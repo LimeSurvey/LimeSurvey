@@ -272,7 +272,7 @@ if ($questionscount > 0)
 	$X="X";
 	foreach($theserows as $rows)
 		{
-		if (strlen($rows['question']) > 30) {$shortquestion=$rows['title'].": ".substr($rows['question'], 0, 30).".. ";}
+		if (strlen($rows['question']) > 30) {$shortquestion=$rows['title'].": ".substr(strip_tags($rows['question']), 0, 30).".. ";}
 		else {$shortquestion=$rows['title'].": ".$rows['question'];}
 		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H")
 			{
