@@ -369,7 +369,7 @@ if ($action == "addquestion")
 	$newquestion .= "\t\t</td>\n";
 	$newquestion .= "\t</tr>\n";
 
-	$newquestion .= "\t<tr>\n";
+	$newquestion .= "\t<tr id='MandatorySelection' style='display: none'>\n";
 	$newquestion .= "\t\t<td align='right'>$setfont<b>Mandatory?</b></font></td>\n";
 	$newquestion .= "\t\t<td>$setfont\n";
 	$newquestion .= "\t\t\tYes <input type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n";
@@ -389,6 +389,15 @@ if ($action == "addquestion")
 	$newquestion .= "\t\t{\n";
 	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
 	$newquestion .= "\t\tdocument.addnewquestion.other[1].checked = true;\n";
+	$newquestion .= "\t\t}\n";
+	$newquestion .= "\tif (QuestionType == 'S' || QuestionType == 'T')\n";
+	$newquestion .= "\t\t{\n";
+	$newquestion .= "\t\tdocument.getElementById('MandatorySelection').style.display = 'none';\n";
+	$newquestion .= "\t\tdocument.editquestion.mandatory[1].checked=true;\n";
+	$newquestion .= "\t\t}\n";
+	$newquestion .= "\telse\n";
+	$newquestion .= "\t\t{\n";
+	$newquestion .= "\t\tdocument.getElementById('MandatorySelection').style.display = '';\n";
 	$newquestion .= "\t\t}\n";
 	$newquestion .= "\t}\n";
 	$newquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
@@ -455,7 +464,7 @@ if ($action == "copyquestion")
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
 		
-		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t<tr id='MandatorySelection' style='display: none'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Mandatory?</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
 		$editquestion .= "\t\t\tYes <input type='radio' name='mandatory' value='Y'";
@@ -479,6 +488,15 @@ if ($action == "copyquestion")
 		$editquestion .= "\t\t{\n";
 		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
 		$editquestion .= "\t\tdocument.editquestion.other[1].checked = true;\n";
+		$editquestion .= "\t\t}\n";
+		$editquestion .= "\tif (QuestionType == 'S' || QuestionType == 'T')\n";
+		$editquestion .= "\t\t{\n";
+		$editquestion .= "\t\tdocument.getElementById('MandatorySelection').style.display = 'none';\n";
+		$editquestion .= "\t\tdocument.editquestion.mandatory[1].checked=true;\n";
+		$editquestion .= "\t\t}\n";
+		$editquestion .= "\telse\n";
+		$editquestion .= "\t\t{\n";
+		$editquestion .= "\t\tdocument.getElementById('MandatorySelection').style.display = '';\n";
 		$editquestion .= "\t\t}\n";
 		$editquestion .= "\t}\n";
 		$editquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
@@ -605,7 +623,7 @@ if ($action == "editquestion")
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
 		
-		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t<tr id='MandatorySelection' style='display: none'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Mandatory?</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
 		$editquestion .= "\t\t\tYes <input type='radio' name='mandatory' value='Y'";
@@ -629,6 +647,15 @@ if ($action == "editquestion")
 		$editquestion .= "\t\t{\n";
 		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
 		$editquestion .= "\t\tdocument.editquestion.other[1].checked = true;\n";
+		$editquestion .= "\t\t}\n";
+		$editquestion .= "\tif (QuestionType == 'S' || QuestionType == 'T')\n";
+		$editquestion .= "\t\t{\n";
+		$editquestion .= "\t\tdocument.getElementById('MandatorySelection').style.display = 'none';\n";
+		$editquestion .= "\t\tdocument.editquestion.mandatory[1].checked=true;\n";
+		$editquestion .= "\t\t}\n";
+		$editquestion .= "\telse\n";
+		$editquestion .= "\t\t{\n";
+		$editquestion .= "\t\tdocument.getElementById('MandatorySelection').style.display = '';\n";
 		$editquestion .= "\t\t}\n";
 		$editquestion .= "\t}\n";
 		$editquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
