@@ -172,6 +172,10 @@ elseif ($action == "edit")
 			if ($fnrow['other'] == "Y")
 				{
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+				if ($fnrow['type'] == "P")
+					{
+					$fnames[] = array("$field"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']}(other comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+					}
 				}
 			}
 		elseif ($fnrow['type'] == "O")
@@ -248,6 +252,19 @@ elseif ($action == "edit")
 						if (substr($fnames[$i][0], -7) == "comment")
 							{
 							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value=\"{$idrow[$fnames[$i][0]]}\" /></td>\n";
+							echo "\t</tr>\n";
+							}
+						elseif (substr($fnames[$i][0], -5) == "other")
+							{
+							echo "\t<tr>\n";
+							echo "\t\t<td>\n";
+							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' style='width: ";
+							echo strlen($idrow[$fnames[$i][0]])."em' value=\"{$idrow[$fnames[$i][0]]}\" />\n";
+							echo "\t\t</td>\n";
+							echo "\t\t<td>\n";
+							$i++;
+							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' size='50' value=\"{$idrow[$fnames[$i][0]]}\" />\n";
+							echo "\t\t</td>\n";
 							echo "\t</tr>\n";
 							}
 						else
