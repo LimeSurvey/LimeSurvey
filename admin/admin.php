@@ -107,6 +107,11 @@ if ($action == "importsurvey")
 	include("importsurvey.php");
 	exit;
 	}
+if ($action == "importgroup")
+	{
+	include("importgroup.php");
+	exit;
+	}
 if ($action == "importquestion")
 	{
 	include("importquestion.php");
