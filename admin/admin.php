@@ -49,10 +49,10 @@ echo $htmlheader;
 // CHECK IF FIRST USE!
 if (!mysql_selectdb ($databasename, $connect))
 	{
-	echo "<CENTER><B><FONT COLOR='RED'>ERROR: Surveyor database does not exist</FONT></B><BR><BR>";
-	echo "It appears that your surveyor script has not yet been set up properly.<BR>";
-	echo "The first step is to create a MYSQL database name with your chosen default name of $databasename<BR>";
-	echo "<BR><INPUT TYPE='SUBMIT' VALUE='Create $databasename' onClick='location.href=\"createdb.php?dbname=$databasename\"'>";
+	echo "<center><b><font color='red'>ERROR: Surveyor database does not exist</font></center></b><br /><br />\n";
+	echo "It appears that your surveyor script has not yet been set up properly.<br />\n";
+	echo "The first step is to create a MYSQL database name with your chosen default name of $databasename<br />\n";
+	echo "<br /><input type='submit' value='Create $databasename' onClick='location.href=\"createdb.php?dbname=$databasename\"'>\n";
 	exit;
 	}
 else
@@ -66,20 +66,20 @@ else
 
 if ($action == "activate")
 	{
-	echo "<CENTER><B>Activating survey ID $sid</B><BR><BR>";
+	echo "<center><b>Activating survey ID $sid</b></center><br /><br />\n";
 	include("activate.php");
 	exit;
 	}
 if ($action == "deactivate")
 	{
-	echo "<CENTER><B>De-activating survey ID $sid</B><BR><BR>";
+	echo "<center><b>De-activating survey ID $sid</b></center><br /><br />\n";
 	include("deactivate.php");
 	exit;
 	}
 
 if ($action == "importsurvey")
 	{
-	echo "<CENTER><B>Importing Survey</B><BR><BR>\n";
+	echo "<center><b>Importing Survey</b></center><br /><br />\n";
 	include("importsurvey.php");
 	exit;
 	}
@@ -99,15 +99,20 @@ if ($action == "delsurvey" || $action == "delgroup" || $action=="delquestion" ||
 
 include("html.php"); 
 
-$cellstyle="STYLE='border-color: #000080; border-width: 1; border-style: solid'";
-echo "<TABLE WIDTH='100%' BORDER='0' CELLPADDING='0' CELLSPACING='0' STYLE='border-color: #000080; border-width: 5; border-style: solid'>\n";
-echo "<TR><TD WIDTH='25%' VALIGN='TOP' ALIGN='CENTER' BGCOLOR='SILVER' $cellstyle>";
-echo "<FONT SIZE='2'>$adminmenu</TD>\n";
+$cellstyle = "style='border-color: #000080; border-width: 1; border-style: solid'";
+echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' style='border-color: #000080; border-width: 5; border-style: solid'>\n";
+echo "\t<tr>\n";
+echo "\t\t<td width='25%' valign='top' align='center' bgcolor='silver' $cellstyle>\n";
+echo "\t\t\t<font size='2'>\n";
+echo "$adminmenu\n";
+echo "\t\t</td>\n";
 
-echo "<TD WIDTH='75%' VALIGN='TOP' $cellstyle>";
+echo "\t\t<td width='75%' valign='top' $cellstyle>\n";
 if ($action == "newsurvey")
 	{
-	echo "$newsurvey</TD></TR>\n";
+	echo "$newsurvey\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
 	echo $htmlfooter;
 	exit;
 	}
@@ -125,7 +130,9 @@ if ($editquestion) {echo "$editquestion";}
 if ($newanswer) {echo "$newanswer";}
 if ($answersummary) {echo "$answersummary";}
 if ($editanswer) {echo "$editanswer";}
-echo "</TD></TR>\n";
+echo "\t\t</td>\n";
+echo "\t</tr>\n";
+echo "</table>\n";
 
 echo $htmlfooter;
 ?>
