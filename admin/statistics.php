@@ -540,13 +540,12 @@ if (isset($_POST['display']) && $_POST['display'])
 	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;} // creates array of post variable names
 	foreach ($postvars as $pv) 
 		{
-		if ($_POST[$pv]) //Only do this if there is actually a value for the $pv
+		if (in_array($pv, $allfields)) //Only do this if there is actually a value for the $pv
 			{
 			$firstletter=substr($pv,0,1);
 			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary") //pull out just the fieldnames
 				{
 				$thisquestion = "`$pv` IN (";
-				//foreach ($$pv as $condition)
 				foreach ($_POST[$pv] as $condition)
 					{
 					$thisquestion .= "'$condition', ";
