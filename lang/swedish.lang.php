@@ -164,10 +164,10 @@ define ("_RG_REGISTRATIONCOMPLETE", "Tack för att du registerat dig för att geno
 								   ."Följ den bifogade länken i e-postmeddelandet för att fortsätta.<br /><br />\n"
 								   ."Enkät-ansvarig {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Thank You<br /><br />"
-					   ."You have completed answering the questions in this survey.</b><br /><br />"
-					   ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
-define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
-					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
-					."through your responses."); //New for 0.98finalRC1
+define("_SM_COMPLETED", "<b>Tack!<br /><br />"
+	."Du har besvarat alla frågor i den här enkäten.</b><br /><br />"
+	."Klicka på ["._SUBMIT."] för att slutföra och spara dina svar."); //New for 0.98finalRC1 - by Bjorn Mildh
+define("_SM_REVIEW", "Om du vill kontrollera dina svar och/eller ändra dem, "
+	."kan du göra det genom att klicka på [<< "._PREV."]-knappen och bläddra "
+	."genom dina svar."); //New for 0.98finalRC1 - by Bjorn Mildh
 ?>
