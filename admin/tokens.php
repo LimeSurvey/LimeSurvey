@@ -791,7 +791,7 @@ if ($action == "edit" || $action == "addnew")
 	echo "\t<tr><td align='center'>\n";
 	//echo "<br />\n";
 	echo "<table width='100%' bgcolor='#CCCCCC' align='center'>\n";
-	echo "<form method='post'>\n";
+	echo "<form method='post' action='tokens.php'>\n";
 	echo "<tr>\n";
 	echo "\t<td align='right' width='20%'>$setfont<b>ID:</b></td><td bgcolor='#EEEEEE'>$setfont Auto</td>\n";
 	echo "</tr>\n";
