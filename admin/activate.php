@@ -42,7 +42,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	//  # "O" -> LIST WITH COMMENT
 	//  # "M" -> MULTIPLE OPTIONS
 	//	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
-	//	# "A", "B", "C", "E", "F" -> Various Array Types
+	//	# "A", "B", "C", "E", "F", "H" -> Various Array Types
 	//  # "R" -> RANKING
 	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R')";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
@@ -246,7 +246,7 @@ else
 					break;
 				}
 			}
-		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "P")
+		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "H" || $arow['type'] == "P")
 			{
 			//MULTI ENTRY
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
