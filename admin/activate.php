@@ -181,7 +181,7 @@ else
 	{
 	$createsurvey = "CREATE TABLE survey_{$_GET['sid']} (\n";
 	$createsurvey .= "  id INT(11) NOT NULL auto_increment,\n";
-	$pquery = "SELECT private FROM surveys WHERE sid={$_GET['sid']}";
+	$pquery = "SELECT private, datestamp FROM surveys WHERE sid={$_GET['sid']}";
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
 		{
@@ -189,6 +189,10 @@ else
 			{
 			$createsurvey .= "  token VARCHAR(10),\n";
 			$surveynotprivate="TRUE";
+			}
+		if ($prow['datestamp'] == "Y")
+			{
+			$createsurvey .= " datestamp DATETIME NOT NULL,\n";
 			}
 		}
 	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid={$_GET['sid']} ORDER BY group_name, title";
