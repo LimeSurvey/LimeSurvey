@@ -110,7 +110,7 @@ else
 for ($i=0; $i<$stoppoint; $i++)
 	{
 	$answerarray[] = $bigarray[$i];
-	echo "($i)[$stoppoint]An Answer! - {$bigarray[$i]}<br />";
+	//echo "($i)[$stoppoint]An Answer! - {$bigarray[$i]}<br />";
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
@@ -157,10 +157,13 @@ if ($questionarray)
 				$codepos2=strpos($aa, "', '", strpos($aa, "', '")+1);
 				$codelength=$codepos2-$codepos1;
 				$code = substr($aa, $codepos1, $codelength);
-				if (substr($aa, $astart, $aend) == ($qid))
+				echo "DOING $aa<br />\n";
+				echo "SUBTR:".substr($aa, $astart, $aend). " VS $oldqid<br />\n";
+				if (substr($aa, $astart, $aend) == ($oldqid))
 					{
-					$ainsert = str_replace("('$qid", "('$newqid", $aa);
+					$ainsert = str_replace("('$oldqid", "('$newqid", $aa);
 					//$ainsert = substr(trim($ainsert), 0, -1);
+					echo "$ainsert<br />\n";
 					$ares = mysql_query($ainsert) or die ("<b>ERROR:</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
 					if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P")
 						{
