@@ -139,7 +139,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."\t\t\t$setfont<br /><br />\n"
 			."\t\t\t"._TC_CREATED." (\"tokens_$sid\")<br /><br />\n"
 			."\t\t\t<input type='submit' $btstyle value='"
-			._CONTINUE."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n"
+			._CONTINUE."' onClick=\"window.open('$homeurl/tokens.php?sid=$sid', '_top')\">\n"
 			."\t\t</font></td>\n"
 			."\t</tr>\n"
 			."</table>\n"
@@ -157,7 +157,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."\t\t\t$setfont<br /><br />\n"
 			."\t\t\t"._TC_CREATED." (\"tokens_$sid\")<br /><br />\n"
 			."\t\t\t<input type='submit' $btstyle value='"
-			._CONTINUE."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n"
+			._CONTINUE."' onClick=\"window.open('$homeurl/tokens.php?sid=$sid', '_top')\">\n"
 			."\t\t</font></td>\n"
 			."\t</tr>\n"
 			."</table>\n"
@@ -187,16 +187,16 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."\t\t\t"._TC_INITQ;
 		echo "<br /><br />\n";
 		echo "\t\t\t<input type='submit' $btstyle value='"
-			._TC_INITTOKENS."' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n"
+			._TC_INITTOKENS."' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n"
 			."\t\t\t<input type='submit' $btstyle value='"
-			._GO_ADMIN."' onClick=\"window.open('admin.php?sid=$sid', '_top')\"><br /><br />\n";
+			._GO_ADMIN."' onClick=\"window.open('$homeurl/admin.php?sid=$sid', '_top')\"><br /><br />\n";
 		if ($tcount>0)
 			{
 			echo "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
 				 ."<tr><td bgcolor='#666666'>$setfont<font color='white' size='1'>Restore Options:\n"
 				 ."</font></font></td></tr>\n"
 				 ."<tr>\n"
-				 ."<form action='tokens.php'><td bgcolor='#DDDDDD' align='center'>$setfont\n"
+				 ."<form action='$homeurl/tokens.php'><td bgcolor='#DDDDDD' align='center'>$setfont\n"
 				 ."The following old token tables could be restored:<br />\n"
 				 ."<select $slstyle2 size='4' name='oldtable'>\n";
 			foreach($oldlist as $ol)
@@ -231,28 +231,28 @@ echo "\t<tr bgcolor='#999999'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='SummaryButton' src='$imagefiles/summary.gif' title='"
-	._B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n"
+	._B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid', '_top')\">\n"
 	."\t\t\t<input type='image' name='ViewAllButton' src='$imagefiles/document.gif' title='"
-	._T_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=browse', '_top')\">\n"
+	._T_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=browse', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='AddNewButton' src='$imagefiles/add.gif' title='"
-	._T_ADD_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=addnew', '_top')\">\n"
+	._T_ADD_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=addnew', '_top')\">\n"
 	."\t\t\t<input type='image' name='ExportButton' src='$imagefiles/export.gif' title='"
-	._T_EXPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=export', '_top')\">\n"
+	._T_EXPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=export', '_top')\">\n"
 	."\t\t\t<input type='image' name='ImportButton' src='$imagefiles/import.gif' title='"
-	._T_IMPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=import', '_top')\">\n"
+	._T_IMPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=import', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='InviteButton' src='$imagefiles/invite.gif' title='"
-	._T_INVITE_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=email', '_top')\">\n"
+	._T_INVITE_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=email', '_top')\">\n"
 	."\t\t\t<input type='image' name='RemindButton' src='$imagefiles/remind.gif' title='"
-	._T_REMIND_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=remind', '_top')\">\n"
+	._T_REMIND_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=remind', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='TokenifyButton' src='$imagefiles/tokenify.gif' title='"
-	._T_TOKENIFY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify', '_top')\">\n"
+	._T_TOKENIFY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=tokenify', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='DeleteTokensButton' src='$imagefiles/delete.gif' title='"
-	._T_KILL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=kill', '_top')\">\n"
+	._T_KILL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=kill', '_top')\">\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 
@@ -343,20 +343,20 @@ if (!$action)
 		."\t\t<td align='center'>\n"
 		."\t\t\t<table align='center'><tr><td>\n"
 		."\t\t\t$setfont<br />\n"
-		."\t\t\t<ul><li><a href='tokens.php?sid=$sid&action=clearinvites' onClick='return confirm(\""
+		."\t\t\t<ul><li><a href='$homeurl/tokens.php?sid=$sid&action=clearinvites' onClick='return confirm(\""
 		._TC_CLEARINV_RUSURE."\")'>"._TC_CLEARINVITES."</a></li>\n"
-		."\t\t\t<li><a href='tokens.php?sid=$sid&action=cleartokens' onClick='return confirm(\""
+		."\t\t\t<li><a href='$homeurl/tokens.php?sid=$sid&action=cleartokens' onClick='return confirm(\""
 		._TC_CLEARTOKENS_RUSURE."\")'>"._TC_CLEARTOKENS."</a></li>\n"
-		."\t\t\t<li><a href='tokens.php?sid=$sid&action=deleteall' onClick='return confirm(\""
+		."\t\t\t<li><a href='$homeurl/tokens.php?sid=$sid&action=deleteall' onClick='return confirm(\""
 		._TC_DELETEALL_RUSURE."\")'>"._TC_DELETEALL."</a></li>\n";
 	$bquery = "SELECT * FROM {$dbprefix}tokens_$sid LIMIT 1";
 	$bresult = mysql_query($bquery) or die(_ERROR." counting fields<br />".mysql_error());
 	$bfieldcount=mysql_num_fields($bresult);
 	if ($bfieldcount==7)
 		{
-		echo "\t\t\t<li><a href='tokens.php?sid=$sid&action=updatedb'>"._TC_UPDATEDB."</a></li>\n";
+		echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$sid&action=updatedb'>"._TC_UPDATEDB."</a></li>\n";
 		}
-	echo "\t\t\t<li><a href='tokens.php?sid=$sid&action=kill'>"._T_KILL_BT."</a></li></ul>\n"
+	echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$sid&action=kill'>"._T_KILL_BT."</a></li></ul>\n"
 		."\t\t\t</font>\n"
 		."\t\t\t</td></tr></table>\n"
 		."\t\t</td>\n"
@@ -385,17 +385,17 @@ if ($action == "browse" || $action == "search")
 		."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='31' height='20' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<input type='image' name='DBeginButton' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
-		._D_BEGIN."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=0&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_BEGIN."' onClick=\"window.open('$homeurl/tokens.php?action=browse&sid=$sid&start=0&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<input type='image' name='DBackButton' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
-		._D_BACK."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$last&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_BACK."' onClick=\"window.open('$homeurl/tokens.php?action=browse&sid=$sid&start=$last&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='13' height='20' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<input type='image' name='DForwardButton' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
-		._D_FORWARD."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$next&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_FORWARD."' onClick=\"window.open('$homeurl/tokens.php?action=browse&sid=$sid&start=$next&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<input type='image' name='DEndButton' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
-		._D_END."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$end&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_END."' onClick=\"window.open('$homeurl/tokens.php?action=browse&sid=$sid&start=$end&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>"
-		."\t\t\t<tr><form method='post' action='tokens.php'>\n"
+		."\t\t\t<tr><form method='post' action='$homeurl/tokens.php'>\n"
 		."\t\t\t\t<td>\n"
 		."\t\t\t\t\t<input $slstyle type='text' name='searchstring' value='$searchstring'>\n"
 		."\t\t\t\t\t<input $btstyle type='submit' value='"._SEARCH."'>\n"
@@ -405,7 +405,7 @@ if ($action == "browse" || $action == "search")
 		."\t\t\t\t<input type='hidden' name='sid' value='$sid'>\n"
 		."\t\t\t</tr></form></table>\n"
 		."\t\t</td>\n"
-		."\t\t<form action='tokens.php'>\n"
+		."\t\t<form action='$homeurl/tokens.php'>\n"
 		."\t\t<td align='right'><font size='1' face='verdana'>"
 		."&nbsp;"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$limit' name='limit'>"
 		."&nbsp;"._BR_STARTING."<input type='text' $slstyle size='4' value='$start' name='start'>"
@@ -444,45 +444,45 @@ if ($action == "browse" || $action == "search")
 	//COLUMN HEADINGS
 	echo "\t<tr>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='tokens.php?sid=$sid&action=browse&order=tid&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=tid&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY."ID' border='0' align='left' hspace='0'></a>$setfont"."ID</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='tokens.php?sid=$sid&action=browse&order=firstname&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=firstname&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_FIRST."' border='0' align='left'></a>$setfont"._TL_FIRST."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='tokens.php?sid=$sid&action=browse&order=lastname&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=lastname&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_LAST."' border='0' align='left'></a>$setfont"._TL_LAST."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='tokens.php?sid=$sid&action=browse&order=email&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=email&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_EMAIL."' border='0' align='left'></a>$setfont"._TL_EMAIL."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='tokens.php?sid=$sid&action=browse&order=token&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=token&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_TOKEN."' border='0' align='left'></a>$setfont"._TL_TOKEN."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='tokens.php?sid=$sid&action=browse&order=sent%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=sent%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_INVITE."' border='0' align='left'></a>$setfont"._TL_INVITE."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='tokens.php?sid=$sid&action=browse&order=completed%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=completed%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_DONE."' border='0' align='left'></a>$setfont"._TL_DONE."</font></th>\n";
 	if ($bfieldcount == 9) 
 		{
 		echo "\t\t<th align='left' valign='top'>"
-			."<a href='tokens.php?sid=$sid&action=browse&order=attribute_1&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=attribute_1&start=$start&limit=$limit&searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_ATTR1."' border='0' align='left'></a>$setfont"._TL_ATTR1."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
-			."<a href='tokens.php?sid=$sid&action=browse&order=attribute_2&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=attribute_2&start=$start&limit=$limit&searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_ATTR2."' border='0' align='left'></a>$setfont"._TL_ATTR2."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
-			."<a href='tokens.php?sid=$sid&action=browse&order=mpid&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$sid&action=browse&order=mpid&start=$start&limit=$limit&searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_MPID."' border='0' align='left'></a>$setfont"._TL_MPID."</font></th>\n";
 		}
@@ -507,7 +507,7 @@ if ($action == "browse" || $action == "search")
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
 			{
-			echo "\t\t<form action='browse.php' method='post' target='_blank'>\n"
+			echo "\t\t<form action='$homeurl/browse.php' method='post' target='_blank'>\n"
 				."\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='V' title='"
 				._TC_VIEW."' />\n"
@@ -556,9 +556,9 @@ if ($action == "kill")
 			._TC_DELTOKENSINFO."<br />\n"
 			."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
 			."<input type='submit' $btstyle value='"
-			._TC_DELETETOKENS."' onClick=\"window.open('tokens.php?sid=$sid&action=kill&ok=surething', '_top')\" /><br />\n"
+			._TC_DELETETOKENS."' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=kill&ok=surething', '_top')\" /><br />\n"
 			."<input type='submit' $btstyle value='"
-			._AD_CANCEL."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
+			._AD_CANCEL."' onClick=\"window.open('$homeurl/tokens.php?sid=$sid', '_top')\" />\n";
 		}
 	elseif (isset($_GET['ok']) && $_GET['ok'] == "surething")
 		{
@@ -780,7 +780,7 @@ if (returnglobal('action') == "remind")
 			}
 		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
-			."\t<form method='post' action='tokens.php'>\n"
+			."\t<form method='post' action='$homeurl/tokens.php'>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' width='150'>$setfont<b>"._FROM.":</b></font></td>\n"
 			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"$surveyadmin <$surveyadminemail>\" /></td>\n"
@@ -913,7 +913,7 @@ if (returnglobal('action') == "remind")
 				$lefttosend = $ctcount-$maxemails;
 				echo "\t\t</td>\n"
 					."\t</tr>\n"
-					."\t<tr><form method='post' action='tokens.php'>\n"
+					."\t<tr><form method='post' action='$homeurl/tokens.php'>\n"
 					."\t\t<td align='center'>\n"
 					."\t\t\t$setfont<b>"._WARNING."</b><br /><br />\n"
 					._TC_EMAILSTOGO."<br /><br />\n"
@@ -953,9 +953,9 @@ if ($action == "tokenify")
 		{
 		echo "<br />"._TC_CREATETOKENSINFO."<br /><br />\n"
 			."<input type='submit' $btstyle value='"
-			._AD_YES."' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\" />\n"
+			._AD_YES."' onClick=\"window.open('$homeurl/tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\" />\n"
 			."<input type='submit' $btstyle value='"
-			._AD_NO."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n"
+			._AD_NO."' onClick=\"window.open('$homeurl/tokens.php?sid=$sid', '_top')\" />\n"
 			."<br /><br />\n";
 		}
 	else
@@ -1059,7 +1059,7 @@ if ($action == "edit" || $action == "addnew")
 		._TC_ADDEDIT."</b></font></td></tr>\n"
 		."\t<tr><td align='center'>\n"
 		."<table width='100%' bgcolor='#CCCCCC' align='center'>\n"
-		."<form method='post' action='tokens.php'>\n"
+		."<form method='post' action='$homeurl/tokens.php'>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<b>ID:</b></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>{$setfont}Auto</font></td>\n"
@@ -1162,7 +1162,7 @@ if ($action == _UPDATE)
 	$udresult = mysql_query($udquery) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".mysql_error());
 	echo "<br />$setfont<font color='green'><b>"._SUCCESS."</b></font><br />\n"
 		."<br />"._TC_TOKENUPDATED."<br /><br />\n"
-		."<a href='tokens.php?sid=$sid&action=browse'>"._T_ALL_BT."</a><br /><br />\n"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse'>"._T_ALL_BT."</a><br /><br />\n"
 		."\t</td></tr></table>\n";
 	}
 
@@ -1197,8 +1197,8 @@ if ($action == _ADD)
 	$inresult = mysql_query($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".mysql_error());
 	echo "<br />$setfont<font color='green'><b>"._SUCCESS."</b></font><br />\n"
 		."<br />"._TC_TOKENADDED."<br /><br />\n"
-		."<a href='tokens.php?sid=$sid&action=browse'>"._T_ALL_BT."</a><br />\n"
-		."<a href='tokens.php?sid=$sid&action=browse'>"._T_ADD_BT."</a><br /><br />\n"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse'>"._T_ALL_BT."</a><br />\n"
+		."<a href='$homeurl/tokens.php?sid=$sid&action=browse'>"._T_ADD_BT."</a><br /><br />\n"
 		."\t</td></tr></table>\n";
 	}
 

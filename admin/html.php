@@ -152,7 +152,7 @@ if ($action == "checksettings" || $action == "changelang")
 	$cssummary .= "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 				. "cellpadding='1' cellspacing='0' width='450'>\n"
 				. "<tr><td align='center'>$setfont<br />"
-				. "<a href='dbchecker.php'>"._PS_CHECKDBINTEGRITY."</a>"
+				. "<a href='".$homeurl."/dbchecker.php'>"._PS_CHECKDBINTEGRITY."</a>"
 				. "<br />&nbsp;</font></td></tr>\n"
 				. "</table>\n"
 				. "<table><tr><td height='1'></td></tr></table>\n";
@@ -261,13 +261,13 @@ if ($sid)
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
 						. "\t\t\t\t\t<input type='image' src='$imagefiles/do.gif' title='"._S_DOSURVEY_BT."' "
 						. "name='DoSurvey' align='left' border='0' hspace='0' "
-						. "onclick=\"window.open('../index.php?sid=$sid&newtest=Y', '_blank')\">\n"
+						. "onclick=\"window.open('".$publicurl."/index.php?sid=$sid&newtest=Y', '_blank')\">\n"
 						. "\t\t\t\t\t<input type='image' src='$imagefiles/dataentry.gif' "
 						. "title='"._S_DATAENTRY_BT."' align='left' border='0' hspace='0' "
-						. "name='DoDataentry' onclick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n"
+						. "name='DoDataentry' onclick=\"window.open('".$homeurl."/dataentry.php?sid=$sid', '_blank')\">\n"
 						. "\t\t\t\t\t<input type='image' src='$imagefiles/print.gif' title='"._S_PRINTABLE_BT."' "
 						. "name='ShowPrintableSurvey' align='left' border='0' hspace='0' "
-						. "onclick=\"window.open('printablesurvey.php?sid=$sid', '_blank')\">\n"
+						. "onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$sid', '_blank')\">\n"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
 						. "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"._S_EDIT_BT."' "
 						. "name='EditSurvey' align='left' border='0' hspace='0' "
@@ -284,17 +284,17 @@ if ($sid)
 			}
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
 						. _S_EXPORT_BT."' align='left' border='0' hspace='0' name='ExportSurvey' "
-						. "onclick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
+						. "onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$sid', '_top')\">\n";
 		if ($activated == "Y")
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
 							. "\t\t\t\t\t<input type='image' src='$imagefiles/browse.gif' title='"._S_BROWSE_BT."' "
 							. "align='left' border='0' hspace='0' name='BrowseSurveyResults' "
-							. "onclick=\"window.open('browse.php?sid=$sid', '_top')\">\n"
+							. "onclick=\"window.open('".$homeurl."/browse.php?sid=$sid', '_top')\">\n"
 							. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
 							. "\t\t\t\t\t<input type='image' src='$imagefiles/tokens.gif' title='"._S_TOKENS_BT."' "
 							. "align='left' border='0' hspace='0' name='TokensControl' "
-							. "onclick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
+							. "onclick=\"window.open('$homeurl/tokens.php?sid=$sid', '_top')\">\n";
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
 						. "\t\t\t\t</td>\n"
@@ -587,13 +587,13 @@ if ($qid)
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.gif' title='"
 						  . _Q_CONDITIONS_BT."' border='0' hspace='0' align='left' name='SetQuestionConditions' "
-						  . "onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n"
+						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
 			$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/answers.gif' title='"
 							  . _Q_ANSWERS_BT."' border='0' hspace='0' align='left' name='ViewAnswers' "
-							  . "onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
+							  . "onClick=\"window.open('".$scriptname."?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
 			}
 		$questionsummary .= "\t\t\t\t\t</td>\n"
 						  . "\t\t\t\t\t<td align='right' width='330'>\n"
@@ -640,7 +640,7 @@ if ($qid)
 							 . _WARNING.": ". _QS_NOANSWERS." "
 							 . "<input type='image' src='$imagefiles/answers.gif' title='"
 							 . _Q_ANSWERS_BT."' border='0' hspace='0' name='EditThisQuestionAnswers'"
-							 . "onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
+							 . "onClick=\"window.open('".$scriptname."?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}
 		if (!$qrrow['lid'] && ($qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 			{
@@ -697,7 +697,7 @@ if (returnglobal('viewanswer'))
 			}
 		$position=sprintf("%05d", $position);
 		if ($cdrow['sortorder'] || $cdrow['sortorder'] == "0") {$position=$cdrow['sortorder'];}
-		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n";
+		$vasummary .= "\t<tr><form action='".$scriptname."' method='post'>\n";
 		$vasummary .= "\t\t<td align='center'>";
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
@@ -763,7 +763,7 @@ if (returnglobal('viewanswer'))
 	if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 		{
 		$position=sprintf("%05d", $position);
-		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n"
+		$vasummary .= "\t<tr><form action='".$scriptname."' method='post'>\n"
 					. "\t\t<td align='center'><input name='code' type='text' $btstyle size='5' maxlength='5' "
 					. "id='addanswercode' "
 					. "onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\">"
@@ -792,14 +792,14 @@ if (returnglobal('viewanswer'))
 	if ($cdcount > 0)
 		{
 		$vasummary .= "<tr><td colspan='3'></td>"
-					. "<form action='admin.php' method='post'><td align='center'>"
+					. "<form action='".$scriptname."' method='post'><td align='center'>"
 					. "<input $btstyle type='submit' name='ansaction' value='"._AL_SORTALPHA."'></td>\n"
 					. "\t<input type='hidden' name='sid' value='$sid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
 					. "\t<input type='hidden' name='viewanswer' value='Y'></form>\n"
-					. "<form action='admin.php' method='post'>"
+					. "<form action='".$scriptname."' method='post'>"
 					. "<td align='center'><input $btstyle type='submit' name='ansaction' value='"._AL_FIXSORT."'></td>\n"
 					. "\t<input type='hidden' name='sid' value='$sid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
