@@ -1073,6 +1073,7 @@ if ($action == "copyquestion")
 	{
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
 	$eqresult = mysql_query($eqquery);
+	$qattributes=questionAttributes();
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
 		$editquestion = "<table width='100%' border='0'>\n"
@@ -1160,11 +1161,16 @@ if ($action == "copyquestion")
 					   . "\t\t</font></td>\n"
 					   . "\t</tr>\n";
 		
-		$editquestion .= questionjavascript($eqrow['type']);
+		$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 		
 		$editquestion .= "\t<tr>\n"
 					   . "\t\t<td align='right'>$setfont<b>"._QL_COPYANS."</b></font></td>\n"
 					   . "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y' />"
+					   . "</font></td>\n"
+					   . "\t</tr>\n"
+					   . "\t<tr>\n"
+					   . "\t\t<td align='right'>$setfont<b>"._QL_COPYATT."</b></font></td>\n"
+					   . "\t\t<td>$setfont<input type='checkbox' checked name='copyattributes' value='Y' />"
 					   . "</font></td>\n"
 					   . "\t</tr>\n"
 					   . "\t<tr>\n"
@@ -1294,7 +1300,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= " />\n"
 					   . "\t\t</font></td>\n"
 					   . "\t</tr>\n";
-		$qattributes=questionAttributes();		
+		$qattributes=questionAttributes();
 		
 		$editquestion .= "\t<tr>\n"
 					   . "\t\t<td colspan='2' align='center'>"
@@ -1307,13 +1313,22 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		}
 
 	$qidattributes=getQuestionAttributes($qid);
-	$editquestion .= "<td valign='top' width='35%'><table width='100%' border='0' cellspacing='0'>
+	$editquestion .= "\t\t\t<td valign='top' width='35%'><table width='100%' border='0' cellspacing='0'>
 					   <tr>
 					    <td colspan='2' align='center'>
-						 <table class='outlinetable' cellspacing='0' width='90%'>
-						  <tr>
+						 <table class='outlinetable' cellspacing='0' width='90%'><tr id='QTattributes'><form action='$scriptname' method='post'>
+						<tr>
 						   <th colspan='4'>{$setfont}"._QL_QUESTIONATTRIBUTES."</font></th>
-						  </tr>\n";
+						  </tr>
+						  <tr><th colspan='4' height='5'></th></tr>
+						  <th colspan=2 nowrap align='right'><select id='QTlist' name='attribute_name' $slstyle>
+						  </select></th><th><input type='text' id='QTtext' size='6' name='attribute_value' $slstyle></th>
+						  <th><input type='submit' value='"._ADD."' $btstyle></th>
+						  <input type='hidden' name='action' value='addattribute'>
+						  <input type='hidden' name='sid' value='$sid'>
+					      <input type='hidden' name='qid' value='$qid'>
+					      <input type='hidden' name='gid' value='$gid'></form></tr>
+					     <tr><th colspan='4' height='10'></th></tr>\n";
 	foreach ($qidattributes as $qa)
 		{
 		$editquestion .= "<tr><td align='right' width='50%'>"
@@ -1339,22 +1354,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					   . "\t<input type='hidden' name='qaid' value='".$qa['qaid']."'>\n"
 					   . "</form></tr>";
 		}
-	$editquestion .= "\t\t\t	</table></td></tr><tr id='QTattributes'><form action='$scriptname' method='post'>
-						<td nowrap colspan='2' align='center'><select id='QTlist' name='attribute_name' $slstyle>
-						</select>
-						<input type='text' id='QTtext' size='6' name='attribute_value' $slstyle>
-						<input type='submit' value='"._ADD."' $btstyle></td>
-					    <input type='hidden' name='action' value='addattribute'>
-					    <input type='hidden' name='sid' value='$sid'>
-					    <input type='hidden' name='qid' value='$qid'>
-					    <input type='hidden' name='gid' value='$gid'>
-					   </tr>
-					   <tr>
-					    <td colspan='2' align='center'>
-						 
-						</td></form>
-					   </tr>
-					  </table></td></tr></table>\n";
+	$editquestion .= "\t\t\t	</table>";
+	$editquestion .= "</td></tr></table>\n";
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 	}
 

@@ -175,6 +175,7 @@ define("_QL_OTHER", "Other:");
 define("_QL_LABELSET", "Label Set:");
 define("_QL_COPYANS", "Copy Answers?"); //New in 0.98rc3
 define("_QL_QUESTIONATTRIBUTES", "Question Attributes:"); //New in 0.99dev01
+define("_QL_COPYATT", "Copy Attributes?"); //New in 0.99dev01
 //answers
 define("_AL_CODE", "Code");
 define("_AL_ANSWER", "Answer");

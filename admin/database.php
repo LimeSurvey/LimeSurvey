@@ -303,18 +303,16 @@ elseif ($action == "copynewquestion")
 	if (!isset($_POST['lid'])) {$_POST['lid']="";}
 	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
+	$newqid = mysql_insert_id();
 	if (!$result)
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\\n".mysql_error()."\")\n //-->\n</script>\n";
 		}
 	if (returnglobal('copyanswers') == "Y")
 		{
-		$q2 = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
-		$r2 = mysql_query($q2);
-		while ($qr2 = mysql_fetch_array($r2)) {$newqid = $qr2['qid'];}
-		$q1 = "SELECT * FROM {$dbprefix}answers WHERE qid='"
+		$q1 = "SELECT * FROM {$dbprefix}answers WHERE qid="
 			. returnglobal('oldqid')
-			. "' ORDER BY code";
+			. " ORDER BY code";
 		$r1 = mysql_query($q1);
 		while ($qr1 = mysql_fetch_array($r1))
 			{
@@ -324,7 +322,23 @@ elseif ($action == "copynewquestion")
 				. "'{$qr1['sortorder']}')";
 			$ir1 = mysql_query($i1);
 			}		
-		}	
+		}
+	if (returnglobal('copyattributes') == "Y") 
+		{
+		$q1 = "SELECT * FROM {$dbprefix}question_attributes
+			   WHERE qid=".returnglobal('oldqid')."
+			   ORDER BY qaid";
+		$r1 = mysql_query($q1);
+		while($qr1 = mysql_fetch_array($r1))
+			{
+			$i1 = "INSERT INTO {$dbprefix}question_attributes
+				   (qid, attribute, value)
+				   VALUES ('$newqid',
+				   '{$qr1['attribute']}',
+				   '{$qr1['value']}')";
+			$ir1 = mysql_query($i1);
+			} // while
+		}
 	}	
 
 elseif ($action == "delquestion")
