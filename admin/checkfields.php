@@ -33,6 +33,7 @@ $allfields[]=array("answers", "sortorder", "sortorder varchar(5) NULL");
 
 $allfields[]=array("conditions", "cid", "cid int(11) NOT NULL auto_increment");
 $allfields[]=array("conditions", "qid", "qid int(11) NOT NULL default '0'");
+$allfields[]=array("conditions", "cqid", "cqid int(11) NOT NULL default '0'");
 $allfields[]=array("conditions", "cfieldname", "cfieldname varchar(50) NOT NULL default ''");
 $allfields[]=array("conditions", "method", "method char(2) NOT NULL default ''");
 $allfields[]=array("conditions", "value", "value varchar(5) NOT NULL default ''");
@@ -76,7 +77,7 @@ echo "<table width='350' align='center' style='border: 1px solid #555555' cellpa
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._CHECKFIELDS."</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td>\n";
 
-echo "$setfont<b><u>"._CF_CHECKTABLES.":</u></b><br /><font size='1'>\n";
+echo "$setfont<b>"._CF_CHECKTABLES.":</b><br /><font size='1'>\n";
 
 $result = mysql_list_tables($databasename);
 while ($row = mysql_fetch_row($result))
@@ -123,7 +124,7 @@ foreach ($alltables as $at)
 echo "<br /></font>\n";
 
 
-echo "$setfont<b><u>"._CF_CHECKFIELDS.":</u></b><br /><font size='1'>\n";
+echo "$setfont<b>"._CF_CHECKFIELDS.":</b><br /><font size='1'>\n";
 
 //GET LIST OF TABLES
 $tables = mysql_list_tables($databasename);
