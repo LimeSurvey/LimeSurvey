@@ -7,7 +7,7 @@
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
 	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 20 February 2003								#
+	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
 	# perform data-entry on surveys.							#
@@ -58,25 +58,25 @@ if (!$_GET['sid'] && !$_POST['sid'])
 	}
 else
 	{
-	$sid=$_GET['sid'];
-	if (!$sid) {$sid=$_POST['sid'];}
+	$sid = $_GET['sid'];
+	if (!$sid) {$sid = $_POST['sid'];}
 	}
 // MAKE SURE THAT THE SURVEY EXISTS
 $chquery = "SELECT * FROM surveys WHERE sid=$sid";
-if (!$chresult=mysql_query($chquery))
+if (!$chresult = mysql_query($chquery))
 	{
 	echo "\t<tr><td colspan='2' align='center'>$setfont<br /><br />Sorry, this survey does not exist</td></tR>\n";
 	echo "</table>\n";
 	exit;
 	}
-while ($chrow=mysql_fetch_row($chresult))
+while ($chrow = mysql_fetch_array($chresult))
 	{
-	echo "\t<tr><td colspan='2' align='center'>$setfont<b>Survey $sid - $chrow[1]</td></tr>\n";
+	echo "\t<tr><td colspan='2' align='center'>$setfont<b>Survey $sid - {$chrow['short_title']}</td></tr>\n";
 	}
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-$tkquery="SELECT * FROM tokens_$sid";
-if (!$tkresult=mysql_query($tkquery))
+$tkquery = "SELECT * FROM tokens_$sid";
+if (!$tkresult = mysql_query($tkquery))
 	{
 	if (!$createtable)
 		{
@@ -93,8 +93,8 @@ if (!$tkresult=mysql_query($tkquery))
 		}
 	else
 		{
-		$createtokentable="CREATE TABLE tokens_$sid (\n  tid int NOT NULL auto_increment,\n  firstname varchar(40) NULL,  lastname varchar(40) NULL,\n  email varchar(100) NULL,  token varchar(10) NULL,\n sent varchar(1) NULL DEFAULT 'N', completed varchar(1) NULL DEFAULT 'N',  PRIMARY KEY (tid)\n) TYPE=MyISAM;";
-		$ctresult=mysql_query($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".mysql_error());
+		$createtokentable = "CREATE TABLE tokens_$sid (\n  tid int NOT NULL auto_increment,\n  firstname varchar(40) NULL,  lastname varchar(40) NULL,\n  email varchar(100) NULL,  token varchar(10) NULL,\n sent varchar(1) NULL DEFAULT 'N', completed varchar(1) NULL DEFAULT 'N',  PRIMARY KEY (tid)\n) TYPE=MyISAM;";
+		$ctresult = mysql_query($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".mysql_error());
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2' align='center'>\n";
 		echo "\t\t\t$setfont<br /><br />\n";
@@ -126,7 +126,7 @@ $tokenmenu .= "\t\t</td>\n";
 $tokenmenu .= "\t</tr>\n";
 
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
-$tkcount=mysql_num_rows($tkresult);
+$tkcount = mysql_num_rows($tkresult);
 echo "$tokenmenu";
 echo "\t<tr><td colspan='2' align='center'>There are $tkcount records in your token table for this survey.</td></tr>\n";
 
@@ -136,17 +136,17 @@ echo "\t\t<td colspan='2' align='center'>\n";
 echo "\t\t\t<table width='400' align='center' bgcoloR='#DDDDDD'>\n";
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
-$tksq="SELECT count(*) FROM tokens_$sid WHERE sent='Y'";
-$tksr=mysql_query($tksq);
-while ($tkr=mysql_fetch_row($tksr))
+$tksq = "SELECT count(*) FROM tokens_$sid WHERE sent='Y'";
+$tksr = mysql_query($tksq);
+while ($tkr = mysql_fetch_row($tksr))
 	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount have been sent an invitation to participate<br />\n";}
-$tksq="SELECT count(*) FROM tokens_$sid WHERE completed='Y'";
-$tksr=mysql_query($tksq);
-while ($tkr=mysql_fetch_row($tksr))
+$tksq = "SELECT count(*) FROM tokens_$sid WHERE completed='Y'";
+$tksr = mysql_query($tksq);
+while ($tkr = mysql_fetch_row($tksr))
 	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount entries have completed the survey<br />\n";}
-$tksq="SELECT count(*) FROM tokens_$sid WHERE token IS NULL OR token=''";
-$tksr=mysql_query($tksq);
-while ($tkr=mysql_fetch_row($tksr))
+$tksq = "SELECT count(*) FROM tokens_$sid WHERE token IS NULL OR token=''";
+$tksr = mysql_query($tksq);
+while ($tkr = mysql_fetch_row($tksr))
 	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount have not had a token generated\n";}
 echo "\t\t\t\t\t</td>\n";
 echo "\t\t\t\t</tr>\n";
@@ -157,7 +157,7 @@ echo "\t\t\t</table>\n";
 
 if ($action == "browse")
 	{
-	echo "<br>\n<table width='600' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
+	echo "<br />\n<table width='600' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
 	//COLUMN HEADINGS
 	echo "\t<tr>\n";
 	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=tid'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>ID</b></td>\n";
@@ -169,13 +169,13 @@ if ($action == "browse")
 	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Complete?</b></td>\n";
 	echo "\t\t<td>$setfont<b>Action</b></td>\n";
 	echo "\t</tr>\n";
-	$bquery="SELECT * FROM tokens_$sid";
+	$bquery = "SELECT * FROM tokens_$sid";
 	if (!$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order";}
-	$bresult=mysql_query($bquery);
-	while ($brow=mysql_fetch_row($bresult))
+	$bresult = mysql_query($bquery);
+	while ($brow = mysql_fetch_row($bresult))
 		{
-		if ($bgc=="#EEEEEE") {$bgc="#DDDDDD";} else {$bgc="#EEEEEE";}
+		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
 		echo "\t<tr bgcolor='$bgc'>\n";
 		for ($i=0; $i<=6; $i++)
 			{
@@ -193,32 +193,32 @@ if ($action == "browse")
 if ($action == "kill")
 	{
 	$date = date(Ymd);
-	echo "<CENTER>$setfont<B>Drop/Delete Tokens</B><BR>\n";
+	echo "<CENTER>$setfont<B>Drop/Delete Tokens</B><br />\n";
 	if (!$ok)
 		{
 		echo "<TABLE WIDTH='80%' ALIGN='CENTER' BGCOLOR='#DDDDDD'>\n";
 		echo " <TR><TD ALIGN='CENTER'>";
-		echo "Deleting this tokens table will mean that tokens are no longer<BR>";
-		echo "required for public access to this survey. It will also delete<BR>";
-		echo "all the existing tokens in this survey. A backup of this table<BR>";
-		echo "will be made, and called \"old_tokens_$sid\". This can be<BR>";
-		echo "recovered by a systems administrator.<BR><BR>";
-		echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Tokens' onClick=\"window.open('tokens.php?sid=$sid&action=kill&ok=surething', '_top')\"><BR>\n";
+		echo "Deleting this tokens table will mean that tokens are no longer<br />";
+		echo "required for public access to this survey. It will also delete<br />";
+		echo "all the existing tokens in this survey. A backup of this table<br />";
+		echo "will be made, and called \"old_tokens_$sid\". This can be<br />";
+		echo "recovered by a systems administrator.<br /><br />";
+		echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Tokens' onClick=\"window.open('tokens.php?sid=$sid&action=kill&ok=surething', '_top')\"><br />\n";
 		echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Cancel' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">";
 		echo " </TD></TR></TABLE>\n";
 		}
 	elseif ($ok == "surething")
 		{
-		$oldtable="tokens_{$sid}";
-		$newtable="old_tokens_{$sid}_{$date}";
+		$oldtable = "tokens_{$sid}";
+		$newtable = "old_tokens_{$sid}_{$date}";
 		$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
-		$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid=$sid'>Admin</a>");
+		$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<br />".mysql_error()."<br /><br /><a href='$scriptname?sid=$sid'>Admin</a>");
 		echo "<TABLE WIDTH='80%' ALIGN='CENTER' BGCOLOR='#DDDDDD'>\n";
 		echo " <TR><TD ALIGN='CENTER'>";
-		echo "The tokens table has now been removed and tokens are no longer<BR>";
-		echo "required for public access to this survey. A backup of this table<BR>";
-		echo "has been made, and is called \"old_tokens_$sid_$date\". This can be<BR>";
-		echo "recovered by a systems administrator.<BR><BR>";
+		echo "The tokens table has now been removed and tokens are no longer<br />";
+		echo "required for public access to this survey. A backup of this table<br />";
+		echo "has been made, and is called \"old_tokens_$sid_$date\". This can be<br />";
+		echo "recovered by a systems administrator.<br /><br />";
 		echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Finished' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">";
 		echo " </TD></TR></TABLE>\n";
 			
@@ -228,18 +228,18 @@ if ($action == "kill")
 
 if ($_GET['action'] == "email" || $_POST['action'] == "email")
 	{
-	echo "<CENTER>$setfont<B>Email Invitation</B><BR>\n";
+	echo "<CENTER>$setfont<B>Email Invitation</B><br />\n";
 	if (!$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
-		$esquery="SELECT * FROM surveys WHERE sid=$sid";
-		$esresult=mysql_query($esquery);
-		while ($esrow=mysql_fetch_row($esresult))
+		$esquery = "SELECT * FROM surveys WHERE sid=$sid";
+		$esresult = mysql_query($esquery);
+		while ($esrow = mysql_fetch_array($esresult))
 			{
-			$surveyname=$esrow[1];
-			$surveydescription=$esrow[2];
-			$surveyadmin=$esrow[3];
-			$surveyadminemail=$esrow[7];
+			$surveyname = $esrow['short_title'];
+			$surveydescription = $esrow['description'];
+			$surveyadmin = $esrow['admin'];
+			$surveyadminemail = $esrow['adminemail'];
 			}
 		echo "<TABLE WIDTH='80%' ALIGN='CENTER' BGCOLOR='#DDDDDD'>\n";
 		echo "<FORM METHOD='POST'>\n";
@@ -255,7 +255,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "<TABLE WIDTH='500' BGCOLOR='#EEEEEE' BORDER='1' CELLPADDING='0' CELLSPACING='0'><TR><TD>";
 		echo "$setfont Dear [FIRSTNAME],";
 		echo "</TD></TR></TABLE>\n";
-		echo "<B>You can make changes to this part of the message:</B><BR>";
+		echo "<B>You can make changes to this part of the message:</B><br />";
 		echo "<TEXTAREA NAME='message' ROWS='6' COLS='60'>";
 		echo "You have been invited to participate in the following survey.\n\n";
 		echo "** Survey Name **\n$surveyname\n\n";
@@ -264,9 +264,9 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "\n\nSincerely,\n\n$surveyadmin ($surveyadminemail)";
 		echo "</TEXTAREA></TD></TR>\n";
 		echo " <TR>\n  <TD></TD>";
-		echo "  <TD>$setfont<B>The following will be added to the end of your email message:</B><BR>";
+		echo "  <TD>$setfont<B>The following will be added to the end of your email message:</B><br />";
 		echo "<TABLE WIDTH='500' BGCOLOR='#EEEEEE' BORDER='1' CELLPADDING='0' CELLSPACING='0'><TR><TD>";
-		echo "$setfont---------------------------------<BR> Click Here to do Survey:<BR>$publicurl/index.php?sid=$sid&token=[TOKENVALUE]<BR>";
+		echo "$setfont---------------------------------<br /> Click Here to do Survey:<br />$publicurl/index.php?sid=$sid&token=[TOKENVALUE]<br />";
 		echo "</TD></TR></TABLE>\n</TD></TR>\n";
 		echo " <TR>";
 		echo "  <TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Send Invitations'></TD></TR>\n";
@@ -278,12 +278,12 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 	else
 		{
 		echo "Sending email!";
-		$ctquery="SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !=''";
-		$ctresult=mysql_query($ctquery);
-		$ctcount=mysql_num_rows($ctresult);
-		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' LIMIT $maxemails";
-		$emresult=mysql_query($emquery) or die ("Couldn't do query.<BR>$emquery<BR>".mysql_error());
-		$emcount=mysql_num_rows($emresult);
+		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !=''";
+		$ctresult = mysql_query($ctquery);
+		$ctcount = mysql_num_rows($ctresult);
+		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' LIMIT $maxemails";
+		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />$emquery<br />".mysql_error());
+		$emcount = mysql_num_rows($emresult);
 		$headers = "From: {$_POST['from']}\r\n";
 		$headers .= "X-Mailer: $sitename Email Inviter";  
 		$message = strip_tags($_POST['message']);
@@ -293,31 +293,31 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "<TABLE WIDTH='500' ALIGN='CENTER' BGCOLOR='#EEEEEE'><TR><TD><FONT SIZE='1'>\n";
 		if ($emcount > 0)
 			{
-			while ($emrow=mysql_fetch_array($emresult))
+			while ($emrow = mysql_fetch_array($emresult))
 				{
-				$to=$emrow['email'];
-				//echo "To: $to ($emrow[0] $emrow[1])<BR>";
-				//$from=$surveyadminemail;
-				//echo "From: $from<BR>";
-				//echo "Subject: $subject<BR>";
+				$to = $emrow['email'];
+				//echo "To: $to ({$emrow['firstname']} {$emrow['lastname']})<br />";
+				//$from = $surveyadminemail;
+				//echo "From: $from<br />";
+				//echo "Subject: $subject<br />";
 				$sendmessage = "Dear {$emrow['firstname']},\n\n".$message;
 				$sendmessage .= "\n\n-------------------------------------------\n\n";
 				$sendmessage .= "Click here to do this survey:\n\n";
 				$sendmessage .= "$publicurl/index.php?sid=$sid&token={$emrow['token']}\n\n";
-				//echo "Message:". str_replace("\n", "<BR>", $sendmessage) . "<P>";
+				//echo "Message:". str_replace("\n", "<br />", $sendmessage) . "<p>";
 				mail($to, $_POST['subject'], $sendmessage, $headers);
 				$udequery = "UPDATE tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
-				$uderesult=mysql_query($udequery) or die ("Couldn't update tokens<BR>$udequery<BR>".mysql_error());
-				echo "[Invite Sent to {$emrow['firstname']} {$emrow['lastname']}] ";
+				$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
+				echo "[Invite Sent to {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				}
 			if ($ctcount > $emcount)
 				{
-				$lefttosend=$ctcount-$maxemails;
-				echo "</TD></TR><TR><FORM METHOD='POST'><TD ALIGN='CENTER'>$setfont<B>Warning:</B><BR>";
+				$lefttosend = $ctcount-$maxemails;
+				echo "</TD></TR><TR><FORM METHOD='POST'><TD ALIGN='CENTER'>$setfont<B>Warning:</B><br />";
 				echo "The number of emails to send ($ctcount) is greater than the maximum number";
 				echo " of emails that can be sent in one lot ($maxemails). There are still $lefttosend";
 				echo " emails to go. You can continue sending the next $maxemails by clicking on the";
-				echo " button below.<BR>";
+				echo " button below.<br />";
 				$message = str_replace('"', "&quot;", $message);
 				echo "<INPUT TYPE='SUBMIT' VALUE=\"Send More\"></TD>\n";
 				echo "<INPUT TYPE='HIDDEN' NAME='ok' VALUE=\"absolutely\">\n";
@@ -331,8 +331,8 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			}
 		else
 			{
-			echo "<CENTER><B>WARNING:</B><BR>There were no token recipients who have not already had";
-			echo " an invitation sent out, or who have not responded!<BR><BR>";
+			echo "<CENTER><B>WARNING:</B><br />There were no token recipients who have not already had";
+			echo " an invitation sent out, or who have not responded!<br /><br />";
 			echo "No invitations have been sent out!";
 			}
 		
@@ -346,14 +346,14 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 	if (!$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
-		$esquery="SELECT * FROM surveys WHERE sid=$sid";
-		$esresult=mysql_query($esquery);
-		while ($esrow=mysql_fetch_row($esresult))
+		$esquery = "SELECT * FROM surveys WHERE sid=$sid";
+		$esresult = mysql_query($esquery);
+		while ($esrow = mysql_fetch_array($esresult))
 			{
-			$surveyname=$esrow[1];
-			$surveydescription=$esrow[2];
-			$surveyadmin=$esrow[3];
-			$surveyadminemail=$esrow[7];
+			$surveyname = $esrow['short_title'];
+			$surveydescription = $esrow['description'];
+			$surveyadmin = $esrow['admin'];
+			$surveyadminemail = $esrow['adminemail'];
 			}
 		echo "<table width='80%' align='center' bgcolor='#DDDDDD'>\n";
 		echo "\t<form method='post' action='tokens.php'>\n";
@@ -401,41 +401,42 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		}
 	else
 		{
-		echo "Sending reminder email! (Starting after {$_POST['last_tid']})";
-		$ctquery="SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !=''";
+		echo "Sending reminder email!";
+		if ($_POST['last_tid']) {echo " (Starting after {$_POST['last_tid']})";}
+		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !=''";
 		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
-		$ctresult=mysql_query($ctquery);
-		$ctcount=mysql_num_rows($ctresult);
-		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !=''";
+		$ctresult = mysql_query($ctquery);
+		$ctcount = mysql_num_rows($ctresult);
+		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !=''";
 		if ($_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
-		$emresult=mysql_query($emquery) or die ("Couldn't do query.<BR>$emquery<BR>".mysql_error());
-		$emcount=mysql_num_rows($emresult);
+		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />$emquery<br />".mysql_error());
+		$emcount = mysql_num_rows($emresult);
 		$headers = "From: {$_POST['from']}\r\n";
 		$headers .= "X-Mailer: $sitename Email Reminder";  
-		echo "<table width='500' align='CENTER' bgcolor='#EEEEEE'><tr><td><font size='1'>\n";
+		echo "\n<table width='500' align='CENTER' bgcolor='#EEEEEE'><tr><td><font size='1'>\n";
 		$message = strip_tags($_POST['message']);
 		$message = str_replace("&quot;", '"', $message);
 		if (get_magic_quotes_gpc() != "0")
 			{$message = stripcslashes($message);}
 		if ($emcount > 0)
 			{
-			while ($emrow=mysql_fetch_array($emresult))
+			while ($emrow = mysql_fetch_array($emresult))
 				{
-				$to=$emrow['email'];
+				$to = $emrow['email'];
 				$sendmessage = "Dear {$emrow['firstname']},\n\n";
 				$sendmessage .= $message;
 				$sendmessage .= "\n\n-------------------------------------------\n\n";
 				$sendmessage .= "Click here to do this survey:\n\n";
 				$sendmessage .= "$publicurl/index.php?sid={$_POST['sid']}&token={$emrow['token']}\n\n";
 				mail($to, $_POST['subject'], $sendmessage, $headers);
-				echo "[Reminder Sent to {$emrow['firstname']} {$emrow['lastname']}]({$emrow['tid']}) ";
-				$lasttid=$emrow['tid'];
+				echo "({$emrow['tid']})[Reminder Sent to {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+				$lasttid = $emrow['tid'];
 				}
 			if ($ctcount > $emcount)
 				{
-				$lefttosend=$ctcount-$maxemails;
-				echo "</td></tr><tr><form method='post' action='tokens.php'><td align='center'>$setfont<b>Warning:</b><br>";
+				$lefttosend = $ctcount-$maxemails;
+				echo "</td></tr><tr><form method='post' action='tokens.php'><td align='center'>$setfont<b>Warning:</b><br />";
 				echo "The number of emails to send ($ctcount) is greater than the maximum number";
 				echo " of emails that can be sent in one lot ($maxemails). There are still $lefttosend";
 				echo " emails to go. You can continue sending the next $maxemails by clicking on the";
@@ -455,7 +456,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		else
 			{
 			echo "<center><b>WARNING:</b><br />There were no token recipients who have not yet responded.";
-			echo "<br><br>";
+			echo "<br /><br />";
 			echo "No invitations have been sent out!";
 			}
 		
@@ -466,39 +467,39 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 	
 if ($action == "tokenify")
 	{
-	echo "<CENTER>$setfont<B>Tokens</B><BR>\n";
+	echo "<CENTER>$setfont<B>Tokens</B><br />\n";
 	if (!$ok)
 		{
-		echo "<CENTER><BR>$setfont Clicking OK will generate tokens for all<BR>those in this token list that have not<BR>been issued one. Is this OK?";
-		echo "<BR><INPUT TYPE='SUBMIT' $btstyle VALUE='Yes' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\">";
-		echo "<BR><INPUT TYPE='SUBMIT' $btstyle VALUE='No' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">";
+		echo "<CENTER><br />$setfont Clicking OK will generate tokens for all<br />those in this token list that have not<br />been issued one. Is this OK?";
+		echo "<br /><INPUT TYPE='SUBMIT' $btstyle VALUE='Yes' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\">";
+		echo "<br /><INPUT TYPE='SUBMIT' $btstyle VALUE='No' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">";
 		}
 	else
 		{
-		$tkquery="SELECT * FROM tokens_$sid WHERE token IS NULL OR token=''";
-		$tkresult=mysql_query($tkquery) or die ("Mucked up!<BR>$tkquery<BR>".mysql_error());
-		while ($tkrow=mysql_fetch_row($tkresult))
+		$tkquery = "SELECT * FROM tokens_$sid WHERE token IS NULL OR token=''";
+		$tkresult = mysql_query($tkquery) or die ("Mucked up!<br />$tkquery<br />".mysql_error());
+		while ($tkrow = mysql_fetch_array($tkresult))
 			{
-			$insert="NO";
-			while ($insert!="OK")
+			$insert = "NO";
+			while ($insert != "OK")
 				{
-				$newtoken=sprintf("%010s", rand(1,10000000000));
-				$ntquery="SELECT * FROM tokens_$sid WHERE token='$newtoken'";
-				$ntresult=mysql_query($ntquery);
-				if (!mysql_num_rows($ntresult)) {$insert="OK";}
+				$newtoken = sprintf("%010s", rand(1,10000000000));
+				$ntquery = "SELECT * FROM tokens_$sid WHERE token='$newtoken'";
+				$ntresult = mysql_query($ntquery);
+				if (!mysql_num_rows($ntresult)) {$insert = "OK";}
 				}
-			$itquery="UPDATE tokens_$sid SET token='$newtoken' WHERE tid=$tkrow[0]";
-			$itresult=mysql_query($itquery);
+			$itquery = "UPDATE tokens_$sid SET token='$newtoken' WHERE tid={$tkrow['tid']}";
+			$itresult = mysql_query($itquery);
 			$newtokencount++;
 			}
-		echo "<BR><BR><B>$newtokencount tokens have been generated";
+		echo "<br /><br /><B>$newtokencount tokens have been generated";
 		}
 	}
 if ($action == "delete")
 	{
-	$dlquery="DELETE FROM tokens_$sid WHERE tid=$tid";
-	$dlresult=mysql_query($dlquery) or die ("Couldn't delete record $tid<BR>".mysql_error());
-	echo "<BR><B>Record has been deleted.";
+	$dlquery = "DELETE FROM tokens_$sid WHERE tid=$tid";
+	$dlresult = mysql_query($dlquery) or die ("Couldn't delete record $tid<br />".mysql_error());
+	echo "<br /><B>Record has been deleted.";
 	}
 
 	
@@ -507,14 +508,15 @@ if ($action == "edit" || $action == "add")
 	{
 	if ($action == "edit")
 		{
-		$edquery="SELECT * FROM tokens_$sid WHERE tid=$tid";
-		$edresult=mysql_query($edquery);
-		while($edrow=mysql_fetch_row($edresult))
+		$edquery = "SELECT * FROM tokens_$sid WHERE tid=$tid";
+		$edresult = mysql_query($edquery);
+		while($edrow = mysql_fetch_array($edresult))
 			{
-			$id=$edrow[0]; $firstname=$edrow[1]; $lastname=$edrow[2]; $email=$edrow[3]; $token=$edrow[4]; $sent=$edrow[5]; $completed=$edrow[6];
+			//Create variables with the same names as the database column names and fill in the value
+			foreach ($edrow as $Key=>$Value) {$$Key = $Value;}
 			}
 		}
-	echo "<br>\n";
+	echo "<br />\n";
 	echo "<table width='550' bgcolor='#CCCCCC'>\n";
 	echo "<form method='post'>\n";
 	echo "<tr>\n";
@@ -568,103 +570,127 @@ if ($action == "edit" || $action == "add")
 
 if ($action == "update")
 	{
-	echo "<BR>$setfont<B>UPDATING TOKEN ENTRY</B><BR>\n";
-	$udquery="UPDATE tokens_$sid SET firstname='$firstname', lastname='$lastname', email='$email', token='$token', sent='$sent', completed='$completed' WHERE tid=$tid";
-	$udresult=mysql_query($udquery) or die ("Update record $tid failed:<BR>$udquery<BR>".mysql_error());
-	echo "<BR>Entry succesfully updated!";
+	echo "<br />$setfont<B>UPDATING TOKEN ENTRY</B><br />\n";
+	$udquery = "UPDATE tokens_$sid SET firstname='$firstname', lastname='$lastname', email='$email', token='$token', sent='$sent', completed='$completed' WHERE tid=$tid";
+	$udresult = mysql_query($udquery) or die ("Update record $tid failed:<br />$udquery<br />".mysql_error());
+	echo "<br />Entry succesfully updated!";
 	}
 
 
 if ($action == "insert")
 	{
-	echo "<BR>$setfont<B>INSERTING TOKEN ENTRY</B><BR>\n";
-	$inquery = "INSERT into tokens_$sid VALUES ('', '$firstname', '$lastname', '$email', '$token', '$sent', '$completed')";
-	$inresult=mysql_query($inquery) or die ("Add new record failed:<BR>$inquery<BR>".mysql_error());
-	echo "<BR>Entry succesfully added!";
+	echo "<br />$setfont<B>INSERTING TOKEN ENTRY</B><br />\n";
+	$inquery = "INSERT into tokens_$sid \n";
+	$inquery .= "(firstname, lastname, email, token, sent, completed) \n";
+	$inquery .= "VALUES ('$firstname', '$lastname', '$email', '$token', '$sent', '$completed')";
+	$inresult = mysql_query($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".mysql_error());
+	echo "<br />Entry succesfully added!";
 	}
 
 
 if ($action == "import") 
 	{
 	form();
-	echo "<TABLE WIDTH='400' BGCOLOR='#EEEEEE'><TR><TD ALIGN='CENTER'>";
-	echo "<FONT SIZE='1'><B>Note:</B><BR>File should be a standard comma delimited file with no quotes in the form of:<BR><BR>";
-	echo "<I>Firstname, Lastname, Email, Token</I></TD></TR></TABLE>\n";
+	echo "<table width='400' bgcolor='#eeeeee'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'>\n";
+	echo "\t\t\t<font size='1'><b>Note:</b><br />\n";
+	echo "\t\t\tFile should be a standard comma delimited file with no quotes in the form of:<br /><br />\n";
+	echo "\t\t\t<i>Firstname, Lastname, Email, Token</i>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
 	}
 
 
 if ($action == "upload") 
 	{
-	$the_path="$homedir";
-	$the_full_file_path=$homedir."/".$the_file_name;
-    if (!@copy($the_file, $the_path . "/" . $the_file_name)) 
+	$the_path = "$homedir";
+	$the_full_file_path = $homedir."/".$the_file_name;
+	if (!@copy($the_file, $the_path . "/" . $the_file_name)) 
 		{
-		form("\n<b>Something went horribly wrong, check the path to and ".
-		"the permissions for the upload directory</b>");
+		form("<b>Something went horribly wrong, check the path to and ".
+		"the permissions for the upload directory</b>\n");
 		}
 		else
 		{
-		echo "\n<BR><B>IMPORTING FILE</B><BR>File succesfully uploaded<BR><BR>";
-		echo "\nReading File...<BR>";
-		$handle=fopen($the_full_file_path, "r");
+		echo "<br /><b>IMPORTING FILE</b><br />\nFile succesfully uploaded<br /><br />\n";
+		echo "Reading File...<br />\n";
+		$xz = 0; $xx = 0;
+		$handle = fopen($the_full_file_path, "r");
+		if ($handle == false) {echo "Failed to open the uploaded file!\n";}
 		while (!feof($handle))
 			{
-			$buffer=fgets($handle);
-			//echo "$xx:".$buffer."<BR>";
+			$buffer = fgets($handle);
+			
+			//Delete trailing CR from Windows files.
+			//Macintosh files end lines with just a CR, which fgets() doesn't handle correctly.
+			//It will read the entire file in as one line.
+			if (substr($buffer, -1) == "\n") {$buffer = substr($buffer, 0, -1);}
+			
+			//echo "$xx:".$buffer."<br />\n"; //Debugging info
+			$firstname = ""; $lastname = ""; $email = ""; $token = ""; //Clear out values from the last path, in case the next line is missing a value
 			if (!$xx)
 				{
 				//THIS IS THE FIRST LINE. IT IS THE HEADINGS. IGNORE IT
 				}
 			else
 				{
-				$line=explode(",",$buffer);
-				$elements=count($line); 
+				$line = explode(",", $buffer);
+				$elements = count($line); 
 				if ($elements > 1)
 					{
-					$xy=0;
+					$xy = 0;
 					foreach($line as $el)
 						{
-						//echo "[$el]($xy)<BR>";
-						if ($xy<$elements)
+						//echo "[$el]($xy)<br />\n"; //Debugging info
+						if ($xy < $elements)
 							{
-							if ($xy==0){$firstname=$el;}
-							if ($xy==1){$lastname=$el;}
-							if ($xy==2){$email=$el;}
-							if ($xy==3){$token=$el;}
+							if ($xy == 0) {$firstname = $el;}
+							if ($xy == 1) {$lastname = $el;}
+							if ($xy == 2) {$email = $el;}
+							if ($xy == 3) {$token = $el;}
 							}
 						$xy++;
 						}
 					//CHECK FOR DUPLICATES?
-					$iq="INSERT INTO tokens_$sid VALUES('','$firstname', '$lastname', '$email', '$token', '', '')";
-					$ir=mysql_query($iq) or die ("Couldn't insert line<BR>$iq<BR>".mysql_error());
+					$iq = "INSERT INTO tokens_$sid \n";
+					$iq .= "(firstname, lastname, email, token) \n";
+					$iq .= "VALUES ('$firstname', '$lastname', '$email', '$token')";
+					//echo "<pre style='text-align: left'>$iq</pre>\n"; //Debugging info
+					$ir = mysql_query($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".mysql_error()."<pre style='text-align: left'>$iq</pre>\n");
 					$xz++;
 					}
 				}
 			$xx++;
 			}
-		echo "\nProcess completed. $xz records added.<BR>";
+		echo "Process completed.<br />\n";
+		echo "$xz records added.<br />\n";
 		fclose($handle);
 		unlink($the_full_file_path);
 		}
-
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
+	echo "</body>\n</html>";
 	}
 
-//echo "ACTION: $action<BR>THEFILE: $the_file<BR>THEFILENAME: $the_file_name";
+//echo "ACTION: $action<br />THEFILE: $the_file<br />THEFILENAME: $the_file_name";
 
 
 function form($error=false) {
 
 global $PHP_SELF, $sid, $btstyle, $slstyle, $setfont;
 
-    if ($error) print $error . "<br><br>";
-    
-    print "\n<form ENCTYPE=\"multipart/form-data\"  action=\"" . $PHP_SELF . "\" method=\"post\">";
-    print "\n<INPUT TYPE=\"hidden\" name=\"action\" value=\"upload\">";
-	print "\n<INPUT TYPE=\"hidden\" name=\"sid\" value=\"$sid\">";
-    print "\n<P>$setfont Upload a file";
-    print "\n<br><INPUT $slstyle NAME=\"the_file\" TYPE=\"file\" SIZE=\"35\"><br>";
-    print "\n<input type=\"submit\" $btstyle Value=\"Upload\">";
-    print "\n</form>";
+	if ($error) {print $error . "<br /><br />\n";}
+	
+	print "\n<form enctype='multipart/form-data' action='" . $PHP_SELF . "' method='post'>\n";
+	print "<input type='hidden' name='action' value='upload' />\n";
+	print "<input type='hidden' name='sid' value='$sid' />\n";
+	print "$setfont Upload a file<br />\n";
+	print "<input type='file' $slstyle name='the_file' size='35' /><br />\n";
+	print "<input type='submit' $btstyle value='Upload' />\n";
+	print "</form>\n\n";
 
 } # END form
 
