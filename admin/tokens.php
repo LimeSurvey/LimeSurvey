@@ -77,7 +77,7 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
 echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
 // MAKE SURE THAT THERE IS A SID
-if (!$sid)
+if (!isset($sid) || !$sid)
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._TOKENCONTROL.":</b></td></tr>\n"
@@ -119,7 +119,7 @@ while ($chrow = mysql_fetch_array($chresult))
 $tkquery = "SELECT * FROM {$dbprefix}tokens_$sid";
 if (!$tkresult = mysql_query($tkquery))
 	{
-	if (!$_GET['createtable']) //Initialise Tokens Table
+	if (!isset($_GET['createtable']) || !$_GET['createtable']) //Initialise Tokens Table
 		{
 		echo "\t<tr>\n"
 			."\t\t<td align='center'>\n"
@@ -308,10 +308,10 @@ if ($action == "browse" || $action == "search")
 		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"
 		._D_BEGIN."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=0&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databack.gif' title='"
-		._D_BACK."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&surveytable=$surveytable&start=$last&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_BACK."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$last&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<img src='./images/blank.gif' width='13' height='20' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"
-		._D_FORWARD."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&surveytable=$surveytable&start=$next&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_FORWARD."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$next&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"
 		._D_END."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$end&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
@@ -370,8 +370,10 @@ if ($action == "browse" || $action == "search")
 	else {$bquery .= " ORDER BY $order"; }
 	$bquery .= " LIMIT $start, $limit";
 	$bresult = mysql_query($bquery) or die ("$bquery<br />".mysql_error());
+	$bgc="";
 	while ($brow = mysql_fetch_array($bresult))
 		{
+		$brow['token'] = trim($brow['token']);
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
 		echo "\t<tr bgcolor='$bgc'>\n";
 		for ($i=0; $i<=6; $i++)
@@ -424,12 +426,12 @@ if ($action == "browse" || $action == "search")
 
 if ($action == "kill")
 	{
-	$date = date(YmdHi);
+	$date = date('YmdHi');
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._DROPTOKENS.":</b></td></tr>\n"
 		."\t<tr><td colspan='2' align='center'>\n"
 		."$setfont<br />\n";
-	if (!$_GET['ok'])
+	if (!isset($_GET['ok']) || !$_GET['ok'])
 		{
 		echo "<span style='display: block; text-align: center; width: 70%'>\n"
 			."<font color='red'><b>"._WARNING."</b></font></br>\n"
@@ -441,10 +443,10 @@ if ($action == "kill")
 			._AD_CANCEL."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n"
 			."</span>\n";
 		}
-	elseif ($_GET['ok'] == "surething")
+	elseif (isset($_GET['ok']) && $_GET['ok'] == "surething")
 		{
 		$oldtable = "{$dbprefix}tokens_$sid";
-		$newtable = "{$dbprefix}old_tokens_$sid_$date";
+		$newtable = "{$dbprefix}old_tokens_{$sid}_$date";
 		$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 		$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<br />\n".mysql_error()."<br /><br />\n<a href='$scriptname?sid=$sid'>Admin</a>\n");
 		echo "<span style='display: block; text-align: center; width: 70%'>\n"
@@ -461,12 +463,12 @@ if ($action == "kill")
 	}	
 
 
-if ($_GET['action'] == "email" || $_POST['action'] == "email")
+if (returnglobal('action') == "email")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._EMAILINVITE.":</b></td></tr>\n"
 		."\t<tr><td colspan='2' align='center'>\n";
-	if (!$_POST['ok'])
+	if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
 		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
@@ -483,7 +485,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."<form method='post'>\n";
 		//echo "\t<tr><td colspan='2' bgcolor='#555555' align='center'>$setfont<font color='white'><b>Send Invitation";
-		if ($_GET['tid']) {echo " to TokenID No {$_GET['tid']}";}
+		if (isset($_GET['tid']) && $_GET['tid']) {echo " to TokenID No {$_GET['tid']}";}
 		echo "</b></td></tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right'>$setfont<b>"._FROM.":</b></td>\n"
@@ -538,22 +540,22 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			."\t<input type='hidden' name='ok' value='absolutely' />\n"
 			."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
 			."\t<input type='hidden' name='action' value='email' />\n";
-		if ($_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'";}
+		if (isset($_GET['tid']) && $_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'";}
 		echo "</form>\n"
 			."</table>\n";
 		}
 	else
 		{
 		echo _TC_SENDINGEMAILS;
-		if ($_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
+		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
 		echo "<br />\n";
 		$ctquery = "SELECT firstname FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !='' AND email != ''";
-		if ($_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
+		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
 		echo "<!-- ctquery: $ctquery -->\n";
 		$ctresult = mysql_query($ctquery) or die("Database error!<br />\n" . mysql_error());
 		$ctcount = mysql_num_rows($ctresult);
 		$emquery = "SELECT firstname, lastname, email, token, tid FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' AND email != ''";
-		if ($_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
+		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
 		$emquery .= " LIMIT $maxemails";
 		echo "\n\n<!-- emquery: $emquery -->\n\n";
 		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".mysql_error());
@@ -614,12 +616,12 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 	echo "</td></tr></table>\n";
 	}
 	
-if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
+if (returnglobal('action') == "remind")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._EMAILREMIND.":</b></td></tr>\n"
 		."\t<tr><td colspan='2' align='center'>\n";
-	if (!$_POST['ok'])
+	if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
 		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
@@ -643,7 +645,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		$subject=str_replace("{SURVEYNAME}", $surveyname, _TC_REMINDSUBJECT);
 		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='$subject' /></td>\n"
 			."\t</tr>\n";
-		if (!$_GET['tid'])
+		if (!isset($_GET['tid']) || !$_GET['tid'])
 			{
 			echo "\t<tr>\n"
 				."\t\t<td align='right' width='150' valign='top'>$setfont<b>"._TC_REMINDSTARTAT."</b></td>\n"
@@ -703,23 +705,23 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 			."\t<input type='hidden' name='ok' value='absolutely'>\n"
 			."\t<input type='hidden' name='sid' value='{$_GET['sid']}'>\n"
 			."\t<input type='hidden' name='action' value='remind'>\n";
-		if ($_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";}
+		if (isset($_GET['tid']) && $_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";}
 		echo "\t</form>\n"
 			."</table>\n";
 		}
 	else
 		{
 		echo _TC_SENDINGREMINDERS;
-		if ($_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
-		if ($_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
+		if (isset($_POST['last_tid']) && $_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
+		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
 		$ctquery = "SELECT firstname FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
-		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
-		if ($_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
+		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
+		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
 		$ctresult = mysql_query($ctquery);
 		$ctcount = mysql_num_rows($ctresult);
 		$emquery = "SELECT firstname, lastname, email, token, tid FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !='' AND EMAIL !=''";
-		if ($_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
-		if ($_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
+		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
+		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
 		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />$emquery<br />".mysql_error());
 		$emcount = mysql_num_rows($emresult);
@@ -787,7 +789,7 @@ if ($action == "tokenify")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TOKENIFY.":</b></td></tr>\n";
 	echo "\t<tr><td align='center'>$setfont<br />\n";
-	if (!$_GET['ok'])
+	if (!isset($_GET['ok']) || !$_GET['ok'])
 		{
 		echo "<br />$setfont"._TC_CREATETOKENSINFO."<br /><br />\n"
 			."<input type='submit' $btstyle value='"
@@ -869,19 +871,27 @@ if ($action == "edit" || $action == "addnew")
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<b>"._TL_FIRST.":</b></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='firstname' value='$firstname'></td>\n"
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='firstname' value='";
+	if (isset($firstname)) {echo $firstname;}
+	echo "'></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<b>"._TL_LAST.":</b></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='lastname' value='$lastname'></td>\n"
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='lastname' value='";
+	if (isset($lastname)) {echo $lastname;}
+	echo "'></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<b>"._TL_EMAIL.":</b></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='50' name='email' value='$email'></td>\n"
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='50' name='email' value='";
+	if (isset($email)) {echo $email;}
+	echo "'></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<b>"._TL_TOKEN.":</b></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value='$token'>\n";
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value='";
+	if (isset($token)) {echo $token;}
+	echo "'>\n";
 	if ($action == "addnew")
 		{
 		echo "\t\t$setfont<font size='1' color='red'>"._TC_TOKENCREATEINFO."</font></font>\n";
@@ -890,11 +900,15 @@ if ($action == "edit" || $action == "addnew")
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<b>"._TL_INVITE.":</b></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='sent' value='$sent'></td>\n"
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='sent' value='";
+	if (isset($sent)) {echo $sent;}	
+	echo "'></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<b>"._TL_DONE.":</b></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='completed' value='$completed'></td>\n"
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='completed' value='";
+	if (isset($completed)) {echo $completed;}
+	echo "'></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td colspan='2' align='center'>";
