@@ -926,9 +926,9 @@ if ($_POST['summary'])
 					if ($al[0] == "") 
 						{$fname=_NOANSWER;} 
 					elseif ($al[0] == _OTHER || $al[0] == "Answers")
-						{$fname="$al[1] <input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+						{$fname="$al[1] <input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]&sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
 					elseif ($qtype == "S" || $qtype == "T")
-						{$fname="$al[1] $qtype<input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+						{$fname="$al[1] $qtype<input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]&sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
 					else
 						{$fname="$al[1] ($al[0])";}
 					echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont"
