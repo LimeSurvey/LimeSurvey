@@ -386,7 +386,7 @@ if ($action == "kill")
 		echo _TC_DELTOKENSINFO."<br />\n";
 		echo "( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n";
 		echo "<input type='submit' $btstyle value='"._TC_DELETETOKENS."' onClick=\"window.open('tokens.php?sid=$sid&action=kill&ok=surething', '_top')\" /><br />\n";
-		echo "<input type='submit' $btstyle value='"._CANCEL."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
+		echo "<input type='submit' $btstyle value='"._AD_CANCEL."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
 		echo "</span>\n";
 		}
 	elseif ($_GET['ok'] == "surething")
@@ -734,8 +734,8 @@ if ($action == "tokenify")
 	if (!$_GET['ok'])
 		{
 		echo "<br />$setfont"._TC_CREATETOKENSINFO."<br /><br />\n";
-		echo "<input type='submit' $btstyle value='"._YES."' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\" />\n";
-		echo "<input type='submit' $btstyle value='"._NO."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
+		echo "<input type='submit' $btstyle value='"._AD_YES."' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\" />\n";
+		echo "<input type='submit' $btstyle value='"._AD_NO."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
 		echo "<br /><br />\n";
 		}
 	else
