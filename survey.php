@@ -262,6 +262,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 		if (mysql_query($subquery)) //save responses was succesful
 			{
 			//UPDATE COOKIE IF REQUIRED
+			$savedid=mysql_insert_id();
 			if ($surveyusecookie == "Y" && $tokensexist != 1)
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
