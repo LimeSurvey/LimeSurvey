@@ -142,17 +142,9 @@ define ("_RG_FIRSTNAME", "First Name"); //NEW for 0.98rc9
 define ("_RG_LASTNAME", "Last Name"); //NEW for 0.98rc9
 define ("_RG_INVALIDEMAIL", "The email you used is not valid. Please try again.");//NEW for 0.98rc9
 define ("_RG_USEDEMAIL", "The email you used has already been registered.");//NEW for 0.98rc9
-define ("_RG_EMAILINVITATION", "Dear {FIRSTNAME},\n\n"
-							  ."You, or someone using your email address, have registered to\n"
-							  ."participate in an online survey titled {SURVEYNAME}.\n\n"
-							  ."To complete this survey, click on the following URL:\n\n"
-							  ."{SURVEYURL}\n\n"
-							  ."If you have any questions about this survey, or if you\n"
-							  ."did not register to participate and believe this email\n"
-							  ."is in error, please contact {ADMINNAME} at {ADMINEMAIL}.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registration Confirmation");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in this survey.<br /><br />\n"
-								   ."An email has been sent to the address you provided with access details"
+								   ."An email has been sent to the address you provided with access details "
 								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
 								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 ?>
