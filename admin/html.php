@@ -879,7 +879,7 @@ if ($action == "copyquestion")
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_GROUP."</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
-		$editquestion .= getgrouplist2($eqrow['gid']);
+		$editquestion .= getgrouplist3($eqrow['gid']);
 		$editquestion .= "\t\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
 		
@@ -996,7 +996,7 @@ if ($action == "editquestion")
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t<td align='right'>$setfont<b>"._QL_GROUP."</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
-		$editquestion .= getgrouplist2($eqrow['gid']);
+		$editquestion .= getgrouplist3($eqrow['gid']);
 		$editquestion .= "\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
 		

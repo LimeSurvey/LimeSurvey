@@ -158,14 +158,22 @@ elseif ($action == "updatequestion")
 		}
 	else
 		{
-		$uqquery = "UPDATE {$dbprefix}questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
-				. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
-				. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}', lid='{$_POST['lid']}' "
-				. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
-		$uqresult = mysql_query($uqquery);
-		if (!$uqresult)
+		//echo "GID: ".$_POST['gid'];
+		if (isset($_POST['gid']) && $_POST['gid'] != "")
 			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\n".mysql_error()."\")\n //-->\n</script>\n";
+			$uqquery = "UPDATE {$dbprefix}questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
+					. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
+					. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}', lid='{$_POST['lid']}' "
+					. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
+			$uqresult = mysql_query($uqquery);
+			if (!$uqresult)
+				{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\n".mysql_error()."\")\n //-->\n</script>\n";
+				}
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\")\n //-->\n</script>\n";
 			}
 		}
 	}
