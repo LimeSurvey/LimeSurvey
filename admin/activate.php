@@ -372,6 +372,27 @@ else
 		"</body>\n</html>"
 		);
 	
+	$anquery = "SELECT autonumber_start FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
+	if ($anresult=mysql_query($anquery)) 
+		{
+		//if there is an autonumber_start field, start auto numbering here
+		while($row=mysql_fetch_array($anresult))
+			{
+			if ($row['autonumber_start'] > 0) 
+				{
+			    $query = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$row['autonumber_start'];
+				if ($result = mysql_query($query))
+					{
+					//We're happy it worked!
+					}
+				else
+					{
+					//Continue regardless - it's not the end of the world
+					}
+				}
+			}
+		}
+	
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
 	echo "\t\t\t\t<tr><td align='center'>$setfont<font color='green'>"._AC_ACTIVATED."<br /><br />\n";

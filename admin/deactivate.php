@@ -78,8 +78,20 @@ else
 		$tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
 		$tdeactivateresult = mysql_query($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".mysql_error()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a>");
 		}
+	
 	$oldtable="{$dbprefix}survey_{$_GET['sid']}";
 	$newtable="{$dbprefix}old_{$_GET['sid']}_{$date}";
+
+	//Update the auto_increment value from the table before renaming
+	$query = "SELECT id FROM $oldtable ORDER BY id desc LIMIT 1";
+	$result = mysql_query($query) or die("Error getting latest id number<br />$query<br />".mysql_error()); 
+	while ($row=mysql_fetch_array($result))
+		{
+		$new_autonumber_start=$row['id']+1;
+		} 
+	$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$sid";
+	$result = mysql_query($query); //Note this won't die if it fails - that's deliberate.
+	
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
