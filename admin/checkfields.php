@@ -112,11 +112,11 @@ foreach ($alltables as $at)
 		$ctquery .= ")\n";
 		$ctquery .= "TYPE=MyISAM\n";
 		$ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error);
-		echo _CF_TABLECREATED."! ($at)<br />\n";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_TABLECREATED."! ($at)</font><br />\n";
 		}
 	else
 		{
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;"._CF_OK."<br />\n";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
 		}
 	//echo "<br />\n";
 	}
@@ -166,14 +166,14 @@ function checktable($tablename)
 				{
 				$query="ALTER TABLE `$tablename` ADD $af[2]";
 				$result=mysql_query($query) or die("Insert field failed.<br />$query<br />".mysql_error());
-				echo "&nbsp;&nbsp;&nbsp;&nbsp;"._CF_FIELDCREATED." ($af[1]) <br />\n";
+				echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_FIELDCREATED."</font> ($af[1]) <br />\n";
 				$addedfield="Y";
 				}
 			}
 		}
 	if ($addedfield != "Y")
 		{
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;"._CF_OK."<br />\n";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
 		}
 	}
 echo "</font></td></tr>\n<tr><td align='center' bgcolor='#CCCCCC'>\n";
