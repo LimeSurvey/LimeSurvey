@@ -332,7 +332,7 @@ function helpscreen()
 	global $surveyid, $gid, $qid, $action;
 	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
 		."\t\t\t<table width='100%'><tr><td>"
-		."<table width='100%' height='100%' align='center' cellspacing='0'>\n"
+		."<table width='100%' align='center' cellspacing='0'>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
 		."\t\t\t\t\t\t$setfont<font color='white' size='1'><b>"

@@ -86,14 +86,14 @@ if ($action == "checksettings" || $action == "changelang")
 				. "\t<tr>\n"
 				. "\t\t<td align='right'>$setfont\n"
 				. "\t\t\t<b>"._PS_DEFLANG.":</b></font>\n"
-				. "\t\t</font></td><td>$setfont\n"
+				. "\t\t</td><td>$setfont\n"
 				. "\t\t\t$realdefaultlang\n"
 				. "\t\t</font></td>\n"
 				. "\t</tr>\n"
 				. "\t<tr>\n"
 				. "\t\t<td align='right'>$setfont\n"
 				. "\t\t\t<b>"._PS_CURLANG.":</b>\n"
-				. "\t\t</font></td><form action='$scriptname'><td>$setfont\n"
+				. "\t\t</font></td><td><form action='$scriptname'>$setfont\n"
 				. "\t\t\t<select name='lang' $slstyle onChange='form.submit()'>\n";
 	foreach (getadminlanguages() as $language)
 		{
@@ -103,7 +103,7 @@ if ($action == "checksettings" || $action == "changelang")
 		}
 	$cssummary .= "\t\t\t</select>\n"
 				. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
-				. "\t\t</font></td></form>\n"
+				. "\t\t</font></form></td>\n"
 				. "\t</tr>\n"
 				. "\t<tr>\n"
 				. "\t\t<td align='right'>$setfont\n"
@@ -143,7 +143,7 @@ if ($action == "checksettings" || $action == "changelang")
 				. "\t<tr>\n"
 				. "\t\t<td align='right'>$setfont\n"
 				. "\t\t\t<b>"._PS_DEACTTOKENS.":</b></font>\n"
-				. "\t\t</font></td><td>$setfont\n"
+				. "\t\t</td><td>$setfont\n"
 				. "\t\t\t$deactivatedtokens\n"
 				. "\t\t</font></td>\n"
 				. "\t</tr>\n"
