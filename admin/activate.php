@@ -53,7 +53,7 @@ if (!$_GET['ok'])
 		$chacount=mysql_num_rows($charesult);
 		if (!$chacount > 0) 
 			{
-			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], " is a multiple answer style question but does not have any answers");
+			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_MULTI_NOANSWER);
 			}
 		}
 		
@@ -62,7 +62,7 @@ if (!$_GET['ok'])
 	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing types<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
-		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], " does not have a question type set.");
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOTYPE);
 		}
 	
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
@@ -99,7 +99,7 @@ if (!$_GET['ok'])
 				}
 			if ($qidfound == 1)
 				{
-				$failedcheck[]=array($conrow['qid'], $conrow['question'], " is set to only display based on the results of a question that appears after it.");
+				$failedcheck[]=array($conrow['qid'], $conrow['question'], ": "._AC_CON_OUTOFORDER);
 				}
 			$b++;
 			}
@@ -110,25 +110,25 @@ if (!$_GET['ok'])
 		echo "<table width='350' align='center'>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center' bgcolor='pink'>\n";
-		echo "\t\t\t<font color='red'>$setfont<b>:ERROR:</b><br />\n";
-		echo "\t\t\tSurvey does not pass consistency check</font></font>\n";
+		echo "\t\t\t<font color='red'>$setfont<b>"._ERROR."</b><br />\n";
+		echo "\t\t\t"._AC_FAIL."</font></font>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td>\n";
-		echo "\t\t\t$setfont<b>The following problems have been found:</b><br />\n";
+		echo "\t\t\t$setfont<b>"._AC_PROBS."</b><br />\n";
 		echo "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 			{
 			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"{$fc[1]}\") {$fc[2]}</li>\n";
 			}
 		echo "\t\t\t</ul>\n";
-		echo "\t\t\tThe survey cannot be activated until these problems have been resolved.\n";
+		echo "\t\t\t"._AC_CANNOTACTIVATE."\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center'>\n";
-		echo "\t\t\t<input type='submit' $btstyle value='Return to Admin' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+		echo "\t\t\t<input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>\n";
@@ -138,39 +138,23 @@ if (!$_GET['ok'])
 	echo "<table width='350' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' bgcolor='pink'>\n";
-	echo "\t\t\t<font color='red'>$setfont<b>:WARNING:</b><br />\n";
-	echo "\t\t\tREAD THIS CAREFULLY BEFORE PROCEEDING\n";
+	echo "\t\t\t<font color='red'>$setfont<b>"._WARNING."</b><br />\n";
+	echo "\t\t\t"._AC_READCAREFULLY."\n";
 	echo "\t\t\t</font></font>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td>$setfont\n";
-	echo "You should only activate a survey when you are absolutely certain that your survey ";
-	echo "setup is finished and will not need changing.\n";
-	echo "<p>Once a survey is activated you can no longer:\n";
-	echo "<ul>\n";
-	echo "<li>Add or delete groups</li>\n";
-	echo "<li>Add or remove answers to Multiple Answer questions</li>\n";
-	echo "<li>Add or delete questions</li>\n";
-	echo "</ul>\n";
-	echo "However you can still:\n";
-	echo "<ul>\n";
-	echo "<li>Edit (change) your questions code, text or type</li>\n";
-	echo "<li>Edit (change) your group names</li>\n";
-	echo "<li>Add, Remove or Edit pre-defined question answers <i>(except for Multi-answer questions)</i></li>\n";
-	echo "<li>Change survey name or description</li>\n";
-	echo "</ul>\n";
-	echo "Once data has been entered into this survey, if you want to add or remove groups ";
-	echo "or questions, you will need to de-activate this survey, which will move all data ";
-	echo "that has already been entered into a seperate archived table.\n";
-	echo "<p>The point of all this being that you should not proceed to the next step unless ";
-	echo "you are ABSOLUTELY SURE!\n";
+	echo _AC_ACTIVATE_MESSAGE1."<br /><br />\n";
+	echo _AC_ACTIVATE_MESSAGE2."\n";
+	echo _AC_ACTIVATE_MESSAGE3."\n";
+	echo _AC_ACTIVATE_MESSAGE4."<br /><br />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='I`m Unsure' onclick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Activate' onClick=\"window.open('$scriptname?action=activate&ok=Y&sid={$_GET['sid']}', '_top')\">\n";
+	echo "\t\t\t<input type='submit' $btstyle value=\""._CANCEL."\" onclick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle value=\""._AC_ACTIVATE."\" onClick=\"window.open('$scriptname?action=activate&ok=Y&sid={$_GET['sid']}', '_top')\">\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -277,29 +261,28 @@ else
 	
 	$createtable=mysql_query($createsurvey) or die 
 		(
-		"<center><h3>Could not activate this survey.</h3></center><br />\n" .
-		"<center><a href='$scriptname?sid={$_GET['sid']}'>Back to Admin</a></center>\n" .
-		"The database reported:<br />\n<font color='red'>" . mysql_error() . "</font>\n" .
+		"<center><font color='red'>"._AC_NOTACTIVATED."</font></center><br />\n" .
+		"<center><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a></center>\n" .
+		"DB "._ERROR.":<br />\n<font color='red'>" . mysql_error() . "</font>\n" .
 		"<pre>$createsurvey</pre>\n" .
 		"</body>\n</html>"
 		);
 	
-	echo "<center><font color='green'>Results Table has been created!<br /><br />\n";
+	echo "<center><font color='green'>"._AC_ACTIVATED."<br /><br />\n";
 	
 	$acquery = "UPDATE surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
 	
 	if ($surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 		{
-		echo "This survey is registered as NOT PRIVATE and therefore requires a tokens table\n";
-		echo "to be created.<br /><br />\n";
-		echo "<input type='submit' value='Create Tokens Table' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
+		echo _AC_NOTPRIVATE."<br /><br />\n";
+		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
 		
 		}
 	else
 		{
-		echo "Survey is now active and data entry can proceed!<br /><br />\n";
-		echo "<input type='submit' value='Return to Administration' $btstyle onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+		echo _AC_SURVEYACTIVE."<br /><br />\n";
+		echo "<input type='submit' value='"._GO_ADMIN."' $btstyle onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 		}
 	echo "</body>\n</html>";
 	}	
