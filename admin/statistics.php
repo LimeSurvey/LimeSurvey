@@ -97,7 +97,7 @@ foreach ($filters as $flt)
 		if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {$myfield = "M$myfield";}
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
 		echo "<input type='radio' name='summary' value='$myfield'";
-		if ($_POST['summary'] == "{$sid}X{$flt[1]}X{$flt[0]}" || $_POST['summary'] == "M{$sid}X{$flt[1]}X{$flt[0]}") {echo " CHECKED";}
+		if ($_POST['summary'] == "{$sid}X{$flt[1]}X{$flt[0]}" || $_POST['summary'] == "M{$sid}X{$flt[1]}X{$flt[0]}" || $_POST['summary'] == "N{$sid}X{$flt[1]}X{$flt[0]}") {echo " CHECKED";}
 		echo ">&nbsp;";
 		echo "<img src='speaker.jpg' align='bottom' alt=\"$flt[5]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])."')\"></b>";
 		echo "<br />\n";
@@ -499,6 +499,11 @@ if ($_POST['summary'])
 		}
 	elseif (substr($_POST['summary'], 0, 1) == "N") //NUMERICAL TYPE
 		{
+		list($qsid, $qgid, $qqid) = explode("X", $_POST['summary']);
+		$nquery = "SELECT title, type, question, qid FROM questions WHERE qid='$qqid'";
+		//echo $nquery; //debugging line
+		$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
+		while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];}
 		echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
 		echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>";
 		echo "</td></tr>\n";
@@ -508,22 +513,91 @@ if ($_POST['summary'])
 		echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b></b></font></td>\n";
 		echo "\t</tr>\n";
 		$fieldname=substr($_POST['summary'], 1, strlen($_POST['summary']));
-		$query = "SELECT AVG($fieldname) as average";
-		$query .= ", MIN($fieldname) as minimum";
-		$query .= ", MAX($fieldname) as maximum";
-		$query .= ", SUM($fieldname) as sum";
-		$query .= ", STDDEV($fieldname) as stdev";
+		$query = "SELECT STDDEV(`$fieldname`) as stdev";
+		$query .= ", SUM(`$fieldname`*1) as sum";
+		$query .= ", AVG(`$fieldname`*1) as average";
+		$query .= ", MIN(`$fieldname`*1) as minimum";
+		$query .= ", MAX(`$fieldname`*1) as maximum";
 		$query .= " FROM survey_$sid";
-		if ($sql != "NULL") {$query .= " WHERE $sql";	}
+		if ($sql != "NULL") {$query .= " WHERE $sql";}
 		$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
 		while ($row=mysql_fetch_array($result))
 			{
-			$showem[]=array("Average", $row['average']);
-			$showem[]=array("Minimum", $row['minimum']);
-			$showem[]=array("Maximum", $row['maximum']);
 			$showem[]=array("Sum", $row['sum']);
 			$showem[]=array("Standard Deviation", $row['stdev']);
+			$showem[]=array("Average", $row['average']);
+			$showem[]=array("Minimum", $row['minimum']);
+			$maximum=$row['maximum']; //we're going to put this after the quartiles for neatness
 			}
+		
+		//CALCULATE QUARTILES
+		$query ="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
+		if ($sql != "NULL") {$query .= " AND $sql";}
+		$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
+		$querystarter="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
+		if ($sql != "NULL") {$querystarter .= " AND $sql";}
+		$medcount=mysql_num_rows($result);
+		
+		//1ST QUARTILE (Q1)
+		$q1=(($medcount+1)/4)-1;
+		$q1b=(int)((($medcount+1)/4)-1);
+		$q1diff=(((($medcount+1)/4)-1) - ((int)((($medcount+1)/4)-1)));
+		if ($q1 != $q1b)
+			{
+			//ODD NUMBER
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1b, 2";
+			$result=mysql_query($query) or die("1st Quartile query failed<br />".mysql_error());
+			while ($row=mysql_fetch_array($result))	{$total=$total-$row[$fieldname];}
+			$showem[]=array("1st Quartile", -$total * $q1diff);
+			}
+		else
+			{
+			//EVEN NUMBER
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1, 1";
+			$result=mysql_query($query) or die ("1st Quartile query failed<br />".mysql_error());
+			while ($row=mysql_fetch_array($result)) {$showem[]=array("1st Quartile", $row[$fieldname]);}
+			}
+		$total=0;
+		//MEDIAN (Q2)
+		$median=(($medcount+1)/2)-1;
+		if ($median != (int)((($medcount+1)/2)-1)) 
+			{
+			//remainder
+			$medresult=(int)($medcount/2);
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medresult, 2";
+			$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
+			while ($row=mysql_fetch_array($result))	{$total=$total+$row[$fieldname];}
+			$showem[]=array("2nd Quartile (Median)", $total/2);
+			}
+		else
+			{
+			//EVEN NUMBER
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $median, 1";
+			$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
+			while ($row=mysql_fetch_array($result))	{$showem[]=array("Median Value", $row[$fieldname]);}
+			}
+		$total=0;
+		//3RD QUARTILE (Q3)
+		$q3=((($medcount+1)/4)*3)+1;
+		$q3b=(int)(((($medcount+1)/4)*3)+1);
+		$q3diff=(((($medcount+1)/4)*3)+1)-((int)(((($medcount+1)/4)*3)+1));
+		if ($q3 != $q3b)
+			{
+			$q3c=$q3b-2;
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 2";
+			$result = mysql_query($query) or die("3rd Quartile query failed<br />".mysql_error());
+			while ($row=mysql_fetch_array($result)) {$total=$total-$row[$fieldname]; echo " ".$row[$fieldname]." - ";}
+			$showem[]=array("3rd Quartile", -$total * $q3diff);
+			}
+		else
+			{
+			$q3c=$q3b-2;
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 1";
+			$result = mysql_query($query) or die("3rd Quartile even query failed<br />".mysql_error());
+			while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile", $row[$fieldname]);}
+			}
+		$total=0;
+		$showem[]=array("Maximum", $maximum);
 		foreach ($showem as $shw)
 			{
 			echo "\t<tr>\n";
@@ -532,6 +606,9 @@ if ($_POST['summary'])
 			echo "\t\t<td bgcolor='#666666'></td>\n";
 			echo "\t</tr>\n";
 			}
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>$setfont<font size='1'>*Null values are ignored in calculations</font></font></td>\n";
+		echo "\t</tr>\n";
 		}
 	else // NICE SIMPLE SINGLE OPTION ANSWERS
 		{
