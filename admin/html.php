@@ -765,6 +765,7 @@ if (returnglobal('viewanswer'))
 		$position=sprintf("%05d", $position);
 		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n"
 					. "\t\t<td align='center'><input name='code' type='text' $btstyle size='5' maxlength='5' "
+					. "id='addanswercode' "
 					. "onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\">"
 					. "</td>\n"
 					. "\t\t<td align='center'><input name='answer' type='text' $btstyle size='50'></td>\n"
@@ -782,6 +783,11 @@ if (returnglobal('viewanswer'))
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
 					. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
 					. "\t</form></tr>\n";
+		$vasummary .= "<script type='text/javascript' language='javascript'>\n"
+					. "<!--\n"
+					. "document.getElementById('addanswercode').focus();\n"
+					. "//-->\n"
+					. "</script>\n";
 		}
 	if ($cdcount > 0)
 		{
