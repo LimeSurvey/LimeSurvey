@@ -540,25 +540,35 @@ if ($_POST['summary'])
 		$medcount=mysql_num_rows($result);
 		
 		//1ST QUARTILE (Q1)
-		$q1=(($medcount+1)/4)-1;
-		$q1b=(int)((($medcount+1)/4)-1);
-		$q1diff=(((($medcount+1)/4)-1) - ((int)((($medcount+1)/4)-1)));
+		//$q1=(($medcount+1)/4)-1;
+		$q1=(1/4)*($medcount+1);
+		//$q1b=(int)((($medcount+1)/4)-1);
+		$q1b=(int)((1/4)*($medcount+1));
+		$q1c=$q1b-1;
+		$q1diff=$q1-$q1b;
+		//$q1diff=(((($medcount+1)/4)-1) - ((int)((($medcount+1)/4)-1)));
+		$total=0;
 		if ($q1 != $q1b)
 			{
 			//ODD NUMBER
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1b, 2";
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1c, 2";
 			$result=mysql_query($query) or die("1st Quartile query failed<br />".mysql_error());
-			while ($row=mysql_fetch_array($result))	{$total=$total-$row[$fieldname];}
-			$q1total=-$total*$q1diff;
+			while ($row=mysql_fetch_array($result))	
+				{
+				if ($total == 0) 	{$total=$total-$row[$fieldname];}
+				else				{$total=$total+$row[$fieldname];}
+				$lastnumber=$row[$fieldname];
+				}
+			$q1total=$lastnumber-(1-($total*$q1diff));
 			if ($q1total < $minimum) {$q1total=$minimum;}
-			$showem[]=array("1st Quartile", $q1total);
+			$showem[]=array("1st Quartile (Q1)", $q1total);
 			}
 		else
 			{
 			//EVEN NUMBER
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1, 1";
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1c, 1";
 			$result=mysql_query($query) or die ("1st Quartile query failed<br />".mysql_error());
-			while ($row=mysql_fetch_array($result)) {$showem[]=array("1st Quartile", $row[$fieldname]);}
+			while ($row=mysql_fetch_array($result)) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}
 			}
 		$total=0;
 		//MEDIAN (Q2)
@@ -581,25 +591,30 @@ if ($_POST['summary'])
 			}
 		$total=0;
 		//3RD QUARTILE (Q3)
-		$q3=((($medcount+1)/4)*3)+1;
-		$q3b=(int)(((($medcount+1)/4)*3)+1);
-		$q3diff=(((($medcount+1)/4)*3)+1)-((int)(((($medcount+1)/4)*3)+1));
+		$q3=(3/4)*($medcount+1);
+		$q3b=(int)((3/4)*($medcount+1));
+		$q3c=$q3b-1;
+		$q3diff=$q3-$q3b;
 		if ($q3 != $q3b)
 			{
-			$q3c=$q3b-2;
 			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 2";
 			$result = mysql_query($query) or die("3rd Quartile query failed<br />".mysql_error());
-			while ($row=mysql_fetch_array($result)) {$total=$total-$row[$fieldname];}
-			$q3total=-$total * $q3diff;
-			if ($q3total > $maximum) {$q3total=$maximum;}
-			$showem[]=array("3rd Quartile", $q3total);
+			$lastnumber='';
+			while ($row=mysql_fetch_array($result)) 
+				{
+				if ($total == 0)	{$total=$total-$row[$fieldname];}
+				else				{$total=$total+$row[$fieldname];}
+				if (!$lastnumber) {$lastnumber=$row[$fieldname];}
+				}
+			$q3total=$lastnumber+($total*$q3diff);
+			if ($q3total < $maximum) {$q1total=$maximum;}
+			$showem[]=array("3rd Quartile (Q3)", $q3total);
 			}
 		else
 			{
-			$q3c=$q3b-2;
 			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 1";
 			$result = mysql_query($query) or die("3rd Quartile even query failed<br />".mysql_error());
-			while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile", $row[$fieldname]);}
+			while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
 			}
 		$total=0;
 		$showem[]=array("Maximum", $maximum);
@@ -612,7 +627,11 @@ if ($_POST['summary'])
 			echo "\t</tr>\n";
 			}
 		echo "\t<tr>\n";
-		echo "\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>$setfont<font size='1'>*Null values are ignored in calculations</font></font></td>\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n";
+		echo "\t\t\t$setfont<font size='1'>*Null values are ignored in calculations<br />\n";
+		echo "\t\t\t*Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>";
+		echo "</font></font>\n";
+		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		}
 	else // NICE SIMPLE SINGLE OPTION ANSWERS
