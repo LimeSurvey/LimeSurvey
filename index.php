@@ -206,7 +206,11 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 		."\t<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>\n"
 		."\t\t<font face='arial' size='2'>\n"
 		."\t\t<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />"
-		."<a href='{$_SERVER['PHP_SELF']}?sid=$sid'>"._RESTART."</a><br />\n"
+		."<a href='{$_SERVER['PHP_SELF']}?sid=$sid";
+	if (returnglobal('token')) {
+	    echo "&token=".returnglobal('token');
+	}
+	echo "'>"._RESTART."</a><br />\n"
 		."\t\t<a href='javascript: window.close()'>"._CLOSEWIN_PS."</a>\n"
 		."\t\t</font>\n"
 		."\t</td></tr>\n"
@@ -264,7 +268,14 @@ function templatereplace($line)
 	if ($templatedir) {$templateurl="$publicurl/templates/$templatedir/";}
 	else {$templateurl="$publicurl/templates/default/";}
 
-	$clearall = "\t\t\t\t\t<div class='clearall'><a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall' onClick='return confirm(\""._CONFIRMCLEAR."\")'>["._EXITCLEAR."]</a></div>\n";
+	$clearall = "\t\t\t\t\t<div class='clearall'>"
+			  . "<a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall";
+	if (returnglobal('token')) {
+	    $clearall .= "&token=".returnglobal('token');
+	}
+	$clearall .="' onClick='return confirm(\""
+			  . _CONFIRMCLEAR."\")'>["
+			  . _EXITCLEAR."]</a></div>\n";
 	
 	
 	if (ereg("^<body", $line))
