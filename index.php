@@ -237,7 +237,6 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 	//DELETE COOKIE (allow to use multiple times)
 	setcookie("$cookiename", "INCOMPLETE", time()-120);
 	//echo "Reset Cookie!";
-
 	}
 
 sendcacheheaders();
@@ -1229,6 +1228,7 @@ function surveymover()
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "
 					  . _SUBMIT." ' name='move' />\n";
 		}
-	return $surveymover;	
+	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."'>\n";
+	return $surveymover;
 	}
 ?>
