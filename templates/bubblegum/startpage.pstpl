@@ -37,6 +37,7 @@
 	{
 	font-size: 7pt;
 	}
+.clearall
 	A:link
 	{
 	text-decoration: none;
