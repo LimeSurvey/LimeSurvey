@@ -640,7 +640,7 @@ if ($action == "editsurvey")
 	while ($esrow = mysql_fetch_array($esresult))	
 		{
 		$editsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>";
-		$editsurvey .= "\t\t<b>$setfont<font color='white'>Create New Survey</font></font></b></td></tr>\n";
+		$editsurvey .= "\t\t<b>$setfont<font color='white'>Edit Survey</font></font></b></td></tr>\n";
 		$editsurvey .= "\t<tr><form name='addnewsurvey' action='$scriptname' method='post'>\n";
 		$editsurvey .= "\t\t<td align='right'><b>$setfont Short Title:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='short_title' value='{$esrow['short_title']}'></td></tr>\n";
