@@ -126,6 +126,12 @@ elseif ($action == "insertnewquestion")
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\")\n //-->\n</script>\n";
 		}
+	else
+		{
+		$query = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1"; //get last question id
+		$result=mysql_query($query);
+		while ($row=mysql_fetch_array($result)) {$qid = $row['qid'];}
+		}
 	}	
 
 elseif ($action == "updatequestion")
