@@ -540,68 +540,70 @@ if (isset($_POST['display']) && $_POST['display'])
 	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;} // creates array of post variable names
 	foreach ($postvars as $pv) 
 		{
-		
-		$firstletter=substr($pv,0,1);
-		if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary") //pull out just the fieldnames
+		if ($_POST[$pv]) //Only do this if there is actually a value for the $pv
 			{
-			$thisquestion = "`$pv` IN (";
-			//foreach ($$pv as $condition)
-			foreach ($_POST[$pv] as $condition)
+			$firstletter=substr($pv,0,1);
+			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary") //pull out just the fieldnames
 				{
-				$thisquestion .= "'$condition', ";
-				}
-			$thisquestion = substr($thisquestion, 0, -2)
-						  . ")";
-			$selects[]=$thisquestion;
-			}
-		elseif (substr($pv, 0, 1) == "M")
-			{
-			list($lsid, $lgid, $lqid) = explode("X", $pv);
-			$aquery="SELECT code FROM {$dbprefix}answers WHERE qid=$lqid ORDER BY sortorder, answer";
-			$aresult=mysql_query($aquery) or die ("Couldn't get answers<br />$aquery<br />".mysql_error());
-			while ($arow=mysql_fetch_row($aresult)) // go through every possible answer
-				{
-				if (in_array($arow[0], $_POST[$pv])) // only add condition if answer has been chosen
+				$thisquestion = "`$pv` IN (";
+				//foreach ($$pv as $condition)
+				foreach ($_POST[$pv] as $condition)
 					{
-					$mselects[]="`".substr($pv, 1, strlen($pv))."$arow[0]` = 'Y'";
+					$thisquestion .= "'$condition', ";
+					}
+				$thisquestion = substr($thisquestion, 0, -2)
+							  . ")";
+				$selects[]=$thisquestion;
+				}
+			elseif (substr($pv, 0, 1) == "M")
+				{
+				list($lsid, $lgid, $lqid) = explode("X", $pv);
+				$aquery="SELECT code FROM {$dbprefix}answers WHERE qid=$lqid ORDER BY sortorder, answer";
+				$aresult=mysql_query($aquery) or die ("Couldn't get answers<br />$aquery<br />".mysql_error());
+				while ($arow=mysql_fetch_row($aresult)) // go through every possible answer
+					{
+					if (in_array($arow[0], $_POST[$pv])) // only add condition if answer has been chosen
+						{
+						$mselects[]="`".substr($pv, 1, strlen($pv))."$arow[0]` = 'Y'";
+						}
+					}
+				if ($mselects) 
+					{
+					$thismulti=implode(" OR ", $mselects);
+					$selects[]="($thismulti)";
 					}
 				}
-			if ($mselects) 
+			elseif (substr($pv, 0, 1) == "N")
 				{
-				$thismulti=implode(" OR ", $mselects);
-				$selects[]="($thismulti)";
-				}
-			}
-		elseif (substr($pv, 0, 1) == "N")
-			{
-			if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
-				{
-				$selects[]="`".substr($pv, 1, -1)."` > '".$_POST[$pv]."'";
-				}
-			if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-				{
-				$selects[]="`".substr($pv, 1, -1)."` < '".$_POST[$pv]."'";
-				}
-			}
-		elseif (substr($pv, 0, 1) == "T" && $_POST[$pv] != "")
-			{
-			$selects[]="`".substr($pv, 1, strlen($pv))."` like '%".$_POST[$pv]."%'";
-			}
-		elseif (substr($pv, 0, 1) == "D" && $_POST[$pv] != "")
-			{
-			if (substr($pv, -1, 1) == "=")
-				{
-				$selects[] = "`".substr($pv, 1, strlen($pv)-2)."` = '".$_POST[$pv]."'";
-				}
-			else
-				{
-				if (substr($pv, -1, 1) == "<")
+				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
 					{
-					$selects[]= "`".substr($pv, 1, strlen($pv)-2) . "` > '".$_POST[$pv]."'";
+					$selects[]="`".substr($pv, 1, -1)."` > '".$_POST[$pv]."'";
 					}
-				if (substr($pv, -1, 1) == ">")
+				if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
 					{
-					$selects[]= "`".substr($pv, 1, strlen($pv)-2) . "` < '".$_POST[$pv]."'";
+					$selects[]="`".substr($pv, 1, -1)."` < '".$_POST[$pv]."'";
+					}
+				}
+			elseif (substr($pv, 0, 1) == "T" && $_POST[$pv] != "")
+				{
+				$selects[]="`".substr($pv, 1, strlen($pv))."` like '%".$_POST[$pv]."%'";
+				}
+			elseif (substr($pv, 0, 1) == "D" && $_POST[$pv] != "")
+				{
+				if (substr($pv, -1, 1) == "=")
+					{
+					$selects[] = "`".substr($pv, 1, strlen($pv)-2)."` = '".$_POST[$pv]."'";
+					}
+				else
+					{
+					if (substr($pv, -1, 1) == "<")
+						{
+						$selects[]= "`".substr($pv, 1, strlen($pv)-2) . "` > '".$_POST[$pv]."'";
+						}
+					if (substr($pv, -1, 1) == ">")
+						{
+						$selects[]= "`".substr($pv, 1, strlen($pv)-2) . "` < '".$_POST[$pv]."'";
+						}
 					}
 				}
 			}
