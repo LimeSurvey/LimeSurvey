@@ -575,7 +575,7 @@ if ($qid)
 	$questionsummary .= "</table>\n";
 	}
 
-if ($_GET['viewanswer'] || $_POST['viewanswer'])
+if (returnglobal('viewanswer'))
 	{
 	echo keycontroljs();
 	$qquery = "SELECT type FROM {$dbprefix}questions WHERE qid=$qid";
