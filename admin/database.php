@@ -38,30 +38,37 @@ if ($_GET['action']) {$action = $_GET['action'];}
 
 if ($action == "insertnewgroup")
 	{
-	if (get_magic_quotes_gpc() == "0")
+	if (!$_POST['group_name'])
 		{
-		$_POST['description'] = addcslashes($_POST['description'], "'");
-		$_POST['group_name'] = addcslashes($_POST['group_name'], "'");
-		}
-
-	$query = "INSERT INTO groups (sid, group_name, description) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}')";
-	$result = mysql_query($query);
-	
-	if ($result)
-		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ($group_name) has been created for survey id $sid\")\n //-->\n</script>\n";
-		$query = "SELECT gid FROM groups WHERE group_name='$group_name' AND sid={$_POST['sid']}";
-		$result = mysql_query($query);
-		while ($res = mysql_fetch_array($result)) {$gid = $res['gid'];}
-		$groupselect = getgrouplist($gid);
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your group could not be added! It did not include a group name (which is required)\")\n //-->\n</script>\n";		
 		}
 	else
 		{
-		echo "The database reported the following error:<br />\n";
-		echo "<font color='red'>" . mysql_error() . "</font>\n";
-		echo "<pre>$query</pre>\n";
-		echo "</body>\n</html>";
-		exit;
+		if (get_magic_quotes_gpc() == "0")
+			{
+			$_POST['description'] = addcslashes($_POST['description'], "'");
+			$_POST['group_name'] = addcslashes($_POST['group_name'], "'");
+			}
+
+		$query = "INSERT INTO groups (sid, group_name, description) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}')";
+		$result = mysql_query($query);
+		
+		if ($result)
+			{
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ($group_name) has been created for survey id $sid\")\n //-->\n</script>\n";
+			$query = "SELECT gid FROM groups WHERE group_name='$group_name' AND sid={$_POST['sid']}";
+			$result = mysql_query($query);
+			while ($res = mysql_fetch_array($result)) {$gid = $res['gid'];}
+			$groupselect = getgrouplist($gid);
+			}
+		else
+			{
+			echo "The database reported the following error:<br />\n";
+			echo "<font color='red'>" . mysql_error() . "</font>\n";
+			echo "<pre>$query</pre>\n";
+			echo "</body>\n</html>";
+			exit;
+			}
 		}
 	}
 
