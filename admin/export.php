@@ -34,7 +34,11 @@
 	#############################################################	
 */
 
-$sid = $_GET['sid'];
+$sid = $_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
+$style = $_GET['style']; if (!$style) {$style=$_POST['style'];}
+$answers = $_GET['answers']; if (!$answers) {$answers=$_POST['answers'];}
+$type = $_GET['type']; if (!$type) {$type=$_POST['type'];}
+
 
 if (!$style)
 	{
@@ -194,7 +198,7 @@ while ($lw = mysql_fetch_array($lr))
 	$legitqs[] = $lw['qid']; //this creates an array of question id's'
 	}
 
-$surveytable = "survey_{$sid}";
+$surveytable = "survey_$sid";
 
 if ($_POST['sql']) //this applies if export has been called from the statistics package
 	{
