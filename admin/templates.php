@@ -394,6 +394,10 @@ switch($screenname) {
 			{
 			$myoutput[]=templatereplace($op);
 			}
+		foreach(file("$publicdir/templates/$templatename/survey.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
 		foreach(file("$publicdir/templates/$templatename/register.pstpl") as $op)
 			{
 			$myoutput[]=templatereplace($op);
