@@ -55,7 +55,6 @@ if ($action == "importlabels")
 	exit;
 	}
 
-
 echo "<script type='text/javascript'>\n";
 echo "<!--\n";
 echo "\tfunction showhelp(action)\n";
@@ -195,6 +194,7 @@ if (isset($lid) && ($action != "editset") && $lid)
 		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'><font size='1' face='verdana' color='white'><b>"._LABELSET.":</b> {$row['label_name']}</td></tr>\n";
 		echo "\t\t\t\t<tr bgcolor='#999999'>\n";
 		echo "\t\t\t\t\t<td>\n";
+		echo "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._CLOSEWIN."' align='right' border='0' hspace='0' onClick=\"window.open('labels.php', '_top')\">\n";
 		echo "\t\t\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
 		echo "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		echo "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
@@ -327,9 +327,7 @@ if (isset($lid) && ($action != "editset") && $lid)
 
 //CLOSE OFF
 echo "\t</td>\n"; //END OF MAIN CELL
-echo "\t<td>"; //START OF HELP CELL
-//help
-echo "\t</td></tr>\n";
+helpscreen();
 echo "</table>\n";
 
 echo htmlfooter("instructions.html#labels", "Using PHPSurveyor's Labels Editor");
@@ -458,5 +456,40 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
 		$position++;
 		}
 	}
-
+	
+function helpscreen()
+	{
+	global $homeurl, $langdir;
+	global $lid, $action;
+	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n";
+	echo "\t\t\t<table width='100%'><tr><td><table width='100%' height='100%' align='center' cellspacing='0'>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td bgcolor='#555555' height='8'>\n";
+	echo "\t\t\t\t\t\t<font color='white' size='1'><b>"._HELP."\n";
+	echo "\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
+	echo "\t\t\t\t\t\t<img src='./images/blank.gif' width='20' hspace='0' border='0' align='left'>\n";
+	echo "\t\t\t\t\t\t<input type='image' src='./images/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n";
+	echo "\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
+	//determine which help document to show
+	if (!$lid)
+		{
+		$helpdoc = "$langdir/labelsets.html";
+		}
+	elseif ($lid)
+		{
+		$helpdoc = "$langdir/labels.html";
+		}
+	echo "\t\t\t\t\t\t<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n";
+	echo "\t\t\t\t\t\t</iframe>\n";
+	echo "\t\t\t\t\t</td>";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t</table></td></tr></table>\n";
+	echo "\t\t</td>\n";
+	}
 ?>
