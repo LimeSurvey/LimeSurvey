@@ -138,7 +138,7 @@ if ($sid)
 
 if ($gid)
 	{
-	$grpquery =" SELECT * FROM groups WHERE gid=$gid ORDER BY group_name";
+	$grpquery ="SELECT * FROM groups WHERE gid=$gid ORDER BY group_name";
 	$grpresult = mysql_query($grpquery);
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = mysql_fetch_array($grpresult))
