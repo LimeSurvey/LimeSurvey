@@ -137,6 +137,7 @@ if ($questionsummary) {echo "$questionsummary";}
 if ($editquestion) {echo "$editquestion";}
 if ($newanswer) {echo "$newanswer";}
 if ($answersummary) {echo "$answersummary";}
+if ($vasummary) {echo "$vasummary";}
 if ($editanswer) {echo "$editanswer";}
 echo "\t\t</td>\n";
 echo "\t</tr>\n";
