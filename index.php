@@ -266,7 +266,14 @@ if ($move == " submit ")
 		$col_name .= ", " . substr($value, 1); //Add separator and strip off leading 'F'
 		if (get_magic_quotes_gpc() == "0")
 			{
-			$values .= ", '" . mysql_real_escape_string($$value, "'") . "'";
+			if (phpversion() >= "4.3.0")
+				{
+				$values .= ", '" . mysql_real_escape_string($$value, "'") . "'";	
+				}
+			else
+				{
+				$values .= ", '" . mysql_real_escape_string($$value, "'") . "'";
+				}
 			}
 		else
 			{
