@@ -65,7 +65,7 @@ echo "<table width='95%' align='center' border='1' cellpadding='0' cellspacing='
 echo "<tr><td align='center' bgcolor='#555555'>$setfont<font color='orange'><b>Filter Settings</b></td></tr>\n";
 echo "\t<form method='post'>\n";
 // 1: Get list of questions with predefined answers from survey
-$query = "SELECT qid, questions.gid, type, title, group_name, question FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' AND type IN ('5', 'G', 'L', 'O', 'M', 'P', 'Y', 'A', 'B', 'C') ORDER BY group_name, title";
+$query = "SELECT qid, questions.gid, type, title, group_name, question FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while ($row=mysql_fetch_row($result))
 	{
@@ -88,7 +88,7 @@ foreach ($filters as $flt)
 	//echo $flt[2];	//debugging line
 	if ($counter == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>";}
 	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>";
 		echo "$setfont<B>$flt[3]&nbsp;"; //Heading (Question No)
@@ -105,6 +105,36 @@ foreach ($filters as $flt)
 	echo "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
 	switch ($flt[2])
 		{
+		case "T": // Long free text
+			
+			$myfield2="T$myfield";
+			
+			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
+			echo "&nbsp;<img src='speaker.jpg' align='bottom' alt='$flt[5] [$row[1]]' onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+			echo "<br />\n";
+			echo "\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n";
+			echo "\t\t\t\t\t<textarea $slstyle2 name='$myfield2' rows='3'>".$_POST[$myfield2]."</textarea>";
+			break;
+		case "S": // Short free text
+			
+			$myfield2="T$myfield";
+			
+			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
+			echo "&nbsp;<img src='speaker.jpg' align='bottom' alt='$flt[5] [$row[1]]' onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+			echo "<br />\n";
+			echo "\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n";
+			echo "\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='".$_POST[$myfield2]."'>";
+			break;
+		case "D": // Date
+			$myfield2="D$myfield";
+			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
+			echo "&nbsp;<img src='speaker.jpg' align='bottom' alt='$flt[5] [$row[1]]' onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+			echo "<br />\n";
+			echo "\t\t\t\t\t<font size='1'>Date (YYYY-MM-DD) equals:<br />\n";
+			echo "\t\t\t\t\t<input type='text' ".substr($slstyle2, 0, -13) ."; width:80'><br />\n";
+			echo "\t\t\t\t\t&nbsp;&nbsp;OR between:<br />\n";
+			echo "\t\t\t\t\t<input type='text' ".substr($slstyle2, 0, -13) ."; width:65'> & <input type='text' ".substr($slstyle2, 0, -13) ."; width:65'>\n";
+			break;
 		case "5": // 5 point choice
 			for ($i=1; $i<=5; $i++)
 				{
@@ -225,9 +255,9 @@ foreach ($filters as $flt)
 				echo ">$row[1]</option>\n";
 				}
 		}
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D") //Have to make an exception for these types!
 		{
-		echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+		echo "\n\t\t\t\t</td>\n";
 		}
 	$currentgroup=$flt[1];
 	$counter++;
@@ -253,7 +283,8 @@ if ($_POST['display'])
 	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;} // creates array of post variable names
 	foreach ($postvars as $pv) 
 		{
-		if ($pv != "sid" && $pv != "display" && substr($pv, 0, 1) != "M" && $pv != "summary") //pull out just the fieldnames
+		$firstletter=substr($pv,0,1);
+		if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $pv != "summary") //pull out just the fieldnames
 			{
 			$thisquestion = "$pv IN (";
 			foreach ($$pv as $condition)
@@ -281,6 +312,10 @@ if ($_POST['display'])
 				$thismulti=implode(" OR ", $mselects);
 				$selects[]="($thismulti)";
 				}
+			}
+		elseif (substr($pv, 0, 1) == "T" && $_POST[$pv] != "")
+			{
+			$selects[]=substr($pv, 1, strlen($pv))." like '%".$_POST[$pv]."%'";
 			}
 		}
 	// 2: Do SQL query
