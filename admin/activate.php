@@ -36,30 +36,46 @@
 
 if (!$ok)
 	{
-	echo "<TABLE WIDTH='350' ALIGN='CENTER'><TR><TD ALIGN='CENTER' BGCOLOR='PINK'><FONT COLOR='RED'>$setfont<B>";
-	echo ":WARNING:<BR>READ THIS CAREFULLY BEFORE PROCEEDING</TD></TR>\n";
-	echo "<TR><TD>$setfont";
+	echo "<table width='350' align='center'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center' bgcolor='pink'>\n";
+	echo "\t\t\t<font color='red'>$setfont<b>:WARNING:</b><br />\n";
+	echo "\t\t\tREAD THIS CAREFULLY BEFORE PROCEEDING\n";
+	echo "\t\t\t</font></font>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td>$setfont\n";
 	echo "You should only activate a survey when you are absolutely certain that your survey ";
-	echo "setup is finished and will not need changing.<P>";
-	echo "Once a survey is activated you can no longer:";
-	echo "<UL><LI>Add or delete groups</LI>";
-	echo "<LI>Add or remove answers to Multiple Answer questions</LI>";
-	echo "<LI>Add or delete questions</LI></UL>";
-	echo "However you can still:";
-	echo "<UL><LI>Edit (change) your questions code, text or type</LI>";
-	echo "<LI>Edit (change) your group names</LI>";
-	echo "<LI>Add, Remove or Edit pre-defined question answers <I>(except for Multi-answer questions)</I></LI>";
-	echo "<LI>Change survey name or description</LI></UL>";
+	echo "setup is finished and will not need changing.\n";
+	echo "<p>Once a survey is activated you can no longer:\n";
+	echo "<ul>\n";
+	echo "<li>Add or delete groups</li>\n";
+	echo "<li>Add or remove answers to Multiple Answer questions</li>\n";
+	echo "<li>Add or delete questions</li>\n";
+	echo "</ul>\n";
+	echo "However you can still:\n";
+	echo "<ul>\n";
+	echo "<li>Edit (change) your questions code, text or type</li>\n";
+	echo "<li>Edit (change) your group names</li>\n";
+	echo "<li>Add, Remove or Edit pre-defined question answers <i>(except for Multi-answer questions)</i></li>\n";
+	echo "<li>Change survey name or description</li>\n";
+	echo "</ul>\n";
 	echo "Once data has been entered into this survey, if you want to add or remove groups ";
 	echo "or questions, you will need to de-activate this survey, which will move all data ";
-	echo "that has already been entered into a seperate archived table.<P>";
-	echo "The point of all this being that you should not proceed to the next step unless ";
-	echo "you are ABSOLUTELY SURE!";
-	echo "</TD></TR>";
-	echo "<TR><TD ALIGN='CENTER'>";
-	echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='I`m Unsure' onclick=\"window.open('$scriptname?sid=$sid', '_top')\"><BR>\n";
-	echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Activate' onClick=\"window.open('$scriptname?action=activate&ok=Y&sid=$sid', '_top')\">";
-	echo "</TD></TR></TABLE>\n";
+	echo "that has already been entered into a seperate archived table.\n";
+	echo "<p>The point of all this being that you should not proceed to the next step unless ";
+	echo "you are ABSOLUTELY SURE!\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'>\n";
+	echo "\t\t\t<input type='submit' $btstyle value='I`m Unsure' onclick=\"window.open('$scriptname?sid=$sid', '_top')\"><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Activate' onClick=\"window.open('$scriptname?action=activate&ok=Y&sid=$sid', '_top')\">\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
+	echo "</body>\n</html>";
 	
 	}
 else
@@ -135,14 +151,15 @@ else
 	$createsurvey .= ") TYPE=MyISAM;";
 	//echo "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
 	
-	$createtable=mysql_query($createsurvey) or die ("Could not activate this survey. <BR>".mysql_error() . "<BR><BR><a href='$scriptname?sid=$sid'>Back to Admin</A>");
+	$createtable=mysql_query($createsurvey) or die ("Could not activate this survey. <br />\n".mysql_error() . "<br /><br />\n<a href='$scriptname?sid=$sid'>Back to Admin</a>\n");
 	
-	echo "<FONT COLOR='GREEN'>Results Table has been created!<BR><BR>";
+	echo "<font color='green'>Results Table has been created!<br /><br />\n";
 	
 	$acquery = "UPDATE surveys SET active='Y' WHERE sid=$sid";
 	$acresult = mysql_query($acquery);
 	
-	echo "Survey is now active and data entry can proceed!<BR><BR>";
+	echo "Survey is now active and data entry can proceed!<br /><br />\n";
 	echo "<a href='$scriptname?sid=$sid'>Return to administration</a>\n";
+	echo "</body>\n</html>";
 	}	
 ?>
