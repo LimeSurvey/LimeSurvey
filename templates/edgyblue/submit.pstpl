@@ -1,0 +1,33 @@
+<center>
+<br />
+<b>Thank you.<br /><br />
+You have completed answering the questions in this survey.</b><br /><br />
+
+Click on "submit" now to complete the process and add your answers to our records.<br /><br />
+
+{SUBMITBUTTON}<br /><br />
+
+
+If you want to check any of the answers you have made, and/or change them,<br />
+you can do that now by clicking on the " << prev " button and browsing<br />
+through your responses.<br /><br />
+
+
+<table align='center' bgcolor='#EEEEEE' width='75%'>
+	<tr>
+		<td align='center'><font size='1'>
+		<b><i>A note on privacy</i></b><br />
+		The record kept of your survey responses does not contain any 
+		identifying information about you unless a specific question 
+		in the survey has asked for this. If you have responded to a 
+		survey that used an identifying token to allow you to access 
+		the survey, you can rest assured that the identifying token 
+		is not kept with your responses. It is managed in a seperate 
+		database, and will only be updated to indicate that you have 
+		(or haven't) completed this survey. There is no way of matching 
+		identification tokens with survey responses in this survey.
+		</td>
+	</tr>
+</table>
+<br />
+</center>
