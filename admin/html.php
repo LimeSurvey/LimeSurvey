@@ -443,7 +443,8 @@ if ($gid)
 					   . "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._G_EDIT_BT."' "
 					   . "align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', "
 					   . "'_top')\">";
-		if ($sumcount4 == 0) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._G_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
+		if ($sumcount4 == 0 && $activated != "Y") {$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&sid=$sid&gid=$gid'><image src='./images/delete.gif' title='"._G_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"return confirm('"._DG_RUSURE."')\"></a>";}
+		elseif ($activated != "Y") {$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroupall&sid=$sid&gid=$gid'><image src='./images/delete.gif' title='"._G_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"return confirm('"._DG_RUSURE."')\"></a>";}
 		else				 {$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"._G_EXPORT_BT."' "
 					   . "align='left' border='0' hspace='0' "
@@ -511,8 +512,9 @@ if ($qid)
 						  . "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"
 						  . _Q_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
-		if ($qct == 0 && $activated=="N") {$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._Q_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";}
-		else				 {$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
+		if ($qct == 0 && $activated != "Y") {$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid'><image src='./images/delete.gif' title='"._Q_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"return confirm('"._DQ_RUSURE."')\"></a>";}
+		elseif ($activated != "Y") {$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestionall&sid=$sid&gid=$gid&qid=$qid'><image src='./images/delete.gif' title='"._Q_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"return confirm('"._DQ_RUSURE."')\"></a>";}
+		else {$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"
 						  . _Q_EXPORT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n"
 						  . "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
