@@ -1480,7 +1480,17 @@ if ($action == "editsurvey")
 		$editsurvey .= ">"._AD_NO."</option>\n"
 					. "\t\t</select></td>\n"
 					. "\t</tr>\n";
-		
+		//ALLOW PREV
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWPREV."</b></font></td>\n"
+					. "\t\t<td><select $slstyle name='allowprev'>\n"
+					. "\t\t\t<option value='Y'";
+		if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_YES."</option>\n"
+					. "\t\t<option value='N'";
+		if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_NO."</option>\n"
+					. "\t\t</select></td>\n"
+					. "\t</tr>\n";
 		//NOTIFICATION
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_NOTIFICATION."</b></font></td>\n"
 					 . "\t\t<td><select $slstyle name='notification'>\n"
@@ -1661,8 +1671,19 @@ if ($action == "newsurvey")
 				. "\t\t\t<option value='Y'";
 	if (!isset($esrow['allowsave']) || !$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$newsurvey .= " selected";}
 	$newsurvey .= ">"._AD_YES."</option>\n"
-				. "\t\t\<option value='N'";
+				. "\t\t<option value='N'";
 	if (isset($esrow['allowsave']) && $esrow['allowsave'] == "N") {$newsurvey .= " selected";}
+	$newsurvey .= ">"._AD_NO."</option>\n"
+				. "\t\t</select></td>\n"
+				. "\t</tr>\n";
+	//ALLOW PREV
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWPREV."</b></font></td>\n"
+				. "\t\t<td><select $slstyle name='allowprev'>\n"
+				. "\t\t\t<option value='Y'";
+	if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$newsurvey .= " selected";}
+	$newsurvey .= ">"._AD_YES."</option>\n"
+				. "\t\t<option value='N'";
+	if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$newsurvey .= " selected";}
 	$newsurvey .= ">"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";

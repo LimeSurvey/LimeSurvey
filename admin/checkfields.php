@@ -134,6 +134,7 @@ $allfields[]=array("{$dbprefix}surveys", "email_confirm", "email_confirm text");
 $allfields[]=array("{$dbprefix}surveys", "allowsave","allowsave char(1) default 'Y'");
 $allfields[]=array("{$dbprefix}surveys", "autonumber_start", "autonumber_start bigint(11) default 0");
 $allfields[]=array("{$dbprefix}surveys", "autoredirect", "autoredirect char(1) default 'N'");
+$allfields[]=array("{$dbprefix}surveys", "allowprev","allowprev char(1) default 'Y'");
 
 $allfields[]=array("{$dbprefix}saved", "saved_id", "saved_id int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}saved", "scid", "scid int(11) NOT NULL");
