@@ -122,7 +122,7 @@ if (!$style)
 	echo "\t<tr>\n"
 		."\t\t<td align=\"center\" bgcolor='silver'>\n"
 		."\t\t\t<input $btstyle type='submit' value='"
-		._CLOSEWIN."' onClick=\"window.close()\">\n"
+		._CLOSEWIN."' onClick=\"self.close()\">\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
@@ -557,7 +557,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					$debug .= " | LAST START USEDANSWERS:";
 					if (isset($usedanswers)) { $debug .= $usedanswers;}
 					$debug .= " |";
-					if (!isset($thisacount)) 
+					if (!isset($thisacount))
 						{
 						$aq = "SELECT code FROM {$dbprefix}answers WHERE qid=$fqid"; //We just want to count how many answers so we can delete the legitq entry when they're all used up
 						$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
@@ -565,6 +565,7 @@ for ($i=0; $i<$fieldcount; $i++)
 						$thisacount = mysql_num_rows($ar);
 						if ($ftype == "P") {$thisacount=$thisacount*2;}
 						if ($fother == "Y") {$thisacount++;}
+						$debug .= " | SETTING THISACOUNT - $thisacount POSSIBLE ANSWERS TO QUESTION";
 						}
 					if(!isset($usedanswers)) {$usedanswers=0;}
 					$usedanswers++;
@@ -572,6 +573,7 @@ for ($i=0; $i<$fieldcount; $i++)
 						{
 					    foreach ($legitqs as $lgqs)
 							{
+							$debug .= " | ERASING QUESTION [$fqid] FROM ARRAY - $thisacount ANSWERS, AND $usedanswers USED";
 							if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
 							}
 						$legitqs=$nlegitqs;
@@ -647,6 +649,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					case "Q":
 						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
 						$lr = mysql_query($lq);
+						$debug .= " | QUERY FOR ANSWER CODE [$lq]";
 						while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
 							{
 							$fquest .= " [".$lrow['answer']."]";
