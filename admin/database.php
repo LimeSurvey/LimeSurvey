@@ -131,26 +131,43 @@ elseif ($action == "insertnewquestion")
 
 elseif ($action == "updatequestion")
 	{
+	$cqquery = "SELECT type FROM questions WHERE qid={$_POST['qid']}";
+	$cqresult=mysql_query($cqquery) or die ("Couldn't get question type to check for change<br />$cqquery<br />".mysql_error());
+	while ($cqr=mysql_fetch_array($cqresult)) {$oldtype=$cqr['type'];}
+	if ($oldtype != $_POST['type'])
+		{
+		//Make sure there are no conditions based on this question, since we are changing the type
+		$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']}";
+		$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
+		$cccount=mysql_num_rows($ccresult);
+		while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
+		if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+		}
 	if (get_magic_quotes_gpc() == "0")
 		{
 		$_POST['title'] = addcslashes($_POST['title'], "'");
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	$uqquery = "UPDATE questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
-			. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
-			. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}' "
-			. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
-	//echo $uqquery;
-	$uqresult = mysql_query($uqquery);
-	if ($uqresult)
+	if ($cccount)
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Question ($title) has been updated!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your question could not be updated! Other questions (qid $qidlist) are conditional based on the responses to this question and changing the type will cause problems. You must remove any conditions based on this question before changing this question type.\")\n //-->\n</script>\n";
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your question could not be updated!\")\n //-->\n</script>\n";
-		//echo "$uqquery | ".mysql_error();
+		$uqquery = "UPDATE questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
+				. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
+				. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}' "
+				. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
+		//echo $uqquery;
+		$uqresult = mysql_query($uqquery);
+		if ($uqresult)
+			{
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your question could not be updated!\")\n //-->\n</script>\n";
+			}
 		}
 	}
 
