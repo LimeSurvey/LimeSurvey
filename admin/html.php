@@ -384,7 +384,7 @@ if ($gid)
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._G_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">";
 		if ($sumcount4 == 0) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._G_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
 		else				 {$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
-		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"._G_EXPORT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=dumpgroup&sid=$sid&gid=$gid', '_top')\">";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$groupsummary .= "\t\t\t\t\t</td>\n";
 		$groupsummary .= "\t\t\t\t\t<td align='right' width='330'>\n";
@@ -1044,6 +1044,16 @@ if ($action == "addgroup")
 	$newgroup .= "\t<input type='hidden' name='sid' value='$sid'>\n";
 	$newgroup .= "\t</form></tr>\n";
 	$newgroup .= "</table>\n";
+	$newgroup .= "<center><b>"._AD_OR."</b></center>\n";
+	$newgroup .= "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+	$newgroup .= "\t\t<b>$setfont<font color='white'>"._IMPORTGROUP."</font></font></b></td></tr>\n\t<tr>";
+	$newgroup .= "\t<form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post'>\n";
+	$newgroup .= "\t\t<td align='right'>$setfont<b>"._SL_SELSQL."</b></font></td>\n";
+	$newgroup .= "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n";
+	$newgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._IMPORTGROUP."'></TD>\n";
+	$newgroup .= "\t<input type='hidden' name='action' value='importgroup'>\n";
+	$newgroup .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+	$newgroup .= "\t</tr></form>\n</table>\n";
 	}
 
 if ($action == "editgroup")
