@@ -585,7 +585,7 @@ function do_listwithcomment($ia)
 		if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' ";
-			if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) 
+			if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists))) 
 				{
 				$answer .= "checked />";
 				}
