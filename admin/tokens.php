@@ -184,6 +184,27 @@ echo "<center>\n";
 
 if ($action == "browse")
 	{
+	
+	if (!$_GET['limit']) {$_GET['limit'] = "100";}
+	if (!$_GET['start']) {$_GET['start'] = "1";}
+	
+	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
+	echo "<table cellpadding='1' cellspacing='1' align='center' border='0'>\n";
+	echo "<form method='GET' action='tokens.php'>\n";
+	echo "<input type='hidden' name='sid' value='$sid'>\n";
+	echo "<input type='hidden' name='action' value='browse'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td>{$setfont}Showing</td>\n";
+	echo "\t\t<td><input type='text' $slstyle name='limit' size='4' value='{$_GET['limit']}'></td>\n";
+	echo "\t\t<td>{$setfont}records starting at</td>\n";
+	echo "\t\t<td><input type='text' $slstyle name='start' size='4' value='{$_GET['start']}'></td>\n";
+	echo "\t\t<td><input type='submit' value='Show' $btstyle>\n";
+	echo "\t</tr>\n";
+	echo "</form>\n";
+	echo "</table>\n";
+	
+	$_GET['start']--;
+	
 	echo "<table width='600' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
 	//COLUMN HEADINGS
 	echo "\t<tr>\n";
@@ -197,12 +218,10 @@ if ($action == "browse")
 	echo "\t\t<th align='left' colspan='2'>$setfont"."Action</th>\n";
 	echo "\t</tr>\n";
 	
-	//HANDLE LIMITED NUMBER OF ROWS AT A TIME
-	
-	
 	$bquery = "SELECT * FROM tokens_$sid";
 	if (!$_GET['order']) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY {$_GET['order']}";}
+	$bquery .= " LIMIT {$_GET['start']}, {$_GET['limit']}";
 	$bresult = mysql_query($bquery);
 	while ($brow = mysql_fetch_array($bresult))
 		{
@@ -241,6 +260,16 @@ if ($action == "browse")
 			}
 		echo "\t</tr>\n";
 		}
+	//MOVE NEXT AND LAST
+	$movelast = $_GET['start'] - $_GET['limit'];
+	if ($movelast < 1) {$movelast = 0;}
+	$movenext = $_GET['start'] + $_GET['limit'] + 1;
+	if ($movenext > $tkcount) {$movenext = $tkcount;}
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='4' align='left'><input type='submit' value='<<' $btstyle onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$movelast&limit={$_GET['limit']}', '_top')\"></td>\n";
+	echo "\t\t<td colspan='5' align='right'><input type='submit' value='>>' $btstyle onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$movenext&limit={$_GET['limit']}', '_top')\"></td>\n";
+	echo "\t</tr>\n";
+
 	echo "</table>\n";
 	}
 
