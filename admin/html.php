@@ -442,6 +442,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 			}
 		$vasummary .= "\t<input type='hidden' name='oldcode' value=\"{$cdrow['code']}\">\n";
 		$vasummary .= "\t<input type='hidden' name='oldanswer' value=\"{$cdrow['answer']}\">\n";
+		$vasummary .= "\t<input type='hidden' name='olddefault' value=\"{$cdrow['default']}\">\n";
 		$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
 		$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
 		$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
