@@ -89,7 +89,7 @@ elseif ($action == "updategroup")
 
 elseif ($action == "delgroup")
 	{
-	$query = "DELETE FROM groups WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
+	$query = "DELETE FROM groups WHERE sid=$sid AND gid=$gid";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -228,7 +228,7 @@ elseif ($action == "updateanswer")
 
 elseif ($action == "delanswer")
 	{
-	$query = "DELETE FROM answers WHERE qid={$_POST['qid']} AND code='{$_POST['code']}'";
+	$query = "DELETE FROM answers WHERE qid=$qid AND code='$code'";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -237,7 +237,7 @@ elseif ($action == "delanswer")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question {$_POST['qid']} was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -297,7 +297,7 @@ elseif ($action == "updatesurvey")
 
 elseif ($action == "delsurvey")
 	{
-	$query = "DELETE FROM surveys WHERE sid={$_POST['sid']}";
+	$query = "DELETE FROM surveys WHERE sid=$sid";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -307,7 +307,7 @@ elseif ($action == "delsurvey")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id({$_POST['sid']}) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
