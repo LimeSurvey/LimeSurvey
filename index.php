@@ -190,7 +190,9 @@ function templatereplace($line)
 	$submitbutton="<input class='submit' type='submit' value=' submit ' name='move'>";
 	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
 	$line=str_replace("{COMPLETED}", $completed, $line);
-	$line=str_replace("{URL}", "<a href='$surveyurl'>$surveyurldescrip</a>", $line);
+	if (!$surveyurldescrip) {$linkreplace="<a href='$surveyurl'>$surveyurl</a>";}
+	else {$linkreplace="<a href='$surveyurl'>$surveyurldescrip</a>";}
+	$line=str_replace("{URL}", $linkreplace, $line);
 	$line=str_replace("{PRIVACY}", $privacy, $line);
 	$line=str_replace("{CLEARALL}", $clearall, $line);
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
