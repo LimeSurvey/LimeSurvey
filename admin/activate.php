@@ -262,7 +262,7 @@ else
 				}
 			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
 				{
-				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` VARCHAR(100),\n";
+				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` VARCHAR(255),\n";
 				if ($arow['type']=="P")
 					{
 					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` VARCHAR(255),\n";
