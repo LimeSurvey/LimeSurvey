@@ -73,6 +73,7 @@ $allfields[]=array("{$dbprefix}surveys", "urldescrip", "urldescrip varchar(255) 
 $allfields[]=array("{$dbprefix}surveys", "language", "language varchar(50) default ''");
 $allfields[]=array("{$dbprefix}surveys", "datestamp", "datestamp char(1) default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "usecookie", "usecookie char(1) default 'N'");
+$allfields[]=array("{$dbprefix}surveys", "notification", "notification char(1) default '0'");
 
 echo $htmlheader;
 
