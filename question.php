@@ -59,6 +59,9 @@ if (isset($_POST['move']) && $allowmandatorybackwards==1 && $_POST['move'] == " 
 
 $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandatorys($backok));
 
+//CHECK PREGS
+$notvalidated=checkpregs($backok);
+
 //SUBMIT
 if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSION['insertarray']))
 	{
@@ -147,7 +150,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 	}
 
 //LAST PHASE
-if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) || !$notanswered))
+if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 	{
 	last();
 	exit;
@@ -334,6 +337,11 @@ if (isset($notanswered))
 	list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
 	}
 
+if (isset($notvalidated))
+	{
+    list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
+	}	
+
 //Get list of mandatory questions
 list($plusman, $pluscon)=create_mandatorylist($ia);
 if ($plusman !== null)
@@ -363,6 +371,7 @@ $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 sendcacheheaders();
 echo "<html>\n";
 if (isset($popup)) {echo $popup;}
+if (isset($vpopup)) {echo $vpopup;}
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);

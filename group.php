@@ -62,6 +62,9 @@ if ($allowmandatorybackwards==1 && isset($_POST['move']) &&  $_POST['move'] == "
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandatorys($backok));
 
+//CHECK PREGS
+$notvalidated=checkpregs($backok);
+
 //SEE IF THIS GROUP SHOULD DISPLAY
 if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " "._LAST." " && $_POST['move'] != " "._SUBMIT." ")
 	{
@@ -166,7 +169,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 	}
 
 //LAST PHASE ###########################################################################
-if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) || !$notanswered))
+if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	if ($thissurvey['private'] != "N")
@@ -308,6 +311,12 @@ foreach ($_SESSION['fieldarray'] as $ia)
 			list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
 			}
 		
+		//Display the "validation" popup if necessary
+		if (isset($notvalidated))
+			{
+			list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
+			}
+		
 		//Get list of mandatory questions
 		list($plusman, $pluscon)=create_mandatorylist($ia);
 		if ($plusman !== null)
@@ -339,6 +348,7 @@ $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 sendcacheheaders();
 echo "<html>\n";
 if (isset($popup)) {echo $popup;}
+if (isset($vpopup)) {echo $vpopup;}
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);

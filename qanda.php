@@ -170,7 +170,7 @@ function setman_questionandcode($ia)
 	return array($mandatorys, $mandatoryfns);
 	}
 
-function retrieveAnswers($ia, $notanswered=null)
+function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	{
 	//This function returns an array containing the "question/answer" html display
 	//and a list of the question/answer fieldnames associated. It is called from
@@ -321,9 +321,37 @@ function retrieveAnswers($ia, $notanswered=null)
 	//add a message HIGHLIGHTING the question
 	$qtitle .= mandatory_message($ia);
 
+	$qtitle .= validation_message($ia);
+	
 	$qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0], $ia[1]);
 	//New Return
 	return array($qanda, $inputnames);
+	}
+
+function validation_message($ia)
+	{
+	//This function checks to see if this question requires validation and
+	//that validation has not been met.
+	global $notvalidated, $dbprefix;
+	$help="";
+	$helpselect="SELECT help\n"
+			   ."FROM {$dbprefix}questions\n"
+			   ."WHERE qid={$ia[0]}";
+	$helpresult=mysql_query($helpselect) or die("$helpselect<br />".mysql_error());
+	while ($helprow=mysql_fetch_array($helpresult))
+		{
+		$help=" <i>(".$helprow['help'].")</i>";
+		}
+	$qtitle="";
+	if (isset($notvalidated) && is_array($notvalidated)) //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+		{
+	    global $validationpopup, $popup;
+		if (in_array($ia[1], $notvalidated))
+			{
+		    $qtitle .= "</b><br /><span class='errormandatory'>"._VALIDATION." $help</span><b><br />\n";
+			}
+		}
+	return $qtitle;
 	}
 
 function mandatory_message($ia)
@@ -385,6 +413,28 @@ function mandatory_popup($ia, $notanswered=null)
 		}
 	}
 
+function validation_popup($ia, $notvalidated=null)
+	{
+	//This sets the validation popup message to show if required
+	//Called from question.php, group.php or survey.php
+	if ($notvalidated === null) {unset($notvalidated);}
+	$qtitle="";
+	if (isset($notvalidated) && is_array($notvalidated))  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+		{
+	    global $validationpopup, $vpopup;
+		//POPUP WARNING
+		if (!isset($validationpopup))
+			{
+		    $vpopup = "<script type\"text/javascript\">\n<!--\n alert(\""._VALIDATION_POPUP."\")\n //-->\n</script>\n";
+			$validationpopup="Y";
+			}
+		return array($validationpopup, $vpopup);
+		}
+	else
+		{
+		return false;
+		}
+	}
 //QUESTION METHODS
 function do_boilerplate($ia)
 	{
@@ -535,7 +585,7 @@ function do_listwithcomment($ia)
 		if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' ";
-			if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) 
+			if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) 
 				{
 				$answer .= "checked />";
 				}

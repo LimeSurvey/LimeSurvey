@@ -546,12 +546,13 @@ function checkgroupfordisplay($gid)
 						{
 						$cfieldname=$_SESSION[$row['cfieldname']];
 						$cvalue=$row['value'];
-					    }
+						}
 					}
 				if ($cfieldname == $cvalue)
 					{
 					//This condition is met
-					if (!isset($distinctcqids[$row['cqid']])) {
+					if (!isset($distinctcqids[$row['cqid']])) 
+						{
 						$distinctcqids[$row['cqid']]=1;
 						}
 					}
@@ -647,6 +648,7 @@ function checkconfield($value)
 			unset($container);
 			}
 		}
+	
 	}
 
 function checkmandatorys($backok=null)
@@ -781,6 +783,49 @@ function checkconditionalmandatorys($backok=null)
 		}	
 	if (!isset($notanswered)) {return false;}//$notanswered=null;}
 	return $notanswered;
+	}
+
+function checkpregs($backok=null)
+	{
+	if (!isset($backok) || $backok != "Y") 
+		{
+		global $dbprefix;
+		$fieldmap=createFieldMap(returnglobal('sid'));
+		if (isset($_POST['fieldnames']))
+			{
+			$fields=explode("|", $_POST['fieldnames']);
+			foreach ($fields as $field)
+				{
+				//Get question information
+				if (isset($_POST[$field]) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
+					{
+					$fieldinfo=arraySearchByKey($field, $fieldmap, "fieldname", 1);
+					$pregquery="SELECT preg\n"
+							  ."FROM {$dbprefix}questions\n"
+							  ."WHERE qid=".$fieldinfo['qid'];
+					$pregresult=mysql_query($pregquery) or die("ERROR: $pregquery<br />".mysql_error());
+					while($pregrow=mysql_fetch_array($pregresult))
+						{
+						$preg=$pregrow['preg'];
+						} // while
+					if (isset($preg) && $preg)
+						{
+					    if (!preg_match($preg, $_POST[$field]))
+							{
+							$notvalidated[]=$field;
+							}
+						}
+				    }
+				}
+			}
+		if (isset($notvalidated) && is_array($notvalidated))
+			{
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			return $notvalidated;
+			}
+	    }
 	}
 
 function addtoarray_single($array1, $array2)

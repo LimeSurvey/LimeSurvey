@@ -55,8 +55,11 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 $notanswered=addtoarray_single(checkmandatorys(),checkconditionalmandatorys());
 
+//CHECK PREGS
+$notvalidated=checkpregs();
+
 //SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($notanswered) || !$notanswered) && isset($_SESSION['insertarray']))
+if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && isset($_SESSION['insertarray']))
 	{
 	if ($thissurvey['private'] == "Y")
 		{
@@ -155,7 +158,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 	}
 
 //LAST PHASE
-if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && !$notanswered)
+if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) && !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	sendcacheheaders();
@@ -256,6 +259,11 @@ foreach ($_SESSION['grouplist'] as $gl)
 				list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
 				}
 			
+			if (isset($notvalidated))
+				{
+				list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
+				}
+			
 			//Get list of mandatory questions
 			list($plusman, $pluscon)=create_mandatorylist($ia);
 			if ($plusman !== null)
@@ -285,6 +293,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 sendcacheheaders();
 echo "<html>\n";
 if(isset($popup)) {echo $popup;}
+if(isset($vpopup)) {echo $vpopup;}
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
