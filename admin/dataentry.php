@@ -547,6 +547,7 @@ elseif ($action == "edit" || $action == "editsaved")
 		while($svrow=mysql_fetch_array($svresult))
 			{
 			$responses[$svrow['fieldname']]=$svrow['value'];
+			$save['email']=$svrow['email'];
 			}
 		$fieldmap = createFieldMap($sid);
 		foreach($fieldmap as $fm)
@@ -1121,6 +1122,7 @@ elseif ($action == "edit" || $action == "editsaved")
 		echo "\t</tr>"
 			."<input type='hidden' name='save_password' value='".returnglobal('accesscode')."'>\n"
 			."<input type='hidden' name='save_confirmpassword' value='".returnglobal('accesscode')."'>\n"
+			."<input type='hidden' name='save_email' value='".$save['email']."'>\n"
 			."<input type='hidden' name='redo' value='yes'>\n"
 			."</div>\n";
 		echo "	<tr>
