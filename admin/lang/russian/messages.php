@@ -2,542 +2,542 @@
 //Translation kindly provided by Alexei G. Tchernov  (alexei_g_chernov[at]mail[dot]ru)
 
 //BUTTON BAR TITLES
-define("_ADMINISTRATION", "Администрирование");
-define("_SURVEY", "Опрос");
-define("_GROUP", "Группа");
-define("_QUESTION", "Вопрос");
-define("_ANSWERS", "Ответы");
-define("_CONDITIONS", "Условия");
-define("_HELP", "Справка");
-define("_USERCONTROL", "Управление пользователями");
-define("_ACTIVATE", "Активировать опросник");
-define("_DEACTIVATE", "Деактивировать опросник");
-define("_CHECKFIELDS", "Проверить поля БД");
-define("_CREATEDB", "Создать БД");
-define("_CREATESURVEY", "Создать опрос"); //New for 0.98rc4
+define("_ADMINISTRATION", "РђРґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёРµ");
+define("_SURVEY", "РћРїСЂРѕСЃ");
+define("_GROUP", "Р“СЂСѓРїРїР°");
+define("_QUESTION", "Р’РѕРїСЂРѕСЃ");
+define("_ANSWERS", "РћС‚РІРµС‚С‹");
+define("_CONDITIONS", "РЈСЃР»РѕРІРёСЏ");
+define("_HELP", "РЎРїСЂР°РІРєР°");
+define("_USERCONTROL", "РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРјРё");
+define("_ACTIVATE", "РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ РѕРїСЂРѕСЃРЅРёРє");
+define("_DEACTIVATE", "Р”РµР°РєС‚РёРІРёСЂРѕРІР°С‚СЊ РѕРїСЂРѕСЃРЅРёРє");
+define("_CHECKFIELDS", "РџСЂРѕРІРµСЂРёС‚СЊ РїРѕР»СЏ Р‘Р”");
+define("_CREATEDB", "РЎРѕР·РґР°С‚СЊ Р‘Р”");
+define("_CREATESURVEY", "РЎРѕР·РґР°С‚СЊ РѕРїСЂРѕСЃ"); //New for 0.98rc4
 define("_SETUP", "PHPSurveyor Setup");
-define("_DELETESURVEY", "Удалить опрос");
-define("_EXPORTQUESTION", "Export вопроса");
-define("_EXPORTSURVEY", "Export опроса");
-define("_EXPORTLABEL", "Export Набора меток");
-define("_IMPORTQUESTION", "Import вопроса");
-define("_IMPORTGROUP", "Import группы"); //New for 0.98rc5
-define("_IMPORTSURVEY", "Import опроса");
-define("_IMPORTLABEL", "Import набора меток");
-define("_EXPORTRESULTS", "Export результатов");
-define("_BROWSERESPONSES", "Смотреть результаты");
+define("_DELETESURVEY", "РЈРґР°Р»РёС‚СЊ РѕРїСЂРѕСЃ");
+define("_EXPORTQUESTION", "Export РІРѕРїСЂРѕСЃР°");
+define("_EXPORTSURVEY", "Export РѕРїСЂРѕСЃР°");
+define("_EXPORTLABEL", "Export РќР°Р±РѕСЂР° РјРµС‚РѕРє");
+define("_IMPORTQUESTION", "Import РІРѕРїСЂРѕСЃР°");
+define("_IMPORTGROUP", "Import РіСЂСѓРїРїС‹"); //New for 0.98rc5
+define("_IMPORTSURVEY", "Import РѕРїСЂРѕСЃР°");
+define("_IMPORTLABEL", "Import РЅР°Р±РѕСЂР° РјРµС‚РѕРє");
+define("_EXPORTRESULTS", "Export СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ");
+define("_BROWSERESPONSES", "РЎРјРѕС‚СЂРµС‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚С‹");
 define("_BROWSESAVED", "Browse Saved Responses");
-define("_STATISTICS", "Быстрая статистика");
-define("_VIEWRESPONSE", "Смотреть ответы");
-define("_VIEWCONTROL", "Управление просмотром данных");
-define("_DATAENTRY", "Ввод данных");
-define("_TOKENCONTROL", "Управление Ключ. фразами");
-define("_TOKENDBADMIN", "Опции администрирования БД Ключ. фраз");
-define("_DROPTOKENS", "Удалить таблицу ключ.фраз");
-define("_EMAILINVITE", "Email приглашение");
-define("_EMAILREMIND", "Email напоминание");
-define("_TOKENIFY", "Создать Ключ. фразы");
-define("_UPLOADCSV", "Загрузить CSV File");
-define("_LABELCONTROL", "Администрировать наборы меток"); //NEW with 0.98rc3
-define("_LABELSET", "Набор меток"); //NEW with 0.98rc3
-define("_LABELANS", "Метки"); //NEW with 0.98rc3
-define("_OPTIONAL", "Необязательно"); //NEW with 0.98finalRC1
+define("_STATISTICS", "Р‘С‹СЃС‚СЂР°СЏ СЃС‚Р°С‚РёСЃС‚РёРєР°");
+define("_VIEWRESPONSE", "РЎРјРѕС‚СЂРµС‚СЊ РѕС‚РІРµС‚С‹");
+define("_VIEWCONTROL", "РЈРїСЂР°РІР»РµРЅРёРµ РїСЂРѕСЃРјРѕС‚СЂРѕРј РґР°РЅРЅС‹С…");
+define("_DATAENTRY", "Р’РІРѕРґ РґР°РЅРЅС‹С…");
+define("_TOKENCONTROL", "РЈРїСЂР°РІР»РµРЅРёРµ РљР»СЋС‡. С„СЂР°Р·Р°РјРё");
+define("_TOKENDBADMIN", "РћРїС†РёРё Р°РґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёСЏ Р‘Р” РљР»СЋС‡. С„СЂР°Р·");
+define("_DROPTOKENS", "РЈРґР°Р»РёС‚СЊ С‚Р°Р±Р»РёС†Сѓ РєР»СЋС‡.С„СЂР°Р·");
+define("_EMAILINVITE", "Email РїСЂРёРіР»Р°С€РµРЅРёРµ");
+define("_EMAILREMIND", "Email РЅР°РїРѕРјРёРЅР°РЅРёРµ");
+define("_TOKENIFY", "РЎРѕР·РґР°С‚СЊ РљР»СЋС‡. С„СЂР°Р·С‹");
+define("_UPLOADCSV", "Р—Р°РіСЂСѓР·РёС‚СЊ CSV File");
+define("_LABELCONTROL", "РђРґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ РЅР°Р±РѕСЂС‹ РјРµС‚РѕРє"); //NEW with 0.98rc3
+define("_LABELSET", "РќР°Р±РѕСЂ РјРµС‚РѕРє"); //NEW with 0.98rc3
+define("_LABELANS", "РњРµС‚РєРё"); //NEW with 0.98rc3
+define("_OPTIONAL", "РќРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕ"); //NEW with 0.98finalRC1
 
 //DROPDOWN HEADINGS
-define("_SURVEYS", "Опросы");
-define("_GROUPS", "Группы");
-define("_QUESTIONS", "Вопросы");
-define("_QBYQ", "Вопрос за вопросом");
-define("_GBYG", "Группа за группой");
-define("_SBYS", "Все в одном");
-define("_LABELSETS", "Наборы"); //New with 0.98rc3
+define("_SURVEYS", "РћРїСЂРѕСЃС‹");
+define("_GROUPS", "Р“СЂСѓРїРїС‹");
+define("_QUESTIONS", "Р’РѕРїСЂРѕСЃС‹");
+define("_QBYQ", "Р’РѕРїСЂРѕСЃ Р·Р° РІРѕРїСЂРѕСЃРѕРј");
+define("_GBYG", "Р“СЂСѓРїРїР° Р·Р° РіСЂСѓРїРїРѕР№");
+define("_SBYS", "Р’СЃРµ РІ РѕРґРЅРѕРј");
+define("_LABELSETS", "РќР°Р±РѕСЂС‹"); //New with 0.98rc3
 
 //BUTTON MOUSEOVERS
 //administration bar
-define("_A_HOME_BT", "Административная страница по умолчанию");
-define("_A_SECURITY_BT", "Изменение установок безопастности");
-define("_A_BADSECURITY_BT", "Активизировать режим безопасности");
-define("_A_CHECKDB_BT", "Проверить БД");
-define("_A_DELETE_BT", "Удалить опрос полностью");
-define("_A_ADDSURVEY_BT", "Создать или импортировать новый опрос");
-define("_A_HELP_BT", "Показать справку");
-define("_A_CHECKSETTINGS", "Проверить установки");
-define("_A_BACKUPDB_BT", "Резерное копирование всей БД"); //New for 0.98rc10
-define("_A_TEMPLATES_BT", "Редактор шаблонов"); //New for 0.98rc9
+define("_A_HOME_BT", "РђРґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ");
+define("_A_SECURITY_BT", "РР·РјРµРЅРµРЅРёРµ СѓСЃС‚Р°РЅРѕРІРѕРє Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё");
+define("_A_BADSECURITY_BT", "РђРєС‚РёРІРёР·РёСЂРѕРІР°С‚СЊ СЂРµР¶РёРј Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё");
+define("_A_CHECKDB_BT", "РџСЂРѕРІРµСЂРёС‚СЊ Р‘Р”");
+define("_A_DELETE_BT", "РЈРґР°Р»РёС‚СЊ РѕРїСЂРѕСЃ РїРѕР»РЅРѕСЃС‚СЊСЋ");
+define("_A_ADDSURVEY_BT", "РЎРѕР·РґР°С‚СЊ РёР»Рё РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РЅРѕРІС‹Р№ РѕРїСЂРѕСЃ");
+define("_A_HELP_BT", "РџРѕРєР°Р·Р°С‚СЊ СЃРїСЂР°РІРєСѓ");
+define("_A_CHECKSETTINGS", "РџСЂРѕРІРµСЂРёС‚СЊ СѓСЃС‚Р°РЅРѕРІРєРё");
+define("_A_BACKUPDB_BT", "Р РµР·РµСЂРЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ РІСЃРµР№ Р‘Р”"); //New for 0.98rc10
+define("_A_TEMPLATES_BT", "Р РµРґР°РєС‚РѕСЂ С€Р°Р±Р»РѕРЅРѕРІ"); //New for 0.98rc9
 //Survey bar
-define("_S_ACTIVE_BT", "Опрос активен");
-define("_S_INACTIVE_BT", "Опрос неактивен");
-define("_S_ACTIVATE_BT", "Активизировать опрос");
-define("_S_DEACTIVATE_BT", "Деактивизировать опрос");
-define("_S_CANNOTACTIVATE_BT", "Не могу активизировать опрос");
-define("_S_DOSURVEY_BT", "Провести опрос");
-define("_S_DATAENTRY_BT", "Ввод данных для опроса");
-define("_S_PRINTABLE_BT", "Версия для печати");
-define("_S_EDIT_BT", "Изменение текущего опроса");
-define("_S_DELETE_BT", "Удалить текущий опрос");
-define("_S_EXPORT_BT", "Экспортировать опрос");
-define("_S_BROWSE_BT", "Показать ответы на опрос");
-define("_S_TOKENS_BT", "Активизировать/Изменить Ключ. фразы для опроса");
-define("_S_ADDGROUP_BT", "Добавить новую группу в опрос");
-define("_S_MINIMISE_BT", "Спрятать детали опроса");
-define("_S_MAXIMISE_BT", "Показать  детали опроса");
-define("_S_CLOSE_BT", "Закрыть опрос");
+define("_S_ACTIVE_BT", "РћРїСЂРѕСЃ Р°РєС‚РёРІРµРЅ");
+define("_S_INACTIVE_BT", "РћРїСЂРѕСЃ РЅРµР°РєС‚РёРІРµРЅ");
+define("_S_ACTIVATE_BT", "РђРєС‚РёРІРёР·РёСЂРѕРІР°С‚СЊ РѕРїСЂРѕСЃ");
+define("_S_DEACTIVATE_BT", "Р”РµР°РєС‚РёРІРёР·РёСЂРѕРІР°С‚СЊ РѕРїСЂРѕСЃ");
+define("_S_CANNOTACTIVATE_BT", "РќРµ РјРѕРіСѓ Р°РєС‚РёРІРёР·РёСЂРѕРІР°С‚СЊ РѕРїСЂРѕСЃ");
+define("_S_DOSURVEY_BT", "РџСЂРѕРІРµСЃС‚Рё РѕРїСЂРѕСЃ");
+define("_S_DATAENTRY_BT", "Р’РІРѕРґ РґР°РЅРЅС‹С… РґР»СЏ РѕРїСЂРѕСЃР°");
+define("_S_PRINTABLE_BT", "Р’РµСЂСЃРёСЏ РґР»СЏ РїРµС‡Р°С‚Рё");
+define("_S_EDIT_BT", "РР·РјРµРЅРµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ РѕРїСЂРѕСЃР°");
+define("_S_DELETE_BT", "РЈРґР°Р»РёС‚СЊ С‚РµРєСѓС‰РёР№ РѕРїСЂРѕСЃ");
+define("_S_EXPORT_BT", "Р­РєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РѕРїСЂРѕСЃ");
+define("_S_BROWSE_BT", "РџРѕРєР°Р·Р°С‚СЊ РѕС‚РІРµС‚С‹ РЅР° РѕРїСЂРѕСЃ");
+define("_S_TOKENS_BT", "РђРєС‚РёРІРёР·РёСЂРѕРІР°С‚СЊ/РР·РјРµРЅРёС‚СЊ РљР»СЋС‡. С„СЂР°Р·С‹ РґР»СЏ РѕРїСЂРѕСЃР°");
+define("_S_ADDGROUP_BT", "Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІСѓСЋ РіСЂСѓРїРїСѓ РІ РѕРїСЂРѕСЃ");
+define("_S_MINIMISE_BT", "РЎРїСЂСЏС‚Р°С‚СЊ РґРµС‚Р°Р»Рё РѕРїСЂРѕСЃР°");
+define("_S_MAXIMISE_BT", "РџРѕРєР°Р·Р°С‚СЊ  РґРµС‚Р°Р»Рё РѕРїСЂРѕСЃР°");
+define("_S_CLOSE_BT", "Р—Р°РєСЂС‹С‚СЊ РѕРїСЂРѕСЃ");
 define("_S_SAVED_BT", "View Saved but not submitted Responses"); //New in 0.99dev01
 define("_S_ASSESSMENT_BT", "Set assessment rules"); //New in  0.99dev01
 //Group bar
-define("_G_EDIT_BT", "Редактировать текущую группу");
-define("_G_EXPORT_BT", "Export текущей группы"); //New in 0.98rc5
-define("_G_DELETE_BT", "Удалить текущую группу");
-define("_G_ADDQUESTION_BT", "Добавить новый вопрос в группу");
-define("_G_MINIMISE_BT", "Спрятать детали группы");
-define("_G_MAXIMISE_BT", "Показать детали группы");
-define("_G_CLOSE_BT", "Закрыть группу");
+define("_G_EDIT_BT", "Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ С‚РµРєСѓС‰СѓСЋ РіСЂСѓРїРїСѓ");
+define("_G_EXPORT_BT", "Export С‚РµРєСѓС‰РµР№ РіСЂСѓРїРїС‹"); //New in 0.98rc5
+define("_G_DELETE_BT", "РЈРґР°Р»РёС‚СЊ С‚РµРєСѓС‰СѓСЋ РіСЂСѓРїРїСѓ");
+define("_G_ADDQUESTION_BT", "Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ РІРѕРїСЂРѕСЃ РІ РіСЂСѓРїРїСѓ");
+define("_G_MINIMISE_BT", "РЎРїСЂСЏС‚Р°С‚СЊ РґРµС‚Р°Р»Рё РіСЂСѓРїРїС‹");
+define("_G_MAXIMISE_BT", "РџРѕРєР°Р·Р°С‚СЊ РґРµС‚Р°Р»Рё РіСЂСѓРїРїС‹");
+define("_G_CLOSE_BT", "Р—Р°РєСЂС‹С‚СЊ РіСЂСѓРїРїСѓ");
 //Question bar
-define("_Q_EDIT_BT", "Редактировать Текущий Вопрос");
-define("_Q_COPY_BT", "Копировать Текущий Вопрос"); //New in 0.98rc4
-define("_Q_DELETE_BT", "Удалить Текущий Вопрос");
-define("_Q_EXPORT_BT", "Export Вопрос");
-define("_Q_CONDITIONS_BT", "Установить условия для Вопроса");
-define("_Q_ANSWERS_BT", "Редактировать/Добавить ответы для Вопроса");
-define("_Q_LABELS_BT", "Редактировать/Добавить Наборы Меток");
-define("_Q_MINIMISE_BT", "Спрятать детали для этого Вопроса");
-define("_Q_MAXIMISE_BT", "Показать детали для этого Вопроса");
-define("_Q_CLOSE_BT", "Закрыть Вопрос");
+define("_Q_EDIT_BT", "Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РўРµРєСѓС‰РёР№ Р’РѕРїСЂРѕСЃ");
+define("_Q_COPY_BT", "РљРѕРїРёСЂРѕРІР°С‚СЊ РўРµРєСѓС‰РёР№ Р’РѕРїСЂРѕСЃ"); //New in 0.98rc4
+define("_Q_DELETE_BT", "РЈРґР°Р»РёС‚СЊ РўРµРєСѓС‰РёР№ Р’РѕРїСЂРѕСЃ");
+define("_Q_EXPORT_BT", "Export Р’РѕРїСЂРѕСЃ");
+define("_Q_CONDITIONS_BT", "РЈСЃС‚Р°РЅРѕРІРёС‚СЊ СѓСЃР»РѕРІРёСЏ РґР»СЏ Р’РѕРїСЂРѕСЃР°");
+define("_Q_ANSWERS_BT", "Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ/Р”РѕР±Р°РІРёС‚СЊ РѕС‚РІРµС‚С‹ РґР»СЏ Р’РѕРїСЂРѕСЃР°");
+define("_Q_LABELS_BT", "Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ/Р”РѕР±Р°РІРёС‚СЊ РќР°Р±РѕСЂС‹ РњРµС‚РѕРє");
+define("_Q_MINIMISE_BT", "РЎРїСЂСЏС‚Р°С‚СЊ РґРµС‚Р°Р»Рё РґР»СЏ СЌС‚РѕРіРѕ Р’РѕРїСЂРѕСЃР°");
+define("_Q_MAXIMISE_BT", "РџРѕРєР°Р·Р°С‚СЊ РґРµС‚Р°Р»Рё РґР»СЏ СЌС‚РѕРіРѕ Р’РѕРїСЂРѕСЃР°");
+define("_Q_CLOSE_BT", "Р—Р°РєСЂС‹С‚СЊ Р’РѕРїСЂРѕСЃ");
 //Browse Button Bar
-define("_B_ADMIN_BT", "Вернуться к редактированию опросов");
-define("_B_SUMMARY_BT", "Показать итоговую информацию");
-define("_B_ALL_BT", "Показать ответы");
-define("_B_LAST_BT", "Показать последних 50 ответов");
-define("_B_STATISTICS_BT", "Получить статистику по этим ответам");
-define("_B_EXPORT_BT", "Export результатов в приложения");
-define("_B_BACKUP_BT", "Резервное копирование таблицы результатов как SQL файл");
+define("_B_ADMIN_BT", "Р’РµСЂРЅСѓС‚СЊСЃСЏ Рє СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЋ РѕРїСЂРѕСЃРѕРІ");
+define("_B_SUMMARY_BT", "РџРѕРєР°Р·Р°С‚СЊ РёС‚РѕРіРѕРІСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ");
+define("_B_ALL_BT", "РџРѕРєР°Р·Р°С‚СЊ РѕС‚РІРµС‚С‹");
+define("_B_LAST_BT", "РџРѕРєР°Р·Р°С‚СЊ РїРѕСЃР»РµРґРЅРёС… 50 РѕС‚РІРµС‚РѕРІ");
+define("_B_STATISTICS_BT", "РџРѕР»СѓС‡РёС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ РїРѕ СЌС‚РёРј РѕС‚РІРµС‚Р°Рј");
+define("_B_EXPORT_BT", "Export СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РІ РїСЂРёР»РѕР¶РµРЅРёСЏ");
+define("_B_BACKUP_BT", "Р РµР·РµСЂРІРЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РєР°Рє SQL С„Р°Р№Р»");
 //Tokens Button Bar
-define("_T_ALL_BT", "Показать Ключ. фразы");
-define("_T_ADD_BT", "Добавить новую Ключ. фразу");
-define("_T_IMPORT_BT", "Импорт Ключ. фраз из CSV файла");
-define("_T_EXPORT_BT", "Export Ключ. фраз в CSV файл"); //New for 0.98rc7
-define("_T_INVITE_BT", "Послать email приглашение");
-define("_T_REMIND_BT", "Послать email напоминание");
-define("_T_TOKENIFY_BT", "Генирировать Ключ. фразы");
-define("_T_KILL_BT", "Уничтожить таблицу Ключ. фраз");
+define("_T_ALL_BT", "РџРѕРєР°Р·Р°С‚СЊ РљР»СЋС‡. С„СЂР°Р·С‹");
+define("_T_ADD_BT", "Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІСѓСЋ РљР»СЋС‡. С„СЂР°Р·Сѓ");
+define("_T_IMPORT_BT", "РРјРїРѕСЂС‚ РљР»СЋС‡. С„СЂР°Р· РёР· CSV С„Р°Р№Р»Р°");
+define("_T_EXPORT_BT", "Export РљР»СЋС‡. С„СЂР°Р· РІ CSV С„Р°Р№Р»"); //New for 0.98rc7
+define("_T_INVITE_BT", "РџРѕСЃР»Р°С‚СЊ email РїСЂРёРіР»Р°С€РµРЅРёРµ");
+define("_T_REMIND_BT", "РџРѕСЃР»Р°С‚СЊ email РЅР°РїРѕРјРёРЅР°РЅРёРµ");
+define("_T_TOKENIFY_BT", "Р“РµРЅРёСЂРёСЂРѕРІР°С‚СЊ РљР»СЋС‡. С„СЂР°Р·С‹");
+define("_T_KILL_BT", "РЈРЅРёС‡С‚РѕР¶РёС‚СЊ С‚Р°Р±Р»РёС†Сѓ РљР»СЋС‡. С„СЂР°Р·");
 //Labels Button Bar
-define("_L_ADDSET_BT", "Добавить набор меток");
-define("_L_EDIT_BT", "Редактировать набор меток");
-define("_L_DEL_BT", "Удалить набор меток");
+define("_L_ADDSET_BT", "Р”РѕР±Р°РІРёС‚СЊ РЅР°Р±РѕСЂ РјРµС‚РѕРє");
+define("_L_EDIT_BT", "Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РЅР°Р±РѕСЂ РјРµС‚РѕРє");
+define("_L_DEL_BT", "РЈРґР°Р»РёС‚СЊ РЅР°Р±РѕСЂ РјРµС‚РѕРє");
 //Datacontrols
-define("_D_BEGIN", "Показать начальное..");
-define("_D_BACK", "Показать предыдущее..");
-define("_D_FORWARD", "Показать следующее..");
-define("_D_END", "Показать следующее..");
+define("_D_BEGIN", "РџРѕРєР°Р·Р°С‚СЊ РЅР°С‡Р°Р»СЊРЅРѕРµ..");
+define("_D_BACK", "РџРѕРєР°Р·Р°С‚СЊ РїСЂРµРґС‹РґСѓС‰РµРµ..");
+define("_D_FORWARD", "РџРѕРєР°Р·Р°С‚СЊ СЃР»РµРґСѓСЋС‰РµРµ..");
+define("_D_END", "РџРѕРєР°Р·Р°С‚СЊ СЃР»РµРґСѓСЋС‰РµРµ..");
 
 //DATA LABELS
 //surveys
-define("_SL_TITLE", "Заголовок:");
-define("_SL_SURVEYURL", "Страница опроса (URL):"); //new in 0.98rc5
-define("_SL_DESCRIPTION", "Описание:");
-define("_SL_WELCOME", "Приветствие:");
-define("_SL_ADMIN", "Администратор:");
+define("_SL_TITLE", "Р—Р°РіРѕР»РѕРІРѕРє:");
+define("_SL_SURVEYURL", "РЎС‚СЂР°РЅРёС†Р° РѕРїСЂРѕСЃР° (URL):"); //new in 0.98rc5
+define("_SL_DESCRIPTION", "РћРїРёСЃР°РЅРёРµ:");
+define("_SL_WELCOME", "РџСЂРёРІРµС‚СЃС‚РІРёРµ:");
+define("_SL_ADMIN", "РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ:");
 define("_SL_EMAIL", "Admin Email:");
 define("_SL_FAXTO", "Fax:");
-define("_SL_ANONYMOUS", "Анонимный?");
-define("_SL_EXPIRES", "Окончание:");
-define("_SL_FORMAT", "Формат:");
-define("_SL_DATESTAMP", "Отмечать время?");
-define("_SL_TEMPLATE", "Шаблон:");
-define("_SL_LANGUAGE", "Язык:");
-define("_SL_LINK", "Ссылка:");
-define("_SL_URL", "Финальный URL:");
-define("_SL_URLDESCRIP", "URL описание:");
-define("_SL_STATUS", "Статус:");
-define("_SL_SELSQL", "Выберите SQL файл:");
-define("_SL_USECOOKIES", "Использовать Cookies?"); //NEW with 098rc3
-define("_SL_NOTIFICATION", "Извещение:"); //New with 098rc5
-define("_SL_ALLOWREGISTER", "Разрешить публичную регистрацию?"); //New with 0.98rc9
-define("_SL_ATTRIBUTENAMES", "Наименования атрибутов фраз:"); //New with 0.98rc9
+define("_SL_ANONYMOUS", "РђРЅРѕРЅРёРјРЅС‹Р№?");
+define("_SL_EXPIRES", "РћРєРѕРЅС‡Р°РЅРёРµ:");
+define("_SL_FORMAT", "Р¤РѕСЂРјР°С‚:");
+define("_SL_DATESTAMP", "РћС‚РјРµС‡Р°С‚СЊ РІСЂРµРјСЏ?");
+define("_SL_TEMPLATE", "РЁР°Р±Р»РѕРЅ:");
+define("_SL_LANGUAGE", "РЇР·С‹Рє:");
+define("_SL_LINK", "РЎСЃС‹Р»РєР°:");
+define("_SL_URL", "Р¤РёРЅР°Р»СЊРЅС‹Р№ URL:");
+define("_SL_URLDESCRIP", "URL РѕРїРёСЃР°РЅРёРµ:");
+define("_SL_STATUS", "РЎС‚Р°С‚СѓСЃ:");
+define("_SL_SELSQL", "Р’С‹Р±РµСЂРёС‚Рµ SQL С„Р°Р№Р»:");
+define("_SL_USECOOKIES", "РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Cookies?"); //NEW with 098rc3
+define("_SL_NOTIFICATION", "РР·РІРµС‰РµРЅРёРµ:"); //New with 098rc5
+define("_SL_ALLOWREGISTER", "Р Р°Р·СЂРµС€РёС‚СЊ РїСѓР±Р»РёС‡РЅСѓСЋ СЂРµРіРёСЃС‚СЂР°С†РёСЋ?"); //New with 0.98rc9
+define("_SL_ATTRIBUTENAMES", "РќР°РёРјРµРЅРѕРІР°РЅРёСЏ Р°С‚СЂРёР±СѓС‚РѕРІ С„СЂР°Р·:"); //New with 0.98rc9
 define("_SL_EMAILINVITE_SUBJ", "Invitation Email Subject:"); //New with 0.99dev01
-define("_SL_EMAILINVITE", "Email приглашение:"); //New with 0.98rc9
+define("_SL_EMAILINVITE", "Email РїСЂРёРіР»Р°С€РµРЅРёРµ:"); //New with 0.98rc9
 define("_SL_EMAILREMIND_SUBJ", "Email Reminder Subject:"); //New with 0.99dev01
-define("_SL_EMAILREMIND", "Email напоминание:"); //New with 0.98rc9
+define("_SL_EMAILREMIND", "Email РЅР°РїРѕРјРёРЅР°РЅРёРµ:"); //New with 0.98rc9
 define("_SL_EMAILREGISTER_SUBJ", "Public registration Email Subject:"); //New with 0.99dev01
-define("_SL_EMAILREGISTER", "Email публичной регистрации:"); //New with 0.98rc9
+define("_SL_EMAILREGISTER", "Email РїСѓР±Р»РёС‡РЅРѕР№ СЂРµРіРёСЃС‚СЂР°С†РёРё:"); //New with 0.98rc9
 define("_SL_EMAILCONFIRM_SUBJ", "Confirmation Email Subject"); //New with 0.99dev01
-define("_SL_EMAILCONFIRM", "Email подтверждения"); //New with 0.98rc9
-define("_SL_REPLACEOK", "Это изменит существующий текст. Продолжить?"); //New with 0.98rc9
+define("_SL_EMAILCONFIRM", "Email РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ"); //New with 0.98rc9
+define("_SL_REPLACEOK", "Р­С‚Рѕ РёР·РјРµРЅРёС‚ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ С‚РµРєСЃС‚. РџСЂРѕРґРѕР»Р¶РёС‚СЊ?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
 define("_SL_AUTONUMBER", "Start ID numbers at:"); //New with 0.99dev01
 define("_SL_AUTORELOAD", "Automatically load URL when survey complete?"); //New with 0.99dev01
 define("_SL_ALLOWPREV", "Show [<< Prev] button"); //New with 0.99dev01
-define("_SL_USE_DEFAULT","Использовать умолчание");
-define("_SL_UPD_SURVEY","Обновить опрос");
+define("_SL_USE_DEFAULT","РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СѓРјРѕР»С‡Р°РЅРёРµ");
+define("_SL_UPD_SURVEY","РћР±РЅРѕРІРёС‚СЊ РѕРїСЂРѕСЃ");
 
 //groups
-define("_GL_TITLE", "Заголовок:");
-define("_GL_DESCRIPTION", "Описание:");
+define("_GL_TITLE", "Р—Р°РіРѕР»РѕРІРѕРє:");
+define("_GL_DESCRIPTION", "РћРїРёСЃР°РЅРёРµ:");
 //questions
-define("_QL_CODE", "Код:");
-define("_QL_QUESTION", "Вопрос:");
+define("_QL_CODE", "РљРѕРґ:");
+define("_QL_QUESTION", "Р’РѕРїСЂРѕСЃ:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
-define("_QL_HELP", "Помощь:");
-define("_QL_TYPE", "Ввод:");
-define("_QL_GROUP", "Группа:");
-define("_QL_MANDATORY", "Обязательность:");
-define("_QL_OTHER", "Другое:");
-define("_QL_LABELSET", "Набор меток:");
-define("_QL_COPYANS", "Копировать ответы?"); //New in 0.98rc3
+define("_QL_HELP", "РџРѕРјРѕС‰СЊ:");
+define("_QL_TYPE", "Р’РІРѕРґ:");
+define("_QL_GROUP", "Р“СЂСѓРїРїР°:");
+define("_QL_MANDATORY", "РћР±СЏР·Р°С‚РµР»СЊРЅРѕСЃС‚СЊ:");
+define("_QL_OTHER", "Р”СЂСѓРіРѕРµ:");
+define("_QL_LABELSET", "РќР°Р±РѕСЂ РјРµС‚РѕРє:");
+define("_QL_COPYANS", "РљРѕРїРёСЂРѕРІР°С‚СЊ РѕС‚РІРµС‚С‹?"); //New in 0.98rc3
 define("_QL_QUESTIONATTRIBUTES", "Question Attributes:"); //New in 0.99dev01
 define("_QL_COPYATT", "Copy Attributes?"); //New in 0.99dev01
 //answers
-define("_AL_CODE", "Код");
-define("_AL_ANSWER", "Ответ");
-define("_AL_DEFAULT", "По умолчанию");
-define("_AL_MOVE", "Переместить");
-define("_AL_ACTION", "Действие");
-define("_AL_UP", "Вверх");
-define("_AL_DN", "Вниз");
-define("_AL_SAVE", "Сохранить");
-define("_AL_DEL", "Удалить");
-define("_AL_ADD", "Добавить");
-define("_AL_FIXSORT", "Сохранить сортировку");
-define("_AL_SORTALPHA", "Сортировать по алфавиту"); //New in 0.98rc8 - Sort Answers Alphabetically
+define("_AL_CODE", "РљРѕРґ");
+define("_AL_ANSWER", "РћС‚РІРµС‚");
+define("_AL_DEFAULT", "РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ");
+define("_AL_MOVE", "РџРµСЂРµРјРµСЃС‚РёС‚СЊ");
+define("_AL_ACTION", "Р”РµР№СЃС‚РІРёРµ");
+define("_AL_UP", "Р’РІРµСЂС…");
+define("_AL_DN", "Р’РЅРёР·");
+define("_AL_SAVE", "РЎРѕС…СЂР°РЅРёС‚СЊ");
+define("_AL_DEL", "РЈРґР°Р»РёС‚СЊ");
+define("_AL_ADD", "Р”РѕР±Р°РІРёС‚СЊ");
+define("_AL_FIXSORT", "РЎРѕС…СЂР°РЅРёС‚СЊ СЃРѕСЂС‚РёСЂРѕРІРєСѓ");
+define("_AL_SORTALPHA", "РЎРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ Р°Р»С„Р°РІРёС‚Сѓ"); //New in 0.98rc8 - Sort Answers Alphabetically
 //users
-define("_UL_USER", "Пользователь");
-define("_UL_PASSWORD", "Пароль");
-define("_UL_SECURITY", "Режим безопастности");
-define("_UL_ACTION", "Действие");
-define("_UL_EDIT", "Изменить");
-define("_UL_DEL", "Удалить");
-define("_UL_ADD", "Добавить");
-define("_UL_TURNOFF", "Выключить Режим безопастности");
+define("_UL_USER", "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ");
+define("_UL_PASSWORD", "РџР°СЂРѕР»СЊ");
+define("_UL_SECURITY", "Р РµР¶РёРј Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё");
+define("_UL_ACTION", "Р”РµР№СЃС‚РІРёРµ");
+define("_UL_EDIT", "РР·РјРµРЅРёС‚СЊ");
+define("_UL_DEL", "РЈРґР°Р»РёС‚СЊ");
+define("_UL_ADD", "Р”РѕР±Р°РІРёС‚СЊ");
+define("_UL_TURNOFF", "Р’С‹РєР»СЋС‡РёС‚СЊ Р РµР¶РёРј Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё");
 //tokens
-define("_TL_FIRST", "Имя");
-define("_TL_LAST", "Фамилия");
+define("_TL_FIRST", "РРјСЏ");
+define("_TL_LAST", "Р¤Р°РјРёР»РёСЏ");
 define("_TL_EMAIL", "Email");
-define("_TL_TOKEN", "Ключ. фраза");
-define("_TL_INVITE", "Приглашение отправлено?");
-define("_TL_DONE", "Окончено?");
-define("_TL_ACTION", "Действия");
+define("_TL_TOKEN", "РљР»СЋС‡. С„СЂР°Р·Р°");
+define("_TL_INVITE", "РџСЂРёРіР»Р°С€РµРЅРёРµ РѕС‚РїСЂР°РІР»РµРЅРѕ?");
+define("_TL_DONE", "РћРєРѕРЅС‡РµРЅРѕ?");
+define("_TL_ACTION", "Р”РµР№СЃС‚РІРёСЏ");
 define("_TL_ATTR1", "Att_1"); //New for 0.98rc7
 define("_TL_ATTR2", "Att_2"); //New for 0.98rc7
 define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
-define("_LL_NAME", "Имя набора"); //NEW with 098rc3
-define("_LL_CODE", "Код"); //NEW with 098rc3
-define("_LL_ANSWER", "Название"); //NEW with 098rc3
-define("_LL_SORTORDER", "Порядок"); //NEW with 098rc3
-define("_LL_ACTION", "Действие"); //New with 098rc3
+define("_LL_NAME", "РРјСЏ РЅР°Р±РѕСЂР°"); //NEW with 098rc3
+define("_LL_CODE", "РљРѕРґ"); //NEW with 098rc3
+define("_LL_ANSWER", "РќР°Р·РІР°РЅРёРµ"); //NEW with 098rc3
+define("_LL_SORTORDER", "РџРѕСЂСЏРґРѕРє"); //NEW with 098rc3
+define("_LL_ACTION", "Р”РµР№СЃС‚РІРёРµ"); //New with 098rc3
 
 //QUESTION TYPES
-define("_5PT", "5 баллов выбор");
-define("_DATE", "Дата");
-define("_GENDER", "Пол");
-define("_LIST", "Список");
+define("_5PT", "5 Р±Р°Р»Р»РѕРІ РІС‹Р±РѕСЂ");
+define("_DATE", "Р”Р°С‚Р°");
+define("_GENDER", "РџРѕР»");
+define("_LIST", "РЎРїРёСЃРѕРє");
 define("_LIST_DROPDOWN", "List (Dropdown)"); //New with 0.99dev01
-define("_LISTWC", "Список с комментарием");
-define("_MULTO", "Множественный выбор");
-define("_MULTOC", "Множественный выбор с комментарием");
-define("_MULTITEXT", "Множественный короткий текст");
-define("_NUMERICAL", "Числовой ввод");
-define("_RANK", "Ранжирование");
-define("_STEXT", "Произвольный короткий текст");
-define("_LTEXT", "Произвольный длинный текст");
+define("_LISTWC", "РЎРїРёСЃРѕРє СЃ РєРѕРјРјРµРЅС‚Р°СЂРёРµРј");
+define("_MULTO", "РњРЅРѕР¶РµСЃС‚РІРµРЅРЅС‹Р№ РІС‹Р±РѕСЂ");
+define("_MULTOC", "РњРЅРѕР¶РµСЃС‚РІРµРЅРЅС‹Р№ РІС‹Р±РѕСЂ СЃ РєРѕРјРјРµРЅС‚Р°СЂРёРµРј");
+define("_MULTITEXT", "РњРЅРѕР¶РµСЃС‚РІРµРЅРЅС‹Р№ РєРѕСЂРѕС‚РєРёР№ С‚РµРєСЃС‚");
+define("_NUMERICAL", "Р§РёСЃР»РѕРІРѕР№ РІРІРѕРґ");
+define("_RANK", "Р Р°РЅР¶РёСЂРѕРІР°РЅРёРµ");
+define("_STEXT", "РџСЂРѕРёР·РІРѕР»СЊРЅС‹Р№ РєРѕСЂРѕС‚РєРёР№ С‚РµРєСЃС‚");
+define("_LTEXT", "РџСЂРѕРёР·РІРѕР»СЊРЅС‹Р№ РґР»РёРЅРЅС‹Р№ С‚РµРєСЃС‚");
 define("_HTEXT", "Huge free text"); //New with 0.99dev01
-define("_YESNO", "Да/Нет");
-define("_ARR5", "Массив (5-ти бальный выбор)");
-define("_ARR10", "Массив (10-ти бальный выбор)");
-define("_ARRYN", "Массив  (Да/Нет/Не знаю)");
-define("_ARRMV", "Массив  (Увеличить, Тоже, Уменьшить)");
-define("_ARRFL", "Массив  (Гибкие метки)"); //Release 0.98rc3
-define("_ARRFLC", "Массив (Гибкие метки) по колонке"); //Release 0.98rc8
-define("_SINFL", "Единичное (Гибкие метки)"); //(FOR LATER RELEASE)
-define("_EMAIL", "Email адрес"); //FOR LATER RELEASE
-define("_BOILERPLATE", "Горячий (Boilerplate) вопрос"); //New in 0.98rc6
+define("_YESNO", "Р”Р°/РќРµС‚");
+define("_ARR5", "РњР°СЃСЃРёРІ (5-С‚Рё Р±Р°Р»СЊРЅС‹Р№ РІС‹Р±РѕСЂ)");
+define("_ARR10", "РњР°СЃСЃРёРІ (10-С‚Рё Р±Р°Р»СЊРЅС‹Р№ РІС‹Р±РѕСЂ)");
+define("_ARRYN", "РњР°СЃСЃРёРІ  (Р”Р°/РќРµС‚/РќРµ Р·РЅР°СЋ)");
+define("_ARRMV", "РњР°СЃСЃРёРІ  (РЈРІРµР»РёС‡РёС‚СЊ, РўРѕР¶Рµ, РЈРјРµРЅСЊС€РёС‚СЊ)");
+define("_ARRFL", "РњР°СЃСЃРёРІ  (Р“РёР±РєРёРµ РјРµС‚РєРё)"); //Release 0.98rc3
+define("_ARRFLC", "РњР°СЃСЃРёРІ (Р“РёР±РєРёРµ РјРµС‚РєРё) РїРѕ РєРѕР»РѕРЅРєРµ"); //Release 0.98rc8
+define("_SINFL", "Р•РґРёРЅРёС‡РЅРѕРµ (Р“РёР±РєРёРµ РјРµС‚РєРё)"); //(FOR LATER RELEASE)
+define("_EMAIL", "Email Р°РґСЂРµСЃ"); //FOR LATER RELEASE
+define("_BOILERPLATE", "Р“РѕСЂСЏС‡РёР№ (Boilerplate) РІРѕРїСЂРѕСЃ"); //New in 0.98rc6
 define("_LISTFL_DROPDOWN", "List (Flexible Labels) (Dropdown)"); //New in 0.99dev01
 define("_LISTFL_RADIO", "List (Flexible Labels) (Radio)"); //New in 0.99dev01
 
 //GENERAL WORDS AND PHRASES
-define("_AD_YES", "Да");
-define("_AD_NO", "Нет");
-define("_AD_CANCEL", "Отмена");
-define("_AD_CHOOSE", "Пожалуйста выберите..");
-define("_AD_OR", "ИЛИ"); //New in 0.98rc4
-define("_ERROR", "Ошибка");
-define("_SUCCESS", "Успех");
-define("_REQ", "*Требуется");
-define("_ADDS", "Добавить опрос");
-define("_ADDG", "Добавить группу");
-define("_ADDQ", "Добавить вопрос");
-define("_ADDA", "Добавить ответ"); //New in 0.98rc4
-define("_COPYQ", "Копировать вопрос"); //New in 0.98rc4
-define("_ADDU", "Добавить пользователя");
-define("_SEARCH", "Поиск"); //New in 0.98rc4
-define("_SAVE", "Сохранить изменения");
+define("_AD_YES", "Р”Р°");
+define("_AD_NO", "РќРµС‚");
+define("_AD_CANCEL", "РћС‚РјРµРЅР°");
+define("_AD_CHOOSE", "РџРѕР¶Р°Р»СѓР№СЃС‚Р° РІС‹Р±РµСЂРёС‚Рµ..");
+define("_AD_OR", "РР›Р"); //New in 0.98rc4
+define("_ERROR", "РћС€РёР±РєР°");
+define("_SUCCESS", "РЈСЃРїРµС…");
+define("_REQ", "*РўСЂРµР±СѓРµС‚СЃСЏ");
+define("_ADDS", "Р”РѕР±Р°РІРёС‚СЊ РѕРїСЂРѕСЃ");
+define("_ADDG", "Р”РѕР±Р°РІРёС‚СЊ РіСЂСѓРїРїСѓ");
+define("_ADDQ", "Р”РѕР±Р°РІРёС‚СЊ РІРѕРїСЂРѕСЃ");
+define("_ADDA", "Р”РѕР±Р°РІРёС‚СЊ РѕС‚РІРµС‚"); //New in 0.98rc4
+define("_COPYQ", "РљРѕРїРёСЂРѕРІР°С‚СЊ РІРѕРїСЂРѕСЃ"); //New in 0.98rc4
+define("_ADDU", "Р”РѕР±Р°РІРёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ");
+define("_SEARCH", "РџРѕРёСЃРє"); //New in 0.98rc4
+define("_SAVE", "РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ");
 define("_NONE", "None"); //as in "Do not display anything", "or none chosen";
-define("_GO_ADMIN", "Главный административная страница"); //text to display to return/display main administration screen
-define("_CONTINUE", "Продолжить");
-define("_WARNING", "Предупреждение");
-define("_USERNAME", "Имя пользователя");
-define("_PASSWORD", "Пароль");
-define("_DELETE", "Удалить");
-define("_CLOSEWIN", "Закрыть окно");
-define("_TOKEN", "Ключ. фраза");
-define("_DATESTAMP", "Дата и время"); //Referring to the datestamp или time response submitted
-define("_COMMENT", "Комментарий");
-define("_FROM", "От"); //For emails
-define("_SUBJECT", "Тема"); //For emails
-define("_MESSAGE", "Сообщение"); //For emails
-define("_RELOADING", "Обновление экрана. Ждите...");
-define("_ADD", "Добавить");
-define("_UPDATE", "Обновить");
-define("_BROWSE", "Просмотреть"); //New in 098rc5
-define("_AND", "И"); //New with 0.98rc8
+define("_GO_ADMIN", "Р“Р»Р°РІРЅС‹Р№ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р°"); //text to display to return/display main administration screen
+define("_CONTINUE", "РџСЂРѕРґРѕР»Р¶РёС‚СЊ");
+define("_WARNING", "РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ");
+define("_USERNAME", "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ");
+define("_PASSWORD", "РџР°СЂРѕР»СЊ");
+define("_DELETE", "РЈРґР°Р»РёС‚СЊ");
+define("_CLOSEWIN", "Р—Р°РєСЂС‹С‚СЊ РѕРєРЅРѕ");
+define("_TOKEN", "РљР»СЋС‡. С„СЂР°Р·Р°");
+define("_DATESTAMP", "Р”Р°С‚Р° Рё РІСЂРµРјСЏ"); //Referring to the datestamp РёР»Рё time response submitted
+define("_COMMENT", "РљРѕРјРјРµРЅС‚Р°СЂРёР№");
+define("_FROM", "РћС‚"); //For emails
+define("_SUBJECT", "РўРµРјР°"); //For emails
+define("_MESSAGE", "РЎРѕРѕР±С‰РµРЅРёРµ"); //For emails
+define("_RELOADING", "РћР±РЅРѕРІР»РµРЅРёРµ СЌРєСЂР°РЅР°. Р–РґРёС‚Рµ...");
+define("_ADD", "Р”РѕР±Р°РІРёС‚СЊ");
+define("_UPDATE", "РћР±РЅРѕРІРёС‚СЊ");
+define("_BROWSE", "РџСЂРѕСЃРјРѕС‚СЂРµС‚СЊ"); //New in 098rc5
+define("_AND", "Р"); //New with 0.98rc8
 define("_SQL", "SQL"); //New with 0.98rc8
-define("_PERCENTAGE", "Процент"); //New with 0.98rc8
-define("_COUNT", "Считать"); //New with 0.98rc8
+define("_PERCENTAGE", "РџСЂРѕС†РµРЅС‚"); //New with 0.98rc8
+define("_COUNT", "РЎС‡РёС‚Р°С‚СЊ"); //New with 0.98rc8
 
 //SURVEY STATUS MESSAGES (new in 0.98rc3)
-define("_SS_NOGROUPS", "Число групп в опросе:"); //NEW for release 0.98rc3
-define("_SS_NOQUESTS", "Число вопросов в опросе:"); //NEW for release 0.98rc3
-define("_SS_ANONYMOUS", "Этот опрос анонимный."); //NEW for release 0.98rc3
-define("_SS_TRACKED", "Этот опрос НЕ анонимный."); //NEW for release 0.98rc3
-define("_SS_DATESTAMPED", "Ответы имеют дату"); //NEW for release 0.98rc3
-define("_SS_COOKIES", "Используются cookie для контроля доступа."); //NEW for release 0.98rc3
-define("_SS_QBYQ", "Форма \"Вопрос за Вопросом\"."); //NEW for release 0.98rc3
-define("_SS_GBYG", "Форма \"Группа за Группой\"."); //NEW for release 0.98rc3
-define("_SS_SBYS", "Форма \"На одной странице\"."); //NEW for release 0.98rc3
-define("_SS_ACTIVE", "Опрос активен."); //NEW for release 0.98rc3
-define("_SS_NOTACTIVE", "Опрос неактивен."); //NEW for release 0.98rc3
-define("_SS_SURVEYTABLE", "Имя таблицы опроса:"); //NEW for release 0.98rc3
-define("_SS_CANNOTACTIVATE", "Опрос не может быть активирован."); //NEW for release 0.98rc3
-define("_SS_ADDGROUPS", "Необходимо добавить группы"); //NEW for release 0.98rc3
-define("_SS_ADDQUESTS", "Необходимо добавить вопросы"); //NEW for release 0.98rc3
-define("_SS_ALLOWREGISTER", "Если ключ. фразы используются, то любой может зарегистрироваться для этого опроса"); //NEW for release 0.98rc9
+define("_SS_NOGROUPS", "Р§РёСЃР»Рѕ РіСЂСѓРїРї РІ РѕРїСЂРѕСЃРµ:"); //NEW for release 0.98rc3
+define("_SS_NOQUESTS", "Р§РёСЃР»Рѕ РІРѕРїСЂРѕСЃРѕРІ РІ РѕРїСЂРѕСЃРµ:"); //NEW for release 0.98rc3
+define("_SS_ANONYMOUS", "Р­С‚РѕС‚ РѕРїСЂРѕСЃ Р°РЅРѕРЅРёРјРЅС‹Р№."); //NEW for release 0.98rc3
+define("_SS_TRACKED", "Р­С‚РѕС‚ РѕРїСЂРѕСЃ РќР• Р°РЅРѕРЅРёРјРЅС‹Р№."); //NEW for release 0.98rc3
+define("_SS_DATESTAMPED", "РћС‚РІРµС‚С‹ РёРјРµСЋС‚ РґР°С‚Сѓ"); //NEW for release 0.98rc3
+define("_SS_COOKIES", "РСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ cookie РґР»СЏ РєРѕРЅС‚СЂРѕР»СЏ РґРѕСЃС‚СѓРїР°."); //NEW for release 0.98rc3
+define("_SS_QBYQ", "Р¤РѕСЂРјР° \"Р’РѕРїСЂРѕСЃ Р·Р° Р’РѕРїСЂРѕСЃРѕРј\"."); //NEW for release 0.98rc3
+define("_SS_GBYG", "Р¤РѕСЂРјР° \"Р“СЂСѓРїРїР° Р·Р° Р“СЂСѓРїРїРѕР№\"."); //NEW for release 0.98rc3
+define("_SS_SBYS", "Р¤РѕСЂРјР° \"РќР° РѕРґРЅРѕР№ СЃС‚СЂР°РЅРёС†Рµ\"."); //NEW for release 0.98rc3
+define("_SS_ACTIVE", "РћРїСЂРѕСЃ Р°РєС‚РёРІРµРЅ."); //NEW for release 0.98rc3
+define("_SS_NOTACTIVE", "РћРїСЂРѕСЃ РЅРµР°РєС‚РёРІРµРЅ."); //NEW for release 0.98rc3
+define("_SS_SURVEYTABLE", "РРјСЏ С‚Р°Р±Р»РёС†С‹ РѕРїСЂРѕСЃР°:"); //NEW for release 0.98rc3
+define("_SS_CANNOTACTIVATE", "РћРїСЂРѕСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р°РєС‚РёРІРёСЂРѕРІР°РЅ."); //NEW for release 0.98rc3
+define("_SS_ADDGROUPS", "РќРµРѕР±С…РѕРґРёРјРѕ РґРѕР±Р°РІРёС‚СЊ РіСЂСѓРїРїС‹"); //NEW for release 0.98rc3
+define("_SS_ADDQUESTS", "РќРµРѕР±С…РѕРґРёРјРѕ РґРѕР±Р°РІРёС‚СЊ РІРѕРїСЂРѕСЃС‹"); //NEW for release 0.98rc3
+define("_SS_ALLOWREGISTER", "Р•СЃР»Рё РєР»СЋС‡. С„СЂР°Р·С‹ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ, С‚Рѕ Р»СЋР±РѕР№ РјРѕР¶РµС‚ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ РґР»СЏ СЌС‚РѕРіРѕ РѕРїСЂРѕСЃР°"); //NEW for release 0.98rc9
 define("_SS_ALLOWSAVE", "Participants can save partially finished surveys"); //NEW for release 0.99dev01
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
-define("_QS_MANDATORY", "Обязательный вопрос"); //New for release 0.98rc4
-define("_QS_OPTIONAL", "Необязательный вопрос"); //New for release 0.98rc4
-define("_QS_NOANSWERS", "Необходимо добавить ответы к этому вопросу"); //New for release 0.98rc4
-define("_QS_NOLID", "Надо выдать набор меток для этого вопроса"); //New for release 0.98rc4
-define("_QS_COPYINFO", "Заметьте: Вы ДОЛЖНЫ ввести новый код вопроса"); //New for release 0.98rc4
+define("_QS_MANDATORY", "РћР±СЏР·Р°С‚РµР»СЊРЅС‹Р№ РІРѕРїСЂРѕСЃ"); //New for release 0.98rc4
+define("_QS_OPTIONAL", "РќРµРѕР±СЏР·Р°С‚РµР»СЊРЅС‹Р№ РІРѕРїСЂРѕСЃ"); //New for release 0.98rc4
+define("_QS_NOANSWERS", "РќРµРѕР±С…РѕРґРёРјРѕ РґРѕР±Р°РІРёС‚СЊ РѕС‚РІРµС‚С‹ Рє СЌС‚РѕРјСѓ РІРѕРїСЂРѕСЃСѓ"); //New for release 0.98rc4
+define("_QS_NOLID", "РќР°РґРѕ РІС‹РґР°С‚СЊ РЅР°Р±РѕСЂ РјРµС‚РѕРє РґР»СЏ СЌС‚РѕРіРѕ РІРѕРїСЂРѕСЃР°"); //New for release 0.98rc4
+define("_QS_COPYINFO", "Р—Р°РјРµС‚СЊС‚Рµ: Р’С‹ Р”РћР›Р–РќР« РІРІРµСЃС‚Рё РЅРѕРІС‹Р№ РєРѕРґ РІРѕРїСЂРѕСЃР°"); //New for release 0.98rc4
 
 //General Setup Messages
-define("_ST_NODB1", "Указанная БД не существует");
-define("_ST_NODB2", "Либо выранная БД не создана или проблема доступа к ней.");
-define("_ST_NODB3", "PHPSurveyor может попытаться создать БД для Вас.");
-define("_ST_NODB4", "Имя выбранной БД:");
-define("_ST_CREATEDB", "Создать БД");
+define("_ST_NODB1", "РЈРєР°Р·Р°РЅРЅР°СЏ Р‘Р” РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
+define("_ST_NODB2", "Р›РёР±Рѕ РІС‹СЂР°РЅРЅР°СЏ Р‘Р” РЅРµ СЃРѕР·РґР°РЅР° РёР»Рё РїСЂРѕР±Р»РµРјР° РґРѕСЃС‚СѓРїР° Рє РЅРµР№.");
+define("_ST_NODB3", "PHPSurveyor РјРѕР¶РµС‚ РїРѕРїС‹С‚Р°С‚СЊСЃСЏ СЃРѕР·РґР°С‚СЊ Р‘Р” РґР»СЏ Р’Р°СЃ.");
+define("_ST_NODB4", "РРјСЏ РІС‹Р±СЂР°РЅРЅРѕР№ Р‘Р”:");
+define("_ST_CREATEDB", "РЎРѕР·РґР°С‚СЊ Р‘Р”");
 
 //USER CONTROL MESSAGES
-define("_UC_CREATE", "Создание htaccess файла по умолчанию");
-define("_UC_NOCREATE", "Не могу создать htaccess файл. Проверьте в файле config.php строку с \$homedir установками и наличие прав на запись в соответсвующий каталог.");
-define("_UC_SEC_DONE", "Настройте уровни режима безопастности!");
-define("_UC_CREATE_DEFAULT", "Создание пользователей по умолчанию");
-define("_UC_UPDATE_TABLE", "Обновление таблицы пользователей");
-define("_UC_HTPASSWD_ERROR", "Ошибка при создании htpasswd файла");
-define("_UC_HTPASSWD_EXPLAIN", "Если Вы используете windows сервер, то рекомендуем скопировать  htpasswd.exe файл из Apache в Ваш каталог admin  для правитьной работы. Этот файл обычно находится в каталоге /apache group/apache/bin/");
-define("_UC_SEC_REMOVE", "Удаление настроек безопастности");
-define("_UC_ALL_REMOVED", "Файл доступа, файл паролей и БД пользователей удалены");
-define("_UC_ADD_USER", "Добавление пользователя");
-define("_UC_ADD_MISSING", "Не могу добавить пользователя. Имя и/или пароль не указаны");
-define("_UC_DEL_USER", "Удаление пользователя");
-define("_UC_DEL_MISSING", "Не могу удалить пользователя. Имя не указано.");
-define("_UC_MOD_USER", "Редактирование пользователя");
-define("_UC_MOD_MISSING", "Не могу изменить пользователя. Имя и/или пароль не указаны");
-define("_UC_TURNON_MESSAGE1", "Вы не инициализировали настройки безопастности для системы опросов и, следовательно, нет ограничений доступа.</p>\nЕсли Вы кликните на кнопку 'Инициализировать режим безопастности' ниже, стандартные средства безопастности APACHE будут задействованы для административной части системы опросов. Вам потребуется использовать имя пользователя и пароль по  умолчанию для доступа к админитративному интерфейсу.");
-define("_UC_TURNON_MESSAGE2", "Настоятельно рекомендуется после инициализации режима безопастности сменить пароль по умолчанию.");
-define("_UC_INITIALISE", "Инициализировать Режим безопастности");
-define("_UC_NOUSERS", "Нет ни одного пользователя. Рекомендуем 'Выключить' безопасный режим. Вы сможете снова включить его позже.");
-define("_UC_TURNOFF", "Выключить Режим безопастности");
+define("_UC_CREATE", "РЎРѕР·РґР°РЅРёРµ htaccess С„Р°Р№Р»Р° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ");
+define("_UC_NOCREATE", "РќРµ РјРѕРіСѓ СЃРѕР·РґР°С‚СЊ htaccess С„Р°Р№Р». РџСЂРѕРІРµСЂСЊС‚Рµ РІ С„Р°Р№Р»Рµ config.php СЃС‚СЂРѕРєСѓ СЃ \$homedir СѓСЃС‚Р°РЅРѕРІРєР°РјРё Рё РЅР°Р»РёС‡РёРµ РїСЂР°РІ РЅР° Р·Р°РїРёСЃСЊ РІ СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰РёР№ РєР°С‚Р°Р»РѕРі.");
+define("_UC_SEC_DONE", "РќР°СЃС‚СЂРѕР№С‚Рµ СѓСЂРѕРІРЅРё СЂРµР¶РёРјР° Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё!");
+define("_UC_CREATE_DEFAULT", "РЎРѕР·РґР°РЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ");
+define("_UC_UPDATE_TABLE", "РћР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№");
+define("_UC_HTPASSWD_ERROR", "РћС€РёР±РєР° РїСЂРё СЃРѕР·РґР°РЅРёРё htpasswd С„Р°Р№Р»Р°");
+define("_UC_HTPASSWD_EXPLAIN", "Р•СЃР»Рё Р’С‹ РёСЃРїРѕР»СЊР·СѓРµС‚Рµ windows СЃРµСЂРІРµСЂ, С‚Рѕ СЂРµРєРѕРјРµРЅРґСѓРµРј СЃРєРѕРїРёСЂРѕРІР°С‚СЊ  htpasswd.exe С„Р°Р№Р» РёР· Apache РІ Р’Р°С€ РєР°С‚Р°Р»РѕРі admin  РґР»СЏ РїСЂР°РІРёС‚СЊРЅРѕР№ СЂР°Р±РѕС‚С‹. Р­С‚РѕС‚ С„Р°Р№Р» РѕР±С‹С‡РЅРѕ РЅР°С…РѕРґРёС‚СЃСЏ РІ РєР°С‚Р°Р»РѕРіРµ /apache group/apache/bin/");
+define("_UC_SEC_REMOVE", "РЈРґР°Р»РµРЅРёРµ РЅР°СЃС‚СЂРѕРµРє Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё");
+define("_UC_ALL_REMOVED", "Р¤Р°Р№Р» РґРѕСЃС‚СѓРїР°, С„Р°Р№Р» РїР°СЂРѕР»РµР№ Рё Р‘Р” РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ СѓРґР°Р»РµРЅС‹");
+define("_UC_ADD_USER", "Р”РѕР±Р°РІР»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ");
+define("_UC_ADD_MISSING", "РќРµ РјРѕРіСѓ РґРѕР±Р°РІРёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. РРјСЏ Рё/РёР»Рё РїР°СЂРѕР»СЊ РЅРµ СѓРєР°Р·Р°РЅС‹");
+define("_UC_DEL_USER", "РЈРґР°Р»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ");
+define("_UC_DEL_MISSING", "РќРµ РјРѕРіСѓ СѓРґР°Р»РёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. РРјСЏ РЅРµ СѓРєР°Р·Р°РЅРѕ.");
+define("_UC_MOD_USER", "Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ");
+define("_UC_MOD_MISSING", "РќРµ РјРѕРіСѓ РёР·РјРµРЅРёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. РРјСЏ Рё/РёР»Рё РїР°СЂРѕР»СЊ РЅРµ СѓРєР°Р·Р°РЅС‹");
+define("_UC_TURNON_MESSAGE1", "Р’С‹ РЅРµ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°Р»Рё РЅР°СЃС‚СЂРѕР№РєРё Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё РґР»СЏ СЃРёСЃС‚РµРјС‹ РѕРїСЂРѕСЃРѕРІ Рё, СЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ, РЅРµС‚ РѕРіСЂР°РЅРёС‡РµРЅРёР№ РґРѕСЃС‚СѓРїР°.</p>\nР•СЃР»Рё Р’С‹ РєР»РёРєРЅРёС‚Рµ РЅР° РєРЅРѕРїРєСѓ 'РРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ СЂРµР¶РёРј Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё' РЅРёР¶Рµ, СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ СЃСЂРµРґСЃС‚РІР° Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё APACHE Р±СѓРґСѓС‚ Р·Р°РґРµР№СЃС‚РІРѕРІР°РЅС‹ РґР»СЏ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅРѕР№ С‡Р°СЃС‚Рё СЃРёСЃС‚РµРјС‹ РѕРїСЂРѕСЃРѕРІ. Р’Р°Рј РїРѕС‚СЂРµР±СѓРµС‚СЃСЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Рё РїР°СЂРѕР»СЊ РїРѕ  СѓРјРѕР»С‡Р°РЅРёСЋ РґР»СЏ РґРѕСЃС‚СѓРїР° Рє Р°РґРјРёРЅРёС‚СЂР°С‚РёРІРЅРѕРјСѓ РёРЅС‚РµСЂС„РµР№СЃСѓ.");
+define("_UC_TURNON_MESSAGE2", "РќР°СЃС‚РѕСЏС‚РµР»СЊРЅРѕ СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ РїРѕСЃР»Рµ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё СЂРµР¶РёРјР° Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё СЃРјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.");
+define("_UC_INITIALISE", "РРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ Р РµР¶РёРј Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё");
+define("_UC_NOUSERS", "РќРµС‚ РЅРё РѕРґРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р РµРєРѕРјРµРЅРґСѓРµРј 'Р’С‹РєР»СЋС‡РёС‚СЊ' Р±РµР·РѕРїР°СЃРЅС‹Р№ СЂРµР¶РёРј. Р’С‹ СЃРјРѕР¶РµС‚Рµ СЃРЅРѕРІР° РІРєР»СЋС‡РёС‚СЊ РµРіРѕ РїРѕР·Р¶Рµ.");
+define("_UC_TURNOFF", "Р’С‹РєР»СЋС‡РёС‚СЊ Р РµР¶РёРј Р±РµР·РѕРїР°СЃС‚РЅРѕСЃС‚Рё");
 
 //Activate and deactivate messages
-define("_AC_MULTI_NOANSWER", "Этот вопрос с типом 'множественный ответ', однако без ответов.");
-define("_AC_NOTYPE", "Не установлен тип вопроса.");
-define("_AC_NOLID", "Этот вопрос требует набора меток, но набор не определен."); //New for 0.98rc8
-define("_AC_CON_OUTOFORDER", "Этот вопрос содержит набор условий, однако условие базируется на вопросе, который идет за ним.");
-define("_AC_FAIL", "Опрос не прошел проверку на целостность");
-define("_AC_PROBS", "Обнаружены след. проблемы:");
-define("_AC_CANNOTACTIVATE", "Опрос не может быть активирован пока эти проблемы не будут решены");
-define("_AC_READCAREFULLY", "ВНИМАТЕЛЬНО ПРОЧИТАЙТЕ ПЕРЕД ПРОДОЛЖЕНИЕМ");
+define("_AC_MULTI_NOANSWER", "Р­С‚РѕС‚ РІРѕРїСЂРѕСЃ СЃ С‚РёРїРѕРј 'РјРЅРѕР¶РµСЃС‚РІРµРЅРЅС‹Р№ РѕС‚РІРµС‚', РѕРґРЅР°РєРѕ Р±РµР· РѕС‚РІРµС‚РѕРІ.");
+define("_AC_NOTYPE", "РќРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅ С‚РёРї РІРѕРїСЂРѕСЃР°.");
+define("_AC_NOLID", "Р­С‚РѕС‚ РІРѕРїСЂРѕСЃ С‚СЂРµР±СѓРµС‚ РЅР°Р±РѕСЂР° РјРµС‚РѕРє, РЅРѕ РЅР°Р±РѕСЂ РЅРµ РѕРїСЂРµРґРµР»РµРЅ."); //New for 0.98rc8
+define("_AC_CON_OUTOFORDER", "Р­С‚РѕС‚ РІРѕРїСЂРѕСЃ СЃРѕРґРµСЂР¶РёС‚ РЅР°Р±РѕСЂ СѓСЃР»РѕРІРёР№, РѕРґРЅР°РєРѕ СѓСЃР»РѕРІРёРµ Р±Р°Р·РёСЂСѓРµС‚СЃСЏ РЅР° РІРѕРїСЂРѕСЃРµ, РєРѕС‚РѕСЂС‹Р№ РёРґРµС‚ Р·Р° РЅРёРј.");
+define("_AC_FAIL", "РћРїСЂРѕСЃ РЅРµ РїСЂРѕС€РµР» РїСЂРѕРІРµСЂРєСѓ РЅР° С†РµР»РѕСЃС‚РЅРѕСЃС‚СЊ");
+define("_AC_PROBS", "РћР±РЅР°СЂСѓР¶РµРЅС‹ СЃР»РµРґ. РїСЂРѕР±Р»РµРјС‹:");
+define("_AC_CANNOTACTIVATE", "РћРїСЂРѕСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р°РєС‚РёРІРёСЂРѕРІР°РЅ РїРѕРєР° СЌС‚Рё РїСЂРѕР±Р»РµРјС‹ РЅРµ Р±СѓРґСѓС‚ СЂРµС€РµРЅС‹");
+define("_AC_READCAREFULLY", "Р’РќРРњРђРўР•Р›Р¬РќРћ РџР РћР§РРўРђР™РўР• РџР•Р Р•Р” РџР РћР”РћР›Р–Р•РќРР•Рњ");
 define("_AC_ACTIVATE_MESSAGE1", "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.");
-define("_AC_ACTIVATE_MESSAGE2", "Once a survey is activated you can no longer:<ul><li>Добавить или delete groups</li><li>Добавить или remove answers to Multiple Answer questions</li><li>Добавить или delete questions</li></ul>");
-define("_AC_ACTIVATE_MESSAGE3", "Однако Вы все же можете:<ul><li>Редактировать (менять) коды вопросов, текст или тип</li><li>Редактировать (менять) имена групп</li><li>Добавлять, Удалять или Редактировать предопределенные ответы (исключая вопрoсы с многожественными ответами)</li><li>Менять имя опроса или его описание</li></ul>");
-define("_AC_ACTIVATE_MESSAGE4", "Once data has been entered into this survey, if you want to add или remove groups или questions, you will need to de-activate this survey, which will move all data that has already been entered into a seperate archived table.");
-define("_AC_ACTIVATE", "Активировать");
-define("_AC_ACTIVATED", "Опрос активирован. Табица результатов успешно создана.");
-define("_AC_NOTACTIVATED", "Опрос не может быть активирован.");
-define("_AC_NOTPRIVATE", "Это неанонимный опрос. Таблица ключ. фраз также создана.");
-define("_AC_REGISTRATION", "Это опрос позволяет проводить регистрацию. Таблица кл. фраз тоже создана.");
-define("_AC_CREATETOKENS", "Инициализация ключ. фраз");
-define("_AC_SURVEYACTIVE", "Опрос активирован, и ответы могут сохраняться.");
+define("_AC_ACTIVATE_MESSAGE2", "Once a survey is activated you can no longer:<ul><li>Р”РѕР±Р°РІРёС‚СЊ РёР»Рё delete groups</li><li>Р”РѕР±Р°РІРёС‚СЊ РёР»Рё remove answers to Multiple Answer questions</li><li>Р”РѕР±Р°РІРёС‚СЊ РёР»Рё delete questions</li></ul>");
+define("_AC_ACTIVATE_MESSAGE3", "РћРґРЅР°РєРѕ Р’С‹ РІСЃРµ Р¶Рµ РјРѕР¶РµС‚Рµ:<ul><li>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ (РјРµРЅСЏС‚СЊ) РєРѕРґС‹ РІРѕРїСЂРѕСЃРѕРІ, С‚РµРєСЃС‚ РёР»Рё С‚РёРї</li><li>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ (РјРµРЅСЏС‚СЊ) РёРјРµРЅР° РіСЂСѓРїРї</li><li>Р”РѕР±Р°РІР»СЏС‚СЊ, РЈРґР°Р»СЏС‚СЊ РёР»Рё Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РїСЂРµРґРѕРїСЂРµРґРµР»РµРЅРЅС‹Рµ РѕС‚РІРµС‚С‹ (РёСЃРєР»СЋС‡Р°СЏ РІРѕРїСЂoСЃС‹ СЃ РјРЅРѕРіРѕР¶РµСЃС‚РІРµРЅРЅС‹РјРё РѕС‚РІРµС‚Р°РјРё)</li><li>РњРµРЅСЏС‚СЊ РёРјСЏ РѕРїСЂРѕСЃР° РёР»Рё РµРіРѕ РѕРїРёСЃР°РЅРёРµ</li></ul>");
+define("_AC_ACTIVATE_MESSAGE4", "Once data has been entered into this survey, if you want to add РёР»Рё remove groups РёР»Рё questions, you will need to de-activate this survey, which will move all data that has already been entered into a seperate archived table.");
+define("_AC_ACTIVATE", "РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ");
+define("_AC_ACTIVATED", "РћРїСЂРѕСЃ Р°РєС‚РёРІРёСЂРѕРІР°РЅ. РўР°Р±РёС†Р° СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅР°.");
+define("_AC_NOTACTIVATED", "РћРїСЂРѕСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р°РєС‚РёРІРёСЂРѕРІР°РЅ.");
+define("_AC_NOTPRIVATE", "Р­С‚Рѕ РЅРµР°РЅРѕРЅРёРјРЅС‹Р№ РѕРїСЂРѕСЃ. РўР°Р±Р»РёС†Р° РєР»СЋС‡. С„СЂР°Р· С‚Р°РєР¶Рµ СЃРѕР·РґР°РЅР°.");
+define("_AC_REGISTRATION", "Р­С‚Рѕ РѕРїСЂРѕСЃ РїРѕР·РІРѕР»СЏРµС‚ РїСЂРѕРІРѕРґРёС‚СЊ СЂРµРіРёСЃС‚СЂР°С†РёСЋ. РўР°Р±Р»РёС†Р° РєР». С„СЂР°Р· С‚РѕР¶Рµ СЃРѕР·РґР°РЅР°.");
+define("_AC_CREATETOKENS", "РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєР»СЋС‡. С„СЂР°Р·");
+define("_AC_SURVEYACTIVE", "РћРїСЂРѕСЃ Р°РєС‚РёРІРёСЂРѕРІР°РЅ, Рё РѕС‚РІРµС‚С‹ РјРѕРіСѓС‚ СЃРѕС…СЂР°РЅСЏС‚СЊСЃСЏ.");
 define("_AC_DEACTIVATE_MESSAGE1", "In an active survey, a table is created to store all the data-entry records.");
 define("_AC_DEACTIVATE_MESSAGE2", "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.");
 define("_AC_DEACTIVATE_MESSAGE3", "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.");
 define("_AC_DEACTIVATE_MESSAGE4", "Your responses table will be renamed to:");
 define("_AC_DEACTIVATE_MESSAGE5", "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.");
-define("_AC_DEACTIVATE", "Деактивировать");
-define("_AC_DEACTIVATED_MESSAGE1", "Таблица ответов переименована в: ");
-define("_AC_DEACTIVATED_MESSAGE2", "Ответы на этот опрос больше не могут использоваться PHPSurveyor.");
-define("_AC_DEACTIVATED_MESSAGE3", "Для доальнейшего доступа к информации Вы должны запомнить имя таблицы.");
-define("_AC_DEACTIVATED_MESSAGE4", "Таблица ключ. фраз связанная с опросом переменована в: ");
+define("_AC_DEACTIVATE", "Р”РµР°РєС‚РёРІРёСЂРѕРІР°С‚СЊ");
+define("_AC_DEACTIVATED_MESSAGE1", "РўР°Р±Р»РёС†Р° РѕС‚РІРµС‚РѕРІ РїРµСЂРµРёРјРµРЅРѕРІР°РЅР° РІ: ");
+define("_AC_DEACTIVATED_MESSAGE2", "РћС‚РІРµС‚С‹ РЅР° СЌС‚РѕС‚ РѕРїСЂРѕСЃ Р±РѕР»СЊС€Рµ РЅРµ РјРѕРіСѓС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ PHPSurveyor.");
+define("_AC_DEACTIVATED_MESSAGE3", "Р”Р»СЏ РґРѕР°Р»СЊРЅРµР№С€РµРіРѕ РґРѕСЃС‚СѓРїР° Рє РёРЅС„РѕСЂРјР°С†РёРё Р’С‹ РґРѕР»Р¶РЅС‹ Р·Р°РїРѕРјРЅРёС‚СЊ РёРјСЏ С‚Р°Р±Р»РёС†С‹.");
+define("_AC_DEACTIVATED_MESSAGE4", "РўР°Р±Р»РёС†Р° РєР»СЋС‡. С„СЂР°Р· СЃРІСЏР·Р°РЅРЅР°СЏ СЃ РѕРїСЂРѕСЃРѕРј РїРµСЂРµРјРµРЅРѕРІР°РЅР° РІ: ");
 
 //CHECKFIELDS
-define("_CF_CHECKTABLES", "Проверка существования таблиц");
-define("_CF_CHECKFIELDS", "проверка существования всех полей");
-define("_CF_CHECKING", "Проверка");
-define("_CF_TABLECREATED", "Таблица создана");
-define("_CF_FIELDCREATED", "Поле создано");
+define("_CF_CHECKTABLES", "РџСЂРѕРІРµСЂРєР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ С‚Р°Р±Р»РёС†");
+define("_CF_CHECKFIELDS", "РїСЂРѕРІРµСЂРєР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ РІСЃРµС… РїРѕР»РµР№");
+define("_CF_CHECKING", "РџСЂРѕРІРµСЂРєР°");
+define("_CF_TABLECREATED", "РўР°Р±Р»РёС†Р° СЃРѕР·РґР°РЅР°");
+define("_CF_FIELDCREATED", "РџРѕР»Рµ СЃРѕР·РґР°РЅРѕ");
 define("_CF_OK", "OK");
-define("_CFT_PROBLEM", "Похоже что некоторые поля или таблицы не существуют в вашей БД.");
+define("_CFT_PROBLEM", "РџРѕС…РѕР¶Рµ С‡С‚Рѕ РЅРµРєРѕС‚РѕСЂС‹Рµ РїРѕР»СЏ РёР»Рё С‚Р°Р±Р»РёС†С‹ РЅРµ СЃСѓС‰РµСЃС‚РІСѓСЋС‚ РІ РІР°С€РµР№ Р‘Р”.");
 
 //CREATE DATABASE (createdb.php)
-define("_CD_DBCREATED", "БД создана.");
-define("_CD_POPULATE_MESSAGE", "Пожалуйста клинтете для заполения БД");
-define("_CD_POPULATE", "Заполнение БД");
-define("_CD_NOCREATE", "Не могу создать БД");
-define("_CD_NODBNAME", "Нет информации о БД. Этот скрипт может быть запущен только через admin.php.");
+define("_CD_DBCREATED", "Р‘Р” СЃРѕР·РґР°РЅР°.");
+define("_CD_POPULATE_MESSAGE", "РџРѕР¶Р°Р»СѓР№СЃС‚Р° РєР»РёРЅС‚РµС‚Рµ РґР»СЏ Р·Р°РїРѕР»РµРЅРёСЏ Р‘Р”");
+define("_CD_POPULATE", "Р—Р°РїРѕР»РЅРµРЅРёРµ Р‘Р”");
+define("_CD_NOCREATE", "РќРµ РјРѕРіСѓ СЃРѕР·РґР°С‚СЊ Р‘Р”");
+define("_CD_NODBNAME", "РќРµС‚ РёРЅС„РѕСЂРјР°С†РёРё Рѕ Р‘Р”. Р­С‚РѕС‚ СЃРєСЂРёРїС‚ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р·Р°РїСѓС‰РµРЅ С‚РѕР»СЊРєРѕ С‡РµСЂРµР· admin.php.");
 
 //DATABASE MODIFICATION MESSAGES
-define("_DB_FAIL_GROUPNAME", "Группа не может быть добавлена. Опущено обязательное имя группы");
-define("_DB_FAIL_GROUPUPDATE", "Группа не может быть обновлена");
-define("_DB_FAIL_GROUPDELETE", "Группа не может быть удалена");
-define("_DB_FAIL_NEWQUESTION", "Вопрос не может быть создан.");
-define("_DB_FAIL_QUESTIONTYPECONDITIONS", "Вопрос не может быть обновлен. Есть условия для других вопросов, которые связаны с ответами на него. И изменение типа вызовет проблемы. Удалите сначала условия перед изменением типа этого вопроса.");
-define("_DB_FAIL_QUESTIONUPDATE", "Вопрос  не может быть обновлен");
-define("_DB_FAIL_QUESTIONDELCONDITIONS", "Вопрос  не может быть удален. Есть условия для других вопросов, которые связаны с ответами на него. Удалите сначала условия.");
-define("_DB_FAIL_QUESTIONDELETE", "Вопрос не может быть удален.");
-define("_DB_FAIL_NEWANSWERMISSING", "Нельзя добавить ответ. Вы должены указать и КОД и ОТВЕТ");
-define("_DB_FAIL_NEWANSWERDUPLICATE", "Нельзя добавить ответ. Уже есть ответ с таким кодом");
-define("_DB_FAIL_ANSWERUPDATEMISSING", "Нельзя изменить ответ. Вы должены указать и КОД и ОТВЕТ");
-define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "Нельзя изменить ответ. Уже есть ответ с таким кодом");
-define("_DB_FAIL_ANSWERUPDATECONDITIONS", "Нельзя изменить ответ. Вы изменили код ответа, но есть уловия других вопросов, которые зависят от старого кода ответа. Вы должны удалить условия до изменения кода ответа.");
-define("_DB_FAIL_ANSWERDELCONDITIONS", "Нельзя удалить ответ. Есть условия других вопросов, связанные с этим ответом. Вы не можете удалить ответ пока не удалены условия");
-define("_DB_FAIL_NEWSURVEY_TITLE", "Опрос нельзя создать, так как не указан короткий заголовок");
-define("_DB_FAIL_NEWSURVEY", "Нельзя создать опрос");
-define("_DB_FAIL_SURVEYUPDATE", "Нельзя обновить опрос");
-define("_DB_FAIL_SURVEYDELETE", "Нельзя удалить опрос");
+define("_DB_FAIL_GROUPNAME", "Р“СЂСѓРїРїР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РґРѕР±Р°РІР»РµРЅР°. РћРїСѓС‰РµРЅРѕ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕРµ РёРјСЏ РіСЂСѓРїРїС‹");
+define("_DB_FAIL_GROUPUPDATE", "Р“СЂСѓРїРїР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕР±РЅРѕРІР»РµРЅР°");
+define("_DB_FAIL_GROUPDELETE", "Р“СЂСѓРїРїР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРґР°Р»РµРЅР°");
+define("_DB_FAIL_NEWQUESTION", "Р’РѕРїСЂРѕСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЃРѕР·РґР°РЅ.");
+define("_DB_FAIL_QUESTIONTYPECONDITIONS", "Р’РѕРїСЂРѕСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕР±РЅРѕРІР»РµРЅ. Р•СЃС‚СЊ СѓСЃР»РѕРІРёСЏ РґР»СЏ РґСЂСѓРіРёС… РІРѕРїСЂРѕСЃРѕРІ, РєРѕС‚РѕСЂС‹Рµ СЃРІСЏР·Р°РЅС‹ СЃ РѕС‚РІРµС‚Р°РјРё РЅР° РЅРµРіРѕ. Р РёР·РјРµРЅРµРЅРёРµ С‚РёРїР° РІС‹Р·РѕРІРµС‚ РїСЂРѕР±Р»РµРјС‹. РЈРґР°Р»РёС‚Рµ СЃРЅР°С‡Р°Р»Р° СѓСЃР»РѕРІРёСЏ РїРµСЂРµРґ РёР·РјРµРЅРµРЅРёРµРј С‚РёРїР° СЌС‚РѕРіРѕ РІРѕРїСЂРѕСЃР°.");
+define("_DB_FAIL_QUESTIONUPDATE", "Р’РѕРїСЂРѕСЃ  РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕР±РЅРѕРІР»РµРЅ");
+define("_DB_FAIL_QUESTIONDELCONDITIONS", "Р’РѕРїСЂРѕСЃ  РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРґР°Р»РµРЅ. Р•СЃС‚СЊ СѓСЃР»РѕРІРёСЏ РґР»СЏ РґСЂСѓРіРёС… РІРѕРїСЂРѕСЃРѕРІ, РєРѕС‚РѕСЂС‹Рµ СЃРІСЏР·Р°РЅС‹ СЃ РѕС‚РІРµС‚Р°РјРё РЅР° РЅРµРіРѕ. РЈРґР°Р»РёС‚Рµ СЃРЅР°С‡Р°Р»Р° СѓСЃР»РѕРІРёСЏ.");
+define("_DB_FAIL_QUESTIONDELETE", "Р’РѕРїСЂРѕСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРґР°Р»РµРЅ.");
+define("_DB_FAIL_NEWANSWERMISSING", "РќРµР»СЊР·СЏ РґРѕР±Р°РІРёС‚СЊ РѕС‚РІРµС‚. Р’С‹ РґРѕР»Р¶РµРЅС‹ СѓРєР°Р·Р°С‚СЊ Рё РљРћР” Рё РћРўР’Р•Рў");
+define("_DB_FAIL_NEWANSWERDUPLICATE", "РќРµР»СЊР·СЏ РґРѕР±Р°РІРёС‚СЊ РѕС‚РІРµС‚. РЈР¶Рµ РµСЃС‚СЊ РѕС‚РІРµС‚ СЃ С‚Р°РєРёРј РєРѕРґРѕРј");
+define("_DB_FAIL_ANSWERUPDATEMISSING", "РќРµР»СЊР·СЏ РёР·РјРµРЅРёС‚СЊ РѕС‚РІРµС‚. Р’С‹ РґРѕР»Р¶РµРЅС‹ СѓРєР°Р·Р°С‚СЊ Рё РљРћР” Рё РћРўР’Р•Рў");
+define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "РќРµР»СЊР·СЏ РёР·РјРµРЅРёС‚СЊ РѕС‚РІРµС‚. РЈР¶Рµ РµСЃС‚СЊ РѕС‚РІРµС‚ СЃ С‚Р°РєРёРј РєРѕРґРѕРј");
+define("_DB_FAIL_ANSWERUPDATECONDITIONS", "РќРµР»СЊР·СЏ РёР·РјРµРЅРёС‚СЊ РѕС‚РІРµС‚. Р’С‹ РёР·РјРµРЅРёР»Рё РєРѕРґ РѕС‚РІРµС‚Р°, РЅРѕ РµСЃС‚СЊ СѓР»РѕРІРёСЏ РґСЂСѓРіРёС… РІРѕРїСЂРѕСЃРѕРІ, РєРѕС‚РѕСЂС‹Рµ Р·Р°РІРёСЃСЏС‚ РѕС‚ СЃС‚Р°СЂРѕРіРѕ РєРѕРґР° РѕС‚РІРµС‚Р°. Р’С‹ РґРѕР»Р¶РЅС‹ СѓРґР°Р»РёС‚СЊ СѓСЃР»РѕРІРёСЏ РґРѕ РёР·РјРµРЅРµРЅРёСЏ РєРѕРґР° РѕС‚РІРµС‚Р°.");
+define("_DB_FAIL_ANSWERDELCONDITIONS", "РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ РѕС‚РІРµС‚. Р•СЃС‚СЊ СѓСЃР»РѕРІРёСЏ РґСЂСѓРіРёС… РІРѕРїСЂРѕСЃРѕРІ, СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ СЌС‚РёРј РѕС‚РІРµС‚РѕРј. Р’С‹ РЅРµ РјРѕР¶РµС‚Рµ СѓРґР°Р»РёС‚СЊ РѕС‚РІРµС‚ РїРѕРєР° РЅРµ СѓРґР°Р»РµРЅС‹ СѓСЃР»РѕРІРёСЏ");
+define("_DB_FAIL_NEWSURVEY_TITLE", "РћРїСЂРѕСЃ РЅРµР»СЊР·СЏ СЃРѕР·РґР°С‚СЊ, С‚Р°Рє РєР°Рє РЅРµ СѓРєР°Р·Р°РЅ РєРѕСЂРѕС‚РєРёР№ Р·Р°РіРѕР»РѕРІРѕРє");
+define("_DB_FAIL_NEWSURVEY", "РќРµР»СЊР·СЏ СЃРѕР·РґР°С‚СЊ РѕРїСЂРѕСЃ");
+define("_DB_FAIL_SURVEYUPDATE", "РќРµР»СЊР·СЏ РѕР±РЅРѕРІРёС‚СЊ РѕРїСЂРѕСЃ");
+define("_DB_FAIL_SURVEYDELETE", "РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ РѕРїСЂРѕСЃ");
 
 //DELETE SURVEY MESSAGES
-define("_DS_NOSID", "Вы не вбрали опрос для удаления");
-define("_DS_DELMESSAGE1", "Вы удаляете этот опрос");
-define("_DS_DELMESSAGE2", "Это удалит опрос и все связанные группы, ответы на вопросы и условия.");
-define("_DS_DELMESSAGE3", "Мы рекомендуем перед удлением опроса экспортировать его данные.");
-define("_DS_SURVEYACTIVE", "Опрос активен и существует таблица ответов. Если Вы удалите опрос, то  эти ответы будут удалены. Рекомендуем экспортировать ответы перед удалением опроса.");
-define("_DS_SURVEYTOKENS", "Опрос имеет связанную таблицу кл. фраз. Удаление опроса повлечет удаление таблицы ключевых фраз. Рекомендуем экспортировать и сделать резервную копию таблицы клю фраз перед удалением опроса.");
-define("_DS_DELETED", "Это опрос удален.");
+define("_DS_NOSID", "Р’С‹ РЅРµ РІР±СЂР°Р»Рё РѕРїСЂРѕСЃ РґР»СЏ СѓРґР°Р»РµРЅРёСЏ");
+define("_DS_DELMESSAGE1", "Р’С‹ СѓРґР°Р»СЏРµС‚Рµ СЌС‚РѕС‚ РѕРїСЂРѕСЃ");
+define("_DS_DELMESSAGE2", "Р­С‚Рѕ СѓРґР°Р»РёС‚ РѕРїСЂРѕСЃ Рё РІСЃРµ СЃРІСЏР·Р°РЅРЅС‹Рµ РіСЂСѓРїРїС‹, РѕС‚РІРµС‚С‹ РЅР° РІРѕРїСЂРѕСЃС‹ Рё СѓСЃР»РѕРІРёСЏ.");
+define("_DS_DELMESSAGE3", "РњС‹ СЂРµРєРѕРјРµРЅРґСѓРµРј РїРµСЂРµРґ СѓРґР»РµРЅРёРµРј РѕРїСЂРѕСЃР° СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РµРіРѕ РґР°РЅРЅС‹Рµ.");
+define("_DS_SURVEYACTIVE", "РћРїСЂРѕСЃ Р°РєС‚РёРІРµРЅ Рё СЃСѓС‰РµСЃС‚РІСѓРµС‚ С‚Р°Р±Р»РёС†Р° РѕС‚РІРµС‚РѕРІ. Р•СЃР»Рё Р’С‹ СѓРґР°Р»РёС‚Рµ РѕРїСЂРѕСЃ, С‚Рѕ  СЌС‚Рё РѕС‚РІРµС‚С‹ Р±СѓРґСѓС‚ СѓРґР°Р»РµРЅС‹. Р РµРєРѕРјРµРЅРґСѓРµРј СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РѕС‚РІРµС‚С‹ РїРµСЂРµРґ СѓРґР°Р»РµРЅРёРµРј РѕРїСЂРѕСЃР°.");
+define("_DS_SURVEYTOKENS", "РћРїСЂРѕСЃ РёРјРµРµС‚ СЃРІСЏР·Р°РЅРЅСѓСЋ С‚Р°Р±Р»РёС†Сѓ РєР». С„СЂР°Р·. РЈРґР°Р»РµРЅРёРµ РѕРїСЂРѕСЃР° РїРѕРІР»РµС‡РµС‚ СѓРґР°Р»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ РєР»СЋС‡РµРІС‹С… С„СЂР°Р·. Р РµРєРѕРјРµРЅРґСѓРµРј СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ Рё СЃРґРµР»Р°С‚СЊ СЂРµР·РµСЂРІРЅСѓСЋ РєРѕРїРёСЋ С‚Р°Р±Р»РёС†С‹ РєР»СЋ С„СЂР°Р· РїРµСЂРµРґ СѓРґР°Р»РµРЅРёРµРј РѕРїСЂРѕСЃР°.");
+define("_DS_DELETED", "Р­С‚Рѕ РѕРїСЂРѕСЃ СѓРґР°Р»РµРЅ.");
 
 //DELETE QUESTION AND GROUP MESSAGES
-define("_DG_RUSURE", "Удаление этой группы полечет удаление вопрос  и ответов, содержащихся в ней. Продолжить?"); //New for 098rc5
-define("_DQ_RUSURE", "Удаление вопроса повлечет удаление всех его ответов. Продолжить?"); //New for 098rc5
+define("_DG_RUSURE", "РЈРґР°Р»РµРЅРёРµ СЌС‚РѕР№ РіСЂСѓРїРїС‹ РїРѕР»РµС‡РµС‚ СѓРґР°Р»РµРЅРёРµ РІРѕРїСЂРѕСЃ  Рё РѕС‚РІРµС‚РѕРІ, СЃРѕРґРµСЂР¶Р°С‰РёС…СЃСЏ РІ РЅРµР№. РџСЂРѕРґРѕР»Р¶РёС‚СЊ?"); //New for 098rc5
+define("_DQ_RUSURE", "РЈРґР°Р»РµРЅРёРµ РІРѕРїСЂРѕСЃР° РїРѕРІР»РµС‡РµС‚ СѓРґР°Р»РµРЅРёРµ РІСЃРµС… РµРіРѕ РѕС‚РІРµС‚РѕРІ. РџСЂРѕРґРѕР»Р¶РёС‚СЊ?"); //New for 098rc5
 
 //EXPORT MESSAGES
-define("_EQ_NOQID", "Нет QID. Не могу выгрузить вопрос.");
-define("_ES_NOSID", "Нет SID. Не могу выгрузить опрос");
+define("_EQ_NOQID", "РќРµС‚ QID. РќРµ РјРѕРіСѓ РІС‹РіСЂСѓР·РёС‚СЊ РІРѕРїСЂРѕСЃ.");
+define("_ES_NOSID", "РќРµС‚ SID. РќРµ РјРѕРіСѓ РІС‹РіСЂСѓР·РёС‚СЊ РѕРїСЂРѕСЃ");
 
 //EXPORT RESULTS
-define("_EX_FROMSTATS", "Отфильтрованная статистика");
-define("_EX_HEADINGS", "Вопросы");
-define("_EX_ANSWERS", "Ответы");
-define("_EX_FORMAT", "Формат");
-define("_EX_HEAD_ABBREV", "Сокращенные заголовки");
-define("_EX_HEAD_FULL", "Полные заголовки");
-define("_EX_ANS_ABBREV", "Коды вопросов");
-define("_EX_ANS_FULL", "Полные ответы");
+define("_EX_FROMSTATS", "РћС‚С„РёР»СЊС‚СЂРѕРІР°РЅРЅР°СЏ СЃС‚Р°С‚РёСЃС‚РёРєР°");
+define("_EX_HEADINGS", "Р’РѕРїСЂРѕСЃС‹");
+define("_EX_ANSWERS", "РћС‚РІРµС‚С‹");
+define("_EX_FORMAT", "Р¤РѕСЂРјР°С‚");
+define("_EX_HEAD_ABBREV", "РЎРѕРєСЂР°С‰РµРЅРЅС‹Рµ Р·Р°РіРѕР»РѕРІРєРё");
+define("_EX_HEAD_FULL", "РџРѕР»РЅС‹Рµ Р·Р°РіРѕР»РѕРІРєРё");
+define("_EX_ANS_ABBREV", "РљРѕРґС‹ РІРѕРїСЂРѕСЃРѕРІ");
+define("_EX_ANS_FULL", "РџРѕР»РЅС‹Рµ РѕС‚РІРµС‚С‹");
 define("_EX_FORM_WORD", "Microsoft Word");
 define("_EX_FORM_EXCEL", "Microsoft Excel");
 define("_EX_FORM_CSV", "CSV Comma Delimited");
 define("_EX_EXPORTDATA", "Export Data");
-define("_EX_COLCONTROLS", "Управление колонкой"); //New for 0.98rc7
-define("_EX_TOKENCONTROLS", "Управление кл. фразами"); //New for 0.98rc7
-define("_EX_COLSELECT", "Выбор столбцов"); //New for 0.98rc7
-define("_EX_COLOK", "Выберите колонки для экспорта. Еслит ничего не выбрано, то экспортируются все колонки."); //New for 0.98rc7
-define("_EX_COLNOTOK", "Опрос содержит более 255 колонок отвентов. Табличные приложения, такие как Excel, не могут импортировать более 255. Выберите колонки для экспота из приведенного списка."); //New for 0.98rc7
-define("_EX_TOKENMESSAGE", "Ваш опрос может экспортировать кл. фразы с ответами. Выберите любые дополнительные поля для экспорта."); //New for 0.98rc7
-define("_EX_TOKSELECT", "Выберите поля кл. фраз"); //New for 0.98rc7
+define("_EX_COLCONTROLS", "РЈРїСЂР°РІР»РµРЅРёРµ РєРѕР»РѕРЅРєРѕР№"); //New for 0.98rc7
+define("_EX_TOKENCONTROLS", "РЈРїСЂР°РІР»РµРЅРёРµ РєР». С„СЂР°Р·Р°РјРё"); //New for 0.98rc7
+define("_EX_COLSELECT", "Р’С‹Р±РѕСЂ СЃС‚РѕР»Р±С†РѕРІ"); //New for 0.98rc7
+define("_EX_COLOK", "Р’С‹Р±РµСЂРёС‚Рµ РєРѕР»РѕРЅРєРё РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°. Р•СЃР»РёС‚ РЅРёС‡РµРіРѕ РЅРµ РІС‹Р±СЂР°РЅРѕ, С‚Рѕ СЌРєСЃРїРѕСЂС‚РёСЂСѓСЋС‚СЃСЏ РІСЃРµ РєРѕР»РѕРЅРєРё."); //New for 0.98rc7
+define("_EX_COLNOTOK", "РћРїСЂРѕСЃ СЃРѕРґРµСЂР¶РёС‚ Р±РѕР»РµРµ 255 РєРѕР»РѕРЅРѕРє РѕС‚РІРµРЅС‚РѕРІ. РўР°Р±Р»РёС‡РЅС‹Рµ РїСЂРёР»РѕР¶РµРЅРёСЏ, С‚Р°РєРёРµ РєР°Рє Excel, РЅРµ РјРѕРіСѓС‚ РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ Р±РѕР»РµРµ 255. Р’С‹Р±РµСЂРёС‚Рµ РєРѕР»РѕРЅРєРё РґР»СЏ СЌРєСЃРїРѕС‚Р° РёР· РїСЂРёРІРµРґРµРЅРЅРѕРіРѕ СЃРїРёСЃРєР°."); //New for 0.98rc7
+define("_EX_TOKENMESSAGE", "Р’Р°С€ РѕРїСЂРѕСЃ РјРѕР¶РµС‚ СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РєР». С„СЂР°Р·С‹ СЃ РѕС‚РІРµС‚Р°РјРё. Р’С‹Р±РµСЂРёС‚Рµ Р»СЋР±С‹Рµ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РїРѕР»СЏ РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°."); //New for 0.98rc7
+define("_EX_TOKSELECT", "Р’С‹Р±РµСЂРёС‚Рµ РїРѕР»СЏ РєР». С„СЂР°Р·"); //New for 0.98rc7
 
 //IMPORT SURVEY MESSAGES
-define("_IS_FAILUPLOAD", "Ошибка призагрузке Вашего файла. Это может быть вызвано недостаточными провами на каталог admin.");
-define("_IS_OKUPLOAD", "Файл успешно загружен.");
-define("_IS_READFILE", "Чтение файла..");
-define("_IS_WRONGFILE", "Это не файл опроска для PHPSurveyor. Импорт не завершен.");
-define("_IS_IMPORTSUMMARY", "Итоги импорта опроса");
-define("_IS_SUCCESS", "Импорт опроса закончен.");
-define("_IS_IMPFAILED", "Сбой при мпорте файла опроса");
-define("_IS_FILEFAILS", "AФайл не содержит данных для PHPSurveyor в правильном формате.");
+define("_IS_FAILUPLOAD", "РћС€РёР±РєР° РїСЂРёР·Р°РіСЂСѓР·РєРµ Р’Р°С€РµРіРѕ С„Р°Р№Р»Р°. Р­С‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ РІС‹Р·РІР°РЅРѕ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅС‹РјРё РїСЂРѕРІР°РјРё РЅР° РєР°С‚Р°Р»РѕРі admin.");
+define("_IS_OKUPLOAD", "Р¤Р°Р№Р» СѓСЃРїРµС€РЅРѕ Р·Р°РіСЂСѓР¶РµРЅ.");
+define("_IS_READFILE", "Р§С‚РµРЅРёРµ С„Р°Р№Р»Р°..");
+define("_IS_WRONGFILE", "Р­С‚Рѕ РЅРµ С„Р°Р№Р» РѕРїСЂРѕСЃРєР° РґР»СЏ PHPSurveyor. РРјРїРѕСЂС‚ РЅРµ Р·Р°РІРµСЂС€РµРЅ.");
+define("_IS_IMPORTSUMMARY", "РС‚РѕРіРё РёРјРїРѕСЂС‚Р° РѕРїСЂРѕСЃР°");
+define("_IS_SUCCESS", "РРјРїРѕСЂС‚ РѕРїСЂРѕСЃР° Р·Р°РєРѕРЅС‡РµРЅ.");
+define("_IS_IMPFAILED", "РЎР±РѕР№ РїСЂРё РјРїРѕСЂС‚Рµ С„Р°Р№Р»Р° РѕРїСЂРѕСЃР°");
+define("_IS_FILEFAILS", "AР¤Р°Р№Р» РЅРµ СЃРѕРґРµСЂР¶РёС‚ РґР°РЅРЅС‹С… РґР»СЏ PHPSurveyor РІ РїСЂР°РІРёР»СЊРЅРѕРј С„РѕСЂРјР°С‚Рµ.");
 
 //IMPORT GROUP MESSAGES
-define("_IG_IMPORTSUMMARY", "Итоги импорта группы");
-define("_IG_SUCCESS", "Импорт группы выполнен.");
-define("_IG_IMPFAILED", "Сбой при импорте группы");
-define("_IG_WRONGFILE", "Это не файл группы для PHPSurveyor. Импорт не завершен.");
+define("_IG_IMPORTSUMMARY", "РС‚РѕРіРё РёРјРїРѕСЂС‚Р° РіСЂСѓРїРїС‹");
+define("_IG_SUCCESS", "РРјРїРѕСЂС‚ РіСЂСѓРїРїС‹ РІС‹РїРѕР»РЅРµРЅ.");
+define("_IG_IMPFAILED", "РЎР±РѕР№ РїСЂРё РёРјРїРѕСЂС‚Рµ РіСЂСѓРїРїС‹");
+define("_IG_WRONGFILE", "Р­С‚Рѕ РЅРµ С„Р°Р№Р» РіСЂСѓРїРїС‹ РґР»СЏ PHPSurveyor. РРјРїРѕСЂС‚ РЅРµ Р·Р°РІРµСЂС€РµРЅ.");
 
 //IMPORT QUESTION MESSAGES
-define("_IQ_NOSID", "Нет SID (опрос). Нельзя импортировать вопрос.");
-define("_IQ_NOGID", "Нет GID (группа). Нельзя импортировать вопрос");
-define("_IQ_WRONGFILE", "Это не файл вопроса для PHPSurveyor. Импорт не завершен.");
-define("_IQ_IMPORTSUMMARY", "Итоги импорта вопроса");
-define("_IQ_SUCCESS", "Импорт вопроса завершен");
+define("_IQ_NOSID", "РќРµС‚ SID (РѕРїСЂРѕСЃ). РќРµР»СЊР·СЏ РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РІРѕРїСЂРѕСЃ.");
+define("_IQ_NOGID", "РќРµС‚ GID (РіСЂСѓРїРїР°). РќРµР»СЊР·СЏ РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РІРѕРїСЂРѕСЃ");
+define("_IQ_WRONGFILE", "Р­С‚Рѕ РЅРµ С„Р°Р№Р» РІРѕРїСЂРѕСЃР° РґР»СЏ PHPSurveyor. РРјРїРѕСЂС‚ РЅРµ Р·Р°РІРµСЂС€РµРЅ.");
+define("_IQ_IMPORTSUMMARY", "РС‚РѕРіРё РёРјРїРѕСЂС‚Р° РІРѕРїСЂРѕСЃР°");
+define("_IQ_SUCCESS", "РРјРїРѕСЂС‚ РІРѕРїСЂРѕСЃР° Р·Р°РІРµСЂС€РµРЅ");
 
 //IMPORT LABELSET MESSAGES
 define("_IL_DUPLICATE", "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.");
 
 //BROWSE RESPONSES MESSAGES
-define("_BR_NOSID", "Вы не выбрали опрос для просмотра ответов.");
-define("_BR_NOTACTIVATED", "Опрос не активирован. Нечего смотреть.");
-define("_BR_NOSURVEY", "Нет соответсвующих опрсов.");
-define("_BR_EDITRESPONSE", "Изменить");
-define("_BR_DELRESPONSE", "Удалить");
-define("_BR_DISPLAYING", "Отображено записей:");
-define("_BR_STARTING", "Начиная с:");
-define("_BR_SHOW", "Показать");
-define("_DR_RUSURE", "Вы хотите удалить этот ответ?"); //New for 0.98rc6
+define("_BR_NOSID", "Р’С‹ РЅРµ РІС‹Р±СЂР°Р»Рё РѕРїСЂРѕСЃ РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° РѕС‚РІРµС‚РѕРІ.");
+define("_BR_NOTACTIVATED", "РћРїСЂРѕСЃ РЅРµ Р°РєС‚РёРІРёСЂРѕРІР°РЅ. РќРµС‡РµРіРѕ СЃРјРѕС‚СЂРµС‚СЊ.");
+define("_BR_NOSURVEY", "РќРµС‚ СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰РёС… РѕРїСЂСЃРѕРІ.");
+define("_BR_EDITRESPONSE", "РР·РјРµРЅРёС‚СЊ");
+define("_BR_DELRESPONSE", "РЈРґР°Р»РёС‚СЊ");
+define("_BR_DISPLAYING", "РћС‚РѕР±СЂР°Р¶РµРЅРѕ Р·Р°РїРёСЃРµР№:");
+define("_BR_STARTING", "РќР°С‡РёРЅР°СЏ СЃ:");
+define("_BR_SHOW", "РџРѕРєР°Р·Р°С‚СЊ");
+define("_DR_RUSURE", "Р’С‹ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РѕС‚РІРµС‚?"); //New for 0.98rc6
 
 //STATISTICS MESSAGES
-define("_ST_FILTERSETTINGS", "Установки фильтрации");
-define("_ST_VIEWALL", "Посмотреть итоги по всем доступным полям"); //New with 0.98rc8
-define("_ST_SHOWRESULTS", "Посмотреть статистику"); //New with 0.98rc8
-define("_ST_CLEAR", "Очистить"); //New with 0.98rc8
-define("_ST_RESPONECONT", "Ответы содержащие"); //New with 0.98rc8
-define("_ST_NOGREATERTHAN", "Число больше чем"); //New with 0.98rc8
-define("_ST_NOLESSTHAN", "Число меньше чем"); //New with 0.98rc8
-define("_ST_DATEEQUALS", "Дата (ГГГГ-ММ-ДД) равна"); //New with 0.98rc8
-define("_ST_ORBETWEEN", "ИЛИ между"); //New with 0.98rc8
-define("_ST_RESULTS", "Результаты"); //New with 0.98rc8 (Plural)
-define("_ST_RESULT", "Результат"); //New with 0.98rc8 (Singular)
-define("_ST_RECORDSRETURNED", "Нет записей по этому запросу"); //New with 0.98rc8
-define("_ST_TOTALRECORDS", "Всего записей в опросе"); //New with 0.98rc8
-define("_ST_PERCENTAGE", "Процент от общего"); //New with 0.98rc8
-define("_ST_FIELDSUMMARY", "Итоговое поля для"); //New with 0.98rc8
-define("_ST_CALCULATION", "Вычисление"); //New with 0.98rc8
-define("_ST_SUM", "Сумма"); //New with 0.98rc8 - Mathematical
-define("_ST_STDEV", "Стандартное отклонение"); //New with 0.98rc8 - Mathematical
-define("_ST_AVERAGE", "Среднее"); //New with 0.98rc8 - Mathematical
-define("_ST_MIN", "Минимум"); //New with 0.98rc8 - Mathematical
-define("_ST_MAX", "Максимум"); //New with 0.98rc8 - Mathematical
-define("_ST_Q1", "1ая Quartile (Q1)"); //New with 0.98rc8 - Mathematical
-define("_ST_Q2", "2ая Quartile (Median)"); //New with 0.98rc8 - Mathematical
-define("_ST_Q3", "3ья Quartile (Q3)"); //New with 0.98rc8 - Mathematical
-define("_ST_NULLIGNORED", "*Незаданные значения (Null) игнорируются при вычислениях"); //New with 0.98rc8
-define("_ST_QUARTMETHOD", "*Q1 и Q3 вычислены с использованием <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"); //New with 0.98rc8
+define("_ST_FILTERSETTINGS", "РЈСЃС‚Р°РЅРѕРІРєРё С„РёР»СЊС‚СЂР°С†РёРё");
+define("_ST_VIEWALL", "РџРѕСЃРјРѕС‚СЂРµС‚СЊ РёС‚РѕРіРё РїРѕ РІСЃРµРј РґРѕСЃС‚СѓРїРЅС‹Рј РїРѕР»СЏРј"); //New with 0.98rc8
+define("_ST_SHOWRESULTS", "РџРѕСЃРјРѕС‚СЂРµС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ"); //New with 0.98rc8
+define("_ST_CLEAR", "РћС‡РёСЃС‚РёС‚СЊ"); //New with 0.98rc8
+define("_ST_RESPONECONT", "РћС‚РІРµС‚С‹ СЃРѕРґРµСЂР¶Р°С‰РёРµ"); //New with 0.98rc8
+define("_ST_NOGREATERTHAN", "Р§РёСЃР»Рѕ Р±РѕР»СЊС€Рµ С‡РµРј"); //New with 0.98rc8
+define("_ST_NOLESSTHAN", "Р§РёСЃР»Рѕ РјРµРЅСЊС€Рµ С‡РµРј"); //New with 0.98rc8
+define("_ST_DATEEQUALS", "Р”Р°С‚Р° (Р“Р“Р“Р“-РњРњ-Р”Р”) СЂР°РІРЅР°"); //New with 0.98rc8
+define("_ST_ORBETWEEN", "РР›Р РјРµР¶РґСѓ"); //New with 0.98rc8
+define("_ST_RESULTS", "Р РµР·СѓР»СЊС‚Р°С‚С‹"); //New with 0.98rc8 (Plural)
+define("_ST_RESULT", "Р РµР·СѓР»СЊС‚Р°С‚"); //New with 0.98rc8 (Singular)
+define("_ST_RECORDSRETURNED", "РќРµС‚ Р·Р°РїРёСЃРµР№ РїРѕ СЌС‚РѕРјСѓ Р·Р°РїСЂРѕСЃСѓ"); //New with 0.98rc8
+define("_ST_TOTALRECORDS", "Р’СЃРµРіРѕ Р·Р°РїРёСЃРµР№ РІ РѕРїСЂРѕСЃРµ"); //New with 0.98rc8
+define("_ST_PERCENTAGE", "РџСЂРѕС†РµРЅС‚ РѕС‚ РѕР±С‰РµРіРѕ"); //New with 0.98rc8
+define("_ST_FIELDSUMMARY", "РС‚РѕРіРѕРІРѕРµ РїРѕР»СЏ РґР»СЏ"); //New with 0.98rc8
+define("_ST_CALCULATION", "Р’С‹С‡РёСЃР»РµРЅРёРµ"); //New with 0.98rc8
+define("_ST_SUM", "РЎСѓРјРјР°"); //New with 0.98rc8 - Mathematical
+define("_ST_STDEV", "РЎС‚Р°РЅРґР°СЂС‚РЅРѕРµ РѕС‚РєР»РѕРЅРµРЅРёРµ"); //New with 0.98rc8 - Mathematical
+define("_ST_AVERAGE", "РЎСЂРµРґРЅРµРµ"); //New with 0.98rc8 - Mathematical
+define("_ST_MIN", "РњРёРЅРёРјСѓРј"); //New with 0.98rc8 - Mathematical
+define("_ST_MAX", "РњР°РєСЃРёРјСѓРј"); //New with 0.98rc8 - Mathematical
+define("_ST_Q1", "1Р°СЏ Quartile (Q1)"); //New with 0.98rc8 - Mathematical
+define("_ST_Q2", "2Р°СЏ Quartile (Median)"); //New with 0.98rc8 - Mathematical
+define("_ST_Q3", "3СЊСЏ Quartile (Q3)"); //New with 0.98rc8 - Mathematical
+define("_ST_NULLIGNORED", "*РќРµР·Р°РґР°РЅРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ (Null) РёРіРЅРѕСЂРёСЂСѓСЋС‚СЃСЏ РїСЂРё РІС‹С‡РёСЃР»РµРЅРёСЏС…"); //New with 0.98rc8
+define("_ST_QUARTMETHOD", "*Q1 Рё Q3 РІС‹С‡РёСЃР»РµРЅС‹ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"); //New with 0.98rc8
 
 //DATA ENTRY MESSAGES
-define("_DE_NOMODIFY", "Нельзя изменить");
-define("_DE_UPDATE", "Обновление данных");
-define("_DE_NOSID", "Вы не выбрали опрос для ввода данных.");
-define("_DE_NOEXIST", "Выбранный опрос не существует");
-define("_DE_NOTACTIVE", "Опрос еще не активен. Выш ответ не может быть сохранен");
-define("_DE_INSERT", "Вставка данных");
-define("_DE_RECORD", "Данным назначен след. идентификатор записи: ");
-define("_DE_ADDANOTHER", "Добавить другую запись ");
-define("_DE_VIEWTHISONE", "Посмотреть эту запись");
-define("_DE_BROWSE", "Просмотр ответов");
-define("_DE_DELRECORD", "Запись удалена");
-define("_DE_UPDATED", "Запись обновлена.");
-define("_DE_EDITING", "Редатирование ответа");
-define("_DE_QUESTIONHELP", "Справка по данному вопросу");
-define("_DE_CONDITIONHELP1", "Отвечать только если выполняются след. условия:"); 
-define("_DE_CONDITIONHELP2", "по вопроса {QUESTION}, Вы ответили {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
-define("_DE_AND", "И");
-define("_DE_OR", "ИЛИ");
+define("_DE_NOMODIFY", "РќРµР»СЊР·СЏ РёР·РјРµРЅРёС‚СЊ");
+define("_DE_UPDATE", "РћР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С…");
+define("_DE_NOSID", "Р’С‹ РЅРµ РІС‹Р±СЂР°Р»Рё РѕРїСЂРѕСЃ РґР»СЏ РІРІРѕРґР° РґР°РЅРЅС‹С….");
+define("_DE_NOEXIST", "Р’С‹Р±СЂР°РЅРЅС‹Р№ РѕРїСЂРѕСЃ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
+define("_DE_NOTACTIVE", "РћРїСЂРѕСЃ РµС‰Рµ РЅРµ Р°РєС‚РёРІРµРЅ. Р’С‹С€ РѕС‚РІРµС‚ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЃРѕС…СЂР°РЅРµРЅ");
+define("_DE_INSERT", "Р’СЃС‚Р°РІРєР° РґР°РЅРЅС‹С…");
+define("_DE_RECORD", "Р”Р°РЅРЅС‹Рј РЅР°Р·РЅР°С‡РµРЅ СЃР»РµРґ. РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїРёСЃРё: ");
+define("_DE_ADDANOTHER", "Р”РѕР±Р°РІРёС‚СЊ РґСЂСѓРіСѓСЋ Р·Р°РїРёСЃСЊ ");
+define("_DE_VIEWTHISONE", "РџРѕСЃРјРѕС‚СЂРµС‚СЊ СЌС‚Сѓ Р·Р°РїРёСЃСЊ");
+define("_DE_BROWSE", "РџСЂРѕСЃРјРѕС‚СЂ РѕС‚РІРµС‚РѕРІ");
+define("_DE_DELRECORD", "Р—Р°РїРёСЃСЊ СѓРґР°Р»РµРЅР°");
+define("_DE_UPDATED", "Р—Р°РїРёСЃСЊ РѕР±РЅРѕРІР»РµРЅР°.");
+define("_DE_EDITING", "Р РµРґР°С‚РёСЂРѕРІР°РЅРёРµ РѕС‚РІРµС‚Р°");
+define("_DE_QUESTIONHELP", "РЎРїСЂР°РІРєР° РїРѕ РґР°РЅРЅРѕРјСѓ РІРѕРїСЂРѕСЃСѓ");
+define("_DE_CONDITIONHELP1", "РћС‚РІРµС‡Р°С‚СЊ С‚РѕР»СЊРєРѕ РµСЃР»Рё РІС‹РїРѕР»РЅСЏСЋС‚СЃСЏ СЃР»РµРґ. СѓСЃР»РѕРІРёСЏ:"); 
+define("_DE_CONDITIONHELP2", "РїРѕ РІРѕРїСЂРѕСЃР° {QUESTION}, Р’С‹ РѕС‚РІРµС‚РёР»Рё {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define("_DE_AND", "Р");
+define("_DE_OR", "РР›Р");
 define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01
 define("_DE_SAVEID", "Identifier:"); //New in 0.99dev01
 define("_DE_SAVEPW", "Password:"); //New in 0.99dev01
@@ -545,171 +545,171 @@ define("_DE_SAVEPWCONFIRM", "Confirm Password:"); //New in 0.99dev01
 define("_DE_SAVEEMAIL", "Email:"); //New in 0.99dev01
 
 //TOKEN CONTROL MESSAGES
-define("_TC_TOTALCOUNT", "Всего записей в этой таблице кл. фраз:"); //New in 0.98rc4
-define("_TC_NOTOKENCOUNT", "Всего с неуникальными кл.фразами:"); //New in 0.98rc4
-define("_TC_INVITECOUNT", "Всего послано приглашений:"); //New in 0.98rc4
-define("_TC_COMPLETEDCOUNT", "Всего завершено опросов:"); //New in 0.98rc4
-define("_TC_NOSID", "Вы не выбрали опрос");
-define("_TC_DELTOKENS", "Удаление таблицы кл.фраз для данного опроса.");
-define("_TC_DELTOKENSINFO", "Если Вы удалите эту таблицу, то кл. фразы больше не будут требоваться для доступа к опросу. Будет сдлеана резервная копия таблицы если Вы продолжите. Ваш системный администратор сможет получить доступ к этой таблице.");
-define("_TC_DELETETOKENS", "Удаление кл.фраз");
-define("_TC_TOKENSGONE", "Таблица кл. фраз удалена, и кл. фразы не требуются для доступа к опросу. Резервная копия таблицы создана, к ней может получить доступ системный администратор.");
-define("_TC_NOTINITIALISED", "Кл. фразы не инициализированы для данного опроса.");
-define("_TC_INITINFO", "После инициализации кл. фраз то опрос будет только пользователям с назначенными клю фразами.");
-define("_TC_INITQ", "Вы хотите создать таблицу кл. фраз для этого опроса?");
-define("_TC_INITTOKENS", "Инициализация кл. фраз");
-define("_TC_CREATED", "Таблица кл. фраз создана для данного опроса.");
-define("_TC_DELETEALL", "Удалить все кл. фразы");
-define("_TC_DELETEALL_RUSURE", "Вы уверены что хотите удалить ВСЕ кл. фразы?");
-define("_TC_ALLDELETED", "Все кл. фразы удалены");
-define("_TC_CLEARINVITES", "Проставить везде  'N' по отправке приглашений");
-define("_TC_CLEARINV_RUSURE", "Вы дествительно хотить сбросить все записи об отправке приглашений (установить NO)?");
-define("_TC_CLEARTOKENS", "Удалить все уникальные номера кл. фраз");
-define("_TC_CLEARTOKENS_RUSURE", "Вы дествительно хотите удалить уникальные номера кл. фраз?");
-define("_TC_TOKENSCLEARED", "Все уникальные ноера кл. фраз удалены");
-define("_TC_INVITESCLEARED", "По отправке приглашений везде установлено значение N");
-define("_TC_EDIT", "Изменение кл. фразы");
-define("_TC_DEL", "Удаление кл. фразы");
-define("_TC_DO", "Провести опрос");
-define("_TC_VIEW", "Смотреть ответы");
-define("_TC_INVITET", "Отправить email приглашение для этого элемента");
-define("_TC_REMINDT", "Отправить email напоминание для этого элемента");
-define("_TC_INVITESUBJECT", "Приглашение участнику опроса {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
-define("_TC_REMINDSUBJECT", "Напоминание участнику опроса {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
-define("_TC_REMINDSTARTAT", "Начать с TID No:");
-define("_TC_REMINDTID", "Отправка для TID No:");
-define("_TC_CREATETOKENSINFO", "Выбор ДА приведет к генерации кл. фраз
-для всех в списке кто не имел такие. Все правильно?");
-define("_TC_TOKENSCREATED", "{TOKENCOUNT} кл. фраз создано"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
-define("_TC_TOKENDELETED", "Кл.фраза удалена.");
-define("_TC_SORTBY", "Сортировка по: ");
-define("_TC_ADDEDIT", "Добавить или изменить кл. фразу");
-define("_TC_TOKENCREATEINFO", "Вы можете оставить это пустым, и кл. фразы будут созданы при выборе 'Создать кл. фразы'");
-define("_TC_TOKENADDED", "Добавлена новая кл. фраза");
-define("_TC_TOKENUPDATED", "Кл. фраза обновлена");
-define("_TC_UPLOADINFO", "Файл должен быть стндартным CSV (разделенным запятыми) файлом без кавычек. Первая строка должна содежать  заголовок (будет удалена). Данные должны быть упорядочены как  \"Имя, Фамилия, email, [кл.фраза], [attribute1], [attribute2]\".");
-define("_TC_UPLOADFAIL", "Файл для загрузки не обнаружен. Проверьте Ваши права и путь к каталогу загрузки"); //New for 0.98rc5
-define("_TC_IMPORT", "Импорт CSV файла");
-define("_TC_CREATE", "Создание кл. фраз");
-define("_TC_TOKENS_CREATED", "{TOKENCOUNT} записей создано");
-define("_TC_NONETOSEND", "Нет отобранных email адресов для отправки. Это произошло из-за отсутствия удовлетворяющих критерию - есть email адрес, еще не отправлено приглашение, уже закончил опрос и имеет кл.фразу.");
-define("_TC_NOREMINDERSTOSEND", "Нет отобранных email адресов для отправки. Это произошло из-за отсутствия удовлетворяющих критерию - есть email адрес, уже отправлено приглашение, но еще закончил опрос.");
-define("_TC_NOEMAILTEMPLATE", "Шаблон приглашения не найден. Это файл должен существовать в каталоге шаблонов по умолчанию.");
-define("_TC_NOREMINDTEMPLATE", "Шаблон напоминания не найден.  Это файл должен существовать в каталоге шаблонов по умолчанию.");
-define("_TC_SENDEMAIL", "Отправить приглашения");
-define("_TC_SENDINGEMAILS", "Отправка приглашений");
-define("_TC_SENDINGREMINDERS", "Отправка напоминаний");
-define("_TC_EMAILSTOGO", "Есть email письма ожидающие отправки одним пакетом. Для продолжения отправки писем нажмите ниже.");
-define("_TC_EMAILSREMAINING", "Еще {EMAILCOUNT} писем для отправки."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
-define("_TC_SENDREMIND", "Отправить наминания");
-define("_TC_INVITESENTTO", "Приглашение оправлено:"); //is followed by token name
-define("_TC_REMINDSENTTO", "Напоминание отправлено:"); //is followed by token name
-define("_TC_UPDATEDB", "Обновление таблицы кл. фраз с новыми полями"); //New for 0.98rc7
+define("_TC_TOTALCOUNT", "Р’СЃРµРіРѕ Р·Р°РїРёСЃРµР№ РІ СЌС‚РѕР№ С‚Р°Р±Р»РёС†Рµ РєР». С„СЂР°Р·:"); //New in 0.98rc4
+define("_TC_NOTOKENCOUNT", "Р’СЃРµРіРѕ СЃ РЅРµСѓРЅРёРєР°Р»СЊРЅС‹РјРё РєР».С„СЂР°Р·Р°РјРё:"); //New in 0.98rc4
+define("_TC_INVITECOUNT", "Р’СЃРµРіРѕ РїРѕСЃР»Р°РЅРѕ РїСЂРёРіР»Р°С€РµРЅРёР№:"); //New in 0.98rc4
+define("_TC_COMPLETEDCOUNT", "Р’СЃРµРіРѕ Р·Р°РІРµСЂС€РµРЅРѕ РѕРїСЂРѕСЃРѕРІ:"); //New in 0.98rc4
+define("_TC_NOSID", "Р’С‹ РЅРµ РІС‹Р±СЂР°Р»Рё РѕРїСЂРѕСЃ");
+define("_TC_DELTOKENS", "РЈРґР°Р»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ РєР».С„СЂР°Р· РґР»СЏ РґР°РЅРЅРѕРіРѕ РѕРїСЂРѕСЃР°.");
+define("_TC_DELTOKENSINFO", "Р•СЃР»Рё Р’С‹ СѓРґР°Р»РёС‚Рµ СЌС‚Сѓ С‚Р°Р±Р»РёС†Сѓ, С‚Рѕ РєР». С„СЂР°Р·С‹ Р±РѕР»СЊС€Рµ РЅРµ Р±СѓРґСѓС‚ С‚СЂРµР±РѕРІР°С‚СЊСЃСЏ РґР»СЏ РґРѕСЃС‚СѓРїР° Рє РѕРїСЂРѕСЃСѓ. Р‘СѓРґРµС‚ СЃРґР»РµР°РЅР° СЂРµР·РµСЂРІРЅР°СЏ РєРѕРїРёСЏ С‚Р°Р±Р»РёС†С‹ РµСЃР»Рё Р’С‹ РїСЂРѕРґРѕР»Р¶РёС‚Рµ. Р’Р°С€ СЃРёСЃС‚РµРјРЅС‹Р№ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ СЃРјРѕР¶РµС‚ РїРѕР»СѓС‡РёС‚СЊ РґРѕСЃС‚СѓРї Рє СЌС‚РѕР№ С‚Р°Р±Р»РёС†Рµ.");
+define("_TC_DELETETOKENS", "РЈРґР°Р»РµРЅРёРµ РєР».С„СЂР°Р·");
+define("_TC_TOKENSGONE", "РўР°Р±Р»РёС†Р° РєР». С„СЂР°Р· СѓРґР°Р»РµРЅР°, Рё РєР». С„СЂР°Р·С‹ РЅРµ С‚СЂРµР±СѓСЋС‚СЃСЏ РґР»СЏ РґРѕСЃС‚СѓРїР° Рє РѕРїСЂРѕСЃСѓ. Р РµР·РµСЂРІРЅР°СЏ РєРѕРїРёСЏ С‚Р°Р±Р»РёС†С‹ СЃРѕР·РґР°РЅР°, Рє РЅРµР№ РјРѕР¶РµС‚ РїРѕР»СѓС‡РёС‚СЊ РґРѕСЃС‚СѓРї СЃРёСЃС‚РµРјРЅС‹Р№ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ.");
+define("_TC_NOTINITIALISED", "РљР». С„СЂР°Р·С‹ РЅРµ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅС‹ РґР»СЏ РґР°РЅРЅРѕРіРѕ РѕРїСЂРѕСЃР°.");
+define("_TC_INITINFO", "РџРѕСЃР»Рµ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РєР». С„СЂР°Р· С‚Рѕ РѕРїСЂРѕСЃ Р±СѓРґРµС‚ С‚РѕР»СЊРєРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРј СЃ РЅР°Р·РЅР°С‡РµРЅРЅС‹РјРё РєР»СЋ С„СЂР°Р·Р°РјРё.");
+define("_TC_INITQ", "Р’С‹ С…РѕС‚РёС‚Рµ СЃРѕР·РґР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ РєР». С„СЂР°Р· РґР»СЏ СЌС‚РѕРіРѕ РѕРїСЂРѕСЃР°?");
+define("_TC_INITTOKENS", "РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєР». С„СЂР°Р·");
+define("_TC_CREATED", "РўР°Р±Р»РёС†Р° РєР». С„СЂР°Р· СЃРѕР·РґР°РЅР° РґР»СЏ РґР°РЅРЅРѕРіРѕ РѕРїСЂРѕСЃР°.");
+define("_TC_DELETEALL", "РЈРґР°Р»РёС‚СЊ РІСЃРµ РєР». С„СЂР°Р·С‹");
+define("_TC_DELETEALL_RUSURE", "Р’С‹ СѓРІРµСЂРµРЅС‹ С‡С‚Рѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ Р’РЎР• РєР». С„СЂР°Р·С‹?");
+define("_TC_ALLDELETED", "Р’СЃРµ РєР». С„СЂР°Р·С‹ СѓРґР°Р»РµРЅС‹");
+define("_TC_CLEARINVITES", "РџСЂРѕСЃС‚Р°РІРёС‚СЊ РІРµР·РґРµ  'N' РїРѕ РѕС‚РїСЂР°РІРєРµ РїСЂРёРіР»Р°С€РµРЅРёР№");
+define("_TC_CLEARINV_RUSURE", "Р’С‹ РґРµСЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚СЊ СЃР±СЂРѕСЃРёС‚СЊ РІСЃРµ Р·Р°РїРёСЃРё РѕР± РѕС‚РїСЂР°РІРєРµ РїСЂРёРіР»Р°С€РµРЅРёР№ (СѓСЃС‚Р°РЅРѕРІРёС‚СЊ NO)?");
+define("_TC_CLEARTOKENS", "РЈРґР°Р»РёС‚СЊ РІСЃРµ СѓРЅРёРєР°Р»СЊРЅС‹Рµ РЅРѕРјРµСЂР° РєР». С„СЂР°Р·");
+define("_TC_CLEARTOKENS_RUSURE", "Р’С‹ РґРµСЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ СѓРЅРёРєР°Р»СЊРЅС‹Рµ РЅРѕРјРµСЂР° РєР». С„СЂР°Р·?");
+define("_TC_TOKENSCLEARED", "Р’СЃРµ СѓРЅРёРєР°Р»СЊРЅС‹Рµ РЅРѕРµСЂР° РєР». С„СЂР°Р· СѓРґР°Р»РµРЅС‹");
+define("_TC_INVITESCLEARED", "РџРѕ РѕС‚РїСЂР°РІРєРµ РїСЂРёРіР»Р°С€РµРЅРёР№ РІРµР·РґРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ Р·РЅР°С‡РµРЅРёРµ N");
+define("_TC_EDIT", "РР·РјРµРЅРµРЅРёРµ РєР». С„СЂР°Р·С‹");
+define("_TC_DEL", "РЈРґР°Р»РµРЅРёРµ РєР». С„СЂР°Р·С‹");
+define("_TC_DO", "РџСЂРѕРІРµСЃС‚Рё РѕРїСЂРѕСЃ");
+define("_TC_VIEW", "РЎРјРѕС‚СЂРµС‚СЊ РѕС‚РІРµС‚С‹");
+define("_TC_INVITET", "РћС‚РїСЂР°РІРёС‚СЊ email РїСЂРёРіР»Р°С€РµРЅРёРµ РґР»СЏ СЌС‚РѕРіРѕ СЌР»РµРјРµРЅС‚Р°");
+define("_TC_REMINDT", "РћС‚РїСЂР°РІРёС‚СЊ email РЅР°РїРѕРјРёРЅР°РЅРёРµ РґР»СЏ СЌС‚РѕРіРѕ СЌР»РµРјРµРЅС‚Р°");
+define("_TC_INVITESUBJECT", "РџСЂРёРіР»Р°С€РµРЅРёРµ СѓС‡Р°СЃС‚РЅРёРєСѓ РѕРїСЂРѕСЃР° {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
+define("_TC_REMINDSUBJECT", "РќР°РїРѕРјРёРЅР°РЅРёРµ СѓС‡Р°СЃС‚РЅРёРєСѓ РѕРїСЂРѕСЃР° {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
+define("_TC_REMINDSTARTAT", "РќР°С‡Р°С‚СЊ СЃ TID No:");
+define("_TC_REMINDTID", "РћС‚РїСЂР°РІРєР° РґР»СЏ TID No:");
+define("_TC_CREATETOKENSINFO", "Р’С‹Р±РѕСЂ Р”Рђ РїСЂРёРІРµРґРµС‚ Рє РіРµРЅРµСЂР°С†РёРё РєР». С„СЂР°Р·
+РґР»СЏ РІСЃРµС… РІ СЃРїРёСЃРєРµ РєС‚Рѕ РЅРµ РёРјРµР» С‚Р°РєРёРµ. Р’СЃРµ РїСЂР°РІРёР»СЊРЅРѕ?");
+define("_TC_TOKENSCREATED", "{TOKENCOUNT} РєР». С„СЂР°Р· СЃРѕР·РґР°РЅРѕ"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
+define("_TC_TOKENDELETED", "РљР».С„СЂР°Р·Р° СѓРґР°Р»РµРЅР°.");
+define("_TC_SORTBY", "РЎРѕСЂС‚РёСЂРѕРІРєР° РїРѕ: ");
+define("_TC_ADDEDIT", "Р”РѕР±Р°РІРёС‚СЊ РёР»Рё РёР·РјРµРЅРёС‚СЊ РєР». С„СЂР°Р·Сѓ");
+define("_TC_TOKENCREATEINFO", "Р’С‹ РјРѕР¶РµС‚Рµ РѕСЃС‚Р°РІРёС‚СЊ СЌС‚Рѕ РїСѓСЃС‚С‹Рј, Рё РєР». С„СЂР°Р·С‹ Р±СѓРґСѓС‚ СЃРѕР·РґР°РЅС‹ РїСЂРё РІС‹Р±РѕСЂРµ 'РЎРѕР·РґР°С‚СЊ РєР». С„СЂР°Р·С‹'");
+define("_TC_TOKENADDED", "Р”РѕР±Р°РІР»РµРЅР° РЅРѕРІР°СЏ РєР». С„СЂР°Р·Р°");
+define("_TC_TOKENUPDATED", "РљР». С„СЂР°Р·Р° РѕР±РЅРѕРІР»РµРЅР°");
+define("_TC_UPLOADINFO", "Р¤Р°Р№Р» РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СЃС‚РЅРґР°СЂС‚РЅС‹Рј CSV (СЂР°Р·РґРµР»РµРЅРЅС‹Рј Р·Р°РїСЏС‚С‹РјРё) С„Р°Р№Р»РѕРј Р±РµР· РєР°РІС‹С‡РµРє. РџРµСЂРІР°СЏ СЃС‚СЂРѕРєР° РґРѕР»Р¶РЅР° СЃРѕРґРµР¶Р°С‚СЊ  Р·Р°РіРѕР»РѕРІРѕРє (Р±СѓРґРµС‚ СѓРґР°Р»РµРЅР°). Р”Р°РЅРЅС‹Рµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СѓРїРѕСЂСЏРґРѕС‡РµРЅС‹ РєР°Рє  \"РРјСЏ, Р¤Р°РјРёР»РёСЏ, email, [РєР».С„СЂР°Р·Р°], [attribute1], [attribute2]\".");
+define("_TC_UPLOADFAIL", "Р¤Р°Р№Р» РґР»СЏ Р·Р°РіСЂСѓР·РєРё РЅРµ РѕР±РЅР°СЂСѓР¶РµРЅ. РџСЂРѕРІРµСЂСЊС‚Рµ Р’Р°С€Рё РїСЂР°РІР° Рё РїСѓС‚СЊ Рє РєР°С‚Р°Р»РѕРіСѓ Р·Р°РіСЂСѓР·РєРё"); //New for 0.98rc5
+define("_TC_IMPORT", "РРјРїРѕСЂС‚ CSV С„Р°Р№Р»Р°");
+define("_TC_CREATE", "РЎРѕР·РґР°РЅРёРµ РєР». С„СЂР°Р·");
+define("_TC_TOKENS_CREATED", "{TOKENCOUNT} Р·Р°РїРёСЃРµР№ СЃРѕР·РґР°РЅРѕ");
+define("_TC_NONETOSEND", "РќРµС‚ РѕС‚РѕР±СЂР°РЅРЅС‹С… email Р°РґСЂРµСЃРѕРІ РґР»СЏ РѕС‚РїСЂР°РІРєРё. Р­С‚Рѕ РїСЂРѕРёР·РѕС€Р»Рѕ РёР·-Р·Р° РѕС‚СЃСѓС‚СЃС‚РІРёСЏ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёС… РєСЂРёС‚РµСЂРёСЋ - РµСЃС‚СЊ email Р°РґСЂРµСЃ, РµС‰Рµ РЅРµ РѕС‚РїСЂР°РІР»РµРЅРѕ РїСЂРёРіР»Р°С€РµРЅРёРµ, СѓР¶Рµ Р·Р°РєРѕРЅС‡РёР» РѕРїСЂРѕСЃ Рё РёРјРµРµС‚ РєР».С„СЂР°Р·Сѓ.");
+define("_TC_NOREMINDERSTOSEND", "РќРµС‚ РѕС‚РѕР±СЂР°РЅРЅС‹С… email Р°РґСЂРµСЃРѕРІ РґР»СЏ РѕС‚РїСЂР°РІРєРё. Р­С‚Рѕ РїСЂРѕРёР·РѕС€Р»Рѕ РёР·-Р·Р° РѕС‚СЃСѓС‚СЃС‚РІРёСЏ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёС… РєСЂРёС‚РµСЂРёСЋ - РµСЃС‚СЊ email Р°РґСЂРµСЃ, СѓР¶Рµ РѕС‚РїСЂР°РІР»РµРЅРѕ РїСЂРёРіР»Р°С€РµРЅРёРµ, РЅРѕ РµС‰Рµ Р·Р°РєРѕРЅС‡РёР» РѕРїСЂРѕСЃ.");
+define("_TC_NOEMAILTEMPLATE", "РЁР°Р±Р»РѕРЅ РїСЂРёРіР»Р°С€РµРЅРёСЏ РЅРµ РЅР°Р№РґРµРЅ. Р­С‚Рѕ С„Р°Р№Р» РґРѕР»Р¶РµРЅ СЃСѓС‰РµСЃС‚РІРѕРІР°С‚СЊ РІ РєР°С‚Р°Р»РѕРіРµ С€Р°Р±Р»РѕРЅРѕРІ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.");
+define("_TC_NOREMINDTEMPLATE", "РЁР°Р±Р»РѕРЅ РЅР°РїРѕРјРёРЅР°РЅРёСЏ РЅРµ РЅР°Р№РґРµРЅ.  Р­С‚Рѕ С„Р°Р№Р» РґРѕР»Р¶РµРЅ СЃСѓС‰РµСЃС‚РІРѕРІР°С‚СЊ РІ РєР°С‚Р°Р»РѕРіРµ С€Р°Р±Р»РѕРЅРѕРІ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.");
+define("_TC_SENDEMAIL", "РћС‚РїСЂР°РІРёС‚СЊ РїСЂРёРіР»Р°С€РµРЅРёСЏ");
+define("_TC_SENDINGEMAILS", "РћС‚РїСЂР°РІРєР° РїСЂРёРіР»Р°С€РµРЅРёР№");
+define("_TC_SENDINGREMINDERS", "РћС‚РїСЂР°РІРєР° РЅР°РїРѕРјРёРЅР°РЅРёР№");
+define("_TC_EMAILSTOGO", "Р•СЃС‚СЊ email РїРёСЃСЊРјР° РѕР¶РёРґР°СЋС‰РёРµ РѕС‚РїСЂР°РІРєРё РѕРґРЅРёРј РїР°РєРµС‚РѕРј. Р”Р»СЏ РїСЂРѕРґРѕР»Р¶РµРЅРёСЏ РѕС‚РїСЂР°РІРєРё РїРёСЃРµРј РЅР°Р¶РјРёС‚Рµ РЅРёР¶Рµ.");
+define("_TC_EMAILSREMAINING", "Р•С‰Рµ {EMAILCOUNT} РїРёСЃРµРј РґР»СЏ РѕС‚РїСЂР°РІРєРё."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
+define("_TC_SENDREMIND", "РћС‚РїСЂР°РІРёС‚СЊ РЅР°РјРёРЅР°РЅРёСЏ");
+define("_TC_INVITESENTTO", "РџСЂРёРіР»Р°С€РµРЅРёРµ РѕРїСЂР°РІР»РµРЅРѕ:"); //is followed by token name
+define("_TC_REMINDSENTTO", "РќР°РїРѕРјРёРЅР°РЅРёРµ РѕС‚РїСЂР°РІР»РµРЅРѕ:"); //is followed by token name
+define("_TC_UPDATEDB", "РћР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ РєР». С„СЂР°Р· СЃ РЅРѕРІС‹РјРё РїРѕР»СЏРјРё"); //New for 0.98rc7
 define("_TC_EMAILINVITE_SUBJ", "Invitation to participate in survey"); //New for 0.99dev01
-define("_TC_EMAILINVITE", "Уважаемая/-ый {FIRSTNAME},\n\nВы приглашения для участия в опросе.\n\n"
-						 ."Опрос называется:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
-						 ."Для участия, пожалуйста выберите ссылку внизу.\n\nС уважением,\n\n"
+define("_TC_EMAILINVITE", "РЈРІР°Р¶Р°РµРјР°СЏ/-С‹Р№ {FIRSTNAME},\n\nР’С‹ РїСЂРёРіР»Р°С€РµРЅРёСЏ РґР»СЏ СѓС‡Р°СЃС‚РёСЏ РІ РѕРїСЂРѕСЃРµ.\n\n"
+						 ."РћРїСЂРѕСЃ РЅР°Р·С‹РІР°РµС‚СЃСЏ:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
+						 ."Р”Р»СЏ СѓС‡Р°СЃС‚РёСЏ, РїРѕР¶Р°Р»СѓР№СЃС‚Р° РІС‹Р±РµСЂРёС‚Рµ СЃСЃС‹Р»РєСѓ РІРЅРёР·Сѓ.\n\nРЎ СѓРІР°Р¶РµРЅРёРµРј,\n\n"
 						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
 						 ."----------------------------------------------\n"
-						 ."Нажмите здесь для участия в опросе:\n"
+						 ."РќР°Р¶РјРёС‚Рµ Р·РґРµСЃСЊ РґР»СЏ СѓС‡Р°СЃС‚РёСЏ РІ РѕРїСЂРѕСЃРµ:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Invitation
 define("_TC_EMAILREMIND_SUBJ", "Reminder to participate in survey"); //New for 0.99dev01
-define("_TC_EMAILREMIND", "Уважаемая/-ый {FIRSTNAME},\n\nНекоторое время назад мы пригласили Вас участвовать в опросе.\n\n"
-						 ."Мы заметили, что Вы еще не закончили опрос, и хотели бы напомнить Вам что опрос еще доступен если Вы захотите принять в нем участие.\n\n"
-						 ."Опрос называется:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
-						 ."Для участия, пожалуйста выберите ссылку внизу.\n\nС уважением,\n\n"
+define("_TC_EMAILREMIND", "РЈРІР°Р¶Р°РµРјР°СЏ/-С‹Р№ {FIRSTNAME},\n\nРќРµРєРѕС‚РѕСЂРѕРµ РІСЂРµРјСЏ РЅР°Р·Р°Рґ РјС‹ РїСЂРёРіР»Р°СЃРёР»Рё Р’Р°СЃ СѓС‡Р°СЃС‚РІРѕРІР°С‚СЊ РІ РѕРїСЂРѕСЃРµ.\n\n"
+						 ."РњС‹ Р·Р°РјРµС‚РёР»Рё, С‡С‚Рѕ Р’С‹ РµС‰Рµ РЅРµ Р·Р°РєРѕРЅС‡РёР»Рё РѕРїСЂРѕСЃ, Рё С…РѕС‚РµР»Рё Р±С‹ РЅР°РїРѕРјРЅРёС‚СЊ Р’Р°Рј С‡С‚Рѕ РѕРїСЂРѕСЃ РµС‰Рµ РґРѕСЃС‚СѓРїРµРЅ РµСЃР»Рё Р’С‹ Р·Р°С…РѕС‚РёС‚Рµ РїСЂРёРЅСЏС‚СЊ РІ РЅРµРј СѓС‡Р°СЃС‚РёРµ.\n\n"
+						 ."РћРїСЂРѕСЃ РЅР°Р·С‹РІР°РµС‚СЃСЏ:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
+						 ."Р”Р»СЏ СѓС‡Р°СЃС‚РёСЏ, РїРѕР¶Р°Р»СѓР№СЃС‚Р° РІС‹Р±РµСЂРёС‚Рµ СЃСЃС‹Р»РєСѓ РІРЅРёР·Сѓ.\n\nРЎ СѓРІР°Р¶РµРЅРёРµРј,\n\n"
 						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
 						 ."----------------------------------------------\n"
-						 ."Нажмите здесь для участия в опросе:\n"
+						 ."РќР°Р¶РјРёС‚Рµ Р·РґРµСЃСЊ РґР»СЏ СѓС‡Р°СЃС‚РёСЏ РІ РѕРїСЂРѕСЃРµ:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Reminder
 define("_TC_EMAILREGISTER_SUBJ", "Survey Registration Confirmation"); //New for 0.99dev01
-define("_TC_EMAILREGISTER", "Уважаемая/-ый {FIRSTNAME},\n\n"
-						  ."Вы, или кто-то используя Ваш email адрес, зарегистрировался для "
-						  ."в онлайн опросе {SURVEYNAME}.\n\n"
-						  ."Для участия опросе перерйдите по указанному адресу (URL):\n\n"
+define("_TC_EMAILREGISTER", "РЈРІР°Р¶Р°РµРјР°СЏ/-С‹Р№ {FIRSTNAME},\n\n"
+						  ."Р’С‹, РёР»Рё РєС‚Рѕ-С‚Рѕ РёСЃРїРѕР»СЊР·СѓСЏ Р’Р°С€ email Р°РґСЂРµСЃ, Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»СЃСЏ РґР»СЏ "
+						  ."РІ РѕРЅР»Р°Р№РЅ РѕРїСЂРѕСЃРµ {SURVEYNAME}.\n\n"
+						  ."Р”Р»СЏ СѓС‡Р°СЃС‚РёСЏ РѕРїСЂРѕСЃРµ РїРµСЂРµСЂР№РґРёС‚Рµ РїРѕ СѓРєР°Р·Р°РЅРЅРѕРјСѓ Р°РґСЂРµСЃСѓ (URL):\n\n"
 						  ."{SURVEYURL}\n\n"
-						  ."Если у Вас есть вопросы по опросу или если Вы "
-						  ."нем регистрировались для опроса и считаете это письмо "
-						  ."ошибочным, пожалуйста, сообщите {ADMINNAME} по адресу {ADMINEMAIL}.");//NEW for 0.98rc9
+						  ."Р•СЃР»Рё Сѓ Р’Р°СЃ РµСЃС‚СЊ РІРѕРїСЂРѕСЃС‹ РїРѕ РѕРїСЂРѕСЃСѓ РёР»Рё РµСЃР»Рё Р’С‹ "
+						  ."РЅРµРј СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»РёСЃСЊ РґР»СЏ РѕРїСЂРѕСЃР° Рё СЃС‡РёС‚Р°РµС‚Рµ СЌС‚Рѕ РїРёСЃСЊРјРѕ "
+						  ."РѕС€РёР±РѕС‡РЅС‹Рј, РїРѕР¶Р°Р»СѓР№СЃС‚Р°, СЃРѕРѕР±С‰РёС‚Рµ {ADMINNAME} РїРѕ Р°РґСЂРµСЃСѓ {ADMINEMAIL}.");//NEW for 0.98rc9
 define("_TC_EMAILCONFIRM_SUBJ", "Confirmation of completed survey"); //New for 0.99dev01
-define("_TC_EMAILCONFIRM", "Уважаемая/-ый {FIRSTNAME},\n\nЭт описьмо подтверждает, что Вы закончили опрос {SURVEYNAME} "
-						  ."и Ваши ответы сохранены. Спасибо за участие.\n\n"
-						  ."Если у Вас есть вопросы по данному письму, пожалуйста, свяжитесь с {ADMINNAME} по адресу {ADMINEMAIL}.\n\n"
-						  ."С уважением,\n\n"
+define("_TC_EMAILCONFIRM", "РЈРІР°Р¶Р°РµРјР°СЏ/-С‹Р№ {FIRSTNAME},\n\nР­С‚ РѕРїРёСЃСЊРјРѕ РїРѕРґС‚РІРµСЂР¶РґР°РµС‚, С‡С‚Рѕ Р’С‹ Р·Р°РєРѕРЅС‡РёР»Рё РѕРїСЂРѕСЃ {SURVEYNAME} "
+						  ."Рё Р’Р°С€Рё РѕС‚РІРµС‚С‹ СЃРѕС…СЂР°РЅРµРЅС‹. РЎРїР°СЃРёР±Рѕ Р·Р° СѓС‡Р°СЃС‚РёРµ.\n\n"
+						  ."Р•СЃР»Рё Сѓ Р’Р°СЃ РµСЃС‚СЊ РІРѕРїСЂРѕСЃС‹ РїРѕ РґР°РЅРЅРѕРјСѓ РїРёСЃСЊРјСѓ, РїРѕР¶Р°Р»СѓР№СЃС‚Р°, СЃРІСЏР¶РёС‚РµСЃСЊ СЃ {ADMINNAME} РїРѕ Р°РґСЂРµСЃСѓ {ADMINEMAIL}.\n\n"
+						  ."РЎ СѓРІР°Р¶РµРЅРёРµРј,\n\n"
 						  ."{ADMINNAME}"); //New for 0.98rc9 - Confirmation Email
 
 //labels.php
-define("_LB_NEWSET", "Создание нового набора меток");
-define("_LB_EDITSET", "Изменение набора меток");
-define("_LB_FAIL_UPDATESET", "Ошибка обновления набора меток");
-define("_LB_FAIL_INSERTSET", "Ошибка добавления нового набора меток");
-define("_LB_FAIL_DELSET", "Нельзя удалить набор меток - Есть вопросы связанные с ним. Вы должны сначала удалить этот вопрос.");
-define("_LB_ACTIVEUSE", "Вы не можете изменять коды, добавлять или удалять элементы в этот набор меток так как от используется в активном опросе.");
-define("_LB_TOTALUSE", "Некоторые опросы используют это набор меток. Изменяя коды, добавляя или удаляя элементы этого набора меток, Вы можете получитьнежелательные результаты в других опросах.");
+define("_LB_NEWSET", "РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РЅР°Р±РѕСЂР° РјРµС‚РѕРє");
+define("_LB_EDITSET", "РР·РјРµРЅРµРЅРёРµ РЅР°Р±РѕСЂР° РјРµС‚РѕРє");
+define("_LB_FAIL_UPDATESET", "РћС€РёР±РєР° РѕР±РЅРѕРІР»РµРЅРёСЏ РЅР°Р±РѕСЂР° РјРµС‚РѕРє");
+define("_LB_FAIL_INSERTSET", "РћС€РёР±РєР° РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ РЅР°Р±РѕСЂР° РјРµС‚РѕРє");
+define("_LB_FAIL_DELSET", "РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ РЅР°Р±РѕСЂ РјРµС‚РѕРє - Р•СЃС‚СЊ РІРѕРїСЂРѕСЃС‹ СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РЅРёРј. Р’С‹ РґРѕР»Р¶РЅС‹ СЃРЅР°С‡Р°Р»Р° СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РІРѕРїСЂРѕСЃ.");
+define("_LB_ACTIVEUSE", "Р’С‹ РЅРµ РјРѕР¶РµС‚Рµ РёР·РјРµРЅСЏС‚СЊ РєРѕРґС‹, РґРѕР±Р°РІР»СЏС‚СЊ РёР»Рё СѓРґР°Р»СЏС‚СЊ СЌР»РµРјРµРЅС‚С‹ РІ СЌС‚РѕС‚ РЅР°Р±РѕСЂ РјРµС‚РѕРє С‚Р°Рє РєР°Рє РѕС‚ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ Р°РєС‚РёРІРЅРѕРј РѕРїСЂРѕСЃРµ.");
+define("_LB_TOTALUSE", "РќРµРєРѕС‚РѕСЂС‹Рµ РѕРїСЂРѕСЃС‹ РёСЃРїРѕР»СЊР·СѓСЋС‚ СЌС‚Рѕ РЅР°Р±РѕСЂ РјРµС‚РѕРє. РР·РјРµРЅСЏСЏ РєРѕРґС‹, РґРѕР±Р°РІР»СЏСЏ РёР»Рё СѓРґР°Р»СЏСЏ СЌР»РµРјРµРЅС‚С‹ СЌС‚РѕРіРѕ РЅР°Р±РѕСЂР° РјРµС‚РѕРє, Р’С‹ РјРѕР¶РµС‚Рµ РїРѕР»СѓС‡РёС‚СЊРЅРµР¶РµР»Р°С‚РµР»СЊРЅС‹Рµ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РІ РґСЂСѓРіРёС… РѕРїСЂРѕСЃР°С….");
 //Export Labels
-define("_EL_NOLID", "Не указан LID. Нельзя создать слепок набора меток.");
+define("_EL_NOLID", "РќРµ СѓРєР°Р·Р°РЅ LID. РќРµР»СЊР·СЏ СЃРѕР·РґР°С‚СЊ СЃР»РµРїРѕРє РЅР°Р±РѕСЂР° РјРµС‚РѕРє.");
 //Import Labels
-define("_IL_GOLABELADMIN", "Вернуться к администрированию меток");
+define("_IL_GOLABELADMIN", "Р’РµСЂРЅСѓС‚СЊСЃСЏ Рє Р°РґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёСЋ РјРµС‚РѕРє");
 
 //PHPSurveyor System Summary
-define("_PS_TITLE", "Общие системные данные PHPSurveyor");
-define("_PS_DBNAME", "Имя базы данных");
-define("_PS_DEFLANG", "Язык по умолчанию");
-define("_PS_CURLANG", "Текущий язык");
-define("_PS_USERS", "Пользователи");
-define("_PS_ACTIVESURVEYS", "Активные опросы");
-define("_PS_DEACTSURVEYS", "Деактивированные опросы");
-define("_PS_ACTIVETOKENS", "Активные таблицы кл. фраз");
-define("_PS_DEACTTOKENS", "Деактивированные таблицы кл. фраз");
-define("_PS_CHECKDBINTEGRITY", "проверка целостности данных PHPSurveyor"); //New with 0.98rc8
+define("_PS_TITLE", "РћР±С‰РёРµ СЃРёСЃС‚РµРјРЅС‹Рµ РґР°РЅРЅС‹Рµ PHPSurveyor");
+define("_PS_DBNAME", "РРјСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С…");
+define("_PS_DEFLANG", "РЇР·С‹Рє РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ");
+define("_PS_CURLANG", "РўРµРєСѓС‰РёР№ СЏР·С‹Рє");
+define("_PS_USERS", "РџРѕР»СЊР·РѕРІР°С‚РµР»Рё");
+define("_PS_ACTIVESURVEYS", "РђРєС‚РёРІРЅС‹Рµ РѕРїСЂРѕСЃС‹");
+define("_PS_DEACTSURVEYS", "Р”РµР°РєС‚РёРІРёСЂРѕРІР°РЅРЅС‹Рµ РѕРїСЂРѕСЃС‹");
+define("_PS_ACTIVETOKENS", "РђРєС‚РёРІРЅС‹Рµ С‚Р°Р±Р»РёС†С‹ РєР». С„СЂР°Р·");
+define("_PS_DEACTTOKENS", "Р”РµР°РєС‚РёРІРёСЂРѕРІР°РЅРЅС‹Рµ С‚Р°Р±Р»РёС†С‹ РєР». С„СЂР°Р·");
+define("_PS_CHECKDBINTEGRITY", "РїСЂРѕРІРµСЂРєР° С†РµР»РѕСЃС‚РЅРѕСЃС‚Рё РґР°РЅРЅС‹С… PHPSurveyor"); //New with 0.98rc8
 
 //Notification Levels
-define("_NT_NONE", "Нет email извещение"); //New with 098rc5
-define("_NT_SINGLE", "Простое email извещение"); //New with 098rc5
-define("_NT_RESULTS", "Отправка email извещения с кодами результатов"); //New with 098rc5
+define("_NT_NONE", "РќРµС‚ email РёР·РІРµС‰РµРЅРёРµ"); //New with 098rc5
+define("_NT_SINGLE", "РџСЂРѕСЃС‚РѕРµ email РёР·РІРµС‰РµРЅРёРµ"); //New with 098rc5
+define("_NT_RESULTS", "РћС‚РїСЂР°РІРєР° email РёР·РІРµС‰РµРЅРёСЏ СЃ РєРѕРґР°РјРё СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ"); //New with 098rc5
 
 //CONDITIONS TRANSLATIONS
-define("_CD_CONDITIONDESIGNER", "Дизайнер условий"); //New with 098rc9
-define("_CD_ONLYSHOW", "Показывать вопрос {QID} только ЕСЛИ"); //New with 098rc9 - {QID} is repleaced leave there
-define("_CD_AND", "И"); //New with 098rc9
-define("_CD_COPYCONDITIONS", "Копирование условий"); //New with 098rc9
-define("_CD_CONDITION", "Условие"); //New with 098rc9
-define("_CD_ADDCONDITION", "Добавить условие"); //New with 098rc9
-define("_CD_EQUALS", "Равенства"); //New with 098rc9
-define("_CD_COPYRUSURE", "Вы уверены что хотите скопировать это условие(ия) в выбранные вопросы?"); //New with 098rc9
-define("_CD_NODIRECT", "Вы не можете выполнить это скрипт непосредственно."); //New with 098rc9
-define("_CD_NOSID", "Вы не выбрали опрос."); //New with 098rc9
-define("_CD_NOQID", "Вы не выбрали вопрос."); //New with 098rc9
-define("_CD_DIDNOTCOPYQ", "Вопросы не скопированы"); //New with 098rc9
-define("_CD_NOCONDITIONTOCOPY", "Нет условия для копирования из"); //New with 098rc9
-define("_CD_NOQUESTIONTOCOPYTO", "Нет условия для копирования в"); //New with 098rc9
+define("_CD_CONDITIONDESIGNER", "Р”РёР·Р°Р№РЅРµСЂ СѓСЃР»РѕРІРёР№"); //New with 098rc9
+define("_CD_ONLYSHOW", "РџРѕРєР°Р·С‹РІР°С‚СЊ РІРѕРїСЂРѕСЃ {QID} С‚РѕР»СЊРєРѕ Р•РЎР›Р"); //New with 098rc9 - {QID} is repleaced leave there
+define("_CD_AND", "Р"); //New with 098rc9
+define("_CD_COPYCONDITIONS", "РљРѕРїРёСЂРѕРІР°РЅРёРµ СѓСЃР»РѕРІРёР№"); //New with 098rc9
+define("_CD_CONDITION", "РЈСЃР»РѕРІРёРµ"); //New with 098rc9
+define("_CD_ADDCONDITION", "Р”РѕР±Р°РІРёС‚СЊ СѓСЃР»РѕРІРёРµ"); //New with 098rc9
+define("_CD_EQUALS", "Р Р°РІРµРЅСЃС‚РІР°"); //New with 098rc9
+define("_CD_COPYRUSURE", "Р’С‹ СѓРІРµСЂРµРЅС‹ С‡С‚Рѕ С…РѕС‚РёС‚Рµ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ СЌС‚Рѕ СѓСЃР»РѕРІРёРµ(РёСЏ) РІ РІС‹Р±СЂР°РЅРЅС‹Рµ РІРѕРїСЂРѕСЃС‹?"); //New with 098rc9
+define("_CD_NODIRECT", "Р’С‹ РЅРµ РјРѕР¶РµС‚Рµ РІС‹РїРѕР»РЅРёС‚СЊ СЌС‚Рѕ СЃРєСЂРёРїС‚ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ."); //New with 098rc9
+define("_CD_NOSID", "Р’С‹ РЅРµ РІС‹Р±СЂР°Р»Рё РѕРїСЂРѕСЃ."); //New with 098rc9
+define("_CD_NOQID", "Р’С‹ РЅРµ РІС‹Р±СЂР°Р»Рё РІРѕРїСЂРѕСЃ."); //New with 098rc9
+define("_CD_DIDNOTCOPYQ", "Р’РѕРїСЂРѕСЃС‹ РЅРµ СЃРєРѕРїРёСЂРѕРІР°РЅС‹"); //New with 098rc9
+define("_CD_NOCONDITIONTOCOPY", "РќРµС‚ СѓСЃР»РѕРІРёСЏ РґР»СЏ РєРѕРїРёСЂРѕРІР°РЅРёСЏ РёР·"); //New with 098rc9
+define("_CD_NOQUESTIONTOCOPYTO", "РќРµС‚ СѓСЃР»РѕРІРёСЏ РґР»СЏ РєРѕРїРёСЂРѕРІР°РЅРёСЏ РІ"); //New with 098rc9
 
 //TEMPLATE EDITOR TRANSLATIONS
-define("_TP_CREATENEW", "Создать новый шаблон"); //New with 098rc9
-define("_TP_NEWTEMPLATECALLED", "Создать новый шаблон с именем:"); //New with 098rc9
-define("_TP_DEFAULTNEWTEMPLATE", "Новый шаблон"); //New with 098rc9 (default name for new template)
-define("_TP_CANMODIFY", "Этот шаблон  может быть изменен"); //New with 098rc9
-define("_TP_CANNOTMODIFY", "Этот шаблон не может быть изменен"); //New with 098rc9
-define("_TP_RENAME", "Переименовать этот шаблон");  //New with 098rc9
-define("_TP_RENAMETO", "Переименовать этот шаблон в:"); //New with 098rc9
-define("_TP_COPY", "Сделать копию этого шаблона");  //New with 098rc9
-define("_TP_COPYTO", "Создать копию этого шаблона с именем:"); //New with 098rc9
+define("_TP_CREATENEW", "РЎРѕР·РґР°С‚СЊ РЅРѕРІС‹Р№ С€Р°Р±Р»РѕРЅ"); //New with 098rc9
+define("_TP_NEWTEMPLATECALLED", "РЎРѕР·РґР°С‚СЊ РЅРѕРІС‹Р№ С€Р°Р±Р»РѕРЅ СЃ РёРјРµРЅРµРј:"); //New with 098rc9
+define("_TP_DEFAULTNEWTEMPLATE", "РќРѕРІС‹Р№ С€Р°Р±Р»РѕРЅ"); //New with 098rc9 (default name for new template)
+define("_TP_CANMODIFY", "Р­С‚РѕС‚ С€Р°Р±Р»РѕРЅ  РјРѕР¶РµС‚ Р±С‹С‚СЊ РёР·РјРµРЅРµРЅ"); //New with 098rc9
+define("_TP_CANNOTMODIFY", "Р­С‚РѕС‚ С€Р°Р±Р»РѕРЅ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РёР·РјРµРЅРµРЅ"); //New with 098rc9
+define("_TP_RENAME", "РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ СЌС‚РѕС‚ С€Р°Р±Р»РѕРЅ");  //New with 098rc9
+define("_TP_RENAMETO", "РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ СЌС‚РѕС‚ С€Р°Р±Р»РѕРЅ РІ:"); //New with 098rc9
+define("_TP_COPY", "РЎРґРµР»Р°С‚СЊ РєРѕРїРёСЋ СЌС‚РѕРіРѕ С€Р°Р±Р»РѕРЅР°");  //New with 098rc9
+define("_TP_COPYTO", "РЎРѕР·РґР°С‚СЊ РєРѕРїРёСЋ СЌС‚РѕРіРѕ С€Р°Р±Р»РѕРЅР° СЃ РёРјРµРЅРµРј:"); //New with 098rc9
 define("_TP_COPYOF", "copy_of_"); //New with 098rc9 (prefix to default copy name)
-define("_TP_FILECONTROL", "Управление файлами:"); //New with 098rc9
-define("_TP_STANDARDFILES", "Стандартные файлы:");  //New with 098rc9
-define("_TP_NOWEDITING", "Редактируется:");  //New with 098rc9
-define("_TP_OTHERFILES", "Другие файлы:"); //New with 098rc9
-define("_TP_PREVIEW", "Предпросмотр:"); //New with 098rc9
-define("_TP_DELETEFILE", "Удалить"); //New with 098rc9
-define("_TP_UPLOADFILE", "Загрузить"); //New with 098rc9
-define("_TP_SCREEN", "Экран:"); //New with 098rc9
-define("_TP_WELCOMEPAGE", "Страница приветствия"); //New with 098rc9
-define("_TP_QUESTIONPAGE", "Страница вопроса"); //New with 098rc9
-define("_TP_SUBMITPAGE", "Страница отправки");
-define("_TP_COMPLETEDPAGE", "Страница завершения"); //New with 098rc9
-define("_TP_CLEARALLPAGE", "Очистить все страницы"); //New with 098rc9
-define("_TP_REGISTERPAGE", "Страница регистрации"); //New with 098finalRC1
-define("_TP_EXPORT", "Export шаблона"); //New with 098rc10
+define("_TP_FILECONTROL", "РЈРїСЂР°РІР»РµРЅРёРµ С„Р°Р№Р»Р°РјРё:"); //New with 098rc9
+define("_TP_STANDARDFILES", "РЎС‚Р°РЅРґР°СЂС‚РЅС‹Рµ С„Р°Р№Р»С‹:");  //New with 098rc9
+define("_TP_NOWEDITING", "Р РµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ:");  //New with 098rc9
+define("_TP_OTHERFILES", "Р”СЂСѓРіРёРµ С„Р°Р№Р»С‹:"); //New with 098rc9
+define("_TP_PREVIEW", "РџСЂРµРґРїСЂРѕСЃРјРѕС‚СЂ:"); //New with 098rc9
+define("_TP_DELETEFILE", "РЈРґР°Р»РёС‚СЊ"); //New with 098rc9
+define("_TP_UPLOADFILE", "Р—Р°РіСЂСѓР·РёС‚СЊ"); //New with 098rc9
+define("_TP_SCREEN", "Р­РєСЂР°РЅ:"); //New with 098rc9
+define("_TP_WELCOMEPAGE", "РЎС‚СЂР°РЅРёС†Р° РїСЂРёРІРµС‚СЃС‚РІРёСЏ"); //New with 098rc9
+define("_TP_QUESTIONPAGE", "РЎС‚СЂР°РЅРёС†Р° РІРѕРїСЂРѕСЃР°"); //New with 098rc9
+define("_TP_SUBMITPAGE", "РЎС‚СЂР°РЅРёС†Р° РѕС‚РїСЂР°РІРєРё");
+define("_TP_COMPLETEDPAGE", "РЎС‚СЂР°РЅРёС†Р° Р·Р°РІРµСЂС€РµРЅРёСЏ"); //New with 098rc9
+define("_TP_CLEARALLPAGE", "РћС‡РёСЃС‚РёС‚СЊ РІСЃРµ СЃС‚СЂР°РЅРёС†С‹"); //New with 098rc9
+define("_TP_REGISTERPAGE", "РЎС‚СЂР°РЅРёС†Р° СЂРµРіРёСЃС‚СЂР°С†РёРё"); //New with 098finalRC1
+define("_TP_EXPORT", "Export С€Р°Р±Р»РѕРЅР°"); //New with 098rc10
 define("_TP_LOADPAGE", "Load Page"); //New with 0.99dev01
 define("_TP_SAVEPAGE", "Save Page"); //New with 0.99dev01
 
