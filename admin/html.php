@@ -898,7 +898,8 @@ if ($action == "addquestion")
 				  . "\t\t</td>\n"
 				  . "\t</tr>\n";
 	
-	$newquestion .= questionjavascript($eqrow['type']);	
+	if (isset($eqrow)) {$newquestion .= questionjavascript($eqrow['type']);}
+	else {$newquestion .= questionjavascript('');}
 
 	$newquestion .= "\t<tr>\n"
 				  . "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='"._ADDQ."' /></td>\n"
