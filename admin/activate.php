@@ -82,7 +82,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	//	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
 	//	# "A", "B", "C", "E", "F", "H" -> Various Array Types
 	//  # "R" -> RANKING
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R')";
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', '!')";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
@@ -104,7 +104,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		}
 	
 	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H') AND lid = 0";
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z') AND (lid = 0 OR lid is null)";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".mysql_error());
 	while($chkrow = mysql_fetch_array($chkresult)){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOLID, $chkrow['gid']);
