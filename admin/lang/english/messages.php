@@ -1,7 +1,13 @@
 <?php
 
 
-
+//BUTTON BAR TITLES
+define(_ADMINISTRATION, "Administration");
+define(_SURVEY, "Survey");
+define(_GROUP, "Group");
+define(_QUESTION, "Question");
+define(_ANSWERS, "Answers");
+define(_HELP, "Help");
 
 //BUTTON MOUSEOVERS
 //administration bar
@@ -15,10 +21,11 @@ define(_A_HELP_BT, "Show Help");
 //Survey bar
 define(_S_ACTIVE_BT, "This survey is currently active");
 define(_S_INACTIVE_BT, "This survey is not currently active");
-define(_S_ACTIVATE_BT, "Activate This Survey");
-define(_S_DEACTIVATE_BT, "De-activate This Survey");
+define(_S_ACTIVATE_BT, "Activate this Survey");
+define(_S_DEACTIVATE_BT, "De-activate this Survey");
+define(_S_CANNOTACTIVATE_BT, "Cannot Activate this Survey");
 define(_S_DOSURVEY_BT, "Do Survey");
-define(_S_DATAENTRY_BT, "Dataentry Screen For Survey");
+define(_S_DATAENTRY_BT, "Dataentry Screen for Survey");
 define(_S_PRINTABLE_BT, "Printable Version of Survey");
 define(_S_EDIT_BT, "Edit Current Survey");
 define(_S_DELETE_BT, "Delete Current Survey");
@@ -46,6 +53,35 @@ define(_Q_LABELS_BT, "Edit/Add Labels to this Question");
 define(_Q_MINIMISE_BT, "Hide Details of this Question");
 define(_Q_MAXIMISE_BT, "Show Details of this Question");
 define(_Q_CLOSE_BT, "Close this Question");
+
+//DATA LABELS
+//surveys
+define(_SL_TITLE, "Title:");
+define(_SL_DESCRIPTION, "Description:");
+define(_SL_WELCOME, "Welcome:");
+define(_SL_ADMIN, "Admin:");
+define(_SL_FAXTO, "Fax To:");
+define(_SL_EXPIRES, "Expires:");
+define(_SL_TEMPLATE, "Template:");
+define(_SL_LANGUAGE, "Language:");
+define(_SL_LINK, "Link:");
+define(_SL_STATUS, "Status:");
+//groups
+define(_GL_TITLE, "Title:");
+define(_GL_DESCRIPTION, "Description:");
+//questions
+define(_QL_TITLE, "Title:");
+define(_QL_QUESTION, "Question:");
+define(_QL_HELP, "Help:");
+define(_QL_TYPE, "Type:");
+define(_QL_MANDATORY, "Mandatory:");
+define(_QL_OTHER, "Other:");
+//answers
+define(_AL_CODE, "Code");
+define(_AL_ANSWER, "Answer");
+define(_AL_DEFAULT, "Default");
+define(_AL_MOVE, "Move");
+define(_AL_ACTION, "Action");
 
 
 ?>
