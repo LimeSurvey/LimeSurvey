@@ -765,7 +765,7 @@ function submittokens()
 function sendsubmitnotification($sendnotification)
 	{
 	global $thissurvey;
-	global $savedid;
+	global $savedid, $dbprefix;
 	global $sitename, $homeurl, $sid;
 	$subject = "$sitename Survey Submitted";
 	$message = _CONFIRMATION_MESSAGE1." {$thissurvey['name']}\r\n"
@@ -780,7 +780,12 @@ function sendsubmitnotification($sendnotification)
 		foreach ($_SESSION['insertarray'] as $value)
 			{
 			$questiontitle=returnquestiontitlefromfieldcode($value);
-			$message .= "$questiontitle:   {$_SESSION[$value]}\r\n";
+			$message .= "$questiontitle:   ";
+			if (isset($_SESSION[$value]))
+				{
+			    $message .= getextendedanswer($value, $_SESSION[$value]);
+				}
+			$message .= "\r\n";
 			}
 		$message .= "----------------------------\r\n\r\n";
 		}

@@ -48,6 +48,15 @@ header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
+//Select public language file
+$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
+$result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+$langdir="$publicdir/lang";
+$langfilename="$langdir/$surveylanguage.lang.php";
+if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
+require($langfilename);
+
 $surveyoptions = browsemenubar();
 echo $htmlheader;
 echo "<table height='1'><tr><td></td></tr></table>\n"
@@ -240,9 +249,11 @@ if ($action == "id") // Looking at a SINGLE entry
 		for ($i; $i<$nfncount+1; $i++)
 			{
 			echo "\t<tr>\n"
-				."\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>$setfont{$fnames[$i][2]}</td>\n"
+				."\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>"
+				."$setfont{$fnames[$i][2]}</td>\n"
 				."\t\t<td valign='top' style='padding-left: 5px'>$setfont"
-				. htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</font></td>\n"
+				.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]]), ENT_QUOTES) 
+				."</font></td>\n"
 				."\t</tr>\n"
 				."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 			}
