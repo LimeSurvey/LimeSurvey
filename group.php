@@ -243,7 +243,7 @@ if ($_POST['move'] == " "._SUBMIT." ")
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				$cookie_life = time() + 31536000; // 1 year life
-				setcookie($cookiename, "COMPLETE", $cookielife);
+				setcookie("$cookiename", "COMPLETE", time() + 31536000);
 				}
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
