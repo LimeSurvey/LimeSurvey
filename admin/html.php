@@ -58,7 +58,7 @@ if ($sid)
 	$surveysummary .= "\t\t\t}\n";
 	$surveysummary .= "\t\telse if (action == \"hideg\")\n";
 	$surveysummary .= "\t\t\t{\n";
-	$surveysummary .= "\t\t\tfor (i=11; i<=13; i++)\n";
+	$surveysummary .= "\t\t\tfor (i=20; i<=21; i++)\n";
 	$surveysummary .= "\t\t\t\t{\n";
 	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
 	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='none';\n";
@@ -66,7 +66,23 @@ if ($sid)
 	$surveysummary .= "\t\t\t}\n";
 	$surveysummary .= "\t\telse if (action == \"showg\")\n";
 	$surveysummary .= "\t\t\t{\n";
-	$surveysummary .= "\t\t\tfor (i=11; i<=13; i++)\n";
+	$surveysummary .= "\t\t\tfor (i=20; i<=21; i++)\n";
+	$surveysummary .= "\t\t\t\t{\n";
+	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
+	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='';\n";
+	$surveysummary .= "\t\t\t\t}\n";
+	$surveysummary .= "\t\t\t}\n";
+	$surveysummary .= "\t\telse if (action == \"hideq\")\n";
+	$surveysummary .= "\t\t\t{\n";
+	$surveysummary .= "\t\t\tfor (i=30; i<=34; i++)\n";
+	$surveysummary .= "\t\t\t\t{\n";
+	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
+	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='none';\n";
+	$surveysummary .= "\t\t\t\t}\n";
+	$surveysummary .= "\t\t\t}\n";
+	$surveysummary .= "\t\telse if (action == \"showq\")\n";
+	$surveysummary .= "\t\t\t{\n";
+	$surveysummary .= "\t\t\tfor (i=30; i<=34; i++)\n";
 	$surveysummary .= "\t\t\t\t{\n";
 	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
 	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='';\n";
@@ -75,70 +91,134 @@ if ($sid)
 	$surveysummary .= "\t\t}\n";
 	$surveysummary .= "-->\n";
 	$surveysummary .= "</script>\n";
-	$sumquery1 = "SELECT * FROM surveys WHERE sid=$sid";
+	$sumquery3 = "SELECT * FROM questions WHERE sid=$sid"; //Getting a count of questions for this survey
+	$sumresult3 = mysql_query($sumquery3);
+	$sumcount3 = mysql_num_rows($sumresult3);
+	$sumquery2 = "SELECT * FROM groups WHERE sid=$sid"; //Getting a count of groups for this survey
+	$sumresult2 = mysql_query($sumquery2);
+	$sumcount2 = mysql_num_rows($sumresult2);
+	$sumquery1 = "SELECT * FROM surveys WHERE sid=$sid"; //Getting data for this survey
 	$sumresult1 = mysql_query($sumquery1);
 	$surveysummary .= "<table width='100%' align='center' bgcolor='silver' border='0'>\n";
 	while ($s1row = mysql_fetch_array($sumresult1))
 		{
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n";
+		$activated = $s1row['active'];
+		$surveysummary .= "\t<tr>\n";
+		$surveysummary .= "\t\t<td colspan='2'>\n";
+		$surveysummary .= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		$surveysummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>Survey</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
+		$surveysummary .= "\t\t\t\t<tr height='22' bgcolor='#999999'><td align='right'>\n";
+		if ($activated == "N" && $sumcount3>0) 
+			{
+			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' alt='Survey is Not Active' border='0' hspace='0' align='left'>\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/activate.gif' title='Activate Survey' border='0' hspace='0' align='left' onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
+			}
+		elseif ($activated == "Y")
+			{
+			$surveysummary .= "\t\t\t\t\t<img src='./images/active.gif' alt='Survey is Active' border='0' hspace='0' align='left'>\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/deactivate.gif' title='De-activate Survey' border='0' hspace='0' align='left' onClick=\"window.open('$scriptname?action=deactivate&sid=$sid', '_top')\">\n";
+			}
+		elseif ($activated == "N")
+			{
+			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' alt='Survey is Not Active' border='0' hspace='0' align='left'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='11' alt='Cannot be activated yet' border='0' align='left' hspace='0'>\n";
+			}
+		//$surveysummary .= "\t\t\t\t</td>\n";
+		//$surveysummary .= "\t\t\t\t<td>\n";
+		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/do.gif' title='Do Survey' align='left' border='0' hspace='0' onclick=\"window.open('../index.php?sid=$sid&newtest=Y', '_blank')\">\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/dataentry.gif' title='Data Entry' align='left' border='0' hspace='0' onclick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/print.gif' title='Printable Version' align='left' border='0' hspace='0' onclick=\"window.open('printablesurvey.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='Edit Survey' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editsurvey&sid=$sid', '_top')\">\n";
+		if ($sumcount3 == 0 && $sumcount2 == 0)
+			{
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='Delete Survey' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delsurvey&sid=$sid', '_top')\">\n";
+			}
+		else
+			{
+			$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";
+			}
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='Export Survey' align='left' border='0' hspace='0' onclick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
+		if ($activated == "Y")
+			{
+			$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/browse.gif' title='Browse Results' align='left' border='0' hspace='0' onclick=\"window.open('browse.php?sid=$sid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/tokens.gif' title='Tokens' align='left' border='0' hspace='0' onclick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
+			}
+		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
+		$surveysummary .= "\t\t\t\t</td>\n";
+		$surveysummary .= "\t\t\t\t<td align='right' valign='middle' width='300'>\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"shows\")'>";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hides\")'>\n";
+		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='right' border='0' hspace='0'>\n";
+		if ($activated == "Y")
+			{
+			$surveysummary .= "<img src='./images/blank.gif' width='20' align='right' border='0' hspace='0'>\n";
+			}
+		else
+			{
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='Add Group' align='right' border='0' hspace='0' onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";
+			}
+		$surveysummary .= "<font size='1' color='#222222'><b>Groups:</b>";
+		$surveysummary .= "\t\t<select style='font-size: 9; font-family: verdana; font-color: #222222; background: silver; width: 160' name='groupselect' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+		if (getgrouplist($gid))
+			{
+			$surveysummary .= getgrouplist($gid);
+			}
+		else
+			{
+			$surveysummary .= "<option>No Groups</option>\n";
+			}
+		$surveysummary .= "</select>\n";
+		$surveysummary .= "\t\t\t\t</td>";
+		$surveysummary .= "</tr>\n";
+		$surveysummary .= "\t\t\t</table>\n";
+		$surveysummary .= "\t\t</td>\n";
+		$surveysummary .= "\t</tr>\n";
+		
+		if ($gid || $qid || $action=="editsurvey" || $action=="addgroup") {$showstyle="style='display: none'";}
+		
+		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n";
 		$surveysummary .= "\t<td>";
-		$surveysummary .= "<img src='./images/plus.gif' alt='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"shows\")'>";
-		$surveysummary .= "<img src='./images/minus.gif' alt='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hides\")'>\n";
-		$surveysummary .= "$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
-		if ($s1row['private'] != "N") {$surveysummary .= "This survey is anonymous";}
-		else {$surveysummary .= "This survey is <b>not</b> anonymous";}
-		if ($s1row['format'] == "S") {$surveysummary .= " and is presented question by question. ";}
-		elseif ($s1row['format'] == "G") {$surveysummary .= " and is presented group by group. ";}
-		else {$surveysummary .= " and is presented as one single page. ";}
-		if ($s1row['datestamp'] == "Y") {$surveysummary .= "Responses will be date-stamped.";}
-		$surveysummary .= "</font></td></tr>\n";
-		if ($gid || $qid) {$showstyle="style='display: none'";}
-		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
+		$surveysummary .= "$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b></td></tr>\n";
+		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td><td>$setfont<font size='1' color='#000080'>\n";
+		if ($s1row['private'] != "N") {$surveysummary2 .= "This survey is anonymous";}
+		else {$surveysummary2 .= "This survey is <b>not</b> anonymous";}
+		if ($s1row['format'] == "S") {$surveysummary2 .= " and is presented question by question. ";}
+		elseif ($s1row['format'] == "G") {$surveysummary2 .= " and is presented group by group. ";}
+		else {$surveysummary2 .= " and is presented as one single page. ";}
+		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= "Responses will be date-stamped.";}
+		$surveysummary2 .= "</font></td></tr>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails1'>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails3'>\n";
 		$surveysummary .= "\t\t<td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails3'><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
 		if ($s1row['expires'] != "0000-00-00") 
 			{
 			$expdate=$s1row['expires'];
 			}
 		$expdate="Never";
 		$surveysummary .= "\t<td>$setfont$expdate</font></td></tr>\n";
-		$activated = $s1row['active'];
-		$surveysummary .= "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<b>Language:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<b>Language:</b></font></td>\n";
 		if (!$s1row['language']) {$language=$defaultlang;} else {$language=$s1row['language'];}
 		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>{$s1row['urldescrip']}</a></font></td></tr>\n";
 		}
 	
-	$sumquery2 = "SELECT * FROM groups WHERE sid=$sid";
-	$sumresult2 = mysql_query($sumquery2);
-	$sumcount2 = mysql_num_rows($sumresult2);
-	$surveysummary .= "\t<tr $showstyle id='surveydetails8'><td align='right'>$setfont<b>Groups:</b></font></td>\n";
-	$surveysummary .= "\t<td>$setfont";
-	if ($groupselect)
-		{
-		$surveysummary .= "\t\t<select $slstyle name='groupselect' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
-		$surveysummary .= $groupselect;
-		$surveysummary .= "</select>\n";
-		}
-
-	$sumquery3 = "SELECT * FROM questions WHERE sid=$sid";
-	$sumresult3 = mysql_query($sumquery3);
-	$sumcount3 = mysql_num_rows($sumresult3);
-
-	$surveysummary .= "\t<font size='1'>($sumcount2 groups, $sumcount3 questions)</font></td></tr>\n";
-
-	$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right'>$setfont<b>Activation:</b></font></td>\n";
+	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<b>Status:</b></font></td>\n";
 	$surveysummary .= "\t<td valign='top'>$setfont";
+	$surveysummary .= "<font size='1'>This survey contains $sumcount2 groups and $sumcount3 questions.</font><br />\n";
 	if ($activated == "N" && $sumcount3 > 0)
 		{
 		$surveysummary .= "\t\t<input $btstyle type='submit' value='Activate' onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
@@ -151,10 +231,10 @@ if ($sid)
 		}
 	else
 		{
-		$surveysummary .= "<font size='1'>Survey cannot be activated yet.\n";
+		$surveysummary .= "<font size='1'>Survey cannot be activated yet.<br />\n";
 		if ($sumcount2 == 0) 
 			{
-			$surveysummary .= "\t<font color='green'>[You need to Add Groups]</font>";
+			$surveysummary .= "\t<font color='green'>[You need to Add Groups]</font><br />";
 			}
 		if ($sumcount3 == 0)
 			{
@@ -162,27 +242,7 @@ if ($sid)
 			}
 		}
 	$surveysummary .= "</td></tr>\n";
-	
-	//OPTIONS
-	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td colspan='2' align='right'>\n";
-	$surveysummary .= "\t\t<input type='submit' $btstyle value='Export' title='Export Survey Structure..' onClick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
-	if ($activated == "N") 
-		{
-		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test Data Entry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
-		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test Survey' onClick=\"window.open('../index.php?sid=$sid&newtest=Y', '_blank')\">\n";
-		}
-	else 
-		{
-		$surveysummary .= "\t\t<input type='submit' $btstyle value='Browse' onClick=\"window.open('browse.php?sid=$sid', '_top')\">\n";
-		$surveysummary .= "\t\t<input type='submit' $btstyle value='Data Entry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
-		$surveysummary .= "\t\t<input type='submit' $btstyle value='Do Survey' onClick=\"window.open('../index.php?sid=$sid', '_blank')\">\n";
-		}
-	$surveysummary .= "\t\t<input type='submit' $btstyle value='Edit Survey' onClick=\"window.open('$scriptname?action=editsurvey&sid=$sid', '_top')\">\n";
-	if ($activated == "N") {$surveysummary .= "\t\t<input type='submit' $btstyle value='Add Group' onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";}
-	if ($sumcount3 == 0 && $sumcount2 == 0) {$surveysummary .= "\t\t<input type='submit' $btstyle value='Delete Survey' onClick=\"window.open('$scriptname?action=delsurvey&sid=$sid', '_top')\">\n";}
-	
-	$surveysummary .= "\t</td></tr>\n";
-	
+	$surveysummary .= $surveysummary2;
 	$surveysummary .= "</table>\n";
 	}
 
@@ -193,72 +253,110 @@ if ($gid)
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = mysql_fetch_array($grpresult))
 		{
+		$groupsummary .= "\t<tr>\n";
+		$groupsummary .= "\t\t<td colspan='2'>\n";
+		$groupsummary .= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		$groupsummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>Group</b> <font color='silver'>{$grow['group_name']}</td></tr>\n";
+		$groupsummary .= "\t\t\t\t<tr bgcolor='#AAAAAA'>\n";
+		$groupsummary .= "\t\t\t\t\t<td>\n";
+		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
+		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
+		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='Edit Group' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">";
+		if ($sumcount3 == 0) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='Delete Group' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
+		else				 {$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
+		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";
+		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+		$groupsummary .= "\t\t\t\t\t</td>\n";
+		$groupsummary .= "\t\t\t\t\t<td align='right' width='300'>\n";
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"showg\")'>";
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hideg\")'>\n";
+		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='right' border='0' hspace='0'>\n";
+		if ($activated == "Y")
+			{
+			$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' border='0' hspace='0' align='right'>\n";
+			}
+		else
+			{
+			$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='Add New Question' border='0' hspace='0' align='right' onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";
+			}
+		$groupsummary .= "\t\t\t\t\t$setfont<font size='1'><b>Questions:</b> <select name='qid' onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\" style='font-size:9; font-family: verdana; font-color: #333333; background-color: silver; width: 160'>\n";
+		$groupsummary .= getquestions();
+		$groupsummary .= "\t\t\t\t\t</select>\n";
+		$groupsummary .= "\t\t\t\t</td></tr>\n";
+		$groupsummary .= "\t\t\t</table>\n";
+		$groupsummary .= "\t\t</td>\n";
+		$groupsummary .= "\t</tr>\n";
 		if ($qid) {$gshowstyle="style='display: none'";}
-		$groupsummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Group Title:</b></font></td>\n";
+
+		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'>$setfont<b>Group Title:</b></font></td>\n";
 		$groupsummary .="\t<td>";
-		$groupsummary .= "<img src='./images/plus.gif' alt='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"showg\")'>";
-		$groupsummary .= "<img src='./images/minus.gif' alt='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hideg\")'>\n";
 		$groupsummary .="$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n";
-		$groupsummary .= "\t<tr $gshowstyle id='surveydetails11'><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
+		$groupsummary .= "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
 		}
-	$groupsummary .="\t<tr $gshowstyle id='surveydetails12'><td align='right'>$setfont<b>Questions:</b></font></td>\n";
-	$groupsummary .="\t<td><select $slstyle name='qid' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
-	$groupsummary .= getquestions();
-	$groupsummary .= "\n\t\t</select></td></tr>\n";
-	$groupsummary .= "\n\t<tr $gshowstyle id='surveydetails13'><td colspan='2' align='right'>\n";
-	$groupsummary .= "\t\t<input type='submit' $btstyle value='Edit Group' onClick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">\n";
-	if ($activated == "N") {$groupsummary .= "\t\t<input type='submit' $btstyle value='Add Question' onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";}
-	$qquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid ORDER BY title";
-	$qresult = mysql_query($qquery);
-	$qcount = mysql_num_rows($qresult);
-	if ($qcount == 0) {$groupsummary .= "\t\t<input type='submit' $btstyle value='Delete Group' onClick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
-	$groupsummary .= "\t</td></tr>\n</table>\n";
+	$groupsummary .= "\n</table>\n";
 	}
 
 if ($qid)
 	{
+	$qrq = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
+	$qrr = mysql_query($qrq);
+	$qct = mysql_num_rows($qrr);
 	$qrquery = "SELECT * FROM questions WHERE gid=$gid AND sid=$sid AND qid=$qid";
 	$qrresult = mysql_query($qrquery);
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = mysql_fetch_array($qrresult))
 		{
-		$questionsummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Question Title:</b></font></td>\n";
+		$questionsummary .= "\t<tr>\n";
+		$questionsummary .= "\t\t<td colspan='2'>\n";
+		$questionsummary .= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		$questionsummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>Question</b> <font color='silver'>{$qrrow['question']}</td></tr>\n";
+		$questionsummary .= "\t\t\t\t<tr bgcolor='#AAAAAA'>\n";
+		$questionsummary .= "\t\t\t\t\t<td>\n";
+		$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
+		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+		$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
+		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='Edit Group' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">";
+		if ($qct == 0 && $activated=="N") {$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='Delete Group' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
+		else				 {$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='Export Survey' align='left' border='0' hspace='0' onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n";
+		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/conditions.gif' border='0' hspace='0' align='left' title='Set Conditions' onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n";
+		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
+			{
+			$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/answers.gif' border='0' hspace='0' align='left' title='View and Edit Answers' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
+			}
+		$questionsummary .= "\t\t\t\t\t</td>\n";
+		$questionsummary .= "\t\t\t\t\t<td align='right'>\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"showq\")'>";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hideq\")'>\n";
+		$questionsummary .= "\t\t\t\t</td></tr>\n";
+		$questionsummary .= "\t\t\t</table>\n";
+		$questionsummary .= "\t\t</td>\n";
+		$questionsummary .= "\t</tr>\n";
+		if ($_GET['viewanswer'] || $_POST['viewanswer'])
+			{
+			$qshowstyle = "style='display: none'";
+			}
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'>$setfont<b>Title:</b></font></td>\n";
 		$questionsummary .= "\t<td>$setfont{$qrrow['title']}";
 		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>Mandatory Question</i>)";}
 		else {$questionsummary .= ": (<i>Optional Question</i>)";}
 		$questionsummary .= "</td></tr>\n";
-		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
-		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
-		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
-		$qrq = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
-		$qrr = mysql_query($qrq);
-		$qct = mysql_num_rows($qrr);
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>Type:</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R"))
 			{
-			$questionsummary .= "\t\t<tr><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question</font></td></tr>\n";
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question</font></td></tr>\n";
 			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
-			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
+			$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
 			}
-		$questionsummary .= "\t<tr><td colspan='2' align='right'>\n";
-		$questionsummary .= "\t\t<input type='submit' $btstyle value='Set Conditions' onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n";
-		$questionsummary .= "\t\t<input type='submit' $btstyle value='Edit Question' onClick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
-		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
-			{
-			$questionsummary .= "\t\t<input type='submit' $btstyle value='Answers' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
-			if (($activated == "Y" && $qrrow['type'] == "L") || ($activated == "N"))
-				{
-				}
-			if ($qct == 0)
-				{
-				$questionsummary .= "\t\t<input type='submit' $btstyle value='Delete Question' onClick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
-				}
-			}
-		else {$questionsummary .= "\t\t<input type='submit' $btstyle value='Delete Question' onClick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";}
-		if ($activated == "N") {$questionsummary .= "\t\t<input type='submit' $btstyle value='Copy Question' onClick=\"window.open('$scriptname?action=copyquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";}
-		$questionsummary .= "\t</td></tr>\n";
 		}
 	$questionsummary .= "</table>\n";
 	}
@@ -279,7 +377,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 			fixsortorder($qid);
 			}
 		}
-	$vasummary .= "<table width='100%' align='center' border='0'>\n";
+	$vasummary .= "<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n";
 	$cdquery = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
 	$cdresult = mysql_query($cdquery);
 	$cdcount = mysql_num_rows($cdresult);

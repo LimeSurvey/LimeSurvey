@@ -276,7 +276,7 @@ echo "//-->\n";
 echo "</script>\n";	
 
 //SHOW FORM TO CREATE IT!
-echo "<table width='98%' align='center' cellspacing='0' cellpadding='0'>\n";
+echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-size: 1; border-color: #555555'>\n";
 echo "\t<tr bgcolor='#CDCDCD'>\n";
 echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t$setfont<b>Only show question $questiontitle<img src='./images/speaker.jpg' alt='$questiontext' onClick=\"alert('$questiontext')\"> if:</b></font>\n";
@@ -357,7 +357,14 @@ if ($conditionscount > 0)
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	}
-
+else
+	{
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='3' height='3'>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	}
+	
 echo "\t<tr bgcolor='#CDCDCD'>\n";
 echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t$setfont<b>New Condition:</b></font>\n";
