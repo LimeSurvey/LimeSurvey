@@ -738,22 +738,21 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			}
 		elseif (substr($rt, 0, 1) == "R") //RANKING OPTION THEREFORE CONFUSING
 			{
-			$lengthofnumeral=substr($rt, strchr($rt, "-"), 1);
-			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strchr($rt, "-")-($lengthofnumeral+1)), 3);	
-	
+			$lengthofnumeral=substr($rt, strpos($rt, "-")+1, 1);
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-")-($lengthofnumeral+1)), 3);	
 			$nquery = "SELECT title, type, question FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
 				{
-				$qtitle=$nrow[0]. " [".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]"; 
+				$qtitle=$nrow[0]. " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]"; 
 				$qtype=$nrow[1]; 
-				$qquestion=strip_tags($nrow[2]). "["._RANK." ".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]";
+				$qquestion=strip_tags($nrow[2]). "["._RANK." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 				}
 			$query="SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qqid' ORDER BY sortorder, answer";
 			$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
-				$mfield=substr($rt, 1, strchr($rt, "-")-($lengthofnumeral));
+				$mfield=substr($rt, 1, strpos($rt, "-")-1);
 				$alist[]=array("$row[0]", "$row[1]", $mfield);
 				}
 			}
