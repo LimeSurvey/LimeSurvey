@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-include("config.php");
+require_once("config.php");
 
 sendcacheheaders();
 
@@ -321,7 +321,11 @@ echo "</script>\n";
 echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-size: 1; border-color: #555555'>\n";
 echo "\t<tr bgcolor='#CDCDCD'>\n";
 echo "\t\t<td colspan='3' align='center'>\n";
-echo "\t\t\t$setfont<b>Only show question $questiontitle<img src='./images/speaker.jpg' alt='$questiontext' onClick=\"alert('$questiontext')\"> if:</b></font>\n";
+echo "\t\t\t$setfont<b>Only show question $questiontitle<img src='./images/speaker.jpg' alt='"
+	. addslashes($questiontext)
+	. "' onClick=\"alert('"
+	. addslashes($questiontext)
+	. "')\"> if:</b></font>\n";
 echo "\t\t</td>\n";
 echo "\t</tr>\n";
 
