@@ -77,12 +77,12 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $ba
 					}
 				}
 			$multiname="MULTI$mfns[$mi]";
-			$multiname2=$multiname; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
+			$multiname2=$multiname."2"; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
 			$$multiname=0; 
 			$$multiname2=0;
 			}
 		else {$multiname="MULTI$mfns[$mi]";}
-		if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
+		if (isset($_SESSION[$cm]) && ($_SESSION[$cm] == "0" || $_SESSION[$cm]))
 			{
 			}
 		elseif (!isset($_POST[$multiname]) || !$_POST[$multiname])
@@ -139,7 +139,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && (!isset($backok) 
 			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$cmfns[$mi];
 			}
-		elseif ($_POST[$dccm] == "on" && !$_SESSION[$ccm] && $_POST[$multiname])
+		elseif ($_POST[$dccm] == "on" && !$_SESSION[$ccm] && isset($_POST[$multiname]))
 			{
 			$notanswered[]=$cmfns[$mi];
 			}

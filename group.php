@@ -60,9 +60,9 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $ba
 	$mi=0;
 	foreach ($chkmands as $cm)
 		{
-		if (!isset($multiname) || $multiname != "MULTI$mfns[$mi]") 
+		if (!isset($multiname) || $multiname != "MULTI$mfns[$mi]") //no multiple type mandatory set, or does not match this question
 			{
-			if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname]))
+			if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname])) //multiple type mandatory is set
 				{
 				if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 					{
@@ -76,12 +76,13 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $ba
 					}
 				}
 			$multiname="MULTI$mfns[$mi]";
-			$multiname2=$multiname; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
+			$multiname2=$multiname."2"; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
 			$$multiname=0; 
 			$$multiname2=0;
 			}
 		else {$multiname="MULTI$mfns[$mi]";}
-		if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
+		//if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
+		if (isset($_SESSION[$cm]))
 			{
 			}
 		elseif (!isset($_POST[$multiname]) || !$_POST[$multiname])
@@ -143,7 +144,8 @@ if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok
 			}
 		else{$multiname="MULTI$cmfns[$mi]";}
 		$dccm="display$cmfns[$mi]";
-		if (($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && $_POST[$dccm] == "on")//There is an answer
+		//if (($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && $_POST[$dccm] == "on")//There is an answer
+		if (isset($_SESSION[$ccm]) && isset($_POST[$dccm]) && $_POST[$dccm] == "on")
 			{
 			}
 		elseif ($_POST[$dccm] == "on" && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
@@ -156,7 +158,7 @@ if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok
 		elseif ($_POST[$dccm] == "on")
 			{
 			//One of the conditional mandatory questions was on, but hasn't been answered
-			$$multiname++; 
+			$$multiname++;
 			}
 		$$multiname2++;
 		$mi++;

@@ -73,7 +73,7 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'])
 					}
 				}
 			$multiname="MULTI$mfns[$mi]";
-			$multiname2=$multiname; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
+			$multiname2=$multiname."2"; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
 			$$multiname=0;
 			$$multiname2=0;
 			}

@@ -484,15 +484,19 @@ switch ($ia[4])
 		$anscount = mysql_num_rows($ansresult);
 		$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 		$fn = 1;
+		if (!isset($multifields)) {$multifields="";}
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
+			//LOOK HERE: TAKE OUT/MODIFY
 			$multifields .= "$fname{$ansrow['code']}|";
 			$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='$ia[1]{$ansrow['code']}' value='Y'";
-			if ($_SESSION[$myfname] == "Y") {$answer .= " checked";}
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 			$fn++;
-			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
+			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			$answer .= "'>\n";
 			$inputnames[]=$myfname;
 			if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
 				{
@@ -509,9 +513,11 @@ switch ($ia[4])
 			{
 			$myfname = $ia[1]."other";
 			$answer .= "\t\t\t\t\t\t"._OTHER.": <input class='text' type='text' name='$myfname'";
-			if ($_SESSION[$myfname]) {$answer .= " value='".$_SESSION[$myfname]."'";}
+			if (isset($_SESSION[$myfname])) {$answer .= " value='".$_SESSION[$myfname]."'";}
 			$answer .= " />\n"
-					 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
+					 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			$answer .= "'>\n";
 			$inputnames[]=$myfname;
 			$anscount++;
 			if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
