@@ -34,6 +34,13 @@
 	#############################################################	
 */
 $sid = $_GET['sid'];
+$gid = $_GET['gid'];
+$qid = $_GET['qid'];
+$code = $_GET['code'];
+$activate = $_GET['action'];
+$ok = $_GET['ok'];
+$user = $_GET['user'];
+
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
