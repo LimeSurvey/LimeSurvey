@@ -168,4 +168,23 @@ define("_SM_COMPLETED", "<b>Thank You<br /><br />"
 define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
 					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
 					."through your responses."); //New for 0.98finalRC1
+
+//For the "printable" survey
+define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following"); //New for 0.98finalRC1
+define("_PS_WRITE", "Please write your answer here"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "Please choose the appropriate response for each item"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "Please write your answer(s) here"); //New for 0.98finalRC1
+define("_PS_DATE", "Please enter a date"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Make a comment on your choice here"); //New for 0.98finalRC1
+define("_PS_RANKING", "Please number each box in order of preference from 1 to"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Submit Your Survey"); //New for 0.98finalRC1
+define("_PS_THANKYOU", "Thank you for completing this survey."); //New for 0.98finalRC1
+define("_PS_FAXTO", "Please fax your completed survey to:"); //New for 0.98finaclRC1
+
+define("_PS_CON_ONLYANSWER", "Only answer this question"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
+define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
 ?>
