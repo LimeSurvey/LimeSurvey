@@ -43,74 +43,95 @@ if (!file_exists("$homedir/.htaccess"))
 		{
 		//DON'T DO ANYTHING UNLESS IT HAS BEEN ASKED FOR
 		//CREATE HTACCESS FILE
-		$addsummary .= "Creating default htaccess file<BR>";
+		$addsummary .= "Creating default htaccess file<br />\n";
 		$fname="$homedir/.htaccess";
-		echo "<FONT COLOR='WHITE'>";
-		$handle=fopen($fname, 'a') or die ("<TABLE WIDTH='250' BORDER='1' ALIGN='CENTER'><TR><TD ALIGN='CENTER'><B>Error.</B><BR>Couldn't create htaccess file. Have you set your config.php properly? Check the '\$homedir' setting in particular!<P><a href='$scriptname'>Back to admin</a></TD></TR></TABLE>");
-		echo "</FONT>";
+		echo "<font color='white'>";
+		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<b>Error.</b><br />\nCouldn't create htaccess file. Have you set your config.php properly? Check the '\$homedir' setting in particular!\n<p><a href='$scriptname'>Back to admin</a></p>\n</td>\n</tr>\n</table>\n");
+		echo "</font>";
 		fputs($handle, $htaccess);
 		fclose($handle);
-		$addsummary .= "Security Levels are now set up!";
-		$addsummary .= "<BR><BR><a href='$scriptname'>Finished</a>";
+		$addsummary .= "Security Levels are now set up!<br />\n<br />\n";
+		$addsummary .= "<a href='$scriptname'>Finished</a>\n";
+		
 		//CREATE DEFAULT USER AND PASS
-		$addsummary = "Creating default users<BR>";
-		if ($htpasswddir) {$htpasswd="\"$htpasswddir/htpasswd\"";} else {$htpasswd="htpasswd";}
-		$command="$htpasswd -bc \"$homedir/.htpasswd\" $defaultuser $defaultpass";
-		$addsummary .= "<FONT SIZE='1'>$command</FONT><BR><BR>";
-		exec($command);
+		$addsummary = "Creating default users<br />\n";
+		if ($htpasswddir) {$htpasswd = "\"$htpasswddir/htpasswd\"";} else {$htpasswd = "htpasswd";}
+		
+		# Form command line. Redirect STDERR to STDOUT using 2>&1
+		$command = "$htpasswd -bc .htpasswd $defaultuser $defaultpass 2>&1";
+		$addsummary .= "<font size='1'>$command</font><br />\n<br />\n";
+		
+		exec($command, $CommandResult, $CommandStatus);
+		if ($CommandStatus) //0=success, for other possibilities see http://httpd.apache.org/docs/programs/htpasswd.html
+			{
+			$addsummary .= "<pre>";
+			$addsummary .= "\$CommandStatus = $CommandStatus\n";
+			$addsummary .= "\$CommandResult = \n";
+			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
+			$addsummary .= "</pre>\n";
+			}
+		
 		if (file_exists("$homedir/.htpasswd"))
 			{
-			$addsummary .= "Updating users table<BR>";
+			$addsummary .= "Updating users table<br />\n";
 			$uquery="INSERT INTO users VALUES ('$defaultuser', '$defaultpass', '5')";
 			$uresult=mysql_query($uquery);
 			}
 		else
 			{
 			unlink($fname);
-			$addsummary .= "Error occurred creating htpasswd file. Sorry.";
+			$addsummary .= "Error occurred creating htpasswd file. Sorry.<br />\n";
 			}
-		$addsummary .= "<BR><a href='$scriptname'>Finished</a>";
+		$addsummary .= "<br />\n<a href='$scriptname'>Finished</a>\n";
 		}
 	}
 
 elseif ($action == "deleteall")
 	{
-	$addsummary = "<B>DELETING SECURITY...</B><BR>";
+	$addsummary = "<b>DELETING SECURITY...</b><br />\n";
 	$fname1="$homedir/.htaccess";
 	unlink($fname1);
-	$addsummary .= "Access file removed<BR>";
+	$addsummary .= "Access file removed<br />\n";
 	$fname1="$homedir/.htpasswd";
 	unlink($fname1);
-	$addsummary .= "Password file removed<BR>";
+	$addsummary .= "Password file removed<br />\n";
 	$dq="DELETE FROM users";
 	$dr=mysql_query($dq);
 	$addsummary .= "User records removed.";
-	$addsummary .= "<BR><BR><a href='$scriptname'>Finished</a>";
+	$addsummary .= "<br /><br /><a href='$scriptname'>Finished</a>\n";
 	}
 	
 elseif ($action == "adduser")
 	{
-	$addsummary = "<B>ADDING USER...</B><BR>";
+	$addsummary = "<b>ADDING USER...</b><br />\n";
 	if ($user && $pass)
 		{
-		$addsummary .= "Adding user $user with password $pass<BR>";
+		$addsummary .= "Adding user $user with password $pass<br />\n";
 		if ($htpasswddir) {$htpasswd="\"$htpasswddir/htpasswd\"";} else {$htpasswd="htpasswd";}
-		$command="$htpasswd -b .htpasswd $user $pass";
-		exec($command);
+		$command="$htpasswd -b .htpasswd $user $pass 2>&1";
+		exec($command, $CommandResult, $CommandStatus);
+		if ($CommandStatus) //0=success, for other possibilities see http://httpd.apache.org/docs/programs/htpasswd.html
+			{
+			$addsummary .= "<pre>";
+			$addsummary .= "\$CommandStatus = $CommandStatus\n";
+			$addsummary .= "\$CommandResult = \n";
+			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
+			$addsummary .= "</pre>\n";
+			}
 		$uquery = "INSERT INTO users VALUES ('$user', '$pass', '$level')";
 		$uresult = mysql_query($uquery);
 		
 		}
 	else
 		{
-		$addsummary .= "Could not add user. Username and/or password were not supplied<BR>";
+		$addsummary .= "Could not add user. Username and/or password were not supplied<br />\n";
 		}
-	$addsummary .= "<BR><BR><a href='$scriptname'>Finished</a>";
+	$addsummary .= "<br /><br /><a href='$scriptname'>Finished</a>\n";
 	}
 
 elseif ($action == "deluser")
 	{
-	$addsummary = "DELETING USER...<BR>";
+	$addsummary = "DELETING USER...<br />\n";
 	if ($user)
 		{
 		$fname="$homedir/.htpasswd";
@@ -120,7 +141,7 @@ elseif ($action == "deluser")
 			list ($fuser, $fpass) = split(":", $htp);
 			if ($fuser == $user)
 				{
-				$addsummary .= "User found!<BR>";
+				$addsummary .= "User found!<br />\n";
 				}
 			else
 				{
@@ -135,7 +156,7 @@ elseif ($action == "deluser")
 			fputs($fp, $nhtp);
 			}
 		fclose($fp);
-		$addsummary .= "User password deleted<BR>";
+		$addsummary .= "User password deleted<br />\n";
 		//DELETE USER FROM TABLE
 		$dquery="DELETE FROM users WHERE user='$user'";
 		$dresult=mysql_query($dquery);
@@ -143,19 +164,28 @@ elseif ($action == "deluser")
 		}
 	else
 		{
-		$addsummary .= "Could not delete user. Username not supplied!<BR>";
+		$addsummary .= "Could not delete user. Username not supplied!<br />\n";
 		}
-	$addsummary .= "<BR><BR><a href='$scriptname'>Finished</a>";
+	$addsummary .= "<br /><br /><a href='$scriptname'>Finished</a>\n";
 	}
 
 elseif ($action == "moduser")
 	{
-	$addsummary = "<B>MODIFYING USER...</B><BR>";
+	$addsummary = "<b>MODIFYING USER...</b><br />\n";
 	if ($user && $pass)
 		{
-		$addsummary .= "Modifying user $user with password $pass<BR>";
-		$command="\"$homedir/htpasswd.exe\" -b .htpasswd $user $pass";
-		exec($command);
+		$addsummary .= "Modifying user $user with password $pass<br />\n";
+		if ($htpasswddir) {$htpasswd = "\"$htpasswddir/htpasswd\"";} else {$htpasswd = "htpasswd";}
+		$command="$htpasswd -b .htpasswd $user $pass 2>&1";
+		exec($command, $CommandResult, $CommandStatus);
+		if ($CommandStatus) //0=success, for other possibilities see http://httpd.apache.org/docs/programs/htpasswd.html
+			{
+			$addsummary .= "<pre>";
+			$addsummary .= "\$CommandStatus = $CommandStatus\n";
+			$addsummary .= "\$CommandResult = \n";
+			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
+			$addsummary .= "</pre>\n";
+			}
 		$uquery = "UPDATE users SET password='$pass', security='$level' WHERE user='$user'";
 		$uresult = mysql_query($uquery);
 		$addsummary .= "User added!";
@@ -164,6 +194,6 @@ elseif ($action == "moduser")
 		{
 		$addsummary .= "Could not modify user. Username and/or password were not supplied!";
 		}
-	$addsummary .= "<BR><BR><a href='$scriptname'>Finished</a>";
+	$addsummary .= "<br /><br /><a href='$scriptname'>Finished</a>\n";
 	}
 ?>
