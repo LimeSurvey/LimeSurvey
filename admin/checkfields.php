@@ -117,7 +117,7 @@ foreach ($alltables as $at)
 		$ctquery = substr($ctquery, 0, -2);
 		$ctquery .= ")\n";
 		$ctquery .= "TYPE=MyISAM\n";
-		$ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error);
+		$ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error());
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_TABLECREATED."! ($at)</font><br />\n";
 		}
 	else
