@@ -505,9 +505,9 @@ function checkgroupfordisplay($gid)
 		//check every question, to see if the condition for each has been met.
 		//If 1 or more have their conditions met, then the group should
 		//be displayed.
-		$totalands=0;
 		foreach ($checkConditions as $cc)
 			{
+			$totalands=0;
 			$query = "SELECT * FROM {$dbprefix}conditions\n"
 					."WHERE qid=$cc[0] ORDER BY cqid";
 			$result = mysql_query($query) or die("Couldn't check conditions<br />$query<br />".mysql_error());
