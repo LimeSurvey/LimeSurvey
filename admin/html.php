@@ -197,6 +197,7 @@ if ($qid)
 			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
 			}
 		$questionsummary .= "\t<tr><td colspan='2' align='right'>\n";
+		$questionsummary .= "\t\t<input type='submit' $btstyle value='Answers' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
 		$questionsummary .= "\t\t<input type='submit' $btstyle value='Set Conditions' onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n";
 		$questionsummary .= "\t\t<input type='submit' $btstyle value='Edit Question' onClick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
@@ -236,6 +237,118 @@ if ($code)
 	$answersummary .= "</table>\n";
 	}
 
+if ($_GET['viewanswer'] || $_POST['viewanswer'])
+	{
+	if (!$_POST['ansaction'])
+		{
+		//check if any nulls exist. If they do, redo the sortorders
+		$caquery="SELECT * FROM answers WHERE qid=$qid AND sortorder is null";
+		$caresult=mysql_query($caquery);
+		$cacount=mysql_num_rows($caresult);
+		if ($cacount)
+			{
+			$vasummary = "Some nulls exist. Re-numbering sort order.";
+			$cdquery = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
+			$cdresult = mysql_query($cdquery);
+			$position=0;
+			while ($cdrow=mysql_fetch_array($cdresult))
+				{
+				$position=sprintf("%05d", $position);
+				$cd2query="UPDATE answers SET sortorder='$position' WHERE qid={$cdrow['qid']} AND code='{$cdrow['code']}' AND answer='{$cdrow['answer']}' AND sortorder='{$cdrow['sortorder']}'";
+				$cd2result=mysql_query($cd2query);
+				$position++;
+				}
+			}
+		}
+	$vasummary .= "<table width='100%' align='center' border='0'>\n";
+	$vasummary .= "\t<tr bgcolor='#FFEFFF'><th colspan='5'>Answers</th></tr>\n";
+	switch ($_POST['ansaction'])
+		{
+		case "Add":
+			$cdquery = "INSERT INTO answers (qid, code, answer, sortorder, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
+			$cdresult = mysql_query($cdquery) or die ("Couldn't add answer<br />$cdquery<br />".mysql_error());
+			$vasummary .= "\t<tr><td colspan='5' align='center'><font size='1' color='red'><i>Added Entry</i></font></td></tr>\n";
+			break;
+		case "Save":
+			$cdquery = "UPDATE answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', `default`='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
+			$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
+			$vasummary .= "\t<tr><td colspan='5' align='center'><font size='1' color='red'><i>Updated Entry ($cdquery)</i></font></td></tr>\n";
+			break;
+		case "Del":
+			$cdquery = "DELETE FROM answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
+			$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
+			$vasummary .= "\t<tr><td colspan='5' align='center'><font size='1' color='red'><i>Deleted Entry ($cdquery)</i></font></td></tr>\n";
+			break;
+		case "Up":
+			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
+			$replacesortorder=$newsortorder;
+			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
+			$vasummary .= "<tr><td colspan='2'>Moving {$_POST['answer']} from $newreplacesortorder to $newsortorder and also moving $replacesortorder to $newreplacesortorder";
+			$cdquery = "UPDATE answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$cdquery = "UPDATE answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$vasummary .= "</td></tr>\n";
+			break;
+		case "Dn":
+			$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
+			$replacesortorder=$newsortorder;
+			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
+			$newreplace2=sprintf("%05d", $_POST['sortorder']);
+			//if ($newreplacesortorder == "00000") {$newreplacesortorder=0;}
+			$vasummary .= "<tr><td colspan='2'>Moving {$_POST['answer']} from $newreplacesortorder to $newsortorder and also moving $replacesortorder to $newreplacesortorder";
+			$cdquery = "UPDATE answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$cdquery = "UPDATE answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			echo "$cdquery<br />";
+			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$vasummary .= "</td></tr>\n";
+			break;
+		default:
+			break;
+		}
+	$cdquery = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
+	$cdresult = mysql_query($cdquery);
+	$vasummary .= "\t<tr><th>Code</th><th>Answer</th><th>Sortorder</th><th>Default</th><th>Action</th></tr>\n";
+	$position=0;
+	while ($cdrow = mysql_fetch_array($cdresult))
+		{
+		$position=sprintf("%05d", $position);
+		if ($cdrow['sortorder'] || $cdrow['sortorder'] == "0") {$position=$cdrow['sortorder'];}
+		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n";
+		$vasummary .= "\t\t<td align='center'><input name='code' type='text' $btstyle value='{$cdrow['code']}' size='5'></td>\n";
+		$vasummary .= "\t\t<td align='center'><input name='answer' type='text' $btstyle value='{$cdrow['answer']}' size='50'></td>";
+		$vasummary .= "\t\t<td align='center'><input name='sortorder' type='text' $btstyle value='$position' size='5'></td>";
+		$vasummary .= "\t\t<td align='center'><input name='default' type='text' $btstyle value='{$cdrow['default']}' size='2'></td>";
+		$vasummary .= "\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='Up'><input name='ansaction' $btstyle type='submit' value='Dn'><input name='ansaction' $btstyle type='submit' value='Save'><input name='ansaction' $btstyle type='submit' value='Del'></td>\n";
+		$vasummary .= "\t<input type='hidden' name='oldcode' value='{$cdrow['code']}'>\n";
+		$vasummary .= "\t<input type='hidden' name='oldanswer' value='{$cdrow['answer']}'>\n";
+		$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+		$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+		$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+		$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
+		$vasummary .= "\t</form></tr>\n";
+		$position++;
+		}
+	$position=sprintf("%05d", $position);
+	$vasummary .= "\t<tr><form action='admin.php' method='post'>\n";
+	$vasummary .= "\t\t<td align='center'><input name='code' type='text' $btstyle value='{$cdrow['code']}' size='5'></td>\n";
+	$vasummary .="\t\t<td align='center'><input name='answer' type='text' $btstyle value='{$cdrow['answer']}' size='50'></td>";
+	$vasummary .="\t\t<td align='center'><input name='sortorder' type='text' $btstyle value='$position' size='5'></td>";
+	$vasummary .="\t\t<td align='center'><input name='default' type='text' $btstyle value='{$cdrow['default']}' size='2'></td>";
+	$vasummary .="\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='Add'></td>\n";
+	$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+	$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+	$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+	$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
+	$vasummary .="\t</form></tr>\n";
+	$vasummary .= "</table>\n";
+	}
+	
 if ($action == "setupsecurity")
 	{
 	$action = "setup";
