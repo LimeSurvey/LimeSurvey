@@ -502,7 +502,8 @@ else
 			//DIFFERENT TYPES OF DATA FIELD HERE
 			if ($deqrow[6])
 				{
-				$hh=str_replace("'", "\'", strip_tags($deqrow['help']));
+				$hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
+				$hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
 				echo "<IMG SRC='help.gif' ALT='Help about this question' ALIGN='RIGHT' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\">";
 				}
 			switch($deqrow['type'])
