@@ -104,7 +104,7 @@ echo "</table>\n"
 	."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"filtersettings\"); hide(\"sqlbuilder\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"filtersettings\")'>"
 	."<font size='2' face='verdana' color='orange'><b>"._ST_FILTERSETTINGS."</b>"
 	."</td></tr>\n"
-	."<form method='post'>\n";
+	."<form method='post' name='formbuilder'>\n";
 
 //Select public language file
 $query = "SELECT language, datestamp FROM {$dbprefix}surveys WHERE sid=$sid";
@@ -700,7 +700,7 @@ echo "</table>\n"
 	."<input type='image' src='$imagefiles/plus.gif' align='right' hspace='0' border='0' onClick='show(\"sqlbuilder\"); hide(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' border='0' onClick='hide(\"sqlbuilder\")' hspace='0'>"
 	."<font size='2' face='verdana' color='orange'><b>SQL Builder</b>"
 	."</td></tr>\n"
-	."<form method='post'>\n";
+	."<form method='post' name='sqlbuilder'>\n";
 
 echo "		<tr><td>
 	  <script type='text/javascript'>
@@ -875,11 +875,11 @@ if (isset($_POST['display']) && $_POST['display'])
 		$query .= " WHERE ";
 		$query .= implode(" AND ", $selects);
 		}
-	elseif (isset($_POST['sql']))
+	elseif (!empty($_POST['sql']) && !isset($_POST['id=']))
 		{
 		$newsql=substr($_POST['sql'], strpos($_POST['sql'], "WHERE")+5, strlen($_POST['sql']));
 		//$query = $_POST['sql'];
-		$query .= " WHERE".$newsql;
+		$query .= " WHERE ".$newsql;
 		}
 	$result=mysql_query($query) or die("Couldn't get results<br />$query<br />".mysql_error());
 	while ($row=mysql_fetch_row($result)) {$results=$row[0];}
@@ -903,7 +903,7 @@ if (isset($_POST['display']) && $_POST['display'])
 		."\t\t<font size='1'><b>"._SQL.":</b> $query\n"
 		."\t</td></tr>\n";
 	if (isset ($selects) && $selects) {$sql=implode(" AND ", $selects);}
-	elseif ($newsql) {$sql = $newsql;}
+	elseif (!empty($newsql)) {$sql = $newsql;}
 	if (!isset($sql) || !$sql) {$sql="NULL";}
 	if ($results > 0)
 		{
@@ -1200,6 +1200,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			$qsid=$fielddata['sid'];
 			$qgid=$fielddata['gid'];
 			$qqid=$fielddata['qid'];
+			$qanswer=$fielddata['aid'];
 			$rqid=$qqid;
 			$nquery = "SELECT title, type, question, qid, lid, other FROM {$dbprefix}questions WHERE qid=$rqid";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
@@ -1216,7 +1217,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			switch($qtype)
 				{
 				case "A": //Array of 5 point choices
-					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
 					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -1231,7 +1231,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$qtitle .= "($qanswer)";
 					break;
 				case "B": //Array of 10 point choices
-					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
 					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -1246,7 +1245,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$qtitle .= "($qanswer)";
 					break;
 				case "C": //Array of Yes/No/Uncertain
-					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
 					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -1260,7 +1258,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$qtitle .= "($qanswer)";
 					break;
 				case "E": //Array of Yes/No/Uncertain
-					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
 					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -1275,7 +1272,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					break;
 				case "F": //Array of Flexible
 				case "H": //Array of Flexible by Column
-					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
 					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -1424,6 +1420,18 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				
 				if ($usejpgraph == 1 && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
 					{
+//					echo "<pre>";
+//					echo "GDATA:\n";
+//					print_r($gdata);
+//					echo "GRAWDATA\n";
+//					print_r($grawdata);
+//					echo "LABEL\n";
+//					print_r($label);
+//					echo "JUSTCODE\n";
+//					print_r($justcode);
+//					echo "LBL\n";
+//					print_r($lbl);
+//					echo "</pre>";
 					//First, lets delete any earlier graphs from the tmp directory
 					//$gdata and $lbl are arrays built at the end of the last section
 					//that contain the values, and labels for the data we are about
