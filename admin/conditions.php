@@ -283,6 +283,7 @@ echo "\t</tr>\n";
 $query = "SELECT conditions.cid, conditions.cqid, conditions.cfieldname, conditions.value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid=$qid ORDER BY conditions.cfieldname";
 $result = mysql_query($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".mysql_error());
 $conditionscount=mysql_num_rows($result);
+echo $conditionscount;
 if ($conditionscount > 0)
 	{
 	while ($rows=mysql_fetch_array($result))
@@ -313,7 +314,7 @@ if ($conditionscount > 0)
 				}
 			else
 				{
-				echo "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+				//echo "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
 				}
 			}
 		echo "\t\t</font></td>\n";
