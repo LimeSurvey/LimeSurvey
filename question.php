@@ -514,7 +514,7 @@ if ((!$_SESSION['step'] && $_SESSION['step'] != "0") || $_SESSION['step'] < 0 )
 		{
 		echo templatereplace($op);
 		}
-	if ($surveyactive != "Y") {echo "\t\t<center><font color='red'>This survey is not currently active. You will not be able to save your responses.</font></center>\n";}
+	if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>This survey is not currently active. You will not be able to save your responses.</font></center>\n";}
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
