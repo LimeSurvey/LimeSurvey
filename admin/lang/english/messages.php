@@ -7,6 +7,7 @@ define(_SURVEY, "Survey");
 define(_GROUP, "Group");
 define(_QUESTION, "Question");
 define(_ANSWERS, "Answers");
+define(_CONDITIONS, "Conditions");
 define(_HELP, "Help");
 define(_USERCONTROL, "User Control");
 define(_ACTIVATE, "Activate Survey");
@@ -150,6 +151,7 @@ define(_YES, "Yes");
 define(_NO, "No");
 define(_CANCEL, "Cancel");
 define(_ERROR, "Error");
+define(_SUCCESS, "Success");
 define(_REQ, "*Required");
 define(_ADDS, "Add Survey");
 define(_ADDG, "Add Group");
@@ -286,6 +288,16 @@ define(_EX_FORM_WORD, "Microsoft Word");
 define(_EX_FORM_EXCEL, "Microsoft Excel");
 define(_EX_FORM_CSV, "CSV Comma Delimited");
 define(_EX_EXPORTDATA, "Export Data");
+
+//IMPORT SURVEY MESSAGES
+define(_IS_FAILUPLOAD, "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.");
+define(_IS_OKUPLOAD, "File upload succeeded.");
+define(_IS_READFILE, "Reading file..");
+define(_IS_WRONGFILE, "This file is not a PHPSurveyor survey file. Import failed.");
+define(_IS_IMPORTSUMMARY, "Survey Import Summary");
+define(_IS_SUCCESS, "Import of Survey is completed.");
+define(_IS_IMPFAILED, "Import of this survey file failed");
+define(_IS_FILEFAILS, "File does not contain PHPSurveyor data in the correct format.");
 
 
 ?>
