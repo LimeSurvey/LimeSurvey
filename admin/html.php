@@ -322,26 +322,45 @@ if ($action == "editusers")
 	}
 if ($action == "addquestion")
 	{
-	$newquestion = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='BLACK' align='center'>";
-	$newquestion .= "<b>$setfont<font color='WHITE'>Create New Question for Survey ID($sid), Group ID($gid) </b></td></tr>\n";
-	$newquestion .= "\t<tr><form action='$scriptname' name='addnewquestion' method='post'>\n";
-	$newquestion .= "\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
-	$newquestion .= "\t<td><input type='text' size='20' name='title'></td></tr>\n";
-	$newquestion .= "\t<tr><td align='right'>$setfont<b>Question:</b></font></td>\n";
-	$newquestion .= "\t<td><textarea cols='35' rows='3' name='question'></textarea></td></tr>\n";
-	$newquestion .= "\t<tr><td align='right'>$setfont<b>Help:</b></font></td>\n";
-	$newquestion .= "\t<td><textarea cols='35' rows='3' name='help'></textarea></td></tr>\n";
-	$newquestion .= "\t<tr><td align='right'>$setfont<b>Question Type:</b></font></td>\n";
-	$newquestion .= "\t<td>\n\t\t<select $slstyle name='type'>\n";
+	$newquestion = "<table width='100%' border='0'>\n\n";
+	$newquestion .= "\t<tr>\n";
+	$newquestion .= "\t\t<td colspan='2' bgcolor='black' align='center'>";
+	$newquestion .= "\t\t<b>$setfont<font color='white'>Create New Question for Survey ID($sid), Group ID($gid) </b>\n";
+	$newquestion .= "\t\t</td>\n";
+	$newquestion .= "\t</tr>\n";
+	$newquestion .= "\t<form action='$scriptname' name='addnewquestion' method='post'>\n";
+	$newquestion .= "\t<tr>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
+	$newquestion .= "\t\t<td><input type='text' size='20' name='title'></td></tr>\n";
+	$newquestion .= "\t<tr>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>Question:</b></font></td>\n";
+	$newquestion .= "\t\t<td><textarea cols='35' rows='3' name='question'></textarea></td>\n";
+	$newquestion .= "\t</tr>\n";
+	$newquestion .= "\t<tr>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>Help:</b></font></td>\n";
+	$newquestion .= "\t\t<td><textarea cols='35' rows='3' name='help'></textarea></td>\n";
+	$newquestion .= "\t</tr>\n";
+	$newquestion .= "\t<tr>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>Question Type:</b></font></td>\n";
+	$newquestion .= "\t\t<td><select $slstyle name='type'>\n";
 	$newquestion .= "$qtypeselect";
-	$newquestion .= "\n\t\t</select></td></tr>\n";
-	$newquestion .= "\t<tr><td align='right'>$setfont<b>Other?</b></font></td>\n";
-	$newquestion .= "\t<td><input type='text' size='1' value='N' name='other'></td></tr>\n";
-	$newquestion .= "\t<tr><td colspan='2' align='center'>\n\t\t<input type='submit' $btstyle value='Add Question'></td></tr>\n";
-	$newquestion .= "\t<input type='hidden' name='action' value='insertnewquestion'>\n";
-	$newquestion .= "\t<input type='hidden' name='sid' value='$sid'>\n";
-	$newquestion .= "\t<input type='hidden' name='gid' value='$gid'>\n";
-	$newquestion .= "</form></table>\n";
+	$newquestion .= "\t\t</select></td>\n";
+	$newquestion .= "\t</tr>\n";
+	$newquestion .= "\t<tr>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
+	$newquestion .= "\t\t<td>$setfont\n";
+	$newquestion .= "\t\t\tYes <input type='radio' name='other' value='Y' />&nbsp;&nbsp;\n";
+	$newquestion .= "\t\t\tNo <input type='radio' name='other' value='N' checked />\n";
+	$newquestion .= "\t\t</td>\n";
+	$newquestion .= "\t</tr>\n";
+	$newquestion .= "\t<tr>\n";
+	$newquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Add Question' /></td>\n";
+	$newquestion .= "\t</tr>\n";
+	$newquestion .= "\t<input type='hidden' name='action' value='insertnewquestion' />\n";
+	$newquestion .= "\t<input type='hidden' name='sid' value='$sid' />\n";
+	$newquestion .= "\t<input type='hidden' name='gid' value='$gid' />\n";
+	$newquestion .= "\t</form>\n";
+	$newquestion .= "</table>\n";
 	}
 
 if ($action == "copyquestion")
@@ -350,37 +369,60 @@ if ($action == "copyquestion")
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
-		$editquestion = "<table width='100%' border='0'>";
-		$editquestion .= "\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-		$editquestion .= "\t\t<b>$setfont<font color='white'>Copy Question $qid (Code {$eqrow['title']})</b><br />Note: You MUST enter a new Question Code!</font></font>\n\t</td></tr>\n";
+		$editquestion = "<table width='100%' border='0'>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td colspan='2' bgcolor='black' align='center'>\n";
+		$editquestion .= "\t\t\t<b>$setfont<font color='white'>Copy Question $qid (Code {$eqrow['title']})</b><br />Note: You MUST enter a new Question Code!</font></font>\n";
+		$editquestion .= "\t\t</td>\n";
+		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr><form action='$scriptname' name='editquestion' >\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>";
-		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value=''></td>\n\t</tr>\n";
-		$editquestion .= "\t<tr>\n\t\t<td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n";
-		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='question'>{$eqrow['question']}</textarea></td></tr>\n";
-		$editquestion .= "\t<tr>\n\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
-		$editquestion .= "\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td></tr>\n";
-		$editquestion .= "\t<tr>\n\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
+		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value='' /></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n";
+		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
+		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='type'>\n";
 		$editquestion .= getqtypelist($eqrow['type']);
-		$editquestion .= "\n\t\t</select></td></tr>\n";
+		$editquestion .= "\t\t</select></td>\n";
+		$editquestion .= "\t</tr>\n";
 		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' NAME='type' VALUE='{$eqrow['type']}'></TD></TR>\n";
-		$editquestion .= "\t<tr><td align='right'>$setfont<b>Group?</b></font></td>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Group?</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
 		$editquestion .= getgrouplist2($eqrow['gid']);
-		$editquestion .= "\n\t\t</select></td></tr>\n";
-		$editquestion .= "\t<tr><td align='right'>$setfont<b>Other?</b></font></td>\n";
-		$editquestion .= "\t\t<td><input type='text' size='1' value='{$eqrow['other']}' name='other'></td></tr>\n";
-		$editquestion .= "\t<tr><td align='right'>$setfont<b>Copy answers:</b></font></td>\n";
-		$editquestion .= "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y'></font></td></tr>\n";
-		$editquestion .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Question'></td>\n";
-		$editquestion .= "\t<input type='hidden' name='action' value='copynewquestion'>\n";
-		$editquestion .= "\t<input type='hidden' name='sid' value='$sid'>\n";
-		$editquestion .= "\t<input type='hidden' name='oldqid' value='$qid'>\n";
+		$editquestion .= "\t\t\t</select></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
+		$editquestion .= "\t\t<td>$setfont\n";
+		$editquestion .= "\t\t\tYes <input type='radio' name='other' value='Y'";
+		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
+		$editquestion .= " />&nbsp;&nbsp;\n";
+		$editquestion .= "\t\t\tNo <input type='radio' name='other' value='N'";
+		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
+		$editquestion .= " />\n";
+		$editquestion .= "\t\t</td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Copy answers:</b></font></td>\n";
+		$editquestion .= "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y' /></font></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Update Question'></td>\n";
+		$editquestion .= "\t\t<input type='hidden' name='action' value='copynewquestion'>\n";
+		$editquestion .= "\t\t<input type='hidden' name='sid' value='$sid' />\n";
+		$editquestion .= "\t\t<input type='hidden' name='oldqid' value='$qid' />\n";
 		$editquestion .= "\t</form></tr>\n";
 		$editquestion .= "</table>\n";
 		}
-
 	}
 
 if ($action == "addanswer")
@@ -446,26 +488,49 @@ if ($action == "editquestion")
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
-		$editquestion = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-		$editquestion .= "\t\t<b>$setfont<font color='white'>Edit Question $qid</b></font></font></td></tr>\n";
+		$editquestion = "<table width='100%' border='0'>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td colspan='2' bgcolor='black' align='center'>\n";
+		$editquestion .= "\t\t\t<b>$setfont<font color='white'>Edit Question $qid</b></font></font>\n";
+		$editquestion .= "\t\t</td>\n";
+		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr><form action='$scriptname' name='editquestion' method='post'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
-		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value='{$eqrow['title']}'></td></tr>\n";
-		$editquestion .= "\t<tr>\t\t<td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n";
-		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='question'>{$eqrow['question']}</textarea></td></tr>\n";
-		$editquestion .= "\t<tr>\n\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
-		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td></tr>\n";
-		$editquestion .= "\t<tr>\n\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
+		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value='{$eqrow['title']}'></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n";
+		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
+		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='type'>\n";
 		$editquestion .= getqtypelist($eqrow['type']);
-		$editquestion .= "\t\t</select></td></tr>\n";
-		$editquestion .= "\t<tr><td align='right'>$setfont<b>Group?</b></font></td>\n";
+		$editquestion .= "\t\t</select></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t<td align='right'>$setfont<b>Group?</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
 		$editquestion .= getgrouplist2($eqrow['gid']);
-		$editquestion .= "\t\t</select></td></tr>\n";
-		$editquestion .= "\t<tr><td align='right'>$setfont<b>Other?</b></font></td>\n";
-		$editquestion .= "\t\t<td><input type='text' size='1' value='{$eqrow['other']}' name='other'></td></tr>\n";
-		$editquestion .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Question'></td>\n";
+		$editquestion .= "\t\t</select></td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
+		$editquestion .= "\t\t<td>$setfont\n";
+		$editquestion .= "\t\t\tYes <input type='radio' name='other' value='Y'";
+		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
+		$editquestion .= " />&nbsp;&nbsp;\n";
+		$editquestion .= "\t\t\tNo <input type='radio' name='other' value='N'";
+		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
+		$editquestion .= " />\n";
+		$editquestion .= "\t\t</td>\n";
+		$editquestion .= "\t</tr>\n";
+		$editquestion .= "\t<tr>\n";
+		$editquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Update Question'></td>\n";
 		$editquestion .= "\t<input type='hidden' name='action' value='updatequestion'>\n";
 		$editquestion .= "\t<input type='hidden' name='sid' value='$sid'>\n";
 		$editquestion .= "\t<input type='hidden' name='qid' value='$qid'>\n";
