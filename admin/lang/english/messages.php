@@ -32,6 +32,8 @@ define(_TOKENDBADMIN, "Token Database Administration Options");
 define(_DROPTOKENS, "Delete Tokens Table");
 define(_EMAILINVITE, "Email Invitation");
 define(_EMAILREMIND, "Email Reminder");
+define(_TOKENIFY, "Create Tokens");
+define(_UPLOADCSV, "Upload CSV File");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -213,6 +215,9 @@ define(_COMMENT, "Comment");
 define(_FROM, "From"); //For emails
 define(_SUBJECT, "Subject"); //For emails
 define(_MESSAGE, "Message"); //For emails
+define(_RELOADING, "Reloading Screen. Please wait.");
+define(_ADD, "Add");
+define(_UPDATE, "Update");
 
 
 //General Setup Messages
@@ -393,6 +398,9 @@ define(_TC_INITINFO, "If you initialise tokens for this survey, the survey will 
 define(_TC_INITQ, "Do you want to create a tokens table for this survey?");
 define(_TC_INITTOKENS, "Initialise Tokens");
 define(_TC_CREATED, "A token table has been created for this survey.");
+define(_TC_DELETEALL, "Delete all token entries");
+define(_TC_DELETEALL_RUSURE, "Are you really sure you want to delete ALL token entries?");
+define(_TC_ALLDELETED, "All token entries have been deleted");
 define(_TC_CLEARINVITES, "Set all entries to 'N' invitation sent");
 define(_TC_CLEARINV_RUSURE, "Are you really sure you want to reset all invitation records to NO?");
 define(_TC_CLEARTOKENS, "Delete all unique token numbers");
@@ -406,5 +414,20 @@ define(_TC_VIEW, "View Response");
 define(_TC_INVITET, "Send invitation email to this entry");
 define(_TC_REMINDT, "Send reminder email to this entry");
 define(_TC_INVITESUBJECT, "Invitation to participate in {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
-
+define(_TC_CREATETOKENSINFO, "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?");
+define(_TC_TOKENSCREATED, "{TOKENCOUNT} tokens have been created"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
+define(_TC_TOKENDELETED, "Token has been deleted.");
+define(_TC_SORTBY, "Sort by: ");
+define(_TC_ADDEDIT, "Add or Edit Token");
+define(_TC_TOKENCREATEINFO, "You can leave this blank, and automatically generate tokens using 'Create Tokens'");
+define(_TC_TOKENADDED, "Added New Token");
+define(_TC_TOKENUPDATED, "Updated Token");
+define(_TC_UPLOADINFO, "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as 'firstname, lastname, email, [token]'.");
+define(_TC_IMPORT, "Importing CSV File");
+define(_TC_CREATE, "Creating Token Entries");
+define(_TC_TOKENS_CREATED, "{TOKENCOUNT} Records Created");
+define(_TC_NONETOSEND, "There were no eligible emails to send. This will be because none satisfied the requirements of having an email address, not having been sent an invitation already, having already completed the survey and/or having a token.");
+define(_TC_NOEMAILTEMPLATE, "Invitation Template cannot be found. This file must exist in the default template folder.");
+define(_TC_SENDEMAIL, "Send Invitations");
+define(_TC_INVITESENTTO, "Invitation Sent To:"); //is followed by token name
 ?>
