@@ -202,7 +202,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	$idquery = "SELECT * FROM $surveytable WHERE ";
 	if (isset($_POST['sql']) && $_POST['sql'])
 		{
-		if (get_magic_quotes_gpc) {$idquery .= stripslashes($_POST['sql']);}
+		if (get_magic_quotes_gpc()) {$idquery .= stripslashes($_POST['sql']);}
 		else {$idquery .= "{$_POST['sql']}";}
 		}
 	else {$idquery .= "id=$id";}
