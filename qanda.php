@@ -996,6 +996,9 @@ switch ($ia[4])
 			$labelans[]=$lrow['title'];
 			$labelcode[]=$lrow['code'];
 			}
+		$cellwidth=60/count($labelans);
+		if ($ia[6] != "Y") {$cellwidth++;}
+		//$cellwidth=sprintf("%02d", 60/$cellwidth);
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
@@ -1003,9 +1006,6 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table class='question'>\n"
 				 . "\t\t\t\t<tr>\n"
 				 . "\t\t\t\t\t<td></td>\n";
-		$cellwidth=count($labelans);
-		if ($ia[6] != "Y") {$cellwidth++;}
-		$cellwidth=60/$cellwidth;
 		foreach ($labelans as $ld)
 			{
 			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
