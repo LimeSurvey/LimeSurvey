@@ -35,6 +35,7 @@
 */
 	
 //Move current step ###########################################################################
+if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 if (!isset($gl)) {$gl=array("null");}
 if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
