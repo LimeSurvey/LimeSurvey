@@ -1090,8 +1090,9 @@ if ($action == "copyquestion")
 					   . "\t</tr>\n";
 		
 		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
-					   . "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n"
-					   . "\t\t<td>$setfont\n"
+					   . "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n";
+		
+		$editquestion .= "\t\t<td>$setfont\n"
 					   . "\t\t\t"._AD_YES." <input type='radio' name='other' value='Y'";
 		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
@@ -1099,8 +1100,9 @@ if ($action == "copyquestion")
 		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
 		$editquestion .= " />\n"
 					   . "\t\t</font></td>\n"
-					   . "\t</tr>\n"
-					   . "\t<tr id='MandatorySelection'>\n"
+					   . "\t</tr>\n";
+
+		$editquestion .= "\t<tr id='MandatorySelection'>\n"
 					   . "\t\t<td align='right'>$setfont<b>"._QL_MANDATORY."</b></font></td>\n"
 					   . "\t\t<td>$setfont\n"
 					   . "\t\t\t"._AD_YES." <input type='radio' name='mandatory' value='Y'";
@@ -1204,19 +1206,28 @@ if ($action == "editquestion")
 					   . "\t\t<td><select $slstyle name='gid'>\n"
 					   . getgrouplist3($eqrow['gid'])
 					   . "\t\t</select></td>\n"
-					   . "\t</tr>\n"
-					   . "\t<tr id='OtherSelection'>\n"
-					   . "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n"
-					   . "\t\t<td>$setfont\n"
-					   . "\t\t\t<label for='OY'>"._AD_YES."</label><input id='OY' type='radio' name='other' value='Y'";
-		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
-		$editquestion .= " />&nbsp;&nbsp;\n"
-					   . "\t\t\t<label for='ON'>"._AD_NO."</label><input id='ON' type='radio' name='other' value='N'";
-		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
-		$editquestion .= " />\n"
-					   . "\t\t</font></td>\n"
-					   . "\t</tr>\n"
-					   . "\t<tr id='MandatorySelection'>\n"
+					   . "\t</tr>\n";
+		$editquestion .= "\t<tr id='OtherSelection'>\n"
+					   . "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n";
+		if ($activated != "Y") 
+			{
+			$editquestion .= "\t\t<td>$setfont\n"
+						   . "\t\t\t<label for='OY'>"._AD_YES."</label><input id='OY' type='radio' name='other' value='Y'";
+			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
+			$editquestion .= " />&nbsp;&nbsp;\n"
+						   . "\t\t\t<label for='ON'>"._AD_NO."</label><input id='ON' type='radio' name='other' value='N'";
+			if ($eqrow['other'] == "N") {$editquestion .= " checked";}
+			$editquestion .= " />\n"
+						   . "\t\t</font></td>\n";
+			}
+		else
+			{
+			$editquestion .= "<td>$setfont [{$eqrow['other']}] - "._DE_NOMODIFY." - "._SS_ACTIVE."\n"
+						   . "\t\t\t<input type='hidden' name='other' value='{$eqrow['other']}'></font></td>\n";
+			}
+		$editquestion .= "\t</tr>\n";
+
+		$editquestion .= "\t<tr id='MandatorySelection'>\n"
 					   . "\t\t<td align='right'>$setfont<b>"._QL_MANDATORY."</b></font></td>\n"
 					   . "\t\t<td>$setfont\n"
 					   . "\t\t\t<label for='MY'>"._AD_YES."</label><input id='MY' type='radio' name='mandatory' value='Y'";
