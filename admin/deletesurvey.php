@@ -123,7 +123,7 @@ else //delete the survey
 		$cddel = "DELETE FROM {$dbprefix}conditions WHERE qid={$dsrow['qid']}";
 		$cdres = mysql_query($cddel) or die ("Delete conditions failed<br />$cddel<br />".mysql_error());
 		$qadel = "DELETE FROM {$dbprefix}question_attributes WHERE qid={$dsrow['qid']}";
-		$qares = mysql_query($qares);
+		$qares = mysql_query($qadel);
 		}
 	
 	$qdel = "DELETE FROM {$dbprefix}questions WHERE sid=$sid";
