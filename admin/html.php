@@ -36,13 +36,39 @@
 
 if ($sid)
 	{
+	$surveysummary = "<script type='text/javascript'>\n";
+	$surveysummary .= "<!--\n";
+	$surveysummary .= "\tfunction showdetails(action)\n";
+	$surveysummary .= "\t\t{\n";
+	$surveysummary .= "\t\tif (action == \"hide\")\n";
+	$surveysummary .= "\t\t\t{\n";
+	$surveysummary .= "\t\t\tfor (i=0; i<=11; i++)\n";
+	$surveysummary .= "\t\t\t\t{\n";
+	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
+	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='none';\n";
+	$surveysummary .= "\t\t\t\t}\n";
+	$surveysummary .= "\t\t\t}\n";
+	$surveysummary .= "\t\telse\n";
+	$surveysummary .= "\t\t\t{\n";
+	$surveysummary .= "\t\t\tfor (i=0; i<=11; i++)\n";
+	$surveysummary .= "\t\t\t\t{\n";
+	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
+	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='';\n";
+	$surveysummary .= "\t\t\t\t}\n";
+	$surveysummary .= "\t\t\t}\n";
+	$surveysummary .= "\t\t}\n";
+	$surveysummary .= "-->\n";
+	$surveysummary .= "</script>\n";
 	$sumquery1 = "SELECT * FROM surveys WHERE sid=$sid";
 	$sumresult1 = mysql_query($sumquery1);
-	$surveysummary = "<table width='100%' align='center' bgcolor='silver' border='0'>\n";
+	$surveysummary .= "<table width='100%' align='center' bgcolor='silver' border='0'>\n";
 	while ($s1row = mysql_fetch_array($sumresult1))
 		{
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n";
-		$surveysummary .= "\t<td>$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
+		$surveysummary .= "\t<td>";
+		$surveysummary .= "<img src='./images/plus.gif' alt='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"show\")'>";
+		$surveysummary .= "<img src='./images/minus.gif' alt='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hide\")'>\n";
+		$surveysummary .= "$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
 		if ($s1row['private'] != "N") {$surveysummary .= "This survey is anonymous";}
 		else {$surveysummary .= "This survey is <b>not</b> anonymous";}
 		if ($s1row['format'] == "S") {$surveysummary .= " and is presented question by question. ";}
@@ -50,35 +76,35 @@ if ($sid)
 		else {$surveysummary .= " and is presented as one single page. ";}
 		if ($s1row['datestamp'] == "Y") {$surveysummary .= "Responses will be date-stamped.";}
 		$surveysummary .= "</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
-		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
 		if ($gid || $qid) {$showstyle="style='display: none'";}
-		$surveysummary .= "\t<tr $showstyle>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
+		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails1'>\n";
 		$surveysummary .= "\t\t<td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails3'><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n";
 		if ($s1row['expires'] != "0000-00-00") 
 			{
-			$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
+			$surveysummary .= "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
 			$surveysummary .= "\t<td>$setfont {$s1row['expires']}</font></td></tr>\n";
 			}
 		$activated = $s1row['active'];
-		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Language:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<b>Language:</b></font></td>\n";
 		if (!$s1row['language']) {$language=$defaultlang;} else {$language=$s1row['language'];}
 		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>{$s1row['urldescrip']}</a></font></td></tr>\n";
 		}
 	
 	$sumquery2 = "SELECT * FROM groups WHERE sid=$sid";
 	$sumresult2 = mysql_query($sumquery2);
 	$sumcount2 = mysql_num_rows($sumresult2);
-	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Groups:</b></font></td>\n";
+	$surveysummary .= "\t<tr $showstyle id='surveydetails8'><td align='right'>$setfont<b>Groups:</b></font></td>\n";
 	$surveysummary .= "\t<td>$setfont";
 	if ($groupselect)
 		{
@@ -93,7 +119,7 @@ if ($sid)
 
 	$surveysummary .= "\t<font size='1'>($sumcount2 groups, $sumcount3 questions)</font></td></tr>\n";
 
-	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Activation:</b></font></td>\n";
+	$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right'>$setfont<b>Activation:</b></font></td>\n";
 	$surveysummary .= "\t<td valign='top'>$setfont";
 	if ($activated == "N" && $sumcount3 > 0)
 		{
@@ -150,10 +176,12 @@ if ($gid)
 	while ($grow = mysql_fetch_array($grpresult))
 		{
 		if ($qid) {$gshowstyle="style='display: none'";}
-		$groupsummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Group Title:</b></font></td>\n\t<td>$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n";
-		if ($grow['description']) {$groupsummary .= "\t<tr $gshowstyle><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";}
+		$groupsummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Group Title:</b></font></td>\n";
+		$groupsummary .="\t<td>";
+		$groupsummary .="$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n";
+		$groupsummary .= "\t<tr $gshowstyle id='surveydetails10'><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
 		}
-	$groupsummary .="\t<tr><td align='right'>$setfont<b>Questions:</b></font></td>\n";
+	$groupsummary .="\t<tr $gshowstyle id='surveydetails11'><td align='right'>$setfont<b>Questions:</b></font></td>\n";
 	$groupsummary .="\t<td><select $slstyle name='qid' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 	$groupsummary .= getquestions();
 	$groupsummary .= "\n\t\t</select></td></tr>\n";
