@@ -310,6 +310,10 @@ if ($conditionscount > 0)
 				{
 				echo "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
 				}
+			else
+				{
+				echo "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+				}
 			}
 		echo "\t\t</font></td>\n";
 		echo "\t\t<td align='center' valign='middle'><font size='1'>equals</font></td>";
