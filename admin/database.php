@@ -226,7 +226,7 @@ elseif ($action == "copynewquestion")
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\n".mysql_error()."\")\n //-->\n</script>\n";
 		}
-	if ($copyanswers == "Y")
+	if (returnglobal('copyanswers') == "Y")
 		{
 		$q2 = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
 		$r2 = mysql_query($q2);
