@@ -1,0 +1,212 @@
+<?php
+require_once("config.php");
+if (!isset($imagefiles)) {$imagefiles="./images";}
+if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($style)) {$style=returnglobal('style');}
+if (!isset($answers)) {$answers=returnglobal('answers');}
+if (!isset($type)) {$type=returnglobal('type');}
+
+#Get all legitimate question ids
+$query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
+$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+$num_results = mysql_num_rows($result);
+# Build array that has to be returned
+for ($i=0; $i < $num_results; $i++) {
+	$row = mysql_fetch_array($result);
+	$legitqs[] = $row['qid']; //this creates an array of question id's'
+}
+
+#See if tokens are being used
+$tresult = @mysql_list_tables($databasename) or die ("Error getting table list<br />".mysql_error());
+while($tbl = @mysql_tablename($tresult, $i++))
+	{
+	if ($tbl == "{$dbprefix}tokens_$sid") {$tokensexist = 1;}
+	}
+
+#Lookup the names of the attributes
+$query="SELECT sid, attribute1, attribute2, private FROM {$dbprefix}surveys WHERE sid=$sid";
+$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+$num_results = mysql_num_rows($result);
+$num_fields = $num_results;
+# Build array that has to be returned
+for ($i=0; $i < $num_results; $i++) {
+        $row = mysql_fetch_array($result);
+	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_TL_ATTR1;}
+	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_TL_ATTR2;}
+	$surveyprivate=$row['private'];
+}
+
+$fieldno=0;
+
+if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+	$fields=array(
+		$fieldno++ =>array("id"=>"fname","name"=>_TL_FIRST,"code"=>"", "qid"=>0,"type"=>"A40" ) , 
+		$fieldno++ =>array("id"=>"lname","name"=>_TL_LAST,"code"=>"", "qid"=>0,"type"=>"A40" ) , 
+		$fieldno++ =>array("id"=>"email","name"=>_TL_EMAIL,"code"=>"", "qid"=>0,"type"=>"A100") , 
+		$fieldno++ =>array("id"=>"attr1","name"=>$attr1_name,"code"=>"", "qid"=>0,"type"=>"A100") , 
+		$fieldno++ =>array("id"=>"attr2","name"=>$attr2_name,"code"=>"", "qid"=>0,"type"=>"A100"));
+} else {
+	$fields=array();
+}
+
+$query="SHOW COLUMNS FROM {$dbprefix}survey_$sid";
+$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+$num_results = mysql_num_rows($result);
+$num_fields = $num_results;
+# Build array that has to be returned
+for ($i=0; $i < $num_results; $i++) {
+        $row = mysql_fetch_array($result);
+        #Conditions for SPSS fields:
+        # - Length may not be longer than 8 characters
+        # - Name may not begin with a digit
+        $fieldname = $row["Field"];
+
+        #Rename 'datestamp' to stamp
+        if ($fieldname =="datestamp") {
+                $fieldname = "stamp";
+        }
+
+	#Determine field type
+	if ($fieldname=="stamp"){
+		$fieldtype = "DATETIME20.0";
+	} else {
+		$fieldtype = "A10";
+	}
+	#Get qid (question id)
+	$code="";
+	if ($fieldname == "id" OR $fieldname=="token" OR $fieldname=="stamp"){
+		$qid = 0;
+	}else{
+		#Split the fieldname into three parts
+		list($fsid, $fgid, $fqid) = split("X", $fieldname);
+		#Determine if the question id is in the array above
+		while (!in_array($fqid, $legitqs)){
+			$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
+		}
+		$qid = $fqid;
+		#Get the code
+		#Reload the fqid
+		list($fsid, $fgid, $fqid) = split("X", $fieldname);
+		#load 'code' in code
+		$code = substr($fqid,strlen($qid));
+	}
+	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype"));
+	$fields = $fields + $tempArray;
+}
+
+echo "DATA LIST LIST /";
+
+foreach ($fields as $field){
+        echo $field["id"];
+        echo "(".$field["type"].") ";
+}
+
+echo ".";
+echo "<br>";
+echo "\n";
+
+#echo "*Begin data\n";
+echo "BEGIN DATA<br>";
+
+if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+$query="SELECT `{$dbprefix}tokens_$sid`.`firstname`   ,
+	       `{$dbprefix}tokens_$sid`.`lastname`    ,
+	       `{$dbprefix}tokens_$sid`.`email`       ,
+	       `{$dbprefix}tokens_$sid`.`attribute_1` ,
+	       `{$dbprefix}tokens_$sid`.`attribute_2` ,
+	       `{$dbprefix}survey_$sid`.* 
+	FROM `{$dbprefix}survey_$sid`
+	LEFT JOIN `{$dbprefix}tokens_$sid` ON `{$dbprefix}survey_$sid`.`token` = `{$dbprefix}tokens_$sid`.`token`";
+} else {
+$query = "SELECT `{$dbprefix}survey_$sid`.*
+	FROM `{$dbprefix}survey_$sid`";
+}
+
+
+$result=mysql_query($query) or die("Couldn't get results<br />$query<br />".mysql_error());
+$num_results = mysql_num_rows($result);
+for ($i=0; $i < $num_results; $i++) {
+        $row = mysql_fetch_array($result);
+	$fieldno = 0;
+	while ($fieldno < $num_fields){
+		if ($fields[$fieldno]["id"]=="stamp"){
+			#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
+			list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
+			echo "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ";
+		}else {
+			echo "'".$row[$fieldno]."' ";
+		}
+		$fieldno++;
+	}
+	echo "<br>";
+        #Conditions for SPSS fields:
+        # - Length may not be longer than 8 charac
+}
+echo "END DATA.<br>";
+
+echo "*Define Variable Properties.<br>";
+foreach ($fields as $field){
+	if ($field["id"] == "fname" OR $field["id"]=="lname" OR $field["id"]=="email" OR $field["id"]=="attr1" OR $field["id"]=="attr2"){
+	        echo "VARIABLE LABELS ".$field["id"]." '".$field["name"]."'.<br>";
+	}else{
+		#If a split question
+		if ($field["code"] != ""){
+			#Lookup the question
+
+			$query = "SELECT `questions`.`question` FROM questions WHERE ((`questions`.`sid` =".$sid.") AND (`questions`.`qid` =".$field["qid"]."))";
+			echo $query;
+			$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+			$num_results = mysql_num_rows($result);
+			$num_fields = $num_results;
+			if ($num_results >0){
+				# Build array that has to be returned
+				for ($i=0; $i < $num_results; $i++) {
+					$row = mysql_fetch_array($result);
+					$question_text = $row["question"];
+				}
+			}
+			#Lookup the answer
+			$query = "SELECT `answers`.`answer` FROM answers WHERE ((`answers`.`qid` =".$field["qid"].") AND (`answers`.`code` ='".$field["code"]."'))";
+			$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+			$num_results = mysql_num_rows($result);
+			$num_fields = $num_results;
+			if ($num_results >0){
+				# Build array that has to be returned
+				for ($i=0; $i < $num_results; $i++) {
+					$row = mysql_fetch_array($result);
+					echo "VARIABLE LABELES ".$field["id"]." '".$question_text." - ".$row["answer"]."'.<br>";
+				}
+			}
+
+
+		#If a 'normal'
+		}else{
+				####
+			#Split fieldname by "X"
+			#$test[0] --> contains 'survey id' --> surveys-sid
+			#$test[1] --> contains 'group is'  --> groups-gid
+			#$test[2] --> contains a combination 'qid' and 'code' in 'answers' table
+			$test=explode ("X", $field["name"]);
+		}
+	}
+}
+
+echo "*Define Value labels.<br>";
+
+foreach ($fields as $field){
+	if ($field["qid"]!=0){
+		$query = "SELECT `answers`.`code`, `{$dbprefix}answers`.`answer` FROM {$dbprefix}answers WHERE (`{$dbprefix}answers`.`qid` = ".$field["qid"].")";
+		$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+		$num_results = mysql_num_rows($result);
+		$num_fields = $num_results;
+		if ($num_results >0){
+			echo "VALUE LABELES ".$field["id"]."<br>";
+			# Build array that has to be returned
+			for ($i=0; $i < $num_results; $i++) {
+			        $row = mysql_fetch_array($result);
+				echo $row["code"]." '".$row["answer"]."'<br>";
+			}
+		}
+	}
+}
+?>
