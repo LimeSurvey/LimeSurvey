@@ -107,8 +107,9 @@ if (!$tkresult=mysql_query($tkquery))
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
 
 $tokenmenu = "\t<tr>\n";
-$tokenmenu .= "\t\t<td bgcolor='#EEEEEE' colspan='2' align='center' style='border-top-style: solid; border-top-width: 1; border-top-color:#BBBBBB; border-left-color:#BBBBBB; border-left-width:1; border-left-style:solid; border-right-style: solid; border-right-width:1; border-right-color:#BBBBBB'>\n";
-$tokenmenu .= "\t\t\t[<a href='admin.php?sid=$sid'>admin</a>] \n";
+$tokenmenu .= "\t\t<td bgcolor='#EEEEEE' colspan='2' align='center' ";
+$tokenmenu .= "style='border-top-style: solid; border-top-width: 1; border-top-color:#BBBBBB; border-left-color:#BBBBBB; border-left-width:1; border-left-style:solid; border-right-style: solid; border-right-width:1; border-right-color:#BBBBBB'>\n";
+$tokenmenu .= "\t\t\t<font size='2'>[<a href='admin.php?sid=$sid'>admin</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=browse'>browse</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=add'>add</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=import'>import</a>] \n";
@@ -180,8 +181,8 @@ if ($action == "browse")
 		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\">\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
-		echo "</table>\n";
 		}
+	echo "</table>\n";
 	}
 
 if ($action == "kill")
