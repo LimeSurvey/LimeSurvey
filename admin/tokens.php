@@ -711,13 +711,14 @@ if (returnglobal('action') == "remind")
 		}
 	else
 		{
-		echo _TC_SENDINGREMINDERS;
+		echo _TC_SENDINGREMINDERS."<br />\n";
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
 		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
 		$ctquery = "SELECT firstname FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
-		$ctresult = mysql_query($ctquery);
+		echo "<!-- ctquery: $ctquery -->\n";
+		$ctresult = mysql_query($ctquery) or die ("Database error!<br />\n" . mysql_error());
 		$ctcount = mysql_num_rows($ctresult);
 		$emquery = "SELECT firstname, lastname, email, token, tid FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !='' AND EMAIL !=''";
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
