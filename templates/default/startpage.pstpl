@@ -28,6 +28,14 @@ body.default
 	font-weight:bold;
 	color:RED;
 	}
+.saveall
+	{
+	font-size:10px;
+	font-weight:normal;
+	font-style:underline;
+	color:black;
+	background-color:#999999;
+	}
 </style>
 </head>
 <body class='default'>
