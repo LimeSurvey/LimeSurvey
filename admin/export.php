@@ -35,7 +35,7 @@
 */
 
 require_once("config.php");
-
+if (!isset($imagefiles)) {$imagefiles="./images";}
 if (!isset($sid)) {$sid=returnglobal('sid');}
 if (!isset($style)) {$style=returnglobal('style');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
@@ -286,7 +286,7 @@ while ($lw = mysql_fetch_array($lr))
 	{
 	$legitqs[] = $lw['qid']; //this creates an array of question id's'
 	}
-
+$origlegitqs=$legitqs;
 //Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$sid";
 if (isset($_POST['colselect']))
@@ -451,6 +451,15 @@ for ($i=0; $i<$fieldcount; $i++)
 				$ftype = $qrow['type']; //get the question type
 				$fquest = $qrow['question'];
 				}
+			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" ) 
+				{ //If its a single - answer only type question
+				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
+					{
+					if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+					}
+				$legitqs=$nlegitqs;
+				unset($nlegitqs);
+				}
 			switch ($ftype)
 				{
 				case "R": //RANKING TYPE
@@ -555,14 +564,8 @@ for ($i=0; $i<$fieldcount; $i++)
 $firstline = trim($firstline);
 $firstline .= "\n";
 echo $firstline; //Sending the header row
-
 //Now dump the data
-if (isset($_POST['sql'])) //this applies if export has been called from the statistics package
-	{
-	if ($_POST['sql'] == "NULL") {$dquery = "SELECT $selectfields FROM $surveytable ORDER BY id";}
-	else {$dquery = "SELECT $selectfields FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
-	}
-elseif ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
+if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
 	{
 	$dquery = "SELECT $selectfields";
 	if (isset($_POST['first_name']) && $_POST['first_name']=="on")
@@ -587,14 +590,19 @@ elseif ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_
 		}
 	$dquery	.= " FROM $surveytable "
 			. "LEFT OUTER JOIN {$dbprefix}tokens_$sid "
-			. "ON $surveytable.token={$dbprefix}tokens_$sid.token "
-			. "ORDER BY $surveytable.id";
+			. "ON $surveytable.token={$dbprefix}tokens_$sid.token ";
 	}
 else // this applies for exporting everything
 	{
-	$dquery = "SELECT $selectfields FROM $surveytable ORDER BY id";
+	$dquery = "SELECT $selectfields FROM $surveytable ";
 	}
 
+if (isset($_POST['sql'])) //this applies if export has been called from the statistics package
+	{
+	if ($_POST['sql'] != "NULL") {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
+	}
+
+$dquery .= "ORDER BY $surveytable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
 	{
 	$dresult = mysql_query($dquery);
@@ -613,17 +621,18 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 
 elseif ($answers == "long")
 	{
-	$dresult = mysql_query($dquery);
+	$dresult = mysql_query($dquery) or die("ERROR: $dquery -".mysql_error());
 	$fieldcount = mysql_num_fields($dresult);
 	while ($drow = mysql_fetch_array($dresult))
 		{
+		$legitqs=$origlegitqs;
 		if (!ini_get('safe_mode'))
 			{
 			set_time_limit(3); //Give each record 3 seconds	
 			}
 		for ($i=0; $i<$fieldcount; $i++)
 			{
-			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "token")
+			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "token" && mysql_field_name($dresult, $i) != "first_name" && mysql_field_name($dresult, $i) != "last_name" && mysql_field_name($dresult, $i) != "email" && mysql_field_name($dresult, $i) != "attribute_1" && mysql_field_name($dresult, $i) != "attribute_2")
 				{
 				list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
 				}
@@ -647,6 +656,15 @@ elseif ($answers == "long")
 				$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
 				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 					{$ftype = $qrow['type']; $lid=$qrow['lid'];}
+				}
+			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" ) 
+				{ //If its a single - answer only type question
+				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
+					{
+					if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+					}
+				$legitqs=$nlegitqs;
+				unset($nlegitqs);
 				}
 			if ($type == "csv") {echo "\"";}
 			switch ($ftype)
