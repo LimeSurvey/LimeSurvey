@@ -598,6 +598,7 @@ if (returnglobal('action') == "email")
 			$surveyadmin = $esrow['admin'];
 			$surveyadminemail = $esrow['adminemail'];
 			$surveytemplate = $esrow['template'];
+			$surveyemailinvite = $esrow['email_invite'];
 			}
 		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
@@ -622,38 +623,44 @@ if (returnglobal('action') == "email")
 			."\t\t<td align='right' valign='top'>$setfont<b>"._MESSAGE.":</b></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
-		if (!is_dir("$publicdir/templates/$surveytemplate")) {$surveytemplate = "default";}
-		if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
-			{
-			if ($surveytemplate == "default")
-				{
-				echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
-					._TC_NOEMAILTEMPLATE."\n"
-					."</td></tr></table>\n";
-				exit;
-				}
-			else
-				{
-				$surveytemplate = "default";
-				if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
-					{
-					echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
-						._TC_NOEMAILTEMPLATE."\n"
-						."</td></tr></table>\n";
-					exit;
-					}
-				}
-			}
-		foreach(file("$publicdir/templates/$surveytemplate/invitationemail.pstpl") as $op)
-			{
-			$textarea = $op;
-			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
-			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
-			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
-			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
-			echo $textarea;
-			}
+//		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
+//		if (!is_dir("$publicdir/templates/$surveytemplate")) {$surveytemplate = "default";}
+//		if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
+//			{
+//			if ($surveytemplate == "default")
+//				{
+//				echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
+//					._TC_NOEMAILTEMPLATE."\n"
+//					."</td></tr></table>\n";
+//				exit;
+//				}
+//			else
+//				{
+//				$surveytemplate = "default";
+//				if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
+//					{
+//					echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
+//						._TC_NOEMAILTEMPLATE."\n"
+//						."</td></tr></table>\n";
+//					exit;
+//					}
+//				}
+//			}
+//		foreach(file("$publicdir/templates/$surveytemplate/invitationemail.pstpl") as $op)
+//			{
+//			$textarea = $op;
+//			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
+//			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
+//			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
+//			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
+//			echo $textarea;
+//			}
+		$textarea = $surveyemailinvite;
+		$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
+		$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
+		$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
+		$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
+		echo $textarea;
 		echo "\t\t\t</textarea>\n"
 			."\t\t</td>\n"
 			."\t</tr>\n"
@@ -777,6 +784,7 @@ if (returnglobal('action') == "remind")
 			$surveyadmin = $esrow['admin'];
 			$surveyadminemail = $esrow['adminemail'];
 			$surveytemplate = $esrow['template'];
+			$surveyremindemail = $esrow['email_remind'];
 			}
 		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
@@ -811,36 +819,43 @@ if (returnglobal('action') == "remind")
 			._MESSAGE.":</b></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
-		if (!is_dir("$publicdir/templates/$surveytemplate")) {$surveytemplate = "default";}
-		if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
-			{
-			if ($surveytemplate == "default")
-				{
-				echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
-					._TC_NOREMINDTEMPLATE."\n";
-				exit;
-				}
-			else
-				{
-				$surveytemplate = "default";
-				if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
-					{
-					echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
-						._TC_NOREMINDTEMPLATE."\n";
-					exit;
-					}
-				}
-			}
-		foreach(file("$publicdir/templates/$surveytemplate/reminderemail.pstpl") as $op)
-			{
-			$textarea = $op;
+//		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
+//		if (!is_dir("$publicdir/templates/$surveytemplate")) {$surveytemplate = "default";}
+//		if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
+//			{
+//			if ($surveytemplate == "default")
+//				{
+//				echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
+//					._TC_NOREMINDTEMPLATE."\n";
+//				exit;
+//				}
+//			else
+//				{
+//				$surveytemplate = "default";
+//				if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
+//					{
+//					echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
+//						._TC_NOREMINDTEMPLATE."\n";
+//					exit;
+//					}
+//				}
+//			}
+//		foreach(file("$publicdir/templates/$surveytemplate/reminderemail.pstpl") as $op)
+//			{
+//			$textarea = $op;
+//			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
+//			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
+//			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
+//			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
+//			echo $textarea;
+//			}
+		$textarea = $surveyremindemail;
 			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
 			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
 			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
 			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
 			echo $textarea;
-			}
+
 		echo "\t\t\t</textarea>\n"
 			."\t\t</td>\n"
 			."\t</tr>\n"
@@ -862,13 +877,16 @@ if (returnglobal('action') == "remind")
 		echo _TC_SENDINGREMINDERS."<br />\n";
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
 		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TC_REMINDTID." TID: {$_POST['tid']})";}
-		$ctquery = "SELECT firstname FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
+		$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
 		echo "<!-- ctquery: $ctquery -->\n";
 		$ctresult = mysql_query($ctquery) or die ("Database error!<br />\n" . mysql_error());
 		$ctcount = mysql_num_rows($ctresult);
-		$emquery = "SELECT firstname, lastname, email, token, tid FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !='' AND EMAIL !=''";
+		$ctfieldcount = mysql_num_fields($ctresult);
+		$emquery = "SELECT firstname, lastname, email, token, tid";
+		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+		$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !='' AND EMAIL !=''";
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
