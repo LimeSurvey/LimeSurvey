@@ -62,6 +62,8 @@ if (!$style)
 			$groupname=$row['group_name'];
 			$title=$row['title'];
 			}
+		if (!isset($groupname)) { $groupname="";}
+		if (!isset($title)) { $title="";}
 		$eachone[]=array("fieldname"=>$fm['fieldname'],
 						 "group_name"=>$groupname,
 						 "title"=>$title);
