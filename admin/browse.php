@@ -259,6 +259,7 @@ elseif ($action == "all")
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center' $singleborderstyle>$setfont\n";
 		echo "\t\t\tShowing Filtered Results<br />\n";
+		//echo "\t\t\t".$_POST['sql']."\n";
 		echo "\t\t\t&nbsp;[<a href=\"javascript:window.close()\">Close</a>]";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
@@ -391,7 +392,7 @@ elseif ($action == "all")
 		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
 		}
 	if ($order == "desc") {$dtquery .= " DESC LIMIT $limit";}
-	if (isset($start) && isset($limit) && !isset($order)) {$dtquery = "SELECT * FROM $surveytable LIMIT $start, $limit";}
+	if (isset($start) && isset($limit) && !isset($order)) {$dtquery .= " LIMIT $start, $limit";}
 	if (!isset($limit)) {$dtquery .= " LIMIT $limit";}
 	if (!isset($start)) {$start = 0;}
 	$dtresult = mysql_query($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".mysql_error());

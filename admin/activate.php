@@ -188,7 +188,7 @@ else
 		{
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && $arow['type'] !="P" && $arow['type'] != "R" && $arow['type'] != "Q")
 			{
-			$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
 			switch($arow['type'])
 				{
 				case "N":  //NUMERICAL
@@ -201,7 +201,7 @@ else
 					$createsurvey .= " VARCHAR(5)";
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
-					$createsurvey .= " VARCHAR(5),\n {$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment TEXT";
+					$createsurvey .= " VARCHAR(5),\n `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment` TEXT";
 					break;
 				case "T":  //LONG TEXT
 					$createsurvey .= " TEXT";
@@ -223,7 +223,7 @@ else
 			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			while ($abrow=mysql_fetch_array($abresult))
 				{
-				$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']} VARCHAR(5),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` VARCHAR(5),\n";
 				if ($abrow['other']=="Y") {$alsoother="Y";}
 				if ($arow['type'] == "P")
 					{
@@ -232,10 +232,10 @@ else
 				}
 			if ($alsoother=="Y" && ($arow['type']=="M" || $arow['type']=="P"))
 				{
-				$createsurvey .= " {$arow['sid']}X{$arow['gid']}X{$arow['qid']}other VARCHAR(100),\n";
+				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` VARCHAR(100),\n";
 				if ($arow['type']=="P")
 					{
-					$createsurvey .= " {$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment VARCHAR(100),\n";
+					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` VARCHAR(100),\n";
 					}
 				}
 			}
@@ -245,7 +245,7 @@ else
 			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			while ($abrow=mysql_fetch_array($abresult))
 				{
-				$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']} VARCHAR(100),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` VARCHAR(100),\n";
 				}
 			}
 		elseif ($arow['type'] == "R")
@@ -256,7 +256,7 @@ else
 			$abcount=mysql_num_rows($abresult);
 			for ($i=1; $i<=$abcount; $i++)
 				{
-				$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i VARCHAR(5),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i` VARCHAR(5),\n";
 				}			
 			}
 		if ( substr($createsurvey, strlen($createsurvey)-2, 2) != ",\n") {$createsurvey .= ",\n";}

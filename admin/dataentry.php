@@ -111,7 +111,7 @@ if ($action == "insert")
 		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$col_name .= "$fieldname, \n";
+			$col_name .= "`$fieldname`, \n";
 			if (get_magic_quotes_gpc())
 				{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 			else
@@ -130,7 +130,7 @@ if ($action == "insert")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			$fieldname2 = $fieldname . "comment";
-			$col_name .= "$fieldname, \n$fieldname2, \n";
+			$col_name .= "`$fieldname`, \n`$fieldname2`, \n";
 			if (get_magic_quotes_gpc())
 				{$insertqr .= "'" . $_POST[$fieldname] . "', \n'" . $_POST[$fieldname2] . "', \n";}
 			else
@@ -153,7 +153,7 @@ if ($action == "insert")
 			for ($i=1; $i<=$i2count; $i++)
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$i";
-				$col_name .= "$fieldname, \n";		
+				$col_name .= "`$fieldname`, \n";		
 				if (get_magic_quotes_gpc())
 					{$insertqr .= "'" . $_POST["d$fieldname"] . "', \n";}
 				else
@@ -176,7 +176,7 @@ if ($action == "insert")
 			while ($i2row = mysql_fetch_array($i2result))
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-				$col_name .= "$fieldname, \n";
+				$col_name .= "`$fieldname`, \n";
 				if (get_magic_quotes_gpc())
 					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 				else
@@ -195,7 +195,7 @@ if ($action == "insert")
 				if ($irow['type'] == "P")
 					{
 					$fieldname2 = $fieldname."comment";
-					$col_name .= "$fieldname2, \n";
+					$col_name .= "`$fieldname2`, \n";
 					if (get_magic_quotes_gpc())
 						{$insertqr .= "'" . $_POST[$fieldname2] . "', \n";}
 					else
@@ -214,7 +214,7 @@ if ($action == "insert")
 			if ($otherexists == "Y") 
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
-				$col_name .= "$fieldname, \n";
+				$col_name .= "`$fieldname`, \n";
 				if (get_magic_quotes_gpc())
 					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 				else
@@ -863,35 +863,35 @@ elseif ($action == "update")
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (get_magic_quotes_gpc())
 				//{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
-				{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
+				{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
 			else
 				{
 				if (phpversion() >= "4.3.0")
 					{
-					$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+					$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				else
 					{
-					$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+					$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				}
 			}
 		elseif ($irow['type'] == "O")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";
+			$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}comment";
 			if (get_magic_quotes_gpc())
-				{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
+				{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
 			else
 				{
 				if (phpversion() >= "4.3.0")
 					{
-					$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+					$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				else
 					{
-					$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+					$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				}
 			}
@@ -904,16 +904,16 @@ elseif ($action == "update")
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$x";
 				if (get_magic_quotes_gpc())
-					{$updateqr .= "$fieldname = '" . $_POST["d$fieldname"] . "', \n";}
+					{$updateqr .= "`$fieldname` = '" . $_POST["d$fieldname"] . "', \n";}
 				else
 					{
 					if (phpversion() >= "4.3.0")
 						{
-						$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
+						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
 						}
 					else
 						{
-						$updateqr .= "$fieldname = '" . mysql_escape_string($_POST["d$fieldname"]) . "', \n";
+						$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST["d$fieldname"]) . "', \n";
 						}
 					}
 				}
@@ -927,22 +927,22 @@ elseif ($action == "update")
 			while ($i2row = mysql_fetch_array($i2result))
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-				$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";
+				$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";
 				if ($i2row['other'] == "Y") {$otherexists = "Y";}
 				if ($irow['type'] == "P")
 					{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
 					if (get_magic_quotes_gpc())
-						{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
+						{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
 					else
 						{
 						if (phpversion() >= "4.3.0")
 							{
-							$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+							$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 							}
 						else
 							{
-							$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+							$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 							}
 						}
 					}
@@ -951,16 +951,16 @@ elseif ($action == "update")
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 				if (get_magic_quotes_gpc())
-					{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
+					{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
 				else
 					{
 					if (phpversion() >= "4.3.0")
 						{
-						$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 						}
 					else
 						{
-						$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+						$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 						}
 					}
 				}

@@ -428,10 +428,11 @@ if ($_POST['display'])
 	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;} // creates array of post variable names
 	foreach ($postvars as $pv) 
 		{
+		
 		$firstletter=substr($pv,0,1);
 		if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary") //pull out just the fieldnames
 			{
-			$thisquestion = "$pv IN (";
+			$thisquestion = "`$pv` IN (";
 			foreach ($$pv as $condition)
 				{
 				$thisquestion .= "'$condition', ";
@@ -449,7 +450,7 @@ if ($_POST['display'])
 				{
 				if (in_array($arow[0], $$pv)) // only add condition if answer has been chosen
 					{
-					$mselects[]=substr($pv, 1, strlen($pv))."$arow[0] = 'Y'";
+					$mselects[]="`".substr($pv, 1, strlen($pv))."$arow[0]` = 'Y'";
 					}
 				}
 			if ($mselects) 
@@ -462,32 +463,32 @@ if ($_POST['display'])
 			{
 			if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
 				{
-				$selects[]=substr($pv, 1, -1)." > '".$_POST[$pv]."'";
+				$selects[]="`".substr($pv, 1, -1)."` > '".$_POST[$pv]."'";
 				}
 			if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
 				{
-				$selects[]=substr($pv, 1, -1)." < '".$_POST[$pv]."'";
+				$selects[]="`".substr($pv, 1, -1)."` < '".$_POST[$pv]."'";
 				}
 			}
 		elseif (substr($pv, 0, 1) == "T" && $_POST[$pv] != "")
 			{
-			$selects[]=substr($pv, 1, strlen($pv))." like '%".$_POST[$pv]."%'";
+			$selects[]="`".substr($pv, 1, strlen($pv))."` like '%".$_POST[$pv]."%'";
 			}
 		elseif (substr($pv, 0, 1) == "D" && $_POST[$pv] != "")
 			{
 			if (substr($pv, -1, 1) == "=")
 				{
-				$selects[] = substr($pv, 1, strlen($pv)-2)." = '".$_POST[$pv]."'";
+				$selects[] = "`".substr($pv, 1, strlen($pv)-2)."` = '".$_POST[$pv]."'";
 				}
 			else
 				{
 				if (substr($pv, -1, 1) == "<")
 					{
-					$selects[]=substr($pv, 1, strlen($pv)-2) . " > '".$_POST[$pv]."'";
+					$selects[]= "`".substr($pv, 1, strlen($pv)-2) . "` > '".$_POST[$pv]."'";
 					}
 				if (substr($pv, -1, 1) == ">")
 					{
-					$selects[]=substr($pv, 1, strlen($pv)-2) . " < '".$_POST[$pv]."'";
+					$selects[]= "`".substr($pv, 1, strlen($pv)-2) . "` < '".$_POST[$pv]."'";
 					}
 				}
 			
@@ -550,7 +551,6 @@ if ($_POST['summary'])
 		// 1. Get answers for question
 		if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
 			{
-			
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
 			$nquery = "SELECT title, type, question, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
@@ -605,7 +605,7 @@ if ($_POST['summary'])
 			$query .= ", AVG(`$fieldname`*1) as average";
 			$query .= ", MIN(`$fieldname`*1) as minimum";
 			$query .= ", MAX(`$fieldname`*1) as maximum";
-			$query .= " FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT NULL AND $fieldname != ' '";
+			$query .= " FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT NULL AND `$fieldname` != ' '";
 			if ($sql != "NULL") {$query .= " AND $sql";}
 			$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_array($result))
@@ -619,10 +619,10 @@ if ($_POST['summary'])
 				}
 			
 			//CALCULATE QUARTILES
-			$query ="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null AND $fieldname != ' '";
+			$query ="SELECT `$fieldname` FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
 			if ($sql != "NULL") {$query .= " AND $sql";}
 			$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
-			$querystarter="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null AND $fieldname != ' '";
+			$querystarter="SELECT `$fieldname` FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
 			if ($sql != "NULL") {$querystarter .= " AND $sql";}
 			$medcount=mysql_num_rows($result);
 			
@@ -638,7 +638,7 @@ if ($_POST['summary'])
 			if ($q1 != $q1b)
 				{
 				//ODD NUMBER
-				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1c, 2";
+				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 2";
 				$result=mysql_query($query) or die("1st Quartile query failed<br />".mysql_error());
 				while ($row=mysql_fetch_array($result))	
 					{
@@ -653,7 +653,7 @@ if ($_POST['summary'])
 			else
 				{
 				//EVEN NUMBER
-				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1c, 1";
+				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 1";
 				$result=mysql_query($query) or die ("1st Quartile query failed<br />".mysql_error());
 				while ($row=mysql_fetch_array($result)) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}
 				}
@@ -666,7 +666,7 @@ if ($_POST['summary'])
 			if ($median != (int)((($medcount+1)/2)-1)) 
 				{
 				//remainder
-				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medianc, 2";
+				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $medianc, 2";
 				$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
 				while ($row=mysql_fetch_array($result))	{$total=$total+$row[$fieldname];}
 				$showem[]=array("2nd Quartile (Median)", $total/2);
@@ -674,7 +674,7 @@ if ($_POST['summary'])
 			else
 				{
 				//EVEN NUMBER
-				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medianc, 1";
+				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $medianc, 1";
 				$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
 				while ($row=mysql_fetch_array($result))	{$showem[]=array("Median Value", $row[$fieldname]);}
 				}
@@ -686,7 +686,7 @@ if ($_POST['summary'])
 			$q3diff=$q3-$q3b;
 			if ($q3 != $q3b)
 				{
-				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 2";
+				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q3c, 2";
 				$result = mysql_query($query) or die("3rd Quartile query failed<br />".mysql_error());
 				$lastnumber='';
 				while ($row=mysql_fetch_array($result)) 
@@ -701,7 +701,7 @@ if ($_POST['summary'])
 				}
 			else
 				{
-				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 1";
+				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q3c, 1";
 				$result = mysql_query($query) or die("3rd Quartile even query failed<br />".mysql_error());
 				while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
 				}
@@ -861,16 +861,16 @@ if ($_POST['summary'])
 					{
 					if (substr($rt, 0, 1) == "R")
 						{
-						$query = "SELECT count($al[2]) FROM {$dbprefix}survey_$sid WHERE $al[2] = '$al[0]'";
+						$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` = '$al[0]'";
 						}
 					else
 						{
-						$query = "SELECT count($al[2]) FROM {$dbprefix}survey_$sid WHERE $al[2] = 'Y'";
+						$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` = 'Y'";
 						}
 					}
 				else
 					{
-					$query = "SELECT count($rt) FROM {$dbprefix}survey_$sid WHERE $rt = '$al[0]'";
+					$query = "SELECT count(`$rt`) FROM {$dbprefix}survey_$sid WHERE `$rt` = '$al[0]'";
 					//echo $query; //debugging line
 					}
 				if ($sql != "NULL") {$query .= " AND $sql";}

@@ -167,7 +167,7 @@ if ($_POST['move'] == " "._SUBMIT." ")
 		{
 		foreach ($_SESSION['insertarray'] as $value)
 			{
-			$col_name .= ", " . $value; 
+			$col_name .= "`, `" . $value; 
 			if (get_magic_quotes_gpc() == "0")
 				{
 				if (phpversion() >= "4.3.0")
@@ -184,7 +184,8 @@ if ($_POST['move'] == " "._SUBMIT." ")
 				$values .= ", '" . $_SESSION[$value] . "'";
 				}
 			}
-		$col_name = substr($col_name, 2); //Strip off first comma & space
+		$col_name .= "`";
+		$col_name = substr($col_name, 3); //Strip off first backtick, comma & space
 		$values = substr($values, 2); //Strip off first comma & space
 		$subquery .= "\n($col_name) \nVALUES \n($values)";
 		}
@@ -298,6 +299,7 @@ if ($_POST['move'] == " "._SUBMIT." ")
 			else
 				{
 				$completed .= "<a href='javascript:location.reload()'>"._SUBMITAGAIN."</a><br /><br />\n";
+				$completed .= $subquery;
 				}
 			}
 		}
