@@ -122,7 +122,11 @@ define("_NOTACTIVE", "Ce sondage n'est pas actif. Vous ne pourrez pas sauver vos
 
 define("_SURVEYCOMPLETE", "Vous avez déjà accompli cet aperçu.");
 
-define("_INSTRUCTION_LIST", "Choose only one of the following"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Check any that apply"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "Choisissez seulement un du suivant"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "En vérifiez qui s'appliquent"); //NEW for 098rc3
 
+define("_CONFIRMATION_MESSAGE1", "L'Aperçu A soumis"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "Une nouvelle réponse a été écrite pour votre aperçu"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "Cliquetez le lien suivant pour voir la réponse individuelle:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "Statistiques de vue en cliquetant ici:"); //NEW for 098rc5
 ?>

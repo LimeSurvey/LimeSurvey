@@ -125,4 +125,8 @@ define("_SURVEYCOMPLETE", "Hai gi&agrave; completato il questionario.");
 define("_INSTRUCTION_LIST", "Scegliere solo una delle seguenti voci"); //NEW for 098rc3
 define("_INSTRUCTION_MULTI", "Scegli una o pi&ugrave; delle seguenti voci"); //NEW for 098rc3
 
+define("_CONFIRMATION_MESSAGE1", "Indagine Presentata"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "Una nuova risposta è stata inserita per la vostra indagine"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "Scatti il seguente collegamento per vedere la risposta specifica:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "Statistiche di vista scattandosi qui:"); //NEW for 098rc5
 ?>

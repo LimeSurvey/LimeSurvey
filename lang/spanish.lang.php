@@ -122,7 +122,11 @@ define("_NOTACTIVE", "Esta encuesta no está activa. No podrá guardar sus respues
 
 define("_SURVEYCOMPLETE", "Usted ha terminado ya este examen.");
 
-define("_INSTRUCTION_LIST", "Choose only one of the following"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Check any that apply"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "Elija solamente uno del siguiente"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "Compruebe cualquiera que se aplica"); //NEW for 098rc3
 
+define("_CONFIRMATION_MESSAGE1", "Examen Sometido"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "Una nueva respuesta fue incorporada para su examen"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "Chasque el acoplamiento siguiente para ver la respuesta individual:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "Estadística de la visión chascando aquí:"); //NEW for 098rc5
 ?>

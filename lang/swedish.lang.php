@@ -125,4 +125,8 @@ define("_SURVEYCOMPLETE", "You have already completed this survey.");
 define("_INSTRUCTION_LIST", "Choose only one of the following"); //NEW for 098rc3
 define("_INSTRUCTION_MULTI", "Check any that apply"); //NEW for 098rc3
 
+define("_CONFIRMATION_MESSAGE1", "Survey Submitted"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "A new response was entered for your survey"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "Click the following link to see the individual response:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "View statistics by clicking here:"); //NEW for 098rc5
 ?>
