@@ -185,6 +185,14 @@ function retrieveAnswers($ia, $notanswered=null)
 	$name = $ia[0];
 
 	$qtitle=$ia[3];
+	//Replace INSERTANS statements with previously provided answers;
+	while (strpos($qtitle, "{INSERTANS:") !== false) 
+		{
+		$replace=substr($qtitle, strpos($qtitle, "{INSERTANS:"), strpos($qtitle, "}", strpos($qtitle, "{INSERTANS:"))-strpos($qtitle, "{INSERTANS:")+1);
+		$replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
+		$replace3=retrieve_Answer($replace2);
+		$qtitle=str_replace($replace, $replace3, $qtitle);
+		} //while
 	
 	//GET HELP
 	$hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0]";
@@ -1391,6 +1399,91 @@ function do_array_flexiblecolumns($ia)
 		}			
 	$answer .= "\t\t\t</table>\n";
 	return array($answer, $inputnames);
+	}
+
+function retrieve_Answer($code)
+	{
+	global $dbprefix;
+	//Find question details
+	if (isset($_SESSION[$code]))
+		{
+		$questiondetails=getsidgidqid($code);
+		$query="SELECT type FROM {$dbprefix}questions WHERE qid=".$questiondetails['qid'];
+		$result=mysql_query($query) or die("Error getting reference question type<br />$query<br />".mysql_error());
+		while($row=mysql_fetch_array($result))
+			{
+			$type=$row['type'];
+			} // while
+		if ($_SESSION[$code] || $type == "M")
+			{
+			switch($type)
+				{
+				case "L":
+				case "P":
+					if ($_SESSION[$code]== "-oth-")
+						{
+					    $newcode=$code."other";
+						if($_SESSION[$newcode])
+							{
+							$return=$_SESSION[$newcode];
+							}
+						else
+							{
+							$return=_OTHER;
+							}
+						}
+					else
+						{
+						$query="SELECT * FROM {$dbprefix}answers WHERE qid=".$questiondetails['qid']." AND code='".$_SESSION[$code]."'";
+						$result=mysql_query($query) or die("Error getting answer<br />$query<br />".mysql_error());
+						while($row=mysql_fetch_array($result))
+							{
+							$return=$row['answer'];
+							} // while
+						}
+					break;
+				case "M":
+				case "P":
+					$query="SELECT * FROM {$dbprefix}answers WHERE qid=".$questiondetails['qid'];
+					$result=mysql_query($query) or die("Error getting answer<br />$query<br />".mysql_error());
+					while($row=mysql_fetch_array($result))
+						{
+						if (isset($_SESSION[$code.$row['code']]) && $_SESSION[$code.$row['code']] == "Y")
+							{
+						    $returns[] = $row['answer'];
+							}
+						}
+					if (isset($_SESSION[$code."other"]) && $_SESSION[$code."other"])
+						{
+						$returns[]=$_SESSION[$code."other"];
+						}
+					if (isset($returns))
+						{
+					    $return=implode(", ", $returns);
+						if (strpos($return, ","))
+							{
+						    $return=substr_replace($return, " &", strrpos($return, ","), 1);
+							}
+						}
+					else
+						{
+						$return=_NOANSWER;
+						}
+					break;
+				default:
+				$return=$_SESSION[$code];
+				} // switch
+			}
+		else
+			{
+			$return=_NOTAPPLICABLE;
+			}
+		}
+	else
+		{
+		$return=_ERROR_PS . "($code)";
+		}
+	return $return;
 	}
 
 function addtoarray_single($array1, $array2)
