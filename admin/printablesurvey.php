@@ -283,9 +283,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t\t<td>$setfont";
 					for ($i=1; $i<=5; $i++)
 						{
-						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i'";
-						if ($idrow[$i] == $i) {echo " checked";}
-						echo " />$i&nbsp;\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' />$i&nbsp;\n";
 						}
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
@@ -304,9 +302,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t\t<td>$setfont\n";
 					for ($i=1; $i<=10; $i++)
 						{
-						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i'";
-						if ($idrow[$i] == $i) {echo " checked";}
-						echo ">$i&nbsp;\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' />$i&nbsp;\n";
 						}
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
@@ -323,15 +319,27 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
-					if ($idrow[$i] == "Y") {echo " checked";}
-					echo ">Yes&nbsp;\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U'";
-					if ($idrow[$i] == "U") {echo " checked";}
-					echo ">Uncertain&nbsp;\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N'";
-					if ($idrow[$i] == "N") {echo " checked";}
-					echo ">No&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'>Yes&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U'>Uncertain&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N'>No&nbsp;\n";
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t</table>\n";
+				break;
+			case "E":  //ARRAY (Increase/Same/Decrease)
+				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
+				$mearesult = mysql_query($meaquery);
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />\n";
+				echo "\t\t\t<table>\n";
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td>$setfont\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='I'>Increase&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='S'>Same&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D'>Decrease&nbsp;\n";
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
