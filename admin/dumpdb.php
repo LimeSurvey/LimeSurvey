@@ -41,7 +41,7 @@ function defdump($tablename)
           $def .= "    $row[Field] $row[Type]";
           if ($row["Default"] != "") $def .= " DEFAULT '$row[Default]'";
           if ($row["Null"] != "YES") $def .= " NOT NULL";
-          if ($row[Extra] != "") $def .= " $row[Extra]";
+          if ($row["Extra"] != "") $def .= " $row[Extra]";
           $def .= ",\n";
         }
         $def = ereg_replace(",\n$","", $def);
@@ -49,10 +49,10 @@ function defdump($tablename)
         $result = @mysql_query("SHOW KEYS FROM $tablename");
         while($row = @mysql_fetch_array($result))
         {
-          $kname=$row[Key_name];
-          if(($kname != "PRIMARY") && ($row[Non_unique] == 0)) $kname="UNIQUE|$kname";
+          $kname=$row["Key_name"];
+          if(($kname != "PRIMARY") && ($row["Non_unique"] == 0)) $kname="UNIQUE|$kname";
           if(!isset($index[$kname])) $index[$kname] = array();
-          $index[$kname][] = $row[Column_name];
+          $index[$kname][] = $row["Column_name"];
         }
 
         while(list($x, $columns) = @each($index))
