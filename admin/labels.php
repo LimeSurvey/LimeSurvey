@@ -122,13 +122,14 @@ if ($action == "newset" || $action == "editset")
 		while ($row=mysql_fetch_array($result)) {$lbname=$row['label_name']; $lblid=$row['lid'];}
 		}
 	echo "\t\t<table width='100%' bgcolor='#DDDDDD'>\n";
-	echo "\t\t<form method='post' action='labels.php'>\n";
 	echo "\t\t\t<tr bgcolor='black'>\n";
 	echo "\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><b>\n";
+	echo "\t\t\t\t<input type='image' src='./images/close.gif' align='right' onClick=\"window.open('labels.php?lid=$lid', '_top')\">\n";
 	if ($action == "newset") {echo _LB_NEWSET;}
 	else {echo _LB_EDITSET;}
 	echo "\t\t\t\t</font></font></b></td>\n";
 	echo "\t\t\t</tr>\n";
+	echo "\t\t<form method='post' action='labels.php'>\n";
 	echo "\t\t\t<tr>\n";
 	echo "\t\t\t\t<td align='right' width='15%'>\n";
 	echo "\t\t\t\t\t$setfont<b>"._LL_NAME.":</b></font>";
@@ -168,7 +169,7 @@ if ($action == "newset" || $action == "editset")
 		echo "\t\t<td><input $btstyle name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n";
 		echo "\t<tr><td></td><td><input type='submit' $btstyle value='"._IMPORTLABEL."'></TD>\n";
 		echo "\t<input type='hidden' name='action' value='importlabels'>\n";
-		echo "\t</tr></form>\n</table>\n";
+		echo "\t</tr></form>\n";
 		
 		}
 	echo "\t\t</table>\n";
