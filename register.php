@@ -130,7 +130,7 @@ $message=str_replace("{FIRSTNAME}", returnglobal('register_firstname'), $message
 $message=str_replace("{LASTNAME}", returnglobal('register_lastname'), $message);
 $message=str_replace("{ATTRIBUTE_1}", returnglobal('register_attribute1'), $message);
 $message=str_replace("{ATTRIBUTE_2}", returnglobal('register_attribute2'), $message);
-$message=str_replace("\n", "\r\n", $message);
+//$message=str_replace("\n", "\r\n", $message);
 
 $headers = "From: $surveyadmin <$surveyadminemail>\r\n"
 		 . "X-Mailer: $sitename Emailer (phpsurveyor.sourceforge.net)\r\n";
