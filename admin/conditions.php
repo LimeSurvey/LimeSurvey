@@ -327,7 +327,7 @@ echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t$setfont<b>Only show question $questiontitle<img src='$imagefiles/speaker.jpg' alt='"
 	. addslashes($questiontext)
 	. "' onClick=\"alert('"
-	. addslashes($questiontext)
+	. addslashes(strip_tags($questiontext))
 	. "')\"> if:</b></font>\n";
 echo "\t\t</td>\n";
 echo "\t</tr>\n";
