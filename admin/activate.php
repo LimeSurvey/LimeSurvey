@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-if (!$_GET['ok'])
+if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 	//CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 	//THESE QUESTION TYPES ARE:
@@ -88,7 +88,7 @@ if (!$_GET['ok'])
 		$qidorder[]=array($c, $qrow['qid']);
 		$c++;
 		}
-
+	$qordercount="";
 	//1: Get each condition's question id
 	$conquery="SELECT {$dbprefix}conditions.qid, cqid, {$dbprefix}questions.question FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY qid";
 	$conresult=mysql_query($conquery) or die("Couldn't check conditions for relative consistency<br />$conquery<br />".mysql_error());
@@ -118,7 +118,7 @@ if (!$_GET['ok'])
 			}
 		}
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
-	if ($failedcheck)
+	if (isset($failedcheck) && $failedcheck)
 		{
 		echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
@@ -244,7 +244,7 @@ else
 					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` VARCHAR(255),\n";
 					}
 				}
-			if ($alsoother=="Y" && ($arow['type']=="M" || $arow['type']=="P"))
+			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
 				{
 				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` VARCHAR(100),\n";
 				if ($arow['type']=="P")
@@ -300,7 +300,7 @@ else
 	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
 	
-	if ($surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
+	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 		{
 		echo _AC_NOTPRIVATE."<br /><br />\n";
 		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
