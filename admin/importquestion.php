@@ -91,7 +91,7 @@ if (substr($bigarray[1], 0, 24) != "# SURVEYOR QUESTION DUMP")
 	echo "<b><font color='red'>"._ERROR."</font></b><br />\n"
 		._IQ_WRONGFILE."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&gid=$gid', '_top')\">\n"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	exit;
@@ -449,7 +449,7 @@ echo "</li></ul><br />\n";
 
 echo "<b>"._IS_SUCCESS."</b><br />\n"
 	."<input $btstyle type='submit' value='"
-	._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&gid=$gid&qid=$newqid', '_top')\">\n"
+	._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$newqid', '_top')\">\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	

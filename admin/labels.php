@@ -204,7 +204,7 @@ if (isset($lid) && ($action != "editset") && $lid)
     $totaluse=mysql_num_rows($result);
     while($row=mysql_fetch_array($result))
         {
-        $qidarray[]=array("url"=>"$scriptname?sid=".$row['sid']."&gid=".$row['gid']."&qid=".$row['qid'], "title"=>"QID: ".$row['qid']);
+        $qidarray[]=array("url"=>"$scriptname?sid=".$row['sid']."&amp;gid=".$row['gid']."&amp;qid=".$row['qid'], "title"=>"QID: ".$row['qid']);
         } // while
     //NOW GET THE ANSWERS AND DISPLAY THEM
     $query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";

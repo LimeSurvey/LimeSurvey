@@ -29,12 +29,12 @@ function surveyNavigator($surveyid, $gid, $qid) {
 			foreach(getGroupsBrief($toplevel['sid']) as $grouplevel) {
 				$nxgroups="node01_group_".$m;
 				$text=makeJavaSafe($grouplevel['group_name'], 37);
-				$$nxgroups = &$node01->addItem(new HTML_TreeNodeXL($text, "$scriptname?sid=$surveyid&gid=".$grouplevel['gid'], $nodeProperties));
+				$$nxgroups = &$node01->addItem(new HTML_TreeNodeXL($text, "$scriptname?sid=$surveyid&amp;gid=".$grouplevel['gid'], $nodeProperties));
 				$n=0;
 				foreach(getQuestionsBrief($grouplevel['gid']) as $questionlevel) {
 					$nxquestions=$nxgroups."_".$n;
 					$text=makeJavaSafe($questionlevel['question'], 27);
-					$$nxquestions = &${$nxgroups}->addItem(new HTML_TreeNodeXL($questionlevel['title'].": ".$text, "$scriptname?sid=$surveyid&gid=".$grouplevel['gid']."&qid=".$questionlevel['qid'], $questionProperties));
+					$$nxquestions = &${$nxgroups}->addItem(new HTML_TreeNodeXL($questionlevel['title'].": ".$text, "$scriptname?sid=$surveyid&amp;gid=".$grouplevel['gid']."&qid=".$questionlevel['qid'], $questionProperties));
 					$n++;
 				}
 			$m++;
@@ -65,7 +65,7 @@ function surveyNavigator($surveyid, $gid, $qid) {
 			foreach(getGroupsBrief($toplevel['sid']) as $grouplevel) {
 				$nxgroups=$nodename."_group_".$k;
 				$text=makeJavaSafe($grouplevel['group_name'], 37);
-				$$nxgroups = &${$nodename}->addItem(new HTML_TreeNodeXL($text, "$scriptname?sid=".$toplevel['sid']."&gid=".$grouplevel['gid'], $nodeProperties));
+				$$nxgroups = &${$nodename}->addItem(new HTML_TreeNodeXL($text, "$scriptname?sid=".$toplevel['sid']."&amp;gid=".$grouplevel['gid'], $nodeProperties));
 				$l=0;
 				if ($_SESSION['noquestions'] != "noquestions") {
 					foreach(getQuestionsBrief($grouplevel['gid']) as $questionlevel){
@@ -73,7 +73,7 @@ function surveyNavigator($surveyid, $gid, $qid) {
 						$text=makeJavaSafe($questionlevel['question'], 27);
 						if ($text == "") {$text="No title";}
 						
-						$$nxquestions = &${$nxgroups}->addItem(new HTML_TreeNodeXL($questionlevel['title'].": ".$text, "$scriptname?sid=".$toplevel['sid']."&gid=".$grouplevel['gid']."&qid=".$questionlevel['qid'], $nodeProperties));
+						$$nxquestions = &${$nxgroups}->addItem(new HTML_TreeNodeXL($questionlevel['title'].": ".$text, "$scriptname?sid=".$toplevel['sid']."&amp;gid=".$grouplevel['gid']."&qid=".$questionlevel['qid'], $nodeProperties));
 						$l++;
 					}
 				}
@@ -237,7 +237,7 @@ function labelsetDetails($lid = null) {
 					<select onChange=\"window.open(this.value, '_top')\">
 					 <option>"._AD_CHOOSE."</option>\n";
 				foreach($detail as $dets) {
-					echo "<option value='$scriptname?sid=$surveyid&gid=".$dets['gid']."&qid=".$dets['qid']."'>".$dets['qid']."</option>\n";
+					echo "<option value='$scriptname?sid=$surveyid&amp;gid=".$dets['gid']."&qid=".$dets['qid']."'>".$dets['qid']."</option>\n";
 				}
 				echo "		</select>
 					</td>\n";
@@ -594,7 +594,7 @@ function questionDetails($surveyid, $gid, $qid, $action) {
 		</tr>
 		<tr>
 		 <td height='22' nowrap>"
-		 .windowControl('questionsummary', "$scriptname?sid=$surveyid&gid=$gid")."
+		 .windowControl('questionsummary', "$scriptname?sid=$surveyid&amp;gid=$gid")."
 		  <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, questionoptions, '210px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_OPTIONS."</a>
 		  <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, questionactions, '230px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_ACTIONS."</a>\n";
 	if($thissurvey['active'] == "Y") {
@@ -747,7 +747,7 @@ function questionResultSummary($surveyid, $gid, $qid) {
 		</tr>
 		<tr>
 		 <td height='22' nowrap>"
-		 .windowControl('questionresults', "$scriptname?sid=$surveyid&gid=$gid&qid=$qid")."
+		 .windowControl('questionresults', "$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid")."
 		 <img src='{$imagefiles}/browse.gif' align='left'>$total "._SN_RECORDS."</td>
 		</tr>
 	   </table>";
@@ -843,7 +843,7 @@ function assessmentDetails($surveyid) {
 					<td valign='top' align='center'>".$field[_AS_URL]."</td>
 					<form action='$scriptname' method='post'>
 					<td  valign='top' align='center'>
-					 <input type='button' class='buttons' value='"._AS_EDIT."' onClick='window.open(\"{$homeurl}/$scriptname?action=showassessments&sid=$surveyid&id=".$field['id']."\", \"_top\")'>
+					 <input type='button' class='buttons' value='"._AS_EDIT."' onClick='window.open(\"{$homeurl}/$scriptname?action=showassessments&amp;sid=$surveyid&amp;id=".$field['id']."\", \"_top\")'>
 					 <input type='submit' class='buttons' value='"._AS_DELETE."' onClick='return confirm(\""._DR_RUSURE."\")'>
 					 <input type='hidden' name='action' value='showassessments'>
 					 <input type='hidden' name='sid' value='$surveyid'>
@@ -921,7 +921,7 @@ function answerDetails($surveyid, $gid, $qid) {
 		</tr>
 		<tr>
 		 <td height='22' nowrap>"
-		 .windowControl('answersummary', "$scriptname?sid=$surveyid&gid=$gid&qid=$qid")."
+		 .windowControl('answersummary', "$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid")."
 		 </td>
 		</tr>
 	   </table>
@@ -941,11 +941,11 @@ function answerDetails($surveyid, $gid, $qid) {
 						<option value='Y'".autoComparitor("Y", $field[_AL_DEFAULT], " selected").">"._AD_YES."</option>
 						<option value='N'".autoComparitor("N", $field[_AL_DEFAULT], " selected").">"._AD_NO."</option>
 					</select></td>
-					<td align='center'><input type='button' class='buttons' value='"._AL_DEL."' onClick=\"window.open('$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=showanswers&dbaction=deleteanswer&code=".$field[_AL_CODE]."', '_top')\">
+					<td align='center'><input type='button' class='buttons' value='"._AL_DEL."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showanswers&dbaction=deleteanswer&code=".$field[_AL_CODE]."', '_top')\">
 					</td>
 					<td align='center'>
-					 <input type='button' class='buttons' value='"._AL_UP."'".autoComparitor(1, $i, " style='display: none'")." onClick=\"window.open('$scriptname?sid=$surveyid&gid=$gid&qid=$qid&sortorder=".$field['sortorder']."&code=".$field[_AL_CODE]."&action=showanswers&dbaction=moveanswer&moveorder=-1', '_top')\">
-					 <input type='button' class='buttons' value='"._AL_DN."'".autoComparitor($max, $i, " style='display: none'")." onClick=\"window.open('$scriptname?sid=$surveyid&gid=$gid&qid=$qid&sortorder=".$field['sortorder']."&code=".$field[_AL_CODE]."&action=showanswers&dbaction=moveanswer&moveorder=1', '_top')\">
+					 <input type='button' class='buttons' value='"._AL_UP."'".autoComparitor(1, $i, " style='display: none'")." onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&sortorder=".$field['sortorder']."&code=".$field[_AL_CODE]."&action=showanswers&dbaction=moveanswer&moveorder=-1', '_top')\">
+					 <input type='button' class='buttons' value='"._AL_DN."'".autoComparitor($max, $i, " style='display: none'")." onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&sortorder=".$field['sortorder']."&code=".$field[_AL_CODE]."&action=showanswers&dbaction=moveanswer&moveorder=1', '_top')\">
 					</td>
 				   </tr>
 				   <input type='hidden' name='sortorder[]' value='".$field['sortorder']."'>\n";
@@ -1023,7 +1023,7 @@ function attributeDetails($surveyid, $gid, $qid) {
 		</tr>
 		<tr>
 		 <td height='22' nowrap>"
-		 .windowControl('attributesummary', "$scriptname?sid=$surveyid&gid=$gid&qid=$qid")."
+		 .windowControl('attributesummary', "$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid")."
 		 </td>
 		</tr>
 	   </table>
@@ -1045,7 +1045,7 @@ function attributeDetails($surveyid, $gid, $qid) {
 		 <input type='hidden' name='qaid' value='".$attributes['qaid']."'>
 		 </form>
 		 <td align='center'>
-		  <input type='button' class='buttons' value='"._AL_DEL."' onClick=\"window.open('$homeurl/$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=showattributes&dbaction=deleteattribute&qaid=".$attributes['qaid']."', '_top')\">
+		  <input type='button' class='buttons' value='"._AL_DEL."' onClick=\"window.open('$homeurl/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showattributes&dbaction=deleteattribute&qaid=".$attributes['qaid']."', '_top')\">
 		 </td>
 		</tr>\n";
 	 }
@@ -1151,7 +1151,7 @@ function showPreview($surveyid, $gid, $qid=null) {
 		  "._PR_HEADING."
 		  </th></tr>
 		  <tr><td height='22'>
-		  ".windowControl("preview", "?sid=$surveyid&gid=$gid&qid=$qid")."
+		  ".windowControl("preview", "?sid=$surveyid&amp;gid=$gid&qid=$qid")."
 		   <img src='$imagefiles/templates.gif' align='left'>
 		   "._Q_PREVIEWQUESTION."
 		  </td></tr>
@@ -1744,28 +1744,28 @@ if (!empty($lid)) {
 if(!empty($surveyid)) {
 	$thissurvey=getSurveyInfo($surveyid);
 	if ($thissurvey['active'] != "Y") {
-		$menu['createnew']["1"]="<a href='$homeurl/$scriptname?action=addgroup&sid=$surveyid'><img src='$imagefiles/add.gif' align='left' border='0' height='15' width='15'>"._S_ADDGROUP_BT."</a><br />";
-		$menu['importnew']["1"]="<a href='$homeurl/$scriptname?action=importgroup&sid=$surveyid'><img src='$imagefiles/import.gif' align='left' border='0' height='15' width='15'>"._IMPORTGROUP."</a><br />";
+		$menu['createnew']["1"]="<a href='$homeurl/$scriptname?action=addgroup&amp;sid=$surveyid'><img src='$imagefiles/add.gif' align='left' border='0' height='15' width='15'>"._S_ADDGROUP_BT."</a><br />";
+		$menu['importnew']["1"]="<a href='$homeurl/$scriptname?action=importgroup&amp;sid=$surveyid'><img src='$imagefiles/import.gif' align='left' border='0' height='15' width='15'>"._IMPORTGROUP."</a><br />";
 	}
 
 	if(!empty($gid)) {
 		if ($thissurvey['active'] != "Y") {
-			$menu['createnew']["0"]="<a href='$homeurl/$scriptname?action=addquestion&sid=$surveyid&gid=$gid'><img src='$imagefiles/add.gif' align='left' border='0' height='15' width='15'>"._G_ADDQUESTION_BT."</a><br />";
-			$menu['importnew']["0"]="<a href='$homeurl/$scriptname?action=importquestion&sid=$surveyid&gid=$gid'><img src='$imagefiles/import.gif' align='left' border='0' height='15' width='15'>"._IMPORTQUESTION."</a><br />";
+			$menu['createnew']["0"]="<a href='$homeurl/$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/add.gif' align='left' border='0' height='15' width='15'>"._G_ADDQUESTION_BT."</a><br />";
+			$menu['importnew']["0"]="<a href='$homeurl/$scriptname?action=importquestion&amp;sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/import.gif' align='left' border='0' height='15' width='15'>"._IMPORTQUESTION."</a><br />";
 		}
 	}
 
 	
-	$menu['surveyactions']["0"]="<a href='{$publicurl}/$scriptname?sid=$surveyid&newtest=Y' target='_blank'><img src='$imagefiles/do.gif' align='left' border='0' height='15' width='15'>"._S_DOSURVEY_BT."</a><br />";
+	$menu['surveyactions']["0"]="<a href='{$publicurl}/$scriptname?sid=$surveyid&amp;newtest=Y' target='_blank'><img src='$imagefiles/do.gif' align='left' border='0' height='15' width='15'>"._S_DOSURVEY_BT."</a><br />";
 	$menu['surveyactions']["1"]="<a href='{$homeurl}/dataentry.php?sid=$surveyid' target='_blank'><img src='$imagefiles/dataentry.gif' align='left' border='0' height='15' width='15'>"._S_DATAENTRY_BT."</a><br />";
 	$menu['surveyactions']["2"]="<a href='{$homeurl}/printablesurvey.php?sid=$surveyid' target='_blank'><img src='$imagefiles/print.gif' align='left' border='0' height='15' width='15'>"._S_PRINTABLE_BT."</a><br />";
 	$menu['surveyactions']["3"]="<a onClick='rusurelink(\\\""._S_RENUMBERSURVEYWARNING."\\\", \\\"$homeurl/$scriptname?sid=$surveyid&dbaction=renumbersurvey\\\")' href='#'><img src='$imagefiles/renumber.gif' align='left' border='0' height='15' width='15'>"._S_RENUMBER_BT."</a><br />";
 
 	
 	if ($thissurvey['active'] == "Y") {
-	    $menu['surveyactivation']["0"]="<a href='{$homeurl}/$scriptname?action=deactivate&sid=$surveyid'><img src='$imagefiles/deactivate.gif' align='left' border='0' height='15' width='15'>"._S_DEACTIVATE_BT."</a><br />";
+	    $menu['surveyactivation']["0"]="<a href='{$homeurl}/$scriptname?action=deactivate&amp;sid=$surveyid'><img src='$imagefiles/deactivate.gif' align='left' border='0' height='15' width='15'>"._S_DEACTIVATE_BT."</a><br />";
 	} else {
-		$menu['surveyactivation']["0"]="<a href='{$homeurl}/$scriptname?action=activate&sid=$surveyid'><img src='$imagefiles/activate.gif' align='left' border='0' height='15' width='15'>"._S_ACTIVATE_BT."</a><br />";
+		$menu['surveyactivation']["0"]="<a href='{$homeurl}/$scriptname?action=activate&amp;sid=$surveyid'><img src='$imagefiles/activate.gif' align='left' border='0' height='15' width='15'>"._S_ACTIVATE_BT."</a><br />";
 	}
 
 	$menu['surveyoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=editsurvey'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._S_EDIT_BT."</a><br />";
@@ -1785,35 +1785,35 @@ if(!empty($surveyid)) {
 	}
 	
 	if (!empty($gid)) {
-	    $menu['groupoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&action=editgroup'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._G_EDIT_BT."</a><br />";
+	    $menu['groupoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&action=editgroup'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._G_EDIT_BT."</a><br />";
 		if ($thissurvey['active'] != "Y") {
-			$menu['groupoptions']["1"] = "<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&action=delgroup'><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._G_DELETE_BT."</a><br />";
+			$menu['groupoptions']["1"] = "<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&action=delgroup'><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._G_DELETE_BT."</a><br />";
 		}
-		$menu['groupoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&gid=$gid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._G_EXPORT_BT."</a><br />";
+		$menu['groupoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._G_EXPORT_BT."</a><br />";
 	
-		$menu['groupactions']["0"]="<a href='$homeurl/$scriptname?sid=$surveyid&gid=$gid&dbaction=renumbergroup'><img src='$imagefiles/renumber.gif' align='left' border='0' height='15' width='15'>"._G_RENUMBER_BT."</a><br />";
+		$menu['groupactions']["0"]="<a href='$homeurl/$scriptname?sid=$surveyid&amp;gid=$gid&dbaction=renumbergroup'><img src='$imagefiles/renumber.gif' align='left' border='0' height='15' width='15'>"._G_RENUMBER_BT."</a><br />";
 	}
 
 	if (!empty($qid)) {
-	    $menu['questionoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=editquestion'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._Q_EDIT_BT."</a><br />";
+	    $menu['questionoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=editquestion'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._Q_EDIT_BT."</a><br />";
 	    if ($thissurvey['active'] != "Y") {
-			$menu['questionoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=delquestion'><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._Q_DELETE_BT."</a><br />";
+			$menu['questionoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=delquestion'><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._Q_DELETE_BT."</a><br />";
 	    }
-	    $menu['questionoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&gid=$gid&qid=$qid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._Q_EXPORT_BT."</a><br />";
-	    $menu['questionoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=copyquestion'><img src='{$imagefiles}/copy.gif' align='left' border='0' height='15' width='15'>"._Q_COPY_BT."</a><br />";
+	    $menu['questionoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid&qid=$qid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._Q_EXPORT_BT."</a><br />";
+	    $menu['questionoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=copyquestion'><img src='{$imagefiles}/copy.gif' align='left' border='0' height='15' width='15'>"._Q_COPY_BT."</a><br />";
 
 		$thisquestion=getQuestionInfo($qid);
 		switch($thisquestion['type']){
 			case "L": case "M": case "O": case "!": case "A": case "B": case "C": case "E": case "F":
 			case "P": case "Q": case "R": case "H":
-				$menu["questionactions"]["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=showanswers'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._Q_ANSWERS_BT."</a><br />";
+				$menu["questionactions"]["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showanswers'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._Q_ANSWERS_BT."</a><br />";
 				break;
 		} // switch
-		$menu["questionactions"]["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=showattributes'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._QL_QUESTIONATTRIBUTES."</a><br />";
+		$menu["questionactions"]["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showattributes'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._QL_QUESTIONATTRIBUTES."</a><br />";
 		$menu["questionactions"]["2"]="<a href=\\\"#\\\" onclick=\\\"window.open('{$homeurl}/conditions.php?sid=$surveyid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\\\"><img src='{$imagefiles}/conditions.gif' align='left' border='0' height='15' width='15'>"._Q_CONDITIONS_BT."</a><br />";
-		$menu["questionactions"]["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=showpreview'><img src='{$imagefiles}/templates.gif' align='left' border='0' height='15' width='15'>"._Q_PREVIEWQUESTION."</a><br />";	
+		$menu["questionactions"]["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showpreview'><img src='{$imagefiles}/templates.gif' align='left' border='0' height='15' width='15'>"._Q_PREVIEWQUESTION."</a><br />";	
 		if($thissurvey['active'] == "Y") {
-			$menu['activequestion']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&gid=$gid&qid=$qid&action=showsummary'><img src='{$imagefiles}/browse.gif' align='left' border='0' height='15' width='15'>"._Q_VIEWSUMMARY."</a><br />";
+			$menu['activequestion']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showsummary'><img src='{$imagefiles}/browse.gif' align='left' border='0' height='15' width='15'>"._Q_VIEWSUMMARY."</a><br />";
 		}
 	}
 }							   

@@ -48,7 +48,7 @@ if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 
 sendcacheheaders();
 
-if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL={$_SERVER['PHP_SELF']}?action=browse&sid={$_GET['sid']}&start=$start&limit=$limit&order=$order\"", $htmlheader);}
+if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL={$_SERVER['PHP_SELF']}?action=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\"", $htmlheader);}
 else {echo $htmlheader;}
 
 //Show Help
@@ -386,14 +386,14 @@ if ($action == "browse" || $action == "search")
 		."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='31' height='20' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<input type='image' name='DBeginButton' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
-		._D_BEGIN."' onClick=\"window.open('$homeurl/tokens.php?action=browse&sid=$surveyid&start=0&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_BEGIN."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<input type='image' name='DBackButton' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
-		._D_BACK."' onClick=\"window.open('$homeurl/tokens.php?action=browse&sid=$surveyid&start=$last&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_BACK."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='13' height='20' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<input type='image' name='DForwardButton' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
-		._D_FORWARD."' onClick=\"window.open('$homeurl/tokens.php?action=browse&sid=$surveyid&start=$next&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_FORWARD."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<input type='image' name='DEndButton' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
-		._D_END."' onClick=\"window.open('$homeurl/tokens.php?action=browse&sid=$surveyid&start=$end&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
+		._D_END."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>"
 		."\t\t\t<tr><form method='post' action='$homeurl/tokens.php'>\n"

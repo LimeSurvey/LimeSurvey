@@ -177,7 +177,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	foreach ($duplicates as $dup)
 		{
 		$badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
-		$fix = "[<a href='$scriptname?action=activate&sid=$surveyid&fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
+		$fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
 		$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
 		}
 //	echo "<pre>";print_r($duplicates); echo "</pre>";
@@ -199,7 +199,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		echo "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 			{
-			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&gid=$fc[3]&qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</li>\n";
+			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</li>\n";
 			}
 		echo "\t\t\t</ul>\n";
 		echo "\t\t\t"._AC_CANNOTACTIVATE."\n";
