@@ -279,7 +279,7 @@ echo "</script>\n";
 echo "<table width='98%' align='center' cellspacing='0' cellpadding='0'>\n";
 echo "\t<tr bgcolor='#CDCDCD'>\n";
 echo "\t\t<td colspan='3' align='center'>\n";
-echo "\t\t\t$setfont<b>Only show question $questiontitle<img src='speaker.jpg' alt='$questiontext' onClick=\"alert('$questiontext')\"> if:</b></font>\n";
+echo "\t\t\t$setfont<b>Only show question $questiontitle<img src='./images/speaker.jpg' alt='$questiontext' onClick=\"alert('$questiontext')\"> if:</b></font>\n";
 echo "\t\t</td>\n";
 echo "\t</tr>\n";
 
