@@ -205,7 +205,7 @@ if ($action == "insert")
 		}
 	
 	$SQL = "INSERT INTO $surveytable \n($col_name) \nVALUES \n($insertqr)";
-	echo $SQL;
+	//echo $SQL; //Debugging line
 	$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
 	
 	echo "<font color='green'><b>Insert Was A Success</b><br />\n";
@@ -429,7 +429,7 @@ elseif ($action == "edit")
 					echo "\t\t\t\t\t\t\$b += '';\n";	
 					echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
 					echo "\t\t\t\t\t\t\$hiddenname=\"d$myfname\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$cutname=\"CUT\"+i;\n";
+					echo "\t\t\t\t\t\t\$cutname=\"cut\"+i;\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
 					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
 					echo "\t\t\t\t\t\t\t{\n";
@@ -499,7 +499,7 @@ elseif ($action == "edit")
 							$ranklist .= "'";
 							}
 						$ranklist .= " onFocus=\"this.blur()\">\n";
-						$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='d$myfname$j' value='";
+						$ranklist .= "\t\t\t\t\t\t<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
 						$chosen[]=""; //create array
 						if ($currentvalues[$k]) 
 							{
@@ -512,7 +512,7 @@ elseif ($action == "edit")
 							{
 							$ranklist .= "style='display:none'";
 							}
-						$ranklist .= " id='cut$j' name='cut$j' onClick=\"deletethis(RANK$j.value, d$myfname$j.value, RANK$j.name, this.name)\"><br />\n\n";
+						$ranklist .= " id='cut$j' name='cut$j' onClick=\"deletethis(document.editsurvey.RANK$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK$j.name, this.name)\"><br />\n\n";
 						}
 					
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
@@ -1007,7 +1007,7 @@ else
 					echo "\t\t\t\t\t\t\$b += '';\n";
 					echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
 					echo "\t\t\t\t\t\t\$hiddenname=\"d$fieldname\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$cutname=\"CUT\"+i;\n";
+					echo "\t\t\t\t\t\t\$cutname=\"cut\"+i;\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
 					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
 					echo "\t\t\t\t\t\t\t{\n";
@@ -1083,7 +1083,7 @@ else
 							$ranklist .= "'";
 							}
 						$ranklist .= " onFocus=\"this.blur()\">\n";
-						$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='d$fieldname$i' value='";
+						$ranklist .= "\t\t\t\t\t\t<input type='hidden' id='d$fieldname$i' name='d$fieldname$i' value='";
 						$chosen[]=""; //create array
 						if ($_SESSION[$myfname]) 
 							{
@@ -1097,7 +1097,7 @@ else
 							$ranklist .= "style='display:none'";
 							}
 						$mfn=$fieldname.$i;
-						$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(RANK$i.value, d$fieldname$i.value, RANK$i.name, this.name)\"><br />\n\n";
+						$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(document.addsurvey.RANK$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK$i.name, this.name)\"><br />\n\n";
 						}
 					
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
