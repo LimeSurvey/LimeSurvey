@@ -287,7 +287,7 @@ if ($grouparray) {
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = mysql_query($qidquery);
 					while ($qrow = mysql_fetch_array($qidres)) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
-					if ($type == "F") {//IF this is a flexible label array, update the lid entry
+					if ($type == "F" || $type == "H") {//IF this is a flexible label array, update the lid entry
 						foreach ($labelreplacements as $lrp) {
 							if ($lrp[0] == $oldlid) {
 								$lrupdate="UPDATE {$dbprefix}questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
@@ -311,7 +311,7 @@ if ($grouparray) {
 								//$ainsert = str_replace("'$qid'", "'$newqid'", $aa);
 								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
 								$ares = mysql_query($ainsert) or die ("<b>"._ERROR."</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
-								if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P" || $type == "F") {
+								if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P" || $type == "F" || $type == "H") {
 									$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
 									if ($type == "P") {
 										$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code."comment", $newsid."X".$newgid."X".$newqid.$code."comment");

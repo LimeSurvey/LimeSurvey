@@ -259,7 +259,7 @@ if (isset($questionarray) && $questionarray)
 		while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0]; $oldlid=$qrow[1]; $type=$qrow[2];}
 
 	
-		if ($type == "F")
+		if ($type == "F" || $type == "H")
 			{
 			foreach ($labelreplacements as $lrp)
 				{
