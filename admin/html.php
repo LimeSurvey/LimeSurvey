@@ -291,8 +291,15 @@ if ($sid)
 							. "\t\t\t\t\t<input type='image' src='$imagefiles/browse.gif' title='"._S_BROWSE_BT."' "
 							. "align='left' border='0' hspace='0' name='BrowseSurveyResults' "
 							. "onclick=\"window.open('".$homeurl."/browse.php?sid=$sid', '_top')\">\n"
-							. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
-							. "\t\t\t\t\t<input type='image' src='$imagefiles/tokens.gif' title='"._S_TOKENS_BT."' "
+							. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n";
+			if ($s1row['allowsave'] == "Y")
+				{
+				$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/saved.gif' title='"._S_SAVED_BT."' "
+								. "align='left' border='0' hspace='0' name='BrowseSaved' "
+								. "onclick=\"window.open('".$homeurl."/saved.php?sid=$sid', '_top')\">\n"
+								. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n";
+				}				
+			$surveysummary .="\t\t\t\t\t<input type='image' src='$imagefiles/tokens.gif' title='"._S_TOKENS_BT."' "
 							. "align='left' border='0' hspace='0' name='TokensControl' "
 							. "onclick=\"window.open('$homeurl/tokens.php?sid=$sid', '_top')\">\n";
 			}
@@ -364,6 +371,7 @@ if ($sid)
 		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _SS_DATESTAMPED."<br />\n";}
 		if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _SS_COOKIES."<br />\n";}
 		if ($s1row['allowregister'] == "Y") {$surveysummary2 .= _SS_ALLOWREGISTER."<br />\n";}
+		if ($s1row['allowsave'] == "Y") {$surveysummary2 .= _SS_ALLOWSAVE."<br />\n";}
 		switch ($s1row['notification'])
 			{
 			case 0:
@@ -376,6 +384,12 @@ if ($sid)
 				$surveysummary2 .= _NT_RESULTS."<br />\n";
 				break;
 			}
+		$surveysummary2 .= "Regenerate Question Numbers: "
+						 . "[<a href='$scriptname?action=renumberquestions&sid=$sid&style=straight' "
+						 . "onClick='return confirm(\"Are you sure?\")' "
+						 . ">Straight</a>] "
+						 . "[<a href='$scriptname?action=renumberquestions&sid=$sid&style=bygroup' "
+						 . ">By Group</a>]";
 		$surveysummary2 .= "</font></font></td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails11'>"
 			. "<td align='right' valign='top'>$setfont<b>"
@@ -543,6 +557,8 @@ if ($gid)
 					   . "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'>$setfont<b>"
 					   . _GL_DESCRIPTION."</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
 		}
+		//RENUMBER LINK
+		$groupsummary .= "<tr><td></td><td><a href='?sid=$sid&action=renumberquestions'>Renumber</a></td></tr>\n";
 	$groupsummary .= "\n</table>\n";
 	}
 
