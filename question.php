@@ -133,7 +133,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && (!isset($backok) 
 			{
 			$dccm="display".$cmfns[0];
 			}
-		if ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && !isset($_SESSION[$ccm]) && (!isset($_POST[$multiname]) || !$_POST[$multiname]))
+		if ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_SESSION[$ccm]) || !$_SESSION[$ccm]) && (!isset($_POST[$multiname]) || !$_POST[$multiname]))
 			{
 			//One of the conditional mandatory questions was on, but hasn't been answered
 			//echo "Got here -".$_POST[$dccm]."-".$_SESSION[$ccm]; exit;
@@ -142,7 +142,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && (!isset($backok) 
 			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$cmfns[$mi];
 			}
-		elseif ((isset ($_POST[$dccm]) && $_POST[$dccm] == "on") && !isset($_SESSION[$ccm]) && isset($_POST[$multiname]))
+		elseif ((isset ($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_SESSION[$ccm]) || !$_SESSION[$ccm]) && isset($_POST[$multiname]))
 			{
 			$notanswered[]=$cmfns[$mi];
 			}
@@ -737,7 +737,52 @@ if ($questionsSkipped == 0 && $newgroup == "Y" && $_POST['move'] == " << "._PREV
 
 list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
-include("qanda.php");
+require_once("qanda.php");
+$mandatorys=array();
+$mandatoryfns=array();
+$conmandatorys=array();
+$conmandatoryfns=array();
+$conditions=array();
+$inputnames=array();
+
+list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
+if ($plus_qanda)
+	{
+		$qanda[]=$plus_qanda;
+	}
+if ($plus_inputnames)
+	{
+	$inputnames = addtoarray_single($inputnames, $plus_inputnames);
+	}
+
+//Display the "mandatory" popup if necessary
+if (isset($notanswered)) 
+	{
+	list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
+	}
+
+//Get list of mandatory questions
+list($plusman, $pluscon)=create_mandatorylist($ia);
+if ($plusman !== null)
+	{
+    list($plus_man, $plus_manfns)=$plusman;
+	$mandatorys=addtoarray_single($mandatorys, $plus_man);
+	$mandatoryfns=addtoarray_single($mandatoryfns, $plus_manfns);
+	}
+if ($pluscon !== null)
+	{
+    list($plus_conman, $plus_conmanfns)=$pluscon;
+	$conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
+	$conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
+	}
+
+//Build an array containing the conditions that apply for this page
+$plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
+if ($plus_conditions)
+	{
+    $conditions = addtoarray_single($conditions, $plus_conditions);
+	}
+//------------------------END DEVELOPMENT OF QUESTION
 
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 
@@ -873,24 +918,24 @@ else
 	echo "'>\n";
 	}
 //SOME STUFF FOR MANDATORY QUESTIONS
-if (isset($mandatorys) && is_array($mandatorys) && $newgroup != "Y")
+if (remove_nulls_from_array($mandatorys) && $newgroup != "Y")
 	{
-	$mandatory=implode("|", $mandatorys);
+	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
 	echo "<input type='hidden' name='mandatory' value='$mandatory'>\n";
 	}
-if (isset($conmandatorys) && is_array($conmandatorys))
+if (remove_nulls_from_array($conmandatorys))
 	{
-	$conmandatory=implode("|", $conmandatorys);
+	$conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
 	echo "<input type='hidden' name='conmandatory' value='$conmandatory'>\n";
 	}
-if (isset($mandatoryfns) && is_array($mandatoryfns))
+if (remove_nulls_from_array($mandatoryfns))
 	{
-	$mandatoryfn=implode("|", $mandatoryfns);
+	$mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
 	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn'>\n";
 	}
-if (isset($conmandatoryfns) && is_array($conmandatoryfns))
+if (remove_nulls_from_array($conmandatoryfns))
 	{
-	$conmandatoryfn=implode("|", $conmandatoryfns);
+	$conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
 	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn'>\n";
 	}
 

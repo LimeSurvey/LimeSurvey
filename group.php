@@ -54,22 +54,26 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
+
+//First, see if we are moving backwards, and its OK not to check:
 if ($allowmandatorybackwards==1 && isset($_POST['move']) &&  $_POST['move'] == " << "._PREV." ") {$backok="Y";}
 
+//Now, we check mandatory questions if necessary
 if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $backok != "Y"))
 	{
-	$chkmands=explode("|", $_POST['mandatory']);
-	$mfns=explode("|", $_POST['mandatoryfn']);
+	$chkmands=explode("|", $_POST['mandatory']); //These are the mandatory questions to check
+	$mfns=explode("|", $_POST['mandatoryfn']); //These are the fieldnames of the mandatory questions
 	$mi=0;
 	foreach ($chkmands as $cm)
 		{
-		if (!isset($multiname) || $multiname != "MULTI$mfns[$mi]") //no multiple type mandatory set, or does not match this question
+		if (!isset($multiname) || $multiname != "MULTI$mfns[$mi]") //no multiple type mandatory set, or does not match this question (set later on for first time)
 			{
 			if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname])) //multiple type mandatory is set
 				{
 				if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 					{
 					//The number of questions not answered is equal to the number of questions
+					//This section gets used if it is a multiple choice type question
 					if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
 					if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
 					if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
@@ -83,8 +87,10 @@ if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $
 			$$multiname=0; 
 			$$multiname2=0;
 			}
-		else {$multiname="MULTI$mfns[$mi]";}
-		//if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
+		else 
+			{
+			$multiname="MULTI$mfns[$mi]";
+			}
 		if (isset($_SESSION[$cm]) && ($_SESSION[$cm] == "0" || $_SESSION[$cm]))
 			{
 			}
@@ -734,13 +740,60 @@ $gid=$_SESSION['grouplist'][$grouparrayno][0];
 $groupname=$_SESSION['grouplist'][$grouparrayno][1];
 $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
 
+require_once("qanda.php"); //This should be qanda.php when finished
+
+//Iterate through the questions about to be displayed:
+$mandatorys=array();
+$mandatoryfns=array();
+$conmandatorys=array();
+$conmandatoryfns=array();
+$conditions=array();
+$inputnames=array();
 foreach ($_SESSION['fieldarray'] as $ia)
 	{
 	if ($ia[5] == $gid)
 		{
-		include("qanda.php");
+		//Get the answers/inputnames
+		list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
+		if ($plus_qanda)
+			{
+				$qanda[]=$plus_qanda;
+			}
+		if ($plus_inputnames)
+			{
+			$inputnames = addtoarray_single($inputnames, $plus_inputnames);
+			}
+
+		//Display the "mandatory" popup if necessary
+		if (isset($notanswered)) 
+			{
+			list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
+			}
+		
+		//Get list of mandatory questions
+		list($plusman, $pluscon)=create_mandatorylist($ia);
+		if ($plusman !== null)
+			{
+		    list($plus_man, $plus_manfns)=$plusman;
+			$mandatorys=addtoarray_single($mandatorys, $plus_man);
+			$mandatoryfns=addtoarray_single($mandatoryfns, $plus_manfns);
+			}
+		if ($pluscon !== null)
+			{
+		    list($plus_conman, $plus_conmanfns)=$pluscon;
+			$conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
+			$conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
+			}
+		
+		//Build an array containing the conditions that apply for this page
+		$plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
+		if ($plus_conditions)
+			{
+		    $conditions = addtoarray_single($conditions, $plus_conditions);
+			}
 		} 
-	}
+	} //end iteration
+
 
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 
@@ -845,8 +898,10 @@ if (isset($conditions) && is_array($conditions))
 if (isset($java)) {echo $java;}
 echo "\t\t\t}\n"
 	."\t//-->\n"
-	."\t</script>\n\n"
-	."\n\n<!-- START THE GROUP -->\n";
+	."\t</script>\n\n";
+
+
+echo "\n\n<!-- START THE GROUP -->\n";
 foreach(file("$thistpl/startgroup.pstpl") as $op)
 	{
 	echo "\t".templatereplace($op);
@@ -888,7 +943,8 @@ foreach(file("$thistpl/endgroup.pstpl") as $op)
 	}
 echo "\n";
 
-$navigator = surveymover();
+$navigator = surveymover(); //This gets globalised in the templatereplace function
+
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 foreach(file("$thistpl/navigator.pstpl") as $op)
 	{
@@ -896,13 +952,19 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 	}
 echo "\n";
 
-if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
+if ($surveyactive != "Y") 
+	{
+	echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";
+	}
+
 foreach(file("$thistpl/endpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
 	}
 echo "\n";
-	
+
+echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
+
 if (isset($conditions) && is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
 	{
 	foreach (array_keys($_SESSION) as $SESak)
@@ -914,24 +976,24 @@ if (isset($conditions) && is_array($conditions)) //if conditions exist, create h
 		}
 	}
 //SOME STUFF FOR MANDATORY QUESTIONS
-if (isset($mandatorys) && is_array($mandatorys))
+if (remove_nulls_from_array($mandatorys))
 	{
-	$mandatory=implode("|", $mandatorys);
+	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
 	echo "<input type='hidden' name='mandatory' value='$mandatory'>\n";
 	}
-if (isset($conmandatorys) && is_array($conmandatorys))
+if (remove_nulls_from_array($conmandatorys))
 	{
-	$conmandatory=implode("|", $conmandatorys);
+	$conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
 	echo "<input type='hidden' name='conmandatory' value='$conmandatory'>\n";
 	}
-if (isset($mandatoryfns) && is_array($mandatoryfns))
+if (remove_nulls_from_array($mandatoryfns))
 	{
-	$mandatoryfn=implode("|", $mandatoryfns);
+	$mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
 	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn'>\n";
 	}
-if (isset($conmandatoryfns) && is_array($conmandatoryfns))
+if (remove_nulls_from_array($conmandatoryfns))
 	{
-	$conmandatoryfn=implode("|", $conmandatoryfns);
+	$conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
 	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn'>\n";
 	}
 
