@@ -41,6 +41,19 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 	require_once ("$jpgraphdir/jpgraph_pie.php");
 	require_once ("$jpgraphdir/jpgraph_pie3d.php");
 	require_once ("$jpgraphdir/jpgraph_bar.php");
+	//$currentuser is created as prefix for jpgraph files
+	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
+		{
+		$currentuser=$_SERVER['REDIRECT_REMOTE_USER'];
+		}
+	elseif (session_id())
+		{
+		$currentuser=substr(session_id(), 0, 15);
+		}
+	else
+		{
+		$currentuser="standard";
+		}
 	}
 
 if (isset($_POST['summary']) && !is_array($_POST['summary'])) {
@@ -48,6 +61,7 @@ if (isset($_POST['summary']) && !is_array($_POST['summary'])) {
 }	
 
 if (!isset($sid)) {$sid=returnglobal('sid');}
+
 sendcacheheaders();
 
 $slstyle2 = "style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080; width: 150'";
@@ -61,6 +75,9 @@ if (!$sid)
 	exit;
 	}
 
+//Delete any stats files from the temp directory that aren't from today.
+deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
+	
 $surveyoptions=browsemenubar();
 
 echo "<table height='1'><tr><td></td></tr></table>\n"
@@ -87,7 +104,7 @@ $query = "SELECT qid, {$dbprefix}questions.gid, type, title, group_name, questio
 		."FROM {$dbprefix}questions, {$dbprefix}groups "
 		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
 		."AND {$dbprefix}questions.sid='$sid' "
-		."ORDER BY group_name, title";
+		."ORDER BY group_name, title, question";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while ($row=mysql_fetch_row($result))
 	{
@@ -142,7 +159,12 @@ foreach ($filters as $flt)
 			break;
 		case "T": // Long free text
 			$myfield2="T$myfield";
-			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
+			echo "\t\t\t\t<td align='center' valign='top'>";
+			echo "<input type='checkbox' name='summary[]' value='$myfield2'";
+			if (isset($_POST['summary']) && (array_search("T{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
+				{echo " CHECKED";}
+			echo ">&nbsp;"
+				."$setfont<b>$flt[3]</b>"
 				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
 				.str_replace("\"", "`", $flt[5])." [$row[1]]\" "
 				."onClick=\"alert('"._QUESTION.": ".$niceqtext." "
@@ -156,7 +178,12 @@ foreach ($filters as $flt)
 			break;
 		case "S": // Short free text
 			$myfield2="T$myfield";
-			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
+			echo "\t\t\t\t<td align='center' valign='top'>";
+			echo "<input type='checkbox' name='summary[]' value='$myfield2'";
+			if (isset($_POST['summary']) && (array_search("T{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
+				{echo " CHECKED";}
+			echo ">&nbsp;"
+				."$setfont<b>$flt[3]</b>"
 				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
 				.str_replace("\"", "`", $flt[5])
 				." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
@@ -453,6 +480,11 @@ foreach ($filters as $flt)
 				$allfields[]=$myfield2;
 				}
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+			//Link to rankwinner script - awaiting completion
+//			echo "\t\t\t\t</tr>\n\t\t\t\t<tr bgcolor='#DDDDDD'>\n"
+//				."<td colspan=$count align=center>$setfont"
+//				."<input $btstyle type='button' value='Show Rank Summary' onClick=\"window.open('rankwinner.php?sid=$sid&qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
+//				."</td></tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
 			unset($answers);
 			break;
@@ -626,13 +658,29 @@ if (isset($_POST['display']) && $_POST['display'])
 //Show Summary results
 if (isset($_POST['summary']) && $_POST['summary'])
 	{
+	if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+		{
+		//Delete any old temp image files
+		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$sid."X"."*.png");
+		}
 	$runthrough=returnglobal('summary');
+
+	//START Chop up fieldname and find matching questions
+	$lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
+	$lr = mysql_query($lq);
+	$legitqs[] = "DUMMY ENTRY";
+	while ($lw = mysql_fetch_array($lr))
+		{
+		$legitqids[] = $lw['qid']; //this creates an array of question id's'
+		}
+	//Finished collecting legitqids
+
 	foreach ($runthrough as $rt)
 		{
-		// 1. Get answers for question
+		// 1. Get answers for question ##############################################################
 		if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
 			{
-			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 			$nquery = "SELECT title, type, question, lid, other FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
@@ -660,7 +708,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			}
 		elseif (substr($rt, 0, 1) == "T" || substr($rt, 0, 1) == "S") //Short and long text
 			{
-			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 			$nquery = "SELECT title, type, question, other FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die("Couldn't get text question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult))
@@ -669,12 +717,13 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				$qquestion=strip_tags($nrow[2]);
 				}
 			$mfield=substr($rt, 1, strlen($rt));
-			$alist[]=array("Answers", "", $mfield);
+			$alist[]=array("Answers", _AL_ANSWER, $mfield);
+			$alist[]=array("NoAnswer", _NOANSWER, $mfield);
 			}
 		elseif (substr($rt, 0, 1) == "R") //RANKING OPTION THEREFORE CONFUSING
 			{
 			$lengthofnumeral=substr($rt, strchr($rt, "-"), 1);
-			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strchr($rt, "-")-($lengthofnumeral+1)));	
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strchr($rt, "-")-($lengthofnumeral+1)), 3);	
 	
 			$nquery = "SELECT title, type, question FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
@@ -694,7 +743,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			}
 		elseif (substr($rt, 0, 1) == "N") //NUMERICAL TYPE
 			{
-			list($qsid, $qgid, $qqid) = explode("X", $rt);
+			list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
 			$nquery = "SELECT title, type, question, qid, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
@@ -832,19 +881,14 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			}
 		else // NICE SIMPLE SINGLE OPTION ANSWERS
 			{
-			list($qsid, $qgid, $qqid) = explode("X", $rt);
-			$lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
-			$lr = mysql_query($lq);
-			$legitqs[] = "DUMMY ENTRY";
-			while ($lw = mysql_fetch_array($lr))
-				{
-				$legitqids[] = $lw['qid']; //this creates an array of question id's'
-				}
+			
+			list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
 			$rqid=$qqid;
 			while (!in_array($rqid, $legitqids)) //checks that the qid exists in our list. If not, have to do some tricky stuff to find where qid ends and answer code begins:
 				{
 				$rqid = substr($rqid, 0, strlen($rqid)-1); //keeps cutting off the end until it finds the real qid
 				}
+			//END
 			$nquery = "SELECT title, type, question, qid, lid, other FROM {$dbprefix}questions WHERE qid=$rqid";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
@@ -965,8 +1009,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		//foreach ($alist as $al) {echo "$al[0] - $al[1]<br />";} //debugging line
 		//foreach ($fvalues as $fv) {echo "$fv | ";} //debugging line
 		
-		//2. Display results
-		if (isset($alist) && $alist) //JUST IN CASE SOMETHING GOES WRONG
+		//2. Collect and Display results #######################################################################
+		if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
 			{
 			echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
 				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>"
@@ -991,7 +1035,14 @@ if (isset($_POST['summary']) && $_POST['summary'])
 						}
 					elseif ($qtype == "T" || $qtype == "S")
 						{
-						$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` != ''";
+						if($al[0]=="Answers")
+							{
+							$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` != ''";
+							}
+						elseif($al[0]=="NoAnswer")
+							{
+							$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` IS NULL OR `$al[2]` = ''";
+							}
 						}
 					else
 						{
@@ -1020,7 +1071,18 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					elseif ($al[0] == _OTHER || $al[0] == "Answers")
 						{$fname="$al[1] <input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]&sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
 					elseif ($qtype == "S" || $qtype == "T")
-						{$fname="$al[1] $qtype<input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]&sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+						{
+						if ($al[0] == "Answer")
+							{
+							$fname= "$al[1] <input $btstyle type='submit' value='"
+								  . _BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]&sql="
+								  . urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";
+							}
+						elseif ($al[0] == "NoAnswer")
+							{
+							$fname= "$al[1]";
+							}
+						}
 					else
 						{$fname="$al[1] ($al[0])";}
 					echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont"
@@ -1031,52 +1093,164 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp"
 						."\t\t</td></tr>\n";
 					$gdata[] = ($row[0]/$results)*100;
-					$lbl[] = $fname;
+					$grawdata[]=$row[0];
+					$label=strip_tags($fname);
+					$justcode[]=$al[0];
+					$lbl[] = wordwrap($label, 20, "\n");
 					}
 				}
 				
-				if ($usejpgraph == 1 && array_sum($gdata)>0) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+				if ($usejpgraph == 1 && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
 					{
+					//First, lets delete any earlier graphs from the tmp directory
 					//$gdata and $lbl are arrays built at the end of the last section
 					//that contain the values, and labels for the data we are about
 					//to send to jpgraph.
-					$graph = new PieGraph(640,320,'png');
-					$graph->img->SetAntiAliasing();
-			
-					// Set A title for the plot
-					//$graph->title->Set($qquestion);
-					$graph->title->SetFont(FF_ARIAL,FS_BOLD,13); 
+					if ($qtype == "M" || $qtype == "P") { //Bar Graph
+					    $graph = new Graph(640,320,'png');
+						$graph->SetScale("textint"); 
+						$graph->img->SetMargin(50,50,50,50);
+						$graph->xaxis->SetTickLabels($justcode);
+						$graph->xaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
+						$graph->xaxis->SetColor("silver");
+						$graph->xaxis->title->Set(_AL_CODE);
+						$graph->xaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
+						$graph->xaxis->title->SetColor("silver");
+						$graph->yaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
+						$graph->yaxis->SetColor("silver");
+						$graph->yaxis->title->Set(_COUNT." / $results");
+						$graph->yaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
+						$graph->yaxis->title->SetColor("silver");
+						//$graph->Set90AndMargin();
+					} else { //Pie Charts
+						$totallines=countLines($lbl);
+						if ($totallines>26) {
+						    $gheight=320+(6.7*($totallines-26));
+							$fontsize=7;
+							$legendtop=0.01;
+							$setcentrey=0.5/(($gheight/320));
+						} else {
+							$gheight=320;
+							$fontsize=8;
+							$legendtop=0.07;
+							$setcentrey=0.5;
+						}
+						$graph = new PieGraph(640,$gheight,'png');
+						$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
+						$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
+						$graph->legend->SetFillColor("silver");
+						
+					}
 					$graph->title->SetColor("#EEEEEE");
 					$graph->SetMarginColor("#666666");
-					$graph->legend->SetFont(FF_ARIAL, FS_NORMAL, 8);
-					$graph->legend->SetFillColor("silver");
-					$graph->legend->SetPos(0.02, 0.07, 'right', 'top');
+					$graph->img->SetAntiAliasing();
+					// Set A title for the plot
+					//$graph->title->Set($qquestion);
+					$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,13); 
 					// Create pie plot
-					$p1 = new PiePlot3d($gdata);
-					$p1->SetTheme("earth");
-					$p1->SetCenter(0.4,0.5);
-					$p1->SetLegends($lbl);
-					$p1->value->SetColor("orange");
-					$p1->value->SetFont(FF_ARIAL,FS_NORMAL,11);
-									// Set how many pixels each slice should explode
-					//$p1->Explode(array(0,15,15,25,15));
+					if ($qtype == "M" || $qtype == "P") { //Bar Graph
+						$p1 = new BarPlot($grawdata);
+						$p1->SetWidth(0.8);
+						$p1->SetValuePos("center");
+						$p1->SetFillColor("orange");
+						if (!in_array(0, $grawdata)) { //don't show shadows if any of the values are 0 - jpgraph bug
+							$p1->SetShadow();
+						}
+						$p1->value->Show();
+						$p1->value->SetFont(constant($jpgraphfont),FS_NORMAL,8);
+						$p1->value->SetColor("#555555");
+					} else { //Pie Chart
+						$p1 = new PiePlot3d($gdata);
+						$p1->SetTheme("earth");
+						$p1->SetLegends($lbl);
+						$p1->SetSize(200);
+						$p1->SetCenter(0.375,$setcentrey);
+						$p1->value->SetColor("orange");
+						$p1->value->SetFont(constant($jpgraphfont),FS_NORMAL,10);
+						// Set how many pixels each slice should explode
+						//$p1->Explode(array(0,15,15,25,15));
+					}
+					
 					if (!isset($ci)) {$ci=0;}
 					$ci++;
 					$graph->Add($p1);
-					$graph->Stroke($tempdir."/".$ci.".png");
-					
-					echo "<tr><td colspan='3' style=\"text-align:center\"><img src=\"$tempurl/".$ci.".png\" border='1'></td></tr>";
+					$gfilename="STATS_".date("d")."X".$currentuser."X".$sid."X".$ci.date("His").".png";
+					$graph->Stroke($tempdir."/".$gfilename);
+					echo "<tr><td colspan='3' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
 					
 					////// PIE ALL DONE
 					}
-					unset($gdata);
-					unset($lbl);
-
 			}
 		echo "</table>\n";
+		unset($gdata);
+		unset($grawdata);
+		unset($lbl);
+		unset($justcode);
 		unset ($alist);
 		}
 	}
 echo "<br />&nbsp;";
 echo htmlfooter("instructions.html#statistics", "Using PHPSurveyors Statistics Function");
+
+function deletePattern($dir, $pattern = "")
+   {
+   $deleted = false;
+   $pattern = str_replace(array("\*","\?"), array(".*","."), preg_quote($pattern));
+   if (substr($dir,-1) != "/") $dir.= "/";
+   if (is_dir($dir))
+	   {    
+	   $d = opendir($dir);
+       while ($file = readdir($d))
+	   	{
+		if (is_file($dir.$file) && ereg("^".$pattern."$", $file))
+        	{
+			if (unlink($dir.$file))    
+				{
+				$deleted[] = $file;
+				}
+        	}
+       }
+       closedir($d);
+       return $deleted;
+	   }
+   else return 0; 
+   }
+  
+function deleteNotPattern($dir, $matchpattern, $pattern = "")
+   {
+   $deleted = false;
+   $pattern = str_replace(array("\*","\?"), array(".*","."), preg_quote($pattern));
+   $matchpattern = str_replace(array("\*","\?"), array(".*","."), preg_quote($matchpattern));
+   if (substr($dir,-1) != "/") $dir.= "/";
+   if (is_dir($dir))
+	   {    
+	   $d = opendir($dir);
+       while ($file = readdir($d))
+	   	{
+		if (is_file($dir.$file) && ereg("^".$matchpattern."$", $file) && !ereg("^".$pattern."$", $file))
+        	{
+			if (unlink($dir.$file))    
+				{
+				$deleted[] = $file;
+				}
+        	}
+       }
+       closedir($d);
+       return $deleted;
+	   }
+   else return 0; 
+   }
+
+function countLines($array)
+	{
+	//$totalelements=count($array);
+	$totalnewlines=0;
+	foreach ($array as $ar)
+		{
+		$totalnewlines=$totalnewlines+substr_count($ar, "\n")+1;
+		}
+	$totallines=$totalnewlines+count($array);
+	return $totallines;
+	}
+
 ?>
