@@ -722,7 +722,24 @@ function submittokens()
 		$message="";
 //		foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
 //			{
-		$add=$thissurvey['email_confirm'];
+		if ($thissurvey['email_confirm']) 
+			{
+			$add=$thissurvey['email_confirm'];
+			}
+		else
+			{
+			//Get the default email_confirm from the default admin lang file
+			global $defaultlang, $homedir, $homeurl;
+			$langdir="$homeurl/lang/$defaultlang";
+			$langdir2="$homedir/lang/$defaultlang";
+			if (!is_dir($langdir2)) 
+				{
+				$langdir="$homeurl/lang/english"; //default to english if there is no matching language dir
+				$langdir2="$homedir/lang/english";
+				}
+			require("$langdir2/messages.php");
+			$add = str_replace("\n", "\r\n", _TC_EMAILCONFIRM);
+			}
 		$add = str_replace("{FIRSTNAME}", $cnfrow['firstname'], $add);
 		$add = str_replace("{LASTNAME}", $cnfrow['lastname'], $add);
 		$add = str_replace("{ADMINNAME}", $thissurvey['adminname'], $add);
