@@ -66,7 +66,7 @@ else
 
 if ($action == "activate")
 	{
-	echo "<center><b>Activating survey ID $sid</b></center><br /><br />\n";
+	echo "<center><b>Activating survey ID $sid</b></center><br />\n";
 	include("activate.php");
 	exit;
 	}
