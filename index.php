@@ -453,7 +453,8 @@ function checkgroupfordisplay($gid)
 				if ($cfieldname == $cvalue)
 					{
 					//This condition is met
-					if (!isset($distinctcqids[$row['cqid']])) 
+					//Bugfix provided by Zoran Avtarovski
+					if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
 						{
 						$distinctcqids[$row['cqid']]=1;
 						}
@@ -1241,6 +1242,15 @@ function buildsurveysession()
 		else
 			{
 			$conditions = "N";
+			}
+
+		//3(b) See if any of the insertarray values have been passed in the query URL
+		foreach($_SESSION['insertarray'] as $field)
+			{
+			if (isset($_GET[$field]))
+				{
+				$_SESSION[$field]=$_GET[$field];
+			    }
 			}
 
 		//4. SESSION VARIABLE: fieldarray
