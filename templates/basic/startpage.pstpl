@@ -1,0 +1,26 @@
+<head>
+<title>{SURVEYNAME} :: {GROUPNAME}</title>
+<style type='text/css'>
+body { font-family: arial, verdana, sans-serif; font-size: 14px; line-height: 17px; background-color: #999999; }
+table { border: 0; }
+table.question { border: 1; border-color: #aaaaaa; }
+td { font-family: arial, verdana, sans-serif; font-size: 14px; line-height: 17px; }
+td.tenpoint { font-size: 12px; line-height: 15px; }
+img { border: 0; }
+.b3 { background-color: #333333; }
+.b9 { background-color: #999999; }
+.ba { background-color: #aaaaaa; }
+.bd { background-color: #dddddd; }
+.be { background-color: #eeeeee; }
+.bf { background-color: #ffffff; }
+.array1 { background-color: #eeeeee; }
+.array2 { background-color: #ffffff; }
+.errormandatory { font-size: 13px; font-weight: bold; color:#ff0000; }
+</style>
+</head>
+<body>
+<table width="80%" align='center' class='bf' cellpadding='0' cellspacing='0'>
+<tr>
+	<td rowspan='2'><table width='100%' cellspacing='10'>
+		<tr>
+			<td>

@@ -1,0 +1,13 @@
+<br />
+ <table align='center' cellpadding='30'>
+  <tr>
+   <td align='center' bgcolor='white'>
+    <font face='arial' size='2'>
+    <b><font color='red'>{ANSWERSCLEARED}</b></font><br /><br />
+	{RESTART}<br />
+        {URL}<br />
+	{CLOSEWINDOW}
+   </td>
+  </tr>
+ </table>
+<br />

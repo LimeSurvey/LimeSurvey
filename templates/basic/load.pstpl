@@ -1,0 +1,7 @@
+<center>
+<font color='red'>{LOADERROR}</font>
+<p><b><font size='+1'>{LOADHEADING}</font></b></p>
+<p>{LOADMESSAGE}</p>
+<p>{LOADFORM}</p>
+{RETURNTOSURVEY}
+</center>

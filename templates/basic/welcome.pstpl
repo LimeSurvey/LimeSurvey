@@ -1,0 +1,9 @@
+<table align='center' width='100%' cellpadding='25' cellspacing='0'>
+	<tr>
+		<td width="100%" valign="bottom"><img src="{TEMPLATEURL}logo.gif" height="72" width="211"></td>
+		<td nowrap valign="bottom"><b>{SURVEYNAME}</b></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><table width='80%'><tr><td>{WELCOME}<br> <br></td></tr></table></td>
+	</tr>
+</table>

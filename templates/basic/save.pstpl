@@ -1,0 +1,7 @@
+<center>
+<font color='red'>{SAVEERROR}</font>
+<p><b><font size='+1'>{SAVEHEADING}</font></b></p>
+<p>{SAVEMESSAGE}</p>
+<p>{SAVEFORM}</p>
+{RETURNTOSURVEY}
+</center>
