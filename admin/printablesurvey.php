@@ -278,20 +278,29 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "L":  //LIST
 			case "!":
+				$qidattributes=getQuestionAttributes($deqrow['qid']);
+				if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+					{
+				    $dcols=$displaycols['value'];
+					}
+				else
+					{
+					$dcols=0;
+					}
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
 				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$dearesult = mysql_query($deaquery);
 				$deacount=mysql_num_rows($dearesult);
 				if ($deqrow['other'] == "Y") {$deacount++;}
-				if ($deacount > $repeatheadings)
+				if ($deacount > $dcols)
 					{
-					$columns=$deacount/$repeatheadings;
+					$columns=$deacount/$dcols;
 					$spacing=sprintf("%02d", 100/$columns);
 					$upto=0;
 					echo "<table><tr><td valign='top'>$setfont\n";
 					while ($dearow = mysql_fetch_array($dearesult))
 						{
-						if ($upto == $repeatheadings) 
+						if ($upto == $dcols) 
 							{
 						    echo "</td><td valign='top'>$setfont";
 							$upto=0;
@@ -341,20 +350,29 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				break;
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
+				$qidattributes=getQuestionAttributes($deqrow['qid']);
+				if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+					{
+				    $dcols=$displaycols['value'];
+					}
+				else
+					{
+					$dcols=0;
+					}
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEANY."</u><br />\n";
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
 				$meacount = mysql_num_rows($mearesult);
 				if ($deqrow['other'] == "Y") {$meacount++;}
-				if ($meacount > $repeatheadings)
+				if ($meacount > $dcols)
 					{
-					$columns=$deacount/$repeatheadings;
+					$columns=$deacount/$dcols;
 					$spacing=sprintf("%02d", 100/$columns);
 					$upto=0;
 					echo "<table><tr><td valign='top'>$setfont\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
-						if ($upto == $repeatheadings) 
+						if ($upto == $dcols) 
 							{
 						    echo "</td><td valign='top'>$setfont";
 							$upto=0;
