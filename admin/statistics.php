@@ -77,7 +77,8 @@ if (!$sid)
 
 //Delete any stats files from the temp directory that aren't from today.
 deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
-	
+
+//Get the menubar
 $surveyoptions=browsemenubar();
 
 echo "<table height='1'><tr><td></td></tr></table>\n"
@@ -100,15 +101,17 @@ if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);	
 
 // 1: Get list of questions from survey
-$query = "SELECT qid, {$dbprefix}questions.gid, type, title, group_name, question, lid "
-		."FROM {$dbprefix}questions, {$dbprefix}groups "
-		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
-		."AND {$dbprefix}questions.sid='$sid' "
-		."ORDER BY group_name, title, question";
+$query = "SELECT {$dbprefix}questions.*, group_name\n"
+		."FROM {$dbprefix}questions, {$dbprefix}groups\n"
+		."WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid\n"
+		."AND {$dbprefix}questions.sid=$sid";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
-while ($row=mysql_fetch_row($result))
+while($row=mysql_fetch_assoc($result)){$rows[]=$row;} // while
+//SORT IN NATURAL ORDER!
+usort($rows, 'CompareGroupThenTitle');
+foreach ($rows as $row) 
 	{
-	$filters[]=array("$row[0]", "$row[1]", "$row[2]", "$row[3]", "$row[4]", strip_tags($row[5]), $row[6]);
+	$filters[]=array($row['qid'], $row['gid'], $row['type'], $row['title'], $row['group_name'], strip_tags($row['question']), $row['lid']);
 	}
 // 2: Get answers for each question
 if (!isset($currentgroup)) {$currentgroup="";}
