@@ -39,7 +39,7 @@ if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep']-1;}
 if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
-//CONVERT POSTED ANSWERS TO SESSION VARIABLES
+//CONVERT POSTED ANSWERS TO SESSION VARIABLES 
 if ($_POST['fieldnames'])
 	{
 	$postedfieldnames=explode("|", $_POST['fieldnames']);
@@ -309,7 +309,7 @@ while($tbl = @mysql_tablename($tresult, $i++))
 	}
 
 //RUN THIS IF THIS IS THE FIRST TIME
-if (!$_SESSION['step'])
+if ((!$_SESSION['step'] && $_SESSION['step'] != "0") || $_SESSION['step'] < 0 )
 	{
 	//*****************************************************************************************************
 	//PREPARE SURVEY
@@ -539,7 +539,8 @@ if (!$_SESSION['step'])
 //echo "--- TOTALSTEPS: ".$_SESSION['totalsteps']." ---<br />";
 //GET GROUP DETAILS
 
-$currentquestion=$_SESSION['step']-1;
+if ($_SESSION['step'] == "0") {$currentquestion=$_SESSION['step'];}
+else {$currentquestion=$_SESSION['step']-1;}
 $ia=$_SESSION['fieldarray'][$currentquestion];
 
 foreach ($_SESSION['grouplist'] as $gl)
@@ -556,7 +557,6 @@ foreach ($_SESSION['grouplist'] as $gl)
 if ($newgroup == "Y" && $_POST['move'] == " << prev " && $_POST['grpdesc']=="Y") //a small trick to manage moving backwards from a group description
 	{
 	$currentquestion++; 
-	echo "Hi there ($currentquestion)";
 	$ia=$_SESSION['fieldarray'][$currentquestion]; 
 	$_SESSION['step']++;
 	}
@@ -646,10 +646,10 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 	}
 echo "\n<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
-echo "\n\n<!-- INPUT NAMES -->\n";
-echo "\t<input type='hidden' name='fieldnames' value='";
-echo implode("|", $inputnames);
-echo "'>\n";
+//echo "\n\n<!-- INPUT NAMES -->\n";
+//echo "\t<input type='hidden' name='fieldnames' value='";
+//echo implode("|", $inputnames);
+//echo "'>\n";
 
 echo "\n\n<!-- START THE SURVEY -->\n";
 foreach(file("$thistpl/survey.pstpl") as $op)
@@ -780,8 +780,16 @@ if (is_array($conditions)) //if conditions exist, create hidden inputs for previ
 			}
 		}
 	}
-//SOME STUFF FOR MANDATORY QUESTIONS
 
+//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT (But only when a question is showing)
+if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << prev ")
+	{}
+else
+	{echo "<input type='hidden' name='fieldnames' value='";
+	echo implode("|", $inputnames);
+	echo "'>\n";
+	}
+//SOME STUFF FOR MANDATORY QUESTIONS
 if (is_array($mandatorys) && $newgroup != "Y")
 	{
 	$mandatory=implode("|", $mandatorys);
@@ -812,7 +820,7 @@ echo "</form>\n</html>";
 function surveymover()
 	{
 	global $sid, $presentinggroupdescription;
-	if ($_SESSION['step'] > 0)
+	if ($_SESSION['step'] > -1)
 		{$surveymover .= "<input class='submit' type='submit' value=' << prev ' name='move' />\n";}
 	if ($_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' next >> ' name='move' />\n";}
@@ -851,11 +859,6 @@ function last()
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
 	echo "\n<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
-	//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
-	//echo "\n\n<!-- INPUT NAMES -->\n";
-	//echo "\t\t<input type='hidden' name='fieldnames' value='";
-	//echo implode("|", $inputnames);
-	//echo "'>\n";
 	$GLOBALS["privacy"]=$privacy;
 	echo "\n\n<!-- START THE SURVEY -->\n";
 	foreach(file("$thistpl/survey.pstpl") as $op)
