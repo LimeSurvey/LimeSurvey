@@ -35,12 +35,12 @@
 */
 
 //Move current step
-if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
-if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
+if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES
-if ($_POST['fieldnames'])
+if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	{
 	$postedfieldnames=explode("|", $_POST['fieldnames']);
 	foreach ($postedfieldnames as $pf)
@@ -50,7 +50,7 @@ if ($_POST['fieldnames'])
 	}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
-if ($_POST['mandatory'])
+if (isset($_POST['mandatory']) && $_POST['mandatory'])
 	{
 	$chkmands=explode("|", $_POST['mandatory']);
 	$mfns=explode("|", $_POST['mandatoryfn']);
@@ -64,9 +64,9 @@ if ($_POST['mandatory'])
 				if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 					{
 					//The number of questions not answered is equal to the number of questions
-					if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+					if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 				    $notanswered[]=substr($multiname, 5, strlen($multiname));
 					$$multiname=0;
 					$$multiname2=0;
@@ -77,15 +77,15 @@ if ($_POST['mandatory'])
 			$$multiname2=0;
 			}
 		else {$multiname="MULTI$mfns[$mi]";}
-		if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
+		if (isset($_SESSION[$cm]) && ($_SESSION[$cm] == "0" || $_SESSION[$cm]))
 			{
 			}
-		elseif (!$_POST[$multiname])
+		elseif (!isset($_POST[$multiname]) || !$_POST[$multiname])
 			{
 			//One of the mandatory questions hasn't been asnwered
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$mfns[$mi];
 			}
 		else
@@ -96,14 +96,14 @@ if ($_POST['mandatory'])
 		$$multiname2++;
 		$mi++;
 		}
-	if ($multiname && $_POST[$multiname]) // Catch the last multiple options question in the lot
+	if ($multiname && isset($_POST[$multiname]) && $_POST[$multiname]) // Catch the last multiple options question in the lot
 		{
 		if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 			//The number of questions not answered is equal to the number of questions
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 		    $notanswered[]=substr($multiname, 5, strlen($multiname));
 			$$multiname="";
 			$$multiname2="";
@@ -111,7 +111,7 @@ if ($_POST['mandatory'])
 		}
 	}
 
-if ($_POST['conmandatory'])
+if (isset($_POST['conmandatory']) && $_POST['conmandatory'])
 	{
 	$chkcmands=explode("|", $_POST['conmandatory']);
 	$cmfns=explode("|", $_POST['conmandatoryfn']);
@@ -120,7 +120,7 @@ if ($_POST['conmandatory'])
 		{
 		if ($multiname != "MULTI$cmfns[$mi]") //the last multipleanswerchecked is different to this one
 			{
-			if ($multiname && $_POST[$multiname])
+			if ($multiname && isset($_POST[$multiname]) && $_POST[$multiname])
 				{
 				if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
 					{
