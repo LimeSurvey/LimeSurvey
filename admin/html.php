@@ -372,7 +372,10 @@ if ($sid)
 			{
 			$expdate=$s1row['expires'];
 			}
-		$expdate="Never";
+		else 
+			{
+			$expdate="Never";
+			}
 		$surveysummary .= "\t<td>$setfont$expdate</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<b>"
 						. _SL_TEMPLATE."</b></font></td>\n"
@@ -1251,6 +1254,7 @@ if ($action == "editsurvey")
 			else {$editsurvey .= "This survey <b>is</b> anonymous";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 						 . "\t\t</td>\n";
+			$editsurvey .= "<input type='hidden' name='private' value='".$esrow['private']."'>\n";
 			}
 		else
 			{
@@ -1273,6 +1277,7 @@ if ($action == "editsurvey")
 			else {$editsurvey .= "Responses <b>will</b> be date stamped";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 						 . "\t\t</td>\n";
+			$editsurvey .= "<input type='hidden' name='datestamp' value='".$esrow['datestamp']."'>\n";
 			}
 		else
 			{
