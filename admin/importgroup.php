@@ -37,7 +37,7 @@
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._IMPORTSURVEY."</b></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._IMPORTGROUP."</b></td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
@@ -69,7 +69,7 @@ fclose($handle);
 if (substr($bigarray[1], 0, 21) != "# SURVEYOR GROUP DUMP")
 	{
 	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
-	echo _IS_WRONGFILE."<br /><br />\n";
+	echo _IG_WRONGFILE."<br /><br />\n";
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
@@ -208,7 +208,7 @@ $newsid = $_POST["sid"];
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
 if ($labelsetsarray) {
-	echo "DOING LABELSETS<br />";
+	//echo "DOING LABELSETS<br />";
 	foreach ($labelsetsarray as $lsa) {
 		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
@@ -347,7 +347,7 @@ if ($grouparray) {
 						$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid, $newsid."X".$newgid."X".$newqid);
 						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					}
-				echo $oldsid."X".$oldgid."X".$oldqid ."--". $newsid."X".$newgid."X".$newqid."<br />";
+				//echo $oldsid."X".$oldgid."X".$oldqid ."--". $newsid."X".$newgid."X".$newqid."<br />";
 				}
 			}
 		}
@@ -379,20 +379,20 @@ if ($conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
 		$newvalues="('".implode("', '", $newfieldcontents)."')";
 		$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $car);
 		$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
-		echo "-- CONDITIONS --<br />$insert<br />\n";
+		//echo "-- CONDITIONS --<br />$insert<br />\n";
 		$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
 	}
 }
 
 echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
-echo "<b><u>"._IS_IMPORTSUMMARY."</u></b><br />\n";
+echo "<b><u>"._IG_IMPORTSUMMARY."</u></b><br />\n";
 echo "<ul>\n\t<li>"._GROUPS.": $countgroups</li>\n";
 echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
 echo "\t<li>"._ANSWERS.": $countanswers</li>\n";
 echo "\t<li>"._CONDITIONS.": $countconditions</li>\n";
 echo "\t<li>"._LABELSET.": $countlabelsets ("._LABELANS.": $countlabels)</li>\n</ul>\n";
 
-echo "<b>"._IS_SUCCESS."</b><br />\n";
+echo "<b>"._IG_SUCCESS."</b><br />\n";
 echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 
 echo "</td></tr></table>\n";
