@@ -247,6 +247,12 @@ if ($action == "browse")
 			echo "\t\t<input type='hidden' name='sql' value=\"token='{$brow['token']}'\" />\n";
 			echo "\t\t</form>\n";
 			}
+		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['send'] != "Y")
+			{
+			echo "\t\t<td align='center'>\n";
+			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='I' title='Send Invitation Email' onClick=\"window.open('$PHP_SELF?sid=$sid&action=email&tid=$brow[0]', '_top')\" />";
+			echo "\t\t</td>\n";
+			}
 		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] == "Y")
 			{
 			echo "\t\t<td align='center'>\n";
@@ -323,7 +329,9 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			}
 		echo "<table width='80%' align='center' bgcolor='#DDDDDD'>\n";
 		echo "<form method='post'>\n";
-		echo "\t<tr><td colspan='2' bgcolor='black' align='center'>$setfont<font color='white'><b>Send Invitation</b></td></tr>\n";
+		echo "\t<tr><td colspan='2' bgcolor='black' align='center'>$setfont<font color='white'><b>Send Invitation";
+		if ($_GET['tid']) {echo " to TokenID No {$_GET['tid']}";}
+		echo "</b></td></tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='right'>$setfont<b>From:</b></td>\n";
 		echo "\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadminemail' /></td>\n";
@@ -362,16 +370,24 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "\t<input type='hidden' name='ok' value='absolutely' />\n";
 		echo "\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n";
 		echo "\t<input type='hidden' name='action' value='email' />\n";
+		if ($_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'";}
 		echo "</form>\n";
 		echo "</table>\n";
 		}
 	else
 		{
-		echo "Sending email!<br />\n";
+		echo "Sending email!";
+		if ($_POST['tid']) {echo " (Sending just to TokenID {$_POST['tid']})";}
+		echo "<br />\n";
 		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !=''";
+		if ($_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
+		echo "<!-- ctquery: $ctquery -->\n";
 		$ctresult = mysql_query($ctquery) or die("Database error!<br />\n" . mysql_error());
 		$ctcount = mysql_num_rows($ctresult);
-		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' LIMIT $maxemails";
+		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !=''";
+		if ($_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
+		$emquery .= " LIMIT $maxemails";
+		echo "<!-- emquery: $emquery -->\n";
 		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".mysql_error());
 		$emcount = mysql_num_rows($emresult);
 		$headers = "From: {$_POST['from']}\r\n";
