@@ -155,7 +155,7 @@ if ($sid)
 	$surveysummary .= "\t\t{\n";
 	$surveysummary .= "\t\tif (action == \"hides\")\n";
 	$surveysummary .= "\t\t\t{\n";
-	$surveysummary .= "\t\t\tfor (i=0; i<=10; i++)\n";
+	$surveysummary .= "\t\t\tfor (i=0; i<=11; i++)\n";
 	$surveysummary .= "\t\t\t\t{\n";
 	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
 	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='none';\n";
@@ -163,7 +163,7 @@ if ($sid)
 	$surveysummary .= "\t\t\t}\n";
 	$surveysummary .= "\t\telse if (action == \"shows\")\n";
 	$surveysummary .= "\t\t\t{\n";
-	$surveysummary .= "\t\t\tfor (i=0; i<=10; i++)\n";
+	$surveysummary .= "\t\t\tfor (i=0; i<=11; i++)\n";
 	$surveysummary .= "\t\t\t\t{\n";
 	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
 	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='';\n";
@@ -307,6 +307,12 @@ if ($sid)
 		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _SS_DATESTAMPED."<br />\n";}
 		if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _SS_COOKIES."<br />\n";}
 		$surveysummary2 .= "</font></td></tr>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails11'>"
+			. "<td align='right' valign='top'>$setfont<b>"
+			. _SL_SURVEYURL . "</b></font></td>\n";
+		$tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $s1row['sid'];
+		$surveysummary .= "\t\t<td>$setfont <a href='$tmp_url'>$tmp_url</a>"
+			. "</font></td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<b>"._SL_DESCRIPTION."</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails3'>\n";
