@@ -243,10 +243,10 @@ elseif ($action == "modanswer")
 		}
 	switch ($_POST['ansaction'])
 		{
-		case "Fix Sort":
+		case _AL_FIXSORT:
 			fixsortorder($_POST['qid']);
 			break;
-		case "Add":
+		case _AL_ADD:
 			if (!$_POST['code'] || !$_POST['answer'])
 				{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not add answer. You must include both a Code AND an Answer\")\n //-->\n</script>\n";
@@ -267,7 +267,7 @@ elseif ($action == "modanswer")
 					}
 				}
 			break;
-		case "Save":
+		case _AL_SAVE:
 			if (!$_POST['code'] || !$_POST['answer'])
 				{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not save changes. You must include both a Code AND an Answer\")\n //-->\n</script>\n";
@@ -303,7 +303,7 @@ elseif ($action == "modanswer")
 					}
 				}
 			break;
-		case "Del":
+		case _AL_DEL:
 			$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
 			$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
 			$cccount=mysql_num_rows($ccresult);
@@ -320,7 +320,7 @@ elseif ($action == "modanswer")
 				}
 			fixsortorder($qid);
 			break;
-		case "Up":
+		case _AL_UP:
 			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
 			$replacesortorder=$newsortorder;
 			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
@@ -331,7 +331,7 @@ elseif ($action == "modanswer")
 			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
 			break;
-		case "Dn":
+		case _AL_DN:
 			$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
 			$replacesortorder=$newsortorder;
 			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
