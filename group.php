@@ -53,16 +53,16 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
 if ($allowmandatorybackwards==1 && isset($_POST['move']) &&  $_POST['move'] == " << "._PREV." ") {$backok="Y";}
-if (isset($_POST['mandatory']) && $_POST['mandatory'] && $backok != "Y")
+if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $backok != "Y"))
 	{
 	$chkmands=explode("|", $_POST['mandatory']);
 	$mfns=explode("|", $_POST['mandatoryfn']);
 	$mi=0;
 	foreach ($chkmands as $cm)
 		{
-		if ($multiname != "MULTI$mfns[$mi]") 
+		if (!isset($multiname) || $multiname != "MULTI$mfns[$mi]") 
 			{
-			if ($multiname && $_POST[$multiname])
+			if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname]))
 				{
 				if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 					{
@@ -75,7 +75,8 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && $backok != "Y")
 					$$multiname2=0;
 					}
 				}
-			$multiname="MULTI$mfns[$mi]"; 
+			$multiname="MULTI$mfns[$mi]";
+			$multiname2=$multiname; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
 			$$multiname=0; 
 			$$multiname2=0;
 			}
@@ -114,7 +115,7 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && $backok != "Y")
 		}
 	}
 
-if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y") //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
+if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok) || $backok != "Y")) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
 	{
 	$chkcmands=explode("|", $_POST['conmandatory']);
 	$cmfns=explode("|", $_POST['conmandatoryfn']);
@@ -123,7 +124,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y") /
 		{
 		if ($multiname != "MULTI$cmfns[$mi]") //the last multipleanswerchecked is different to this one
 			{
-			if ($multiname && $_POST[$multiname])
+			if (isset($multiname) && $multiname && isset($_POST[$multiname]) && $_POST[$multiname])
 				{
 				if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
 					{
@@ -145,11 +146,11 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y") /
 		if (($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && $_POST[$dccm] == "on")//There is an answer
 			{
 			}
-		elseif ($_POST[$dccm] == "on" && !$_POST[$multiname]) //Question is on, there is no answer, but it's a multiple
+		elseif ($_POST[$dccm] == "on" && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
 			{
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$cmfns[$mi];
 			}
 		elseif ($_POST[$dccm] == "on")
@@ -160,7 +161,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y") /
 		$$multiname2++;
 		$mi++;
 		}
-	if ($multiname && $_POST[$multiname])
+	if (isset($multiname) && $multiname && isset($_POST[$multiname]) && $_POST[$multiname])
 		{
 		if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{

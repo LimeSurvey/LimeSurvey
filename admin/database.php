@@ -186,7 +186,7 @@ elseif ($action == "updatequestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	if ($cccount)
+	if (isset($cccount) && $cccount)
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONTYPECONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
 		}
