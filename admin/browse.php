@@ -190,6 +190,10 @@ if ($action == "id") // Looking at a SINGLE entry
 		else
 			{
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
+			if ($fnrow['type'] == "L" && $fnrow['other'] == "Y") 
+				{
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+				}
 			}
 		}
 
@@ -300,6 +304,11 @@ elseif ($action == "all")
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 			$fquestion = $fnrow['question'];
 			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
+			if ($fnrow['type'] == "L" && $fnrow['other'] == "Y") 
+				{
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['gid']}");
+				}
+
 			}
 		elseif ($fnrow['type'] == "O")
 			{
@@ -361,7 +370,7 @@ elseif ($action == "all")
 	foreach ($fnames as $fn)
 		{
 		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "#555555";}
-		if ($currentgroup != $fn[3]) 
+		if ($currentgroup != $fn[3])
 			{
 			$currentgroup = $fn[3];
 			if ($gbc == "#555555") {$gbc = "#666666";}
