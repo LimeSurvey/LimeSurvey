@@ -140,21 +140,58 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 $bigarray = array_values($bigarray);
 
 //CONDITIONS
+if (array_search("# LABELSETS TABLE\n", $bigarray))
+	{
+	$stoppoint = array_search("# LABELSETS TABLE\n", $bigarray);
+	}
+else
+	{
+	$stoppoint = count($bigarray-1);
+	}
+for ($i=0; $i<=$stoppoint+1; $i++)
+	{
+	if ($i<$stoppoint-2) {$conditionsarray[] = $bigarray[$i];}
+	unset($bigarray[$i]);
+	}
+$bigarray = array_values($bigarray);
+
+//LABELSETS
+if (array_search("# LABELS TABLE\n", $bigarray))
+	{
+	$stoppoint = array_search("# LABELS TABLE\n", $bigarray);
+	}
+else
+	{
+	$stoppoint = count($bigarray-1);
+	}
+for ($i=0; $i<=$stoppoint+1; $i++)
+	{
+	if ($i<$stoppoint-2) {$labelsetsarray[] = $bigarray[$i];}
+	unset($bigarray[$i]);
+	}
+$bigarray = array_values($bigarray);
+
+//LABELS
 if ($noconditions != "Y")
 	{
 	$stoppoint = count($bigarray)-1;
 	for ($i=0; $i<=$stoppoint+1; $i++)
 		{
-		if ($i<$stoppoint-2) {$conditionsarray[] = $bigarray[$i];}
+		if ($i<$stoppoint-2) {$labelsarray[] = $bigarray[$i];}
 		unset($bigarray[$i]);
 		}
 	}
+
+
+
 
 $countsurveys = count($tablearray);
 $countgroups = count($grouparray);
 $countquestions = count($questionarray);
 $countanswers = count($answerarray);
 $countconditions = count($conditionsarray);
+$countlabelsets = count($labelsetsarray);
+$countlabels = count($labelsarray);
 
 // CREATE SURVEY
 $sid = substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
@@ -178,6 +215,21 @@ $oldsid=$sid;
 $sidquery = "SELECT sid FROM surveys ORDER BY sid DESC LIMIT 1";
 $sidres = mysql_query($sidquery);
 while ($srow = mysql_fetch_row($sidres)) {$newsid = $srow[0];}
+
+//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
+if ($labelsetsarray)
+	{
+	foreach ($labelsetsarray as $lsa)
+		{
+		$lidpos = "VALUES ('";
+		$start = strpos($lsa, "$lidpos")+strlen("VALUES ('");
+		$end = strpos($lsa, "'", $start)-$start;
+		$oldlid=substr($lsa, $start, $end)."<br />";
+		echo "OLDLID: $oldlid - ";
+		$lsainsert=str_replace("VALUES ('$oldlid", "VALUES ('", $lsa);
+		echo $lsainsert."<br />";
+		}
+	}
 
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if ($grouparray)
@@ -324,7 +376,8 @@ echo "<ul>\n\t<li>"._SURVEYS.": $countsurveys</li>\n";
 echo "\t<li>"._GROUPS.": $countgroups</li>\n";
 echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
 echo "\t<li>"._ANSWERS.": $countanswers</li>\n";
-echo "\t<li>"._CONDITIONS.": $countconditions</li>\n</ul>\n";
+echo "\t<li>"._CONDITIONS.": $countconditions</li>\n";
+echo "\t<li>"._LABELSET.": $countlabelsets ("._LABELANS.": $countlabels)</li>\n</ul>\n";
 
 echo "<b>"._IS_SUCCESS."</b><br />\n";
 echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
