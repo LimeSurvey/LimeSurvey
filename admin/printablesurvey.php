@@ -235,6 +235,10 @@ while ($degrow = mysql_fetch_array($degresult))
 		$fieldname = "$sid"."X"."$gid"."X"."$qid";
 		echo "\t<tr bgcolor='$bgc'>\n";
 		echo "\t\t<td valign='top' align='left' colspan='3'>\n";
+		if ($deqrow['mandatory'] == "Y")
+			{
+		    echo _REQUIRED;
+			}
 		echo "\t\t\t<b>$setfont{$deqrow['title']}: {$deqrow['question']}</b>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
