@@ -101,7 +101,7 @@ function BuildOutput($Query)
 		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
 		
 		
-		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues)\n";
+		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues);\n";
 		}
 	return $Output;
 	}
