@@ -703,22 +703,6 @@ else
 				echo "\t\t\t\t</tr>\n";
 				echo "\t\t\t</table>\n";
 				break;
-			case "G": //GENDER drop-down list
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<select name='fvalue'>\n";
-				echo "\t\t\t\t<option value='F'";
-				if ($_SESSION[$fname] == "F") {echo " selected";}
-				echo ">Female</option>\n";
-				echo "\t\t\t\t<option value='M'";
-				if ($_SESSION[$fname] == "M") {echo " selected";}
-				echo ">Male</option>\n";
-				echo "\t\t\t\t<option value=' '";
-				if ($_SESSION[$fname] != "F" && $_SESSION[$fname] !="M") {echo " selected";}
-				echo ">Please choose</option>\n";
-				echo "\t\t\t</select>\n";
-				break;
 			case "L": //LIST drop-down/radio-button list
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
@@ -924,9 +908,43 @@ else
 				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='N'";
 				if ($_SESSION[$fname] == "N") {echo " checked";}
 				echo " />No<br />\n";
+				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value=''";
+				if ($_SESSION[$fname] == "") {echo " checked";}
+				echo " />No Answer<br />\n";
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 				echo "\t\t\t</table>\n";
+				break;
+			case "G": //GENDER drop-down list
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='1' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
+				echo "\t\t\t<table align='center'>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td>$setfont\n";
+				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='F'";
+				if ($_SESSION[$fname] == "F") {echo " checked";}
+				echo " />Female<br />\n";
+				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='M'";
+				if ($_SESSION[$fname] == "M") {echo " checked";}
+				echo " />Male<br />\n";
+				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value=''";
+				if ($_SESSION[$fname] == "") {echo " checked";}
+				echo " />No Answer\n";
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t</table>\n";
+				//echo "\t\t\t<select name='fvalue'>\n";
+				//echo "\t\t\t\t<option value='F'";
+				//if ($_SESSION[$fname] == "F") {echo " selected";}
+				//echo ">Female</option>\n";
+				//echo "\t\t\t\t<option value='M'";
+				//if ($_SESSION[$fname] == "M") {echo " selected";}
+				//echo ">Male</option>\n";
+				//echo "\t\t\t\t<option value=' '";
+				//if ($_SESSION[$fname] != "F" && $_SESSION[$fname] !="M") {echo " selected";}
+				//echo ">Please choose</option>\n";
+				//echo "\t\t\t</select>\n";
 				break;
 			case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 				echo "\t<tr>\n";
