@@ -257,7 +257,7 @@ function templatereplace($line)
 	global $help, $totalquestions, $surveyformat;
 	global $completed, $surveyurl, $surveyurldescrip;
 	global $notanswered, $privacy, $sid;
-	global $publicurl, $templatedir;
+	global $publicurl, $templatedir, $token;
 	
 	if ($templatedir) {$templateurl="$publicurl/templates/$templatedir/";}
 	else {$templateurl="$publicurl/templates/default/";}
@@ -287,6 +287,8 @@ function templatereplace($line)
 	$line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	$line=str_replace("{ANSWER}", $answer, $line);
 	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
+	$line=str_replace("{TOKEN}", $token, $line);
+	$line=str_replace("{SID}", $sid, $line);
 	if ($help) 
 		{$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' align='left'>".$help, $line);}
 	else
