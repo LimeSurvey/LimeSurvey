@@ -215,17 +215,17 @@ define(_AD_YES, "Yes");
 define(_AD_NO, "No");
 define(_AD_CANCEL, "Cancel");
 define(_AD_CHOOSE, "Please Choose..");
-define(_AD_OR, "OR"); //New in 0.98rc3
+define(_AD_OR, "OR"); //New in 0.98rc4
 define(_ERROR, "Error");
 define(_SUCCESS, "Success");
 define(_REQ, "*Required");
 define(_ADDS, "Add Survey");
 define(_ADDG, "Add Group");
 define(_ADDQ, "Add Question");
-define(_ADDA, "Add Answer"); //New in 0.98rc3
-define(_COPYQ, "Copy Question"); //New in 0.98rc3
+define(_ADDA, "Add Answer"); //New in 0.98rc4
+define(_COPYQ, "Copy Question"); //New in 0.98rc4
 define(_ADDU, "Add User");
-define(_SEARCH, "Search"); //New in 0.98rc3
+define(_SEARCH, "Search"); //New in 0.98rc4
 define(_SAVE, "Save Changes");
 define(_NONE, "None"); //as in "Do not display anything", "or none chosen";
 define(_GO_ADMIN, "Main Admin Screen"); //text to display to return/display main administration screen
@@ -262,12 +262,12 @@ define(_SS_CANNOTACTIVATE, "Survey cannot be activated yet."); //NEW for release
 define(_SS_ADDGROUPS, "You need to add groups"); //NEW for release 0.98rc3
 define(_SS_ADDQUESTS, "You need to add questions"); //NEW for release 0.98rc3
 
-//QUESTION STATUS MESSAGES (new in 0.98rc3)
-define(_QS_MANDATORY, "Mandatory Question");
-define(_QS_OPTIONAL, "Optional Question");
-define(_QS_NOANSWERS, "You need to add answers to this question");
-define(_QS_NOLID, "You need to choose a Label Set for this question");
-define(_QS_COPYINFO, "Note: You MUST enter a new question code");
+//QUESTION STATUS MESSAGES (new in 0.98rc4)
+define(_QS_MANDATORY, "Mandatory Question"); //New for release 0.98rc4
+define(_QS_OPTIONAL, "Optional Question"); //New for release 0.98rc4
+define(_QS_NOANSWERS, "You need to add answers to this question"); //New for release 0.98rc4
+define(_QS_NOLID, "You need to choose a Label Set for this question"); //New for release 0.98rc4
+define(_QS_COPYINFO, "Note: You MUST enter a new question code"); //New for release 0.98rc4
 
 //General Setup Messages
 define(_ST_NODB1, "The defined surveyor database does not exist");
@@ -441,10 +441,10 @@ define(_DE_AND, "AND");
 define(_DE_OR, "OR");
 
 //TOKEN CONTROL MESSAGES
-define(_TC_TOTALCOUNT, "Total Records in this Token Table:"); //New in 0.98rc3
-define(_TC_NOTOKENCOUNT, "Total With No Unique Token:"); //New in 0.98rc3
-define(_TC_INVITECOUNT, "Total Invitations Sent:"); //New in 0.98rc3
-define(_TC_COMPLETEDCOUNT, "Total Surveys Completed:"); //New in 0.98rc3
+define(_TC_TOTALCOUNT, "Total Records in this Token Table:"); //New in 0.98rc4
+define(_TC_NOTOKENCOUNT, "Total With No Unique Token:"); //New in 0.98rc4
+define(_TC_INVITECOUNT, "Total Invitations Sent:"); //New in 0.98rc4
+define(_TC_COMPLETEDCOUNT, "Total Surveys Completed:"); //New in 0.98rc4
 define(_TC_NOSID, "You have not selected a survey");
 define(_TC_DELTOKENS, "About to delete tokens table for this survey.");
 define(_TC_DELTOKENSINFO, "If you delete this table tokens will no longer be required to access this survey. A backup of this table will be made if you proceed. Your system administrator will be able to access this table.");
