@@ -446,6 +446,10 @@ elseif ($action == "edit")
 					echo "\t\t\t\t\t\t\ti=$anscount;\n";
 					echo "\t\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length == 0)\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=true;\n";
+					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t}\n";
 					echo "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
 					echo "\t\t\t\t\t{\n";
@@ -467,6 +471,10 @@ elseif ($action == "edit")
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
 					echo "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
+					echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length > 0)\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=false;\n";
+					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t}\n";
 					echo "\t\t\t//-->\n";
 					echo "\t\t\t</script>\n";	
@@ -1029,6 +1037,10 @@ else
 					echo "\t\t\t\t\t\t\ti=$anscount;\n";
 					echo "\t\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length == 0)\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=true;\n";
+					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t}\n";
 					echo "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
 					echo "\t\t\t\t\t{\n";
@@ -1050,6 +1062,10 @@ else
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
 					echo "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
+					echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length > 0)\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=false;\n";
+					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t}\n";
 					echo "\t\t\t//-->\n";
 					echo "\t\t\t</script>\n";	
