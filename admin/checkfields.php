@@ -49,7 +49,8 @@ $alltables=array("{$dbprefix}surveys",
 				 "{$dbprefix}labels",
 				 "{$dbprefix}saved",
 				 "{$dbprefix}saved_control",
-				 "{$dbprefix}question_attributes");
+				 "{$dbprefix}question_attributes",
+				 "{$dbprefix}assessments");
 
 //KEYS
 $keyinfo[]=array("{$dbprefix}surveys", "sid");
@@ -132,6 +133,7 @@ $allfields[]=array("{$dbprefix}surveys", "email_register", "email_register text"
 $allfields[]=array("{$dbprefix}surveys", "email_confirm", "email_confirm text");
 $allfields[]=array("{$dbprefix}surveys", "allowsave","allowsave char(1) default 'Y'");
 $allfields[]=array("{$dbprefix}surveys", "autonumber_start", "autonumber_start bigint(11) default 0");
+$allfields[]=array("{$dbprefix}surveys", "autoredirect", "autoredirect char(1) default 'N'");
 
 $allfields[]=array("{$dbprefix}saved", "saved_id", "saved_id int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}saved", "scid", "scid int(11) NOT NULL");
@@ -153,6 +155,16 @@ $allfields[]=array("{$dbprefix}question_attributes", "qaid", "qaid int(11) NOT N
 $allfields[]=array("{$dbprefix}question_attributes", "qid", "qid int(11) NOT NULL");
 $allfields[]=array("{$dbprefix}question_attributes", "attribute", "attribute varchar(50)");
 $allfields[]=array("{$dbprefix}question_attributes", "value", "value varchar(5)");
+
+$allfields[]=array("{$dbprefix}assessments", "id", "id int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}assessments", "sid", "sid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}assessments", "scope", "scope varchar(5) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}assessments", "gid", "gid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}assessments", "name", "name text NOT NULL");
+$allfields[]=array("{$dbprefix}assessments", "minimum", "minimum varchar(50) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}assessments", "maximum", "maximum varchar(50) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}assessments", "message", "message text NOT NULL");
+$allfields[]=array("{$dbprefix}assessments", "link", "link text NOT NULL");
 
 echo $htmlheader;
 

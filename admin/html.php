@@ -285,6 +285,10 @@ if ($sid)
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
 						. _S_EXPORT_BT."' align='left' border='0' hspace='0' name='ExportSurvey' "
 						. "onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$sid', '_top')\">\n";
+		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
+						. "<input type='image' src='$imagefiles/assessments.gif' title='"
+						. _S_ASSESSMENT_BT."' align='left' border='0' hspace='0' name='SurveyAssessment' "
+						. "onclick=\"window.open('".$homeurl."/assessments.php?sid=$sid', '_top')\">\n";		
 		
 		if ($activated == "Y")
 			{
@@ -1586,7 +1590,16 @@ if ($action == "editsurvey")
 					 . "\t<tr><td align='right'>$setfont<b>"._SL_URL."</b></font></td>\n"
 					 . "\t\t<td><input $slstyle type='text' size='50' name='url' value='{$esrow['url']}'></td></tr>\n"
 					 . "\t<tr><td align='right'>$setfont<b>"._SL_URLDESCRIP."</b></font></td>\n"
-					 . "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n";
+					 . "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n"
+					 . "\t<tr><td align='right'>$setfont<b>"._SL_AUTORELOAD."</b><font></td>\n"
+					 . "\t\t<td><select $slstyle name='autoredirect'>";
+		$editsurvey .= "\t\t\t<option value='Y'";
+		if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_YES."</option>\n";
+		$editsurvey .= "\t\t\t<option value='N'";
+		if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_NO."</option>\n"
+					 . "</select></td></tr>";
 
 		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Survey'></td>\n"
 					 . "\t<input type='hidden' name='action' value='updatesurvey'>\n"
@@ -1712,6 +1725,11 @@ if ($action == "newsurvey")
 				. "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='";
 	if (isset($esrow)) {$newsurvey .= $esrow['urldescrip'];}
 	$newsurvey .= "'></td></tr>\n"
+				 . "\t<tr><td align='right'>$setfont<b>"._SL_AUTORELOAD."</b><font></td>\n"
+				 . "\t\t<td><select $slstyle name='autoredirect'>\n"
+				 . "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
+				 . "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
+				 . "</select></td></tr>"
 				. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._CREATESURVEY."'></td>\n"
 				. "\t<input type='hidden' name='action' value='insertnewsurvey'>\n"
 				. "\t</tr></form>\n"

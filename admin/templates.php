@@ -209,6 +209,7 @@ $files[]=array("name"=>"clearall.pstpl");
 $files[]=array("name"=>"register.pstpl");
 $files[]=array("name"=>"load.pstpl");
 $files[]=array("name"=>"save.pstpl");
+$files[]=array("name"=>"assessment.pstpl");
 
 $normalfiles=array("DUMMYENTRY", ".", "..");
 foreach ($files as $fl) {
@@ -228,7 +229,7 @@ $screens[]=array("name"=>_TP_SAVEPAGE);
 $Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Submit=array("startpage.pstpl", "survey.pstpl", "submit.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
-$Completed=array("startpage.pstpl", "completed.pstpl", "endpage.pstpl");
+$Completed=array("startpage.pstpl", "assessment.pstpl", "completed.pstpl", "endpage.pstpl");
 $Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
 $Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
 $Save=array("startpage.pstpl", "save.pstpl", "endpage.pstpl");
@@ -299,6 +300,7 @@ $notanswered="5";
 $privacy="";
 $sid="1295";
 $token=1234567;
+$assessments="<table align='center'><tr><th>Assessment Heading</th></tr><tr><td align='center'>Assessment details<br />Note that assessments will only show if assessment rules have been set. Otherwise, this assessment table will not appear</td></tr></table>";
 
 $addbr=false;
 switch($screenname) {

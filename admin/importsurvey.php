@@ -226,13 +226,33 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 	}
 $bigarray = array_values($bigarray);
 
-//LAST LOT (now question_attributes)
+//QUESTION_ATTRIBUTES
+if (array_search("# ASSESSMENTS TABLE\n", $bigarray))
+	{
+	$stoppoint = array_search("# ASSESSMENTS TABLE\n", $bigarray);
+	}
+elseif (array_search("# ASSESSMENTS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# ASSESSMENTS TABLE\r\n", $bigarray);
+	}
+else
+	{
+	$stoppoint = count($bigarray)-1;
+	}
+for ($i=0; $i<=$stoppoint+1; $i++)
+	{
+	if ($i<$stoppoint-2 || $i==count($bigarray)-1) {$question_attributesarray[] = $bigarray[$i];}
+	unset($bigarray[$i]);
+	}
+$bigarray = array_values($bigarray);
+
+//LAST LOT (now assessments)
 if (!isset($noconditions) || $noconditions != "Y")
 	{
 	$stoppoint = count($bigarray)-1;
 	for ($i=0; $i<=$stoppoint+1; $i++)
 		{
-		if ($i<$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
+		if ($i<$stoppoint-1) {$assessmentsarray[] = $bigarray[$i];}
 		unset($bigarray[$i]);
 		}
 	}
@@ -251,6 +271,7 @@ if (isset($conditionsarray)) {$countconditions = count($conditionsarray);} else 
 if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);} else {$countlabelsets=0;}
 if (isset($labelsarray)) {$countlabels = count($labelsarray);} else {$countlabels=0;}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
+if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else {$countassessments=0;}
 
 // CREATE SURVEY
 $sfieldorders=convertToArray($tablearray[0], "`, `", "(`", "`)");
@@ -525,7 +546,32 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 		$insert=str_replace("INTO question_attributes", "INTO {$dbprefix}question_attributes", $insert);
 		$result=mysql_query($insert) or die ("Couldn't insert question_attribute<br />$insert<br />".mysql_error());
 
-		unset($newcqid);
+		unset($newqid);
+	}
+}
+
+if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
+	foreach ($assessmentsarray as $qar) {
+		$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
+		$fieldcontents=convertToArray($qar, "', '", "('", "')");
+		$newfieldcontents=$fieldcontents;
+		$oldsid=$fieldcontents[array_search("sid", $fieldorders)];
+		$oldgid=$fieldcontents[array_search("gid", $fieldorders)];
+		foreach ($substitutions as $subs) {
+			if ($oldsid==$subs[0]) {$newsid=$subs[3];}
+			if ($oldgid==$subs[1]) {$newgid=$subs[4];}
+			}
+		
+		$newfieldcontents[array_search("sid", $fieldorders)]=$newsid;
+		$newfieldcontents[array_search("gid", $fieldorders)]=$newgid;
+		$newfieldcontents[array_search("id", $fieldorders)]="";
+		
+		$newvalues="('".implode("', '", $newfieldcontents)."')";
+		$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $qar);
+		$insert=str_replace("INTO assessments", "INTO {$dbprefix}assessments", $insert);
+		$result=mysql_query($insert) or die ("Couldn't insert assessment<br />$insert<br />".mysql_error());
+
+		unset($newgid);
 	}
 }
 
@@ -580,7 +626,8 @@ echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
 echo "\t<li>"._ANSWERS.": $countanswers</li>\n";
 echo "\t<li>"._CONDITIONS.": $countconditions</li>\n";
 echo "\t<li>"._LABELSET.": $countlabelsets ("._LABELANS.": $countlabels)</li>\n";
-echo "\t<li>"._QL_QUESTIONATTRIBUTES." $countquestion_attributes</li>\n</ul>\n";
+echo "\t<li>"._QL_QUESTIONATTRIBUTES." $countquestion_attributes</li>\n";
+echo "\t<li>"._AS_TITLE." $countassessments</li>\n</ul>\n";
 
 echo "<b>"._IS_SUCCESS."</b><br />\n";
 echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
