@@ -63,7 +63,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 		$privacy="";
 		foreach (file("$thistpl/privacy.pstpl") as $op)
 			{
-			$privacy .= $op;
+			$privacy .= templatereplace($op);
 			}
 		}
 	//If survey has datestamp turned on, add $localtimedate to sessions

@@ -527,7 +527,7 @@ function last()
 		{
 		foreach (file("$thistpl/privacy.pstpl") as $op)
 			{
-			$privacy .= $op;
+			$privacy .= templatereplace($op);
 			}
 		}
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE

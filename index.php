@@ -320,6 +320,7 @@ function templatereplace($line)
 	$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";
 	$line=str_replace("{URL}", $linkreplace, $line);
 	$line=str_replace("{PRIVACY}", $privacy, $line);
+	$line=str_replace("{PRIVACYMESSAGE}", _PRIVACY_MESSAGE, $line);
 	$line=str_replace("{CLEARALL}", $clearall, $line);
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	return $line;

@@ -133,6 +133,18 @@ define("_CONFIRMATION_MESSAGE2", "Válaszok érkeztek a következõ kérdõívhez"); //
 define("_CONFIRMATION_MESSAGE3", "Kattintson ide e kérdõív megtekintéséhez:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Itt tekintheti meg a statisztikákat:"); //NEW for 098rc5
 
+define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
+						  ."This survey is anonymous.<br />"
+						  ."The record kept of your survey responses does not contain any "
+						  ."identifying information about you unless a specific question "
+						  ."in the survey has asked for this. If you have responded to a "
+						  ."survey that used an identifying token to allow you to access "
+						  ."the survey, you can rest assured that the identifying token "
+						  ."is not kept with your responses. It is managed in a seperate "
+						  ."database, and will only be updated to indicate that you have "
+						  ."(or haven't) completed this survey. There is no way of matching "
+						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9
+
 define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
 define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
 						."Enter your details below, and an email containing the link to "

@@ -174,7 +174,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 		$privacy="";
 		foreach (file("$thistpl/privacy.pstpl") as $op)
 			{
-			$privacy .= $op;
+			$privacy .= templatereplace($op);
 			}
 		}
 	foreach(file("$thistpl/startpage.pstpl") as $op)
