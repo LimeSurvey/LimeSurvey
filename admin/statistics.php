@@ -118,7 +118,7 @@ foreach ($filters as $flt)
 		case "T": // Long free text
 			$myfield2="T$myfield";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
-			echo "&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5]\" [$row[1]]' onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+			echo "&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5]\" [$row[1]]' onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
 			echo "<br />\n";
 			echo "\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n";
 			echo "\t\t\t\t\t<textarea $slstyle2 name='$myfield2' rows='3'>".$_POST[$myfield2]."</textarea>";
@@ -126,7 +126,7 @@ foreach ($filters as $flt)
 		case "S": // Short free text
 			$myfield2="T$myfield";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
-			echo "&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+			echo "&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
 			echo "<br />\n";
 			echo "\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n";
 			echo "\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='".$_POST[$myfield2]."'>";
@@ -144,7 +144,7 @@ foreach ($filters as $flt)
 		case "D": // Date
 			$myfield2="D$myfield";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
-			echo "&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+			echo "&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
 			echo "<br />\n";
 			echo "\t\t\t\t\t<font size='1'>Date (YYYY-MM-DD) equals:<br />\n";
 			$myfield3="$myfield2=";
@@ -193,7 +193,7 @@ foreach ($filters as $flt)
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;";
-				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: $flt[5][$row[1]]')\">";
+				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
 				echo "<br />\n";
 				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
 				for ($i=1; $i<=5; $i++)
@@ -225,7 +225,7 @@ foreach ($filters as $flt)
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;";
-				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
 				echo "<br />\n";
 				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
 				for ($i=1; $i<=10; $i++)
@@ -256,7 +256,7 @@ foreach ($filters as $flt)
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;";
-				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
 				echo "<br />\n";
 
 				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
@@ -290,7 +290,7 @@ foreach ($filters as $flt)
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;";
-				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
 				echo "<br />\n";
 
 				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
@@ -330,7 +330,7 @@ foreach ($filters as $flt)
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;";
-				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: {$flt[5]} [Rank $i]')\">";
+				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
 				echo "<br />\n";
 				
 				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple $slstyle2>\n";
