@@ -88,6 +88,17 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			{
 			echo templatereplace($op);
 			}
+
+		//Check for assessments
+		$assessments = doAssessment($sid);
+		if ($assessments)
+			{
+			foreach(file("$thistpl/assessment.pstpl") as $op)
+				{
+				echo templatereplace($op);
+				}
+			}
+
 		$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n"
 				   . _NOTACTIVE1."<br /><br />\n"
 				   . "<a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n"
@@ -130,12 +141,28 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			
 			//Start to print the final page
 			sendcacheheaders();
+			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+				{
+			    //Automatically redirect the page to the "url" setting for the survey
+				header("Location: {$thissurvey['url']}");
+			    }
+
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
 				}
 			
+			//Check for assessments
+			$assessments = doAssessment($sid);
+			if ($assessments)
+				{
+				foreach(file("$thistpl/assessment.pstpl") as $op)
+					{
+					echo templatereplace($op);
+					}
+				}
+	
 			//Create text for use in later print section
 			$completed = "<br /><b><font size='2'><font color='green'>"
 					   . _THANKS."</b></font><br /><br />\n\n"

@@ -588,6 +588,7 @@ function do_list_radio($ia)
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
 	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
 	$anscount = mysql_num_rows($ansresult);
+	if ((isset($other) && $other=="Y") || ($ia[6] != "Y" && $shownoanswer == 1)) {$anscount++;} //Count "
 	$divider="";
 	$maxrows=0;
 	if ($dcols >0 && $anscount > $dcols) //Break into columns
@@ -991,7 +992,6 @@ function do_multiplechoice($ia)
 	$maxrows=0;
 	if ($dcols >0 && $anscount > $dcols) //Break into columns
 		{
-		
 	    $width=sprintf("%0d", 100/$dcols);
 		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
 		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";

@@ -274,7 +274,12 @@ if ($tokensexist == 1 && returnglobal('token'))
 //CLEAR SESSION IF REQUESTED
 if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	{
+	session_unset();
+	session_destroy();
 	sendcacheheaders();
+	if (isset($_GET['redirect'])) {
+	    header("location: {$_GET['redirect']}");
+	}
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -300,8 +305,6 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 		echo templatereplace($op);
 		}
 	echo "</html>\n";
-	session_unset();
-	session_destroy();
 	exit;	
 	}
 
@@ -1298,5 +1301,115 @@ function surveymover()
 		}
 	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID'>\n";
 	return $surveymover;
+	}
+
+function doAssessment($sid) 
+	{
+	global $dbprefix, $thistpl;
+	$query = "SELECT * FROM {$dbprefix}assessments
+			  WHERE sid=$sid
+			  ORDER BY scope";
+	if ($result = mysql_query($query)) 
+		{
+	    if (mysql_num_rows($result) > 0) 
+			{
+			while ($row=mysql_fetch_array($result))
+				{
+				if ($row['scope'] == "G") 
+					{
+				    $assessment['group'][$row['gid']][]=array("name"=>$row['name'],
+															"min"=>$row['minimum'],
+															"max"=>$row['maximum'],
+															"message"=>$row['message'],
+															"link"=>$row['link']);
+					}
+				else
+					{
+				    $assessment['total'][]=array( "name"=>$row['name'],
+												"min"=>$row['minimum'],
+												"max"=>$row['maximum'],
+												"message"=>$row['message'],
+												"link"=>$row['link']);
+					}
+				}
+			$fieldmap=createFieldMap($sid, "full");
+			$i=0;
+			$total=0;
+			foreach($fieldmap as $field) 
+				{
+				$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];
+				$groups[]=$field['gid'];
+				$total=$total+$_SESSION[$field['fieldname']];
+				$i++;
+				}
+			
+			$groups=array_unique($groups);
+			
+			foreach($groups as $group) 
+				{
+				$grouptotal=0;
+				foreach ($fieldmap as $field) 
+					{
+					if ($field['gid'] == $group) 
+						{
+					    $grouptotal=$grouptotal+$field['answer'];
+						}
+					}
+				$subtotal[$group]=$grouptotal;
+				}
+	    	}
+			$assessments = "";
+			foreach($subtotal as $key=>$val) 
+				{
+				if (isset($assessment['group'][$key])) 
+					{
+					foreach($assessment['group'][$key] as $assessed) 
+						{
+						if ($val >= $assessed['min'] && $val <= $assessed['max']) 
+							{
+						    $assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $total -->
+`							<table align='center'>
+							 <tr>
+							  <th>($val) ".stripslashes($assessed['name'])."
+							  </th>
+							 </tr>
+							 <tr>
+							  <td align='center'>".stripslashes($assessed['message'])."
+							 </td>
+							</tr>
+						  	<tr>
+							 <td align='center'><a href='".$assessed['link']."'>".$assessed['link']."</a>
+							 </td>
+							</tr>
+						   </table><br />\n";
+							}
+						}
+					}
+				}
+			
+			if (isset($assessment['total'])) 
+				{
+				foreach($assessment['total'] as $assessed) 
+					{
+					if ($total >= $assessed['min'] && $total <= $assessed['max']) 
+						{
+					    $assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total -->
+						<table align='center'><tr><th>".stripslashes($assessed['name'])."
+						 </th></tr>
+						 <tr>
+						  <td align='center'>".stripslashes($assessed['message'])."
+						  </td>
+						 </tr>
+						 <tr>
+						  <td align='center'><a href='".$assessed['link']."'>".$assessed['link']."</a>
+						  </td>
+						 </tr>
+						</table>\n";
+						}
+					}
+				}			
+			
+			return $assessments;
+		}
 	}
 ?>
