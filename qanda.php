@@ -1101,7 +1101,7 @@ if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS I
 	//POPUP WARNING
 	if (!isset($mandatorypopup))
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._MANDATORY_POPUP."\")\n //-->\n</script>\n";
+		$popup="<script type=\"text/javascript\">\n<!--\n alert(\""._MANDATORY_POPUP."\")\n //-->\n</script>\n";
 		$mandatorypopup="Y";
 		}
 	}

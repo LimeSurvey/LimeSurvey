@@ -750,6 +750,9 @@ include("qanda.php");
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+sendcacheheaders();
+echo "<html>\n";
+if (isset($popup)) {echo $popup;}
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);

@@ -97,6 +97,8 @@ while ($row=mysql_fetch_array($result))
 	$sendnotification = $row['notification'];
 	}
 
+if (!$surveyadminemail) {$surveyadminemail=$siteadminemail;}
+if (!$surveyadminname) {$surveyadminname=$siteadminname;}
 //SEE IF SURVEY USES TOKENS
 $i = 0; $tokensexist = 0;
 $tresult = @mysql_list_tables($databasename) or die ("Error getting tokens<br />".mysql_error());
@@ -128,7 +130,7 @@ if ($surveyexpiry < date("Y-m-d") && $surveyexpiry != "0000-00-00")
 		}
 	echo "\t\t<center><br />\n"
 		."\t\t\t"._SURVEYEXPIRED."<br /><br />\n"
-		."\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "
+		."\t\t\t"._CONTACT1." <i>$surveyadminname</i> (<i>$surveyadminemail</i>) "
 		._CONTACT2."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach ($output as $op)
@@ -154,7 +156,7 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surv
 	echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><b>"._ERROR_PS."</b></font><br />\n"
 		."\t\t\t"._SURVEYCOMPLETE."<br /><br />\n"
-		."\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "
+		."\t\t\t"._CONTACT1." <i>$surveyadminname</i> (<i>$surveyadminemail</i>) "
 		._CONTACT2."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
