@@ -318,7 +318,7 @@ if ($sid)
 							. _S_ADDGROUP_BT."' align='right' border='0' hspace='0' name='AddNewGroup' "
 							. "onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";
 			}
-		$surveysummary .= "<font size='1' color='#222222'><b>"._GROUPS.":</b>"
+		$surveysummary .= "$setfont<font size='1' color='#222222'><b>"._GROUPS.":</b>"
 						. "\t\t<select style='font-size: 9; font-family: verdana; font-color: #222222; "
 						. "background: silver; width: 160' name='groupselect' "
 						. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
@@ -331,7 +331,7 @@ if ($sid)
 			//$surveysummary .= "<option>No Groups</option>\n";
 			//}
 		$surveysummary .= "</select>\n"
-						. "\t\t\t\t</font></td>"
+						. "\t\t\t\t</font></font></td>"
 						. "</tr>\n"
 						. "\t\t\t</table>\n"
 						. "\t\t</td>\n"
