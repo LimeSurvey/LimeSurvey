@@ -30,7 +30,7 @@ $allfields[]=array("{$dbprefix}users", "security", "security varchar(10) NOT NUL
 $allfields[]=array("{$dbprefix}answers", "qid", "qid int(11) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}answers", "code", "code varchar(5) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}answers", "answer", "answer text NOT NULL");
-$allfields[]=array("{$dbprefix}answers", "default", "`default` char(1) NOT NULL default 'N'");
+$allfields[]=array("{$dbprefix}answers", "default_value", "`default_value` char(1) NOT NULL default 'N'");
 $allfields[]=array("{$dbprefix}answers", "sortorder", "sortorder varchar(5) NULL");
 
 $allfields[]=array("{$dbprefix}conditions", "cid", "cid int(11) NOT NULL auto_increment");
@@ -167,6 +167,13 @@ function checktable($tablename)
 					{
 					$thisfieldexists=1;
 					}
+				elseif ($af[1] == "default_value" && $fn == "default")
+					{
+					$thisfieldexists=1;
+					$query = "ALTER TABLE `$tablename` CHANGE `$fn` {$af[2]}";
+					$result = mysql_query($query) or die("Couldn't change name of default field to default_value.<br />$query<br />".mysql_error());
+					echo "&nbsp;&nbsp;&nbsp;<font color='red'>Changed field name</font> ($af[1]) <br />\n";
+					}
 				}
 			if ($thisfieldexists==0)
 				{
@@ -174,6 +181,10 @@ function checktable($tablename)
 				$result=mysql_query($query) or die("Insert field failed.<br />$query<br />".mysql_error());
 				echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_FIELDCREATED."</font> ($af[1]) <br />\n";
 				$addedfield="Y";
+				}
+			else
+				{
+				$addedfield = "N";
 				}
 			}
 		}
@@ -183,7 +194,7 @@ function checktable($tablename)
 		}
 	}
 
-if ($checkfororphans)
+if (isset($checkfororphans) && $checkfororphans)
 	{
 	$query  = "SELECT {$dbprefix}questions.qid as nullqid, {$dbprefix}answers.* "
 			. "FROM {$dbprefix}answers "

@@ -35,28 +35,30 @@
 */
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
-echo "<br />\n";
-echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._IMPORTQUESTION."</b></td></tr>\n";
-echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+echo "<br />\n"
+	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+	._IMPORTQUESTION."</b></td></tr>\n"
+	."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
-	echo _IS_FAILUPLOAD."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n"
+		._IS_FAILUPLOAD."<br /><br />\n"
+		."<input $btstyle type='submit' value='"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
+		."</td></tr></table>\n"
+		."</body>\n</html>\n";
 	exit;
 	}
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n";
-echo _IS_OKUPLOAD."<br /><br />\n";
-echo _IS_READFILE."<br />\n";
+echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n"
+	._IS_OKUPLOAD."<br /><br />\n"
+	._IS_READFILE."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 	{
@@ -68,27 +70,30 @@ fclose($handle);
 
 if (!$_POST['sid'])
 	{
-	echo _IQ_NOSID."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	echo _IQ_NOSID."<br /><br />\n"
+		."<input $btstyle type='submit' value='"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
+		."</td></tr></table>\n"
+		."</body>\n</html>\n";
 	exit;
 	}
 if (!$_POST['gid'])
 	{
-	echo _IQ_NOGID."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	echo _IQ_NOGID."<br /><br />\n"
+		."<input $btstyle type='submit' value='"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
+		."</td></tr></table>\n"
+		."</body>\n</html>\n";
 	exit;
 	}
 if (substr($bigarray[1], 0, 24) != "# SURVEYOR QUESTION DUMP")
 	{
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
-	echo _IQ_WRONGFILE."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n";
-	echo "</td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n"
+		._IQ_WRONGFILE."<br /><br />\n"
+		."<input $btstyle type='submit' value='"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n"
+		."</td></tr></table>\n"
+		."</body>\n</html>\n";
 	exit;
 	}
 
@@ -133,7 +138,7 @@ else
 	}
 for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) {$answerarray[] = str_replace("`default`,", "`default_value`,", $bigarray[$i]);}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
@@ -180,18 +185,19 @@ for ($i=0; $i<$stoppoint; $i++)
 $bigarray = array_values($bigarray);
 
 
-$countquestions = count($questionarray);
-$countanswers = count($answerarray);
-$countlabelsets = count($labelsetsarray);
-$countlabels = count($labelsarray);
+if (isset($questionarray)) {$countquestions = count($questionarray);}
+if (isset($answerarray)) {$countanswers = count($answerarray);}
+if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);}
+if (isset($labelsarray)) {$countlabels = count($labelsarray);}
 
 // GET SURVEY AND GROUP DETAILS
 $sid=$_POST['sid'];
 $gid=$_POST['gid'];
-
+$newsid=$sid;
+$newgid=$gid;
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
-if ($labelsetsarray)
+if (isset($labelsetsarray) && $labelsetsarray)
 	{
 	foreach ($labelsetsarray as $lsa)
 		{
@@ -231,7 +237,7 @@ if ($labelsetsarray)
 	}
 
 // QUESTIONS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
-if ($questionarray)
+if (isset($questionarray) && $questionarray)
 	{
 	foreach ($questionarray as $qa)
 		{
@@ -267,8 +273,7 @@ if ($questionarray)
 
 		$newrank=0;
 		//NOW DO NESTED ANSWERS FOR THIS QID
-		//echo "<br />COUNT: ".count($answerarray);
-		if ($answerarray)
+		if (isset($answerarray) && $answerarray)
 			{
 			foreach ($answerarray as $aa)
 				{
@@ -330,17 +335,26 @@ if ($questionarray)
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions.
 
 
-echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
-echo "<b><u>"._IQ_IMPORTSUMMARY."</u></b><br />\n";
-echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
-echo "\t<li>"._ANSWERS.": $countanswers</li><br />\n";
-echo "\t<li>"._LABELSETS.": $countlabelsets ($countlabels)</li></ul><br />\n";
+echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n"
+	."<b><u>"._IQ_IMPORTSUMMARY."</u></b><br />\n"
+	."\t<li>"._QUESTIONS.": ";
+if (isset($countquestions)) {echo $countquestions;}
+echo "</li>\n"
+	."\t<li>"._ANSWERS.": ";
+if (isset($countanswers)) {echo $countanswers;}
+echo "</li><br />\n"
+	."\t<li>"._LABELSETS.": ";
+if (isset($countlabelsets)) {echo $countlabelsets;}
+echo " (";
+if (isset($countlabels)) {echo $countlabels;}
+echo ")</li></ul><br />\n";
 
-echo "<b>"._IS_SUCCESS."</b><br />\n";
-echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid&qid=$newqid', '_top')\">\n";
-
-echo "</td></tr></table>\n";
-echo "</body>\n</html>";
+echo "<b>"._IS_SUCCESS."</b><br />\n"
+	."<input $btstyle type='submit' value='"
+	._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid&qid=$newqid', '_top')\">\n"
+	."</td></tr></table>\n"
+	."</body>\n</html>";
+	
 unlink($the_full_file_path);
 
 function convertToArray($string, $seperator, $start, $end)

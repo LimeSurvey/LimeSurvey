@@ -134,7 +134,10 @@ else
 	}
 for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	if ($i<$stoppoint-2) {$questionarray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) 
+		{
+		$questionarray[] = $bigarray[$i];
+		}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
@@ -154,7 +157,10 @@ else
 	}
 for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) 
+		{
+		$answerarray[] = str_replace("`default`,", "`default_value`,", $bigarray[$i]);
+		}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);

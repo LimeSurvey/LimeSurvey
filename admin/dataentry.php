@@ -1081,6 +1081,7 @@ else
 		$gid = $degrow['gid'];
 		
 		//Alternate bgcolor for different groups
+		$bgc="";
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
 		else {$bgc = "#EEEEEE";}
 		if (!$bgc) {$bgc = "#EEEEEE";}
@@ -1218,7 +1219,7 @@ else
 					while ($dearow = mysql_fetch_array($dearesult))
 						{
 						echo "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
+						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">{$dearow['answer']}</option>\n";
 						}
 					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
@@ -1231,7 +1232,7 @@ else
 					while ($dearow = mysql_fetch_array($dearesult))
 						{
 						echo "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
+						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">{$dearow['answer']}</option>\n";
 						}
 					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
@@ -1406,7 +1407,7 @@ else
 					while ($mearow = mysql_fetch_array($mearesult))
 						{
 						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
-						if ($mearow['default'] == "Y") {echo " checked";}
+						if ($mearow['default_value'] == "Y") {echo " checked";}
 						echo " />{$mearow['answer']}<br />\n";
 						}
 					if ($deqrow['other'] == "Y")
@@ -1424,7 +1425,7 @@ else
 						echo "\t<tr>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
-						if ($mearow['default'] == "Y") {echo " checked";}
+						if ($mearow['default_value'] == "Y") {echo " checked";}
 						echo " />{$mearow['answer']}\n";
 						echo "\t\t</td>\n";
 						//This is the commments field:

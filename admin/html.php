@@ -634,17 +634,17 @@ if (returnglobal('viewanswer'))
 			{
 			$vasummary .= "\t\t\t<select name='default' $btstyle>\n"
 						. "\t\t\t\t<option value='Y'";
-			if ($cdrow['default'] == "Y") {$vasummary .= " selected";};
+			if ($cdrow['default_value'] == "Y") {$vasummary .= " selected";};
 			$vasummary .= ">"._AD_YES."</option>\n"
 						. "\t\t\t\t<option value='N'";
-			if ($cdrow['default'] != "Y") {$vasummary .= " selected";};
+			if ($cdrow['default_value'] != "Y") {$vasummary .= " selected";};
 			$vasummary .= ">"._AD_NO."</option>\n"
 						. "\t\t\t</select></td>\n";
 			}
 		else
 			{
-			$vasummary .= "$setfont<font size='1'>{$cdrow['default']}"
-						. "<input type='hidden' name='default' value='{$cdrow['default']}'>";
+			$vasummary .= "$setfont<font size='1'>{$cdrow['default_value']}"
+						. "<input type='hidden' name='default' value='{$cdrow['default_value']}'>";
 			}
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
@@ -666,7 +666,7 @@ if (returnglobal('viewanswer'))
 		$vasummary .= "\t\t</td>\n";
 		$vasummary .= "\t<input type='hidden' name='oldcode' value=\"{$cdrow['code']}\">\n"
 					. "\t<input type='hidden' name='oldanswer' value=\"{$cdrow['answer']}\">\n"
-					. "\t<input type='hidden' name='olddefault' value=\"{$cdrow['default']}\">\n"
+					. "\t<input type='hidden' name='olddefault' value=\"{$cdrow['default_value']}\">\n"
 					. "\t<input type='hidden' name='sid' value='$sid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"

@@ -138,7 +138,7 @@ else
 	}
 for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) {$answerarray[] = str_replace("`default`,", "`default_value`,", $bigarray[$i]);}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
@@ -184,7 +184,7 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 $bigarray = array_values($bigarray);
 
 //LABELS
-if ($noconditions != "Y")
+if (!isset($noconditions) || $noconditions != "Y")
 	{
 	$stoppoint = count($bigarray)-1;
 	for ($i=0; $i<=$stoppoint+1; $i++)
@@ -194,20 +194,17 @@ if ($noconditions != "Y")
 		}
 	}
 
-
-
-
-$countgroups = count($grouparray);
-$countquestions = count($questionarray);
-$countanswers = count($answerarray);
-$countconditions = count($conditionsarray);
-$countlabelsets = count($labelsetsarray);
-$countlabels = count($labelsarray);
+if (isset($grouparray)) {$countgroups = count($grouparray);}
+if (isset($questionarray)) {$countquestions = count($questionarray);}
+if (isset($answerarray)) {$countanswers = count($answerarray);}
+if (isset($conditionsarray)) {$countconditions = count($conditionsarray);}
+if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);}
+if (isset($labelsarray)) {$countlabels = count($labelsarray);}
 
 $newsid = $_POST["sid"];
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
-if ($labelsetsarray) {
+if (isset($labelsetsarray) && $labelsetsarray) {
 	//echo "DOING LABELSETS<br />";
 	foreach ($labelsetsarray as $lsa) {
 		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
@@ -269,7 +266,7 @@ if ($grouparray) {
 		$gidres = mysql_query($gidquery);
 		while ($grow = mysql_fetch_row($gidres)) {$newgid = $grow[0];}
 		//NOW DO NESTED QUESTIONS FOR THIS GID
-		if ($questionarray) {
+		if (isset($questionarray) && $questionarray) {
 			foreach ($questionarray as $qa) {
 				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
 				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
@@ -384,19 +381,31 @@ if ($conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
 	}
 }
 
-echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
-echo "<b><u>"._IG_IMPORTSUMMARY."</u></b><br />\n";
-echo "<ul>\n\t<li>"._GROUPS.": $countgroups</li>\n";
-echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
-echo "\t<li>"._ANSWERS.": $countanswers</li>\n";
-echo "\t<li>"._CONDITIONS.": $countconditions</li>\n";
-echo "\t<li>"._LABELSET.": $countlabelsets ("._LABELANS.": $countlabels)</li>\n</ul>\n";
+echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n"
+	."<b><u>"._IG_IMPORTSUMMARY."</u></b><br />\n"
+	."<ul>\n\t<li>"._GROUPS.": ";
+if (isset($countgroups)) {echo $countgroups;}
+echo "</li>\n"
+	."\t<li>"._QUESTIONS.": ";
+if (isset($countquestions)) {echo $countquestions;}
+echo "</li>\n"
+	."\t<li>"._ANSWERS.": ";
+if (isset($countanswers)) {echo $countanswers;}
+echo "</li>\n"
+	."\t<li>"._CONDITIONS.": ";
+if (isset($countconditions)) {echo $countconditions;}
+echo "</li>\n"
+	."\t<li>"._LABELSET.": ";
+if (isset($countlabelsets)) {echo $countlabelsets;}
+echo " ("._LABELANS.": ";
+if (isset($countlabels)) {echo $countlabels;}
+echo ")</li>\n</ul>\n";
 
-echo "<b>"._IG_SUCCESS."</b><br />\n";
-echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
+echo "<b>"._IG_SUCCESS."</b><br />\n"
+	."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n"
+	."</td></tr></table>\n"
+	."</body>\n</html>";
 
-echo "</td></tr></table>\n";
-echo "</body>\n</html>";
 unlink($the_full_file_path);
 
 function convertToArray($string, $seperator, $start, $end) {
