@@ -80,6 +80,7 @@ if ($multi)
 	{
 	$myfields = explode("|", $lastfield);
 	$multimandatory="N";
+	$j=0;
 	for ($i=1; $i<=$multi; $i++)
 		{
 		$mylist = "fvalue$i";
@@ -88,6 +89,20 @@ if ($multi)
 		//echo "$mylist -> " . $_POST[$mylist] ." -> " . $myfields[$arrayno] . " -> {$_SESSION[$myfields[$arrayno]]}<br />";
 		//echo "$mylist: " . $_POST[$mylist] . " (session: " . $myfields[$arrayno] . ")<br />";
 		if ($_POST[$mylist]) {$multimandatory="Y";} //if there are any answers, set this to true
+		if ($_POST[$mylist] && ($_POST['lasttype'] == "R" || $_POST['lasttype'] == "A" || $_POST['lasttype'] == "B" || $_POST['lasttype'] == "C"))
+			{
+			$j++;
+			}
+		}
+	if ($_POST['lasttype'] == "R" || $_POST['lasttype'] == "A" || $_POST['lasttype'] == "B" || $_POST['lasttype'] == "C") 
+		{
+		//echo "$j == $i == $multi";
+		if ($j == $multi)	
+			{
+			$multimandatory="Y";
+			} else	{
+			$multimandatory="N";
+			}
 		}
 	$mylist = substr($mylist, 0, strlen($mylist)-1);
 	}
@@ -97,7 +112,7 @@ if ($_POST['mandatory'] == "Y" && (!$_POST['fvalue'] || $_POST['fvalue'] == " ")
 	{
 	//Repeat last question until an answer is shown
 	if ($move == " last ") {$move = " next >> ";} //avoids going to submit if last question isn't answered
-	$repeatmandatory="Y"; //avoids repeating group description if this is the first question of a group
+	$repeatmandatory="Y"; //avoids repeating group description if this is the first question of a group (see group description section at top of else{})
 	}
 elseif ($_POST['mandatory'] == "Y" && $multi && $multimandatory != "Y")
 	{
@@ -279,7 +294,7 @@ if ($move == " last ")
 		echo "used an identifying token to allow you to access the survey, you can rest assured that the ";
 		echo "identifying token is not kept with your responses. It is managed in a seperate database, and will ";
 		echo "only be updated to indicate that you have (or haven't) completed this survey. There is no way of ";
-		echo "relating identification tokens with responses in this system.\n";
+		echo "matching identification tokens with survey responses in this system.\n";
 		echo "\t\t\t\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t\t\t\t</tr>\n";
 		echo "\t\t\t\t\t\t</table>\n";
@@ -434,7 +449,7 @@ if ($move == " submit ")
 // THIS IS FOR WHEN THE SURVEY SCRIPTS AND STUFF HAVEN'T STARTED YET
 if (!$_SESSION['step'])
 	{
-	if ($tokensexist == 1 && !$token)
+	if ($tokensexist == 1 && !$_GET['token'])
 		{
 		echo "<center><b>$sitename</b><br />\n<br />\n<b>You cannot access this website without a valid token.</b><br />\n";
 		echo "Tokens are issued to invited participants. If you have been invited to participate in this<br />\n";
@@ -454,10 +469,10 @@ if (!$_SESSION['step'])
 		echo "</body>\n</html>";
 		exit;
 		}
-	if ($tokensexist == 1 && $token)
+	if ($tokensexist == 1 && $_GET['token'])
 		{
 		//check if token actually does exist
-		$tkquery = "SELECT * FROM tokens_$sid WHERE token='$token' AND completed != 'Y'";
+		$tkquery = "SELECT * FROM tokens_$sid WHERE token='{$_GET['token']}' AND completed != 'Y'";
 		$tkresult = mysql_query($tkquery);
 		$tkexist = mysql_num_rows($tkresult);
 		if ($tkexist > 0)
@@ -494,7 +509,13 @@ if (!$_SESSION['step'])
 	echo "\t\t<td colspan='2' align='center'>&nbsp;<br />\n";
 	echo "\t\t\t<b>$surveyname</b><br />\n";
 	//echo "\t\t\t$setfont<i>$surveydesc</i><br />\n";
-	echo "\t\t\t$surveywelcome<br />&nbsp;<br />\n";
+	echo "\t\t\t<table width='80%' align='center'>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td align='center'>\n";
+	echo "\t\t\t\t\t\t$setfont<br />$surveywelcome<br />&nbsp;\n";
+	echo "\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t</table>\n";
 	echo "\t\t\tClick \"Next\" to begin.<br />&nbsp;\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
@@ -641,13 +662,20 @@ else
 		}
 	
 	//if (($currentgroupname != $lastgroupname) && ($move != " << prev "))
+	//SHOWS GROUP DESCRIPTION AT BEGINNING OF A GROUP
 	if ($_SESSION['fieldarray'][$t][5] != $_SESSION['fieldarray'][$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev " && !$repeatmandatory)
 		{
 		$presentinggroupdescription = "yes";
 		echo "\t<form method='post'>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2' align='center'>\n";
-		echo "\t\t\t$setfont<br />$groupdescription<br />&nbsp;\n";
+		echo "\t\t\t<table width='80%' align='center'>\n";
+		echo "\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t<td align='center'>\n";
+		echo "\t\t\t\t\t\t$setfont<br />$groupdescription<br />&nbsp;\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t</tr>\n";
+		echo "\t\t\t</table>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<input type='hidden' name='sid' value='$sid' />\n";
@@ -675,6 +703,7 @@ else
 		echo "\t<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
 		echo "\t<input type='hidden' name='sid' value='$sid' />\n";
 		echo "\t<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
+		echo "\t<input type='hidden' name='lasttype' value='{$_SESSION['fieldarray'][$t][4]}' />\n";
 		
 		// QUESTION STUFF
 		echo "\t<tr>\n";
@@ -700,7 +729,10 @@ else
 			//if ($_POST['mandatory'] == "Y" && ($_POST['fvalue']==" " || !$_POST['fvalue'])) //If we are repeating a question because it wasn't answered, tell the participant why
 			if ($repeatmandatory)
 				{
-				echo "\t\t\t<br /><font size='1' color='red'>This is required information</font>\n";
+				echo "\t\t\t<br /><font size='1' color='red'>This is required information";
+				if ($_POST['lasttype'] == "R" || $_POST['lasttype'] == "A" || $_POST['lasttype'] == "B" || $_POST['lasttype'] == "C") 
+					{echo ". Please complete all sections.";}
+				echo "</font>\n";
 				}
 			}
 		echo "\t\t</td>\n";
