@@ -226,7 +226,7 @@ function helpscreen()
 		{
 		$helpdoc = "$langdir/question.html";
 		}
-	elseif ($sid && $gid && $qid && ($_GET['viewanswer'] || $_POST['viewanswer']))
+	elseif ($sid && $gid && $qid && (returnglobal('viewanswer')))
 		{
 		$helpdoc = "$langdir/answer.html";
 		}
