@@ -938,6 +938,58 @@ else
 		
 		foreach ($deqrows as $deqrow)
 			{
+			//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
+			$explanation = ""; //reset conditions explanation
+			$x=0;
+			$distinctquery="SELECT DISTINCT cqid, questions.title FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid={$deqrow['qid']} ORDER BY cqid";
+			$distinctresult=mysql_query($distinctquery);
+			while ($distinctrow=mysql_fetch_array($distinctresult))
+				{
+				if ($x > 0) {$explanation .= " <i>and</i> ";}
+				$explanation .= "if you answered ";
+				$conquery="SELECT cid, cqid, questions.title, questions.question, value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.cqid={$distinctrow['cqid']} AND conditions.qid={$deqrow['qid']}";
+				$conresult=mysql_query($conquery);
+				while ($conrow=mysql_fetch_array($conresult))
+					{
+					if ($conrow['type'] == "Y")
+						{
+						switch ($conrow['value'])
+							{
+							case "Y":
+								$conditions[]="Yes";
+								break;
+							case "N":
+								$conditions[]="No";
+							}
+						}
+					$ansquery="SELECT answer FROM answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
+					$ansresult=mysql_query($ansquery);
+					while ($ansrow=mysql_fetch_array($ansresult))
+						{
+						$conditions[]=$ansrow['answer'];
+						}
+					}
+				if (count($conditions) > 1)
+					{
+					$explanation .=  "'".implode("' or '", $conditions)."'";	
+					}
+				else
+					{
+					$explanation .= "'".$conditions[0]."'";
+					}
+				unset($conditions);
+				$explanation .= " to question '".$distinctrow['title']."'";
+				$x++;
+				}
+
+			if ($explanation) 
+				{
+				$explanation = "[Answer this question ".$explanation."]";
+				echo "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
+				}
+
+			//END OF GETTING CONDITIONS
+
 			$qid = $deqrow['qid'];
 			$fieldname = "$sid"."X"."$gid"."X"."$qid";
 			echo "\t<tr bgcolor='$bgc'>\n";
