@@ -38,156 +38,156 @@ if ($sid)
 	{
 	$sumquery1 = "SELECT * FROM surveys WHERE sid=$sid";
 	$sumresult1 = mysql_query($sumquery1);
-	$surveysummary = "<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='SILVER' BORDER='0'>\n";
+	$surveysummary = "<table width='100%' align='center' bgcolor='silver' border='0'>\n";
 	while ($s1row = mysql_fetch_array($sumresult1))
 		{
-		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Title:</B></TD><TD>$setfont<B><FONT COLOR='#000080'>{$s1row['short_title']} (ID {$s1row['sid']})</FONT></B></TD></TR>\n";
-		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Description:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont {$s1row['description']}</TD></TR>\n";
-		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Welcome:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont {$s1row['welcome']}</TD></TR>\n";
-		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Admin:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont {$s1row['admin']} ({$s1row['adminemail']})</TD></TR>\n";
-		if ($s1row['expires'] != "0000-00-00") {$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Expires:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont {$s1row['expires']}</TD></TR>\n";}
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n\t<td>$setfont<b><font color='#000080'>{$s1row['short_title']} (ID {$s1row['sid']})</font></b></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['description']}</font></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['welcome']}</font></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
+		if ($s1row['expires'] != "0000-00-00") {$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['expires']}</font></td></tr>\n";}
 		$activated = $s1row['active'];
 		}
 	
 	$sumquery2 = "SELECT * FROM groups WHERE sid=$sid";
 	$sumresult2 = mysql_query($sumquery2);
 	$sumcount2 = mysql_num_rows($sumresult2);
-	$surveysummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Groups:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont";
+	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Groups:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont";
 	if ($groupselect)
 		{
-		$surveysummary .= "<SELECT $slstyle NAME='groupselect' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+		$surveysummary .= "\t\t<select $slstyle name='groupselect' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 		$surveysummary .= $groupselect;
-		$surveysummary .= "</SELECT>\n";
+		$surveysummary .= "</select>\n";
 		}
 
 	$sumquery3 = "SELECT * FROM questions WHERE sid=$sid";
 	$sumresult3 = mysql_query($sumquery3);
 	$sumcount3 = mysql_num_rows($sumresult3);
 
-	$surveysummary .= " <FONT SIZE='1'>($sumcount2 groups, $sumcount3 questions)</FONT></TD></TR>\n";
+	$surveysummary .= "\t<font size='1'>($sumcount2 groups, $sumcount3 questions)</font></td></tr>\n";
 
-	$surveysummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Activation</TD><TD VALIGN='TOP' BGCOLOR='#DDDDDD'>$setfont";
+	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Activation</b></font></td>\n\t<td valign='top' bgcolor='#DDDDDD'>$setfont";
 	if ($activated == "N" && $sumcount3 > 0)
 		{
-		$surveysummary .= "<INPUT $btstyle TYPE='SUBMIT' VALUE='Activate' onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
+		$surveysummary .= "\t\t<input $btstyle type='submit' value='Activate' onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
 		}
 	elseif ($activated == "Y")
 		{
-		$surveysummary .= "<INPUT $btstyle TYPE='SUBMIT' VALUE='De-activate' onClick=\"window.open('$scriptname?action=deactivate&sid=$sid', '_top')\">\n";
+		$surveysummary .= "\t\t<input $btstyle type='submit' value='De-activate' onClick=\"window.open('$scriptname?action=deactivate&sid=$sid', '_top')\">\n";
 		//$surveysummary .= "&nbsp;&nbsp;&nbsp;<FONT SIZE='1'>Survey Table is 'survey_$sid'<BR>";
-		$surveysummary .= "<INPUT $btstyle TYPE='SUBMIT' VALUE='Tokens' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
+		$surveysummary .= "\t\t<input $btstyle type='submit' value='Tokens' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
 		}
 	else
 		{
-		$surveysummary .= "&nbsp;&nbsp;&nbsp;<FONT SIZE='1'>Survey cannot yet be activated";
+		$surveysummary .= "&nbsp;&nbsp;&nbsp;<font size='1'>Survey cannot yet be activated";
 		}
-	$surveysummary .= "</TD></TR>\n";
+	$surveysummary .= "</td></tr>\n";
 	
 	//OPTIONS
-	$surveysummary .= "<TR><TD COLSPAN='2' ALIGN='RIGHT'>";
-	$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Export' TITLE='Export Survey Structure..' onClick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
+	$surveysummary .= "\t<tr><td colspan='2' align='right'>\n";
+	$surveysummary .= "\t\t<input type='submit' $btstyle value='Export' title='Export Survey Structure..' onClick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
 	if ($activated == "N") 
 		{
-		$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Test DataEntry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
-		$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Test Survey' onClick=\"window.open('../index.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test DataEntry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test Survey' onClick=\"window.open('../index.php?sid=$sid', '_blank')\">\n";
 		}
 	else 
 		{
-		$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Browse' onClick=\"window.open('browse.php?sid=$sid', '_top')\">\n";
-		$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='DataEntry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
-		$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Do Survey' onClick=\"window.open('../index.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t<input type='submit' $btstyle value='Browse' onClick=\"window.open('browse.php?sid=$sid', '_top')\">\n";
+		$surveysummary .= "\t\t<input type='submit' $btstyle value='DataEntry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t<input type='submit' $btstyle value='Do Survey' onClick=\"window.open('../index.php?sid=$sid', '_blank')\">\n";
 		}
-	$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Edit Survey' onClick=\"window.open('$scriptname?action=editsurvey&sid=$sid', '_top')\">\n";
-	if ($activated == "N") {$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Add Group' onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";}
-	if ($sumcount3 == 0 && $sumcount2 == 0) {$surveysummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Survey' onClick=\"window.open('$scriptname?action=delsurvey&sid=$sid', '_top')\">\n";}
+	$surveysummary .= "\t\t<input type='submit' $btstyle value='Edit Survey' onClick=\"window.open('$scriptname?action=editsurvey&sid=$sid', '_top')\">\n";
+	if ($activated == "N") {$surveysummary .= "\t\t<input type='submit' $btstyle value='Add Group' onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";}
+	if ($sumcount3 == 0 && $sumcount2 == 0) {$surveysummary .= "\t\t<input type='submit' $btstyle value='Delete Survey' onClick=\"window.open('$scriptname?action=delsurvey&sid=$sid', '_top')\">\n";}
 	
-	$surveysummary .= "</TD></TR>\n";
+	$surveysummary .= "\t</td></tr>\n";
 	
-	$surveysummary .= "</TABLE>\n";
+	$surveysummary .= "</table>\n";
 	}
 
 if ($gid)
 	{
 	$grpquery =" SELECT * FROM groups WHERE gid=$gid ORDER BY group_name";
 	$grpresult = mysql_query($grpquery);
-	$groupsummary = "<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='#DDDDDD' BORDER='0'>\n";
+	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = mysql_fetch_array($grpresult))
 		{
-		$groupsummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Group Title:</TD><TD>$setfont{$grow['group_name']} ({$grow['gid']})</TD></TR>\n";
-		if ($grow['description']) {$groupsummary .= "<TR><TD VALIGN='TOP' ALIGN='RIGHT'>$setfont<B>Description:</TD><TD>$setfont{$grow['description']}</TD></TR>\n";}
+		$groupsummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Group Title:</b></font></td>\n\t<td>$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n";
+		if ($grow['description']) {$groupsummary .= "\t<tr><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";}
 		}
-	$groupsummary .="<TR><TD ALIGN='RIGHT'>$setfont<B>Questions:</TD>";
-	$groupsummary .="<TD><SELECT $slstyle NAME='qid' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+	$groupsummary .="\t<tr><td align='right'>$setfont<b>Questions:</b></font></td>\n";
+	$groupsummary .="\t<td><select $slstyle name='qid' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 	$groupsummary .= getquestions();
-	$groupsummary .= "</SELECT></TD></TR>\n";
-	$groupsummary .= "<TR><TD COLSPAN='2' ALIGN='RIGHT'>";
-	$groupsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Edit Group' onClick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">\n";
-	if ($activated == "N") {$groupsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Add Question' onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";}
+	$groupsummary .= "\n\t\t</select></td></tr>\n";
+	$groupsummary .= "\n\t<tr><td colspan='2' align='right'>\n";
+	$groupsummary .= "\t\t<input type='submit' $btstyle value='Edit Group' onClick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">\n";
+	if ($activated == "N") {$groupsummary .= "\t\t<input type='submit' $btstyle value='Add Question' onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";}
 	$qquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid ORDER BY title";
 	$qresult = mysql_query($qquery);
 	$qcount = mysql_num_rows($qresult);
-	if ($qcount == 0) {$groupsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Group' onClick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
-	$groupsummary .= "</TD></TR></TABLE>\n";
+	if ($qcount == 0) {$groupsummary .= "\t\t<input type='submit' $btstyle value='Delete Group' onClick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
+	$groupsummary .= "\t</td></tr>\n</table>\n";
 	}
 
 if ($qid)
 	{
 	$qrquery = "SELECT * FROM questions WHERE gid=$gid AND sid=$sid AND qid=$qid";
 	$qrresult = mysql_query($qrquery);
-	$questionsummary = "<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='#EEEEEE' BORDER='0'>\n";
+	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = mysql_fetch_array($qrresult))
 		{
-		$questionsummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Question Title:</TD><TD>$setfont{$qrrow['title']}</TD></TR>\n";
-		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Question:</TD><TD>$setfont{$qrrow['question']}</TD></TR>\n";
-		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Help:</TD><TD>$setfont{$qrrow['help']}</TD></TR>\n";
-		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Type:</TD><TD>$setfont{$qrrow['type']}</TD></TR>\n";
+		$questionsummary .= "\t<tr><td width='20%' align='RIGHT'>$setfont<b>Question Title:</b></font></td>\n\t<tr><td>$setfont{$qrrow['title']}</td></tr>\n";
+		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
+		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
+		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></TD>\n\t<td>$setfont{$qrrow['type']}</td></tr>\n";
 		if ($qrrow['type']== "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $grrow[3] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P")
 			{
-			$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Answers:</TD>";
-			$questionsummary .= "<TD><SELECT $slstyle NAME='answer' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Answers:</b></font></td>\n";
+			$questionsummary .= "\t<td>\n\t\t<select $slstyle name='answer' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 			$questionsummary .= getanswers();
-			$questionsummary .= "</SELECT></TD></TR>\n";
+			$questionsummary .= "\n\t\t</select>\n\t</td></tr>\n";
 			}
-		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Other?</TD><TD>$setfont$qrrow[7]</TD></TR>\n";
-		$questionsummary .= "<TR><TD COLSPAN='2' ALIGN='RIGHT'>";
-		$questionsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Edit Question' onClick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
+		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont$qrrow[7]</td></tr>\n";
+		$questionsummary .= "\t<tr><td colspan='2' align='right'>\n";
+		$questionsummary .= "\t\t<input type='submit' $btstyle value='Edit Question' onClick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P") 
 			{
 			if (($activated == "Y" && $qrrow['type'] == "L") || ($activated == "N"))
 				{
-				$questionsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Add Answer' onClick=\"window.open('$scriptname?action=addanswer&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
+				$questionsummary .= "\t\t<input type='submit' $btstyle value='Add Answer' onClick=\"window.open('$scriptname?action=addanswer&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
 				}
 			$qrq = "SELECT * FROM answers WHERE qid=$qid";
 			$qrr = mysql_query($qrq);
 			$qct = mysql_num_rows($qrr);
 			if ($qct == 0)
 				{
-				$questionsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Question' onClick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
+				$questionsummary .= "\t\t<input type='submit' $btstyle value='Delete Question' onClick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
 				}
 			}
-		else {$questionsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Question' onClick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";}
-		if ($activated == "N") {$questionsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Copy Question' onClick=\"window.open('$scriptname?action=copyquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";}
-		$questionsummary .= "</TD></TR>";
+		else {$questionsummary .= "\t\t<input type='submit' $btstyle value='Delete Question' onClick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";}
+		if ($activated == "N") {$questionsummary .= "\t\t<input type='submit' $btstyle value='Copy Question' onClick=\"window.open('$scriptname?action=copyquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";}
+		$questionsummary .= "\t</td></tr>\n";
 		}
-	$questionsummary .= "</TABLE>\n";
+	$questionsummary .= "</table>\n";
 	}
 
 if ($code)
 	{
 	$cdquery = "SELECT * FROM answers WHERE qid=$qid AND code='$code'";
 	$cdresult = mysql_query($cdquery);
-	$answersummary = "<TABLE WIDTH='100%' ALIGN='CENTER' BORDER='0'>\n";
+	$answersummary = "<table width='100%' align='center' border='0'>\n";
 	while ($cdrow = mysql_fetch_array($cdresult))
 		{
-		$answersummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Code:</TD><TD>$setfont{$cdrow['code']}</TD></TR>\n";
-		$answersummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Answer:</TD><TD>$setfont{$cdrow['answer']}</TD></TR>\n";
-		$answersummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Default?</TD><TD>$setfont{$cdrow['default']}</TD></TR>\n";
+		$answersummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Code:</b></font></td>\n\t<td>$setfont{$cdrow['code']}</td></tr>\n";
+		$answersummary .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n\t<td>$setfont{$cdrow['answer']}</td></tr>\n";
+		$answersummary .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n\t<td>$setfont{$cdrow['default']}</td></tr>\n";
 		}
-	$answersummary .= "<TR><TD ALIGN='RIGHT' COLSPAN='2'>";
-	$answersummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Answer' onClick=\"window.open('$scriptname?action=delanswer&sid=$sid&gid=$gid&qid=$qid&code=$code', '_top')\">\n";
-	$answersummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Edit Answer' onClick=\"window.open('$scriptname?action=editanswer&sid=$sid&gid=$gid&qid=$qid&code=$code', '_top')\">\n";
-	$answersummary .= "</TD></TR>\n";
-	$answersummary .= "</TABLE>\n";
+	$answersummary .= "\t<tr><td align='right' colspan='2'>\n";
+	$answersummary .= "\t\t<input type='submit' $btstyle value='Delete Answer' onClick=\"window.open('$scriptname?action=delanswer&sid=$sid&gid=$gid&qid=$qid&code=$code', '_top')\">\n";
+	$answersummary .= "\t\t<input type='submit' $btstyle value='Edit Answer' onClick=\"window.open('$scriptname?action=editanswer&sid=$sid&gid=$gid&qid=$qid&code=$code', '_top')\">\n";
+	$answersummary .= "\t</td></tr>\n";
+	$answersummary .= "</table>\n";
 	}
 
 if ($action == "setupsecurity")
@@ -209,95 +209,96 @@ if ($action == "adduser" || $action=="deluser" || $action == "moduser")
 
 if ($action == "modifyuser")
 	{
-	$usersummary = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='3' BGCOLOR='BLACK' ALIGN='CENTER'>";
-	$usersummary .= "<B>$setfont<FONT COLOR='WHITE'>Modify User</TD></TR>\n";
+	$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n";
+	$usersummary .= "\t\t<b>$setfont<font color='white'>Modify User</td></tr>\n";
 	$muq = "SELECT * FROM users WHERE user='$user' LIMIT 1";
 	$mur = mysql_query($muq);
-	$usersummary .= "<TR><FORM ACTION='$scriptname' METHOD='POST'>";
+	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
 	while ($mrw = mysql_fetch_array($mur))
 		{
-		$usersummary .= "<TD>$setfont<B>$mrw[0]</TD>";
-		$usersummary .= "<INPUT TYPE='HIDDEN' NAME='user' VALUE='{$mrw['user']}'>";
-		$usersummary .= "<TD><INPUT TYPE='text' NAME='pass' VALUE='{$mrw['password']}'></TD>";
-		$usersummary .= "<TD><INPUT TYPE='text' SIZE='2' NAME='level' VALUE='{$mrw['security']}'></TD>";
+		$usersummary .= "\t<td>$setfont<b>$mrw[0]</b></font></td>\n";
+		$usersummary .= "\t\t<input type='hidden' name='user' value='{$mrw['user']}'>\n";
+		$usersummary .= "\t<td>\n\t\t<input type='text' name='pass' value='{$mrw['password']}'></td>\n";
+		$usersummary .= "\t<td>\n\t\t<input type='text' size='2' name='level' value='{$mrw['security']}'></td>\n";
 		}
-	$usersummary .= "</TR>\n<TR><TD COLSPAN='3' ALIGN='CENTER'>";
-	$usersummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Update'></TD></TR>\n";
-	$usersummary .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='moduser'>\n";
-	$usersummary .= "</FORM></TABLE>\n";
+	$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n";
+	$usersummary .= "\t\t<input type='submit' $btstyle value='Update'></td></tr>\n";
+	$usersummary .= "<input type='hidden' name='action' value='moduser'>\n";
+	$usersummary .= "</form></table>\n";
 	}
 
 if ($action == "editusers")
 	{
 	if (!file_exists("$homedir/.htaccess"))
 		{
-		$usersummary = "<TABLE WIDTH='100%' BORDER='0'><TR><TD BGCOLOR='BLACK' ALIGN='CENTER'>";
-		$usersummary .= "<B>$setfont<FONT COLOR='WHITE'>Security Control</TD></TR>\n";
-		$usersummary .= "<TR><TD>$setfont<FONT COLOR='RED'><B>Warning:</FONT></B><BR>";
-		$usersummary .= "You have not yet initialised security settings for your survey system ";
-		$usersummary .= "and subsequently there are no restrictions on access.<P>";
-		$usersummary .= "If you click on the 'initialise security' button below, standard APACHE ";
-		$usersummary .= "security settings will be added to the administration directory of this ";
-		$usersummary .= "script. You will then need to use the default access username and password ";
-		$usersummary .= "to access the administration and dataentry scripts.<P>";
-		$usersummary .= "USERNAME: $defaultuser<BR>PASSWORD: $defaultpass<P>";
-		$usersummary .= "It is highly recommended that once your security system has been initialised ";
-		$usersummary .= "you change this default password.</TD></TR>\n";
-		$usersummary .= "<TR><TD ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Initialise Security' onClick=\"window.open('$scriptname?action=setupsecurity', '_top')\"></TD></TR>\n";
-		$usersummary .= "</TABLE>\n";
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>\n";
+		$usersummary .= "\t\t<b>$setfont<font color='WHITE'>Security Control</font></font></b></td></tr>\n";
+		$usersummary .= "\t<tr><td>$setfont<font color='RED'><b>Warning:</font></font></b><br />\n";
+		$usersummary .= "\t\tYou have not yet initialised security settings for your survey system \n";
+		$usersummary .= "\t\tand subsequently there are no restrictions on access.\n";
+		$usersummary .= "\t\t<p>If you click on the 'initialise security' button below, standard APACHE \n";
+		$usersummary .= "\t\tsecurity settings will be added to the administration directory of this \n";
+		$usersummary .= "\t\tscript. You will then need to use the default access username and password \n";
+		$usersummary .= "\t\tto access the administration and dataentry scripts.</p>\n";
+		$usersummary .= "\t\t<p>USERNAME: $defaultuser<BR>PASSWORD: $defaultpass</p>\n";
+		$usersummary .= "\t\t<p>It is highly recommended that once your security system has been initialised \n";
+		$usersummary .= "\t\tyou change this default password.</p></td></tr>\n";
+		$usersummary .= "\t<tr><td align='center'><input type='submit' $btstyle value='Initialise Security' onClick=\"window.open('$scriptname?action=setupsecurity', '_top')\"></td></tr>\n";
+		$usersummary .= "</table>\n";
 		}
 	else
 		{
-		$usersummary = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='4' BGCOLOR='BLACK' ALIGN='CENTER'>";
-		$usersummary .= "<B>$setfont<FONT COLOR='WHITE'>List of users</TD></TR>\n";
-		$usersummary .= "<TR BGCOLOR='#444444'><TD>$setfont<FONT COLOR='WHITE'><B>User</TD><TD>$setfont<FONT COLOR='WHITE'><B>Password</TD><TD>$setfont<FONT COLOR='WHITE'><B>Security</TD><TD>$setfont<FONT COLOR='WHITE'><B>Actions</TD></TR>\n";
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='BLACK' align='center'>\n";
+		$usersummary .= "\t\t<b>$setfont<font color='WHITE'>List of users</font><font></b></td></tr>\n";
+		$usersummary .= "\t<tr bgcolor='#444444'><td>$setfont<font color='WHITE'><b>User</td>\n\t<td>$setfont<font color='WHITE'><b>Password</b></font></font></td>";
+		$usersummary .= "\t<td>$setfont<font color='WHITE'><b>Security</b></font></font></td>\n\t<td>$setfont<font color='WHITE'><b>Actions</b></font></font></td></tr>\n";
 		$userlist = getuserlist();
 		$ui = count($userlist);
-		if ($ui < 1) {$usersummary .= "<CENTER>WARNING: No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.";}
+		if ($ui < 1) {$usersummary .= "<center>WARNING: No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.</center>";}
 		else
 			{
 			foreach ($userlist as $usr)
 				{
-				$usersummary .= "<TR><TD>$setfont<B>$usr[0]</TD><TD>$setfont$usr[1]</TD><TD>$setfont$usr[2]</TD>";
-				$usersummary .= "<TD><INPUT TYPE='SUBMIT' $btstyle VALUE='Edit' onClick=\"window.open('$scriptname?action=modifyuser&user=$usr[0]', '_top')\">";
-				if ($ui > 1 ) {$usersummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Del' onClick=\"window.open('$scriptname?action=deluser&user=$usr[0]', '_top')\">";}
-				$usersummary .= "</TD></TR>\n";
+				$usersummary .= "\t<tr><td>$setfont<b>$usr[0]</b></font></td>\n\t<td>$setfont$usr[1]</font></td>\n\t<td>$setfont$usr[2]</td>\n";
+				$usersummary .= "\t<td><input type='submit' $btstyle value='Edit' onClick=\"window.open('$scriptname?action=modifyuser&user=$usr[0]', '_top')\">\n";
+				if ($ui > 1 ) {$usersummary .= "\t\t<input type='submit' $btstyle value='Del' onClick=\"window.open('$scriptname?action=deluser&user=$usr[0]', '_top')\">\n";}
+				$usersummary .= "\t</td></tr>\n";
 				$ui++;
 				}
 			}
-		$usersummary .= "<TR BGCOLOR='#EEEFFF'><FORM ACTION='$scriptname' METHOD='POST'><TD>";
-		$usersummary .= "<INPUT TYPE='TEXT' $slstyle NAME='user'></TD>";
-		$usersummary .= "<TD><INPUT TYPE='TEXT' $slstyle NAME='pass'></TD>";
-		$usersummary .= "<TD><INPUT TYPE='TEXT' $slstyle NAME='level' SIZE='2'></TD>";
-		$usersummary .= "<TD><INPUT TYPE='SUBMIT' $btstyle VALUE='Add New User'></TD></TR>\n";
-		$usersummary .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='adduser'></FORM>\n";
-		$usersummary .= "<TR><TD COLSPAN='3'></TD><TD><INPUT TYPE='SUBMIT' $btstyle VALUE='Turn Off Security' ";
-		$usersummary .= "onClick=\"window.open('$scriptname?action=turnoffsecurity', '_top')\"></TD></TR>\n";		
-		$usersummary .= "</TABLE>\n";
+		$usersummary .= "\t<tr bgcolor='#EEEFFF'><form action='$scriptname' method='post'>\n\t<td>\n";
+		$usersummary .= "\t\t<input type='text' $slstyle naeme'user'></td>\n";
+		$usersummary .= "\t<td><input type='text' $slstyle name='pass'></td>\n";
+		$usersummary .= "\t<td><input type='text' $slstyle name='level' size='2'></td>\n";
+		$usersummary .= "\t<td><input type='submit' $btstyle value='Add New User'></td></tr>\n";
+		$usersummary .= "\t\t<input type='hidden' name='action' value='adduser'></form>\n";
+		$usersummary .= "\t<tr><td colspan='3'></td>\n\t<td><input type='submit' $btstyle value='Turn Off Security' ";
+		$usersummary .= "onClick=\"window.open('$scriptname?action=turnoffsecurity', '_top')\"></td></tr>\n";		
+		$usersummary .= "</table>\n";
 		}
 	}
 if ($action == "addquestion")
 	{
-	$newquestion = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-	$newquestion .= "<B>$setfont<FONT COLOR='WHITE'>Create New Question for Survey ID($sid), Group ID($gid) </B></TD></TR>\n";
-	$newquestion .= "<TR><FORM ACTION='$scriptname' NAME='addnewquestion' METHOD='POST'>\n";
-	$newquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Question Code:</TD>";
-	$newquestion .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='title'></TD></TR>\n";
-	$newquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Question:</TD>";
-	$newquestion .= "<TD><TEXTAREA COLS='35' ROWS='3' NAME='question'></TEXTAREA></TD></TR>\n";
-	$newquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Help:</TD>";
-	$newquestion .= "<TD><TEXTAREA COLS='35' ROWS='3' NAME='help'></TEXTAREA></TD></TR>\n";
-	$newquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Question Type:</TD>";
-	$newquestion .= "<TD><SELECT $slstyle NAME='type'>";
+	$newquestion = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='BLACK' align='center'>";
+	$newquestion .= "<b>$setfont<font color='WHITE'>Create New Question for Survey ID($sid), Group ID($gid) </b></td></tr>\n";
+	$newquestion .= "\t<tr><form action='$scriptname' name='addnewquestion' method='post'>\n";
+	$newquestion .= "\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
+	$newquestion .= "\t<td><input type='text' size='20' name='title'></td></tr>\n";
+	$newquestion .= "\t<tr><td align='right'>$setfont<b>Question:</b></font></td>\n";
+	$newquestion .= "\t<td><textarea cols='35' rows='3' name='question'></textarea></td></tr>\n";
+	$newquestion .= "\t<tr><td align='right'>$setfont<b>Help:</b></font></td>\n";
+	$newquestion .= "\t<td><textarea cols='35' rows='3' name='help'></textarea></td></tr>\n";
+	$newquestion .= "\t<tr><td align='right'>$setfont<b>Question Type:</b></font></td>\n";
+	$newquestion .= "\t<td>\n\t\t<select $slstyle name='type'>\n";
 	$newquestion .= "$qtypeselect";
-	$newquestion .= "</SELECT></TD></TR>\n";
-	$newquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Other?</TD>";
-	$newquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='N' NAME='other'></TD></TR>\n";
-	$newquestion .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Add Question'></TD></TR>\n";
-	$newquestion .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='insertnewquestion'>\n";
-	$newquestion .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	$newquestion .= "<INPUT TYPE='HIDDEN' NAME='gid' VALUE='$gid'>\n";
-	$newquestion .= "</FORM></TABLE>\n";
+	$newquestion .= "\n\t\t</select></td></tr>\n";
+	$newquestion .= "\t<tr><td align='right'>$setfont<b>Other?</b></font></td>\n";
+	$newquestion .= "\t<td><input type='text' size='1' value='N' name='other'></td></tr>\n";
+	$newquestion .= "\t<tr><td colspan='2' align='center'>\n\t\t<input type='submit' $btstyle value='Add Question'></td></tr>\n";
+	$newquestion .= "\t<input type='hidden' name='action' value='insertnewquestion'>\n";
+	$newquestion .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+	$newquestion .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+	$newquestion .= "</form></table>\n";
 	}
 
 if ($action == "copyquestion")
