@@ -100,7 +100,7 @@ while ($rows=mysql_fetch_array($result))
 	}
 
 //2: Get all other questions that occur before this question that are pre-determined answer types
-$query = "SELECT questions.qid, questions.sid, questions.gid, questions.question, questions.type FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid AND (groups.group_name < '$questiongroupname' OR (groups.group_name = '$questiongroupname' AND questions.title < '$questiontitle')) AND questions.type NOT IN ('S', 'D', 'T') ORDER BY CONCAT(groups.group_name, questions.title)";
+$query = "SELECT questions.qid, questions.sid, questions.gid, questions.question, questions.type, questions.lid FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid AND (groups.group_name < '$questiongroupname' OR (groups.group_name = '$questiongroupname' AND questions.title < '$questiontitle')) AND questions.type NOT IN ('S', 'D', 'T') ORDER BY CONCAT(groups.group_name, questions.title)";
 echo "<!-- DEBUG: \n";
 echo $query;
 echo "\n-->\n";
@@ -117,7 +117,7 @@ if ($questionscount > 0)
 		{
 		if (strlen($rows['question']) > 30) {$shortquestion=substr($rows['question'], 0, 30).".. ";}
 		else {$shortquestion=$rows['question'];}
-		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C")
+		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F")
 			{
 			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".mysql_error());
@@ -145,6 +145,19 @@ if ($questionscount > 0)
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", "Yes");
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", "Uncertain");
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", "No");
+						break;
+					case "E":
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", "Increase");
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", "Same");
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", "Decrease");
+						break;
+					case "F":
+						$fquery = "SELECT * FROM labels WHERE lid={$rows['lid']} ORDER BY sortorder, code";
+						$fresult = mysql_query($fquery);
+						while ($frow=mysql_fetch_array($fresult))
+							{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
+							}
 						break;
 					}
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", "No Answer");
