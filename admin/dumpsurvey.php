@@ -49,7 +49,7 @@ if (!isset($sid)) {$sid=returnglobal('sid');}
 //echo $htmlheader;
 if (!$sid)
 	{
-	echo $htmlheader;
+	echo $htmlheader
 		."<br />\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
