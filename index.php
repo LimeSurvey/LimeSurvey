@@ -401,26 +401,38 @@ function checkgroupfordisplay($gid)
 		}
 	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup)
 		{
+		//One of the questions in this group is NOT conditional, therefore
+		//the group MUST be displayed
 		unset($checkConditions); // We can safely delete this variable because it won't be needed.
 		return true;
 		}
 	else
 		{
+		//All of the questions in this group are conditional. Now we must
+		//check every question, to see if the condition for each has been met.
+		//If 1 or more have their conditions met, then the group should
+		//be displayed.
 		$totalands=0;
 		foreach ($checkConditions as $cc)
 			{
-			$query = "SELECT * FROM {$dbprefix}conditions WHERE qid=$cc[0] ORDER BY cqid";
+			$query = "SELECT * FROM {$dbprefix}conditions\n"
+					."WHERE qid=$cc[0] ORDER BY cqid";
 			$result = mysql_query($query) or die("Couldn't check conditions<br />$query<br />".mysql_error());
 			while($row=mysql_fetch_array($result))
 				{
-				$query2="SELECT type FROM {$dbprefix}questions WHERE qid={$row['cqid']}";
+				//Iterate through each condition for this question and check if it is met.
+				$query2= "SELECT type FROM {$dbprefix}questions\n"
+						." WHERE qid={$row['cqid']}";
 				$result2=mysql_query($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".mysql_error());
 				while($row2=mysql_fetch_array($result2))
 					{
+					//Find out the "type" of the question this condition uses
 					$thistype=$row2['type'];
 					}
 				if ($thistype == "M" || $thistype == "P")
 					{
+					// For multiple choice type questions, the "answer" value will be "Y"
+					// if selected, the fieldname will have the answer code appended.
 					$fieldname=$row['cfieldname'].$row['value'];
 					if (isset($_SESSION[$fieldname])) 
 						{
@@ -430,6 +442,8 @@ function checkgroupfordisplay($gid)
 					}
 				else
 					{
+					//For all other questions, the "answer" value will be the answer
+					//code.
 					if (isset($_SESSION[$row['cfieldname']]))
 						{
 						$cfieldname=$_SESSION[$row['cfieldname']];
@@ -438,7 +452,10 @@ function checkgroupfordisplay($gid)
 					}
 				if ($cfieldname == $cvalue)
 					{
-					$distinctcqids[$row['cqid']]=1;
+					//This condition is met
+					if (!isset($distinctcqids[$row['cqid']])) {
+						$distinctcqids[$row['cqid']]=1;
+						}
 					}
 				else
 					{
@@ -448,13 +465,18 @@ function checkgroupfordisplay($gid)
 						}
 					}
 				} // while
-			foreach($distinctcqids as $key=>$val)
-				{
-				$totalands=$totalands+$val;
-				}
 			}
-		if ($totalands == count($distinctcqids)) 
+		foreach($distinctcqids as $key=>$val)
 			{
+			//Because multiple cqids are treated as "AND", we only check
+			//one condition per conditional qid (cqid). As long as one
+			//match is found for each distinct cqid, then the condition is met.
+			$totalands=$totalands+$val;
+			}
+		if ($totalands >= count($distinctcqids))
+			{
+			//The number of matches to conditions exceeds the number of distinct 
+			//conditional questions, therefore a condition has been met.
 		    return true;
 			}
 		else
