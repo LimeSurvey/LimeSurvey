@@ -134,7 +134,7 @@ foreach ($filters as $flt)
 	$niceqtext = str_replace("\r", "", $niceqtext);
 	$niceqtext = str_replace("\n", "", $niceqtext);
 	//headings
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "X") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "X") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>"
 			."$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
@@ -406,6 +406,7 @@ foreach ($filters as $flt)
 			$counter=0;
 			break;
 		case "F": // ARRAY OF Flexible QUESTIONS
+		case "H": // ARRAY OF Flexible Questions (By Column)
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0][]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
@@ -962,6 +963,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$qtitle .= "($qanswer)";
 					break;
 				case "F": //Array of Flexible
+				case "H": //Array of Flexible by Column
 					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
 					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
