@@ -683,10 +683,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 
 	foreach ($runthrough as $rt)
 		{
-		if (substr($rt, 0, 1) == "N" && (substr($rt, -1) == "G" || substr($rt, -1) == "L")) 
-			{ //Exception for numerical types
-		    break;
-			}
 		// 1. Get answers for question ##############################################################
 		if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
 			{
@@ -753,141 +749,148 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			}
 		elseif (substr($rt, 0, 1) == "N") //NUMERICAL TYPE
 			{
-			list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
-			$nquery = "SELECT title, type, question, qid, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
-			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
-			echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
-				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>"._ST_FIELDSUMMARY." $qtitle:</b>"
-				."</td></tr>\n"
-				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n"
-				."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>"
-				._ST_CALCULATION."</b></font></td>\n"
-				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>"
-				._ST_RESULT."</b></font></td>\n"
-				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b></b></font></td>\n"
-				."\t</tr>\n";
-			$fieldname=substr($rt, 1, strlen($rt));
-			$query = "SELECT STDDEV(`$fieldname`) as stdev";
-			$query .= ", SUM(`$fieldname`*1) as sum";
-			$query .= ", AVG(`$fieldname`*1) as average";
-			$query .= ", MIN(`$fieldname`*1) as minimum";
-			$query .= ", MAX(`$fieldname`*1) as maximum";
-			$query .= " FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT NULL AND `$fieldname` != ' '";
-			if ($sql != "NULL") {$query .= " AND $sql";}
-			$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
-			while ($row=mysql_fetch_array($result))
+			if (substr($rt, -1) == "G" || substr($rt, -1) == "L") 
 				{
-				$showem[]=array(_ST_SUM, $row['sum']);
-				$showem[]=array(_ST_STDEV, $row['stdev']);
-				$showem[]=array(_ST_AVERAGE, $row['average']);
-				$showem[]=array(_ST_MIN, $row['minimum']);
-				$maximum=$row['maximum']; //we're going to put this after the quartiles for neatness
-				$minimum=$row['minimum'];
+			    //DO NUSSINK
 				}
-			
-			//CALCULATE QUARTILES
-			$query ="SELECT `$fieldname` FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
-			if ($sql != "NULL") {$query .= " AND $sql";}
-			$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
-			$querystarter="SELECT `$fieldname` FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
-			if ($sql != "NULL") {$querystarter .= " AND $sql";}
-			$medcount=mysql_num_rows($result);
-			
-			//1ST QUARTILE (Q1)
-			$q1=(1/4)*($medcount+1);
-			$q1b=(int)((1/4)*($medcount+1));
-			$q1c=$q1b-1;
-			$q1diff=$q1-$q1b;
-			$total=0;
-			if ($q1 != $q1b)
+			else 
 				{
-				//ODD NUMBER
-				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 2";
-				$result=mysql_query($query) or die("1st Quartile query failed<br />".mysql_error());
-				while ($row=mysql_fetch_array($result))	
-					{
-					if ($total == 0) 	{$total=$total-$row[$fieldname];}
-					else				{$total=$total+$row[$fieldname];}
-					$lastnumber=$row[$fieldname];
-					}
-				$q1total=$lastnumber-(1-($total*$q1diff));
-				if ($q1total < $minimum) {$q1total=$minimum;}
-				$showem[]=array(_ST_Q1, $q1total);
-				}
-			else
-				{
-				//EVEN NUMBER
-				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 1";
-				$result=mysql_query($query) or die ("1st Quartile query failed<br />".mysql_error());
-				while ($row=mysql_fetch_array($result)) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}
-				}
-			$total=0;
-			//MEDIAN (Q2)
-			$median=(1/2)*($medcount+1);
-			$medianb=(int)((1/2)*($medcount+1));
-			$medianc=$medianb-1;
-			$mediandiff=$median-$medianb;
-			if ($median != (int)((($medcount+1)/2)-1)) 
-				{
-				//remainder
-				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $medianc, 2";
-				$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
-				while ($row=mysql_fetch_array($result))	{$total=$total+$row[$fieldname];}
-				$showem[]=array(_ST_Q2, $total/2);
-				}
-			else
-				{
-				//EVEN NUMBER
-				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $medianc, 1";
-				$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
-				while ($row=mysql_fetch_array($result))	{$showem[]=array("Median Value", $row[$fieldname]);}
-				}
-			$total=0;
-			//3RD QUARTILE (Q3)
-			$q3=(3/4)*($medcount+1);
-			$q3b=(int)((3/4)*($medcount+1));
-			$q3c=$q3b-1;
-			$q3diff=$q3-$q3b;
-			if ($q3 != $q3b)
-				{
-				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q3c, 2";
-				$result = mysql_query($query) or die("3rd Quartile query failed<br />".mysql_error());
-				$lastnumber='';
-				while ($row=mysql_fetch_array($result)) 
-					{
-					if ($total == 0)	{$total=$total-$row[$fieldname];}
-					else				{$total=$total+$row[$fieldname];}
-					if (!$lastnumber) {$lastnumber=$row[$fieldname];}
-					}
-				$q3total=$lastnumber+($total*$q3diff);
-				if ($q3total < $maximum) {$q1total=$maximum;}
-				$showem[]=array(_ST_Q3, $q3total);
-				}
-			else
-				{
-				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q3c, 1";
-				$result = mysql_query($query) or die("3rd Quartile even query failed<br />".mysql_error());
-				while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
-				}
-			$total=0;
-			$showem[]=array(_ST_MAX, $maximum);
-			foreach ($showem as $shw)
-				{
-				echo "\t<tr>\n"
-					."\t\t<td align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$shw[0]</font></font></td>\n"
-					."\t\t<td align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$shw[1]</td>\n"
-					."\t\t<td bgcolor='#666666'></td>\n"
+				list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
+				$nquery = "SELECT title, type, question, qid, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
+				$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
+				while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
+				echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
+					."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>"._ST_FIELDSUMMARY." $qtitle:</b>"
+					."</td></tr>\n"
+					."\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n"
+					."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>"
+					._ST_CALCULATION."</b></font></td>\n"
+					."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>"
+					._ST_RESULT."</b></font></td>\n"
+					."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b></b></font></td>\n"
 					."\t</tr>\n";
+				$fieldname=substr($rt, 1, strlen($rt));
+				$query = "SELECT STDDEV(`$fieldname`) as stdev";
+				$query .= ", SUM(`$fieldname`*1) as sum";
+				$query .= ", AVG(`$fieldname`*1) as average";
+				$query .= ", MIN(`$fieldname`*1) as minimum";
+				$query .= ", MAX(`$fieldname`*1) as maximum";
+				$query .= " FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT NULL AND `$fieldname` != ' '";
+				if ($sql != "NULL") {$query .= " AND $sql";}
+				$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
+				while ($row=mysql_fetch_array($result))
+					{
+					$showem[]=array(_ST_SUM, $row['sum']);
+					$showem[]=array(_ST_STDEV, $row['stdev']);
+					$showem[]=array(_ST_AVERAGE, $row['average']);
+					$showem[]=array(_ST_MIN, $row['minimum']);
+					$maximum=$row['maximum']; //we're going to put this after the quartiles for neatness
+					$minimum=$row['minimum'];
+					}
+				
+				//CALCULATE QUARTILES
+				$query ="SELECT `$fieldname` FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
+				if ($sql != "NULL") {$query .= " AND $sql";}
+				$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
+				$querystarter="SELECT `$fieldname` FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
+				if ($sql != "NULL") {$querystarter .= " AND $sql";}
+				$medcount=mysql_num_rows($result);
+				
+				//1ST QUARTILE (Q1)
+				$q1=(1/4)*($medcount+1);
+				$q1b=(int)((1/4)*($medcount+1));
+				$q1c=$q1b-1;
+				$q1diff=$q1-$q1b;
+				$total=0;
+				if ($q1 != $q1b)
+					{
+					//ODD NUMBER
+					$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 2";
+					$result=mysql_query($query) or die("1st Quartile query failed<br />".mysql_error());
+					while ($row=mysql_fetch_array($result))	
+						{
+						if ($total == 0) 	{$total=$total-$row[$fieldname];}
+						else				{$total=$total+$row[$fieldname];}
+						$lastnumber=$row[$fieldname];
+						}
+					$q1total=$lastnumber-(1-($total*$q1diff));
+					if ($q1total < $minimum) {$q1total=$minimum;}
+					$showem[]=array(_ST_Q1, $q1total);
+					}
+				else
+					{
+					//EVEN NUMBER
+					$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 1";
+					$result=mysql_query($query) or die ("1st Quartile query failed<br />".mysql_error());
+					while ($row=mysql_fetch_array($result)) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}
+					}
+				$total=0;
+				//MEDIAN (Q2)
+				$median=(1/2)*($medcount+1);
+				$medianb=(int)((1/2)*($medcount+1));
+				$medianc=$medianb-1;
+				$mediandiff=$median-$medianb;
+				if ($median != (int)((($medcount+1)/2)-1)) 
+					{
+					//remainder
+					$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $medianc, 2";
+					$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
+					while ($row=mysql_fetch_array($result))	{$total=$total+$row[$fieldname];}
+					$showem[]=array(_ST_Q2, $total/2);
+					}
+				else
+					{
+					//EVEN NUMBER
+					$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $medianc, 1";
+					$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
+					while ($row=mysql_fetch_array($result))	{$showem[]=array("Median Value", $row[$fieldname]);}
+					}
+				$total=0;
+				//3RD QUARTILE (Q3)
+				$q3=(3/4)*($medcount+1);
+				$q3b=(int)((3/4)*($medcount+1));
+				$q3c=$q3b-1;
+				$q3diff=$q3-$q3b;
+				if ($q3 != $q3b)
+					{
+					$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q3c, 2";
+					$result = mysql_query($query) or die("3rd Quartile query failed<br />".mysql_error());
+					$lastnumber='';
+					while ($row=mysql_fetch_array($result)) 
+						{
+						if ($total == 0)	{$total=$total-$row[$fieldname];}
+						else				{$total=$total+$row[$fieldname];}
+						if (!$lastnumber) {$lastnumber=$row[$fieldname];}
+						}
+					$q3total=$lastnumber+($total*$q3diff);
+					if ($q3total < $maximum) {$q1total=$maximum;}
+					$showem[]=array(_ST_Q3, $q3total);
+					}
+				else
+					{
+					$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q3c, 1";
+					$result = mysql_query($query) or die("3rd Quartile even query failed<br />".mysql_error());
+					while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
+					}
+				$total=0;
+				$showem[]=array(_ST_MAX, $maximum);
+				foreach ($showem as $shw)
+					{
+					echo "\t<tr>\n"
+						."\t\t<td align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$shw[0]</font></font></td>\n"
+						."\t\t<td align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$shw[1]</td>\n"
+						."\t\t<td bgcolor='#666666'></td>\n"
+						."\t</tr>\n";
+					}
+				echo "\t<tr>\n"
+					."\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n"
+					."\t\t\t$setfont<font size='1'>"._ST_NULLIGNORED."<br />\n"
+					."\t\t\t"._ST_QUARTMETHOD
+					."</font></font>\n"
+					."\t\t</td>\n"
+					."\t</tr>\n";
+				unset($showem);
 				}
-			echo "\t<tr>\n"
-				."\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n"
-				."\t\t\t$setfont<font size='1'>"._ST_NULLIGNORED."<br />\n"
-				."\t\t\t"._ST_QUARTMETHOD
-				."</font></font>\n"
-				."\t\t</td>\n"
-				."\t</tr>\n";
-			unset($showem);
 			}
 		else // NICE SIMPLE SINGLE OPTION ANSWERS
 			{
