@@ -791,6 +791,8 @@ function createinsertquery()
 			//Iterate through possible responses
 			if (isset($_SESSION[$value]))
 				{
+				//If deletenonvalues is ON, delete any values that shouldn't exist
+				if($deletenonvalues==1) {checkconfield($value);}
 				//Only create column name and data entry if there is actually data!
 				$colnames[]=$value;
 			    $values[]=mysql_escape_string($_SESSION[$value]);
