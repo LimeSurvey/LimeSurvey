@@ -212,7 +212,7 @@ function templatereplace($line)
 	$groupname="Group 1: The first lot of questions";
 	$groupdescription="This group description is fairly vacuous, but quite important.";
 	$navigator="<input class='submit' type='submit' value=' next >> ' name='move' />";
-	if ($screenname != "Welcome") {$navigator = "<input class='submit' type='submit' value=' << prev ' name='move' />\n".$navigator;}
+	if ($screenname != _TP_WELCOMEPAGE) {$navigator = "<input class='submit' type='submit' value=' << prev ' name='move' />\n".$navigator;}
 	$help="Help me";
 	$totalquestions="10";
 	$surveyformat="Format";
@@ -280,7 +280,7 @@ function makegraph($thisstep, $total)
 	return $graph;
 	}
 
-if (!$screenname) {$screenname="Welcome";}
+if (!$screenname) {$screenname=_TP_WELCOMEPAGE;}
 $addbr=false;
 switch($screenname) {
 	case _TP_QUESTIONPAGE:
@@ -552,7 +552,7 @@ echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1
 	. "\t\t\t\t</font></font></td>\n"
 	. "\t\t\t</tr>\n"
 	."\t<tr>\n"
-	."\t\t<td width=90% align='center' bgcolor='#666666'>\n";
+	."\t\t<td width=90% align='center' bgcolor='#555555'>\n";
 
 
 unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
