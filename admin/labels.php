@@ -48,6 +48,14 @@ if ($action == "modanswers") {modanswers($lid);}
 if ($action == "delset") {if (delset($lid)) {unset($lid);}}
 
 echo $htmlheader;
+
+if ($action == "importlabels")
+	{
+	include("importlabel.php");
+	exit;
+	}
+
+
 echo "<script type='text/javascript'>\n";
 echo "<!--\n";
 echo "\tfunction showhelp(action)\n";
