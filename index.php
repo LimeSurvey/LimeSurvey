@@ -37,6 +37,9 @@
 
 session_start();
 
+if (!isset($sid)) {$sid=returnglobal('sid');}
+settype($sid, "integer");
+
 include("./admin/config.php");
 
 //DEFAULT SETTINGS FOR TEMPLATES
@@ -44,7 +47,7 @@ if (!$publicdir) {$publicdir=".";}
 $tpldir="$publicdir/templates";
 
 //CHECK FOR REQUIRED INFORMATION (sid)
-if (!$_GET['sid'] && !$_POST['sid'])
+if (!$sid)
 	{
 	//A nice crashout
 	sendcacheheaders();
@@ -70,7 +73,6 @@ if (!$_GET['sid'] && !$_POST['sid'])
 
 
 //GET BASIC INFORMATION ABOUT THIS SURVEY
-if (!isset($sid)) {$sid=returnglobal('sid');}
 if (!isset($token)) {$token=returnglobal('token');}
 $query="SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
