@@ -353,7 +353,7 @@ switch ($ia[4])
 						}
 					}
 				}
-			$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input class='text' type='text' style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$i' id='RANK$i'";
+			$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input class='text' type='text' name='RANK$i' id='RANK$i'";
 			if ($_SESSION[$myfname])
 				{
 				$ranklist .= " value='";
@@ -389,7 +389,7 @@ switch ($ia[4])
 			$inputnames[]=$myfname;
 			}
 		
-		$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080'>\n";
+		$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
 		if ($parser_version <= "4.2.0")
 			{
 			foreach ($chosen as $chs) {$choose[]=$chs[0];}
@@ -423,11 +423,11 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t\t<tr>\n";
-		$answer .= "\t\t\t\t\t<td align='left' valign='top' style='border: solid 1 #111111' bgcolor='silver'>\n";
-		$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Choices:</b><br />\n";
-		$answer .= "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
-		$answer .= "\t\t\t\t\t</td>\n";
-		$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
+		$answer .= "\t\t\t\t\t<td align='left' valign='top' class='rank'>\n";
+		$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;Your Choices:</b><br />\n";
+		$answer .= "&nbsp;".$choicelist;
+		$answer .= "\t\t\t\t\t&nbsp;</td>\n";
+		$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>$setfont\n";
 		$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Ranking:</b><br />\n";
 		$answer .= $ranklist;
 		$answer .= "\t\t\t\t\t</td>\n";
@@ -651,8 +651,8 @@ switch ($ia[4])
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			//$multifields .= "$fname{$ansrow['code']}|";
-			if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
-			$answer .= "\t\t\t\t<tr bgcolor='$trbc'>\n";
+			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
+			$answer .= "\t\t\t\t<tr class='$trbc'>\n";
 			$answer .= "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
 			$answer .= "\t\t\t\t\t<td>";
 			for ($i=1; $i<=5; $i++)
@@ -692,8 +692,8 @@ switch ($ia[4])
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
-			if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
-			$answer .= "\t\t\t\t<tr bgcolor='$trbc'>\n";
+			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
+			$answer .= "\t\t\t\t<tr class='$trbc'>\n";
 			$answer .= "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
 			$answer .= "\t\t\t\t\t<td>\n";
 			for ($i=1; $i<=10; $i++)
@@ -732,8 +732,8 @@ switch ($ia[4])
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
-			if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
-			$answer .= "\t\t\t\t<tr bgcolor='$trbc'>\n";
+			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
+			$answer .= "\t\t\t\t<tr class='$trbc'>\n";
 			$answer .= "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
 			$answer .= "\t\t\t\t\t<td>\n";
 			$answer .= "\t\t\t\t\t\t$setfont<input class='radio' type='radio' name='$myfname' value='Y'";
