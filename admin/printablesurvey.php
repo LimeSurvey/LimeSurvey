@@ -44,7 +44,9 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 //Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ")
 //echo $htmlheader;
-echo "<html>\n<head></head>\n<body>\n";
+echo "<html>\n<head>\n";
+echo "<meta http-equiv='content-script-type' content='text/javascript' />\n";
+echo "</head>\n<body>\n";
 
 // PRESENT SURVEY DATAENTRY SCREEN
 
