@@ -138,7 +138,8 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n";
 echo "\t<tr>\n";
 echo "\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
 echo "\t\t\t<font size='2'>\n";
-echo "$adminmenu\n";
+//echo "$adminmenu\n";
+echo showadminmenu();
 
 if ($action == "newsurvey")
 	{
