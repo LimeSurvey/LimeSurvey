@@ -203,6 +203,12 @@ if ($action == "insert")
 		$col_name .= ", token\n";
 		$insertqr .= ", '{$_POST['token']}'";
 		}
+	if ($_POST['datestamp']) //handle datestamp if needed
+		{
+		$col_name .= ", datestamp\n";
+		$insertqr .= ", '{$_POST['datestamp']}'";
+		}
+	
 	
 	$SQL = "INSERT INTO $surveytable \n($col_name) \nVALUES \n($insertqr)";
 	//echo $SQL; //Debugging line
@@ -876,6 +882,8 @@ elseif ($action == "update")
 			}	
 		}
 	$updateqr = substr($updateqr, 0, -3);
+	if ($_POST['datestamp']) {$updateqr .= ", datestamp='{$_POST['datestamp']}'";}
+	if ($_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 	$updateqr .= " WHERE id=$id";
 	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
 	echo "<br />\n<b>Record has been updated.</b><br /><br />\n";
@@ -917,6 +925,7 @@ else
 		$surveyactive = $desrow['active'];
 		$surveyprivate = $desrow['private'];
 		$surveytable = "survey_{$desrow['sid']}";
+		$surveydatestamp = $desrow['datestamp'];
 		}
 	if ($surveyactive == "Y") {echo "$surveyoptions\n";}
 	echo "<table width='100%' border='0' cellspacing='0'>\n";
@@ -938,7 +947,17 @@ else
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		}
-	
+	if ($surveydatestamp == "Y") //Give datestampentry field
+		{
+		echo "\t<tr>\n";
+		echo "\t\t<td valign='top' width='1%'></td>\n";
+		echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>Date stamp:</b></font></td>\n";
+		echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
+		echo "\t\t\t<input type='text' name='datestamp' value='$localtimedate'>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		}
+
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
 	$degquery = "SELECT * FROM groups WHERE sid=$sid ORDER BY group_name";
 	$degresult = mysql_query($degquery);
