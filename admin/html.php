@@ -119,7 +119,7 @@ if ($sid)
 	if ($activated == "N") 
 		{
 		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test Data Entry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
-		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test Survey' onClick=\"window.open('../index.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test Survey' onClick=\"window.open('../index.php?sid=$sid&newtest=Y', '_blank')\">\n";
 		}
 	else 
 		{
