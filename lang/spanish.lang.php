@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
     #############################################################
     # >>> PHP Surveyor                                          #
@@ -64,7 +64,7 @@ define("_CONTINUE_PS", "Continuar");
 define("_ACCEPT", "Aceptar");
 define("_PREV", "anterior");
 define("_NEXT", "sig");
-define("_LAST", "&uacute;ltimo");
+define("_LAST", "último");
 define("_SUBMIT", "enviar");
 
 
@@ -78,7 +78,7 @@ define("_MANDATORY", "Esta pregunta es requerida");
 define("_MANDATORY_PARTS", "Favor de completar todas las partes");
 define("_MANDATORY_CHECK", "Favor de seleccionar al menos un elemento");
 define("_MANDATORY_RANK", "Favor de clasificar todos los elementos");
-define("_MANDATORY_POPUP", "Unas o m&aacute;s preguntas obligatorias no se han contestado. Usted no puede proceder hasta que se hayan terminado �stos"); //NEW in 0.98rc4 - Mod by John Krikorian
+define("_MANDATORY_POPUP", "Unas o m&aacute;s preguntas obligatorias no se han contestado. Usted no puede proceder hasta que se hayan terminado éstos"); //NEW in 0.98rc4 - Mod by John Krikorian
 define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
 define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Formato: AAAA-MM-DD");

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
         #################################################################
         # >>> PHP Surveyor                                              #
@@ -31,7 +31,7 @@
         # the Free Software Foundation, Inc., 59 Temple Place -         #
         # Suite 330, Boston, MA  02111-1307, USA.                       #
         #################################################################
-        # This language file kindly provided by Fran�ois Tissandier     #
+        # This language file kindly provided by François Tissandier     #
         # and corrected by Pascal Bastien 20/07/2004                    #
         # Version 1.3                                                   #
         #                                                               #
@@ -61,7 +61,7 @@ define("_CONTINUE_PS", "Continuer");
 
 //BUTTONS
 define("_ACCEPT", "Accepter");
-define("_PREV", "pr&eacute;c&eacute;dent");
+define("_PREV", "précédent");
 define("_NEXT", "suivant");
 define("_LAST", "fin");
 define("_SUBMIT", "envoyer");
@@ -79,7 +79,7 @@ define("_MANDATORY_CHECK", "Veuillez choisir au moins un &eacute;l&eacute;ment S
 define("_MANDATORY_RANK", "Veuillez classer tous les &eacute;l&eacute;ments SVP");
 define("_MANDATORY_POPUP", "Vous n&acute;avez pas r&eacute;pondu &agrave; une ou plusieurs questions obligatoires. Vous ne pouvez pas r&eacute;pondre au questionnaire tant que vous n&acute;avez r&eacute;pondu &agrave; celles-ci"); //NEW in 0.98rc4
 define("_DATEFORMAT", "Format: AAAA-MM-JJ");
-define("_DATEFORMATEG", "(ex: 2003-12-25 pour No�l)");
+define("_DATEFORMATEG", "(ex: 2003-12-25 pour Noël)");
 define("_REMOVEITEM", "Enlever cet &eacute;l&eacute;ment");
 define("_RANK_1", "Cliquez sur un &eacute;l&eacute;ment dans la liste de gauche ci-dessous.");
 define("_RANK_2", "Choisissez l&acute;&eacute;l&eacute;ment le plus important pour finir par le moins important.");

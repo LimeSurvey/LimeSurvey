@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
     #############################################################
     # >>> PHP Surveyor                                          #
@@ -65,8 +65,8 @@ define("_CONTINUE_PS", "Forts&auml;tt");
 
 //BUTTONS
 define("_ACCEPT", "Acceptera");
-define("_PREV", "f&ouml;reg.");
-define("_NEXT", "n&auml;sta");
+define("_PREV", "föreg.");
+define("_NEXT", "nästa");
 define("_LAST", "sista");
 define("_SUBMIT", "skicka");
 

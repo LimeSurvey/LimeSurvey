@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 	#############################################################
 	# >>> PHP Surveyor  										#
@@ -63,10 +63,10 @@ define("_CONTINUE_PS", "Folytat&aacute;s");
 
 //BUTTONS
 define("_ACCEPT", "Elfogadom");
-define("_PREV", "el&otilde;z&otilde;");
-define("_NEXT", "k&ouml;vetkez&otilde;");
-define("_LAST", "utols&oacute;");
-define("_SUBMIT", "Elk&uuml;ld&ouml;m");
+define("_PREV", "elõzõ");
+define("_NEXT", "következõ");
+define("_LAST", "utolsó");
+define("_SUBMIT", "Elküldöm");
 
 
 //MESSAGES
@@ -90,20 +90,20 @@ define("_RANK_2", "majd sorban a legkev&eacute;sb&eacute; fontosig az &ouml;ssze
 define("_YOURCHOICES", "Lehet&otilde;s&eacute;gek");
 define("_YOURRANKING", "Az &Ouml;n rangsora");
 define("_RANK_3", "Egy t&eacute;tel elt&aacute;vol&iacute;t&aacute;s&aacute;hoz kattintson a mellette tal&aacute;lhat&oacute;");
-define("_RANK_4", "oll&oacute;ra. �gy az utols&oacute; t&eacute;tel leker&uuml;l a list&aacute;r&oacute;l");
+define("_RANK_4", "oll&oacute;ra. Így az utols&oacute; t&eacute;tel leker&uuml;l a list&aacute;r&oacute;l");
 //From INDEX.PHP
 define("_NOSID", "Nem adott meg k&eacute;rd&otilde;&iacute;v-azonos&iacute;t&oacute;t");
 define("_CONTACT1", "A tov&aacute;bbi teend&otilde;k &uuml;gy&eacute;ben vegye fel a kapcsolatot:");
 define("_CONTACT2", "");
 define("_ANSCLEAR", "A v&aacute;laszok t&ouml;r&ouml;lve");
-define("_RESTART", "A k&eacute;rd&otilde;&iacute;v �jrakezd&eacute;se");
+define("_RESTART", "A k&eacute;rd&otilde;&iacute;v újrakezd&eacute;se");
 define("_CLOSEWIN_PS", "Ablak bez&aacute;r&aacute;sa");
 define("_CONFIRMCLEAR", "Biztosan t&ouml;r&ouml;lni akarja a v&aacute;laszait?");
 define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
 define("_EXITCLEAR", "Kil&eacute;p&eacute;s &eacute;s a k&eacute;rd&otilde;&iacute;v t&ouml;rl&eacute;se");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Nem tudom elk&uuml;ldeni az eredm&eacute;nyeket, mert nincsenek v&aacute;laszok.");
-define("_BADSUBMIT2", "Ez a hiba akkor fordul el&otilde;, ha m&aacute;r elk&uuml;ldte a v&aacute;laszait &eacute;s ut&aacute;na megnyomta a 'Friss&iacute;t&eacute;s' gombot a b&ouml;ng&eacute;sz&otilde;n. Ebben az esetben a v&aacute;laszai m&aacute;r el vannak k&uuml;ldve.<br /><br />Ha viszont ezt a hib&aacute;t a k&eacute;rd&otilde;&iacute;v kit&ouml;lt&eacute;se k&ouml;zben kapta, akkor nyomja meg a b&ouml;ng&eacute;sz&otilde; '<- VISSZA/BACK' gombj&aacute;t, &eacute;s az &iacute;gy megjelen&otilde; oldalt friss&iacute;tse. �gy az utols&oacute; oldal v&aacute;laszait elveszti, de minden el&otilde;z&otilde; megmarad. Ez a hiba akkor szokott el&otilde;fordulni, ha a szerver t�l van terhelve. Eln&eacute;z&eacute;st k&eacute;r&uuml;nk a kellemetlens&eacute;g&eacute;rt.");
+define("_BADSUBMIT2", "Ez a hiba akkor fordul el&otilde;, ha m&aacute;r elk&uuml;ldte a v&aacute;laszait &eacute;s ut&aacute;na megnyomta a 'Friss&iacute;t&eacute;s' gombot a b&ouml;ng&eacute;sz&otilde;n. Ebben az esetben a v&aacute;laszai m&aacute;r el vannak k&uuml;ldve.<br /><br />Ha viszont ezt a hib&aacute;t a k&eacute;rd&otilde;&iacute;v kit&ouml;lt&eacute;se k&ouml;zben kapta, akkor nyomja meg a b&ouml;ng&eacute;sz&otilde; '<- VISSZA/BACK' gombj&aacute;t, &eacute;s az &iacute;gy megjelen&otilde; oldalt friss&iacute;tse. Így az utols&oacute; oldal v&aacute;laszait elveszti, de minden el&otilde;z&otilde; megmarad. Ez a hiba akkor szokott el&otilde;fordulni, ha a szerver túl van terhelve. Eln&eacute;z&eacute;st k&eacute;r&uuml;nk a kellemetlens&eacute;g&eacute;rt.");
 define("_NOTACTIVE1", "Your survey responses have not been recorded. This survey is not yet active.");
 define("_CLEARRESP", "V&aacute;laszok t&ouml;rl&eacute;se");
 define("_THANKS", "K&ouml;sz&ouml;nj&uuml;k");
@@ -117,9 +117,9 @@ define("_DNSAVEEMAIL2", "DATA TO BE ENTERED");
 define("_DNSAVEEMAIL3", "SQL CODE THAT FAILED");
 define("_DNSAVEEMAIL4", "ERROR MESSAGE");
 define("_DNSAVEEMAIL5", "ERROR SAVING");
-define("_SUBMITAGAIN", "Pr&oacute;b&aacute;lja meg �jra elk&uuml;ldeni");
+define("_SUBMITAGAIN", "Pr&oacute;b&aacute;lja meg újra elk&uuml;ldeni");
 define("_SURVEYNOEXIST", "Nincs ilyen k&eacute;rd&otilde;&iacute;v.");
-define("_NOTOKEN1", "Ez a k&eacute;rd&otilde;&iacute;v z&aacute;rtk&ouml;r�, a felm&eacute;r&eacute;sben val&oacute; r&eacute;szv&eacute;telehez egy k&oacute;dra van sz&uuml;ks&eacute;ge.");
+define("_NOTOKEN1", "Ez a k&eacute;rd&otilde;&iacute;v z&aacute;rtk&ouml;rû, a felm&eacute;r&eacute;sben val&oacute; r&eacute;szv&eacute;telehez egy k&oacute;dra van sz&uuml;ks&eacute;ge.");
 define("_NOTOKEN2", "Ha kapott ilyen k&oacute;dot, &iacute;rja be az al&aacute;bbi mez&otilde;be, majd kattintson a 'Tov&aacute;bb' gombra.");
 define("_NOTOKEN3", "A megadott k&oacute;d &eacute;rv&eacute;nytelen vagy m&aacute;r valaki felhaszn&aacute;lta egy k&eacute;rd&otilde;&iacute;v kit&ouml;lt&eacute;s&eacute;hez.");
 define("_NOQUESTIONS", "Ez a k&eacute;rd&otilde;&iacute;v egyel&otilde;re nem tartalmaz k&eacute;rd&eacute;seket, ez&eacute;rt nem lehet kipr&oacute;b&aacute;lni vagy kit&ouml;lteni.");

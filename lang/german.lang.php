@@ -1,4 +1,4 @@
-<?php
+Ôªø<?php
 /*
     #############################################################
     # >>> PHP Surveyor                                          #
@@ -63,9 +63,9 @@ define("_CONTINUE_PS", "Weiter");
 
 //BUTTONS 
 define("_ACCEPT", "Annehmen");
-define("_PREV", "Zur&uuml;ck"); 
+define("_PREV", "Zur√ºck"); 
 define("_NEXT", "Weiter"); 
-define("_LAST", "Abschlieﬂen"); 
+define("_LAST", "Abschlie√üen"); 
 define("_SUBMIT", "Absenden");
 
 
@@ -97,7 +97,7 @@ define("_CONTACT1", "Bitte kontaktieren Sie");
 define("_CONTACT2", "f&uuml;r weitere Unterst&uuml;tzung.");
 define("_ANSCLEAR", "Antworten verworfen");
 define("_RESTART", "Umfrage neu starten");
-define("_CLOSEWIN_PS", "Fenster schlieﬂen"); 
+define("_CLOSEWIN_PS", "Fenster schlie√üen"); 
 define("_CONFIRMCLEAR", "Sind Sie sich sicher, dass Sie alle Antworten verwerfen m&ouml;chten?");
 define("_CONFIRMSAVE", "Sind Sie sicher, dass Sie Ihre Antworten speichern wollen?");
 define("_EXITCLEAR", "Umfrage beenden und verwerfen");
@@ -124,7 +124,7 @@ define("_NOTOKEN2", "Falls Sie ein Schl&uuml;sselwort erhalten haben, geben Sie 
 define("_NOTOKEN3", "Das von ihnen angegebene Schl&uuml;sselwort ist entweder ung&uuml;ltig oder wurde bereits verwendet."); 
 define("_NOQUESTIONS", "F&uuml;r diese Befragung wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden.");
 define("_FURTHERINFO", "Um weitere Informationen zu erhalten, kontaktieren Sie bitte");
-define("_NOTACTIVE", "Diese Befragung ist momentan nicht aktiv. Sie werden sie nicht abschlieﬂen k&ouml;nnen.");
+define("_NOTACTIVE", "Diese Befragung ist momentan nicht aktiv. Sie werden sie nicht abschlie√üen k&ouml;nnen.");
 define("_SURVEYEXPIRED", "Diese Umfrage ist beendet und kann nicht mehr zur Verf&uuml;gung.");
 
 define("_SURVEYCOMPLETE", "Sie haben diese Umfrage bereits durchgef&uuml;hrt.");
