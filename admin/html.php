@@ -62,9 +62,9 @@ if ($action == "checksettings" || $action == "changelang")
 			$oldresultslist[]=$row[0];
 			}
 	    }
-	$deactivatedsurveys=count($oldresultslist);
-	$deactivatedtokens=count($oldtokenlist);
-	$activetokens=count($tokenlist);
+	if(is_array($oldresultslist)) {$deactivatedsurveys=count($oldresultslist);} else {$deactivatedsurveys=0;}
+	if(is_array($oldtokenlist)) {$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
+	if(is_array($tokenlist)) {$activetokens=count($tokenlist);} else {$tokenlist=0;}
 	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
 				. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 				. "cellpadding='1' cellspacing='0'>\n"
