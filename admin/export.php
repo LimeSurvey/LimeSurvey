@@ -182,6 +182,8 @@ for ($i=0; $i<$fieldcount; $i++)
 				{$qname=$qrow['question'];}
 			$qname=substr($qname, 0, 15)."..";
 			$qname=strip_tags($qname);
+			$firstline = str_replace("\n", "", $firstline);
+			$firstline = str_replace("\r", "", $firstline);
 			$firstline .= "$qname";
 			if ($faid) {$firstline .= " [{$faid}]"; $faid="";}
 			$firstline .= "$s";
