@@ -266,8 +266,6 @@ foreach ($filters as $flt)
 echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 echo "\t\t</td></tr>\n";
 echo "\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n";
-echo "\t\t\t<img src='help.gif' align='left' alt='Statistics Help' onClick=\"window.open('instructions.html#statistics', '_blank')\">\n";
-echo "\t\t\t<img src='help.gif' align='right' alt='Statistics Help' onClick=\"window.open('instructions.html#statistics', '_blank')\">\n";
 echo "\t\t\t<input $btstyle type='submit' value='View Stats'>\n";
 echo "\t\t\t<input $btstyle type='button' value='Clear' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n";
 echo "\t\t<br />&nbsp;\n\t\t</td></tr>\n";
@@ -511,4 +509,6 @@ if ($_POST['summary'])
 		}
 	echo "</table>\n<br />";
 	}
+echo "&nbsp;";
+echo htmlfooter("instructions.html#statistics", "Using PHPSurveyors Statistics Function");
 ?>

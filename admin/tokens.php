@@ -779,15 +779,7 @@ if ($action == "upload")
 //echo "ACTION: $action (POST: {$_POST['action']})<br />THEFILE: $the_file (FILES: {$_FILES['the_file']['tmp_name']})<br />THEFILENAME: $the_file_name (FILES: {$_FILES['the_file']['name']})";
 echo "</center>\n";
 echo "&nbsp;";
-echo "<table width='100%' align='center' bgcolor='#000080'>\n";
-echo "\t<tr>\n";
-echo "\t\t<td align='center'>\n";
-echo "\t\t\t<img src='help.gif' align='left' alt='Help for Tokens' onClick=\"window.open('instructions.html#tokens', '_blank')\">\n";
-echo "\t\t\t<img src='help.gif' align='right' alt='Help for Tokens' onClick=\"window.open('instructions.html#tokens', '_blank')\">\n";
-echo "\t\t\t<a href='http://phpsurveyor.sourceforge.net/' target='_blank'><img src='phpsurveyor_logo.jpg' border='0'></a>\n";
-echo "\t\t</td>\n";
-echo "\t</tr>\n";
-echo "</table>\n";
+echo htmlfooter("instructions.html#tokens", "Using PHPSurveyors Tokens Function");
 echo "</body>\n</html>";
 
 

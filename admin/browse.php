@@ -413,14 +413,8 @@ else
 		}
 	}
 echo "&nbsp;";
-echo "<table width='100%' align='center' bgcolor='#000080'>\n";
-echo "\t<tr>\n";
-echo "\t\t<td align='center'>\n";
-echo "\t\t\t<img src='help.gif' align='left' alt='Help for Tokens' onClick=\"window.open('instructions.html#browse', '_blank')\">\n";
-echo "\t\t\t<img src='help.gif' align='right' alt='Help for Tokens' onClick=\"window.open('instructions.html#browse', '_blank')\">\n";
-echo "\t\t\t<a href='http://phpsurveyor.sourceforge.net/' target='_blank'><img src='phpsurveyor_logo.jpg' border='0'></a>\n";
-echo "\t\t</td>\n";
-echo "\t</tr>\n";
-echo "</table>\n";
+echo htmlfooter("instructions.html#browse", "Using PHPSurveyors Browse Function");
+
+echo "</body>\n</html>\n";
 
 ?>
