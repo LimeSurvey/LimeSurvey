@@ -92,9 +92,9 @@ echo "</table>\n"
 	."\t<form method='post'>\n";
 
 //Select public language file
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
+$query = "SELECT language, datestamp FROM {$dbprefix}surveys WHERE sid=$sid";
 $result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language']; $datestamp=$row['datestamp'];}
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
@@ -139,10 +139,40 @@ echo "\t\t\t\t\t<font size='1'>"._ST_NOGREATERTHAN.":<br />\n"
 	echo "\t\t\t\t\t=<br />
 			<input type='text' $slstyle2 name='$myfield4' value='";
 	if (isset($_POST[$myfield4])) {echo $_POST[$myfield4];}
-	echo "'><br />\n";
+	echo "'><br /></td>\n";
 	$allfields[]=$myfield2;
 	$allfields[]=$myfield3;
 	$allfields[]=$myfield4;
+
+if ($datestamp == "Y") {
+    $myfield = "datestamp";
+	$myfield2 = "datestampG";
+	$myfield3 = "datestampL";
+	$myfield2="$myfield";
+	$myfield3="$myfield2=";
+	$myfield4="$myfield2<"; $myfield5="$myfield2>";
+	echo "<td width='40'></td>";
+	echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>datestamp</b>"
+		."<br />\n"
+		."\t\t\t\t\t<font size='1'>"._ST_DATEEQUALS.":<br />\n"
+		."\t\t\t\t\t<input name='$myfield3' type='text' value='";
+	if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
+	echo "' ".substr($slstyle2, 0, -13) ."; width:80'><br />\n"
+		."\t\t\t\t\t&nbsp;&nbsp;"._ST_ORBETWEEN.":<br />\n"
+		."\t\t\t\t\t<input name='$myfield4' value='";
+	if (isset($_POST[$myfield4])) {echo $_POST[$myfield4];}
+	echo "' type='text' ".substr($slstyle2, 0, -13) 
+		."; width:65'> "._AND." <input  name='$myfield5' value='";
+	if (isset($_POST[$myfield5])) {echo $_POST[$myfield5];}
+	echo "' type='text' ".substr($slstyle2, 0, -13) 
+		."; width:65'>\n";
+	$allfields[]=$myfield2;
+	$allfields[]=$myfield3;
+	$allfields[]=$myfield4;
+	$allfields[]=$myfield5;
+}
+echo "</td></tr></table>";
+
 // 2: Get answers for each question
 if (!isset($currentgroup)) {$currentgroup="";}
 foreach ($filters as $flt)
@@ -601,7 +631,7 @@ if (isset($_POST['display']) && $_POST['display'])
 		if (in_array($pv, $allfields)) //Only do this if there is actually a value for the $pv
 			{
 			$firstletter=substr($pv,0,1);
-			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary" && substr($pv, 0, 2) != "id") //pull out just the fieldnames
+			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
 				{
 				$thisquestion = "`$pv` IN (";
 				foreach ($_POST[$pv] as $condition)
@@ -643,7 +673,6 @@ if (isset($_POST['display']) && $_POST['display'])
 				}
 			elseif (substr($pv, 0, 2) == "id")
 				{
-				echo "Hi";
 				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
 					{
 				    $selects[]="`".substr($pv, 0, -1)."` > '".$_POST[$pv]."'";
@@ -676,6 +705,24 @@ if (isset($_POST['display']) && $_POST['display'])
 					if (substr($pv, -1, 1) == ">")
 						{
 						$selects[]= "`".substr($pv, 1, strlen($pv)-2) . "` < '".$_POST[$pv]."'";
+						}
+					}
+				}
+			elseif (substr($pv, 0, 9) == "datestamp")
+				{
+				if (substr($pv, -1, 1) == "=" && !empty($_POST[$pv]))
+					{
+					$selects[] = "`datestamp` = '".$_POST[$pv]."'";
+					}
+				else
+					{
+					if (substr($pv, -1, 1) == "<" && !empty($_POST[$pv]))
+						{
+						$selects[]= "`datestamp` > '".$_POST[$pv]."'";
+						}
+					if (substr($pv, -1, 1) == ">" && !empty($_POST[$pv]))
+						{
+						$selects[]= "`datestamp` < '".$_POST[$pv]."'";
 						}
 					}
 				}
