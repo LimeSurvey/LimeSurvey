@@ -205,19 +205,12 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 		."\t//-->\n"
 		."\t</script>\n\n";
 
-	echo "\t<br />\n"
-		."\t<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>\n"
-		."\t\t<font face='arial' size='2'>\n"
-		."\t\t<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />"
-		."<a href='{$_SERVER['PHP_SELF']}?sid=$sid";
-	if (returnglobal('token')) {
-	    echo "&token=".returnglobal('token');
-	}
-	echo "'>"._RESTART."</a><br />\n"
-		."\t\t<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a>\n"
-		."\t\t</font>\n"
-		."\t</td></tr>\n"
-		."\t</table>\n\t<br />\n";
+	//Present the clear all page using clearall.pstpl template
+	foreach(file("$thistpl/clearall.pstpl") as $op)
+		{
+		echo templatereplace($op);
+		}
+	
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -281,7 +274,7 @@ function templatereplace($line)
 	global $groupname, $groupdescription, $question;
 	global $questioncode, $answer, $navigator;
 	global $help, $totalquestions, $surveyformat;
-	global $completed;
+	global $completed, $register_errormsg;
 	global $notanswered, $privacy, $sid;
 	global $publicurl, $templatedir, $token;
 	
@@ -358,6 +351,66 @@ function templatereplace($line)
 		$line=str_replace("{TOKEN:ATTRIBUTE_2}", $_SESSION['thistoken']['attribute_2'], $line);
 		}
 
+	$line=str_replace("{ANSWERSCLEARED}", _ANSCLEAR, $line);
+	$line=str_replace("{RESTART}", 	"<a href='{$_SERVER['PHP_SELF']}?sid=$sid&token=".returnglobal('token')."'>"._RESTART."</a>", $line);
+	$line=str_replace("{CLOSEWINDOW}", "<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a>", $line);
+	
+	$line=str_replace("{REGISTERERROR}", $register_errormsg, $line);
+	$line=str_replace("{REGISTERMESSAGE1}", _RG_REGISTER1, $line);
+	$line=str_replace("{REGISTERMESSAGE2}", _RG_REGISTER2, $line);
+	if (strpos($line, "{REGISTERFORM}") !== false) {
+		$registerform="<table class='register'>\n"
+			."<form method='post' action='register.php'>\n"
+			."<input type='hidden' name='sid' value='$sid'>\n"
+			."<tr><td align='right'>"
+			._RG_FIRSTNAME.":</td>"
+			."<td align='left'><input class='text' type='text' name='register_firstname'";
+		if (isset($_POST['register_firstname'])) 
+			{
+			$registerform .= " value='".returnglobal('register_firstname')."'";
+				}
+		$registerform .= "</td></tr>"
+			."<tr><td align='right'>"._RG_LASTNAME.":</td>\n"
+			."<td align='left'><input class='text' type='text' name='register_lastname'";
+		if (isset($_POST['register_lastname'])) 
+			{
+			$registerform .= " value='".returnglobal('register_lastname')."'";
+			}
+		$registerform .= "></td></tr>\n"
+			."<tr><td align='right'>"._RG_EMAIL.":</td>\n"
+			."<td align='left'><input class='text' type='text' name='register_email'";
+		if (isset($_POST['register_email'])) 
+			{
+			$registerform .= " value='".returnglobal('register_email')."'";
+			}
+		$registerform .= "</td></tr>\n";
+		if($thissurvey['attribute1'])
+			{
+			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
+				."<td align='left'><input class='text' type='text' name='register_attribute1'";
+			if (isset($_POST['register_attribute1'])) 
+				{
+				$registerform .= " value='".returnglobal('register_attribute1')."'";
+				}
+			$registerform .= "></td></tr>\n";
+			}
+		if($thissurvey['attribute2'])
+			{
+			$registerform .= "<tr><td align='right'>".$thissurvey['attribute2'].":</td>\n"
+				."<td align='left'><input class='text' type='text' name='register_attribute2'";
+			if (isset($_POST['register_attribute2'])) 
+				{
+				$registerform .= " value='".returnglobal('register_attribute2')."'";
+				}
+			$registerform .= "></td></tr>\n";
+			}
+		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._CONTINUE_PS."'>"
+			."</td></tr>\n"
+			."</form>\n"
+			."</table>\n";
+		$line=str_replace("{REGISTERFORM}", $registerform, $line);
+	}
+	
 	return $line;
 	}
 
@@ -935,63 +988,10 @@ function buildsurveysession()
 			}
 		if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
 			{
-			echo "<center><br />";
-			if (isset($register_errormsg)) 
+			foreach(file("$thistpl/register.pstpl") as $op)
 				{
-				echo "<font color='red'>$register_errormsg</font><br /><br />\n";
+				echo templatereplace($op);
 				}
-			echo _RG_REGISTER1."<br /><br />\n\n"
-				._RG_REGISTER2."<br />&nbsp;\n"
-				."<table align='center'>\n"
-				."<form method='post' action='register.php'>\n"
-				."<input type='hidden' name='sid' value='$sid'>\n"
-				."<tr><td align='right'>"
-				._RG_FIRSTNAME.":</td>"
-				."<td align='left'><input class='text' type='text' name='register_firstname'";
-			if (isset($_POST['register_firstname'])) 
-				{
-				echo " value='".returnglobal('register_firstname')."'";
-				}
-			echo "</td></tr>"
-				."<tr><td align='right'>"._RG_LASTNAME.":</td>\n"
-				."<td align='left'><input class='text' type='text' name='register_lastname'";
-			if (isset($_POST['register_lastname'])) 
-				{
-				echo " value='".returnglobal('register_lastname')."'";
-				}
-			echo "></td></tr>\n"
-				."<tr><td align='right'>"._RG_EMAIL.":</td>\n"
-				."<td align='left'><input class='text' type='text' name='register_email'";
-			if (isset($_POST['register_email'])) 
-				{
-				echo " value='".returnglobal('register_email')."'";
-				}
-			echo "</td></tr>\n";
-			if($thissurvey['attribute1'])
-				{
-				echo "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
-					."<td align='left'><input class='text' type='text' name='register_attribute1'";
-				if (isset($_POST['register_attribute1'])) 
-					{
-					echo " value='".returnglobal('register_attribute1')."'";
-					}
-				echo "></td></tr>\n";
-				}
-			if($thissurvey['attribute2'])
-				{
-				echo "<tr><td align='right'>".$thissurvey['attribute2'].":</td>\n"
-					."<td align='left'><input class='text' type='text' name='register_attribute2'";
-				if (isset($_POST['register_attribute2'])) 
-					{
-					echo " value='".returnglobal('register_attribute2')."'";
-					}
-				echo "></td></tr>\n";
-				}
-			echo "<tr><td></td><td><input class='submit' type='submit' value='"._CONTINUE_PS."'>"
-				."</td></tr>\n"
-				."</form>\n"
-				."</table>\n"
-				."<br />&nbsp;</center>";
 			}
 		else
 			{
