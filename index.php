@@ -255,7 +255,7 @@ if ($move == " submit ")
 	echo "\t<tr>\n";
 	echo "\t\t<td>\n";
 	echo "\t\t\t<br />&nbsp;<br />\n";
-	echo "\t\t\t<table width='175' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+	echo "\t\t\t<table width='250' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
 	echo "\t\t\t\t<tr>\n";
 	echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#CCCCCC'>\n";
 	echo "\t\t\t\t\t\t<br /><b>Results are being submitted...<br /><br />\n";
@@ -264,19 +264,19 @@ if ($move == " submit ")
 	$subquery = "INSERT INTO $surveytable ";
 	foreach ($insertarray as $value)
 		{
-		$col_name .= "," . substr($value, 1); //Strip off leadinf 'F'
+		$col_name .= ", " . substr($value, 1); //Add separator and strip off leading 'F'
 		if (get_magic_quotes_gpc()=="0")
 			{
-			$values .= ",'" . addcslashes($$value, "'") . "'";
+			$values .= ", '" . addcslashes($$value, "'") . "'";
 			}
 		else
 			{
-			$values .= ",'" . $$value . "'";
+			$values .= ", '" . $$value . "'";
 			}
 		//echo "$value<br />\n"; //Debugging info
 		}
-	$col_name = substr($col_name, 1); //Strip off inital comma
-	$values = substr($values, 1); //Strip off leading comma
+	$col_name = substr($col_name, 2); //Strip off first comma & space
+	$values = substr($values, 2); //Strip off first comma & space
 	$subquery .= "($col_name) VALUES ($values)";
 	//echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
 	
