@@ -79,13 +79,13 @@ if ($action == "insert")
 			echo $fieldname . "| ";
 			$insertqr .= "'" . $$fieldname . "', ";
 			$fieldname .= "comment";
-			echo $fieldname;
+			echo $fieldname."<br />\n";
 			$insertqr .= "'" . $$fieldname . "', ";
 			}
 		else
 			{
 			$i2query="SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid=$irow[0] AND questions.sid=$sid ORDER BY code";
-			//echo $i2query;
+			//echo $i2query."<br />\n";
 			$i2result=mysql_query($i2query);
 			while ($i2row=mysql_fetch_row($i2result))
 				{
@@ -111,7 +111,7 @@ if ($action == "insert")
 	
 	$insertqr .= ")";
 	
-	//echo "$insertqr";
+	//echo "$insertqr."<br />\n"";
 	
 	$iinsert = mysql_query ($insertqr) or die ("Could not insert your data<BR>$insertqr<BR>" . mysql_error());
 	
@@ -487,25 +487,33 @@ else
 		else {$bgc = "#EEEEEE";}
 		if (!$bgc) {$bgc="#EEEEEE";}
 		
-		while ($deqrow=mysql_fetch_row($deqresult))
+		while ($deqrow=mysql_fetch_array($deqresult)) {$deqrows[]=$deqrow;} // Get table output into array
+		
+		if (count($deqrows) > 0)
 			{
-			$qid=$deqrow[0];
+			// Perform a case insensitive natural sort on title column of a multidimensional array
+			usort($deqrows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
+			} // end if there's anything to sort
+		
+		foreach ($deqrows as $deqrow)
+			{
+			$qid=$deqrow['qid'];
 			$fieldname="$sid"."X"."$gid"."X"."$qid";
-			echo "<TR BGCOLOR='$bgc'>\n <TD VALIGN='TOP' WIDTH='1%'>$setfont$deqrow[4]</TD>\n";
-			echo " <TD VALIGN='TOP' ALIGN='RIGHT' WIDTH='30%'>$setfont<B>$deqrow[5]</B></TD>\n <TD VALIGN='TOP'>$setfont";
+			echo "<TR BGCOLOR='$bgc'>\n <TD VALIGN='TOP' WIDTH='1%'>$setfont{$deqrow['title']}</TD>\n";
+			echo " <TD VALIGN='TOP' ALIGN='RIGHT' WIDTH='30%'>$setfont<B>{$deqrow['question']}</B></TD>\n <TD VALIGN='TOP'>$setfont";
 			//DIFFERENT TYPES OF DATA FIELD HERE
 			if ($deqrow[6])
 				{
-				$hh=str_replace("'", "\'", strip_tags($deqrow[6]));
-				echo "<IMG SRC='help.gif' ALT='Help about this question' ALIGN='RIGHT' onClick=\"javascript:alert('Question $deqrow[0] Help: $hh')\">";
+				$hh=str_replace("'", "\'", strip_tags($deqrow['help']));
+				echo "<IMG SRC='help.gif' ALT='Help about this question' ALIGN='RIGHT' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\">";
 				}
-			switch($deqrow[3])
+			switch($deqrow['type'])
 				{
 				case "S":  //SHORT TEXT
 					echo "<INPUT TYPE='TEXT' NAME='$fieldname'>";				
 					break;
 				case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
+					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
 					while ($mearow = mysql_fetch_row($mearesult))
 						{
@@ -513,7 +521,7 @@ else
 						if ($mearow[3] == "Y") {echo " CHECKED";}
 						echo ">$mearow[2]<BR>";
 						}
-					if ($deqrow[7] == "Y")
+					if ($deqrow['other'] == "Y")
 						{
 						echo "Other: <INPUT TYPE='TEXT' NAME='$fieldname";
 						echo "other'>";
@@ -521,7 +529,7 @@ else
 					echo "\n\n";
 					break;
 				case "P":  //MULTIPLE OPTIONS (with comments)
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
+					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
 					while ($mearow = mysql_fetch_row($mearesult))
 						{
@@ -534,7 +542,7 @@ else
 					echo "\n\n";
 					break;
 				case "A":  //MULTI ARRAY
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
+					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult=mysql_query($meaquery);
 					echo "<TABLE>";
 					while ($mearow = mysql_fetch_row($mearesult))
@@ -551,7 +559,7 @@ else
 					echo "</TABLE>\n\n";
 					break;
 				case "B":  //MULTI ARRAY
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
+					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult=mysql_query($meaquery);
 					echo "<TABLE>";
 					while ($mearow = mysql_fetch_row($mearesult))
@@ -568,7 +576,7 @@ else
 					echo "</TABLE>\n\n";
 					break;
 				case "C":  //MULTI ARRAY
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
+					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult=mysql_query($meaquery);
 					echo "<TABLE>";
 					while ($mearow = mysql_fetch_row($mearesult))
@@ -588,7 +596,7 @@ else
 					echo "</TABLE>\n\n";
 					break;
 				case "L":  //DROPDOWN LIST
-					$deaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY answer";
+					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 					$dearesult = mysql_query($deaquery);
 					echo "<SELECT NAME='$fieldname'>\n";
 					while ($dearow = mysql_fetch_row($dearesult))
@@ -601,7 +609,7 @@ else
 					echo "</SELECT>\n\n";
 					break;
 				case "O":  //LIST WITH COMMENT
-					$deaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY answer";
+					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 					$dearesult = mysql_query($deaquery);
 					echo "<SELECT NAME='$fieldname'>\n";
 					while ($dearow = mysql_fetch_row($dearesult))
