@@ -178,8 +178,10 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	}
 else
 	{
+	//Create the survey responses table
 	$createsurvey = "CREATE TABLE {$dbprefix}survey_{$_GET['sid']} (\n";
 	$createsurvey .= "  id INT(11) NOT NULL auto_increment,\n";
+	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, datestamp FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
@@ -194,10 +196,10 @@ else
 			$createsurvey .= " datestamp DATETIME NOT NULL,\n";
 			}
 		}
+	//Get list of questions
 	$aquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, title";
 	$aresult = mysql_query($aquery);
-	//echo "<br /><br />$aquery<br /><br />\n";
-	while ($arow=mysql_fetch_array($aresult))
+	while ($arow=mysql_fetch_array($aresult)) //With each question, create the appropriate field(s)
 		{
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && $arow['type'] !="P" && $arow['type'] != "R" && $arow['type'] != "Q")
 			{
@@ -212,6 +214,10 @@ else
 					break;
 				case "L":  //DROPDOWN LIST
 					$createsurvey .= " VARCHAR(5)";
+					if ($arow['other'] == "Y") 
+						{
+						$createsurvey .= ",\n`{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` TEXT";
+						}
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
 					$createsurvey .= " VARCHAR(5),\n `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment` TEXT";
