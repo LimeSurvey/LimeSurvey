@@ -211,7 +211,7 @@ else
 	$aresult = mysql_query($aquery);
 	while ($arow=mysql_fetch_array($aresult)) //With each question, create the appropriate field(s)
 		{
-		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && $arow['type'] !="P" && $arow['type'] != "R" && $arow['type'] != "Q")
+		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && $arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" && $arow['type'] != "Q")
 			{
 			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
 			switch($arow['type'])
