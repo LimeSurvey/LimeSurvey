@@ -35,10 +35,9 @@
 */
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
-$the_path = "$homedir";
-$the_full_file_path = $homedir . "/" . $the_file_name;
+$the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
 
-if (!@copy($the_file, $the_path . "/" . $the_file_name))
+if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
 	echo "<b><center>Something went horribly wrong. See system administrator.</center></b>\n";
 	echo "</body>\n</html>\n";
