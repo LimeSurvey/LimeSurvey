@@ -1348,9 +1348,19 @@ else
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
 						{
-						if (!in_array($ans, $chosen))
+						if (phpversion() < "4.2.0")
 							{
-							$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+							if (!array_in_array($ans, $chosen))
+								{
+								$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+								}
+							}
+						else
+							{
+							if (!in_array($ans, $chosen))
+								{
+								$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+								}
 							}
 						}
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
@@ -1590,4 +1600,14 @@ else
 echo "&nbsp;";
 echo htmlfooter("instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
 echo "</body>\n</html>";
+
+function array_in_array($needle, $haystack)
+	{
+	foreach ($haystack as $value) 
+		{
+		if ($needle == $value) 
+      	return true;
+  		}
+	return false;
+	}
 ?>
