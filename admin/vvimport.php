@@ -103,7 +103,7 @@ else
 	$handle = fopen($the_full_file_path, "r");
 	while (!feof($handle))
 		{
-		$buffer = fgets($handle, 10240); //To allow for very long lines (up to 10k)
+		$buffer = fgets($handle, 20480); //To allow for very long lines (up to 10k)
 		$bigarray[] = $buffer;
 		}
 	fclose($handle);
@@ -150,7 +150,7 @@ else
 		if (trim($row) != "")
 			{
 			$fieldvalues=explode("\t", mysql_escape_string(str_replace("\n", "", $row)), $fieldcount+1);
-			if (isset($donotimport))
+			if (isset($donotimport)) //remove any fields which no longer exist
 				{
 				foreach ($donotimport as $not)
 					{
@@ -174,7 +174,7 @@ else
 	echo "<font color='green'>"._SUCCESS."</font>
 		  File upload completed.<br /><br />
 		  <i>Note: Do NOT refresh this page</i><br /><br />";
-	echo "[<a href='$scriptname?sid=4'>"._B_ADMIN_BT."</a>]";
+	echo "[<a href='browse.php?sid=$sid'>"._BROWSERESPONSES."</a>]";
 	echo "</td></tr></table>";
 	}
 ?>

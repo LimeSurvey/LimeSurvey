@@ -69,7 +69,7 @@ if (!$action == "export")
 		</tr>
 		 <input type='hidden' name='action' value='export'>
 		</form>
-		<tr><td colspan='2' align='center'>[<a href='$scriptname?sid=4'>"._B_ADMIN_BT."</a>]</td></tr>
+		<tr><td colspan='2' align='center'>[<a href='$scriptname?sid=$sid'>"._B_ADMIN_BT."</a>]</td></tr>
 		</table>";
 	}
 elseif (isset($sid) && $sid)
@@ -114,7 +114,10 @@ elseif (isset($sid) && $sid)
 		{
 		foreach ($fieldnames as $field)
 			{
-			echo $row[$field].$s;
+			$value=str_replace("\n", "{newline}", $row[$field]);
+			$value=str_replace("\r", "", $value);
+			$value=str_replace("\t", "{tab}", $value);
+			echo $value.$s;
 			}
 		echo "\n";
 		}
