@@ -252,24 +252,32 @@ if ($display)
 		{
 		if ($pv != "sid" && $pv != "display" && substr($pv, 0, 1) != "M") //pull out just the fieldnames
 			{
+			$thisquestion = "$pv IN (";
 			foreach ($$pv as $condition)
 				{
-				$selects[]="$pv = '$condition'";
+				$thisquestion .= "'$condition', ";
 				}
+			$thisquestion = substr($thisquestion, 0, -2);
+			$thisquestion .= ")";
+			$selects[]=$thisquestion;
 			}
 		elseif (substr($pv, 0, 1) == "M")
 			{
 			list($lsid, $lgid, $lqid) = explode("X", $pv);
 			$aquery="SELECT code FROM answers WHERE qid=$lqid";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers<br />$aquery<br />".mysql_error());
-			while ($arow=mysql_fetch_row($aresult))
+			while ($arow=mysql_fetch_row($aresult)) // go through every possible answer
 				{
-				if (in_array($arow[0], $$pv))
+				if (in_array($arow[0], $$pv)) // only add condition if answer has been chosen
 					{
-					$selects[]=substr($pv, 1, strlen($pv))."$arow[0] = 'Y'";
+					$mselects[]=substr($pv, 1, strlen($pv))."$arow[0] = 'Y'";
 					}
 				}
-			
+			if ($mselects) 
+				{
+				$thismulti=implode(" OR ", $mselects);
+				$selects[]="($thismulti)";
+				}
 			}
 		}
 	// 2: Do SQL query
