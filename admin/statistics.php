@@ -560,13 +560,14 @@ if ($_POST['summary'])
 		if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
 			{
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
-			$nquery = "SELECT title, type, question, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, lid, other FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
 				{
 				$qtitle=$nrow[0]; $qtype=$nrow[1]; 
 				$qquestion=strip_tags($nrow[2]); 
 				$qlid=$nrow[3];
+				$qother=$nrow[4];
 				}
 			
 			//1. Get list of answers
@@ -577,7 +578,11 @@ if ($_POST['summary'])
 				$mfield=substr($rt, 1, strlen($rt))."$row[0]";
 				$alist[]=array("$row[0]", "$row[1]", $mfield);
 				}
-			 
+			if ($qother == "Y")
+				{
+				$mfield=substr($rt, 1, strlen($rt))."other";
+				$alist[]=array(_OTHER, _OTHER, $mfield);
+				}
 			}
 		elseif (substr($rt, 0, 1) == "R") //RANKING OPTION THEREFORE CONFUSING
 			{
@@ -873,14 +878,21 @@ if ($_POST['summary'])
 				{
 				if ($al[2]) //picks out alist that come from the multiple list above
 					{
-					$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` =";
-					if (substr($rt, 0, 1) == "R")
+					if ($al[1] == _OTHER)
 						{
-						$query .= " '$al[0]'";
+						$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` != ''";
 						}
 					else
 						{
-						$query .= " 'Y'";
+						$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` =";
+						if (substr($rt, 0, 1) == "R")
+							{
+							$query .= " '$al[0]'";
+							}
+						else
+							{
+							$query .= " 'Y'";
+							}
 						}
 					}
 				else
@@ -890,10 +902,18 @@ if ($_POST['summary'])
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
 				echo "\n<!-- ($sql): $query -->\n\n";
+				//echo $qtype;
 				while ($row=mysql_fetch_row($result))
 					{
-					if ($al[0] == "") {$fname=_NOANSWER;} else {$fname="$al[1] ($al[0])";}
-					echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$fname\n\t\t</td>\n"
+					if ($al[0] == "") 
+						{$fname=_NOANSWER;} 
+					elseif ($al[0] == _OTHER)
+						{$fname="$al[1] <input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+					else
+						{$fname="$al[1] ($al[0])";}
+					echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont"
+						."<font color='#EEEEEE'>$fname\n"
+						."\t\t</td>\n"
 						."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$row[0]";
 					if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
 					echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp"
