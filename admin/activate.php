@@ -140,33 +140,31 @@ else
 					$createsurvey .= " {$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment VARCHAR(100),\n";
 					}
 				}
-			
 			}
-
 		
 		if ( substr($createsurvey, strlen($createsurvey)-2, 2) != ",\n") {$createsurvey .= ",\n";}
 		}
 	//$createsurvey = substr($createsurvey, 0, strlen($createsurvey)-2);
-	$createsurvey .= "  INDEX(id)";
+	$createsurvey .= "  INDEX(id)\n";
 	$createsurvey .= ") TYPE=MyISAM;";
 	//echo "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
 	
 	$createtable=mysql_query($createsurvey) or die 
 		(
-		"<center>Could not activate this survey.</center>\n" .
-		"<pre>$createsurvey</pre>\n" .
-		mysql_error() . "<br /><br />\n" .
+		"<center><h3>Could not activate this survey.</h3></center><br />\n" .
 		"<center><a href='$scriptname?sid=$sid'>Back to Admin</a></center>\n" .
+		"The database reported:<br />\n<font color='red'>" . mysql_error() . "</font>\n" .
+		"<pre>$createsurvey</pre>\n" .
 		"</body>\n<html>"
 		);
 	
-	echo "<font color='green'>Results Table has been created!<br /><br />\n";
+	echo "<center><font color='green'>Results Table has been created!<br /><br />\n";
 	
 	$acquery = "UPDATE surveys SET active='Y' WHERE sid=$sid";
 	$acresult = mysql_query($acquery);
 	
 	echo "Survey is now active and data entry can proceed!<br /><br />\n";
-	echo "<a href='$scriptname?sid=$sid'>Return to administration</a>\n";
+	echo "<a href='$scriptname?sid=$sid'>Return to administration</a></center>\n";
 	echo "</body>\n</html>";
 	}	
 ?>
