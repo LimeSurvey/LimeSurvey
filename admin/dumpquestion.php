@@ -42,7 +42,7 @@
 
 $qid = $_GET['qid'];
 
-include ("config.php");
+require_once("config.php");
 
 //echo $htmlheader;
 if (!$qid)
