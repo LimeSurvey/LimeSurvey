@@ -37,7 +37,8 @@ $date = date(YmdHi); //'Hi' adds 24hours+minutes to name to allow multiple deact
 
 if (!$_GET['ok'])
 	{
-	echo "<table width='350' align='center'>";
+	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._DEACTIVATE." ($sid)</b></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' bgcolor='pink'>\n";
 	echo "\t\t\t<font color='red'>$setfont<b>";
@@ -75,13 +76,14 @@ else
 		$toldtable="tokens_{$_GET['sid']}";
 		$tnewtable="old_tokens_{$_GET['sid']}_{$date}";
 		$tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
-		$tdeactivateresult = mysql_query($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".mysql_error()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+		$tdeactivateresult = mysql_query($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".mysql_error()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a>");
 		}
 	$oldtable="survey_{$_GET['sid']}";
 	$newtable="old_{$_GET['sid']}_{$date}";
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
-	echo "<table width='350' align='center'>";
+	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._DEACTIVATE." ($sid)</b></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
 	echo "\t\t\t$setfont<b>Survey Has Been De-Activated\n";

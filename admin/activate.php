@@ -107,7 +107,8 @@ if (!$_GET['ok'])
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
 	if ($failedcheck)
 		{
-		echo "<table width='350' align='center'>\n";
+		echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center' bgcolor='pink'>\n";
 		echo "\t\t\t<font color='red'>$setfont<b>"._ERROR."</b><br />\n";
@@ -135,7 +136,8 @@ if (!$_GET['ok'])
 		exit;		
 		}
 	
-	echo "<table width='350' align='center'>\n";
+	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' bgcolor='pink'>\n";
 	echo "\t\t\t<font color='red'>$setfont<b>"._WARNING."</b><br />\n";
@@ -261,14 +263,20 @@ else
 	
 	$createtable=mysql_query($createsurvey) or die 
 		(
-		"<center><font color='red'>"._AC_NOTACTIVATED."</font></center><br />\n" .
+		"<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
+		"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n" .
+		"<tr><td>\n" .
+		"<font color='red'>"._AC_NOTACTIVATED."</font></center><br />\n" .
 		"<center><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a></center>\n" .
 		"DB "._ERROR.":<br />\n<font color='red'>" . mysql_error() . "</font>\n" .
 		"<pre>$createsurvey</pre>\n" .
+		"</td></tr></table>\n" .
 		"</body>\n</html>"
 		);
 	
-	echo "<center><font color='green'>"._AC_ACTIVATED."<br /><br />\n";
+	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
+	echo "\t\t\t\t<tr><td align='center'><font color='green'>"._AC_ACTIVATED."<br /><br />\n";
 	
 	$acquery = "UPDATE surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
@@ -284,6 +292,7 @@ else
 		echo _AC_SURVEYACTIVE."<br /><br />\n";
 		echo "<input type='submit' value='"._GO_ADMIN."' $btstyle onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 		}
+	echo "\t\t\t\t</td></tr></table>\n";
 	echo "</body>\n</html>";
 	}	
 ?>

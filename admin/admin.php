@@ -91,13 +91,11 @@ else
 
 if ($action == "activate")
 	{
-	echo "<center><b>Activating survey ID $sid</b></center><br />\n";
 	include("activate.php");
 	exit;
 	}
 if ($action == "deactivate")
 	{
-	echo "<center><b>De-activating survey ID $sid</b></center><br /><br />\n";
 	include("deactivate.php");
 	exit;
 	}
