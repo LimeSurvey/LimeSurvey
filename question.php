@@ -35,6 +35,7 @@
 */
 	
 //Move current step
+if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 if (!isset($_POST['newgroupondisplay'])) {$_POST['newgroupondisplay'] = "";}
 if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." " && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $_POST['thisstep']-1;}
@@ -233,7 +234,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			}
 		$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
 		$completed .= _NOTACTIVE1."<br /><br />\n";
-		$completed .= "<a href='$PHP_SELF?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
+		$completed .= "<a href='".$_SERVER['PHP_SELF']."?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
 		$completed .= "<font size='1'>$subquery</font>\n";
 		}
 	else //submit the responses
@@ -639,7 +640,14 @@ foreach ($_SESSION['grouplist'] as $gl)
 		$gid=$gl[0];
 		$groupname=$gl[1];
 		$groupdescription=$gl[2];
-		if (isset($_POST['lastgroupname']) && $_POST['lastgroupname'] != $groupname && $groupdescription) {$newgroup = "Y";} else {$newgroup = "N";}
+		if (isset($_POST['lastgroupname']) && $_POST['lastgroupname'] != $groupname && $groupdescription) 
+			{
+			$newgroup = "Y";
+			}
+		else 
+			{
+			$newgroup = "N";
+			}
 		if (!isset($_POST['lastgroupname'])) {$newgroup="Y";}
 		}
 	}
@@ -885,7 +893,7 @@ if (isset($conmandatoryfns) && is_array($conmandatoryfns))
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n";
 echo "<input type='hidden' name='sid' value='$sid'>\n";
 echo "<input type='hidden' name='token' value='$token'>\n";
-echo "<input type='hidden' name='lastgroupname' value='$groupname'>\n";
+echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars($groupname)."'>\n";
 echo "</form>\n</html>";
 
 function surveymover()
