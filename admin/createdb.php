@@ -48,7 +48,7 @@ header("Pragma: no-cache");                          // HTTP/1.0
 echo $htmlheader;
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._CREATEDB."</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._CREATEDB."</b></td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 if (!$dbname)
