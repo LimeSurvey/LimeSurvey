@@ -361,7 +361,10 @@ elseif ($answers == "long")
 	$fieldcount = mysql_num_fields($dresult);
 	while ($drow = mysql_fetch_array($dresult))
 		{
-		set_time_limit(3); //Give each record 3 seconds	
+		if (!ini_get('safe_mode'))
+			{
+			set_time_limit(3); //Give each record 3 seconds	
+			}
 		for ($i=0; $i<$fieldcount; $i++)
 			{
 			list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
