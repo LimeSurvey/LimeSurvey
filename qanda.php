@@ -957,7 +957,7 @@ switch ($ia[4])
 	
 	}
 
-if (is_array($notanswered))
+if (is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
 	{
 	if (in_array($ia[1], $notanswered))
 		{
@@ -970,6 +970,12 @@ if (is_array($notanswered))
 			{ $qtitle .= "<br />\n"._MANDATORY_RANK."."; }
 		$qtitle .= "</font><b><br />\n";
 		$qtitle .= $ia[3];
+		}
+	//POPUP WARNING
+	if (!isset($mandatorypopup))
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._MANDATORY_POPUP."\")\n //-->\n</script>\n";
+		$mandatorypopup="Y";
 		}
 	}
 
