@@ -345,7 +345,7 @@ if ($qid)
 			{
 			$qshowstyle = "style='display: none'";
 			}
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'>$setfont<b>"._QL_TITLE."</b></font></td>\n";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'>$setfont<b>"._QL_CODE."</b></font></td>\n";
 		$questionsummary .= "\t<td>$setfont{$qrrow['title']}";
 		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>Mandatory Question</i>)";}
 		else {$questionsummary .= ": (<i>Optional Question</i>)";}
@@ -356,7 +356,7 @@ if ($qid)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R"))
 			{
-			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question <input type='image' src='./images/answers.gif' border='0' hspace='0' title='Add Answers' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question <input type='image' src='./images/answers.gif' border='0' hspace='0' title='"._Q_ADDANSWERS_BT."' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
@@ -417,16 +417,16 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 			$vasummary .= "$setfont<font size='1'>{$cdrow['default']}<input type='hidden' name='default' value='{$cdrow['default']}'>";
 			}
 		$vasummary .= "\t\t<td align='center'>";
-		if ($position > 0) {$vasummary .= "<input name='ansaction' $btstyle type='submit' value='Up'>";}
+		if ($position > 0) {$vasummary .= "<input name='ansaction' $btstyle type='submit' value='"._AL_UP."'>";}
 		else {$vasummary .= "&nbsp;&nbsp;&nbsp;&nbsp;";}
-		if ($position < $cdcount-1) {$vasummary .= "<input name='ansaction' $btstyle type='submit' value='Dn'>";}
+		if ($position < $cdcount-1) {$vasummary .= "<input name='ansaction' $btstyle type='submit' value='"._AL_DN."'>";}
 		else {$vasummary .= "&nbsp;&nbsp;&nbsp;&nbsp;";}
 		$vasummary .= "\t\t</td>\n";
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
 			$vasummary .= "\t\t<td align='center'>\n";
-			$vasummary .= "\t\t\t<input name='ansaction' $btstyle type='submit' value='Save'>";
-			$vasummary .= "<input name='ansaction' $btstyle type='submit' value='Del'>\n";
+			$vasummary .= "\t\t\t<input name='ansaction' $btstyle type='submit' value='"._AL_SAVE."'>";
+			$vasummary .= "<input name='ansaction' $btstyle type='submit' value='"._AL_DEL."'>\n";
 			$vasummary .= "\t\t</td>\n";
 		}
 		else
@@ -452,7 +452,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$vasummary .="\t\t<input name='sortorder' type='hidden' $btstyle value='$position'>\n";
 		$vasummary .="\t\t<td align='center'><input name='default' type='text' $btstyle value='N' size='2'></td>\n";
 		$vasummary .= "\t\t<td></td>\n";
-		$vasummary .="\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='Add'></td>\n";
+		$vasummary .="\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='"._AL_ADD."'></td>\n";
 		$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
 		$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
 		$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
@@ -463,7 +463,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 	if ($cdcount > 0)
 		{
 		$vasummary .= "<tr><form action='admin.php' method='post'><td colspan='3'></td>";
-		$vasummary .= "<td align='center'><input $btstyle type='submit' name='ansaction' value='Fix Sort'></td><td></td>\n";
+		$vasummary .= "<td align='center'><input $btstyle type='submit' name='ansaction' value='"._AL_FIXSORT."'></td><td></td>\n";
 		$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
 		$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
 		$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
@@ -615,36 +615,36 @@ if ($action == "addquestion")
 	$newquestion .= "\t</tr>\n";
 	$newquestion .= "\t<form action='$scriptname' name='addnewquestion' method='post'>\n";
 	$newquestion .= "\t<tr>\n";
-	$newquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
-	$newquestion .= "\t\t<td><input type='text' size='20' name='title'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>"._QL_CODE."</b></font></td>\n";
+	$newquestion .= "\t\t<td><input type='text' size='20' name='title'><font color='red' face='verdana' size='1'>"._REQ."</font></td></tr>\n";
 	$newquestion .= "\t<tr>\n";
-	$newquestion .= "\t\t<td align='right'>$setfont<b>Question:</b></font></td>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>"._QL_QUESTION."</b></font></td>\n";
 	$newquestion .= "\t\t<td><textarea cols='35' rows='3' name='question'></textarea></td>\n";
 	$newquestion .= "\t</tr>\n";
 	$newquestion .= "\t<tr>\n";
-	$newquestion .= "\t\t<td align='right'>$setfont<b>Help:</b></font></td>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>"._QL_HELP."</b></font></td>\n";
 	$newquestion .= "\t\t<td><textarea cols='35' rows='3' name='help'></textarea></td>\n";
 	$newquestion .= "\t</tr>\n";
 	$newquestion .= "\t<tr>\n";
-	$newquestion .= "\t\t<td align='right'>$setfont<b>Question Type:</b></font></td>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>"._QL_TYPE."</b></font></td>\n";
 	$newquestion .= "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n";
 	$newquestion .= "$qtypeselect";
 	$newquestion .= "\t\t</select></td>\n";
 	$newquestion .= "\t</tr>\n";
 	
 	$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n";
-	$newquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n";
 	$newquestion .= "\t\t<td>$setfont\n";
-	$newquestion .= "\t\t\tYes <input type='radio' name='other' value='Y' />&nbsp;&nbsp;\n";
-	$newquestion .= "\t\t\tNo <input type='radio' name='other' value='N' checked />\n";
+	$newquestion .= "\t\t\t"._YES." <input type='radio' name='other' value='Y' />&nbsp;&nbsp;\n";
+	$newquestion .= "\t\t\t"._NO." <input type='radio' name='other' value='N' checked />\n";
 	$newquestion .= "\t\t</td>\n";
 	$newquestion .= "\t</tr>\n";
 
 	$newquestion .= "\t<tr id='MandatorySelection'>\n";
-	$newquestion .= "\t\t<td align='right'>$setfont<b>Mandatory?</b></font></td>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>"._QL_MANDATORY."</b></font></td>\n";
 	$newquestion .= "\t\t<td>$setfont\n";
-	$newquestion .= "\t\t\tYes <input type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n";
-	$newquestion .= "\t\t\tNo <input type='radio' name='mandatory' value='N' checked />\n";
+	$newquestion .= "\t\t\t"._YES." <input type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n";
+	$newquestion .= "\t\t\t"._NO." <input type='radio' name='mandatory' value='N' checked />\n";
 	$newquestion .= "\t\t</td>\n";
 	$newquestion .= "\t</tr>\n";
 	
@@ -728,10 +728,10 @@ if ($action == "copyquestion")
 		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
-		$editquestion .= "\t\t\tYes <input type='radio' name='other' value='Y'";
+		$editquestion .= "\t\t\t"._YES." <input type='radio' name='other' value='Y'";
 		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n";
-		$editquestion .= "\t\t\tNo <input type='radio' name='other' value='N'";
+		$editquestion .= "\t\t\t"._NO." <input type='radio' name='other' value='N'";
 		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
 		$editquestion .= " />\n";
 		$editquestion .= "\t\t</td>\n";
@@ -740,10 +740,10 @@ if ($action == "copyquestion")
 		$editquestion .= "\t<tr id='MandatorySelection'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Mandatory?</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
-		$editquestion .= "\t\t\tYes <input type='radio' name='mandatory' value='Y'";
+		$editquestion .= "\t\t\t"._YES." <input type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n";
-		$editquestion .= "\t\t\tNo <input type='radio' name='mandatory' value='N'";
+		$editquestion .= "\t\t\t"._NO." <input type='radio' name='mandatory' value='N'";
 		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked";}
 		$editquestion .= " />\n";
 		$editquestion .= "\t\t</td>\n";
@@ -927,31 +927,31 @@ if ($action == "editquestion")
 			}
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t<td align='right'>$setfont<b>"._GL_GROUP."</b></font></td>\n";
+		$editquestion .= "\t<td align='right'>$setfont<b>"._QL_GROUP."</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
 		$editquestion .= getgrouplist2($eqrow['gid']);
 		$editquestion .= "\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
 		
 		$editquestion .= "\t<tr id='OtherSelection'>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>"._GL_OTHER."</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
-		$editquestion .= "\t\t\tYes <input type='radio' name='other' value='Y'";
+		$editquestion .= "\t\t\t"._YES." <input type='radio' name='other' value='Y'";
 		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n";
-		$editquestion .= "\t\t\tNo <input type='radio' name='other' value='N'";
+		$editquestion .= "\t\t\t"._NO." <input type='radio' name='other' value='N'";
 		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
 		$editquestion .= " />\n";
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
 		
 		$editquestion .= "\t<tr id='MandatorySelection'>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>"._GL_MANDATORY."</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_MANDATORY."</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
-		$editquestion .= "\t\t\tYes <input type='radio' name='mandatory' value='Y'";
+		$editquestion .= "\t\t\t"._YES." <input type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n";
-		$editquestion .= "\t\t\tNo <input type='radio' name='mandatory' value='N'";
+		$editquestion .= "\t\t\t"._NO." <input type='radio' name='mandatory' value='N'";
 		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked";}
 		$editquestion .= " />\n";
 		$editquestion .= "\t\t</td>\n";
@@ -1047,10 +1047,10 @@ if ($action == "editsurvey")
 			$editsurvey .= "\t\t<td><select name='private'>\n";
 			$editsurvey .= "\t\t\t<option value='Y'";
 			if ($esrow['private'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">Yes</option>\n";
+			$editsurvey .= ">"._YES."</option>\n";
 			$editsurvey .= "\t\t\t<option value='N'";
 			if ($esrow['private'] != "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">No</option>\n";
+			$editsurvey .= ">"._NO."</option>\n";
 			$editsurvey .= "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
@@ -1069,10 +1069,10 @@ if ($action == "editsurvey")
 			$editsurvey .= "\t\t<td><select name='datestamp'>\n";
 			$editsurvey .= "\t\t\t<option value='Y'";
 			if ($esrow['datestamp'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">Yes</option>\n";
+			$editsurvey .= ">"._YES."</option>\n";
 			$editsurvey .= "\t\t\t<option value='N'";
 			if ($esrow['datestamp'] != "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">No</option>\n";
+			$editsurvey .= ">"._NO."</option>\n";
 			$editsurvey .= "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
@@ -1121,13 +1121,13 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='faxto'></td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ANONYMOUS."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='private'>\n";
-	$newsurvey .= "\t\t\t<option value='Y' selected>Yes</option>\n";
-	$newsurvey .= "\t\t\t<option value='N'>No</option>\n";
+	$newsurvey .= "\t\t\t<option value='Y' selected>"._YES."</option>\n";
+	$newsurvey .= "\t\t\t<option value='N'>"._NO."</option>\n";
 	$newsurvey .= "\t\t</select></td>\n\t</tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_DATESTAMP."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='datestamp'>\n";
-	$newsurvey .= "\t\t\t<option value='Y'>Yes</option>\n";
-	$newsurvey .= "\t\t\t<option value='N' selected>No</option>\n";
+	$newsurvey .= "\t\t\t<option value='Y'>"._YES."</option>\n";
+	$newsurvey .= "\t\t\t<option value='N' selected>"._NO."</option>\n";
 	$newsurvey .= "\t\t</select></td>\n\t</tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_FORMAT."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='format'>\n";
