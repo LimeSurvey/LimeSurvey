@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-include("config.php");
+require_once("config.php");
 
 if (!isset($sid)) {$sid=returnglobal('sid');}
 sendcacheheaders();

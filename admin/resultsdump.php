@@ -36,7 +36,7 @@
 
 $sid = $_GET['sid'];
 
-include("config.php");
+require_once("config.php");
 
 if (!$sid)
 	{

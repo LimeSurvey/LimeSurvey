@@ -35,7 +35,7 @@
 */
 $dbname = $_GET['dbname'];
 
-include("config.php");
+require_once("config.php");
 
 sendcacheheaders();
 

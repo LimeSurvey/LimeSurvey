@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-include("config.php");
+require_once("config.php");
 
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($lid)) {$lid=returnglobal('lid');}

@@ -37,7 +37,7 @@
 $sid = $_GET['sid'];
 
 $boxstyle = "style='border-color: #111111; border-width: 1; border-style: solid'";
-include("config.php");
+require_once("config.php");
 
 sendcacheheaders();
 

@@ -42,7 +42,7 @@
 
 $lid=$_GET['lid'];
 
-include ("config.php");
+require_once("config.php");
 
 //echo $htmlheader;
 if (!$lid)

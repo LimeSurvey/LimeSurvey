@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-include("config.php");
+require_once("config.php");
 
 // THIS FILE CHECKS THE CONSISTENCY OF THE DATABASE, IT LOOKS FOR 
 // STRAY QUESTIONS, ANSWERS, CONDITIONS OR GROUPS AND DELETES THEM

@@ -42,7 +42,7 @@
 
 $gid = $_GET['gid'];
 
-include ("config.php");
+require_once("config.php");
 
 //echo $htmlheader;
 if (!$gid)

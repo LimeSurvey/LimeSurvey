@@ -42,7 +42,7 @@
 // 3. questions
 // 4. answers
 
-include ("config.php");
+require_once("config.php");
 
 if (!isset($sid)) {$sid=returnglobal('sid');}
 

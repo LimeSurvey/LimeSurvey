@@ -1,6 +1,6 @@
 <?php
 //THE TABLE STRUCTURE, TABLE BY TABLE AND FIELD BY FIELD
-include("config.php");
+require_once("config.php");
 
 sendcacheheaders();
 
