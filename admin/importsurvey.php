@@ -283,13 +283,28 @@ if ($grouparray)
 					$type = substr($qa, strpos($qa, $typepos)+strlen($typepos), 1);
 					$otherpos = "')";
 					$other = substr($qa, strpos($qa, $otherpos)-6, 1);
-					
-					//echo "$qinsert<br />\n";
+
 					$qres = mysql_query($qinsert) or die ("<b>"._ERROR."</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
-					//GET NEW GID
-					$qidquery = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
+					//GET NEW QID
+					$qidquery = "SELECT qid, lid FROM questions ORDER BY qid DESC LIMIT 1";
 					$qidres = mysql_query($qidquery);
-					while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0];}
+					while ($qrow = mysql_fetch_array($qidres)) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
+					//IF this is a flexible label array, update the lid entry
+					if ($type == "F")
+						{
+						echo "Type is F:<br />";
+						foreach ($labelreplacements as $lrp)
+							{
+							echo $lrp[0] . " - " . $oldlid;
+							if ($lrp[0] == $oldlid)
+								{
+								$lrupdate="UPDATE questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
+								echo $lrupdate;
+								$lrresult=mysql_query($lrupdate);
+								}
+							}
+						}
+
 					$newrank=0;
 					//NOW DO NESTED ANSWERS FOR THIS QID
 					if ($answerarray)
