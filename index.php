@@ -79,7 +79,7 @@ if (!isset($token)) {$token=returnglobal('token');}
 //		$token=$_POST['token'];
 //		}
 //	}
-$query="SELECT * FROM surveys WHERE sid=$sid";
+$query="SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
 $surveyexists=mysql_num_rows($result);
 while ($row=mysql_fetch_array($result))
@@ -93,7 +93,7 @@ while ($row=mysql_fetch_array($result))
 	$surveyactive = $row['active'];
 	$surveyexpiry = $row['expires'];
 	$surveyprivate = $row['private'];
-	$surveytable = "survey_{$row['sid']}";
+	$surveytable = "{$dbprefix}survey_{$row['sid']}";
 	$surveyurl = $row['url'];
 	$surveyurldescrip = $row['urldescrip'];
 	$surveyformat = $row['format'];
@@ -107,7 +107,7 @@ $i = 0; $tokensexist = 0;
 $tresult = @mysql_list_tables($databasename) or die ("Error getting tokens<br />".mysql_error());
 while($tbl = @mysql_tablename($tresult, $i++))
 	{
-	if ($tbl == "tokens_$sid") {$tokensexist = 1;}
+	if ($tbl == "{$dbprefix}tokens_$sid") {$tokensexist = 1;}
 	}
 
 //SET THE TEMPLATE DIRECTORY

@@ -254,9 +254,9 @@ if ($_POST['move'] == " "._SUBMIT." ")
 			$completed .= "<a href='javascript:window.close()'>"._CLOSEWIN."</a></font><br /><br />\n";
 			if ($_POST['token'])
 				{
-				$utquery = "UPDATE tokens_$sid SET completed='Y' WHERE token='{$_POST['token']}'";
+				$utquery = "UPDATE {$dbprefix}tokens_$sid SET completed='Y' WHERE token='{$_POST['token']}'";
 				$utresult = mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
-				$cnfquery = "SELECT * FROM tokens_$sid WHERE token='{$_POST['token']}' AND completed='Y'";
+				$cnfquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='{$_POST['token']}' AND completed='Y'";
 				$cnfresult = mysql_query($cnfquery);
 				while ($cnfrow = mysql_fetch_array($cnfresult))
 					{
@@ -438,7 +438,7 @@ if (!$_SESSION['step'])
 	if ($tokensexist == 1 && $_GET['token'])
 		{
 		//check if token actually does exist
-		$tkquery = "SELECT * FROM tokens_$sid WHERE token='{$_GET['token']}' AND completed != 'Y'";
+		$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='{$_GET['token']}' AND completed != 'Y'";
 		$tkresult = mysql_query($tkquery);
 		$tkexist = mysql_num_rows($tkresult);
 
@@ -472,7 +472,7 @@ if (!$_SESSION['step'])
 	unset($_SESSION['insertarray']);
 
 	//LETS COUNT THE NUMBER OF GROUPS (That's how many steps there will be)
-	$query = "SELECT * FROM groups WHERE groups.sid=$sid ORDER BY group_name";
+	$query = "SELECT * FROM {$dbprefix}groups WHERE groups.sid=$sid ORDER BY group_name";
 	$result = mysql_query($query) or die ("Couldn't get group list<br />$query<br />".mysql_error());
 	$_SESSION['totalsteps'] = mysql_num_rows($result);
 	while ($row = mysql_fetch_array($result))
@@ -480,7 +480,7 @@ if (!$_SESSION['step'])
 		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
 		}
 	//NOW LETS BUILD THE SESSION VARIABLES
-	$query = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
+	$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name";
 	$result = mysql_query($query);
 	$totalquestions = mysql_num_rows($result);
 	if ($totalquestions == "0")	//break out and crash if there are no questions!
@@ -521,7 +521,7 @@ if (!$_SESSION['step'])
 			$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "P") 
 				{
-				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
+				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 				$abresult = mysql_query($abquery);
 				while ($abrow = mysql_fetch_array($abresult))
 					{
@@ -542,7 +542,7 @@ if (!$_SESSION['step'])
 						}
 					}
 				} elseif ($arow['type'] == "R") {
-				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
+				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 				$abresult = mysql_query($abquery);
 				$abcount = mysql_num_rows($abresult);
 				for ($i=1; $i<=$abcount; $i++)
@@ -552,7 +552,7 @@ if (!$_SESSION['step'])
 				}
 			elseif ($arow['type'] == "Q")
 				{
-				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
+				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 				$abresult = mysql_query($abquery);
 				while ($abrow = mysql_fetch_array($abresult))
 					{
