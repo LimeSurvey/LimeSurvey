@@ -1427,7 +1427,7 @@ function questionjavascript($type)
 				 . "<!--\n"
 				 . "function OtherSelection(QuestionType)\n"
 				 . "\t{\n"
-				 . "\tif (QuestionType == 'M' || QuestionType == 'P')\n"
+				 . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L')\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
