@@ -55,8 +55,8 @@ if (!$action == "export")
 		 </td>
 		 <td>
 		  <select name='method' $slstyle>
-		   <option value='deactivate' selected>"._VV_EXPORTDEACTIVATE."</option>
-		   <option value='none'>"._VV_EXPORTONLY."</option>
+		   <option value='deactivate'>"._VV_EXPORTDEACTIVATE."</option>
+		   <option value='none' selected>"._VV_EXPORTONLY."</option>
 		  </select>
 		 </td>
 		</tr>
@@ -64,7 +64,7 @@ if (!$action == "export")
 		 <td>&nbsp;
 		 </td>
 		 <td>
-		  <input type='submit' value='"._EXPORTRESULTS."' $btstyle>&nbsp;
+		  <input type='submit' value='"._EXPORTRESULTS."' $btstyle onClick='return confirm(\""._VV_RUSURE."\")'>&nbsp;
 		 </td>
 		</tr>
 		 <input type='hidden' name='action' value='export'>
@@ -102,7 +102,7 @@ elseif (isset($sid) && $sid)
 		if (count($fielddata) < 1) {$firstline.=$field;}
 		else 
 			//{$firstline.=str_replace("\n", " ", str_replace("\t", "   ", strip_tags($fielddata['question'])));}
-			{$firstline.=preg_replace('/\s+/',' ',strip_tags($fielddata['question']));
+			{$firstline.=preg_replace('/\s+/',' ',strip_tags($fielddata['question']));}
 		$firstline .= $s;
 		$secondline .= $field.$s;
 		}
