@@ -73,8 +73,8 @@ if (!$sid)
 	exit;
 	}
 
-//GET BASIC INFORMATION ABOUT THIS SURVEY
 if (!isset($token)) {$token=returnglobal('token');}
+//GET BASIC INFORMATION ABOUT THIS SURVEY
 $query="SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
 $surveyexists=mysql_num_rows($result);
@@ -958,7 +958,7 @@ function buildsurveysession()
 	elseif ($tokensexist == 1 && returnglobal('token'))
 		{
 		//check if token actually does exist
-		$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='".returnglobal('token')."' AND completed != 'Y'";
+		$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='".trim(returnglobal('token'))."' AND completed != 'Y'";
 		$tkresult = mysql_query($tkquery);
 		$tkexist = mysql_num_rows($tkresult);
 		if (!$tkexist)
