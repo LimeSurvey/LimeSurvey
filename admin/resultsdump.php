@@ -44,6 +44,14 @@ if (!$sid)
 	exit;
 	}
 
+if (ini_get('safe_mode'))
+	{
+	echo "ERROR: Your server has safe_mode set to ON, and subsequently PHPSurveyor cannot dump your survey results.<br /><br />\n";
+	echo "You should either set your safe_mode to OFF (which, naturally, has security implications) or consider using";
+	echo " an alternative script, like phpMyAdmin to dump the results from survey_$sid.";
+	exit;
+	}
+
 $filename="survey_{$sid}_dump.sql";
 $mysqldump="$mysqlbin/mysqldump";
 if (substr($OS, 0, 3) == "WIN") {$mysqldump .= ".exe";}
