@@ -117,9 +117,9 @@ elseif ($action == "insertnewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other, mandatory)"
+	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other, mandatory, lid)"
 			." VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-			." '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}')";
+			." '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
 	if (!$result)
 		{
@@ -161,7 +161,7 @@ elseif ($action == "updatequestion")
 		{
 		$uqquery = "UPDATE questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
 				. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
-				. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}' "
+				. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}', lid='{$_POST['lid']}' "
 				. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
 		//echo $uqquery;
 		$uqresult = mysql_query($uqquery);
@@ -183,7 +183,7 @@ elseif ($action == "copynewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other, mandatory) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}')";
+	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
 	if ($result)
 		{
