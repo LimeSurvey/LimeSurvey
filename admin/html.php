@@ -1386,6 +1386,18 @@ if ($action == "editsurvey")
 		$editsurvey .= ">"._AD_NO."</option>\n"
 					 . "\t\t</select></td>\n"
 					 . "\t</tr>\n";
+		//ALLOW SAVES
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWSAVE."</b></font></td>\n"
+					. "\t\t<td><select $slstyle name='allowsave'>\n"
+					. "\t\t\t<option value='Y'";
+		if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_YES."</option>\n"
+					. "\t\t\<option value='N'";
+		if ($esrow['allowsave'] == "N") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_NO."</option>\n"
+					. "\t\t</select></td>\n"
+					. "\t</tr>\n";
+		
 		//NOTIFICATION
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_NOTIFICATION."</b></font></td>\n"
 					 . "\t\t<td><select $slstyle name='notification'>\n"
@@ -1540,6 +1552,7 @@ if ($action == "newsurvey")
 		}
 	$newsurvey .= "\t\t</select></td>\n"
 				. "\t</tr>\n";
+	//COOKIES
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_USECOOKIES."</b></font></td>\n"
 				. "\t\t<td><select $slstyle name='usecookie'>\n"
 				. "\t\t\t<option value='Y'";
@@ -1550,6 +1563,18 @@ if ($action == "newsurvey")
 	$newsurvey .= ">"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
+	//ALLOW SAVES
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWSAVE."</b></font></td>\n"
+				. "\t\t<td><select $slstyle name='allowsave'>\n"
+				. "\t\t\t<option value='Y'";
+	if (!isset($esrow['allowsave']) || !$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$newsurvey .= " selected";}
+	$newsurvey .= ">"._AD_YES."</option>\n"
+				. "\t\t\<option value='N'";
+	if (isset($esrow['allowsave']) && $esrow['allowsave'] == "N") {$newsurvey .= " selected";}
+	$newsurvey .= ">"._AD_NO."</option>\n"
+				. "\t\t</select></td>\n"
+				. "\t</tr>\n";
+	//NOTIFICATIONS
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_NOTIFICATION."</b></font></td>\n"
 				. "\t\t<td><select $slstyle name='notification'>\n"
 				. getNotificationlist(0)
@@ -1585,7 +1610,6 @@ if ($action == "newsurvey")
 				. "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
 				. "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n\t</tr>\n";
-		//COOKIES
 	//NOTIFICATION
 	//LANGUAGE
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_LANGUAGE."</b></font></td>\n"
@@ -1643,7 +1667,7 @@ function questionjavascript($type)
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
 				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
 				 . "\t\t}\n"
-				 . "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'N' || QuestionType=='')\n"
+				 . "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='')\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('Validation').style.display = '';\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
