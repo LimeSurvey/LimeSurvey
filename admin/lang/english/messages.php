@@ -434,6 +434,7 @@ define("_BR_DELRESPONSE", "Delete this entry");
 define("_BR_DISPLAYING", "Records Displayed:");
 define("_BR_STARTING", "Starting From:");
 define("_BR_SHOW", "Show");
+define("_DR_RUSURE", "Are you sure you want to delete this entry?"); //New for 0.98rc6
 
 //STATISTICS MESSAGES
 define("_ST_FILTERSETTINGS", "Filter Settings");

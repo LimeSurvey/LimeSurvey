@@ -440,6 +440,7 @@ define("_BR_DELRESPONSE", "Eliminar esta entrada");
 define("_BR_DISPLAYING", "Registros Desplegados:");
 define("_BR_STARTING", "Empezando desde:");
 define("_BR_SHOW", "Mostrar");
+define("_DR_RUSURE", "Are you sure you want to delete this entry?"); //New for 0.98rc6
 
 //STATISTICS MESSAGES
 define("_ST_FILTERSETTINGS", "Opciones del Filtro");

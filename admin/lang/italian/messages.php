@@ -434,6 +434,7 @@ define("_BR_DELRESPONSE", "Elimina risposta");
 define("_BR_DISPLAYING", "Dati visualizzati:");
 define("_BR_STARTING", "Da:");
 define("_BR_SHOW", "Mostra");
+define("_DR_RUSURE", "Are you sure you want to delete this entry?"); //New for 0.98rc6
 
 //STATISTICS MESSAGES
 define("_ST_FILTERSETTINGS", "Imposta filtro");
