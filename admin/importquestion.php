@@ -34,6 +34,7 @@
 	#############################################################	
 */
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
+echo "<center><b>Importing Question</b></center><br /><br />\n";
 
 $the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
 
