@@ -18,9 +18,10 @@ define(_SETUP, "PHPSurveyor Setup");
 define(_DELETESURVEY, "Delete Survey");
 define(_EXPORTQUESTION, "Export Question");
 define(_EXPORTSURVEY, "Export Survey");
+define(_EXPORTLABEL, "Export Label Set");
 define(_IMPORTQUESTION, "Import Question");
 define(_IMPORTSURVEY, "Import Survey");
-define(_IMPORTQUESTION, "Import Question");
+define(_IMPORTLABEL, "Import Label Set");
 define(_EXPORTRESULTS, "Export Responses");
 define(_BROWSERESPONSES, "Browse Responses");
 define(_STATISTICS, "Quick Statistics");
@@ -486,4 +487,8 @@ define(_LB_EDITSET, "Edit Label Set");
 define(_LB_FAIL_UPDATESET, "Update of Label Set failed");
 define(_LB_FAIL_INSERTSET, "Insert of new Label Set failed");
 define(_LB_FAIL_DELSET, "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.");
+//Export Labels
+define(_EL_NOLID, "No LID has been provided. Cannot dump label set.");
+//Import Labels
+define(_IL_GOLABELADMIN, "Return to Labels Admin");
 ?>
