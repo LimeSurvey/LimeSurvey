@@ -533,6 +533,13 @@ if ($action == "copyquestion")
 
 if ($action == "addanswer")
 	{
+	//Get sortorder number that is one greater than the last.
+	$saquery="SELECT sortorder FROM answers WHERE qid=$qid ORDER BY sortorder desc LIMIT 1";
+	$saresult=mysql_query($saquery) or die ("Couldn't get last sortorder<br />$saquery<br />".mysql_error());
+	while ($sarow=mysql_fetch_array($saresult)) {$lastsa=$sarow['sortorder'];}
+	if ($lastsa) {$newsa=chr(ord(strtoupper($lastsa))+1);}
+	else {$newsa=1;}
+	
 	$newanswer = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
 	$newanswer .= "\t\t<b>$setfont<font color='white'>Create New Answer for Survey ID($sid), Group ID($gid), Question ID($qid)</b></font></font></td></tr>\n";
 	$newanswer .= "\t<tr><form action='$scriptname' name='addnewanswer' method='post'>\n";
@@ -541,7 +548,7 @@ if ($action == "addanswer")
 	$newanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
 	$newanswer .= "\t\t<td><input type='text' name='answer'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
 	$newanswer .= "\t<tr><td align='right'>$setfont<b>Sort Order:</b></font></td>\n";
-	$newanswer .= "\t\t<td><input type='text' size='5' maxlength='5' value='' name='sortorder'></td></tr>\n";
+	$newanswer .= "\t\t<td><input type='text' size='5' maxlength='5' value='$newsa' name='sortorder'></td></tr>\n";
 	$newanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
 	$newanswer .= "\t\t<td><input type='text' size='1' maxlength='1' value='N' name='default'></td></tr>\n";
 	$newanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Add Answer'></td></tr>\n";
