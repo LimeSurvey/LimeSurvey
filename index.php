@@ -99,7 +99,7 @@ if (!mysql_selectdb ($databasename, $connect))
 	exit;
 	}
 
-// NOW LETS GATHER SOME INFORMATION ABOUT THIS PARTICULAR SURVEY
+// NOW LETS GATHER SOME INFORMATION ABOUT THIS PARTICULAR SURVEY (This happens on every page)
 if ($sid)
 	{
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
@@ -127,6 +127,7 @@ if ($sid)
 		$surveywelcome = $desrow['welcome'];
 		$surveyadminname = $desrow['admin'];
 		$surveyadminemail = $desrow['adminemail'];
+		$surveyprivate = $desrow['private'];
 		}
 	$surveyheader = "<table width='95%' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
 	$surveyheader .= "\t<tr>\n";
@@ -161,7 +162,7 @@ if ($move == "clearall" || $move == "here")
 	}
 
 
-//THIS IS THE LAST POINT. HERE, WE GATHER ALL THE SESSION VARIABLES AND INSERT THEM INTO THE DATABASE.
+// This is the LAST POINT. The survey is completed and saved and now we're just letting the user close the window
 if ($move == "completed")
 	{
 	echo "<table width='95%' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
@@ -184,6 +185,7 @@ if ($move == "completed")
 	exit;
 	}
 
+// Here we present the user with the option to submit their responses and provide general information about stopping, and privacy (if appropriate)
 if ($move == " last ")
 	{
 	echo $surveyheader;
@@ -218,19 +220,26 @@ if ($move == " last ")
 	echo "clicking on the \" << prev \" button and browsing through your responses.<br />\n";
 	echo "&nbsp;<br />\n";
 	echo "<input type='submit' value=' submit ' name='move' /><br />&nbsp;\n";
-	echo "\t\t\t\t\t\t<table align='center' width='400' bgcolor='#EFEFEF' border='0'>\n";
-	echo "\t\t\t\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t\t\t\t<td align='center'>\n";
-	echo "$setfont<b>A note on privacy</b><br />\n";
-	echo "<font size='1'>The record kept of this survey does not contain any identifying information about you unless ";
-	echo "a specific question in the survey has asked for this. If you have responded to a survey that ";
-	echo "used an identifying token to allow you to access the survey, you can rest assured that the ";
-	echo "identifying token is not kept with your responses. It is managed in a seperate database, and will ";
-	echo "only be updated to indicate that you have (or haven't) completed this survey. There is no way of ";
-	echo "relating identification tokens with responses in this system.\n";
-	echo "\t\t\t\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t\t\t\t</tr>\n";
-	echo "\t\t\t\t\t\t</table>\n";
+	if ($surveyprivate != "N")
+		{
+		echo "\t\t\t\t\t\t<table align='center' width='400' bgcolor='#EFEFEF' border='0'>\n";
+		echo "\t\t\t\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t\t\t\t<td align='center'>\n";
+		echo "$setfont<b>A note on privacy</b><br />\n";
+		echo "<font size='1'>The record kept of this survey does not contain any identifying information about you unless ";
+		echo "a specific question in the survey has asked for this. If you have responded to a survey that ";
+		echo "used an identifying token to allow you to access the survey, you can rest assured that the ";
+		echo "identifying token is not kept with your responses. It is managed in a seperate database, and will ";
+		echo "only be updated to indicate that you have (or haven't) completed this survey. There is no way of ";
+		echo "relating identification tokens with responses in this system.\n";
+		echo "\t\t\t\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t\t\t\t</tr>\n";
+		echo "\t\t\t\t\t\t</table>\n";
+		}
+	else
+		{
+		// Just in case we want to add a comment for non-private surveys
+		}
 	echo "<font size='1'>&nbsp;<br />\nIf you do not wish to submit responses to this survey, ";
 	echo "and you would like to delete all records on your computer that may have saved your responses, ";
 	echo "click <a href='index.php?move=clearall&sid=$sid'>here</a><br />&nbsp;\n";
@@ -247,6 +256,7 @@ if ($move == " last ")
 	exit;
 	}
 
+//THIS IS THE SECOND LAST POINT. HERE, WE GATHER ALL THE SESSION VARIABLES AND INSERT THEM INTO THE DATABASE.
 if ($move == " submit ")
 	{
 	echo "$surveyheader";
@@ -312,10 +322,17 @@ if ($move == " submit ")
 				$message = "Dear {$cnfrow['firstname']},\n\n";
 				$message .= "This email is to confirm that you have completed the survey titled \"$surveyname\" ";
 				$message .= "and your response has been saved. Thank you for participating.\n\n";
-				$message .= "Please note that your survey submission does not contain any link to your personal ";
-				$message .= "information used to send you this confirmation or the original invitation.\n";
-				$message .= "The information you submitted in the survey is anonymous unless a question in the ";
-				$message .= "survey itself actually asks for such information.\n\n";
+				if ($surveyprivate != "N")
+					{
+					$message .= "Please note that your survey submission does not contain any link to your personal ";
+					$message .= "information used to send you this confirmation or the original invitation.\n";
+					$message .= "The information you submitted in the survey is anonymous unless a question in the ";
+					$message .= "survey itself actually asks for such information.\n\n";
+					}
+				else
+					{
+					//just in case we want to add info about it not being private
+					}
 				$message .= "If you have any questions about this survey please contact $surveyadminname on ";
 				$message .= "$surveyadminemail.\n\n";
 				$message .= "Sincerely,\n\n";
@@ -437,6 +454,13 @@ if (!$step)
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($arows, 'CompareGroupThenTitle');
+	
+	if ($surveyprivate == "N")
+		{
+		session_register("Ftoken");
+		$Ftoken=$token;
+		$insertarray[]= "Ftoken";
+		}
 	
 	foreach ($arows as $arow)
 		{
