@@ -128,8 +128,15 @@ elseif (isset($sid) && $sid)
 									 "{cr}",
 									 "{tab}"), 
 							   $value);
+			// one last tweak: excel likes to quote values when it
+			// exports as tab-delimited (esp if value contains a comma,
+			// oddly enough).  So we're going to encode a leading quote,
+			// if it occurs, so that we can tell the difference between
+			// strings that "really are" quoted, and those that excel quotes
+			// for us.
+			$value=preg_replace('/^"/','{quote}',$value);
+			// yay!  that nasty sun won't hurt us now!
 			$sun[]=$value;
-			//echo $value.$s;
 			}
 		$beach=implode($s, $sun);
 		echo $beach;

@@ -39,6 +39,7 @@ require_once("config.php");
 if (!isset($sid)) {$sid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($noid)) {$noid=returnglobal('noid');}
+if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
 
 if ($action != "upload") 
 	{
@@ -59,6 +60,13 @@ if ($action != "upload")
 		<tr><td>"._VV_FILE."</td><td><input type='file' name='the_file'></td></tr>
 		<tr><td>"._VV_SURVEYID."</td><td><input type='text' size=2 name='sid' value='$sid' readonly></td></tr>
 		<tr><td>"._VV_EXCLUDEID."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
+        <!-- this next item should only appear if noid is not checked -->
+		<tr><td>"._VV_INSERT."</td><td><select name='insert' $slstyle>
+        <option value='error' selected>"._VV_INSERT_ERROR."</option>
+        <option value='renumber'>"._VV_INSERT_RENUMBER."</option>
+        <option value='ignore'>"._VV_INSERT_IGNORE."</option>
+        <option value='replace'>"._VV_INSERT_REPLACE."</option>
+        </select></td></tr>
 		<tr><td>&nbsp;</td><td><input type='submit' value='"._TP_UPLOADFILE."'></td></tr>
 		<input type='hidden' name='action' value='upload'>
 		</form>
@@ -115,12 +123,11 @@ else
 	
 	$fieldnames=explode("\t", trim($bigarray[1]));
 	$fieldcount=count($fieldnames)-1;
-	if (trim($fieldnames[$fieldcount]) == "") //Get rid of a blank entry at the end
+	while (trim($fieldnames[$fieldcount]) == "") // get rid of blank entries
 		{
 	    unset($fieldnames[$fieldcount]);
 		$fieldcount--;
 		}
-	if ($noid == "noid") {unset($fieldnames[0]);}
 
 	$fldlist = mysql_list_fields($databasename, $surveytable);
 	$columns = mysql_num_fields($fldlist);
@@ -151,16 +158,20 @@ else
 		if (trim($row) != "")
 			{
 			$recordcount++;
-			$fieldvalues=explode("\t", mysql_escape_string(str_replace("\n", "", $row)), $fieldcount+1);
+			$fieldvalues=explode("\t", str_replace("\n", "", $row), $fieldcount+1);
+			// Excel likes to quote fields sometimes. =(
+			$fieldvalues=preg_replace('/^"(.*)"$/s','\1',$fieldvalues);
 			// careful about the order of these arrays:
 			// lbrace has to be substituted *last*
 			$fieldvalues=str_replace(array("{newline}",
 										   "{cr}",
 										   "{tab}",
+										   "{quote}",
 										   "{lbrace}"),
 									 array("\n",
 									 	   "\r",
 										   "\t",
+										   "\"",
 										   "{"),
 									 $fieldvalues);
 			if (isset($donotimport)) //remove any fields which no longer exist
@@ -170,13 +181,47 @@ else
 				    unset($fieldvalues[$not]);
 					}
 				}
-			if ($noid == "noid") {unset($fieldvalues[0]);}
-			$insert = "INSERT INTO $surveytable\n";
+			// sometimes columns with nothing in them get omitted by excel
+			while (count($fieldnames) > count($fieldvalues))
+				{
+					$fieldvalues[]="";
+				}
+			// sometimes columns with nothing in them get added by excel
+			while (count($fieldnames) < count($fieldvalues) &&
+				   trim($fieldvalues[count($fieldvalues)-1])=="")
+				{
+					unset($fieldvalues[count($fieldvalues)-1]);
+				}
+			// make this safe for mysql (*after* we undo first excel's
+			// and then our escaping).
+			$fieldvalues=array_map('mysql_escape_string',$fieldvalues);
+			// okay, now we should be good to go.
+			if ($insertstyle=="ignore" && !$noid)
+				$insert = "INSERT IGNORE";
+			else if ($insertstyle=="replace" && !$noid)
+				$insert = "REPLACE";
+			else $insert = "INSERT";
+			$insert .= " INTO $surveytable\n";
 			$insert .= "(".implode(", ", $fieldnames).")\n";
 			$insert .= "VALUES\n";
 			$insert .= "('".implode("', '", $fieldvalues)."')\n";
 			
 			if (!$result = mysql_query($insert)) 
+				{
+				$idkey = array_search('id',$fieldnames);
+				if ($insertstyle=="renumber" && $idkey!==FALSE)
+					{
+					// try again, without the 'id' field.
+					unset($fieldnames[$idkey]);
+					unset($fieldvalues[$idkey]);
+					$insert = "INSERT INTO $surveytable\n";
+					$insert .= "(".implode(", ", $fieldnames).")\n";
+					$insert .= "VALUES\n";
+					$insert .= "('".implode("', '", $fieldvalues)."')\n";
+					$result = mysql_query($insert);
+					}
+				}
+			if (!$result)
 				{
 				echo "<table align='center' class='outlintable'>
 				      <tr><td>"._VV_ENTRYFAILED." $recordcount "._VV_BECAUSE." [".mysql_error()."]
@@ -190,7 +235,7 @@ else
 			}
 		}
 	
-	if ($noid == "noid")
+	if ($noid == "noid" || $insertstyle == "renumber")
 		{
 		echo "<br /><i><b><font color='red'>"._VV_DONOTREFRESH."</font></b></i><br /><br />";
 		}
