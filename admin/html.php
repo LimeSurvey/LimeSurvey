@@ -137,7 +137,7 @@ if ($qid)
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = mysql_fetch_array($qrresult))
 		{
-		$questionsummary .= "\t<tr><td width='20%' align='RIGHT'>$setfont<b>Question Title:</b></font></td>\n\t<tr><td>$setfont{$qrrow['title']}</td></tr>\n";
+		$questionsummary .= "\t<tr><td width='20%' align='RIGHT'>$setfont<b>Question Title:</b></font></td>\n\t<td>$setfont{$qrrow['title']}</td></tr>\n";
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></TD>\n\t<td>$setfont{$qrrow['type']}</td></tr>\n";
