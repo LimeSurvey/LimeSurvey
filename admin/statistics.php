@@ -70,12 +70,12 @@ echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpa
 echo "<tr><td align='center' bgcolor='#555555'><font size='2' face='verdana' color='orange'><b>"._ST_FILTERSETTINGS."</b></td></tr>\n";
 echo "\t<form method='post'>\n";
 // 1: Get list of questions from survey
-$query = "SELECT qid, questions.gid, type, title, group_name, question FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
+$query = "SELECT qid, questions.gid, type, title, group_name, question, lid FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while ($row=mysql_fetch_row($result))
 	{
-	//filters='qid','gid','type','title','group_name','question'
-	$filters[]=array("$row[0]", "$row[1]", "$row[2]", "$row[3]", "$row[4]", strip_tags($row[5]));
+	//filters='qid','gid','type','title','group_name','question', 'lid'
+	$filters[]=array("$row[0]", "$row[1]", "$row[2]", "$row[3]", "$row[4]", strip_tags($row[5]), $row[6]);
 	}
 // 2: Get answers for each question
 foreach ($filters as $flt)
@@ -96,7 +96,7 @@ foreach ($filters as $flt)
 	if ($counter == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
 	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
 	//headings
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>";
 		echo "$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
@@ -310,6 +310,39 @@ foreach ($filters as $flt)
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
 			break;
+		case "F": // ARRAY OF Flexible QUESTIONS
+			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0][]' ORDER BY sortorder, answer";
+			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
+			$counter2=0;
+			while ($row=mysql_fetch_row($result))
+				{
+				$myfield2 = $myfield . "$row[0]";
+				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
+				echo "<input type='radio' name='summary' value='$myfield2'";
+				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
+				echo ">&nbsp;";
+				echo "<img src='./images/speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: ".str_replace("'", "`", $flt[5])." ".str_replace("'", "`", $row[1])."')\">";
+				echo "<br />\n";
+				$fquery = "SELECT * FROM labels WHERE lid={$flt[6]} ORDER BY sortorder, code";
+				//echo $fquery;
+				$fresult = mysql_query($fquery);
+				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
+				while ($frow = mysql_fetch_array($fresult))
+					{
+					echo "\t\t\t\t\t<option value='{$frow['code']}'";
+					if (is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
+					echo ">{$frow['title']}</option>\n";
+					}
+				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+				$counter2++;
+				$allfields[]=$myfield2;
+				}
+			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+			$counter=0;
+			break;
 		case "R": //RANKING
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
@@ -516,13 +549,13 @@ if ($_POST['summary'])
 	foreach ($runthrough as $rt)
 		{
 		// 1. Get answers for question
-		if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS. HOW THE HELL DO WE DO THIS ONE?
+		if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
 			{
 			
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
-			$nquery = "SELECT title, type, question FROM questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, lid FROM questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]);}
+			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qlid=$nrow[3];}
 			
 			//1. Get list of answers
 			$query="SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY sortorder, answer";
@@ -555,10 +588,10 @@ if ($_POST['summary'])
 		elseif (substr($rt, 0, 1) == "N") //NUMERICAL TYPE
 			{
 			list($qsid, $qgid, $qqid) = explode("X", $rt);
-			$nquery = "SELECT title, type, question, qid FROM questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, qid, lid FROM questions WHERE qid='$qqid'";
 			//echo $nquery; //debugging line
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];}
+			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
 			echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
 			echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>";
 			echo "</td></tr>\n";
@@ -695,12 +728,12 @@ if ($_POST['summary'])
 		else // NICE SIMPLE SINGLE OPTION ANSWERS
 			{
 			list($qsid, $qgid, $qqid) = explode("X", $rt);
-			$nquery = "SELECT title, type, question, qid FROM questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, qid, lid FROM questions WHERE qid='$qqid'";
 			//echo $nquery; //debugging line
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
 				{
-				$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];
+				$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];
 				}
 			$alist[]=array("", "No Answer");
 			switch($qtype)
@@ -762,6 +795,24 @@ if ($_POST['summary'])
 						$alist[]=array("I", "Increase");
 						$alist[]=array("S", "Same");
 						$alist[]=array("D", "Decrease");
+						$atext=$qrow[1];
+						}
+					$qquestion .= "<br />\n[".$atext."]";
+					$qtitle .= "($qanswer)";
+					break;
+				case "F": //Array of Flexible
+					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
+					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
+					//echo $qquery; //debugging line
+					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
+					while ($qrow=mysql_fetch_row($qresult))
+						{
+						$fquery = "SELECT * FROM labels WHERE lid=$qlid ORDER BY sortorder, code";
+						$fresult = mysql_query($fquery);
+						while ($frow=mysql_fetch_array($fresult))
+							{
+							$alist[]=array($frow['code'], $frow['title']);
+							}
 						$atext=$qrow[1];
 						}
 					$qquestion .= "<br />\n[".$atext."]";
