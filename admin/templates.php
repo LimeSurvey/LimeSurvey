@@ -207,6 +207,8 @@ $files[]=array("name"=>"navigator.pstpl");
 $files[]=array("name"=>"endpage.pstpl");
 $files[]=array("name"=>"clearall.pstpl");
 $files[]=array("name"=>"register.pstpl");
+$files[]=array("name"=>"load.pstpl");
+$files[]=array("name"=>"save.pstpl");
 
 $normalfiles=array("DUMMYENTRY", ".", "..");
 foreach ($files as $fl) {
@@ -219,13 +221,18 @@ $screens[]=array("name"=>_TP_SUBMITPAGE);
 $screens[]=array("name"=>_TP_COMPLETEDPAGE);
 $screens[]=array("name"=>_TP_CLEARALLPAGE);
 $screens[]=array("name"=>_TP_REGISTERPAGE);
+$screens[]=array("name"=>_TP_LOADPAGE);
+$screens[]=array("name"=>_TP_SAVEPAGE);
 
+//Page Display Instructions
 $Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Submit=array("startpage.pstpl", "survey.pstpl", "submit.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Completed=array("startpage.pstpl", "completed.pstpl", "endpage.pstpl");
 $Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
 $Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
+$Save=array("startpage.pstpl", "save.pstpl", "endpage.pstpl");
+$Load=array("startpage.pstpl", "load.pstpl", "endpage.pstpl");
 
 //CHECK ALL FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
 foreach ($files as $file) {
@@ -248,88 +255,6 @@ function filetext($templatefile) {
 	return $output;
 }
 
-function templatereplace($line)
-	{
-	global $publicurl, $templatedir, $templatename;
-	global $question, $questioncode, $answer;
-	global $screenname;
-	$surveyname="Template Sample";
-	$surveydescription="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
-	$surveywelcome="Welcome to this sample survey.<br />\n You should have a great time doing this<br />";
-	$percentcomplete=makegraph(6, 10);
-	$groupname="Group 1: The first lot of questions";
-	$groupdescription="This group description is fairly vacuous, but quite important.";
-	$navigator="<input class='submit' type='submit' value=' next >> ' name='move' />";
-	if ($screenname != _TP_WELCOMEPAGE) {$navigator = "<input class='submit' type='submit' value=' << prev ' name='move' />\n".$navigator;}
-	$help="This is some help text";
-	$totalquestions="10";
-	$surveyformat="Format";
-	$completed="Survey is completed and saved.";
-	$surveyurl="http://phpsurveyor.sourceforge.net/";
-	$surveyurldescrip="A URL Description";
-	$notanswered="5";
-	$privacy="";
-	$sid="1295";
-	$token=1234567;
-	
-	if ($templatename) {$templateurl="$publicurl/templates/$templatename/";}
-	else {$templateurl="$publicurl/templates/default/";}
-	$clearall = "\t\t\t\t\t<div class='clearall'><a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall' onClick='return confirm(\"Are you sure you want to clear?\")'>[Exit and Clear Responses]</a></div>\n";
-	
-	$line=str_replace("{SURVEYNAME}", $surveyname, $line);
-	$line=str_replace("{SURVEYDESCRIPTION}", $surveydescription, $line);
-	$line=str_replace("{WELCOME}", $surveywelcome, $line);
-	$line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
-	$line=str_replace("{GROUPNAME}", $groupname, $line);
-	$line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
-	$line=str_replace("{QUESTION}", $question, $line);
-	$line=str_replace("{QUESTION_CODE}", $questioncode, $line);
-	$line=str_replace("{ANSWER}", $answer, $line);
-	$line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS, $line);
-	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
-	$line=str_replace("{TOKEN}", $token, $line);
-	$line=str_replace("{SID}", $sid, $line);
-	if ($help) 
-		{
-		$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' align='left'>".$help, $line);
-		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
-		}
-	else
-		{
-		$line=str_replace("{QUESTIONHELP}", $help, $line);
-		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
-		}
-	$line=str_replace("{NAVIGATOR}", $navigator, $line);
-	//$submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move'>";
-	$submitbutton="<input class='submit' type='submit' value=' Submit ' name='move'>";
-	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
-	$line=str_replace("{COMPLETED}", $completed, $line);
-	if (!$surveyurldescrip) {$linkreplace="<a href='$surveyurl'>$surveyurl</a>";}
-	else {$linkreplace="<a href='$surveyurl'>$surveyurldescrip</a>";}
-	$line=str_replace("{URL}", $linkreplace, $line);
-	$line=str_replace("{PRIVACY}", $privacy, $line);
-	$line=str_replace("{PRIVACYMESSAGE}", _PRIVACY_MESSAGE, $line);
-	$line=str_replace("{CLEARALL}", $clearall, $line);
-	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
-	$line=str_replace("{SUBMITCOMPLETE}", _SM_COMPLETED, $line);
-	$line=str_replace("{SUBMITREVIEW}", _SM_REVIEW, $line);
-	$line=str_replace("{ANSWERSCLEARED}", _ANSCLEAR, $line);
-	$line=str_replace("{RESTART}", 	"<a href='{$_SERVER['PHP_SELF']}?sid=$sid&token=".returnglobal('token')."'>"._RESTART."</a>", $line);
-	$line=str_replace("{CLOSEWINDOW}", "<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a>", $line);
-	$line=str_replace("{REGISTERERROR}", "You must include an email address!", $line);
-	$line=str_replace("{REGISTERMESSAGE1}", _RG_REGISTER1, $line);
-	$line=str_replace("{REGISTERMESSAGE2}", _RG_REGISTER2, $line);
-	$registerform="<table class='register'><tr><td align='right'>"._RG_FIRSTNAME."</td><td><input type='text'></td></tr>\n"
-				. "<tr><td align='right'>"._RG_LASTNAME."</td><td><input type='text'></td></tr>\n"
-				. "<tr><td align='right'>"._RG_EMAIL."</td><td><input type='text'></td></tr>\n"
-				. "<tr><td align='right'>"._TL_ATTR1."</td><td><input type='text'></td></tr>\n"
-				. "<tr><td align='right'>"._TL_ATTR2."</td><td><input type='text'></td></tr>\n"
-				. "<tr><td></td><td><input type='submit' value='"._CONTINUE_PS."'></td></tr>\n"
-				. "</table>\n";
-	$line=str_replace("{REGISTERFORM}", $registerform, $line);
-
-	return $line;
-	}
 function makegraph($thisstep, $total)
 	{
 	global $templatedir, $publicurl, $templatename;
@@ -350,6 +275,31 @@ function makegraph($thisstep, $total)
 	}
 
 if (!$screenname) {$screenname=_TP_WELCOMEPAGE;}
+if ($screenname != _TP_WELCOMEPAGE) {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
+if ($screenname == _TP_SUBMITPAGE) {$_POST['move'] = " "._LAST." ";}
+//FAKE DATA FOR TEMPLATES
+$thissurvey['name']="Template Sample";
+$thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
+$thissurvey['welcome']="Welcome to this sample survey.<br />\n You should have a great time doing this<br />";
+$thissurvey['allowsave']="Y";
+$thissurvey['templatedir']=$templatename;
+$thissurvey['format']="G";
+$thissurvey['url']="http://phpsurveyor.sourceforge.net/";
+$thissurvey['urldescrip']="A URL Description";
+$percentcomplete=makegraph(6, 10);
+$groupname="Group 1: The first lot of questions";
+$groupdescription="This group description is fairly vacuous, but quite important.";
+$navigator="<input class='submit' type='submit' value=' next >> ' name='move' />";
+if ($screenname != _TP_WELCOMEPAGE) {$navigator = "<input class='submit' type='submit' value=' << prev ' name='move' />\n".$navigator;}
+$help="This is some help text";
+$totalquestions="10";
+$surveyformat="Format";
+$completed="Survey is completed and saved.";
+$notanswered="5";
+$privacy="";
+$sid="1295";
+$token=1234567;
+
 $addbr=false;
 switch($screenname) {
 	case _TP_QUESTIONPAGE:
@@ -405,6 +355,46 @@ switch($screenname) {
 			$myoutput[]=templatereplace($op);
 			}
 		foreach(file("$publicdir/templates/$templatename/register.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		$myoutput[]= "\n";
+		break;
+	case _TP_SAVEPAGE:
+		unset($files);
+		foreach($Save as $qs) {
+			$files[]=array("name"=>$qs);
+		}
+		$myoutput[]="<html>";
+		foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		foreach(file("$publicdir/templates/$templatename/save.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		$myoutput[]= "\n";
+		break;
+	case _TP_LOADPAGE:
+		unset($files);
+		foreach($Load as $qs) {
+			$files[]=array("name"=>$qs);
+		}
+		$myoutput[]="<html>";
+		foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		foreach(file("$publicdir/templates/$templatename/load.pstpl") as $op)
 			{
 			$myoutput[]=templatereplace($op);
 			}
