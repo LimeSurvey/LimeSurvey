@@ -310,7 +310,7 @@ if (isset($lid) && ($action != "editset") && $lid)
 		echo "\t\t\t\t<tr>\n"
 			."\t\t\t\t<form method='post' action='labels.php'>\n"
 			."\t\t\t\t\t<td>\n"
-			."\t\t\t\t\t<input type='text' $slstyle name='code' size='5'>\n"
+			."\t\t\t\t\t<input type='text' $slstyle name='code' size='5' id='addnewlabelcode'>\n"
 			."\t\t\t\t\t</td>\n"
 			."\t\t\t\t\t<td>\n"
 			."\t\t\t\t\t<input type='text' $slstyle name='title' size='35'>\n"
@@ -321,6 +321,11 @@ if (isset($lid) && ($action != "editset") && $lid)
 			."\t\t\t\t\t<td>\n"
 			."\t\t\t\t\t</td>\n"
 			."\t\t\t\t</tr>\n";
+		echo "<script type='text/javascript' language='javascript'>\n"
+			. "<!--\n"
+			. "document.getElementById('addnewlabelcode').focus();\n"
+			. "//-->\n"
+			. "</script>\n";
 		}
 	else
 		{
@@ -426,10 +431,13 @@ function modanswers($lid)
 	switch($_POST['method'])
 		{
 		case _ADD:
-			$query = "INSERT INTO {$dbprefix}labels (lid, code, title, sortorder) VALUES ($lid, '{$_POST['code']}', '{$_POST['title']}', '{$_POST['sortorder']}')";
-			if (!$result = mysql_query($query))
+			if (isset($_POST['code']) && $_POST['code'])
 				{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_INSERTANS." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+				$query = "INSERT INTO {$dbprefix}labels (lid, code, title, sortorder) VALUES ($lid, '{$_POST['code']}', '{$_POST['title']}', '{$_POST['sortorder']}')";
+				if (!$result = mysql_query($query))
+					{
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_INSERTANS." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+					}
 				}
 			break;
 		case _AL_SAVE:
