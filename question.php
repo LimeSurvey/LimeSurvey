@@ -278,12 +278,21 @@ if ($_POST['move'] == " "._SUBMIT." ")
 				$id = $savedid;
 				$to = $surveyadminemail;
 				$subject = "$sitename Survey Submitted";
-				$message = _CONFIRMATION_MESSAGE1." $sitename\r\n";
+				$message = _CONFIRMATION_MESSAGE1." $surveyname\r\n";
 				$message.= "\r\n";
 				$message.= _CONFIRMATION_MESSAGE2."\r\n";
 				$message.= "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n";
 				$message.= _CONFIRMATION_MESSAGE3."\r\n";
 				$message.= "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
+				if ($sendnotification > 1)
+					{ //Send results as well. Currently just bare-bones - will be extended in later release
+					$message .= "----------------------------\r\n";
+					foreach ($_SESSION['insertarray'] as $value)
+						{
+						$message .= "$value: {$_SESSION[$value]}\r\n";
+						}
+					$message .= "----------------------------\r\n\r\n";
+					}
 				$message.= "PHP Surveyor";
 				$headers = "From: $surveyadminemail\r\n";
 				mail($to, $subject, $message, $headers);
