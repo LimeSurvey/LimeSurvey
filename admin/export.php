@@ -188,7 +188,14 @@ if (!$style)
 	foreach($excesscols as $ec)
 		{
 		echo "<option value='$ec'";
-		if ($i<256) 
+		if (isset($_POST['summary'])) 
+			{
+		    if (in_array($ec, $_POST['summary'])) 
+				{
+		        echo "selected";
+		    	}
+			}
+		elseif ($i<256) 
 			{
 			echo " selected";
 		    }
