@@ -33,10 +33,10 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$action = $_GET['action'];
-$sid = $_GET['sid'];
-$id = $_GET['id'];
-$surveytable = $_GET['surveytable'];
+$action = $_GET['action']; if (!$action) {$action = $_POST['action'];}
+$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
+$id = $_GET['id']; if (!$id) {$id = $_POST['id'];}
+$surveytable = $_GET['surveytable']; if (!$surveytable) {$surveytable = $_POST['surveytable'];}
 
 include("config.php");
 
@@ -76,16 +76,16 @@ if ($action == "insert")
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			$col_name .= "$fieldname, \n";
 			if (get_magic_quotes_gpc())
-				{$insertqr .= "'" . $$fieldname . "', \n";}
+				{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 			else
 				{
 				if (phpversion() >= "4.3.0")
 					{
-					$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";
+					$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				else
 					{
-					$insertqr .= "'" . mysql_escape_string($$fieldname) . "', \n";
+					$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				}
 			}
@@ -95,16 +95,16 @@ if ($action == "insert")
 			$fieldname2 = $fieldname . "comment";
 			$col_name .= "$fieldname, \n$fieldname2, \n";
 			if (get_magic_quotes_gpc())
-				{$insertqr .= "'" . $$fieldname . "', \n'" . $$fieldname2 . "', \n";}
+				{$insertqr .= "'" . $_POST[$fieldname] . "', \n'" . $_POST[$fieldname2] . "', \n";}
 			else
 				{
 				if (phpversion() >= "4.3.0")
 					{
-					$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n'" . mysql_real_escape_string($$fieldname2) . "', \n";
+					$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
 					}
 				else
 					{
-					$insertqr .= "'" . mysql_escape_string($$fieldname) . "', \n'" . mysql_escape_string($$fieldname2) . "', \n";
+					$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
 					}
 				}
 			}
@@ -118,16 +118,16 @@ if ($action == "insert")
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 				$col_name .= "$fieldname, \n";
 				if (get_magic_quotes_gpc())
-					{$insertqr .= "'" . $$fieldname . "', \n";}
+					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 				else
 					{
 					if (phpversion() >= "4.3.0")
 						{
-						$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";
+						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 						}
 					else
 						{
-						$insertqr .= "'" . mysql_escape_string($$fieldname) . "', \n";
+						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 						}
 					}
 				$otherexists = "";
@@ -137,16 +137,16 @@ if ($action == "insert")
 					$fieldname2 = $fieldname."comment";
 					$col_name .= "$fieldname2, \n";
 					if (get_magic_quotes_gpc())
-						{$insertqr .= "'" . $$fieldname2 . "', \n";}
+						{$insertqr .= "'" . $_POST[$fieldname2] . "', \n";}
 					else
 						{
 						if (phpversion() >= "4.3.0")
 							{
-							$insertqr .= "'" . mysql_real_escape_string($$fieldname2) . "', \n";
+							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
 							}
 						else
 							{
-							$insertqr .= "'" . mysql_escape_string($$fieldname2) . "', \n";
+							$insertqr .= "'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
 							}
 						}
 					}
@@ -156,16 +156,16 @@ if ($action == "insert")
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 				$col_name .= "$fieldname, \n";
 				if (get_magic_quotes_gpc())
-					{$insertqr .= "'" . $$fieldname . "', \n";}
+					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 				else
 					{
 					if (phpversion() >= "4.3.0")
 						{
-						$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";
+						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 						}
 					else
 						{
-						$insertqr .= "'" . mysql_escape_string($$fieldname) . "', \n";
+						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 						}
 					}
 				}
@@ -551,35 +551,36 @@ elseif ($action == "update")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (get_magic_quotes_gpc())
-				{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
+				//{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
+				{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
 			else
 				{
 				if (phpversion() >= "4.3.0")
 					{
-					$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";
+					$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				else
 					{
-					$updateqr .= "$fieldname = '" . mysql_escape_string($$fieldname) . "', \n";
+					$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				}
 			}
 		elseif ($irow['type'] == "O")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
+			$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}comment";
 			if (get_magic_quotes_gpc())
-				{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
+				{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
 			else
 				{
 				if (phpversion() >= "4.3.0")
 					{
-					$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";
+					$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				else
 					{
-					$updateqr .= "$fieldname = '" . mysql_escape_string($$fieldname) . "', \n";
+					$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 					}
 				}
 			}
@@ -592,22 +593,22 @@ elseif ($action == "update")
 			while ($i2row = mysql_fetch_array($i2result))
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-				$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
+				$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";
 				if ($i2row['other'] == "Y") {$otherexists = "Y";}
 				if ($irow['type'] == "P")
 					{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
 					if (get_magic_quotes_gpc())
-						{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
+						{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
 					else
 						{
 						if (phpversion() >= "4.3.0")
 							{
-							$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";
+							$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 							}
 						else
 							{
-							$updateqr .= "$fieldname = '" . mysql_escape_string($$fieldname) . "', \n";
+							$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 							}
 						}
 					}
@@ -616,16 +617,16 @@ elseif ($action == "update")
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 				if (get_magic_quotes_gpc())
-					{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
+					{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
 				else
 					{
 					if (phpversion() >= "4.3.0")
 						{
-						$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";
+						$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 						}
 					else
 						{
-						$updateqr .= "$fieldname = '" . mysql_escape_string($$fieldname) . "', \n";
+						$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 						}
 					}
 				}
@@ -637,7 +638,7 @@ elseif ($action == "update")
 	echo "<br />\n<b>Record has been updated.</b><br /><br />\n";
 	echo "<a href='browse.php?sid=$sid&action=id&id=$id'>View record again</a>\n<br />\n";
 	echo "<a href='browse.php?sid=$sid&action=all'>Browse all records</a>\n";
-	//echo "<pre style='text-align: left'>$updateqr</pre>"; //Debugging info
+	echo "<pre style='text-align: left'>$updateqr</pre>"; //Debugging info
 	echo "</body>\n</html>\n";
 	}
 
