@@ -877,7 +877,7 @@ switch ($ia[4])
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
-			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
+			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n"
 					 . "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n"
 					 . "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='Y'";
@@ -936,7 +936,7 @@ switch ($ia[4])
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
-			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
+			if (!isset($trbc) || $$trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n"
 					 . "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n"
 					 . "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='I'";
@@ -1021,7 +1021,7 @@ switch ($ia[4])
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
-			if (isset($trbc) && ($trbc == "array1" || !$trbc) || !isset($trbc)) {$trbc = "array2";} else {$trbc = "array1";}
+			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n"
 					 . "\t\t\t\t\t<td align='right' class='answertext' width='$percwidth%'>{$ansrow['answer']}</td>\n";
 			foreach ($labelcode as $ld)
