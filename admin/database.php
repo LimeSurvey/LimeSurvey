@@ -275,10 +275,10 @@ elseif ($action == "insertnewsurvey")
 			$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 			}
 		$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires,";
-		$isquery .= " adminemail, private, faxto, format) VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',";
+		$isquery .= " adminemail, private, faxto, format, template, url, urldescrip) VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',";
 		$isquery .= " '{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',";
 		$isquery .= " '{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',";
-		$isquery .= " '{$_POST['faxto']}', '{$_POST['format']}')";
+		$isquery .= " '{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}', '{$_POST['urldescrip']}')";
 		$isresult = mysql_query ($isquery);
 		if ($isresult)
 			{
@@ -309,7 +309,8 @@ elseif ($action == "updatesurvey")
 	$usquery .= " admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',";
 	$usquery .= " expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',";
 	$usquery .= " private='{$_POST['private']}', faxto='{$_POST['faxto']}',";
-	$usquery .= " format='{$_POST['format']}'";
+	$usquery .= " format='{$_POST['format']}', template='{$_POST['template']}', ";
+	$usquery .= " url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}'";
 	$usquery .= " WHERE sid={$_POST['sid']}";
 	$usresult = mysql_query($usquery);
 	if ($usresult)
