@@ -206,6 +206,8 @@ foreach ($filters as $flt)
 				."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield3' value='";
 			if (isset($_POST[$myfield2])) {echo $_POST[$myfield3];}
 			echo "'><br />\n";
+			$allfields[]=$myfield2;
+			$allfields[]=$myfield3;
 			break;
 		case "D": // Date
 			$myfield2="D$myfield";
@@ -605,6 +607,8 @@ if (isset($_POST['display']) && $_POST['display'])
 						}
 					}
 				}
+			} else {
+			 echo "<!-- $pv DOES NOT EXIST IN ARRAY -->";
 			}
 		}
 	// 2: Do SQL query
