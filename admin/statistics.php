@@ -56,7 +56,7 @@ if (!$sid)
 	}
 
 echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Quick Statistics</b></td></tr></table>\n";
-
+echo $surveyoptions;
 echo "<table width='100%'>\n";
 echo "\t<form method='post'>\n";
 // 1: Get list of questions with predefined answers from survey
@@ -293,14 +293,30 @@ if ($display)
 	while ($row=mysql_fetch_row($result)) {$results=$row[0];}
 	// 3: Present results including option to view those rows
 	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='0' cellspacing='0' bordercolor='black'>\n";
-	echo "\t<tr><td align='center'><b>$setfont<font color='orange'>Results:</b></td></tr>\n";
-	echo "\t<tr><td align='center'>$setfont<font color='#EEEEEE'>";
+	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Results:</b></td></tr>\n";
+	echo "\t<tr><td colspan='2' align='center'>$setfont<font color='#EEEEEE'>";
 	echo "<B>Your query returns $results record(s)!</b><br />\n\t\t";
 	echo "There are $total records in your survey. This query represents ";
 	$percent=sprintf("%02d", ($results/$total)*100);
 	echo "$percent% of your total results<br />\n\t\t<br />\n";
-	echo "\t\t<font size='1'>$query";
-	echo "</td></tr>\n";
+	echo "\t\t<font size='1'>$query\n";
+	echo "\t</td></tr>\n";
+	$sql=implode(" AND ", $selects);
+	if ($results > 0)
+		{
+		echo "\t<tr>";
+		echo "\t\t<form action='browse.php' method='post'><td align='right' width='50%'>\n";
+		echo "\t\t<input type='submit' value='Browse' $btstyle>\n";
+		echo "\t\t\t<input type='hidden' name='sid' value='$sid'>\n";
+		echo "\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n";
+		echo "\t\t\t<input type='hidden' name='action' value='all'>\n";
+		echo "\t\t</td></form>\n";
+		echo "\t\t<form action='export.php' method='post' target='_blank'><td width='50%'>\n";
+		echo "\t\t<input type='submit' value='Export' $btstyle>\n";
+		echo "\t\t\t<input type='hidden' name='sid' value='$sid'>\n";
+		echo "\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n";
+		echo "\t\t</td></form>\n\t</tr>\n";
+		}
 	echo "</table>\n";
 	}
 ?>
