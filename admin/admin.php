@@ -73,12 +73,17 @@ echo "</script>\n";
 // CHECK IF FIRST USE!
 if (!mysql_selectdb ($databasename, $connect))
 	{
-	echo "<center><b><font color='red'>"._ERROR."<br />\n";
+	echo "<br />\n";
+	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._SETUP."</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "<b><font color='red'>"._ERROR."<br />\n";
 	echo _ST_NODB1."</font></b><br /><br />\n";
 	echo _ST_NODB2."<br />\n";
-	echo _ST_NODB3."<br />\n";
+	echo _ST_NODB3."<br /><br />\n";
 	echo _ST_NODB4." $databasename<br />\n";
-	echo "<br /><input type='submit' value='"._ST_CREATEDB."' onClick='location.href=\"createdb.php?dbname=$databasename\"' /></center>\n";
+	echo "<br /><input $btstyle type='submit' value='"._ST_CREATEDB."' onClick='location.href=\"createdb.php?dbname=$databasename\"' /></center>\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
