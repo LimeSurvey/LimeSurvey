@@ -118,6 +118,28 @@ $langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 
+//MAKE SURE SURVEY HASN'T EXPIRED
+if ($surveyexpiry < date("Y-m-d") && $surveyexpiry != "0000-00-00")
+	{
+	sendcacheheaders();
+	echo "<html>\n";
+	$output=file("$tpldir/default/startpage.pstpl");
+	foreach ($output as $op)
+		{
+		echo templatereplace($op);
+		}
+	echo "\t\t<center><br />\n";
+	echo "\t\t\t"._SURVEYEXPIRED."<br /><br />\n";
+	echo "\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "._CONTACT2."<br /><br />\n";
+	$output=file("$tpldir/default/endpage.pstpl");
+	foreach ($output as $op)
+		{
+		echo templatereplace($op);
+		}
+	echo "</html>\n";
+	exit;
+	}
+	
 //CHECK FOR PREVIOUSLY COMPLETED COOKIE
 //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
 $cookiename="PHPSID".returnglobal('sid')."STATUS";
