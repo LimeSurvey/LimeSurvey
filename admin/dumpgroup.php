@@ -101,7 +101,7 @@ function BuildOutput($Query)
 	return $Output;
 	}
 
-//header("Content-Type: application/msword"); //EXPORT INTO MSWORD
+header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
