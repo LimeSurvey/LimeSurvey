@@ -622,7 +622,7 @@ if ($_POST['summary'])
 			$query ="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null";
 			if ($sql != "NULL") {$query .= " AND $sql";}
 			$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
-			$querystarter="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
+			$querystarter="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null";
 			if ($sql != "NULL") {$querystarter .= " AND $sql";}
 			$medcount=mysql_num_rows($result);
 			
@@ -806,7 +806,7 @@ if ($_POST['summary'])
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
 						{
-						$fquery = "SELECT * FROM labels WHERE lid=$qlid ORDER BY sortorder, code";
+						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$qlid ORDER BY sortorder, code";
 						$fresult = mysql_query($fquery);
 						while ($frow=mysql_fetch_array($fresult))
 							{
