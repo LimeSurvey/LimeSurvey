@@ -35,12 +35,14 @@
 */
 	
 //Move current step
-if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
-if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
+if (!isset($gl)) {$gl=array("null");}
+if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
+if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES
-if ($_POST['fieldnames'])
+if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	{
 	$postedfieldnames=explode("|", $_POST['fieldnames']);
 	foreach ($postedfieldnames as $pf)
@@ -50,8 +52,8 @@ if ($_POST['fieldnames'])
 	}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
-if ($allowmandatorybackwards==1 && $_POST['move'] == " << "._PREV." ") {$backok="Y";}
-if ($_POST['mandatory'] && $backok != "Y")
+if ($allowmandatorybackwards==1 && isset($_POST['move']) &&  $_POST['move'] == " << "._PREV." ") {$backok="Y";}
+if (isset($_POST['mandatory']) && $_POST['mandatory'] && $backok != "Y")
 	{
 	$chkmands=explode("|", $_POST['mandatory']);
 	$mfns=explode("|", $_POST['mandatoryfn']);
@@ -65,9 +67,9 @@ if ($_POST['mandatory'] && $backok != "Y")
 				if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 					{
 					//The number of questions not answered is equal to the number of questions
-					if ($_POST['move'] == " << "._PREV." ") 
-					if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+					if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") 
+					if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 				    $notanswered[]=substr($multiname, 5, strlen($multiname));
 					$$multiname=0;
 					$$multiname2=0;
@@ -97,14 +99,14 @@ if ($_POST['mandatory'] && $backok != "Y")
 		$$multiname2++;
 		$mi++;
 		}
-	if ($multiname && $_POST[$multiname]) // Catch the last multiple options question in the lot
+	if ($multiname && isset($_POST[$multiname]) && $_POST[$multiname]) // Catch the last multiple options question in the lot
 		{
 		if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 			//The number of questions not answered is equal to the number of questions
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 		    $notanswered[]=substr($multiname, 5, strlen($multiname));
 			$$multiname="";
 			$$multiname2="";
@@ -112,7 +114,7 @@ if ($_POST['mandatory'] && $backok != "Y")
 		}
 	}
 
-if ($_POST['conmandatory'] && $backok != "Y") //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
+if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y") //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
 	{
 	$chkcmands=explode("|", $_POST['conmandatory']);
 	$cmfns=explode("|", $_POST['conmandatoryfn']);
@@ -172,7 +174,7 @@ if ($_POST['conmandatory'] && $backok != "Y") //Mandatory conditional questions 
 	}
 
 //SUBMIT
-if ($_POST['move'] == " "._SUBMIT." ")
+if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 	{
 	//If survey has datestamp turned on, add $localtimedate to sessions
 	if ($surveydatestamp == "Y")
@@ -183,10 +185,12 @@ if ($_POST['move'] == " "._SUBMIT." ")
 
 	//DEVELOP SQL TO INSERT RESPONSES
 	$subquery = "INSERT INTO $surveytable ";
-	if (is_array($_SESSION['insertarray']))
+	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 		{
 		foreach ($_SESSION['insertarray'] as $value)
 			{
+			if (!isset($col_name)) {$col_name="";}
+			if (!isset($values)) {$values="";}
 			$col_name .= "`, `" . $value; 
 			if (get_magic_quotes_gpc() == "0")
 				{
@@ -362,7 +366,7 @@ if ($_POST['move'] == " "._SUBMIT." ")
 	}
 
 //LAST PHASE
-if ($_POST['move'] == " "._LAST." " && !$notanswered)
+if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) || !$notanswered))
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	if ($surveyprivate != "N")
@@ -427,7 +431,7 @@ if ($surveyexists <1)
 	}
 
 //RUN THIS IF THIS IS THE FIRST TIME
-if (!$_SESSION['step'])
+if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 	if ($tokensexist == 1 && !$_GET['token'])
 		{
@@ -534,7 +538,7 @@ if (!$_SESSION['step'])
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($row = mysql_fetch_assoc($result)) {$arows[] = $row;} // Get table output into array
 	usort($arows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-	if (!$_SESSION['insertarray'])
+	if (!isset($_SESSION['insertarray']) || !$_SESSION['insertarray'])
 		{
 		if ($surveyprivate == "N")
 			{
@@ -816,7 +820,7 @@ foreach(file("$thistpl/endpage.pstpl") as $op)
 	}
 echo "\n";
 	
-if (is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
+if (isset($conditions) && is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
 	{
 	foreach (array_keys($_SESSION) as $SESak)
 		{
@@ -827,22 +831,22 @@ if (is_array($conditions)) //if conditions exist, create hidden inputs for previ
 		}
 	}
 //SOME STUFF FOR MANDATORY QUESTIONS
-if (is_array($mandatorys))
+if (isset($mandatorys) && is_array($mandatorys))
 	{
 	$mandatory=implode("|", $mandatorys);
 	echo "<input type='hidden' name='mandatory' value='$mandatory'>\n";
 	}
-if (is_array($conmandatorys))
+if (isset($conmandatorys) && is_array($conmandatorys))
 	{
 	$conmandatory=implode("|", $conmandatorys);
 	echo "<input type='hidden' name='conmandatory' value='$conmandatory'>\n";
 	}
-if (is_array($mandatoryfns))
+if (isset($mandatoryfns) && is_array($mandatoryfns))
 	{
 	$mandatoryfn=implode("|", $mandatoryfns);
 	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn'>\n";
 	}
-if (is_array($conmandatoryfns))
+if (isset($conmandatoryfns) && is_array($conmandatoryfns))
 	{
 	$conmandatoryfn=implode("|", $conmandatoryfns);
 	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn'>\n";
@@ -855,16 +859,17 @@ echo "</form>\n</html>";
 
 function surveymover()
 	{
-	global $sid;
-	if ($_SESSION['step'] > 0)
+	global $sid, $presentinggroupdescription;
+	$surveymover="";
+	if (isset($_SESSION['step']) && $_SESSION['step'] > 0)
 		{$surveymover .= "<input class='submit' type='submit' value=' << "._PREV." ' name='move' />\n";}
-	if ($_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
+	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
-	if (!$_SESSION['step'])
+	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
+	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
+	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
 		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "._LAST." ' name='move' />\n";}
 	return $surveymover;	
 	}
