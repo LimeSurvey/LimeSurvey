@@ -331,7 +331,7 @@ if ($action == "browse" || $action == "search")
 	$bquery = "SELECT * FROM {$dbprefix}tokens_$sid";
 	if ($searchstring)
 		{
-		$bquery .= " WHERE firstname LIKE '%$searchstring%' OR lastname LIKE '%$searchstring' OR email LIKE '%$searchstring%' OR token LIKE '%$searchstring%'";
+		$bquery .= " WHERE firstname LIKE '%$searchstring%' OR lastname LIKE '%$searchstring%' OR email LIKE '%$searchstring%' OR token LIKE '%$searchstring%'";
 		}
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
