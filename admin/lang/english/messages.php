@@ -201,7 +201,7 @@ define(_ARR5, "Array (5 Point Choice)");
 define(_ARR10, "Array (10 Point Choice)");
 define(_ARRYN, "Array (Yes/No/Uncertain)");
 define(_ARRMV, "Array (Increase, Same, Decrease)");
-define(_ARRFL, "Array (Flexible Labels)"); //(FOR LATER RELEASE)
+define(_ARRFL, "Array (Flexible Labels)"); //Release 0.98rc3
 define(_SINFL, "Single (Flexible Labels)"); //(FOR LATER RELEASE)
 define(_EMAIL, "Email Address"); //FOR LATER RELEASE
 
