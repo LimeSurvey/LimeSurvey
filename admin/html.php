@@ -171,12 +171,17 @@ if ($qid)
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
+		$qrq = "SELECT * FROM answers WHERE qid=$qid";
+		$qrr = mysql_query($qrq);
+		$qct = mysql_num_rows($qrr);
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $grrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P")
 			{
 			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Answers:</b></font></td>\n";
 			$questionsummary .= "\t<td>\n\t\t<select $slstyle name='answer' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 			$questionsummary .= getanswers();
-			$questionsummary .= "\n\t\t</select>\n\t</td></tr>\n";
+			$questionsummary .= "\n\t\t</select>\n";
+			if ($qct == 0) {$questionsummary .= "\t\t<font face='verdana' size='1' color='green'>[You need to Add Answers]</font>\n";}
+			$questionsummary .= "\t</td></tr>\n";
 			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
@@ -190,9 +195,6 @@ if ($qid)
 				{
 				$questionsummary .= "\t\t<input type='submit' $btstyle value='Add Answer' onClick=\"window.open('$scriptname?action=addanswer&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
 				}
-			$qrq = "SELECT * FROM answers WHERE qid=$qid";
-			$qrr = mysql_query($qrq);
-			$qct = mysql_num_rows($qrr);
 			if ($qct == 0)
 				{
 				$questionsummary .= "\t\t<input type='submit' $btstyle value='Delete Question' onClick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
