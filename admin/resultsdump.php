@@ -45,8 +45,20 @@ if (!$sid)
 	}
 
 $filename="survey_{$sid}_dump.sql";
+$mysqldump="$mysqlbin/mysqldump";
+if (substr($OS, 0, 3) == "WIN") {$mysqldump .= ".exe";}
+//Check that $mysqlbin/mysqldump actually exists
+if (!file_exists($mysqldump)) 
+	{
+	echo "$setfont<center><b><font color='red'>ERROR:</font></b><br />\n";
+	echo "Cannot find mysqldump file. ($mysqldump)<br /><br />\n";
+	echo "If this script is running on a Windows Server, you should uncomment the \$mysqlbin line in config.php<br /><br />\n";
+	echo "<a href='browse.php?sid=$sid'>Back to browse</a></center>";
+	exit;
+	}
 
 $command="$mysqlbin/mysqldump -u $databaseuser --password=$databasepass $databasename survey_$sid > $filename";
+
 $backup = popen("$command","r");
 pclose($backup);
 
