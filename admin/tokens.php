@@ -114,13 +114,14 @@ $tokenmenu = "\t<tr>\n";
 $tokenmenu .= "\t\t<td bgcolor='#EEEEEE' colspan='2' align='center' ";
 $tokenmenu .= "style='border-top-style: solid; border-top-width: 1; border-top-color:#BBBBBB; border-left-color:#BBBBBB; border-left-width:1; border-left-style:solid; border-right-style: solid; border-right-width:1; border-right-color:#BBBBBB'>\n";
 $tokenmenu .= "\t\t\t<font size='2'>[<a href='admin.php?sid=$sid'>admin</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid'>summary</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=browse'>browse</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=add'>add</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=import'>import</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=email'>invite</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=remind'>remind</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=tokenify'>tokenify</a>] \n";
-$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=kill'>drop tokens</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=kill'>drop&nbsp;tokens</a>] \n";
 $tokenmenu .= "\t\t</td>\n";
 $tokenmenu .= "\t</tr>\n";
 
