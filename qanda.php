@@ -1213,12 +1213,14 @@ function do_multiplechoice($ia)
 	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$divider="";
 	$maxrows=0;
+	$closetable=false;
 	if ($dcols >0 && $anscount > $dcols) //Break into columns
 		{
 	    $width=sprintf("%0d", 100/$dcols);
 		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
 		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
 		$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+		$closetable=true;
 		}	
 	$fn = 1;
 	if (!isset($multifields)) {$multifields="";}
@@ -1251,6 +1253,7 @@ function do_multiplechoice($ia)
 		$anscount++;
 		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 		}
+	if ($closetable) $answer.="</td></tr></table>\n";
 	$answer .= "\t\t\t\t\t</td>\n";
 	if ($dcols <1) 
 		{ //This just makes a single column look a bit nicer
