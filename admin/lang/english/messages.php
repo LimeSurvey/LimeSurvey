@@ -84,6 +84,7 @@ define(_G_MAXIMISE_BT, "Show Details of this Group");
 define(_G_CLOSE_BT, "Close this Group");
 //Question bar
 define(_Q_EDIT_BT, "Edit Current Question");
+define(_Q_COPY_BT, "Copy Current Question"); //New in 0.98rc4
 define(_Q_DELETE_BT, "Delete Current Question");
 define(_Q_EXPORT_BT, "Export this Question");
 define(_Q_CONDITIONS_BT, "Set Conditions for this Question");
