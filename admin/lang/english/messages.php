@@ -511,4 +511,17 @@ define(_LB_TOTALUSE, "Some surveys currently use this label set. Modifying the c
 define(_EL_NOLID, "No LID has been provided. Cannot dump label set.");
 //Import Labels
 define(_IL_GOLABELADMIN, "Return to Labels Admin");
+
+//PHPSurveyor System Summary
+define(_PS_TITLE, "PHPSurveyor System Summary");
+define(_PS_DBNAME, "Database Name");
+define(_PS_DEFLANG, "Default Language");
+define(_PS_CURLANG, "Current Language");
+define(_PS_USERS, "Users");
+define(_PS_ACTIVESURVEYS, "Active Surveys");
+define(_PS_DEACTSURVEYS, "De-activated Surveys");
+define(_PS_ACTIVETOKENS, "Active Token Tables");
+define(_PS_DEACTTOKENS, "De-activated Token Tables");
+
+
 ?>
