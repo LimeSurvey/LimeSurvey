@@ -224,7 +224,7 @@ else
 					$createsurvey .= " TINYTEXT";
 					break;
 				case "S":  //SHORT TEXT
-					$createsurvey .= " VARCHAR(200)";
+					$createsurvey .= " TINYTEXT";
 					break;
 				case "L":  //LIST (RADIO)
 				case "!":  //LIST (DROPDOWN)
@@ -265,15 +265,15 @@ else
 				if ($abrow['other']=="Y") {$alsoother="Y";}
 				if ($arow['type'] == "P")
 					{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` VARCHAR(255),\n";
+					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` TINYTEXT,\n";
 					}
 				}
 			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
 				{
-				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` VARCHAR(255),\n";
+				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` TINYTEXT,\n";
 				if ($arow['type']=="P")
 					{
-					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` VARCHAR(255),\n";
+					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` TINYTEXT,\n";
 					}
 				}
 			}
@@ -283,7 +283,7 @@ else
 			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			while ($abrow=mysql_fetch_array($abresult))
 				{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` VARCHAR(255),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` TINYTEXT,\n";
 				}
 			}
 		elseif ($arow['type'] == "R")
