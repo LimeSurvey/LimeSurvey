@@ -661,7 +661,7 @@ if (is_array($conditions))
 			$cccount=mysql_num_rows($cccresult);
 			}
 		if ($cd[4] == "R") 	{$idname="fvalue".substr($cd[2], strlen($cd[5]), strlen($cd[2]-strlen($cd[5])));}
-		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $dropdowns == "R" && $cccount <= $dropdownthreshold))
+		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $dropdowns == "R" && $cccount <= $dropdownthreshold))
 							{$idname="java$cd[2]";}
 		elseif ($cd[4] == "M" || $cd[4] == "O" || $cd[4] == "P")
 							{$idname="$cd[2]$cd[3]";}
