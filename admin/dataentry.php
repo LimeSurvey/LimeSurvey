@@ -33,11 +33,6 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-//$action = $_GET['action']; if (!$action) {$action = $_POST['action'];}
-//$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
-//$id = $_GET['id']; if (!$id) {$id = $_POST['id'];}
-//$surveytable = $_GET['surveytable']; if (!$surveytable) {$surveytable = $_POST['surveytable'];}
-
 include("config.php");
 
 $action = returnglobal('action');
@@ -50,7 +45,6 @@ sendcacheheaders();
 $surveyoptions = browsemenubar();
 echo $htmlheader;
 echo "<table height='1'><tr><td></td></tr></table>\n";
-//echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Data Entry</b></td></tr></table>\n";
 
 if (!mysql_selectdb ($databasename, $connect))
 	{
@@ -86,51 +80,40 @@ if (!$sid && !$action)
 	exit;
 	}
 
-if ($action == "edit" || $action == "")
+if ($action == "edit" || $action == "" || $action == "editsaved")
 	{
-	$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
-	$result = mysql_query($query);
-	if (!isset($tpldir)) {$tpldir=$publicdir."/templates";}
-	while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
-	if (!isset($templatedir) || !$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
-	if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
-	$langdir="$publicdir/lang";
-	$langfilename="$langdir/$surveylanguage.lang.php";
-	if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-	require($langfilename);	
+	loadPublicLangFile($sid);
 	}	
 	
 if ($action == "insert")
 	{
-	echo "<table height='1'><tr><td></td></tr></table>\n"
-		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DATAENTRY."</b></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."\t\t\t<b>Inserting data</b><br />\n"
-		."SID: $sid, ($surveytable)<br /><br />\n";
+	//BUILD THE SQL TO INSERT RESPONSES
 	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
-	
+	$col_name="";
+	$insertqr="";
 	while ($irow = mysql_fetch_array($iresult))
 		{
 		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$col_name .= "`$fieldname`, \n";
-			if (get_magic_quotes_gpc())
-				{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
-			else
+			if (isset($_POST[$fieldname]))
 				{
-				if (_PHPVERSION >= "4.3.0")
-					{
-					$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-					}
+				$col_name .= "`$fieldname`, \n";
+				if (get_magic_quotes_gpc())
+					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 				else
 					{
-					$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+					if (_PHPVERSION >= "4.3.0")
+						{
+						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+						}
+					else
+						{
+						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+						}
 					}
-				}
+			    }
 			}
 		elseif ($irow['type'] == "O")
 			{
@@ -182,42 +165,45 @@ if ($action == "insert")
 			while ($i2row = mysql_fetch_array($i2result))
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-				$col_name .= "`$fieldname`, \n";
-				if (get_magic_quotes_gpc())
-					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
-				else
+				if (isset($_POST[$fieldname]))
 					{
-					if (_PHPVERSION >= "4.3.0")
-						{
-						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-						}
-					else
-						{
-						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-						}
-					}
-				$otherexists = "";
-				if ($i2row['other'] == "Y") {$otherexists = "Y";}
-				if ($irow['type'] == "P")
-					{
-					$fieldname2 = $fieldname."comment";
-					$col_name .= "`$fieldname2`, \n";
+					$col_name .= "`$fieldname`, \n";
 					if (get_magic_quotes_gpc())
-						{$insertqr .= "'" . $_POST[$fieldname2] . "', \n";}
+						{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 					else
 						{
 						if (_PHPVERSION >= "4.3.0")
 							{
-							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
+							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 							}
 						else
 							{
-							$insertqr .= "'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
+							$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 							}
 						}
+					$otherexists = "";
+					if ($i2row['other'] == "Y") {$otherexists = "Y";}
+					if ($irow['type'] == "P")
+						{
+						$fieldname2 = $fieldname."comment";
+						$col_name .= "`$fieldname2`, \n";
+						if (get_magic_quotes_gpc())
+							{$insertqr .= "'" . $_POST[$fieldname2] . "', \n";}
+						else
+							{
+							if (_PHPVERSION >= "4.3.0")
+								{
+								$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
+								}
+							else
+								{
+								$insertqr .= "'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
+								}
+							}
+						}				    
 					}
 				}
-			if ($otherexists == "Y") 
+			if (isset($otherexists) && $otherexists == "Y") 
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 				$col_name .= "`$fieldname`, \n";
@@ -241,42 +227,202 @@ if ($action == "insert")
 	$col_name = substr($col_name, 0, -3); //Strip off the last comma-space
 	$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
 	
-	if ($_POST['token']) //handle tokens if survey needs them
+	//NOW SHOW SCREEN
+	if (isset($_POST['token']) && $_POST['token']) //handle tokens if survey needs them
 		{
 		$col_name .= ", token\n";
 		$insertqr .= ", '{$_POST['token']}'";
 		}
-	if ($_POST['datestamp']) //handle datestamp if needed
+	if (isset($_POST['datestamp']) && $_POST['datestamp']) //handle datestamp if needed
 		{
 		$col_name .= ", datestamp\n";
 		$insertqr .= ", '{$_POST['datestamp']}'";
 		}
-	
-	
-	$SQL = "INSERT INTO $surveytable \n($col_name) \nVALUES \n($insertqr)";
-	//echo $SQL; //Debugging line
-	$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
-	
-	echo "\t\t\t<font color='green'><b>"._SUCCESS."</b></font><br />\n";
-	
-	$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
-	$fresult = mysql_query($fquery);
-	while ($frow = mysql_fetch_array($fresult))
+
+	echo "<table height='1'><tr><td></td></tr></table>\n"
+		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+
+	if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
-		echo "\t\t\t"._DE_RECORD." {$frow['id']}<br />\n";
-		$thisid=$frow['id'];
+	    //Save this, don't submit to final response table
+		loadPublicLangFile($sid);
+		$save['identifier']=returnglobal('save_identifier');
+		$save['password']=returnglobal('save_password');
+		$save['passwordconfirm']=returnglobal('save_confirmpassword');
+		$save['email']=returnglobal('save_email');
+		if (!returnglobal('redo'))
+			{
+		    $password=md5($save['password']);
+			}
+		else
+			{
+			$password=$save['password'];
+			}
+		$errormsg="";
+		if (!$save['identifier']) {$errormsg .= _ERROR.": "._SAVENONAME;}
+		if (!$save['password']) {$errormsg .= _ERROR.": "._SAVENOPASS;}
+		if ($save['password'] != $save['passwordconfirm']) {$errormsg .= _ERROR.": "._SAVENOMATCH;}
+		if (!$errormsg && $save['identifier'] && !returnglobal('redo'))
+			{
+		    //All the fields are correct. Now make sure there's not already a matching saved item
+			$query = "SELECT * FROM {$dbprefix}saved\n"
+					."WHERE sid=$sid\n"
+					."AND identifier='".$save['identifier']."'\n"
+					."AND access_code='$password'\n";
+			$result = mysql_query($query) or die("Error checking for duplicates!<br />$query<br />".mysql_error());
+			if (mysql_num_rows($result) > 0) 
+				{
+				$errormsg.=_SAVEDUPLICATE."<br />\n";
+				}
+			}
+		if ($errormsg) 
+			{
+		    echo $errormsg;
+			echo "Try again:<br />
+				  <table class='outlinetable' cellspacing='0' align='center'>
+				  <tr>
+				   <form method='post'>
+				   <td align='right'>"._DE_SAVEID."</td>
+				   <td><input type='text' name='save_identifier' value='".$_POST['save_identifier']."'></td></tr>
+				  <tr><td align='right'>"._DE_SAVEPW."</td>
+				   <td><input type='password' name='save_password' value='".$_POST['save_password']."'></td></tr>
+				  <tr><td align='right'>"._DE_SAVEPWCONFIRM."</td>
+				   <td><input type='password' name='save_confirmpassword' value='".$_POST['save_confirmpassword']."'></td></tr>
+				  <tr><td align='right'>"._DE_SAVEEMAIL."</td>
+				   <td><input type='text' name='save_email' value='".$_POST['save_email']."'></td></tr>\n";
+			foreach ($_POST as $key=>$val)
+				{
+				if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp")
+					{
+					echo "<input type='hidden' name='$key' value='$val'>\n";
+					}
+				}
+			echo "<tr><td></td><td><input type='submit' value='"._SUBMIT."'></td>
+				 <input type='hidden' name='sid' value='$sid'>
+				 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
+				 <input type='hidden' name='action' value='".$_POST['action']."'>
+				 <input type='hidden' name='save' value='on'>";
+			if (isset($_POST['datestamp'])) 
+				{
+			    echo "<input type='hidden' name='datestamp' value='".$_POST['datestamp']."'>\n";
+				}
+			echo "</form></table>\n";
+			} 
+		else 
+			{
+			if (returnglobal('redo')=="yes")
+				{
+				//Delete all the existing entries
+				$delete="DELETE FROM {$dbprefix}saved
+						 WHERE sid=$sid
+						 AND identifier='".mysql_escape_string($save['identifier'])."'
+						 AND access_code='$password'";
+				$result=mysql_query($delete) or die("Couldn't delete old record<br />".mysql_error());
+			    }
+			foreach ($_POST as $key=>$val)
+				{
+				if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp")
+					{
+					if($val)
+						{
+						$insert="INSERT INTO {$dbprefix}saved\n"
+							   . "(`saved_id`, `sid`, `saved_thisstep`, `saved_ip`,\n"
+							   . "`saved_date`, `identifier`, `access_code`, `fieldname`,\n"
+							   . "`value`, `email`)\n"
+							   ."VALUES ('',\n"
+							   ."'$sid',\n"
+							   ."'0',\n"
+							   ."'".$_SERVER['REMOTE_ADDR']."',\n"
+							   ."'".date("Y-m-d H:i:s")."',\n"
+							   ."'".mysql_escape_string($save['identifier'])."',\n"
+							   ."'$password',\n"
+							   ."'".$key."',\n"
+							   ."'".$val."',\n"
+							   ."'".$save['email']."')";
+						//echo "$insert<br />\n";
+						if (!$result=mysql_query($insert))
+							{
+							$failed=1;
+							}
+						}
+					}
+				}
+			if (!isset($failed) || $failed < 1) 
+				{
+			    echo "<font color='green'>"._SAVE_SUCCEEDED."</font><br />\n";
+				if ($save['email'])
+					{
+				    //Send email
+					if (validate_email($save['email']) && !returnglobal('redo'))
+						{
+						$subject=_SAVE_EMAILSUBJECT;
+						$message=_SAVE_EMAILTEXT;
+						$message.="\n\n".$thissurvey['name']."\n\n";
+						$message.=_SAVENAME.": ".$save['identifier']."\n";
+						$message.=_SAVEPASSWORD.": ".$save['password']."\n\n";
+						$message.=_SAVE_EMAILURL.":\n";
+						$message.=$homeurl."/dataentry.php?sid=$sid&action=editsaved&identifier=".$save['identifier']."&accesscode=".$save['password']."&public=true";
+						$message=crlf_lineendings($message);
+						$headers = "From: {$thissurvey['adminemail']}\r\n";
+						if (mail($save['email'], $subject, $message, $headers))
+							{
+							$emailsent="Y";
+							echo "<font color='green'>"._SAVE_EMAILSENT."</font><br />\n";
+							}
+						}
+					}
+				}
+			else
+				{
+				echo "<font color='red'>"._SAVE_FAILED."</font><br />\n";
+				}
+			}
 		}
+	else
+		{
+		echo "\t\t\t<b>Inserting data</b><br />\n"
+			."SID: $sid, ($surveytable)<br /><br />\n";
+		$SQL = "INSERT INTO $surveytable \n($col_name) \nVALUES \n($insertqr)";
+		//echo $SQL; //Debugging line
+		$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
+		if (returnglobal('redo')=="yes")
+			{
+			//This submission of data came from a saved session. Must delete the
+			//saved session now that it has been recorded in the responses table
+			$dquery = "DELETE FROM {$dbprefix}saved
+					  WHERE sid=$sid
+					  AND identifier='".$_POST['save_identifier']."'
+					  AND access_code='".$_POST['save_password']."'";
+			$dresult=mysql_query($dquery) or die("Couldn't delete saved data<br />$dquery<br />".mysql_error());
+			}
+		echo "\t\t\t<font color='green'><b>"._SUCCESS."</b></font><br />\n";
+		
+		$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
+		$fresult = mysql_query($fquery);
+		while ($frow = mysql_fetch_array($fresult))
+			{
+			echo "\t\t\t"._DE_RECORD." {$frow['id']}<br />\n";
+			$thisid=$frow['id'];
+			}
+		}
+
 	
-	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$sid'>"._DE_ADDANOTHER."</a>]<br />\n"
-		."\t\t\t[<a href='browse.php?sid=$sid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n"
-		."\t\t\t[<a href='browse.php?sid=$sid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n"
+	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$sid'>"._DE_ADDANOTHER."</a>]<br />\n";
+	if (isset($thisid))
+		{
+		echo "\t\t\t[<a href='browse.php?sid=$sid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n";
+	    }
+	echo "\t\t\t[<a href='browse.php?sid=$sid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n"
 		."\t</td></tr>\n"
 		."</table>\n"
 		."</body>\n</html>";
 	
 	}
 
-elseif ($action == "edit")
+elseif ($action == "edit" || $action == "editsaved")
 	{
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
@@ -374,8 +520,52 @@ elseif ($action == "edit")
 //		}
 
 	//SHOW INDIVIDUAL RECORD
-	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
-	$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
+	if ($action == "edit")
+		{
+		$idquery = "SELECT * FROM $surveytable WHERE id=$id";
+		$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
+		while ($idrow = mysql_fetch_assoc($idresult))
+			{
+			$results[]=$idrow;
+			}
+		}
+	elseif ($action == "editsaved")
+		{
+		if (isset($_GET['public']) && $_GET['public']=="true")
+			{
+			$password=md5($_GET['accesscode']);
+		    }
+		else
+			{
+			$password=$_GET['accesscode'];
+			}
+		$svquery = "SELECT * FROM {$dbprefix}saved
+					WHERE sid=$sid 
+					AND identifier='".$_GET['identifier']."'
+					AND access_code = '".$password."'";
+		$svresult=mysql_query($svquery) or die("Error getting save<br />$svquery<br />".mysql_error());
+		while($svrow=mysql_fetch_array($svresult))
+			{
+			$responses[$svrow['fieldname']]=$svrow['value'];
+			}
+		$fieldmap = createFieldMap($sid);
+		foreach($fieldmap as $fm)
+			{
+			if (isset($responses[$fm['fieldname']])) 
+				{
+				$results1[$fm['fieldname']]=$responses[$fm['fieldname']];
+				}
+			else
+				{
+				$results1[$fm['fieldname']]="";
+				}
+			}
+		$results1['id']="";
+		$results1['datestamp']=date("Y-m-d H:i:s");
+		$results[]=$results1;	
+		}
+//	echo "<pre>";print_r($results);echo "</pre>";
+
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._DATAENTRY."</b></td></tr>\n"
@@ -384,10 +574,12 @@ elseif ($action == "edit")
 		._DE_EDITING." (ID $id)</td></tr>\n"
 		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 
-	while ($idrow = mysql_fetch_assoc($idresult))
+	foreach ($results as $idrow)
 		{
+		//echo "<pre>"; print_r($idrow);echo "</pre>";
 		for ($i=0; $i<$nfncount+1; $i++)
 			{
+			//echo "<pre>"; print_r($fnames[$i]);echo "</pre>";
 			$answer = $idrow[$fnames[$i][0]];
 			$question=$fnames[$i][2];
 			echo "\t<tr>\n"
@@ -872,24 +1064,75 @@ elseif ($action == "edit")
 						.$idrow[$fnames[$i][0]] . "'>\n";
 					break;
 				}
-				echo "\t\t</td>\n"
-					."\t</tr>\n"
-					."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+				echo "		</td>
+						</tr>
+						<tr>
+							<td colspan='2' bgcolor='#CCCCCC' height='1'>
+							</td>
+						</tr>\n";
 			}
 		}
 	echo "</table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n"
-		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr>\n"
-		."\t\t<td bgcolor='#CCCCCC' align='center'>\n"
-		."\t\t\t<input type='submit' $btstyle value='"._DE_UPDATE."'>\n"
-		."\t\t\t<input type='hidden' name='id' value='$id'>\n"
-		."\t\t\t<input type='hidden' name='sid' value='$sid'>\n"
-		."\t\t\t<input type='hidden' name='action' value='update'>\n"
-		."\t\t\t<input type='hidden' name='surveytable' value='{$dbprefix}survey_$sid'>\n"
-		."\t\t</td>\n"
-		."\t\t</form>\n"
-		."\t</tr>\n"
+		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	if ($action == "edit")
+		{
+		echo "	<tr>
+			 		<td bgcolor='#CCCCCC' align='center'>
+					 <input type='submit' $btstyle value='"._DE_UPDATE."'>
+					 <input type='hidden' name='id' value='$id'>
+					 <input type='hidden' name='sid' value='$sid'>
+					 <input type='hidden' name='action' value='update'>
+					 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$sid'>
+					</td>
+				</tr>\n";
+		}
+	elseif ($action == "editsaved")
+		{
+		echo "<script type='text/javascript'>
+			  <!--
+			  	function saveshow(value)
+					{
+					if (document.getElementById(value).checked == true)
+						{
+						document.getElementById(\"saveoptions\").style.display=\"\";
+						}
+					else
+						{
+						document.getElementById(\"saveoptions\").style.display=\"none\";
+						}
+					}
+			  //-->
+			  </script>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+	    echo "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>"._DE_SAVEENTRY."</label>\n";
+		echo "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
+		echo "<table align='center' class='outlinetable' cellspacing='0'>
+			  <tr><td align='right'>"._DE_SAVEID."</td>
+			  <td><input type='text' name='save_identifier'";
+		if (returnglobal('identifier')) 
+			{
+		    echo " value='".returnglobal('identifier')."'";
+			}
+		echo "></td></tr>
+			  </table>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>"
+			."<input type='hidden' name='save_password' value='".returnglobal('accesscode')."'>\n"
+			."<input type='hidden' name='save_confirmpassword' value='".returnglobal('accesscode')."'>\n"
+			."<input type='hidden' name='redo' value='yes'>\n"
+			."</div>\n";
+		echo "	<tr>
+				<td bgcolor='#CCCCCC' align='center'>
+				 <input type='submit' $btstyle value='"._SUBMIT."'>
+				 <input type='hidden' name='sid' value='$sid'>
+				 <input type='hidden' name='action' value='insert'>
+				 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$sid'>
+				</td>
+			</tr>\n";
+		}
+	echo "\t</form>\n"
 		."</table>\n";
 	}
 	
@@ -1035,13 +1278,14 @@ elseif ($action == "update")
 
 elseif ($action == "delete")
 	{
+	$thissurvey=getSurveyInfo($sid);
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._DATAENTRY."</b></td></tr>\n"
 		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."\t\t\t<b>$surveyname</b><br />\n"
-		."\t\t\t$setfont$surveydesc\n"
+		."\t\t\t<b>".$thissurvey['name']."</b><br />\n"
+		."\t\t\t$setfont".$thissurvey['description']."\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 	$delquery = "DELETE FROM $surveytable WHERE id=$id";
@@ -1057,37 +1301,29 @@ elseif ($action == "delete")
 	
 else
 	{
+	//This is the default, presenting a blank dataentry form
 	$fieldmap=createFieldMap($sid);
 	// PRESENT SURVEY DATAENTRY SCREEN
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._BROWSERESPONSES."</b></td></tr>\n"
 		.$surveyoptions;
-	$desquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
-	$desresult = mysql_query($desquery);
-	while ($desrow = mysql_fetch_array($desresult))
-		{
-		$surveyname = $desrow['short_title'];
-		$surveydesc = $desrow['description'];
-		$surveyactive = $desrow['active'];
-		$surveyprivate = $desrow['private'];
-		$surveytable = "{$dbprefix}survey_{$desrow['sid']}";
-		$surveydatestamp = $desrow['datestamp'];
-		}
-	//if ($surveyactive == "Y") {echo "$surveyoptions\n";}
+	loadPublicLangFile($sid);
+	$thissurvey=getSurveyInfo($sid);
+	$surveytable = "{$dbprefix}survey_$sid";
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><b>"
 		._DATAENTRY."</b></td></tr>\n"
 		."\t<tr bgcolor='#777777'>\n"
 		."\t\t<td colspan='3' align='center'><font color='white'>\n"
-		."\t\t\t<b>$surveyname</b>\n"
-		."\t\t\t<br>$setfont$surveydesc\n"
+		."\t\t\t<b>".$thissurvey['name']."</b>\n"
+		."\t\t\t<br>$setfont".$thissurvey['description']."\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n";
 	
-	if ($surveyprivate == "N") //Give entry field for token id
+	if ($thissurvey['private'] == "N") //Give entry field for token id
 		{
 		echo "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
@@ -1097,7 +1333,7 @@ else
 			."\t\t</td>\n"
 			."\t</tr>\n";
 		}
-	if ($surveydatestamp == "Y") //Give datestampentry field
+	if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
 		{
 		echo "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
@@ -1691,15 +1927,50 @@ else
 			}		
 		}
 	
-	if ($surveyactive == "Y")
+	if ($thissurvey['active'] == "Y")
 		{
+		if ($thissurvey['allowsave'] == "Y")
+			{
+			//Show Save Option
+			echo "<script type='text/javascript'>
+				  <!--
+				  	function saveshow(value)
+						{
+						if (document.getElementById(value).checked == true)
+							{
+							document.getElementById(\"saveoptions\").style.display=\"\";
+							}
+						else
+							{
+							document.getElementById(\"saveoptions\").style.display=\"none\";
+							}
+						}
+				  //-->
+				  </script>\n";
+			echo "\t<tr>\n";
+			echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+		    echo "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>"._DE_SAVEENTRY."</label>\n";
+			echo "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
+			echo "<table align='center' class='outlinetable' cellspacing='0'>
+				  <tr><td align='right'>"._DE_SAVEID."</td>
+				  <td><input type='text' name='save_identifier'></td></tr>
+				  <tr><td align='right'>"._DE_SAVEPW."</td>
+				  <td><input type='password' name='save_password'></td></tr>
+				  <tr><td align='right'>"._DE_SAVEPWCONFIRM."</td>
+				  <td><input type='password' name='save_confirmpassword'></td></tr>
+				  <tr><td align='right'>"._DE_SAVEEMAIL."</td>
+				  <td><input type='text' name='save_email'></td></tr>
+				  </table>\n";
+			echo "\t\t</td>\n";
+			echo "\t</tr>\n";
+			}
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 		echo "\t\t\t<input type='submit' value='"._SUBMIT."' $btstyle/>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		}
-	elseif ($surveyactive == "N")
+	elseif ($thissurvey['active'] == "N")
 		{
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
