@@ -99,10 +99,11 @@ if ($sid)
 	$sumcount2 = mysql_num_rows($sumresult2);
 	$sumquery1 = "SELECT * FROM surveys WHERE sid=$sid"; //Getting data for this survey
 	$sumresult1 = mysql_query($sumquery1);
-	$surveysummary .= "<table width='100%' align='center' bgcolor='silver' border='0'>\n";
+	$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($s1row = mysql_fetch_array($sumresult1))
 		{
 		$activated = $s1row['active'];
+		//BUTTON BAR
 		$surveysummary .= "\t<tr>\n";
 		$surveysummary .= "\t\t<td colspan='2'>\n";
 		$surveysummary .= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
@@ -123,8 +124,6 @@ if ($sid)
 			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' alt='Survey is Not Active' border='0' hspace='0' align='left'>\n";
 			$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='11' alt='Cannot be activated yet' border='0' align='left' hspace='0'>\n";
 			}
-		//$surveysummary .= "\t\t\t\t</td>\n";
-		//$surveysummary .= "\t\t\t\t<td>\n";
 		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/do.gif' title='Do Survey' align='left' border='0' hspace='0' onclick=\"window.open('../index.php?sid=$sid&newtest=Y', '_blank')\">\n";
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/dataentry.gif' title='Data Entry' align='left' border='0' hspace='0' onclick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
@@ -178,6 +177,7 @@ if ($sid)
 		$surveysummary .= "\t\t</td>\n";
 		$surveysummary .= "\t</tr>\n";
 		
+		//SURVEY SUMMARY
 		if ($gid || $qid || $action=="editsurvey" || $action=="addgroup") {$showstyle="style='display: none'";}
 		
 		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n";
@@ -221,13 +221,12 @@ if ($sid)
 	$surveysummary .= "<font size='1'>This survey contains $sumcount2 groups and $sumcount3 questions.</font><br />\n";
 	if ($activated == "N" && $sumcount3 > 0)
 		{
-		$surveysummary .= "\t\t<input $btstyle type='submit' value='Activate' onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
+		$surveysummary .= "<font size='1'>Survey is not active. Activate using the button bar above.<br />\n";
 		}
 	elseif ($activated == "Y")
 		{
-		$surveysummary .= "\t\t<input $btstyle type='submit' value='De-activate' onClick=\"window.open('$scriptname?action=deactivate&sid=$sid', '_top')\">\n";
-		//$surveysummary .= "&nbsp;&nbsp;&nbsp;<FONT SIZE='1'>Survey Table is 'survey_$sid'<BR>";
-		$surveysummary .= "\t\t<input $btstyle type='submit' value='Tokens' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
+		$surveysummary .= "<font size='1'>Survey is currently active. De-activate it by using the button bar above.<br />\n";
+		$surveysummary .= "<FONT SIZE='1'>Survey Table is 'survey_$sid'<BR>";
 		}
 	else
 		{
