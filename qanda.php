@@ -269,67 +269,73 @@ switch ($ia[4])
 		$anscount = mysql_num_rows($ansresult);
 		$answer .= "\t\t\t<script type='text/javascript'>\n";
 		$answer .= "\t\t\t<!--\n";
-		$answer .= "\t\t\t\tfunction rankthis(\$code, \$value)\n";
+		$answer .= "\t\t\t\tfunction rankthis_{$ia[0]}(\$code, \$value)\n";
 		$answer .= "\t\t\t\t\t{\n";
-		$answer .= "\t\t\t\t\t\$index=document.phpsurveyor.CHOICES.selectedIndex;\n";
-		$answer .= "\t\t\t\t\tdocument.phpsurveyor.CHOICES.selectedIndex=-1;\n";
+		$answer .= "\t\t\t\t\t\$index=document.phpsurveyor.CHOICES_{$ia[0]}.selectedIndex;\n";
+		$answer .= "\t\t\t\t\tdocument.phpsurveyor.CHOICES_{$ia[0]}.selectedIndex=-1;\n";
 		$answer .= "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
 		$answer .= "\t\t\t\t\t\t{\n";
 		$answer .= "\t\t\t\t\t\t\$b=i;\n";
 		$answer .= "\t\t\t\t\t\t\$b += '';\n";
-		$answer .= "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
-		$answer .= "\t\t\t\t\t\t\$hiddenname=\"fvalue\"+\$b;\n";
-		$answer .= "\t\t\t\t\t\t\$cutname=\"cut\"+i;\n";
+		$answer .= "\t\t\t\t\t\t\$inputname=\"RANK_{$ia[0]}\"+\$b;\n";
+		$answer .= "\t\t\t\t\t\t\$hiddenname=\"fvalue_{$ia[0]}\"+\$b;\n";
+		$answer .= "\t\t\t\t\t\t\$cutname=\"cut_{$ia[0]}\"+i;\n";
 		$answer .= "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
 		$answer .= "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
 		$answer .= "\t\t\t\t\t\t\t{\n";
 		$answer .= "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
 		$answer .= "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
 		$answer .= "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
-		$answer .= "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES').options.length-1; b>=0; b--)\n";
+		$answer .= "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_{$ia[0]}').options.length-1; b>=0; b--)\n";
 		$answer .= "\t\t\t\t\t\t\t\t{\n";
-		$answer .= "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES').options[b].value == \$code)\n";
+		$answer .= "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options[b].value == \$code)\n";
 		$answer .= "\t\t\t\t\t\t\t\t\t{\n";
-		$answer .= "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES').options[b] = null;\n";
+		$answer .= "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[b] = null;\n";
 		$answer .= "\t\t\t\t\t\t\t\t\t}\n";
 		$answer .= "\t\t\t\t\t\t\t\t}\n";
 		$answer .= "\t\t\t\t\t\t\ti=$anscount;\n";
 		$answer .= "\t\t\t\t\t\t\t}\n";
 		$answer .= "\t\t\t\t\t\t}\n";
-		$answer .= "\t\t\t\t\tif (document.getElementById('CHOICES').options.length == 0)\n";
+		$answer .= "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length == 0)\n";
 		$answer .= "\t\t\t\t\t\t{\n";
-		$answer .= "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=true;\n";
+		$answer .= "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n";
 		$answer .= "\t\t\t\t\t\t}\n";
 		$answer .= "\t\t\t\t\tcheckconditions(\$code);\n";
 		$answer .= "\t\t\t\t\t}\n";
-		$answer .= "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
+		$answer .= "\t\t\t\tfunction deletethis_{$ia[0]}(\$text, \$value, \$name, \$thisname)\n";
 		$answer .= "\t\t\t\t\t{\n";
-		$answer .= "\t\t\t\t\tvar cutindex=\$thisname.substring(3,6);\n";
+		$answer .= "\t\t\t\t\tvar qid='{$ia[0]}';\n";
+		$answer .= "\t\t\t\t\tvar lngth=qid.length+4;\n";
+		$answer .= "\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n";
 		$answer .= "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
 		$answer .= "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
 		$answer .= "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
 		$answer .= "\t\t\t\t\tif (cutindex > 1)\n";
 		$answer .= "\t\t\t\t\t\t{\n";
-		$answer .= "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
-		$answer .= "\t\t\t\t\t\t\$cut2name=\"fvalue\"+(cutindex);\n";
+		$answer .= "\t\t\t\t\t\t\$cut1name=\"cut_{$ia[0]}\"+(cutindex-1);\n";
+		$answer .= "\t\t\t\t\t\t\$cut2name=\"fvalue_{$ia[0]}\"+(cutindex);\n";
 		$answer .= "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
 		$answer .= "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
 		$answer .= "\t\t\t\t\t\t}\n";
 		$answer .= "\t\t\t\t\telse\n";
 		$answer .= "\t\t\t\t\t\t{\n";
-		$answer .= "\t\t\t\t\t\t\$cut2name=\"fvalue\"+(cutindex);\n";
+		$answer .= "\t\t\t\t\t\t\$cut2name=\"fvalue_{$ia[0]}\"+(cutindex);\n";
 		$answer .= "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
 		$answer .= "\t\t\t\t\t\t}\n";
-		$answer .= "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
-		$answer .= "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
-		$answer .= "\t\t\t\t\tif (document.getElementById('CHOICES').options.length > 0)\n";
+		$answer .= "\t\t\t\t\tvar i=document.getElementById('CHOICES_{$ia[0]}').options.length;\n";
+		$answer .= "\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[i] = new Option(\$text, \$value);\n";
+		$answer .= "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length > 0)\n";
 		$answer .= "\t\t\t\t\t\t{\n";
-		$answer .= "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=false;\n";
+		$answer .= "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=false;\n";
 		$answer .= "\t\t\t\t\t\t}\n";
 		$answer .= "\t\t\t\t\tcheckconditions('');\n";
 		$answer .= "\t\t\t\t\t}\n";
 		$answer .= "\t\t\t//-->\n";
 		$answer .= "\t\t\t</script>\n";	
+		unset($answers);
+		//unset($inputnames);
+		unset($chosen);
+		$ranklist="";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$answers[] = array($ansrow['code'], $ansrow['answer']);
@@ -357,7 +363,7 @@ switch ($ia[4])
 						}
 					}
 				}
-			$ranklist .= "\t\t\t\t\t\t&nbsp;$i:&nbsp;<input class='text' type='text' name='RANK$i' id='RANK$i'";
+			$ranklist .= "\t\t\t\t\t\t&nbsp;$i:&nbsp;<input class='text' type='text' name='RANK_{$ia[0]}$i' id='RANK_{$ia[0]}$i'";
 			if ($_SESSION[$myfname])
 				{
 				$ranklist .= " value='";
@@ -365,7 +371,7 @@ switch ($ia[4])
 				$ranklist .= "'";
 				}
 			$ranklist .= " onFocus=\"this.blur()\">\n";
-			$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$myfname' id='fvalue$i' value='";
+			$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$myfname' id='fvalue_{$ia[0]}$i' value='";
 			if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
 				{
 				$mandatorys[]=$myfname;
@@ -389,11 +395,11 @@ switch ($ia[4])
 				{
 				$ranklist .= "style='display:none'";
 				}
-			$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(document.phpsurveyor.RANK$i.value, document.phpsurveyor.fvalue$i.value, document.phpsurveyor.RANK$i.name, this.id)\"><br />\n";
+			$ranklist .= " id='cut_{$ia[0]}$i' name='cut$i' onClick=\"deletethis_{$ia[0]}(document.phpsurveyor.RANK_{$ia[0]}$i.value, document.phpsurveyor.fvalue_{$ia[0]}$i.value, document.phpsurveyor.RANK_{$ia[0]}$i.name, this.id)\"><br />\n";
 			$inputnames[]=$myfname;
 			}
 
-		$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' $choicewidth id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
+		$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES_{$ia[0]}' $choicewidth id='CHOICES_{$ia[0]}' onClick=\"rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
 		if ($parser_version <= "4.2.0")
 			{
 			foreach ($chosen as $chs) {$choose[]=$chs[0];}
