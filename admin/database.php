@@ -253,7 +253,7 @@ elseif ($action == "insertnewanswer")
 				{
 				$_POST['answer'] = addcslashes($_POST['answer'], "'");
 				}
-			$iaquery = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['default']}')";
+			$iaquery = "INSERT INTO answers (qid, code, answer, `default`, sortorder) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['default']}', '{$_POST['sortorder']}')";
 			$iaresult = mysql_query ($iaquery);
 			if ($iaresult)
 				{
@@ -297,7 +297,7 @@ elseif ($action == "updateanswer")
 			}
 			else
 				{
-			$uaquery = "UPDATE answers SET code='{$_POST['code']}', answer='{$_POST['answer']}', `default`='{$_POST['default']}' WHERE qid={$_POST['qid']} AND code='{$_POST['old_code']}'";
+			$uaquery = "UPDATE answers SET code='{$_POST['code']}', answer='{$_POST['answer']}', `default`='{$_POST['default']}', sortorder='{$_POST['sortorder']}' WHERE qid={$_POST['qid']} AND code='{$_POST['old_code']}'";
 			//echo $uaquery;
 			$uaresult = mysql_query($uaquery);
 			if ($uaresult)
