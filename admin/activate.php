@@ -111,9 +111,19 @@ else
 				{
 				$createsurvey .= "  $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."$abrow[1] VARCHAR(5),\n";
 				if ($abrow[4]=="Y") {$alsoother="Y";}
-				if ($arow[3] == "P") {$createsurvey .= "  $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."$abrow[1]comment VARCHAR(100),\n";}
+				if ($arow[3] == "P")
+					{
+					$createsurvey .= "  $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."$abrow[1]comment VARCHAR(100),\n";
+					}
 				}
-			if ($alsoother=="Y" && $arow[3]=="M") {$createsurvey .= " $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."other VARCHAR(100),\n";}
+			if ($alsoother=="Y" && ($arow[3]=="M" || $arow[3]=="P"))
+				{
+				$createsurvey .= " $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."other VARCHAR(100),\n";
+				if ($arow[3]=="P")
+					{
+					$createsurvey .= " $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."othercomment VARCHAR(100),\n";
+					}
+				}
 			
 			}
 

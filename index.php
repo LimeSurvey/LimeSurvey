@@ -455,6 +455,11 @@ if (!$step)
 				{
 				session_register("F$fieldname"."other");
 				$insertarray[]="F$fieldname"."other";
+				if ($arow['type'] == "P")
+					{
+					session_register("F$fieldname"."othercomment");
+					$insertarray[]="F$fieldname"."othercomment";	
+					}
 				}
 			
 			}
@@ -550,7 +555,7 @@ else
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2'>\n";
 		echo "<!-- THE QUESTION IS HERE -->\n";
-		echo "<table width='100%' border='4'>\n";
+		echo "<table width='100%' border='0'>\n";
 		echo "\t<tr><td colspan='2' height='20'></td></tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2' height='4'>\n";
@@ -769,8 +774,26 @@ else
 					echo "\t\t\t\t\t\t\t</tr>\n";
 					$fn++;
 					}
-				echo "\t\t\t\t\t\t</table>\n";
 				$multifields = substr($multifields, 0, strlen($multifields)-1);
+				if ($other == "Y")
+					{
+					$myfname = $fname."other";
+					$myfname2 = $myfname."comment";
+					$multifields .= "|$fname"."other|$fname"."othercomment";
+					$anscount = $anscount + 2;
+					echo "\t\t\t\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t\t\t\t<td>$setfont\n";
+					echo "\t\t\t\t\t\t\t\t\tOther: <input type='text' name='fvalue$fn'";
+					if ($$myfname) {echo " value='".$$myfname."'";}
+					echo ">\n";
+					echo "\t\t\t\t\t\t\t\t</td>\n";
+					$fn++;
+					echo "\t\t\t\t\t\t\t\t<td>\n";
+					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$$myfname2."'>\n";
+					echo "\t\t\t\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t\t\t\t</table>\n";
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
 				echo "\t\t\t\t</tr>\n";
