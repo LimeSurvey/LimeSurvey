@@ -291,8 +291,10 @@ function templatereplace($line)
 	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
 	$line=str_replace("{TOKEN}", $token, $line);
 	$line=str_replace("{SID}", $sid, $line);
-	if ($help) 
-		{$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' alt='Help' align='left'>".$help, $line);}
+	if ($help) {
+		$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' alt='Help' align='left'>".$help, $line);
+		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+	}
 	else
 		{$line=str_replace("{QUESTIONHELP}", $help, $line);}
 	$line=str_replace("{NAVIGATOR}", $navigator, $line);
