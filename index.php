@@ -465,6 +465,15 @@ if (!$step)
 	$aresult = mysql_query($aquery);
 	$totalsteps = mysql_num_rows($aresult);
 	
+	if ($totalsteps == "0")
+		{
+		//break out and crash if there are no questions!
+		echo "$setfont<center><b>$sitename</b><br />\n<br />\n<b>This survey does not yet have any questions, and so cannot be accessed.</b><br />\n";
+		echo "<br />\nPlease contact $siteadminemail for information.<br /><br />\n";
+		echo "<a href=\"javascript:window.close()\">Close Window</a>\n";		
+		exit;
+		}
+	
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($arow = mysql_fetch_assoc($aresult)) {$arows[] = $arow;} // Get table output into array
 	
