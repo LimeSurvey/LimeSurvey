@@ -68,7 +68,14 @@ function BuildOutput($Query)
 		foreach ($Row as $Key=>$Value)
 			{
 			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
-			$ColumnValues .= "'" . mysql_real_escape_string(str_replace("\r\n", "\n", $Value)) . "', ";
+			if (phpversion() >= "4.3.0")
+				{
+				$ColumnValues .= "'" . mysql_real_escape_string(str_replace("\r\n", "\n", $Value)) . "', ";
+				}
+			else
+				{
+				$ColumnValues .= "'" . mysql_escape_string(str_replace("\r\n", "\n", $Value)) . "', ";
+				}
 			}
 		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
 		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
