@@ -1425,7 +1425,7 @@ function submit($surveyheader, $step, $totalsteps, $sid, $setfont, $surveyprivat
 	echo "\t\t\t\t<tr>\n";
 	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
 	echo "\t\t\t\t\t<td align='center' width='500'>\n";
-	echo "$setfont<p><b>Congratulations. You have completed answering the questions in this survey.</b>\n";
+	echo "$setfont<p><b>Congratulations. You have completed answering<br />the questions in this survey.</b>\n";
 	echo "<p>Click on \"Submit\" now to complete the process and submit your answers to our records. ";
 	echo "If you want to check any of the answers you have made, and/or change them, you can do that now by ";
 	echo "clicking on the \" << prev \" button and browsing through your responses.<br />\n";
@@ -1437,12 +1437,12 @@ function submit($surveyheader, $step, $totalsteps, $sid, $setfont, $surveyprivat
 		echo "\t\t\t\t\t\t\t<tr>\n";
 		echo "\t\t\t\t\t\t\t\t<td align='center'>\n";
 		echo "$setfont<b>A note on privacy</b><br />\n";
-		echo "<font size='1'>The record kept of this survey does not contain any identifying information about you unless ";
+		echo "<font size='1'>The record kept of your survey responses does not contain any identifying information about you unless ";
 		echo "a specific question in the survey has asked for this. If you have responded to a survey that ";
 		echo "used an identifying token to allow you to access the survey, you can rest assured that the ";
 		echo "identifying token is not kept with your responses. It is managed in a seperate database, and will ";
 		echo "only be updated to indicate that you have (or haven't) completed this survey. There is no way of ";
-		echo "matching identification tokens with survey responses in this system.\n";
+		echo "matching identification tokens with survey responses in this survey.\n";
 		echo "\t\t\t\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t\t\t\t</tr>\n";
 		echo "\t\t\t\t\t\t</table>\n";
@@ -1452,7 +1452,7 @@ function submit($surveyheader, $step, $totalsteps, $sid, $setfont, $surveyprivat
 		// Just in case we want to add a comment for non-private surveys
 		}
 	echo "<font size='1'>&nbsp;<br />\nIf you do not wish to submit responses to this survey, ";
-	echo "and you would like to delete all records on your computer that may have saved your responses, ";
+	echo "and you would like to delete<br />all the responses you have made, ";
 	echo "click <a href='index.php?move=clearall&sid=$sid'>here</a><br />&nbsp;\n";
 	//echo "<input type='submit' name='move' value='here' style='height:15; font-size:9; font-family:verdana' onclick=\"window.open('index.php?clearall', '_top')\" />\n";
 	echo "\t\t\t\t\t</td>\n";
