@@ -222,16 +222,8 @@ $countlabelsets = count($labelsetsarray);
 $countlabels = count($labelsarray);
 
 // CREATE SURVEY
-//GET ORDER OF FIELDS
-$sstart=strpos($tablearray[0], "(`")+2;
-$slen=strpos($tablearray[0], "`)")-$sstart;
-$sfieldorder=substr($tablearray[0], $sstart, $slen);
-$sfieldorders=explode("`, `", $sfieldorder);
-//GET CONTENTS OF FIELDS
-$sfstart=strpos($tablearray[0], "('")+2;
-$sflen=strpos($tablearray[0], "')")-$sfstart;
-$sffieldcontent=substr($tablearray[0], $sfstart, $sflen);
-$sffieldcontents=explode("', '", $sffieldcontent);
+$sfieldorders=convertToArray($tablearray[0], "`, `", "(`", "`)");
+$sffieldcontents=convertToArray($tablearray[0], "', '", "('", "')");
 
 $sidpos=array_search("sid", $sfieldorders);
 $sid=$sffieldcontents[$sidpos];
@@ -240,14 +232,14 @@ if (!$sid)
 	{
 	echo "<br /><b><font color='red'>"._ERROR."</b></font><br />\n";
 	echo _IS_IMPFAILED."<br />\n";
-	echo _IS_FILEFAILS."<br />\n"; //NOT A PHPSURVEYOR EXPORT FILE
+	echo _IS_FILEFAILS."<br />\n"; //Couldn't find the SID - cannot continue
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	unlink($the_full_file_path); //Delete the uploaded file
 	exit;
 	}
-$insert = str_replace("('$sid'", "(''", $tablearray[0]);
+$insert = str_replace("'$sid'", "''", $tablearray[0]);
 $insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
 //$insert = substr($insert, 0, -1);
 $iresult = mysql_query($insert) or die("<br />"._IS_IMPFAILED."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . mysql_error() . "</body>\n</html>");
@@ -264,17 +256,8 @@ if ($labelsetsarray)
 	{
 	foreach ($labelsetsarray as $lsa)
 		{
-		//GET ORDER OF FIELDS
-		$fostart=strpos($lsa, "(`")+2;
-		$folen=strpos($lsa, "`)")-$fostart;
-		$fieldorder=substr($lsa, $fostart, $folen);
-		$fieldorders=explode("`, `", $fieldorder);
-		//GET CONTENTS OF FIELDS
-		$fcstart=strpos($lsa, "('")+2;
-		$fclen=strpos($lsa, "')")-$fcstart;
-		$fieldcontent=substr($lsa, $fcstart, $fclen);
-		$fieldcontents=explode("', '", $fieldcontent);
-
+		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
+		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
 		$oldlidpos=array_search("lid", $fieldorders);
 		$oldlid=$fieldcontents[$oldlidpos];
 		
@@ -292,16 +275,8 @@ if ($labelsetsarray)
 			foreach ($labelsarray as $la)
 				{
 				//GET ORDER OF FIELDS
-				$lfostart=strpos($la, "(`")+2;
-				$lfolen=strpos($la, "`)")-$lfostart;
-				$lfieldorder=substr($la, $lfostart, $lfolen);
-				$lfieldorders=explode("`, `", $lfieldorder);
-				//GET CONTENTS OF FIELDS
-				$lfcstart=strpos($la, "('")+2;
-				$lfclen=strpos($la, "')")-$lfcstart;
-				$lfieldcontent=substr($la, $lfcstart, $lfclen);
-				$lfieldcontents=explode("', '", $lfieldcontent);
-	
+				$lfieldorders=convertToArray($la, "`, `", "(`", "`)");
+				$lfieldcontents=convertToArray($la, "', '", "('", "')");
 				$labellidpos=array_search("lid", $lfieldorders);
 				$labellid=$lfieldcontents[$labellidpos];
 				if ($labellid == $oldlid)
@@ -321,24 +296,14 @@ if ($grouparray)
 	foreach ($grouparray as $ga)
 		{
 		//GET ORDER OF FIELDS
-		$gastart=strpos($ga, "(`")+2;
-		$galen=strpos($ga, "`)")-$gastart;
-		$gafieldorder=substr($ga, $gastart, $galen);
-		$gafieldorders=explode("`, `", $gafieldorder);
-		//GET CONTENTS OF FIELDS
-		$gacstart=strpos($ga, "('")+2;
-		$gaclen=strpos($ga, "')")-$gacstart;
-		$gacfieldcontent=substr($ga, $gacstart, $gaclen);
-		$gacfieldcontents=explode("', '", $gacfieldcontent);
-
+		$gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
+		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
 		$gidpos=array_search("gid", $gafieldorders);
 		$gid=$gacfieldcontents[$gidpos];
-		
 		//$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
 		$ginsert = str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
 		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
 		$oldgid=$gid;
-		//$ginsert = substr($ginsert, 0, -1);
 		$gres = mysql_query($ginsert);
 		//GET NEW GID
 		$gidquery = "SELECT gid FROM {$dbprefix}groups ORDER BY gid DESC LIMIT 1";
@@ -349,30 +314,24 @@ if ($grouparray)
 			{
 			foreach ($questionarray as $qa)
 				{
-				$sidpos = ", '$sid'";
-				$start = strpos($qa, "$sidpos")+2+strlen($sid)+5;
-				$end = strpos($qa, "'", $start)-$start;
-				if (substr($qa, $start, $end) == $gid)
+				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
+				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
+				$thisgid=$qacfieldcontents[array_search("gid", $qafieldorders)];
+				if ($thisgid == $gid)
 					{
-					$qid = substr($qa, strpos($qa, "('")+2, (strpos($qa, "',")-(strpos($qa, "('")+2)));
+					$qid = $qacfieldcontents[array_search("qid", $qafieldorders)];
 					$oldqid=$qid;
-					$qinsert = str_replace("('$qid', '$sid', '$gid',", "('$newsid', '$newgid',", $qa);
-					$qinsert = str_replace("(`qid`, ", "(", $qinsert);
+					$qinsert = str_replace("'$qid'", "''", $qa); //LEAVE QID BLANK FOR AUTOINCREMENT
+					$qinsert = str_replace("'$sid'", "'$newsid'", $qinsert); //REPLACE OLD SID WITH NEW ONE
+					$qinsert = str_replace("'$gid'", "'$newgid'", $qinsert); //REPLACE OLD GID WITH NEW ONE
 					$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
-					//$qinsert = substr(trim($qinsert), 0, -1);
-					//FIELDNAME ARRAY GENERATION
-					$typepos = "('$qid', '$sid', '$gid', '";
-					$type = substr($qa, strpos($qa, $typepos)+strlen($typepos), 1);
-					$otherpos = "')";
-					$other = substr($qa, strpos($qa, $otherpos)-6, 1);
-
+					$type = $qacfieldcontents[array_search("type", $qafieldorders)]; //Get the type
+					$other = $qacfieldcontents[array_search("other", $qafieldorders)]; //Get 'other';
 					$qres = mysql_query($qinsert) or die ("<b>"._ERROR."</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
-					//GET NEW QID
-					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
+					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = mysql_query($qidquery);
 					while ($qrow = mysql_fetch_array($qidres)) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
-					//IF this is a flexible label array, update the lid entry
-					if ($type == "F")
+					if ($type == "F") //IF this is a flexible label array, update the lid entry
 						{
 						foreach ($labelreplacements as $lrp)
 							{
@@ -383,23 +342,27 @@ if ($grouparray)
 								}
 							}
 						}
-
 					$newrank=0;
 					//NOW DO NESTED ANSWERS FOR THIS QID
 					if ($answerarray)
 						{
 						foreach ($answerarray as $aa)
 							{
-							$qidpos = "('";
-							$astart = strpos($aa, "$qidpos")+2;
-							$aend = strpos($aa, "'", $astart)-$astart;
-							$codepos1=strpos($aa, "', '")+4;
-							$codepos2=strpos($aa, "', '", strpos($aa, "', '")+1);
-							$codelength=$codepos2-$codepos1;
-							$code = substr($aa, $codepos1, $codelength);
-							if (substr($aa, $astart, $aend) == ($qid))
+							$aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
+							$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
+							//$qidpos = "('";
+							//$astart = strpos($aa, "$qidpos")+2;
+							//$aend = strpos($aa, "'", $astart)-$astart;
+							//$codepos1=strpos($aa, "', '")+4;
+							//$codepos2=strpos($aa, "', '", strpos($aa, "', '")+1);
+							//$codelength=$codepos2-$codepos1;
+							//$code = substr($aa, $codepos1, $codelength);
+							$code=$aacfieldcontents[array_search("code", $aafieldorders)];
+							$thisqid=$aacfieldcontents[array_search("qid", $aafieldorders)];
+							if ($thisqid == $qid)
 								{
-								$ainsert = str_replace("('$qid", "('$newqid", $aa);
+								$ainsert = str_replace("'$qid'", "'$newqid'", $aa);
+								//$ainsert = str_replace("('$qid", "('$newqid", $aa);
 								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
 								//$ainsert = substr(trim($ainsert), 0, -1);
 								$ares = mysql_query($ainsert) or die ("<b>"._ERROR."</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
@@ -459,16 +422,8 @@ if ($conditionsarray) //ONLY DO THIS IF THERE ARE CONDITIONS!
 	{
 	foreach ($conditionsarray as $car)
 		{
-		//GET ORDER OF FIELDS
-		$fostart=strpos($car, "(`")+2;
-		$folen=strpos($car, "`)")-$fostart;
-		$fieldorder=substr($car, $fostart, $folen);
-		$fieldorders=explode("`, `", $fieldorder);
-		//GET CONTENTS OF FIELDS
-		$fcstart=strpos($car, "('")+2;
-		$fclen=strpos($car, "')")-$fcstart;
-		$fieldcontent=substr($car, $fcstart, $fclen);
-		$fieldcontents=explode("', '", $fieldcontent);
+		$fieldorders=convertToArray($car, "`, `", "(`", "`)");
+		$fieldcontents=convertToArray($car, "', '", "('", "')");
 
 		$oldcidpos=array_search("cid", $fieldorders);
 		$oldcid=$fieldcontents[$oldcidpos];
@@ -511,4 +466,14 @@ echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open(
 echo "</td></tr></table>\n";
 echo "</body>\n</html>";
 unlink($the_full_file_path);
+
+function convertToArray($string, $seperator, $start, $end)
+	{
+	$begin=strpos($string, $start)+strlen($start);
+	$len=strpos($string, $end)-$begin;
+	$order=substr($string, $begin, $len);
+	$orders=explode($seperator, $order);
+	
+	return $orders;
+	}
 ?>
