@@ -161,15 +161,24 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t<u>Make a comment on your choice here:</u><br />\n";
 				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname"."comment"."'></textarea>\n";
 				break;
+			case "R":  //RANKING Type Question
+				$reaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
+				$rearesult = mysql_query($reaquery) or die ("Couldn't get ranked answers<br />".mysql_error());
+				$reacount = mysql_num_rows($rearesult);
+				echo "\t\t\t$setfont<u>Please number each box in order of preference from 1 to $reacount</u><br />\n";
+				while ($rearow = mysql_fetch_array($rearesult))
+					{
+					echo "\t\t\t<table cellspacing='1' cellpadding='0'><tr><td width='20' height='20' bgcolor='white' style='border: solid 1 #111111'>&nbsp;</td>\n";
+					echo "\t\t\t<td valign='middle'>$setfont{$rearow['answer']}</td></tr></table>\n";
+					}
+				break;
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
 				echo "\t\t\t$setfont<u>Please tick <b>any</b> that apply</u><br />\n";
 				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 				$mearesult = mysql_query($meaquery);
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
-					echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
-					if ($mearow['default'] == "Y") {echo " checked";}
-					echo " />{$mearow['answer']}<br />\n";
+					echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' />{$mearow['answer']}<br />\n";
 					}
 				if ($deqrow['other'] == "Y")
 					{
