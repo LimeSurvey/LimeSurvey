@@ -702,17 +702,18 @@ if (is_array($conditions))
 	echo "\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n";
 	echo "\t\t\t\t}\n";
 	$java="";
+	$endzone="";
 	$cqcount=1;
 	foreach ($conditions as $cd)
 		{
-		if ($oldq != $cd[0]) //New if statement
+		if (isset($oldq) && $oldq != $cd[0]) //New if statement
 			{
 			$java .= $endzone;
 			$endzone = "";
 			$cqcount=1;
 			$java .= "\n\t\t\tif ((";
 			}
-		if (!$oldcq) {$oldcq = $cd[2];}
+		if (!isset($oldcq) || !$oldcq) {$oldcq = $cd[2];}
 		if ($cd[4] == "L" && $dropdowns == "R") //Just in case the dropdown threshold is being applied, check number of answers here
 			{
 			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
@@ -740,7 +741,7 @@ if (is_array($conditions))
 			{
 			$java .= "document.getElementById('$idname').value == '$cd[3]'";
 			}
-		if ($oldq != $cd[0])//Close if statement
+		if (isset($oldq) && $oldq != $cd[0])//Close if statement
 			{
 			$endzone = "))\n";
 			$endzone .= "\t\t\t\t{\n";

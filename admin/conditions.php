@@ -44,13 +44,13 @@ echo "\t<tr><td align='center'><font color='white'><b>Condition Designer</b></td
 echo "</table>\n";
 
 
-if (!$_GET['sid'] && !$_POST['sid'])
+if (!isset($_GET['sid']) && !isset($_POST['sid']))
 	{
 	echo "<br /><center>$setfont<b>No survey identification. You must not run this script directly.</b></font></center>\n";
 	echo "</body></html>\n";
 	exit;
 	}
-if (!$_GET['qid'] && !$_POST['qid'])
+if (!isset($_GET['qid']) && !isset($_POST['qid']))
 	{
 	echo "<br /><center>$setfont<b>No question identification. You must not run this script directly.</b></font></center>\n";
 	echo "</body></html>\n";
@@ -58,7 +58,7 @@ if (!$_GET['qid'] && !$_POST['qid'])
 	}
 
 //ADD NEW ENTRY IF THIS IS AN ADD
-if ($_POST['action'] == "insertcondition")
+if (isset($_POST['action']) && $_POST['action'] == "insertcondition")
 	{
 	if (!$_POST['canswers'] || !$_POST['cquestions'])
 		{
@@ -72,7 +72,7 @@ if ($_POST['action'] == "insertcondition")
 		}
 	}
 //DELETE ENTRY IF THIS IS DELETE
-if ($_POST['action'] == "delete")
+if (isset($_POST['action']) && $_POST['action'] == "delete")
 	{
 	$query = "DELETE FROM {$dbprefix}conditions WHERE cid={$_POST['cid']}";
 	$result = mysql_query($query) or die ("Couldn't delete condition<br />$query<br />".mysql_error());
@@ -86,8 +86,8 @@ unset($canswers);
 // ** ADD FORM
 // *******************************************************************
 //1: Get information for this question
-$qid=$_GET['qid']; if (!$qid) {$qid=$_POST['qid'];}
-$sid=$_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
+if (!isset($qid)) {$qid=returnglobal('qid');}
+if (!isset($sid)) {$sid=returnglobal('sid');}
 
 $query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND qid=$qid";
 $result = mysql_query($query) or die ("Couldn't get information for question $qid<br />$query<br />".mysql_error());
@@ -334,13 +334,13 @@ if ($conditionscount > 0)
 	{
 	while ($rows=mysql_fetch_array($result))
 		{
-		if ($currentfield && $currentfield != $rows['cfieldname'])
+		if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 			{
 			echo "\t\t\t\t<tr bgcolor='#FFFFFF'>\n";
 			echo "\t\t\t\t\t<td colspan='3' align='center'>\n";
 			echo "$setfont<font size='1'>AND</font></font>";
 			}
-		elseif ($currentfield)
+		elseif (isset($currentfield))
 			{
 			echo "\t\t\t\t<tr bgcolor='#EFEFEF'>\n";
 			echo "\t\t\t\t\t<td colspan='3' align='center'>\n";

@@ -228,7 +228,7 @@ if ($sid)
 		if ($activated == "N" && $sumcount3>0) 
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' "
-							. "title='"._S_INACTIVE_BT."' alt='"._A_INACTIVE_BT."' border='0' hspace='0' align='left'>\n"
+							. "title='"._S_INACTIVE_BT."' alt='"._S_INACTIVE_BT."' border='0' hspace='0' align='left'>\n"
 							. "\t\t\t\t\t<input type='image' src='./images/activate.gif' "
 							. "title='"._S_ACTIVATE_BT."' border='0' hspace='0' align='left' "
 							. "onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
@@ -1355,8 +1355,8 @@ if ($action == "newsurvey")
 	foreach (gettemplatelist() as $tname)
 		{
 		$newsurvey .= "\t\t\t<option value='$tname'";
-		if ($esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected";}
-		elseif (!$esrow['template'] && $tname == "default") {$newsurvey .= " selected";}
+		if (isset($esrow) && $esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected";}
+		elseif ((!isset($esrow) || !$esrow['template']) && $tname == "default") {$newsurvey .= " selected";}
 		$newsurvey .= ">$tname</option>\n";
 		}
 	$newsurvey .= "\t\t</select></td>\n"
@@ -1365,10 +1365,10 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_USECOOKIES."</b></font></td>\n"
 				. "\t\t<td><select $slstyle name='usecookie'>\n"
 				. "\t\t\t<option value='Y'";
-	if ($esrow['usecookie'] == "Y") {$newsurvey .= " selected";}
+	if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected";}
 	$newsurvey .= ">"._AD_YES."</option>\n"
 				. "\t\t\t<option value='N'";
-	if ($esrow['usecookie'] != "Y") {$newsurvey .= " selected";}
+	if (isset($esrow) && $esrow['usecookie'] != "Y") {$newsurvey .= " selected";}
 	$newsurvey .= ">"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
@@ -1393,9 +1393,13 @@ if ($action == "newsurvey")
 				. "\t\t<td>$setfont<input $slstyle type='text' size='12' name='expires'>"
 				. "<font size='1'>Date Format: YYYY-MM-DD</font></font></td></tr>\n"
 				. "\t<tr><td align='right'>$setfont<b>"._SL_URL."</b></font></td>\n"
-				. "\t\t<td><input $slstyle type='text' size='50' name='url' value='http://{$esrow['url']}'></td></tr>\n"
+				. "\t\t<td><input $slstyle type='text' size='50' name='url' value='http://";
+	if (isset($esrow)) {$newsurvey .= $esrow['url'];}
+	$newsurvey .= "'></td></tr>\n"
 				. "\t<tr><td align='right'>$setfont<b>"._SL_URLDESCRIP."</b></font></td>\n"
-				. "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n"
+				. "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='";
+	if (isset($esrow)) {$newsurvey .= $esrow['urldescrip'];}
+	$newsurvey .= "'></td></tr>\n"
 				. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._CREATESURVEY."'></td>\n"
 				. "\t<input type='hidden' name='action' value='insertnewsurvey'>\n"
 				. "\t</form></tr>\n"

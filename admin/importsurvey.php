@@ -200,7 +200,7 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 $bigarray = array_values($bigarray);
 
 //LABELS
-if ($noconditions != "Y")
+if (!isset($noconditions) || $noconditions != "Y")
 	{
 	$stoppoint = count($bigarray)-1;
 	for ($i=0; $i<=$stoppoint+1; $i++)
@@ -213,13 +213,13 @@ if ($noconditions != "Y")
 
 
 
-$countsurveys = count($tablearray);
-$countgroups = count($grouparray);
-$countquestions = count($questionarray);
-$countanswers = count($answerarray);
-$countconditions = count($conditionsarray);
-$countlabelsets = count($labelsetsarray);
-$countlabels = count($labelsarray);
+if (isset($tablearray)) {$countsurveys = count($tablearray);} else {$countsurveys = 0;}
+if (isset($grouparray)) {$countgroups = count($grouparray);} else {$countgroups = 0;}
+if (isset($questionarray)) {$countquestions = count($questionarray);} else {$countquestions=0;}
+if (isset($answerarray)) {$countanswers = count($answerarray);} else {$countanswers=0;}
+if (isset($conditionsarray)) {$countconditions = count($conditionsarray);} else {$countconditions=0;}
+if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);} else {$countlabelsets=0;}
+if (isset($labelsarray)) {$countlabels = count($labelsarray);} else {$countlabels=0;}
 
 // CREATE SURVEY
 $sfieldorders=convertToArray($tablearray[0], "`, `", "(`", "`)");
@@ -252,7 +252,7 @@ $sidres = mysql_query($sidquery);
 while ($srow = mysql_fetch_row($sidres)) {$newsid = $srow[0];}
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
-if ($labelsetsarray) {
+if (isset($labelsetsarray) && $labelsetsarray) {
 	foreach ($labelsetsarray as $lsa) {
 		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
@@ -305,7 +305,7 @@ if ($grouparray) {
 		$ginsert = str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
 		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
 		$oldgid=$gid;
-		$gres = mysql_query($ginsert);
+		$gres = mysql_query($ginsert) or die("<b>"._ERROR."</b> Failed to insert group<br />\n$ginsert<br />\n".mysql_error()."</body>\n</html>");
 		//GET NEW GID
 		$gidquery = "SELECT gid FROM {$dbprefix}groups ORDER BY gid DESC LIMIT 1";
 		$gidres = mysql_query($gidquery);
@@ -397,7 +397,7 @@ if ($grouparray) {
 //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions.
 
-if ($conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
+if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
 	foreach ($conditionsarray as $car) {
 		$fieldorders=convertToArray($car, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($car, "', '", "('", "')");
@@ -413,6 +413,7 @@ if ($conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
 		foreach($fieldnames as $fns) {
 			if ($oldcfieldname==$fns[0]) {$newcfieldname=$fns[1];}
 		}
+		if (!isset($newcfieldname)) {$newcfieldname="";}
 		$newfieldcontents[array_search("cid", $fieldorders)]="";
 		$newfieldcontents[array_search("qid", $fieldorders)]=$newqid;
 		$newfieldcontents[array_search("cfieldname", $fieldorders)]=$newcfieldname;

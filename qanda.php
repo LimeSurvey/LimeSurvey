@@ -117,7 +117,7 @@ switch ($ia[4])
 		$anscount = mysql_num_rows($ansresult);
 		if ($dropdowns == "L" || !$dropdowns || $anscount > $dropdownthreshold)
 			{
-			$answer .= "\n\t\t\t\t\t<select name='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n";
+			$answer .= "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n";
 			while ($ansrow = mysql_fetch_array($ansresult))
 				{
 				$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
@@ -128,8 +128,8 @@ switch ($ia[4])
 				elseif ($ansrow['default'] == "Y") {$answer .= " selected"; $defexists = "Y";}
 				$answer .= ">{$ansrow['answer']}</option>\n";
 				}
-			if (!$_SESSION[$ia[1]] && !$defexists) {$answer .= "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n";}
-			if ($_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
+			if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer .= "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n";}
+			if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
 			$answer .= "\t\t\t\t\t</select>\n";
 			}
 		elseif ($dropdowns == "R")
@@ -147,12 +147,12 @@ switch ($ia[4])
 				elseif ($ansrow['default'] == "Y") {$answer .= " checked"; $defexists = "Y";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 				}
-			if (((!$_SESSION[$ia[1]] && !$defexists) || ($_SESSION[$ia[1]] == ' ' && !$defexists)) && $ia[6] != "Y") 
+			if (((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && !$defexists)) && $ia[6] != "Y") 
 				{
 				$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='$ia[1] ' value=' ' checked onClick='checkconditions(this.value, this.name, this.type)' />"
 						 . "<label for='$ia[1] ' class='answertext'>"._NOANSWER."</label>\n";
 				}
-			elseif ($_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") 
+			elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y") 
 				{
 				$answer .= "\t\t\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' />"
 						 . _NOANSWER."\n";

@@ -33,8 +33,8 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$sid = $_GET['sid'];
-$ok = $_GET['ok'];
+if (isset($_GET['sid'])) {$sid = $_GET['sid'];}
+if (isset($_GET['ok'])) {$ok = $_GET['ok'];}
 
 include("config.php");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -51,7 +51,7 @@ echo "<table width='350' align='center' style='border: 1px solid #555555' cellpa
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DELETESURVEY."</b></td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
-if (!$sid)
+if (!isset($sid) || !$sid)
 	{
 	echo "<br /><font color='red'><b>"._ERROR."</b></font><br />\n";
 	echo _DS_NOSID."<br /><br />\n";
@@ -61,7 +61,7 @@ if (!$sid)
 	exit;
 	}
 
-if (!$ok)
+if (!isset($ok) || !$ok)
 	{
 	$result = mysql_list_tables($databasename);
 	while ($row = mysql_fetch_row($result))
