@@ -487,6 +487,8 @@ define(_LB_EDITSET, "Edit Label Set");
 define(_LB_FAIL_UPDATESET, "Update of Label Set failed");
 define(_LB_FAIL_INSERTSET, "Insert of new Label Set failed");
 define(_LB_FAIL_DELSET, "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.");
+define(_LB_ACTIVEUSE, "You cannot change codes, add or delete entries in this label set because it is being used by an active survey.");
+define(_LB_TOTALUSE, "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.");
 //Export Labels
 define(_EL_NOLID, "No LID has been provided. Cannot dump label set.");
 //Import Labels
