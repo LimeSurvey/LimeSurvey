@@ -270,18 +270,7 @@ if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);	
 
 //STEP 1: First line is column headings
-//$s = "\t";
 
-//********************************   OLD LEGITQS METHOD
-//$lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
-//$lr = mysql_query($lq);
-//$legitqs[] = "DUMMY ENTRY";
-//while ($lw = mysql_fetch_array($lr))
-//	{
-//	$legitqs[] = $lw['qid']; //this creates an array of question id's'
-//	}
-//$origlegitqs=$legitqs;
-//********************************
 $fieldmap=createFieldMap($sid);
 
 //Get the fieldnames from the survey table for column headings
