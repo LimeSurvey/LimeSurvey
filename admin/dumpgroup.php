@@ -40,9 +40,9 @@
 // 1. questions
 // 2. answers
 
-$gid = $_GET['gid'];
-
 require_once("config.php");
+$gid = returnglobal('gid');
+$sid = returnglobal('sid');
 
 //echo $htmlheader;
 if (!$gid)
@@ -69,7 +69,7 @@ $dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
 function BuildOutput($Query)
 	{
 	global $dbprefix;
-	$QueryResult = mysql_query($Query);
+	$QueryResult = mysql_query($Query) or die("ERROR:\n".$Query."\n".mysql_error()."\n\n");
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];
 	if ($dbprefix)
