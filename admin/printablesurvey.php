@@ -57,6 +57,7 @@ while ($desrow = mysql_fetch_array($desresult))
 	$surveyactive = $desrow['active'];
 	$surveytable = "survey_{$desrow['sid']}";
 	$surveyexpirydate = $desrow['expires'];
+	$surveyfaxto = $desrow['faxto'];
 	}
 //if ($surveyactive == "Y") {echo "$surveyoptions\n";}
 echo "<table width='100%' cellspacing='0'>\n";
@@ -277,7 +278,7 @@ echo "\t\t\t<table width='100%' border='1' style='border-collapse: collapse' bor
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
 echo "\t\t\t\t\t\t$setfont<b>Submit your survey!</b><br />\n";
-echo "\t\t\t\t\t\tThank you for completing this survey. Please fax your completed survey to $surveyfaxnumber";
+echo "\t\t\t\t\t\tThank you for completing this survey. Please fax your completed survey to $surveyfaxto";
 if ($surveyexpirydate && $surveyexpirydate != "0000-00-00")
 	{
 	echo " by $surveyexpirydate";
