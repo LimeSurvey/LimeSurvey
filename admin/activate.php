@@ -159,6 +159,9 @@ else
 			$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 			switch($arow['type'])
 				{
+						case "N":  //NUMERICAL
+							$createsurvey .= " DOUBLE";
+							break;
 						case "S":  //SHORT TEXT
 							$createsurvey .= " VARCHAR(200)";
 							break;
