@@ -1056,8 +1056,8 @@ else
 			$distinctresult=mysql_query($distinctquery);
 			while ($distinctrow=mysql_fetch_array($distinctresult))
 				{
-				if ($x > 0) {$explanation .= " <i>and</i> ";}
-				$explanation .= "if you answered ";
+				if ($x > 0) {$explanation .= " <i>"._DE_AND."</i><br />";}
+				//$explanation .= "if you answered ";
 				$conquery="SELECT cid, cqid, questions.title, questions.question, value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.cqid={$distinctrow['cqid']} AND conditions.qid={$deqrow['qid']}";
 				$conresult=mysql_query($conquery);
 				while ($conrow=mysql_fetch_array($conresult))
@@ -1067,10 +1067,23 @@ else
 						switch ($conrow['value'])
 							{
 							case "Y":
-								$conditions[]="Yes";
+								$conditions[]=_YES;
 								break;
 							case "N":
-								$conditions[]="No";
+								$conditions[]=_NO;
+								break;
+							}
+						}
+					if ($conrow['type'] == "G")
+						{
+						switch ($conrow['value'])
+							{
+							case "M":
+								$conditions[]=_MALE;
+								break;
+							case "F":
+								$conditions[]=_FEMALE;
+								break;
 							}
 						}
 					$ansquery="SELECT answer FROM answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
@@ -1082,20 +1095,21 @@ else
 					}
 				if (count($conditions) > 1)
 					{
-					$explanation .=  "'".implode("' or '", $conditions)."'";	
+					$conanswers = "'".implode("' "._DE_OR." '", $conditions)."'";
+					$explanation .= " -" . str_replace("{ANSWER}", $conanswers, _DE_CONDITIONHELP2);
 					}
 				else
 					{
-					$explanation .= "'".$conditions[0]."'";
+					$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", _DE_CONDITIONHELP2);
 					}
 				unset($conditions);
-				$explanation .= " to question '".$distinctrow['title']."'";
+				$explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}'", $explanation);
 				$x++;
 				}
 
 			if ($explanation) 
 				{
-				$explanation = "<font color='maroon' size='1'>[Only answer this question ".$explanation."]";
+				$explanation = "<font color='maroon' size='1'>["._DE_CONDITIONHELP1."]<br />$explanation\n";
 				echo "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
 				}
 
