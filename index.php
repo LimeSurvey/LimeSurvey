@@ -53,6 +53,7 @@ $tpldir="$publicdir/templates";
 if (!$_GET['sid'] && !$_POST['sid'])
 	{
 	//A nice crashout
+	echo "<html>\n";
 	$output=file("$tpldir/default/startpage.pstpl");
 	foreach($output as $op)
 		{
@@ -67,6 +68,7 @@ if (!$_GET['sid'] && !$_POST['sid'])
 		{
 		echo templatereplace($op);
 		}
+	echo "</html>\n";
 	exit;
 	}
 
@@ -135,7 +137,7 @@ if ($_GET['move'] == "clearall")
 		{
 		echo templatereplace($op);
 		}
-	
+	echo "</html>\n";
 	session_unset();
 	session_destroy();
 	exit;	
