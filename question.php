@@ -447,7 +447,7 @@ else
 			{
 			echo "\n\t<!-- NEW QUESTION -->\n";
 			echo "\t\t\t\t<div name='$qa[4]' id='$qa[4]'>";
-			$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
+			$question="<label for='$ia[7]'>" . $qa[0] . "</label>";
 			$answer=$qa[1];
 			$help=$qa[2];
 			$questioncode=$qa[5];
