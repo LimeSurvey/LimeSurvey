@@ -136,12 +136,7 @@ echo "\t<tr>\n";
 echo "\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
 echo "\t\t\t<font size='2'>\n";
 echo "$adminmenu\n";
-//echo "\t\t</td>\n";
 
-//echo "\t</tr>\n";
-//echo "\t<tr>\n";
-//echo "\t\t<td>\n";
-//echo "\t\t<td width='75%' valign='top' $cellstyle>\n";
 if ($action == "newsurvey")
 	{
 	echo "$newsurvey\n";
