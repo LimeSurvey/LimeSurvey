@@ -48,23 +48,26 @@ $slstyle2 = "style='background-color: #EEEFFF; font-family: verdana; font-size: 
 
 echo $htmlheader;
 
-if (!$sid)
+if (!$_GET['sid'] && !$_GET['sid'])
 	{
 	//need to have a survey id
 	echo "<center>You have not selected a survey!</center>";
 	exit;
 	}
 
+if ($_GET['sid']) {$sid=$_GET['sid'];}
+elseif ($_POST['sid']) {$sid=$_POST['sid'];}
+
 echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Quick Statistics</b></td></tr></table>\n";
 echo $surveyoptions;
 echo "<table width='100%'>\n";
 echo "\t<form method='post'>\n";
 // 1: Get list of questions with predefined answers from survey
-$query = "SELECT qid, gid, type, title FROM questions WHERE sid='$sid' AND type IN ('5', 'G', 'L', 'O', 'M', 'P', 'Y', 'A', 'B', 'C') ORDER BY gid";
+$query = "SELECT qid, questions.gid, type, title, group_name, question FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' AND type IN ('5', 'G', 'L', 'O', 'M', 'P', 'Y', 'A', 'B', 'C') ORDER BY group_name, title";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while ($row=mysql_fetch_row($result))
 	{
-	$filters[]=array("$row[0]", "$row[1]", "$row[2]", "$row[3]");
+	$filters[]=array("$row[0]", "$row[1]", "$row[2]", "$row[3]", "$row[4]", strip_tags($row[5]));
 	}
 // 2: Get answers for each question
 foreach ($filters as $flt)
@@ -76,7 +79,7 @@ foreach ($filters as $flt)
 			echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 			}
 		echo "\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n";
-		echo "\t\t<b>Group $flt[1]</b></td></tr>\n\t\t<tr><td align='center'>\n";
+		echo "\t\t<b>Group $flt[1]: $flt[4]</b></td></tr>\n\t\t<tr><td align='center'>\n";
 		echo "\t\t\t<table><tr>\n";
 		$counter=0;
 		}
@@ -84,7 +87,11 @@ foreach ($filters as $flt)
 	if ($counter == 5) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>";}
 	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C") //Have to make an exception for these types!
 		{
-		echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3]<br />\n";
+		echo "\t\t\t\t<td align='center'>";
+		echo "$setfont<B>$flt[3]&nbsp;"; //Heading (Question No)
+		echo "<input type='radio' name='summary' value='{$sid}X{$flt[1]}X{$flt[0]}'>&nbsp;";
+		echo "<img src='help.gif' width='12' height='12' align='bottom' alt='$flt[5]' onClick=\"alert('$flt[5]')\">";
+		echo "<br />\n";
 		echo "\t\t\t\t<select name='";
 		if ($flt[2] == "M" || $flt[2] == "P") {echo "M";}
 		echo "{$sid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
@@ -243,14 +250,13 @@ echo "</table>\n";
 //}
 // -----------
 
-if ($display)
+if ($_POST['display'])
 	{
 	// 1: Get list of questions with answers chosen
-	for (reset($_POST); $key=key($_POST);
-	next($_POST)) { $postvars[]=$key;} // creates array of post variable names
+	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;} // creates array of post variable names
 	foreach ($postvars as $pv) 
 		{
-		if ($pv != "sid" && $pv != "display" && substr($pv, 0, 1) != "M") //pull out just the fieldnames
+		if ($pv != "sid" && $pv != "display" && substr($pv, 0, 1) != "M" && $pv != "summary") //pull out just the fieldnames
 			{
 			$thisquestion = "$pv IN (";
 			foreach ($$pv as $condition)
@@ -291,6 +297,7 @@ if ($display)
 		}
 	$result=mysql_query($query) or die("Couldn't get results<br />$query<br />".mysql_error());
 	while ($row=mysql_fetch_row($result)) {$results=$row[0];}
+	
 	// 3: Present results including option to view those rows
 	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='0' cellspacing='0' bordercolor='black'>\n";
 	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Results:</b></td></tr>\n";
@@ -318,5 +325,32 @@ if ($display)
 		echo "\t\t</td></form>\n\t</tr>\n";
 		}
 	echo "</table>\n";
+	}
+
+if ($_POST['summary'])
+	{
+	//1. Get distinct results for field
+	$query = "SELECT DISTINCT {$_POST['summary']} FROM survey_$sid ORDER BY {$_POST['summary']}";
+	$result=mysql_query($query) or die("Couldn't get distinct results<br />$query<br />".mysql_error());
+	while ($row=mysql_fetch_row($result))
+		{
+		$fvalues[]=$row[0];
+		}
+	//foreach ($fvalues as $fv) {echo "$fv | ";} //debugging line
+	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='0' cellspacing='0' bordercolor='black'>\n";
+	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Field Summary for {$_POST['summary']}:</b></td></tr>\n";
+	foreach ($fvalues as $fv)
+		{
+		$query = "SELECT count({$_POST['summary']}) FROM survey_$sid WHERE {$_POST['summary']} = '$fv' AND $sql";
+		$result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
+		while ($row=mysql_fetch_row($result))
+			{
+			if ($fv == "") {$fname="No Answer";} else {$fname=$fv;}
+			echo "\t<tr>\n\t\t<td width='50%' align='right'>$setfont<font color='#EEEEEE'>$fname:\n\t\t</td>\n";
+			echo "\t\t<td width='50%'>$setfont<font color='#EEEEEE'>$row[0]";
+			echo "\t\t</td></tr>\n";
+			}
+		}
+	
 	}
 ?>
