@@ -748,7 +748,6 @@ foreach(file("$thistpl/survey.pstpl") as $op)
 	{
 	echo "\t".templatereplace($op);
 	}
-
 echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
 echo "\t<script type='text/javascript'>\n";
 echo "\t<!--\n";
@@ -848,7 +847,7 @@ if ($groupdescription)
 echo "\n";
 
 echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
-if (is_array($qanda))
+if (isset($qanda) && is_array($qanda))
 	{
 	foreach ($qanda as $qa)
 		{
