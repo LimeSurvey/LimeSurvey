@@ -468,7 +468,6 @@ echo "><label for='viewsummaryall'>View summary of all available fields</label><
 
 
 // DISPLAY RESULTS
-
 if (isset($_POST['display']) && $_POST['display'])
 	{
 	// 1: Get list of questions with answers chosen
@@ -539,7 +538,6 @@ if (isset($_POST['display']) && $_POST['display'])
 					$selects[]= "`".substr($pv, 1, strlen($pv)-2) . "` < '".$_POST[$pv]."'";
 					}
 				}
-			
 			}
 		}
 	// 2: Do SQL query
@@ -589,6 +587,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	echo "</table>\n";
 	}
 
+//Show Summary results
 if (isset($_POST['summary']) && $_POST['summary'])
 	{
 	$pipepos=strpos($_POST['summary'], "|");
@@ -627,7 +626,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		elseif (substr($rt, 0, 1) == "T" || substr($rt, 0, 1) == "S") //Short and long text
 			{
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
-			$nquery = "SELECT title, type, question FROM {$dbprefix}questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, other FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die("Couldn't get text question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult))
 				{
@@ -805,11 +804,16 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				{
 				$rqid = substr($rqid, 0, strlen($rqid)-1); //keeps cutting off the end until it finds the real qid
 				}
-			$nquery = "SELECT title, type, question, qid, lid FROM {$dbprefix}questions WHERE qid=$rqid";
+			$nquery = "SELECT title, type, question, qid, lid, other FROM {$dbprefix}questions WHERE qid=$rqid";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
 				{
-				$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];
+				$qtitle=$nrow[0]; 
+				$qtype=$nrow[1]; 
+				$qquestion=strip_tags($nrow[2]); 
+				$qiqid=$nrow[3]; 
+				$qlid=$nrow[4];
+				$qother=$nrow[5];
 				}
 			$alist[]=array("", _NOANSWER);
 			switch($qtype)
@@ -910,6 +914,10 @@ if (isset($_POST['summary']) && $_POST['summary'])
 						{
 						$alist[]=array("$qrow[0]", "$qrow[1]");
 						}
+					if ($qtype == "L" && $qother == "Y") 
+						{
+						$alist[]=array("-oth-", _OTHER);
+						}
 				}
 			}
 	
@@ -1003,7 +1011,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$p1->value->SetFont(FF_ARIAL,FS_NORMAL,11);
 									// Set how many pixels each slice should explode
 					//$p1->Explode(array(0,15,15,25,15));
-	
+					if (!isset($ci)) {$ci=0;}
 					$ci++;
 					$graph->Add($p1);
 					$graph->Stroke($tempdir."/".$ci.".png");
