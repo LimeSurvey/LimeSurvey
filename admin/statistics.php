@@ -120,7 +120,7 @@ foreach ($filters as $flt)
 		echo "<input type='radio' name='summary' value='$myfield'";
 		if (isset($_POST['summary']) && ($_POST['summary'] == "{$sid}X{$flt[1]}X{$flt[0]}" || $_POST['summary'] == "M{$sid}X{$flt[1]}X{$flt[0]}" || $_POST['summary'] == "N{$sid}X{$flt[1]}X{$flt[0]}")) {echo " CHECKED";}
 		echo ">&nbsp;"
-			."<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
+			."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
 			."<br />\n";
 		if ($flt[2] != "N") {echo "\t\t\t\t<select name='";}
 		if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {echo "M";}
@@ -136,7 +136,7 @@ foreach ($filters as $flt)
 		case "T": // Long free text
 			$myfield2="T$myfield";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
-				."&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 				."<br />\n"
 				."\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n"
 				."\t\t\t\t\t<textarea $slstyle2 name='$myfield2' rows='3'>";
@@ -147,7 +147,7 @@ foreach ($filters as $flt)
 		case "S": // Short free text
 			$myfield2="T$myfield";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
-				."&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 				."<br />\n"
 				."\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n"
 				."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
@@ -172,7 +172,7 @@ foreach ($filters as $flt)
 			$myfield3="$myfield2=";
 			$myfield4="$myfield2<"; $myfield5="$myfield2>";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
-				."&nbsp;<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])
+				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])
 				." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 				."<br />\n"
 				."\t\t\t\t\t<font size='1'>Date (YYYY-MM-DD) equals:<br />\n"
@@ -228,7 +228,7 @@ foreach ($filters as $flt)
 					."<input type='radio' name='summary' value='$myfield2'";
 				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
 				for ($i=1; $i<=5; $i++)
@@ -262,7 +262,7 @@ foreach ($filters as $flt)
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])
 					." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])
 					."')\">"
 					."<br />\n"
@@ -297,7 +297,7 @@ foreach ($filters as $flt)
 					."<input type='radio' name='summary' value='$myfield2'";
 				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
 					."\t\t\t\t\t<option value='Y'";
@@ -332,7 +332,7 @@ foreach ($filters as $flt)
 					."<input type='radio' name='summary' value='$myfield2'";
 				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
 					."\t\t\t\t\t<option value='I'";
@@ -367,7 +367,7 @@ foreach ($filters as $flt)
 					."<input type='radio' name='summary' value='$myfield2'";
 				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n";
 				$fquery = "SELECT * FROM labels WHERE lid={$flt[6]} ORDER BY sortorder, code";
 				//echo $fquery;
@@ -408,7 +408,7 @@ foreach ($filters as $flt)
 					."<input type='radio' name='summary' value='$myfield2'";
 				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='./images/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple $slstyle2>\n";
 				foreach ($answers as $ans)
@@ -984,7 +984,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				if ($usejpgraph == 1) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
 					{
 					$graph = new PieGraph(640,320,'png');
-					
 					$graph->img->SetAntiAliasing();
 			
 					// Set A title for the plot
@@ -1007,9 +1006,9 @@ if (isset($_POST['summary']) && $_POST['summary'])
 	
 					$ci++;
 					$graph->Add($p1);
-					$graph->Stroke("../tmp/".$ci.".png");
+					$graph->Stroke($tempdir."/".$ci.".png");
 					
-					echo "<tr><td colspan='3' style=\"text-align:center\"><img src=\"../tmp/".$ci.".png\" border='1'></td></tr>";
+					echo "<tr><td colspan='3' style=\"text-align:center\"><img src=\"$tempurl/".$ci.".png\" border='1'></td></tr>";
 					
 					////// PIE ALL DONE
 					unset($gdata);

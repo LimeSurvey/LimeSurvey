@@ -610,7 +610,7 @@ elseif ($action == "edit")
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n"
-								   . "\t\t\t\t\t\t<img src='./images/cut.gif' title='"._REMOVEITEM."' ";
+								   . "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' title='"._REMOVEITEM."' ";
 						if ($j != $existing)
 							{
 							$ranklist .= "style='display:none'";
@@ -1203,7 +1203,7 @@ else
 				{
 				$hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
 				$hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-				echo "\t\t\t<img src='./images/help.gif' alt='"._DE_QUESTIONHELP."' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+				echo "\t\t\t<img src='$imagefiles/help.gif' alt='"._DE_QUESTIONHELP."' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
 				}
 			switch($deqrow['type'])
 				{
@@ -1403,7 +1403,7 @@ else
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='./images/cut.gif' title='"._REMOVEITEM."' ";
+						$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' title='"._REMOVEITEM."' ";
 						if (!isset($existing) || $i != $existing)
 							{
 							$ranklist .= "style='display:none'";

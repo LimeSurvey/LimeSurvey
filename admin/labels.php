@@ -79,17 +79,17 @@ echo "\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' 
 echo "\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'><font size='1' face='verdana' color='white'><b>"._LABELCONTROL."</b></td></tr>\n";
 echo "\t\t\t\t<tr bgcolor='#999999'>\n";
 echo "\t\t\t\t\t<td>\n";
-echo "\t\t\t\t\t<input type='image' src='./images/home.gif' title='"._B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname', '_top')\">\n";
-echo "\t\t\t\t\t<img src='./images/blank.gif' width='11' height='20' border='0' hspace='0' align='left'>\n";
-echo "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-echo "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
-echo "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+echo "\t\t\t\t\t<input type='image' src='$imagefiles/home.gif' title='"._B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname', '_top')\">\n";
+echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left'>\n";
+echo "\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n";
+echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
+echo "\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n";
 echo "\t\t\t\t\t</td>\n";
 echo "\t\t\t\t\t<td align='right' width='320'>\n";
-echo "\t\t\t\t\t<input type='image' src='./images/showhelp.gif' title='"._A_HELP_BT."' align='right' hspace='0' border='0' onClick=\"showhelp('show')\">\n";
-echo "\t\t\t\t\t<img src='./images/blank.gif' width='42' height='20' align='right' hspace='0' border='0'>\n";
-echo "\t\t\t\t\t<img src='./images/seperator.gif' align='right' hspace='0' border='0'>\n";
-echo "\t\t\t\t\t<input type='image' src='./images/add.gif' align='right' hspace='0' border='0' title='"._L_ADDSET_BT."' onClick=\"window.open('labels.php?action=newset', '_top')\">\n";
+echo "\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.gif' title='"._A_HELP_BT."' align='right' hspace='0' border='0' onClick=\"showhelp('show')\">\n";
+echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'>\n";
+echo "\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0'>\n";
+echo "\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' align='right' hspace='0' border='0' title='"._L_ADDSET_BT."' onClick=\"window.open('labels.php?action=newset', '_top')\">\n";
 echo "\t\t\t\t\t$setfont<font size='1'><b>"._LABELSETS.":</b> ";
 echo "\t\t\t\t\t<select style='font-size: 9; font-family: verdana; font-color: #333333; background: SILVER; width: 160' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 $labelsets=getlabelsets();
@@ -124,7 +124,7 @@ if ($action == "newset" || $action == "editset")
 	echo "\t\t<table width='100%' bgcolor='#DDDDDD'>\n";
 	echo "\t\t\t<tr bgcolor='black'>\n";
 	echo "\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><b>\n";
-	echo "\t\t\t\t<input type='image' src='./images/close.gif' align='right' onClick=\"window.open('labels.php?lid=$lid', '_top')\">\n";
+	echo "\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' onClick=\"window.open('labels.php?lid=$lid', '_top')\">\n";
 	if ($action == "newset") {echo _LB_NEWSET;}
 	else {echo _LB_EDITSET;}
 	echo "\t\t\t\t</font></font></b></td>\n";
@@ -197,14 +197,14 @@ if (isset($lid) && ($action != "editset") && $lid)
 		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'><font size='1' face='verdana' color='white'><b>"._LABELSET.":</b> {$row['label_name']}</td></tr>\n";
 		echo "\t\t\t\t<tr bgcolor='#999999'>\n";
 		echo "\t\t\t\t\t<td>\n";
-		echo "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._CLOSEWIN."' align='right' border='0' hspace='0' onClick=\"window.open('labels.php', '_top')\">\n";
-		echo "\t\t\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
-		echo "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-		echo "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
-		echo "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-		echo "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._L_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('labels.php?action=editset&lid=$lid', '_top')\">\n";
-		echo "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._L_DEL_BT."' align='left' border='0' hspace='0' onClick=\"window.open('labels.php?action=delset&lid=$lid', '_top')\">\n";
-		echo "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"._EXPORTLABEL."' align='left' border='0' hspace='0' onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n";
+		echo "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"._CLOSEWIN."' align='right' border='0' hspace='0' onClick=\"window.open('labels.php', '_top')\">\n";
+		echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
+		echo "\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n";
+		echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
+		echo "\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n";
+		echo "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"._L_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('labels.php?action=editset&lid=$lid', '_top')\">\n";
+		echo "\t\t\t\t\t<input type='image' src='$imagefiles/delete.gif' title='"._L_DEL_BT."' align='left' border='0' hspace='0' onClick=\"window.open('labels.php?action=delset&lid=$lid', '_top')\">\n";
+		echo "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"._EXPORTLABEL."' align='left' border='0' hspace='0' onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n";
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t</tr>\n";
 		echo "\t\t\t</table>\n";
@@ -258,7 +258,7 @@ if (isset($lid) && ($action != "editset") && $lid)
 			{
 			echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_UP."'>\n";
 			}
-		else {echo "<img src='./images/spacer.gif' width='21' height='5' align='left'></font>";}
+		else {echo "<img src='$imagefiles/spacer.gif' width='21' height='5' align='left'></font>";}
 		if ($position < $labelcount-1)
 			{
 			echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DN."'>\n";
@@ -470,7 +470,7 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
 	
 function helpscreen()
 	{
-	global $homeurl, $langdir;
+	global $homeurl, $langdir, $imagefiles;
 	global $lid, $action;
 	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n";
 	echo "\t\t\t<table width='100%'><tr><td><table width='100%' height='100%' align='center' cellspacing='0'>\n";
@@ -481,8 +481,8 @@ function helpscreen()
 	echo "\t\t\t\t</tr>\n";
 	echo "\t\t\t\t<tr>\n";
 	echo "\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
-	echo "\t\t\t\t\t\t<img src='./images/blank.gif' width='20' hspace='0' border='0' align='left'>\n";
-	echo "\t\t\t\t\t\t<input type='image' src='./images/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n";
+	echo "\t\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' hspace='0' border='0' align='left'>\n";
+	echo "\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n";
 	echo "\t\t\t\t\t</td>\n";
 	echo "\t\t\t\t</tr>\n";
 	echo "\t\t\t\t<tr>\n";

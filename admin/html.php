@@ -227,94 +227,94 @@ if ($sid)
 						. "\t\t\t\t<tr bgcolor='#999999'><td align='right' height='22'>\n";
 		if ($activated == "N" && $sumcount3>0) 
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' "
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.gif' "
 							. "title='"._S_INACTIVE_BT."' alt='"._S_INACTIVE_BT."' border='0' hspace='0' align='left'>\n"
-							. "\t\t\t\t\t<input type='image' src='./images/activate.gif' name='ActivateSurvey' "
+							. "\t\t\t\t\t<input type='image' src='$imagefiles/activate.gif' name='ActivateSurvey' "
 							. "title='"._S_ACTIVATE_BT."' border='0' hspace='0' align='left' "
 							. "onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
 			}
 		elseif ($activated == "Y")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/active.gif' title='"._S_ACTIVE_BT."' "
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.gif' title='"._S_ACTIVE_BT."' "
 							. "alt='"._S_ACTIVE_BT."' border='0' hspace='0' align='left'>\n"
-							. "\t\t\t\t\t<input type='image' src='./images/deactivate.gif' name='DeactivateSurvey' "
+							. "\t\t\t\t\t<input type='image' src='$imagefiles/deactivate.gif' name='DeactivateSurvey' "
 							. "title='"._S_DEACTIVATE_BT."' border='0' hspace='0' align='left' "
 							. "onClick=\"window.open('$scriptname?action=deactivate&sid=$sid', '_top')\">\n";
 			}
 		elseif ($activated == "N")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' title='"._S_INACTIVE_BT."' "
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.gif' title='"._S_INACTIVE_BT."' "
 							. "alt='"._S_INACTIVE_BT."' border='0' hspace='0' align='left'>\n"
-							. "\t\t\t\t\t<img src='./images/blank.gif' width='11' title='"._S_CANNOTACTIVATE_BT."' "
+							. "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' title='"._S_CANNOTACTIVATE_BT."' "
 							. "alt='"._S_CANNOTACTIVATE_BT."' border='0' align='left' hspace='0'>\n";
 			}
-		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
-						. "\t\t\t\t\t<input type='image' src='./images/do.gif' title='"._S_DOSURVEY_BT."' "
+		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/do.gif' title='"._S_DOSURVEY_BT."' "
 						. "name='DoSurvey' align='left' border='0' hspace='0' "
 						. "onclick=\"window.open('../index.php?sid=$sid&newtest=Y', '_blank')\">\n"
-						. "\t\t\t\t\t<input type='image' src='./images/dataentry.gif' "
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/dataentry.gif' "
 						. "title='"._S_DATAENTRY_BT."' align='left' border='0' hspace='0' "
 						. "name='DoDataentry' onclick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n"
-						. "\t\t\t\t\t<input type='image' src='./images/print.gif' title='"._S_PRINTABLE_BT."' "
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/print.gif' title='"._S_PRINTABLE_BT."' "
 						. "name='ShowPrintableSurvey' align='left' border='0' hspace='0' "
 						. "onclick=\"window.open('printablesurvey.php?sid=$sid', '_blank')\">\n"
-						. "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
-						. "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._S_EDIT_BT."' "
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"._S_EDIT_BT."' "
 						. "name='EditSurvey' align='left' border='0' hspace='0' "
 						. "onclick=\"window.open('$scriptname?action=editsurvey&sid=$sid', '_top')\">\n";
 		if ($sumcount3 == 0 && $sumcount2 == 0)
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/delete.gif' title='"
 							. _S_DELETE_BT."' align='left' border='0' hspace='0' name='DeleteWholeSurvey' "
 							. "onclick=\"window.open('$scriptname?action=delsurvey&sid=$sid', '_top')\">\n";
 			}
 		else
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='20' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
 						. _S_EXPORT_BT."' align='left' border='0' hspace='0' name='ExportSurvey' "
 						. "onclick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
 		if ($activated == "Y")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
-							. "\t\t\t\t\t<input type='image' src='./images/browse.gif' title='"._S_BROWSE_BT."' "
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
+							. "\t\t\t\t\t<input type='image' src='$imagefiles/browse.gif' title='"._S_BROWSE_BT."' "
 							. "align='left' border='0' hspace='0' name='BrowseSurveyResults' "
 							. "onclick=\"window.open('browse.php?sid=$sid', '_top')\">\n"
-							. "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
-							. "\t\t\t\t\t<input type='image' src='./images/tokens.gif' title='"._S_TOKENS_BT."' "
+							. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
+							. "\t\t\t\t\t<input type='image' src='$imagefiles/tokens.gif' title='"._S_TOKENS_BT."' "
 							. "align='left' border='0' hspace='0' name='TokensControl' "
 							. "onclick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
 			}
-		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
+		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
 						. "\t\t\t\t</td>\n"
 						. "\t\t\t\t<td align='right' valign='middle' width='330'>\n";
 		if (!$gid) 
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
 							. _S_CLOSE_BT."' align='right' border='0' hspace='0' name='CloseSurveyWindow' "
 							. "onclick=\"window.open('$scriptname', '_top')\">\n";
 			}
 		else 
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='21' align='right' "
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='21' align='right' "
 							. "border='0' hspace='0' alt='-'>\n";
 			}
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
 						. _S_MAXIMISE_BT."' name='MaximiseSurveyWindow' "
 						. "align='right' border='0' hspace='0' onclick='showdetails(\"shows\")'>\n"
-						. "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='"
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
 						. _S_MINIMISE_BT."' name='MinimiseSurveyWindow' "
 						. "align='right' border='0' hspace='0' onclick='showdetails(\"hides\")'>\n"
-						. "\t\t\t\t\t<img src='./images/seperator.gif' align='right' border='0' "
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' border='0' "
 						. "alt='|' hspace='0'>\n";
 		if ($activated == "Y")
 			{
-			$surveysummary .= "<img src='./images/blank.gif' alt='-' width='20' align='right' border='0' hspace='0'>\n";
+			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='-' width='20' align='right' border='0' hspace='0'>\n";
 			}
 		else
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='"
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' title='"
 							. _S_ADDGROUP_BT."' align='right' border='0' hspace='0' name='AddNewGroup' "
 							. "onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";
 			}
@@ -458,57 +458,57 @@ if ($gid)
 					   . "<font color='silver'>{$grow['group_name']}</font></font></td></tr>\n"
 					   . "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 					   . "\t\t\t\t\t<td>\n"
-					   . "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='31' height='20' border='0' hspace='0' align='left'>\n"
-					   . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
-					   . "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='60' height='20' border='0' hspace='0' align='left'>\n"
-					   . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
-					   . "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"
+					   . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='31' height='20' border='0' hspace='0' align='left'>\n"
+					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+					   . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='60' height='20' border='0' hspace='0' align='left'>\n"
+					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+					   . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"
 					   . _G_EDIT_BT."' name='EditGroup' "
 					   . "align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', "
 					   . "'_top')\">";
 		if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y") 
 			{
 			$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&sid=$sid&gid=$gid'>"
-						   . "<img src='./images/delete.gif' alt='"
+						   . "<img src='$imagefiles/delete.gif' alt='"
 						   . _G_DELETE_BT."' name='DeleteWholeGroup' title='"
 						   . _G_DELETE_BT."' align='left' border='0' hspace='0' "
 						   . "onclick=\"return confirm('"._DG_RUSURE."')\"></a>";
 			}
 		else				
 			{
-			$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='20' align='left' border='0' hspace='0'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
 					   . _G_EXPORT_BT."' name='ExportGroup' "
 					   . "align='left' border='0' hspace='0' "
 					   . "onclick=\"window.open('dumpgroup.php?sid=$sid&gid=$gid', '_top')\">"
-					   . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 					   . "\t\t\t\t\t</td>\n"
 					   . "\t\t\t\t\t<td align='right' width='330'>\n";
 		if (!$qid) 
 			{
-			$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"
+			$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
 						   . _G_CLOSE_BT."' align='right' border='0' hspace='0' name='CloseSurveyWindow' "
 						   . "onclick=\"window.open('$scriptname?sid=$sid', '_top')\">\n";
 			}
 		else 
 			{
-			$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='21' align='right' border='0' hspace='0'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='21' align='right' border='0' hspace='0'>\n";
 			}
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
 					   . _G_MAXIMISE_BT."' name='MaximiseGroupWindow' "
 					   . "align='right' border='0' hspace='0' onclick='showdetails(\"showg\")'>"
-					   . "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='"
+					   . "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
 					   . _G_MINIMISE_BT."' name='MinimiseGroupWindow' "
 					   . "align='right' border='0' hspace='0' onclick='showdetails(\"hideg\")'>\n"
-					   . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' align='right' border='0' hspace='0'>\n";
+					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='right' border='0' hspace='0'>\n";
 		if ($activated == "Y")
 			{
-			$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='20' border='0' hspace='0' align='right'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' border='0' hspace='0' align='right'>\n";
 			}
 		else
 			{
-			$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='"
+			$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' title='"
 						   . _G_ADDQUESTION_BT."' border='0' hspace='0' align='right' name='AddNewQuestion' "
 						   . "onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";
 			}
@@ -552,48 +552,48 @@ if ($qid)
 						  . _QUESTION."</b> <font color='silver'>{$qrrow['question']}</font></font></td></tr>\n"
 						  . "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 						  . "\t\t\t\t\t<td>\n"
-						  . "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='31' height='20' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='60' height='20' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"
+						  . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='31' height='20' border='0' hspace='0' align='left'>\n"
+						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+						  . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='60' height='20' border='0' hspace='0' align='left'>\n"
+						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"
 						  . _Q_EDIT_BT."' align='left' border='0' hspace='0' name='EditQuestion' "
 						  . "onclick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
 		if (($qct == 0 && $activated != "Y") || $activated != "Y") 
 			{
 			$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid'>"
-							  . "<image src='./images/delete.gif' name='DeleteWholeQuestion' title='"
+							  . "<image src='$imagefiles/delete.gif' name='DeleteWholeQuestion' title='"
 							  . _Q_DELETE_BT."' align='left' border='0' hspace='0' "
 							  . "onclick=\"return confirm('"._DQ_RUSURE."')\"></a>\n";
 			}
-		else {$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='20' align='left' border='0' hspace='0'>\n";}
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"
+		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' align='left' border='0' hspace='0'>\n";}
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
 						  . _Q_EXPORT_BT."' align='left' border='0' hspace='0' name='ExportQuestion' "
 						  . "onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n"
-						  . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='./images/copy.gif' title='"
+						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/copy.gif' title='"
 						  . _Q_COPY_BT."' border='0' hspace='0' align='left' name='CopyQuestion' "
 						  . "onclick=\"window.open('$scriptname?action=copyquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n"
-						  . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='./images/conditions.gif' title='"
+						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.gif' title='"
 						  . _Q_CONDITIONS_BT."' border='0' hspace='0' align='left' name='SetQuestionConditions' "
 						  . "onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n"
-						  . "\t\t\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n";
+						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
-			$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/answers.gif' title='"
+			$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/answers.gif' title='"
 							  . _Q_ANSWERS_BT."' border='0' hspace='0' align='left' name='ViewAnswers' "
 							  . "onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
 			}
 		$questionsummary .= "\t\t\t\t\t</td>\n"
 						  . "\t\t\t\t\t<td align='right' width='330'>\n"
-						  . "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
 						  . _Q_CLOSE_BT."' align='right' border='0' hspace='0' name='CloseQuestionWindow' "
 						  . "onclick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n"
-						  . "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
 						  . _Q_MAXIMISE_BT."' align='right' border='0' hspace='0' name='MaximiseQuestionWindow' "
 						  . "onclick='showdetails(\"showq\")'>"
-						  . "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
 						  . _Q_MINIMISE_BT."' align='right' border='0' hspace='0' name='MinimiseQuestionWindow' "
 						  . "onclick='showdetails(\"hideq\")'>\n"
 						  . "\t\t\t\t</td></tr>\n"
@@ -618,7 +618,7 @@ if ($qid)
 		if ($qrrow['type'] == "F") 
 			{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
-							  . "<input align='top' type='image' src='./images/labels.gif' title='"
+							  . "<input align='top' type='image' src='$imagefiles/labels.gif' title='"
 							  . _Q_LABELS_BT."' height='15' width='15' hspace='0' name='EditThisLabelSet' "
 							  . "onClick=\"window.open('labels.php?lid={$qrrow['lid']}', '_blank')\">\n";
 			}
@@ -628,7 +628,7 @@ if ($qid)
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td>"
 							 . "<font face='verdana' size='1' color='green'>"
 							 . _WARNING.": ". _QS_NOANSWERS." "
-							 . "<input type='image' src='./images/answers.gif' title='"
+							 . "<input type='image' src='$imagefiles/answers.gif' title='"
 							 . _Q_ANSWERS_BT."' border='0' hspace='0' name='EditThisQuestionAnswers'"
 							 . "onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}

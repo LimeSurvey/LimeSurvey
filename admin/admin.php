@@ -181,7 +181,7 @@ echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
 
 function helpscreen()
 	{
-	global $homeurl, $langdir, $setfont;
+	global $homeurl, $langdir, $setfont, $imagefiles;
 	global $sid, $gid, $qid, $action;
 	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
 		."\t\t\t<table width='100%'><tr><td>"
@@ -194,8 +194,8 @@ function helpscreen()
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
-		."\t\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='20' hspace='0' border='0' align='left'>\n"
-		."\t\t\t\t\t\t<input type='image' src='./images/close.gif' name='CloseHelp' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
+		."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' hspace='0' border='0' align='left'>\n"
+		."\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
 		."\t\t\t\t\t</td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
