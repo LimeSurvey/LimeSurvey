@@ -146,6 +146,9 @@ define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
 						  ."(or haven't) completed this survey. There is no way of matching "
 						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9
 
+define("_THEREAREXQUESTIONS", "There are {NUMBEROFQUESTIONS} questions in this survey."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
+define("_THEREAREXQUESTIONS_SINGLE", "There is 1 question in this survey."); //New for 0.98rc9 - singular version of above
+
 define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
 define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
 						."Enter your details below, and an email containing the link to "

@@ -20,7 +20,7 @@
 		<td></td>
 		<td align='center'>
 			<font size='2'><br />{WELCOME}<br /><br />
-			<i>There are {NUMBEROFQUESTIONS} questions in this survey.</i><br />&nbsp;
+			<i>{THEREAREXQUESTIONS}</i><br />&nbsp;
 		</td>
 		<td></td>
 	</tr>

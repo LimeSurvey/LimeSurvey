@@ -304,7 +304,15 @@ function templatereplace($line)
 	$line=str_replace("{QUESTION}", $question, $line);
 	$line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	$line=str_replace("{ANSWER}", $answer, $line);
-	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
+	if ($totalquestions < 2)
+		{
+		$line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS_SINGLE, $line); //Singular
+	    }
+	else
+		{
+		$line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS, $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+		$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
+		}
 	$line=str_replace("{TOKEN}", $token, $line);
 	$line=str_replace("{SID}", $sid, $line);
 	if ($help) {
