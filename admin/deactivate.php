@@ -83,14 +83,26 @@ else
 	$newtable="{$dbprefix}old_{$_GET['sid']}_{$date}";
 
 	//Update the auto_increment value from the table before renaming
+	$new_autonumber_start=0;
 	$query = "SELECT id FROM $oldtable ORDER BY id desc LIMIT 1";
 	$result = mysql_query($query) or die("Error getting latest id number<br />$query<br />".mysql_error()); 
 	while ($row=mysql_fetch_array($result))
 		{
-		$new_autonumber_start=$row['id']+1;
-		} 
+		if (strlen($row['id']) > 12) //Handle very large autonumbers (like those using IP prefixes)
+			{
+		    $part1=substr($row['id'], 0, 12);
+			$part2len=strlen($row['id'])-12;
+			$part2=sprintf("%0{$part2len}d", substr($row['id'], 12, strlen($row['id'])-12)+1);
+			$new_autonumber_start="{$part1}{$part2}";
+			}
+		else
+			{
+			$new_autonumber_start=$row['id']+1;
+			}
+		}
 	$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$sid";
-	$result = mysql_query($query); //Note this won't die if it fails - that's deliberate.
+	@$result = mysql_query($query); //Note this won't die if it fails - that's deliberate.
+	echo $query;
 	
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");

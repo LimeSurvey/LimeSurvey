@@ -245,7 +245,7 @@ else
 	{
 	//Create the survey responses table
 	$createsurvey = "CREATE TABLE {$dbprefix}survey_{$_GET['sid']} (\n";
-	$createsurvey .= "  id INT(11) NOT NULL auto_increment,\n";
+	$createsurvey .= "  id BIGINT(11) NOT NULL auto_increment,\n";
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, allowregister, datestamp FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
 	$presult=mysql_query($pquery);
@@ -380,8 +380,8 @@ else
 			{
 			if ($row['autonumber_start'] > 0) 
 				{
-			    $query = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$row['autonumber_start'];
-				if ($result = mysql_query($query))
+				$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$row['autonumber_start'];
+				if ($result = mysql_query($autonumberquery))
 					{
 					//We're happy it worked!
 					}
@@ -390,6 +390,24 @@ else
 					//Continue regardless - it's not the end of the world
 					}
 				}
+			}
+		}
+	if (isset($useidprefix) && $useidprefix == 1 && !isset($autonumberquery))
+		{
+		if (!isset($idprefix) || $idprefix == 0 || is_string($idprefix))
+			{
+			$idprefix="";
+		    $elements=explode(".", $_SERVER['SERVER_ADDR']);
+			foreach ($elements as $element)
+				{
+				$idprefix.=sprintf("%03d", $element);
+				}
+			}
+		$idprefix = "{$idprefix}0000000"; //Setting 7 zeros at the end allows for up to 9,999,999 responses
+		$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$idprefix;
+		if (!$result = mysql_query($autonumberquery))
+			{
+		    echo "There was an error defining the autonumbering to start at $idprefix.<br />";
 			}
 		}
 	
