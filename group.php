@@ -239,6 +239,7 @@ if ($_POST['move'] == " "._SUBMIT." ")
 		if (mysql_query($subquery)) //submit of responses was successful
 			{
 			//UPDATE COOKIE IF REQUIRED
+			$savedid=mysql_insert_id();
 			if ($surveyusecookie == "Y" && $tokensexist != 1)
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
@@ -287,6 +288,21 @@ if ($_POST['move'] == " "._SUBMIT." ")
 					//END DEBUG
 					}					
 				}
+			if ($sendnotification > 0 && $surveyadminemail)
+				{ //Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
+				$id = $savedid;
+				$to = $surveyadminemail;
+				$subject = "$sitename Survey Submitted";
+				$message = _CONFIRMATION_MESSAGE1." $sitename\r\n";
+				$message.= "\r\n";
+				$message.= _CONFIRMATION_MESSAGE2."\r\n";
+				$message.= "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n";
+				$message.= _CONFIRMATION_MESSAGE3."\r\n";
+				$message.= "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
+				$message.= "PHP Surveyor";
+				$headers = "From: $surveyadminemail\r\n";
+				mail($to, $subject, $message, $headers);
+				}
 			session_unset();
 			session_destroy();
 			}
@@ -303,7 +319,7 @@ if ($_POST['move'] == " "._SUBMIT." ")
 				{	
 				$completed .= _DIDNOTSAVE3."<br /><br />\n";
 				$email=_DNSAVEEMAIL1." $sid\n\n";
-				$email .= DNSAVEEMAIL2.":\n";
+				$email .= _DNSAVEEMAIL2.":\n";
 				foreach ($_SESSION['insertarray'] as $value)
 					{
 					$email .= "$value: {$_SESSION[$value]}\n";

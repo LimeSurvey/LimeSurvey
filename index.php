@@ -93,6 +93,7 @@ while ($row=mysql_fetch_array($result))
 	$surveylanguage = $row['language'];
 	$surveydatestamp = $row['datestamp'];
 	$surveyusecookie = $row['usecookie'];
+	$sendnotification = $row['notification'];
 	}
 
 //SEE IF SURVEY USES TOKENS

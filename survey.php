@@ -296,6 +296,21 @@ if ($_POST['move'] == " "._SUBMIT." " && !$notanswered)
 					//END DEBUG
 					}					
 				}
+			if ($sendnotification > 0 && $surveyadminemail) 
+				{ //Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
+				$id = $savedid;
+				$to = $surveyadminemail;
+				$subject = "$sitename Survey Submitted";
+				$message = _CONFIRMATION_MESSAGE1." $sitename\r\n";
+				$message.= "\r\n";
+				$message.= _CONFIRMATION_MESSAGE2."\r\n";
+				$message.= "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n";
+				$message.= _CONFIRMATION_MESSAGE3."\r\n";
+				$message.= "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
+				$message.= "PHP Surveyor";
+				$headers = "From: $surveyadminemail\r\n";
+				mail($to, $subject, $message, $headers);
+				}
 			session_unset();
 			session_destroy();
 			}
