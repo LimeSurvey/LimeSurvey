@@ -557,6 +557,7 @@ define("_PS_ACTIVESURVEYS", "啟用問卷");
 define("_PS_DEACTSURVEYS", "停用問卷");
 define("_PS_ACTIVETOKENS", "啟用操作代碼表");
 define("_PS_DEACTTOKENS", "停用操作代碼表");
+define("_PS_CHECKDBINTEGRITY", "Check PHPSurveyor Data Integrity"); //New with 0.98rc8
 
 //Notification Levels
 define("_NT_NONE", "未有電郵通知"); //New with 098rc5

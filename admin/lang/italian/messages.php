@@ -557,6 +557,7 @@ define("_PS_ACTIVESURVEYS", "Indagini attive");
 define("_PS_DEACTSURVEYS", "Indagini disattivate");
 define("_PS_ACTIVETOKENS", "Tavole di token attive");
 define("_PS_DEACTTOKENS", "Tavole di token disattivate");
+define("_PS_CHECKDBINTEGRITY", "Check PHPSurveyor Data Integrity"); //New with 0.98rc8
 
 //Notification Levels
 define("_NT_NONE", "Nessuna notifica del email"); //New with 098rc5

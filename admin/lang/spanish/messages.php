@@ -563,6 +563,7 @@ define("_PS_ACTIVESURVEYS", "Encuestas Activas");
 define("_PS_DEACTSURVEYS", "Encuestas Desactivadas");
 define("_PS_ACTIVETOKENS", "Tablas de Tokens Activadas");
 define("_PS_DEACTTOKENS", "Tablas de Tokens Desactivadas");
+define("_PS_CHECKDBINTEGRITY", "Check PHPSurveyor Data Integrity"); //New with 0.98rc8
 
 //Notification Levels
 define("_NT_NONE", "Ninguna notificación del email"); //New with 098rc5
