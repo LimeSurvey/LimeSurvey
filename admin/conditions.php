@@ -36,6 +36,17 @@
 
 require_once("config.php");
 
+
+$sid=returnglobal('sid');
+
+$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
+$result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+$langdir="$publicdir/lang";
+$langfilename="$langdir/$surveylanguage.lang.php";
+if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
+require($langfilename);
+
 sendcacheheaders();
 
 if(isset($_POST['cquestions'])) {
@@ -44,21 +55,26 @@ if(isset($_POST['cquestions'])) {
 	echo $htmlheader;
 }
 
-echo "<table width='100%' border='0' bgcolor='#555555'>\n";
-echo "\t<tr><td align='center'><font color='white'><b>Condition Designer</b></td></tr>\n";
-echo "</table>\n";
+echo "<table width='100%' border='0' bgcolor='#555555'>\n"
+	."\t<tr><td align='center'>$setfont<font color='white'><b>"
+	._CD_CONDITIONDESIGNER."</b></font></font></td></tr>\n"
+	."</table>\n";
 
 
-if (!isset($_GET['sid']) && !isset($_POST['sid']))
+if (!isset($sid))
 	{
-	echo "<br /><center>$setfont<b>No survey identification. You must not run this script directly.</b></font></center>\n";
-	echo "</body></html>\n";
+	echo "<br /><center>$setfont<b>"
+		._CD_NOSID." "._CD_NODIRECT
+		."</b></font></center>\n"
+		."</body></html>\n";
 	exit;
 	}
 if (!isset($_GET['qid']) && !isset($_POST['qid']))
 	{
-	echo "<br /><center>$setfont<b>No question identification. You must not run this script directly.</b></font></center>\n";
-	echo "</body></html>\n";
+	echo "<br /><center>$setfont<b>"
+		._CD_NOQID." "._CD_NODIRECT
+		."</b></font></center>\n"
+		."</body></html>\n";
 	exit;
 	}
 
@@ -85,6 +101,66 @@ if (isset($_POST['action']) && $_POST['action'] == "delete")
 	$query = "DELETE FROM {$dbprefix}conditions WHERE cid={$_POST['cid']}";
 	$result = mysql_query($query) or die ("Couldn't delete condition<br />$query<br />".mysql_error());
 	}
+//COPY CONDITIONS IF THIS IS COPY
+if (isset($_POST['action']) && $_POST['action'] == "copyconditions") 
+	{
+	$qid=returnglobal('qid');
+	$copyconditionsfrom=returnglobal('copyconditionsfrom');
+	$copyconditionsto=returnglobal('copyconditionsto');
+	if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) 
+		{
+		//Get the conditions we are going to copy
+		$query = "SELECT * FROM {$dbprefix}conditions\n"
+				."WHERE cid in ('";
+		$query .= implode("', '", $copyconditionsfrom);
+		$query .= "')";
+		$result = mysql_query($query) or die("Couldn't get conditions for copy<br />$query<br />".mysql_error());
+		while($row=mysql_fetch_array($result))
+			{
+			$proformaconditions[]=array("cqid"=>$row['cqid'],
+										"cfieldname"=>$row['cfieldname'],
+										"method"=>$row['method'],
+										"value"=>$row['value']);
+			} // while
+		foreach ($copyconditionsto as $copyc)
+			{
+			list($newsid, $newgid, $newqid)=explode("X", $copyc);
+			foreach ($proformaconditions as $pfc)
+				{
+				//First lets make sure there isn't already an exact replica of this condition
+				$query = "SELECT * FROM {$dbprefix}conditions\n"
+						."WHERE qid='$newqid'\n"
+						."AND cqid='".$pfc['cqid']."'\n"
+						."AND cfieldname='".$pfc['cfieldname']."'\n"
+						."AND method='".$pfc['method']."'\n"
+						."AND value='".$pfc['value']."'";
+				$result = mysql_query($query) or die("Couldn't check for existing condition<br />$query<br />".mysql_error());
+				$count = mysql_num_rows($result);
+				if ($count == 0) //If there is no match, add the condition.
+					{
+					$query = "INSERT INTO {$dbprefix}conditions\n"
+							."VALUES ('', '$newqid', '".$pfc['cqid']."',"
+							."'".$pfc['cfieldname']."', '".$pfc['method']."',"
+							."'".$pfc['value']."')";
+					$result=mysql_query($query) or die ("Couldn't insert query<br />$query<br />".mysql_error());
+					}
+				}
+			}
+		}
+	else
+		{
+		$message = _CD_DIDNOTCOPYQ.": ";
+		if (!isset($copyconditionsfrom))
+			{
+		    $message .= _CD_NOCONDITIONTOCOPY.". ";
+			}
+		if (!isset($copyconditionsto)) 
+			{
+		    $message .= _CD_NOQUESTIONTOCOPYTO.".";
+			}
+		echo "<script type=\"text/javascript\">\n<!--\nalert('$message');\n//-->\n</script>\n";
+		}
+	}
 
 unset($cquestions);
 unset($canswers);
@@ -97,7 +173,9 @@ unset($canswers);
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($sid)) {$sid=returnglobal('sid');}
 
-$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND qid=$qid";
+$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
+		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
+		."AND qid=$qid";
 $result = mysql_query($query) or die ("Couldn't get information for question $qid<br />$query<br />".mysql_error());
 while ($rows=mysql_fetch_array($result))
 	{
@@ -115,15 +193,36 @@ $qresult = mysql_query($qquery) or die ("$qquery<br />".mysql_error());
 $qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 while ($qrow = mysql_fetch_array($qresult)) {$qrows[] = $qrow;} // Get table output into array
 usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-foreach ($qrows as $qrow) 
+$position="before";
+foreach ($qrows as $qrow) //Go through each question until we reach the current one
 	{
-	if ($qrow["qid"] != $qid) 
+	if ($qrow["qid"] != $qid && $position=="before") 
 		{
 		$questionlist[]=$qrow["qid"];
 		}
 	elseif ($qrow["qid"] == $qid)
 		{
 		break;
+		}
+	}
+
+//Select all questions to create array of questions that occur _after_ this one
+$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid";
+$qresult = mysql_query($qquery) or die ("$qquery<br />".mysql_error());
+$qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+while ($qrow = mysql_fetch_array($qresult)) {$qrows[] = $qrow;} // Get table output into array
+usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
+$position = "before";
+foreach ($qrows as $qrow) //Go through each question until we reach the current one
+	{
+	if ($qrow["qid"] == $qid)
+		{
+		$position="after";
+		//break;
+		}
+	elseif ($qrow["qid"] != $qid && $position=="after")
+		{
+		$postquestionlist[]=$qrow['qid'];
 		}
 	}
 
@@ -141,7 +240,31 @@ if (is_array($questionlist))
 		}
 	}
 
+if (isset($postquestionlist) && is_array($postquestionlist))
+	{
+	foreach ($postquestionlist as $pq)
+		{
+		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$pq";
+		$result = mysql_query($query) or die("Couldn't get postquestions $qid<br />$query<br />".mysql_error());
+		$postcount=mysql_num_rows($result);
+		while($myrows=mysql_fetch_array($result))
+			{
+			$postrows[]=array("qid"=>$myrows['qid'], "sid"=>$myrows['sid'], "gid"=>$myrows['gid'], "question"=>$myrows['question'], "type"=>$myrows['type'], "lid"=>$myrows['lid'], "title"=>$myrows['title']);
+			} // while
+		}
+	$postquestionscount=count($postrows);
+	}
+
 $questionscount=count($theserows);
+
+if (isset($postquestionscount) && $postquestionscount > 0) //Build the select box for questions after this one
+	{
+	foreach ($postrows as $pr)
+		{
+		$pquestions[]=array("text"=>$pr['title'].": ".substr($pr['question'], 0, 30),
+							"fieldname"=>$pr['sid']."X".$pr['gid']."X".$pr['qid']);
+		}
+	}
 
 if ($questionscount > 0)
 	{
@@ -175,17 +298,19 @@ if ($questionscount > 0)
 							}
 						break;
 					case "C":
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", "Yes");
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", "Uncertain");
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", "No");
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", _YES);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", _UNCERTAIN);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", _NO);
 						break;
 					case "E":
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", "Increase");
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", "Same");
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", "Decrease");
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", _INCREASE);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", _SAME);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", _DECREASE);
 						break;
 					case "F":
-						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$rows['lid']} ORDER BY sortorder, code";
+						$fquery = "SELECT * FROM {$dbprefix}labels\n"
+								. "WHERE lid={$rows['lid']}\n"
+								. "ORDER BY sortorder, code";
 						$fresult = mysql_query($fquery);
 						while ($frow=mysql_fetch_array($fresult))
 							{
@@ -193,12 +318,14 @@ if ($questionscount > 0)
 							}
 						break;
 					}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", "No Answer");
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", _NOANSWER);
 				}
 			}
 		elseif ($rows['type'] == "R")
 			{
-			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
+			$aquery="SELECT * FROM {$dbprefix}answers\n"
+				   ."WHERE qid={$rows['qid']}\n"
+				   ."ORDER BY sortorder, answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 			$acount=mysql_num_rows($aresult);
 			while ($arow=mysql_fetch_array($aresult))
@@ -213,7 +340,7 @@ if ($questionscount > 0)
 					{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
 					}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, "", "No Answer");
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, "", _NOANSWER);
 				}
 			unset($quicky);
 			}
@@ -223,24 +350,26 @@ if ($questionscount > 0)
 			switch ($rows['type'])
 				{
 				case "Y":
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", "Yes");
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", "No");
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", _YES);
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", _NO);
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
 					break;
 				case "G":
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", "Female");
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", "Male");
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", _FEMALE);
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", _MALE);
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
 					break;
 				case "5":
 					for ($i=1; $i<=5; $i++)
 						{
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
 						}
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
 					break;
 				default:
-					$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
+					$aquery="SELECT * FROM {$dbprefix}answers\n"
+						   ."WHERE qid={$rows['qid']}\n"
+						   ."ORDER BY sortorder, answer";
 					$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 					while ($arows=mysql_fetch_array($aresult))
 						{
@@ -249,7 +378,7 @@ if ($questionscount > 0)
 						}
 					if ($rows['type'] != "M" && $rows['type'] != "P")
 						{
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
 						}
 					break;
 				}
@@ -258,90 +387,96 @@ if ($questionscount > 0)
 	}
 
 //JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
-echo "<script type='text/javascript'>\n";
-echo "<!--\n";
-echo "\tvar Fieldnames = new Array();\n";
-echo "\tvar Codes = new Array();\n";
-echo "\tvar Answers = new Array();\n";
-echo "\tvar QFieldnames = new Array();\n";
-echo "\tvar Qcqids = new Array();\n";
+echo "<script type='text/javascript'>\n"
+	."<!--\n"
+	."\tvar Fieldnames = new Array();\n"
+	."\tvar Codes = new Array();\n"
+	."\tvar Answers = new Array();\n"
+	."\tvar QFieldnames = new Array();\n"
+	."\tvar Qcqids = new Array();\n";
 $jn=0;
 foreach($canswers as $can)
 	{
 	$an=str_replace("'", "`", $can[2]);
-	echo "\t\tFieldnames[$jn]='$can[0]';\n";
-	echo "\t\tCodes[$jn]='$can[1]';\n";
-	echo "\t\tAnswers[$jn]='$an';\n";
+	echo "\t\tFieldnames[$jn]='$can[0]';\n"
+		."\t\tCodes[$jn]='$can[1]';\n"
+		."\t\tAnswers[$jn]='$an';\n";
 	$jn++;
 	}
 $jn=0;
 
 foreach ($cquestions as $cqn)
 	{
-	echo "\t\tQFieldnames[$jn]='$cqn[3]';\n";
-	echo "\t\tQcqids[$jn]='$cqn[1]';\n";
+	echo "\t\tQFieldnames[$jn]='$cqn[3]';\n"
+		."\t\tQcqids[$jn]='$cqn[1]';\n";
 	$jn++;
 	}
-echo "\n";
-echo "\tfunction clearAnswers()\n";
-echo "\t\t{\n";
-echo "\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n";
-echo "\t\t\t\t{\n";
+echo "\n"
+	."\tfunction clearAnswers()\n"
+	."\t\t{\n"
+	."\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n"
+	."\t\t\t\t{\n";
 //echo "alert(i);\n";
-echo "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n";
-echo "\t\t\t\t}\n";
-echo "\t\t}\n";
+echo "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n"
+	."\t\t\t\t}\n"
+	."\t\t}\n";
 
-echo "\tfunction getAnswers(fname)\n";
-echo "\t\t{\n";
+echo "\tfunction getAnswers(fname)\n"
+	."\t\t{\n";
 //echo "\t\talert(getElementById('canswers').options.length)\n";
 //echo "\t\t\t{\n";
-echo "\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n";
-echo "\t\t\t\t{\n";
+echo "\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n"
+	."\t\t\t\t{\n";
 //echo "alert(i);\n";
-echo "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n";
-echo "\t\t\t\t}\n";
+echo "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n"
+	."\t\t\t\t}\n";
 //echo "\t\t\t}\n";
 //echo "\t\t\talert(fname);\n";
-echo "\t\t\tvar Keys = new Array();\n";
-echo "\t\t\tfor (var i=0;i<Fieldnames.length;i++)\n";
-echo "\t\t\t\t{\n";
-echo "\t\t\t\tif (Fieldnames[i] == fname)\n";
-echo "\t\t\t\t\t{\n";
-echo "\t\t\t\t\tKeys[Keys.length]=i;\n";
-echo "\t\t\t\t\t}\n";
-echo "\t\t\t\t}\n";
-echo "\t\t\tfor (var i=0;i<QFieldnames.length;i++)\n";
-echo "\t\t\t\t{\n";
-echo "\t\t\t\tif (QFieldnames[i] == fname)\n";
-echo "\t\t\t\t\t{\n";
-echo "\t\t\t\t\tdocument.getElementById('cqid').value=Qcqids[i];\n";
-echo "\t\t\t\t\t}\n";
-echo "\t\t\t\t}\n";
+echo "\t\t\tvar Keys = new Array();\n"
+	."\t\t\tfor (var i=0;i<Fieldnames.length;i++)\n"
+	."\t\t\t\t{\n"
+	."\t\t\t\tif (Fieldnames[i] == fname)\n"
+	."\t\t\t\t\t{\n"
+	."\t\t\t\t\tKeys[Keys.length]=i;\n"
+	."\t\t\t\t\t}\n"
+	."\t\t\t\t}\n"
+	."\t\t\tfor (var i=0;i<QFieldnames.length;i++)\n"
+	."\t\t\t\t{\n"
+	."\t\t\t\tif (QFieldnames[i] == fname)\n"
+	."\t\t\t\t\t{\n"
+	."\t\t\t\t\tdocument.getElementById('cqid').value=Qcqids[i];\n"
+	."\t\t\t\t\t}\n"
+	."\t\t\t\t}\n";
 //echo "\t\t\talert(Keys.length);\n";
-echo "\t\t\tfor (var i=0;i<Keys.length;i++)\n";
-echo "\t\t\t\t{\n";
+echo "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
+	."\t\t\t\t{\n";
 //echo "\t\t\t\talert(Answers[Keys[i]]);\n";
-echo "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n";
-echo "\t\t\t\t}\n";
-echo "\t\t}\n";
-echo "//-->\n";
-echo "</script>\n";	
+echo "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
+	."\t\t\t\t}\n"
+	."\t\t}\n"
+	."//-->\n"
+	."</script>\n";	
 
 //SHOW FORM TO CREATE IT!
-echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-size: 1; border-color: #555555'>\n";
-echo "\t<tr bgcolor='#CDCDCD'>\n";
-echo "\t\t<td colspan='3' align='center'>\n";
-echo "\t\t\t$setfont<b>Only show question $questiontitle<img src='$imagefiles/speaker.jpg' alt='"
+echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-size: 1; border-color: #555555'>\n"
+	."\t<tr bgcolor='#CCFFCC'>\n"
+	."\t\t<td colspan='3' align='center'>\n";
+$showreplace="$questiontitle<img src='$imagefiles/speaker.jpg' alt='"
 	. addslashes($questiontext)
 	. "' onClick=\"alert('"
 	. addslashes(strip_tags($questiontext))
-	. "')\"> if:</b></font>\n";
-echo "\t\t</td>\n";
-echo "\t</tr>\n";
+	. "')\">";
+$onlyshow=str_replace("{QID}", $showreplace, _CD_ONLYSHOW);
+echo "\t\t\t$setfont<b>$onlyshow</b></font>\n"
+	."\t\t</td>\n"
+	."\t</tr>\n";
 
 //3: Get other conditions currently set for this question
-$query = "SELECT {$dbprefix}conditions.cid, {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname, {$dbprefix}conditions.value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid=$qid ORDER BY {$dbprefix}conditions.cfieldname";
+$query = "SELECT {$dbprefix}conditions.cid, {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname, {$dbprefix}conditions.value, {$dbprefix}questions.type\n"
+		."FROM {$dbprefix}conditions, {$dbprefix}questions\n"
+		."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid\n"
+		."AND {$dbprefix}conditions.qid=$qid\n"
+		."ORDER BY {$dbprefix}conditions.cfieldname";
 $result = mysql_query($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".mysql_error());
 $conditionscount=mysql_num_rows($result);
 
@@ -351,40 +486,45 @@ if ($conditionscount > 0)
 		{
 		if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 			{
-			echo "\t\t\t\t<tr bgcolor='#FFFFFF'>\n";
-			echo "\t\t\t\t\t<td colspan='3' align='center'>\n";
-			echo "$setfont<font size='1'>AND</font></font>";
+			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
+				."\t\t\t\t\t<td colspan='3' align='center'>\n"
+				."$setfont<font size='1'><b>"
+				._AND."</b></font></font>";
 			}
 		elseif (isset($currentfield))
 			{
-			echo "\t\t\t\t<tr bgcolor='#EFEFEF'>\n";
-			echo "\t\t\t\t\t<td colspan='3' align='center'>\n";
-			echo "$setfont<font size='1'>OR</font></font>";
+			echo "\t\t\t\t<tr bgcolor='E1FFE1'>\n"
+				."\t\t\t\t\t<td colspan='3' align='center'>\n"
+				."$setfont<font size='1'><b>"
+				._AD_OR."</b></font></font>";
 			}
-		echo "\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t</tr>\n";
-		echo "\t<tr bgcolor='#EFEFEF'>\n";
-		echo "\t<form name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n";
-		echo "\t\t<td align='right' valign='middle'><font size='1' face='verdana'>\n";
+		echo "\t\t\t\t\t</td>\n"
+			."\t\t\t\t</tr>\n"
+			."\t<tr bgcolor='#E1FFE1'>\n"
+			."\t<form name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
+			."\t\t<td align='right' valign='middle'><font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
 			{
 			if ($cqn[3] == $rows['cfieldname'])
 				{
 				echo "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
+				$conditionsList[]=array("cid"=>$rows['cid'],
+										"text"=>$cqn[0]." ({$rows['value']})");
 				}
 			else
 				{
 				//echo "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
 				}
 			}
-		echo "\t\t</font></td>\n";
-		echo "\t\t<td align='center' valign='middle'><font size='1'>equals</font></td>";
-		echo "\t\t<td>\n";
-		echo "\t\t\t<table border='0' cellpadding='0' cellspacing='0' width='99%'>\n";
-		echo "\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t<td align='left' valign='middle'>\n";
-		echo "\t\t\t\t\t\t<font size='1' face='verdana'>\n";
+		echo "\t\t</font></td>\n"
+			."\t\t<td align='center' valign='middle'>$setfont<font size='1'>"
+			._CD_EQUALS."</font></font></td>"
+			."\t\t<td>\n"
+			."\t\t\t<table border='0' cellpadding='0' cellspacing='0' width='99%'>\n"
+			."\t\t\t\t<tr>\n"
+			."\t\t\t\t\t<td align='left' valign='middle'>\n"
+			."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
 		foreach ($canswers as $can)
 			{
 			//echo $rows['cfieldname'] . "- $can[0]<br />";
@@ -394,53 +534,105 @@ if ($conditionscount > 0)
 				echo "\t\t\t\t\t\t$can[2] ($can[1])\n";
 				}
 			}
-		echo "\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t\t<td align='right' valign='middle'>\n";
-		echo "\t\t\t\t\t\t<input type='submit' value='Del' style='font-face: verdana; font-size: 8; height:13' align='right'>\n";
-		echo "\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t</tr>\n";
-		echo "\t\t\t</table>\n";
-		echo "\t\t</td>\n";
-		echo "\t<input type='hidden' name='action' value='delete'>\n";
-		echo "\t<input type='hidden' name='cid' value='{$rows['cid']}'>\n";
-		echo "\t<input type='hidden' name='sid' value='$sid'>\n";
-		echo "\t<input type='hidden' name='qid' value='$qid'>\n";
-		echo "\t</form>\n";
-		echo "\t</tr>\n";
+		echo "\t\t\t\t\t</td>\n"
+			."\t\t\t\t\t<td align='right' valign='middle'>\n"
+			."\t\t\t\t\t\t<input type='submit' value='Del' style='font-face: verdana; font-size: 8; height:13' align='right'>\n"
+			."\t\t\t\t\t</td>\n"
+			."\t\t\t\t</tr>\n"
+			."\t\t\t</table>\n"
+			."\t\t</td>\n"
+			."\t<input type='hidden' name='action' value='delete'>\n"
+			."\t<input type='hidden' name='cid' value='{$rows['cid']}'>\n"
+			."\t<input type='hidden' name='sid' value='$sid'>\n"
+			."\t<input type='hidden' name='qid' value='$qid'>\n"
+			."\t</form>\n"
+			."\t</tr>\n";
 		$currentfield=$rows['cfieldname'];
 		}
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='3' height='3'>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
+	echo "\t<tr>\n"
+		."\t\t<td colspan='3' height='3'>\n"
+		."\t\t</td>\n"
+		."\t</tr>\n";
 	}
 else
 	{
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='3' height='3'>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
+	echo "\t<tr>\n"
+		."\t\t<td colspan='3' height='3'>\n"
+		."\t\t</td>\n"
+		."\t</tr>\n";
+	}
+
+echo "\t<tr height='5' bgcolor='#555555'><td colspan='3'></td></tr>\n";
+
+if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 0) 
+	{
+	echo "<form action='".$_SERVER['PHP_SELF']."' name='copyconditions' id='copyconditions' method='post'>\n";
+
+	echo "\t<tr bgcolor='#CDCDCD'>\n"
+		."\t\t<td colspan='3' align='center'>\n"
+		."\t\t$setfont<b>"
+		._CD_COPYCONDITIONS."</b></font>\n"
+		."\t\t</td>\n"
+		."\t</tr>\n";
+
+	echo "\t<tr>\n"
+		."\t\t<th>{$setfont}"._CD_CONDITION."</th><th></th><th>{$setfont}"._QUESTION."</th>\n"
+		."\t</tr>\n";
+	
+	echo "\t<tr>\n"
+		."\t\t<td>\n"
+		."\t\t<select name='copyconditionsfrom[]' multiple style='font-face:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4'>\n";
+	foreach ($conditionsList as $cl)
+		{
+		echo "<option value='".$cl['cid']."'>".$cl['text']."</option>\n";
+		}
+	echo "\t\t</select>\n"
+		."\t\t</td>\n"
+		."\t\t<td align='center'>$setfont\n"
+		."\t\tcopy to\n"
+		."\t\t</font></font></td>\n"
+		."\t\t<td>\n"
+		."\t\t<select name='copyconditionsto[]' multiple style='font-face:verdana; font-size:10; width:220' size='4'>\n";
+	foreach ($pquestions as $pq)
+		{
+		echo "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
+		}
+	echo "\t\t</select>\n";
+	echo "\t\t</td>\n"
+		."\t</tr>\n";
+	
+	echo "\t<tr><td colspan='3' align='center'>$setfont\n"
+		."<input type='submit' value='"._CD_COPYCONDITIONS."' $btstyle onclick=\"return confirm('"._CD_COPYRUSURE."')\">"
+		."\t\t</font></td></tr>\n";
+		
+	echo "<input type='hidden' name='action' value='copyconditions'>\n"
+		."<input type='hidden' name='sid' value='$sid'>\n"
+		."<input type='hidden' name='qid' value='$qid'>\n"
+		."</form>\n";
+
+	echo "\t<tr height='5'><td colspan='3'></td></tr>\n"
+		."\t<tr height='5' bgcolor='#555555'><td colspan='3'></td></tr>\n";
 	}
 	
-echo "\t<tr bgcolor='#CDCDCD'>\n";
-echo "\t\t<td colspan='3' align='center'>\n";
-echo "\t\t\t$setfont<b>New Condition:</b></font>\n";
-echo "\t\t</td>\n";
-echo "\t</tr>\n";
-echo "\t<tr bgcolor='#EFEFEF'>\n";
-echo "\t\t<th width='40%'>\n";
-echo "\t\t\t$setfont<b>Question</b></font>\n";
-echo "\t\t</th>\n";
-echo "\t\t<th width='20%'>\n";
-echo "\t\t</th>\n";
-echo "\t\t<th width='40%'>\n";
-echo "\t\t\t$setfont<b>Answer</b></font>\n";
-echo "\t\t</th>\n";
-echo "\t</tr>\n";
-echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditions' method='post'>\n";
-echo "\t<tr>\n";
-echo "\t\t<td valign='top'>\n";
-echo "\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
+echo "\t<tr bgcolor='#CDCDCD'>\n"
+	."\t\t<td colspan='3' align='center'>\n"
+	."\t\t\t$setfont<b>"._CD_ADDCONDITION."</b></font>\n"
+	."\t\t</td>\n"
+	."\t</tr>\n"
+	."\t<tr bgcolor='#EFEFEF'>\n"
+	."\t\t<th width='40%'>\n"
+	."\t\t\t$setfont<b>"._QUESTION."</b></font>\n"
+	."\t\t</th>\n"
+	."\t\t<th width='20%'>\n"
+	."\t\t</th>\n"
+	."\t\t<th width='40%'>\n"
+	."\t\t\t$setfont<b>"._AL_ANSWER."</b></font>\n"
+	."\t\t</th>\n"
+	."\t</tr>\n";
+echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditions' method='post'>\n"
+	."\t<tr>\n"
+	."\t\t<td valign='top'>\n"
+	."\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
 foreach ($cquestions as $cqn)
 	{
 	echo "\t\t\t\t<option value='$cqn[3]'";
@@ -449,41 +641,44 @@ foreach ($cquestions as $cqn)
 	}
 	echo ">$cqn[0]</option>\n";
 	}
-echo "\t\t\t</select>\n";
-echo "\t\t</td>\n";
-echo "\t\t<td align='center'>\n";
+echo "\t\t\t</select>\n"
+	."\t\t</td>\n"
+	."\t\t<td align='center'>$setfont\n";
 //echo "\t\t\t<select name='method' id='method' style='font-face:verdana; font-size:10'>\n";
 //echo "\t\t\t\t<option value='='>Equals</option>\n";
 //echo "\t\t\t\t<option value='!'>Does not equal</option>\n";
 //echo "\t\t\t</select>\n";
-echo "\t\t\tEquals\n";
-echo "\t\t</td>\n";
-echo "\t\t<td valign='top'>\n";
-echo "\t\t\t<select name='canswers[]' multiple id='canswers' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
+echo "\t\t\t"._CD_EQUALS."\n"
+	."\t\t</font></td>\n"
+	."\t\t<td valign='top'>\n"
+	."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
 
-echo "\t\t\t</select>\n";
-echo "\t</tr>\n";
-echo "\t<tr>\n";
-echo "\t\t<td colspan='3' align='center'>\n";
-echo "\t\t\t<input type='reset' value='Clear' onClick=\"clearAnswers()\" $btstyle />\n";
-echo "\t\t\t<input type='submit' value='Add Condition' $btstyle />\n";
-echo "\t\t</td>\n";
-echo "\t</tr>\n";
-echo "<input type='hidden' name='sid' value='$sid' />\n";
-echo "<input type='hidden' name='qid' value='$qid' />\n";
-echo "<input type='hidden' name='action' value='insertcondition' />\n";
-echo "<input type='hidden' name='cqid' id='cqid' value='' />\n";
-echo "</form>\n";
-echo "\t<tr bgcolor='#CDCDCD'>\n";
-echo "\t\t<td height='5' colspan='3'>\n";
-echo "\t\t</td>\n";
-echo "\t</tr>\n";
-echo "\t<tr>\n";
-echo "\t\t<td colspan='3' align='center'>\n";
-echo "\t\t\t<input type='submit' value='Close Conditions Window' onClick=\"window.close()\" $btstyle>\n";
-echo "\t\t</td>\n";
-echo "\t</tr>\n";
-echo "</table>\n";
+echo "\t\t\t</select>\n"
+	."\t</tr>\n"
+	."\t<tr>\n"
+	."\t\t<td colspan='3' align='center'>\n"
+	."\t\t\t<input type='reset' value='"._ST_CLEAR."' onClick=\"clearAnswers()\" $btstyle />\n"
+	."\t\t\t<input type='submit' value='"._CD_ADDCONDITION."' $btstyle />\n"
+	."\t\t</td>\n"
+	."\t</tr>\n";
+echo "<input type='hidden' name='sid' value='$sid' />\n"
+	."<input type='hidden' name='qid' value='$qid' />\n"
+	."<input type='hidden' name='action' value='insertcondition' />\n"
+	."<input type='hidden' name='cqid' id='cqid' value='' />\n"
+	."</form>\n";
+echo "\t<tr height='3'><td colspan='3'></td></tr>\n"
+	."\t<tr bgcolor='#555555'>\n"
+	."\t\t<td height='5' colspan='3'>\n"
+	."\t\t</td>\n"
+	."\t</tr>\n";
+echo "\t<tr>\n"
+	."\t<tr bgcolor='#CDCDCD' height=10><td colspan=3></td></tr>\n"
+	."\t\t<td colspan='3' align='center'>\n"
+	."\t\t\t<input type='submit' value='"._CLOSEWIN."' onClick=\"window.close()\" $btstyle>\n"
+	."\t\t</td>\n"
+	."\t</tr>\n";
+echo "\t<tr height='3'><td colspan='3'></td></tr>\n"
+	."</table>\n";
 
 echo htmlfooter("instructions.html#conditions", "Using PHPSurveyor's Conditions");
 
