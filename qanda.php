@@ -321,7 +321,7 @@ function retrieveAnswers($ia, $notanswered=null)
 	//add a message HIGHLIGHTING the question
 	$qtitle .= mandatory_message($ia);
 
-	$qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0]);
+	$qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0], $ia[1]);
 	//New Return
 	return array($qanda, $inputnames);
 	}
@@ -534,7 +534,7 @@ function do_listwithcomment($ia)
 			}
 		if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
-			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1] ' value=' ' onClick='checkconditions(this.value, this.name, this.type)' ";
+			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' ";
 			if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) 
 				{
 				$answer .= "checked />";
