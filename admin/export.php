@@ -236,14 +236,6 @@ if (!$style)
 
 //HERE WE EXPORT THE ACTUAL RESULTS
 
-//if (isset($_POST['colselect']))
-//	{
-//	foreach($_POST['colselect'] as $colname)
-//		{
-//		echo $colname."<br />";
-//		}
-//	}
-
 if ($type == "doc") 
 	{
 	header("Content-Disposition: attachment; filename=survey.doc");
@@ -279,14 +271,19 @@ require($langfilename);
 
 //STEP 1: First line is column headings
 //$s = "\t";
-$lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
-$lr = mysql_query($lq);
-$legitqs[] = "DUMMY ENTRY";
-while ($lw = mysql_fetch_array($lr))
-	{
-	$legitqs[] = $lw['qid']; //this creates an array of question id's'
-	}
-$origlegitqs=$legitqs;
+
+//********************************   OLD LEGITQS METHOD
+//$lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
+//$lr = mysql_query($lq);
+//$legitqs[] = "DUMMY ENTRY";
+//while ($lw = mysql_fetch_array($lr))
+//	{
+//	$legitqs[] = $lw['qid']; //this creates an array of question id's'
+//	}
+//$origlegitqs=$legitqs;
+//********************************
+$fieldmap=createFieldMap($sid);
+
 //Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$sid";
 if (isset($_POST['colselect']))
@@ -339,7 +336,7 @@ $faid="";
 $debug="";
 for ($i=0; $i<$fieldcount; $i++)
 	{
-	$debug.="\n\n================================== [$i]\n";
+	//Iterate through column names and output headings
 	$fieldinfo=mysql_field_name($dresult, $i);
 	if ($fieldinfo == "token")
 		{
@@ -403,26 +400,17 @@ for ($i=0; $i<$fieldcount; $i++)
 		if ($type == "csv") {$firstline .= "\"Time Submitted\"$s";}
 		else {$firstline .= "Time Submitted$s";}
 		}
-	else //A normal question field. Break the fieldname up into constituent parts to find $sid, $gid, and $qid
+	else
 		{
-		$debug .= "STARTING NORMAL QUESTION FIELD\n";
-		list($fsid, $fgid, $fqid) = split("X", $fieldinfo);
-		$debug .= "FSID: $fsid $s FGID: $fgid $s FQID: $fqid\n";
-		if ($style == "abrev") //Print out abbreviated question title
+		//Data fields!
+		$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+		$fqid=$fielddata['qid'];
+		$ftype=$fielddata['type'];
+		$fsid=$fielddata['sid'];
+		$fgid=$fielddata['gid'];
+		$faid=$fielddata['aid'];
+		if ($style == "abrev")
 			{
-			$debug .= "Abbreviated:\n";
-			if (!$fqid) {$fqid = "0";}
-			$oldfqid=$fqid;
-			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list. If not, have to do some tricky stuff to find where qid ends and answer code begins:
-				{
-				$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
-				}
-			if (strlen($fqid) < strlen($oldfqid)) 
-				{
-				$faid = substr($oldfqid, strlen($fqid), strlen($oldfqid)-strlen($fqid));
-				$oldfqid="";
-				}
-			//Now we know what the qid is, we'll get the question text and then print it out (in abbreviate format of course)
 			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid";
 			$qr = mysql_query($qq);
 			while ($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
@@ -437,283 +425,99 @@ for ($i=0; $i<$fieldcount; $i++)
 			if ($type == "csv") {$firstline .= "\"";}
 			$firstline .= "$s";
 			}
-		else //Print out extended question title
+		else
 			{
-			$debug .= "Extended:\n";
-			if (!$fqid) {$fqid = 0;}
-			$oldfqid=$fqid;
-			$debug .= "FQID: $fqid $s OLDFQID: $oldfqid\n";
-			$debug .= "LEGIT QS:$s";
-			foreach($legitqs as $lq) {$debug .= "$lq $s";}
-			$debug .= "\n";
-			while (!in_array($fqid, $legitqs) && $fqid) //checks that the qid exists in our list
+			$qq = "SELECT question, type, other FROM {$dbprefix}questions WHERE qid=$fqid"; //get the question
+			$qr = mysql_query($qq) or die ("ERROR:<br />".$qq."<br />".mysql_error());
+			while ($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
+				{$fquest=$qrow['question'];}
+			switch ($ftype)
 				{
-				$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
-				}
-			if (strlen($fqid) < strlen($oldfqid)) 
-				{
-				$faid = substr($oldfqid, strlen($fqid), strlen($oldfqid)-strlen($fqid));
-				$oldfqid="";
-				}
-			if (!$fqid) 
-				{
-				$debug .= "NO FQID!\n";
-				if (substr($fieldinfo, -5, 5) == "other") 
-					{
-					if ($type == "csv")
+				case "R": //RANKING TYPE
+					$fquest .= " ["._RANK." $faid]";
+					break;
+				case "L":
+					if ($faid == "other") {
+						$fquest .= " ["._OTHER."]";
+					} 
+					break;
+				case "O": //DROPDOWN LIST WITH COMMENT
+					if ($faid == "comment")
 						{
-						$firstline .="\"$fieldinfo*\"$s";
+						$fquest .= " - Comment";
+						}
+					break;
+				case "M": //multioption
+					if ($faid == "other")
+						{
+						$fquest .= " ["._OTHER."]";
 						}
 					else
 						{
-						$firstline .= "$fieldinfo* $s";
-						}
-				    }
-				elseif (substr($fieldinfo, -7, 7) == "comment")
-					{
-					if ($type == "csv") 
-						{
-					    $firstline .= "\"$fieldinfo*\"$s\"";
-						}
-					else
-						{
-						$firstline .= "$fieldinfo* $s";
-						}
-					}
-				else
-					{
-					echo "EXPORT ERROR - Debug Info Follows\n";
-					echo "FIRSTLINE: $firstline\n";
-					foreach ($legitqs as $lq) { echo "DEBUG UNUSED LEGIT QUESTIONS: $lq\n\n";}
-					echo "QUESTION TYPE: ".$qrow['type']."\n\n";
-					echo "Other Debug Info: $debug\n\n";
-					foreach ($origlegitqs as $olq) {echo "DEBUG ORIGINAL LEGIT QUESTIONS: $olq\n\n";}
-					die("An Export Error Occurred With Field [$fieldinfo]");
-					}
-				}
-			else
-				{
-				$debug .= "THIS FQID: $fqid $s";
-				$qq = "SELECT question, type, other FROM {$dbprefix}questions WHERE qid=$fqid"; //get the question
-				$qr = mysql_query($qq) or die ("ERROR:<br />".$qq."<br />".mysql_error());
-				$debug .= "LAST QQ Query: $qq $s";
-				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
-					{
-					$ftype = $qrow['type']; //get the question type
-					$fquest = $qrow['question'];
-					$fother = $qrow['other'];
-					}
-				$debug .= "LAST FTYPE: $ftype $s LAST FQUEST: $fquest $s LAST FOTHER: $fother $s";
-				if ($ftype != "O" && $ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "E" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
-					{ //If its a single - answer only type question
-					$debug .= "Doing NOT TYPE one..\n";
-					foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
-						{
-						if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-						}
-					$legitqs=$nlegitqs;
-					unset($nlegitqs);
-					}
-				elseif ($ftype == "O") //List with Comment
-					{
-					$debug .= "\nDOING A COMMENT TYPE ONE\n";
-					$thisacount=2;
-					if (!isset($usedanswers)) {$usedanswers=0;}
-					$usedanswers++;
-					$debug .= "USEDANSWERS = $usedanswers AND THISACOUNT = $thisacount\n";
-					if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
-						{
-						$debug .= "Iterating through legit questions..\n";
-					    foreach ($legitqs as $lgqs)
-							{
-							if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-							}
-						$legitqs=$nlegitqs;
-						unset($nlegitqs);
-						unset($thisacount);
-						unset($usedanswers);
-						}
-					}
-				elseif ($ftype == "L" && $fother != "Y") 
-					{
-					$debug .= "\nQUESTION TYPE L - not \"OTHER\"\n";
-					foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
-						{
-						if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-						}
-					$legitqs=$nlegitqs;
-					unset($nlegitqs);
-					unset($thisacount);
-					unset($usedanswers);
-					}
-				elseif ($ftype == "L" && $fother == "Y")
-					{
-					$debug .= "\nQUESTION TYPE L \n";
-					$thisacount=2;
-					if (!isset($usedanswers)) {$usedanswers=0;}
-					$usedanswers++;
-					if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
-						{
-					    foreach ($legitqs as $lgqs)
-							{
-							if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-							}
-						$legitqs=$nlegitqs;
-						unset($nlegitqs);
-						unset($thisacount);
-						unset($usedanswers);
-						}
-					}
-				else
-					{
-					$debug .= "\nDOING _ELSE_ - question type $ftype\n";
-					$debug .= "LAST START THISACOUNT: ";
-					if (isset($thisacount)) {$debug .= $thisacount;}
-					$debug .= " $s LAST START USEDANSWERS:";
-					if (isset($usedanswers)) { $debug .= $usedanswers;}
-					$debug .= " $s";
-					if (!isset($thisacount))
-						{
-						$aq = "SELECT code FROM {$dbprefix}answers WHERE qid=$fqid"; //We just want to count how many answers so we can delete the legitq entry when they're all used up
-						$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
-						$debug .= "LAST SELECT TO GET ACOUNT: $aq $s";
-						$thisacount = mysql_num_rows($ar);
-						if ($ftype == "P") {$thisacount=$thisacount*2;}
-						if ($ftype == "P" && $fother == "Y") {$thisacount++;}
-						if ($fother == "Y") {$thisacount++;}
-						$debug .= " $s SETTING THISACOUNT - $thisacount POSSIBLE ANSWERS TO QUESTION";
-						}
-					if(!isset($usedanswers)) {$usedanswers=0;}
-					$usedanswers++;
-					if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
-						{
-					    foreach ($legitqs as $lgqs)
-							{
-							$debug .= " | ERASING QUESTION [$fqid] FROM ARRAY - $thisacount ANSWERS, AND $usedanswers USED";
-							if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-							}
-						$legitqs=$nlegitqs;
-						unset($nlegitqs);
-						unset($thisacount);
-						unset($usedanswers);
-						}
-					}
-				switch ($ftype)
-					{
-					case "R": //RANKING TYPE
-						//$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
-						//$lr = mysql_query($lq) or die("Couldn't get answer!<br />$lq<br />".mysql_error());
-						//while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
-						//	{
-						//	$fquest .= " [".$lrow['answer']."]";
-						//	}
-						$fquest .= " ["._RANK." $faid]";
-						break;
-					case "L":
-						if ($faid == "other") {
-							$fquest .= " ["._OTHER."]";
-						} 
-						break;
-					case "O": //DROPDOWN LIST WITH COMMENT
-						if ($faid == "comment")
-							{
-							$fquest .= " - Comment";
-							}
-						break;
-					case "M": //multioption
-						if ($faid == "other")
-							{
-							$fquest .= " ["._OTHER."]";
-							}
-						else
-							{
-							$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
-							$lr = mysql_query($lq);
-							while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
-								{
-								$fquest .= " [".$lrow['answer']."]";
-								}
-							}
-						break;
-					case "P": //multioption with comment
-						if (substr($faid, -7, 7) == "comment")
-							{
-							$faid=substr($faid, 0, -7);
-							$comment=true;
-							}
-						if ($faid == "other")
-							{
-							$fquest .= " ["._OTHER."]";
-							}
-						else
-							{
-							$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
-							$lr = mysql_query($lq);
-							while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
-								{
-								$fquest .= " [".$lrow['answer']."]";
-								}
-							}
-						if (isset($comment) && $comment == true) {$fquest .= " - comment"; $comment=false;}
-						break;
-					case "A":
-					case "B":
-					case "C":
-					case "E":
-					case "F":
-					case "H":
-					case "Q":
-						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
+						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
 						$lr = mysql_query($lq);
-						$debug .= " | QUERY FOR ANSWER CODE [$lq]";
-						while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
+						while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 							{
 							$fquest .= " [".$lrow['answer']."]";
 							}
-						break;
-					default:
-						//echo "---------- $ftype ----------";
-						//if (mysql_field_name($dresult, $i) == "token")
-						//	{
-						//	$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$sid WHERE token='$drow[$i]'";
-						//	if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
-						//	while ($tokenrow=mysql_fetch_array($tokenresult))
-						//		{
-						//		echo "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
-						//		}
-						//	else
-						//		{
-						//		echo "Not found";
-						//		}
-						//	}
-						//else
-						//	{
-						//	echo str_replace("\r\n", " ", $drow[$i]);
-						//	}
-						break;
-					}
-				$fquest = strip_tags($fquest);
-				$fquest = str_replace("\n", " ", $fquest);
-				$fquest = str_replace("\r", "", $fquest);
-				if ($type == "csv")
-					{
-					$firstline .="\"$fquest\"$s";
-					}
-				else
-					{
-					$firstline .= "$fquest $s";
-					}
+						}
+					break;
+				case "P": //multioption with comment
+					if (substr($faid, -7, 7) == "comment")
+						{
+						$faid=substr($faid, 0, -7);
+						$comment=true;
+						}
+					if ($faid == "other")
+						{
+						$fquest .= " ["._OTHER."]";
+						}
+					else
+						{
+						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
+						$lr = mysql_query($lq);
+						while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+							{
+							$fquest .= " [".$lrow['answer']."]";
+							}
+						}
+					if (isset($comment) && $comment == true) {$fquest .= " - comment"; $comment=false;}
+					break;
+				case "A":
+				case "B":
+				case "C":
+				case "E":
+				case "F":
+				case "H":
+				case "Q":
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
+					$lr = mysql_query($lq);
+					$debug .= " | QUERY FOR ANSWER CODE [$lq]";
+					while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
+						{
+						$fquest .= " [".$lrow['answer']."]";
+						}
+					break;
 				}
-			}
-		}
+			$fquest = strip_tags($fquest);
+			$fquest = str_replace("\n", " ", $fquest);
+			$fquest = str_replace("\r", "", $fquest);
+			if ($type == "csv")
+				{
+				$firstline .="\"$fquest\"$s";
+				}
+			else
+				{
+				$firstline .= "$fquest $s";
+				}
+			}		
+		}	
 	}
-if (isset($thisacount)) {unset($thisacount);}
-if (isset($usedanswers)) {unset($usedanswers);}
-if (isset($faid)) {unset($faid);}
-if (isset($debug)) {unset($debug);}
 $firstline = trim($firstline);
 $firstline .= "\n";
 echo $firstline; //Sending the header row
+
+
 //Now dump the data
 if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
 	{
@@ -775,7 +579,6 @@ elseif ($answers == "long")
 	$fieldcount = mysql_num_fields($dresult);
 	while ($drow = mysql_fetch_array($dresult))
 		{
-		$legitqs=$origlegitqs;
 		if (!ini_get('safe_mode'))
 			{
 			set_time_limit(3); //Give each record 3 seconds	
@@ -783,9 +586,19 @@ elseif ($answers == "long")
 		for ($i=0; $i<$fieldcount; $i++) //For each field, work out the QID
 			{
 			$debug .= "\n";
+			$fieldinfo=mysql_field_name($dresult, $i);
 			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "token" && mysql_field_name($dresult, $i) != "firstname" && mysql_field_name($dresult, $i) != "lastname" && mysql_field_name($dresult, $i) != "email" && mysql_field_name($dresult, $i) != "attribute_1" && mysql_field_name($dresult, $i) != "attribute_2")
 				{
-				list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
+				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+				$fqid=$fielddata['qid'];
+				$ftype=$fielddata['type'];
+				$fsid=$fielddata['sid'];
+				$fgid=$fielddata['gid'];
+				$faid=$fielddata['aid'];
+				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid";
+				$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
+				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
+					{$ftype = $lid=$qrow['lid']; $fother=$qrow['other'];}
 				}
 			else
 				{
@@ -795,114 +608,6 @@ elseif ($answers == "long")
 			if ($fqid == 0) 
 				{
 				$ftype = "-";
-				}
-			else
-				{
-				$oldfqid=$fqid;
-				while (!in_array($fqid, $legitqs) && $fqid) //checks that the qid exists in our list
-					{
-					$fqid = substr($fqid, 0, strlen($fqid)-1);
-					}
-				if (!$fqid) 
-					{
-				    if (substr(mysql_field_name($dresult, $i), -5, 5) == "other") 
-						{
-				        $ftype = "-";
-				    	}
-					else
-						{
-						echo "\nEXPORT ERROR ON [".mysql_field_name($dresult, $i)."] - DEBUG INFO FOLLOWS:\n";
-						echo "DEBUG INFO: $debug\n";
-						die("END OF DEBUG\n");
-						}
-					}
-				else
-					{
-					$qq = "SELECT type, lid, other FROM {$dbprefix}questions WHERE qid=$fqid";
-					$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
-					while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
-						{$ftype = $qrow['type']; $lid=$qrow['lid']; $fother=$qrow['other'];}
-					$debug .= "LAST FTYPE: $ftype | LAST LID: $lid | LAST FOTHER: $fother |";
-					}
-				}
-			if ($ftype != "O" && $ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "E" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
-				{ //If its a single - answer only type question
-				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
-					{
-					if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-					}
-				$legitqs=$nlegitqs;
-				unset($nlegitqs);
-				}
-			elseif ($ftype == "O") //List with Comment
-				{
-				$thisacount=2;
-				if (!isset($usedanswers)) {$usedanswers=0;}
-				$usedanswers++;
-				if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
-					{
-				    foreach ($legitqs as $lgqs)
-						{
-						if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-						}
-					$legitqs=$nlegitqs;
-					unset($nlegitqs);
-					unset($thisacount);
-					unset($usedanswers);
-					}
-				}
-			elseif ($ftype == "L" && $fother != "Y") 
-				{
-				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
-					{
-					if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-					}
-				$legitqs=$nlegitqs;
-				unset($nlegitqs);
-				unset($thisacount);
-				unset($usedanswers);
-				}
-			elseif ($ftype == "L" && $fother == "Y")
-				{
-				$thisacount=2;
-				if (!isset($usedanswers)) {$usedanswers=0;}
-				$usedanswers++;
-				if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
-					{
-				    foreach ($legitqs as $lgqs)
-						{
-						if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-						}
-					$legitqs=$nlegitqs;
-					unset($nlegitqs);
-					unset($thisacount);
-					unset($usedanswers);
-					}
-				}
-			else //This is for multi answer type questions
-				{
-				if (!isset($thisacount)) //Count the number of answers possible for this question
-					{
-					$aq = "SELECT code FROM {$dbprefix}answers WHERE qid=$fqid"; //We just want to count how many answers so we can delete the legitq entry when they're all used up
-					$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
-					$thisacount = mysql_num_rows($ar);
-					if ($ftype == "P") {$thisacount=$thisacount*2;}
-					if ($ftype == "P" && $fother == "Y") {$thisacount++;}
-					if ($fother == "Y") {$thisacount++;}
-					}
-				if(!isset($usedanswers)) {$usedanswers=0;}
-				$usedanswers++;
-				if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
-					{
-				    foreach ($legitqs as $lgqs)
-						{
-						if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
-						}
-					$legitqs=$nlegitqs;
-					unset($nlegitqs);
-					unset($thisacount);
-					unset($usedanswers);
-					}
 				}
 			if ($type == "csv") {echo "\"";}
 			switch ($ftype)
@@ -919,7 +624,7 @@ elseif ($answers == "long")
 						}
 					break;
 				case "L": //DROPDOWN LIST
-					if (substr($oldfqid, -5, 5) == "other") 
+					if (substr($fieldinfo, -5, 5) == "other") 
 						{
 						echo $drow[$i];
 						}
@@ -969,11 +674,11 @@ elseif ($answers == "long")
 					break;
 				case "M": //multioption
 				case "P":
-					if (substr($oldfqid, -5, 5) == "other")
+					if (substr($fieldinfo, -5, 5) == "other")
 						{
 						echo "$drow[$i]";
 						}
-					elseif (substr($oldfqid, -7, 7) == "comment")
+					elseif (substr($fieldinfo, -7, 7) == "comment")
 						{
 						echo "$drow[$i]";
 						}
