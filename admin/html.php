@@ -148,7 +148,7 @@ if ($sid)
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
 		$surveysummary .= "\t\t\t\t</td>\n";
-		$surveysummary .= "\t\t\t\t<td align='right' valign='middle' width='300'>\n";
+		$surveysummary .= "\t\t\t\t<td align='right' valign='middle' width='320'>\n";
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"shows\")'>";
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hides\")'>\n";
 		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='right' border='0' hspace='0'>\n";
@@ -268,7 +268,7 @@ if ($gid)
 		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$groupsummary .= "\t\t\t\t\t</td>\n";
-		$groupsummary .= "\t\t\t\t\t<td align='right' width='300'>\n";
+		$groupsummary .= "\t\t\t\t\t<td align='right' width='320'>\n";
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"showg\")'>";
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hideg\")'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='right' border='0' hspace='0'>\n";
@@ -350,7 +350,7 @@ if ($qid)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>Type:</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R"))
 			{
-			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question</font></td></tr>\n";
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question <input type='image' src='./images/answers.gif' border='0' hspace='0' title='Add Answers' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
@@ -377,6 +377,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 			}
 		}
 	$vasummary .= "<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n";
+	$vasummary .= "<tr bgcolor='#555555'><td colspan='5'><font size='1' color='white'><b>Answers</b></td></tr>\n";
 	$cdquery = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
 	$cdresult = mysql_query($cdquery);
 	$cdcount = mysql_num_rows($cdresult);
@@ -453,14 +454,18 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
 		$vasummary .="\t</form></tr>\n";
 		}
-	$vasummary .= "<tr><form action='admin.php' method='post'><td colspan='3'></td>";
-	$vasummary .= "<td align='center'><input $btstyle type='submit' name='ansaction' value='Fix Sort'></td><td></td>\n";
-	$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
-	$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
-	$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
-	$vasummary .= "\t<input type='hidden' name='action' value='modanswer'>\n";
-	$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
-	$vasummary .= "</form></tr>\n";
+	if ($cdcount > 0)
+		{
+		$vasummary .= "<tr><form action='admin.php' method='post'><td colspan='3'></td>";
+		$vasummary .= "<td align='center'><input $btstyle type='submit' name='ansaction' value='Fix Sort'></td><td></td>\n";
+		$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+		$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+		$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+		$vasummary .= "\t<input type='hidden' name='action' value='modanswer'>\n";
+		$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
+		$vasummary .= "</form></tr>\n";
+		}
+
 	$vasummary .= "</table>\n";
 	}
 	
@@ -663,6 +668,17 @@ if ($action == "addquestion")
 	$newquestion .= "\t<input type='hidden' name='gid' value='$gid' />\n";
 	$newquestion .= "\t</form>\n";
 	$newquestion .= "</table>\n";
+	$newquestion .= "<center><b>OR</b></center>\n";
+	$newquestion .= "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+	$newquestion .= "\t\t<b>$setfont<font color='white'>Import Question</font></font></b></td></tr>\n\t<tr>";
+	$newquestion .= "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post'>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>Select SQL File:</b></font></td>\n";
+	$newquestion .= "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n";
+	$newquestion .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Import Question'></TD>\n";
+	$newquestion .= "\t<input type='hidden' name='action' value='importquestion'>\n";
+	$newquestion .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+	$newquestion .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+	$newquestion .= "\t</tr></form>\n</table>\n";
 	}
 
 if ($action == "copyquestion")
