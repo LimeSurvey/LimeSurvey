@@ -443,8 +443,10 @@ elseif ($action == "edit")
 					echo "\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>";
 					echo htmlspecialchars($idrow[$fnames[$i][0]]) . "</textarea>\n";
 					break;
+
 				case "R": //RANKING TYPE QUESTION
 					$l=$i;
+					$thisqid=$fnames[$l][7];
 					$myfname=substr($fnames[$i][0], 0, -1);
 					while ($fnames[$i][3] == "R")
 						{
@@ -455,52 +457,54 @@ elseif ($action == "edit")
 							}
 						$i++;
 						}
-					$ansquery = "SELECT * FROM answers WHERE qid={$fnames[$l][7]} ORDER BY sortorder, answer";
+					$ansquery = "SELECT * FROM answers WHERE qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = mysql_query($ansquery);
 					$anscount = mysql_num_rows($ansresult);
 					echo "\t\t\t<script type='text/javascript'>\n";
 					echo "\t\t\t<!--\n";
-					echo "\t\t\t\tfunction rankthis(\$code, \$value)\n";
+					echo "\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n";
 					echo "\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\$index=document.editsurvey.CHOICES.selectedIndex;\n";
-					echo "\t\t\t\t\tdocument.editsurvey.CHOICES.selectedIndex=-1;\n";
+					echo "\t\t\t\t\t\$index=document.editsurvey.CHOICES_$thisqid.selectedIndex;\n";
+					echo "\t\t\t\t\tdocument.editsurvey.CHOICES_$thisqid.selectedIndex=-1;\n";
 					echo "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
 					echo "\t\t\t\t\t\t{\n";
 					echo "\t\t\t\t\t\t\$b=i;\n";
 					echo "\t\t\t\t\t\t\$b += '';\n";	
-					echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
+					echo "\t\t\t\t\t\t\$inputname=\"RANK_$thisqid\"+\$b;\n";
 					echo "\t\t\t\t\t\t\$hiddenname=\"d$myfname\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$cutname=\"cut\"+i;\n";
+					echo "\t\t\t\t\t\t\$cutname=\"cut_$thisqid\"+i;\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
 					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
 					echo "\t\t\t\t\t\t\t{\n";
 					echo "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
 					echo "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
 					echo "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
-					echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES').options.length-1; b>=0; b--)\n";
+					echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n";
 					echo "\t\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES').options[b].value == \$code)\n";
+					echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n";
 					echo "\t\t\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES').options[b] = null;\n";
+					echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n";
 					echo "\t\t\t\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t\t\ti=$anscount;\n";
 					echo "\t\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length == 0)\n";
+					echo "\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n";
 					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=true;\n";
+					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=true;\n";
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t}\n";
-					echo "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
+					echo "\t\t\t\tfunction deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n";
 					echo "\t\t\t\t\t{\n";
-					echo "\t\t\t\t\tvar cutindex=\$thisname.substring(3,6);\n";
+					echo "\t\t\t\t\tvar qid='$thisqid';\n";
+					echo "\t\t\t\t\tvar lngth=qid.length+4;\n";
+					echo "\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n";
 					echo "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
 					echo "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
 					echo "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
 					echo "\t\t\t\t\tif (cutindex > 1)\n";
 					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
+					echo "\t\t\t\t\t\t\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n";
 					echo "\t\t\t\t\t\t\$cut2name=\"d$myfname\"+(cutindex);\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
@@ -510,11 +514,11 @@ elseif ($action == "edit")
 					echo "\t\t\t\t\t\t\$cut2name=\"d$myfname\"+(cutindex);\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
 					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
-					echo "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
-					echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length > 0)\n";
+					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n";
+					echo "\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n";
+					echo "\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n";
 					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=false;\n";
+					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=false;\n";
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t}\n";
 					echo "\t\t\t//-->\n";
@@ -561,10 +565,10 @@ elseif ($action == "edit")
 							{
 							$ranklist .= "style='display:none'";
 							}
-						$ranklist .= " id='cut$j' name='cut$j' onClick=\"deletethis(document.editsurvey.RANK$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK$j.name, this.name)\"><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$j' name='cut$j' onClick=\"deletethis(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"><br />\n\n";
 						}
 					
-					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
 						{
 						if (!in_array($ans, $chosen))
@@ -590,6 +594,9 @@ elseif ($action == "edit")
 					echo "\t\t\t</table>\n";
 					echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
 					echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
+					$choicelist="";
+					$ranklist="";
+					unset($answers);
 					break;
 
 				case "M": //MULTIPLE OPTIONS checkbox
@@ -1107,11 +1114,6 @@ else
 						echo "\t\t\t\t<option value='$x'>$x</option>\n";
 						}
 					echo "\t\t\t</select>\n";
-					//echo "\t\t\t<input type='radio' name='$fieldname' value='1' />1 \n";
-					//echo "\t\t\t<input type='radio' name='$fieldname' value='2' />2 \n";
-					//echo "\t\t\t<input type='radio' name='$fieldname' value='3' />3 \n";
-					//echo "\t\t\t<input type='radio' name='$fieldname' value='4' />4 \n";
-					//echo "\t\t\t<input type='radio' name='$fieldname' value='5' />5 \n";
 					break;
 				case "D": //DATE
 					echo "\t\t\t<input type='text' name='$fieldname' size='10' />\n";
@@ -1153,52 +1155,55 @@ else
 					echo "comment'>$idrow[$i]</textarea>\n";
 					break;
 				case "R": //RANKING TYPE QUESTION
-					$ansquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$thisqid=$deqrow['qid'];
+					$ansquery = "SELECT * FROM answers WHERE qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = mysql_query($ansquery);
 					$anscount = mysql_num_rows($ansresult);
 					echo "\t\t\t<script type='text/javascript'>\n";
 					echo "\t\t\t<!--\n";
-					echo "\t\t\t\tfunction rankthis(\$code, \$value)\n";
+					echo "\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n";
 					echo "\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\$index=document.addsurvey.CHOICES.selectedIndex;\n";
-					echo "\t\t\t\t\tdocument.addsurvey.CHOICES.selectedIndex=-1;\n";
+					echo "\t\t\t\t\t\$index=document.addsurvey.CHOICES_$thisqid.selectedIndex;\n";
+					echo "\t\t\t\t\tdocument.addsurvey.CHOICES_$thisqid.selectedIndex=-1;\n";
 					echo "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
 					echo "\t\t\t\t\t\t{\n";
 					echo "\t\t\t\t\t\t\$b=i;\n";
 					echo "\t\t\t\t\t\t\$b += '';\n";
-					echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
+					echo "\t\t\t\t\t\t\$inputname=\"RANK_$thisqid\"+\$b;\n";
 					echo "\t\t\t\t\t\t\$hiddenname=\"d$fieldname\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$cutname=\"cut\"+i;\n";
+					echo "\t\t\t\t\t\t\$cutname=\"cut_$thisqid\"+i;\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
 					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
 					echo "\t\t\t\t\t\t\t{\n";
 					echo "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
 					echo "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
 					echo "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
-					echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES').options.length-1; b>=0; b--)\n";
+					echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n";
 					echo "\t\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES').options[b].value == \$code)\n";
+					echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n";
 					echo "\t\t\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES').options[b] = null;\n";
+					echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n";
 					echo "\t\t\t\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t\t\ti=$anscount;\n";
 					echo "\t\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length == 0)\n";
+					echo "\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n";
 					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=true;\n";
+					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=true;\n";
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t}\n";
-					echo "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
+					echo "\t\t\t\tfunction deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n";
 					echo "\t\t\t\t\t{\n";
-					echo "\t\t\t\t\tvar cutindex=\$thisname.substring(3,6);\n";
+					echo "\t\t\t\t\tvar qid='$thisqid';\n";
+					echo "\t\t\t\t\tvar lngth=qid.length+4;\n";
+					echo "\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n";
 					echo "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
 					echo "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
 					echo "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
 					echo "\t\t\t\t\tif (cutindex > 1)\n";
 					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
+					echo "\t\t\t\t\t\t\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n";
 					echo "\t\t\t\t\t\t\$cut2name=\"d$fieldname\"+(cutindex);\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
@@ -1208,11 +1213,11 @@ else
 					echo "\t\t\t\t\t\t\$cut2name=\"d$fieldname\"+(cutindex);\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
 					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
-					echo "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
-					echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length > 0)\n";
+					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n";
+					echo "\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n";
+					echo "\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n";
 					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=false;\n";
+					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=false;\n";
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\t}\n";
 					echo "\t\t\t//-->\n";
@@ -1244,7 +1249,7 @@ else
 									}
 								}
 							}
-						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$i' id='RANK$i'";
+						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input type='text' style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$i' id='RANK_$thisqid$i'";
 						if ($_SESSION[$myfname])
 							{
 							$ranklist .= " value='";
@@ -1266,10 +1271,10 @@ else
 							$ranklist .= "style='display:none'";
 							}
 						$mfn=$fieldname.$i;
-						$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(document.addsurvey.RANK$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK$i.name, this.name)\"><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$i' name='cut$i' onClick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
 						}
 					
-					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
 						{
 						if (!in_array($ans, $chosen))
@@ -1295,7 +1300,9 @@ else
 					echo "\t\t\t</table>\n";
 					echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
 					echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
-
+					$choicelist="";
+					$ranklist="";
+					unset($answers);
 					break;
 				case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
