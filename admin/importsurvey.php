@@ -360,7 +360,7 @@ if ($grouparray) {
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					//NOW DO NESTED ANSWERS FOR THIS QID
-					if ($answerarray) {
+					if (isset($answerarray) && $answerarray) {
 						foreach ($answerarray as $aa) {
 							$aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
 							$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
