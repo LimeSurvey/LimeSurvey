@@ -22,6 +22,8 @@ define(_IMPORTQUESTION, "Import Question");
 define(_IMPORTSURVEY, "Import Survey");
 define(_IMPORTQUESTION, "Import Question");
 define(_EXPORTRESULTS, "Export Responses");
+define(_BROWSERESPONSES, "Browse Responses");
+define(_STATISTICS, "Quick Statistics");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -72,6 +74,15 @@ define(_Q_LABELS_BT, "Edit/Add Labels to this Question");
 define(_Q_MINIMISE_BT, "Hide Details of this Question");
 define(_Q_MAXIMISE_BT, "Show Details of this Question");
 define(_Q_CLOSE_BT, "Close this Question");
+//Browse Button Bar
+define(_B_ADMIN_BT, "Return to Survey Administration");
+define(_B_SUMMARY_BT, "Show summary information");
+define(_B_ALL_BT, "Display all responses");
+define(_B_LAST_BT, "Display last 50 responses");
+define(_B_STATISTICS_BT, "Get statistics from these responses");
+define(_B_EXPORT_BT, "Export Results to Application");
+define(_B_BACKUP_BT, "Backup results table as SQL file");
+
 
 //DATA LABELS
 //surveys
@@ -307,4 +318,11 @@ define(_IQ_WRONGFILE, "This file is not a PHPSurveyor question file. Import fail
 define(_IQ_IMPORTSUMMARY, "Question Import Summary");
 define(_IQ_SUCCESS, "Import of Question is completed");
 
+//BROWSE RESPONSES MESSAGES
+define(_BR_NOSID, "You have not selected a survey to browse.");
+define(_BR_NOTACTIVATED, "This survey has not been activated. There are no results to browse.");
+define(_BR_NOSURVEY, "There is no matching survey.");
+
+//STATISTICS MESSAGES
+define(_ST_FILTERSETTINGS, "Filter Settings");
 ?>
