@@ -432,21 +432,24 @@ elseif ($action == "all")
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		. _VIEWCONTROL.":</b></font></td></tr>\n"
-		."\t<tr bgcolor='#999999'><td align='left'>\n"
-		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
-		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
-		."\t\t\t<input type='image' name='DataBegin' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
-		. _D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=0&limit=$limit','_top')\" />\n"
-		."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
-		. _D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$last&limit=$limit','_top')\" />\n"
-		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
-		."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
-		. _D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$next&limit=$limit','_top')\" />\n"
-		."\t\t\t<input type='image' name='DataEnd' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
-		. _D_END."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=$end&limit=$limit','_top')\" />\n"
-		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
-		."\t\t</td>\n"
-		."\t\t<form action='browse.php'>\n"
+		."\t<tr bgcolor='#999999'><td align='left'>\n";
+	if (!isset($_POST['sql']))
+		{
+		echo "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
+			."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
+			."\t\t\t<input type='image' name='DataBegin' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
+			. _D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=0&limit=$limit','_top')\" />\n"
+			."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
+			. _D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$last&limit=$limit','_top')\" />\n"
+			."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
+			."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
+			. _D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$next&limit=$limit','_top')\" />\n"
+			."\t\t\t<input type='image' name='DataEnd' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
+			. _D_END."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=$end&limit=$limit','_top')\" />\n"
+			."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n";
+		}
+	echo "\t\t</td>\n"
+		."\t\t<form action='browse.php' method='post'>\n"
 		."\t\t<td align='right'><font size='1' face='verdana'>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='-'>\n"
 		."\t\t\t"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$dtcount2' name='limit'>\n"
@@ -454,8 +457,12 @@ elseif ($action == "all")
 		."\t\t\t<input type='submit' value='"._BR_SHOW."' $btstyle>\n"
 		."\t\t</font></td>\n"
 		."\t\t<input type='hidden' name='sid' value='$sid'>\n"
-		."\t\t<input type='hidden' name='action' value='all'>\n"
-		."\t\t</form>\n"
+		."\t\t<input type='hidden' name='action' value='all'>\n";
+if (isset($_POST['sql'])) 
+	{
+	echo "\t\t<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."'>\n";
+	}
+echo 	 "\t\t</form>\n"
 		."\t</tr>\n"
 		."</table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n";
