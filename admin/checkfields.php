@@ -142,7 +142,13 @@ foreach ($tablenames as $tn)
 	{
 	if (substr($tn, 0, 3) != "old" && substr($tn, 0, 7) != "survey_" && substr($tn, 0, 3) != "tok")
 		{
-		checktable($tn);
+		if (isset($dbprefix) && $dbprefix) {
+			if(substr($tn, 0, strlen($dbprefix)) == $dbprefix) {
+				checktable($tn);
+			}
+		} else {
+			checktable($tn);
+		}
 		}
 	}
 
@@ -188,7 +194,7 @@ function checktable($tablename)
 				}
 			}
 		}
-	if ($addedfield != "Y")
+	if (isset($addedfield) && $addedfield != "Y")
 		{
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
 		}
