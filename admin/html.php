@@ -1092,7 +1092,8 @@ if ($action == "editquestion")
 			}
 		else
 			{
-			$editquestion .= "[{$eqrow['lid']}] - "._DE_NOMODIFY." - "._SS_ACTIVE."\n";
+			$editquestion .= "[{$eqrow['lid']}] - "._DE_NOMODIFY." - "._SS_ACTIVE."\n"
+						   . "\t\t\t<input type='hidden' name='lid' value='{$eqrow['lid']}'>\n";
 			}
 		$editquestion .= "\t\t</td>\n"
 					   . "\t</tr>\n"
