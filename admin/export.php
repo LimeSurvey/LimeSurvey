@@ -460,11 +460,22 @@ for ($i=0; $i<$fieldcount; $i++)
 						$firstline .= "$fieldinfo* $s";
 						}
 				    }
+				elseif (substr($fieldinfo, -7, 7) == "comment")
+					{
+					if ($type == "csv") 
+						{
+					    $firstline .= "\"$fieldinfo*\"$s\"";
+						}
+					else
+						{
+						$firstline .= "$fieldinfo* $s";
+						}
+					}
 				else
 					{
 					echo "EXPORT ERROR - Debug Info Follows\n";
 					echo "FIRSTLINE: $firstline\n";
-					foreach ($legitqs as $lq) { echo "DEBUG LEGIT QUESTIONS: $lq\n";}
+					foreach ($legitqs as $lq) { echo "DEBUG UNUSED LEGIT QUESTIONS: $lq\n";}
 					echo "QUESTION TYPE: ".$qrow['type']."\n";
 					echo "Other Debug Info: $debug\n";
 					die("An Export Error Occurred With Field [$fieldinfo]");
@@ -483,7 +494,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					$fother = $qrow['other'];
 					}
 				$debug .= "LAST FTYPE: $ftype | LAST FQUEST: $fquest | LAST FOTHER: $fother |";
-				if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "E" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
+				if ($ftype != "O" && $ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "E" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
 					{ //If its a single - answer only type question
 					foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 						{
@@ -491,6 +502,23 @@ for ($i=0; $i<$fieldcount; $i++)
 						}
 					$legitqs=$nlegitqs;
 					unset($nlegitqs);
+					}
+				elseif ($ftype == "O") //List with Comment
+					{
+					$thisacount=2;
+					if (!isset($usedanswers)) {$usedanswers=0;}
+					$usedanswers++;
+					if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
+						{
+					    foreach ($legitqs as $lgqs)
+							{
+							if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+							}
+						$legitqs=$nlegitqs;
+						unset($nlegitqs);
+						unset($thisacount);
+						unset($usedanswers);
+						}
 					}
 				elseif ($ftype == "L" && $fother != "Y") 
 					{
@@ -561,7 +589,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					case "L":
 						if ($faid == "other") {
 							$fquest .= " ["._OTHER."]";
-						}
+						} 
 						break;
 					case "O": //DROPDOWN LIST WITH COMMENT
 						if ($faid == "comment")
@@ -773,7 +801,7 @@ elseif ($answers == "long")
 					$debug .= "LAST FTYPE: $ftype | LAST LID: $lid | LAST FOTHER: $fother |";
 					}
 				}
-			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "E" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
+			if ($ftype != "O" && $ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "E" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
 				{ //If its a single - answer only type question
 				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 					{
@@ -781,6 +809,23 @@ elseif ($answers == "long")
 					}
 				$legitqs=$nlegitqs;
 				unset($nlegitqs);
+				}
+			elseif ($ftype == "O") //List with Comment
+				{
+				$thisacount=2;
+				if (!isset($usedanswers)) {$usedanswers=0;}
+				$usedanswers++;
+				if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
+					{
+				    foreach ($legitqs as $lgqs)
+						{
+						if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+						}
+					$legitqs=$nlegitqs;
+					unset($nlegitqs);
+					unset($thisacount);
+					unset($usedanswers);
+					}
 				}
 			elseif ($ftype == "L" && $fother != "Y") 
 				{
