@@ -83,7 +83,11 @@ if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);	
 
 // 1: Get list of questions from survey
-$query = "SELECT qid, {$dbprefix}questions.gid, type, title, group_name, question, lid FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid='$sid' ORDER BY group_name, title";
+$query = "SELECT qid, {$dbprefix}questions.gid, type, title, group_name, question, lid "
+		."FROM {$dbprefix}questions, {$dbprefix}groups "
+		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
+		."AND {$dbprefix}questions.sid='$sid' "
+		."ORDER BY group_name, title";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while ($row=mysql_fetch_row($result))
 	{
@@ -101,7 +105,7 @@ foreach ($filters as $flt)
 			echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 			}
 		echo "\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
-			."\t\t<font size='1' face='verdana'><b>$flt[4]</b> (Group $flt[1])</font></td></tr>\n\t\t"
+			."\t\t<font size='1' face='verdana'><b>$flt[4]</b> ("._GROUP." $flt[1])</font></td></tr>\n\t\t"
 			."<tr><td align='center'>\n"
 			."\t\t\t<table align='center'><tr>\n";
 		$counter=0;
@@ -113,14 +117,15 @@ foreach ($filters as $flt)
 	$niceqtext = str_replace("\r", "", $niceqtext);
 	$niceqtext = str_replace("\n", "", $niceqtext);
 	//headings
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "X") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>"
 			."$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
 		if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {$myfield = "M$myfield";}
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
 		echo "<input type='checkbox' name='summary[]' value='$myfield'";
-		if (isset($_POST['summary']) && (array_search("{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) {echo " CHECKED";}
+		if (isset($_POST['summary']) && (array_search("{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
+			{echo " CHECKED";}
 		echo ">&nbsp;"
 			."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
 			."<br />\n";
@@ -138,9 +143,12 @@ foreach ($filters as $flt)
 		case "T": // Long free text
 			$myfield2="T$myfield";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
-				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+				.str_replace("\"", "`", $flt[5])." [$row[1]]\" "
+				."onClick=\"alert('"._QUESTION.": ".$niceqtext." "
+				.str_replace("'", "`", $row[1])."')\">"
 				."<br />\n"
-				."\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n"
+				."\t\t\t\t\t<font size='1'>"._ST_RESPONECONT.":</font><br />\n"
 				."\t\t\t\t\t<textarea $slstyle2 name='$myfield2' rows='3'>";
 			if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
 			echo "</textarea>";
@@ -149,9 +157,12 @@ foreach ($filters as $flt)
 		case "S": // Short free text
 			$myfield2="T$myfield";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
-				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+				.str_replace("\"", "`", $flt[5])
+				." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
+				.str_replace("'", "`", $row[1])."')\">"
 				."<br />\n"
-				."\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n"
+				."\t\t\t\t\t<font size='1'>"._ST_RESPONECONT.":</font><br />\n"
 				."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
 			if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
 			echo "'>";
@@ -160,11 +171,11 @@ foreach ($filters as $flt)
 		case "N": // Numerical
 			$myfield2="{$myfield}G";
 			$myfield3="{$myfield}L";
-			echo "\t\t\t\t\t<font size='1'>Number greater than:<br />\n"
+			echo "\t\t\t\t\t<font size='1'>"._ST_NOGREATERTHAN.":<br />\n"
 				."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
 			if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
 			echo "'><br />\n"
-				."\t\t\t\t\tNumber less than:<br />\n"
+				."\t\t\t\t\t"._ST_NOLESSTHAN.":<br />\n"
 				."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield3' value='";
 			if (isset($_POST[$myfield2])) {echo $_POST[$myfield3];}
 			echo "'><br />\n";
@@ -174,25 +185,30 @@ foreach ($filters as $flt)
 			$myfield3="$myfield2=";
 			$myfield4="$myfield2<"; $myfield5="$myfield2>";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
-				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])
-				." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+				.str_replace("\"", "`", $flt[5])
+				." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
+				.str_replace("'", "`", $row[1])."')\">"
 				."<br />\n"
-				."\t\t\t\t\t<font size='1'>Date (YYYY-MM-DD) equals:<br />\n"
+				."\t\t\t\t\t<font size='1'>"._ST_DATEEQUALS.":<br />\n"
 				."\t\t\t\t\t<input name='$myfield3' type='text' value='";
 			if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
 			echo "' ".substr($slstyle2, 0, -13) ."; width:80'><br />\n"
-				."\t\t\t\t\t&nbsp;&nbsp;OR between:<br />\n"
+				."\t\t\t\t\t&nbsp;&nbsp;"._ST_ORBETWEEN.":<br />\n"
 				."\t\t\t\t\t<input name='$myfield4' value='";
 			if (isset($_POST[$myfield4])) {echo $_POST[$myfield4];}
-			echo "' type='text' ".substr($slstyle2, 0, -13) ."; width:65'> & <input  name='$myfield5' value='";
+			echo "' type='text' ".substr($slstyle2, 0, -13) 
+				."; width:65'> "._AND." <input  name='$myfield5' value='";
 			if (isset($_POST[$myfield5])) {echo $_POST[$myfield5];}
-			echo "' type='text' ".substr($slstyle2, 0, -13) ."; width:65'>\n";
+			echo "' type='text' ".substr($slstyle2, 0, -13) 
+				."; width:65'>\n";
 			break;
 		case "5": // 5 point choice
 			for ($i=1; $i<=5; $i++)
 				{
 				echo "\t\t\t\t\t<option value='$i'";
-				if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($i, $_POST[$myfield])) {echo " selected";}
+				if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($i, $_POST[$myfield])) 
+					{echo " selected";}
 				echo ">$i</option>\n";
 				}
 			break;
@@ -230,7 +246,9 @@ foreach ($filters as $flt)
 					."<input type='checkbox' name='summary[]' value='$myfield2'";
 				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+					.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION.": "
+					.$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
 				for ($i=1; $i<=5; $i++)
@@ -264,8 +282,10 @@ foreach ($filters as $flt)
 				echo "<input type='checkbox' name='summary[]' value='$myfield2'";
 				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])
-					." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+					.str_replace("\"", "`", $flt[5])
+					." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
+					.str_replace("'", "`", $row[1])
 					."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
@@ -297,9 +317,12 @@ foreach ($filters as $flt)
 				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"
 					."<input type='checkbox' name='summary[]' value='$myfield2'";
-				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
+				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) 
+					{echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+					.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
+					.str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
 					."\t\t\t\t\t<option value='Y'";
@@ -334,7 +357,9 @@ foreach ($filters as $flt)
 					."<input type='checkbox' name='summary[]' value='$myfield2'";
 				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+					.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
+					.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
 					."\t\t\t\t\t<option value='I'";
@@ -369,7 +394,9 @@ foreach ($filters as $flt)
 					."<input type='checkbox' name='summary[]' value='$myfield2'";
 				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+					.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
+					.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n";
 				$fquery = "SELECT * FROM labels WHERE lid={$flt[6]} ORDER BY sortorder, code";
 				//echo $fquery;
@@ -410,7 +437,9 @@ foreach ($filters as $flt)
 					."<input type='checkbox' name='summary[]' value='$myfield2'";
 				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary']) !== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
-					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+					.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
+					.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
 					."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple $slstyle2>\n";
 				foreach ($answers as $ans)
@@ -425,6 +454,8 @@ foreach ($filters as $flt)
 				}
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
+			break;
+		case "X": //This is a boilerplate question and it has no business in this script
 			break;
 		default:
 			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
@@ -455,12 +486,11 @@ echo "\t\t\t</table>\n"
 	."\t\t</td></tr>\n"
 	."\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
 	."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-	."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' id='viewsummaryall' name='summary' value='$allfield'";
-//if (isset($_POST['summary']) && $_POST['summary'] == $allfields) {echo " CHECKED";}
-echo "><label for='viewsummaryall'>View summary of all available fields</label></td></tr>\n"
+	."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' id='viewsummaryall' name='summary' value='$allfield'"
+	."><label for='viewsummaryall'>"._ST_VIEWALL."</label></td></tr>\n"
 	."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
-	."\t\t\t<input $btstyle type='submit' value='View Stats'>\n"
-	."\t\t\t<input $btstyle type='button' value='Clear' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n"
+	."\t\t\t<input $btstyle type='submit' value='"._ST_SHOWRESULTS."'>\n"
+	."\t\t\t<input $btstyle type='button' value='"._ST_CLEAR."' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n"
 	."\t\t<br />&nbsp;\n\t\t</td></tr>\n"
 	."\t<input type='hidden' name='sid' value='$sid'>\n"
 	."\t<input type='hidden' name='display' value='stats'>\n"
@@ -555,19 +585,22 @@ if (isset($_POST['display']) && $_POST['display'])
 	while ($row=mysql_fetch_row($result)) {$results=$row[0];}
 	
 	// 3: Present results including option to view those rows
-	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
-		."\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Results</b></td></tr>\n"
-		."\t<tr><td colspan='2' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>"
-		."<b>Your query returns $results record(s)!</b><br />\n\t\t"
-		."There are $total records in your survey.";
+	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' "
+		."cellpadding='2' cellspacing='0' bordercolor='black'>\n"
+		."\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>"
+		._ST_RESULTS."</b></td></tr>\n"
+		."\t<tr><td colspan='2' align='center' bgcolor='#666666'>"
+		."$setfont<font color='#EEEEEE'>"
+		."<b>"._ST_RECORDSRETURNED.": $results </b><br />\n\t\t"
+		._ST_TOTALRECORDS.": $total<br />\n";
 	if ($total)
 		{
 		$percent=sprintf("%01.2f", ($results/$total)*100);
-		echo " This query represents "
-			."$percent% of your total results<br />";
+		echo _ST_PERCENTAGE
+			.": $percent%<br />";
 		}
 	echo "\n\t\t<br />\n"
-		."\t\t<font size='1'><b>SQL:</b> $query\n"
+		."\t\t<font size='1'><b>"._SQL.":</b> $query\n"
 		."\t</td></tr>\n";
 	if (isset ($selects) && $selects) {$sql=implode(" AND ", $selects);}
 	if (!isset($sql) || !$sql) {$sql="NULL";}
@@ -603,7 +636,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
 				{
-				$qtitle=$nrow[0]; $qtype=$nrow[1]; 
+				$qtitle=$nrow[0]; 
+				$qtype=$nrow[1];
 				$qquestion=strip_tags($nrow[2]); 
 				$qlid=$nrow[3];
 				$qother=$nrow[4];
@@ -643,8 +677,12 @@ if (isset($_POST['summary']) && $_POST['summary'])
 	
 			$nquery = "SELECT title, type, question FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]. " [".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]"; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]). "[Rank ".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]";}
-			
+			while ($nrow=mysql_fetch_row($nresult)) 
+				{
+				$qtitle=$nrow[0]. " [".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]"; 
+				$qtype=$nrow[1]; 
+				$qquestion=strip_tags($nrow[2]). "["._RANK." ".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]";
+				}
 			$query="SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qqid' ORDER BY sortorder, answer";
 			$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
@@ -660,11 +698,13 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
 			echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
-				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>"
+				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>"._ST_FIELDSUMMARY." $qtitle:</b>"
 				."</td></tr>\n"
 				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n"
-				."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Calculation</b></font></td>\n"
-				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Result</b></font></td>\n"
+				."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>"
+				._ST_CALCULATION."</b></font></td>\n"
+				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>"
+				._ST_RESULT."</b></font></td>\n"
 				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b></b></font></td>\n"
 				."\t</tr>\n";
 			$fieldname=substr($rt, 1, strlen($rt));
@@ -678,10 +718,10 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_array($result))
 				{
-				$showem[]=array("Sum", $row['sum']);
-				$showem[]=array("Standard Deviation", $row['stdev']);
-				$showem[]=array("Average", $row['average']);
-				$showem[]=array("Minimum", $row['minimum']);
+				$showem[]=array(_ST_SUM, $row['sum']);
+				$showem[]=array(_ST_STDEV, $row['stdev']);
+				$showem[]=array(_ST_AVERAGE, $row['average']);
+				$showem[]=array(_ST_MIN, $row['minimum']);
 				$maximum=$row['maximum']; //we're going to put this after the quartiles for neatness
 				$minimum=$row['minimum'];
 				}
@@ -713,7 +753,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					}
 				$q1total=$lastnumber-(1-($total*$q1diff));
 				if ($q1total < $minimum) {$q1total=$minimum;}
-				$showem[]=array("1st Quartile (Q1)", $q1total);
+				$showem[]=array(_ST_Q1, $q1total);
 				}
 			else
 				{
@@ -734,7 +774,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $medianc, 2";
 				$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
 				while ($row=mysql_fetch_array($result))	{$total=$total+$row[$fieldname];}
-				$showem[]=array("2nd Quartile (Median)", $total/2);
+				$showem[]=array(_ST_Q2, $total/2);
 				}
 			else
 				{
@@ -762,7 +802,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					}
 				$q3total=$lastnumber+($total*$q3diff);
 				if ($q3total < $maximum) {$q1total=$maximum;}
-				$showem[]=array("3rd Quartile (Q3)", $q3total);
+				$showem[]=array(_ST_Q3, $q3total);
 				}
 			else
 				{
@@ -771,7 +811,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
 				}
 			$total=0;
-			$showem[]=array("Maximum", $maximum);
+			$showem[]=array(_ST_MAX, $maximum);
 			foreach ($showem as $shw)
 				{
 				echo "\t<tr>\n"
@@ -782,8 +822,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				}
 			echo "\t<tr>\n"
 				."\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n"
-				."\t\t\t$setfont<font size='1'>*Null values are ignored in calculations<br />\n"
-				."\t\t\t*Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
+				."\t\t\t$setfont<font size='1'>"._ST_NULLIGNORED."<br />\n"
+				."\t\t\t"._ST_QUARTMETHOD
 				."</font></font>\n"
 				."\t\t</td>\n"
 				."\t</tr>\n";
@@ -928,12 +968,17 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		if (isset($alist) && $alist) //JUST IN CASE SOMETHING GOES WRONG
 			{
 			echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
-				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>"
+				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>"
+				._ST_FIELDSUMMARY." $qtitle:</b>"
 				."</td></tr>\n"
-				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n"
-				."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Answer</b></font></td>\n"
-				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Count</b></font></td>\n"
-				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Percentage</b></font></td>\n"
+				."\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>"
+				."$qquestion</b></font></font></td></tr>\n"
+				."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont"
+				."<font color='#EEEEEE'><b>"._AL_ANSWER."</b></font></td>\n"
+				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont"
+				."<font color='#EEEEEE'><b>"._COUNT."</b></font></td>\n"
+				."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont"
+				."<font color='#EEEEEE'><b>"._PERCENTAGE."</b></font></td>\n"
 				."\t</tr>\n";
 			foreach ($alist as $al)
 				{
@@ -988,9 +1033,12 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$lbl[] = $fname;
 					}
 				}
-				//$usejpgraph=1;
-				if ($usejpgraph == 1) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+				
+				if ($usejpgraph == 1 && array_sum($gdata)>0) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
 					{
+					//$gdata and $lbl are arrays built at the end of the last section
+					//that contain the values, and labels for the data we are about
+					//to send to jpgraph.
 					$graph = new PieGraph(640,320,'png');
 					$graph->img->SetAntiAliasing();
 			
@@ -1019,9 +1067,10 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					echo "<tr><td colspan='3' style=\"text-align:center\"><img src=\"$tempurl/".$ci.".png\" border='1'></td></tr>";
 					
 					////// PIE ALL DONE
+					}
 					unset($gdata);
 					unset($lbl);
-					}
+
 			}
 		echo "</table>\n";
 		unset ($alist);
