@@ -364,7 +364,7 @@ if ($action == "addquestion")
 	$newquestion .= "\t<form action='$scriptname' name='addnewquestion' method='post'>\n";
 	$newquestion .= "\t<tr>\n";
 	$newquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
-	$newquestion .= "\t\t<td><input type='text' size='20' name='title'></td></tr>\n";
+	$newquestion .= "\t\t<td><input type='text' size='20' name='title'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
 	$newquestion .= "\t<tr>\n";
 	$newquestion .= "\t\t<td align='right'>$setfont<b>Question:</b></font></td>\n";
 	$newquestion .= "\t\t<td><textarea cols='35' rows='3' name='question'></textarea></td>\n";
@@ -542,9 +542,9 @@ if ($action == "addanswer")
 	$newanswer .= "\t\t<b>$setfont<font color='white'>Create New Answer for Survey ID($sid), Group ID($gid), Question ID($qid)</b></font></font></td></tr>\n";
 	$newanswer .= "\t<tr><form action='$scriptname' name='addnewanswer' method='post'>\n";
 	$newanswer .= "\t\t<td align='right'>$setfont<b>Answer Code:</b></font></td>\n";
-	$newanswer .= "\t\t<td><input type='text' size='5' name='code'></td></tr>\n";
+	$newanswer .= "\t\t<td><input type='text' size='5' name='code' maxlength='5'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
 	$newanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
-	$newanswer .= "\t\t<td><input type='text' name='answer'></td></tr>\n";
+	$newanswer .= "\t\t<td><input type='text' name='answer'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
 	$newanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
 	$newanswer .= "\t\t<td><input type='text' size='1' value='N' name='default'></td></tr>\n";
 	$newanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Add Answer'></td></tr>\n";
@@ -561,7 +561,7 @@ if ($action == "addgroup")
 	$newgroup .= "\t\t<b>$setfont<font color='white'>Create New Group for Survey ID($sid)</font></font></b></td></tr>\n";
 	$newgroup .= "\t<tr><form action='$scriptname' name='addnewgroup' method='post'>\n";
 	$newgroup .= "\t\t<td align='right'>$setfont<b>Group Name:</b></font></td>\n";
-	$newgroup .= "\t\t<td><input type='text' size='40' name='group_name'></td></tr>\n";
+	$newgroup .= "\t\t<td><input type='text' size='40' name='group_name'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
 	$newgroup .= "\t<tr><td align='right'>$setfont<b>Group Description:</b>(optional)</font></td>\n";
 	$newgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'></textarea></td></tr>\n";
 	$newgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create New Group'></td>\n";
