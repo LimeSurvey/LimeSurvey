@@ -49,7 +49,7 @@ if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 
 sendcacheheaders();
 
-if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL=$PHP_SELF?action=browse&sid={$_GET['sid']}&start=$start&limit=$limit&order=$order\"", $htmlheader);}
+if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL={$_SERVER['PHP_SELF']}?action=browse&sid={$_GET['sid']}&start=$start&limit=$limit&order=$order\"", $htmlheader);}
 else {echo $htmlheader;}
 
 echo "<script type='text/javascript'>\n";
@@ -347,8 +347,8 @@ if ($action == "browse" || $action == "search")
 			echo "\t\t<td>$setfont$brow[$i]</td>\n";
 			}
 		echo "\t\t<td align='left'>\n";
-		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='"._TC_EDIT."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\" />\n";
-		echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"._TC_DEL."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />\n";
+		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='"._TC_EDIT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$sid&action=edit&tid=$brow[0]', '_top')\" />\n";
+		echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$sid&action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />\n";
 		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$sid&token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
@@ -365,13 +365,13 @@ if ($action == "browse" || $action == "search")
 		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] != "Y")
 			{
 			echo "\t\t<td align='center' valign='top'>\n";
-			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='I' title='"._TC_INVITET."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=email&tid=$brow[0]', '_top')\" />";
+			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='I' title='"._TC_INVITET."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$sid&action=email&tid=$brow[0]', '_top')\" />";
 			echo "\t\t</td>\n";
 			}
 		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] == "Y")
 			{
 			echo "\t\t<td align='center' valign='top'>\n";
-			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='R' title='"._TC_REMINDT."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=remind&tid=$brow[0]', '_top')\" />";
+			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='R' title='"._TC_REMINDT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$sid&action=remind&tid=$brow[0]', '_top')\" />";
 			echo "\t\t</td>\n";
 			}
 		else
@@ -1011,11 +1011,11 @@ echo "</body>\n</html>";
 
 function form($error=false) {
 
-global $PHP_SELF, $sid, $btstyle, $slstyle, $setfont;
+global $_SERVER['PHP_SELF'], $sid, $btstyle, $slstyle, $setfont;
 
 	if ($error) {print $error . "<br /><br />\n";}
 	
-	print "\n<form enctype='multipart/form-data' action='" . $PHP_SELF . "' method='post'>\n";
+	print "\n<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n";
 	print "<input type='hidden' name='action' value='upload' />\n";
 	print "<input type='hidden' name='sid' value='$sid' />\n";
 	print "$setfont Upload a file<br />\n";
