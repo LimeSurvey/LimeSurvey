@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-$sid = $_GET['sid'];
+$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
 
 include("config.php");
 
@@ -50,15 +50,12 @@ $slstyle2 = "style='background-color: #EEEFFF; font-family: verdana; font-size: 
 
 echo $htmlheader;
 
-if (!$_GET['sid'] && !$_GET['sid'])
+if (!$sid)
 	{
 	//need to have a survey id
 	echo "<center>You have not selected a survey!</center>";
 	exit;
 	}
-
-if ($_GET['sid']) {$sid=$_GET['sid'];}
-elseif ($_POST['sid']) {$sid=$_POST['sid'];}
 
 echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Quick Statistics</b></td></tr></table>\n";
 echo $surveyoptions;
