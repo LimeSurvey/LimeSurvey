@@ -272,20 +272,26 @@ if ($display)
 			
 			}
 		}
-	// 2: Develop SQL query
+	// 2: Do SQL query
 	$query = "SELECT count(*) FROM survey_$sid";
+	$result = mysql_query($query) or die ("Couldn't get total<br />$query<br />".mysql_error());
+	while ($row=mysql_fetch_row($result)) {$total=$row[0];}
 	if ($selects) 
 		{
 		$query .= " WHERE ";
 		$query .= implode(" AND ", $selects);
 		}
 	$result=mysql_query($query) or die("Couldn't get results<br />$query<br />".mysql_error());
-	while ($row=mysql_fetch_row($result)) {$total=$row[0];}
+	while ($row=mysql_fetch_row($result)) {$results=$row[0];}
 	// 3: Present results including option to view those rows
 	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='0' cellspacing='0' bordercolor='black'>\n";
 	echo "\t<tr><td align='center'><b>$setfont<font color='orange'>Results:</b></td></tr>\n";
 	echo "\t<tr><td align='center'>$setfont<font color='#EEEEEE'>";
-	echo "<B>Your query returns $total records!</b><br />\n\t\t<br />\n\t\t<font size='1'>$query";
+	echo "<B>Your query returns $results record(s)!</b><br />\n\t\t";
+	echo "There are $total records in your survey. This query represents ";
+	$percent=sprintf("%02d", ($results/$total)*100);
+	echo "$percent% of your total results<br />\n\t\t<br />\n";
+	echo "\t\t<font size='1'>$query";
 	echo "</td></tr>\n";
 	echo "</table>\n";
 	}
