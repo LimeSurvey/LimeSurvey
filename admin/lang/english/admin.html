@@ -31,6 +31,13 @@ database has all the required fields.</font></p>
   </tr>
   <tr>
     <td valign="top"><font face="Verdana" style="font-size: 8pt">
+<img border="0" src="../../images/summary.gif" width="20" height="20"></font></td>
+    <td valign="top"><font face="Verdana" style="font-size: 8pt"><b>Check 
+    Settings:</b> Show a summary of current settings for PHPSurveyor. You can 
+    change the administration language from here.</font></td>
+  </tr>
+  <tr>
+    <td valign="top"><font face="Verdana" style="font-size: 8pt">
 <img border="0" src="../../images/checkdb.gif" width="20" height="20"></font></td>
     <td valign="top"><font face="Verdana" style="font-size: 8pt">
     <b>Check Database</b>: Click here to perform a check on your database to 
@@ -38,10 +45,22 @@ database has all the required fields.</font></p>
   </tr>
   <tr>
     <td valign="top"><font face="Verdana" style="font-size: 8pt">
+<img border="0" src="../../images/export.gif" width="20" height="20"></font></td>
+    <td valign="top"><font face="Verdana" style="font-size: 8pt"><b>Backup 
+    Database:</b> Dumps entire PHPSurveyor database into a SQL file</font></td>
+  </tr>
+  <tr>
+    <td valign="top"><font face="Verdana" style="font-size: 8pt">
 <img border="0" src="../../images/labels.gif" width="20" height="20"></font></td>
     <td valign="top"><b><font face="Verdana" style="font-size: 8pt">Edit/Add 
     Labelsets</font></b><font face="Verdana" style="font-size: 8pt">: Click here to 
     edit, create or delete label sets used in the 'flexible' labels questions.</font></td>
+  </tr>
+  <tr>
+    <td valign="top"><font face="Verdana" style="font-size: 8pt">
+<img border="0" src="../../images/templates.gif" width="20" height="20"></font></td>
+    <td valign="top"><font face="Verdana" style="font-size: 8pt"><b>Template 
+    Editor:</b> Click here to edit the PHPSurveyor templates</font></td>
   </tr>
   <tr>
     <td valign="top"><font face="Verdana" style="font-size: 8pt">
@@ -74,26 +93,12 @@ self-explanatory <b>Administrator Name</b> and <b>Admin Email</b> fields which
 are used to direct participants to the appropriate person with questions about 
 the survey and are also used as the reply-to address when sending email 
 invitations to your survey, a <b>Fax To</b>: field, which allows you to enter a 
-fax number which will appear on your 'printable' survey, a <b>URL</b>: which 
-will be presented at the end of the survey so you can direct participants to a 
-web site of your choice after completing the survey, and a <b>URL Description</b>: 
-which is the text to which the URL is attached.</font></p>
+fax number which will appear on your 'printable' survey.</font></p>
 <p><font face="Verdana" style="font-size: 8pt">The presentation options are <b>
 Format</b>: which lets you choose whether your survey will be presented as all 
 questions in a single page, questions displayed by group, or questions displayed 
-one web page at a time, <b>Template</b>: which gives you a list of pre-defined 
-templates that set the look and feel of your survey, and <b>Language</b>: which 
-lets you choose from any pre-existing language files for built-in answers and 
-messages such as &quot;Yes/No&quot;, &quot;Male/Female&quot; and so on.</font></p>
-<p><font face="Verdana" style="font-size: 8pt">Finally, there are a couple of 
-additional general options to choose from. By default your survey will be <b>
-Anonymous</b>, however you can choose to make a survey Not Anonymous, which 
-means that the responses are linked to your tokens table, and you can trace 
-individual answers to a particular respondent. <b>Date Stamp</b>: lets you add a 
-time/date entry to every response so you can keep a record with each 
-participants response of when they completed the survey. The <b>Expiry Date</b>: 
-is the date at which your survey will cease to be publicly available. If you 
-leave this field blank, the survey will never expire. </font></p>
+one web page at a time and <b>Template</b>: which gives you a list of pre-defined 
+templates that set the look and feel of your survey.</font></p>
 <p><font face="Verdana" style="font-size: 8pt">The option <b>Use Cookies?</b> 
 allows you to set some basic access controls over your survey if you are not 
 using tokens. Setting this to 'Y' means that when a participant successfully 
@@ -107,6 +112,34 @@ tries to complete the survey twice, but on different computers, they <u>will</u>
 able to do so. So you should be aware of these issues before applying this 
 option. It is helpful to provide some impediments to multiple responses by the 
 same person but certainly not a foolproof solution.</font></p>
+<p><font face="Verdana" style="font-size: 8pt">The <b>Notification: </b>option 
+sets whether PHPSurveyor sends the administrator an email whenever a survey is 
+completed. If you choose to receive notification emails, you can choose basic 
+notification, or to have the full responses included. By default your survey will be <b>
+Anonymous</b>, however you can choose to make a survey Not Anonymous, which 
+means that the responses are linked to your tokens table, and you can trace 
+individual answers to a particular respondent.</font></p>
+<p><font face="Verdana" style="font-size: 8pt">The <b>Invitation Email, Email 
+Reminder </b>and <b>Confirmation Email </b>text boxes allow you to set your 
+preferred email messages which will be used if you use tokens with your survey.</font></p>
+<p><font face="Verdana" style="font-size: 8pt">If you <b>Allow Public 
+Registration:</b>, and you create a tokens table with your survey, then the 
+general public will be able to register to access the survey. They will be sent 
+an email invitation, which you write in the <b>Public Registration Email:</b> 
+textbox. When you allow public registration, if you want the public to also 
+provide you with the additional &quot;free form&quot; fields in the tokens table, 
+attribute_1 and attribute_2, you can give them nicer names using <b>Token 
+attribute names:</b>.</font></p>
+<p><font face="Verdana" style="font-size: 8pt"> <b>Date Stamp</b>: lets you add a 
+time/date entry to every response so you can keep a record with each 
+participants response of when they completed the survey and <b>Language</b>:  lets you choose from any pre-existing language files for built-in answers and 
+messages such as &quot;Yes/No&quot;, &quot;Male/Female&quot; and so on. The <b>Expiry Date</b>: 
+is the date at which your survey will cease to be publicly available. If you 
+leave this field blank, the survey will never expire. </font></p>
+<p><font face="Verdana" style="font-size: 8pt"><b>Finally, you can enter a URL</b>: which 
+will be presented at the end of the survey so you can direct participants to a 
+web site of your choice after completing the survey, and a <b>URL Description</b>: 
+which is the text to which the URL is attached.</font></p>
 <p><font face="Verdana" style="font-size: 8pt"><b>Importing a Survey</b><br>
 You can use the file menu at the bottom of the screen to import a survey. Click 
 on browse, choose the PHPSurveyor *.sql file containing your survey and then 
