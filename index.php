@@ -328,7 +328,7 @@ if (!$step)
 	echo "<TR><TD ALIGN='CENTER' COLSPAN='2'>";
 
 	session_register("fieldarray");
-	session_register("step");
+	$_SESSION["step"] = $step; // session_register("step") causes really strange session behavior on PHP 4.3.0, Apache 2.0.43, WinXP
 	session_register("totalsteps");
 	session_register("insertarray");
 	session_register("sid");
