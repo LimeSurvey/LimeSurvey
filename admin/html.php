@@ -62,12 +62,15 @@ if ($action == "checksettings" || $action == "changelang")
 			$oldresultslist[]=$row[0];
 			}
 	    }
-	if(is_array($oldresultslist)) {$deactivatedsurveys=count($oldresultslist);} else {$deactivatedsurveys=0;}
-	if(is_array($oldtokenlist)) {$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
-	if(isset($tokenlist) && is_array($tokenlist)) {$activetokens=count($tokenlist);} else {$tokenlist=0;}
+	if(isset($oldresultslist) && is_array($oldresultslist)) 
+		{$deactivatedsurveys=count($oldresultslist);} else {$deactivatedsurveys=0;}
+	if(isset($oldtokenlist) && is_array($oldtokenlist)) 
+		{$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
+	if(isset($tokenlist) && is_array($tokenlist)) 
+		{$activetokens=count($tokenlist);} else {$activetokens=0;}
 	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
 				. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
-				. "cellpadding='1' cellspacing='0'>\n"
+				. "cellpadding='1' cellspacing='0' width='450'>\n"
 				. "\t<tr>\n"
 				. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
 				. "\t\t\t<b>"._PS_TITLE."</b>\n"
@@ -144,6 +147,13 @@ if ($action == "checksettings" || $action == "changelang")
 				. "\t\t\t$deactivatedtokens\n"
 				. "\t\t</font></td>\n"
 				. "\t</tr>\n"
+				. "</table>\n"
+				. "<table><tr><td height='1'></td></tr></table>\n";
+	$cssummary .= "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
+				. "cellpadding='1' cellspacing='0' width='450'>\n"
+				. "<tr><td align='center'>$setfont<br />"
+				. "<a href='dbchecker.php'>"._PS_CHECKDBINTEGRITY."</a>"
+				. "<br />&nbsp;</font></td></tr>\n"
 				. "</table>\n"
 				. "<table><tr><td height='1'></td></tr></table>\n";
 	}
