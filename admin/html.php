@@ -74,7 +74,7 @@ if ($sid)
 	$surveysummary .= "\t\t\t}\n";
 	$surveysummary .= "\t\telse if (action == \"hideq\")\n";
 	$surveysummary .= "\t\t\t{\n";
-	$surveysummary .= "\t\t\tfor (i=30; i<=34; i++)\n";
+	$surveysummary .= "\t\t\tfor (i=30; i<=36; i++)\n";
 	$surveysummary .= "\t\t\t\t{\n";
 	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
 	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='none';\n";
@@ -82,7 +82,7 @@ if ($sid)
 	$surveysummary .= "\t\t\t}\n";
 	$surveysummary .= "\t\telse if (action == \"showq\")\n";
 	$surveysummary .= "\t\t\t{\n";
-	$surveysummary .= "\t\t\tfor (i=30; i<=34; i++)\n";
+	$surveysummary .= "\t\t\tfor (i=30; i<=36; i++)\n";
 	$surveysummary .= "\t\t\t\t{\n";
 	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
 	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='';\n";
@@ -355,13 +355,17 @@ if ($qid)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<b>"._QL_HELP."</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
-		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R"))
+		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"))
 			{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question <input type='image' src='./images/answers.gif' border='0' hspace='0' title='"._Q_ADDANSWERS_BT."' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}
+		if (!$qrrow['lid'] && $qrrow['type'] == "F")
+			{
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to choose a Label Set for this question</font></td></tr>\n";
+			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
-			$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'>$setfont<b>"._QL_OTHER."</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
+			$questionsummary .= "\t<tr $qshowstyle id='surveydetails36'><td align='right' valign='top'>$setfont<b>"._QL_OTHER."</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
 			}
 		}
 	$questionsummary .= "</table>\n";
@@ -637,6 +641,22 @@ if ($action == "addquestion")
 	$newquestion .= "\t\t</select></td>\n";
 	$newquestion .= "\t</tr>\n";
 	
+	$newquestion .= "\t<tr id='LabelSets' style='display: none'>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>"._QL_LABELSET."</b></font></td>\n";
+	$newquestion .= "\t\t<td>$setfont\n";
+	$newquestion .= "\t\t<select name='lid' $slstyle>\n";
+	$labelsets=getlabelsets();
+	if (count($labelsets)>0)
+		{
+		foreach ($labelsets as $lb)
+			{
+			$newquestion .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
+			}
+		}
+	$newquestion .= "\t\t</select>\n";
+	$newquestion .= "\t\t</td>\n";
+	$newquestion .= "\t</tr>\n";
+	
 	$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n";
 	$newquestion .= "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n";
 	$newquestion .= "\t\t<td>$setfont\n";
@@ -653,24 +673,8 @@ if ($action == "addquestion")
 	$newquestion .= "\t\t</td>\n";
 	$newquestion .= "\t</tr>\n";
 	
-	$newquestion .= "<script type='text/javascript'>\n";
-	$newquestion .= "<!--\n";
-	$newquestion .= "function OtherSelection(QuestionType)\n";
-	$newquestion .= "\t{\n";
-	$newquestion .= "\tif (QuestionType == 'M' || QuestionType == 'P')\n";
-	$newquestion .= "\t\t{\n";
-	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = '';\n";
-	$newquestion .= "\t\t}\n";
-	$newquestion .= "\telse\n";
-	$newquestion .= "\t\t{\n";
-	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
-	$newquestion .= "\t\tdocument.addnewquestion.other[1].checked = true;\n";
-	$newquestion .= "\t\t}\n";
-	$newquestion .= "\t}\n";
-	$newquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
-	$newquestion .= "-->\n";
-	$newquestion .= "</script>\n";
-	
+	$newquestion .= questionjavascript($eqrow['type']);	
+
 	$newquestion .= "\t<tr>\n";
 	$newquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Add Question' /></td>\n";
 	$newquestion .= "\t</tr>\n";
@@ -722,7 +726,26 @@ if ($action == "copyquestion")
 		$editquestion .= getqtypelist($eqrow['type']);
 		$editquestion .= "\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
-		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' NAME='type' VALUE='{$eqrow['type']}'></TD></TR>\n";
+
+		$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_LABELSET."</b></font></td>\n";
+		$editquestion .= "\t\t<td>$setfont\n";
+		$editquestion .= "\t\t<select name='lid' $slstyle>\n";
+		$labelsets=getlabelsets();
+		if (count($labelsets)>0)
+			{
+			foreach ($labelsets as $lb)
+				{
+				$editquestion .= "\t\t\t<option value='{$lb[0]}'";
+				if ($eqrow['usecookie'] == "Y" && $lb[0] == "Y") {echo " selected";}
+				elseif ($eqrow['usecookie'] != "Y" && $lb[0] == "N") {echo " selected";}
+				$editquestion .= ">{$lb[1]}</option>\n";
+				}
+			}
+		$editquestion .= "\t\t</select>\n";
+		$editquestion .= "\t\t</td>\n";
+		$editquestion .= "\t</tr>\n";
+		
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Group?</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
@@ -754,23 +777,7 @@ if ($action == "copyquestion")
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
 		
-		$editquestion .= "<script type='text/javascript'>\n";
-		$editquestion .= "<!--\n";
-		$editquestion .= "function OtherSelection(QuestionType)\n";
-		$editquestion .= "\t{\n";
-		$editquestion .= "\tif (QuestionType == 'M' || QuestionType == 'P')\n";
-		$editquestion .= "\t\t{\n";
-		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = '';\n";
-		$editquestion .= "\t\t}\n";
-		$editquestion .= "\telse\n";
-		$editquestion .= "\t\t{\n";
-		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
-		$editquestion .= "\t\tdocument.editquestion.other[1].checked = true;\n";
-		$editquestion .= "\t\t}\n";
-		$editquestion .= "\t}\n";
-		$editquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
-		$editquestion .= "-->\n";
-		$editquestion .= "</script>\n";
+		$editquestion .= questionjavascript($eqrow['type']);
 		
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Copy answers:</b></font></td>\n";
@@ -931,6 +938,26 @@ if ($action == "editquestion")
 			$editquestion .= "\t\t</td>\n";
 			}
 		$editquestion .= "\t</tr>\n";
+		
+		$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_LABELSET."</b></font></td>\n";
+		$editquestion .= "\t\t<td>$setfont\n";
+		$editquestion .= "\t\t<select name='lid' $slstyle>\n";
+		$labelsets=getlabelsets();
+		if (count($labelsets)>0)
+			{
+			foreach ($labelsets as $lb)
+				{
+				$editquestion .= "\t\t\t<option value='{$lb[0]}'";
+				if ($eqrow['usecookie'] == "Y" && $lb[0] == "Y") {echo " selected";}
+				elseif ($eqrow['usecookie'] != "Y" && $lb[0] == "N") {echo " selected";}
+				$editquestion .= ">{$lb[1]}</option>\n";
+				}
+			}
+		$editquestion .= "\t\t</select>\n";
+		$editquestion .= "\t\t</td>\n";
+		$editquestion .= "\t</tr>\n";
+		
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t<td align='right'>$setfont<b>"._QL_GROUP."</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
@@ -962,23 +989,7 @@ if ($action == "editquestion")
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
 		
-		$editquestion .= "<script type='text/javascript'>\n";
-		$editquestion .= "<!--\n";
-		$editquestion .= "function OtherSelection(QuestionType)\n";
-		$editquestion .= "\t{\n";
-		$editquestion .= "\tif (QuestionType == 'M' || QuestionType == 'P')\n";
-		$editquestion .= "\t\t{\n";
-		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = '';\n";
-		$editquestion .= "\t\t}\n";
-		$editquestion .= "\telse\n";
-		$editquestion .= "\t\t{\n";
-		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
-		$editquestion .= "\t\tdocument.editquestion.other[1].checked = true;\n";
-		$editquestion .= "\t\t}\n";
-		$editquestion .= "\t}\n";
-		$editquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
-		$editquestion .= "-->\n";
-		$editquestion .= "</script>\n";
+		$editquestion .= questionjavascript($eqrow['type']);
 		
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Update Question'></td>\n";
@@ -1203,5 +1214,35 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Import Survey'></TD>\n";
 	$newsurvey .= "\t<input type='hidden' name='action' value='importsurvey'>\n";
 	$newsurvey .= "\t</tr></form>\n</table>\n";
+	}
+
+function questionjavascript($type)
+	{
+	$newquestion = "<script type='text/javascript'>\n";
+	$newquestion .= "<!--\n";
+	$newquestion .= "function OtherSelection(QuestionType)\n";
+	$newquestion .= "\t{\n";
+	$newquestion .= "\tif (QuestionType == 'M' || QuestionType == 'P')\n";
+	$newquestion .= "\t\t{\n";
+	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = '';\n";
+	$newquestion .= "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n";
+	$newquestion .= "\t\t}\n";
+	$newquestion .= "\telse if (QuestionType == 'F')\n";
+	$newquestion .= "\t\t{\n";
+	$newquestion .= "\t\tdocument.getElementById('LabelSets').style.display = '';\n";
+	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
+	$newquestion .= "\t\t}\n";
+	$newquestion .= "\telse\n";
+	$newquestion .= "\t\t{\n";
+	$newquestion .= "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n";
+	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
+	$newquestion .= "\t\tdocument.addnewquestion.other[1].checked = true;\n";
+	$newquestion .= "\t\t}\n";
+	$newquestion .= "\t}\n";
+	$newquestion .= "\tOtherSelection('$type');\n";
+	$newquestion .= "-->\n";
+	$newquestion .= "</script>\n";
+
+	return $newquestion;
 	}
 ?>
