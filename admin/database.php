@@ -93,9 +93,9 @@ elseif ($action == "updategroup")
 
 	}
 
-elseif ($action == "delgroup")
+elseif ($action == "delgroupnone")
 	{
-	if (!isset($gid)) {returnglobal('gid');} 
+	if (!isset($gid)) {returnglobal('gid');}
 	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
 	$result = mysql_query($query);
 	if ($result)
@@ -109,7 +109,7 @@ elseif ($action == "delgroup")
 		}
 	}
 
-elseif ($action == "delgroupall")
+elseif ($action == "delgroup")
 	{
 	if (!isset($gid)) {returnglobal('gid');}
 	$query = "SELECT qid FROM {$dbprefix}groups, {$dbprefix}questions WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid AND {$dbprefix}groups.gid=$gid";
@@ -304,6 +304,8 @@ elseif ($action == "delquestion")
 		{
 		//see if there are any conditions for this question, and delete them now as well
 		$cquery = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
+		$cresult = mysql_query($cquery);
+		$cquery = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
 		$cresult = mysql_query($cquery);
 		$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
 		$result = mysql_query($query);
