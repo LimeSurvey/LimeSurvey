@@ -188,11 +188,16 @@ while ($rows=mysql_fetch_array($result))
 //2: Get all other questions that occur before this question that are pre-determined answer types
 
 //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND type not in ('S', 'D', 'T', 'Q')";
+$qquery = "SELECT *\n"
+		. "FROM {$dbprefix}questions, {$dbprefix}groups\n"
+		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
+		."AND {$dbprefix}questions.sid=$sid\n"
+		."AND type not in ('S', 'D', 'T', 'Q')";
 $qresult = mysql_query($qquery) or die ("$qquery<br />".mysql_error());
 $qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-while ($qrow = mysql_fetch_array($qresult)) {$qrows[] = $qrow;} // Get table output into array
+while ($qrow = mysql_fetch_assoc($qresult)) {$qrows[] = $qrow;} // Get table output into array
 usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
+
 $position="before";
 foreach ($qrows as $qrow) //Go through each question until we reach the current one
 	{
@@ -206,12 +211,8 @@ foreach ($qrows as $qrow) //Go through each question until we reach the current 
 		}
 	}
 
-//Select all questions to create array of questions that occur _after_ this one
-$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid";
-$qresult = mysql_query($qquery) or die ("$qquery<br />".mysql_error());
-$qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-while ($qrow = mysql_fetch_array($qresult)) {$qrows[] = $qrow;} // Get table output into array
-usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
+//Now, using the same array which is now properly sorted by group then question
+//Create an array of all the questions that appear AFTER the current one
 $position = "before";
 foreach ($qrows as $qrow) //Go through each question until we reach the current one
 	{
