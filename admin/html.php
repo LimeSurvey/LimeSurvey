@@ -333,7 +333,7 @@ if ($qid)
 			}
 		$questionsummary .= "\t\t\t\t\t</td>\n";
 		$questionsummary .= "\t\t\t\t\t<td align='right'>\n";
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._G_CLOSE_BT."' align='right' border='0' hspace='0' onclick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._Q_CLOSE_BT."' align='right' border='0' hspace='0' onclick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n";
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"._Q_MAXIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"showq\")'>";
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='"._Q_MINIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"hideq\")'>\n";
 		$questionsummary .= "\t\t\t\t</td></tr>\n";
