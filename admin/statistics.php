@@ -829,7 +829,7 @@ if ($_POST['summary'])
 					for ($i=1; $i<=5; $i++)
 						{
 						$alist[]=array("$i", "$i");
-						}
+					break;
 				default:
 					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qqid' ORDER BY sortorder, answer";
 					$qresult = mysql_query($qquery) or die ("Couldn't get answers list<br />$qquery<br />".mysql_error());
