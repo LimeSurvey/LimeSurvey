@@ -37,13 +37,27 @@ $dbname = $_GET['dbname'];
 
 include("config.php");
 
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
+                                                     // always modified
+header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");                          // HTTP/1.0
+//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
+
 echo $htmlheader;
+echo "<br />\n";
+echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._CREATEDB."</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
+echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 if (!$dbname)
 	{
-	echo "<CENTER><B><FONT COLOR='RED'>Error. References not provided. Please do not run this script directly</FONT></B>";
-	echo "<br /><br /><B>Now you can go back to the Admin page!<br />";
-	echo "<INPUT TYPE='SUBMIT' VALUE='Admin' onClick='location.href=\"$scriptname\"'>";
+	echo "<br /><b>$setfont<font color='red'>"._ERROR."</font></b><br />\n";
+	echo _CD_NODBNAME;
+	
+	echo "<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick='location.href=\"$scriptname\"'>";
 	exit;
 	}
 $connect=mysql_connect("$databaselocation:$databaseport", "$databaseuser", "$databasepass");
@@ -51,45 +65,20 @@ if (!mysql_selectdb ($dbname, $connect))
 	{
 	if (mysql_create_db("$dbname"))
 		{
-		echo "<CENTER><B><FONT COLOR='GREEN'>$dbname has now been created.</FONT></B><br /><br />";
-		
-		$db=mysql_selectdb($databasename, $connect);
-		
-		if(mysql_query($createsurveys))
-			{echo "Surveys Table Created Succesfully..<br />";}
-		else
-			{echo "Surveys table could not be created!<br />(".mysql_error().")<br />";}
-		if (mysql_query($createquestions))
-			{echo "Questions Table Created Succesfully..<br />";}
-		else
-			{echo "Questions table could not be created!<br />(".mysql_error().")<br />";}
-		if (mysql_query($createanswers))
-			{echo "Answers Table Created Succesfully..<br />";}
-		else
-			{echo "Answers table could not be created!<br />(".mysql_error().")<br />";}
-		if (mysql_query($creategroups))
-			{echo "Groups Table Created Succesfully..<br />";}
-		else
-			{echo "Groups table could not be created!<br />(".mysql_error().")<br />";}
-		if (mysql_query($createusers))
-			{echo "Users Table Created Succesfully..<br />";}
-		else
-			{echo "Users table could not be created!<br />(".mysql_error().")<br />";}
-		if (mysql_query($createconditions))
-			{echo "Conditions Table Created Succesfully..<br />\n";}
-		else
-			{echo "Conditions table could not be created!<br />(".mysql_error().")\n";}
-		
-		echo "<br /><br /><B>Now you can go back to the Admin page!<br />";
-		echo "<INPUT TYPE='SUBMIT' VALUE='Admin' onClick='location.href=\"$scriptname\"'>";
+		echo "<br />$setfont<b><font color='green'>\n";
+		echo _CD_DBCREATED."</font></b><br /><br />\n";
+		echo _CD_POPULATE_MESSAGE."<br /><br />\n";
+		echo "<input $btstyle type='submit' value='"._CD_POPULATE."' onClick='location.href=\"checkfields.php\"'>";
 		}
 	else
 		{
-		echo "<CENTER><B><FONT COLOR='RED'>ERROR: $dbname could not be created. Contact your system administrator</FONT></B>";
-		echo "<br /><br /><B>Now you can go back to the Admin page!<br />";
-		echo "<INPUT TYPE='SUBMIT' VALUE='Admin' onClick='location.href=\"$scriptname\"'>";
+		echo "<b>$setfont<font color='red'>"._ERROR."</b></font><br />\n";
+		echo _CD_NOCREATE." ($dbname)<br /><font size='1'>\n";
+		echo mysql_error();
+		echo "</font><br /><br />\n";
+		echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick='location.href=\"$scriptname\"'>";
 		}
 	}
-
+echo "</td></tr></table>\n";
 
 ?>
