@@ -605,8 +605,8 @@ if ($_POST['summary'])
 			$query .= ", AVG(`$fieldname`*1) as average";
 			$query .= ", MIN(`$fieldname`*1) as minimum";
 			$query .= ", MAX(`$fieldname`*1) as maximum";
-			$query .= " FROM {$dbprefix}survey_$sid";
-			if ($sql != "NULL") {$query .= " WHERE $sql";}
+			$query .= " FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT NULL AND $fieldname != ' '";
+			if ($sql != "NULL") {$query .= " AND $sql";}
 			$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_array($result))
 				{
@@ -619,10 +619,10 @@ if ($_POST['summary'])
 				}
 			
 			//CALCULATE QUARTILES
-			$query ="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null";
+			$query ="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null AND $fieldname != ' '";
 			if ($sql != "NULL") {$query .= " AND $sql";}
 			$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
-			$querystarter="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null";
+			$querystarter="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null AND $fieldname != ' '";
 			if ($sql != "NULL") {$querystarter .= " AND $sql";}
 			$medcount=mysql_num_rows($result);
 			
