@@ -85,6 +85,7 @@ $allfields[]=array("{$dbprefix}questions", "gid", "gid int(11) NOT NULL default 
 $allfields[]=array("{$dbprefix}questions", "type", "type char(1) NOT NULL default 'T'");
 $allfields[]=array("{$dbprefix}questions", "title", "title varchar(20) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}questions", "question", "question text NOT NULL");
+$allfields[]=array("{$dbprefix}questions", "preg", "preg text");
 $allfields[]=array("{$dbprefix}questions", "help", "help text");
 $allfields[]=array("{$dbprefix}questions", "other", "other char(1) NOT NULL default 'N'");
 $allfields[]=array("{$dbprefix}questions", "mandatory", "mandatory char(1) default NULL");
@@ -156,7 +157,7 @@ foreach ($alltables as $at)
 			}
 		$ctquery = substr($ctquery, 0, -2);
 		$ctquery .= ")\n";
-		$ctquery .= "TYPE=MyISAM\n";
+		$ctquery .= "TYPE=$databasetabletype\n";
 		$ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error());
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_TABLECREATED."! ($at)</font><br />\n";
 		}
