@@ -72,6 +72,16 @@
 	border-color: #800000;
 	background-color: #DDDDDD;
 	}
+.innergraph
+	{
+	font-family: verdana;
+	font-size: 10;
+	}
+.question
+	{
+	font-family: verdana;
+	font-size: 10;
+	}
 </style>
 </head>
 <body bgcolor='#000000'><font face='verdana' size='2'>
