@@ -106,10 +106,10 @@ if ($action == "delsurvey" || $action == "delgroup" || $action=="delquestion" ||
 
 include("html.php"); 
 
-$cellstyle = "style='border: 1px solid #000080'";
-echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' style='border: 5px solid #000080'>\n";
+//$cellstyle = "style='border: 1px inset #000080'";
+echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n";
 echo "\t<tr>\n";
-echo "\t\t<td width='25%' valign='top' align='center' bgcolor='silver' $cellstyle>\n";
+echo "\t\t<td width='25%' valign='top' align='center' bgcolor='#BBBBBB'>\n";
 echo "\t\t\t<font size='2'>\n";
 echo "$adminmenu\n";
 echo "\t\t</td>\n";
