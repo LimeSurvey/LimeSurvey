@@ -507,7 +507,7 @@ elseif ($action == "edit")
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='cut.gif' title='Remove this item' ";
+						$ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' title='Remove this item' ";
 						if ($j != $existing)
 							{
 							$ranklist .= "style='display:none'";
@@ -1091,7 +1091,7 @@ else
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='cut.gif' title='Remove this item' ";
+						$ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' title='Remove this item' ";
 						if ($i != $existing)
 							{
 							$ranklist .= "style='display:none'";
