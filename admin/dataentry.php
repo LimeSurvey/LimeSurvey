@@ -984,7 +984,7 @@ else
 
 			if ($explanation) 
 				{
-				$explanation = "[Answer this question ".$explanation."]";
+				$explanation = "<font color='maroon' size='1'>[Only answer this question ".$explanation."]";
 				echo "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
 				}
 
