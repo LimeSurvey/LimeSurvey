@@ -665,25 +665,38 @@ if (returnglobal('action') == "email")
 				{
 				//$to = $emrow['email'];
 				$to = $emrow['email'];
-				$sendmessage = $message;
-				$sendmessage = str_replace("{FIRSTNAME}", $emrow['firstname'], $sendmessage);
-				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
-				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
-				$sendmessage = str_replace("{TOKEN}", $emrow['token'], $sendmessage);
-				if (isset($emrow['attribute_1'])) 
-					{
-				    $sendmessage = str_replace("{ATTRIBUTE_1}", $emrow['attribute_1'], $sendmessage);
-					}
-				if (isset($emrow['attribute_2'])) 
-					{
-					$sendmessage = str_replace("{ATTRIBUTE_2}", $emrow['attribute_2'], $sendmessage);
-					}
+				$msgsubject=str_replace(array("{FIRSTNAME}",
+													"{LASTNAME}",
+													"{SURVEYURL}",
+													"{TOKEN}",
+													"{ATTRIBUTE_1}",
+													"{ATTRIBUTE_2}"),
+											  array($emrow['firstname'],
+											  		$emrow['lastname'],
+													"$publicurl/index.php?sid=$sid&token={$emrow['token']}",
+													$emrow['token'],
+													$emrow['attribute_1'],
+													$emrow['attribute_2']),
+											  $_POST['subject']);
+				$sendmessage = str_replace(array("{FIRSTNAME}",
+												 "{LASTNAME}",
+												 "{SURVEYURL}",
+												 "{TOKEN}",
+												 "{ATTRIBUTE_1}",
+												 "{ATTRIBUTE_2}"),
+										   array($emrow['firstname'],
+											  	 $emrow['lastname'],
+												 "$publicurl/index.php?sid=$sid&token={$emrow['token']}",
+												 $emrow['token'],
+												 $emrow['attribute_1'],
+												 $emrow['attribute_2']),
+										   $message);
 				$sendmessage=crlf_lineendings($sendmessage);
 				// Uncomment the next line if your mail clients can't handle emails containing <CR><LF> 
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
 				// cause problems with certain email server
 				//$sendmessage = str_replace("\r", "", $sendmessage);
-				if (mail($to, $_POST['subject'], $sendmessage, $headers)) 
+				if (mail($to, $msgsubject, $sendmessage, $headers)) 
 					{
 					$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 					$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
@@ -827,19 +840,38 @@ if (returnglobal('action') == "remind")
 			while ($emrow = mysql_fetch_array($emresult))
 				{
 				$to = $emrow['email'];
-				$sendmessage = $message;
-				$sendmessage = str_replace("{FIRSTNAME}", $emrow['firstname'], $sendmessage);
-				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
-				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
-				$sendmessage = str_replace("{ATTRIBUTE1}", $emrow['attribute_1'], $sendmessage);
-				$sendmessage = str_replace("{ATTRIBUTE2}", $emrow['attribute_2'], $sendmessage);
-				$sendmessage = str_replace("{TOKEN}", $emrow['token'], $sendmessage);
+				$msgsubject=str_replace(array("{FIRSTNAME}",
+													"{LASTNAME}",
+													"{SURVEYURL}",
+													"{TOKEN}",
+													"{ATTRIBUTE_1}",
+													"{ATTRIBUTE_2}"),
+											  array($emrow['firstname'],
+											  		$emrow['lastname'],
+													"$publicurl/index.php?sid=$sid&token={$emrow['token']}",
+													$emrow['token'],
+													$emrow['attribute_1'],
+													$emrow['attribute_2']),
+											  $_POST['subject']);
+				$sendmessage = str_replace(array("{FIRSTNAME}",
+												 "{LASTNAME}",
+												 "{SURVEYURL}",
+												 "{TOKEN}",
+												 "{ATTRIBUTE_1}",
+												 "{ATTRIBUTE_2}"),
+										   array($emrow['firstname'],
+											  	 $emrow['lastname'],
+												 "$publicurl/index.php?sid=$sid&token={$emrow['token']}",
+												 $emrow['token'],
+												 $emrow['attribute_1'],
+												 $emrow['attribute_2']),
+										   $message);
 				$sendmessage=crlf_lineendings($sendmessage);
 				// Uncomment the next line if your mail clients can't handle emails containing <CR><LF> 
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
 				// cause problems with certain email server
 				//$sendmessage = str_replace("\r", "", $sendmessage);
-				if (mail($to, $_POST['subject'], $sendmessage, $headers))
+				if (mail($to, $msgsubject, $sendmessage, $headers))
 					{
 					echo "\t\t\t({$emrow['tid']})["._TC_REMINDSENTTO." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 					}
