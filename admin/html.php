@@ -188,6 +188,7 @@ if ($qid)
 			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
 			}
 		$questionsummary .= "\t<tr><td colspan='2' align='right'>\n";
+		$questionsummary .= "\t\t<input type='submit' $btstyle value='Set Conditions' onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n";
 		$questionsummary .= "\t\t<input type='submit' $btstyle value='Edit Question' onClick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
