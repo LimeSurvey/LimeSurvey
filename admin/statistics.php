@@ -43,6 +43,10 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 	require_once ("$jpgraphdir/jpgraph_bar.php");
 	}
 
+if (isset($_POST['summary']) && !is_array($_POST['summary'])) {
+    $_POST['summary'] = explode("|", $_POST['summary']);
+}	
+
 if (!isset($sid)) {$sid=returnglobal('sid');}
 sendcacheheaders();
 
@@ -452,7 +456,7 @@ echo "\t\t\t</table>\n"
 	."\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
 	."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 	."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' id='viewsummaryall' name='summary' value='$allfield'";
-if (isset($_POST['summary']) && $_POST['summary'] == "$allfield") {echo " CHECKED";}
+//if (isset($_POST['summary']) && $_POST['summary'] == $allfields) {echo " CHECKED";}
 echo "><label for='viewsummaryall'>View summary of all available fields</label></td></tr>\n"
 	."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
 	."\t\t\t<input $btstyle type='submit' value='View Stats'>\n"
