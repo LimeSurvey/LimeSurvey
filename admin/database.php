@@ -195,12 +195,13 @@ elseif ($action == "updatequestion")
 		}
 	else
 		{
-		//echo "GID: ".$_POST['gid'];
 		if (isset($_POST['gid']) && $_POST['gid'] != "")
 			{
-			$uqquery = "UPDATE {$dbprefix}questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
-					. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
-					. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}', lid='{$_POST['lid']}' "
+			$uqquery = "UPDATE {$dbprefix}questions "
+					. "SET type='".returnglobal('type')."', title='".returnglobal('title')."', "
+					. "question='".returnglobal('question')."', help='".returnglobal('help')."', "
+					. "gid='".returnglobal('gid')."', other='".returnglobal('other')."', "
+					. "mandatory='".returnglobal('mandatory')."', lid='".returnglobal('lid')."' "
 					. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
 			$uqresult = mysql_query($uqquery);
 			if (!$uqresult)
