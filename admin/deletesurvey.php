@@ -44,54 +44,66 @@ header("Pragma: no-cache");                          // HTTP/1.0
 echo $htmlheader;
 if (!$sid)
 	{
-	echo "<CENTER><BR>ERROR: You have not chosen a survey to delete!";
+	echo "<center><br />ERROR: You have not chosen a survey to delete!</center>\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 
 if (!$ok)
 	{
-	echo "<TABLE WIDTH='100%' ALIGN='CENTER'>\n";
-	echo "<TR><TD ALIGN='CENTER'>$setfont";
-	echo "<BR><FONT COLOR='RED'><B>--:WARNING:--</B></FONT><BR>";
-	echo "<B>You are about to delete survey $sid</B>";
-	echo "<BR>If you select \"OK\" below to delete this survey<BR>";
-	echo "you will lose all your work on this survey. You'd want<BR>";
-	echo "to be pretty sure about that!<BR><BR>";
-	echo "You could consider 'exporting' the survey before deleting<BR>";
-	echo "it, and then if you change your mind later you could<BR>";
-	echo "re-install it. If you want to do this, click on 'cancel'<BR>";
-	echo "and then choose \"export\" from the survey summary on the<BR>";
-	echo "main administration screen.";
-	echo "</TD></TR>";
-	echo "<TR><TD ALIGN='CENTER'><BR>";
-	echo "<INPUT TYPE='SUBMIT' $btstyle STYLE='width:100' VALUE='Delete It' onClick=\"window.open('$PHP_SELF?sid=$sid&ok=Y','_top')\"><BR><BR>";
-	echo "<INPUT TYPE='SUBMIT' $btstyle STYLE='width:100' VALUE='Cancel' onClick=\"window.open('admin.php?sid=$sid', '_top')\">";
-	echo "</TD></TR></TABLE>\n";
+	echo "<table width='100%' align='center'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'>$setfont<br />\n";
+	echo "\t\t\t<font color='red'><b>--:WARNING:--</b></font><br />\n";
+	echo "\t\t\t<b>You are about to delete survey $sid</b><br />\n";
+	echo "\t\t\tIf you select \"OK\" below to delete this survey<br />\n";
+	echo "\t\t\tyou will lose all your work on this survey. You'd want<br />\n";
+	echo "\t\t\tto be pretty sure about that!<br /><br />\n";
+	echo "\t\t\tYou could consider 'exporting' the survey before deleting<br />\n";
+	echo "\t\t\tit, and then if you change your mind later you could<br />\n";
+	echo "\t\t\tre-install it. If you want to do this, click on 'cancel'<br />\n";
+	echo "\t\t\tand then choose \"export\" from the survey summary on the<br />\n";
+	echo "\t\t\tmain administration screen.\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='Delete It' onClick=\"window.open('$PHP_SELF?sid=$sid&ok=Y','_top')\" /><br /><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='Cancel' onClick=\"window.open('admin.php?sid=$sid', '_top')\" />\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
+	echo "</body>\n</html>";
 	}
 
 else
 	{
-	$dsquery="SELECT qid FROM questions WHERE sid=$sid";
-	$dsresult=mysql_query($dsquery);
-	while ($dsrow=mysql_fetch_row($dsresult))
+	$dsquery = "SELECT qid FROM questions WHERE sid=$sid";
+	$dsresult = mysql_query($dsquery);
+	while ($dsrow = mysql_fetch_array($dsresult))
 		{
-		$asdel="DELETE FROM answers WHERE qid=$dsrow[0]";
-		$asres=mysql_query($asdel);
+		$asdel = "DELETE FROM answers WHERE qid=$dsrow['qid']";
+		$asres = mysql_query($asdel);
 		}
 	
-	$qdel="DELETE FROM questions WHERE sid=$sid";
-	$qres=mysql_query($qdel);
+	$qdel = "DELETE FROM questions WHERE sid=$sid";
+	$qres = mysql_query($qdel);
 	
-	$gdel="DELETE FROM groups WHERE sid=$sid";
-	$gres=mysql_query($gdel);
+	$gdel = "DELETE FROM groups WHERE sid=$sid";
+	$gres = mysql_query($gdel);
 	
-	$sdel="DELETE FROM surveys WHERE sid=$sid";
-	$sres=mysql_query($sdel);
+	$sdel = "DELETE FROM surveys WHERE sid=$sid";
+	$sres = mysql_query($sdel);
 	
-	echo "<TABLE WIDTH='100%' ALIGN='CENTER'>\n";
-	echo "<TR><TD ALIGN='CENTER'>$setfont";
-	echo "<BR><B>All bits of survey $sid have been deleted.<BR><BR>";
-	echo "<a href='admin.php'>Return to Admin Page</a></TD></TR></TABLE>\n";
+	echo "<table width='100%' align='center'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'>$setfont<br />\n";
+	echo "\t\t\t<b>All bits of survey $sid have been deleted.<br /><br />\n";
+	echo "\t\t\t<a href='admin.php'>Return to Admin Page</a>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
+	echo "</body>\n</html>";
 	}
 
 ?>
