@@ -170,7 +170,7 @@ echo "\t\t\t<input type='image' src='./images/summary.gif' title='"._B_SUMMARY_B
 echo "\t\t\t<input type='image' src='./images/document.gif' title='"._T_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=browse', '_top')\">\n";
 echo "\t\t\t<img src='./images/blank.gif' width='20' border='0' hspace='0' align='left'>\n";
 echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-echo "\t\t\t<input type='image' src='./images/add.gif' title='"._T_ADD_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=add', '_top')\">\n";
+echo "\t\t\t<input type='image' src='./images/add.gif' title='"._T_ADD_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=addnew', '_top')\">\n";
 echo "\t\t\t<input type='image' src='./images/import.gif' title='"._T_IMPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=import', '_top')\">\n";
 echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 echo "\t\t\t<input type='image' src='./images/invite.gif' title='"._T_INVITE_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=email', '_top')\">\n";
@@ -775,7 +775,7 @@ if ($action == "delete")
 	}
 
 
-if ($action == "edit" || $action == "add")
+if ($action == "edit" || $action == "addnew")
 	{
 	if ($action == "edit")
 		{
@@ -810,7 +810,7 @@ if ($action == "edit" || $action == "add")
 	echo "<tr>\n";
 	echo "\t<td align='right' width='20%'>$setfont<b>"._TL_TOKEN.":</b></td>\n";
 	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value='$token'>\n";
-	if ($action == "add")
+	if ($action == "addnew")
 		{
 		echo "\t\t$setfont<font size='1' color='red'>"._TC_TOKENCREATEINFO."</font></font>\n";
 		}
@@ -832,7 +832,7 @@ if ($action == "edit" || $action == "add")
 			echo "\t\t<input type='submit' $btstyle name='action' value='"._UPDATE."'>\n";
 			echo "\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
 			break;
-		case "add":
+		case "addnew":
 			echo "\t\t<input type='submit' $btstyle name='action' value='"._ADD."'>\n";
 			break;
 		}
@@ -1029,7 +1029,7 @@ function helpscreen()
 		case "email":
 			$helpdoc .= "#Email Invitiation";
 			break;
-		case "add":
+		case "addnew":
 			$helpdoc .= "#Add new token entry";
 			break;
 		case "import":
