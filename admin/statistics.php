@@ -433,7 +433,8 @@ if ($_POST['display'])
 		if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary") //pull out just the fieldnames
 			{
 			$thisquestion = "`$pv` IN (";
-			foreach ($$pv as $condition)
+			//foreach ($$pv as $condition)
+			foreach ($_POST[$pv] as $condition)
 				{
 				$thisquestion .= "'$condition', ";
 				}
@@ -448,7 +449,7 @@ if ($_POST['display'])
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers<br />$aquery<br />".mysql_error());
 			while ($arow=mysql_fetch_row($aresult)) // go through every possible answer
 				{
-				if (in_array($arow[0], $$pv)) // only add condition if answer has been chosen
+				if (in_array($arow[0], $_POST[$pv])) // only add condition if answer has been chosen
 					{
 					$mselects[]="`".substr($pv, 1, strlen($pv))."$arow[0]` = 'Y'";
 					}
