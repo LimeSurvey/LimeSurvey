@@ -34,6 +34,7 @@
 	#############################################################	
 */
 $sid = $_GET['sid'];
+$ok = $_GET['ok'];
 
 include("config.php");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -70,7 +71,7 @@ if (!$ok)
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='Delete It' onClick=\"window.open('$PHP_SELF?sid=$sid&ok=Y','_top')\" /><br /><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='Delete It' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$sid&ok=Y','_top')\" /><br /><br />\n";
 	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='Cancel' onClick=\"window.open('admin.php?sid=$sid', '_top')\" />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
