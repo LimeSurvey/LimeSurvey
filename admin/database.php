@@ -238,6 +238,11 @@ elseif ($action == "delquestion")
 	
 elseif ($action == "modanswer")
 	{
+	if (($_POST['olddefault'] != $_POST['default'] && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _AL_ADD)) //TURN ALL OTHER DEFAULT SETTINGS TO NO
+		{
+		$query = "UPDATE answers SET `default` = 'N' WHERE qid={$_POST['qid']}";
+		$result=mysql_query($query) or die("Error occurred updating default settings");
+		}
 	if (get_magic_quotes_gpc() == "0")
 		{
 		$_POST['code'] = addcslashes($_POST['code'], "'");
