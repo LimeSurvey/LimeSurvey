@@ -160,7 +160,7 @@ elseif ($action == "copynewquestion")
 		{
 		$q2 = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
 		$r2 = mysql_query($q2);
-		while ($qr2 = mysql_fetch_row($r2)) {$newqid = qr2['qid'];}
+		while ($qr2 = mysql_fetch_row($r2)) {$newqid = $qr2['qid'];}
 		$q1 = "SELECT * FROM answers WHERE qid='$oldqid' ORDER BY code";
 		$r1 = mysql_query($q1);
 		while ($qr1 = mysql_fetch_row($r1))
