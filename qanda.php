@@ -604,7 +604,7 @@ function do_list_flexible_dropdown($ia)
 		$filter=$code_filter['value'];
 		if(in_array($filter, $_SESSION['insertarray']))
 			{
-			$filter=$_SESSION[$filter];
+			$filter=trim($_SESSION[$filter]);
 			}
 		}
 	$filter .= "%";
@@ -788,7 +788,7 @@ function do_list_flexible_radio($ia)
 		$filter=$code_filter['value'];
 		if(in_array($filter, $_SESSION['insertarray']))
 			{
-			$filter=$_SESSION[$filter];
+			$filter=trim($_SESSION[$filter]);
 			}
 		}
 	$filter .= "%";
