@@ -459,7 +459,8 @@ if ($surveyexists <1)
 //RUN THIS IF THIS IS THE FIRST TIME ######################################################
 if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
-	if ($tokensexist == 1 && (!isset($_GET['token']) || !$_GET['token']))
+	//if ($tokensexist == 1 && (!isset($_GET['token']) || !$_GET['token']) && (!isset($_POST['token']) || !$_POST['token']) )
+	if ($tokensexist == 1 && !returnglobal('token'))
 		{
 		sendcacheheaders();
 		echo "<html>\n";
@@ -495,10 +496,12 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			}
 		exit;
 		}
-	if ($tokensexist == 1 && $_GET['token'])
+	//if ($tokensexist == 1 && ((isset($_GET['token']) && $_GET['token']) || (isset($_POST['token']) && $_POST['token'])))
+	if ($tokensexist == 1 && returnglobal('token'))
 		{
+		$token=returnglobal('token');
 		//check if token actually does exist
-		$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='{$_GET['token']}' AND completed != 'Y'";
+		$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='$token' AND completed != 'Y'";
 		$tkresult = mysql_query($tkquery);
 		$tkexist = mysql_num_rows($tkresult);
 
