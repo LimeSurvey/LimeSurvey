@@ -196,8 +196,6 @@ function helpscreen()
 	echo "\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
 	
 	//determine which help document to show
-	$langdir="$homeurl/lang/$defaultlang";
-	if (!is_dir($langdir)) {$langdir="$homeurl/lang/english";} //default to english if there is no matching language dir
 	if (!$sid)
 		{
 		$helpdoc = "$langdir/admin.html";
