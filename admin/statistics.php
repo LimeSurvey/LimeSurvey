@@ -143,7 +143,7 @@ foreach ($filters as $flt)
 	$niceqtext = str_replace("\r", "", $niceqtext);
 	$niceqtext = str_replace("\n", "", $niceqtext);
 	//headings
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "X") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>"
 			."$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
@@ -196,8 +196,8 @@ foreach ($filters as $flt)
 				."$setfont<b>$flt[3]</b>"
 				."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
 				.str_replace("\"", "`", $flt[5])
-				." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
-				.str_replace("'", "`", $row[1])."')\">"
+				." [$flt[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
+				.str_replace("'", "`", $flt[1])."')\">"
 				."<br />\n"
 				."\t\t\t\t\t<font size='1'>"._ST_RESPONECONT.":</font><br />\n"
 				."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
@@ -503,6 +503,28 @@ foreach ($filters as $flt)
 			break;
 		case "X": //This is a boilerplate question and it has no business in this script
 			break;
+		case "W":
+		case "Z":
+			echo "\t\t\t\t<td align='center'>"
+				."$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
+			echo "<input type='checkbox' name='summary[]' value='$myfield'";
+			if (isset($_POST['summary']) && (array_search("{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
+				{echo " CHECKED";}
+			echo ">&nbsp;"
+				."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
+				."<br />\n";
+			echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
+			$allfields[]=$myfield;
+			$query = "SELECT code, title FROM {$dbprefix}labels WHERE lid={$flt[6]} ORDER BY sortorder, title";
+			$result = mysql_query($query) or die("Couldn't get answers!<br />$query<br />".mysql_error());
+			while($row=mysql_fetch_row($result))
+				{
+				echo "\t\t\t\t\t\t<option value='$row[0]'";
+				if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected";}
+				echo ">$row[1]</option>\n";
+				} // while
+			echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+			break;
 		default:
 			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die("Couldn't get answers!<br />$query<br />".mysql_error());
@@ -514,7 +536,7 @@ foreach ($filters as $flt)
 				}
 			break;
 		}
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "W" && $flt[2] !="Z") //Have to make an exception for these types!
 		{
 		echo "\n\t\t\t\t</td>\n";
 		}
@@ -941,14 +963,12 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			}
 		else // NICE SIMPLE SINGLE OPTION ANSWERS
 			{
-			
-			list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
+			$fieldmap=createFieldMap($sid);
+			$fielddata=arraySearchByKey($rt, $fieldmap, "fieldname", 1);
+			$qsid=$fielddata['sid'];
+			$qgid=$fielddata['gid'];
+			$qqid=$fielddata['qid'];
 			$rqid=$qqid;
-			while (!in_array($rqid, $legitqids)) //checks that the qid exists in our list. If not, have to do some tricky stuff to find where qid ends and answer code begins:
-				{
-				$rqid = substr($rqid, 0, strlen($rqid)-1); //keeps cutting off the end until it finds the real qid
-				}
-			//END
 			$nquery = "SELECT title, type, question, qid, lid, other FROM {$dbprefix}questions WHERE qid=$rqid";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
@@ -1051,6 +1071,15 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					for ($i=1; $i<=5; $i++)
 						{
 						$alist[]=array("$i", "$i");
+						}
+					break;
+				case "W":
+				case "Z":
+					$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$qlid ORDER BY sortorder, code";
+					$fresult = mysql_query($fquery);
+					while ($frow=mysql_fetch_array($fresult))
+						{
+						$alist[]=array($frow['code'], $frow['title']);
 						}
 					break;
 				default:

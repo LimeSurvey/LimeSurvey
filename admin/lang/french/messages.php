@@ -244,6 +244,8 @@ define("_ARRFLC", "Ligne de Bouton Radio (Etiquettes Personnalisées en colonne")
 define("_SINFL", "Simple (Etiquettes Personnalisées)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Adresse Email"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Texte Fixe"); //New in 0.98rc6
+define("_LISTFL_DROPDOWN", "List (Flexible Labels) (Dropdown)"); //New in 0.99dev01
+define("_LISTFL_RADIO", "List (Flexible Labels) (Radio)"); //New in 0.99dev01
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Oui");

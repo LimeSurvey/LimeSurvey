@@ -1787,7 +1787,7 @@ function questionjavascript($type, $qattributes)
 				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
 				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
 				 . "\t\t}\n"
-				 . "\telse if (QuestionType == 'F' || QuestionType == 'H')\n"
+				 . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z')\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"

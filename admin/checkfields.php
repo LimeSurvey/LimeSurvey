@@ -154,7 +154,7 @@ $allfields[]=array("{$dbprefix}saved_control", "saved_date", "saved_date datetim
 $allfields[]=array("{$dbprefix}question_attributes", "qaid", "qaid int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}question_attributes", "qid", "qid int(11) NOT NULL");
 $allfields[]=array("{$dbprefix}question_attributes", "attribute", "attribute varchar(50)");
-$allfields[]=array("{$dbprefix}question_attributes", "value", "value varchar(5)");
+$allfields[]=array("{$dbprefix}question_attributes", "value", "value varchar(20)");
 
 $allfields[]=array("{$dbprefix}assessments", "id", "id int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}assessments", "sid", "sid int(11) NOT NULL default '0'");

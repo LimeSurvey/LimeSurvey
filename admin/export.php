@@ -451,6 +451,8 @@ for ($i=0; $i<$fieldcount; $i++)
 					break;
 				case "L":
 				case "!":
+				case "W":
+				case "Z":
 					if ($faid == "other") {
 						$fquest .= " ["._OTHER."]";
 					} 
@@ -705,6 +707,29 @@ elseif ($answers == "long")
 								{
 								//if ($lrow['code'] == $drow[$i]) {echo $lrow['answer'];} 
 								echo $lrow['answer'];
+								}
+							}
+						}
+					break;
+				case "W":
+				case "Z":
+					if (substr($fieldinfo, -5, 5) == "other") 
+						{
+						echo $drow[$i];
+						}
+					else
+						{
+						if ($drow[$i] == "-oth-") 
+							{
+						    echo _OTHER;
+							}
+						else
+							{
+							$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code='$drow[$i]'";
+							$fresult = mysql_query($fquery) or die("ERROR:".$fquery."\n".$qq."\n".mysql_error());
+							while ($frow = mysql_fetch_array($fresult))
+								{
+								echo $frow['title'];
 								}
 							}
 						}

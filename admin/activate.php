@@ -283,6 +283,8 @@ else
 					break;
 				case "L":  //LIST (RADIO)
 				case "!":  //LIST (DROPDOWN)
+				case "W":
+				case "Z":
 					$createsurvey .= " VARCHAR(5)";
 					if ($arow['other'] == "Y") 
 						{

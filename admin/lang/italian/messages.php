@@ -244,6 +244,8 @@ define("_ARRFLC", "Array (Flexible Labels) by Column"); //Release 0.98rc8
 define("_SINFL", "Campo unico (Flessibile)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Indirizzo Email"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Boilerplate Question"); //New in 0.98rc6
+define("_LISTFL_DROPDOWN", "List (Flexible Labels) (Dropdown)"); //New in 0.99dev01
+define("_LISTFL_RADIO", "List (Flexible Labels) (Radio)"); //New in 0.99dev01
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Si");

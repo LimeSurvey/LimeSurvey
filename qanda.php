@@ -230,8 +230,24 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			$qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
 			$values=do_date($ia);
 			break;
+		case "Z": //LIST Flexible drop-down/radio-button list
+			$values=do_list_flexible_radio($ia);
+			if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_LIST."</font></i><b>";
+				}
+			break;
 		case "L": //LIST drop-down/radio-button list
 			$values=do_list_radio($ia);
+			if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_LIST."</font></i><b>";
+				}
+			break;
+		case "W": //List - dropdown
+			$values=do_list_flexible_dropdown($ia);
 			if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
 				{
 				$qtitle .= "<br />\n</b><i><font size='1'>"
@@ -573,6 +589,90 @@ function do_list_dropdown($ia)
 	return array($answer, $inputnames);
 	}
 
+function do_list_flexible_dropdown($ia)
+	{
+	global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
+	global $shownoanswer;
+	$qidattributes=getQuestionAttributes($ia[0]);
+	$answer="";
+	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
+	$qresult = mysql_query($qquery);
+	while($row = mysql_fetch_array($qresult)) {$other = $row['other']; $lid=$row['lid'];}
+	$filter="";
+	if ($code_filter=arraySearchByKey("code_filter", $qidattributes, "attribute", 1))
+		{
+		$filter=$code_filter['value'];
+		if(in_array($filter, $_SESSION['insertarray']))
+			{
+			$filter=$_SESSION[$filter];
+			}
+		}
+	$filter .= "%";
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' ORDER BY sortorder, code";
+	}
+	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
+	$anscount = mysql_num_rows($ansresult);
+	while ($ansrow = mysql_fetch_array($ansresult))
+		{
+		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
+		if ($_SESSION[$ia[1]] == $ansrow['code'])
+			{
+			$answer .= " selected"; 
+			}
+		$answer .= ">{$ansrow['title']}</option>\n";
+		}
+	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
+	if (isset($other) && $other=="Y") 
+		{
+		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
+		if ($_SESSION[$ia[1]] == "-oth-")
+			{
+			$answer .= " selected";
+			}
+		$answer .= ">"._OTHER."</option>\n";
+		}
+	if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
+	$answer .= "\t\t\t\t\t</select>\n";
+	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)";
+	if (isset($other) && $other=="Y")
+		{
+		$sselect .= "; showhideother(this.name, this.value)";
+		}
+	$sselect .= "'>\n";
+	$answer = $sselect.$answer;
+	if (isset($other) && $other=="Y") 
+		{
+		$answer = "\n<SCRIPT TYPE=\"text/javascript\">\n"
+			."<!--\n"
+			."function showhideother(name, value)\n"
+			."\t{\n"
+			."\tvar hiddenothername='othertext'+name;\n"
+			."\tif (value == \"-oth-\")\n"
+			."\t\t{\n"
+			."\t\tdocument.getElementById(hiddenothername).style.display='';\n"
+			."\t\tdocument.getElementById(hiddenothername).focus();\n"
+			."\t\t}\n"
+			."\telse\n"
+			."\t\t{\n"
+			."\t\tdocument.getElementById(hiddenothername).style.display='none';\n"
+			."\t\t}\n"
+			."\t}\n"
+			."//--></SCRIPT>\n".$answer;
+		$answer .= "<input type='text' id='othertext".$ia[1]."' name='$ia[1]other' style='display:";
+		if ($_SESSION[$ia[1]] != "-oth-")
+			{
+			$answer .= " none";
+			}
+		$answer .= "'>";
+		}
+
+	$inputnames[]=$ia[1];
+	return array($answer, $inputnames);
+	}
+
 function do_list_radio($ia)
 	{
 	global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
@@ -664,6 +764,105 @@ function do_list_radio($ia)
 	return array($answer, $inputnames);
 	}
 
+function do_list_flexible_radio($ia)
+	{
+	global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
+	global $shownoanswer;
+	$answer="";
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+		{
+	    $dcols=$displaycols['value'];
+		}
+	else
+		{
+		$dcols=0;
+		}
+	if (isset($defexists)) {unset ($defexists);}
+	$query = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
+	$result = mysql_query($query);
+	while($row = mysql_fetch_array($result)) {$other = $row['other']; $lid = $row['lid'];}
+	$filter="";
+	if ($code_filter=arraySearchByKey("code_filter", $qidattributes, "attribute", 1))
+		{
+		$filter=$code_filter['value'];
+		if(in_array($filter, $_SESSION['insertarray']))
+			{
+			$filter=$_SESSION[$filter];
+			}
+		}
+	$filter .= "%";
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' ORDER BY sortorder, code";
+	}
+	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
+	$anscount = mysql_num_rows($ansresult);
+	if ((isset($other) && $other=="Y") || ($ia[6] != "Y" && $shownoanswer == 1)) {$anscount++;} //Count "
+	$divider="";
+	$maxrows=0;
+	if ($dcols >0 && $anscount > $dcols) //Break into columns
+		{
+	    $denominator=$dcols; //Change this to set the number of columns
+		$width=sprintf("%0d", 100/$denominator);
+		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
+		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+		$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+		}
+	else 
+		{
+		$answer .= "\n\t\t\t\t\t<table class='question'>\n"
+				 . "\t\t\t\t\t\t<tr>\n"
+				 . "\t\t\t\t\t\t\t<td>\n";
+		}
+	$rowcounter=0;
+	while ($ansrow = mysql_fetch_array($ansresult))
+		{
+		$rowcounter++;
+		$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='$ia[1]{$ansrow['code']}'";
+		if ($_SESSION[$ia[1]] == $ansrow['code'])
+			{
+			$answer .= " checked";
+			}
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['title']}</label><br />\n";
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+		}
+	if (isset($other) && $other=="Y") 
+		{
+		$rowcounter++;
+	    $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
+		if ($_SESSION[$ia[1]] == "-oth-") 
+			{
+		    $answer .= " checked";
+			}
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>"._OTHER."</label>\n";
+		$answer .= "<label for='$ia[1]othertext'><input type='text' class='text' id='$ia[1]othertext' name='$ia[1]other' size='20' title='"._OTHER."' ";
+		$thisfieldname=$ia[1]."other";
+		if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".$_SESSION[$thisfieldname]."' ";}
+		$answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"></label><br />\n";
+		$inputnames[]=$thisfieldname;
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+		}
+	if ($ia[6] != "Y" && $shownoanswer == 1)
+		{
+		$rowcounter++;
+		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='$ia[1]NANS' value=' ' ";
+		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || !$_SESSION[$ia[1]]))
+			{
+			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			}
+		$answer .=" onClick='checkconditions(this.value, this.name, this.type)' />"
+				 . "<label for='$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+		}
+	$answer .= "\t\t\t\t\t\t\t</td>\n"
+			 . "\t\t\t\t\t\t</tr>\n"
+			 . "\t\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
+			 . "\t\t\t\t\t</table>\n";
+	$inputnames[]=$ia[1];
+	return array($answer, $inputnames);
+	}
 
 function do_listwithcomment($ia)
 	{
