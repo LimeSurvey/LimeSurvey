@@ -194,6 +194,7 @@ define(_LIST, "List");
 define(_LISTWC, "List With Comment");
 define(_MULTO, "Multiple Options");
 define(_MULTOC, "Multiple Options with Comments");
+define(_MULTITEXT, "Multiple Short Text");
 define(_NUMERICAL, "Numerical Input");
 define(_RANK, "Ranking");
 define(_STEXT, "Short free text");
