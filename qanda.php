@@ -663,7 +663,7 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t<td></td>\n";
 		for ($xc=1; $xc<=5; $xc++)
 			{
-			$answer .= "\t\t\t\t\t<td align='center'>$xc</td>\n";
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
 			}
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
@@ -709,7 +709,7 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t<td></td>\n";
 		for ($xc=1; $xc<=10; $xc++)
 			{
-			$answer .= "\t\t\t\t\t<td align='center'>$xc</td>\n";
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
 			}
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
@@ -752,9 +752,9 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td></td>\n";
-		$answer .= "\t\t\t\t\t<td align='center'>Yes</td>\n";
-		$answer .= "\t\t\t\t\t<td align='center'>Uncertain</td>\n";
-		$answer .= "\t\t\t\t\t<td align='center'>No</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Yes</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Uncertain</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>No</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
