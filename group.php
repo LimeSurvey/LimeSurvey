@@ -82,7 +82,7 @@ if ($_POST['mandatory'])
 			}
 		elseif (!$_POST[$multiname])
 			{
-			//One of the mandatory questions hasn't been asnwered
+			//One of the mandatory questions hasn't been answered
 			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
@@ -549,6 +549,15 @@ if (!$_SESSION['step'])
 					{
 					$_SESSION['insertarray'][] = "$fieldname".$i;
 					}			
+				}
+			elseif ($arow['type'] == "Q")
+				{
+				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
+				$abresult = mysql_query($abquery);
+				while ($abrow = mysql_fetch_array($abresult))
+					{
+					$_SESSION['insertarray'][] = "$fieldname".$abrow['code'];
+					}
 				}
 			elseif ($arow['type'] == "O")	
 				{

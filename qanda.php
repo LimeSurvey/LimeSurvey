@@ -598,6 +598,39 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t</table>\n";
 		break;
+	case "Q": //MULTIPLE SHORT TEXT
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+		$ansresult = mysql_query($ansquery);
+		$anscount = mysql_num_rows($ansresult)*2;
+		//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
+		$fn = 1;
+		$answer .= "\t\t\t\t\t\t<table class='question'>\n";
+		while ($ansrow = mysql_fetch_array($ansresult))
+			{
+			$myfname = $ia[1].$ansrow['code'];
+			$answer .= "\t\t\t\t\t\t\t<tr>\n";
+			$answer .= "\t\t\t\t\t\t\t\t<td align='right'>\n";
+			$answer .= "\t\t\t\t\t\t\t\t\t{$ansrow['answer']}\n";
+			$answer .= "\t\t\t\t\t\t\t\t</td>\n";
+			$answer .= "\t\t\t\t\t\t\t\t<td>\n";
+			$answer .= "\t\t\t\t\t\t\t\t\t<input class='text' type='text' type='text' size='40' name='$myfname' value='".$_SESSION[$myfname]."' />\n";
+			$answer .= "\t\t\t\t\t\t\t\t</td>\n";
+			$answer .= "\t\t\t\t\t\t\t</tr>\n";
+			$fn++;
+			$inputnames[]=$myfname;
+			if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
+				{
+				$mandatorys[]=$myfname;
+				$mandatoryfns[]=$ia[1];
+				}
+			if ($ia[6] == "Y" && $ia[7] == "Y")
+				{
+				$conmandatorys[]=$myfname;
+				$conmandatoryfns[]=$ia[1];
+				}
+			}
+		$answer .= "\t\t\t\t\t\t</table>\n";
+		break;
 	case "N": //NUMERICAL QUESTION TYPE
 		$answer .= keycontroljs();
 		$answer .= "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n";
@@ -929,7 +962,7 @@ if (is_array($notanswered))
 	if (in_array($ia[1], $notanswered))
 		{
 		$qtitle = "</b><font color='red' size='1'>"._MANDATORY.".";
-		if ($ia[4] == "A" || $ia[4] == "B" || $ia[4] == "C")
+		if ($ia[4] == "A" || $ia[4] == "B" || $ia[4] == "C" || $ia[4] == "Q")
 			{ $qtitle .= "<br />\n"._MANDATORY_PARTS."."; }
 		if ($ia[4] == "M" || $ia[4] == "P")
 			{ $qtitle .= "<br />\n"._MANDATORY_CHECK.".";}
