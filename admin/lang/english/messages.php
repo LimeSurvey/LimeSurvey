@@ -58,6 +58,7 @@ define(_A_CHECKDB_BT, "Check Database");
 define(_A_DELETE_BT, "Delete Entire Survey");
 define(_A_ADDSURVEY_BT, "Create or Import New Survey");
 define(_A_HELP_BT, "Show Help");
+define(_A_CHECKSETTINGS, "Check Settings");
 //Survey bar
 define(_S_ACTIVE_BT, "This survey is currently active");
 define(_S_INACTIVE_BT, "This survey is not currently active");
