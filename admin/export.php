@@ -339,7 +339,7 @@ $faid="";
 $debug="";
 for ($i=0; $i<$fieldcount; $i++)
 	{
-	$debug.="\n";
+	$debug.="\n\n================================== [$i]\n";
 	$fieldinfo=mysql_field_name($dresult, $i);
 	if ($fieldinfo == "token")
 		{
@@ -410,6 +410,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		$debug .= "FSID: $fsid $s FGID: $fgid $s FQID: $fqid\n";
 		if ($style == "abrev") //Print out abbreviated question title
 			{
+			$debug .= "Abbreviated:\n";
 			if (!$fqid) {$fqid = "0";}
 			$oldfqid=$fqid;
 			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list. If not, have to do some tricky stuff to find where qid ends and answer code begins:
@@ -438,9 +439,13 @@ for ($i=0; $i<$fieldcount; $i++)
 			}
 		else //Print out extended question title
 			{
+			$debug .= "Extended:\n";
 			if (!$fqid) {$fqid = 0;}
 			$oldfqid=$fqid;
 			$debug .= "FQID: $fqid $s OLDFQID: $oldfqid\n";
+			$debug .= "LEGIT QS:$s";
+			foreach($legitqs as $lq) {$debug .= "$lq $s";}
+			$debug .= "\n";
 			while (!in_array($fqid, $legitqs) && $fqid) //checks that the qid exists in our list
 				{
 				$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
@@ -479,10 +484,10 @@ for ($i=0; $i<$fieldcount; $i++)
 					{
 					echo "EXPORT ERROR - Debug Info Follows\n";
 					echo "FIRSTLINE: $firstline\n";
-					foreach ($legitqs as $lq) { echo "DEBUG UNUSED LEGIT QUESTIONS: $lq\n";}
-					echo "QUESTION TYPE: ".$qrow['type']."\n";
-					echo "Other Debug Info: $debug\n";
-					foreach ($origlegitqs as $olq) {echo "DEBUG ORIGINAL LEGIT QUESTIONS: $olq\n";}
+					foreach ($legitqs as $lq) { echo "DEBUG UNUSED LEGIT QUESTIONS: $lq\n\n";}
+					echo "QUESTION TYPE: ".$qrow['type']."\n\n";
+					echo "Other Debug Info: $debug\n\n";
+					foreach ($origlegitqs as $olq) {echo "DEBUG ORIGINAL LEGIT QUESTIONS: $olq\n\n";}
 					die("An Export Error Occurred With Field [$fieldinfo]");
 					}
 				}
@@ -574,6 +579,7 @@ for ($i=0; $i<$fieldcount; $i++)
 						$debug .= "LAST SELECT TO GET ACOUNT: $aq $s";
 						$thisacount = mysql_num_rows($ar);
 						if ($ftype == "P") {$thisacount=$thisacount*2;}
+						if ($ftype == "P" && $fother == "Y") {$thisacount++;}
 						if ($fother == "Y") {$thisacount++;}
 						$debug .= " $s SETTING THISACOUNT - $thisacount POSSIBLE ANSWERS TO QUESTION";
 						}
@@ -777,7 +783,7 @@ elseif ($answers == "long")
 		for ($i=0; $i<$fieldcount; $i++) //For each field, work out the QID
 			{
 			$debug .= "\n";
-			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "token" && mysql_field_name($dresult, $i) != "first_name" && mysql_field_name($dresult, $i) != "last_name" && mysql_field_name($dresult, $i) != "email" && mysql_field_name($dresult, $i) != "attribute_1" && mysql_field_name($dresult, $i) != "attribute_2")
+			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "token" && mysql_field_name($dresult, $i) != "firstname" && mysql_field_name($dresult, $i) != "lastname" && mysql_field_name($dresult, $i) != "email" && mysql_field_name($dresult, $i) != "attribute_1" && mysql_field_name($dresult, $i) != "attribute_2")
 				{
 				list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
 				}
@@ -881,6 +887,7 @@ elseif ($answers == "long")
 					$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
 					$thisacount = mysql_num_rows($ar);
 					if ($ftype == "P") {$thisacount=$thisacount*2;}
+					if ($ftype == "P" && $fother == "Y") {$thisacount++;}
 					if ($fother == "Y") {$thisacount++;}
 					}
 				if(!isset($usedanswers)) {$usedanswers=0;}
