@@ -48,38 +48,41 @@ sendcacheheaders();
 
 echo $htmlheader;
 
-echo "<script type='text/javascript'>\n";
-echo "<!--\n";
-echo "\tfunction showhelp(action)\n";
-echo "\t\t{\n";
-echo "\t\tvar name='help';\n";
-echo "\t\tif (action == \"hide\")\n";
-echo "\t\t\t{\n";
-echo "\t\t\tdocument.getElementById(name).style.display='none';\n";
-echo "\t\t\t}\n";
-echo "\t\telse if (action == \"show\")\n";
-echo "\t\t\t{\n";
-echo "\t\t\tdocument.getElementById(name).style.display='';\n";
-echo "\t\t\t}\n";
-echo "\t\t}\n";
-echo "-->\n";
-echo "</script>\n";
+echo "<script type='text/javascript'>\n"
+	."<!--\n"
+	."\tfunction showhelp(action)\n"
+	."\t\t{\n"
+	."\t\tvar name='help';\n"
+	."\t\tif (action == \"hide\")\n"
+	."\t\t\t{\n"
+	."\t\t\tdocument.getElementById(name).style.display='none';\n"
+	."\t\t\t}\n"
+	."\t\telse if (action == \"show\")\n"
+	."\t\t\t{\n"
+	."\t\t\tdocument.getElementById(name).style.display='';\n"
+	."\t\t\t}\n"
+	."\t\t}\n"
+	."-->\n"
+	."</script>\n";
 
 // CHECK IF FIRST USE!
 if (!mysql_selectdb ($databasename, $connect))
 	{
-	echo "<br />\n";
-	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._SETUP."</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
-	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
-	echo "<b><font color='red'>"._ERROR."<br />\n";
-	echo _ST_NODB1."</font></b><br /><br />\n";
-	echo _ST_NODB2."<br />\n";
-	echo _ST_NODB3."<br /><br />\n";
-	echo _ST_NODB4." $databasename<br />\n";
-	echo "<br /><input $btstyle type='submit' value='"._ST_CREATEDB."' onClick='location.href=\"createdb.php?dbname=$databasename\"' /></center>\n";
-	echo "</td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	echo "<br />\n"
+		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._SETUP."</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n"
+		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."<b><font color='red'>"
+		._ERROR."<br />\n"
+		._ST_NODB1."</font></b><br /><br />\n"
+		._ST_NODB2."<br />\n"
+		._ST_NODB3."<br /><br />\n"
+		._ST_NODB4." $databasename<br />\n"
+		."<br /><input $btstyle type='submit' value='"
+		._ST_CREATEDB."' onClick='location.href=\"createdb.php?dbname=$databasename\"' /></center>\n"
+		."</td></tr></table>\n"
+		."</body>\n</html>\n";
 	exit;
 	}
 else
@@ -134,20 +137,20 @@ if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" 
 include("html.php"); 
 
 //$cellstyle = "style='border: 1px inset #000080'";
-echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n";
-echo "\t<tr>\n";
-echo "\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
-echo "\t\t\t<font size='2'>\n";
-//echo "$adminmenu\n";
+echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
+	."\t<tr>\n"
+	."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n"
+	."\t\t\t<font size='2'>\n";
+
 echo showadminmenu();
 
 if ($action == "newsurvey")
 	{
-	echo "$newsurvey\n";
-	echo "\t\t</td>\n";
+	echo "$newsurvey\n"
+		."\t\t</td>\n";
 	helpscreen();
-	echo "\t</tr>\n";
-	echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
+	echo "\t</tr>\n"
+		.htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
 	exit;
 	}
 
@@ -179,21 +182,23 @@ function helpscreen()
 	{
 	global $homeurl, $langdir;
 	global $sid, $gid, $qid, $action;
-	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n";
-	echo "\t\t\t<table width='100%'><tr><td><table width='100%' height='100%' align='center' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td bgcolor='#555555' height='8'>\n";
-	echo "\t\t\t\t\t\t<font color='white' size='1'><b>"._HELP."\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
-	echo "\t\t\t\t\t\t<img src='./images/blank.gif' width='20' hspace='0' border='0' align='left'>\n";
-	echo "\t\t\t\t\t\t<input type='image' src='./images/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
+	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
+		."\t\t\t<table width='100%'><tr><td>"
+		."<table width='100%' height='100%' align='center' cellspacing='0'>\n"
+		."\t\t\t\t<tr>\n"
+		."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
+		."\t\t\t\t\t\t<font color='white' size='1'><b>"
+		._HELP."\n"
+		."\t\t\t\t\t</td>\n"
+		."\t\t\t\t</tr>\n"
+		."\t\t\t\t<tr>\n"
+		."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
+		."\t\t\t\t\t\t<img src='./images/blank.gif' width='20' hspace='0' border='0' align='left'>\n"
+		."\t\t\t\t\t\t<input type='image' src='./images/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
+		."\t\t\t\t\t</td>\n"
+		."\t\t\t\t</tr>\n"
+		."\t\t\t\t<tr>\n"
+		."\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
 	//determine which help document to show
 	if (!$sid && $action != "editusers")
 		{
@@ -211,7 +216,8 @@ function helpscreen()
 		{
 		$helpdoc = "$langdir/group.html";
 		}
-	elseif ($sid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
+	//elseif ($sid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
+	elseif ($sid && $gid && $qid && !returnglobal('viewanswer'))
 		{
 		$helpdoc = "$langdir/question.html";
 		}
@@ -219,11 +225,11 @@ function helpscreen()
 		{
 		$helpdoc = "$langdir/answer.html";
 		}
-	echo "\t\t\t\t\t\t<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n";
-	echo "\t\t\t\t\t\t</iframe>\n";
-	echo "\t\t\t\t\t</td>";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t</table></td></tr></table>\n";
-	echo "\t\t</td>\n";
+	echo "\t\t\t\t\t\t<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
+		."\t\t\t\t\t\t</iframe>\n"
+		."\t\t\t\t\t</td>"
+		."\t\t\t\t</tr>\n"
+		."\t\t\t</table></td></tr></table>\n"
+		."\t\t</td>\n";
 	}
 ?>
