@@ -33,10 +33,14 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$file_version="PHPSurveyor Template Editor Version 0.1";
+$file_version="PHPSurveyor Template Editor Version 0.98rc9";
 require_once("config.php");
-//$slstyle3="style='font-family: verdana; font-size: 9; color: #000080'";;
 $slstyle3=$slstyle2;
+if(get_magic_quotes_gpc())
+	{
+	$_GET = array_map("stripslashes", $_GET);
+	$_POST = array_map("stripslashes", $_POST);
+	}
 
 if (!isset($templatename)) {$templatename = returnglobal('templatename');}
 if (!isset($templatedir)) {$templatedir = returnglobal('templatedir');}
@@ -72,9 +76,7 @@ require($langfilename);
 
 //Save Changes if necessary
 if ($action=="savechanges" && $_POST['changes']) {
-	//echo $_POST['changes']."<hr>\n";
-	//Save data into new file.
-	//echo "Updating ".$publicdir."/templates/".$_POST['templatename']."/".$_POST['editfile']."...<br />\n";
+	$_POST['changes']=str_replace("\r\n", "\n", $_POST['changes']);
 	if ($_POST['editfile']) {
 		$savefilename=$publicdir."/templates/".$_POST['templatename']."/".$_POST['editfile'];
 		if (is_writable($savefilename)) {
@@ -86,8 +88,6 @@ if ($action=="savechanges" && $_POST['changes']) {
 			    echo "Cannot write to file ($savefilename)";
 				exit;
 			}
-		//echo "Update saved!<br />";
-		//echo $_POST['changes'];
 		fclose($handle);
 		} else {
 			echo "The file $savefilename is not writable";
@@ -120,9 +120,6 @@ $files[]=array("name"=>"completed.pstpl");
 $files[]=array("name"=>"endgroup.pstpl");
 $files[]=array("name"=>"navigator.pstpl");
 $files[]=array("name"=>"endpage.pstpl");
-$files[]=array("name"=>"invitationemail.pstpl");
-$files[]=array("name"=>"reminderemail.pstpl");
-$files[]=array("name"=>"confirmationemail.pstpl");
 
 $normalfiles=array("DUMMYENTRY", ".", "..");
 foreach ($files as $fl) {
@@ -134,18 +131,12 @@ $screens[]=array("name"=>"Question");
 $screens[]=array("name"=>"Submit");
 $screens[]=array("name"=>"Completed");
 $screens[]=array("name"=>"Clear All");
-$screens[]=array("name"=>"Invite Email");
-$screens[]=array("name"=>"Remind Email");
-$screens[]=array("name"=>"Confirm Email");
 
 $Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Submit=array("startpage.pstpl", "survey.pstpl", "submit.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Completed=array("startpage.pstpl", "completed.pstpl", "endpage.pstpl");
 $Clearall=array("startpage.pstpl", "endpage.pstpl");
-$Invite=array("invitationemail.pstpl");
-$Remind=array("reminderemail.pstpl");
-$Confirm=array("confirmationemail.pstpl");
 //Load this editfile
 function filetext($templatefile) {
 	global $publicdir, $templatename;
@@ -173,8 +164,8 @@ function templatereplace($line)
 	$totalquestions="10";
 	$surveyformat="Format";
 	$completed="Survey is completed and saved.";
-	$surveyurl="http://wwwwwwww";
-	$surveyurldescrip="Hello";
+	$surveyurl="http://phpsurveyor.sourceforge.net/";
+	$surveyurldescrip="A URL Description";
 	$notanswered="5";
 	$privacy="";
 	$sid="1295";
@@ -195,6 +186,7 @@ function templatereplace($line)
 	$line=str_replace("{QUESTION}", $question, $line);
 	$line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	$line=str_replace("{ANSWER}", $answer, $line);
+	$line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS, $line);
 	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
 	$line=str_replace("{TOKEN}", $token, $line);
 	$line=str_replace("{SID}", $sid, $line);
@@ -211,6 +203,7 @@ function templatereplace($line)
 	else {$linkreplace="<a href='$surveyurl'>$surveyurldescrip</a>";}
 	$line=str_replace("{URL}", $linkreplace, $line);
 	$line=str_replace("{PRIVACY}", $privacy, $line);
+	$line=str_replace("{PRIVACYMESSAGE}", _PRIVACY_MESSAGE, $line);
 	$line=str_replace("{CLEARALL}", $clearall, $line);
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	return $line;
@@ -315,33 +308,6 @@ switch($screenname) {
 			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
 		}
 		break;	
-	case "Remind Email":
-		unset($files);
-		$myoutput[]="<html>";
-		foreach ($Remind as $qs) {
-			$files[]=array("name"=>$qs);
-			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
-		}
-		$addbr=true;
-		break;
-	case "Confirm Email":
-		unset($files);
-		$myoutput[]="<html>";
-		foreach ($Confirm as $qs) {
-			$files[]=array("name"=>$qs);
-			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
-		}
-		$addbr=true;
-		break;
-	case "Invite Email":
-		unset($files);
-		$myoutput[]="<html>";
-		foreach ($Invite as $qs) {
-			$files[]=array("name"=>$qs);
-			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
-		}
-		$addbr=true;
-		break;
 }
 $myoutput[]="</html>";
 function doreplacement($file) { //Produce sample page from template file
@@ -383,11 +349,14 @@ if ($handle = opendir($dirloc)) {
 //****************************************************************
 //** OUTPUT STARTS HERE
 //****************************************************************
-// PRINT PAGE
-//echo "<html><head><title>$file_version</title></head>\n"
-//	."<body topmargin='2' leftmargin='5' bgcolor='black' style='font-face:verdana;font-size:10'>\n";
-//START MAIN SECTION
 echo $htmlheader;
+echo "<script type='text/javascript'>\n<!--\nfunction copyprompt(text, defvalue, copydirectory)\n"
+	."\t{\n"
+	."\tvar newtemplatename=window.prompt(text, defvalue);\n"
+	."\tvar url='templates.php?action=copy&newname='+newtemplatename+'&copydir='+copydirectory;\n"
+	."\talert(url);\n"
+	."\twindow.open(url, '_top');\n"
+	."\t}\n//-->\n</script>\n";
 echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	. "\t<tr>\n"
 	. "\t\t<td>\n"
@@ -435,12 +404,13 @@ if (is_writable("$publicdir/templates/$templatename")) {
 	echo "\t\t\t\t\t<img src='$imagefiles/trafficred.gif' alt='Cannot be modified' hspace='0' align='left'>\n";
 	}
 echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='60' height='10' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='60' height='10' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>"
-	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.gif' align='left' hspace='0' border='0'>"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>\n"
+	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.gif' align='left' hspace='0' border='0' title='Copy Template'"
+	." onClick=\"javascript: copyprompt('Name of copy:', 'newname', '$templatename')\">"
 	."</td><td align='right'>\n"
 	."<img src='./images/close.gif' align='right' border='0' hspace='0' alt='Close Window' onClick='window.close()'>"
 	."<img src='./images/plus.gif' align='right' alt='maximise' border='0' hspace='0'>"
@@ -454,16 +424,6 @@ echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' h
 	."</td></tr></table>\n"
 	."<table><tr><td height='1'></td></tr><table>\n";
 
-//echo "<table width='100%' cellpadding='0' cellspacing='0'><tr><td align='left'>"
-//	. "<font face='verdana' size='3' color='black'><b><i>$templatename</i></b><font color='black'> template</font></font><br />\n"
-//	. "</td><td align='right'>"
-//	."<img src='./images/blank.gif' align='right' width='69' height='10' hspace='0'>"
-//	. "<font size='2' color='white'><b>Screen:</b></font>"
-//	. "<select name='screenname' $slstyle onchange='javascript: window.open(\"templates.php?templatename=$templatename&editfile=$editfile&screenname=\"+this.value, \"_top\")'>\n"
-//	. makeoptions($screens, "name", "name", $screenname)
-//	. "</select>\n"
-//	. "</td></tr></table>\n"
-//	. "</td></tr>\n";
 //FILE CONTROL DETAILS
 echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
@@ -490,17 +450,29 @@ if ($editfile) {
 }
 echo "</textarea><br />\n";
 if (is_writable("$publicdir/templates/$templatename")) {
-echo "<input $btstyle align='right' type='submit' value='Save Changes'>";
+echo "<input $btstyle align='right' type='submit' value='Save Changes'";
+if ($templatename == "default") {
+    echo " disabled";
+}
+echo ">";
 	}
 echo "<br />\n"
-	. "</font></font></td>\n"
+	. "</font></font></td></form>\n"
 	."\t\t\t\t\t\t<td valign='top' align='right'>"
 	. "$setfont<b>Other Files</b><br />\n"
 	//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
-	. "<select size='8' $slstyle2 name='otherfile'>\n"
+	. "<select size='8' $slstyle2 name='otherfile' style='width: 120'>\n"
 	.makeoptions($otherfiles, "name", "name", "")
 	."</select>\n"
-	."<br /><input type='submit' value='Del' $btstyle><input type='submit' value='Upload' $btstyle>"
+	."<input type='submit' value='Del' $btstyle";
+if ($templatename == "default") {
+    echo " disabled";
+}
+echo "><input type='submit' value='Upload' $btstyle";
+if ($templatename == "default") {
+    echo " disabled";
+}
+echo ">"
 	."\t\t\t\t\t\t</font></font></td>\n"
 	."\t\t\t\t\t</tr>\n"
 	."\t\t\t\t</table>\n"
@@ -509,7 +481,7 @@ echo "<br />\n"
 	."\t\t<input type='hidden' name='screenname' value='$screenname' />\n"
 	."\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
 	."\t\t<input type='hidden' name='action' value='savechanges' />\n"
-	."\t</form></tr>"
+	."\t</tr>"
 	."</table>"
 	."<table><tr><td height='1'></td></tr><table>\n";
 
@@ -534,27 +506,9 @@ fclose($fnew);
 
 echo "<font face='verdana' size='2'><b>Sample $screenname in $templatename template</b><br />\n"
 	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample'></iframe>\n"
-	."<br />&nbsp;<br />";
-
-//IFRAMES JAVASCRIPT
-//echo "<script><!--\n"
-//	."	i=frames[\"sample\"];\n"
-//	."	i.document.open;\n";
-//foreach (file("$homedir/templates.html") as $line) {
-//foreach($myoutput as $line) {
-//	$niceline=addslashes($line);
-//	if ($addbr !== false) {
-//	    $niceline=nl2br($niceline);
-//	}
-//	$niceline=str_replace("\r\n", "", $niceline);
-//	$niceline=str_replace("\n", "", $niceline);
-//	echo "	i.document.writeln(\"$niceline\");\n";
-//}
-//ho "	i.document.close;\n";
-//echo "//--></script>\n";
-//END MAIN SECTION
-echo "</td></tr></table>\n";
-echo htmlfooter("", "");
+	."<br />&nbsp;<br />"
+	."</td></tr></table>\n"
+	.htmlfooter("", "");
 
 function unlink_wc($dir, $pattern){
    if ($dh = opendir($dir)) { 
