@@ -40,6 +40,7 @@ define("_UPLOADCSV", "Upload CSV File");
 define("_LABELCONTROL", "Label Sets Administration"); //NEW with 0.98rc3
 define("_LABELSET", "Label Set"); //NEW with 0.98rc3
 define("_LABELANS", "Labels"); //NEW with 0.98rc3
+define("_OPTIONAL", "Optional"); //NEW with 0.98finalRC1
 
 //DROPDOWN HEADINGS
 define("_SURVEYS", "Surveys");

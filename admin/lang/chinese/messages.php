@@ -40,6 +40,7 @@ define("_UPLOADCSV", "上傳CSV 檔案");
 define("_LABELCONTROL", "標籤集管理台"); //NEW with 0.98rc3
 define("_LABELSET", "標籤集"); //NEW with 0.98rc3
 define("_LABELANS", "標籤"); //NEW with 0.98rc3
+define("_OPTIONAL", "Optional"); //NEW with 0.98finalRC1
 
 //DROPDOWN HEADINGS
 define("_SURVEYS", "問卷");

@@ -1255,13 +1255,13 @@ if ($action == "editquestion")
 if ($action == "addgroup")
 	{
 	$newgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-			   . "\t\t<b>$setfont<font color='white'>Create New Group for Survey ID($sid)</font></font></b></td></tr>\n"
+			   . "\t\t<b>$setfont<font color='white'>"._ADDG."</font></font></b></td></tr>\n"
 			   . "\t<tr><form action='$scriptname' name='addnewgroup' method='post'>\n"
 			   . "\t\t<td align='right'>$setfont<b>"._GL_TITLE."</b></font></td>\n"
-			   . "\t\t<td><input $slstyle type='text' size='50' name='group_name'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n"
-			   . "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>(optional)</font></td>\n"
+			   . "\t\t<td><input $slstyle type='text' size='50' name='group_name'><font color='red' face='verdana' size='1'>"._REQ."</font></td></tr>\n"
+			   . "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>("._OPTIONAL.")</font></td>\n"
 			   . "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='description'></textarea></td></tr>\n"
-			   . "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create New Group'></td>\n"
+			   . "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._ADDG."'></td>\n"
 			   . "\t<input type='hidden' name='action' value='insertnewgroup'>\n"
 			   . "\t<input type='hidden' name='sid' value='$sid'>\n"
 			   . "\t</form></tr>\n"

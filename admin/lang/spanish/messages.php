@@ -40,6 +40,7 @@ define("_UPLOADCSV", "Subir Archivo CSV");
 define("_LABELCONTROL", "Administraci&oacute;n de Etiquetas"); //NEW with 0.98rc3
 define("_LABELSET", "Conjunto de Etiquetas"); //NEW with 0.98rc3
 define("_LABELANS", "Etiquetas"); //NEW with 0.98rc3
+define("_OPTIONAL", "Optional"); //NEW with 0.98finalRC1
 
 //DROPDOWN HEADINGS
 define("_SURVEYS", "Encuestas");
