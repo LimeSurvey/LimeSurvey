@@ -97,14 +97,17 @@ function create_mandatorylist($ia)
 			case "H":
 				$thismandatory=setman_questionandcode($ia);
 				break;
+			case "X":
+				//Do nothing - boilerplate questions CANNOT be mandatory
+				break;
 			default:
 				$thismandatory=setman_normal($ia);
 			}
-		if ($ia[7] != "Y") //Question is not conditional - addto mandatory arrays
+		if ($ia[7] != "Y" && isset($thismandatory)) //Question is not conditional - addto mandatory arrays
 			{
 			$mandatory=$thismandatory;
 			}	
-		if ($ia[7] == "Y") //Question IS conditional - add to conmandatory arrays
+		if ($ia[7] == "Y" && isset($thismandatory)) //Question IS conditional - add to conmandatory arrays
 			{
 			$conmandatory=$thismandatory;
 			}
