@@ -317,6 +317,24 @@ if ($action == "cleartokens")
 	$action="";
 	}
 
+if ($action == "updatedb" && $sid)
+	{
+	$query = "ALTER TABLE `tokens_$sid`\n"
+		   . "ADD `attribute_1` varchar(100) NULL,\n"
+		   . "ADD `attribute_2` varchar(100) NULL,\n"
+		   . "ADD `mpid` int NULL";
+	if ($result = mysql_query($query))
+		{
+		echo "<tr><td align='center'>"._SUCCESS."</td></tr>\n";
+		$action="";
+		}
+	else
+		{
+		echo "<tr><td align='center'>"._ERROR."</td></tr>\n";
+		$action="";
+		}
+	}
+	
 if (!$action)
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
@@ -330,8 +348,15 @@ if (!$action)
 		."\t\t\t<li><a href='tokens.php?sid=$sid&action=cleartokens' onClick='return confirm(\""
 		._TC_CLEARTOKENS_RUSURE."\")'>"._TC_CLEARTOKENS."</a></li>\n"
 		."\t\t\t<li><a href='tokens.php?sid=$sid&action=deleteall' onClick='return confirm(\""
-		._TC_DELETEALL_RUSURE."\")'>"._TC_DELETEALL."</a></li>\n"
-		."\t\t\t<li><a href='tokens.php?sid=$sid&action=kill'>"._T_KILL_BT."</a></li></ul>\n"
+		._TC_DELETEALL_RUSURE."\")'>"._TC_DELETEALL."</a></li>\n";
+	$bquery = "SELECT * FROM {$dbprefix}tokens_$sid LIMIT 1";
+	$bresult = mysql_query($bquery) or die(_ERROR." counting fields<br />".mysql_error());
+	$bfieldcount=mysql_num_fields($bresult);
+	if ($bfieldcount==7)
+		{
+		echo "\t\t\t<li><a href='tokens.php?sid=$sid&action=updatedb'>"._TC_UPDATEDB."</a></li>\n";
+		}
+	echo "\t\t\t<li><a href='tokens.php?sid=$sid&action=kill'>"._T_KILL_BT."</a></li></ul>\n"
 		."\t\t\t</font>\n"
 		."\t\t\t</td></tr></table>\n"
 		."\t\t</td>\n"
