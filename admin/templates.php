@@ -55,24 +55,11 @@ foreach ($template_a as $tp) {
 }
 unset($template_a);
 
-function newfolder($name) { //Creates a new template directory
-	if (mkdir("$publicdir/templates/$name")) {
-	    return true;
-	} else {
-		return false;
-	}
-}
-
-function createfiles($folder) { //Places basic files into new template directory
-
-}
-
 //PUBLIC LANGUAGE FILE
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$defaultlang.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
-
 
 //Save Changes if necessary
 if ($action=="savechanges" && $_POST['changes']) {
@@ -218,6 +205,8 @@ $files[]=array("name"=>"completed.pstpl");
 $files[]=array("name"=>"endgroup.pstpl");
 $files[]=array("name"=>"navigator.pstpl");
 $files[]=array("name"=>"endpage.pstpl");
+$files[]=array("name"=>"clearall.pstpl");
+$files[]=array("name"=>"register.pstpl");
 
 $normalfiles=array("DUMMYENTRY", ".", "..");
 foreach ($files as $fl) {
@@ -229,12 +218,26 @@ $screens[]=array("name"=>_TP_QUESTIONPAGE);
 $screens[]=array("name"=>_TP_SUBMITPAGE);
 $screens[]=array("name"=>_TP_COMPLETEDPAGE);
 $screens[]=array("name"=>_TP_CLEARALLPAGE);
+$screens[]=array("name"=>_TP_REGISTERPAGE);
 
 $Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Submit=array("startpage.pstpl", "survey.pstpl", "submit.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Completed=array("startpage.pstpl", "completed.pstpl", "endpage.pstpl");
-$Clearall=array("startpage.pstpl", "endpage.pstpl");
+$Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
+$Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
+
+//CHECK ALL FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
+foreach ($files as $file) {
+	$thisfile="$publicdir/templates/$templatename/".$file['name'];
+	if (!is_file($thisfile)) {
+	    $copyfile="$publicdir/templates/default/".$file['name'];
+		$newfile=$thisfile;
+		if (!@copy($copyfile, $newfile)) {
+		    echo "<script type=\"text/javascript\">\n<!--\nalert('Failed to copy ".$file['name']." to new template directory.');\n//-->\n</script>";
+		}
+	}
+}
 //Load this editfile
 function filetext($templatefile) {
 	global $publicdir, $templatename;
@@ -271,8 +274,6 @@ function templatereplace($line)
 	
 	if ($templatename) {$templateurl="$publicurl/templates/$templatename/";}
 	else {$templateurl="$publicurl/templates/default/";}
-	//echo $templateurl;
-	//$clearall = "\t\t\t\t\t<div class='clearall'><a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall' onClick='return confirm(\""._CONFIRMCLEAR."\")'>["._EXITCLEAR."]</a></div>\n";
 	$clearall = "\t\t\t\t\t<div class='clearall'><a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall' onClick='return confirm(\"Are you sure you want to clear?\")'>[Exit and Clear Responses]</a></div>\n";
 	
 	$line=str_replace("{SURVEYNAME}", $surveyname, $line);
@@ -306,7 +307,21 @@ function templatereplace($line)
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	$line=str_replace("{SUBMITCOMPLETE}", _SM_COMPLETED, $line);
 	$line=str_replace("{SUBMITREVIEW}", _SM_REVIEW, $line);
-	
+	$line=str_replace("{ANSWERSCLEARED}", _ANSCLEAR, $line);
+	$line=str_replace("{RESTART}", 	"<a href='{$_SERVER['PHP_SELF']}?sid=$sid&token=".returnglobal('token')."'>"._RESTART."</a>", $line);
+	$line=str_replace("{CLOSEWINDOW}", "<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a>", $line);
+	$line=str_replace("{REGISTERERROR}", "You must include an email address!", $line);
+	$line=str_replace("{REGISTERMESSAGE1}", _RG_REGISTER1, $line);
+	$line=str_replace("{REGISTERMESSAGE2}", _RG_REGISTER2, $line);
+	$registerform="<table class='register'><tr><td align='right'>"._RG_FIRSTNAME."</td><td><input type='text'></td></tr>\n"
+				. "<tr><td align='right'>"._RG_LASTNAME."</td><td><input type='text'></td></tr>\n"
+				. "<tr><td align='right'>"._RG_EMAIL."</td><td><input type='text'></td></tr>\n"
+				. "<tr><td align='right'>"._TL_ATTR1."</td><td><input type='text'></td></tr>\n"
+				. "<tr><td align='right'>"._TL_ATTR2."</td><td><input type='text'></td></tr>\n"
+				. "<tr><td></td><td><input type='submit' value='"._CONTINUE_PS."'></td></tr>\n"
+				. "</table>\n";
+	$line=str_replace("{REGISTERFORM}", $registerform, $line);
+
 	return $line;
 	}
 function makegraph($thisstep, $total)
@@ -369,6 +384,26 @@ switch($screenname) {
 			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
 		}
 		break;
+	case _TP_REGISTERPAGE:
+		unset($files);
+		foreach($Register as $qs) {
+			$files[]=array("name"=>$qs);
+		}
+		$myoutput[]="<html>";
+		foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		foreach(file("$publicdir/templates/$templatename/register.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
+		$myoutput[]= "\n";
+		break;
 	case _TP_CLEARALLPAGE:
 		unset($files);
 		foreach ($Clearall as $qs) {
@@ -379,17 +414,13 @@ switch($screenname) {
 			{
 			$myoutput[]=templatereplace($op);
 			}
-		$myoutput[]= "<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>";
-		$myoutput[]= "<font face='arial' size='2'>";
-		$myoutput[]= "<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />";
-		$myoutput[]= "<a href='{$_SERVER['PHP_SELF']}?sid=x'>"._RESTART."</a><br />";
-		$myoutput[]= "<a href='javascript: window.close()'>"._CLOSEWIN."</a>";
-		$myoutput[]= "</font>";
-		$myoutput[]= "</td></tr>";
-		$myoutput[]= "</table><br />";
+		foreach(file("$publicdir/templates/$templatename/clearall.pstpl") as $op)
+			{
+			$myoutput[]=templatereplace($op);
+			}
 		foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
 			{
-			$myoutput[]= templatereplace($op);
+			$myoutput[]=templatereplace($op);
 			}
 		$myoutput[]= "\n";
 		break;
@@ -633,10 +664,10 @@ foreach($myoutput as $line) {
 fclose($fnew);
 
 echo "<font face='verdana' size='2'><br />\n"
-	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample'></iframe>\n"
+	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'></iframe>\n"
 	."<br />&nbsp;<br />"
 	."</td></tr></table>\n"
-	.htmlfooter("", "");
+	.htmlfooter("instructions.html#Templates", "");
 
 function unlink_wc($dir, $pattern){
    if ($dh = opendir($dir)) { 
