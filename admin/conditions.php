@@ -279,7 +279,7 @@ echo "\t\t</td>\n";
 echo "\t</tr>\n";
 
 //3: Get other conditions currently set for this question
-$query = "SELECT * FROM conditions WHERE qid=$qid";
+$query = "SELECT conditions.cid, conditions.cqid, conditions.cfieldname, conditions.value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid=$qid";
 $result = mysql_query($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".mysql_error());
 $conditionscount=mysql_num_rows($result);
 if ($conditionscount > 0)
@@ -289,9 +289,10 @@ if ($conditionscount > 0)
 		echo "\t<tr bgcolor='FFFFFF'>\n";
 		echo "\t<form name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n";
 		echo "\t\t<td align='right'><font size='1' face='verdana'>\n";
+		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
 			{
-			if ($cqn[1] == $rows['cqid'])
+			if ($cqn[3] == $rows['cfieldname'])
 				{
 				echo "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
 				}
