@@ -120,6 +120,7 @@ define("_NOTOKEN3", "El token que se le ha proporcionado no es válido o ya fue u
 define("_NOQUESTIONS", "Esta encuesta todavía no tiene preguntas y no puede ser probada ni completada.");
 define("_FURTHERINFO", "Para más información contactar a");
 define("_NOTACTIVE", "Esta encuesta no está activa. No podrá guardar sus respuestas.");
+define("_SURVEYEXPIRED", "This survey is no longer available."); //NEW for 098rc5
 
 define("_SURVEYCOMPLETE", "Usted ha terminado ya este examen.");
 

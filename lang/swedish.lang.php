@@ -120,6 +120,7 @@ define("_NOTOKEN3", "Behörighetskoden som du angett är antingen ogiltlig eller r
 define("_NOQUESTIONS", "Denna enkät har ännu inga frågor och kan inte testas eller färdigställas.");
 define("_FURTHERINFO", "För ytterligare information kontakta");
 define("_NOTACTIVE", "Denna enkät är inte aktiv för tillfället. Du kan därför inte spara dina svar.");
+define("_SURVEYEXPIRED", "This survey is no longer available."); //NEW for 098rc5
 
 define("_SURVEYCOMPLETE", "You have already completed this survey.");
 

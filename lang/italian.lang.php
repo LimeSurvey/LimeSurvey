@@ -120,6 +120,7 @@ define("_NOTOKEN3", "Il Token inserito non &egrave; valido o &egrave; gi&agrave;
 define("_NOQUESTIONS", "L&#039;indagine non contiene domande. Pertanto non pu&ograve; essere avviata o testata.");
 define("_FURTHERINFO", "Per ulteriori informazioni contattare");
 define("_NOTACTIVE", "L&#039;indagine non &egrave; attiva. Impossibile salvare le risposte.");
+define("_SURVEYEXPIRED", "This survey is no longer available."); //NEW for 098rc5
 
 define("_SURVEYCOMPLETE", "Hai gi&agrave; completato il questionario.");
 

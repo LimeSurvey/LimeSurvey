@@ -120,6 +120,7 @@ define("_NOTOKEN3", "L'invitation que vous avez reçue n'est pas valide, ou a déj
 define("_NOQUESTIONS", "Ce sondage n'a plus de questions et ne peut être testé ou finalisé.");
 define("_FURTHERINFO", "Pour plus d'informations veuillez contacter");
 define("_NOTACTIVE", "Ce sondage n'est pas actif. Vous ne pourrez pas sauver vos réponses.");
+define("_SURVEYEXPIRED", "This survey is no longer available."); //NEW for 098rc5
 
 define("_SURVEYCOMPLETE", "Vous avez déjà accompli cet aperçu.");
 

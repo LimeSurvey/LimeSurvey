@@ -116,8 +116,9 @@ define("_NOTOKEN3", "The token you have provided is either not valid, or has alr
 define("_NOQUESTIONS", "This survey does not yet have any questions and cannot be tested or completed.");
 define("_FURTHERINFO", "For further information contact");
 define("_NOTACTIVE", "This survey is not currently active. You will not be able to save your responses.");
+define("_SURVEYEXPIRED", "This survey is no longer available.");
 
-define("_SURVEYCOMPLETE", "You have already completed this survey.");
+define("_SURVEYCOMPLETE", "You have already completed this survey."); //NEW FOR 0.98rc6
 
 define("_INSTRUCTION_LIST", "Choose only one of the following"); //NEW for 098rc3
 define("_INSTRUCTION_MULTI", "Check any that apply"); //NEW for 098rc3
