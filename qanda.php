@@ -620,7 +620,7 @@ switch ($ia[4])
 			{
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=''";
 			if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />No Answer<br />\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"._NOANSWER."<br />\n";
 			}
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
