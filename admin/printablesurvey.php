@@ -104,6 +104,7 @@ while ($degrow = mysql_fetch_array($degresult))
 	
 	foreach ($deqrows as $deqrow)
 		{
+		//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 		$explanation = ""; //reset conditions explanation
 		$x=0;
 		$distinctquery="SELECT DISTINCT cqid, questions.title FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid={$deqrow['qid']} ORDER BY cqid";
@@ -152,6 +153,9 @@ while ($degrow = mysql_fetch_array($degresult))
 			$explanation = "[Answer this question ".$explanation."]";
 			echo "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
 			}
+		
+		//END OF GETTING CONDITIONS
+		
 		$qid = $deqrow['qid'];
 		$fieldname = "$sid"."X"."$gid"."X"."$qid";
 		echo "\t<tr bgcolor='$bgc'>\n";
