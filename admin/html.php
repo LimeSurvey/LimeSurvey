@@ -36,22 +36,22 @@
 
 if ($sid)
 	{
-	$sumquery1="SELECT * FROM surveys WHERE sid=$sid";
-	$sumresult1=mysql_query($sumquery1);
-	$surveysummary="<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='SILVER' BORDER='0'>\n";
-	while ($s1row=mysql_fetch_row($sumresult1))
+	$sumquery1 = "SELECT * FROM surveys WHERE sid=$sid";
+	$sumresult1 = mysql_query($sumquery1);
+	$surveysummary = "<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='SILVER' BORDER='0'>\n";
+	while ($s1row = mysql_fetch_array($sumresult1))
 		{
-		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Title:</B></TD><TD>$setfont<B><FONT COLOR='#000080'>$s1row[1] (ID $s1row[0])</FONT></B></tD></TR>\n";
-		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Description:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont $s1row[2]</TD></TR>\n";
-		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Welcome:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont $s1row[5]</TD></TR>\n";
-		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Admin:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont $s1row[3] ($s1row[7])</TD></TR>\n";
-		if ($s1row[6] != "0000-00-00") {$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Expires:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont $s1row[6]</TD></TR>\n";}
-		$activated=$s1row[4];
+		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Title:</B></TD><TD>$setfont<B><FONT COLOR='#000080'>{$s1row['short_title']} (ID {$s1row['sid']})</FONT></B></TD></TR>\n";
+		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Description:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont {$s1row['description']}</TD></TR>\n";
+		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Welcome:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont {$s1row['welcome']}</TD></TR>\n";
+		$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Admin:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont {$s1row['admin']} ({$s1row['adminemail']})</TD></TR>\n";
+		if ($s1row['expires'] != "0000-00-00") {$surveysummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Expires:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont {$s1row['expires']}</TD></TR>\n";}
+		$activated = $s1row['active'];
 		}
 	
-	$sumquery2="SELECT * FROM groups WHERE sid=$sid";
-	$sumresult2=mysql_query($sumquery2);
-	$sumcount2=mysql_num_rows($sumresult2);
+	$sumquery2 = "SELECT * FROM groups WHERE sid=$sid";
+	$sumresult2 = mysql_query($sumquery2);
+	$sumcount2 = mysql_num_rows($sumresult2);
 	$surveysummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Groups:</B></TD><TD BGCOLOR='#DDDDDD'>$setfont";
 	if ($groupselect)
 		{
@@ -60,9 +60,9 @@ if ($sid)
 		$surveysummary .= "</SELECT>\n";
 		}
 
-	$sumquery3="SELECT * FROM questions WHERE sid=$sid";
-	$sumresult3=mysql_query($sumquery3);
-	$sumcount3=mysql_num_rows($sumresult3);
+	$sumquery3 = "SELECT * FROM questions WHERE sid=$sid";
+	$sumresult3 = mysql_query($sumquery3);
+	$sumcount3 = mysql_num_rows($sumresult3);
 
 	$surveysummary .= " <FONT SIZE='1'>($sumcount2 groups, $sumcount3 questions)</FONT></TD></TR>\n";
 
@@ -108,13 +108,13 @@ if ($sid)
 
 if ($gid)
 	{
-	$grpquery="SELECT * FROM groups WHERE gid=$gid ORDER BY group_name";
-	$grpresult=mysql_query($grpquery);
-	$groupsummary="<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='#DDDDDD' BORDER='0'>\n";
-	while ($grow=mysql_fetch_row($grpresult))
+	$grpquery =" SELECT * FROM groups WHERE gid=$gid ORDER BY group_name";
+	$grpresult = mysql_query($grpquery);
+	$groupsummary = "<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='#DDDDDD' BORDER='0'>\n";
+	while ($grow = mysql_fetch_array($grpresult))
 		{
-		$groupsummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Group Title:</TD><TD>$setfont$grow[2] ($grow[0])</TD></TR>\n";
-		if ($grow[3]) {$groupsummary .= "<TR><TD VALIGN='TOP' ALIGN='RIGHT'>$setfont<B>Description:</TD><TD>$setfont$grow[3]</TD></TR>\n";}
+		$groupsummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Group Title:</TD><TD>$setfont{$grow['group_name']} ({$grow['gid']})</TD></TR>\n";
+		if ($grow['description']) {$groupsummary .= "<TR><TD VALIGN='TOP' ALIGN='RIGHT'>$setfont<B>Description:</TD><TD>$setfont{$grow['description']}</TD></TR>\n";}
 		}
 	$groupsummary .="<TR><TD ALIGN='RIGHT'>$setfont<B>Questions:</TD>";
 	$groupsummary .="<TD><SELECT $slstyle NAME='qid' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
@@ -132,16 +132,16 @@ if ($gid)
 
 if ($qid)
 	{
-	$qrquery="SELECT * FROM questions WHERE gid=$gid AND sid=$sid AND qid=$qid";
-	$qrresult=mysql_query($qrquery);
-	$questionsummary="<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='#EEEEEE' BORDER='0'>\n";
-	while ($qrrow=mysql_fetch_row($qrresult))
+	$qrquery = "SELECT * FROM questions WHERE gid=$gid AND sid=$sid AND qid=$qid";
+	$qrresult = mysql_query($qrquery);
+	$questionsummary = "<TABLE WIDTH='100%' ALIGN='CENTER' BGCOLOR='#EEEEEE' BORDER='0'>\n";
+	while ($qrrow = mysql_fetch_array($qrresult))
 		{
-		$questionsummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Question Title:</TD><TD>$setfont$qrrow[4]</TD></TR>\n";
-		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Question:</TD><TD>$setfont$qrrow[5]</TD></TR>\n";
-		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Help:</TD><TD>$setfont$qrrow[6]</TD></TR>\n";
-		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Type:</TD><TD>$setfont$qrrow[3]</TD></TR>\n";
-		if ($qrrow[3]== "O" || $qrrow[3] == "L" || $qrrow[3] == "M" || $qrrow[3] == "A" || $grrow[3] == "B" || $qrrow[3] == "C" || $qrrow[3] == "P")
+		$questionsummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Question Title:</TD><TD>$setfont{$qrrow['title']}</TD></TR>\n";
+		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Question:</TD><TD>$setfont{$qrrow['question']}</TD></TR>\n";
+		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Help:</TD><TD>$setfont{$qrrow['help']}</TD></TR>\n";
+		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Type:</TD><TD>$setfont{$qrrow['type']}</TD></TR>\n";
+		if ($qrrow['type']== "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $grrow[3] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P")
 			{
 			$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Answers:</TD>";
 			$questionsummary .= "<TD><SELECT $slstyle NAME='answer' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
@@ -151,15 +151,15 @@ if ($qid)
 		$questionsummary .= "<TR><TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Other?</TD><TD>$setfont$qrrow[7]</TD></TR>\n";
 		$questionsummary .= "<TR><TD COLSPAN='2' ALIGN='RIGHT'>";
 		$questionsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Edit Question' onClick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
-		if ($qrrow[3] == "O" || $qrrow[3] == "L" || $qrrow[3] == "M" || $qrrow[3]=="A" || $qrrow[3] == "B" || $qrrow[3] == "C" || $qrrow[3] == "P") 
+		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P") 
 			{
-			if (($activated == "Y" && $qrrow[3] == "L") || ($activated == "N"))
+			if (($activated == "Y" && $qrrow['type'] == "L") || ($activated == "N"))
 				{
 				$questionsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Add Answer' onClick=\"window.open('$scriptname?action=addanswer&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
 				}
-			$qrq="SELECT * FROM answers WHERE qid=$qid";
-			$qrr=mysql_query($qrq);
-			$qct=mysql_num_rows($qrr);
+			$qrq = "SELECT * FROM answers WHERE qid=$qid";
+			$qrr = mysql_query($qrq);
+			$qct = mysql_num_rows($qrr);
 			if ($qct == 0)
 				{
 				$questionsummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Question' onClick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
@@ -175,13 +175,13 @@ if ($qid)
 if ($code)
 	{
 	$cdquery = "SELECT * FROM answers WHERE qid=$qid AND code='$code'";
-	$cdresult=mysql_query($cdquery);
+	$cdresult = mysql_query($cdquery);
 	$answersummary = "<TABLE WIDTH='100%' ALIGN='CENTER' BORDER='0'>\n";
-	while ($cdrow=mysql_fetch_row($cdresult))
+	while ($cdrow = mysql_fetch_array($cdresult))
 		{
-		$answersummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Code:</TD><TD>$setfont$cdrow[1]</TD></TR>\n";
-		$answersummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Answer:</TD><TD>$setfont$cdrow[2]</TD></TR>\n";
-		$answersummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Default?</TD><TD>$setfont$cdrow[3]</TD></TR>\n";
+		$answersummary .= "<TR><TD WIDTH='20%' ALIGN='RIGHT'>$setfont<B>Code:</TD><TD>$setfont{$cdrow['code']}</TD></TR>\n";
+		$answersummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Answer:</TD><TD>$setfont{$cdrow['answer']}</TD></TR>\n";
+		$answersummary .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Default?</TD><TD>$setfont{$cdrow['default']}</TD></TR>\n";
 		}
 	$answersummary .= "<TR><TD ALIGN='RIGHT' COLSPAN='2'>";
 	$answersummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete Answer' onClick=\"window.open('$scriptname?action=delanswer&sid=$sid&gid=$gid&qid=$qid&code=$code', '_top')\">\n";
@@ -211,15 +211,15 @@ if ($action == "modifyuser")
 	{
 	$usersummary = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='3' BGCOLOR='BLACK' ALIGN='CENTER'>";
 	$usersummary .= "<B>$setfont<FONT COLOR='WHITE'>Modify User</TD></TR>\n";
-	$muq="SELECT * FROM users WHERE user='$user' LIMIT 1";
-	$mur=mysql_query($muq);
+	$muq = "SELECT * FROM users WHERE user='$user' LIMIT 1";
+	$mur = mysql_query($muq);
 	$usersummary .= "<TR><FORM ACTION='$scriptname' METHOD='POST'>";
-	while ($mrw=mysql_fetch_row($mur))
+	while ($mrw = mysql_fetch_array($mur))
 		{
 		$usersummary .= "<TD>$setfont<B>$mrw[0]</TD>";
-		$usersummary .= "<INPUT TYPE='HIDDEN' NAME='user' VALUE='$mrw[0]'>";
-		$usersummary .= "<TD><INPUT TYPE='text' NAME='pass' VALUE='$mrw[1]'></TD>";
-		$usersummary .= "<TD><INPUT TYPE='text' SIZE='2' NAME='level' VALUE='$mrw[2]'></TD>";
+		$usersummary .= "<INPUT TYPE='HIDDEN' NAME='user' VALUE='{$mrw['user']}'>";
+		$usersummary .= "<TD><INPUT TYPE='text' NAME='pass' VALUE='{$mrw['password']}'></TD>";
+		$usersummary .= "<TD><INPUT TYPE='text' SIZE='2' NAME='level' VALUE='{$mrw['security']}'></TD>";
 		}
 	$usersummary .= "</TR>\n<TR><TD COLSPAN='3' ALIGN='CENTER'>";
 	$usersummary .= "<INPUT TYPE='SUBMIT' $btstyle VALUE='Update'></TD></TR>\n";
@@ -252,7 +252,7 @@ if ($action == "editusers")
 		$usersummary .= "<B>$setfont<FONT COLOR='WHITE'>List of users</TD></TR>\n";
 		$usersummary .= "<TR BGCOLOR='#444444'><TD>$setfont<FONT COLOR='WHITE'><B>User</TD><TD>$setfont<FONT COLOR='WHITE'><B>Password</TD><TD>$setfont<FONT COLOR='WHITE'><B>Security</TD><TD>$setfont<FONT COLOR='WHITE'><B>Actions</TD></TR>\n";
 		$userlist = getuserlist();
-		$ui=count($userlist);
+		$ui = count($userlist);
 		if ($ui < 1) {$usersummary .= "<CENTER>WARNING: No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.";}
 		else
 			{
@@ -304,28 +304,28 @@ if ($action == "copyquestion")
 	{
 	$eqquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
 	$eqresult = mysql_query($eqquery);
-	while ($eqrow=mysql_fetch_row($eqresult))
+	while ($eqrow = mysql_fetch_array($eqresult))
 		{
 		$editquestion = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-		$editquestion .= "<B>$setfont<FONT COLOR='WHITE'>Copy Question $qid (Code $eqrow[4])</B><BR>Note: You MUST enter a new Question Code!</TD></TR>\n";
+		$editquestion .= "<B>$setfont<FONT COLOR='WHITE'>Copy Question $qid (Code {$eqrow['title']})</B><BR>Note: You MUST enter a new Question Code!</TD></TR>\n";
 		$editquestion .= "<TR><FORM ACTION='$scriptname' NAME='editquestion' >\n";
 		$editquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Question Code:</TD>";
 		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='title' VALUE=''></TD></TR>\n";
 		$editquestion .= "<TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Question:</TD>";
-		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='question'>$eqrow[5]</TEXTAREA></TD></TR>\n";
+		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='question'>{$eqrow['question']}</TEXTAREA></TD></TR>\n";
 		$editquestion .= "<TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Help:</TD>";
-		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='help'>$eqrow[6]</TEXTAREA></TD></TR>\n";
+		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='help'>{$eqrow['help']}</TEXTAREA></TD></TR>\n";
 		$editquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Type:</TD>";
 		$editquestion .= "<TD><SELECT $slstyle NAME='type'>\n";
-		$editquestion .= getqtypelist($eqrow[3]);
+		$editquestion .= getqtypelist($eqrow['type']);
 		$editquestion .= "</SELECT></TD></TR>\n";
-		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' NAME='type' VALUE='$eqrow[3]'></TD></TR>\n";
+		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' NAME='type' VALUE='{$eqrow['type']}'></TD></TR>\n";
 		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Group?</tD>";
 		$editquestion .= "<TD><SELECT $slstyle NAME='gid'>\n";
-		$editquestion .= getgrouplist2($eqrow[2]);
+		$editquestion .= getgrouplist2($eqrow['gid']);
 		$editquestion .= "</SELECT></TD></TR>\n";
 		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Other?</TD>";
-		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='$eqrow[7]' NAME='other'></TD></TR>\n";
+		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='{$eqrow['other']}' NAME='other'></TD></TR>\n";
 		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Copy answers:</TD>";
 		$editquestion .= "<TD>$setfont<INPUT TYPE='checkbox' CHECKED NAME='copyanswers' VALUE='Y'></TD></TR>\n";
 		$editquestion .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Question'></TD>";
@@ -375,17 +375,17 @@ if ($action == "addgroup")
 
 if ($action == "editgroup")
 	{
-	$egquery="SELECT * FROM groups WHERE sid=$sid AND gid=$gid";
-	$egresult=mysql_query($egquery);
-	while ($esrow=mysql_fetch_row($egresult))	
+	$egquery = "SELECT * FROM groups WHERE sid=$sid AND gid=$gid";
+	$egresult = mysql_query($egquery);
+	while ($esrow = mysql_fetch_array($egresult))	
 		{
 		$editgroup = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
 		$editgroup .= "<B>$setfont<FONT COLOR='WHITE'>Edit Group for Survey ID($sid) </B></TD></TR>\n";
 		$editgroup .= "<TR><FORM ACTION='$scriptname' NAME='editgroup' METHOD='POST'>\n";
 		$editgroup .= "<TD ALIGN='RIGHT' WIDTH='20%'>$setfont<B>Group Name:</TD>";
-		$editgroup .= "<TD><INPUT TYPE='TEXT' SIZE='40' NAME='group_name' value='$esrow[2]'></TD></TR>\n";
+		$editgroup .= "<TD><INPUT TYPE='TEXT' SIZE='40' NAME='group_name' value='{$esrow['group_name']}'></TD></TR>\n";
 		$editgroup .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Description:</B>(optional)</TD>";
-		$editgroup .= "<TD><TEXTAREA COLS='40' ROWS='4' NAME='description'>$esrow[3]</TEXTAREA></TD></TR>\n";
+		$editgroup .= "<TD><TEXTAREA COLS='40' ROWS='4' NAME='description'>{$esrow['description']}</TEXTAREA></TD></TR>\n";
 		$editgroup .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Group'></TD>";
 		$editgroup .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='updategroup'>\n";
 		$editgroup .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
@@ -399,29 +399,29 @@ if ($action == "editquestion")
 	{
 	$eqquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
 	$eqresult = mysql_query($eqquery);
-	while ($eqrow=mysql_fetch_row($eqresult))
+	while ($eqrow = mysql_fetch_array($eqresult))
 		{
 		$editquestion = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
 		$editquestion .= "<B>$setfont<FONT COLOR='WHITE'>Edit Question $qid</B></TD></TR>\n";
 		$editquestion .= "<TR><FORM ACTION='$scriptname' NAME='editquestion' >\n";
 		$editquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Question Code:</TD>";
-		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='title' VALUE='$eqrow[4]'></TD></TR>\n";
+		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='title' VALUE='{$eqrow['title']}'></TD></TR>\n";
 		$editquestion .= "<TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Question:</TD>";
-		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='question'>$eqrow[5]</TEXTAREA></TD></TR>\n";
+		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='question'>{$eqrow['question']}</TEXTAREA></TD></TR>\n";
 		$editquestion .= "<TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Help:</TD>";
-		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='help'>$eqrow[6]</TEXTAREA></TD></TR>\n";
+		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='help'>{$eqrow['help']}</TEXTAREA></TD></TR>\n";
 		$editquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Type:</TD>";
 		$editquestion .= "<TD><SELECT $slstyle NAME='type'>\n";
-		$editquestion .= getqtypelist($eqrow[3]);
+		$editquestion .= getqtypelist($eqrow['type']);
 		$editquestion .= "</SELECT></TD></TR>\n";
-		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' NAME='type' VALUE='$eqrow[3]'></TD></TR>\n";
+		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' NAME='type' VALUE='{$eqrow['type']}'></TD></TR>\n";
 		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Group?</tD>";
 		$editquestion .= "<TD><SELECT $slstyle NAME='gid'>\n";
-		$editquestion .= getgrouplist2($eqrow[2]);
+		$editquestion .= getgrouplist2($eqrow['gid']);
 		$editquestion .= "</SELECT></TD></TR>\n";
 		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Other?</TD>";
-		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='$eqrow[7]' NAME='other'></TD></TR>\n";
-		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='$eqrow[2]' NAME='gid'></TD></TR>\n";
+		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='{$eqrow['other']}' NAME='other'></TD></TR>\n";
+		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='{$eqrow['gid']}' NAME='gid'></TD></TR>\n";
 		$editquestion .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Question'></TD>";
 		$editquestion .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='updatequestion'>\n";
 		$editquestion .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
@@ -436,23 +436,23 @@ if ($action == "editanswer")
 	{
 	$eaquery = "SELECT * FROM answers WHERE qid=$qid AND code='$code'";
 	$earesult = mysql_query($eaquery);
-	while ($earow=mysql_fetch_row($earesult))
+	while ($earow = mysql_fetch_array($earesult))
 		{
 		$editanswer = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
 		$editanswer .= "<B>$setfont<FONT COLOR='WHITE'>Edit Answer $qid, $code</B></TD></TR>\n";
 		$editanswer .= "<TR><FORM ACTION='$scriptname' NAME='editanswer' METHOD='POST'>\n";
 		$editanswer .= "<TD ALIGN='RIGHT'>$setfont<B>Answer Code:</TD>";
-		$editanswer .= "<TD><INPUT TYPE='TEXT' SIZE='5' VALUE='$earow[1]' NAME='code'></TD></TR>\n";
+		$editanswer .= "<TD><INPUT TYPE='TEXT' SIZE='5' VALUE='{$earow['code']}' NAME='code'></TD></TR>\n";
 		$editanswer .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Answer:</TD>";
-		$editanswer .= "<TD><INPUT TYPE='TEXT' VALUE='$earow[2]' NAME='answer'></TD></TR>\n";
+		$editanswer .= "<TD><INPUT TYPE='TEXT' VALUE='{$earow['answer']}' NAME='answer'></TD></TR>\n";
 		$editanswer .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Default?</TD>";
-		$editanswer .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='$earow[3]' NAME='default'></TD></TR>\n";
+		$editanswer .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='{$earow['default']}' NAME='default'></TD></TR>\n";
 		$editanswer .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Answer'></TD>";
 		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='updateanswer'>\n";
 		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
 		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='gid' VALUE='$gid'>\n";
 		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='qid' VALUE='$qid'>\n";
-		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='old_code' VALUE='$earow[1]'>\n";
+		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='old_code' VALUE='{$earow['code']}'>\n";
 		$editanswer .= "</FORM></TR>\n"; 
 		$editanswer .= "</TABLE>\n";
 				
@@ -461,28 +461,28 @@ if ($action == "editanswer")
 
 if ($action == "editsurvey")
 	{
-	$esquery="SELECT * FROM surveys WHERE sid=$sid";
-	$esresult=mysql_query($esquery);
-	while ($esrow=mysql_fetch_row($esresult))	
+	$esquery = "SELECT * FROM surveys WHERE sid=$sid";
+	$esresult = mysql_query($esquery);
+	while ($esrow = mysql_fetch_array($esresult))	
 		{
 		$editsurvey = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
 		$editsurvey .= "<B>$setfont<FONT COLOR='WHITE'>Create New Survey </B></TD></TR>\n";
 		$editsurvey .= "<TR><FORM NAME='addnewsurvey' ACTION='$scriptname' METHOD='POST'>\n";
 		$editsurvey .= "<TD ALIGN='RIGHT'><B>$setfont Short Title:</TD>";
-		$editsurvey .= "<TD><INPUT TYPE='text' SIZE='20' NAME='short_title' VALUE='$esrow[1]'></tD></TR>\n";
+		$editsurvey .= "<TD><INPUT TYPE='text' SIZE='20' NAME='short_title' VALUE='{$esrow['short_title']}'></tD></TR>\n";
 		$editsurvey .= "<TR><TD ALIGN='RIGHT'><B>$setfont Description:</TD>";
-		$editsurvey .= "<TD><TEXTAREA COLS='35' ROWS='5' NAME='description'>$esrow[2]</TEXTAREA></TD></TR>\n";
+		$editsurvey .= "<TD><TEXTAREA COLS='35' ROWS='5' NAME='description'>{$esrow['description']}</TEXTAREA></TD></TR>\n";
 		$editsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Welcome Message:</TD>";
-		$editsurvey .= "<TD><TEXTAREA COLS='35' ROWS='5' NAME='welcome'>".str_replace("<BR>", "\n", $esrow[5])."</TEXTAREA></TD></TR>\n";
+		$editsurvey .= "<TD><TEXTAREA COLS='35' ROWS='5' NAME='welcome'>".str_replace("<BR>", "\n", $esrow['welcome'])."</TEXTAREA></TD></TR>\n";
 		$editsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Administrator</TD>";
-		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='admin' VALUE='$esrow[3]'></TD></TR>\n";
+		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='admin' VALUE='{$esrow['admin']}'></TD></TR>\n";
 		$editsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Admin Email</TD>";
-		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='adminemail' VALUE='$esrow[7]'></TD></TR>\n";
+		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='adminemail' VALUE='{$esrow['adminemail']}'></TD></TR>\n";
 		$editsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Expiry Date</TD>";
-		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='10' NAME='expires' VALUE='$esrow[6]'></TD></TR>\n";
+		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='10' NAME='expires' VALUE='{$esrow['expires']}'></TD></TR>\n";
 		$editsurvey .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Survey'></TD>";
 		$editsurvey .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='updatesurvey'>\n";
-		$editsurvey .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$esrow[0]'>\n";
+		$editsurvey .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='{$esrow['sid']}'>\n";
 		$editsurvey .= "</FORM></TR>\n";	
 		$editsurvey .= "</TABLE>\n";
 		}
