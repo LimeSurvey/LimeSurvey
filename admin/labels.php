@@ -199,9 +199,13 @@ if (isset($lid) && ($action != "editset") && $lid)
 	$activeuse=mysql_num_rows($result);
 	while ($row=mysql_fetch_array($result)) {$activesurveys[]=$row['short_title'];}
 	//NOW ALSO COUNT UP HOW MANY QUESTIONS ARE USING THIS LABELSET, TO GIVE WARNING ABOUT CHANGES
-	$query = "SELECT * FROM {$dbprefix}questions WHERE lid=$lid";
+	$query = "SELECT * FROM {$dbprefix}questions WHERE type IN ('F','H') AND lid=$lid";
 	$result = mysql_query($query);
 	$totaluse=mysql_num_rows($result);
+	while($row=mysql_fetch_array($result))
+		{
+		$qidarray[]=array("url"=>"$scriptname?sid=".$row['sid']."&gid=".$row['gid']."&qid=".$row['qid'], "title"=>"QID: ".$row['qid']);
+		} // while
 	//NOW GET THE ANSWERS AND DISPLAY THEM
 	$query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
 	$result = mysql_query($query);
@@ -223,9 +227,10 @@ if (isset($lid) && ($action != "editset") && $lid)
 			."\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"
 			._L_EDIT_BT."' align='left' border='0' hspace='0' "
 			."onclick=\"window.open('labels.php?action=editset&lid=$lid', '_top')\">\n"
-			."\t\t\t\t\t<input type='image' src='$imagefiles/delete.gif' title='"
+			."\t\t\t\t\t<a href='labels.php?action=delset&lid=$lid'>"
+			."<img src='$imagefiles/delete.gif' title='"
 			._L_DEL_BT."' align='left' border='0' hspace='0' "
-			."onClick=\"window.open('labels.php?action=delset&lid=$lid', '_top')\">\n"
+			."onClick=\"return confirm('Are you sure?')\">\n"
 			."\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
 			._EXPORTLABEL."' align='left' border='0' hspace='0' "
 			."onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n"
@@ -235,7 +240,7 @@ if (isset($lid) && ($action != "editset") && $lid)
 		}
 	//LABEL ANSWERS
 	$query = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
-	$result = mysql_query($query);
+	$result = mysql_query($query) or die(mysql_error());
 	$labelcount = mysql_num_rows($result);
 	echo "\t\t<table height='1'><tr><td></td></tr></table>\n"
 		."\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
@@ -351,7 +356,9 @@ if (isset($lid) && ($action != "editset") && $lid)
 		echo "\t\t\t\t<tr>\n"
 			."\t\t\t\t\t<td colspan='4' align='center'>\n"
 			."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><b>"
-			._WARNING."</b>: "._LB_TOTALUSE."</i></font></font>\n"
+			._WARNING."</b>: "._LB_TOTALUSE."</i><br />";
+		foreach ($qidarray as $qd) {echo "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
+		echo "</font></font>\n"
 			."\t\t\t\t\t</td>\n"
 			."\t\t\t\t</tr>\n";
 		}
@@ -385,12 +392,12 @@ function delset($lid)
 	{
 	global $dbprefix;
 	//CHECK THAT THERE ARE NO QUESTIONS THAT RELY ON THIS LID
-	$query = "SELECT qid FROM {$dbprefix}questions WHERE lid=$lid";
-	$result = mysql_query($query);
-	$count=mysql_num_rows($result);
+	$query = "SELECT qid FROM {$dbprefix}questions WHERE type IN ('F','H') AND lid=$lid";
+	$result = mysql_query($query) or die("Error");
+	$count = mysql_num_rows($result);
 	if ($count > 0)
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELSET." \")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELSET."\")\n //-->\n</script>\n";
 		return false;
 		}
 	else //There are no dependencies. We can delete this safely
