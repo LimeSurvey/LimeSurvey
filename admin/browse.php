@@ -43,17 +43,22 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
 echo $htmlheader;
-echo "<TABLE WIDTH='100%' BORDER='0' BGCOLOR='#555555'><TR><TD ALIGN='CENTER'><FONT COLOR='WHITE'><B>Browse Survey Data</B></TD></TR></TABLE>\n";
-if (!mysql_selectdb ($databasename, $connect))
+echo "<table width='100%' border='0' bgcolor='#555555'>\n";
+echo "\t<tr><td align='center'><font color='white'><b>Browse Survey Data</b></td></tr>\n";
+echo "</table>\n";
+
+if (!mysql_selectdb($databasename, $connect))
 	{
-	echo "<CENTER><B><FONT COLOR='RED'>ERROR: Surveyor database does not exist</FONT></B><BR><BR>";
-	echo "It appears that your surveyor script has not yet been set up properly.<BR>";
+	echo "<center><b><font color='red'>ERROR: Surveyor database does not exist</font></b><br /><br />\n";
+	echo "It appears that your surveyor script has not yet been set up properly.<br />\n";
 	echo "Contact your System Administrator";
+	echo "</body>\n</html>";
 	exit;
 	}
 if (!$sid && !$action)
 	{
-	echo "<CENTER><B>You have not selected a survey.</B><BR>";
+	echo "<center><b>You have not selected a survey.</b></center><br />\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 
@@ -63,24 +68,27 @@ $actresult = mysql_query($actquery);
 $actcount = mysql_num_rows($actresult);
 if ($actcount > 0)
 	{
-	while ($actrow=mysql_fetch_row($actresult))
+	while ($actrow = mysql_fetch_array($actresult))
 		{
-		if ($actrow[4]=="N")
+		if ($actrow['active'] == "N")
 			{
-			echo "<CENTER><B><FONT COLOR='RED'>ERROR:</FONT><BR>This survey has not yet been activated, and subsequently there is no data to browse.</B>";
-			
+			echo "<center><b><font color='red'>ERROR:</font><br />\n";
+			echo "This survey has not yet been activated, and subsequently there is no data to browse.</b></center>\n";
+			echo "</body>\n</html>";
 			exit;
 			}
 		else
 			{
-			$surveytable="survey_$actrow[0]";
-			$surveyname="$actrow[1]";
+			$surveytable = "survey_{$actrow['sid']}";
+			$surveyname = "{$actrow['short_title']}";
 			}
 		}
 	}
 else
 	{
-	echo "<CENTER><B><FONT COLOR='RED'>ERROR:</FONT><BR>There is no matching survey ($sid)</B>";
+	echo "<center><b><font color='red'>ERROR:</font><br />\n";
+	echo "There is no matching survey ($sid)</b></center>\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 
@@ -88,77 +96,99 @@ else
 
 //BUT FIRST, A QUICK WORD FROM OUR SPONSORS
 
-$surveyheader = "<TABLE WIDTH='100%' ALIGN='CENTER' BORDER='0' BGCOLOR='#EFEFEF'>";
-$surveyheader .= "<TR><TD ALIGN='CENTER' $singleborderstyle>";
-$surveyheader .= "$setfont<B>$surveyname</B></TD></TR></TABLE>\n";
+$surveyheader = "<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n";
+$surveyheader .= "\t<tr>\n";
+$surveyheader .= "\t\t<td align='center' $singleborderstyle>\n";
+$surveyheader .= "\t\t\t$setfont<b>$surveyname</b>\n";
+$surveyheader .= "\t\t</td>\n";
+$surveyheader .= "\t</tr>\n";
+$surveyheader .= "</table>\n";
 
 
 if ($action == "id")
 	{
 	echo "$surveyheader";
 	echo "$surveyoptions";
+	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
+	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
-	//echo "$fnquery<BR><BR>";
-	$fnames[]=array("id", "id", "id");
-	while ($fnrow = mysql_fetch_row($fnresult))
+	//echo "$fnquery<br /><br />\n";
+	
+	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow;} // Get table output into array
+	
+	if (count($fnrows) > 0)
 		{
-		$field=$fnrow[1]."X".$fnrow[2]."X".$fnrow[0];
-		$ftitle="Grp$fnrow[2]Qst$fnrow[4]";
-		$fquestion=$fnrow[5];
-		if ($fnrow[3] == "M" || $fnrow[3] == "A" || $fnrow[3] == "B" || $fnrow[3] == "C" || $fnrow[3] == "P")
+		// Perform a case insensitive natural sort on title column of a multidimensional array
+		usort($fnrows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
+		} // end if there are any questions
+	
+	$fnames[] = array("id", "id", "id");
+	foreach ($fnrows as $fnrow)
+	#while ($fnrow = mysql_fetch_array($fnresult))
+		{
+		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
+		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
+		$fquestion = $fnrow['question'];
+		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "P")
 			{
-			$fnrquery="SELECT * FROM answers WHERE qid=$fnrow[0] order by code";
-			$fnrresult=mysql_query($fnrquery);
-			while ($fnrrow=mysql_fetch_row($fnrresult))
+			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY code";
+			$fnrresult = mysql_query($fnrquery);
+			while ($fnrrow = mysql_fetch_array($fnrresult))
 				{
-				$fnames[]=array("$field$fnrrow[1]", "$ftitle ($fnrrow[1])", "$fnrow[5]($fnrrow[2])");
-				if ($fnrow[3] == "P") {$fnames[]=array("$field$nfrrow[1]"."comment", "$ftitle"."comment", "$fnrow[5] (comment)");}
+				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
+				if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");}
 				}
-			if ($fnrow[7] == "Y")
+			if ($fnrow['other'] == "Y")
 				{
-				$fnames[]=array("$field"."other", "$ftitle"."other", "$fnrow[5](other)");
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
 				}
 			}
-		elseif ($fnrow[3] == "O")
+		elseif ($fnrow['type'] == "O")
 			{
-			$fnames[]=array("$field", "$ftitle", "$fnrow[5]");
-			$field2=$field."comment";
-			$ftitle2=$ftitle."[Comment]";
-			$longtitle=$fnrow[5]."<BR>[Comment]";
-			$fnames[]=array("$field2", "$ftitle2", "$longtitle");
+			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
+			$field2 = $field."comment";
+			$ftitle2 = $ftitle."[Comment]";
+			$longtitle = "{$fnrow['question']}<br />[Comment]";
+			$fnames[] = array("$field2", "$ftitle2", "$longtitle");
 			}
 		else
 			{
-			$fnames[]=array("$field", "$ftitle", "$fnrow[5]");
+			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
 			}
-		//echo "$field | $ftitle | $fquestion<BR>";
+		//echo "$field | $ftitle | $fquestion<br />\n";
 		}
 
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = mysql_query($idquery);
-	echo "<TABLE>";
-	echo "<TR><TD COLSPAN='2' BGCOLOR='#DDDDDD' ALIGN='CENTER'>$setfont<B>Viewing Answer ID $id</TD></TR>\n";
-	echo "<TR><TD COLSPAN='2' BGCOLOR='#CCCCCC' HEIGHT='1'></TD></TR>\n";
-	while ($idrow = mysql_fetch_row($idresult))
+	echo "<table>\n";
+	echo "\t<tr><td colspan='2' bgcolor='#DDDDDD' align='center'>$setfont<b>Viewing Answer ID $id</b></td></tr>\n";
+	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+	while ($idrow = mysql_fetch_array($idresult))
 		{
 		$i=0;
 		for ($i; $i<$nfncount+1; $i++)
 			{
-			echo "<TR><TD BGCOLOR='#EFEFEF' VALIGN='TOP' ALIGN='RIGHT' WIDTH='33%'>$setfont<B>{$fnames[$i][2]}</TD>";
-			echo "<TD VALIGN='TOP'>$setfont$idrow[$i]</TD></TR>\n";
-			echo "<TR><TD COLSPAN='2' BGCOLOR='#CCCCCC' HEIGHT='1'></TD></TR>\n";
+			echo "\t<tr>\n";
+			echo "\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>$setfont<b>{$fnames[$i][2]}</b></td>\n";
+			echo "\t\t<td valign='top' style='padding-left: 5px'>$setfont{$idrow[$fnames[$i][0]]}</td>\n";
+			echo "\t</tr>\n";
+			echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 			}
 		}
-	echo "</TABLE>\n";
-	echo "<TABLE WIDTH='100%'><TR><TD $singleborderstyle BGCOLOR='#EEEEEE' ALIGN='CENTER'>";
-	echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\">\n";
-	echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\">\n";
-	echo "</TD></TR></TABLE>\n";
+	echo "</table>\n";
+	echo "<table width='100%'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
 	}
 
 
@@ -171,74 +201,75 @@ elseif ($action == "all")
 	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
-	//echo "$fnquery<BR><BR>";
-	while ($fnrow = mysql_fetch_row($fnresult))
+	//echo "$fnquery<br /><br />\n";
+	while ($fnrow = mysql_fetch_array($fnresult))
 		{
-		if ($fnrow[3] != "M" && $fnrow[3] != "A" && $fnrow[3] != "B" && $fnrow[3] != "C" && $fnrow[3] != "P" && $fnrow[3] != "O")
+		if ($fnrow['type'] != "M" && $fnrow['type'] != "A" && $fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "P" && $fnrow['type'] != "O")
 			{
-			$field=$fnrow[1]."X".$fnrow[2]."X".$fnrow[0];
-			$ftitle="Grp$fnrow[2]Qst$fnrow[4]";
-			$fquestion=$fnrow[5];
-			$fnames[]=array("$field", "$ftitle", "$fquestion", "$fnrow[2]");
+			$field = "{$fnrow['sid']}X{fnrow['gid']}X{fnrow['qid']}";
+			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
+			$fquestion = $fnrow['question'];
+			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
 			}
-		elseif ($fnrow[3] == "O")
+		elseif ($fnrow['type'] == "O")
 			{
-			$field=$fnrow[1]."X".$fnrow[2]."X".$fnrow[0];
-			$ftitle="Grp$fnrow[2]Qst$fnrow[4]";
-			$fquestion=$fnrow[5];
-			$fnames[]=array("$field", "$ftitle", "$fquestion", "$fnrow[2]");
+			$field = "{$fnrow['sid']}X{fnrow['gid']}X{fnrow['qid']}";
+			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
+			$fquestion = $fnrow['question'];
+			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
 			$field .= "comment";
 			$ftitle .= "[comment]";
 			$fquestion .= " (comment)";
-			$fnames[]=array("$field", "$ftitle", "$fquestion", "$fnrow[2]");
+			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
 			$fncount++;
 			}
 		else
 			{
-			$i2query="SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid=$fnrow[0] AND questions.sid=$sid ORDER BY code";
-			$i2result=mysql_query($i2query);
-			while ($i2row=mysql_fetch_row($i2result))
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2result = mysql_query($i2query);
+			while ($i2row = mysql_fetch_array($i2result))
 				{
-				$field=$fnrow[1] . "X" . $fnrow[2] . "X" . $fnrow[0].$i2row[1];
-				$ftitle="Grp$fnrow[2]Qst$fnrow[4]Opt$i2row[1]";
-				if ($i2row[4] == "Y") {$otherexists="Y";}
-				$fnames[]=array("$field", "$ftitle", "$fnrow[5]<BR>[$i2row[2]]", "$fnrow[2]");
-				if ($fnrow[3] == "P") {$fnames[]=array("$field"."comment", "$ftitle", "$fnrow[5]<BR>[$i2row[2]]<BR>[Comment]", "$fnrow[2]"); $fncount++;}
+				$field = "{$fnrow['sid']}X{fnrow['gid']}X{fnrow['qid']}{$i2row['code']}";
+				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Opt{$i2row['code']}";
+				if ($i2row['other'] == "Y") {$otherexists = "Y";}
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]", "{$fnrow['gid']}");
+				if ($fnrow['type'] == "P") {$fnames[] = array("$field"."comment", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]<br />\n[Comment]", "{$fnrow['gid']}"); $fncount++;}
 				$fncount++;
 				}
 			if ($otherexists == "Y") 
 				{
-				$field=$fnrow[1]."X".$fnrow[2]."X".$fnrow[0]."other";
-				$ftitle="Grp$fnrow[2]Qst$fnrow[4]OptOther";
-				$fnames[]=array("$field", "$ftitle", "$fnrow[5]<BR>[Other]", "$fnrow[2]");
+				$field = "{$fnrow['sid']}X{fnrow['gid']}X{fnrow['qid']}"."other";
+				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}OptOther";
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[Other]", "{$fnrow['gid']}");
 				$fncount++;
 				}			
 			
 			}
-		//echo "$field | $ftitle | $fquestion<BR>";
+		//echo "$field | $ftitle | $fquestion<br />\n";
 		}
 	
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
 	if ($fncount < 10) {$cellwidth="10%";} else {$cellwidth="100";}
 	
 	echo "\n\n<!-- DATA TABLE -->\n";
-	if ($fncount < 10) {echo "<TABLE WIDTH='100%' BORDER='0'>\n";}
-	else {$fnwidth=(($fncount-1)*100); echo "<TABLE WIDTH='$fnwidth' BORDER='0'>\n";}
-	$tableheader = " <TR BGCOLOR='#000080' VALIGN='TOP'>\n  <TD BGCOLOR='BLACK'><FONT SIZE='1' COLOR='WHITE' WIDTH='$cellwidth'><B>id</B></TD>\n";
+	if ($fncount < 10) {echo "<table width='100%' border='0'>\n";}
+	else {$fnwidth = (($fncount-1)*100); echo "<table width='$fnwidth' border='0'>\n";}
+	$tableheader = "\t<tr bgcolor='#000080' valign='top'>\n";
+	$tableheader .= "\t\t<td bgcolor='black'><font size='1' color='white' width='$cellwidth'><b>id</b></td>\n";
 	foreach ($fnames as $fn)
 		{
-		if (!$currentgroup)  {$currentgroup=$fn[3]; $gbc="#000080";}
+		if (!$currentgroup)  {$currentgroup = $fn[3]; $gbc = "#000080";}
 		if ($currentgroup != $fn[3]) 
 			{
 			$currentgroup = $fn[3];
 			if ($gbc == "#000080") {$gbc = "#0000C0";}
 			else {$gbc = "#000080";}
 			}
-		$tableheader .= "  <TD BGCOLOR='$gbc'><FONT SIZE='1' COLOR='WHITE' WIDTH='$cellwidth'><B>";
+		$tableheader .= "\t\t<td bgcolor='$gbc'><font size='1' color='white' width='$cellwidth'><b>";
 		$tableheader .= "$fn[2]";
-		$tableheader .="</B></TD>\n"; 
+		$tableheader .= "</b></td>\n"; 
 		}
-	$tableheader .= " </TR>\n\n";
+	$tableheader .= "\t</tr>\n\n";
 	
 	//NOW LETS SHOW THE DATA
 	if ($_POST['sql'])
@@ -253,7 +284,7 @@ elseif ($action == "all")
 	if ($start && $limit) {$dtquery = "SELECT * FROM $surveytable WHERE id >= $start AND id <= $limit";}
 	$dtresult = mysql_query($dtquery);
 	$dtcount = mysql_num_rows($dtresult);
-	$cells=$fncount+1;
+	$cells = $fncount+1;
 
 	echo $tableheader;
 	
@@ -262,43 +293,45 @@ elseif ($action == "all")
 		if (!$bgcc) {$bgcc="#EEEEEE";}
 		else
 			{
-			if ($bgcc == "#EEEEEE") {$bgcc="#CCCCCC";}
-			else {$bgcc="#EEEEEE";}
+			if ($bgcc == "#EEEEEE") {$bgcc = "#CCCCCC";}
+			else {$bgcc = "#EEEEEE";}
 			}
-		echo " <TR BGCOLOR='$bgcc' VALIGN='TOP'>\n";
-		$i=0;
-		for ($i; $i<=$fncount; $i++)
+		echo "\t<tr bgcolor='$bgcc' valign='top'>\n";
+		for ($i=0; $i<=$fncount; $i++)
 			{
-			echo "  <TD ALIGN='CENTER'><FONT SIZE='1'>";
-			if ($i == 0) {echo "<a href='browse.php?sid=$sid&action=id&id=$dtrow[$i]' TITLE='View this record'>";}
+			echo "\t\t<td align='center'><font size='1'>";
+			if ($i == 0) {echo "<a href='browse.php?sid=$sid&action=id&id=$dtrow[$i]' title='View this record'>";}
 			echo "$dtrow[$i]";
 			if ($i == 0) {echo "</a>";}			
-			echo "</TD>\n";
+			echo "</td>\n";
 			}
-		echo " </TR>\n";
+		echo "\t</tr>\n";
 		}
-	echo "</TABLE>\n<BR>";
+	echo "</table>\n<br />\n";
 	
 	echo "\n\n<!-- OTHER OPTIONS -->\n";
-	echo "<TABLE WIDTH='100%' ALIGN='CENTER'>\n";
-	echo " <TR BGCOLOR='#AAAAAA'><FORM>\n  <TD WIDTH='50%' ALIGN='CENTER'>\n";
-	echo "  $setfont View Record ID: ";
-	echo "<INPUT TYPE='TEXT' SIZE='4' NAME='id' STYLE='HEIGHT: 18; font-family: verdana; font-size: 9'>\n";
-	echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Go' STYLE='HEIGHT: 18; font-family: verdana; font-size: 9'>\n";
-	echo "  </TD>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='action' VALUE='id'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	echo "</FORM><FORM>";
-	echo "  <TD WIDTH='50%' ALIGN='CENTER'>\n";
-	echo "  $setfont View records ranging from: ";
-	echo "<INPUT TYPE='TEXT' SIZE='4' NAME='start' STYLE='HEIGHT: 18; font-family: verdana; font-size: 9'>\n";
-	echo " to  <INPUT TYPE='TEXT' SIZE='4' NAME='limit' STYLE='HEIGHT: 18; font-family: verdana; font-size: 9'>\n";
-	echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Go' >\n";
-	echo "  </TD>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='action' VALUE='all'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	echo " </TR>\n";
-	echo "</TABLE>\n";
+	echo "<table width='100%' align='center'>\n";
+	echo "\t<tr bgcolor='#AAAAAA'>\n";
+	echo "\t<form>\n";
+	echo "\t\t<td width='50%' align='center'>\n";
+	echo "\t\t\t$setfont View Record ID: \n";
+	echo "\t\t\t<input type='text' size='4' name='id' style='height: 18; font-family: verdana; font-size: 9' />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Go' style='height: 18; font-family: verdana; font-size: 9' />\n";
+	echo "\t\t</td>\n";
+	echo "\t<input type='hidden' name='action' value='id' />\n";
+	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
+	echo "\t</form>\n";
+	echo "\t<form>\n";
+	echo "\t\t<td width='50%' align='center'>\n";
+	echo "\t\t\t$setfont View records ranging from: \n";
+	echo "\t\t\t<input type='text' size='4' name='start' style='height: 18; font-family: verdana; font-size: 9' />\n";
+	echo "\t\t\t to <input type='text' size='4' name='limit' style='height: 18; font-family: verdana; font-size: 9' />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Go' />\n";
+	echo "\t\t</td>\n";
+	echo "\t<input type='hidden' name='action' value='all' />\n";
+	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
 	}
 else
 	{
@@ -308,7 +341,9 @@ else
 	$gnresult = mysql_query($gnquery);
 	while ($gnrow = mysql_fetch_row($gnresult))
 		{
-		echo "<TABLE WIDTH='100%' BORDER='0'><TR><TD ALIGN='CENTER'>$setfont$gnrow[0] entries in this database</TD></TR></TABLE>\n";
+		echo "<table width='100%' border='0'>\n";
+		echo "\t<tr><td align='center'>$setfont$gnrow[0] entries in this database</td></tr>\n";
+		echo "</table>\n";
 		}
 	}
 ?>
