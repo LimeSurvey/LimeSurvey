@@ -207,20 +207,30 @@ elseif ($action == "insertnewanswer")
 		}
 	else
 		{
-		if (get_magic_quotes_gpc() == "0")
+		$iaquery="SELECT * FROM answers WHERE qid={$_POST['qid']} AND code='{$_POST['code']}'";
+		$iaresult=mysql_query($iaquery) or die ("Error checking for answers with the same code<br />$iaquery<br />".mysql_error());
+		$matchcount=mysql_num_rows($iaresult);
+		if ($matchcount)
 			{
-			$_POST['answer'] = addcslashes($_POST['answer'], "'");
-			}
-		$iaquery = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['default']}')";
-		$iaresult = mysql_query ($iaquery);
-		if ($iaresult)
-			{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your New Answer has been added!\")\n //-->\n</script>\n";
-			$surveyselect = getsurveylist();
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be created! There is already an answer to this question which has the same code. Your codes should be unique for each answer.\")\n //-->\n</script>\n";
 			}
 		else
 			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be created!\")\n //-->\n</script>\n";
+			if (get_magic_quotes_gpc() == "0")
+				{
+				$_POST['answer'] = addcslashes($_POST['answer'], "'");
+				}
+			$iaquery = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['default']}')";
+			$iaresult = mysql_query ($iaquery);
+			if ($iaresult)
+				{
+				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your New Answer has been added!\")\n //-->\n</script>\n";
+				$surveyselect = getsurveylist();
+				}
+			else
+				{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be created!\")\n //-->\n</script>\n";
+				}
 			}
 		}	
 	}
@@ -231,18 +241,30 @@ elseif ($action == "updateanswer")
 		{
 		$_POST['answer'] = addcslashes($_POST['answer'], "'");
 		}
-	$uaquery = "UPDATE answers SET code='{$_POST['code']}', answer='{$_POST['answer']}', `default`='{$_POST['default']}' WHERE qid={$_POST['qid']} AND code='{$_POST['old_code']}'";
-	//echo $uaquery;
-	$uaresult = mysql_query($uaquery);
-	if ($uaresult)
+	if ($_POST['code'] != $_POST['old_code'])
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Answer ($qid, $code) has been updated!\")\n //-->\n</script>\n";
+		$uaquery = "SELECT * FROM answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
+		$uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
+		$matchcount = mysql_num_rows($uaresult);
+		}
+	if ($matchcount)
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated! There is another answer to this question with the same code. All codes should be unique.\")\n //-->\n</script>\n";
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated!\")\n //-->\n</script>\n";
+		$uaquery = "UPDATE answers SET code='{$_POST['code']}', answer='{$_POST['answer']}', `default`='{$_POST['default']}' WHERE qid={$_POST['qid']} AND code='{$_POST['old_code']}'";
+		//echo $uaquery;
+		$uaresult = mysql_query($uaquery);
+		if ($uaresult)
+			{
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Answer ($qid, $code) has been updated!\")\n //-->\n</script>\n";
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated!\")\n //-->\n</script>\n";
+			}
 		}
-
 	}
 
 elseif ($action == "delanswer")
