@@ -268,6 +268,10 @@ if ($result=mysql_query($query))
 					{
 					$emailsent="Y";
 					}
+				else
+					{
+					echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
+					}
 				}
 			}
 		session_unset();
