@@ -976,7 +976,7 @@ else
 		$surveytable = "survey_{$desrow['sid']}";
 		$surveydatestamp = $desrow['datestamp'];
 		}
-	if ($surveyactive == "Y") {echo "$surveyoptions\n";}
+	//if ($surveyactive == "Y") {echo "$surveyoptions\n";}
 	echo "<table height='1'><tr><td></td></tr></table>\n";
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
