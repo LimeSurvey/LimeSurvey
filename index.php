@@ -189,10 +189,10 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 			  WHERE {$dbprefix}saved.scid={$dbprefix}saved_control.scid 
 			  AND {$dbprefix}saved_control.sid=$sid\n";
 	if (isset($_POST['scid'])) {
-	    $query .= "AND {$dbprefix}saved.scid=".$_POST['scid']."\n";
+	    $query .= "AND {$dbprefix}saved.scid=".auto_escape($_POST['scid'])."\n";
 	}		  
-	$query .="AND {$dbprefix}saved_control.identifier='".$_POST['loadname']."'
-			  AND {$dbprefix}saved_control.access_code='".md5($_POST['loadpass'])."'\n";
+	$query .="AND {$dbprefix}saved_control.identifier='".auto_escape($_POST['loadname'])."'
+			  AND {$dbprefix}saved_control.access_code='".md5(auto_unescape($_POST['loadpass']))."'\n";
 	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
 	if (mysql_num_rows($result) < 1)
 		{
@@ -1375,11 +1375,11 @@ function doAssessment($sid)
 							    $assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $total -->
 	`							<table align='center'>
 								 <tr>
-								  <th>($val) ".stripslashes($assessed['name'])."
+								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['name']))."
 								  </th>
 								 </tr>
 								 <tr>
-								  <td align='center'>".stripslashes($assessed['message'])."
+								  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['message']))."
 								 </td>
 								</tr>
 							  	<tr>
@@ -1400,10 +1400,10 @@ function doAssessment($sid)
 					if ($total >= $assessed['min'] && $total <= $assessed['max']) 
 						{
 					    $assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total -->
-						<table align='center'><tr><th>".stripslashes($assessed['name'])."
+						<table align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['name']))."
 						 </th></tr>
 						 <tr>
-						  <td align='center'>".stripslashes($assessed['message'])."
+						  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['message']))."
 						  </td>
 						 </tr>
 						 <tr>
