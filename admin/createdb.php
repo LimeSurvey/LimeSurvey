@@ -75,6 +75,10 @@ if (!mysql_selectdb ($dbname, $connect))
 			{echo "Users Table Created Succesfully..<BR>";}
 		else
 			{echo "Users table could not be created!<BR>";}
+		if (mysql_query($createconditions))
+			{echo "Conditions Table Created Succesfully..<br />\n";}
+		else
+			{echo "Conditions table could not be created!<br />\n";}
 		
 		echo "<BR><BR><B>Now you can go back to the Admin page!<BR>";
 		echo "<INPUT TYPE='SUBMIT' VALUE='Admin' onClick='location.href=\"$scriptname\"'>";
