@@ -49,10 +49,11 @@ echo $htmlheader;
 // CHECK IF FIRST USE!
 if (!mysql_selectdb ($databasename, $connect))
 	{
-	echo "<center><b><font color='red'>ERROR: Surveyor database does not exist</font></center></b><br /><br />\n";
+	echo "<center><b><font color='red'>ERROR: Surveyor database does not exist</font></b><br /><br />\n";
 	echo "It appears that your surveyor script has not yet been set up properly.<br />\n";
 	echo "The first step is to create a MYSQL database name with your chosen default name of $databasename<br />\n";
-	echo "<br /><input type='submit' value='Create $databasename' onClick='location.href=\"createdb.php?dbname=$databasename\"'>\n";
+	echo "<br /><input type='submit' value='Create $databasename' onClick='location.href=\"createdb.php?dbname=$databasename\"' /></center>\n";
+	echo "</body>\n</html>\n";
 	exit;
 	}
 else
