@@ -249,28 +249,28 @@ if ($action == "insert")
 		{
 	    //Save this, don't submit to final response table
 		loadPublicLangFile($sid);
-		$save['identifier']=returnglobal('save_identifier');
-		$save['password']=returnglobal('save_password');
-		$save['passwordconfirm']=returnglobal('save_confirmpassword');
-		$save['email']=returnglobal('save_email');
+		$saver['identifier']=returnglobal('save_identifier');
+		$saver['password']=returnglobal('save_password');
+		$saver['passwordconfirm']=returnglobal('save_confirmpassword');
+		$saver['email']=returnglobal('save_email');
 		if (!returnglobal('redo'))
 			{
-		    $password=md5($save['password']);
+		    $password=md5($saver['password']);
 			}
 		else
 			{
-			$password=$save['password'];
+			$password=$saver['password'];
 			}
 		$errormsg="";
-		if (!$save['identifier']) {$errormsg .= _ERROR.": "._SAVENONAME;}
-		if (!$save['password']) {$errormsg .= _ERROR.": "._SAVENOPASS;}
-		if ($save['password'] != $save['passwordconfirm']) {$errormsg .= _ERROR.": "._SAVENOMATCH;}
-		if (!$errormsg && $save['identifier'] && !returnglobal('redo'))
+		if (!$saver['identifier']) {$errormsg .= _ERROR.": "._SAVENONAME;}
+		if (!$saver['password']) {$errormsg .= _ERROR.": "._SAVENOPASS;}
+		if ($saver['password'] != $saver['passwordconfirm']) {$errormsg .= _ERROR.": "._SAVENOMATCH;}
+		if (!$errormsg && $saver['identifier'] && !returnglobal('redo'))
 			{
 		    //All the fields are correct. Now make sure there's not already a matching saved item
 			$query = "SELECT * FROM {$dbprefix}saved\n"
 					."WHERE sid=$sid\n"
-					."AND identifier='".$save['identifier']."'\n"
+					."AND identifier='".$saver['identifier']."'\n"
 					."AND access_code='$password'\n";
 			$result = mysql_query($query) or die("Error checking for duplicates!<br />$query<br />".mysql_error());
 			if (mysql_num_rows($result) > 0) 
@@ -318,7 +318,7 @@ if ($action == "insert")
 				//Delete all the existing entries
 				$delete="DELETE FROM {$dbprefix}saved
 						 WHERE sid=$sid
-						 AND identifier='".mysql_escape_string($save['identifier'])."'
+						 AND identifier='".mysql_escape_string($saver['identifier'])."'
 						 AND access_code='$password'";
 				$result=mysql_query($delete) or die("Couldn't delete old record<br />".mysql_error());
 			    }
@@ -337,11 +337,11 @@ if ($action == "insert")
 							   ."'0',\n"
 							   ."'".$_SERVER['REMOTE_ADDR']."',\n"
 							   ."'".date("Y-m-d H:i:s")."',\n"
-							   ."'".mysql_escape_string($save['identifier'])."',\n"
+							   ."'".mysql_escape_string($saver['identifier'])."',\n"
 							   ."'$password',\n"
 							   ."'".$key."',\n"
 							   ."'".$val."',\n"
-							   ."'".$save['email']."')";
+							   ."'".$saver['email']."')";
 						//echo "$insert<br />\n";
 						if (!$result=mysql_query($insert))
 							{
@@ -353,21 +353,21 @@ if ($action == "insert")
 			if (!isset($failed) || $failed < 1) 
 				{
 			    echo "<font color='green'>"._SAVE_SUCCEEDED."</font><br />\n";
-				if ($save['email'])
+				if ($saver['email'])
 					{
 				    //Send email
-					if (validate_email($save['email']) && !returnglobal('redo'))
+					if (validate_email($saver['email']) && !returnglobal('redo'))
 						{
 						$subject=_SAVE_EMAILSUBJECT;
 						$message=_SAVE_EMAILTEXT;
 						$message.="\n\n".$thissurvey['name']."\n\n";
-						$message.=_SAVENAME.": ".$save['identifier']."\n";
-						$message.=_SAVEPASSWORD.": ".$save['password']."\n\n";
+						$message.=_SAVENAME.": ".$saver['identifier']."\n";
+						$message.=_SAVEPASSWORD.": ".$saver['password']."\n\n";
 						$message.=_SAVE_EMAILURL.":\n";
-						$message.=$homeurl."/dataentry.php?sid=$sid&action=editsaved&identifier=".$save['identifier']."&accesscode=".$save['password']."&public=true";
+						$message.=$homeurl."/dataentry.php?sid=$sid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
 						$message=crlf_lineendings($message);
 						$headers = "From: {$thissurvey['adminemail']}\r\n";
-						if (mail($save['email'], $subject, $message, $headers))
+						if (mail($saver['email'], $subject, $message, $headers))
 							{
 							$emailsent="Y";
 							echo "<font color='green'>"._SAVE_EMAILSENT."</font><br />\n";
@@ -547,7 +547,7 @@ elseif ($action == "edit" || $action == "editsaved")
 		while($svrow=mysql_fetch_array($svresult))
 			{
 			$responses[$svrow['fieldname']]=$svrow['value'];
-			$save['email']=$svrow['email'];
+			$saver['email']=$svrow['email'];
 			}
 		$fieldmap = createFieldMap($sid);
 		foreach($fieldmap as $fm)
@@ -1122,7 +1122,7 @@ elseif ($action == "edit" || $action == "editsaved")
 		echo "\t</tr>"
 			."<input type='hidden' name='save_password' value='".returnglobal('accesscode')."'>\n"
 			."<input type='hidden' name='save_confirmpassword' value='".returnglobal('accesscode')."'>\n"
-			."<input type='hidden' name='save_email' value='".$save['email']."'>\n"
+			."<input type='hidden' name='save_email' value='".$saver['email']."'>\n"
 			."<input type='hidden' name='redo' value='yes'>\n"
 			."</div>\n";
 		echo "	<tr>
