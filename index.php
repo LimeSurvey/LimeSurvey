@@ -168,21 +168,15 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surv
 	}
 
 //CHECK IF SURVEY ID DETAILS HAVE CHANGED
-if (!isset($oldsid)) {$oldsid=returnglobal('oldsid');}
-if ($oldsid && $oldsid != $sid) //Must be an 'oldsid' and this must not match up with current sid
-	{ // SURVEY HAS CHANGED
-	foreach ($_SESSION as $SES)
-		{
-		session_unset();
-		}
-	//Add here an option to save old results when this capability is added.
-	//exit;
-	}
-if (!isset($oldsid))
-	{
-	$_SESSION['oldsid'] = $sid;
-	}
+if (isset($_SESSION['oldsid'])) {$oldsid=$_SESSION['oldsid'];}
 
+if (!isset($oldsid)) {$_SESSION['oldsid'] = $sid;}
+
+if ($oldsid && $oldsid != $sid)
+	{
+	session_unset();
+	$_SESSION['oldsid']=$sid;
+	}
 
 //CLEAR SESSION IF REQUESTED
 if (isset($_GET['move']) && $_GET['move'] == "clearall")
