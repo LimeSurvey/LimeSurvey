@@ -501,12 +501,17 @@ function do_list_dropdown($ia)
 	{
 	global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
 	global $shownoanswer;
+	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
 	if (isset($defexists)) {unset ($defexists);}
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$result = mysql_query($query);
 	while($row = mysql_fetch_array($result)) {$other = $row['other'];}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	}
 	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
 	$anscount = mysql_num_rows($ansresult);
 	while ($ansrow = mysql_fetch_array($ansresult))
@@ -586,7 +591,11 @@ function do_list_radio($ia)
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$result = mysql_query($query);
 	while($row = mysql_fetch_array($result)) {$other = $row['other'];}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	}
 	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
 	$anscount = mysql_num_rows($ansresult);
 	if ((isset($other) && $other=="Y") || ($ia[6] != "Y" && $shownoanswer == 1)) {$anscount++;} //Count "
@@ -661,8 +670,13 @@ function do_listwithcomment($ia)
 	global $maxoptionsize, $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
 	global $shownoanswer;
 	$answer="";
+	$qidattributes=getQuestionAttributes($ia[0]);
 	if (!isset($maxoptionsize)) {$maxoptionsize=35;}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	}
 	$ansresult = mysql_query($ansquery);
 	$anscount = mysql_num_rows($ansresult);
 	if ($lwcdropdowns == "R" && $anscount <= $dropdownthreshold)
@@ -772,8 +786,13 @@ function do_listwithcomment($ia)
 function do_ranking($ia)
 	{
 	global $dbprefix;
+	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	}
 	$ansresult = mysql_query($ansquery);
 	$anscount = mysql_num_rows($ansresult);
 	$answer .= "\t\t\t<script type='text/javascript'>\n"
@@ -984,7 +1003,11 @@ function do_multiplechoice($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	}
 	$ansresult = mysql_query($ansquery);
 	$anscount = mysql_num_rows($ansresult);
 	if ($other == "Y") {$anscount++;} //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
@@ -1042,6 +1065,7 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 	{
 	global $dbprefix;
+	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer  = "\t\t\t<table class='question'>\n"
 			 . "\t\t\t\t<tr>\n"
 			 . "\t\t\t\t\t<td>&nbsp;</td>\n"
@@ -1049,7 +1073,11 @@ function do_multiplechoice_withcomments($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while ($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	}
 	$ansresult = mysql_query($ansquery);
 	$anscount = mysql_num_rows($ansresult)*2;
 	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n"
@@ -1114,8 +1142,12 @@ function do_multiplechoice_withcomments($ia)
 function do_multipleshorttext($ia)
 	{
 	global $dbprefix;
-	
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	}
 	$ansresult = mysql_query($ansquery);
 	$anscount = mysql_num_rows($ansresult)*2;
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
