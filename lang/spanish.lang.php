@@ -50,6 +50,9 @@ define("_OTHER", "Otro");
 define("_PLEASECHOOSE", "Favor de elegir");
 define("_ERROR", "Error");
 define("_COMPLETE", "completo");
+define("_INCREASE", "Aumento"); //NEW WITH 0.98 BABELFISH TRANSLATION
+define("_SAME", "Iguales"); //NEW WITH 0.98 BABELFISH TRANSLATION
+define("_DECREASE", "Disminución"); //NEW WITH 0.98 BABELFISH TRANSLATION
 //from questions.php
 define("_CONFIRMATION", "Confirmación");
 define("_TOKEN", "Token");

@@ -54,6 +54,9 @@ define("_COMPLETE", "complete");
 define("_CONFIRMATION", "Bekräftelse");
 define("_TOKEN", "Behörighetskod");
 define("_CONTINUE", "Fortsätt");
+define("_INCREASE", "Increase"); //NEW WITH 0.98
+define("_SAME", "Same"); //NEW WITH 0.98
+define("_DECREASE", "Decrease"); //NEW WITH 0.98
 
 //BUTTONS
 define("_ACCEPT", "Acceptera");

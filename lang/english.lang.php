@@ -46,6 +46,9 @@ define("_OTHER", "Other");
 define("_PLEASECHOOSE", "Please choose");
 define("_ERROR", "Error");
 define("_COMPLETE", "complete");
+define("_INCREASE", "Increase"); //NEW WITH 0.98
+define("_SAME", "Same"); //NEW WITH 0.98
+define("_DECREASE", "Decrease"); //NEW WITH 0.98
 //from questions.php
 define("_CONFIRMATION", "Confirmation");
 define("_TOKEN", "Token");
