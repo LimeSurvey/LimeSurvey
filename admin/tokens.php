@@ -185,7 +185,7 @@ if ($action == "browse")
 	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=token'><img src='DownArrow.gif' alt='Sort by Token' border='0' align='left'></a>$setfont"."Token</th>\n";
 	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc'><img src='DownArrow.gif' alt='Sort by Invite?' border='0' align='left'></a>$setfont"."Invite?</th>\n";
 	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='DownArrow.gif' alt='Sort by Done?' border='0' align='left'></a>$setfont"."Done?</th>\n";
-	echo "\t\t<th align='left'>$setfont"."Action</th>\n";
+	echo "\t\t<th align='left' colspan='2'>$setfont"."Action</th>\n";
 	echo "\t</tr>\n";
 	$bquery = "SELECT * FROM tokens_$sid";
 	if (!$order) {$bquery .= " ORDER BY tid";}
@@ -200,9 +200,9 @@ if ($action == "browse")
 			echo "\t\t<td>$setfont$brow[$i]</td>\n";
 			}
 		echo "\t\t<td align='left'>\n";
-		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='Edit' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\" />\n";
-		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\" />\n";
-		if ($brow['completed'] != "Y" && $brow['token']) {echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='Do Survey' onClick=\"window.open('$publicurl/index.php?sid=$sid&token={$brow['token']}', '_blank')\" />\n";}
+		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='Edit' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\" />";
+		echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\" />";
+		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='Do Survey' onClick=\"window.open('$publicurl/index.php?sid=$sid&token={$brow['token']}', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
 			{
