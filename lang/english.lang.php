@@ -45,15 +45,15 @@ define("_NOANSWER", "No answer");
 define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Other");
 define("_PLEASECHOOSE", "Please choose");
-define("_ERROR", "Error");
+define("_ERROR_PS", "Error");
 define("_COMPLETE", "complete");
 define("_INCREASE", "Increase"); //NEW WITH 0.98
 define("_SAME", "Same"); //NEW WITH 0.98
 define("_DECREASE", "Decrease"); //NEW WITH 0.98
 //from questions.php
 define("_CONFIRMATION", "Confirmation");
-define("_TOKEN", "Token");
-define("_CONTINUE", "Continue");
+define("_TOKEN_PS", "Token");
+define("_CONTINUE_PS", "Continue");
 
 //BUTTONS
 define("_ACCEPT", "Accept");
@@ -67,7 +67,7 @@ define("_SUBMIT", "submit");
 //From QANDA.PHP
 define("_CHOOSEONE", "Please choose one of the following");
 define("_ENTERCOMMENT", "Please enter your comment here");
-define("_NUMERICAL", "Only numbers may be entered in this field");
+define("_NUMERICAL_PS", "Only numbers may be entered in this field");
 define("_CLEARALL", "Exit and Clear Survey");
 define("_MANDATORY", "This question is mandatory");
 define("_MANDATORY_PARTS", "Please complete all parts");
@@ -89,7 +89,7 @@ define("_CONTACT1", "Please contact");
 define("_CONTACT2", "for further assistance");
 define("_ANSCLEAR", "Answers Cleared");
 define("_RESTART", "Restart this Survey");
-define("_CLOSEWIN", "Close this Window");
+define("_CLOSEWIN_PS", "Close this Window");
 define("_CONFIRMCLEAR", "Are you sure you want to clear all your responses?");
 define("_EXITCLEAR", "Exit and Clear Survey");
 //From QUESTION.PHP

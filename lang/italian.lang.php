@@ -49,15 +49,15 @@ define("_NOANSWER", "Nessuna risposta");
 define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Altro");
 define("_PLEASECHOOSE", "Seleziona");
-define("_ERROR", "Errore");
+define("_ERROR_PS", "Errore");
 define("_COMPLETE", "Completato");
 define("_INCREASE", "Crescente"); //NEW WITH 0.98
 define("_SAME", "Uguale"); //NEW WITH 0.98
 define("_DECREASE", "Descrescente"); //NEW WITH 0.98
 //from questions.php
 define("_CONFIRMATION", "Conferma");
-define("_TOKEN", "Token");
-define("_CONTINUE", "Continua");
+define("_TOKEN_PS", "Token");
+define("_CONTINUE_PS", "Continua");
 
 //BUTTONS
 define("_ACCEPT", "Accetta");
@@ -71,7 +71,7 @@ define("_SUBMIT", "invia");
 //From QANDA.PHP
 define("_CHOOSEONE", "Seleziona");
 define("_ENTERCOMMENT", "Scrivi i tuoi commenti");
-define("_NUMERICAL", "Inserire solo numeri");
+define("_NUMERICAL_PS", "Inserire solo numeri");
 define("_CLEARALL", "Azzera e esci dall&#039;indagine");
 define("_MANDATORY", "domanda obbligatoria");
 define("_MANDATORY_PARTS", "Si prega di completare tutti i campi");
@@ -93,7 +93,7 @@ define("_CONTACT1", "Contattare");
 define("_CONTACT2", "per ulteriori informazioni");
 define("_ANSCLEAR", "Risposte azzerate");
 define("_RESTART", "Avvia di nuovo l&#039;indagine");
-define("_CLOSEWIN", "Chiudi finestra");
+define("_CLOSEWIN_PS", "Chiudi finestra");
 define("_CONFIRMCLEAR", "Procedere nell&#039;eliminazione di tutte le risposte?");
 define("_EXITCLEAR", "azzera ed esci dall&#039;indagine");
 //From QUESTION.PHP

@@ -49,12 +49,12 @@ define("_NOANSWER", "Inget svar");
 define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Annat");
 define("_PLEASECHOOSE", "Välj");
-define("_ERROR", "Fel");
+define("_ERROR_PS", "Fel");
 define("_COMPLETE", "complete");
 //from questions.php
 define("_CONFIRMATION", "Bekräftelse");
-define("_TOKEN", "Behörighetskod");
-define("_CONTINUE", "Fortsätt");
+define("_TOKEN_PS", "Behörighetskod");
+define("_CONTINUE_PS", "Fortsätt");
 define("_INCREASE", "Increase"); //NEW WITH 0.98
 define("_SAME", "Same"); //NEW WITH 0.98
 define("_DECREASE", "Decrease"); //NEW WITH 0.98
@@ -71,7 +71,7 @@ define("_SUBMIT", "skicka");
 //From QANDA.PHP
 define("_CHOOSEONE", "Välj ett av de följande");
 define("_ENTERCOMMENT", "Skriv din kommentar här");
-define("_NUMERICAL", "Endast nummer kan skrivas i detta fält");
+define("_NUMERICAL_PS", "Endast nummer kan skrivas i detta fält");
 define("_CLEARALL", "Lämna och rensa enkäten");
 define("_MANDATORY", "Denna fråga är obligatorisk");
 define("_MANDATORY_PARTS", "Var god, fyll i alla delar");
@@ -93,7 +93,7 @@ define("_CONTACT1", "Var god kontakta");
 define("_CONTACT2", "för ytterligare assistans");
 define("_ANSCLEAR", "Svaren rensade");
 define("_RESTART", "Starta om enkäten");
-define("_CLOSEWIN", "Stäng fönstret");
+define("_CLOSEWIN_PS", "Stäng fönstret");
 define("_CONFIRMCLEAR", "Är du säker på att du vill rensa dina svar?");
 define("_EXITCLEAR", "Lämna och rensa enkäten");
 //From QUESTION.PHP

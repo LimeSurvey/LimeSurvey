@@ -49,15 +49,15 @@ define("_NOANSWER", "Sin respuesta");
 define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Otro");
 define("_PLEASECHOOSE", "Favor de elegir");
-define("_ERROR", "Error");
+define("_ERROR_PS", "Error");
 define("_COMPLETE", "completo");
 define("_INCREASE", "Aumento"); //NEW WITH 0.98 BABELFISH TRANSLATION
 define("_SAME", "Iguales"); //NEW WITH 0.98 BABELFISH TRANSLATION
 define("_DECREASE", "Disminución"); //NEW WITH 0.98 BABELFISH TRANSLATION
 //from questions.php
 define("_CONFIRMATION", "Confirmación");
-define("_TOKEN", "Token");
-define("_CONTINUE", "Continuar");
+define("_TOKEN_PS", "Token");
+define("_CONTINUE_PS", "Continuar");
 
 //BUTTONS
 define("_ACCEPT", "Aceptar");
@@ -71,7 +71,7 @@ define("_SUBMIT", "enviar");
 //From QANDA.PHP
 define("_CHOOSEONE", "Favor de elijir uno de los siguientes");
 define("_ENTERCOMMENT", "Favor de teclear su comentario aquí");
-define("_NUMERICAL", "Sólo se aceptan números en este campo");
+define("_NUMERICAL_PS", "Sólo se aceptan números en este campo");
 define("_CLEARALL", "Salir y Limpiar Encuesta");
 define("_MANDATORY", "Esta pregunta es requerida");
 define("_MANDATORY_PARTS", "Favor de completar todas las partes");
@@ -93,7 +93,7 @@ define("_CONTACT1", "Favor de contactar a");
 define("_CONTACT2", "para más asistencia");
 define("_ANSCLEAR", "Respuestas quitadas");
 define("_RESTART", "Reiniciar la Encuesta");
-define("_CLOSEWIN", "Cerrar esta Ventana");
+define("_CLOSEWIN_PS", "Cerrar esta Ventana");
 define("_CONFIRMCLEAR", "¿Está seguro de eliminar todas sus respuestas?");
 define("_EXITCLEAR", "Salir y Limpiar la Encuesta");
 //From QUESTION.PHP
