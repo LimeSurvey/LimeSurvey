@@ -42,13 +42,8 @@ $type = $_GET['type']; if (!$type) {$type=$_POST['type'];}
 
 if (!$style)
 	{
-	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-	                                                     // always modified
-	header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-	header("Cache-Control: post-check=0, pre-check=0", false);
-	header("Pragma: no-cache");                          // HTTP/1.0
 	include ("config.php");
+	sendcacheheaders();
 	echo "$htmlheader";
 	echo "<br />\n";
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
@@ -125,7 +120,7 @@ while ($lw = mysql_fetch_array($lr))
 	$legitqs[] = $lw['qid']; //this creates an array of question id's'
 	}
 
-
+//Get the fieldnames from the survey table
 $surveytable = "survey_$sid";
 $dquery = "SELECT * FROM $surveytable ORDER BY id LIMIT 1";
 $dresult = mysql_query($dquery);
@@ -150,14 +145,14 @@ for ($i=0; $i<$fieldcount; $i++)
 		{
 		$firstline .= "Time Submitted$s";
 		}
-	else
+	else //A normal question field. Break the fieldname up into constituent parts to find $sid, $gid, and $qid
 		{
 		list($fsid, $fgid, $fqid) = split("X", $fieldinfo);
 		if ($style == "abrev")
 			{
 			if (!$fqid) {$fqid = 0;}
 			$oldfqid=$fqid;
-			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list
+			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list. If not, have to do some tricky stuff to find where qid ends and answer code begins:
 				{
 				$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
 				}
@@ -166,6 +161,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				$faid = substr($oldfqid, strlen($fqid), strlen($oldfqid)-strlen($fqid));
 				$oldfqid="";
 				}
+			//Now we know what the qid is, we'll get the question text and then print it out (in abbreviate format of course)
 			$qq = "SELECT question FROM questions WHERE qid=$fqid";
 			$qr = mysql_query($qq);
 			while ($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
@@ -252,6 +248,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "B":
 				case "C":
 				case "E":
+				case "F":
 					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code= '$faid'";
 					$lr = mysql_query($lq);
 					while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
@@ -301,7 +298,7 @@ else // this applies for exporting everything
 	$dquery = "SELECT * FROM $surveytable ORDER BY id";
 	}
 
-if ($answers == "short")
+if ($answers == "short") //Nice and easy. Just dump the data straight
 	{
 	$dresult = mysql_query($dquery);
 	while ($drow = mysql_fetch_array($dresult, MYSQL_ASSOC))
@@ -325,10 +322,10 @@ elseif ($answers == "long")
 				{
 				$fqid = substr($fqid, 0, strlen($fqid)-1);
 				}
-			$qq = "SELECT type FROM questions WHERE qid=$fqid";
+			$qq = "SELECT type, lid FROM questions WHERE qid=$fqid";
 			$qr = mysql_query($qq);
 			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
-				{$ftype = $qrow['type'];}
+				{$ftype = $qrow['type']; $lid=$qrow['lid'];}
 			switch ($ftype)
 				{
 				case "R": //RANKING TYPE
@@ -393,6 +390,41 @@ elseif ($answers == "long")
 							case "": echo "No"; break;
 							default: echo $drow[$i]; break;
 							}
+						}
+					break;
+				case "C":
+					switch($drow[$i])
+						{
+						case "Y":
+							echo "Yes";
+							break;
+						case "N":
+							echo "No";
+							break;
+						case "U":
+							echo "Uncertain";
+							break;
+						}
+				case "E":
+					switch($drow[$i])
+						{
+						case "I":
+							echo "Increase";
+							break;
+						case "S":
+							echo "Same";
+							break;
+						case "D":
+							echo "Decrease";
+							break;
+						}
+					break;
+				case "F":
+					$fquery = "SELECT * FROM labels WHERE lid=$lid AND code='$drow[$i]'";
+					$fresult = mysql_query($fquery);
+					while ($frow = mysql_fetch_array($fresult))
+						{
+						echo $frow['title'];
 						}
 					break;
 				default:
