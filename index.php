@@ -147,7 +147,11 @@ function templatereplace($line)
 	global $help, $totalquestions;
 	global $completed, $surveyurl, $surveyurldescrip;
 	global $notanswered, $privacy, $sid;
+	global $publicurl, $templatedir;
 	
+	if ($templatedir) {$templateurl="$publicurl/templates/$templatedir/";}
+	else {$templateurl="$publicurl/templates/default/";}
+
 	$clearall = "\t\t\t\t\t<div class='clearall'><a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall' onClick='return confirm(\"Are you sure you want to clear all your responses?\")'>[Exit and Clear Survey]</a></div>\n";
 	
 	
@@ -180,6 +184,7 @@ function templatereplace($line)
 	$line=str_replace("{URL}", "<a href='$surveyurl'>$surveyurldescrip</a>", $line);
 	$line=str_replace("{PRIVACY}", $privacy, $line);
 	$line=str_replace("{CLEARALL}", $clearall, $line);
+	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	return $line;
 	}
 
