@@ -110,7 +110,7 @@ else //delete the survey
 
 	if (in_array("{$dbprefix}tokens_$sid", $tablelist)) //delete the tokens_$sid table
 		{
-		$dsquery = "DROP TABLE `tokens_$sid`";
+		$dsquery = "DROP TABLE `{$dbprefix}tokens_$sid`";
 		$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
 		}
 	
