@@ -367,7 +367,7 @@ if ($_POST['display'])
 	if ($results > 0)
 		{
 		echo "\t<tr>";
-		echo "\t\t<form action='browse.php' method='post'><td align='right' width='50%'>\n";
+		echo "\t\t<form action='browse.php' method='post' target='_blank'><td align='right' width='50%'>\n";
 		echo "\t\t<input type='submit' value='Browse' $btstyle>\n";
 		echo "\t\t\t<input type='hidden' name='sid' value='$sid'>\n";
 		echo "\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n";
