@@ -458,12 +458,12 @@ else
 
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery);
-	while ($desrow=mysql_fetch_row($desresult))
+	while ($desrow = mysql_fetch_row($desresult))
 		{
-		$surveyname=$desrow[1];
-		$surveydesc=$desrow[2];
-		$surveyactive=$desrow[4];
-		$surveytable="survey_$desrow[0]";
+		$surveyname = $desrow[1];
+		$surveydesc = $desrow[2];
+		$surveyactive = $desrow[4];
+		$surveytable = "survey_$desrow[0]";
 		}
 	if ($surveyactive == "Y") {echo "$surveyoptions";}
 	echo "<TABLE WIDTH='100%' BORDER='0' CELLSPACING='0'>";
@@ -475,7 +475,7 @@ else
 	$degquery = "SELECT * FROM groups WHERE sid=$sid ORDER BY group_name";
 	$degresult = mysql_query($degquery);
 	// GROUP NAME
-	while ($degrow=mysql_fetch_row($degresult))
+	while ($degrow = mysql_fetch_row($degresult))
 		{
 		$deqquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$degrow[0] ORDER BY title";
 		$deqresult = mysql_query($deqquery);
@@ -487,13 +487,14 @@ else
 		else {$bgc = "#EEEEEE";}
 		if (!$bgc) {$bgc="#EEEEEE";}
 		
-		while ($deqrow=mysql_fetch_array($deqresult)) {$deqrows[]=$deqrow;} // Get table output into array
+		$deqrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+		while ($deqrow = mysql_fetch_array($deqresult)) {$deqrows[] = $deqrow;} //Get table output into array
 		
 		if (count($deqrows) > 0)
 			{
-			// Perform a case insensitive natural sort on title column of a multidimensional array
+			//Perform a case insensitive natural sort on title column of a multidimensional array
 			usort($deqrows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
-			} // end if there's anything to sort
+			}
 		
 		foreach ($deqrows as $deqrow)
 			{
