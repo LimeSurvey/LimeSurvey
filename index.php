@@ -50,6 +50,8 @@ $tpldir="$publicdir/templates";
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$sid)
 	{
+	$langfilename="$publicdir/lang/$defaultlang.lang.php";
+	require($langfilename);
 	//A nice exit
 	sendcacheheaders();
 	echo "<html>\n";
@@ -119,7 +121,7 @@ $langdir="$publicdir/lang";
 $langfilename="$langdir/{$thissurvey['language']}.lang.php";
 //Use the default language file if the $thissurvey['language'] file doesn't exist
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-require($langfilename);
+require_once($langfilename);
 
 //MAKE SURE SURVEY HASN'T EXPIRED
 if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['expiry'] != "0000-00-00")
@@ -806,6 +808,7 @@ function buildsurveysession()
 	global $thissurvey;
 	global $tokensexist, $thistpl;
 	global $sid, $dbprefix;
+	global $register_errormsg;
 	
 	//This function builds all the required session variables when a survey is first started.
 	//It is called from each various format script (ie: group.php, question.php, survey.php)
@@ -825,6 +828,60 @@ function buildsurveysession()
 			{
 			echo templatereplace($op);
 			}
+		if (isset($thissurevey) && $thissurvey('allowregister') == "Y")
+			{
+			define ("_RG_REGISTER1", "You must be registered to complete this survey");
+			define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
+									."Enter your details below, and an email containing the link to "
+									."participate in this survey will be sent immediately.");
+			define ("_RG_EMAIL", "Email Address");
+			define ("_RG_FIRSTNAME", "First Name");
+			define ("_RG_LASTNAME", "Last Name");
+			define ("_RG_ATTRIBUTE1", "Attribute 1");
+			define ("_RG_ATTRIBUTE2", "Attribute 2");
+			
+?>
+	<center><br />
+	<?php if (isset($register_errormsg)) 
+		{
+		echo "<font color='red'>$register_errormsg</font><br /><br />\n";
+		}
+	?>
+	<?php echo _RG_REGISTER1 ?><br /><br />
+	<?php echo _RG_REGISTER2 ?><br />&nbsp;
+	<table align='center'>
+	<form method='post' action='register.php'>
+	<input type='hidden' name='sid' value='<?php echo $sid ?>'>
+		<tr><td align='right'>
+		<?php echo _RG_FIRSTNAME ?>:</td>
+		<td align='left'><input class='text' type='text' name='register_firstname'<?php
+		if (isset($_POST['register_firstname'])) {echo " value='".returnglobal('register_firstname')."'";}
+		?>></td></tr>
+		<tr><td align='right'><?php echo _RG_LASTNAME ?>:</td>
+		<td align='left'><input class='text' type='text' name='register_lastname'<?php
+		if (isset($_POST['register_lastname'])) {echo " value='".returnglobal('register_lastname')."'";}
+		?>></td></tr>
+		<tr><td align='right'><?php echo _RG_EMAIL ?>:</td>
+		<td align='left'><input class='text' type='text' name='register_email'<?php
+		if (isset($_POST['register_email'])) {echo " value='".returnglobal('register_email')."'";}
+		?>></td></tr>
+		<tr><td align='right'><?php echo _RG_ATTRIBUTE1 ?>:</td>
+		<td align='left'><input class='text' type='text' name='register_attribute1'<?php
+		if (isset($_POST['register_attribute1'])) {echo " value='".returnglobal('register_attribute1')."'";}
+		?>></td></tr>
+		<tr><td align='right'><?php echo _RG_ATTRIBUTE2 ?>:</td>
+		<td align='left'><input class='text' type='text' name='register_attribute2'<?php
+		if (isset($_POST['register_attribute2'])) {echo " value='".returnglobal('register_attribute2')."'";}
+		?>></td></tr>
+		<tr><td></td><td><input class='submit' type='submit' value='<?php echo _CONTINUE_PS ?>'>
+		</td></tr>
+	</form>
+	</table>
+	<br />&nbsp;</center>
+<?php
+			}
+		else
+			{
 ?>
 	<center><br />
 	<?php echo _NOTOKEN1 ?><br /><br />
@@ -842,6 +899,7 @@ function buildsurveysession()
 	</table>
 	<br />&nbsp;</center>
 <?php
+			}
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
