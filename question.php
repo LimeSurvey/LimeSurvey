@@ -661,7 +661,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 		}
 	}
 
-if ($newgroup == "Y" && $_POST['move'] == " << "._PREV." " && $_POST['grpdesc']=="Y") //a small trick to manage moving backwards from a group description
+if ($newgroup == "Y" && $_POST['move'] == " << "._PREV." " && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
 	{
 	$currentquestion++; 
 	$ia=$_SESSION['fieldarray'][$currentquestion]; 
@@ -929,9 +929,9 @@ function surveymover()
 function last()
 	{
 	global $thistpl, $sid, $token, $surveyprivate;
+	if (!isset($privacy)) {$privacy="";}
 	if ($surveyprivate != "N")
 		{
-		if (!isset($privacy)) {$privacy="";}
 		foreach (file("$thistpl/privacy.pstpl") as $op)
 			{
 			$privacy .= $op;
