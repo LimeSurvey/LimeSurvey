@@ -43,7 +43,7 @@
 // 4. answers
 
 include ("config.php");
-sendcacheheaders();
+//sendcacheheaders();
 if (!isset($sid)) {$sid=returnglobal('sid');}
 
 //echo $htmlheader;
