@@ -438,7 +438,7 @@ if (!$step)
 		$fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 		if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
 			{
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY code";
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
 			$abresult=mysql_query($abquery);
 			while ($abrow=mysql_fetch_row($abresult))
 				{
@@ -624,11 +624,11 @@ else
 				echo ">Please choose</option>\n";
 				echo "\t\t\t</select>\n";
 				break;
-			case "L": //LIST drop-down list
+			case "L": //LIST drop-down/radio-button list
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
-				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
+				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				if ($dropdowns == "L" || !$dropdowns)
 					{
@@ -665,11 +665,11 @@ else
 					echo "\t\t\t</table>\n";
 					}
 				break;
-			case "O": //LIST WITH COMMENT drop-down list + textarea
+			case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
 				//echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
-				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
+				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount=mysql_num_rows($ansresult);
 				echo "\t\t\t<table align='center'>\n";
@@ -711,7 +711,7 @@ else
 				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult=mysql_query($qquery);
 				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
-				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
+				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn=1;
@@ -751,7 +751,7 @@ else
 				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult = mysql_query($qquery);
 				while ($qrow = mysql_fetch_row($qresult)) {$other = $qrow[0];}
-				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
+				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult)*2;
 				$fn=1;
@@ -838,7 +838,7 @@ else
 				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult=mysql_query($qquery);
 				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
-				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
+				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn=1;
@@ -871,7 +871,7 @@ else
 				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult=mysql_query($qquery);
 				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
-				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
+				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn=1;
@@ -904,7 +904,7 @@ else
 				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult=mysql_query($qquery);
 				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
-				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
+				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn=1;
