@@ -557,8 +557,6 @@ if ($gid)
 					   . "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'>$setfont<b>"
 					   . _GL_DESCRIPTION."</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
 		}
-		//RENUMBER LINK
-		$groupsummary .= "<tr><td></td><td><a href='?sid=$sid&action=renumberquestions'>Renumber</a></td></tr>\n";
 	$groupsummary .= "\n</table>\n";
 	}
 
