@@ -414,6 +414,9 @@ define(_TC_VIEW, "View Response");
 define(_TC_INVITET, "Send invitation email to this entry");
 define(_TC_REMINDT, "Send reminder email to this entry");
 define(_TC_INVITESUBJECT, "Invitation to participate in {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
+define(_TC_REMINDSUBJECT, "Reminder to participate in {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
+define(_TC_REMINDSTARTAT, "Start at TID No:");
+define(_TC_REMINDTID, "Sending to TID No:");
 define(_TC_CREATETOKENSINFO, "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?");
 define(_TC_TOKENSCREATED, "{TOKENCOUNT} tokens have been created"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
 define(_TC_TOKENDELETED, "Token has been deleted.");
@@ -426,8 +429,16 @@ define(_TC_UPLOADINFO, "File should be a standard CSV (comma delimited) file wit
 define(_TC_IMPORT, "Importing CSV File");
 define(_TC_CREATE, "Creating Token Entries");
 define(_TC_TOKENS_CREATED, "{TOKENCOUNT} Records Created");
-define(_TC_NONETOSEND, "There were no eligible emails to send. This will be because none satisfied the requirements of having an email address, not having been sent an invitation already, having already completed the survey and/or having a token.");
+define(_TC_NONETOSEND, "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.");
+define(_TC_NOREMINDERSTOSEND, "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.");
 define(_TC_NOEMAILTEMPLATE, "Invitation Template cannot be found. This file must exist in the default template folder.");
+define(_TC_NOREMINDTEMPLATE, "Reminder Template cannot be found. This file must exist in the default template folder.");
 define(_TC_SENDEMAIL, "Send Invitations");
+define(_TC_SENDINGEMAILS, "Sending Invitations");
+define(_TC_SENDINGREMINDERS, "Sending Reminders");
+define(_TC_EMAILSTOGO, "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.");
+define(_TC_EMAILSREMAINING, "There are {EMAILCOUNT} emails still to be sent."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
+define(_TC_SENDREMIND, "Send Reminders");
 define(_TC_INVITESENTTO, "Invitation Sent To:"); //is followed by token name
+define(_TC_REMINDSENTTO, "Reminder Sent To:"); //is followed by token name
 ?>
