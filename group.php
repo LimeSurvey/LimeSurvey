@@ -696,17 +696,17 @@ echo "\t\tfunction checkconditions(value, name, type)\n";
 echo "\t\t\t{\n";
 if (is_array($conditions))
 	{
+	if (!isset($endzone)) {$endzone="";}
 	echo "\t\t\tif (type == 'radio')\n";
 	echo "\t\t\t\t{\n";
 	echo "\t\t\t\tvar hiddenformname='java'+name;\n";
 	echo "\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n";
 	echo "\t\t\t\t}\n";
 	$java="";
-	$endzone="";
 	$cqcount=1;
 	foreach ($conditions as $cd)
 		{
-		if (isset($oldq) && $oldq != $cd[0]) //New if statement
+		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
 			{
 			$java .= $endzone;
 			$endzone = "";
@@ -728,7 +728,6 @@ if (is_array($conditions))
 		else				{$idname=$cd[2];}
 		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
 		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
-			
 		if ($cd[3] == '') 
 			{
 			$java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
@@ -741,7 +740,7 @@ if (is_array($conditions))
 			{
 			$java .= "document.getElementById('$idname').value == '$cd[3]'";
 			}
-		if (isset($oldq) && $oldq != $cd[0])//Close if statement
+		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
 			{
 			$endzone = "))\n";
 			$endzone .= "\t\t\t\t{\n";

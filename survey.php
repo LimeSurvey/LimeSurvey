@@ -672,14 +672,14 @@ if (is_array($conditions))
 	$cqcount=1;
 	foreach ($conditions as $cd)
 		{
-		if ($oldq != $cd[0]) //New if statement
+		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
 			{
 			$java .= $endzone;
 			$endzone = "";
 			$cqcount=1;
 			$java .= "\n\t\t\tif ((";
 			}
-		if (!$oldcq) {$oldcq = $cd[2];}
+		if (!isset($oldcq) || !$oldcq) {$oldcq = $cd[2];}
 		if ($cd[4] == "L" && $dropdowns == "R") //Just in case the dropdown threshold is being applied, check number of answers here
 			{
 			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
@@ -694,11 +694,19 @@ if (is_array($conditions))
 		else				{$idname=$cd[2];}
 		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
 		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
-		if ($cd[3] == '') {$java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";}
+		if ($cd[3] == '') 
+			{
+			$java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
+			}
 		elseif($cd[4] == "M" || $cd[4] == "O" || $cd[4] == "P")
-			{$java .= "document.getElementById('$idname').checked";}
-		else {$java .= "document.getElementById('$idname').value == '$cd[3]'";}
-		if ($oldq != $cd[0])//Close if statement
+			{
+			$java .= "document.getElementById('$idname').checked";
+			}
+		else 
+			{
+			$java .= "document.getElementById('$idname').value == '$cd[3]'";
+			}
+		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
 			{
 			$endzone = "))\n";
 			$endzone .= "\t\t\t\t{\n";
