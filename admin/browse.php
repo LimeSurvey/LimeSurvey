@@ -142,7 +142,7 @@ if ($action == "id")
 		$fquestion = $fnrow['question'];
 		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "P")
 			{
-			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY code";
+			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY answer";
 			$fnrresult = mysql_query($fnrquery);
 			while ($fnrrow = mysql_fetch_array($fnrresult))
 				{
@@ -156,7 +156,7 @@ if ($action == "id")
 			}
 		elseif ($fnrow['type'] == "R")
 			{
-			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY code";
+			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY answer";
 			$fnrresult = mysql_query($fnrquery);
 			$fnrcount = mysql_num_rows($fnrresult);
 			for ($i=1; $i<=$fnrcount; $i++)
@@ -283,7 +283,7 @@ elseif ($action == "all")
 			}
 		elseif ($fnrow['type'] == "R")
 			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY answers.answer";
 			$i2result = mysql_query($i2query);
 			$i2count = mysql_num_rows($i2result);
 			for ($i=1; $i<=$i2count; $i++)
@@ -295,7 +295,7 @@ elseif ($action == "all")
 			}
 		else
 			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY answers.answer";
 			$i2result = mysql_query($i2query);
 			$otherexists = "";
 			while ($i2row = mysql_fetch_array($i2result))

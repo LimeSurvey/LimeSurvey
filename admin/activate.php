@@ -48,7 +48,7 @@ if (!$_GET['ok'])
 	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
-		$chaquery = "SELECT * FROM answers WHERE qid = {$chkrow['qid']}";
+		$chaquery = "SELECT * FROM answers WHERE qid = {$chkrow['qid']} ORDER BY answer";
 		$charesult=mysql_query($chaquery);
 		$chacount=mysql_num_rows($charesult);
 		if (!$chacount > 0) 
@@ -233,7 +233,7 @@ else
 		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
 			{
 			//MULTI ENTRY
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY code";
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY answers.answer";
 			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			while ($abrow=mysql_fetch_array($abresult))
 				{
@@ -256,7 +256,7 @@ else
 		elseif ($arow['type'] == "R")
 			{
 			//MULTI ENTRY
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY code";
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY answers.answer";
 			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			$abcount=mysql_num_rows($abresult);
 			for ($i=1; $i<=$abcount; $i++)

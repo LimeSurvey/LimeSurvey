@@ -176,7 +176,7 @@ if ($qid)
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
-		$qrq = "SELECT * FROM answers WHERE qid=$qid";
+		$qrq = "SELECT * FROM answers WHERE qid=$qid ORDER BY answer";
 		$qrr = mysql_query($qrq);
 		$qct = mysql_num_rows($qrr);
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P" || $qrrow['type'] == "R")
