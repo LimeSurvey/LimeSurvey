@@ -82,9 +82,17 @@ if ($action == "checksettings")
 	$cssummary .= "\t<tr>\n";
 	$cssummary .= "\t\t<td align='right'>$setfont\n";
 	$cssummary .= "\t\t\t<b>"._PS_DEFLANG.":</b></font>\n";
-	$cssummary .= "\t\t</td><td>$setfont\n";
-	$cssummary .= "\t\t\t$defaultlang\n";
-	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t\t</td><form action='$scriptname'><td>$setfont\n";
+	$cssummary .= "\t\t\t<select name='lang' $slstyle onChange='form.submit()'>\n";
+	foreach (getadminlanguages() as $language)
+		{
+		$cssummary .= "\t\t\t\t<option value='$language'";
+		if ($language == $defaultlang) {$cssummary .= " selected";}
+		$cssummary .= ">$language</option>\n";
+		}
+	$cssummary .= "\t\t\t</select>\n";
+	$cssummary .= "\t\t\t<input type='hidden' name='action' value='changelang'>\n";
+	$cssummary .= "\t\t</td></form>\n";
 	$cssummary .= "\t</tr>\n";
 	$cssummary .= "\t<tr>\n";
 	$cssummary .= "\t\t<td align='right'>$setfont\n";
