@@ -118,7 +118,7 @@ if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $
 			}
 		}
 	}
-
+//CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok) || $backok != "Y")) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
 	{
 	$chkcmands=explode("|", $_POST['conmandatory']);
@@ -180,6 +180,21 @@ if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok
 		}
 	}
 
+//SEE IF THIS GROUP SHOULD DISPLAY
+//checkgroupfordisplay($gid);
+if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " "._LAST." " && $_POST['move'] != " "._SUBMIT." ")
+	{
+	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
+		{
+		if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_SESSION['step']-1;}
+		if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step']=$_SESSION['step']+1;}
+		if ($_SESSION['step']-1 == $_SESSION['totalsteps'])
+			{
+		    $_POST['move'] = " "._LAST." ";
+			break;
+			}
+		}
+	}
 //SUBMIT ###############################################################################
 if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 	{
