@@ -103,6 +103,10 @@ $qdump = BuildOutput($qquery);
 $aquery = "SELECT answers.* FROM answers, questions WHERE answers.qid=questions.qid AND questions.sid=$sid";
 $adump = BuildOutput($aquery);
 
+//5: Conditions table
+$cquery = "SELECT conditions.* FROM conditions, questions WHERE conditions.qid=questions.qid AND questions.sid=$sid";
+$cdump = BuildOutput($cquery);
+
 $fn = "survey_$sid.sql";
 
 //header("Content-Type: application/msword"); //EXPORT INTO MSWORD
@@ -113,7 +117,7 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 echo "#<pre>\n";
-echo $dumphead, $sdump, $gdump, $qdump, $adump;
+echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump;
 echo "#</pre>\n";
 
 ?>
