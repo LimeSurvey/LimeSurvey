@@ -175,8 +175,8 @@ if ($action == "browse")
 			echo "\t\t<td>$setfont$brow[$i]</td>\n";
 			}
 		echo "\t\t<td align='center'>\n";
-		echo "\t\t\t<input style='height: 14; width: 14px; font-size: 8; font-face: verdana' type='submit' value='E' title='Edit' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\">\n";
-		echo "\t\t\t<input style='height: 14; width: 14px; font-size: 8; font-face: verdana' type='submit' value='D' title='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\">\n";
+		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='Edit' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\">\n";
+		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\">\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>\n";
@@ -379,29 +379,55 @@ if ($action == "edit" || $action == "add")
 			$id=$edrow[0]; $firstname=$edrow[1]; $lastname=$edrow[2]; $email=$edrow[3]; $token=$edrow[4]; $sent=$edrow[5]; $completed=$edrow[6];
 			}
 		}
-	echo "<BR><TABLE WIDTH='550' BGCOLOR='#CCCCCC'>\n";
-	echo "<FORM METHOD='POST'>\n";
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<B>Edit/Add Token Entry</TD></TR>\n";
-	echo "<TR><TD ALIGN='RIGHT' WIDTH='10%'>$setfont<B>ID:</TD><TD BGCOLOR='#EEEEEE'>$setfont Auto</TD></TR>\n";
-	echo "<TR><TD ALIGN='RIGHT' WIDTH='10%'>$setfont<B>Firstname:</TD><TD BGCOLOR='#EEEEEE'>$setfont<INPUT TYPE='TEXT' $slstyle NAME='firstname' VALUE='$firstname'></TD></TR>\n";
-	echo "<TR><TD ALIGN='RIGHT' WIDTH='10%'>$setfont<B>Lastname:</TD><TD BGCOLOR='#EEEEEE'>$setfont<INPUT TYPE='TEXT' $slstyle NAME='lastname' VALUE='$lastname'></TD></TR>\n";
-	echo "<TR><TD ALIGN='RIGHT' WIDTH='10%'>$setfont<B>Email:</TD><TD BGCOLOR='#EEEEEE'>$setfont<INPUT TYPE='TEXT' $slstyle NAME='email' VALUE='$email'></TD></TR>\n";
-	echo "<TR><TD ALIGN='RIGHT' WIDTH='10%'>$setfont<B>Token:</TD><TD BGCOLOR='#EEEEEE'>$setfont<INPUT SIZE='10' $slstyle TYPE='TEXT' NAME='token' VALUE='$token'></TD></TR>\n";
-	echo "<TR><TD ALIGN='RIGHT' WIDTH='10%'>$setfont<B>Sent?:</TD><TD BGCOLOR='#EEEEEE'>$setfont<INPUT SIZE='1' $slstyle TYPE='TEXT' NAME='sent' VALUE='$sent'></TD></TR>\n";
-	echo "<TR><TD ALIGN='RIGHT' WIDTH='10%'>$setfont<B>Complete?:</TD><TD BGCOLOR='#EEEEEE'>$setfont<INPUT SIZE='1' TYPE='TEXT' $slstyle NAME='completed' VALUE='$completed'></TD></TR>\n";
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>";
+	echo "<br>\n";
+	echo "<table width='550' bgcolor='#CCCCCC'>\n";
+	echo "<form method='post'>\n";
+	echo "<tr>\n";
+	echo "\t<td colspan='2' align='center'>$setfont<b>Edit/Add Token Entry</b></td>\n";
+	echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td align='right' width='10%'>$setfont<b>ID:</b></td><td bgcolor='#EEEEEE'>$setfont Auto</td>\n";
+	echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td align='right' width='10%'>$setfont<b>Firstname:</b></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='firstname' value='$firstname'></td>\n";
+	echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td align='right' width='10%'>$setfont<b>Lastname:</b></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='lastname' value='$lastname'></td>\n";
+	echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td align='right' width='10%'>$setfont<b>Email:</b></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='40' name='email' value='$email'></td>\n";
+	echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td align='right' width='10%'>$setfont<b>Token:</b></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='10' $slstyle name='token' value='$token'></td>\n";
+	echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td align='right' width='10%'>$setfont<b>Sent?:</b></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='sent' value='$sent'></td>\n";
+	echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td align='right' width='10%'>$setfont<b>Complete?:</b></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='completed' value='$completed'></td>\n";
+	echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td colspan='2' align='center'>";
 	switch($action)
 		{
 		case "edit":
-			echo "<INPUT TYPE='SUBMIT' $btstyle NAME='action' VALUE='update'>\n";
-			echo "<INPUT TYPE='HIDDEN' NAME='tid' VALUE='$tid'>\n";
+			echo "\t\t<input type='submit' $btstyle name='action' value='update'>\n";
+			echo "\t\t<input type='hidden' name='tid' value='$tid'>\n";
 			break;
 		case "add":
-			echo "<INPUT TYPE='SUBMIT' $btstyle NAME='action' VALUE='insert'>\n";
+			echo "\t\t<input type='submit' $btstyle name='action' value='insert'>\n";
 			break;
 		}
-	echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>";
-	echo "</TD></TR>\n</FORM>\n</TABLE>\n";
+	echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
+	echo "\t</td>\n";
+	echo "</tr>\n</form>\n</table>\n";
+	echo "</body>\n</html>";
 	}
 
 
@@ -489,9 +515,6 @@ if ($action == "upload")
 	}
 
 //echo "ACTION: $action<BR>THEFILE: $the_file<BR>THEFILENAME: $the_file_name";
-echo "\t\t</td>\n";
-echo "\t</tr>\n";
-echo "</table>\n";
 
 
 function form($error=false) {
