@@ -63,6 +63,7 @@ define("_IMPORTSURVEY", "Importer le Questionnaire");
 define("_IMPORTLABEL", "Importer le jeu d'Etiquette");
 define("_EXPORTRESULTS", "Exporter les réponses");
 define("_BROWSERESPONSES", "Parcourir les réponses");
+define("_BROWSESAVED", "Browse Saved Responses");
 define("_STATISTICS", "Statistiques flash");
 define("_VIEWRESPONSE", "Voir Réponse");
 define("_VIEWCONTROL", "Contrôle de la Visualisation des données");
@@ -118,6 +119,7 @@ define("_S_ADDGROUP_BT", "Ajouter un Nouveau Groupe au Questionnaire");
 define("_S_MINIMISE_BT", "Masquer les Détails de ce Questionnaire");
 define("_S_MAXIMISE_BT", "Afficher les Détails de ce Questionnaire");
 define("_S_CLOSE_BT", "Fermer ce Questionnaire");
+define("_S_SAVED_BT", "View Saved but not submitted Responses"); //New in 0.99dev01
 //Group bar
 define("_G_EDIT_BT", "Editer le Groupe en Cours");
 define("_G_EXPORT_BT", "Exporter le Groupe en Cours"); //New in 0.98rc5
@@ -201,8 +203,8 @@ define("_GL_DESCRIPTION", "Description:");
 //questions
 define("_QL_CODE", "Code:");
 define("_QL_QUESTION", "Question:");
-define("_QL_HELP", "Aide:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
+define("_QL_HELP", "Aide:");
 define("_QL_TYPE", "Type:");
 define("_QL_GROUP", "Groupe:");
 define("_QL_MANDATORY", "Obligatoire:");
@@ -332,6 +334,7 @@ define("_SS_CANNOTACTIVATE", "Impossible d'Activer le Questionnaire Maintenant."
 define("_SS_ADDGROUPS", "Vous devez Ajouter des Groupes"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "Vous devez Ajouter des Questions"); //NEW for release 0.98rc3
 define("_SS_ALLOWREGISTER", "Si les Invitations sont utilisées, les destinataires doivent être enregistrés pour ce Questionnaire"); //NEW for release 0.98rc9
+define("_SS_ALLOWSAVE", "Participants can save partially finished surveys"); //NEW for release 0.99dev01
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "Question Obligatoire"); //New for release 0.98rc4
@@ -555,6 +558,11 @@ define("_DE_CONDITIONHELP1", "Répondez seulement à ceci si les conditions suivan
 define("_DE_CONDITIONHELP2", "à la question {QUESTION}, vous avez répondu {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
 define("_DE_AND", "ET (AND)");
 define("_DE_OR", "OU (OR)");
+define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01
+define("_DE_SAVEID", "Identifier:"); //New in 0.99dev01
+define("_DE_SAVEPW", "Password:"); //New in 0.99dev01
+define("_DE_SAVEPWCONFIRM", "Confirm Password:"); //New in 0.99dev01
+define("_DE_SAVEEMAIL", "Email:"); //New in 0.99dev01
 
 //TOKEN CONTROL MESSAGES
 define("_TC_TOTALCOUNT", "Totale d'enregistrements dans cette table Invitation:"); //New in 0.98rc4
@@ -718,4 +726,14 @@ define("_TP_REGISTERPAGE", "Register Page"); //New with 098finalRC1
 define("_TP_EXPORT", "Export Template"); //New with 098rc10
 define("_TP_LOADPAGE", "Load Page"); //New with 0.99dev01
 define("_TP_SAVEPAGE", "Save Page"); //New with 0.99dev01
+
+//Saved Surveys
+define("_SV_RESPONSES", "Saved Responses:");
+define("_SV_IDENTIFIER", "Identifier");
+define("_SV_RESPONSECOUNT", "Answered");
+define("_SV_IP", "IP Address");
+define("_SV_DATE", "Date Saved");
+define("_SV_REMIND", "Remind");
+define("_SV_EDIT", "Edit");
+
 ?>

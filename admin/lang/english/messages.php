@@ -26,6 +26,7 @@ define("_IMPORTSURVEY", "Import Survey");
 define("_IMPORTLABEL", "Import Label Set");
 define("_EXPORTRESULTS", "Export Responses");
 define("_BROWSERESPONSES", "Browse Responses");
+define("_BROWSESAVED", "Browse Saved Responses");
 define("_STATISTICS", "Quick Statistics");
 define("_VIEWRESPONSE", "View Response");
 define("_VIEWCONTROL", "Data View Control");
@@ -81,6 +82,7 @@ define("_S_ADDGROUP_BT", "Add New Group to Survey");
 define("_S_MINIMISE_BT", "Hide Details of this Survey");
 define("_S_MAXIMISE_BT", "Show Details of this Survey");
 define("_S_CLOSE_BT", "Close this Survey");
+define("_S_SAVED_BT", "View Saved but not submitted Responses"); //New in 0.99dev01
 //Group bar
 define("_G_EDIT_BT", "Edit Current Group");
 define("_G_EXPORT_BT", "Export Current Group"); //New in 0.98rc5
@@ -295,6 +297,7 @@ define("_SS_CANNOTACTIVATE", "Survey cannot be activated yet."); //NEW for relea
 define("_SS_ADDGROUPS", "You need to add groups"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "You need to add questions"); //NEW for release 0.98rc3
 define("_SS_ALLOWREGISTER", "If tokens are used, the public may register for this survey"); //NEW for release 0.98rc9
+define("_SS_ALLOWSAVE", "Participants can save partially finished surveys"); //NEW for release 0.99dev01
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "Mandatory Question"); //New for release 0.98rc4
@@ -518,6 +521,11 @@ define("_DE_CONDITIONHELP1", "Only answer this if the following conditions are m
 define("_DE_CONDITIONHELP2", "to question {QUESTION}, you answered {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
 define("_DE_AND", "AND");
 define("_DE_OR", "OR");
+define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01
+define("_DE_SAVEID", "Identifier:"); //New in 0.99dev01
+define("_DE_SAVEPW", "Password:"); //New in 0.99dev01
+define("_DE_SAVEPWCONFIRM", "Confirm Password:"); //New in 0.99dev01
+define("_DE_SAVEEMAIL", "Email:"); //New in 0.99dev01
 
 //TOKEN CONTROL MESSAGES
 define("_TC_TOTALCOUNT", "Total Records in this Token Table:"); //New in 0.98rc4
@@ -682,4 +690,14 @@ define("_TP_REGISTERPAGE", "Register Page"); //New with 098finalRC1
 define("_TP_EXPORT", "Export Template"); //New with 098rc10
 define("_TP_LOADPAGE", "Load Page"); //New with 0.99dev01
 define("_TP_SAVEPAGE", "Save Page"); //New with 0.99dev01
+
+//Saved Surveys
+define("_SV_RESPONSES", "Saved Responses:");
+define("_SV_IDENTIFIER", "Identifier");
+define("_SV_RESPONSECOUNT", "Answered");
+define("_SV_IP", "IP Address");
+define("_SV_DATE", "Date Saved");
+define("_SV_REMIND", "Remind");
+define("_SV_EDIT", "Edit");
+
 ?>

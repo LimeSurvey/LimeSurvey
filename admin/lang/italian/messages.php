@@ -26,6 +26,7 @@ define("_IMPORTSURVEY", "Importa indagine");
 define("_IMPORTLABEL", "Importa etichetta");
 define("_EXPORTRESULTS", "Esporta risposte");
 define("_BROWSERESPONSES", "Sfoglia risposte");
+define("_BROWSESAVED", "Browse Saved Responses");
 define("_STATISTICS", "Statistiche rapide");
 define("_VIEWRESPONSE", "Visualizza risposta");
 define("_VIEWCONTROL", "Visualizzazione dei dati");
@@ -81,6 +82,7 @@ define("_S_ADDGROUP_BT", "Aggiungi gruppo");
 define("_S_MINIMISE_BT", "Nascondi dettagli dell&#039;indagine");
 define("_S_MAXIMISE_BT", "Mostra dettagli dell&#039;indagine");
 define("_S_CLOSE_BT", "Chiudi indagine");
+define("_S_SAVED_BT", "View Saved but not submitted Responses"); //New in 0.99dev01
 //Group bar
 define("_G_EDIT_BT", "Modifica gruppo");
 define("_G_EXPORT_BT", "Esporta gruppo"); //New in 0.98rc5
@@ -164,8 +166,8 @@ define("_GL_DESCRIPTION", "Descrizione:");
 //questions
 define("_QL_CODE", "Codice:");
 define("_QL_QUESTION", "Domanda:");
-define("_QL_HELP", "Note:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
+define("_QL_HELP", "Note:");
 define("_QL_TYPE", "Tipologia:");
 define("_QL_GROUP", "Gruppo:");
 define("_QL_MANDATORY", "Obbligatorio:");
@@ -295,6 +297,7 @@ define("_SS_CANNOTACTIVATE", "L&#039;indagine non può essere ancora attivata.");
 define("_SS_ADDGROUPS", "&Egrave; necessario aggiungere dei gruppi"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "&Egrave; necessario aggiungere delle domande"); //NEW for release 0.98rc3
 define("_SS_ALLOWREGISTER", "If tokens are used, the public may register for this survey"); //NEW for release 0.98rc9
+define("_SS_ALLOWSAVE", "Participants can save partially finished surveys"); //NEW for release 0.99dev01
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "Domanda obbligatoria"); //New for release 0.98rc4
@@ -518,6 +521,11 @@ define("_DE_CONDITIONHELP1", "Rispondi solo se le seguenti condizioni sono rispe
 define("_DE_CONDITIONHELP2", "alla domanda {QUESTION}, hai risposto {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
 define("_DE_AND", "E");
 define("_DE_OR", "O");
+define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01
+define("_DE_SAVEID", "Identifier:"); //New in 0.99dev01
+define("_DE_SAVEPW", "Password:"); //New in 0.99dev01
+define("_DE_SAVEPWCONFIRM", "Confirm Password:"); //New in 0.99dev01
+define("_DE_SAVEEMAIL", "Email:"); //New in 0.99dev01
 
 //TOKEN CONTROL MESSAGES
 define("_TC_TOTALCOUNT", "Numero totale record in questa tavola di token:"); //New in 0.98rc4
@@ -682,4 +690,14 @@ define("_TP_REGISTERPAGE", "Register Page"); //New with 098finalRC1
 define("_TP_EXPORT", "Export Template"); //New with 098rc10
 define("_TP_LOADPAGE", "Load Page"); //New with 0.99dev01
 define("_TP_SAVEPAGE", "Save Page"); //New with 0.99dev01
+
+//Saved Surveys
+define("_SV_RESPONSES", "Saved Responses:");
+define("_SV_IDENTIFIER", "Identifier");
+define("_SV_RESPONSECOUNT", "Answered");
+define("_SV_IP", "IP Address");
+define("_SV_DATE", "Date Saved");
+define("_SV_REMIND", "Remind");
+define("_SV_EDIT", "Edit");
+
 ?>

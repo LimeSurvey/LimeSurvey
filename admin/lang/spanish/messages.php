@@ -26,6 +26,7 @@ define("_IMPORTSURVEY", "Importar Encuesta");
 define("_IMPORTLABEL", "Importar Etiquetas");
 define("_EXPORTRESULTS", "Exportar Respuestas");
 define("_BROWSERESPONSES", "Navegar Respuestas");
+define("_BROWSESAVED", "Browse Saved Responses");
 define("_STATISTICS", "Estad&iacute;sticas R&aacute;pidas");
 define("_VIEWRESPONSE", "Ver Respuesta");
 define("_VIEWCONTROL", "Vista de Control de Datos");
@@ -81,6 +82,7 @@ define("_S_ADDGROUP_BT", "Agregar Nuevo Grupo a la Encuesta");
 define("_S_MINIMISE_BT", "Ocultar Detalles de esta Encuesta");
 define("_S_MAXIMISE_BT", "Mostrar Detalles de esta Encuesta");
 define("_S_CLOSE_BT", "Cerrar esta Encuesta");
+define("_S_SAVED_BT", "View Saved but not submitted Responses"); //New in 0.99dev01
 //Group bar
 define("_G_EDIT_BT", "Modificar Grupo Seleccionado");
 define("_G_EXPORT_BT", "Export Current Group"); //New in 0.98rc5
@@ -169,8 +171,8 @@ define("_GL_UPDATEQUESTION", "Actualizar Pregunta");
 //questions
 define("_QL_CODE", "C&oacute;digo:");
 define("_QL_QUESTION", "Pregunta:");
-define("_QL_HELP", "Ayuda:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
+define("_QL_HELP", "Ayuda:");
 define("_QL_TYPE", "Tipo:");
 define("_QL_GROUP", "Grupo:");
 define("_QL_MANDATORY", "Requerida:");
@@ -226,7 +228,6 @@ define("_GENDER", "G&eacute;nero");
 define("_LIST", "Lista (Radio)"); //Changed with 0.99dev01
 define("_LIST_DROPDOWN", "Lista (Dropdown)"); //New with 0.99dev01
 define("_LISTWC", "Lista con Comentarios");
-define("_HTEXT", "Huge free text"); //New with 0.99dev01
 define("_MULTO", "Opci&oacute;n M&uacute;ltiple");
 define("_MULTOC", "Opci&oacute;n M&uacute;ltiple con Comentarios");
 define("_MULTITEXT", "M&uacute;ltiples Textos Cortos");
@@ -234,6 +235,7 @@ define("_NUMERICAL", "Entrada Num&eacute;rica");
 define("_RANK", "Ordenar/Fila");
 define("_STEXT", "Texto corto");
 define("_LTEXT", "Texto largo");
+define("_HTEXT", "Huge free text"); //New with 0.99dev01
 define("_YESNO", "Si/No");
 define("_ARR5",  "Arreglo (Elegir entre 5 Puntos)");
 define("_ARR10", "Arreglo (Elegir entre 10 Puntos)");
@@ -302,6 +304,7 @@ define("_SS_CANNOTACTIVATE", "La encuesta no puede ser activada a&uacute;n."); /
 define("_SS_ADDGROUPS", "Necesitas agregar grupos"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "Necesitas agregar preguntas"); //NEW for release 0.98rc3
 define("_SS_ALLOWREGISTER", "If tokens are used, the public may register for this survey"); //NEW for release 0.98rc9
+define("_SS_ALLOWSAVE", "Participants can save partially finished surveys"); //NEW for release 0.99dev01
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "Pregunta obligatoria"); //New for release 0.98rc4
@@ -525,6 +528,11 @@ define("_DE_CONDITIONHELP1", "Contesta esta pregunta solo bajo las siguientes co
 define("_DE_CONDITIONHELP2", "a la pregunta {QUESTION}, contestaste {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
 define("_DE_AND", "Y");
 define("_DE_OR", "O");
+define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01
+define("_DE_SAVEID", "Identifier:"); //New in 0.99dev01
+define("_DE_SAVEPW", "Password:"); //New in 0.99dev01
+define("_DE_SAVEPWCONFIRM", "Confirm Password:"); //New in 0.99dev01
+define("_DE_SAVEEMAIL", "Email:"); //New in 0.99dev01
 
 //TOKEN CONTROL MESSAGES
 define("_TC_TOTALCOUNT", "N&uacute;mero de Registros en la tabla de Tokens:"); //New in 0.98rc4
@@ -689,4 +697,14 @@ define("_TP_REGISTERPAGE", "Register Page"); //New with 098finalRC1
 define("_TP_EXPORT", "Export Template"); //New with 098rc10
 define("_TP_LOADPAGE", "Load Page"); //New with 0.99dev01
 define("_TP_SAVEPAGE", "Save Page"); //New with 0.99dev01
+
+//Saved Surveys
+define("_SV_RESPONSES", "Saved Responses:");
+define("_SV_IDENTIFIER", "Identifier");
+define("_SV_RESPONSECOUNT", "Answered");
+define("_SV_IP", "IP Address");
+define("_SV_DATE", "Date Saved");
+define("_SV_REMIND", "Remind");
+define("_SV_EDIT", "Edit");
+
 ?>
