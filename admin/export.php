@@ -147,7 +147,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		{
 		$firstline .= "id$s";
 		}
-	elseif ($fieldinfo == "timestamp")
+	elseif ($fieldinfo == "datestamp")
 		{
 		$firstline .= "Time Submitted$s";
 		}
