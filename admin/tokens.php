@@ -36,6 +36,12 @@
 
 # TOKENS FILE
 
+$sid = $_GET['sid'];
+$action = $_GET['action'];
+$tid = $_GET['tid'];
+$order = $_GET['order'];
+$ok = $_GET['ok'];
+
 include("config.php");
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past

@@ -33,6 +33,11 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
+$sid = $_GET['sid'];
+$action = $_GET['action'];
+$id = $_GET['id'];
+$limit = $_GET['limit'];
+
 include("config.php");
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past

@@ -42,6 +42,8 @@
 // 3. questions
 // 4. answers
 
+$sid = $_GET['sid'];
+
 include ("config.php");
 
 //echo $htmlheader;

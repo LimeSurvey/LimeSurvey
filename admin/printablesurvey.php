@@ -33,6 +33,9 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
+
+$sid = $_GET['sid'];
+
 $boxstyle = "style='border-color: #111111; border-width: 1; border-style: solid'";
 include("config.php");
 
