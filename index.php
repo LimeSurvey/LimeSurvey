@@ -1360,29 +1360,32 @@ function doAssessment($sid)
 				}
 	    	}
 			$assessments = "";
-			foreach($subtotal as $key=>$val) 
+			if (isset($subtotal) && is_array($subtotal)) 
 				{
-				if (isset($assessment['group'][$key])) 
+				foreach($subtotal as $key=>$val) 
 					{
-					foreach($assessment['group'][$key] as $assessed) 
+					if (isset($assessment['group'][$key])) 
 						{
-						if ($val >= $assessed['min'] && $val <= $assessed['max']) 
+						foreach($assessment['group'][$key] as $assessed) 
 							{
-						    $assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $total -->
-`							<table align='center'>
-							 <tr>
-							  <th>($val) ".stripslashes($assessed['name'])."
-							  </th>
-							 </tr>
-							 <tr>
-							  <td align='center'>".stripslashes($assessed['message'])."
-							 </td>
-							</tr>
-						  	<tr>
-							 <td align='center'><a href='".$assessed['link']."'>".$assessed['link']."</a>
-							 </td>
-							</tr>
-						   </table><br />\n";
+							if ($val >= $assessed['min'] && $val <= $assessed['max']) 
+								{
+							    $assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $total -->
+	`							<table align='center'>
+								 <tr>
+								  <th>($val) ".stripslashes($assessed['name'])."
+								  </th>
+								 </tr>
+								 <tr>
+								  <td align='center'>".stripslashes($assessed['message'])."
+								 </td>
+								</tr>
+							  	<tr>
+								 <td align='center'><a href='".$assessed['link']."'>".$assessed['link']."</a>
+								 </td>
+								</tr>
+							   </table><br />\n";
+								}
 							}
 						}
 					}
