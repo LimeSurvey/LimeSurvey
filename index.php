@@ -78,27 +78,30 @@ $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".
 $surveyexists=mysql_num_rows($result);
 while ($row=mysql_fetch_array($result))
 	{
-	$surveyname = $row['short_title'];
-	$surveydescription = $row['description'];
-	$surveywelcome = $row['welcome'];
-	$templatedir = $row['template'];
-	$surveyadminname = $row['admin'];
-	$surveyadminemail = $row['adminemail'];
-	$surveyactive = $row['active'];
-	$surveyexpiry = $row['expires'];
-	$surveyprivate = $row['private'];
-	$surveytable = "{$dbprefix}survey_{$row['sid']}";
-	$surveyurl = $row['url'];
-	$surveyurldescrip = $row['urldescrip'];
-	$surveyformat = $row['format'];
-	$surveylanguage = $row['language'];
-	$surveydatestamp = $row['datestamp'];
-	$surveyusecookie = $row['usecookie'];
-	$sendnotification = $row['notification'];
+	$thissurvey=array("name"=>$row['short_title'],
+					  "description"=>$row['description'],
+					  "welcome"=>$row['welcome'],
+					  "templatedir"=>$row['template'],
+					  "adminname"=>$row['admin'],
+					  "adminemail"=>$row['adminemail'],
+					  "active"=>$row['active'],
+					  "expiry"=>$row['expires'],
+					  "private"=>$row['private'],
+					  "tablename"=>$dbprefix."survey_".$row['sid'],
+					  "url"=>$row['url'],
+					  "urldescrip"=>$row['urldescrip'],
+					  "format"=>$row['format'],
+					  "language"=>$row['language'],
+					  "datestamp"=>$row['datestamp'],
+					  "usecookie"=>$row['usecookie'],
+					  "sendnotification"=>$row['notification']);
+	if (!$thissurvey['adminname']) {$thissurvey['adminname']=$siteadminname;}
+	if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
+	if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
+	    
 	}
+	
 
-if (!$surveyadminemail) {$surveyadminemail=$siteadminemail;}
-if (!$surveyadminname) {$surveyadminname=$siteadminname;}
 //SEE IF SURVEY USES TOKENS
 $i = 0; $tokensexist = 0;
 $tresult = @mysql_list_tables($databasename) or die ("Error getting tokens<br />".mysql_error());
@@ -108,18 +111,18 @@ while($tbl = @mysql_tablename($tresult, $i++))
 	}
 
 //SET THE TEMPLATE DIRECTORY
-if (!$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
+if (!$thissurvey['templatedir']) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/{$thissurvey['templatedir']}";}
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 
 //REQUIRE THE LANGUAGE FILE
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
-//Use the default language file if the $surveylanguage file doesn't exist
+$langfilename="$langdir/{$thissurvey['language']}.lang.php";
+//Use the default language file if the $thissurvey['language'] file doesn't exist
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 
 //MAKE SURE SURVEY HASN'T EXPIRED
-if ($surveyexpiry < date("Y-m-d") && $surveyexpiry != "0000-00-00")
+if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['expiry'] != "0000-00-00")
 	{
 	sendcacheheaders();
 	echo "<html>\n";
@@ -130,7 +133,7 @@ if ($surveyexpiry < date("Y-m-d") && $surveyexpiry != "0000-00-00")
 		}
 	echo "\t\t<center><br />\n"
 		."\t\t\t"._SURVEYEXPIRED."<br /><br />\n"
-		."\t\t\t"._CONTACT1." <i>$surveyadminname</i> (<i>$surveyadminemail</i>) "
+		."\t\t\t"._CONTACT1." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
 		._CONTACT2."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach ($output as $op)
@@ -144,7 +147,7 @@ if ($surveyexpiry < date("Y-m-d") && $surveyexpiry != "0000-00-00")
 //CHECK FOR PREVIOUSLY COMPLETED COOKIE
 //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
 $cookiename="PHPSID".returnglobal('sid')."STATUS";
-if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surveyusecookie == "Y" && $tokensexist != 1 && (!isset($_GET['newtest']) || $_GET['newtest'] != "Y"))
+if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1 && (!isset($_GET['newtest']) || $_GET['newtest'] != "Y"))
 	{
 	sendcacheheaders();
 	echo "<html>\n";
@@ -156,7 +159,7 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surv
 	echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><b>"._ERROR_PS."</b></font><br />\n"
 		."\t\t\t"._SURVEYCOMPLETE."<br /><br />\n"
-		."\t\t\t"._CONTACT1." <i>$surveyadminname</i> (<i>$surveyadminemail</i>) "
+		."\t\t\t"._CONTACT1." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
 		._CONTACT2."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
@@ -233,7 +236,7 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 
 sendcacheheaders();
 //CALL APPROPRIATE SCRIPT
-switch ($surveyformat)
+switch ($thissurvey['format'])
 	{
 	case "A": //All in one
 		require_once("survey.php");
@@ -250,16 +253,18 @@ switch ($surveyformat)
 
 function templatereplace($line)
 	{
-	global $surveyname, $surveydescription;
-	global $surveywelcome, $percentcomplete;
+	global $thissurvey;
+	
+	global $percentcomplete;
+	
 	global $groupname, $groupdescription, $question;
 	global $questioncode, $answer, $navigator;
 	global $help, $totalquestions, $surveyformat;
-	global $completed, $surveyurl, $surveyurldescrip;
+	global $completed;
 	global $notanswered, $privacy, $sid;
 	global $publicurl, $templatedir, $token;
 	
-	if ($templatedir) {$templateurl="$publicurl/templates/$templatedir/";}
+	if ($thissurvey['templatedir']) {$templateurl="$publicurl/templates/{$thissurvey['templatedir']}/";}
 	else {$templateurl="$publicurl/templates/default/";}
 
 	$clearall = "\t\t\t\t\t<div class='clearall'>"
@@ -278,15 +283,15 @@ function templatereplace($line)
 			{
 			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
 			}
-		//elseif ($surveyformat == "A")
+		//elseif ($thissurvey['format'] == "A")
 		//	{
 		//	$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
 		//	}
 		}
 	
-	$line=str_replace("{SURVEYNAME}", $surveyname, $line);
-	$line=str_replace("{SURVEYDESCRIPTION}", $surveydescription, $line);
-	$line=str_replace("{WELCOME}", $surveywelcome, $line);
+	$line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
+	$line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
+	$line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
 	$line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
 	$line=str_replace("{GROUPNAME}", $groupname, $line);
 	$line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
@@ -306,8 +311,7 @@ function templatereplace($line)
 	$submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move'>";
 	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
 	$line=str_replace("{COMPLETED}", $completed, $line);
-	if (!$surveyurldescrip) {$linkreplace="<a href='$surveyurl'>$surveyurl</a>";}
-	else {$linkreplace="<a href='$surveyurl'>$surveyurldescrip</a>";}
+	$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";
 	$line=str_replace("{URL}", $linkreplace, $line);
 	$line=str_replace("{PRIVACY}", $privacy, $line);
 	$line=str_replace("{CLEARALL}", $clearall, $line);
@@ -317,10 +321,11 @@ function templatereplace($line)
 
 function makegraph($thisstep, $total)
 	{
-	global $thistpl, $templatedir, $publicurl;
+	global $thissurvey;
+	global $thistpl, $publicurl;
 	$chart=$thistpl."/chart.jpg";
 	if (!is_file($chart)) {$shchart="chart.jpg";}
-	else {$shchart = "$publicurl/templates/$templatedir/chart.jpg";}
+	else {$shchart = "$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";}
 	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
 		   . "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
 		   . "<tr><td align='right' width='40'>0%</td>\n";
@@ -654,7 +659,9 @@ function remove_nulls_from_array($array)
 //FUNCTIONS USED WHEN SUBMITTING RESULTS:
 function createinsertquery()
 	{
-	global $surveytable, $deletenonvalues, $thistpl;
+	global $thissurvey;
+	global $deletenonvalues, $thistpl;
+	
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 		{
 	    foreach ($_SESSION['insertarray'] as $value)
@@ -667,7 +674,7 @@ function createinsertquery()
 			    $values[]=mysql_escape_string($_SESSION[$value]);
 				}
 			}		
-		$query = "INSERT INTO $surveytable\n"
+		$query = "INSERT INTO {$thissurvey['tablename']}\n"
 				."(`".implode("`, `", $colnames)."`)\n"
 				."VALUES ('".implode("', '", $values)."')";
 		return $query;
@@ -690,36 +697,35 @@ function createinsertquery()
 
 function submittokens()
 	{
+	global $thissurvey;
 	global $dbprefix, $sid;
-	global $surveyadminname, $surveyadminemail;
-	global $sitename, $surveyname, $thistpl;
-	global $siteadminname, $siteadminemail;
-
-	if (!$surveyadminemail) {$surveyadminemail=$siteadminemail;}
-	if (!$surveyadminname) {$surveyadmin=$siteadminname;}
-
-	$utquery = "UPDATE {$dbprefix}tokens_$sid SET completed='Y' WHERE token='{$_POST['token']}'";
+	global $sitename, $thistpl;
+	
+	$utquery = "UPDATE {$dbprefix}tokens_$sid\n"
+			 . "SET completed='Y'\n"
+			 . "WHERE token='{$_POST['token']}'";
 	$utresult = mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
 	$cnfquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='{$_POST['token']}' AND completed='Y'";
 	$cnfresult = mysql_query($cnfquery);
 	while ($cnfrow = mysql_fetch_array($cnfresult))
 		{
-		$headers = "From: $surveyadminemail\r\n";
+		$headers = "From: {$thissurvey['adminemail']}\r\n";
 		$headers .= "X-Mailer: $sitename Email Inviter";
 		$to = $cnfrow['email'];
-		$subject = _CONFIRMATION.": $surveyname "._SURVEYCPL;
+		$subject = _CONFIRMATION.": {$thissurvey['name']} "._SURVEYCPL;
 		$message="";
 		foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
 			{
 			$add=$ce;
 			$add = str_replace("{FIRSTNAME}", $cnfrow['firstname'], $add);
 			$add = str_replace("{LASTNAME}", $cnfrow['lastname'], $add);
-			$add = str_replace("{ADMINNAME}", $surveyadminname, $add);
-			$add = str_replace("{ADMINEMAIL}", $surveyadminemail, $add);
-			$add = str_replace("{SURVEYNAME}", $surveyname, $add);
+			$add = str_replace("{ADMINNAME}", $thissurvey['adminname'], $add);
+			$add = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $add);
+			$add = str_replace("{SURVEYNAME}", $thissurvey['name'], $add);
 			$message .= $add;
 			}
-		if ($cnfrow['email']) {mail($to, $subject, $message, $headers);} //Only send confirmation email if there is an email address
+		//Only send confirmation email if there is a valid email address
+		if (validate_email($cnfrow['email'])) {mail($to, $subject, $message, $headers);} 
 		
 		//DEBUG INFO: CAN BE REMOVED
 		echo "<!-- DEBUG: MAIL INFORMATION\n"
@@ -734,10 +740,11 @@ function submittokens()
 	
 function sendsubmitnotification($sendnotification)
 	{
-	global $savedid, $surveyadminemail;
-	global $sitename, $surveyname, $homeurl, $sid;
+	global $thissurvey;
+	global $savedid;
+	global $sitename, $homeurl, $sid;
 	$subject = "$sitename Survey Submitted";
-	$message = _CONFIRMATION_MESSAGE1." $surveyname\r\n"
+	$message = _CONFIRMATION_MESSAGE1." {$thissurvey['name']}\r\n"
 			 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
 			 . _CONFIRMATION_MESSAGE3."\r\n"
 			 . "  $homeurl/browse.php?sid=$sid&action=id&id=$savedid\r\n\r\n"
@@ -754,22 +761,24 @@ function sendsubmitnotification($sendnotification)
 		$message .= "----------------------------\r\n\r\n";
 		}
 	$message.= "PHP Surveyor";
-	$headers = "From: $surveyadminemail\r\n";
-	mail($surveyadminemail, $subject, $message, $headers);	
+	$headers = "From: {$thissurvey['adminemail']}\r\n";
+	mail($thissurvey['adminemail'], $subject, $message, $headers);	
 	}
 
 function submitfailed()
 	{
-	global $thistpl, $adminemail, $subquery;
+	global $thissurvey;
+	global $thistpl, $subquery;
 	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
 		}
-	$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
-	$completed .= _DIDNOTSAVE2."<br /><br />\n";
-	if ($adminemail)
+	$completed = "<br /><b><font size='2' color='red'>"
+			   . _DIDNOTSAVE."</b></font><br /><br />\n\n"
+			   . _DIDNOTSAVE2."<br /><br />\n";
+	if ($thissurvey['adminemail'])
 		{	
 		$completed .= _DIDNOTSAVE3."<br /><br />\n";
 		$email=_DNSAVEEMAIL1." $sid\n\n";
@@ -778,11 +787,11 @@ function submitfailed()
 			{
 			$email .= "$value: {$_SESSION[$value]}\n";
 			}
-			$email .= "\n"._DNSAVEEMAIL3.":\n";
-		$email .= "$subquery\n\n";
-		$email .= _DNSAVEEMAIL4.":\n";
-		$email .= mysql_error()."\n\n";
-		mail($adminemail, _DNSAVEEMAIL5, $email);
+		$email .= "\n"._DNSAVEEMAIL3.":\n"
+				. "$subquery\n\n"
+				. _DNSAVEEMAIL4.":\n"
+				. mysql_error()."\n\n";
+		mail($thissurvey['adminemail'], _DNSAVEEMAIL5, $email);
 		}
 	else
 		{
@@ -794,12 +803,16 @@ function submitfailed()
 
 function buildsurveysession()
 	{
+	global $thissurvey;
 	global $tokensexist, $thistpl;
 	global $sid, $dbprefix;
-	global $surveyadminname, $surveyadminemail, $surveyprivate;
-	global $surveyformat;
 	
-	if ($tokensexist ==1 && !returnglobal('token'))
+	//This function builds all the required session variables when a survey is first started.
+	//It is called from each various format script (ie: group.php, question.php, survey.php)
+	//if the survey has just begun. This funcion also returns the variable $totalquestions.
+	
+	//BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
+	if ($tokensexist == 1 && !returnglobal('token'))
 		{
 		sendcacheheaders();
 		echo "<html>\n";
@@ -812,28 +825,31 @@ function buildsurveysession()
 			{
 			echo templatereplace($op);
 			}
-		echo "\t<center><br />\n";
-		echo "\t"._NOTOKEN1."<br /><br />\n";
-		echo "\t"._NOTOKEN2."<br />&nbsp;\n";
-		echo "\t<table align='center'>";
-		echo "\t<form method='get' action='{$_SERVER['PHP_SELF']}'>\n";
-		echo "\t<input type='hidden' name='sid' value='$sid'>\n";
-		echo "\t\t<tr>\n";
-		echo "\t\t\t<td align='center' valign='middle'>\n";
-		echo "\t\t\t"._TOKEN_PS.": <input class='text' type='text' name='token'>\n";
-		echo "\t\t\t<input class='submit' type='submit' value='"._CONTINUE_PS."'>\n";
-		echo "\t\t\t</td>\n";
-		echo "\t\t</tr>\n";
-		echo "\t</form>\n";
-		echo "\t</table>\n";
-		echo "\t<br />&nbsp;</center>\n";
+?>
+	<center><br />
+	<?php echo _NOTOKEN1 ?><br /><br />
+	<?php echo _NOTOKEN2 ?><br />&nbsp;
+	<table align='center'>
+	<form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'>
+	<input type='hidden' name='sid' value='<?php echo $sid ?>'>
+		<tr>
+			<td align='center' valign='middle'>
+			<?php echo _TOKEN_PS ?>: <input class='text' type='text' name='token'>
+			<input class='submit' type='submit' value='<?php echo _CONTINUE_PS ?>'>
+			</td>
+		</tr>
+	</form>
+	</table>
+	<br />&nbsp;</center>
+<?php
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
 			}
 		exit;
 		}
-	if ($tokensexist == 1 && returnglobal('token'))
+	//Tokens are required, and a token has been provided.
+	elseif ($tokensexist == 1 && returnglobal('token'))
 		{
 		//check if token actually does exist
 		$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='".returnglobal('token')."' AND completed != 'Y'";
@@ -852,11 +868,13 @@ function buildsurveysession()
 				{
 				echo "\t".templatereplace($op);
 				}
-			echo "\t<center><br />\n";
-			echo "\t"._NOTOKEN1."<br /><br />\n";
-			echo "\t"._NOTOKEN3."\n";
-			echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
-			echo "\t<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
+			echo "\t<center><br />\n"
+				."\t"._NOTOKEN1."<br /><br />\n"
+				."\t"._NOTOKEN3."\n"
+				."\t"._FURTHERINFO." {$thissurvey['adminname']} "
+				."(<a href='mailto:{$thissurvey['adminemail']}'>"
+				."{$thissurvey['adminemail']}</a>)<br /><br />\n"
+				."\t<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
 			foreach(file("$thistpl/endpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -864,12 +882,15 @@ function buildsurveysession()
 			exit;
 			}
 		}
+
 	//RESET ALL THE SESSION VARIABLES AND START AGAIN
 	unset($_SESSION['grouplist']);
 	unset($_SESSION['fieldarray']);
 	unset($_SESSION['insertarray']);
+	
+	//1. SESSION VARIABLE: grouplist
+	//A list of groups in this survey, ordered by group name.
 
-	//Build a list of groups and order them by group name
 	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid ORDER BY group_name";
 	$result = mysql_query($query) or die ("Couldn't get group list<br />$query<br />".mysql_error());
 	while ($row = mysql_fetch_array($result))
@@ -877,7 +898,6 @@ function buildsurveysession()
 		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
 		}
 
-	//NOW LETS BUILD THE SESSION VARIABLES
 	$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
 			."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
 			."AND {$dbprefix}questions.sid=$sid\n"
@@ -885,7 +905,10 @@ function buildsurveysession()
 	$result = mysql_query($query);
 	$totalquestions = mysql_num_rows($result);
 
-	switch($surveyformat)
+	//2. SESSION VARIABLE: totalsteps
+	//The number of "pages" that will be presented in this survey
+	//The number of pages to be presented will differ depending on the survey format
+	switch($thissurvey['format'])
 		{
 		case "A":
 			$_SESSION['totalsteps']=1;
@@ -909,10 +932,12 @@ function buildsurveysession()
 			{
 			echo "\t".templatereplace($op);
 			}
-		echo "\t<center><br />\n";
-		echo "\t"._NOQUESTIONS."<br /><br />\n";
-		echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
-		echo "\t<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
+		echo "\t<center><br />\n"
+			."\t"._NOQUESTIONS."<br /><br />\n"
+			."\t"._FURTHERINFO." {$thissurvey['adminname']}"
+			." (<a href='mailto:{$thissurvey['adminemail']}'>"
+			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
+			."\t<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -921,131 +946,182 @@ function buildsurveysession()
 		}
 
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($row = mysql_fetch_assoc($result)) {$arows[] = $row;} // Get table output into array
-	usort($arows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-		if (!isset($_SESSION['insertarray']) || !$_SESSION['insertarray'])
+	while ($row = mysql_fetch_assoc($result)) 
 		{
-		if ($surveyprivate == "N")
-			{
-			$_SESSION['token'] = $token;
-			$_SESSION['insertarray'][]= "token";
-			}
+		$arows[] = $row;
+		} // Get table output into array
 	
-		foreach ($arows as $arow)
-			{
-			//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
-			$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "H" || $arow['type'] == "P") 
-				{
-				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
-						 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
-						 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
-						 . "AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']}\n"
-						 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-				$abresult = mysql_query($abquery);
-				while ($abrow = mysql_fetch_array($abresult))
-					{
-					$_SESSION['insertarray'][] = "$fieldname".$abrow['code'];
-					$alsoother = "";
-					if ($abrow['other'] == "Y") {$alsoother = "Y";}
-					if ($arow['type'] == "P")
-						{
-						$_SESSION['insertarray'][] = "$fieldname".$abrow['code']."comment";	
-						}
-					}
-				if ($alsoother) //Add an extra field for storing "Other" answers
-					{
-					$_SESSION['insertarray'][] = "$fieldname"."other";
-					if ($arow['type'] == "P")
-						{
-						$_SESSION['insertarray'][] = "$fieldname"."othercomment";	
-						}
-					}
-				} 
-			elseif ($arow['type'] == "R") 
-				{
-				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-				$abresult = mysql_query($abquery);
-				$abcount = mysql_num_rows($abresult);
-				for ($i=1; $i<=$abcount; $i++)
-					{
-					$_SESSION['insertarray'][] = "$fieldname".$i;
-					}			
-				}
-			elseif ($arow['type'] == "Q")
-				{
-				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-				$abresult = mysql_query($abquery);
-				while ($abrow = mysql_fetch_array($abresult))
-					{
-					$_SESSION['insertarray'][] = "$fieldname".$abrow['code'];
-					}
-				}
-			elseif ($arow['type'] == "O")	
-				{
-				$_SESSION['insertarray'][] = "$fieldname";
-				$fn2 = "$fieldname"."comment";
-				$_SESSION['insertarray'][] = "$fn2";
-				}
-			elseif ($arow['type'] == "L")
-				{
-				$_SESSION['insertarray'][] = "$fieldname";
-				if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = "{$fieldname}other";}
-				//go through answers, and if there is a default, register it now so that conditions work properly the first time
-				$abquery = "SELECT {$dbprefix}answers.* "
-						 . "FROM {$dbprefix}answers, {$dbprefix}questions "
-						 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid "
-						 . "AND {$dbprefix}questions.qid={$arow['qid']} "
-						 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-				$abresult = mysql_query($abquery);
-				while($abrow = mysql_fetch_array($abresult))
-					{
-					if ($abrow['default_value'] == "Y") 
-						{
-					    $_SESSION[$fieldname] = $abrow['code'];
-						}
-					}
-				}
-			else
-				{
-				$_SESSION['insertarray'][] = "$fieldname";
-				}
+	//Perform a case insensitive natural sort on group name then question title of a multidimensional array
+	usort($arows, 'CompareGroupThenTitle'); 
+	
+	//3. SESSION VARIABLE - insertarray
+	//An array containing information about used to insert the data into the db at the submit stage
+	//4. SESSION VARIABLE - fieldarray
+	//See rem at end..
+	if ($thissurvey['private'] == "N")
+		{
+		$_SESSION['token'] = returnglobal('token');
+		$_SESSION['insertarray'][]= "token";
+		}
 
-			//Check to see if there are any conditions set for this question
-			if (conditionscount($arow['qid']) > 0)
+	foreach ($arows as $arow)
+		{
+		//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
+		$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+		if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "H" || $arow['type'] == "P") 
+			{
+			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
+					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
+					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
+					 . "AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']}\n"
+					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$abresult = mysql_query($abquery);
+			while ($abrow = mysql_fetch_array($abresult))
 				{
-				$conditions = "Y";
+				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
+				$alsoother = "";
+				if ($abrow['other'] == "Y") {$alsoother = "Y";}
+				if ($arow['type'] == "P")
+					{
+					$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";	
+					}
 				}
-			else
+			if ($alsoother) //Add an extra field for storing "Other" answers
 				{
-				$conditions = "N";
+				$_SESSION['insertarray'][] = $fieldname."other";
+				if ($arow['type'] == "P")
+					{
+					$_SESSION['insertarray'][] = $fieldname."othercomment";	
+					}
 				}
-			//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
-			//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
-			//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
-			//                 [4]=questions.type, [5]=questions.gid, [6]=questions.mandatory, [7]=conditionsexist?
-			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}", $conditions);
+			} 
+		elseif ($arow['type'] == "R") 
+			{
+			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
+					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
+					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
+					 . "AND sid=$sid\n"
+					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
+					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$abresult = mysql_query($abquery) or die("ERROR:<br />".$abquery."<br />".mysql_error());
+			$abcount = mysql_num_rows($abresult);
+			for ($i=1; $i<=$abcount; $i++)
+				{
+				$_SESSION['insertarray'][] = "$fieldname".$i;
+				}			
 			}
+		elseif ($arow['type'] == "Q")
+			{
+			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
+					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
+					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
+					 . "AND sid=$sid\n"
+					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
+					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$abresult = mysql_query($abquery);
+			while ($abrow = mysql_fetch_array($abresult))
+				{
+				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
+				}
+			}
+		elseif ($arow['type'] == "O")	
+			{
+			$_SESSION['insertarray'][] = $fieldname;
+			$fn2 = $fieldname."comment";
+			$_SESSION['insertarray'][] = $fn2;
+			}
+		elseif ($arow['type'] == "L")
+			{
+			$_SESSION['insertarray'][] = $fieldname;
+			if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = $fieldname."other";}
+			//go through answers, and if there is a default, register it now so that conditions work properly the first time
+			$abquery = "SELECT {$dbprefix}answers.*\n"
+					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
+					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
+					 . "AND sid=$sid\n"
+					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
+					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$abresult = mysql_query($abquery);
+			while($abrow = mysql_fetch_array($abresult))
+				{
+				if ($abrow['default_value'] == "Y") 
+					{
+				    $_SESSION[$fieldname] = $abrow['code'];
+					}
+				}
+			}
+		else
+			{
+			$_SESSION['insertarray'][] = $fieldname;
+			}
+
+		//Check to see if there are any conditions set for this question
+		if (conditionscount($arow['qid']) > 0)
+			{
+			$conditions = "Y";
+			}
+		else
+			{
+			$conditions = "N";
+			}
+
+		//4. SESSION VARIABLE: fieldarray
+		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
+		//ARRAY CONTENTS - 	[0]=questions.qid, 
+		//					[1]=fieldname, 
+		//					[2]=questions.title, 
+		//					[3]=questions.question
+		//                 	[4]=questions.type, 
+		//					[5]=questions.gid, 
+		//					[6]=questions.mandatory, 
+		//					[7]=conditionsexist
+		$_SESSION['fieldarray'][] = array($arow['qid'], 
+										  $fieldname, 
+										  $arow['title'], 
+										  $arow['question'], 
+										  $arow['type'], 
+										  $arow['gid'], 
+										  $arow['mandatory'], 
+										  $conditions);
 		}
 	return $totalquestions;
 	}
 
 function surveymover()
 	{
-	global $sid, $surveyformat, $presentinggroupdescription;
+	global $thissurvey;
+	global $sid, $presentinggroupdescription;
 	$surveymover = "";
-	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $surveyformat != "A")
-		{$surveymover .= "<input class='submit' type='submit' value=' << "._PREV." ' name='move' />\n";}
+	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A")
+		{
+		$surveymover .= "<input class='submit' type='submit' value=' << "
+					 . _PREV." ' name='move' />\n";
+		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
-		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
+		{
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "
+					  . _NEXT." >> ' name='move' />\n";
+		}
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
-		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
+		{
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "
+					  . _NEXT." >> ' name='move' />\n";
+		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
-		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $surveyformat != "A")
-		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "._LAST." ' name='move' />\n";}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $surveyformat == "A")
-		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "._SUBMIT." ' name='move' />\n";}
+		{
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "
+					  . _NEXT." >> ' name='move' />\n";
+		}
+	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+		{
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "
+					  . _LAST." ' name='move' />\n";
+		}
+	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] == "A")
+		{
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "
+					  . _SUBMIT." ' name='move' />\n";
+		}
 	return $surveymover;	
 	}
 ?>

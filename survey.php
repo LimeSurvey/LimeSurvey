@@ -56,9 +56,9 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 $notanswered=addtoarray_single(checkmandatorys(),checkconditionalmandatorys());
 
 //SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($notanswered) || !$notanswered))
+if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($notanswered) || !$notanswered) && isset($_SESSION['insertarray']))
 	{
-	if ($surveyprivate == "Y")
+	if ($thissurvey['private'] == "Y")
 		{
 		$privacy="";
 		foreach (file("$thistpl/privacy.pstpl") as $op)
@@ -67,7 +67,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			}
 		}
 	//If survey has datestamp turned on, add $localtimedate to sessions
-	if ($surveydatestamp == "Y")
+	if ($thissurvey['datestamp'] == "Y")
 		{
 		$_SESSION['insertarray'][] = "datestamp";
 		$_SESSION['datestamp'] = $localtimedate;
@@ -77,7 +77,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 	$subquery = createinsertquery();
 
 	//COMMIT CHANGES TO DATABASE
-	if ($surveyactive != "Y")
+	if ($thissurvey['active'] != "Y")
 		{
 		sendcacheheaders();
 		echo "<html>\n";
@@ -98,7 +98,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			
 			//UPDATE COOKIE IF REQUIRED
 			$savedid=mysql_insert_id();
-			if ($surveyusecookie == "Y" && $tokensexist != 1)
+			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				setcookie("$cookiename", "COMPLETE", time() + 31536000); //365 days
@@ -126,9 +126,9 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				}
 			
 			//Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
-			if ($sendnotification > 0 && $surveyadminemail) 
+			if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail']) 
 				{
-				sendsubmitnotification($sendnotification);
+				sendsubmitnotification($thissurvey['sendnotification']);
 				}
 
 			session_unset();
@@ -445,7 +445,7 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 	}
 echo "\n";
 
-if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
+if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
 foreach(file("$thistpl/endpage.pstpl") as $op)
 	{
 	echo templatereplace($op);

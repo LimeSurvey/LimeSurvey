@@ -78,10 +78,10 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " "._LA
 	}
 
 //SUBMIT ###############################################################################
-if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
+if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSION['insertarray']))
 	{
 	//If survey has datestamp turned on, add $localtimedate to sessions
-	if ($surveydatestamp == "Y")
+	if ($thissurvey['datestamp'] == "Y")
 		{
 		$_SESSION['insertarray'][] = "datestamp";
 		$_SESSION['datestamp'] = $localtimedate;
@@ -91,7 +91,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 	$subquery = createinsertquery();
 
 	//COMMIT CHANGES TO DATABASE
-	if ($surveyactive != "Y")
+	if ($thissurvey['active'] != "Y")
 		{
 		sendcacheheaders();
 		echo "<html>\n";
@@ -111,7 +111,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			//UPDATE COOKIE IF REQUIRED
 			$savedid=mysql_insert_id();
 			
-			if ($surveyusecookie == "Y" && $tokensexist != 1)
+			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
@@ -137,9 +137,9 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 				}
 
 			//Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
-			if ($sendnotification > 0 && $surveyadminemail)
+			if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail'])
 				{ 
-				sendsubmitnotification($sendnotification);
+				sendsubmitnotification($thissurvey['sendnotification']);
 				}
 
 			session_unset();
@@ -169,7 +169,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) || !$notanswered))
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-	if ($surveyprivate != "N")
+	if ($thissurvey['private'] != "N")
 		{
 		$privacy="";
 		foreach (file("$thistpl/privacy.pstpl") as $op)
@@ -254,7 +254,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
 		echo templatereplace($op);
 		}
-	if ($surveyactive != "Y") 
+	if ($thissurvey['active'] != "Y") 
 		{
 		echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";
 		}
@@ -490,7 +490,7 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 	}
 echo "\n";
 
-if ($surveyactive != "Y") 
+if ($thissurvey['active'] != "Y") 
 	{
 	echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";
 	}

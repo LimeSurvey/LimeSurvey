@@ -60,10 +60,10 @@ if (isset($_POST['move']) && $allowmandatorybackwards==1 && $_POST['move'] == " 
 $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandatorys($backok));
 
 //SUBMIT
-if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
+if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSION['insertarray']))
 	{
 	//If survey has datestamp turned on, add $localtimedate to sessions
-	if ($surveydatestamp == "Y")
+	if ($thissurvey['datestamp'] == "Y")
 		{
 		$_SESSION['insertarray'][] = "datestamp";
 		$_SESSION['datestamp'] = $localtimedate;
@@ -73,7 +73,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 	$subquery = createinsertquery();
 
 	//COMMIT CHANGES TO DATABASE
-	if ($surveyactive != "Y")
+	if ($thissurvey['active'] != "Y")
 		{
 		sendcacheheaders();
 		echo "<html>\n";
@@ -93,7 +93,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			//UPDATE COOKIE IF REQUIRED
 			$savedid=mysql_insert_id();
 			
-			if ($surveyusecookie == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
+			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
@@ -119,9 +119,9 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 				}
 
 			//Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
-			if ($sendnotification > 0 && $surveyadminemail) 
+			if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail']) 
 				{
-				sendsubmitnotification($sendnotification);
+				sendsubmitnotification($thissurvey['sendnotification']);
 				}
 
 			session_unset();
@@ -194,7 +194,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
 		echo templatereplace($op);
 		}
-	if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
+	if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -464,7 +464,7 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 	}
 echo "\n";
 
-if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
+if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
 foreach(file("$thistpl/endpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
@@ -520,9 +520,10 @@ echo "</form>\n</html>";
 
 function last()
 	{
-	global $thistpl, $sid, $token, $surveyprivate;
+	global $thissurvey;
+	global $thistpl, $sid, $token;
 	if (!isset($privacy)) {$privacy="";}
-	if ($surveyprivate != "N")
+	if ($thissurvey['private'] != "N")
 		{
 		foreach (file("$thistpl/privacy.pstpl") as $op)
 			{
