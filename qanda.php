@@ -103,7 +103,7 @@ switch ($ia[4])
 		$inputnames[]=$ia[1];
 		break;
 	case "L": //LIST drop-down/radio-button list
-		$ansquery = "SELECT * FROM answers WHERE qid=$ia[0] ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
 		if ($dropdowns == "L" || !$dropdowns)
 			{
@@ -155,7 +155,7 @@ switch ($ia[4])
 		$inputnames[]=$ia[1];
 		break;
 	case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		if ($lwcdropdowns == "R")
@@ -260,7 +260,7 @@ switch ($ia[4])
 			}
 		break;
 	case "R": //RANKING STYLE
-		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$answer .= "\t\t\t<script type='text/javascript'>\n";
@@ -460,7 +460,7 @@ switch ($ia[4])
 		$qquery = "SELECT other FROM questions WHERE qid=".$ia[0];
 		$qresult = mysql_query($qquery);
 		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
@@ -519,7 +519,7 @@ switch ($ia[4])
 		$qquery = "SELECT other FROM questions WHERE qid=".$ia[0];
 		$qresult = mysql_query($qquery);
 		while ($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult)*2;
 		$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
@@ -654,7 +654,7 @@ switch ($ia[4])
 		$qquery = "SELECT other FROM questions WHERE qid=".$ia[0];
 		$qresult = mysql_query($qquery);
 		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$fn = 1;
@@ -700,7 +700,7 @@ switch ($ia[4])
 		$qquery = "SELECT other FROM questions WHERE qid=".$ia[0];
 		$qresult = mysql_query($qquery);
 		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$fn = 1;
@@ -745,7 +745,7 @@ switch ($ia[4])
 		$qquery = "SELECT other FROM questions WHERE qid=".$ia[0];
 		$qresult = mysql_query($qquery);
 		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$fn = 1;
@@ -792,7 +792,7 @@ switch ($ia[4])
 		$qquery = "SELECT other FROM questions WHERE qid=".$ia[0];
 		$qresult = mysql_query($qquery);
 		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$fn = 1;
