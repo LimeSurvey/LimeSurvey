@@ -176,16 +176,16 @@ define("_SM_REVIEW", "Om du vill kontrollera dina svar och/eller ändra dem, "
 	."genom dina svar."); //New for 0.98finalRC1 - by Bjorn Mildh
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Välj <b>endast en</b> av följande"); //New for 0.98finalRC1
-define("_PS_WRITE", "Skriv ditt svar här"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Välj <b>alla</b> som stämmer"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Välj alla som stämmer och skriv en kommentar"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "Välj det korrekta svaret för varje punkt"); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Skriv ditt/dina svar här"); //New for 0.98finalRC1
-define("_PS_DATE", "Fyll i datum"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Kommentera dina val här"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Välj <b>endast en</b> av följande:"); //New for 0.98finalRC1
+define("_PS_WRITE", "Skriv ditt svar här:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Välj <b>alla</b> som stämmer:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Välj alla som stämmer och skriv en kommentar:"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "Välj det korrekta svaret för varje punkt:"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "Skriv ditt/dina svar här:"); //New for 0.98finalRC1
+define("_PS_DATE", "Fyll i datum:"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Kommentera dina val här:"); //New for 0.98finalRC1
 define("_PS_RANKING", "Rangordna i varje ruta med ett nummer från 1 till"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Lämna in din enkät"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Lämna in din enkät."); //New for 0.98finalRC1
 define("_PS_THANKYOU", "Tack för att du svarat på denna enkät."); //New for 0.98finalRC1
 define("_PS_FAXTO", "Faxa den ifyllda enkäten till:"); //New for 0.98finaclRC1
 

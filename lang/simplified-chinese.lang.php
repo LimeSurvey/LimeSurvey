@@ -166,16 +166,16 @@ define("_SM_REVIEW", "如果您想检查您的回答，并且/或者修改它们，"
 					."您可以点击[<< "._PREV."]按钮，然后查看您的回答。"); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "请选择下列中<b>唯一</b>的一个项目"); //New for 0.98finalRC1
-define("_PS_WRITE", "请在此填写您的回答"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "请选择<b>所有</b>适合的项目"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "请选择所有适合的项目并提供解释意见"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "请为每一项目选择适合的回答"); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "请在此填写您的回答"); //New for 0.98finalRC1
-define("_PS_DATE", "请填写日期"); //New for 0.98finalRC1
-define("_PS_COMMENT", "请在此解释您的选择"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "请选择下列中<b>唯一</b>的一个项目:"); //New for 0.98finalRC1
+define("_PS_WRITE", "请在此填写您的回答:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "请选择<b>所有</b>适合的项目:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "请选择所有适合的项目并提供解释意见:"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "请为每一项目选择适合的回答:"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "请在此填写您的回答:"); //New for 0.98finalRC1
+define("_PS_DATE", "请填写日期:"); //New for 0.98finalRC1
+define("_PS_COMMENT", "请在此解释您的选择:"); //New for 0.98finalRC1
 define("_PS_RANKING", "请为每一项目按喜好排名从1到"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "提交您的问卷调查"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "提交您的问卷调查."); //New for 0.98finalRC1
 define("_PS_THANKYOU", "感谢您完成此问卷调查。"); //New for 0.98finalRC1
 define("_PS_FAXTO", "请将您完成的问卷传真到："); //New for 0.98finaclRC1
 

@@ -1,8 +1,8 @@
 <?php
 /*
-	#################################################################
+	#############################################################
 	# >>> PHP Surveyor  										#
-	#################################################################
+	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
@@ -34,10 +34,10 @@
 	#############################################################
 	#															#
 	# This language file kindly provided by François Tissandier	#
-	# and corrected by Pascal Bastien 20/07/2004			#
-	# Version 1.2							#
+	# and corrected by Pascal Bastien 20/07/2004                #
+	# Version 1.2                                               #
 	#															#
-	#################################################################
+	#############################################################
 */
 //SINGLE WORDS
 define("_YES", "Oui");
@@ -176,16 +176,16 @@ define("_SM_REVIEW", "If you want to check any of the answers you have made, and
 					."through your responses."); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following"); //New for 0.98finalRC1
-define("_PS_WRITE", "Please write your answer here"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "Please choose the appropriate response for each item"); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Please write your answer(s) here"); //New for 0.98finalRC1
-define("_PS_DATE", "Please enter a date"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Make a comment on your choice here"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following:"); //New for 0.98finalRC1
+define("_PS_WRITE", "Please write your answer here:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment:"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "Please choose the appropriate response for each item:"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "Please write your answer(s) here:"); //New for 0.98finalRC1
+define("_PS_DATE", "Please enter a date:"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Make a comment on your choice here:"); //New for 0.98finalRC1
 define("_PS_RANKING", "Please number each box in order of preference from 1 to"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Submit Your Survey"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Submit Your Survey."); //New for 0.98finalRC1
 define("_PS_THANKYOU", "Thank you for completing this survey."); //New for 0.98finalRC1
 define("_PS_FAXTO", "Please fax your completed survey to:"); //New for 0.98finaclRC1
 

@@ -173,16 +173,16 @@ define("_SM_COMPLETED", "<b>Najlep¹a hvala<br /><br />"
 define("_SM_REVIEW", "Èe ¾elite preveriti va¹e odgovore ali jih popraviti, "
 					."lahko to storite s klikanjem na gumb [<< "._PREV."] ."); //New for 0.98finalRC1
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Prosimo, izberite  <b>eno</b> izmed mo¾nosti"); //New for 0.98finalRC1
-define("_PS_WRITE", "Vpi¹ite va¹ odgovor"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Mo¾nih je <b>veè</b> odgovorov"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Izberite ustrezne odgovore in podajte komentar"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Prosimo, izberite  <b>eno</b> izmed mo¾nosti:"); //New for 0.98finalRC1
+define("_PS_WRITE", "Vpi¹ite va¹ odgovor:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Mo¾nih je <b>veè</b> odgovorov:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Izberite ustrezne odgovore in podajte komentar:"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Izberite primeren odgovor za vsako trditev."); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Prosimo, vpi¹ite odgovor"); //New for 0.98finalRC1
-define("_PS_DATE", "Prosimo, vpi¹ite datum"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Komentirajte va¹o izbiro"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "Prosimo, vpi¹ite odgovor:"); //New for 0.98finalRC1
+define("_PS_DATE", "Prosimo, vpi¹ite datum:"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Komentirajte va¹o izbiro:"); //New for 0.98finalRC1
 define("_PS_RANKING", "Prosimo, o¹tevièite vsako polje glede na va¹e preference od 1 do"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Po¹lji anketo"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Po¹lji anketo."); //New for 0.98finalRC1
 define("_PS_THANKYOU", "Najlep¹a hvala za sodelovanje v anketi."); //New for 0.98finalRC1
 define("_PS_FAXTO", "Prosimo, po¹ljite va¹o izpolnjeno anketo po telefaksu na ¹tevilko:"); //New for 0.98finaclRC1
 
