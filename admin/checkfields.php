@@ -89,7 +89,7 @@ while ($row = mysql_fetch_row($result))
 	{
 	$tablelist[]=$row[0];
     }
-if (!is_array($tablelist))
+if (!isset($tablelist) || !is_array($tablelist))
 	{
 	$tablelist[]="empty";
 	}
