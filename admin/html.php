@@ -52,24 +52,26 @@ if ($sid)
 		$surveysummary .= "</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n";
+		if ($gid || $qid) {$showstyle="style='display: none'";}
+		$surveysummary .= "\t<tr $showstyle>\n";
+		$surveysummary .= "\t\t<td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n";
 		if ($s1row['expires'] != "0000-00-00") 
 			{
-			$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
+			$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
 			$surveysummary .= "\t<td>$setfont {$s1row['expires']}</font></td></tr>\n";
 			}
 		$activated = $s1row['active'];
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Language:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Language:</b></font></td>\n";
 		if (!$s1row['language']) {$language=$defaultlang;} else {$language=$s1row['language'];}
 		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>{$s1row['urldescrip']}</a></font></td></tr>\n";
 		}
 	
@@ -147,8 +149,9 @@ if ($gid)
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = mysql_fetch_array($grpresult))
 		{
+		if ($qid) {$gshowstyle="style='display: none'";}
 		$groupsummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Group Title:</b></font></td>\n\t<td>$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n";
-		if ($grow['description']) {$groupsummary .= "\t<tr><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";}
+		if ($grow['description']) {$groupsummary .= "\t<tr $gshowstyle><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";}
 		}
 	$groupsummary .="\t<tr><td align='right'>$setfont<b>Questions:</b></font></td>\n";
 	$groupsummary .="\t<td><select $slstyle name='qid' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
@@ -183,15 +186,10 @@ if ($qid)
 		$qrq = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
 		$qrr = mysql_query($qrq);
 		$qct = mysql_num_rows($qrr);
-		//if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R")
-		//	{
-		//	$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Answers:</b></font></td>\n";
-		//	$questionsummary .= "\t<td>\n\t\t<select $slstyle name='answer' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
-		//	$questionsummary .= getanswers();
-		//	$questionsummary .= "\n\t\t</select>\n";
-		//	if ($qct == 0) {$questionsummary .= "\t\t<font face='verdana' size='1' color='green'>[You need to Add Answers]</font>\n";}
-		//	$questionsummary .= "\t</td></tr>\n";
-		//	}
+		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R"))
+			{
+			$questionsummary .= "\t\t<tr><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question</font></td></tr>\n";
+			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
 			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
@@ -230,90 +228,37 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$cacount=mysql_num_rows($caresult);
 		if ($cacount)
 			{
-			$vasummary = "Some nulls exist. Re-numbering sort order.";
-			$cdquery = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
-			$cdresult = mysql_query($cdquery);
-			$position=0;
-			while ($cdrow=mysql_fetch_array($cdresult))
-				{
-				$position=sprintf("%05d", $position);
-				$cd2query="UPDATE answers SET sortorder='$position' WHERE qid={$cdrow['qid']} AND code='{$cdrow['code']}' AND answer='{$cdrow['answer']}'";
-				$cd2result=mysql_query($cd2query) or die ("Couldn't update sortorder<br />$cd2query<br />".mysql_error());
-				$position++;
-				}
+			fixsortorder($qid);
 			}
 		}
 	$vasummary .= "<table width='100%' align='center' border='0'>\n";
-	switch ($_POST['ansaction'])
-		{
-		case "Add":
-			$cdquery = "INSERT INTO answers (qid, code, answer, sortorder, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
-			$cdresult = mysql_query($cdquery) or die ("Couldn't add answer<br />$cdquery<br />".mysql_error());
-			$vasummary .= "\t<tr><td colspan='5' align='center'><font size='1' color='red'><i>Added Entry</i></font></td></tr>\n";
-			break;
-		case "Save":
-			$cdquery = "UPDATE answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', `default`='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
-			$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
-			$vasummary .= "\t<tr><td colspan='5' align='center'><font size='1' color='red'><i>Updated Entry ($cdquery)</i></font></td></tr>\n";
-			break;
-		case "Del":
-			$cdquery = "DELETE FROM answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
-			$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
-			$vasummary .= "\t<tr><td colspan='5' align='center'><font size='1' color='red'><i>Deleted Entry ($cdquery)</i></font></td></tr>\n";
-			break;
-		case "Up":
-			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
-			$replacesortorder=$newsortorder;
-			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-			$cdquery = "UPDATE answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
-			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
-			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
-			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			break;
-		case "Dn":
-			$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
-			$replacesortorder=$newsortorder;
-			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-			$newreplace2=sprintf("%05d", $_POST['sortorder']);
-			$cdquery = "UPDATE answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
-			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
-			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
-			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			break;
-		default:
-			break;
-		}
 	$cdquery = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
 	$cdresult = mysql_query($cdquery);
 	$cdcount = mysql_num_rows($cdresult);
-	$vasummary .= "\t<tr><th>$setfont Code</th><th>$setfont Answer</th><th>$setfont Sortorder</th><th>$setfont Default</th><th>$setfont Move</th><th>$setfont Action</th></tr>\n";
+	$vasummary .= "\t<tr><th>$setfont Code</th><th>$setfont Answer</th><th>$setfont Default</th><th>$setfont Move</th><th>$setfont Action</th></tr>\n";
 	$position=0;
 	while ($cdrow = mysql_fetch_array($cdresult))
 		{
+		$cdrow['answer']=htmlentities($cdrow['answer']);
 		$position=sprintf("%05d", $position);
 		if ($cdrow['sortorder'] || $cdrow['sortorder'] == "0") {$position=$cdrow['sortorder'];}
 		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n";
 		$vasummary .= "\t\t<td align='center'>";
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
-			$vasummary .="<input name='code' type='text' $btstyle value='{$cdrow['code']}' size='5'>";
+			$vasummary .="<input name='code' type='text' $btstyle value=\"{$cdrow['code']}\" size='5'>";
 			}
 		else
 			{
 			$vasummary .= "$setfont<font size='1'>{$cdrow['code']}";
 			}
 		$vasummary .="</td>\n";
-		$vasummary .= "\t\t<td align='center'><input name='answer' type='text' $btstyle value='{$cdrow['answer']}' size='50'></td>\n";
-		$vasummary .= "\t\t<td align='center'><input name='sortorder' type='hidden' $btstyle value='$position' size='5'>";
-		$vasummary .= "$setfont<font size='1'>$position</td>\n";
+		$vasummary .= "\t\t<td align='center'><input name='answer' type='text' $btstyle value=\"{$cdrow['answer']}\" size='50'></td>\n";
+		$vasummary .= "\t\t<input name='sortorder' type='hidden' $btstyle value=\"$position\" >";
 		$vasummary .= "\t\t<td align='center'>";
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
-			$vasummary .= "<input name='default' type='text' $btstyle value='{$cdrow['default']}' size='2'></td>\n";
+			$vasummary .= "<input name='default' type='text' $btstyle value=\"{$cdrow['default']}\" size='2'></td>\n";
 			}
 		else
 			{
@@ -336,12 +281,13 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 			{
 			$vasummary .= "\t\t<td><input name='ansaction' $btstyle type='submit' value='Save'></td>\n";
 			}
-		$vasummary .= "\t<input type='hidden' name='oldcode' value='{$cdrow['code']}'>\n";
-		$vasummary .= "\t<input type='hidden' name='oldanswer' value='{$cdrow['answer']}'>\n";
+		$vasummary .= "\t<input type='hidden' name='oldcode' value=\"{$cdrow['code']}\">\n";
+		$vasummary .= "\t<input type='hidden' name='oldanswer' value=\"{$cdrow['answer']}\">\n";
 		$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
 		$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
 		$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
 		$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
+		$vasummary .= "\t<input type='hidden' name='action' value='modanswer'>\n";
 		$vasummary .= "\t</form></tr>\n";
 		$position++;
 		}
@@ -351,13 +297,14 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n";
 		$vasummary .= "\t\t<td align='center'><input name='code' type='text' $btstyle size='5'></td>\n";
 		$vasummary .="\t\t<td align='center'><input name='answer' type='text' $btstyle size='50'></td>\n";
-		$vasummary .="\t\t<td align='center'><input name='sortorder' type='hidden' $btstyle value='$position' size='5'>$setfont<font size='1'>$position</td>\n";
+		$vasummary .="\t\t<input name='sortorder' type='hidden' $btstyle value='$position'>\n";
 		$vasummary .="\t\t<td align='center'><input name='default' type='text' $btstyle value='N' size='2'></td>\n";
 		$vasummary .= "\t\t<td></td>\n";
 		$vasummary .="\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='Add'></td>\n";
 		$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
 		$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
 		$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+		$vasummary .= "\t<input type='hidden' name='action' value='modanswer'>\n";
 		$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
 		$vasummary .="\t</form></tr>\n";
 		}
