@@ -95,7 +95,7 @@ while ($degrow = mysql_fetch_array($degresult))
 	//Alternate bgcolor for different groups
 	if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
 	else {$bgc = "#EEEEEE";}
-	if (!$bgc) {$bgc="#EEEEEE";}
+	if (!$bgc) {$bgc = "#EEEEEE";}
 	
 	foreach ($deqrows as $deqrow)
 		{
@@ -108,8 +108,8 @@ while ($degrow = mysql_fetch_array($degresult))
 		//DIFFERENT TYPES OF DATA FIELD HERE
 		if ($deqrow['help'])
 			{
-			$hh = str_replace("'", "\'", $deqrow['help']);
-			echo "\t\t\t<table width='100%' border=1><tr><td align='center'><font size='1'>$hh</td></tr></table>\n";
+			$hh = $deqrow['help'];
+			echo "\t\t\t<table width='100%' border='1'><tr><td align='center'><font size='1'>$hh</td></tr></table>\n";
 			//echo "\t\t\t<img src='help.gif' alt='Help about this question' align='right' onClick=\"javascript:alert('Question {$deqrow['qid']} Help: $hh')\">\n";
 			}
 		echo "\t\t</td>\n";
