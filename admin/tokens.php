@@ -1251,14 +1251,13 @@ if ($action == "upload")
 		if ($handle == false) {echo "Failed to open the uploaded file!\n";}
 		while (!feof($handle))
 			{
-			$buffer = fgets($handle, 4096); //4096 could be increased if very long lines are being used
+			$buffer=getLine($handle); //Function determines line endings including \r (mac)
+			//$buffer = fgets($handle, 4096); //4096 could be increased if very long lines are being used
+
+			if (substr($buffer, -2) == "\r\n") {$buffer = substr($buffer, 0, -2);}
+			elseif (substr($buffer, -1) == "\n") {$buffer = substr($buffer, 0, -1);}
+			elseif (substr($buffer, -1) == "\r") {$buffer = substr($buffer, 0, -1);}
 			
-			//Delete trailing CR from Windows files.
-			//Macintosh files end lines with just a CR, which fgets() doesn't handle correctly.
-			//It will read the entire file in as one line.
-			if (substr($buffer, -1) == "\n") {$buffer = substr($buffer, 0, -1);}
-			
-			//echo "$xx:".$buffer."<br />\n"; //Debugging info
 			$firstname = ""; $lastname = ""; $email = ""; $token = ""; //Clear out values from the last path, in case the next line is missing a value
 			if (!$xx)
 				{
@@ -1393,4 +1392,39 @@ function helpscreen()
 		."\t\t\t</table></td></tr></table>\n"
 		."\t\t</td>\n";
 	}
+
+function getLine($file)
+	{
+	$buffer="";
+	   // iterate over each character in line.
+	while (!feof($file))
+	   {    
+       // append the character to the buffer.
+       $character = fgetc($file);
+       $buffer .= $character;
+       // check for end of line.
+       if (($character == "\n") or ($character == "\r"))
+	   		{
+           // checks if the next character is part of the line ending, as in
+           // the case of windows '\r\n' files, or not as in the case of 
+           // mac classic '\r', and unix/os x '\n' files.
+      		$character = fgetc($file);
+			if ($character == "\n")
+	       		{
+				// part of line ending, append to buffer.
+           		$buffer .= $character;
+	       		} 
+			else
+				{
+               	// not part of line ending, roll back file pointer.
+           		fseek($file, -1, SEEK_CUR);
+	           	}
+           // end of line, so stop reading.
+			break;
+			}
+		}
+	// return the line buffer.
+	return $buffer;
+	}
+
 ?>
