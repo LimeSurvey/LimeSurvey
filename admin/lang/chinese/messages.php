@@ -166,6 +166,9 @@ define("_SL_REPLACEOK", "This will replace the existing text. Continue?"); //New
 define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
 define("_SL_AUTONUMBER", "Start ID numbers at:"); //New with 0.99dev01
 define("_SL_AUTORELOAD", "Automatically load URL when survey complete?"); //New with 0.99dev01
+define("_SL_ALLOWPREV", "Show [<< Prev] button"); //New with 0.99dev01
+define("_SL_USE_DEFAULT","Use default");
+define("_SL_UPD_SURVEY","Update survey");
 
 //groups
 define("_GL_TITLE", "¼ÐÃD:");

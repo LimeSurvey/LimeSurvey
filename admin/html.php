@@ -394,6 +394,7 @@ if ($sid)
 						 . "onClick='return confirm(\"Are you sure?\")' "
 						 . ">Straight</a>] "
 						 . "[<a href='$scriptname?action=renumberquestions&sid=$sid&style=bygroup' "
+						 . "onClick='return confirm(\"Are you sure?\")' "
 						 . ">By Group</a>]";
 		$surveysummary2 .= "</font></font></td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails11'>"
@@ -1533,27 +1534,27 @@ if ($action == "editsurvey")
 					 . "--></script>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILINVITE_SUBJ."</b></font></td>\n"
 					 . "\t\t<td><input type='text' $slstyle size='54' name='email_invite_subj' id='email_invite_subj' value='".$esrow['email_invite_subj']."'>\n"
-					 . "\t\t<input type='button' $slstyle value='Use Default' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILINVITE_SUBJ))))."\", \"email_invite_subj\")'>\n"
+					 . "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILINVITE_SUBJ))))."\", \"email_invite_subj\")'>\n"
 					 . "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILINVITE."</b></font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_invite' id='email_invite'>".$esrow['email_invite']."</textarea>\n"
-					. "\t\t<input type='button' $slstyle value='Use Default' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILINVITE))))."\", \"email_invite\")'>\n"
+					. "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILINVITE))))."\", \"email_invite\")'>\n"
 					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILREMIND_SUBJ."</b></font></td>\n"
 					 . "\t\t<td><input type='text' $slstyle size='54' name='email_remind_subj' id='email_remind_subj' value='".$esrow['email_remind_subj']."'>\n"
-					 . "\t\t<input type='button' $slstyle value='Use Default' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILREMIND_SUBJ))))."\", \"email_remind_subj\")'>\n"
+					 . "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILREMIND_SUBJ))))."\", \"email_remind_subj\")'>\n"
 					 . "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILREMIND."</b></font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_remind' id='email_remind'>".$esrow['email_remind']."</textarea>\n"
-					. "\t\t<input type='button' $slstyle value='Use Default' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILREMIND))))."\", \"email_remind\")'>\n"
+					. "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILREMIND))))."\", \"email_remind\")'>\n"
 					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILCONFIRM_SUBJ."</b></font></td>\n"
 					 . "\t\t<td><input type='text' $slstyle size='54' name='email_confirm_subj' id='email_confirm_subj' value='".$esrow['email_confirm_subj']."'>\n"
-					 . "\t\t<input type='button' $slstyle value='Use Default' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILCONFIRM_SUBJ))))."\", \"email_confirm_subj\")'>\n"
+					 . "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILCONFIRM_SUBJ))))."\", \"email_confirm_subj\")'>\n"
 					 . "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILCONFIRM."</b></font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_confirm' id='email_confirm'>".$esrow['email_confirm']."</textarea>\n"
-					. "\t\t<input type='button' $slstyle value='Use Default' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILCONFIRM))))."\", \"email_confirm\")'>\n"
+					. "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILCONFIRM))))."\", \"email_confirm\")'>\n"
 					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWREGISTER."</b></font></td>\n"
 					. "\t\t<td><select $slstyle name='allowregister'>\n"
@@ -1566,11 +1567,11 @@ if ($action == "editsurvey")
 					. "\t\t</select></td>\n\t</tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILREGISTER_SUBJ."</b></font></td>\n"
 					 . "\t\t<td><input type='text' $slstyle size='54' name='email_register_subj' id='email_register_subj' value='".$esrow['email_register_subj']."'>\n"
-					 . "\t\t<input type='button' $slstyle value='Use Default' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILREGISTER_SUBJ))))."\", \"email_register_subj\")'>\n"
+					 . "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILREGISTER_SUBJ))))."\", \"email_register_subj\")'>\n"
 					 . "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILREGISTER."</b></font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_register' id='email_register'>".$esrow['email_register']."</textarea>\n"
-					. "\t\t<input type='button' $slstyle value='Use Default' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILREGISTER))))."\", \"email_register\")'>\n"
+					. "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"".str_replace("&quot;", "~quote~", str_replace("\n", "", nl2br(htmlentities(_TC_EMAILREGISTER))))."\", \"email_register\")'>\n"
 					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right' valign='top'>$setfont<b>"._SL_ATTRIBUTENAMES."</b></font></td>\n"
 					. "\t\t<td>$setfont<input $slstyle type='text' size='25' name='attribute1'"
@@ -1627,7 +1628,7 @@ if ($action == "editsurvey")
 		$editsurvey .= ">"._AD_NO."</option>\n"
 					 . "</select></td></tr>";
 
-		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Survey'></td>\n"
+		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._SL_UPD_SURVEY."'></td>\n"
 					 . "\t<input type='hidden' name='action' value='updatesurvey'>\n"
 					 . "\t<input type='hidden' name='sid' value='{$esrow['sid']}'>\n"
 					 . "\t</tr></form>\n"
