@@ -638,6 +638,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 		$groupname=$gl[1];
 		$groupdescription=$gl[2];
 		if (isset($_POST['lastgroupname']) && $_POST['lastgroupname'] != $groupname && $groupdescription) {$newgroup = "Y";} else {$newgroup = "N";}
+		if (!isset($_POST['lastgroupname'])) {$newgroup="Y";}
 		}
 	}
 
