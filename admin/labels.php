@@ -74,29 +74,29 @@ echo "<script type='text/javascript'>\n"
 echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
     ."\t<tr>\n"
     ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n"
-    ."\t\t\t<table height='1' cellspacing='1'><tr><td></td></tr></table>\n"
+    ."\t\t\t<table cellspacing='1'><tr><td></td></tr></table>\n"
     ."\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' "
     ."cellpadding='1' cellspacing='0'>\n"
     ."\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'>"
     ."<font size='1' face='verdana' color='white'><b>"
-    ._LABELCONTROL."</b></td></tr>\n"
+    ._LABELCONTROL."</b></font></td></tr>\n"
     ."\t\t\t\t<tr bgcolor='#999999'>\n"
     ."\t\t\t\t\t<td>\n"
     ."\t\t\t\t\t<input type='image' src='$imagefiles/home.gif' title='"
-    ._B_ADMIN_BT."' border='0' align='left' hspace='0' "
+    ._B_ADMIN_BT."' align='left' "
     ."onClick=\"window.open('$scriptname', '_top')\">\n"
-    ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left'>\n"
-    ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
-    ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n"
-    ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
+    ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left' alt=''>\n"
+    ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
+    ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt=''>\n"
+    ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
     ."\t\t\t\t\t</td>\n"
     ."\t\t\t\t\t<td align='right' width='320'>\n"
     ."\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.gif' title='"
-    ._A_HELP_BT."' align='right' hspace='0' border='0' "
+    ._A_HELP_BT."' align='right'  "
     ."onClick=\"showhelp('show')\">\n"
-    ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'>\n"
-    ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0'>\n"
-    ."\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' align='right' hspace='0' border='0' title='"
+    ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'  alt=''>\n"
+    ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt=''>\n"
+    ."\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' align='right' title='"
     ._L_ADDSET_BT."' onClick=\"window.open('labels.php?action=newset', '_top')\">\n"
     ."\t\t\t\t\t$setfont<font size='1'><b>"
     ._LABELSETS.":</b> "
@@ -116,11 +116,11 @@ echo "\t\t\t\t\t\t<option value=''";
 if (!isset($lid) || $lid<1) {echo " selected";}
 echo ">"._AD_CHOOSE."</option>\n";
 
-echo "\t\t\t\t\t</select>\n"
+echo "\t\t\t\t\t</select></font></font>\n"
     ."\t\t\t\t\t</td>\n"
     ."\t\t\t\t</tr>\n"
     ."\t\t\t</table>\n"
-    ."\t\t<table height='1'><tr><td></td></tr></table>\n";
+    ."\t\t<table ><tr><td></td></tr></table>\n";
 
 //NEW SET
 if ($action == "newset" || $action == "editset")
@@ -372,7 +372,7 @@ echo "\t</td>\n"; //END OF MAIN CELL
 helpscreen();
 echo "</table>\n";
 
-echo htmlfooter("instructions.html#labels", "Using PHPSurveyor's Labels Editor");
+echo htmlfooter("instructions.html#labels", "Using PHPSurveyor`s Labels Editor");
 
 //************************FUNCTIONS********************************
 function updateset($lid)
@@ -524,13 +524,13 @@ function helpscreen()
     echo "\t\t\t<table width='100%'><tr><td><table width='100%' align='center' cellspacing='0'>\n";
     echo "\t\t\t\t<tr>\n";
     echo "\t\t\t\t\t<td bgcolor='#555555' height='8'>\n";
-    echo "\t\t\t\t\t\t<font color='white' size='1'><b>"._HELP."\n";
+    echo "\t\t\t\t\t\t<font color='white' size='1'><b>"._HELP."</b></font>\n";
     echo "\t\t\t\t\t</td>\n";
     echo "\t\t\t\t</tr>\n";
     echo "\t\t\t\t<tr>\n";
     echo "\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
-    echo "\t\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' hspace='0' border='0' align='left'>\n";
-    echo "\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n";
+    echo "\t\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' hspace='0' border='0' align='left' alt=''>\n";
+    echo "\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\">\n";
     echo "\t\t\t\t\t</td>\n";
     echo "\t\t\t\t</tr>\n";
     echo "\t\t\t\t<tr>\n";
