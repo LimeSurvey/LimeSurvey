@@ -222,7 +222,7 @@ if ($questionarray)
 		$oldgid=substr($qa, $oldgidpos, (strpos($qa, "', '", $oldgidpos))-$oldgidpos);
 		$qinsert = str_replace("('$oldqid', '$oldsid', '$oldgid',", "('$sid', '$gid',", $qa);
 		$qinsert = str_replace("(`qid`, ", "(", $qinsert);
-		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions");
+		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 		$qres = mysql_query($qinsert) or die ("<b>"._ERROR.":</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
 		//GET NEW QID
 		$qidquery = "SELECT qid, lid, type FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
