@@ -102,33 +102,39 @@ while ($rows=mysql_fetch_array($result))
 //2: Get all other questions that occur before this question that are pre-determined answer types
 
 //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid";
+$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND type not in ('S', 'D', 'T', 'Q')";
 $qresult = mysql_query($qquery) or die ("$qquery<br />".mysql_error());
 $qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 while ($qrow = mysql_fetch_array($qresult)) {$qrows[] = $qrow;} // Get table output into array
 usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-$questionpos=0;
 foreach ($qrows as $qrow) 
 	{
-	if ($qrow["qid"] == $qid) {$setlimit=$questionpos;}
-	$questionpos++;
+	if ($qrow["qid"] != $qid) 
+		{
+		$questionlist[]=$qrow["qid"];
+		}
+	elseif ($qrow["qid"] == $qid)
+		{
+		break;
+		}
 	}
 
-$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid AND ({$dbprefix}groups.group_name < '$questiongroupname' OR ({$dbprefix}groups.group_name = '$questiongroupname')) AND {$dbprefix}questions.type NOT IN ('S', 'D', 'T', 'Q') ORDER BY CONCAT({$dbprefix}groups.group_name, {$dbprefix}questions.title) LIMIT $setlimit";
-echo "<!-- DEBUG: \n";
-echo $query;
-echo "\n-->\n";
-$result=mysql_query($query) or die ("Couldn't get other questions.<br />$query<br />".mysql_error());
-$questionscount=mysql_num_rows($result);
-//conditionstable: 0=qid, 1=cqid, 2=cfieldname, 3=description, 4=method, 5=value
-//$cquestions: 0=description, 1=cqid, 2=type, 3=fieldname
-//$canswers: 0=fieldname, 1=code, 2=answer
+foreach ($questionlist as $ql)
+	{
+	$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql";
+	$result=mysql_query($query) or die("Couldn't get question $qid");
+	$thiscount=mysql_num_rows($result);
+	while ($myrows=mysql_fetch_array($result)) 
+		{
+		$theserows[]=array("qid"=>$myrows['qid'], "sid"=>$myrows['sid'], "gid"=>$myrows['gid'], "question"=>$myrows['question'], "type"=>$myrows['type'], "lid"=>$myrows['lid'], "title"=>$myrows['title']);
+		}
+	}
+
+$questionscount=count($theserows);
 
 if ($questionscount > 0)
 	{
 	$X="X";
-	while ($myrows=mysql_fetch_array($result)) {$theserows[]=$myrows;}
-	usort($theserows, 'CompareGroupThenTitle');
 	foreach($theserows as $rows)
 		{
 		if (strlen($rows['question']) > 30) {$shortquestion=$rows['title'].": ".substr($rows['question'], 0, 30).".. ";}
