@@ -129,6 +129,7 @@ define(_SL_URL, "End URL:");
 define(_SL_URLDESCRIP, "URL Descrip:");
 define(_SL_STATUS, "Status:");
 define(_SL_SELSQL, "Select SQL File:");
+define(_SL_USECOOKIES, "Use Cookies?"); //NEW IN RELEASE 0.98rc3
 //groups
 define(_GL_TITLE, "Title:");
 define(_GL_DESCRIPTION, "Description:");
@@ -222,6 +223,22 @@ define(_RELOADING, "Reloading Screen. Please wait.");
 define(_ADD, "Add");
 define(_UPDATE, "Update");
 
+//SURVEY STATUS MESSAGES (new in 0.98rc3)
+define(_SS_NOGROUPS, "Number of groups in survey:"); //NEW for release 0.98rc3
+define(_SS_NOQUESTS, "Number of questions in survey:"); //NEW for release 0.98rc3
+define(_SS_ANONYMOUS, "This survey is anonymous."); //NEW for release 0.98rc3
+define(_SS_TRACKED, "This survey is NOT anonymous."); //NEW for release 0.98rc3
+define(_SS_DATESTAMPED, "Responses will be date stamped"); //NEW for release 0.98rc3
+define(_SS_COOKIES, "It uses cookies for access control."); //NEW for release 0.98rc3
+define(_SS_QBYQ, "It is presented question by question."); //NEW for release 0.98rc3
+define(_SS_GBYG, "It is presented group by group."); //NEW for release 0.98rc3
+define(_SS_SBYS, "It is presented on one single page."); //NEW for release 0.98rc3
+define(_SS_ACTIVE, "Survey is currently active."); //NEW for release 0.98rc3
+define(_SS_NOTACTIVE, "Survey is not currently active."); //NEW for release 0.98rc3
+define(_SS_SURVEYTABLE, "Survey table name is:"); //NEW for release 0.98rc3
+define(_SS_CANNOTACTIVATE, "Survey cannot be activated yet."); //NEW for release 0.98rc3
+define(_SS_ADDGROUPS, "You need to add groups"); //NEW for release 0.98rc3
+define(_SS_ADDQUESTS, "You need to add questions"); //NEW for release 0.98rc3
 
 //General Setup Messages
 define(_ST_NODB1, "The defined surveyor database does not exist");
