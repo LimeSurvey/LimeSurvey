@@ -447,7 +447,7 @@ if ($action == "copyquestion")
 		$editquestion .= "\t\t\t<b>$setfont<font color='white'>Copy Question $qid (Code {$eqrow['title']})</b><br />Note: You MUST enter a new Question Code!</font></font>\n";
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
-		$editquestion .= "\t<tr><form action='$scriptname' name='editquestion' >\n";
+		$editquestion .= "\t<tr><form action='$scriptname' name='editquestion' method='post'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
 		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value='' /></td>\n";
 		$editquestion .= "\t</tr>\n";
