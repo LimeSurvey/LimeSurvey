@@ -46,40 +46,51 @@ if (!$style)
 	sendcacheheaders();
 	echo $htmlheader
 		."<br />\n"
+		."<table align='center'><tr>"
+		."<form action='export.php' method='post'>\n"
+		."<td>\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
+		."<font size='1' face='verdana' color='white'><b>"
 		._EXPORTRESULTS;
 	if (isset($_POST['sql'])) {echo " ("._EX_FROMSTATS.")";}
-	echo "</b></td></tr>\n"
-		."\t<form action='export.php' method='post'>\n"
-		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"._EX_HEADINGS."</b></font></td></tr>\n"
+	echo "</b></font></td></tr>\n"
+		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><b>"
+		._EX_HEADINGS."</b></font></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
-		."\t\t\t$setfont<input type='radio' name='style' value='abrev' id='headabbrev'><label for='headabbrev'><font size='1'>"
+		."\t\t\t$setfont<input type='radio' name='style' value='abrev' id='headabbrev'>"
+		."<label for='headabbrev'><font size='1'>"
 		._EX_HEAD_ABBREV."</label><br />\n"
-		."\t\t\t<input type='radio' checked name='style' value='full' id='headfull'><label for='headfull'><font size='1'>"
+		."\t\t\t<input type='radio' checked name='style' value='full' id='headfull'>"
+		."<label for='headfull'><font size='1'>"
 		._EX_HEAD_FULL."</label>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
-		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"
-		._EX_ANSWERS."</b></font></td></tr>\n"
+		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><b>"
+		._EX_ANSWERS."</b></font></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
-		."\t\t\t$setfont<input type='radio' name='answers' value='short' id='ansabbrev'><label for='ansabbrev'><font size='1'>"
+		."\t\t\t$setfont<input type='radio' name='answers' value='short' id='ansabbrev'>"
+		."<label for='ansabbrev'><font size='1'>"
 		._EX_ANS_ABBREV."</label><br />\n"
-		."\t\t\t<input type='radio' checked name='answers' value='long' id='ansfull'><label for='ansfull'><font size='1'>"
+		."\t\t\t<input type='radio' checked name='answers' value='long' id='ansfull'>"
+		."<label for='ansfull'><font size='1'>"
 		._EX_ANS_FULL."</label>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
-		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"
-		._EX_FORMAT."</b></font></td></tr>\n"
+		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><b>"
+		._EX_FORMAT."</b></font></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
-		."\t\t\t$setfont<input type='radio' name='type' value='doc' id='worddoc'><label for='worddoc'><font size='1'>"
+		."\t\t\t$setfont<input type='radio' name='type' value='doc' id='worddoc'>"
+		."<label for='worddoc'><font size='1'>"
 		._EX_FORM_WORD."</label><br />\n"
-		."\t\t\t<input type='radio' name='type' value='xls' checked id='exceldoc'><label for='exceldoc'><font size='1'>"
+		."\t\t\t<input type='radio' name='type' value='xls' checked id='exceldoc'>"
+		."<label for='exceldoc'><font size='1'>"
 		._EX_FORM_EXCEL."</label><br />\n"
-		."\t\t\t<input type='radio' name='type' value='csv' id='csvdoc'><label for='csvdoc'><font size='1'>"
+		."\t\t\t<input type='radio' name='type' value='csv' id='csvdoc'>"
+		."<label for='csvdoc'><font size='1'>"
 		._EX_FORM_CSV."</label>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -97,19 +108,78 @@ if (!$style)
 			.stripcslashes($_POST['sql'])
 			."\">\n";
 		}
-	echo "\t</form>\n"
-		."\t<tr>\n"
+	echo "\t<tr>\n"
 		."\t\t<td align=\"center\" bgcolor='silver'>\n"
 		."\t\t\t<input $btstyle type='submit' value='"
 		._CLOSEWIN."' onClick=\"window.close()\">\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
-		."<br />\n"
+		."</td>";
+	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
+	$query="SELECT * FROM {$dbprefix}survey_$sid LIMIT 1";
+	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+	$afieldcount=mysql_num_fields($result);
+	$query="SELECT private FROM {$dbprefix}surveys WHERE sid=$sid"; //Find out if tokens are used
+	$result=mysql_query($query) or die("Couldn't get privacy data<br />$query<br />".mysql_error());
+	while ($rows = mysql_fetch_array($result)) {$surveyprivate=$rows['private'];}
+	if ($surveyprivate == "N")
+		{
+		$query="SHOW TABLES LIKE '{$dbprefix}tokens_$sid'"; //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
+		$result=mysql_query($query) or die("Couldn't get table list<br />$query<br />".mysql_error());
+		$tablecount=mysql_num_rows($result);
+		}
+	if ($afieldcount > 255 || $tablecount > 0) //Do second column
+		{
+		//OPTIONAL EXTRAS (FROM TOKENS TABLE)
+		if ($tablecount > 0) 
+			{
+			echo "<td valign='top'>\n"
+				."<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
+				."\t<tr>\n"
+				."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><b>"
+				."Token Options</b>\n"
+				."\t\t</font></td>\n"
+				."\t</tr>\n"
+				."\t<tr>\n"
+				."\t\t<td bgcolor='silver' height='8'><b>$setfont<font size='1'>\n"
+				."Include Token Fields:"
+				."\t\t</font></font></b></td>\n"
+				."\t</tr>\n"
+				."\t<tr>\n"
+				."\t\t<td>$setfont<font size='1'>"
+				."<input type='checkbox' name='first_name' id='first_name'>"
+				."<label for='first_name'>"._TL_FIRST."</label><br />\n"
+				."<input type='checkbox' name='last_name' id='last_name'>"
+				."<label for='last_name'>"._TL_LAST."</label><br />\n"
+				."<input type='checkbox' name='email_address' id='email_address'>"
+				."<label for='email_address'>"._TL_EMAIL."</label><br />\n";
+			$query = "SELECT * FROM {$dbprefix}tokens_$sid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
+			$result = mysql_query($query) or die ($query."<br />".mysql_error());
+			$rowcount = mysql_num_fields($result);
+			if ($rowcount > 7)
+				{
+				echo "<input type='checkbox' name='attribute_1' id='attribute_1'>"
+					."<label for='attribute_1'>"._TL_ATTR1."</label><br />\n"
+					."<input type='checkbox' name='attribute_2' id='attribute_2'>"
+					."<label for='attribute_2'>"._TL_ATTR2."</label><br />\n";
+				}
+			echo "\t\t</font></font></td>\n"
+				."\t</tr>\n"
+				."</table>"
+				."</td>";
+			}
+		}
+		
+	echo "</tr>"
+		."\t</form>\n"
+		."</table><br />\n"
 		.htmlfooter("instructions.html", "General PHPSurveyor Instructions")
 		."</body>\n</html>";
 	exit;
 	}
+
+//HERE WE EXPORT THE ACTUAL RESULTS
 
 if ($type == "doc") 
 	{
@@ -133,12 +203,7 @@ else
 	{
 	header("Content-Disposition: attachment; filename=survey.doc");
 	}
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-                                                     // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");                          // HTTP/1.0
+sendcacheheaders();
 
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
@@ -159,10 +224,38 @@ while ($lw = mysql_fetch_array($lr))
 	$legitqs[] = $lw['qid']; //this creates an array of question id's'
 	}
 
-//Get the fieldnames from the survey table
+//Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$sid";
-$dquery = "SELECT * FROM $surveytable ORDER BY id LIMIT 1";
-$dresult = mysql_query($dquery);
+$dquery = "SELECT $surveytable.*";
+if (isset($_POST['first_name']) && $_POST['first_name']=="on")
+	{
+	$dquery .= ", {$dbprefix}tokens_$sid.firstname";
+	}
+if (isset($_POST['last_name']) && $_POST['last_name']=="on")
+	{
+	$dquery .= ", {$dbprefix}tokens_$sid.lastname";
+	}
+if (isset($_POST['email_address']) && $_POST['email_address']=="on")
+	{
+	$dquery .= ", {$dbprefix}tokens_$sid.email";
+	}
+if (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") 
+	{
+	$dquery .= ", {$dbprefix}tokens_$sid.attribute_1";
+	}
+if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
+	{
+	$dquery .= ", {$dbprefix}tokens_$sid.attribute_2";
+	}
+$dquery .= " FROM $surveytable";
+if ((isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on") || (isset($_POST['email_address']) && $_POST['email_address']=="on")) 
+	{
+	$dquery .= ""
+			 . " LEFT OUTER JOIN {$dbprefix}tokens_$sid"
+			 . " ON $surveytable.token = {$dbprefix}tokens_$sid.token";
+	}
+$dquery .=" ORDER BY id LIMIT 1";
+$dresult = mysql_query($dquery) or die(_ERROR." getting results<br />$dquery<br />".mysql_error());
 $fieldcount = mysql_num_fields($dresult);
 $firstline="";
 for ($i=0; $i<$fieldcount; $i++)
@@ -170,7 +263,17 @@ for ($i=0; $i<$fieldcount; $i++)
 	$fieldinfo=mysql_field_name($dresult, $i);
 	if ($fieldinfo == "token")
 		{
-		if ($answers == "short") {if ($type == "csv") {$firstline.="\"Token\"$s";} else {$firstline .= "Token$s";}}
+		if ($answers == "short") 
+			{
+			if ($type == "csv") 
+				{
+				$firstline.="\"Token\"$s";
+				}
+			else 
+				{
+				$firstline .= "Token$s";
+				}
+			}
 		if ($answers == "long") 
 			{
 			if ($style == "abrev")
@@ -184,6 +287,31 @@ for ($i=0; $i<$fieldcount; $i++)
 				else {$firstline .= "Participant Name$s";}
 				}
 			}
+		}
+	elseif ($fieldinfo == "lastname")
+		{
+		if ($type == "csv") {$firstline .= "\""._TL_LAST."\"$s";}
+		else {$firstline .= _TL_LAST."$s";}
+		}
+	elseif ($fieldinfo == "firstname")
+		{
+		if ($type == "csv") {$firstline .= "\""._TL_FIRST."\"$s";}
+		else {$firstline .= _TL_FIRST."$s";}
+		}
+	elseif ($fieldinfo == "email")
+		{
+		if ($type == "csv") {$firstline .= "\""._EMAIL."\"$s";}
+		else {$firstline .= _EMAIL."$s";}
+		}
+	elseif ($fieldinfo == "attribute_1")
+		{
+		if ($type == "csv") {$firstline .= "\"attr1\"$s";}
+		else {$firstline .= _TL_ATTR1."$s";}
+		}
+	elseif ($fieldinfo == "attribute_2")
+		{
+		if ($type == "csv") {$firstline .= "\"attr2\"$s";}
+		else {$firstline .= _TL_ATTR2."$s";}
 		}
 	elseif ($fieldinfo == "id")
 		{
@@ -347,10 +475,9 @@ for ($i=0; $i<$fieldcount; $i++)
 		}
 	}
 
-//$firstline = substr($firstline, 0, strlen($firstline)-1);
 $firstline = trim($firstline);
 $firstline .= "\n";
-echo $firstline;
+echo $firstline; //Sending the header row
 
 //Now dump the data
 
@@ -358,6 +485,34 @@ if (isset($_POST['sql'])) //this applies if export has been called from the stat
 	{
 	if ($_POST['sql'] == "NULL") {$dquery = "SELECT * FROM $surveytable ORDER BY id";}
 	else {$dquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
+	}
+elseif ((isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
+	{
+	$dquery = "SELECT $surveytable.*";
+	if (isset($_POST['first_name']) && $_POST['first_name']=="on")
+		{
+		$dquery .= ", {$dbprefix}tokens_$sid.firstname";
+		}
+	if (isset($_POST['last_name']) && $_POST['last_name']=="on")
+		{
+		$dquery .= ", {$dbprefix}tokens_$sid.lastname";
+		}
+	if (isset($_POST['email_address']) && $_POST['email_address']=="on")
+		{
+		$dquery .= ", {$dbprefix}tokens_$sid.email";
+		}
+	if (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on")
+		{
+		$dquery .= ", {$dbprefix}tokens_$sid.attribute_1";
+		}
+	if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
+		{
+		$dquery .= ", {$dbprefix}tokens_$sid.attribute_2";
+		}
+	$dquery	.= " FROM $surveytable "
+			. "LEFT OUTER JOIN {$dbprefix}tokens_$sid "
+			. "ON $surveytable.token={$dbprefix}tokens_$sid.token "
+			. "ORDER BY $surveytable.id";
 	}
 else // this applies for exporting everything
 	{
