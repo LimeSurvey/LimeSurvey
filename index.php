@@ -770,13 +770,18 @@ function createinsertquery()
 	{
 	global $thissurvey;
 	global $deletenonvalues, $thistpl;
+	global $sid;
+	$fieldmap=createFieldMap($sid); //Creates a list of the legitimate questions for this survey
 	
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 		{
-	    foreach ($_SESSION['insertarray'] as $value)
+		$inserts=array_unique($_SESSION['insertarray']);
+	    foreach ($inserts as $value)
 			{
+			//Work out if the field actually exists in this survey
+			$fieldexists = arraySearchByKey($value, $fieldmap, "fieldname");
 			//Iterate through possible responses
-			if (isset($_SESSION[$value]))
+			if (isset($_SESSION[$value]) && !empty($fieldexists))
 				{
 				//If deletenonvalues is ON, delete any values that shouldn't exist
 				if($deletenonvalues==1) {checkconfield($value);}
@@ -784,7 +789,13 @@ function createinsertquery()
 				$colnames[]=$value;
 			    $values[]=mysql_escape_string($_SESSION[$value]);
 				}
-			}		
+			}
+		if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
+			{
+			echo submitfailed();
+			
+			exit;		
+		    }
 		$query = "INSERT INTO {$thissurvey['tablename']}\n"
 				."(`".implode("`, `", $colnames)."`)\n"
 				."VALUES ('".implode("', '", $values)."')";
@@ -938,6 +949,7 @@ function submitfailed()
 				. mysql_error()."\n\n";
 		$email=crlf_lineendings($email);
 		mail($thissurvey['adminemail'], _DNSAVEEMAIL5, $email);
+		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.
 		session_unset();
 		session_destroy();
