@@ -183,48 +183,48 @@ if (!$style)
 		."\t</tr>\n"
 		."</table>\n"
 		."</td>\n";
-	if ($tablecount > 0) //Do second column
+	if (isset($tablecount) && $tablecount > 0) //Do second column
 		{
 		//OPTIONAL EXTRAS (FROM TOKENS TABLE)
 		if ($tablecount > 0) 
 			{
-			echo "<td valign='top'>\n"
-				."<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
-				."\t<tr>\n"
-				."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><b>"
-				._EX_TOKENCONTROLS."</b>\n"
-				."\t\t</font></td>\n"
-				."\t</tr>\n"
-				."\t<tr>\n"
-				."\t\t<td bgcolor='silver' height='8'><b>$setfont<font size='1'>\n"
-				._EX_TOKSELECT.":"
-				."\t\t</font></font></b></td>\n"
-				."\t</tr>\n"
-				."\t<tr>\n"
-				."\t\t<td>$setfont<font size='1'>"
-				."<img src='$imagefiles/showhelp.gif' alt='"._HELP."' align='right' onclick='javascript:alert(\""
-				._EX_TOKENMESSAGE
-				."\")'><br /><br />\n"
-				."<input type='checkbox' name='first_name' id='first_name'>"
-				."<label for='first_name'>"._TL_FIRST."</label><br />\n"
-				."<input type='checkbox' name='last_name' id='last_name'>"
-				."<label for='last_name'>"._TL_LAST."</label><br />\n"
-				."<input type='checkbox' name='email_address' id='email_address'>"
-				."<label for='email_address'>"._TL_EMAIL."</label><br />\n";
-			$query = "SELECT * FROM {$dbprefix}tokens_$sid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
-			$result = mysql_query($query) or die ($query."<br />".mysql_error());
-			$rowcount = mysql_num_fields($result);
-			if ($rowcount > 7)
-				{
-				echo "<input type='checkbox' name='attribute_1' id='attribute_1'>"
-					."<label for='attribute_1'>"._TL_ATTR1."</label><br />\n"
-					."<input type='checkbox' name='attribute_2' id='attribute_2'>"
-					."<label for='attribute_2'>"._TL_ATTR2."</label><br />\n";
-				}
-			echo "\t\t</font></font></td>\n"
-				."\t</tr>\n"
-				."</table>"
-				."</td>";
+ 		echo "<td valign='top'>\n"
+ 			."<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
+ 			."\t<tr>\n"
+ 			."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><b>"
+ 			._EX_TOKENCONTROLS."</b>\n"
+ 			."\t\t</font></td>\n"
+ 			."\t</tr>\n"
+ 			."\t<tr>\n"
+ 			."\t\t<td bgcolor='silver' height='8'><b>$setfont<font size='1'>\n"
+ 			._EX_TOKSELECT.":"
+ 			."\t\t</font></font></b></td>\n"
+ 			."\t</tr>\n"
+ 			."\t<tr>\n"
+ 			."\t\t<td>$setfont<font size='1'>"
+ 			."<img src='$imagefiles/showhelp.gif' alt='"._HELP."' align='right' onclick='javascript:alert(\""
+ 			._EX_TOKENMESSAGE
+ 			."\")'><br /><br />\n"
+ 			."<input type='checkbox' name='first_name' id='first_name'>"
+ 			."<label for='first_name'>"._TL_FIRST."</label><br />\n"
+ 			."<input type='checkbox' name='last_name' id='last_name'>"
+ 			."<label for='last_name'>"._TL_LAST."</label><br />\n"
+ 			."<input type='checkbox' name='email_address' id='email_address'>"
+ 			."<label for='email_address'>"._TL_EMAIL."</label><br />\n";
+ 		$query = "SELECT * FROM {$dbprefix}tokens_$sid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
+ 		$result = mysql_query($query) or die ($query."<br />".mysql_error());
+ 		$rowcount = mysql_num_fields($result);
+ 		if ($rowcount > 7)
+ 			{
+ 			echo "<input type='checkbox' name='attribute_1' id='attribute_1'>"
+ 				."<label for='attribute_1'>"._TL_ATTR1."</label><br />\n"
+ 				."<input type='checkbox' name='attribute_2' id='attribute_2'>"
+ 				."<label for='attribute_2'>"._TL_ATTR2."</label><br />\n";
+ 			}
+ 		echo "\t\t</font></font></td>\n"
+ 			."\t</tr>\n"
+ 			."</table>"
+ 			."</td>";
 			}
 		}
 	echo "</tr>\n"
@@ -405,7 +405,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		list($fsid, $fgid, $fqid) = split("X", $fieldinfo);
 		if ($style == "abrev") //Print out abbreviated question title
 			{
-			if (!$fqid) {$fqid = 0;}
+			if (!$fqid) {$fqid = "0";}
 			$oldfqid=$fqid;
 			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list. If not, have to do some tricky stuff to find where qid ends and answer code begins:
 				{
@@ -445,13 +445,13 @@ for ($i=0; $i<$fieldcount; $i++)
 				$oldfqid="";
 				}
 			$qq = "SELECT question, type FROM {$dbprefix}questions WHERE qid=$fqid"; //get the question
-			$qr = mysql_query($qq);
+			$qr = mysql_query($qq) or die ("ERROR:<br />".$qq."<br />".mysql_error());
 			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 				{
 				$ftype = $qrow['type']; //get the question type
 				$fquest = $qrow['question'];
 				}
-			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H") 
+			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H" && $ftype != "R") 
 				{ //If its a single - answer only type question
 				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 					{
@@ -460,15 +460,38 @@ for ($i=0; $i<$fieldcount; $i++)
 				$legitqs=$nlegitqs;
 				unset($nlegitqs);
 				}
+			else
+				{
+				if (!isset($thisacount)) 
+					{
+					$aq = "SELECT code FROM {$dbprefix}answers WHERE qid=$fqid"; //We just want to count how many answers so we can delete the legitq entry when they're all used up
+					$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
+					$thisacount = mysql_num_rows($ar);
+					}
+				if(!isset($usedanswers)) {$usedanswers=0;}
+				$usedanswers++;
+				if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
+					{
+				    foreach ($legitqs as $lgqs)
+						{
+						if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+						}
+					$legitqs=$nlegitqs;
+					unset($nlegitqs);
+					unset($thisacount);
+					unset($usedanswers);
+					}
+				}
 			switch ($ftype)
 				{
 				case "R": //RANKING TYPE
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
-					$lr = mysql_query($lq);
-					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
-						{
-						$fquest .= " [".$lrow['answer']."]";
-						}
+					//$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
+					//$lr = mysql_query($lq) or die("Couldn't get answer!<br />$lq<br />".mysql_error());
+					//while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+					//	{
+					//	$fquest .= " [".$lrow['answer']."]";
+					//	}
+					$fquest .= " ["._RANK." $faid]";
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
 					if ($faid == "comment")
@@ -627,6 +650,7 @@ elseif ($answers == "long")
 	while ($drow = mysql_fetch_array($dresult))
 		{
 		$legitqs=$origlegitqs;
+		
 		if (!ini_get('safe_mode'))
 			{
 			set_time_limit(3); //Give each record 3 seconds	
@@ -641,10 +665,10 @@ elseif ($answers == "long")
 				{
 				$fsid=""; $fgid=""; $fqid="";
 				}
-			if (!$fqid) {$fqid = 0;}
+			if (!$fqid) {$fqid = "0";}
 			if ($fqid == 0) 
 				{
-			    $ftype = "-";
+				$ftype = "-";
 				}
 			else
 				{
@@ -658,7 +682,7 @@ elseif ($answers == "long")
 				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 					{$ftype = $qrow['type']; $lid=$qrow['lid'];}
 				}
-			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H") 
+			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H" && $ftype != "R") 
 				{ //If its a single - answer only type question
 				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 					{
@@ -666,6 +690,28 @@ elseif ($answers == "long")
 					}
 				$legitqs=$nlegitqs;
 				unset($nlegitqs);
+				}
+			else
+				{
+				if (!isset($thisacount)) 
+					{
+					$aq = "SELECT code FROM {$dbprefix}answers WHERE qid=$fqid"; //We just want to count how many answers so we can delete the legitq entry when they're all used up
+					$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
+					$thisacount = mysql_num_rows($ar);
+					}
+				if(!isset($usedanswers)) {$usedanswers=0;}
+				$usedanswers++;
+				if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
+					{
+				    foreach ($legitqs as $lgqs)
+						{
+						if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+						}
+					$legitqs=$nlegitqs;
+					unset($nlegitqs);
+					unset($thisacount);
+					unset($usedanswers);
+					}
 				}
 			if ($type == "csv") {echo "\"";}
 			switch ($ftype)
