@@ -925,7 +925,8 @@ if ($action == "upload")
 	$the_full_file_path = $homedir."/".$the_file_name;
 	if (!@copy($the_file, $the_path . "/" . $the_file_name)) 
 		{
-		form("<b><font color='red'>"._ERROR.":</font> "._TC_UPLOADFAIL."</b>\n");
+		$errormessage="<b><font color='red'>"._ERROR.":</font> "._TC_UPLOADFAIL."</b>\n";
+		form($errormessage);
 		}
 		else
 		{
@@ -1009,8 +1010,7 @@ echo "</body>\n</html>";
 
 
 function form($error=false) {
-
-global $_SERVER['PHP_SELF'], $sid, $btstyle, $slstyle, $setfont;
+global $sid, $btstyle, $slstyle, $setfont;
 
 	if ($error) {print $error . "<br /><br />\n";}
 	
