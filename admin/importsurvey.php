@@ -52,7 +52,7 @@ echo "Reading File...<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 	{
-	$buffer = fgets($handle);
+	$buffer = fgets($handle, 1024); //Length parameter is required for PHP versions < 4.2.0
 	$bigarray[] = $buffer;
 	}
 fclose($handle);
