@@ -817,11 +817,12 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Format</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='format'>\n";
 	$newsurvey .= "\t\t\t<option value='S' selected>One at a time</option>\n";
+	$newsurvey .= "\t\t\t<option value='A'>Group at a time</option>\n";
 	$newsurvey .= "\t\t\t<option value='A'>All in one</option>\n";
 	$newsurvey .= "\t\t</select></td>\n";
 	$newsurvey .= "\t</tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date</b></font></td>\n";
-	$newsurvey .= "\t\t<td><input type='text' size='10' name='expires'></td></tr>\n";
+	$newsurvey .= "\t\t<td>$setfont<input type='text' size='10' name='expires'><font size='1'>Date Format: YYYY-MM-DD</font></font></td></tr>\n";
 	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create Survey'></td>\n";
 	$newsurvey .= "\t<input type='hidden' name='action' value='insertnewsurvey'>\n";
 	$newsurvey .= "\t</form></tr>\n";	
