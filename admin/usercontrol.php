@@ -107,7 +107,7 @@ elseif ($action == "adduser")
 	$pass=preg_replace("/\W/","",$pass);  
 	if ($user && $pass)
 		{
-		if ($htpasswddir) {$htpasswd="\"$htpasswddir/htpasswd\"";} else {$htpasswd="htpasswd";}
+		if (isset($htpasswddir) && $htpasswddir) {$htpasswd="\"$htpasswddir/htpasswd\"";} else {$htpasswd="htpasswd";}
 		$command="$htpasswd -b .htpasswd $user $pass 2>&1";
 		exec($command, $CommandResult, $CommandStatus);
 		if ($CommandStatus) //0=success, for other possibilities see http://httpd.apache.org/docs/programs/htpasswd.html
