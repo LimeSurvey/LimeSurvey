@@ -396,7 +396,7 @@ if ($action == "addquestion")
 	$newquestion .= "\t\t</td>\n";
 	$newquestion .= "\t</tr>\n";
 
-	$newquestion .= "\t<tr id='MandatorySelection' style='display: none'>\n";
+	$newquestion .= "\t<tr id='MandatorySelection'>\n";
 	$newquestion .= "\t\t<td align='right'>$setfont<b>Mandatory?</b></font></td>\n";
 	$newquestion .= "\t\t<td>$setfont\n";
 	$newquestion .= "\t\t\tYes <input type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n";
