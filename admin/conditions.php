@@ -76,7 +76,8 @@ if ($_POST['action'] == "delete")
 	$result = mysql_query($query) or die ("Couldn't delete condition<br />$query<br />".mysql_error());
 	}
 
-
+unset($cquestions);
+unset($canswers);
 
 
 // *******************************************************************
