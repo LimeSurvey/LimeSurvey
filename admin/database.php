@@ -244,6 +244,7 @@ elseif ($action == "insertnewsurvey")
 		{
 		$short_title = addcslashes($short_title, "'");
 		$description = addcslashes($description, "'");
+		$welcome = addcslashes($welcome, "'");
 		}
 	$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires, adminemail) VALUES ('', '$short_title', '$description', '$admin', 'N', '".str_replace("\n", "<BR>", $welcome)."', '$expires', '$adminemail')";
 	$isresult = mysql_query ($isquery);
@@ -267,6 +268,7 @@ elseif ($action == "updatesurvey")
 		{
 		$short_title = addcslashes($short_title, "'");
 		$description = addcslashes($description, "'");
+		$welcome = addcslashes($welcome, "'");
 		}
 	$usquery = "UPDATE surveys SET short_title='$short_title', description='$description',";
 	$usquery .= " admin='$admin', welcome='".str_replace("\n", "<BR>", $welcome)."',";
