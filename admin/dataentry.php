@@ -108,7 +108,7 @@ if ($action == "insert")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R")
+		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			$col_name .= "$fieldname, \n";
@@ -310,24 +310,24 @@ elseif ($action == "edit")
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
-		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "P")
+		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "P")
 			{
 			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 			$fnrresult = mysql_query($fnrquery);
 			while ($fnrrow = mysql_fetch_array($fnrresult))
 				{
-				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				if ($fnrow['type'] == "P")
 					{
-					$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']}(comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+					$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']}(comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 					}
 				}
 			if ($fnrow['other'] == "Y")
 				{
-				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				if ($fnrow['type'] == "P")
 					{
-					$fnames[] = array("$field"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']}(other comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+					$fnames[] = array("$field"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']}(other comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 					}
 				}
 			}
@@ -338,20 +338,20 @@ elseif ($action == "edit")
 			$fnrcount = mysql_num_rows($fnrresult);
 			for ($j=1; $j<=$fnrcount; $j++)
 				{
-				$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "$j", "{$fnrow['qid']}");
+				$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "$j", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				}
 			}
 		elseif ($fnrow['type'] == "O")
 			{
-			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 			$field2 = $field."comment";
 			$ftitle2 = $ftitle."[Comment]";
 			$longtitle = "{$fnrow['question']}<br />(Comment)";
-			$fnames[] = array("$field2", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+			$fnames[] = array("$field2", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 			}
 		else
 			{
-			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 			}
 		//$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}");
 		//echo "$field | $ftitle | $fquestion<br />\n";
@@ -361,7 +361,7 @@ elseif ($action == "edit")
 
 	foreach ($fnames as $fnm)
 		{
-		echo "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6], $fnm[7] -->\n";
+		echo "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6], $fnm[7], $fnm[8] -->\n";
 		}
 	
 	//SHOW INDIVIDUAL RECORD
@@ -699,7 +699,8 @@ elseif ($action == "edit")
 					break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 					echo "<table>\n";
-					while ($fnames[$i][3] == "A")
+					$thisqid=$fnames[$i][7];
+					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
 						echo "\t<tr>\n";
@@ -720,7 +721,8 @@ elseif ($action == "edit")
 					break;
 				case "B": //ARRAY (10 POINT CHOICE) radio-buttons
 					echo "<table>\n";
-					while ($fnames[$i][3] == "B")
+					$thisqid=$fnames[$i][7];
+					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
 						echo "\t<tr>\n";
@@ -741,7 +743,8 @@ elseif ($action == "edit")
 					break;
 				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					echo "<table>\n";
-					while ($fnames[$i][3] == "C")
+					$thisqid=$fnames[$i][7];
+					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
 						echo "\t<tr>\n";
@@ -765,7 +768,8 @@ elseif ($action == "edit")
 					break;
 				case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
 					echo "<table>\n";
-					while ($fnames[$i][3] == "C")
+					$thisqid=$fnames[$i][7];
+					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
 						echo "\t<tr>\n";
@@ -780,6 +784,30 @@ elseif ($action == "edit")
 						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='D'";
 						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
 						echo " />Decrease&nbsp;\n";
+						echo "\t\t</td>\n";
+						echo "\t</tr>\n";
+						$i++;
+						}
+					$i--;
+					echo "</table>\n";
+					break;
+				case "F": //ARRAY (Flexible Labels)
+					echo "<table>\n";
+					$thisqid=$fnames[$i][7];
+					while ($fnames[$i][7] == $thisqid)
+						{
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</td>\n";
+						$fquery = "SELECT * FROM labels WHERE lid='{$fnames[$i][8]}'";
+						$fresult = mysql_query($fquery);
+						echo "\t\t<td>$setfont\n";
+						while ($frow=mysql_fetch_array($fresult))
+							{
+							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='{$frow['code']}'";
+							if ($idrow[$fnames[$i][0]] == $frow['code']) {echo " checked";}
+							echo " />".$frow['title']."&nbsp;\n";
+							}
 						echo "\t\t</td>\n";
 						echo "\t</tr>\n";
 						$i++;
@@ -830,7 +858,7 @@ elseif ($action == "update")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "O" && $irow['type'] != "R")
+		if ($irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (get_magic_quotes_gpc())
@@ -1408,9 +1436,6 @@ else
 						for ($i=1; $i<=5; $i++)
 							{
 							echo "\t\t\t\t<option value='$i'>$i</option>\n";
-							//echo "\t\t\t<input type='radio' name='$fieldname{$mearow['code']}' value='$i'";
-							//if ($idrow[$i] == $i) {echo " checked";}
-							//echo " />$i&nbsp;\n";
 							}
 						echo "\t\t\t</select>\n";
 						echo "\t\t</td>\n";
@@ -1432,9 +1457,6 @@ else
 						for ($i=1; $i<=10; $i++)
 							{
 							echo "\t\t\t\t<option value='$i'>$i</option>\n";
-							//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='$i'";
-							//if ($idrow[$i] == $i) {echo " checked";}
-							//echo " />$i&nbsp;\n";
 							}
 						echo "</select>\n";
 						echo "\t\t</td>\n";
@@ -1473,9 +1495,32 @@ else
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
-						echo "\t\t\t\t<option value='I'>Increase</option>\n";
-						echo "\t\t\t\t<option value='S'>Same</option>\n";
-						echo "\t\t\t\t<option value='D'>Decrease</option>\n";
+						echo "\t\t\t\t<option value='I'>"._INCREASE."</option>\n";
+						echo "\t\t\t\t<option value='S'>"._SAME."</option>\n";
+						echo "\t\t\t\t<option value='D'>"._DECREASE."</option>\n";
+						echo "\t\t\t</select>\n";
+						echo "\t\t</td>\n";
+						echo "</tr>\n";
+						}
+					echo "</table>\n";
+					break;
+				case "F": //ARRAY (Flexible Labels)
+					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$mearesult=mysql_query($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".mysql_error());
+					echo "<table>\n";
+					while ($mearow = mysql_fetch_array($mearesult))
+						{
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td>\n";
+						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
+						$fquery = "SELECT * FROM labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
+						$fresult = mysql_query($fquery);
+						while ($frow = mysql_fetch_array($fresult))
+							{
+							echo "\t\t\t\t<option value='{$frow['code']}'>".$frow['title']."</option>\n";
+							}
 						echo "\t\t\t</select>\n";
 						echo "\t\t</td>\n";
 						echo "</tr>\n";
