@@ -172,7 +172,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'])
 	}
 
 //SUBMIT
-if ($_POST['move'] == " "._SUBMIT." " && !$notanswered)
+if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($notanswered) || !$notanswered))
 	{
 	if ($surveyprivate == "Y")
 		{
@@ -191,10 +191,12 @@ if ($_POST['move'] == " "._SUBMIT." " && !$notanswered)
 
 	//DEVELOP SQL TO INSERT RESPONSES
 	$subquery = "INSERT INTO $surveytable ";
-	if (is_array($_SESSION['insertarray']))
+	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 		{
 		foreach ($_SESSION['insertarray'] as $value)
 			{
+			if (!isset($col_name)) {$col_name="";}
+			if (!isset($values)) {$values="";}
 			$col_name .= "`, `" . $value; 
 			if (get_magic_quotes_gpc() == "0")
 				{
@@ -368,7 +370,7 @@ if ($_POST['move'] == " "._SUBMIT." " && !$notanswered)
 	}
 
 //LAST PHASE
-if ($_POST['move'] == " "._LAST." " && !$notanswered)
+if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && !$notanswered)
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	echo "<html>\n";
@@ -427,7 +429,7 @@ if ($surveyexists <1)
 	}
 
 //RUN THIS IF THIS IS THE FIRST TIME
-if (!$_SESSION['step'])
+if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 	if ($tokensexist == 1 && !$_GET['token'])
 		{
@@ -533,7 +535,7 @@ if (!$_SESSION['step'])
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($row = mysql_fetch_assoc($result)) {$arows[] = $row;} // Get table output into array
 	usort($arows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-		if (!$_SESSION['insertarray'])
+		if (!isset($_SESSION['insertarray']) || !$_SESSION['insertarray'])
 		{
 		if ($surveyprivate == "N")
 			{
@@ -660,6 +662,7 @@ echo "\t\tfunction checkconditions(value, name, type)\n";
 echo "\t\t\t{\n";
 if (is_array($conditions))
 	{
+	if (!isset($endzone)) {$endzone="";}
 	echo "\t\t\tif (type == 'radio')\n";
 	echo "\t\t\t\t{\n";
 	echo "\t\t\t\tvar hiddenformname='java'+name;\n";
@@ -798,22 +801,22 @@ if (is_array($conditions)) //if conditions exist, create hidden inputs for previ
 		}
 	}
 //SOME STUFF FOR MANDATORY QUESTIONS
-if (is_array($mandatorys))
+if (isset($mandatorys) && is_array($mandatorys))
 	{
 	$mandatory=implode("|", $mandatorys);
 	echo "<input type='hidden' name='mandatory' value='$mandatory'>\n";
 	}
-if (is_array($conmandatorys))
+if (isset($conmandatorys) && is_array($conmandatorys))
 	{
 	$conmandatory=implode("|", $conmandatorys);
 	echo "<input type='hidden' name='conmandatory' value='$conmandatory'>\n";
 	}
-if (is_array($mandatoryfns))
+if (isset($mandatoryfns) && is_array($mandatoryfns))
 	{
 	$mandatoryfn=implode("|", $mandatoryfns);
 	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn'>\n";
 	}
-if (is_array($conmandatoryfns))
+if (isset($conmandatoryfns) && is_array($conmandatoryfns))
 	{
 	$conmandatoryfn=implode("|", $conmandatoryfns);
 	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn'>\n";
@@ -826,14 +829,15 @@ echo "</form>\n</html>";
 
 function surveymover()
 	{
-	global $sid, $surveyformat;
-	if ($_SESSION['step'] > 0 && $surveyformat != "A")
+	global $sid, $surveyformat, $presentinggroupdescription;
+	$surveymover = "";
+	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $surveyformat != "A")
 		{$surveymover .= "<input class='submit' type='submit' value=' << "._PREV." ' name='move' />\n";}
-	if ($_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
+	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
-	if (!$_SESSION['step'])
+	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
+	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $surveyformat != "A")
 		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "._LAST." ' name='move' />\n";}
