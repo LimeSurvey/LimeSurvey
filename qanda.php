@@ -206,11 +206,11 @@ switch ($ia[4])
 			$inputnames[]=$ia[1];
 			$inputnames[]=$ia[1]."comment";
 			}
-		else
+		else //Dropdown list
 			{
 			$answer .= "\t\t\t<table align='center'>\n";
 			$answer .= "\t\t\t\t<tr>\n";
-			$answer .= "\t\t\t\t\t<td valign='top'>\n";
+			$answer .= "\t\t\t\t\t<td valign='top' align='center'>\n";
 			$answer .= "\t\t\t\t\t<select class='select' name='$ia[1]' onClick='checkconditions(this.value, this.name, this.type)'>\n";
 			while ($ansrow=mysql_fetch_array($ansresult))
 				{
@@ -242,6 +242,8 @@ switch ($ia[4])
 			$fname2 = $ia[1]."comment";
 			if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
 			$maxoptionsize=$maxoptionsize*0.72;
+			if ($maxoptionsize < 33) {$maxoptionsize=33;}
+			if ($maxoptionsize > 80) {$maxoptionsize=80;}
 			$answer .= "\t\t\t\t\t<td valign='top'>\n";
 			$answer .= "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' rows='$tarows' cols='$maxoptionsize'>";
 			if ($_SESSION[$fname2]) 
