@@ -338,6 +338,59 @@ function makegraph($thisstep, $total)
 	return $graph;
 	}
 
+function checkgroupfordisplay($gid)
+	{
+	global $dbprefix;
+//	$grouparrayno=$_SESSION['step']-1;
+//	$gid=$_SESSION['grouplist'][$grouparrayno][0];
+//	$groupname=$_SESSION['grouplist'][$grouparrayno][1];
+//	$groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+	$countQuestionsInThisGroup=0;
+	$countConditionalQuestionsInThisGroup=0;
+	foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
+		{
+		if ($ia[5] == $gid) //If the question is in the group we are checking:
+			{
+			$countQuestionsInThisGroup++;
+			if ($ia[7] == "Y") //This question is conditional
+				{
+			    $countConditionalQuestionsInThisGroup++;
+				$checkConditions[]=$ia; //Create an array containing all the conditional questions
+				}
+			}
+		}
+	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup)
+		{
+		unset($checkConditions); // We can safely delete this because it won't be needed.
+		return true;
+		}
+	else
+		{
+		$conditionsToMeet=count($checkConditions);
+		$totalConditionsMet=0;
+		foreach ($checkConditions as $cc)
+			{
+			$query = "SELECT * FROM {$dbprefix}conditions WHERE qid=$cc[0] ORDER BY cqid";
+			$result = mysql_query($query) or die("Couldn't check conditions<br />$query<br />".mysql_error());
+			while($row=mysql_fetch_array($result))
+				{
+				if ($_SESSION[$row['cfieldname']] == $row['value'])
+					{
+					$totalConditionsMet++;
+					}
+				} // while
+			}
+		if ($totalConditionsMet > 0)
+			{
+			return true;
+			}
+		else
+			{
+			return false;
+			}
+		}
+	}
+
 function checkconfield($value)
 	{
 	global $dbprefix;
