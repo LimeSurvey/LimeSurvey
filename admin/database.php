@@ -373,12 +373,12 @@ elseif ($action == "insertnewsurvey")
 			$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 			}
 		$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires,";
-		$isquery .= " adminemail, private, faxto, format, template, url, urldescrip, language, datestamp)";
+		$isquery .= " adminemail, private, faxto, format, template, url, urldescrip, language, datestamp, usecookie)";
 		$isquery .= " VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',";
 		$isquery .= " '{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',";
 		$isquery .= " '{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',";
 		$isquery .= " '{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',";
-		$isquery .= " '{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}')";
+		$isquery .= " '{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}', '{$_POST['usecookie']}')";
 		$isresult = mysql_query ($isquery);
 		if ($isresult)
 			{
@@ -391,7 +391,7 @@ elseif ($action == "insertnewsurvey")
 			}
 		else
 			{
-			$errormsg=_DB_FAIL_NEWSURVEY."\n".mysql_error();
+			$errormsg=_DB_FAIL_NEWSURVEY." - ".mysql_error();
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
 			}
 		}
@@ -412,7 +412,8 @@ elseif ($action == "updatesurvey")
 	$usquery .= " private='{$_POST['private']}', faxto='{$_POST['faxto']}',";
 	$usquery .= " format='{$_POST['format']}', template='{$_POST['template']}', ";
 	$usquery .= " url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}', ";
-	$usquery .= " language='{$_POST['language']}', datestamp='{$_POST['datestamp']}'";
+	$usquery .= " language='{$_POST['language']}', datestamp='{$_POST['datestamp']}', ";
+	$usquery .= " usecookie='{$_POST['usecookie']}'";
 	$usquery .= " WHERE sid={$_POST['sid']}";
 	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
 	if ($usresult)
