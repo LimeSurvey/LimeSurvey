@@ -119,11 +119,8 @@ if ($action == "id")
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow;} // Get table output into array
 	
-	if (count($fnrows) > 0)
-		{
-		// Perform a case insensitive natural sort on title column of a multidimensional array
-		usort($fnrows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
-		} // end if there are any questions
+	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
+	usort($fnrows, 'CompareGroupThenTitle');
 	
 	$fnames[] = array("id", "id", "id");
 	foreach ($fnrows as $fnrow)

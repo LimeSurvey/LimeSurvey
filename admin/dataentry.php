@@ -490,11 +490,8 @@ else
 		$deqrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 		while ($deqrow = mysql_fetch_array($deqresult)) {$deqrows[] = $deqrow;} //Get table output into array
 		
-		if (count($deqrows) > 0)
-			{
-			//Perform a case insensitive natural sort on title column of a multidimensional array
-			usort($deqrows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
-			}
+		// Perform a case insensitive natural sort on group name then question title of a multidimensional array
+		usort($deqrows, 'CompareGroupThenTitle');
 		
 		foreach ($deqrows as $deqrow)
 			{

@@ -46,29 +46,29 @@ if ($fvalue)
 	{
 	if ($fvalue == " ")
 		{
-		$$lastfield="";
+		$$lastfield = "";
 		}
 	else
 		{
-		$$lastfield=$fvalue;
+		$$lastfield = $fvalue;
 		}
 	}
 
 if ($multi)
 	{
-	$myfields=explode("|", $lastfield);
+	$myfields = explode("|", $lastfield);
 	for ($i=1; $i<=$multi; $i++)
 		{
 		$mylist = "fvalue$i";
-		$arrayno=$i-1;
-		$$myfields[$arrayno]=$$mylist;
+		$arrayno = $i-1;
+		$$myfields[$arrayno] = $$mylist;
 		}
-	$mylist=substr($mylist, 0, strlen($mylist)-1);
+	$mylist = substr($mylist, 0, strlen($mylist)-1);
 	}
 
-if ($move == " << prev " && $newgroup != "yes") {$step=$thisstep-1;} else {$step=$thisstep;}
-if ($move == " next >> ") {$step=$thisstep+1;}
-if ($move == " last ") {$step=$thisstep+1;}
+if ($move == " << prev " && $newgroup != "yes") {$step=$thisstep-1;} else {$step = $thisstep;}
+if ($move == " next >> ") {$step = $thisstep+1;}
+if ($move == " last ") {$step = $thisstep+1;}
 
 include("./admin/config.php");
 
@@ -104,9 +104,9 @@ if ($sid)
 	{
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery);
-	$descount=mysql_num_rows($desresult);
-	while ($desr=mysql_fetch_row($desresult))
-		{$expirydate=$desr[6];}
+	$descount = mysql_num_rows($desresult);
+	while ($desr = mysql_fetch_row($desresult))
+		{$expirydate = $desr[6];}
 	if ($descount == 0) 
 		{
 		echo "There is no survey with that SID. Sorry. [$descount][$desquery]";
@@ -119,15 +119,15 @@ if ($sid)
 		exit;
 		}
 	$desresult = mysql_query($desquery);
-	while ($desrow=mysql_fetch_row($desresult))
+	while ($desrow = mysql_fetch_row($desresult))
 		{
-		$surveyname=$desrow[1];
-		$surveydesc=$desrow[2];
-		$surveyactive=$desrow[4];
-		$surveytable="survey_$desrow[0]";
-		$surveywelcome=$desrow[5];
-		$surveyadminname=$desrow[3];
-		$surveyadminemail=$desrow[7];
+		$surveyname = $desrow[1];
+		$surveydesc = $desrow[2];
+		$surveyactive = $desrow[4];
+		$surveytable = "survey_$desrow[0]";
+		$surveywelcome = $desrow[5];
+		$surveyadminname = $desrow[3];
+		$surveyadminemail = $desrow[7];
 		}
 	$surveyheader = "<table width='95%' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
 	$surveyheader .= "\t<tr>\n";
@@ -138,22 +138,22 @@ if ($sid)
 	$surveyheader .= "\t</tr>\n";	
 	
 	//LETS SEE IF THERE ARE TOKENS FOR THIS SURVEY
-	$i=0; $tokensexist=0;
-	$tresult=@mysql_list_tables($databasename);
-	while($tbl=@mysql_tablename($tresult, $i++))
+	$i = 0; $tokensexist = 0;
+	$tresult = @mysql_list_tables($databasename);
+	while($tbl = @mysql_tablename($tresult, $i++))
 		{
-		if ($tbl=="tokens_$sid") {$tokensexist=1;}
+		if ($tbl == "tokens_$sid") {$tokensexist = 1;}
 		}
 	}
 
 //THIS CLEARS ALL DATA WHEN CLEARALL OR FINISH HAS BEEN CHOSEN
 if ($move == "clearall" || $move == "here")
 	{
-	$fieldname="";
-	$fieldarray="";
-	$step="";
-	$totalsteps="";
-	$token="";
+	$fieldname = "";
+	$fieldarray = "";
+	$step = "";
+	$totalsteps = "";
+	$token = "";
 	echo "<br />\n&nbsp;<br />\n";
 	echo "<center>All data has been deleted.<br />\n&nbsp;<br />\n";
 	echo "<a href='javascript:window.close()'>Close</a><br />\n<br />\n&nbsp;$sid</center>\n";
@@ -188,10 +188,10 @@ if ($move == "completed")
 if ($move == " last ")
 	{
 	echo $surveyheader;
-	$s=$step-1;
-	$t=$s-1;
-	$u=$totalsteps;
-	$chart=105;
+	$s = $step-1;
+	$t = $s-1;
+	$u = $totalsteps;
+	$chart = 105;
 	echo "\t<tr>\n";
 	echo "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
 	echo "\t\t\tSurvey Complete<br />\n";
@@ -265,7 +265,7 @@ if ($move == " submit ")
 	foreach ($insertarray as $value)
 		{
 		$col_name .= ", " . substr($value, 1); //Add separator and strip off leading 'F'
-		if (get_magic_quotes_gpc()=="0")
+		if (get_magic_quotes_gpc() == "0")
 			{
 			$values .= ", '" . addcslashes($$value, "'") . "'";
 			}
@@ -282,7 +282,7 @@ if ($move == " submit ")
 	
 	if ($surveyactive == "Y")
 		{
-		$subresult=mysql_query($subquery) or die ("Couldn't update $surveytable<br />\n".mysql_error()."<br />\n<br />\n$subquery");
+		$subresult = mysql_query($subquery) or die ("Couldn't update $surveytable<br />\n".mysql_error()."<br />\n<br />\n$subquery");
 		echo "\t\t\t\t<tr>\n";
 		echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
 		echo "\t\t\t\t\t\t<br /><font color='red'>Thank you!</font><br />\n";
@@ -292,16 +292,17 @@ if ($move == " submit ")
 		if ($token)
 			{
 			$utquery = "UPDATE tokens_$sid SET completed='Y' WHERE token='$token'";
-			$utresult=mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
+			$utresult = mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
+			
 			//MAIL CONFIRMATION TO PARTICIPANT
-			$cnfquery="SELECT * FROM tokens_$sid WHERE token='$token' AND completed='Y'";
-			$cnfresult=mysql_query($cnfquery);
-			while ($cnfrow=mysql_fetch_row($cnfresult))
+			$cnfquery = "SELECT * FROM tokens_$sid WHERE token='$token' AND completed='Y'";
+			$cnfresult = mysql_query($cnfquery);
+			while ($cnfrow = mysql_fetch_row($cnfresult))
 				{
-				$headers="From: $surveyadminemail\r\n";
-				$headers.="X-Mailer: $sitename Email Inviter";
-				$to=$cnfrow[3];
-				$subject="Confirmation: $surveyname Survey Completed";
+				$headers = "From: $surveyadminemail\r\n";
+				$headers .= "X-Mailer: $sitename Email Inviter";
+				$to = $cnfrow[3];
+				$subject = "Confirmation: $surveyname Survey Completed";
 				$message = "Dear $cnfrow[1],\n\n";
 				$message .= "This email is to confirm that you have completed the survey titled \"$surveyname\" ";
 				$message .= "and your response has been saved. Thank you for participating.\n\n";
@@ -365,8 +366,8 @@ if (!$step)
 		{
 		//check if token actually does exist
 		$tkquery = "SELECT * FROM tokens_$sid WHERE token='$token' AND completed != 'Y'";
-		$tkresult=mysql_query($tkquery);
-		$tkexist=mysql_num_rows($tkresult);
+		$tkresult = mysql_query($tkquery);
+		$tkexist = mysql_num_rows($tkresult);
 		if ($tkexist > 0)
 			{
 			session_register("token");
@@ -404,9 +405,6 @@ if (!$step)
 	echo "\t\t\tClick \"Next\" to begin.<br />&nbsp;\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
-	$aquery="SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
-	$aresult=mysql_query($aquery);
-	$totalsteps=mysql_num_rows($aresult);
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' colspan='2' bgcolor='#DDDDDD'>\n";
 	echo "\t\t\t$setfont There are $totalsteps questions in this survey.\n";
@@ -424,42 +422,43 @@ if (!$step)
 	session_register("insertarray");
 	session_register("sid");
 	
-	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($arow=mysql_fetch_array($aresult)) {$arows[]=$arow;} // Get table output into array
+	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
+	$aresult = mysql_query($aquery);
+	$totalsteps = mysql_num_rows($aresult);
 	
-	if (count($arows) > 0)
-		{
-		// Perform a case insensitive natural sort on title column of a multidimensional array
-		usort($arows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
-		} // end if there are any questions
+	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	while ($arow = mysql_fetch_assoc($aresult)) {$arows[] = $arow;} // Get table output into array
+	
+	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
+	usort($arows, 'CompareGroupThenTitle');
 	
 	foreach ($arows as $arow)
 		{
 		//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
-		$fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+		$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 		if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
 			{
 			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
-			$abresult=mysql_query($abquery);
-			while ($abrow=mysql_fetch_row($abresult))
+			$abresult = mysql_query($abquery);
+			while ($abrow = mysql_fetch_row($abresult))
 				{
 				session_register("F$fieldname".$abrow[1]); //THE F HAS TO GO IN FRONT OF THE FIELDNAME SO THAT PHP RECOGNISES IT AS A VARIABLE
-				$insertarray[]="F$fieldname".$abrow[1];
-				if ($abrow[4]=="Y") {$alsoother="Y";}
+				$insertarray[] = "F$fieldname".$abrow[1];
+				if ($abrow[4] == "Y") {$alsoother="Y";}
 				if ($arow['type'] == "P") 
 					{
 					session_register("F$fieldname".$abrow[1]."comment");
-					$insertarray[]="F$fieldname".$abrow[1]."comment";	
+					$insertarray[] = "F$fieldname".$abrow[1]."comment";	
 					}
 				}
 			if ($alsoother) 
 				{
 				session_register("F$fieldname"."other");
-				$insertarray[]="F$fieldname"."other";
+				$insertarray[] = "F$fieldname"."other";
 				if ($arow['type'] == "P")
 					{
 					session_register("F$fieldname"."othercomment");
-					$insertarray[]="F$fieldname"."othercomment";	
+					$insertarray[] = "F$fieldname"."othercomment";	
 					}
 				}
 			
@@ -467,57 +466,57 @@ if (!$step)
 		elseif ($arow['type'] == "O")
 			{
 			session_register("F$fieldname");
-			$insertarray[]="F$fieldname";
-			$fn2="F$fieldname"."comment";
+			$insertarray[] = "F$fieldname";
+			$fn2 = "F$fieldname"."comment";
 			session_register("$fn2");
-			$insertarray[]="$fn2";
+			$insertarray[] = "$fn2";
 			
 			}
 		else
 			{
 			session_register("F$fieldname");
-			$insertarray[]="F$fieldname";
+			$insertarray[] = "F$fieldname";
 			}
 		//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
 		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD
 		//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
 		//                 [4]=questions.type, [5]=questions.gid
-		$fieldarray[]=array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}");
+		$fieldarray[] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}");
 		}
 	//echo count($fieldarray);
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
-	//$step=1;
+	//$step = 1;
 	}
 
 else
 	{
 	echo $surveyheader;
-	$s=$step;
+	$s = $step;
 	//$t indicates which question in the array we should be displaying
-	$t=$s-1;
-	$v=$t-1;
-	$u=$totalsteps;
-	$chart=(($s-1)/$u*100);
+	$t = $s-1;
+	$v = $t-1;
+	$u = $totalsteps;
+	$chart = (($s-1)/$u*100);
 
 	// GET AND SHOW GROUP NAME
 	$gdquery = "SELECT group_name, groups.description FROM groups, questions WHERE groups.gid=questions.gid and qid={$fieldarray[$t][0]}";
 	$gdresult = mysql_query($gdquery);
-	while ($gdrow=mysql_fetch_row($gdresult))
+	while ($gdrow = mysql_fetch_row($gdresult))
 		{
-		$currentgroupname=$gdrow[0];
+		$currentgroupname = $gdrow[0];
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2' align='center' bgcolor='#DDDDDD'>\n";
 		echo "\t\t\t$setfont<font color='#800000'><b>$currentgroupname</b><br />&nbsp;\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
-		$groupdescription=$gdrow[1];
+		$groupdescription = $gdrow[1];
 		}
 
 	//if (($currentgroupname != $lastgroupname) && ($move != " << prev "))
 	if ($fieldarray[$t][5] != $fieldarray[$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev ")
 		{
-		$presentinggroupdescription="yes";
+		$presentinggroupdescription = "yes";
 		echo "\t<form method='post'>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2' align='center'>\n";
@@ -579,7 +578,7 @@ else
 		echo "\t\t\t</table>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
-		$fname="F".$fieldarray[$t][1];
+		$fname = "F".$fieldarray[$t][1];
 		
 		// THE FOLLOWING PRESENTS THE QUESTION BASED ON THE QUESTION TYPE
 		switch ($fieldarray[$t][4])
@@ -634,12 +633,12 @@ else
 				if ($dropdowns == "L" || !$dropdowns)
 					{
 					echo "\t\t\t<select name='fvalue'>\n";
-					while ($ansrow=mysql_fetch_row($ansresult))
+					while ($ansrow = mysql_fetch_row($ansresult))
 						{
 						echo "\t\t\t\t  <option value='$ansrow[1]'";
 						if ($$fname == $ansrow[1])
 							{ echo " selected"; }
-						elseif ($ansrow[3]== "Y") {echo " selected"; $defexists="Y";}
+						elseif ($ansrow[3] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">$ansrow[2]</option>\n";
 						}
 					if (!$$fname && !$defexists) {echo "\t\t\t\t  <option value=' ' selected>Please choose..</option>\n";}
@@ -651,12 +650,12 @@ else
 					echo "\t\t\t<table align='center'>\n";
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
-					while ($ansrow=mysql_fetch_row($ansresult))
+					while ($ansrow = mysql_fetch_row($ansresult))
 						{
 						echo "\t\t\t\t\t\t  <input type='radio' value='$ansrow[1]' name='fvalue'";
 						if ($$fname == $ansrow[1])
 							{ echo " checked"; }
-						elseif ($ansrow[3] == "Y") {echo " checked"; $defexists="Y";}
+						elseif ($ansrow[3] == "Y") {echo " checked"; $defexists = "Y";}
 						echo ">$ansrow[2]<br />\n";
 						}
 					if (!$$fname && !$defexists) {echo "\t\t\t\t\t\t  <input type='radio' name='fvalue' value=' ' checked>No answer\n";}
@@ -672,7 +671,7 @@ else
 				//echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
 				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
-				$anscount=mysql_num_rows($ansresult);
+				$anscount = mysql_num_rows($ansresult);
 				echo "\t\t\t<table align='center'>\n";
 				echo "\t\t\t\t<tr>\n";
 				echo "\t\t\t\t\t<td>$setfont<u>Choose one of the following:</u></td>\n";
@@ -685,14 +684,14 @@ else
 					echo "\t\t\t\t\t\t<input type='radio' value='$ansrow[1]' name='fvalue1'";
 					if ($$fname == $ansrow[1])
 						{ echo " checked"; }
-					elseif ($ansrow[3] == "Y") {echo " checked"; $defexists="Y";}
+					elseif ($ansrow[3] == "Y") {echo " checked"; $defexists = "Y";}
 					echo ">$ansrow[2]<br />\n";
 					}
 				if (!$$fname && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' checked>No answer\n";}
 				elseif ($$fname && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' '>No answer\n";}
 				echo "\t\t\t\t\t</td>\n";
-				$fname2=$fname."comment";
-				if ($anscount > 8) {$tarows=$anscount/1.2;} else {$tarows=4;}
+				$fname2 = $fname."comment";
+				if ($anscount > 8) {$tarows=$anscount/1.2;} else {$tarows = 4;}
 				echo "\t\t\t\t\t<td valign='top'>\n";
 				echo "\t\t\t\t\t\t<textarea name='fvalue2' rows='$tarows' cols='30'>".$$fname2."</textarea>\n";
 				$multifields = "$fname|$fname"."comment|";
@@ -709,26 +708,26 @@ else
 				echo "\t\t\t\t<tr>\n";
 				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
 				echo "\t\t\t\t\t<td align='left'>\n";
-				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
-				$qresult=mysql_query($qquery);
-				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
+				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qresult = mysql_query($qquery);
+				while($qrow = mysql_fetch_row($qresult)) {$other = $qrow[0];}
 				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
-				$fn=1;
-				while ($ansrow=mysql_fetch_row($ansresult))
+				$fn = 1;
+				while ($ansrow = mysql_fetch_row($ansresult))
 					{
-					$myfname=$fname.$ansrow[1];
+					$myfname = $fname.$ansrow[1];
 					$multifields .= "$fname$ansrow[1]|";
 					echo "\t\t\t\t\t\t$setfont<input type='checkbox' name='fvalue$fn' value='Y'";
 					if ($$myfname == "Y") {echo " checked";}
 					echo ">$ansrow[2]<br />\n";
 					$fn++;
 					}
-				$multifields=substr($multifields, 0, strlen($multifields)-1);
+				$multifields = substr($multifields, 0, strlen($multifields)-1);
 				if ($other == "Y")
 					{
-					$myfname=$fname."other";
+					$myfname = $fname."other";
 					echo "\t\t\t\t\t\tOther: <input type='text' name='fvalue$fn'";
 					if ($$myfname) {echo " value='".$$myfname."'";}
 					echo ">\n";
@@ -755,7 +754,7 @@ else
 				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult)*2;
-				$fn=1;
+				$fn = 1;
 				echo "\t\t\t\t\t\t<table border='0'>\n";
 				while ($ansrow = mysql_fetch_row($ansresult))
 					{
@@ -836,19 +835,19 @@ else
 			case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2'>\n";
-				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
-				$qresult=mysql_query($qquery);
-				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
+				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qresult = mysql_query($qquery);
+				while($qrow = mysql_fetch_row($qresult)) {$other = $qrow[0];}
 				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
-				$fn=1;
+				$fn = 1;
 				echo "\t\t\t<table align='center' border='0'>\n";
-				while ($ansrow=mysql_fetch_row($ansresult))
+				while ($ansrow = mysql_fetch_row($ansresult))
 					{
-					$myfname=$fname.$ansrow[1];
+					$myfname = $fname.$ansrow[1];
 					$multifields .= "$fname$ansrow[1]|";
-					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc="#E1E1E1";}
+					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
 					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
 					echo "\t\t\t\t\t<td align='right'>$setfont$ansrow[2]</td>\n";
 					echo "\t\t\t\t\t<td>";
@@ -869,19 +868,19 @@ else
 			case "B": //ARRAY (10 POINT CHOICE) radio-buttons
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2'>\n";
-				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
-				$qresult=mysql_query($qquery);
-				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
+				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qresult = mysql_query($qquery);
+				while($qrow = mysql_fetch_row($qresult)) {$other = $qrow[0];}
 				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
-				$fn=1;
+				$fn = 1;
 				echo "\t\t\t<table align='center'>\n";
-				while ($ansrow=mysql_fetch_row($ansresult))
+				while ($ansrow = mysql_fetch_row($ansresult))
 					{
-					$myfname=$fname.$ansrow[1];
+					$myfname = $fname.$ansrow[1];
 					$multifields .= "$fname$ansrow[1]|";
-					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc="#E1E1E1";}
+					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
 					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
 					echo "\t\t\t\t\t<td align='right'>$setfont$ansrow[2]</td>\n";
 					echo "\t\t\t\t\t<td>\n";
@@ -902,19 +901,19 @@ else
 			case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2'>\n";
-				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
-				$qresult=mysql_query($qquery);
-				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
+				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qresult = mysql_query($qquery);
+				while($qrow = mysql_fetch_row($qresult)) {$other = $qrow[0];}
 				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
-				$fn=1;
+				$fn = 1;
 				echo "\t\t\t<table align='center'>\n";
-				while ($ansrow=mysql_fetch_row($ansresult))
+				while ($ansrow = mysql_fetch_row($ansresult))
 					{
-					$myfname=$fname.$ansrow[1];
+					$myfname = $fname.$ansrow[1];
 					$multifields .= "$fname$ansrow[1]|";
-					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc="#E1E1E1";}
+					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
 					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
 					echo "\t\t\t\t\t<td align='right'>$setfont$ansrow[2]</td>\n";
 					echo "\t\t\t\t\t<td>\n";
@@ -951,7 +950,7 @@ else
 		//SHOW HELP INFORMATION IF THERE IS ANY
 		$helpquery = "SELECT help FROM questions WHERE qid=".$fieldarray[$t][0];
 		$helpresult = mysql_query($helpquery);
-		while ($helprow=mysql_fetch_row($helpresult))
+		while ($helprow = mysql_fetch_row($helpresult))
 			{
 			if ($helprow[0])
 				{
