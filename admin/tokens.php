@@ -579,6 +579,7 @@ if (returnglobal('action') == "email")
 				$sendmessage = str_replace("{FIRSTNAME}", $emrow['firstname'], $sendmessage);
 				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
 				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
+				$sendmessage = str_replace("\r", "", $sendmessage);
 				mail($to, $_POST['subject'], $sendmessage, $headers);
 				$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 				$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
