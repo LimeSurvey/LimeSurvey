@@ -630,7 +630,8 @@ if ($action == "editquestion")
 			}
 		else
 			{
-			$editquestion .= "\t\t<td>{$setfont}Cannot be changed in activated survey.\n";
+			$editquestion .= "\t\t<td>{$setfont}[{$eqrow['type']}] - Cannot be changed in activated survey.\n";
+			$editquestion .= "\t\t\t<input type='hidden' name='type' value='{$eqrow['type']}'>\n";
 			$editquestion .= "\t\t</td>\n";
 			}
 		$editquestion .= "\t</tr>\n";
