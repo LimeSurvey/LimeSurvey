@@ -96,9 +96,8 @@ while ($degrow = mysql_fetch_array($degresult))
 	echo "\t</tr>\n";
 	$gid = $degrow['gid'];
 	//Alternate bgcolor for different groups
-	if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
+	if (!isset($bgc) || $bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
 	else {$bgc = "#EEEEEE";}
-	if (!$bgc) {$bgc = "#EEEEEE";}
 	
 	foreach ($deqrows as $deqrow)
 		{
