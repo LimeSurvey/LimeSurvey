@@ -161,8 +161,8 @@ elseif (array_search("# LABELSETS TABLE\r\n", $bigarray))
 	$stoppoint = array_search("# LABELSETS TABLE\r\n", $bigarray);
 	}
 else
-	{
-	$stoppoint = count($bigarray-1);
+	{ //There is no labelsets information, so presumably this is a pre-0.98rc3 survey.
+	$stoppoint = count($bigarray);
 	}
 for ($i=0; $i<=$stoppoint+1; $i++)
 	{
@@ -182,7 +182,7 @@ elseif (array_search("# LABELS TABLE\r\n", $bigarray))
 	}
 else
 	{
-	$stoppoint = count($bigarray-1);
+	$stoppoint = count($bigarray)-1;
 	}
 for ($i=0; $i<=$stoppoint+1; $i++)
 	{
@@ -384,6 +384,11 @@ if ($grouparray)
 							}
 						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 						}
+					else
+						{
+						$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid, $newsid."X".$newgid."X".$newqid);
+						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
+						}
 					}
 				}
 			}
@@ -409,19 +414,23 @@ if ($conditionsarray) //ONLY DO THIS IF THERE ARE CONDITIONS!
 		$nextpos=strpos($car, "', '", $startpos);
 		$oldcfieldname=substr($car, $startpos, $nextpos-$startpos);
 		$toreplace="('$oldcid', '$oldqid', '$oldcqid', '$oldcfieldname'";
-		//echo "$toreplace<br />\n";
+		echo "REPLACING $toreplace ";
 		foreach ($substitutions as $subs)
 			{
 			if ($oldqid==$subs[2])	{$newqid=$subs[5];}
-			if ($oldcqid==$subs[2]) 	{$newcqid=$subs[5];}
+			if ($oldcqid==$subs[2])	{$newcqid=$subs[5];}
 			}
 		foreach($fieldnames as $fns)
 			{
 			if ($oldcfieldname==$fns[0]) {$newcfieldname=$fns[1];}
+			echo "(OLD FIELDNAME=$fns[0], NEW FIELDNAME=$fns[1])<br />\n";
 			}
 		$replacewith="('', '$newqid', '$newcqid', '$newcfieldname'";
+		echo "WITH $replacewith!<br />\n";
 		$insert=str_replace($toreplace, $replacewith, $car);
 		$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
+		echo "OLD INSERT=$car<br />\n";
+		echo "NEW INSERT=$insert<br />\n";
 		$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
 		}
 	}
