@@ -355,10 +355,15 @@ if ($_POST['display'])
 	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Results</b></td></tr>\n";
 	echo "\t<tr><td colspan='2' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>";
 	echo "<B>Your query returns $results record(s)!</b><br />\n\t\t";
-	echo "There are $total records in your survey. This query represents ";
-	$percent=sprintf("%01.2f", ($results/$total)*100);
-	echo "$percent% of your total results<br />\n\t\t<br />\n";
-	echo "\t\t<font size='1'>$query\n";
+	echo "There are $total records in your survey.";
+	if ($total)
+		{
+		echo " This query represents ";
+		$percent=sprintf("%01.2f", ($results/$total)*100);
+		echo "$percent% of your total results<br />";
+		}
+	echo "\n\t\t<br />\n";
+	echo "\t\t<font size='1'><b>SQL:</b> $query\n";
 	echo "\t</td></tr>\n";
 	if ($selects) {$sql=implode(" AND ", $selects);}
 	if ($results > 0)
@@ -502,8 +507,8 @@ if ($_POST['summary'])
 			if ($al[0] == "") {$fname="No Answer";} else {$fname="$al[1] ($al[0])";}
 			echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$fname\n\t\t</td>\n";
 			echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$row[0]";
-			if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100);} else {$vp="No Records";}
-			echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp%";
+			if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
+			echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp";
 			echo "\t\t</td></tr>\n";
 			}
 		}
