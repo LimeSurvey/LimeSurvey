@@ -628,6 +628,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		}
 	echo "\n<input type='hidden' name='sid' value='$sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token'>\n";
+	echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_ä'>\n"; //This is to ensure consistency with mandatory checks, and new group test
 	echo "\n</form>\n</html>";
 	exit;
 	}
