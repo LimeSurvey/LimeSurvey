@@ -489,6 +489,7 @@ define(_TC_TOKENCREATEINFO, "Si pu&ograve; scegliere di lasciare questo campo vu
 define(_TC_TOKENADDED, "Un nuovo token &egrave; stato creato");
 define(_TC_TOKENUPDATED, "Aggiorna token");
 define(_TC_UPLOADINFO, "Il file deve essere un file CSV standard (delimitato da virgole) senza apici. La prima riga deve contenere i dati dell&#039;header (che verr&agrave; rimossa). I dati devono seguire il seguente ordine &#039;nome, cognome, email, [Token]&#039;.");
+define(_TC_UPLOADFAIL, "Lima di upload non trovata. Controlli i vostri permessi e percorso per vedere se c'è l'indice di upload"); //New for 0.98rc5 (babelfish translation)
 define(_TC_IMPORT, "Importazione File CSV");
 define(_TC_CREATE, "Crea voce token");
 define(_TC_TOKENS_CREATED, "{TOKENCOUNT} voci sono stati creati");

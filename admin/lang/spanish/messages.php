@@ -493,6 +493,7 @@ define(_TC_TOKENCREATEINFO, "Puedes dejar en blanco esto, y automaticamente gene
 define(_TC_TOKENADDED, "Nuevo Token Agregado");
 define(_TC_TOKENUPDATED, "Token Actualizado");
 define(_TC_UPLOADINFO, "El archivo debe ser CSV est&aacute;ndar (delimitado por comas) sin comillas. La primera l&iacute;nea debe contener la informaci&oacute;n de la cabecera (que ser&aacute; eliminada). Los datos deben estar ordenados como 'nombre, apellido, correo electr&oacute;nico, [token]'.");
+define(_TC_UPLOADFAIL, "Archivo del upload no encontrado. Compruebe sus permisos y trayectoria para saber si hay el directorio del upload"); //New for 0.98rc5 (babelfish translation)
 define(_TC_IMPORT, "Importando Archivo CSV");
 define(_TC_CREATE, "Creando Tokens");
 define(_TC_TOKENS_CREATED, "{TOKENCOUNT} Tokens Creados");

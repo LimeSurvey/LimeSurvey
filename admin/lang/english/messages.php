@@ -488,6 +488,7 @@ define(_TC_TOKENCREATEINFO, "You can leave this blank, and automatically generat
 define(_TC_TOKENADDED, "Added New Token");
 define(_TC_TOKENUPDATED, "Updated Token");
 define(_TC_UPLOADINFO, "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as 'firstname, lastname, email, [token]'.");
+define(_TC_UPLOADFAIL, "Upload file not found. Check your permissions and path for the upload directory"); //New for 0.98rc5
 define(_TC_IMPORT, "Importing CSV File");
 define(_TC_CREATE, "Creating Token Entries");
 define(_TC_TOKENS_CREATED, "{TOKENCOUNT} Records Created");
