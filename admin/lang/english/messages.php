@@ -9,6 +9,8 @@ define(_QUESTION, "Question");
 define(_ANSWERS, "Answers");
 define(_HELP, "Help");
 define(_USERCONTROL, "User Control");
+define(_ACTIVATE, "Activate Survey");
+define(_DEACTIVATE, "Deactivate Survey");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
