@@ -562,11 +562,12 @@ if ($gid)
 
 if ($qid)
 	{
+	//Show Question Details
 	$qrq = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
 	$qrr = mysql_query($qrq);
 	$qct = mysql_num_rows($qrr);
 	$qrquery = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid AND sid=$sid AND qid=$qid";
-	$qrresult = mysql_query($qrquery);
+	$qrresult = mysql_query($qrquery) or die($qrquery."<br />".mysql_error());
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = mysql_fetch_array($qrresult))
 		{
@@ -676,6 +677,7 @@ if ($qid)
 							  . _QL_OTHER."</b></font></td>\n"
 							  . "\t<td>$setfont{$qrrow['other']}</td></tr>\n";
 			}
+		$qid_attributes=getQuestionAttributes($qid);
 		}
 	$questionsummary .= "</table>\n";
 	}
@@ -981,7 +983,7 @@ if ($action == "addquestion")
 				  . "\t</tr>\n"
 				  . "\t<tr>\n"
 				  . "\t\t<td align='right'>$setfont<b>"._QL_TYPE."</b></font></td>\n"
-				  . "\t\t<td><select $slstyle name='type' "
+				  . "\t\t<td><select $slstyle name='type' id='question_type' "
 				  . "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 				  . "$qtypeselect"
 				  . "\t\t</select></td>\n"
@@ -1031,8 +1033,17 @@ if ($action == "addquestion")
 				  . "\t\t</font></td>\n"
 				  . "\t</tr>\n";
 	
-	if (isset($eqrow)) {$newquestion .= questionjavascript($eqrow['type']);}
-	else {$newquestion .= questionjavascript('');}
+	//Question attributes
+	$qattributes=questionAttributes();
+
+	$newquestion .= "\t<tr id='QTattributes'>
+						<td align='right'>{$setfont}<b>"._QL_QUESTIONATTRIBUTES."</b></font></td>
+						<td><select id='QTlist' name='attribute_name' $slstyle>
+						</select>
+						<input type='text' id='QTtext' name='attribute_value' $slstyle></td></tr>\n";
+	
+	if (isset($eqrow)) {$newquestion .= questionjavascript($eqrow['type'], $qattributes);}
+	else {$newquestion .= questionjavascript('', $qattributes);}
 
 	$newquestion .= "\t<tr>\n"
 				  . "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='"
@@ -1172,12 +1183,14 @@ if ($action == "editquestion")
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
-		$editquestion = "<table width='100%' border='0'>\n"
-					   . "\t<tr>\n"
-					   . "\t\t<td colspan='2' bgcolor='black' align='center'>\n"
+		$editquestion = "<table width='100%' border='0'><tr>"
+					   . "<td colspan='2' bgcolor='black' align='center'>"
 					   . "\t\t\t$setfont<font color='white'><b>Edit Question $qid</b></font></font>\n"
 					   . "\t\t</td>\n"
 					   . "\t</tr>\n"
+					   . "\t<tr>\n"
+					   . "\t\t<td valign='top'><table width='100%' border='0'>\n"
+					   . "\t<tr>\n"
 					   . "\t<tr><form action='$scriptname' name='editquestion' method='post'>\n"
 					   . "\t\t<td align='right'>$setfont<b>"._QL_CODE."</b></font></td>\n"
 					   . "\t\t<td><input $slstyle type='text' size='20' name='title' value='{$eqrow['title']}'></td>\n"
@@ -1195,7 +1208,7 @@ if ($action == "editquestion")
 					   . "\t\t<td align='right'>$setfont<b>"._QL_TYPE."</b></font></td>\n";
 		if ($activated != "Y")
 			{
-			$editquestion .= "\t\t<td><select $slstyle name='type' "
+			$editquestion .= "\t\t<td><select $slstyle id='question_type' name='type' "
 						   . "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 						   . getqtypelist($eqrow['type'])
 						   . "\t\t</select></td>\n";
@@ -1281,8 +1294,7 @@ if ($action == "editquestion")
 		$editquestion .= " />\n"
 					   . "\t\t</font></td>\n"
 					   . "\t</tr>\n";
-		
-		$editquestion .= questionjavascript($eqrow['type']);
+		$qattributes=questionAttributes();		
 		
 		$editquestion .= "\t<tr>\n"
 					   . "\t\t<td colspan='2' align='center'>"
@@ -1291,8 +1303,49 @@ if ($action == "editquestion")
 					   . "\t<input type='hidden' name='sid' value='$sid'>\n"
 					   . "\t<input type='hidden' name='qid' value='$qid'>\n"
 					   . "\t</form></tr>\n"
-					   . "</table>\n";
+					   . "</table></td>\n";
 		}
+
+	$qidattributes=getQuestionAttributes($qid);
+	$editquestion .= "<td valign='top' width='35%'><table width='100%' border='0' cellspacing='0'>
+					   <tr>
+					    <td colspan='2' align='center'>
+						 <table class='outlinetable' cellspacing='0' width='90%'>
+						  <tr>
+						   <th colspan='3'>{$setfont}Existing Attributes</font></th>
+						  </tr>\n";
+	foreach ($qidattributes as $qa)
+		{
+		$editquestion .= "<tr><td align='right' width='50%'>"
+					   .$qa['attribute']."</td><td>"
+					   .$qa['value']."</td><form action='$scriptname' method='post'><td width='5%'>"
+					   ."<input type='submit' $btstyle value='"
+					   ._DELETE."'></td>"
+					   . "\t<input type='hidden' name='action' value='delattribute'>\n"
+					   . "\t<input type='hidden' name='sid' value='$sid'>\n"
+					   . "\t<input type='hidden' name='qid' value='$qid'>\n"
+					   . "\t<input type='hidden' name='gid' value='$gid'>\n"
+					   . "\t<input type='hidden' name='qaid' value='".$qa['qaid']."'>\n"
+					   . "</form></tr>";
+		}
+	$editquestion .= "\t\t\t	</table></td></tr><tr id='QTattributes'><form action='$scriptname' method='post'>
+						<td align='right'>{$setfont}<b>"._QL_QUESTIONATTRIBUTES."</b></font></td>
+						<td nowrap><select id='QTlist' name='attribute_name' $slstyle>
+						</select>
+						<input type='text' id='QTtext' size='6' name='attribute_value' $slstyle>
+						<input type='submit' value='"._ADD."' $btstyle></td>
+					    <input type='hidden' name='action' value='addattribute'>
+					    <input type='hidden' name='sid' value='$sid'>
+					    <input type='hidden' name='qid' value='$qid'>
+					    <input type='hidden' name='gid' value='$gid'>
+					   </tr>
+					   <tr>
+					    <td colspan='2' align='center'>
+						 
+						</td></form>
+					   </tr>
+					  </table></td></tr></table>\n";
+	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 	}
 
 if ($action == "addgroup")
@@ -1663,12 +1716,41 @@ if ($action == "newsurvey")
 				. "\t</tr></form>\n</table>\n";
 	}
 
-function questionjavascript($type)
+function questionjavascript($type, $qattributes)
 	{
 	$newquestion = "<script type='text/javascript'>\n"
-				 . "<!--\n"
-				 . "function OtherSelection(QuestionType)\n"
+				 . "<!--\n";
+		$jc=0;
+		$newquestion .= "\t\t\tvar qtypes = new Array();\n";
+		$newquestion .= "\t\t\tvar qnames = new Array();\n\n";
+		foreach ($qattributes as $key=>$val)
+			{
+			foreach ($val as $vl)
+				{
+				$newquestion .= "\t\t\tqtypes[$jc]='".$key."';\n";
+				$newquestion .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
+				$jc++;
+				}
+			}
+		$newquestion .= "\t\t\t function buildQTlist(type)
+				{
+				document.getElementById('QTattributes').style.display='none';
+				for (var i=document.getElementById('QTlist').options.length-1; i>=0; i--)
+					{
+					document.getElementById('QTlist').options[i] = null;
+					}
+				for (var i=0;i<qtypes.length;i++)
+					{
+					if (qtypes[i] == type)
+						{
+						document.getElementById('QTattributes').style.display='';
+						document.getElementById('QTlist').options[document.getElementById('QTlist').options.length] = new Option(qnames[i], qnames[i]);
+						}
+					}
+				}";
+	$newquestion .="function OtherSelection(QuestionType)\n"
 				 . "\t{\n"
+				 . "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
 				 . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
@@ -1694,6 +1776,7 @@ function questionjavascript($type)
 				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
 				 //. "\t\tdocument.addnewquestion.other[1].checked = true;\n"
 				 . "\t\t}\n"
+				 . "\tbuildQTlist(QuestionType);\n"
 				 . "\t}\n"
 				 . "\tOtherSelection('$type');\n"
 				 . "-->\n"

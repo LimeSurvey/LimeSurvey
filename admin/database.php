@@ -35,7 +35,28 @@
 */
 if (!isset($action)) {$action=returnglobal('action');}
 
-if ($action == "insertnewgroup")
+if ($action == "delattribute")
+	{
+    $query = "DELETE FROM {$dbprefix}question_attributes
+			  WHERE qaid=".$_POST['qaid']."
+			  AND qid=".$_POST['qid'];
+	$result=mysql_query($query) or die("Couldn't delete attribute<br />$query<br />".mysql_error());
+	}
+elseif ($action == "addattribute")
+	{
+	if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+		{
+		$query = "INSERT INTO {$dbprefix}question_attributes
+				  (qaid, qid, attribute, value)
+				  VALUES
+				  ('',
+				  '".$_POST['qid']."',
+				  '".$_POST['attribute_name']."',
+				  '".$_POST['attribute_value']."')";
+		$result = mysql_query($query) or die("Error<br />$query<br />".mysql_error());
+	    }
+	}
+elseif ($action == "insertnewgroup")
 	{
 	if (!$_POST['group_name'])
 		{
@@ -167,6 +188,14 @@ elseif ($action == "insertnewquestion")
 		$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //get last question id
 		$result=mysql_query($query);
 		while ($row=mysql_fetch_array($result)) {$qid = $row['qid'];}
+		}
+	if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+		{
+	    $query = "INSERT INTO {$dbprefix}question_attributes
+				  (qaid, qid, attribute, value)
+				  VALUES
+				  ('',$qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
+		$result = mysql_query($query);
 		}
 	}	
 
@@ -302,9 +331,11 @@ elseif ($action == "delquestion")
 		}
 	else
 		{
-		//see if there are any conditions for this question, and delete them now as well
+		//see if there are any conditions/attributes/answers for this question, and delete them now as well
 		$cquery = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
 		$cresult = mysql_query($cquery);
+		$query = "DELETE FROM {$dbprefix}question_attributes WHERE qid=$qid";
+		$result = mysql_query($query);
 		$cquery = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
 		$cresult = mysql_query($cquery);
 		$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";

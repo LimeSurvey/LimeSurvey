@@ -48,7 +48,8 @@ $alltables=array("{$dbprefix}surveys",
 				 "{$dbprefix}labelsets", 
 				 "{$dbprefix}labels",
 				 "{$dbprefix}saved",
-				 "{$dbprefix}saved_control");
+				 "{$dbprefix}saved_control",
+				 "{$dbprefix}question_attributes");
 
 //KEYS
 $keyinfo[]=array("{$dbprefix}surveys", "sid");
@@ -58,6 +59,7 @@ $keyinfo[]=array("{$dbprefix}conditions", "cid");
 $keyinfo[]=array("{$dbprefix}labelsets", "lid");
 $keyinfo[]=array("{$dbprefix}saved", "saved_id");
 $keyinfo[]=array("{$dbprefix}saved_control", "scid");
+$keyinfo[]=array("{$dbprefix}question_attributes", "qaid");
 
 //FIELDS THAT SHOULD EXIST
 $allfields[]=array("{$dbprefix}labelsets", "lid", "lid int(11) NOT NULL auto_increment");
@@ -144,6 +146,12 @@ $allfields[]=array("{$dbprefix}saved_control", "ip", "ip text NOT NULL");
 $allfields[]=array("{$dbprefix}saved_control", "saved_thisstep", "saved_thisstep text NOT NULL");
 $allfields[]=array("{$dbprefix}saved_control", "status", "status char(1) NOT NULL");
 $allfields[]=array("{$dbprefix}saved_control", "saved_date", "saved_date datetime NOT NULL default '0000-00-00 00:00:00'");
+
+$allfields[]=array("{$dbprefix}question_attributes", "qaid", "qaid int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}question_attributes", "qid", "qid int(11) NOT NULL");
+$allfields[]=array("{$dbprefix}question_attributes", "attribute", "attribute varchar(50)");
+$allfields[]=array("{$dbprefix}question_attributes", "value", "value varchar(5)");
+
 
 echo $htmlheader;
 
