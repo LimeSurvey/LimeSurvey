@@ -46,7 +46,7 @@ if ($sid)
 		if ($s1row['private'] != "N") {$surveysummary .= "This survey is anonymous";}
 		else {$surveysummary .= "This survey is <b>not</b> anonymous";}
 		if ($s1row['format'] != "A") {$surveysummary .= " and is presented question by question.";}
-		else {$surveysummary .= " and is presented as one single page.";}
+		else {$surveysummary .= " and is presented as one single page.<font size='1' color='red'>[Single Page function not yet available]</font>";}
 		$surveysummary .= "</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
 		$surveysummary .= "\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
