@@ -111,7 +111,9 @@ elseif ($action == "insertnewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}')";
+	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other, mandatory)"
+			." VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
+			." '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}')";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -128,7 +130,10 @@ elseif ($action == "updatequestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	$uqquery = "UPDATE questions SET type='{$_POST['type']}', title='{$_POST['title']}', question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', other='{$_POST['other']}' WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
+	$uqquery = "UPDATE questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
+			. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
+			. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}' "
+			. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
 	//echo $uqquery;
 	$uqresult = mysql_query($uqquery);
 	if ($uqresult)
@@ -138,6 +143,7 @@ elseif ($action == "updatequestion")
 	else
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your question could not be updated!\")\n //-->\n</script>\n";
+		//echo "$uqquery | ".mysql_error();
 		}
 	}
 
@@ -149,7 +155,7 @@ elseif ($action == "copynewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}')";
+	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other, mandatory) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}')";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -250,10 +256,10 @@ elseif ($action == "insertnewsurvey")
 		$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 		}
 	$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires,";
-	$isquery .= " adminemail, private, faxto) VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',";
+	$isquery .= " adminemail, private, faxto, format) VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',";
 	$isquery .= " '{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',";
 	$isquery .= " '{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',";
-	$isquery .= " '{$_POST['faxto']}')";
+	$isquery .= " '{$_POST['faxto']}', '{$_POST['format']}')";
 	$isresult = mysql_query ($isquery);
 	if ($isresult)
 		{
@@ -281,7 +287,8 @@ elseif ($action == "updatesurvey")
 	$usquery = "UPDATE surveys SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',";
 	$usquery .= " admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',";
 	$usquery .= " expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',";
-	$usquery .= " private='{$_POST['private']}', faxto='{$_POST['faxto']}'";
+	$usquery .= " private='{$_POST['private']}', faxto='{$_POST['faxto']}',";
+	$usquery .= " format='{$_POST['format']}'";
 	$usquery .= " WHERE sid={$_POST['sid']}";
 	$usresult = mysql_query($usquery);
 	if ($usresult)
