@@ -643,6 +643,53 @@ foreach ($fieldmap as $field)
 	{
 	$selectlist .= "<option value='".$field['fieldname']."'>"
 				.$field['title'].": ".$field['question']."</option>\n";
+	//create a select list of all the possible answers to this question
+	switch($field['type'])
+		{
+		case "S":
+		case "T":
+		case "U":
+		case "N":
+			//text type - don't do anything
+			break;
+		case "G":
+			$thisselect="<div id='{$field['fieldname']}' style='display:none'><select size='10' style='font-size: 8.5px'>\n";
+			$thisselect .= "<option value='F'>[F] "._FEMALE."</option>\n";
+			$thisselect .= "<option value='Y'>[M] "._MALE."</option>\n";
+			$thisselect .= "</select></div>\n";
+			$answerselects[]=$thisselect;
+			$asnames[]=$field['fieldname'];
+			break;
+		case "Y":
+			$thisselect="<div id='{$field['fieldname']}' style='display:none'><select size='10' style='font-size: 8.5px'>\n";
+			$thisselect .= "<option value='Y'>[Y] "._YES."</option>\n";
+			$thisselect .= "<option value='N'>[N] "._NO."</option>\n";
+			$thisselect .= "</select></div>\n";
+			$answerselects[]=$thisselect;
+			$asnames[]=$field['fieldname'];
+			break;
+		case "M":
+			//multiple choise - yes or nothing
+			$thisselect="<div id='{$field['fieldname']}' style='display:none'><select size='10' style='font-size: 8.5px'>\n";
+			$thisselect .= "<option value='Y'>[Y] "._YES."</option>\n";
+			$thisselect .= "</select></div>\n";
+			$answerselects[]=$thisselect;
+			$asnames[]=$field['fieldname'];
+			break;
+		case "L":
+			//list - show possible answers
+			$query = "SELECT * FROM {$dbprefix}answers WHERE qid={$field['qid']}";
+			$result = mysql_query($query);
+			$thisselect="<div id='{$field['fieldname']}' style='display:none'><select size='10' style='font-size: 8.5px'>\n";
+			while($row = mysql_fetch_array($result))
+				{
+				$thisselect .= "<option value='".$row['code']."'>[".$row['code']."] ".$row['answer']."</option>\n";
+				} // while
+			$thisselect .= "</select></div>\n";
+			$answerselects[]=$thisselect;
+			$asnames[]=$field['fieldname'];
+			break;
+		} // switch
 	}
 
 echo "</table>\n"
@@ -659,7 +706,12 @@ echo "		<tr><td>
 	  <script type='text/javascript'>
 	  <!--
 	   function displayvalue(value) {
-	     document.getElementById('fieldnametext').value=value;
+	     document.getElementById('fieldnametext').value=value;\n";
+foreach ($asnames as $as)
+	{
+	echo "		document.getElementById('$as').style.display='none';\n";
+	}
+echo "	     document.getElementById(value).style.display='';
 	   }
 	  //-->
 	  </script>
@@ -674,10 +726,19 @@ echo "		<tr><td>
 		 Field Name:<br /><input type='text' id='fieldnametext' size='50'>
 		</td>
 	   </tr>
+	   <tr>
+	    <td align='center'>Answers:<br />\n";
+foreach ($answerselects as $as) {echo "$as\n";}
+if (!isset($_POST['sql'])) 
+	{
+    $_POST['sql']="SELECT *\nFROM survey_$sid\n";
+	}
+echo "		</td>
+	   </tr>
    	   <tr>
 	    <td align='center'><br />
 		 "._SQL.":<br />
-		 <textarea name='sql' cols='60' rows='10'>SELECT *\nFROM survey_$sid\n</textarea>
+		 <textarea name='sql' cols='60' rows='10'>".$_POST['sql']."</textarea>
 		</td>
 	   </tr>
 	   <tr>
@@ -814,6 +875,12 @@ if (isset($_POST['display']) && $_POST['display'])
 		$query .= " WHERE ";
 		$query .= implode(" AND ", $selects);
 		}
+	elseif (isset($_POST['sql']))
+		{
+		$newsql=substr($_POST['sql'], strpos($_POST['sql'], "WHERE")+5, strlen($_POST['sql']));
+		//$query = $_POST['sql'];
+		$query .= " WHERE".$newsql;
+		}
 	$result=mysql_query($query) or die("Couldn't get results<br />$query<br />".mysql_error());
 	while ($row=mysql_fetch_row($result)) {$results=$row[0];}
 	
@@ -836,6 +903,7 @@ if (isset($_POST['display']) && $_POST['display'])
 		."\t\t<font size='1'><b>"._SQL.":</b> $query\n"
 		."\t</td></tr>\n";
 	if (isset ($selects) && $selects) {$sql=implode(" AND ", $selects);}
+	elseif ($newsql) {$sql = $newsql;}
 	if (!isset($sql) || !$sql) {$sql="NULL";}
 	if ($results > 0)
 		{
