@@ -65,9 +65,14 @@ $dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
 
 function BuildOutput($Query)
 	{
+	global $dbprefix;
 	$QueryResult = mysql_query($Query);
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];
+	if ($dbprefix)
+		{
+		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
+		}
 	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
 	while ($Row = mysql_fetch_assoc($QueryResult))
 		{

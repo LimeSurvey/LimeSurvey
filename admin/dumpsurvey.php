@@ -43,6 +43,7 @@
 // 4. answers
 
 include ("config.php");
+sendcacheheaders();
 if (!isset($sid)) {$sid=returnglobal('sid');}
 
 //echo $htmlheader;
@@ -67,9 +68,14 @@ $dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
 
 function BuildOutput($Query)
 	{
-	$QueryResult = mysql_query($Query);
+	global $dbprefix;
+	$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];
+	if ($dbprefix)
+		{
+		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
+		}
 	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
 	while ($Row = mysql_fetch_assoc($QueryResult))
 		{
@@ -90,37 +96,38 @@ function BuildOutput($Query)
 		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
 		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
 		
+		
 		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues)\n";
 		}
 	return $Output;
 	}
 
 //1: Surveys table
-$squery = "SELECT * FROM surveys WHERE sid=$sid";
+$squery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 $sdump = BuildOutput($squery);
 
 //2: Groups Table
-$gquery = "SELECT * FROM groups WHERE sid=$sid";
+$gquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid";
 $gdump = BuildOutput($gquery);
 
 //3: Questions Table
-$qquery = "SELECT * FROM questions WHERE sid=$sid";
+$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid";
 $qdump = BuildOutput($qquery);
 
 //4: Answers table
-$aquery = "SELECT answers.* FROM answers, questions WHERE answers.qid=questions.qid AND questions.sid=$sid";
+$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$sid";
 $adump = BuildOutput($aquery);
 
 //5: Conditions table
-$cquery = "SELECT conditions.* FROM conditions, questions WHERE conditions.qid=questions.qid AND questions.sid=$sid";
+$cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$sid";
 $cdump = BuildOutput($cquery);
 
 //6: Label Sets
-$lsquery = "SELECT DISTINCT labelsets.lid, label_name FROM labelsets, questions WHERE labelsets.lid=questions.lid AND sid=$sid";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND sid=$sid";
 $lsdump = BuildOutput($lsquery);
 
 //7: Labels
-$lquery = "SELECT DISTINCT labels.lid, labels.code, labels.title, labels.sortorder FROM labels, questions WHERE labels.lid=questions.lid AND sid=$sid";
+$lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND sid=$sid";
 $ldump = BuildOutput($lquery);
 
 $fn = "survey_$sid.sql";

@@ -65,9 +65,14 @@ $dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
 
 function BuildOutput($Query)
 	{
+	global $dbprefix;
 	$QueryResult = mysql_query($Query);
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];
+	if ($dbprefix)
+		{
+		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
+		}
 	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
 	while ($Row = mysql_fetch_assoc($QueryResult))
 		{
@@ -94,19 +99,19 @@ function BuildOutput($Query)
 	}
 
 //1: Questions Table
-$qquery = "SELECT * FROM questions WHERE qid=$qid";
+$qquery = "SELECT * FROM {$dbprefix}questions WHERE qid=$qid";
 $qdump = BuildOutput($qquery);
 
 //2: Answers table
-$aquery = "SELECT answers.* FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid=$qid";
+$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid=$qid";
 $adump = BuildOutput($aquery);
 
 //3: Labelsets Table
-$lsquery = "SELECT DISTINCT labelsets.lid, label_name FROM labelsets, questions WHERE labelsets.lid=questions.lid AND qid=$qid";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND qid=$qid";
 $lsdump = BuildOutput($lsquery);
 
 //4: Labels Table
-$lquery = "SELECT DISTINCT labels.lid, labels.code, labels.title, labels.sortorder FROM labels, questions WHERE labels.lid=questions.lid AND qid=$qid";
+$lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND qid=$qid";
 $ldump = BuildOutput($lquery);
 
 $fn = "question_$qid.sql";
