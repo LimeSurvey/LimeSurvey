@@ -107,50 +107,52 @@ if ($sid)
 		$surveysummary .= "\t<tr>\n";
 		$surveysummary .= "\t\t<td colspan='2'>\n";
 		$surveysummary .= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-		$surveysummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>Survey</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
+		$surveysummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._SURVEY."</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
 		$surveysummary .= "\t\t\t\t<tr height='22' bgcolor='#999999'><td align='right'>\n";
 		if ($activated == "N" && $sumcount3>0) 
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' alt='Survey is Not Active' border='0' hspace='0' align='left'>\n";
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/activate.gif' title='Activate Survey' border='0' hspace='0' align='left' onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' title='"._S_INACTIVE_BT."' alt='"._A_INACTIVE_BT."' border='0' hspace='0' align='left'>\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/activate.gif' title='"._S_ACTIVATE_BT."' border='0' hspace='0' align='left' onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
 			}
 		elseif ($activated == "Y")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/active.gif' alt='Survey is Active' border='0' hspace='0' align='left'>\n";
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/deactivate.gif' title='De-activate Survey' border='0' hspace='0' align='left' onClick=\"window.open('$scriptname?action=deactivate&sid=$sid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<img src='./images/active.gif' title='"._S_ACTIVE_BT."' alt='"._S_ACTIVE_BT."' border='0' hspace='0' align='left'>\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/deactivate.gif' title='"._S_DEACTIVATE_BT."' border='0' hspace='0' align='left' onClick=\"window.open('$scriptname?action=deactivate&sid=$sid', '_top')\">\n";
 			}
 		elseif ($activated == "N")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' alt='Survey is Not Active' border='0' hspace='0' align='left'>\n";
-			$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='11' alt='Cannot be activated yet' border='0' align='left' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='./images/inactive.gif' title='"._S_INACTIVE_BT."' ALT='"._S_INACTIVE_BT."' border='0' hspace='0' align='left'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='11' title='"._S_CANNOTACTIVATE_BT."' alt='"._S_CANNOTACTIVATE_BT."' border='0' align='left' hspace='0'>\n";
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/do.gif' title='Do Survey' align='left' border='0' hspace='0' onclick=\"window.open('../index.php?sid=$sid&newtest=Y', '_blank')\">\n";
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/dataentry.gif' title='Data Entry' align='left' border='0' hspace='0' onclick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/print.gif' title='Printable Version' align='left' border='0' hspace='0' onclick=\"window.open('printablesurvey.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/do.gif' title='"._S_DOSURVEY_BT."' align='left' border='0' hspace='0' onclick=\"window.open('../index.php?sid=$sid&newtest=Y', '_blank')\">\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/dataentry.gif' title='"._S_DATAENTRY_BT."' align='left' border='0' hspace='0' onclick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/print.gif' title='"._S_PRINTABLE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('printablesurvey.php?sid=$sid', '_blank')\">\n";
 		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='Edit Survey' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editsurvey&sid=$sid', '_top')\">\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._S_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editsurvey&sid=$sid', '_top')\">\n";
 		if ($sumcount3 == 0 && $sumcount2 == 0)
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='Delete Survey' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delsurvey&sid=$sid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._S_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delsurvey&sid=$sid', '_top')\">\n";
 			}
 		else
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='Export Survey' align='left' border='0' hspace='0' onclick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"._S_EXPORT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
 		if ($activated == "Y")
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/browse.gif' title='Browse Results' align='left' border='0' hspace='0' onclick=\"window.open('browse.php?sid=$sid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/browse.gif' title='"._S_BROWSE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('browse.php?sid=$sid', '_top')\">\n";
 			$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/tokens.gif' title='Tokens' align='left' border='0' hspace='0' onclick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/tokens.gif' title='"._S_TOKENS_BT."' align='left' border='0' hspace='0' onclick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
 		$surveysummary .= "\t\t\t\t</td>\n";
 		$surveysummary .= "\t\t\t\t<td align='right' valign='middle' width='320'>\n";
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"shows\")'>";
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hides\")'>\n";
+		if (!$gid) {$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._S_CLOSE_BT."' align='right' border='0' hspace='0' onclick=\"window.open('$scriptname', '_top')\">\n";}
+		else {$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='21' align='right' border='0' hspace='0'>\n";}
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"._S_MAXIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"shows\")'>\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='"._S_MINIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"hides\")'>\n";
 		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='right' border='0' hspace='0'>\n";
 		if ($activated == "Y")
 			{
@@ -158,7 +160,7 @@ if ($sid)
 			}
 		else
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='Add Group' align='right' border='0' hspace='0' onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='"._S_ADDGROUP_BT."' align='right' border='0' hspace='0' onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";
 			}
 		$surveysummary .= "<font size='1' color='#222222'><b>Groups:</b>";
 		$surveysummary .= "\t\t<select style='font-size: 9; font-family: verdana; font-color: #222222; background: silver; width: 160' name='groupselect' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
@@ -180,7 +182,7 @@ if ($sid)
 		//SURVEY SUMMARY
 		if ($gid || $qid || $action=="editsurvey" || $action=="addgroup") {$showstyle="style='display: none'";}
 		
-		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top'>$setfont<b>"._SL_TITLE."</b></font></td>\n";
 		$surveysummary .= "\t<td>";
 		$surveysummary .= "$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b></td></tr>\n";
 		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td><td>$setfont<font size='1' color='#000080'>\n";
@@ -191,32 +193,32 @@ if ($sid)
 		else {$surveysummary2 .= " and is presented as one single page. ";}
 		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= "Responses will be date-stamped.";}
 		$surveysummary2 .= "</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<b>"._SL_DESCRIPTION."</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails3'>\n";
-		$surveysummary .= "\t\t<td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n";
+		$surveysummary .= "\t\t<td align='right' valign='top'>$setfont<b>"._SL_WELCOME."</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<b>"._SL_ADMIN."</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<b>"._SL_FAXTO."</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<b>"._SL_EXPIRES."</b></font></td>\n";
 		if ($s1row['expires'] != "0000-00-00") 
 			{
 			$expdate=$s1row['expires'];
 			}
 		$expdate="Never";
 		$surveysummary .= "\t<td>$setfont$expdate</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<b>"._SL_TEMPLATE."</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<b>Language:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<b>"._SL_LANGUAGE."</b></font></td>\n";
 		if (!$s1row['language']) {$language=$defaultlang;} else {$language=$s1row['language'];}
 		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<b>"._SL_LINK."</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>{$s1row['urldescrip']}</a></font></td></tr>\n";
 		}
 	
-	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<b>Status:</b></font></td>\n";
+	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<b>"._SL_STATUS."</b></font></td>\n";
 	$surveysummary .= "\t<td valign='top'>$setfont";
 	$surveysummary .= "<font size='1'>This survey contains $sumcount2 groups and $sumcount3 questions.</font><br />\n";
 	if ($activated == "N" && $sumcount3 > 0)
@@ -262,15 +264,17 @@ if ($gid)
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='Edit Group' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">";
-		if ($sumcount3 == 0) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='Delete Group' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._G_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">";
+		if ($sumcount3 == 0) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._G_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
 		else				 {$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
 		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$groupsummary .= "\t\t\t\t\t</td>\n";
 		$groupsummary .= "\t\t\t\t\t<td align='right' width='320'>\n";
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"showg\")'>";
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hideg\")'>\n";
+		if (!$qid) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._G_CLOSE_BT."' align='right' border='0' hspace='0' onclick=\"window.open('$scriptname?sid=$sid', '_top')\">\n";}
+		else {$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='21' align='right' border='0' hspace='0'>\n";}
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"._G_MAXIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"showg\")'>";
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='"._G_MINIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"hideg\")'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='right' border='0' hspace='0'>\n";
 		if ($activated == "Y")
 			{
@@ -278,7 +282,7 @@ if ($gid)
 			}
 		else
 			{
-			$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='Add New Question' border='0' hspace='0' align='right' onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";
+			$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='"._G_ADDQUESTION_BT."' border='0' hspace='0' align='right' onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";
 			}
 		$groupsummary .= "\t\t\t\t\t$setfont<font size='1'><b>Questions:</b> <select name='qid' onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\" style='font-size:9; font-family: verdana; font-color: #333333; background-color: silver; width: 160'>\n";
 		$groupsummary .= getquestions();
@@ -289,10 +293,10 @@ if ($gid)
 		$groupsummary .= "\t</tr>\n";
 		if ($qid) {$gshowstyle="style='display: none'";}
 
-		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'>$setfont<b>Group Title:</b></font></td>\n";
+		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'>$setfont<b>"._GL_TITLE."</b></font></td>\n";
 		$groupsummary .="\t<td>";
 		$groupsummary .="$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n";
-		$groupsummary .= "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
+		$groupsummary .= "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'>$setfont<b>"._GL_DESCRIPTION."</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
 		}
 	$groupsummary .= "\n</table>\n";
 	}
@@ -310,27 +314,28 @@ if ($qid)
 		$questionsummary .= "\t<tr>\n";
 		$questionsummary .= "\t\t<td colspan='2'>\n";
 		$questionsummary .= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-		$questionsummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>Question</b> <font color='silver'>{$qrrow['question']}</td></tr>\n";
+		$questionsummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._QUESTION."</b> <font color='silver'>{$qrrow['question']}</td></tr>\n";
 		$questionsummary .= "\t\t\t\t<tr bgcolor='#AAAAAA'>\n";
 		$questionsummary .= "\t\t\t\t\t<td>\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='Edit Question' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
-		if ($qct == 0 && $activated=="N") {$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='Delete Question' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";}
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._Q_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
+		if ($qct == 0 && $activated=="N") {$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._Q_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";}
 		else				 {$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='Export Survey' align='left' border='0' hspace='0' onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"._Q_EXPORT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/conditions.gif' border='0' hspace='0' align='left' title='Set Conditions' onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/conditions.gif' border='0' hspace='0' align='left' title='"._Q_CONDITIONS_BT."' onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
-			$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/answers.gif' border='0' hspace='0' align='left' title='View and Edit Answers' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
+			$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/answers.gif' border='0' hspace='0' align='left' title='"._Q_ANSWERS_BT."' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
 			}
 		$questionsummary .= "\t\t\t\t\t</td>\n";
 		$questionsummary .= "\t\t\t\t\t<td align='right'>\n";
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"showq\")'>";
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hideq\")'>\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._G_CLOSE_BT."' align='right' border='0' hspace='0' onclick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"._Q_MAXIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"showq\")'>";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='"._Q_MINIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"hideq\")'>\n";
 		$questionsummary .= "\t\t\t\t</td></tr>\n";
 		$questionsummary .= "\t\t\t</table>\n";
 		$questionsummary .= "\t\t</td>\n";
@@ -339,22 +344,22 @@ if ($qid)
 			{
 			$qshowstyle = "style='display: none'";
 			}
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'>$setfont<b>Title:</b></font></td>\n";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'>$setfont<b>"._QL_TITLE."</b></font></td>\n";
 		$questionsummary .= "\t<td>$setfont{$qrrow['title']}";
 		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>Mandatory Question</i>)";}
 		else {$questionsummary .= ": (<i>Optional Question</i>)";}
 		$questionsummary .= "</td></tr>\n";
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'>$setfont<b>"._QL_QUESTION."</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<b>"._QL_HELP."</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>Type:</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R"))
 			{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question <input type='image' src='./images/answers.gif' border='0' hspace='0' title='Add Answers' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
-			$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
+			$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'>$setfont<b>"._QL_OTHER."</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
 			}
 		}
 	$questionsummary .= "</table>\n";
@@ -377,11 +382,11 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 			}
 		}
 	$vasummary .= "<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n";
-	$vasummary .= "<tr bgcolor='#555555'><td colspan='5'><font size='1' color='white'><b>Answers</b></td></tr>\n";
+	$vasummary .= "<tr bgcolor='#555555'><td colspan='5'><font size='1' color='white'><b>"._ANSWERS."</b></td></tr>\n";
 	$cdquery = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
 	$cdresult = mysql_query($cdquery);
 	$cdcount = mysql_num_rows($cdresult);
-	$vasummary .= "\t<tr><th>$setfont Code</th><th>$setfont Answer</th><th>$setfont Default</th><th>$setfont Move</th><th>$setfont Action</th></tr>\n";
+	$vasummary .= "\t<tr><th>$setfont"._AL_CODE."</th><th>$setfont"._AL_ANSWER."</th><th>$setfont"._AL_DEFAULT."</th><th>$setfont"._AL_MOVE."</th><th>$setfont"._AL_ACTION."</th></tr>\n";
 	$position=0;
 	while ($cdrow = mysql_fetch_array($cdresult))
 		{
@@ -847,9 +852,9 @@ if ($action == "addgroup")
 	$newgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
 	$newgroup .= "\t\t<b>$setfont<font color='white'>Create New Group for Survey ID($sid)</font></font></b></td></tr>\n";
 	$newgroup .= "\t<tr><form action='$scriptname' name='addnewgroup' method='post'>\n";
-	$newgroup .= "\t\t<td align='right'>$setfont<b>Group Name:</b></font></td>\n";
+	$newgroup .= "\t\t<td align='right'>$setfont<b>"._GL_TITLE."</b></font></td>\n";
 	$newgroup .= "\t\t<td><input type='text' size='40' name='group_name'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
-	$newgroup .= "\t<tr><td align='right'>$setfont<b>Group Description:</b>(optional)</font></td>\n";
+	$newgroup .= "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>(optional)</font></td>\n";
 	$newgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'></textarea></td></tr>\n";
 	$newgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create New Group'></td>\n";
 	$newgroup .= "\t<input type='hidden' name='action' value='insertnewgroup'>\n";
@@ -867,9 +872,9 @@ if ($action == "editgroup")
 		$editgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
 		$editgroup .= "\t\t<b>$setfont<font color='white'>Edit Group for Survey ID($sid)</font></font></b></td></tr>\n";
 		$editgroup .= "\t<tr><form action='$scriptname' name='editgroup' method='post'>\n";
-		$editgroup .= "\t\t<td align='right' width='20%'>$setfont<b>Group Name:</b></font></td>\n";
+		$editgroup .= "\t\t<td align='right' width='20%'>$setfont<b>"._GL_TITLE."</b></font></td>\n";
 		$editgroup .= "\t\t<td><input type='text' size='40' name='group_name' value='{$esrow['group_name']}'></td></tr>\n";
-		$editgroup .= "\t<tr><td align='right'>$setfont<b>Description:</b>(optional)</font></td>\n";
+		$editgroup .= "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>(optional)</font></td>\n";
 		$editgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n";
 		$editgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Group'></td>\n";
 		$editgroup .= "\t<input type='hidden' name='action' value='updategroup'>\n";
@@ -893,20 +898,20 @@ if ($action == "editquestion")
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr><form action='$scriptname' name='editquestion' method='post'>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_CODE."</b></font></td>\n";
 		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value='{$eqrow['title']}'></td>\n";
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>"._QL_QUESTION."</b></font></td>\n";
 		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n";
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>"._QL_HELP."</b></font></td>\n";
 		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n";
 		$editquestion .= "\t</tr>\n";
 		//question type:
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_TYPE."</b></font></td>\n";
 		if ($activated != "Y")
 			{
 			$editquestion .= "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n";
@@ -921,14 +926,14 @@ if ($action == "editquestion")
 			}
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t<td align='right'>$setfont<b>Group?</b></font></td>\n";
+		$editquestion .= "\t<td align='right'>$setfont<b>"._GL_GROUP."</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
 		$editquestion .= getgrouplist2($eqrow['gid']);
 		$editquestion .= "\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
 		
 		$editquestion .= "\t<tr id='OtherSelection'>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._GL_OTHER."</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
 		$editquestion .= "\t\t\tYes <input type='radio' name='other' value='Y'";
 		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
@@ -940,7 +945,7 @@ if ($action == "editquestion")
 		$editquestion .= "\t</tr>\n";
 		
 		$editquestion .= "\t<tr id='MandatorySelection'>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Mandatory?</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._GL_MANDATORY."</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
 		$editquestion .= "\t\t\tYes <input type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
@@ -988,19 +993,19 @@ if ($action == "editsurvey")
 		$editsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>";
 		$editsurvey .= "\t\t<b>$setfont<font color='white'>Edit Survey</font></font></b></td></tr>\n";
 		$editsurvey .= "\t<tr><form name='addnewsurvey' action='$scriptname' method='post'>\n";
-		$editsurvey .= "\t\t<td align='right'><b>$setfont Short Title:</b></font></td>\n";
+		$editsurvey .= "\t\t<td align='right'><b>$setfont"._SL_TITLE."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='short_title' value='{$esrow['short_title']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><b>$setfont Description:</font></b></td>\n";
+		$editsurvey .= "\t<tr><td align='right'><b>$setfont"._SL_DESCRIPTION."</font></b></td>\n";
 		$editsurvey .= "\t\t<td><textarea cols='35' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Welcome Message:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_WELCOME."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><textarea cols='35' rows='5' name='welcome'>".str_replace("<br />", "\n", $esrow['welcome'])."</textarea></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Administrator:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ADMIN."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='admin' value='{$esrow['admin']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAIL."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='adminemail' value='{$esrow['adminemail']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_FAXTO."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='faxto' value='{$esrow['faxto']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Format:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_FORMAT."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><select name='format'>\n";
 		$editsurvey .= "\t\t\t<option value='S'";
 		if ($esrow['format'] == "S" || !$esrow['format']) {$editsurvey .= " selected";}
@@ -1014,7 +1019,7 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t\t</select></td>\n";
 		$editsurvey .= "\t</tr>\n";
 
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Template:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_TEMPLATE."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><select name='template'>\n";
 		foreach (gettemplatelist() as $tname)
 			{
@@ -1026,7 +1031,7 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t\t</select></td>\n";
 		$editsurvey .= "\t</tr>\n";
 		
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Anonymous?</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ANONYMOUS."</b></font></td>\n";
 				
 		if ($esrow['active'] == "Y")
 			{
@@ -1048,7 +1053,7 @@ if ($action == "editsurvey")
 			$editsurvey .= "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Date stamp?</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_DATESTAMP."</b></font></td>\n";
 				
 		if ($esrow['active'] == "Y")
 			{
@@ -1070,7 +1075,7 @@ if ($action == "editsurvey")
 			$editsurvey .= "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Language:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_LANGUAGE."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><select name='language'>\n";
 		foreach (getlanguages() as $langname)
 			{
@@ -1081,11 +1086,11 @@ if ($action == "editsurvey")
 			}
 		$editsurvey .= "\t\t</select></td>\n";
 		$editsurvey .= "\t</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EXPIRES."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='10' name='expires' value='{$esrow['expires']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>End URL:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_URL."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='50' name='url' value='{$esrow['url']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>URL Description:</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_URLDESCRIP."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n";
 
 		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Survey'></td>\n";
@@ -1101,36 +1106,36 @@ if ($action == "newsurvey")
 	$newsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
 	$newsurvey .= "\t\t<b>$setfont<font color='white'>Create New Survey</font></font></b></td></tr>\n";
 	$newsurvey .= "\t<TR><FORM NAME='addnewsurvey' ACTION='$scriptname' METHOD='POST'>\n";
-	$newsurvey .= "\t\t<td align='right'><b>$setfont Short Title:</font></b></td>\n";
+	$newsurvey .= "\t\t<td align='right'><b>$setfont"._SL_TITLE."</font></b></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='short_title'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><b>$setfont Description:</b></td>\n";
+	$newsurvey .= "\t<tr><td align='right'><b>$setfont"._SL_DESCRIPTION."</b></td>\n";
 	$newsurvey .= "\t\t<td><textarea cols='35' rows='5' name='description'></textarea></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Welcome Message:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_WELCOME."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><textarea cols='35' rows='5' name='welcome'></textarea></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Administrator:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ADMIN."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='admin'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAIL."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='adminemail'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_FAXTO."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='faxto'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Anonymous?</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ANONYMOUS."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='private'>\n";
 	$newsurvey .= "\t\t\t<option value='Y' selected>Yes</option>\n";
 	$newsurvey .= "\t\t\t<option value='N'>No</option>\n";
 	$newsurvey .= "\t\t</select></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Date Stamp?</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_DATESTAMP."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='datestamp'>\n";
 	$newsurvey .= "\t\t\t<option value='Y'>Yes</option>\n";
 	$newsurvey .= "\t\t\t<option value='N' selected>No</option>\n";
 	$newsurvey .= "\t\t</select></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Format:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_FORMAT."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='format'>\n";
 	$newsurvey .= "\t\t\t<option value='S' selected>One at a time</option>\n";
 	$newsurvey .= "\t\t\t<option value='G'>Group at a time</option>\n";
 	$newsurvey .= "\t\t\t<option value='A'>All in one</option>\n";
 	$newsurvey .= "\t\t</select></td>\n";
 	$newsurvey .= "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Template:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_TEMPLATE."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='template'>\n";
 	foreach (gettemplatelist() as $tname)
 		{
@@ -1141,7 +1146,7 @@ if ($action == "newsurvey")
 		}
 	$newsurvey .= "\t\t</select></td>\n";
 	$newsurvey .= "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Language:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_LANGUAGE."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='language'>\n";
 	foreach (getlanguages() as $langname)
 		{
@@ -1151,11 +1156,11 @@ if ($action == "newsurvey")
 		}
 	$newsurvey .= "\t\t</select></td>\n";
 	$newsurvey .= "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EXPIRES."</b></font></td>\n";
 	$newsurvey .= "\t\t<td>$setfont<input type='text' size='10' name='expires'><font size='1'>Date Format: YYYY-MM-DD</font></font></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>End URL:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_URL."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='50' name='url' value='{$esrow['url']}'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>URL Description:</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_URLDESCRIP."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n";
 	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create Survey'></td>\n";
 	$newsurvey .= "\t<input type='hidden' name='action' value='insertnewsurvey'>\n";
@@ -1165,7 +1170,7 @@ if ($action == "newsurvey")
 	$newsurvey .= "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
 	$newsurvey .= "\t\t<b>$setfont<font color='white'>Import Survey</font></font></b></td></tr>\n\t<tr>";
 	$newsurvey .= "\t<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n";
-	$newsurvey .= "\t\t<td align='right'>$setfont<b>Select SQL File:</b></font></td>\n";
+	$newsurvey .= "\t\t<td align='right'>$setfont<b>"._SL_SELSQL."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n";
 	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Import Survey'></TD>\n";
 	$newsurvey .= "\t<input type='hidden' name='action' value='importsurvey'>\n";
