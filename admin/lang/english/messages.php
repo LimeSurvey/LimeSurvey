@@ -24,6 +24,8 @@ define(_IMPORTQUESTION, "Import Question");
 define(_EXPORTRESULTS, "Export Responses");
 define(_BROWSERESPONSES, "Browse Responses");
 define(_STATISTICS, "Quick Statistics");
+define(_VIEWRESPONSE, "View Response");
+define(_VIEWCONTROL, "Data View Control");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -82,7 +84,11 @@ define(_B_LAST_BT, "Display last 50 responses");
 define(_B_STATISTICS_BT, "Get statistics from these responses");
 define(_B_EXPORT_BT, "Export Results to Application");
 define(_B_BACKUP_BT, "Backup results table as SQL file");
-
+//Datacontrols
+define(_D_BEGIN, "Show start..");
+define(_D_BACK, "Show last..");
+define(_D_FORWARD, "Show next..");
+define(_D_END, "Show last..");
 
 //DATA LABELS
 //surveys
@@ -322,6 +328,8 @@ define(_IQ_SUCCESS, "Import of Question is completed");
 define(_BR_NOSID, "You have not selected a survey to browse.");
 define(_BR_NOTACTIVATED, "This survey has not been activated. There are no results to browse.");
 define(_BR_NOSURVEY, "There is no matching survey.");
+define(_BR_EDITRESPONSE, "Edit this entry");
+define(_BR_DELRESPONSE, "Delete this entry");
 
 //STATISTICS MESSAGES
 define(_ST_FILTERSETTINGS, "Filter Settings");
