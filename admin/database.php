@@ -243,6 +243,9 @@ elseif ($action == "modanswer")
 		}
 	switch ($_POST['ansaction'])
 		{
+		case "Fix Sort":
+			fixsortorder($_POST['qid']);
+			break;
 		case "Add":
 			if (!$_POST['code'] || !$_POST['answer'])
 				{
