@@ -51,14 +51,9 @@ $surveyoptions = browsemenubar();
 echo $htmlheader;
 
 echo "<table height='1'><tr><td></td></tr></table>\n";
-//echo "<br />\n";
 echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
-//echo "<table width='100%' border='0' bgcolor='#555555'>\n";
-//echo "\t<tr><td align='center'><font color='white'><b>Browse Survey Data</b></td></tr>\n";
-//echo "</table>\n";
-
-if (!mysql_selectdb($databasename, $connect))
+if (!mysql_selectdb($databasename, $connect)) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
 	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
@@ -70,7 +65,7 @@ if (!mysql_selectdb($databasename, $connect))
 	echo "</body>\n</html>";
 	exit;
 	}
-if (!$sid && !$action)
+if (!$sid && !$action) //NO SID OR ACTION PROVIDED
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
 	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
@@ -92,7 +87,7 @@ if ($actcount > 0)
 		{
 		$surveytable = "survey_{$actrow['sid']}";
 		$surveyname = "{$actrow['short_title']}";
-		if ($actrow['active'] == "N")
+		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 			{
 			echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n";
 			echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
@@ -105,7 +100,7 @@ if ($actcount > 0)
 			}
 		}
 	}
-else
+else //SURVEY MATCHING $SID DOESN'T EXIST
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
 	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
@@ -121,10 +116,11 @@ else
 
 if ($action == "id") // Looking at a SINGLE entry
 	{
+	//SHOW HEADER
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n";
-	echo $surveyheader;
-	
 	if (!$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
+	echo "</table>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n";
 	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid='$sid' ORDER BY group_name";
@@ -204,12 +200,15 @@ if ($action == "id") // Looking at a SINGLE entry
 	else {$idquery .= "id=$id";}
 	$idresult = mysql_query($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".mysql_error());
 	while ($idrow = mysql_fetch_array($idresult)) {$id=$idrow['id'];}
-	echo "<table align='center'>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' bgcolor='#DDDDDD' align='center'>$setfont\n";
-	echo "\t\t\t<b>Viewing Answer ID $id</b><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'>\n";
+	echo "\t\t<td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._VIEWRESPONSE.":</b> $id</td></tr>\n";
+	echo "\t<tr bgcolor='#999999'><td colspan='2'>\n";
+	echo "\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/edit.gif' title='"._BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/delete.gif' title='"._BR_DELRESPONSE."' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
@@ -220,7 +219,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		for ($i; $i<$nfncount+1; $i++)
 			{
 			echo "\t<tr>\n";
-			echo "\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>$setfont<b>{$fnames[$i][2]}</b></td>\n";
+			echo "\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>$setfont{$fnames[$i][2]}</td>\n";
 			echo "\t\t<td valign='top' style='padding-left: 5px'>$setfont";
 			echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</td>\n";
 			echo "\t</tr>\n";
@@ -228,11 +227,9 @@ if ($action == "id") // Looking at a SINGLE entry
 			}
 		}
 	echo "</table>\n";
-	echo "<table width='100%'>\n";
+	echo "<table width='99%' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top');\" />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top');\" />\n";
 	if ($_POST['sql']) {echo "\t\t\t<input type='submit' $btstyle value='Close Window' onClick=\"window.close();\" />\n";}
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
@@ -245,6 +242,8 @@ elseif ($action == "all")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</td></tr>\n";
 //	echo "$surveyheader";
+	
+	
 	if (!$_POST['sql'])
 		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
 	else
@@ -259,6 +258,7 @@ elseif ($action == "all")
 		echo "</table>\n";
 		
 		}
+	echo "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
@@ -341,20 +341,19 @@ elseif ($action == "all")
 	
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
 	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
-	
-	echo "\n\n<!-- DATA TABLE -->\n";
-	if ($fncount < 10) {echo "<table width='100%' border='0'>\n";}
-	else {$fnwidth = (($fncount-1)*100); echo "<table width='$fnwidth' border='0'>\n";}
-	$tableheader = "\t<tr bgcolor='#000080' valign='top'>\n";
-	$tableheader .= "\t\t<td bgcolor='black'><font size='1' color='white' width='$cellwidth'><b>id</b></td>\n";
+	$tableheader = "\n\n<!-- DATA TABLE -->\n";
+	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	else {$fnwidth = (($fncount-1)*100); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	$tableheader .= "\t<tr bgcolor='#555555' valign='top'>\n";
+	$tableheader .= "\t\t<td bgcolor='#333333'><font size='1' color='white' width='$cellwidth'><b>id</b></td>\n";
 	foreach ($fnames as $fn)
 		{
-		if (!$currentgroup)  {$currentgroup = $fn[3]; $gbc = "#000080";}
+		if (!$currentgroup)  {$currentgroup = $fn[3]; $gbc = "#555555";}
 		if ($currentgroup != $fn[3]) 
 			{
 			$currentgroup = $fn[3];
-			if ($gbc == "#000080") {$gbc = "#0000C0";}
-			else {$gbc = "#000080";}
+			if ($gbc == "#555555") {$gbc = "#666666";}
+			else {$gbc = "#555555";}
 			}
 		$tableheader .= "\t\t<td bgcolor='$gbc'><font size='1' color='white' width='$cellwidth'><b>";
 		$tableheader .= "$fn[2]";
@@ -372,11 +371,45 @@ elseif ($action == "all")
 		{
 		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
 		}
-	if ($_GET['limit'] && !$_GET['start']) {$dtquery .= " DESC LIMIT {$_GET['limit']}";}
-	if ($_GET['start'] && $_GET['limit']) {$dtquery = "SELECT * FROM $surveytable WHERE id >= {$_GET['start']} AND id <= {$_GET['limit']}";}
+	if ($_GET['limit'] && !isset($_GET['start'])) {$dtquery .= " DESC LIMIT {$_GET['limit']}";}
+	if (isset($_GET['start']) && isset($_GET['limit'])) {$dtquery = "SELECT * FROM $surveytable LIMIT {$_GET['start']}, {$_GET['limit']}";}
+	if (!isset($_GET['start'])) {$_GET['start'] = 0;}
 	$dtresult = mysql_query($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".mysql_error());
 	$dtcount = mysql_num_rows($dtresult);
 	$cells = $fncount+1;
+
+	
+	//CONTROL MENUBAR
+	$last=$_GET['start']-50;
+	$next=$_GET['start']+50;
+	$end=$dtcount-50;
+	if ($end < 0) {$end=0;}
+	echo "<table height='1'><tr><td></td></tr></table>\n";
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._VIEWCONTROL.":</b></td></tr>\n";
+	echo "\t<tr bgcolor='#999999'><td align='left'>\n";
+	echo "\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"._D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=0','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databack.gif' title='"._D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$last&limit=50','_top')\" />\n";
+	echo "\t\t\t<img src='./images/blank.gif' width='13' height='20' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"._D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$next&limit=50','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"._D_END."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=$end','_top')\" />\n";
+	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+	echo "\t\t</td>\n";
+	echo "\t\t<form action='browse.php'>\n";
+	echo "\t\t<td align='right'><font size='1' face='verdana'>\n";
+	echo "\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='right'>\n";
+	echo "\t\t\tShowing <input type='text' $slstyle size='4' value='$dtcount' name='limit'>\n";
+	echo "\t\t\trecords starting at <input type='text' $slstyle size='4' value='{$_GET['start']}' name='start'>\n";
+	echo "\t\t\t<input type='submit' value='Show' $btstyle>\n";
+	echo "\t\t</font></td>\n";
+	echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
+	echo "\t\t<input type='hidden' name='action' value='all'>\n";
+	echo "\t\t</form>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";	
+	echo "<table height='1'><tr><td></td></tr></table>\n";
 
 	echo $tableheader;
 	
@@ -416,29 +449,6 @@ elseif ($action == "all")
 		}
 	echo "</table>\n<br />\n";
 	
-	echo "\n\n<!-- OTHER OPTIONS -->\n";
-	echo "<table width='100%' align='center'>\n";
-	echo "\t<tr bgcolor='#AAAAAA'>\n";
-	echo "\t<form>\n";
-	echo "\t\t<td width='50%' align='center'>\n";
-	echo "\t\t\t$setfont View Record ID: \n";
-	echo "\t\t\t<input type='text' size='4' name='id' style='height: 18; font-family: verdana; font-size: 9' />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Go' style='height: 18; font-family: verdana; font-size: 9' />\n";
-	echo "\t\t</td>\n";
-	echo "\t<input type='hidden' name='action' value='id' />\n";
-	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
-	echo "\t</form>\n";
-	echo "\t<form>\n";
-	echo "\t\t<td width='50%' align='center'>\n";
-	echo "\t\t\t$setfont View records ranging from: \n";
-	echo "\t\t\t<input type='text' size='4' name='start' style='height: 18; font-family: verdana; font-size: 9' />\n";
-	echo "\t\t\t to <input type='text' size='4' name='limit' style='height: 18; font-family: verdana; font-size: 9' />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Go' />\n";
-	echo "\t\t</td>\n";
-	echo "\t<input type='hidden' name='action' value='all' />\n";
-	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
-	echo "\t</tr>\n";
-	echo "</table>\n";
 	}
 else
 	{
@@ -453,7 +463,6 @@ else
 		echo "</table>\n";
 		}
 	}
-echo "&nbsp;";
 echo htmlfooter("instructions.html#browse", "Using PHPSurveyors Browse Function");
 
 echo "</td></tr></table>\n";
