@@ -252,16 +252,18 @@ $sidres = mysql_query($sidquery);
 while ($srow = mysql_fetch_row($sidres)) {$newsid = $srow[0];}
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
-if ($labelsetsarray)
-	{
-	foreach ($labelsetsarray as $lsa)
-		{
+if ($labelsetsarray) {
+	foreach ($labelsetsarray as $lsa) {
 		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
+		$newfieldcontents=$fieldcontents;
 		$oldlidpos=array_search("lid", $fieldorders);
 		$oldlid=$fieldcontents[$oldlidpos];
 		
-		$lsainsert = str_replace("'$oldlid'", "''", $lsa);
+		$newfieldcontents[array_search("lid", $fieldorders)]="";
+		$newvalues="('".implode("', '", $newfieldcontents)."')";
+		$lsainsert = str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $lsa);
+		//$lsainsert = str_replace("'$oldlid'", "''", $lsa);
 		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
 		$lsiresult=mysql_query($lsainsert);
 		
@@ -270,31 +272,30 @@ if ($labelsetsarray)
 		$nlidresult=mysql_query($nlidquery);
 		while ($nlidrow=mysql_fetch_array($nlidresult)) {$newlid=$nlidrow['lid'];}
 		$labelreplacements[]=array($oldlid, $newlid);
-		if ($labelsarray)
-			{
-			foreach ($labelsarray as $la)
-				{
+		if ($labelsarray) {
+			foreach ($labelsarray as $la) {
 				//GET ORDER OF FIELDS
 				$lfieldorders=convertToArray($la, "`, `", "(`", "`)");
 				$lfieldcontents=convertToArray($la, "', '", "('", "')");
+				$newlfieldcontents=$lfieldcontents;
 				$labellidpos=array_search("lid", $lfieldorders);
 				$labellid=$lfieldcontents[$labellidpos];
-				if ($labellid == $oldlid)
-					{
-					$lainsert = str_replace("'$labellid'", "'$newlid'", $la);
+				if ($labellid == $oldlid) {
+					$newlfieldcontents[array_search("lid", $lfieldorders)]=$newlid;
+					$newlvalues="('".implode("', '", $newlfieldcontents)."')";
+					$lainsert = str_replace("('".implode("', '", $lfieldcontents)."')", $newlvalues, $la);
+					//$lainsert = str_replace("'$labellid'", "'$newlid'", $la);
 					$lainsert = str_replace ("INTO labels", "INTO {$dbprefix}labels", $lainsert);
 					$liresult=mysql_query($lainsert);
-					}
 				}
 			}
 		}
 	}
+}
 
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
-if ($grouparray)
-	{
-	foreach ($grouparray as $ga)
-		{
+if ($grouparray) {
+	foreach ($grouparray as $ga) {
 		//GET ORDER OF FIELDS
 		$gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
 		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
@@ -310,20 +311,20 @@ if ($grouparray)
 		$gidres = mysql_query($gidquery);
 		while ($grow = mysql_fetch_row($gidres)) {$newgid = $grow[0];}
 		//NOW DO NESTED QUESTIONS FOR THIS GID
-		if ($questionarray)
-			{
-			foreach ($questionarray as $qa)
-				{
+		if ($questionarray) {
+			foreach ($questionarray as $qa) {
 				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
 				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
+				$newfieldcontents=$qacfieldcontents;
 				$thisgid=$qacfieldcontents[array_search("gid", $qafieldorders)];
-				if ($thisgid == $gid)
-					{
+				if ($thisgid == $gid) {
 					$qid = $qacfieldcontents[array_search("qid", $qafieldorders)];
+					$newfieldcontents[array_search("qid", $qafieldorders)] = "";
+					$newfieldcontents[array_search("sid", $qafieldorders)] = $newsid;
+					$newfieldcontents[array_search("gid", $qafieldorders)] = $newgid;
 					$oldqid=$qid;
-					$qinsert = str_replace("'$qid'", "''", $qa); //LEAVE QID BLANK FOR AUTOINCREMENT
-					$qinsert = str_replace("'$sid'", "'$newsid'", $qinsert); //REPLACE OLD SID WITH NEW ONE
-					$qinsert = str_replace("'$gid'", "'$newgid'", $qinsert); //REPLACE OLD GID WITH NEW ONE
+					$newvalues="('".implode("', '", $newfieldcontents)."')";
+					$qinsert = str_replace ("('".implode("', '", $qacfieldcontents)."')", $newvalues, $qa);
 					$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 					$type = $qacfieldcontents[array_search("type", $qafieldorders)]; //Get the type
 					$other = $qacfieldcontents[array_search("other", $qafieldorders)]; //Get 'other';
@@ -331,118 +332,97 @@ if ($grouparray)
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = mysql_query($qidquery);
 					while ($qrow = mysql_fetch_array($qidres)) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
-					if ($type == "F") //IF this is a flexible label array, update the lid entry
-						{
-						foreach ($labelreplacements as $lrp)
-							{
-							if ($lrp[0] == $oldlid)
-								{
+					if ($type == "F") {//IF this is a flexible label array, update the lid entry
+						foreach ($labelreplacements as $lrp) {
+							if ($lrp[0] == $oldlid) {
 								$lrupdate="UPDATE {$dbprefix}questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
 								$lrresult=mysql_query($lrupdate);
-								}
 							}
 						}
+					}
 					$newrank=0;
 					//NOW DO NESTED ANSWERS FOR THIS QID
-					if ($answerarray)
-						{
-						foreach ($answerarray as $aa)
-							{
+					if ($answerarray) {
+						foreach ($answerarray as $aa) {
 							$aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
 							$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
+							$newfieldcontents=$aacfieldcontents;
 							$code=$aacfieldcontents[array_search("code", $aafieldorders)];
 							$thisqid=$aacfieldcontents[array_search("qid", $aafieldorders)];
-							if ($thisqid == $qid)
-								{
-								$ainsert = str_replace("'$qid'", "'$newqid'", $aa);
-								//$ainsert = str_replace("('$qid", "('$newqid", $aa);
+							if ($thisqid == $qid) {
+								$newfieldcontents[array_search("qid", $aafieldorders)]=$newqid;
+								$newvalues="('".implode("', '", $newfieldcontents)."')";
+								$ainsert = str_replace("('".implode("', '", $aacfieldcontents)."')", $newvalues, $aa);
+								//$ainsert = str_replace("'$qid'", "'$newqid'", $aa);
 								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
-								//$ainsert = substr(trim($ainsert), 0, -1);
 								$ares = mysql_query($ainsert) or die ("<b>"._ERROR."</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
-								if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P" || $type == "F")
-									{
+								if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P" || $type == "F") {
 									$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
-									if ($type == "P")
-										{
+									if ($type == "P") {
 										$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code."comment", $newsid."X".$newgid."X".$newqid.$code."comment");
-										}
 									}
-								elseif ($type == "R")
-									{
+								}
+								elseif ($type == "R") {
 									$newrank++;
-									}
-								}			
-							}
-						if (($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P") && ($other == "Y"))
-							{
-							$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid."other", $newsid."X".$newgid."X".$newqid."other");
-							if ($type == "P")
-								{
-								$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid."othercomment", $newsid."X".$newgid."X".$newqid."othercomment");
 								}
-							}
-						if ($type == "R" && $newrank >0)
-							{
-							for ($i=1; $i<=$newrank; $i++)
-								{
-								$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$i, $newsid."X".$newgid."X".$newqid.$i);
-								}
-							}
-						if ($type != "A" && $type != "B" && $type != "C" && $type != "R" && $type != "M" && $type != "P")
-							{
-							$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid, $newsid."X".$newgid."X".$newqid);
-							if ($type == "O")
-								{
-								$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid."comment", $newsid."X".$newgid."X".$newqid."comment");
-								}
-							}
-						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
+							}			
 						}
-					else
-						{
+						if (($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P") && ($other == "Y")) {
+							$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid."other", $newsid."X".$newgid."X".$newqid."other");
+							if ($type == "P") {
+								$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid."othercomment", $newsid."X".$newgid."X".$newqid."othercomment");
+							}
+						}
+						if ($type == "R" && $newrank >0) {
+							for ($i=1; $i<=$newrank; $i++) {
+								$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$i, $newsid."X".$newgid."X".$newqid.$i);
+							}
+						}
+						if ($type != "A" && $type != "B" && $type != "C" && $type != "R" && $type != "M" && $type != "P") {
+							$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid, $newsid."X".$newgid."X".$newqid);
+							if ($type == "O") {
+								$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid."comment", $newsid."X".$newgid."X".$newqid."comment");
+							}
+						}
+						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
+					} else {
 						$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid, $newsid."X".$newgid."X".$newqid);
 						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
-						}
 					}
 				}
 			}
 		}
 	}
+}
 //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions.
 
-if ($conditionsarray) //ONLY DO THIS IF THERE ARE CONDITIONS!
-	{
-	foreach ($conditionsarray as $car)
-		{
+if ($conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
+	foreach ($conditionsarray as $car) {
 		$fieldorders=convertToArray($car, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($car, "', '", "('", "')");
-
-		$oldcidpos=array_search("cid", $fieldorders);
-		$oldcid=$fieldcontents[$oldcidpos];
-		$oldqidpos=array_search("qid", $fieldorders);
-		$oldqid=$fieldcontents[$oldqidpos];
-		$oldcfieldnamepos=array_search("cfieldname", $fieldorders);
-		$oldcfieldname=$fieldcontents[$oldcfieldnamepos];
-		$oldcqidpos=array_search("cqid", $fieldorders);
-		$oldcqid=$fieldcontents[$oldcqidpos];
-		foreach ($substitutions as $subs)
-			{
+		$newfieldcontents=$fieldcontents;
+		$oldcid=$fieldcontents[array_search("cid", $fieldorders)];
+		$oldqid=$fieldcontents[array_search("qid", $fieldorders)];
+		$oldcfieldname=$fieldcontents[array_search("cfieldname", $fieldorders)];
+		$oldcqid=$fieldcontents[array_search("cqid", $fieldorders)];
+		foreach ($substitutions as $subs) {
 			if ($oldqid==$subs[2])	{$newqid=$subs[5];}
 			if ($oldcqid==$subs[2])	{$newcqid=$subs[5];}
-			}
-		foreach($fieldnames as $fns)
-			{
+		}
+		foreach($fieldnames as $fns) {
 			if ($oldcfieldname==$fns[0]) {$newcfieldname=$fns[1];}
-			}
-		$insert=str_replace("'$oldcid'", "''", $car); //replace cid (remove it)
-		$insert=str_replace("'$oldqid'", "'$newqid'", $insert); //replace qid
-		$insert=str_replace("'$oldcfieldname'", "'$newcfieldname'", $insert); //replace cfieldname
-		$insert=str_replace("$oldcqid'", "$newcqid'", $insert); //replace cqid
+		}
+		$newfieldcontents[array_search("cid", $fieldorders)]="";
+		$newfieldcontents[array_search("qid", $fieldorders)]=$newqid;
+		$newfieldcontents[array_search("cfieldname", $fieldorders)]=$newcfieldname;
+		$newfieldcontents[array_search("cqid", $fieldorders)]=$newcqid;
+		$newvalues="('".implode("', '", $newfieldcontents)."')";
+		$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $car);
 		$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
 		$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
-		}
 	}
+}
 
 echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
 echo "<b><u>"._IS_IMPORTSUMMARY."</u></b><br />\n";
@@ -460,13 +440,11 @@ echo "</td></tr></table>\n";
 echo "</body>\n</html>";
 unlink($the_full_file_path);
 
-function convertToArray($string, $seperator, $start, $end)
-	{
+function convertToArray($string, $seperator, $start, $end) {
 	$begin=strpos($string, $start)+strlen($start);
 	$len=strpos($string, $end)-$begin;
 	$order=substr($string, $begin, $len);
 	$orders=explode($seperator, $order);
-	
 	return $orders;
-	}
+}
 ?>
