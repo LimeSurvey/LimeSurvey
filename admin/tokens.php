@@ -784,7 +784,7 @@ if ($action == "upload")
 		if ($handle == false) {echo "Failed to open the uploaded file!\n";}
 		while (!feof($handle))
 			{
-			$buffer = fgets($handle);
+			$buffer = fgets($handle, 4096);
 			
 			//Delete trailing CR from Windows files.
 			//Macintosh files end lines with just a CR, which fgets() doesn't handle correctly.
