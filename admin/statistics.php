@@ -83,7 +83,6 @@ $query = "SELECT qid, {$dbprefix}questions.gid, type, title, group_name, questio
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while ($row=mysql_fetch_row($result))
 	{
-	//filters='qid','gid','type','title','group_name','question', 'lid'
 	$filters[]=array("$row[0]", "$row[1]", "$row[2]", "$row[3]", "$row[4]", strip_tags($row[5]), $row[6]);
 	}
 // 2: Get answers for each question
@@ -103,7 +102,6 @@ foreach ($filters as $flt)
 			."\t\t\t<table align='center'><tr>\n";
 		$counter=0;
 		}
-	//echo $flt[2];	//debugging line
 	if (isset($counter) && $counter == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
 	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
 	$niceqtext = str_replace("\"", "`", $flt[5]);
@@ -117,8 +115,8 @@ foreach ($filters as $flt)
 			."$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
 		if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {$myfield = "M$myfield";}
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
-		echo "<input type='radio' name='summary' value='$myfield'";
-		if (isset($_POST['summary']) && ($_POST['summary'] == "{$sid}X{$flt[1]}X{$flt[0]}" || $_POST['summary'] == "M{$sid}X{$flt[1]}X{$flt[0]}" || $_POST['summary'] == "N{$sid}X{$flt[1]}X{$flt[0]}")) {echo " CHECKED";}
+		echo "<input type='checkbox' name='summary[]' value='$myfield'";
+		if (isset($_POST['summary']) && (array_search("{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) {echo " CHECKED";}
 		echo ">&nbsp;"
 			."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
 			."<br />\n";
@@ -225,8 +223,8 @@ foreach ($filters as $flt)
 				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"
-					."<input type='radio' name='summary' value='$myfield2'";
-				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
+					."<input type='checkbox' name='summary[]' value='$myfield2'";
+				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
 					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
@@ -259,8 +257,8 @@ foreach ($filters as $flt)
 				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
-				echo "<input type='radio' name='summary' value='$myfield2'";
-				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
+				echo "<input type='checkbox' name='summary[]' value='$myfield2'";
+				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
 					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])
 					." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])
@@ -294,8 +292,8 @@ foreach ($filters as $flt)
 				echo " -->\n";
 				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"
-					."<input type='radio' name='summary' value='$myfield2'";
-				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
+					."<input type='checkbox' name='summary[]' value='$myfield2'";
+				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
 					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
@@ -329,8 +327,8 @@ foreach ($filters as $flt)
 				echo " -->\n";
 				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"
-					."<input type='radio' name='summary' value='$myfield2'";
-				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
+					."<input type='checkbox' name='summary[]' value='$myfield2'";
+				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
 					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
@@ -364,8 +362,8 @@ foreach ($filters as $flt)
 				echo " -->\n";
 				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"
-					."<input type='radio' name='summary' value='$myfield2'";
-				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
+					."<input type='checkbox' name='summary[]' value='$myfield2'";
+				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
 					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n";
@@ -405,8 +403,8 @@ foreach ($filters as $flt)
 				if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
 				echo " -->\n"
 					."\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($i)"
-					."<input type='radio' name='summary' value='$myfield2'";
-				if (isset($_POST['summary']) && $_POST['summary'] == "$myfield2") {echo " CHECKED";}
+					."<input type='checkbox' name='summary[]' value='$myfield2'";
+				if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary']) !== FALSE) {echo " CHECKED";}
 				echo ">&nbsp;"
 					."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('QUESTION: ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 					."<br />\n"
@@ -590,9 +588,7 @@ if (isset($_POST['display']) && $_POST['display'])
 //Show Summary results
 if (isset($_POST['summary']) && $_POST['summary'])
 	{
-	$pipepos=strpos($_POST['summary'], "|");
-	if ($pipepos == 0) {$runthrough[]=$_POST['summary'];}
-	else {$runthrough=explode("|", $_POST['summary']);}
+	$runthrough=returnglobal('summary');
 	foreach ($runthrough as $rt)
 		{
 		// 1. Get answers for question
