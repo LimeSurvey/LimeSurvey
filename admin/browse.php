@@ -167,9 +167,13 @@ if ($action == "id")
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE ";
-	if ($_POST['sql']) {$idquery .= "{$_POST['sql']}";}
+	if ($_POST['sql'])
+		{
+		if (get_magic_quotes_gpc) {$idquery .= stripslashes($_POST['sql']);}
+		else {$idquery .= "{$_POST['sql']}";}
+		}
 	else {$idquery .= "id=$id";}
-	$idresult = mysql_query($idquery) or die ("Couldn't get entry<br />$idquery<br />".mysql_error());
+	$idresult = mysql_query($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".mysql_error());
 	while ($idrow = mysql_fetch_array($idresult)) {$id=$idrow['id'];}
 	echo "<table align='center'>\n";
 	echo "\t<tr>\n";
@@ -198,9 +202,9 @@ if ($action == "id")
 	echo "<table width='100%'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
-	if ($_POST['sql']) {echo "\t\t\t<input type='submit' $btstyle value='Close Window' onClick=\"javascript(window.close())\">\n";}
+	echo "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top');\" />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top');\" />\n";
+	if ($_POST['sql']) {echo "\t\t\t<input type='submit' $btstyle value='Close Window' onClick=\"window.close();\" />\n";}
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
