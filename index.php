@@ -340,6 +340,11 @@ function makegraph($thisstep, $total)
 
 function checkgroupfordisplay($gid)
 	{
+	//This function checks all the questions in a group to see if they have
+	//conditions, and if the do - to see if the conditions are met.
+	//If none of the questions in the group are set to display, then
+	//the function will return false, to indicate that the whole group
+	//should not display at all.
 	global $dbprefix;
 	$countQuestionsInThisGroup=0;
 	$countConditionalQuestionsInThisGroup=0;
@@ -378,13 +383,19 @@ function checkgroupfordisplay($gid)
 				if ($thistype == "M" || $thistype == "P")
 					{
 					$fieldname=$row['cfieldname'].$row['value'];
-					$cfieldname=$_SESSION[$fieldname];
-					$cvalue="Y";
+					if (isset($_SESSION[$fieldname])) 
+						{
+						$cfieldname=$_SESSION[$fieldname];
+						$cvalue="Y";
+						}
 					}
 				else
 					{
-					$cfieldname=$_SESSION[$row['cfieldname']];
-					$cvalue=$row['value'];
+					if (isset($_SESSION[$row['cfieldname']]))
+						{
+						$cfieldname=$_SESSION[$row['cfieldname']];
+						$cvalue=$row['value'];
+					    }
 					}
 				if ($cfieldname == $cvalue)
 					{
