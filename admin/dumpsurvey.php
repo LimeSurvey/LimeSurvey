@@ -52,8 +52,8 @@ if (!$sid)
 	}
 
 $dumphead = "# SURVEYOR SURVEY DUMP\n";
-$dumphead .= "#\n# This is a dumped survey from the Surveyor Script\n";
-$dumphead .= "# Written by Jason Cleeland\n#\n\n";
+$dumphead .= "#\n# This is a dumped survey from the PHPSurveyor Script\n";
+$dumphead .= "# http://phpsurveyor.sourceforge.net/\n#\n\n";
 
 function BuildOutput($Query)
 	{
