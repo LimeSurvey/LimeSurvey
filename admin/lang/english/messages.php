@@ -8,6 +8,12 @@ define(_GROUP, "Group");
 define(_QUESTION, "Question");
 define(_ANSWERS, "Answers");
 define(_HELP, "Help");
+define(_USERCONTROL, "User Control");
+
+//DROPDOWN HEADINGS
+define(_SURVEYS, "Surveys");
+define(_GROUPS, "Groups");
+define(_QUESTIONS, "Questions");
 
 //BUTTON MOUSEOVERS
 //administration bar
@@ -96,6 +102,16 @@ define(_AL_SAVE, "Save");
 define(_AL_DEL, "Del");
 define(_AL_ADD, "Add");
 define(_AL_FIXSORT, "Fix Sort");
+//users
+define(_UL_USER, "User");
+define(_UL_PASSWORD, "Password");
+define(_UL_SECURITY, "Security");
+define(_UL_ACTION, "Action");
+define(_UL_EDIT, "Edit");
+define(_UL_DEL, "Delete");
+define(_UL_ADD, "Add");
+define(_UL_TURNOFF, "Turn Off Security");
+
 
 //QUESTION TYPES
 define(_5PT, "5 Point Choice");
@@ -115,15 +131,44 @@ define(_ARR10, "Array (10 Point Choice)");
 define(_ARRYN, "Array (Yes/No/Uncertain)");
 define(_ARRMV, "Array (Increase, Same, Decrease)");
 define(_ARRFL, "Array (Flexible Labels)"); //(FOR LATER RELEASE)
+define(_SINFL, "Single (Flexible Labels)"); //(FOR LATER RELEASE)
+define(_EMAIL, "Email Address"); //FOR LATER RELEASE
 
 //GENERAL WORDS AND PHRASES
 define(_YES, "Yes");
 define(_NO, "No");
+define(_ERROR, "Error");
 define(_REQ, "*Required");
 define(_ADDS, "Add Survey");
 define(_ADDG, "Add Group");
 define(_ADDQ, "Add Question");
 define(_SAVE, "Save Changes");
+define(_CHOOSE, "Please Choose..");
+define(_NONE, "None"); //as in "Do not display anything, or none chosen";
+define(_GO_ADMIN, "Main Admin Screen"); //text to display to return/display main administration screen
+define(_CONTINUE, "Continue");
+define(_WARNING, "Warning");
+define(_USERNAME, "User name");
+define(_PASSWORD, "Password");
 
-
+//USER CONTROL MESSAGES
+define(_UC_CREATE, "Creating default htaccess file");
+define(_UC_NOCREATE, "Couldn't create htaccess file. Check your config.php for \$homedir setting, and that you have write permission in the correct directory.");
+define(_UC_SEC_DONE, "Security Levels are now set up!");
+define(_UC_CREATE_DEFAULT, "Creating default users");
+define(_UC_UPDATE_TABLE, "Updating users table");
+define(_UC_HTPASSWD_ERROR, "Error occurred creating htpasswd file");
+define(_UC_HTPASSWD_EXPLAIN, "If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/");
+define(_UC_SEC_REMOVE, "Removing security settings");
+define(_UC_ALL_REMOVED, "Access file, password file and user database deleted");
+define(_UC_ADD_USER, "Adding User");
+define(_UC_ADD_MISSING, "Could not add user. Username and/or password were not supplied");
+define(_UC_DEL_USER, "Deleting User");
+define(_UC_DEL_MISSING, "Could not delete user. Username was not supplied.");
+define(_UC_MOD_USER, "Modifying User");
+define(_UC_MOD_MISSING, "Could not modify user. Username and/or password were not supplied");
+define(_UC_TURNON_MESSAGE1, "You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\nIf you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts.");
+define(_UC_TURNON_MESSAGE2, "It is highly recommended that once your security system has been initialised you change this default password.");
+define(_UC_INITIALISE, "Initialise Security");
+define(_UC_NOUSERS, "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.");
 ?>
