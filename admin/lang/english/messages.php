@@ -232,4 +232,25 @@ define(_CD_POPULATE, "Populate Database");
 define(_CD_NOCREATE, "Could not create database");
 define(_CD_NODBNAME, "Database Information not provided. This script must be run from admin.php only.")
 
+//DATABASE MODIFICATION MESSAGES
+define(_DB_FAIL_GROUPNAME, "Group could not be added. It is missing the mandatory group name");
+define(_DB_FAIL_GROUPUPDATE, "Group could not be updated");
+define(_DB_FAIL_GROUPDELETE, "Group could not be deleted");
+define(_DB_FAIL_NEWQUESTION, "Question could not be created.");
+define(_DB_FAIL_QUESTIONTYPECONDITIONS, "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.")
+define(_DB_FAIL_QUESTIONUPDATE, "Question could not be updated");
+define(_DB_FAIL_QUESTIONDELCONDITIONS, "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed");
+define(_DB_FAIL_QUESTIONDELETE, "Question could not be deleted");
+define(_DB_FAIL_NEWANSWERMISSING, "Answer could not be added. You must include both a Code and an Answer");
+define(_DB_FAIL_NEWANSWERDUPLICATE, "Answer could not be added. There is already an answer with this code");
+define(_DB_FAIL_ANSWERUPDATEMISSING, "Answer could not be updated. You must include both a Code and an Answer");
+define(_DB_FAIL_ANSWERUPDATEDUPLICATE, "Answer could not be updated. There is already an answer with this code");
+define(_DB_FAIL_ANSWERUPDATECONDITIONS, "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.");
+define(_DB_FAIL_ANSWERDELCONDITIONS, "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed");
+define(_DB_FAIL_NEWSURVEY_TITLE, "Survey could not be created because it did not have a short title")
+define(_DB_FAIL_NEWSURVEY, "Survey could not be created");
+define(_DB_FAIL_SURVEYUPDATE, "Survey could not be updated");
+define(_DB_FAIL_SURVEYDELETE, "Survey could not be deleted");
+
+
 ?>
