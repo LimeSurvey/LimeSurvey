@@ -355,6 +355,7 @@ elseif ($action == "modanswer")
 
 elseif ($action == "insertnewsurvey")
 	{
+	if ($_POST['url'] == "http://") {$_POST['url']="";}
 	if (!$_POST['short_title'])
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWSURVEY_TITLE."\")\n //-->\n</script>\n";
@@ -394,6 +395,7 @@ elseif ($action == "insertnewsurvey")
 
 elseif ($action == "updatesurvey")
 	{
+	if ($_POST['url'] == "http://") {$_POST['url']="";}
 	if (get_magic_quotes_gpc() == "0")
 		{
 		$_POST['short_title'] = addcslashes($_POST['short_title'], "'");
