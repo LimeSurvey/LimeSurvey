@@ -654,7 +654,7 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='adminemail' value='{$esrow['adminemail']}'></td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='faxto' value='{$esrow['faxto']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Private?</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Anonymous?</b></font></td>\n";
 				
 		if ($esrow['active'] == "Y")
 			{
@@ -703,7 +703,7 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='adminemail'></td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='faxto'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Private?</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Anonymous?</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='private'>\n";
 	$newsurvey .= "\t\t\t<option value='Y' selected>Yes</option>\n";
 	$newsurvey .= "\t\t\t<option value='N'>No</option>\n";
