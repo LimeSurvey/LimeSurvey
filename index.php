@@ -37,7 +37,8 @@
 
 session_start();
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($sid)) {$sid=$_GET('sid');}
+if (!isset($sid)) {$sid=$_POST('sid');}
 if (phpversion() >= '4.2.0') {settype($sid, "int");} else {settype($sid, "integer");}
 
 include("./admin/config.php");
