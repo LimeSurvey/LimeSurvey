@@ -241,7 +241,14 @@ elseif ($action == "all")
 	$tableheader .= " </TR>\n\n";
 	
 	//NOW LETS SHOW THE DATA
-	$dtquery = "SELECT * FROM $surveytable ORDER BY id";
+	if ($sql)
+		{
+		$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($sql)." ORDER BY id";
+		}
+	else
+		{
+		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
+		}
 	if ($limit && !$start) {$dtquery .= " DESC LIMIT $limit";}
 	if ($start && $limit) {$dtquery = "SELECT * FROM $surveytable WHERE id >= $start AND id <= $limit";}
 	$dtresult = mysql_query($dtquery);
