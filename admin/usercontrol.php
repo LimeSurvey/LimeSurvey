@@ -186,7 +186,7 @@ elseif ($action == "moduser")
 			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
 			$addsummary .= "</pre>\n";
 			}
-		$uquery = "UPDATE {$dbprefix}users SET password='$pass', security='$level' WHERE user='$user'";
+		$uquery = "UPDATE {$dbprefix}users SET password='$pass', security='{$_POST['level']}' WHERE user='$user'";
 		$uresult = mysql_query($uquery);
 		
 		$addsummary .= "<br />"._USERNAME.": $user<br />"._PASSWORD.": $pass<br />\n";
