@@ -53,14 +53,14 @@ if (!$sid)
 
 $dumphead = "# SURVEYOR SURVEY DUMP\n";
 $dumphead .= "#\n# This is a dumped survey from the PHPSurveyor Script\n";
-$dumphead .= "# http://phpsurveyor.sourceforge.net/\n#\n\n";
+$dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
 
 function BuildOutput($Query)
 	{
 	$QueryResult = mysql_query($Query);
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];
-	$Output = "\n#\n# " . strtoupper($TableName) . " TABLE\n#\n";
+	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
 	while ($Row = mysql_fetch_assoc($QueryResult))
 		{
 		$ColumnNames = "";
@@ -73,7 +73,7 @@ function BuildOutput($Query)
 		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
 		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
 		
-		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES\n ($ColumnValues);\n";
+		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues)\n";
 		}
 	return $Output;
 	}
