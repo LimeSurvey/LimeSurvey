@@ -207,6 +207,7 @@ elseif ($action == "copynewquestion")
 
 elseif ($action == "delquestion")
 	{
+	if (!isset($qid)) {returnglobal('qid');}
 	//check if any other questions have conditions which rely on this question. Don't delete if there are.
 	$ccquery = "SELECT * FROM conditions WHERE cqid={$_GET['qid']}";
 	$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
@@ -221,7 +222,7 @@ elseif ($action == "delquestion")
 		{
 		//see if there are any conditions for this question, and delete them now as well
 		$cquery = "DELETE FROM conditions WHERE qid=$qid";
-		$cresult = mysql_query($query);
+		$cresult = mysql_query($cquery);
 		$query = "DELETE FROM questions WHERE qid=$qid";
 		$result = mysql_query($query);
 		if ($result)
