@@ -113,6 +113,7 @@ $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=browse'>browse</a>] \n
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=add'>add</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=import'>import</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=email'>invite</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=remind'>remind</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=tokenify'>tokenify</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=kill'>drop tokens</a>] \n";
 $tokenmenu .= "\t\t</td>\n";
@@ -328,6 +329,122 @@ if ($action == "email")
 		}
 	}	
 	
+if ($action == "remind")
+	{
+	echo "<center>$setfont<b>Email Reminder</b><br />\n";
+	if (!$ok)
+		{
+		//GET SURVEY DETAILS
+		$esquery="SELECT * FROM surveys WHERE sid=$sid";
+		$esresult=mysql_query($esquery);
+		while ($esrow=mysql_fetch_row($esresult))
+			{
+			$surveyname=$esrow[1];
+			$surveydescription=$esrow[2];
+			$surveyadmin=$esrow[3];
+			$surveyadminemail=$esrow[7];
+			}
+		echo "<table width='80%' align='center' bgcolor='#DDDDDD'>\n";
+		//echo "<FORM METHOD='POST'>\n";
+		echo "\t<form method='post' action='tokens.php'>\n";
+		echo "\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+		echo "\t\t$setfont<font color='white'><b>Send Reminder\n";
+		echo "\t</td></tr>\n";
+		echo "\t<tr><td align='right'>\n";
+		echo "\t\t$setfont<b>From:</td>\n";
+		echo "\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadminemail'>\n";
+		echo "\t</td></tr>\n";
+		echo "\t<tr><td align='right'>\n\t\t$setfont<b>Subject:\n\t</td>\n\t<td>\n";
+		echo "\t\t<input type='text' $slstyle size='50' name='subject' value='Reminder to participate in $surveyname'>\n";
+		echo "\t</td></tr>\n";
+		echo "\t<tr><td align='right' valign='top'>\n\t\t$setfont<b>Message:\n\t</td>\n";
+		echo "\t<td>\n\t\t$setfont<b>The following will be added to the top of your message:</b>\n";
+		echo "\t\t\t<table width='500' bgcolor='#EEEEEE' border='1' cellpadding='0' cellspacing='0'>\n\t\t\t\t<tr><td>\n";
+		echo "\t\t\t\t\t$setfont Dear [FIRSTNAME],\n";
+		echo "\t\t\t\t</td></tr>\n\t\t\t</table>\n";
+		echo "\t\t\t<b>You can make changes to this part of the message:</b><br />\n";
+		echo "\t\t\t<textarea name='message' rows='6' cols='60'>";
+		echo "Recently we invited you to participate in a survey.\n\n";
+		echo "We note that you have not yet completed the survey, and wish to remind you ";
+		echo "that the survey is still available should you wish to take part.\n\n";
+		echo "** Survey Name **\n$surveyname\n\n";
+		echo "** Survey Description **\n";
+		echo strip_tags($surveydescription)."\n\n";
+		echo "To participate, please click on the link below.";
+		echo "\n\nSincerely,\n\n$surveyadmin ($surveyadminemail)";
+		echo "</textarea>\n\t\t</td></tr>\n";
+		echo "\t\t<tr>\n\t\t<td></td>";
+		echo "\t\t<td>$setfont<b>The following will be added to the end of your email message:</b><br />\n";
+		echo "\t\t\t<table width='500' bgcolor='#EEEEEE' border='1' cellpadding='0' cellspacing='0'>\n";
+		echo "\t\t\t\t<tr><td>";
+		echo "$setfont---------------------------------<br /> Click Here to do Survey:<br />$publicurl/index.php?sid=$sid&token=[TOKENVALUE]<br />\n";
+		echo "\t\t\t\t</td></tr>\n\t\t\t</table>\n\t\t</td></tr>\n";
+		echo "\t\t<tr><td colspan='2' align='center'>\n";
+		echo "\t\t\t<input type='submit' $btstyle value='Send Reminder'>\n\t\t</td></tr>\n";
+		echo "\t\t<input type='hidden' name='ok' value='absolutely'>\n";
+		echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
+		echo "\t\t<input type='hidden' name='action' value='remind'\n";
+		echo "\t</form>\n</table>\n";
+		}
+	else
+		{
+		echo "Sending reminder email!";
+		$ctquery="SELECT firstname FROM tokens_$sid WHERE completed !='Y' AND sent='Y' AND token !=''";
+		$ctresult=mysql_query($ctquery);
+		$ctcount=mysql_num_rows($ctresult);
+		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_$sid WHERE completed != 'Y' AND sent = 'Y' AND token !='' LIMIT $maxemails";
+		$emresult=mysql_query($emquery) or die ("Couldn't do query.<BR>$emquery<BR>".mysql_error());
+		$emcount=mysql_num_rows($emresult);
+		$headers = "From: $from\r\n";
+		$headers .= "X-Mailer: $sitename Email Reminder";  
+		echo "<table width='500' align='CENTER' bgcolor='#EEEEEE'><tr><td><font size='1'>\n";
+		if ($emcount > 0)
+			{
+			while ($emrow=mysql_fetch_row($emresult))
+				{
+				$to=$emrow[2];
+				//echo "To: $to ($emrow[0] $emrow[1])<BR>";
+				//$from=$surveyadminemail;
+				//echo "From: $from<BR>";
+				//echo "Subject: $subject<BR>";
+				$sendmessage = "Dear $emrow[0],\n\n";
+				$sendmessage .= str_replace("\'", "'", $message);
+				$sendmessage .= "\n\n-------------------------------------------\n\n";
+				$sendmessage .= "Click here to do this survey:\n\n";
+				$sendmessage .= "$publicurl/index.php?sid=$sid&token=$emrow[3]\n\n";
+				//echo "Message:". str_replace("\n", "<BR>", $sendmessage) . "<P>";
+				mail($to, $subject, $sendmessage, $headers);
+				echo "[Reminder Sent to $emrow[0] $emrow[1]] ";
+				}
+			if ($ctcount > $emcount)
+				{
+				$lefttosend=$ctcount-$maxemails;
+				echo "</td></tr><tr><form method='post' action='tokens.php'><td align='center'>$setfont<b>Warning:</b><br>";
+				echo "The number of emails to send ($ctcount) is greater than the maximum number";
+				echo " of emails that can be sent in one lot ($maxemails). There are still $lefttosend";
+				echo " emails to go. You can continue sending the next $maxemails by clicking on the";
+				echo " button below.<br />";
+				echo "<input type='submit' value='Send More'></TD>\n";
+				echo "<input type='hidden' name='ok' value='absolutely'>\n";
+				echo "<input type='hidden' name='action' value='email'>\n";
+				echo "<input type='hidden' name='sid' value='$sid'>\n";
+				echo "<input type='hidden' name='from' value='$from'>\n";
+				echo "<input type='hidden' name='subject' value='$subject'>\n";
+				echo "<input type='hidden' name='message' value='$message'>\n";
+				echo "</form>\n";
+				}
+			}
+		else
+			{
+			echo "<center><b>WARNING:</b><br />There were no token recipients who have not yet responded.";
+			echo "<br><br>";
+			echo "No invitations have been sent out!";
+			}
+		
+		echo "</td></tr></table>\n";
+		}
+	}
+
 	
 if ($action == "tokenify")
 	{
