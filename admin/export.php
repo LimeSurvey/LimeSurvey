@@ -405,7 +405,9 @@ for ($i=0; $i<$fieldcount; $i++)
 		}
 	else //A normal question field. Break the fieldname up into constituent parts to find $sid, $gid, and $qid
 		{
+		$debug .= "STARTING NORMAL QUESTION FIELD\n";
 		list($fsid, $fgid, $fqid) = split("X", $fieldinfo);
+		$debug .= "FSID: $fsid $s FGID: $fgid $s FQID: $fqid\n";
 		if ($style == "abrev") //Print out abbreviated question title
 			{
 			if (!$fqid) {$fqid = "0";}
@@ -438,6 +440,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			{
 			if (!$fqid) {$fqid = 0;}
 			$oldfqid=$fqid;
+			$debug .= "FQID: $fqid $s OLDFQID: $oldfqid\n";
 			while (!in_array($fqid, $legitqs) && $fqid) //checks that the qid exists in our list
 				{
 				$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
@@ -449,6 +452,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				}
 			if (!$fqid) 
 				{
+				$debug .= "NO FQID!\n";
 				if (substr($fieldinfo, -5, 5) == "other") 
 					{
 					if ($type == "csv")
@@ -484,19 +488,20 @@ for ($i=0; $i<$fieldcount; $i++)
 				}
 			else
 				{
-				$debug .= "LAST FQID: $fqid |";
+				$debug .= "THIS FQID: $fqid $s";
 				$qq = "SELECT question, type, other FROM {$dbprefix}questions WHERE qid=$fqid"; //get the question
 				$qr = mysql_query($qq) or die ("ERROR:<br />".$qq."<br />".mysql_error());
-				$debug .= "LAST QQ Query: $qq |";
+				$debug .= "LAST QQ Query: $qq $s";
 				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 					{
 					$ftype = $qrow['type']; //get the question type
 					$fquest = $qrow['question'];
 					$fother = $qrow['other'];
 					}
-				$debug .= "LAST FTYPE: $ftype | LAST FQUEST: $fquest | LAST FOTHER: $fother |";
+				$debug .= "LAST FTYPE: $ftype $s LAST FQUEST: $fquest $s LAST FOTHER: $fother $s";
 				if ($ftype != "O" && $ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "E" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
 					{ //If its a single - answer only type question
+					$debug .= "Doing NOT TYPE one..\n";
 					foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 						{
 						if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
@@ -506,7 +511,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					}
 				elseif ($ftype == "O") //List with Comment
 					{
-					$debug .= "DOING A COMMENT TYPE ONE\n";
+					$debug .= "\nDOING A COMMENT TYPE ONE\n";
 					$thisacount=2;
 					if (!isset($usedanswers)) {$usedanswers=0;}
 					$usedanswers++;
@@ -526,15 +531,19 @@ for ($i=0; $i<$fieldcount; $i++)
 					}
 				elseif ($ftype == "L" && $fother != "Y") 
 					{
+					$debug .= "\nQUESTION TYPE L - not \"OTHER\"\n";
 					foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 						{
 						if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
 						}
 					$legitqs=$nlegitqs;
 					unset($nlegitqs);
+					unset($thisacount);
+					unset($usedanswers);
 					}
 				elseif ($ftype == "L" && $fother == "Y")
 					{
+					$debug .= "\nQUESTION TYPE L \n";
 					$thisacount=2;
 					if (!isset($usedanswers)) {$usedanswers=0;}
 					$usedanswers++;
@@ -552,20 +561,21 @@ for ($i=0; $i<$fieldcount; $i++)
 					}
 				else
 					{
+					$debug .= "\nDOING _ELSE_ - question type $ftype\n";
 					$debug .= "LAST START THISACOUNT: ";
 					if (isset($thisacount)) {$debug .= $thisacount;}
-					$debug .= " | LAST START USEDANSWERS:";
+					$debug .= " $s LAST START USEDANSWERS:";
 					if (isset($usedanswers)) { $debug .= $usedanswers;}
-					$debug .= " |";
+					$debug .= " $s";
 					if (!isset($thisacount))
 						{
 						$aq = "SELECT code FROM {$dbprefix}answers WHERE qid=$fqid"; //We just want to count how many answers so we can delete the legitq entry when they're all used up
 						$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
-						$debug .= "LAST SELECT TO GET ACOUNT: $aq |";
+						$debug .= "LAST SELECT TO GET ACOUNT: $aq $s";
 						$thisacount = mysql_num_rows($ar);
 						if ($ftype == "P") {$thisacount=$thisacount*2;}
 						if ($fother == "Y") {$thisacount++;}
-						$debug .= " | SETTING THISACOUNT - $thisacount POSSIBLE ANSWERS TO QUESTION";
+						$debug .= " $s SETTING THISACOUNT - $thisacount POSSIBLE ANSWERS TO QUESTION";
 						}
 					if(!isset($usedanswers)) {$usedanswers=0;}
 					$usedanswers++;
@@ -843,6 +853,8 @@ elseif ($answers == "long")
 					}
 				$legitqs=$nlegitqs;
 				unset($nlegitqs);
+				unset($thisacount);
+				unset($usedanswers);
 				}
 			elseif ($ftype == "L" && $fother == "Y")
 				{
