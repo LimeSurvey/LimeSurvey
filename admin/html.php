@@ -285,6 +285,7 @@ if ($sid)
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
 						. _S_EXPORT_BT."' align='left' border='0' hspace='0' name='ExportSurvey' "
 						. "onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$sid', '_top')\">\n";
+		
 		if ($activated == "Y")
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' align='left' border='0' hspace='0'>\n"
@@ -1222,7 +1223,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		else
 			{
 			$editquestion .= "\t\t<td>{$setfont}[{$eqrow['type']}] - "._DE_NOMODIFY." - "._SS_ACTIVE."\n"
-						   . "\t\t\t<input type='hidden' name='type' value='{$eqrow['type']}'>\n"
+						   . "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}'>\n"
 						   . "\t\t</font></td>\n";
 			}
 
