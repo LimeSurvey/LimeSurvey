@@ -112,38 +112,81 @@
 				$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
-				$answer .= "\t\t\t<table align='center'>\n";
-				$answer .= "\t\t\t\t<tr>\n";
-				$answer .= "\t\t\t\t\t<td>$setfont<u>Choose one of the following:</u></td>\n";
-				$answer .= "\t\t\t\t\t<td>$setfont<u>Please enter your comment here:</td>\n";
-				$answer .= "\t\t\t\t</tr>\n";
-				$answer .= "\t\t\t\t<tr>\n";
-				$answer .= "\t\t\t\t\t<td valign='top'>$setfont\n";
-				
-				while ($ansrow=mysql_fetch_array($ansresult))
+				if ($lwcdropdowns == "R")
 					{
-					$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]'";
-					if ($_SESSION[$ia[1]] == $ansrow['code'])
-						{ $answer .= " checked"; }
-					elseif ($ansrow['default'] == "Y") {$answer .= " checked"; $defexists = "Y";}
-					$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />{$ansrow['answer']}<br />\n";
+					$answer .= "\t\t\t<table align='center'>\n";
+					$answer .= "\t\t\t\t<tr>\n";
+					$answer .= "\t\t\t\t\t<td>$setfont<u>Choose one of the following:</u></td>\n";
+					$answer .= "\t\t\t\t\t<td>$setfont<u>Please enter your comment here:</td>\n";
+					$answer .= "\t\t\t\t</tr>\n";
+					$answer .= "\t\t\t\t<tr>\n";
+					$answer .= "\t\t\t\t\t<td valign='top'>$setfont\n";
+					
+					while ($ansrow=mysql_fetch_array($ansresult))
+						{
+						$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]'";
+						if ($_SESSION[$ia[1]] == $ansrow['code'])
+							{ $answer .= " checked"; }
+						elseif ($ansrow['default'] == "Y") {$answer .= " checked"; $defexists = "Y";}
+						$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />{$ansrow['answer']}<br />\n";
+						}
+					if ($ia[6] != "Y")
+						{
+						if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) {$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' checked onChange='checkconditions(this.value, this.name, this.type)' />No answer\n";}
+						elseif ($_SESSION[$ia[1]] && !$defexists) {$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' onChange='checkconditions(this.value, this.name, this.type)' />No answer\n";}
+						}
+					$answer .= "\t\t\t\t\t</td>\n";
+					$fname2 = $ia[1]."comment";
+					if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
+					$answer .= "\t\t\t\t\t<td valign='top'>\n";
+					$answer .= "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' rows='$tarows' cols='30'>";
+					if ($_SESSION[$fname2]) {$answer .= str_replace("\\", "", $_SESSION[$fname2]);}
+					$answer .= "</textarea>\n";
+					$answer .= "\t\t\t\t\t</td>\n";
+					$answer .= "\t\t\t\t</tr>\n";
+					$answer .= "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n";
+					$answer .= "\t\t\t</table>\n";
+					$inputnames[]=$ia[1];
+					$inputnames[]=$ia[1]."comment";
 					}
-				if ($ia[6] != "Y")
+				else
 					{
-					if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) {$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' checked onChange='checkconditions(this.value, this.name, this.type)' />No answer\n";}
-					elseif ($_SESSION[$ia[1]] && !$defexists) {$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' onChange='checkconditions(this.value, this.name, this.type)' />No answer\n";}
+					$answer .= "\t\t\t<table align='center'>\n";
+					$answer .= "\t\t\t\t<tr>\n";
+					$answer .= "\t\t\t\t\t<td valign='top'>\n";
+					$answer .= "\t\t\t\t\t<select class='select' name='$ia[1]' onClick='checkconditions(this.value, this.name, this.type)'>\n";
+					while ($ansrow=mysql_fetch_array($ansresult))
+						{
+						$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
+						if ($_SESSION[$ia[1]] == $ansrow['code'])
+							{$answer .= " selected";}
+						elseif ($ansrow['default'] == "Y") {$answer .= " selected"; $defexists = "Y";}
+						$answer .= ">{$ansrow['answer']}</option>\n";
+						if (strlen($ansrow['answer']) > $maxoptionsize) {$maxoptionsize = strlen($ansrow['answer']);}
+						}
+					if ($ia[6] != "Y")
+						{
+						if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) {$answer .= "\t\t\t\t\t\t<option value=' ' selected>No answer</option>\n";}
+						elseif ($_SESSION[$ia[1]] && !$defexists) {$answer .= "\t\t\t\t\t\t<option value=' '>No answer</option>\n";}
+						}
+					$answer .= "\t\t\t\t\t</select>\n";
+					$answer .= "\t\t\t\t\t</td>\n";
+					$answer .= "\t\t\t\t</tr>\n";
+					$answer .= "\t\t\t\t<tr>\n";
+					$fname2 = $ia[1]."comment";
+					if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
+					$maxoptionsize=$maxoptionsize*0.72;
+					$answer .= "\t\t\t\t\t<td valign='top'>\n";
+					$answer .= "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' rows='$tarows' cols='$maxoptionsize'>";
+					if ($_SESSION[$fname2]) {$answer .= str_replace("\\", "", $_SESSION[$fname2]);}
+					$answer .= "</textarea>\n";
+					$answer .= "\t\t\t\t\t</td>\n";
+					$answer .= "\t\t\t\t</tr>\n";
+					$answer .= "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n";
+					$answer .= "\t\t\t</table>\n";
+					$inputnames[]=$ia[1];
+					$inputnames[]=$ia[1]."comment";
 					}
-				$answer .= "\t\t\t\t\t</td>\n";
-				$fname2 = $ia[1]."comment";
-				if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
-				$answer .= "\t\t\t\t\t<td valign='top'>\n";
-				$answer .= "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' rows='$tarows' cols='30'>".$_SESSION[$fname2]."</textarea>\n";
-				$answer .= "\t\t\t\t\t</td>\n";
-				$answer .= "\t\t\t\t</tr>\n";
-				$answer .= "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n";
-				$answer .= "\t\t\t</table>\n";
-				$inputnames[]=$ia[1];
-				$inputnames[]=$ia[1]."comment";
 				break;
 			case "R": //RANKING STYLE
 				$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY code";
