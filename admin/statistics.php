@@ -167,11 +167,13 @@ foreach ($filters as $flt)
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]'";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
+			$counter2=0;
 			while ($row=mysql_fetch_row($result))
 				{
 				$myfield2 = $myfield."$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
-				
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
+
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
@@ -186,18 +188,22 @@ foreach ($filters as $flt)
 					if ($_POST[$myfield2] == $i) {echo " selected";}
 					echo ">$i</option>\n";
 					}
-				echo "\t\t\t\t</select>\n";
+				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+				$counter2++;
 				}
+			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
 			break;
 		case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]'";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
+			$counter2=0;
 			while ($row=mysql_fetch_row($result))
 				{
 				$myfield2 = $myfield . "$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
 				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
 				echo "<input type='radio' name='summary' value='$myfield2'";
@@ -213,19 +219,22 @@ foreach ($filters as $flt)
 					if ($_POST[$myfield2] == $i) {echo " selected";}
 					echo ">$i</option>\n";
 					}
-				echo "\t\t\t\t</select>\n";
+				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+				$count2++;
 				}
+			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
 			break;
 		case "C": // ARRAY OF YES\No\Uncertain QUESTIONS
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0][]'";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
+			$counter2=0;
 			while ($row=mysql_fetch_row($result))
 				{
 				$myfield2 = $myfield . "$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
-
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
@@ -243,8 +252,10 @@ foreach ($filters as $flt)
 				echo "\t\t\t\t\t<option value='N'";
 				if (is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {echo " selected";}
 				echo ">No</option>\n";
-				echo "\t\t\t\t</select>\n";
+				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+				$counter2++;
 				}
+			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
 			break;
 		case "R": //RANKING
@@ -277,9 +288,10 @@ foreach ($filters as $flt)
 					if (is_array($_POST[$myfield3]) && in_array("$ans[0]", $_POST[$myfield3])) {echo " selected";}
 					echo ">$ans[1]</option>\n";
 					}
-				echo "\t\t\t\t</select>\n";
+				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$counter2++;
 				}
+			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
 			break;
 		default:
