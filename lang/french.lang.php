@@ -80,6 +80,8 @@ define("_MANDATORY_PARTS", "Veuillez Compléter toutes les parties SVP");
 define("_MANDATORY_CHECK", "Veuillez choisir au moins un élément SVP");
 define("_MANDATORY_RANK", "Veuillez classer tous les éléments SVP");
 define("_MANDATORY_POPUP", "Vous n'avez pas répondu à une ou plusieurs questions obligatoires. Vous ne pouvez pas répondre au questionnaire tant que vous n'avez répondu à celles-ci"); //NEW in 0.98rc4
+define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format: AAAA-MM-JJ");
 define("_DATEFORMATEG", "(ex: 2003-12-25 pour Noël)");
 define("_REMOVEITEM", "Enlever cet élément");

@@ -81,6 +81,8 @@ define("_MANDATORY_PARTS", "Du måste fylla i alla delar");
 define("_MANDATORY_CHECK", "Välj minst ett objekt");
 define("_MANDATORY_RANK", "Rangordna alla alternativen");
 define("_MANDATORY_POPUP", "En eller flera obligatoriska frågor har inte besvarats. Du kan inte fortsätta innan de är besvarade"); //NEW in 0.98rc4
+define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format: ÅÅÅÅ-MM-DD");
 define("_DATEFORMATEG", "(tex: 2004-12-24 för Julafton)");
 define("_REMOVEITEM", "Ta bort detta objekt");

@@ -79,6 +79,8 @@ define("_MANDATORY_PARTS", "Kérem töltsön ki mindent");
 define("_MANDATORY_CHECK", "Jelöljön be legalább egy válszt");
 define("_MANDATORY_RANK", "Rangsorolja az összeset");
 define("_MANDATORY_POPUP", "Legalább egy kötelezõen kitöltendõ kérdésre nem válszolt. Addig nem léphet tovább, amíg ezeket nem tölti ki!"); //NEW in 0.98rc4
+define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Dátum formátum: ÉÉÉÉ-HH-NN");
 define("_DATEFORMATEG", "(pl: karácsony napja: 2003-12-25)");
 define("_REMOVEITEM", "E tétel eltávolítása");

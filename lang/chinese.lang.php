@@ -75,6 +75,8 @@ define("_MANDATORY_PARTS", "請回答全部問卷內容");
 define("_MANDATORY_CHECK", "請在項目打鉤");
 define("_MANDATORY_RANK", "請為所有項目排序");
 define("_MANDATORY_POPUP", "尚有部份題目未完成作答，請完成後才繼續填寫問卷靘下的題目"); //NEW in 0.98rc4
+define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "日期格式: YYYY-MM-DD");
 define("_DATEFORMATEG", "(例: 2003-12-25 是聖誕節)");
 define("_REMOVEITEM", "移除本項");

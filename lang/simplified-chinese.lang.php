@@ -76,6 +76,8 @@ define("_MANDATORY_PARTS", "请完成所有部分");
 define("_MANDATORY_CHECK", "请至少选择一项");
 define("_MANDATORY_RANK", "请评价所有项目");
 define("_MANDATORY_POPUP", "部分必答问题尚未回答，完成它们才能继续。"); //NEW in 0.98rc4
+define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "日期格式: YYYY-MM-DD");
 define("_DATEFORMATEG", "(例: 2003年圣诞节是2003-12-25)");
 define("_REMOVEITEM", "删除这一项");

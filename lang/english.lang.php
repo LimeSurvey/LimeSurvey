@@ -74,6 +74,8 @@ define("_MANDATORY_PARTS", "Please complete all parts");
 define("_MANDATORY_CHECK", "Please check at least one item");
 define("_MANDATORY_RANK", "Please rank all items");
 define("_MANDATORY_POPUP", "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"); //NEW in 0.98rc4
+define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format: YYYY-MM-DD");
 define("_DATEFORMATEG", "(eg: 2003-12-25 for Christmas day)");
 define("_REMOVEITEM", "Remove this item");

@@ -78,6 +78,8 @@ define("_MANDATORY_PARTS", "Vennligst fyll ut alle felt");
 define("_MANDATORY_CHECK", "Velg minst et alternativ");
 define("_MANDATORY_RANK", "Vennligst ranger alle elementene");
 define("_MANDATORY_POPUP", "Et eller flere sp&oslash;rsm&aring;l er ikke besvart. Du kan ikke fortsette f&oslash;r disse er besvart."); //NEW in 0.98rc4
+define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format: &Aring;&Aring;&Aring;&Aring-MM-DD");
 define("_DATEFORMATEG", "(f.eks 2003-12-24 for juleaften)");
 define("_REMOVEITEM", "Fjern dette elementet");

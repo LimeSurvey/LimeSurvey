@@ -80,6 +80,8 @@ define("_MANDATORY_PARTS", "Prosimo, odgovorite na vsa vpra¹anja");
 define("_MANDATORY_CHECK", "Prosimo, izberite vsaj eno izmed mo¾nosti");
 define("_MANDATORY_RANK", "Prosimo, rangirajte vse");
 define("_MANDATORY_POPUP", "Niste odgovorili na eno ali veè obveznih vpra¹anj, zato z anketo ne morete nadaljevati!"); //NEW in 0.98rc4
+define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "V obliki: LLLL-MM-DD");
 define("_DATEFORMATEG", "(npr.: 2004-12-25 za Bo¾iè)");
 define("_REMOVEITEM", "Odstrani");
