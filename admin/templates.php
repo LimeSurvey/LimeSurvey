@@ -440,7 +440,7 @@ echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' h
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>"
 	."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='60' height='10' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>"
-	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.gif' align='left'>"
+	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.gif' align='left' hspace='0' border='0'>"
 	."</td><td align='right'>\n"
 	."<img src='./images/close.gif' align='right' border='0' hspace='0' alt='Close Window' onClick='window.close()'>"
 	."<img src='./images/plus.gif' align='right' alt='maximise' border='0' hspace='0'>"
