@@ -179,7 +179,7 @@ if ($_GET['move'] == "clearall")
 	echo "\t<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>\n";
 	echo "\t\t<font face='arial' size='2'>\n";
 	echo "\t\t<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />";
-	echo "<a href='{$_SERVER['PHP_SELF]'}?sid=$sid'>"._RESTART."</a><br />\n";
+	echo "<a href='{$_SERVER['PHP_SELF']}?sid=$sid'>"._RESTART."</a><br />\n";
 	echo "\t\t<a href='javascript: window.close()'>"._CLOSEWIN."</a>\n";
 	echo "\t\t</font>\n";
 	echo "\t</td></tr>\n";
