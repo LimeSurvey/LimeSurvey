@@ -101,15 +101,18 @@ if ($type == "doc")
 	{
 	header("Content-Disposition: attachment; filename=survey.doc");
 	header("Content-type: application/vnd.ms-word");
+	$s="\t";
 	}
 elseif ($type == "xls") 
 	{
 	header("Content-Disposition: attachment; filename=survey.xls");
 	header("Content-type: application/vnd.ms-excel");
+	$s="\t";
 	}
 elseif ($type == "csv") 
 	{
 	header("Content-Disposition: attachment; filename=survey.csv");
+	$s=",";
 	}
 else 
 	{
@@ -125,7 +128,7 @@ header("Pragma: no-cache");                          // HTTP/1.0
 include ("config.php");
 
 //STEP 1: First line is column headings
-$s = "\t";
+//$s = "\t";
 $lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
 $lr = mysql_query($lq);
 $legitqs[] = "DUMMY ENTRY";
@@ -144,20 +147,30 @@ for ($i=0; $i<$fieldcount; $i++)
 	$fieldinfo=mysql_field_name($dresult, $i);
 	if ($fieldinfo == "token")
 		{
-		if ($answers == "short") {$firstline .= "Token$s";}
+		if ($answers == "short") {if ($type == "csv") {$firstline.="\"Token\"$s";} else {$firstline .= "Token$s";}}
 		if ($answers == "long") 
 			{
 			if ($style == "abrev")
-				{$firstline .= "Participant$s";} else {$firstline .= "Participant Name$s";}
+				{
+				if ($type == "csv") {$firstline .= "\"Participant\"$s";}
+				else {$firstline .= "Participant$s";}
+				}
+			else 
+				{
+				if ($type == "csv") {$firstline .= "\"Participant Name\"$s";}
+				else {$firstline .= "Participant Name$s";}
+				}
 			}
 		}
 	elseif ($fieldinfo == "id")
 		{
-		$firstline .= "id$s";
+		if ($type == "csv") {$firstline .= "\"id\"$s";}
+		else {$firstline .= "id$s";}
 		}
 	elseif ($fieldinfo == "datestamp")
 		{
-		$firstline .= "Time Submitted$s";
+		if ($type == "csv") {$firstline .= "\"Time Submitted\"$s";}
+		else {$firstline .= "Time Submitted$s";}
 		}
 	else //A normal question field. Break the fieldname up into constituent parts to find $sid, $gid, and $qid
 		{
@@ -184,8 +197,10 @@ for ($i=0; $i<$fieldcount; $i++)
 			$qname=strip_tags($qname);
 			$firstline = str_replace("\n", "", $firstline);
 			$firstline = str_replace("\r", "", $firstline);
-			$firstline .= "$qname";
+			if ($type == "csv") {$firstline .= "\"$qname";}
+			else {$firstline .= "$qname";}
 			if ($faid) {$firstline .= " [{$faid}]"; $faid="";}
+			if ($type == "csv") {$firstline .= "\"";}
 			$firstline .= "$s";
 			}
 		else
@@ -295,7 +310,14 @@ for ($i=0; $i<$fieldcount; $i++)
 			$fquest = strip_tags($fquest);
 			$fquest = str_replace("\n", " ", $fquest);
 			$fquest = str_replace("\r", "", $fquest);
-			$firstline .= "$fquest $s";
+			if ($type == "csv")
+				{
+				$firstline .="\"$fquest\"$s";
+				}
+			else
+				{
+				$firstline .= "$fquest $s";
+				}
 			}
 		}
 	}
@@ -322,7 +344,14 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 	$dresult = mysql_query($dquery);
 	while ($drow = mysql_fetch_array($dresult, MYSQL_ASSOC))
 		{
-		echo implode($s, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
+		if ($type == "csv")
+			{
+			echo "\"".implode("\"$s\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
+			}
+		else
+			{
+			echo implode($s, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
+			}
 		}
 	}
 
@@ -332,6 +361,7 @@ elseif ($answers == "long")
 	$fieldcount = mysql_num_fields($dresult);
 	while ($drow = mysql_fetch_array($dresult))
 		{
+		set_time_limit(3); //Give each record 3 seconds	
 		for ($i=0; $i<$fieldcount; $i++)
 			{
 			list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
@@ -345,6 +375,7 @@ elseif ($answers == "long")
 			$qr = mysql_query($qq);
 			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 				{$ftype = $qrow['type']; $lid=$qrow['lid'];}
+			if ($type == "csv") {echo "\"";}
 			switch ($ftype)
 				{
 				case "R": //RANKING TYPE
@@ -371,7 +402,7 @@ elseif ($answers == "long")
 						{
 						if ($lrow['code'] == $drow[$i]) {echo $lrow['answer']; $found = "Y";}
 						}
-					if ($found != "Y") {echo str_replace("\r\n", " ", $drow[$i]);}
+					if ($found != "Y") {if ($type == "csv") {echo str_replace("\"", "\"\"", $drow[$i]);} else {echo str_replace("\r\n", " ", $drow[$i]);}}
 					$found = "";
 					break;
 				case "Y": //YES\NO
@@ -462,9 +493,13 @@ elseif ($answers == "long")
 						}
 					else
 						{
-						echo str_replace("\r\n", " ", $drow[$i]);
+						if ($type == "csv")
+						{echo str_replace("\r\n", "\n", str_replace("\"", "\"\"", $drow[$i]));}
+						else
+						{echo str_replace("\r\n", " ", $drow[$i]);}
 						}
 				}
+			if ($type == "csv") {echo "\"";}
 			echo "$s";
 			$ftype = "";
 			}
