@@ -36,11 +36,9 @@
 
 # TOKENS FILE
 
-$sid = $_GET['sid'];
-$action = $_GET['action'];
-$tid = $_GET['tid'];
-$order = $_GET['order'];
-$ok = $_GET['ok'];
+//Create global $action variable
+if ($_GET['action']) {$action = $_GET['action'];}
+if ($_POST['action']) {$action = $_POST['action'];}
 
 include("config.php");
 
@@ -68,10 +66,6 @@ else
 	$sid = $_GET['sid'];
 	if (!$sid) {$sid = $_POST['sid'];}
 	}
-
-//CONVERT POST & GET VARIABLES TO GLOBALS
-if ($_GET['action']) {$action = $_GET['action'];}
-if ($_POST['action']) {$action = $_POST['action'];}
 
 // MAKE SURE THAT THE SURVEY EXISTS
 $chquery = "SELECT * FROM surveys WHERE sid=$sid";
@@ -107,6 +101,7 @@ if (!$tkresult = mysql_query($tkquery))
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>\n";
+		echo htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions");
 		echo "</body>\n</html>";
 		exit;
 		}
@@ -130,6 +125,7 @@ if (!$tkresult = mysql_query($tkquery))
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>\n";
+		echo htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions");
 		echo "</body>\n</html>";
 		exit;
 		
@@ -198,8 +194,8 @@ if ($action == "browse")
 	echo "\t\t<th align='left' colspan='2'>$setfont"."Action</th>\n";
 	echo "\t</tr>\n";
 	$bquery = "SELECT * FROM tokens_$sid";
-	if (!$order) {$bquery .= " ORDER BY tid";}
-	else {$bquery .= " ORDER BY $order";}
+	if (!$_GET['order']) {$bquery .= " ORDER BY tid";}
+	else {$bquery .= " ORDER BY {$_GET['order']}";}
 	$bresult = mysql_query($bquery);
 	while ($brow = mysql_fetch_array($bresult))
 		{
@@ -245,30 +241,30 @@ if ($action == "kill")
 	{
 	$date = date(YmdHi);
 	echo "$setfont<b>Drop/Delete Tokens</b></font><br />\n";
-	if (!$ok)
+	if (!$_GET['ok'])
 		{
 		echo "<span style='display: block; text-align: center; width: 70%; background-color: #DDDDDD'>\n";
 		echo "Deleting this token table will mean that tokens are no longer<br />\n";
 		echo "required for public access to this survey. It will also delete<br />\n";
 		echo "all the existing tokens in this survey. A backup of this table<br />\n";
-		echo "will be made, and called \"old_tokens_$sid_$date\". This can be<br />\n";
+		echo "will be made, and called \"old_tokens_{$_GET['sid']}_$date\". This can be<br />\n";
 		echo "recovered by a systems administrator.<br /><br />\n";
-		echo "<input type='submit' $btstyle value='Delete Tokens' onClick=\"window.open('tokens.php?sid=$sid&action=kill&ok=surething', '_top')\" /><br />\n";
-		echo "<input type='submit' $btstyle value='Cancel' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
+		echo "<input type='submit' $btstyle value='Delete Tokens' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&action=kill&ok=surething', '_top')\" /><br />\n";
+		echo "<input type='submit' $btstyle value='Cancel' onClick=\"window.open('tokens.php?sid={$_GET['sid']}', '_top')\" />\n";
 		echo "</span>\n";
 		}
 	elseif ($_GET['ok'] == "surething")
 		{
-		$oldtable = "tokens_{$sid}";
-		$newtable = "old_tokens_{$sid}_{$date}";
+		$oldtable = "tokens_{$_GET['sid']}";
+		$newtable = "old_tokens_{$_GET['sid']}_{$date}";
 		$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 		$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<br />\n".mysql_error()."<br /><br />\n<a href='$scriptname?sid=$sid'>Admin</a>\n");
 		echo "<span style='display: block; text-align: center; width: 70%; background-color: #DDDDDD'>\n";
 		echo "The tokens table has now been removed and tokens are no longer<br />\n";
 		echo "required for public access to this survey. A backup of this table<br />\n";
-		echo "has been made, and is called \"old_tokens_$sid_$date\". This can be<br />\n";
+		echo "has been made, and is called \"old_tokens_{$_GET['sid']}_$date\". This can be<br />\n";
 		echo "recovered by a systems administrator.<br /><br />\n";
-		echo "<input type='submit' $btstyle value='Finished' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
+		echo "<input type='submit' $btstyle value='Finished' onClick=\"window.open('tokens.php?sid={$_GET['sid']}', '_top')\" />\n";
 		echo "</span>\n";
 		}
 	}	
