@@ -33,19 +33,13 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$sid = $_GET['sid'];
-if (!$sid) {$sid=$_POST['sid'];}
-$gid = $_GET['gid'];
-if (!$gid) {$gid=$_POST['gid'];}
-$qid = $_GET['qid'];
-if (!$qid) {$qid=$_POST['qid'];}
-$code = $_GET['code'];
-if (!$code) {$code=$_POST['code'];}
-$activate = $_GET['action'];
-$ok = $_GET['ok'];
-if (!$ok) {$ok = $_POST['ok'];}
-$user = $_GET['user'];
-if (!$user) {$user = $_POST['user'];}
+$sid = $_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
+$gid = $_GET['gid']; if (!$gid) {$gid=$_POST['gid'];}
+$qid = $_GET['qid']; if (!$qid) {$qid=$_POST['qid'];}
+$code = $_GET['code']; if (!$code) {$code=$_POST['code'];}
+$activate = $_GET['action']; if (!$activate) {$active=$_POST['action'];}
+$ok = $_GET['ok']; if (!$ok) {$ok = $_POST['ok'];}
+$user = $_GET['user']; if (!$user) {$user = $_POST['user'];}
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
