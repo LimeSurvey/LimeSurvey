@@ -46,13 +46,10 @@ if ($action == "insertnewgroup")
 	
 	if ($result)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"New group ($group_name) has been created for survey id $sid\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ($group_name) has been created for survey id $sid\")\n //-->\n</script>\n";
 		$query = "SELECT gid FROM groups WHERE group_name='$group_name' AND sid=$sid";
 		$result = mysql_query($query);
-		while ($res = mysql_fetch_row($result))
-			{
-			$gid = $res['gid'];
-			}
+		while ($res = mysql_fetch_array($result)) {$gid = $res['gid'];}
 		$groupselect = getgrouplist($gid);
 		}
 	else
@@ -77,12 +74,12 @@ elseif ($action == "updategroup")
 	$ugresult = mysql_query($ugquery);
 	if ($ugresult)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n</script>\n";
 		$groupsummary = getgrouplist($gid);
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your group could not be updated!\")\n //-->\n</SCRIPT>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your group could not be updated!\")\n //-->\n</script>\n";
 		}
 
 	}
@@ -93,13 +90,13 @@ elseif ($action == "delgroup")
 	$result = mysql_query($query);
 	if ($result)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Group id($gid) for survey $sid has been deleted!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Group id($gid) for survey $sid has been deleted!\")\n //-->\n</script>\n";
 		$gid = "";
 		$groupselect = getgrouplist($gid);
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Group id($gid) for survey $sid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Group id($gid) for survey $sid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -115,7 +112,7 @@ elseif ($action == "insertnewquestion")
 	$result = mysql_query($query);
 	if ($result)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"New question ($title) has been created for survey id $sid, group id $gid\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"New question ($title) has been created for survey id $sid, group id $gid\")\n //-->\n</script>\n";
 		}
 	
 	}	
@@ -133,11 +130,11 @@ elseif ($action == "updatequestion")
 	$uqresult = mysql_query($uqquery);
 	if ($uqresult)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your Question ($title) has been updated!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Question ($title) has been updated!\")\n //-->\n</script>\n";
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your question could not be updated!\")\n //-->\n</SCRIPT>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your question could not be updated!\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -153,17 +150,17 @@ elseif ($action == "copynewquestion")
 	$result = mysql_query($query);
 	if ($result)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"New question ($title) has been created for survey id $sid, group id $gid\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"New question ($title) has been created for survey id $sid, group id $gid\")\n //-->\n</script>\n";
 		}
 	//echo "COPYANSWERS: $copyanswers, OLDQID: $oldqid";
 	if ($copyanswers == "Y")
 		{
 		$q2 = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
 		$r2 = mysql_query($q2);
-		while ($qr2 = mysql_fetch_row($r2)) {$newqid = $qr2['qid'];}
+		while ($qr2 = mysql_fetch_array($r2)) {$newqid = $qr2['qid'];}
 		$q1 = "SELECT * FROM answers WHERE qid='$oldqid' ORDER BY code";
 		$r1 = mysql_query($q1);
-		while ($qr1 = mysql_fetch_row($r1))
+		while ($qr1 = mysql_fetch_array($r1))
 			{
 			$i1 = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('$newqid', '{$qr1['code']}', '{$qr1['answer']}', '{$qr1['default']}')";
 			$ir1 = mysql_query($i1);
@@ -177,12 +174,12 @@ elseif ($action == "delquestion")
 	$result = mysql_query($query);
 	if ($result)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Question id($qid) has been deleted!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($qid) has been deleted!\")\n //-->\n</script>\n";
 		$qid = "";
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Question id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -196,12 +193,12 @@ elseif ($action == "insertnewanswer")
 	$iaresult = mysql_query ($iaquery);
 	if ($iaresult)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your New Answer has been added!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your New Answer has been added!\")\n //-->\n</script>\n";
 		$surveyselect = getsurveylist();
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created!\")\n //-->\n</SCRIPT>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created!\")\n //-->\n</script>\n";
 		}
 	
 	}
@@ -217,11 +214,11 @@ elseif ($action == "updateanswer")
 	$uaresult = mysql_query($uaquery);
 	if ($uaresult)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your Answer ($qid, $code) has been updated!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Answer ($qid, $code) has been updated!\")\n //-->\n</script>\n";
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated!\")\n //-->\n</SCRIPT>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated!\")\n //-->\n</script>\n";
 		}
 
 	}
@@ -232,12 +229,12 @@ elseif ($action == "delanswer")
 	$result = mysql_query($query);
 	if ($result)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid ($code) has been deleted!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid ($code) has been deleted!\")\n //-->\n</script>\n";
 		$code = "";
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -252,18 +249,15 @@ elseif ($action == "insertnewsurvey")
 	$isresult = mysql_query ($isquery);
 	if ($isresult)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been created!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been created!\")\n //-->\n</script>\n";
 		$isquery = "SELECT sid FROM surveys WHERE short_title like '$short_title' AND description like '$description' AND admin like '$admin'";
 		$isresult = mysql_query($isquery);
-		while ($isr = mysql_fetch_row($isresult))
-			{
-			$sid=$isr[0];
-			}
+		while ($isr = mysql_fetch_array($isresult)) {$sid = $isr['sid'];}
 		$surveyselect = getsurveylist();
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created!\")\n //-->\n</SCRIPT>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created!\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -281,12 +275,12 @@ elseif ($action == "updatesurvey")
 	$usresult = mysql_query($usquery);
 	if ($usresult)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been updated!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been updated!\")\n //-->\n</script>\n";
 		$surveyselect = getsurveylist();
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Your survey could not be updated!\")\n //-->\n</SCRIPT>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be updated!\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -296,13 +290,13 @@ elseif ($action == "delsurvey")
 	$result = mysql_query($query);
 	if ($result)
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) has been deleted!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) has been deleted!\")\n //-->\n</script>\n";
 		$sid = "";
 		$surveyselect = getsurveylist();
 		}
 	else
 		{
-		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
