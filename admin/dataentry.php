@@ -731,6 +731,10 @@ elseif ($action == "edit")
 					echo "\t\t\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>"
 						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
 					break;
+				case "U": //HUGE FREE TEXT
+					echo "\t\t\t<textarea rows='50' cols='70' name='{$fnames[$i][0]}'>"
+ 						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
+ 					break;
 				case "Y": //YES/NO radio-buttons
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
@@ -1562,6 +1566,9 @@ else
 					break;
 				case "T": //LONG FREE TEXT
 					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname'></textarea>\n";
+					break;
+				case "U": //LONG FREE TEXT
+					echo "\t\t\t<textarea cols='50' rows='70' name='$fieldname'></textarea>\n";
 					break;
 				case "Y": //YES/NO radio-buttons
 					echo "\t\t\t<select name='$fieldname'>\n";
