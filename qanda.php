@@ -897,7 +897,7 @@ function do_multiplechoice_withcomments($ia)
 		$answer .= "'>\n";
 		$fn++;
 		$answer .= "\t\t\t\t\t\t\t\t<td>\n"
-				 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname2' value='";
+				 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' id='$myfname2' name='$myfname2' value='";
 		if (isset($_SESSION[$myfname2])) {$answer .= $_SESSION[$myfname2];}
 		$answer .= "' />\n"
 				 . "\t\t\t\t\t\t\t\t</td>\n"
@@ -1330,13 +1330,13 @@ function do_array_flexible($ia)
 			foreach ($labelcode as $ld)
 				{
 				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'>";
-				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld'";
+				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld' id='$myfname-$ld'";
 				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			if ($ia[6] != "Y" && $shownoanswer == 1)
 				{
-				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value=''";
+				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value='' id='$myfname-'";
 				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
@@ -1418,7 +1418,7 @@ function do_array_flexiblecolumns($ia)
 			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$myfname=$ia[1].$ld;
 			$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>";
-			$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."'";
+			$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='$myfname-".$ansrow['code']."'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 			}
