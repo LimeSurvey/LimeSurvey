@@ -42,7 +42,7 @@ $allfields[]=array("surveys", "format", "format char(1) default NULL");
 $allfields[]=array("surveys", "template", "template varchar(100) default 'default'");
 $allfields[]=array("surveys", "url", "url varchar(255) default NULL");
 $allfields[]=array("surveys", "urldescrip", "urldescrip varchar(255) default NULL");
-$allfields[]=array("surveys", "language", "language varchar(50) default 'english'");
+$allfields[]=array("surveys", "language", "language varchar(50) default ''");
 
 
 include("config.php");
