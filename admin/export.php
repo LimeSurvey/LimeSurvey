@@ -97,10 +97,24 @@ if (!$style)
 	exit;
 	}
 
-if ($type == "doc") {header("Content-Disposition: attachment; filename=survey.doc");}
-elseif ($type == "xls") {header("Content-Disposition: attachment; filename=survey.xls");}
-elseif ($type == "csv") {header("Content-Disposition: attachment; filename=survey.csv");}
-else {header("Content-Disposition: attachment; filename=survey.doc");}
+if ($type == "doc") 
+	{
+	header("Content-Disposition: attachment; filename=survey.doc");
+	header("Content-type: application/vnd.ms-word");
+	}
+elseif ($type == "xls") 
+	{
+	header("Content-Disposition: attachment; filename=survey.xls");
+	header("Content-type: application/vnd.ms-excel");
+	}
+elseif ($type == "csv") 
+	{
+	header("Content-Disposition: attachment; filename=survey.csv");
+	}
+else 
+	{
+	header("Content-Disposition: attachment; filename=survey.doc");
+	}
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
                                                      // always modified
@@ -276,6 +290,8 @@ for ($i=0; $i<$fieldcount; $i++)
 						}
 				}
 			$fquest = strip_tags($fquest);
+			$fquest = str_replace("\n", " ", $fquest);
+			$fquest = str_replace("\r", "", $fquest);
 			$firstline .= "$fquest $s";
 			}
 		}
