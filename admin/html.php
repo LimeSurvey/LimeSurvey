@@ -614,7 +614,7 @@ if (returnglobal('viewanswer'))
 		$vasummary .= "\t\t<td align='center'>";
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
-			$vasummary .="<input name='code' type='text' $btstyle value=\"{$cdrow['code']}\" "
+			$vasummary .="<input name='code' type='text' $btstyle value=\"{$cdrow['code']}\" maxlength='5' "
 						."size='5' onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\">";
 			}
 		else
@@ -676,7 +676,7 @@ if (returnglobal('viewanswer'))
 		{
 		$position=sprintf("%05d", $position);
 		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n"
-					. "\t\t<td align='center'><input name='code' type='text' $btstyle size='5' "
+					. "\t\t<td align='center'><input name='code' type='text' $btstyle size='5' maxlength='5' "
 					. "onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\"></td>\n"
 					. "\t\t<td align='center'><input name='answer' type='text' $btstyle size='50'></td>\n"
 					. "\t\t<input name='sortorder' type='hidden' $btstyle value='$position'>\n"
