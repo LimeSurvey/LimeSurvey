@@ -309,13 +309,13 @@ if ($action == "email")
 				echo " of emails that can be sent in one lot ($maxemails). There are still $lefttosend";
 				echo " emails to go. You can continue sending the next $maxemails by clicking on the";
 				echo " button below.<BR>";
-				echo "<INPUT TYPE='SUBMIT' VALUE='Send More'></TD>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='ok' VALUE='absolutely'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='action' VALUE='email'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='from' VALUE='$from'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='subject' VALUE='$subject'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='message' VALUE='$message'>\n";
+				echo "<INPUT TYPE='SUBMIT' VALUE=\"Send More\"></TD>\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='ok' VALUE=\"absolutely\">\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='action' VALUE=\"email\">\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE=\"$sid\">\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='from' VALUE=\"$from\">\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='subject' VALUE=\"$subject\">\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='message' VALUE=\"$message\">\n";
 				echo "</FORM>\n";
 				}
 			}
@@ -358,6 +358,9 @@ if ($action == "remind")
 		echo "\t<tr><td align='right'>\n\t\t$setfont<b>Subject:\n\t</td>\n\t<td>\n";
 		echo "\t\t<input type='text' $slstyle size='50' name='subject' value='Reminder to participate in $surveyname'>\n";
 		echo "\t</td></tr>\n";
+		echo "\t<tr><td align='right' valign='top'>\n\t\t$setfont<b>Start at ID:\n\t</td>\n";
+		echo "\t\t<td><input type='text' $slstyle size='5' name='last_tid'>\n";
+		echo "\t</td></tr>\n";
 		echo "\t<tr><td align='right' valign='top'>\n\t\t$setfont<b>Message:\n\t</td>\n";
 		echo "\t<td>\n\t\t$setfont<b>The following will be added to the top of your message:</b>\n";
 		echo "\t\t\t<table width='500' bgcolor='#EEEEEE' border='1' cellpadding='0' cellspacing='0'>\n\t\t\t\t<tr><td>\n";
@@ -389,7 +392,7 @@ if ($action == "remind")
 		}
 	else
 		{
-		echo "Sending reminder email!";
+		echo "Sending reminder email! (Starting at {$_POST['last_tid']})";
 		$ctquery="SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !=''";
 		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		$ctresult=mysql_query($ctquery);
@@ -408,12 +411,14 @@ if ($action == "remind")
 				{
 				$to=$emrow['email'];
 				$sendmessage = "Dear {$emrow['firstname']},\n\n";
+				//if (get_magic_quotes_gpc()=="0") 
 				$sendmessage .= str_replace("\'", "'", $_POST['message']);
 				$sendmessage .= "\n\n-------------------------------------------\n\n";
 				$sendmessage .= "Click here to do this survey:\n\n";
 				$sendmessage .= "$publicurl/index.php?sid={$_POST['sid']}&token={$emrow['token']}\n\n";
 				//echo "Message:". str_replace("\n", "<BR>", $sendmessage) . "<P>";
 				mail($to, $_POST['subject'], $sendmessage, $headers);
+				//echo "<b>TEST ONLY - NO MAIL</b>";
 				echo "[Reminder Sent to {$emrow['firstname']} {$emrow['lastname']}]({$emrow['tid']}) ";
 				$lasttid=$emrow['tid'];
 				}
@@ -426,13 +431,13 @@ if ($action == "remind")
 				echo " emails to go. You can continue sending the next $maxemails by clicking on the";
 				echo " button below.<br />";
 				echo "<input type='submit' value='Send More'></TD>\n";
-				echo "<input type='hidden' name='ok' value='absolutely'>\n";
-				echo "<input type='hidden' name='action' value='remind'>\n";
-				echo "<input type='hidden' name='sid' value='{$_POST['sid']}'>\n";
-				echo "<input type='hidden' name='from' value='{$_POST['from']}'>\n";
-				echo "<input type='hidden' name='subject' value='{$_POST['subject']}'>\n";
-				echo "<input type='hidden' name='message' value='{$_POST['message']}'>\n";
-				echo "<input type='hidden' name='last_tid' value='$lasttid'>\n";
+				echo "<input type='hidden' name='ok' value=\"absolutely\">\n";
+				echo "<input type='hidden' name='action' value=\"remind\">\n";
+				echo "<input type='hidden' name='sid' value=\"{$_POST['sid']}\">\n";
+				echo "<input type='hidden' name='from' value=\"{$_POST['from']}\">\n";
+				echo "<input type='hidden' name='subject' value=\"{$_POST['subject']}\">\n";
+				echo "<input type='hidden' name='message' value=\"{$_POST['message']}\">\n";
+				echo "<input type='hidden' name='last_tid' value=\"$lasttid\">\n";
 				echo "</form>\n";
 				}
 			}
