@@ -325,7 +325,8 @@ elseif ($action == "all")
 	//NOW LETS SHOW THE DATA
 	if ($_POST['sql'])
 		{
-		$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";
+		if ($_POST['sql'] == "NULL") {$dtquery = "SELECT * FROM $surveytable ORDER BY id";}
+		else {$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
 		}
 	else
 		{
@@ -333,7 +334,7 @@ elseif ($action == "all")
 		}
 	if ($_GET['limit'] && !$_GET['start']) {$dtquery .= " DESC LIMIT {$_GET['limit']}";}
 	if ($_GET['start'] && $_GET['limit']) {$dtquery = "SELECT * FROM $surveytable WHERE id >= {$_GET['start']} AND id <= {$_GET['limit']}";}
-	$dtresult = mysql_query($dtquery);
+	$dtresult = mysql_query($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".mysql_error());
 	$dtcount = mysql_num_rows($dtresult);
 	$cells = $fncount+1;
 

@@ -88,7 +88,10 @@ if (!$style)
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<input type='hidden' name='sid' value='$sid'>\n";
-	if ($_POST['sql']) {echo "\t<input type='hidden' name='sql' value=\"".stripcslashes($_POST['sql'])."\">\n";}
+	if ($_POST['sql']) 
+		{
+		echo "\t<input type='hidden' name='sql' value=\"".stripcslashes($_POST['sql'])."\">\n";
+		}
 	echo "\t</form>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align=\"center\">\n";
@@ -202,7 +205,8 @@ $surveytable = "survey_$sid";
 
 if ($_POST['sql']) //this applies if export has been called from the statistics package
 	{
-	$dquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";
+	if ($_POST['sql'] == "NULL") {$dquery = "SELECT * FROM $surveytable ORDER BY id";}
+	else {$dquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
 	}
 else // this applies for exporting everything
 	{
