@@ -3,34 +3,34 @@
     #############################################################
     # >>> PHP Surveyor                                          #
     #############################################################
-    # > Author:  Jason Cleeland                                    #
-    # > E-mail:  jason@cleeland.org                                #
-    # > Mail:    Box 99, Trades Hall, 54 Victoria St,            #
-    # >          CARLTON SOUTH 3053, AUSTRALIA
-     # > Date:      19 April 2003                                #
-    #                                                            #
+    # > Author:  Jason Cleeland                                 #
+    # > E-mail:  jason@cleeland.org                             #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,           #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                  #
+    # > Date:    19 April 2003                                  #
+    #                                                           #
     # This set of scripts allows you to develop, publish and    #
     # perform data-entry on surveys.                            #
     #############################################################
-    #                                                            #
-    #    Copyright (C) 2003  Jason Cleeland                        #
-    #                                                            #
-    # This program is free software; you can redistribute         #
-    # it and/or modify it under the terms of the GNU General     #
-    # Public License as published by the Free Software             #
-    # Foundation; either version 2 of the License, or (at your     #
+    #                                                           #
+    #    Copyright (C) 2003  Jason Cleeland                     #
+    #                                                           #
+    # This program is free software; you can redistribute       #
+    # it and/or modify it under the terms of the GNU General    #
+    # Public License as published by the Free Software          #
+    # Foundation; either version 2 of the License, or (at your  #
     # option) any later version.                                #
-    #                                                            #
-    # This program is distributed in the hope that it will be     #
-    # useful, but WITHOUT ANY WARRANTY; without even the         #
-    # implied warranty of MERCHANTABILITY or FITNESS FOR A         #
-    # PARTICULAR PURPOSE.  See the GNU General Public License     #
-    # for more details.                                            #
-    #                                                            #
-    # You should have received a copy of the GNU General         #
-    # Public License along with this program; if not, write to     #
+    #                                                           #
+    # This program is distributed in the hope that it will be   #
+    # useful, but WITHOUT ANY WARRANTY; without even the        #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A      #
+    # PARTICULAR PURPOSE.  See the GNU General Public License   #
+    # for more details.                                         #
+    #                                                           #
+    # You should have received a copy of the GNU General        #
+    # Public License along with this program; if not, write to  #
     # the Free Software Foundation, Inc., 59 Temple Place -     #
-    # Suite 330, Boston, MA  02111-1307, USA.                    #
+    # Suite 330, Boston, MA  02111-1307, USA.                   #
     #############################################################    
 */
 
@@ -45,7 +45,7 @@ sendcacheheaders();
 if ($action == "updateset") {updateset($lid);}
 if ($action == "insertset") {$lid=insertset();}
 if ($action == "modanswers") {modanswers($lid);}
-if ($action == "delset") {if (delset($lid)) {unset($lid);}}
+if ($action == "delset") {if (delset($lid)) {$lid=0;}}
 
 echo $htmlheader;
 
@@ -113,7 +113,7 @@ if (count($labelsets)>0)
         }
     }
 echo "\t\t\t\t\t\t<option value=''";
-if (!isset($lid)) {echo " selected";}
+if (!isset($lid) || $lid<1) {echo " selected";}
 echo ">"._AD_CHOOSE."</option>\n";
 
 echo "\t\t\t\t\t</select>\n"
@@ -439,7 +439,7 @@ function modanswers($lid)
     if (!isset($_POST['method'])) {
         $_POST['method'] = _AL_SAVE;
     }
-    switch($_POST['method'])
+	switch($_POST['method'])
         {
         case _AL_ADD:
             if (isset($_POST['code']) && $_POST['code'])
