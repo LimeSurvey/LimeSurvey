@@ -33,10 +33,10 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$sid = $_GET['sid'];
-$action = $_GET['action'];
-$id = $_GET['id'];
-$limit = $_GET['limit'];
+$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
+$action = $_GET['action']; if (!$action) {$action = $_POST['action'];}
+$id = $_GET['id']; if (!$id) {$id = $_POST['id'];}
+$limit = $_GET['limit']; if ($limit) {$limit = $_POST['limit'];}
 
 include("config.php");
 
