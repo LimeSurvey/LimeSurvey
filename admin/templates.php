@@ -593,7 +593,7 @@ echo "\t\t\t\t<table width='100%' border='0'>\n"
 	."\t\t\t\t\t\t</font></font></td>\n"
 	."\t\t\t\t\t\t<td align='center' valign='top'>"
 	."$setfont<b>"._TP_NOWEDITING." <i>$editfile</i></b><font size='1'><br />\n"
-	."<textarea $slstyle3 name='changes' id='changes' cols='110' rows='12' onChange=\"setCursorPos()\" onClick=\"setCursorPos()\">";
+	."<textarea $slstyle3 name='changes' id='changes' cols='110' rows='12'>";
 if ($editfile) {
 	echo filetext($editfile);
 }
