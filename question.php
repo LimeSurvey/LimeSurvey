@@ -51,7 +51,8 @@ if ($_POST['fieldnames'])
 	}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
-if ($_POST['mandatory'])
+if ($allowmandatorybackwards==1 && $_POST['move'] == " << "._PREV." ") {$backok="Y";}
+if ($_POST['mandatory'] && $backok != "Y")
 	{
 	$chkmands=explode("|", $_POST['mandatory']);
 	$mfns=explode("|", $_POST['mandatoryfn']);
@@ -111,7 +112,7 @@ if ($_POST['mandatory'])
 			}
 		}
 	}
-if ($_POST['conmandatory'])
+if ($_POST['conmandatory'] && $backok != "Y")
 	{
 	$chkcmands=explode("|", $_POST['conmandatory']);
 	$cmfns=explode("|", $_POST['conmandatoryfn']);
@@ -666,7 +667,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 					$gid=$gl[0];
 					$groupname=$gl[1];
 					$groupdescription=$gl[2];
-					if ($_POST['lastgroupname'] != $groupname) {$newgroup = "Y";} else {$newgroup == "N";}
+					if ($_POST['lastgroupname'] != $groupname && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
 					}
 				}
 	
