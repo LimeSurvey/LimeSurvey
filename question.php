@@ -64,6 +64,7 @@ if ($_POST['mandatory'])
 				{
 				if ($$multiname == $$multiname2) //The number of questions not answered is equal to the number of questions
 					{
+					//The number of questions not answered is equal to the number of questions
 					if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
 					if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
 					if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
@@ -120,7 +121,7 @@ if ($_POST['conmandatory'])
 		$multiname="MULTI$cmfns[$mi]";
 		if (!$_POST[$multiname])
 			{
-		    $dccm="display$ccm";
+			$dccm="display$ccm";
 			}
 		else
 			{
@@ -141,13 +142,17 @@ if ($_POST['conmandatory'])
 		}
 	if ($_POST[$multiname])
 		{
-	    if (count($notanswered) == count($chkcmands)) //
+		if (count($notanswered) == count($chkcmands)) //
 			{
 			//The number of questions not answered is equal to the number of questions
 			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 		    }
+		else
+			{
+			$mandatorypopup="Y";
+			}
 		}
 	}
 
