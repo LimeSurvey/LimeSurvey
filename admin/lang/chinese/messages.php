@@ -345,6 +345,7 @@ define("_AC_ACTIVATE", "啟用");
 define("_AC_ACTIVATED", "已啟用問卷，回應的問卷資料表已成功建立.");
 define("_AC_NOTACTIVATED", "不能啟用問卷.");
 define("_AC_NOTPRIVATE", "這並非匿名方式的問卷，因此您必須建立操作代碼表.");
+define("_AC_REGISTRATION", "This survey allows public registration. A token table must also be created."); //New for 0.98finalRC1
 define("_AC_CREATETOKENS", "啟動操作代碼");
 define("_AC_SURVEYACTIVE", "本問卷現已啟用，回應的問卷會馬上記錄下來.");
 define("_AC_DEACTIVATE_MESSAGE1", "在已啟用的問卷, 系統會建立資料表來存放全部輸入的資料記錄.");

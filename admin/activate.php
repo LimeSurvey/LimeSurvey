@@ -192,14 +192,20 @@ else
 	$createsurvey = "CREATE TABLE {$dbprefix}survey_{$_GET['sid']} (\n";
 	$createsurvey .= "  id INT(11) NOT NULL auto_increment,\n";
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
-	$pquery = "SELECT private, datestamp FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
+	$pquery = "SELECT private, allowregister, datestamp FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
 		{
+		echo $prow['allowregister'];
 		if ($prow['private'] == "N") 
 			{
 			$createsurvey .= "  token VARCHAR(10),\n";
 			$surveynotprivate="TRUE";
+			}
+		if ($prow['allowregister'] == "Y") 
+			{
+			$surveyallowsregistration="TRUE";
+			echo "G'day";
 			}
 		if ($prow['datestamp'] == "Y")
 			{
@@ -320,7 +326,11 @@ else
 		{
 		echo _AC_NOTPRIVATE."<br /><br />\n";
 		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
-		
+		}
+	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
+		{
+		echo _AC_REGISTRATION."<br /><br />\n";
+		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
 		}
 	else
 		{

@@ -345,6 +345,7 @@ define("_AC_ACTIVATE", "Activate");
 define("_AC_ACTIVATED", "Survey has been activated. Results table has been succesfully created.");
 define("_AC_NOTACTIVATED", "Survey could not be actived.");
 define("_AC_NOTPRIVATE", "This is not an anonymous survey. A token table must also be created.");
+define("_AC_REGISTRATION", "This survey allows public registration. A token table must also be created.");
 define("_AC_CREATETOKENS", "Initialise Tokens");
 define("_AC_SURVEYACTIVE", "This survey is now active, and responses can be recorded.");
 define("_AC_DEACTIVATE_MESSAGE1", "In an active survey, a table is created to store all the data-entry records.");

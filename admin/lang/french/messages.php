@@ -382,6 +382,7 @@ define("_AC_ACTIVATE", "Activer");
 define("_AC_ACTIVATED", "Le Questionnaire a été activé. La table résultat a été crée avec succés.");
 define("_AC_NOTACTIVATED", "Le Questionnaire ne peut pas être activé.");
 define("_AC_NOTPRIVATE", "Ce n'est pas un questionnaire anonyme. Une table Invitation doit donc être crée.");
+define("_AC_REGISTRATION", "This survey allows public registration. A token table must also be created."); //New for 0.98finalRC1
 define("_AC_CREATETOKENS", "Initialiser les Invitations");
 define("_AC_SURVEYACTIVE", "Ce questionnaire est maintenant activé, et les réponses peuvent être enregistrées.");
 define("_AC_DEACTIVATE_MESSAGE1", "Dans un questionnaire activé, une table est crée pour stocker toutes les données saisies enregistrées.");

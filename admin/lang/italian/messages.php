@@ -345,6 +345,7 @@ define("_AC_ACTIVATE", "Attiva");
 define("_AC_ACTIVATED", "L&#039;indagine &egrave; stata attivata. Le tavole dei risultati sono state create.");
 define("_AC_NOTACTIVATED", "Impossibile attivare l&#039;indagine.");
 define("_AC_NOTPRIVATE", "Questa indagine &egrave; anonima. Crea una tavola dei Token.");
+define("_AC_REGISTRATION", "This survey allows public registration. A token table must also be created.");
 define("_AC_CREATETOKENS", "genera token");
 define("_AC_SURVEYACTIVE", "Indagine attiva. Si pu&ograve; procedere con l&#039;inserimento delle domande.");
 define("_AC_DEACTIVATE_MESSAGE1", "Un&#039;indagine attiva contiene un database dove vengono memorizzati tutti i dati.");

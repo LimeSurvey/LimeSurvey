@@ -352,6 +352,7 @@ define("_AC_ACTIVATE", "Activar");
 define("_AC_ACTIVATED", "La encuesta ha sido activada. La tabla de resultados ha sido creada con &eacute;xito.");
 define("_AC_NOTACTIVATED", "La encuesta no pudo ser activada.");
 define("_AC_NOTPRIVATE", "Esta no es una encuesta an&oacute;nima. Se debe crear una tabla de tokens.");
+define("_AC_REGISTRATION", "This survey allows public registration. A token table must also be created.");
 define("_AC_CREATETOKENS", "Inicializar los Tokens");
 define("_AC_SURVEYACTIVE", "La encuesta ha sido activada, y ahora las respuestas pueden ser almacenadas.");
 define("_AC_DEACTIVATE_MESSAGE1", "En una encuesta activa, una tabla es creada para el almacenamiento de las contestaciones.");
