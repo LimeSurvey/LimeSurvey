@@ -124,7 +124,6 @@ if ($action == "id")
 	
 	$fnames[] = array("id", "id", "id");
 	foreach ($fnrows as $fnrow)
-	#while ($fnrow = mysql_fetch_array($fnresult))
 		{
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
@@ -178,7 +177,8 @@ if ($action == "id")
 			{
 			echo "\t<tr>\n";
 			echo "\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>$setfont<b>{$fnames[$i][2]}</b></td>\n";
-			echo "\t\t<td valign='top' style='padding-left: 5px'>$setfont{$idrow[$fnames[$i][0]]}</td>\n";
+			echo "\t\t<td valign='top' style='padding-left: 5px'>$setfont";
+			echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</td>\n";
 			echo "\t</tr>\n";
 			echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 			}
