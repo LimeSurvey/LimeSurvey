@@ -42,9 +42,8 @@
 // 3. questions
 // 4. answers
 
-$sid = $_GET['sid'];
-
 include ("config.php");
+if (!isset($sid)) {$sid=returnglobal('sid');}
 
 //echo $htmlheader;
 if (!$sid)
