@@ -356,6 +356,14 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
 		$vasummary .="\t</form></tr>\n";
 		}
+	$vasummary .= "<tr><form action='admin.php' method='post'><td colspan='3'></td>";
+	$vasummary .= "<td align='center'><input $btstyle type='submit' name='ansaction' value='Fix Sort'></td><td></td>\n";
+	$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+	$vasummary .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+	$vasummary .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+	$vasummary .= "\t<input type='hidden' name='action' value='modanswer'>\n";
+	$vasummary .= "\t<input type='hidden' name='viewanswer' value='Y'>\n";
+	$vasummary .= "</form></tr>\n";
 	$vasummary .= "</table>\n";
 	}
 	
