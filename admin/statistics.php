@@ -132,6 +132,7 @@ foreach ($filters as $flt)
 				."<br />\n"
 				."\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n"
 				."\t\t\t\t\t<textarea $slstyle2 name='$myfield2' rows='3'>".$_POST[$myfield2]."</textarea>";
+			$allfields[]=$myfield2;
 			break;
 		case "S": // Short free text
 			$myfield2="T$myfield";
@@ -140,6 +141,7 @@ foreach ($filters as $flt)
 				."<br />\n"
 				."\t\t\t\t\t<font size='1'>Responses containing:</font><br />\n"
 				."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='".$_POST[$myfield2]."'>";
+			$allfields[]=$myfield2;
 			break;
 		case "N": // Numerical
 			$myfield2="{$myfield}G";
@@ -584,6 +586,19 @@ if ($_POST['summary'])
 				$alist[]=array(_OTHER, _OTHER, $mfield);
 				}
 			}
+		elseif (substr($rt, 0, 1) == "T" || substr($rt, 0, 1) == "S") //Short and long text
+			{
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
+			$nquery = "SELECT title, type, question FROM {$dbprefix}questions WHERE qid='$qqid'";
+			$nresult = mysql_query($nquery) or die("Couldn't get text question<br />$nquery<br />".mysql_error());
+			while ($nrow=mysql_fetch_row($nresult))
+				{
+				$qtitle=$nrow[0]; $qtype=$nrow[1];
+				$qquestion=strip_tags($nrow[2]);
+				}
+			$mfield=substr($rt, 1, strlen($rt));
+			$alist[]=array("Answers", "", $mfield);
+			}
 		elseif (substr($rt, 0, 1) == "R") //RANKING OPTION THEREFORE CONFUSING
 			{
 			$lengthofnumeral=substr($rt, strchr($rt, "-"), 1);
@@ -882,6 +897,10 @@ if ($_POST['summary'])
 						{
 						$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` != ''";
 						}
+					elseif ($qtype == "T" || $qtype == "S")
+						{
+						$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` != ''";
+						}
 					else
 						{
 						$query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` =";
@@ -902,13 +921,14 @@ if ($_POST['summary'])
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
 				echo "\n<!-- ($sql): $query -->\n\n";
-				//echo $qtype;
 				while ($row=mysql_fetch_row($result))
 					{
 					if ($al[0] == "") 
 						{$fname=_NOANSWER;} 
-					elseif ($al[0] == _OTHER)
+					elseif ($al[0] == _OTHER || $al[0] == "Answers")
 						{$fname="$al[1] <input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+					elseif ($qtype == "S" || $qtype == "T")
+						{$fname="$al[1] $qtype<input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
 					else
 						{$fname="$al[1] ($al[0])";}
 					echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont"
