@@ -73,10 +73,12 @@ echo "</script>\n";
 // CHECK IF FIRST USE!
 if (!mysql_selectdb ($databasename, $connect))
 	{
-	echo "<center><b><font color='red'>ERROR: Surveyor database does not exist</font></b><br /><br />\n";
-	echo "It appears that your surveyor script has not yet been set up properly.<br />\n";
-	echo "The first step is to create a MYSQL database name with your chosen default name of $databasename<br />\n";
-	echo "<br /><input type='submit' value='Create $databasename' onClick='location.href=\"createdb.php?dbname=$databasename\"' /></center>\n";
+	echo "<center><b><font color='red'>"._ERROR."<br />\n";
+	echo _ST_NODB1."</font></b><br /><br />\n";
+	echo _ST_NODB2."<br />\n";
+	echo _ST_NODB3."<br />\n";
+	echo _ST_NODB4." $databasename<br />\n";
+	echo "<br /><input type='submit' value='"._ST_CREATEDB."' onClick='location.href=\"createdb.php?dbname=$databasename\"' /></center>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
@@ -102,13 +104,11 @@ if ($action == "deactivate")
 
 if ($action == "importsurvey")
 	{
-	echo "<center><b>Importing Survey</b></center><br /><br />\n";
 	include("importsurvey.php");
 	exit;
 	}
 if ($action == "importquestion")
 	{
-	echo "<center><b>Importing Question</b></center><br /><br />\n";
 	include("importquestion.php");
 	exit;
 	}
