@@ -47,7 +47,10 @@ define ("_DC_QUESTIONSTODELETE", "The following questions should be deleted");
 define ("_DC_ANSWERSTODELETE", "The following answers should be deleted");
 define ("_DC_CONDITIONSTODELETE", "The following conditions should be deleted");
 define ("_DC_GROUPSTODELETE", "The following groups should be deleted");
-
+define ("_DC_ASSESSTODELETE", "The following assessments should be deleted");
+define ("_DC_QATODELETE", "The following question attributes should be deleted");
+define ("_DC_QAOK", "All question_attributes meet consistency standards");
+define ("_DC_ASSESSOK", "All assessments meet consistency standards");
 // THIS FILE CHECKS THE CONSISTENCY OF THE DATABASE, IT LOOKS FOR 
 // STRAY QUESTIONS, ANSWERS, CONDITIONS OR GROUPS AND DELETES THEM
 $ok=returnglobal('ok');
@@ -108,6 +111,74 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		echo "<b>"._DC_CONDITIONSSOK."</b><br />\n";
 		}
 	
+	// Check question_attributes to delete
+	$query = "SELECT * FROM {$dbprefix}question_attributes ORDER BY qid";
+	$result = mysql_query($query) or die(mysql_error());
+	while($row = mysql_fetch_array($result))
+		{
+		$aquery = "SELECT * FROM {$dbprefix}questions WHERE qid = {$row['qid']}";
+		$aresult = mysql_query($aquery) or die(mysql_error());
+		$qacount = mysql_num_rows($aresult);
+		if (!$qacount) {
+		    $qadelete[]=array("qaid"=>$row['qaid'], "attribute"=>$row['attribute'], "reason"=>"No matching qid");
+		}
+		} // while
+	if (isset($qadelete) && $qadelete) {
+	    echo "<b>"._DC_QATODELETE.":</b><br /><font size='1'>\n";
+		foreach ($qadelete as $qad) {echo "QAID `{$qad['qaid']}` ATTRIBUTE `{$qad['attribute']}` because `{$qad['reason']}`<br />\n";}
+		echo "</font><br />\n";
+	}
+	else
+		{
+		echo "<b>"._DC_QAOK."</b><br />\n";
+		}
+
+	// Check assessments
+	$query = "SELECT * FROM {$dbprefix}assessments WHERE scope='T' ORDER BY sid";
+	$result = mysql_query($query) or die ("Couldn't get list of assessments<br />$query<br />".mysql_error());
+	while($row = mysql_fetch_array($result))
+		{
+		$aquery = "SELECT * FROM {$dbprefix}surveys WHERE sid = {$row['sid']}";
+		$aresult = mysql_query($aquery) or die("Oh dear - died in assessments surveys:".$aquery ."<br />".mysql_error());
+		$acount = mysql_num_rows($aresult);
+		if (!$acount) {
+		    $assdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>"No matching survey");
+		}
+		} // while
+
+	$query = "SELECT * FROM {$dbprefix}assessments WHERE scope='G' ORDER BY gid";
+	$result = mysql_query($query) or die ("Couldn't get list of assessments<br />$query<br />".mysql_error());
+	while($row = mysql_fetch_array($result))
+		{
+		$aquery = "SELECT * FROM {$dbprefix}groups WHERE gid = {$row['gid']}";
+		$aresult = mysql_query($aquery) or die("Oh dear - died:".$aquery ."<br />".mysql_error());
+		$acount = mysql_num_rows($aresult);
+		if (!$acount) {
+		    $asgdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>"No matching group");
+		}
+		}
+
+	if (isset($assdelete) && $assdelete) 
+		{
+	    echo "<b>"._DC_ASSESSTODELETE.":</b><br /><font size='1'>\n";
+		foreach ($assdelete as $ass) {echo "ID `{$ass['id']}` ASSESSMENT `{$ass['assessment']}` because `{$ass['reason']}`<br />\n";}
+		echo "</font><br />\n";
+		}
+	else
+		{
+		echo "<b>"._DC_ASSESSOK."</b><br />\n";
+		}
+	if (isset($asgdelete) && $asgdelete) 
+		{
+	    echo "<b>"._DC_ASSESSTODELETE.":</b><br /><font size='1'>\n";
+		foreach ($asgdelete as $asg) {echo "ID `{$asg['id']}` ASSESSMENT `{$asg['assessment']}` because `{$asg['reason']}`<br />\n";}
+		echo "</font><br />\n";
+		}
+	else
+		{
+		echo "<b>"._DC_ASSESSOK."</b><br />\n";
+		}
+		
 	// Check answers
 	$query = "SELECT * FROM {$dbprefix}answers ORDER BY qid";
 	$result = mysql_query($query) or die ("Couldn't get list of answers from database<br />$query<br />".mysql_error());
@@ -181,7 +252,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		echo "<b>"._DC_GROUPSOK."</b><br />\n";
 		}
 //NOW CHECK FOR STRAY SURVEY RESPONSE TABLES AND TOKENS TABLES
-	if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) && !isset($gdelete)) {
+	if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) && !isset($gdelete) && !isset($asgdelete) && !isset($assdelete) && !isset($qadelete)) {
 	    echo "<br />"._DC_NOACTIONREQUIRED;
 	} else {
 		echo "<br />Should we proceed with the delete?<br />\n";
@@ -204,6 +275,21 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		if (isset($gdelete)) {
 			foreach ($gdelete as $gd) {
 				echo "<input type='hidden' name='gdelete[]' value='{$gd['gid']}'>\n";
+			}
+		}
+		if (isset($qadelete)) {
+		    foreach ($qadelete as $qad) {
+				echo "<input type='hidden' name='qadelete[]' value='{$qad['qaid']}'\n";
+			}
+		}
+		if (isset($assdelete)) {
+		    foreach ($assdelete as $ass) {
+				echo "<input type='hidden' name='assdelete[]' value='{$ass['id']}'\n";
+			}
+		}
+		if (isset($asgdelete)) {
+		    foreach ($asgdelete as $asg) {
+				echo "<input type='hidden' name='asgdelete[]' value='{$asg['id']}'\n";
 			}
 		}
 		echo "<input type='hidden' name='ok' value='Y'>\n";
@@ -232,6 +318,34 @@ elseif ($ok == "Y")
 	$adelete=returnglobal('adelete');
 	$qdelete=returnglobal('qdelete');
 	$gdelete=returnglobal('gdelete');
+	$assdelete=returnglobal('assdelete');
+	$asgdelete=returnglobal('asgdelete');
+	$qadelete=returnglobal('qadelete');
+	
+	if (isset($assdelete)) {
+	    echo "Deleting Assessments:<br /><fontsize='1'>\n";
+		foreach ($assdelete as $ass) {
+			echo "Deleting ID:".$ass."<br />\n";
+			$sql = "DELETE FROM {$dbprefix}assessments WHERE id=$ass";
+			$result = mysql_query($sql) or die ("Couldn't delete ($sql)<br />".mysql_error());
+		}
+	}
+	if (isset($asgdelete)) {
+	    echo "Deleting Assessments:<br /><fontsize='1'>\n";
+		foreach ($asgdelete as $asg) {
+			echo "Deleting ID:".$asg."<br />\n";
+			$sql = "DELETE FROM {$dbprefix}assessments WHERE id=$asg";
+			$result = mysql_query($sql) or die ("Couldn't delete ($sql)<br />".mysql_error());
+		}
+	}
+	if (isset($qadelete)) {
+	    echo "Deleting Question_Attributes:<br /><fontsize='1'>\n";
+		foreach ($qadelete as $qad) {
+			echo "Deleting QAID:".$qad."<br />\n";
+			$sql = "DELETE FROM {$dbprefix}question_attributes WHERE qaid=$qad";
+			$result = mysql_query($sql) or die ("Couldn't delete ($sql)<br />".mysql_error());
+		}
+	}
 	if (isset($cdelete)) {
 	    echo "Deleting Conditions:<br /><font size='1'>\n";
 		foreach ($cdelete as $cd) {
