@@ -463,6 +463,9 @@ define("_IQ_WRONGFILE", "This file is not a PHPSurveyor question file. Import fa
 define("_IQ_IMPORTSUMMARY", "Question Import Summary");
 define("_IQ_SUCCESS", "Import of Question is completed");
 
+//IMPORT LABELSET MESSAGES
+define("_IL_DUPLICATE", "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.");
+
 //BROWSE RESPONSES MESSAGES
 define("_BR_NOSID", "You have not selected a survey to browse.");
 define("_BR_NOTACTIVATED", "This survey has not been activated. There are no results to browse.");

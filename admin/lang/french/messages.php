@@ -500,6 +500,9 @@ define("_IQ_WRONGFILE", "Ce fichier n'est pas un fichier de question PHPSurveyor
 define("_IQ_IMPORTSUMMARY", "Sommaire de l'importation de question");
 define("_IQ_SUCCESS", "L'importation de Question est terminée");
 
+//IMPORT LABELSET MESSAGES
+define("_IL_DUPLICATE", "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.");
+
 //BROWSE RESPONSES MESSAGES
 define("_BR_NOSID", "Vous n'avez pas Sélectionné de questionnaire à parcourir.");
 define("_BR_NOTACTIVATED", "Ce questionnaire n'a pas été activé. Aucun résultats à parcourir.");

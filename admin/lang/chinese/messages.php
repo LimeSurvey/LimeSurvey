@@ -463,6 +463,9 @@ define("_IQ_WRONGFILE", "本檔案並非 PHPSurveyor 的題目檔，因此無法輸入.");
 define("_IQ_IMPORTSUMMARY", "輸入題目的簡報");
 define("_IQ_SUCCESS", "題目的輸入已完成");
 
+//IMPORT LABELSET MESSAGES
+define("_IL_DUPLICATE", "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.");
+
 //BROWSE RESPONSES MESSAGES
 define("_BR_NOSID", "您尚未選擇問卷，以致無法瀏覽問卷內容.");
 define("_BR_NOTACTIVATED", "本問卷尚未被啟用, 因此無法瀏覽回應結果.");

@@ -470,6 +470,9 @@ define("_IQ_WRONGFILE", "Este archivo no es un archivo de pregunta PHPSurveypr v
 define("_IQ_IMPORTSUMMARY", "Resumen de la Importaci&oacute;n de la Pregunta");
 define("_IQ_SUCCESS", "Se complet&oacute; con &eacute;xito la importaci&oacute;n de la pregunta");
 
+//IMPORT LABELSET MESSAGES
+define("_IL_DUPLICATE", "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.");
+
 //BROWSE RESPONSES MESSAGES
 define("_BR_NOSID", "No has elegido una encuesta para navegar.");
 define("_BR_NOTACTIVATED", "Esta encuesta no ha sido activada. No hay resultados que navegar.");
