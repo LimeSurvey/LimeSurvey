@@ -1,53 +1,51 @@
 <?php
 /*
-	#############################################################
-	# >>> PHP Surveyor  										#
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA					#
-	# > Date: 	 20 February 2003								#
-	#															#
+	#################################################################
+	# >>> PHP Surveyor  						#
+	#################################################################
+	# > Author:  Jason Cleeland					#
+	# > E-mail:  jason@cleeland.org					#
+	# > Mail:    Box 99, Trades Hall, 54 Victoria St,		#
+	# >          CARLTON SOUTH 3053, AUSTRALIA			#
+	# > Date: 	 20 February 2003				#
+	#								#
 	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
+	# perform data-entry on surveys.				#
+	#################################################################
+	#	Copyright (C) 2003  Jason Cleeland			#
+	#								#
 	# This program is free software; you can redistribute 		#
 	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
+	# Public License as published by the Free Software 		#
 	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
+	# option) any later version.					#
+	#								#
 	# This program is distributed in the hope that it will be 	#
 	# useful, but WITHOUT ANY WARRANTY; without even the 		#
 	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
 	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
+	# for more details.						#
+	#								#
 	# You should have received a copy of the GNU General 		#
 	# Public License along with this program; if not, write to 	#
 	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################
-	#															#
+	# Suite 330, Boston, MA  02111-1307, USA.			#
+	#################################################################
 	# This language file kindly provided by François Tissandier	#
-	# and corrected by Pascal Bastien 20/07/2004                #
-	# Version 1.2                                               #
-	#															#
-	#############################################################
+	# and corrected by Pascal Bastien 20/07/2004			#
+	# Version 1.3							#
+	#								#
+	#################################################################
 */
 //SINGLE WORDS
 define("_YES", "Oui");
 define("_NO", "Non");
-define("_UNCERTAIN", "Je ne sais pas");
+define("_UNCERTAIN", "Indifférent");
 define("_ADMIN", "Administrateur");
 define("_TOKENS", "Invitations");
 define("_FEMALE", "Femme");
 define("_MALE", "Homme");
-define("_NOANSWER", "Sans réponser");
+define("_NOANSWER", "Sans réponse");
 define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Autre");
 define("_PLEASECHOOSE", "Veuillez choisir");
@@ -56,7 +54,6 @@ define("_COMPLETE", "Terminé");
 define("_INCREASE", "Augmenter"); //NEW WITH 0.98
 define("_SAME", "Sans Changement"); //NEW WITH 0.98
 define("_DECREASE", "Diminuer"); //NEW WITH 0.98
-define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Confirmation");
 define("_TOKEN_PS", "Invitation");
@@ -64,9 +61,9 @@ define("_CONTINUE_PS", "Continuer");
 
 //BUTTONS
 define("_ACCEPT", "Accepter");
-define("_PREV", "précedant");
+define("_PREV", "précédent");
 define("_NEXT", "suivant");
-define("_LAST", "dernier");
+define("_LAST", "fin");
 define("_SUBMIT", "envoyer");
 
 
@@ -81,8 +78,6 @@ define("_MANDATORY_PARTS", "Veuillez Compléter toutes les parties SVP");
 define("_MANDATORY_CHECK", "Veuillez choisir au moins un élément SVP");
 define("_MANDATORY_RANK", "Veuillez classer tous les éléments SVP");
 define("_MANDATORY_POPUP", "Vous n'avez pas répondu à une ou plusieurs questions obligatoires. Vous ne pouvez pas répondre au questionnaire tant que vous n'avez répondu à celles-ci"); //NEW in 0.98rc4
-define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
-define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format: AAAA-MM-JJ");
 define("_DATEFORMATEG", "(ex: 2003-12-25 pour Noël)");
 define("_REMOVEITEM", "Enlever cet élément");
@@ -100,7 +95,6 @@ define("_ANSCLEAR", "Réponses effacées");
 define("_RESTART", "Recommencer ce sondage");
 define("_CLOSEWIN_PS", "Fermer cette fenêtre");
 define("_CONFIRMCLEAR", "Etes-vous sûr de vouloir effacer toutes les réponses?");
-define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
 define("_EXITCLEAR", "Sortir et effacer le questionnaire");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Impossible d'envoyer les Réponses car il n'y en a aucune (vides).");
@@ -131,14 +125,13 @@ define("_SURVEYEXPIRED", "Ce questionnaire n'est plus disponible."); //NEW for 0
 define("_SURVEYCOMPLETE", "Vous avez déjà completé ce questionnaire.");
 
 define("_INSTRUCTION_LIST", "Veuillez sélectionner seulement une réponse ci-dessous"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Cochez le (ou les) réponses"); //NEW for 098rc3
-
+define("_INSTRUCTION_MULTI", "Cochez la (ou les) réponse(s)"); //NEW for 098rc3
 define("_CONFIRMATION_MESSAGE1", "Questionnaire envoyé"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Une nouvelle réponse a été saisie dans votre questionnaire"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Cliquez sur le lien suivant pour voir votre réponse personnelle:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Visualiser les Statistiques cliquant ici:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>Note sur la vie privée</i></b><br />"
+define("_PRIVACY_MESSAGE", "<b><i>Note sur la protection de la vie privée</i></b><br />"
 						  ."Ce questionnaire est anonyme.<br />"
 						  ."Les enregistrements conservés de votre questionnaire ne contiennent aucune "
 						  ."information d'identification à moins bien sûr qu'un question  "
@@ -167,74 +160,4 @@ define ("_RG_REGISTRATIONCOMPLETE", "Merci de vous enregistre pour participer à 
 								   ."Un email a été envoyé à l'adresse que vous avez fournie dans les détails d'accés "
 								   ."pour ce questionnaire. Veuillez suivre ce lien dans cet email pour participer.<br /><br />\n"
 								   ."Administrateur du questionnaire {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
-
-define("_SM_COMPLETED", "<b>Thank You<br /><br />"
-					   ."You have completed answering the questions in this survey.</b><br /><br />"
-					   ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
-define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
-					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
-					."through your responses."); //New for 0.98finalRC1
-
-//For the "printable" survey
-define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following:"); //New for 0.98finalRC1
-define("_PS_WRITE", "Please write your answer here:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment:"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "Please choose the appropriate response for each item:"); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Please write your answer(s) here:"); //New for 0.98finalRC1
-define("_PS_DATE", "Please enter a date:"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Make a comment on your choice here:"); //New for 0.98finalRC1
-define("_PS_RANKING", "Please number each box in order of preference from 1 to"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Submit Your Survey."); //New for 0.98finalRC1
-define("_PS_THANKYOU", "Thank you for completing this survey."); //New for 0.98finalRC1
-define("_PS_FAXTO", "Please fax your completed survey to:"); //New for 0.98finaclRC1
-
-define("_PS_CON_ONLYANSWER", "Only answer this question"); //New for 0.98finalRC1
-define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
-define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
-define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
-define("_PS_CON_OR", "or"); //New for 0.98finalRC2
-
-//Save Messages
-define("_SAVE_AND_RETURN", "Save your responses so far");
-define("_SAVEHEADING", "Save Your Unfinished Survey");
-define("_RETURNTOSURVEY", "Return To Survey");
-define("_SAVENAME", "Name");
-define("_SAVEPASSWORD", "Password");
-define("_SAVEPASSWORDRPT", "Repeat Password");
-define("_SAVE_EMAIL", "Your Email");
-define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
-				  ."Your survey will be saved using that name and password, and can be "
-				  ."completed later by logging in with the same name and password.<br /><br />\n"
-				  ."If you give an email address, an email containing the details will be sent "
-				  ."to you.");
-define("_SAVESUBMIT", "Save Now");
-define("_SAVENONAME", "You must supply a name for this saved session.");
-define("_SAVENOPASS", "You must supply a password for this saved session.");
-define("_SAVENOMATCH", "Your passwords do not match.");
-define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
-define("_SAVETRYAGAIN", "Please try again.");
-define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
-define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
-						 ."a survey in progress. The following details can be used "
-						 ."to return to this survey and continue where you left "
-						 ."off.");
-define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
-define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
-define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
-define("_SAVE_EMAILSENT", "An email has been sent with details about your saved survey.");
-
-//Load Messages
-define("_LOAD_SAVED", "Load unfinished survey");
-define("_LOADHEADING", "Load A Previously Saved Survey");
-define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
-			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
-define("_LOADNAME", "Saved name");
-define("_LOADPASSWORD", "Password");
-define("_LOADSUBMIT", "Load Now");
-define("_LOADNONAME", "You did not provide a name");
-define("_LOADNOPASS", "You did not provide a password");
-define("_LOADNOMATCH", "There is no matching saved survey");
-
-define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>

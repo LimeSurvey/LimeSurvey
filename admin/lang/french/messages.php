@@ -1,5 +1,42 @@
 <?php
-
+/*
+	#################################################################
+	# >>> PHP Surveyor  						#
+	#################################################################
+	# > Author:  Jason Cleeland					#
+	# > E-mail:  jason@cleeland.org					#
+	# > Mail:    Box 99, Trades Hall, 54 Victoria St,		#
+	# >          CARLTON SOUTH 3053, AUSTRALIA			#
+	# > Date: 	 20 February 2003				#
+	#								#
+	# This set of scripts allows you to develop, publish and	#
+	# perform data-entry on surveys.				#
+	#################################################################
+	#	Copyright (C) 2003  Jason Cleeland			#
+	#								#
+	# This program is free software; you can redistribute 		#
+	# it and/or modify it under the terms of the GNU General 	#
+	# Public License as published by the Free Software 		#
+	# Foundation; either version 2 of the License, or (at your 	#
+	# option) any later version.					#
+	#								#
+	# This program is distributed in the hope that it will be 	#
+	# useful, but WITHOUT ANY WARRANTY; without even the 		#
+	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
+	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
+	# for more details.						#
+	#								#
+	# You should have received a copy of the GNU General 		#
+	# Public License along with this program; if not, write to 	#
+	# the Free Software Foundation, Inc., 59 Temple Place - 	#
+	# Suite 330, Boston, MA  02111-1307, USA.			#
+	#################################################################
+	#								#
+	# This language file provided by Pascal BASTIEN 20/07/2004	#
+	# Version 1.4.1							#
+	#								#
+	#################################################################
+*/
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Administration");
@@ -19,11 +56,11 @@ define("_SETUP", "Paramètres de PHPSurveyor");
 define("_DELETESURVEY", "Supprimer le Questionnaire");
 define("_EXPORTQUESTION", "Exporter la Question");
 define("_EXPORTSURVEY", "Exporter le Questionnaire");
-define("_EXPORTLABEL", "Exporter le jeu d'Etiquettes");
+define("_EXPORTLABEL", "Exporter le jeu d Etiquettes");
 define("_IMPORTQUESTION", "Importer la Question");
 define("_IMPORTGROUP", "Importer le Groupe"); //New for 0.98rc5
 define("_IMPORTSURVEY", "Importer le Questionnaire");
-define("_IMPORTLABEL", "Importer le jeu d'Etiquette");
+define("_IMPORTLABEL", "Importer jeu Etiquette");
 define("_EXPORTRESULTS", "Exporter les réponses");
 define("_BROWSERESPONSES", "Parcourir les réponses");
 define("_BROWSESAVED", "Browse Saved Responses");
@@ -99,13 +136,13 @@ define("_Q_DELETE_BT", "Supprimer la Question en Cours");
 define("_Q_EXPORT_BT", "Exporter cette Question");
 define("_Q_CONDITIONS_BT", "Affecter des Conditions pour Cette Question");
 define("_Q_ANSWERS_BT", "Editer/Ajouter des Réponses pour cette Question");
-define("_Q_LABELS_BT", "Edit./Aj. jeux Etiquette");
+define("_Q_LABELS_BT", "Editer/Ajouter jeux d Etiquette");
 define("_Q_MINIMISE_BT", "Masquer les Détails de cette Question");
 define("_Q_MAXIMISE_BT", "Afficher les Détails de cette Question");
 define("_Q_CLOSE_BT", "Fermer cette Question");
 //Browse Button Bar
-define("_B_ADMIN_BT", "Retourner à l'Administration du Questionnaire");
-define("_B_SUMMARY_BT", "Montrer l'Information du Sommaire");
+define("_B_ADMIN_BT", "Retourner à l Ecran d Administration du Questionnaire");
+define("_B_SUMMARY_BT", "Montrer Info Résumé");
 define("_B_ALL_BT", "Afficher les Réponses");
 define("_B_LAST_BT", "Afficher les 50 dernières Réponses");
 define("_B_STATISTICS_BT", "Donner les Statistiques de ces Réponses");
@@ -114,35 +151,35 @@ define("_B_BACKUP_BT", "Sauvegarder vers un fichier SQL la Table de Résultats");
 //Tokens Button Bar
 define("_T_ALL_BT", "Afficher les Invitations");
 define("_T_ADD_BT", "Ajouter une nouvelle entrée/Invitation");
-define("_T_IMPORT_BT", "Importer des Invitations à partir d'un Fichier CSV");
+define("_T_IMPORT_BT", "Importer Invitations à partir d un fichier CSV");
 define("_T_EXPORT_BT", "Exporter des Invitations vers un Fichier CSV"); //New for 0.98rc7
 define("_T_INVITE_BT", "Envoyer une invitation par Email");
 define("_T_REMIND_BT", "Envoyer un rappel par EMail");
 define("_T_TOKENIFY_BT", "Générer des Invitations");
 define("_T_KILL_BT", "Effacer la table des Invitations");
 //Labels Button Bar
-define("_L_ADDSET_BT", "Ajouter un Nouveau jeu d'Etiquette");
-define("_L_EDIT_BT", "Editer un jeu d'Etiquette");
-define("_L_DEL_BT", "Supprimer un Jeu d'Etiquette");
+define("_L_ADDSET_BT", "Aj. Nouveau jeu Etiquette");
+define("_L_EDIT_BT", "Editer un jeu d Etiquette");
+define("_L_DEL_BT", "Supprimer un Jeu d Etiquette");
 //Datacontrols
-define("_D_BEGIN", "Montrer le Début..");
-define("_D_BACK", "Montrer le Précédant..");
-define("_D_FORWARD", "Montrer le Suivant..");
-define("_D_END", "Montrer la Fin..");
+define("_D_BEGIN", "Montrer Début..");
+define("_D_BACK", "Montrer Précédant..");
+define("_D_FORWARD", "Montrer Suivant..");
+define("_D_END", "Montrer Fin..");
 
 //DATA LABELS
 //surveys
 define("_SL_TITLE", "Titre:");
 define("_SL_SURVEYURL", "URL du Questionnaire:"); //new in 0.98rc5
 define("_SL_DESCRIPTION", "Description:");
-define("_SL_WELCOME", "Bienvenue:");
+define("_SL_WELCOME", "Message de Bienvenue:");
 define("_SL_ADMIN", "Administrateur:");
 define("_SL_EMAIL", "Email de l'Administrateur:");
 define("_SL_FAXTO", "Fax à:");
 define("_SL_ANONYMOUS", "Anonyme?");
 define("_SL_EXPIRES", "Expire:");
 define("_SL_FORMAT", "Format:");
-define("_SL_DATESTAMP", "Date Stamp?");
+define("_SL_DATESTAMP", "Réponses datées");
 define("_SL_TEMPLATE", "Modèle:");
 define("_SL_LANGUAGE", "Langue:");
 define("_SL_LINK", "Lien:");
@@ -153,7 +190,7 @@ define("_SL_SELSQL", "Sélectionner un fichier SQL:");
 define("_SL_USECOOKIES", "Utiliser des Cookies?"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Notification:"); //New with 098rc5
 define("_SL_ALLOWREGISTER", "Permettre l'enregistrement publique?"); //New with 0.98rc9
-define("_SL_ATTRIBUTENAMES", "Noms Attribué àl'Invitation:"); //New with 0.98rc9
+define("_SL_ATTRIBUTENAMES", "Noms Attribué à l'Invitation:"); //New with 0.98rc9
 define("_SL_EMAILINVITE_SUBJ", "Invitation Email Subject:"); //New with 0.99dev01
 define("_SL_EMAILINVITE", "Invitation par Email:"); //New with 0.98rc9
 define("_SL_EMAILREMIND_SUBJ", "Email Reminder Subject:"); //New with 0.99dev01
@@ -230,7 +267,7 @@ define("_LL_ACTION", "Action"); //New with 098rc3
 define("_5PT", "Alignement de 5 Boutons Radio");
 define("_DATE", "Date");
 define("_GENDER", "Genre");
-define("_LIST", "Liste (Radio)"); //Changed with 0.99dev01
+define("_LIST", "Liste (Bouton Radio)");
 define("_LIST_DROPDOWN", "Liste (Dropdown)"); //New with 0.99dev01
 define("_LISTWC", "Liste déroulante avec Commentaire");
 define("_MULTO", "Case à Cocher");
@@ -239,12 +276,12 @@ define("_MULTITEXT", "Zones de Texte Court");
 define("_NUMERICAL", "Entrée Numérique");
 define("_RANK", "Classement");
 define("_STEXT", "Texte Libre Court");
-define("_LTEXT", "Texte Libre Long");
+define("_LTEXT", "Zone de commentaires");
 define("_HTEXT", "Huge free text"); //New with 0.99dev01
 define("_YESNO", "Oui/Non");
 define("_ARR5", "Ligne de 5 Boutons Radio");
 define("_ARR10", "Ligne de 10 Boutons Radio");
-define("_ARRYN", "Ligne (Oui/Non/Incertain)");
+define("_ARRYN", "Ligne (Oui/Non/Indifférent)");
 define("_ARRMV", "Ligne (Augmenter, Sans changement, Diminuer)");
 define("_ARRFL", "Ligne de Bouton Radio (Etiquettes Personnalisées)"); //Release 0.98rc3
 define("_ARRFLC", "Ligne de Bouton Radio (Etiquettes Personnalisées en colonne"); //Release 0.98rc8
@@ -272,7 +309,7 @@ define("_ADDU", "Ajouter un utilisateurr");
 define("_SEARCH", "Chercher"); //New in 0.98rc4
 define("_SAVE", "Sauver les Modifications");
 define("_NONE", "Rien"); //as in "Do not display anything", "or none chosen";
-define("_GO_ADMIN", "Ecran Principal d'Admin"); //text to display to return/display main administration screen
+define("_GO_ADMIN", "Ecran Principal d Administration"); //text to display to return/display main administration screen
 define("_CONTINUE", "Continuer");
 define("_WARNING", "Avertissement");
 define("_USERNAME", "Nom d'Utilisateur");
@@ -280,7 +317,7 @@ define("_PASSWORD", "Mot de Passe");
 define("_DELETE", "Supprimer");
 define("_CLOSEWIN", "Fermer la Fenêtre");
 define("_TOKEN", "Invitation");
-define("_DATESTAMP", "Date de Réponse"); //Referring to the datestamp or time response submitted
+define("_DATESTAMP", "Délai de Réponse"); //Referring to the datestamp or time response submitted
 define("_COMMENT", "Commentaire");
 define("_FROM", "De"); //For emails
 define("_SUBJECT", "Objet"); //For emails
@@ -299,7 +336,7 @@ define("_SS_NOGROUPS", "Nombre de Groupes dans le Questionnaire:"); //NEW for re
 define("_SS_NOQUESTS", "Nombre de Questions dans le Questionnaire:"); //NEW for release 0.98rc3
 define("_SS_ANONYMOUS", "Ce Questionnaire est Anonyme."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Ce questionnaire n'EST PAS anonyme."); //NEW for release 0.98rc3
-define("_SS_DATESTAMPED", "Les Réponses auront une date de Cloture"); //NEW for release 0.98rc3
+define("_SS_DATESTAMPED", "Les Réponses seront datées"); //NEW for release 0.98rc3
 define("_SS_COOKIES", "Utilisation des Cookies pour le Contrôle d'Accées."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Présentation: une question par Page."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Présentation: un Groupe de Questions par Page."); //NEW for release 0.98rc3
@@ -370,8 +407,8 @@ define("_AC_REGISTRATION", "This survey allows public registration. A token tabl
 define("_AC_CREATETOKENS", "Initialiser les Invitations");
 define("_AC_SURVEYACTIVE", "Ce questionnaire est maintenant activé, et les réponses peuvent être enregistrées.");
 define("_AC_DEACTIVATE_MESSAGE1", "Dans un questionnaire activé, une table est crée pour stocker toutes les données saisies enregistrées.");
-define("_AC_DEACTIVATE_MESSAGE2", "Lorsque vous désactiver un questionnaire toute les données saisie dans la table original seront déplacée ailleurs, et lorsque vous réactivez le questionnaire la table est vide. Vous ne pourrez plus accéder à ces données avec PHPSurveyor.");
-define("_AC_DEACTIVATE_MESSAGE3", "Seul un administrateur systéme peut accéder aux données d'un questionnaire désactivé en utilisant un gestionnaire de bases MySQL comme phpmyadmin. Si votre questionnaire utilise des Invitations, cette table sera également renommée et seul un administrateur systéme y aura accés.");
+define("_AC_DEACTIVATE_MESSAGE2", "Lorsque vous désactivez un questionnaire, toutes les données saisies dans la table original seront déplacées ailleurs, ainsi lorsque vous réactiverez le questionnaire la table sera vide. Vous ne pourrez plus accéder à ces données avec PHPSurveyor.");
+define("_AC_DEACTIVATE_MESSAGE3", "Seul un administrateur systéme peut accéder aux données d'un questionnaire désactivé en utilisant un gestionnaire de bases de données MySQL tel que phpmyadmin par exemple. Si votre questionnaire utilise des Invitations, cette table sera également renommée et seul un administrateur systéme y aura accés.");
 define("_AC_DEACTIVATE_MESSAGE4", "Votre table de réponse sera renommée en:");
 define("_AC_DEACTIVATE_MESSAGE5", "Vous devriez exporter vos réponses avant de désactiver. Cliquer \"Annuler\" pour retourner à l'écran principal d'administration sans désactiver ce questionnaire.");
 define("_AC_DEACTIVATE", "Désactiver");
@@ -601,7 +638,7 @@ define("_TC_SENDINGREMINDERS", "Envoi Rappels");
 define("_TC_EMAILSTOGO", "Il y a plus d'email en suspens qui peuvent être envoyés en groupe (batch).  Continuez d'envoyer des email en cliquant ci-dessous.");
 define("_TC_EMAILSREMAINING", "Il y a encore {EMAILCOUNT} à envoyer."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
 define("_TC_SENDREMIND", "Envoyer Rappels");
-define("_TC_INVITESENTTO", "Invitation envoyé à:"); //is followed by token name
+define("_TC_INVITESENTTO", "Invitation envoyée à:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Rappel envoyé à:"); //is followed by token name
 define("_TC_UPDATEDB", "Mettre à jour la table d'invitation (Tokens) avec des nouveaux champs"); //New for 0.98rc7
 define("_TC_EMAILINVITE_SUBJ", "Invitation to participate in survey"); //New for 0.99dev01
@@ -613,8 +650,8 @@ define("_TC_EMAILINVITE", "{FIRSTNAME},\n\nVous avez été invité à participer à u
 						 ."Cliquer ici pour faire le questionnaire:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - Email d'Invitation par défaut
 define("_TC_EMAILREMIND_SUBJ", "Reminder to participate in survey"); //New for 0.99dev01
-define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez été inviter à participer à un questionnaire récemment.\n\n"
-						 ."Nous avons pris en compte que vous n'avez pas encore completé le questionnaire, et nous vous rappelons que celui-ci est toujours disponible si vous souhaitez participer.\n\n"
+define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez été invité à participer à un questionnaire récemment.\n\n"
+						 ."Nous avons pris en compte que vous n avez pas encore completé le questionnaire, et nous vous rappelons que celui-ci est toujours disponible si vous souhaitez participer.\n\n"
 						 ."Le questionnaire est intitulé:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
 						 ."Pour participer, veuillez cliquer sur le lien ci-dessous.\n\nCordialement,\n\n"
 						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
@@ -622,18 +659,18 @@ define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez été inviter à participer à 
 						 ."Cliquez ici pour faire le questionnaire:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - Email de rappel par defaut
 define("_TC_EMAILREGISTER_SUBJ", "Survey Registration Confirmation"); //New for 0.99dev01
-define("_TC_EMAILREGISTER", "Dear {FIRSTNAME},\n\n"
-						  ."Vous (ou quelqu'un utilisant votre adresse email) êtes enregistrés pour "
-						  ."participer à un questionnaire en ligne intitulé {SURVEYNAME}.\n\n"
-						  ."Pour compléter ce questionnaire, cliquez sur l'URL suivante:\n\n"
+define("_TC_EMAILREGISTER", "{FIRSTNAME},\n\n"
+						  ."Vous (ou quelqu un utilisant votre adresse email) êtes enregistrés pour "
+						  ."participer à un questionnaire en ligne intitulé:\n\"{SURVEYNAME}\"\n\n"
+						  ."Pour compléter ce questionnaire, cliquez sur le lien suivant:\n\n"
 						  ."{SURVEYURL}\n\n"
 						  ."Quel que soit votre question à propos de ce questionnaire, ou si vous "
-						  ."n'avez pas été enregistré pour participer à celui-ci et croyez qu'il s'agit "
-						  ."d'une erreur, veuillez contacter {ADMINNAME} :  {ADMINEMAIL}.");//NEW for 0.98rc9
+						  ."ne vous êtes pas enregistré pour participer à celui-ci et croyez qu il s agit "
+						  ."d une erreur, veuillez contacter {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 define("_TC_EMAILCONFIRM_SUBJ", "Confirmation of completed survey"); //New for 0.99dev01
 define("_TC_EMAILCONFIRM", "{FIRSTNAME},\n\nCet email vous confirme que vous avez completé le questionnaire intitulé {SURVEYNAME} "
-						  ."et votre réponse à été enregistrée. Merci d'avoir participé.\n\n"
-						  ."Si vous avez d'autres questions à propos de cet email, veuillez contacter {ADMINNAME} : {ADMINEMAIL}.\n\n"
+						  ."et votre réponse à été enregistrée. Merci.\n\n"
+						  ."Si vous avez des questions à propos de cet email, veuillez contacter {ADMINNAME} ({ADMINEMAIL}).\n\n"
 						  ."Cordialement,\n\n"
 						  ."{ADMINNAME}"); //New for 0.98rc9 - Confirmation Email
 
