@@ -303,9 +303,9 @@ if ($_POST['display'])
 	while ($row=mysql_fetch_row($result)) {$results=$row[0];}
 	
 	// 3: Present results including option to view those rows
-	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='0' cellspacing='0' bordercolor='black'>\n";
+	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
 	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Results:</b></td></tr>\n";
-	echo "\t<tr><td colspan='2' align='center'>$setfont<font color='#EEEEEE'>";
+	echo "\t<tr><td colspan='2' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>";
 	echo "<B>Your query returns $results record(s)!</b><br />\n\t\t";
 	echo "There are $total records in your survey. This query represents ";
 	$percent=sprintf("%02d", ($results/$total)*100);
@@ -341,8 +341,12 @@ if ($_POST['summary'])
 		$fvalues[]=$row[0];
 		}
 	//foreach ($fvalues as $fv) {echo "$fv | ";} //debugging line
-	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='0' cellspacing='0' bordercolor='black'>\n";
-	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Field Summary for {$_POST['summary']}:</b></td></tr>\n";
+	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
+	echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for {$_POST['summary']}:</b></td></tr>\n";
+	echo "\t<tr>\n\t\t<td width='50%' align='right' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Answer</b></font></td>\n";
+	echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Count</b></font></td>\n";
+	echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Percentage</b></font></td>\n";
+	echo "\t</tr>\n";
 	foreach ($fvalues as $fv)
 		{
 		$query = "SELECT count({$_POST['summary']}) FROM survey_$sid WHERE {$_POST['summary']} = '$fv'";
@@ -351,8 +355,10 @@ if ($_POST['summary'])
 		while ($row=mysql_fetch_row($result))
 			{
 			if ($fv == "") {$fname="No Answer";} else {$fname=$fv;}
-			echo "\t<tr>\n\t\t<td width='50%' align='right'>$setfont<font color='#EEEEEE'>$fname:\n\t\t</td>\n";
-			echo "\t\t<td width='50%'>$setfont<font color='#EEEEEE'>$row[0]";
+			echo "\t<tr>\n\t\t<td width='50%' align='right' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$fname:\n\t\t</td>\n";
+			echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$row[0]";
+			$vp=sprintf("%02d", ($row[0]/$results)*100);
+			echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp%";
 			echo "\t\t</td></tr>\n";
 			}
 		}
