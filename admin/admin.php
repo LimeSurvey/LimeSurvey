@@ -137,10 +137,10 @@ if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" 
 include("html.php"); 
 
 //$cellstyle = "style='border: 1px inset #000080'";
-echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
+echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 	."\t<tr>\n"
-	."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n"
-	."\t\t\t<font size='2'>\n";
+	."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
+	//."\t\t\t<font size='2'>\n";
 
 echo showadminmenu();
 
@@ -150,6 +150,7 @@ if ($action == "newsurvey")
 		."\t\t</td>\n";
 	helpscreen();
 	echo "\t</tr>\n"
+		."</table>\n"
 		.htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
 	exit;
 	}
@@ -180,21 +181,21 @@ echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
 
 function helpscreen()
 	{
-	global $homeurl, $langdir;
+	global $homeurl, $langdir, $setfont;
 	global $sid, $gid, $qid, $action;
 	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
 		."\t\t\t<table width='100%'><tr><td>"
 		."<table width='100%' height='100%' align='center' cellspacing='0'>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
-		."\t\t\t\t\t\t<font color='white' size='1'><b>"
-		._HELP."\n"
-		."\t\t\t\t\t</td>\n"
+		."\t\t\t\t\t\t$setfont<font color='white' size='1'><b>"
+		._HELP."</b>\n"
+		."\t\t\t\t\t</font></font></td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
-		."\t\t\t\t\t\t<img src='./images/blank.gif' width='20' hspace='0' border='0' align='left'>\n"
-		."\t\t\t\t\t\t<input type='image' src='./images/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
+		."\t\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='20' hspace='0' border='0' align='left'>\n"
+		."\t\t\t\t\t\t<input type='image' src='./images/close.gif' name='CloseHelp' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
 		."\t\t\t\t\t</td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
