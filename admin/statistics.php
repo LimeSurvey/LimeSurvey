@@ -453,9 +453,9 @@ echo "\t\t\t</table>\n"
 	."\t\t</td></tr>\n"
 	."\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
 	."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-	."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' name='summary' value='$allfield'";
+	."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' id='viewsummaryall' name='summary' value='$allfield'";
 if (isset($_POST['summary']) && $_POST['summary'] == "$allfield") {echo " CHECKED";}
-echo ">View summary of all available fields</td></tr>\n"
+echo "><label for='viewsummaryall'>View summary of all available fields</label></td></tr>\n"
 	."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
 	."\t\t\t<input $btstyle type='submit' value='View Stats'>\n"
 	."\t\t\t<input $btstyle type='button' value='Clear' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n"
