@@ -343,7 +343,7 @@ define("_UC_DEL_USER", "Deleting User");
 define("_UC_DEL_MISSING", "Could not delete user. Username was not supplied.");
 define("_UC_MOD_USER", "Modifying User");
 define("_UC_MOD_MISSING", "Could not modify user. Username and/or password were not supplied");
-define("_UC_TURNON_MESSAGE1", "You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\nIf you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts.");
+define("_UC_TURNON_MESSAGE1", "<p>You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\nIf you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts.");
 define("_UC_TURNON_MESSAGE2", "It is highly recommended that once your security system has been initialised you change this default password.");
 define("_UC_INITIALISE", "Initialise Security");
 define("_UC_NOUSERS", "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.");
