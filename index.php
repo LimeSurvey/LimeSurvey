@@ -833,7 +833,10 @@ function submittokens()
 	while ($cnfrow = mysql_fetch_array($cnfresult))
 		{
 		$headers = "From: {$thissurvey['adminname']} <{$thissurvey['adminemail']}>\r\n";
-		$headers .= "X-Mailer: $sitename Email Inviter";
+		$headers .= "X-Mailer: $sitename Email Inviter\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/plain; charset=" .encode_lang($thissurvey['language']) . "\r\n";		
+		
 		$to = $cnfrow['email'];
 		$subject = $thissurvey['email_confirm_subj'];
 //		$subject = _CONFIRMATION.": {$thissurvey['name']} "._SURVEYCPL;
@@ -910,6 +913,9 @@ function sendsubmitnotification($sendnotification)
 	$message.= "PHP Surveyor";
 	$message = crlf_lineendings($message);
 	$headers = "From: {$thissurvey['adminemail']}\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/plain; charset=" .encode_lang($thissurvey['language']) . "\r\n";		
+	
 	if ($recips=explode(";", $thissurvey['adminemail'])) 
 		{
 	    foreach ($recips as $rc) 

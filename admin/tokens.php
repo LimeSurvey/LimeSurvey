@@ -652,6 +652,8 @@ if (returnglobal('action') == "email")
 		$emcount = mysql_num_rows($emresult);
 		$headers = "From: {$_POST['from']}\r\n";
 		$headers .= "X-Mailer: $sitename Emailer (PHPSurveyor.sourceforge.net)\r\n";  
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/plain; charset=" .encode_lang($defaultlang) . "\r\n";		
 		$message = strip_tags($_POST['message']);
 		$message = str_replace("&quot;", '"', $message);
 		if (get_magic_quotes_gpc() != "0")
@@ -696,6 +698,7 @@ if (returnglobal('action') == "email")
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
 				// cause problems with certain email server
 				//$sendmessage = str_replace("\r", "", $sendmessage);
+				$msgsubject= encode_lang($defaultlang,$msgsubject);
 				if (mail($to, $msgsubject, $sendmessage, $headers)) 
 					{
 					$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
@@ -828,6 +831,8 @@ if (returnglobal('action') == "remind")
 		$emcount = mysql_num_rows($emresult);
 		$headers = "From: {$_POST['from']}\r\n";
 		$headers .= "X-Mailer: $sitename Email Reminder";  
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/plain; charset=" .encode_lang($defaultlang) . "\r\n";		
 		echo "<table width='500' align='center' bgcolor='#EEEEEE'>\n"
 			."\t<tr>\n"
 			."\t\t<td><font size='1'>\n";
@@ -871,6 +876,7 @@ if (returnglobal('action') == "remind")
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
 				// cause problems with certain email server
 				//$sendmessage = str_replace("\r", "", $sendmessage);
+				$msgsubject= encode_lang($defaultlang,$msgsubject);
 				if (mail($to, $msgsubject, $sendmessage, $headers))
 					{
 					echo "\t\t\t({$emrow['tid']})["._TC_REMINDSENTTO." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
