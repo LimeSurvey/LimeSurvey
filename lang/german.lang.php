@@ -48,7 +48,7 @@ define("_FEMALE", "Weiblich");
 define("_MALE", "Männlich"); 
 define("_NOANSWER", "Keine Antwort"); 
 define("_NOTAPPLICABLE", "Nicht zutreffend");
-define("_OTHER", "Sonstige"); 
+define("_OTHER", "Sonstiges"); 
 define("_PLEASECHOOSE", "Bitte wählen"); 
 define("_ERROR_PS", "Fehler"); 
 define("_COMPLETE", "vollständig");
@@ -72,18 +72,18 @@ define("_SUBMIT", "Absenden");
 //MESSAGES 
 //From QANDA.PHP
 define("_CHOOSEONE", "Bitte wählen Sie eine Antwort aus"); 
-define("_ENTERCOMMENT", "Bitte geben Sie hier Ihr Kommentar ein"); 
+define("_ENTERCOMMENT", "Bitte geben Sie hier Ihren Kommentar ein"); 
 define("_NUMERICAL_PS", "In dieses Feld dürfen nur Ziffern eingetragen werden"); 
 define("_CLEARALL", "Ergebnisse verwerfen und Befragung beenden"); 
 define("_MANDATORY", "Bitte beantworten Sie diese Frage"); 
-define("_MANDATORY_PARTS", "Bitte beenden Sie alle Teile"); 
+define("_MANDATORY_PARTS", "Bitte beenden Sie alle Bereiche/Teile"); 
 define("_MANDATORY_CHECK", "Bitte machen Sie mindestens ein Kreuzchen"); 
 define("_MANDATORY_RANK", "Bitte bringen Sie alle Elemente in eine Rangfolge"); 
 define("_MANDATORY_POPUP", "Eine oder mehr vorgeschriebene Fragen sind nicht beantwortet worden. Sie können nicht fortfahren, bis diese beantwortet wurden!");
 define("_VALIDATION", "Diese Frage muss korrekt beantwortet werden");
 define("_VALIDATION_POPUP", "Ein oder mehrere Fragen sind nicht korrekt beantwortet worden. Sie können nicht fortfahren, bevor Sie dies nicht getan haben.");
 define("_DATEFORMAT", "Format: JJJJ-MM-TT"); 
-define("_DATEFORMATEG", "(z.B.: 2003-12-24 für Heiligabend)");
+define("_DATEFORMATEG", "(z.B.: 2005-12-24 für Heiligabend)");
 define("_REMOVEITEM", "Entfernen Sie bitte dieses Element"); 
 define("_RANK_1", "Klicken Sie in der Liste links bitte zuerst das am höchsten"); 
 define("_RANK_2", "bewertete Element an und machen Sie weiter bis zum niedrigsten."); 
@@ -102,7 +102,7 @@ define("_CONFIRMCLEAR", "Sind Sie sich sicher, dass Sie alle Antworten verwerfen
 define("_CONFIRMSAVE", "Sind Sie sicher, dass Sie Ihre Antworten speichern wollen?");
 define("_EXITCLEAR", "Umfrage beenden und verwerfen");
 //From QUESTION.PHP 
-define("_BADSUBMIT1", "Kann keine Ergebnisse absenden, da keine vorhanden sind.");
+define("_BADSUBMIT1", "Kann keine Ergebnisse abschicken, da keine vorhanden sind.");
 define("_BADSUBMIT2", "Dieser Fehler kann auftreten, wenn Sie Ihre Antworten bereits abgeschickt haben und in Ihrem Browser auf 'aktualisieren' geklickt haben. In diesem Fall wurden Ihre Fragen bereits gespeichert."); 
 define("_NOTACTIVE1", "Ihre Antworten wurden nicht gespeichert. Diese Befragung ist noch nicht aktiv."); 
 define("_CLEARRESP", "Antworten verwerfen"); 
@@ -117,7 +117,7 @@ define("_DNSAVEEMAIL2", "EINZUGEBENDE DATEN");
 define("_DNSAVEEMAIL3", "FEHLERHAFTE SQL ANWEISUNG");
 define("_DNSAVEEMAIL4", "FEHLERMELDUNG"); 
 define("_DNSAVEEMAIL5", "FEHLER BEIM SPEICHERN"); 
-define("_SUBMITAGAIN", "Versuchen Sie das Absenden erneut"); 
+define("_SUBMITAGAIN", "Versuchen Sie das Abschicken erneut"); 
 define("_SURVEYNOEXIST", "Es gibt leider keine passende Befragung."); 
 define("_NOTOKEN1", "Um an dieser Befragung teilzunehmen benötigen Sie ein passendes Schlüsselwort."); 
 define("_NOTOKEN2", "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."); 
@@ -140,12 +140,12 @@ define("_CONFIRMATION_MESSAGE4", "Ansichtstatistiken, bitte hier klicken:");
 define("_PRIVACY_MESSAGE", "<b><i>Schutz Ihrer Privatsphäre</i></b><br />"
                           ."Diese Umfrage ist anonym.<br />"
                           ."Die Daten, die wir aus dieser Umfrage erhalten, enthalten "
-                          ."keinerlei Information, mit denen man Sie identifizieren könnte,"
-                          ."es sei denn es innerhalb der Umfrage wurde danach gefragt. "
+                          ."keinerlei Informationen, mit denen man Sie identifizieren könnte,"
+                          ."es sei denn, innerhalb der Umfrage wurde danach gefragt. "
                           ."Wenn Sie eine Umfrage beantwortet haben, zu der Sie einen Zugangsschlüssel "
-                          ."benötigen, können wir Ihnen versichern, dass dieser Zugangsschlüssel "
+                          ."benötigten, können wir Ihnen versichern, dass dieser Zugangsschlüssel "
                           ."nicht mit Ihren Antworten in einer Tabelle gehalten wird. "
-                          ."Alle Zugangsschlüssel werden in einer separaten Tabelle vorgehalten, "
+                          ."Alle Zugangsschlüssel werden in einer separaten Tabelle gespeichert, "
                           ."und werden nur dazu benutzt, um zu sehen, ob Sie diese Umfrage schon ausgefüllt haben. "
                           ."Auf keinen Fall werden die Zugangschlüssel mit Ihren Daten aus dieser Umfrage in Verbindung gebracht werden.");
 
@@ -169,29 +169,29 @@ define ("_RG_REGISTRATIONCOMPLETE", "Vielen Dank, dass Sie sich für die Teilnahm
                                    ."{ADMINNAME} ({ADMINEMAIL})");
 define("_SM_COMPLETED", "<b>Vielen Dank!<br /><br />"
                        ."Sie haben nun alle Fragen dieser Umfrage beantwortet.</b><br /><br />"
-                       ."Klicken Sie jetzt auf 'Absenden', um diese Umfrage abzuschlissen und Ihre Antworten endgültig zu speichern.");
+                       ."Klicken Sie jetzt auf 'Absenden', um diese Umfrage abzuschliessen und Ihre Antworten endgültig zu speichern.");
 define("_SM_REVIEW", "Wenn Sie Ihre Antworten nochmal überprüfen und/oder ändern wollen, "
-                    ."dann klicken Sie bitte auf den Knop 'Zurück', um durch Ihre Antworten zu blättern.");
+                    ."dann klicken Sie bitte auf den Knopf 'Zurück', um durch Ihre Antworten zu blättern.");
 
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Bitte wählen Sie nur <b>eine Antwort</b> aus:"); 
-define("_PS_WRITE", "Bitte schreiben Sie Ihre Antwort hier rein:");
-define("_PS_CHOOSEANY", "Wählen Sie <b>alle</b> zutreffenden Antworten:"); 
-define("_PS_CHOOSEANYCOMMENT", "Wählen Sie <b>alle</b> zutreffenden Antworten und geben einen Kommentar an:");
-define("_PS_EACHITEM", "Bitte wählen Sie die jeweilige Antwort für jeden Eintrag:"); 
-define("_PS_WRITEMULTI", "Bitte schreiben Sie Ihre Antwort(en) hier rein:");
-define("_PS_DATE", "Geben Sie bitte ein Datum an:"); 
-define("_PS_COMMENT", "Bitte kommentieren Sie Ihre Antwort hier:");
-define("_PS_RANKING", "Bitte vergeben Sie jeweils eine Nummer von 1 bis");
-define("_PS_SUBMIT", "Umfrage absenden."); 
-define("_PS_THANKYOU", "Vielen Dank, dass Sie an dieser Umfrage teilgenommen haben."); 
-define("_PS_FAXTO", "Bitte faxen Sie Ihren ausgefüllten Fragebogen an:"); 
+define("_PS_CHOOSEONE", "Bitte <b>nur eine Antwort</b> aus folgenden Möglichkeiten wählen"); //New for 0.98finalRC1
+define("_PS_WRITE", "Bitte schreiben Sie Ihre Antwort hier"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Bitte <b>alle</b> auswählen, die zutreffen"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Bitte alle auswählen die zutreffen und einen Kommentar dazuschreiben"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "Bitte wählen Sie die zutreffende Antwort aus"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "Bitte Ihre Antwort(en) hierher schreiben"); //New for 0.98finalRC1
+define("_PS_DATE", "Bitte ein datum eingeben"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Bitte schreiben Sie einen Kommentar zu Ihrer Auswahl"); //New for 0.98finalRC1
+define("_PS_RANKING", "Bitte nummerieren Sie jede Box in der Reigenfolge Ihrer Präferenz, beginnen mit 1 bis"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Übermitteln Sie Ihrern Fragebogen"); //New for 0.98finalRC1
+define("_PS_THANKYOU", "Danke für die Beantwortung des Fragebogens."); //New for 0.98finalRC1
+define("_PS_FAXTO", "Bitte faxen Sie den ausgefüllten Fragebogen an"); //New for 0.98finaclRC1
 
-define("_PS_CON_ONLYANSWER", "Beantworten Sie diese Frage nur,"); 
-define("_PS_CON_IFYOU", "wenn sie folgendes geantwortet haben"); 
-define("_PS_CON_JOINER", "und"); 
-define("_PS_CON_TOQUESTION", "zur Frage"); 
+define("_PS_CON_ONLYANSWER", "Bitte beantworten Sie diese Frage nur,"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "falls ihre Antwort "); //New for 0.98finalRC1
+define("_PS_CON_JOINER", "und"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", " war bei der Frage"); //New for 0.98finalRC1
 define("_PS_CON_OR", "oder"); 
 
 //Save Messages
@@ -235,5 +235,5 @@ define("_LOADNONAME", "Sie haben keinen Namen angegeben");
 define("_LOADNOPASS", "Sie haben kein Passwort angegeben");
 define("_LOADNOMATCH", "Es gibt keine entsprechende Unmfrage.");
 
-define("_ASSESSMENT_HEADING", "Your Assessment");
+define("_ASSESSMENT_HEADING", "Ihre Bewertung");
 ?>
