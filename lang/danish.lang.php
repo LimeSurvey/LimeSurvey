@@ -34,7 +34,7 @@
 	#############################################################
 	#                                                           #
 	#     Translation by Mikkel Skovgaard Sørensen              #
-	#                                                           #
+	#                and Rolf Njor Jensen                       #                    #
 	#############################################################
 */
 //SINGLE WORDS
@@ -166,32 +166,31 @@ define ("_RG_REGISTRATIONCOMPLETE", "Tak fordi du v&aelig;lger at deltage i unde
 								   ."informationer om hvordan du deltager i unders&oslash;gelsen. Benyt linket i e-mailen for at deltage.<br /><br />\n"
 								   ."Venlig hilsen <br /> {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Thank You<br /><br />"
-					   ."You have completed answering the questions in this survey.</b><br /><br />"
-					   ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
-define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
-					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
-					."through your responses."); //New for 0.98finalRC1
+define("_SM_COMPLETED", "<b>Tak<br /><br />"
+					   ."Du har nu besvaret alle spørgsmålene i denne undersøgelse.</b><br /><br />"
+					   ."Klik på ["._SUBMIT."] for at afslutte undersøgelsen og indsende dine svar."); //New for 0.98finalRC1
+
+define("_SM_REVIEW", "Hvis du vil tjekke et eller flere af dine svar og evt. rette i dem, kan du gøre det ved at klikke på [<< "._PREV."] knappen og gennemgå dine besvarelse."); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following:"); //New for 0.98finalRC1
-define("_PS_WRITE", "Please write your answer here:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment:"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "Please choose the appropriate response for each item:"); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Please write your answer(s) here:"); //New for 0.98finalRC1
-define("_PS_DATE", "Please enter a date:"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Make a comment on your choice here:"); //New for 0.98finalRC1
-define("_PS_RANKING", "Please number each box in order of preference from 1 to"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Submit Your Survey."); //New for 0.98finalRC1
-define("_PS_THANKYOU", "Thank you for completing this survey."); //New for 0.98finalRC1
-define("_PS_FAXTO", "Please fax your completed survey to:"); //New for 0.98finaclRC1
+define("_PS_CHOOSEONE", "Vælg venligst <b>kun een</b> af de følgende"); //New for 0.98finalRC1
+define("_PS_WRITE", "Indtast venligst dit svar her"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Vælg venligst alle de muligheder der passer"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Vælg venligst alle de muligheder der passer, og tilføj en kommentar"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "Please choose the appropriate response for each item"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "Indtast venligst dine svar her"); //New for 0.98finalRC1
+define("_PS_DATE", "Indtast venligst en dato"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Tilføj en kommentar til dit svar her"); //New for 0.98finalRC1
+define("_PS_RANKING", "Angiv et tal for hver boks i præference orden fra 1 til"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Indsend dit besvarelse"); //New for 0.98finalRC1
+define("_PS_THANKYOU", "Tak for din besvarelse."); //New for 0.98finalRC1
+define("_PS_FAXTO", "Fax venligst den udfyldte besvarelse til:"); //New for 0.98finaclRC1
 
-define("_PS_CON_ONLYANSWER", "Only answer this question"); //New for 0.98finalRC1
-define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
-define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
-define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
-define("_PS_CON_OR", "or"); //New for 0.98finalRC2
+define("_PS_CON_ONLYANSWER", "Svar kun på dette spørgsmål"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "hvis du svarede"); //New for 0.98finalRC1
+define("_PS_CON_JOINER", "og"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "til spørgsmål"); //New for 0.98finalRC1
+define("_PS_CON_OR", "eller"); //New for 0.98final (translated by machine)
 
 //Save Messages
 define("_SAVE_AND_RETURN", "Save your responses so far");
