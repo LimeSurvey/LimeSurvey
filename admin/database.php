@@ -95,6 +95,40 @@ elseif ($action == "updategroup")
 
 elseif ($action == "delgroup")
 	{
+	if (!isset($gid)) {returnglobal('gid');} 
+	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
+	$result = mysql_query($query);
+	if ($result)
+		{
+		$gid = "";
+		$groupselect = getgrouplist($gid);
+		}
+	else
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPDELETE."\n$error\")\n //-->\n</script>\n";
+		}
+	}
+
+elseif ($action == "delgroupall")
+	{
+	if (!isset($gid)) {returnglobal('gid');}
+	$query = "SELECT qid FROM {$dbprefix}groups, {$dbprefix}questions WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid";
+	if ($result = mysql_query($query))
+		{
+		$qtodel=mysql_num_rows($result);
+		while ($row=mysql_fetch_array($result))
+			{
+			$dquery = "DELETE FROM {$dbprefix}conditions WHERE qid={$row['qid']}";
+			if ($dresult=mysql_query($dquery)) {$total++;}
+			$dquery = "DELETE FROM {$dbprefix}answers WHERE qid={$row['qid']}";
+			if ($dresult=mysql_query($dquery)) {$total++;}
+			$dquery = "DELETE FROM {$dbprefix}questions WHERE qid={$row['qid']}";
+			}
+		if ($total != $qtodel*3)
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPDELETE."\n$error\")\n //-->\n</script>\n";
+			}
+		}
 	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
 	$result = mysql_query($query);
 	if ($result)
@@ -227,15 +261,52 @@ elseif ($action == "delquestion")
 		$cresult = mysql_query($cquery);
 		$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
 		$result = mysql_query($query);
-		if ($result)
+		if ($result) 
 			{
-			$qid = "";
+			$qid="";
+			$_POST['qid']="";
+			$_GET['qid']="";
 			}
 		else
 			{
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELETE."\n$error\")\n //-->\n</script>\n";
 			}
 		}
+	}
+
+elseif ($action == "delquestionall")
+	{
+	if (!isset($qid)) {returnglobal('qid');}
+	//check if any other questions have conditions which rely on this question. Don't delete if there are.
+	$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
+	$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
+	$cccount=mysql_num_rows($ccresult);
+	while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
+	if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+	if ($cccount) //there are conditions dependant on this question
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELCONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
+		}
+	else
+		{
+		//First delete all the answers
+		$query = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
+		if ($result=mysql_query($query)) {$total++;}
+		$query = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
+		if ($result=mysql_query($query)) {$total++;}
+		$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
+		if ($result=mysql_query($query)) {$total++;}
+		}
+		if ($total==3)
+			{
+			$qid="";
+			$_POST['qid']="";
+			$_GET['qid']="";
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELETE."\n$error\")\n //-->\n</script>\n";
+			}
 	}
 	
 elseif ($action == "modanswer")
