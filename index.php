@@ -36,18 +36,25 @@
 
 session_start();
 
-$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
-$token = $_GET['token']; if (!$token) {$token = $_POST['token'];}
-$move = $_POST['move']; if (!$move) {$move = $_GET['move'];}
-$fvalue = $_POST['fvalue'];
-$multi = $_POST['multi'];
-$thisstep = $_POST['thisstep']; if (!$thisstep) {$thisstep=$_SESSION['thisstep'];}
-$totalsteps = $_SESSION['totalsteps'];
-$fieldarray = $_SESSION['fieldarray'];
-$insertarray = $_SESSION['insertarray'];
-$lastgroupname = $_POST['lastgroupname'];
-$newgroup = $_POST['newgroup'];
-$lastfield = $_POST['lastfield'];
+if ($_GET['sid']) {$_SESSION['sid'] = $_GET['sid'];}
+if ($_POST['sid']) {$_SESSION['sid'] = $_POST['sid'];}
+$sid = $_SESSION['sid'];
+if ($_GET['token']) {$_SESSION['token'] = $_GET['token'];}
+if ($_POST['token']) {$_SESSION['token'] = $_POST['token'];}
+$token = $_SESSION['token'];
+if ($_GET['move']) {$move = $_GET['move'];}
+if ($_POST['move']) {$move = $_POST['move'];}
+if ($_POST['fvalue']) {$fvalue = $_POST['fvalue'];}
+if ($_POST['fvalue1']) {$fvalue1 = $_POST['fvalue1'];}
+if ($_POST['multi']) {$multi = $_POST['multi'];}
+if ($_POST['thisstep']) {$thisstep = $_POST['thisstep'];}
+//$thisstep = $_POST['thisstep']; if (!$thisstep) {$thisstep=$_SESSION['thisstep'];}
+#$totalsteps = $_SESSION['totalsteps'];
+#$fieldarray = $_SESSION['fieldarray'];
+#$insertarray = $_SESSION['insertarray'];
+if ($_POST['lastgroupname']) {$lastgroupname = $_POST['lastgroupname'];}
+if ($_POST['newgroup']) {$newgroup = $_POST['newgroup'];}
+if ($_POST['lastfield']) {$lastfield = $_POST['lastfield'];}
 
 if ($move == "clearall" || $move == "here" || $move == "completed") 
 	{
@@ -82,13 +89,13 @@ if ($multi)
 	$mylist = substr($mylist, 0, strlen($mylist)-1);
 	}
 
-if ($move == " << prev " && $newgroup != "yes") {$step = $thisstep-1;} else {$step = $thisstep;}
-if ($move == " next >> ") {$step = $thisstep+1;}
-if ($move == " last ") {$step = $thisstep+1;}
+if ($move == " << prev " && $newgroup != "yes") {$_SESSION['step'] = $thisstep-1;} else {$_SESSION['step'] = $thisstep;}
+if ($move == " next >> ") {$_SESSION['step'] = $thisstep+1;}
+if ($move == " last ") {$_SESSION['step'] = $thisstep+1;}
 
 include("./admin/config.php");
 
-if ($sid != $_GET['sid'] && $sid != $_POST['sid']){$sid = $_GET['sid'];}
+//if ($sid != $_GET['sid'] && $sid != $_POST['sid']){$sid = $_GET['sid'];}
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
@@ -106,6 +113,7 @@ if (!$sid && (!$move == "clearall" || !$move=="here"))
 	{
 	echo "<center><b>$sitename</b><br />\n<br />\n<b>You cannot access this website without a valid Survey ID code.</b><br />\n";
 	echo "<br />\nPlease contact $siteadminemail for information.";
+	echo "</body>\n</html";
 	exit;
 	}
 
@@ -114,6 +122,7 @@ if (!mysql_selectdb ($databasename, $connect))
 	echo "<center><b>$sitename<br />\n<br />\n<font color='red'>ERROR</font></b><br />\n<br />\n";
 	echo "This system has not yet been installed properly.<br />\n";
 	echo "Contact your $siteadminemail for information";
+	echo "</body>\n</html";
 	exit;
 	}
 
@@ -127,12 +136,14 @@ if ($sid)
 	if ($descount == 0) 
 		{
 		echo "There is no survey with that SID. Sorry. [$descount][$desquery]";
+		echo "</body>\n</html";
 		exit;
 		}
 	elseif ($expirydate < date("Y-m-d") && $expirydate != "0000-00-00")
 		{
 		echo "<center><b>$sitename<br />\n<br />\n<font color='red'>ERROR</font></b><br />\n<br />\n";
 		echo "Sorry. This survey has expired and is no longer available.<br />\n(Expiry date $expirydate)";
+		echo "</body>\n</html";
 		exit;
 		}
 	$desresult = mysql_query($desquery);
@@ -168,10 +179,10 @@ if ($sid)
 if ($move == "clearall" || $move == "here")
 	{
 	$fieldname = "";
-	$fieldarray = "";
-	$step = "";
-	$totalsteps = "";
-	$token = "";
+	$_SESSION['fieldarray'] = "";
+	$_SESSION['step'] = "";
+	$_SESSION['totalsteps'] = "";
+	$_SESSION['token'] = "";
 	echo "<br />\n&nbsp;<br />\n";
 	echo "<center>All data has been deleted.<br />\n&nbsp;<br />\n";
 	echo "<a href='javascript:window.close()'>Close</a><br />\n<br />\n&nbsp;$sid</center>\n";
@@ -207,9 +218,9 @@ if ($move == "completed")
 if ($move == " last ")
 	{
 	echo $surveyheader;
-	$s = $step-1;
+	$s = $_SESSION['step']-1;
 	$t = $s-1;
-	$u = $totalsteps;
+	$u = $_SESSION['totalsteps'];
 	$chart = 105;
 	echo "\t<tr>\n";
 	echo "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
@@ -225,7 +236,7 @@ if ($move == " last ")
 	echo "\t</tr>\n";
 	echo "<form method='post'>\n";
 	echo "<input type='hidden' name='sid' value='$sid' />\n";
-	echo "<input type='hidden' name='thisstep' value='$step' />\n";
+	echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td>\n";
 	echo "\t\t\t<table border='0' width='100%'>\n";
@@ -272,7 +283,7 @@ if ($move == " last ")
 	echo "</table>\n";
 	//debugging info
 	echo "<!-- DEBUG INFO \n";
-	foreach ($insertarray as $posted) 
+	foreach ($_SESSION['insertarray'] as $posted) 
 		{
 		echo "$posted: ".$_SESSION[$posted] ."\n";
 		}
@@ -299,7 +310,7 @@ if ($move == " submit ")
 	echo "\t\t\t\t\t</td>\n";
 	echo "\t\t\t\t</tr>\n";
 	$subquery = "INSERT INTO $surveytable ";
-	foreach ($insertarray as $value)
+	foreach ($_SESSION['insertarray'] as $value)
 		{
 		$col_name .= ", " . substr($value, 1); //Add separator and strip off leading 'F'
 		if (get_magic_quotes_gpc() == "0")
@@ -389,7 +400,7 @@ if ($move == " submit ")
 	
 	// debugging info
 	echo "<!-- DEBUG INFO \n";
-	foreach ($insertarray as $posted) 
+	foreach ($_SESSION['insertarray'] as $posted) 
 		{
 		echo "$posted: ".$_SESSION[$posted] ."\n";
 		}
@@ -404,7 +415,7 @@ if ($move == " submit ")
 	}
 	
 // THIS IS FOR WHEN THE SURVEY SCRIPTS AND STUFF HAVEN'T STARTED YET
-if (!$step)
+if (!$_SESSION['step'])
 	{
 	if ($tokensexist == 1 && !$token)
 		{
@@ -434,7 +445,7 @@ if (!$step)
 		$tkexist = mysql_num_rows($tkresult);
 		if ($tkexist > 0)
 			{
-			session_register("token");
+#			session_register("token"); //No need to register $token as long as it's passed via GET
 			}
 		else
 			{
@@ -451,6 +462,7 @@ if (!$step)
 			echo "\t\t<input type='hidden' name='sid' value='$sid' />\n";
 			echo "\t</form></tr>\n";
 			echo "</table>\n";
+			echo "</body>\n</html";
 			exit;
 			}
 		}
@@ -471,26 +483,26 @@ if (!$step)
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' colspan='2' bgcolor='#DDDDDD'>\n";
-	echo "\t\t\t$setfont There are $totalsteps questions in this survey.\n";
+	echo "\t\t\t$setfont There are {$_SESSION['totalsteps']} questions in this survey.\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<form method='post'>\n";
 	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
-	echo "\t<input type='hidden' name='thisstep' value='$step' />\n";
+	echo "\t<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' colspan='2'>\n";
 
-	session_register("fieldarray");
-	$_SESSION["step"] = $step; // session_register("step") causes really strange session behavior on PHP 4.3.0, Apache 2.0.43, WinXP
-	session_register("totalsteps");
-	session_register("insertarray");
-	session_register("sid");
+#	session_register("fieldarray");
+#	$_SESSION['step'] = $step; // session_register("step") causes really strange session behavior on PHP 4.3.0, Apache 2.0.43, WinXP
+#	session_register("totalsteps");
+#	session_register("insertarray");
+#	session_register("sid");
 	
 	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
 	$aresult = mysql_query($aquery);
-	$totalsteps = mysql_num_rows($aresult);
+	$_SESSION['totalsteps'] = mysql_num_rows($aresult);
 	
-	if ($totalsteps == "0")
+	if ($_SESSION['totalsteps'] == "0")
 		{
 		//break out and crash if there are no questions!
 		echo "$setfont<center><b>$sitename</b><br />\n<br />\n<b>This survey does not yet have any questions, and so cannot be accessed.</b><br />\n";
@@ -507,9 +519,10 @@ if (!$step)
 	
 	if ($surveyprivate == "N")
 		{
-		session_register("Ftoken");
-		$Ftoken=$token;
-		$insertarray[]= "Ftoken";
+#		session_register("Ftoken");
+#		$Ftoken=$token;
+		$_SESSION['Ftoken'] = $token;
+		$_SESSION['insertarray'][]= "Ftoken";
 		}
 	
 	foreach ($arows as $arow)
@@ -522,67 +535,67 @@ if (!$step)
 			$abresult = mysql_query($abquery);
 			while ($abrow = mysql_fetch_array($abresult))
 				{
-				session_register("F$fieldname".$abrow['code']); //THE F HAS TO GO IN FRONT OF THE FIELDNAME SO THAT PHP RECOGNISES IT AS A VARIABLE
-				$insertarray[] = "F$fieldname".$abrow['code'];
+#				session_register("F$fieldname".$abrow['code']); //THE F HAS TO GO IN FRONT OF THE FIELDNAME SO THAT PHP RECOGNISES IT AS A VARIABLE
+				$_SESSION['insertarray'][] = "F$fieldname".$abrow['code'];
 				$alsoother = "";
 				if ($abrow['other'] == "Y") {$alsoother = "Y";}
 				if ($arow['type'] == "P") 
 					{
-					session_register("F$fieldname".$abrow['code']."comment");
-					$insertarray[] = "F$fieldname".$abrow['code']."comment";	
+#					session_register("F$fieldname".$abrow['code']."comment");
+					$_SESSION['insertarray'][] = "F$fieldname".$abrow['code']."comment";	
 					}
 				}
 			if ($alsoother) 
 				{
-				session_register("F$fieldname"."other");
-				$insertarray[] = "F$fieldname"."other";
+#				session_register("F$fieldname"."other");
+				$_SESSION['insertarray'][] = "F$fieldname"."other";
 				if ($arow['type'] == "P")
 					{
-					session_register("F$fieldname"."othercomment");
-					$insertarray[] = "F$fieldname"."othercomment";	
+#					session_register("F$fieldname"."othercomment");
+					$_SESSION['insertarray'][] = "F$fieldname"."othercomment";	
 					}
 				}
 			
 			}
 		elseif ($arow['type'] == "O")
 			{
-			session_register("F$fieldname");
-			$insertarray[] = "F$fieldname";
+#			session_register("F$fieldname");
+			$_SESSION['insertarray'][] = "F$fieldname";
 			$fn2 = "F$fieldname"."comment";
-			session_register("$fn2");
-			$insertarray[] = "$fn2";
+#			session_register("$fn2");
+			$_SESSION['insertarray'][] = "$fn2";
 			
 			}
 		else
 			{
-			session_register("F$fieldname");
-			$insertarray[] = "F$fieldname";
+#			session_register("F$fieldname");
+			$_SESSION['insertarray'][] = "F$fieldname";
 			}
 		//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
 		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD
 		//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
 		//                 [4]=questions.type, [5]=questions.gid
-		$fieldarray[] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}");
+		$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}");
 		}
-	//echo count($fieldarray);
+	//echo count($_SESSION['fieldarray']);
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
-	//$step = 1;
+	//$_SESSION['step'] = 1;
 	}
 
 else
 	{
 	echo $surveyheader;
-	//echo "STEP: $step, TOTALSTEPS: $totalsteps, LASTFIELD: $lastfield";
-	$s = $step;
+	//echo "STEP: $_SESSION['step'], TOTALSTEPS: {$_SESSION['totalsteps']}, LASTFIELD: $lastfield";
+	$s = $_SESSION['step'];
 	//$t indicates which question in the array we should be displaying
 	$t = $s-1;
 	$v = $t-1;
-	$u = $totalsteps;
+	$u = $_SESSION['totalsteps'];
 	$chart = (($s-1)/$u*100);
 
 	// GET AND SHOW GROUP NAME
-	$gdquery = "SELECT group_name, groups.description FROM groups, questions WHERE groups.gid=questions.gid and qid={$fieldarray[$t][0]}";
+	$gdquery = "SELECT group_name, groups.description FROM groups, questions WHERE groups.gid=questions.gid and qid={$_SESSION['fieldarray'][$t][0]}";
 	$gdresult = mysql_query($gdquery);
 	while ($gdrow = mysql_fetch_array($gdresult))
 		{
@@ -596,7 +609,7 @@ else
 		}
 
 	//if (($currentgroupname != $lastgroupname) && ($move != " << prev "))
-	if ($fieldarray[$t][5] != $fieldarray[$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev ")
+	if ($_SESSION['fieldarray'][$t][5] != $_SESSION['fieldarray'][$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev ")
 		{
 		$presentinggroupdescription = "yes";
 		echo "\t<form method='post'>\n";
@@ -631,7 +644,7 @@ else
 		// PRESENT QUESTION
 		echo "\t<form method='post'>\n";
 		echo "\t<input type='hidden' name='sid' value='$sid' />\n";
-		echo "\t<input type='hidden' name='thisstep' value='$step' />\n";
+		echo "\t<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
 		
 		// QUESTION STUFF
 		echo "\t<tr>\n";
@@ -649,7 +662,7 @@ else
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2' align='center' valign='top'>\n";
 		echo "\t\t\t<b><font color='#000080'>\n";
-		echo $fieldarray[$t][3]."\n";
+		echo $_SESSION['fieldarray'][$t][3]."\n";
 		echo "\t\t\t</font></b>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
@@ -660,10 +673,10 @@ else
 		echo "\t\t\t</table>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
-		$fname = "F".$fieldarray[$t][1];
+		$fname = "F".$_SESSION['fieldarray'][$t][1];
 		
 		// THE FOLLOWING PRESENTS THE QUESTION BASED ON THE QUESTION TYPE
-		switch ($fieldarray[$t][4])
+		switch ($_SESSION['fieldarray'][$t][4])
 			{
 			case "5": //5 POINT CHOICE radio-buttons
 				echo "\t<tr>\n";
@@ -710,7 +723,7 @@ else
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
+				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				if ($dropdowns == "L" || !$dropdowns)
 					{
@@ -751,7 +764,7 @@ else
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
 				//echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
+				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				echo "\t\t\t<table align='center'>\n";
@@ -791,10 +804,10 @@ else
 				echo "\t\t\t\t<tr>\n";
 				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
 				echo "\t\t\t\t\t<td align='left'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
 				$qresult = mysql_query($qquery);
 				while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
+				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn = 1;
@@ -831,10 +844,10 @@ else
 				echo "\t\t\t\t<tr>\n";
 				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
 				echo "\t\t\t\t\t<td align='left'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
 				$qresult = mysql_query($qquery);
 				while ($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
+				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult)*2;
 				$fn = 1;
@@ -918,10 +931,10 @@ else
 			case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
 				$qresult = mysql_query($qquery);
 				while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
+				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn = 1;
@@ -951,10 +964,10 @@ else
 			case "B": //ARRAY (10 POINT CHOICE) radio-buttons
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
 				$qresult = mysql_query($qquery);
 				while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
+				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn = 1;
@@ -984,10 +997,10 @@ else
 			case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
 				$qresult = mysql_query($qquery);
 				while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$fieldarray[$t][0]} ORDER BY code";
+				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn = 1;
@@ -1031,7 +1044,7 @@ else
 
 
 		//SHOW HELP INFORMATION IF THERE IS ANY
-		$helpquery = "SELECT help FROM questions WHERE qid=".$fieldarray[$t][0];
+		$helpquery = "SELECT help FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
 		$helpresult = mysql_query($helpquery);
 		while ($helprow = mysql_fetch_array($helpresult))
 			{
@@ -1078,29 +1091,29 @@ echo "</body>\n</html>";
 
 function surveymover()
 	{
-	global $step, $sid, $totalsteps, $presentinggroupdescription;
+	global $presentinggroupdescription;
 	$surveymover = "\t<tr>\n";
 	$surveymover .= "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
 	$surveymover .= "\t\t\t<table width='50%' align='center'>\n";
 	$surveymover .= "\t\t\t\t<tr>\n";
 	$surveymover .= "\t\t\t\t\t<td align='center'>\n";
-	if ($step > 0)
+	if ($_SESSION['step'] > 0)
 		{$surveymover .= "\t\t\t\t\t\t<input type='submit' value=' << prev ' name='move' />\n";}
-	if ($step && (!$totalsteps || ($step < $totalsteps)))
+	if ($_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 		{$surveymover .=  "\t\t\t\t\t\t<input type='submit' value=' next >> ' name='move' />";}
-	if (!$step)
+	if (!$_SESSION['step'])
 		{$surveymover .=  "\t\t\t\t\t\t<input type='submit' value=' next >> ' name='move' />";}
-	if ($step && ($step == $totalsteps) && $presentinggroupdescription == "yes")
+	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 		{$surveymover .=  "\t\t\t\t\t\t<input type='submit' value=' next >> ' name='move' />";}
-	if ($step && ($step == $totalsteps) && !$presentinggroupdescription)
+	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
 		{$surveymover .= "\t\t\t\t\t\t <input type='submit' value=' last ' name='move' />";}
-	//if ($step && ($step == $totalsteps+1))
+	//if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']+1))
 		//{$surveymover .= "\t\t\t\t\t\t<input type='submit' value=' submit ' name='move' />";}
-	//$surveymover .= " <a href='?move=clearall&sid=$sid'>X</a>";
+	//$surveymover .= " <a href='?move=clearall&sid={$_SESSION['sid']}'>X</a>";
 	$surveymover .= "\t\t\t\t\t</td>\n";
 	$surveymover .= "\t\t\t\t</tr>\n";
 	$surveymover .= "\t\t\t</table>\n";
-	$surveymover .= "\t\t\t<font size='1'>[<a href='index.php?sid=$sid&move=clearall'>Exit and Clear Survey</a>]\n";
+	$surveymover .= "\t\t\t<font size='1'>[<a href='index.php?sid={$_SESSION['sid']}&move=clearall'>Exit and Clear Survey</a>]\n";
 	$surveymover .= "\t\t</td>\n";
 	$surveymover .= "\t</tr>\n";
 	return $surveymover;	
