@@ -1,37 +1,37 @@
 <?php
 /*
-	#############################################################
-	# >>> PHP Surveyor  										#
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################	
+    #############################################################
+    # >>> PHP Surveyor                                          #
+    #############################################################
+    # > Author:  Jason Cleeland                                 #
+    # > E-mail:  jason@cleeland.org                             #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,           #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                  #
+    # > Date:    20 February 2003                               #
+    #                                                           #
+    # This set of scripts allows you to develop, publish and    #
+    # perform data-entry on surveys.                            #
+    #############################################################
+    #                                                           #
+    #   Copyright (C) 2003  Jason Cleeland                      #
+    #                                                           #
+    # This program is free software; you can redistribute       #
+    # it and/or modify it under the terms of the GNU General    #
+    # Public License as published by the Free Software          #
+    # Foundation; either version 2 of the License, or (at your  #
+    # option) any later version.                                #
+    #                                                           #
+    # This program is distributed in the hope that it will be   #
+    # useful, but WITHOUT ANY WARRANTY; without even the        #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A      #
+    # PARTICULAR PURPOSE.  See the GNU General Public License   #
+    # for more details.                                         #
+    #                                                           #
+    # You should have received a copy of the GNU General        #
+    # Public License along with this program; if not, write to  #
+    # the Free Software Foundation, Inc., 59 Temple Place -     #
+    # Suite 330, Boston, MA  02111-1307, USA.                   #
+    #############################################################   
 */
 //THE TABLE STRUCTURE, TABLE BY TABLE AND FIELD BY FIELD
 require_once("config.php");
@@ -40,17 +40,17 @@ sendcacheheaders();
 
 //TABLES THAT SHOULD EXIST
 $alltables=array("{$dbprefix}surveys", 
-				 "{$dbprefix}groups", 
-				 "{$dbprefix}questions", 
-				 "{$dbprefix}answers", 
-				 "{$dbprefix}conditions", 
-				 "{$dbprefix}users", 
-				 "{$dbprefix}labelsets", 
-				 "{$dbprefix}labels",
-				 "{$dbprefix}saved",
-				 "{$dbprefix}saved_control",
-				 "{$dbprefix}question_attributes",
-				 "{$dbprefix}assessments");
+                 "{$dbprefix}groups", 
+                 "{$dbprefix}questions", 
+                 "{$dbprefix}answers", 
+                 "{$dbprefix}conditions", 
+                 "{$dbprefix}users", 
+                 "{$dbprefix}labelsets", 
+                 "{$dbprefix}labels",
+                 "{$dbprefix}saved",
+                 "{$dbprefix}saved_control",
+                 "{$dbprefix}question_attributes",
+                 "{$dbprefix}assessments");
 
 //KEYS
 $keyinfo[]=array("{$dbprefix}surveys", "sid");
@@ -175,8 +175,8 @@ echo $htmlheader;
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._CHECKFIELDS."</b></td></tr>\n";
-echo "\t<tr height='22' bgcolor='#CCCCCC'><td>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._CHECKFIELDS."</b></font></td></tr>\n";
+echo "\t<tr bgcolor='#CCCCCC'><td>\n";
 
 echo "$setfont<b>"._CF_CHECKTABLES.":</b><br /><font size='1'>\n";
 
@@ -184,46 +184,46 @@ if (!isset($databasetabletype)) {$databasetabletype="MyISAM";}
 
 $result = mysql_list_tables($databasename);
 while ($row = mysql_fetch_row($result))
-	{
-	$tablelist[]=$row[0];
+    {
+    $tablelist[]=$row[0];
     }
 if (!isset($tablelist) || !is_array($tablelist))
-	{
-	$tablelist[]="empty";
-	}
+    {
+    $tablelist[]="empty";
+    }
 foreach ($alltables as $at)
-	{
-	echo "<b>-></b>"._CF_CHECKING." <b>$at</b>..<br />";
-	if (!in_array($at, $tablelist))
-		{
-		//Create table
-		$ctquery="CREATE TABLE `$at` (\n";
-		foreach ($allfields as $af)
-			{
-			if ($af[0] == $at)
-				{
-				$ctquery .= $af[2].",\n";
-				}
-			}
-		foreach($keyinfo as $ki)
-			{
-			if ($ki[0] == $at)
-				{
-				$ctquery .= "PRIMARY KEY ({$ki[1]}),\n";
-				}
-			}
-		$ctquery = substr($ctquery, 0, -2);
-		$ctquery .= ")\n";
-		$ctquery .= "TYPE=$databasetabletype\n";
-		$ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error());
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_TABLECREATED."! ($at)</font><br />\n";
-		}
-	else
-		{
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
-		}
-	//echo "<br />\n";
-	}
+    {
+    echo "<b>-></b>"._CF_CHECKING." <b>$at</b>..<br />";
+    if (!in_array($at, $tablelist))
+        {
+        //Create table
+        $ctquery="CREATE TABLE `$at` (\n";
+        foreach ($allfields as $af)
+            {
+            if ($af[0] == $at)
+                {
+                $ctquery .= $af[2].",\n";
+                }
+            }
+        foreach($keyinfo as $ki)
+            {
+            if ($ki[0] == $at)
+                {
+                $ctquery .= "PRIMARY KEY ({$ki[1]}),\n";
+                }
+            }
+        $ctquery = substr($ctquery, 0, -2);
+        $ctquery .= ")\n";
+        $ctquery .= "TYPE=$databasetabletype\n";
+        $ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error());
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_TABLECREATED."! ($at)</font><br />\n";
+        }
+    else
+        {
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
+        }
+    //echo "<br />\n";
+    }
 echo "<br /></font>\n";
 
 
@@ -232,91 +232,91 @@ echo "$setfont<b>"._CF_CHECKFIELDS.":</b><br /><font size='1'>\n";
 //GET LIST OF TABLES
 $tables = mysql_list_tables($databasename);
 while ($trow = mysql_fetch_row($tables))
-	{
-	$tablenames[] = $trow[0];
-	}
+    {
+    $tablenames[] = $trow[0];
+    }
 
 foreach ($tablenames as $tn)
-	{
-	if (substr($tn, 0, 3) != "old" && substr($tn, 0, 7) != "survey_" && substr($tn, 0, 3) != "tok")
-		{
-		if (isset($dbprefix) && $dbprefix) {
-			if(substr($tn, 0, strlen($dbprefix)) == $dbprefix) {
-				checktable($tn);
-			}
-		} else {
-			checktable($tn);
-		}
-		}
-	}
+    {
+    if (substr($tn, 0, 3) != "old" && substr($tn, 0, 7) != "survey_" && substr($tn, 0, 3) != "tok")
+        {
+        if (isset($dbprefix) && $dbprefix) {
+            if(substr($tn, 0, strlen($dbprefix)) == $dbprefix) {
+                checktable($tn);
+            }
+        } else {
+            checktable($tn);
+        }
+        }
+    }
 
 function checktable($tablename)
-	{
-	global $databasename, $allfields;
-	echo "<b>-></b>"._CF_CHECKING." <b>$tablename</b>..<br />";
-	$fields=mysql_list_fields($databasename, $tablename);
-	$numfields=mysql_num_fields($fields);
-	for ($i=0; $i<$numfields; $i++)
-		{
-		$fieldnames[]=mysql_field_name($fields, $i);
-		}
-	foreach ($allfields as $af)
-		{
-		if ($af[0] == $tablename)
-			{
-			$thisfieldexists=0;
-			foreach($fieldnames as $fn)
-				{
-				if ($af[1] == $fn)
-					{
-					$thisfieldexists=1;
-					}
-				elseif ($af[1] == "default_value" && $fn == "default")
-					{
-					$thisfieldexists=1;
-					$query = "ALTER TABLE `$tablename` CHANGE `$fn` {$af[2]}";
-					$result = mysql_query($query) or die("Couldn't change name of default field to default_value.<br />$query<br />".mysql_error());
-					echo "&nbsp;&nbsp;&nbsp;<font color='red'>Changed field name</font> ($af[1]) <br />\n";
-					}
-				}
-			if ($thisfieldexists==0)
-				{
-				$query="ALTER TABLE `$tablename` ADD $af[2]";
-				$result=mysql_query($query) or die("Insert field failed.<br />$query<br />".mysql_error());
-				echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_FIELDCREATED."</font> ($af[1]) <br />\n";
-				$addedfield="Y";
-				}
-			else
-				{
-				$addedfield = "N";
-				}
-			}
-		}
-	if (isset($addedfield) && $addedfield != "Y")
-		{
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
-		}
-	}
+    {
+    global $databasename, $allfields;
+    echo "<b>-></b>"._CF_CHECKING." <b>$tablename</b>..<br />";
+    $fields=mysql_list_fields($databasename, $tablename);
+    $numfields=mysql_num_fields($fields);
+    for ($i=0; $i<$numfields; $i++)
+        {
+        $fieldnames[]=mysql_field_name($fields, $i);
+        }
+    foreach ($allfields as $af)
+        {
+        if ($af[0] == $tablename)
+            {
+            $thisfieldexists=0;
+            foreach($fieldnames as $fn)
+                {
+                if ($af[1] == $fn)
+                    {
+                    $thisfieldexists=1;
+                    }
+                elseif ($af[1] == "default_value" && $fn == "default")
+                    {
+                    $thisfieldexists=1;
+                    $query = "ALTER TABLE `$tablename` CHANGE `$fn` {$af[2]}";
+                    $result = mysql_query($query) or die("Couldn't change name of default field to default_value.<br />$query<br />".mysql_error());
+                    echo "&nbsp;&nbsp;&nbsp;<font color='red'>Changed field name</font> ($af[1]) <br />\n";
+                    }
+                }
+            if ($thisfieldexists==0)
+                {
+                $query="ALTER TABLE `$tablename` ADD $af[2]";
+                $result=mysql_query($query) or die("Insert field failed.<br />$query<br />".mysql_error());
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_FIELDCREATED."</font> ($af[1]) <br />\n";
+                $addedfield="Y";
+                }
+            else
+                {
+                $addedfield = "N";
+                }
+            }
+        }
+    if (isset($addedfield) && $addedfield != "Y")
+        {
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
+        }
+    }
 
 if (isset($checkfororphans) && $checkfororphans)
-	{
-	$query  = "SELECT {$dbprefix}questions.qid as nullqid, {$dbprefix}answers.* "
-			. "FROM {$dbprefix}answers "
-			. "LEFT JOIN {$dbprefix}questions "
-			. "ON {$dbprefix}answers.qid={$dbprefix}questions.qid "
-			. "WHERE {$dbprefix}questions.qid IS NULL";
-	$result = mysql_query($query) or die("Orphan check failed.<br />$query<br />".mysql_error());
-	if ($result)
-		{
-		echo "<br /><b>Orphan Database Entries</b><br />\n";
-		while ($row = mysql_fetch_array($result))
-			{
-			echo "$setfont ANSWER: ".$row['qid']." - ".$row['code']."<br />\n";
-			}
-		}
-	}
+    {
+    $query  = "SELECT {$dbprefix}questions.qid as nullqid, {$dbprefix}answers.* "
+            . "FROM {$dbprefix}answers "
+            . "LEFT JOIN {$dbprefix}questions "
+            . "ON {$dbprefix}answers.qid={$dbprefix}questions.qid "
+            . "WHERE {$dbprefix}questions.qid IS NULL";
+    $result = mysql_query($query) or die("Orphan check failed.<br />$query<br />".mysql_error());
+    if ($result)
+        {
+        echo "<br /><b>Orphan Database Entries</b><br />\n";
+        while ($row = mysql_fetch_array($result))
+            {
+            echo "$setfont ANSWER: ".$row['qid']." - ".$row['code']."<br />\n";
+            }
+        }
+    }
 
-echo "</font></td></tr>\n";
+echo "</font></font></font></td></tr>\n";
 echo "<tr><td align='center' bgcolor='#CCCCCC'>\n";
 echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 
