@@ -99,7 +99,9 @@ while ($row=mysql_fetch_array($result))
 					  "sendnotification"=>$row['notification'],
 					  "allowregister"=>$row['allowregister'],
 					  "attribute1"=>$row['attribute1'],
-					  "attribute2"=>$row['attribute2']);
+					  "attribute2"=>$row['attribute2'],
+					  "email_confirm"=>$row['email_confirm'],
+					  "email_register"=>$row['email_register']);
 	if (!$thissurvey['adminname']) {$thissurvey['adminname']=$siteadminname;}
 	if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
 	if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
@@ -718,16 +720,16 @@ function submittokens()
 		$to = $cnfrow['email'];
 		$subject = _CONFIRMATION.": {$thissurvey['name']} "._SURVEYCPL;
 		$message="";
-		foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
-			{
-			$add=$ce;
-			$add = str_replace("{FIRSTNAME}", $cnfrow['firstname'], $add);
-			$add = str_replace("{LASTNAME}", $cnfrow['lastname'], $add);
-			$add = str_replace("{ADMINNAME}", $thissurvey['adminname'], $add);
-			$add = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $add);
-			$add = str_replace("{SURVEYNAME}", $thissurvey['name'], $add);
-			$message .= $add;
-			}
+//		foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
+//			{
+		$add=$thissurvey['email_confirm'];
+		$add = str_replace("{FIRSTNAME}", $cnfrow['firstname'], $add);
+		$add = str_replace("{LASTNAME}", $cnfrow['lastname'], $add);
+		$add = str_replace("{ADMINNAME}", $thissurvey['adminname'], $add);
+		$add = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $add);
+		$add = str_replace("{SURVEYNAME}", $thissurvey['name'], $add);
+		$message .= $add;
+//			}
 		//Only send confirmation email if there is a valid email address
 		if (validate_email($cnfrow['email'])) {mail($to, $subject, $message, $headers);} 
 		

@@ -56,6 +56,7 @@ while ($esrow = mysql_fetch_array($esresult))
 	$surveyadminemail = $esrow['adminemail'];
 	$surveytemplate = $esrow['template'];
 	$surveylanguage = $esrow['language'];
+	$surveyemailregister = $esrow['email_register'];
 	}
 if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
 
@@ -118,7 +119,8 @@ $query = "INSERT INTO {$dbprefix}tokens_$sid\n"
 $result = mysql_query($query) or die ($query."<br />".mysql_error());
 $tid=mysql_insert_id();
 
-$message=_RG_EMAILINVITATION;
+//$message=_RG_EMAILINVITATION;
+$message=$surveyemailregister;
 $message=str_replace("{ADMINNAME}", $surveyadmin, $message);
 $message=str_replace("{ADMINEMAIL}", $surveyadminemail, $message);
 $message=str_replace("{SURVEYNAME}", $surveyname, $message);
