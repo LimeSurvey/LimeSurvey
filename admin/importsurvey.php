@@ -66,7 +66,7 @@ while (!feof($handle))
 	}
 fclose($handle);
 
-if (!$bigarray[0] == "# SURVEYOR SURVEY DUMP")
+if (substr($bigarray[1], 0, 22) != "# SURVEYOR SURVEY DUMP")
 	{
 	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
 	echo _IS_WRONGFILE."<br /><br />\n";

@@ -82,11 +82,11 @@ if (!$_POST['gid'])
 	echo "</body>\n</html>\n";
 	exit;
 	}
-if (!$bigarray[0] == "# SURVEYOR QUESTION DUMP")
+if (substr($bigarray[1], 0, 24) != "# SURVEYOR QUESTION DUMP")
 	{
 	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
 	echo _IQ_WRONGFILE."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;

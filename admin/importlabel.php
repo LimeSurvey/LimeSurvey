@@ -66,11 +66,11 @@ while (!feof($handle))
 	}
 fclose($handle);
 
-if (!$bigarray[0] == "# SURVEYOR LABEL SET DUMP")
+if (substr($bigarray[1], 0, 25) != "# SURVEYOR LABEL SET DUMP")
 	{
 	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
 	echo _IQ_WRONGFILE."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<input $btstyle type='submit' value='"._IL_GOLABELADMIN."' onClick=\"window.open('labels.php', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -129,15 +129,15 @@ $countlabels = count($labelarray);
 
 if ($labelsetarray)
 	{
-	echo "Number of Labelsets: " . count($labelsetarray). "<br />";
 	foreach ($labelsetarray as $lsa)
 		{
 		$oldlidpos=strpos($lsa, "VALUES ('") + strlen("VALUES ('");
 		$oldlid=substr($lsa, $oldlidpos, (strpos($lsa, "', '", $oldlidpos))-$oldlidpos);
 		$lsinsert = str_replace("('$oldlid',", "('',", $lsa);
+		$lsinsert = str_replace("labelsets", "{$dbprefix}labelsets", $lsinsert);
 		$lsres = mysql_query($lsinsert) or die ("<b>"._ERROR.":</b> Failed to insert label set<br />\n$lsinsert<br />\n".mysql_error());
 		//GET NEW LID
-		$lidquery = "SELECT lid FROM labelsets ORDER BY lid DESC LIMIT 1";
+		$lidquery = "SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
 		$lidres = mysql_query($lidquery);
 		while ($lirow = mysql_fetch_row($lidres)) {$newlid = $lirow[0];}
 		$newrank=0;
@@ -153,6 +153,7 @@ if ($labelsetarray)
 				if (substr($la, $astart, $aend) == $oldlid) //This label belongs to this label set
 					{
 					$ainsert = str_replace("('$oldlid", "('$newlid", $la);
+					$ainsert = str_replace("labels", "{$dbprefix}labels", $ainsert);
 					$aresult=mysql_query($ainsert);
 					//echo $ainsert;
 					}
