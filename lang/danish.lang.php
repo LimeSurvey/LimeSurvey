@@ -98,6 +98,7 @@ define("_ANSCLEAR", "Svar gennemf&oslash;rt");
 define("_RESTART", "Nulstil og start forfra");
 define("_CLOSEWIN_PS", "Luk dette vindue");
 define("_CONFIRMCLEAR", "Er du sikker p&aring; at du vil nulstille alle dine sp&oslash;rgsm&aring;l?");
+define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
 define("_EXITCLEAR", "Nulstil og forlad unders&oslash;gelsen.");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Kan ikke gemme besvarelsen - der er ikke noget at gemme.");
@@ -191,4 +192,44 @@ define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
 define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
 define("_PS_CON_OR", "or"); //New for 0.98finalRC2
+//Save Messages
+define("_SAVE_AND_RETURN", "Save your responses so far");
+define("_SAVEHEADING", "Save Your Unfinished Survey");
+define("_RETURNTOSURVEY", "Return To Survey");
+define("_SAVENAME", "Name");
+define("_SAVEPASSWORD", "Password");
+define("_SAVEPASSWORDRPT", "Repeat Password");
+define("_SAVE_EMAIL", "Your Email");
+define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
+				  ."Your survey will be saved using that name and password, and can be "
+				  ."completed later by logging in with the same name and password.<br /><br />\n"
+				  ."If you give an email address, an email containing the details will be sent "
+				  ."to you.");
+define("_SAVESUBMIT", "Save Now");
+define("_SAVENONAME", "You must supply a name for this saved session.");
+define("_SAVENOPASS", "You must supply a password for this saved session.");
+define("_SAVENOMATCH", "Your passwords do not match.");
+define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
+define("_SAVETRYAGAIN", "Please try again.");
+define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
+define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
+						 ."a survey in progress. The following details can be used "
+						 ."to return to this survey and continue where you left "
+						 ."off.");
+define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
+define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
+define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
+define("_SAVE_EMAILSENT", "An email has been sent with details about your saved survey.");
+
+//Load Messages
+define("_LOAD_SAVED", "Load unfinished survey");
+define("_LOADHEADING", "Load A Previously Saved Survey");
+define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
+			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
+define("_LOADNAME", "Saved name");
+define("_LOADPASSWORD", "Password");
+define("_LOADSUBMIT", "Load Now");
+define("_LOADNONAME", "You did not provide a name");
+define("_LOADNOPASS", "You did not provide a password");
+define("_LOADNOMATCH", "There is no matching saved survey");
 ?>
