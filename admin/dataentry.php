@@ -43,12 +43,13 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 //Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
 echo $htmlheader;
-echo "<TABLE WIDTH='100%' BORDER='0' BGCOLOR='#555555'><TR><TD ALIGN='CENTER'><FONT COLOR='WHITE'><B>Data Entry</B></TD></TR></TABLE>\n";
+echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Data Entry</b></td></tr></table>\n";
 if (!mysql_selectdb ($databasename, $connect))
 	{
-	echo "<CENTER><B><FONT COLOR='RED'>ERROR: Surveyor database does not exist</FONT></B><BR><BR>";
-	echo "It appears that your surveyor script has not yet been set up properly.<BR>";
-	echo "Contact your System Administrator";
+	echo "<center><b><font color='red'>ERROR: Surveyor database does not exist</font></b><br /><br />\n";
+	echo "It appears that your surveyor script has not yet been set up properly.<br />\n";
+	echo "Contact your System Administrator</center>\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 if (!$sid && !$action)
@@ -59,73 +60,77 @@ if (!$sid && !$action)
 
 if ($action == "insert")
 	{
-	echo "<CENTER><B>Inserting data into Survey $sid, tablename $surveytable</B><BR><BR>";
+	echo "<center><b>Inserting data into Survey $sid, tablename $surveytable</b><br /><br />\n";
 	$iquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
-	$insertqr = "INSERT INTO $surveytable VALUES ('',";
-	
-	while ($irow=mysql_fetch_row($iresult))
+	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow[3] != "M" && $irow[3] != "A" && $irow[3] != "B" && $irow[3] != "C" && $irow[3] != "P" && $irow[3] != "O")
+		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "P" && $irow['type'] != "O")
 			{
-			$fieldname=$irow[1] . "X" . $irow[2] . "X" . $irow[0];
+			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
+			$col_name .= "`$fieldname`, ";
 			$insertqr .= "'" . $$fieldname . "', ";
 			}
-		elseif ($irow[3] == "O")
+		elseif ($irow['type'] == "O")
 			{
-			echo "TYPE O<BR>";
-			$fieldname=$irow[1] . "X" . $irow[2] . "X" . $irow[0];
-			echo $fieldname . "| ";
+			//echo "TYPE O<br />\n";
+			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
+			$col_name .= "`$fieldname`, ";
+			//echo $fieldname . "| ";
 			$insertqr .= "'" . $$fieldname . "', ";
 			$fieldname .= "comment";
-			echo $fieldname."<br />\n";
+			$col_name .= "`$fieldname`, ";
+			//echo $fieldname."<br />\n";
 			$insertqr .= "'" . $$fieldname . "', ";
 			}
 		else
 			{
-			$i2query="SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid=$irow[0] AND questions.sid=$sid ORDER BY code";
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY code";
 			//echo $i2query."<br />\n";
-			$i2result=mysql_query($i2query);
-			while ($i2row=mysql_fetch_row($i2result))
+			$i2result = mysql_query($i2query);
+			while ($i2row = mysql_fetch_array($i2result))
 				{
-				$fieldname=$irow[1] . "X" . $irow[2] . "X" . $irow[0].$i2row[1];
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
+				$col_name .= "`$fieldname`, ";
 				$insertqr .= "'" . $$fieldname . "', ";
-				if ($i2row[4] == "Y") {$otherexists="Y";}
-				if ($irow[3] == "P")
+				if ($i2row['other'] == "Y") {$otherexists = "Y";}
+				if ($irow['type'] == "P")
 					{
-					$fieldname2=$fieldname."comment";
+					$fieldname2 = $fieldname."comment";
+					$col_name .= "`$fieldname2`, ";
 					$insertqr .= "'".$$fieldname2."', ";
 					}
 				}
 			if ($otherexists == "Y") 
 				{
-				$fieldname=$irow[1]."X".$irow[2]."X".$irow[0]."other";
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
+				$col_name .= "`$fieldname`, ";
 				$insertqr .= "'".$$fieldname . "', ";
 				}
-			 
 			}
 		}
 	
-	$insertqr = substr($insertqr, 0, strlen($insertqr)-2);
+	$col_name = substr($col_name, 0, -2); //Strip off the last comma-space
+	$insertqr = substr($insertqr, 0, -2); //Strip off the last comma-space
+	$SQL = "INSERT INTO $surveytable \n($col_name) \nVALUES \n($insertqr)";
 	
-	$insertqr .= ")";
+	//echo "<pre style='text-align: left'>$SQL</pre><br />\n"; //Debugging info
+	$iinsert = mysql_query ($SQL) or die ("Could not insert your data<br />\n$insertqr<br />\n" . mysql_error());
 	
-	//echo "$insertqr."<br />\n"";
-	
-	$iinsert = mysql_query ($insertqr) or die ("Could not insert your data<BR>$insertqr<BR>" . mysql_error());
-	
-	echo "<FONT COLOR='GREEN'><B>Insert Was A Success</B><BR>";
+	echo "<font color='green'><b>Insert Was A Success</b><br />\n";
 	
 	$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
 	$fresult = mysql_query($fquery);
-	while ($frow=mysql_fetch_row($fresult))
+	while ($frow = mysql_fetch_array($fresult))
 		{
-		echo "This record has been assigned the ID number, $frow[0]<BR>";
+		echo "This record has been assigned the ID number, {$frow['id']}<br />\n";
 		}
 	
-	echo "</FONT><BR>[<a href='dataentry.php?sid=$sid'>Add another record</A>]<BR>";
-	echo "[<a href='browse.php?sid=$sid&action=all&limit=100'>Browse Surveys</a>]<BR>";
+	echo "</font><br />[<a href='dataentry.php?sid=$sid'>Add another record</a>]<br />\n";
+	echo "[<a href='browse.php?sid=$sid&action=all&limit=100'>Browse Surveys</a>]<br />\n";
+	echo "</center>\n";
+	echo "</body>\n</html>";
 	
 	}
 
@@ -133,354 +138,410 @@ elseif ($action == "edit")
 	{
 	echo "$surveyheader";
 	echo "$surveyoptions";
+	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
+	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid'";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
-	//echo "$fnquery<BR><BR>";
-	$fnames[]=array("id", "id", "id", "id", "id", "id", "id");
-	while ($fnrow = mysql_fetch_row($fnresult))
+	//echo "$fnquery<br /><br />\n";
+	
+	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow;} // Get table output into array
+	
+	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
+	usort($fnrows, 'CompareGroupThenTitle');
+	
+	$fnames[] = array("id", "id", "id", "id", "id", "id", "id");
+	foreach ($fnrows as $fnrow)
 		{
-		$field=$fnrow[1]."X".$fnrow[2]."X".$fnrow[0];
-		$ftitle="Grp$fnrow[2]Qst$fnrow[4]";
-		$fquestion=$fnrow[5];
-			if ($fnrow[3] == "M" || $fnrow[3] == "A" || $fnrow[3] == "B" || $fnrow[3] == "C" || $fnrow[3] == "P")
+		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
+		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
+		$fquestion = $fnrow['question'];
+		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "P")
 			{
-			$fnrquery="SELECT * FROM answers WHERE qid=$fnrow[0] order by code";
-			$fnrresult=mysql_query($fnrquery);
-			while ($fnrrow=mysql_fetch_row($fnrresult))
+			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY code";
+			$fnrresult = mysql_query($fnrquery);
+			while ($fnrrow = mysql_fetch_array($fnrresult))
 				{
-				$fnames[]=array("$field$fnrrow[1]", "$ftitle ($fnrrow[1])", "$fnrow[5]", "$fnrow[3]", "$field", "$fnrrow[1]", "$fnrrow[2]", "$fnrow[0]");
-				if ($fnrow[3] == "P")
+				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+				if ($fnrow['type'] == "P")
 					{
-					$fnames[]=array("$field"."comment", "$ftitle"."comment", "$fnrow[5](comment)", "$fnrow[3]", "$field", "$fnrrow[1]", "$fnrrow[2]", "$fnrow[0]");
+					$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']}(comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
 					}
 				}
-			if ($fnrow[7] == "Y")
+			if ($fnrow['other'] == "Y")
 				{
-				$fnames[]=array("$field"."other", "$ftitle"."other", "$fnrow[5](other)", "$fnrow[3]", "$field", "$fnrrow[1]", "$fnrrow[2]", "$fnrow[0]");
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
 				}
 			}
-		elseif ($fnrow[3] == "O")
+		elseif ($fnrow['type'] == "O")
 			{
-			$fnames[]=array("$field", "$ftitle", "$fnrow[5]", "$fnrow[3]", "$field", "$fnrrow[1]", "$fnrrow[2]", "$fnrow[0]");
-			$field2=$field."comment";
-			$ftitle2=$ftitle."[Comment]";
-			$longtitle=$fnrow[5]."<BR>(Comment)";
-			$fnames[]=array("$field", "$ftitle", "$fnrow[5]", "$fnrow[3]", "$field", "$fnrrow[1]", "$fnrrow[2]", "$fnrow[0]");
+			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
+			$field2 = $field."comment";
+			$ftitle2 = $ftitle."[Comment]";
+			$longtitle = "{$fnrow['question']}<br />(Comment)";
+			$fnames[] = array("$field2", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
 			}
 		else
 			{
-			$fnames[]=array("$field", "$ftitle", "$fnrow[5]", "$fnrow[3]", "$field", "$fnrrow[1]", "$fnrrow[2]", "$fnrow[0]");
+			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
 			}
-	//$fnames[]=array("$field", "$ftitle", "$fnrow[5]", "$fnrow[3]");
-		//echo "$field | $ftitle | $fquestion<BR>";
+		//$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}");
+		//echo "$field | $ftitle | $fquestion<br />\n";
 		}
+	//echo "<pre>"; print_r($fnames); echo "</pre>"; //Debugging info
 	$nfncount = count($fnames)-1;
 
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = mysql_query($idquery);
-	echo "<TABLE>";
-	echo "<TR><TD COLSPAN='2' BGCOLOR='#EEEEEE' ALIGN='CENTER'>$setfont<B>Editing Answer ID $id ($nfncount)</TD></TR>\n";
-	echo "<TR><TD COLSPAN='2' BGCOLOR='#CCCCCC' HEIGHT='1'></TD></TR>\n";
-	while ($idrow = mysql_fetch_row($idresult))
+	echo "<table>\n";
+	echo "\t<tr><td colspan='2' bgcolor='#EEEEEE' align='center'>$setfont<b>Editing Answer ID $id ($nfncount)</td></tr>\n";
+	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+	while ($idrow = mysql_fetch_assoc($idresult))
 		{
-		$i=0;
-		for ($i; $i<$nfncount+1; $i++)
+		for ($i=0; $i<$nfncount+1; $i++)
 			{
-			echo "<TR><FORM>";
-			echo "<TD BGCOLOR='#EEEEEE' VALIGN='TOP' ALIGN='RIGHT' WIDTH='20%'>$setfont<B>";
+			$answer = $idrow[$fnames[$i][0]];
+			echo "\t<tr><form>\n";
+			echo "\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont<b>\n";
 			if ($fnames[$i][3] != "A" && $fnames[$i][3] != "B" && $fnames[$i][3]!="C" && $fnames[$i][3]!="P" && $fnames[$i][3] != "M") 
 				{
-				echo "{$fnames[$i][2]}";
+				echo "\t\t\t{$fnames[$i][2]}\n";
 				}
 			else
 				{
-				echo "{$fnames[$i][2]}";
+				echo "\t\t\t{$fnames[$i][2]}\n";
 				}
-			echo "</TD>";
-			echo "<TD VALIGN='TOP'>";
-			//echo "-={$fnames[$i][3]}=-";
-			switch($fnames[$i][3])
+			echo "\t\t</td>\n";
+			echo "\t\t<td valign='top'>\n";
+			//echo "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info
+			switch ($fnames[$i][3])
 				{
 				case "id":
-					echo "$idrow[$i] <FONT COLOR=RED SIZE=1>Cannot be altered</FONT>\n";
+					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>Cannot be altered</font>\n";
 					break;
 				case "M":
-					while ($fnames[$i][3]=="M")
+					while ($fnames[$i][3] == "M")
 						{
-						$fieldn=substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						//echo substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<BR>";
-						if (substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5) == "other")
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						//echo substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
+						if (substr($fnames[$i][0], -5) == "other")
 							{
-							echo "$setfont<INPUT TYPE='TEXT' NAME='{$fnames[$i][0]}' VALUE='$idrow[$i]'>";
+							echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
 							}
 						else
 							{
-							echo "$setfont<INPUT TYPE='CHECKBOX' NAME='{$fnames[$i][0]}' VALUE='Y'";
-							if ($idrow[$i] == "Y") {echo " CHECKED";}
-							echo ">{$fnames[$i][6]}<BR>";
+							echo "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
+							if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
+							echo " />{$fnames[$i][6]}<br />\n";
 							}
 						$i++;
 						}
 					$i--;
 					break;
 				case "P":
-					while ($fnames[$i][3]=="P")
+					echo "<table>\n";
+					while ($fnames[$i][3] == "P")
 						{
-						$fieldn=substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						if (substr($fnames[$i][0], strlen($fnames[$i][0])-7, 7) == "comment")
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						if (substr($fnames[$i][0], -7) == "comment")
 							{
-							echo "$setfont<INPUT TYPE='TEXT' NAME='{$fnames[$i][0]}' VALUE=\"$idrow[$i]\"><BR>";
+							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value=\"{$idrow[$fnames[$i][0]]}\" /></td>\n";
+							echo "\t</tr>\n";
 							}
 						else
 							{
-							echo "$setfont<INPUT TYPE='CHECKBOX' NAME=\"{$fnames[$i][0]}\" VALUE='Y'";
-							if ($idrow[$i] == "Y") {echo " CHECKED";}
-							echo ">{$fnames[$i][6]}";
+							echo "\t<tr>\n";
+							echo "\t\t<td>$setfont<input type='checkbox' name=\"{$fnames[$i][0]}\" value='Y'";
+							if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
+							echo " />{$fnames[$i][6]}</td>\n";
 							}
 						$i++;
 						}
-					//$i--;
+					echo "</table>\n";
+					$i--;
 					break;
 				case "A":
-					echo "<TABLE>\n";
-					while ($fnames[$i][3]=="A")
+					echo "<table>\n";
+					while ($fnames[$i][3] == "A")
 						{
-						$fieldn=substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						echo "<TR><TD ALIGN='RIGHT'>$setfont{$fnames[$i][6]}</TD><TD>$setfont";
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n";
+						echo "\t\t<td>$setfont\n";
 						for ($j=1; $j<=5; $j++)
 							{
-							echo "<INPUT TYPE='RADIO' NAME='{$fnames[$i][0]}' VALUE='$j'";
-							if ($idrow[$i] == $j) {echo " CHECKED";}
-							echo ">$j&nbsp;";
+							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
+							if ($idrow[$fnames[$i][0]] == $j) {echo " checked";}
+							echo " />$j&nbsp;\n";
 							}
-						echo "</TD></TR>";
+						echo "\t\t</td>\n";
+						echo "\t</tr>\n";
 						$i++;
 						}
-					echo "</TABLE>\n";
+					echo "</table>\n";
 					$i--;
 					break;
 				case "B":
-					echo "<TABLE>\n";
-					while ($fnames[$i][3]=="B")
+					echo "<table>\n";
+					while ($fnames[$i][3] == "B")
 						{
-						$fieldn=substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						echo "<TR><TD ALIGN='RIGHT'>$setfont{$fnames[$i][6]}</TD><TD>$setfont";
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n";
+						echo "\t\t<td>$setfont\n";
 						for ($j=1; $j<=10; $j++)
 							{
-							echo "<INPUT TYPE='RADIO' NAME='{$fnames[$i][0]}' VALUE='$j'";
-							if ($idrow[$i] == $j) {echo " CHECKED";}
-							echo ">$j&nbsp;";
+							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
+							if ($idrow[$fnames[$i][0]] == $j) {echo " checked";}
+							echo " />$j&nbsp;\n";
 							}
-						echo "</TD></TR>";
+						echo "\t\t</td>\n";
+						echo "\t</tr>\n";
 						$i++;
 						}
 					$i--;
-					echo "</TABLE>\n";
+					echo "</table>\n";
 					break;
 				case "C":
-					echo "<TABLE>\n";
-					while ($fnames[$i][3]=="C")
+					echo "<table>\n";
+					while ($fnames[$i][3] == "C")
 						{
-						$fieldn=substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						echo "<TR><TD ALIGN='RIGHT'>$setfont{$fnames[$i][6]}</TD><TD>$setfont";
-						echo "<INPUT TYPE='RADIO' NAME='{$fnames[$i][0]}' VALUE='Y'";
-						if ($idrow[$i] == "Y") {echo " CHECKED";}
-						echo ">Yes&nbsp;";
-						echo "<INPUT TYPE='RADIO' NAME='{$fnames[$i][0]}' VALUE='U'";
-						if ($idrow[$i] == "U") {echo " CHECKED";}
-						echo ">Uncertain&nbsp";
-						echo "<INPUT TYPE='RADIO' NAME='{$fnames[$i][0]}' VALUE='N'";
-						if ($idrow[$i] == "N") {echo " CHECKED";}
-						echo ">No&nbsp;";
-						echo "</TD></TR>";
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n";
+						echo "\t\t<td>$setfont\n";
+						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='Y'";
+						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
+						echo " />Yes&nbsp;\n";
+						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='U'";
+						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
+						echo " />Uncertain&nbsp\n";
+						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='N'";
+						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
+						echo " />No&nbsp;\n";
+						echo "\t\t</td>\n";
+						echo "\t</tr>\n";
 						$i++;
 						}
 					$i--;
-					echo "</TABLE>\n";
+					echo "</table>\n";
 					break;
 				case "T": //Long Text
-					echo "<TEXTAREA ROWS='5' COLS='45' NAME='{$fnames[$i][0]}'>$idrow[$i]</TEXTAREA>\n";
+					echo "\t\t\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>{$idrow[$fnames[$i][0]]}</textarea>\n";
 					break;
 				case "S": //Short text
-					echo "<INPUT TYPE='TEXT' NAME='{$fnames[$i][0]}' VALUE='$idrow[$i]'>\n";
+					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
 					break;
 				case "D": //Date
-					echo "<INPUT TYPE='TEXT' SIZE='10' NAME='{$fnames[$i][0]}' VALUE='$idrow[$i]'>\n";
+					echo "\t\t\t<input type='text' size='10' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
 					break;
 				case "G": //Gender
-					echo "<SELECT NAME='{$fnames[$i][0]}'>\n";
-					echo "  <OPTION VALUE=''";
-					if ($idrow[$i] == "") {echo " SELECTED";}
-					echo ">Please choose..</OPTION>\n  <OPTION VALUE='F'";
-					if ($idrow[$i] == "F") {echo " SELECTED";}
-					echo ">Female</OPTION>\n  <OPTION VALUE='M'";
-					if ($idrow[$i] == "M") {echo " SELECTED";}
-					echo ">Male</OPTION>\n<SELECT>\n";
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
+					echo "\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">Please choose..</option>\n";
+					echo "\t\t\t\t<option value='F'";
+					if ($idrow[$fnames[$i][0]] == "F") {echo " selected";}
+					echo ">Female</option>\n";
+					echo "\t\t\t\t<option value='M'";
+					if ($idrow[$fnames[$i][0]] == "M") {echo " selected";}
+					echo ">Male</option>\n";
+					echo "\t\t\t<select>\n";
 					break;
 				case "Y": //Yes/No
-					echo "<SELECT NAME='{$fnames[$i][0]}'>\n";
-					echo "  <OPTION VALUE=''";
-					if ($idrow[$i] == "") {echo " SELECTED";}
-					echo ">Please choose..</OPTION>\n  <OPTION VALUE='Y'";
-					if ($idrow[$i] == "Y") {echo " SELECTED";}
-					echo ">Yes</OPTION>\n  <OPTION VALUE='N'";
-					if ($idrow[$i] == "N") {echo " SELECTED";}
-					echo ">No</OPTION>\n</SELECT>\n";
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
+					echo "\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">Please choose..</option>\n";
+					echo "\t\t\t\t<option value='Y'";
+					if ($idrow[$fnames[$i][0]] == "Y") {echo " selected";}
+					echo ">Yes</option>\n";
+					echo "\t\t\t\t<option value='N'";
+					if ($idrow[$fnames[$i][0]] == "N") {echo " selected";}
+					echo ">No</option>\n";
+					echo "\t\t\t</select>\n";
 					break;
 				case "L": //Dropdown list
-					$lquery="SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY code";
-					$lresult=mysql_query($lquery);
-					echo "<SELECT NAME='{$fnames[$i][0]}'>\n";
-					echo "  <OPTION VALUE=''";
-					if ($idrow[$i] == "") {echo " SELECTED";}
-					echo ">Please choose..</OPTION>\n";
+					$lquery = "SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY code";
+					$lresult = mysql_query($lquery);
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
+					echo "\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">Please choose..</option>\n";
 					
-					while ($llrow=mysql_fetch_row($lresult))
+					while ($llrow = mysql_fetch_array($lresult))
 						{
-						echo "  <OPTION VALUE='$llrow[1]'";
-						if ($idrow[$i]==$llrow[1]) {echo " SELECTED";}
-						echo ">$llrow[2]</OPTION>\n";
+						echo "\t\t\t\t<option value='{$llrow['code']}'";
+						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
+						echo ">{$llrow['answer']}</option>\n";
 						}
-					echo "</SELECT>\n";
+					echo "\t\t\t</select>\n";
 					break;
 				case "O": //List with Comment
-					$lquery="SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY code";
-					$lresult=mysql_query($lquery);
-					echo "<SELECT NAME='{$fnames[$i][0]}'>\n";
-					echo "  <OPTION VALUE=''";
-					if ($idrow[$i] == "") {echo " SELECTED";}
-					echo ">Please choose..</OPTION>\n";
+					$lquery = "SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY code";
+					$lresult = mysql_query($lquery);
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
+					echo "\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">Please choose..</option>\n";
 					
-					while ($llrow=mysql_fetch_row($lresult))
+					while ($llrow = mysql_fetch_array($lresult))
 						{
-						echo "  <OPTION VALUE='$llrow[1]'";
-						if ($idrow[$i]==$llrow[1]) {echo " SELECTED";}
-						echo ">$llrow[2]</OPTION>\n";
+						echo "\t\t\t\t<option value='{$llrow['code']}'";
+						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
+						echo ">{$llrow['answer']}</option>\n";
 						}
-					echo "</SELECT>\n";
+					echo "\t\t\t</select>\n";
 					$i++;
-					echo "<BR><TEXTAREA COLS='45' ROWS='5' NAME='{$fnames[$i][0]}comment'>$idrow[$i]</TEXTAREA>\n";
+					echo "\t\t\t<br />\n";
+					echo "\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>{$idrow[$fnames[$i][0]]}</textarea>\n";
 					break;
 				case "5": //1 to 5 point spread
 					for ($x=1; $x<=5; $x++)
 						{
-						echo "<INPUT TYPE='RADIO' NAME='{$fnames[$i][0]}' VALUE='$x'";
-						if ($idrow[$i] == $x) {echo " CHECKED";}
-						echo ">$x ";
+						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$x'";
+						if ($idrow[$fnames[$i][0]] == $x) {echo " checked";}
+						echo " />$x \n";
 						}
 					break;
 				}
-			//echo "$setfont$idrow[$i]";
-			//echo $fnames[$i][0], $fnames[$i][1], $fnames[$i][2];
-			echo "</TD></TR>\n";
-			echo "<TR><TD COLSPAN='2' BGCOLOR='#CCCCCC' HEIGHT='1'></TD></TR>\n";
+			//echo "\t\t\t$setfont{$idrow[$fnames[$i][0]]}\n"; //Debugging info
+			//echo $fnames[$i][0], $fnames[$i][1], $fnames[$i][2], "\n"; //Debugging info
+			echo "\t\t</td>\n";
+			echo "\t</tr>\n";
+			echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 			}
 		}
-	echo "</TABLE>\n";
-	echo "<TABLE WIDTH='100%'><TR><TD $singleborderstyle BGCOLOR='#EEEEEE' ALIGN='CENTER'>";
-	echo "<INPUT TYPE='SUBMIT' VALUE='Update'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='id' VALUE='$id'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='action' VALUE='update'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='surveytable' VALUE='survey_$sid'>\n";
-	echo "</TD></FORM></TR></TABLE>\n";
+	echo "</table>\n";
+	echo "<table width='100%'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
+	echo "\t\t\t<input type='submit' value='Update'>\n";
+	echo "\t\t\t<input type='hidden' name='id' value='$id'>\n";
+	echo "\t\t\t<input type='hidden' name='sid' value='$sid'>\n";
+	echo "\t\t\t<input type='hidden' name='action' value='update'>\n";
+	echo "\t\t\t<input type='hidden' name='surveytable' value='survey_$sid'>\n";
+	echo "\t\t</td>\n";
+	echo "\t\t</form>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
 	}
 	
 
 elseif ($action == "update")
 	{
 	echo "$surveyoptions";
-	echo "<CENTER><BR><B>Updating data for Survey $sid, tablename $surveytable - Record No $id</B><BR><BR>";
+	echo "<center><br /><b>Updating data for Survey $sid, tablename $surveytable - Record No $id</b><br /><br />\n";
 	$iquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
 	$updateqr = "UPDATE $surveytable SET ";
 	
-	while ($irow=mysql_fetch_row($iresult))
+	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow[3] != "M" && $irow[3] != "A" && $irow[3] != "B" && $irow[3] != "C" && $irow[3] != "O")
+		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "O" && $irow['type'] != "P")
 			{
-			$fieldname=$irow[1] . "X" . $irow[2] . "X" . $irow[0];
-			$updateqr .= "$fieldname = '" . $$fieldname . "', ";
+			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
+			$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
 			}
-		elseif ($irow[3] == "O")
+		elseif ($irow['type'] == "O")
 			{
-			$fieldname=$irow[1] . "X" . $irow[2] . "X" . $irow[0];
-			$updateqr .= "$fieldname = '" . $$fieldname . "', ";
-			$fieldname=$irow[1] . "X" . $irow[2] . "X" . $irow[0] . "comment";
-			$updateqr .= "$fieldname = '" . $$fieldname . "', ";
+			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
+			$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
+			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}comment";
+			$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
 			
 			}
 		else
 			{
-			$i2query="SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid=$irow[0] AND questions.sid=$sid ORDER BY code";
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY code";
 			//echo $i2query;
-			$i2result=mysql_query($i2query);
-			while ($i2row=mysql_fetch_row($i2result))
+			$i2result = mysql_query($i2query);
+			$otherexists = "";
+			while ($i2row = mysql_fetch_array($i2result))
 				{
-				$fieldname=$irow[1] . "X" . $irow[2] . "X" . $irow[0].$i2row[1];
-				$updateqr .= "$fieldname = '" . $$fieldname . "', ";
-				if ($i2row[4] == "Y") {$otherexists="Y";}
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
+				$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
+				if ($i2row['other'] == "Y") {$otherexists = "Y";}
+				if ($irow['type'] == "P")
+					{
+					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
+					$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
+					}
 				}
 			if ($otherexists == "Y") 
 				{
-				$fieldname=$irow[1]."X".$irow[2]."X".$irow[0]."other";
-				$updateqr .= "$fieldname='".$$fieldname . "', ";
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
+				$updateqr .= "$fieldname='".$$fieldname . "', \n";
 				}
 			}	
 		}
-	$updateqr = substr($updateqr, 0, -2);
+	$updateqr = substr($updateqr, 0, -3);
 	$updateqr .= " WHERE id=$id";
-	$updateres=mysql_query($updateqr);
-	echo "<BR><B>Record has been updated.</B><BR><BR>\n";
-	echo "<a href='browse.php?sid=$sid&action=id&id=$id'>View record again</a>\n<BR>";
+	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre>$updateqr</pre>");
+	echo "<br />\n<b>Record has been updated.</b><br /><br />\n";
+	echo "<a href='browse.php?sid=$sid&action=id&id=$id'>View record again</a>\n<br />\n";
 	echo "<a href='browse.php?sid=$sid&action=all'>Browse all records</a>\n";
-	
+	//echo "<pre style='text-align: left'>$updateqr</pre>"; //Debugging info
+	echo "</body>\n</html>\n";
 	}
 
 elseif ($action == "delete")
 	{
-	echo "<TABLE WIDTH='100%' BORDER='0' CELLSPACING='0'>";
-	echo "<TR BGCOLOR='#000080'><TD COLSPAN='3' ALIGN='CENTER'><FONT COLOR='WHITE'><B>$surveyname</B>";
-	echo "<BR>$setfont$surveydesc</TD></TR>\n";
-	$delquery="DELETE FROM $surveytable WHERE id=$id";
-	echo "<TR><TD ALIGN='CENTER'><BR>$setfont<B>Deleting Record $id</B><BR><BR>";
-	$delresult=mysql_query($delquery) or die ("Couldn't delete record $id<BR>".mysql_error());
-	echo "Record succesfully deleted.<BR><BR><a href='browse.php?sid=$sid&action=all'>Back to Browse</a></TD></TR>\n";
+	echo "<table width='100%' border='0' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#000080'>\n";
+	echo "\t\t<td colspan='3' align='center'><font color='white'>\n";
+	echo "\t\t\t<b>$surveyname</b><br />\n";
+	echo "\t\t\t$setfont$surveydesc\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	$delquery = "DELETE FROM $surveytable WHERE id=$id";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'><br />$setfont<b>Deleting Record $id</b><br /><br />\n";
+	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
+	echo "\t\t\tRecord succesfully deleted.<br /><br />\n<a href='browse.php?sid=$sid&action=all'>Back to Browse</a>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
+	echo "</body>\n</html>\n";
 	}
 	
 else
 	{
 	// PRESENT SURVEY DATAENTRY SCREEN
-
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery);
-	while ($desrow = mysql_fetch_row($desresult))
+	while ($desrow = mysql_fetch_array($desresult))
 		{
-		$surveyname = $desrow[1];
-		$surveydesc = $desrow[2];
-		$surveyactive = $desrow[4];
-		$surveytable = "survey_$desrow[0]";
+		$surveyname = $desrow['short_title'];
+		$surveydesc = $desrow['description'];
+		$surveyactive = $desrow['active'];
+		$surveytable = "survey_{$desrow['sid']}";
 		}
-	if ($surveyactive == "Y") {echo "$surveyoptions";}
-	echo "<TABLE WIDTH='100%' BORDER='0' CELLSPACING='0'>";
-	echo "<TR BGCOLOR='#000080'><TD COLSPAN='3' ALIGN='CENTER'><FONT COLOR='WHITE'><B>$surveyname</B>";
-	echo "<BR>$setfont$surveydesc</TD></TR>\n";
-	echo "<FORM ACTION='dataentry.php' NAME='addsurvey' >\n";
+	if ($surveyactive == "Y") {echo "$surveyoptions\n";}
+	echo "<table width='100%' border='0' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#000080'>\n";
+	echo "\t\t<td colspan='3' align='center'><font color='white'>\n";
+	echo "\t\t\t<b>$surveyname</b>\n";
+	echo "\t\t\t<br>$setfont$surveydesc\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<form action='dataentry.php' name='addsurvey'>\n";
+	
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
-
 	$degquery = "SELECT * FROM groups WHERE sid=$sid ORDER BY group_name";
 	$degresult = mysql_query($degquery);
 	// GROUP NAME
-	while ($degrow = mysql_fetch_row($degresult))
+	while ($degrow = mysql_fetch_array($degresult))
 		{
-		$deqquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$degrow[0] ORDER BY title";
+		$deqquery = "SELECT * FROM questions WHERE sid=$sid AND gid={$degrow['gid']}";
 		$deqresult = mysql_query($deqquery);
-		echo "<TR><TD COLSPAN='3' ALIGN='CENTER' BGCOLOR='#AAAAAA'>$setfont<B>$degrow[2]</TD></TR>\n\n";
-		$gid=$degrow[0];
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<b>{$degrow['group_name']}</td>\n";
+		echo "\t</tr>\n";
+		$gid = $degrow['gid'];
 		
 		//Alternate bgcolor for different groups
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
@@ -495,180 +556,208 @@ else
 		
 		foreach ($deqrows as $deqrow)
 			{
-			$qid=$deqrow['qid'];
-			$fieldname="$sid"."X"."$gid"."X"."$qid";
-			echo "<TR BGCOLOR='$bgc'>\n <TD VALIGN='TOP' WIDTH='1%'>$setfont{$deqrow['title']}</TD>\n";
-			echo " <TD VALIGN='TOP' ALIGN='RIGHT' WIDTH='30%'>$setfont<B>{$deqrow['question']}</B></TD>\n <TD VALIGN='TOP'>$setfont";
+			$qid = $deqrow['qid'];
+			$fieldname = "$sid"."X"."$gid"."X"."$qid";
+			echo "\t<tr bgcolor='$bgc'>\n";
+			echo "\t\t<td valign='top' width='1%'>$setfont{$deqrow['title']}</td>\n";
+			echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>{$deqrow['question']}</b></td>\n";
+			echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
 			//DIFFERENT TYPES OF DATA FIELD HERE
-			if ($deqrow[6])
+			if ($deqrow['help'])
 				{
 				$hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
 				$hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-				echo "<IMG SRC='help.gif' ALT='Help about this question' ALIGN='RIGHT' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\">";
+				echo "\t\t\t<img src='help.gif' alt='Help about this question' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
 				}
 			switch($deqrow['type'])
 				{
 				case "S":  //SHORT TEXT
-					echo "<INPUT TYPE='TEXT' NAME='$fieldname'>";				
+					echo "\t\t\t<input type='text' name='$fieldname' />\n";				
 					break;
 				case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
-					while ($mearow = mysql_fetch_row($mearesult))
+					while ($mearow = mysql_fetch_array($mearesult))
 						{
-						echo "$setfont<INPUT TYPE='checkbox' name='$fieldname$mearow[1]' VALUE='Y'";
-						if ($mearow[3] == "Y") {echo " CHECKED";}
-						echo ">$mearow[2]<BR>";
+						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+						if ($mearow['default'] == "Y") {echo " checked";}
+						echo " />{$mearow['answer']}<br />\n";
 						}
 					if ($deqrow['other'] == "Y")
 						{
-						echo "Other: <INPUT TYPE='TEXT' NAME='$fieldname";
-						echo "other'>";
-						}				
-					echo "\n\n";
+						echo "\t\t\tOther: <input type='text' name='$fieldname";
+						echo "other' />\n";
+						}
 					break;
 				case "P":  //MULTIPLE OPTIONS (with comments)
+					echo "<table>\n";
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
-					while ($mearow = mysql_fetch_row($mearesult))
+					while ($mearow = mysql_fetch_array($mearesult))
 						{
-						echo "$setfont<INPUT TYPE='checkbox' name='$fieldname$mearow[1]' VALUE='Y'";
-						if ($mearow[3] == "Y") {echo " CHECKED";}
-						echo ">$mearow[2]";
+						echo "\t<tr>\n";
+						echo "\t\t<td>\n";
+						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+						if ($mearow['default'] == "Y") {echo " checked";}
+						echo " />{$mearow['answer']}\n";
+						echo "\t\t</td>\n";
 						//This is the commments field:
-						echo " <INPUT TYPE='TEXT' name='$fieldname$mearow[1]comment' SIZE='40'><BR>\n";
+						echo "\t\t<td>\n";
+						echo " \t\t\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
+						echo "\t\t</td>\n";
+						echo "\t</td>\n";
 						}
-					echo "\n\n";
+					echo "</table>\n";
 					break;
 				case "A":  //MULTI ARRAY
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
-					$mearesult=mysql_query($meaquery);
-					echo "<TABLE>";
-					while ($mearow = mysql_fetch_row($mearesult))
+					$mearesult = mysql_query($meaquery);
+					echo "<table>\n";
+					while ($mearow = mysql_fetch_array($mearesult))
 						{
-						echo "<TR><TD ALIGN='RIGHT'>$setfont$mearow[2]</tD><TD>";
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td>$setfont\n";
 						for ($i=1; $i<=5; $i++)
 							{
-							echo "$setfont<INPUT TYPE='RADIO' NAME='$fieldname$mearow[1]' VALUE='$i'";
-							if ($idrow[$i]== $i) {echo " CHECKED";}
-							echo ">$i&nbsp;";
+							echo "\t\t\t<input type='radio' name='$fieldname{$mearow['code']}' value='$i'";
+							if ($idrow[$i] == $i) {echo " checked";}
+							echo " />$i&nbsp;\n";
 							}
-						echo "</TD></TR>\n";
+						echo "\t\t</td>\n";
+						echo "\t</tr>\n";
 						}
-					echo "</TABLE>\n\n";
+					echo "</table>\n";
 					break;
 				case "B":  //MULTI ARRAY
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
-					$mearesult=mysql_query($meaquery);
-					echo "<TABLE>";
-					while ($mearow = mysql_fetch_row($mearesult))
+					$mearesult = mysql_query($meaquery);
+					echo "<table>\n";
+					while ($mearow = mysql_fetch_array($mearesult))
 						{
-						echo "<TR><TD ALIGN='RIGHT'>$setfont$mearow[2]</tD><TD>";
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td>\n";
 						for ($i=1; $i<=10; $i++)
 							{
-							echo "$setfont<INPUT TYPE='RADIO' NAME='$fieldname$mearow[1]' VALUE='$i'";
-							if ($idrow[$i]== $i) {echo " CHECKED";}
-							echo ">$i&nbsp;";
+							echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='$i'";
+							if ($idrow[$i] == $i) {echo " checked";}
+							echo " />$i&nbsp;\n";
 							}
-						echo "</TD></TR>";
+						echo "\t\t</td>\n";
+						echo "\t</tr>\n";
 						}
-					echo "</TABLE>\n\n";
+					echo "</table>\n";
 					break;
 				case "C":  //MULTI ARRAY
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult=mysql_query($meaquery);
-					echo "<TABLE>";
-					while ($mearow = mysql_fetch_row($mearesult))
+					echo "<table>\n";
+					while ($mearow = mysql_fetch_array($mearesult))
 						{
-						echo "<TR><TD ALIGN='RIGHT'>$setfont$mearow[2]</tD><TD>";
-						echo "$setfont<INPUT TYPE='RADIO' NAME='$fieldname$mearow[1]' VALUE='Y'";
-						if ($idrow[$i]== "Y") {echo " CHECKED";}
-						echo ">Yes&nbsp;";
-						echo "$setfont<INPUT TYPE='RADIO' NAME='$fieldname$mearow[1]' VALUE='U'";
-						if ($idrow[$i]== "U") {echo " CHECKED";}
-						echo ">Uncertain&nbsp;";
-						echo "$setfont<INPUT TYPE='RADIO' NAME='$fieldname$mearow[1]' VALUE='N'";
-						if ($idrow[$i]== "N") {echo " CHECKED";}
-						echo ">No&nbsp;";
-						echo "</TD></TR>";
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td>\n";
+						echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='Y'";
+						if ($idrow[$i]== "Y") {echo " checked";}
+						echo " />Yes&nbsp;\n";
+						echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='U'";
+						if ($idrow[$i]== "U") {echo " checked";}
+						echo " />Uncertain&nbsp;\n";
+						echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='N'";
+						if ($idrow[$i]== "N") {echo " checked";}
+						echo " />No&nbsp;\n";
+						echo "\t\t</td>\n";
+						echo "</tr>\n";
 						}
-					echo "</TABLE>\n\n";
+					echo "</table>\n";
 					break;
 				case "L":  //DROPDOWN LIST
 					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 					$dearesult = mysql_query($deaquery);
-					echo "<SELECT NAME='$fieldname'>\n";
-					while ($dearow = mysql_fetch_row($dearesult))
+					echo "\t\t\t<select name='$fieldname'>\n";
+					while ($dearow = mysql_fetch_array($dearesult))
 						{
-						echo "  <OPTION VALUE='$dearow[1]'";
-						if ($dearow[3] == "Y") {echo " SELECTED"; $defexists="Y";}
-						echo ">$dearow[2]</OPTION>\n";
+						echo "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
+						echo ">{$dearow['answer']}</option>\n";
 						}
-					if (!$defexists) {echo "  <OPTION SELECTED VALUE=''>Please choose..</OPTION>\n";}
-					echo "</SELECT>\n\n";
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";}
+					echo "\t\t\t</select>\n";
 					break;
 				case "O":  //LIST WITH COMMENT
 					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 					$dearesult = mysql_query($deaquery);
-					echo "<SELECT NAME='$fieldname'>\n";
-					while ($dearow = mysql_fetch_row($dearesult))
+					echo "\t\t\t<select name='$fieldname'>\n";
+					while ($dearow = mysql_fetch_array($dearesult))
 						{
-						echo "  <OPTION VALUE='$dearow[1]'";
-						if ($dearow[3] == "Y") {echo " SELECTED"; $defexists="Y";}
-						echo ">$dearow[2]</OPTION>\n";
+						echo "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
+						echo ">{$dearow['answer']}</option>\n";
 						}
-					if (!$defexists) {echo "  <OPTION SELECTED VALUE=''>Please choose..</OPTION>\n";}
-					echo "</SELECT>\n\n";
-					echo "<BR>Comment:<BR><TEXTAREA COLS='40' ROWS='5' NAME='";
-					echo $fieldname;
-					echo "comment'>$idrow[$i]</TEXTAREA>\n";
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";}
+					echo "\t\t\t</select>\n";
+					echo "\t\t\t<br />Comment:<br />\n";
+					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname";
+					echo "comment'>$idrow[$i]</textarea>\n";
 					break;
 				case "T":  //LONG TEXT
-					echo "\n<TEXTAREA COLS='40' ROWS='5' NAME='$fieldname'></TEXTAREA>\n\n";
+					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname'></textarea>\n";
 					break;
 				case "D":  //DATE
-					echo "<INPUT TYPE='TEXT' NAME='$fieldname' SIZE='10'>\n\n";
+					echo "\t\t\t<input type='text' name='$fieldname' size='10' />\n";
 					break;
 				case "5":  //5 Point Choice
-					echo "<INPUT TYPE='RADIO' NAME='$fieldname' VALUE='1'>1 ";
-					echo "<INPUT TYPE='RADIO' NAME='$fieldname' VALUE='2'>2 ";
-					echo "<INPUT TYPE='RADIO' NAME='$fieldname' VALUE='3'>3 ";
-					echo "<INPUT TYPE='RADIO' NAME='$fieldname' VALUE='4'>4 ";
-					echo "<INPUT TYPE='RADIO' NAME='$fieldname' VALUE='5'>5 ";
-					echo "\n\n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='1' />1 \n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='2' />2 \n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='3' />3 \n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='4' />4 \n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='5' />5 \n";
 					break;
 				case "G":  //Gender
-					echo "<SELECT NAME='$fieldname'>\n";
-					echo " <OPTION SELECTED VALUE=''>Please Choose..</OPTION>\n";
-					echo " <OPTION VALUE='F'>Female</OPTION>\n";
-					echo " <OPTION VALUE='M'>Male</OPTION>\n";
-					echo "</SELECT>\n\n";
+					echo "\t\t\t<select name='$fieldname'>\n";
+					echo "\t\t\t\t<option selected value=''>Please Choose..</option>\n";
+					echo "\t\t\t\t<option value='F'>Female</option>\n";
+					echo "\t\t\t\t<option value='M'>Male</option>\n";
+					echo "\t\t\t</select>\n";
 					break;
 				case "Y":  //YesNo
-					echo "<SELECT NAME='$fieldname'>\n";
-					echo " <OPTION SELECTED VALUE=''>Please choose..</OPTION>\n";
-					echo " <OPTION VALUE='Y'>Yes</OPTION>\n";
-					echo " <OPTION VALUE='N'>No</OPTION>\n";
-					echo "</SELECT>\n\n";
+					echo "\t\t\t<Select name='$fieldname'>\n";
+					echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";
+					echo "\t\t\t\t<option value='Y'>Yes</option>\n";
+					echo "\t\t\t\t<option value='N'>No</option>\n";
+					echo "\t\t\t</select>\n";
 					break;
 				}
 			//echo " [$sid"."X"."$gid"."X"."$qid]";
-			echo "</TD></TR><TR><TD COLSPAN='3' HEIGHT='2' BGCOLOR='SILVER'></TD></TR>\n";		
+			echo "\t\t</td>\n";
+			echo "\t</tr>\n";
+			echo "\t<tr><td colspan='3' height='2' bgcolor='silver'></td></tr>\n";		
 			}		
 		}
 	
 	if ($surveyactive == "Y")
 		{
-		echo "<TR><TD COLSPAN='3' ALIGN='CENTER' BGCOLOR='#AAAAAA'><INPUT TYPE='SUBMIT' VALUE='Submit Survey'></TD></TR>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>\n";
+		echo "\t\t\t<input type='submit' value='Submit Survey' />\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
 		}
 	else
 		{
-		echo "<TR><TD COLSPAN='3' ALIGN='CENTER' BGCOLOR='#AAAAAA'><FONT COLOR='RED'><B>This is a test survey only - it is not yet activated</TD></TR>\n";	
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>\n";
+		echo "\t\t\t<font color='red'><b>This is a test survey only - it is not yet activated\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";	
 		}
-	echo "<INPUT TYPE='HIDDEN' NAME='action' VALUE='insert'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='surveytable' VALUE='$surveytable'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	echo "</FORM></TABLE>\n";
+	echo "\t<input type='hidden' name='action' value='insert' />\n";
+	echo "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
+	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
+	echo "\t</form>\n";
+	echo "</table>\n";
+	echo "</body>\n</html>";
 	}
 
 ?>
