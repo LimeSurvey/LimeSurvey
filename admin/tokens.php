@@ -50,13 +50,17 @@ echo "<table width='100%'>\n";
 echo "\t<tr><td bgcolor='#BBBBBB' colspan='2' align='center'>$setfont<b>Token Control</b></td></tr>\n";
 
 // MAKE SURE THAT THERE IS A SID
-if (!$sid)
+if (!$_GET['sid'] && !$_POST['sid'])
 	{
 	echo "\t<tr><td colspan='2' align='center'>$setfont<br /><br />Sorry, you have not chosen a survey_id!</td></tr>\n";
 	echo "</table>\n";
 	exit;
 	}
-
+else
+	{
+	$sid=$_GET['sid'];
+	if (!$sid) {$sid=$_POST['sid'];}
+	}
 // MAKE SURE THAT THE SURVEY EXISTS
 $chquery = "SELECT * FROM surveys WHERE sid=$sid";
 if (!$chresult=mysql_query($chquery))
@@ -221,10 +225,10 @@ if ($action == "kill")
 	}	
 
 
-if ($action == "email")
+if ($_GET['action'] == "email" || $_POST['action'] == "email")
 	{
 	echo "<CENTER>$setfont<B>Email Invitation</B><BR>\n";
-	if (!$ok)
+	if (!$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
 		$esquery="SELECT * FROM surveys WHERE sid=$sid";
@@ -237,8 +241,8 @@ if ($action == "email")
 			$surveyadminemail=$esrow[7];
 			}
 		echo "<TABLE WIDTH='80%' ALIGN='CENTER' BGCOLOR='#DDDDDD'>\n";
-		//echo "<FORM METHOD='POST'>\n";
-		echo "<FORM>\n";
+		echo "<FORM METHOD='POST'>\n";
+		//echo "<FORM>\n";
 		echo " <TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>$setfont<FONT COLOR='WHITE'><B>Send Invitation</TD></TR>\n";
 		echo " <TR>\n";
 		echo "  <TD ALIGN='RIGHT'>$setfont<B>From:</TD>\n";
@@ -266,40 +270,44 @@ if ($action == "email")
 		echo " <TR>";
 		echo "  <TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Send Invitations'></TD></TR>\n";
 		echo "<INPUT TYPE='HIDDEN' NAME='ok' VALUE='absolutely'>\n";
-		echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
+		echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='{$_GET['sid']}'>\n";
 		echo "<INPUT TYPE='HIDDEN' NAME='action' VALUE='email'\n";
 		echo "</FORM></TABLE>\n";
 		}
 	else
 		{
 		echo "Sending email!";
-		$ctquery="SELECT firstname FROM tokens_$sid WHERE completed !='Y' AND sent !='Y' AND token !=''";
+		$ctquery="SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !=''";
 		$ctresult=mysql_query($ctquery);
 		$ctcount=mysql_num_rows($ctresult);
-		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_$sid WHERE completed != 'Y' AND sent != 'Y' AND token !='' LIMIT $maxemails";
+		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' LIMIT $maxemails";
 		$emresult=mysql_query($emquery) or die ("Couldn't do query.<BR>$emquery<BR>".mysql_error());
 		$emcount=mysql_num_rows($emresult);
-		$headers = "From: $from\r\n";
+		$headers = "From: {$_POST['from']}\r\n";
 		$headers .= "X-Mailer: $sitename Email Inviter";  
+		$message = strip_tags($_POST['message']);
+		$message = str_replace("&quot;", '"', $message);
+		if (get_magic_quotes_gpc() != "0")
+			{$message = stripcslashes($message);}
 		echo "<TABLE WIDTH='500' ALIGN='CENTER' BGCOLOR='#EEEEEE'><TR><TD><FONT SIZE='1'>\n";
 		if ($emcount > 0)
 			{
-			while ($emrow=mysql_fetch_row($emresult))
+			while ($emrow=mysql_fetch_array($emresult))
 				{
-				$to=$emrow[2];
+				$to=$emrow['email'];
 				//echo "To: $to ($emrow[0] $emrow[1])<BR>";
 				//$from=$surveyadminemail;
 				//echo "From: $from<BR>";
 				//echo "Subject: $subject<BR>";
-				$sendmessage = "Dear $emrow[0],\n\n".$message;
+				$sendmessage = "Dear {$emrow['firstname']},\n\n".$message;
 				$sendmessage .= "\n\n-------------------------------------------\n\n";
 				$sendmessage .= "Click here to do this survey:\n\n";
-				$sendmessage .= "$publicurl/index.php?sid=$sid&token=$emrow[3]\n\n";
+				$sendmessage .= "$publicurl/index.php?sid=$sid&token={$emrow['token']}\n\n";
 				//echo "Message:". str_replace("\n", "<BR>", $sendmessage) . "<P>";
-				mail($to, $subject, $sendmessage, $headers);
-				$udequery = "UPDATE tokens_$sid SET sent='Y' WHERE tid=$emrow[4]";
+				mail($to, $_POST['subject'], $sendmessage, $headers);
+				$udequery = "UPDATE tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 				$uderesult=mysql_query($udequery) or die ("Couldn't update tokens<BR>$udequery<BR>".mysql_error());
-				echo "[Invite Sent to $emrow[0] $emrow[1]] ";
+				echo "[Invite Sent to {$emrow['firstname']} {$emrow['lastname']}] ";
 				}
 			if ($ctcount > $emcount)
 				{
@@ -309,12 +317,13 @@ if ($action == "email")
 				echo " of emails that can be sent in one lot ($maxemails). There are still $lefttosend";
 				echo " emails to go. You can continue sending the next $maxemails by clicking on the";
 				echo " button below.<BR>";
+				$message = str_replace('"', "&quot;", $message);
 				echo "<INPUT TYPE='SUBMIT' VALUE=\"Send More\"></TD>\n";
 				echo "<INPUT TYPE='HIDDEN' NAME='ok' VALUE=\"absolutely\">\n";
 				echo "<INPUT TYPE='HIDDEN' NAME='action' VALUE=\"email\">\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE=\"$sid\">\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='from' VALUE=\"$from\">\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='subject' VALUE=\"$subject\">\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE=\"{$_POST['sid']}\">\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='from' VALUE=\"{$_POST['from']}\">\n";
+				echo "<INPUT TYPE='HIDDEN' NAME='subject' VALUE=\"{$_POST['subject']}\">\n";
 				echo "<INPUT TYPE='HIDDEN' NAME='message' VALUE=\"$message\">\n";
 				echo "</FORM>\n";
 				}
@@ -330,10 +339,10 @@ if ($action == "email")
 		}
 	}	
 	
-if ($action == "remind")
+if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 	{
 	echo "<center>$setfont<b>Email Reminder</b><br />\n";
-	if (!$ok)
+	if (!$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
 		$esquery="SELECT * FROM surveys WHERE sid=$sid";
@@ -346,7 +355,6 @@ if ($action == "remind")
 			$surveyadminemail=$esrow[7];
 			}
 		echo "<table width='80%' align='center' bgcolor='#DDDDDD'>\n";
-		//echo "<FORM METHOD='POST'>\n";
 		echo "\t<form method='post' action='tokens.php'>\n";
 		echo "\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
 		echo "\t\t$setfont<font color='white'><b>Send Reminder\n";
@@ -386,13 +394,13 @@ if ($action == "remind")
 		echo "\t\t<tr><td colspan='2' align='center'>\n";
 		echo "\t\t\t<input type='submit' $btstyle value='Send Reminder'>\n\t\t</td></tr>\n";
 		echo "\t\t<input type='hidden' name='ok' value='absolutely'>\n";
-		echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
-		echo "\t\t<input type='hidden' name='action' value='remind'\n";
+		echo "\t\t<input type='hidden' name='sid' value='{$_GET['sid']}'>\n";
+		echo "\t\t<input type='hidden' name='action' value='remind'>\n";
 		echo "\t</form>\n</table>\n";
 		}
 	else
 		{
-		echo "Sending reminder email! (Starting at {$_POST['last_tid']})";
+		echo "Sending reminder email! (Starting after {$_POST['last_tid']})";
 		$ctquery="SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !=''";
 		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		$ctresult=mysql_query($ctquery);
@@ -402,23 +410,24 @@ if ($action == "remind")
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
 		$emresult=mysql_query($emquery) or die ("Couldn't do query.<BR>$emquery<BR>".mysql_error());
 		$emcount=mysql_num_rows($emresult);
-		$headers = "From: $from\r\n";
+		$headers = "From: {$_POST['from']}\r\n";
 		$headers .= "X-Mailer: $sitename Email Reminder";  
 		echo "<table width='500' align='CENTER' bgcolor='#EEEEEE'><tr><td><font size='1'>\n";
+		$message = strip_tags($_POST['message']);
+		$message = str_replace("&quot;", '"', $message);
+		if (get_magic_quotes_gpc() != "0")
+			{$message = stripcslashes($message);}
 		if ($emcount > 0)
 			{
 			while ($emrow=mysql_fetch_array($emresult))
 				{
 				$to=$emrow['email'];
 				$sendmessage = "Dear {$emrow['firstname']},\n\n";
-				//if (get_magic_quotes_gpc()=="0") 
-				$sendmessage .= str_replace("\'", "'", $_POST['message']);
+				$sendmessage .= $message;
 				$sendmessage .= "\n\n-------------------------------------------\n\n";
 				$sendmessage .= "Click here to do this survey:\n\n";
 				$sendmessage .= "$publicurl/index.php?sid={$_POST['sid']}&token={$emrow['token']}\n\n";
-				//echo "Message:". str_replace("\n", "<BR>", $sendmessage) . "<P>";
 				mail($to, $_POST['subject'], $sendmessage, $headers);
-				//echo "<b>TEST ONLY - NO MAIL</b>";
 				echo "[Reminder Sent to {$emrow['firstname']} {$emrow['lastname']}]({$emrow['tid']}) ";
 				$lasttid=$emrow['tid'];
 				}
@@ -436,7 +445,8 @@ if ($action == "remind")
 				echo "<input type='hidden' name='sid' value=\"{$_POST['sid']}\">\n";
 				echo "<input type='hidden' name='from' value=\"{$_POST['from']}\">\n";
 				echo "<input type='hidden' name='subject' value=\"{$_POST['subject']}\">\n";
-				echo "<input type='hidden' name='message' value=\"{$_POST['message']}\">\n";
+				$message = str_replace('"', "&quot;", $message);
+				echo "<input type='hidden' name='message' value=\"$message}\">\n";
 				echo "<input type='hidden' name='last_tid' value=\"$lasttid\">\n";
 				echo "</form>\n";
 				}
