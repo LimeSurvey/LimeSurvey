@@ -363,6 +363,7 @@ if ($sid)
 		else {$surveysummary2 .= _SS_SBYS;}
 		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _SS_DATESTAMPED."<br />\n";}
 		if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _SS_COOKIES."<br />\n";}
+		if ($s1row['allowregister'] == "Y") {$surveysummary2 .= _SS_ALLOWREGISTER."<br />\n";}
 		switch ($s1row['notification'])
 			{
 			case 0:
@@ -1297,7 +1298,7 @@ if ($action == "editsurvey")
 		$editsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"
 					. "\t\t<b>$setfont<font color='white'>Edit Survey</font></font></b></td></tr>\n"
 					. "\t<tr><form name='addnewsurvey' action='$scriptname' method='post'>\n"
-					. "\t\t<td align='right'>$setfont<b>"._SL_TITLE."</b></font></td>\n"
+					. "\t\t<td align='right' width='25%'>$setfont<b>"._SL_TITLE."</b></font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='short_title' value='{$esrow['short_title']}'></td></tr>\n"
 					. "\t<tr><td align='right' valign='top'><b>$setfont"._SL_DESCRIPTION."</font></b></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
@@ -1373,8 +1374,22 @@ if ($action == "editsurvey")
 			$editsurvey .= ">"._AD_NO."</option>\n"
 						 . "</select>\n\t\t</td>\n";
 			}
-		$editsurvey .= "</tr>\n"
-					 . "\t<tr><td align='right'>$setfont<b>"._SL_DATESTAMP."</b></font></td>\n";
+		$editsurvey .= "</tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWREGISTER."</b></font></td>\n"
+					. "\t\t<td><select $slstyle name='allowregister'>\n"
+					. "\t\t\t<option value='Y'";
+		if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_YES."</option>\n"
+					. "\t\t\t<option value='N'";
+		if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_NO."</option>\n"
+					. "\t\t</select></td>\n\t</tr>\n";
+		$editsurvey .= "\t<tr><td align='right' valign='top'>$setfont<b>"._SL_ATTRIBUTENAMES."</b></font></td>\n"
+					. "\t\t<td>$setfont<input $slstyle type='text' size='25' name='attribute1'"
+					. " value='".$esrow['attribute1']."'>("._TL_ATTR1.")<br />"
+					. "<input $slstyle type='text' size='25' name='attribute2'"
+					. " value='".$esrow['attribute2']."'>("._TL_ATTR2.")</font></td>\n\t</tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_DATESTAMP."</b></font></td>\n";
 				
 		if ($esrow['active'] == "Y")
 			{
@@ -1428,7 +1443,7 @@ if ($action == "newsurvey")
 	$newsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 				. "\t\t<b>$setfont<font color='white'>"._CREATESURVEY."</font></font></b></td></tr>\n"
 				. "\t<tr><form name='addnewsurvey' action='$scriptname' method='post'>\n"
-				. "\t\t<td align='right'><b>$setfont"._SL_TITLE."</font></b></td>\n"
+				. "\t\t<td align='right' width='25%'><b>$setfont"._SL_TITLE."</font></b></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='short_title'></td></tr>\n"
 				. "\t<tr><td align='right'><b>$setfont"._SL_DESCRIPTION."</font></b>	</td>\n"
 				. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='description'></textarea></td></tr>\n"
@@ -1439,17 +1454,7 @@ if ($action == "newsurvey")
 				. "\t<tr><td align='right'>$setfont<b>"._SL_EMAIL."</b></font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='adminemail'></td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_FAXTO."</b></font></td>\n"
-				. "\t\t<td><input $slstyle type='text' size='50' name='faxto'></td></tr>\n"
-				. "\t<tr><td align='right'>$setfont<b>"._SL_ANONYMOUS."</b></font></td>\n"
-				. "\t\t<td><select $slstyle name='private'>\n"
-				. "\t\t\t<option value='Y' selected>"._AD_YES."</option>\n"
-				. "\t\t\t<option value='N'>"._AD_NO."</option>\n"
-				. "\t\t</select></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_DATESTAMP."</b></font></td>\n"
-				. "\t\t<td><select $slstyle name='datestamp'>\n"
-				. "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
-				. "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
-				. "\t\t</select></td>\n\t</tr>\n";
+				. "\t\t<td><input $slstyle type='text' size='50' name='faxto'></td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_FORMAT."</b></font></td>\n"
 				. "\t\t<td><select $slstyle name='format'>\n"
 				. "\t\t\t<option value='S' selected>"._QBYQ."</option>\n"
@@ -1468,7 +1473,6 @@ if ($action == "newsurvey")
 		}
 	$newsurvey .= "\t\t</select></td>\n"
 				. "\t</tr>\n";
-		//COOKIES
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_USECOOKIES."</b></font></td>\n"
 				. "\t\t<td><select $slstyle name='usecookie'>\n"
 				. "\t\t\t<option value='Y'";
@@ -1479,12 +1483,31 @@ if ($action == "newsurvey")
 	$newsurvey .= ">"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
-	//NOTIFICATION
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_NOTIFICATION."</b></font></td>\n"
 				. "\t\t<td><select $slstyle name='notification'>\n"
 				. getNotificationlist(0)
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ANONYMOUS."</b></font></td>\n"
+				. "\t\t<td><select $slstyle name='private'>\n"
+				. "\t\t\t<option value='Y' selected>"._AD_YES."</option>\n"
+				. "\t\t\t<option value='N'>"._AD_NO."</option>\n"
+				. "\t\t</select></td>\n\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWREGISTER."</b></font></td>\n"
+				. "\t\t<td><select $slstyle name='allowregister'>\n"
+				. "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
+				. "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
+				. "\t\t</select></td>\n\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right' valign='top'>$setfont<b>"._SL_ATTRIBUTENAMES."</b></font></td>\n"
+				. "\t\t<td>$setfont<input $slstyle type='text' size='25' name='attribute1'>("._TL_ATTR1.")<br />"
+				. "<input $slstyle type='text' size='25' name='attribute2'>("._TL_ATTR2.")</font></td>\n\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_DATESTAMP."</b></font></td>\n"
+				. "\t\t<td><select $slstyle name='datestamp'>\n"
+				. "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
+				. "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
+				. "\t\t</select></td>\n\t</tr>\n";
+		//COOKIES
+	//NOTIFICATION
 	//LANGUAGE
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_LANGUAGE."</b></font></td>\n"
 				. "\t\t<td><select $slstyle name='language'>\n";

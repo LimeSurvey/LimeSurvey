@@ -34,22 +34,6 @@
 	#############################################################
 */
 //THESE WILL BEMOVED INTO THE LANGUAGE FILE ONCE COMPLETED
-define ("_RG_INVALIDEMAIL", "The email you used is not valid. Please try again.");
-define ("_RG_USEDEMAIL", "The email you used is already registered to someone else.");
-define ("_RG_EMAILINVITATION", "Dear {FIRSTNAME},\n\n"
-							  ."You, or someone using your email address, have registered to\n"
-							  ."participate in an online survey titled {SURVEYNAME}.\n\n"
-							  ."To complete this survey, click on the following URL:\n\n"
-							  ."{SURVEYURL}\n\n"
-							  ."If you have any questions about this survey, or if you\n"
-							  ."did not register to participate and believe this email\n"
-							  ."is in error, please contact {ADMINNAME} at {ADMINEMAIL}.");
-define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registration Confirmation");
-define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in this survey.<br /><br />\n"
-								   ."An email has been sent to the address you provided with access details"
-								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");
-
 require_once("./admin/config.php");
 
 $sid=returnglobal('sid');
@@ -61,6 +45,26 @@ if (!isset($sid))
 	include "index.php";
     exit;
 	}
+
+$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
+$esresult = mysql_query($esquery);
+while ($esrow = mysql_fetch_array($esresult))
+	{
+	$surveyname = $esrow['short_title'];
+	$surveydescription = $esrow['description'];
+	$surveyadmin = $esrow['admin'];
+	$surveyadminemail = $esrow['adminemail'];
+	$surveytemplate = $esrow['template'];
+	$surveylanguage = $esrow['language'];
+	}
+if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
+
+//Get the language file
+$langdir="$publicdir/lang";
+$langfilename="$langdir/$surveylanguage.lang.php";
+//Use the default language file if the $thissurvey['language'] file doesn't exist
+if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
+require_once($langfilename);
 
 //Check that the email is a valid style address
 if (!validate_email(returnglobal('register_email'))) 
@@ -114,27 +118,6 @@ $query = "INSERT INTO {$dbprefix}tokens_$sid\n"
 $result = mysql_query($query) or die ($query."<br />".mysql_error());
 $tid=mysql_insert_id();
 
-$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
-$esresult = mysql_query($esquery);
-while ($esrow = mysql_fetch_array($esresult))
-	{
-	$surveyname = $esrow['short_title'];
-	$surveydescription = $esrow['description'];
-	$surveyadmin = $esrow['admin'];
-	$surveyadminemail = $esrow['adminemail'];
-	$surveytemplate = $esrow['template'];
-	$surveylanguage = $esrow['language'];
-	}
-if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
-
-//Get the language file
-$langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
-//Use the default language file if the $thissurvey['language'] file doesn't exist
-if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-require_once($langfilename);
-
-
 $message=_RG_EMAILINVITATION;
 $message=str_replace("{ADMINNAME}", $surveyadmin, $message);
 $message=str_replace("{ADMINEMAIL}", $surveyadminemail, $message);
@@ -161,10 +144,11 @@ if (mail(returnglobal('register_email'), $subject, $message, $headers))
 	$query = "UPDATE {$dbprefix}tokens_$sid\n"
 			."SET sent='Y' WHERE tid=$tid";
 	$result=mysql_query($query) or die ("$query<br />".mysql_error());
-	$html=_RG_REGISTRATIONCOMPLETE;
+	$html="<center>"._RG_REGISTRATIONCOMPLETE;
 	$html=str_replace("{ADMINNAME}", $surveyadmin, $html);
 	$html=str_replace("{ADMINEMAIL}", $surveyadminemail, $html);
 	$html=str_replace("{SURVEYNAME}", $surveyname, $html);
+	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: window.close()' value='"._CLOSEWIN."'></center>\n";
 	}
 
 //PRINT COMPLETED PAGE

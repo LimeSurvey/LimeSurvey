@@ -131,4 +131,27 @@ define("_CONFIRMATION_MESSAGE1", "Unders&oslash;kelse sendt"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Et nytt svar var gitt for din unders&oslash;kelse"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Klikk p&aring; f&oslash;lgende link for &aring; se de individuelle svarene:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Se statistikken ved &aring; klikke her:"); //NEW for 098rc5
+
+define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
+define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
+						."Enter your details below, and an email containing the link to "
+						."participate in this survey will be sent immediately."); //NEW for 0.98rc9
+define ("_RG_EMAIL", "Email Address"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "First Name"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "Last Name"); //NEW for 0.98rc9
+define ("_RG_INVALIDEMAIL", "The email you used is not valid. Please try again.");//NEW for 0.98rc9
+define ("_RG_USEDEMAIL", "The email you used has already been registered.");//NEW for 0.98rc9
+define ("_RG_EMAILINVITATION", "Dear {FIRSTNAME},\n\n"
+							  ."You, or someone using your email address, have registered to\n"
+							  ."participate in an online survey titled {SURVEYNAME}.\n\n"
+							  ."To complete this survey, click on the following URL:\n\n"
+							  ."{SURVEYURL}\n\n"
+							  ."If you have any questions about this survey, or if you\n"
+							  ."did not register to participate and believe this email\n"
+							  ."is in error, please contact {ADMINNAME} at {ADMINEMAIL}.");//NEW for 0.98rc9
+define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registration Confirmation");//NEW for 0.98rc9
+define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in this survey.<br /><br />\n"
+								   ."An email has been sent to the address you provided with access details"
+								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
+								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 ?>

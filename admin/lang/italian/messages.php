@@ -146,6 +146,9 @@ define("_SL_STATUS", "Status:");
 define("_SL_SELSQL", "Seleziona File SQL:");
 define("_SL_USECOOKIES", "Abilita Cookies?"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Notification:"); //New with 098rc5
+define("_SL_ALLOWREGISTER", "Allow public registration?"); //New with 0.98rc9
+define("_SL_ATTRIBUTENAMES", "Token Attribute Names:"); //New with 0.98rc9
+
 //groups
 define("_GL_TITLE", "Titolo:");
 define("_GL_DESCRIPTION", "Descrizione:");
@@ -279,6 +282,7 @@ define("_SS_SURVEYTABLE", "Il nome della tavola per l&#039;indagine &egrave;:");
 define("_SS_CANNOTACTIVATE", "L&#039;indagine non può essere ancora attivata."); //NEW for release 0.98rc3
 define("_SS_ADDGROUPS", "&Egrave; necessario aggiungere dei gruppi"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "&Egrave; necessario aggiungere delle domande"); //NEW for release 0.98rc3
+define("_SS_ALLOWREGISTER", "If tokens are used, the public may register for this survey"); //NEW for release 0.98rc9
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "Domanda obbligatoria"); //New for release 0.98rc4

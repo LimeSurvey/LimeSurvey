@@ -475,15 +475,20 @@ elseif ($action == "insertnewsurvey")
 			$_POST['short_title'] = addcslashes($_POST['short_title'], "'");
 			$_POST['description'] = addcslashes($_POST['description'], "'");
 			$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
+			$_POST['attribute1'] = addcslashes($_POST['attribute1'], "'");
+			$_POST['attribute2'] = addcslashes($_POST['attribute2'], "'");
 			}
-		$isquery = "INSERT INTO {$dbprefix}surveys (sid, short_title, description, admin, active, welcome, expires,"
-				  . " adminemail, private, faxto, format, template, url, urldescrip, language, datestamp, usecookie, notification)"
-				  . " VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',"
-				  . " '{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',"
-				  . " '{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',"
-				  . " '{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',"
-				  . " '{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}',"
-				  . " '{$_POST['usecookie']}', '{$_POST['notification']}')";
+		$isquery = "INSERT INTO {$dbprefix}surveys\n"
+				  . "(sid, short_title, description, admin, active, welcome, expires, "
+				  . "adminemail, private, faxto, format, template, url, urldescrip, "
+				  . "language, datestamp, usecookie, notification, allowregister, attribute1, attribute2)\n"
+				  . "VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',\n"
+				  . "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
+				  . "'{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',\n"
+				  . "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
+				  . "'{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}',\n"
+				  . "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
+				  . "'{$_POST['attribute1']}', '{$_POST['attribute2']}')";
 		$isresult = mysql_query ($isquery);
 		if ($isresult)
 			{
@@ -509,16 +514,21 @@ elseif ($action == "updatesurvey")
 		$_POST['short_title'] = addcslashes($_POST['short_title'], "'");
 		$_POST['description'] = addcslashes($_POST['description'], "'");
 		$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
+		$_POST['attribute1'] = addcslashes($_POST['attribute1'], "'");
+		$_POST['attribute2'] = addcslashes($_POST['attribute2'], "'");
 		}
-	$usquery = "UPDATE {$dbprefix}surveys SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',"
-			  . " admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',"
-			  . " expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',"
-			  . " private='{$_POST['private']}', faxto='{$_POST['faxto']}',"
-			  . " format='{$_POST['format']}', template='{$_POST['template']}', "
-			  . " url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}', "
-			  . " language='{$_POST['language']}', datestamp='{$_POST['datestamp']}', "
-			  . " usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}'"
-			  . " WHERE sid={$_POST['sid']}";
+	$usquery = "UPDATE {$dbprefix}surveys \n"
+			  . "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
+			  . "admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
+			  . "expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',\n"
+			  . "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
+			  . "format='{$_POST['format']}', template='{$_POST['template']}',\n"
+			  . "url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}',\n"
+			  . "language='{$_POST['language']}', datestamp='{$_POST['datestamp']}',\n"
+			  . "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
+			  . "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
+			  . "attribute2='{$_POST['attribute2']}'\n"
+			  . "WHERE sid={$_POST['sid']}";
 	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
 	if ($usresult)
 		{

@@ -74,6 +74,9 @@ $allfields[]=array("{$dbprefix}surveys", "language", "language varchar(50) defau
 $allfields[]=array("{$dbprefix}surveys", "datestamp", "datestamp char(1) default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "usecookie", "usecookie char(1) default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "notification", "notification char(1) default '0'");
+$allfields[]=array("{$dbprefix}surveys", "allowregister", "allowregister char(1) default 'N'");
+$allfields[]=array("{$dbprefix}surveys", "attribute1", "attribute1 varchar(255) default NULL");
+$allfields[]=array("{$dbprefix}surveys", "attribute2", "attribute2 varchar(255) default NULL");
 
 echo $htmlheader;
 

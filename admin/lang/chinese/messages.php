@@ -146,6 +146,9 @@ define("_SL_STATUS", "狀態:");
 define("_SL_SELSQL", "選擇 SQL 檔案:");
 define("_SL_USECOOKIES", "使用 Cookies 嗎?"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "通知:"); //New with 098rc5
+define("_SL_ALLOWREGISTER", "Allow public registration?"); //New with 0.98rc9
+define("_SL_ATTRIBUTENAMES", "Token Attribute Names:"); //New with 0.98rc9
+
 //groups
 define("_GL_TITLE", "標題:");
 define("_GL_DESCRIPTION", "說明:");
@@ -279,6 +282,7 @@ define("_SS_SURVEYTABLE", "問卷表格名稱是:"); //NEW for release 0.98rc3
 define("_SS_CANNOTACTIVATE", "問卷無法啟用."); //NEW for release 0.98rc3
 define("_SS_ADDGROUPS", "您需要新增題目組別"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "您需要新增題目"); //NEW for release 0.98rc3
+define("_SS_ALLOWREGISTER", "If tokens are used, the public may register for this survey"); //NEW for release 0.98rc9
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "必須回應的問題"); //New for release 0.98rc4

@@ -96,11 +96,13 @@ while ($row=mysql_fetch_array($result))
 					  "language"=>$row['language'],
 					  "datestamp"=>$row['datestamp'],
 					  "usecookie"=>$row['usecookie'],
-					  "sendnotification"=>$row['notification']);
+					  "sendnotification"=>$row['notification'],
+					  "allowregister"=>$row['allowregister'],
+					  "attribute1"=>$row['attribute1'],
+					  "attribute2"=>$row['attribute2']);
 	if (!$thissurvey['adminname']) {$thissurvey['adminname']=$siteadminname;}
 	if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
 	if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
-	    
 	}
 	
 
@@ -828,57 +830,65 @@ function buildsurveysession()
 			{
 			echo templatereplace($op);
 			}
-		if (isset($thissurevey) && $thissurvey('allowregister') == "Y")
+		if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
 			{
-			define ("_RG_REGISTER1", "You must be registered to complete this survey");
-			define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
-									."Enter your details below, and an email containing the link to "
-									."participate in this survey will be sent immediately.");
-			define ("_RG_EMAIL", "Email Address");
-			define ("_RG_FIRSTNAME", "First Name");
-			define ("_RG_LASTNAME", "Last Name");
-			define ("_RG_ATTRIBUTE1", "Attribute 1");
-			define ("_RG_ATTRIBUTE2", "Attribute 2");
-			
-?>
-	<center><br />
-	<?php if (isset($register_errormsg)) 
-		{
-		echo "<font color='red'>$register_errormsg</font><br /><br />\n";
-		}
-	?>
-	<?php echo _RG_REGISTER1 ?><br /><br />
-	<?php echo _RG_REGISTER2 ?><br />&nbsp;
-	<table align='center'>
-	<form method='post' action='register.php'>
-	<input type='hidden' name='sid' value='<?php echo $sid ?>'>
-		<tr><td align='right'>
-		<?php echo _RG_FIRSTNAME ?>:</td>
-		<td align='left'><input class='text' type='text' name='register_firstname'<?php
-		if (isset($_POST['register_firstname'])) {echo " value='".returnglobal('register_firstname')."'";}
-		?>></td></tr>
-		<tr><td align='right'><?php echo _RG_LASTNAME ?>:</td>
-		<td align='left'><input class='text' type='text' name='register_lastname'<?php
-		if (isset($_POST['register_lastname'])) {echo " value='".returnglobal('register_lastname')."'";}
-		?>></td></tr>
-		<tr><td align='right'><?php echo _RG_EMAIL ?>:</td>
-		<td align='left'><input class='text' type='text' name='register_email'<?php
-		if (isset($_POST['register_email'])) {echo " value='".returnglobal('register_email')."'";}
-		?>></td></tr>
-		<tr><td align='right'><?php echo _RG_ATTRIBUTE1 ?>:</td>
-		<td align='left'><input class='text' type='text' name='register_attribute1'<?php
-		if (isset($_POST['register_attribute1'])) {echo " value='".returnglobal('register_attribute1')."'";}
-		?>></td></tr>
-		<tr><td align='right'><?php echo _RG_ATTRIBUTE2 ?>:</td>
-		<td align='left'><input class='text' type='text' name='register_attribute2'<?php
-		if (isset($_POST['register_attribute2'])) {echo " value='".returnglobal('register_attribute2')."'";}
-		?>></td></tr>
-		<tr><td></td><td><input class='submit' type='submit' value='<?php echo _CONTINUE_PS ?>'>
-		</td></tr>
-	</form>
-	</table>
-	<br />&nbsp;</center>
-<?php
+			echo "<center><br />";
+			if (isset($register_errormsg)) 
+				{
+				echo "<font color='red'>$register_errormsg</font><br /><br />\n";
+				}
+			echo _RG_REGISTER1."<br /><br />\n\n"
+				._RG_REGISTER2."<br />&nbsp;\n"
+				."<table align='center'>\n"
+				."<form method='post' action='register.php'>\n"
+				."<input type='hidden' name='sid' value='$sid'>\n"
+				."<tr><td align='right'>"
+				._RG_FIRSTNAME.":</td>"
+				."<td align='left'><input class='text' type='text' name='register_firstname'";
+			if (isset($_POST['register_firstname'])) 
+				{
+				echo " value='".returnglobal('register_firstname')."'";
+				}
+			echo "</td></tr>"
+				."<tr><td align='right'>"._RG_LASTNAME.":</td>\n"
+				."<td align='left'><input class='text' type='text' name='register_lastname'";
+			if (isset($_POST['register_lastname'])) 
+				{
+				echo " value='".returnglobal('register_lastname')."'";
+				}
+			echo "></td></tr>\n"
+				."<tr><td align='right'>"._RG_EMAIL.":</td>\n"
+				."<td align='left'><input class='text' type='text' name='register_email'";
+			if (isset($_POST['register_email'])) 
+				{
+				echo " value='".returnglobal('register_email')."'";
+				}
+			echo "</td></tr>\n";
+			if($thissurvey['attribute1'])
+				{
+				echo "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
+					."<td align='left'><input class='text' type='text' name='register_attribute1'";
+				if (isset($_POST['register_attribute1'])) 
+					{
+					echo " value='".returnglobal('register_attribute1')."'";
+					}
+				echo "></td></tr>\n";
+				}
+			if($thissurvey['attribute2'])
+				{
+				echo "<tr><td align='right'>".$thissurvey['attribute2'].":</td>\n"
+					."<td align='left'><input class='text' type='text' name='register_attribute2'";
+				if (isset($_POST['register_attribute2'])) 
+					{
+					echo " value='".returnglobal('register_attribute2')."'";
+					}
+				echo "></td></tr>\n";
+				}
+			echo "<tr><td></td><td><input class='submit' type='submit' value='"._CONTINUE_PS."'>"
+				."</td></tr>\n"
+				."</form>\n"
+				."</table>\n"
+				."<br />&nbsp;</center>";
 			}
 		else
 			{
