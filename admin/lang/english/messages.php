@@ -27,6 +27,11 @@ define(_STATISTICS, "Quick Statistics");
 define(_VIEWRESPONSE, "View Response");
 define(_VIEWCONTROL, "Data View Control");
 define(_DATAENTRY, "Data Entry");
+define(_TOKENCONTROL, "Token Control");
+define(_TOKENDBADMIN, "Token Database Administration Options");
+define(_DROPTOKENS, "Delete Tokens Table");
+define(_EMAILINVITE, "Email Invitation");
+define(_EMAILREMIND, "Email Reminder");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -80,11 +85,20 @@ define(_Q_CLOSE_BT, "Close this Question");
 //Browse Button Bar
 define(_B_ADMIN_BT, "Return to Survey Administration");
 define(_B_SUMMARY_BT, "Show summary information");
-define(_B_ALL_BT, "Display all responses");
-define(_B_LAST_BT, "Display last 50 responses");
+define(_B_ALL_BT, "Display Responses");
+define(_B_LAST_BT, "Display Last 50 Responses");
 define(_B_STATISTICS_BT, "Get statistics from these responses");
 define(_B_EXPORT_BT, "Export Results to Application");
 define(_B_BACKUP_BT, "Backup results table as SQL file");
+//Tokens Button Bar
+define(_T_ALL_BT, "Display Tokens");
+define(_T_ADD_BT, "Add new token entry");
+define(_T_IMPORT_BT, "Import Tokens from CSV File");
+define(_T_INVITE_BT, "Send email invitation");
+define(_T_REMIND_BT, "Send email reminder");
+define(_T_TOKENIFY_BT, "Generate Tokens");
+define(_T_KILL_BT, "Drop tokens table");
+
 //Datacontrols
 define(_D_BEGIN, "Show start..");
 define(_D_BACK, "Show last..");
@@ -142,7 +156,14 @@ define(_UL_EDIT, "Edit");
 define(_UL_DEL, "Delete");
 define(_UL_ADD, "Add");
 define(_UL_TURNOFF, "Turn Off Security");
-
+//tokens
+define(_TL_FIRST, "First Name");
+define(_TL_LAST, "Last Name");
+define(_TL_EMAIL, "Email");
+define(_TL_TOKEN, "Token");
+define(_TL_INVITE, "Invite sent?");
+define(_TL_DONE, "Completed?");
+define(_TL_ACTION, "Actions");
 
 //QUESTION TYPES
 define(_5PT, "5 Point Choice");
@@ -189,6 +210,10 @@ define(_CLOSEWIN, "Close Window");
 define(_TOKEN, "Token");
 define(_DATESTAMP, "Date Stamp"); //Referring to the datestamp or time response submitted
 define(_COMMENT, "Comment");
+define(_FROM, "From"); //For emails
+define(_SUBJECT, "Subject"); //For emails
+define(_MESSAGE, "Message"); //For emails
+
 
 //General Setup Messages
 define(_ST_NODB1, "The defined surveyor database does not exist");
@@ -357,5 +382,29 @@ define(_DE_UPDATED, "Record has been updated.");
 define(_DE_EDITING, "Editing Response");
 define(_DE_QUESTIONHELP, "Help about this question");
 
+//TOKEN CONTROL MESSAGES
+define(_TC_NOSID, "You have not selected a survey");
+define(_TC_DELTOKENS, "About to delete tokens table for this survey.");
+define(_TC_DELTOKENSINFO, "If you delete this table tokens will no longer be required to access this survey. A backup of this table will be made if you proceed. Your system administrator will be able to access this table.");
+define(_TC_DELETETOKENS, "Delete Tokens");
+define(_TC_TOKENSGONE, "The tokens table has now been removed and tokens are no longer required to access this survey. A backup of this table has been made and can be accessed by your system administrator.");
+define(_TC_NOTINITIALISED, "Tokens have not been initialised for this survey.");
+define(_TC_INITINFO, "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token.");
+define(_TC_INITQ, "Do you want to create a tokens table for this survey?");
+define(_TC_INITTOKENS, "Initialise Tokens");
+define(_TC_CREATED, "A token table has been created for this survey.");
+define(_TC_CLEARINVITES, "Set all entries to 'N' invitation sent");
+define(_TC_CLEARINV_RUSURE, "Are you really sure you want to reset all invitation records to NO?");
+define(_TC_CLEARTOKENS, "Delete all unique token numbers");
+define(_TC_CLEARTOKENS_RUSURE, "Are you sure you want to delete all unique token numbers?");
+define(_TC_TOKENSCLEARED, "All unique token numbers have been removed");
+define(_TC_INVITESCLEARED, "All invite entries have been set to N");
+define(_TC_EDIT, "Edit Token Entry");
+define(_TC_DEL, "Delete Token Entry");
+define(_TC_DO, "Do Survey");
+define(_TC_VIEW, "View Response");
+define(_TC_INVITET, "Send invitation email to this entry");
+define(_TC_REMINDT, "Send reminder email to this entry");
+define(_TC_INVITESUBJECT, "Invitation to participate in {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
 
 ?>
