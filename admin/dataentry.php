@@ -86,7 +86,7 @@ if ($action == "edit" || $action == "")
 	{
 	$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
 	$result = mysql_query($query);
-	while ($row=mysql_fetch_row($result)) {$surveylanguage = $row['language'];}
+	while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
 	if (!$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
 	if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 	$langdir="$publicdir/lang";
