@@ -234,10 +234,11 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			{
 			echo templatereplace($op);
 			}
-		echo "<br /><center><font face='verdana' size='2'><font color='red'><b>"._ERROR."</b></font><br /><br />\n";
-		echo _BADSUBMIT1."<br /><br />\n";
-		echo "<font size='1'>"._BADSUBMIT2."<br />\n";
-		echo "</font></center><br /><br />";
+		echo "<br /><center><font face='verdana' size='2'><font color='red'><b>"
+			._ERROR."</b></font><br /><br />\n"
+			._BADSUBMIT1."<br /><br />\n"
+			."<font size='1'>"._BADSUBMIT2."<br />\n"
+			."</font></center><br /><br />";
 		exit;
 		}	
 	//COMMIT CHANGES TO DATABASE
@@ -248,10 +249,10 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			{
 			echo templatereplace($op);
 			}
-		$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
-		$completed .= _NOTACTIVE1."<br /><br />\n";
-		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
-		$completed .= "<font size='1'>$subquery</font>\n";
+		$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n"
+				   . _NOTACTIVE1."<br /><br />\n"
+				   . "<a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n"
+				   . "<font size='1'>$subquery</font>\n";
 		}
 	else
 		{
@@ -268,9 +269,11 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				{
 				echo templatereplace($op);
 				}
-			$completed = "<br /><b><font size='2'><font color='green'>"._THANKS."</b></font><br /><br />\n\n";
-			$completed .= _SURVEYREC."<br />\n";
-			$completed .= "<a href='javascript:window.close()'>"._CLOSEWIN."</a></font><br /><br />\n";
+			$completed = "<br /><b><font size='2'><font color='green'>"
+					   . _THANKS."</b></font><br /><br />\n\n"
+					   . _SURVEYREC."<br />\n"
+					   . "<a href='javascript:window.close()'>"
+					   . _CLOSEWIN."</a></font><br /><br />\n";
 			if ($_POST['token'])
 				{
 				$utquery = "UPDATE {$dbprefix}tokens_$sid SET completed='Y' WHERE token='{$_POST['token']}'";
@@ -297,12 +300,12 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 					if ($cnfrow['email']) {mail($to, $subject, $message, $headers);} //Only send confirmation email if there is an email address
 					
 					//DEBUG INFO: CAN BE REMOVED
-					echo "<!-- DEBUG: MAIL INFORMATION\n";
-					echo "TO: $to\n";
-					echo "SUBJECT: $subject\n";
-					echo "MESSAGE: $message\n";
-					echo "HEADERS: $headers\n";
-					echo "-->\n";
+					echo "<!-- DEBUG: MAIL INFORMATION\n"
+						."TO: $to\n"
+						."SUBJECT: $subject\n"
+						."MESSAGE: $message\n"
+						."HEADERS: $headers\n"
+						."-->\n";
 					//END DEBUG
 					}					
 				}
@@ -311,12 +314,12 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				$id = $savedid;
 				$to = $surveyadminemail;
 				$subject = "$sitename Survey Submitted";
-				$message = _CONFIRMATION_MESSAGE1." $surveyname\r\n";
-				$message.= "\r\n";
-				$message.= _CONFIRMATION_MESSAGE2."\r\n";
-				$message.= "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n";
-				$message.= _CONFIRMATION_MESSAGE3."\r\n";
-				$message.= "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
+				$message = _CONFIRMATION_MESSAGE1." $surveyname\r\n"
+						 . "\r\n"
+						 . _CONFIRMATION_MESSAGE2."\r\n"
+						 . "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n"
+						 . _CONFIRMATION_MESSAGE3."\r\n"
+						 . "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
 				if ($sendnotification > 1)
 					{ //Send results as well. Currently just bare-bones - will be extended in later release
 					$message .= "----------------------------\r\n";
@@ -345,16 +348,16 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			if ($adminemail)
 				{	
 				$completed .= _DIDNOTSAVE3."<br /><br />\n";
-				$email=_DNSAVEEMAIL1." $sid\n\n";
-				$email .= DNSAVEEMAIL2.":\n";
+				$email= _DNSAVEEMAIL1." $sid\n\n"
+					  . _DNSAVEEMAIL2.":\n";
 				foreach ($_SESSION['insertarray'] as $value)
 					{
 					$email .= "$value: {$_SESSION[$value]}\n";
 					}
-				$email .= "\n"._DNSAVEEMAIL3.":\n";
-				$email .= "$subquery\n\n";
-				$email .= _DNSAVEEMAIL4.":\n";
-				$email .= mysql_error()."\n\n";
+				$email .= "\n"._DNSAVEEMAIL3.":\n"
+						. "$subquery\n\n"
+						. _DNSAVEEMAIL4.":\n"
+						. mysql_error()."\n\n";
 				mail($surveyadminemail, _DNSAVEEMAIL5, $email);
 				}
 			else
@@ -386,9 +389,8 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && !$notanswered)
 		{
 		echo templatereplace($op);
 		}
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
-	
-	echo "\n\n<!-- START THE SURVEY -->\n";
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n"
+		."\n\n<!-- START THE SURVEY -->\n";
 	foreach(file("$thistpl/survey.pstpl") as $op)
 		{
 		echo "\t\t".templatereplace($op);
@@ -410,11 +412,11 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && !$notanswered)
 		{
 		echo templatereplace($op);
 		}
-	echo "\n";
-	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n";
-	echo "\n<input type='hidden' name='sid' value='$sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token'>\n";
-	echo "\n</form>\n</html>";
+	echo "\n"
+		."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n"
+		."\n<input type='hidden' name='sid' value='$sid'>\n"
+		."\n<input type='hidden' name='token' value='$token'>\n"
+		."\n</form>\n</html>";
 	exit;
 	}
 
@@ -427,8 +429,8 @@ if ($surveyexists <1)
 		{
 		echo templatereplace($op);
 		}
-	echo "\t<center><br />\n";
-	echo "\t"._SURVEYNOEXIST."<br />&nbsp;\n";	
+	echo "\t<center><br />\n"
+		."\t"._SURVEYNOEXIST."<br />&nbsp;\n";	
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -451,22 +453,22 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			{
 			echo templatereplace($op);
 			}
-		echo "\t<center><br />\n";
-		echo "\t<center><br />\n";
-		echo "\t"._NOTOKEN1."<br /><br />\n";
-		echo "\t"._NOTOKEN2."<br />&nbsp;\n";
-		echo "\t<table align='center'>";
-		echo "\t<form method='get' action='{$_SERVER['PHP_SELF']}'>\n";
-		echo "\t<input type='hidden' name='sid' value='$sid'>\n";
-		echo "\t\t<tr>\n";
-		echo "\t\t\t<td align='center' valign='middle'>\n";
-		echo "\t\t\t"._TOKEN.": <input class='text' type='text' name='token'>\n";
-		echo "\t\t\t<input class='submit' type='submit' value='"._CONTINUE."'>\n";
-		echo "\t\t\t</td>\n";
-		echo "\t\t</tr>\n";
-		echo "\t</form>\n";
-		echo "\t</table>\n";
-		echo "\t<br />&nbsp;</center>\n";
+		echo "\t<center><br />\n"
+			."\t<center><br />\n"
+			."\t"._NOTOKEN1."<br /><br />\n"
+			."\t"._NOTOKEN2."<br />&nbsp;\n"
+			."\t<table align='center'>"
+			."\t<form method='get' action='{$_SERVER['PHP_SELF']}'>\n"
+			."\t<input type='hidden' name='sid' value='$sid'>\n"
+			."\t\t<tr>\n"
+			."\t\t\t<td align='center' valign='middle'>\n"
+			."\t\t\t"._TOKEN.": <input class='text' type='text' name='token'>\n"
+			."\t\t\t<input class='submit' type='submit' value='"._CONTINUE."'>\n"
+			."\t\t\t</td>\n"
+			."\t\t</tr>\n"
+			."\t</form>\n"
+			."\t</table>\n"
+			."\t<br />&nbsp;</center>\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -492,11 +494,11 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 				{
 				echo "\t".templatereplace($op);
 				}
-			echo "\t<center><br />\n";
-			echo "\t"._NOTOKEN1."<br /><br />\n";
-			echo "\t"._NOTOKEN3."\n";
-			echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
-			echo "\t<a href='javascript:window.close()'>"._CLOSEWIN."</a><br />&nbsp;\n";
+			echo "\t<center><br />\n"
+				."\t"._NOTOKEN1."<br /><br />\n"
+				."\t"._NOTOKEN3."\n"
+				."\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n"
+				."\t<a href='javascript:window.close()'>"._CLOSEWIN."</a><br />&nbsp;\n";
 			foreach(file("$thistpl/endpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -529,10 +531,10 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			{
 			echo "\t".templatereplace($op);
 			}
-		echo "\t<center><br />\n";
-		echo "\t"._NOQUESTIONS."<br /><br />\n";
-		echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
-		echo "\t<a href='javascript:window.close()'>"._CLOSEWIN."</a><br />&nbsp;\n";
+		echo "\t<center><br />\n"
+			."\t"._NOQUESTIONS."<br /><br />\n"
+			."\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n"
+			."\t<a href='javascript:window.close()'>"._CLOSEWIN."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -838,10 +840,10 @@ if (isset($conmandatoryfns) && is_array($conmandatoryfns))
 	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn'>\n";
 	}
 
-echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n";
-echo "<input type='hidden' name='sid' value='$sid'>\n";
-echo "<input type='hidden' name='token' value='$token'>\n";
-echo "</form>\n</html>";
+echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n"
+	."<input type='hidden' name='sid' value='$sid'>\n"
+	."<input type='hidden' name='token' value='$token'>\n"
+	."</form>\n</html>";
 
 function surveymover()
 	{
@@ -861,6 +863,4 @@ function surveymover()
 		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "._SUBMIT." ' name='move' />\n";}
 	return $surveymover;	
 	}
-
-
 ?>
