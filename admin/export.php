@@ -135,7 +135,7 @@ foreach ($crows as $crow)
 	{
 	if ($style == "abrev")
 		{
-		if ($crow['type'] != "M" && $crow['type'] != "A" && $crow['type'] != "B" && $crow['type'] != "C" && $crow['type'] != "P" && $crow['type'] != "O")
+		if ($crow['type'] != "M" && $crow['type'] != "A" && $crow['type'] != "B" && $crow['type'] != "C" && $crow['type'] != "P" && $crow['type'] != "O" && $crow['type'] != "R")
 			{
 			$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}$s ";
 			}
@@ -143,6 +143,16 @@ foreach ($crows as $crow)
 			{
 			$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}$s ";
 			$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}[comment]$s ";
+			}
+		elseif ($crow['type'] == "R")
+			{
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$crow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2result = mysql_query($i2query);
+			$i2count = mysql_num_rows($i2result);
+			for ($i=1; $i<=$i2count; $i++)
+				{
+				$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}No$i $s";	
+				}
 			}
 		else
 			{
@@ -162,7 +172,7 @@ foreach ($crows as $crow)
 		}
 	elseif ($style == "full")
 		{
-		if ($crow['type'] != "M" && $crow['type'] != "A" && $crow['type'] != "B" && $crow['type'] != "C" && $crow['type'] != "P" && $crow['type'] != "O")
+		if ($crow['type'] != "M" && $crow['type'] != "A" && $crow['type'] != "B" && $crow['type'] != "C" && $crow['type'] != "P" && $crow['type'] != "O" && $crow['type'] != "R")
 			{
 			$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question']))."$s ";
 			}
@@ -170,6 +180,16 @@ foreach ($crows as $crow)
 			{
 			$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question']))."$s ";
 			$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question']))."[Comment]$s ";
+			}
+		elseif ($crow['type'] == "R")
+			{
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$crow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2result = mysql_query($i2query);
+			$i2count = mysql_num_rows($i2result);
+			for ($i=1; $i<=$i2count; $i++)
+				{
+				$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question'])).": $i$s ";
+				}			
 			}
 		else
 			{
@@ -242,6 +262,14 @@ elseif ($answers == "long")
 				{$ftype = $qrow['type'];}
 			switch ($ftype)
 				{
+				case "R": //RANKING TYPE
+					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code = '$drow[$i]'";
+					$lr = mysql_query($lq);
+					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+						{
+						echo $lrow['answer'];
+						}
+					break;
 				case "L": //DROPDOWN LIST
 					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code ='$drow[$i]'";
 					$lr = mysql_query($lq);
