@@ -237,7 +237,7 @@ elseif ($action == "edit")
 	//echo "$fnquery<br /><br />\n";
 	
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private=$fnrow['private'];} // Get table output into array
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private=$fnrow['private']; $datestamp=$fnrow['datestamp'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -249,7 +249,10 @@ elseif ($action == "edit")
 		{
 		$fnames[] = array ("token", "Token ID", "Token", "token", "TID", "");
 		}
-	
+	if ($datestamp == "Y")
+		{
+		$fnames[] = array ("datestamp", "Date Stamp", "Datestamp", "datestamp", "datestamp", "");
+		}
 
 	foreach ($fnrows as $fnrow)
 		{
