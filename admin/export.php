@@ -44,17 +44,28 @@ if (!isset($type)) {$type=returnglobal('type');}
 if (!$style)
 	{
 	sendcacheheaders();
+	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
+	$query="SELECT * FROM {$dbprefix}survey_$sid LIMIT 1";
+	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+	$afieldcount=mysql_num_fields($result);
+	$i=0;
+	while($i<$afieldcount)
+		{
+		$meta=mysql_fetch_field($result, $i);
+		$excesscols[]=$meta->name;
+		$i++;
+		}
 	echo $htmlheader
 		."<br />\n"
 		."<table align='center'><tr>"
 		."<form action='export.php' method='post'>\n"
-		."<td>\n"
+		."<td valign='top'>\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 		."<font size='1' face='verdana' color='white'><b>"
 		._EXPORTRESULTS;
 	if (isset($_POST['sql'])) {echo " ("._EX_FROMSTATS.")";}
-	echo "</b></font></td></tr>\n"
+	echo "</b> ($afieldcount Cols)</font></td></tr>\n"
 		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><b>"
 		._EX_HEADINGS."</b></font></font></td></tr>\n"
 		."\t<tr>\n"
@@ -116,10 +127,6 @@ if (!$style)
 		."\t</tr>\n"
 		."</table>\n"
 		."</td>";
-	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-	$query="SELECT * FROM {$dbprefix}survey_$sid LIMIT 1";
-	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-	$afieldcount=mysql_num_fields($result);
 	$query="SELECT private FROM {$dbprefix}surveys WHERE sid=$sid"; //Find out if tokens are used
 	$result=mysql_query($query) or die("Couldn't get privacy data<br />$query<br />".mysql_error());
 	while ($rows = mysql_fetch_array($result)) {$surveyprivate=$rows['private'];}
@@ -129,7 +136,54 @@ if (!$style)
 		$result=mysql_query($query) or die("Couldn't get table list<br />$query<br />".mysql_error());
 		$tablecount=mysql_num_rows($result);
 		}
-	if ($afieldcount > 255 || $tablecount > 0) //Do second column
+	echo "<td valign='top'>\n"
+		."<table align='center' width='150' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
+		."\t<tr>\n"
+		."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><b>"
+		._EX_COLCONTROLS."</b>\n"
+		."\t\t</font></td>\n"
+		."\t</tr>\n"
+		."\t<tr>\n"
+		."\t\t<td bgcolor='silver' height='8'><b>$setfont<font size='1'>\n"
+		."\t\t\t"._EX_COLSELECT.":\n"
+		."\t\t</font></font></td>\n"
+		."\t</tr>\n"
+		."\t<tr>\n"
+		."\t\t<td>$setfont\n";
+	if ($afieldcount > 255)
+		{
+		echo "\t\t\t<img src='$imagefiles/showhelp.gif' alt='"._HELP."' align='right' onclick='javascript:alert(\""
+			._EX_COLNOTOK
+			."\")'>";
+		}
+	else
+		{
+		echo "\t\t\t<img src='$imagefiles/showhelp.gif' alt='"._HELP."' align='right' onclick='javascript:alert(\""
+			._EX_COLOK
+			."\")'>";
+		}
+	echo "\t\t</font></font></td>\n"
+		."\t</tr>\n"
+		."\t<tr>\n"
+		."\t\t<td align='center'>$setfont<font size='1'>\n"
+		."\t\t\t<select name='colselect[]' $slstyle2 multiple size='15'>\n";
+	$i=1;
+	foreach($excesscols as $ec)
+		{
+		echo "<option value='$ec'";
+		if ($i<256) 
+			{
+			echo " selected";
+		    }
+		echo ">$i: $ec</option>\n";
+		$i++;
+		}
+	echo "\t\t\t</select><br />\n"
+		."\t\t<img src='$imagefiles/blank.gif' height='7' alt='-'></td>\n"
+		."\t</tr>\n"
+		."</table>\n"
+		."</td>\n";
+	if ($tablecount > 0) //Do second column
 		{
 		//OPTIONAL EXTRAS (FROM TOKENS TABLE)
 		if ($tablecount > 0) 
@@ -138,16 +192,19 @@ if (!$style)
 				."<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
 				."\t<tr>\n"
 				."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><b>"
-				."Token Options</b>\n"
+				._EX_TOKENCONTROLS."</b>\n"
 				."\t\t</font></td>\n"
 				."\t</tr>\n"
 				."\t<tr>\n"
 				."\t\t<td bgcolor='silver' height='8'><b>$setfont<font size='1'>\n"
-				."Include Token Fields:"
+				._EX_TOKSELECT.":"
 				."\t\t</font></font></b></td>\n"
 				."\t</tr>\n"
 				."\t<tr>\n"
 				."\t\t<td>$setfont<font size='1'>"
+				."<img src='$imagefiles/showhelp.gif' alt='"._HELP."' align='right' onclick='javascript:alert(\""
+				._EX_TOKENMESSAGE
+				."\")'><br /><br />\n"
 				."<input type='checkbox' name='first_name' id='first_name'>"
 				."<label for='first_name'>"._TL_FIRST."</label><br />\n"
 				."<input type='checkbox' name='last_name' id='last_name'>"
@@ -170,7 +227,6 @@ if (!$style)
 				."</td>";
 			}
 		}
-		
 	echo "</tr>\n"
 		."\t</form>\n"
 		."</table><br />\n"
@@ -179,6 +235,14 @@ if (!$style)
 	}
 
 //HERE WE EXPORT THE ACTUAL RESULTS
+
+//if (isset($_POST['colselect']))
+//	{
+//	foreach($_POST['colselect'] as $colname)
+//		{
+//		echo $colname."<br />";
+//		}
+//	}
 
 if ($type == "doc") 
 	{
@@ -225,7 +289,21 @@ while ($lw = mysql_fetch_array($lr))
 
 //Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$sid";
-$dquery = "SELECT $surveytable.*";
+if (isset($_POST['colselect']))
+	{
+	$selectfields="";
+    foreach($_POST['colselect'] as $cs)
+		{
+		$selectfields.= "$surveytable.$cs, ";
+		}
+	$selectfields = substr($selectfields, 0, strlen($selectfields)-2);
+	}
+else
+	{
+	$selectfields="$surveytable.*";
+	}
+
+$dquery = "SELECT $selectfields";
 if (isset($_POST['first_name']) && $_POST['first_name']=="on")
 	{
 	$dquery .= ", {$dbprefix}tokens_$sid.firstname";
@@ -266,24 +344,24 @@ for ($i=0; $i<$fieldcount; $i++)
 			{
 			if ($type == "csv") 
 				{
-				$firstline.="\"Token\"$s";
+				$firstline.="\""._TL_TOKEN."\"$s";
 				}
 			else 
 				{
-				$firstline .= "Token$s";
+				$firstline .= _TL_TOKEN."$s";
 				}
 			}
 		if ($answers == "long") 
 			{
 			if ($style == "abrev")
 				{
-				if ($type == "csv") {$firstline .= "\"Participant\"$s";}
-				else {$firstline .= "Participant$s";}
+				if ($type == "csv") {$firstline .= "\""._TL_TOKEN."\"$s";}
+				else {$firstline .= _TL_TOKEN."$s";}
 				}
 			else 
 				{
-				if ($type == "csv") {$firstline .= "\"Participant Name\"$s";}
-				else {$firstline .= "Participant Name$s";}
+				if ($type == "csv") {$firstline .= "\""._TL_TOKEN."\"$s";}
+				else {$firstline .= _TL_TOKEN."$s";}
 				}
 			}
 		}
@@ -479,15 +557,14 @@ $firstline .= "\n";
 echo $firstline; //Sending the header row
 
 //Now dump the data
-
 if (isset($_POST['sql'])) //this applies if export has been called from the statistics package
 	{
-	if ($_POST['sql'] == "NULL") {$dquery = "SELECT * FROM $surveytable ORDER BY id";}
-	else {$dquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
+	if ($_POST['sql'] == "NULL") {$dquery = "SELECT $selectfields FROM $surveytable ORDER BY id";}
+	else {$dquery = "SELECT $selectfields FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
 	}
 elseif ((isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
 	{
-	$dquery = "SELECT $surveytable.*";
+	$dquery = "SELECT $selectfields";
 	if (isset($_POST['first_name']) && $_POST['first_name']=="on")
 		{
 		$dquery .= ", {$dbprefix}tokens_$sid.firstname";
@@ -515,7 +592,7 @@ elseif ((isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset(
 	}
 else // this applies for exporting everything
 	{
-	$dquery = "SELECT * FROM $surveytable ORDER BY id";
+	$dquery = "SELECT $selectfields FROM $surveytable ORDER BY id";
 	}
 
 if ($answers == "short") //Nice and easy. Just dump the data straight
