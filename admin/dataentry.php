@@ -71,7 +71,7 @@ if ($action == "insert")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "P" && $irow['type'] != "O")
+		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			$col_name .= "$fieldname, \n";
@@ -108,10 +108,33 @@ if ($action == "insert")
 					}
 				}
 			}
+		elseif ($irow['type'] == "R")
+			{
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2result = mysql_query($i2query);
+			$i2count = mysql_num_rows($i2result);
+			for ($i=1; $i<=$i2count; $i++)
+				{
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$i";
+				$col_name .= "$fieldname, \n";		
+				if (get_magic_quotes_gpc())
+					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
+				else
+					{
+					if (phpversion() >= "4.3.0")
+						{
+						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+						}
+					else
+						{
+						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+						}
+					}
+				}
+			}
 		else
 			{
 			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY code";
-			//echo $i2query . "<br />\n";
 			$i2result = mysql_query($i2query);
 			while ($i2row = mysql_fetch_array($i2result))
 				{
@@ -254,6 +277,16 @@ elseif ($action == "edit")
 					}
 				}
 			}
+		elseif ($fnrow['type'] == "R")
+			{
+			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY code";
+			$fnrresult = mysql_query($fnrquery);
+			$fnrcount = mysql_num_rows($fnrresult);
+			for ($j=1; $j<=$fnrcount; $j++)
+				{
+				$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "$j", "{$fnrow['qid']}");
+				}
+			}
 		elseif ($fnrow['type'] == "O")
 			{
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}");
@@ -272,11 +305,16 @@ elseif ($action == "edit")
 	//echo "<pre>"; print_r($fnames); echo "</pre>"; //Debugging info
 	$nfncount = count($fnames)-1;
 
+	foreach ($fnames as $fnm)
+		{
+		echo "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6], $fnm[7] -->\n";
+		}
+	
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
 	echo "<table>\n";
-	echo "<form method='post' action='dataentry.php'>\n";
+	echo "<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#EEEEEE' align='center'>$setfont<b>Editing Answer ID $id ($nfncount)</td></tr>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 
@@ -364,6 +402,147 @@ elseif ($action == "edit")
 					echo "\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>";
 					echo htmlspecialchars($idrow[$fnames[$i][0]]) . "</textarea>\n";
 					break;
+				case "R": //RANKING TYPE QUESTION
+					$l=$i;
+					$myfname=substr($fnames[$i][0], 0, -1);
+					while ($fnames[$i][3] == "R")
+						{
+						//Let's get all the existing values into an array
+						if ($idrow[$fnames[$i][0]])
+							{
+							$currentvalues[] = $idrow[$fnames[$i][0]];						
+							}
+						$i++;
+						}
+					$ansquery = "SELECT * FROM answers WHERE qid={$fnames[$l][7]} ORDER BY code";
+					$ansresult = mysql_query($ansquery);
+					$anscount = mysql_num_rows($ansresult);
+					echo "\t\t\t<script type='text/javascript'>\n";
+					echo "\t\t\t<!--\n";
+					echo "\t\t\t\tfunction rankthis(\$code, \$value)\n";
+					echo "\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\$index=document.editsurvey.CHOICES.selectedIndex;\n";
+					echo "\t\t\t\t\tdocument.editsurvey.CHOICES.selectedIndex=-1;\n";
+					echo "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\$b=i;\n";
+					echo "\t\t\t\t\t\t\$b += '';\n";	
+					echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
+					echo "\t\t\t\t\t\t\$hiddenname=\"$myfname\"+\$b;\n";
+					echo "\t\t\t\t\t\t\$cutname=\"CUT\"+i;\n";
+					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
+					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
+					echo "\t\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
+					echo "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
+					echo "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
+					echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES').options.length-1; b>=0; b--)\n";
+					echo "\t\t\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES').options[b].value == \$code)\n";
+					echo "\t\t\t\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES').options[b] = null;\n";
+					echo "\t\t\t\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\t\t\ti=$anscount;\n";
+					echo "\t\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\t}\n";
+					echo "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
+					echo "\t\t\t\t\t{\n";
+					echo "\t\t\t\t\tvar cutindex=\$thisname.substring(3,6);\n";
+					echo "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
+					echo "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
+					echo "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
+					echo "\t\t\t\t\tif (cutindex > 1)\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
+					echo "\t\t\t\t\t\t\$cut2name=\"$myfname\"+(cutindex);\n";
+					echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
+					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
+					echo "\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\telse\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\$cut2name=\"$myfname\"+(cutindex);\n";
+					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
+					echo "\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
+					echo "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
+					echo "\t\t\t\t\t}\n";
+					echo "\t\t\t//-->\n";
+					echo "\t\t\t</script>\n";	
+					while ($ansrow = mysql_fetch_array($ansresult)) //Now we're getting the codes and answers
+						{
+						$answers[] = array($ansrow['code'], $ansrow['answer']);
+						}
+					//now find out how many existing values there are
+					$existing = count($currentvalues);
+					
+					for ($j=1; $j<=$anscount; $j++) //go through each ranking and check for matching answer
+						{
+						$k=$j-1;
+						if ($currentvalues[$k]) 
+							{
+							foreach ($answers as $ans)
+								{
+								if ($ans[0] == $currentvalues[$k])
+									{
+									$thiscode=$ans[0];
+									$thistext=$ans[1];
+									}
+								}
+							}
+						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$j:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$j' id='RANK$j'";
+						if ($currentvalues[$k])
+							{
+							$ranklist .= " value='";
+							$ranklist .= $thistext;
+							$ranklist .= "'";
+							}
+						$ranklist .= " onFocus=\"this.blur()\">\n";
+						$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$myfname$j' value='";
+						$chosen[]=""; //create array
+						if ($currentvalues[$k]) 
+							{
+							$ranklist .= $thiscode;
+							$chosen[]=array($thiscode, $thistext);
+							}
+						$ranklist .= "'>\n";
+						$ranklist .= "\t\t\t\t\t\t<img src='cut.gif' title='Remove this item' ";
+						if ($j != $existing)
+							{
+							$ranklist .= "style='display:none'";
+							}
+						$ranklist .= " id='cut$j' name='cut$j' onClick=\"deletethis(RANK$j.value, '$myfname$j.value', RANK$j.name, this.name)\"><br />\n\n";
+						}
+					
+					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+					foreach ($answers as $ans)
+						{
+						if (!in_array($ans, $chosen))
+							{
+							$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+							}
+						}
+					$choicelist .= "\t\t\t\t\t\t</select>\n";
+	
+					echo "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t</tr>\n";
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n";
+					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Choices:</b><br />\n";
+					echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
+					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ranking:</b><br />\n";
+					echo $ranklist;
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
+					echo "\t\t\t</table>\n";
+					echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
+					echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
+					break;
+
 				case "M": //MULTIPLE OPTIONS checkbox
 					while ($fnames[$i][3] == "M")
 						{
@@ -548,7 +727,7 @@ elseif ($action == "update")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "O")
+		if ($irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (get_magic_quotes_gpc())
@@ -582,6 +761,29 @@ elseif ($action == "update")
 				else
 					{
 					$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+					}
+				}
+			}
+		elseif ($irow['type'] == "R")
+			{
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2result = mysql_query($i2query);
+			$i2count = mysql_num_rows($i2result);
+			for ($x=1; $x<=$i2count; $x++)
+				{
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$x";
+				if (get_magic_quotes_gpc())
+					{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
+				else
+					{
+					if (phpversion() >= "4.3.0")
+						{
+						$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+						}
+					else
+						{
+						$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+						}
 					}
 				}
 			}
@@ -684,7 +886,7 @@ else
 	echo "\t\t\t<br>$setfont$surveydesc\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
-	echo "\t<form action='dataentry.php' name='addsurvey' method='post'>\n";
+	echo "\t<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n";
 	
 	if ($surveyprivate == "N") //Give entry field for token id
 		{
@@ -788,6 +990,143 @@ else
 					echo "\t\t\t<br />Comment:<br />\n";
 					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname";
 					echo "comment'>$idrow[$i]</textarea>\n";
+					break;
+				case "R": //RANKING TYPE QUESTION
+					$ansquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
+					$ansresult = mysql_query($ansquery);
+					$anscount = mysql_num_rows($ansresult);
+					echo "\t\t\t<script type='text/javascript'>\n";
+					echo "\t\t\t<!--\n";
+					echo "\t\t\t\tfunction rankthis(\$code, \$value)\n";
+					echo "\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\$index=document.addsurvey.CHOICES.selectedIndex;\n";
+					echo "\t\t\t\t\tdocument.addsurvey.CHOICES.selectedIndex=-1;\n";
+					echo "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\$b=i;\n";
+					echo "\t\t\t\t\t\t\$b += '';\n";
+					echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
+					echo "\t\t\t\t\t\t\$hiddenname=\"$fieldname\"+\$b;\n";
+					echo "\t\t\t\t\t\t\$cutname=\"CUT\"+i;\n";
+					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
+					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
+					echo "\t\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
+					echo "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
+					echo "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
+					echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES').options.length-1; b>=0; b--)\n";
+					echo "\t\t\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES').options[b].value == \$code)\n";
+					echo "\t\t\t\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES').options[b] = null;\n";
+					echo "\t\t\t\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\t\t\ti=$anscount;\n";
+					echo "\t\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\t}\n";
+					echo "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
+					echo "\t\t\t\t\t{\n";
+					echo "\t\t\t\t\tvar cutindex=\$thisname.substring(3,6);\n";
+					echo "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
+					echo "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
+					echo "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
+					echo "\t\t\t\t\tif (cutindex > 1)\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
+					echo "\t\t\t\t\t\t\$cut2name=\"$fieldname\"+(cutindex);\n";
+					echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
+					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
+					echo "\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\telse\n";
+					echo "\t\t\t\t\t\t{\n";
+					echo "\t\t\t\t\t\t\$cut2name=\"$fieldname\"+(cutindex);\n";
+					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
+					echo "\t\t\t\t\t\t}\n";
+					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
+					echo "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
+					echo "\t\t\t\t\t}\n";
+					echo "\t\t\t//-->\n";
+					echo "\t\t\t</script>\n";	
+					while ($ansrow = mysql_fetch_array($ansresult))
+						{
+						$answers[] = array($ansrow['code'], $ansrow['answer']);
+						}
+	
+					for ($i=1; $i<=$anscount; $i++)
+						{
+						$myfname=$fname.$i;
+						if ($_SESSION[$myfname])
+							{
+							$existing++;
+							}
+						}
+					for ($i=1; $i<=$anscount; $i++)
+						{
+						$myfname = $fname.$i;
+						if ($_SESSION[$myfname])
+							{
+							foreach ($answers as $ans)
+								{
+								if ($ans[0] == $_SESSION[$myfname])
+									{
+									$thiscode=$ans[0];
+									$thistext=$ans[1];
+									}
+								}
+							}
+						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$i' id='RANK$i'";
+						if ($_SESSION[$myfname])
+							{
+							$ranklist .= " value='";
+							$ranklist .= $thistext;
+							$ranklist .= "'";
+							}
+						$ranklist .= " onFocus=\"this.blur()\">\n";
+						$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$fieldname$i' value='";
+						$chosen[]=""; //create array
+						if ($_SESSION[$myfname]) 
+							{
+							$ranklist .= $thiscode;
+							$chosen[]=array($thiscode, $thistext);
+							}
+						$ranklist .= "'>\n";
+						$ranklist .= "\t\t\t\t\t\t<img src='cut.gif' title='Remove this item' ";
+						if ($i != $existing)
+							{
+							$ranklist .= "style='display:none'";
+							}
+						$mfn=$fieldname.$i;
+						$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(RANK$i.value, '$mfn.value', RANK$i.name, this.name)\"><br />\n\n";
+						}
+					
+					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+					foreach ($answers as $ans)
+						{
+						if (!in_array($ans, $chosen))
+							{
+							$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+							}
+						}
+					$choicelist .= "\t\t\t\t\t\t</select>\n";
+	
+					echo "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t</tr>\n";
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n";
+					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Choices:</b><br />\n";
+					echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
+					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ranking:</b><br />\n";
+					echo $ranklist;
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
+					echo "\t\t\t</table>\n";
+					echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
+					echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
+
 					break;
 				case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
