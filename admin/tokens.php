@@ -62,6 +62,11 @@ else
 	$sid = $_GET['sid'];
 	if (!$sid) {$sid = $_POST['sid'];}
 	}
+
+//CONVERT POST & GET VARIABLES TO GLOBALS
+if ($_GET['action']) {$action = $_GET['action'];}
+if ($_POST['action']) {$action = $_POST['action'];}
+
 // MAKE SURE THAT THE SURVEY EXISTS
 $chquery = "SELECT * FROM surveys WHERE sid=$sid";
 if (!$chresult = mysql_query($chquery))
@@ -228,7 +233,7 @@ if ($action == "browse")
 
 if ($action == "kill")
 	{
-	$date = date(Ymd);
+	$date = date(YmdHi);
 	echo "$setfont<b>Drop/Delete Tokens</b></font><br />\n";
 	if (!$ok)
 		{
@@ -236,13 +241,13 @@ if ($action == "kill")
 		echo "Deleting this token table will mean that tokens are no longer<br />\n";
 		echo "required for public access to this survey. It will also delete<br />\n";
 		echo "all the existing tokens in this survey. A backup of this table<br />\n";
-		echo "will be made, and called \"old_tokens_$sid\". This can be<br />\n";
+		echo "will be made, and called \"old_tokens_$sid_$date\". This can be<br />\n";
 		echo "recovered by a systems administrator.<br /><br />\n";
 		echo "<input type='submit' $btstyle value='Delete Tokens' onClick=\"window.open('tokens.php?sid=$sid&action=kill&ok=surething', '_top')\" /><br />\n";
 		echo "<input type='submit' $btstyle value='Cancel' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
 		echo "</span>\n";
 		}
-	elseif ($ok == "surething")
+	elseif ($_GET['ok'] == "surething")
 		{
 		$oldtable = "tokens_{$sid}";
 		$newtable = "old_tokens_{$sid}_{$date}";
@@ -551,7 +556,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 if ($action == "tokenify")
 	{
 	echo "$setfont<b>Tokens</b><br />\n";
-	if (!$ok)
+	if (!$_GET['ok'])
 		{
 		echo "<br />$setfont Clicking OK will generate tokens for all<br />\nthose in this token list that have not<br />\nbeen issued one. Is this OK?<br />\n";
 		echo "<input type='submit' $btstyle value='Yes' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\" />\n";
@@ -583,8 +588,8 @@ if ($action == "tokenify")
 
 if ($action == "delete")
 	{
-	$dlquery = "DELETE FROM tokens_$sid WHERE tid=$tid";
-	$dlresult = mysql_query($dlquery) or die ("Couldn't delete record $tid<br />".mysql_error());
+	$dlquery = "DELETE FROM tokens_$sid WHERE tid={$_GET['tid']}";
+	$dlresult = mysql_query($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".mysql_error());
 	echo "<br /><b>Record has been deleted.</b>\n";
 	}
 
@@ -593,7 +598,7 @@ if ($action == "edit" || $action == "add")
 	{
 	if ($action == "edit")
 		{
-		$edquery = "SELECT * FROM tokens_$sid WHERE tid=$tid";
+		$edquery = "SELECT * FROM tokens_$sid WHERE tid={$_GET['tid']}";
 		$edresult = mysql_query($edquery);
 		while($edrow = mysql_fetch_array($edresult))
 			{
@@ -640,7 +645,7 @@ if ($action == "edit" || $action == "add")
 		{
 		case "edit":
 			echo "\t\t<input type='submit' $btstyle name='action' value='update'>\n";
-			echo "\t\t<input type='hidden' name='tid' value='$tid'>\n";
+			echo "\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
 			break;
 		case "add":
 			echo "\t\t<input type='submit' $btstyle name='action' value='insert'>\n";
@@ -656,8 +661,8 @@ if ($action == "edit" || $action == "add")
 if ($action == "update")
 	{
 	echo "<br />$setfont<B>UPDATING TOKEN ENTRY</B><br />\n";
-	$udquery = "UPDATE tokens_$sid SET firstname='$firstname', lastname='$lastname', email='$email', token='$token', sent='$sent', completed='$completed' WHERE tid=$tid";
-	$udresult = mysql_query($udquery) or die ("Update record $tid failed:<br />\n$udquery<br />\n".mysql_error());
+	$udquery = "UPDATE tokens_$sid SET firstname='{$_POST['firstname']}', lastname='{$_POST['lastname']}', email='{$_POST['email']}', token='{$_POST['token']}', sent='{$_POST['sent']}', completed='{$_POST['completed']}' WHERE tid={$_POST['tid']}";
+	$udresult = mysql_query($udquery) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".mysql_error());
 	echo "<br />Entry succesfully updated!\n";
 	}
 
@@ -667,7 +672,7 @@ if ($action == "insert")
 	echo "<br />$setfont<B>INSERTING TOKEN ENTRY</b><br />\n";
 	$inquery = "INSERT into tokens_$sid \n";
 	$inquery .= "(firstname, lastname, email, token, sent, completed) \n";
-	$inquery .= "VALUES ('$firstname', '$lastname', '$email', '$token', '$sent', '$completed')";
+	$inquery .= "VALUES ('{$_POST['firstname']}', '{$_POST['lastname']}', '{$_POST['email']}', '{$_POST['token']}', '{$_POST['sent']}', '{$_POST['completed']}')";
 	$inresult = mysql_query($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".mysql_error());
 	echo "<br />Entry succesfully added!\n";
 	}
@@ -691,6 +696,8 @@ if ($action == "import")
 if ($action == "upload") 
 	{
 	$the_path = "$homedir";
+	$the_file_name = $_FILES['the_file']['name'];
+	$the_file = $_FILES['the_file']['tmp_name'];
 	$the_full_file_path = $homedir."/".$the_file_name;
 	if (!@copy($the_file, $the_path . "/" . $the_file_name)) 
 		{
@@ -721,7 +728,14 @@ if ($action == "upload")
 				}
 			else
 				{
-				$line = explode(",", $buffer);
+				if (phpversion() >= "4.3.0")
+					{
+					$line = explode(",", mysql_real_escape_string($buffer));
+					}
+				else
+					{
+					$line = explode(",", mysql_escape_string($buffer));
+					}
 				$elements = count($line); 
 				if ($elements > 1)
 					{
@@ -756,7 +770,7 @@ if ($action == "upload")
 		}
 	}
 
-//echo "ACTION: $action<br />THEFILE: $the_file<br />THEFILENAME: $the_file_name";
+//echo "ACTION: $action (POST: {$_POST['action']})<br />THEFILE: $the_file (FILES: {$_FILES['the_file']['tmp_name']})<br />THEFILENAME: $the_file_name (FILES: {$_FILES['the_file']['name']})";
 echo "</center>\n";
 echo "</body>\n</html>";
 
