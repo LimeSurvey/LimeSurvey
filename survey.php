@@ -93,19 +93,19 @@ if ($_POST['conmandatory'])
 //DEBUG - FOLLOWING SECTION CAN GO ONCE SCRIPT IS OK
 //What answers have been made so far?
 //echo "<hr>\n";
-echo "<!-- DEBUG: ANSWERFIELDS AND ANSWERS SO FAR\n";
-foreach (array_keys($_SESSION) as $SESak)
-	{
-	echo "$SESak: " . $_SESSION[$SESak] . "\n";
-	}
-echo "-->\n";
+//echo "<!-- DEBUG: ANSWERFIELDS AND ANSWERS SO FAR\n";
+//foreach (array_keys($_SESSION) as $SESak)
+//	{
+//	echo "$SESak: " . $_SESSION[$SESak] . "\n";
+//	}
+//echo "-->\n";
 
-echo "<!-- DEBUG: POSTED VARIABLES\n";
-foreach (array_keys($_POST) as $POSak)
-	{
-	echo "$POSak: ". $_POST[$POSak] . "\n";
-	}
-echo "-->\n";
+//echo "<!-- DEBUG: POSTED VARIABLES\n";
+//foreach (array_keys($_POST) as $POSak)
+//	{
+//	echo "$POSak: ". $_POST[$POSak] . "\n";
+//	}
+//echo "-->\n";
 
 //echo "<!-- DEBUG: GROUPLIST\n";
 //foreach (array_keys($_SESSION['grouplist']) as $GLak)
