@@ -21,6 +21,7 @@ define(_EXPORTQUESTION, "Export Question");
 define(_EXPORTSURVEY, "Export Survey");
 define(_EXPORTLABEL, "Export Label Set");
 define(_IMPORTQUESTION, "Import Question");
+define(_IMPORTGROUP, "Import Group"); //New for 0.98rc5
 define(_IMPORTSURVEY, "Import Survey");
 define(_IMPORTLABEL, "Import Label Set");
 define(_EXPORTRESULTS, "Export Responses");
@@ -79,6 +80,7 @@ define(_S_MAXIMISE_BT, "Show Details of this Survey");
 define(_S_CLOSE_BT, "Close this Survey");
 //Group bar
 define(_G_EDIT_BT, "Edit Current Group");
+define(_G_EXPORT_BT, "Export Current Group"); //New in 0.98rc5
 define(_G_DELETE_BT, "Delete Current Group");
 define(_G_ADDQUESTION_BT, "Add New Question to Group");
 define(_G_MINIMISE_BT, "Hide Details of this Group");
