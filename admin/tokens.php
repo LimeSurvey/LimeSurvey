@@ -1151,10 +1151,17 @@ if ($action == "upload")
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._UPLOADCSV."</b></td></tr>\n"
 		."\t<tr><td align='center'>\n";
-	$the_path = "$homedir";
+	if (!isset($tempdir))
+		{
+		$the_path = $homedir;
+	    }
+	else
+		{
+		$the_path = $tempdir;
+		}
 	$the_file_name = $_FILES['the_file']['name'];
 	$the_file = $_FILES['the_file']['tmp_name'];
-	$the_full_file_path = $homedir."/".$the_file_name;
+	$the_full_file_path = $the_path."/".$the_file_name;
 	if (!@move_uploaded_file($the_file, $the_full_file_path))
 		{
 		$errormessage="<b><font color='red'>"._ERROR.":</font> "._TC_UPLOADFAIL."</b>\n";
@@ -1169,7 +1176,7 @@ if ($action == "upload")
 		if ($handle == false) {echo "Failed to open the uploaded file!\n";}
 		while (!feof($handle))
 			{
-			$buffer = fgets($handle, 4096);
+			$buffer = fgets($handle, 4096); //4096 could be increased if very long lines are being used
 			
 			//Delete trailing CR from Windows files.
 			//Macintosh files end lines with just a CR, which fgets() doesn't handle correctly.

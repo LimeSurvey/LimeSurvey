@@ -40,7 +40,7 @@ echo "<table width='350' align='center' style='border: 1px solid #555555' cellpa
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._IMPORTLABEL."</b></td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
-$the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
+$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
