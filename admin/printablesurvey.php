@@ -170,7 +170,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				}
 			if (count($conditions) > 1)
 				{
-				$explanation .=  "'".implode("' or '", $conditions)."'";	
+				$explanation .=  "'".implode("' "._PS_CON_OR." '", $conditions)."'";	
 				}
 			else
 				{

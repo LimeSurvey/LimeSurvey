@@ -189,4 +189,5 @@ define("_PS_CON_ONLYANSWER", "Only answer this question"); //New for 0.98finalRC
 define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
 define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
+define("_PS_CON_OR", "or"); //New for 0.98finalRC2
 ?>
