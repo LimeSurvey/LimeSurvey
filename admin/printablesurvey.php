@@ -70,7 +70,11 @@ while ($desrow = mysql_fetch_array($desresult))
 	$surveyexpirydate = $desrow['expires'];
 	$surveyfaxto = $desrow['faxto'];
 	}
-//if ($surveyactive == "Y") {echo "$surveyoptions\n";}
+if (!isset($surveyfaxto) || !$surveyfaxto) 
+	{
+    $surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
+	}
+
 echo "<table width='100%' cellspacing='0'>\n";
 echo "\t<tr>\n";
 echo "\t\t<td colspan='3' align='center'><font color='black'>\n";
@@ -259,17 +263,17 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
 				for ($i=1; $i<=5; $i++) 
 					{
-					echo "\t\t\t<input type='checkbox' name='$fieldname' value='$i' />$i \n";
+					echo "\t\t\t<input type='checkbox' name='$fieldname' value='$i' readonly='readonly' />$i \n";
 					}
 				break;
 			case "D":  //DATE
 				echo "\t\t\t$setfont<u>"._PS_DATE.":</u><br />\n";
-				echo "\t\t\t<input type='text' $boxstyle name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' />\n";
+				echo "\t\t\t<input type='text' $boxstyle name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' readonly='readonly' />\n";
 				break;
 			case "G":  //GENDER
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE.":</u><br />\n";
-				echo "\t\t\t<input type='checkbox' name='$fieldname' value='F' />"._FEMALE."<br />\n";
-				echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' />"._MALE."<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='F' readonly='readonly' />"._FEMALE."<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />"._MALE."<br />\n";
 				break;
 			case "L":  //LIST
 			case "!":
@@ -278,11 +282,11 @@ while ($degrow = mysql_fetch_array($degresult))
 				$dearesult = mysql_query($deaquery);
 				while ($dearow = mysql_fetch_array($dearesult))
 					{
-					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' />{$dearow['answer']}<br />\n";
+					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
 					}
 				if ($deqrow['other'] == "Y")
 					{
-				    echo "\t\t\t<input type='checkbox'>"._OTHER." <input type='text' size='30'><br />\n";
+				    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
 					}
 				break;
 			case "O":  //LIST WITH COMMENT
@@ -291,10 +295,10 @@ while ($degrow = mysql_fetch_array($degresult))
 				$dearesult = mysql_query($deaquery);
 				while ($dearow = mysql_fetch_array($dearesult))
 					{
-					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' />{$dearow['answer']}<br />\n";
+					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
 					}
 				echo "\t\t\t<u>"._PS_COMMENT.":</u><br />\n";
-				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname"."comment"."'></textarea>\n";
+				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname"."comment"."' readonly='readonly'></textarea>\n";
 				break;
 			case "R":  //RANKING Type Question
 				$reaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
@@ -313,11 +317,11 @@ while ($degrow = mysql_fetch_array($degresult))
 				$mearesult = mysql_query($meaquery);
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
-					echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' />{$mearow['answer']}<br />\n";
+					echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />{$mearow['answer']}<br />\n";
 					}
 				if ($deqrow['other'] == "Y")
 					{
-					echo "\t\t\t"._OTHER.": <input type='text' $boxstyle size='60' name='$fieldname" . "other' />\n";
+					echo "\t\t\t"._OTHER.": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
 					}
 				break;
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
@@ -330,9 +334,9 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
 					if ($mearow[3] == "Y") {echo " checked";}
-					echo " />{$mearow['answer']} </td>\n";
+					echo " readonly='readonly' />{$mearow['answer']} </td>\n";
 					//This is the commments field:
-					echo "\t\t\t\t\t<td>$setfont<input type='text' $boxstyle name='$fieldname{$mearow['code']}comment' size='60' /></td>\n";
+					echo "\t\t\t\t\t<td>$setfont<input type='text' $boxstyle name='$fieldname{$mearow['code']}comment' size='60' readonly='readonly' /></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
@@ -347,27 +351,31 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont{$mearow['answer']}: <input type='text' size='60' name='$fieldname{$mearow['code']}' value=''";
 					if ($mearow[3] == "Y") {echo " checked";}
-					echo " /> </td>\n";
+					echo " readonly='readonly' /> </td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
 				break;
 			case "S":  //SHORT TEXT
 				echo "\t\t\t$setfont<u>"._PS_WRITE.":</u><br />\n";
-				echo "\t\t\t<input type='text' name='$fieldname' size='60' $boxstyle />\n";
+				echo "\t\t\t<input type='text' name='$fieldname' size='60' $boxstyle readonly='readonly' />\n";
 				break;
 			case "T":  //LONG TEXT
 				echo "\t\t\t$setfont<u>"._PS_WRITE.":</u><br />\n";
-				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname'></textarea>\n";
+				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname' readonly='readonly'></textarea>\n";
 				break;
+			case "U":  //HUGE TEXT
+				echo "\t\t\t$setfont<u>"._PS_WRITE.":</u><br />\n";
+				echo "\t\t\t<textarea $boxstyle cols='70' rows='50' name='$fieldname' readonly='readonly'></textarea>\n";
+ 				break;
 			case "N":  //NUMERICAL
 				echo "\t\t\t$setfont<u>"._PS_WRITE.":</u><br />\n";
-				echo "\t\t\t<input type='text' size='40' $boxstyle />\n";
+				echo "\t\t\t<input type='text' size='40' $boxstyle readonly='readonly' />\n";
 				break;
 			case "Y":  //YES/NO
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE.":</u><br />\n";
-				echo "\t\t\t<input type='checkbox' name='$fieldname' value='Y' />"._YES."<br />\n";
-				echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' />"._NO."<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='Y' readonly='readonly' />"._YES."<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />"._NO."<br />\n";
 				break;
 			case "A":  //ARRAY (5 POINT CHOICE)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
@@ -381,7 +389,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t\t<td>$setfont";
 					for ($i=1; $i<=5; $i++)
 						{
-						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' />$i&nbsp;\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
 						}
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
@@ -400,7 +408,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t\t<td>$setfont\n";
 					for ($i=1; $i<=10; $i++)
 						{
-						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' />$i&nbsp;\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
 						}
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
@@ -417,9 +425,9 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'>"._YES."&nbsp;\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U'>"._UNCERTAIN."&nbsp;\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N'>"._NO."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />"._YES."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U' readonly='readonly' />"._UNCERTAIN."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N' readonly='readonly' />"._NO."&nbsp;\n";
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
@@ -435,9 +443,9 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='I'>"._INCREASE."&nbsp;\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='S'>"._SAME."&nbsp;\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D'>"._DECREASE."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='I' readonly='readonly' />"._INCREASE."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='S' readonly='readonly' />"._SAME."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D' readonly='readonly' />"._DECREASE."&nbsp;\n";
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
@@ -472,7 +480,7 @@ while ($degrow = mysql_fetch_array($degresult))
 						echo "\t\t\t\t\t<td align='center'";
 						if ($i > 1) {echo " $headstyle";}
 						echo ">$setfont\n";
-						echo "\t\t\t\t\t\t<input type='checkbox'>\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
 						echo "\t\t\t\t\t</td>\n";
 						}
 					//echo "\t\t\t\t\t</tr></table></td>\n";
@@ -481,7 +489,6 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t</table>\n";
 				break;
 			}
-		//echo "\t\t[$sid"."X"."$gid"."X"."$qid]\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr><td height='3' colspan='3'><hr noshade size='1' color='#111111'></td></tr>\n";
