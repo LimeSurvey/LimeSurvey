@@ -747,7 +747,7 @@ if (isset($conditions) && is_array($conditions))
 							{$idname="java$cd[2]";}
 		elseif ($cd[4] == "M" || $cd[4] == "O" || $cd[4] == "P")
 							{$idname="java$cd[2]$cd[3]";}
-		else				{$idname=$cd[2];}
+		else				{$idname="java".$cd[2];}
 		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
 		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
 		if ($cd[3] == '') 
