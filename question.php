@@ -413,7 +413,7 @@ if (!$_SESSION['step'])
 	unset($_SESSION['insertarray']);
 
 	//LETS COUNT THE NUMBER OF GROUPS (That's how many steps there will be)
-	$query = "SELECT * FROM {$dbprefix}groups WHERE {$dbprefix}groups.sid=$sid ORDER BY group_name";
+	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid ORDER BY group_name";
 	$result = mysql_query($query) or die ("Couldn't get group list<br />$query<br />".mysql_error());
 	while ($row = mysql_fetch_array($result)){$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);}
 	//NOW LETS BUILD THE SESSION VARIABLES
