@@ -47,22 +47,37 @@ header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
+$surveyoptions = browsemenubar();
 echo $htmlheader;
-echo "<table width='100%' border='0' bgcolor='#555555'>\n";
-echo "\t<tr><td align='center'><font color='white'><b>Browse Survey Data</b></td></tr>\n";
-echo "</table>\n";
+
+echo "<table height='1'><tr><td></td></tr></table>\n";
+//echo "<br />\n";
+echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+
+//echo "<table width='100%' border='0' bgcolor='#555555'>\n";
+//echo "\t<tr><td align='center'><font color='white'><b>Browse Survey Data</b></td></tr>\n";
+//echo "</table>\n";
 
 if (!mysql_selectdb($databasename, $connect))
 	{
-	echo "<center><b><font color='red'>ERROR: Surveyor database does not exist</font></b><br /><br />\n";
-	echo "It appears that your surveyor script has not yet been set up properly.<br />\n";
-	echo "Contact your System Administrator";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _ST_NODB1."<br />\n";
+	echo _ST_NODB2."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>";
 	exit;
 	}
 if (!$sid && !$action)
 	{
-	echo "<center><b>You have not selected a survey.</b></center><br />\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _BR_NOSID."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>";
 	exit;
 	}
@@ -75,44 +90,39 @@ if ($actcount > 0)
 	{
 	while ($actrow = mysql_fetch_array($actresult))
 		{
+		$surveytable = "survey_{$actrow['sid']}";
+		$surveyname = "{$actrow['short_title']}";
 		if ($actrow['active'] == "N")
 			{
-			echo "<center><b><font color='red'>ERROR:</font><br />\n";
-			echo "This survey has not yet been activated, and subsequently there is no data to browse.</b></center>\n";
+			echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n";
+			echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+			echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+			echo _BR_NOTACTIVATED."<br /><br />\n";
+			echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid', '_top')\"><br />\n";
+			echo "</td></tr></table>\n";
 			echo "</body>\n</html>";
 			exit;
-			}
-		else
-			{
-			$surveytable = "survey_{$actrow['sid']}";
-			$surveyname = "{$actrow['short_title']}";
 			}
 		}
 	}
 else
 	{
-	echo "<center><b><font color='red'>ERROR:</font><br />\n";
-	echo "There is no matching survey ($sid)</b></center>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _BR_NOSURVEY." ($sid)<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>";
 	exit;
 	}
 
 //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 
-//BUT FIRST, A QUICK WORD FROM OUR SPONSORS
-
-$surveyheader = "<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n";
-$surveyheader .= "\t<tr>\n";
-$surveyheader .= "\t\t<td align='center' $singleborderstyle>\n";
-$surveyheader .= "\t\t\t$setfont<b>$surveyname</b>\n";
-$surveyheader .= "\t\t</td>\n";
-$surveyheader .= "\t</tr>\n";
-$surveyheader .= "</table>\n";
-
-
-if ($action == "id")
+if ($action == "id") // Looking at a SINGLE entry
 	{
-	echo "$surveyheader";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n";
+	echo $surveyheader;
 	
 	if (!$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
 	
@@ -233,7 +243,8 @@ if ($action == "id")
 
 elseif ($action == "all")
 	{
-	echo "$surveyheader";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</td></tr>\n";
+//	echo "$surveyheader";
 	if (!$_POST['sql'])
 		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
 	else
@@ -431,7 +442,7 @@ elseif ($action == "all")
 	}
 else
 	{
-	echo "$surveyheader";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</td></tr>\n";
 	echo "$surveyoptions";
 	$gnquery = "SELECT count(id) FROM $surveytable";
 	$gnresult = mysql_query($gnquery);
@@ -445,6 +456,7 @@ else
 echo "&nbsp;";
 echo htmlfooter("instructions.html#browse", "Using PHPSurveyors Browse Function");
 
+echo "</td></tr></table>\n";
 echo "</body>\n</html>\n";
 
 ?>
