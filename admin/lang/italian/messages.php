@@ -315,6 +315,7 @@ define("_UC_TURNOFF", "Disattiva sicurezza");
 //Activate and deactivate messages
 define("_AC_MULTI_NOANSWER", "Questa domanda &egrave; una domanda a scelta multipla senza risposte.");
 define("_AC_NOTYPE", "Questa domanda non contiene il parametro &#039; tipologia&#039;.");
+define("_AC_NOLID", "This question requires a Labelset, but none is set."); //New for 0.98rc8
 define("_AC_CON_OUTOFORDER", "Domanda con le condizioni. La condizione dipende da una domanda successiva.");
 define("_AC_FAIL", "L&#039;indagine non &egrave; coerente");
 define("_AC_PROBS", "Sono stati riscontrati i seguenti problemi:");

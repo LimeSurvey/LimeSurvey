@@ -315,6 +315,7 @@ define("_UC_TURNOFF", "Turn Off Security");
 //Activate and deactivate messages
 define("_AC_MULTI_NOANSWER", "This question is a multiple answer type question but has no answers.");
 define("_AC_NOTYPE", "This question does not have a question 'type' set.");
+define("_AC_NOLID", "This question requires a Labelset, but none is set."); //New for 0.98rc8
 define("_AC_CON_OUTOFORDER", "This question has a condition set, however the condition is based on a question that appears after it.");
 define("_AC_FAIL", "Survey does not pass consistency check");
 define("_AC_PROBS", "The following problems have been found:");

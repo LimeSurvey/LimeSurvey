@@ -321,6 +321,7 @@ define("_UC_TURNOFF", "Desactivar Seguridad");
 //Activate and deactivate messages
 define("_AC_MULTI_NOANSWER", "Esta pregunta  es de m&uacute;tiples respuestas pero a&uacute;n no tiene respuestas asignadas a &eacute;l");
 define("_AC_NOTYPE", "Esta pregunta a&uacute;n no tiene asignado el 'tipo' de pregunta.");
+define("_AC_NOLID", "This question requires a Labelset, but none is set."); //New for 0.98rc8
 define("_AC_CON_OUTOFORDER", "Esta pregunta tiene asignada una condifi&oacute;n, pero esta condici&oacute;n est&aacute; basada en una pregunta que aparece despu&eacute;s de ella..");
 define("_AC_FAIL", "La encuesta no pasa la revisi&oacute;n de consistencia");
 define("_AC_PROBS", "Se han encontrado los siguientes problemas:");

@@ -315,6 +315,7 @@ define("_UC_TURNOFF", "關閉安全設定");
 //Activate and deactivate messages
 define("_AC_MULTI_NOANSWER", "本題目是多項選擇的類型，但未有答案.");
 define("_AC_NOTYPE", "本題目並未設定題目 '類型' .");
+define("_AC_NOLID", "This question requires a Labelset, but none is set."); //New for 0.98rc8
 define("_AC_CON_OUTOFORDER", "本題目有條件句式的設定，但條件句式是基於題目出現的正確次序才能生效.");
 define("_AC_FAIL", "問卷不能通過系統的檢查");
 define("_AC_PROBS", "已發現以下的問題:");
