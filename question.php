@@ -132,9 +132,10 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && (!isset($backok) 
 			{
 			$dccm="display".$cmfns[0];
 			}
-		if ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_SESSION[$ccm]) || $_SESSION[$ccm] != "0") && (!isset($_POST[$multiname]) || !$_POST[$multiname]))
+		if ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && !isset($_SESSION[$ccm]) && (!isset($_POST[$multiname]) || !$_POST[$multiname]))
 			{
 			//One of the conditional mandatory questions was on, but hasn't been answered
+			//echo "Got here -".$_POST[$dccm]."-".$_SESSION[$ccm]; exit;
 			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
@@ -731,7 +732,6 @@ include("qanda.php");
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-echo "<html>\n";
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
