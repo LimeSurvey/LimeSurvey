@@ -144,7 +144,7 @@ if (!mysql_selectdb ($databasename, $connect))
 	}
 
 // NOW LETS GATHER SOME INFORMATION ABOUT THIS PARTICULAR SURVEY (This happens on every page)
-if ($sid)
+if ($sid && $move != "clearall")
 	{
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery) or die ("Couldn't get survey with sid of $sid<br />$desquery<br />".mysql_error());
@@ -203,7 +203,7 @@ if ($move == "clearall" || $move == "here")
 	$_SESSION['token'] = "";
 	echo "<br />\n&nbsp;<br />\n";
 	echo "<center>All data has been deleted.<br />\n&nbsp;<br />\n";
-	echo "<a href='javascript:window.close()'>Close</a><br />\n<br />\n&nbsp;$sid</center>\n";
+	echo "<a href='javascript:window.close()'>Close</a><br />\n<br />\n&nbsp;</center>\n";
 	echo "</body>\n</html>";
 	exit;
 	}
