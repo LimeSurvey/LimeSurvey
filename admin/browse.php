@@ -195,22 +195,29 @@ elseif ($action == "all")
 	echo "$surveyheader";
 	echo "$surveyoptions";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
+	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
-	while ($fnrow = mysql_fetch_array($fnresult))
+	
+	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow;} // Get table output into array
+	
+	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
+	usort($fnrows, 'CompareGroupThenTitle');
+	
+	foreach ($fnrows as $fnrow)
 		{
 		if ($fnrow['type'] != "M" && $fnrow['type'] != "A" && $fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "P" && $fnrow['type'] != "O")
 			{
-			$field = "{$fnrow['sid']}X{fnrow['gid']}X{fnrow['qid']}";
+			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 			$fquestion = $fnrow['question'];
 			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
 			}
 		elseif ($fnrow['type'] == "O")
 			{
-			$field = "{$fnrow['sid']}X{fnrow['gid']}X{fnrow['qid']}";
+			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 			$fquestion = $fnrow['question'];
 			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
@@ -224,9 +231,10 @@ elseif ($action == "all")
 			{
 			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY code";
 			$i2result = mysql_query($i2query);
+			$otherexists = "";
 			while ($i2row = mysql_fetch_array($i2result))
 				{
-				$field = "{$fnrow['sid']}X{fnrow['gid']}X{fnrow['qid']}{$i2row['code']}";
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$i2row['code']}";
 				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Opt{$i2row['code']}";
 				if ($i2row['other'] == "Y") {$otherexists = "Y";}
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]", "{$fnrow['gid']}");
@@ -235,10 +243,15 @@ elseif ($action == "all")
 				}
 			if ($otherexists == "Y") 
 				{
-				$field = "{$fnrow['sid']}X{fnrow['gid']}X{fnrow['qid']}"."other";
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}"."other";
 				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}OptOther";
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[Other]", "{$fnrow['gid']}");
 				$fncount++;
+				if ($fnrow['type'] == "P")
+					{
+					$fnames[] = array("$field"."comment", "$ftitle"."Comment", "{$fnrow['question']}<br />\n[Other]<br />\n[Comment]", "{$fnrow['gid']}");
+					$fncount++;
+					}
 				}			
 			
 			}
@@ -246,7 +259,7 @@ elseif ($action == "all")
 		}
 	
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
-	if ($fncount < 10) {$cellwidth="10%";} else {$cellwidth="100";}
+	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
 	
 	echo "\n\n<!-- DATA TABLE -->\n";
 	if ($fncount < 10) {echo "<table width='100%' border='0'>\n";}
@@ -285,7 +298,7 @@ elseif ($action == "all")
 
 	echo $tableheader;
 	
-	while ($dtrow = mysql_fetch_row($dtresult))
+	while ($dtrow = mysql_fetch_assoc($dtresult))
 		{
 		if (!$bgcc) {$bgcc="#EEEEEE";}
 		else
@@ -294,12 +307,13 @@ elseif ($action == "all")
 			else {$bgcc = "#EEEEEE";}
 			}
 		echo "\t<tr bgcolor='$bgcc' valign='top'>\n";
+		echo "\t\t<td align='center'><font size='1'>\n";
+		echo "\t\t\t<a href='browse.php?sid=$sid&action=id&id={$dtrow['id']}' title='View this record'>";
+		echo "{$dtrow['id']}</a>\n";
 		for ($i=0; $i<=$fncount; $i++)
 			{
 			echo "\t\t<td align='center'><font size='1'>";
-			if ($i == 0) {echo "<a href='browse.php?sid=$sid&action=id&id=$dtrow[$i]' title='View this record'>";}
-			echo "$dtrow[$i]";
-			if ($i == 0) {echo "</a>";}			
+			echo "{$dtrow[$fnames[$i][0]]}";
 			echo "</td>\n";
 			}
 		echo "\t</tr>\n";
