@@ -1294,7 +1294,7 @@ function surveymover()
 		{
 		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _NEXT." >> \" id=\"movenext\">";
 		}
-	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A")
+	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N")
 		{
 		$surveymover .= "<input class='submit' type='button' onclick=\"javascript:document.phpsurveyor.move.value = this.value; document.phpsurveyor.submit();\" value=' << "
 					 . _PREV." ' name='move2' />\n";
