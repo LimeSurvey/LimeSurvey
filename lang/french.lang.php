@@ -235,4 +235,6 @@ define("_LOADSUBMIT", "Load Now");
 define("_LOADNONAME", "You did not provide a name");
 define("_LOADNOPASS", "You did not provide a password");
 define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>

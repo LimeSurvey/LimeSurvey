@@ -149,6 +149,7 @@ define("_PRIVACY_MESSAGE", "<b><i>Obvestilo o varovanju zasebnosti</i></b><br />
 						  ."odgovorili na anketo. Gesel v nobenem primeru ni mogoèe povezati z "
 						  ."odgovori na anketo."); //New for 0.98rc9
 
+
 define("_THEREAREXQUESTIONS", "V tej anketi je {NUMBEROFQUESTIONS} vpra¹anj."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "V tej anketi je samo eno vpra¹anje."); //New for 0.98rc9 - singular version of above
 
@@ -172,6 +173,8 @@ define("_SM_COMPLETED", "<b>Najlep¹a hvala<br /><br />"
 					   ."S klikom na ["._SUBMIT."] boste shranili va¹e odgovore."); //New for 0.98finalRC1
 define("_SM_REVIEW", "Èe ¾elite preveriti va¹e odgovore ali jih popraviti, "
 					."lahko to storite s klikanjem na gumb [<< "._PREV."] ."); //New for 0.98finalRC1
+
+
 //For the "printable" survey
 define("_PS_CHOOSEONE", "Prosimo, izberite  <b>eno</b> izmed mo¾nosti:"); //New for 0.98finalRC1
 define("_PS_WRITE", "Vpi¹ite va¹ odgovor:"); //New for 0.98finalRC1
@@ -232,4 +235,6 @@ define("_LOADSUBMIT", "Load Now");
 define("_LOADNONAME", "You did not provide a name");
 define("_LOADNOPASS", "You did not provide a password");
 define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>

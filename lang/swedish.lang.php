@@ -54,14 +54,14 @@ define("_OTHER", "Annat");
 define("_PLEASECHOOSE", "Välj");
 define("_ERROR_PS", "Fel");
 define("_COMPLETE", "komplett");
-//from questions.php
-define("_CONFIRMATION", "Bekräftelse");
-define("_TOKEN_PS", "Behörighetskod");
-define("_CONTINUE_PS", "Fortsätt");
 define("_INCREASE", "Öka"); //NEW WITH 0.98
 define("_SAME", "Samma"); //NEW WITH 0.98
 define("_DECREASE", "Minska"); //NEW WITH 0.98
 define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
+//from questions.php
+define("_CONFIRMATION", "Bekräftelse");
+define("_TOKEN_PS", "Behörighetskod");
+define("_CONTINUE_PS", "Fortsätt");
 
 //BUTTONS
 define("_ACCEPT", "Acceptera");
@@ -150,6 +150,7 @@ define("_PRIVACY_MESSAGE", "<b><i>Hantering av personuppgifter. </i></b><br />"
 						  ."separat. Det finns inget sätt att avgöra vilket id-nummer som hör "
 						  ."ihop med ett visst svar i den här enkäten."); //New for 0.98rc9
 
+
 define("_THEREAREXQUESTIONS", "Den här undersökningen innehåller {NUMBEROFQUESTIONS} frågor."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "Det finns 1 fråga i enkäten."); //New for 0.98rc9 - singular version of above
 
@@ -235,4 +236,6 @@ define("_LOADSUBMIT", "Load Now");
 define("_LOADNONAME", "You did not provide a name");
 define("_LOADNOPASS", "You did not provide a password");
 define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>

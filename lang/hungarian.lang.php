@@ -174,7 +174,6 @@ define("_SM_REVIEW", "If you want to check any of the answers you have made, and
 					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
 					."through your responses."); //New for 0.98finalRC1
 
-
 //For the "printable" survey
 define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following:"); //New for 0.98finalRC1
 define("_PS_WRITE", "Please write your answer here:"); //New for 0.98finalRC1
@@ -235,4 +234,6 @@ define("_LOADSUBMIT", "Load Now");
 define("_LOADNONAME", "You did not provide a name");
 define("_LOADNOPASS", "You did not provide a password");
 define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>

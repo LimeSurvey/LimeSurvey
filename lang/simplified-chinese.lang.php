@@ -143,12 +143,16 @@ define("_PRIVACY_MESSAGE", "<b><i>隐私申明</i></b><br />"
 						  ."身份令牌由单独的数据库管理，仅用来更新您是否完成问卷调查的信息。"
 						  ."身份令牌与问卷调查的回答没有任何关联。"); //New for 0.98rc9
 
+
+
+
 define("_THEREAREXQUESTIONS", "此问卷调查包括{NUMBEROFQUESTIONS}个问题。"); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "此问卷调查包括1个问题。"); //New for 0.98rc9 - singular version of above
 
 define ("_RG_REGISTER1", "您必须注册才能完成此问卷调查。"); //NEW for 0.98rc9
 define ("_RG_REGISTER2", "如果愿意，您可以注册参加此问卷调查。<br />\n"
 						."输入您的信息，我们将立刻发送一个包含参与此问卷调查链接的e-mail给您。"); //NEW for 0.98rc9
+
 define ("_RG_EMAIL", "E-mail地址"); //NEW for 0.98rc9
 define ("_RG_FIRSTNAME", "名"); //NEW for 0.98rc9
 define ("_RG_LASTNAME", "姓"); //NEW for 0.98rc9
@@ -158,6 +162,7 @@ define ("_RG_EMAILSUBJECT", "{SURVEYNAME}注册确认");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "感谢您注册参与此问卷调查。<br /><br />\n"
 								   ."我们已经发送了一个包含参与细节的e-mail到您提供的地址。请使用其中的链接进行问卷调查。<br /><br />\n"
 								   ."问卷调查管理者 {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+
 
 define("_SM_COMPLETED", "<b>谢谢您！<br /><br />"
 					   ."您已经回答了此问卷调查的所有问题。</b><br /><br />"
@@ -225,4 +230,6 @@ define("_LOADSUBMIT", "Load Now");
 define("_LOADNONAME", "You did not provide a name");
 define("_LOADNOPASS", "You did not provide a password");
 define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>

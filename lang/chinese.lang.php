@@ -100,7 +100,6 @@ define("_EXITCLEAR", "離開及清除問卷");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "不能送出問卷結果 - 未有人回答問卷.");
 define("_BADSUBMIT2", "照理您已完成及送出問卷<br /><br />如果您是在填寫問卷期間出現本訊息，請按瀏覽器的 '<- 返回' 鍵及按[重新整理]鍵更新上一頁面。這情況可能是因為系統資源不足造成部份答題內容散失，對此我們感到遺憾。");
-//define("_BADSUBMIT2", "您已完成及送出問卷.");
 define("_NOTACTIVE1", "由於本問卷已停用，所以您的問卷未被儲存.");
 define("_CLEARRESP", "清除問卷內容");
 define("_THANKS", "多謝");
@@ -231,4 +230,6 @@ define("_LOADSUBMIT", "Load Now");
 define("_LOADNONAME", "You did not provide a name");
 define("_LOADNOPASS", "You did not provide a password");
 define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>

@@ -192,6 +192,7 @@ define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
 define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
 define("_PS_CON_OR", "or"); //New for 0.98finalRC2
+
 //Save Messages
 define("_SAVE_AND_RETURN", "Save your responses so far");
 define("_SAVEHEADING", "Save Your Unfinished Survey");
@@ -232,4 +233,6 @@ define("_LOADSUBMIT", "Load Now");
 define("_LOADNONAME", "You did not provide a name");
 define("_LOADNOPASS", "You did not provide a password");
 define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>

@@ -125,9 +125,7 @@ define("_NOQUESTIONS", "Esta encuesta todavía no tiene preguntas y no puede ser 
 define("_FURTHERINFO", "Para más información contactar a");
 define("_NOTACTIVE", "Esta encuesta no está activa. No podrá guardar sus respuestas.");
 define("_SURVEYEXPIRED", "This survey is no longer available."); //NEW for 098rc5
-
 define("_SURVEYCOMPLETE", "Usted ha terminado ya este examen.");
-
 define("_INSTRUCTION_LIST", "Elija solamente uno del siguiente"); //NEW for 098rc3
 define("_INSTRUCTION_MULTI", "Compruebe cualquiera que se aplica"); //NEW for 098rc3
 
@@ -225,4 +223,6 @@ define("_LOADSUBMIT", "Load Now");
 define("_LOADNONAME", "You did not provide a name");
 define("_LOADNOPASS", "You did not provide a password");
 define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>
