@@ -37,7 +37,8 @@
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._IMPORTSURVEY."</b></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+._IMPORTSURVEY."</b></font></td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
@@ -47,7 +48,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
 	echo _IS_FAILUPLOAD."<br /><br />\n";
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</td></tr></table>\n";
+	echo "</font></td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
@@ -71,7 +72,7 @@ if (substr($bigarray[1], 0, 22) != "# SURVEYOR SURVEY DUMP")
 	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
 	echo _IS_WRONGFILE."<br /><br />\n";
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</td></tr></table>\n";
+	echo "</font></td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	unlink($the_full_file_path);
 	exit;
@@ -240,7 +241,7 @@ if (!$sid)
 	echo _IS_IMPFAILED."<br />\n";
 	echo _IS_FILEFAILS."<br />\n"; //Couldn't find the SID - cannot continue
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</td></tr></table>\n";
+	echo "</font></td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	unlink($the_full_file_path); //Delete the uploaded file
 	exit;
@@ -452,7 +453,7 @@ echo "\t<li>"._LABELSET.": $countlabelsets ("._LABELANS.": $countlabels)</li>\n<
 echo "<b>"._IS_SUCCESS."</b><br />\n";
 echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 
-echo "</td></tr></table>\n";
+echo "</font></td></tr></table>\n";
 echo "</body>\n</html>";
 unlink($the_full_file_path);
 
