@@ -2,14 +2,7 @@
 //THE TABLE STRUCTURE, TABLE BY TABLE AND FIELD BY FIELD
 include("config.php");
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-                                                     // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");                          // HTTP/1.0
-//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
-
+sendcacheheaders();
 
 //TABLES THAT SHOULD EXIST
 $alltables=array("surveys", "groups", "questions", "answers", "conditions", "users");
@@ -69,6 +62,7 @@ $allfields[]=array("surveys", "url", "url varchar(255) default NULL");
 $allfields[]=array("surveys", "urldescrip", "urldescrip varchar(255) default NULL");
 $allfields[]=array("surveys", "language", "language varchar(50) default ''");
 $allfields[]=array("surveys", "datestamp", "datestamp char(1) default 'N'");
+$allfields[]=array("surveys", "usecookie", "usecookie char(1) default 'N'");
 
 echo $htmlheader;
 
