@@ -590,7 +590,7 @@ else
 						}
 					break;
 				case "P":  //MULTIPLE OPTIONS (with comments)
-					echo "<table>\n";
+					echo "<table border='0'>\n";
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
 					while ($mearow = mysql_fetch_array($mearesult))
@@ -603,9 +603,18 @@ else
 						echo "\t\t</td>\n";
 						//This is the commments field:
 						echo "\t\t<td>\n";
-						echo " \t\t\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
+						echo "\t\t\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
 						echo "\t\t</td>\n";
-						echo "\t</td>\n";
+						echo "\t</tr>\n";
+						}
+					if ($deqrow['other'] == "Y")
+						{
+						echo "\t<tr>\n";
+						echo "\t\t<td style='padding-left: 22px'>$setfont"."Other:</td>\n";
+						echo "\t\t<td>\n";
+						echo "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
+						echo "\t\t</td>\n";
+						echo "\t</tr>\n";
 						}
 					echo "</table>\n";
 					break;
