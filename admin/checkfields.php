@@ -4,7 +4,8 @@
 $allfields[]=array("answers", "qid", "qid int(11) NOT NULL default '0'");
 $allfields[]=array("answers", "code", "code varchar(5) NOT NULL default ''");
 $allfields[]=array("answers", "answer", "answer text NOT NULL");
-$allfields[]=array("answers", "default", "default char(1) NOT NULL default 'N'");
+$allfields[]=array("answers", "default", "`default` char(1) NOT NULL default 'N'");
+$allfields[]=array("answers", "sortorder", "sortorder varchar(5) NULL");
 
 $allfields[]=array("conditions", "cid", "cid int(11) NOT NULL auto_increment");
 $allfields[]=array("conditions", "qid", "qid int(11) NOT NULL default '0'");
@@ -38,12 +39,16 @@ $allfields[]=array("surveys", "adminemail", "adminemail varchar(100) default NUL
 $allfields[]=array("surveys", "private", "private char(1) default NULL");
 $allfields[]=array("surveys", "faxto", "faxto varchar(20) default NULL");
 $allfields[]=array("surveys", "format", "format char(1) default NULL");
-$allfields[]=array("surveys", "template", "varchar(100) default 'default'");
-$allfields[]=array("surveys", "url", "varchar(255) default NULL");
-$allfields[]=array("surveys", "urldescrip", "varchar(255) default NULL");
+$allfields[]=array("surveys", "template", "template varchar(100) default 'default'");
+$allfields[]=array("surveys", "url", "url varchar(255) default NULL");
+$allfields[]=array("surveys", "urldescrip", "urldescrip varchar(255) default NULL");
+$allfields[]=array("surveys", "language", "language varchar(50) default 'english'");
 
 
 include("config.php");
+
+
+echo "$setfont<center><b>Checking $databasename to ensure all fields exist</b></p>\n";
 
 //GET LIST OF TABLES
 $tables = mysql_list_tables($databasename);
@@ -63,7 +68,7 @@ foreach ($tablenames as $tn)
 function checktable($tablename)
 	{
 	global $databasename, $allfields;
-	echo "<br /><B><U>CHECKING $tablename</U></B><br />";
+	echo "<br /><b>--== CHECKING <i>$tablename</i> ==--</b><br />";
 	$fields=mysql_list_fields($databasename, $tablename);
 	$numfields=mysql_num_fields($fields);
 	for ($i=0; $i<$numfields; $i++)
@@ -89,8 +94,16 @@ function checktable($tablename)
 				$query="ALTER TABLE `$tablename` ADD $af[2]";
 				$result=mysql_query($query) or die("Insert field failed.<br />$query<br />".mysql_error());
 				echo "Field $af[1] has been added!";
+				$addedfield="Y";
 				}
 			}
 		}
+	if ($addedfield != "Y")
+		{
+		echo "All required fields exist.<br />\n";
+		}
 	}
+echo "<br />&nbsp;\n";
+echo "<br />\n";
+echo "<a href='admin.php'>Return to Admin</a>\n";
 ?>
