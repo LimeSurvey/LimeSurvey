@@ -47,87 +47,55 @@ include ("config.php");
 //echo $htmlheader;
 if (!$sid)
 	{
-	echo "<CENTER>$setfont<BR><B>You must have a Survey ID number to export.";
+	echo "<center>$setfont<br /><b>You must have a Survey ID number to export.</b></center>\n";
 	exit;
 	}
 
-
-$dumphead="# SURVEYOR SURVEY DUMP\n";
+$dumphead = "# SURVEYOR SURVEY DUMP\n";
 $dumphead .= "#\n# This is a dumped survey from the Surveyor Script\n";
 $dumphead .= "# Written by Jason Cleeland\n#\n\n";
 
+function BuildOutput($Query)
+	{
+	$QueryResult = mysql_query($Query);
+	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
+	$TableName = $MatchResults[1];
+	$Output = "\n#\n# " . strtoupper($TableName) . " TABLE\n#\n";
+	while ($Row = mysql_fetch_assoc($QueryResult))
+		{
+		$ColumnNames = "";
+		$ColumnValues = "";
+		foreach ($Row as $Key=>$Value)
+			{
+			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
+			$ColumnValues .= "'" . addcslashes(str_replace("\r\n", "<br />", $Value), "',\",") . "', ";
+			}
+		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
+		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
+		
+		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES\n ($ColumnValues);\n";
+		}
+	return $Output;
+	}
 
 //1: Surveys table
-$squery="SELECT * FROM surveys WHERE sid=$sid";
-$sresult=mysql_query($squery);
-$sfields=mysql_num_fields($sresult);
-$sdump = "\n# NEW TABLE\n# SURVEY TABLE\n#\n";
-while ($srow=mysql_fetch_row($sresult))
-	{
-	$sdump.="INSERT INTO surveys VALUES (";
-	for ($i=0; $i<$sfields; $i++)
-		{
-		$sdump .= "'".addcslashes(str_replace("\r\n", "<BR>", $srow[$i]), "',\",")."'";
-		if ($i!=$sfields-1) {$sdump .= ", ";}
-		}
-	$sdump .= ");\n";
-	}
-//echo str_replace("\n", "<BR>", $sdump);
-//echo "<BR>";
+$squery = "SELECT * FROM surveys WHERE sid=$sid";
+$sdump = BuildOutput($squery);
 
 //2: Groups Table
-$gquery="SELECT * FROM groups WHERE sid=$sid";
-$gresult=mysql_query($gquery);
-$gfields=mysql_num_fields($gresult);
-$gdump="\n# NEW TABLE\n# GROUP TABLE\n#\n";
-while ($grow=mysql_fetch_row($gresult))
-	{
-	$gdump.="INSERT INTO groups VALUES (";
-	for ($i=0; $i<$gfields; $i++)
-		{
-		$gdump .= "'".addcslashes(str_replace("\r\n", "<BR>", $grow[$i]), "',\",")."'";
-		if ($i!=$gfields-1) {$gdump .= ", ";}
-		}
-	$gdump .= ");\n";
-	}
-//echo str_replace("\n", "<BR>", $gdump);
-//echo "<BR>";
+$gquery = "SELECT * FROM groups WHERE sid=$sid";
+$gdump = BuildOutput($gquery);
 
 //3: Questions Table
-$qquery="SELECT * FROM questions WHERE sid=$sid";
-$qresult=mysql_query($qquery);
-$qfields=mysql_num_fields($qresult);
-$qdump = "\n# NEW TABLE\n# QUESTIONS TABLE\n#\n";
-while ($qrow=mysql_fetch_row($qresult))
-	{
-	$qdump.="INSERT INTO questions VALUES (";
-	for ($i=0; $i<$qfields; $i++)
-		{
-		$qdump .= "'".addcslashes(str_replace("\r\n","<BR>",$qrow[$i]), "',\",")."'";
-		if ($i != $qfields-1) {$qdump .= ", ";}
-		}
-	$qdump .= ");\n";
-	}
-//echo str_replace("\n", "<BR>", $qdump);
-//echo "<BR>";
+$qquery = "SELECT * FROM questions WHERE sid=$sid";
+$qdump = BuildOutput($qquery);
 
 //4: Answers table
-$aquery="SELECT answers.* FROM answers, questions WHERE answers.qid=questions.qid AND questions.sid=$sid";
-$aresult=mysql_query($aquery);
-$afields=mysql_num_fields($aresult);
-$adump = "\n# NEW TABLE\n# ANSWERS TABLE\n#\n";
-while ($arow=mysql_fetch_row($aresult))
-	{
-	$adump.="INSERT INTO answers VALUES (";
-	for ($i=0; $i<$afields; $i++)
-		{
-		$adump .= "'".addcslashes(str_replace("\r\n","<BR>",$arow[$i]), "',\",")."'";
-		if ($i != $afields-1) {$adump .= ", ";}
-		}
-	$adump .= ");\n";
-	}
-//echo str_replace("\n", "<BR>", $adump);
-$fn="survey_$sid.sql";
+$aquery = "SELECT answers.* FROM answers, questions WHERE answers.qid=questions.qid AND questions.sid=$sid";
+$adump = BuildOutput($aquery);
+
+$fn = "survey_$sid.sql";
+
 //header("Content-Type: application/msword"); //EXPORT INTO MSWORD
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -135,6 +103,8 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
                                                      // always modified
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
+echo "#<pre>\n";
 echo $dumphead, $sdump, $gdump, $qdump, $adump;
+echo "#</pre>\n";
 
 ?>
