@@ -148,7 +148,7 @@ if ($sid)
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='./images/seperator.gif' align='left' border='0' hspace='0'>\n";
 		$surveysummary .= "\t\t\t\t</td>\n";
-		$surveysummary .= "\t\t\t\t<td align='right' valign='middle' width='320'>\n";
+		$surveysummary .= "\t\t\t\t<td align='right' valign='middle' width='330'>\n";
 		if (!$gid) {$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._S_CLOSE_BT."' align='right' border='0' hspace='0' onclick=\"window.open('$scriptname', '_top')\">\n";}
 		else {$surveysummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='21' align='right' border='0' hspace='0'>\n";}
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"._S_MAXIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"shows\")'>\n";
@@ -270,7 +270,7 @@ if ($gid)
 		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$groupsummary .= "\t\t\t\t\t</td>\n";
-		$groupsummary .= "\t\t\t\t\t<td align='right' width='320'>\n";
+		$groupsummary .= "\t\t\t\t\t<td align='right' width='330'>\n";
 		if (!$qid) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._G_CLOSE_BT."' align='right' border='0' hspace='0' onclick=\"window.open('$scriptname?sid=$sid', '_top')\">\n";}
 		else {$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='21' align='right' border='0' hspace='0'>\n";}
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"._G_MAXIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"showg\")'>";
@@ -333,7 +333,7 @@ if ($qid)
 			$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/answers.gif' border='0' hspace='0' align='left' title='"._Q_ANSWERS_BT."' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\">\n";
 			}
 		$questionsummary .= "\t\t\t\t\t</td>\n";
-		$questionsummary .= "\t\t\t\t\t<td align='right'>\n";
+		$questionsummary .= "\t\t\t\t\t<td align='right' width='330'>\n";
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/close.gif' title='"._Q_CLOSE_BT."' align='right' border='0' hspace='0' onclick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n";
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/plus.gif' title='"._Q_MAXIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"showq\")'>";
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/minus.gif' title='"._Q_MINIMISE_BT."' align='right' border='0' hspace='0' onclick='showdetails(\"hideq\")'>\n";
