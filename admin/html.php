@@ -6,7 +6,7 @@
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
+	# >          CARLTON SOUTH 3053, AUSTRALIA					#
  	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
@@ -65,6 +65,9 @@ if ($sid)
 		$activated = $s1row['active'];
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Language:</b></font></td>\n";
+		if (!$s1row['language']) {$language=$defaultlang;} else {$language=$s1row['language'];}
+		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>{$s1row['urldescrip']}</a></font></td></tr>\n";
 		}
@@ -87,7 +90,7 @@ if ($sid)
 
 	$surveysummary .= "\t<font size='1'>($sumcount2 groups, $sumcount3 questions)</font></td></tr>\n";
 
-	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Activation</b></font></td>\n";
+	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Activation:</b></font></td>\n";
 	$surveysummary .= "\t<td valign='top'>$setfont";
 	if ($activated == "N" && $sumcount3 > 0)
 		{
@@ -777,6 +780,17 @@ if ($action == "editsurvey")
 			$editsurvey .= "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Language:</b></font></td>\n";
+		$editsurvey .= "\t\t<td><select name='language'>\n";
+		foreach (getlanguages() as $langname)
+			{
+			$editsurvey .= "\t\t\t<option value='$langname'";
+			if ($esrow['language'] && $esrow['language'] == $langname) {$editsurvey .= " selected";}
+			if (!$esrow['language'] && $defaultlang && $defaultlang == $langname) {$editsurvey .= " selected";}
+			$editsurvey .= ">$langname</option>\n";
+			}
+		$editsurvey .= "\t\t</select></td>\n";
+		$editsurvey .= "\t</tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='10' name='expires' value='{$esrow['expires']}'></td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>End URL:</b></font></td>\n";
@@ -829,6 +843,16 @@ if ($action == "newsurvey")
 		if ($esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected";}
 		elseif (!$esrow['template'] && $tname == "default") {$newsurvey .= " selected";}
 		$newsurvey .= ">$tname</option>\n";
+		}
+	$newsurvey .= "\t\t</select></td>\n";
+	$newsurvey .= "\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Language:</b></font></td>\n";
+	$newsurvey .= "\t\t<td><select name='language'>\n";
+	foreach (getlanguages() as $langname)
+		{
+		$newsurvey .= "\t\t\t<option value='$langname'";
+		if ($defaultlang && $defaultlang == $langname) {$newsurvey .= " selected";}
+		$newsurvey .= ">$langname</option>\n";
 		}
 	$newsurvey .= "\t\t</select></td>\n";
 	$newsurvey .= "\t</tr>\n";
