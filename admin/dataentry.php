@@ -261,19 +261,7 @@ if ($action == "insert")
 				if (isset($_POST[$fieldname]))
 					{
 					$col_name .= "`$fieldname`, \n";
-					if (get_magic_quotes_gpc())
-						{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
-					else
-						{
-						if (_PHPVERSION >= "4.3.0")
-							{
-							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-							}
-						else
-							{
-							$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-							}
-						}
+					$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
 				    }
 				}
 			elseif ($irow['type'] == "O")
