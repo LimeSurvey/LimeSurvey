@@ -192,7 +192,7 @@ if ($_POST['move'] == " submit ")
 		echo "Cannot submit results - there are none to submit.<br /><br />\n";
 		echo "<font size='1'>This error can occur if you have already submitted your responses<br />\n";
 		echo "and pressed 'refresh' on your browser. In this case, your responses have<br />\n";
-		echo "been saved and you should move on with your life.";
+		echo "already been saved.";
 		echo "</font></center><br /><br />";
 		exit;
 		}	
