@@ -160,7 +160,7 @@ else
 			switch($arow['type'])
 				{
 						case "N":  //NUMERICAL
-							$createsurvey .= " DOUBLE";
+							$createsurvey .= " TINYTEXT";
 							break;
 						case "S":  //SHORT TEXT
 							$createsurvey .= " VARCHAR(200)";
