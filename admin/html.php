@@ -687,11 +687,11 @@ if ($action == "addquestion")
 	$newquestion .= "</table>\n";
 	$newquestion .= "<center><b>OR</b></center>\n";
 	$newquestion .= "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-	$newquestion .= "\t\t<b>$setfont<font color='white'>Import Question</font></font></b></td></tr>\n\t<tr>";
+	$newquestion .= "\t\t<b>$setfont<font color='white'>"._IMPORTQUESTION."</font></font></b></td></tr>\n\t<tr>";
 	$newquestion .= "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post'>\n";
-	$newquestion .= "\t\t<td align='right'>$setfont<b>Select SQL File:</b></font></td>\n";
+	$newquestion .= "\t\t<td align='right'>$setfont<b>"._SL_SELSQL."</b></font></td>\n";
 	$newquestion .= "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n";
-	$newquestion .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Import Question'></TD>\n";
+	$newquestion .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._IMPORTQUESTION."'></TD>\n";
 	$newquestion .= "\t<input type='hidden' name='action' value='importquestion'>\n";
 	$newquestion .= "\t<input type='hidden' name='sid' value='$sid'>\n";
 	$newquestion .= "\t<input type='hidden' name='gid' value='$gid'>\n";
