@@ -223,7 +223,6 @@ if ($_POST['move'] == " "._SUBMIT." ")
 			if ($surveyusecookie == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
-				$cookie_life = time() + 31536000; // 1 year life
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
 				}
 			echo "<html>\n";

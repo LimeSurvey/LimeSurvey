@@ -251,7 +251,6 @@ if ($_POST['move'] == " "._SUBMIT." " && !$notanswered)
 			if ($surveyusecookie == "Y" && $tokensexist != 1)
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
-				$cookie_life = time() + 31536000; // 1 year life
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
 				}
 			echo "<html>\n";
