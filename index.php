@@ -103,6 +103,15 @@ if ($_GET['move'] == "clearall")
 		{
 		echo templatereplace($op);
 		}
+	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
+	echo "\t<script type='text/javascript'>\n";
+	echo "\t<!--\n";
+	echo "\t\tfunction checkconditions(value, name, type)\n";
+	echo "\t\t\t{\n";
+	echo "\t\t\t}\n";
+	echo "\t//-->\n";
+	echo "\t</script>\n\n";
+
 	echo "\t<br />\n";
 	echo "\t<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>\n";
 	echo "\t\t<font face='arial' size='2'>\n";
