@@ -301,7 +301,7 @@ else
 	
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
-	echo "\t\t\t\t<tr><td align='center'><font color='green'>"._AC_ACTIVATED."<br /><br />\n";
+	echo "\t\t\t\t<tr><td align='center'>$setfont<font color='green'>"._AC_ACTIVATED."<br /><br />\n";
 	
 	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
@@ -317,7 +317,7 @@ else
 		echo _AC_SURVEYACTIVE."<br /><br />\n";
 		echo "<input type='submit' value='"._GO_ADMIN."' $btstyle onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 		}
-	echo "\t\t\t\t</td></tr></table>\n";
+	echo "\t\t\t\t</font></td></tr></table>\n";
 	echo "</body>\n</html>";
 	}	
 ?>
