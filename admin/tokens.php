@@ -330,6 +330,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			$surveydescription = $esrow['description'];
 			$surveyadmin = $esrow['admin'];
 			$surveyadminemail = $esrow['adminemail'];
+			$surveytemplate = $esrow['template'];
 			}
 		echo "<table width='80%' align='center' bgcolor='#DDDDDD'>\n";
 		echo "<form method='post'>\n";
@@ -346,28 +347,39 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='right' valign='top'>$setfont<b>Message:</b></td>\n";
-		echo "\t\t<td>$setfont<b>The following will be added to the top of your message:</b>\n";
-		echo "\t\t\t<table width='500' bgcolor='#EEEEEE' border='1' cellpadding='0' cellspacing='0'>\n";
-		echo "\t\t\t\t<tr><td>$setfont Dear [FIRSTNAME],</td></tr>\n";
-		echo "\t\t\t</table>\n";
-		echo "\t\t\t<b>You can make changes to this part of the message:</b><br />\n";
-		echo "<textarea name='message' rows='6' cols='60'>";
-		echo "You have been invited to participate in the following survey.\n\n";
-		echo "** Survey Name **\n$surveyname\n\n";
-		echo "** Survey Description **\n$surveydescription\n\n";
-		echo "To participate, please click on the link below.";
-		echo "\n\nSincerely,\n\n$surveyadmin ($surveyadminemail)";
-		echo "</textarea>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td></td>\n";
-		echo "\t\t<td>$setfont<b>The following will be added to the end of your email message:</b><br />\n";
-		echo "\t\t\t<span style='width: 500px; background-color: #EEEEEE; border: 2px ridge #FFFFFF; display: block'>\n";
-		echo "\t\t\t\t$setfont---------------------------------<br />\n";
-		echo "\t\t\t\tClick Here to do Survey:<br />\n";
-		echo "\t\t\t\t$publicurl/index.php?sid=$sid&token=[TOKENVALUE]<br />\n";
-		echo "\t\t\t</span>\n";
+		echo "\t\t<td>\n";
+		echo "\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
+		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
+		if (!is_dir("$publicdir/templates/$surveytemplate")) {$surveytemplate = "default";}
+		if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
+			{
+			if ($surveytemplate == "default")
+				{
+				echo "<b><font color='red'>ERROR:</b></font><br />\n";
+				echo "Invitation Email Template CANNOT BE FOUND. This file must exist in the default template folder.\n";
+				exit;
+				}
+			else
+				{
+				$surveytemplate = "default";
+				if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
+					{
+					echo "<b><font color='red'>ERROR:</b></font><br />\n";
+					echo "Invitation Email Template CANNOT BE FOUND. This file must exist in the default template folder.\n";
+					exit;
+					}
+				}
+			}
+		foreach(file("$publicdir/templates/$surveytemplate/invitationemail.pstpl") as $op)
+			{
+			$textarea = $op;
+			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
+			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
+			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
+			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
+			echo $textarea;
+			}
+		echo "\t\t\t</textarea>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Send Invitations'></td></tr>\n";
@@ -395,7 +407,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".mysql_error());
 		$emcount = mysql_num_rows($emresult);
 		$headers = "From: {$_POST['from']}\r\n";
-		$headers .= "X-Mailer: $sitename Email Inviter";  
+		$headers .= "X-Mailer: $sitename Emailer (PHPSurveyor.sourceforge.net)";  
 		$message = strip_tags($_POST['message']);
 		$message = str_replace("&quot;", '"', $message);
 		if (get_magic_quotes_gpc() != "0")
@@ -408,15 +420,10 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			while ($emrow = mysql_fetch_array($emresult))
 				{
 				$to = $emrow['email'];
-				//echo "To: $to ({$emrow['firstname']} {$emrow['lastname']})<br />\n";
-				//$from = $surveyadminemail;
-				//echo "From: $from<br />\n";
-				//echo "Subject: $subject<br />\n";
-				$sendmessage = "Dear {$emrow['firstname']},\n\n".$message;
-				$sendmessage .= "\n\n-------------------------------------------\n\n";
-				$sendmessage .= "Click here to do this survey:\n\n";
-				$sendmessage .= "$publicurl/index.php?sid=$sid&token={$emrow['token']}\n\n";
-				//echo "Message:". str_replace("\n", "<br />", $sendmessage) . "<p>";
+				$sendmessage = $message;
+				$sendmessage = str_replace("{FIRSTNAME}", $emrow['firstname'], $sendmessage);
+				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
+				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
 				mail($to, $_POST['subject'], $sendmessage, $headers);
 				$udequery = "UPDATE tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 				$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
@@ -471,6 +478,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 			$surveydescription = $esrow['description'];
 			$surveyadmin = $esrow['admin'];
 			$surveyadminemail = $esrow['adminemail'];
+			$surveytemplate = $esrow['template'];
 			}
 		echo "<table width='80%' align='center' bgcolor='#DDDDDD'>\n";
 		echo "\t<form method='post' action='tokens.php'>\n";
@@ -499,31 +507,38 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		echo "\t<tr>\n";
 		echo "\t\t<td align='right' valign='top'>$setfont<b>Message:</b></td>\n";
 		echo "\t\t<td>\n";
-		echo "\t\t\t$setfont<b>The following will be added to the top of your message:</b>\n";
-		echo "\t\t\t<table width='500' bgcolor='#EEEEEE' border='1' cellpadding='0' cellspacing='0'>\n";
-		echo "\t\t\t\t<tr><td>$setfont Dear [FIRSTNAME],</td></tr>\n";
-		echo "\t\t\t</table>\n";
-		echo "\t\t\t<b>You can make changes to this part of the message:</b><br />\n";
-		echo "<textarea name='message' rows='6' cols='60'>";
-		echo "Recently we invited you to participate in a survey.\n\n";
-		echo "We note that you have not yet completed the survey, and wish to remind you ";
-		echo "that the survey is still available should you wish to take part.\n\n";
-		echo "** Survey Name **\n$surveyname\n\n";
-		echo "** Survey Description **\n";
-		echo strip_tags($surveydescription)."\n\n";
-		echo "To participate, please click on the link below.";
-		echo "\n\nSincerely,\n\n$surveyadmin ($surveyadminemail)";
-		echo "</textarea>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td></td>\n";
-		echo "\t\t<td>$setfont<b>The following will be added to the end of your email message:</b><br />\n";
-		echo "\t\t\t<span style='width: 500px; background-color: #EEEEEE; border: 2px ridge #FFFFFF; display: block'>\n";
-		echo "\t\t\t$setfont---------------------------------<br />\n";
-		echo "\t\t\tClick Here to do Survey:<br />\n";
-		echo "\t\t\t$publicurl/index.php?sid=$sid&token=[TOKENVALUE]<br />\n";
-		echo "\t\t\t</span>\n";
+		echo "\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
+		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
+		if (!is_dir("$publicdir/templates/$surveytemplate")) {$surveytemplate = "default";}
+		if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
+			{
+			if ($surveytemplate == "default")
+				{
+				echo "<b><font color='red'>ERROR:</b></font><br />\n";
+				echo "Reminder Email Template CANNOT BE FOUND. This file must exist in the default template folder.\n";
+				exit;
+				}
+			else
+				{
+				$surveytemplate = "default";
+				if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
+					{
+					echo "<b><font color='red'>ERROR:</b></font><br />\n";
+					echo "Reminder Email Template CANNOT BE FOUND. This file must exist in the default template folder.\n";
+					exit;
+					}
+				}
+			}
+		foreach(file("$publicdir/templates/$surveytemplate/reminderemail.pstpl") as $op)
+			{
+			$textarea = $op;
+			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
+			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
+			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
+			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
+			echo $textarea;
+			}
+		echo "\t\t\t</textarea>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
@@ -568,11 +583,10 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 			while ($emrow = mysql_fetch_array($emresult))
 				{
 				$to = $emrow['email'];
-				$sendmessage = "Dear {$emrow['firstname']},\n\n";
-				$sendmessage .= $message;
-				$sendmessage .= "\n\n-------------------------------------------\n\n";
-				$sendmessage .= "Click here to do this survey:\n\n";
-				$sendmessage .= "$publicurl/index.php?sid={$_POST['sid']}&token={$emrow['token']}\n\n";
+				$sendmessage = $message;
+				$sendmessage = str_replace("{FIRSTNAME}", $emrow['firstname'], $sendmessage);
+				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
+				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
 				mail($to, $_POST['subject'], $sendmessage, $headers);
 				echo "\t\t\t({$emrow['tid']})[Reminder Sent to {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				$lasttid = $emrow['tid'];
@@ -597,7 +611,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 				echo "\t<input type='hidden' name='from' value=\"{$_POST['from']}\" />\n";
 				echo "\t<input type='hidden' name='subject' value=\"{$_POST['subject']}\" />\n";
 				$message = str_replace('"', "&quot;", $message);
-				echo "\t<input type='hidden' name='message' value=\"$message}\" />\n";
+				echo "\t<input type='hidden' name='message' value=\"$message\" />\n";
 				echo "\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n";
 				echo "\t</form>\n";
 				}
