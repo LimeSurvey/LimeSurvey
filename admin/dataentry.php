@@ -1052,6 +1052,7 @@ elseif ($action == "delete")
 	
 else
 	{
+	$fieldmap=createFieldMap($sid);
 	// PRESENT SURVEY DATAENTRY SCREEN
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
@@ -1138,39 +1139,81 @@ else
 			while ($distinctrow=mysql_fetch_array($distinctresult))
 				{
 				if ($x > 0) {$explanation .= " <i>"._DE_AND."</i><br />";}
-				$conquery="SELECT cid, cqid, {$dbprefix}questions.title, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
+				$conquery="SELECT cid, cqid, cfieldname, {$dbprefix}questions.title, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
 				$conresult=mysql_query($conquery);
 				while ($conrow=mysql_fetch_array($conresult))
 					{
-					if ($conrow['type'] == "Y")
+					switch($conrow['type'])
 						{
-						switch ($conrow['value'])
-							{
-							case "Y":
-								$conditions[]=_YES;
-								break;
-							case "N":
-								$conditions[]=_NO;
-								break;
-							}
-						}
-					if ($conrow['type'] == "G")
+						case "Y": 
+							switch ($conrow['value'])
+								{
+								case "Y": $conditions[]=_YES; break;
+								case "N": $conditions[]=_NO; break;
+								}
+							break;
+						case "G":
+							switch($conrow['value'])
+								{
+								case "M": $conditions[]=_MALE; break;
+								case "F": $conditions[]=_FEMALE; break;
+								} // switch
+							break;
+						case "A":
+						case "B":
+							$conditions[]=$conrow['value'];
+							break;
+						case "C":
+							switch($conrow['value'])
+								{
+								case "Y": $conditions[]=_YES; break;
+								case "U": $conditions[]=_UNCERTAIN; break;
+								case "N": $conditions[]=_NO; break;
+								} // switch
+							break;
+						case "E":
+							switch($conrow['value'])
+								{
+								case "I": $conditions[]=_INCREASE; break;
+								case "D": $conditions[]=_DECREASE; break;
+								case "S": $conditions[]=_SAME; break;
+								}
+						case "F":
+						case "H":
+							$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
+							$fquery = "SELECT * FROM {$dbprefix}labels\n"
+									. "WHERE lid='{$conrow['lid']}'\n"
+									. "AND code='{$conrow['value']}'";
+							$fresult=mysql_query($fquery) or die("$fquery<br />".mysql_error());
+							while($frow=mysql_fetch_array($fresult))
+								{
+								$postans=$frow['title'];
+								} // while
+							break;
+						} // switch
+					$answer_section="";
+					switch($conrow['type'])
 						{
-						switch ($conrow['value'])
-							{
-							case "M":
-								$conditions[]=_MALE;
-								break;
-							case "F":
-								$conditions[]=_FEMALE;
-								break;
-							}
-						}
-					$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
-					$ansresult=mysql_query($ansquery);
-					while ($ansrow=mysql_fetch_array($ansresult))
-						{
-						$conditions[]=$ansrow['answer'];
+						case "A":
+						case "B":
+						case "C":
+						case "E":
+							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
+							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}'";
+							$ansresult=mysql_query($ansquery);
+							while ($ansrow=mysql_fetch_array($ansresult))
+								{
+								$answer_section=" (".$ansrow['answer'].")";
+								}
+							break;
+						default:
+							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
+							$ansresult=mysql_query($ansquery);
+							while ($ansrow=mysql_fetch_array($ansresult))
+								{
+								$conditions[]=$ansrow['answer'];
+								}
+							break;
 						}
 					}
 				if (count($conditions) > 1)
@@ -1183,7 +1226,7 @@ else
 					$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", _DE_CONDITIONHELP2);
 					}
 				unset($conditions);
-				$explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}'", $explanation);
+				$explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}$answer_section'", $explanation);
 				$x++;
 				}
 
