@@ -81,7 +81,7 @@ if (!$ok)
 else
 	{
 	$dsquery = "SELECT qid FROM questions WHERE sid=$sid";
-	$dsresult = mysql_query($dsquery);
+	$dsresult = mysql_query($dsquery) or die ("Couldn't find matching survey to delete<br />$dsquery<br />".mysql_error());
 	while ($dsrow = mysql_fetch_array($dsresult))
 		{
 		$asdel = "DELETE FROM answers WHERE qid={$dsrow['qid']}";
