@@ -162,4 +162,11 @@ define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in
 								   ."An email has been sent to the address you provided with access details "
 								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
 								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+
+define("_SM_COMPLETED", "<b>Thank You<br /><br />"
+					   ."You have completed answering the questions in this survey.</b><br /><br />"
+					   ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
+define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
+					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
+					."through your responses."); //New for 0.98finalRC1
 ?>

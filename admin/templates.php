@@ -304,6 +304,9 @@ function templatereplace($line)
 	$line=str_replace("{PRIVACYMESSAGE}", _PRIVACY_MESSAGE, $line);
 	$line=str_replace("{CLEARALL}", $clearall, $line);
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
+	$line=str_replace("{SUBMITCOMPLETE}", _SM_COMPLETED, $line);
+	$line=str_replace("{SUBMITREVIEW}", _SM_REVIEW, $line);
+	
 	return $line;
 	}
 function makegraph($thisstep, $total)
