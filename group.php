@@ -125,7 +125,7 @@ if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok
 	$mi=0;
 	foreach ($chkcmands as $ccm)
 		{
-		if ($multiname != "MULTI$cmfns[$mi]") //the last multipleanswerchecked is different to this one
+		if (!isset($multiname) || $multiname != "MULTI$cmfns[$mi]") //the last multipleanswerchecked is different to this one
 			{
 			if (isset($multiname) && $multiname && isset($_POST[$multiname]) && $_POST[$multiname])
 				{
@@ -141,13 +141,14 @@ if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok
 					}
 			    }
 			$multiname="MULTI$cmfns[$mi]"; 
+			$multiname2=$multiname."2"; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
 			$$multiname=0; 
 			$$multiname2=0;
 			}
 		else{$multiname="MULTI$cmfns[$mi]";}
 		$dccm="display$cmfns[$mi]";
 		//if (($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && $_POST[$dccm] == "on")//There is an answer
-		if (isset($_SESSION[$ccm]) && isset($_POST[$dccm]) && $_POST[$dccm] == "on")
+		if (isset($_SESSION[$ccm]) && $_SESSION[$ccm] && isset($_POST[$dccm]) && $_POST[$dccm] == "on")
 			{
 			}
 		elseif ($_POST[$dccm] == "on" && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
