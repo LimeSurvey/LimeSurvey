@@ -924,7 +924,7 @@ else
 						$chosen[]=array($thiscode, $thistext);
 						}
 					$ranklist .= "'>\n";
-					$ranklist .= "\t\t\t\t\t\t<img src='cut.gif' title='Remove this item' ";
+					$ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' title='Remove this item' ";
 					if ($i != $existing)
 						{
 						$ranklist .= "style='display:none'";
@@ -932,7 +932,7 @@ else
 					$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(document.phpsurveyor.RANK$i.value, document.phpsurveyor.fvalue$i.value, document.phpsurveyor.RANK$i.name, this.id)\"><br />\n";
 					}
 				
-				$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+				$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080'>\n";
 				foreach ($answers as $ans)
 					{
 					if (!in_array($ans, $chosen))
@@ -952,7 +952,7 @@ else
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n";
+				echo "\t\t\t\t\t<td align='left' valign='top' style='border: solid 1 #111111' bgcolor='silver'>\n";
 				echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Choices:</b><br />\n";
 				echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
 				echo "\t\t\t\t\t</td>\n";
