@@ -434,6 +434,7 @@ if ($move == " submit ")
 	
 	// debugging info
 	echo "<!-- DEBUG INFO (\$insertarray)\n";
+	
 	foreach ($_SESSION['insertarray'] as $posted)
 		{
 		echo "$posted: ".$_SESSION[$posted] ."\n";
@@ -564,70 +565,73 @@ if (!$_SESSION['step'])
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($arows, 'CompareGroupThenTitle');
 	
-	if ($surveyprivate == "N")
+	if (!$_SESSION['insertarray'])
 		{
-#		session_register("Ftoken");
-#		$Ftoken=$token;
-		$_SESSION['Ftoken'] = $token;
-		$_SESSION['insertarray'][]= "Ftoken";
-		}
+		if ($surveyprivate == "N")
+			{
+	#		session_register("Ftoken");
+	#		$Ftoken=$token;
+			$_SESSION['Ftoken'] = $token;
+			$_SESSION['insertarray'][]= "Ftoken";
+			}
 	
-	foreach ($arows as $arow)
-		{
-		//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
-		$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-		if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
+		foreach ($arows as $arow)
 			{
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
-			$abresult = mysql_query($abquery);
-			while ($abrow = mysql_fetch_array($abresult))
+			//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
+			$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
 				{
-				$_SESSION['insertarray'][] = "F$fieldname".$abrow['code'];
-				$alsoother = "";
-				if ($abrow['other'] == "Y") {$alsoother = "Y";}
-				if ($arow['type'] == "P")
+				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
+				$abresult = mysql_query($abquery);
+				while ($abrow = mysql_fetch_array($abresult))
 					{
-					$_SESSION['insertarray'][] = "F$fieldname".$abrow['code']."comment";	
+					$_SESSION['insertarray'][] = "F$fieldname".$abrow['code'];
+					$alsoother = "";
+					if ($abrow['other'] == "Y") {$alsoother = "Y";}
+					if ($arow['type'] == "P")
+						{
+						$_SESSION['insertarray'][] = "F$fieldname".$abrow['code']."comment";	
+						}
+					}
+				if ($alsoother)
+					{
+					$_SESSION['insertarray'][] = "F$fieldname"."other";
+					if ($arow['type'] == "P")
+						{
+						$_SESSION['insertarray'][] = "F$fieldname"."othercomment";	
+						}
 					}
 				}
-			if ($alsoother)
+			elseif ($arow['type'] == "R")
 				{
-				$_SESSION['insertarray'][] = "F$fieldname"."other";
-				if ($arow['type'] == "P")
+				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
+				$abresult = mysql_query($abquery);
+				$abcount = mysql_num_rows($abresult);
+				for ($i=1; $i<=$abcount; $i++)
 					{
-					$_SESSION['insertarray'][] = "F$fieldname"."othercomment";	
-					}
+					$_SESSION['insertarray'][] = "F$fieldname".$i;
+					}			
 				}
-			}
-		elseif ($arow['type'] == "R")
-			{
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
-			$abresult = mysql_query($abquery);
-			$abcount = mysql_num_rows($abresult);
-			for ($i=1; $i<=$abcount; $i++)
+			elseif ($arow['type'] == "O")
 				{
-				$_SESSION['insertarray'][] = "F$fieldname".$i;
-				}			
+#				session_register("F$fieldname");
+				$_SESSION['insertarray'][] = "F$fieldname";
+				$fn2 = "F$fieldname"."comment";
+#				session_register("$fn2");
+				$_SESSION['insertarray'][] = "$fn2";
+				
+				}
+			else
+				{
+#				session_register("F$fieldname");
+				$_SESSION['insertarray'][] = "F$fieldname";
+				}
+			//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
+			//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
+			//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
+			//                 [4]=questions.type, [5]=questions.gid, [6]=questions.mandatory
+			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}");
 			}
-		elseif ($arow['type'] == "O")
-			{
-#			session_register("F$fieldname");
-			$_SESSION['insertarray'][] = "F$fieldname";
-			$fn2 = "F$fieldname"."comment";
-#			session_register("$fn2");
-			$_SESSION['insertarray'][] = "$fn2";
-			
-			}
-		else
-			{
-#			session_register("F$fieldname");
-			$_SESSION['insertarray'][] = "F$fieldname";
-			}
-		//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
-		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
-		//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
-		//                 [4]=questions.type, [5]=questions.gid, [6]=questions.mandatory
-		$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}");
 		}
 	//echo count($_SESSION['fieldarray']);
 	echo "\t\t</td>\n";
