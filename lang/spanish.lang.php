@@ -32,6 +32,10 @@
 	# the Free Software Foundation, Inc., 59 Temple Place - 	#
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################
+	#															#
+	# This language file kindly provided by Luis M. Martinez	#
+	#															#
+	#############################################################
 */
 //SINGLE WORDS
 define("_YES", "Sí");
@@ -43,7 +47,7 @@ define("_FEMALE", "Femenino");
 define("_MALE", "Masculino");
 define("_NOANSWER", "Sin respuesta");
 define("_OTHER", "Otro");
-define("_PLEASECHOOSE", "Favor de elejir");
+define("_PLEASECHOOSE", "Favor de elegir");
 define("_ERROR", "Error");
 define("_COMPLETE", "completo");
 //from questions.php
@@ -72,7 +76,7 @@ define("_MANDATORY_RANK", "Favor de clasificar todos los elementos");
 define("_DATEFORMAT", "Formato: AAAA-MM-DD");
 define("_DATEFORMATEG", "(pej: 2003-12-25 para Navidad)");
 define("_REMOVEITEM", "Eliminar este elemento");
-define("_RANK_1", "Haga click en un elemento de la lista de la izquierda, empezando por su");
+define("_RANK_1", "Haga click en un elemento de la lista de la izquierda, empezando por el");
 define("_RANK_2", "elemento con más alta clasificación hasta llegar al elemento con más baja clasificación.");
 define("_YOURCHOICES", "Sus Opciones");
 define("_YOURRANKING", "Su Clasificación");
@@ -80,7 +84,7 @@ define("_RANK_3", "Haga click en las tijeras de la derecha de cada elemento");
 define("_RANK_4", "para eliminar la última captura de su lista clasificada");
 //From INDEX.PHP
 define("_NOSID", "No ha proporcionado un número identificador de encuesta");
-define("_CONTACT1", "Favor de contactar");
+define("_CONTACT1", "Favor de contactar a");
 define("_CONTACT2", "para más asistencia");
 define("_ANSCLEAR", "Respuestas quitadas");
 define("_RESTART", "Reiniciar la Encuesta");
@@ -89,7 +93,7 @@ define("_CONFIRMCLEAR", "¿Está seguro de eliminar todas sus respuestas?");
 define("_EXITCLEAR", "Salir y Limpiar la Encuesta");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "No se pueden enviar los resultados - no hay resultados por enviar.");
-define("_BADSUBMIT2", "Este error puede ocurrir si envió sus respuestas y presióno 'renovar' en su navegador. En este caso, sus respuestas ya fueron guardadas.");
+define("_BADSUBMIT2", "Este error puede ocurrir si envió sus respuestas y presionó 'renovar' en su navegador. En este caso, sus respuestas ya fueron guardadas.");
 define("_NOTACTIVE1", "Sus respuestas no han sido guardadas porque la Encuesta no ha sido activada aún.");
 define("_CLEARRESP", "Inicializar Respuestas");
 define("_THANKS", "Gracias");
@@ -98,14 +102,14 @@ define("_SURVEYCPL", "Encuesta Completada");
 define("_DIDNOTSAVE", "No se guardó");
 define("_DIDNOTSAVE2", "Ha ocurrido un error inesperado y sus respuestas no han podido ser guardadas.");
 define("_DIDNOTSAVE3", "Sus respuestas no se han perdido y han sido enviadas por correo electrónico al administrador de la encuesta para ser capturadas en nuestra base de datos posteriormente.");
-define("_DNSAVEEMAIL1", "Ha sucedido un error al guardar la respuesta en la encuesta identificada");
+define("_DNSAVEEMAIL1", "Ha sucedido un error al guardar una respuesta de la encuesta identificada con");
 define("_DNSAVEEMAIL2", "DATOS PARA SER CAPTURADOS");
 define("_DNSAVEEMAIL3", "EL CODIGO SQL HA FALLADO");
 define("_DNSAVEEMAIL4", "MENSAJE DE ERROR");
 define("_DNSAVEEMAIL5", "ERROR GUARDANDO");
 define("_SUBMITAGAIN", "Reintente enviar otra vez");
 define("_SURVEYNOEXIST", "Lo sentimos. No hay encuestas que coincidan.");
-define("_NOTOKEN1", "Esta encuesta está controlada. Necesita un token válido para participar.");
+define("_NOTOKEN1", "Esta encuesta tiene control de acceso. Necesita un token válido para participar.");
 define("_NOTOKEN2", "Si se le ha proporcionado un token, favor de teclearlo en la caja de abajo y hacer click en continuar.");
 define("_NOTOKEN3", "El token que se le ha proporcionado no es válido o ya fue usado.");
 define("_NOQUESTIONS", "Esta encuesta todavía no tiene preguntas y no puede ser probada ni completada.");
