@@ -65,6 +65,12 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOTYPE);
 		}
 	
+	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
+	$chkquery = "SELECT qid, question FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H') AND lid = 0";
+	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".mysql_error());
+	while($chkrow = mysql_fetch_array($chkresult)){
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOLID);
+	} // while
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
 //	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, {$dbprefix}questions.title";
