@@ -601,6 +601,7 @@ if (returnglobal('action') == "email")
 			$surveyemailinvite = $esrow['email_invite'];
 			}
 		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
+		if (!$surveyemailinvite) {$surveyemailinvite=str_replace("\n", "\r\n", _TC_EMAILINVITE);}
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."<form method='post'>\n";
 		//echo "\t<tr><td colspan='2' bgcolor='#555555' align='center'>$setfont<font color='white'><b>Send Invitation";
@@ -623,38 +624,6 @@ if (returnglobal('action') == "email")
 			."\t\t<td align='right' valign='top'>$setfont<b>"._MESSAGE.":</b></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-//		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
-//		if (!is_dir("$publicdir/templates/$surveytemplate")) {$surveytemplate = "default";}
-//		if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
-//			{
-//			if ($surveytemplate == "default")
-//				{
-//				echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
-//					._TC_NOEMAILTEMPLATE."\n"
-//					."</td></tr></table>\n";
-//				exit;
-//				}
-//			else
-//				{
-//				$surveytemplate = "default";
-//				if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
-//					{
-//					echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
-//						._TC_NOEMAILTEMPLATE."\n"
-//						."</td></tr></table>\n";
-//					exit;
-//					}
-//				}
-//			}
-//		foreach(file("$publicdir/templates/$surveytemplate/invitationemail.pstpl") as $op)
-//			{
-//			$textarea = $op;
-//			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
-//			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
-//			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
-//			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
-//			echo $textarea;
-//			}
 		$textarea = $surveyemailinvite;
 		$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
 		$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
@@ -787,6 +756,7 @@ if (returnglobal('action') == "remind")
 			$surveyremindemail = $esrow['email_remind'];
 			}
 		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
+		if (!$surveyremindemail) {$surveyremindemail=str_replace("\n", "\r\n", _TC_EMAILREMIND);}
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."\t<form method='post' action='$homeurl/tokens.php'>\n"
 			."\t<tr>\n"
@@ -819,42 +789,13 @@ if (returnglobal('action') == "remind")
 			._MESSAGE.":</b></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-//		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
-//		if (!is_dir("$publicdir/templates/$surveytemplate")) {$surveytemplate = "default";}
-//		if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
-//			{
-//			if ($surveytemplate == "default")
-//				{
-//				echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
-//					._TC_NOREMINDTEMPLATE."\n";
-//				exit;
-//				}
-//			else
-//				{
-//				$surveytemplate = "default";
-//				if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
-//					{
-//					echo "<b><font color='red'>"._ERROR."</b></font><br />\n"
-//						._TC_NOREMINDTEMPLATE."\n";
-//					exit;
-//					}
-//				}
-//			}
-//		foreach(file("$publicdir/templates/$surveytemplate/reminderemail.pstpl") as $op)
-//			{
-//			$textarea = $op;
-//			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
-//			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
-//			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
-//			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
-//			echo $textarea;
-//			}
+
 		$textarea = $surveyremindemail;
-			$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
-			$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
-			$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
-			$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
-			echo $textarea;
+		$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
+		$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
+		$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
+		$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
+		echo $textarea;
 
 		echo "\t\t\t</textarea>\n"
 			."\t\t</td>\n"
