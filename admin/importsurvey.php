@@ -64,13 +64,13 @@ if (!$bigarray[0] == "# SURVEYOR SURVEY DUMP")
 	exit;
 	}
 
-for ($i=0; $i<10; $i++)
+for ($i=0; $i<9; $i++)
 	{
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
 
-//TABLES
+//SURVEYS
 $stoppoint = array_search("# NEW TABLE\n", $bigarray);
 for ($i=0; $i<=$stoppoint+2; $i++)
 	{
