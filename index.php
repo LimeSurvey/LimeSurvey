@@ -1119,6 +1119,14 @@ else
 				echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
 				break;
+			case "N": //NUMERICAL QUESTION TYPE
+				echo keycontroljs();
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
+				echo "\t\t\t<input type='text' size='10' name='fvalue' value=\"{$_SESSION[$fname]}\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n";
+				echo "\t\t\t<font size='1'><i>Only numbers can be entered in this field</i></font>\n";
+				break;
 			case "S": //SHORT FREE TEXT
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";

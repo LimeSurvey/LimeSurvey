@@ -601,6 +601,11 @@ elseif ($action == "edit")
 					echo "</table>\n";
 					$i--;
 					break;
+				case "N": //NUMERICAL TEXT
+					echo keycontroljs();
+					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' ";
+					echo "onKeyPress=\"return goodchars(event,'0123456789.')\" />\n";					
+					break;
 				case "S": //SHORT FREE TEXT
 					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
 					echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
@@ -1171,6 +1176,10 @@ else
 						echo "\t</tr>\n";
 						}
 					echo "</table>\n";
+					break;
+				case "N": //NUMERICAL TEXT
+					echo keycontroljs();
+					echo "\t\t\t<input type='text' name='$fieldname' onKeyPress=\"return goodchars(event,'0123456789.')\" />";
 					break;
 				case "S": //SHORT FREE TEXT
 					echo "\t\t\t<input type='text' name='$fieldname' />\n";				
