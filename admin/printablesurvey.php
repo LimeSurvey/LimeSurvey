@@ -87,7 +87,11 @@ while ($degrow = mysql_fetch_array($degresult))
 	
 	echo "\t<tr>\n";
 	echo "\t\t<td colspan='3' align='center' bgcolor='#EEEEEE' style='border-width: 1; border-style: double; border-color: #111111'>\n";
-	echo "\t\t\t<font size='3' face='verdana'><b>{$degrow['group_name']}</b>\n";
+	echo "\t\t\t<font size='3' face='verdana'><b>{$degrow['group_name']}</b></font>\n";
+	if ($degrow['description'])
+		{
+		echo "\t\t\t<br /><font size='2' face='verdana'>{$degrow['description']}</font>\n";
+		}
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	$gid = $degrow['gid'];
