@@ -33,9 +33,9 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$date = date(YmdHi); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
+$date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
-if (!$_GET['ok'])
+if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._DEACTIVATE." ($sid)</b></td></tr>\n";
@@ -94,7 +94,7 @@ else
 	echo "\t\t\t"._AC_DEACTIVATED_MESSAGE1." $newtable.\n";
 	echo "\t\t\t"._AC_DEACTIVATED_MESSAGE2."\n";
 	echo "\t\t\t<p>"._AC_DEACTIVATED_MESSAGE3."</p>\n";
-	if ($toldtable)
+	if (isset($toldtable) && $toldtable)
 		{
 		echo "\t\t\t"._AC_DEACTIVATED_MESSAGE4." $tnewtable.\n";
 		}
