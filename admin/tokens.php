@@ -92,7 +92,7 @@ while ($chrow = mysql_fetch_array($chresult))
 $tkquery = "SELECT * FROM tokens_$sid";
 if (!$tkresult = mysql_query($tkquery))
 	{
-	if (!$createtable)
+	if (!$_GET['createtable'])
 		{
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center'>\n";
