@@ -51,7 +51,7 @@ if (!file_exists("$homedir/.htaccess"))
 		fputs($handle, $htaccess);
 		fclose($handle);
 		$addsummary .= "Security Levels are now set up!<br />\n<br />\n";
-		$addsummary .= "<a href='$scriptname'>Finished</a>\n";
+		$addsummary .= "<a href='$scriptname?action=editusers'>Finished</a>\n";
 		
 		//CREATE DEFAULT USER AND PASS
 		$addsummary = "Creating default users<br />\n";
@@ -82,7 +82,7 @@ if (!file_exists("$homedir/.htaccess"))
 			unlink($fname);
 			$addsummary .= "Error occurred creating htpasswd file. Sorry.<br />\n";
 			}
-		$addsummary .= "<br />\n<a href='$scriptname'>Finished</a>\n";
+		$addsummary .= "<br />\n<a href='$scriptname?action=editusers'>Finished</a>\n";
 		}
 	}
 
@@ -126,7 +126,7 @@ elseif ($action == "adduser")
 		{
 		$addsummary .= "Could not add user. Username and/or password were not supplied<br />\n";
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname'>Finished</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>Finished</a>\n";
 	}
 
 elseif ($action == "deluser")
@@ -166,7 +166,7 @@ elseif ($action == "deluser")
 		{
 		$addsummary .= "Could not delete user. Username not supplied!<br />\n";
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname'>Finished</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>Finished</a>\n";
 	}
 
 elseif ($action == "moduser")
@@ -194,6 +194,6 @@ elseif ($action == "moduser")
 		{
 		$addsummary .= "Could not modify user. Username and/or password were not supplied!";
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname'>Finished</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>Finished</a>\n";
 	}
 ?>
