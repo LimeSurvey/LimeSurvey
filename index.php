@@ -254,7 +254,7 @@ function templatereplace($line)
 	global $surveywelcome, $percentcomplete;
 	global $groupname, $groupdescription, $question;
 	global $questioncode, $answer, $navigator;
-	global $help, $totalquestions;
+	global $help, $totalquestions, $surveyformat;
 	global $completed, $surveyurl, $surveyurldescrip;
 	global $notanswered, $privacy, $sid;
 	global $publicurl, $templatedir;
@@ -268,6 +268,10 @@ function templatereplace($line)
 	if (ereg("^<body", $line))
 		{
 		if (isset($_SESSION['step']) && !ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && (isset($_POST['move']) && ($_POST['move'] != " "._LAST." " || ($_POST['move'] == " "._LAST." " && $notanswered)) && ($_POST['move'] != " "._SUBMIT." " || ($_POST['move']== " "._SUBMIT." " && $notanswered))))
+			{
+			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
+			}
+		elseif ($surveyformat == "A")
 			{
 			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
 			}
