@@ -258,6 +258,10 @@ define("_RELOADING", "更新畫面，請稍候.");
 define("_ADD", "新增");
 define("_UPDATE", "更新");
 define("_BROWSE", "瀏覽"); //New in 098rc5
+define("_AND", "and"); //New with 0.98rc8
+define("_SQL", "SQL"); //New with 0.98rc8
+define("_PERCENTAGE", "Percentage"); //New with 0.98rc8
+define("_COUNT", "Count"); //New with 0.98rc8
 
 //SURVEY STATUS MESSAGES (new in 0.98rc3)
 define("_SS_NOGROUPS", "問卷的題目組別數目"); //NEW for release 0.98rc3
@@ -452,6 +456,31 @@ define("_DR_RUSURE", "您肯定要刪除本項目嗎?"); //New for 0.98rc6
 
 //STATISTICS MESSAGES
 define("_ST_FILTERSETTINGS", "篩選條件的設定");
+define("_ST_VIEWALL", "View summary of all available fields"); //New with 0.98rc8
+define("_ST_SHOWRESULTS", "View Stats"); //New with 0.98rc8
+define("_ST_CLEAR", "Clear"); //New with 0.98rc8
+define("_ST_RESPONECONT", "Responses Containing"); //New with 0.98rc8
+define("_ST_NOGREATERTHAN", "Number greater than"); //New with 0.98rc8
+define("_ST_NOLESSTHAN", "Number Less Than"); //New with 0.98rc8
+define("_ST_DATEEQUALS", "Date (YYYY-MM-DD) equals"); //New with 0.98rc8
+define("_ST_ORBETWEEN", "OR between"); //New with 0.98rc8
+define("_ST_RESULTS", "Results"); //New with 0.98rc8 (Plural)
+define("_ST_RESULT", "Result"); //New with 0.98rc8 (Singular)
+define("_ST_RECORDSRETURNED", "No of records in this query"); //New with 0.98rc8
+define("_ST_TOTALRECORDS", "Total records in survey"); //New with 0.98rc8
+define("_ST_PERCENTAGE", "Percentage of total"); //New with 0.98rc8
+define("_ST_FIELDSUMMARY", "Field Summary for"); //New with 0.98rc8
+define("_ST_CALCULATION", "Calculation"); //New with 0.98rc8
+define("_ST_SUM", "Sum"); //New with 0.98rc8 - Mathematical
+define("_ST_STDEV", "Standard Deviation"); //New with 0.98rc8 - Mathematical
+define("_ST_AVERAGE", "Average"); //New with 0.98rc8 - Mathematical
+define("_ST_MIN", "Minimum"); //New with 0.98rc8 - Mathematical
+define("_ST_MAX", "Maximum"); //New with 0.98rc8 - Mathematical
+define("_ST_Q1", "1st Quartile (Q1)"); //New with 0.98rc8 - Mathematical
+define("_ST_Q2", "2nd Quartile (Median)"); //New with 0.98rc8 - Mathematical
+define("_ST_Q3", "3rd Quartile (Q3)"); //New with 0.98rc8 - Mathematical
+define("_ST_NULLIGNORED", "*Null values are ignored in calculations"); //New with 0.98rc8
+define("_ST_QUARTMETHOD", "*Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"); //New with 0.98rc8
 
 //DATA ENTRY MESSAGES
 define("_DE_NOMODIFY", "不能被修改");
@@ -563,4 +592,5 @@ define("_PS_CHECKDBINTEGRITY", "Check PHPSurveyor Data Integrity"); //New with 0
 define("_NT_NONE", "未有電郵通知"); //New with 098rc5
 define("_NT_SINGLE", "基本電郵通知"); //New with 098rc5
 define("_NT_RESULTS", "送出電郵通知/(附上回應結果)/"); //New with 098rc5
+
 ?>
