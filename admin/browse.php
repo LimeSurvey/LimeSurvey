@@ -361,6 +361,12 @@ elseif ($action == "all")
 		}
 	$tableheader .= "\t</tr>\n\n";
 	
+	if (!isset($_GET['limit'])) {$limit = 50;}
+	else {$limit=$_GET['limit'];}
+	//LETS COUNT THE DATA
+	$dtquery = "SELECT count(*) FROM $surveytable";
+	$dtresult=mysql_query($dtquery);
+	while ($dtrow=mysql_fetch_row($dtresult)) {$dtcount=$dtrow[0];}
 	//NOW LETS SHOW THE DATA
 	if ($_POST['sql'])
 		{
@@ -373,9 +379,10 @@ elseif ($action == "all")
 		}
 	if ($_GET['limit'] && !isset($_GET['start'])) {$dtquery .= " DESC LIMIT {$_GET['limit']}";}
 	if (isset($_GET['start']) && isset($_GET['limit'])) {$dtquery = "SELECT * FROM $surveytable LIMIT {$_GET['start']}, {$_GET['limit']}";}
+	if (!isset($_GET['limit'])) {$dtquery .= " LIMIT $limit";}
 	if (!isset($_GET['start'])) {$_GET['start'] = 0;}
 	$dtresult = mysql_query($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".mysql_error());
-	$dtcount = mysql_num_rows($dtresult);
+	$dtcount2 = mysql_num_rows($dtresult);
 	$cells = $fncount+1;
 
 	
@@ -400,9 +407,9 @@ elseif ($action == "all")
 	echo "\t\t<form action='browse.php'>\n";
 	echo "\t\t<td align='right'><font size='1' face='verdana'>\n";
 	echo "\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='right'>\n";
-	echo "\t\t\tShowing <input type='text' $slstyle size='4' value='$dtcount' name='limit'>\n";
-	echo "\t\t\trecords starting at <input type='text' $slstyle size='4' value='{$_GET['start']}' name='start'>\n";
-	echo "\t\t\t<input type='submit' value='Show' $btstyle>\n";
+	echo "\t\t\t"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$dtcount2' name='limit'>\n";
+	echo "\t\t\t"._BR_STARTING."<input type='text' $slstyle size='4' value='{$_GET['start']}' name='start'>\n";
+	echo "\t\t\t<input type='submit' value='"._BR_SHOW."' $btstyle>\n";
 	echo "\t\t</font></td>\n";
 	echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
 	echo "\t\t<input type='hidden' name='action' value='all'>\n";
