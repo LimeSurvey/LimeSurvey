@@ -38,7 +38,7 @@
 session_start();
 
 if (!isset($sid)) {$sid=returnglobal('sid');}
-settype($sid, "integer");
+if (phpversion() >= '4.2.0') {settype($sid, "int");} else {settype($sid, "integer");}
 
 include("./admin/config.php");
 
