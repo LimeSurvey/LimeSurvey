@@ -40,7 +40,7 @@ if ($action == "insertnewgroup")
 	{
 	if (!$_POST['group_name'])
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your group could not be added! It did not include a group name (which is required)\")\n //-->\n</script>\n";		
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPNAME."\")\n //-->\n</script>\n";		
 		}
 	else
 		{
@@ -89,7 +89,7 @@ elseif ($action == "updategroup")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your group could not be updated!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPUPDATE."\")\n //-->\n</script>\n";
 		}
 
 	}
@@ -106,7 +106,7 @@ elseif ($action == "delgroup")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Group id($gid) for survey $sid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPDELETE."\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -122,11 +122,10 @@ elseif ($action == "insertnewquestion")
 			." VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}')";
 	$result = mysql_query($query);
-	if ($result)
+	if (!$result)
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New question ($title) has been created for survey id $sid, group id $gid\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\")\n //-->\n</script>\n";
 		}
-	
 	}	
 
 elseif ($action == "updatequestion")
@@ -151,7 +150,7 @@ elseif ($action == "updatequestion")
 		}
 	if ($cccount)
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your question could not be updated! Other questions (qid $qidlist) are conditional based on the responses to this question and changing the type will cause problems. You must remove any conditions based on this question before changing this question type.\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONTYPECONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
 		}
 	else
 		{
@@ -166,7 +165,7 @@ elseif ($action == "updatequestion")
 			}
 		else
 			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your question could not be updated!\")\n //-->\n</script>\n";
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\n".mysql_error()."\")\n //-->\n</script>\n";
 			}
 		}
 	}
@@ -211,7 +210,7 @@ elseif ($action == "delquestion")
 	if ($qidarray) {$qidlist=implode(", ", $qidarray);}
 	if ($cccount) //there are conditions dependant on this question
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($sid) was NOT DELETED!\n There are other questions with conditions set that are based on the response to this question (qid $qidlist). You must remove these conditions before deleting this question.\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELCONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
 		}
 	else
 		{
@@ -227,7 +226,7 @@ elseif ($action == "delquestion")
 			}
 		else
 			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELETE."\n$error\")\n //-->\n</script>\n";
 			}
 		}
 	}
@@ -249,7 +248,7 @@ elseif ($action == "modanswer")
 		case _AL_ADD:
 			if (!$_POST['code'] || !$_POST['answer'])
 				{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not add answer. You must include both a Code AND an Answer\")\n //-->\n</script>\n";
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWANSWERMISSING."\")\n //-->\n</script>\n";
 				}
 			else
 				{
@@ -258,7 +257,7 @@ elseif ($action == "modanswer")
 				$matchcount = mysql_num_rows($uaresult);
 				if ($matchcount) //another answer exists with the same code
 					{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not add ahswer. There is already an answer with this code\")\n //-->\n</script>\n";
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWANSWERDUPLICATE."\")\n //-->\n</script>\n";
 					}
 				else
 					{
@@ -270,7 +269,7 @@ elseif ($action == "modanswer")
 		case _AL_SAVE:
 			if (!$_POST['code'] || !$_POST['answer'])
 				{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not save changes. You must include both a Code AND an Answer\")\n //-->\n</script>\n";
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATEMISSING."\")\n //-->\n</script>\n";
 				}
 			else
 				{
@@ -287,13 +286,13 @@ elseif ($action == "modanswer")
 					}
 				if ($matchcount) //another answer exists with the same code
 					{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not save changes. There is already an answer with this code\")\n //-->\n</script>\n";
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATEDUPLICATE."\")\n //-->\n</script>\n";
 					}
 				else
 					{
 					if ($cccount) // there are conditions dependent upon this answer to this question
 						{
-						echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated! You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question (qid $qidlist). You must delete these conditions before you can change this answer code.\")\n //-->\n</script>\n";
+						echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATECONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
 						}
 					else
 						{
@@ -311,7 +310,7 @@ elseif ($action == "modanswer")
 			if ($qidarray) {$qidlist=implode(", ", $qidarray);}
 			if ($cccount)
 				{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be deleted! There are conditions to other questions which are dependant upon the answer code to this question (qid $qidlist). You must delete these conditions before you can delete this answer code.\")\n //-->\n</script>\n";
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERDELCONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
 				}
 			else
 				{
@@ -352,7 +351,7 @@ elseif ($action == "insertnewsurvey")
 	{
 	if (!$_POST['short_title'])
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created because it did not have a short title.\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWSURVEY_TITLE."\")\n //-->\n</script>\n";
 		}
 	else
 		{
@@ -381,7 +380,7 @@ elseif ($action == "insertnewsurvey")
 			}
 		else
 			{
-			$errormsg="Your survey could not be created - ".mysql_error();
+			$errormsg=_DB_FAIL_NEWSURVEY."\n".mysql_error();
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
 			}
 		}
@@ -411,7 +410,7 @@ elseif ($action == "updatesurvey")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be updated! " . mysql_error() ." ($usquery)\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_SURVEYUPDATE."\n".mysql_error() ." ($usquery)\")\n //-->\n</script>\n";
 		}
 	}
 
