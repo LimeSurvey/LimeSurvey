@@ -188,9 +188,9 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && !$notanswered)
 		echo templatereplace($op);
 		}
 	echo "\n"
-		."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n"
-		."\n<input type='hidden' name='sid' value='$sid'>\n"
-		."\n<input type='hidden' name='token' value='$token'>\n"
+		."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
+		."\n<input type='hidden' name='sid' value='$sid' id='sid'>\n"
+		."\n<input type='hidden' name='token' value='$token' id='token'>\n"
 		."\n</form>\n</html>";
 	exit;
 	}
@@ -292,7 +292,7 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n\n<!-- INPUT NAMES -->\n"
-	."\t<input type='hidden' name='fieldnames' value='"
+	."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
 	.implode("|", $inputnames)
 	."'>\n";
 
@@ -466,27 +466,27 @@ if (is_array($conditions)) //if conditions exist, create hidden inputs for previ
 if (remove_nulls_from_array($mandatorys))
 	{
 	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
-	echo "<input type='hidden' name='mandatory' value='$mandatory'>\n";
+	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory'>\n";
 	}
 if (remove_nulls_from_array($conmandatorys))
 	{
 	$conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
-	echo "<input type='hidden' name='conmandatory' value='$conmandatory'>\n";
+	echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory'>\n";
 	}
 if (remove_nulls_from_array($mandatoryfns))
 	{
 	$mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
-	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn'>\n";
+	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn'>\n";
 	}
 if (remove_nulls_from_array($conmandatoryfns))
 	{
 	$conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
-	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn'>\n";
+	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn'>\n";
 	}
 
-echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n"
-	."<input type='hidden' name='sid' value='$sid'>\n"
-	."<input type='hidden' name='token' value='$token'>\n"
+echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
+	."<input type='hidden' name='sid' value='$sid' id='sid'>\n"
+	."<input type='hidden' name='token' value='$token' id='token'>\n"
 	."</form>\n</html>";
 
 ?>

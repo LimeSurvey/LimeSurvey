@@ -361,7 +361,7 @@ function templatereplace($line)
 	if (strpos($line, "{REGISTERFORM}") !== false) {
 		$registerform="<table class='register'>\n"
 			."<form method='post' action='register.php'>\n"
-			."<input type='hidden' name='sid' value='$sid'>\n"
+			."<input type='hidden' name='sid' value='$sid' id='sid'>\n"
 			."<tr><td align='right'>"
 			._RG_FIRSTNAME.":</td>"
 			."<td align='left'><input class='text' type='text' name='register_firstname'";
@@ -1003,7 +1003,7 @@ function buildsurveysession()
 	<?php echo _NOTOKEN2 ?><br />&nbsp;
 	<table align='center'>
 	<form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'>
-	<input type='hidden' name='sid' value='<?php echo $sid ?>'>
+	<input type='hidden' name='sid' value='<?php echo $sid ?>' id='sid'>
 		<tr>
 			<td align='center' valign='middle'>
 			<?php echo _TOKEN_PS ?>: <input class='text' type='text' name='token'>
@@ -1279,11 +1279,11 @@ function surveymover()
 	$surveymover = "";
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 		{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _LAST." \">";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _LAST." \" id=\"movelast\">";
 		}
 	else
 		{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _NEXT." >> \">";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _NEXT." >> \" id=\"movenext\">";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A")
 		{
@@ -1315,7 +1315,7 @@ function surveymover()
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
 					  . _SUBMIT." ' name='move2' />\n";
 		}
-	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."'>\n";
+	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID'>\n";
 	return $surveymover;
 	}
 ?>

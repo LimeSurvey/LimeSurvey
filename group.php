@@ -206,9 +206,9 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 		echo templatereplace($op);
 		}
 	echo "\n";
-	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n";
-	echo "\n<input type='hidden' name='sid' value='$sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token'>\n";
+	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
+	echo "\n<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
 	echo "\n</form>\n</html>";
 	exit;
 	}
@@ -262,8 +262,8 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
 		echo templatereplace($op);
 		}
-	echo "\n<input type='hidden' name='sid' value='$sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token'>\n";
+	echo "\n<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
 	echo "\n</form>\n</html>";
 	exit;
 	}
@@ -348,7 +348,7 @@ echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' nam
 echo "\n\n<!-- INPUT NAMES -->\n";
 echo "\t<input type='hidden' name='fieldnames' value='";
 echo implode("|", $inputnames);
-echo "'>\n";
+echo "' id='fieldnames'>\n";
 
 echo "\n\n<!-- START THE SURVEY -->\n";
 foreach(file("$thistpl/survey.pstpl") as $op)
@@ -517,27 +517,27 @@ if (isset($conditions) && is_array($conditions)) //if conditions exist, create h
 if (remove_nulls_from_array($mandatorys))
 	{
 	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
-	echo "<input type='hidden' name='mandatory' value='$mandatory'>\n";
+	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory'>\n";
 	}
 if (remove_nulls_from_array($conmandatorys))
 	{
 	$conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
-	echo "<input type='hidden' name='conmandatory' value='$conmandatory'>\n";
+	echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory'>\n";
 	}
 if (remove_nulls_from_array($mandatoryfns))
 	{
 	$mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
-	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn'>\n";
+	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn'>\n";
 	}
 if (remove_nulls_from_array($conmandatoryfns))
 	{
 	$conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
-	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn'>\n";
+	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn'>\n";
 	}
 
-echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n";
-echo "<input type='hidden' name='sid' value='$sid'>\n";
-echo "<input type='hidden' name='token' value='$token'>\n";
+echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
+echo "<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+echo "<input type='hidden' name='token' value='$token' id='token'>\n";
 echo "</form>\n</html>";
 
 ?>

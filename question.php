@@ -199,9 +199,9 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
 		echo templatereplace($op);
 		}
-	echo "\n<input type='hidden' name='sid' value='$sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token'>\n";
-	echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_'>\n"; //This is to ensure consistency with mandatory checks, and new group test
+	echo "\n<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
+	echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname'>\n"; //This is to ensure consistency with mandatory checks, and new group test
 	echo "\n</form>\n</html>";
 	exit;
 	}
@@ -379,7 +379,7 @@ if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << "._PREV." ")
 	{
 	$presentinggroupdescription = "yes";
 	echo "\n\n<!-- START THE GROUP DESCRIPTION -->\n";
-	echo "\t\t\t<input type='hidden' name='grpdesc' value='Y'>\n";
+	echo "\t\t\t<input type='hidden' name='grpdesc' value='Y' id='grpdesc'>\n";
 	foreach(file("$thistpl/startgroup.pstpl") as $op)
 		{
 		echo "\t".templatereplace($op);
@@ -411,7 +411,7 @@ if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << "._PREV." ")
 	echo "\n";
 
 	$_SESSION['step']--;
-	echo "\t\t\t<input type='hidden' name='newgroupondisplay' value='Y'>\n";
+	echo "\t\t\t<input type='hidden' name='newgroupondisplay' value='Y' id='newgroupondisplay'>\n";
 	}
 else
 	{
@@ -486,7 +486,7 @@ if (isset($conditions) && is_array($conditions)) //if conditions exist, create h
 if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << "._PREV." ")
 	{}
 else
-	{echo "<input type='hidden' name='fieldnames' value='";
+	{echo "<input type='hidden' name='fieldnames' id='fieldnames' value='";
 	echo implode("|", $inputnames);
 	echo "'>\n";
 	}
@@ -494,28 +494,28 @@ else
 if (remove_nulls_from_array($mandatorys) && $newgroup != "Y")
 	{
 	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
-	echo "<input type='hidden' name='mandatory' value='$mandatory'>\n";
+	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory'>\n";
 	}
 if (remove_nulls_from_array($conmandatorys))
 	{
 	$conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
-	echo "<input type='hidden' name='conmandatory' value='$conmandatory'>\n";
+	echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory'>\n";
 	}
 if (remove_nulls_from_array($mandatoryfns))
 	{
 	$mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
-	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn'>\n";
+	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn'>\n";
 	}
 if (remove_nulls_from_array($conmandatoryfns))
 	{
 	$conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
-	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn'>\n";
+	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn'>\n";
 	}
 
-echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n";
-echo "<input type='hidden' name='sid' value='$sid'>\n";
-echo "<input type='hidden' name='token' value='$token'>\n";
-echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars($groupname)."'>\n";
+echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
+echo "<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+echo "<input type='hidden' name='token' value='$token' id='token'>\n";
+echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars($groupname)."' id='lastgroupname'>\n";
 echo "</form>\n</html>";
 
 function last()
@@ -570,9 +570,9 @@ function last()
 		echo templatereplace($op);
 		}
 	echo "\n";
-	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}'>\n";
-	echo "\n<input type='hidden' name='sid' value='$sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token'>\n";
+	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
+	echo "\n<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
 	echo "\n</form>\n</html>";
 	}
 
