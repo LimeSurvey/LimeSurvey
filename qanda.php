@@ -579,7 +579,9 @@ switch ($ia[4])
 					 . "\t\t\t\t\t\t\t\t<td>\n"
 					 . "\t\t\t\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$myfname' id='$myfname' value='Y'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$myfname' class='answertext'>{$ansrow['answer']}</label>\n"
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"
+					 . "<label for='$myfname' class='answertext'>"
+					 . $ansrow['answer']."</label>\n"
 					 . "\t\t\t\t\t\t\t\t</td>\n"
 					 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
@@ -587,7 +589,7 @@ switch ($ia[4])
 			$fn++;
 			$answer .= "\t\t\t\t\t\t\t\t<td>\n"
 					 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname2' value='";
-			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			if (isset($_SESSION[$myfname2])) {$answer .= $_SESSION[$myfname2];}
 			$answer .= "' />\n"
 					 . "\t\t\t\t\t\t\t\t</td>\n"
 					 . "\t\t\t\t\t\t\t</tr>\n";
@@ -1024,8 +1026,9 @@ switch ($ia[4])
 					 . "\t\t\t\t\t<td align='right' class='answertext' width='$percwidth%'>{$ansrow['answer']}</td>\n";
 			foreach ($labelcode as $ld)
 				{
-				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value='$ld'";
-				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld['code']) {$answer .= " checked";}
+				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'>";
+				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld'";
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			if ($ia[6] != "Y")
