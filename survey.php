@@ -670,7 +670,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 	$gid=$gl[0];
 	$groupname=$gl[1];
 	$groupdescription=$gl[2];
-	echo "&nbsp;\n";
+//	echo "&nbsp;\n";
 	echo "\n\n<!-- START THE GROUP -->\n";
 	foreach(file("$thistpl/startgroup.pstpl") as $op)
 		{
@@ -717,7 +717,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 		}
 	echo "\n";
 	}
-echo "&nbsp;\n";
+//echo "&nbsp;\n";
 $navigator = surveymover();
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 foreach(file("$thistpl/navigator.pstpl") as $op)
