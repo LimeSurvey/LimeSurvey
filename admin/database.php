@@ -203,16 +203,32 @@ elseif ($action == "copynewquestion")
 
 elseif ($action == "delquestion")
 	{
-	$query = "DELETE FROM questions WHERE qid=$qid";
-	$result = mysql_query($query);
-	if ($result)
+	//check if any other questions have conditions which rely on this question. Don't delete if there are.
+	$ccquery = "SELECT * FROM conditions WHERE cqid={$_GET['qid']}";
+	$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
+	$cccount=mysql_num_rows($ccresult);
+	while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
+	if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+	if ($cccount) //there are conditions dependant on this question
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($qid) has been deleted!\")\n //-->\n</script>\n";
-		$qid = "";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($sid) was NOT DELETED!\n There are other questions with conditions set that are based on the response to this question (qid $qidlist). You must remove these conditions before deleting this question.\")\n //-->\n</script>\n";
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		//see if there are any conditions for this question, and delete them now as well
+		$cquery = "DELETE FROM conditions WHERE qid=$qid";
+		$cresult = mysql_query($query);
+		$query = "DELETE FROM questions WHERE qid=$qid";
+		$result = mysql_query($query);
+		if ($result)
+			{
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($qid) has been deleted!\")\n //-->\n</script>\n";
+			$qid = "";
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+			}
 		}
 	}
 
@@ -263,6 +279,11 @@ elseif ($action == "updateanswer")
 		$uaquery = "SELECT * FROM answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
 		$uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
 		$matchcount = mysql_num_rows($uaresult);
+		$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['old_code']}'";
+		$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
+		$cccount=mysql_num_rows($ccresult);
+		while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
+		if ($qidarray) {$qidlist=implode(", ", $qidarray);}
 		}
 	if ($matchcount)
 		{
@@ -270,32 +291,61 @@ elseif ($action == "updateanswer")
 		}
 	else
 		{
-		$uaquery = "UPDATE answers SET code='{$_POST['code']}', answer='{$_POST['answer']}', `default`='{$_POST['default']}' WHERE qid={$_POST['qid']} AND code='{$_POST['old_code']}'";
-		//echo $uaquery;
-		$uaresult = mysql_query($uaquery);
-		if ($uaresult)
+		if ($ccount) // there are conditions dependent upon this answer to this question
 			{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Answer ($qid, $code) has been updated!\")\n //-->\n</script>\n";
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated! You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question (qid $qidlist). You must delete these conditions before you can change this answer code.\")\n //-->\n</script>\n";
 			}
-		else
-			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated!\")\n //-->\n</script>\n";
+			else
+				{
+			$uaquery = "UPDATE answers SET code='{$_POST['code']}', answer='{$_POST['answer']}', `default`='{$_POST['default']}' WHERE qid={$_POST['qid']} AND code='{$_POST['old_code']}'";
+			//echo $uaquery;
+			$uaresult = mysql_query($uaquery);
+			if ($uaresult)
+				{
+				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Answer ($qid, $code) has been updated!\")\n //-->\n</script>\n";
+				}
+			else
+				{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated!\")\n //-->\n</script>\n";
+				}
 			}
 		}
 	}
 
 elseif ($action == "delanswer")
 	{
-	$query = "DELETE FROM answers WHERE qid=$qid AND code='$code'";
-	$result = mysql_query($query);
-	if ($result)
+	//make sure that no conditions rely upon this particular answer - a bit complicated because of different question types, and values
+	//build a cfieldname for this question.
+	$cfieldname="{$sid}X{$gid}X{$qid}";
+	$qquery="SELECT type FROM questions WHERE qid=$qid";
+	$qresult=mysql_query($qquery) or die ("Couldn't get question information for this answer.<br />$qquery<br />".mysql_error());
+	while ($qrow=mysql_fetch_array($qresult)) {$qtype=$qrow['type'];}
+	if ($qtype == "A" || $qtype == "B" || $qtype == "C" || $qtype == "M" || $qtype == "O") {$cfieldname .= $code; $multitype=true;}
+
+	if ($multitype==true) {$ccquery = "SELECT * FROM conditions WHERE cfieldname='$cfieldname'";}
+	else {$ccquery = "SELECT * FROM conditions WHERE cqid=$qid AND value='$code'";}
+	$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
+	$cccount=mysql_num_rows($ccresult);
+	while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
+	if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+	
+	if ($cccount) //A condition relies upon this answer. Do not delete
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid ($code) has been deleted!\")\n //-->\n</script>\n";
-		$code = "";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED! There are conditions for other questions which rely upon this answer (qid $qidlist). You must delete these conditions before you can delete this answer.\")\n //-->\n</script>\n";
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		$query = "DELETE FROM answers WHERE qid=$qid AND code='$code'";
+		$result = mysql_query($query);
+		if ($result)
+			{
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid ($code) has been deleted!\")\n //-->\n</script>\n";
+			$code = "";
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+			}
 		}
 	}
 
@@ -363,13 +413,12 @@ elseif ($action == "updatesurvey")
 		}
 	}
 
-elseif ($action == "delsurvey")
+elseif ($action == "delsurvey") //can only happen if there are no groups, no questions, no answers etc.
 	{
 	$query = "DELETE FROM surveys WHERE sid=$sid";
 	$result = mysql_query($query);
 	if ($result)
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) has been deleted!\")\n //-->\n</script>\n";
 		$sid = "";
 		$surveyselect = getsurveylist();
 		}
