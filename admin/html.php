@@ -141,10 +141,11 @@ if ($qid)
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = mysql_fetch_array($qrresult))
 		{
-		$questionsummary .= "\t<tr><td width='20%' align='RIGHT'>$setfont<b>Question Title:</b></font></td>\n\t<td>$setfont{$qrrow['title']}</td></tr>\n";
+		$questionsummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Question Title:</b></font></td>\n\t<td>$setfont{$qrrow['title']}</td></tr>\n";
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
-		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></TD>\n\t<td>$setfont{$qrrow['type']}</td></tr>\n";
+		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
+		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $grrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P")
 			{
 			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Answers:</b></font></td>\n";
