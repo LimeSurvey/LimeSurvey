@@ -148,6 +148,10 @@ define("_SL_USECOOKIES", "&iquest;Utilizar Cookies?"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Notification:"); //New with 098rc5
 define("_SL_ALLOWREGISTER", "Allow public registration?"); //New with 0.98rc9
 define("_SL_ATTRIBUTENAMES", "Token Attribute Names:"); //New with 0.98rc9
+define("_SL_EMAILINVITE", "Invitation Email:"); //New with 0.98rc9
+define("_SL_EMAILREMIND", "Email Reminder:"); //New with 0.98rc9
+define("_SL_EMAILREGISTER", "Public registration Email:"); //New with 0.98rc9
+define("_SL_EMAILCONFIRM", "Confirmation Email"); //New with 0.98rc9
 
 //groups
 define("_GL_TITLE", "T&iacute;tulo:");
@@ -573,6 +577,34 @@ define("_TC_SENDREMIND", "Enviar Recordatorios");
 define("_TC_INVITESENTTO", "Invitaci&oacute;n Enviada a:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Recordatorio Enviado a:"); //is followed by token name
 define("_TC_UPDATEDB", "Update tokens table with new fields"); //New for 0.98rc7
+define("_TC_EMAILINVITE", "Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\n"
+						 ."The survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
+						 ."To participate, please click on the link below.\n\nSincerely,\n\n"
+						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
+						 ."----------------------------------------------\n"
+						 ."Click here to do the survey:\n"
+						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Invitation
+define("_TC_EMAILREMIND", "Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\n"
+						 ."We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\n"
+						 ."The survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
+						 ."To participate, please click on the link below.\n\nSincerely,\n\n"
+						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
+						 ."----------------------------------------------\n"
+						 ."Click here to do the survey:\n"
+						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Reminder
+define("_TC_EMAILREGISTER", "Dear {FIRSTNAME},\n\n"
+						  ."You, or someone using your email address, have registered to "
+						  ."participate in an online survey titled {SURVEYNAME}.\n\n"
+						  ."To complete this survey, click on the following URL:\n\n"
+						  ."{SURVEYURL}\n\n"
+						  ."If you have any questions about this survey, or if you "
+						  ."did not register to participate and believe this email "
+						  ."is in error, please contact {ADMINNAME} at {ADMINEMAIL}.");//NEW for 0.98rc9
+define("_TC_EMAILCONFIRM", "Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} "
+						  ."and your response has been saved. Thank you for participating.\n\n"
+						  ."If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\n"
+						  ."Sincerely,\n\n"
+						  ."{ADMINNAME}"); //New for 0.98rc9 - Confirmation Email
 
 //labels.php
 define("_LB_NEWSET", "Crear Nuevo Conjunto de Etiquetas");
