@@ -179,6 +179,8 @@ define("_QL_MANDATORY", "Requerida:");
 define("_QL_OTHER", "Otro:");
 define("_QL_LABELSET", "Etiquetas:");
 define("_QL_COPYANS", "&iquest;Copiar Respuestas?"); //New in 0.98rc3
+define("_QL_QUESTIONATTRIBUTES", "Question Attributes:"); //New in 0.99dev01
+define("_QL_COPYATT", "Copy Attributes?"); //New in 0.99dev01
 //answers
 define("_AL_CODE", "C&oacute;digo");
 define("_AL_ANSWER", "Respuesta");
@@ -710,4 +712,16 @@ define("_SV_DATE", "Date Saved");
 define("_SV_REMIND", "Remind");
 define("_SV_EDIT", "Edit");
 
+//VVEXPORT/IMPORT
+define("_VV_IMPORTFILE", "Import a VV survey file");
+define("_VV_EXPORTFILE", "Export a VV survey file");
+define("_VV_FILE", "File:");
+define("_VV_SURVEYID", "Survey ID:");
+define("_VV_EXCLUDEID", "Exclude record IDs?");
+define("_VV_DONOTREFRESH", "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates");
+define("_VV_IMPORTNUMBER", "Total records imported:");
+define("_VV_ENTRYFAILED", "Import Failed on Record");
+define("_VV_BECAUSE", "because");
+define("_VV_EXPORTDEACTIVATE", "Export, then de-activate survey");
+define("_VV_EXPORTONLY", "Export but leave survey active");
 ?>

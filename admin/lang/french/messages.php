@@ -1,42 +1,5 @@
 <?php
-/*
-	#################################################################
-	# >>> PHP Surveyor  						#
-	#################################################################
-	# > Author:  Jason Cleeland					#
-	# > E-mail:  jason@cleeland.org					#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,		#
-	# >          CARLTON SOUTH 3053, AUSTRALIA			#
-	# > Date: 	 20 February 2003				#
-	#								#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.				#
-	#################################################################
-	#	Copyright (C) 2003  Jason Cleeland			#
-	#								#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 		#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.					#
-	#								#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.						#
-	#								#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.			#
-	#################################################################
-	#								#
-	# This language file provided by Pascal BASTIEN 20/07/2004	#
-	# Version 1.1							#
-	#								#
-	#################################################################
-*/
+
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Administration");
@@ -211,6 +174,8 @@ define("_QL_MANDATORY", "Obligatoire:");
 define("_QL_OTHER", "Autre:");
 define("_QL_LABELSET", "Jeu d'Etiquette:");
 define("_QL_COPYANS", "Copier les Réponses?"); //New in 0.98rc3
+define("_QL_QUESTIONATTRIBUTES", "Question Attributes:"); //New in 0.99dev01
+define("_QL_COPYATT", "Copy Attributes?"); //New in 0.99dev01
 //answers
 define("_AL_CODE", "Code");
 define("_AL_ANSWER", "Réponse");
@@ -739,4 +704,16 @@ define("_SV_DATE", "Date Saved");
 define("_SV_REMIND", "Remind");
 define("_SV_EDIT", "Edit");
 
+//VVEXPORT/IMPORT
+define("_VV_IMPORTFILE", "Import a VV survey file");
+define("_VV_EXPORTFILE", "Export a VV survey file");
+define("_VV_FILE", "File:");
+define("_VV_SURVEYID", "Survey ID:");
+define("_VV_EXCLUDEID", "Exclude record IDs?");
+define("_VV_DONOTREFRESH", "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates");
+define("_VV_IMPORTNUMBER", "Total records imported:");
+define("_VV_ENTRYFAILED", "Import Failed on Record");
+define("_VV_BECAUSE", "because");
+define("_VV_EXPORTDEACTIVATE", "Export, then de-activate survey");
+define("_VV_EXPORTONLY", "Export but leave survey active");
 ?>
