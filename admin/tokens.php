@@ -151,7 +151,7 @@ $tokenmenu .= "\t</tr>\n";
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
 $tkcount = mysql_num_rows($tkresult);
 echo "$tokenmenu";
-echo "\t<tr><td align='center'>There are $tkcount records in your token table for this survey.</td></tr>\n";
+echo "\t<tr><td align='center'>{$setfont}There are $tkcount records in your token table for this survey.</td></tr>\n";
 
 // GIVE SOME INFORMATION ABOUT THE TOKENS
 echo "\t<tr>\n";
@@ -179,6 +179,9 @@ echo "\t</tr>\n";
 echo "</table>\n";
 echo "<center>\n";
 
+#############################################################################################
+// NOW FOR VARIOUS ACTIONS:
+
 if ($action == "browse")
 	{
 	echo "<table width='600' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
@@ -193,6 +196,10 @@ if ($action == "browse")
 	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='DownArrow.gif' alt='Sort by Done?' border='0' align='left'></a>$setfont"."Done?</th>\n";
 	echo "\t\t<th align='left' colspan='2'>$setfont"."Action</th>\n";
 	echo "\t</tr>\n";
+	
+	//HANDLE LIMITED NUMBER OF ROWS AT A TIME
+	
+	
 	$bquery = "SELECT * FROM tokens_$sid";
 	if (!$_GET['order']) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY {$_GET['order']}";}
