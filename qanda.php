@@ -595,7 +595,7 @@ function do_listwithcomment($ia)
 				{
 				$answer .= "checked />";
 				}
-			elseif ($_SESSION[$ia[1]] && !$defexists) 
+			elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) 
 				{
 				$answer .= " />";
 				}
