@@ -155,6 +155,13 @@ define(_WARNING, "Warning");
 define(_USERNAME, "User name");
 define(_PASSWORD, "Password");
 
+//General Setup Messages
+define(_ST_NODB1, "The defined surveyor database does not exist");
+define(_ST_NODB2, "Either your selected database has not yet been created or there is a problem accessing it.");
+define(_ST_NODB3, "PHPSurveyor can attempt to create this database for you.");
+define(_ST_NODB4, "Your selected database name is:");
+define(_ST_CREATEDB, "Create Database");
+
 //USER CONTROL MESSAGES
 define(_UC_CREATE, "Creating default htaccess file");
 define(_UC_NOCREATE, "Couldn't create htaccess file. Check your config.php for \$homedir setting, and that you have write permission in the correct directory.");
@@ -177,6 +184,7 @@ define(_UC_INITIALISE, "Initialise Security");
 define(_UC_NOUSERS, "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.");
 define(_UC_TURNOFF, "Turn Off Security");
 
+//Activate and deactivate messages
 define(_AC_MULTI_NOANSWER, "This question is a multiple answer type question but has no answers.");
 define(_AC_NOTYPE, "This question does not have a question 'type' set.");
 define(_AC_CON_OUTOFORDER, "This question has a condition set, however the condition is based on a question that appears after it.");
@@ -204,5 +212,7 @@ define(_AC_DEACTIVATED_MESSAGE1, "The responses table has been renamed to: ");
 define(_AC_DEACTIVATED_MESSAGE2, "The responses to this survey are no longer available using PHPSurveyor.");
 define(_AC_DEACTIVATED_MESSAGE3, "You should note the name of this table in case you need to access this information later.");
 define(_AC_DEACTIVATED_MESSAGE4, "The tokens table associated with this survey has been renamed to: ");
+
+
 
 ?>
