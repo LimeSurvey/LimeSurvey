@@ -99,7 +99,7 @@ if (!$tkresult = mysql_query($tkquery))
 		echo "\t\t\t$setfont<br /><br />\n";
 		echo "\t\t\t<b>Tokens have not been initialised for this survey.</b><br /><br />\n";
 		echo "\t\t\tNote that if you initialise tokens for this survey, then only<br />\n";
-		echo "\t\t\twith an entry in the token table, and a unique token can<br />\n";
+		echo "\t\t\tthose with an entry in the token table, and a unique token can<br />\n";
 		echo "\t\t\tparticipate in this survey.<br /><br />\n";
 		echo "\t\t\tDo you want to create one now?<br /><br />\n";
 		echo "\t\t\t<input type='submit' $btstyle value='Initialise Tokens' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n";
