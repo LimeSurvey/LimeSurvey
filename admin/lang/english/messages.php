@@ -12,6 +12,8 @@ define(_USERCONTROL, "User Control");
 define(_ACTIVATE, "Activate Survey");
 define(_DEACTIVATE, "Deactivate Survey");
 define(_CHECKFIELDS, "Check Database Fields");
+define(_CREATEDB, "Create Database");
+define(_SETUP, "PHPSurveyor Setup");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -221,5 +223,12 @@ define(_CF_CHECKING, "Checking");
 define(_CF_TABLECREATED, "Table Created");
 define(_CF_FIELDCREATED, "Field Created");
 define(_CF_OK, "OK");
+
+//CREATE DATABASE (createdb.php)
+define(_CD_DBCREATED, "Database has been created.");
+define(_CD_POPULATE_MESSAGE, "Please click below to populate the database");
+define(_CD_POPULATE, "Populate Database");
+define(_CD_NOCREATE, "Could not create database");
+define(_CD_NODBNAME, "Database Information not provided. This script must be run from admin.php only.")
 
 ?>
