@@ -170,7 +170,7 @@ while ($degrow = mysql_fetch_array($degresult))
 			{
 			$hh = $deqrow['help'];
 			echo "\t\t\t<table width='100%' border='1'><tr><td align='center'><font size='1'>$hh</td></tr></table>\n";
-			//echo "\t\t\t<img src='help.gif' alt='Help about this question' align='right' onClick=\"javascript:alert('Question {$deqrow['qid']} Help: $hh')\">\n";
+
 			}
 		echo "\t\t</td>\n";
 		echo "\t\t<td style='padding-left: 20px'>\n";
@@ -185,7 +185,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='5' />5 \n";
 				break;
 			case "D":  //DATE
-				echo "\t\t\t$setfont<u>Please enter your birth date:</u><br />\n";
+				echo "\t\t\t$setfont<u>Please enter a date:</u><br />\n";
 				echo "\t\t\t<input type='text' $boxstyle name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' />\n";
 				break;
 			case "G":  //GENDER
@@ -240,7 +240,7 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
 				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>Please tick the appropriate response for each question and provide a comment</u><br />\n";
+				echo "\t\t\t$setfont<u>Please tick any that apply and provide a comment</u><br />\n";
 				echo "\t\t\t<table border='0'>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
@@ -255,7 +255,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t</table>\n";
 				break;
 			case "S":  //SHORT TEXT
-				echo "\t\t\t$setfont<u>Put your answer here:</u><br />\n";
+				echo "\t\t\t$setfont<u>Please write your answer here:</u><br />\n";
 				echo "\t\t\t<input type='text' name='$fieldname' size='60' $boxstyle />\n";
 				break;
 			case "T":  //LONG TEXT
@@ -270,7 +270,7 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "A":  //ARRAY (5 POINT CHOICE)
 				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>Please tick the appropriate response for each question</u><br />\n";
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />\n";
 				echo "\t\t\t<table>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
@@ -291,7 +291,7 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "B":  //ARRAY (10 POINT CHOICE)
 				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>Please tick the appropriate response for each question</u><br />";
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />";
 				echo "\t\t\t<table border='0'>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
@@ -312,7 +312,7 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
 				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>Please tick the appropriate response for each question</u><br />\n";
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />\n";
 				echo "\t\t\t<table>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
