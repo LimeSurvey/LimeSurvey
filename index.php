@@ -806,7 +806,7 @@ function submitfailed()
 	if ($thissurvey['adminemail'])
 		{	
 		$completed .= _DIDNOTSAVE3."<br /><br />\n";
-		$email=_DNSAVEEMAIL1." $sid\n\n";
+		$email=_DNSAVEEMAIL1." ".$thissurvey['name']." - $sid\n\n";
 		$email .= _DNSAVEEMAIL2.":\n";
 		foreach ($_SESSION['insertarray'] as $value)
 			{
