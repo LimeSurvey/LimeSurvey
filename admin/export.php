@@ -6,8 +6,8 @@
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 20 February 2003								#
+	# >          CARLTON SOUTH 3053, AUSTRALIA                  #
+	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
 	# perform data-entry on surveys.							#
@@ -253,29 +253,27 @@ if (!$style)
 
 //HERE WE EXPORT THE ACTUAL RESULTS
 
-if ($type == "doc") 
-	{
-	header("Content-Disposition: attachment; filename=survey.doc");
-	header("Content-type: application/vnd.ms-word");
-	$s="\n\n";
-	}
-elseif ($type == "xls") 
-	{
-	header("Content-Disposition: attachment; filename=survey.xls");
-	header("Content-type: application/vnd.ms-excel");
-	$s="\t";
-	}
-elseif ($type == "csv") 
-	{
-	header("Content-Disposition: attachment; filename=survey.csv");
-	header("Content-Type: application/download");
-	$s=",";
-	}
-else 
-	{
-	header("Content-Disposition: attachment; filename=survey.doc");
-	}
-sendcacheheaders();
+sendcacheheaders();             // sending "cache headers" before this permit us to send something else than a "text/html" content-type
+switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c)
+case "doc":
+        header("Content-Disposition: attachment; filename=survey.doc");
+        header("Content-type: application/vnd.ms-word");
+        $s="\t";
+        break;
+case "xls":
+        header("Content-Disposition: attachment; filename=survey.xls");
+        header("Content-type: application/vnd.ms-excel");
+        $s="\t";
+        break;
+case "csv":
+        header("Content-Disposition: attachment; filename=survey.csv");
+        header("Content-type: text/comma-separated-values; charset=ISO-8859-15");
+        $s=",";
+        break;
+default:
+        header("Content-Disposition: attachment; filename=survey.doc");
+        break;
+}
 
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
