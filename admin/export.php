@@ -49,19 +49,12 @@ if (!$style)
 	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 	$afieldcount=mysql_num_fields($result);
 	$i=0;
-	$fieldmap=createFieldMap($sid);
+	$fieldmap=createFieldMap($sid, "full");
+	usort($fieldmap, 'CompareGroupThenTitle');
 	foreach ($fieldmap as $fm) 
 		{
-		$query="SELECT group_name, title\n"
-			  ."FROM {$dbprefix}questions, {$dbprefix}groups\n"
-			  ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-			  ."AND {$dbprefix}questions.qid='".$fm['qid']."'";
-		$result=mysql_query($query) or die("EXPORT: Fieldmap-$query<br />".mysql_error());
-		while ($row=mysql_fetch_array($result))
-			{
-			$groupname=$row['group_name'];
-			$title=$row['title'];
-			}
+		$groupname=$fm['group_name'];
+		$title=$fm['title'];
 		if (!isset($groupname)) { $groupname="";}
 		if (!isset($title)) { $title="";}
 		$eachone[]=array("fieldname"=>$fm['fieldname'],
