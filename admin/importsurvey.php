@@ -118,7 +118,7 @@ echo "<LI>Answers: $countanswers</LI></UL>";
 // CREATE SURVEY
 $sid=substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
 $insert=str_replace("('$sid'", "(''", $tablearray[0]);
-$insert=substr($insert, 0, -1);
+//$insert=substr($insert, 0, -1);
 $iresult=mysql_query($insert) or die("Insert of imported survey completely failed<BR>$insert<BR><BR>".mysql_error());
 
 //GET NEW SID
@@ -131,7 +131,7 @@ foreach ($grouparray as $ga)
 	{
 	$gid=substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
 	$ginsert=str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
-	$ginsert=substr($ginsert, 0, -1);
+	//$ginsert=substr($ginsert, 0, -1);
 	$gres=mysql_query($ginsert);
 	//GET NEW GID
 	$gidquery="SELECT gid FROM groups ORDER BY gid DESC LIMIT 1";
@@ -146,8 +146,9 @@ foreach ($grouparray as $ga)
 		if (substr($qa, $start, $end)==$gid)
 			{
 			$qid=substr($qa, strpos($qa, "('")+2, (strpos($qa, "',")-(strpos($qa, "('")+2)));
-			$qinsert=str_replace("('$qid', '$sid', '$gid',", "('', '$newsid', '$newgid',", $qa);
-			$qinsert=substr(trim($qinsert), 0, -1);
+			$qinsert=str_replace("('$qid', '$sid', '$gid',", "('$newsid', '$newgid',", $qa);
+			$qinsert=str_replace("(`qid`, ", "(", $qinsert);
+			//$qinsert=substr(trim($qinsert), 0, -1);
 			//echo "$qinsert<BR>";
 			$qres=mysql_query($qinsert) or die ("<B>ERROR:</B> Failed to insert question<BR>$qinsert<BR>".mysql_error());
 			//GET NEW GID
@@ -163,7 +164,7 @@ foreach ($grouparray as $ga)
 				if (substr($aa, $astart, $aend) == ($qid))
 					{
 					$ainsert=str_replace("('$qid", "('$newqid", $aa);
-					$ainsert=substr(trim($ainsert), 0, -1);
+					//$ainsert=substr(trim($ainsert), 0, -1);
 					$ares=mysql_query($ainsert) or die ("<B>ERROR:</B> Failed to insert answer<BR>$ainsert<BR>".mysql_error());
 					}
 				}
