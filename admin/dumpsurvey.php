@@ -50,21 +50,25 @@ if (!isset($sid)) {$sid=returnglobal('sid');}
 if (!$sid)
 	{
 	echo $htmlheader;
-	echo "<br />\n";
-	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._EXPORTSURVEY."</b></td></tr>\n";
-	echo "\t<tr><td align='center'>\n";
-	echo "$setfont<br /><b><font color='red'>"._ERROR."</font></b><br />\n"._ES_NOSID."<br />\n";
-	echo "<br /><input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "\t</td></tr>\n";
-	echo "</table>\n";
-	echo "</body></html>\n";
+		."<br />\n"
+		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._EXPORTSURVEY."</b></td></tr>\n"
+		."\t<tr><td align='center'>\n"
+		."$setfont<br /><b><font color='red'>"
+		._ERROR."</font></b><br />\n"
+		._ES_NOSID."<br />\n"
+		."<br /><input type='submit' $btstyle value='"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
+		."\t</td></tr>\n"
+		."</table>\n"
+		."</body></html>\n";
 	exit;
 	}
 
-$dumphead = "# SURVEYOR SURVEY DUMP\n";
-$dumphead .= "#\n# This is a dumped survey from the PHPSurveyor Script\n";
-$dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
+$dumphead = "# SURVEYOR SURVEY DUMP\n"
+		  . "#\n# This is a dumped survey from the PHPSurveyor Script\n"
+		  . "# http://phpsurveyor.sourceforge.net/\n";
 
 function BuildOutput($Query)
 	{
@@ -140,7 +144,7 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
-echo "#<pre>\n";
-echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump;
-echo "#</pre>\n";
+echo "#<pre>\n"
+	.$dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump
+	."#</pre>\n";
 ?>
