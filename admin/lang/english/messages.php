@@ -186,6 +186,9 @@ define(_USERNAME, "User name");
 define(_PASSWORD, "Password");
 define(_DELETE, "Delete");
 define(_CLOSEWIN, "Close Window");
+define(_TOKEN, "Token");
+define(_DATESTAMP, "Date Stamp"); //Referring to the datestamp or time response submitted
+define(_COMMENT, "Comment");
 
 //General Setup Messages
 define(_ST_NODB1, "The defined surveyor database does not exist");
@@ -351,6 +354,8 @@ define(_DE_VIEWTHISONE, "View This Record");
 define(_DE_BROWSE, "Browse Responses");
 define(_DE_DELRECORD, "Record Deleted");
 define(_DE_UPDATED, "Record has been updated.");
+define(_DE_EDITING, "Editing Response");
+define(_DE_QUESTIONHELP, "Help about this question");
 
 
 ?>
