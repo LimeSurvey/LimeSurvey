@@ -44,7 +44,7 @@ if (!file_exists("$homedir/.htaccess"))
 		{
 		//DON'T DO ANYTHING UNLESS IT HAS BEEN ASKED FOR
 		//CREATE HTACCESS FILE
-		$addsummary .= "<br />"._UC_CREATE."<br />\n";
+		$addsummary = "<br />"._UC_CREATE."<br />\n";
 		$fname="$homedir/.htaccess";
 		echo "<font color='white'>";
 		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<b>"._ERROR."</b><br />\n"._UC_NOCREATE."\n<p><a href='$scriptname'>"._GO_ADMIN."</a></p>\n</td>\n</tr>\n</table>\n");
@@ -56,7 +56,7 @@ if (!file_exists("$homedir/.htaccess"))
 		
 		//CREATE DEFAULT USER AND PASS
 		$addsummary = "<br />"._UC_CREATE_DEFAULT."<br />\n";
-		if ($htpasswddir) {$htpasswd = "\"$htpasswddir/htpasswd\"";} else {$htpasswd = "htpasswd";}
+		if (isset($htpasswddir) && $htpasswddir) {$htpasswd = "\"$htpasswddir/htpasswd\"";} else {$htpasswd = "htpasswd";}
 		
 		# Form command line. Redirect STDERR to STDOUT using 2>&1
 		$command = "$htpasswd -bc .htpasswd $defaultuser $defaultpass 2>&1";
