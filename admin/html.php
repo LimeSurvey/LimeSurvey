@@ -424,14 +424,14 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$vasummary .= "\t\t</td>\n";
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
-			$vasummary .= "\t\t<td>\n";
+			$vasummary .= "\t\t<td align='center'>\n";
 			$vasummary .= "\t\t\t<input name='ansaction' $btstyle type='submit' value='Save'>";
 			$vasummary .= "<input name='ansaction' $btstyle type='submit' value='Del'>\n";
 			$vasummary .= "\t\t</td>\n";
 		}
 		else
 			{
-			$vasummary .= "\t\t<td><input name='ansaction' $btstyle type='submit' value='Save'></td>\n";
+			$vasummary .= "\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='Save'></td>\n";
 			}
 		$vasummary .= "\t<input type='hidden' name='oldcode' value=\"{$cdrow['code']}\">\n";
 		$vasummary .= "\t<input type='hidden' name='oldanswer' value=\"{$cdrow['answer']}\">\n";
