@@ -1305,7 +1305,7 @@ function do_array_flexible($ia)
 		$ansresult = mysql_query($ansquery);
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
-			if (isset($repeatheadings) && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0) 
+			if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0) 
 				{
 				$answer .= "\t\t\t\t<tr>\n"
 				 		 . "\t\t\t\t\t<td></td>\n";
