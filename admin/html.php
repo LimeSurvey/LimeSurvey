@@ -618,7 +618,7 @@ if ($action == "editanswer")
 		$editanswer .= "\t\t<td align='right'>$setfont<b>Answer Code:</b></font></td>\n";
 		$editanswer .= "\t\t<td><input type='text' size='5' value='{$earow['code']}' name='code'></td></tr>\n";
 		$editanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
-		$editanswer .= "\t\t<td><input type='text' value='{$earow['answer']}' name='answer'></td></tr>\n";
+		$editanswer .= "\t\t<td><input type='text' value=\"".str_replace('"', "&quot;", $earow['answer'])."\" name='answer'></td></tr>\n";
 		$editanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
 		$editanswer .= "\t\t<td><input type='text' size='1' value='{$earow['default']}' name='default'></td></tr>\n";
 		$editanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Answer'></td>\n";
