@@ -80,6 +80,7 @@ else
 //BUILD FIELDLIST
 //BUILD ANSWERS
 $answer = "";
+if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
 switch ($ia[4])
 	{
 	case "5": //5 POINT CHOICE radio-buttons
@@ -1031,7 +1032,7 @@ switch ($ia[4])
 	
 	}
 
-if (is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
 	{
 	if (in_array($ia[1], $notanswered))
 		{

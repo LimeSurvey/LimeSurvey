@@ -121,7 +121,7 @@ require($langfilename);
 //CHECK FOR PREVIOUSLY COMPLETED COOKIE
 //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
 $cookiename="PHPSID".returnglobal('sid')."STATUS";
-if ($_COOKIE[$cookiename] == "COMPLETE" && $surveyusecookie == "Y" && $tokensexist != 1)
+if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surveyusecookie == "Y" && $tokensexist != 1)
 	{
 	sendcacheheaders();
 	echo "<html>\n";
@@ -161,7 +161,7 @@ if (!isset($oldsid))
 
 
 //CLEAR SESSION IF REQUESTED
-if ($_GET['move'] == "clearall")
+if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	{
 	sendcacheheaders();
 	echo "<html>\n";
@@ -197,7 +197,7 @@ if ($_GET['move'] == "clearall")
 	exit;	
 	}
 
-if ($_GET['newtest'] == "Y")
+if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 	{
 	foreach ($_SESSION as $SES)
 		{
@@ -241,7 +241,7 @@ function templatereplace($line)
 	
 	if (ereg("^<body", $line))
 		{
-		if (!ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && ($_POST['move'] != " "._LAST." " || ($_POST['move'] == " "._LAST." " && $notanswered)) && ($_POST['move'] != " "._SUBMIT." " || ($_POST['move']== " "._SUBMIT." " && $notanswered)))
+		if (isset($_SESSION['step']) && !ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && (isset($_POST['move']) && ($_POST['move'] != " "._LAST." " || ($_POST['move'] == " "._LAST." " && $notanswered)) && ($_POST['move'] != " "._SUBMIT." " || ($_POST['move']== " "._SUBMIT." " && $notanswered))))
 			{
 			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
 			}
