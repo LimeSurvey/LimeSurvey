@@ -462,21 +462,23 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			{
 			echo templatereplace($op);
 			}
-		echo "\t<center><br />\n";
-		echo "\t"._NOTOKEN1."<br /><br />\n";
-		echo "\t"._NOTOKEN2."<br />&nbsp;\n";
-		echo "\t<table align='center'>";
-		echo "\t<form method='get' action='{$_SERVER['PHP_SELF']}'>\n";
-		echo "\t<input type='hidden' name='sid' value='$sid'>\n";
-		echo "\t\t<tr>\n";
-		echo "\t\t\t<td align='center' valign='middle'>\n";
-		echo "\t\t\t"._TOKEN.": <input class='text' type='text' name='token'>\n";
-		echo "\t\t\t<input class='submit' type='submit' value='"._CONTINUE."'>\n";
-		echo "\t\t\t</td>\n";
-		echo "\t\t</tr>\n";
-		echo "\t</form>\n";
-		echo "\t</table>\n";
-		echo "\t<br />&nbsp;</center>\n";
+		echo "\t<center><br />\n"
+			."\t"._NOTOKEN1."<br /><br />\n"
+			."\t"._NOTOKEN2."<br />&nbsp;\n"
+			."\t<table align='center'>"
+			."\t<form method='get' action='{$_SERVER['PHP_SELF']}'>\n"
+			."\t<input type='hidden' name='sid' value='$sid'>\n"
+			."\t\t<tr>\n"
+			."\t\t\t<td align='center' valign='middle'>\n"
+			."\t\t\t"
+			._TOKEN.": <input class='text' type='text' name='token'>\n"
+			."\t\t\t<input class='submit' type='submit' value='"
+			._CONTINUE."'>\n"
+			."\t\t\t</td>\n"
+			."\t\t</tr>\n"
+			."\t</form>\n"
+			."\t</table>\n"
+			."\t<br />&nbsp;</center>\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -541,10 +543,12 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			{
 			echo "\t".templatereplace($op);
 			}
-		echo "\t<center><br />\n";
-		echo "\t"._NOQUESTIONS."<br /><br />\n";
-		echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
-		echo "\t<a href='javascript:window.close()'>"._CLOSEWIN."</a><br />&nbsp;\n";
+		echo "\t<center><br />\n"
+			."\t"._NOQUESTIONS."<br /><br />\n"
+			."\t"._FURTHERINFO
+			." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n"
+			."\t<a href='javascript:window.close()'>"
+			._CLOSEWIN."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
