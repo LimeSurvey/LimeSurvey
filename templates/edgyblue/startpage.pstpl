@@ -94,6 +94,11 @@
 	{
 	background-color: #FFEFCA;
 	}
+.question
+	{
+	font-family: verdana;
+	font-size: 10;
+	}
 </style>
 </head>
 <body bgcolor='#FF9933' link='#0000FF' vlink='#800080' alink='#FF0000'><font face='verdana' size='2'>
