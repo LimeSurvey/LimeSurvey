@@ -632,7 +632,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 						}
 					if (!$_SESSION[$conditionfieldname]) {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
 					if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
-					echo "!- $conditionfieldname -- ". $currentvalue . "---". $conditionvalue."-- <br />";
+					//echo "!- $conditionfieldname -- ". $currentvalue . "---". $conditionvalue."-- <br />";
 					}
 				if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
 				}
@@ -644,7 +644,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			else
 				{
 				//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
-				echo "<!-- DEBUG - CONDITIONS ARE NOT MET IN THIS ROUND -->\n";
+				//echo "<!-- DEBUG - CONDITIONS ARE NOT MET IN THIS ROUND -->\n";
 				if ($move == " next >> ")
 					{
 					$currentquestion++;
@@ -663,7 +663,6 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 
 					if ($_SESSION['step'] > $_SESSION['totalsteps']) 
 						{
-						//echo "OhMyGod!";
 						//The last question was conditional and has been skipped. Move into panic mode.
 						$conditionforthisquestion="N";
 						last();
@@ -686,7 +685,6 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 				}
 			}
 
-//echo "--- ".$ia[1]." ---<br />";
 include("qanda.php");
 
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
