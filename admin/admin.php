@@ -177,13 +177,13 @@ echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
 
 function helpscreen()
 	{
-	global $homeurl, $defaultlang;
+	global $homeurl, $langdir;
 	global $sid, $gid, $qid;
 	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n";
 	echo "\t\t\t<table width='100%'><tr><td><table width='100%' height='100%' align='center' cellspacing='0'>\n";
 	echo "\t\t\t\t<tr>\n";
 	echo "\t\t\t\t\t<td bgcolor='#555555' height='8'>\n";
-	echo "\t\t\t\t\t\t<font color='white' size='1'><b>Help\n";
+	echo "\t\t\t\t\t\t<font color='white' size='1'><b>"._HELP."\n";
 	echo "\t\t\t\t\t</td>\n";
 	echo "\t\t\t\t</tr>\n";
 	echo "\t\t\t\t<tr>\n";
