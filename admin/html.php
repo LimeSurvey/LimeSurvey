@@ -307,71 +307,72 @@ if ($action == "copyquestion")
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
-		$editquestion = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-		$editquestion .= "<B>$setfont<FONT COLOR='WHITE'>Copy Question $qid (Code {$eqrow['title']})</B><BR>Note: You MUST enter a new Question Code!</TD></TR>\n";
-		$editquestion .= "<TR><FORM ACTION='$scriptname' NAME='editquestion' >\n";
-		$editquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Question Code:</TD>";
-		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='title' VALUE=''></TD></TR>\n";
-		$editquestion .= "<TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Question:</TD>";
-		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='question'>{$eqrow['question']}</TEXTAREA></TD></TR>\n";
-		$editquestion .= "<TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Help:</TD>";
-		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='help'>{$eqrow['help']}</TEXTAREA></TD></TR>\n";
-		$editquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Type:</TD>";
-		$editquestion .= "<TD><SELECT $slstyle NAME='type'>\n";
+		$editquestion = "<table width='100%' border='0'>";
+		$editquestion .= "\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+		$editquestion .= "\t\t<b>$setfont<font color='white'>Copy Question $qid (Code {$eqrow['title']})</b><br />Note: You MUST enter a new Question Code!</font></font>\n\t</td></tr>\n";
+		$editquestion .= "\t<tr><form action='$scriptname' name='editquestion' >\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>";
+		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value=''></td>\n\t</tr>\n";
+		$editquestion .= "\t<tr>\n\t\t<td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n";
+		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='question'>{$eqrow['question']}</textarea></td></tr>\n";
+		$editquestion .= "\t<tr>\n\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
+		$editquestion .= "\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td></tr>\n";
+		$editquestion .= "\t<tr>\n\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
+		$editquestion .= "\t\t<td><select $slstyle name='type'>\n";
 		$editquestion .= getqtypelist($eqrow['type']);
-		$editquestion .= "</SELECT></TD></TR>\n";
+		$editquestion .= "\n\t\t</select></td></tr>\n";
 		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' NAME='type' VALUE='{$eqrow['type']}'></TD></TR>\n";
-		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Group?</tD>";
-		$editquestion .= "<TD><SELECT $slstyle NAME='gid'>\n";
+		$editquestion .= "\t<tr><td align='right'>$setfont<b>Group?</b></font></td>\n";
+		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
 		$editquestion .= getgrouplist2($eqrow['gid']);
-		$editquestion .= "</SELECT></TD></TR>\n";
-		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Other?</TD>";
-		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='{$eqrow['other']}' NAME='other'></TD></TR>\n";
-		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Copy answers:</TD>";
-		$editquestion .= "<TD>$setfont<INPUT TYPE='checkbox' CHECKED NAME='copyanswers' VALUE='Y'></TD></TR>\n";
-		$editquestion .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Question'></TD>";
-		$editquestion .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='copynewquestion'>\n";
-		$editquestion .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-		$editquestion .= "<INPUT TYPE='HIDDEN' NAME='oldqid' VALUE='$qid'>\n";
-		$editquestion .= "</FORM></TR>\n";
-		$editquestion .= "</TABLE>\n";
+		$editquestion .= "\n\t\t</select></td></tr>\n";
+		$editquestion .= "\t<tr><td align='right'>$setfont<b>Other?</b></font></td>\n";
+		$editquestion .= "\t\t<td><input type='text' size='1' value='{$eqrow['other']}' name='other'></td></tr>\n";
+		$editquestion .= "\t<tr><td align='right'>$setfont<b>Copy answers:</b></font></td>\n";
+		$editquestion .= "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y'></font></td></tr>\n";
+		$editquestion .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Question'></td>\n";
+		$editquestion .= "\t<input type='hidden' name='action' value='copynewquestion'>\n";
+		$editquestion .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+		$editquestion .= "\t<input type='hidden' name='oldqid' value='$qid'>\n";
+		$editquestion .= "\t</form></tr>\n";
+		$editquestion .= "</table>\n";
 		}
 
 	}
 
 if ($action == "addanswer")
 	{
-	$newanswer = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-	$newanswer .= "<B>$setfont<FONT COLOR='WHITE'>Create New Answer for Survey ID($sid), Group ID($gid), Question ID($qid) </B></TD></TR>\n";
-	$newanswer .= "<TR><FORM ACTION='$scriptname' NAME='addnewanswer' ACTION='' METHOD='POST'>\n";
-	$newanswer .= "<TD ALIGN='RIGHT'>$setfont<B>Answer Code:</TD>";
-	$newanswer .= "<TD><INPUT TYPE='TEXT' SIZE='5' NAME='code'></TD></TR>\n";
-	$newanswer .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Answer:</tD>";
-	$newanswer .= "<TD><INPUT TYPE='TEXT' NAME='answer'></TD></TR>\n";
-	$newanswer .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Default?</TD>";
-	$newanswer .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='N' NAME='default'></TD></TR>\n";
-	$newanswer .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Add Answer'></TD></TR>\n";
-	$newanswer .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='insertnewanswer'>\n";
-	$newanswer .= "<INPUT TYPE='HIDDEN' NAME='qid' VALUE='$qid'>\n";
-	$newanswer .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	$newanswer .= "<INPUT TYPE='HIDDEN' NAME='gid' VALUE='$gid'>\n";
-	$newanswer .= "</FORM></TABLE>\n";
+	$newanswer = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+	$newanswer .= "\t\t<b>$setfont<font color='white'>Create New Answer for Survey ID($sid), Group ID($gid), Question ID($qid)</b></font></font></td></tr>\n";
+	$newanswer .= "\t<tr><form action='$scriptname' name='addnewanswer' method='post'>\n";
+	$newanswer .= "\t\t<td align='right'>$setfont<b>Answer Code:</b></font></td>\n";
+	$newanswer .= "\t\t<td><input type='text' size='5' name='code'></td></tr>\n";
+	$newanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
+	$newanswer .= "\t\t<td><input type='text' name='answer'></td></tr>\n";
+	$newanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
+	$newanswer .= "\t\t<td><input type='text' size='1' value='N' name='default'></td></tr>\n";
+	$newanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Add Answer'></td></tr>\n";
+	$newanswer .= "\t<input type='hidden' name='action' value='insertnewanswer'>\n";
+	$newanswer .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+	$newanswer .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+	$newanswer .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+	$newanswer .= "</form></table>\n";
 	} 
 
 if ($action == "addgroup")
 	{
-	$newgroup = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-	$newgroup .= "<B>$setfont<FONT COLOR='WHITE'>Create New Group for Survey ID($sid) </B></TD></TR>\n";
-	$newgroup .= "<TR><FORM ACTION='$scriptname' NAME='addnewgroup' ACTION='' METHOD='POST'>\n";
-	$newgroup .= "<TD ALIGN='RIGHT'>$setfont<B>Group Name:</TD>";
-	$newgroup .= "<TD><INPUT TYPE='TEXT' SIZE='40' NAME='group_name'></TD></TR>\n";
-	$newgroup .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Group Description:</B>(optional)</TD>";
-	$newgroup .= "<TD><TEXTAREA COLS='40' ROWS='4' NAME='description'></TEXTAREA></TD></TR>\n";
-	$newgroup .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Create New Group'></TD>";
-	$newgroup .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='insertnewgroup'>\n";
-	$newgroup .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	$newgroup .= "</FORM></TR>\n";
-	$newgroup .= "</TABLE>\n";
+	$newgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+	$newgroup .= "\t\t<b>$setfont<font color='white'>Create New Group for Survey ID($sid)</font></font></b></td></tr>\n";
+	$newgroup .= "\t<tr><form action='$scriptname' name='addnewgroup' method='post'>\n";
+	$newgroup .= "\t\t<td align='right'>$setfont<b>Group Name:</b></font></td>\n";
+	$newgroup .= "\t\t<td><input type='text' size='40' name='group_name'></td></tr>\n";
+	$newgroup .= "\t<tr><td align='right'>$setfont<b>Group Description:</b>(optional)</font></td>\n";
+	$newgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'></textarea></td></tr>\n";
+	$newgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create New Group'></td>\n";
+	$newgroup .= "\t<input type='hidden' name='action' value='insertnewgroup'>\n";
+	$newgroup .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+	$newgroup .= "\t</form></tr>\n";
+	$newgroup .= "</table>\n";
 	}
 
 if ($action == "editgroup")
@@ -380,20 +381,20 @@ if ($action == "editgroup")
 	$egresult = mysql_query($egquery);
 	while ($esrow = mysql_fetch_array($egresult))	
 		{
-		$editgroup = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-		$editgroup .= "<B>$setfont<FONT COLOR='WHITE'>Edit Group for Survey ID($sid) </B></TD></TR>\n";
-		$editgroup .= "<TR><FORM ACTION='$scriptname' NAME='editgroup' METHOD='POST'>\n";
-		$editgroup .= "<TD ALIGN='RIGHT' WIDTH='20%'>$setfont<B>Group Name:</TD>";
-		$editgroup .= "<TD><INPUT TYPE='TEXT' SIZE='40' NAME='group_name' value='{$esrow['group_name']}'></TD></TR>\n";
-		$editgroup .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Description:</B>(optional)</TD>";
-		$editgroup .= "<TD><TEXTAREA COLS='40' ROWS='4' NAME='description'>{$esrow['description']}</TEXTAREA></TD></TR>\n";
-		$editgroup .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Group'></TD>";
-		$editgroup .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='updategroup'>\n";
-		$editgroup .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-		$editgroup .= "<INPUT TYPE='HIDDEN' NAME='gid' VALUE='$gid'>\n";
-		$editgroup .= "</FORM></TR>\n";
-		$editgroup .= "</TABLE>\n";
-		}	
+		$editgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+		$editgroup .= "\t\t<b>$setfont<font color='white'>Edit Group for Survey ID($sid)</font></font></b></td></tr>\n";
+		$editgroup .= "\t<tr><form action='$scriptname' name='editgroup' method='post'>\n";
+		$editgroup .= "\t\t<td align='right' width='20%'>$setfont<b>Group Name:</b></font></td>\n";
+		$editgroup .= "\t\t<td><input type='text' size='40' name='group_name' value='{$esrow['group_name']}'></td></tr>\n";
+		$editgroup .= "\t<tr><td align='right'>$setfont<b>Description:</b>(optional)</font></td>\n";
+		$editgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n";
+		$editgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Group'></td>\n";
+		$editgroup .= "\t<input type='hidden' name='action' value='updategroup'>\n";
+		$editgroup .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+		$editgroup .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+		$editgroup .= "\t</form></tr>\n";
+		$editgroup .= "</table>\n";
+		}
 	}
 	
 if ($action == "editquestion")
@@ -402,34 +403,31 @@ if ($action == "editquestion")
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
-		$editquestion = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-		$editquestion .= "<B>$setfont<FONT COLOR='WHITE'>Edit Question $qid</B></TD></TR>\n";
-		$editquestion .= "<TR><FORM ACTION='$scriptname' NAME='editquestion' >\n";
-		$editquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Question Code:</TD>";
-		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='title' VALUE='{$eqrow['title']}'></TD></TR>\n";
-		$editquestion .= "<TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Question:</TD>";
-		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='question'>{$eqrow['question']}</TEXTAREA></TD></TR>\n";
-		$editquestion .= "<TD ALIGN='RIGHT' VALIGN='TOP'>$setfont<B>Help:</TD>";
-		$editquestion .= "<TD><TEXTAREA COLS='35' ROWS='4' NAME='help'>{$eqrow['help']}</TEXTAREA></TD></TR>\n";
-		$editquestion .= "<TD ALIGN='RIGHT'>$setfont<B>Type:</TD>";
-		$editquestion .= "<TD><SELECT $slstyle NAME='type'>\n";
+		$editquestion = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+		$editquestion .= "\t\t<b>$setfont<font color='white'>Edit Question $qid</b></font></font></td></tr>\n";
+		$editquestion .= "\t<tr><form action='$scriptname' name='editquestion' method='post'>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
+		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value='{$eqrow['title']}'></td></tr>\n";
+		$editquestion .= "\t<tr>\t\t<td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n";
+		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='question'>{$eqrow['question']}</textarea></td></tr>\n";
+		$editquestion .= "\t<tr>\n\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
+		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td></tr>\n";
+		$editquestion .= "\t<tr>\n\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
+		$editquestion .= "\t\t<td><select $slstyle name='type'>\n";
 		$editquestion .= getqtypelist($eqrow['type']);
-		$editquestion .= "</SELECT></TD></TR>\n";
-		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' NAME='type' VALUE='{$eqrow['type']}'></TD></TR>\n";
-		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Group?</tD>";
-		$editquestion .= "<TD><SELECT $slstyle NAME='gid'>\n";
+		$editquestion .= "\t\t</select></td></tr>\n";
+		$editquestion .= "\t<tr><td align='right'>$setfont<b>Group?</b></font></td>\n";
+		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
 		$editquestion .= getgrouplist2($eqrow['gid']);
-		$editquestion .= "</SELECT></TD></TR>\n";
-		$editquestion .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Other?</TD>";
-		$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='{$eqrow['other']}' NAME='other'></TD></TR>\n";
-		//$editquestion .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='{$eqrow['gid']}' NAME='gid'></TD></TR>\n";
-		$editquestion .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Question'></TD>";
-		$editquestion .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='updatequestion'>\n";
-		$editquestion .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-		//$editquestion .= "<INPUT TYPE='HIDDEN' NAME='gid' VALUE='$gid'>\n";
-		$editquestion .= "<INPUT TYPE='HIDDEN' NAME='qid' VALUE='$qid'>\n";
-		$editquestion .= "</FORM></TR>\n";
-		$editquestion .= "</TABLE>\n";
+		$editquestion .= "\t\t</select></td></tr>\n";
+		$editquestion .= "\t<tr><td align='right'>$setfont<b>Other?</b></font></td>\n";
+		$editquestion .= "\t\t<td><input type='text' size='1' value='{$eqrow['other']}' name='other'></td></tr>\n";
+		$editquestion .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Question'></td>\n";
+		$editquestion .= "\t<input type='hidden' name='action' value='updatequestion'>\n";
+		$editquestion .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+		$editquestion .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+		$editquestion .= "\t</form></tr>\n";
+		$editquestion .= "</table>\n";
 		}
 	}
 
@@ -439,24 +437,23 @@ if ($action == "editanswer")
 	$earesult = mysql_query($eaquery);
 	while ($earow = mysql_fetch_array($earesult))
 		{
-		$editanswer = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-		$editanswer .= "<B>$setfont<FONT COLOR='WHITE'>Edit Answer $qid, $code</B></TD></TR>\n";
-		$editanswer .= "<TR><FORM ACTION='$scriptname' NAME='editanswer' METHOD='POST'>\n";
-		$editanswer .= "<TD ALIGN='RIGHT'>$setfont<B>Answer Code:</TD>";
-		$editanswer .= "<TD><INPUT TYPE='TEXT' SIZE='5' VALUE='{$earow['code']}' NAME='code'></TD></TR>\n";
-		$editanswer .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Answer:</TD>";
-		$editanswer .= "<TD><INPUT TYPE='TEXT' VALUE='{$earow['answer']}' NAME='answer'></TD></TR>\n";
-		$editanswer .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Default?</TD>";
-		$editanswer .= "<TD><INPUT TYPE='TEXT' SIZE='1' VALUE='{$earow['default']}' NAME='default'></TD></TR>\n";
-		$editanswer .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Answer'></TD>";
-		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='updateanswer'>\n";
-		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='gid' VALUE='$gid'>\n";
-		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='qid' VALUE='$qid'>\n";
-		$editanswer .= "<INPUT TYPE='HIDDEN' NAME='old_code' VALUE='{$earow['code']}'>\n";
-		$editanswer .= "</FORM></TR>\n"; 
-		$editanswer .= "</TABLE>\n";
-				
+		$editanswer = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+		$editanswer .= "\t\t<b>$setfont<font color='WHITE'>Edit Answer $qid, $code</b></font></font></td></tr>\n";
+		$editanswer .= "\t<tr><form action='$scriptname' name='editanswer' method='post'>\n";
+		$editanswer .= "\t\t<td align='right'>$setfont<b>Answer Code:</b></font></td>\n";
+		$editanswer .= "\t\t<td><input type='text' size='5' value='{$earow['code']}' name='code'></td></tr>\n";
+		$editanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
+		$editanswer .= "\t\t<td><input type='text' value='{$earow['answer']}' name='answer'></td></tr>\n";
+		$editanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
+		$editanswer .= "\t\t<td><input type='text' size='1' value='{$earow['default']}' name='default'></td></tr>\n";
+		$editanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Answer'></td>\n";
+		$editanswer .= "\t<input type='hidden' name='action' value='updateanswer'>\n";
+		$editanswer .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+		$editanswer .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+		$editanswer .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+		$editanswer .= "\t<input type='hidden' name='old_code' value='{$earow['code']}'>\n";
+		$editanswer .= "\t</form></tr>\n"; 
+		$editanswer .= "</table>\n";
 		}
 	}
 
@@ -466,60 +463,59 @@ if ($action == "editsurvey")
 	$esresult = mysql_query($esquery);
 	while ($esrow = mysql_fetch_array($esresult))	
 		{
-		$editsurvey = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-		$editsurvey .= "<B>$setfont<FONT COLOR='WHITE'>Create New Survey </B></TD></TR>\n";
-		$editsurvey .= "<TR><FORM NAME='addnewsurvey' ACTION='$scriptname' METHOD='POST'>\n";
-		$editsurvey .= "<TD ALIGN='RIGHT'><B>$setfont Short Title:</TD>";
-		$editsurvey .= "<TD><INPUT TYPE='text' SIZE='20' NAME='short_title' VALUE='{$esrow['short_title']}'></tD></TR>\n";
-		$editsurvey .= "<TR><TD ALIGN='RIGHT'><B>$setfont Description:</TD>";
-		$editsurvey .= "<TD><TEXTAREA COLS='35' ROWS='5' NAME='description'>{$esrow['description']}</TEXTAREA></TD></TR>\n";
-		$editsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Welcome Message:</TD>";
-		$editsurvey .= "<TD><TEXTAREA COLS='35' ROWS='5' NAME='welcome'>".str_replace("<BR>", "\n", $esrow['welcome'])."</TEXTAREA></TD></TR>\n";
-		$editsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Administrator</TD>";
-		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='admin' VALUE='{$esrow['admin']}'></TD></TR>\n";
-		$editsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Admin Email</TD>";
-		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='adminemail' VALUE='{$esrow['adminemail']}'></TD></TR>\n";
-		$editsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Expiry Date</TD>";
-		$editsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='10' NAME='expires' VALUE='{$esrow['expires']}'></TD></TR>\n";
-		$editsurvey .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Update Survey'></TD>";
-		$editsurvey .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='updatesurvey'>\n";
-		$editsurvey .= "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='{$esrow['sid']}'>\n";
-		$editsurvey .= "</FORM></TR>\n";	
-		$editsurvey .= "</TABLE>\n";
+		$editsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>";
+		$editsurvey .= "\t\t<b>$setfont<font color='white'>Create New Survey</font></font></b></td></tr>\n";
+		$editsurvey .= "\t<tr><form name='addnewsurvey' action='$scriptname' method='post'>\n";
+		$editsurvey .= "\t\t<td align='right'><b>$setfont Short Title:</b></font></td>\n";
+		$editsurvey .= "\t\t<td><input type='text' size='20' name='short_title' value='{$esrow['short_title']}'></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'><b>$setfont Description:</font></b></td>\n";
+		$editsurvey .= "\t\t<td><textarea cols='35' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Welcome Message:</b></font></td>\n";
+		$editsurvey .= "\t\t<td><textarea cols='35' rows='5' name='welcome'>".str_replace("<br />", "\n", $esrow['welcome'])."</textarea></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Administrator</b></font></td>\n";
+		$editsurvey .= "\t\t<td><input type='text' size='20' name='admin' value='{$esrow['admin']}'></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email</b></font></td>\n";
+		$editsurvey .= "\t\t<td><input type='text' size='20' name='adminemail' value='{$esrow['adminemail']}'></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date</b></font></td>\n";
+		$editsurvey .= "\t\t<td><input type='text' size='10' name='expires' value='{$esrow['expires']}'></td></tr>\n";
+		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Survey'></td>\n";
+		$editsurvey .= "\t<input type='hidden' name='action' value='updatesurvey'>\n";
+		$editsurvey .= "\t<input type='hidden' name='sid' value='{$esrow['sid']}'>\n";
+		$editsurvey .= "\t</form></tr>\n";	
+		$editsurvey .= "</table>\n";
 		}
 	}
 	
 if ($action == "newsurvey")
 	{
-	$newsurvey = "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-	$newsurvey .= "<B>$setfont<FONT COLOR='WHITE'>Create New Survey </B></TD></TR>\n";
-	$newsurvey .= "<TR><FORM NAME='addnewsurvey' ACTION='$scriptname' METHOD='POST'>\n";
-	$newsurvey .= "<TD ALIGN='RIGHT'><B>$setfont Short Title:</TD>";
-	$newsurvey .= "<TD><INPUT TYPE='text' SIZE='20' NAME='short_title'></tD></TR>\n";
-	$newsurvey .= "<TR><TD ALIGN='RIGHT'><B>$setfont Description:</TD>";
-	$newsurvey .= "<TD><TEXTAREA COLS='35' ROWS='5' NAME='description'></TEXTAREA></TD></TR>\n";
-	$newsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Welcome Message:</TD>";
-	$newsurvey .= "<TD><TEXTAREA COLS='35' ROWS='5' NAME='welcome'></TEXTAREA></TD></TR>\n";
-	$newsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Administrator</TD>";
-	$newsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='admin'></TD></TR>\n";
-	$newsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Admin Email</TD>";
-	$newsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='20' NAME='adminemail'></TD></TR>\n";
-	$newsurvey .= "<TR><TD ALIGN='RIGHT'>$setfont<B>Expiry Date</TD>";
-	$newsurvey .= "<TD><INPUT TYPE='TEXT' SIZE='10' NAME='expires'></TD></TR>\n";
-	$newsurvey .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Create Survey'></TD>";
-	$newsurvey .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='insertnewsurvey'>\n";
-	$newsurvey .= "</FORM></TR>\n";	
-	$newsurvey .= "</TABLE>\n";
-	$newsurvey .= "<CENTER><B>OR</B></CENTER>";
-	$newsurvey .= "<TABLE WIDTH='100%' BORDER='0'><TR><TD COLSPAN='2' BGCOLOR='BLACK' ALIGN='CENTER'>";
-	$newsurvey .= "<B>$setfont<FONT COLOR='WHITE'>Import Survey</B></TD></TR>\n<TR>";
-	//$newsurvey .= "<FORM ENCTYPE='multipart/form-data' NAME='importsurvey' ACTION='importsurvey.php' METHOD='POST'>\n";
-	$newsurvey .= "<FORM ENCTYPE='multipart/form-data' NAME='importsurvey' ACTION='$scriptname' METHOD='POST'>\n";
-	$newsurvey .= "<TD ALIGN='RIGHT'>$setfont<B>Select SQL File:</TD>";
-	$newsurvey .= "<TD><INPUT NAME=\"the_file\" TYPE=\"file\" SIZE=\"35\"></TD></TR>\n";
-	$newsurvey .= "<TR><TD COLSPAN='2' ALIGN='CENTER'><INPUT TYPE='SUBMIT' $btstyle VALUE='Import Survey'></TD>";
-	$newsurvey .= "<INPUT TYPE='HIDDEN' NAME='action' VALUE='importsurvey'>\n";
-	$newsurvey .= "</TR></FORM></TABLE>\n";
+	$newsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+	$newsurvey .= "\t\t<b>$setfont<font color='white'>Create New Survey</font></font></b></td></tr>\n";
+	$newsurvey .= "\t<TR><FORM NAME='addnewsurvey' ACTION='$scriptname' METHOD='POST'>\n";
+	$newsurvey .= "\t\t<td align='right'><b>$setfont Short Title:</font></b></td>\n";
+	$newsurvey .= "\t\t<td><input type='text' size='20' name='short_title'></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'><b>$setfont Description:</b></td>\n";
+	$newsurvey .= "\t\t<td><textarea cols='35' rows='5' name='description'></textarea></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Welcome Message:</b></font></td>\n";
+	$newsurvey .= "\t\t<td><textarea cols='35' rows='5' name='welcome'></textarea></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Administrator</b></font></td>\n";
+	$newsurvey .= "\t\t<td><input type='text' size='20' name='admin'></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email</b></font></td>\n";
+	$newsurvey .= "\t\t<td><input type='text' size='20' name='adminemail'></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date</b></font></td>\n";
+	$newsurvey .= "\t\t<td><input type='text' size='10' name='expires'></td></tr>\n";
+	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create Survey'></td>\n";
+	$newsurvey .= "\t<input type='hidden' name='action' value='insertnewsurvey'>\n";
+	$newsurvey .= "\t</form></tr>\n";	
+	$newsurvey .= "</table>\n";
+	$newsurvey .= "<center><b>OR</b></center>\n";
+	$newsurvey .= "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+	$newsurvey .= "\t\t<b>$setfont<font color='white'>Import Survey</font></font></b></td></tr>\n\t<tr>";
+	$newsurvey .= "\t<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n";
+	$newsurvey .= "\t\t<td align='right'>$setfont<b>Select SQL File:</b></font></td>\n";
+	$newsurvey .= "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n";
+	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Import Survey'></TD>\n";
+	$newsurvey .= "\t<input type='hidden' name='action' value='importsurvey'>\n";
+	$newsurvey .= "\t</tr></form>\n</table>\n";
 	
 	}
 ?>
