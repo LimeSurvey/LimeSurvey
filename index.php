@@ -270,10 +270,10 @@ function templatereplace($line)
 			{
 			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
 			}
-		elseif ($surveyformat == "A")
-			{
-			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
-			}
+		//elseif ($surveyformat == "A")
+		//	{
+		//	$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
+		//	}
 		}
 	
 	$line=str_replace("{SURVEYNAME}", $surveyname, $line);
@@ -320,5 +320,69 @@ function makegraph($thisstep, $total)
 		    . "</table>\n"
 		    . "</td></tr>\n</table>\n";
 	return $graph;
+	}
+
+function checkconfield($value)
+	{
+	global $dbprefix;
+	foreach ($_SESSION['fieldarray'] as $sfa)
+		{
+		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value])
+			{
+			$currentcfield="";
+			$query = "SELECT {$dbprefix}conditions.*, {$dbprefix}questions.type "
+				   . "FROM {$dbprefix}conditions, {$dbprefix}questions "
+				   . "WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+				   . "AND {$dbprefix}conditions.qid=$sfa[0] "
+				   . "ORDER BY {$dbprefix}conditions.qid";
+			$result=mysql_query($query) or die($query."<br />".mysql_error());
+			while($rows = mysql_fetch_array($result))
+				{
+				if($rows['type'] == "M" || $rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "P")
+					{
+					$matchfield=$rows['cfieldname'].$rows['value'];
+					$matchvalue="Y";
+					}
+				else
+					{
+					$matchfield=$rows['cfieldname'];
+					$matchvalue=$rows['value'];
+					}
+				$cqval[]=array("cfieldname"=>$rows['cfieldname'],
+							 "value"=>$rows['value'],
+							 "type"=>$rows['type'],
+							 "matchfield"=>$matchfield,
+							 "matchvalue"=>$matchvalue);
+				if ($rows['cfieldname'] != $currentcfield)
+					{
+					$container[]=$rows['cfieldname'];
+					}
+				$currentcfield=$rows['cfieldname'];
+				}
+			//At least one match must be found for each "$container"
+			$total=0;
+			foreach($container as $con)
+				{
+				$addon=0;
+				foreach($cqval as $cqv)
+					{//Go through each condition
+					if($cqv['cfieldname'] == $con)
+						{
+						if($_SESSION[$cqv['matchfield']] == $cqv['matchvalue'])
+							{//plug succesful matches into appropriate container
+							$addon=1;
+							}
+						}
+					}
+				if($addon==1){$total++;}
+				}
+			if($total<count($container))
+				{
+				$_SESSION[$value]="";
+				}
+			unset($cqval);
+			unset($container);
+			}
+		}
 	}
 ?>

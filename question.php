@@ -180,6 +180,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 		foreach ($_SESSION['insertarray'] as $value)
 			{
 			$col_name .= "`, `" . $value; 
+			if($deletenonvalues==1) {checkconfield($value);}
 			if (isset($_SESSION[$value]))
 				{
 				if (get_magic_quotes_gpc() == "0")
@@ -692,10 +693,6 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
 		if (returnglobal('move') == " "._NEXT." >> ")
 			{
-			if (isset($_SESSION[$_SESSION['fieldarray'][$currentquestion][1]])) //Removes answers to conditional questions that are no longer applicable
-				{
-				unset($_SESSION[$_SESSION['fieldarray'][$currentquestion][1]]);
-				}
 			$currentquestion++;
 			$ia=$_SESSION['fieldarray'][$currentquestion];
 			$_SESSION['step']++;

@@ -197,7 +197,8 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			{
 			if (!isset($col_name)) {$col_name="";}
 			if (!isset($values)) {$values="";}
-			$col_name .= "`, `" . $value; 
+			$col_name .= "`, `" . $value;
+			if($deletenonvalues==1) {checkconfield($value);}
 			if (isset($_SESSION[$value]))
 				{
 				if (get_magic_quotes_gpc() == "0")
