@@ -119,14 +119,17 @@ foreach ($qrows as $qrow)
 		}
 	}
 
-foreach ($questionlist as $ql)
+if (is_array($questionlist))
 	{
-	$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql";
-	$result=mysql_query($query) or die("Couldn't get question $qid");
-	$thiscount=mysql_num_rows($result);
-	while ($myrows=mysql_fetch_array($result)) 
+	foreach ($questionlist as $ql)
 		{
-		$theserows[]=array("qid"=>$myrows['qid'], "sid"=>$myrows['sid'], "gid"=>$myrows['gid'], "question"=>$myrows['question'], "type"=>$myrows['type'], "lid"=>$myrows['lid'], "title"=>$myrows['title']);
+		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql";
+		$result=mysql_query($query) or die("Couldn't get question $qid");
+		$thiscount=mysql_num_rows($result);
+		while ($myrows=mysql_fetch_array($result)) 
+			{
+			$theserows[]=array("qid"=>$myrows['qid'], "sid"=>$myrows['sid'], "gid"=>$myrows['gid'], "question"=>$myrows['question'], "type"=>$myrows['type'], "lid"=>$myrows['lid'], "title"=>$myrows['title']);
+			}
 		}
 	}
 
