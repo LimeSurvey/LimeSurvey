@@ -214,7 +214,7 @@ define("_RANK", "Ordenar/Fila");
 define("_STEXT", "Texto corto");
 define("_LTEXT", "Texto largo");
 define("_YESNO", "Si/No");
-define("_ARR5,  "Arreglo (Elegir entre 5 Puntos)");
+define("_ARR5",  "Arreglo (Elegir entre 5 Puntos)");
 define("_ARR10", "Arreglo (Elegir entre 10 Puntos)");
 define("_ARRYN", "Arreglo (Si/No/Incierto)");
 define("_ARRMV", "Arreglo (Ampliar, Mantener, Reducir)");
