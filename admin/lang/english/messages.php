@@ -215,7 +215,8 @@ define("_LL_ACTION", "Action"); //New with 098rc3
 define("_5PT", "5 Point Choice");
 define("_DATE", "Date");
 define("_GENDER", "Gender");
-define("_LIST", "List");
+define("_LIST", "List (Radio)"); //Changed with 0.99dev01
+define("_LIST_DROPDOWN", "List (Dropdown)"); //New with 0.99dev01
 define("_LISTWC", "List With Comment");
 define("_MULTO", "Multiple Options");
 define("_MULTOC", "Multiple Options with Comments");

@@ -252,7 +252,8 @@ define("_LL_ACTION", "Action"); //New with 098rc3
 define("_5PT", "Alignement de 5 Boutons Radio");
 define("_DATE", "Date");
 define("_GENDER", "Genre");
-define("_LIST", "Liste (Bouton Radio)");
+define("_LIST", "Liste (Radio)"); //Changed with 0.99dev01
+define("_LIST_DROPDOWN", "Liste (Dropdown)"); //New with 0.99dev01
 define("_LISTWC", "Liste déroulante avec Commentaire");
 define("_MULTO", "Case à Cocher");
 define("_MULTOC", "Case à Cocher avec Commentaires");

@@ -590,7 +590,7 @@ if ($qid)
 						  . _Q_CONDITIONS_BT."' border='0' hspace='0' align='left' name='SetQuestionConditions' "
 						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n";
-		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
+		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
 			$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/answers.gif' title='"
 							  . _Q_ANSWERS_BT."' border='0' hspace='0' align='left' name='ViewAnswers' "
@@ -640,7 +640,7 @@ if ($qid)
 							  . "onClick=\"window.open('labels.php?lid={$qrrow['lid']}', '_blank')\">\n";
 			}
 		$questionsummary .="</font></td></tr>\n";
-		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
+		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 			{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td>"
 							 . "<font face='verdana' size='1' color='green'>"
@@ -706,7 +706,7 @@ if (returnglobal('viewanswer'))
 		if ($cdrow['sortorder'] || $cdrow['sortorder'] == "0") {$position=$cdrow['sortorder'];}
 		$vasummary .= "\t<tr><form action='".$scriptname."' method='post'>\n";
 		$vasummary .= "\t\t<td align='center'>";
-		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
+		if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
 			{
 			$vasummary .="<input name='code' type='text' $btstyle value=\"{$cdrow['code']}\" maxlength='5' size='5' "
 						."onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\""
@@ -722,7 +722,7 @@ if (returnglobal('viewanswer'))
 					. "type='text' $btstyle value=\"{$cdrow['answer']}\" size='50'></td>\n"
 					. "\t\t<input name='sortorder' type='hidden' $btstyle value=\"$position\">"
 					. "\t\t<td align='center'>";
-		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
+		if (($activated == "Y" && ($qtype == "L" || $qtype =="!")) || ($activated == "N"))
 			{
 			$vasummary .= "\t\t\t<select name='default' $btstyle>\n"
 						. "\t\t\t\t<option value='Y'";
@@ -738,7 +738,7 @@ if (returnglobal('viewanswer'))
 			$vasummary .= "$setfont<font size='1'>{$cdrow['default_value']}"
 						. "<input type='hidden' name='default' value='{$cdrow['default_value']}'>";
 			}
-		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
+		if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
 			{
 			$vasummary .= "\t\t<td align='center'>\n"
 						. "\t\t\t<input name='ansaction' $btstyle type='submit' value='"._AL_SAVE."'>"
@@ -767,7 +767,7 @@ if (returnglobal('viewanswer'))
 					. "\t</form></tr>\n";
 		$position++;
 		}
-	if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
+	if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
 		{
 		$position=sprintf("%05d", $position);
 		$vasummary .= "\t<tr><form action='".$scriptname."' method='post'>\n"
@@ -1631,7 +1631,7 @@ function questionjavascript($type)
 				 . "<!--\n"
 				 . "function OtherSelection(QuestionType)\n"
 				 . "\t{\n"
-				 . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L')\n"
+				 . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"

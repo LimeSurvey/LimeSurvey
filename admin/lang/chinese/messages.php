@@ -215,7 +215,8 @@ define("_LL_ACTION", "管理動作"); //New with 098rc3
 define("_5PT", "5 項式選擇");
 define("_DATE", "日期");
 define("_GENDER", "性別");
-define("_LIST", "列表");
+define("_LIST", "列表 (Radio)"); //Changed with 0.99dev01
+define("_LIST_DROPDOWN", "列表 (Dropdown)"); //New with 0.99dev01
 define("_LISTWC", "列表附上評語功能");
 define("_MULTO", "多項選擇");
 define("_MULTOC", "多項選擇附上評語功能");

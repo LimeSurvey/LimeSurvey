@@ -230,7 +230,15 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			$values=do_date($ia);
 			break;
 		case "L": //LIST drop-down/radio-button list
-			$values=do_list($ia);
+			$values=do_list_radio($ia);
+			if (count($values[1]) > 1) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_LIST."</font></i><b>";
+				}
+			break;
+		case "!": //List - dropdown
+			$values=do_list_dropdown($ia);
 			if (count($values[1]) > 1) 
 				{
 				$qtitle .= "<br />\n</b><i><font size='1'>"
@@ -484,7 +492,7 @@ function do_date($ia)
 	return array($answer, $inputnames);
 	}
 
-function do_list($ia)
+function do_list_dropdown($ia)
 	{
 	global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
 	global $shownoanswer;
@@ -496,70 +504,81 @@ function do_list($ia)
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
 	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
 	$anscount = mysql_num_rows($ansresult);
-	if (($dropdowns == "L" || !$dropdowns || $anscount > $dropdownthreshold) && $other != "Y")
+	while ($ansrow = mysql_fetch_array($ansresult))
 		{
-		while ($ansrow = mysql_fetch_array($ansresult))
+		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
+		if ($_SESSION[$ia[1]] == $ansrow['code'])
 			{
-			$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
-			if ($_SESSION[$ia[1]] == $ansrow['code'])
-				{
-				$answer .= " selected"; 
-				}
-			elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
-			$answer .= ">{$ansrow['answer']}</option>\n";
+			$answer .= " selected"; 
 			}
-		if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
-		if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
-		$answer .= "\t\t\t\t\t</select>\n";
-		$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n".$answer;
+		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
+		$answer .= ">{$ansrow['answer']}</option>\n";
 		}
-	else
-		{
-		$answer .= "\n\t\t\t\t\t<table class='question'>\n"
-				 . "\t\t\t\t\t\t<tr>\n"
-				 . "\t\t\t\t\t\t\t<td>\n";
-		while ($ansrow = mysql_fetch_array($ansresult))
-			{
-			$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='$ia[1]{$ansrow['code']}'";
-			if ($_SESSION[$ia[1]] == $ansrow['code'])
-				{
-				$answer .= " checked";
-				}
-			elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
-			}
-		if (isset($other) && $other=="Y") 
-			{
-		    $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
-			if ($_SESSION[$ia[1]] == "-oth-") 
-				{
-			    $answer .= " checked";
-				}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>"._OTHER."</label>\n";
-			$answer .= "<label for='$ia[1]othertext'><input type='text' class='text' id='$ia[1]othertext' name='$ia[1]other' size='20' title='"._OTHER."' ";
-			$thisfieldname=$ia[1]."other";
-			if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".$_SESSION[$thisfieldname]."' ";}
-			$answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"></label><br />\n";
-			$inputnames[]=$thisfieldname;
-			}
-		if ($ia[6] != "Y" && $shownoanswer == 1)
-			{
-			$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='$ia[1]NANS' value=' ' ";
-			if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || !$_SESSION[$ia[1]]))
-				{
-				$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
-				}
-			$answer .=" onClick='checkconditions(this.value, this.name, this.type)' />"
-					 . "<label for='$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
-			}
-		$answer .= "\t\t\t\t\t\t\t</td>\n"
-				 . "\t\t\t\t\t\t</tr>\n"
-				 . "\t\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
-				 . "\t\t\t\t\t</table>\n";
-		}
+	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
+	if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
+	$answer .= "\t\t\t\t\t</select>\n";
+	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n".$answer;
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 	}
+
+function do_list_radio($ia)
+	{
+	global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
+	global $shownoanswer;
+	$answer="";
+	if (isset($defexists)) {unset ($defexists);}
+	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
+	$result = mysql_query($query);
+	while($row = mysql_fetch_array($result)) {$other = $row['other'];}
+	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
+	$anscount = mysql_num_rows($ansresult);
+	$answer .= "\n\t\t\t\t\t<table class='question'>\n"
+			 . "\t\t\t\t\t\t<tr>\n"
+			 . "\t\t\t\t\t\t\t<td>\n";
+	while ($ansrow = mysql_fetch_array($ansresult))
+		{
+		$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='$ia[1]{$ansrow['code']}'";
+		if ($_SESSION[$ia[1]] == $ansrow['code'])
+			{
+			$answer .= " checked";
+			}
+		elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+		}
+	if (isset($other) && $other=="Y") 
+		{
+	    $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
+		if ($_SESSION[$ia[1]] == "-oth-") 
+			{
+		    $answer .= " checked";
+			}
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>"._OTHER."</label>\n";
+		$answer .= "<label for='$ia[1]othertext'><input type='text' class='text' id='$ia[1]othertext' name='$ia[1]other' size='20' title='"._OTHER."' ";
+		$thisfieldname=$ia[1]."other";
+		if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".$_SESSION[$thisfieldname]."' ";}
+		$answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"></label><br />\n";
+		$inputnames[]=$thisfieldname;
+		}
+	if ($ia[6] != "Y" && $shownoanswer == 1)
+		{
+		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='$ia[1]NANS' value=' ' ";
+		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || !$_SESSION[$ia[1]]))
+			{
+			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			}
+		$answer .=" onClick='checkconditions(this.value, this.name, this.type)' />"
+				 . "<label for='$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
+		}
+	$answer .= "\t\t\t\t\t\t\t</td>\n"
+			 . "\t\t\t\t\t\t</tr>\n"
+			 . "\t\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
+			 . "\t\t\t\t\t</table>\n";
+	$inputnames[]=$ia[1];
+	return array($answer, $inputnames);
+	}
+
 
 function do_listwithcomment($ia)
 	{
