@@ -818,6 +818,9 @@ function submitfailed()
 				. mysql_error()."\n\n";
 		$email=crlf_lineendings($email);
 		mail($thissurvey['adminemail'], _DNSAVEEMAIL5, $email);
+		//An email has been sent, so we can kill off this session.
+		session_unset();
+		session_destroy();
 		}
 	else
 		{
