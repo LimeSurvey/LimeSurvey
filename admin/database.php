@@ -242,7 +242,7 @@ elseif ($action == "copynewquestion")
 		$r1 = mysql_query($q1);
 		while ($qr1 = mysql_fetch_array($r1))
 			{
-			$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, `default_value`, sortorder) "
+			$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder) "
 				. "VALUES ('$newqid', '{$qr1['code']}', "
 				. "'".mysql_escape_string($qr1['answer'])."', '{$qr1['default_value']}', "
 				. "'{$qr1['sortorder']}')";
@@ -324,7 +324,7 @@ elseif ($action == "modanswer")
 	{
 	if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _AL_ADD)) //TURN ALL OTHER DEFAULT SETTINGS TO NO
 		{
-		$query = "UPDATE {$dbprefix}answers SET `default_value` = 'N' WHERE qid={$_POST['qid']}";
+		$query = "UPDATE {$dbprefix}answers SET default_value = 'N' WHERE qid={$_POST['qid']}";
 		$result=mysql_query($query) or die("Error occurred updating default_value settings");
 		}
 	if (get_magic_quotes_gpc() == "0")
@@ -375,7 +375,7 @@ elseif ($action == "modanswer")
 					}
 				else
 					{
-					$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, `default_value`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
+					$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
 					$cdresult = mysql_query($cdquery) or die ("Couldn't add answer<br />$cdquery<br />".mysql_error());
 					}
 				}
@@ -410,7 +410,7 @@ elseif ($action == "modanswer")
 						}
 					else
 						{
-						$cdquery = "UPDATE {$dbprefix}answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', `default_value`='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
+						$cdquery = "UPDATE {$dbprefix}answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', default_value='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
 						$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
 						}
 					}
