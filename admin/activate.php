@@ -56,6 +56,7 @@ if (!$_GET['ok'])
 			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], " is a multiple answer style question but does not have any answers");
 			}
 		}
+		
 	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
 	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type = ''";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing types<br />$chkquery<br />".mysql_error());
@@ -63,6 +64,47 @@ if (!$_GET['ok'])
 		{
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], " does not have a question type set.");
 		}
+	
+	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
+	//A: Make an array of all the qids in order of appearance
+	$qorderquery="SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid={$_GET['sid']} ORDER BY group_name, questions.title";
+	$qorderresult=mysql_query($qorderquery) or die("Couldn't generate a list of questions in order<br />$qorderquery<br />".mysql_error());
+	$qordercount=mysql_num_rows($qorderresult);
+	$c=0;
+	while ($qorderrow=mysql_fetch_array($qorderresult)) 
+		{
+		$qidorder[]=array($c, $qorderrow['qid']);
+		$c++;
+		}
+	//1: Get each condition's question id
+	$conquery="SELECT conditions.qid, cqid, questions.question FROM conditions, questions, groups WHERE conditions.qid=questions.qid AND questions.gid=groups.gid ORDER BY qid";
+	$conresult=mysql_query($conquery) or die("Couldn't check conditions for relative consistency<br />$conquery<br />".mysql_error());
+	//2: Check each conditions cqid that it occurs later than the cqid
+	while ($conrow=mysql_fetch_array($conresult))
+		{
+		$cqidfound=0;
+		$qidfound=0;
+		$b=0;
+		while ($b<$qordercount)
+			{
+			if ($conrow['cqid'] == $qidorder[$b][1])
+				{
+				$cqidfound = 1;
+				$b=$qordercount;
+				}
+			if ($conrow['qid'] == $qidorder[$b][1])
+				{
+				$qidfound = 1;
+				$b=$qordercount;
+				}
+			if ($qidfound == 1)
+				{
+				$failedcheck[]=array($conrow['qid'], $conrow['question'], " is set to only display based on the results of a question that appears after it.");
+				}
+			$b++;
+			}
+		}
+	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
 	if ($failedcheck)
 		{
 		echo "<table width='350' align='center'>\n";
