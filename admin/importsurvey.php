@@ -94,8 +94,7 @@ elseif (array_search("# GROUPS TABLE\r\n", $bigarray))
 	}
 for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	echo $bigarray[$i]. "- ($i) - stoppoint($stoppoint)";
-	if ($i<$stoppoint-2) {$tablearray[] = $bigarray[$i]; echo "HI";}
+	if ($i<$stoppoint-2) {$tablearray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
@@ -243,8 +242,6 @@ if (!$sid)
 	echo "<br /><b><font color='red'>"._ERROR."</b></font><br />\n";
 	echo _IS_IMPFAILED."<br />\n";
 	echo _IS_FILEFAILS."<br />\n"; //NOT A PHPSURVEYOR EXPORT FILE
-	echo "($tablearray[0])";
-	foreach ($sfieldorders as $sfo) {echo "$sfo<br />\n";}
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
