@@ -268,9 +268,11 @@ function retrieveAnswers($ia, $notanswered=null)
 			$values=do_numerical($ia);
 			break;
 		case "S": //SHORT FREE TEXT
+			$qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
 			$values=do_shortfreetext($ia);
 			break;
 		case "T": //LONG FREE TEXT
+			$qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
 			$values=do_longfreetext($ia);
 			break;
 		case "Y": //YES/NO radio-buttons
@@ -946,10 +948,10 @@ function do_multipleshorttext($ia)
 		$myfname = $ia[1].$ansrow['code'];
 		$answer .= "\t\t\t\t\t\t\t<tr>\n"
 				 . "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
-				 . "\t\t\t\t\t\t\t\t\t{$ansrow['answer']}\n"
+				 . "\t\t\t\t\t\t\t\t\t<label for='$myfname'>{$ansrow['answer']}</label>\n"
 				 . "\t\t\t\t\t\t\t\t</td>\n"
 				 . "\t\t\t\t\t\t\t\t<td>\n"
-				 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname' value='";
+				 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname' id='$myfname' value='";
 		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 		$answer .= "' />\n"
 				 . "\t\t\t\t\t\t\t\t</td>\n"
@@ -973,14 +975,14 @@ function do_numerical($ia)
 
 function do_shortfreetext($ia)
 	{
-	$answer = "\t\t\t<input class='text' type='text' size='50' name='$ia[1]' value=\"".str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))."\" />\n";
+	$answer = "\t\t\t<input class='text' type='text' size='50' name='$ia[1]' id='$ia[1]' value=\"".str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))."\" />\n";
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 	}
 
 function do_longfreetext($ia)
 	{
-	$answer = "<textarea class='textarea' name='$ia[1]' rows='5' cols='40'>";
+	$answer = "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' rows='5' cols='40'>";
 	if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}	
 	$answer .= "</textarea>\n";
 	$inputnames[]=$ia[1];
