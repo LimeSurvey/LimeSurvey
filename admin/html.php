@@ -45,7 +45,8 @@ if ($sid)
 		$surveysummary .= "\t<td>$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
 		if ($s1row['private'] != "N") {$surveysummary .= "This survey is anonymous";}
 		else {$surveysummary .= "This survey is <b>not</b> anonymous";}
-		if ($s1row['format'] != "A") {$surveysummary .= " and is presented question by question.";}
+		if ($s1row['format'] == "S") {$surveysummary .= " and is presented question by question.";}
+		elseif ($sqrow['format'] == "G") {$surveysummary .= " and is presented group by group.<font size='1' color='red'>[Presenty by Group function not yet available]</font>";}
 		else {$surveysummary .= " and is presented as one single page.<font size='1' color='red'>[Single Page function not yet available]</font>";}
 		$surveysummary .= "</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
@@ -756,6 +757,9 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t\t\t<option value='S'";
 		if ($esrow['format'] == "S" || !$esrow['format']) {$editsurvey .= " selected";}
 		$editsurvey .= ">One at a time</option>\n";
+		$editsurvey .= "\t\t\t<option value='G'";
+		if ($esrow['format'] == "G") {$editsurvey .= " selected";}
+		$editsurvey .= ">Group at a time</option>\n";
 		$editsurvey .= "\t\t\t<option value='A'";
 		if ($esrow['format'] == "A") {$editsurvey .= " selected";}
 		$editsurvey .= ">All in one</option>\n";
@@ -818,7 +822,7 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Format</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='format'>\n";
 	$newsurvey .= "\t\t\t<option value='S' selected>One at a time</option>\n";
-	$newsurvey .= "\t\t\t<option value='A'>Group at a time</option>\n";
+	$newsurvey .= "\t\t\t<option value='G'>Group at a time</option>\n";
 	$newsurvey .= "\t\t\t<option value='A'>All in one</option>\n";
 	$newsurvey .= "\t\t</select></td>\n";
 	$newsurvey .= "\t</tr>\n";
