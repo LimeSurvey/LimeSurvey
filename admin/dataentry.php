@@ -458,6 +458,18 @@ elseif ($action == "edit")
 							if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
 							echo ">{$llrow['answer']}</option>\n";
 							}
+						$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$fnames[$i][7]}";
+						$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
+						while($orow = mysql_fetch_array($oresult))
+							{
+							$fother=$orow['other'];
+							}
+						if ($fother =="Y") 
+							{
+						    echo "<option value='-oth-'";
+							if ($idrow[$fnames[$i][0]] == "-oth-"){echo " selected";}
+							echo ">"._OTHER."</option>\n";
+							}
 						echo "\t\t\t</select>\n";
 						}
 					break;
@@ -1239,7 +1251,24 @@ else
 						echo ">{$dearow['answer']}</option>\n";
 						}
 					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
+
+					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
+					$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
+					while($orow = mysql_fetch_array($oresult))
+						{
+						$fother=$orow['other'];
+						}
+					if ($fother == "Y") 
+						{
+					    echo "<option value='-oth-'>"._OTHER."</option>\n";
+						}
 					echo "\t\t\t</select>\n";
+					if ($fother == "Y")
+						{
+						echo "\t\t\t$setfont"
+							._OTHER.":"
+							."<input type='text' name='{$fieldname}other' value='' />\n";
+						}
 					break;
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
@@ -1329,19 +1358,24 @@ else
 						{
 						$answers[] = array($ansrow['code'], $ansrow['answer']);
 						}
-	
 					for ($i=1; $i<=$anscount; $i++)
 						{
-						$myfname=$fname.$i;
-						if ($_SESSION[$myfname])
+						if (isset($fname))
+							{
+						    $myfname=$fname.$i;
+							}
+						if (isset($myfname) && $_SESSION[$myfname])
 							{
 							$existing++;
 							}
 						}
 					for ($i=1; $i<=$anscount; $i++)
 						{
-						$myfname = $fname.$i;
-						if ($_SESSION[$myfname])
+						if (isset($fname))
+							{
+							$myfname = $fname.$i;
+							}
+						if (isset($myfname) && $_SESSION[$myfname])
 							{
 							foreach ($answers as $ans)
 								{
@@ -1352,8 +1386,9 @@ else
 									}
 								}
 							}
+						if (!isset($ranklist)) {$ranklist="";}
 						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input type='text' style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$i' id='RANK_$thisqid$i'";
-						if ($_SESSION[$myfname])
+						if (isset($myfname) && $_SESSION[$myfname])
 							{
 							$ranklist .= " value='";
 							$ranklist .= $thistext;
@@ -1362,21 +1397,21 @@ else
 						$ranklist .= " onFocus=\"this.blur()\">\n";
 						$ranklist .= "\t\t\t\t\t\t<input type='hidden' id='d$fieldname$i' name='d$fieldname$i' value='";
 						$chosen[]=""; //create array
-						if ($_SESSION[$myfname]) 
+						if (isset($myfname) && $_SESSION[$myfname]) 
 							{
 							$ranklist .= $thiscode;
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n";
 						$ranklist .= "\t\t\t\t\t\t<img src='./images/cut.gif' title='"._REMOVEITEM."' ";
-						if ($i != $existing)
+						if (!isset($existing) || $i != $existing)
 							{
 							$ranklist .= "style='display:none'";
 							}
 						$mfn=$fieldname.$i;
 						$ranklist .= " id='cut_$thisqid$i' name='cut$i' onClick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
 						}
-					
+					if (!isset($choicelist)) {$choicelist="";}
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
 						{
@@ -1397,22 +1432,26 @@ else
 						}
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
 	
-					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n";
-					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t</tr>\n";
-					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n";
-					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURCHOICES.":</b><br />\n";
-					echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
-					echo "\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
-					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURRANKING.":</b><br />\n";
-					echo $ranklist;
-					echo "\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t</tr>\n";
-					echo "\t\t\t</table>\n";
-					echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
-					echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
+					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
+						."\t\t\t\t<tr>\n"
+						."\t\t\t\t</tr>\n"
+						."\t\t\t\t<tr>\n"
+						."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
+						."\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+						._YOURCHOICES.":</b><br />\n"
+						."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
+						."\t\t\t\t\t</td>\n"
+						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n"
+						."\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+						._YOURRANKING.":</b><br />\n"
+						.$ranklist
+						."\t\t\t\t\t</td>\n"
+						."\t\t\t\t</tr>\n"
+						."\t\t\t</table>\n"
+						."\t\t\t<input type='hidden' name='multi' value='$anscount' />\n"
+						."\t\t\t<input type='hidden' name='lastfield' value='";
+					if (isset($multifields)) {echo $multifields;}
+					echo "' />\n";
 					$choicelist="";
 					$ranklist="";
 					unset($answers);
