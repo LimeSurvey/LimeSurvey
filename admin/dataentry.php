@@ -69,54 +69,63 @@ if ($action == "insert")
 		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "P" && $irow['type'] != "O")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$col_name .= "`$fieldname`, ";
-			$insertqr .= "'" . $$fieldname . "', ";
+			$col_name .= "$fieldname, \n";
+			if (get_magic_quotes_gpc())
+				{$insertqr .= "'" . $$fieldname . "', \n";}
+			else
+				{$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";}
 			}
 		elseif ($irow['type'] == "O")
 			{
-			//echo "TYPE O<br />\n";
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$col_name .= "`$fieldname`, ";
-			//echo $fieldname . "| ";
-			$insertqr .= "'" . $$fieldname . "', ";
-			$fieldname .= "comment";
-			$col_name .= "`$fieldname`, ";
-			//echo $fieldname."<br />\n";
-			$insertqr .= "'" . $$fieldname . "', ";
+			$fieldname2 .= $fieldname . "comment";
+			$col_name .= "$fieldname, \n$fieldname2, \n";
+			if (get_magic_quotes_gpc())
+				{$insertqr .= "'" . $$fieldname . "', \n'" . $$fieldname2 . "', \n";}
+			else
+				{$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n'" . mysql_real_escape_string($$fieldname2) . "', \n";}
 			}
 		else
 			{
 			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY code";
-			//echo $i2query."<br />\n";
+			//echo $i2query . "<br />\n";
 			$i2result = mysql_query($i2query);
 			while ($i2row = mysql_fetch_array($i2result))
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-				$col_name .= "`$fieldname`, ";
-				$insertqr .= "'" . $$fieldname . "', ";
+				$col_name .= "$fieldname, \n";
+				if (get_magic_quotes_gpc())
+					{$insertqr .= "'" . $$fieldname . "', \n";}
+				else
+					{$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";}
+				$otherexists = "";
 				if ($i2row['other'] == "Y") {$otherexists = "Y";}
 				if ($irow['type'] == "P")
 					{
 					$fieldname2 = $fieldname."comment";
-					$col_name .= "`$fieldname2`, ";
-					$insertqr .= "'".$$fieldname2."', ";
+					$col_name .= "$fieldname2, \n";
+					if (get_magic_quotes_gpc())
+						{$insertqr .= "'" . $$fieldname2 . "', \n";}
+					else
+						{$insertqr .= "'" . mysql_real_escape_string($$fieldname2) . "', \n";}
 					}
 				}
 			if ($otherexists == "Y") 
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
-				$col_name .= "`$fieldname`, ";
-				$insertqr .= "'".$$fieldname . "', ";
+				$col_name .= "$fieldname, \n";
+				if (get_magic_quotes_gpc())
+					{$insertqr .= "'" . $$fieldname . "', \n";}
+				else
+					{$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";}
 				}
 			}
 		}
 	
-	$col_name = substr($col_name, 0, -2); //Strip off the last comma-space
-	$insertqr = substr($insertqr, 0, -2); //Strip off the last comma-space
+	$col_name = substr($col_name, 0, -3); //Strip off the last comma-space
+	$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
 	$SQL = "INSERT INTO $surveytable \n($col_name) \nVALUES \n($insertqr)";
-	
-	//echo "<pre style='text-align: left'>$SQL</pre><br />\n"; //Debugging info
-	$iinsert = mysql_query ($SQL) or die ("Could not insert your data<br />\n$insertqr<br />\n" . mysql_error());
+	$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
 	
 	echo "<font color='green'><b>Insert Was A Success</b><br />\n";
 	
@@ -130,6 +139,7 @@ if ($action == "insert")
 	echo "</font><br />[<a href='dataentry.php?sid=$sid'>Add another record</a>]<br />\n";
 	echo "[<a href='browse.php?sid=$sid&action=all&limit=100'>Browse Surveys</a>]<br />\n";
 	echo "</center>\n";
+	//echo "<pre style='text-align: left'>$SQL</pre><br />\n"; //Debugging info
 	echo "</body>\n</html>";
 	
 	}
@@ -225,14 +235,75 @@ elseif ($action == "edit")
 				case "id":
 					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>Cannot be altered</font>\n";
 					break;
-				case "M":
+				case "5": //5 POINT CHOICE radio-buttons
+					for ($x=1; $x<=5; $x++)
+						{
+						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$x'";
+						if ($idrow[$fnames[$i][0]] == $x) {echo " checked";}
+						echo " />$x \n";
+						}
+					break;
+				case "D": //DATE
+					echo "\t\t\t<input type='text' size='10' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
+					break;
+				case "G": //GENDER drop-down list
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
+					echo "\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">Please choose..</option>\n";
+					echo "\t\t\t\t<option value='F'";
+					if ($idrow[$fnames[$i][0]] == "F") {echo " selected";}
+					echo ">Female</option>\n";
+					echo "\t\t\t\t<option value='M'";
+					if ($idrow[$fnames[$i][0]] == "M") {echo " selected";}
+					echo ">Male</option>\n";
+					echo "\t\t\t<select>\n";
+					break;
+				case "L": //LIST drop-down/radio-button list
+					$lquery = "SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY code";
+					$lresult = mysql_query($lquery);
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
+					echo "\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">Please choose..</option>\n";
+					
+					while ($llrow = mysql_fetch_array($lresult))
+						{
+						echo "\t\t\t\t<option value='{$llrow['code']}'";
+						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
+						echo ">{$llrow['answer']}</option>\n";
+						}
+					echo "\t\t\t</select>\n";
+					break;
+				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+					$lquery = "SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY code";
+					$lresult = mysql_query($lquery);
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
+					echo "\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">Please choose..</option>\n";
+					
+					while ($llrow = mysql_fetch_array($lresult))
+						{
+						echo "\t\t\t\t<option value='{$llrow['code']}'";
+						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
+						echo ">{$llrow['answer']}</option>\n";
+						}
+					echo "\t\t\t</select>\n";
+					$i++;
+					echo "\t\t\t<br />\n";
+					echo "\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>";
+					echo htmlspecialchars($idrow[$fnames[$i][0]]) . "</textarea>\n";
+					break;
+				case "M": //MULTIPLE OPTIONS checkbox
 					while ($fnames[$i][3] == "M")
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
 						//echo substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
 						if (substr($fnames[$i][0], -5) == "other")
 							{
-							echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
+							echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='";
+							echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 							}
 						else
 							{
@@ -244,14 +315,15 @@ elseif ($action == "edit")
 						}
 					$i--;
 					break;
-				case "P":
+				case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					echo "<table>\n";
 					while ($fnames[$i][3] == "P")
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
 						if (substr($fnames[$i][0], -7) == "comment")
 							{
-							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value=\"{$idrow[$fnames[$i][0]]}\" /></td>\n";
+							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value='";
+							echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></td>\n";
 							echo "\t</tr>\n";
 							}
 						elseif (substr($fnames[$i][0], -5) == "other")
@@ -259,11 +331,13 @@ elseif ($action == "edit")
 							echo "\t<tr>\n";
 							echo "\t\t<td>\n";
 							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' style='width: ";
-							echo strlen($idrow[$fnames[$i][0]])."em' value=\"{$idrow[$fnames[$i][0]]}\" />\n";
+							echo strlen($idrow[$fnames[$i][0]])."em' value='";
+							echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 							echo "\t\t</td>\n";
 							echo "\t\t<td>\n";
 							$i++;
-							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' size='50' value=\"{$idrow[$fnames[$i][0]]}\" />\n";
+							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' size='50' value='";
+							echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 							echo "\t\t</td>\n";
 							echo "\t</tr>\n";
 							}
@@ -279,7 +353,28 @@ elseif ($action == "edit")
 					echo "</table>\n";
 					$i--;
 					break;
-				case "A":
+				case "S": //SHORT FREE TEXT
+					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
+					echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+					break;
+				case "T": //LONG FREE TEXT
+					echo "\t\t\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>";
+					echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
+					break;
+				case "Y": //YES/NO radio-buttons
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
+					echo "\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">Please choose..</option>\n";
+					echo "\t\t\t\t<option value='Y'";
+					if ($idrow[$fnames[$i][0]] == "Y") {echo " selected";}
+					echo ">Yes</option>\n";
+					echo "\t\t\t\t<option value='N'";
+					if ($idrow[$fnames[$i][0]] == "N") {echo " selected";}
+					echo ">No</option>\n";
+					echo "\t\t\t</select>\n";
+					break;
+				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 					echo "<table>\n";
 					while ($fnames[$i][3] == "A")
 						{
@@ -300,7 +395,7 @@ elseif ($action == "edit")
 					echo "</table>\n";
 					$i--;
 					break;
-				case "B":
+				case "B": //ARRAY (10 POINT CHOICE) radio-buttons
 					echo "<table>\n";
 					while ($fnames[$i][3] == "B")
 						{
@@ -321,7 +416,7 @@ elseif ($action == "edit")
 					$i--;
 					echo "</table>\n";
 					break;
-				case "C":
+				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					echo "<table>\n";
 					while ($fnames[$i][3] == "C")
 						{
@@ -344,84 +439,6 @@ elseif ($action == "edit")
 						}
 					$i--;
 					echo "</table>\n";
-					break;
-				case "T": //Long Text
-					echo "\t\t\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>{$idrow[$fnames[$i][0]]}</textarea>\n";
-					break;
-				case "S": //Short text
-					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
-					break;
-				case "D": //Date
-					echo "\t\t\t<input type='text' size='10' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
-					break;
-				case "G": //Gender
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
-					echo "\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">Please choose..</option>\n";
-					echo "\t\t\t\t<option value='F'";
-					if ($idrow[$fnames[$i][0]] == "F") {echo " selected";}
-					echo ">Female</option>\n";
-					echo "\t\t\t\t<option value='M'";
-					if ($idrow[$fnames[$i][0]] == "M") {echo " selected";}
-					echo ">Male</option>\n";
-					echo "\t\t\t<select>\n";
-					break;
-				case "Y": //Yes/No
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
-					echo "\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">Please choose..</option>\n";
-					echo "\t\t\t\t<option value='Y'";
-					if ($idrow[$fnames[$i][0]] == "Y") {echo " selected";}
-					echo ">Yes</option>\n";
-					echo "\t\t\t\t<option value='N'";
-					if ($idrow[$fnames[$i][0]] == "N") {echo " selected";}
-					echo ">No</option>\n";
-					echo "\t\t\t</select>\n";
-					break;
-				case "L": //Dropdown list
-					$lquery = "SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY code";
-					$lresult = mysql_query($lquery);
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
-					echo "\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">Please choose..</option>\n";
-					
-					while ($llrow = mysql_fetch_array($lresult))
-						{
-						echo "\t\t\t\t<option value='{$llrow['code']}'";
-						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
-						echo ">{$llrow['answer']}</option>\n";
-						}
-					echo "\t\t\t</select>\n";
-					break;
-				case "O": //List with Comment
-					$lquery = "SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY code";
-					$lresult = mysql_query($lquery);
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
-					echo "\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">Please choose..</option>\n";
-					
-					while ($llrow = mysql_fetch_array($lresult))
-						{
-						echo "\t\t\t\t<option value='{$llrow['code']}'";
-						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
-						echo ">{$llrow['answer']}</option>\n";
-						}
-					echo "\t\t\t</select>\n";
-					$i++;
-					echo "\t\t\t<br />\n";
-					echo "\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>{$idrow[$fnames[$i][0]]}</textarea>\n";
-					break;
-				case "5": //1 to 5 point spread
-					for ($x=1; $x<=5; $x++)
-						{
-						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$x'";
-						if ($idrow[$fnames[$i][0]] == $x) {echo " checked";}
-						echo " />$x \n";
-						}
 					break;
 				}
 			//echo "\t\t\t$setfont{$idrow[$fnames[$i][0]]}\n"; //Debugging info
@@ -454,22 +471,27 @@ elseif ($action == "update")
 	$iquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
-	$updateqr = "UPDATE $surveytable SET ";
+	$updateqr = "UPDATE $surveytable SET \n";
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "O" && $irow['type'] != "P")
+		if ($irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "O")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
+			if (get_magic_quotes_gpc())
+				{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
+			else
+				{$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";}
 			}
 		elseif ($irow['type'] == "O")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}comment";
-			$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
-			
+			if (get_magic_quotes_gpc())
+				{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
+			else
+				{$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";}
 			}
 		else
 			{
@@ -485,19 +507,25 @@ elseif ($action == "update")
 				if ($irow['type'] == "P")
 					{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
-					$updateqr .= "$fieldname = '" . $$fieldname . "', \n";
+					if (get_magic_quotes_gpc())
+						{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
+					else
+						{$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";}
 					}
 				}
 			if ($otherexists == "Y") 
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
-				$updateqr .= "$fieldname='".$$fieldname . "', \n";
+				if (get_magic_quotes_gpc())
+					{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
+				else
+					{$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";}
 				}
 			}	
 		}
 	$updateqr = substr($updateqr, 0, -3);
 	$updateqr .= " WHERE id=$id";
-	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre>$updateqr</pre>");
+	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
 	echo "<br />\n<b>Record has been updated.</b><br /><br />\n";
 	echo "<a href='browse.php?sid=$sid&action=id&id=$id'>View record again</a>\n<br />\n";
 	echo "<a href='browse.php?sid=$sid&action=all'>Browse all records</a>\n";
@@ -563,7 +591,7 @@ else
 		//Alternate bgcolor for different groups
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
 		else {$bgc = "#EEEEEE";}
-		if (!$bgc) {$bgc="#EEEEEE";}
+		if (!$bgc) {$bgc = "#EEEEEE";}
 		
 		$deqrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 		while ($deqrow = mysql_fetch_array($deqresult)) {$deqrows[] = $deqrow;} //Get table output into array
@@ -588,10 +616,53 @@ else
 				}
 			switch($deqrow['type'])
 				{
-				case "S":  //SHORT TEXT
-					echo "\t\t\t<input type='text' name='$fieldname' />\n";				
+				case "5": //5 POINT CHOICE radio-buttons
+					echo "\t\t\t<input type='radio' name='$fieldname' value='1' />1 \n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='2' />2 \n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='3' />3 \n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='4' />4 \n";
+					echo "\t\t\t<input type='radio' name='$fieldname' value='5' />5 \n";
 					break;
-				case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
+				case "D": //DATE
+					echo "\t\t\t<input type='text' name='$fieldname' size='10' />\n";
+					break;
+				case "G": //GENDER drop-down list
+					echo "\t\t\t<select name='$fieldname'>\n";
+					echo "\t\t\t\t<option selected value=''>Please Choose..</option>\n";
+					echo "\t\t\t\t<option value='F'>Female</option>\n";
+					echo "\t\t\t\t<option value='M'>Male</option>\n";
+					echo "\t\t\t</select>\n";
+					break;
+				case "L": //LIST drop-down/radio-button list
+					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+					$dearesult = mysql_query($deaquery);
+					echo "\t\t\t<select name='$fieldname'>\n";
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						echo "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
+						echo ">{$dearow['answer']}</option>\n";
+						}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";}
+					echo "\t\t\t</select>\n";
+					break;
+				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+					$dearesult = mysql_query($deaquery);
+					echo "\t\t\t<select name='$fieldname'>\n";
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						echo "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
+						echo ">{$dearow['answer']}</option>\n";
+						}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";}
+					echo "\t\t\t</select>\n";
+					echo "\t\t\t<br />Comment:<br />\n";
+					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname";
+					echo "comment'>$idrow[$i]</textarea>\n";
+					break;
+				case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
 					while ($mearow = mysql_fetch_array($mearesult))
@@ -606,7 +677,7 @@ else
 						echo "other' />\n";
 						}
 					break;
-				case "P":  //MULTIPLE OPTIONS (with comments)
+				case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					echo "<table border='0'>\n";
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
@@ -635,7 +706,20 @@ else
 						}
 					echo "</table>\n";
 					break;
-				case "A":  //MULTI ARRAY
+				case "S": //SHORT FREE TEXT
+					echo "\t\t\t<input type='text' name='$fieldname' />\n";				
+					break;
+				case "T": //LONG FREE TEXT
+					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname'></textarea>\n";
+					break;
+				case "Y": //YES/NO radio-buttons
+					echo "\t\t\t<Select name='$fieldname'>\n";
+					echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";
+					echo "\t\t\t\t<option value='Y'>Yes</option>\n";
+					echo "\t\t\t\t<option value='N'>No</option>\n";
+					echo "\t\t\t</select>\n";
+					break;
+				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
 					echo "<table>\n";
@@ -655,7 +739,7 @@ else
 						}
 					echo "</table>\n";
 					break;
-				case "B":  //MULTI ARRAY
+				case "B": //ARRAY (10 POINT CHOICE) radio-buttons
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult = mysql_query($meaquery);
 					echo "<table>\n";
@@ -675,7 +759,7 @@ else
 						}
 					echo "</table>\n";
 					break;
-				case "C":  //MULTI ARRAY
+				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
 					$mearesult=mysql_query($meaquery);
 					echo "<table>\n";
@@ -697,62 +781,6 @@ else
 						echo "</tr>\n";
 						}
 					echo "</table>\n";
-					break;
-				case "L":  //DROPDOWN LIST
-					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
-					$dearesult = mysql_query($deaquery);
-					echo "\t\t\t<select name='$fieldname'>\n";
-					while ($dearow = mysql_fetch_array($dearesult))
-						{
-						echo "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
-						echo ">{$dearow['answer']}</option>\n";
-						}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";}
-					echo "\t\t\t</select>\n";
-					break;
-				case "O":  //LIST WITH COMMENT
-					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
-					$dearesult = mysql_query($deaquery);
-					echo "\t\t\t<select name='$fieldname'>\n";
-					while ($dearow = mysql_fetch_array($dearesult))
-						{
-						echo "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
-						echo ">{$dearow['answer']}</option>\n";
-						}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";}
-					echo "\t\t\t</select>\n";
-					echo "\t\t\t<br />Comment:<br />\n";
-					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname";
-					echo "comment'>$idrow[$i]</textarea>\n";
-					break;
-				case "T":  //LONG TEXT
-					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname'></textarea>\n";
-					break;
-				case "D":  //DATE
-					echo "\t\t\t<input type='text' name='$fieldname' size='10' />\n";
-					break;
-				case "5":  //5 Point Choice
-					echo "\t\t\t<input type='radio' name='$fieldname' value='1' />1 \n";
-					echo "\t\t\t<input type='radio' name='$fieldname' value='2' />2 \n";
-					echo "\t\t\t<input type='radio' name='$fieldname' value='3' />3 \n";
-					echo "\t\t\t<input type='radio' name='$fieldname' value='4' />4 \n";
-					echo "\t\t\t<input type='radio' name='$fieldname' value='5' />5 \n";
-					break;
-				case "G":  //Gender
-					echo "\t\t\t<select name='$fieldname'>\n";
-					echo "\t\t\t\t<option selected value=''>Please Choose..</option>\n";
-					echo "\t\t\t\t<option value='F'>Female</option>\n";
-					echo "\t\t\t\t<option value='M'>Male</option>\n";
-					echo "\t\t\t</select>\n";
-					break;
-				case "Y":  //YesNo
-					echo "\t\t\t<Select name='$fieldname'>\n";
-					echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";
-					echo "\t\t\t\t<option value='Y'>Yes</option>\n";
-					echo "\t\t\t\t<option value='N'>No</option>\n";
-					echo "\t\t\t</select>\n";
 					break;
 				}
 			//echo " [$sid"."X"."$gid"."X"."$qid]";
