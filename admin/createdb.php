@@ -42,7 +42,7 @@ echo $htmlheader;
 if (!$dbname)
 	{
 	echo "<CENTER><B><FONT COLOR='RED'>Error. References not provided. Please do not run this script directly</FONT></B>";
-	echo "<BR><BR><B>Now you can go back to the Admin page!<BR>";
+	echo "<br /><br /><B>Now you can go back to the Admin page!<br />";
 	echo "<INPUT TYPE='SUBMIT' VALUE='Admin' onClick='location.href=\"$scriptname\"'>";
 	exit;
 	}
@@ -51,42 +51,42 @@ if (!mysql_selectdb ($dbname, $connect))
 	{
 	if (mysql_create_db("$dbname"))
 		{
-		echo "<CENTER><B><FONT COLOR='GREEN'>$dbname has now been created.</FONT></B><BR><BR>";
+		echo "<CENTER><B><FONT COLOR='GREEN'>$dbname has now been created.</FONT></B><br /><br />";
 		
 		$db=mysql_selectdb($databasename, $connect);
 		
 		if(mysql_query($createsurveys))
-			{echo "Surveys Table Created Succesfully..<BR>";}
+			{echo "Surveys Table Created Succesfully..<br />";}
 		else
-			{echo "Surveys table could not be created!<BR>";}
+			{echo "Surveys table could not be created!<br />(".mysql_error().")<br />";}
 		if (mysql_query($createquestions))
-			{echo "Questions Table Created Succesfully..<BR>";}
+			{echo "Questions Table Created Succesfully..<br />";}
 		else
-			{echo "Questions table could not be created!<BR>";}
+			{echo "Questions table could not be created!<br />(".mysql_error().")<br />";}
 		if (mysql_query($createanswers))
-			{echo "Answers Table Created Succesfully..<BR>";}
+			{echo "Answers Table Created Succesfully..<br />";}
 		else
-			{echo "Answers table could not be created!<BR>";}
+			{echo "Answers table could not be created!<br />(".mysql_error().")<br />";}
 		if (mysql_query($creategroups))
-			{echo "Groups Table Created Succesfully..<BR>";}
+			{echo "Groups Table Created Succesfully..<br />";}
 		else
-			{echo "Groups table could not be created!<BR>";}
+			{echo "Groups table could not be created!<br />(".mysql_error().")<br />";}
 		if (mysql_query($createusers))
-			{echo "Users Table Created Succesfully..<BR>";}
+			{echo "Users Table Created Succesfully..<br />";}
 		else
-			{echo "Users table could not be created!<BR>";}
+			{echo "Users table could not be created!<br />(".mysql_error().")<br />";}
 		if (mysql_query($createconditions))
 			{echo "Conditions Table Created Succesfully..<br />\n";}
 		else
-			{echo "Conditions table could not be created!<br />\n";}
+			{echo "Conditions table could not be created!<br />(".mysql_error().")\n";}
 		
-		echo "<BR><BR><B>Now you can go back to the Admin page!<BR>";
+		echo "<br /><br /><B>Now you can go back to the Admin page!<br />";
 		echo "<INPUT TYPE='SUBMIT' VALUE='Admin' onClick='location.href=\"$scriptname\"'>";
 		}
 	else
 		{
 		echo "<CENTER><B><FONT COLOR='RED'>ERROR: $dbname could not be created. Contact your system administrator</FONT></B>";
-		echo "<BR><BR><B>Now you can go back to the Admin page!<BR>";
+		echo "<br /><br /><B>Now you can go back to the Admin page!<br />";
 		echo "<INPUT TYPE='SUBMIT' VALUE='Admin' onClick='location.href=\"$scriptname\"'>";
 		}
 	}
