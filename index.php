@@ -187,10 +187,12 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		}
 	$query = "SELECT * FROM {$dbprefix}saved, {$dbprefix}saved_control
 			  WHERE {$dbprefix}saved.scid={$dbprefix}saved_control.scid 
-			  AND sid=$sid
-			  AND {$dbprefix}saved.scid=".$_POST['scid']."
-			  AND identifier='".$_POST['loadname']."'
-			  AND access_code='".md5($_POST['loadpass'])."'\n";
+			  AND {$dbprefix}saved_control.sid=$sid\n";
+	if (isset($_POST['scid'])) {
+	    $query .= "AND {$dbprefix}saved.scid=".$_POST['scid']."\n";
+	}		  
+	$query .="AND {$dbprefix}saved_control.identifier='".$_POST['loadname']."'
+			  AND {$dbprefix}saved_control.access_code='".md5($_POST['loadpass'])."'\n";
 	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
 	if (mysql_num_rows($result) < 1)
 		{
