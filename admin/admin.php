@@ -146,6 +146,7 @@ if ($action == "newsurvey")
 	}
 
 echo "$surveysummary";
+if ($cssummary) {echo $cssummary;}
 if ($usersummary) {echo $usersummary;}
 if ($addsummary) {echo $addsummary;}
 if ($editsurvey) {echo "$editsurvey";}

@@ -33,6 +33,112 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
+if ($action == "checksettings")
+	{
+	//GET NUMBER OF SURVEYS
+	$query = "SELECT sid FROM {$dbprefix}surveys";
+	$result = mysql_query($query);
+	$surveycount=mysql_num_rows($result);
+	$query = "SELECT sid FROM {$dbprefix}surveys WHERE active='Y'";
+	$result = mysql_query($query);
+	$activesurveycount=mysql_num_rows($result);
+	$query = "SELECT user FROM {$dbprefix}users";
+	$result = mysql_query($query);
+	$usercount = mysql_num_rows($result);
+	$result = mysql_list_tables($databasename);
+	while ($row = mysql_fetch_row($result))
+		{
+		$stlength=strlen($dbprefix).strlen("old");
+		if (substr($row[0], 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
+			{
+			$oldtokenlist[]=$row[0];
+			}
+		elseif (substr($row[0], 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
+			{
+			$tokenlist[]=$row[0];
+			}
+		elseif (substr($row[0], 0, $stlength) == $dbprefix."old")
+			{
+			$oldresultslist[]=$row[0];
+			}
+	    }
+	$deactivatedsurveys=count($oldresultslist);
+	$deactivatedtokens=count($oldtokenlist);
+	$activetokens=count($tokenlist);
+	$cssummary = "<table><tr><td height='1'></td></tr></table>\n";
+	$cssummary .= "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_TITLE."</b>\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td width='50%' align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_DBNAME.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$databasename\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_DEFLANG.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$defaultlang\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_CURLANG.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$defaultlang\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_USERS.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$usercount\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._SURVEYS.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$surveycount\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_ACTIVESURVEYS.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$activesurveycount\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_DEACTSURVEYS.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$deactivatedsurveys\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_ACTIVETOKENS.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$activetokens\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_DEACTTOKENS.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$deactivatedtokens\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "</table>\n";
+	
+	$cssummary .= "<table><tr><td height='1'></td></tr></table>\n";
+	}
 
 if ($sid)
 	{
