@@ -1,41 +1,41 @@
 <?php
 /*
-	#################################################################
-	# >>> PHP Surveyor  						#
-	#################################################################
-	# > Author:  Jason Cleeland					#
-	# > E-mail:  jason@cleeland.org					#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,		#
-	# >          CARLTON SOUTH 3053, AUSTRALIA			#
-	# > Date: 	 20 February 2003				#
-	#								#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.				#
-	#################################################################
-	#	Copyright (C) 2003  Jason Cleeland			#
-	#								#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 		#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.					#
-	#								#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.						#
-	#								#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.			#
-	#################################################################
-	# This language file kindly provided by François Tissandier	#
-	# and corrected by Pascal Bastien 20/07/2004			#
-	# Version 1.3							#
-	#								#
-	#################################################################
+        #################################################################
+        # >>> PHP Surveyor                                              #
+        #################################################################
+        # > Author:  Jason Cleeland                                     #
+        # > E-mail:  jason@cleeland.org                                 #
+        # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+        # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+        # > Date:        20 February 2003                               #
+        #                                                               #
+        # This set of scripts allows you to develop, publish and        #
+        # perform data-entry on surveys.                                #
+        #################################################################
+        #       Copyright (C) 2003  Jason Cleeland                      #
+        #                                                               #
+        # This program is free software; you can redistribute           #
+        # it and/or modify it under the terms of the GNU General        #
+        # Public License as published by the Free Software              #
+        # Foundation; either version 2 of the License, or (at your      #
+        # option) any later version.                                    #
+        #                                                               #
+        # This program is distributed in the hope that it will be       #
+        # useful, but WITHOUT ANY WARRANTY; without even the            #
+        # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+        # PARTICULAR PURPOSE.  See the GNU General Public License       #
+        # for more details.                                             #
+        #                                                               #
+        # You should have received a copy of the GNU General            #
+        # Public License along with this program; if not, write to      #
+        # the Free Software Foundation, Inc., 59 Temple Place -         #
+        # Suite 330, Boston, MA  02111-1307, USA.                       #
+        #################################################################
+        # This language file kindly provided by François Tissandier     #
+        # and corrected by Pascal Bastien 20/07/2004                    #
+        # Version 1.3                                                   #
+        #                                                               #
+        #################################################################
 */
 //SINGLE WORDS
 define("_YES", "Oui");
@@ -132,32 +132,32 @@ define("_CONFIRMATION_MESSAGE3", "Cliquez sur le lien suivant pour voir votre ré
 define("_CONFIRMATION_MESSAGE4", "Visualiser les Statistiques cliquant ici:"); //NEW for 098rc5
 
 define("_PRIVACY_MESSAGE", "<b><i>Note sur la protection de la vie privée</i></b><br />"
-						  ."Ce questionnaire est anonyme.<br />"
-						  ."Les enregistrements conservés de votre questionnaire ne contiennent aucune "
-						  ."information d'identification à moins bien sûr qu'un question  "
-						  ."sur votre identité ai été posée dans le questionnaire. Si vous avez répondu à "
-						  ."un questionnaire utilisant une invitation pour vous permettre d'accéder au "
-						  ."questionnaire, vous pouvez être assurés que cet identifiant. "
-						  ."n'est pas conservé avec vos réponses. Il est geré dans une base de données séparée "
-						  ."et ne pourra pas être mis à jour pour indiquer que vous "
-						  ."avez completé ce questionnaire. Il n'y a aucun moyen pour faire correspondre "
-						  ."les invitations avec les réponses au questionnaire."); //New for 0.98rc9
+                                                  ."Ce questionnaire est anonyme.<br />"
+                                                  ."Les enregistrements conservés de votre questionnaire ne contiennent aucune "
+                                                  ."information d'identification à moins bien sûr qu'un question  "
+                                                  ."sur votre identité ai été posée dans le questionnaire. Si vous avez répondu à "
+                                                  ."un questionnaire utilisant une invitation pour vous permettre d'accéder au "
+                                                  ."questionnaire, vous pouvez être assurés que cet identifiant. "
+                                                  ."n'est pas conservé avec vos réponses. Il est geré dans une base de données séparée "
+                                                  ."et ne pourra pas être mis à jour pour indiquer que vous "
+                                                  ."avez completé ce questionnaire. Il n'y a aucun moyen pour faire correspondre "
+                                                  ."les invitations avec les réponses au questionnaire."); //New for 0.98rc9
 
 define("_THEREAREXQUESTIONS", "Il y a {NUMBEROFQUESTIONS} questions dans ce questionnaire."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "Il y a 1 question dans ce questionnaire."); //New for 0.98rc9 - singular version of above
 
 define ("_RG_REGISTER1", "Vous devez être enregistré pour répondre à ce questionnaire"); //NEW for 0.98rc9
 define ("_RG_REGISTER2", "Vous devez être enregistré pour ce questionnaire si vous désirez y participer.<br />\n"
-						."Saisissez vos coordonnées ci-dessous, et un email contenant le lien pour "
-						."participer à ce questionnaire vous sera immédiatement envoyé."); //NEW for 0.98rc9
+                                                ."Saisissez vos coordonnées ci-dessous, et un email contenant le lien pour "
+                                                ."participer à ce questionnaire vous sera immédiatement envoyé."); //NEW for 0.98rc9
 define ("_RG_EMAIL", "Addresse Email"); //NEW for 0.98rc9
-define ("_RG_FIRSTNAME", "Nom"); //NEW for 0.98rc9
-define ("_RG_LASTNAME", "Prénom"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "PrénomNom"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "Nom"); //NEW for 0.98rc9
 define ("_RG_INVALIDEMAIL", "L'email utilisé n'est pas valide. Veuillez reéssayer.");//NEW for 0.98rc9
 define ("_RG_USEDEMAIL", "L'email utilisé a déjà été enregistré.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "Confirmation d'enregistrement de {SURVEYNAME}");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "Merci de vous enregistre pour participer à ce questionnaire.<br /><br />\n"
-								   ."Un email a été envoyé à l'adresse que vous avez fournie dans les détails d'accés "
-								   ."pour ce questionnaire. Veuillez suivre ce lien dans cet email pour participer.<br /><br />\n"
-								   ."Administrateur du questionnaire {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+                                                                   ."Un email a été envoyé à l'adresse que vous avez fournie dans les détails d'accés "
+                                                                   ."pour ce questionnaire. Veuillez suivre ce lien dans cet email pour participer.<br /><br />\n"
+                                                                   ."Administrateur du questionnaire {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 ?>
