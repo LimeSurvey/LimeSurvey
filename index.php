@@ -214,7 +214,7 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	    echo "&token=".returnglobal('token');
 	}
 	echo "'>"._RESTART."</a><br />\n"
-		."\t\t<a href='javascript: window.close()'>"._CLOSEWIN_PS."</a>\n"
+		."\t\t<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a>\n"
 		."\t\t</font>\n"
 		."\t</td></tr>\n"
 		."\t</table>\n\t<br />\n";
@@ -944,7 +944,7 @@ function buildsurveysession()
 				."\t"._FURTHERINFO." {$thissurvey['adminname']} "
 				."(<a href='mailto:{$thissurvey['adminemail']}'>"
 				."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-				."\t<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
+				."\t<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
 			foreach(file("$thistpl/endpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -1007,7 +1007,7 @@ function buildsurveysession()
 			."\t"._FURTHERINFO." {$thissurvey['adminname']}"
 			." (<a href='mailto:{$thissurvey['adminemail']}'>"
 			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-			."\t<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
+			."\t<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
