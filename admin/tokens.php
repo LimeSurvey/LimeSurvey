@@ -925,7 +925,7 @@ if ($action == "upload")
 	$the_full_file_path = $homedir."/".$the_file_name;
 	if (!@copy($the_file, $the_path . "/" . $the_file_name)) 
 		{
-		form("<b><font color='red'>"._ERROR.: "</font>"._TC_UPLOADFAIL."</b>\n");
+		form("<b><font color='red'>"._ERROR.":</font> "._TC_UPLOADFAIL."</b>\n");
 		}
 		else
 		{
