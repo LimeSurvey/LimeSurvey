@@ -59,7 +59,11 @@ while ($esrow = mysql_fetch_array($esresult))
 	$surveyemailregister = $esrow['email_register'];
 	}
 if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
-
+if (!$surveyemailregister)
+	{
+	//Get the default email_confirm from the default admin lang file
+	$surveyemailregister = str_replace("\n", "\r\n", _TC_EMAILREGISTER);
+	}
 //Get the language file
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
