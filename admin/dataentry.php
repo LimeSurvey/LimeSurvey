@@ -33,20 +33,20 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$action = $_GET['action']; if (!$action) {$action = $_POST['action'];}
-$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
-$id = $_GET['id']; if (!$id) {$id = $_POST['id'];}
-$surveytable = $_GET['surveytable']; if (!$surveytable) {$surveytable = $_POST['surveytable'];}
+//$action = $_GET['action']; if (!$action) {$action = $_POST['action'];}
+//$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
+//$id = $_GET['id']; if (!$id) {$id = $_POST['id'];}
+//$surveytable = $_GET['surveytable']; if (!$surveytable) {$surveytable = $_POST['surveytable'];}
 
 include("config.php");
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-                                                     // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");                          // HTTP/1.0
-//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
+$action = returnglobal('action');
+$sid = returnglobal('sid');
+$id = returnglobal('id');
+$surveytable = returnglobal('surveytable');
+
+sendcacheheaders();
+
 $surveyoptions = browsemenubar();
 echo $htmlheader;
 echo "<table height='1'><tr><td></td></tr></table>\n";
@@ -55,30 +55,34 @@ echo "<table height='1'><tr><td></td></tr></table>\n";
 if (!mysql_selectdb ($databasename, $connect))
 	{
 	//echo "</table>\n";
-	echo "<table height='1'><tr><td></td></tr></table>\n";
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
-	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
-	echo _ST_NODB1."<br />\n";
-	echo _ST_NODB2."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n";
-	echo "</td></tr></table>\n";
-	echo "</body>\n</html>";
+	echo "<table height='1'><tr><td></td></tr></table>\n"
+		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."<b><font color='red'>"._ERROR."</font></b><br />\n"
+		._ST_NODB1."<br />\n"
+		._ST_NODB2."<br /><br />\n"
+		."<input $btstyle type='submit' value='"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		."</td></tr></table>\n"
+		."</body>\n</html>";
 	exit;
 	}
 if (!$sid && !$action)
 	{
 	//echo "</table>\n";
-	echo "<table height='1'><tr><td></td></tr></table>\n";
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
-	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
-	echo _DE_NOSID."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n";
-	echo "</td></tr></table>\n";
-	echo "</body>\n</html>";
+	echo "<table height='1'><tr><td></td></tr></table>\n"
+		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."<b><font color='red'>"._ERROR."</font></b><br />\n"
+		._DE_NOSID."<br /><br />\n"
+		."<input $btstyle type='submit' value='"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		."</td></tr></table>\n"
+		."</body>\n</html>";
 	exit;
 	}
 
@@ -97,12 +101,13 @@ if ($action == "edit" || $action == "")
 	
 if ($action == "insert")
 	{
-	echo "<table height='1'><tr><td></td></tr></table>\n";
-	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
-	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
-	echo "\t\t\t<b>Inserting data</b><br />\n";
-	echo "SID: $sid, ($surveytable)<br /><br />\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n"
+		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t\t\t<b>Inserting data</b><br />\n"
+		."SID: $sid, ($surveytable)<br /><br />\n";
 	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
@@ -261,25 +266,25 @@ if ($action == "insert")
 		$thisid=$frow['id'];
 		}
 	
-	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$sid'>"._DE_ADDANOTHER."</a>]<br />\n";
-	echo "\t\t\t[<a href='browse.php?sid=$sid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n";
-	echo "\t\t\t[<a href='browse.php?sid=$sid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n";
-	echo "\t</td></tr>\n";
-	echo "</table>\n";
-	//echo "<pre style='text-align: left'>$SQL</pre><br />\n"; //Debugging info
-	echo "</body>\n</html>";
+	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$sid'>"._DE_ADDANOTHER."</a>]<br />\n"
+		."\t\t\t[<a href='browse.php?sid=$sid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n"
+		."\t\t\t[<a href='browse.php?sid=$sid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n"
+		."\t</td></tr>\n"
+		."</table>\n"
+		."</body>\n</html>";
 	
 	}
 
 elseif ($action == "edit")
 	{
 
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
-	echo "$surveyheader";
-	echo "$surveyoptions";
-	echo "</table>\n";
-	echo "<table height='1'><tr><td></td></tr></table>\n";
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._BROWSERESPONSES."</b></td></tr>\n"
+		.$surveyheader
+		.$surveyoptions
+		."</table>\n"
+		."<table height='1'><tr><td></td></tr></table>\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$sid'";
@@ -367,20 +372,22 @@ elseif ($action == "edit")
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
-	echo "<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n";
-	echo "\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<b>"._DE_EDITING." (ID $id)</td></tr>\n";
-	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._DATAENTRY."</b></td></tr>\n"
+		."<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n"
+		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<b>"
+		._DE_EDITING." (ID $id)</td></tr>\n"
+		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 
 	while ($idrow = mysql_fetch_assoc($idresult))
 		{
 		for ($i=0; $i<$nfncount+1; $i++)
 			{
 			$answer = $idrow[$fnames[$i][0]];
-			echo "\t<tr>\n";
-			echo "\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont";
-			echo "<b>\n";
+			echo "\t<tr>\n"
+				."\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont"
+				."<b>\n";
 			if ($fnames[$i][3] != "A" && $fnames[$i][3] != "B" && $fnames[$i][3]!="C" && $fnames[$i][3] != "E" && $fnames[$i][3]!="P" && $fnames[$i][3] != "M") 
 				{
 				echo "\t\t\t{$fnames[$i][2]}\n";
@@ -389,8 +396,8 @@ elseif ($action == "edit")
 				{
 				echo "\t\t\t{$fnames[$i][2]}\n";
 				}
-			echo "\t\t</td>\n";
-			echo "\t\t<td valign='top'>\n";
+			echo "\t\t</td>\n"
+				."\t\t<td valign='top'>\n";
 			//echo "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info
 			switch ($fnames[$i][3])
 				{
@@ -409,23 +416,23 @@ elseif ($action == "edit")
 					echo "\t\t\t<input type='text' size='10' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
 					break;
 				case "G": //GENDER drop-down list
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
-					echo "\t\t\t\t<option value=''";
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">"._PLEASECHOOSE."..</option>\n";
-					echo "\t\t\t\t<option value='F'";
+					echo ">"._PLEASECHOOSE."..</option>\n"
+						."\t\t\t\t<option value='F'";
 					if ($idrow[$fnames[$i][0]] == "F") {echo " selected";}
-					echo ">"._FEMALE."</option>\n";
-					echo "\t\t\t\t<option value='M'";
+					echo ">"._FEMALE."</option>\n"
+						."\t\t\t\t<option value='M'";
 					if ($idrow[$fnames[$i][0]] == "M") {echo " selected";}
-					echo ">"._MALE."</option>\n";
-					echo "\t\t\t<select>\n";
+					echo ">"._MALE."</option>\n"
+						."\t\t\t<select>\n";
 					break;
 				case "L": //LIST drop-down/radio-button list
 					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 					$lresult = mysql_query($lquery);
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
-					echo "\t\t\t\t<option value=''";
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
 					echo ">"._PLEASECHOOSE."..</option>\n";
 					
@@ -440,8 +447,8 @@ elseif ($action == "edit")
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 					$lresult = mysql_query($lquery);
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
-					echo "\t\t\t\t<option value=''";
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
 					echo ">"._PLEASECHOOSE."..</option>\n";
 					
@@ -451,11 +458,11 @@ elseif ($action == "edit")
 						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
 						echo ">{$llrow['answer']}</option>\n";
 						}
-					echo "\t\t\t</select>\n";
 					$i++;
-					echo "\t\t\t<br />\n";
-					echo "\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>";
-					echo htmlspecialchars($idrow[$fnames[$i][0]]) . "</textarea>\n";
+					echo "\t\t\t</select>\n"
+						."\t\t\t<br />\n"
+						."\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>"
+						.htmlspecialchars($idrow[$fnames[$i][0]]) . "</textarea>\n";
 					break;
 
 				case "R": //RANKING TYPE QUESTION
@@ -474,69 +481,69 @@ elseif ($action == "edit")
 					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = mysql_query($ansquery);
 					$anscount = mysql_num_rows($ansresult);
-					echo "\t\t\t<script type='text/javascript'>\n";
-					echo "\t\t\t<!--\n";
-					echo "\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n";
-					echo "\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\$index=document.editsurvey.CHOICES_$thisqid.selectedIndex;\n";
-					echo "\t\t\t\t\tdocument.editsurvey.CHOICES_$thisqid.selectedIndex=-1;\n";
-					echo "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$b=i;\n";
-					echo "\t\t\t\t\t\t\$b += '';\n";	
-					echo "\t\t\t\t\t\t\$inputname=\"RANK_$thisqid\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$hiddenname=\"d$myfname\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$cutname=\"cut_$thisqid\"+i;\n";
-					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
-					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
-					echo "\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
-					echo "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
-					echo "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
-					echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n";
-					echo "\t\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n";
-					echo "\t\t\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n";
-					echo "\t\t\t\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t\t\ti=$anscount;\n";
-					echo "\t\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=true;\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t}\n";
-					echo "\t\t\t\tfunction deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n";
-					echo "\t\t\t\t\t{\n";
-					echo "\t\t\t\t\tvar qid='$thisqid';\n";
-					echo "\t\t\t\t\tvar lngth=qid.length+4;\n";
-					echo "\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n";
-					echo "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
-					echo "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
-					echo "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
-					echo "\t\t\t\t\tif (cutindex > 1)\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n";
-					echo "\t\t\t\t\t\t\$cut2name=\"d$myfname\"+(cutindex);\n";
-					echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
-					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\telse\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$cut2name=\"d$myfname\"+(cutindex);\n";
-					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n";
-					echo "\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n";
-					echo "\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=false;\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t}\n";
-					echo "\t\t\t//-->\n";
-					echo "\t\t\t</script>\n";	
+					echo "\t\t\t<script type='text/javascript'>\n"
+						."\t\t\t<!--\n"
+						."\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n"
+						."\t\t\t\t\t{\n"
+						."\t\t\t\t\t\$index=document.editsurvey.CHOICES_$thisqid.selectedIndex;\n"
+						."\t\t\t\t\tdocument.editsurvey.CHOICES_$thisqid.selectedIndex=-1;\n"
+						."\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\$b=i;\n"
+						."\t\t\t\t\t\t\$b += '';\n"
+						."\t\t\t\t\t\t\$inputname=\"RANK_$thisqid\"+\$b;\n"
+						."\t\t\t\t\t\t\$hiddenname=\"d$myfname\"+\$b;\n"
+						."\t\t\t\t\t\t\$cutname=\"cut_$thisqid\"+i;\n"
+						."\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n"
+						."\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n"
+						."\t\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n"
+						."\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n"
+						."\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n"
+						."\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n"
+						."\t\t\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n"
+						."\t\t\t\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n"
+						."\t\t\t\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t\t\ti=$anscount;\n"
+						."\t\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=true;\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t}\n"
+						."\t\t\t\tfunction deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n"
+						."\t\t\t\t\t{\n"
+						."\t\t\t\t\tvar qid='$thisqid';\n"
+						."\t\t\t\t\tvar lngth=qid.length+4;\n"
+						."\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n"
+						."\t\t\t\t\tcutindex=parseFloat(cutindex);\n"
+						."\t\t\t\t\tdocument.getElementById(\$name).value='';\n"
+						."\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n"
+						."\t\t\t\t\tif (cutindex > 1)\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n"
+						."\t\t\t\t\t\t\$cut2name=\"d$myfname\"+(cutindex);\n"
+						."\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n"
+						."\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\telse\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\$cut2name=\"d$myfname\"+(cutindex);\n"
+						."\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n"
+						."\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n"
+						."\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=false;\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t}\n"
+						."\t\t\t//-->\n"
+						."\t\t\t</script>\n";	
 					while ($ansrow = mysql_fetch_array($ansresult)) //Now we're getting the codes and answers
 						{
 						$answers[] = array($ansrow['code'], $ansrow['answer']);
@@ -561,20 +568,20 @@ elseif ($action == "edit")
 						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$j:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$j' id='RANK$j'";
 						if ($currentvalues[$k])
 							{
-							$ranklist .= " value='";
-							$ranklist .= $thistext;
-							$ranklist .= "'";
+							$ranklist .= " value='"
+									   . $thistext
+									   . "'";
 							}
-						$ranklist .= " onFocus=\"this.blur()\">\n";
-						$ranklist .= "\t\t\t\t\t\t<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
+						$ranklist .= " onFocus=\"this.blur()\">\n"
+								   . "\t\t\t\t\t\t<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
 						$chosen[]=""; //create array
 						if ($currentvalues[$k]) 
 							{
 							$ranklist .= $thiscode;
 							$chosen[]=array($thiscode, $thistext);
 							}
-						$ranklist .= "'>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='./images/cut.gif' title='"._REMOVEITEM."' ";
+						$ranklist .= "'>\n"
+								   . "\t\t\t\t\t\t<img src='./images/cut.gif' title='"._REMOVEITEM."' ";
 						if ($j != $existing)
 							{
 							$ranklist .= "style='display:none'";
@@ -592,22 +599,24 @@ elseif ($action == "edit")
 						}
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
 	
-					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n";
-					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t</tr>\n";
-					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n";
-					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURCHOICES.":</b><br />\n";
-					echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
-					echo "\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
-					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURRANKING.":</b><br />\n";
-					echo $ranklist;
-					echo "\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t</tr>\n";
-					echo "\t\t\t</table>\n";
-					echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
-					echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
+					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
+						."\t\t\t\t<tr>\n"
+						."\t\t\t\t</tr>\n"
+						."\t\t\t\t<tr>\n"
+						."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
+						."\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+						._YOURCHOICES.":</b><br />\n"
+						."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
+						."\t\t\t\t\t</td>\n"
+						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n"
+						."\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+						._YOURRANKING.":</b><br />\n"
+						.$ranklist
+						."\t\t\t\t\t</td>\n"
+						."\t\t\t\t</tr>\n"
+						."\t\t\t</table>\n"
+						."\t\t\t<input type='hidden' name='multi' value='$anscount' />\n"
+						."\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
 					$choicelist="";
 					$ranklist="";
 					unset($answers);
@@ -620,8 +629,8 @@ elseif ($action == "edit")
 						//echo substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
 						if (substr($fnames[$i][0], -5) == "other")
 							{
-							echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='";
-							echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+							echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 							}
 						else
 							{
@@ -640,29 +649,29 @@ elseif ($action == "edit")
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
 						if (substr($fnames[$i][0], -7) == "comment")
 							{
-							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value='";
-							echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></td>\n";
-							echo "\t</tr>\n";
+							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value='"
+								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></td>\n"
+								."\t</tr>\n";
 							}
 						elseif (substr($fnames[$i][0], -5) == "other")
 							{
-							echo "\t<tr>\n";
-							echo "\t\t<td>\n";
-							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' style='width: ";
-							echo strlen($idrow[$fnames[$i][0]])."em' value='";
-							echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
-							echo "\t\t</td>\n";
-							echo "\t\t<td>\n";
+							echo "\t<tr>\n"
+								."\t\t<td>\n"
+								."\t\t\t<input type='text' name='{$fnames[$i][0]}' style='width: "
+								.strlen($idrow[$fnames[$i][0]])."em' value='"
+								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n"
+								."\t\t</td>\n"
+								."\t\t<td>\n";
 							$i++;
-							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' size='50' value='";
-							echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
-							echo "\t\t</td>\n";
-							echo "\t</tr>\n";
+							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' size='50' value='"
+								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n"
+								."\t\t</td>\n"
+								."\t</tr>\n";
 							}
 						else
 							{
-							echo "\t<tr>\n";
-							echo "\t\t<td>$setfont<input type='checkbox' name=\"{$fnames[$i][0]}\" value='Y'";
+							echo "\t<tr>\n"
+								."\t\t<td>$setfont<input type='checkbox' name=\"{$fnames[$i][0]}\" value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
 							echo " />{$fnames[$i][6]}</td>\n";
 							}
@@ -672,30 +681,30 @@ elseif ($action == "edit")
 					$i--;
 					break;
 				case "N": //NUMERICAL TEXT
-					echo keycontroljs();
-					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' ";
-					echo "onKeyPress=\"return goodchars(event,'0123456789.,')\" />\n";					
+					echo keycontroljs()
+						."\t\t\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' "
+						."onKeyPress=\"return goodchars(event,'0123456789.,')\" />\n";					
 					break;
 				case "S": //SHORT FREE TEXT
-					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
-					echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
+						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 					break;
 				case "T": //LONG FREE TEXT
-					echo "\t\t\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>";
-					echo htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
+					echo "\t\t\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>"
+						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
 					break;
 				case "Y": //YES/NO radio-buttons
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
-					echo "\t\t\t\t<option value=''";
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">"._PLEASECHOOSE."..</option>\n";
-					echo "\t\t\t\t<option value='Y'";
+					echo ">"._PLEASECHOOSE."..</option>\n"
+						."\t\t\t\t<option value='Y'";
 					if ($idrow[$fnames[$i][0]] == "Y") {echo " selected";}
-					echo ">"._YES."</option>\n";
-					echo "\t\t\t\t<option value='N'";
+					echo ">"._YES."</option>\n"
+						."\t\t\t\t<option value='N'";
 					if ($idrow[$fnames[$i][0]] == "N") {echo " selected";}
-					echo ">"._NO."</option>\n";
-					echo "\t\t\t</select>\n";
+					echo ">"._NO."</option>\n"
+						."\t\t\t</select>\n";
 					break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 					echo "<table>\n";
@@ -703,17 +712,17 @@ elseif ($action == "edit")
 					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n";
-						echo "\t\t<td>$setfont\n";
+						echo "\t<tr>\n"
+							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
+							."\t\t<td>$setfont\n";
 						for ($j=1; $j<=5; $j++)
 							{
 							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
 							if ($idrow[$fnames[$i][0]] == $j) {echo " checked";}
 							echo " />$j&nbsp;\n";
 							}
-						echo "\t\t</td>\n";
-						echo "\t</tr>\n";
+						echo "\t\t</td>\n"
+							."\t</tr>\n";
 						$i++;
 						}
 					echo "</table>\n";
@@ -725,17 +734,17 @@ elseif ($action == "edit")
 					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n";
-						echo "\t\t<td>$setfont\n";
+						echo "\t<tr>\n"
+							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
+							."\t\t<td>$setfont\n";
 						for ($j=1; $j<=10; $j++)
 							{
 							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
 							if ($idrow[$fnames[$i][0]] == $j) {echo " checked";}
 							echo " />$j&nbsp;\n";
 							}
-						echo "\t\t</td>\n";
-						echo "\t</tr>\n";
+						echo "\t\t</td>\n"
+							."\t</tr>\n";
 						$i++;
 						}
 					$i--;
@@ -747,20 +756,20 @@ elseif ($action == "edit")
 					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n";
-						echo "\t\t<td>$setfont\n";
-						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='Y'";
+						echo "\t<tr>\n"
+							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
+							."\t\t<td>$setfont\n"
+							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-						echo " />"._YES."&nbsp;\n";
-						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='U'";
+						echo " />"._YES."&nbsp;\n"
+							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='U'";
 						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
-						echo " />"._UNCERTAIN."&nbsp\n";
-						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='N'";
+						echo " />"._UNCERTAIN."&nbsp\n"
+							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='N'";
 						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
-						echo " />"._NO."&nbsp;\n";
-						echo "\t\t</td>\n";
-						echo "\t</tr>\n";
+						echo " />"._NO."&nbsp;\n"
+							."\t\t</td>\n"
+							."\t</tr>\n";
 						$i++;
 						}
 					$i--;
@@ -772,20 +781,20 @@ elseif ($action == "edit")
 					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n";
-						echo "\t\t<td>$setfont\n";
-						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='I'";
+						echo "\t<tr>\n"
+							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
+							."\t\t<td>$setfont\n"
+							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='I'";
 						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-						echo " />Increase&nbsp;\n";
-						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='S'";
+						echo " />Increase&nbsp;\n"
+							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='S'";
 						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
-						echo " />Same&nbsp\n";
-						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='D'";
+						echo " />Same&nbsp\n"
+							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='D'";
 						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
-						echo " />Decrease&nbsp;\n";
-						echo "\t\t</td>\n";
-						echo "\t</tr>\n";
+						echo " />Decrease&nbsp;\n"
+							."\t\t</td>\n"
+							."\t</tr>\n";
 						$i++;
 						}
 					$i--;
@@ -797,8 +806,8 @@ elseif ($action == "edit")
 					while ($fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</td>\n";
+						echo "\t<tr>\n"
+							."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</td>\n";
 						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$fnames[$i][8]}'";
 						$fresult = mysql_query($fquery);
 						echo "\t\t<td>$setfont\n";
@@ -808,49 +817,46 @@ elseif ($action == "edit")
 							if ($idrow[$fnames[$i][0]] == $frow['code']) {echo " checked";}
 							echo " />".$frow['title']."&nbsp;\n";
 							}
-						echo "\t\t</td>\n";
-						echo "\t</tr>\n";
+						echo "\t\t</td>\n"
+							."\t</tr>\n";
 						$i++;
 						}
 					$i--;
 					echo "</table>\n";
 					break;
 				default: //This really only applies to tokens for non-private surveys
-					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
-					echo $idrow[$fnames[$i][0]] . "'>\n";
+					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
+						.$idrow[$fnames[$i][0]] . "'>\n";
 					break;
 				}
-			//echo "\t\t\t$setfont{$idrow[$fnames[$i][0]]}\n"; //Debugging info
-			//echo $fnames[$i][0], $fnames[$i][1], $fnames[$i][2], "\n"; //Debugging info
-			echo "\t\t</td>\n";
-			echo "\t</tr>\n";
-			echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+				."\t\t</td>\n"
+				."\t</tr>\n"
+				."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 			}
 		}
-	echo "</table>\n";
-	echo "<table height='1'><tr><td></td></tr></table>\n";
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td bgcolor='#CCCCCC' align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._DE_UPDATE."'>\n";
-	echo "\t\t\t<input type='hidden' name='id' value='$id'>\n";
-	echo "\t\t\t<input type='hidden' name='sid' value='$sid'>\n";
-	echo "\t\t\t<input type='hidden' name='action' value='update'>\n";
-	echo "\t\t\t<input type='hidden' name='surveytable' value='{$dbprefix}survey_$sid'>\n";
-	echo "\t\t</td>\n";
-	echo "\t\t</form>\n";
-	echo "\t</tr>\n";
-	echo "</table>\n";
+	echo "</table>\n"
+		."<table height='1'><tr><td></td></tr></table>\n"
+		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr>\n"
+		."\t\t<td bgcolor='#CCCCCC' align='center'>\n"
+		."\t\t\t<input type='submit' $btstyle value='"._DE_UPDATE."'>\n"
+		."\t\t\t<input type='hidden' name='id' value='$id'>\n"
+		."\t\t\t<input type='hidden' name='sid' value='$sid'>\n"
+		."\t\t\t<input type='hidden' name='action' value='update'>\n"
+		."\t\t\t<input type='hidden' name='surveytable' value='{$dbprefix}survey_$sid'>\n"
+		."\t\t</td>\n"
+		."\t\t</form>\n"
+		."\t</tr>\n"
+		."</table>\n";
 	}
 	
 
 elseif ($action == "update")
 	{
-	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
-	//echo "$surveyoptions";
-	echo "\t<tr><td align='center'>\n";
-	//echo "<br /><b>Updating data for Survey $sid, tablename $surveytable - Record No $id</b><br /><br />\n";
+	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr><td align='center'>\n";
 	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
@@ -921,7 +927,6 @@ elseif ($action == "update")
 		else
 			{
 			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			//echo $i2query;
 			$i2result = mysql_query($i2query);
 			$otherexists = "";
 			while ($i2row = mysql_fetch_array($i2result))
@@ -971,42 +976,43 @@ elseif ($action == "update")
 	if ($_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 	$updateqr .= " WHERE id=$id";
 	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
-	echo "<font color='green'><b>"._SUCCESS."</b></font><br />\n";
-	echo _DE_UPDATED."<br /><br />\n";
-	echo "<a href='browse.php?sid=$sid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n";
-	echo "<a href='browse.php?sid=$sid&action=all'>"._DE_BROWSE."</a><br />\n";
-	//echo "<pre style='text-align: left'>$updateqr</pre>"; //Debugging info
-	echo "</td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	echo "<font color='green'><b>"._SUCCESS."</b></font><br />\n"
+		._DE_UPDATED."<br /><br />\n"
+		."<a href='browse.php?sid=$sid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
+		."<a href='browse.php?sid=$sid&action=all'>"._DE_BROWSE."</a><br />\n"
+		."</td></tr></table>\n"
+		."</body>\n</html>\n";
 	}
 
 elseif ($action == "delete")
 	{
-	echo "<table height='1'><tr><td></td></tr></table>\n";
-	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
-	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
-	echo "\t\t\t<b>$surveyname</b><br />\n";
-	echo "\t\t\t$setfont$surveydesc\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n"
+		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t\t\t<b>$surveyname</b><br />\n"
+		."\t\t\t$setfont$surveydesc\n"
+		."\t\t</td>\n"
+		."\t</tr>\n";
 	$delquery = "DELETE FROM $surveytable WHERE id=$id";
 	echo "\t<tr>\n";
 	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
-	echo "\t\t<td align='center'><br />$setfont<b>"._DE_DELRECORD." (ID: $id)</b><br /><br />\n";
-	echo "\t\t\t<a href='browse.php?sid=$sid&action=all'>"._DE_BROWSE."</a>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "</table>\n";
-	echo "</body>\n</html>\n";
+	echo "\t\t<td align='center'><br />$setfont<b>"._DE_DELRECORD." (ID: $id)</b><br /><br />\n"
+		."\t\t\t<a href='browse.php?sid=$sid&action=all'>"._DE_BROWSE."</a>\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."</table>\n"
+		."</body>\n</html>\n";
 	}
 	
 else
 	{
 	// PRESENT SURVEY DATAENTRY SCREEN
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
-	echo $surveyoptions;
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._BROWSERESPONSES."</b></td></tr>\n"
+		.$surveyoptions;
 	$desquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery);
 	while ($desrow = mysql_fetch_array($desresult))
@@ -1019,36 +1025,38 @@ else
 		$surveydatestamp = $desrow['datestamp'];
 		}
 	//if ($surveyactive == "Y") {echo "$surveyoptions\n";}
-	echo "<table height='1'><tr><td></td></tr></table>\n";
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
-	echo "\t<tr bgcolor='#777777'>\n";
-	echo "\t\t<td colspan='3' align='center'><font color='white'>\n";
-	echo "\t\t\t<b>$surveyname</b>\n";
-	echo "\t\t\t<br>$setfont$surveydesc\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "\t<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n"
+		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><b>"
+		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr bgcolor='#777777'>\n"
+		."\t\t<td colspan='3' align='center'><font color='white'>\n"
+		."\t\t\t<b>$surveyname</b>\n"
+		."\t\t\t<br>$setfont$surveydesc\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."\t<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n";
 	
 	if ($surveyprivate == "N") //Give entry field for token id
 		{
-		echo "\t<tr>\n";
-		echo "\t\t<td valign='top' width='1%'></td>\n";
-		echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>"._TOKEN.":</b></font></td>\n";
-		echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
-		echo "\t\t\t<input type='text' name='token'>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
+		echo "\t<tr>\n"
+			."\t\t<td valign='top' width='1%'></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'>$setfont<b>"._TOKEN.":</b></font></td>\n"
+			."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n"
+			."\t\t\t<input type='text' name='token'>\n"
+			."\t\t</td>\n"
+			."\t</tr>\n";
 		}
 	if ($surveydatestamp == "Y") //Give datestampentry field
 		{
-		echo "\t<tr>\n";
-		echo "\t\t<td valign='top' width='1%'></td>\n";
-		echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>"._DATESTAMP.":</b></font></td>\n";
-		echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
-		echo "\t\t\t<input type='text' name='datestamp' value='$localtimedate'>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
+		echo "\t<tr>\n"
+			."\t\t<td valign='top' width='1%'></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'>$setfont<b>"
+			._DATESTAMP.":</b></font></td>\n"
+			."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n"
+			."\t\t\t<input type='text' name='datestamp' value='$localtimedate'>\n"
+			."\t\t</td>\n"
+			."\t</tr>\n";
 		}
 
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
@@ -1059,9 +1067,9 @@ else
 		{
 		$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid={$degrow['gid']}";
 		$deqresult = mysql_query($deqquery);
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<b>{$degrow['group_name']}</td>\n";
-		echo "\t</tr>\n";
+		echo "\t<tr>\n"
+			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<b>{$degrow['group_name']}</td>\n"
+			."\t</tr>\n";
 		$gid = $degrow['gid'];
 		
 		//Alternate bgcolor for different groups
@@ -1085,7 +1093,6 @@ else
 			while ($distinctrow=mysql_fetch_array($distinctresult))
 				{
 				if ($x > 0) {$explanation .= " <i>"._DE_AND."</i><br />";}
-				//$explanation .= "if you answered ";
 				$conquery="SELECT cid, cqid, {$dbprefix}questions.title, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
 				$conresult=mysql_query($conquery);
 				while ($conrow=mysql_fetch_array($conresult))
@@ -1145,15 +1152,15 @@ else
 
 			$qid = $deqrow['qid'];
 			$fieldname = "$sid"."X"."$gid"."X"."$qid";
-			echo "\t<tr bgcolor='$bgc'>\n";
-			echo "\t\t<td valign='top' width='1%'>$setfont<font size='1'>{$deqrow['title']}</font></font></td>\n";
-			echo "\t\t<td valign='top' align='right' width='30%'>$setfont";
+			echo "\t<tr bgcolor='$bgc'>\n"
+				."\t\t<td valign='top' width='1%'>$setfont<font size='1'>{$deqrow['title']}</font></font></td>\n"
+				."\t\t<td valign='top' align='right' width='30%'>$setfont";
 			if ($deqrow['mandatory']=="Y") //question is mandatory
 				{
 				echo "<font color='red'>*</font>";
 				}
-			echo "</font><b>{$deqrow['question']}</b></td>\n";
-			echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
+			echo "</font><b>{$deqrow['question']}</b></td>\n"
+				."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
 			//DIFFERENT TYPES OF DATA FIELD HERE
 			if ($deqrow['help'])
 				{
@@ -1164,8 +1171,8 @@ else
 			switch($deqrow['type'])
 				{
 				case "5": //5 POINT CHOICE radio-buttons
-					echo "\t\t\t<select name='$fieldname'>\n";
-					echo "\t\t\t\t<option value=''>"._NOANSWER."</option>\n";
+					echo "\t\t\t<select name='$fieldname'>\n"
+						."\t\t\t\t<option value=''>"._NOANSWER."</option>\n";
 					for ($x=1; $x<=5; $x++)
 						{
 						echo "\t\t\t\t<option value='$x'>$x</option>\n";
@@ -1176,11 +1183,11 @@ else
 					echo "\t\t\t<input type='text' name='$fieldname' size='10' />\n";
 					break;
 				case "G": //GENDER drop-down list
-					echo "\t\t\t<select name='$fieldname'>\n";
-					echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";
-					echo "\t\t\t\t<option value='F'>"._FEMALE."</option>\n";
-					echo "\t\t\t\t<option value='M'>"._MALE."</option>\n";
-					echo "\t\t\t</select>\n";
+					echo "\t\t\t<select name='$fieldname'>\n"
+						."\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n"
+						."\t\t\t\t<option value='F'>"._FEMALE."</option>\n"
+						."\t\t\t\t<option value='M'>"._MALE."</option>\n"
+						."\t\t\t</select>\n";
 					break;
 				case "Q": //MULTIPLE SHORT TEXT
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
@@ -1188,11 +1195,11 @@ else
 					echo "\t\t\t<table>\n";
 					while ($dearow = mysql_fetch_array($dearesult))
 						{
-						echo "\t\t\t\t<tr><td align='right'>$setfont";
-						echo $dearow['answer'];
-						echo "</td>\n";
-						echo "\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}'></td>\n";
-						echo "\t\t\t\t</tr>\n";
+						echo "\t\t\t\t<tr><td align='right'>$setfont"
+							.$dearow['answer']
+							."</td>\n"
+							."\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}'></td>\n"
+							."\t\t\t\t</tr>\n";
 						}
 					echo "\t\t\t</table>\n";
 					break;
@@ -1220,79 +1227,79 @@ else
 						echo ">{$dearow['answer']}</option>\n";
 						}
 					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
-					echo "\t\t\t</select>\n";
-					echo "\t\t\t<br />"._COMMENT.":<br />\n";
-					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname";
-					echo "comment'>$idrow[$i]</textarea>\n";
+					echo "\t\t\t</select>\n"
+						."\t\t\t<br />"._COMMENT.":<br />\n"
+						."\t\t\t<textarea cols='40' rows='5' name='$fieldname"
+						."comment'>$idrow[$i]</textarea>\n";
 					break;
 				case "R": //RANKING TYPE QUESTION
 					$thisqid=$deqrow['qid'];
 					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = mysql_query($ansquery);
 					$anscount = mysql_num_rows($ansresult);
-					echo "\t\t\t<script type='text/javascript'>\n";
-					echo "\t\t\t<!--\n";
-					echo "\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n";
-					echo "\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\$index=document.addsurvey.CHOICES_$thisqid.selectedIndex;\n";
-					echo "\t\t\t\t\tdocument.addsurvey.CHOICES_$thisqid.selectedIndex=-1;\n";
-					echo "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$b=i;\n";
-					echo "\t\t\t\t\t\t\$b += '';\n";
-					echo "\t\t\t\t\t\t\$inputname=\"RANK_$thisqid\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$hiddenname=\"d$fieldname\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$cutname=\"cut_$thisqid\"+i;\n";
-					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
-					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
-					echo "\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
-					echo "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
-					echo "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
-					echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n";
-					echo "\t\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n";
-					echo "\t\t\t\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n";
-					echo "\t\t\t\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t\t\ti=$anscount;\n";
-					echo "\t\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=true;\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t}\n";
-					echo "\t\t\t\tfunction deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n";
-					echo "\t\t\t\t\t{\n";
-					echo "\t\t\t\t\tvar qid='$thisqid';\n";
-					echo "\t\t\t\t\tvar lngth=qid.length+4;\n";
-					echo "\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n";
-					echo "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
-					echo "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
-					echo "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
-					echo "\t\t\t\t\tif (cutindex > 1)\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n";
-					echo "\t\t\t\t\t\t\$cut2name=\"d$fieldname\"+(cutindex);\n";
-					echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
-					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\telse\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$cut2name=\"d$fieldname\"+(cutindex);\n";
-					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n";
-					echo "\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n";
-					echo "\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n";
-					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=false;\n";
-					echo "\t\t\t\t\t\t}\n";
-					echo "\t\t\t\t\t}\n";
-					echo "\t\t\t//-->\n";
-					echo "\t\t\t</script>\n";	
+					echo "\t\t\t<script type='text/javascript'>\n"
+						."\t\t\t<!--\n"
+						."\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n"
+						."\t\t\t\t\t{\n"
+						."\t\t\t\t\t\$index=document.addsurvey.CHOICES_$thisqid.selectedIndex;\n"
+						."\t\t\t\t\tdocument.addsurvey.CHOICES_$thisqid.selectedIndex=-1;\n"
+						."\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\$b=i;\n"
+						."\t\t\t\t\t\t\$b += '';\n"
+						."\t\t\t\t\t\t\$inputname=\"RANK_$thisqid\"+\$b;\n"
+						."\t\t\t\t\t\t\$hiddenname=\"d$fieldname\"+\$b;\n"
+						."\t\t\t\t\t\t\$cutname=\"cut_$thisqid\"+i;\n"
+						."\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n"
+						."\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n"
+						."\t\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
+						."\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n"
+						."\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n"
+						."\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n"
+						."\t\t\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n"
+						."\t\t\t\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n"
+						."\t\t\t\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t\t\ti=$anscount;\n"
+						."\t\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=true;\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t}\n"
+						."\t\t\t\tfunction deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n"
+						."\t\t\t\t\t{\n"
+						."\t\t\t\t\tvar qid='$thisqid';\n"
+						."\t\t\t\t\tvar lngth=qid.length+4;\n"
+						."\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n"
+						."\t\t\t\t\tcutindex=parseFloat(cutindex);\n"
+						."\t\t\t\t\tdocument.getElementById(\$name).value='';\n"
+						."\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n"
+						."\t\t\t\t\tif (cutindex > 1)\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n"
+						."\t\t\t\t\t\t\$cut2name=\"d$fieldname\"+(cutindex);\n"
+						."\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n"
+						."\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\telse\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\t\$cut2name=\"d$fieldname\"+(cutindex);\n"
+						."\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n"
+						."\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n"
+						."\t\t\t\t\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n"
+						."\t\t\t\t\t\t{\n"
+						."\t\t\t\t\t\tdocument.getElementById('CHOICES_$thisqid').disabled=false;\n"
+						."\t\t\t\t\t\t}\n"
+						."\t\t\t\t\t}\n"
+						."\t\t\t//-->\n"
+						."\t\t\t</script>\n";
 					while ($ansrow = mysql_fetch_array($ansresult))
 						{
 						$answers[] = array($ansrow['code'], $ansrow['answer']);
