@@ -388,8 +388,8 @@ switch ($ia[4])
 			$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(document.phpsurveyor.RANK$i.value, document.phpsurveyor.fvalue$i.value, document.phpsurveyor.RANK$i.name, this.id)\"><br />\n";
 			$inputnames[]=$myfname;
 			}
-		
-		$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
+
+		$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' $choicewidth id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
 		if ($parser_version <= "4.2.0")
 			{
 			foreach ($chosen as $chs) {$choose[]=$chs[0];}
@@ -398,6 +398,7 @@ switch ($ia[4])
 				if (!in_array($ans[0], $choose))
 					{
 					$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+					if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
 					}
 				}
 			}
@@ -408,6 +409,7 @@ switch ($ia[4])
 				if (!in_array($ans, $chosen))
 					{
 					$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+					if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
 					}
 				}
 			}
@@ -418,8 +420,8 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
-		$answer .= "\t\t\t\t\t\tClick on an item in the list on the left, starting with your<br />";
-		$answer .= "\t\t\t\t\t\thighest ranking item, moving through to your lowest ranking item.";
+		$answer .= "\t\t\t\t\t\tClick on an item in the choices list, starting with your highest<br />";
+		$answer .= "\t\t\t\t\t\tranking item, moving through to your lowest ranking item.";
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t\t<tr>\n";
@@ -427,14 +429,24 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;Your Choices:</b><br />\n";
 		$answer .= "&nbsp;".$choicelist;
 		$answer .= "\t\t\t\t\t&nbsp;</td>\n";
-		$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>$setfont\n";
-		$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Ranking:</b><br />\n";
+		if ($maxselectlength > 60) 
+			{
+			$answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+			$ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
+			$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' class='rank'>$setfont\n";
+			$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;Your Ranking:</b><br />\n";
+			}
+		else
+			{
+			$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>$setfont\n";
+			$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Ranking:</b><br />\n";
+			}
 		$answer .= $ranklist;
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
-		$answer .= "\t\t\t\t\t\tClick on the scissors next to each item on the right<br />";
+		$answer .= "\t\t\t\t\t\tClick on the scissors next to each ranked item<br />";
 		$answer .= "\t\t\t\t\t\tto remove the last entry in your ranked list.";
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
