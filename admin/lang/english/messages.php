@@ -192,4 +192,15 @@ define(_AC_NOTACTIVATED, "Survey could not be actived.");
 define(_AC_NOTPRIVATE, "This is not an anonymous survey. A token table must also be created.");
 define(_AC_CREATETOKENS, "Initialise Tokens");
 define(_AC_SURVEYACTIVE, "This survey is now active, and responses can be recorded.");
+define(_AC_DEACTIVATE_MESSAGE1, "In an active survey, a table is created to store all the data-entry records.");
+define(_AC_DEACTIVATE_MESSAGE2, "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.");
+define(_AC_DEACTIVATE_MESSAGE3, "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.");
+define(_AC_DEACTIVATE_MESSAGE4, "Your responses table will be renamed to:");
+define(_AC_DEACTIVATE_MESSAGE5, "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.");
+define(_AC_DEACTIVATE, "De-Activate");
+define(_AC_DEACTIVATED_MESSAGE1, "The responses table has been renamed to: ");
+define(_AC_DEACTIVATED_MESSAGE2, "The responses to this survey are no longer available using PHPSurveyor.");
+define(_AC_DEACTIVATED_MESSAGE3, "You should note the name of this table in case you need to access this information later.");
+define(_AC_DEACTIVATED_MESSAGE4, "The tokens table associated with this survey has been renamed to: ");
+
 ?>
