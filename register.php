@@ -46,30 +46,8 @@ if (!isset($sid))
     exit;
 	}
 
-$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
-$esresult = mysql_query($esquery);
-while ($esrow = mysql_fetch_array($esresult))
-	{
-	$surveyname = $esrow['short_title'];
-	$surveydescription = $esrow['description'];
-	$surveyadmin = $esrow['admin'];
-	$surveyadminemail = $esrow['adminemail'];
-	$surveytemplate = $esrow['template'];
-	$surveylanguage = $esrow['language'];
-	$surveyemailregister = $esrow['email_register'];
-	}
-if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
-if (!$surveyemailregister)
-	{
-	//Get the default email_confirm from the default admin lang file
-	$surveyemailregister = str_replace("\n", "\r\n", _TC_EMAILREGISTER);
-	}
-//Get the language file
-$langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
-//Use the default language file if the $thissurvey['language'] file doesn't exist
-if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-require_once($langfilename);
+$thissurvey=getSurveyInfo($sid);
+loadPublicLangFile($sid);
 
 //Check that the email is a valid style address
 if (!validate_email(returnglobal('register_email'))) 
@@ -123,12 +101,11 @@ $query = "INSERT INTO {$dbprefix}tokens_$sid\n"
 $result = mysql_query($query) or die ($query."<br />".mysql_error());
 $tid=mysql_insert_id();
 
-//$message=_RG_EMAILINVITATION;
-$message=$surveyemailregister;
-$message=str_replace("{ADMINNAME}", $surveyadmin, $message);
-$message=str_replace("{ADMINEMAIL}", $surveyadminemail, $message);
-$message=str_replace("{SURVEYNAME}", $surveyname, $message);
-$message=str_replace("{SURVEYDESCRIPTION}", $surveydescription, $message);
+$message=$thissurvey['email_register'];
+$message=str_replace("{ADMINNAME}", $thissurvey['adminname'], $message);
+$message=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $message);
+$message=str_replace("{SURVEYNAME}", $thissurvey['name'], $message);
+$message=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $message);
 $message=str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token=$newtoken", $message);
 $message=str_replace("{FIRSTNAME}", returnglobal('register_firstname'), $message);
 $message=str_replace("{LASTNAME}", returnglobal('register_lastname'), $message);
@@ -136,14 +113,14 @@ $message=str_replace("{ATTRIBUTE_1}", returnglobal('register_attribute1'), $mess
 $message=str_replace("{ATTRIBUTE_2}", returnglobal('register_attribute2'), $message);
 //$message=str_replace("\n", "\r\n", $message);
 
-$headers = "From: $surveyadmin <$surveyadminemail>\r\n"
+$headers = "From: {$thissurvey['adminname']} <{$thissurvey['adminemail']}>\r\n"
 		 . "X-Mailer: $sitename Emailer (phpsurveyor.sourceforge.net)\r\n";
 
-$subject=_RG_EMAILSUBJECT;
-$subject=str_replace("{ADMINNAME}", $surveyadmin, $subject);
-$subject=str_replace("{ADMINEMAIL}", $surveyadminemail, $subject);
-$subject=str_replace("{SURVEYNAME}", $surveyname, $subject);
-$subject=str_replace("{SURVEYDESCRIPTION}", $surveydescription, $subject);
+$subject=$thissurvey['email_register_subj'];
+$subject=str_replace("{ADMINNAME}", $thissurvey['adminname'], $subject);
+$subject=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $subject);
+$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $subject);
+$subject=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $subject);
 
 $message=crlf_lineendings($message);
 
@@ -155,9 +132,9 @@ if (mail(returnglobal('register_email'), $subject, $message, $headers))
 			."SET sent='Y' WHERE tid=$tid";
 	$result=mysql_query($query) or die ("$query<br />".mysql_error());
 	$html.="<center>"._RG_REGISTRATIONCOMPLETE;
-	$html=str_replace("{ADMINNAME}", $surveyadmin, $html);
-	$html=str_replace("{ADMINEMAIL}", $surveyadminemail, $html);
-	$html=str_replace("{SURVEYNAME}", $surveyname, $html);
+	$html=str_replace("{ADMINNAME}", $thissurvey['adminname'], $html);
+	$html=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $html);
+	$html=str_replace("{SURVEYNAME}", $thissurvey['name'], $html);
 	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: self.close()' value='"._CLOSEWIN_PS."'></center>\n";
 	}
 else
@@ -167,7 +144,7 @@ else
 
 //PRINT COMPLETED PAGE
 if (!$publicdir) {$publicdir=".";}
-if (!$surveytemplate) {$thistpl="$publicdir/templates/default";} else {$thistpl="$publicdir/templates/$surveytemplate";}
+if (!$thissurvey['template']) {$thistpl="$publicdir/templates/default";} else {$thistpl="$publicdir/templates/{$thissurvey['template']}";}
 if (!is_dir($thistpl)) {$thistpl="$publicdir/templates/default";}
 
 sendcacheheaders();
@@ -189,14 +166,14 @@ foreach(file("$thistpl/endpage.pstpl") as $op)
 	
 function templatereplace1($line)
 	{
-	global $surveyname, $surveydescription, $surveytemplate, $sid; 
+	global $thissurvey, $sid;
 	global $publicurl, $templatedir, $token;
 	
-	if ($surveytemplate) {$templateurl="$publicurl/templates/$surveytemplate/";}
+	if ($thissurvey['template']) {$templateurl="$publicurl/templates/{$thissurvey['template']}/";}
 	else {$templateurl="$publicurl/templates/default/";}
 
-	$line=str_replace("{SURVEYNAME}", $surveyname, $line);
-	$line=str_replace("{SURVEYDESCRIPTION}", $surveydescription, $line);
+	$line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
+	$line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
 	$line=str_replace("{TOKEN}", $token, $line);
 	$line=str_replace("{SID}", $sid, $line);
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);

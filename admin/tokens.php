@@ -590,22 +590,10 @@ if (returnglobal('action') == "email")
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
-		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
-		$esresult = mysql_query($esquery);
-		while ($esrow = mysql_fetch_array($esresult))
-			{
-			$surveyname = $esrow['short_title'];
-			$surveydescription = $esrow['description'];
-			$surveyadmin = $esrow['admin'];
-			$surveyadminemail = $esrow['adminemail'];
-			$surveytemplate = $esrow['template'];
-			$surveyemailinvite = $esrow['email_invite'];
-			}
-		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
-		if (!$surveyemailinvite) {$surveyemailinvite=str_replace("\n", "\r\n", _TC_EMAILINVITE);}
+		$thissurvey=getSurveyInfo($sid);
+		if (!$thissurvey['email_invite']) {$thissurvey['email_invite']=str_replace("\n", "\r\n", _TC_EMAILINVITE);}
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."<form method='post'>\n";
-		//echo "\t<tr><td colspan='2' bgcolor='#555555' align='center'>$setfont<font color='white'><b>Send Invitation";
 		if (isset($_GET['tid']) && $_GET['tid']) 
 			{
 			echo "<tr><td bgcolor='silver' colspan='2'>$setfont<font size='1'>"
@@ -614,22 +602,22 @@ if (returnglobal('action') == "email")
 			}
 		echo "\t<tr>\n"
 			."\t\t<td align='right'>$setfont<b>"._FROM.":</b></font></td>\n"
-			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"$surveyadmin <$surveyadminemail>\" /></td>\n"
+			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right'>$setfont<b>"._SUBJECT.":</b></font></td>\n";
-		$subject=str_replace("{SURVEYNAME}", $surveyname, _TC_INVITESUBJECT);
+		$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_invite_subj']);
 		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value=\"$subject\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' valign='top'>$setfont<b>"._MESSAGE.":</b></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-		$textarea = $surveyemailinvite;
-		$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
-		$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
-		$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
-		$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
+		$textarea = $thissurvey['email_invite'];
+		$textarea = str_replace("{ADMINNAME}", $thissurvey['adminname'], $textarea);
+		$textarea = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $textarea);
+		$textarea = str_replace("{SURVEYNAME}", $thissurvey['name'], $textarea);
+		$textarea = str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $textarea);
 		echo $textarea;
 		echo "\t\t\t</textarea>\n"
 			."\t\t</td>\n"
@@ -747,28 +735,17 @@ if (returnglobal('action') == "remind")
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
-		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
-		$esresult = mysql_query($esquery);
-		while ($esrow = mysql_fetch_array($esresult))
-			{
-			$surveyname = $esrow['short_title'];
-			$surveydescription = $esrow['description'];
-			$surveyadmin = $esrow['admin'];
-			$surveyadminemail = $esrow['adminemail'];
-			$surveytemplate = $esrow['template'];
-			$surveyremindemail = $esrow['email_remind'];
-			}
-		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
-		if (!$surveyremindemail) {$surveyremindemail=str_replace("\n", "\r\n", _TC_EMAILREMIND);}
+		$thissurvey=getSurveyInfo($sid);
+		if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", _TC_EMAILREMIND);}
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."\t<form method='post' action='$homeurl/tokens.php'>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' width='150'>$setfont<b>"._FROM.":</b></font></td>\n"
-			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"$surveyadmin <$surveyadminemail>\" /></td>\n"
+			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' width='150'>$setfont<b>"._SUBJECT.":</b></font></td>\n";
-		$subject=str_replace("{SURVEYNAME}", $surveyname, _TC_REMINDSUBJECT);
+		$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_remind_subj']);
 		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='$subject' /></td>\n"
 			."\t</tr>\n";
 		if (!isset($_GET['tid']) || !$_GET['tid'])
@@ -793,11 +770,11 @@ if (returnglobal('action') == "remind")
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
 
-		$textarea = $surveyremindemail;
-		$textarea = str_replace("{ADMINNAME}", $surveyadmin, $textarea);
-		$textarea = str_replace("{ADMINEMAIL}", $surveyadminemail, $textarea);
-		$textarea = str_replace("{SURVEYNAME}", $surveyname, $textarea);
-		$textarea = str_replace("{SURVEYDESCRIPTION}", $surveydescription, $textarea);
+		$textarea = $thissurvey['email_remind'];
+		$textarea = str_replace("{ADMINNAME}", $thissurvey['adminname'], $textarea);
+		$textarea = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $textarea);
+		$textarea = str_replace("{SURVEYNAME}", $thissurvey['name'], $textarea);
+		$textarea = str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $textarea);
 		echo $textarea;
 
 		echo "\t\t\t</textarea>\n"

@@ -571,24 +571,33 @@ elseif ($action == "insertnewsurvey")
 			$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 			$_POST['attribute1'] = addcslashes($_POST['attribute1'], "'");
 			$_POST['attribute2'] = addcslashes($_POST['attribute2'], "'");
+			$_POST['email_invite_subj'] = addcslashes($_POST['email_invite_subj'], "'");
 			$_POST['email_invite'] = addcslashes($_POST['email_invite'], "'");
+			$_POST['email_remind_subj'] = addcslashes($_POST['email_remind_subj'], "'");
 			$_POST['email_remind'] = addcslashes($_POST['email_remind'], "'");
+			$_POST['email_register_subj'] = addcslashes($_POST['email_register_subj'], "'");
 			$_POST['email_register'] = addcslashes($_POST['email_register'], "'");
+			$_POST['email_confirm_subj'] = addcslashes($_POST['email_confirm_subj'], "'");
 			$_POST['email_confirm'] = addcslashes($_POST['email_confirm'], "'");
 			}
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
 				  . "(sid, short_title, description, admin, active, welcome, expires, "
 				  . "adminemail, private, faxto, format, template, url, urldescrip, "
 				  . "language, datestamp, usecookie, notification, allowregister, attribute1, attribute2, "
-				  . "email_invite, email_remind, email_register, email_confirm, allowsave, autoredirect, allowprev)\n"
+				  . "email_invite_subj, email_invite, email_remind_subj, email_remind, "
+				  . "email_register_subj, email_register, email_confirm_subj, email_confirm, "
+				  . "allowsave, autoredirect, allowprev)\n"
 				  . "VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',\n"
 				  . "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
 				  . "'{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',\n"
 				  . "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
 				  . "'{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}',\n"
 				  . "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
-				  . "'{$_POST['attribute1']}', '{$_POST['attribute2']}', '{$_POST['email_invite']}', \n"
-				  . "'{$_POST['email_remind']}', '{$_POST['email_register']}', '{$_POST['email_confirm']}', \n"
+				  . "'{$_POST['attribute1']}', '{$_POST['attribute2']}', '{$_POST['email_invite_subj']}',\n"
+				  . "'{$_POST['email_invite']}', '{$_POST['email_remind_subj']}',\n"
+				  . "'{$_POST['email_remind']}', '{$_POST['email_register_subj']}',\n"
+				  . "'{$_POST['email_register']}', '{$_POST['email_confirm_subj']}',\n"
+				  . "'{$_POST['email_confirm']}', \n"
 				  . "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', '{$_POST['allowprev']}')";
 		$isresult = mysql_query ($isquery);
 		if ($isresult)
@@ -603,6 +612,7 @@ elseif ($action == "insertnewsurvey")
 			{
 			$errormsg=_DB_FAIL_NEWSURVEY." - ".mysql_error();
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
+			echo $isquery;
 			}
 		}
 	}
@@ -617,9 +627,13 @@ elseif ($action == "updatesurvey")
 		$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 		$_POST['attribute1'] = addcslashes($_POST['attribute1'], "'");
 		$_POST['attribute2'] = addcslashes($_POST['attribute2'], "'");
+		$_POST['email_invite_subj'] = addcslashes($_POST['email_invite_subj'], "'");
 		$_POST['email_invite'] = addcslashes($_POST['email_invite'], "'");
+		$_POST['email_remind_subj'] = addcslashes($_POST['email_remind_subj'], "'");
 		$_POST['email_remind'] = addcslashes($_POST['email_remind'], "'");
+		$_POST['email_register_subj'] = addcslashes($_POST['email_register_subj'], "'");
 		$_POST['email_register'] = addcslashes($_POST['email_register'], "'");
+		$_POST['email_confirm_subj'] = addcslashes($_POST['email_confirm_subj'], "'");
 		$_POST['email_confirm'] = addcslashes($_POST['email_confirm'], "'");
 		}
 	$usquery = "UPDATE {$dbprefix}surveys \n"
@@ -632,8 +646,10 @@ elseif ($action == "updatesurvey")
 			  . "language='{$_POST['language']}', datestamp='{$_POST['datestamp']}',\n"
 			  . "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 			  . "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
-			  . "attribute2='{$_POST['attribute2']}', email_invite='{$_POST['email_invite']}',\n"
-			  . "email_remind='{$_POST['email_remind']}', email_register='{$_POST['email_register']}',\n"
+			  . "attribute2='{$_POST['attribute2']}', email_invite_subj='{$_POST['email_invite_subj']}',\n"
+			  . "email_invite='{$_POST['email_invite']}', email_remind_subj='{$_POST['email_remind_subj']}',\n"
+			  . "email_remind='{$_POST['email_remind']}', email_register_subj='{$_POST['email_register_subj']}',\n"
+			  . "email_register='{$_POST['email_register']}', email_confirm_subj='{$_POST['email_confirm_subj']}',\n"
 			  . "email_confirm='{$_POST['email_confirm']}', allowsave='{$_POST['allowsave']}',\n"
 			  . "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
 			  . "WHERE sid={$_POST['sid']}";

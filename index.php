@@ -832,10 +832,11 @@ function submittokens()
 	$cnfresult = mysql_query($cnfquery);
 	while ($cnfrow = mysql_fetch_array($cnfresult))
 		{
-		$headers = "From: {$thissurvey['adminemail']}\r\n";
+		$headers = "From: {$thissurvey['adminname']} <{$thissurvey['adminemail']}>\r\n";
 		$headers .= "X-Mailer: $sitename Email Inviter";
 		$to = $cnfrow['email'];
-		$subject = _CONFIRMATION.": {$thissurvey['name']} "._SURVEYCPL;
+		$subject = $thissurvey['email_confirm_subj'];
+//		$subject = _CONFIRMATION.": {$thissurvey['name']} "._SURVEYCPL;
 		$message="";
 //		foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
 //			{

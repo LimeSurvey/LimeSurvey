@@ -650,7 +650,7 @@ echo "</table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
 	." cellspacing='0' bordercolor='#555555'>\n"
 	."<tr><td align='center' bgcolor='#555555' height='22'>"
-	."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"sqlbuilder\"); hide(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"sqlbuilder\")'>"
+	."<input type='image' src='$imagefiles/plus.gif' align='right' hspace='0' border='0' onClick='show(\"sqlbuilder\"); hide(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' border='0' onClick='hide(\"sqlbuilder\")' hspace='0'>"
 	."<font size='2' face='verdana' color='orange'><b>SQL Builder</b>"
 	."</td></tr>\n"
 	."<form method='post'>\n";
