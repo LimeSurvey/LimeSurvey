@@ -179,7 +179,7 @@ function retrieveAnswers($ia, $notanswered=null)
 	//globalise required config variables
 	global $dbprefix, $shownoanswer; //These are from the confir.php file
 	//-----
-	global $surveyformat, $gl; //These are set by index.php
+	global $thissurvey, $gl; //These are set by index.php
 	
 	//DISPLAY
 	$display = $ia[7];
@@ -307,7 +307,7 @@ function retrieveAnswers($ia, $notanswered=null)
 		}
 
 	$answer .= "\n\t\t\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
-	if ($surveyformat == "S")
+	if ($thissurvey['format'] == "S")
 		{
 	    $answer .= "on"; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
 		}
