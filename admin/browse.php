@@ -163,7 +163,13 @@ if ($action == "id")
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = mysql_query($idquery);
 	echo "<table>\n";
-	echo "\t<tr><td colspan='2' bgcolor='#DDDDDD' align='center'>$setfont<b>Viewing Answer ID $id</b></td></tr>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' bgcolor='#DDDDDD' align='center'>$setfont\n";
+	echo "\t\t\t<b>Viewing Answer ID $id</b>&nbsp;&nbsp;\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 	while ($idrow = mysql_fetch_array($idresult))
 		{
