@@ -55,9 +55,10 @@ if (!$dbname)
 	exit;
 	}
 $connect=mysql_connect("$databaselocation:$databaseport", "$databaseuser", "$databasepass");
-if (!mysql_selectdb ($dbname, $connect))
+if (!mysql_selectdb ($dbname, $connect)) //Database named in config.php does not exist
 	{
-	if (mysql_create_db("$dbname"))
+	$createDb=mysql_query("CREATE DATABASE `$dbname`"); //Better than using mysql_create_db which is deprecated and does not work for MySQL 4 Client API
+	if ($createDb) //Database has been succesfully created
 		{
 		echo "<br />$setfont<b><font color='green'>\n";
 		echo _CD_DBCREATED."</font></b><br /><br />\n";
