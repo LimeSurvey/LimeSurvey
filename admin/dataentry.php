@@ -47,25 +47,49 @@ header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 //Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
+$surveyoptions = browsemenubar();
 echo $htmlheader;
-echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Data Entry</b></td></tr></table>\n";
+echo "<table height='1'><tr><td></td></tr></table>\n";
+//echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Data Entry</b></td></tr></table>\n";
+
 if (!mysql_selectdb ($databasename, $connect))
 	{
-	echo "<center><b><font color='red'>ERROR: Surveyor database does not exist</font></b><br /><br />\n";
-	echo "It appears that your surveyor script has not yet been set up properly.<br />\n";
-	echo "Contact your System Administrator</center>\n";
+	//echo "</table>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n";
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _ST_NODB1."<br />\n";
+	echo _ST_NODB2."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>";
 	exit;
 	}
 if (!$sid && !$action)
 	{
-	echo "You have not selected a survey.";
+	//echo "</table>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n";
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _DE_NOSID."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n";
+	echo "</td></tr></table>\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 
 if ($action == "insert")
 	{
-	echo "<center><b>Inserting data into Survey $sid, tablename $surveytable</b><br /><br />\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n";
+	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "\t\t\t<b>Inserting data</b><br />\n";
+	echo "SID: $sid, ($surveytable)<br /><br />\n";
 	$iquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
@@ -214,18 +238,21 @@ if ($action == "insert")
 	//echo $SQL; //Debugging line
 	$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
 	
-	echo "<font color='green'><b>Insert Was A Success</b><br />\n";
+	echo "\t\t\t<font color='green'><b>"._SUCCESS."</b></font><br />\n";
 	
 	$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
 	$fresult = mysql_query($fquery);
 	while ($frow = mysql_fetch_array($fresult))
 		{
-		echo "This record has been assigned the ID number, {$frow['id']}<br />\n";
+		echo "\t\t\t"._DE_RECORD." {$frow['id']}<br />\n";
+		$thisid=$frow['id'];
 		}
 	
-	echo "</font><br />[<a href='dataentry.php?sid=$sid'>Add another record</a>]<br />\n";
-	echo "[<a href='browse.php?sid=$sid&action=all&limit=100'>Browse Surveys</a>]<br />\n";
-	echo "</center>\n";
+	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$sid'>"._DE_ADDANOTHER."</a>]<br />\n";
+	echo "\t\t\t[<a href='browse.php?sid=$sid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n";
+	echo "\t\t\t[<a href='browse.php?sid=$sid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n";
+	echo "\t</td></tr>\n";
+	echo "</table>\n";
 	//echo "<pre style='text-align: left'>$SQL</pre><br />\n"; //Debugging info
 	echo "</body>\n</html>";
 	
@@ -233,9 +260,13 @@ if ($action == "insert")
 
 elseif ($action == "edit")
 	{
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
 	echo "$surveyheader";
 	echo "$surveyoptions";
-	
+	echo "</table>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n";
+
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND questions.sid=surveys.sid AND questions.sid='$sid'";
 	$fnresult = mysql_query($fnquery);
@@ -322,9 +353,10 @@ elseif ($action == "edit")
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
-	echo "<table>\n";
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
 	echo "<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n";
-	echo "\t<tr><td colspan='2' bgcolor='#EEEEEE' align='center'>$setfont<b>Editing Answer ID $id ($nfncount)</td></tr>\n";
+	echo "\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<b>Editing Answer ID $id ($nfncount)</td></tr>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 
 	while ($idrow = mysql_fetch_assoc($idresult))
@@ -349,7 +381,7 @@ elseif ($action == "edit")
 			switch ($fnames[$i][3])
 				{
 				case "id":
-					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>Cannot be altered</font>\n";
+					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>"._DE_NOMODIFY."</font>\n";
 					break;
 				case "5": //5 POINT CHOICE radio-buttons
 					for ($x=1; $x<=5; $x++)
@@ -747,10 +779,11 @@ elseif ($action == "edit")
 			}
 		}
 	echo "</table>\n";
-	echo "<table width='100%'>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n";
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr>\n";
-	echo "\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
-	echo "\t\t\t<input type='submit' value='Update'>\n";
+	echo "\t\t<td bgcolor='#CCCCCC' align='center'>\n";
+	echo "\t\t\t<input type='submit' $btstyle value='"._DE_UPDATE."'>\n";
 	echo "\t\t\t<input type='hidden' name='id' value='$id'>\n";
 	echo "\t\t\t<input type='hidden' name='sid' value='$sid'>\n";
 	echo "\t\t\t<input type='hidden' name='action' value='update'>\n";
@@ -764,8 +797,11 @@ elseif ($action == "edit")
 
 elseif ($action == "update")
 	{
-	echo "$surveyoptions";
-	echo "<center><br /><b>Updating data for Survey $sid, tablename $surveytable - Record No $id</b><br /><br />\n";
+	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
+	//echo "$surveyoptions";
+	echo "\t<tr><td align='center'>\n";
+	//echo "<br /><b>Updating data for Survey $sid, tablename $surveytable - Record No $id</b><br /><br />\n";
 	$iquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
@@ -886,27 +922,30 @@ elseif ($action == "update")
 	if ($_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 	$updateqr .= " WHERE id=$id";
 	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
-	echo "<br />\n<b>Record has been updated.</b><br /><br />\n";
-	echo "<a href='browse.php?sid=$sid&action=id&id=$id'>View record again</a>\n<br />\n";
-	echo "<a href='browse.php?sid=$sid&action=all'>Browse all records</a>\n";
+	echo "<font color='green'><b>"._SUCCESS."</b></font><br />\n";
+	echo _DE_UPDATED."<br /><br />\n";
+	echo "<a href='browse.php?sid=$sid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n";
+	echo "<a href='browse.php?sid=$sid&action=all'>"._DE_BROWSE."</a><br />\n";
 	//echo "<pre style='text-align: left'>$updateqr</pre>"; //Debugging info
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	}
 
 elseif ($action == "delete")
 	{
-	echo "<table width='100%' border='0' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#000080'>\n";
-	echo "\t\t<td colspan='3' align='center'><font color='white'>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n";
+	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 	echo "\t\t\t<b>$surveyname</b><br />\n";
 	echo "\t\t\t$setfont$surveydesc\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	$delquery = "DELETE FROM $surveytable WHERE id=$id";
 	echo "\t<tr>\n";
-	echo "\t\t<td align='center'><br />$setfont<b>Deleting Record $id</b><br /><br />\n";
 	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
-	echo "\t\t\tRecord succesfully deleted.<br /><br />\n<a href='browse.php?sid=$sid&action=all'>Back to Browse</a>\n";
+	echo "\t\t<td align='center'><br />$setfont<b>"._DE_DELRECORD." (ID: $id)</b><br /><br />\n";
+	echo "\t\t\t<a href='browse.php?sid=$sid&action=all'>"._DE_BROWSE."</a>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -916,6 +955,8 @@ elseif ($action == "delete")
 else
 	{
 	// PRESENT SURVEY DATAENTRY SCREEN
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery);
 	while ($desrow = mysql_fetch_array($desresult))
@@ -928,8 +969,10 @@ else
 		$surveydatestamp = $desrow['datestamp'];
 		}
 	if ($surveyactive == "Y") {echo "$surveyoptions\n";}
-	echo "<table width='100%' border='0' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#000080'>\n";
+	echo "<table height='1'><tr><td></td></tr></table>\n";
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
+	echo "\t<tr bgcolor='#777777'>\n";
 	echo "\t\t<td colspan='3' align='center'><font color='white'>\n";
 	echo "\t\t\t<b>$surveyname</b>\n";
 	echo "\t\t\t<br>$setfont$surveydesc\n";
@@ -1423,25 +1466,40 @@ else
 	if ($surveyactive == "Y")
 		{
 		echo "\t<tr>\n";
-		echo "\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 		echo "\t\t\t<input type='submit' value='Submit Survey' $btstyle/>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		}
-	else
+	elseif ($surveyactive == "N")
 		{
 		echo "\t<tr>\n";
-		echo "\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>\n";
-		echo "\t\t\t<font color='red'><b>This is a test survey only - it is not yet activated\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+		echo "\t\t\t<font color='red'><b>"._DE_NOTACTIVE."\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";	
+		}
+	else
+		{
+		echo "</form>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+		echo "\t\t\t<font color='red'><b>"._ERROR."</b></font><br />\n";
+		echo "\t\t\t"._DE_NOEXIST."<br /><br />\n";
+		echo "\t\t\t<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "</table>";
+		echo htmlfooter("instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
+		echo "</body></html>";
+		exit;
 		}
 	echo "\t<input type='hidden' name='action' value='insert' />\n";
 	echo "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
 	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
 	echo "\t</form>\n";
 	echo "</table>\n";
-	echo "</body>\n</html>";
+	//echo "</body>\n</html>";
 	}
 echo "&nbsp;";
 echo htmlfooter("instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
