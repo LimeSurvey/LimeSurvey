@@ -464,7 +464,6 @@ elseif ($action == "edit")
 						."\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>"
 						.htmlspecialchars($idrow[$fnames[$i][0]]) . "</textarea>\n";
 					break;
-
 				case "R": //RANKING TYPE QUESTION
 					$l=$i;
 					$thisqid=$fnames[$l][7];
@@ -829,9 +828,9 @@ elseif ($action == "edit")
 						.$idrow[$fnames[$i][0]] . "'>\n";
 					break;
 				}
-				."\t\t</td>\n"
-				."\t</tr>\n"
-				."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+				echo "\t\t</td>\n"
+					."\t</tr>\n"
+					."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 			}
 		}
 	echo "</table>\n"
@@ -1253,7 +1252,7 @@ else
 						."\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n"
 						."\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n"
 						."\t\t\t\t\t\t\t{\n"
-						."\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
+						."\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n"
 						."\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n"
 						."\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n"
 						."\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n"
