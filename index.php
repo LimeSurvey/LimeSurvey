@@ -365,7 +365,7 @@ if ($move == " submit ")
 				$message .= "$surveyadminemail.\n\n";
 				$message .= "Sincerely,\n\n";
 				$message .= "$surveyadminname";
-				mail($to, $subject, $message, $headers);
+				if ($cnfrow['email']) {mail($to, $subject, $message, $headers);} //Only send confirmation email if there is an email address
 				}
 			}
 		}
