@@ -1517,7 +1517,7 @@ if ($action == "newsurvey")
 	if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected";}
 	$newsurvey .= ">"._AD_YES."</option>\n"
 				. "\t\t\t<option value='N'";
-	if (isset($esrow) && $esrow['usecookie'] != "Y") {$newsurvey .= " selected";}
+	if (isset($esrow) && $esrow['usecookie'] != "Y" || !isset($esrow)) {$newsurvey .= " selected";}
 	$newsurvey .= ">"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
