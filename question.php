@@ -188,29 +188,27 @@ if ($_POST['move'] == " "._SUBMIT." ")
 		}
 	else
 		{
-		echo "<br /><center><font face='verdana' size='2'><font color='red'><b>Error:</b></font><br /><br />\n";
-		echo "Cannot submit results - there are none to submit.<br /><br />\n";
-		echo "<font size='1'>This error can occur if you have already submitted your responses<br />\n";
-		echo "and pressed 'refresh' on your browser. In this case, your responses have<br />\n";
-		echo "already been saved.";
+		echo "<br /><center><font face='verdana' size='2'><font color='red'><b>"._ERROR."</b></font><br /><br />\n";
+		echo _BADSUBMIT1."<br /><br />\n";
+		echo "<font size='1'>"._BADSUBMIT2."<br />\n";
 		echo "</font></center><br /><br />";
 		exit;
 		}	
 	//COMMIT CHANGES TO DATABASE
 	if ($surveyactive != "Y")
 		{
-		$completed = "<br /><b><font size='2' color='red'>Did Not Save!</b></font><br /><br />\n\n";
-		$completed .= "Your survey responses have not been recorded. This survey is not yet active.<br /><br />\n";
-		$completed .= "<a href='$PHP_SELF?sid=$sid&move=clearall'>Clear responses</a><br /><br />\n";
+		$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
+		$completed .= _NOTACTIVE1."<br /><br />\n";
+		$completed .= "<a href='$PHP_SELF?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
 		$completed .= "<font size='1'>$subquery</font>\n";
 		}
 	else
 		{
 		if (mysql_query($subquery))
 			{
-			$completed = "<br /><b><font size='2'><font color='green'>Thank you.</b></font><br /><br />\n\n";
-			$completed .= "Your survey responses have been recorded.<br />\n";
-			$completed .= "<a href='javascript:window.close()'>Close this window</a></font><br /><br />\n";
+			$completed = "<br /><b><font size='2'><font color='green'>"._THANKS."</b></font><br /><br />\n\n";
+			$completed .= _SURVEYREC."<br />\n";
+			$completed .= "<a href='javascript:window.close()'>"._CLOSEWIN."</a></font><br /><br />\n";
 			if ($_POST['token'])
 				{
 				$utquery = "UPDATE tokens_$sid SET completed='Y' WHERE token='{$_POST['token']}'";
@@ -222,7 +220,7 @@ if ($_POST['move'] == " "._SUBMIT." ")
 					$headers = "From: $surveyadminemail\r\n";
 					$headers .= "X-Mailer: $sitename Email Inviter";
 					$to = $cnfrow['email'];
-					$subject = "Confirmation: $surveyname Survey Completed";
+					$subject = _CONFIRMATION.": $surveyname "._SURVEYCPL;
 					$message="";
 					foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
 						{
@@ -251,27 +249,26 @@ if ($_POST['move'] == " "._SUBMIT." ")
 			}
 		else
 			{
-			$completed = "<br /><b><font size='2' color='red'>Did Not Save!</b></font><br /><br />\n\n";
-			$completed .= "An unexpected error has occurred and your responses cannot be saved.<br /><br />\n";
+			$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
+			$completed .= _DIDNOTSAVE2."<br /><br />\n";
 			if ($adminemail)
 				{	
-				$completed .= "Your responses have not been lost and have been emailed to the survey administrator ";
-				$completed .= "and will be entered into our database at a later point.<br /><br />\n";
-				$email="An error occurred saving a response to survey id $sid\n\n";
-				$email .= "DATA TO BE ENTERED:\n";
+				$completed .= _DIDNOTSAVE3."<br /><br />\n";
+				$email=_DNSAVEEMAIL1." $sid\n\n";
+				$email .= _DNSAVEEMAIL2.":\n";
 				foreach ($_SESSION['insertarray'] as $value)
 					{
 					$email .= "$value: {$_SESSION[$value]}\n";
 					}
-					$email .= "\nSQL CODE THAT FAILED:\n";
+					$email .= "\n"._DNSAVEEMAIL3.":\n";
 				$email .= "$subquery\n\n";
-				$email .= "ERROR MESSAGE:\n";
+				$email .= _DNSAVEEMAIL4.":\n";
 				$email .= mysql_error()."\n\n";
-				mail($surveyadminemail, "ERROR SAVING", $email);
+				mail($surveyadminemail, _DNSAVEEMAIL5, $email);
 				}
 			else
 				{
-				$completed .= "<a href='javascript:location.reload()'>Try to submit again</a><br /><br />\n";
+				$completed .= "<a href='javascript:location.reload()'>"._SUBMITAGAIN."</a><br /><br />\n";
 				}
 			}
 		}
@@ -335,17 +332,15 @@ if (!$_SESSION['step'])
 			echo templatereplace($op);
 			}
 		echo "\t<center><br />\n";
-		echo "\tThis survey titled <b>$surveyname</b> is a controlled survey. You need a valid\n";
-		echo "\ttoken to participate.<br /><br />\n";
-		echo "\tIf you have been issued with a token, please enter it in the box below and click\n";
-		echo "\tcontinue.<br />&nbsp;\n";
+		echo "\t"._NOTOKEN1."<br /><br />\n";
+		echo "\t"._NOTOKEN2."<br />&nbsp;\n";
 		echo "\t<table align='center'>";
 		echo "\t<form method='get' action='{$_SERVER['PHP_SELF']}'>\n";
 		echo "\t<input type='hidden' name='sid' value='$sid'>\n";
 		echo "\t\t<tr>\n";
 		echo "\t\t\t<td align='center' valign='middle'>\n";
-		echo "\t\t\tToken: <input class='text' type='text' name='token'>\n";
-		echo "\t\t\t<input class='submit' type='submit' value='Continue'>\n";
+		echo "\t\t\t"._TOKEN.": <input class='text' type='text' name='token'>\n";
+		echo "\t\t\t<input class='submit' type='submit' value='"._CONTINUE."'>\n";
 		echo "\t\t\t</td>\n";
 		echo "\t\t</tr>\n";
 		echo "\t</form>\n";
@@ -377,8 +372,8 @@ if (!$_SESSION['step'])
 			echo "\t<center><br />\n";
 			echo "\t"._NOTOKEN1."<br /><br />\n";
 			echo "\t"._NOTOKEN3."\n";
-			echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a><br /><br />\n";
-			echo "\t<a href='javascript:window.close()'>"._CLOSEWINDOW."</a><br />&nbsp;\n";
+			echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
+			echo "\t<a href='javascript:window.close()'>"._CLOSEWIN."</a><br />&nbsp;\n";
 			foreach(file("$thistpl/endpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -413,7 +408,7 @@ if (!$_SESSION['step'])
 		echo "\t<center><br />\n";
 		echo "\t"._NOQUESTIONS."<br /><br />\n";
 		echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
-		echo "\t<a href='javascript:window.close()'>"._CLOSEWINDOW."</a><br />&nbsp;\n";
+		echo "\t<a href='javascript:window.close()'>"._CLOSEWIN."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
