@@ -319,7 +319,7 @@ elseif ($action == "all")
 		for ($i=0; $i<=$fncount; $i++)
 			{
 			echo "\t\t<td align='center'><font size='1'>";
-			echo "{$dtrow[$fnames[$i][0]]}";
+			echo htmlspecialchars($dtrow[$fnames[$i][0]]);
 			echo "</td>\n";
 			}
 		echo "\t</tr>\n";
