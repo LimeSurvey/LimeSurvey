@@ -7,7 +7,7 @@
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
 	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 20 February 2003								#
+	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
 	# perform data-entry on surveys.							#
@@ -33,224 +33,266 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$boxstyle="STYLE='border-color: #111111; border-width: 1; border-style: solid'";
+$boxstyle = "style='border-color: #111111; border-width: 1; border-style: solid'";
 include("config.php");
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
                                                      // always modified
 header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
-//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
+//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ")
 //echo $htmlheader;
-	// PRESENT SURVEY DATAENTRY SCREEN
+echo "<html>\n<head></head>\n<body>\n";
 
-	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
-	$desresult = mysql_query($desquery);
-	while ($desrow=mysql_fetch_row($desresult))
-		{
-		$surveyname=$desrow[1];
-		$surveydesc=$desrow[2];
-		$surveyactive=$desrow[4];
-		$surveytable="survey_$desrow[0]";
-		$surveyexpirydate=$desrow[6];
-		}
-	//if ($surveyactive == "Y") {echo "$surveyoptions";}
-	echo "<TABLE WIDTH='100%' CELLSPACING='0'>";
-	echo "<TR><TD COLSPAN='3' ALIGN='CENTER'><FONT COLOR='BLACK'>";
-	echo "<TABLE BORDER='1' STYLE='border-collapse: collapse' BORDERCOLOR='#111111' WIDTH='100%'><TR><TD ALIGN='CENTER'>";
-	echo "<FONT SIZE='5' FACE='VERDANA'><B>$surveyname</B></FONT>";
-	echo "<FONT SIZE='4' FACE='VERDANA'><BR>$setfont$surveydesc</FONT></TD></TR></TABLE></TD></TR>\n";
-	// SURVEY NAME AND DESCRIPTION TO GO HERE
+// PRESENT SURVEY DATAENTRY SCREEN
 
-	$degquery = "SELECT * FROM groups WHERE sid=$sid ORDER BY group_name";
-	$degresult = mysql_query($degquery);
-	// GROUP NAME
-	while ($degrow=mysql_fetch_row($degresult))
+$desquery = "SELECT * FROM surveys WHERE sid=$sid";
+$desresult = mysql_query($desquery);
+while ($desrow = mysql_fetch_array($desresult))
+	{
+	$surveyname = $desrow['short_title'];
+	$surveydesc = $desrow['description'];
+	$surveyactive = $desrow['active'];
+	$surveytable = "survey_{$desrow['sid']}";
+	$surveyexpirydate = $desrow['expires'];
+	}
+//if ($surveyactive == "Y") {echo "$surveyoptions\n";}
+echo "<table width='100%' cellspacing='0'>\n";
+echo "\t<tr>\n";
+echo "\t\t<td colspan='3' align='center'><font color='black'>\n";
+echo "\t\t\t<table border='1' style='border-collapse: collapse; border-color: #111111; width: 100%'>\n";
+echo "\t\t\t\t<tr><td align='center'>\n";
+echo "\t\t\t\t\t<font size='5' face='verdana'><b>$surveyname</b></font>\n";
+echo "\t\t\t\t\t<font size='4' face='verdana'><br />$setfont$surveydesc</font>\n";
+echo "\t\t\t\t</td></tr>\n";
+echo "\t\t\t</table>\n";
+echo "\t\t</td>\n";
+echo "\t</tr>\n";
+// SURVEY NAME AND DESCRIPTION TO GO HERE
+
+$degquery = "SELECT * FROM groups WHERE sid=$sid ORDER BY group_name";
+$degresult = mysql_query($degquery);
+// GROUP NAME
+while ($degrow = mysql_fetch_array($degresult))
+	{
+	$deqquery = "SELECT * FROM questions WHERE sid=$sid AND gid={$degrow['gid']} ORDER BY title";
+	$deqresult = mysql_query($deqquery);
+	$deqrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	while ($deqrow = mysql_fetch_array($deqresult)) {$deqrows[] = $deqrow;} // Get table output into array
+	
+	if (count($deqrows) > 0)
 		{
-		$deqquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$degrow[0] ORDER BY title";
-		$deqresult = mysql_query($deqquery);
-		echo "<TR><TD COLSPAN='3' ALIGN='CENTER' BGCOLOR='#EEEEEE' STYLE='border-top-width:1; border-left-width:1; border-right-width:1; border-bottom-width:1;border-top-style:double; border-left-style:double; border-right-style:double; border-bottom-style: double; border-left-color:#111111; border-right-color:#111111;border-top-color:#111111;border-bottom-color:#111111'>";
-		echo "<FONT SIZE='3' FACE='VERDANA'><B>$degrow[2]</TD></TR>\n";
-		$gid=$degrow[0];
-		echo "<FORM ACTION='dataentry.php' NAME='addsurvey' >\n";
-		//Alternate bgcolor for different groups
-		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
-		else {$bgc = "#EEEEEE";}
-		if (!$bgc) {$bgc="#EEEEEE";}
-		
-		while ($deqrow=mysql_fetch_row($deqresult))
+		// Perform a case insensitive natural sort on title column of a multidimensional array
+		usort($deqrows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
+		} // end if there are any questions
+	
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='3' align='center' bgcolor='#EEEEEE' style='border-width: 1; border-style: double; border-color: #111111'>\n";
+	echo "\t\t\t<font size='3' face='verdana'><b>{$degrow['group_name']}</b>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	$gid = $degrow['gid'];
+	echo "\t<form action='dataentry.php' name='addsurvey'>\n";
+	//Alternate bgcolor for different groups
+	if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
+	else {$bgc = "#EEEEEE";}
+	if (!$bgc) {$bgc="#EEEEEE";}
+	
+	foreach ($deqrows as $deqrow)
+		{
+		$qid = $deqrow['qid'];
+		$fieldname = "$sid"."X"."$gid"."X"."$qid";
+		echo "\t<tr bgcolor='$bgc'>\n";
+		echo "\t\t<td valign='top' width='1%'>$setfont{$deqrow['title']}</td>\n";
+		echo "\t\t<td valign='top' align='right' width='30%'>\n";
+		echo "\t\t\t<b>$setfont{$deqrow['question']}</b>\n";
+		//DIFFERENT TYPES OF DATA FIELD HERE
+		if ($deqrow['help'])
 			{
-			$qid=$deqrow[0];
-			$fieldname="$sid"."X"."$gid"."X"."$qid";
-			echo "<TR BGCOLOR='$bgc'><TD VALIGN='TOP' WIDTH='1%'>$setfont$deqrow[4]</TD>";
-			echo "<TD VALIGN='TOP' ALIGN='RIGHT' WIDTH='30%'><B>$setfont$deqrow[5]</B>";
-			//DIFFERENT TYPES OF DATA FIELD HERE
-			if ($deqrow[6])
-				{
-				$hh=str_replace("'", "\'", $deqrow[6]);
-				echo "<TABLE WIDTH='100%' BORDER=1><TR><TD ALIGN='CENTER'><FONT SIZE='1'>$hh</TD></TR></TABLE>\n";
-				//echo "<IMG SRC='help.gif' ALT='Help about this question' ALIGN='RIGHT' onClick=\"javascript:alert('Question $deqrow[0] Help: $hh')\">";
-				}
-			echo "</TD><TD>";
-			switch($deqrow[3])
-				{
-				case "S":  //SHORT TEXT
-					echo "$setfont<U>Put your answer here:</U><BR>";
-					echo "<INPUT TYPE='TEXT' NAME='$fieldname' SIZE='60' $boxstyle>";				
-					break;
-				case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
-					echo "$setfont<U>Please tick <B>any</B> that apply</U><BR>";
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
-					$mearesult = mysql_query($meaquery);
-					while ($mearow = mysql_fetch_row($mearesult))
+			$hh = str_replace("'", "\'", $deqrow['help']);
+			echo "\t\t\t<table width='100%' border=1><tr><td align='center'><font size='1'>$hh</td></tr></table>\n";
+			//echo "\t\t\t<img src='help.gif' alt='Help about this question' align='right' onClick=\"javascript:alert('Question {$deqrow['qid']} Help: $hh')\">\n";
+			}
+		echo "\t\t</td>\n";
+		echo "\t\t<td style='padding-left: 20px'>\n";
+		switch($deqrow['type'])
+			{
+			case "5":  //5 POINT CHOICE
+				echo "\t\t\t$setfont<u>Please tick one response</u><br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='1' />1 \n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='2' />2 \n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='3' />3 \n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='4' />4 \n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='5' />5 \n";
+				break;
+			case "D":  //DATE
+				echo "\t\t\t$setfont<u>Please enter your birth date:</u><br />\n";
+				echo "\t\t\t<input type='text' $boxstyle name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' />\n";
+				break;
+			case "G":  //GENDER
+				echo "\t\t\t$setfont<u>Please tick <b>only one</b> of the following:</u><br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='F' />Female<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' />Male<br />\n";
+				break;
+			case "L":  //LIST
+				echo "\t\t\t$setfont<u>Please tick <b>only one</b> of the following:</u><br />\n";
+				$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$dearesult = mysql_query($deaquery);
+				while ($dearow = mysql_fetch_array($dearesult))
+					{
+					echo "\t\t\t<input type='checkbox' name='$fieldname' value='$dearow[1]' />$dearow[2]<br />\n";
+					}
+				break;
+			case "O":  //LIST WITH COMMENT
+				echo "\t\t\t$setfont<u>Please tick <b>only one</b> of the following:</u><br />\n";
+				$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$dearesult = mysql_query($deaquery);
+				while ($dearow = mysql_fetch_array($dearesult))
+					{
+					echo "\t\t\t<input type='checkbox' name='$fieldname' value='$dearow[1]' />$dearow[2]<br />\n";
+					}
+				echo "\t\t\t<u>Make a comment on your choice here:</u><br />\n";
+				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname"."comment"."'></textarea>\n";
+				break;
+			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
+				echo "\t\t\t$setfont<u>Please tick <b>any</b> that apply</u><br />\n";
+				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
+				$mearesult = mysql_query($meaquery);
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+					if ($mearow['default'] == "Y") {echo " checked";}
+					echo " />{$mearow['answer']}<br />\n";
+					}
+				if ($deqrow['other'] == "Y")
+					{
+					echo "\t\t\tOther: <input type='text' $boxstyle size='60' name='$fieldname" . "other' />\n";
+					}
+				break;
+			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
+				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
+				$mearesult = mysql_query($meaquery);
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each question and provide a comment</u><br />\n";
+				echo "\t\t\t<table border='0'>\n";
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td>$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+					if ($mearow[3] == "Y") {echo " checked";}
+					echo " />{$mearow['answer']} </td>\n";
+					//This is the commments field:
+					echo "\t\t\t\t\t<td>$setfont<input type='text' $boxstyle name='$fieldname{$mearow['code']}comment' size='60' /></td>\n";
+					echo "\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t</table>\n";
+				break;
+			case "S":  //SHORT TEXT
+				echo "\t\t\t$setfont<u>Put your answer here:</u><br />\n";
+				echo "\t\t\t<input type='text' name='$fieldname' size='60' $boxstyle />\n";
+				break;
+			case "T":  //LONG TEXT
+				echo "\t\t\t$setfont<u>Please write your answer in the box below:</u><br />\n";
+				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname'></textarea>\n";
+				break;
+			case "Y":  //YES/NO
+				echo "\t\t\t$setfont<u>Please tick <b>only one</b> of the following:</u><br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='Y' />Yes<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' />No<br />\n";
+				break;
+			case "A":  //ARRAY (5 POINT CHOICE)
+				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
+				$mearesult = mysql_query($meaquery);
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each question</u><br />\n";
+				echo "\t\t\t<table>\n";
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td>$setfont";
+					for ($i=1; $i<=5; $i++)
 						{
-						echo "$setfont<INPUT TYPE='checkbox' name='$fieldname$mearow[1]' VALUE='Y'";
-						if ($mearow[3] == "Y") {echo " CHECKED";}
-						echo ">$mearow[2]<BR>";
+						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i'";
+						if ($idrow[$i] == $i) {echo " checked";}
+						echo " />$i&nbsp;\n";
 						}
-					if ($deqrow[7] == "Y")
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t</table>\n";
+				break;
+			case "B":  //ARRAY (10 POINT CHOICE)
+				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
+				$mearesult = mysql_query($meaquery);
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each question</u><br />";
+				echo "\t\t\t<table border='0'>\n";
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td>$setfont\n";
+					for ($i=1; $i<=10; $i++)
 						{
-						echo "Other: <INPUT TYPE='TEXT' $boxstyle SIZE='60' NAME='$fieldname";
-						echo "other'>";
-						}				
-					echo "\n\n";
-					break;
-				case "P":  //MULTIPLE OPTIONS (with comments)
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
-					$mearesult = mysql_query($meaquery);
-					echo "<U>Please tick the appropriate response for each question and provide a comment</U><BR>";
-					while ($mearow = mysql_fetch_row($mearesult))
-						{
-						echo "$setfont<INPUT TYPE='checkbox' name='$fieldname$mearow[1]' VALUE='Y'";
-						if ($mearow[3] == "Y") {echo " CHECKED";}
-						echo ">$mearow[2]";
-						//This is the commments field:
-						echo " <INPUT TYPE='TEXT' $boxstyle name='$fieldname$mearow[1]comment' SIZE='60'><BR>\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i'";
+						if ($idrow[$i] == $i) {echo " checked";}
+						echo ">$i&nbsp;\n";
 						}
-					echo "\n\n";
-					break;
-				case "A":  //MULTI ARRAY
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
-					$mearesult=mysql_query($meaquery);
-					echo "<U>Please tick the appropriate response for each question</U><BR>";
-					echo "<TABLE>";
-					while ($mearow = mysql_fetch_row($mearesult))
-						{
-						echo "<TR><TD ALIGN='RIGHT'>$setfont$mearow[2]</tD><TD>";
-						for ($i=1; $i<=5; $i++)
-							{
-							echo "$setfont<INPUT TYPE='CHECKBOX' NAME='$fieldname$mearow[1]' VALUE='$i'";
-							if ($idrow[$i]== $i) {echo " CHECKED";}
-							echo ">$i&nbsp;";
-							}
-						echo "</TD></TR>\n";
-						}
-					echo "</TABLE>\n\n";
-					break;
-				case "B":  //MULTI ARRAY
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
-					$mearesult=mysql_query($meaquery);
-					echo "<U>Please tick the appropriate response for each question</U><BR>";
-					echo "<TABLE>";
-					while ($mearow = mysql_fetch_row($mearesult))
-						{
-						echo "<TR><TD ALIGN='RIGHT'>$setfont$mearow[2]</tD><TD>";
-						for ($i=1; $i<=10; $i++)
-							{
-							echo "$setfont<INPUT TYPE='CHECKBOX' NAME='$fieldname$mearow[1]' VALUE='$i'";
-							if ($idrow[$i]== $i) {echo " CHECKED";}
-							echo ">$i&nbsp;";
-							}
-						echo "</TD></TR>";
-						}
-					echo "</TABLE>\n\n";
-					break;
-				case "C":  //MULTI ARRAY
-					$meaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY code";
-					$mearesult=mysql_query($meaquery);
-					echo "<U>Please tick the appropriate response for each question</U><BR>";
-					echo "<TABLE>";
-					while ($mearow = mysql_fetch_row($mearesult))
-						{
-						echo "<TR><TD ALIGN='RIGHT'>$setfont$mearow[2]</tD><TD>";
-						echo "$setfont<INPUT TYPE='CHECKBOX' NAME='$fieldname$mearow[1]' VALUE='Y'";
-						if ($idrow[$i]== "Y") {echo " CHECKED";}
-						echo ">Yes&nbsp;";
-						echo "$setfont<INPUT TYPE='CHECKBOX' NAME='$fieldname$mearow[1]' VALUE='U'";
-						if ($idrow[$i]== "U") {echo " CHECKED";}
-						echo ">Uncertain&nbsp;";
-						echo "$setfont<INPUT TYPE='CHECKBOX' NAME='$fieldname$mearow[1]' VALUE='N'";
-						if ($idrow[$i]== "N") {echo " CHECKED";}
-						echo ">No&nbsp;";
-						echo "</TD></TR>";
-						}
-					echo "</TABLE>\n\n";
-					break;
-				case "L":  //DROPDOWN LIST
-					echo "$setfont<U>Please tick <B>only one</B> of the following:</U><BR>";
-					$deaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY answer";
-					$dearesult = mysql_query($deaquery);
-					while ($dearow = mysql_fetch_row($dearesult))
-						{
-						echo "  <INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='$dearow[1]'>$dearow[2]<BR>";
-						}
-					break;
-				case "O":  //DROPDOWN LIST
-					echo "$setfont<U>Please tick <B>only one</B> of the following:</U><BR>";
-					$deaquery = "SELECT * FROM answers WHERE qid=$deqrow[0] ORDER BY answer";
-					$dearesult = mysql_query($deaquery);
-					while ($dearow = mysql_fetch_row($dearesult))
-						{
-						echo "  <INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='$dearow[1]'>$dearow[2]<BR>";
-						}
-					echo "<U>Make a comment on your choice here:</U><BR>\n";
-					echo "<TEXTAREA $boxstyle COLS='50' ROWS='8' NAME='$fieldname"."comment"."'></TEXTAREA>\n";
-					break;
-				case "T":  //LONG TEXT
-					echo "<U>Please write your answer in the box below:</U><BR>";
-					echo "<TEXTAREA $boxstyle COLS='50' ROWS='8' NAME='$fieldname'></TEXTAREA>\n\n";
-					break;
-				case "D":  //DATE
-					echo "<U>Please enter your date:</U><BR>";
-					echo "<INPUT TYPE='TEXT' $boxstyle NAME='$fieldname' SIZE='30' VALUE='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;'>\n\n";
-					break;
-				case "5":  //5 Point Choice
-					echo "$setfont<U>Please tick one response</U><BR>";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='1'>1 ";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='2'>2 ";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='3'>3 ";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='4'>4 ";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='5'>5 ";
-					echo "\n\n";
-					break;
-				case "G":  //Gender
-					echo "$setfont<U>Please tick <B>only one</B> of the following:</U><BR>";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='F'>Female<BR>";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='M'>Male<BR>";
-					break;
-				case "Y":  //YesNo
-					echo "$setfont<U>Please tick <B>only one</B> of the following:</U><BR>";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='Y'>Yes<BR>";
-					echo "<INPUT TYPE='CHECKBOX' NAME='$fieldname' VALUE='N'>No<BR>";
-					break;
-				}
-			//echo " [$sid"."X"."$gid"."X"."$qid]";
-			echo "</TD></TR>\n";
-			echo "<TR><TD HEIGHT='3' COLSPAN='3'><HR NOSHADE SIZE='1' COLOR='#111111'></TD></TR>\n";		
-			}		
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t</table>\n";
+				break;
+			case "C":  //ARRAY (YES/UNCERTAIN/NO)
+				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY code";
+				$mearesult = mysql_query($meaquery);
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each question</u><br />\n";
+				echo "\t\t\t<table>\n";
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td>$setfont\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+					if ($idrow[$i] == "Y") {echo " checked";}
+					echo ">Yes&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U'";
+					if ($idrow[$i] == "U") {echo " checked";}
+					echo ">Uncertain&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N'";
+					if ($idrow[$i] == "N") {echo " checked";}
+					echo ">No&nbsp;\n";
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t</table>\n";
+				break;
+			}
+		//echo "\t\t[$sid"."X"."$gid"."X"."$qid]\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "\t<tr><td height='3' colspan='3'><hr noshade size='1' color='#111111'></td></tr>\n";
 		}
-	echo "<TR><TD COLSPAN='3' ALIGN='CENTER'>";
-	echo "<TABLE WIDTH='100%' BORDER='1' STYLE='border-collapse: collapse' BORDERCOLOR='#111111'><TR><TD ALIGN='CENTER'>";
-	echo "$setfont<FONT FACE='VERDANA'><B>Submit your survey!</B><BR>";
-	echo "Thank you for completing this survey. Please fax your completed survey to $surveyfaxnumber";
-	if ($surveyexpirydate && $surveyexpirydate != "0000-00-00")
-		{
-		echo " by $surveyexpirydate";
-		}
-	echo ".</TD></TR></TABLE></TD></TR>\n";
-	echo "</FORM></TABLE>\n";
-
+	}
+echo "\t<tr>\n";
+echo "\t\t<td colspan='3' align='center'>\n";
+echo "\t\t\t<table width='100%' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+echo "\t\t\t\t<tr>\n";
+echo "\t\t\t\t\t<td align='center'>\n";
+echo "\t\t\t\t\t\t$setfont<b>Submit your survey!</b><br />\n";
+echo "\t\t\t\t\t\tThank you for completing this survey. Please fax your completed survey to $surveyfaxnumber";
+if ($surveyexpirydate && $surveyexpirydate != "0000-00-00")
+	{
+	echo " by $surveyexpirydate";
+	}
+echo ".\n";
+echo "\t\t\t\t\t</td>\n";
+echo "\t\t\t\t</tr>\n";
+echo "\t\t\t</table>\n";
+echo "\t\t</td>\n";
+echo "\t</tr>\n";
+echo "\t</form>\n";
+echo "</table>\n";
+echo "</body>\n</html>";
 
 ?>
