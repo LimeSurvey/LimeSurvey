@@ -36,6 +36,19 @@
 
 session_start();
 
+$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
+$token = $_GET['token']; if (!$token) {$token = $_POST['token'];}
+$move = $_POST['move']; if (!$move) {$move = $_GET['move'];}
+$fvalue = $_POST['fvalue'];
+$multi = $_POST['multi'];
+$thisstep = $_POST['thisstep']; if (!$thisstep) {$thisstep=$_SESSION['thisstep'];}
+$totalsteps = $_SESSION['totalsteps'];
+$fieldarray = $_SESSION['fieldarray'];
+$insertarray = $_SESSION['insertarray'];
+$lastgroupname = $_POST['lastgroupname'];
+$newgroup = $_POST['newgroup'];
+$lastfield = $_POST['lastfield'];
+
 if ($move == "clearall" || $move == "here" || $move == "completed") 
 	{
 	session_unset();
@@ -46,11 +59,13 @@ if ($fvalue)
 	{
 	if ($fvalue == " ")
 		{
-		$$lastfield = "";
+		//$$lastfield = "";
+		$_SESSION[$lastfield] = "";
 		}
 	else
 		{
-		$$lastfield = $fvalue;
+		//$$lastfield = $fvalue;
+		$_SESSION[$lastfield] = $fvalue;
 		}
 	}
 
@@ -61,7 +76,8 @@ if ($multi)
 		{
 		$mylist = "fvalue$i";
 		$arrayno = $i-1;
-		$$myfields[$arrayno] = $$mylist;
+		$_SESSION[$myfields[$arrayno]] = $_POST[$mylist];
+		//echo "$mylist: " . $_POST[$mylist] . " (session: " . $myfields[$arrayno] . ")<br />";
 		}
 	$mylist = substr($mylist, 0, strlen($mylist)-1);
 	}
@@ -278,23 +294,23 @@ if ($move == " submit ")
 			{
 			if (phpversion() >= "4.3.0")
 				{
-				$values .= ", '" . mysql_real_escape_string($$value, "'") . "'";	
+				$values .= ", '" . mysql_real_escape_string($_SESSION[$value], "'") . "'";	
 				}
 			else
 				{
-				$values .= ", '" . mysql_escape_string($$value) . "'";
+				$values .= ", '" . mysql_escape_string($_SESSION[$value]) . "'";
 				}
 			}
 		else
 			{
-			$values .= ", '" . $$value . "'";
+			$values .= ", '" . $_SESSION[$value] . "'";
 			}
 		//echo "$value<br />\n"; //Debugging info
 		}
 	$col_name = substr($col_name, 2); //Strip off first comma & space
 	$values = substr($values, 2); //Strip off first comma & space
 	$subquery .= "\n($col_name) \nVALUES \n($values)";
-	//echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
+	echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
 	
 	if ($surveyactive == "Y")
 		{
@@ -523,6 +539,7 @@ if (!$step)
 else
 	{
 	echo $surveyheader;
+	//echo "STEP: $step, TOTALSTEPS: $totalsteps, LASTFIELD: $lastfield";
 	$s = $step;
 	//$t indicates which question in the array we should be displaying
 	$t = $s-1;
@@ -621,7 +638,7 @@ else
 				for ($fp=1; $fp<=5; $fp++)
 					{
 					echo "\t\t\t<input type='radio' name='fvalue' value='$fp'";
-					if ($$fname == $fp) {echo " checked";}
+					if ($_SESSION[$fname] == $fp) {echo " checked";}
 					echo " />$fp\n";
 					}
 				break;
@@ -629,7 +646,7 @@ else
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<input type='text' size=10 name='fvalue' value=\"".$$fname."\" />\n";
+				echo "\t\t\t<input type='text' size=10 name='fvalue' value=\"".$_SESSION[$fname]."\" />\n";
 				echo "\t\t\t<table width='230' align='center' bgcolor='#EEEEEE'>\n";
 				echo "\t\t\t\t<tr>\n";
 				echo "\t\t\t\t\t<td align='center'>\n";
@@ -645,13 +662,13 @@ else
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
 				echo "\t\t\t<select name='fvalue'>\n";
 				echo "\t\t\t\t<option value='F'";
-				if ($$fname == "F") {echo " selected";}
+				if ($_SESSION[$fname] == "F") {echo " selected";}
 				echo ">Female</option>\n";
 				echo "\t\t\t\t<option value='M'";
-				if ($$fname == "M") {echo " selected";}
+				if ($_SESSION[$fname] == "M") {echo " selected";}
 				echo ">Male</option>\n";
 				echo "\t\t\t\t<option value=' '";
-				if ($$fname != "F" && $$fname !="M") {echo " selected";}
+				if ($_SESSION[$fname] != "F" && $_SESSION[$fname] !="M") {echo " selected";}
 				echo ">Please choose</option>\n";
 				echo "\t\t\t</select>\n";
 				break;
@@ -667,13 +684,13 @@ else
 					while ($ansrow = mysql_fetch_array($ansresult))
 						{
 						echo "\t\t\t\t  <option value='{$ansrow['code']}'";
-						if ($$fname == $ansrow['code'])
+						if ($_SESSION[$fname] == $ansrow['code'])
 							{ echo " selected"; }
 						elseif ($ansrow['default'] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">{$ansrow['answer']}</option>\n";
 						}
-					if (!$$fname && !$defexists) {echo "\t\t\t\t  <option value=' ' selected>Please choose..</option>\n";}
-					if ($$fname && !$defexists) {echo "\t\t\t\t  <option value=' '>No answer</option>\n";}
+					if (!$_SESSION[$fname] && !$defexists) {echo "\t\t\t\t  <option value=' ' selected>Please choose..</option>\n";}
+					if ($_SESSION[$fname] && !$defexists) {echo "\t\t\t\t  <option value=' '>No answer</option>\n";}
 					echo "\t\t\t</select>\n";
 					}
 				elseif ($dropdowns == "R")
@@ -684,12 +701,12 @@ else
 					while ($ansrow = mysql_fetch_array($ansresult))
 						{
 						echo "\t\t\t\t\t\t  <input type='radio' value='{$ansrow['code']}' name='fvalue'";
-						if ($$fname == $ansrow['code'])
+						if ($_SESSION[$fname] == $ansrow['code'])
 							{ echo " checked"; }
 						elseif ($ansrow['default'] == "Y") {echo " checked"; $defexists = "Y";}
 						echo " />{$ansrow['answer']}<br />\n";
 						}
-					if (!$$fname && !$defexists) {echo "\t\t\t\t\t\t  <input type='radio' name='fvalue' value=' ' checked />No answer\n";}
+					if (!$_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t  <input type='radio' name='fvalue' value=' ' checked />No answer\n";}
 					elseif ($ffname && !$defexists) {echo "\t\t\t\t\t\t  <input type='radio' name='fvalue' value=' ' />No answer\n";}
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
@@ -710,21 +727,22 @@ else
 				echo "\t\t\t\t</tr>\n";
 				echo "\t\t\t\t<tr>\n";
 				echo "\t\t\t\t\t<td valign='top'>$setfont\n";
+				
 				while ($ansrow=mysql_fetch_array($ansresult))
 					{
 					echo "\t\t\t\t\t\t<input type='radio' value='{$ansrow['code']}' name='fvalue1'";
-					if ($$fname == $ansrow['code'])
+					if ($_SESSION[$fname] == $ansrow['code'])
 						{ echo " checked"; }
 					elseif ($ansrow['default'] == "Y") {echo " checked"; $defexists = "Y";}
 					echo " />{$ansrow['answer']}<br />\n";
 					}
-				if (!$$fname && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' checked />No answer\n";}
-				elseif ($$fname && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' />No answer\n";}
+				if (!$_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' checked />No answer\n";}
+				elseif ($_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' />No answer\n";}
 				echo "\t\t\t\t\t</td>\n";
 				$fname2 = $fname."comment";
 				if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
 				echo "\t\t\t\t\t<td valign='top'>\n";
-				echo "\t\t\t\t\t\t<textarea name='fvalue2' rows='$tarows' cols='30'>".$$fname2."</textarea>\n";
+				echo "\t\t\t\t\t\t<textarea name='fvalue2' rows='$tarows' cols='30'>".$_SESSION[$fname2]."</textarea>\n";
 				$multifields = "$fname|$fname"."comment|";
 				echo "\t\t\t\t\t\t<input type='hidden' name='multi' value='2' />\n";
 				echo "\t\t\t\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
@@ -751,7 +769,7 @@ else
 					$myfname = $fname.$ansrow['code'];
 					$multifields .= "$fname{$ansrow['code']}|";
 					echo "\t\t\t\t\t\t$setfont<input type='checkbox' name='fvalue$fn' value='Y'";
-					if ($$myfname == "Y") {echo " checked";}
+					if ($_SESSION[$myfname] == "Y") {echo " checked";}
 					echo " />{$ansrow['answer']}<br />\n";
 					$fn++;
 					}
@@ -795,12 +813,12 @@ else
 					echo "\t\t\t\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t\t\t\t<td>$setfont\n";
 					echo "\t\t\t\t\t\t\t\t\t<input type='checkbox' name='fvalue$fn' value='Y'";
-					if ($$myfname == "Y") {echo " checked";}
+					if ($_SESSION[$myfname] == "Y") {echo " checked";}
 					echo " /><b>{$ansrow['answer']}</b>\n";
 					echo "\t\t\t\t\t\t\t\t</td>\n";
 					$fn++;
 					echo "\t\t\t\t\t\t\t\t<td>\n";
-					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$$myfname2."' />\n";
+					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$_SESSION[$myfname2]."' />\n";
 					echo "\t\t\t\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t\t\t\t</tr>\n";
 					$fn++;
@@ -815,12 +833,12 @@ else
 					echo "\t\t\t\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t\t\t\t<td>$setfont\n";
 					echo "\t\t\t\t\t\t\t\t\tOther: <input type='text' name='fvalue$fn'";
-					if ($$myfname) {echo " value='".$$myfname."'";}
+					if ($_SESSION[$myfname]) {echo " value='".$_SESSION[$myfname]."'";}
 					echo " />\n";
 					echo "\t\t\t\t\t\t\t\t</td>\n";
 					$fn++;
 					echo "\t\t\t\t\t\t\t\t<td>\n";
-					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$$myfname2."' />\n";
+					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$_SESSION[$myfname2]."' />\n";
 					echo "\t\t\t\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t\t\t\t</tr>\n";
 					}
@@ -836,14 +854,14 @@ else
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<input type='text' size='50' name='fvalue' value=\"".str_replace ("\"", "'", str_replace("\\", "", $$fname))."\" />\n";
+				echo "\t\t\t<input type='text' size='50' name='fvalue' value=\"".str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$fname]))."\" />\n";
 				break;
 			case "T": //LONG FREE TEXT
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
 				echo "\t\t\t<textarea name='fvalue' rows='5' cols='40'>";
-				if ($$fname) {echo str_replace("\\", "", $$fname);}	
+				if ($_SESSION[$fname]) {echo str_replace("\\", "", $_SESSION[$fname]);}	
 				echo "</textarea>\n";
 				break;
 			case "Y": //YES/NO radio-buttons
@@ -854,10 +872,10 @@ else
 				echo "\t\t\t\t<tr>\n";
 				echo "\t\t\t\t\t<td>$setfont\n";
 				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='Y'";
-				if ($$fname == "Y") {echo " checked";}
+				if ($_SESSION[$fname] == "Y") {echo " checked";}
 				echo " />Yes<br />\n";
 				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='N'";
-				if ($$fname == "N") {echo " checked";}
+				if ($_SESSION[$fname] == "N") {echo " checked";}
 				echo " />No<br />\n";
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
@@ -885,7 +903,7 @@ else
 					for ($i=1; $i<=5; $i++)
 						{
 						echo "\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='$i'";
-						if ($$myfname == $i) {echo " checked";}
+						if ($_SESSION[$myfname] == $i) {echo " checked";}
 						echo " />$i&nbsp;\n";
 						}
 					echo "\t\t\t\t\t</td>\n";
@@ -918,7 +936,7 @@ else
 					for ($i=1; $i<=10; $i++)
 						{
 						echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='$i'";
-						if ($$myfname == $i) {echo " checked";}
+						if ($_SESSION[$myfname] == $i) {echo " checked";}
 						echo " />$i&nbsp;\n";
 						}
 					echo "\t\t\t\t\t</td>\n";
@@ -949,13 +967,13 @@ else
 					echo "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
 					echo "\t\t\t\t\t<td>\n";
 					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='Y'";
-					if ($$myfname == "Y") {echo " checked";}
+					if ($_SESSION[$myfname] == "Y") {echo " checked";}
 					echo " />Yes&nbsp;\n";
 					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='U'";
-					if ($$myfname == "U") {echo " checked";}
+					if ($_SESSION[$myfname] == "U") {echo " checked";}
 					echo " />Uncertain&nbsp;\n";
 					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='N'";
-					if ($$myfname == "N") {echo " checked";}
+					if ($_SESSION[$myfname] == "N") {echo " checked";}
 					echo " />No&nbsp;\n";
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
