@@ -35,6 +35,8 @@
 	#############################################################
 */
 //MANDATORY (for single answer questions) (multi answer questions in select)
+if (!$dropdownthreshold) {$dropdownthreshold=25;}
+
 if ($ia[4] == "5" || $ia[4] == "D" || $ia[4] == "G" || $ia[4] == "L" || $ia[4] == "O" || $ia[4] == "N" || $ia[4] == "Y" || $ia[4] == "T" || $ia[4] == "S")
 	{
 	if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
@@ -105,7 +107,8 @@ switch ($ia[4])
 	case "L": //LIST drop-down/radio-button list
 		$ansquery = "SELECT * FROM answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
-		if ($dropdowns == "L" || !$dropdowns)
+		$anscount = mysql_num_rows($ansresult);
+		if ($dropdowns == "L" || !$dropdowns || $anscount > $dropdownthreshold)
 			{
 			$answer .= "\n\t\t\t\t\t<select name='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n";
 			while ($ansrow = mysql_fetch_array($ansresult))
@@ -158,7 +161,7 @@ switch ($ia[4])
 		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
-		if ($lwcdropdowns == "R")
+		if ($lwcdropdowns == "R" && $anscount <= $dropdownthreshold)
 			{
 			$answer .= "\t\t\t<table class='question'>\n";
 			$answer .= "\t\t\t\t<tr>\n";
@@ -241,9 +244,10 @@ switch ($ia[4])
 			$answer .= "\t\t\t\t<tr>\n";
 			$fname2 = $ia[1]."comment";
 			if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
+			if ($tarows > 15) {$tarows=15;}
 			$maxoptionsize=$maxoptionsize*0.72;
 			if ($maxoptionsize < 33) {$maxoptionsize=33;}
-			if ($maxoptionsize > 80) {$maxoptionsize=80;}
+			if ($maxoptionsize > 70) {$maxoptionsize=70;}
 			$answer .= "\t\t\t\t\t<td valign='top'>\n";
 			$answer .= "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' rows='$tarows' cols='$maxoptionsize'>";
 			if ($_SESSION[$fname2]) 
@@ -415,8 +419,6 @@ switch ($ia[4])
 			}
 		$choicelist .= "\t\t\t\t\t\t</select>\n";
 
-		//$answer .= "\t<tr>\n";
-		//$answer .= "\t\t<td colspan='2'>\n";
 		$answer .= "\t\t\t<table border='0' cellspacing='5' class='rank'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n";
