@@ -79,20 +79,29 @@ if ($fvalue)
 if ($multi)
 	{
 	$myfields = explode("|", $lastfield);
+	$multimandatory="N";
 	for ($i=1; $i<=$multi; $i++)
 		{
 		$mylist = "fvalue$i";
 		$arrayno = $i-1;
 		$_SESSION[$myfields[$arrayno]] = $_POST[$mylist];
 		//echo "$mylist: " . $_POST[$mylist] . " (session: " . $myfields[$arrayno] . ")<br />";
+		if ($_POST[$mylist]) {$multimandatory="Y";} //if there are any answers, set this to true
 		}
 	$mylist = substr($mylist, 0, strlen($mylist)-1);
 	}
 
 //This section handles the question number that will be answered - moving backwards and forwards as required
-if ($_POST['mandatory'] == "Y" && (!$_POST['fvalue'] || $_POST['fvalue'] == " ")) //if the last question was mandatory but there is no data
+if ($_POST['mandatory'] == "Y" && (!$_POST['fvalue'] || $_POST['fvalue'] == " ") && !$multimandatory) //if the last question was mandatory but there is no data
 	{
 	//Repeat last question until an answer is shown
+	if ($move == " last ") {$move = " next >> ";} //avoids going to submit if last question isn't answered
+	$repeatmandatory="Y"; //avoids repeating group description if this is the first question of a group
+	}
+elseif ($_POST['mandatory'] == "Y" && $multi && $multimandatory != "Y")
+	{
+	if ($move == " last ") {$move = " next >> ";}
+	$repeatmandatory="Y"; //avoids repeating group description if this is the first question of a group
 	}
 else
 	{
@@ -626,7 +635,7 @@ else
 		}
 	
 	//if (($currentgroupname != $lastgroupname) && ($move != " << prev "))
-	if ($_SESSION['fieldarray'][$t][5] != $_SESSION['fieldarray'][$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev ")
+	if ($_SESSION['fieldarray'][$t][5] != $_SESSION['fieldarray'][$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev " && !$repeatmandatory)
 		{
 		$presentinggroupdescription = "yes";
 		echo "\t<form method='post'>\n";
@@ -682,7 +691,8 @@ else
 		if ($_SESSION['fieldarray'][$t][6] == "Y") //question is mandatory: inform participant
 			{
 			echo "\t\t\t<input type='hidden' name='mandatory' value='Y'>\n";
-			if ($_POST['mandatory'] == "Y" && ($_POST['fvalue']==" " || !$_POST['fvalue'])) //If we are repeating a question because it wasn't answered, tell the participant why
+			//if ($_POST['mandatory'] == "Y" && ($_POST['fvalue']==" " || !$_POST['fvalue'])) //If we are repeating a question because it wasn't answered, tell the participant why
+			if ($repeatmandatory)
 				{
 				echo "\t\t\t<br /><font size='1' color='red'>This is required information</font>\n";
 				}
@@ -790,8 +800,11 @@ else
 					elseif ($ansrow['default'] == "Y") {echo " checked"; $defexists = "Y";}
 					echo " />{$ansrow['answer']}<br />\n";
 					}
-				if (!$_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' checked />No answer\n";}
-				elseif ($_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' />No answer\n";}
+				if ($_SESSION['fieldarray'][$t][6] != "Y")
+					{
+					if (!$_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' checked />No answer\n";}
+					elseif ($_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' />No answer\n";}
+					}
 				echo "\t\t\t\t\t</td>\n";
 				$fname2 = $fname."comment";
 				if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
@@ -868,7 +881,7 @@ else
 					echo "\t\t\t\t\t\t\t\t<td>$setfont\n";
 					echo "\t\t\t\t\t\t\t\t\t<input type='checkbox' name='fvalue$fn' value='Y'";
 					if ($_SESSION[$myfname] == "Y") {echo " checked";}
-					echo " /><b>{$ansrow['answer']}</b>\n";
+					echo " />{$ansrow['answer']}\n";
 					echo "\t\t\t\t\t\t\t\t</td>\n";
 					$fn++;
 					echo "\t\t\t\t\t\t\t\t<td>\n";
@@ -886,12 +899,12 @@ else
 					$anscount = $anscount + 2;
 					echo "\t\t\t\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t\t\t\t<td>$setfont\n";
-					echo "\t\t\t\t\t\t\t\t\tOther: <input type='text' name='fvalue$fn'";
+					echo "\t\t\t\t\t\t\t\t\tOther:<br /><input $slstyle type='text' name='fvalue$fn' size='10'";
 					if ($_SESSION[$myfname]) {echo " value='".$_SESSION[$myfname]."'";}
 					echo " />\n";
 					echo "\t\t\t\t\t\t\t\t</td>\n";
 					$fn++;
-					echo "\t\t\t\t\t\t\t\t<td>\n";
+					echo "\t\t\t\t\t\t\t\t<td valign='bottom'>\n";
 					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$_SESSION[$myfname2]."' />\n";
 					echo "\t\t\t\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t\t\t\t</tr>\n";
