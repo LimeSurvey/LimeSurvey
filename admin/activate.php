@@ -196,7 +196,6 @@ else
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
 		{
-		echo $prow['allowregister'];
 		if ($prow['private'] == "N") 
 			{
 			$createsurvey .= "  token VARCHAR(10),\n";
@@ -205,7 +204,6 @@ else
 		if ($prow['allowregister'] == "Y") 
 			{
 			$surveyallowsregistration="TRUE";
-			echo "G'day";
 			}
 		if ($prow['datestamp'] == "Y")
 			{
