@@ -35,30 +35,32 @@
 */
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
-$the_path="$homedir";
-$the_full_file_path=$homedir."/".$the_file_name;
+$the_path = "$homedir";
+$the_full_file_path = $homedir . "/" . $the_file_name;
 
 if (!@copy($the_file, $the_path . "/" . $the_file_name))
 	{
-	echo "<B><CENTER>Something went horribly wrong. See system administrator.";
+	echo "<b><center>Something went horribly wrong. See system administrator.</center></b>\n";
+	echo "</body>\n</html>\n";
 	exit;
 	}
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "\n<BR><B>IMPORTING FILE</B><BR>File succesfully uploaded<BR><BR>";
-echo "\nReading File...<BR>";
-$handle=fopen($the_full_file_path, "r");
+echo "<br />\n<b>IMPORTING FILE</b><br />File succesfully uploaded<br /><br />\n";
+echo "Reading File...<br />\n";
+$handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 	{
-	$buffer=fgets($handle);
-	$bigarray[]=$buffer;
+	$buffer = fgets($handle);
+	$bigarray[] = $buffer;
 	}
 fclose($handle);
 
 if (!$bigarray[0] == "# SURVEYOR SURVEY DUMP")
 	{
-	echo "This is NOT a Surveyor Dump File. Import aborted!";
+	echo "This is NOT a Surveyor Dump File. Import aborted!\n";
+	echo "</body>\n</html>\n";
 	exit;
 	}
 
@@ -66,111 +68,112 @@ for ($i=0; $i<10; $i++)
 	{
 	unset($bigarray[$i]);
 	}
-$bigarray=array_values($bigarray);
+$bigarray = array_values($bigarray);
 
 //TABLES
-$stoppoint=array_search("# NEW TABLE\n", $bigarray);
+$stoppoint = array_search("# NEW TABLE\n", $bigarray);
 for ($i=0; $i<=$stoppoint+2; $i++)
 	{
-	if ($i<$stoppoint-1) {$tablearray[]=$bigarray[$i];}
+	if ($i<$stoppoint-1) {$tablearray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
-$bigarray=array_values($bigarray);
+$bigarray = array_values($bigarray);
 
 //GROUPS
-$stoppoint=array_search("# NEW TABLE\n", $bigarray);
+$stoppoint = array_search("# NEW TABLE\n", $bigarray);
 for ($i=0; $i<=$stoppoint+2; $i++)
 	{
-	if ($i<$stoppoint-1) {$grouparray[]=$bigarray[$i];}
+	if ($i<$stoppoint-1) {$grouparray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
-$bigarray=array_values($bigarray);
+$bigarray = array_values($bigarray);
 
 //QUESTIONS
-$stoppoint=array_search("# NEW TABLE\n", $bigarray);
+$stoppoint = array_search("# NEW TABLE\n", $bigarray);
 for ($i=0; $i<=$stoppoint+2; $i++)
 	{
-	if ($i<$stoppoint-1) {$questionarray[]=$bigarray[$i];}
+	if ($i<$stoppoint-1) {$questionarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
-$bigarray=array_values($bigarray);
+$bigarray = array_values($bigarray);
 
 //ANSWERS
-$stoppoint=count($bigarray);
+$stoppoint = count($bigarray);
 for ($i=0; $i<=$stoppoint+2; $i++)
 	{
-	if ($i<$stoppoint-1) {$answerarray[]=$bigarray[$i];}
+	if ($i<$stoppoint-1) {$answerarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
-$bigarray=array_values($bigarray);
+$bigarray = array_values($bigarray);
 
-$countsurveys=count($tablearray);
-$countgroups=count($grouparray);
-$countquestions=count($questionarray);
-$countanswers=count($answerarray);
+$countsurveys = count($tablearray);
+$countgroups = count($grouparray);
+$countquestions = count($questionarray);
+$countanswers = count($answerarray);
 
-echo "SURVEY SUMMARY:<BR>";
-echo "<UL><LI>Surveys: $countsurveys</LI>";
-echo "<LI>Groups: $countgroups</LI>";
-echo "<LI>Questions: $countquestions</LI>";
-echo "<LI>Answers: $countanswers</LI></UL>";
+echo "SURVEY SUMMARY:<br />\n";
+echo "<ul>\n\t<li>Surveys: $countsurveys</li>\n";
+echo "\t<li>Groups: $countgroups</li>\n";
+echo "\t<li>Questions: $countquestions</li>\n";
+echo "\t<li>Answers: $countanswers</li>\n</ul>\n";
 
 // CREATE SURVEY
-$sid=substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
-$insert=str_replace("('$sid'", "(''", $tablearray[0]);
-//$insert=substr($insert, 0, -1);
-$iresult=mysql_query($insert) or die("Insert of imported survey completely failed<BR>$insert<BR><BR>".mysql_error());
+$sid = substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
+$insert = str_replace("('$sid'", "(''", $tablearray[0]);
+//$insert = substr($insert, 0, -1);
+$iresult = mysql_query($insert) or die("Insert of imported survey completely failed<br />\n$insert<br /><br />\n" . mysql_error() . "</body>\n</html>");
 
 //GET NEW SID
-$sidquery="SELECT sid FROM surveys ORDER BY sid DESC LIMIT 1";
-$sidres=mysql_query($sidquery);
-while ($srow=mysql_fetch_row($sidres)){$newsid=$srow[0];}
+$sidquery = "SELECT sid FROM surveys ORDER BY sid DESC LIMIT 1";
+$sidres = mysql_query($sidquery);
+while ($srow = mysql_fetch_row($sidres)) {$newsid = $srow[0];}
 
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 foreach ($grouparray as $ga)
 	{
-	$gid=substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
-	$ginsert=str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
-	//$ginsert=substr($ginsert, 0, -1);
-	$gres=mysql_query($ginsert);
+	$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
+	$ginsert = str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
+	//$ginsert = substr($ginsert, 0, -1);
+	$gres = mysql_query($ginsert);
 	//GET NEW GID
-	$gidquery="SELECT gid FROM groups ORDER BY gid DESC LIMIT 1";
-	$gidres=mysql_query($gidquery);
-	while ($grow=mysql_fetch_row($gidres)){$newgid=$grow[0];}
+	$gidquery = "SELECT gid FROM groups ORDER BY gid DESC LIMIT 1";
+	$gidres = mysql_query($gidquery);
+	while ($grow = mysql_fetch_row($gidres)) {$newgid = $grow[0];}
 	//NOW DO NESTED QUESTIONS FOR THIS GID
 	foreach ($questionarray as $qa)
 		{
-		$sidpos=", '$sid'";
-		$start=strpos($qa, "$sidpos")+2+strlen($sid)+5;
-		$end=strpos($qa, "'", $start)-$start;
-		if (substr($qa, $start, $end)==$gid)
+		$sidpos = ", '$sid'";
+		$start = strpos($qa, "$sidpos")+2+strlen($sid)+5;
+		$end = strpos($qa, "'", $start)-$start;
+		if (substr($qa, $start, $end) == $gid)
 			{
-			$qid=substr($qa, strpos($qa, "('")+2, (strpos($qa, "',")-(strpos($qa, "('")+2)));
-			$qinsert=str_replace("('$qid', '$sid', '$gid',", "('$newsid', '$newgid',", $qa);
-			$qinsert=str_replace("(`qid`, ", "(", $qinsert);
-			//$qinsert=substr(trim($qinsert), 0, -1);
-			//echo "$qinsert<BR>";
-			$qres=mysql_query($qinsert) or die ("<B>ERROR:</B> Failed to insert question<BR>$qinsert<BR>".mysql_error());
+			$qid = substr($qa, strpos($qa, "('")+2, (strpos($qa, "',")-(strpos($qa, "('")+2)));
+			$qinsert = str_replace("('$qid', '$sid', '$gid',", "('$newsid', '$newgid',", $qa);
+			$qinsert = str_replace("(`qid`, ", "(", $qinsert);
+			//$qinsert = substr(trim($qinsert), 0, -1);
+			//echo "$qinsert<br />\n";
+			$qres = mysql_query($qinsert) or die ("<b>ERROR:</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
 			//GET NEW GID
-			$qidquery="SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
-			$qidres=mysql_query($qidquery);
-			while ($qrow=mysql_fetch_row($qidres)) {$newqid=$qrow[0];}	
+			$qidquery = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
+			$qidres = mysql_query($qidquery);
+			while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0];}	
 			//NOW DO NESTED ANSWERS FOR THIS QID
 			foreach ($answerarray as $aa)
 				{
-				$qidpos="('";
-				$astart=strpos($aa, "$qidpos")+2;
-				$aend=strpos($aa, "'", $astart)-$astart;
+				$qidpos = "('";
+				$astart = strpos($aa, "$qidpos")+2;
+				$aend = strpos($aa, "'", $astart)-$astart;
 				if (substr($aa, $astart, $aend) == ($qid))
 					{
-					$ainsert=str_replace("('$qid", "('$newqid", $aa);
-					//$ainsert=substr(trim($ainsert), 0, -1);
-					$ares=mysql_query($ainsert) or die ("<B>ERROR:</B> Failed to insert answer<BR>$ainsert<BR>".mysql_error());
+					$ainsert = str_replace("('$qid", "('$newqid", $aa);
+					//$ainsert = substr(trim($ainsert), 0, -1);
+					$ares = mysql_query($ainsert) or die ("<b>ERROR:</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
 					}
 				}
 			}
 		}
 	}
-echo "<B>Survey Import has been completed. <a href='admin.php?sid=$newsid'>Administration</a>";
+echo "<b>Survey Import has been completed. <a href='admin.php?sid=$newsid'>Administration</a></b>";
+echo "</body>\n</html>";
 unlink($the_full_file_path);
 ?>
