@@ -108,7 +108,8 @@ $surveyheader .= "</table>\n";
 if ($action == "id")
 	{
 	echo "$surveyheader";
-	echo "$surveyoptions";
+	
+	echo "$surveyoptions"; // Don't show options if coming from statistics script
 	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name";
@@ -199,7 +200,20 @@ if ($action == "id")
 elseif ($action == "all")
 	{
 	echo "$surveyheader";
-	echo "$surveyoptions";
+	if (!$_POST['sql'])
+		{echo "$surveyoptions";} //don't show options when called from statistics script
+	else
+		{
+		echo "\n<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td align='center' $singleborderstyle>$setfont\n";
+		echo "\t\t\tShowing Filtered Results<br />\n";
+		echo "\t\t\t&nbsp;[<a href=\"javascript:window.close()\">Close</a>]";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "</table>\n";
+		
+		}
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
