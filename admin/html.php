@@ -1386,6 +1386,15 @@ if ($action == "editsurvey")
 						 . "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILINVITE."</b></font></td>\n"
+					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_invite'>".$esrow['email_invite']."</textarea>\n"
+					. "\t</td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILREMIND."</b></font></td>\n"
+					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_remind'>".$esrow['email_remind']."</textarea>\n"
+					. "\t</td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILCONFIRM."</b></font></td>\n"
+					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_confirm'>".$esrow['email_confirm']."</textarea>\n"
+					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWREGISTER."</b></font></td>\n"
 					. "\t\t<td><select $slstyle name='allowregister'>\n"
 					. "\t\t\t<option value='Y'";
@@ -1395,6 +1404,9 @@ if ($action == "editsurvey")
 		if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._AD_NO."</option>\n"
 					. "\t\t</select></td>\n\t</tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILREGISTER."</b></font></td>\n"
+					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_register'>".$esrow['email_register']."</textarea>\n"
+					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right' valign='top'>$setfont<b>"._SL_ATTRIBUTENAMES."</b></font></td>\n"
 					. "\t\t<td>$setfont<input $slstyle type='text' size='25' name='attribute1'"
 					. " value='".$esrow['attribute1']."'>("._TL_ATTR1.")<br />"
@@ -1504,11 +1516,23 @@ if ($action == "newsurvey")
 				. "\t\t\t<option value='Y' selected>"._AD_YES."</option>\n"
 				. "\t\t\t<option value='N'>"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILINVITE."</b></font></td>\n"
+				. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_invite'>"._TC_EMAILINVITE."</textarea>\n"
+				. "\t</td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILREMIND."</b></font></td>\n"
+				. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_remind'>"._TC_EMAILREMIND."</textarea>\n"
+				. "\t</td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILCONFIRM."</b></font></td>\n"
+				. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_confirm'>"._TC_EMAILCONFIRM."</textarea>\n"
+				. "\t</td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ALLOWREGISTER."</b></font></td>\n"
 				. "\t\t<td><select $slstyle name='allowregister'>\n"
 				. "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
 				. "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_EMAILREGISTER."</b></font></td>\n"
+				. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_register'>"._TC_EMAILREGISTER."</textarea>\n"
+				. "\t</td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right' valign='top'>$setfont<b>"._SL_ATTRIBUTENAMES."</b></font></td>\n"
 				. "\t\t<td>$setfont<input $slstyle type='text' size='25' name='attribute1'>("._TL_ATTR1.")<br />"
 				. "<input $slstyle type='text' size='25' name='attribute2'>("._TL_ATTR2.")</font></td>\n\t</tr>\n";

@@ -77,7 +77,10 @@ $allfields[]=array("{$dbprefix}surveys", "notification", "notification char(1) d
 $allfields[]=array("{$dbprefix}surveys", "allowregister", "allowregister char(1) default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "attribute1", "attribute1 varchar(255) default NULL");
 $allfields[]=array("{$dbprefix}surveys", "attribute2", "attribute2 varchar(255) default NULL");
-
+$allfields[]=array("{$dbprefix}surveys", "email_invite", "email_invite text");
+$allfields[]=array("{$dbprefix}surveys", "email_remind", "email_remind text");
+$allfields[]=array("{$dbprefix}surveys", "email_register", "email_register text");
+$allfields[]=array("{$dbprefix}surveys", "email_confirm", "email_confirm text");
 echo $htmlheader;
 
 echo "<br />\n";

@@ -477,18 +477,24 @@ elseif ($action == "insertnewsurvey")
 			$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 			$_POST['attribute1'] = addcslashes($_POST['attribute1'], "'");
 			$_POST['attribute2'] = addcslashes($_POST['attribute2'], "'");
+			$_POST['email_invite'] = addcslashes($_POST['email_invite'], "'");
+			$_POST['email_remind'] = addcslashes($_POST['email_remind'], "'");
+			$_POST['email_register'] = addcslashes($_POST['email_register'], "'");
+			$_POST['email_confirm'] = addcslashes($_POST['email_confirm'], "'");
 			}
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
 				  . "(sid, short_title, description, admin, active, welcome, expires, "
 				  . "adminemail, private, faxto, format, template, url, urldescrip, "
-				  . "language, datestamp, usecookie, notification, allowregister, attribute1, attribute2)\n"
+				  . "language, datestamp, usecookie, notification, allowregister, attribute1, attribute2, "
+				  . "email_invite, email_remind, email_register, email_confirm)\n"
 				  . "VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',\n"
 				  . "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
 				  . "'{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',\n"
 				  . "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
 				  . "'{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}',\n"
 				  . "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
-				  . "'{$_POST['attribute1']}', '{$_POST['attribute2']}')";
+				  . "'{$_POST['attribute1']}', '{$_POST['attribute2']}', '{$_POST['email_invite']}', \n"
+				  . "'{$_POST['email_remind']}', '{$_POST['email_register']}', '{$_POST['email_confirm']}')";
 		$isresult = mysql_query ($isquery);
 		if ($isresult)
 			{
@@ -516,6 +522,10 @@ elseif ($action == "updatesurvey")
 		$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 		$_POST['attribute1'] = addcslashes($_POST['attribute1'], "'");
 		$_POST['attribute2'] = addcslashes($_POST['attribute2'], "'");
+		$_POST['email_invite'] = addcslashes($_POST['email_invite'], "'");
+		$_POST['email_remind'] = addcslashes($_POST['email_remind'], "'");
+		$_POST['email_register'] = addcslashes($_POST['email_register'], "'");
+		$_POST['email_confirm'] = addcslashes($_POST['email_confirm'], "'");
 		}
 	$usquery = "UPDATE {$dbprefix}surveys \n"
 			  . "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
@@ -527,7 +537,9 @@ elseif ($action == "updatesurvey")
 			  . "language='{$_POST['language']}', datestamp='{$_POST['datestamp']}',\n"
 			  . "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 			  . "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
-			  . "attribute2='{$_POST['attribute2']}'\n"
+			  . "attribute2='{$_POST['attribute2']}', email_invite='{$_POST['email_invite']}',\n"
+			  . "email_remind='{$_POST['email_remind']}', email_register='{$_POST['email_register']}',\n"
+			  . "email_confirm='{$_POST['email_confirm']}'\n"
 			  . "WHERE sid={$_POST['sid']}";
 	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
 	if ($usresult)
