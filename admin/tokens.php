@@ -427,7 +427,7 @@ if ($action == "remind")
 				echo " button below.<br />";
 				echo "<input type='submit' value='Send More'></TD>\n";
 				echo "<input type='hidden' name='ok' value='absolutely'>\n";
-				echo "<input type='hidden' name='action' value='email'>\n";
+				echo "<input type='hidden' name='action' value='remind'>\n";
 				echo "<input type='hidden' name='sid' value='$sid'>\n";
 				echo "<input type='hidden' name='from' value='$from'>\n";
 				echo "<input type='hidden' name='subject' value='$subject'>\n";
