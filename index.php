@@ -399,11 +399,10 @@ function checkgroupfordisplay($gid)
 				}
 			}
 		}
-	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup)
+	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($checkConditions))
 		{
 		//One of the questions in this group is NOT conditional, therefore
 		//the group MUST be displayed
-		unset($checkConditions); // We can safely delete this variable because it won't be needed.
 		return true;
 		}
 	else
@@ -421,15 +420,20 @@ function checkgroupfordisplay($gid)
 			while($row=mysql_fetch_array($result))
 				{
 				//Iterate through each condition for this question and check if it is met.
-				$query2= "SELECT type FROM {$dbprefix}questions\n"
+				$query2= "SELECT type, gid FROM {$dbprefix}questions\n"
 						." WHERE qid={$row['cqid']}";
 				$result2=mysql_query($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".mysql_error());
 				while($row2=mysql_fetch_array($result2))
 					{
+					$cq_gid=$row2['gid'];
 					//Find out the "type" of the question this condition uses
 					$thistype=$row2['type'];
 					}
-				if ($thistype == "M" || $thistype == "P")
+				if ($gid == $cq_gid) 
+					{
+				    //Don't do anything - this cq is in the current group
+					}
+				elseif ($thistype == "M" || $thistype == "P")
 					{
 					// For multiple choice type questions, the "answer" value will be "Y"
 					// if selected, the fieldname will have the answer code appended.
@@ -477,7 +481,7 @@ function checkgroupfordisplay($gid)
 			{
 			//The number of matches to conditions exceeds the number of distinct 
 			//conditional questions, therefore a condition has been met.
-		    return true;
+			return true;
 			}
 		else
 			{
