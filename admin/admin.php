@@ -120,7 +120,7 @@ if ($action == "newsurvey")
 	echo "$newsurvey\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
-	echo htmlfooter("instructions.html");
+	echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
 	exit;
 	}
 
