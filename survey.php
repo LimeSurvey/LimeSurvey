@@ -45,7 +45,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	$postedfieldnames=explode("|", $_POST['fieldnames']);
 	foreach ($postedfieldnames as $pf)
 		{
-		$_SESSION[$pf] = $_POST[$pf];
+		if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
 		}
 	}
 
@@ -57,9 +57,9 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'])
 	$mi=0;
 	foreach ($chkmands as $cm)
 		{
-		if ($multiname != "MULTI$mfns[$mi]") 
+		if (!isset($multiname) || $multiname != "MULTI$mfns[$mi]") 
 			{
-			if ($multiname && $_POST[$multiname])
+			if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname]))
 				{
 				if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 					{
@@ -73,6 +73,7 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'])
 					}
 				}
 			$multiname="MULTI$mfns[$mi]";
+			$multiname2=$multiname; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
 			$$multiname=0;
 			$$multiname2=0;
 			}
@@ -158,7 +159,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'])
 		$$multiname2++;
 		$mi++;
 		}
-	if ($multiname && $_POST[$multiname])
+	if (isset($multiname) && $multiname && isset($_POST[$multiname]) && $_POST[$multiname])
 		{
 		if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
@@ -198,20 +199,27 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			if (!isset($col_name)) {$col_name="";}
 			if (!isset($values)) {$values="";}
 			$col_name .= "`, `" . $value; 
-			if (get_magic_quotes_gpc() == "0")
+			if (isset($_SESSION[$value]))
 				{
-				if (phpversion() >= "4.3.0")
+				if (get_magic_quotes_gpc() == "0")
 					{
-					$values .= ", '" . mysql_real_escape_string($_SESSION[$value]) . "'";
+					if (phpversion() >= "4.3.0")
+						{
+						$values .= ", '" . mysql_real_escape_string($_SESSION[$value]) . "'";
+						}
+					else
+						{
+						$values .= ", '" . mysql_escape_string($_SESSION[$value]) . "'";
+						}
 					}
 				else
 					{
-					$values .= ", '" . mysql_escape_string($_SESSION[$value]) . "'";
+					$values .= ", '" . $_SESSION[$value] . "'";
 					}
 				}
 			else
 				{
-				$values .= ", '" . $_SESSION[$value] . "'";
+				$values .= ", ''";
 				}
 			}
 		$col_name .= "`";

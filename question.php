@@ -48,35 +48,36 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	$postedfieldnames=explode("|", $_POST['fieldnames']);
 	foreach ($postedfieldnames as $pf)
 		{
-		$_SESSION[$pf] = $_POST[$pf];
+		if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
 		}
 	}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
 if (isset($_POST['move']) && $allowmandatorybackwards==1 && $_POST['move'] == " << "._PREV." ") {$backok="Y";}
-if (isset($_POST['mandatory']) && $_POST['mandatory'] && $backok != "Y")
+if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $backok != "Y"))
 	{
 	$chkmands=explode("|", $_POST['mandatory']);
 	$mfns=explode("|", $_POST['mandatoryfn']);
 	$mi=0;
 	foreach ($chkmands as $cm)
 		{
-		if ($multiname != "MULTI$mfns[$mi]") //multiname has not been set, or is different from the last one
+		if (!isset($multiname) || $multiname != "MULTI$mfns[$mi]") //multiname has not been set, or is different from the last one
 			{
-			if ($multiname && $_POST[$multiname]) //This isn't the first time (multiname exists, and is a posted variable)
+			if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname])) //This isn't the first time (multiname exists, and is a posted variable)
 				{
 				if ($$multiname == $$multiname2) //The number of questions not answered is equal to the number of questions
 					{
 					//The number of questions not answered is equal to the number of questions
-					if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+					if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 				    $notanswered[]=substr($multiname, 5, strlen($multiname));
 					$$multiname=0;
 					$$multiname2=0;
 					}
 				}
 			$multiname="MULTI$mfns[$mi]";
+			$multiname2=$multiname; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
 			$$multiname=0; 
 			$$multiname2=0;
 			}
@@ -84,12 +85,12 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && $backok != "Y")
 		if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
 			{
 			}
-		elseif (!$_POST[$multiname])
+		elseif (!isset($_POST[$multiname]) || !$_POST[$multiname])
 			{
 			//One of the mandatory questions hasn't been asnwered
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$mfns[$mi];
 			}
 		else
@@ -100,21 +101,21 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && $backok != "Y")
 		$$multiname2++;
 		$mi++;
 		}
-	if ($multiname && $_POST[$multiname])
+	if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname]))
 		{
 		if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 			//The number of questions not answered is equal to the number of questions
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 		    $notanswered[]=substr($multiname, 5, strlen($multiname));
 			$$multiname="";
 			$$multiname2="";
 			}
 		}
 	}
-if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y")
+if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && (!isset($backok) || $backok != "Y"))
 	{
 	$chkcmands=explode("|", $_POST['conmandatory']);
 	$cmfns=explode("|", $_POST['conmandatoryfn']);
@@ -122,7 +123,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y")
 	foreach ($chkcmands as $ccm)
 		{
 		$multiname="MULTI$cmfns[$mi]";
-		if (!$_POST[$multiname])
+		if (!isset($_POST[$multiname]) || !$_POST[$multiname])
 			{
 			$dccm="display$ccm";
 			}
@@ -130,12 +131,12 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y")
 			{
 			$dccm="display".$cmfns[0];
 			}
-		if ($_POST[$dccm] == "on" && (!$_SESSION[$ccm] && $_SESSION[$ccm] != "0") && !$_POST[$multiname])
+		if ($_POST[$dccm] == "on" && (!$_SESSION[$ccm] && $_SESSION[$ccm] != "0") && (!isset($_POST[$multiname]) || !$_POST[$multiname]))
 			{
 			//One of the conditional mandatory questions was on, but hasn't been answered
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$cmfns[$mi];
 			}
 		elseif ($_POST[$dccm] == "on" && !$_SESSION[$ccm] && $_POST[$multiname])
@@ -143,14 +144,14 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && $backok != "Y")
 			$notanswered[]=$cmfns[$mi];
 			}
 		}
-	if ($_POST[$multiname])
+	if (isset($_POST[$multiname]) && $_POST[$multiname])
 		{
 		if (count($notanswered) == count($chkcmands)) //
 			{
 			//The number of questions not answered is equal to the number of questions
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 		    }
 		else
 			{
@@ -178,20 +179,27 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 		foreach ($_SESSION['insertarray'] as $value)
 			{
 			$col_name .= "`, `" . $value; 
-			if (get_magic_quotes_gpc() == "0")
+			if (isset($_SESSION[$value]))
 				{
-				if (phpversion() >= "4.3.0")
+				if (get_magic_quotes_gpc() == "0")
 					{
-					$values .= ", '" . mysql_real_escape_string($_SESSION[$value]) . "'";	
+					if (phpversion() >= "4.3.0")
+						{
+						$values .= ", '" . mysql_real_escape_string($_SESSION[$value]) . "'";	
+						}
+					else
+						{
+						$values .= ", '" . mysql_escape_string($_SESSION[$value]) . "'";
+						}
 					}
 				else
 					{
-					$values .= ", '" . mysql_escape_string($_SESSION[$value]) . "'";
+					$values .= ", '" . $_SESSION[$value] . "'";
 					}
 				}
 			else
 				{
-				$values .= ", '" . $_SESSION[$value] . "'";
+				$values .= ", ''";
 				}
 			}
 		$col_name .= "`";

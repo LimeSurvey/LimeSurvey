@@ -47,7 +47,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	$postedfieldnames=explode("|", $_POST['fieldnames']);
 	foreach ($postedfieldnames as $pf)
 		{
-		$_SESSION[$pf] = $_POST[$pf];
+		if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
 		}
 	}
 
@@ -84,7 +84,7 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $ba
 		if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
 			{
 			}
-		elseif (!$_POST[$multiname])
+		elseif (!isset($_POST[$multiname]) || !$_POST[$multiname])
 			{
 			//One of the mandatory questions hasn't been answered
 			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
@@ -193,20 +193,27 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			if (!isset($col_name)) {$col_name="";}
 			if (!isset($values)) {$values="";}
 			$col_name .= "`, `" . $value; 
-			if (get_magic_quotes_gpc() == "0")
+			if (isset($_SESSION[$value]))
 				{
-				if (phpversion() >= "4.3.0")
+				if (get_magic_quotes_gpc() == "0")
 					{
-					$values .= ", '" . mysql_real_escape_string($_SESSION[$value]) . "'";	
+					if (phpversion() >= "4.3.0")
+						{
+						$values .= ", '" . mysql_real_escape_string($_SESSION[$value]) . "'";	
+						}
+					else
+						{
+						$values .= ", '" . mysql_escape_string($_SESSION[$value]) . "'";
+						}
 					}
 				else
 					{
-					$values .= ", '" . mysql_escape_string($_SESSION[$value]) . "'";
+					$values .= ", '" . $_SESSION[$value] . "'";
 					}
 				}
 			else
 				{
-				$values .= ", '" . $_SESSION[$value] . "'";
+				$values .= ", ''";
 				}
 			}
 		$col_name .= "`";
