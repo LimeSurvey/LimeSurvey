@@ -50,19 +50,23 @@ if ($sid)
 		else {$surveysummary .= " and is presented as one single page.<font size='1' color='red'>[Single Page function not yet available]</font>";}
 		$surveysummary .= "</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
-		$surveysummary .= "\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
+		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n";
-		$surveysummary .= "\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n";
+		$surveysummary .= "\t\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
-		$surveysummary .= "\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
+		$surveysummary .= "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
-		$surveysummary .= "\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n";
+		$surveysummary .= "\t\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n";
 		if ($s1row['expires'] != "0000-00-00") 
 			{
 			$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
 			$surveysummary .= "\t<td>$setfont {$s1row['expires']}</font></td></tr>\n";
 			}
 		$activated = $s1row['active'];
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
+		$surveysummary .= "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Link:</b></font></td>\n";
+		$surveysummary .= "\t\t<td>$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>{$s1row['urldescrip']}</a></font></td></tr>\n";
 		}
 	
 	$sumquery2 = "SELECT * FROM groups WHERE sid=$sid";
@@ -746,13 +750,13 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t\t<td><textarea cols='35' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Welcome Message:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><textarea cols='35' rows='5' name='welcome'>".str_replace("<br />", "\n", $esrow['welcome'])."</textarea></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Administrator</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Administrator:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='admin' value='{$esrow['admin']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='adminemail' value='{$esrow['adminemail']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='faxto' value='{$esrow['faxto']}'></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Format</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Format:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><select name='format'>\n";
 		$editsurvey .= "\t\t\t<option value='S'";
 		if ($esrow['format'] == "S" || !$esrow['format']) {$editsurvey .= " selected";}
@@ -765,6 +769,19 @@ if ($action == "editsurvey")
 		$editsurvey .= ">All in one</option>\n";
 		$editsurvey .= "\t\t</select></td>\n";
 		$editsurvey .= "\t</tr>\n";
+
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Template:</b></font></td>\n";
+		$editsurvey .= "\t\t<td><select name='template'>\n";
+		foreach (gettemplatelist() as $tname)
+			{
+			$editsurvey .= "\t\t\t<option value='$tname'";
+			if ($esrow['template'] && $tname == $esrow['template']) {$editsurvey .= " selected";}
+			elseif (!$esrow['template'] && $tname == "default") {$editsurvey .= " selected";}
+			$editsurvey .= ">$tname</option>\n";
+			}
+		$editsurvey .= "\t\t</select></td>\n";
+		$editsurvey .= "\t</tr>\n";
+		
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Anonymous?</b></font></td>\n";
 				
 		if ($esrow['active'] == "Y")
@@ -787,8 +804,13 @@ if ($action == "editsurvey")
 			$editsurvey .= "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date</b></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='10' name='expires' value='{$esrow['expires']}'></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>End URL:</b></font></td>\n";
+		$editsurvey .= "\t\t<td><input type='text' size='50' name='url' value='{$esrow['url']}'></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>URL Description:</b></font></td>\n";
+		$editsurvey .= "\t\t<td><input type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n";
+
 		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Survey'></td>\n";
 		$editsurvey .= "\t<input type='hidden' name='action' value='updatesurvey'>\n";
 		$editsurvey .= "\t<input type='hidden' name='sid' value='{$esrow['sid']}'>\n";
@@ -808,26 +830,41 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t\t<td><textarea cols='35' rows='5' name='description'></textarea></td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Welcome Message:</b></font></td>\n";
 	$newsurvey .= "\t\t<td><textarea cols='35' rows='5' name='welcome'></textarea></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Administrator</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Administrator:</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='admin'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email:</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='adminemail'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To:</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='faxto'></td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Anonymous?</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='private'>\n";
 	$newsurvey .= "\t\t\t<option value='Y' selected>Yes</option>\n";
 	$newsurvey .= "\t\t\t<option value='N'>No</option>\n";
 	$newsurvey .= "\t\t</select></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Format</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Format:</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='format'>\n";
 	$newsurvey .= "\t\t\t<option value='S' selected>One at a time</option>\n";
 	$newsurvey .= "\t\t\t<option value='G'>Group at a time</option>\n";
 	$newsurvey .= "\t\t\t<option value='A'>All in one</option>\n";
 	$newsurvey .= "\t\t</select></td>\n";
 	$newsurvey .= "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date</b></font></td>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Template:</b></font></td>\n";
+	$newsurvey .= "\t\t<td><select name='template'>\n";
+	foreach (gettemplatelist() as $tname)
+		{
+		$newsurvey .= "\t\t\t<option value='$tname'";
+		if ($esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected";}
+		elseif (!$esrow['template'] && $tname == "default") {$newsurvey .= " selected";}
+		$newsurvey .= ">$tname</option>\n";
+		}
+	$newsurvey .= "\t\t</select></td>\n";
+	$newsurvey .= "\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date:</b></font></td>\n";
 	$newsurvey .= "\t\t<td>$setfont<input type='text' size='10' name='expires'><font size='1'>Date Format: YYYY-MM-DD</font></font></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>End URL:</b></font></td>\n";
+	$newsurvey .= "\t\t<td><input type='text' size='50' name='url' value='{$esrow['url']}'></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>URL Description:</b></font></td>\n";
+	$newsurvey .= "\t\t<td><input type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n";
 	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create Survey'></td>\n";
 	$newsurvey .= "\t<input type='hidden' name='action' value='insertnewsurvey'>\n";
 	$newsurvey .= "\t</form></tr>\n";	
