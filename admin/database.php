@@ -249,7 +249,7 @@ elseif ($action == "delquestion")
 	$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
 	$cccount=mysql_num_rows($ccresult);
 	while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
-	if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+	if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
 	if ($cccount) //there are conditions dependant on this question
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELCONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
@@ -311,7 +311,7 @@ elseif ($action == "delquestionall")
 	
 elseif ($action == "modanswer")
 	{
-	if (($_POST['olddefault'] != $_POST['default'] && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _AL_ADD)) //TURN ALL OTHER DEFAULT SETTINGS TO NO
+	if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _AL_ADD)) //TURN ALL OTHER DEFAULT SETTINGS TO NO
 		{
 		$query = "UPDATE {$dbprefix}answers SET `default` = 'N' WHERE qid={$_POST['qid']}";
 		$result=mysql_query($query) or die("Error occurred updating default settings");
@@ -319,9 +319,9 @@ elseif ($action == "modanswer")
 	if (get_magic_quotes_gpc() == "0")
 		{
 		$_POST['code'] = addcslashes($_POST['code'], "'");
-		$_POST['oldcode'] = addcslashes($_POST['oldcode'], "'");
+		if (isset($_POST['oldcode'])) {$_POST['oldcode'] = addcslashes($_POST['oldcode'], "'");}
 		$_POST['answer'] = addcslashes($_POST['answer'], "'");
-		$_POST['oldanswer'] = addcslashes($_POST['oldanswer'], "'");
+		if (isset($_POST['oldanswer'])) {$_POST['oldanswer'] = addcslashes($_POST['oldanswer'], "'");}
 		}
 	switch ($_POST['ansaction'])
 		{
@@ -390,7 +390,7 @@ elseif ($action == "modanswer")
 			$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
 			$cccount=mysql_num_rows($ccresult);
 			while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
-			if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+			if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
 			if ($cccount)
 				{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERDELCONDITIONS." ($qidlist)\")\n //-->\n</script>\n";

@@ -135,7 +135,9 @@ if ($action == "newset" || $action == "editset")
 	echo "\t\t\t\t\t$setfont<b>"._LL_NAME.":</b></font>";
 	echo "\t\t\t\t</td>\n";
 	echo "\t\t\t\t<td>\n";
-	echo "\t\t\t\t\t<input type='text' $slstyle name='label_name' value='$lbname'>\n";
+	echo "\t\t\t\t\t<input type='text' $slstyle name='label_name' value='";
+	if (isset($lbname)) {echo $lbname;} 
+	echo "'>\n";
 	echo "\t\t\t\t</td>\n";
 	echo "\t\t\t</tr>\n";
 	echo "\t\t\t<tr>\n";
