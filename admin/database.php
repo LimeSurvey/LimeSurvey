@@ -180,7 +180,7 @@ elseif ($action == "updatequestion")
 		$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
 		$cccount=mysql_num_rows($ccresult);
 		while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
-		if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+		if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
 		}
 	if (get_magic_quotes_gpc() == "0")
 		{
