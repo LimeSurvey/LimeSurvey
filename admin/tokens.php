@@ -626,6 +626,10 @@ if ($action == "tokenify")
 		}
 	else
 		{
+		if (phpversion() < "4.2.0")
+			{
+			srand((double)microtime()*1000000);
+			}
 		$newtokencount = 0;
 		$tkquery = "SELECT * FROM tokens_$sid WHERE token IS NULL OR token=''";
 		$tkresult = mysql_query($tkquery) or die ("Mucked up!<br />$tkquery<br />".mysql_error());
