@@ -83,6 +83,7 @@ define("_S_MINIMISE_BT", "隱藏本問卷的詳細資料");
 define("_S_MAXIMISE_BT", "顯示本問卷的詳細資料");
 define("_S_CLOSE_BT", "關閉本問卷");
 define("_S_SAVED_BT", "View Saved but not submitted Responses"); //New in 0.99dev01
+define("_S_ASSESSMENT_BT", "Set assessment rules"); //New in  0.99dev01
 //Group bar
 define("_G_EDIT_BT", "修改目前的題目組別");
 define("_G_EXPORT_BT", "輸出目前的題目組別"); //New in 0.98rc5
@@ -717,4 +718,25 @@ define("_VV_ENTRYFAILED", "Import Failed on Record");
 define("_VV_BECAUSE", "because");
 define("_VV_EXPORTDEACTIVATE", "Export, then de-activate survey");
 define("_VV_EXPORTONLY", "Export but leave survey active");
+define("_VV_RUSURE", "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?");
+
+//ASSESSMENTS
+define("_AS_TITLE", "Assessments");
+define("_AS_DESCRIPTION", "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission");
+define("_AS_NOSID", "No SID Provided");
+define("_AS_SCOPE", "Scope");
+define("_AS_MINIMUM", "Minimum");
+define("_AS_MAXIMUM", "Maximum");
+define("_AS_GID", "Group");
+define("_AS_NAME", "Name/Header");
+define("_AS_HEADING", "Heading");
+define("_AS_MESSAGE", "Message");
+define("_AS_URL", "URL");
+define("_AS_SCOPE_GROUP", "Group");
+define("_AS_SCOPE_TOTAL", "Total");
+define("_AS_ACTIONS", "Actions");
+define("_AS_EDIT", "Edit");
+define("_AS_DELETE", "Delete");
+define("_AS_ADD", "Add");
+define("_AS_UPDATE", "Update");
 ?>
