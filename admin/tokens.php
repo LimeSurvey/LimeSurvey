@@ -97,8 +97,12 @@ if (!$tkresult = mysql_query($tkquery))
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center'>\n";
 		echo "\t\t\t$setfont<br /><br />\n";
-		echo "\t\t\tNo token system has been created for this survey. Do you want to create one now?<br /><br />\n";
-		echo "\t\t\t<input type='submit' $btstyle value='Create Token Table' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n";
+		echo "\t\t\t<b>Tokens have not been initialised for this survey.</b><br /><br />\n";
+		echo "\t\t\tNote that if you initialise tokens for this survey, then only<br />\n";
+		echo "\t\t\twith an entry in the token table, and a unique token can<br />\n";
+		echo "\t\t\tparticipate in this survey.<br /><br />\n";
+		echo "\t\t\tDo you want to create one now?<br /><br />\n";
+		echo "\t\t\t<input type='submit' $btstyle value='Initialise Tokens' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n";
 		echo "\t\t\t<input type='submit' $btstyle value='Return to Admin' onClick=\"window.open('admin.php?sid=$sid', '_top')\">\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
