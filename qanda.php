@@ -1295,9 +1295,12 @@ function do_array_flexible($ia)
 		$ansrowavg=(($ansrowtotallength/$ansrowcount)/2);
 		if ($ansrowavg > 54) {$percwidth=60;}
 		elseif ($ansrowavg < 5) {$percwidth=5;}
-		//elseif ($ansrowavg > 25) {$percwidth=30;}
 		else {$percwidth=$ansrowavg*1.2;}
-		$otherwidth=(100-$percwidth)/$cellwidth;
+		$percwidth=sprintf("%0d", $percwidth);
+		$lblcount=0;
+		$lblcount=count($labelans);
+		if($ia[6]=="Y") {$lblcount++;}
+		$otherwidth=sprintf("%0d",(100-$percwidth)/$cellwidth);
 		$ansresult = mysql_query($ansquery);
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
@@ -1355,17 +1358,16 @@ function do_array_flexiblecolumns($ia)
 		$labelans[]=_NOTAPPLICABLE;
 		$labels[]=array("answer"=>_NOTAPPLICABLE, "code"=>"");
 	}
-	
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 	$ansresult = mysql_query($ansquery);
 	$anscount = mysql_num_rows($ansresult);
 	$fn=1;
-	$answer = "\t\t\t<table class='question'>\n"
+	$answer = "\t\t\t<table class='question' align='center'>\n"
 			 . "\t\t\t\t<tr>\n"
 			 . "\t\t\t\t\t<td></td>\n";
 	$cellwidth=$anscount;
-	//if ($ia[6] != "Y") {$cellwidth++;}
-	$cellwidth=60/$cellwidth;
+	
+	$cellwidth=50/$cellwidth;
 	while ($ansrow = mysql_fetch_array($ansresult))
 		{
 		$anscode[]=$ansrow['code'];
@@ -1386,7 +1388,7 @@ function do_array_flexiblecolumns($ia)
 		$ansrowcount++;
 		$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
 		}
-	$percwidth=100/($ansrowcount + 1);
+	$percwidth=100 - ($cellwidth*$anscount);
 	foreach($labels as $ansrow)
 		{
 		$answer .= "\t\t\t\t<tr>\n"
@@ -1395,7 +1397,7 @@ function do_array_flexiblecolumns($ia)
 			{
 			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$myfname=$ia[1].$ld;
-			$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$percwidth%'>";
+			$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>";
 			$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
