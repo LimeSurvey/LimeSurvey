@@ -441,7 +441,7 @@ function modanswers($lid)
     }
     switch($_POST['method'])
         {
-        case _ADD:
+        case _AL_ADD:
             if (isset($_POST['code']) && $_POST['code'])
                 {
                 $query = "INSERT INTO {$dbprefix}labels (lid, code, title, sortorder) VALUES ($lid, '{$_POST['code']}', '{$_POST['title']}', '{$_POST['sortorder']}')";
