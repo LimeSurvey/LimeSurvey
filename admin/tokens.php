@@ -146,7 +146,7 @@ $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=import'>import</a>] \n
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=email'>invite</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=remind'>remind</a>] \n";
 $tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=tokenify'>tokenify</a>] \n";
-$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=kill'>drop&nbsp;tokens</a>] \n";
+//$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=kill'>drop&nbsp;tokens</a>] \n";
 $tokenmenu .= "\t\t</td>\n";
 $tokenmenu .= "\t</tr>\n";
 
@@ -183,6 +183,38 @@ echo "<center>\n";
 
 #############################################################################################
 // NOW FOR VARIOUS ACTIONS:
+
+if ($action == "clearinvites")
+	{
+	$query="UPDATE tokens_$sid SET sent='N'";
+	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
+	echo "<center>All Invitations have been set to \"N\"</center>\n";
+	$action="";
+	}
+
+if ($action == "cleartokens")
+	{
+	$query="UPDATE tokens_$sid SET token=''";
+	$result=mysql_query($query) or die("Couldn't reset the tokens field<br />$query<br />".mysql_error());
+	echo "<center>All tokens have been removed</center>\n";
+	$action="";
+	}
+
+if (!$action)
+	{
+	echo "<br />\n";
+	echo "<table align='center' style='background-color: #EEEEEE; border-top: 1px solid #BBBBBB; border-left: 1px solid #BBBBBB; border-right: 1px solid #BBBBBB'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'>\n";
+	echo "\t\t\t<font size='1'><b>Database Admin</b><br />\n";
+	echo "\t\t\t[<a href='tokens.php?sid=$sid&action=clearinvites' onClick='return confirm(\"Are you sure you want to delete all your records that an invitation has been sent?\")'>clear&nbsp;invites</a>]\n";
+	echo "\t\t\t[<a href='tokens.php?sid=$sid&action=cleartokens' onClick='return confirm(\"Are you sure you want to delete all existing tokens? Doing so will cause problems for participants if you have already sent invitations.\")'>clear&nbsp;tokens</a>]\n";
+	echo "\t\t\t[<a href='tokens.php?sid=$sid&action=kill'>drop&nbsp;tokens</a>]\n";
+	echo "\t\t\t</font>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
+	}
 
 if ($action == "browse")
 	{
