@@ -625,11 +625,11 @@ if ($action == "edit" || $action == "add")
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td align='right' width='20%'>$setfont<b>Email:</b></td>\n";
-	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='40' name='email' value='$email'></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='50' name='email' value='$email'></td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td align='right' width='20%'>$setfont<b>Token:</b></td>\n";
-	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='10' $slstyle name='token' value='$token'></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value='$token'></td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td align='right' width='20%'>$setfont<b>Sent?:</b></td>\n";
