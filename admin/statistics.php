@@ -65,7 +65,7 @@ echo "</table>\n"
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
 $result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language']; echo $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
