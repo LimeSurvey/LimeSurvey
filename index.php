@@ -237,7 +237,7 @@ function templatereplace($line)
 	
 	if (ereg("^<body", $line))
 		{
-		if (!ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && ($_POST['move'] != " last " || ($_POST['move'] == " "._LAST." " && $notanswered)) && ($_POST['move'] != " "._SUBMIT." " || ($_POST['move']== " "._SUBMIT." " && $notanswered)))
+		if (!ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && ($_POST['move'] != " "._LAST." " || ($_POST['move'] == " "._LAST." " && $notanswered)) && ($_POST['move'] != " "._SUBMIT." " || ($_POST['move']== " "._SUBMIT." " && $notanswered)))
 			{
 			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
 			}
