@@ -291,13 +291,10 @@ elseif ($action == "edit")
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
-	
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private=$fnrow['private']; $datestamp=$fnrow['datestamp'];} // Get table output into array
-	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
-	
 	// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist) 
 	$fnames[] = array("id", "id", "id", "id", "id", "id", "id", "");
 
@@ -309,9 +306,10 @@ elseif ($action == "edit")
 		{
 		$fnames[] = array ("datestamp", "Date Stamp", "Datestamp", "datestamp", "datestamp", "", "");
 		}
-
+	$fcount=0;
 	foreach ($fnrows as $fnrow)
 		{
+		$fcount++;
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
@@ -391,6 +389,7 @@ elseif ($action == "edit")
 		for ($i=0; $i<$nfncount+1; $i++)
 			{
 			$answer = $idrow[$fnames[$i][0]];
+			$question=$fnames[$i][2];
 			echo "\t<tr>\n"
 				."\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont"
 				."<b>\n";
@@ -653,7 +652,7 @@ elseif ($action == "edit")
 					break;
 
 				case "M": //MULTIPLE OPTIONS checkbox
-					while ($fnames[$i][3] == "M")
+					while ($fnames[$i][3] == "M" && $question != "" && $question == $fnames[$i][2])
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						//echo substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
@@ -668,7 +667,15 @@ elseif ($action == "edit")
 							if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
 							echo " />{$fnames[$i][6]}<br />\n";
 							}
-						$i++;
+						if ($i<$nfncount) 
+							{
+							$i++;
+							}
+						else
+							{
+							$i++;
+							break;
+						    }
 						}
 					$i--;
 					break;
