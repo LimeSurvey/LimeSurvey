@@ -75,38 +75,8 @@ if (!$sid)
 
 if (!isset($token)) {$token=returnglobal('token');}
 //GET BASIC INFORMATION ABOUT THIS SURVEY
-$query="SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
-$result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
-$surveyexists=mysql_num_rows($result);
-while ($row=mysql_fetch_array($result))
-	{
-	$thissurvey=array("name"=>$row['short_title'],
-					  "description"=>$row['description'],
-					  "welcome"=>$row['welcome'],
-					  "templatedir"=>$row['template'],
-					  "adminname"=>$row['admin'],
-					  "adminemail"=>$row['adminemail'],
-					  "active"=>$row['active'],
-					  "expiry"=>$row['expires'],
-					  "private"=>$row['private'],
-					  "tablename"=>$dbprefix."survey_".$row['sid'],
-					  "url"=>$row['url'],
-					  "urldescrip"=>$row['urldescrip'],
-					  "format"=>$row['format'],
-					  "language"=>$row['language'],
-					  "datestamp"=>$row['datestamp'],
-					  "usecookie"=>$row['usecookie'],
-					  "sendnotification"=>$row['notification'],
-					  "allowregister"=>$row['allowregister'],
-					  "attribute1"=>$row['attribute1'],
-					  "attribute2"=>$row['attribute2'],
-					  "email_confirm"=>$row['email_confirm'],
-					  "email_register"=>$row['email_register']);
-	if (!$thissurvey['adminname']) {$thissurvey['adminname']=$siteadminname;}
-	if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
-	if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
-	}
-	
+$thissurvey=getSurveyInfo($sid);
+if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
 
 //SEE IF SURVEY USES TOKENS
 $i = 0; $tokensexist = 0;
@@ -186,6 +156,80 @@ if (isset($oldsid) && $oldsid && $oldsid != $sid)
 	session_unset();
 	$_SESSION['oldsid']=$sid;
 	}
+
+//Save and clear session if requested
+if (isset($_POST['saveall']) && $_POST['saveall'] == _SAVE_AND_RETURN) 
+	{
+	require_once("save.php");
+	}
+
+if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
+	{
+    if (returnglobal('loadname') && returnglobal('loadpass'))
+		{
+        $_POST['loadall']="reload";
+		$_POST['loadname']=returnglobal('loadname');
+		$_POST['loadpass']=returnglobal('loadpass');
+		}
+	}
+//Load saved survey
+if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
+	{
+	$errormsg="";
+	if (!isset($_POST['loadname']) || (!$_POST['loadname'] && !$_POST['loadname'] == 0))
+		{
+	    $errormsg .= _LOADNONAME."<br />\n";
+		}
+	if (!isset($_POST['loadpass']) || (!$_POST['loadpass'] && !$_POST['loadpass'] == 0))
+		{
+		$errormsg .= _LOADNOPASS."<br />\n";
+		}
+	$query = "SELECT * FROM {$dbprefix}saved\n"
+			."WHERE sid=$sid\n"
+			."AND identifier='".$_POST['loadname']."'\n"
+			."AND access_code='".md5($_POST['loadpass'])."'\n";
+	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
+	if (mysql_num_rows($result) < 1)
+		{
+	    $errormsg .= _LOADNOMATCH."<br />\n";
+		}
+	else
+		{
+		//A match has been found. Let's load the values!
+		//If this is from an email, build surveysession first
+		while($row=mysql_fetch_array($result))
+			{
+			if ($row['fieldname'] == "token")
+				{
+			    $_POST['token']=$row['value'];
+				$token=$row['value'];
+				}
+			else
+				{
+				$_SESSION[$row['fieldname']]=$row['value'];
+				$_SESSION['step']=$row['saved_thisstep'];
+				}
+			} // while
+		$_SESSION['savename']=$_POST['loadname']; //This session variable hangs around
+		                                           //for later use.
+		$_POST['move'] = _NEXT; //Just to stop a bug
+		if (isset($_GET['loadall']))
+			{
+			buildsurveysession();
+			}
+		}
+	
+	if ($errormsg)
+		{
+	    $_POST['loadall'] = _LOAD_SAVED;
+		}
+	}
+//Allow loading of saved survey
+if (isset($_POST['loadall']) && $_POST['loadall'] == _LOAD_SAVED)
+	{
+    require_once("load.php");
+	}
+
 
 //Check if TOKEN is used for EVERY PAGE
 //This function fixes bug #998700 - Users able to submit two surveys/votes
@@ -299,158 +343,6 @@ function getTokenData($sid, $token)
 						 "attribute_2"=>$row['attribute_2']);
 		} // while
 	return $thistoken;
-	}
-
-function templatereplace($line)
-	{
-	global $thissurvey;
-	
-	global $percentcomplete;
-	
-	global $groupname, $groupdescription, $question;
-	global $questioncode, $answer, $navigator;
-	global $help, $totalquestions, $surveyformat;
-	global $completed, $register_errormsg;
-	global $notanswered, $privacy, $sid;
-	global $publicurl, $templatedir, $token;
-	
-	if ($thissurvey['templatedir']) {$templateurl="$publicurl/templates/{$thissurvey['templatedir']}/";}
-	else {$templateurl="$publicurl/templates/default/";}
-
-	$clearall = "\t\t\t\t\t<div class='clearall'>"
-			  . "<a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall";
-	if (returnglobal('token')) {
-	    $clearall .= "&token=".returnglobal('token');
-	}
-	$clearall .="' onClick='return confirm(\""
-			  . _CONFIRMCLEAR."\")'>["
-			  . _EXITCLEAR."]</a></div>\n";
-	
-	
-	if (ereg("^<body", $line))
-		{
-		if (isset($_SESSION['step']) && !ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && (isset($_POST['move']) && ($_POST['move'] != " "._LAST." " || ($_POST['move'] == " "._LAST." " && $notanswered)) && ($_POST['move'] != " "._SUBMIT." " || ($_POST['move']== " "._SUBMIT." " && $notanswered))))
-			{
-			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
-			}
-		//elseif ($thissurvey['format'] == "A")
-		//	{
-		//	$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
-		//	}
-		}
-	
-	$line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
-	$line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
-	$line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
-	$line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
-	$line=str_replace("{GROUPNAME}", $groupname, $line);
-	$line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
-	$line=str_replace("{QUESTION}", $question, $line);
-	$line=str_replace("{QUESTION_CODE}", $questioncode, $line);
-	$line=str_replace("{ANSWER}", $answer, $line);
-	if ($totalquestions < 2)
-		{
-		$line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS_SINGLE, $line); //Singular
-	    }
-	else
-		{
-		$line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS, $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
-		}
-	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
-	$line=str_replace("{TOKEN}", $token, $line);
-	$line=str_replace("{SID}", $sid, $line);
-	if ($help) {
-		$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' alt='Help' align='left'>".$help, $line);
-		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
-	}
-	else
-		{
-		$line=str_replace("{QUESTIONHELP}", $help, $line);
-		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
-		}
-	$line=str_replace("{NAVIGATOR}", $navigator, $line);
-	$submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
-	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
-	$line=str_replace("{COMPLETED}", $completed, $line);
-	$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";
-	$line=str_replace("{URL}", $linkreplace, $line);
-	$line=str_replace("{PRIVACY}", $privacy, $line);
-	$line=str_replace("{PRIVACYMESSAGE}", _PRIVACY_MESSAGE, $line);
-	$line=str_replace("{CLEARALL}", $clearall, $line);
-	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
-	$line=str_replace("{SUBMITCOMPLETE}", _SM_COMPLETED, $line);
-	$line=str_replace("{SUBMITREVIEW}", _SM_REVIEW, $line);
-	
-	if (isset($_SESSION['thistoken']))
-		{
-	    $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
-		$line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
-		$line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
-		$line=str_replace("{TOKEN:ATTRIBUTE_1}", $_SESSION['thistoken']['attribute_1'], $line);
-		$line=str_replace("{TOKEN:ATTRIBUTE_2}", $_SESSION['thistoken']['attribute_2'], $line);
-		}
-
-	$line=str_replace("{ANSWERSCLEARED}", _ANSCLEAR, $line);
-	$line=str_replace("{RESTART}", 	"<a href='{$_SERVER['PHP_SELF']}?sid=$sid&token=".returnglobal('token')."'>"._RESTART."</a>", $line);
-	$line=str_replace("{CLOSEWINDOW}", "<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a>", $line);
-	
-	$line=str_replace("{REGISTERERROR}", $register_errormsg, $line);
-	$line=str_replace("{REGISTERMESSAGE1}", _RG_REGISTER1, $line);
-	$line=str_replace("{REGISTERMESSAGE2}", _RG_REGISTER2, $line);
-	if (strpos($line, "{REGISTERFORM}") !== false) {
-		$registerform="<table class='register'>\n"
-			."<form method='post' action='register.php'>\n"
-			."<input type='hidden' name='sid' value='$sid' id='sid'>\n"
-			."<tr><td align='right'>"
-			._RG_FIRSTNAME.":</td>"
-			."<td align='left'><input class='text' type='text' name='register_firstname'";
-		if (isset($_POST['register_firstname'])) 
-			{
-			$registerform .= " value='".returnglobal('register_firstname')."'";
-				}
-		$registerform .= "</td></tr>"
-			."<tr><td align='right'>"._RG_LASTNAME.":</td>\n"
-			."<td align='left'><input class='text' type='text' name='register_lastname'";
-		if (isset($_POST['register_lastname'])) 
-			{
-			$registerform .= " value='".returnglobal('register_lastname')."'";
-			}
-		$registerform .= "></td></tr>\n"
-			."<tr><td align='right'>"._RG_EMAIL.":</td>\n"
-			."<td align='left'><input class='text' type='text' name='register_email'";
-		if (isset($_POST['register_email'])) 
-			{
-			$registerform .= " value='".returnglobal('register_email')."'";
-			}
-		$registerform .= "</td></tr>\n";
-		if($thissurvey['attribute1'])
-			{
-			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
-				."<td align='left'><input class='text' type='text' name='register_attribute1'";
-			if (isset($_POST['register_attribute1'])) 
-				{
-				$registerform .= " value='".returnglobal('register_attribute1')."'";
-				}
-			$registerform .= "></td></tr>\n";
-			}
-		if($thissurvey['attribute2'])
-			{
-			$registerform .= "<tr><td align='right'>".$thissurvey['attribute2'].":</td>\n"
-				."<td align='left'><input class='text' type='text' name='register_attribute2'";
-			if (isset($_POST['register_attribute2'])) 
-				{
-				$registerform .= " value='".returnglobal('register_attribute2')."'";
-				}
-			$registerform .= "></td></tr>\n";
-			}
-		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._CONTINUE_PS."'>"
-			."</td></tr>\n"
-			."</form>\n"
-			."</table>\n";
-		$line=str_replace("{REGISTERFORM}", $registerform, $line);
-	}
-	
-	return $line;
 	}
 
 function makegraph($thisstep, $total)
