@@ -454,6 +454,7 @@ foreach ($filters as $flt)
 				}
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
+			unset($answers);
 			break;
 		case "X": //This is a boilerplate question and it has no business in this script
 			break;
