@@ -102,7 +102,6 @@ else
 		}
 	$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$sid";
 	@$result = mysql_query($query); //Note this won't die if it fails - that's deliberate.
-	echo $query;
 	
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
