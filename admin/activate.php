@@ -123,8 +123,7 @@ else
 	//$createsurvey = substr($createsurvey, 0, strlen($createsurvey)-2);
 	$createsurvey .= "  INDEX(id)";
 	$createsurvey .= ") TYPE=MyISAM;";
-	$prettycreate=str_replace("\n", "<BR>", $createsurvey);
-	echo "<BR>$prettycreate";
+	//echo "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
 	
 	$createtable=mysql_query($createsurvey) or die ("Could not activate this survey. <BR>".mysql_error() . "<BR><BR><a href='$scriptname?sid=$sid'>Back to Admin</A>");
 	
