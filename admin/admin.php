@@ -97,7 +97,7 @@ checkactivations();
 
 
 //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
-if ($action == "delsurvey" || $action == "delgroup" || $action=="delquestion" || $action == "delanswer" || $action == "insertnewsurvey" || $action == "copynewquestion" || $action == "insertnewgroup" || $action == "insertnewquestion" || $action == "insertnewanswer" || $action == "updatesurvey" || $action=="updategroup" || $action=="updatequestion" || $action == "updateanswer")
+if ($action == "delsurvey" || $action == "delgroup" || $action=="delquestion" || $action == "insertnewsurvey" || $action == "copynewquestion" || $action == "insertnewgroup" || $action == "insertnewquestion" || $action == "updatesurvey" || $action=="updategroup" || $action=="updatequestion" || $action == "modanswer")
 	{
 	include("database.php");
 	}
