@@ -364,7 +364,10 @@ function templatereplace($line)
 		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
 	}
 	else
-		{$line=str_replace("{QUESTIONHELP}", $help, $line);}
+		{
+		$line=str_replace("{QUESTIONHELP}", $help, $line);
+		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+		}
 	$line=str_replace("{NAVIGATOR}", $navigator, $line);
 	$submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
 	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
