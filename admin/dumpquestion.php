@@ -40,7 +40,7 @@
 // 1. questions
 // 2. answers
 
-$sid = $_GET['sid'];
+$qid = $_GET['qid'];
 
 include ("config.php");
 
