@@ -160,6 +160,8 @@ define("_SL_EMAILREGISTER", "Public registration Email:"); //New with 0.98rc9
 define("_SL_EMAILCONFIRM", "Confirmation Email"); //New with 0.98rc9
 define("_SL_REPLACEOK", "This will replace the existing text. Continue?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
+define("_SL_AUTONUMBER", "Start ID numbers at:"); //New with 0.99dev01
+define("_SL_AUTORELOAD", "Automatically load URL when survey complete?"); //New with 0.99dev01
 
 //groups
 define("_GL_TITLE", "¼ÐÃD:");
@@ -712,6 +714,11 @@ define("_VV_EXPORTFILE", "Export a VV survey file");
 define("_VV_FILE", "File:");
 define("_VV_SURVEYID", "Survey ID:");
 define("_VV_EXCLUDEID", "Exclude record IDs?");
+define("_VV_INSERT", "When an imported record matches an existing record ID:");
+define("_VV_INSERT_ERROR", "Report an error (and skip the new record).");
+define("_VV_INSERT_RENUMBER", "Renumber the new record.");
+define("_VV_INSERT_IGNORE", "Ignore the new record.");
+define("_VV_INSERT_REPLACE", "Replace the existing record.");
 define("_VV_DONOTREFRESH", "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates");
 define("_VV_IMPORTNUMBER", "Total records imported:");
 define("_VV_ENTRYFAILED", "Import Failed on Record");
