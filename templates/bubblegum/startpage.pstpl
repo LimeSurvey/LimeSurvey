@@ -1,0 +1,79 @@
+<head>
+	<title>
+	A SURVEY: {SURVEYNAME}
+	</title>
+<style>
+.submit
+	{
+	background-color: #CCCCFF;
+	color: #800000;
+	font-size: 9pt;
+	font-family: verdana;
+	}
+.text
+	{
+	background-color: #CCCCFF;
+	color: #800000;
+	font-size: 9pt;
+	font-family: verdana;
+	}
+.radio
+	{
+	}
+.checkbox
+	{
+	}
+.select
+	{
+	}
+.textarea
+	{
+	background-color: #CCCCFF;
+	color: #800000;
+	font-size: 9pt;
+	font-family: verdana;
+	}
+.clearall
+	{
+	font-size: 7pt;
+	}
+	A:link
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: white;
+	}
+.clearall
+	A:visited
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: white;
+	}
+.clearall
+	A:active
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: white;
+	}
+.clearall
+	A:hover
+	{
+	text-decoration: underline;
+	font-family: verdana;
+	color: white;
+	}
+.graph
+	{
+	border: solid;
+	border-width: 1;
+	border-color: #800000;
+	background-color: #DDDDDD;
+	}
+</style>
+</head>
+<body bgcolor='#000000'><font face='verdana' size='2'>
+<table width='75%' align='center' style='border-collapse: collapse' bordercolor='#333333' bgcolor='#CCCCFF' border='1' cellspacing='0'>
+	<tr>
+		<td>
