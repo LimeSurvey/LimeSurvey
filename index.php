@@ -908,7 +908,7 @@ else
 								}
 							}
 						}
-					$ranklist .= "\t\t\t\t\t\t$i:<input $slstyle name='RANK$i' id='RANK$i'";
+					$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$i' id='RANK$i'";
 					if ($_SESSION[$myfname])
 						{
 						$ranklist .= " value='";
@@ -932,7 +932,7 @@ else
 					$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(RANK$i.value, fvalue$i.value, RANK$i.name, this.name)\"><br />\n";
 					}
 				
-				$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 14; color: #000080; width: 150'>\n";
+				$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 				foreach ($answers as $ans)
 					{
 					if (!in_array($ans, $chosen))
@@ -944,7 +944,7 @@ else
 
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2'>\n";
-				echo "\t\t\t<table align='center' border='0'>\n";
+				echo "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
 				echo "\t\t\t\t<tr>\n";
 				echo "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
 				echo "\t\t\t\t\t\tClick on an item in the list on the left, starting with your<br />";
@@ -952,11 +952,12 @@ else
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='right'>\n";
-				echo $choicelist;
+				echo "\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n";
+				echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Choices:</b><br />\n";
+				echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
 				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t\t<td align='left'>$setfont\n";
-				$fn = 1;
+				echo "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
+				echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Ranking:</b><br />\n";
 				echo $ranklist;
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
