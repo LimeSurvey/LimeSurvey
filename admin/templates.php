@@ -149,6 +149,31 @@ if ($action == "delete") {
 		unlink($the_full_file_path);
 	}
 }
+
+if ($action == "zip") {
+	require("classes/phpzip.inc.php");
+	$z = new PHPZip();
+	$templatedir="$publicdir/templates/$templatename/";
+	$zipfile="$tempdir/$templatename.zip";
+	$z -> Zip($templatedir, $zipfile);
+	if (is_file($zipfile)) {
+	    //Send the file for download!
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+		
+		header("Content-Type: application/force-download");
+		header( "Content-Disposition: attachment; filename=$templatename.zip" );
+		header( "Content-Description: File Transfer");
+		@readfile($zipfile);
+
+		//Delete the temporary file
+		unlink($zipfile);
+		
+	}
+}
+
+
 function mkdir_p($target){
 	//creates a new directory
 	//Returns 1 for success
@@ -489,7 +514,10 @@ echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' h
 	." onClick=\"javascript: copyprompt('"._TP_RENAMETO."', '$templatename', '$templatename', 'rename')\"";
 if ($templatename == "default") {echo " disabled";}
 echo ">";
-echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='40' height='10' border='0' hspace='0' align='left'>\n"
+echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' height='10' border='0' hspace='0' align='left'>\n"
+	."\t\t\t\t\t<input type='image' name='Export' src='$imagefiles/export.gif' align='left' hspace='0' "
+	."border='0' title='"._TP_EXPORT."'"
+	." onClick='javascript:window.open(\"templates.php?action=zip&editfile=$editfile&screenname=$screenname&templatename=$templatename\", \"_top\")'>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.gif' align='left' hspace='0' "
 	."border='0' title='"._TP_COPY."'"
@@ -681,6 +709,5 @@ function getListOfFiles($wh){
 $arr=explode("\n",$files);
 return $arr;
 }
-
 
 ?>
