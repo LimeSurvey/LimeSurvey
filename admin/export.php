@@ -96,6 +96,8 @@ if (!$style)
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
+	echo "<br />\n";
+	echo htmlfooter("instructions.html", "General PHPSurveyor Instructions");
 	echo "</body>\n</html>";
 	exit;
 	}

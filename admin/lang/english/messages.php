@@ -14,6 +14,12 @@ define(_DEACTIVATE, "Deactivate Survey");
 define(_CHECKFIELDS, "Check Database Fields");
 define(_CREATEDB, "Create Database");
 define(_SETUP, "PHPSurveyor Setup");
+define(_DELETESURVEY, "Delete Survey");
+define(_EXPORTQUESTION, "Export Question");
+define(_EXPORTSURVEY, "Export Survey");
+define(_IMPORTQUESTION, "Import Question");
+define(_IMPORTSURVEY, "Import Survey");
+define(_EXPORTRESULTS, "Export Responses");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -157,6 +163,8 @@ define(_CONTINUE, "Continue");
 define(_WARNING, "Warning");
 define(_USERNAME, "User name");
 define(_PASSWORD, "Password");
+define(_DELETE, "Delete");
+define(_CLOSEWIN, "Close Window");
 
 //General Setup Messages
 define(_ST_NODB1, "The defined surveyor database does not exist");
@@ -230,14 +238,14 @@ define(_CD_DBCREATED, "Database has been created.");
 define(_CD_POPULATE_MESSAGE, "Please click below to populate the database");
 define(_CD_POPULATE, "Populate Database");
 define(_CD_NOCREATE, "Could not create database");
-define(_CD_NODBNAME, "Database Information not provided. This script must be run from admin.php only.")
+define(_CD_NODBNAME, "Database Information not provided. This script must be run from admin.php only.");
 
 //DATABASE MODIFICATION MESSAGES
 define(_DB_FAIL_GROUPNAME, "Group could not be added. It is missing the mandatory group name");
 define(_DB_FAIL_GROUPUPDATE, "Group could not be updated");
 define(_DB_FAIL_GROUPDELETE, "Group could not be deleted");
 define(_DB_FAIL_NEWQUESTION, "Question could not be created.");
-define(_DB_FAIL_QUESTIONTYPECONDITIONS, "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.")
+define(_DB_FAIL_QUESTIONTYPECONDITIONS, "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.");
 define(_DB_FAIL_QUESTIONUPDATE, "Question could not be updated");
 define(_DB_FAIL_QUESTIONDELCONDITIONS, "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed");
 define(_DB_FAIL_QUESTIONDELETE, "Question could not be deleted");
@@ -247,10 +255,37 @@ define(_DB_FAIL_ANSWERUPDATEMISSING, "Answer could not be updated. You must incl
 define(_DB_FAIL_ANSWERUPDATEDUPLICATE, "Answer could not be updated. There is already an answer with this code");
 define(_DB_FAIL_ANSWERUPDATECONDITIONS, "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.");
 define(_DB_FAIL_ANSWERDELCONDITIONS, "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed");
-define(_DB_FAIL_NEWSURVEY_TITLE, "Survey could not be created because it did not have a short title")
+define(_DB_FAIL_NEWSURVEY_TITLE, "Survey could not be created because it did not have a short title");
 define(_DB_FAIL_NEWSURVEY, "Survey could not be created");
 define(_DB_FAIL_SURVEYUPDATE, "Survey could not be updated");
 define(_DB_FAIL_SURVEYDELETE, "Survey could not be deleted");
+
+//DELETE SURVEY MESSAGES
+define(_DS_NOSID, "You have not selected a survey to delete");
+define(_DS_DELMESSAGE1, "You are about to delete this survey");
+define(_DS_DELMESSAGE2, "This process will delete this survey, and all related groups, questions answers and conditions.");
+define(_DS_DELMESSAGE3, "We recommend that before you delete this survey you export the entire survey from the main administration screen.");
+define(_DS_SURVEYACTIVE, "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey.");
+define(_DS_SURVEYTOKENS, "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.");
+define(_DS_DELETED, "This survey has been deleted.");
+
+//EXPORT MESSAGES
+define(_EQ_NOQID, "No QID has been provided. Cannot dump question.");
+define(_ES_NOSID, "No SID has been provided. Cannot dump survey");
+
+//EXPORT RESULTS
+define(_EX_FROMSTATS, "Filtered from Statistics Script");
+define(_EX_HEADINGS, "Questions");
+define(_EX_ANSWERS, "Answers");
+define(_EX_FORMAT, "Format");
+define(_EX_HEAD_ABBREV, "Abbreviated headings");
+define(_EX_HEAD_FULL, "Full headings");
+define(_EX_ANS_ABBREV, "Answer Codes");
+define(_EX_ANS_FULL, "Full Answers");
+define(_EX_FORM_WORD, "Microsoft Word");
+define(_EX_FORM_EXCEL, "Microsoft Excel");
+define(_EX_FORM_CSV, "CSV Comma Delimited");
+define(_EX_EXPORTDATA, "Export Data");
 
 
 ?>
