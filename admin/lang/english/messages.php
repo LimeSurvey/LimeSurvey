@@ -160,6 +160,8 @@ define("_SL_EMAILREGISTER", "Public registration Email:"); //New with 0.98rc9
 define("_SL_EMAILCONFIRM", "Confirmation Email"); //New with 0.98rc9
 define("_SL_REPLACEOK", "This will replace the existing text. Continue?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
+define("_SL_AUTONUMBER", "Start ID numbers at:"); //New with 0.99dev01
+define("_SL_AUTORELOAD", "Automatically load URL when survey complete?"); //New with 0.99dev01
 
 //groups
 define("_GL_TITLE", "Title:");
