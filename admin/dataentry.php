@@ -638,7 +638,7 @@ elseif ($action == "update")
 	echo "<br />\n<b>Record has been updated.</b><br /><br />\n";
 	echo "<a href='browse.php?sid=$sid&action=id&id=$id'>View record again</a>\n<br />\n";
 	echo "<a href='browse.php?sid=$sid&action=all'>Browse all records</a>\n";
-	echo "<pre style='text-align: left'>$updateqr</pre>"; //Debugging info
+	//echo "<pre style='text-align: left'>$updateqr</pre>"; //Debugging info
 	echo "</body>\n</html>\n";
 	}
 
