@@ -1418,11 +1418,21 @@ function do_array_flexiblecolumns($ia)
 
 function retrieve_Answer($code)
 	{
+	//This function checks to see if there is an answer saved in the survey session
+	//data that matches the $code. If it does, it returns that data.
+	//It is used when building a questions text to allow incorporating the answer
+	//to an earlier question into the text of a later question.
+	//IE: Q1: What is your name? [Jason]
+	//    Q2: Hi [Jason] how are you ?
+	//This function is called from the retriveAnswers function.
 	global $dbprefix;
 	//Find question details
 	if (isset($_SESSION[$code]))
 		{
-		$questiondetails=getsidgidqid($code);
+		$questiondetails=getsidgidqid($code); 
+		//the getsidgidqid function is in common.php and returns
+		//a SurveyID, GroupID, QuestionID and an Answer code
+		//extracted from a "fieldname" - ie: 1X2X3a
 		$query="SELECT type FROM {$dbprefix}questions WHERE qid=".$questiondetails['qid'];
 		$result=mysql_query($query) or die("Error getting reference question type<br />$query<br />".mysql_error());
 		while($row=mysql_fetch_array($result))
