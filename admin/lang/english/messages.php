@@ -529,6 +529,7 @@ define("_TC_EMAILSREMAINING", "There are {EMAILCOUNT} emails still to be sent.")
 define("_TC_SENDREMIND", "Send Reminders");
 define("_TC_INVITESENTTO", "Invitation Sent To:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Reminder Sent To:"); //is followed by token name
+define("_TC_UPDATEDB", "Update tokens table with new fields"); //New for 0.98rc7
 
 //labels.php
 define("_LB_NEWSET", "Create New Label Set");

@@ -529,6 +529,7 @@ define("_TC_EMAILSREMAINING", "還有 {EMAILCOUNT} 封電郵有待寄出。"); //Leave {EM
 define("_TC_SENDREMIND", "送出提示單");
 define("_TC_INVITESENTTO", "邀請寄給:"); //is followed by token name
 define("_TC_REMINDSENTTO", "提示單寄給:"); //is followed by token name
+define("_TC_UPDATEDB", "Update tokens table with new fields"); //New for 0.98rc7
 
 //labels.php
 define("_LB_NEWSET", "新增標籤集");

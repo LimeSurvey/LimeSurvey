@@ -535,6 +535,7 @@ define("_TC_EMAILSREMAINING", "Hay {EMAILCOUNT} correos que no han sido enviados
 define("_TC_SENDREMIND", "Enviar Recordatorios");
 define("_TC_INVITESENTTO", "Invitaci&oacute;n Enviada a:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Recordatorio Enviado a:"); //is followed by token name
+define("_TC_UPDATEDB", "Update tokens table with new fields"); //New for 0.98rc7
 
 //labels.php
 define("_LB_NEWSET", "Crear Nuevo Conjunto de Etiquetas");

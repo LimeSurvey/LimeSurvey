@@ -529,6 +529,7 @@ define("_TC_EMAILSREMAINING", "Ci sono ancora {EMAILCOUNT} email in attesa di in
 define("_TC_SENDREMIND", "Invia solleciti");
 define("_TC_INVITESENTTO", "Invito inviato a:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Sollecito inviato a:"); //is followed by token name
+define("_TC_UPDATEDB", "Update tokens table with new fields"); //New for 0.98rc7
 
 //labels.php
 define("_LB_NEWSET", "Crea un nuovo gruppo di etichette");
