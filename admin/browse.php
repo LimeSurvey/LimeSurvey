@@ -154,6 +154,16 @@ if ($action == "id")
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
 				}
 			}
+		elseif ($fnrow['type'] == "R")
+			{
+			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY code";
+			$fnrresult = mysql_query($fnrquery);
+			$fnrcount = mysql_num_rows($fnrresult);
+			for ($i=1; $i<=$fnrcount; $i++)
+				{
+				$fnames[] = array("$field$i", "$ftitle ($i)", "{$fnrow['question']} ($i)");
+				}			
+			}
 		elseif ($fnrow['type'] == "O")
 			{
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
@@ -253,7 +263,7 @@ elseif ($action == "all")
 	
 	foreach ($fnrows as $fnrow)
 		{
-		if ($fnrow['type'] != "M" && $fnrow['type'] != "A" && $fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "P" && $fnrow['type'] != "O")
+		if ($fnrow['type'] != "M" && $fnrow['type'] != "A" && $fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "P" && $fnrow['type'] != "O" && $fnrow['type'] != "R")
 			{
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
@@ -270,6 +280,18 @@ elseif ($action == "all")
 			$ftitle .= "[comment]";
 			$fquestion .= " (comment)";
 			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
+			}
+		elseif ($fnrow['type'] == "R")
+			{
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2result = mysql_query($i2query);
+			$i2count = mysql_num_rows($i2result);
+			for ($i=1; $i<=$i2count; $i++)
+				{
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}$i";
+				$ftitle = "Grp{$fnrow['qid']}Qst{$fnrow['title']}Opt$i";
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[$i]", "{$fnrow['gid']}");
+				}
 			}
 		else
 			{
