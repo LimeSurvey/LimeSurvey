@@ -68,7 +68,10 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 	//If survey has datestamp turned on, add $localtimedate to sessions
 	if ($thissurvey['datestamp'] == "Y")
 		{
-		$_SESSION['insertarray'][] = "datestamp";
+		if (!in_array("datestamp", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
+			{
+		    $_SESSION['insertarray'][] = "datestamp";
+			}
 		$_SESSION['datestamp'] = $localtimedate;
 		}
 	
