@@ -33,7 +33,7 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$date = date(Ymd);
+$date = date(YmdHi); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
 if (!$ok)
 	{
