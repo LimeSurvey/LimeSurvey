@@ -525,7 +525,7 @@ elseif ($action == "edit")
 						}
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
 	
-					echo "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
+					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n";
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t</tr>\n";
 					echo "\t\t\t\t<tr>\n";
@@ -1110,7 +1110,7 @@ else
 						}
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
 	
-					echo "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
+					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n";
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t</tr>\n";
 					echo "\t\t\t\t<tr>\n";
