@@ -109,7 +109,7 @@ switch ($ia[4])
 				 . "\t\t\t\t\t<td>\n"
 				 . "\t\t\t\t\t\t<font size='1'>"._DATEFORMAT."<br />\n"
 				 . "\t\t\t\t\t\t"._DATEFORMATEG."\n"
-				 . "\t\t\t\t\t</td>\n"
+				 . "\t\t\t\t\t</font></td>\n"
 				 . "\t\t\t\t</tr>\n"
 				 . "\t\t\t</table>\n";
 		$inputnames[]=$ia[1];
@@ -419,7 +419,7 @@ switch ($ia[4])
 				$chosen[]=array($thiscode, $thistext);
 				}
 			$ranklist .= "' />\n";
-			$ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' title='"._REMOVEITEM."' ";
+			$ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' alt='"._REMOVEITEM."' title='"._REMOVEITEM."' ";
 			if ($i != $existing)
 				{
 				$ranklist .= "style='display:none'";
@@ -461,7 +461,7 @@ switch ($ia[4])
 				 . "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
 				 . "\t\t\t\t\t\t"._RANK_1."<br />"
 				 . "\t\t\t\t\t\t"._RANK_2
-				 . "\t\t\t\t\t</td>\n"
+				 . "\t\t\t\t\t</font></td>\n"
 				 . "\t\t\t\t</tr>\n"
 				 . "\t\t\t\t<tr>\n"
 				 . "\t\t\t\t\t<td align='left' valign='top' class='rank'>\n"
@@ -487,7 +487,7 @@ switch ($ia[4])
 				 . "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
 				 . "\t\t\t\t\t\t"._RANK_3."<br />"
 				 . "\t\t\t\t\t\t"._RANK_4.""
-				 . "\t\t\t\t\t</td>\n"
+				 . "\t\t\t\t\t</font></td>\n"
 				 . "\t\t\t\t</tr>\n"
 				 . "\t\t\t</table>\n";
 		break;
@@ -495,7 +495,7 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table class='question'>\n"
 				 . "\t\t\t\t<tr>\n"
 				 . "\t\t\t\t\t<td>&nbsp;</td>\n"
-				 . "\t\t\t\t\t<td align='left'>\n";
+				 . "\t\t\t\t\t<td align='left' class='answertext'>\n";
 		$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 		$qresult = mysql_query($qquery);
 		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -586,7 +586,7 @@ switch ($ia[4])
 			$answer .= "'>\n";
 			$fn++;
 			$answer .= "\t\t\t\t\t\t\t\t<td>\n"
-					 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' type='text' size='40' name='$myfname2' value='";
+					 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname2' value='";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 			$answer .= "' />\n"
 					 . "\t\t\t\t\t\t\t\t</td>\n"
@@ -611,7 +611,7 @@ switch ($ia[4])
 			$myfname2 = $myfname."comment";
 			$anscount = $anscount + 2;
 			$answer .= "\t\t\t\t\t\t\t<tr>\n"
-					 . "\t\t\t\t\t\t\t\t<td>\n"
+					 . "\t\t\t\t\t\t\t\t<td class='answertext'>\n"
 					 . "\t\t\t\t\t\t\t\t\t"._OTHER.":<input class='text' type='text' name='$myfname' size='10'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".$_SESSION[$myfname]."'";}
 			$fn++;
@@ -653,11 +653,11 @@ switch ($ia[4])
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			$answer .= "\t\t\t\t\t\t\t<tr>\n"
-					 . "\t\t\t\t\t\t\t\t<td align='right'>\n"
+					 . "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
 					 . "\t\t\t\t\t\t\t\t\t{$ansrow['answer']}\n"
 					 . "\t\t\t\t\t\t\t\t</td>\n"
 					 . "\t\t\t\t\t\t\t\t<td>\n"
-					 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' type='text' size='40' name='$myfname' value='";
+					 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname' value='";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 			$answer .= "' />\n"
 					 . "\t\t\t\t\t\t\t\t</td>\n"
@@ -995,11 +995,11 @@ switch ($ia[4])
 		$cellwidth=60/$cellwidth;
 		foreach ($labelans as $ld)
 			{
-			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</td>\n";
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
 			}
 		if ($ia[6] != "Y") //Question is not mandatory
 			{
-			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</td>\n";
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></td>\n";
 			}
 		$answer .= "\t\t\t\t</tr>\n";
 		$ansrowcount=0;
@@ -1021,7 +1021,7 @@ switch ($ia[4])
 			$myfname = $ia[1].$ansrow['code'];
 			if (isset($trbc) && ($trbc == "array1" || !$trbc) || !isset($trbc)) {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n"
-					 . "\t\t\t\t\t<td align='right' width='$percwidth%'>{$ansrow['answer']}</td>\n";
+					 . "\t\t\t\t\t<td align='right' class='answertext' width='$percwidth%'>{$ansrow['answer']}</td>\n";
 			foreach ($labelcode as $ld)
 				{
 				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value='$ld'";
@@ -1070,13 +1070,13 @@ switch ($ia[4])
 	{
 	case "L":
 	case "O":
-		$qtitle .= "<br />\n</b><i><font size='1'>";
-		$qtitle .= _INSTRUCTION_LIST;
+		$qtitle .= "<br />\n</b><i><font size='1'>"
+				 . _INSTRUCTION_LIST."</font></i><b>";
 		break;
 	case "M":
 	case "P":
-		$qtitle .= "<br />\n</b><i><font size='1'>";
-		$qtitle .= _INSTRUCTION_MULTI;
+		$qtitle .= "<br />\n</b><i><font size='1'>"
+				 . _INSTRUCTION_MULTI."</font></i><b>";
 		break;
 	
 	}
