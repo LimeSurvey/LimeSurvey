@@ -54,7 +54,18 @@ if ($ia[4] == "5" || $ia[4] == "D" || $ia[4] == "G" || $ia[4] == "L" || $ia[4] =
 $display = $ia[7];
 if ($ia[7] == "Y")
 	{ //DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
-	$cquery = "SELECT {$dbprefix}conditions.qid, {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname, {$dbprefix}conditions.value, {$dbprefix}questions.type, {$dbprefix}questions.sid, {$dbprefix}questions.gid FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid=$ia[0]";
+	$cquery = "SELECT {$dbprefix}conditions.qid, "
+			."{$dbprefix}conditions.cqid, "
+			."{$dbprefix}conditions.cfieldname, "
+			."{$dbprefix}conditions.value, "
+			."{$dbprefix}questions.type, "
+			."{$dbprefix}questions.sid, "
+			."{$dbprefix}questions.gid "
+			."FROM {$dbprefix}conditions, "
+			."{$dbprefix}questions "
+			."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+			."AND {$dbprefix}conditions.qid=$ia[0] "
+			."ORDER BY {$dbprefix}conditions.cqid";
 	$cresult = mysql_query($cquery) or die ("OOPS<BR />$cquery<br />".mysql_error());
 	while ($crow = mysql_fetch_array($cresult))
 		{
