@@ -369,7 +369,7 @@ function checkconfield($value)
 					{//Go through each condition
 					if($cqv['cfieldname'] == $con)
 						{
-						if($_SESSION[$cqv['matchfield']] == $cqv['matchvalue'])
+						if(isset($_SESSION[$cqv['matchfield']]) && $_SESSION[$cqv['matchfield']] == $cqv['matchvalue'])
 							{//plug succesful matches into appropriate container
 							$addon=1;
 							}
