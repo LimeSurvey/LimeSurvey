@@ -587,7 +587,7 @@ if ($qid)
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.gif' title='"
 						  . _Q_CONDITIONS_BT."' border='0' hspace='0' align='left' name='SetQuestionConditions' "
-						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n"
+						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
