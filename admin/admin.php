@@ -33,24 +33,19 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$sid = $_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
-$gid = $_GET['gid']; if (!$gid) {$gid=$_POST['gid'];}
-$qid = $_GET['qid']; if (!$qid) {$qid=$_POST['qid'];}
-$code = $_GET['code']; if (!$code) {$code=$_POST['code'];}
-$action = $_GET['action']; if (!$action) {$action=$_POST['action'];}
-$ok = $_GET['ok']; if (!$ok) {$ok = $_POST['ok'];}
-$user = $_GET['user']; if (!$user) {$user = $_POST['user'];}
-$pass = $_GET['pass']; if (!$pass) {$pass = $_POST['pass'];}
-
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-                                                     // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");                          // HTTP/1.0
-//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
-
 include("config.php");
+
+if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($gid)) {$gid=returnglobal('gid');}
+if (!isset($qid)) {$qid=returnglobal('qid');}
+if (!isset($code)) {$code=returnglobal('code');}
+if (!isset($action)) {$action=returnglobal('action');}
+if (!isset($ok)) {$ok=returnglobal('ok');}
+if (!isset($user)) {$user=returnglobal('user');}
+if (!isset($pass)) {$pass=returnglobal('pass');}
+
+sendcacheheaders();
+
 echo $htmlheader;
 
 echo "<script type='text/javascript'>\n";
