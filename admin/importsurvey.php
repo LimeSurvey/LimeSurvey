@@ -71,58 +71,58 @@ for ($i=0; $i<9; $i++)
 $bigarray = array_values($bigarray);
 
 //SURVEYS
-$stoppoint = array_search("# NEW TABLE\n", $bigarray);
-for ($i=0; $i<=$stoppoint+2; $i++)
+$stoppoint = array_search("# GROUPS TABLE\n", $bigarray);
+for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	if ($i<$stoppoint-1) {$tablearray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) {$tablearray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
 
 //GROUPS
-if (array_search("# NEW TABLE\n", $bigarray))
+if (array_search("# QUESTIONS TABLE\n", $bigarray))
 	{
-	$stoppoint = array_search("# NEW TABLE\n", $bigarray);
+	$stoppoint = array_search("# QUESTIONS TABLE\n", $bigarray);
 	}
 else
 	{
 	$stoppoint = count($bigarray)-1;
 	}
-for ($i=0; $i<=$stoppoint+2; $i++)
+for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	if ($i<$stoppoint-1) {$grouparray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) {$grouparray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
 
 //QUESTIONS
-if (array_search("# NEW TABLE\n", $bigarray))
+if (array_search("# ANSWERS TABLE\n", $bigarray))
 	{
-	$stoppoint = array_search("# NEW TABLE\n", $bigarray);
+	$stoppoint = array_search("# ANSWERS TABLE\n", $bigarray);
 	}
 else
 	{
 	$stoppoint = count($bigarray)-1;
 	}
-for ($i=0; $i<=$stoppoint+2; $i++)
+for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	if ($i<$stoppoint-1) {$questionarray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) {$questionarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
 
 //ANSWERS
-if (array_search("# NEW TABLE\n", $bigarray))
+if (array_search("# CONDITIONS TABLE\n", $bigarray))
 	{
-	$stoppoint = array_search("# NEW TABLE\n", $bigarray);
+	$stoppoint = array_search("# CONDITIONS TABLE\n", $bigarray);
 	}
 else
 	{
 	$stoppoint = count($bigarray)-1;
 	}
-for ($i=0; $i<=$stoppoint+2; $i++)
+for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	if ($i<$stoppoint-1) {$answerarray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
@@ -131,9 +131,9 @@ $bigarray = array_values($bigarray);
 if ($noconditions != "Y")
 	{
 	$stoppoint = count($bigarray)-1;
-	for ($i=0; $i<=$stoppoint+2; $i++)
+	for ($i=0; $i<=$stoppoint+1; $i++)
 		{
-		if ($i<$stoppoint-1) {$conditionsarray[] = $bigarray[$i];}
+		if ($i<$stoppoint-2) {$conditionsarray[] = $bigarray[$i];}
 		unset($bigarray[$i]);
 		}
 	}
