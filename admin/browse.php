@@ -33,12 +33,12 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
-$action = $_GET['action']; if (!$action) {$action = $_POST['action'];}
-$id = $_GET['id']; if (!$id) {$id = $_POST['id'];}
-$limit = $_GET['limit']; if ($limit) {$limit = $_POST['limit'];}
-
 include("config.php");
+
+if (!isset($limit)) {$limit=returnglobal('limit');}
+if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($id)) {$id=returnglobal('id');}
+if (!isset($action)) {$action=returnglobal('action');}
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
@@ -405,7 +405,7 @@ elseif ($action == "all")
 	$end=$dtcount-$limit;
 	if ($end < 0) {$end=0;}
 	if ($last <0) {$last=0;}
-	if ($next > $dtcount) {$next=$dtcount-$limit;}
+	if ($next >= $dtcount) {$next=$dtcount-$limit;}
 	if ($end < 0) {$end=0;}
 
 	echo "<table height='1'><tr><td></td></tr></table>\n";
