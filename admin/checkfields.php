@@ -1,6 +1,11 @@
 <?php
 //THE TABLE STRUCTURE, TABLE BY TABLE AND FIELD BY FIELD
+include("config.php");
+//TABLES THAT SHOULD EXIST
+$alltables=array("surveys", "groups", "questions", "answers", "conditions", "users");
 
+
+//FIELDS THAT SHOULD EXIST
 $allfields[]=array("answers", "qid", "qid int(11) NOT NULL default '0'");
 $allfields[]=array("answers", "code", "code varchar(5) NOT NULL default ''");
 $allfields[]=array("answers", "answer", "answer text NOT NULL");
@@ -45,11 +50,39 @@ $allfields[]=array("surveys", "urldescrip", "urldescrip varchar(255) default NUL
 $allfields[]=array("surveys", "language", "language varchar(50) default ''");
 $allfields[]=array("surveys", "datestamp", "datestamp char(1) default 'N'");
 
+echo "$setfont<center><b><u>Checking $databasename to ensure all tables exist</u></b></p>\n";
 
-include("config.php");
+$result = mysql_list_tables($databasename);
+while ($row = mysql_fetch_row($result))
+	{
+	$tablelist[]=$row[0];
+    }
+foreach ($alltables as $at)
+	{
+	echo "<b>--== Checking $at ==--</b><br />";
+	if (!in_array($at, $tablelist))
+		{
+		echo "$at table does not exist!<br />\n";
+		//Create table
+		$ctquery="CREATE TABLE `$at` (\n";
+		foreach ($allfields as $af)
+			{
+			if ($af[0] == $at)
+				{
+				$ctquery .= $af[2]."\n";
+				}
+			}
+		$ctquery .= ")\n";
+		$ctquery .= "TYPE=MyISAM";
+		$ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error);
+		echo "Table Created!";
+		}
+	echo "<br />\n";
+	}
+echo "<br />\n";
 
 
-echo "$setfont<center><b>Checking $databasename to ensure all fields exist</b></p>\n";
+echo "$setfont<center><b><u>Checking $databasename to ensure all fields exist</u></b></p>\n";
 
 //GET LIST OF TABLES
 $tables = mysql_list_tables($databasename);
