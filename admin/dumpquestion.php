@@ -47,7 +47,15 @@ include ("config.php");
 //echo $htmlheader;
 if (!$qid)
 	{
-	echo "<center>$setfont<br /><b>You must have a Question ID number to export.</b></center>\n";
+	echo $htmlheader;
+	echo "<br />\n";
+	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._EXPORTQUESTION."</b></td></tr>\n";
+	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "$setfont<br /><b>"._EQ_NOQID."</b>\n";
+	echo "\t</td></tr>\n";
+	echo "</table>\n";
+	echo "</body></html>\n";
 	exit;
 	}
 $dumphead = "# SURVEYOR QUESTION DUMP\n";
