@@ -738,7 +738,8 @@ function submittokens()
 				$langdir2="$homedir/lang/english";
 				}
 			require("$langdir2/messages.php");
-			$add = str_replace("\n", "\r\n", _TC_EMAILCONFIRM);
+			echo "<!-- Sending Default Email -->\n";
+			$add = _TC_EMAILCONFIRM;
 			}
 		$add = str_replace("{FIRSTNAME}", $cnfrow['firstname'], $add);
 		$add = str_replace("{LASTNAME}", $cnfrow['lastname'], $add);
@@ -746,7 +747,7 @@ function submittokens()
 		$add = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $add);
 		$add = str_replace("{SURVEYNAME}", $thissurvey['name'], $add);
 		$message .= $add;
-//			}
+		$message=crlf_lineendings($message);
 		//Only send confirmation email if there is a valid email address
 		if (validate_email($cnfrow['email'])) {mail($to, $subject, $message, $headers);} 
 		
@@ -784,6 +785,7 @@ function sendsubmitnotification($sendnotification)
 		$message .= "----------------------------\r\n\r\n";
 		}
 	$message.= "PHP Surveyor";
+	$message = crlf_lineendings($message);
 	$headers = "From: {$thissurvey['adminemail']}\r\n";
 	mail($thissurvey['adminemail'], $subject, $message, $headers);	
 	}
@@ -791,7 +793,7 @@ function sendsubmitnotification($sendnotification)
 function submitfailed()
 	{
 	global $thissurvey;
-	global $thistpl, $subquery;
+	global $thistpl, $subquery, $sid;
 	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -814,6 +816,7 @@ function submitfailed()
 				. "$subquery\n\n"
 				. _DNSAVEEMAIL4.":\n"
 				. mysql_error()."\n\n";
+		$email=crlf_lineendings($email);
 		mail($thissurvey['adminemail'], _DNSAVEEMAIL5, $email);
 		}
 	else
