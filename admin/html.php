@@ -141,14 +141,17 @@ if ($qid)
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></TD>\n\t<td>$setfont{$qrrow['type']}</td></tr>\n";
-		if ($qrrow['type']== "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $grrow[3] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P")
+		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $grrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P")
 			{
 			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Answers:</b></font></td>\n";
 			$questionsummary .= "\t<td>\n\t\t<select $slstyle name='answer' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 			$questionsummary .= getanswers();
 			$questionsummary .= "\n\t\t</select>\n\t</td></tr>\n";
 			}
-		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont$qrrow[7]</td></tr>\n";
+		if ($qrrow['type'] == "M" or $eqrow['type'] == "P")
+			{
+			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
+			}
 		$questionsummary .= "\t<tr><td colspan='2' align='right'>\n";
 		$questionsummary .= "\t\t<input type='submit' $btstyle value='Edit Question' onClick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P") 
@@ -342,17 +345,37 @@ if ($action == "addquestion")
 	$newquestion .= "\t</tr>\n";
 	$newquestion .= "\t<tr>\n";
 	$newquestion .= "\t\t<td align='right'>$setfont<b>Question Type:</b></font></td>\n";
-	$newquestion .= "\t\t<td><select $slstyle name='type'>\n";
+	$newquestion .= "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n";
 	$newquestion .= "$qtypeselect";
 	$newquestion .= "\t\t</select></td>\n";
 	$newquestion .= "\t</tr>\n";
-	$newquestion .= "\t<tr>\n";
+	
+	$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n";
 	$newquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
 	$newquestion .= "\t\t<td>$setfont\n";
 	$newquestion .= "\t\t\tYes <input type='radio' name='other' value='Y' />&nbsp;&nbsp;\n";
 	$newquestion .= "\t\t\tNo <input type='radio' name='other' value='N' checked />\n";
 	$newquestion .= "\t\t</td>\n";
 	$newquestion .= "\t</tr>\n";
+	
+	$newquestion .= "<script type='text/javascript'>\n";
+	$newquestion .= "<!--\n";
+	$newquestion .= "function OtherSelection(QuestionType)\n";
+	$newquestion .= "\t{\n";
+	$newquestion .= "\tif (QuestionType == 'M' || QuestionType == 'P')\n";
+	$newquestion .= "\t\t{\n";
+	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = '';\n";
+	$newquestion .= "\t\t}\n";
+	$newquestion .= "\telse\n";
+	$newquestion .= "\t\t{\n";
+	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
+	$newquestion .= "\t\tdocument.addnewquestion.other[1].checked = true;\n";
+	$newquestion .= "\t\t}\n";
+	$newquestion .= "\t}\n";
+	$newquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
+	$newquestion .= "-->\n";
+	$newquestion .= "</script>\n";
+	
 	$newquestion .= "\t<tr>\n";
 	$newquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Add Question' /></td>\n";
 	$newquestion .= "\t</tr>\n";
@@ -389,7 +412,7 @@ if ($action == "copyquestion")
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
-		$editquestion .= "\t\t<td><select $slstyle name='type'>\n";
+		$editquestion .= "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n";
 		$editquestion .= getqtypelist($eqrow['type']);
 		$editquestion .= "\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
@@ -400,7 +423,8 @@ if ($action == "copyquestion")
 		$editquestion .= getgrouplist2($eqrow['gid']);
 		$editquestion .= "\t\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
-		$editquestion .= "\t<tr>\n";
+		
+		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
 		$editquestion .= "\t\t\tYes <input type='radio' name='other' value='Y'";
@@ -411,6 +435,25 @@ if ($action == "copyquestion")
 		$editquestion .= " />\n";
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
+		
+		$editquestion .= "<script type='text/javascript'>\n";
+		$editquestion .= "<!--\n";
+		$editquestion .= "function OtherSelection(QuestionType)\n";
+		$editquestion .= "\t{\n";
+		$editquestion .= "\tif (QuestionType == 'M' || QuestionType == 'P')\n";
+		$editquestion .= "\t\t{\n";
+		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = '';\n";
+		$editquestion .= "\t\t}\n";
+		$editquestion .= "\telse\n";
+		$editquestion .= "\t\t{\n";
+		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
+		$editquestion .= "\t\tdocument.editquestion.other[1].checked = true;\n";
+		$editquestion .= "\t\t}\n";
+		$editquestion .= "\t}\n";
+		$editquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
+		$editquestion .= "-->\n";
+		$editquestion .= "</script>\n";
+		
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Copy answers:</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y' /></font></td>\n";
@@ -508,7 +551,7 @@ if ($action == "editquestion")
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
-		$editquestion .= "\t\t<td><select $slstyle name='type'>\n";
+		$editquestion .= "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n";
 		$editquestion .= getqtypelist($eqrow['type']);
 		$editquestion .= "\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
@@ -518,7 +561,8 @@ if ($action == "editquestion")
 		$editquestion .= getgrouplist2($eqrow['gid']);
 		$editquestion .= "\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
-		$editquestion .= "\t<tr>\n";
+		
+		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
 		$editquestion .= "\t\t\tYes <input type='radio' name='other' value='Y'";
@@ -529,6 +573,25 @@ if ($action == "editquestion")
 		$editquestion .= " />\n";
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
+		
+		$editquestion .= "<script type='text/javascript'>\n";
+		$editquestion .= "<!--\n";
+		$editquestion .= "function OtherSelection(QuestionType)\n";
+		$editquestion .= "\t{\n";
+		$editquestion .= "\tif (QuestionType == 'M' || QuestionType == 'P')\n";
+		$editquestion .= "\t\t{\n";
+		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = '';\n";
+		$editquestion .= "\t\t}\n";
+		$editquestion .= "\telse\n";
+		$editquestion .= "\t\t{\n";
+		$editquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
+		$editquestion .= "\t\tdocument.editquestion.other[1].checked = true;\n";
+		$editquestion .= "\t\t}\n";
+		$editquestion .= "\t}\n";
+		$editquestion .= "\tOtherSelection('{$eqrow['type']}');\n";
+		$editquestion .= "-->\n";
+		$editquestion .= "</script>\n";
+		
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Update Question'></td>\n";
 		$editquestion .= "\t<input type='hidden' name='action' value='updatequestion'>\n";
