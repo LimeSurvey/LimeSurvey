@@ -39,7 +39,15 @@ require_once("config.php");
 sendcacheheaders();
 
 //TABLES THAT SHOULD EXIST
-$alltables=array("{$dbprefix}surveys", "{$dbprefix}groups", "{$dbprefix}questions", "{$dbprefix}answers", "{$dbprefix}conditions", "{$dbprefix}users", "{$dbprefix}labelsets", "{$dbprefix}labels");
+$alltables=array("{$dbprefix}surveys", 
+				 "{$dbprefix}groups", 
+				 "{$dbprefix}questions", 
+				 "{$dbprefix}answers", 
+				 "{$dbprefix}conditions", 
+				 "{$dbprefix}users", 
+				 "{$dbprefix}labelsets", 
+				 "{$dbprefix}labels",
+				 "{$dbprefix}saved");
 
 //KEYS
 $keyinfo[]=array("{$dbprefix}surveys", "sid");
@@ -47,6 +55,7 @@ $keyinfo[]=array("{$dbprefix}groups", "gid");
 $keyinfo[]=array("{$dbprefix}questions", "qid");
 $keyinfo[]=array("{$dbprefix}conditions", "cid");
 $keyinfo[]=array("{$dbprefix}labelsets", "lid");
+$keyinfo[]=array("{$dbprefix}saved", "saved_id");
 
 //FIELDS THAT SHOULD EXIST
 $allfields[]=array("{$dbprefix}labelsets", "lid", "lid int(11) NOT NULL auto_increment");
@@ -116,6 +125,18 @@ $allfields[]=array("{$dbprefix}surveys", "email_invite", "email_invite text");
 $allfields[]=array("{$dbprefix}surveys", "email_remind", "email_remind text");
 $allfields[]=array("{$dbprefix}surveys", "email_register", "email_register text");
 $allfields[]=array("{$dbprefix}surveys", "email_confirm", "email_confirm text");
+$allfields[]=array("{$dbprefix}surveys", "allowsave","allowsave char(1) default 'Y'");
+
+$allfields[]=array("{$dbprefix}saved", "saved_id", "saved_id int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}saved", "sid", "sid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}saved", "saved_thisstep", "saved_thisstep text NOT NULL");
+$allfields[]=array("{$dbprefix}saved", "saved_ip", "saved_ip text NOT NULL");
+$allfields[]=array("{$dbprefix}saved", "saved_date", "saved_date datetime NOT NULL default '0000-00-00 00:00:00'");
+$allfields[]=array("{$dbprefix}saved", "identifier", "identifier text NOT NULL");
+$allfields[]=array("{$dbprefix}saved", "access_code", "access_code text NOT NULL");
+$allfields[]=array("{$dbprefix}saved", "fieldname", "fieldname text NOT NULL");
+$allfields[]=array("{$dbprefix}saved", "value", "value text NOT NULL");
+
 echo $htmlheader;
 
 echo "<br />\n";
