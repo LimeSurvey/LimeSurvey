@@ -115,4 +115,6 @@ define("_NOQUESTIONS", "This survey does not yet have any questions and cannot b
 define("_FURTHERINFO", "For further information contact");
 define("_NOTACTIVE", "This survey is not currently active. You will not be able to save your responses.");
 
+define("_SURVEYCOMPLETE", "You have already completed this survey.");
+
 ?>

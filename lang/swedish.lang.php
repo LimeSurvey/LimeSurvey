@@ -119,4 +119,6 @@ define("_NOQUESTIONS", "Denna enkät har ännu inga frågor och kan inte testas ell
 define("_FURTHERINFO", "För ytterligare information kontakta");
 define("_NOTACTIVE", "Denna enkät är inte aktiv för tillfället. Du kan därför inte spara dina svar.");
 
+define("_SURVEYCOMPLETE", "You have already completed this survey.");
+
 ?>

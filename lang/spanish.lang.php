@@ -119,4 +119,6 @@ define("_NOQUESTIONS", "Esta encuesta todavía no tiene preguntas y no puede ser 
 define("_FURTHERINFO", "Para más información contactar a");
 define("_NOTACTIVE", "Esta encuesta no está activa. No podrá guardar sus respuestas.");
 
+define("_SURVEYCOMPLETE", "Usted ha terminado ya este examen.");
+
 ?>
