@@ -80,21 +80,21 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
 
-echo "<HTML><HEAD><TITLE>$sitename</TITLE></HEAD>\n<BODY><FONT FACE='VERDANA'>";
+echo "<html>\n<head>\n<title>$sitename</title>\n</head>\n<body>\n<font face='Verdana'>\n";
 
 //FIRST, LETS HANDLE SOME CONTINGENCIES
 
 if (!$sid && (!$move == "clearall" || !$move=="here"))
 	{
-	echo "<CENTER><B>$sitename</B><BR><BR><B>You cannot access this website without a valid Survey ID code.</B><BR>";
-	echo "<BR>Please contact $siteadminemail for information.";
+	echo "<center><b>$sitename</b><br />\n<br />\n<b>You cannot access this website without a valid Survey ID code.</b><br />\n";
+	echo "<br />\nPlease contact $siteadminemail for information.";
 	exit;
 	}
 
 if (!mysql_selectdb ($databasename, $connect))
 	{
-	echo "<CENTER><B>$sitename<BR><BR><FONT COLOR='RED'>ERROR</FONT></B><BR><BR>";
-	echo "This system has not yet been installed properly.<BR>";
+	echo "<center><b>$sitename<br />\n<br />\n<font color='red'>ERROR</font></b><br />\n<br />\n";
+	echo "This system has not yet been installed properly.<br />\n";
 	echo "Contact your $siteadminemail for information";
 	exit;
 	}
@@ -114,8 +114,8 @@ if ($sid)
 		}
 	elseif ($expirydate < date("Y-m-d") && $expirydate != "0000-00-00")
 		{
-		echo "<CENTER><B>$sitename<BR><BR><FONT COLOR='RED'>ERROR</FONT></B><BR><BR>";
-		echo "Sorry. This survey has expired and is no longer available.<BR>(Expiry date $expirydate)";
+		echo "<center><b>$sitename<br />\n<br />\n<font color='red'>ERROR</font></b><br />\n<br />\n";
+		echo "Sorry. This survey has expired and is no longer available.<br />\n(Expiry date $expirydate)";
 		exit;
 		}
 	$desresult = mysql_query($desquery);
@@ -129,9 +129,13 @@ if ($sid)
 		$surveyadminname=$desrow[3];
 		$surveyadminemail=$desrow[7];
 		}
-	$surveyheader = "<TABLE WIDTH='95%' ALIGN='CENTER' BORDER='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
-	$surveyheader .= "<TR><TD COLSPAN='2' BGCOLOR='SILVER' ALIGN='CENTER'><BR><FONT COLOR='#000080'><FONT SIZE='4'><B>$surveyname</B></FONT><BR>\n";
-	$surveyheader .= "<FONT SIZE='1' COLOR='#444444'>$surveydesc<BR>&nbsp;</TD></TR>\n";	
+	$surveyheader = "<table width='95%' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+	$surveyheader .= "\t<tr>\n";
+	$surveyheader .= "\t\t<td colspan='2' bgcolor='silver' align='center' valign='middle' style='padding: 1em 1em 1em 1em'>\n";
+	$surveyheader .= "\t\t\t<font color='#000080' size='4'><b>$surveyname</b></font><br />\n";
+	$surveyheader .= "\t\t\t<font size='1' color='#444444'>$surveydesc\n";
+	$surveyheader .= "\t\t</td>\n";
+	$surveyheader .= "\t</tr>\n";	
 	
 	//LETS SEE IF THERE ARE TOKENS FOR THIS SURVEY
 	$i=0; $tokensexist=0;
@@ -150,7 +154,10 @@ if ($move == "clearall" || $move == "here")
 	$step="";
 	$totalsteps="";
 	$token="";
-	echo "<BR>&nbsp;<BR><CENTER>All data has been deleted<BR>&nbsp;<BR><a href='javascript:window.close()'>Close</a><BR><BR>&nbsp;$sid";
+	echo "<br />\n&nbsp;<br />\n";
+	echo "<center>All data has been deleted.<br />\n&nbsp;<br />\n";
+	echo "<a href='javascript:window.close()'>Close</a><br />\n<br />\n&nbsp;$sid</center>\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 
@@ -158,11 +165,23 @@ if ($move == "clearall" || $move == "here")
 //THIS IS THE LAST POINT. HERE, WE GATHER ALL THE SESSION VARIABLES AND INSERT THEM INTO THE DATABASE.
 if ($move == "completed")
 	{
-	echo "<TABLE WIDTH='95%' ALIGN='CENTER' BORDER='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
-	echo "<TR><TD COLSPAN='2' BGCOLOR='SILVER' ALIGN='CENTER'><FONT COLOR='#000080'><FONT SIZE='4'><B>$sitename</B></FONT><BR>\n";
-	echo "<FONT SIZE='1' COLOR='#444444'>&nbsp;</TD></TR>\n";	
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<BR>This is the \"$sitename\" Survey site.<BR>";
-	echo "<BR><BR><a href='javascript: window.close()'>Close Window</a><BR></TD></TR>\n";
+	echo "<table width='95%' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' bgcolor='silver' align='center'>\n";
+	echo "\t\t\t<font color='#000080' size='4'><b>$sitename</b></font><br />\n";
+	echo "\t\t\t<font color='#444444' size='1'>&nbsp;\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";	
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' align='center'>\n";
+	echo "\t\t\t$setfont<br />\nThis is the \"$sitename\" Survey site.<br />\n";
+	echo "\t\t\t<br />\n";
+	echo "\t\t\t<a href='javascript: window.close()'>Close Window</a><br />\n";
+	echo "\t\t\t<br />\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "<table>\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 
@@ -173,36 +192,59 @@ if ($move == " last ")
 	$t=$s-1;
 	$u=$totalsteps;
 	$chart=105;
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER' BGCOLOR='EEEEEE'>";
-	echo "Survey Complete<BR>";
-	echo "<TABLE WIDTH='175' ALIGN='CENTER' BORDER='1' style='border-collapse: collapse' bordercolor='#111111'>";
-	echo "<TR><TD WIDTH='35' ALIGN='RIGHT'><FONT SIZE='1'>0%</TD><TD WIDTH='105'>";
-	echo "<IMG SRC='chart.jpg' HEIGHT='15' WIDTH='$chart'>";
-	echo "</TD><TD WIDTH='35'><FONT SIZE='1'>100%</TD></TR></TABLE>\n";
-	echo "</TD></TR>\n";
-	echo "<FORM METHOD='POST'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='thisstep' VALUE='$step'>\n";
-	echo "<TR><TD ALIGN='CENTER' COLSPAN='2'><TABLE WIDTH='500' ALIGN='CENTER'><TR><TD ALIGN='CENTER'>";
-	echo "$setfont<B>Congratulations. You have completed answering the<BR>questions in this survey.</B><P>";
-	echo "Click on \"Submit\" now to complete the process and submit your answers to our records.";
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
+	echo "\t\t\tSurvey Complete<br />\n";
+	echo "\t\t\t<table width='175' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td width='35' align='right'><font size='1'>0%</td>\n";
+	echo "\t\t\t\t\t<td width='105'><img src='chart.jpg' height='15' width='$chart'></td>\n";
+	echo "\t\t\t\t\t<td width='35'><font size='1'>100%</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t</table>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "<form method='post'>\n";
+	echo "<input type='hidden' name='sid' value='$sid'>\n";
+	echo "<input type='hidden' name='thisstep' value='$step'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td>\n";
+	echo "\t\t\t<table border='0' width='100%'>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
+	echo "\t\t\t\t\t<td align='center' width='500'>\n";
+	echo "$setfont<p><b>Congratulations. You have completed answering the questions in this survey.</b>\n";
+	echo "<p>Click on \"Submit\" now to complete the process and submit your answers to our records. ";
 	echo "If you want to check any of the answers you have made, and/or change them, you can do that now by ";
-	echo "clicking on the \" << prev \" button and browsing through your responses.<BR>&nbsp;";
-	echo "<BR><input type='submit' value=' submit ' name='move'><BR>&nbsp;";
-	echo "</TD></TR></TABLE>\n";
-	echo "<TABLE WIDTH='400' ALIGN='CENTER' BGCOLOR='#EFEFEF'><TR><TD ALIGN='CENTER'>$setfont<B>A note on privacy</B><BR>";
-	echo "<FONT SIZE='1'>The record kept of this survey does not contain any identifying information about you unless ";
+	echo "clicking on the \" << prev \" button and browsing through your responses.<br />\n";
+	echo "&nbsp;<br />\n";
+	echo "<input type='submit' value=' submit ' name='move'><br />&nbsp;\n";
+	echo "\t\t\t\t\t\t<table align='center' width='400' bgcolor='#EFEFEF' border='0'>\n";
+	echo "\t\t\t\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t\t\t\t<td align='center'>\n";
+	echo "$setfont<b>A note on privacy</b><br />\n";
+	echo "<font size='1'>The record kept of this survey does not contain any identifying information about you unless ";
 	echo "a specific question in the survey has asked for this. If you have responded to a survey that ";
 	echo "used an identifying token to allow you to access the survey, you can rest assured that the ";
 	echo "identifying token is not kept with your responses. It is managed in a seperate database, and will ";
 	echo "only be updated to indicate that you have (or haven't) completed this survey. There is no way of ";
-	echo "relating identification tokens with responses in this system.</TD></TR></TABLE>\n";
-	echo "<FONT SIZE='1'>&nbsp;<BR>If you do not wish to submit responses to this survey,<BR>and you would like to delete all records";
-	echo " on your computer that<BR> may have saved your responses, click ";
-	echo "<a href='index.php?move=clearall&sid=$sid'>here</a><BR>&nbsp;";
+	echo "relating identification tokens with responses in this system.\n";
+	echo "\t\t\t\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t\t\t\t</tr>\n";
+	echo "\t\t\t\t\t\t</table>\n";
+	echo "<font size='1'>&nbsp;<br />\nIf you do not wish to submit responses to this survey, ";
+	echo "and you would like to delete all records on your computer that may have saved your responses, ";
+	echo "click <a href='index.php?move=clearall&sid=$sid'>here</a><br />&nbsp;\n";
 	//echo "<input type='submit' name='move' value='here' style='height:15; font-size:9; font-family:verdana' onclick=\"window.open('index.php?clearall', '_top')\">\n";
-	echo "</TD></TR>\n";
+	echo "\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t</table>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
 	echo surveymover();
+	echo "</table>\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 
@@ -210,9 +252,15 @@ if ($move == " submit ")
 	{
 	echo "$surveyheader";
 	//echo $surveyactive;
-	echo "<TR><TD><BR>&nbsp;<BR>";
-	echo "<TABLE WIDTH='175' ALIGN='CENTER' BORDER='1' style='border-collapse: collapse' bordercolor='#111111'>";
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER' BGCOLOR='#CCCCCC'><BR><B>Results are being submitted...<BR><BR></TD></TR>\n";	
+	echo "\t<tr>\n";
+	echo "\t\t<td>\n";
+	echo "\t\t\t<br />&nbsp;<br />\n";
+	echo "\t\t\t<table width='175' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#CCCCCC'>\n";
+	echo "\t\t\t\t\t\t<br /><b>Results are being submitted...<br /><br />\n";
+	echo "\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t</tr>\n";
 	$subquery = "INSERT INTO $surveytable VALUES ('',";
 	foreach ($insertarray as $in)
 		{
@@ -224,19 +272,24 @@ if ($move == " submit ")
 			{
 			$subquery .= "'".$$in."',";
 			}
-		//echo "$in<BR>";
+		//echo "$in<br />\n";
 		}
 	$subquery = substr($subquery, 0, strlen($subquery)-1);
 	$subquery .= ")";
 	//echo $subquery;
 	if ($surveyactive == "Y")
 		{
-		$subresult=mysql_query($subquery) or die ("Couldn't update $surveytable<BR>".mysql_error()."<BR><BR>$subquery");
-		echo "<TR><TD COLSPAN='2' ALIGN='CENTER' BGCOLOR='#EEEEEE'><BR><FONT COLOR='RED'>Thank you!</FONT><BR>Results have been successfully updated.<BR>&nbsp;</TD></TR>\n";
+		$subresult=mysql_query($subquery) or die ("Couldn't update $surveytable<br />\n".mysql_error()."<br />\n<br />\n$subquery");
+		echo "\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
+		echo "\t\t\t\t\t\t<br /><font color='red'>Thank you!</font><br />\n";
+		echo "\t\t\t\t\t\tResults have been successfully updated.<br />&nbsp;\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t</tr>\n";
 		if ($token)
 			{
 			$utquery = "UPDATE tokens_$sid SET completed='Y' WHERE token='$token'";
-			$utresult=mysql_query($utquery) or die ("Couldn't update tokens table!<BR>$utquery<BR>".mysql_error());
+			$utresult=mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
 			//MAIL CONFIRMATION TO PARTICIPANT
 			$cnfquery="SELECT * FROM tokens_$sid WHERE token='$token' AND completed='Y'";
 			$cnfresult=mysql_query($cnfquery);
@@ -263,10 +316,22 @@ if ($move == " submit ")
 		}
 	else
 		{
-		echo"<TR><TD COLSPAN='2' ALIGN='CENTER' BGCOLOR='#EEEEEE'><BR><FONT COLOR='RED'>Sorry!</FONT><BR>Could not submit results - survey has not been activated<BR>&nbsp;</TD></TR>\n";
-		echo "<TR><TD><FONT SIZE='1'>$subquery</TD></TR>\n";
+		echo "\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
+		echo "\t\t\t\t\t\t<br /><font color='red'>Sorry!</font><br />\n";
+		echo "\t\t\t\t\t\tCould not submit results - survey has not been activated<br />&nbsp;\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t</tr>\n";
+		echo "\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t<td><font size='1'>$subquery</td>\n";
+		echo "\t\t\t\t</tr>\n";
 		}
-	echo "</TABLE><CENTER><BR><a href='?move=completed'>Finish</a></CENTER><BR>\n</TD></TR></TABLE>";
+	echo "\t\t\t</table>\n";
+	echo "\t\t\t<center><br /><a href='?move=completed'>Finish</a></center><br />\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
+	echo "</body>\n</html>";
 	exit;
 	}
 	
@@ -275,14 +340,22 @@ if (!$step)
 	{
 	if ($tokensexist == 1 && !$token)
 		{
-		echo "<CENTER><B>$sitename</B><BR><BR><B>You cannot access this website without a valid token.</B><BR>";
-		echo "Tokens are issued to invited participants. If you have been invited to participate in this<BR>";
-		echo "survey but have not got a token, please contact $siteadminemail for information.<BR>&nbsp;";
-		echo "<TABLE ALIGN='CENTER' BGCOLOR='#EEEEEE'><TR><FORM METHOD='POST'>\n";
-		echo "<TD ALIGN='CENTER'>If you have been issued a token, please enter it here to proceed:<BR>";
-		echo "<INPUT TYPE='TEXT' SIZE='10' NAME='token'><BR>";
-		echo "<INPUT TYPE='SUBMIT' VALUE='Go'>\n";
-		echo "</TD><INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'></TR></FORM></TABLE>\n";
+		echo "<center><b>$sitename</b><br />\n<br />\n<b>You cannot access this website without a valid token.</b><br />\n";
+		echo "Tokens are issued to invited participants. If you have been invited to participate in this<br />\n";
+		echo "survey but have not got a token, please contact $siteadminemail for information.<br />\n&nbsp;";
+		echo "<table align='center' bgcolor='#EEEEEE'>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<form method='post'>\n";
+		echo "\t\t<td align='center'>\n";
+		echo "\t\t\tIf you have been issued a token, please enter it here to proceed:<br />\n";
+		echo "\t\t\t<input type='text' size='10' name='token'><br />\n";
+		echo "\t\t\t<input type='submit' value='Go'>\n";
+		echo "\t\t</td>\n";
+		echo "\t<input type='hidden' name='sid' value='$sid'>\n";
+		echo "\t</tr>\n";
+		echo "\t</form>\n";
+		echo "</table>\n";
+		echo "</body>\n</html>";
 		exit;
 		}
 	if ($tokensexist == 1 && $token)
@@ -297,35 +370,50 @@ if (!$step)
 			}
 		else
 			{
-			echo "<CENTER><B>$sitename</B><BR><BR><B>The token you have submitted has either been used or does not exist.</B><BR>";
-			echo "Tokens are issued to invited participants. If you have been invited to participate in this<BR>";
-			echo "survey but your token has failed, please contact $siteadminemail for more information.<BR>&nbsp;";
-			echo "<TABLE ALIGN='CENTER' BGCOLOR='#EEEEEE'><TR><FORM METHOD='POST'>\n";
-			echo "<TD ALIGN='CENTER'>If you have been issued a token, please enter it here to proceed:<BR>";
-			echo "<INPUT TYPE='TEXT' SIZE='10' NAME='token'><BR>";
-			echo "<INPUT TYPE='SUBMIT' VALUE='Go'>\n";
-			echo "</TD><INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'></TR></FORM></TABLE>\n";
+			echo "<center><b>$sitename</b><br />\n<br />\n<b>The token you have submitted has either been used or does not exist.</b><br />\n";
+			echo "Tokens are issued to invited participants. If you have been invited to participate in this<br />\n";
+			echo "survey but your token has failed, please contact $siteadminemail for more information.<br />\n&nbsp;";
+			echo "<table align='center' bgcolor='#EEEEEE'>\n";
+			echo "\t<tr><form method='post'>\n";
+			echo "\t\t<td align='center'>\n";
+			echo "\t\t\tIf you have been issued a token, please enter it here to proceed:<br />\n";
+			echo "\t\t\t<input type='text' size='10' name='token'><br />\n";
+			echo "\t\t\t<input type='submit' value='Go'>\n";
+			echo "\t\t</td>\n";
+			echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
+			echo "\t</form></tr>\n";
+			echo "</table>\n";
 			exit;
 			}
 		}
-	echo "<TABLE WIDTH='95%' ALIGN='CENTER' BORDER='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
-	echo "<TR><TD COLSPAN='2' BGCOLOR='SILVER' ALIGN='CENTER'><FONT COLOR='#000080'><B>$sitename</B></FONT>";
-	echo "</TD></TR>\n\n";	
-	echo "<TR><TD COLSPAN='2' BGCOLOR='#DDDDDD' ALIGN='CENTER'>";
-	echo "<FONT SIZE='4'><B>Welcome</B></FONT></TD></TR>";
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>&nbsp;<BR>";
-	echo "<B>$surveyname</B><BR>";
-	//echo "$setfont<I>$surveydesc</I><BR>";
-	echo "$surveywelcome<BR>&nbsp;<BR>Click \"Next\" to begin.<BR>&nbsp;";
-	echo "</TD></TR>\n";
+	echo "<table width='95%' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' bgcolor='silver' align='center'><font color='#000080'><b>$sitename</b></font></td>\n";
+	echo "\t</tr>\n";	
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' bgcolor='#dddddd' align='center'><font size='4'><b>Welcome</b></font></td>\n";
+	echo "\t</tr>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' align='center'>&nbsp;<br />\n";
+	echo "\t\t\t<b>$surveyname</b><br />\n";
+	//echo "\t\t\t$setfont<i>$surveydesc</i><br />\n";
+	echo "\t\t\t$surveywelcome<br />&nbsp;<br />\n";
+	echo "\t\t\tClick \"Next\" to begin.<br />&nbsp;\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
 	$aquery="SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
 	$aresult=mysql_query($aquery);
 	$totalsteps=mysql_num_rows($aresult);
-	echo "<TR><TD ALIGN='CENTER' COLSPAN='2' BGCOLOR='#DDDDDD'>$setfont There are $totalsteps questions in this survey.</TD></TR>\n";
-	echo "<FORM METHOD='POST'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-	echo "<INPUT TYPE='HIDDEN' NAME='thisstep' VALUE='$step'>\n";
-	echo "<TR><TD ALIGN='CENTER' COLSPAN='2'>";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center' colspan='2' bgcolor='#DDDDDD'>\n";
+	echo "\t\t\t$setfont There are $totalsteps questions in this survey.\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<form method='post'>\n";
+	echo "\t<input type='hidden' name='sid' value='$sid'>\n";
+	echo "\t<input type='hidden' name='thisstep' value='$step'>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center' colspan='2'>\n";
 
 	session_register("fieldarray");
 	$_SESSION["step"] = $step; // session_register("step") causes really strange session behavior on PHP 4.3.0, Apache 2.0.43, WinXP
@@ -381,14 +469,15 @@ if (!$step)
 			session_register("F$fieldname");
 			$insertarray[]="F$fieldname";
 			}
-		//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<BR>"; //MORE DEBUGGING STUFF
+		//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
 		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD
 		//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
 		//                 [4]=questions.type, [5]=questions.gid
 		$fieldarray[]=array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}");
 		}
 	//echo count($fieldarray);
-	echo "</TD></TR>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
 	//$step=1;
 	}
 
@@ -408,8 +497,11 @@ else
 	while ($gdrow=mysql_fetch_row($gdresult))
 		{
 		$currentgroupname=$gdrow[0];
-		echo "<TR><TD COLSPAN='2' ALIGN='CENTER' BGCOLOR='#DDDDDD'>$setfont<FONT COLOR='#800000'><B>";
-		echo "<BR>$currentgroupname<BR>&nbsp;</TD></TR>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2' align='center' bgcolor='#DDDDDD'>\n";
+		echo "\t\t\t$setfont<font color='#800000'><b>$currentgroupname</b><br />&nbsp;\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
 		$groupdescription=$gdrow[1];
 		}
 
@@ -417,146 +509,197 @@ else
 	if ($fieldarray[$t][5] != $fieldarray[$v][5] && $newgroup != "yes" && $groupdescription)
 		{
 		$presentinggroupdescription="yes";
-		echo "<FORM METHOD='POST'>\n";
-		//echo "<FORM>\n";
-		echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<BR>$groupdescription<BR>&nbsp;";
-		echo "</TD></TR>\n";
-		echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-		echo "<INPUT TYPE='HIDDEN' NAME='thisstep' VALUE='$t'>\n";
-		echo "<INPUT TYPE='HIDDEN' NAME='newgroup' VALUE='yes'>\n";
+		echo "\t<form method='post'>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2' align='center'>\n";
+		echo "\t\t\t$setfont<br />$groupdescription<br />&nbsp;\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "\t<input type='hidden' name='sid' value='$sid'>\n";
+		echo "\t<input type='hidden' name='thisstep' value='$t'>\n";
+		echo "\t<input type='hidden' name='newgroup' value='yes'>\n";
 		}
 	
 	
 	else
 		{
 		// SHOW % CHART
-		echo "<TR><TD COLSPAN='2' ALIGN='CENTER' BGCOLOR='EEEEEE'>$setfont";
+		echo "\t<tr>\n";;
+		echo "\t\t<td colspan='2' align='center' bgcolor='EEEEEE'>$setfont\n";
 		
-		echo "<TABLE WIDTH='175' ALIGN='CENTER' BORDER='1' style='border-collapse: collapse' bordercolor='#111111'>";
-		echo "<TR><TD WIDTH='35' ALIGN='RIGHT'><FONT SIZE='1'>0%</TD><TD WIDTH='105'>";
-		echo "<IMG SRC='chart.jpg' HEIGHT='15' WIDTH='$chart'>";
-		echo "</TD><TD WIDTH='35'><FONT SIZE='1'>100%</TD></TR></TABLE>\n";
-	
-		echo "</TD></TR>\n";
-	
+		echo "\t\t\t<table width='175' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+		echo "\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t<td width='35' align='right'><font size='1'>0%</td>\n";
+		echo "\t\t\t\t\t<td width='105'><img src='chart.jpg' height='15' width='$chart'></td>\n";
+		echo "\t\t\t\t\t<td width='35'><font size='1'>100%</td>\n";
+		echo "\t\t\t\t</tr>\n";
+		echo "\t\t\t</table>\n";
+		
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		
 		// PRESENT QUESTION
-		echo "<FORM METHOD='POST'>\n";
-		//echo "<FORM>\n";
-		echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
-		echo "<INPUT TYPE='HIDDEN' NAME='thisstep' VALUE='$step'>\n";
+		echo "\t<form method='post'>\n";
+		echo "\t<input type='hidden' name='sid' value='$sid'>\n";
+		echo "\t<input type='hidden' name='thisstep' value='$step'>\n";
 		
 		// QUESTION STUFF
-		echo "<TR><TD COLSPAN='2'>\n\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2'>\n";
 		echo "<!-- THE QUESTION IS HERE -->\n";
-		echo "<TABLE WIDTH='100%' BORDER='0'>\n";
-		echo "<TR><TD COLSPAN='2' HEIGHT='20'></TD></TR>\n";
-		echo "<TR><TD COLSPAN='2' HEIGHT='4'>";
-		echo "<TABLE WIDTH='50%' ALIGN='CENTER'><TR><TD BGCOLOR='#888888' HEIGHT='3'></TD></TR></TABLE>";
-		echo "</TD></TR>\n";
-		echo "<TR><TD COLSPAN='2' ALIGN='CENTER' VALIGN='TOP'><B><FONT COLOR='#000080'>";
-		echo $fieldarray[$t][3];	
-		echo "</TD></TR>";
-		echo "<TR><TD COLSPAN='2' HEIGHT='4'>";
-		echo "<TABLE WIDTH='50%' ALIGN='CENTER'><TR><TD BGCOLOR='SILVER' HEIGHT='3'></TD></TR></TABLE>";
-		echo "</TD></TR>\n";
+		echo "<table width='100%' border='4'>\n";
+		echo "\t<tr><td colspan='2' height='20'></td></tr>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2' height='4'>\n";
+		echo "\t\t\t<table width='50%' align='center'>\n";
+		echo "\t\t\t\t<tr><td bgcolor='#888888' height='3'></td></tr>\n";
+		echo "\t\t\t</table>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2' align='center' valign='top'>\n";
+		echo "\t\t\t<b><font color='#000080'>\n";
+		echo $fieldarray[$t][3]."\n";
+		echo "\t\t\t</font></b>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2' height='4'>\n";
+		echo "\t\t\t<table width='50%' align='center'>\n";
+		echo "\t\t\t\t<tr><td bgcolor='silver' height='3'></td></tr>\n";
+		echo "\t\t\t</table>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
 		$fname="F".$fieldarray[$t][1];
 		
 		// THE FOLLOWING PRESENTS THE QUESTION BASED ON THE QUESTION TYPE
 		switch ($fieldarray[$t][4])
 			{
-			case "G": //Gender List
-				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$fname'>";
-				echo "<SELECT NAME='fvalue'>\n";
-				echo "  <OPTION VALUE='F'";
-				if ($$fname == "F") {echo " SELECTED";}
-				echo ">Female</OPTION>\n";
-				echo "  <OPTION VALUE='M'";
-				if ($$fname == "M") {echo " SELECTED";}
-				echo ">Male</OPTION>\n";
-				echo "<OPTION VALUE=' '";
-				if ($$fname != "F" && $$fname !="M") {echo " SELECTED";}
-				echo ">Please choose</OPTION>\n";
-				echo "</SELECT>\n";
+			case "5": //5 POINT CHOICE radio-buttons
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
+				for ($fp=1; $fp<=5; $fp++)
+					{
+					echo "\t\t\t<input type='radio' name='fvalue' value='$fp'";
+					if ($$fname == $fp) {echo " checked";}
+					echo ">$fp\n";
+					}
 				break;
-			case "Y": //yes/no radio-buttons
-				echo "<tr><td colspan='1' align='center'>";
-				echo "<input type='hidden' name='lastfield' value='$fname'>";
-				echo "<table align='center'><tr><td>$setfont";
-				echo "<input type='radio' name='fvalue' value='Y'";
-				if ($$fname == "Y") {echo " checked";}
-				echo " />Yes<br />\n";
-				echo "<input type='radio' name='fvalue' value='N'";
-				if ($$fname == "N") {echo " checked";}
-				echo " />No<br />\n";
-				echo "</td></tr></table>\n";
+			case "D": //DATE
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
+				echo "\t\t\t<input type='text' size=10 name='fvalue' value=\"".$$fname."\">\n";
+				echo "\t\t\t<table width='230' align='center' bgcolor='#EEEEEE'>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td align='center'>\n";
+				echo "\t\t\t\t\t\t<font size='1'>Format: YYYY-MM-DD<br />\n";
+				echo "\t\t\t\t\t\t(eg: 2003-12-25 for christmas day)\n";
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t</table>\n";
 				break;
-			case "L": //dropdown list
-				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$fname'>";
+			case "G": //GENDER drop-down list
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
+				echo "\t\t\t<select name='fvalue'>\n";
+				echo "\t\t\t\t<option value='F'";
+				if ($$fname == "F") {echo " selected";}
+				echo ">Female</option>\n";
+				echo "\t\t\t\t<option value='M'";
+				if ($$fname == "M") {echo " selected";}
+				echo ">Male</option>\n";
+				echo "\t\t\t\t<option value=' '";
+				if ($$fname != "F" && $$fname !="M") {echo " selected";}
+				echo ">Please choose</option>\n";
+				echo "\t\t\t</select>\n";
+				break;
+			case "L": //LIST drop-down list
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
 				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
 				$ansresult = mysql_query($ansquery);
 				if ($dropdowns == "L" || !$dropdowns)
 					{
-					echo "<SELECT NAME='fvalue'>\n";
+					echo "\t\t\t<select name='fvalue'>\n";
 					while ($ansrow=mysql_fetch_row($ansresult))
 						{
-						echo "  <OPTION VALUE='$ansrow[1]'";
+						echo "\t\t\t\t  <option value='$ansrow[1]'";
 						if ($$fname == $ansrow[1])
-							{ echo " SELECTED"; }
-						elseif ($ansrow[3]== "Y") {echo " SELECTED"; $defexists="Y";}
-						echo ">$ansrow[2]</OPTION>\n";
+							{ echo " selected"; }
+						elseif ($ansrow[3]== "Y") {echo " selected"; $defexists="Y";}
+						echo ">$ansrow[2]</option>\n";
 						}
-					if (!$$fname && !$defexists) {echo "  <OPTION VALUE=' ' SELECTED>Please choose..</OPTION>\n";}
-					if ($$fname && !$defexists) {echo "  <OPTION VALUE=' '>No answer</OPTION>\n";}
-					echo "</SELECT>\n";
+					if (!$$fname && !$defexists) {echo "\t\t\t\t  <option value=' ' selected>Please choose..</option>\n";}
+					if ($$fname && !$defexists) {echo "\t\t\t\t  <option value=' '>No answer</option>\n";}
+					echo "\t\t\t</select>\n";
 					}
 				elseif ($dropdowns == "R")
 					{
-					echo "<TABLE ALIGN='CENTER'><TR><TD>$setfont";
+					echo "\t\t\t<table align='center'>\n";
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td>$setfont\n";
 					while ($ansrow=mysql_fetch_row($ansresult))
 						{
-						echo "  <INPUT TYPE='RADIO' VALUE='$ansrow[1]' NAME='fvalue'";
+						echo "\t\t\t\t\t\t  <input type='radio' value='$ansrow[1]' name='fvalue'";
 						if ($$fname == $ansrow[1])
-							{ echo " CHECKED"; }
-						elseif ($ansrow[3] == "Y") {echo " CHECKED"; $defexists="Y";}
-						echo ">$ansrow[2]<BR>\n";
+							{ echo " checked"; }
+						elseif ($ansrow[3] == "Y") {echo " checked"; $defexists="Y";}
+						echo ">$ansrow[2]<br />\n";
 						}
-					if (!$$fname && !$defexists) {echo "  <INPUT TYPE='RADIO' NAME='fvalue' VALUE=' ' CHECKED>No answer\n";}
-					elseif ($ffname && !$defexists) {echo "  <INPUT TYPE='RADIO' NAME='fvalue' VALUE=' '>No answer\n";}
-					echo "</TD></TR></TABLE>\n";
+					if (!$$fname && !$defexists) {echo "\t\t\t\t\t\t  <input type='radio' name='fvalue' value=' ' checked>No answer\n";}
+					elseif ($ffname && !$defexists) {echo "\t\t\t\t\t\t  <input type='radio' name='fvalue' value=' '>No answer\n";}
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
+					echo "\t\t\t</table>\n";
 					}
 				break;
-			case "O": //dropdown list
-				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>";
-				//echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$fname'>";
+			case "O": //LIST WITH COMMENT drop-down list + textarea
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2' align='center'>\n";
+				//echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
 				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
 				$ansresult = mysql_query($ansquery);
 				$anscount=mysql_num_rows($ansresult);
-				echo "<TABLE ALIGN='CENTER'>";
-				echo "<TR><TD>$setfont<U>Choose one of the following:</U></TD><TD>$setfont<U>Please enter your comment here:</TD></TR>\n";
-				echo "<TR><TD VALIGN='TOP'>$setfont";
+				echo "\t\t\t<table align='center'>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td>$setfont<u>Choose one of the following:</u></td>\n";
+				echo "\t\t\t\t\t<td>$setfont<u>Please enter your comment here:</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td valign='top'>$setfont\n";
 				while ($ansrow=mysql_fetch_row($ansresult))
 					{
-					echo "  <INPUT TYPE='RADIO' VALUE='$ansrow[1]' NAME='fvalue1'";
+					echo "\t\t\t\t\t\t<input type='radio' value='$ansrow[1]' name='fvalue1'";
 					if ($$fname == $ansrow[1])
-						{ echo " CHECKED"; }
-					elseif ($ansrow[3] == "Y") {echo " CHECKED"; $defexists="Y";}
-					echo ">$ansrow[2]<BR>\n";
+						{ echo " checked"; }
+					elseif ($ansrow[3] == "Y") {echo " checked"; $defexists="Y";}
+					echo ">$ansrow[2]<br />\n";
 					}
-				if (!$$fname && !$defexists) {echo "  <INPUT TYPE='RADIO' NAME='fvalue1' VALUE=' ' CHECKED>No answer\n";}
-				elseif ($$fname && !$defexists) {echo "  <INPUT TYPE='RADIO' NAME='fvalue1' VALUE=' '>No answer\n";}
-				echo "</TD>\n";
+				if (!$$fname && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' checked>No answer\n";}
+				elseif ($$fname && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' '>No answer\n";}
+				echo "\t\t\t\t\t</td>\n";
 				$fname2=$fname."comment";
 				if ($anscount > 8) {$tarows=$anscount/1.2;} else {$tarows=4;}
-				echo "<TD VALIGN='TOP'><TEXTAREA NAME='fvalue2' ROWS='$tarows' COLS='30'>".$$fname2."</TEXTAREA>\n";
+				echo "\t\t\t\t\t<td valign='top'>\n";
+				echo "\t\t\t\t\t\t<textarea name='fvalue2' rows='$tarows' cols='30'>".$$fname2."</textarea>\n";
 				$multifields = "$fname|$fname"."comment|";
-				echo "<INPUT TYPE='HIDDEN' NAME='multi' VALUE='2'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$multifields'>\n";
-				echo "</TR></TABLE>\n";
+				echo "\t\t\t\t\t\t<input type='hidden' name='multi' value='2'>\n";
+				echo "\t\t\t\t\t\t<input type='hidden' name='lastfield' value='$multifields'>\n";
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t</table>\n";
 				break;
-			case "M": //MULTIPLE OPTIONS
-				echo "<TR><TD WIDTH='30%'></TD><TD WIDTH='70%' ALIGN='LEFT'>";
+			case "M": //MULTIPLE OPTIONS checkbox
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2'>\n";
+				echo "\t\t\t<table align='center' border='0'>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
+				echo "\t\t\t\t\t<td align='left'>\n";
 				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult=mysql_query($qquery);
 				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
@@ -568,53 +711,104 @@ else
 					{
 					$myfname=$fname.$ansrow[1];
 					$multifields .= "$fname$ansrow[1]|";
-					echo "$setfont<INPUT TYPE='checkbox' NAME='fvalue$fn' VALUE='Y'";
-					if ($$myfname == "Y") {echo " CHECKED";}
-					echo ">$ansrow[2]<BR>\n";
+					echo "\t\t\t\t\t\t$setfont<input type='checkbox' name='fvalue$fn' value='Y'";
+					if ($$myfname == "Y") {echo " checked";}
+					echo ">$ansrow[2]<br />\n";
 					$fn++;
 					}
 				$multifields=substr($multifields, 0, strlen($multifields)-1);
 				if ($other == "Y")
 					{
 					$myfname=$fname."other";
-					echo "Other: <INPUT TYPE='TEXT' NAME='fvalue$fn'";
-					if ($$myfname) {echo " VALUE='".$$myfname."'";}
+					echo "\t\t\t\t\t\tOther: <input type='text' name='fvalue$fn'";
+					if ($$myfname) {echo " value='".$$myfname."'";}
 					echo ">\n";
 					$multifields .= "|$fname"."other";
 					$anscount++;
 					}
-				echo "<INPUT TYPE='HIDDEN' NAME='multi' VALUE='$anscount'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$multifields'>\n";
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t</table>\n";
+				echo "\t\t\t<input type='hidden' name='multi' value='$anscount'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields'>\n";
 				break;
-			case "P": //MULTIPLE OPTIONS
-				echo "<TR><TD WIDTH='30%'></TD><TD WIDTH='70%' ALIGN='LEFT'>";
-				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
-				$qresult=mysql_query($qquery);
-				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
+			case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2'>\n";
+				echo "\t\t\t<table align='center' border='0'>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
+				echo "\t\t\t\t\t<td align='left'>\n";
+				$qquery = "SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
+				$qresult = mysql_query($qquery);
+				while ($qrow = mysql_fetch_row($qresult)) {$other = $qrow[0];}
 				$ansquery = "SELECT * FROM answers WHERE qid=".$fieldarray[$t][0];
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult)*2;
 				$fn=1;
-				echo "<TABLE>\n";
-				while ($ansrow=mysql_fetch_row($ansresult))
+				echo "\t\t\t\t\t\t<table border='0'>\n";
+				while ($ansrow = mysql_fetch_row($ansresult))
 					{
-					$myfname=$fname.$ansrow[1];
-					$myfname2=$myfname."comment";
+					$myfname = $fname.$ansrow[1];
+					$myfname2 = $myfname."comment";
 					$multifields .= "$fname$ansrow[1]|$fname$ansrow[1]comment|";
-					echo "<TR><TD>$setfont<INPUT TYPE='checkbox' NAME='fvalue$fn' VALUE='Y'";
-					if ($$myfname == "Y") {echo " CHECKED";}
-					echo "><B>$ansrow[2]</B></TD>";
+					echo "\t\t\t\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t\t\t\t<td>$setfont\n";
+					echo "\t\t\t\t\t\t\t\t\t<input type='checkbox' name='fvalue$fn' value='Y'";
+					if ($$myfname == "Y") {echo " checked";}
+					echo "><b>$ansrow[2]</b>\n";
+					echo "\t\t\t\t\t\t\t\t</td>\n";
 					$fn++;
-					echo "<TD><input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' SIZE='40' NAME='fvalue$fn' VALUE='".$$myfname2."'></TD></TR>\n";
+					echo "\t\t\t\t\t\t\t\t<td>\n";
+					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$$myfname2."'>\n";
+					echo "\t\t\t\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t\t\t\t</tr>\n";
 					$fn++;
 					}
-				echo "</TABLE>\n";
-				$multifields=substr($multifields, 0, strlen($multifields)-1);
-				echo "<INPUT TYPE='HIDDEN' NAME='multi' VALUE='$anscount'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$multifields'>\n";
+				echo "\t\t\t\t\t\t</table>\n";
+				$multifields = substr($multifields, 0, strlen($multifields)-1);
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t</table>\n";
+				echo "\t\t\t<input type='hidden' name='multi' value='$anscount'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields'>\n";
 				break;
-			case "A": //MULTI ARRAY
-				echo "<TR><TD COLSPAN='2'>";
+			case "S": //SHORT FREE TEXT
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
+				echo "\t\t\t<input type='text' size=50 name='fvalue' value=\"".str_replace ("\"", "'", str_replace("\\", "", $$fname))."\">\n";
+				break;
+			case "T": //LONG FREE TEXT
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
+				echo "\t\t\t<textarea name='fvalue' rows='5' cols='40'>";
+				if ($$fname) {echo str_replace("\\", "", $$fname);}	
+				echo "</textarea>\n";
+				break;
+			case "Y": //YES/NO radio-buttons
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='1' align='center'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname'>\n";
+				echo "\t\t\t<table align='center'>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td>$setfont\n";
+				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='Y'";
+				if ($$fname == "Y") {echo " checked";}
+				echo " />Yes<br />\n";
+				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='N'";
+				if ($$fname == "N") {echo " checked";}
+				echo " />No<br />\n";
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t</table>\n";
+				break;
+			case "A": //ARRAY (5 POINT CHOICE) radio-buttons
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2'>\n";
 				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult=mysql_query($qquery);
 				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
@@ -622,28 +816,32 @@ else
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn=1;
-				echo "<TABLE>";
+				echo "\t\t\t<table align='center' border='0'>\n";
 				while ($ansrow=mysql_fetch_row($ansresult))
 					{
 					$myfname=$fname.$ansrow[1];
 					$multifields .= "$fname$ansrow[1]|";
 					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc="#E1E1E1";}
-					echo "<TR bgcolor='$trbc'><TD ALIGN='RIGHT'>$setfont$ansrow[2]</tD><TD>";
+					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
+					echo "\t\t\t\t\t<td align='right'>$setfont$ansrow[2]</td>\n";
+					echo "\t\t\t\t\t<td>";
 					for ($i=1; $i<=5; $i++)
 						{
-						echo "$setfont<INPUT TYPE='RADIO' NAME='fvalue$fn' VALUE='$i'";
-						if ($$myfname == $i) {echo " CHECKED";}
-						echo ">$i&nbsp;";
+						echo "\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='$i'";
+						if ($$myfname == $i) {echo " checked";}
+						echo ">$i&nbsp;\n";
 						}
-					echo "</TD></TR>";
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
 					$fn++;
 					}			
-				echo "</TABLE>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='multi' VALUE='$anscount'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$multifields'>\n";
+				echo "\t\t\t</table>\n";
+				echo "\t\t\t<input type='hidden' name='multi' value='$anscount'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields'>\n";
 				break;
-			case "B": //MULTI ARRAY
-				echo "<TR><TD COLSPAN='2'>";
+			case "B": //ARRAY (10 POINT CHOICE) radio-buttons
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2'>\n";
 				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult=mysql_query($qquery);
 				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
@@ -651,28 +849,32 @@ else
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn=1;
-				echo "<TABLE ALIGN='CENTER'>";
+				echo "\t\t\t<table align='center'>\n";
 				while ($ansrow=mysql_fetch_row($ansresult))
 					{
 					$myfname=$fname.$ansrow[1];
 					$multifields .= "$fname$ansrow[1]|";
 					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc="#E1E1E1";}
-					echo "<TR bgcolor='$trbc'><TD ALIGN='RIGHT'>$setfont$ansrow[2]</tD><TD>";
+					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
+					echo "\t\t\t\t\t<td align='right'>$setfont$ansrow[2]</td>\n";
+					echo "\t\t\t\t\t<td>\n";
 					for ($i=1; $i<=10; $i++)
 						{
-						echo "$setfont<INPUT TYPE='RADIO' NAME='fvalue$fn' VALUE='$i'";
-						if ($$myfname == $i) {echo " CHECKED";}
-						echo ">$i&nbsp;";
+						echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='$i'";
+						if ($$myfname == $i) {echo " checked";}
+						echo ">$i&nbsp;\n";
 						}
-					echo "</TD></TR>";
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
 					$fn++;
 					}			
-				echo "</TABLE>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='multi' VALUE='$anscount'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$multifields'>\n";
+				echo "\t\t\t</table>\n";
+				echo "\t\t\t<input type='hidden' name='multi' value='$anscount'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields'>\n";
 				break;
-			case "C": //MULTI ARRAY
-				echo "<TR><TD COLSPAN='2'>";
+			case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2'>\n";
 				$qquery="SELECT other FROM questions WHERE qid=".$fieldarray[$t][0];
 				$qresult=mysql_query($qquery);
 				while($qrow=mysql_fetch_row($qresult)) {$other=$qrow[0];}
@@ -680,63 +882,43 @@ else
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
 				$fn=1;
-				echo "<TABLE ALIGN='CENTER'>";
+				echo "\t\t\t<table align='center'>\n";
 				while ($ansrow=mysql_fetch_row($ansresult))
 					{
 					$myfname=$fname.$ansrow[1];
 					$multifields .= "$fname$ansrow[1]|";
 					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc="#E1E1E1";}
-					echo "<TR bgcolor='$trbc'><TD ALIGN='RIGHT'>$setfont$ansrow[2]</tD><TD>";
-					echo "$setfont<INPUT TYPE='RADIO' NAME='fvalue$fn' VALUE='Y'";
-					if ($$myfname == "Y") {echo " CHECKED";}
-					echo ">Yes&nbsp;";
-					echo "$setfont<INPUT TYPE='RADIO' NAME='fvalue$fn' VALUE='U'";
-					if ($$myfname == "U") {echo " CHECKED";}
-					echo ">Uncertain&nbsp;";
-					echo "$setfont<INPUT TYPE='RADIO' NAME='fvalue$fn' VALUE='N'";
-					if ($$myfname == "N") {echo " CHECKED";}
-					echo ">No&nbsp;";
-					echo "</TD></TR>";
+					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
+					echo "\t\t\t\t\t<td align='right'>$setfont$ansrow[2]</td>\n";
+					echo "\t\t\t\t\t<td>\n";
+					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='Y'";
+					if ($$myfname == "Y") {echo " checked";}
+					echo ">Yes&nbsp;\n";
+					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='U'";
+					if ($$myfname == "U") {echo " checked";}
+					echo ">Uncertain&nbsp;\n";
+					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='N'";
+					if ($$myfname == "N") {echo " checked";}
+					echo ">No&nbsp;\n";
+					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
 					$fn++;
 					}			
-				echo "</TABLE>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='multi' VALUE='$anscount'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$multifields'>\n";
-				break;
-			case "T": //LONG TEXT
-				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$fname'>";
-				echo "<TEXTAREA NAME='fvalue' ROWS='5' COLS='40'>";
-				if ($$fname) {echo str_replace("\\", "", $$fname);}	
-				echo "</TEXTAREA>\n";
-				break;
-			case "S": //SHORT TEXT
-				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$fname'>";
-				echo "<INPUT TYPE='TEXT' SIZE=50 NAME='fvalue' VALUE=\"".str_replace ("\"", "'", str_replace("\\", "", $$fname))."\">";
-				break;
-			case "D": //DATE
-				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$fname'>\n";
-				echo "<INPUT TYPE='TEXT' SIZE=10 NAME='fvalue' VALUE=\"".$$fname."\">";
-				echo "<TABLE WIDTH='200' ALIGN='CENTER' BGCOLOR='#EEEEEE'><TR><TD ALIGN='CENTER'><FONT SIZE='1'>Format: YYYY-MM-DD<BR>(eg: 2003-12-25 for christmas day)</TD></TR></TABLE>\n";
-				break;
-			case "5": //5 POINT OPTION
-				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>\n";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$fname'>\n";
-				for ($fp=1; $fp<=5; $fp++)
-					{
-					echo "<INPUT TYPE='radio' NAME='fvalue' VALUE='$fp'";
-					if ($$fname == $fp) {echo " CHECKED";}
-					echo ">$fp ";
-					}
+				echo "\t\t\t</table>\n";
+				echo "\t\t\t<input type='hidden' name='multi' value='$anscount'>\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields'>\n";
 				break;
 			}	
 
-		echo "</TD></TR>\n";
-		echo "<TR><TD COLSPAN='2' HEIGHT='4'>";
-		echo "<TABLE WIDTH='50%' ALIGN='CENTER'><TR><TD BGCOLOR='SILVER' HEIGHT='3'></TD></TR></TABLE>";
-		echo "</TD></TR>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2' height='4'>\n";
+		echo "\t\t\t<table width='50%' align='center'>\n";
+		echo "\t\t\t\t<tr><td bgcolor='silver' height='3'></td></tr>\n";
+		echo "\t\t\t</table>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
 
 
 		//SHOW HELP INFORMATION IF THERE IS ANY
@@ -746,47 +928,72 @@ else
 			{
 			if ($helprow[0])
 				{
-				echo "<TR><TD COLSPAN='2'>";
-				echo "<TABLE WIDTH='50%' ALIGN='CENTER' CELLSPACING='0'>";
-				echo "<TR><TD BGCOLOR='#DEDEDE' VALIGN='TOP'>";
-				echo "<IMG SRC='help.gif' vspace='1' ALIGN='LEFT' ALT='Help for this question..'></TD>";
-				echo "<TD BGCOLOR='#DEDEDE'><FONT SIZE='1'>$helprow[0]";
-				echo "</TD></TR></TABLE></TD></TR>\n";
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2'>\n";
+				echo "\t\t\t<table width='50%' align='center' cellspacing='0'>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td bgcolor='#DEDEDE' valign='top'>\n";
+				echo "\t\t\t\t\t\t<img src='help.gif' vspace='1' align='left' alt='Help for this question..'>\n";
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t\t<td bgcolor='#DEDEDE'>\n";
+				echo "\t\t\t\t\t\t<font size='1'>$helprow[0]</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t</table>\n";
+				echo "\t\t</td>\n";
+				echo "\t</tr>\n";
 				}
 			}
-
-	
-		echo "<TR><TD COLSPAN='2' HEIGHT='20'></TD></TR>\n";
-		echo "</TABLE>\n";
+		
+		echo "\t<tr><td colspan='2' height='20'></td></tr>\n";
+		echo "</table>\n";
 		echo "<!-- END OF QUESTION -->\n";
-		echo "</TD></TR>\n";
-	//echo "<TR><TD COLSPAN='2'>$token</TD></TR>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		//echo "<tr><td colspan='2'>$token</td></tr>\n";
 		}
 	}
 
 echo surveymover();
-echo "<INPUT TYPE='HIDDEN' NAME='lastgroupname' VALUE='$currentgroupname'>\n";
-echo "</FORM>\n";
+echo "\t<input type='hidden' name='lastgroupname' value='$currentgroupname'>\n";
+echo "\t</form>\n";
 if ($surveyactive != "Y")
 	{
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<FONT COLOR='RED'>Warning: Survey Not Active. Your survey results will not be recorded</tD></TR>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' align='center'>\n";
+	echo "\t\t\t$setfont<font color='red'>Warning: Survey Not Active. Your survey results will not be recorded.\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
 	}
-echo "</TABLE>\n";
+echo "</table>\n";
+echo "</body>\n</html>";
 
 function surveymover()
 	{
 	global $step, $sid, $totalsteps, $presentinggroupdescription;
-	$surveymover = "<TR><TD COLSPAN='2' ALIGN='CENTER' BGCOLOR='#EEEEEE'><TABLE WIDTH='50%' ALIGN='CENTER'><TR><TD ALIGN='CENTER'>";
-	if ($step > 0) { $surveymover .= "<input type='submit' value=' << prev ' name='move'>";}
-	if ($step && (!$totalsteps || ($step < $totalsteps))) { $surveymover .=  " <input type='submit' value=' next >> ' name='move'>";}
-	if (!$step) {$surveymover .=  "<input type='submit' value=' next >> ' name='move'>";}
-	if ($step && ($step == $totalsteps) && $presentinggroupdescription == "yes") {$surveymover .=  "<input type='submit' value=' next >> ' name='move'>";}
-	if ($step && ($step == $totalsteps) && !$presentinggroupdescription) {$surveymover .= " <input type='submit' value=' last ' name='move'>";}
-	//if ($step && ($step == $totalsteps+1)) {$surveymover .= " <input type='submit' value=' submit ' name='move'>";}
+	$surveymover = "\t<tr>\n";
+	$surveymover .= "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
+	$surveymover .= "\t\t\t<table width='50%' align='center'>\n";
+	$surveymover .= "\t\t\t\t<tr>\n";
+	$surveymover .= "\t\t\t\t\t<td align='center'>\n";
+	if ($step > 0)
+		{$surveymover .= "\t\t\t\t\t\t<input type='submit' value=' << prev ' name='move'>\n";}
+	if ($step && (!$totalsteps || ($step < $totalsteps)))
+		{$surveymover .=  "\t\t\t\t\t\t <input type='submit' value=' next >> ' name='move'>";}
+	if (!$step)
+		{$surveymover .=  "\t\t\t\t\t\t<input type='submit' value=' next >> ' name='move'>";}
+	if ($step && ($step == $totalsteps) && $presentinggroupdescription == "yes")
+		{$surveymover .=  "\t\t\t\t\t\t<input type='submit' value=' next >> ' name='move'>";}
+	if ($step && ($step == $totalsteps) && !$presentinggroupdescription)
+		{$surveymover .= "\t\t\t\t\t\t <input type='submit' value=' last ' name='move'>";}
+	//if ($step && ($step == $totalsteps+1))
+		//{$surveymover .= "\t\t\t\t\t\t <input type='submit' value=' submit ' name='move'>";}
 	//$surveymover .= " <a href='?move=clearall&sid=$sid'>X</a>";
-	$surveymover .=  "</TD></TR></TABLE>";
-	$surveymover .= "<FONT SIZE='1'>[<a href='index.php?sid=$sid&move=clearall'>Exit and Clear Survey</a>]";
-	$surveymover .= "</TD></TR>\n";
+	$surveymover .= "\t\t\t\t\t</td>\n";
+	$surveymover .= "\t\t\t\t</tr>\n";
+	$surveymover .= "\t\t\t</table>\n";
+	$surveymover .= "\t\t\t<font size='1'>[<a href='index.php?sid=$sid&move=clearall'>Exit and Clear Survey</a>]\n";
+	$surveymover .= "\t\t</td>\n";
+	$surveymover .= "\t</tr>\n";
 	return $surveymover;	
 	}
 ?>
