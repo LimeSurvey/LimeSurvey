@@ -204,7 +204,7 @@ define(_ADDG, "Add Group");
 define(_ADDQ, "Add Question");
 define(_ADDU, "Add User");
 define(_SAVE, "Save Changes");
-define(_NONE, "None"); //as in "Do not display anything, or none chosen";
+define(_NONE, "None"); //as in "Do not display anything", "or none chosen";
 define(_GO_ADMIN, "Main Admin Screen"); //text to display to return/display main administration screen
 define(_CONTINUE, "Continue");
 define(_WARNING, "Warning");
