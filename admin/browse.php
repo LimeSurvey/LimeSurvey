@@ -368,12 +368,18 @@ elseif ($action == "all")
 		}
 	$tableheader .= "\t</tr>\n\n";
 	
-	if (!isset($_GET['limit'])) {$limit = 50;}
-	else {$limit=$_GET['limit'];}
+	$start=returnglobal('start');
+	$limit=returnglobal('limit');
+	if (!isset($limit)) {$limit = 50;}
+	if (!isset($start)) {$start = 0;}
+		
 	//LETS COUNT THE DATA
 	$dtquery = "SELECT count(*) FROM $surveytable";
 	$dtresult=mysql_query($dtquery);
 	while ($dtrow=mysql_fetch_row($dtresult)) {$dtcount=$dtrow[0];}
+	
+	if ($limit > $dtcount) {$limit=$dtcount;}
+	
 	//NOW LETS SHOW THE DATA
 	if ($_POST['sql'])
 		{
@@ -384,38 +390,42 @@ elseif ($action == "all")
 		{
 		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
 		}
-	if ($_GET['limit'] && !isset($_GET['start'])) {$dtquery .= " DESC LIMIT {$_GET['limit']}";}
-	if (isset($_GET['start']) && isset($_GET['limit'])) {$dtquery = "SELECT * FROM $surveytable LIMIT {$_GET['start']}, {$_GET['limit']}";}
-	if (!isset($_GET['limit'])) {$dtquery .= " LIMIT $limit";}
-	if (!isset($_GET['start'])) {$_GET['start'] = 0;}
+	if ($limit && !isset($start)) {$dtquery .= " DESC LIMIT $limit";}
+	if (isset($start) && isset($limit)) {$dtquery = "SELECT * FROM $surveytable LIMIT $start, $limit";}
+	if (!isset($limit)) {$dtquery .= " LIMIT $limit";}
+	if (!isset($start)) {$start = 0;}
 	$dtresult = mysql_query($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".mysql_error());
 	$dtcount2 = mysql_num_rows($dtresult);
 	$cells = $fncount+1;
 
 	
 	//CONTROL MENUBAR
-	$last=$_GET['start']-50;
-	$next=$_GET['start']+50;
-	$end=$dtcount-50;
+	$last=$start-$limit;
+	$next=$start+$limit;
+	$end=$dtcount-$limit;
 	if ($end < 0) {$end=0;}
+	if ($last <0) {$last=0;}
+	if ($next > $dtcount) {$next=$dtcount-$limit;}
+	if ($end < 0) {$end=0;}
+
 	echo "<table height='1'><tr><td></td></tr></table>\n";
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._VIEWCONTROL.":</b></td></tr>\n";
 	echo "\t<tr bgcolor='#999999'><td align='left'>\n";
 	echo "\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
 	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"._D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=0','_top')\" />\n";
-	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databack.gif' title='"._D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$last&limit=50','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"._D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=0&limit=$limit','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databack.gif' title='"._D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$last&limit=$limit','_top')\" />\n";
 	echo "\t\t\t<img src='./images/blank.gif' width='13' height='20' border='0' hspace='0' align='left'>\n";
-	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"._D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$next&limit=50','_top')\" />\n";
-	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"._D_END."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=$end','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"._D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$next&limit=$limit','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"._D_END."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=$end&limit=$limit','_top')\" />\n";
 	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 	echo "\t\t</td>\n";
 	echo "\t\t<form action='browse.php'>\n";
 	echo "\t\t<td align='right'><font size='1' face='verdana'>\n";
 	echo "\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='right'>\n";
 	echo "\t\t\t"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$dtcount2' name='limit'>\n";
-	echo "\t\t\t"._BR_STARTING."<input type='text' $slstyle size='4' value='{$_GET['start']}' name='start'>\n";
+	echo "\t\t\t"._BR_STARTING."<input type='text' $slstyle size='4' value='$start' name='start'>\n";
 	echo "\t\t\t<input type='submit' value='"._BR_SHOW."' $btstyle>\n";
 	echo "\t\t</font></td>\n";
 	echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
