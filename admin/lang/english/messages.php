@@ -60,6 +60,7 @@ define("_A_DELETE_BT", "Delete Entire Survey");
 define("_A_ADDSURVEY_BT", "Create or Import New Survey");
 define("_A_HELP_BT", "Show Help");
 define("_A_CHECKSETTINGS", "Check Settings");
+define("_A_TEMPLATES_BT", "Template Editor"); //New for 0.98rc9
 //Survey bar
 define("_S_ACTIVE_BT", "This survey is currently active");
 define("_S_INACTIVE_BT", "This survey is not currently active");
@@ -645,5 +646,30 @@ define("_CD_NOQID", "You have not selected a Question."); //New with 098rc9
 define("_CD_DIDNOTCOPYQ", "Did not copy questions"); //New with 098rc9
 define("_CD_NOCONDITIONTOCOPY", "No condition selected to copy from"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "No question selected to copy condition to"); //New with 098rc9
+
+//TEMPLATE EDITOR TRANSLATIONS
+define("_TP_CREATENEW", "Create new template"); //New with 098rc9
+define("_TP_NEWTEMPLATECALLED", "Create new template called:"); //New with 098rc9
+define("_TP_DEFAULTNEWTEMPLATE", "NewTemplate"); //New with 098rc9 (default name for new template)
+define("_TP_CANMODIFY", "This template can be modified"); //New with 098rc9
+define("_TP_CANNOTMODIFY", "This template cannot be modified"); //New with 098rc9
+define("_TP_RENAME", "Rename this template");  //New with 098rc9
+define("_TP_RENAMETO", "Rename this template to:"); //New with 098rc9
+define("_TP_COPY", "Make a copy of this template");  //New with 098rc9
+define("_TP_COPYTO", "Create a copy of this template called:"); //New with 098rc9
+define("_TP_COPYOF", "copy_of_"); //New with 098rc9 (prefix to default copy name)
+define("_TP_FILECONTROL", "File Control:"); //New with 098rc9
+define("_TP_STANDARDFILES", "Standard Files:");  //New with 098rc9
+define("_TP_NOWEDITING", "Now editing:");  //New with 098rc9
+define("_TP_OTHERFILES", "Other Files:"); //New with 098rc9
+define("_TP_PREVIEW", "Preview:"); //New with 098rc9
+define("_TP_DELETEFILE", "Delete"); //New with 098rc9
+define("_TP_UPLOADFILE", "Upload"); //New with 098rc9
+define("_TP_SCREEN", "Screen:"); //New with 098rc9
+define("_TP_WELCOMEPAGE", "Welcome Page"); //New with 098rc9
+define("_TP_QUESTIONPAGE", "Question Page"); //New with 098rc9
+define("_TP_SUBMITPAGE", "Submit Page");
+define("_TP_COMPLETEDPAGE", "Completed Page"); //New with 098rc9
+define("_TP_CLEARALLPAGE", "Clear All Page"); //New with 098rc9
 
 ?>
