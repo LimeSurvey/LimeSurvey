@@ -1,5 +1,4 @@
 <?php
-
 /*
 	#############################################################
 	# >>> PHP Surveyor  										#
@@ -681,7 +680,7 @@ switch ($ia[4])
 	case "N": //NUMERICAL QUESTION TYPE
 		$answer .= keycontroljs()
 				 . "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n"
-				 . "\t\t\t<font size='1'><i>"._NUMERICAL."</i></font>\n";
+				 . "\t\t\t<font size='1'><i>"._NUMERICAL_PS."</i></font>\n";
 		$inputnames[]=$ia[1];
 		break;
 	case "S": //SHORT FREE TEXT

@@ -153,7 +153,7 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surv
 		echo templatereplace($op);
 		}
 	echo "\t\t<center><br />\n";
-	echo "\t\t\t<font color='RED'><b>"._ERROR."</b></font><br />\n";
+	echo "\t\t\t<font color='RED'><b>"._ERROR_PS."</b></font><br />\n";
 	echo "\t\t\t"._SURVEYCOMPLETE."<br /><br />\n";
 	echo "\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "._CONTACT2."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
@@ -205,7 +205,7 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	echo "\t\t<font face='arial' size='2'>\n";
 	echo "\t\t<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />";
 	echo "<a href='{$_SERVER['PHP_SELF']}?sid=$sid'>"._RESTART."</a><br />\n";
-	echo "\t\t<a href='javascript: window.close()'>"._CLOSEWIN."</a>\n";
+	echo "\t\t<a href='javascript: window.close()'>"._CLOSEWIN_PS."</a>\n";
 	echo "\t\t</font>\n";
 	echo "\t</td></tr>\n";
 	echo "\t</table>\n\t<br />\n";

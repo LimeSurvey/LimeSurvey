@@ -232,7 +232,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			{
 			echo templatereplace($op);
 			}
-		echo "<br /><center><font face='verdana' size='2'><font color='red'><b>"._ERROR."</b></font><br /><br />\n";
+		echo "<br /><center><font face='verdana' size='2'><font color='red'><b>"._ERROR_PS."</b></font><br /><br />\n";
 		echo _BADSUBMIT1."<br /><br />\n";
 		echo "<font size='1'>"._BADSUBMIT2."<br />\n";
 		echo "</font></center><br /><br />";
@@ -269,7 +269,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 				}
 			$completed = "<br /><b><font size='2'><font color='green'>"._THANKS."</b></font><br /><br />\n\n";
 			$completed .= _SURVEYREC."<br />\n";
-			$completed .= "<a href='javascript:window.close()'>"._CLOSEWIN."</a></font><br /><br />\n";
+			$completed .= "<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a></font><br /><br />\n";
 			if ($_POST['token'])
 				{
 				$utquery = "UPDATE {$dbprefix}tokens_$sid SET completed='Y' WHERE token='{$_POST['token']}'";
@@ -471,9 +471,9 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			."\t\t<tr>\n"
 			."\t\t\t<td align='center' valign='middle'>\n"
 			."\t\t\t"
-			._TOKEN.": <input class='text' type='text' name='token'>\n"
+			._TOKEN_PS.": <input class='text' type='text' name='token'>\n"
 			."\t\t\t<input class='submit' type='submit' value='"
-			._CONTINUE."'>\n"
+			._CONTINUE_PS."'>\n"
 			."\t\t\t</td>\n"
 			."\t\t</tr>\n"
 			."\t</form>\n"
@@ -508,7 +508,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			echo "\t"._NOTOKEN1."<br /><br />\n";
 			echo "\t"._NOTOKEN3."\n";
 			echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
-			echo "\t<a href='javascript:window.close()'>"._CLOSEWIN."</a><br />&nbsp;\n";
+			echo "\t<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
 			foreach(file("$thistpl/endpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -548,7 +548,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			."\t"._FURTHERINFO
 			." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n"
 			."\t<a href='javascript:window.close()'>"
-			._CLOSEWIN."</a><br />&nbsp;\n";
+			._CLOSEWIN_PS."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
