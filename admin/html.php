@@ -678,7 +678,13 @@ if (returnglobal('viewanswer'))
 	$position=0;
 	while ($cdrow = mysql_fetch_array($cdresult))
 		{
-		$cdrow['answer']=htmlentities($cdrow['answer']);
+		switch($defaultlang)
+			{
+			case "chinese": //hack to deal with capson double byte bug
+				break;
+			default:
+				$cdrow['answer']=htmlentities($cdrow['answer']);
+			}
 		$position=sprintf("%05d", $position);
 		if ($cdrow['sortorder'] || $cdrow['sortorder'] == "0") {$position=$cdrow['sortorder'];}
 		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n";
