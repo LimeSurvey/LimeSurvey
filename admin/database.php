@@ -249,30 +249,37 @@ elseif ($action == "delanswer")
 
 elseif ($action == "insertnewsurvey")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (!$short_title)
 		{
-		$_POST['short_title'] = addcslashes($_POST['short_title'], "'");
-		$_POST['description'] = addcslashes($_POST['description'], "'");
-		$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
-		}
-	$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires,";
-	$isquery .= " adminemail, private, faxto, format) VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',";
-	$isquery .= " '{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',";
-	$isquery .= " '{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',";
-	$isquery .= " '{$_POST['faxto']}', '{$_POST['format']}')";
-	$isresult = mysql_query ($isquery);
-	if ($isresult)
-		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been created!\")\n //-->\n</script>\n";
-		$isquery = "SELECT sid FROM surveys WHERE short_title like '{$_POST['short_title']}'";
-		$isquery .= " AND description like '{$_POST['description']}' AND admin like '{$_POST['admin']}'";
-		$isresult = mysql_query($isquery);
-		while ($isr = mysql_fetch_array($isresult)) {$sid = $isr['sid'];}
-		$surveyselect = getsurveylist();
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created because it did not have a short title.\")\n //-->\n</script>\n";
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created!\")\n //-->\n</script>\n";
+		if (get_magic_quotes_gpc()=="0")
+			{
+			$_POST['short_title'] = addcslashes($_POST['short_title'], "'");
+			$_POST['description'] = addcslashes($_POST['description'], "'");
+			$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
+			}
+		$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires,";
+		$isquery .= " adminemail, private, faxto, format) VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',";
+		$isquery .= " '{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',";
+		$isquery .= " '{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',";
+		$isquery .= " '{$_POST['faxto']}', '{$_POST['format']}')";
+		$isresult = mysql_query ($isquery);
+		if ($isresult)
+			{
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been created!\")\n //-->\n</script>\n";
+			$isquery = "SELECT sid FROM surveys WHERE short_title like '{$_POST['short_title']}'";
+			$isquery .= " AND description like '{$_POST['description']}' AND admin like '{$_POST['admin']}'";
+			$isresult = mysql_query($isquery);
+			while ($isr = mysql_fetch_array($isresult)) {$sid = $isr['sid'];}
+			$surveyselect = getsurveylist();
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created!\")\n //-->\n</script>\n";
+			}
 		}
 	}
 
