@@ -186,6 +186,7 @@ while ($degrow = mysql_fetch_array($degresult))
 						while($frow=mysql_fetch_array($fresult))
 							{
 							$postans=$frow['title'];
+							$conditions[]=$frow['title'];
 							} // while
 						break;
 					} // switch

@@ -1464,6 +1464,7 @@ else
 							while($frow=mysql_fetch_array($fresult))
 								{
 								$postans=$frow['title'];
+								$conditions[]=$frow['title'];
 								} // while
 							break;
 						} // switch
@@ -1492,7 +1493,7 @@ else
 							break;
 						}
 					}
-				if (count($conditions) > 1)
+				if (isset($conditions) && count($conditions) > 1)
 					{
 					$conanswers = "'".implode("' "._DE_OR." '", $conditions)."'";
 					$explanation .= " -" . str_replace("{ANSWER}", $conanswers, _DE_CONDITIONHELP2);
