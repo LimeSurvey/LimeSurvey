@@ -139,7 +139,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				$dearesult = mysql_query($deaquery);
 				while ($dearow = mysql_fetch_array($dearesult))
 					{
-					echo "\t\t\t<input type='checkbox' name='$fieldname' value='$dearow[1]' />$dearow[2]<br />\n";
+					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' />{$dearow['answer']}<br />\n";
 					}
 				break;
 			case "O":  //LIST WITH COMMENT
@@ -148,7 +148,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				$dearesult = mysql_query($deaquery);
 				while ($dearow = mysql_fetch_array($dearesult))
 					{
-					echo "\t\t\t<input type='checkbox' name='$fieldname' value='$dearow[1]' />$dearow[2]<br />\n";
+					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' />{$dearow['answer']}<br />\n";
 					}
 				echo "\t\t\t<u>Make a comment on your choice here:</u><br />\n";
 				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname"."comment"."'></textarea>\n";
