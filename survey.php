@@ -711,7 +711,7 @@ echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 if (isset($conditions) && is_array($conditions))
 	{
 	if (!isset($endzone)) {$endzone="";}
-	echo "\t\t\tif (type == 'radio')\n"
+	echo "\t\t\tif (type == 'radio' || type == 'select-one')\n"
 		."\t\t\t\t{\n"
 		."\t\t\t\tvar hiddenformname='java'+name;\n"
 		."\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n"
