@@ -895,7 +895,7 @@ elseif ($action == "update")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "O" && $irow['type'] != "R")
+		if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
@@ -1009,8 +1009,8 @@ elseif ($action == "update")
 			}	
 		}
 	$updateqr = substr($updateqr, 0, -3);
-	if ($_POST['datestamp']) {$updateqr .= ", datestamp='{$_POST['datestamp']}'";}
-	if ($_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
+	if (isset($_POST['datestampe']) && $_POST['datestamp']) {$updateqr .= ", datestamp='{$_POST['datestamp']}'";}
+	if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 	$updateqr .= " WHERE id=$id";
 	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
 	echo "<font color='green'><b>"._SUCCESS."</b></font><br />\n"
@@ -1601,6 +1601,7 @@ else
 					echo "</table>\n";
 					break;
 				case "F": //ARRAY (Flexible Labels)
+				case "H":
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=mysql_query($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".mysql_error());
 					echo "<table>\n";
