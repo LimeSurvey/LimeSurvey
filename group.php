@@ -757,11 +757,19 @@ echo "\t\t\t{\n";
 if (isset($conditions) && is_array($conditions))
 	{
 	if (!isset($endzone)) {$endzone="";}
-	echo "\t\t\tif (type == 'radio')\n";
-	echo "\t\t\t\t{\n";
-	echo "\t\t\t\tvar hiddenformname='java'+name;\n";
-	echo "\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n";
-	echo "\t\t\t\t}\n";
+	echo "\t\t\tif (type == 'radio')\n"
+		."\t\t\t\t{\n"
+		."\t\t\t\tvar hiddenformname='java'+name;\n"
+		."\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n"
+		."\t\t\t\t}\n"
+		."\t\t\tif (type == 'checkbox')\n"
+		."\t\t\t\t{\n"
+		."\t\t\t\tvar hiddenformname='java'+name;\n"
+		."\t\t\t\tif (document.getElementById(name).checked) {\n"
+		."\t\t\t\t\tdocument.getElementById(hiddenformname).value='Y';}\n"
+		."\t\t\t\telse {\n"
+		."\t\t\t\t\tdocument.getElementById(hiddenformname).value='';}\n"
+		."\t\t\t\t}\n";
 	$java="";
 	$cqcount=1;
 	foreach ($conditions as $cd)
@@ -784,7 +792,7 @@ if (isset($conditions) && is_array($conditions))
 		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $dropdowns == "R" && $cccount <= $dropdownthreshold))
 							{$idname="java$cd[2]";}
 		elseif($cd[4] == "M" || $cd[4] == "O" || $cd[4] == "P")
-							{$idname="$cd[2]$cd[3]";}
+							{$idname="java$cd[2]$cd[3]";}
 		else				{$idname=$cd[2];}
 		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
 		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
@@ -794,7 +802,7 @@ if (isset($conditions) && is_array($conditions))
 			}
 		elseif ($cd[4] == "M" || $cd[4] == "O" || $cd[4] == "P")
 			{
-			$java .= "document.getElementById('$idname').checked";
+			$java .= "document.getElementById('$idname').value == 'Y'";
 			}
 		else 
 			{
