@@ -179,7 +179,7 @@ if ($qid)
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Type:</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
-		$qrq = "SELECT * FROM answers WHERE qid=$qid ORDER BY answer";
+		$qrq = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
 		$qrr = mysql_query($qrq);
 		$qct = mysql_num_rows($qrr);
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R")
@@ -225,6 +225,7 @@ if ($code)
 		{
 		$answersummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Code:</b></font></td>\n\t<td>$setfont{$cdrow['code']}</td></tr>\n";
 		$answersummary .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n\t<td>$setfont{$cdrow['answer']}</td></tr>\n";
+		$answersummary .= "\t<tr><td align='right'>$setfont<b>Sort Order:</b></font></td>\n\t<td>$setfont{$cdrow['sortorder']}</td></tr>\n";
 		$answersummary .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n\t<td>$setfont{$cdrow['default']}</td></tr>\n";
 		}
 	$answersummary .= "\t<tr><td align='right' colspan='2'>\n";
@@ -538,8 +539,10 @@ if ($action == "addanswer")
 	$newanswer .= "\t\t<td><input type='text' size='5' name='code' maxlength='5'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
 	$newanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
 	$newanswer .= "\t\t<td><input type='text' name='answer'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
+	$newanswer .= "\t<tr><td align='right'>$setfont<b>Sort Order:</b></font></td>\n";
+	$newanswer .= "\t\t<td><input type='text' size='5' maxlength='5' value='' name='sortorder'></td></tr>\n";
 	$newanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
-	$newanswer .= "\t\t<td><input type='text' size='1' value='N' name='default'></td></tr>\n";
+	$newanswer .= "\t\t<td><input type='text' size='1' maxlength='1' value='N' name='default'></td></tr>\n";
 	$newanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Add Answer'></td></tr>\n";
 	$newanswer .= "\t<input type='hidden' name='action' value='insertnewanswer'>\n";
 	$newanswer .= "\t<input type='hidden' name='qid' value='$qid'>\n";
@@ -547,6 +550,34 @@ if ($action == "addanswer")
 	$newanswer .= "\t<input type='hidden' name='gid' value='$gid'>\n";
 	$newanswer .= "</form></table>\n";
 	} 
+
+if ($action == "editanswer")
+	{
+	$eaquery = "SELECT * FROM answers WHERE qid=$qid AND code='$code'";
+	$earesult = mysql_query($eaquery);
+	while ($earow = mysql_fetch_array($earesult))
+		{
+		$editanswer = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+		$editanswer .= "\t\t<b>$setfont<font color='WHITE'>Edit Answer $qid, $code</b></font></font></td></tr>\n";
+		$editanswer .= "\t<tr><form action='$scriptname' name='editanswer' method='post'>\n";
+		$editanswer .= "\t\t<td align='right'>$setfont<b>Answer Code:</b></font></td>\n";
+		$editanswer .= "\t\t<td><input type='text' size='5' value='{$earow['code']}' name='code'></td></tr>\n";
+		$editanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
+		$editanswer .= "\t\t<td><input type='text' value=\"".str_replace('"', "&quot;", $earow['answer'])."\" name='answer'></td></tr>\n";
+		$editanswer .= "\t<tr><td align='right'>$setfont<b>Sort Order:</b></font></td>\n";
+		$editanswer .= "\t\t<td><input type='text' size='5' maxlength='5' value='{$earow['sortorder']}' name='sortorder'></td></tr>\n";
+		$editanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
+		$editanswer .= "\t\t<td><input type='text' size='1' maxlength='1' value='{$earow['default']}' name='default'></td></tr>\n";
+		$editanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Answer'></td>\n";
+		$editanswer .= "\t<input type='hidden' name='action' value='updateanswer'>\n";
+		$editanswer .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+		$editanswer .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+		$editanswer .= "\t<input type='hidden' name='qid' value='$qid'>\n";
+		$editanswer .= "\t<input type='hidden' name='old_code' value='{$earow['code']}'>\n";
+		$editanswer .= "\t</form></tr>\n"; 
+		$editanswer .= "</table>\n";
+		}
+	}
 
 if ($action == "addgroup")
 	{
@@ -682,32 +713,6 @@ if ($action == "editquestion")
 		$editquestion .= "\t<input type='hidden' name='qid' value='$qid'>\n";
 		$editquestion .= "\t</form></tr>\n";
 		$editquestion .= "</table>\n";
-		}
-	}
-
-if ($action == "editanswer")
-	{
-	$eaquery = "SELECT * FROM answers WHERE qid=$qid AND code='$code'";
-	$earesult = mysql_query($eaquery);
-	while ($earow = mysql_fetch_array($earesult))
-		{
-		$editanswer = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-		$editanswer .= "\t\t<b>$setfont<font color='WHITE'>Edit Answer $qid, $code</b></font></font></td></tr>\n";
-		$editanswer .= "\t<tr><form action='$scriptname' name='editanswer' method='post'>\n";
-		$editanswer .= "\t\t<td align='right'>$setfont<b>Answer Code:</b></font></td>\n";
-		$editanswer .= "\t\t<td><input type='text' size='5' value='{$earow['code']}' name='code'></td></tr>\n";
-		$editanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
-		$editanswer .= "\t\t<td><input type='text' value=\"".str_replace('"', "&quot;", $earow['answer'])."\" name='answer'></td></tr>\n";
-		$editanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
-		$editanswer .= "\t\t<td><input type='text' size='1' value='{$earow['default']}' name='default'></td></tr>\n";
-		$editanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Answer'></td>\n";
-		$editanswer .= "\t<input type='hidden' name='action' value='updateanswer'>\n";
-		$editanswer .= "\t<input type='hidden' name='sid' value='$sid'>\n";
-		$editanswer .= "\t<input type='hidden' name='gid' value='$gid'>\n";
-		$editanswer .= "\t<input type='hidden' name='qid' value='$qid'>\n";
-		$editanswer .= "\t<input type='hidden' name='old_code' value='{$earow['code']}'>\n";
-		$editanswer .= "\t</form></tr>\n"; 
-		$editanswer .= "</table>\n";
 		}
 	}
 
