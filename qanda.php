@@ -788,6 +788,53 @@ switch ($ia[4])
 			}			
 		$answer .= "\t\t\t</table>\n";
 		break;
+	case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+		$qquery = "SELECT other FROM questions WHERE qid=".$ia[0];
+		$qresult = mysql_query($qquery);
+		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
+		$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY answer";
+		$ansresult = mysql_query($ansquery);
+		$anscount = mysql_num_rows($ansresult);
+		$fn = 1;
+		$answer .= "\t\t\t<table class='question'>\n";
+		$answer .= "\t\t\t\t<tr>\n";
+		$answer .= "\t\t\t\t\t<td></td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Increase</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Same</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Decrease</td>\n";
+		$answer .= "\t\t\t\t</tr>\n";
+		while ($ansrow = mysql_fetch_array($ansresult))
+			{
+			$myfname = $ia[1].$ansrow['code'];
+			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
+			$answer .= "\t\t\t\t<tr class='$trbc'>\n";
+			$answer .= "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
+			$answer .= "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='I'";
+			if ($_SESSION[$myfname] == "I") {$answer .= " checked";}
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+			$answer .= "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='S'";
+			if ($_SESSION[$myfname] == "S") {$answer .= " checked";}
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+			$answer .= "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='D'";
+			if ($_SESSION[$myfname] == "D") {$answer .= " checked";}
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+			$answer .= "\t\t\t\t</tr>\n";
+			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
+			$inputnames[]=$myfname;
+			$fn++;
+			if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
+				{
+				$mandatorys[]=$myfname;
+				$mandatoryfns[]=$ia[1];
+				}
+			if ($ia[6] == "Y" && $ia[7] == "Y")
+				{
+				$conmandatorys[]=$myfname;
+				$conmandatoryfns[]=$ia[1];
+				}
+			}			
+		$answer .= "\t\t\t</table>\n";
+		break;
 		}
 $answer .= "\n\t\t\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
 if ($surveyformat == "S")
