@@ -895,6 +895,8 @@ switch ($ia[4])
 				}
 			}
 		$answer .= "\t\t\t</table>\n";
+		unset($labelans);
+		unset($labelcode);
 		break;
 		}
 $answer .= "\n\t\t\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
