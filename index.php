@@ -318,10 +318,10 @@ if (!$step)
 	//echo "$setfont<I>$surveydesc</I><BR>";
 	echo "$surveywelcome<BR>&nbsp;<BR>Click \"Next\" to begin.<BR>&nbsp;";
 	echo "</TD></TR>\n";
-	$aquery="SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
+	$aquery="SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
 	$aresult=mysql_query($aquery);
 	$totalsteps=mysql_num_rows($aresult);
-	echo "<TR><TD ALIGN='CENTER' COLSPAN='2' BGCOLOR='#DDDDDD'>$setfont There are $totalsteps questions in this survey.</tD></TR>\n";
+	echo "<TR><TD ALIGN='CENTER' COLSPAN='2' BGCOLOR='#DDDDDD'>$setfont There are $totalsteps questions in this survey.</TD></TR>\n";
 	echo "<FORM METHOD='POST'>\n";
 	echo "<INPUT TYPE='HIDDEN' NAME='sid' VALUE='$sid'>\n";
 	echo "<INPUT TYPE='HIDDEN' NAME='thisstep' VALUE='$step'>\n";
@@ -332,21 +332,29 @@ if (!$step)
 	session_register("totalsteps");
 	session_register("insertarray");
 	session_register("sid");
-
-	while ($arow=mysql_fetch_row($aresult))
+	
+	while ($arow=mysql_fetch_array($aresult)) {$arows[]=$arow;} // Get table output into array
+	
+	if ($totalsteps > 0)
+		{
+		// Perform a case insensitive natural sort on title column of a multidimensional array
+		usort($arows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
+		} // end if there's anything to sort
+	
+	foreach ($arows as $arow)
 		{
 		//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
-		$fieldname="$arow[1]"."X"."$arow[2]"."X"."$arow[0]";
-		if ($arow[3] == "M" || $arow[3] == "A" || $arow[3] == "B" || $arow[3] == "C" || $arow[3] == "P")
+		$fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+		if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
 			{
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid=$arow[0] ORDER BY code";
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY code";
 			$abresult=mysql_query($abquery);
 			while ($abrow=mysql_fetch_row($abresult))
 				{
 				session_register("F$fieldname".$abrow[1]); //THE F HAS TO GO IN FRONT OF THE FIELDNAME SO THAT PHP RECOGNISES IT AS A VARIABLE
 				$insertarray[]="F$fieldname".$abrow[1];
 				if ($abrow[4]=="Y") {$alsoother="Y";}
-				if ($arow[3] == "P") 
+				if ($arow['type'] == "P") 
 					{
 					session_register("F$fieldname".$abrow[1]."comment");
 					$insertarray[]="F$fieldname".$abrow[1]."comment";	
@@ -359,7 +367,7 @@ if (!$step)
 				}
 			
 			}
-		elseif ($arow[3] == "O")
+		elseif ($arow['type'] == "O")
 			{
 			session_register("F$fieldname");
 			$insertarray[]="F$fieldname";
@@ -373,11 +381,11 @@ if (!$step)
 			session_register("F$fieldname");
 			$insertarray[]="F$fieldname";
 			}
-		//echo "F$fieldname, $arow[4], $arow[5], $arow[3]<BR>"; //MORE DEBUGGING STUFF
+		//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<BR>"; //MORE DEBUGGING STUFF
 		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD
 		//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
 		//                 [4]=questions.type, [5]=questions.gid
-		$fieldarray[]=array("$arow[0]", "$fieldname", "$arow[4]", "$arow[5]", "$arow[3]", "$arow[2]");
+		$fieldarray[]=array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}");
 		}
 	//echo count($fieldarray);
 	echo "</TD></TR>\n";
