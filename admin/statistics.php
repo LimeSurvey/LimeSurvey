@@ -60,7 +60,9 @@ elseif ($_POST['sid']) {$sid=$_POST['sid'];}
 
 echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Quick Statistics</b></td></tr></table>\n";
 echo $surveyoptions;
-echo "<table width='100%'>\n";
+echo "<br />\n";
+echo "<table width='95%' align='center' border='1' cellpadding='0' cellspacing='0' bordercolor='#555555'>\n";
+echo "<tr><td align='center' bgcolor='#555555'>$setfont<font color='orange'><b>Filter Settings</b></td></tr>\n";
 echo "\t<form method='post'>\n";
 // 1: Get list of questions with predefined answers from survey
 $query = "SELECT qid, questions.gid, type, title, group_name, question FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' AND type IN ('5', 'G', 'L', 'O', 'M', 'P', 'Y', 'A', 'B', 'C') ORDER BY group_name, title";
@@ -89,7 +91,9 @@ foreach ($filters as $flt)
 		{
 		echo "\t\t\t\t<td align='center'>";
 		echo "$setfont<B>$flt[3]&nbsp;"; //Heading (Question No)
-		echo "<input type='radio' name='summary' value='{$sid}X{$flt[1]}X{$flt[0]}'>&nbsp;";
+		echo "<input type='radio' name='summary' value='{$sid}X{$flt[1]}X{$flt[0]}'";
+		if ($_POST['summary'] == "{$sid}X{$flt[1]}X{$flt[0]}") {echo " CHECKED";}
+		echo ">&nbsp;";
 		echo "<img src='help.gif' width='12' height='12' align='bottom' alt='$flt[5]' onClick=\"alert('$flt[5]')\">";
 		echo "<br />\n";
 		echo "\t\t\t\t<select name='";
@@ -213,10 +217,10 @@ foreach ($filters as $flt)
 	}
 echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 echo "\t\t</td></tr>\n";
-echo "\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n";
+echo "\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n";
 echo "\t\t\t<input $btstyle type='submit' value='View Stats'>\n";
 echo "\t\t\t<input $btstyle type='button' value='Clear' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n";
-echo "\t\t</td></tr>\n";
+echo "\t\t<br />&nbsp;\n\t\t</td></tr>\n";
 echo "\t<input type='hidden' name='sid' value='$sid'>\n";
 echo "\t<input type='hidden' name='display' value='stats'>\n";
 echo "\t</form>\n";
@@ -308,7 +312,7 @@ if ($_POST['display'])
 	echo "$percent% of your total results<br />\n\t\t<br />\n";
 	echo "\t\t<font size='1'>$query\n";
 	echo "\t</td></tr>\n";
-	$sql=implode(" AND ", $selects);
+	if ($selects) {$sql=implode(" AND ", $selects);}
 	if ($results > 0)
 		{
 		echo "\t<tr>";
@@ -341,7 +345,8 @@ if ($_POST['summary'])
 	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Field Summary for {$_POST['summary']}:</b></td></tr>\n";
 	foreach ($fvalues as $fv)
 		{
-		$query = "SELECT count({$_POST['summary']}) FROM survey_$sid WHERE {$_POST['summary']} = '$fv' AND $sql";
+		$query = "SELECT count({$_POST['summary']}) FROM survey_$sid WHERE {$_POST['summary']} = '$fv'";
+		if ($sql) {$query .= " AND $sql";}
 		$result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
 		while ($row=mysql_fetch_row($result))
 			{
@@ -351,6 +356,6 @@ if ($_POST['summary'])
 			echo "\t\t</td></tr>\n";
 			}
 		}
-	
+	echo "</table>\n<br />";
 	}
 ?>
