@@ -96,6 +96,10 @@ if (array_search("# QUESTIONS TABLE\n", $bigarray))
 	{
 	$stoppoint = array_search("# QUESTIONS TABLE\n", $bigarray);
 	}
+elseif (array_search("# QUESTIONS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# QUESTIONS TABLE\r\n", $bigarray);
+	}
 else
 	{
 	$stoppoint = count($bigarray)-1;
@@ -111,6 +115,10 @@ $bigarray = array_values($bigarray);
 if (array_search("# ANSWERS TABLE\n", $bigarray))
 	{
 	$stoppoint = array_search("# ANSWERS TABLE\n", $bigarray);
+	}
+elseif (array_search("# ANSWERS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# ANSWERS TABLE\r\n", $bigarray);
 	}
 else
 	{
@@ -128,6 +136,10 @@ if (array_search("# CONDITIONS TABLE\n", $bigarray))
 	{
 	$stoppoint = array_search("# CONDITIONS TABLE\n", $bigarray);
 	}
+elseif (array_search("# CONDITIONS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# CONDITIONS TABLE\r\n", $bigarray);
+	}
 else
 	{
 	$stoppoint = count($bigarray)-1;
@@ -144,6 +156,10 @@ if (array_search("# LABELSETS TABLE\n", $bigarray))
 	{
 	$stoppoint = array_search("# LABELSETS TABLE\n", $bigarray);
 	}
+elseif (array_search("# LABELSETS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# LABELSETS TABLE\r\n", $bigarray);
+	}
 else
 	{
 	$stoppoint = count($bigarray-1);
@@ -159,6 +175,10 @@ $bigarray = array_values($bigarray);
 if (array_search("# LABELS TABLE\n", $bigarray))
 	{
 	$stoppoint = array_search("# LABELS TABLE\n", $bigarray);
+	}
+elseif (array_search("# LABELS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# LABELS TABLE\r\n", $bigarray);
 	}
 else
 	{
@@ -291,10 +311,8 @@ if ($grouparray)
 					//IF this is a flexible label array, update the lid entry
 					if ($type == "F")
 						{
-						echo "Type is F:<br />";
 						foreach ($labelreplacements as $lrp)
 							{
-							echo $lrp[0] . " - " . $oldlid;
 							if ($lrp[0] == $oldlid)
 								{
 								$lrupdate="UPDATE questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
