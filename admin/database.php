@@ -170,6 +170,40 @@ elseif ($action == "insertnewquestion")
 		}
 	}	
 
+elseif ($action == "renumberquestions")
+	{
+	//Automatically renumbers the "question codes" so that they follow
+	//a methodical numbering method
+	$question_number=1;
+	$group_number=0;
+	$gselect="SELECT *\n"
+			."FROM {$dbprefix}questions, {$dbprefix}groups\n"
+			."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
+			."AND {$dbprefix}questions.sid=$sid\n"
+			."ORDER BY group_name, title";
+	$gresult=mysql_query($gselect) or die (mysql_error());
+	$grows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	while ($grow = mysql_fetch_array($gresult)) {$grows[] = $grow;} // Get table output into array
+	usort($grows, 'CompareGroupThenTitle');
+	foreach($grows as $grow)
+		{
+		//Go through all the questions
+		if ((isset($_GET['style']) && $_GET['style']=="bygroup") && (!isset($groupname) || $groupname != $grow['group_name']))
+			{
+		    $question_number=1;
+			$group_number++;
+			}
+		//echo "GROUP: ".$grow['group_name']."<br />";
+		$usql="UPDATE {$dbprefix}questions\n"
+			."SET title='".$question_number."'\n"
+			."WHERE qid=".$grow['qid'];
+		//echo "[$sql]";
+		$uresult=mysql_query($usql) or die("Error:".mysql_error());
+		$question_number++;
+		$groupname=$grow['group_name'];
+		}
+	}
+
 elseif ($action == "updatequestion")
 	{
 	$cqquery = "SELECT type FROM {$dbprefix}questions WHERE qid={$_POST['qid']}";
