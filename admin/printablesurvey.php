@@ -34,20 +34,20 @@
 	#############################################################	
 */
 
-$sid = $_GET['sid'];
+$surveyid = $_GET['sid'];
 
 $boxstyle = "style='border-color: #111111; border-width: 1; border-style: solid'";
 require_once("config.php");
 
 //Get local language file
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
+$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = mysql_query($query) or die ("Couldn't get language file");
 if (!isset($tpldir)) {$tpldir=$publicdir."/templates";}
-while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
 if (!isset($templatedir) || !$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveyidlanguage.lang.php";
+$langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);	
 
@@ -59,20 +59,20 @@ echo "</head>\n<body>\n";
 
 // PRESENT SURVEY DATAENTRY SCREEN
 
-$desquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
+$desquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $desresult = mysql_query($desquery);
 while ($desrow = mysql_fetch_array($desresult))
 	{
-	$surveyidname = $desrow['short_title'];
-	$surveyiddesc = $desrow['description'];
-	$surveyidactive = $desrow['active'];
-	$surveyidtable = "{$dbprefix}survey_{$desrow['sid']}";
-	$surveyidexpirydate = $desrow['expires'];
-	$surveyidfaxto = $desrow['faxto'];
+	$surveyname = $desrow['short_title'];
+	$surveydesc = $desrow['description'];
+	$surveyactive = $desrow['active'];
+	$surveytable = "{$dbprefix}survey_{$desrow['sid']}";
+	$surveyexpirydate = $desrow['expires'];
+	$surveyfaxto = $desrow['faxto'];
 	}
-if (!isset($surveyidfaxto) || !$surveyidfaxto) 
+if (!isset($surveyfaxto) || !$surveyfaxto) 
 	{
-    $surveyidfaxto=$surveyidfaxnumber; //Use system fax number if none is set in survey.
+    $surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
 	}
 
 echo "<table width='100%' cellspacing='0'>\n";
@@ -80,22 +80,22 @@ echo "\t<tr>\n";
 echo "\t\t<td colspan='3' align='center'><font color='black'>\n";
 echo "\t\t\t<table border='1' style='border-collapse: collapse; border-color: #111111; width: 100%'>\n";
 echo "\t\t\t\t<tr><td align='center'>\n";
-echo "\t\t\t\t\t<font size='5' face='verdana'><b>$surveyidname</b></font>\n";
-echo "\t\t\t\t\t<font size='4' face='verdana'><br />$setfont$surveyiddesc</font>\n";
+echo "\t\t\t\t\t<font size='5' face='verdana'><b>$surveyname</b></font>\n";
+echo "\t\t\t\t\t<font size='4' face='verdana'><br />$setfont$surveydesc</font>\n";
 echo "\t\t\t\t</td></tr>\n";
 echo "\t\t\t</table>\n";
 echo "\t\t</td>\n";
 echo "\t</tr>\n";
 // SURVEY NAME AND DESCRIPTION TO GO HERE
 
-$fieldmap=createFieldMap($sid);
+$fieldmap=createFieldMap($surveyid);
 
-$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid ORDER BY group_name";
+$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
 $degresult = mysql_query($degquery);
 // GROUP NAME
 while ($degrow = mysql_fetch_array($degresult))
 	{
-	$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid={$degrow['gid']} ORDER BY title";
+	$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']} ORDER BY title";
 	$deqresult = mysql_query($deqquery);
 	$deqrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($deqrow = mysql_fetch_array($deqresult)) {$deqrows[] = $deqrow;} // Get table output into array
@@ -239,7 +239,7 @@ while ($degrow = mysql_fetch_array($degresult))
 		//END OF GETTING CONDITIONS
 		
 		$qid = $deqrow['qid'];
-		$fieldname = "$sid"."X"."$gid"."X"."$qid";
+		$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
 		echo "\t<tr bgcolor='$bgc'>\n";
 		echo "\t\t<td valign='top' align='left' colspan='3'>\n";
 		if ($deqrow['mandatory'] == "Y")
@@ -630,10 +630,10 @@ echo "\t\t\t<table width='100%' border='1' style='border-collapse: collapse' bor
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
 echo "\t\t\t\t\t\t$setfont<b>"._PS_SUBMIT."</b><br />\n";
-echo "\t\t\t\t\t\t"._PS_THANKYOU." "._PS_FAXTO." $surveyidfaxto";
-if ($surveyidexpirydate && $surveyidexpirydate != "0000-00-00")
+echo "\t\t\t\t\t\t"._PS_THANKYOU." "._PS_FAXTO." $surveyfaxto";
+if ($surveyexpirydate && $surveyexpirydate != "0000-00-00")
 	{
-	echo " by $surveyidexpirydate";
+	echo " by $surveyexpirydate";
 	}
 echo ".\n";
 echo "\t\t\t\t\t</td>\n";

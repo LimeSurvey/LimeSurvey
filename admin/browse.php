@@ -36,7 +36,7 @@
 require_once("config.php");
 
 if (!isset($limit)) {$limit=returnglobal('limit');}
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($id)) {$id=returnglobal('id');}
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($order)) {$order=returnglobal('order');}
@@ -44,15 +44,15 @@ if (!isset($order)) {$order=returnglobal('order');}
 sendcacheheaders();
 
 //Select public language file
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
+$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveyidlanguage.lang.php";
+$langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 
-$surveyidoptions = browsemenubar();
+$surveyoptions = browsemenubar();
 echo $htmlheader;
 echo "<table height='1'><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
@@ -70,7 +70,7 @@ if (!mysql_selectdb($databasename, $connect)) //DATABASE DOESN'T EXIST OR CAN'T 
 		."</body>\n</html>";
 	exit;
 	}
-if (!$sid && !$action) //NO SID OR ACTION PROVIDED
+if (!$surveyid && !$action) //NO SID OR ACTION PROVIDED
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		. _BROWSERESPONSES."</b></td></tr>\n"
@@ -85,37 +85,37 @@ if (!$sid && !$action) //NO SID OR ACTION PROVIDED
 	}
 
 //CHECK IF SURVEY IS ACTIVATED AND EXISTS
-$actquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
+$actquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $actresult = mysql_query($actquery);
 $actcount = mysql_num_rows($actresult);
 if ($actcount > 0)
 	{
 	while ($actrow = mysql_fetch_array($actresult))
 		{
-		$surveyidtable = "{$dbprefix}survey_{$actrow['sid']}";
-		$surveyidname = "{$actrow['short_title']}";
+		$surveytable = "{$dbprefix}survey_{$actrow['sid']}";
+		$surveyname = "{$actrow['short_title']}";
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 			{
 			echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-				. _BROWSERESPONSES.": <font color='silver'>$surveyidname</b></td></tr>\n"
+				. _BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n"
 				."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 				."<b><font color='red'>"._ERROR."</font></b><br />\n"
 				. _BR_NOTACTIVATED."<br /><br />\n"
 				."<input $btstyle type='submit' value='"
-				. _GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid', '_top')\"><br />\n"
+				. _GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
 				."</td></tr></table>\n"
 				."</body>\n</html>";
 			exit;
 			}
 		}
 	}
-else //SURVEY MATCHING $SID DOESN'T EXIST
+else //SURVEY MATCHING $surveyid DOESN'T EXIST
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		. _BROWSERESPONSES."</b></td></tr>\n"
 		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<b><font color='red'>"._ERROR."</font></b><br />\n"
-		. _BR_NOSURVEY." ($sid)<br /><br />\n"
+		. _BR_NOSURVEY." ($surveyid)<br /><br />\n"
 		."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>";
@@ -127,13 +127,13 @@ else //SURVEY MATCHING $SID DOESN'T EXIST
 if ($action == "id") // Looking at a SINGLE entry
 	{
 	//SHOW HEADER
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyidname</b></td></tr>\n";
-	if (!isset($_POST['sql']) || !$_POST['sql']) {echo "$surveyidoptions";} // Don't show options if coming from tokens script
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n";
+	if (!isset($_POST['sql']) || !$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
 	echo "</table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n";
 	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$sid' ORDER BY group_name";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	
@@ -203,7 +203,7 @@ if ($action == "id") // Looking at a SINGLE entry
 
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
-	$idquery = "SELECT * FROM $surveyidtable WHERE ";
+	$idquery = "SELECT * FROM $surveytable WHERE ";
 	if (isset($_POST['sql']) && $_POST['sql'])
 		{
 		if (get_magic_quotes_gpc()) {$idquery .= stripslashes($_POST['sql']);}
@@ -222,18 +222,18 @@ if ($action == "id") // Looking at a SINGLE entry
 		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
 		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='$imagefiles/edit.gif' title='"
-		. _BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveyidtable','_top')\" />\n"
-		."\t\t\t<a href='dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveyidtable'>"
+		. _BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$surveyid&surveytable=$surveytable','_top')\" />\n"
+		."\t\t\t<a href='dataentry.php?action=delete&id=$id&sid=$surveyid&surveytable=$surveytable'>"
 		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.gif' title='"
 		. _BR_DELRESPONSE."' onClick=\"return confirm('"._DR_RUSURE."')\" /></a>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 		."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
-		. _D_BACK."' onClick=\"window.open('browse.php?action=id&id=$last&sid=$sid&surveytable=$surveyidtable','_top')\" />\n"
+		. _D_BACK."' onClick=\"window.open('browse.php?action=id&id=$last&sid=$surveyid&surveytable=$surveytable','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 		."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
-		. _D_FORWARD."' onClick=\"window.open('browse.php?action=id&id=$next&sid=$sid&surveytable=$surveyidtable','_top')\" />\n"
+		. _D_FORWARD."' onClick=\"window.open('browse.php?action=id&id=$next&sid=$surveyid&surveytable=$surveytable','_top')\" />\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
@@ -266,10 +266,10 @@ if ($action == "id") // Looking at a SINGLE entry
 elseif ($action == "all")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyidname</font></font></td></tr>\n";
+		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n";
 	
 	if (!isset($_POST['sql']))
-		{echo "$surveyidoptions";} //don't show options when called from another script with a filter on
+		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
 	else
 		{
 		echo "\n<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
@@ -284,7 +284,7 @@ elseif ($action == "all")
 		}
 	echo "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$sid' ORDER BY group_name";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	
@@ -329,7 +329,7 @@ elseif ($action == "all")
 			}
 		elseif ($fnrow['type'] == "R")
 			{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			$i2count = mysql_num_rows($i2result);
 			for ($i=1; $i<=$i2count; $i++)
@@ -341,7 +341,7 @@ elseif ($action == "all")
 			}
 		else
 			{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			$otherexists = "";
 			while ($i2row = mysql_fetch_array($i2result))
@@ -394,7 +394,7 @@ elseif ($action == "all")
 	if (!isset($start)) {$start = 0;}
 		
 	//LETS COUNT THE DATA
-	$dtquery = "SELECT count(*) FROM $surveyidtable";
+	$dtquery = "SELECT count(*) FROM $surveytable";
 	$dtresult=mysql_query($dtquery);
 	while ($dtrow=mysql_fetch_row($dtresult)) {$dtcount=$dtrow[0];}
 	
@@ -403,12 +403,12 @@ elseif ($action == "all")
 	//NOW LETS SHOW THE DATA
 	if (isset($_POST['sql']))
 		{
-		if ($_POST['sql'] == "NULL") {$dtquery = "SELECT * FROM $surveyidtable ORDER BY id";}
-		else {$dtquery = "SELECT * FROM $surveyidtable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
+		if ($_POST['sql'] == "NULL") {$dtquery = "SELECT * FROM $surveytable ORDER BY id";}
+		else {$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
 		}
 	else
 		{
-		$dtquery = "SELECT * FROM $surveyidtable ORDER BY id";
+		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
 		}
 	if ($order == "desc") {$dtquery .= " DESC LIMIT $limit";}
 	if (isset($start) && isset($limit) && !isset($order)) {$dtquery .= " LIMIT $start, $limit";}
@@ -438,14 +438,14 @@ elseif ($action == "all")
 		echo "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 			."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
 			."\t\t\t<input type='image' name='DataBegin' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
-			. _D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=0&limit=$limit','_top')\" />\n"
+			. _D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$surveyid&start=0&limit=$limit','_top')\" />\n"
 			."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
-			. _D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveyidtable&start=$last&limit=$limit','_top')\" />\n"
+			. _D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$surveyid&surveytable=$surveytable&start=$last&limit=$limit','_top')\" />\n"
 			."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 			."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
-			. _D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveyidtable&start=$next&limit=$limit','_top')\" />\n"
+			. _D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$surveyid&surveytable=$surveytable&start=$next&limit=$limit','_top')\" />\n"
 			."\t\t\t<input type='image' name='DataEnd' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
-			. _D_END."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=$end&limit=$limit','_top')\" />\n"
+			. _D_END."' onClick=\"window.open('browse.php?action=all&sid=$surveyid&start=$end&limit=$limit','_top')\" />\n"
 			."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n";
 		}
 	echo "\t\t</td>\n"
@@ -456,7 +456,7 @@ elseif ($action == "all")
 		."\t\t\t"._BR_STARTING."<input type='text' $slstyle size='4' value='$start' name='start'>\n"
 		."\t\t\t<input type='submit' value='"._BR_SHOW."' $btstyle>\n"
 		."\t\t</font></td>\n"
-		."\t\t<input type='hidden' name='sid' value='$sid'>\n"
+		."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t<input type='hidden' name='action' value='all'>\n";
 if (isset($_POST['sql'])) 
 	{
@@ -479,13 +479,13 @@ echo 	 "\t\t</form>\n"
 			}
 		echo "\t<tr bgcolor='$bgcc' valign='top'>\n"
 			."\t\t<td align='center'><font face='verdana' size='1'>\n"
-			."\t\t\t<a href='browse.php?sid=$sid&action=id&id={$dtrow['id']}' title='View this record'>"
+			."\t\t\t<a href='browse.php?sid=$surveyid&action=id&id={$dtrow['id']}' title='View this record'>"
 			."{$dtrow['id']}</a></font></td>\n";
 		
 		$i = 0;
 		if ($private == "N")
 			{
-			$SQL = "Select * FROM {$dbprefix}tokens_$sid WHERE token='{$dtrow['token']}'";
+			$SQL = "Select * FROM {$dbprefix}tokens_$surveyid WHERE token='{$dtrow['token']}'";
 			if ($SQLResult = mysql_query($SQL))
 				{
 				$TokenRow = mysql_fetch_assoc($SQLResult);
@@ -493,7 +493,7 @@ echo 	 "\t\t</form>\n"
 			echo "\t\t<td align='center'><font size='1'>\n";
 			if (isset($TokenRow) && $TokenRow) 
 				{
-				echo "\t\t<a href='tokens.php?sid=$sid&action=edit&tid={$TokenRow['tid']}' title='Edit this token'>";
+				echo "\t\t<a href='tokens.php?sid=$surveyid&action=edit&tid={$TokenRow['tid']}' title='Edit this token'>";
 				}
 			echo "{$dtrow['token']}";
 			if (isset($TokenRow) && $TokenRow) 
@@ -516,10 +516,10 @@ echo 	 "\t\t</form>\n"
 else
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyidname</font></font></td></tr>\n"
-		. $surveyidoptions;
+		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
+		. $surveyoptions;
 	echo "</table>\n";
-	$gnquery = "SELECT count(id) FROM $surveyidtable";
+	$gnquery = "SELECT count(id) FROM $surveytable";
 	$gnresult = mysql_query($gnquery);
 	while ($gnrow = mysql_fetch_row($gnresult))
 		{

@@ -37,13 +37,13 @@
 require_once("config.php");
 
 
-$sid=returnglobal('sid');
+$surveyid=returnglobal('sid');
 
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
+$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveyidlanguage.lang.php";
+$langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 
@@ -61,7 +61,7 @@ echo "<table width='100%' border='0' bgcolor='#555555'>\n"
 	."</table>\n";
 
 
-if (!isset($sid))
+if (!isset($surveyid))
 	{
 	echo "<br /><center>$setfont<b>"
 		._CD_NOSID." "._CD_NODIRECT
@@ -171,7 +171,7 @@ unset($canswers);
 // *******************************************************************
 //1: Get information for this question
 if (!isset($qid)) {$qid=returnglobal('qid');}
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 $query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
 		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
@@ -191,7 +191,7 @@ while ($rows=mysql_fetch_array($result))
 $qquery = "SELECT *\n"
 		. "FROM {$dbprefix}questions, {$dbprefix}groups\n"
 		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-		."AND {$dbprefix}questions.sid=$sid\n";
+		."AND {$dbprefix}questions.sid=$surveyid\n";
 
 $qresult = mysql_query($qquery) or die ("$qquery<br />".mysql_error());
 $qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
@@ -549,7 +549,7 @@ if ($conditionscount > 0)
 			."\t\t</td>\n"
 			."\t<input type='hidden' name='action' value='delete'>\n"
 			."\t<input type='hidden' name='cid' value='{$rows['cid']}'>\n"
-			."\t<input type='hidden' name='sid' value='$sid'>\n"
+			."\t<input type='hidden' name='sid' value='$surveyid'>\n"
 			."\t<input type='hidden' name='qid' value='$qid'>\n"
 			."\t</form>\n"
 			."\t</tr>\n";
@@ -612,7 +612,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 		."\t\t</font></td></tr>\n";
 		
 	echo "<input type='hidden' name='action' value='copyconditions'>\n"
-		."<input type='hidden' name='sid' value='$sid'>\n"
+		."<input type='hidden' name='sid' value='$surveyid'>\n"
 		."<input type='hidden' name='qid' value='$qid'>\n"
 		."</form>\n";
 
@@ -667,7 +667,7 @@ echo "\t\t\t</select>\n"
 	."\t\t\t<input type='submit' value='"._CD_ADDCONDITION."' $btstyle />\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
-echo "<input type='hidden' name='sid' value='$sid' />\n"
+echo "<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='qid' value='$qid' />\n"
 	."<input type='hidden' name='action' value='insertcondition' />\n"
 	."<input type='hidden' name='cqid' id='cqid' value='' />\n"

@@ -86,7 +86,7 @@ elseif ($action == "insertnewgroup")
 		
 		if ($result)
 			{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $sid\")\n //-->\n</script>\n";
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $surveyid\")\n //-->\n</script>\n";
 			$query = "SELECT gid FROM {$dbprefix}groups WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
 			$result = mysql_query($query);
 			while ($res = mysql_fetch_array($result)) {$gid = $res['gid'];}
@@ -128,7 +128,7 @@ elseif ($action == "updategroup")
 elseif ($action == "delgroupnone")
 	{
 	if (!isset($gid)) {returnglobal('gid');}
-	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
+	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -163,7 +163,7 @@ elseif ($action == "delgroup")
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPDELETE."\")\n //-->\n</script>\n";
 			}
 		}
-	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
+	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -219,7 +219,7 @@ elseif ($action == "renumberquestions")
 	$gselect="SELECT *\n"
 			."FROM {$dbprefix}questions, {$dbprefix}groups\n"
 			."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-			."AND {$dbprefix}questions.sid=$sid\n"
+			."AND {$dbprefix}questions.sid=$surveyid\n"
 			."ORDER BY group_name, title";
 	$gresult=mysql_query($gselect) or die (mysql_error());
 	$grows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
@@ -605,8 +605,8 @@ elseif ($action == "insertnewsurvey")
 			$isquery = "SELECT sid FROM {$dbprefix}surveys WHERE short_title like '{$_POST['short_title']}'";
 			$isquery .= " AND description like '{$_POST['description']}' AND admin like '{$_POST['admin']}'";
 			$isresult = mysql_query($isquery);
-			while ($isr = mysql_fetch_array($isresult)) {$sid = $isr['sid'];}
-			$surveyidselect = getsurveylist();
+			while ($isr = mysql_fetch_array($isresult)) {$surveyid = $isr['sid'];}
+			$surveyselect = getsurveylist();
 			}
 		else
 			{
@@ -656,7 +656,7 @@ elseif ($action == "updatesurvey")
 	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
 	if ($usresult)
 		{
-		$surveyidselect = getsurveylist();
+		$surveyselect = getsurveylist();
 		}
 	else
 		{
@@ -666,16 +666,16 @@ elseif ($action == "updatesurvey")
 
 elseif ($action == "delsurvey") //can only happen if there are no groups, no questions, no answers etc.
 	{
-	$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$sid";
+	$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
 	$result = mysql_query($query);
 	if ($result)
 		{
-		$sid = "";
-		$surveyidselect = getsurveylist();
+		$surveyid = "";
+		$surveyselect = getsurveylist();
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 

@@ -1,26 +1,26 @@
 <?php
 require_once("config.php");
 if (!isset($imagefiles)) {$imagefiles="./images";}
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($style)) {$style=returnglobal('style');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
 
 #Get all legitimate question ids
-$query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
+$query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
 $result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 $num_results = mysql_num_rows($result);
 # Build array that has to be returned
-$fieldmap=createFieldMap($sid);
+$fieldmap=createFieldMap($surveyid);
 #See if tokens are being used
 $tresult = @mysql_list_tables($databasename) or die ("Error getting table list<br />".mysql_error());
 while($tbl = @mysql_tablename($tresult, $i++))
 	{
-	if ($tbl == "{$dbprefix}tokens_$sid") {$tokensexist = 1;}
+	if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist = 1;}
 	}
 
 #Lookup the names of the attributes
-$query="SELECT sid, attribute1, attribute2, private FROM {$dbprefix}surveys WHERE sid=$sid";
+$query="SELECT sid, attribute1, attribute2, private FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 $num_results = mysql_num_rows($result);
 $num_fields = $num_results;
@@ -29,13 +29,13 @@ for ($i=0; $i < $num_results; $i++) {
         $row = mysql_fetch_array($result);
 	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_TL_ATTR1;}
 	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_TL_ATTR2;}
-	$surveyidprivate=$row['private'];
+	$surveyprivate=$row['private'];
 }
 
 $fieldno=0;
 
-if (isset($tokensexist) && $tokensexist == 1 && $surveyidprivate == "N") {
-	$query="SHOW COLUMNS FROM {$dbprefix}tokens_$sid";
+if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+	$query="SHOW COLUMNS FROM {$dbprefix}tokens_$surveyid";
 	$result=mysql_query($query) or die("Couldn't count fields in tokens<br />$query<br />".mysql_error());
 	while ($row=mysql_fetch_row($result)) {
 			$token_fields[]=$row[0];
@@ -65,7 +65,7 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyidprivate == "N") {
 	$fields=array();
 }
 
-$query="SHOW COLUMNS FROM {$dbprefix}survey_$sid";
+$query="SHOW COLUMNS FROM {$dbprefix}survey_$surveyid";
 $result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 $num_results = mysql_num_rows($result);
 $num_fields = $num_results;
@@ -119,22 +119,22 @@ echo "\n";
 #echo "*Begin data\n";
 echo "BEGIN DATA<br>";
 
-if (isset($tokensexist) && $tokensexist == 1 && $surveyidprivate == "N") {
-$query="SELECT `{$dbprefix}tokens_$sid`.`firstname`   ,
-	       `{$dbprefix}tokens_$sid`.`lastname`    ,
-	       `{$dbprefix}tokens_$sid`.`email`";
+if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+$query="SELECT `{$dbprefix}tokens_$surveyid`.`firstname`   ,
+	       `{$dbprefix}tokens_$surveyid`.`lastname`    ,
+	       `{$dbprefix}tokens_$surveyid`.`email`";
 if (in_array("attribute_1", $token_fields)) {
-    $query .= ",\n		`{$dbprefix}tokens_$sid`.`attribute_1`";
+    $query .= ",\n		`{$dbprefix}tokens_$surveyid`.`attribute_1`";
 }
 if (in_array("attribute_2", $token_fields)) {
-    $query .= ",\n		`{$dbprefix}tokens_$sid`.`attribute_2`";
+    $query .= ",\n		`{$dbprefix}tokens_$surveyid`.`attribute_2`";
 }
-$query .= ",\n	       `{$dbprefix}survey_$sid`.* 
-	FROM `{$dbprefix}survey_$sid`
-	LEFT JOIN `{$dbprefix}tokens_$sid` ON `{$dbprefix}survey_$sid`.`token` = `{$dbprefix}tokens_$sid`.`token`";
+$query .= ",\n	       `{$dbprefix}survey_$surveyid`.* 
+	FROM `{$dbprefix}survey_$surveyid`
+	LEFT JOIN `{$dbprefix}tokens_$surveyid` ON `{$dbprefix}survey_$surveyid`.`token` = `{$dbprefix}tokens_$surveyid`.`token`";
 } else {
-$query = "SELECT `{$dbprefix}survey_$sid`.*
-	FROM `{$dbprefix}survey_$sid`";
+$query = "SELECT `{$dbprefix}survey_$surveyid`.*
+	FROM `{$dbprefix}survey_$surveyid`";
 }
 
 
@@ -168,7 +168,7 @@ foreach ($fields as $field){
 		if ($field["code"] != ""){
 			#Lookup the question
 
-			$query = "SELECT `questions`.`question` FROM questions WHERE ((`questions`.`sid` =".$sid.") AND (`questions`.`qid` =".$field["qid"]."))";
+			$query = "SELECT `questions`.`question` FROM questions WHERE ((`questions`.`sid` =".$surveyid.") AND (`questions`.`qid` =".$field["qid"]."))";
 			echo $query;
 			$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 			$num_results = mysql_num_rows($result);

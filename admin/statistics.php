@@ -60,7 +60,7 @@ if (isset($_POST['summary']) && !is_array($_POST['summary'])) {
     $_POST['summary'] = explode("|", $_POST['summary']);
 }   
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 sendcacheheaders();
 
@@ -68,7 +68,7 @@ $slstyle2 = "style='background-color: #EEEFFF; font-family: verdana; font-size: 
 
 echo $htmlheader;
 
-if (!$sid)
+if (!$surveyid)
     {
     //need to have a survey id
     echo "<center>You have not selected a survey!</center>";
@@ -79,7 +79,7 @@ if (!$sid)
 deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 
 //Get the menubar
-$surveyidoptions=browsemenubar();
+$surveyoptions=browsemenubar();
 
 echo "\t<script type='text/javascript'>
       <!--
@@ -95,7 +95,7 @@ echo "\t<script type='text/javascript'>
 echo "<table height='1'><tr><td></td></tr></table>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
     ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._STATISTICS."</b></td></tr>\n";
-echo $surveyidoptions;
+echo $surveyoptions;
 echo "</table>\n"
     ."<table height='1'><tr><td></td></tr></table>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
@@ -107,11 +107,11 @@ echo "</table>\n"
     ."<form method='post' name='formbuilder'>\n";
 
 //Select public language file
-$query = "SELECT language, datestamp FROM {$dbprefix}surveys WHERE sid=$sid";
+$query = "SELECT language, datestamp FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language']; $datestamp=$row['datestamp'];}
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language']; $datestamp=$row['datestamp'];}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveyidlanguage.lang.php";
+$langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename); 
 
@@ -119,7 +119,7 @@ require($langfilename);
 $query = "SELECT {$dbprefix}questions.*, group_name\n"
         ."FROM {$dbprefix}questions, {$dbprefix}groups\n"
         ."WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid\n"
-        ."AND {$dbprefix}questions.sid=$sid";
+        ."AND {$dbprefix}questions.sid=$surveyid";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while($row=mysql_fetch_assoc($result)){$rows[]=$row;} // while
 //SORT IN NATURAL ORDER!
@@ -208,7 +208,7 @@ foreach ($filters as $flt)
         $counter=0;
         }
     if (isset($counter) && $counter == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
-    $myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
+    $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
     $niceqtext = str_replace("\"", "`", $flt[5]);
     $niceqtext = str_replace("'", "`", $niceqtext);
     $niceqtext = str_replace("\r", "", $niceqtext);
@@ -221,14 +221,14 @@ foreach ($filters as $flt)
         if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {$myfield = "M$myfield";}
         if ($flt[2] == "N") {$myfield = "N$myfield";}
         echo "<input type='checkbox' name='summary[]' value='$myfield'";
-        if (isset($_POST['summary']) && (array_search("{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
+        if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
             {echo " CHECKED";}
         echo ">&nbsp;"
             ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
             ."<br />\n";
         if ($flt[2] != "N") {echo "\t\t\t\t<select name='";}
         if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {echo "M";}
-        if ($flt[2] != "N") {echo "{$sid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";}
+        if ($flt[2] != "N") {echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";}
         $allfields[]=$myfield;
         }
     echo "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
@@ -242,7 +242,7 @@ foreach ($filters as $flt)
             $myfield2="T$myfield";
             echo "\t\t\t\t<td align='center' valign='top'>";
             echo "<input type='checkbox' name='summary[]' value='$myfield2'";
-            if (isset($_POST['summary']) && (array_search("T{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
+            if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
                 ."$setfont<b>$flt[3]</b>"
@@ -261,7 +261,7 @@ foreach ($filters as $flt)
             $myfield2="T$myfield";
             echo "\t\t\t\t<td align='center' valign='top'>";
             echo "<input type='checkbox' name='summary[]' value='$myfield2'";
-            if (isset($_POST['summary']) && (array_search("T{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
+            if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
                 ."$setfont<b>$flt[3]</b>"
@@ -360,7 +360,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION.": "
                     .$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
                 for ($i=1; $i<=5; $i++)
                     {
                     echo "\t\t\t\t\t<option value='$i'";
@@ -398,7 +398,7 @@ foreach ($filters as $flt)
                     .str_replace("'", "`", $row[1])
                     ."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
                 for ($i=1; $i<=10; $i++)
                     {
                     echo "\t\t\t\t\t<option value='$i'";
@@ -434,7 +434,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
                     .str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
                     ."\t\t\t\t\t<option value='Y'";
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected";}
                 echo ">"._YES."</option>\n"
@@ -471,7 +471,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
                     .": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
                     ."\t\t\t\t\t<option value='I'";
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected";}
                 echo ">"._INCREASE."</option>\n"
@@ -512,7 +512,7 @@ foreach ($filters as $flt)
                 $fquery = "SELECT * FROM labels WHERE lid={$flt[6]} ORDER BY sortorder, code";
                 //echo $fquery;
                 $fresult = mysql_query($fquery);
-                echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
+                echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
                 while ($frow = mysql_fetch_array($fresult))
                     {
                     echo "\t\t\t\t\t<option value='{$frow['code']}'";
@@ -552,7 +552,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
                     .": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple $slstyle2>\n";
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple $slstyle2>\n";
                 foreach ($answers as $ans)
                     {
                     echo "\t\t\t\t\t<option value='$ans[0]'";
@@ -567,7 +567,7 @@ foreach ($filters as $flt)
             //Link to rankwinner script - awaiting completion
 //          echo "\t\t\t\t</tr>\n\t\t\t\t<tr bgcolor='#DDDDDD'>\n"
 //              ."<td colspan=$count align=center>$setfont"
-//              ."<input $btstyle type='button' value='Show Rank Summary' onClick=\"window.open('rankwinner.php?sid=$sid&qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
+//              ."<input $btstyle type='button' value='Show Rank Summary' onClick=\"window.open('rankwinner.php?sid=$surveyid&qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
 //              ."</td></tr>\n\t\t\t\t<tr>\n";
             $counter=0;
             unset($answers);
@@ -579,12 +579,12 @@ foreach ($filters as $flt)
             echo "\t\t\t\t<td align='center'>"
                 ."$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
             echo "<input type='checkbox' name='summary[]' value='$myfield'";
-            if (isset($_POST['summary']) && (array_search("{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$sid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
+            if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
                 ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
                 ."<br />\n";
-            echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
+            echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
             $allfields[]=$myfield;
             $query = "SELECT code, title FROM {$dbprefix}labels WHERE lid={$flt[6]} ORDER BY sortorder, title";
             $result = mysql_query($query) or die("Couldn't get answers!<br />$query<br />".mysql_error());
@@ -629,15 +629,15 @@ echo "\t\t\t</table>\n"
     ."><label for='viewsummaryall'>"._ST_VIEWALL."</label></td></tr>\n"
     ."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
     ."\t\t\t<input $btstyle type='submit' value='"._ST_SHOWRESULTS."'>\n"
-    ."\t\t\t<input $btstyle type='button' value='"._ST_CLEAR."' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n"
+    ."\t\t\t<input $btstyle type='button' value='"._ST_CLEAR."' onClick=\"window.open('statistics.php?sid=$surveyid', '_top')\">\n"
     ."\t\t<br />&nbsp;\n\t\t</td></tr>\n"
-    ."\t<input type='hidden' name='sid' value='$sid'>\n"
+    ."\t<input type='hidden' name='sid' value='$surveyid'>\n"
     ."\t<input type='hidden' name='display' value='stats'>\n"
     ."\t</form>\n"
     ."</table>\n"
     ."</td></tr></table>";
 
-$fieldmap = createFieldMap($sid, "full");
+$fieldmap = createFieldMap($surveyid, "full");
 $selectlist = "";
 foreach ($fieldmap as $field)
     {
@@ -731,7 +731,7 @@ echo "       document.getElementById(value).style.display='';
 foreach ($answerselects as $as) {echo "$as\n";}
 if (!isset($_POST['sql'])) 
     {
-    $_POST['sql']="SELECT *\nFROM survey_$sid\n";
+    $_POST['sql']="SELECT *\nFROM survey_$surveyid\n";
     }
 echo "      </td>
        </tr>
@@ -867,7 +867,7 @@ if (isset($_POST['display']) && $_POST['display'])
             }
         }
     // 2: Do SQL query
-    $query = "SELECT count(*) FROM {$dbprefix}survey_$sid";
+    $query = "SELECT count(*) FROM {$dbprefix}survey_$surveyid";
     $result = mysql_query($query) or die ("Couldn't get total<br />$query<br />".mysql_error());
     while ($row=mysql_fetch_row($result)) {$total=$row[0];}
     if (isset($selects) && $selects) 
@@ -910,13 +910,13 @@ if (isset($_POST['display']) && $_POST['display'])
         echo "\t<tr>"
             ."\t\t<form action='browse.php' method='post' target='_blank'><td align='right' width='50%'>\n"
             ."\t\t<input type='submit' value='Browse' $btstyle>\n"
-            ."\t\t\t<input type='hidden' name='sid' value='$sid'>\n"
+            ."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
             ."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n"
             ."\t\t\t<input type='hidden' name='action' value='all'>\n"
             ."\t\t</td></form>\n"
             ."\t\t<form action='export.php' method='post' target='_blank'><td width='50%'>\n"
             ."\t\t<input type='submit' value='Export' $btstyle>\n"
-            ."\t\t\t<input type='hidden' name='sid' value='$sid'>\n"
+            ."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
             ."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n";
             //Add the fieldnames
             if (isset($_POST['summary']) && $_POST['summary'])
@@ -967,12 +967,12 @@ if (isset($_POST['summary']) && $_POST['summary'])
     if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
         {
         //Delete any old temp image files
-        deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$sid."X"."*.png");
+        deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
         }
     $runthrough=returnglobal('summary');
 
     //START Chop up fieldname and find matching questions
-    $lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
+    $lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
     $lr = mysql_query($lq);
     $legitqs[] = "DUMMY ENTRY";
     while ($lw = mysql_fetch_array($lr))
@@ -1073,7 +1073,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 $query .= ", AVG(`$fieldname`*1) as average";
                 $query .= ", MIN(`$fieldname`*1) as minimum";
                 $query .= ", MAX(`$fieldname`*1) as maximum";
-                $query .= " FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT NULL AND `$fieldname` != ' '";
+                $query .= " FROM {$dbprefix}survey_$surveyid WHERE `$fieldname` IS NOT NULL AND `$fieldname` != ' '";
                 if ($sql != "NULL") {$query .= " AND $sql";}
                 $result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
                 while ($row=mysql_fetch_array($result))
@@ -1087,10 +1087,10 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     }
                 
                 //CALCULATE QUARTILES
-                $query ="SELECT `$fieldname` FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
+                $query ="SELECT `$fieldname` FROM {$dbprefix}survey_$surveyid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
                 if ($sql != "NULL") {$query .= " AND $sql";}
                 $result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
-                $querystarter="SELECT `$fieldname` FROM {$dbprefix}survey_$sid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
+                $querystarter="SELECT `$fieldname` FROM {$dbprefix}survey_$surveyid WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
                 if ($sql != "NULL") {$querystarter .= " AND $sql";}
                 $medcount=mysql_num_rows($result);
                 
@@ -1195,7 +1195,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
             }
         else // NICE SIMPLE SINGLE OPTION ANSWERS
             {
-            $fieldmap=createFieldMap($sid);
+            $fieldmap=createFieldMap($surveyid);
             $fielddata=arraySearchByKey($rt, $fieldmap, "fieldname", 1);
             $qsid=$fielddata['sid'];
             $qgid=$fielddata['gid'];
@@ -1349,22 +1349,22 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     {
                     if ($al[1] == _OTHER)
                         {
-                        $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` != ''";
+                        $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$surveyid WHERE `$al[2]` != ''";
                         }
                     elseif ($qtype == "T" || $qtype == "S")
                         {
                         if($al[0]=="Answers")
                             {
-                            $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` != ''";
+                            $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$surveyid WHERE `$al[2]` != ''";
                             }
                         elseif($al[0]=="NoAnswer")
                             {
-                            $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` IS NULL OR `$al[2]` = ''";
+                            $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$surveyid WHERE `$al[2]` IS NULL OR `$al[2]` = ''";
                             }
                         }
                     else
                         {
-                        $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$sid WHERE `$al[2]` =";
+                        $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$surveyid WHERE `$al[2]` =";
                         if (substr($rt, 0, 1) == "R")
                             {
                             $query .= " '$al[0]'";
@@ -1377,7 +1377,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     }
                 else
                     {
-                    $query = "SELECT count(`$rt`) FROM {$dbprefix}survey_$sid WHERE `$rt` = '$al[0]'";
+                    $query = "SELECT count(`$rt`) FROM {$dbprefix}survey_$surveyid WHERE `$rt` = '$al[0]'";
                     }
                 if ($sql != "NULL") {$query .= " AND $sql";}
                 $result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
@@ -1387,13 +1387,13 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     if ($al[0] == "") 
                         {$fname=_NOANSWER;} 
                     elseif ($al[0] == _OTHER || $al[0] == "Answers")
-                        {$fname="$al[1] <input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]&sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+                        {$fname="$al[1] <input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$al[2]&sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
                     elseif ($qtype == "S" || $qtype == "T")
                         {
                         if ($al[0] == "Answer")
                             {
                             $fname= "$al[1] <input $btstyle type='submit' value='"
-                                  . _BROWSE."' onclick=\"window.open('listcolumn.php?sid=$sid&column=$al[2]&sql="
+                                  . _BROWSE."' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$al[2]&sql="
                                   . urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";
                             }
                         elseif ($al[0] == "NoAnswer")
@@ -1505,7 +1505,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     if (!isset($ci)) {$ci=0;}
                     $ci++;
                     $graph->Add($p1);
-                    $gfilename="STATS_".date("d")."X".$currentuser."X".$sid."X".$ci.date("His").".png";
+                    $gfilename="STATS_".date("d")."X".$currentuser."X".$surveyid."X".$ci.date("His").".png";
                     $graph->Stroke($tempdir."/".$gfilename);
                     echo "<tr><td colspan='3' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
                     

@@ -34,21 +34,21 @@
 	#############################################################
 */
 include_once("config.php");
-$sid=returnglobal('sid');
+$surveyid=returnglobal('sid');
 $action=returnglobal('action');
 $scid=returnglobal('scid');
-if (!$sid) {echo _ERROR;}
+if (!$surveyid) {echo _ERROR;}
 
 sendcacheheaders();
 
-$thissurvey=getSurveyInfo($sid);
+$thissurvey=getSurveyInfo($surveyid);
 echo $htmlheader;
 
-if ($action == "delete" && $sid && $scid) 
+if ($action == "delete" && $surveyid && $scid) 
 	{
     $query = "DELETE FROM {$dbprefix}saved_control
 			  WHERE scid=$scid
-			  AND sid=$sid
+			  AND sid=$surveyid
 			  AND identifier='".returnglobal('identifier')."'";
 	if ($result = mysql_query($query)) 
 		{
@@ -78,20 +78,20 @@ switch ($action)
 	{
 	case "all":
 	case "delete":
-		echo "<center>".$setfont._SV_RESPONSES . " ". getSavedCount($sid)."</font></center>";
-		showSavedList($sid);
+		echo "<center>".$setfont._SV_RESPONSES . " ". getSavedCount($surveyid)."</font></center>";
+		showSavedList($surveyid);
 		break;
 	default:
-		echo "<center>".$setfont._SV_RESPONSES . " ". getSavedCount($sid)."</font></center>";
+		echo "<center>".$setfont._SV_RESPONSES . " ". getSavedCount($surveyid)."</font></center>";
 	}
 echo "</td></tr></table>\n";
 
-function showSavedList($sid)
+function showSavedList($surveyid)
 	{
 	global $dbprefix;
 	$query = "SELECT scid, identifier, ip, saved_date, email, access_code\n"
 			."FROM {$dbprefix}saved_control\n"
-			."WHERE sid=$sid\n"
+			."WHERE sid=$surveyid\n"
 			."ORDER BY saved_date desc";
 	$result = mysql_query($query) or die ("Couldn't summarise saved entries<br />$query<br />".mysql_error());
 	if (mysql_num_rows($result) > 0)
@@ -113,11 +113,11 @@ function showSavedList($sid)
 				<td>".$row['saved_date']."</td>
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
 				<td align='center'>
-				[<a href='saved.php?sid=$sid&action=delete&scid=".$row['scid']."&identifier=".$row['identifier']."'"
+				[<a href='saved.php?sid=$surveyid&action=delete&scid=".$row['scid']."&identifier=".$row['identifier']."'"
 				." onClick='return confirm(\""._DR_RUSURE."\")'"
 				.">"._DELETE."</a>]
-				[<a href='saved.php?sid=$sid&action=remind&identifier=".$row['identifier']."'>"._SV_REMIND."</a>]
-				[<a href='dataentry.php?sid=$sid&action=editsaved&identifier=".$row['identifier']."&accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]
+				[<a href='saved.php?sid=$surveyid&action=remind&identifier=".$row['identifier']."'>"._SV_REMIND."</a>]
+				[<a href='dataentry.php?sid=$surveyid&action=editsaved&identifier=".$row['identifier']."&accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]
 				</td>
 			   </tr>\n";
 			} // while
@@ -127,24 +127,24 @@ function showSavedList($sid)
 
 function savedmenubar()
 	{
-	global $sid, $scriptname, $imagefiles;
+	global $surveyid, $scriptname, $imagefiles;
 	//BROWSE MENU BAR
-	if (!isset($surveyidoptions)) {$surveyidoptions="";}
-	$surveyidoptions .= "\t<tr bgcolor='#999999'>\n"
+	if (!isset($surveyoptions)) {$surveyoptions="";}
+	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
 					. "\t\t<td>\n"
 					. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
-					. _B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$sid', '_top')\">\n"
+					. _B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
 					. "\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 					. "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.gif' title='"
-					. _B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$sid', '_top')\">\n"
+					. _B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.gif' title='"
-					. _B_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$sid&action=all', '_top')\">\n"
+					. _B_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$surveyid&action=all', '_top')\">\n"
 					//. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.gif' title='"
-					//. _B_LAST_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$sid&action=all&limit=50&order=desc', '_top')\">\n"
+					//. _B_LAST_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
 					. "\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
 					. "\t\t</td>\n"
 					. "\t</tr>\n";
-	return $surveyidoptions;
+	return $surveyoptions;
 	}
 ?>

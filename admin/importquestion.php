@@ -91,7 +91,7 @@ if (substr($bigarray[1], 0, 24) != "# SURVEYOR QUESTION DUMP")
 	echo "<b><font color='red'>"._ERROR."</font></b><br />\n"
 		._IQ_WRONGFILE."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid', '_top')\">\n"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&gid=$gid', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	exit;
@@ -223,9 +223,9 @@ if (isset($labelsarray)) {$countlabels = count($labelsarray);}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
 
 // GET SURVEY AND GROUP DETAILS
-$sid=$_POST['sid'];
+$surveyid=$_POST['sid'];
 $gid=$_POST['gid'];
-$newsid=$sid;
+$newsid=$surveyid;
 $newgid=$gid;
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
@@ -321,7 +321,7 @@ if (isset($questionarray) && $questionarray)
 		$oldgid=$qacfieldcontents[array_search("gid", $qafieldorders)];
 		$oldqid=$qacfieldcontents[array_search("qid", $qafieldorders)];
 		$qinsert=str_replace("'$oldqid'", "''", $qa);
-		$qinsert=str_replace("'$oldsid'", "'$sid'", $qinsert);
+		$qinsert=str_replace("'$oldsid'", "'$surveyid'", $qinsert);
 		$qinsert=str_replace("'$oldgid'", "'$gid'", $qinsert);
 		
 		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
@@ -449,7 +449,7 @@ echo "</li></ul><br />\n";
 
 echo "<b>"._IS_SUCCESS."</b><br />\n"
 	."<input $btstyle type='submit' value='"
-	._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid&qid=$newqid', '_top')\">\n"
+	._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&gid=$gid&qid=$newqid', '_top')\">\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	

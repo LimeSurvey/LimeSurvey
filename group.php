@@ -107,7 +107,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 			}
 
 		//Check for assessments
-		$assessments = doAssessment($sid);
+		$assessments = doAssessment($surveyid);
 		if ($assessments)
 			{
 			foreach(file("$thistpl/assessment.pstpl") as $op)
@@ -118,13 +118,13 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 
 		$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
 		$completed .= _NOTACTIVE1."<br /><br />\n";
-		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
+		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
 		$completed .= "<font size='1'>$subquery</font>\n";
 		if (isset($_SESSION['savename'])) 
 			{
 			//Delete the saved survey
 			$query = "DELETE FROM {$dbprefix}saved\n"
-					."WHERE sid=$sid\n"
+					."WHERE sid=$surveyid\n"
 					."AND identifier = '".$_SESSION['savename']."'";
 			$result = mysql_query($query);
 			//Should put an email to administrator here
@@ -148,7 +148,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				{
 				//Delete the saved survey
 			    $query = "DELETE FROM {$dbprefix}saved\n"
-						."WHERE sid=$sid\n"
+						."WHERE sid=$surveyid\n"
 						."AND identifier = '".$_SESSION['savename']."'";
 				$result = mysql_query($query);
 				//Should put an email to administrator here
@@ -170,7 +170,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				}
 			//echo $thissurvey['url'];	
 			//Check for assessments
-			$assessments = doAssessment($sid);
+			$assessments = doAssessment($surveyid);
 			if ($assessments)
 				{
 				foreach(file("$thistpl/assessment.pstpl") as $op)
@@ -262,14 +262,14 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 		}
 	echo "\n";
 	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
-	echo "\n<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
 	echo "\n</form>\n</html>";
 	exit;
 	}
 
-//SEE IF $sid EXISTS ####################################################################
-if ($surveyidexists <1)
+//SEE IF $surveyid EXISTS ####################################################################
+if ($surveyexists <1)
 	{
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -317,7 +317,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
 		echo templatereplace($op);
 		}
-	echo "\n<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
 	echo "\n</form>\n</html>";
 	exit;
@@ -598,7 +598,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 	}
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
-echo "<input type='hidden' name='sid' value='$sid' id='sid'>\n";
+echo "<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 echo "<input type='hidden' name='token' value='$token' id='token'>\n";
 echo "</form>\n</html>";
 

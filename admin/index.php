@@ -35,7 +35,7 @@
 */
 require_once("config.php");
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($lid)) {$lid=returnglobal('lid');}
@@ -218,7 +218,7 @@ if (isset($dbaction) && $dbaction != "") {
 include("navigator.php");
 echo "<table width='100%' cellspacing='0' cellpadding='0'>
 	<tr><td valign='top' bgcolor='#CCCCCC' width='10%'>";
-surveyNavigator($sid, $gid, $qid);
+surveyNavigator($surveyid, $gid, $qid);
 echo "</td><td valign='top' bgcolor='#DDDDDD' width='90%'>";
 //
 
@@ -233,32 +233,32 @@ echo "</td><td valign='top' bgcolor='#DDDDDD' width='90%'>";
 //	exit;
 //	}
 
-//if (isset($surveyidsummary)) {echo $surveyidsummary;}
-//if (isset($sid) && $sid) {echo javadropdown($sid, $gid, $qid);}
-echo javadropdown($sid, $gid, $qid);
-if (!empty($sid) && call_user_func($auth_function)) {
-	surveyDetails($sid, $gid, $qid);
+//if (isset($surveysummary)) {echo $surveysummary;}
+//if (isset($surveyid) && $surveyid) {echo javadropdown($surveyid, $gid, $qid);}
+echo javadropdown($surveyid, $gid, $qid);
+if (!empty($surveyid) && call_user_func($auth_function)) {
+	surveyDetails($surveyid, $gid, $qid);
 }
 
-//if (isset($sid) && $sid) {surveyDetails($sid, $gid, $qid);}
-//if (isset($gid) && $gid) {groupDetails($sid, $gid, $qid);}
-if (!empty($gid) && call_user_func($auth_function)) {groupDetails($sid, $gid, $qid);}
-if (!empty($qid) && call_user_func($auth_function)) {questionDetails($sid, $gid, $qid, $action);}
+//if (isset($surveyid) && $surveyid) {surveyDetails($surveyid, $gid, $qid);}
+//if (isset($gid) && $gid) {groupDetails($surveyid, $gid, $qid);}
+if (!empty($gid) && call_user_func($auth_function)) {groupDetails($surveyid, $gid, $qid);}
+if (!empty($qid) && call_user_func($auth_function)) {questionDetails($surveyid, $gid, $qid, $action);}
 
 if (isset($action) && call_user_func($auth_function)) {
     switch($action) {
 		case "editsurvey":
 		case "addsurvey":
-			surveyEdit($sid);
+			surveyEdit($surveyid);
 			break;
 		case "editgroup":
 		case "addgroup":
-			groupEdit($sid, $gid);
+			groupEdit($surveyid, $gid);
 			break;
 		case "editquestion":
 		case "addquestion":
 		case "copyquestion";
-			questionEdit($sid, $gid, $qid);
+			questionEdit($surveyid, $gid, $qid);
 			break;
 		case "showlabelsets":
 			labelsetDetails($lid);
@@ -268,22 +268,22 @@ if (isset($action) && call_user_func($auth_function)) {
 			break;
 		case "showsummary":
 			if(!empty($qid)) {
-				questionResultSummary($sid, $gid, $qid);
+				questionResultSummary($surveyid, $gid, $qid);
 			}
 			break;
 		case "showattributes":
 			if (!empty($qid)) {
-			    attributeDetails($sid, $gid, $qid);
+			    attributeDetails($surveyid, $gid, $qid);
 			}
 			break;
 		case "showanswers":
 			if (!empty($qid)) {
-			    answerDetails($sid, $gid, $qid);
+			    answerDetails($surveyid, $gid, $qid);
 			}
 			break;
 		case "showassessments":
-			if (!empty($sid)) {
-			    assessmentDetails($sid);
+			if (!empty($surveyid)) {
+			    assessmentDetails($surveyid);
 			}
 			break;
 		case "checksettings":
@@ -291,13 +291,13 @@ if (isset($action) && call_user_func($auth_function)) {
 			checksettings($dbprefix);
 			break;
 		case "showpreview":
-			showPreview($sid, $gid, $qid);
+			showPreview($surveyid, $gid, $qid);
 			break;
 	}
 }
-//if (isset($action) && $action == "editsurvey" && isset($sid)) {surveyEdit($sid);}
-//if (isset($action) && $action == "showattributes" && isset($qid) && $qid) {attributeDetails($sid, $gid, $qid);}
-//if (isset($action) && $action == "showanswers" && isset($qid) && $qid) {answerDetails($sid, $gid, $qid);}
+//if (isset($action) && $action == "editsurvey" && isset($surveyid)) {surveyEdit($surveyid);}
+//if (isset($action) && $action == "showattributes" && isset($qid) && $qid) {attributeDetails($surveyid, $gid, $qid);}
+//if (isset($action) && $action == "showanswers" && isset($qid) && $qid) {answerDetails($surveyid, $gid, $qid);}
 
 //if (isset($cssummary)) {echo $cssummary;}
 //if (isset($usersummary)) {echo $usersummary;}
@@ -329,7 +329,7 @@ echo footer("instructions.html", "Using PHPSurveyors Admin Script");
 function helpscreen()
 	{
 	global $homeurl, $langdir, $setfont, $imagefiles;
-	global $sid, $gid, $qid, $action;
+	global $surveyid, $gid, $qid, $action;
 	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
 		."\t\t\t<table width='100%'><tr><td>"
 		."<table width='100%' height='100%' align='center' cellspacing='0'>\n"
@@ -348,28 +348,28 @@ function helpscreen()
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
 	//determine which help document to show
-	if (!$sid && $action != "editusers")
+	if (!$surveyid && $action != "editusers")
 		{
 		$helpdoc = "$langdir/admin.html";
 		}
-	elseif (!$sid && $action=="editusers")
+	elseif (!$surveyid && $action=="editusers")
 		{
 		$helpdoc = "$langdir/users.html";
 		}
-	elseif ($sid && !$gid)
+	elseif ($surveyid && !$gid)
 		{
 		$helpdoc = "$langdir/survey.html";
 		}
-	elseif ($sid && $gid && !$qid)
+	elseif ($surveyid && $gid && !$qid)
 		{
 		$helpdoc = "$langdir/group.html";
 		}
-	//elseif ($sid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
-	elseif ($sid && $gid && $qid && !returnglobal('viewanswer'))
+	//elseif ($surveyid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
+	elseif ($surveyid && $gid && $qid && !returnglobal('viewanswer'))
 		{
 		$helpdoc = "$langdir/question.html";
 		}
-	elseif ($sid && $gid && $qid && (returnglobal('viewanswer')))
+	elseif ($surveyid && $gid && $qid && (returnglobal('viewanswer')))
 		{
 		$helpdoc = "$langdir/answer.html";
 		}
@@ -403,7 +403,7 @@ function multiStringSearch($needle, $haystack, $method = "full") {
 }
 
 function adminmenu() {
-	global $accesscontrol, $homedir, $scriptname, $sid, $setfont, $imagefiles, $navigation;
+	global $accesscontrol, $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $navigation;
 	echo "		<table width='100%' border='0' bgcolor='#DDDDDD'>
 		  <tr>
 		   <td>

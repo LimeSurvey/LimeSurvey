@@ -36,7 +36,7 @@
 
 require_once("config.php");
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($noid)) {$noid=returnglobal('noid');}
 if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
@@ -52,13 +52,13 @@ if ($action != "upload")
 		{
 		$tablelist[]=$row[0];
 	    }
-	if (in_array("survey_$sid", $tablelist))
+	if (in_array("survey_$surveyid", $tablelist))
 		{
 		echo "<br /><table class='outlinetable' align='center'>
 		<form enctype='multipart/form-data' method='post'>
 		<tr><th colspan=2>"._VV_IMPORTFILE."</th></tr>
 		<tr><td>"._VV_FILE."</td><td><input type='file' name='the_file'></td></tr>
-		<tr><td>"._VV_SURVEYID."</td><td><input type='text' size=2 name='sid' value='$sid' readonly></td></tr>
+		<tr><td>"._VV_SURVEYID."</td><td><input type='text' size=2 name='sid' value='$surveyid' readonly></td></tr>
 		<tr><td>"._VV_EXCLUDEID."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
         <!-- this next item should only appear if noid is not checked -->
 		<tr><td>"._VV_INSERT."</td><td><select name='insert' $slstyle>
@@ -116,7 +116,7 @@ else
 		}
 	fclose($handle);
 	
-	$surveyidtable = "survey_$sid";
+	$surveytable = "survey_$surveyid";
 	
 	unlink($the_full_file_path); //delete the uploaded file
 	unset($bigarray[0]); //delete the first line
@@ -129,7 +129,7 @@ else
 		$fieldcount--;
 		}
 
-	$fldlist = mysql_list_fields($databasename, $surveyidtable);
+	$fldlist = mysql_list_fields($databasename, $surveytable);
 	$columns = mysql_num_fields($fldlist);
 	for ($i = 0; $i < $columns; $i++)
 		{
@@ -201,7 +201,7 @@ else
 			else if ($insertstyle=="replace" && !$noid)
 				$insert = "REPLACE";
 			else $insert = "INSERT";
-			$insert .= " INTO $surveyidtable\n";
+			$insert .= " INTO $surveytable\n";
 			$insert .= "(".implode(", ", $fieldnames).")\n";
 			$insert .= "VALUES\n";
 			$insert .= "('".implode("', '", $fieldvalues)."')\n";
@@ -214,7 +214,7 @@ else
 					// try again, without the 'id' field.
 					unset($fieldnames[$idkey]);
 					unset($fieldvalues[$idkey]);
-					$insert = "INSERT INTO $surveyidtable\n";
+					$insert = "INSERT INTO $surveytable\n";
 					$insert .= "(".implode(", ", $fieldnames).")\n";
 					$insert .= "VALUES\n";
 					$insert .= "('".implode("', '", $fieldvalues)."')\n";
@@ -240,7 +240,7 @@ else
 		echo "<br /><i><b><font color='red'>"._VV_DONOTREFRESH."</font></b></i><br /><br />";
 		}
 	echo _VV_IMPORTNUMBER." ".$importcount."<br /><br />";
-	echo "[<a href='browse.php?sid=$sid'>"._BROWSERESPONSES."</a>]";
+	echo "[<a href='browse.php?sid=$surveyid'>"._BROWSERESPONSES."</a>]";
 	echo "</td></tr></table>";
 	}
 ?>

@@ -36,18 +36,18 @@
 //THESE WILL BEMOVED INTO THE LANGUAGE FILE ONCE COMPLETED
 require_once("./admin/config.php");
 
-$sid=returnglobal('sid');
+$surveyid=returnglobal('sid');
 
 //Check that there is a SID
-if (!isset($sid))
+if (!isset($surveyid))
 	{
 	//You must have an SID to use this
 	include "index.php";
     exit;
 	}
 
-$thissurvey=getSurveyInfo($sid);
-loadPublicLangFile($sid);
+$thissurvey=getSurveyInfo($surveyid);
+loadPublicLangFile($surveyid);
 
 //Check that the email is a valid style address
 if (!validate_email(returnglobal('register_email'))) 
@@ -58,7 +58,7 @@ if (!validate_email(returnglobal('register_email')))
 	}
 
 //Check if this email already exists in token database
-$query = "SELECT email FROM {$dbprefix}tokens_$sid\n"
+$query = "SELECT email FROM {$dbprefix}tokens_$surveyid\n"
 	   . "WHERE email = '".returnglobal('register_email')."'";
 $result = mysql_query($query) or die ($query."<br />".mysql_error());
 if (mysql_num_rows($result) > 0)
@@ -84,13 +84,13 @@ while ($insert != "OK")
 		{
 		$newtoken = "R".sprintf("%09s", rand(1, 1000000000));
 		}
-	$ntquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='$newtoken'";
+	$ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
 	$ntresult = mysql_query($ntquery);
 	if (!mysql_num_rows($ntresult)) {$insert = "OK";}
 	}
 
 //Insert new entry into tokens db
-$query = "INSERT INTO {$dbprefix}tokens_$sid\n"
+$query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
 	   . "(`firstname`, `lastname`, `email`, `token`, `attribute_1`, `attribute_2`)\n"
 	   . "VALUES ('".mysql_escape_string(returnglobal('register_firstname'))."',\n"
 	   . "'".mysql_escape_string(returnglobal('register_lastname'))."',\n"
@@ -106,7 +106,7 @@ $message=str_replace("{ADMINNAME}", $thissurvey['adminname'], $message);
 $message=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $message);
 $message=str_replace("{SURVEYNAME}", $thissurvey['name'], $message);
 $message=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $message);
-$message=str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token=$newtoken", $message);
+$message=str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$surveyid&token=$newtoken", $message);
 $message=str_replace("{FIRSTNAME}", returnglobal('register_firstname'), $message);
 $message=str_replace("{LASTNAME}", returnglobal('register_lastname'), $message);
 $message=str_replace("{ATTRIBUTE_1}", returnglobal('register_attribute1'), $message);
@@ -128,7 +128,7 @@ $html=""; //Set variable
 
 if (mail(returnglobal('register_email'), $subject, $message, $headers))
 	{
-	$query = "UPDATE {$dbprefix}tokens_$sid\n"
+	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 			."SET sent='Y' WHERE tid=$tid";
 	$result=mysql_query($query) or die ("$query<br />".mysql_error());
 	$html.="<center>"._RG_REGISTRATIONCOMPLETE;
@@ -166,7 +166,7 @@ foreach(file("$thistpl/endpage.pstpl") as $op)
 	
 function templatereplace1($line)
 	{
-	global $thissurvey, $sid;
+	global $thissurvey, $surveyid;
 	global $publicurl, $templatedir, $token;
 	
 	if ($thissurvey['template']) {$templateurl="$publicurl/templates/{$thissurvey['template']}/";}
@@ -175,7 +175,7 @@ function templatereplace1($line)
 	$line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
 	$line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
 	$line=str_replace("{TOKEN}", $token, $line);
-	$line=str_replace("{SID}", $sid, $line);
+	$line=str_replace("{SID}", $surveyid, $line);
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	$line=str_replace("{PERCENTCOMPLETE}", "", $line);
 	return $line;

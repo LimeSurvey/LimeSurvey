@@ -36,7 +36,7 @@
 
 require_once("config.php");
 if (!isset($imagefiles)) {$imagefiles="./images";}
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($style)) {$style=returnglobal('style');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
@@ -45,11 +45,11 @@ if (!$style)
 	{
 	sendcacheheaders();
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-	$query="SELECT * FROM {$dbprefix}survey_$sid LIMIT 1";
+	$query="SELECT * FROM {$dbprefix}survey_$surveyid LIMIT 1";
 	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 	$afieldcount=mysql_num_fields($result);
 	$i=0;
-	$fieldmap=createFieldMap($sid, "full");
+	$fieldmap=createFieldMap($surveyid, "full");
 	usort($fieldmap, 'CompareGroupThenTitle');
 	foreach ($fieldmap as $fm) 
 		{
@@ -122,7 +122,7 @@ if (!$style)
 		._EX_EXPORTDATA."'>\n"
 		."\t\t</font></td>\n"
 		."\t</tr>\n"
-		."\t<input type='hidden' name='sid' value='$sid'>\n";
+		."\t<input type='hidden' name='sid' value='$surveyid'>\n";
 	if (isset($_POST['sql'])) 
 		{
 		echo "\t<input type='hidden' name='sql' value=\""
@@ -137,12 +137,12 @@ if (!$style)
 		."\t</tr>\n"
 		."</table>\n"
 		."</td>";
-	$query="SELECT private FROM {$dbprefix}surveys WHERE sid=$sid"; //Find out if tokens are used
+	$query="SELECT private FROM {$dbprefix}surveys WHERE sid=$surveyid"; //Find out if tokens are used
 	$result=mysql_query($query) or die("Couldn't get privacy data<br />$query<br />".mysql_error());
-	while ($rows = mysql_fetch_array($result)) {$surveyidprivate=$rows['private'];}
-	if ($surveyidprivate == "N")
+	while ($rows = mysql_fetch_array($result)) {$surveyprivate=$rows['private'];}
+	if ($surveyprivate == "N")
 		{
-		$query="SHOW TABLES LIKE '{$dbprefix}tokens_$sid'"; //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
+		$query="SHOW TABLES LIKE '{$dbprefix}tokens_$surveyid'"; //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
 		$result=mysql_query($query) or die("Couldn't get table list<br />$query<br />".mysql_error());
 		$tablecount=mysql_num_rows($result);
 		}
@@ -228,7 +228,7 @@ if (!$style)
  			."<label for='last_name'>"._TL_LAST."</label><br />\n"
  			."<input type='checkbox' name='email_address' id='email_address'>"
  			."<label for='email_address'>"._TL_EMAIL."</label><br />\n";
- 		$query = "SELECT * FROM {$dbprefix}tokens_$sid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
+ 		$query = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
  		$result = mysql_query($query) or die ($query."<br />".mysql_error());
  		$rowcount = mysql_num_fields($result);
  		if ($rowcount > 7)
@@ -276,61 +276,61 @@ default:
 }
 
 //Select public language file
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
+$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveyidlanguage.lang.php";
+$langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);	
 
 //STEP 1: First line is column headings
 
-$fieldmap=createFieldMap($sid);
+$fieldmap=createFieldMap($surveyid);
 
 //Get the fieldnames from the survey table for column headings
-$surveyidtable = "{$dbprefix}survey_$sid";
+$surveytable = "{$dbprefix}survey_$surveyid";
 if (isset($_POST['colselect']))
 	{
 	$selectfields="";
     foreach($_POST['colselect'] as $cs)
 		{
-		$selectfields.= "$surveyidtable.`$cs`, ";
+		$selectfields.= "$surveytable.`$cs`, ";
 		}
 	$selectfields = substr($selectfields, 0, strlen($selectfields)-2);
 	}
 else
 	{
-	$selectfields="$surveyidtable.*";
+	$selectfields="$surveytable.*";
 	}
 
 $dquery = "SELECT $selectfields";
 if (isset($_POST['first_name']) && $_POST['first_name']=="on")
 	{
-	$dquery .= ", {$dbprefix}tokens_$sid.firstname";
+	$dquery .= ", {$dbprefix}tokens_$surveyid.firstname";
 	}
 if (isset($_POST['last_name']) && $_POST['last_name']=="on")
 	{
-	$dquery .= ", {$dbprefix}tokens_$sid.lastname";
+	$dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
 	}
 if (isset($_POST['email_address']) && $_POST['email_address']=="on")
 	{
-	$dquery .= ", {$dbprefix}tokens_$sid.email";
+	$dquery .= ", {$dbprefix}tokens_$surveyid.email";
 	}
 if (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") 
 	{
-	$dquery .= ", {$dbprefix}tokens_$sid.attribute_1";
+	$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_1";
 	}
 if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
 	{
-	$dquery .= ", {$dbprefix}tokens_$sid.attribute_2";
+	$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_2";
 	}
-$dquery .= " FROM $surveyidtable";
+$dquery .= " FROM $surveytable";
 if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on") || (isset($_POST['email_address']) && $_POST['email_address']=="on")) 
 	{
 	$dquery .= ""
-			 . " LEFT OUTER JOIN {$dbprefix}tokens_$sid"
-			 . " ON $surveyidtable.token = {$dbprefix}tokens_$sid.token";
+			 . " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
+			 . " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 	}
 $dquery .=" ORDER BY id LIMIT 1";
 $dresult = mysql_query($dquery) or die(_ERROR." getting results<br />$dquery<br />".mysql_error());
@@ -546,31 +546,31 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 	$dquery = "SELECT $selectfields";
 	if (isset($_POST['first_name']) && $_POST['first_name']=="on")
 		{
-		$dquery .= ", {$dbprefix}tokens_$sid.firstname";
+		$dquery .= ", {$dbprefix}tokens_$surveyid.firstname";
 		}
 	if (isset($_POST['last_name']) && $_POST['last_name']=="on")
 		{
-		$dquery .= ", {$dbprefix}tokens_$sid.lastname";
+		$dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
 		}
 	if (isset($_POST['email_address']) && $_POST['email_address']=="on")
 		{
-		$dquery .= ", {$dbprefix}tokens_$sid.email";
+		$dquery .= ", {$dbprefix}tokens_$surveyid.email";
 		}
 	if (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on")
 		{
-		$dquery .= ", {$dbprefix}tokens_$sid.attribute_1";
+		$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_1";
 		}
 	if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
 		{
-		$dquery .= ", {$dbprefix}tokens_$sid.attribute_2";
+		$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_2";
 		}
-	$dquery	.= " FROM $surveyidtable "
-			. "LEFT OUTER JOIN {$dbprefix}tokens_$sid "
-			. "ON $surveyidtable.token={$dbprefix}tokens_$sid.token ";
+	$dquery	.= " FROM $surveytable "
+			. "LEFT OUTER JOIN {$dbprefix}tokens_$surveyid "
+			. "ON $surveytable.token={$dbprefix}tokens_$surveyid.token ";
 	}
 else // this applies for exporting everything
 	{
-	$dquery = "SELECT $selectfields FROM $surveyidtable ";
+	$dquery = "SELECT $selectfields FROM $surveytable ";
 	}
 
 if (isset($_POST['sql'])) //this applies if export has been called from the statistics package
@@ -578,7 +578,7 @@ if (isset($_POST['sql'])) //this applies if export has been called from the stat
 	if ($_POST['sql'] != "NULL") {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
 	}
 
-$dquery .= "ORDER BY $surveyidtable.id";
+$dquery .= "ORDER BY $surveytable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
 	{
 	$dresult = mysql_query($dquery);
@@ -811,7 +811,7 @@ elseif ($answers == "long")
 				default:
 					if (mysql_field_name($dresult, $i) == "token")
 						{
-						$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$sid WHERE token='$drow[$i]'";
+						$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$surveyid WHERE token='$drow[$i]'";
 						if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
 						while ($tokenrow=mysql_fetch_array($tokenresult))
 							{

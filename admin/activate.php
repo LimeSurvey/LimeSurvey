@@ -121,7 +121,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 //		$c++;
 //		}
 	//TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-	$qorderquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND type not in ('S', 'D', 'T', 'Q')";
+	$qorderquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND type not in ('S', 'D', 'T', 'Q')";
 	$qorderresult = mysql_query($qorderquery) or die ("$qorderquery<br />".mysql_error());
 	$qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($qrow = mysql_fetch_array($qorderresult)) {$qrows[] = $qrow;} // Get table output into array
@@ -166,7 +166,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 			}
 		}
 	//CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-	$fieldmap=createFieldMap($sid, "full");
+	$fieldmap=createFieldMap($surveyid, "full");
 	foreach($fieldmap as $fielddata)
 		{
 		$fieldlist[]=$fielddata['fieldname'];
@@ -177,7 +177,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	foreach ($duplicates as $dup)
 		{
 		$badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
-		$fix = "[<a href='$scriptname?action=activate&sid=$sid&fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
+		$fix = "[<a href='$scriptname?action=activate&sid=$surveyid&fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
 		$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
 		}
 //	echo "<pre>";print_r($duplicates); echo "</pre>";
@@ -186,7 +186,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	if (isset($failedcheck) && $failedcheck)
 		{
 		echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
+		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($surveyid)</b></td></tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center' bgcolor='pink'>\n";
 		echo "\t\t\t<font color='red'>$setfont<b>"._ERROR."</b><br />\n";
@@ -199,7 +199,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		echo "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 			{
-			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$sid&gid=$fc[3]&qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</li>\n";
+			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&gid=$fc[3]&qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</li>\n";
 			}
 		echo "\t\t\t</ul>\n";
 		echo "\t\t\t"._AC_CANNOTACTIVATE."\n";
@@ -215,7 +215,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		}
 	
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($surveyid)</b></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' bgcolor='pink'>\n";
 	echo "\t\t\t<font color='red'>$setfont<b>"._WARNING."</b><br />\n";
@@ -254,11 +254,11 @@ else
 		if ($prow['private'] == "N") 
 			{
 			$createsurvey .= "  token VARCHAR(10),\n";
-			$surveyidnotprivate="TRUE";
+			$surveynotprivate="TRUE";
 			}
 		if ($prow['allowregister'] == "Y") 
 			{
-			$surveyidallowsregistration="TRUE";
+			$surveyallowsregistration="TRUE";
 			}
 		if ($prow['datestamp'] == "Y")
 			{
@@ -364,7 +364,7 @@ else
 	$createtable=mysql_query($createsurvey) or die 
 		(
 		"<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
-		"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n" .
+		"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($surveyid)</b></td></tr>\n" .
 		"<tr><td>\n" .
 		"<font color='red'>"._AC_NOTACTIVATED."</font></center><br />\n" .
 		"<center><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a></center>\n" .
@@ -414,18 +414,18 @@ else
 		}
 	
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($surveyid)</b></td></tr>\n";
 	echo "\t\t\t\t<tr><td align='center'>$setfont<font color='green'>"._AC_ACTIVATED."<br /><br />\n";
 	
 	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
 	
-	if (isset($surveyidnotprivate) && $surveyidnotprivate) //This survey is tracked, and therefore a tokens table MUST exist
+	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 		{
 		echo _AC_NOTPRIVATE."<br /><br />\n";
 		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
 		}
-	elseif (isset($surveyidallowsregistration) && $surveyidallowsregistration == "TRUE")
+	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
 		{
 		echo _AC_REGISTRATION."<br /><br />\n";
 		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";

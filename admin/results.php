@@ -41,8 +41,8 @@ require_once("config.php");
 /*include this file in a php script
 
 * The two "overall" functions are:
-*   - giveMeRawDataFromFieldNames($sid, $gid, $qid, $fieldarray, responsestyle)
-*     $sid = the survey id number
+*   - giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldarray, responsestyle)
+*     $surveyid = the survey id number
 *     $gid = the group id for the question you want results for
 *     $qid = the question id for the question you want results for
 *     $fieldarray = a keyed array containing the fieldnames as key, and the value for of that fieldname that you want matches to
@@ -154,14 +154,14 @@ if (!empty($_GET['debug'])) {
 	//		print_r($results);
 	//		echo "</pre>";
 	//	}
-	$sid=$_GET['sid'];
+	$surveyid=$_GET['sid'];
 	$gid=$_GET['gid'];
 	$qid=$_GET['qid'];
 	//$results = giveMeRawDataFromFieldNames("4", "6", "22", array(), "full");
 	//$results = giveMeRawDataFromFieldNames("2", "2", "7", array(), "full");
 	//$results = giveMeRawDataFromFieldNames("8", "18", "66", array(), "full");
 	//$results = giveMeRawDataFromFieldNames("29", "89", "559", array(), "full");
-	$results = giveMeRawDataFromFieldNames($sid, $gid, $qid, array(), "full");
+	$results = giveMeRawDataFromFieldNames($surveyid, $gid, $qid, array(), "full");
 	
 	$summary = makeSummaryFromRawData($results);
 	foreach ($results as $result) { foreach ($result as $answer) {echo $answer[1];} }
@@ -179,7 +179,7 @@ if (!empty($_GET['debug'])) {
 //	}
 }
 
-function makeSummaryFromRawData($results, $sid=null, $gid=null, $qid=null) {
+function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) {
 
 	//echo "<pre>";print_r($results);echo "</pre>";
 	if (empty($results)) {
@@ -227,8 +227,8 @@ function makeSummaryFromRawData($results, $sid=null, $gid=null, $qid=null) {
 	}
 	//echo "<pre>";print_r($summary);echo "</pre>";
 	//fill in the blanks from answer table and sort
-	if (isset($sid) && isset($qid) && $summary) {
-		//$thissurvey=getSurveyInfo($sid);
+	if (isset($surveyid) && isset($qid) && $summary) {
+		//$thissurvey=getSurveyInfo($surveyid);
 		$rowcodes=array_keys($summary);
 		switch($thisquestion['type']){
 			case "F":
@@ -238,7 +238,7 @@ function makeSummaryFromRawData($results, $sid=null, $gid=null, $qid=null) {
 			case "!":
 			case "L":
 			case "O":
-				$answers=getAnswersSingle($sid, $gid, $qid);
+				$answers=getAnswersSingle($surveyid, $gid, $qid);
 				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
 				break;
 			case "W":
@@ -310,14 +310,14 @@ function makeSummaryFromRawData($results, $sid=null, $gid=null, $qid=null) {
 	return $summary;
 }
 
-function giveMeRawDataFromFieldNames($sid, $gid, $qid, $fieldlimiters=array(), $output="full") {
-	//Builds output data for question $sid$gid$qid, limiting with $fieldlimiters array
-	$questionfields = buildQuestionFields($sid, $qid);
+function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array(), $output="full") {
+	//Builds output data for question $surveyid$gid$qid, limiting with $fieldlimiters array
+	$questionfields = buildQuestionFields($surveyid, $qid);
 	$sql = buildSqlFromFieldnamesArray($fieldlimiters);
-	$tablename = "survey_".$sid;
-	$fieldmap=createFieldMap($sid, "full");
+	$tablename = "survey_".$surveyid;
+	$fieldmap=createFieldMap($surveyid, "full");
 	//echo "<pre>"; print_r($answers); echo "</pre>";
-	list($questioninfo, $results) = returnQuestionResults($sid, $questionfields, $sql);
+	list($questioninfo, $results) = returnQuestionResults($surveyid, $questionfields, $sql);
 	//echo "<pre>"; print_r($questioninfo); echo "</pre>";
 	if (count($results) < 1) {
 	    return array();
@@ -327,7 +327,7 @@ function giveMeRawDataFromFieldNames($sid, $gid, $qid, $fieldlimiters=array(), $
 	}
 //	echo "[$questiontype]<br />";
 	if ($output == "full") {
-		loadPublicLangFile($sid);
+		loadPublicLangFile($surveyid);
 		//echo "<pre>"; print_r($answers); echo "</pre>";
 		switch($questiontype) {
 			case "L":
@@ -342,7 +342,7 @@ function giveMeRawDataFromFieldNames($sid, $gid, $qid, $fieldlimiters=array(), $
 			case "A":
 			case "F":
 			case "H":
-				$answers = getAnswersSingle($sid, $gid, $qid);
+				$answers = getAnswersSingle($surveyid, $gid, $qid);
 				break;
 			case "W":
 			case "Z":
@@ -431,7 +431,7 @@ function giveMeRawDataFromFieldNames($sid, $gid, $qid, $fieldlimiters=array(), $
 					foreach($result as $key=>$val) {
 						$questions=arraySearchByKey($key, $fieldmap, "fieldname", 1);
 						if (substr($key, -7, 7) != "comment") {
-						    $code=substr($key, strlen($sid."X".$gid."X".$qid), strlen($key)-strlen($sid."X".$gid."X".$qid));
+						    $code=substr($key, strlen($surveyid."X".$gid."X".$qid), strlen($key)-strlen($surveyid."X".$gid."X".$qid));
 							//echo $code;
 						    $results[$i][$key]=array($questions['question'], arraySubstitute($val, $values));
 						}
@@ -463,12 +463,12 @@ function buildSqlFromFieldnamesArray($fieldnamesarray) {
 	}
 }
 
-function buildQuestionFields($sid, $qid) {
+function buildQuestionFields($surveyid, $qid) {
 	//Takes a specific question, and returns an array containing
 	//all the possible fieldnames for responses to that question
-	$fieldmap=createFieldMap($sid);
+	$fieldmap=createFieldMap($surveyid);
 	foreach ($fieldmap as $fields) {
-		if ($fields['sid'] == $sid && $fields['qid'] == $qid && $fields['aid'] != "comment") {
+		if ($fields['sid'] == $surveyid && $fields['qid'] == $qid && $fields['aid'] != "comment") {
 		    $questionfields[]=$fields['fieldname'];
 		}
 	}
@@ -479,7 +479,7 @@ function buildQuestionFields($sid, $qid) {
 	}
 }
 
-function returnQuestionResults($sid, $questionfields, $sql=null) {
+function returnQuestionResults($surveyid, $questionfields, $sql=null) {
 	//Returns uninterpreted raw results from survey table for question(s)
 	//$table = survcey table name (ie: "survey_1")
 	//$questionfields should contain an array of the question fields that are being returned
@@ -487,12 +487,12 @@ function returnQuestionResults($sid, $questionfields, $sql=null) {
 	$details=array();
 	$output=array();
 	foreach($questionfields as $questionfield) {
-		$detailsarray=arraySearchByKey($questionfield, createFieldMap($sid), "fieldname");
+		$detailsarray=arraySearchByKey($questionfield, createFieldMap($surveyid), "fieldname");
 		foreach ($detailsarray as $dt) {
 			$details[]=$dt;
 		}
 	}
-	$table="survey_".$sid;
+	$table="survey_".$surveyid;
 
 	if (count($questionfields) > 1) {
 	    $selects = "`".implode("`, `", $questionfields)."`";
@@ -511,7 +511,7 @@ function returnQuestionResults($sid, $questionfields, $sql=null) {
 	return array($details, $output);
 }
 
-function getAnswersSingle($sid, $gid, $qid) {
+function getAnswersSingle($surveyid, $gid, $qid) {
 	global $dbprefix;
 	$query = "SELECT * 
 			  FROM {$dbprefix}answers

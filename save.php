@@ -35,7 +35,7 @@
 */
 
 require_once("./admin/config.php");
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
@@ -49,7 +49,7 @@ if (!isset($_SESSION))
 	$source="posted";
 	session_start();
 	//GET BASIC INFORMATION ABOUT THIS SURVEY
-	$thissurvey=getSurveyInfo($sid);
+	$thissurvey=getSurveyInfo($surveyid);
 	
 	//SET THE TEMPLATE DIRECTORY
 	if (!$thissurvey['templatedir']) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/{$thissurvey['templatedir']}";}
@@ -75,7 +75,7 @@ if (isset($source))
 		{
 	    //All the fields are correct. Now make sure there's not already a matching saved item
 		$query = "SELECT * FROM {$dbprefix}saved_control\n"
-				."WHERE sid=$sid\n"
+				."WHERE sid=$surveyid\n"
 				."AND identifier='".$_POST['savename']."'\n"
 				."AND access_code='".md5($_POST['savepass'])."'\n";
 		$result = mysql_query($query) or die("Error checking for duplicates!<br />$query<br />".mysql_error());
@@ -137,7 +137,7 @@ if (!isset($source))
 		echo templatereplace($op);
 		}
 	//END
-	echo "<input type='hidden' name='sid' value='$sid'>\n";
+	echo "<input type='hidden' name='sid' value='$surveyid'>\n";
 	echo "<input type='hidden' name='thisstep' value='".$_POST['thisstep']."'>\n";
 	echo "<input type='hidden' name='token' value='".returnglobal('token')."'>\n";
 	echo "</form>";
@@ -166,7 +166,7 @@ if (!isset($source))
 //We start by generating the first 5 values which are consistent for all rows.
 
 $sdata = array("thisstep"=>$_POST['thisstep'],
-			   "sid"=>$sid,
+			   "sid"=>$surveyid,
 			   "ip"=>$_SERVER['REMOTE_ADDR'],
 			   "date"=>date("Y-m-d H:i:s"),
 			   "identifier"=>$_POST['savename'],
@@ -261,7 +261,7 @@ if ($result=mysql_query($query))
 				$message.=_SAVENAME.": ".$_POST['savename']."\n";
 				$message.=_SAVEPASSWORD.": ".$_POST['savepass']."\n\n";
 				$message.=_SAVE_EMAILURL.":\n";
-				$message.=$publicurl."/index.php?sid=$sid&loadall=reload&scid=".$sdata['scid']."&loadname=".$_POST['savename']."&loadpass=".$_POST['savepass'];
+				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$sdata['scid']."&loadname=".$_POST['savename']."&loadpass=".$_POST['savepass'];
 				$message=crlf_lineendings($message);
 				$headers = "From: {$thissurvey['adminemail']}\r\n";
 				if (mail($_POST['saveemail'], $subject, $message, $headers))
@@ -321,7 +321,7 @@ echo "<p>";
 echo templatereplace("{URL}");
 echo "</p>";
 
-echo "<a href='index.php?sid=$sid";
+echo "<a href='index.php?sid=$surveyid";
 if (returnglobal('token'))
 	{
 	echo "&token=".returnglobal('token');

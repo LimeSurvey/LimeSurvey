@@ -48,13 +48,13 @@ if (call_user_func($auth_function)) {
 			delAttribute($qid, $dbprefix);
 			break;
 		case "deleteassessment":
-			delAssessment($sid, $dbprefix);
+			delAssessment($surveyid, $dbprefix);
 			break;
 		case "addassessment":
-			addAssessment($sid, $dbprefix);
+			addAssessment($surveyid, $dbprefix);
 			break;
 		case "editassessment":
-			updateAssessment($sid, $dbprefix);
+			updateAssessment($surveyid, $dbprefix);
 			break;
 		case "addanswer":
 			addAnswer($qid, $dbprefix);
@@ -70,29 +70,29 @@ if (call_user_func($auth_function)) {
 			break;
 		case "editsurvey":
 		case "addsurvey":
-			$sid=editSurvey($sid, $dbprefix, $dbaction);
+			$surveyid=editSurvey($surveyid, $dbprefix, $dbaction);
 			break;
 		case "editgroup":
 		case "addgroup":
-			$gid=editGroup($sid, $gid, $dbprefix, $dbaction);
+			$gid=editGroup($surveyid, $gid, $dbprefix, $dbaction);
 			break;
 		case "editquestion":
 		case "addquestion":
-			$qid=editQuestion($sid, $gid, $qid, $dbprefix, $dbaction);
+			$qid=editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction);
 			break;
 		case "renumbergroup":
 		case "renumbersurvey":
-			renumber($sid, $gid, $dbprefix);
+			renumber($surveyid, $gid, $dbprefix);
 			break;
 	} // switch
 }
 
-function renumber($sid, $gid=null, $dbprefix) {
+function renumber($surveyid, $gid=null, $dbprefix) {
 	$question_number=1;
 	$gselect="SELECT *
 			  FROM {$dbprefix}questions, {$dbprefix}groups
 			  WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid
-			  AND {$dbprefix}questions.sid=$sid\n";
+			  AND {$dbprefix}questions.sid=$surveyid\n";
 	if (!empty($gid)) {
 	    $gselect .= "AND {$dbprefix}questions.gid=$gid\n";
 	}
@@ -122,7 +122,7 @@ function addLabel($dbprefix) {
 	return mysql_insert_id();
 }
 
-function editSurvey($sid, $dbprefix, $dbaction) {
+function editSurvey($surveyid, $dbprefix, $dbaction) {
 	$tablefields=array("short_title",
 					   "description",
 					   "admin",
@@ -165,7 +165,7 @@ function editSurvey($sid, $dbprefix, $dbaction) {
 				}
 			}
 			$query .= implode(",\n", $querys);
-			$query .= "\nWHERE sid=$sid";
+			$query .= "\nWHERE sid=$surveyid";
 			$result = mysql_query($query);
 			break;
 		case "addsurvey":
@@ -180,16 +180,16 @@ function editSurvey($sid, $dbprefix, $dbaction) {
 			$query .= "\nVALUES ('";
 			$query .= implode("',\n'", $values)."')";
 			if ($result = mysql_query($query)) {
-				$sid = mysql_insert_id();
+				$surveyid = mysql_insert_id();
 			} else {
 				echo $query."<br />".mysql_error();
 			}
 			break;
 	}
-	return $sid;
+	return $surveyid;
 }
 
-function editGroup($sid, $gid, $dbprefix, $dbaction) {
+function editGroup($surveyid, $gid, $dbprefix, $dbaction) {
 	$tablefields=array("sid",
 					   "group_name",
 					   "description");
@@ -229,7 +229,7 @@ function editGroup($sid, $gid, $dbprefix, $dbaction) {
 	return $gid;
 }
 
-function editQuestion($sid, $gid, $qid, $dbprefix, $dbaction) {
+function editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction) {
 	$tablefields=array("sid",
 					   "gid",
 					   "type",
@@ -318,14 +318,14 @@ function addAnswer($qid, $dbprefix) {
 	}
 }
 
-function delAssessment($sid, $dbprefix) {
+function delAssessment($surveyid, $dbprefix) {
 	$query = "DELETE FROM {$dbprefix}assessments
 			  WHERE id=".$_POST['id']."
-			  AND sid=$sid";
+			  AND sid=$surveyid";
 	$result = mysql_query($query);
 }
 
-function updateAssessment($sid, $dbprefix) {
+function updateAssessment($surveyid, $dbprefix) {
 	$query = "UPDATE {$dbprefix}assessments
 			  SET scope='".$_POST['scope']."',
 			  gid=".$_POST['assessment_gid'].",
@@ -338,11 +338,11 @@ function updateAssessment($sid, $dbprefix) {
 	$result=mysql_query($query);
 }
 
-function addAssessment($sid, $dbprefix) {
+function addAssessment($surveyid, $dbprefix) {
 	$query = "INSERT INTO {$dbprefix}assessments
 			  (sid, scope, gid, name, minimum, maximum, message, link)
 			  VALUES
-			  ($sid,
+			  ($surveyid,
 			  '".$_POST['scope']."',
 			  ".$_POST['assessment_gid'].",
 			  '".auto_escape($_POST['name'])."',

@@ -36,7 +36,7 @@
 //Exports all responses to a survey in special "Verified Voting" format.
 require_once("config.php");
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action = returnglobal('action');}
 
 if (!$action == "export")
@@ -47,7 +47,7 @@ if (!$action == "export")
 		<form method='post'>
 		<tr>
 		 <td align='right'>"._EXPORTSURVEY.":</td>
-		 <td><input type='text' $slstyle size=4 value='$sid' name='sid' readonly></td>
+		 <td><input type='text' $slstyle size=4 value='$surveyid' name='sid' readonly></td>
 		</tr>
 		<tr>
 		 <td align='right'>
@@ -69,22 +69,22 @@ if (!$action == "export")
 		</tr>
 		 <input type='hidden' name='action' value='export'>
 		</form>
-		<tr><td colspan='2' align='center'>[<a href='$scriptname?sid=$sid'>"._B_ADMIN_BT."</a>]</td></tr>
+		<tr><td colspan='2' align='center'>[<a href='$scriptname?sid=$surveyid'>"._B_ADMIN_BT."</a>]</td></tr>
 		</table>";
 	}
-elseif (isset($sid) && $sid)
+elseif (isset($surveyid) && $surveyid)
 	{
 	//Export is happening
-	header("Content-Disposition: attachment; filename=vvexport_$sid.xls");
+	header("Content-Disposition: attachment; filename=vvexport_$surveyid.xls");
 	header("Content-type: application/vnd.ms-excel");
 	$s="\t";
 	
-	$fieldmap=createFieldMap($sid, "full");
-	$surveyidtable = "{$dbprefix}survey_$sid";
+	$fieldmap=createFieldMap($surveyid, "full");
+	$surveytable = "{$dbprefix}survey_$surveyid";
 	
-	loadPublicLangFile($sid);
+	loadPublicLangFile($surveyid);
 	
-	$fldlist = mysql_list_fields($databasename, $surveyidtable);
+	$fldlist = mysql_list_fields($databasename, $surveytable);
 	$columns = mysql_num_fields($fldlist);
 	for ($i = 0; $i < $columns; $i++)
 		{
@@ -108,7 +108,7 @@ elseif (isset($sid) && $sid)
 		}
 	echo $firstline."\n";
 	echo $secondline."\n";
-	$query = "SELECT * FROM $surveyidtable";
+	$query = "SELECT * FROM $surveytable";
 	$result = mysql_query($query) or die("Error:<br />$query<br />".mysql_error());
 	
 	while ($row=mysql_fetch_array($result))
@@ -177,7 +177,7 @@ elseif (isset($sid) && $sid)
 				{
 				$new_autonumber_start=$row['id']+1;
 				} 
-			$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$sid";
+			$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$surveyid";
 			$result = mysql_query($query); //Note this won't kill the script if it fails
 			
 			//Rename survey responses table

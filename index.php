@@ -39,16 +39,16 @@ session_start();
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 require_once("./admin/config.php");
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
-//This next line is for security reasons. It ensures that the $sid value is never anything but a number.
-if (_PHPVERSION >= '4.2.0') {settype($sid, "int");} else {settype($sid, "integer");} 
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+//This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
+if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");} 
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
 $tpldir="$publicdir/templates";
 
 //CHECK FOR REQUIRED INFORMATION (sid)
-if (!$sid)
+if (!$surveyid)
 	{
 	$langfilename="$publicdir/lang/$defaultlang.lang.php";
 	require($langfilename);
@@ -75,15 +75,15 @@ if (!$sid)
 
 if (!isset($token)) {$token=returnglobal('token');}
 //GET BASIC INFORMATION ABOUT THIS SURVEY
-$thissurvey=getSurveyInfo($sid);
-if (is_array($thissurvey)) {$surveyidexists=1;} else {$surveyidexists=0;}
+$thissurvey=getSurveyInfo($surveyid);
+if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
 
 //SEE IF SURVEY USES TOKENS
 $i = 0; $tokensexist = 0;
 $tresult = @mysql_list_tables($databasename) or die ("Error getting tokens<br />".mysql_error());
 while($tbl = @mysql_tablename($tresult, $i++))
 	{
-	if ($tbl == "{$dbprefix}tokens_$sid") {$tokensexist = 1;}
+	if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist = 1;}
 	}
 
 //SET THE TEMPLATE DIRECTORY
@@ -149,12 +149,12 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 //CHECK IF SURVEY ID DETAILS HAVE CHANGED
 if (isset($_SESSION['oldsid'])) {$oldsid=$_SESSION['oldsid'];}
 
-if (!isset($oldsid)) {$_SESSION['oldsid'] = $sid;}
+if (!isset($oldsid)) {$_SESSION['oldsid'] = $surveyid;}
 
-if (isset($oldsid) && $oldsid && $oldsid != $sid)
+if (isset($oldsid) && $oldsid && $oldsid != $surveyid)
 	{
 	session_unset();
-	$_SESSION['oldsid']=$sid;
+	$_SESSION['oldsid']=$surveyid;
 	}
 
 //Save and clear session if requested
@@ -187,7 +187,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		}
 	$query = "SELECT * FROM {$dbprefix}saved, {$dbprefix}saved_control
 			  WHERE {$dbprefix}saved.scid={$dbprefix}saved_control.scid 
-			  AND {$dbprefix}saved_control.sid=$sid\n";
+			  AND {$dbprefix}saved_control.sid=$surveyid\n";
 	if (isset($_POST['scid'])) {
 	    $query .= "AND {$dbprefix}saved.scid=".auto_escape($_POST['scid'])."\n";
 	}		  
@@ -243,7 +243,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == _LOAD_SAVED)
 if ($tokensexist == 1 && returnglobal('token'))
 	{
 	//check if token actually does exist
-	$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='".trim(returnglobal('token'))."' AND completed != 'Y'";
+	$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND completed != 'Y'";
 	$tkresult = mysql_query($tkquery);
 	$tkexist = mysql_num_rows($tkresult);
 	if (!$tkexist)
@@ -339,10 +339,10 @@ switch ($thissurvey['format'])
 		require_once("question.php");
 	}
 
-function getTokenData($sid, $token)
+function getTokenData($surveyid, $token)
 	{
 	global $dbprefix;
-	$query = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='$token'";
+	$query = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$token'";
 	$result = mysql_query($query) or die("Couldn't get token info in getTokenData()<br />".$query."<br />".mysql_error());
 	while($row=mysql_fetch_array($result))
 		{
@@ -771,8 +771,8 @@ function createinsertquery()
 	{
 	global $thissurvey;
 	global $deletenonvalues, $thistpl;
-	global $sid;
-	$fieldmap=createFieldMap($sid); //Creates a list of the legitimate questions for this survey
+	global $surveyid;
+	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
 	
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 		{
@@ -821,14 +821,14 @@ function createinsertquery()
 function submittokens()
 	{
 	global $thissurvey;
-	global $dbprefix, $sid;
+	global $dbprefix, $surveyid;
 	global $sitename, $thistpl;
 	
-	$utquery = "UPDATE {$dbprefix}tokens_$sid\n"
+	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n"
 			 . "SET completed='Y'\n"
 			 . "WHERE token='{$_POST['token']}'";
 	$utresult = mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
-	$cnfquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='{$_POST['token']}' AND completed='Y'";
+	$cnfquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}' AND completed='Y'";
 	$cnfresult = mysql_query($cnfquery);
 	while ($cnfrow = mysql_fetch_array($cnfresult))
 		{
@@ -887,14 +887,14 @@ function sendsubmitnotification($sendnotification)
 	{
 	global $thissurvey;
 	global $savedid, $dbprefix;
-	global $sitename, $homeurl, $sid;
+	global $sitename, $homeurl, $surveyid;
 	$subject = "$sitename Survey Submitted";
 	$message = _CONFIRMATION_MESSAGE1." {$thissurvey['name']}\r\n"
 			 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
 			 . _CONFIRMATION_MESSAGE3."\r\n"
-			 . "  $homeurl/browse.php?sid=$sid&action=id&id=$savedid\r\n\r\n"
+			 . "  $homeurl/browse.php?sid=$surveyid&action=id&id=$savedid\r\n\r\n"
 			 . _CONFIRMATION_MESSAGE4."\r\n"
-			 . "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
+			 . "  $homeurl/statistics.php?sid=$surveyid\r\n\r\n";
 	if ($sendnotification > 1)
 		{ //Send results as well. Currently just bare-bones - will be extended in later release
 		$message .= "----------------------------\r\n";
@@ -932,7 +932,7 @@ function sendsubmitnotification($sendnotification)
 function submitfailed()
 	{
 	global $thissurvey;
-	global $thistpl, $subquery, $sid;
+	global $thistpl, $subquery, $surveyid;
 	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -945,7 +945,7 @@ function submitfailed()
 	if ($thissurvey['adminemail'])
 		{	
 		$completed .= _DIDNOTSAVE3."<br /><br />\n";
-		$email=_DNSAVEEMAIL1." ".$thissurvey['name']." - $sid\n\n";
+		$email=_DNSAVEEMAIL1." ".$thissurvey['name']." - $surveyid\n\n";
 		$email .= _DNSAVEEMAIL2.":\n";
 		foreach ($_SESSION['insertarray'] as $value)
 			{
@@ -974,7 +974,7 @@ function buildsurveysession()
 	{
 	global $thissurvey;
 	global $tokensexist, $thistpl;
-	global $sid, $dbprefix;
+	global $surveyid, $dbprefix;
 	global $register_errormsg;
 	
 	//This function builds all the required session variables when a survey is first started.
@@ -1010,7 +1010,7 @@ function buildsurveysession()
 	<?php echo _NOTOKEN2 ?><br />&nbsp;
 	<table align='center'>
 	<form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'>
-	<input type='hidden' name='sid' value='<?php echo $sid ?>' id='sid'>
+	<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid'>
 		<tr>
 			<td align='center' valign='middle'>
 			<?php echo _TOKEN_PS ?>: <input class='text' type='text' name='token'>
@@ -1032,7 +1032,7 @@ function buildsurveysession()
 	elseif ($tokensexist == 1 && returnglobal('token'))
 		{
 		//check if token actually does exist
-		$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='".trim(returnglobal('token'))."' AND completed != 'Y'";
+		$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND completed != 'Y'";
 		$tkresult = mysql_query($tkquery);
 		$tkexist = mysql_num_rows($tkresult);
 		if (!$tkexist)
@@ -1071,7 +1071,7 @@ function buildsurveysession()
 	//1. SESSION VARIABLE: grouplist
 	//A list of groups in this survey, ordered by group name.
 
-	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid ORDER BY group_name";
+	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
 	$result = mysql_query($query) or die ("Couldn't get group list<br />$query<br />".mysql_error());
 	while ($row = mysql_fetch_array($result))
 		{
@@ -1080,7 +1080,7 @@ function buildsurveysession()
 
 	$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
 			."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-			."AND {$dbprefix}questions.sid=$sid\n"
+			."AND {$dbprefix}questions.sid=$surveyid\n"
 			."ORDER BY group_name";
 	$result = mysql_query($query);
 	$totalquestions = mysql_num_rows($result);
@@ -1147,7 +1147,7 @@ function buildsurveysession()
 	if ($tokensexist == 1 && $thissurvey['private'] == "N") 
 		{
 		//Gather survey data for "non anonymous" surveys, for use in presenting questions
-	    $_SESSION['thistoken']=getTokenData($sid, returnglobal('token'));
+	    $_SESSION['thistoken']=getTokenData($surveyid, returnglobal('token'));
 		}
 	
 	foreach ($arows as $arow)
@@ -1159,7 +1159,7 @@ function buildsurveysession()
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
 					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
 					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
-					 . "AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']}\n"
+					 . "AND sid=$surveyid AND {$dbprefix}questions.qid={$arow['qid']}\n"
 					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$abresult = mysql_query($abquery);
 			while ($abrow = mysql_fetch_array($abresult))
@@ -1186,7 +1186,7 @@ function buildsurveysession()
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
 					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
 					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
-					 . "AND sid=$sid\n"
+					 . "AND sid=$surveyid\n"
 					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
 					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$abresult = mysql_query($abquery) or die("ERROR:<br />".$abquery."<br />".mysql_error());
@@ -1201,7 +1201,7 @@ function buildsurveysession()
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
 					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
 					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
-					 . "AND sid=$sid\n"
+					 . "AND sid=$surveyid\n"
 					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
 					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$abresult = mysql_query($abquery);
@@ -1224,7 +1224,7 @@ function buildsurveysession()
 			$abquery = "SELECT {$dbprefix}answers.*\n"
 					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"
 					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
-					 . "AND sid=$sid\n"
+					 . "AND sid=$surveyid\n"
 					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
 					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$abresult = mysql_query($abquery);
@@ -1291,55 +1291,55 @@ function surveymover()
 	//on the  relevant button - allowing "NEXT" to be the default setting when
 	//a user presses enter.
 	global $thissurvey;
-	global $sid, $presentinggroupdescription;
-	$surveyidmover = "";
+	global $surveyid, $presentinggroupdescription;
+	$surveymover = "";
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 		{
-		$surveyidmover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _LAST." \" id=\"movelast\">";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _LAST." \" id=\"movelast\">";
 		}
 	else
 		{
-		$surveyidmover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _NEXT." >> \" id=\"movenext\">";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _NEXT." >> \" id=\"movenext\">";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N")
 		{
-		$surveyidmover .= "<input class='submit' type='button' onclick=\"javascript:document.phpsurveyor.move.value = this.value; document.phpsurveyor.submit();\" value=' << "
+		$surveymover .= "<input class='submit' type='button' onclick=\"javascript:document.phpsurveyor.move.value = this.value; document.phpsurveyor.submit();\" value=' << "
 					 . _PREV." ' name='move2' />\n";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 		{
-		$surveyidmover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
 					  . _NEXT." >> ' name='move2' />\n";
 		}
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
-		$surveyidmover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
 					  . _NEXT." >> ' name='move2' />\n";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 		{
-		$surveyidmover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
 					  . _NEXT." >> ' name='move2' />\n";
 		}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 		{
-		$surveyidmover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
 					  . _LAST." ' name='move2' />\n";
 		}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] == "A")
 		{
-		$surveyidmover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
 					  . _SUBMIT." ' name='move2' />\n";
 		}
-	$surveyidmover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID'>\n";
-	return $surveyidmover;
+	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID'>\n";
+	return $surveymover;
 	}
 
-function doAssessment($sid) 
+function doAssessment($surveyid) 
 	{
 	global $dbprefix, $thistpl;
 	$query = "SELECT * FROM {$dbprefix}assessments
-			  WHERE sid=$sid
+			  WHERE sid=$surveyid
 			  ORDER BY scope";
 	if ($result = mysql_query($query)) 
 		{
@@ -1364,7 +1364,7 @@ function doAssessment($sid)
 												"link"=>$row['link']);
 					}
 				}
-			$fieldmap=createFieldMap($sid, "full");
+			$fieldmap=createFieldMap($surveyid, "full");
 			$i=0;
 			$total=0;
 			foreach($fieldmap as $field) 

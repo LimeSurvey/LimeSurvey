@@ -36,13 +36,13 @@
 include("config.php");
 
 $action = returnglobal('action');
-$sid = returnglobal('sid');
+$surveyid = returnglobal('sid');
 $id = returnglobal('id');
-$surveyidtable = returnglobal('surveytable');
+$surveytable = returnglobal('surveytable');
 
 sendcacheheaders();
 
-$surveyidoptions = browsemenubar();
+$surveyoptions = browsemenubar();
 echo $htmlheader;
 echo "<table height='1'><tr><td></td></tr></table>\n";
 
@@ -63,7 +63,7 @@ if (!mysql_selectdb ($databasename, $connect))
 		."</body>\n</html>";
 	exit;
 	}
-if (!$sid && !$action)
+if (!$surveyid && !$action)
 	{
 	//echo "</table>\n";
 	echo "<table height='1'><tr><td></td></tr></table>\n"
@@ -82,7 +82,7 @@ if (!$sid && !$action)
 
 if ($action == "edit" || $action == "" || $action == "editsaved")
 	{
-	loadPublicLangFile($sid);
+	loadPublicLangFile($surveyid);
 	}	
 	
 if ($action == "insert")
@@ -96,7 +96,7 @@ if ($action == "insert")
 	if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
 	    //Save this, don't submit to final response table
-		loadPublicLangFile($sid);
+		loadPublicLangFile($surveyid);
 		$saver['identifier']=returnglobal('save_identifier');
 		$saver['password']=returnglobal('save_password');
 		$saver['passwordconfirm']=returnglobal('save_confirmpassword');
@@ -118,7 +118,7 @@ if ($action == "insert")
 			{
 		    //All the fields are correct. Now make sure there's not already a matching saved item
 			$query = "SELECT * FROM {$dbprefix}saved_control\n"
-					."WHERE sid=$sid\n"
+					."WHERE sid=$surveyid\n"
 					."AND identifier='".$saver['identifier']."'\n"
 					."AND access_code='$password'\n";
 			$result = mysql_query($query) or die("Error checking for duplicates!<br />$query<br />".mysql_error());
@@ -150,7 +150,7 @@ if ($action == "insert")
 					}
 				}
 			echo "<tr><td></td><td><input type='submit' value='"._SUBMIT."'></td>
-				 <input type='hidden' name='sid' value='$sid'>
+				 <input type='hidden' name='sid' value='$surveyid'>
 				 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
 				 <input type='hidden' name='action' value='".$_POST['action']."'>
 				 <input type='hidden' name='save' value='on'>";
@@ -176,7 +176,7 @@ if ($action == "insert")
 					  (`scid`, `sid`, `identifier`, `access_code`,
 					   `email`, `ip`, `saved_thisstep`, `status`, `saved_date`)
 					  VALUES ('',
-					  '$sid',
+					  '$surveyid',
 					  '".mysql_escape_string($saver['identifier'])."',
 					  '$password',
 					  '".$saver['email']."',
@@ -224,7 +224,7 @@ if ($action == "insert")
 							$message.=_SAVENAME.": ".$saver['identifier']."\n";
 							$message.=_SAVEPASSWORD.": ".$saver['password']."\n\n";
 							$message.=_SAVE_EMAILURL.":\n";
-							$message.=$homeurl."/dataentry.php?sid=$sid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
+							$message.=$homeurl."/dataentry.php?sid=$surveyid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
 							$message=crlf_lineendings($message);
 							$headers = "From: {$thissurvey['adminemail']}\r\n";
 							if (mail($saver['email'], $subject, $message, $headers))
@@ -249,7 +249,7 @@ if ($action == "insert")
 	else
 		{
 		//BUILD THE SQL TO INSERT RESPONSES
-		$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
+		$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
 		$iresult = mysql_query($iquery);
 		$col_name="";
 		$insertqr="";
@@ -285,7 +285,7 @@ if ($action == "insert")
 				}
 			elseif ($irow['type'] == "R")
 				{
-				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 				$i2result = mysql_query($i2query);
 				$i2count = mysql_num_rows($i2result);
 				for ($i=1; $i<=$i2count; $i++)
@@ -309,7 +309,7 @@ if ($action == "insert")
 				}
 			else
 				{
-				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 				$i2result = mysql_query($i2query);
 				while ($i2row = mysql_fetch_array($i2result))
 					{
@@ -388,8 +388,8 @@ if ($action == "insert")
 			$insertqr .= ", '{$_POST['datestamp']}'";
 			}
 //		echo "\t\t\t<b>Inserting data</b><br />\n"
-//			."SID: $sid, ($surveyidtable)<br /><br />\n";
-		$SQL = "INSERT INTO $surveyidtable 
+//			."SID: $surveyid, ($surveytable)<br /><br />\n";
+		$SQL = "INSERT INTO $surveytable 
 				($col_name)
 				VALUES 
 				($insertqr)";
@@ -414,7 +414,7 @@ if ($action == "insert")
 			}
 		echo "\t\t\t<font color='green'><b>"._SUCCESS."</b></font><br />\n";
 		
-		$fquery = "SELECT id FROM $surveyidtable ORDER BY id DESC LIMIT 1";
+		$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
 		$fresult = mysql_query($fquery);
 		while ($frow = mysql_fetch_array($fresult))
 			{
@@ -424,12 +424,12 @@ if ($action == "insert")
 		}
 
 	
-	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$sid'>"._DE_ADDANOTHER."</a>]<br />\n";
+	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$surveyid'>"._DE_ADDANOTHER."</a>]<br />\n";
 	if (isset($thisid))
 		{
-		echo "\t\t\t[<a href='browse.php?sid=$sid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n";
+		echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n";
 	    }
-	echo "\t\t\t[<a href='browse.php?sid=$sid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n"
+	echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n"
 		."\t</td></tr>\n"
 		."</table>\n"
 		."</body>\n</html>";
@@ -441,13 +441,13 @@ elseif ($action == "edit" || $action == "editsaved")
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._BROWSERESPONSES."</b></td></tr>\n";
-	if (isset($surveyidheader)) {echo $surveyidheader;}
-	echo $surveyidoptions
+	if (isset($surveyheader)) {echo $surveyheader;}
+	echo $surveyoptions
 		."</table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$sid'";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid'";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
@@ -536,7 +536,7 @@ elseif ($action == "edit" || $action == "editsaved")
 	//SHOW INDIVIDUAL RECORD
 	if ($action == "edit")
 		{
-		$idquery = "SELECT * FROM $surveyidtable WHERE id=$id";
+		$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 		$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
 		while ($idrow = mysql_fetch_assoc($idresult))
 			{
@@ -554,7 +554,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			$password=$_GET['accesscode'];
 			}
 		$svquery = "SELECT * FROM {$dbprefix}saved_control
-					WHERE sid=$sid
+					WHERE sid=$surveyid
 					AND identifier='".$_GET['identifier']."'
 					AND access_code='".$password."'";
 		$svresult=mysql_query($svquery) or die("Error getting save<br />$svquery<br />".mysql_error());
@@ -569,7 +569,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			{
 			$responses[$svrow['fieldname']]=$svrow['value'];
 			} // while
-		$fieldmap = createFieldMap($sid);
+		$fieldmap = createFieldMap($surveyid);
 		foreach($fieldmap as $fm)
 			{
 			if (isset($responses[$fm['fieldname']])) 
@@ -1112,9 +1112,9 @@ elseif ($action == "edit" || $action == "editsaved")
 			 		<td bgcolor='#CCCCCC' align='center'>
 					 <input type='submit' $btstyle value='"._DE_UPDATE."'>
 					 <input type='hidden' name='id' value='$id'>
-					 <input type='hidden' name='sid' value='$sid'>
+					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='action' value='update'>
-					 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$sid'>
+					 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
 					</td>
 				</tr>\n";
 		}
@@ -1159,9 +1159,9 @@ elseif ($action == "edit" || $action == "editsaved")
 		echo "	<tr>
 				<td bgcolor='#CCCCCC' align='center'>
 				 <input type='submit' $btstyle value='"._SUBMIT."'>
-				 <input type='hidden' name='sid' value='$sid'>
+				 <input type='hidden' name='sid' value='$surveyid'>
 				 <input type='hidden' name='action' value='insert'>
-				 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$sid'>
+				 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
 				</td>
 			</tr>\n";
 		}
@@ -1176,10 +1176,10 @@ elseif ($action == "update")
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._DATAENTRY."</b></td></tr>\n"
 		."\t<tr><td align='center'>\n";
-	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
+	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
-	$updateqr = "UPDATE $surveyidtable SET \n";
+	$updateqr = "UPDATE $surveytable SET \n";
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
@@ -1224,7 +1224,7 @@ elseif ($action == "update")
 			}
 		elseif ($irow['type'] == "R")
 			{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			$i2count = mysql_num_rows($i2result);
 			for ($x=1; $x<=$i2count; $x++)
@@ -1247,7 +1247,7 @@ elseif ($action == "update")
 			}
 		else
 			{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			$otherexists = "";
 			while ($i2row = mysql_fetch_array($i2result))
@@ -1301,7 +1301,7 @@ elseif ($action == "update")
 	if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 	$updateqr .= " WHERE id=$id";
 	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
-	$thissurvey=getSurveyInfo($sid);
+	$thissurvey=getSurveyInfo($surveyid);
 	if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect']=='Y' && $thissurvey['url']) {
 	    session_write_close();
 	    $url=$thissurvey['url'];
@@ -1310,15 +1310,15 @@ elseif ($action == "update")
 	ob_end_flush();
 	echo "<font color='green'><b>"._SUCCESS."</b></font><br />\n"
 		._DE_UPDATED."<br /><br />\n"
-		."<a href='browse.php?sid=$sid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
-		."<a href='browse.php?sid=$sid&action=all'>"._DE_BROWSE."</a><br />\n"
+		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
+		."<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	}
 
 elseif ($action == "delete")
 	{
-	$thissurvey=getSurveyInfo($sid);
+	$thissurvey=getSurveyInfo($surveyid);
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
@@ -1328,11 +1328,11 @@ elseif ($action == "delete")
 		."\t\t\t$setfont".$thissurvey['description']."\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
-	$delquery = "DELETE FROM $surveyidtable WHERE id=$id";
+	$delquery = "DELETE FROM $surveytable WHERE id=$id";
 	echo "\t<tr>\n";
 	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
 	echo "\t\t<td align='center'><br />$setfont<b>"._DE_DELRECORD." (ID: $id)</b><br /><br />\n"
-		."\t\t\t<a href='browse.php?sid=$sid&action=all'>"._DE_BROWSE."</a>\n"
+		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
@@ -1342,15 +1342,15 @@ elseif ($action == "delete")
 else
 	{
 	//This is the default, presenting a blank dataentry form
-	$fieldmap=createFieldMap($sid);
+	$fieldmap=createFieldMap($surveyid);
 	// PRESENT SURVEY DATAENTRY SCREEN
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._BROWSERESPONSES."</b></td></tr>\n"
-		.$surveyidoptions;
-	loadPublicLangFile($sid);
-	$thissurvey=getSurveyInfo($sid);
-	$surveyidtable = "{$dbprefix}survey_$sid";
+		.$surveyoptions;
+	loadPublicLangFile($surveyid);
+	$thissurvey=getSurveyInfo($surveyid);
+	$surveytable = "{$dbprefix}survey_$surveyid";
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><b>"
@@ -1386,12 +1386,12 @@ else
 		}
 
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
-	$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid ORDER BY group_name";
+	$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
 	$degresult = mysql_query($degquery);
 	// GROUP NAME
 	while ($degrow = mysql_fetch_array($degresult))
 		{
-		$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid={$degrow['gid']}";
+		$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']}";
 		$deqresult = mysql_query($deqquery);
 		echo "\t<tr>\n"
 			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<b>{$degrow['group_name']}</td>\n"
@@ -1521,7 +1521,7 @@ else
 			//END OF GETTING CONDITIONS
 
 			$qid = $deqrow['qid'];
-			$fieldname = "$sid"."X"."$gid"."X"."$qid";
+			$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
 			echo "\t<tr bgcolor='$bgc'>\n"
 				."\t\t<td valign='top' width='1%'>$setfont<font size='1'>{$deqrow['title']}</font></font></td>\n"
 				."\t\t<td valign='top' align='right' width='30%'>$setfont";
@@ -2002,7 +2002,7 @@ else
 					echo "</table>\n";
 					break;
 				}
-			//echo " [$sid"."X"."$gid"."X"."$qid]";
+			//echo " [$surveyid"."X"."$gid"."X"."$qid]";
 			echo "\t\t</td>\n";
 			echo "\t</tr>\n";
 			echo "\t<tr><td colspan='3' height='2' bgcolor='silver'></td></tr>\n";		
@@ -2076,8 +2076,8 @@ else
 		exit;
 		}
 	echo "\t<input type='hidden' name='action' value='insert' />\n";
-	echo "\t<input type='hidden' name='surveytable' value='$surveyidtable' />\n";
-	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
+	echo "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
+	echo "\t<input type='hidden' name='sid' value='$surveyid' />\n";
 	echo "\t</form>\n";
 	echo "</table>\n";
 	//echo "</body>\n</html>";

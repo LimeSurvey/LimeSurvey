@@ -35,7 +35,7 @@
 */
 require_once("config.php");
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($code)) {$code=returnglobal('code');}
@@ -160,7 +160,7 @@ if ($action == "newsurvey")
 	exit;
 	}
 
-if (isset($surveyidsummary)) {echo $surveyidsummary;}
+if (isset($surveysummary)) {echo $surveysummary;}
 if (isset($cssummary)) {echo $cssummary;}
 if (isset($usersummary)) {echo $usersummary;}
 if (isset($addsummary)) {echo $addsummary;}
@@ -187,7 +187,7 @@ echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
 function helpscreen()
 	{
 	global $homeurl, $langdir, $setfont, $imagefiles;
-	global $sid, $gid, $qid, $action;
+	global $surveyid, $gid, $qid, $action;
 	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
 		."\t\t\t<table width='100%'><tr><td>"
 		."<table width='100%' height='100%' align='center' cellspacing='0'>\n"
@@ -206,28 +206,28 @@ function helpscreen()
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
 	//determine which help document to show
-	if (!$sid && $action != "editusers")
+	if (!$surveyid && $action != "editusers")
 		{
 		$helpdoc = "$langdir/admin.html";
 		}
-	elseif (!$sid && $action=="editusers")
+	elseif (!$surveyid && $action=="editusers")
 		{
 		$helpdoc = "$langdir/users.html";
 		}
-	elseif ($sid && !$gid)
+	elseif ($surveyid && !$gid)
 		{
 		$helpdoc = "$langdir/survey.html";
 		}
-	elseif ($sid && $gid && !$qid)
+	elseif ($surveyid && $gid && !$qid)
 		{
 		$helpdoc = "$langdir/group.html";
 		}
-	//elseif ($sid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
-	elseif ($sid && $gid && $qid && !returnglobal('viewanswer'))
+	//elseif ($surveyid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
+	elseif ($surveyid && $gid && $qid && !returnglobal('viewanswer'))
 		{
 		$helpdoc = "$langdir/question.html";
 		}
-	elseif ($sid && $gid && $qid && (returnglobal('viewanswer')))
+	elseif ($surveyid && $gid && $qid && (returnglobal('viewanswer')))
 		{
 		$helpdoc = "$langdir/answer.html";
 		}

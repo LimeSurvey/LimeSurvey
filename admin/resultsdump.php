@@ -34,11 +34,11 @@
 	#############################################################	
 */
 
-$sid = $_GET['sid'];
+$surveyid = $_GET['sid'];
 
 require_once("config.php");
 
-if (!$sid)
+if (!$surveyid)
 	{
 	echo "ERROR: Cannot backup without a survey SID!";
 	exit;
@@ -48,11 +48,11 @@ if (ini_get('safe_mode'))
 	{
 	echo "ERROR: Your server has safe_mode set to ON, and subsequently PHPSurveyor cannot dump your survey results.<br /><br />\n";
 	echo "You should either set your safe_mode to OFF (which, naturally, has security implications) or consider using";
-	echo " an alternative script, like phpMyAdmin to dump the results from survey_$sid.";
+	echo " an alternative script, like phpMyAdmin to dump the results from survey_$surveyid.";
 	exit;
 	}
 
-$filename="survey_{$sid}_dump.sql";
+$filename="survey_{$surveyid}_dump.sql";
 $mysqldump="$mysqlbin/mysqldump";
 if (substr($OS, 0, 3) == "WIN") {$mysqldump .= ".exe";}
 //Check that $mysqlbin/mysqldump actually exists
@@ -61,11 +61,11 @@ if (!file_exists($mysqldump))
 	echo "$setfont<center><b><font color='red'>ERROR:</font></b><br />\n";
 	echo "Cannot find mysqldump file. ($mysqldump)<br /><br />\n";
 	echo "If this script is running on a Windows Server, you should uncomment the \$mysqlbin line in config.php<br /><br />\n";
-	echo "<a href='browse.php?sid=$sid'>Back to browse</a></center>";
+	echo "<a href='browse.php?sid=$surveyid'>Back to browse</a></center>";
 	exit;
 	}
 
-$command="$mysqlbin/mysqldump -u $databaseuser --password=$databasepass $databasename {$dbprefix}survey_$sid > $filename";
+$command="$mysqlbin/mysqldump -u $databaseuser --password=$databasepass $databasename {$dbprefix}survey_$surveyid > $filename";
 
 $backup = popen("$command","r");
 pclose($backup);

@@ -37,12 +37,12 @@ require_once("config.php");
 
 sendcacheheaders();
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($column)) {$column=returnglobal('column');}
 if (!isset($order)) {$order=returnglobal('order');}
 if (!isset($sql)) {$sql=returnglobal('sql');}
 
-if (!$sid)
+if (!$surveyid)
 	{
 	//NOSID
 	exit;
@@ -53,7 +53,7 @@ if (!$column)
 	exit;
 	}
 
-$query = "SELECT id, $column FROM {$dbprefix}survey_$sid WHERE $column != ''";
+$query = "SELECT id, $column FROM {$dbprefix}survey_$surveyid WHERE $column != ''";
 
 if ($sql && $sql != "NULL")
 	{
@@ -68,14 +68,14 @@ if ($order == "alpha")
 $result=mysql_query($query) or die("Error with query: ".$query."<br />".mysql_error());
 echo "<html><body topmargin='0' leftmargin='0' bgcolor='black'>\n";
 echo "<table width='98%' align='center' border='1' bordercolor='#111111' cellspacing='0' bgcolor='white'>\n";
-echo "<tr><td bgcolor='black' valign='top'><input type='image' src='./images/DownArrow.gif' align='left' onclick=\"window.open('listcolumn.php?sid=$sid&column=$column&order=id', '_top')\"></td>\n";
+echo "<tr><td bgcolor='black' valign='top'><input type='image' src='./images/DownArrow.gif' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
 echo "<td bgcolor='black' valign='top'><input type='image' align='right' src='./images/close.gif' onclick='window.close()'>";
-echo "<input type='image' src='./images/DownArrow.gif' align='left' onclick=\"window.open('listcolumn.php?sid=$sid&column=$column&order=alpha', '_top')\">";
+echo "<input type='image' src='./images/DownArrow.gif' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=alpha', '_top')\">";
 echo "</td></tr>\n";
 while ($row=mysql_fetch_array($result))
 	{
 	echo  "<tr><td valign='top' align='center' $slstyle>$setfont"
-		. "<a href='browse.php?sid=$sid&action=id&id=".$row['id']."' target='home'>"
+		. "<a href='browse.php?sid=$surveyid&action=id&id=".$row['id']."' target='home'>"
 		. $row['id']."</a></td>"
 		. "<td valign='top'>$setfont".$row[$column]."</td></tr>\n";
 	}

@@ -44,10 +44,10 @@
 
 require_once("config.php");
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 //echo $htmlheader;
-if (!$sid)
+if (!$surveyid)
 	{
 	echo $htmlheader
 		."<br />\n"
@@ -107,42 +107,42 @@ function BuildOutput($Query)
 	}
 
 //1: Surveys table
-$squery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
+$squery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $sdump = BuildOutput($squery);
 
 //2: Groups Table
-$gquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid";
+$gquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid";
 $gdump = BuildOutput($gquery);
 
 //3: Questions Table
-$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid";
+$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid";
 $qdump = BuildOutput($qquery);
 
 //4: Answers table
-$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$sid";
+$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $adump = BuildOutput($aquery);
 
 //5: Conditions table
-$cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$sid";
+$cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $cdump = BuildOutput($cquery);
 
 //6: Label Sets
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type='F' AND sid=$sid";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type='F' AND sid=$surveyid";
 $lsdump = BuildOutput($lsquery);
 
 //7: Labels
-$lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'W', 'H', 'Z') AND sid=$sid";
+$lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'W', 'H', 'Z') AND sid=$surveyid";
 $ldump = BuildOutput($lquery);
 
 //8: Question Attributes
-$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$sid";
+$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $qadump = BuildOutput($query);
 
 //9: Assessments
-$query = "SELECT {$dbprefix}assessments.* FROM {$dbprefix}assessments WHERE {$dbprefix}assessments.sid=$sid";
+$query = "SELECT {$dbprefix}assessments.* FROM {$dbprefix}assessments WHERE {$dbprefix}assessments.sid=$surveyid";
 $asdump = BuildOutput($query);
 
-$fn = "survey_$sid.sql";
+$fn = "survey_$surveyid.sql";
 
 header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");

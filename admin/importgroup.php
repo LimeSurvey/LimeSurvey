@@ -314,12 +314,12 @@ if (isset($grouparray) && $grouparray) {
 		//GET ORDER OF FIELDS
 		$gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
 		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
-		$sid=$gacfieldcontents[array_search("sid", $gafieldorders)];
-		$oldsid=$sid;
+		$surveyid=$gacfieldcontents[array_search("sid", $gafieldorders)];
+		$oldsid=$surveyid;
 		$gidpos=array_search("gid", $gafieldorders);
 		$gid=$gacfieldcontents[$gidpos];
 		//$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
-		$ginsert = str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
+		$ginsert = str_replace("('$gid', '$surveyid',", "('', '$newsid',", $ga);
 		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
 		$oldgid=$gid;
 		$gres = mysql_query($ginsert);

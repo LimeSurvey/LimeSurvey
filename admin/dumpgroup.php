@@ -42,7 +42,7 @@
 
 require_once("config.php");
 $gid = returnglobal('gid');
-$sid = returnglobal('sid');
+$surveyid = returnglobal('sid');
 
 //echo $htmlheader;
 if (!$gid)
@@ -122,7 +122,7 @@ $aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}quest
 $adump = BuildOutput($aquery);
 
 //3: Conditions table - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
-$cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid=b.qid AND {$dbprefix}questions.sid=$sid AND {$dbprefix}questions.gid=$gid AND b.gid=$gid";
+$cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid=b.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}questions.gid=$gid AND b.gid=$gid";
 $cdump = BuildOutput($cquery);
 
 //4: Labelsets Table
@@ -134,7 +134,7 @@ $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbpr
 $ldump = BuildOutput($lquery);
 
 //8: Question Attributes
-$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$sid AND {$dbprefix}.questions.gid=$gid";
+$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}.questions.gid=$gid";
 $qadump = BuildOutput($query);
                         // HTTP/1.0
 echo "#<pre>\n";

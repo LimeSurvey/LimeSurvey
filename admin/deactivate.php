@@ -38,7 +38,7 @@ $date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple dea
 if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._DEACTIVATE." ($sid)</b></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._DEACTIVATE." ($surveyid)</b></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' bgcolor='pink'>\n";
 	echo "\t\t\t<font color='red'>$setfont<b>";
@@ -100,13 +100,13 @@ else
 			$new_autonumber_start=$row['id']+1;
 			}
 		}
-	$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$sid";
+	$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$surveyid";
 	@$result = mysql_query($query); //Note this won't die if it fails - that's deliberate.
 	
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._DEACTIVATE." ($sid)</b></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._DEACTIVATE." ($surveyid)</b></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
 	echo "\t\t\t$setfont<b>Survey Has Been De-Activated\n";

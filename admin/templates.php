@@ -294,11 +294,11 @@ $navigator="<input class='submit' type='submit' value=' next >> ' name='move' />
 if ($screenname != _TP_WELCOMEPAGE) {$navigator = "<input class='submit' type='submit' value=' << prev ' name='move' />\n".$navigator;}
 $help="This is some help text";
 $totalquestions="10";
-$surveyidformat="Format";
+$surveyformat="Format";
 $completed="Survey is completed and saved.";
 $notanswered="5";
 $privacy="";
-$sid="1295";
+$surveyid="1295";
 $token=1234567;
 $assessments="<table align='center'><tr><th>Assessment Heading</th></tr><tr><td align='center'>Assessment details<br />Note that assessments will only show if assessment rules have been set. Otherwise, this assessment table will not appear</td></tr></table>";
 

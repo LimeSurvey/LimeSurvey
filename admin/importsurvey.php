@@ -277,10 +277,10 @@ if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else
 $sfieldorders=convertToArray($tablearray[0], "`, `", "(`", "`)");
 $sffieldcontents=convertToArray($tablearray[0], "', '", "('", "')");
 
-$sidpos=array_search("sid", $sfieldorders);
-$sid=$sffieldcontents[$sidpos];
+$surveyidpos=array_search("sid", $sfieldorders);
+$surveyid=$sffieldcontents[$surveyidpos];
 
-if (!$sid) 
+if (!$surveyid) 
 	{
 	echo "<br /><b><font color='red'>"._ERROR."</b></font><br />\n";
 	echo _IS_IMPFAILED."<br />\n";
@@ -291,17 +291,17 @@ if (!$sid)
 	unlink($the_full_file_path); //Delete the uploaded file
 	exit;
 	}
-$insert = str_replace("'$sid'", "''", $tablearray[0]);
+$insert = str_replace("'$surveyid'", "''", $tablearray[0]);
 $insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
 //$insert = substr($insert, 0, -1);
 $iresult = mysql_query($insert) or die("<br />"._IS_IMPFAILED."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . mysql_error() . "</body>\n</html>");
 
-$oldsid=$sid;
+$oldsid=$surveyid;
 
 //GET NEW SID
-$sidquery = "SELECT sid FROM {$dbprefix}surveys ORDER BY sid DESC LIMIT 1";
-$sidres = mysql_query($sidquery);
-while ($srow = mysql_fetch_row($sidres)) {$newsid = $srow[0];}
+$surveyidquery = "SELECT sid FROM {$dbprefix}surveys ORDER BY sid DESC LIMIT 1";
+$surveyidres = mysql_query($surveyidquery);
+while ($srow = mysql_fetch_row($surveyidres)) {$newsid = $srow[0];}
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIE NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
@@ -392,9 +392,9 @@ if ($grouparray) {
 		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
 		$gidpos=array_search("gid", $gafieldorders);
 		$gid=$gacfieldcontents[$gidpos];
-		$sidpos=array_search("sid", $gafieldorders);
-		$gsid=$gacfieldcontents[$sidpos];
-		if ($gsid != $sid) 
+		$surveyidpos=array_search("sid", $gafieldorders);
+		$gsid=$gacfieldcontents[$surveyidpos];
+		if ($gsid != $surveyid) 
 			{
 			echo "<br />\n<font color='red'><b>"._ERROR."</b></font>"
 				."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n"
@@ -402,7 +402,7 @@ if ($grouparray) {
 			exit;
 			}
 		//$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
-		$ginsert = str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
+		$ginsert = str_replace("('$gid', '$surveyid',", "('', '$newsid',", $ga);
 		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
 		$oldgid=$gid;
 		$gres = mysql_query($ginsert) or die("<b>"._ERROR."</b> Failed to insert group<br />\n$ginsert<br />\n".mysql_error()."</body>\n</html>");

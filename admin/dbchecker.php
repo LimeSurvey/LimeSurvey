@@ -87,7 +87,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>"No matching Cqid");}
 		if ($row['cfieldname']) //Only do this if there actually is a "cfieldname"
 			{
-			list ($sid, $gid, $rest) = explode("X", $row['cfieldname']);
+			list ($surveyid, $gid, $rest) = explode("X", $row['cfieldname']);
 			$qquery = "SELECT gid FROM {$dbprefix}groups WHERE gid=$gid";
 			$qresult = mysql_query($qquery) or die ("Couldn't check conditional group matches<br />$qquery<br />".mysql_error());
 			$qcount=mysql_num_rows($qresult);

@@ -35,13 +35,13 @@
 */
 require_once("config.php");
 
-if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
 
 if ($action == _AS_ADD) {
     $query="INSERT into {$dbprefix}assessments
 			(sid, scope, gid, minimum, maximum, name, message, link)
-			VALUES ($sid,
+			VALUES ($surveyid,
 			'".$_POST['scope']."',
 			".$_POST['gid'].",
 			'".$_POST['minimum']."',
@@ -77,21 +77,21 @@ echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='ve
 echo "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
-	. _B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$sid', '_top')\">\n"
+	. _B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
 echo "</table>";	
 
-if ($sid == "") {
+if ($surveyid == "") {
     echo _AS_NOSID;
 	exit;
 }
 
-$assessments=getAssessments($sid);
+$assessments=getAssessments($surveyid);
 //echo "<pre>";print_r($assessments);echo "</pre>";
-$groups=getGroups($sid);
+$groups=getGroups($surveyid);
 $groupselect="<select name='gid'>\n";
 foreach($groups as $group) {
 	$groupselect.="<option value='".$group['gid']."'>".$group['group_name']."</option>\n";
@@ -179,7 +179,7 @@ foreach ($headings as $head) {
 }
 echo "<tr><th colspan='2'><input type='submit' value='$actionbutton'></th></tr></table>\n";
 echo"</td></tr>
-	<input type='hidden' name='sid' value='$sid'>
+	<input type='hidden' name='sid' value='$surveyid'>
 	<input type='hidden' name='action' value='$actionbutton'>
 	<input type='hidden' name='id' value='$thisid'>
 	</form>
@@ -190,11 +190,11 @@ echo"</td></tr>
 
 echo htmlfooter("", "");
 
-function getAssessments($sid) {
+function getAssessments($surveyid) {
 	global $dbprefix;
 	$query = "SELECT id, sid, scope, gid, minimum, maximum, name, message, link
 			  FROM {$dbprefix}assessments
-			  WHERE sid=$sid
+			  WHERE sid=$surveyid
 			  ORDER BY scope, gid";
 	$result=mysql_query($query) or die("Error getting assessments<br />$query<br />".mysql_error());
 	$output=array();
@@ -204,11 +204,11 @@ function getAssessments($sid) {
 	return $output;
 }
 
-function getGroups($sid) {
+function getGroups($surveyid) {
 	global $dbprefix;
 	$query = "SELECT gid, group_name
 			  FROM {$dbprefix}groups
-			  WHERE sid=$sid
+			  WHERE sid=$surveyid
 			  ORDER BY group_name";
 	$result = mysql_query($query) or die("Error getting groups<br />$query<br />".mysql_error());
 	$output=array();
