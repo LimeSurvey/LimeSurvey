@@ -83,6 +83,10 @@ $answer = "";
 if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
 switch ($ia[4])
 	{
+	case "X": //BOILERPLATE QUESTION
+		$answer.="";
+		$inputnames[]="";
+		break;
 	case "5": //5 POINT CHOICE radio-buttons
 		for ($fp=1; $fp<=5; $fp++)
 			{
