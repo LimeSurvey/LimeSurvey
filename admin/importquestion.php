@@ -103,6 +103,10 @@ if (array_search("# ANSWERS TABLE\n", $bigarray))
 	{
 	$stoppoint = array_search("# ANSWERS TABLE\n", $bigarray);
 	}
+elseif (array_search("# ANSWERS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# ANSWERS TABLE\r\n", $bigarray);
+	}
 else
 	{
 	$stoppoint = count($bigarray)-1;
@@ -118,6 +122,10 @@ $bigarray = array_values($bigarray);
 if (array_search("# LABELSETS TABLE\n", $bigarray))
 	{
 	$stoppoint = array_search("# LABELSETS TABLE\n", $bigarray);
+	}
+elseif (array_search("# LABELSETS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# LABELSETS TABLE\r\n", $bigarray);
 	}
 else
 	{
@@ -135,6 +143,10 @@ if (array_search("# LABELS TABLE\n", $bigarray))
 	{
 	$stoppoint = array_search("# LABELS TABLE\n", $bigarray);
 	}
+elseif (array_search("# LABELS TABLE\r\n", $bigarray))
+	{
+	$stoppoint = array_search("# LABELS TABLE\r\n", $bigarray);
+	}
 else
 	{
 	$stoppoint = count($bigarray)-1;
@@ -150,6 +162,10 @@ $bigarray = array_values($bigarray);
 if (array_search("#</pre>\n", $bigarray))
 	{
 	$stoppoint = array_search("#</pre>\n", $bigarray);
+	}
+if (array_search("#</pre>\r\n", $bigarray))
+	{
+	$stoppoint = array_search("#</pre>\r\n", $bigarray);
 	}
 else
 	{
