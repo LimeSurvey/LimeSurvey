@@ -73,7 +73,16 @@ if ($action == "insert")
 			if (get_magic_quotes_gpc())
 				{$insertqr .= "'" . $$fieldname . "', \n";}
 			else
-				{$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";}
+				{
+				if (phpversion() >= "4.3.0")
+					{
+					$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";
+					}
+				else
+					{
+					$insertqr .= "'" . mysql_escape_string($$fieldname) . "', \n";
+					}
+				}
 			}
 		elseif ($irow['type'] == "O")
 			{
@@ -83,7 +92,16 @@ if ($action == "insert")
 			if (get_magic_quotes_gpc())
 				{$insertqr .= "'" . $$fieldname . "', \n'" . $$fieldname2 . "', \n";}
 			else
-				{$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n'" . mysql_real_escape_string($$fieldname2) . "', \n";}
+				{
+				if (phpversion() >= "4.3.0")
+					{
+					$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n'" . mysql_real_escape_string($$fieldname2) . "', \n";
+					}
+				else
+					{
+					$insertqr .= "'" . mysql_escape_string($$fieldname) . "', \n'" . mysql_escape_string($$fieldname2) . "', \n";
+					}
+				}
 			}
 		else
 			{
@@ -97,7 +115,16 @@ if ($action == "insert")
 				if (get_magic_quotes_gpc())
 					{$insertqr .= "'" . $$fieldname . "', \n";}
 				else
-					{$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";}
+					{
+					if (phpversion() >= "4.3.0")
+						{
+						$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";
+						}
+					else
+						{
+						$insertqr .= "'" . mysql_escape_string($$fieldname) . "', \n";
+						}
+					}
 				$otherexists = "";
 				if ($i2row['other'] == "Y") {$otherexists = "Y";}
 				if ($irow['type'] == "P")
@@ -107,7 +134,16 @@ if ($action == "insert")
 					if (get_magic_quotes_gpc())
 						{$insertqr .= "'" . $$fieldname2 . "', \n";}
 					else
-						{$insertqr .= "'" . mysql_real_escape_string($$fieldname2) . "', \n";}
+						{
+						if (phpversion() >= "4.3.0")
+							{
+							$insertqr .= "'" . mysql_real_escape_string($$fieldname2) . "', \n";
+							}
+						else
+							{
+							$insertqr .= "'" . mysql_escape_string($$fieldname2) . "', \n";
+							}
+						}
 					}
 				}
 			if ($otherexists == "Y") 
@@ -117,7 +153,16 @@ if ($action == "insert")
 				if (get_magic_quotes_gpc())
 					{$insertqr .= "'" . $$fieldname . "', \n";}
 				else
-					{$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";}
+					{
+					if (phpversion() >= "4.3.0")
+						{
+						$insertqr .= "'" . mysql_real_escape_string($$fieldname) . "', \n";
+						}
+					else
+						{
+						$insertqr .= "'" . mysql_escape_string($$fieldname) . "', \n";
+						}
+					}
 				}
 			}
 		}
@@ -481,7 +526,16 @@ elseif ($action == "update")
 			if (get_magic_quotes_gpc())
 				{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
 			else
-				{$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";}
+				{
+				if (phpversion() >= "4.3.0")
+					{
+					$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";
+					}
+				else
+					{
+					$updateqr .= "$fieldname = '" . mysql_escape_string($$fieldname) . "', \n";
+					}
+				}
 			}
 		elseif ($irow['type'] == "O")
 			{
@@ -491,7 +545,16 @@ elseif ($action == "update")
 			if (get_magic_quotes_gpc())
 				{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
 			else
-				{$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";}
+				{
+				if (phpversion() >= "4.3.0")
+					{
+					$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";
+					}
+				else
+					{
+					$updateqr .= "$fieldname = '" . mysql_escape_string($$fieldname) . "', \n";
+					}
+				}
 			}
 		else
 			{
@@ -510,7 +573,16 @@ elseif ($action == "update")
 					if (get_magic_quotes_gpc())
 						{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
 					else
-						{$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";}
+						{
+						if (phpversion() >= "4.3.0")
+							{
+							$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";
+							}
+						else
+							{
+							$updateqr .= "$fieldname = '" . mysql_escape_string($$fieldname) . "', \n";
+							}
+						}
 					}
 				}
 			if ($otherexists == "Y") 
@@ -519,7 +591,16 @@ elseif ($action == "update")
 				if (get_magic_quotes_gpc())
 					{$updateqr .= "$fieldname = '" . $$fieldname . "', \n";}
 				else
-					{$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";}
+					{
+					if (phpversion() >= "4.3.0")
+						{
+						$updateqr .= "$fieldname = '" . mysql_real_escape_string($$fieldname) . "', \n";
+						}
+					else
+						{
+						$updateqr .= "$fieldname = '" . mysql_escape_string($$fieldname) . "', \n";
+						}
+					}
 				}
 			}	
 		}
