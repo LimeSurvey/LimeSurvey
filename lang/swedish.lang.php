@@ -139,7 +139,7 @@ define("_CONFIRMATION_MESSAGE3", "Se det enskilda svaret genom att klicka här:")
 define("_CONFIRMATION_MESSAGE4", "Se statistik för enkäten genom att klicka här:"); //NEW for 098rc5
 
 define("_PRIVACY_MESSAGE", "<b><i>Hantering av personuppgifter. </i></b><br />"
-						  ."Den här enkäten Šr anonym.<br />"
+						  ."Den här enkäten är anonym.<br />"
 						  ."De svar på enkäten som sparas innehåller ingen information som "
 						  ."kan identifiera den som svarat utom om denna fråga specifikt ställts "
 						  ."i enkäten. Även om det krävs ett id-nummer för att kunna besvara "
@@ -175,22 +175,22 @@ define("_SM_REVIEW", "Om du vill kontrollera dina svar och/eller ändra dem, "
 	."genom dina svar."); //New for 0.98finalRC1 - by Bjorn Mildh
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following"); //New for 0.98finalRC1
-define("_PS_WRITE", "Please write your answer here"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "Please choose the appropriate response for each item"); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Please write your answer(s) here"); //New for 0.98finalRC1
-define("_PS_DATE", "Please enter a date"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Make a comment on your choice here"); //New for 0.98finalRC1
-define("_PS_RANKING", "Please number each box in order of preference from 1 to"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Submit Your Survey"); //New for 0.98finalRC1
-define("_PS_THANKYOU", "Thank you for completing this survey."); //New for 0.98finalRC1
-define("_PS_FAXTO", "Please fax your completed survey to:"); //New for 0.98finaclRC1
+define("_PS_CHOOSEONE", "Välj <b>endast en</b> av följande"); //New for 0.98finalRC1
+define("_PS_WRITE", "Skriv ditt svar här"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Välj <b>alla</b> som stämmer"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Välj alla som stämmer och skriv en kommentar"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "Välj det korrekta svaret för varje punkt"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "Skriv ditt/dina svar här"); //New for 0.98finalRC1
+define("_PS_DATE", "Fyll i datum"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Kommentera dina val här"); //New for 0.98finalRC1
+define("_PS_RANKING", "Rangordna i varje ruta med ett nummer från 1 till"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Lämna in din enkät"); //New for 0.98finalRC1
+define("_PS_THANKYOU", "Tack för att du svarat på denna enkät."); //New for 0.98finalRC1
+define("_PS_FAXTO", "Faxa den ifyllda enkäten till:"); //New for 0.98finaclRC1
 
-define("_PS_CON_ONLYANSWER", "Only answer this question"); //New for 0.98finalRC1
-define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
-define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
-define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
+define("_PS_CON_ONLYANSWER", "Svara bara på denna fråga"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "om du svarat"); //New for 0.98finalRC1
+define("_PS_CON_JOINER", "och"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "på fråga"); //New for 0.98finalRC1
 define("_PS_CON_OR", "or"); //New for 0.98finalRC2
 ?>
