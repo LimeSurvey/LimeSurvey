@@ -152,6 +152,7 @@ define("_SL_EMAILINVITE", "Invitation Email:"); //New with 0.98rc9
 define("_SL_EMAILREMIND", "Email Reminder:"); //New with 0.98rc9
 define("_SL_EMAILREGISTER", "Public registration Email:"); //New with 0.98rc9
 define("_SL_EMAILCONFIRM", "Confirmation Email"); //New with 0.98rc9
+define("_SL_REPLACEOK", "This will replace the existing text. Continue?"); //New with 0.98rc9
 
 //groups
 define("_GL_TITLE", "Title:");
