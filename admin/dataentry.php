@@ -799,7 +799,7 @@ elseif ($action == "edit")
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</td>\n";
-						$fquery = "SELECT * FROM labels WHERE lid='{$fnames[$i][8]}'";
+						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$fnames[$i][8]}'";
 						$fresult = mysql_query($fquery);
 						echo "\t\t<td>$setfont\n";
 						while ($frow=mysql_fetch_array($fresult))
