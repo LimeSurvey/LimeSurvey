@@ -136,8 +136,11 @@ else
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
 		{
-		if ($prow['private'] == "N") {$createsurvey .= "  token VARCHAR(10),\n";}
-		$surveynotprivate="TRUE";
+		if ($prow['private'] == "N") 
+			{
+			$createsurvey .= "  token VARCHAR(10),\n";
+			$surveynotprivate="TRUE";
+			}
 		}
 	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid={$_GET['sid']} ORDER BY group_name, title";
 	$aresult = mysql_query($aquery);
