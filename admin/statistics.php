@@ -33,8 +33,15 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-
 require_once("config.php");
+
+if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+	{
+	require_once ("$jpgraphdir/jpgraph.php"); 
+	require_once ("$jpgraphdir/jpgraph_pie.php");
+	require_once ("$jpgraphdir/jpgraph_pie3d.php");
+	require_once ("$jpgraphdir/jpgraph_bar.php");
+	}
 
 if (!isset($sid)) {$sid=returnglobal('sid');}
 sendcacheheaders();
@@ -969,8 +976,45 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
 					echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp"
 						."\t\t</td></tr>\n";
+					$gdata[] = ($row[0]/$results)*100;
+					$lbl[] = $fname;
 					}
 				}
+				//$usejpgraph=1;
+				if ($usejpgraph == 1) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+					{
+					$graph = new PieGraph(640,320,'png');
+					
+					$graph->img->SetAntiAliasing();
+			
+					// Set A title for the plot
+					//$graph->title->Set($qquestion);
+					$graph->title->SetFont(FF_ARIAL,FS_BOLD,13); 
+					$graph->title->SetColor("#EEEEEE");
+					$graph->SetMarginColor("#666666");
+					$graph->legend->SetFont(FF_ARIAL, FS_NORMAL, 8);
+					$graph->legend->SetFillColor("silver");
+					$graph->legend->SetPos(0.02, 0.07, 'right', 'top');
+					// Create pie plot
+					$p1 = new PiePlot3d($gdata);
+					$p1->SetTheme("earth");
+					$p1->SetCenter(0.4,0.5);
+					$p1->SetLegends($lbl);
+					$p1->value->SetColor("orange");
+					$p1->value->SetFont(FF_ARIAL,FS_NORMAL,11);
+									// Set how many pixels each slice should explode
+					//$p1->Explode(array(0,15,15,25,15));
+	
+					$ci++;
+					$graph->Add($p1);
+					$graph->Stroke("../tmp/".$ci.".png");
+					
+					echo "<tr><td colspan='3' style=\"text-align:center\"><img src=\"../tmp/".$ci.".png\" border='1'></td></tr>";
+					
+					////// PIE ALL DONE
+					unset($gdata);
+					unset($lbl);
+					}
 			}
 		echo "</table>\n";
 		unset ($alist);
