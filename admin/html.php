@@ -447,7 +447,7 @@ if ($gid)
 		else				 {$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"._G_EXPORT_BT."' "
 					   . "align='left' border='0' hspace='0' "
-					   . "onclick=\"window.open('$scriptname?action=dumpgroup&sid=$sid&gid=$gid', '_top')\">"
+					   . "onclick=\"window.open('dumpgroup.php?sid=$sid&gid=$gid', '_top')\">"
 					   . "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
 					   . "\t\t\t\t\t</td>\n"
 					   . "\t\t\t\t\t<td align='right' width='330'>\n";
