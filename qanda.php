@@ -807,9 +807,9 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td></td>\n";
-		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Increase</td>\n";
-		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Same</td>\n";
-		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Decrease</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._INCREASE."</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._SAME."</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._DECREASE."</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
