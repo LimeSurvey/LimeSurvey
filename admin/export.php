@@ -127,6 +127,15 @@ header("Pragma: no-cache");                          // HTTP/1.0
 
 include ("config.php");
 
+//Select public language file
+$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
+$result = mysql_query($query);
+while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+$langdir="$publicdir/lang";
+$langfilename="$langdir/$surveylanguage.lang.php";
+if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
+require($langfilename);	
+
 //STEP 1: First line is column headings
 //$s = "\t";
 $lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
@@ -242,7 +251,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "M": //multioption
 					if ($faid == "other")
 						{
-						$fquest .= " [Other]";
+						$fquest .= " ["._OTHER."]";
 						}
 					else
 						{
@@ -262,7 +271,7 @@ for ($i=0; $i<$fieldcount; $i++)
 						}
 					if ($faid == "other")
 						{
-						$fquest .= " [Other]";
+						$fquest .= " ["._OTHER."]";
 						}
 					else
 						{
@@ -411,17 +420,17 @@ elseif ($answers == "long")
 				case "Y": //YES\NO
 					switch($drow[$i])
 						{
-						case "Y": echo "Yes"; break;
-						case "N": echo "No"; break;
-						default: echo "N/A"; break;
+						case "Y": echo _YES; break;
+						case "N": echo _NO; break;
+						default: echo _NOTAPPLICABLE; break;
 						}
 					break;
 				case "G": //GENDER
 					switch($drow[$i])
 						{
-						case "M": echo "Male"; break;
-						case "F": echo "Female"; break;
-						default: echo "N/A"; break;
+						case "M": echo _MALE; break;
+						case "F": echo _FEMALE; break;
+						default: echo _NOTAPPLICABLE; break;
 						}
 					break;
 				case "M": //multioption
@@ -438,9 +447,9 @@ elseif ($answers == "long")
 						{
 						switch($drow[$i])
 							{
-							case "Y": echo "Yes"; break;
-							case "N": echo "No"; break;
-							case "": echo "No"; break;
+							case "Y": echo _YES; break;
+							case "N": echo _NO; break;
+							case "": echo _NO; break;
 							default: echo $drow[$i]; break;
 							}
 						}
@@ -449,26 +458,26 @@ elseif ($answers == "long")
 					switch($drow[$i])
 						{
 						case "Y":
-							echo "Yes";
+							echo _YES;
 							break;
 						case "N":
-							echo "No";
+							echo _NO;
 							break;
 						case "U":
-							echo "Uncertain";
+							echo _UNCERTAIN;
 							break;
 						}
 				case "E":
 					switch($drow[$i])
 						{
 						case "I":
-							echo "Increase";
+							echo _INCREASE;
 							break;
 						case "S":
-							echo "Same";
+							echo _SAME;
 							break;
 						case "D":
-							echo "Decrease";
+							echo _DECREASE;
 							break;
 						}
 					break;
