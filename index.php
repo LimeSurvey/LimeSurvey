@@ -266,7 +266,7 @@ if ($move == " submit ")
 		$col_name .= ", " . substr($value, 1); //Add separator and strip off leading 'F'
 		if (get_magic_quotes_gpc() == "0")
 			{
-			$values .= ", '" . addcslashes($$value, "'") . "'";
+			$values .= ", '" . mysql_real_escape_string($$value, "'") . "'";
 			}
 		else
 			{
@@ -276,12 +276,12 @@ if ($move == " submit ")
 		}
 	$col_name = substr($col_name, 2); //Strip off first comma & space
 	$values = substr($values, 2); //Strip off first comma & space
-	$subquery .= "($col_name) VALUES ($values)";
+	$subquery .= "\n($col_name) \nVALUES \n($values)";
 	//echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
 	
 	if ($surveyactive == "Y")
 		{
-		$subresult = mysql_query($subquery) or die ("Couldn't update $surveytable<br />\n".mysql_error()."<br />\n<br />\n$subquery");
+		$subresult = mysql_query($subquery) or die ("</table>\n</td>\n</tr>\n</table>\nCouldn't update $surveytable<br />\n".mysql_error()."<br />\n<pre>$subquery</pre>\n");
 		echo "\t\t\t\t<tr>\n";
 		echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
 		echo "\t\t\t\t\t\t<br /><font color='red'>Thank you!</font><br />\n";
@@ -443,7 +443,8 @@ if (!$step)
 				{
 				session_register("F$fieldname".$abrow['code']); //THE F HAS TO GO IN FRONT OF THE FIELDNAME SO THAT PHP RECOGNISES IT AS A VARIABLE
 				$insertarray[] = "F$fieldname".$abrow['code'];
-				if ($abrow['other'] == "Y") {$alsoother="Y";}
+				$alsoother = "";
+				if ($abrow['other'] == "Y") {$alsoother = "Y";}
 				if ($arow['type'] == "P") 
 					{
 					session_register("F$fieldname".$abrow['code']."comment");
