@@ -1235,73 +1235,80 @@ function do_array_flexible($ia)
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
 	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
-	//echo $lquery;
 	$lresult = mysql_query($lquery);
-	while ($lrow=mysql_fetch_array($lresult))
+	if (mysql_num_rows($lresult) > 0)
 		{
-		$labelans[]=$lrow['title'];
-		$labelcode[]=$lrow['code'];
-		}
-	$cellwidth=60/count($labelans);
-	if ($ia[6] != "Y" && $shownoanswer == 1) {$cellwidth++;}
-	//$cellwidth=sprintf("%02d", 60/$cellwidth);
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-	$ansresult = mysql_query($ansquery);
-	$anscount = mysql_num_rows($ansresult);
-	$fn=1;
-	$answer = "\t\t\t<table class='question'>\n"
-			 . "\t\t\t\t<tr>\n"
-			 . "\t\t\t\t\t<td></td>\n";
-	foreach ($labelans as $ld)
-		{
-		$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
-		}
-	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
-		{
-		$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></td>\n";
-		}
-	$answer .= "\t\t\t\t</tr>\n";
-	$ansrowcount=0;
-	$ansrowtotallength=0;
-	while ($ansrow = mysql_fetch_array($ansresult))
-		{
-		$ansrowcount++;
-		$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
-		}
-	$ansrowavg=(($ansrowtotallength/$ansrowcount)/2);
-	if ($ansrowavg > 54) {$percwidth=60;}
-	elseif ($ansrowavg < 5) {$percwidth=5;}
-	//elseif ($ansrowavg > 25) {$percwidth=30;}
-	else {$percwidth=$ansrowavg*1.2;}
-	$otherwidth=(100-$percwidth)/$cellwidth;
-	$ansresult = mysql_query($ansquery);
-	while ($ansrow = mysql_fetch_array($ansresult))
-		{
-		$myfname = $ia[1].$ansrow['code'];
-		if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
-		$answer .= "\t\t\t\t<tr class='$trbc'>\n"
-				 . "\t\t\t\t\t<td align='right' class='answertext' width='$percwidth%'>{$ansrow['answer']}</td>\n";
-		foreach ($labelcode as $ld)
+		while ($lrow=mysql_fetch_array($lresult))
 			{
-			$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'>";
-			$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld'";
-			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+			$labelans[]=$lrow['title'];
+			$labelcode[]=$lrow['code'];
 			}
-		if ($ia[6] != "Y" && $shownoanswer == 1)
+		$cellwidth=60/count($labelans);
+		if ($ia[6] != "Y" && $shownoanswer == 1) {$cellwidth++;}
+		//$cellwidth=sprintf("%02d", 60/$cellwidth);
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+		$ansresult = mysql_query($ansquery);
+		$anscount = mysql_num_rows($ansresult);
+		$fn=1;
+		$answer = "\t\t\t<table class='question'>\n"
+				 . "\t\t\t\t<tr>\n"
+				 . "\t\t\t\t\t<td></td>\n";
+		foreach ($labelans as $ld)
 			{
-			$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value=''";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
 			}
-		$answer .= "\t\t\t\t</tr>\n"
-				 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-		$answer .= "'>\n";
-		$inputnames[]=$myfname;
-		$fn++;
+		if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+			{
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></td>\n";
+			}
+		$answer .= "\t\t\t\t</tr>\n";
+		$ansrowcount=0;
+		$ansrowtotallength=0;
+		while ($ansrow = mysql_fetch_array($ansresult))
+			{
+			$ansrowcount++;
+			$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
+			}
+		$ansrowavg=(($ansrowtotallength/$ansrowcount)/2);
+		if ($ansrowavg > 54) {$percwidth=60;}
+		elseif ($ansrowavg < 5) {$percwidth=5;}
+		//elseif ($ansrowavg > 25) {$percwidth=30;}
+		else {$percwidth=$ansrowavg*1.2;}
+		$otherwidth=(100-$percwidth)/$cellwidth;
+		$ansresult = mysql_query($ansquery);
+		while ($ansrow = mysql_fetch_array($ansresult))
+			{
+			$myfname = $ia[1].$ansrow['code'];
+			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+			$answer .= "\t\t\t\t<tr class='$trbc'>\n"
+					 . "\t\t\t\t\t<td align='right' class='answertext' width='$percwidth%'>{$ansrow['answer']}</td>\n";
+			foreach ($labelcode as $ld)
+				{
+				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'>";
+				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld'";
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+				}
+			if ($ia[6] != "Y" && $shownoanswer == 1)
+				{
+				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value=''";
+				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+				}
+			$answer .= "\t\t\t\t</tr>\n"
+					 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			$answer .= "'>\n";
+			$inputnames[]=$myfname;
+			$fn++;
+			}
+		$answer .= "\t\t\t</table>\n";
 		}
-	$answer .= "\t\t\t</table>\n";
+	else
+		{
+		$answer = "<font color=red>"._ERROR_PS.": Flexible Label Not Found.</font>";
+		$inputnames="";
+		}
 	return array($answer, $inputnames);
 	}
 
