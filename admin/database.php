@@ -62,7 +62,7 @@ if ($action == "insertnewgroup")
 			}
 		else
 			{
-			echo "The database reported the following error:<br />\n";
+			echo _ERROR.": The database reported the following error:<br />\n";
 			echo "<font color='red'>" . mysql_error() . "</font>\n";
 			echo "<pre>$query</pre>\n";
 			echo "</body>\n</html>";
@@ -99,7 +99,6 @@ elseif ($action == "delgroup")
 	$result = mysql_query($query);
 	if ($result)
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Group id($gid) for survey $sid has been deleted!\")\n //-->\n</script>\n";
 		$gid = "";
 		$groupselect = getgrouplist($gid);
 		}
@@ -163,12 +162,8 @@ elseif ($action == "updatequestion")
 				. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
 				. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}', lid='{$_POST['lid']}' "
 				. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
-		//echo $uqquery;
 		$uqresult = mysql_query($uqquery);
-		if ($uqresult)
-			{
-			}
-		else
+		if (!$uqresult)
 			{
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\n".mysql_error()."\")\n //-->\n</script>\n";
 			}
@@ -185,11 +180,10 @@ elseif ($action == "copynewquestion")
 		}
 	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
-	if ($result)
+	if (!$result)
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New question ($title) has been created for survey id $sid, group id $gid\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\n".mysql_error()."\")\n //-->\n</script>\n";
 		}
-	//echo "COPYANSWERS: $copyanswers, OLDQID: $oldqid";
 	if ($copyanswers == "Y")
 		{
 		$q2 = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
@@ -227,7 +221,6 @@ elseif ($action == "delquestion")
 		$result = mysql_query($query);
 		if ($result)
 			{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Question id($qid) has been deleted!\")\n //-->\n</script>\n";
 			$qid = "";
 			}
 		else
@@ -383,7 +376,6 @@ elseif ($action == "insertnewsurvey")
 		$isresult = mysql_query ($isquery);
 		if ($isresult)
 			{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been created!\")\n //-->\n</script>\n";
 			$isquery = "SELECT sid FROM {$dbprefix}surveys WHERE short_title like '{$_POST['short_title']}'";
 			$isquery .= " AND description like '{$_POST['description']}' AND admin like '{$_POST['admin']}'";
 			$isresult = mysql_query($isquery);
@@ -419,7 +411,6 @@ elseif ($action == "updatesurvey")
 	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
 	if ($usresult)
 		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been updated!\")\n //-->\n</script>\n";
 		$surveyselect = getsurveylist();
 		}
 	else
