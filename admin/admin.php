@@ -40,6 +40,7 @@ $code = $_GET['code']; if (!$code) {$code=$_POST['code'];}
 $action = $_GET['action']; if (!$action) {$action=$_POST['action'];}
 $ok = $_GET['ok']; if (!$ok) {$ok = $_POST['ok'];}
 $user = $_GET['user']; if (!$user) {$user = $_POST['user'];}
+$pass = $_GET['pass']; if (!$pass) {$pass = $_POST['pass'];}
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
