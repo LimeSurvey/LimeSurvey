@@ -19,8 +19,8 @@ foreach($tables as $table) {
 	$export .= defdump($table);
 	$export .= datadump($table);
 }
-$now=date("Y-m-d");
-$file_name = "PHPSurveyor_{$databasename}_dump_$now.sql";
+
+$file_name = "PHPSurveyor_{$databasename}_dump_".date("Y-m-d").".sql";
 Header("Content-type: application/octet-stream"); 
 Header("Content-Disposition: attachment; filename=$file_name");
 echo $export; 
