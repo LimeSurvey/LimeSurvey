@@ -196,9 +196,10 @@ $gid=$_POST['gid'];
 $newsid=$sid;
 $newgid=$gid;
 
-//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
+//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray)
 	{
+	$csarray=buildLabelsetCSArray();
 	foreach ($labelsetsarray as $lsa)
 		{
 		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
@@ -210,12 +211,8 @@ if (isset($labelsetsarray) && $labelsetsarray)
 		$lsainsert = str_replace("'$oldlid'", "''", $lsa);
 		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
 		$lsiresult=mysql_query($lsainsert);
-		
-		//GET NEW LID
-		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
-		$nlidresult=mysql_query($nlidquery);
-		while ($nlidrow=mysql_fetch_array($nlidresult)) {$newlid=$nlidrow['lid'];}
-		$labelreplacements[]=array($oldlid, $newlid);
+		$newlid=mysql_insert_id();
+
 		if ($labelsarray)
 			{
 			foreach ($labelsarray as $la)
@@ -233,6 +230,51 @@ if (isset($labelsetsarray) && $labelsetsarray)
 					}
 				}
 			}
+		
+		//CHECK FOR DUPLICATE LABELSETS
+		$thisset="";
+		$query2 = "SELECT code, title, sortorder
+				   FROM {$dbprefix}labels
+				   WHERE lid=".$newlid."
+				   ORDER BY sortorder, code";
+		$result2 = mysql_query($query2) or die("Died querying labelset $lid<br />$query2<br />".mysql_error());
+		$numfields=mysql_num_fields($result2);
+		while($row2=mysql_fetch_row($result2))
+			{
+			for ($i=0; $i<=$numfields-1; $i++)
+				{
+				$thisset .= $row2[$i];
+				}
+			} // while
+		$newcs=dechex(crc32($thisset)*1);
+		if (isset($csarray))
+			{
+			foreach($csarray as $key=>$val)
+				{
+				if ($val == $newcs)
+					{
+				    $lsmatch=$key;
+					}
+				}
+			}
+		if (isset($lsmatch))
+			{
+		    //There is a matching labelset. So, we will delete this one and refer
+			//to the matched one.
+			$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
+			$result=mysql_query($query) or die("Couldn't delete labels<br />$query<br />".mysql_error());
+			$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
+			$result=mysql_query($query) or die("Couldn't delete labelset<br />$query<br />".mysql_error());
+			$newlid=$lsmatch;
+			}
+		else
+			{
+			//There isn't a matching labelset, add this checksum to the $csarray array
+			$csarray[$newlid]=$newcs;
+			}
+		//END CHECK FOR DUPLICATES
+
+		$labelreplacements[]=array($oldlid, $newlid);
 		}
 	}
 
