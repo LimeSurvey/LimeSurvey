@@ -34,21 +34,29 @@
 	#############################################################	
 */
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
-echo "<center><b>Importing Survey</b></center><br /><br />\n";
+
+echo "<br />\n";
+echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._IMPORTSURVEY."</b></td></tr>\n";
+echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<b><center>A major error occurred and your file cannot be uploaded. See system administrator.</center></b>\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _IS_FAILUPLOAD."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<br />\n<b>IMPORTING FILE</b><br />File succesfully uploaded<br /><br />\n";
-echo "Reading File...<br />\n";
+echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n";
+echo _IS_OKUPLOAD."<br /><br />\n";
+echo _IS_READFILE."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 	{
@@ -60,7 +68,10 @@ fclose($handle);
 
 if (!$bigarray[0] == "# SURVEYOR SURVEY DUMP")
 	{
-	echo "This is NOT a Surveyor Dump File. Import aborted!\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _IS_WRONGFILE."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
@@ -147,9 +158,19 @@ $countconditions = count($conditionsarray);
 
 // CREATE SURVEY
 $sid = substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
+if (!$sid) 
+	{
+	echo "<br /><b><font color='red'>"._ERROR."</b></font><br />\n";
+	echo _IS_IMPFAILED."<br />\n";
+	echo _IS_FILEFAILS."<br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "</td></tr></table>\n";
+	echo "</body>\n</html>\n";
+	exit;
+	}
 $insert = str_replace("('$sid'", "(''", $tablearray[0]);
 //$insert = substr($insert, 0, -1);
-$iresult = mysql_query($insert) or die("Insert of imported survey completely failed<br />\n<font size='1'>$insert</font><hr>$tablearray[0]<br /><br />\n" . mysql_error() . "</body>\n</html>");
+$iresult = mysql_query($insert) or die("<br />"._IS_IMPFAILED."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . mysql_error() . "</body>\n</html>");
 
 $oldsid=$sid;
 
@@ -194,7 +215,7 @@ if ($grouparray)
 					$other = substr($qa, strpos($qa, $otherpos)-6, 1);
 					
 					//echo "$qinsert<br />\n";
-					$qres = mysql_query($qinsert) or die ("<b>ERROR:</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
+					$qres = mysql_query($qinsert) or die ("<b>"._ERROR."</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
 					//GET NEW GID
 					$qidquery = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
 					$qidres = mysql_query($qidquery);
@@ -216,7 +237,7 @@ if ($grouparray)
 								{
 								$ainsert = str_replace("('$qid", "('$newqid", $aa);
 								//$ainsert = substr(trim($ainsert), 0, -1);
-								$ares = mysql_query($ainsert) or die ("<b>ERROR:</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
+								$ares = mysql_query($ainsert) or die ("<b>"._ERROR."</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
 								if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P")
 									{
 									$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
@@ -292,22 +313,23 @@ if ($conditionsarray) //ONLY DO THIS IF THERE ARE CONDITIONS!
 			if ($oldcfieldname==$fns[0]) {$newcfieldname=$fns[1];}
 			}
 		$replacewith="('', '$newqid', '$newcqid', '$newcfieldname'";
-		//echo "$replacewith<br />\n";
 		$insert=str_replace($toreplace, $replacewith, $car);
-		//echo "$insert<br /><br />\n";
 		$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
 		}
 	}
 
-echo "SURVEY SUMMARY:<br />\n";
-echo "<ul>\n\t<li>Surveys: $countsurveys</li>\n";
-echo "\t<li>Groups: $countgroups</li>\n";
-echo "\t<li>Questions: $countquestions</li>\n";
-echo "\t<li>Answers: $countanswers</li>\n";
-echo "\t<li>Conditions: $countconditions</li>\n</ul>\n";
+echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
+echo "<b><u>"._IS_IMPORTSUMMARY."</u></b><br />\n";
+echo "<ul>\n\t<li>"._SURVEYS.": $countsurveys</li>\n";
+echo "\t<li>"._GROUPS.": $countgroups</li>\n";
+echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
+echo "\t<li>"._ANSWERS.": $countanswers</li>\n";
+echo "\t<li>"._CONDITIONS.": $countconditions</li>\n</ul>\n";
 
-echo "<b>Survey Import has been completed. <a href='admin.php?sid=$newsid'>Administration</a></b>";
+echo "<b>"._IS_SUCCESS."</b><br />\n";
+echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 
+echo "</td></tr></table>\n";
 echo "</body>\n</html>";
 unlink($the_full_file_path);
 ?>
