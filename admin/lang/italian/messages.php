@@ -187,6 +187,9 @@ define("_TL_TOKEN", "Token");
 define("_TL_INVITE", "Invito spedito?");
 define("_TL_DONE", "Completato?");
 define("_TL_ACTION", "Funzioni");
+define("_TL_ATTR1", "Attribute_1"); //New for 0.98rc7
+define("_TL_ATTR2", "Attribute_2"); //New for 0.98rc7
+define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
 define("_LL_NAME", "Nome gruppo"); //NEW with 098rc3
 define("_LL_CODE", "Codice"); //NEW with 098rc3
@@ -401,6 +404,13 @@ define("_EX_FORM_WORD", "Microsoft Word");
 define("_EX_FORM_EXCEL", "Microsoft Excel");
 define("_EX_FORM_CSV", "CSV delimitato da virgole");
 define("_EX_EXPORTDATA", "Esporta dati");
+define("_EX_COLCONTROLS", "Column Control"); //New for 0.98rc7
+define("_EX_TOKENCONTROLS", "Token Control"); //New for 0.98rc7
+define("_EX_COLSELECT", "Choose columns"); //New for 0.98rc7
+define("_EX_COLOK", "Choose the columns you wish to export. Leave all unselected to export all columns."); //New for 0.98rc7
+define("_EX_COLNOTOK", "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."); //New for 0.98rc7
+define("_EX_TOKENMESSAGE", "Your survey can export associated token data with each response. Select any additional fields you would like to export."); //New for 0.98rc7
+define("_EX_TOKSELECT", "Choose Token Fields"); //New for 0.98rc7
 
 //IMPORT SURVEY MESSAGES
 define("_IS_FAILUPLOAD", "Errore durante l&#039;upload del file. Il problema pu&ograve; essere dovuto a token errati nella cartella admin.");
@@ -501,7 +511,7 @@ define("_TC_ADDEDIT", "Aggiungi o genera Token");
 define("_TC_TOKENCREATEINFO", "Si pu&ograve; scegliere di lasciare questo campo vuoto e generare i token automaticamente usando &#039;Genera token&#039;");
 define("_TC_TOKENADDED", "Un nuovo token &egrave; stato creato");
 define("_TC_TOKENUPDATED", "Aggiorna token");
-define("_TC_UPLOADINFO", "Il file deve essere un file CSV standard (delimitato da virgole) senza apici. La prima riga deve contenere i dati dell&#039;header (che verr&agrave; rimossa). I dati devono seguire il seguente ordine &#039;nome, cognome, email, [Token]&#039;.");
+define("_TC_UPLOADINFO", "Il file deve essere un file CSV standard (delimitato da virgole) senza apici. La prima riga deve contenere i dati dell&#039;header (che verr&agrave; rimossa). I dati devono seguire il seguente ordine &#039;nome, cognome, email, [Token], [Attribute1], [Attribute2]&#039;.");
 define("_TC_UPLOADFAIL", "Lima di upload non trovata. Controlli i vostri permessi e percorso per vedere se c'è l'indice di upload"); //New for 0.98rc5 (babelfish translation)
 define("_TC_IMPORT", "Importazione File CSV");
 define("_TC_CREATE", "Crea voce token");

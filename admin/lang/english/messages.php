@@ -187,6 +187,9 @@ define("_TL_TOKEN", "Token");
 define("_TL_INVITE", "Invite sent?");
 define("_TL_DONE", "Completed?");
 define("_TL_ACTION", "Actions");
+define("_TL_ATTR1", "Att_1"); //New for 0.98rc7
+define("_TL_ATTR2", "Att_2"); //New for 0.98rc7
+define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
 define("_LL_NAME", "Set Name"); //NEW with 098rc3
 define("_LL_CODE", "Code"); //NEW with 098rc3
@@ -401,6 +404,13 @@ define("_EX_FORM_WORD", "Microsoft Word");
 define("_EX_FORM_EXCEL", "Microsoft Excel");
 define("_EX_FORM_CSV", "CSV Comma Delimited");
 define("_EX_EXPORTDATA", "Export Data");
+define("_EX_COLCONTROLS", "Column Control"); //New for 0.98rc7
+define("_EX_TOKENCONTROLS", "Token Control"); //New for 0.98rc7
+define("_EX_COLSELECT", "Choose columns"); //New for 0.98rc7
+define("_EX_COLOK", "Choose the columns you wish to export. Leave all unselected to export all columns."); //New for 0.98rc7
+define("_EX_COLNOTOK", "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."); //New for 0.98rc7
+define("_EX_TOKENMESSAGE", "Your survey can export associated token data with each response. Select any additional fields you would like to export."); //New for 0.98rc7
+define("_EX_TOKSELECT", "Choose Token Fields"); //New for 0.98rc7
 
 //IMPORT SURVEY MESSAGES
 define("_IS_FAILUPLOAD", "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.");
@@ -501,7 +511,7 @@ define("_TC_ADDEDIT", "Add or Edit Token");
 define("_TC_TOKENCREATEINFO", "You can leave this blank, and automatically generate tokens using 'Create Tokens'");
 define("_TC_TOKENADDED", "Added New Token");
 define("_TC_TOKENUPDATED", "Updated Token");
-define("_TC_UPLOADINFO", "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as 'firstname, lastname, email, [token]'.");
+define("_TC_UPLOADINFO", "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\".");
 define("_TC_UPLOADFAIL", "Upload file not found. Check your permissions and path for the upload directory"); //New for 0.98rc5
 define("_TC_IMPORT", "Importing CSV File");
 define("_TC_CREATE", "Creating Token Entries");
