@@ -572,12 +572,14 @@ if ($_POST['summary'])
 			}
 		$total=0;
 		//MEDIAN (Q2)
-		$median=(($medcount+1)/2)-1;
+		$median=(1/2)*($medcount+1);
+		$medianb=(int)((1/2)*($medcount+1));
+		$medianc=$medianb-1;
+		$mediandiff=$median-$medianb;
 		if ($median != (int)((($medcount+1)/2)-1)) 
 			{
 			//remainder
-			$medresult=(int)($medcount/2);
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medresult, 2";
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medianc, 2";
 			$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
 			while ($row=mysql_fetch_array($result))	{$total=$total+$row[$fieldname];}
 			$showem[]=array("2nd Quartile (Median)", $total/2);
@@ -585,7 +587,7 @@ if ($_POST['summary'])
 		else
 			{
 			//EVEN NUMBER
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $median, 1";
+			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medianc, 1";
 			$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
 			while ($row=mysql_fetch_array($result))	{$showem[]=array("Median Value", $row[$fieldname]);}
 			}
