@@ -467,8 +467,8 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		}
 	else
 		{
-		echo "Sending email!";
-		if ($_POST['tid']) {echo " (Sending just to TokenID {$_POST['tid']})";}
+		echo _TC_SENDINGEMAILS;
+		if ($_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
 		echo "<br />\n";
 		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !='' AND email != ''";
 		if ($_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
@@ -513,12 +513,11 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 				echo "\t<tr>\n";
 				echo "\t\t<td align='center'>$setfont<b>"._WARNING."</b><br />\n";
 				echo "\t\t\t<form method='post'>\n";
-				echo "The number of emails to send ($ctcount) is greater than the maximum number";
-				echo " of emails that can be sent in one lot ($maxemails). There are still $lefttosend";
-				echo " emails to go. You can continue sending the next $maxemails by clicking on the";
-				echo " button below.<br />\n";
+				echo _TC_EMAILSTOGO."<br /><br />\n";
+				echo str_replace("{EMAILCOUNT}", "$lefttosend", _TC_EMAILSREMAINING);
+				echo "<br /><br />\n";
 				$message = str_replace('"', "&quot;", $message);
-				echo "\t\t\t<input type='submit' value=\"Send More\" />\n";
+				echo "\t\t\t<input type='submit' value='"._CONTINUE."' />\n";
 				echo "\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n";
 				echo "\t\t\t<input type='hidden' name='action' value=\"email\" />\n";
 				echo "\t\t\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n";
@@ -541,7 +540,8 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 	
 if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 	{
-	echo "$setfont<b>Email Reminder</b><br />\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._EMAILREMIND.":</b></td></tr>\n";
+	echo "\t<tr><td colspan='2' align='center'>\n";
 	if (!$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
@@ -555,32 +555,33 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 			$surveyadminemail = $esrow['adminemail'];
 			$surveytemplate = $esrow['template'];
 			}
-		echo "<table width='80%' align='center' bgcolor='#DDDDDD'>\n";
+		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n";
 		echo "\t<form method='post' action='tokens.php'>\n";
 		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2' bgcolor='black' align='center'>\n";
-		echo "\t\t\t$setfont<font color='white'><b>Send Reminder\n";
-		if ($_GET['tid']) {echo " to TokenID No {$_GET['tid']}";}
-		echo "\t\t\t</b>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td align='right'>$setfont<b>From:</td>\n";
+		echo "\t\t<td align='right' width='150'>$setfont<b>"._FROM.":</td>\n";
 		echo "\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadmin <$surveyadminemail>' /></td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
-		echo "\t\t<td align='right'>$setfont<b>Subject:</td>\n";
-		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='Reminder to participate in $surveyname' /></td>\n";
+		echo "\t\t<td align='right' width='150'>$setfont<b>"._SUBJECT.":</td>\n";
+		$subject=str_replace("{SURVEYNAME}", $surveyname, _TC_REMINDSUBJECT);
+		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='$subject' /></td>\n";
 		echo "\t</tr>\n";
 		if (!$_GET['tid'])
 			{
 			echo "\t<tr>\n";
-			echo "\t\t<td align='right' valign='top'>$setfont<b>Start at ID:</b></td>\n";
+			echo "\t\t<td align='right' width='150' valign='top'>$setfont<b>"._TC_REMINDSTARTAT."</b></td>\n";
 			echo "\t\t<td><input type='text' $slstyle size='5' name='last_tid' /></td>\n";
 			echo "\t</tr>\n";
 			}
+		else
+			{
+			echo "\t<tr>\n";
+			echo "\t\t<td align='right' width='150' valign='top'>$setfont<b>"._TC_REMINDTID."</b></td>\n";
+			echo "\t\t<td>$setfont{$_GET['tid']}</td>\n";
+			echo "\t</tr>\n";
+			}
 		echo "\t<tr>\n";
-		echo "\t\t<td align='right' valign='top'>$setfont<b>Message:</b></td>\n";
+		echo "\t\t<td align='right' width='150' valign='top'>$setfont<b>"._MESSAGE.":</b></td>\n";
 		echo "\t\t<td>\n";
 		echo "\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
 		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
@@ -589,8 +590,8 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 			{
 			if ($surveytemplate == "default")
 				{
-				echo "<b><font color='red'>ERROR:</b></font><br />\n";
-				echo "Reminder Email Template CANNOT BE FOUND. This file must exist in the default template folder.\n";
+				echo "<b><font color='red'>"._ERROR."</b></font><br />\n";
+				echo _TC_NOREMINDTEMPLATE."\n";
 				exit;
 				}
 			else
@@ -598,8 +599,8 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 				$surveytemplate = "default";
 				if (!is_file("$publicdir/templates/$surveytemplate/reminderemail.pstpl"))
 					{
-					echo "<b><font color='red'>ERROR:</b></font><br />\n";
-					echo "Reminder Email Template CANNOT BE FOUND. This file must exist in the default template folder.\n";
+					echo "<b><font color='red'>"._ERROR."</b></font><br />\n";
+					echo _TC_NOREMINDTEMPLATE."\n";
 					exit;
 					}
 				}
@@ -617,8 +618,9 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2' align='center'>\n";
-		echo "\t\t\t<input type='submit' $btstyle value='Send Reminder' />\n";
+		echo "\t\t<td></td>\n";
+		echo "\t\t<td align='left'>\n";
+		echo "\t\t\t<input type='submit' $btstyle value='"._TC_SENDREMIND."' />\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<input type='hidden' name='ok' value='absolutely'>\n";
@@ -630,9 +632,9 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		}
 	else
 		{
-		echo "Sending reminder email!\n";
-		if ($_POST['last_tid']) {echo " (Starting after {$_POST['last_tid']})";}
-		if ($_POST['tid']) {echo " (Sending just to TokenID {$_POST['tid']})";}
+		echo _TC_SENDINGREMINDERS;
+		if ($_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
+		if ($_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
 		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
 		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if ($_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
@@ -663,7 +665,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
 				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
 				mail($to, $_POST['subject'], $sendmessage, $headers);
-				echo "\t\t\t({$emrow['tid']})[Reminder Sent to {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+				echo "\t\t\t({$emrow['tid']})["._TC_REMINDSENTTO." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				$lasttid = $emrow['tid'];
 				}
 			if ($ctcount > $emcount)
@@ -673,12 +675,11 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 				echo "\t</tr>\n";
 				echo "\t<tr><form method='post' action='tokens.php'>\n";
 				echo "\t\t<td align='center'>\n";
-				echo "\t\t\t$setfont<b>Warning:</b><br />\n";
-				echo "\t\t\tThe number of emails to send ($ctcount) is greater than the maximum number";
-				echo " of emails that can be sent in one lot ($maxemails). There are still $lefttosend";
-				echo " emails to go. You can continue sending the next $maxemails by clicking on the";
-				echo " button below.<br />\n";
-				echo "\t\t\t<input type='submit' value='Send More' />\n";
+				echo "\t\t\t$setfont<b>"._WARNING."</b><br /><br />\n";
+				echo _TC_EMAILSTOGO."<br /><br />\n";
+				echo str_replace("{EMAILCOUNT}", $lefttosend, _TC_EMAILSREMAINING);
+				echo "<br />\n";
+				echo "\t\t\t<input type='submit' value='"._CONTINUE."' />\n";
 				echo "\t\t</td>\n";
 				echo "\t<input type='hidden' name='ok' value=\"absolutely\" />\n";
 				echo "\t<input type='hidden' name='action' value=\"remind\" />\n";
@@ -693,14 +694,15 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 			}
 		else
 			{
-			echo "<center><b>WARNING:</b><br />\nThere were no token recipients who have been sent an invitation but have not yet responded.\n";
+			echo "<center><b>"._WARNING."</b><br />\n";
+			echo _TC_NOREMINDERSTOSEND."\n";
 			echo "<br /><br />\n";
-			echo "No invitations have been sent out!</center>\n";
 			echo "\t\t</td>\n";
 			}
 		echo "\t</tr>\n";
 		echo "</table>\n";
 		}
+	echo "</td></tr></table>\n";
 	}
 
 	
