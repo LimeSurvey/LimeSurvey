@@ -368,6 +368,7 @@ if ($qid)
 
 if ($_GET['viewanswer'] || $_POST['viewanswer'])
 	{
+	echo keycontroljs();
 	$qquery = "SELECT type FROM questions WHERE qid=$qid";
 	$qresult = mysql_query($qquery);
 	while ($qrow=mysql_fetch_array($qresult)) {$qtype=$qrow['type'];}
@@ -398,7 +399,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$vasummary .= "\t\t<td align='center'>";
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
-			$vasummary .="<input name='code' type='text' $btstyle value=\"{$cdrow['code']}\" size='5'>";
+			$vasummary .="<input name='code' type='text' $btstyle value=\"{$cdrow['code']}\" size='5' onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\">";
 			}
 		else
 			{
@@ -455,7 +456,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		{
 		$position=sprintf("%05d", $position);
 		$vasummary .= "\t<tr><form action='admin.php' method='post'>\n";
-		$vasummary .= "\t\t<td align='center'><input name='code' type='text' $btstyle size='5'></td>\n";
+		$vasummary .= "\t\t<td align='center'><input name='code' type='text' $btstyle size='5' onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\"></td>\n";
 		$vasummary .="\t\t<td align='center'><input name='answer' type='text' $btstyle size='50'></td>\n";
 		$vasummary .="\t\t<input name='sortorder' type='hidden' $btstyle value='$position'>\n";
 		$vasummary .="\t\t<td align='center'>";
