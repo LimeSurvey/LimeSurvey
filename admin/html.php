@@ -45,9 +45,10 @@ if ($sid)
 		$surveysummary .= "\t<td>$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
 		if ($s1row['private'] != "N") {$surveysummary .= "This survey is anonymous";}
 		else {$surveysummary .= "This survey is <b>not</b> anonymous";}
-		if ($s1row['format'] == "S") {$surveysummary .= " and is presented question by question.";}
-		elseif ($s1row['format'] == "G") {$surveysummary .= " and is presented group by group.";}
-		else {$surveysummary .= " and is presented as one single page.";}
+		if ($s1row['format'] == "S") {$surveysummary .= " and is presented question by question. ";}
+		elseif ($s1row['format'] == "G") {$surveysummary .= " and is presented group by group. ";}
+		else {$surveysummary .= " and is presented as one single page. ";}
+		if ($s1row['datestamp'] == "Y") {$surveysummary .= "Responses will be date-stamped.";}
 		$surveysummary .= "</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
@@ -785,6 +786,28 @@ if ($action == "editsurvey")
 			$editsurvey .= "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Date stamp?</b></font></td>\n";
+				
+		if ($esrow['active'] == "Y")
+			{
+			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
+			if ($esrow['datestamp'] != "Y") {$editsurvey .= " Responses <b>will not</b> be date stamped.";}
+			else {$editsurvey .= "Responses <b>will</b> be date stamped";}
+			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n";
+			$editsurvey .= "\t\t</td>\n";
+			}
+		else
+			{
+			$editsurvey .= "\t\t<td><select name='datestamp'>\n";
+			$editsurvey .= "\t\t\t<option value='Y'";
+			if ($esrow['datestamp'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">Yes</option>\n";
+			$editsurvey .= "\t\t\t<option value='N'";
+			if ($esrow['datestamp'] != "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">No</option>\n";
+			$editsurvey .= "</select>\n\t\t</td>\n";
+			}
+		$editsurvey .= "</tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Language:</b></font></td>\n";
 		$editsurvey .= "\t\t<td><select name='language'>\n";
 		foreach (getlanguages() as $langname)
@@ -832,6 +855,11 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t\t<td><select name='private'>\n";
 	$newsurvey .= "\t\t\t<option value='Y' selected>Yes</option>\n";
 	$newsurvey .= "\t\t\t<option value='N'>No</option>\n";
+	$newsurvey .= "\t\t</select></td>\n\t</tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Date Stamp?</b></font></td>\n";
+	$newsurvey .= "\t\t<td><select name='datestamp'>\n";
+	$newsurvey .= "\t\t\t<option value='Y'>Yes</option>\n";
+	$newsurvey .= "\t\t\t<option value='N' selected>No</option>\n";
 	$newsurvey .= "\t\t</select></td>\n\t</tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Format:</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='format'>\n";
