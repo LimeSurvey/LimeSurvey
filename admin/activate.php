@@ -171,6 +171,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		{
 		$fieldlist[]=$fielddata['fieldname'];
 		}
+	$fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
 	$checkKeysUniqueComparison = create_function('$value','if ($value > 1) return true;');
 	$duplicates = array_keys (array_filter (array_count_values($fieldlist), $checkKeysUniqueComparison));
 	foreach ($duplicates as $dup)
@@ -354,7 +355,7 @@ else
 		if ( substr($createsurvey, strlen($createsurvey)-2, 2) != ",\n") {$createsurvey .= ",\n";}
 		}
 	//$createsurvey = substr($createsurvey, 0, strlen($createsurvey)-2);
-	$createsurvey .= "  INDEX(id)\n";
+	$createsurvey .= "  UNIQUE(id)\n";
 	$createsurvey .= ") TYPE=MyISAM;";
 	//echo "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
 	
