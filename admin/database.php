@@ -165,7 +165,7 @@ elseif ($action == "copynewquestion")
 		$r1 = mysql_query($q1);
 		while ($qr1 = mysql_fetch_row($r1))
 			{
-			$i1 = "INSERT INTO answers (qid, code, answer default) VALUES ('$newqid', '{$qr1['code']}', '{$qr1['answer']}', '{$qr1['default']}')";
+			$i1 = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('$newqid', '{$qr1['code']}', '{$qr1['answer']}', '{$qr1['default']}')";
 			$ir1 = mysql_query($i1);
 			}		
 		}	
@@ -192,7 +192,7 @@ elseif ($action == "insertnewanswer")
 		{
 		$answer = addcslashes($answer, "'");
 		}
-	$iaquery = "INSERT INTO answers (qid, code, answer default) VALUES ('$qid', '$code', '$answer', '$default')";
+	$iaquery = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('$qid', '$code', '$answer', '$default')";
 	$iaresult = mysql_query ($iaquery);
 	if ($iaresult)
 		{
