@@ -132,7 +132,8 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 						  . "attribute_1 varchar(100) NULL,\n" 
 						  . "attribute_2 varchar(100) NULL,\n"
 						  . "mpid int NULL,\n"
-						  . "PRIMARY KEY (tid)\n) TYPE=MyISAM;";
+						  . "PRIMARY KEY (tid),\n"
+						  . "INDEX (token)) TYPE=MyISAM;";
 		$ctresult = mysql_query($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".mysql_error());
 		echo "\t<tr>\n"
 			."\t\t<td align='center'>\n"
