@@ -278,7 +278,7 @@ if ($move == " submit ")
 	$col_name = substr($col_name, 1); //Strip off inital comma
 	$values = substr($values, 1); //Strip off leading comma
 	$subquery .= "($col_name) VALUES ($values)";
-	echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
+	//echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
 	
 	if ($surveyactive == "Y")
 		{
