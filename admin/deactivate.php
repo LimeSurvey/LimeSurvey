@@ -54,6 +54,8 @@ if (!$_GET['ok'])
 	echo "\t\t\tand the existing table <b><i>survey_{$_GET['sid']}</i></b> will no longer exist.</p>\n";
 	echo "\t\t\t<p>De-activated survey data can only be accessed by system administrators using a MySQL \n";
 	echo "\t\t\tdata access tool like phpmyadmin.</p>\n";
+	echo "\t\t\t<p>If your survey uses tokens, this table will also be renamed and will only be\n";
+	echo "\t\t\taccessible by system administrators.</p>\n";
 	echo "\t\t\tThe point we are trying to make here is... DON'T DO THIS IF YOU ARE UNSURE.\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
@@ -68,6 +70,19 @@ if (!$_GET['ok'])
 
 else
 	{
+	//See if there is a tokens table for this survey
+	$result = mysql_list_tables($databasename);
+	while ($row = mysql_fetch_row($result))
+		{
+		$tablelist[]=$row[0];
+	    }
+	if (in_array("tokens_{$_GET['sid']}", $tablelist))
+		{
+		$toldtable="tokens_{$_GET['sid']}";
+		$tnewtable="old_tokens_{$_GET['sid']}_{$date}";
+		$tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
+		$tdeactivateresult = mysql_query($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".mysql_error()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+		}
 	$oldtable="survey_{$_GET['sid']}";
 	$newtable="old_{$_GET['sid']}_{$date}";
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
@@ -87,6 +102,18 @@ else
 	echo "\t\t\twant your system administrator to completely delete the old table.</p>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
+	if ($toldtable)
+		{
+		echo "\t<tr>\n";
+		echo "\t\t<td>\n";
+		echo "\t\t\tThe tokens table named $toldtable has been renamed to \n";
+		echo "\t\t\t$tnewtable and is now no longer accessible using the PHPSurveyor scripts.\n";
+		echo "\t\t\t<p>You should write down the name of this table and keep it somewhere safe \n";
+		echo "\t\t\tin case you ever need to access this information again. Or, in case you \n";
+		echo "\t\t\twant your system administrator to completely delete the old table.</p>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		}
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
 	echo "\t\t\t<input type='submit' $btstyle value='Admin Page' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
