@@ -149,7 +149,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'] && (!isset($backok) 
 		}
 	if (isset($_POST[$multiname]) && $_POST[$multiname])
 		{
-		if (count($notanswered) == count($chkcmands)) //
+		if (isset($notanswered) && count($notanswered) == count($chkcmands)) //
 			{
 			//The number of questions not answered is equal to the number of questions
 			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
