@@ -351,8 +351,8 @@ if ($qid)
 			}
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'>$setfont<b>"._QL_CODE."</b></font></td>\n";
 		$questionsummary .= "\t<td>$setfont{$qrrow['title']}";
-		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>Mandatory Question</i>)";}
-		else {$questionsummary .= ": (<i>Optional Question</i>)";}
+		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>"._QS_MANDATORY."</i>)";}
+		else {$questionsummary .= ": (<i>"._QS_OPTIONAL."</i>)";}
 		$questionsummary .= "</td></tr>\n";
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'>$setfont<b>"._QL_QUESTION."</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<b>"._QL_HELP."</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
@@ -362,11 +362,11 @@ if ($qid)
 		$questionsummary .="</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"))
 			{
-			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>"._WARNING.": You need to Add Answers to this question <input type='image' src='./images/answers.gif' border='0' hspace='0' title='"._Q_ADDANSWERS_BT."' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>"._WARNING.": "._QS_NOANSWERS." <input type='image' src='./images/answers.gif' border='0' hspace='0' title='"._Q_ADDANSWERS_BT."' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}
 		if (!$qrrow['lid'] && $qrrow['type'] == "F")
 			{
-			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td><font face='verdana' size='1' color='green'>"._WARNING.": You need to choose a Label Set for this question</font></td></tr>\n";
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td><font face='verdana' size='1' color='green'>"._WARNING.": "._QS_NOLID."</font></td></tr>\n";
 			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
@@ -531,7 +531,7 @@ if ($action == "modifyuser")
 		$usersummary .= "\t<td>\n\t\t<input type='text' size='2' name='level' value='{$mrw['security']}'></td>\n";
 		}
 	$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n";
-	$usersummary .= "\t\t<input type='submit' $btstyle value='Update'></td></tr>\n";
+	$usersummary .= "\t\t<input type='submit' $btstyle value='"._UPDATE."'></td></tr>\n";
 	$usersummary .= "<input type='hidden' name='action' value='moduser'>\n";
 	$usersummary .= "</form></table>\n";
 	}
@@ -589,10 +589,10 @@ if ($action == "editusers")
 				$usersummary .= "\t\t<td align='center'>$setfont{$usr['password']}</font></td>\n";
 				$usersummary .= "\t\t<td align='center'>$setfont{$usr['security']}</td>\n";
 				$usersummary .= "\t\t<td align='center'>\n";
-				$usersummary .= "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('$scriptname?action=modifyuser&user={$usr['user']}', '_top')\" />\n";
+				$usersummary .= "\t\t\t<input type='submit' $btstyle value='"._UL_EDIT."' onClick=\"window.open('$scriptname?action=modifyuser&user={$usr['user']}', '_top')\" />\n";
 				if ($ui > 1 )
 					{
-					$usersummary .= "\t\t\t<input type='submit' $btstyle value='Del' onClick=\"window.open('$scriptname?action=deluser&user={$usr['user']}', '_top')\" />\n";
+					$usersummary .= "\t\t\t<input type='submit' $btstyle value='"._UL_DEL."' onClick=\"window.open('$scriptname?action=deluser&user={$usr['user']}', '_top')\" />\n";
 					}
 				$usersummary .= "\t\t</td>\n";
 				$usersummary .= "\t</tr>\n";
@@ -624,7 +624,7 @@ if ($action == "addquestion")
 	$newquestion = "<table width='100%' border='0'>\n\n";
 	$newquestion .= "\t<tr>\n";
 	$newquestion .= "\t\t<td colspan='2' bgcolor='black' align='center'>";
-	$newquestion .= "\t\t<b>$setfont<font color='white'>Create New Question for Survey ID($sid), Group ID($gid) </b>\n";
+	$newquestion .= "\t\t<b>$setfont<font color='white'>"._ADDQ."</b>\n";
 	$newquestion .= "\t\t</td>\n";
 	$newquestion .= "\t</tr>\n";
 	$newquestion .= "\t<form action='$scriptname' name='addnewquestion' method='post'>\n";
@@ -681,14 +681,14 @@ if ($action == "addquestion")
 	$newquestion .= questionjavascript($eqrow['type']);	
 
 	$newquestion .= "\t<tr>\n";
-	$newquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Add Question' /></td>\n";
+	$newquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='"._ADDQ."' /></td>\n";
 	$newquestion .= "\t</tr>\n";
 	$newquestion .= "\t<input type='hidden' name='action' value='insertnewquestion' />\n";
 	$newquestion .= "\t<input type='hidden' name='sid' value='$sid' />\n";
 	$newquestion .= "\t<input type='hidden' name='gid' value='$gid' />\n";
 	$newquestion .= "\t</form>\n";
 	$newquestion .= "</table>\n";
-	$newquestion .= "<center><b>OR</b></center>\n";
+	$newquestion .= "<center><b>"._AD_OR."</b></center>\n";
 	$newquestion .= "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
 	$newquestion .= "\t\t<b>$setfont<font color='white'>"._IMPORTQUESTION."</font></font></b></td></tr>\n\t<tr>";
 	$newquestion .= "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post'>\n";
@@ -710,23 +710,23 @@ if ($action == "copyquestion")
 		$editquestion = "<table width='100%' border='0'>\n";
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td colspan='2' bgcolor='black' align='center'>\n";
-		$editquestion .= "\t\t\t<b>$setfont<font color='white'>Copy Question $qid (Code {$eqrow['title']})</b><br />Note: You MUST enter a new Question Code!</font></font>\n";
+		$editquestion .= "\t\t\t<b>$setfont<font color='white'>"._COPYQ."</b><br />"._QS_COPYINFO."</font></font>\n";
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr><form action='$scriptname' name='editquestion' method='post'>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Question Code:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_CODE."</b></font></td>\n";
 		$editquestion .= "\t\t<td><input type='text' size='20' name='title' value='' /></td>\n";
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Question:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>"._QL_QUESTION."</b></font></td>\n";
 		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n";
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>"._QL_HELP."</b></font></td>\n";
 		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n";
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_TYPE."</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n";
 		$editquestion .= getqtypelist($eqrow['type']);
 		$editquestion .= "\t\t</select></td>\n";
@@ -751,14 +751,14 @@ if ($action == "copyquestion")
 		$editquestion .= "\t</tr>\n";
 		
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Group?</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_GROUP."</b></font></td>\n";
 		$editquestion .= "\t\t<td><select $slstyle name='gid'>\n";
 		$editquestion .= getgrouplist2($eqrow['gid']);
 		$editquestion .= "\t\t\t</select></td>\n";
 		$editquestion .= "\t</tr>\n";
 		
 		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Other?</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
 		$editquestion .= "\t\t\t"._AD_YES." <input type='radio' name='other' value='Y'";
 		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
@@ -770,7 +770,7 @@ if ($action == "copyquestion")
 		$editquestion .= "\t</tr>\n";
 		
 		$editquestion .= "\t<tr id='MandatorySelection'>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Mandatory?</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_MANDATORY."</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
 		$editquestion .= "\t\t\t"._AD_YES." <input type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
@@ -784,11 +784,11 @@ if ($action == "copyquestion")
 		$editquestion .= questionjavascript($eqrow['type']);
 		
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td align='right'>$setfont<b>Copy answers:</b></font></td>\n";
+		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_COPYANS."</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y' /></font></td>\n";
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
-		$editquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='Copy Question'></td>\n";
+		$editquestion .= "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='"._COPYQ."'></td>\n";
 		$editquestion .= "\t\t<input type='hidden' name='action' value='copynewquestion'>\n";
 		$editquestion .= "\t\t<input type='hidden' name='sid' value='$sid' />\n";
 		$editquestion .= "\t\t<input type='hidden' name='oldqid' value='$qid' />\n";
@@ -797,111 +797,6 @@ if ($action == "copyquestion")
 		}
 	}
 
-if ($action == "addanswer")
-	{
-	//Get sortorder number that is one greater than the last.
-	$saquery="SELECT sortorder FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder desc LIMIT 1";
-	$saresult=mysql_query($saquery) or die ("Couldn't get last sortorder<br />$saquery<br />".mysql_error());
-	while ($sarow=mysql_fetch_array($saresult)) {$lastsa=$sarow['sortorder'];}
-	if ($lastsa) 
-		{
-		if (strlen($lastsa)>1) 
-			{
-			$newsa=substr($lastsa, 0, strlen($lastsa)-1).chr(ord(strtoupper(substr($lastsa, -1)))+1);
-			$lastsa=substr($lastsa, -1);
-			} 
-		else
-			{
-			$newsa=chr(ord(strtoupper($lastsa))+1);
-			}
-		}
-	else {$newsa=1;}
-	
-	$newanswer = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-	$newanswer .= "\t\t<b>$setfont<font color='white'>Create New Answer for Survey ID($sid), Group ID($gid), Question ID($qid)</b></font></font></td></tr>\n";
-	$newanswer .= "\t<tr><form action='$scriptname' name='addnewanswer' method='post'>\n";
-	$newanswer .= "\t\t<td align='right'>$setfont<b>Answer Code:</b></font></td>\n";
-	$newanswer .= "\t\t<td><input type='text' size='5' name='code' maxlength='5'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
-	$newanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
-	$newanswer .= "\t\t<td><input type='text' name='answer'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
-	$newanswer .= "\t<tr><td align='right'>$setfont<b>Sort Order:</b></font></td>\n";
-	$newanswer .= "\t\t<td><input type='text' size='5' maxlength='5' value='$newsa' name='sortorder'></td></tr>\n";
-	$newanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
-	$newanswer .= "\t\t<td><input type='text' size='1' maxlength='1' value='N' name='default'></td></tr>\n";
-	$newanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Add Answer'></td></tr>\n";
-	$newanswer .= "\t<input type='hidden' name='action' value='insertnewanswer'>\n";
-	$newanswer .= "\t<input type='hidden' name='qid' value='$qid'>\n";
-	$newanswer .= "\t<input type='hidden' name='sid' value='$sid'>\n";
-	$newanswer .= "\t<input type='hidden' name='gid' value='$gid'>\n";
-	$newanswer .= "</form></table>\n";
-	} 
-
-if ($action == "editanswer")
-	{
-	$eaquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid AND code='$code'";
-	$earesult = mysql_query($eaquery);
-	while ($earow = mysql_fetch_array($earesult))
-		{
-		$editanswer = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-		$editanswer .= "\t\t<b>$setfont<font color='WHITE'>Edit Answer $qid, $code</b></font></font></td></tr>\n";
-		$editanswer .= "\t<tr><form action='$scriptname' name='editanswer' method='post'>\n";
-		$editanswer .= "\t\t<td align='right'>$setfont<b>Answer Code:</b></font></td>\n";
-		$editanswer .= "\t\t<td><input type='text' size='5' value='{$earow['code']}' name='code'></td></tr>\n";
-		$editanswer .= "\t<tr><td align='right'>$setfont<b>Answer:</b></font></td>\n";
-		$editanswer .= "\t\t<td><input type='text' value=\"".str_replace('"', "&quot;", $earow['answer'])."\" name='answer'></td></tr>\n";
-		$editanswer .= "\t<tr><td align='right'>$setfont<b>Sort Order:</b></font></td>\n";
-		$editanswer .= "\t\t<td><input type='text' size='5' maxlength='5' value='{$earow['sortorder']}' name='sortorder'></td></tr>\n";
-		$editanswer .= "\t<tr><td align='right'>$setfont<b>Default?</b></font></td>\n";
-		$editanswer .= "\t\t<td><input type='text' size='1' maxlength='1' value='{$earow['default']}' name='default'></td></tr>\n";
-		$editanswer .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Answer'></td>\n";
-		$editanswer .= "\t<input type='hidden' name='action' value='updateanswer'>\n";
-		$editanswer .= "\t<input type='hidden' name='sid' value='$sid'>\n";
-		$editanswer .= "\t<input type='hidden' name='gid' value='$gid'>\n";
-		$editanswer .= "\t<input type='hidden' name='qid' value='$qid'>\n";
-		$editanswer .= "\t<input type='hidden' name='old_code' value='{$earow['code']}'>\n";
-		$editanswer .= "\t</form></tr>\n"; 
-		$editanswer .= "</table>\n";
-		}
-	}
-
-if ($action == "addgroup")
-	{
-	$newgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-	$newgroup .= "\t\t<b>$setfont<font color='white'>Create New Group for Survey ID($sid)</font></font></b></td></tr>\n";
-	$newgroup .= "\t<tr><form action='$scriptname' name='addnewgroup' method='post'>\n";
-	$newgroup .= "\t\t<td align='right'>$setfont<b>"._GL_TITLE."</b></font></td>\n";
-	$newgroup .= "\t\t<td><input type='text' size='40' name='group_name'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
-	$newgroup .= "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>(optional)</font></td>\n";
-	$newgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'></textarea></td></tr>\n";
-	$newgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create New Group'></td>\n";
-	$newgroup .= "\t<input type='hidden' name='action' value='insertnewgroup'>\n";
-	$newgroup .= "\t<input type='hidden' name='sid' value='$sid'>\n";
-	$newgroup .= "\t</form></tr>\n";
-	$newgroup .= "</table>\n";
-	}
-
-if ($action == "editgroup")
-	{
-	$egquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
-	$egresult = mysql_query($egquery);
-	while ($esrow = mysql_fetch_array($egresult))	
-		{
-		$editgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-		$editgroup .= "\t\t<b>$setfont<font color='white'>Edit Group for Survey ID($sid)</font></font></b></td></tr>\n";
-		$editgroup .= "\t<tr><form action='$scriptname' name='editgroup' method='post'>\n";
-		$editgroup .= "\t\t<td align='right' width='20%'>$setfont<b>"._GL_TITLE."</b></font></td>\n";
-		$editgroup .= "\t\t<td><input type='text' size='40' name='group_name' value='{$esrow['group_name']}'></td></tr>\n";
-		$editgroup .= "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>(optional)</font></td>\n";
-		$editgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n";
-		$editgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Group'></td>\n";
-		$editgroup .= "\t<input type='hidden' name='action' value='updategroup'>\n";
-		$editgroup .= "\t<input type='hidden' name='sid' value='$sid'>\n";
-		$editgroup .= "\t<input type='hidden' name='gid' value='$gid'>\n";
-		$editgroup .= "\t</form></tr>\n";
-		$editgroup .= "</table>\n";
-		}
-	}
-	
 if ($action == "editquestion")
 	{
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
@@ -1008,6 +903,44 @@ if ($action == "editquestion")
 		$editquestion .= "\t<input type='hidden' name='qid' value='$qid'>\n";
 		$editquestion .= "\t</form></tr>\n";
 		$editquestion .= "</table>\n";
+		}
+	}
+
+if ($action == "addgroup")
+	{
+	$newgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+	$newgroup .= "\t\t<b>$setfont<font color='white'>Create New Group for Survey ID($sid)</font></font></b></td></tr>\n";
+	$newgroup .= "\t<tr><form action='$scriptname' name='addnewgroup' method='post'>\n";
+	$newgroup .= "\t\t<td align='right'>$setfont<b>"._GL_TITLE."</b></font></td>\n";
+	$newgroup .= "\t\t<td><input type='text' size='40' name='group_name'><font color='red' face='verdana' size='1'>*Required</font></td></tr>\n";
+	$newgroup .= "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>(optional)</font></td>\n";
+	$newgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'></textarea></td></tr>\n";
+	$newgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create New Group'></td>\n";
+	$newgroup .= "\t<input type='hidden' name='action' value='insertnewgroup'>\n";
+	$newgroup .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+	$newgroup .= "\t</form></tr>\n";
+	$newgroup .= "</table>\n";
+	}
+
+if ($action == "editgroup")
+	{
+	$egquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
+	$egresult = mysql_query($egquery);
+	while ($esrow = mysql_fetch_array($egresult))	
+		{
+		$editgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
+		$editgroup .= "\t\t<b>$setfont<font color='white'>Edit Group for Survey ID($sid)</font></font></b></td></tr>\n";
+		$editgroup .= "\t<tr><form action='$scriptname' name='editgroup' method='post'>\n";
+		$editgroup .= "\t\t<td align='right' width='20%'>$setfont<b>"._GL_TITLE."</b></font></td>\n";
+		$editgroup .= "\t\t<td><input type='text' size='40' name='group_name' value='{$esrow['group_name']}'></td></tr>\n";
+		$editgroup .= "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>(optional)</font></td>\n";
+		$editgroup .= "\t\t<td><textarea cols='40' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n";
+		$editgroup .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Group'></td>\n";
+		$editgroup .= "\t<input type='hidden' name='action' value='updategroup'>\n";
+		$editgroup .= "\t<input type='hidden' name='sid' value='$sid'>\n";
+		$editgroup .= "\t<input type='hidden' name='gid' value='$gid'>\n";
+		$editgroup .= "\t</form></tr>\n";
+		$editgroup .= "</table>\n";
 		}
 	}
 
