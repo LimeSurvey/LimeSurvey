@@ -199,6 +199,10 @@ while ($degrow = mysql_fetch_array($degresult))
 					{
 					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' />{$dearow['answer']}<br />\n";
 					}
+				if ($deqrow['other'] == "Y")
+					{
+				    echo "\t\t\t<input type='checkbox'>"._QL_OTHER." <input type='text' size='30'><br />\n";
+					}
 				break;
 			case "O":  //LIST WITH COMMENT
 				echo "\t\t\t$setfont<u>Please tick <b>only one</b> of the following:</u><br />\n";
