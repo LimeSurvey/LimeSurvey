@@ -41,6 +41,9 @@
 include("config.php");
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($order)) {$order=returnglobal('order');}
+if (!isset($limit)) {$limit=returnglobal('limit');}
+if (!isset($start)) {$start=returnglobal('start');}
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
@@ -49,7 +52,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
-if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL=$PHP_SELF?action=browse&sid={$_GET['sid']}\"", $htmlheader);}
+if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL=$PHP_SELF?action=browse&sid={$_GET['sid']}&start=$start&limit=$limit&order=$order\"", $htmlheader);}
 else {echo $htmlheader;}
 
 echo "<table height='1'><tr><td></td></tr></table>\n";
@@ -199,6 +202,14 @@ echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpa
 #############################################################################################
 // NOW FOR VARIOUS ACTIONS:
 
+if ($action == "deleteall")
+	{
+	$query="DELETE FROM tokens_$sid";
+	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
+	echo "<tr><td bgcolor='silver' align='center'><b>$setfont<font color='green'>"._TC_ALLDELETED."</font></font></td></tr>\n";
+	$action="";
+	}
+
 if ($action == "clearinvites")
 	{
 	$query="UPDATE tokens_$sid SET sent='N'";
@@ -220,11 +231,14 @@ if (!$action)
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TOKENDBADMIN.":</b></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
+	echo "\t\t\t<span style='display: block; text-align: left; width: 300'>";
 	echo "\t\t\t$setfont<br />\n";
-	echo "\t\t\t<a href='tokens.php?sid=$sid&action=clearinvites' onClick='return confirm(\""._TC_CLEARINV_RUSURE."\")'>"._TC_CLEARINVITES."</a><br />\n";
-	echo "\t\t\t<a href='tokens.php?sid=$sid&action=cleartokens' onClick='return confirm(\""._TC_CLEARTOKENS_RUSURE."\")'>"._TC_CLEARTOKENS."</a><br />\n";
-	echo "\t\t\t<a href='tokens.php?sid=$sid&action=kill'>"._T_KILL_BT."</a><br /><br />\n";
+	echo "\t\t\t<ul><li><a href='tokens.php?sid=$sid&action=clearinvites' onClick='return confirm(\""._TC_CLEARINV_RUSURE."\")'>"._TC_CLEARINVITES."</a></li>\n";
+	echo "\t\t\t<li><a href='tokens.php?sid=$sid&action=cleartokens' onClick='return confirm(\""._TC_CLEARTOKENS_RUSURE."\")'>"._TC_CLEARTOKENS."</a></li>\n";
+	echo "\t\t\t<li><a href='tokens.php?sid=$sid&action=deleteall' onClick='return confirm(\""._TC_DELETEALL_RUSURE."\")'>"._TC_DELETEALL."</a></li>\n";
+	echo "\t\t\t<li><a href='tokens.php?sid=$sid&action=kill'>"._T_KILL_BT."</a></li></ul>\n";
 	echo "\t\t\t</font>\n";
+	echo "\t\t\t</span>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -232,13 +246,10 @@ if (!$action)
 
 if ($action == "browse")
 	{
-	if (!isset($order)) {$order=returnglobal('order');}
-	if (!isset($limit)) {$limit=returnglobal('limit');}
-	if (!isset($start)) {$start=returnglobal('start');}
 	if (!isset($limit)) {$limit = 50;}
 	if (!isset($start)) {$start = 0;}
 	
-	if ($limit > $rowcount) {$limit=$tkcount;}
+	if ($limit > $tkcount) {$limit=$tkcount;}
 	$next=$start+$limit;
 	$last=$start-$limit;
 	$end=$tkcount-$limit;
@@ -277,21 +288,21 @@ if ($action == "browse")
 	echo "<table width='100%' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
 	//COLUMN HEADINGS
 	echo "\t<tr>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=tid'><img src='./images/DownArrow.gif' alt='Sort by ID' border='0' align='left'></a>$setfont"."ID</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=firstname'><img src='./images/DownArrow.gif' alt='Sort by First Name' border='0' align='left'></a>$setfont"._TL_FIRST."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=lastname'><img src='./images/DownArrow.gif' alt='Sort by Last Name' border='0' align='left'></a>$setfont"._TL_LAST."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=email'><img src='./images/DownArrow.gif' alt='Sort by Email' border='0' align='left'></a>$setfont"._TL_EMAIL."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=token'><img src='./images/DownArrow.gif' alt='Sort by Token' border='0' align='left'></a>$setfont"._TL_TOKEN."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc'><img src='./images/DownArrow.gif' alt='Sort by Invite?' border='0' align='left'></a>$setfont"._TL_INVITE."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='./images/DownArrow.gif' alt='Sort by Done?' border='0' align='left'></a>$setfont"._TL_DONE."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=tid&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY."ID' border='0' align='left'></a>$setfont"."ID</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=firstname&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_FIRST."' border='0' align='left'></a>$setfont"._TL_FIRST."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=lastname&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_LAST."' border='0' align='left'></a>$setfont"._TL_LAST."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=email&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_EMAIL."' border='0' align='left'></a>$setfont"._TL_EMAIL."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=token&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_TOKEN."' border='0' align='left'></a>$setfont"._TL_TOKEN."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_INVITE."' border='0' align='left'></a>$setfont"._TL_INVITE."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_DONE."' border='0' align='left'></a>$setfont"._TL_DONE."</th>\n";
 	echo "\t\t<th align='left' valign='top' colspan='2'>$setfont"._TL_ACTION."</th>\n";
 	echo "\t</tr>\n";
 	
 	$bquery = "SELECT * FROM tokens_$sid";
-	if (!isset($order)) {$bquery .= " ORDER BY tid";}
-	else { $bquery .= " ORDER BY $order"; }
+	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
+	else {$bquery .= " ORDER BY $order"; }
 	$bquery .= " LIMIT $start, $limit";
-	$bresult = mysql_query($bquery);
+	$bresult = mysql_query($bquery) or die ("$bquery<br />".mysql_error());
 	while ($brow = mysql_fetch_array($bresult))
 		{
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
@@ -302,7 +313,7 @@ if ($action == "browse")
 			}
 		echo "\t\t<td align='left'>\n";
 		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='"._TC_EDIT."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\" />\n";
-		echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"._TC_DEL."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\" />\n";
+		echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"._TC_DEL."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />\n";
 		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$sid&token={$brow['token']}', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
@@ -391,9 +402,10 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			$surveyadminemail = $esrow['adminemail'];
 			$surveytemplate = $esrow['template'];
 			}
-		echo "<table width='80%' align='center' bgcolor='#DDDDDD'>\n";
+		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
+		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n";
 		echo "<form method='post'>\n";
-		echo "\t<tr><td colspan='2' bgcolor='black' align='center'>$setfont<font color='white'><b>Send Invitation";
+		//echo "\t<tr><td colspan='2' bgcolor='#555555' align='center'>$setfont<font color='white'><b>Send Invitation";
 		if ($_GET['tid']) {echo " to TokenID No {$_GET['tid']}";}
 		echo "</b></td></tr>\n";
 		echo "\t<tr>\n";
@@ -415,8 +427,9 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			{
 			if ($surveytemplate == "default")
 				{
-				echo "<b><font color='red'>ERROR:</b></font><br />\n";
-				echo "Invitation Email Template CANNOT BE FOUND. This file must exist in the default template folder.\n";
+				echo "<b><font color='red'>"._ERROR."</b></font><br />\n";
+				echo _TC_NOEMAILTEMPLATE."\n";
+				echo "</td></tr></table>\n";
 				exit;
 				}
 			else
@@ -424,8 +437,9 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 				$surveytemplate = "default";
 				if (!is_file("$publicdir/templates/$surveytemplate/invitationemail.pstpl"))
 					{
-					echo "<b><font color='red'>ERROR:</b></font><br />\n";
-					echo "Invitation Email Template CANNOT BE FOUND. This file must exist in the default template folder.\n";
+					echo "<b><font color='red'>"._ERROR."</b></font><br />\n";
+					echo _TC_NOEMAILTEMPLATE."\n";
+					echo "</td></tr></table>\n";
 					exit;
 					}
 				}
@@ -442,7 +456,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "\t\t\t</textarea>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
-		echo "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Send Invitations'></td></tr>\n";
+		echo "\t<tr><td></td><td align='left'><input type='submit' $btstyle value='"._TC_SENDEMAIL."'></td></tr>\n";
 		echo "\t<input type='hidden' name='ok' value='absolutely' />\n";
 		echo "\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n";
 		echo "\t<input type='hidden' name='action' value='email' />\n";
@@ -464,7 +478,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' AND email != ''";
 		if ($_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
 		$emquery .= " LIMIT $maxemails";
-		echo "<!-- emquery: $emquery -->\n";
+		echo "\n\n<!-- emquery: $emquery -->\n\n";
 		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".mysql_error());
 		$emcount = mysql_num_rows($emresult);
 		$headers = "From: {$_POST['from']}\r\n";
@@ -489,7 +503,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 				mail($to, $_POST['subject'], $sendmessage, $headers);
 				$udequery = "UPDATE tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 				$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
-				echo "[Invite Sent to {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+				echo "["._TC_INVITESENTTO."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 				}
 			if ($ctcount > $emcount)
 				{
@@ -497,7 +511,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 				echo "\t\t</td>\n";
 				echo "\t</tr>\n";
 				echo "\t<tr>\n";
-				echo "\t\t<td align='center'>$setfont<b>Warning:</b><br />\n";
+				echo "\t\t<td align='center'>$setfont<b>"._WARNING."</b><br />\n";
 				echo "\t\t\t<form method='post'>\n";
 				echo "The number of emails to send ($ctcount) is greater than the maximum number";
 				echo " of emails that can be sent in one lot ($maxemails). There are still $lefttosend";
@@ -516,14 +530,13 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			}
 		else
 			{
-			echo "<center><b>WARNING:</b><br />\nThere were no token recipients who have not already had";
-			echo " an invitation sent out, or who have not responded!<br /><br />\n";
-			echo "No invitations have been sent out!</center>\n";
+			echo "<center><b>"._WARNING."</b><br />\n"._TC_NONETOSEND."</center>\n";
 			}
 			echo "\t\t</td>\n";
 		echo "\t</tr>\n";
-		echo "</table>\n";
+		echo "</table>\n<br />";
 		}
+	echo "</td></tr></table>\n";
 	}
 	
 if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
@@ -693,12 +706,14 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 	
 if ($action == "tokenify")
 	{
-	echo "$setfont<b>Tokens</b><br />\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TOKENIFY.":</b></td></tr>\n";
+	echo "\t<tr><td align='center'>$setfont<br />\n";
 	if (!$_GET['ok'])
 		{
-		echo "<br />$setfont Clicking OK will generate tokens for all<br />\nthose in this token list that have not<br />\nbeen issued one. Is this OK?<br />\n";
-		echo "<input type='submit' $btstyle value='Yes' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\" />\n";
-		echo "<input type='submit' $btstyle value='No' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
+		echo "<br />$setfont"._TC_CREATETOKENSINFO."<br /><br />\n";
+		echo "<input type='submit' $btstyle value='"._YES."' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\" />\n";
+		echo "<input type='submit' $btstyle value='"._NO."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
+		echo "<br /><br />\n";
 		}
 	else
 		{
@@ -723,8 +738,10 @@ if ($action == "tokenify")
 			$itresult = mysql_query($itquery);
 			$newtokencount++;
 			}
-		echo "<br /><br /><b>$newtokencount tokens have been generated.</b>\n";
+		$message=str_replace("{TOKENCOUNT}", $newtokencount, _TC_TOKENSCREATED);
+		echo "<br /><b>$message</b><br /><br />\n";
 		}
+	echo "\t</td></tr></table>\n";
 	}
 
 
@@ -732,8 +749,11 @@ if ($action == "delete")
 	{
 	$dlquery = "DELETE FROM tokens_$sid WHERE tid={$_GET['tid']}";
 	$dlresult = mysql_query($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".mysql_error());
-	echo "<br /><b>Record has been deleted.</b><br />\n";
-	echo "<font size='1'><i>Reloading browse screen. Please wait...</i></font>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DELETE."</b></td></tr>\n";
+	echo "\t<tr><td align='center'>$setfont<br />\n";
+	echo "<br /><b>"._TC_TOKENDELETED."</b><br />\n";
+	echo "<font size='1'><i>"._RELOADING."</i><br /><br /></font>\n";
+	echo "\t</td></tr></table>\n";
 	}
 
 
@@ -749,42 +769,41 @@ if ($action == "edit" || $action == "add")
 			foreach ($edrow as $Key=>$Value) {$$Key = $Value;}
 			}
 		}
-	echo "<br />\n";
-	echo "<table width='550' bgcolor='#CCCCCC' align='center'>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TC_ADDEDIT."</b></td></tr>\n";
+	echo "\t<tr><td align='center'>\n";
+	//echo "<br />\n";
+	echo "<table width='100%' bgcolor='#CCCCCC' align='center'>\n";
 	echo "<form method='post'>\n";
-	echo "<tr>\n";
-	echo "\t<td colspan='2' align='center'>$setfont<b>Edit/Add Token Entry</b></td>\n";
-	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td align='right' width='20%'>$setfont<b>ID:</b></td><td bgcolor='#EEEEEE'>$setfont Auto</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
-	echo "\t<td align='right' width='20%'>$setfont<b>First Name:</b></td>\n";
+	echo "\t<td align='right' width='20%'>$setfont<b>"._TL_FIRST.":</b></td>\n";
 	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='firstname' value='$firstname'></td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
-	echo "\t<td align='right' width='20%'>$setfont<b>Last Name:</b></td>\n";
+	echo "\t<td align='right' width='20%'>$setfont<b>"._TL_LAST.":</b></td>\n";
 	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='lastname' value='$lastname'></td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
-	echo "\t<td align='right' width='20%'>$setfont<b>Email:</b></td>\n";
+	echo "\t<td align='right' width='20%'>$setfont<b>"._TL_EMAIL.":</b></td>\n";
 	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='50' name='email' value='$email'></td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
-	echo "\t<td align='right' width='20%'>$setfont<b>Token:</b></td>\n";
+	echo "\t<td align='right' width='20%'>$setfont<b>"._TL_TOKEN.":</b></td>\n";
 	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value='$token'>\n";
 	if ($action == "add")
 		{
-		echo "\t\t$setfont<font size='1' color='red'>You should leave this blank and generate the token using 'tokenify'</font></font>\n";
+		echo "\t\t$setfont<font size='1' color='red'>"._TC_TOKENCREATEINFO."</font></font>\n";
 		}
 	echo "\t</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
-	echo "\t<td align='right' width='20%'>$setfont<b>Sent?:</b></td>\n";
+	echo "\t<td align='right' width='20%'>$setfont<b>"._TL_INVITE.":</b></td>\n";
 	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='sent' value='$sent'></td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
-	echo "\t<td align='right' width='20%'>$setfont<b>Complete?:</b></td>\n";
+	echo "\t<td align='right' width='20%'>$setfont<b>"._TL_DONE.":</b></td>\n";
 	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='completed' value='$completed'></td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
@@ -792,57 +811,71 @@ if ($action == "edit" || $action == "add")
 	switch($action)
 		{
 		case "edit":
-			echo "\t\t<input type='submit' $btstyle name='action' value='update'>\n";
+			echo "\t\t<input type='submit' $btstyle name='action' value='"._UPDATE."'>\n";
 			echo "\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
 			break;
 		case "add":
-			echo "\t\t<input type='submit' $btstyle name='action' value='insert'>\n";
+			echo "\t\t<input type='submit' $btstyle name='action' value='"._ADD."'>\n";
 			break;
 		}
 	echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
 	echo "\t</td>\n";
 	echo "</tr>\n</form>\n";
 	echo "</table>\n";
+	echo "</td></tr></table>\n";
 	}
 
 
-if ($action == "update")
+if ($action == _UPDATE)
 	{
-	echo "<br />$setfont<B>UPDATING TOKEN ENTRY</B><br />\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TC_ADDEDIT."</b></td></tr>\n";
+	echo "\t<tr><td align='center'>\n";
 	$udquery = "UPDATE tokens_$sid SET firstname='{$_POST['firstname']}', lastname='{$_POST['lastname']}', email='{$_POST['email']}', token='{$_POST['token']}', sent='{$_POST['sent']}', completed='{$_POST['completed']}' WHERE tid={$_POST['tid']}";
 	$udresult = mysql_query($udquery) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".mysql_error());
-	echo "<br />Entry succesfully updated!\n";
+	echo "<br />$setfont<font color='green'><b>"._SUCCESS."</b></font><br />\n";
+	echo "<br />"._TC_TOKENUPDATED."<br /><br />\n";
+	echo "<a href='tokens.php?sid=$sid&action=browse'>"._T_ALL_BT."</a><br /><br />\n";
+	echo "\t</td></tr></table>\n";
 	}
 
 
-if ($action == "insert")
+if ($action == _ADD)
 	{
-	echo "<br />$setfont<B>INSERTING TOKEN ENTRY</b><br />\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TC_ADDEDIT."</b></td></tr>\n";
+	echo "\t<tr><td align='center'>\n";
 	$inquery = "INSERT into tokens_$sid \n";
 	$inquery .= "(firstname, lastname, email, token, sent, completed) \n";
 	$inquery .= "VALUES ('{$_POST['firstname']}', '{$_POST['lastname']}', '{$_POST['email']}', '{$_POST['token']}', '{$_POST['sent']}', '{$_POST['completed']}')";
 	$inresult = mysql_query($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".mysql_error());
-	echo "<br />Entry succesfully added!\n";
+	echo "<br />$setfont<font color='green'><b>"._SUCCESS."</b></font><br />\n";
+	echo "<br />"._TC_TOKENADDED."<br /><br />\n";
+	echo "<a href='tokens.php?sid=$sid&action=browse'>"._T_ALL_BT."</a><br />\n";
+	echo "<a href='tokens.php?sid=$sid&action=browse'>"._T_ADD_BT."</a><br /><br />\n";
+	echo "\t</td></tr></table>\n";
 	}
 
 
 if ($action == "import") 
 	{
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._UPLOADCSV."</b></td></tr>\n";
+	echo "\t<tr><td align='center'>\n";
 	form();
 	echo "<table width='400' bgcolor='#eeeeee'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
 	echo "\t\t\t<font size='1'><b>Note:</b><br />\n";
-	echo "\t\t\tFile should be a standard comma delimited file with no quotes in the form of:<br /><br />\n";
-	echo "\t\t\t<i>Firstname, Lastname, Email, Token</i>\n";
+	echo "\t\t\t"._TC_UPLOADINFO."</i>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
-	echo "</table>\n";
+	echo "</table><br />\n";
+	echo "</td></tr></table>\n";
 	}
 
 
 if ($action == "upload") 
 	{
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._UPLOADCSV."</b></td></tr>\n";
+	echo "\t<tr><td align='center'>\n";
 	$the_path = "$homedir";
 	$the_file_name = $_FILES['the_file']['name'];
 	$the_file = $_FILES['the_file']['tmp_name'];
@@ -854,8 +887,8 @@ if ($action == "upload")
 		}
 		else
 		{
-		echo "<br /><b>IMPORTING FILE</b><br />\nFile succesfully uploaded<br /><br />\n";
-		echo "Reading File...<br />\n";
+		echo "<br /><b>"._TC_IMPORT."</b><br />\n<font color='green'>"._SUCCESS."</font><br /><br />\n";
+		echo _TC_CREATE."<br />\n";
 		$xz = 0; $xx = 0;
 		$handle = fopen($the_full_file_path, "r");
 		if ($handle == false) {echo "Failed to open the uploaded file!\n";}
@@ -911,11 +944,13 @@ if ($action == "upload")
 				}
 			$xx++;
 			}
-		echo "Process completed.<br />\n";
-		echo "$xz records added.<br />\n";
+		echo "<font color='green'>"._SUCCESS."</font><br /><br>\n";
+		$message=str_replace("{TOKENCOUNT}", $xz, _TC_TOKENS_CREATED);
+		echo "<i>$message</i><br />\n";
 		fclose($handle);
 		unlink($the_full_file_path);
 		}
+	echo "</td></tr></table>\n";
 	}
 
 //echo "ACTION: $action (POST: {$_POST['action']})<br />THEFILE: $the_file (FILES: {$_FILES['the_file']['tmp_name']})<br />THEFILENAME: $the_file_name (FILES: {$_FILES['the_file']['name']})";
