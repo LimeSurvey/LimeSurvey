@@ -109,6 +109,7 @@ define("_B_BACKUP_BT", "Backup results table as SQL file");
 define("_T_ALL_BT", "Display Tokens");
 define("_T_ADD_BT", "Add new token entry");
 define("_T_IMPORT_BT", "Import Tokens from CSV File");
+define("_T_EXPORT_BT", "Export Tokens to CSV file"); //New for 0.98rc7
 define("_T_INVITE_BT", "Send email invitation");
 define("_T_REMIND_BT", "Send email reminder");
 define("_T_TOKENIFY_BT", "Generate Tokens");
