@@ -1177,7 +1177,7 @@ if ($action == "copyquestion")
 		}
 	}
 
-if ($action == "editquestion")
+if ($action == "editquestion" || $action == "editattribute" || $action == "delattribute" || $action == "addattribute")
 	{
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
 	$eqresult = mysql_query($eqquery);
@@ -1312,15 +1312,26 @@ if ($action == "editquestion")
 					    <td colspan='2' align='center'>
 						 <table class='outlinetable' cellspacing='0' width='90%'>
 						  <tr>
-						   <th colspan='3'>{$setfont}Existing Attributes</font></th>
+						   <th colspan='4'>{$setfont}"._QL_QUESTIONATTRIBUTES."</font></th>
 						  </tr>\n";
 	foreach ($qidattributes as $qa)
 		{
 		$editquestion .= "<tr><td align='right' width='50%'>"
-					   .$qa['attribute']."</td><td>"
-					   .$qa['value']."</td><form action='$scriptname' method='post'><td width='5%'>"
-					   ."<input type='submit' $btstyle value='"
-					   ._DELETE."'></td>"
+					   .$qa['attribute']."</td>
+					   <form action='$scriptname' method='post'>
+					   <td align='center'><input type='text' name='attribute_value' size='5' $slstyle value='"
+					   .$qa['value']."' /></td>
+					   <td width='5%'><input type='submit' $btstyle value='"
+					   ._AL_SAVE."' /></td>
+					   <input type='hidden' name='action' value='editattribute'>\n
+					   <input type='hidden' name='sid' value='$sid'>\n
+					   <input type='hidden' name='gid' value='$gid'>\n
+					   <input type='hidden' name='qid' value='$qid'>\n
+					   <input type='hidden' name='qaid' value='".$qa['qaid']."'>\n
+					   </form>
+					   <form action='$scriptname' method='post'><td width='5%'>
+					   <input type='submit' $btstyle value='"
+					   ._DELETE."' /></td>"
 					   . "\t<input type='hidden' name='action' value='delattribute'>\n"
 					   . "\t<input type='hidden' name='sid' value='$sid'>\n"
 					   . "\t<input type='hidden' name='qid' value='$qid'>\n"
@@ -1329,8 +1340,7 @@ if ($action == "editquestion")
 					   . "</form></tr>";
 		}
 	$editquestion .= "\t\t\t	</table></td></tr><tr id='QTattributes'><form action='$scriptname' method='post'>
-						<td align='right'>{$setfont}<b>"._QL_QUESTIONATTRIBUTES."</b></font></td>
-						<td nowrap><select id='QTlist' name='attribute_name' $slstyle>
+						<td nowrap colspan='2' align='center'><select id='QTlist' name='attribute_name' $slstyle>
 						</select>
 						<input type='text' id='QTtext' size='6' name='attribute_value' $slstyle>
 						<input type='submit' value='"._ADD."' $btstyle></td>

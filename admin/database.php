@@ -56,6 +56,17 @@ elseif ($action == "addattribute")
 		$result = mysql_query($query) or die("Error<br />$query<br />".mysql_error());
 	    }
 	}
+elseif ($action == "editattribute")
+	{
+	if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+		{
+		$query = "UPDATE {$dbprefix}question_attributes
+				  SET value='".$_POST['attribute_value']."'
+				  WHERE qaid=".$_POST['qaid']."
+				  AND qid=".$_POST['qid'];
+		$result = mysql_query($query) or die("Error<br />$query<br />".mysql_error());
+		}
+	}
 elseif ($action == "insertnewgroup")
 	{
 	if (!$_POST['group_name'])

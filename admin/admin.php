@@ -131,7 +131,7 @@ if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" 
 	$action == "copynewquestion" || $action == "insertnewgroup" || 
 	$action == "insertnewquestion" || $action == "updatesurvey" || $action=="updategroup" || 
 	$action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
-	$action == "delattribute" || $action == "addattribute")
+	$action == "delattribute" || $action == "addattribute" || $action == "editattribute")
 	{
 	include("database.php");
 	}
