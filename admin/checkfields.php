@@ -180,6 +180,8 @@ echo "\t<tr height='22' bgcolor='#CCCCCC'><td>\n";
 
 echo "$setfont<b>"._CF_CHECKTABLES.":</b><br /><font size='1'>\n";
 
+if (!isset($databasetabletype)) {$databasetabletype="MyISAM";}
+
 $result = mysql_list_tables($databasename);
 while ($row = mysql_fetch_row($result))
 	{
