@@ -286,7 +286,8 @@ elseif ($action == "edit")
 			{
 			$answer = $idrow[$fnames[$i][0]];
 			echo "\t<tr>\n";
-			echo "\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont<b>\n";
+			echo "\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont";
+			echo "<b>\n";
 			if ($fnames[$i][3] != "A" && $fnames[$i][3] != "B" && $fnames[$i][3]!="C" && $fnames[$i][3]!="P" && $fnames[$i][3] != "M") 
 				{
 				echo "\t\t\t{$fnames[$i][2]}\n";
@@ -725,8 +726,13 @@ else
 			$qid = $deqrow['qid'];
 			$fieldname = "$sid"."X"."$gid"."X"."$qid";
 			echo "\t<tr bgcolor='$bgc'>\n";
-			echo "\t\t<td valign='top' width='1%'>$setfont{$deqrow['title']}</td>\n";
-			echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>{$deqrow['question']}</b></font></td>\n";
+			echo "\t\t<td valign='top' width='1%'>$setfont<font size='1'>{$deqrow['title']}</font></font></td>\n";
+			echo "\t\t<td valign='top' align='right' width='30%'>$setfont";
+			if ($deqrow['mandatory']=="Y") //question is mandatory
+				{
+				echo "<font color='red'>*</font>";
+				}
+			echo "</font><b>{$deqrow['question']}</b></td>\n";
 			echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
 			//DIFFERENT TYPES OF DATA FIELD HERE
 			if ($deqrow['help'])
@@ -915,7 +921,7 @@ else
 		{
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>\n";
-		echo "\t\t\t<input type='submit' value='Submit Survey' />\n";
+		echo "\t\t\t<input type='submit' value='Submit Survey' $btstyle/>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		}
