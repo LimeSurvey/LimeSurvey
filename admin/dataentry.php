@@ -935,6 +935,6 @@ else
 	echo "</body>\n</html>";
 	}
 echo "&nbsp;";
-echo htmlfooter("instructions.html#Editing%20and%20Deleting%20Responses", "Using PHPSurvey to Edit Responses");
+echo htmlfooter("instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
 echo "</body>\n</html>";
 ?>
