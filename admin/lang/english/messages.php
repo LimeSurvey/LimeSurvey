@@ -110,6 +110,7 @@ define(_T_KILL_BT, "Drop tokens table");
 //Labels Button Bar
 define(_L_ADDSET_BT, "Add new label set");
 define(_L_EDIT_BT, "Edit label set");
+define(_L_DEL_BT, "Delete label set");
 //Datacontrols
 define(_D_BEGIN, "Show start..");
 define(_D_BACK, "Show last..");
@@ -484,4 +485,5 @@ define(_LB_NEWSET, "Create New Label Set");
 define(_LB_EDITSET, "Edit Label Set");
 define(_LB_FAIL_UPDATESET, "Update of Label Set failed");
 define(_LB_FAIL_INSERTSET, "Insert of new Label Set failed");
+define(_LB_FAIL_DELSET, "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.");
 ?>
