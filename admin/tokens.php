@@ -695,11 +695,10 @@ if (returnglobal('action') == "remind")
 			$surveyname = $esrow['short_title'];
 			$surveydescription = $esrow['description'];
 			$surveyadmin = $esrow['admin'];
-			echo $surveyadmin;
-			echo $surveyadminemail;
 			$surveyadminemail = $esrow['adminemail'];
 			$surveytemplate = $esrow['template'];
 			}
+		if (!$surveyadminemail) {$surveyadminemail=$siteadminemail; $surveyadmin=$siteadminname;}
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."\t<form method='post' action='tokens.php'>\n"
 			."\t<tr>\n"
@@ -863,7 +862,6 @@ if (returnglobal('action') == "remind")
 	echo "</td></tr></table>\n";
 	}
 
-	
 if ($action == "tokenify")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TOKENIFY.":</b></td></tr>\n";
