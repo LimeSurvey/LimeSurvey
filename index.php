@@ -515,7 +515,7 @@ else
 		}
 
 	//if (($currentgroupname != $lastgroupname) && ($move != " << prev "))
-	if ($fieldarray[$t][5] != $fieldarray[$v][5] && $newgroup != "yes" && $groupdescription)
+	if ($fieldarray[$t][5] != $fieldarray[$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev ")
 		{
 		$presentinggroupdescription="yes";
 		echo "\t<form method='post'>\n";
