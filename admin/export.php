@@ -375,7 +375,7 @@ elseif ($answers == "long")
 				$fqid = substr($fqid, 0, strlen($fqid)-1);
 				}
 			$qq = "SELECT type, lid FROM {$dbprefix}questions WHERE qid=$fqid";
-			$qr = mysql_query($qq);
+			$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
 			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 				{$ftype = $qrow['type']; $lid=$qrow['lid'];}
 			if ($type == "csv") {echo "\"";}
