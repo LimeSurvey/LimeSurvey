@@ -123,7 +123,7 @@ if ($action == "id")
 	//echo "$fnquery<br /><br />\n";
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private'];} // Get table output into array
+	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -133,6 +133,10 @@ if ($action == "id")
 	if ($private == "N") //add token to top ofl ist is survey is not private
 		{
 		$fnames[] = array("token", "token", "Token ID");		
+		}
+	if ($datestamp == "Y") //add datetime to list if survey is datestamped
+		{
+		$fnames[] = array("datestamp", "datestamp", "Date Stamp");
 		}
 	
 	foreach ($fnrows as $fnrow)
@@ -251,7 +255,7 @@ elseif ($action == "all")
 	//echo "$fnquery<br /><br />\n";
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private'];} // Get table output into array
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -260,7 +264,10 @@ elseif ($action == "all")
 		{
 		$fnames[] = array("token", "Token", "Token ID", "0");
 		}
-	
+	if ($datestamp == "Y") //Acd datestamp
+		{
+		$fnames[] = array("datestamp", "Datestamp", "Date Stamp", "0");
+		}
 	foreach ($fnrows as $fnrow)
 		{
 		if ($fnrow['type'] != "M" && $fnrow['type'] != "A" && $fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "E" && $fnrow['type'] != "P" && $fnrow['type'] != "O" && $fnrow['type'] != "R")
