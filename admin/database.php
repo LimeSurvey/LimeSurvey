@@ -33,21 +33,24 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
+if ($_POST['action']) {$action = $_POST['action'];}
+if ($_GET['action']) {$action = $_GET['action'];}
+
 if ($action == "insertnewgroup")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$description = addcslashes($description, "'");
-		$group_name = addcslashes($group_name, "'");
+		$description = addcslashes($_POST['description'], "'");
+		$group_name = addcslashes($_POST['group_name'], "'");
 		}
 
-	$query = "INSERT INTO groups (sid, group_name, description) VALUES ('$sid', '$group_name', '$description')";
+	$query = "INSERT INTO groups (sid, group_name, description) VALUES ('{$_POST['sid']}', '$group_name', '$description')";
 	$result = mysql_query($query);
 	
 	if ($result)
 		{
 		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ($group_name) has been created for survey id $sid\")\n //-->\n</script>\n";
-		$query = "SELECT gid FROM groups WHERE group_name='$group_name' AND sid=$sid";
+		$query = "SELECT gid FROM groups WHERE group_name='$group_name' AND sid={$_POST['sid']}";
 		$result = mysql_query($query);
 		while ($res = mysql_fetch_array($result)) {$gid = $res['gid'];}
 		$groupselect = getgrouplist($gid);
@@ -66,16 +69,16 @@ elseif ($action == "updategroup")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$description = addcslashes($description, "'");
-		$group_name = addcslashes($group_name, "'");
+		$description = addcslashes($_POST['description'], "'");
+		$group_name = addcslashes($_POST['group_name'], "'");
 		}
 
-	$ugquery = "UPDATE groups SET group_name='$group_name', description='$description' WHERE sid=$sid AND gid=$gid";
+	$ugquery = "UPDATE groups SET group_name='$group_name', description='$description' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
 	$ugresult = mysql_query($ugquery);
 	if ($ugresult)
 		{
 		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n</script>\n";
-		$groupsummary = getgrouplist($gid);
+		$groupsummary = getgrouplist($_POST['gid']);
 		}
 	else
 		{
@@ -86,7 +89,7 @@ elseif ($action == "updategroup")
 
 elseif ($action == "delgroup")
 	{
-	$query = "DELETE FROM groups WHERE sid=$sid AND gid=$gid";
+	$query = "DELETE FROM groups WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -104,11 +107,11 @@ elseif ($action == "insertnewquestion")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$title = addcslashes($title, "'");
-		$question = addcslashes($question, "'");
-		$help = addcslashes($help, "'");
+		$title = addcslashes($_POST['title'], "'");
+		$question = addcslashes($_POST['question'], "'");
+		$help = addcslashes($_POST['help'], "'");
 		}
-	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other) VALUES ('', '$sid', '$gid', '$type', '$title', '$question', '$help', '$other')";
+	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '$title', '$question', '$help', '{$_POST['other']}')";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -121,11 +124,11 @@ elseif ($action == "updatequestion")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$title = addcslashes($title, "'");
-		$question = addcslashes($question, "'");
-		$help = addcslashes($help, "'");
+		$title = addcslashes($_POST['title'], "'");
+		$question = addcslashes($_POST['question'], "'");
+		$help = addcslashes($_POST['help'], "'");
 		}
-	$uqquery = "UPDATE questions SET type='$type', title='$title', question='$question', help='$help', gid='$gid', other='$other' WHERE sid=$sid AND qid=$qid";
+	$uqquery = "UPDATE questions SET type='{$_POST['type']}', title='$title', question='$question', help='$help', gid='{$_POST['gid']}', other='{$_POST['other']}' WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
 	//echo $uqquery;
 	$uqresult = mysql_query($uqquery);
 	if ($uqresult)
@@ -142,11 +145,11 @@ elseif ($action == "copynewquestion")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$title = addcslashes($title, "'");
-		$question = addcslashes($question, "'");
-		$help = addcslashes($help, "'");
+		$title = addcslashes($_POST['title'], "'");
+		$question = addcslashes($_POST['question'], "'");
+		$help = addcslashes($_POST['help'], "'");
 		}
-	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other) VALUES ('', '$sid', '$gid', '$type', '$title', '$question', '$help', '$other')";
+	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '$title', '$question', '$help', '{$_POST['other']}')";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -187,9 +190,9 @@ elseif ($action == "insertnewanswer")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$answer = addcslashes($answer, "'");
+		$answer = addcslashes($_POST['answer'], "'");
 		}
-	$iaquery = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('$qid', '$code', '$answer', '$default')";
+	$iaquery = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '$answer', '{$_POST['default']}')";
 	$iaresult = mysql_query ($iaquery);
 	if ($iaresult)
 		{
@@ -207,9 +210,9 @@ elseif ($action == "updateanswer")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$answer = addcslashes($answer, "'");
+		$answer = addcslashes($_POST['answer'], "'");
 		}
-	$uaquery = "UPDATE answers SET code='$code', answer='$answer', `default`='$default' WHERE qid=$qid AND code='$old_code'";
+	$uaquery = "UPDATE answers SET code='{$_POST['code']}', answer='$answer', `default`='{$_POST['default']}' WHERE qid={$_POST['qid']} AND code='{$_POST['old_code']}'";
 	//echo $uaquery;
 	$uaresult = mysql_query($uaquery);
 	if ($uaresult)
@@ -225,7 +228,7 @@ elseif ($action == "updateanswer")
 
 elseif ($action == "delanswer")
 	{
-	$query = "DELETE FROM answers WHERE qid=$qid AND code='$code'";
+	$query = "DELETE FROM answers WHERE qid={$_POST['qid']} AND code='{$_POST['code']}'";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -234,7 +237,7 @@ elseif ($action == "delanswer")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question {$_POST['qid']} was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -242,16 +245,21 @@ elseif ($action == "insertnewsurvey")
 	{
 	if (get_magic_quotes_gpc()=="0")
 		{
-		$short_title = addcslashes($short_title, "'");
-		$description = addcslashes($description, "'");
-		$welcome = addcslashes($welcome, "'");
+		$short_title = addcslashes($_POST['short_title'], "'");
+		$description = addcslashes($_POST['description'], "'");
+		$welcome = addcslashes($_POST['welcome'], "'");
 		}
-	$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires, adminemail, private, faxto) VALUES ('', '$short_title', '$description', '$admin', 'N', '".str_replace("\n", "<br />", $welcome)."', '$expires', '$adminemail', '$private', '$faxto')";
+	$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires,";
+	$isquery .= " adminemail, private, faxto) VALUES ('', '$short_title', '$description',";
+	$isquery .= " '{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $welcome)."',";
+	$isquery .= " '{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',";
+	$isquery .= " '{$_POST['faxto']}')";
 	$isresult = mysql_query ($isquery);
 	if ($isresult)
 		{
 		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been created!\")\n //-->\n</script>\n";
-		$isquery = "SELECT sid FROM surveys WHERE short_title like '$short_title' AND description like '$description' AND admin like '$admin'";
+		$isquery = "SELECT sid FROM surveys WHERE short_title like '$short_title'";
+		$isquery .= " AND description like '$description' AND admin like '{$_POST['admin']}'";
 		$isresult = mysql_query($isquery);
 		while ($isr = mysql_fetch_array($isresult)) {$sid = $isr['sid'];}
 		$surveyselect = getsurveylist();
@@ -266,15 +274,15 @@ elseif ($action == "updatesurvey")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$short_title = addcslashes($short_title, "'");
-		$description = addcslashes($description, "'");
-		$welcome = addcslashes($welcome, "'");
+		$short_title = addcslashes($_POST['short_title'], "'");
+		$description = addcslashes($_POST['description'], "'");
+		$welcome = addcslashes($_POST['welcome'], "'");
 		}
-	$usquery = "UPDATE surveys SET short_title='$short_title', description='$description',";
-	$usquery .= " admin='$admin', welcome='".str_replace("\n", "<br />", $welcome)."',";
-	$usquery .= " expires='$expires', adminemail='$adminemail',";
-	$usquery .= " private='$private', faxto='$faxto'";
-	$usquery .= " WHERE sid=$sid";
+	$usquery = "UPDATE surveys SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',";
+	$usquery .= " admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',";
+	$usquery .= " expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',";
+	$usquery .= " private='{$_POST['private']}', faxto='{$_POST['faxto']}'";
+	$usquery .= " WHERE sid={$_POST['sid']}";
 	$usresult = mysql_query($usquery);
 	if ($usresult)
 		{
@@ -283,13 +291,13 @@ elseif ($action == "updatesurvey")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be updated! " . mysql_error() ."\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be updated! " . mysql_error() ." ($usquery)\")\n //-->\n</script>\n";
 		}
 	}
 
 elseif ($action == "delsurvey")
 	{
-	$query = "DELETE FROM surveys WHERE sid=$sid";
+	$query = "DELETE FROM surveys WHERE sid={$_POST['sid']}";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -299,13 +307,13 @@ elseif ($action == "delsurvey")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id({$_POST['sid']}) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
 elseif ($action == "adduser")
 	{
-	exec("$homedir\htpasswd.exe -b .htpasswd $user $pass"); 
+	exec("$homedir\htpasswd.exe -b .htpasswd {$_POST['user']} {$_POST['pass']}"); 
 	}	
 
 else
