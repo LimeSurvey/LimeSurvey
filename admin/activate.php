@@ -52,8 +52,15 @@ if (!$_GET['ok'])
 		$chacount=mysql_num_rows($charesult);
 		if (!$chacount > 0) 
 			{
-			$failedcheck[]=array($chkrow['qid'], $chkrow['question']);
+			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], " is a multiple answer style question but does not have any answers");
 			}
+		}
+	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
+	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type = ''";
+	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing types<br />$chkquery<br />".mysql_error());
+	while ($chkrow = mysql_fetch_array($chkresult))
+		{
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], " does not have a question type set.");
 		}
 	if ($failedcheck)
 		{
@@ -70,8 +77,7 @@ if (!$_GET['ok'])
 		echo "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 			{
-			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"{$fc[1]}\") is a multiple answer style question "
-				."but does not have any answers.</li>\n";
+			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"{$fc[1]}\") {$fc[2]}</li>\n";
 			}
 		echo "\t\t\t</ul>\n";
 		echo "\t\t\tThe survey cannot be activated until these problems have been resolved.\n";
