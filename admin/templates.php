@@ -129,6 +129,26 @@ if ($action == "rename" && isset($_GET['newname']) && isset($_GET['copydir'])) {
 	$templatename=$_GET['newname'];
 	}
 }
+
+if ($action == "upload") {
+	//Uploads the file into the appropriate directory
+	$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
+	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
+		echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+		echo _IS_FAILUPLOAD."<br /><br />\n";
+		echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "</td></tr></table>\n";
+		echo "</body>\n</html>\n";
+		exit;
+	}	
+}
+
+if ($action == "delete") {
+	if ($_POST['otherfile'] != "chart.jpg") {
+	    $the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_POST['otherfile']; //This is where the temp file is
+		unlink($the_full_file_path);
+	}
+}
 function mkdir_p($target){
 	//creates a new directory
 	//Returns 1 for success
@@ -404,14 +424,16 @@ if ($handle = opendir($dirloc)) {
 //****************************************************************
 echo $htmlheader;
 echo "<script type='text/javascript'>\n"
-	."<!--\nfunction copyprompt(text, defvalue, copydirectory, action)\n"
+	."<!--\n"
+	."function copyprompt(text, defvalue, copydirectory, action)\n"
 	."\t{\n"
 	."\tif (newtemplatename=window.prompt(text, defvalue))\n"
 	."\t\t{\n"
 	."\t\tvar url='templates.php?action='+action+'&newname='+newtemplatename+'&copydir='+copydirectory;\n"
 	."\t\twindow.open(url, '_top');\n"
 	."\t\t}\n"
-	."\t}\n//-->\n</script>\n";
+	."\t}\n"
+	."//-->\n</script>\n";
 echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	. "\t<tr>\n"
 	. "\t\t<td>\n"
@@ -490,7 +512,8 @@ echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1
 	. "\t\t\t\t\t$setfont<font size='1' color='white'><b>"._TP_FILECONTROL."</b>\n"
 	. "\t\t\t\t</font></font></td>\n"
 	. "\t\t\t</tr>\n"
-	. "\t\t\t<tr bgcolor='#999999'><form method='post' action='templates.php'>\n"
+	. "\t\t\t<tr bgcolor='#999999'>"
+	."<form name='editTemplate' method='post' action='templates.php'>\n"
 	. "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
 	. "\t\t\t<input type='hidden' name='screenname' value='$screenname' />\n"
 	. "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
@@ -507,7 +530,7 @@ echo "\t\t\t\t<table width='100%' border='0'>\n"
 	."\t\t\t\t\t\t</font></font></td>\n"
 	."\t\t\t\t\t\t<td align='center' valign='top'>"
 	."$setfont<b>"._TP_NOWEDITING." <i>$editfile</i></b><font size='1'><br />\n"
-	."<textarea $slstyle3 name='changes' cols='110' rows='12'>";
+	."<textarea $slstyle3 name='changes' id='changes' cols='110' rows='12' onChange=\"setCursorPos()\" onClick=\"setCursorPos()\">";
 if ($editfile) {
 	echo filetext($editfile);
 }
@@ -521,21 +544,37 @@ echo ">";
 	}
 echo "<br />\n"
 	. "</font></font></td></form>\n"
-	."\t\t\t\t\t\t<td valign='top' align='right'>"
+	."\t\t\t\t\t\t<form action='templates.php' method='post'><td valign='top' align='right'>"
 	. "$setfont<b>"._TP_OTHERFILES."</b><br />\n"
 	//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
-	. "<select size='12' $slstyle2 name='otherfile' style='width: 120'>\n"
+	. "<select size='9' $slstyle2 name='otherfile' id='otherfile' style='width: 120'>\n"
 	.makeoptions($otherfiles, "name", "name", "")
-	."</select><br />"
-	."<input type='submit' value='"._TP_DELETEFILE."' $btstyle";
+	."</select>"
+	."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n"
+	."<tr><td align='right'>$setfont"
+	."<input type='submit' value='"._TP_DELETEFILE."' $btstyle onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
 if ($templatename == "default") {
     echo " disabled";
 }
-echo "><input type='submit' value='"._TP_UPLOADFILE."' $btstyle";
+echo "></font></td>\n"
+	."<input type='hidden' name='editfile' value='$editfile'>\n"
+	."<input type='hidden' name='screenname' value='$screenname'>\n"
+	."<input type='hidden' name='templatename' value='$templatename'>\n"
+	."<input type='hidden' name='action' value='delete'>\n"
+	."</form></tr><tr $btstyle>"
+	."<form enctype='multipart/form-data' name='importsurvey' action='templates.php' method='post'>\n"
+	."<td align='right' style='border: solid 1 #000080'>$setfont"
+	."<input $btstyle name=\"the_file\" type=\"file\" size=\"7\"><br />"
+	."<input type='submit' value='"._TP_UPLOADFILE."' $btstyle";
 if ($templatename == "default") {
     echo " disabled";
 }
-echo ">"
+echo "></font></td>\n"
+	."<input type='hidden' name='editfile' value='$editfile'>\n"
+	."<input type='hidden' name='screenname' value='$screenname'>\n"
+	."<input type='hidden' name='templatename' value='$templatename'>\n"
+	."<input type='hidden' name='action' value='upload'>\n"
+	."</form></tr></table>\n"
 	."\t\t\t\t\t\t</font></font></td>\n"
 	."\t\t\t\t\t</tr>\n"
 	."\t\t\t\t</table>\n"
