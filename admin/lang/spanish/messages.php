@@ -125,6 +125,7 @@ define(_D_END, "Mostrar &uacute;ltima..");
 //DATA LABELS
 //surveys
 define(_SL_TITLE, "T&iacute;tulo:");
+define(_SL_SURVEYURL, "Encuesta URL:"); //new in 0.98rc5
 define(_SL_DESCRIPTION, "Descripci&oacute;n:");
 define(_SL_WELCOME, "Bienvenida:");
 define(_SL_ADMIN, "Administrador:");
