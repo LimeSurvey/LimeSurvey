@@ -194,22 +194,28 @@ elseif ($action == "delquestion")
 
 elseif ($action == "insertnewanswer")
 	{
-	if (get_magic_quotes_gpc() == "0")
+	if (!$_POST['code'] || !$_POST['answer'])
 		{
-		$_POST['answer'] = addcslashes($_POST['answer'], "'");
-		}
-	$iaquery = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['default']}')";
-	$iaresult = mysql_query ($iaquery);
-	if ($iaresult)
-		{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your New Answer has been added!\")\n //-->\n</script>\n";
-		$surveyselect = getsurveylist();
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be created! It does not contain both an answer code and answer text (which are required).\")\n //-->\n</script>\n";
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created!\")\n //-->\n</script>\n";
-		}
-	
+		if (get_magic_quotes_gpc() == "0")
+			{
+			$_POST['answer'] = addcslashes($_POST['answer'], "'");
+			}
+		$iaquery = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['default']}')";
+		$iaresult = mysql_query ($iaquery);
+		if ($iaresult)
+			{
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your New Answer has been added!\")\n //-->\n</script>\n";
+			$surveyselect = getsurveylist();
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be created!\")\n //-->\n</script>\n";
+			}
+		}	
 	}
 
 elseif ($action == "updateanswer")
