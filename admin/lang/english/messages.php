@@ -14,6 +14,7 @@ define(_ACTIVATE, "Activate Survey");
 define(_DEACTIVATE, "Deactivate Survey");
 define(_CHECKFIELDS, "Check Database Fields");
 define(_CREATEDB, "Create Database");
+define(_CREATESURVEY, "Create Survey"); //New for 0.98rc4
 define(_SETUP, "PHPSurveyor Setup");
 define(_DELETESURVEY, "Delete Survey");
 define(_EXPORTQUESTION, "Export Question");
