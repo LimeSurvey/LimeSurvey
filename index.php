@@ -672,7 +672,7 @@ else
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2' align='center' valign='top'>\n";
 		echo "\t\t\t<b><font color='#000080'>\n";
-		echo $_SESSION['fieldarray'][$t][3]."\n";
+		echo nl2br($_SESSION['fieldarray'][$t][3])."\n";
 		echo "\t\t\t</font></b>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
