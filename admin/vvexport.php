@@ -43,7 +43,7 @@ if (!$action == "export")
 	{
     echo $htmlheader;
 	echo "<br /><table align='center' class='outlinetable'>
-		<tr><th colspan='2'>VV Export</th></tr>
+		<tr><th colspan='2'>"._VV_EXPORTFILE."</th></tr>
 		<form method='post'>
 		<tr>
 		 <td align='right'>"._EXPORTSURVEY.":</td>
@@ -55,8 +55,8 @@ if (!$action == "export")
 		 </td>
 		 <td>
 		  <select name='method' $slstyle>
-		   <option value='deactivate' selected>Export then de-activate Survey</option>
-		   <option value='none'>Export but leave results and survey active</option>
+		   <option value='deactivate' selected>"._VV_EXPORTDEACTIVATE."</option>
+		   <option value='none'>"._VV_EXPORTONLY."</option>
 		  </select>
 		 </td>
 		</tr>

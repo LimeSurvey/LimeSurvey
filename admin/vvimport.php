@@ -83,7 +83,7 @@ else
 	echo $htmlheader;
 	echo "<br /><table class='outlinetable' align='center'>
 		<tr><th>Upload</th></tr>
-		<tr><td>";
+		<tr><td align='center'>";
 	$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 	
 	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
@@ -144,11 +144,13 @@ else
 			unset($fieldnames[$key]);
 			}
 		}
-	
+	$importcount=0;
+	$recordcount=0;
 	foreach($bigarray as $row)
 		{
 		if (trim($row) != "")
 			{
+			$recordcount++;
 			$fieldvalues=explode("\t", mysql_escape_string(str_replace("\n", "", $row)), $fieldcount+1);
 			if (isset($donotimport)) //remove any fields which no longer exist
 				{
@@ -165,15 +167,23 @@ else
 			
 			if (!$result = mysql_query($insert)) 
 				{
-			    echo "Failed insert: <pre>$insert</pre>".mysql_error();
+				echo "<table align='center' class='outlintable'>
+				      <tr><td>"._VV_ENTRYFAILED." $recordcount "._VV_BECAUSE." [".mysql_error()."]
+					  </td></tr></table>\n";
+			    }
+			else
+				{
+				$importcount++;
 				}
 
 			}
 		}
 	
-	echo "<font color='green'>"._SUCCESS."</font>
-		  File upload completed.<br /><br />
-		  <i>Note: Do NOT refresh this page</i><br /><br />";
+	if ($noid == "noid")
+		{
+		echo "<br /><i><b><font color='red'>"._VV_DONOTREFRESH."</font></b></i><br /><br />";
+		}
+	echo _VV_IMPORTNUMBER." ".$importcount."<br /><br />";
 	echo "[<a href='browse.php?sid=$sid'>"._BROWSERESPONSES."</a>]";
 	echo "</td></tr></table>";
 	}
