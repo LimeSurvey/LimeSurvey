@@ -272,7 +272,7 @@ if ($move == " submit ")
 				}
 			else
 				{
-				$values .= ", '" . mysql_real_escape_string($$value, "'") . "'";
+				$values .= ", '" . mysql_escape_string($$value) . "'";
 				}
 			}
 		else
