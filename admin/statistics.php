@@ -81,15 +81,30 @@ deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 //Get the menubar
 $surveyoptions=browsemenubar();
 
+echo "\t<script type='text/javascript'>
+	  <!--
+	   function hide(element) {
+	    document.getElementById(element).style.display='none';
+	   }
+	   function show(element) {
+	    document.getElementById(element).style.display='';
+	   }
+	  //-->
+	  </script>\n";
+
 echo "<table height='1'><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._STATISTICS."</b></td></tr>\n";
 echo $surveyoptions;
 echo "</table>\n"
 	."<table height='1'><tr><td></td></tr></table>\n"
-	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0' bordercolor='#555555'>\n"
-	."<tr><td align='center' bgcolor='#555555'><font size='2' face='verdana' color='orange'><b>"._ST_FILTERSETTINGS."</b></td></tr>\n"
-	."\t<form method='post'>\n";
+	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
+	." cellspacing='0' bordercolor='#555555'>\n"
+	."<tr><td align='center' bgcolor='#555555' height='22'>"
+	."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"filtersettings\"); hide(\"sqlbuilder\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"filtersettings\")'>"
+	."<font size='2' face='verdana' color='orange'><b>"._ST_FILTERSETTINGS."</b>"
+	."</td></tr>\n"
+	."<form method='post'>\n";
 
 //Select public language file
 $query = "SELECT language, datestamp FROM {$dbprefix}surveys WHERE sid=$sid";
@@ -121,7 +136,9 @@ foreach ($rows as $row)
 	}
 
 // SHOW ID FIELD
+
 echo "\t\t<tr><td align='center'>
+	   <table cellspacing='0' cellpadding='0' width='100%' id='filtersettings'><tr><td>
 		<table align='center'><tr>\n";
 $myfield = "id";
 $myfield2=$myfield."G";
@@ -617,13 +634,71 @@ echo "\t\t\t</table>\n"
 	."\t<input type='hidden' name='sid' value='$sid'>\n"
 	."\t<input type='hidden' name='display' value='stats'>\n"
 	."\t</form>\n"
-	."</table>\n";
+	."</table>\n"
+	."</td></tr></table>";
 
+$fieldmap = createFieldMap($sid, "full");
+$selectlist = "";
+foreach ($fieldmap as $field)
+	{
+	$selectlist .= "<option value='".$field['fieldname']."'>"
+				.$field['title'].": ".$field['question']."</option>\n";
+	}
 
+echo "</table>\n"
+	."<table height='1'><tr><td></td></tr></table>\n"
+	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
+	." cellspacing='0' bordercolor='#555555'>\n"
+	."<tr><td align='center' bgcolor='#555555' height='22'>"
+	."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"sqlbuilder\"); hide(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"sqlbuilder\")'>"
+	."<font size='2' face='verdana' color='orange'><b>SQL Builder</b>"
+	."</td></tr>\n"
+	."<form method='post'>\n";
 
+echo "		<tr><td>
+	  <script type='text/javascript'>
+	  <!--
+	   function displayvalue(value) {
+	     document.getElementById('fieldnametext').value=value;
+	   }
+	  //-->
+	  </script>
+	  <table width='100%' align='center' cellspacing='0' cellpadding='0' style='display:none' id='sqlbuilder'>
+	   <tr>
+	    <td align='center'>Questions:<br />
+		 <select size='5' style='width: 800; font-size: 8.5px' onClick='displayvalue(this.value)' onChange='displayvalue(this.value)'>$selectlist</select>
+	    </td>
+	   </tr>
+	   <tr>
+	    <td align='center'><br />
+		 Field Name:<br /><input type='text' id='fieldnametext' size='50'>
+		</td>
+	   </tr>
+   	   <tr>
+	    <td align='center'><br />
+		 "._SQL.":<br />
+		 <textarea name='sql' cols='60' rows='10'>SELECT *\nFROM survey_$sid\n</textarea>
+		</td>
+	   </tr>
+	   <tr>
+	    <td align='center'>
+		 <input type='submit' value='Query'>
+		</td>
+	   </tr>
+	  </table>
+	  <input type='hidden' name='display' value=\"Hi\">
+	  </td></tr></form>
+	  </table>";
+//echo "<pre>";print_r($fieldmap);echo "</pre>";
 // DISPLAY RESULTS
 if (isset($_POST['display']) && $_POST['display'])
 	{
+	echo "<script type='text/javascript'>
+	<!-- 
+	 hide('sqlbuilder'); 
+	 hide('filtersettings'); 
+	//-->
+	</script>\n";
 	// 1: Get list of questions with answers chosen
 	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;} // creates array of post variable names
 	foreach ($postvars as $pv) 
@@ -800,7 +875,7 @@ if (isset($_POST['display']) && $_POST['display'])
 							$aresult = mysql_query($aquery);
 							while($arow = mysql_fetch_row($aresult)){
 								if ($arow[0] == "Y") {
-									echo $arow[0];
+									//echo $arow[0];
 									$field = substr($viewfields, 1, strlen($viewfields)-1)."other";
 								    echo "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
 								}
@@ -837,7 +912,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		$legitqids[] = $lw['qid']; //this creates an array of question id's'
 		}
 	//Finished collecting legitqids
-
 	foreach ($runthrough as $rt)
 		{
 		// 1. Get answers for question ##############################################################
@@ -905,7 +979,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			}
 		elseif (substr($rt, 0, 1) == "N") //NUMERICAL TYPE
 			{
-			if (substr($rt, -1) == "G" || substr($rt, -1) == "L") 
+			if (substr($rt, -1) == "G" || substr($rt, -1) == "L" || substr($rt, -1) == "=") 
 				{
 			    //DO NUSSINK
 				}
@@ -1047,6 +1121,9 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					."\t</tr>\n";
 				unset($showem);
 				}
+			}
+		elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp")
+			{
 			}
 		else // NICE SIMPLE SINGLE OPTION ANSWERS
 			{
