@@ -1,6 +1,7 @@
 <?php
 //THE TABLE STRUCTURE, TABLE BY TABLE AND FIELD BY FIELD
 include("config.php");
+
 //TABLES THAT SHOULD EXIST
 $alltables=array("surveys", "groups", "questions", "answers", "conditions", "users");
 
@@ -50,7 +51,14 @@ $allfields[]=array("surveys", "urldescrip", "urldescrip varchar(255) default NUL
 $allfields[]=array("surveys", "language", "language varchar(50) default ''");
 $allfields[]=array("surveys", "datestamp", "datestamp char(1) default 'N'");
 
-echo "$setfont<center><b><u>Checking $databasename to ensure all tables exist</u></b></p>\n";
+echo $htmlheader;
+
+echo "<br />\n";
+echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._CHECKFIELDS."</b> <font color='silver'>{$s1row['short_title']}</td></tr>\n";
+echo "\t<tr height='22' bgcolor='#CCCCCC'><td>\n";
+
+echo "$setfont<b><u>"._CF_CHECKTABLES.":</u></b><br />\n";
 
 $result = mysql_list_tables($databasename);
 while ($row = mysql_fetch_row($result))
@@ -59,10 +67,9 @@ while ($row = mysql_fetch_row($result))
     }
 foreach ($alltables as $at)
 	{
-	echo "<b>--== Checking $at ==--</b><br />";
+	echo "<b>-></b>"._CF_CHECKING." <b>$at</b>..<br />";
 	if (!in_array($at, $tablelist))
 		{
-		echo "$at table does not exist!<br />\n";
 		//Create table
 		$ctquery="CREATE TABLE `$at` (\n";
 		foreach ($allfields as $af)
@@ -75,14 +82,18 @@ foreach ($alltables as $at)
 		$ctquery .= ")\n";
 		$ctquery .= "TYPE=MyISAM";
 		$ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error);
-		echo "Table Created!";
+		echo _CF_TABLECREATED."! ($at)";
 		}
-	echo "<br />\n";
+	else
+		{
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;"._CF_OK."<br />\n";
+		}
+	//echo "<br />\n";
 	}
 echo "<br />\n";
 
 
-echo "$setfont<center><b><u>Checking $databasename to ensure all fields exist</u></b></p>\n";
+echo "$setfont<b><u>"._CF_CHECKTABLES.":</u></b><br />\n";
 
 //GET LIST OF TABLES
 $tables = mysql_list_tables($databasename);
@@ -102,7 +113,7 @@ foreach ($tablenames as $tn)
 function checktable($tablename)
 	{
 	global $databasename, $allfields;
-	echo "<br /><b>--== CHECKING <i>$tablename</i> ==--</b><br />";
+	echo "<b>-></b>"._CF_CHECKING." <b>$tablename</b>..<br />";
 	$fields=mysql_list_fields($databasename, $tablename);
 	$numfields=mysql_num_fields($fields);
 	for ($i=0; $i<$numfields; $i++)
@@ -123,21 +134,23 @@ function checktable($tablename)
 				}
 			if ($thisfieldexists==0)
 				{
-				echo "<br /><b>Missing Field!</b> Field $af[1] is missing.";
-				echo "<br />";
 				$query="ALTER TABLE `$tablename` ADD $af[2]";
 				$result=mysql_query($query) or die("Insert field failed.<br />$query<br />".mysql_error());
-				echo "Field $af[1] has been added!";
+				echo "&nbsp;&nbsp;&nbsp;&nbsp;"._CF_FIELDCREATED." ($af[1]) <br />\n";
 				$addedfield="Y";
 				}
 			}
 		}
 	if ($addedfield != "Y")
 		{
-		echo "All required fields exist.<br />\n";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;"._CF_OK."<br />\n";
 		}
 	}
-echo "<br />&nbsp;\n";
+echo "</td></tr>\n<tr><td align='center' bgcolor='#CCCCCC'>\n";
+echo "<a href='admin.php'>"._GO_ADMIN."</a>\n";
+
+echo "</td></tr></table>\n";
 echo "<br />\n";
-echo "<a href='admin.php'>Return to Admin</a>\n";
+echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
+
 ?>
