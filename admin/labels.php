@@ -175,8 +175,18 @@ if ($action == "newset" || $action == "editset")
 	echo "\t\t</table>\n";
 	}
 //SET SELECTED
-if (isset($lid) && ($action != "editset"))
+if (isset($lid) && ($action != "editset") && $lid)
 	{
+	//CHECK TO SEE IF ANY ACTIVE SURVEYS ARE USING THIS LABELSET (Don't let it be changed if this is the case)
+	$query = "SELECT surveys.short_title FROM questions, surveys WHERE questions.sid=surveys.sid AND questions.lid=$lid AND surveys.active='Y'";
+	$result = mysql_query($query);
+	$activeuse=mysql_num_rows($result);
+	while ($row=mysql_fetch_array($result)) {$activesurveys[]=$row['short_title'];}
+	//NOW ALSO COUNT UP HOW MANY QUESTIONS ARE USING THIS LABELSET, TO GIVE WARNING ABOUT CHANGES
+	$query = "SELECT * FROM questions WHERE lid=$lid";
+	$result = mysql_query($query);
+	$totaluse=mysql_num_rows($result);
+	//NOW GET THE ANSWERS AND DISPLAY THEM
 	$query = "SELECT * FROM labelsets WHERE lid=$lid";
 	$result = mysql_query($query);
 	while ($row=mysql_fetch_array($result)) 
@@ -227,7 +237,15 @@ if (isset($lid) && ($action != "editset"))
 		echo "\t\t\t\t<tr>\n";
 		echo "\t\t\t\t<form method='post' action='labels.php'>\n";
 		echo "\t\t\t\t\t<td>\n";
-		echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='5' value=\"{$row['code']}\">\n";
+		if ($activeuse > 0)
+			{
+			echo "\t\t\t\t\t$setfont{$row['code']}</font>";
+			echo "<input type='hidden' name='code' value=\"{$row['code']}\">\n";
+			}
+		else
+			{
+			echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='5' value=\"{$row['code']}\">\n";
+			}
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t\t<td>\n";
 		echo "\t\t\t\t\t<input type='text' $slstyle name='title' size='35' value=\"{$row['title']}\">\n";
@@ -245,7 +263,10 @@ if (isset($lid) && ($action != "editset"))
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t\t<td>\n";
 		echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_SAVE."'>\n";
-		echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DEL."'>\n";
+		if ($activeuse == 0)
+			{
+			echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DEL."'>\n";
+			}
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t</tr>\n";
 		echo "\t\t\t\t<input type='hidden' name='sortorder' value='{$row['sortorder']}'>\n";
@@ -257,20 +278,31 @@ if (isset($lid) && ($action != "editset"))
 		$position++;
 		}
 	$position=sprintf("%05d", $position);
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t<form method='post' action='labels.php'>\n";
-	echo "\t\t\t\t\t<td>\n";
-	echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='5'>\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t\t<td>\n";
-	echo "\t\t\t\t\t<input type='text' $slstyle name='title' size='35'>\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t\t<td>\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t\t<td>\n";
-	echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._ADD."'>\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t</tr>\n";
+	if ($activeuse == 0)
+		{
+		echo "\t\t\t\t<tr>\n";
+		echo "\t\t\t\t<form method='post' action='labels.php'>\n";
+		echo "\t\t\t\t\t<td>\n";
+		echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='5'>\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t\t<td>\n";
+		echo "\t\t\t\t\t<input type='text' $slstyle name='title' size='35'>\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t\t<td>\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t\t<td>\n";
+		echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._ADD."'>\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t</tr>\n";
+		}
+	else
+		{
+		echo "\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t<td colspan='4' align='center'>\n";
+		echo "\t\t\t\t\t\t$setfont<font color='red' size='1'><i><b>"._WARNING."</b>: "._LB_ACTIVEUSE."</i></font></font>\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t</tr>\n";
+		}
 	echo "\t\t\t\t<input type='hidden' name='sortorder' value='$position'>\n";
 	echo "\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n";
 	echo "\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n";
@@ -280,6 +312,14 @@ if (isset($lid) && ($action != "editset"))
 	echo "\t\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n";
 	echo "\t\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n";
 	echo "\t\t\t\t</form></tr>\n";
+	if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
+		{
+		echo "\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t<td colspan='4' align='center'>\n";
+		echo "\t\t\t\t\t\t$setfont<font color='red' size='1'><i><b>"._WARNING."</b>: "._LB_TOTALUSE."</i></font></font>\n";
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t</tr>\n";
+		}
 	echo "\t\t\t</table>\n";
 	echo "\t\t\t<table height='1'><tr><td></td></tr></table>\n";
 	}
