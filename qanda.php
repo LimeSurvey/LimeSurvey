@@ -1019,7 +1019,7 @@ function do_gender($ia)
 
 function do_array_5point($ia)
 	{
-	global $dbprefix;
+	global $dbprefix, $shownoanswer;
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -1034,7 +1034,7 @@ function do_array_5point($ia)
 		{
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
 		}
-	if ($ia[6] != "Y") //Question is not mandatory
+	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
 		{
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
 		}
@@ -1051,7 +1051,7 @@ function do_array_5point($ia)
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 			}
-		if ($ia[6] != "Y")
+		if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
 			$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
@@ -1071,7 +1071,7 @@ function do_array_5point($ia)
 
 function do_array_10point($ia)
 	{
-	global $dbprefix;
+	global $dbprefix, $shownoanswer;
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -1086,7 +1086,7 @@ function do_array_10point($ia)
 		{
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
 		}
-	if ($ia[6] != "Y") //Question is not mandatory
+	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
 		{
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
 		}
@@ -1103,7 +1103,7 @@ function do_array_10point($ia)
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 			}
-		if ($ia[6] != "Y")
+		if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
 			$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
@@ -1122,7 +1122,7 @@ function do_array_10point($ia)
 
 function do_array_yesnouncertain($ia)
 	{
-	global $dbprefix;
+	global $dbprefix, $shownoanswer;
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -1136,7 +1136,7 @@ function do_array_yesnouncertain($ia)
 			 . "\t\t\t\t\t<td align='center' class='array1'>"._YES."</td>\n"
 			 . "\t\t\t\t\t<td align='center' class='array1'>"._UNCERTAIN."</td>\n"
 			 . "\t\t\t\t\t<td align='center' class='array1'>"._NO."</td>\n";
-	if ($ia[6] != "Y") //Question is not mandatory
+	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
 		{
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
 		}
@@ -1156,7 +1156,7 @@ function do_array_yesnouncertain($ia)
 				 . "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='N'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "N") {$answer .= " checked";}
 		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
-		if ($ia[6] != "Y")
+		if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
 			$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
@@ -1176,6 +1176,7 @@ function do_array_yesnouncertain($ia)
 function do_array_increasesamedecrease($ia)
 	{
 	global $dbprefix;
+	global $shownoanswer;
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -1189,7 +1190,7 @@ function do_array_increasesamedecrease($ia)
 			 . "\t\t\t\t\t<td align='center' class='array1'>"._INCREASE."</td>\n"
 			 . "\t\t\t\t\t<td align='center' class='array1'>"._SAME."</td>\n"
 			 . "\t\t\t\t\t<td align='center' class='array1'>"._DECREASE."</td>\n";
-	if ($ia[6] != "Y") //Question is not mandatory
+	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
 		{
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
 		}
@@ -1209,7 +1210,7 @@ function do_array_increasesamedecrease($ia)
 				 . "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='D'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "D") {$answer .= " checked";}
 		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
-		if ($ia[6] != "Y")
+		if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
 			$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
@@ -1301,8 +1302,6 @@ function do_array_flexible($ia)
 		$fn++;
 		}
 	$answer .= "\t\t\t</table>\n";
-	unset($labelans);
-	unset($labelcode);
 	return array($answer, $inputnames);
 	}
 
@@ -1360,7 +1359,6 @@ function do_array_flexiblecolumns($ia)
 	$percwidth=100/($ansrowcount + 1);
 	foreach($labels as $ansrow)
 		{
-		//$myfname = $ia[1].$ansrow['code'];
 		$answer .= "\t\t\t\t<tr>\n"
 				 . "\t\t\t\t\t<td align='right' class='array1' width='$percwidth%'>{$ansrow['answer']}</td>\n";
 		foreach ($anscode as $ld)
@@ -1375,6 +1373,7 @@ function do_array_flexiblecolumns($ia)
 		$answer .= "\t\t\t\t</tr>\n";
 		$fn++;
 		}
+	
 	foreach($anscode as $ld) 
 		{
 		$myfname=$ia[1].$ld;
@@ -1384,9 +1383,6 @@ function do_array_flexiblecolumns($ia)
 		$inputnames[]=$myfname;
 		}			
 	$answer .= "\t\t\t</table>\n";
-	unset($labelans);
-	unset($labelcode);
-	unset($oldmyfname);
 	return array($answer, $inputnames);
 	}
 
