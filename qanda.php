@@ -340,7 +340,7 @@ switch ($ia[4])
 			{
 			$answers[] = array($ansrow['code'], $ansrow['answer']);
 			}
-	
+		$existing=0;
 		for ($i=1; $i<=$anscount; $i++)
 			{
 			$myfname=$ia[1].$i;
