@@ -479,20 +479,17 @@ else
 				echo ">Please choose</OPTION>\n";
 				echo "</SELECT>\n";
 				break;
-			case "Y": //yes/no dropdown list
-				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>";
-				echo "<INPUT TYPE='HIDDEN' NAME='lastfield' VALUE='$fname'>";
-				echo "<SELECT NAME='fvalue'>\n";
-				echo "  <OPTION VALUE='Y'";
-				if ($$fname == "Y") {echo " SELECTED";}
-				echo ">Yes</OPTION>\n";
-				echo "  <OPTION VALUE='N'";
-				if ($$fname == "N") {echo " SELECTED";}
-				echo ">No</OPTION>\n";
-				echo "  <OPTION VALUE=' '";
-				if ($$fname != "Y" && $$fname != "N") {echo " SELECTED";}
-				echo ">Please choose</OPTION>\n";
-				echo "</SELECT>\n";
+			case "Y": //yes/no radio-buttons
+				echo "<tr><td colspan='1' align='center'>";
+				echo "<input type='hidden' name='lastfield' value='$fname'>";
+				echo "<table align='center'><tr><td>$setfont";
+				echo "<input type='radio' name='fvalue' value='Y'";
+				if ($$fname == "Y") {echo " checked";}
+				echo " />Yes<br />\n";
+				echo "<input type='radio' name='fvalue' value='N'";
+				if ($$fname == "N") {echo " checked";}
+				echo " />No<br />\n";
+				echo "</td></tr></table>\n";
 				break;
 			case "L": //dropdown list
 				echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>";
