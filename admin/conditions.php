@@ -273,7 +273,7 @@ if ($questionscount > 0)
 		{
 		if (strlen($rows['question']) > 30) {$shortquestion=$rows['title'].": ".substr($rows['question'], 0, 30).".. ";}
 		else {$shortquestion=$rows['title'].": ".$rows['question'];}
-		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F")
+		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H")
 			{
 			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".mysql_error());
@@ -308,6 +308,7 @@ if ($questionscount > 0)
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", _DECREASE);
 						break;
 					case "F":
+					case "H":
 						$fquery = "SELECT * FROM {$dbprefix}labels\n"
 								. "WHERE lid={$rows['lid']}\n"
 								. "ORDER BY sortorder, code";
