@@ -87,21 +87,21 @@ foreach ($filters as $flt)
 		}
 	//echo $flt[2];	//debugging line
 	if ($counter == 5) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>";}
+	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
 	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>";
 		echo "$setfont<B>$flt[3]&nbsp;"; //Heading (Question No)
-		echo "<input type='radio' name='summary' value='{$sid}X{$flt[1]}X{$flt[0]}'";
-		if ($_POST['summary'] == "{$sid}X{$flt[1]}X{$flt[0]}") {echo " CHECKED";}
+		if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
+		echo "<input type='radio' name='summary' value='$myfield'";
+		if ($_POST['summary'] == "{$sid}X{$flt[1]}X{$flt[0]}" || $_POST['summary'] == "M{$sid}X{$flt[1]}X{$flt[0]}") {echo " CHECKED";}
 		echo ">&nbsp;";
-		echo "<img src='help.gif' width='12' height='12' align='bottom' alt='$flt[5]' onClick=\"alert('$flt[5]')\">";
+		echo "<img src='speaker.jpg' align='bottom' alt='$flt[5]' onClick=\"alert('QUESTION: $flt[5]')\">";
 		echo "<br />\n";
 		echo "\t\t\t\t<select name='";
 		if ($flt[2] == "M" || $flt[2] == "P") {echo "M";}
 		echo "{$sid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
 		}
-	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
-	if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
 	echo "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
 	switch ($flt[2])
 		{
@@ -226,33 +226,9 @@ echo "\t<input type='hidden' name='display' value='stats'>\n";
 echo "\t</form>\n";
 echo "</table>\n";
 
-/// MUCKING AROUND ----
-//phpinfo();
-
-//echo count($_POST) . " elements<br />";
-//foreach ($_POST as $post)
-//	{
-//	if (is_array($post))
-//		{
-//		foreach ($post as $pst)
-//			{
-//			echo "$pst<br />\n";
-//			}
-//		}
-//	else
-//		{
-//		echo "$post<br />\n";
-//		}
-//	echo "<br />\n";
-//	}
-	
 
 
-//for($i=0;$i<count($_POST);$i++){
-//$tmpvar=$_POST[$i];
-// echo("Key: ".$tmpvar.key()." Value: ".$tmpvar.value());
-//}
-// -----------
+// DISPLAY RESULTS
 
 if ($_POST['display'])
 	{
@@ -304,7 +280,7 @@ if ($_POST['display'])
 	
 	// 3: Present results including option to view those rows
 	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
-	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Results:</b></td></tr>\n";
+	echo "\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>Results</b></td></tr>\n";
 	echo "\t<tr><td colspan='2' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>";
 	echo "<B>Your query returns $results record(s)!</b><br />\n\t\t";
 	echo "There are $total records in your survey. This query represents ";
@@ -333,31 +309,88 @@ if ($_POST['display'])
 
 if ($_POST['summary'])
 	{
-	//1. Get distinct results for field
-	$query = "SELECT DISTINCT {$_POST['summary']} FROM survey_$sid ORDER BY {$_POST['summary']}";
-	$result=mysql_query($query) or die("Couldn't get distinct results<br />$query<br />".mysql_error());
-	while ($row=mysql_fetch_row($result))
+	// 1. Get answers for question
+	if (substr($_POST['summary'], 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS. HOW THE HELL DO WE DO THIS ONE?
 		{
-		$fvalues[]=$row[0];
+		
+		list($qsid, $qgid, $qqid) = explode("X", substr($_POST['summary'], 1, strlen($_POST['summary'])));
+		$nquery = "SELECT title, type, question FROM questions WHERE qid='$qqid'";
+		$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
+		while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]);}
+		
+		//1. Get list of answers
+		$query="SELECT code, answer FROM answers WHERE qid='$qqid'";
+		$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
+		while ($row=mysql_fetch_row($result))
+			{
+			$mfield=substr($_POST['summary'], 1, strlen($_POST['summary']))."$row[0]";
+			$alist[]=array("$row[0]", "$row[1]", $mfield);
+			}
+		//foreach ($mfields as $mf) {echo "$mf";} //debug line
+		//2. 
 		}
+	else // NICE SIMPLE SINGLE OPTION ANSWERS
+		{
+		list($qsid, $qgid, $qqid) = explode("X", $_POST['summary']);
+		$nquery = "SELECT title, type, question FROM questions WHERE qid='$qqid'";
+		$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
+		while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]);}
+		$alist[]=array("", "No Answer");
+		switch($qtype)
+			{
+			case "G": //Gender
+				$alist[]=array("F", "Female");
+				$alist[]=array("M", "Male");
+				break;
+			case "Y": //Yes\No
+				$alist[]=array("Y", "Yes");
+				$alist[]=array("N", "No");
+				break;
+			case "5": //5 Point
+				for ($i=1; $i<=5; $i++)
+					{
+					$alist[]=array("$i", "$i");
+					}
+			default:
+				$qquery = "SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY code";
+				$qresult = mysql_query($qquery) or die ("Couldn't get answers list<br />$qquery<br />".mysql_error());
+				while ($qrow=mysql_fetch_row($qresult))
+					{
+					$alist[]=array("$qrow[0]", "$qrow[1]");
+					}
+			}
+		}
+
+	//foreach ($alist as $al) {echo "$al[0] - $al[1]<br />";} //debugging line
 	//foreach ($fvalues as $fv) {echo "$fv | ";} //debugging line
+	
+	//2. Display results
 	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
-	echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for {$_POST['summary']}:</b></td></tr>\n";
-	echo "\t<tr>\n\t\t<td width='50%' align='right' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Answer</b></font></td>\n";
+	echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>";
+	echo "</td></tr>\n";
+	echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n";
+	echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Answer</b></font></td>\n";
 	echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Count</b></font></td>\n";
 	echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Percentage</b></font></td>\n";
 	echo "\t</tr>\n";
-	foreach ($fvalues as $fv)
+	foreach ($alist as $al)
 		{
-		$query = "SELECT count({$_POST['summary']}) FROM survey_$sid WHERE {$_POST['summary']} = '$fv'";
+		if ($al[2]) //picks out alist that come from the multiple list above
+			{
+			$query = "SELECT count($al[2]) FROM survey_$sid WHERE $al[2] = 'Y'";
+			}
+		else
+			{
+			$query = "SELECT count({$_POST['summary']}) FROM survey_$sid WHERE {$_POST['summary']} = '$al[0]'";
+			}
 		if ($sql) {$query .= " AND $sql";}
 		$result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
 		while ($row=mysql_fetch_row($result))
 			{
-			if ($fv == "") {$fname="No Answer";} else {$fname=$fv;}
+			if ($al[0] == "") {$fname="No Answer";} else {$fname="$al[1] ($al[0])";}
 			echo "\t<tr>\n\t\t<td width='50%' align='right' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$fname:\n\t\t</td>\n";
 			echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$row[0]";
-			$vp=sprintf("%02d", ($row[0]/$results)*100);
+			if ($results > 0) {$vp=sprintf("%02d", ($row[0]/$results)*100);} else {$vp="No Records";}
 			echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp%";
 			echo "\t\t</td></tr>\n";
 			}
