@@ -82,7 +82,7 @@ else
 	$dsresult = mysql_query($dsquery);
 	while ($dsrow = mysql_fetch_array($dsresult))
 		{
-		$asdel = "DELETE FROM answers WHERE qid=$dsrow['qid']";
+		$asdel = "DELETE FROM answers WHERE qid={$dsrow['qid']}";
 		$asres = mysql_query($asdel);
 		}
 	
