@@ -144,7 +144,6 @@ define("_SL_URLDESCRIP", "Testo URL:");
 define("_SL_STATUS", "Status:");
 define("_SL_SELSQL", "Seleziona File SQL:");
 define("_SL_USECOOKIES", "Abilita Cookies?"); //NEW with 098rc3
-define("_SL_SURVEYURL", "URL questionario"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Notification:"); //New with 098rc5
 //groups
 define("_GL_TITLE", "Titolo:");
