@@ -262,7 +262,7 @@ elseif ($action == "delanswer")
 
 elseif ($action == "insertnewsurvey")
 	{
-	if (!$short_title)
+	if (!$_POST['short_title'])
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created because it did not have a short title.\")\n //-->\n</script>\n";
 		}
