@@ -476,8 +476,7 @@ if ($_POST['summary'])
 			$mfield=substr($_POST['summary'], 1, strlen($_POST['summary']))."$row[0]";
 			$alist[]=array("$row[0]", "$row[1]", $mfield);
 			}
-		//foreach ($mfields as $mf) {echo "$mf";} //debug line
-		//2. 
+		 
 		}
 	elseif (substr($_POST['summary'], 0, 1) == "R") //RANKING OPTION THEREFORE CONFUSING
 		{
@@ -642,7 +641,10 @@ if ($_POST['summary'])
 		$nquery = "SELECT title, type, question, qid FROM questions WHERE qid='$qqid'";
 		//echo $nquery; //debugging line
 		$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-		while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];}
+		while ($nrow=mysql_fetch_row($nresult)) 
+			{
+			$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];
+			}
 		$alist[]=array("", "No Answer");
 		switch($qtype)
 			{
@@ -657,7 +659,10 @@ if ($_POST['summary'])
 						{
 						$alist[]=array("$i", "$i");
 						}
+					$atext=$qrow[1];
 					}
+				$qquestion .= "<br />\n[".$atext."]";
+				$qtitle .= "($qanswer)";
 				break;
 			case "B": //Array of 10 point choices
 				$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
@@ -670,7 +675,10 @@ if ($_POST['summary'])
 						{
 						$alist[]=array("$i", "$i");
 						}
+					$atext=$qrow[1];
 					}
+				$qquestion .= "<br />\n[".$atext."]";
+				$qtitle .= "($qanswer)";
 				break;
 			case "C": //Array of Yes/No/Uncertain
 				$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
@@ -682,7 +690,10 @@ if ($_POST['summary'])
 					$alist[]=array("Y", "Yes");
 					$alist[]=array("N", "No");
 					$alist[]=array("U", "Uncertain");
+					$atext=$qrow[1];
 					}
+				$qquestion .= "<br />\n[".$atext."]";
+				$qtitle .= "($qanswer)";
 				break;
 			case "G": //Gender
 				$alist[]=array("F", "Female");
