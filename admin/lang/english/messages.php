@@ -77,10 +77,11 @@ define(_SL_SELSQL, "Select SQL File:");
 define(_GL_TITLE, "Title:");
 define(_GL_DESCRIPTION, "Description:");
 //questions
-define(_QL_TITLE, "Title:");
+define(_QL_CODE, "Code:");
 define(_QL_QUESTION, "Question:");
 define(_QL_HELP, "Help:");
 define(_QL_TYPE, "Type:");
+define(_QL_GROUP, "Group:");
 define(_QL_MANDATORY, "Mandatory:");
 define(_QL_OTHER, "Other:");
 //answers
@@ -89,6 +90,40 @@ define(_AL_ANSWER, "Answer");
 define(_AL_DEFAULT, "Default");
 define(_AL_MOVE, "Move");
 define(_AL_ACTION, "Action");
+define(_AL_UP, "Up");
+define(_AL_DN, "Dn");
+define(_AL_SAVE, "Save");
+define(_AL_DEL, "Del");
+define(_AL_ADD, "Add");
+define(_AL_FIXSORT, "Fix Sort");
+
+//QUESTION TYPES
+define(_5PT, "5 Point Choice");
+define(_DATE, "Date");
+define(_GENDER, "Gender");
+define(_LIST, "List");
+define(_LISTWC, "List With Comment");
+define(_MULTO, "Multiple Options");
+define(_MULTOC, "Multiple Options with Comments");
+define(_NUMERICAL, "Numerical Input");
+define(_RANK, "Ranking");
+define(_STEXT, "Short free text");
+define(_LTEXT, "Long free text");
+define(_YESNO, "Yes/No");
+define(_ARR5, "Array (5 Point Choice)");
+define(_ARR10, "Array (10 Point Choice)");
+define(_ARRYN, "Array (Yes/No/Uncertain)");
+define(_ARRMV, "Array (Increase, Same, Decrease)");
+define(_ARRFL, "Array (Flexible Labels)"); //(FOR LATER RELEASE)
+
+//GENERAL WORDS AND PHRASES
+define(_YES, "Yes");
+define(_NO, "No");
+define(_REQ, "*Required");
+define(_ADDS, "Add Survey");
+define(_ADDG, "Add Group");
+define(_ADDQ, "Add Question");
+define(_SAVE, "Save Changes");
 
 
 ?>
