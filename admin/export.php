@@ -115,105 +115,10 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
 include ("config.php");
-//echo "$htmlheader";
+
 //STEP 1: First line is column headings
-$cquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid=$sid";
-$cresult = mysql_query($cquery);
-$crows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-while ($crow = mysql_fetch_assoc($cresult)) {$crows[] = $crow; $privatesurvey = $crow['private'];} // Get table output into array
-
-// Perform a case insensitive natural sort on group name then question title of a multidimensional array
-usort($crows, 'CompareGroupThenTitle');
-
 $s = "\t";
-$firstline = "id$s ";
-
-if ($privatesurvey == "N" && $answers == "short") {$firstline .= "Token$s ";}
-if ($privatesurvey == "N" && $answers == "long") {$firstline .= "Participant Name$s ";}
-
-foreach ($crows as $crow)
-	{
-	if ($style == "abrev")
-		{
-		if ($crow['type'] != "M" && $crow['type'] != "A" && $crow['type'] != "B" && $crow['type'] != "C" && $crow['type'] != "P" && $crow['type'] != "O" && $crow['type'] != "R")
-			{
-			$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}$s ";
-			}
-		elseif ($crow['type'] == "O")
-			{
-			$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}$s ";
-			$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}[comment]$s ";
-			}
-		elseif ($crow['type'] == "R")
-			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$crow['qid']} AND questions.sid=$sid ORDER BY code";
-			$i2result = mysql_query($i2query);
-			$i2count = mysql_num_rows($i2result);
-			for ($i=1; $i<=$i2count; $i++)
-				{
-				$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}No$i $s";	
-				}
-			}
-		else
-			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$crow['qid']} AND questions.sid=$sid ORDER BY code";
-			$i2result = mysql_query($i2query);
-			while ($i2row = mysql_fetch_array($i2result))
-				{
-				$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}Opt{$i2row['code']}$s ";
-				if ($i2row['other'] == "Y") {$otherexists = "Y";}
-				if ($crow['type'] == "P") {$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}Opt{$i2row['code']}comment$s ";}
-				}
-			if ($otherexists == "Y") 
-				{
-				$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}OptOther$s ";
-				}			
-			}
-		}
-	elseif ($style == "full")
-		{
-		if ($crow['type'] != "M" && $crow['type'] != "A" && $crow['type'] != "B" && $crow['type'] != "C" && $crow['type'] != "P" && $crow['type'] != "O" && $crow['type'] != "R")
-			{
-			$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question']))."$s ";
-			}
-		elseif ($crow['type'] == "O")
-			{
-			$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question']))."$s ";
-			$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question']))."[Comment]$s ";
-			}
-		elseif ($crow['type'] == "R")
-			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$crow['qid']} AND questions.sid=$sid ORDER BY code";
-			$i2result = mysql_query($i2query);
-			$i2count = mysql_num_rows($i2result);
-			for ($i=1; $i<=$i2count; $i++)
-				{
-				$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question'])).": $i$s ";
-				}			
-			}
-		else
-			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$crow['qid']} AND questions.sid=$sid ORDER BY code";
-			$i2result = mysql_query($i2query);
-			while ($i2row = mysql_fetch_array($i2result))
-				{
-				$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question'])).": {$i2row['answer']}$s ";
-				if ($i2row['other'] == "Y") {$otherexists = "Y";}
-				if ($crow['type'] == "P") {$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question'])).": {$i2row['answer']}(comment)$s ";}
-				}
-			if ($otherexists == "Y") 
-				{
-				$firstline .= str_replace("<BR>", " ", str_replace("\r\n", " ", $crow['question'])).": Other$s ";
-				}			
-			}
-		}
-	}
-$firstline = substr($firstline, 0, strlen($firstline)-2);
-$firstline .= "\n";
-echo $firstline;
-
-//Now dump the data
-$lq = "SELECT DISTINCT qid FROM questions WHERE sid=$sid";
+$lq = "SELECT DISTINCT qid FROM questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
 $lr = mysql_query($lq);
 $legitqs[] = "DUMMY ENTRY";
 while ($lw = mysql_fetch_array($lr))
@@ -221,7 +126,170 @@ while ($lw = mysql_fetch_array($lr))
 	$legitqs[] = $lw['qid']; //this creates an array of question id's'
 	}
 
+
 $surveytable = "survey_$sid";
+$dquery = "SELECT * FROM $surveytable ORDER BY id LIMIT 1";
+$dresult = mysql_query($dquery);
+$fieldcount = mysql_num_fields($dresult);
+for ($i=0; $i<$fieldcount; $i++)
+	{
+	$fieldinfo=mysql_field_name($dresult, $i);
+	if ($fieldinfo == "token")
+		{
+		if ($answers == "short") {$firstline .= "Token$s";}
+		if ($answers == "long") 
+			{
+			if ($style == "abrev")
+				{$firstline .= "Participant$s";} else {$firstline .= "Participant Name$s";}
+			}
+		}
+	elseif ($fieldinfo == "id")
+		{
+		$firstline .= "ID$s";
+		}
+	elseif ($fieldinfo == "timestamp")
+		{
+		$firstline .= "Time Submitted$s";
+		}
+	else
+		{
+		list($fsid, $fgid, $fqid) = split("X", $fieldinfo);
+		if ($style == "abrev")
+			{
+			if (!$fqid) {$fqid = 0;}
+			$oldfqid=$fqid;
+			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list
+				{
+				$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
+				}
+			if (strlen($fqid) < strlen($oldfqid)) 
+				{
+				$faid = substr($oldfqid, strlen($fqid), strlen($oldfqid)-strlen($fqid));
+				$oldfqid="";
+				}
+			$qq = "SELECT question FROM questions WHERE qid=$fqid";
+			$qr = mysql_query($qq);
+			while ($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
+				{$qname=$qrow['question'];}
+			$qname=substr($qname, 0, 15)."..";
+			$qname=strip_tags($qname);
+			$firstline .= "$qname";
+			if ($faid) {$firstline .= " [{$faid}]"; $faid="";}
+			$firstline .= "$s";
+			}
+		else
+			{
+			if (!$fqid) {$fqid = 0;}
+			$oldfqid=$fqid;
+			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list
+				{
+				$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
+				}
+			if (strlen($fqid) < strlen($oldfqid)) 
+				{
+				$faid = substr($oldfqid, strlen($fqid), strlen($oldfqid)-strlen($fqid));
+				$oldfqid="";
+				}
+			$qq = "SELECT question, type FROM questions WHERE qid=$fqid"; //get the question
+			$qr = mysql_query($qq);
+			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
+				{
+				$ftype = $qrow['type']; //get the question type
+				$fquest = $qrow['question'];
+				}
+			switch ($ftype)
+				{
+				case "R": //RANKING TYPE
+					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code = '$faid'";
+					$lr = mysql_query($lq);
+					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+						{
+						$fquest .= " [".$lrow['answer']."]";
+						}
+					break;
+				case "O": //DROPDOWN LIST WITH COMMENT
+					if ($faid == "comment")
+						{
+						$fquest .= " - Comment";
+						}
+					break;
+				case "M": //multioption
+					if ($faid == "other")
+						{
+						$fquest .= " [Other]";
+						}
+					else
+						{
+						$lq = "SELECT * FROM answers WHERE qid=$fqid AND code = '$faid'";
+						$lr = mysql_query($lq);
+						while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+							{
+							$fquest .= " [".$lrow['answer']."]";
+							}
+						}
+					break;
+				case "P": //multioption with comment
+					if (substr($faid, -7, 7) == "comment")
+						{
+						$faid=substr($faid, 0, -7);
+						$comment=true;
+						}
+					if ($faid == "other")
+						{
+						$fquest .= " [Other]";
+						}
+					else
+						{
+						$lq = "SELECT * FROM answers WHERE qid=$fqid AND code = '$faid'";
+						$lr = mysql_query($lq);
+						while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+							{
+							$fquest .= " [".$lrow['answer']."]";
+							}
+						}
+					if ($comment == true) {$fquest .= " - comment"; $comment=false;}
+					break;
+				case "A":
+				case "B":
+				case "C":
+					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code= '$faid'";
+					$lr = mysql_query($lq);
+					while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
+						{
+						$fquest .= " [".$lrow['answer']."]";
+						}
+					break;
+				default:
+					if (mysql_field_name($dresult, $i) == "token")
+						{
+						$tokenquery = "SELECT firstname, lastname FROM tokens_$sid WHERE token='$drow[$i]'";
+						if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
+						while ($tokenrow=mysql_fetch_array($tokenresult))
+							{
+							echo "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
+							}
+						else
+							{
+							echo "Not found";
+							}
+						}
+					else
+						{
+						echo str_replace("\r\n", " ", $drow[$i]);
+						}
+				}
+			$fquest = strip_tags($fquest);
+			$firstline .= "$fquest $s";
+			}
+		}
+	}
+
+//$firstline = substr($firstline, 0, strlen($firstline)-1);
+$firstline = trim($firstline);
+$firstline .= "\n";
+echo $firstline;
+
+//Now dump the data
 
 if ($_POST['sql']) //this applies if export has been called from the statistics package
 	{
@@ -252,6 +320,7 @@ elseif ($answers == "long")
 			{
 			list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
 			if (!$fqid) {$fqid = 0;}
+			$oldfqid=$fqid;
 			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list
 				{
 				$fqid = substr($fqid, 0, strlen($fqid)-1);
@@ -280,7 +349,7 @@ elseif ($answers == "long")
 						}
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
-					$lq = "SELECT * FROM answers WHERE qid=$fqid";
+					$lq = "SELECT * FROM answers WHERE qid=$fqid ORDER BY answer";
 					$lr = mysql_query($lq) or die ("Could do it<br />$lq<br />".mysql_error());
 					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
@@ -306,21 +375,38 @@ elseif ($answers == "long")
 						}
 					break;
 				case "M": //multioption
-					switch($drow[$i])
+				case "P":
+					if (substr($oldfqid, -5, 5) == "other")
 						{
-						case "Y": echo "Yes"; break;
-						case "": echo "No"; break;
-						default: echo "N/A"; break;
+						echo "$drow[$i]";
+						}
+					elseif (substr($oldfqid, -7, 7) == "comment")
+						{
+						echo "$drow[$i]";
+						}
+					else
+						{
+						switch($drow[$i])
+							{
+							case "Y": echo "Yes"; break;
+							case "N": echo "No"; break;
+							case "": echo "No"; break;
+							default: echo $drow[$i]; break;
+							}
 						}
 					break;
 				default:
 					if (mysql_field_name($dresult, $i) == "token")
 						{
 						$tokenquery = "SELECT firstname, lastname FROM tokens_$sid WHERE token='$drow[$i]'";
-						$tokenresult = mysql_query($tokenquery) or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
+						if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
 						while ($tokenrow=mysql_fetch_array($tokenresult))
 							{
 							echo "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
+							}
+						else
+							{
+							echo "Tokens problem - token table missing";
 							}
 						}
 					else
