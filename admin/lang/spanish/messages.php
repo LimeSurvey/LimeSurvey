@@ -383,6 +383,10 @@ define(_DS_SURVEYACTIVE, "Esta encuesta est&aacute; activa y existe una tabla de
 define(_DS_SURVEYTOKENS, "Esta encuesta est&aacute; activa y existe una tabla de tokens. Si la borras, estos tokens ser&aacute;n borrados. Recomendamos que las exportes antes de borrar la encuesta.");
 define(_DS_DELETED, "Se ha borrado la encuesta.");
 
+//DELETE QUESTION AND GROUP MESSAGES
+define(_DG_RUSURE, "Suprimir a este grupo también suprimirá cualesquiera preguntas y respuesta que contenga. ¿Es usted seguro usted desea continuar?"); //New for 098rc5
+define(_DQ_RUSURE, "Suprimir esta pregunta también suprimirá cualquier respuesta que incluya. Está usted seguro usted desea continuar?"); //New for 098rc5
+
 //EXPORT MESSAGES
 define(_EQ_NOQID, "No se indic&oacute; un QID. No se pueden exportar las preguntas.");
 define(_ES_NOSID, "No se indic&oacute; un SID. No se pudo exportar la encuesta");

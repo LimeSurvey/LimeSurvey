@@ -378,6 +378,10 @@ define(_DS_SURVEYACTIVE, "This survey is active and a responses table exists. If
 define(_DS_SURVEYTOKENS, "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.");
 define(_DS_DELETED, "This survey has been deleted.");
 
+//DELETE QUESTION AND GROUP MESSAGES
+define(_DG_RUSURE, "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"); //New for 098rc5
+define(_DQ_RUSURE, "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"); //New for 098rc5
+
 //EXPORT MESSAGES
 define(_EQ_NOQID, "No QID has been provided. Cannot dump question.");
 define(_ES_NOSID, "No SID has been provided. Cannot dump survey");

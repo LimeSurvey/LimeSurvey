@@ -379,6 +379,10 @@ define(_DS_SURVEYACTIVE, "Questa indagine &egrave; attiva e esiste un database d
 define(_DS_SURVEYTOKENS, "Questa indagine &egrave; associata ad una tavola dei token. Eliminanado l&#039;indagine si eliminano anche tutti i token. Si consiglia di esportare o fare il backup dei token prima di eliminare l&#039;indagine.");
 define(_DS_DELETED, "L&#039;indagine &egrave; stata eliminata.");
 
+//DELETE QUESTION AND GROUP MESSAGES
+define(_DG_RUSURE, "Cancellando questo gruppo inoltre cancellerà tutte le domande e risposte che contiene. Siete sicuri voi desiderate continuare?"); //New for 098rc5
+define(_DQ_RUSURE, "La cancellazione del questo problema inoltre cancellerà tutte le risposte che include. Siete sicuri voi desiderate continuare?"); //New for 098rc5
+
 //EXPORT MESSAGES
 define(_EQ_NOQID, "L&#039; ID Domande (QID) non &egrave; stato inserito. Impossibile fare il dump della domanda.");
 define(_ES_NOSID, "L&#039; ID Indagine (SID) non &egrave; stato inserito. Impossibile fare il dump dell&#039;indagine");
