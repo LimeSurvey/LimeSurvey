@@ -215,7 +215,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	//A bit of housekeeping to stop PHP Notices
 	$answer = "";
 	if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
-	
+	$qidattributes=getQuestionAttributes($ia[0]);
+	//echo "<pre>";print_r($qidattributes);echo "</pre>";
 	//Create the question/answer html
 	switch ($ia[4])
 		{
@@ -231,7 +232,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			break;
 		case "L": //LIST drop-down/radio-button list
 			$values=do_list_radio($ia);
-			if (count($values[1]) > 1) 
+			if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
 				{
 				$qtitle .= "<br />\n</b><i><font size='1'>"
 						 . _INSTRUCTION_LIST."</font></i><b>";
@@ -239,7 +240,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			break;
 		case "!": //List - dropdown
 			$values=do_list_dropdown($ia);
-			if (count($values[1]) > 1) 
+			if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
 				{
 				$qtitle .= "<br />\n</b><i><font size='1'>"
 						 . _INSTRUCTION_LIST."</font></i><b>";
@@ -247,7 +248,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			break;
 		case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 			$values=do_listwithcomment($ia);
-			if (count($values[1]) > 1) 
+			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
 				{
 				$qtitle .= "<br />\n</b><i><font size='1'>"
 						 . _INSTRUCTION_LIST."</font></i><b>";
@@ -258,15 +259,15 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			break;
 		case "M": //MULTIPLE OPTIONS checkbox
 			$values=do_multiplechoice($ia);
-			if (count($values[1]) > 1) 
+			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
 				{
-				$qtitle .= "<br />\n</b><i><font size='1'>"
+					$qtitle .= "<br />\n</b><i><font size='1'>"
 						 . _INSTRUCTION_MULTI."</font></i><b>";
 				}
 			break;
 		case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 			$values=do_multiplechoice_withcomments($ia);
-			if (count($values[1]) > 1) 
+			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
 				{
 				$qtitle .= "<br />\n</b><i><font size='1'>"
 						 . _INSTRUCTION_MULTI."</font></i><b>";
