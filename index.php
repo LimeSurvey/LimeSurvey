@@ -424,13 +424,14 @@ if (!$step)
 	session_register("insertarray");
 	session_register("sid");
 	
+	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($arow=mysql_fetch_array($aresult)) {$arows[]=$arow;} // Get table output into array
 	
-	if ($totalsteps > 0)
+	if (count($arows) > 0)
 		{
 		// Perform a case insensitive natural sort on title column of a multidimensional array
 		usort($arows, create_function('$a,$b', 'return strnatcasecmp($a["title"],$b["title"]);'));
-		} // end if there's anything to sort
+		} // end if there are any questions
 	
 	foreach ($arows as $arow)
 		{
@@ -514,7 +515,7 @@ else
 		}
 
 	//if (($currentgroupname != $lastgroupname) && ($move != " << prev "))
-	if ($fieldarray[$t][5] != $fieldarray[$v][5] && $newgroup != "yes" && $groupdescription && $move != " << prev ")
+	if ($fieldarray[$t][5] != $fieldarray[$v][5] && $newgroup != "yes" && $groupdescription)
 		{
 		$presentinggroupdescription="yes";
 		echo "\t<form method='post'>\n";
