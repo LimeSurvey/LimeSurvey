@@ -162,16 +162,16 @@ if ($sid)
 			{
 			$surveysummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='"._S_ADDGROUP_BT."' align='right' border='0' hspace='0' onClick=\"window.open('$scriptname?action=addgroup&sid=$sid', '_top')\">\n";
 			}
-		$surveysummary .= "<font size='1' color='#222222'><b>Groups:</b>";
+		$surveysummary .= "<font size='1' color='#222222'><b>"._GROUPS.":</b>";
 		$surveysummary .= "\t\t<select style='font-size: 9; font-family: verdana; font-color: #222222; background: silver; width: 160' name='groupselect' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 		if (getgrouplist($gid))
 			{
 			$surveysummary .= getgrouplist($gid);
 			}
-		else
-			{
-			$surveysummary .= "<option>No Groups</option>\n";
-			}
+		//else
+			//{
+			//$surveysummary .= "<option>No Groups</option>\n";
+			//}
 		$surveysummary .= "</select>\n";
 		$surveysummary .= "\t\t\t\t</td>";
 		$surveysummary .= "</tr>\n";
@@ -284,7 +284,7 @@ if ($gid)
 			{
 			$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/add.gif' title='"._G_ADDQUESTION_BT."' border='0' hspace='0' align='right' onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";
 			}
-		$groupsummary .= "\t\t\t\t\t$setfont<font size='1'><b>Questions:</b> <select name='qid' onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\" style='font-size:9; font-family: verdana; font-color: #333333; background-color: silver; width: 160'>\n";
+		$groupsummary .= "\t\t\t\t\t$setfont<font size='1'><b>"._QUESTIONS.":</b> <select name='qid' onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\" style='font-size:9; font-family: verdana; font-color: #333333; background-color: silver; width: 160'>\n";
 		$groupsummary .= getquestions();
 		$groupsummary .= "\t\t\t\t\t</select>\n";
 		$groupsummary .= "\t\t\t\t</td></tr>\n";
@@ -516,46 +516,35 @@ if ($action == "editusers")
 	{
 	if (!file_exists("$homedir/.htaccess"))
 		{
-		$usersummary = "<table width='100%' border='0'>\n";
-		$usersummary .= "\t<tr>\n";
-		$usersummary .= "\t\t<td bgcolor='black' align='center'>\n";
-		$usersummary .= "\t\t\t<b>$setfont<font color='WHITE'>Security Control</font></font></b>\n";
-		$usersummary .= "\t\t</td>\n";
-		$usersummary .= "\t</tr>\n";
+		$usersummary = "<table width='100%' border='0'><tr><td colspan='2'>\n";
+		$usersummary .= "<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		$usersummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='4' height='4'><font size='1' face='verdana' color='white'><b>"._USERCONTROL."</b></td></tr>\n";
 		$usersummary .= "\t<tr>\n";
 		$usersummary .= "\t\t<td>\n";
-		$usersummary .= "\t\t\t$setfont<font color='RED'><b>Warning:</font></font></b><br />\n";
-		$usersummary .= "\t\t\tYou have not yet initialised security settings for your survey system \n";
-		$usersummary .= "\t\t\tand subsequently there are no restrictions on access.\n";
-		$usersummary .= "\t\t\t<p>If you click on the 'initialise security' button below, standard APACHE \n";
-		$usersummary .= "\t\t\tsecurity settings will be added to the administration directory of this \n";
-		$usersummary .= "\t\t\tscript. You will then need to use the default access username and password \n";
-		$usersummary .= "\t\t\tto access the administration and data entry scripts.</p>\n";
-		$usersummary .= "\t\t\t<p>USERNAME: $defaultuser<br />PASSWORD: $defaultpass</p>\n";
-		$usersummary .= "\t\t\t<p>It is highly recommended that once your security system has been initialised \n";
-		$usersummary .= "\t\t\tyou change this default password.</p>\n";
+		$usersummary .= "\t\t\t$setfont<font color='RED'><b>"._WARNING."</font></font></b><br />\n";
+		$usersummary .= "\t\t\t"._UC_TURNON_MESSAGE1."</p>\n";
+		$usersummary .= "\t\t\t<p>"._USERNAME.": $defaultuser<br />"._PASSWORD.": $defaultpass</p>\n";
+		$usersummary .= "\t\t\t<p>"._UC_TURNON_MESSAGE2."</p>\n";
 		$usersummary .= "\t\t</td>\n";
 		$usersummary .= "\t</tr>\n";
 		$usersummary .= "\t<tr>\n";
 		$usersummary .= "\t\t<td align='center'>\n";
-		$usersummary .= "\t\t\t<input type='submit' $btstyle value='Initialise Security' onClick=\"window.open('$scriptname?action=setupsecurity', '_top')\">\n";
+		$usersummary .= "\t\t\t<input type='submit' $btstyle value='"._UC_INITIALISE."' onClick=\"window.open('$scriptname?action=setupsecurity', '_top')\">\n";
 		$usersummary .= "\t\t</td>\n";
 		$usersummary .= "\t</tr>\n";
 		$usersummary .= "</table>\n";
+		$usersummary .= "</td></tr></table>\n";	
 		}
 	else
 		{
-		$usersummary = "<table width='100%' border='0'>\n";
+		$usersummary = "<table width='100%' border='0'><tr><td colspan='2'>\n";
+		$usersummary .= "<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		$usersummary .= "\t\t\t\t<tr bgcolor='#555555'><td colspan='4' height='4'><font size='1' face='verdana' color='white'><b>"._USERCONTROL."</b></td></tr>\n";
 		$usersummary .= "\t<tr>\n";
-		$usersummary .= "\t\t<td colspan='4' bgcolor='black' align='center'>\n";
-		$usersummary .= "\t\t\t<b>$setfont<font color='white'>List of users</font><font></b>\n";
-		$usersummary .= "\t\t</td>\n";
-		$usersummary .= "\t</tr>\n";
-		$usersummary .= "\t<tr bgcolor='#444444'>\n";
-		$usersummary .= "\t\t<td>$setfont<font color='white'><b>User</b></td>\n";
-		$usersummary .= "\t\t<td>$setfont<font color='white'><b>Password</b></font></font></td>\n";
-		$usersummary .= "\t\t<td>$setfont<font color='white'><b>Security</b></font></font></td>\n";
-		$usersummary .= "\t\t<td>$setfont<font color='white'><b>Actions</b></font></font></td>\n";
+		$usersummary .= "\t\t<th>$setfont"._UL_USER."</th>\n";
+		$usersummary .= "\t\t<th>$setfont"._UL_PASSWORD."</font></th>\n";
+		$usersummary .= "\t\t<th>$setfont"._UL_SECURITY."</font></th>\n";
+		$usersummary .= "\t\t<th>$setfont"._UL_ACTION."</font></th>\n";
 		$usersummary .= "\t</tr>\n";
 		$userlist = getuserlist();
 		$ui = count($userlist);
@@ -563,7 +552,7 @@ if ($action == "editusers")
 			{
 			$usersummary .= "\t<tr>\n";
 			$usersummary .= "\t\t<td>\n";
-			$usersummary .= "\t\t\t<center>WARNING: No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.</center>";
+			$usersummary .= "\t\t\t<center>"._WARNING.": "._UC_NOUSERS."</center>";
 			$usersummary .= "\t\t</td>\n";
 			$usersummary .= "\t</tr>\n";
 			}
@@ -572,10 +561,10 @@ if ($action == "editusers")
 			foreach ($userlist as $usr)
 				{
 				$usersummary .= "\t<tr>\n";
-				$usersummary .= "\t<td>$setfont<b>{$usr['user']}</b></font></td>\n";
-				$usersummary .= "\t\t<td>$setfont{$usr['password']}</font></td>\n";
-				$usersummary .= "\t\t<td>$setfont{$usr['security']}</td>\n";
-				$usersummary .= "\t\t<td>\n";
+				$usersummary .= "\t<td align='center'>$setfont{$usr['user']}</font></td>\n";
+				$usersummary .= "\t\t<td align='center'>$setfont{$usr['password']}</font></td>\n";
+				$usersummary .= "\t\t<td align='center'>$setfont{$usr['security']}</td>\n";
+				$usersummary .= "\t\t<td align='center'>\n";
 				$usersummary .= "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('$scriptname?action=modifyuser&user={$usr['user']}', '_top')\" />\n";
 				if ($ui > 1 )
 					{
@@ -587,22 +576,23 @@ if ($action == "editusers")
 				}
 			}
 		$usersummary .= "\t\t<form action='$scriptname' method='post'>\n";
-		$usersummary .= "\t\t<tr bgcolor='#EEEFFF'>\n";
-		$usersummary .= "\t\t<td><input type='text' $slstyle name='user'></td>\n";
-		$usersummary .= "\t\t<td><input type='text' $slstyle name='pass'></td>\n";
-		$usersummary .= "\t\t<td><input type='text' $slstyle name='level' size='2'></td>\n";
-		$usersummary .= "\t\t<td><input type='submit' $btstyle value='Add New User'></td>\n";
+		$usersummary .= "\t\t<tr>\n";
+		$usersummary .= "\t\t<td align='center'><input type='text' $slstyle name='user'></td>\n";
+		$usersummary .= "\t\t<td align='center'><input type='text' $slstyle name='pass'></td>\n";
+		$usersummary .= "\t\t<td align='center'><input type='text' $slstyle name='level' size='2'></td>\n";
+		$usersummary .= "\t\t<td align='center'><input type='submit' $btstyle value='"._ADDU."'></td>\n";
 		$usersummary .= "\t</tr>\n";
 		$usersummary .= "\t<tr>\n";
-		$usersummary .= "\t\t<td><input type='hidden' name='action' value='adduser'></td>\n";
+		$usersummary .= "\t\t<td align='center'><input type='hidden' name='action' value='adduser'></td>\n";
 		$usersummary .= "\t</tr>\n";
 		$usersummary .= "\t</form>\n";
 		$usersummary .= "\t<tr>\n";
 		$usersummary .= "\t\t<td colspan='3'></td>\n";
-		$usersummary .= "\t\t<td><input type='submit' $btstyle value='Turn Off Security' ";
+		$usersummary .= "\t\t<td align='center'><input type='submit' $btstyle value='"._UC_TURNOFF."' ";
 		$usersummary .= "onClick=\"window.open('$scriptname?action=turnoffsecurity', '_top')\" /></td>\n";
 		$usersummary .= "\t</tr>\n";		
 		$usersummary .= "</table>\n";
+		$usersummary .= "</td></tr></table>\n";
 		}
 	}
 if ($action == "addquestion")
@@ -1176,6 +1166,5 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Import Survey'></TD>\n";
 	$newsurvey .= "\t<input type='hidden' name='action' value='importsurvey'>\n";
 	$newsurvey .= "\t</tr></form>\n</table>\n";
-	
 	}
 ?>
