@@ -41,7 +41,7 @@ require_once("./admin/config.php");
 
 if (!isset($sid)) {$sid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $sid value is never anything but a number.
-if (phpversion() >= '4.2.0') {settype($sid, "int");} else {settype($sid, "integer");} 
+if (_PHPVERSION >= '4.2.0') {settype($sid, "int");} else {settype($sid, "integer");} 
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}

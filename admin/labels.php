@@ -502,7 +502,7 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
     while ($row=mysql_fetch_array($result))
         {
         $position=sprintf("%05d", $position);
-        if (phpversion() >= "4.3.0")
+        if (_PHPVERSION >= "4.3.0")
             {
             $title = mysql_real_escape_string($row['title']);
             }

@@ -122,7 +122,7 @@ if ($action == "insert")
 				{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 			else
 				{
-				if (phpversion() >= "4.3.0")
+				if (_PHPVERSION >= "4.3.0")
 					{
 					$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 					}
@@ -141,7 +141,7 @@ if ($action == "insert")
 				{$insertqr .= "'" . $_POST[$fieldname] . "', \n'" . $_POST[$fieldname2] . "', \n";}
 			else
 				{
-				if (phpversion() >= "4.3.0")
+				if (_PHPVERSION >= "4.3.0")
 					{
 					$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
 					}
@@ -164,7 +164,7 @@ if ($action == "insert")
 					{$insertqr .= "'" . $_POST["d$fieldname"] . "', \n";}
 				else
 					{
-					if (phpversion() >= "4.3.0")
+					if (_PHPVERSION >= "4.3.0")
 						{
 						$insertqr .= "'" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
 						}
@@ -187,7 +187,7 @@ if ($action == "insert")
 					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 				else
 					{
-					if (phpversion() >= "4.3.0")
+					if (_PHPVERSION >= "4.3.0")
 						{
 						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 						}
@@ -206,7 +206,7 @@ if ($action == "insert")
 						{$insertqr .= "'" . $_POST[$fieldname2] . "', \n";}
 					else
 						{
-						if (phpversion() >= "4.3.0")
+						if (_PHPVERSION >= "4.3.0")
 							{
 							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
 							}
@@ -225,7 +225,7 @@ if ($action == "insert")
 					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
 				else
 					{
-					if (phpversion() >= "4.3.0")
+					if (_PHPVERSION >= "4.3.0")
 						{
 						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 						}
@@ -911,7 +911,7 @@ elseif ($action == "update")
 				{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
 			else
 				{
-				if (phpversion() >= "4.3.0")
+				if (_PHPVERSION >= "4.3.0")
 					{
 					$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
 					}
@@ -931,7 +931,7 @@ elseif ($action == "update")
 				{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
 			else
 				{
-				if (phpversion() >= "4.3.0")
+				if (_PHPVERSION >= "4.3.0")
 					{
 					$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 					}
@@ -953,7 +953,7 @@ elseif ($action == "update")
 					{$updateqr .= "`$fieldname` = '" . $_POST["d$fieldname"] . "', \n";}
 				else
 					{
-					if (phpversion() >= "4.3.0")
+					if (_PHPVERSION >= "4.3.0")
 						{
 						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
 						}
@@ -982,7 +982,7 @@ elseif ($action == "update")
 						{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
 					else
 						{
-						if (phpversion() >= "4.3.0")
+						if (_PHPVERSION >= "4.3.0")
 							{
 							$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
 							}
@@ -1002,7 +1002,7 @@ elseif ($action == "update")
 					{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
 				else
 					{
-					if (phpversion() >= "4.3.0")
+					if (_PHPVERSION >= "4.3.0")
 						{
 						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
 						}
@@ -1423,7 +1423,7 @@ else
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
 						{
-						if (phpversion() < "4.2.0")
+						if (_PHPVERSION < "4.2.0")
 							{
 							if (!array_in_array($ans, $chosen))
 								{

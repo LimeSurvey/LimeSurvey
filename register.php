@@ -90,7 +90,7 @@ if (mysql_num_rows($result) > 0)
 	exit;
 	}
 
-if (phpversion() < "4.2.0")
+if (_PHPVERSION < "4.2.0")
 	{
 	srand((double)microtime()*1000000);
 	}

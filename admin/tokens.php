@@ -922,7 +922,7 @@ if ($action == "tokenify")
 		}
 	else
 		{
-		if (phpversion() < "4.2.0")
+		if (_PHPVERSION < "4.2.0")
 			{
 			srand((double)microtime()*1000000);
 			}
@@ -1227,7 +1227,7 @@ if ($action == "upload")
 				}
 			else
 				{
-				if (phpversion() >= "4.3.0")
+				if (_PHPVERSION >= "4.3.0")
 					{
 					$line = explode(",", mysql_real_escape_string($buffer));
 					}

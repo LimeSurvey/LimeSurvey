@@ -81,7 +81,7 @@ function BuildOutput($Query)
 		foreach ($Row as $Key=>$Value)
 			{
 			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
-			if (phpversion() >= "4.3.0")
+			if (_PHPVERSION >= "4.3.0")
 				{
 				$ColumnValues .= "'" . mysql_real_escape_string(str_replace("\r\n", "\n", $Value)) . "', ";
 				}
