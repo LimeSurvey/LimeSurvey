@@ -216,11 +216,11 @@ function makegraph($thisstep, $total)
 	if (!is_file($chart)) {$shchart="chart.jpg";}
 	else {$shchart = "$publicurl/templates/$templatedir/chart.jpg";}
 	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n";
-	$graph .= "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0'>\n";
-	$graph .= "<tr><td align='right' width='40'><font size='1' face='verdana'>0%</td>\n";
+	$graph .= "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n";
+	$graph .= "<tr><td align='right' width='40'>0%</td>\n";
 	$size=($thisstep-1)/$total*100;
 	$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% complete'></td>\n";
-	$graph .= "<td align='left' width='40'><font size='1' face='verdana'>100%</td></tr>\n";
+	$graph .= "<td align='left' width='40'>100%</td></tr>\n";
 	$graph .= "</table>\n";
 	$graph .= "</td></tr>\n</table>\n";
 	return $graph;
