@@ -572,6 +572,15 @@ function do_list_radio($ia)
 	global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
 	global $shownoanswer;
 	$answer="";
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+		{
+	    $dcols=$displaycols['value'];
+		}
+	else
+		{
+		$dcols=0;
+		}
 	if (isset($defexists)) {unset ($defexists);}
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$result = mysql_query($query);
@@ -579,11 +588,26 @@ function do_list_radio($ia)
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
 	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
 	$anscount = mysql_num_rows($ansresult);
-	$answer .= "\n\t\t\t\t\t<table class='question'>\n"
-			 . "\t\t\t\t\t\t<tr>\n"
-			 . "\t\t\t\t\t\t\t<td>\n";
+	$divider="";
+	$maxrows=0;
+	if ($dcols >0 && $anscount > $dcols) //Break into columns
+		{
+	    $denominator=$dcols; //Change this to set the number of columns
+		$width=sprintf("%0d", 100/$denominator);
+		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
+		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+		$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+		}
+	else 
+		{
+		$answer .= "\n\t\t\t\t\t<table class='question'>\n"
+				 . "\t\t\t\t\t\t<tr>\n"
+				 . "\t\t\t\t\t\t\t<td>\n";
+		}
+	$rowcounter=0;
 	while ($ansrow = mysql_fetch_array($ansresult))
 		{
+		$rowcounter++;
 		$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='$ia[1]{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 			{
@@ -591,9 +615,11 @@ function do_list_radio($ia)
 			}
 		elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
 		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 		}
 	if (isset($other) && $other=="Y") 
 		{
+		$rowcounter++;
 	    $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
 		if ($_SESSION[$ia[1]] == "-oth-") 
 			{
@@ -605,9 +631,11 @@ function do_list_radio($ia)
 		if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".$_SESSION[$thisfieldname]."' ";}
 		$answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"></label><br />\n";
 		$inputnames[]=$thisfieldname;
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 		}
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 		{
+		$rowcounter++;
 		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='$ia[1]NANS' value=' ' ";
 		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || !$_SESSION[$ia[1]]))
 			{
@@ -615,6 +643,7 @@ function do_list_radio($ia)
 			}
 		$answer .=" onClick='checkconditions(this.value, this.name, this.type)' />"
 				 . "<label for='$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 		}
 	$answer .= "\t\t\t\t\t\t\t</td>\n"
 			 . "\t\t\t\t\t\t</tr>\n"
@@ -962,10 +991,10 @@ function do_multiplechoice($ia)
 	$maxrows=0;
 	if ($dcols >0 && $anscount > $dcols) //Break into columns
 		{
-	    $denominator=$dcols; //Change this to set the number of columns
-		$width=sprintf("%0d", 100/$denominator);
-		$maxrows=sprintf("%0d", $anscount/$denominator)+1;
-		$answer .= "<table><tr>\n <td valign='top' width='$width%' nowrap>";
+		
+	    $width=sprintf("%0d", 100/$dcols);
+		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
+		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
 		$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
 		}	
 	$fn = 1;
@@ -999,9 +1028,12 @@ function do_multiplechoice($ia)
 		$anscount++;
 		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 		}
-	$answer .= "\t\t\t\t\t</td>\n"
-			 . "\t\t\t\t\t<td>&nbsp;</td>\n"
-			 . "\t\t\t\t</tr>\n"
+	$answer .= "\t\t\t\t\t</td>\n";
+	if ($dcols <1) 
+		{ //This just makes a single column look a bit nicer
+	    $answer .= "\t\t\t\t\t<td>&nbsp;</td>\n";
+		}
+	$answer .= "\t\t\t\t</tr>\n"
 			 . "\t\t\t</table>\n";
 	return array($answer, $inputnames);
 	}
@@ -1120,14 +1152,43 @@ function do_numerical($ia)
 
 function do_shortfreetext($ia)
 	{
-	$answer = "\t\t\t<input class='text' type='text' size='50' name='$ia[1]' id='$ia[1]' value=\"".str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))."\" />\n";
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+		{
+		$maxsize=$maxchars['value'];
+		}
+	else
+		{
+		$maxsize=255;
+		}
+		$answer = "\t\t\t<input class='text' type='text' size='50' name='$ia[1]' id='$ia[1]' value=\""
+				 .str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
+				 ."\" maxlength='$maxsize' />\n";
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 	}
 
 function do_longfreetext($ia)
 	{
-	$answer = "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' rows='5' cols='40'>";
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+		{
+		$maxsize=$maxchars['value'];
+		}
+	else
+		{
+		$maxsize=65525;
+		}
+	$answer = "<script type='text/javascript'>
+			   <!--
+			   function textLimit(field, maxlen) {
+				if (document.getElementById(field).value.length > maxlen)
+				document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
+				}
+			   //-->
+			   </script>\n";
+	$answer .= "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' "
+			  ."rows='5' cols='40' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\">";
 	if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}	
 	$answer .= "</textarea>\n";
 	$inputnames[]=$ia[1];
@@ -1136,7 +1197,25 @@ function do_longfreetext($ia)
 
 function do_hugefreetext($ia)
 	{
-	$answer = "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' rows='30' cols='70'>";
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+		{
+		$maxsize=$maxchars['value'];
+		}
+	else
+		{
+		$maxsize=65525;
+		}
+	$answer = "<script type='text/javascript'>
+			   <!--
+			   function textLimit(field, maxlen) {
+				if (document.getElementById(field).value.length > maxlen)
+				document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
+				}
+			   //-->
+			   </script>\n";
+	$answer .= "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' "
+			 ."\"\"rows='30' cols='70' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\">";
 	if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}	
 	$answer .= "</textarea>\n";
 	$inputnames[]=$ia[1];
