@@ -1142,8 +1142,27 @@ function do_multipleshorttext($ia)
 
 function do_numerical($ia)
 	{
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+		{
+		$maxsize=$maxchars['value'];
+		}
+	else
+		{
+		$maxsize=255;
+		}
+	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+		{
+		$tiwidth=$maxchars['value'];
+		}
+	else
+		{
+		$tiwidth=10;
+		}
 	$answer = keycontroljs()
-			 . "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' id='{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n"
+			 . "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' "
+			 . "id='{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\" "
+			 . "maxlength='$maxsize' /><br />\n"
 			 . "\t\t\t<font size='1'><i>"._NUMERICAL_PS."</i></font>\n";
 	$inputnames[]=$ia[1];
 	$mandatory=null;
@@ -1161,7 +1180,15 @@ function do_shortfreetext($ia)
 		{
 		$maxsize=255;
 		}
-		$answer = "\t\t\t<input class='text' type='text' size='50' name='$ia[1]' id='$ia[1]' value=\""
+	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+		{
+		$tiwidth=$maxchars['value'];
+		}
+	else
+		{
+		$tiwidth=50;
+		}
+	$answer = "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' id='$ia[1]' value=\""
 				 .str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
 				 ."\" maxlength='$maxsize' />\n";
 	$inputnames[]=$ia[1];
