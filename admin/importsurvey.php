@@ -73,6 +73,7 @@ if (substr($bigarray[1], 0, 22) != "# SURVEYOR SURVEY DUMP")
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
+	unlink($the_full_file_path);
 	exit;
 	}
 
@@ -214,15 +215,30 @@ $countlabelsets = count($labelsetsarray);
 $countlabels = count($labelsarray);
 
 // CREATE SURVEY
-$sid = substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
+//GET ORDER OF FIELDS
+$sstart=strpos($tablearray[0], "(`")+2;
+$slen=strpos($tablearray[0], "`)")-$sstart;
+$sfieldorder=substr($tablearray[0], $sstart, $slen);
+$sfieldorders=explode("`, `", $sfieldorder);
+//GET CONTENTS OF FIELDS
+$sfstart=strpos($tablearray[0], "('")+2;
+$sflen=strpos($tablearray[0], "')")-$sfstart;
+$sffieldcontent=substr($tablearray[0], $sfstart, $sflen);
+$sffieldcontents=explode("', '", $sffieldcontent);
+
+$sidpos=array_search("sid", $sfieldorders);
+$sid=$sffieldcontents[$sidpos];
+
+//$sid = substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
 if (!$sid) 
 	{
 	echo "<br /><b><font color='red'>"._ERROR."</b></font><br />\n";
 	echo _IS_IMPFAILED."<br />\n";
-	echo _IS_FILEFAILS."<br />\n";
+	echo _IS_FILEFAILS."<br />\n"; //NOT A PHPSURVEYOR EXPORT FILE
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
+	unlink($the_full_file_path); //Delete the uploaded file
 	exit;
 	}
 $insert = str_replace("('$sid'", "(''", $tablearray[0]);
@@ -298,7 +314,21 @@ if ($grouparray)
 	{
 	foreach ($grouparray as $ga)
 		{
-		$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
+		//GET ORDER OF FIELDS
+		$gastart=strpos($ga, "(`")+2;
+		$galen=strpos($ga, "`)")-$gastart;
+		$gafieldorder=substr($ga, $gastart, $galen);
+		$gafieldorders=explode("`, `", $gafieldorder);
+		//GET CONTENTS OF FIELDS
+		$gacstart=strpos($ga, "('")+2;
+		$gaclen=strpos($ga, "')")-$gacstart;
+		$gacfieldcontent=substr($ga, $gacstart, $gaclen);
+		$gacfieldcontents=explode("', '", $gacfieldcontent);
+
+		$gidpos=array_search("gid", $gafieldorders);
+		$gid=$gacfieldcontents[$gidpos];
+		
+		//$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
 		$ginsert = str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
 		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
 		$oldgid=$gid;
