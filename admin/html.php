@@ -598,11 +598,20 @@ if ($action == "editquestion")
 		$editquestion .= "\t\t<td align='right' valign='top'>$setfont<b>Help:</b></font></td>\n";
 		$editquestion .= "\t\t<td><textarea cols='35' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n";
 		$editquestion .= "\t</tr>\n";
+		//question type:
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>Type:</b></font></td>\n";
-		$editquestion .= "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n";
-		$editquestion .= getqtypelist($eqrow['type']);
-		$editquestion .= "\t\t</select></td>\n";
+		if ($activated != "Y")
+			{
+			$editquestion .= "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n";
+			$editquestion .= getqtypelist($eqrow['type']);
+			$editquestion .= "\t\t</select></td>\n";
+			}
+		else
+			{
+			$editquestion .= "\t\t<td>{$setfont}Cannot be changed in activated survey.\n";
+			$editquestion .= "\t\t</td>\n";
+			}
 		$editquestion .= "\t</tr>\n";
 		$editquestion .= "\t<tr>\n";
 		$editquestion .= "\t<td align='right'>$setfont<b>Group?</b></font></td>\n";
