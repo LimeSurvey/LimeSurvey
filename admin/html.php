@@ -88,13 +88,13 @@ if ($sid)
 	$surveysummary .= "\t\t<input type='submit' $btstyle value='Export' title='Export Survey Structure..' onClick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
 	if ($activated == "N") 
 		{
-		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test DataEntry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test Data Entry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
 		$surveysummary .= "\t\t<input type='submit' $btstyle value='Test Survey' onClick=\"window.open('../index.php?sid=$sid', '_blank')\">\n";
 		}
 	else 
 		{
 		$surveysummary .= "\t\t<input type='submit' $btstyle value='Browse' onClick=\"window.open('browse.php?sid=$sid', '_top')\">\n";
-		$surveysummary .= "\t\t<input type='submit' $btstyle value='DataEntry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
+		$surveysummary .= "\t\t<input type='submit' $btstyle value='Data Entry' onClick=\"window.open('dataentry.php?sid=$sid', '_blank')\">\n";
 		$surveysummary .= "\t\t<input type='submit' $btstyle value='Do Survey' onClick=\"window.open('../index.php?sid=$sid', '_blank')\">\n";
 		}
 	$surveysummary .= "\t\t<input type='submit' $btstyle value='Edit Survey' onClick=\"window.open('$scriptname?action=editsurvey&sid=$sid', '_top')\">\n";
@@ -248,7 +248,7 @@ if ($action == "editusers")
 		$usersummary .= "\t\t\t<p>If you click on the 'initialise security' button below, standard APACHE \n";
 		$usersummary .= "\t\t\tsecurity settings will be added to the administration directory of this \n";
 		$usersummary .= "\t\t\tscript. You will then need to use the default access username and password \n";
-		$usersummary .= "\t\t\tto access the administration and dataentry scripts.</p>\n";
+		$usersummary .= "\t\t\tto access the administration and data entry scripts.</p>\n";
 		$usersummary .= "\t\t\t<p>USERNAME: $defaultuser<br />PASSWORD: $defaultpass</p>\n";
 		$usersummary .= "\t\t\t<p>It is highly recommended that once your security system has been initialised \n";
 		$usersummary .= "\t\t\tyou change this default password.</p>\n";
