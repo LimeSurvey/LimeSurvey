@@ -115,6 +115,38 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 $bigarray = array_values($bigarray);
 
 //ANSWERS
+if (array_search("# LABELSETS TABLE\n", $bigarray))
+	{
+	$stoppoint = array_search("# LABELSETS TABLE\n", $bigarray);
+	}
+else
+	{
+	$stoppoint = count($bigarray)-1;
+	}
+for ($i=0; $i<=$stoppoint+1; $i++)
+	{
+	if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
+	unset($bigarray[$i]);
+	}
+$bigarray = array_values($bigarray);
+
+//LABELSETS
+if (array_search("# LABELS TABLE\n", $bigarray))
+	{
+	$stoppoint = array_search("# LABELS TABLE\n", $bigarray);
+	}
+else
+	{
+	$stoppoint = count($bigarray)-1;
+	}
+for ($i=0; $i<=$stoppoint+1; $i++)
+	{
+	if ($i<$stoppoint-2) {$labelsetsarray[] = $bigarray[$i];}
+	unset($bigarray[$i]);
+	}
+$bigarray = array_values($bigarray);
+
+//ANSWERS
 if (array_search("#</pre>\n", $bigarray))
 	{
 	$stoppoint = array_search("#</pre>\n", $bigarray);
@@ -125,7 +157,7 @@ else
 	}
 for ($i=0; $i<$stoppoint; $i++)
 	{
-	$answerarray[] = $bigarray[$i];
+	$labelsarray[] = $bigarray[$i];
 	//echo "($i)[$stoppoint]An Answer! - {$bigarray[$i]}<br />";
 	unset($bigarray[$i]);
 	}
@@ -134,14 +166,48 @@ $bigarray = array_values($bigarray);
 
 $countquestions = count($questionarray);
 $countanswers = count($answerarray);
-$countconditions = count($conditionsarray);
+$countlabelsets = count($labelsetsarray);
+$countlabels = count($labelsarray);
 
-// CREATE SURVEY
+// GET SURVEY AND GROUP DETAILS
 $sid=$_POST['sid'];
 $gid=$_POST['gid'];
 
 
-// DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
+//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
+if ($labelsetsarray)
+	{
+	foreach ($labelsetsarray as $lsa)
+		{
+		$start = strpos($lsa, "VALUES ('")+strlen("VALUES ('");
+		$end = strpos($lsa, "'", $start)-$start;
+		$oldlid=substr($lsa, $start, $end);
+		$lsainsert = str_replace("VALUES ('$oldlid", "VALUES ('", $lsa);
+		$lsiresult=mysql_query($lsainsert);
+		//GET NEW LID
+		$nlidquery="SELECT lid FROM labelsets ORDER BY lid DESC LIMIT 1";
+		$nlidresult=mysql_query($nlidquery);
+		while ($nlidrow=mysql_fetch_array($nlidresult)) {$newlid=$nlidrow['lid'];}
+		$labelreplacements[]=array($oldlid, $newlid);
+		if ($labelsarray)
+			{
+			foreach ($labelsarray as $la)
+				{
+				$lstart=strpos($la, "VALUES ('")+strlen("VALUES ('");
+				$lend = strpos($la, "'", $lstart)-$lstart;
+				$labellid=substr($la, $lstart, $lend);
+				if ($labellid == $oldlid)
+					{
+					$lainsert = str_replace("VALUES ('$labellid", "VALUES ('$newlid", $la);
+					$liresult=mysql_query($lainsert);
+					}
+				}
+			}
+		}
+	}
+
+
+// QUESTIONS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if ($questionarray)
 	{
 	foreach ($questionarray as $qa)
@@ -156,9 +222,23 @@ if ($questionarray)
 		$qinsert = str_replace("(`qid`, ", "(", $qinsert);
 		$qres = mysql_query($qinsert) or die ("<b>"._ERROR.":</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
 		//GET NEW QID
-		$qidquery = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
+		$qidquery = "SELECT qid, lid, type FROM questions ORDER BY qid DESC LIMIT 1";
 		$qidres = mysql_query($qidquery);
-		while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0];}
+		while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0]; $oldlid=$qrow[1]; $type=$qrow[2];}
+
+	
+		if ($type == "F")
+			{
+			foreach ($labelreplacements as $lrp)
+				{
+				if ($lrp[0] == $oldlid)
+					{
+					$lrupdate="UPDATE questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
+					$lrresult=mysql_query($lrupdate);
+					}
+				}
+			}
+
 		$newrank=0;
 		//NOW DO NESTED ANSWERS FOR THIS QID
 		//echo "<br />COUNT: ".count($answerarray);
@@ -231,7 +311,8 @@ if ($questionarray)
 echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
 echo "<b><u>"._IQ_IMPORTSUMMARY."</u></b><br />\n";
 echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
-echo "\t<li>"._ANSWERS.": $countanswers</li></ul><br />\n";
+echo "\t<li>"._ANSWERS.": $countanswers</li><br />\n";
+echo "\t<li>"._LABELSETS.": $countlabelsets ($countlabels)</li></ul><br />\n";
 
 echo "<b>"._IS_SUCCESS."</b><br />\n";
 echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid&qid=$newqid', '_top')\">\n";
