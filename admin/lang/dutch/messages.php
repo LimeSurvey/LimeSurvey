@@ -214,7 +214,7 @@ define("_TL_LAST", "Naam");
 define("_TL_EMAIL", "E-mail");
 define("_TL_TOKEN", "Toegangscode");
 define("_TL_INVITE", "Uitnodiging sturen?");
-define("_TL_DONE", "Beëindigd?");
+define("_TL_DONE", "Be&euml;indigd?");
 define("_TL_ACTION", "Bewerkingen");
 define("_TL_ATTR1", "Att_1"); //New for 0.98rc7
 define("_TL_ATTR2", "Att_2"); //New for 0.98rc7
@@ -230,9 +230,9 @@ define("_LL_ACTION", "Bewerking"); //New with 098rc3
 define("_5PT", "5 punt keuze");
 define("_DATE", "Datum");
 define("_GENDER", "Geslacht");
-define("_LIST", "Eénkeuze (Radio)"); //Changed with 0.99dev01
-define("_LIST_DROPDOWN", "Eénkeuze (Dropdown)"); //New with 0.99dev01
-define("_LISTWC", "Eénkeuze met opmerkingen");
+define("_LIST", "E&eacute;nkeuze (Radio)"); //Changed with 0.99dev01
+define("_LIST_DROPDOWN", "E&eacute;nkeuze (Dropdown)"); //New with 0.99dev01
+define("_LISTWC", "E&eacute;nkeuze met opmerkingen");
 define("_MULTO", "Meerkeuze");
 define("_MULTOC", "Meerkeuze met opmerkingen");
 define("_MULTITEXT", "Meerdere korte antwoorden");
@@ -303,7 +303,7 @@ define("_SS_DATESTAMPED", "Deelnames zullen met datum bijgehouden worden"); //NE
 define("_SS_COOKIES", "Er worden cookies gebruikt voor controle."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Weergave vraag per vraag."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Weergave groep per groep."); //NEW for release 0.98rc3
-define("_SS_SBYS", "Weergave op één pagina."); //NEW for release 0.98rc3
+define("_SS_SBYS", "Weergave op &eacute;&eacute;n pagina."); //NEW for release 0.98rc3
 define("_SS_ACTIVE", "Vragenlijst is momenteel actief."); //NEW for release 0.98rc3
 define("_SS_NOTACTIVE", "Vragenlijst is momenteel niet actief."); //NEW for release 0.98rc3
 define("_SS_SURVEYTABLE", "Naam vragenlijsttabel is:"); //NEW for release 0.98rc3
@@ -381,8 +381,8 @@ define("_AC_DEACTIVATED_MESSAGE3", "U noteert best de naam van deze tabel voor h
 define("_AC_DEACTIVATED_MESSAGE4", "De toegangscodetabel van deze vragenlijst is hernoemd naar: ");
 
 //CHECKFIELDS
-define("_CF_CHECKTABLES", "Bezig met verifiëren of alle tabellen bestaan");
-define("_CF_CHECKFIELDS", "Bezig met verifiëren of alle velden bestaan");
+define("_CF_CHECKTABLES", "Bezig met verifi&euml;ren of alle tabellen bestaan");
+define("_CF_CHECKFIELDS", "Bezig met verifi&euml;ren of alle velden bestaan");
 define("_CF_CHECKING", "Bezig met controleren");
 define("_CF_TABLECREATED", "Tabel aangemaakt");
 define("_CF_FIELDCREATED", "Veld aangemaakt");
@@ -598,7 +598,7 @@ define("_TC_NOREMINDTEMPLATE", "Herinnering sjabloon niet gevonden. Dit bestand 
 define("_TC_SENDEMAIL", "Verstuur uitnodigingen");
 define("_TC_SENDINGEMAILS", "Bezig met versturen van uitnodigingen");
 define("_TC_SENDINGREMINDERS", "Bezig met versturen van herinneringen");
-define("_TC_EMAILSTOGO", "Er zijn meer e-mails lopende dan in één keer kunnen verstuurd worden. Ga verder met het versturen door hieronder te klikken.");
+define("_TC_EMAILSTOGO", "Er zijn meer e-mails lopende dan in &eacute;&eacute;n keer kunnen verstuurd worden. Ga verder met het versturen door hieronder te klikken.");
 define("_TC_EMAILSREMAINING", "Er zijn nog {EMAILCOUNT} e-mails te versturen."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
 define("_TC_SENDREMIND", "Verstuur herinneringen");
 define("_TC_INVITESENTTO", "Uitnodiging verzonden naar:"); //is followed by token name

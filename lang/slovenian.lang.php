@@ -42,20 +42,20 @@
 //SINGLE WORDS
 define("_YES", "Da");
 define("_NO", "Ne");
-define("_UNCERTAIN", "NeodloËen");
+define("_UNCERTAIN", "Neodloƒçen");
 define("_ADMIN", "Admin");
 define("_TOKENS", "Gesla");
-define("_FEMALE", "Æenski");
-define("_MALE", "Moπki");
+define("_FEMALE", "≈Ωenski");
+define("_MALE", "Mo≈°ki");
 define("_NOANSWER", "Brez odgovora");
 define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Drugo");
 define("_PLEASECHOOSE", "Prosimo, izberite");
 define("_ERROR_PS", "Napaka");
-define("_COMPLETE", "ZakljuËeno");
-define("_INCREASE", "PoveËalo"); //NEW WITH 0.98
+define("_COMPLETE", "Zakljuƒçeno");
+define("_INCREASE", "Poveƒçalo"); //NEW WITH 0.98
 define("_SAME", "Ostalo enako"); //NEW WITH 0.98
-define("_DECREASE", "Zmanjπalo"); //NEW WITH 0.98
+define("_DECREASE", "Zmanj≈°alo"); //NEW WITH 0.98
 define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Potrditev");
@@ -67,132 +67,132 @@ define("_ACCEPT", "Sprejmi");
 define("_PREV", "Nazaj");
 define("_NEXT", "Naprej");
 define("_LAST", "Zadnje");
-define("_SUBMIT", "Poπlji podatke");
+define("_SUBMIT", "Po≈°lji podatke");
 
 
 //MESSAGES
 //From QANDA.PHP
-define("_CHOOSEONE", "Prosimo, izberite eno izmed naslednjih moænosti");
-define("_ENTERCOMMENT", "Prosimo, vpiπite svoj komentar");
-define("_NUMERICAL_PS", "V to polje lahko vpisujete samo πtevilke");
-define("_CLEARALL", "Izhod brez poπiljanja odgovorov");
-define("_MANDATORY", "Na to vpraπanje morate obvezno odgovoriti");
-define("_MANDATORY_PARTS", "Prosimo, odgovorite na vsa vpraπanja");
-define("_MANDATORY_CHECK", "Prosimo, izberite vsaj eno izmed moænosti");
+define("_CHOOSEONE", "Prosimo, izberite eno izmed naslednjih mo≈ænosti");
+define("_ENTERCOMMENT", "Prosimo, vpi≈°ite svoj komentar");
+define("_NUMERICAL_PS", "V to polje lahko vpisujete samo ≈°tevilke");
+define("_CLEARALL", "Izhod brez po≈°iljanja odgovorov");
+define("_MANDATORY", "Na to vpra≈°anje morate obvezno odgovoriti");
+define("_MANDATORY_PARTS", "Prosimo, odgovorite na vsa vpra≈°anja");
+define("_MANDATORY_CHECK", "Prosimo, izberite vsaj eno izmed mo≈ænosti");
 define("_MANDATORY_RANK", "Prosimo, rangirajte vse");
-define("_MANDATORY_POPUP", "Niste odgovorili na eno ali veË obveznih vpraπanj, zato z anketo ne morete nadaljevati!"); //NEW in 0.98rc4
+define("_MANDATORY_POPUP", "Niste odgovorili na eno ali veƒç obveznih vpra≈°anj, zato z anketo ne morete nadaljevati!"); //NEW in 0.98rc4
 define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
 define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "V obliki: LLLL-MM-DD");
-define("_DATEFORMATEG", "(npr.: 2004-12-25 za BoæiË)");
+define("_DATEFORMATEG", "(npr.: 2004-12-25 za Bo≈æiƒç)");
 define("_REMOVEITEM", "Odstrani");
-define("_RANK_1", "Kliknite na listo na levi strani. PriËnite z najviπje");
-define("_RANK_2", "ocenjenim in nadaljujte do najniæje ocenjenega.");
-define("_YOURCHOICES", "Vaπa izbira");
-define("_YOURRANKING", "Vaπa ocena");
-define("_RANK_3", "Kliknite na πkarje na desni,");
-define("_RANK_4", "ce æelite izbrisati zadnji vnos");
+define("_RANK_1", "Kliknite na listo na levi strani. Priƒçnite z najvi≈°je");
+define("_RANK_2", "ocenjenim in nadaljujte do najni≈æje ocenjenega.");
+define("_YOURCHOICES", "Va≈°a izbira");
+define("_YOURRANKING", "Va≈°a ocena");
+define("_RANK_3", "Kliknite na ≈°karje na desni,");
+define("_RANK_4", "ce ≈æelite izbrisati zadnji vnos");
 //From INDEX.PHP
-define("_NOSID", "Manjka identifikacijska πtevilka ankete!");
+define("_NOSID", "Manjka identifikacijska ≈°tevilka ankete!");
 define("_CONTACT1", "Prosimo, obrnite se na");
-define("_CONTACT2", "za nadaljno pomoË in vpraπanja");
+define("_CONTACT2", "za nadaljno pomoƒç in vpra≈°anja");
 define("_ANSCLEAR", "Odgovori so izbrisani");
-define("_RESTART", "Ponovno zaËni z anketo");
+define("_RESTART", "Ponovno zaƒçni z anketo");
 define("_CLOSEWIN_PS", "Zapri okno");
-define("_CONFIRMCLEAR", "Ali ste prepriËani, da æelite izbrisati vaπe odgovore?");
+define("_CONFIRMCLEAR", "Ali ste prepriƒçani, da ≈æelite izbrisati va≈°e odgovore?");
 define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
-define("_EXITCLEAR", "Zapusti anketo brez poπiljanja odgovorov");
+define("_EXITCLEAR", "Zapusti anketo brez po≈°iljanja odgovorov");
 //From QUESTION.PHP
-define("_BADSUBMIT1", "Odgovorov ni mogoËe poslati -- odgovorov ni.");
-define("_BADSUBMIT2", "Ta napaka se lahko pojavi, Ëe ste æe posredovali vaπe odgovore in nato pritisnili gumb za osveæitev strani (<i>Refresh</i>). Vaπi odgovori so bili v tem primeru æe shranjeni.<br /><br />»e se to sporoËilo pojavi med anketiranjem, morate pritisniti gumb '<- NAZAJ' ('<- BACK') v vaπem brskalniku in nato OSVEÆI/REFRESH. Dokler ne odgovorite na zadnje vpraπanje v anketi, so vaπi odgovori πe vedno dosegljivi. Na podobno teæavo lahko naletite tudi, ob preobremenjenosti streænika. Za teæave se vam opraviËujemo.");
-define("_NOTACTIVE1", "Vaπi odgovori se niso zabeleæili. Anketa πe ni aktivna!");
-define("_CLEARRESP", "Izbriπi odgovore.");
+define("_BADSUBMIT1", "Odgovorov ni mogoƒçe poslati -- odgovorov ni.");
+define("_BADSUBMIT2", "Ta napaka se lahko pojavi, ƒçe ste ≈æe posredovali va≈°e odgovore in nato pritisnili gumb za osve≈æitev strani (<i>Refresh</i>). Va≈°i odgovori so bili v tem primeru ≈æe shranjeni.<br /><br />ƒåe se to sporoƒçilo pojavi med anketiranjem, morate pritisniti gumb '<- NAZAJ' ('<- BACK') v va≈°em brskalniku in nato OSVE≈ΩI/REFRESH. Dokler ne odgovorite na zadnje vpra≈°anje v anketi, so va≈°i odgovori ≈°e vedno dosegljivi. Na podobno te≈æavo lahko naletite tudi, ob preobremenjenosti stre≈ænika. Za te≈æave se vam opraviƒçujemo.");
+define("_NOTACTIVE1", "Va≈°i odgovori se niso zabele≈æili. Anketa ≈°e ni aktivna!");
+define("_CLEARRESP", "Izbri≈°i odgovore.");
 define("_THANKS", "Hvala lepa");
-define("_SURVEYREC", "Vaπi odgovori so se shranili!");
-define("_SURVEYCPL", "Anketa je konËana.");
+define("_SURVEYREC", "Va≈°i odgovori so se shranili!");
+define("_SURVEYCPL", "Anketa je konƒçana.");
 define("_DIDNOTSAVE", "Ni bilo shranjeno.");
-define("_DIDNOTSAVE2", "Priπlo je do nepriËakovane napake. Vaπih odgovorov ni mogoËe shraniti.");
-define("_DIDNOTSAVE3", "Vaπi odgovori NISO bili izgiubljeni. Poslani so bili administratorju ankete in bodo vkljuËeni v rezultate.");
-define("_DNSAVEEMAIL1", "Napaka v identifikacijski πtevilki");
+define("_DIDNOTSAVE2", "Pri≈°lo je do nepriƒçakovane napake. Va≈°ih odgovorov ni mogoƒçe shraniti.");
+define("_DIDNOTSAVE3", "Va≈°i odgovori NISO bili izgiubljeni. Poslani so bili administratorju ankete in bodo vkljuƒçeni v rezultate.");
+define("_DNSAVEEMAIL1", "Napaka v identifikacijski ≈°tevilki");
 define("_DNSAVEEMAIL2", "Podatki za vnos");
 define("_DNSAVEEMAIL3", "Napaka v SQL kodi");
-define("_DNSAVEEMAIL4", "SPORO»ILO Z NAPAKO");
+define("_DNSAVEEMAIL4", "SPOROƒåILO Z NAPAKO");
 define("_DNSAVEEMAIL5", "NAPAKA PRI SHRANJEVANJU");
 define("_SUBMITAGAIN", "Poskusite ponovno");
 define("_SURVEYNOEXIST", "Oprostite. Ta anketa ne obstaja.");
 define("_NOTOKEN1", "Ta anketa ni javno dostopna. Za sodelovanje potrebujete geslo.");
-define("_NOTOKEN2", "»e vam je bilo geslo posredovano, ga vpiπite v spodnje polje in kliknite za nadaljevanje.");
-define("_NOTOKEN3", "Geslo, ki ste ga posredovali ni veljavno ali pa je bilo æe uporabljeno.");
-define("_NOQUESTIONS", "Ta anketa se nima nobenih vpraπanj.");
+define("_NOTOKEN2", "ƒåe vam je bilo geslo posredovano, ga vpi≈°ite v spodnje polje in kliknite za nadaljevanje.");
+define("_NOTOKEN3", "Geslo, ki ste ga posredovali ni veljavno ali pa je bilo ≈æe uporabljeno.");
+define("_NOQUESTIONS", "Ta anketa se nima nobenih vpra≈°anj.");
 define("_FURTHERINFO", "Za dodatne informacije se obrnite na");
-define("_NOTACTIVE", "Ta anketa trenutno ni aktivna. Vaπi odgovori ne bodo shranjeni.");
-define("_SURVEYEXPIRED", "Anketa je zakljuËena.");
+define("_NOTACTIVE", "Ta anketa trenutno ni aktivna. Va≈°i odgovori ne bodo shranjeni.");
+define("_SURVEYEXPIRED", "Anketa je zakljuƒçena.");
 
-define("_SURVEYCOMPLETE", "Na to anketo ste æe odgovorili."); //NEW FOR 0.98rc6
+define("_SURVEYCOMPLETE", "Na to anketo ste ≈æe odgovorili."); //NEW FOR 0.98rc6
 
-define("_INSTRUCTION_LIST", "Izberite samo eno izmed moænosti"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Moænih je veË odgovorov"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "Izberite samo eno izmed mo≈ænosti"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "Mo≈ænih je veƒç odgovorov"); //NEW for 098rc3
 
 define("_CONFIRMATION_MESSAGE1", "Anketa je bila poslana"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE2", "Vaπa anketa je dobila nov odgovor"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "Va≈°a anketa je dobila nov odgovor"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Individualni potatki so vam na voljo tukaj:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Osnovne statistike so vam na voljo tukaj:"); //NEW for 098rc5
 
 define("_PRIVACY_MESSAGE", "<b><i>Obvestilo o varovanju zasebnosti</i></b><br />"
 						  ."Ta anketa je anonimna.<br />"
-						  ."Vaπi odgovori na anketna vpraπanja, ki se shranjujejo v bazo odgovorov ne vsebujejo "
-						  ."nobenih informacij, prek katerih bi vas bilo mogoËe identificirati razen v primeru "
-						  ."ko so le te del odgovora na anketno vpraπanje. »e odgovarjate na anketo, ki "
+						  ."Va≈°i odgovori na anketna vpra≈°anja, ki se shranjujejo v bazo odgovorov ne vsebujejo "
+						  ."nobenih informacij, prek katerih bi vas bilo mogoƒçe identificirati razen v primeru "
+						  ."ko so le te del odgovora na anketno vpra≈°anje. ƒåe odgovarjate na anketo, ki "
 						  ."za dostop uporablja identifikacijsko geslo, se podatki o geslu ne hranijo "
-						  ."skupaj z odgovori na anketna vpraπanja. Identifikacijski podatki se hranijo "
-						  ."v posebni bazi in sluæijo zgolj kot informacija, Ëe ste æe (oz. πe niste) "
-						  ."odgovorili na anketo. Gesel v nobenem primeru ni mogoËe povezati z "
+						  ."skupaj z odgovori na anketna vpra≈°anja. Identifikacijski podatki se hranijo "
+						  ."v posebni bazi in slu≈æijo zgolj kot informacija, ƒçe ste ≈æe (oz. ≈°e niste) "
+						  ."odgovorili na anketo. Gesel v nobenem primeru ni mogoƒçe povezati z "
 						  ."odgovori na anketo."); //New for 0.98rc9
 
 
-define("_THEREAREXQUESTIONS", "V tej anketi je {NUMBEROFQUESTIONS} vpraπanj."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
-define("_THEREAREXQUESTIONS_SINGLE", "V tej anketi je samo eno vpraπanje."); //New for 0.98rc9 - singular version of above
+define("_THEREAREXQUESTIONS", "V tej anketi je {NUMBEROFQUESTIONS} vpra≈°anj."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
+define("_THEREAREXQUESTIONS_SINGLE", "V tej anketi je samo eno vpra≈°anje."); //New for 0.98rc9 - singular version of above
 
-define ("_RG_REGISTER1", "»e æelite odgovoriti na anketo, se morate registrirati."); //NEW for 0.98rc9
-define ("_RG_REGISTER2", "»e æelite sodelovati v anketi se lahko registrirate.<br />\n"
-						."Vpiπite svoje podatke in veljaven e-mail naslov. Navodila za sodelovanje "
-						."boste v kratkem prejeli po elektronski poπti."); //NEW for 0.98rc9
+define ("_RG_REGISTER1", "ƒåe ≈æelite odgovoriti na anketo, se morate registrirati."); //NEW for 0.98rc9
+define ("_RG_REGISTER2", "ƒåe ≈æelite sodelovati v anketi se lahko registrirate.<br />\n"
+						."Vpi≈°ite svoje podatke in veljaven e-mail naslov. Navodila za sodelovanje "
+						."boste v kratkem prejeli po elektronski po≈°ti."); //NEW for 0.98rc9
 define ("_RG_EMAIL", "E-mail naslov"); //NEW for 0.98rc9
 define ("_RG_FIRSTNAME", "Ime"); //NEW for 0.98rc9
 define ("_RG_LASTNAME", "Priimek"); //NEW for 0.98rc9
 define ("_RG_INVALIDEMAIL", "Ta e-mail naslov ni veljaven. Poskusite znova.");//NEW for 0.98rc9
-define ("_RG_USEDEMAIL", "E-mail naslov, ki ste ga vpisali je bil æe uporabljen v tej anketi.");//NEW for 0.98rc9
+define ("_RG_USEDEMAIL", "E-mail naslov, ki ste ga vpisali je bil ≈æe uporabljen v tej anketi.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "Potrditev registracije -- {SURVEYNAME}");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "Hvala ker ste se prijavili za sodelovanje v anketi.<br /><br />\n"
-								   ."Na e-mail naslov, ki ste ga navedli vam je bilo poslano sporoËilo z navodili za dostop do ankete. "
-								   ."Za nadaljevanje upoπtevajte ta navodila.<br /><br />\n"
+								   ."Na e-mail naslov, ki ste ga navedli vam je bilo poslano sporoƒçilo z navodili za dostop do ankete. "
+								   ."Za nadaljevanje upo≈°tevajte ta navodila.<br /><br />\n"
 								   ."Lep pozdrav, {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Najlepπa hvala<br /><br />"
-					   ."Z odgovarjanjem na anketo ste zakljuËili.</b><br /><br />"
-					   ."S klikom na ["._SUBMIT."] boste shranili vaπe odgovore."); //New for 0.98finalRC1
-define("_SM_REVIEW", "»e æelite preveriti vaπe odgovore ali jih popraviti, "
+define("_SM_COMPLETED", "<b>Najlep≈°a hvala<br /><br />"
+					   ."Z odgovarjanjem na anketo ste zakljuƒçili.</b><br /><br />"
+					   ."S klikom na ["._SUBMIT."] boste shranili va≈°e odgovore."); //New for 0.98finalRC1
+define("_SM_REVIEW", "ƒåe ≈æelite preveriti va≈°e odgovore ali jih popraviti, "
 					."lahko to storite s klikanjem na gumb [<< "._PREV."] ."); //New for 0.98finalRC1
 
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Prosimo, izberite  <b>eno</b> izmed moænosti:"); //New for 0.98finalRC1
-define("_PS_WRITE", "Vpiπite vaπ odgovor:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Moænih je <b>veË</b> odgovorov:"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Prosimo, izberite  <b>eno</b> izmed mo≈ænosti:"); //New for 0.98finalRC1
+define("_PS_WRITE", "Vpi≈°ite va≈° odgovor:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Mo≈ænih je <b>veƒç</b> odgovorov:"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Izberite ustrezne odgovore in podajte komentar:"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Izberite primeren odgovor za vsako trditev."); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Prosimo, vpiπite odgovor:"); //New for 0.98finalRC1
-define("_PS_DATE", "Prosimo, vpiπite datum:"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Komentirajte vaπo izbiro:"); //New for 0.98finalRC1
-define("_PS_RANKING", "Prosimo, oπteviËite vsako polje glede na vaπe preference od 1 do"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Poπlji anketo."); //New for 0.98finalRC1
-define("_PS_THANKYOU", "Najlepπa hvala za sodelovanje v anketi."); //New for 0.98finalRC1
-define("_PS_FAXTO", "Prosimo, poπljite vaπo izpolnjeno anketo po telefaksu na πtevilko:"); //New for 0.98finaclRC1
+define("_PS_WRITEMULTI", "Prosimo, vpi≈°ite odgovor:"); //New for 0.98finalRC1
+define("_PS_DATE", "Prosimo, vpi≈°ite datum:"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Komentirajte va≈°o izbiro:"); //New for 0.98finalRC1
+define("_PS_RANKING", "Prosimo, o≈°teviƒçite vsako polje glede na va≈°e preference od 1 do"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Po≈°lji anketo."); //New for 0.98finalRC1
+define("_PS_THANKYOU", "Najlep≈°a hvala za sodelovanje v anketi."); //New for 0.98finalRC1
+define("_PS_FAXTO", "Prosimo, po≈°ljite va≈°o izpolnjeno anketo po telefaksu na ≈°tevilko:"); //New for 0.98finaclRC1
 
-define("_PS_CON_ONLYANSWER", "Odgoorite samo na to vpraπanje"); //New for 0.98finalRC1
-define("_PS_CON_IFYOU", "Ëe odgvovorite"); //New for 0.98finalRC1
+define("_PS_CON_ONLYANSWER", "Odgoorite samo na to vpra≈°anje"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "ƒçe odgvovorite"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "in"); //New for 0.98finalRC1
-define("_PS_CON_TOQUESTION", "na vpraπanje"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "na vpra≈°anje"); //New for 0.98finalRC1
 define("_PS_CON_OR", "ali"); //New for 0.98finalRC2
 
 //Save Messages
