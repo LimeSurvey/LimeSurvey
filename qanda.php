@@ -411,8 +411,8 @@ switch ($ia[4])
 			}
 		$choicelist .= "\t\t\t\t\t\t</select>\n";
 
-		$answer .= "\t<tr>\n";
-		$answer .= "\t\t<td colspan='2'>\n";
+		//$answer .= "\t<tr>\n";
+		//$answer .= "\t\t<td colspan='2'>\n";
 		$answer .= "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
@@ -615,8 +615,6 @@ switch ($ia[4])
 		$inputnames[]=$ia[1];
 		break;
 	case "G": //GENDER drop-down list
-		$answer .= "\t<tr>\n";
-		$answer .= "\t\t<td colspan='1' align='center'>\n";
 		$answer .= "\t\t\t<table align='center'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td>$setfont\n";
