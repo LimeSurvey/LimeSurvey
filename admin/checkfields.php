@@ -5,15 +5,24 @@ include("config.php");
 sendcacheheaders();
 
 //TABLES THAT SHOULD EXIST
-$alltables=array("surveys", "groups", "questions", "answers", "conditions", "users");
+$alltables=array("surveys", "groups", "questions", "answers", "conditions", "users", "labelsets", "labels");
 
 //KEYS
 $keyinfo[]=array("surveys", "sid");
 $keyinfo[]=array("groups", "gid");
 $keyinfo[]=array("questions", "qid");
 $keyinfo[]=array("conditions", "cid");
+$keyinfo[]=array("labelsets", "lid");
 
 //FIELDS THAT SHOULD EXIST
+$allfields[]=array("labelsets", "lid", "lid int(11) NOT NULL auto_increment");
+$allfields[]=array("labelsets", "label_name", "label_name varchar(100) NOT NULL default ''");
+
+$allfields[]=array("labels", "lid", "lid int(11) NOT NULL default '0'");
+$allfields[]=array("labels", "code", "code varchar(5) NOT NULL default ''");
+$allfields[]=array("labels", "title", "title varchar(50) NOT NULL default ''");
+$allfields[]=array("labels", "sortorder", "sortorder varchar(5) NULL");
+
 $allfields[]=array("users", "user", "user varchar(20) NOT NULL default ''");
 $allfields[]=array("users", "password", "password varchar(20) NOT NULL default ''");
 $allfields[]=array("users", "security", "security varchar(10) NOT NULL default ''");
@@ -45,6 +54,7 @@ $allfields[]=array("questions", "question", "question text NOT NULL");
 $allfields[]=array("questions", "help", "help text");
 $allfields[]=array("questions", "other", "other char(1) NOT NULL default 'N'");
 $allfields[]=array("questions", "mandatory", "mandatory char(1) default NULL");
+$allfields[]=array("lid", "lid", "lid int(11) NOT NULL default '0'");
 
 $allfields[]=array("surveys", "sid", "sid int(11) NOT NULL auto_increment");
 $allfields[]=array("surveys", "short_title", "short_title varchar(50) NOT NULL default ''");
