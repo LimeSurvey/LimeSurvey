@@ -148,7 +148,7 @@ if (mail(returnglobal('register_email'), $subject, $message, $headers))
 	$html=str_replace("{ADMINNAME}", $surveyadmin, $html);
 	$html=str_replace("{ADMINEMAIL}", $surveyadminemail, $html);
 	$html=str_replace("{SURVEYNAME}", $surveyname, $html);
-	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: window.close()' value='"._CLOSEWIN."'></center>\n";
+	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: self.close()' value='"._CLOSEWIN."'></center>\n";
 	}
 
 //PRINT COMPLETED PAGE
