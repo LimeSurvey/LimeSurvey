@@ -71,6 +71,21 @@
 	border-color: #333399;
 	background-color: #FFD1A4;
 	}
+.rank
+	{
+	background-color: #FFE4CA;
+	border: solid;
+	border-width: 1;
+	border-color: #FFB4CA;
+	}
+.array1
+	{
+	background-color: #FFE0CA;
+	}
+.array2
+	{
+	background-color: #FFEFCA;
+	}
 </style>
 </head>
 <body bgcolor='#FF9933'><font face='verdana' size='2'>
