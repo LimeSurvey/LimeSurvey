@@ -39,12 +39,6 @@ session_start();
 
 include("./admin/config.php");
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");                          // HTTP/1.0
-
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
 $tpldir="$publicdir/templates";
@@ -53,6 +47,7 @@ $tpldir="$publicdir/templates";
 if (!$_GET['sid'] && !$_POST['sid'])
 	{
 	//A nice crashout
+	sendcacheheaders();
 	echo "<html>\n";
 	$output=file("$tpldir/default/startpage.pstpl");
 	foreach($output as $op)
@@ -60,7 +55,7 @@ if (!$_GET['sid'] && !$_POST['sid'])
 		echo templatereplace($op);
 		}
 	echo "\t\t<center><br />\n";
-	echo "\t\t\t<font color='RED'><b>ERROR:</b></font><br />\n";
+	echo "\t\t\t<font color='RED'><b>ERROR</b></font><br />\n";
 	echo "\t\t\tYou have not provided a survey identification number.<br /><br />\n";
 	echo "\t\t\tPlease contact <i>$siteadminname</i> at <i>$siteadminemail</i> for further assistance.<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
@@ -73,15 +68,17 @@ if (!$_GET['sid'] && !$_POST['sid'])
 	}
 
 //GET BASIC INFORMATION ABOUT THIS SURVEY
-$sid=$_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
-if (!$token) 
-	{
-	$token=$_GET['token'];
-	if (!$token)
-		{
-		$token=$_POST['token'];
-		}
-	}
+if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($token)) {$token=returnglobal('token');}
+//$sid=$_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
+//if (!$token) 
+//	{
+//	$token=$_GET['token'];
+//	if (!$token)
+//		{
+//		$token=$_POST['token'];
+//		}
+//	}
 $query="SELECT * FROM surveys WHERE sid=$sid";
 $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
 $surveyexists=mysql_num_rows($result);
@@ -102,6 +99,15 @@ while ($row=mysql_fetch_array($result))
 	$surveyformat = $row['format'];
 	$surveylanguage = $row['language'];
 	$surveydatestamp = $row['datestamp'];
+	$surveyusecookie = $row['usecookie'];
+	}
+
+//SEE IF SURVEY USES TOKENS
+$i = 0; $tokensexist = 0;
+$tresult = @mysql_list_tables($databasename) or die ("Error getting tokens<br />".mysql_error());
+while($tbl = @mysql_tablename($tresult, $i++))
+	{
+	if ($tbl == "tokens_$sid") {$tokensexist = 1;}
 	}
 
 //SET THE TEMPLATE DIRECTORY
@@ -115,9 +121,35 @@ $langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 
+//CHECK FOR PREVIOUSLY COMPLETED COOKIE
+//If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
+$cookiename="PHPSID".returnglobal('sid')."STATUS";
+if ($_COOKIE[$cookiename] == "COMPLETE" && $surveyusecookie == "Y" && $tokensexist != 1)
+	{
+	sendcacheheaders();
+	echo "<html>\n";
+	$output=file("$tpldir/default/startpage.pstpl");
+	foreach($output as $op)
+		{
+		echo templatereplace($op);
+		}
+	echo "\t\t<center><br />\n";
+	echo "\t\t\t<font color='RED'><b>"._ERROR."</b></font><br />\n";
+	echo "\t\t\tYou have already completed this survey.<br /><br />\n";
+	echo "\t\t\tPlease contact <i>$siteadminname</i> at <i>$siteadminemail</i> for further assistance.<br /><br />\n";
+	$output=file("$tpldir/default/endpage.pstpl");
+	foreach($output as $op)
+		{
+		echo templatereplace($op);
+		}
+	echo "</html>\n";
+	exit;
+	}
+
 //CLEAR SESSION IF REQUESTED
 if ($_GET['move'] == "clearall")
 	{
+	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -157,10 +189,9 @@ if ($_GET['newtest'] == "Y")
 		{
 		session_unset();
 		}
-	//session_unset();
-	//session_destroy();
 	}
 
+sendcacheheaders();
 //CALL APPROPRIATE SCRIPT
 switch ($surveyformat)
 	{

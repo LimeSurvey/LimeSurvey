@@ -173,11 +173,6 @@ if ($_POST['conmandatory']) //Mandatory conditional questions that should only b
 //SUBMIT
 if ($_POST['move'] == " "._SUBMIT." ")
 	{
-	foreach(file("$thistpl/startpage.pstpl") as $op)
-		{
-		echo templatereplace($op);
-		}
-	
 	//If survey has datestamp turned on, add $localtimedate to sessions
 	if ($surveydatestamp == "Y")
 		{
@@ -214,6 +209,11 @@ if ($_POST['move'] == " "._SUBMIT." ")
 		}
 	else
 		{
+		echo "<html>\n";
+		foreach(file("$thistpl/startpage.pstpl") as $op)
+			{
+			echo templatereplace($op);
+			}
 		echo "<br /><center><font face='verdana' size='2'><font color='red'><b>"._ERROR."</b></font><br /><br />\n";
 		echo _BADSUBMIT1."<br /><br />\n";
 		echo "<font size='1'>"._BADSUBMIT2."<br />\n";
@@ -223,6 +223,11 @@ if ($_POST['move'] == " "._SUBMIT." ")
 	//COMMIT CHANGES TO DATABASE
 	if ($surveyactive != "Y")
 		{
+		echo "<html>\n";
+		foreach(file("$thistpl/startpage.pstpl") as $op)
+			{
+			echo templatereplace($op);
+			}
 		$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
 		$completed .= _NOTACTIVE1."<br /><br />\n";
 		$completed .= "<a href='$PHP_SELF?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
@@ -230,8 +235,20 @@ if ($_POST['move'] == " "._SUBMIT." ")
 		}
 	else
 		{
-		if (mysql_query($subquery))
+		if (mysql_query($subquery)) //submit of responses was successful
 			{
+			//UPDATE COOKIE IF REQUIRED
+			if ($surveyusecookie == "Y" && $tokensexist != 1)
+				{
+				$cookiename="PHPSID".returnglobal('sid')."STATUS";
+				$cookie_life = time() + 31536000; // 1 year life
+				setcookie($cookiename, "COMPLETE", $cookielife);
+				}
+			echo "<html>\n";
+			foreach(file("$thistpl/startpage.pstpl") as $op)
+				{
+				echo templatereplace($op);
+				}
 			$completed = "<br /><b><font size='2'><font color='green'>"._THANKS."</b></font><br /><br />\n\n";
 			$completed .= _SURVEYREC."<br />\n";
 			$completed .= "<a href='javascript:window.close()'>"._CLOSEWIN."</a></font><br /><br />\n";
@@ -275,6 +292,11 @@ if ($_POST['move'] == " "._SUBMIT." ")
 			}
 		else
 			{
+			echo "<html>\n";
+			foreach(file("$thistpl/startpage.pstpl") as $op)
+				{
+				echo templatereplace($op);
+				}
 			$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
 			$completed .= _DIDNOTSAVE2."<br /><br />\n";
 			if ($adminemail)
@@ -375,14 +397,6 @@ if ($surveyexists <1)
 		echo templatereplace($op);
 		}
 	exit;
-	}
-
-//SEE IF THERE ARE TOKENS FOR THIS SURVEY
-$i = 0; $tokensexist = 0;
-$tresult = @mysql_list_tables($databasename) or die ("Error getting tokens<br />".mysql_error());
-while($tbl = @mysql_tablename($tresult, $i++))
-	{
-	if ($tbl == "tokens_$sid") {$tokensexist = 1;}
 	}
 
 //RUN THIS IF THIS IS THE FIRST TIME
