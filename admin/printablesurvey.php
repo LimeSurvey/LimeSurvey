@@ -308,13 +308,14 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				else
 					{
-				while ($dearow = mysql_fetch_array($dearesult))
-					{
-					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
-					}
-				if ($deqrow['other'] == "Y")
-					{
-				    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
+						}
+					if ($deqrow['other'] == "Y")
+						{
+					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+						}
 					}
 				break;
 			case "O":  //LIST WITH COMMENT
