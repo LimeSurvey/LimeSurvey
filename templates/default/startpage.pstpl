@@ -1,8 +1,30 @@
 <head>
 	<title>
 	</title>
+<style type='text/css'>
+body.default
+	{
+	font-family: verdana;
+	font-size: 11;
+	}
+.answertext
+	{
+	font-family: verdana;
+	font-size: 11;
+	}
+.array1
+	{
+	font-family: verdana;
+	font-size: 11;
+	}
+.array2
+	{
+	font-family: verdana;
+	font-size: 11;
+	}
+</style>
 </head>
-<body><font face='verdana' size='2'>
+<body class='default'>
 <table width='75%' align='center' style='border-collapse: collapse' bordercolor='#333333' border='1' cellspacing='0'>
 	<tr>
 		<td>

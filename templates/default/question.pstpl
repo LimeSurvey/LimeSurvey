@@ -5,12 +5,12 @@
 				<tr>
 					<td align='center' bgcolor='#EEEEEE'>
 						<font size='2'><b>{QUESTION}</b>
-					</td>
+					</font></td>
 				</tr>
 				<tr>
-					<td align='center'>
+					<td align='center'><font face='verdana' size='2'>
 						{ANSWER}
-					</td>
+					</font></td>
 				</tr>
 				<tr>
 					<td align='center' bgcolor='#EEEEEE'>
