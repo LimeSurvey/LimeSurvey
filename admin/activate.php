@@ -161,7 +161,7 @@ else
 		"<center><a href='$scriptname?sid=$sid'>Back to Admin</a></center>\n" .
 		"The database reported:<br />\n<font color='red'>" . mysql_error() . "</font>\n" .
 		"<pre>$createsurvey</pre>\n" .
-		"</body>\n<html>"
+		"</body>\n</html>"
 		);
 	
 	echo "<center><font color='green'>Results Table has been created!<br /><br />\n";
