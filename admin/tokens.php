@@ -242,13 +242,13 @@ if ($action == "browse")
 	echo "<table cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
 	//COLUMN HEADINGS
 	echo "\t<tr>\n";
-	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=tid'><img src='DownArrow.gif' alt='Sort by ID' border='0' align='left'></a>$setfont"."ID</th>\n";
-	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=firstname'><img src='DownArrow.gif' alt='Sort by First Name' border='0' align='left'></a>$setfont"."First</th>\n";
-	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=lastname'><img src='DownArrow.gif' alt='Sort by Last Name' border='0' align='left'></a>$setfont"."Last</th>\n";
-	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=email'><img src='DownArrow.gif' alt='Sort by Email' border='0' align='left'></a>$setfont"."Email</th>\n";
-	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=token'><img src='DownArrow.gif' alt='Sort by Token' border='0' align='left'></a>$setfont"."Token</th>\n";
-	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc'><img src='DownArrow.gif' alt='Sort by Invite?' border='0' align='left'></a>$setfont"."Invite?</th>\n";
-	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='DownArrow.gif' alt='Sort by Done?' border='0' align='left'></a>$setfont"."Done?</th>\n";
+	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=tid'><img src='./images/DownArrow.gif' alt='Sort by ID' border='0' align='left'></a>$setfont"."ID</th>\n";
+	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=firstname'><img src='./images/DownArrow.gif' alt='Sort by First Name' border='0' align='left'></a>$setfont"."First</th>\n";
+	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=lastname'><img src='./images/DownArrow.gif' alt='Sort by Last Name' border='0' align='left'></a>$setfont"."Last</th>\n";
+	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=email'><img src='./images/DownArrow.gif' alt='Sort by Email' border='0' align='left'></a>$setfont"."Email</th>\n";
+	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=token'><img src='./images/DownArrow.gif' alt='Sort by Token' border='0' align='left'></a>$setfont"."Token</th>\n";
+	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc'><img src='./images/DownArrow.gif' alt='Sort by Invite?' border='0' align='left'></a>$setfont"."Invite?</th>\n";
+	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='./images/DownArrow.gif' alt='Sort by Done?' border='0' align='left'></a>$setfont"."Done?</th>\n";
 	echo "\t\t<th align='left' colspan='2'>$setfont"."Action</th>\n";
 	echo "\t</tr>\n";
 	
