@@ -221,16 +221,34 @@ if ($labelsetsarray)
 	{
 	foreach ($labelsetsarray as $lsa)
 		{
-		$lidpos = "VALUES ('";
-		$start = strpos($lsa, "$lidpos")+strlen("VALUES ('");
+		$start = strpos($lsa, "VALUES ('")+strlen("VALUES ('");
 		$end = strpos($lsa, "'", $start)-$start;
-		$oldlid=substr($lsa, $start, $end)."<br />";
-		echo "OLDLID: $oldlid - ";
-		$lsainsert=str_replace("VALUES ('$oldlid", "VALUES ('", $lsa);
-		echo $lsainsert."<br />";
+		$oldlid=substr($lsa, $start, $end);
+		$lsainsert = str_replace("VALUES ('$oldlid", "VALUES ('", $lsa);
+		$lsiresult=mysql_query($lsainsert);
+		//GET NEW LID
+		$nlidquery="SELECT lid FROM labelsets ORDER BY lid DESC LIMIT 1";
+		$nlidresult=mysql_query($nlidquery);
+		while ($nlidrow=mysql_fetch_array($nlidresult)) {$newlid=$nlidrow['lid'];}
+		$labelreplacements[]=array($oldlid, $newlid);
+		if ($labelsarray)
+			{
+			foreach ($labelsarray as $la)
+				{
+				$lstart=strpos($la, "VALUES ('")+strlen("VALUES ('");
+				$lend = strpos($la, "'", $lstart)-$lstart;
+				$labellid=substr($la, $lstart, $lend);
+				if ($labellid == $oldlid)
+					{
+					$lainsert = str_replace("VALUES ('$labellid", "VALUES ('$newlid", $la);
+					$liresult=mysql_query($lainsert);
+					}
+				}
+			}
 		}
 	}
 
+foreach ($labelreplacements as $lrt) {echo "OLD: ".$lrt[0]." - NEW: ".$lrt[1];}
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if ($grouparray)
 	{
