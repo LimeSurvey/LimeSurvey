@@ -284,7 +284,7 @@ foreach ($filters as $flt)
 					{
 					echo "\t\t\t\t\t<option value='$i'";
 					if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {echo " selected";}
-					if ($_POST[$myfield2] == $i) {echo " selected";}
+					if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {echo " selected";}
 					echo ">$i</option>\n";
 					}
 				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
