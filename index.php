@@ -612,7 +612,7 @@ else
 		$currentgroupname = $gdrow['group_name'];
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='2' align='center' bgcolor='#DDDDDD'>\n";
-		echo "\t\t\t$setfont<font color='#800000'><b>$currentgroupname</b><br />&nbsp;\n";
+		echo "\t\t\t$setfont<font color='#800000'><b>$currentgroupname</b></font>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		$groupdescription = $gdrow['description'];
@@ -632,8 +632,6 @@ else
 		echo "\t<input type='hidden' name='thisstep' value='$t' />\n";
 		echo "\t<input type='hidden' name='newgroup' value='yes' />\n";
 		}
-	
-	
 	else
 		{
 		// SHOW % CHART
