@@ -683,6 +683,10 @@ if (isset($_POST['summary']) && $_POST['summary'])
 
 	foreach ($runthrough as $rt)
 		{
+		if (substr($rt, 0, 1) == "N" && (substr($rt, -1) == "G" || substr($rt, -1) == "L")) 
+			{ //Exception for numerical types
+		    break;
+			}
 		// 1. Get answers for question ##############################################################
 		if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
 			{
