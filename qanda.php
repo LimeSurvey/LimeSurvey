@@ -228,26 +228,38 @@ function retrieveAnswers($ia, $notanswered=null)
 			break;
 		case "L": //LIST drop-down/radio-button list
 			$values=do_list($ia);
-			$qtitle .= "<br />\n</b><i><font size='1'>"
-					 . _INSTRUCTION_LIST."</font></i><b>";
+			if (count($values[1]) > 1) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_LIST."</font></i><b>";
+				}
 			break;
 		case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 			$values=do_listwithcomment($ia);
-			$qtitle .= "<br />\n</b><i><font size='1'>"
-					 . _INSTRUCTION_LIST."</font></i><b>";
+			if (count($values[1]) > 1) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_LIST."</font></i><b>";
+				}
 			break;
 		case "R": //RANKING STYLE
 			$values=do_ranking($ia);
 			break;
 		case "M": //MULTIPLE OPTIONS checkbox
 			$values=do_multiplechoice($ia);
-			$qtitle .= "<br />\n</b><i><font size='1'>"
-					 . _INSTRUCTION_MULTI."</font></i><b>";
+			if (count($values[1]) > 1) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_MULTI."</font></i><b>";
+				}
 			break;
 		case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 			$values=do_multiplechoice_withcomments($ia);
-			$qtitle .= "<br />\n</b><i><font size='1'>"
-					 . _INSTRUCTION_MULTI."</font></i><b>";
+			if (count($values[1]) > 1) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_MULTI."</font></i><b>";
+				}
 			break;
 		case "Q": //MULTIPLE SHORT TEXT
 			$values=do_multipleshorttext($ia);
