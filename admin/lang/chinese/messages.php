@@ -171,6 +171,7 @@ define("_AL_SAVE", "儲存");
 define("_AL_DEL", "刪除");
 define("_AL_ADD", "新增");
 define("_AL_FIXSORT", "修正排序");
+define("_AL_SORTALPHA", "Sort Alpha"); //New in 0.98rc8 - Sort Answers Alphabetically
 //users
 define("_UL_USER", "用戶");
 define("_UL_PASSWORD", "密碼");

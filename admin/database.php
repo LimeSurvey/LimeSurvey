@@ -333,6 +333,26 @@ elseif ($action == "modanswer")
 		case _AL_FIXSORT:
 			fixsortorder($_POST['qid']);
 			break;
+		case _AL_SORTALPHA:
+			$uaquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$_POST['qid']}' ORDER BY answer";
+			$uaresult = mysql_query($uaquery) or die("Cannot get answers<br />$uaquery<br />".mysql_error());
+			while($uarow=mysql_fetch_array($uaresult))
+				{
+				$orderedanswers[]=array("qid"=>$uarow['qid'],
+										"code"=>$uarow['code'],
+										"answer"=>$uarow['answer'],
+										"default_value"=>$uarow['default_value'],
+										"sortorder"=>$uarow['sortorder']);
+				} // while
+			$i=0;
+			foreach ($orderedanswers as $oa)
+				{
+				$position=sprintf("%05d", $i);
+				$upquery = "UPDATE {$dbprefix}answers SET sortorder='$position' WHERE qid='{$oa['qid']}' AND code='{$oa['code']}'";
+				$upresult = mysql_query($upquery);
+				$i++;
+				} // foreach
+			break;
 		case _AL_ADD:
 			if (!$_POST['code'] || !$_POST['answer'])
 				{

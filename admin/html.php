@@ -775,8 +775,16 @@ if (returnglobal('viewanswer'))
 		}
 	if ($cdcount > 0)
 		{
-		$vasummary .= "<tr><form action='admin.php' method='post'><td colspan='3'></td>"
-					. "<td></td><td align='center'><input $btstyle type='submit' name='ansaction' value='"._AL_FIXSORT."'></td>\n"
+		$vasummary .= "<tr><td colspan='3'></td>"
+					. "<form action='admin.php' method='post'><td align='center'>"
+					. "<input $btstyle type='submit' name='ansaction' value='"._AL_SORTALPHA."'></td>\n"
+					. "\t<input type='hidden' name='sid' value='$sid'>\n"
+					. "\t<input type='hidden' name='gid' value='$gid'>\n"
+					. "\t<input type='hidden' name='qid' value='$qid'>\n"
+					. "\t<input type='hidden' name='action' value='modanswer'>\n"
+					. "\t<input type='hidden' name='viewanswer' value='Y'></form>\n"
+					. "<form action='admin.php' method='post'>"
+					. "<td align='center'><input $btstyle type='submit' name='ansaction' value='"._AL_FIXSORT."'></td>\n"
 					. "\t<input type='hidden' name='sid' value='$sid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"

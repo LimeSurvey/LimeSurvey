@@ -175,6 +175,7 @@ define("_AL_SAVE", "Guardar");
 define("_AL_DEL", "Borrar");
 define("_AL_ADD", "Agregar");
 define("_AL_FIXSORT", "Corregir Orden");
+define("_AL_SORTALPHA", "Sort Alpha"); //New in 0.98rc8 - Sort Answers Alphabetically
 //users
 define("_UL_USER", "Usuario");
 define("_UL_PASSWORD", "Contrase&ntilde;a");
