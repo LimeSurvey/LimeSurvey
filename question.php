@@ -49,7 +49,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	$postedfieldnames=explode("|", $_POST['fieldnames']);
 	foreach ($postedfieldnames as $pf)
 		{
-		if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
+		if (isset($_POST[$pf])) {$_SESSION[$pf] = auto_unescape($_POST[$pf]);}
 		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
 		}
 	}
