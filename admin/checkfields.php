@@ -54,7 +54,7 @@ $allfields[]=array("questions", "question", "question text NOT NULL");
 $allfields[]=array("questions", "help", "help text");
 $allfields[]=array("questions", "other", "other char(1) NOT NULL default 'N'");
 $allfields[]=array("questions", "mandatory", "mandatory char(1) default NULL");
-$allfields[]=array("lid", "lid", "lid int(11) NOT NULL default '0'");
+$allfields[]=array("questions", "lid", "lid int(11) NOT NULL default '0'");
 
 $allfields[]=array("surveys", "sid", "sid int(11) NOT NULL auto_increment");
 $allfields[]=array("surveys", "short_title", "short_title varchar(50) NOT NULL default ''");
