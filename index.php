@@ -113,7 +113,7 @@ if (!$sid && (!$move == "clearall" || !$move=="here"))
 	{
 	echo "<center><b>$sitename</b><br />\n<br />\n<b>You cannot access this website without a valid Survey ID code.</b><br />\n";
 	echo "<br />\nPlease contact $siteadminemail for information.";
-	echo "</body>\n</html";
+	echo "</body>\n</html>";
 	exit;
 	}
 
@@ -122,7 +122,7 @@ if (!mysql_selectdb ($databasename, $connect))
 	echo "<center><b>$sitename<br />\n<br />\n<font color='red'>ERROR</font></b><br />\n<br />\n";
 	echo "This system has not yet been installed properly.<br />\n";
 	echo "Contact your $siteadminemail for information";
-	echo "</body>\n</html";
+	echo "</body>\n</html>";
 	exit;
 	}
 
@@ -136,14 +136,14 @@ if ($sid)
 	if ($descount == 0) 
 		{
 		echo "There is no survey with that SID. Sorry. [$descount][$desquery]";
-		echo "</body>\n</html";
+		echo "</body>\n</html>";
 		exit;
 		}
 	elseif ($expirydate < date("Y-m-d") && $expirydate != "0000-00-00")
 		{
 		echo "<center><b>$sitename<br />\n<br />\n<font color='red'>ERROR</font></b><br />\n<br />\n";
 		echo "Sorry. This survey has expired and is no longer available.<br />\n(Expiry date $expirydate)";
-		echo "</body>\n</html";
+		echo "</body>\n</html>";
 		exit;
 		}
 	$desresult = mysql_query($desquery);
@@ -462,7 +462,7 @@ if (!$_SESSION['step'])
 			echo "\t\t<input type='hidden' name='sid' value='$sid' />\n";
 			echo "\t</form></tr>\n";
 			echo "</table>\n";
-			echo "</body>\n</html";
+			echo "</body>\n</html>";
 			exit;
 			}
 		}
