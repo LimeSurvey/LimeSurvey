@@ -310,21 +310,26 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 				$id = $savedid;
 				$to = $surveyadminemail;
 				$subject = "$sitename Survey Submitted";
-				$message = _CONFIRMATION_MESSAGE1." $surveyname\r\n";
-				$message.= "\r\n";
-				$message.= _CONFIRMATION_MESSAGE2."\r\n";
-				$message.= "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n";
-				$message.= _CONFIRMATION_MESSAGE3."\r\n";
-				$message.= "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
+				$message = _CONFIRMATION_MESSAGE1." $surveyname\r\n\r\n"
+						 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
+						 . _CONFIRMATION_MESSAGE3."\r\n"
+						 . "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n"
+						 . _CONFIRMATION_MESSAGE4."\r\n"
+						 . "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
 				if ($sendnotification > 1)
 					{ //Send results as well. Currently just bare-bones - will be extended in later release
 					$message .= "----------------------------\r\n";
 					foreach ($_SESSION['insertarray'] as $value)
 						{
-						$message .= "$value: {$_SESSION[$value]}\r\n";
+						$questiontitle=returnquestiontitlefromfieldcode($value);
+						$message .= "$questiontitle:   {$_SESSION[$value]}\r\n";
 						}
 					$message .= "----------------------------\r\n\r\n";
 					}
+				//foreach ($_SESSION['fieldarray'] as $sfa)
+				//	{
+				//	$message .= "$sfa[0] | $sfa[1] | $sfa[2] | $sfa[3] | $sfa[4] | $sfa[5] | $sfa[6] | $sfa[7]\r\n\r\n";
+				//	}
 				$message.= "PHP Surveyor";
 				$headers = "From: $surveyadminemail\r\n";
 				mail($to, $subject, $message, $headers);
@@ -584,7 +589,9 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 						$_SESSION['insertarray'][] = "$fieldname"."othercomment";	
 						}
 					}
-				} elseif ($arow['type'] == "R") {
+				} 
+			elseif ($arow['type'] == "R") 
+				{
 				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 				$abresult = mysql_query($abquery);
 				$abcount = mysql_num_rows($abresult);
@@ -595,7 +602,11 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 				}
 			elseif ($arow['type'] == "Q")
 				{
-				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other "
+						 . "FROM {$dbprefix}answers, {$dbprefix}questions "
+						 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid "
+						 . "AND {$dbprefix}questions.qid={$arow['qid']} "
+						 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 				$abresult = mysql_query($abquery);
 				while ($abrow = mysql_fetch_array($abresult))
 					{
@@ -607,6 +618,25 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 				$_SESSION['insertarray'][] = "$fieldname";
 				$fn2 = "$fieldname"."comment";
 				$_SESSION['insertarray'][] = "$fn2";
+				}
+			elseif ($arow['type'] == "L")
+				{
+				$_SESSION['insertarray'][] = "$fieldname";
+				if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = "{$fieldname}other";}
+				//go through answers, and if there is a default, register it now so that conditions work properly the first time
+				$abquery = "SELECT {$dbprefix}answers.* "
+						 . "FROM {$dbprefix}answers, {$dbprefix}questions "
+						 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid "
+						 . "AND {$dbprefix}questions.qid={$arow['qid']} "
+						 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$abresult = mysql_query($abquery);
+				while($abrow = mysql_fetch_array($abresult))
+					{
+					if ($abrow['default_value'] == "Y") 
+						{
+					    $_SESSION[$fieldname] = $abrow['code'];
+						}
+					}
 				}
 			else
 				{

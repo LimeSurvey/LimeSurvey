@@ -317,17 +317,18 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				$to = $surveyadminemail;
 				$subject = "$sitename Survey Submitted";
 				$message = _CONFIRMATION_MESSAGE1." $surveyname\r\n"
-						 . "\r\n"
-						 . _CONFIRMATION_MESSAGE2."\r\n"
-						 . "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n"
+						 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
 						 . _CONFIRMATION_MESSAGE3."\r\n"
+						 . "  $homeurl/browse.php?sid=$sid&action=id&id=$id\r\n\r\n"
+						 . _CONFIRMATION_MESSAGE4."\r\n"
 						 . "  $homeurl/statistics.php?sid=$sid\r\n\r\n";
 				if ($sendnotification > 1)
 					{ //Send results as well. Currently just bare-bones - will be extended in later release
 					$message .= "----------------------------\r\n";
 					foreach ($_SESSION['insertarray'] as $value)
 						{
-						$message .= "$value: {$_SESSION[$value]}\r\n";
+						$questiontitle=returnquestiontitlefromfieldcode($value);
+						$message .= "$questiontitle:   {$_SESSION[$value]}\r\n";
 						}
 					$message .= "----------------------------\r\n\r\n";
 					}
