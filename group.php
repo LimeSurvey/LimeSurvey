@@ -230,6 +230,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 		}
 	else
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -244,6 +245,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 	//COMMIT CHANGES TO DATABASE
 	if ($surveyactive != "Y")
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -265,6 +267,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
 				}
+			sendcacheheaders();
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -344,6 +347,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			}
 		else
 			{//Submit of Responses Failed
+			sendcacheheaders();
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -457,6 +461,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 	if ($tokensexist == 1 && (!isset($_GET['token']) || !$_GET['token']))
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 		foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -499,6 +504,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 
 		if (!$tkexist)
 			{
+			sendcacheheaders();
 			echo "<html>\n";
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 			foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -668,6 +674,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}", $conditions);
 			}
 		}
+	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -722,6 +729,7 @@ foreach ($_SESSION['fieldarray'] as $ia)
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+sendcacheheaders();
 echo "<html>\n";
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{

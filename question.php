@@ -213,6 +213,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 		}
 	else //there is no insertarray
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -227,6 +228,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 	//COMMIT CHANGES TO DATABASE
 	if ($surveyactive != "Y")
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -248,6 +250,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
 				}
+			sendcacheheaders();
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -323,6 +326,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			}
 		else //submit failed
 			{
+			sendcacheheaders();
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -375,6 +379,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 //SEE IF $sid EXISTS
 if ($surveyexists <1)
 	{
+	sendcacheheaders();
 	echo "<html>\n";
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -395,6 +400,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 	if ($tokensexist == 1 && (!isset($_GET['token']) || !$_GET['token']))
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 		foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -434,6 +440,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		$tkexist = mysql_num_rows($tkresult);
 		if (!$tkexist)
 			{
+			sendcacheheaders();
 			echo "<html>\n";
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 			foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -472,6 +479,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	$_SESSION['totalsteps'] = $totalquestions;
 	if ($totalquestions == "0")	//break out and crash if there are no questions!
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -595,6 +603,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}", $conditions);
 			}
 		}
+	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -926,6 +935,7 @@ function last()
 			}
 		}
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{

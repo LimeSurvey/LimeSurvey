@@ -233,6 +233,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 		}
 	else
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -248,6 +249,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 	//COMMIT CHANGES TO DATABASE
 	if ($surveyactive != "Y")
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -269,6 +271,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
 				}
+			sendcacheheaders();
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -346,6 +349,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			}
 		else
 			{
+			sendcacheheaders();
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -392,6 +396,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && !$notanswered)
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -431,6 +436,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && !$notanswered)
 //SEE IF $sid EXISTS
 if ($surveyexists <1)
 	{
+	sendcacheheaders();
 	echo "<html>\n";
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -451,6 +457,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 	if ($tokensexist == 1 && (!isset($_GET['token']) || !$_GET['token']))
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 		foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -492,6 +499,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 
 		if (!$tkexist)
 			{
+			sendcacheheaders();
 			echo "<html>\n";
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 			foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -530,6 +538,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	$totalquestions = mysql_num_rows($result);
 	if ($totalquestions == "0")	//break out if there are no questions!
 		{
+		sendcacheheaders();
 		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -675,6 +684,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 	}
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+sendcacheheaders();
 echo "<html>\n";
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
