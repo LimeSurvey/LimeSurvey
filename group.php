@@ -50,7 +50,8 @@ if ($_POST['fieldnames'])
 	}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
-if ($_POST['mandatory'])
+if ($allowmandatorybackwards==1 && $_POST['move'] == " << "._PREV." ") {$backok="Y";}
+if ($_POST['mandatory'] && $backok != "Y")
 	{
 	$chkmands=explode("|", $_POST['mandatory']);
 	$mfns=explode("|", $_POST['mandatoryfn']);
@@ -64,7 +65,7 @@ if ($_POST['mandatory'])
 				if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 					{
 					//The number of questions not answered is equal to the number of questions
-					if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if ($_POST['move'] == " << "._PREV." ") 
 					if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
 					if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 				    $notanswered[]=substr($multiname, 5, strlen($multiname));
@@ -111,7 +112,7 @@ if ($_POST['mandatory'])
 		}
 	}
 
-if ($_POST['conmandatory']) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
+if ($_POST['conmandatory'] && $backok != "Y") //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
 	{
 	$chkcmands=explode("|", $_POST['conmandatory']);
 	$cmfns=explode("|", $_POST['conmandatoryfn']);
