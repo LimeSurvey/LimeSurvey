@@ -330,6 +330,9 @@ define(_BR_NOTACTIVATED, "This survey has not been activated. There are no resul
 define(_BR_NOSURVEY, "There is no matching survey.");
 define(_BR_EDITRESPONSE, "Edit this entry");
 define(_BR_DELRESPONSE, "Delete this entry");
+define(_BR_DISPLAYING, "Records Displayed:");
+define(_BR_STARTING, "Starting From:");
+define(_BR_SHOW, "Show");
 
 //STATISTICS MESSAGES
 define(_ST_FILTERSETTINGS, "Filter Settings");
