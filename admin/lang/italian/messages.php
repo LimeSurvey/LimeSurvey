@@ -60,6 +60,7 @@ define("_A_DELETE_BT", "Elimina indagine");
 define("_A_ADDSURVEY_BT", "Crea o importa una nuova indagine");
 define("_A_HELP_BT", "Guida in linea");
 define("_A_CHECKSETTINGS", "Verifica impostazioni");
+define("_A_BACKUPDB_BT", "Backup Entire Database"); //New for 0.98rc10
 define("_A_TEMPLATES_BT", "Template Editor"); //New for 0.98rc9
 //Survey bar
 define("_S_ACTIVE_BT", "Indagine attiva");
@@ -671,5 +672,6 @@ define("_TP_QUESTIONPAGE", "Question Page"); //New with 098rc9
 define("_TP_SUBMITPAGE", "Submit Page");
 define("_TP_COMPLETEDPAGE", "Completed Page"); //New with 098rc9
 define("_TP_CLEARALLPAGE", "Clear All Page"); //New with 098rc9
+define("_TP_EXPORT", "Export Template"); //New with 098rc10
 
 ?>

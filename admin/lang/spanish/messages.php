@@ -60,6 +60,7 @@ define("_A_DELETE_BT", "Borrar la Encuesta");
 define("_A_ADDSURVEY_BT", "Crear o Importar una Nueva Encuesta");
 define("_A_HELP_BT", "Mostrar Ayuda");
 define("_A_CHECKSETTINGS", "Revisar Opciones del Sistema");
+define("_A_BACKUPDB_BT", "Backup Entire Database"); //New for 0.98rc10
 define("_A_TEMPLATES_BT", "Template Editor"); //New for 0.98rc9
 //Survey bar
 define("_S_ACTIVE_BT", "Esta encuesta est&aacute; actualmente activa");
@@ -678,5 +679,6 @@ define("_TP_QUESTIONPAGE", "Question Page"); //New with 098rc9
 define("_TP_SUBMITPAGE", "Submit Page");
 define("_TP_COMPLETEDPAGE", "Completed Page"); //New with 098rc9
 define("_TP_CLEARALLPAGE", "Clear All Page"); //New with 098rc9
+define("_TP_EXPORT", "Export Template"); //New with 098rc10
 
 ?>

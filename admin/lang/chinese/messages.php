@@ -60,6 +60,7 @@ define("_A_DELETE_BT", "刪除整個問卷");
 define("_A_ADDSURVEY_BT", "建立或輸入新問卷");
 define("_A_HELP_BT", "顯示求助說明");
 define("_A_CHECKSETTINGS", "檢查設定");
+define("_A_BACKUPDB_BT", "Backup Entire Database"); //New for 0.98rc10
 define("_A_TEMPLATES_BT", "Template Editor"); //New for 0.98rc9
 //Survey bar
 define("_S_ACTIVE_BT", "本問卷現已啟用");
@@ -671,5 +672,6 @@ define("_TP_QUESTIONPAGE", "Question Page"); //New with 098rc9
 define("_TP_SUBMITPAGE", "Submit Page");
 define("_TP_COMPLETEDPAGE", "Completed Page"); //New with 098rc9
 define("_TP_CLEARALLPAGE", "Clear All Page"); //New with 098rc9
+define("_TP_EXPORT", "Export Template"); //New with 098rc10
 
 ?>
