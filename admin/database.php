@@ -312,7 +312,7 @@ elseif ($action == "updatesurvey")
 	$usquery .= " format='{$_POST['format']}', template='{$_POST['template']}', ";
 	$usquery .= " url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}'";
 	$usquery .= " WHERE sid={$_POST['sid']}";
-	$usresult = mysql_query($usquery);
+	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
 	if ($usresult)
 		{
 		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been updated!\")\n //-->\n</script>\n";
