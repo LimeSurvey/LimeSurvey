@@ -35,7 +35,7 @@
 	#############################################################
 */
 //MANDATORY (for single answer questions) (multi answer questions in select)
-if ($ia[4] == "5" || $ia[4] == "D" || $ia[4] == "G" || $ia[4] == "L" || $ia[4] == "O" || $ia[4] == "N" || $ia[4] == "Y")
+if ($ia[4] == "5" || $ia[4] == "D" || $ia[4] == "G" || $ia[4] == "L" || $ia[4] == "O" || $ia[4] == "N" || $ia[4] == "Y" || $ia[4] == "T" || $ia[4] == "S")
 	{
 	if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
 		{
