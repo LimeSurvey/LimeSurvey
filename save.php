@@ -170,7 +170,8 @@ $sdata = array("thisstep"=>$_POST['thisstep'],
 			   "ip"=>$_SERVER['REMOTE_ADDR'],
 			   "date"=>date("Y-m-d H:i:s"),
 			   "identifier"=>$_POST['savename'],
-			   "code"=>md5($_POST['savepass']));
+			   "code"=>md5($_POST['savepass']),
+			   "email"=>$_POST['saveemail']);
 
 if (isset($_SESSION['savename']))
 	{
@@ -189,7 +190,7 @@ foreach ($_SESSION['insertarray'] as $sia)
 		$iquery = "INSERT INTO `{$dbprefix}saved`\n"
 				. "(`saved_id`, `sid`, `saved_thisstep`, `saved_ip`,\n"
 				. "`saved_date`, `identifier`, `access_code`, `fieldname`,\n"
-				. "`value`)\n"
+				. "`value`, `email`)\n"
 				. "VALUES ('',\n"
 				. "'".$sdata['sid']."',\n"
 				. "'".$sdata['thisstep']."',\n"
@@ -198,7 +199,8 @@ foreach ($_SESSION['insertarray'] as $sia)
 				. "'".mysql_escape_string($sdata['identifier'])."',\n"
 				. "'".$sdata['code']."',\n"
 				. "'".$sia."',\n"
-				. "'".mysql_escape_string($_SESSION[$sia])."')";
+				. "'".mysql_escape_string($_SESSION[$sia])."',\n"
+				. "'".$sdata['email']."')";
 		if (!$result=mysql_query($iquery))
 			{
 			$failed=1;
