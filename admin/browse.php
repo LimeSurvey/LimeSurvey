@@ -164,7 +164,7 @@ if ($action == "id")
 	echo "<table>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td colspan='2' bgcolor='#DDDDDD' align='center'>$setfont\n";
-	echo "\t\t\t<b>Viewing Answer ID $id</b>&nbsp;&nbsp;\n";
+	echo "\t\t\t<b>Viewing Answer ID $id</b><br />\n";
 	echo "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
 	echo "\t\t\t<input type='submit' $btstyle value='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
 	echo "\t\t</td>\n";
