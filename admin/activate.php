@@ -36,6 +36,44 @@
 
 if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
+	if (isset($_GET['fixnumbering']) && $_GET['fixnumbering'])
+		{
+	    //Fix a question id - requires renumbering a question
+		$oldqid = $_GET['fixnumbering'];
+		$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
+		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		while ($row=mysql_fetch_array($result)) {$lastqid=$row['qid'];}
+		$newqid=$lastqid+1;
+		$query = "UPDATE {$dbprefix}questions SET qid=$newqid WHERE qid=$oldqid";
+		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		//Update conditions.. firstly conditions FOR this question
+		$query = "UPDATE {$dbprefix}conditions SET qid=$newqid WHERE qid=$oldqid";
+		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		//Now conditions based upon this question
+		$query = "SELECT cqid, cfieldname FROM {$dbprefix}conditions WHERE cqid=$oldqid";
+		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		while ($row=mysql_fetch_array($result))
+			{
+			$switcher[]=array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
+			}
+		if (isset($switcher))
+			{
+		    foreach ($switcher as $switch)
+				{
+				$query = "UPDATE {$dbprefix}conditions
+						  SET cqid=$newqid,
+						  cfieldname='".str_replace("X".$oldqid, "X".$newqid, $switch['cfieldname'])."'
+						  WHERE cqid=$oldqid";
+				$result = mysql_query($query) or die("$query<br />".mysql_error());
+				}
+			}
+		//Now question_attributes
+		$query = "UPDATE {$dbprefix}question_attributes SET qid=$newqid WHERE qid=$oldqid";
+		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		//Now answers
+		$query = "UPDATE {$dbprefix}answers SET qid=$newqid WHERE qid=$oldqid";
+		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		}
 	//CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 	//THESE QUESTION TYPES ARE:
 	//	# "L" -> LIST
@@ -127,6 +165,22 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 			$b++;
 			}
 		}
+	//CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
+	$fieldmap=createFieldMap($sid, "full");
+	foreach($fieldmap as $fielddata)
+		{
+		$fieldlist[]=$fielddata['fieldname'];
+		}
+	$checkKeysUniqueComparison = create_function('$value','if ($value > 1) return true;');
+	$duplicates = array_keys (array_filter (array_count_values($fieldlist), $checkKeysUniqueComparison));
+	foreach ($duplicates as $dup)
+		{
+		$badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
+		$fix = "[<a href='$scriptname?action=activate&sid=$sid&fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
+		$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
+		}
+//	echo "<pre>";print_r($duplicates); echo "</pre>";
+	
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
 	if (isset($failedcheck) && $failedcheck)
 		{
