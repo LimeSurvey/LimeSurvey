@@ -33,8 +33,7 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-if ($_POST['action']) {$action = $_POST['action'];}
-if ($_GET['action']) {$action = $_GET['action'];}
+if (!isset($action)) {$action=returnglobal('action');}
 
 if ($action == "insertnewgroup")
 	{
