@@ -587,7 +587,7 @@ elseif ($answers == "long")
 				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid";
 				$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
 				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
-					{$ftype = $lid=$qrow['lid']; $fother=$qrow['other'];}
+					{$lid=$qrow['lid']; $fother=$qrow['other'];} // dgk bug fix. $ftype should not be modified here!
 				}
 			else
 				{
