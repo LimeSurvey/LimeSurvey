@@ -97,7 +97,7 @@ while ($rows=mysql_fetch_array($result))
 	}
 
 //2: Get all other questions that occur before this question that are pre-determined answer types
-$query = "SELECT questions.qid, questions.sid, questions.gid, questions.question, questions.type, groups.group_name+questions.title as grouptitle FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid AND groups.group_name+questions.title <= '$questiongroupname$questiontitle' AND questions.type NOT IN ('S', 'D', 'T') ORDER BY group_name, title";
+$query = "SELECT questions.qid, questions.sid, questions.gid, questions.question, questions.type FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid AND (groups.group_name < '$questiongroupname' OR (groups.group_name = '$questiongroupname' AND questions.title < '$questiontitle')) AND questions.type NOT IN ('S', 'D', 'T') ORDER BY CONCAT(groups.group_name, questions.title)";
 echo "<!-- DEBUG: \n";
 echo $query;
 echo "\n-->\n";
