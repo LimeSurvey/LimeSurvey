@@ -365,15 +365,15 @@ elseif ($action == "modanswer")
 					$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
 					$cccount=mysql_num_rows($ccresult);
 					while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
-					if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+					if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
 					}
-				if ($matchcount) //another answer exists with the same code
+				if (isset($matchcount) && $matchcount) //another answer exists with the same code
 					{
 					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATEDUPLICATE."\")\n //-->\n</script>\n";
 					}
 				else
 					{
-					if ($cccount) // there are conditions dependent upon this answer to this question
+					if (isset($cccount) && $cccount) // there are conditions dependent upon this answer to this question
 						{
 						echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATECONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
 						}

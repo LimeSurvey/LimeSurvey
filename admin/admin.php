@@ -151,21 +151,21 @@ if ($action == "newsurvey")
 	exit;
 	}
 
-echo "$surveysummary";
-if ($cssummary) {echo $cssummary;}
-if ($usersummary) {echo $usersummary;}
-if ($addsummary) {echo $addsummary;}
-if ($editsurvey) {echo "$editsurvey";}
-if ($newgroup) {echo "$newgroup";}
-if ($groupsummary) {echo "$groupsummary";}
-if ($editgroup) {echo "$editgroup";}
-if ($newquestion) {echo "$newquestion";}
-if ($questionsummary) {echo "$questionsummary";}
-if ($editquestion) {echo "$editquestion";}
-if ($newanswer) {echo "$newanswer";}
-if ($answersummary) {echo "$answersummary";}
-if ($vasummary) {echo "$vasummary";}
-if ($editanswer) {echo "$editanswer";}
+if (isset($surveysummary)) {echo $surveysummary;}
+if (isset($cssummary)) {echo $cssummary;}
+if (isset($usersummary)) {echo $usersummary;}
+if (isset($addsummary)) {echo $addsummary;}
+if (isset($editsurvey)) {echo $editsurvey;}
+if (isset($newgroup)) {echo $newgroup;}
+if (isset($groupsummary)) {echo $groupsummary;}
+if (isset($editgroup)) {echo $editgroup;}
+if (isset($newquestion)) {echo $newquestion;}
+if (isset($questionsummary)) {echo $questionsummary;}
+if (isset($editquestion)) {echo $editquestion;}
+if (isset($newanswer)) {echo $newanswer;}
+if (isset($answersummary)) {echo $answersummary;}
+if (isset($vasummary)) {echo $vasummary;}
+if (isset($editanswer)) {echo $editanswer;}
 echo "\t\t</td>\n";
 
 helpscreen();

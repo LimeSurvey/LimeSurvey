@@ -43,5 +43,5 @@ if (returnglobal('action') == "changelang")
 	$_SESSION['lang']=returnglobal('lang');
 	}
 //CHANGE LANGUAGE IF SESSION LANG DOESN'T MATCH DEFAULT LANG
-if ($_SESSION['lang']) {$defaultlang=$_SESSION['lang'];}
+if (isset($_SESSION['lang'])) {$defaultlang=$_SESSION['lang'];}
 ?>

@@ -321,7 +321,7 @@ if ($sid)
 		
 		//SURVEY SUMMARY
 		if ($gid || $qid || $action=="editsurvey" || $action=="addgroup") {$showstyle="style='display: none'";}
-		
+		if (!isset($showstyle)) {$showstyle="";}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
 						. "$setfont<b>"._SL_TITLE."</b></font></td>\n"
 						. "\t<td>$setfont<font color='#000080'><b>{$s1row['short_title']} "
@@ -481,6 +481,7 @@ if ($gid)
 					   . "\t\t</td>\n"
 					   . "\t</tr>\n";
 		if ($qid) {$gshowstyle="style='display: none'";}
+		else	  {$gshowstyle="";}
 
 		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'>$setfont<b>"
 					   . _GL_TITLE."</b></font></td>\n"
@@ -543,10 +544,8 @@ if ($qid)
 						  . "\t\t\t</table>\n"
 						  . "\t\t</td>\n"
 						  . "\t</tr>\n";
-		if ($_GET['viewanswer'] || $_POST['viewanswer'])
-			{
-			$qshowstyle = "style='display: none'";
-			}
+		if (returnglobal('viewanswer'))	{$qshowstyle = "style='display: none'";}
+		else							{$qshowstyle = "";}
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'>$setfont<b>"
 						  . _QL_CODE."</b></font></td>\n"
 						  . "\t<td>$setfont{$qrrow['title']}";
@@ -584,7 +583,7 @@ if (returnglobal('viewanswer'))
 	$qquery = "SELECT type FROM {$dbprefix}questions WHERE qid=$qid";
 	$qresult = mysql_query($qquery);
 	while ($qrow=mysql_fetch_array($qresult)) {$qtype=$qrow['type'];}
-	if (!$_POST['ansaction'])
+	if (!isset($_POST['ansaction']))
 		{
 		//check if any nulls exist. If they do, redo the sortorders
 		$caquery="SELECT * FROM {$dbprefix}answers WHERE qid=$qid AND sortorder is null";
@@ -595,7 +594,7 @@ if (returnglobal('viewanswer'))
 			fixsortorder($qid);
 			}
 		}
-	$vasummary .= "<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n"
+	$vasummary  = "<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n"
 				. "<tr bgcolor='#555555'><td colspan='5'><font size='1' color='white'><b>"
 				. _ANSWERS."</b></td></tr>\n";
 	$cdquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";

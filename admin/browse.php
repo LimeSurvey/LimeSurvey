@@ -50,7 +50,6 @@ header("Pragma: no-cache");                          // HTTP/1.0
 
 $surveyoptions = browsemenubar();
 echo $htmlheader;
-
 echo "<table height='1'><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
@@ -258,7 +257,7 @@ elseif ($action == "all")
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</td></tr>\n";
 	
-	if (!$_POST['sql'])
+	if (!isset($_POST['sql']))
 		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
 	else
 		{
@@ -360,7 +359,7 @@ elseif ($action == "all")
 				  . "\t\t<td bgcolor='#333333'><font size='1' color='white' width='$cellwidth'><b>id</b></td>\n";
 	foreach ($fnames as $fn)
 		{
-		if (!$currentgroup)  {$currentgroup = $fn[3]; $gbc = "#555555";}
+		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "#555555";}
 		if ($currentgroup != $fn[3]) 
 			{
 			$currentgroup = $fn[3];
@@ -386,7 +385,7 @@ elseif ($action == "all")
 	if ($limit > $dtcount) {$limit=$dtcount;}
 	
 	//NOW LETS SHOW THE DATA
-	if ($_POST['sql'])
+	if (isset($_POST['sql']))
 		{
 		if ($_POST['sql'] == "NULL") {$dtquery = "SELECT * FROM $surveytable ORDER BY id";}
 		else {$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
@@ -449,7 +448,7 @@ elseif ($action == "all")
 	
 	while ($dtrow = mysql_fetch_assoc($dtresult))
 		{
-		if (!$bgcc) {$bgcc="#EEEEEE";}
+		if (!isset($bgcc)) {$bgcc="#EEEEEE";}
 		else
 			{
 			if ($bgcc == "#EEEEEE") {$bgcc = "#CCCCCC";}

@@ -64,7 +64,7 @@ echo "</table>\n"
 
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
-$result = mysql_query($query);
+$result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
 while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
