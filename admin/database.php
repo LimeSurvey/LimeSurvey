@@ -152,6 +152,7 @@ elseif ($action == "insertnewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
+	if (!isset($_POST['lid'])) {$_POST['lid']="";}
 	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid)"
 			." VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
@@ -222,6 +223,7 @@ elseif ($action == "copynewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
+	if (!isset($_POST['lid'])) {$_POST['lid']=="";}
 	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
 	if (!$result)
