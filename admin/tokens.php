@@ -55,7 +55,29 @@ header("Pragma: no-cache");                          // HTTP/1.0
 if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL=$PHP_SELF?action=browse&sid={$_GET['sid']}&start=$start&limit=$limit&order=$order\"", $htmlheader);}
 else {echo $htmlheader;}
 
-echo "<table height='1'><tr><td></td></tr></table>\n";
+echo "<script type='text/javascript'>\n";
+echo "<!--\n";
+echo "\tfunction showhelp(action)\n";
+echo "\t\t{\n";
+echo "\t\tvar name='help';\n";
+echo "\t\tif (action == \"hide\")\n";
+echo "\t\t\t{\n";
+echo "\t\t\tdocument.getElementById(name).style.display='none';\n";
+echo "\t\t\t}\n";
+echo "\t\telse if (action == \"show\")\n";
+echo "\t\t\t{\n";
+echo "\t\t\tdocument.getElementById(name).style.display='';\n";
+echo "\t\t\t}\n";
+echo "\t\t}\n";
+echo "-->\n";
+echo "</script>\n";
+
+echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n";
+echo "\t<tr>\n";
+echo "\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
+echo "\t\t<table height='1' ><tr><td></td></tr></table>\n";
+
+
 echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
 // MAKE SURE THAT THERE IS A SID
@@ -145,6 +167,7 @@ if (!$tkresult = mysql_query($tkquery))
 
 echo "\t<tr bgcolor='#999999'>\n";
 echo "\t\t<td>\n";
+echo "\t\t\t<input type='image' src='./images/showhelp.gif' title='"._A_HELP_BT."' align='right' hspace='0' border='0' onClick=\"showhelp('show')\">\n";
 echo "\t\t\t<input type='image' src='./images/home.gif' title='"._B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$sid', '_top')\">\n";
 echo "\t\t\t<img src='./images/blank.gif' width='11' border='0' hspace='0' align='left'>\n";
 echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
@@ -463,7 +486,6 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		if ($_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'";}
 		echo "</form>\n";
 		echo "</table>\n";
-		echo "</td></tr></table>\n";
 		}
 	else
 		{
@@ -532,8 +554,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			echo "<center><b>"._WARNING."</b><br />\n"._TC_NONETOSEND."</center>\n";
 			}
 			echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "</table>\n<br />";
+		
 		}
 	echo "</td></tr></table>\n";
 	}
@@ -960,6 +981,10 @@ echo "</center>\n";
 echo "&nbsp;";
 echo "<table height='1'><tr><td></td></tr></table>\n";
 
+echo "</td>\n";
+echo helpscreen();
+echo "</tr></table>\n";
+
 echo htmlfooter("instructions.html#tokens", "Using PHPSurveyors Tokens Function");
 echo "</body>\n</html>";
 
@@ -980,4 +1005,50 @@ global $PHP_SELF, $sid, $btstyle, $slstyle, $setfont;
 
 } # END form
 
+function helpscreen()
+	{
+	global $homeurl, $langdir;
+	global $action;
+	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n";
+	echo "\t\t\t<table width='100%'><tr><td><table width='100%' height='100%' align='center' cellspacing='0'>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td bgcolor='#555555' height='8'>\n";
+	echo "\t\t\t\t\t\t<font color='white' size='1'><b>"._HELP."\n";
+	echo "\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
+	echo "\t\t\t\t\t\t<img src='./images/blank.gif' width='20' hspace='0' border='0' align='left'>\n";
+	echo "\t\t\t\t\t\t<input type='image' src='./images/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n";
+	echo "\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
+	//determine which help document to show
+	$helpdoc = "$langdir/tokens.html";
+	switch ($action)
+		{
+		case "browse":
+			$helpdoc .= "#Display Tokens";
+			break;
+		case "email":
+			$helpdoc .= "#Email Invitiation";
+			break;
+		case "add":
+			$helpdoc .= "#Add new token entry";
+			break;
+		case "import":
+			$helpdoc .= "#Import/Upload CSV File";
+			break;
+		case "tokenify":
+			$helpdoc .= "#Generate Tokens";
+			break;
+		}
+	echo "\t\t\t\t\t\t<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n";
+	echo "\t\t\t\t\t\t</iframe>\n";
+	echo "\t\t\t\t\t</td>";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t</table></td></tr></table>\n";
+	echo "\t\t</td>\n";
+	}
 ?>
