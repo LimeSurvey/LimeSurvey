@@ -262,6 +262,10 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t$setfont<u>Please write your answer in the box below:</u><br />\n";
 				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname'></textarea>\n";
 				break;
+			case "N":  //NUMERICAL
+				echo "\t\t\t$setfont<u>Please write your answer here:</u><br />\n";
+				echo "\t\t\t<input type='text' size='40' $boxstyle />\n";
+				break;
 			case "Y":  //YES/NO
 				echo "\t\t\t$setfont<u>Please tick <b>only one</b> of the following:</u><br />\n";
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='Y' />Yes<br />\n";
