@@ -38,7 +38,7 @@
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 if (!isset($gl)) {$gl=array("null");}
 if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step']=$_POST['thisstep']+1;}
 if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES #################################################
@@ -90,9 +90,9 @@ if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $
 		elseif (!isset($_POST[$multiname]) || !$_POST[$multiname])
 			{
 			//One of the mandatory questions hasn't been answered
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$mfns[$mi];
 			}
 		else
@@ -132,9 +132,9 @@ if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok
 				if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
 					{
 					//The number of questions not answered is equal to the number of questions
-					if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+					if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 				    $notanswered[]=substr($multiname, 5, strlen($multiname));
 					$$multiname=0;
 					$$multiname2=0;
@@ -151,14 +151,14 @@ if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok
 		if (isset($_SESSION[$ccm]) && $_SESSION[$ccm] && isset($_POST[$dccm]) && $_POST[$dccm] == "on")
 			{
 			}
-		elseif ($_POST[$dccm] == "on" && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
+		elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on" && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
 			{
 			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$cmfns[$mi];
 			}
-		elseif ($_POST[$dccm] == "on")
+		elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on")
 			{
 			//One of the conditional mandatory questions was on, but hasn't been answered
 			$$multiname++;
@@ -171,9 +171,9 @@ if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok
 		if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 			//The number of questions not answered is equal to the number of questions
-			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 		    $notanswered[]=substr($multiname, 5, strlen($multiname));
 			}
 		}
@@ -272,7 +272,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			$completed = "<br /><b><font size='2'><font color='green'>"._THANKS."</b></font><br /><br />\n\n";
 			$completed .= _SURVEYREC."<br />\n";
 			$completed .= "<a href='javascript:window.close()'>"._CLOSEWIN_PS."</a></font><br /><br />\n";
-			if ($_POST['token'])
+			if (isset($_POST['token']) && $_POST['token'])
 				{
 				$utquery = "UPDATE {$dbprefix}tokens_$sid SET completed='Y' WHERE token='{$_POST['token']}'";
 				$utresult = mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
