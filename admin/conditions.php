@@ -191,8 +191,8 @@ while ($rows=mysql_fetch_array($result))
 $qquery = "SELECT *\n"
 		. "FROM {$dbprefix}questions, {$dbprefix}groups\n"
 		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-		."AND {$dbprefix}questions.sid=$sid\n"
-		."AND type not in ('S', 'D', 'T', 'Q')";
+		."AND {$dbprefix}questions.sid=$sid\n";
+
 $qresult = mysql_query($qquery) or die ("$qquery<br />".mysql_error());
 $qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 while ($qrow = mysql_fetch_assoc($qresult)) {$qrows[] = $qrow;} // Get table output into array
@@ -203,7 +203,10 @@ foreach ($qrows as $qrow) //Go through each question until we reach the current 
 	{
 	if ($qrow["qid"] != $qid && $position=="before") 
 		{
-		$questionlist[]=$qrow["qid"];
+		if ($qrow['type'] != "S" && $qrow['type'] != "D" && $qrow['type'] != "T" && $qrow['type'] != "Q")
+			{
+			$questionlist[]=$qrow["qid"];
+			}
 		}
 	elseif ($qrow["qid"] == $qid)
 		{
