@@ -330,7 +330,7 @@ function templatereplace($line)
 	else
 		{$line=str_replace("{QUESTIONHELP}", $help, $line);}
 	$line=str_replace("{NAVIGATOR}", $navigator, $line);
-	$submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move'>";
+	$submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
 	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
 	$line=str_replace("{COMPLETED}", $completed, $line);
 	$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";
@@ -1266,38 +1266,52 @@ function buildsurveysession()
 
 function surveymover()
 	{
+	//This function creates the form elements in the survey navigation bar
+	//with "<<PREV" or ">>NEXT" in them. MOdified by Mikkel Skovgaard Sørensen
+	//so that the "submit" value which determines how the script moves from
+	//one survey page to another is now a hidden element, updated by clicking
+	//on the  relevant button - allowing "NEXT" to be the default setting when
+	//a user presses enter.
 	global $thissurvey;
 	global $sid, $presentinggroupdescription;
 	$surveymover = "";
+	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+		{
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _LAST." \">";
+		}
+	else
+		{
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _NEXT." >> \">";
+		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A")
 		{
-		$surveymover .= "<input class='submit' type='submit' value=' << "
-					 . _PREV." ' name='move' />\n";
+		$surveymover .= "<input class='submit' type='button' onclick=\"javascript:document.phpsurveyor.move.value = this.value; document.phpsurveyor.submit();\" value=' << "
+					 . _PREV." ' name='move2' />\n";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 		{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "
-					  . _NEXT." >> ' name='move' />\n";
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+					  . _NEXT." >> ' name='move2' />\n";
 		}
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "
-					  . _NEXT." >> ' name='move' />\n";
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+					  . _NEXT." >> ' name='move2' />\n";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 		{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "
-					  . _NEXT." >> ' name='move' />\n";
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+					  . _NEXT." >> ' name='move2' />\n";
 		}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 		{
-		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "
-					  . _LAST." ' name='move' />\n";
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+					  . _LAST." ' name='move2' />\n";
 		}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] == "A")
 		{
-		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "
-					  . _SUBMIT." ' name='move' />\n";
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+					  . _SUBMIT." ' name='move2' />\n";
 		}
 	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."'>\n";
 	return $surveymover;
