@@ -43,7 +43,7 @@ sendcacheheaders();
 
 //DO DATABASE UPDATESTUFF
 if ($action == "updateset") {updateset($lid);}
-if ($action == "insertset") {insertset();}
+if ($action == "insertset") {$lid=insertset();}
 if ($action == "modanswers") {modanswers($lid);}
 if ($action == "delset") {if (delset($lid)) {unset($lid);}}
 
@@ -420,6 +420,10 @@ function insertset()
 	if (!$result = mysql_query($query))
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+		}
+	else
+		{
+		return mysql_insert_id();
 		}
 	}
 function modanswers($lid)
