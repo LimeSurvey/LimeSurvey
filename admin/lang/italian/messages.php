@@ -154,15 +154,19 @@ define("_SL_USECOOKIES", "Abilita Cookies?"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Notification:"); //New with 098rc5
 define("_SL_ALLOWREGISTER", "Allow public registration?"); //New with 0.98rc9
 define("_SL_ATTRIBUTENAMES", "Token Attribute Names:"); //New with 0.98rc9
+define("_SL_EMAILINVITE_SUBJ", "Invitation Email Subject:"); //New with 0.99dev01
 define("_SL_EMAILINVITE", "Invitation Email:"); //New with 0.98rc9
+define("_SL_EMAILREMIND_SUBJ", "Email Reminder Subject:"); //New with 0.99dev01
 define("_SL_EMAILREMIND", "Email Reminder:"); //New with 0.98rc9
+define("_SL_EMAILREGISTER_SUBJ", "Public registration Email Subject:"); //New with 0.99dev01
 define("_SL_EMAILREGISTER", "Public registration Email:"); //New with 0.98rc9
+define("_SL_EMAILCONFIRM_SUBJ", "Confirmation Email Subject"); //New with 0.99dev01
 define("_SL_EMAILCONFIRM", "Confirmation Email"); //New with 0.98rc9
 define("_SL_REPLACEOK", "This will replace the existing text. Continue?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
 define("_SL_AUTONUMBER", "Start ID numbers at:"); //New with 0.99dev01
 define("_SL_AUTORELOAD", "Automatically load URL when survey complete?"); //New with 0.99dev01
-
+define("_SL_ALLOWPREV", "Show [<< Prev] button"); //New with 0.99dev01
 //groups
 define("_GL_TITLE", "Titolo:");
 define("_GL_DESCRIPTION", "Descrizione:");
@@ -597,6 +601,7 @@ define("_TC_SENDREMIND", "Invia solleciti");
 define("_TC_INVITESENTTO", "Invito inviato a:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Sollecito inviato a:"); //is followed by token name
 define("_TC_UPDATEDB", "Update tokens table with new fields"); //New for 0.98rc7
+define("_TC_EMAILINVITE_SUBJ", "Invitation to participate in survey"); //New for 0.99dev01
 define("_TC_EMAILINVITE", "Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\n"
 						 ."The survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
 						 ."To participate, please click on the link below.\n\nSincerely,\n\n"
@@ -604,6 +609,7 @@ define("_TC_EMAILINVITE", "Dear {FIRSTNAME},\n\nYou have been invited to partici
 						 ."----------------------------------------------\n"
 						 ."Click here to do the survey:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Invitation
+define("_TC_EMAILREMIND_SUBJ", "Reminder to participate in survey"); //New for 0.99dev01
 define("_TC_EMAILREMIND", "Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\n"
 						 ."We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\n"
 						 ."The survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
@@ -612,6 +618,7 @@ define("_TC_EMAILREMIND", "Dear {FIRSTNAME},\n\nRecently we invited you to parti
 						 ."----------------------------------------------\n"
 						 ."Click here to do the survey:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Reminder
+define("_TC_EMAILREGISTER_SUBJ", "Survey Registration Confirmation"); //New for 0.99dev01
 define("_TC_EMAILREGISTER", "Dear {FIRSTNAME},\n\n"
 						  ."You, or someone using your email address, have registered to "
 						  ."participate in an online survey titled {SURVEYNAME}.\n\n"
@@ -620,6 +627,7 @@ define("_TC_EMAILREGISTER", "Dear {FIRSTNAME},\n\n"
 						  ."If you have any questions about this survey, or if you "
 						  ."did not register to participate and believe this email "
 						  ."is in error, please contact {ADMINNAME} at {ADMINEMAIL}.");//NEW for 0.98rc9
+define("_TC_EMAILCONFIRM_SUBJ", "Confirmation of completed survey"); //New for 0.99dev01
 define("_TC_EMAILCONFIRM", "Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} "
 						  ."and your response has been saved. Thank you for participating.\n\n"
 						  ."If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\n"

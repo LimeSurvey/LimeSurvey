@@ -154,15 +154,19 @@ define("_SL_USECOOKIES", "Utiliser des Cookies?"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Notification:"); //New with 098rc5
 define("_SL_ALLOWREGISTER", "Permettre l'enregistrement publique?"); //New with 0.98rc9
 define("_SL_ATTRIBUTENAMES", "Noms Attribué àl'Invitation:"); //New with 0.98rc9
+define("_SL_EMAILINVITE_SUBJ", "Invitation Email Subject:"); //New with 0.99dev01
 define("_SL_EMAILINVITE", "Invitation par Email:"); //New with 0.98rc9
+define("_SL_EMAILREMIND_SUBJ", "Email Reminder Subject:"); //New with 0.99dev01
 define("_SL_EMAILREMIND", "Rappel par Email:"); //New with 0.98rc9
+define("_SL_EMAILREGISTER_SUBJ", "Public registration Email Subject:"); //New with 0.99dev01
 define("_SL_EMAILREGISTER", "Enregistrement de l'Email Publique:"); //New with 0.98rc9
+define("_SL_EMAILCONFIRM_SUBJ", "Confirmation Email Subject"); //New with 0.99dev01
 define("_SL_EMAILCONFIRM", "Confirmation par Email"); //New with 0.98rc9
 define("_SL_REPLACEOK", "Cela remplacera le texte existant. Continuer?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
 define("_SL_AUTONUMBER", "Start ID numbers at:"); //New with 0.99dev01
 define("_SL_AUTORELOAD", "Automatically load URL when survey complete?"); //New with 0.99dev01
-
+define("_SL_ALLOWPREV", "Show [<< Prev] button"); //New with 0.99dev01
 //groups
 define("_GL_TITLE", "Titre:");
 define("_GL_DESCRIPTION", "Description:");
@@ -555,6 +559,7 @@ define("_TC_CREATED", "Une table d'invitation a été crée pour ce questionnaire."
 define("_TC_DELETEALL", "Supprimer toutes les d'invitations");
 define("_TC_DELETEALL_RUSURE", "Etes-vous sur de vouloir supprimer TOUTES les invitations?");
 define("_TC_ALLDELETED", "Toutes les invitations ont été supprimées");
+define("_TC_CLEARINVITES", "Set all entries to 'N' invitation sent");
 define("_TC_CLEARINV_RUSURE", "Est-vous sûr de vouloir réinitialiser tous les enregistrements d'invitation à NON?");
 define("_TC_CLEARTOKENS", "Supprimer tous les nombres uniques des invitations (All unique token numbers)");
 define("_TC_CLEARTOKENS_RUSURE", "Etes-vous sûr de vouloir supprimer tous les nombres uniques des invitations?");
@@ -596,6 +601,7 @@ define("_TC_SENDREMIND", "Envoyer Rappels");
 define("_TC_INVITESENTTO", "Invitation envoyé à:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Rappel envoyé à:"); //is followed by token name
 define("_TC_UPDATEDB", "Mettre à jour la table d'invitation (Tokens) avec des nouveaux champs"); //New for 0.98rc7
+define("_TC_EMAILINVITE_SUBJ", "Invitation to participate in survey"); //New for 0.99dev01
 define("_TC_EMAILINVITE", "{FIRSTNAME},\n\nVous avez été invité à participer à un questionnaire.\n\n"
 						 ."Celui-ci est intitulé:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
 						 ."Pour participer, veuillez cliquer sur le lien ci-dessous.\n\nCordialement,\n\n"
@@ -603,6 +609,7 @@ define("_TC_EMAILINVITE", "{FIRSTNAME},\n\nVous avez été invité à participer à u
 						 ."----------------------------------------------\n"
 						 ."Cliquer ici pour faire le questionnaire:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - Email d'Invitation par défaut
+define("_TC_EMAILREMIND_SUBJ", "Reminder to participate in survey"); //New for 0.99dev01
 define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez été inviter à participer à un questionnaire récemment.\n\n"
 						 ."Nous avons pris en compte que vous n'avez pas encore completé le questionnaire, et nous vous rappelons que celui-ci est toujours disponible si vous souhaitez participer.\n\n"
 						 ."Le questionnaire est intitulé:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
@@ -611,6 +618,7 @@ define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez été inviter à participer à 
 						 ."----------------------------------------------\n"
 						 ."Cliquez ici pour faire le questionnaire:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - Email de rappel par defaut
+define("_TC_EMAILREGISTER_SUBJ", "Survey Registration Confirmation"); //New for 0.99dev01
 define("_TC_EMAILREGISTER", "Dear {FIRSTNAME},\n\n"
 						  ."Vous (ou quelqu'un utilisant votre adresse email) êtes enregistrés pour "
 						  ."participer à un questionnaire en ligne intitulé {SURVEYNAME}.\n\n"
@@ -619,6 +627,7 @@ define("_TC_EMAILREGISTER", "Dear {FIRSTNAME},\n\n"
 						  ."Quel que soit votre question à propos de ce questionnaire, ou si vous "
 						  ."n'avez pas été enregistré pour participer à celui-ci et croyez qu'il s'agit "
 						  ."d'une erreur, veuillez contacter {ADMINNAME} :  {ADMINEMAIL}.");//NEW for 0.98rc9
+define("_TC_EMAILCONFIRM_SUBJ", "Confirmation of completed survey"); //New for 0.99dev01
 define("_TC_EMAILCONFIRM", "{FIRSTNAME},\n\nCet email vous confirme que vous avez completé le questionnaire intitulé {SURVEYNAME} "
 						  ."et votre réponse à été enregistrée. Merci d'avoir participé.\n\n"
 						  ."Si vous avez d'autres questions à propos de cet email, veuillez contacter {ADMINNAME} : {ADMINEMAIL}.\n\n"
