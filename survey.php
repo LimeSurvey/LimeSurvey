@@ -182,6 +182,7 @@ if ($_POST['move'] == " "._SUBMIT." " && !$notanswered)
 			$privacy .= $op;
 			}
 		}
+	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -325,6 +326,7 @@ if ($_POST['move'] == " "._SUBMIT." " && !$notanswered)
 if ($_POST['move'] == " "._LAST." " && !$notanswered)
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -364,6 +366,7 @@ if ($_POST['move'] == " "._LAST." " && !$notanswered)
 //SEE IF $sid EXISTS
 if ($surveyexists <1)
 	{
+	echo "<html>\n";
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -391,6 +394,7 @@ if (!$_SESSION['step'])
 	{
 	if ($tokensexist == 1 && !$_GET['token'])
 		{
+		echo "<html>\n";
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -431,6 +435,7 @@ if (!$_SESSION['step'])
 
 		if (!$tkexist)
 			{
+			echo "<html>\n";
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -468,6 +473,7 @@ if (!$_SESSION['step'])
 	$totalquestions = mysql_num_rows($result);
 	if ($totalquestions == "0")	//break out if there are no questions!
 		{
+		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -584,6 +590,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 	}
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+echo "<html>\n";
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);

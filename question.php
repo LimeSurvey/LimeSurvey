@@ -154,6 +154,7 @@ if ($_POST['conmandatory'])
 //SUBMIT
 if ($_POST['move'] == " "._SUBMIT." ")
 	{
+	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -302,6 +303,7 @@ if ($_POST['move'] == " "._LAST." " && !$notanswered)
 //SEE IF $sid EXISTS
 if ($surveyexists <1)
 	{
+	echo "<html>\n";
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -329,6 +331,7 @@ if (!$_SESSION['step'])
 	{
 	if ($tokensexist == 1 && !$_GET['token'])
 		{
+		echo "<html>\n";
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -367,6 +370,7 @@ if (!$_SESSION['step'])
 		$tkexist = mysql_num_rows($tkresult);
 		if (!$tkexist)
 			{
+			echo "<html>\n";
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -404,6 +408,7 @@ if (!$_SESSION['step'])
 	$_SESSION['totalsteps'] = $totalquestions;
 	if ($totalquestions == "0")	//break out and crash if there are no questions!
 		{
+		echo "<html>\n";
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -498,6 +503,7 @@ if (!$_SESSION['step'])
 			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}", $conditions);
 			}
 		}
+	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -635,6 +641,7 @@ include("qanda.php");
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+echo "<html>\n";
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
@@ -818,6 +825,7 @@ function last()
 			}
 		}
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
