@@ -635,8 +635,27 @@ elseif ($answers == "long")
 				$fsid=""; $fgid=""; $fqid="";
 				if ($type == "doc") 
 					{
-					$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
-					$ftitle=$fielddata['title'].":";
+					switch($fieldinfo)
+						{
+						case "firstname":
+							$ftitle=_TL_FIRST.":";
+							break;
+						case "lastname":
+							$ftitle=_TL_LAST.":";
+							break;
+						case "email":
+							$ftitle=_TL_EMAIL.":";
+							break;
+						case "attribute_1":
+							$ftitle=_TL_ATTR1.":";
+							break;
+						case "attribute_2":
+							$ftitle=_TL_ATTR2.":";
+							break;
+						default:
+						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+						$ftitle=$fielddata['title'].":";
+						} // switch
 					}
 				}
 			if (!$fqid) {$fqid = "0";}
