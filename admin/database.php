@@ -514,11 +514,6 @@ elseif ($action == "delsurvey") //can only happen if there are no groups, no que
 		}
 	}
 
-elseif ($action == "adduser")
-	{
-	exec("$homedir\htpasswd.exe -b .htpasswd {$_POST['user']} {$_POST['pass']}"); 
-	}	
-
 else
 	{
 	echo "$action Not Yet Available!";
