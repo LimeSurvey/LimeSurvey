@@ -962,7 +962,7 @@ if (is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY B
 	if (in_array($ia[1], $notanswered))
 		{
 		$qtitle = "</b><font color='red' size='1'>"._MANDATORY.".";
-		if ($ia[4] == "A" || $ia[4] == "B" || $ia[4] == "C" || $ia[4] == "Q")
+		if ($ia[4] == "A" || $ia[4] == "B" || $ia[4] == "C" || $ia[4] == "Q" || $ia[4] == "F")
 			{ $qtitle .= "<br />\n"._MANDATORY_PARTS."."; }
 		if ($ia[4] == "M" || $ia[4] == "P")
 			{ $qtitle .= "<br />\n"._MANDATORY_CHECK.".";}
