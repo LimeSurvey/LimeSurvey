@@ -947,11 +947,11 @@ function do_listwithcomment($ia)
             }
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
-            if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) 
+            if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
                 {
                 $answer .= "\t\t\t\t\t\t<option value=' ' selected>"._NOANSWER."</option>\n";
                 }
-            elseif ($_SESSION[$ia[1]] && !$defexists) 
+            elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
                 {
                 $answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";
                 }
