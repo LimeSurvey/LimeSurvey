@@ -217,6 +217,7 @@ define("_ARR10", "Scelta (10 opzioni)");
 define("_ARRYN", "Scelta (Si/No/Non so)");
 define("_ARRMV", "Scelta (crescente, uguale, descrescente)");
 define("_ARRFL", "Scelta (Flessibile)"); //(FOR LATER RELEASE)
+define("_ARRFLC", "Array (Flexible Labels) by Column"); //Release 0.98rc8
 define("_SINFL", "Campo unico (Flessibile)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Indirizzo Email"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Boilerplate Question"); //New in 0.98rc6

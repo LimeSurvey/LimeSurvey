@@ -579,7 +579,7 @@ if ($qid)
 						  . _Q_CONDITIONS_BT."' border='0' hspace='0' align='left' name='SetQuestionConditions' "
 						  . "onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n";
-		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
+		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
 			$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/answers.gif' title='"
 							  . _Q_ANSWERS_BT."' border='0' hspace='0' align='left' name='ViewAnswers' "
@@ -615,7 +615,7 @@ if ($qid)
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"
 						  ._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}";
-		if ($qrrow['type'] == "F") 
+		if ($qrrow['type'] == "F" ||$qrrow['type'] == "H") 
 			{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
 							  . "<input align='top' type='image' src='$imagefiles/labels.gif' title='"
@@ -623,7 +623,7 @@ if ($qid)
 							  . "onClick=\"window.open('labels.php?lid={$qrrow['lid']}', '_blank')\">\n";
 			}
 		$questionsummary .="</font></td></tr>\n";
-		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"))
+		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 			{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td>"
 							 . "<font face='verdana' size='1' color='green'>"
@@ -632,7 +632,7 @@ if ($qid)
 							 . _Q_ANSWERS_BT."' border='0' hspace='0' name='EditThisQuestionAnswers'"
 							 . "onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}
-		if (!$qrrow['lid'] && $qrrow['type'] == "F")
+		if (!$qrrow['lid'] && ($qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 			{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td>"
 							  . "<td><font face='verdana' size='1' color='green'>"
@@ -1510,7 +1510,7 @@ function questionjavascript($type)
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
 				 . "\t\t}\n"
-				 . "\telse if (QuestionType == 'F')\n"
+				 . "\telse if (QuestionType == 'F' || QuestionType == 'H')\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"

@@ -973,7 +973,7 @@ switch ($ia[4])
 			}			
 		$answer .= "\t\t\t</table>\n";
 		break;
-	case "F": //ARRAY (Flexible)
+	case "F": //ARRAY (Flexible) - Row Format
 		$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
 		$qresult = mysql_query($qquery);
 		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -1058,7 +1058,94 @@ switch ($ia[4])
 		unset($labelans);
 		unset($labelcode);
 		break;
+	case "H": //ARRAY (Flexible) - Column Format
+		$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
+		$qresult = mysql_query($qquery);
+		while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
+		$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
+		$lresult = mysql_query($lquery);
+		while ($lrow=mysql_fetch_array($lresult))
+			{
+			$labelans[]=$lrow['title'];
+			$labelcode[]=$lrow['code'];
+			$labels[]=array("answer"=>$lrow['title'], "code"=>$lrow['code']);
+			}
+		if ($ia[6] != "Y") {
+		    $labelcode[]="";
+			$labelans[]=_NOTAPPLICABLE;
+			$labels[]=array("answer"=>_NOTAPPLICABLE, "code"=>"");
 		}
+		
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+		$ansresult = mysql_query($ansquery);
+		$anscount = mysql_num_rows($ansresult);
+		$fn=1;
+		$answer .= "\t\t\t<table class='question'>\n"
+				 . "\t\t\t\t<tr>\n"
+				 . "\t\t\t\t\t<td></td>\n";
+		$cellwidth=$anscount;
+		//if ($ia[6] != "Y") {$cellwidth++;}
+		$cellwidth=60/$cellwidth;
+		while ($ansrow = mysql_fetch_array($ansresult))
+			{
+			$anscode[]=$ansrow['code'];
+			$answers[]=$ansrow['answer'];
+			}
+		foreach ($answers as $ld)
+			{
+			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+			$answer .= "\t\t\t\t\t<td align='center' class='$trbc'><span class='answertext'>".$ld."</span></td>\n";
+			}
+		unset($trbc);
+		$answer .= "\t\t\t\t</tr>\n";
+		$ansrowcount=0;
+		$ansrowtotallength=0;
+		while ($ansrow = mysql_fetch_array($ansresult))
+			{
+			$ansrowcount++;
+			$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
+			}
+		foreach($labels as $ansrow)
+			{
+			//$myfname = $ia[1].$ansrow['code'];
+			$answer .= "\t\t\t\t<tr>\n"
+					 . "\t\t\t\t\t<td align='right' class='array1' width='$percwidth%'>{$ansrow['answer']}</td>\n";
+			foreach ($anscode as $ld)
+				{
+				if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+				$myfname=$ia[1].$ld;
+				$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$otherwidth%'>";
+				$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."'";
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked";}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+				}
+			$answer .= "\t\t\t\t</tr>\n";
+			$fn++;
+			if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
+				{
+				$mandatorys[]=$myfname;
+				$mandatoryfns[]=$ia[1];
+				}
+			if ($ia[6] == "Y" && $ia[7] == "Y")
+				{
+				$conmandatorys[]=$myfname;
+				$conmandatoryfns[]=$ia[1];
+				}
+			}
+		foreach($anscode as $ld) 
+			{
+			$myfname=$ia[1].$ld;
+			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			$answer .= "'>\n";
+			$inputnames[]=$myfname;
+			}			
+		$answer .= "\t\t\t</table>\n";
+		unset($labelans);
+		unset($labelcode);
+		unset($oldmyfname);
+		break;		
+	}
 $answer .= "\n\t\t\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
 if ($surveyformat == "S")
 	{
@@ -1088,14 +1175,14 @@ if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS I
 	{
 	if (in_array($ia[1], $notanswered))
 		{
-		$qtitle = "</b><font color='red' size='1'>"._MANDATORY.".";
+		$qtitle = "</b><span class='errormandatory'>"._MANDATORY.".";
 		if ($ia[4] == "A" || $ia[4] == "B" || $ia[4] == "C" || $ia[4] == "Q" || $ia[4] == "F")
 			{ $qtitle .= "<br />\n"._MANDATORY_PARTS."."; }
 		if ($ia[4] == "M" || $ia[4] == "P")
 			{ $qtitle .= "<br />\n"._MANDATORY_CHECK.".";}
 		if ($ia[4] == "R")
 			{ $qtitle .= "<br />\n"._MANDATORY_RANK."."; }
-		$qtitle .= "</font><b><br />\n";
+		$qtitle .= "</font></span><b><br />\n";
 		$qtitle .= $ia[3];
 		}
 	//POPUP WARNING

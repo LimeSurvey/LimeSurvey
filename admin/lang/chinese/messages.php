@@ -217,6 +217,7 @@ define("_ARR10", "Array (10項式選擇)");
 define("_ARRYN", "Array (是/否/不肯定)");
 define("_ARRMV", "Array (增加, 不變, 減少)");
 define("_ARRFL", "Array (彈性標籤)"); //Release 0.98rc3
+define("_ARRFLC", "Array (Flexible Labels) by Column"); //Release 0.98rc8
 define("_SINFL", "Single (彈性標籤)"); //(FOR LATER RELEASE)
 define("_EMAIL", "電郵地址"); //FOR LATER RELEASE
 define("_BOILERPLATE", "樣版題目"); //New in 0.98rc6

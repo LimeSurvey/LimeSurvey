@@ -451,7 +451,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				$ftype = $qrow['type']; //get the question type
 				$fquest = $qrow['question'];
 				}
-			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" ) 
+			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H") 
 				{ //If its a single - answer only type question
 				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 					{
@@ -517,6 +517,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "C":
 				case "E":
 				case "F":
+				case "H":
 				case "Q":
 					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
 					$lr = mysql_query($lq);
@@ -657,7 +658,7 @@ elseif ($answers == "long")
 				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 					{$ftype = $qrow['type']; $lid=$qrow['lid'];}
 				}
-			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" ) 
+			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H") 
 				{ //If its a single - answer only type question
 				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 					{
@@ -764,6 +765,7 @@ elseif ($answers == "long")
 						}
 					break;
 				case "F":
+				case "H":
 					$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code='$drow[$i]'";
 					$fresult = mysql_query($fquery) or die("ERROR:".$fquery."\n".$qq."\n".mysql_error());
 					while ($frow = mysql_fetch_array($fresult))

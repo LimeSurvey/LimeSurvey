@@ -223,6 +223,7 @@ define("_ARR10", "Arreglo (Elegir entre 10 Puntos)");
 define("_ARRYN", "Arreglo (Si/No/Incierto)");
 define("_ARRMV", "Arreglo (Ampliar, Mantener, Reducir)");
 define("_ARRFL", "Arreglo (Etiquetas Flexibles)"); //Release 0.98rc3
+define("_ARRFLC", "Array (Flexible Labels) by Column"); //Release 0.98rc8
 define("_SINFL", "Sencillo (Etiquetas Flexibles)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Correo electr&oacute;nico"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Boilerplate Question"); //New in 0.98rc6

@@ -582,7 +582,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			{
 			//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
 			$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "P") 
+			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "H" || $arow['type'] == "P") 
 				{
 				$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 				$abresult = mysql_query($abquery);
