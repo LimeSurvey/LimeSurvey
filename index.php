@@ -143,7 +143,7 @@ if ($surveyexpiry < date("Y-m-d") && $surveyexpiry != "0000-00-00")
 //CHECK FOR PREVIOUSLY COMPLETED COOKIE
 //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
 $cookiename="PHPSID".returnglobal('sid')."STATUS";
-if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surveyusecookie == "Y" && $tokensexist != 1)
+if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surveyusecookie == "Y" && $tokensexist != 1 && (!isset($_GET['newtest']) || $_GET['newtest'] != "Y"))
 	{
 	sendcacheheaders();
 	echo "<html>\n";
@@ -225,6 +225,10 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 		{
 		session_unset();
 		}
+	//DELETE COOKIE (allow to use multiple times)
+	setcookie("$cookiename", "INCOMPLETE", time()-120);
+	//echo "Reset Cookie!";
+
 	}
 
 sendcacheheaders();
