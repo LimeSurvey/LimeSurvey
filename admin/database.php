@@ -246,7 +246,7 @@ elseif ($action == "insertnewsurvey")
 		$description = addcslashes($description, "'");
 		$welcome = addcslashes($welcome, "'");
 		}
-	$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires, adminemail) VALUES ('', '$short_title', '$description', '$admin', 'N', '".str_replace("\n", "<br />", $welcome)."', '$expires', '$adminemail')";
+	$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires, adminemail, private, faxto) VALUES ('', '$short_title', '$description', '$admin', 'N', '".str_replace("\n", "<br />", $welcome)."', '$expires', '$adminemail', '$private', '$faxto')";
 	$isresult = mysql_query ($isquery);
 	if ($isresult)
 		{
@@ -272,7 +272,8 @@ elseif ($action == "updatesurvey")
 		}
 	$usquery = "UPDATE surveys SET short_title='$short_title', description='$description',";
 	$usquery .= " admin='$admin', welcome='".str_replace("\n", "<br />", $welcome)."',";
-	$usquery .= " expires='$expires', adminemail='$adminemail'";
+	$usquery .= " expires='$expires', adminemail='$adminemail',";
+	$usquery .= " private='$private', faxto='$faxto'";
 	$usquery .= " WHERE sid=$sid";
 	$usresult = mysql_query($usquery);
 	if ($usresult)
@@ -282,7 +283,7 @@ elseif ($action == "updatesurvey")
 		}
 	else
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be updated!\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be updated! " . mysql_error() ."\")\n //-->\n</script>\n";
 		}
 	}
 

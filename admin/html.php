@@ -41,10 +41,14 @@ if ($sid)
 	$surveysummary = "<table width='100%' align='center' bgcolor='silver' border='0'>\n";
 	while ($s1row = mysql_fetch_array($sumresult1))
 		{
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n\t<td>$setfont<b><font color='#000080'>{$s1row['short_title']} (ID {$s1row['sid']})</font></b></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n\t<td>$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
+		if ($s1row['private'] != "N") {$surveysummary .= "This survey is anonymous";}
+		else {$surveysummary .= "This survey is <b>not</b> anonymous";}
+		$surveysummary .= "</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['description']}</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['welcome']}</font></td></tr>\n";
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['faxto']}</font></td></tr>\n";
 		if ($s1row['expires'] != "0000-00-00") {$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['expires']}</font></td></tr>\n";}
 		$activated = $s1row['active'];
 		}
@@ -79,7 +83,7 @@ if ($sid)
 		}
 	else
 		{
-		$surveysummary .= "&nbsp;&nbsp;&nbsp;<font size='1'>Survey cannot yet be activated";
+		$surveysummary .= "<font size='1'>Survey cannot yet be activated";
 		}
 	$surveysummary .= "</td></tr>\n";
 	
@@ -647,6 +651,17 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='admin' value='{$esrow['admin']}'></td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='adminemail' value='{$esrow['adminemail']}'></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To</b></font></td>\n";
+		$editsurvey .= "\t\t<td><input type='text' size='20' name='faxto' value='{$esrow['faxto']}'></td></tr>\n";
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Private?</b></font></td>\n";
+		$editsurvey .= "\t\t<td><select name='private'>\n";
+		$editsurvey .= "\t\t\t<option value='Y'";
+		if ($esrow['private'] == "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">Yes</option>\n";
+		$editsurvey .= "\t\t\t<option value='N'";
+		if ($esrow['private'] != "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">No</option>\n";
+		$editsurvey .= "</select>\n\t\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='10' name='expires' value='{$esrow['expires']}'></td></tr>\n";
 		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Survey'></td>\n";
@@ -672,6 +687,13 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='admin'></td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Admin Email</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='adminemail'></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To</b></font></td>\n";
+	$newsurvey .= "\t\t<td><input type='text' size='20' name='faxto'></td></tr>\n";
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Private?</b></font></td>\n";
+	$newsurvey .= "\t\t<td><select name='private'>\n";
+	$newsurvey .= "\t\t\t<option value='Y' selected>Yes</option>\n";
+	$newsurvey .= "\t\t\t<option value='N'>No</option>\n";
+	$newsurvey .= "</select>\n\t\t</td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='10' name='expires'></td></tr>\n";
 	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create Survey'></td>\n";

@@ -169,7 +169,15 @@ if ($action == "insert")
 	
 	$col_name = substr($col_name, 0, -3); //Strip off the last comma-space
 	$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
+	
+	if ($_POST['token']) //handle tokens if survey needs them
+		{
+		$col_name .= ", token\n";
+		$insertqr .= ", '{$_POST['token']}'";
+		}
+	
 	$SQL = "INSERT INTO $surveytable \n($col_name) \nVALUES \n($insertqr)";
+	echo $SQL;
 	$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
 	
 	echo "<font color='green'><b>Insert Was A Success</b><br />\n";
@@ -195,18 +203,26 @@ elseif ($action == "edit")
 	echo "$surveyoptions";
 	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid'";
+	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND questions.sid=surveys.sid AND questions.sid='$sid'";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
 	
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow;} // Get table output into array
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private=$fnrow['private'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
 	
+	// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist) 
 	$fnames[] = array("id", "id", "id", "id", "id", "id", "id");
+
+	if ($private == "N") //show token info if survey not private
+		{
+		$fnames[] = array ("token", "Token ID", "Token", "token", "TID", "");
+		}
+	
+
 	foreach ($fnrows as $fnrow)
 		{
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
@@ -253,16 +269,18 @@ elseif ($action == "edit")
 
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
-	$idresult = mysql_query($idquery);
+	$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
 	echo "<table>\n";
+	echo "<form method='post' action='dataentry.php'>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#EEEEEE' align='center'>$setfont<b>Editing Answer ID $id ($nfncount)</td></tr>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+
 	while ($idrow = mysql_fetch_assoc($idresult))
 		{
 		for ($i=0; $i<$nfncount+1; $i++)
 			{
 			$answer = $idrow[$fnames[$i][0]];
-			echo "\t<tr><form>\n";
+			echo "\t<tr>\n";
 			echo "\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont<b>\n";
 			if ($fnames[$i][3] != "A" && $fnames[$i][3] != "B" && $fnames[$i][3]!="C" && $fnames[$i][3]!="P" && $fnames[$i][3] != "M") 
 				{
@@ -485,6 +503,10 @@ elseif ($action == "edit")
 					$i--;
 					echo "</table>\n";
 					break;
+				default: //This really only applies to tokens for non-private surveys
+					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
+					echo $idrow[$fnames[$i][0]] . "'>\n";
+					break;
 				}
 			//echo "\t\t\t$setfont{$idrow[$fnames[$i][0]]}\n"; //Debugging info
 			//echo $fnames[$i][0], $fnames[$i][1], $fnames[$i][2], "\n"; //Debugging info
@@ -644,6 +666,7 @@ else
 		$surveyname = $desrow['short_title'];
 		$surveydesc = $desrow['description'];
 		$surveyactive = $desrow['active'];
+		$surveyprivate = $desrow['private'];
 		$surveytable = "survey_{$desrow['sid']}";
 		}
 	if ($surveyactive == "Y") {echo "$surveyoptions\n";}
@@ -654,7 +677,18 @@ else
 	echo "\t\t\t<br>$setfont$surveydesc\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
-	echo "\t<form action='dataentry.php' name='addsurvey'>\n";
+	echo "\t<form action='dataentry.php' name='addsurvey' method='post'>\n";
+	
+	if ($surveyprivate == "N") //Give entry field for token id
+		{
+		echo "\t<tr>\n";
+		echo "\t\t<td valign='top' width='1%'></td>\n";
+		echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>Token ID:</b></font></td>\n";
+		echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
+		echo "\t\t\t<input type='text' name='token'>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		}
 	
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
 	$degquery = "SELECT * FROM groups WHERE sid=$sid ORDER BY group_name";
@@ -686,7 +720,7 @@ else
 			$fieldname = "$sid"."X"."$gid"."X"."$qid";
 			echo "\t<tr bgcolor='$bgc'>\n";
 			echo "\t\t<td valign='top' width='1%'>$setfont{$deqrow['title']}</td>\n";
-			echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>{$deqrow['question']}</b></td>\n";
+			echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>{$deqrow['question']}</b></font></td>\n";
 			echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
 			//DIFFERENT TYPES OF DATA FIELD HERE
 			if ($deqrow['help'])
