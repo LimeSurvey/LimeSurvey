@@ -89,9 +89,17 @@ if ($multi)
 	$mylist = substr($mylist, 0, strlen($mylist)-1);
 	}
 
-if ($move == " << prev " && $newgroup != "yes") {$_SESSION['step'] = $thisstep-1;} else {$_SESSION['step'] = $thisstep;}
-if ($move == " next >> ") {$_SESSION['step'] = $thisstep+1;}
-if ($move == " last ") {$_SESSION['step'] = $thisstep+1;}
+//This section handles the question number that will be answered - moving backwards and forwards as required
+if ($_POST['mandatory'] == "Y" && (!$_POST['fvalue'] || $_POST['fvalue'] == " ")) //if the last question was mandatory but there is no data
+	{
+	//Repeat last question until an answer is shown
+	}
+else
+	{
+	if ($move == " << prev " && $newgroup != "yes") {$_SESSION['step'] = $thisstep-1;} else {$_SESSION['step'] = $thisstep;}
+	if ($move == " next >> ") {$_SESSION['step'] = $thisstep+1;}
+	if ($move == " last ") {$_SESSION['step'] = $thisstep+1;}
+	}
 
 include("./admin/config.php");
 
@@ -157,6 +165,7 @@ if ($sid)
 		$surveyadminname = $desrow['admin'];
 		$surveyadminemail = $desrow['adminemail'];
 		$surveyprivate = $desrow['private'];
+		$surveyformat = $desrow['format'];
 		}
 	$surveyheader = "<table width='95%' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
 	$surveyheader .= "\t<tr>\n";
@@ -281,7 +290,7 @@ if ($move == " last ")
 	echo "\t</tr>\n";
 	echo surveymover();
 	echo "</table>\n";
-	//debugging info
+	//debugging info - hidden in html, but should be commented out for release 1
 	echo "<!-- DEBUG INFO \n";
 	foreach ($_SESSION['insertarray'] as $posted)
 		{
@@ -388,9 +397,9 @@ if ($move == " submit ")
 		echo "\t\t\t\t\t\tCould not submit results - survey has not been activated<br />&nbsp;\n";
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t</tr>\n";
-		echo "\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t<td><font size='1'>$subquery</td>\n";
-		echo "\t\t\t\t</tr>\n";
+		// debugging info
+		echo "<!-- DEBUG (\$subquery): $subquery -->\n";
+		// end debugging info
 		}
 	echo "\t\t\t</table>\n";
 	echo "\t\t\t<center><br /><a href='index.php?move=completed&sid=$sid'>Finish</a></center><br />\n";
@@ -399,7 +408,7 @@ if ($move == " submit ")
 	echo "</table>\n";
 	
 	// debugging info
-	echo "<!-- DEBUG INFO \n";
+	echo "<!-- DEBUG INFO (\$insertarray)\n";
 	foreach ($_SESSION['insertarray'] as $posted)
 		{
 		echo "$posted: ".$_SESSION[$posted] ."\n";
@@ -408,8 +417,6 @@ if ($move == " submit ")
 	echo "Token: $token\n";
 	echo "-->\n";
 	// end debugging info
-
-	
 	echo "</body>\n</html>";
 	exit;
 	}
@@ -495,9 +502,8 @@ if (!$_SESSION['step'])
 	$aresult = mysql_query($aquery);
 	$_SESSION['totalsteps'] = mysql_num_rows($aresult);
 	
-	if ($_SESSION['totalsteps'] == "0")
+	if ($_SESSION['totalsteps'] == "0")	//break out and crash if there are no questions!
 		{
-		//break out and crash if there are no questions!
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center' colspan='2'>\n";
 		echo "$setfont<center><b>$sitename</b><br />\n<br />\n<b>This survey does not yet have any questions, and so cannot be accessed.</b><br />\n";
@@ -582,10 +588,10 @@ if (!$_SESSION['step'])
 			$_SESSION['insertarray'][] = "F$fieldname";
 			}
 		//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
-		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD
+		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
 		//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
-		//                 [4]=questions.type, [5]=questions.gid
-		$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}");
+		//                 [4]=questions.type, [5]=questions.gid, [6]=questions.mandatory
+		$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}");
 		}
 	//echo count($_SESSION['fieldarray']);
 	echo "\t\t</td>\n";
@@ -597,6 +603,7 @@ else
 	{
 	echo $surveyheader;
 	//echo "STEP: $_SESSION['step'], TOTALSTEPS: {$_SESSION['totalsteps']}, LASTFIELD: $lastfield";
+	echo "<!-- DEBUG: _POST['mandatory'] = {$_POST['mandatory']}\n _POST['fvalue'] = {$_POST['fvalue']} -->\n";
 	$s = $_SESSION['step'];
 	//$t indicates which question in the array we should be displaying
 	$t = $s-1;
@@ -672,6 +679,14 @@ else
 		echo "\t\t\t<b><font color='#000080'>\n";
 		echo nl2br($_SESSION['fieldarray'][$t][3])."\n";
 		echo "\t\t\t</font></b>\n";
+		if ($_SESSION['fieldarray'][$t][6] == "Y") //question is mandatory: inform participant
+			{
+			echo "\t\t\t<input type='hidden' name='mandatory' value='Y'>\n";
+			if ($_POST['mandatory'] == "Y" && ($_POST['fvalue']==" " || !$_POST['fvalue'])) //If we are repeating a question because it wasn't answered, tell the participant why
+				{
+				echo "\t\t\t<br /><font size='1' color='red'>This is required information</font>\n";
+				}
+			}
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
@@ -916,9 +931,12 @@ else
 				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='N'";
 				if ($_SESSION[$fname] == "N") {echo " checked";}
 				echo " />No<br />\n";
-				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value=''";
-				if ($_SESSION[$fname] == "") {echo " checked";}
-				echo " />No Answer<br />\n";
+				if ($_SESSION['fieldarray'][$t][6] != "Y")
+					{
+					echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value=''";
+					if ($_SESSION[$fname] == "") {echo " checked";}
+					echo " />No Answer<br />\n";
+					}
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 				echo "\t\t\t</table>\n";
@@ -936,9 +954,12 @@ else
 				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='M'";
 				if ($_SESSION[$fname] == "M") {echo " checked";}
 				echo " />Male<br />\n";
-				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value=''";
-				if ($_SESSION[$fname] == "") {echo " checked";}
-				echo " />No Answer\n";
+				if ($_SESSION['fieldarray'][$t][6] != "Y")
+					{
+					echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value=''";
+					if ($_SESSION[$fname] == "") {echo " checked";}
+					echo " />No Answer\n";
+					}
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 				echo "\t\t\t</table>\n";
