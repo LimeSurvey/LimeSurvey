@@ -88,6 +88,16 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 		$completed .= _NOTACTIVE1."<br /><br />\n";
 		$completed .= "<a href='".$_SERVER['PHP_SELF']."?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
 		$completed .= "<font size='1'>$subquery</font>\n";
+		if (isset($_SESSION['savename'])) 
+			{
+			//Delete the saved survey
+			$query = "DELETE FROM {$dbprefix}saved\n"
+					."WHERE sid=$sid\n"
+					."AND identifier = '".$_SESSION['savename']."'";
+			$result = mysql_query($query);
+			//Should put an email to administrator here
+			//if the delete doesn't work.
+			}
 		}
 	else //submit the responses
 		{
@@ -101,7 +111,16 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
 				}
-			
+			if (isset($_SESSION['savename'])) 
+				{
+				//Delete the saved survey
+			    $query = "DELETE FROM {$dbprefix}saved\n"
+						."WHERE sid=$sid\n"
+						."AND identifier = '".$_SESSION['savename']."'";
+				$result = mysql_query($query);
+				//Should put an email to administrator here
+				//if the delete doesn't work.
+				}
 			sendcacheheaders();
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -303,7 +322,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		}
 	}
 
-if ($questionsSkipped == 0 && $newgroup == "Y" && $_POST['move'] == " << "._PREV." " && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
+if ($questionsSkipped == 0 && $newgroup == "Y" && isset($_POST['move']) && $_POST['move'] == " << "._PREV." " && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
 	{
 	//This does not work properly in all instances.
 	$currentquestion++; 
