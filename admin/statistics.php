@@ -57,11 +57,17 @@ if (!$sid)
 	exit;
 	}
 
-echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Quick Statistics</b></td></tr></table>\n";
+$surveyoptions=browsemenubar();
+
+echo "<table height='1'><tr><td></td></tr></table>\n";
+echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+//echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><font color='white'><b>Quick Statistics</b></td></tr></table>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._STATISTICS."</b></td></tr>\n";
 echo $surveyoptions;
-echo "<br />\n";
-echo "<table width='95%' align='center' border='1' cellpadding='0' cellspacing='0' bordercolor='#555555'>\n";
-echo "<tr><td align='center' bgcolor='#555555'>$setfont<font color='orange'><b>Filter Settings</b></td></tr>\n";
+echo "</table>\n";
+echo "<table height='1'><tr><td></td></tr></table>\n";
+echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0' bordercolor='#555555'>\n";
+echo "<tr><td align='center' bgcolor='#555555'><font size='2' face='verdana' color='orange'><b>"._ST_FILTERSETTINGS."</b></td></tr>\n";
 echo "\t<form method='post'>\n";
 // 1: Get list of questions from survey
 $query = "SELECT qid, questions.gid, type, title, group_name, question FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
@@ -82,8 +88,8 @@ foreach ($filters as $flt)
 			echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 			}
 		echo "\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n";
-		echo "\t\t<b>Group $flt[1]: $flt[4]</b></td></tr>\n\t\t<tr><td align='center'>\n";
-		echo "\t\t\t<table><tr>\n";
+		echo "\t\t<font size='1' face='verdana'><b>$flt[4]</b> (Group $flt[1])</font></td></tr>\n\t\t<tr><td align='center'>\n";
+		echo "\t\t\t<table align='center'><tr>\n";
 		$counter=0;
 		}
 	//echo $flt[2];	//debugging line
@@ -362,11 +368,15 @@ foreach ($filters as $flt)
 	}
 echo "\n\t\t\t\t</td></tr>\n";
 $allfield=implode("|", $allfields);
-echo "\t\t\t\t<tr><td align='center' colspan='4'>$setfont<input type='radio' name='summary' value='$allfield'";
-if ($_POST['summary'] == "$allfield") {echo " CHECKED";}
-echo ">View summary of all available fields</td></tr>\n";
+
 echo "\t\t\t</table>\n";
 echo "\t\t</td></tr>\n";
+echo "\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n";
+echo "\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n";
+
+echo "\t\t\t\t<tr><td align='center'>$setfont<input type='radio' name='summary' value='$allfield'";
+if ($_POST['summary'] == "$allfield") {echo " CHECKED";}
+echo ">View summary of all available fields</td></tr>\n";
 echo "\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n";
 echo "\t\t\t<input $btstyle type='submit' value='View Stats'>\n";
 echo "\t\t\t<input $btstyle type='button' value='Clear' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n";
