@@ -182,16 +182,17 @@ if ($sid)
 		//SURVEY SUMMARY
 		if ($gid || $qid || $action=="editsurvey" || $action=="addgroup") {$showstyle="style='display: none'";}
 		
-		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top'>$setfont<b>"._SL_TITLE."</b></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>$setfont<b>"._SL_TITLE."</b></font></td>\n";
 		$surveysummary .= "\t<td>";
 		$surveysummary .= "$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b></td></tr>\n";
 		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td><td>$setfont<font size='1' color='#000080'>\n";
-		if ($s1row['private'] != "N") {$surveysummary2 .= "This survey is anonymous";}
-		else {$surveysummary2 .= "This survey is <b>not</b> anonymous";}
-		if ($s1row['format'] == "S") {$surveysummary2 .= " and is presented question by question. ";}
-		elseif ($s1row['format'] == "G") {$surveysummary2 .= " and is presented group by group. ";}
-		else {$surveysummary2 .= " and is presented as one single page. ";}
-		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= "Responses will be date-stamped.";}
+		if ($s1row['private'] != "N") {$surveysummary2 .= _SS_ANONYMOUS."<br />\n";}
+		else {$surveysummary2 .= _SS_TRACKED;}
+		if ($s1row['format'] == "S") {$surveysummary2 .= _SS_QBYQ."<br />\n";}
+		elseif ($s1row['format'] == "G") {$surveysummary2 .= _SS_GBYG."<br />\n";}
+		else {$surveysummary2 .= _SS_SBYS;}
+		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _SS_DATESTAMPED."<br />\n";}
+		if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _SS_COOKIES."<br />\n";}
 		$surveysummary2 .= "</font></td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<b>"._SL_DESCRIPTION."</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
@@ -220,26 +221,26 @@ if ($sid)
 	
 	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<b>"._SL_STATUS."</b></font></td>\n";
 	$surveysummary .= "\t<td valign='top'>$setfont";
-	$surveysummary .= "<font size='1'>This survey contains $sumcount2 groups and $sumcount3 questions.</font><br />\n";
+	$surveysummary .= "<font size='1'>"._SS_NOGROUPS." $sumcount2<br />\n"._SS_NOQUESTS." $sumcount3</font><br />\n";
 	if ($activated == "N" && $sumcount3 > 0)
 		{
-		$surveysummary .= "<font size='1'>Survey is not active. Activate using the button bar above.<br />\n";
+		$surveysummary .= "<font size='1'>"._SS_NOTACTIVE."<br />\n";
 		}
 	elseif ($activated == "Y")
 		{
-		$surveysummary .= "<font size='1'>Survey is currently active. De-activate it by using the button bar above.<br />\n";
-		$surveysummary .= "<FONT SIZE='1'>Survey Table is 'survey_$sid'<BR>";
+		$surveysummary .= "<font size='1'>"._SS_ACTIVE."<br />\n";
+		$surveysummary .= "<FONT SIZE='1'>"._SS_SURVEYTABLE." 'survey_$sid'<BR>";
 		}
 	else
 		{
-		$surveysummary .= "<font size='1'>Survey cannot be activated yet.<br />\n";
+		$surveysummary .= "<font size='1'>"._SS_CANNOTACTIVATE."<br />\n";
 		if ($sumcount2 == 0) 
 			{
-			$surveysummary .= "\t<font color='green'>[You need to Add Groups]</font><br />";
+			$surveysummary .= "\t<font color='green'>["._SS_ADDGROUPS."]</font><br />";
 			}
 		if ($sumcount3 == 0)
 			{
-			$surveysummary .= "\t<font color='green'>[You need to Add Questions]</font>";
+			$surveysummary .= "\t<font color='green'>["._SS_ADDQUESTS."]</font>";
 			}
 		}
 	$surveysummary .= "</td></tr>\n";
@@ -1023,7 +1024,7 @@ if ($action == "editsurvey")
 		$editsurvey .= ">All in one</option>\n";
 		$editsurvey .= "\t\t</select></td>\n";
 		$editsurvey .= "\t</tr>\n";
-
+		//TEMPLATES
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_TEMPLATE."</b></font></td>\n";
 		$editsurvey .= "\t\t<td><select name='template'>\n";
 		foreach (gettemplatelist() as $tname)
@@ -1035,9 +1036,19 @@ if ($action == "editsurvey")
 			}
 		$editsurvey .= "\t\t</select></td>\n";
 		$editsurvey .= "\t</tr>\n";
-		
+		//COOKIES
+		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_USECOOKIES."</b></font></td>\n";
+		$editsurvey .= "\t\t<td><select name='usecookie'>\n";
+		$editsurvey .= "\t\t\t<option value='Y'";
+		if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_YES."</option>\n";
+		$editsurvey .= "\t\t\t<option value='N'";
+		if ($esrow['usecookie'] != "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_NO."</option>\n";
+		$editsurvey .= "\t\t</select></td>\n";
+		$editsurvey .= "\t</tr>\n";
+		//ANONYMOUS
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_ANONYMOUS."</b></font></td>\n";
-				
 		if ($esrow['active'] == "Y")
 			{
 			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
@@ -1151,6 +1162,18 @@ if ($action == "newsurvey")
 		}
 	$newsurvey .= "\t\t</select></td>\n";
 	$newsurvey .= "\t</tr>\n";
+		//COOKIES
+	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_USECOOKIES."</b></font></td>\n";
+	$newsurvey .= "\t\t<td><select name='usecookie'>\n";
+	$newsurvey .= "\t\t\t<option value='Y'";
+	if ($esrow['usecookie'] == "Y") {$newsurvey .= " selected";}
+	$newsurvey .= ">"._AD_YES."</option>\n";
+	$newsurvey .= "\t\t\t<option value='N'";
+	if ($esrow['usecookie'] != "Y") {$newsurvey .= " selected";}
+	$newsurvey .= ">"._AD_NO."</option>\n";
+	$newsurvey .= "\t\t</select></td>\n";
+	$newsurvey .= "\t</tr>\n";
+	//LANGUAGE
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_LANGUAGE."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><select name='language'>\n";
 	foreach (getlanguages() as $langname)
