@@ -49,12 +49,27 @@ if (!$style)
 	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 	$afieldcount=mysql_num_fields($result);
 	$i=0;
-	while($i<$afieldcount)
+	$fieldmap=createFieldMap($sid);
+	foreach ($fieldmap as $fm) 
 		{
-		$meta=mysql_fetch_field($result, $i);
-		$excesscols[]=$meta->name;
-		$i++;
+		$query="SELECT group_name, title\n"
+			  ."FROM questions, groups\n"
+			  ."WHERE questions.gid=groups.gid\n"
+			  ."AND questions.qid='".$fm['qid']."'";
+		$result=mysql_query($query) or die("EXPORT: Fieldmap-$query<br />".mysql_error());
+		while ($row=mysql_fetch_array($result))
+			{
+			$groupname=$row['group_name'];
+			$title=$row['title'];
+			}
+		$eachone[]=array("fieldname"=>$fm['fieldname'],
+						 "group_name"=>$groupname,
+						 "title"=>$title);
 		}
+		foreach($eachone as $ea)
+			{
+			$excesscols[]=$ea['fieldname'];
+			}
 	echo $htmlheader
 		."<br />\n"
 		."<table align='center'><tr>"
