@@ -34,6 +34,7 @@
 	#############################################################	
 */
 //SESSIONCONTROL.PHP FILE MANAGES ADMIN SESSIONS. IT WILL EVENTUALL EXTEND TO MANAGING USER LEVELS
+session_name("PHPSurveyorAdmin");
 session_start();
 
 //LANGUAGE ISSUES
