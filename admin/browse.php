@@ -331,8 +331,8 @@ elseif ($action == "all")
 		{
 		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
 		}
-	if ($limit && !$start) {$dtquery .= " DESC LIMIT $limit";}
-	if ($start && $limit) {$dtquery = "SELECT * FROM $surveytable WHERE id >= $start AND id <= $limit";}
+	if ($_GET['limit'] && !$_GET['start']) {$dtquery .= " DESC LIMIT {$_GET['limit']}";}
+	if ($_GET['start'] && $_GET['limit']) {$dtquery = "SELECT * FROM $surveytable WHERE id >= {$_GET['start']} AND id <= {$_GET['limit']}";}
 	$dtresult = mysql_query($dtquery);
 	$dtcount = mysql_num_rows($dtresult);
 	$cells = $fncount+1;
