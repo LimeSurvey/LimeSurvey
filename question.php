@@ -35,7 +35,8 @@
 */
 	
 //Move current step
-if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep']-1;}
+if ($_POST['move'] == " << prev " && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $_POST['thisstep']-1;}
+elseif ($_POST['move'] == " << prev " && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $_POST['thisstep'];}
 if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
@@ -309,7 +310,8 @@ while($tbl = @mysql_tablename($tresult, $i++))
 	}
 
 //RUN THIS IF THIS IS THE FIRST TIME
-if ((!$_SESSION['step'] && $_SESSION['step'] != "0") || $_SESSION['step'] < 0 )
+//if ((!$_SESSION['step'] && $_SESSION['step'] != "0") || $_SESSION['step'] < 0 )
+if (!$_SESSION['step'])
 	{
 	//*****************************************************************************************************
 	//PREPARE SURVEY
@@ -696,6 +698,7 @@ if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << prev ")
 
 //	echo "&nbsp;\n";
 	$_SESSION['step']--;
+	echo "\t\t\t<input type='hidden' name='newgroupondisplay' value='Y'>\n";
 	}
 else
 	{
@@ -763,7 +766,7 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 	}
 echo "\n";
 
-if ($surveyactive != "Y") {echo "\t\t<center><font color='red'>This survey is not currently active. You will not be able to save your responses.</font></center>\n";}
+if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>This survey is not currently active. You will not be able to save your responses.</font></center>\n";}
 foreach(file("$thistpl/endpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
@@ -820,7 +823,7 @@ echo "</form>\n</html>";
 function surveymover()
 	{
 	global $sid, $presentinggroupdescription;
-	if ($_SESSION['step'] > -1)
+	if ($_SESSION['step'])
 		{$surveymover .= "<input class='submit' type='submit' value=' << prev ' name='move' />\n";}
 	if ($_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' next >> ' name='move' />\n";}
