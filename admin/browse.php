@@ -200,7 +200,8 @@ if ($action == "id") // Looking at a SINGLE entry
 	else {$idquery .= "id=$id";}
 	$idresult = mysql_query($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".mysql_error());
 	while ($idrow = mysql_fetch_array($idresult)) {$id=$idrow['id'];}
-	
+	$next=$id+1;
+	$last=$id-1;
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'>\n";
 	echo "\t\t<td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._VIEWRESPONSE.":</b> $id</td></tr>\n";
@@ -209,6 +210,12 @@ if ($action == "id") // Looking at a SINGLE entry
 	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/edit.gif' title='"._BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
 	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/delete.gif' title='"._BR_DELRESPONSE."' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	echo "\t\t\t<img src='./images/blank.gif' width='20' height='20' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<img src='./images/blank.gif' width='20' height='20' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databack.gif' title='"._D_BACK."' onClick=\"window.open('browse.php?action=id&id=$last&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	echo "\t\t\t<img src='./images/blank.gif' width='13' height='20' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"._D_FORWARD."' onClick=\"window.open('browse.php?action=id&id=$next&sid=$sid&surveytable=$surveytable','_top')\" />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
