@@ -82,6 +82,19 @@ if (!$sid && !$action)
 	exit;
 	}
 
+if ($action == "edit" || $action == "")
+	{
+	$query = "SELECT language FROM surveys WHERE sid=$sid";
+	$result = mysql_query($query);
+	while ($row=mysql_fetch_row($result)) {$surveylanguage = $row['language'];}
+	if (!$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
+	if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
+	$langdir="$publicdir/lang";
+	$langfilename="$langdir/$surveylanguage.lang.php";
+	if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
+	require($langfilename);	
+	}	
+	
 if ($action == "insert")
 	{
 	echo "<table height='1'><tr><td></td></tr></table>\n";
@@ -260,6 +273,7 @@ if ($action == "insert")
 
 elseif ($action == "edit")
 	{
+
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
 	echo "$surveyheader";
@@ -356,7 +370,7 @@ elseif ($action == "edit")
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DATAENTRY."</b></td></tr>\n";
 	echo "<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n";
-	echo "\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<b>Editing Answer ID $id ($nfncount)</td></tr>\n";
+	echo "\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<b>"._DE_EDITING." (ID $id)</td></tr>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 
 	while ($idrow = mysql_fetch_assoc($idresult))
@@ -398,13 +412,13 @@ elseif ($action == "edit")
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
 					echo "\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">Please choose..</option>\n";
+					echo ">"._PLEASECHOOSE."..</option>\n";
 					echo "\t\t\t\t<option value='F'";
 					if ($idrow[$fnames[$i][0]] == "F") {echo " selected";}
-					echo ">Female</option>\n";
+					echo ">"._FEMALE."</option>\n";
 					echo "\t\t\t\t<option value='M'";
 					if ($idrow[$fnames[$i][0]] == "M") {echo " selected";}
-					echo ">Male</option>\n";
+					echo ">"._MALE."</option>\n";
 					echo "\t\t\t<select>\n";
 					break;
 				case "L": //LIST drop-down/radio-button list
@@ -413,7 +427,7 @@ elseif ($action == "edit")
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
 					echo "\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">Please choose..</option>\n";
+					echo ">"._PLEASECHOOSE."..</option>\n";
 					
 					while ($llrow = mysql_fetch_array($lresult))
 						{
@@ -429,7 +443,7 @@ elseif ($action == "edit")
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
 					echo "\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">Please choose..</option>\n";
+					echo ">"._PLEASECHOOSE."..</option>\n";
 					
 					while ($llrow = mysql_fetch_array($lresult))
 						{
@@ -560,7 +574,7 @@ elseif ($action == "edit")
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='./images/cut.gif' title='Remove this item' ";
+						$ranklist .= "\t\t\t\t\t\t<img src='./images/cut.gif' title='"._REMOVEITEM."' ";
 						if ($j != $existing)
 							{
 							$ranklist .= "style='display:none'";
@@ -583,11 +597,11 @@ elseif ($action == "edit")
 					echo "\t\t\t\t</tr>\n";
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n";
-					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Choices:</b><br />\n";
+					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURCHOICES.":</b><br />\n";
 					echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
-					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ranking:</b><br />\n";
+					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURRANKING.":</b><br />\n";
 					echo $ranklist;
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
@@ -660,7 +674,7 @@ elseif ($action == "edit")
 				case "N": //NUMERICAL TEXT
 					echo keycontroljs();
 					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' ";
-					echo "onKeyPress=\"return goodchars(event,'0123456789.')\" />\n";					
+					echo "onKeyPress=\"return goodchars(event,'0123456789.,')\" />\n";					
 					break;
 				case "S": //SHORT FREE TEXT
 					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
@@ -674,13 +688,13 @@ elseif ($action == "edit")
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
 					echo "\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">Please choose..</option>\n";
+					echo ">"._PLEASECHOOSE."..</option>\n";
 					echo "\t\t\t\t<option value='Y'";
 					if ($idrow[$fnames[$i][0]] == "Y") {echo " selected";}
-					echo ">Yes</option>\n";
+					echo ">"._YES."</option>\n";
 					echo "\t\t\t\t<option value='N'";
 					if ($idrow[$fnames[$i][0]] == "N") {echo " selected";}
-					echo ">No</option>\n";
+					echo ">"._NO."</option>\n";
 					echo "\t\t\t</select>\n";
 					break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
@@ -735,13 +749,13 @@ elseif ($action == "edit")
 						echo "\t\t<td>$setfont\n";
 						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-						echo " />Yes&nbsp;\n";
+						echo " />"._YES."&nbsp;\n";
 						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='U'";
 						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
-						echo " />Uncertain&nbsp\n";
+						echo " />"._UNCERTAIN."&nbsp\n";
 						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='N'";
 						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
-						echo " />No&nbsp;\n";
+						echo " />"._NO."&nbsp;\n";
 						echo "\t\t</td>\n";
 						echo "\t</tr>\n";
 						$i++;
@@ -992,7 +1006,7 @@ else
 		{
 		echo "\t<tr>\n";
 		echo "\t\t<td valign='top' width='1%'></td>\n";
-		echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>Token ID:</b></font></td>\n";
+		echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>"._TOKEN.":</b></font></td>\n";
 		echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
 		echo "\t\t\t<input type='text' name='token'>\n";
 		echo "\t\t</td>\n";
@@ -1002,7 +1016,7 @@ else
 		{
 		echo "\t<tr>\n";
 		echo "\t\t<td valign='top' width='1%'></td>\n";
-		echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>Date stamp:</b></font></td>\n";
+		echo "\t\t<td valign='top' align='right' width='30%'>$setfont<b>"._DATESTAMP.":</b></font></td>\n";
 		echo "\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
 		echo "\t\t\t<input type='text' name='datestamp' value='$localtimedate'>\n";
 		echo "\t\t</td>\n";
@@ -1103,13 +1117,13 @@ else
 				{
 				$hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
 				$hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-				echo "\t\t\t<img src='./images/help.gif' alt='Help about this question' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+				echo "\t\t\t<img src='./images/help.gif' alt='"._DE_QUESTIONHELP."' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
 				}
 			switch($deqrow['type'])
 				{
 				case "5": //5 POINT CHOICE radio-buttons
 					echo "\t\t\t<select name='$fieldname'>\n";
-					echo "\t\t\t\t<option value=''>No Answer</option>\n";
+					echo "\t\t\t\t<option value=''>"._NOANSWER."</option>\n";
 					for ($x=1; $x<=5; $x++)
 						{
 						echo "\t\t\t\t<option value='$x'>$x</option>\n";
@@ -1121,9 +1135,9 @@ else
 					break;
 				case "G": //GENDER drop-down list
 					echo "\t\t\t<select name='$fieldname'>\n";
-					echo "\t\t\t\t<option selected value=''>Please Choose..</option>\n";
-					echo "\t\t\t\t<option value='F'>Female</option>\n";
-					echo "\t\t\t\t<option value='M'>Male</option>\n";
+					echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";
+					echo "\t\t\t\t<option value='F'>"._FEMALE."</option>\n";
+					echo "\t\t\t\t<option value='M'>"._MALE."</option>\n";
 					echo "\t\t\t</select>\n";
 					break;
 				case "L": //LIST drop-down/radio-button list
@@ -1136,7 +1150,7 @@ else
 						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">{$dearow['answer']}</option>\n";
 						}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
 					echo "\t\t\t</select>\n";
 					break;
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -1149,9 +1163,9 @@ else
 						if ($dearow['default'] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">{$dearow['answer']}</option>\n";
 						}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
 					echo "\t\t\t</select>\n";
-					echo "\t\t\t<br />Comment:<br />\n";
+					echo "\t\t\t<br />"._COMMENT.":<br />\n";
 					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname";
 					echo "comment'>$idrow[$i]</textarea>\n";
 					break;
@@ -1266,7 +1280,7 @@ else
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='./images/cut.gif' title='Remove this item' ";
+						$ranklist .= "\t\t\t\t\t\t<img src='./images/cut.gif' title='"._REMOVEITEM."' ";
 						if ($i != $existing)
 							{
 							$ranklist .= "style='display:none'";
@@ -1290,11 +1304,11 @@ else
 					echo "\t\t\t\t</tr>\n";
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n";
-					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Choices:</b><br />\n";
+					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURCHOICES.":</b><br />\n";
 					echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
-					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ranking:</b><br />\n";
+					echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURRANKING.":</b><br />\n";
 					echo $ranklist;
 					echo "\t\t\t\t\t</td>\n";
 					echo "\t\t\t\t</tr>\n";
@@ -1341,7 +1355,7 @@ else
 					if ($deqrow['other'] == "Y")
 						{
 						echo "\t<tr>\n";
-						echo "\t\t<td style='padding-left: 22px'>$setfont"."Other:</td>\n";
+						echo "\t\t<td style='padding-left: 22px'>$setfont"._OTHER.":</td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
 						echo "\t\t</td>\n";
@@ -1351,7 +1365,7 @@ else
 					break;
 				case "N": //NUMERICAL TEXT
 					echo keycontroljs();
-					echo "\t\t\t<input type='text' name='$fieldname' onKeyPress=\"return goodchars(event,'0123456789.')\" />";
+					echo "\t\t\t<input type='text' name='$fieldname' onKeyPress=\"return goodchars(event,'0123456789.,')\" />";
 					break;
 				case "S": //SHORT FREE TEXT
 					echo "\t\t\t<input type='text' name='$fieldname' />\n";				
@@ -1361,9 +1375,9 @@ else
 					break;
 				case "Y": //YES/NO radio-buttons
 					echo "\t\t\t<select name='$fieldname'>\n";
-					echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";
-					echo "\t\t\t\t<option value='Y'>Yes</option>\n";
-					echo "\t\t\t\t<option value='N'>No</option>\n";
+					echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";
+					echo "\t\t\t\t<option value='Y'>"._YES."</option>\n";
+					echo "\t\t\t\t<option value='N'>"._NO."</option>\n";
 					echo "\t\t\t</select>\n";
 					break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1376,7 +1390,7 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
 						echo "\t\t<td>$setfont\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>Please choose..</option>\n";
+						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
 						for ($i=1; $i<=5; $i++)
 							{
 							echo "\t\t\t\t<option value='$i'>$i</option>\n";
@@ -1400,7 +1414,7 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>Please choose..</option>\n";
+						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
 						for ($i=1; $i<=10; $i++)
 							{
 							echo "\t\t\t\t<option value='$i'>$i</option>\n";
@@ -1424,20 +1438,11 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>Please choose..</option>\n";
-						echo "\t\t\t\t<option value='Y'>Yes</option>\n";
-						echo "\t\t\t\t<option value='U'>Uncertain</option>\n";
-						echo "\t\t\t\t<option value='N'>No</option>\n";
+						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
+						echo "\t\t\t\t<option value='Y'>"._YES."</option>\n";
+						echo "\t\t\t\t<option value='U'>"._UNCERTAIN."</option>\n";
+						echo "\t\t\t\t<option value='N'>"._NO."</option>\n";
 						echo "\t\t\t</select>\n";
-						//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='Y'";
-						//if ($idrow[$i]== "Y") {echo " checked";}
-						//echo " />Yes&nbsp;\n";
-						//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='U'";
-						//if ($idrow[$i]== "U") {echo " checked";}
-						//echo " />Uncertain&nbsp;\n";
-						//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='N'";
-						//if ($idrow[$i]== "N") {echo " checked";}
-						//echo " />No&nbsp;\n";
 						echo "\t\t</td>\n";
 						echo "</tr>\n";
 						}
@@ -1453,7 +1458,7 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>Please choose..</option>\n";
+						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
 						echo "\t\t\t\t<option value='I'>Increase</option>\n";
 						echo "\t\t\t\t<option value='S'>Same</option>\n";
 						echo "\t\t\t\t<option value='D'>Decrease</option>\n";
@@ -1475,7 +1480,7 @@ else
 		{
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-		echo "\t\t\t<input type='submit' value='Submit Survey' $btstyle/>\n";
+		echo "\t\t\t<input type='submit' value='"._SUBMIT."' $btstyle/>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		}
