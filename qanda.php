@@ -1769,6 +1769,7 @@ function do_array_flexible($ia)
     $qresult = mysql_query($qquery);
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
     $lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
+
     $lresult = mysql_query($lquery);
     if (mysql_num_rows($lresult) > 0)
         {
@@ -1777,9 +1778,11 @@ function do_array_flexible($ia)
             $labelans[]=$lrow['title'];
             $labelcode[]=$lrow['code'];
             }
-        $cellwidth=60/count($labelans);
-        if ($ia[6] != "Y" && $shownoanswer == 1) {$cellwidth++;}
-        //$cellwidth=sprintf("%02d", 60/$cellwidth);
+        $numrows=count($labelans);
+        if ($ia[6] != "Y" && $shownoanswer == 1) {$numrows++;}
+        $cellwidth=80/$numrows;
+        
+        $cellwidth=sprintf("%02d", $cellwidth);
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
         $ansresult = mysql_query($ansquery);
         $anscount = mysql_num_rows($ansresult);
@@ -1796,23 +1799,7 @@ function do_array_flexible($ia)
             $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></th>\n";
             }
         $answer .= "\t\t\t\t</tr>\n";
-        $ansrowcount=0;
-        $ansrowtotallength=0;
-        while ($ansrow = mysql_fetch_array($ansresult))
-            {
-            $ansrowcount++;
-            $ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
-            }
-        $ansrowavg=0;    
-        if ($ansrowcount > 0) {$ansrowavg=(($ansrowtotallength/$ansrowcount)/2);}
-        if ($ansrowavg > 54) {$percwidth=60;}
-        elseif ($ansrowavg < 5) {$percwidth=5;}
-        else {$percwidth=$ansrowavg*1.2;}
-        $percwidth=sprintf("%0d", $percwidth);
-        $lblcount=0;
-        $lblcount=count($labelans);
-        if($ia[6]=="Y") {$lblcount++;}
-        $otherwidth=sprintf("%0d",(100-$percwidth)/$cellwidth);
+         
         $ansresult = mysql_query($ansquery);
         while ($ansrow = mysql_fetch_array($ansresult))
             {
@@ -1833,11 +1820,11 @@ function do_array_flexible($ia)
             $myfname = $ia[1].$ansrow['code'];
             if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
             $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                     . "\t\t\t\t\t<td align='right' class='answertext' width='$percwidth%'>{$ansrow['answer']}</td>\n";
+                     . "\t\t\t\t\t<td align='right' class='answertext' width='20%'>{$ansrow['answer']}</td>\n";
             $thiskey=0;
             foreach ($labelcode as $ld)
                 {
-                $answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><label for='$myfname-$ld'>";
+                $answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='$myfname-$ld'>";
                 $answer .= "<input class='radio' type='radio' name='$myfname' value='$ld' id='$myfname-$ld' title='"
                          . $labelans[$thiskey]."'";
                 if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
@@ -1846,7 +1833,7 @@ function do_array_flexible($ia)
                 }
             if ($ia[6] != "Y" && $shownoanswer == 1)
                 {
-                $answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><label for='$myfname-'>"
+                $answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='$myfname-'>"
                         ."<input class='radio' type='radio' name='$myfname' value='' id='$myfname-' title='"._NOTAPPLICABLE."'";
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
                 $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
