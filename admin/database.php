@@ -239,7 +239,10 @@ elseif ($action == "copynewquestion")
 		$r1 = mysql_query($q1);
 		while ($qr1 = mysql_fetch_array($r1))
 			{
-			$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, `default_value`, sortorder) VALUES ('$newqid', '{$qr1['code']}', '{$qr1['answer']}', '{$qr1['default_value']}', '{$qr1['sortorder']}')";
+			$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, `default_value`, sortorder) "
+				. "VALUES ('$newqid', '{$qr1['code']}', "
+				. "'".mysql_escape_string($qr1['answer'])."', '{$qr1['default_value']}', "
+				. "'{$qr1['sortorder']}')";
 			$ir1 = mysql_query($i1);
 			}		
 		}	
