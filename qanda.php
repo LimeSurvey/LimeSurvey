@@ -380,6 +380,7 @@
 				$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult);
+				$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 				$fn = 1;
 				while ($ansrow = mysql_fetch_array($ansresult))
 					{
@@ -438,6 +439,7 @@
 				$ansquery = "SELECT * FROM answers WHERE qid={$ia[0]} ORDER BY code";
 				$ansresult = mysql_query($ansquery);
 				$anscount = mysql_num_rows($ansresult)*2;
+				$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 				$fn = 1;
 				$answer .= "\t\t\t\t\t\t<table border='0'>\n";
 				while ($ansrow = mysql_fetch_array($ansresult))
@@ -694,7 +696,12 @@
 				$answer .= "\t\t\t</table>\n";
 				break;
 				}
-		$answer .= "\n\t\t\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value=''>\n"; //for conditional mandatory questions
+		$answer .= "\n\t\t\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
+		if ($surveyformat == "S")
+			{
+		    $answer .= "on"; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
+			}
+		$answer .= "'>\n"; //for conditional mandatory questions
 		
 		$qtitle=$ia[3];
 		if (is_array($notanswered))
@@ -702,8 +709,10 @@
 			if (in_array($ia[1], $notanswered))
 				{
 				$qtitle = "</b><font color='red' size='1'>This question is mandatory.";
-				if ($ia[4] == "A" || $ia[4] == "B" || $ia[4] == "C" || $ia[4] == "M" || $ia[4] == "O" )
+				if ($ia[4] == "A" || $ia[4] == "B" || $ia[4] == "C")
 					{ $qtitle .= "<br />\nPlease answer all parts."; }
+				if ($ia[4] == "M" || $ia[4] == "P")
+					{ $qtitle .= "<br />\nPlease check at least one item.";}
 				if ($ia[4] == "R")
 					{ $qtitle .= "<br />\nPlease rank every item."; }
 				$qtitle .= "</font><b><br />\n";

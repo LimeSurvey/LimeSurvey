@@ -59,18 +59,33 @@ if ($_POST['mandatory'])
 	$mi=0;
 	foreach ($chkmands as $cm)
 		{
+		$multiname="MULTI$mfns[$mi]";
 		//echo "Checking Mandatory: $cm<br />";
 		//echo "Mandatory $cm is ".$_SESSION[$cm]."<br />\n";
 		if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
 			{
 			}
-		else
+		elseif (!$_POST[$multiname])
 			{
 			//One of the mandatory questions hasn't been asnwered
 			if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
 			$notanswered[]=$mfns[$mi];
+			}
+		else
+			{
+			$notanswered[]=$mfns[$mi];
+			}
+		if ($_POST[$multiname])
+			{
+		    if (count($notanswered) == count($chkmands)) //
+				{
+				//The number of questions not answered is equal to the number of questions
+				if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
+			    }
 			}
 		$mi++;
 		}
@@ -82,8 +97,16 @@ if ($_POST['conmandatory'])
 	$mi=0;
 	foreach ($chkcmands as $ccm)
 		{
-		$dccm="display$ccm";
-		if ($_POST[$dccm] == "on" && !$_SESSION[$ccm])
+		$multiname="MULTI$cmfns[$mi]";
+		if (!$_POST[$multiname])
+			{
+		    $dccm="display$ccm";
+			}
+		else
+			{
+			$dccm="display".$cmfns[0];
+			}
+		if ($_POST[$dccm] == "on" && (!$_SESSION[$ccm] && $_SESSION[$ccm] != "0") && !$_POST[$multiname])
 			{
 			//One of the conditional mandatory questions was on, but hasn't been answered
 			if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
@@ -91,6 +114,20 @@ if ($_POST['conmandatory'])
 			if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
 			$notanswered[]=$cmfns[$mi];
 			}
+		elseif ($_POST[$dccm] == "on" && !$_SESSION[$ccm] && $_POST[$multiname])
+			{
+			$notanswered[]=$cmfns[$mi];
+			}
+		}
+	if ($_POST[$multiname])
+		{
+	    if (count($notanswered) == count($chkcmands)) //
+			{
+			//The number of questions not answered is equal to the number of questions
+			if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
+		    }
 		}
 	}
 //DEBUG - FOLLOWING SECTION CAN GO ONCE SCRIPT IS OK
@@ -120,7 +157,7 @@ if ($_POST['conmandatory'])
 //		}
 //	}
 //echo "-->\n";
-
+//
 //echo "<!-- DEBUG: POST ARRAY\n";
 //foreach (array_keys($_POST) as $Pak)
 //	{
@@ -573,6 +610,13 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			$cqidmatches=0;
 			while ($crows=mysql_fetch_array($cresult))//Go through each condition for this current question
 				{
+				//Check if the condition is multiple type
+				$ccquery="SELECT type FROM questions WHERE qid={$crows['cqid']}";
+				$ccresult=mysql_query($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".mysql_error());
+				while($ccrows=mysql_fetch_array($ccresult))
+					{
+					$thistype=$ccrows['type'];
+					} 
 				$cqquery = "SELECT cfieldname, value, cqid FROM conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
 				$cqresult = mysql_query($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".mysql_error());
 				$amatchhasbeenfound="N";
@@ -581,8 +625,14 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 					$currentcqid=$cqrows['cqid'];
 					$conditionfieldname=$cqrows['cfieldname'];
 					if (!$cqrows['value']) {$conditionvalue="NULL";} else {$conditionvalue=$cqrows['value'];}
+					if ($thistype == "M" || $thistype == "O")
+						{
+						$conditionfieldname .= $conditionvalue;
+						$conditionvalue = "Y";
+						}
 					if (!$_SESSION[$conditionfieldname]) {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
 					if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
+					echo "!- $conditionfieldname -- ". $currentvalue . "---". $conditionvalue."-- <br />";
 					}
 				if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
 				}
