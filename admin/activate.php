@@ -67,15 +67,28 @@ if (!$_GET['ok'])
 	
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
-	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, {$dbprefix}questions.title";
-	$qorderresult=mysql_query($qorderquery) or die("Couldn't generate a list of questions in order<br />$qorderquery<br />".mysql_error());
-	$qordercount=mysql_num_rows($qorderresult);
+//	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, {$dbprefix}questions.title";
+//	$qorderresult=mysql_query($qorderquery) or die("Couldn't generate a list of questions in order<br />$qorderquery<br />".mysql_error());
+//	$qordercount=mysql_num_rows($qorderresult);
+//	$c=0;
+//	while ($qorderrow=mysql_fetch_array($qorderresult)) 
+//		{
+//		$qidorder[]=array($c, $qorderrow['qid']);
+//		$c++;
+//		}
+	//TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
+	$qorderquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND type not in ('S', 'D', 'T', 'Q')";
+	$qorderresult = mysql_query($qorderquery) or die ("$qorderquery<br />".mysql_error());
+	$qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	while ($qrow = mysql_fetch_array($qorderresult)) {$qrows[] = $qrow;} // Get table output into array
+	usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	$c=0;
-	while ($qorderrow=mysql_fetch_array($qorderresult)) 
+	foreach ($qrows as $qr) 
 		{
-		$qidorder[]=array($c, $qorderrow['qid']);
+		$qidorder[]=array($c, $qrow['qid']);
 		$c++;
 		}
+
 	//1: Get each condition's question id
 	$conquery="SELECT {$dbprefix}conditions.qid, cqid, {$dbprefix}questions.question FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY qid";
 	$conresult=mysql_query($conquery) or die("Couldn't check conditions for relative consistency<br />$conquery<br />".mysql_error());
