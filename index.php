@@ -144,7 +144,7 @@ if (!mysql_selectdb ($databasename, $connect))
 	}
 
 // NOW LETS GATHER SOME INFORMATION ABOUT THIS PARTICULAR SURVEY (This happens on every page)
-if ($sid && $move != "clearall")
+if ($sid && $move != "clearall" && $move != "completed")
 	{
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery) or die ("Couldn't get survey with sid of $sid<br />$desquery<br />".mysql_error());
