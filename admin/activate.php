@@ -137,6 +137,7 @@ else
 	while($prow=mysql_fetch_array($presult))
 		{
 		if ($prow['private'] == "N") {$createsurvey .= "  token VARCHAR(10),\n";}
+		$surveynotprivate="TRUE";
 		}
 	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid={$_GET['sid']} ORDER BY group_name, title";
 	$aresult = mysql_query($aquery);
@@ -219,8 +220,18 @@ else
 	$acquery = "UPDATE surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
 	
-	echo "Survey is now active and data entry can proceed!<br /><br />\n";
-	echo "<a href='$scriptname?sid={$_GET['sid']}'>Return to administration</a></center>\n";
+	if ($surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
+		{
+		echo "This survey is registered as NOT PRIVATE and therefore requires a tokens table\n";
+		echo "to be created.<br /><br />\n";
+		echo "<input type='submit' value='Create Tokens Table' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
+		
+		}
+	else
+		{
+		echo "Survey is now active and data entry can proceed!<br /><br />\n";
+		echo "<input type='submit' value='Return to Administration' $btstyle onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+		}
 	echo "</body>\n</html>";
 	}	
 ?>
