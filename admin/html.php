@@ -354,7 +354,9 @@ if ($qid)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'>$setfont<b>"._QL_QUESTION."</b></font></td>\n\t<td>$setfont{$qrrow['question']}</td></tr>\n";
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<b>"._QL_HELP."</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</td></tr>\n";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}";
+		if ($qrrow['type'] == "F") {$questionsummary .= " (LID: {$qrrow['lid']})";}
+		$questionsummary .="</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"))
 			{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td><font face='verdana' size='1' color='green'>WARNING: You need to Add Answers to this question <input type='image' src='./images/answers.gif' border='0' hspace='0' title='"._Q_ADDANSWERS_BT."' onClick=\"window.open('admin.php?sid=$sid&gid=$gid&qid=$qid&viewanswer=Y', '_top')\"></font></td></tr>\n";
@@ -737,8 +739,7 @@ if ($action == "copyquestion")
 			foreach ($labelsets as $lb)
 				{
 				$editquestion .= "\t\t\t<option value='{$lb[0]}'";
-				if ($eqrow['usecookie'] == "Y" && $lb[0] == "Y") {echo " selected";}
-				elseif ($eqrow['usecookie'] != "Y" && $lb[0] == "N") {echo " selected";}
+				if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
 				$editquestion .= ">{$lb[1]}</option>\n";
 				}
 			}
@@ -949,8 +950,7 @@ if ($action == "editquestion")
 			foreach ($labelsets as $lb)
 				{
 				$editquestion .= "\t\t\t<option value='{$lb[0]}'";
-				if ($eqrow['usecookie'] == "Y" && $lb[0] == "Y") {echo " selected";}
-				elseif ($eqrow['usecookie'] != "Y" && $lb[0] == "N") {echo " selected";}
+				if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
 				$editquestion .= ">{$lb[1]}</option>\n";
 				}
 			}
