@@ -38,7 +38,12 @@ require_once("config.php");
 
 sendcacheheaders();
 
-echo $htmlheader;
+if(isset($_POST['cquestions'])) {
+	echo str_replace("<body ", "<body onload='getAnswers(\"".$_POST['cquestions']."\")'", $htmlheader);
+} else {
+	echo $htmlheader;
+}
+
 echo "<table width='100%' border='0' bgcolor='#555555'>\n";
 echo "\t<tr><td align='center'><font color='white'><b>Condition Designer</b></td></tr>\n";
 echo "</table>\n";
@@ -66,9 +71,12 @@ if (isset($_POST['action']) && $_POST['action'] == "insertcondition")
 		}
 	else
 		{
-		$query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, value) VALUES "
-			   . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['canswers']}')";
-		$result = mysql_query($query) or die ("Couldn't insert new condition<br />$query<br />".mysql_error());
+		foreach ($_POST['canswers'] as $ca)
+			{
+			$query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, value) VALUES "
+				   . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '$ca')";
+			$result = mysql_query($query) or die ("Couldn't insert new condition<br />$query<br />".mysql_error());
+			}
 		}
 	}
 //DELETE ENTRY IF THIS IS DELETE
@@ -435,7 +443,11 @@ echo "\t\t<td valign='top'>\n";
 echo "\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
 foreach ($cquestions as $cqn)
 	{
-	echo "\t\t\t\t<option value='$cqn[3]'>$cqn[0]</option>\n";
+	echo "\t\t\t\t<option value='$cqn[3]'";
+	if (isset($_POST['cquestions']) && $cqn[3] == $_POST['cquestions']) {
+	    echo " selected";
+	}
+	echo ">$cqn[0]</option>\n";
 	}
 echo "\t\t\t</select>\n";
 echo "\t\t</td>\n";
@@ -447,7 +459,7 @@ echo "\t\t<td align='center'>\n";
 echo "\t\t\tEquals\n";
 echo "\t\t</td>\n";
 echo "\t\t<td valign='top'>\n";
-echo "\t\t\t<select name='canswers' id='canswers' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
+echo "\t\t\t<select name='canswers[]' multiple id='canswers' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
 
 echo "\t\t\t</select>\n";
 echo "\t</tr>\n";
