@@ -174,7 +174,7 @@ if ($qid)
 		$qrq = "SELECT * FROM answers WHERE qid=$qid";
 		$qrr = mysql_query($qrq);
 		$qct = mysql_num_rows($qrr);
-		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $grrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P")
+		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "P")
 			{
 			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Answers:</b></font></td>\n";
 			$questionsummary .= "\t<td>\n\t\t<select $slstyle name='answer' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
