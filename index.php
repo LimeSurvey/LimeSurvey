@@ -1294,7 +1294,7 @@ function buildsurveysession()
 			$fn2 = $fieldname."comment";
 			$_SESSION['insertarray'][] = $fn2;
 			}
-		elseif ($arow['type'] == "L")
+		elseif ($arow['type'] == "L" || $arow['type'] == "!")
 			{
 			$_SESSION['insertarray'][] = $fieldname;
 			if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = $fieldname."other";}

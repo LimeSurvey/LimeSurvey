@@ -441,6 +441,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					$fquest .= " ["._RANK." $faid]";
 					break;
 				case "L":
+				case "!":
 					if ($faid == "other") {
 						$fquest .= " ["._OTHER."]";
 					} 
@@ -628,6 +629,7 @@ elseif ($answers == "long")
 						}
 					break;
 				case "L": //DROPDOWN LIST
+				case "!":
 					if (substr($fieldinfo, -5, 5) == "other") 
 						{
 						echo $drow[$i];

@@ -268,6 +268,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' />"._MALE."<br />\n";
 				break;
 			case "L":  //LIST
+			case "!":
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE.":</u><br />\n";
 				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$dearesult = mysql_query($deaquery);

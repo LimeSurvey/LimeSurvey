@@ -356,7 +356,7 @@ elseif ($action == "edit")
 			{
 			if (!isset($fnrrow)) {$fnrrow=array("code"=>"", "answer"=>"");}
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-			if ($fnrow['type'] == "L" && $fnrow['other'] =="Y")
+			if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] =="Y")
 				{
 			    $fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				}
@@ -436,7 +436,8 @@ elseif ($action == "edit")
 					echo ">"._MALE."</option>\n"
 						."\t\t\t<select>\n";
 					break;
-				case "L": //LIST drop-down/radio-button list
+				case "L": //LIST drop-down
+				case "!": //List (Radio)
 					if (substr($fnames[$i][0], -5) == "other")
 						{
 						echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
@@ -1292,6 +1293,7 @@ else
 					echo "\t\t\t</table>\n";
 					break;
 				case "L": //LIST drop-down/radio-button list
+				case "!":
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = mysql_query($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";

@@ -111,7 +111,13 @@ while($row=mysql_fetch_assoc($result)){$rows[]=$row;} // while
 usort($rows, 'CompareGroupThenTitle');
 foreach ($rows as $row) 
 	{
-	$filters[]=array($row['qid'], $row['gid'], $row['type'], $row['title'], $row['group_name'], strip_tags($row['question']), $row['lid']);
+	$filters[]=array($row['qid'], 
+					 $row['gid'], 
+					 $row['type'], 
+					 $row['title'], 
+					 $row['group_name'], 
+					 strip_tags($row['question']), 
+					 $row['lid']);
 	}
 // 2: Get answers for each question
 if (!isset($currentgroup)) {$currentgroup="";}
@@ -1016,7 +1022,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 						{
 						$alist[]=array("$qrow[0]", "$qrow[1]");
 						}
-					if ($qtype == "L" && $qother == "Y") 
+					if (($qtype == "L" || $qtype == "!") && $qother == "Y") 
 						{
 						$alist[]=array("-oth-", _OTHER);
 						}

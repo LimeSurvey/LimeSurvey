@@ -226,7 +226,8 @@ else
 				case "S":  //SHORT TEXT
 					$createsurvey .= " VARCHAR(200)";
 					break;
-				case "L":  //DROPDOWN LIST
+				case "L":  //LIST (RADIO)
+				case "!":  //LIST (DROPDOWN)
 					$createsurvey .= " VARCHAR(5)";
 					if ($arow['other'] == "Y") 
 						{

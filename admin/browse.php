@@ -199,7 +199,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		else
 			{
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
-			if ($fnrow['type'] == "L" && $fnrow['other'] == "Y") 
+			if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] == "Y") 
 				{
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
 				}
@@ -315,7 +315,7 @@ elseif ($action == "all")
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 			$fquestion = $fnrow['question'];
 			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
-			if ($fnrow['type'] == "L" && $fnrow['other'] == "Y") 
+			if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] == "Y") 
 				{
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['gid']}");
 				}
