@@ -155,11 +155,7 @@ if ($questionscount > 0)
 			$acount=mysql_num_rows($aresult);
 			while ($arow=mysql_fetch_array($aresult))
 				{
-				if (get_magic_quotes_gpc() == "0")
-					{
-					$theanswer = addcslashes($arows['answer'], "'");
-					}
-				else {$theanswer=$arows['answer'];}
+				$theanswer = addcslashes($arows['answer'], "'");
 				$quicky[]=array($arow['code'], $theanswer);
 				}
 			for ($i=1; $i<=$acount; $i++)
@@ -200,11 +196,7 @@ if ($questionscount > 0)
 					$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 					while ($arows=mysql_fetch_array($aresult))
 						{
-						if (get_magic_quotes_gpc() == "0")
-							{
-							$theanswer = addcslashes($arows['answer'], "'");
-							}
-						else {$theanswer=$arows['answer'];}
+						$theanswer = addcslashes($arows['answer'], "'");
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
 						}
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
