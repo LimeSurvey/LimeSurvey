@@ -473,11 +473,20 @@ elseif ($action == "all")
 		if ($private == "N")
 			{
 			$SQL = "Select * FROM {$dbprefix}tokens_$sid WHERE token='{$dtrow['token']}'";
-			$SQLResult = mysql_query($SQL) or die(mysql_error());
-			$TokenRow = mysql_fetch_assoc($SQLResult);
-			echo "\t\t<td align='center'><font size='1'>\n"
-				."\t\t<a href='tokens.php?sid=$sid&action=edit&tid={$TokenRow['tid']}' title='Edit this token'>"
-				."{$dtrow['token']}</a>\n";
+			if ($SQLResult = mysql_query($SQL))
+				{
+				$TokenRow = mysql_fetch_assoc($SQLResult);
+				}
+			echo "\t\t<td align='center'><font size='1'>\n";
+			if (isset($TokenRow) && $TokenRow) 
+				{
+				echo "\t\t<a href='tokens.php?sid=$sid&action=edit&tid={$TokenRow['tid']}' title='Edit this token'>";
+				}
+			echo "{$dtrow['token']}";
+			if (isset($TokenRow) && $TokenRow) 
+				{
+				echo "</a>\n";
+				}
 			$i++;
 			}
 		
