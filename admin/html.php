@@ -267,7 +267,7 @@ if ($action == "editusers")
 				}
 			}
 		$usersummary .= "\t<tr bgcolor='#EEEFFF'><form action='$scriptname' method='post'>\n\t<td>\n";
-		$usersummary .= "\t\t<input type='text' $slstyle name'user'></td>\n";
+		$usersummary .= "\t\t<input type='text' $slstyle name='user'></td>\n";
 		$usersummary .= "\t<td><input type='text' $slstyle name='pass'></td>\n";
 		$usersummary .= "\t<td><input type='text' $slstyle name='level' size='2'></td>\n";
 		$usersummary .= "\t<td><input type='submit' $btstyle value='Add New User'></td></tr>\n";
