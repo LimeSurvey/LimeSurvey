@@ -43,7 +43,8 @@ if (!$_GET['ok'])
 	//  # "M" -> MULTIPLE OPTIONS
 	//	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
 	//	# "A", "B", "C" -> Various Array Types
-	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C')";
+	//  # "R" -> RANKING
+	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'R')";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
@@ -153,7 +154,7 @@ else
 	//echo "<br /><br />$aquery<br /><br />\n";
 	while ($arow=mysql_fetch_array($aresult))
 		{
-		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" &&$arow['type'] !="P")
+		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" &&$arow['type'] !="P" && $arow['type'] != "R")
 			{
 			$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 			switch($arow['type'])
@@ -188,7 +189,7 @@ else
 			{
 			//MULTI ENTRY
 			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY code";
-			$abresult=mysql_query($abquery);
+			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			while ($abrow=mysql_fetch_array($abresult))
 				{
 				$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']} VARCHAR(5),\n";
@@ -207,7 +208,17 @@ else
 					}
 				}
 			}
-		
+		elseif ($arow['type'] == "R")
+			{
+			//MULTI ENTRY
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY code";
+			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
+			$abcount=mysql_num_rows($abresult);
+			for ($i=1; $i<=$abcount; $i++)
+				{
+				$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i VARCHAR(5),\n";
+				}			
+			}
 		if ( substr($createsurvey, strlen($createsurvey)-2, 2) != ",\n") {$createsurvey .= ",\n";}
 		}
 	//$createsurvey = substr($createsurvey, 0, strlen($createsurvey)-2);
