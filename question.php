@@ -640,16 +640,16 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		while($ccrows=mysql_fetch_array($ccresult))
 			{
 			$thistype=$ccrows['type'];
-			} 
+			}
 		$cqquery = "SELECT cfieldname, value, cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
 		$cqresult = mysql_query($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".mysql_error());
 		$amatchhasbeenfound="N";
-		while ($cqrows=mysql_fetch_array($cqresult))
+		while ($cqrows=mysql_fetch_array($cqresult)) //Check each condition
 			{
 			$currentcqid=$cqrows['cqid'];
 			$conditionfieldname=$cqrows['cfieldname'];
 			if (!$cqrows['value']) {$conditionvalue="NULL";} else {$conditionvalue=$cqrows['value'];}
-			if ($thistype == "M" || $thistype == "O")
+			if ($thistype == "M" || $thistype == "P") //Adjust conditionfieldname for multiple option type questions
 				{
 				$conditionfieldname .= $conditionvalue;
 				$conditionvalue = "Y";
