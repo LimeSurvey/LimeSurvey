@@ -223,6 +223,7 @@ define(_CF_CHECKING, "Checking");
 define(_CF_TABLECREATED, "Table Created");
 define(_CF_FIELDCREATED, "Field Created");
 define(_CF_OK, "OK");
+define(_CFT_PROBLEM, "It appears as if some tables or fields are missing from your database.");
 
 //CREATE DATABASE (createdb.php)
 define(_CD_DBCREATED, "Database has been created.");
