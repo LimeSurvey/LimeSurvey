@@ -51,7 +51,8 @@ echo "Reading File...<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 	{
-	$buffer = fgets($handle, 1024); //Length parameter is required for PHP versions < 4.2.0
+	//$buffer = fgets($handle, 1024); //Length parameter is required for PHP versions < 4.2.0
+	$buffer = fgets($handle, 10240); //To allow for very long survey welcomes (up to 10k)
 	$bigarray[] = $buffer;
 	}
 fclose($handle);
@@ -147,7 +148,7 @@ $countconditions = count($conditionsarray);
 $sid = substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
 $insert = str_replace("('$sid'", "(''", $tablearray[0]);
 //$insert = substr($insert, 0, -1);
-$iresult = mysql_query($insert) or die("Insert of imported survey completely failed<br />\n$insert<br /><br />\n" . mysql_error() . "</body>\n</html>");
+$iresult = mysql_query($insert) or die("Insert of imported survey completely failed<br />\n<font size='1'>$insert</font><hr>$tablearray[0]<br /><br />\n" . mysql_error() . "</body>\n</html>");
 
 $oldsid=$sid;
 
