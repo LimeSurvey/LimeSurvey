@@ -35,6 +35,9 @@
 	#															#
 	# This language file kindly provided by Ulrika Olsson		#
 	#															#
+	# Updated for 0.98rc9 and slightly edited by				#
+	# Björn Mildh - bjorn at mildh dot se - 2004-06-30			#
+	#															#
 	#############################################################
 */
 //SINGLE WORDS
@@ -46,18 +49,18 @@ define("_TOKENS", "Behörighetskoder");
 define("_FEMALE", "Kvinna");
 define("_MALE", "Man");
 define("_NOANSWER", "Inget svar");
-define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
+define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5 (Det finns ingen förkortning av Ej tillämpbar)
 define("_OTHER", "Annat");
 define("_PLEASECHOOSE", "Välj");
 define("_ERROR_PS", "Fel");
-define("_COMPLETE", "complete");
+define("_COMPLETE", "komplett");
 //from questions.php
 define("_CONFIRMATION", "Bekräftelse");
 define("_TOKEN_PS", "Behörighetskod");
 define("_CONTINUE_PS", "Fortsätt");
-define("_INCREASE", "Increase"); //NEW WITH 0.98
-define("_SAME", "Same"); //NEW WITH 0.98
-define("_DECREASE", "Decrease"); //NEW WITH 0.98
+define("_INCREASE", "Öka"); //NEW WITH 0.98
+define("_SAME", "Samma"); //NEW WITH 0.98
+define("_DECREASE", "Minska"); //NEW WITH 0.98
 
 //BUTTONS
 define("_ACCEPT", "Acceptera");
@@ -74,12 +77,12 @@ define("_ENTERCOMMENT", "Skriv din kommentar här");
 define("_NUMERICAL_PS", "Endast nummer kan skrivas i detta fält");
 define("_CLEARALL", "Lämna och rensa enkäten");
 define("_MANDATORY", "Denna fråga är obligatorisk");
-define("_MANDATORY_PARTS", "Var god, fyll i alla delar");
+define("_MANDATORY_PARTS", "Du måste fylla i alla delar");
 define("_MANDATORY_CHECK", "Välj minst ett objekt");
 define("_MANDATORY_RANK", "Rangordna alla alternativen");
-define("_MANDATORY_POPUP", "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"); //NEW in 0.98rc4
+define("_MANDATORY_POPUP", "En eller flera obligatoriska frågor har inte besvarats. Du kan inte fortsätta innan de är besvarade"); //NEW in 0.98rc4
 define("_DATEFORMAT", "Format: ÅÅÅÅ-MM-DD");
-define("_DATEFORMATEG", "(tex: 2003-12-24 för Julafton)");
+define("_DATEFORMATEG", "(tex: 2004-12-24 för Julafton)");
 define("_REMOVEITEM", "Ta bort detta objekt");
 define("_RANK_1", "Klicka på ett objekt i listan till vänster, börja med ditt");
 define("_RANK_2", "högst rankade objekt, upprepa tills ditt lägst rankade objekt.");
@@ -88,7 +91,7 @@ define("_YOURRANKING", "Din rangordning");
 define("_RANK_3", "Klicka på saxen till höger om objektet");
 define("_RANK_4", "för att ta bort det sist elementet i listan.");
 //From INDEX.PHP
-define("_NOSID", "Du har inte angett ett identifikationsnummer för enkäten");
+define("_NOSID", "Du har inte angett ett id-nummer för enkäten");
 define("_CONTACT1", "Var god kontakta");
 define("_CONTACT2", "för ytterligare assistans");
 define("_ANSCLEAR", "Svaren rensade");
@@ -98,7 +101,7 @@ define("_CONFIRMCLEAR", "Är du säker på att du vill rensa dina svar?");
 define("_EXITCLEAR", "Lämna och rensa enkäten");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Kan inte skicka resultaten - det finns inga att skicka.");
-define("_BADSUBMIT2", "Detta fel kan uppstå om du redan har skickat dina svar och klickat på 'uppdatera' på din bläddrare. I så fall så är dina svar redan sparade.");
+define("_BADSUBMIT2", "Detta fel kan uppstå om du redan har skickat dina svar och klickat på 'uppdatera' på din webbläsare. I så fall så är dina svar redan sparade.");
 define("_NOTACTIVE1", "Dina enkätsvar är inte sparade. Denna enkät är inte aktiviverad ännu.");
 define("_CLEARRESP", "Rensa svaren");
 define("_THANKS", "Tack");
@@ -120,47 +123,46 @@ define("_NOTOKEN3", "Behörighetskoden som du angett är antingen ogiltlig eller r
 define("_NOQUESTIONS", "Denna enkät har ännu inga frågor och kan inte testas eller färdigställas.");
 define("_FURTHERINFO", "För ytterligare information kontakta");
 define("_NOTACTIVE", "Denna enkät är inte aktiv för tillfället. Du kan därför inte spara dina svar.");
-define("_SURVEYEXPIRED", "This survey is no longer available."); //NEW for 098rc5
+define("_SURVEYEXPIRED", "Denna enkät är inte längre tillgänglig."); //NEW for 098rc5
 
-define("_SURVEYCOMPLETE", "You have already completed this survey.");
+define("_SURVEYCOMPLETE", "Du har redan svarat på den här enkäten.");
 
-define("_INSTRUCTION_LIST", "Choose only one of the following"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Check any that apply"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "Välj bara en av följande"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "Välj vilka som stämmer"); //NEW for 098rc3
 
-define("_CONFIRMATION_MESSAGE1", "Survey Submitted"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE2", "A new response was entered for your survey"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE3", "Click the following link to see the individual response:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE4", "View statistics by clicking here:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE1", "Enkäten skickad"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "Ett nytt svar till din enkät har lämnats"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "Se det enskilda svaret genom att klicka här:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "Se statistik för enkäten genom att klicka här:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
-						  ."This survey is anonymous.<br />"
-						  ."The record kept of your survey responses does not contain any "
-						  ."identifying information about you unless a specific question "
-						  ."in the survey has asked for this. If you have responded to a "
-						  ."survey that used an identifying token to allow you to access "
-						  ."the survey, you can rest assured that the identifying token "
-						  ."is not kept with your responses. It is managed in a seperate "
-						  ."database, and will only be updated to indicate that you have "
-						  ."(or haven't) completed this survey. There is no way of matching "
-						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9
+define("_PRIVACY_MESSAGE", "<b><i>Hantering av personuppgifter. </i></b><br />"
+						  ."Den här enkäten Šr anonym.<br />"
+						  ."De svar på enkäten som sparas innehåller ingen information som "
+						  ."kan identifiera den som svarat utom om denna fråga specifikt ställts "
+						  ."i enkäten. Även om det krävs ett id-nummer för att kunna besvara "
+						  ."enkäten sparas inte denna personliga information tillsammans med "
+						  ."enkätsvaret. Id-numret används endast för att avgöra om du har "
+						  ."svarat (eller inte svarat) på enkäten och den informationen sparas "
+						  ."separat. Det finns inget sätt att avgöra vilket id-nummer som hör "
+						  ."ihop med ett visst svar i den här enkäten."); //New for 0.98rc9
 
-define("_THEREAREXQUESTIONS", "There are {NUMBEROFQUESTIONS} questions in this survey."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
-define("_THEREAREXQUESTIONS_SINGLE", "There is 1 question in this survey."); //New for 0.98rc9 - singular version of above
+define("_THEREAREXQUESTIONS", "Den här undersökningen innehåller {NUMBEROFQUESTIONS} frågor."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
+define("_THEREAREXQUESTIONS_SINGLE", "Det finns 1 fråga i enkäten."); //New for 0.98rc9 - singular version of above
 
-define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
-define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
-						."Enter your details below, and an email containing the link to "
-						."participate in this survey will be sent immediately."); //NEW for 0.98rc9
-define ("_RG_EMAIL", "Email Address"); //NEW for 0.98rc9
-define ("_RG_FIRSTNAME", "First Name"); //NEW for 0.98rc9
-define ("_RG_LASTNAME", "Last Name"); //NEW for 0.98rc9
-define ("_RG_INVALIDEMAIL", "The email you used is not valid. Please try again.");//NEW for 0.98rc9
-define ("_RG_USEDEMAIL", "The email you used has already been registered.");//NEW for 0.98rc9
-define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registration Confirmation");//NEW for 0.98rc9
-define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in this survey.<br /><br />\n"
-								   ."An email has been sent to the address you provided with access details "
-								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+define ("_RG_REGISTER1", "Du måste vara registrerad för att genomföra den här enkäten"); //NEW for 0.98rc9
+define ("_RG_REGISTER2", "Du måste registrera dig innan du fyller i den här enkäten.<br />\n"
+						."Fyll i dina uppgifter nedan och så skickas en länk till "
+						."enkäten till dig med e-post genast."); //NEW for 0.98rc9
+define ("_RG_EMAIL", "E-postadress"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "Förnamn"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "Efternamn"); //NEW for 0.98rc9
+define ("_RG_INVALIDEMAIL", "E-postadressen du angav är inte giltig. Var vänlig försök igen.");//NEW for 0.98rc9
+define ("_RG_USEDEMAIL", "Din e-postadress har redan anmälts.");//NEW for 0.98rc9
+define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Bekräftelse på registrering");//NEW for 0.98rc9
+define ("_RG_REGISTRATIONCOMPLETE", "Tack för att du registerat dig för att genomföra den här enkäten.<br /><br />\n"
+								   ."Ett e-postmeddelande med dina uppgifter har sänts till den adress du angav."
+								   ."Följ den bifogade länken i e-postmeddelandet för att fortsätta.<br /><br />\n"
+								   ."Enkät-ansvarig {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
 define("_SM_COMPLETED", "<b>Thank You<br /><br />"
 					   ."You have completed answering the questions in this survey.</b><br /><br />"
