@@ -537,7 +537,18 @@ if ($action == "addanswer")
 	$saquery="SELECT sortorder FROM answers WHERE qid=$qid ORDER BY sortorder desc LIMIT 1";
 	$saresult=mysql_query($saquery) or die ("Couldn't get last sortorder<br />$saquery<br />".mysql_error());
 	while ($sarow=mysql_fetch_array($saresult)) {$lastsa=$sarow['sortorder'];}
-	if ($lastsa) {$newsa=chr(ord(strtoupper($lastsa))+1);}
+	if ($lastsa) 
+		{
+		if (strlen($lastsa)>1) 
+			{
+			$newsa=substr($lastsa, 0, strlen($lastsa)-1).chr(ord(strtoupper(substr($lastsa, -1)))+1);
+			$lastsa=substr($lastsa, -1);
+			} 
+		else
+			{
+			$newsa=chr(ord(strtoupper($lastsa))+1);
+			}
+		}
 	else {$newsa=1;}
 	
 	$newanswer = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
