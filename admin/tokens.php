@@ -923,7 +923,7 @@ if ($action == "upload")
 	$the_file_name = $_FILES['the_file']['name'];
 	$the_file = $_FILES['the_file']['tmp_name'];
 	$the_full_file_path = $homedir."/".$the_file_name;
-	if (!@copy($the_file, $the_path . "/" . $the_file_name)) 
+	if (!@move_uploaded_file($the_file, $the_full_file_path))
 		{
 		$errormessage="<b><font color='red'>"._ERROR.":</font> "._TC_UPLOADFAIL."</b>\n";
 		form($errormessage);
