@@ -33,7 +33,7 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-if ($action == "checksettings")
+if ($action == "checksettings" || $action == "changelang")
 	{
 	//GET NUMBER OF SURVEYS
 	$query = "SELECT sid FROM {$dbprefix}surveys";
@@ -82,6 +82,13 @@ if ($action == "checksettings")
 	$cssummary .= "\t<tr>\n";
 	$cssummary .= "\t\t<td align='right'>$setfont\n";
 	$cssummary .= "\t\t\t<b>"._PS_DEFLANG.":</b></font>\n";
+	$cssummary .= "\t\t</td><td>$setfont\n";
+	$cssummary .= "\t\t\t$realdefaultlang\n";
+	$cssummary .= "\t\t</td>\n";
+	$cssummary .= "\t</tr>\n";
+	$cssummary .= "\t<tr>\n";
+	$cssummary .= "\t\t<td align='right'>$setfont\n";
+	$cssummary .= "\t\t\t<b>"._PS_CURLANG.":</b></font>\n";
 	$cssummary .= "\t\t</td><form action='$scriptname'><td>$setfont\n";
 	$cssummary .= "\t\t\t<select name='lang' $slstyle onChange='form.submit()'>\n";
 	foreach (getadminlanguages() as $language)
@@ -93,13 +100,6 @@ if ($action == "checksettings")
 	$cssummary .= "\t\t\t</select>\n";
 	$cssummary .= "\t\t\t<input type='hidden' name='action' value='changelang'>\n";
 	$cssummary .= "\t\t</td></form>\n";
-	$cssummary .= "\t</tr>\n";
-	$cssummary .= "\t<tr>\n";
-	$cssummary .= "\t\t<td align='right'>$setfont\n";
-	$cssummary .= "\t\t\t<b>"._PS_CURLANG.":</b></font>\n";
-	$cssummary .= "\t\t</td><td>$setfont\n";
-	$cssummary .= "\t\t\t$defaultlang\n";
-	$cssummary .= "\t\t</td>\n";
 	$cssummary .= "\t</tr>\n";
 	$cssummary .= "\t<tr>\n";
 	$cssummary .= "\t\t<td align='right'>$setfont\n";
@@ -144,7 +144,6 @@ if ($action == "checksettings")
 	$cssummary .= "\t\t</td>\n";
 	$cssummary .= "\t</tr>\n";
 	$cssummary .= "</table>\n";
-	
 	$cssummary .= "<table><tr><td height='1'></td></tr></table>\n";
 	}
 
