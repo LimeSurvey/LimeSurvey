@@ -59,6 +59,9 @@ if (!$gid)
 	echo "</body></html>\n";
 	exit;
 	}
+
+$fn = "group_$gid.sql";
+
 $dumphead = "# SURVEYOR GROUP DUMP\n";
 $dumphead .= "#\n# This is a dumped group from the PHPSurveyor Script\n";
 $dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
@@ -129,8 +132,6 @@ $lsdump = BuildOutput($lsquery);
 //5: Labels Table
 $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type='F' AND gid=$gid";
 $ldump = BuildOutput($lquery);
-
-$fn = "group_$gid.sql";
 
                         // HTTP/1.0
 echo "#<pre>\n";
