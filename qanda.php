@@ -116,12 +116,15 @@ switch ($ia[4])
 		$inputnames[]=$ia[1];
 		break;
 	case "L": //LIST drop-down/radio-button list
+		if (isset($defexists)) {unset ($defexists);}
+		$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
+		$result = mysql_query($query);
+		while($row = mysql_fetch_array($result)) {$other = $row['other'];}
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
 		$anscount = mysql_num_rows($ansresult);
-		if ($dropdowns == "L" || !$dropdowns || $anscount > $dropdownthreshold)
+		if (($dropdowns == "L" || !$dropdowns || $anscount > $dropdownthreshold) && $other != "Y")
 			{
-			$answer .= "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n";
 			while ($ansrow = mysql_fetch_array($ansresult))
 				{
 				$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
@@ -132,11 +135,12 @@ switch ($ia[4])
 				elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
 				$answer .= ">{$ansrow['answer']}</option>\n";
 				}
-			if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer .= "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n";}
+			if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
 			if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
 			$answer .= "\t\t\t\t\t</select>\n";
+			$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n".$answer;
 			}
-		elseif ($dropdowns == "R")
+		else
 			{
 			$answer .= "\n\t\t\t\t\t<table class='question'>\n"
 					 . "\t\t\t\t\t\t<tr>\n"
@@ -151,15 +155,29 @@ switch ($ia[4])
 				elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 				}
-			if (((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && !$defexists)) && $ia[6] != "Y") 
+			if (isset($other) && $other=="Y") 
 				{
-				$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='$ia[1] ' value=' ' checked onClick='checkconditions(this.value, this.name, this.type)' />"
-						 . "<label for='$ia[1] ' class='answertext'>"._NOANSWER."</label>\n";
+			    $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
+				if ($_SESSION[$ia[1]] == "-oth-") 
+					{
+				    $answer .= " checked";
+					}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>"._OTHER."</label>\n";
+				$answer .= "<input type='text' class='text' id='$ia[1]othertext' name='$ia[1]other' size='20' ";
+				$thisfieldname=$ia[1]."other";
+				if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".$_SESSION[$thisfieldname]."' ";}
+				$answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"><br />\n";
+				$inputnames[]=$thisfieldname;
 				}
-			elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y") 
+			if ($ia[6] != "Y")
 				{
-				$answer .= "\t\t\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' />"
-						 . _NOANSWER."\n";
+				$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='$ia[1]NANS' value=' ' ";
+				if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || !$_SESSION[$ia[1]]))
+					{
+					$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+					}
+				$answer .=" onClick='checkconditions(this.value, this.name, this.type)' />"
+						 . "<label for='$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
 				}
 			$answer .= "\t\t\t\t\t\t\t</td>\n"
 					 . "\t\t\t\t\t\t</tr>\n"
