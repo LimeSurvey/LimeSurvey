@@ -215,20 +215,20 @@ if ($action == "id") // Looking at a SINGLE entry
 		."\t\t<td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		. _VIEWRESPONSE.":</b> $id</td></tr>\n"
 		."\t<tr bgcolor='#999999'><td colspan='2'>\n"
-		."\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
-		."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
-		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/edit.gif' title='"
+		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
+		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
+		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='$imagefiles/edit.gif' title='"
 		. _BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n"
 		."\t\t\t<a href='dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable'>"
-		."<img align='left' hspace='0' border='0' src='./images/delete.gif' title='"
+		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.gif' title='"
 		. _BR_DELRESPONSE."' onClick=\"return confirm('"._DR_RUSURE."')\" /></a>\n"
-		."\t\t\t<img src='./images/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='-'>\n"
-		."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
-		."\t\t\t<img src='./images/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='-'>\n"
-		."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='./images/databack.gif' title='"
+		."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='-'>\n"
+		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
+		."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='-'>\n"
+		."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
 		. _D_BACK."' onClick=\"window.open('browse.php?action=id&id=$last&sid=$sid&surveytable=$surveytable','_top')\" />\n"
-		."\t\t\t<img src='./images/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
-		."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"
+		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
+		."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
 		. _D_FORWARD."' onClick=\"window.open('browse.php?action=id&id=$next&sid=$sid&surveytable=$surveytable','_top')\" />\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -260,7 +260,7 @@ if ($action == "id") // Looking at a SINGLE entry
 elseif ($action == "all")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</font></td></tr>\n";
+		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n";
 	
 	if (!isset($_POST['sql']))
 		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
@@ -366,7 +366,7 @@ elseif ($action == "all")
 	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	else {$fnwidth = (($fncount-1)*100); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	$tableheader .= "\t<tr bgcolor='#555555' valign='top'>\n"
-				  . "\t\t<td bgcolor='#333333'><font size='1' color='white' width='$cellwidth'><b>id</b></td>\n";
+				  . "\t\t<td bgcolor='#333333' width='$cellwidth'><font size='1' color='white' face='verdana'><b>id</b></font></td>\n";
 	foreach ($fnames as $fn)
 		{
 		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "#555555";}
@@ -376,9 +376,9 @@ elseif ($action == "all")
 			if ($gbc == "#555555") {$gbc = "#666666";}
 			else {$gbc = "#555555";}
 			}
-		$tableheader .= "\t\t<td bgcolor='$gbc'><font size='1' color='white' width='$cellwidth'><b>"
+		$tableheader .= "\t\t<td bgcolor='$gbc' width='$cellwidth'><font size='1' color='white' face='verdana'><b>"
 					  . "$fn[2]"
-					  . "</b></td>\n"; 
+					  . "</b></font></td>\n"; 
 		}
 	$tableheader .= "\t</tr>\n\n";
 	
@@ -425,24 +425,24 @@ elseif ($action == "all")
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		. _VIEWCONTROL.":</b></td></tr>\n"
+		. _VIEWCONTROL.":</b></font></td></tr>\n"
 		."\t<tr bgcolor='#999999'><td align='left'>\n"
-		."\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
-		."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
-		."\t\t\t<input type='image' name='DataBegin' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"
+		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
+		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
+		."\t\t\t<input type='image' name='DataBegin' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
 		. _D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=0&limit=$limit','_top')\" />\n"
-		."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='./images/databack.gif' title='"
+		."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
 		. _D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$last&limit=$limit','_top')\" />\n"
-		."\t\t\t<img src='./images/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
-		."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"
+		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
+		."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
 		. _D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$next&limit=$limit','_top')\" />\n"
-		."\t\t\t<input type='image' name='DataEnd' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"
+		."\t\t\t<input type='image' name='DataEnd' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
 		. _D_END."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=$end&limit=$limit','_top')\" />\n"
-		."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
+		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
 		."\t\t</td>\n"
 		."\t\t<form action='browse.php'>\n"
 		."\t\t<td align='right'><font size='1' face='verdana'>\n"
-		."\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='-'>\n"
+		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='-'>\n"
 		."\t\t\t"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$dtcount2' name='limit'>\n"
 		."\t\t\t"._BR_STARTING."<input type='text' $slstyle size='4' value='$start' name='start'>\n"
 		."\t\t\t<input type='submit' value='"._BR_SHOW."' $btstyle>\n"
@@ -465,9 +465,9 @@ elseif ($action == "all")
 			else {$bgcc = "#EEEEEE";}
 			}
 		echo "\t<tr bgcolor='$bgcc' valign='top'>\n"
-			."\t\t<td align='center'><font size='1'>\n"
+			."\t\t<td align='center'><font face='verdana' size='1'>\n"
 			."\t\t\t<a href='browse.php?sid=$sid&action=id&id={$dtrow['id']}' title='View this record'>"
-			."{$dtrow['id']}</a>\n";
+			."{$dtrow['id']}</a></font></td>\n";
 		
 		$i = 0;
 		if ($private == "N")
@@ -483,9 +483,9 @@ elseif ($action == "all")
 		
 		for ($i; $i<$fncount; $i++)
 			{
-			echo "\t\t<td align='center'><font size='1'>"
+			echo "\t\t<td align='center'><font size='1' face='verdana'>"
 				. htmlspecialchars($dtrow[$fnames[$i][0]])
-				."</td>\n";
+				."</font></td>\n";
 			}
 		echo "\t</tr>\n";
 		}
@@ -494,19 +494,18 @@ elseif ($action == "all")
 else
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</td></tr>\n"
+		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
 		. $surveyoptions;
+	echo "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";
 	$gnresult = mysql_query($gnquery);
 	while ($gnrow = mysql_fetch_row($gnresult))
 		{
 		echo "<table width='100%' border='0'>\n"
-			."\t<tr><td align='center'>$setfont$gnrow[0] entries in this database</td></tr>\n"
+			."\t<tr><td align='center'>$setfont$gnrow[0] responses in this database</font></td></tr>\n"
 			."</table>\n";
 		}
 	}
 echo htmlfooter("instructions.html#browse", "Using PHPSurveyors Browse Function");
 
-echo "</td></tr></table>\n"
-	."</body>\n</html>\n";
 ?>
