@@ -36,8 +36,7 @@
 
 # TOKENS FILE
 
-//Create global $action variable
-$THISOS="";
+$THISOS=""; //SET TO "solaris" if you are using solaris and experiencing the random number bug
 
 include("config.php");
 if (!isset($action)) {$action=returnglobal('action');}
@@ -744,6 +743,7 @@ if (returnglobal('action') == "remind")
 				$sendmessage = str_replace("{FIRSTNAME}", $emrow['firstname'], $sendmessage);
 				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
 				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
+				$sendmessage = str_replace("\r", "", $sendmessage);
 				mail($to, $_POST['subject'], $sendmessage, $headers);
 				echo "\t\t\t({$emrow['tid']})["._TC_REMINDSENTTO." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				$lasttid = $emrow['tid'];
