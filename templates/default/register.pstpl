@@ -1,0 +1,7 @@
+<br />
+<center>
+<font color='red'><b>{REGISTERERROR}</b></font>
+<p><b>{REGISTERMESSAGE1}</b></p>
+<p>{REGISTERMESSAGE2}</p>
+{REGISTERFORM}<br />
+</center>
