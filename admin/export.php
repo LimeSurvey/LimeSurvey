@@ -34,66 +34,80 @@
 	#############################################################	
 */
 
-$sid = $_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
-$style = $_GET['style']; if (!$style) {$style=$_POST['style'];}
-$answers = $_GET['answers']; if (!$answers) {$answers=$_POST['answers'];}
-$type = $_GET['type']; if (!$type) {$type=$_POST['type'];}
+include("config.php");
 
+if (!isset($sid)) {$sid=returnglobal('sid');}
+if (!isset($style)) {$style=returnglobal('style');}
+if (!isset($answers)) {$answers=returnglobal('answers');}
+if (!isset($type)) {$type=returnglobal('type');}
 
 if (!$style)
 	{
-	include ("config.php");
 	sendcacheheaders();
-	echo "$htmlheader";
-	echo "<br />\n";
-	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._EXPORTRESULTS;
-	if ($_POST['sql']) {echo " ("._EX_FROMSTATS.")";}
-	echo "</b></td></tr>\n";
-	echo "\t<form action='export.php' method='post'>\n";
-	echo "\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"._EX_HEADINGS."</b></font></td></tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td>\n";
-	echo "\t\t\t$setfont<input type='radio' checked name='style' value='abrev'><font size='1'>"._EX_HEAD_ABBREV."<br />\n";
-	echo "\t\t\t<input type='radio' name='style' value='full'><font size='1'>"._EX_HEAD_FULL."\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"._EX_ANSWERS."</b></font></td></tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td>\n";
-	echo "\t\t\t$setfont<input type='radio' checked name='answers' value='short'><font size='1'>"._EX_ANS_ABBREV."<br />\n";
-	echo "\t\t\t<input type='radio' name='answers' value='long'><font size='1'>"._EX_ANS_FULL."\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"._EX_FORMAT."</b></font></td></tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td>\n";
-	echo "\t\t\t$setfont<input type='radio' checked name='type' value='doc'><font size='1'>"._EX_FORM_WORD."<br />\n";
-	echo "\t\t\t<input type='radio' name='type' value='xls' checked><font size='1'>"._EX_FORM_EXCEL."<br />\n";
-	echo "\t\t\t<input type='radio' name='type' value='csv'><font size='1'>"._EX_FORM_CSV."\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "\t<tr><td height='2' bgcolor='silver'></td></tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td align='center' bgcolor='silver'>\n";
-	echo "\t\t\t$setfont<input $btstyle type='submit' value='"._EX_EXPORTDATA."'>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "\t<input type='hidden' name='sid' value='$sid'>\n";
-	if ($_POST['sql']) 
+	echo $htmlheader
+		."<br />\n"
+		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
+		._EXPORTRESULTS;
+	if (isset($_POST['sql'])) {echo " ("._EX_FROMSTATS.")";}
+	echo "</b></td></tr>\n"
+		."\t<form action='export.php' method='post'>\n"
+		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"._EX_HEADINGS."</b></font></td></tr>\n"
+		."\t<tr>\n"
+		."\t\t<td>\n"
+		."\t\t\t$setfont<input type='radio' checked name='style' value='abrev'><font size='1'>"
+		._EX_HEAD_ABBREV."<br />\n"
+		."\t\t\t<input type='radio' name='style' value='full'><font size='1'>"
+		._EX_HEAD_FULL."\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"
+		._EX_ANSWERS."</b></font></td></tr>\n"
+		."\t<tr>\n"
+		."\t\t<td>\n"
+		."\t\t\t$setfont<input type='radio' checked name='answers' value='short'><font size='1'>"
+		._EX_ANS_ABBREV."<br />\n"
+		."\t\t\t<input type='radio' name='answers' value='long'><font size='1'>"
+		._EX_ANS_FULL."\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"
+		._EX_FORMAT."</b></font></td></tr>\n"
+		."\t<tr>\n"
+		."\t\t<td>\n"
+		."\t\t\t$setfont<input type='radio' checked name='type' value='doc'><font size='1'>"
+		._EX_FORM_WORD."<br />\n"
+		."\t\t\t<input type='radio' name='type' value='xls' checked><font size='1'>"
+		._EX_FORM_EXCEL."<br />\n"
+		."\t\t\t<input type='radio' name='type' value='csv'><font size='1'>"
+		._EX_FORM_CSV."\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
+		."\t<tr>\n"
+		."\t\t<td align='center' bgcolor='silver'>\n"
+		."\t\t\t$setfont<input $btstyle type='submit' value='"
+		._EX_EXPORTDATA."'>\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."\t<input type='hidden' name='sid' value='$sid'>\n";
+	if (isset($_POST['sql'])) 
 		{
-		echo "\t<input type='hidden' name='sql' value=\"".stripcslashes($_POST['sql'])."\">\n";
+		echo "\t<input type='hidden' name='sql' value=\""
+			.stripcslashes($_POST['sql'])
+			."\">\n";
 		}
-	echo "\t</form>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td align=\"center\" bgcolor='silver'>\n";
-	echo "\t\t\t<input $btstyle type='submit' value='"._CLOSEWIN."' onClick=\"window.close()\">\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "</table>\n";
-	echo "<br />\n";
-	echo htmlfooter("instructions.html", "General PHPSurveyor Instructions");
-	echo "</body>\n</html>";
+	echo "\t</form>\n"
+		."\t<tr>\n"
+		."\t\t<td align=\"center\" bgcolor='silver'>\n"
+		."\t\t\t<input $btstyle type='submit' value='"
+		._CLOSEWIN."' onClick=\"window.close()\">\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."</table>\n"
+		."<br />\n"
+		.htmlfooter("instructions.html", "General PHPSurveyor Instructions")
+		."</body>\n</html>";
 	exit;
 	}
 
@@ -112,6 +126,7 @@ elseif ($type == "xls")
 elseif ($type == "csv") 
 	{
 	header("Content-Disposition: attachment; filename=survey.csv");
+	header("Content-Type: application/download");
 	$s=",";
 	}
 else 
@@ -124,8 +139,6 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
-
-include ("config.php");
 
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
@@ -151,6 +164,7 @@ $surveytable = "{$dbprefix}survey_$sid";
 $dquery = "SELECT * FROM $surveytable ORDER BY id LIMIT 1";
 $dresult = mysql_query($dquery);
 $fieldcount = mysql_num_fields($dresult);
+$firstline="";
 for ($i=0; $i<$fieldcount; $i++)
 	{
 	$fieldinfo=mysql_field_name($dresult, $i);
@@ -208,7 +222,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			$firstline = str_replace("\r", "", $firstline);
 			if ($type == "csv") {$firstline .= "\"$qname";}
 			else {$firstline .= "$qname";}
-			if ($faid) {$firstline .= " [{$faid}]"; $faid="";}
+			if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
 			if ($type == "csv") {$firstline .= "\"";}
 			$firstline .= "$s";
 			}
@@ -338,7 +352,7 @@ echo $firstline;
 
 //Now dump the data
 
-if ($_POST['sql']) //this applies if export has been called from the statistics package
+if (isset($_POST['sql'])) //this applies if export has been called from the statistics package
 	{
 	if ($_POST['sql'] == "NULL") {$dquery = "SELECT * FROM $surveytable ORDER BY id";}
 	else {$dquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
