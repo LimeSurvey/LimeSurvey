@@ -136,6 +136,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
 				{
 			    //Automatically redirect the page to the "url" setting for the survey
+				session_write_close();
 				header("Location: {$thissurvey['url']}");
 			    }
 

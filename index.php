@@ -278,7 +278,8 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	session_destroy();
 	sendcacheheaders();
 	if (isset($_GET['redirect'])) {
-	    header("location: {$_GET['redirect']}");
+	    session_write_close();
+	    header("Location: {$_GET['redirect']}");
 	}
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
