@@ -444,14 +444,15 @@ for ($i=0; $i<$fieldcount; $i++)
 				$faid = substr($oldfqid, strlen($fqid), strlen($oldfqid)-strlen($fqid));
 				$oldfqid="";
 				}
-			$qq = "SELECT question, type FROM {$dbprefix}questions WHERE qid=$fqid"; //get the question
+			$qq = "SELECT question, type, other FROM {$dbprefix}questions WHERE qid=$fqid"; //get the question
 			$qr = mysql_query($qq) or die ("ERROR:<br />".$qq."<br />".mysql_error());
 			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 				{
 				$ftype = $qrow['type']; //get the question type
 				$fquest = $qrow['question'];
+				$fother = $qrow['other'];
 				}
-			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H" && $ftype != "R") 
+			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
 				{ //If its a single - answer only type question
 				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 					{
@@ -459,6 +460,32 @@ for ($i=0; $i<$fieldcount; $i++)
 					}
 				$legitqs=$nlegitqs;
 				unset($nlegitqs);
+				}
+			elseif ($ftype == "L" && $fother != "Y") 
+				{
+				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
+					{
+					if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+					}
+				$legitqs=$nlegitqs;
+				unset($nlegitqs);
+				}
+			elseif ($ftype == "L" && $fother == "Y")
+				{
+				$thisacount=2;
+				if (!isset($usedanswers)) {$usedanswers=0;}
+				$usedanswers++;
+				if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
+					{
+				    foreach ($legitqs as $lgqs)
+						{
+						if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+						}
+					$legitqs=$nlegitqs;
+					unset($nlegitqs);
+					unset($thisacount);
+					unset($usedanswers);
+					}
 				}
 			else
 				{
@@ -492,6 +519,11 @@ for ($i=0; $i<$fieldcount; $i++)
 					//	$fquest .= " [".$lrow['answer']."]";
 					//	}
 					$fquest .= " ["._RANK." $faid]";
+					break;
+				case "L":
+					if ($faid == "other") {
+						$fquest .= " ["._OTHER."]";
+					}
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
 					if ($faid == "comment")
@@ -677,12 +709,12 @@ elseif ($answers == "long")
 					{
 					$fqid = substr($fqid, 0, strlen($fqid)-1);
 					}
-				$qq = "SELECT type, lid FROM {$dbprefix}questions WHERE qid=$fqid";
+				$qq = "SELECT type, lid, other FROM {$dbprefix}questions WHERE qid=$fqid";
 				$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
 				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
-					{$ftype = $qrow['type']; $lid=$qrow['lid'];}
+					{$ftype = $qrow['type']; $lid=$qrow['lid']; $fother=$qrow['other'];}
 				}
-			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H" && $ftype != "R") 
+			if ($ftype != "M" && $ftype != "P" && $ftype != "A" && $ftype != "B" && $ftype != "C" && $ftype != "F" && $ftype != "H" && $ftype != "R" && $ftype != "L" && $ftype != "Q") 
 				{ //If its a single - answer only type question
 				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
 					{
@@ -690,6 +722,32 @@ elseif ($answers == "long")
 					}
 				$legitqs=$nlegitqs;
 				unset($nlegitqs);
+				}
+			elseif ($ftype == "L" && $fother != "Y") 
+				{
+				foreach ($legitqs as $lgqs) //Chop the current FQID out of the array so we don't double up
+					{
+					if($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+					}
+				$legitqs=$nlegitqs;
+				unset($nlegitqs);
+				}
+			elseif ($ftype == "L" && $fother == "Y")
+				{
+				$thisacount=2;
+				if (!isset($usedanswers)) {$usedanswers=0;}
+				$usedanswers++;
+				if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
+					{
+				    foreach ($legitqs as $lgqs)
+						{
+						if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
+						}
+					$legitqs=$nlegitqs;
+					unset($nlegitqs);
+					unset($thisacount);
+					unset($usedanswers);
+					}
 				}
 			else
 				{
@@ -728,12 +786,26 @@ elseif ($answers == "long")
 						}
 					break;
 				case "L": //DROPDOWN LIST
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code ='".mysql_escape_string($drow[$i])."'";
-					$lr = mysql_query($lq) or die($lq."<br />ERROR:<br />".mysql_error());
-					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+					if (substr($oldfqid, -5, 5) == "other") 
 						{
-						//if ($lrow['code'] == $drow[$i]) {echo $lrow['answer'];} 
-						echo $lrow['answer'];
+						echo $drow[$i];
+						}
+					else
+						{
+						if ($drow[$i] == "-oth-") 
+							{
+						    echo _OTHER;
+							}
+						else
+							{
+							$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code ='".mysql_escape_string($drow[$i])."'";
+							$lr = mysql_query($lq) or die($lq."<br />ERROR:<br />".mysql_error());
+							while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+								{
+								//if ($lrow['code'] == $drow[$i]) {echo $lrow['answer'];} 
+								echo $lrow['answer'];
+								}
+							}
 						}
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
