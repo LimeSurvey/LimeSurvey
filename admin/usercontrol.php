@@ -35,6 +35,7 @@
 */
 
 if (!$homedir) {exit;}
+if ($accesscontrol <> 1) {exit;}
 
 if (!file_exists("$homedir/.htaccess"))
 	{
