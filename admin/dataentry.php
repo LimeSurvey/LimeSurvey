@@ -118,16 +118,16 @@ if ($action == "insert")
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$i";
 				$col_name .= "$fieldname, \n";		
 				if (get_magic_quotes_gpc())
-					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
+					{$insertqr .= "'" . $_POST["d$fieldname"] . "', \n";}
 				else
 					{
 					if (phpversion() >= "4.3.0")
 						{
-						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+						$insertqr .= "'" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
 						}
 					else
 						{
-						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+						$insertqr .= "'" . mysql_escape_string($_POST["d$fieldname"]) . "', \n";
 						}
 					}
 				}
@@ -428,7 +428,7 @@ elseif ($action == "edit")
 					echo "\t\t\t\t\t\t\$b=i;\n";
 					echo "\t\t\t\t\t\t\$b += '';\n";	
 					echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$hiddenname=\"$myfname\"+\$b;\n";
+					echo "\t\t\t\t\t\t\$hiddenname=\"d$myfname\"+\$b;\n";
 					echo "\t\t\t\t\t\t\$cutname=\"CUT\"+i;\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
 					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
@@ -456,13 +456,13 @@ elseif ($action == "edit")
 					echo "\t\t\t\t\tif (cutindex > 1)\n";
 					echo "\t\t\t\t\t\t{\n";
 					echo "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
-					echo "\t\t\t\t\t\t\$cut2name=\"$myfname\"+(cutindex);\n";
+					echo "\t\t\t\t\t\t\$cut2name=\"d$myfname\"+(cutindex);\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\telse\n";
 					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$cut2name=\"$myfname\"+(cutindex);\n";
+					echo "\t\t\t\t\t\t\$cut2name=\"d$myfname\"+(cutindex);\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
@@ -499,7 +499,7 @@ elseif ($action == "edit")
 							$ranklist .= "'";
 							}
 						$ranklist .= " onFocus=\"this.blur()\">\n";
-						$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$myfname$j' value='";
+						$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='d$myfname$j' value='";
 						$chosen[]=""; //create array
 						if ($currentvalues[$k]) 
 							{
@@ -512,7 +512,7 @@ elseif ($action == "edit")
 							{
 							$ranklist .= "style='display:none'";
 							}
-						$ranklist .= " id='cut$j' name='cut$j' onClick=\"deletethis(RANK$j.value, '$myfname$j.value', RANK$j.name, this.name)\"><br />\n\n";
+						$ranklist .= " id='cut$j' name='cut$j' onClick=\"deletethis(RANK$j.value, d$myfname$j.value, RANK$j.name, this.name)\"><br />\n\n";
 						}
 					
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
@@ -773,16 +773,16 @@ elseif ($action == "update")
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$x";
 				if (get_magic_quotes_gpc())
-					{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
+					{$updateqr .= "$fieldname = '" . $_POST["d$fieldname"] . "', \n";}
 				else
 					{
 					if (phpversion() >= "4.3.0")
 						{
-						$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+						$updateqr .= "$fieldname = '" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
 						}
 					else
 						{
-						$updateqr .= "$fieldname = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+						$updateqr .= "$fieldname = '" . mysql_escape_string($_POST["d$fieldname"]) . "', \n";
 						}
 					}
 				}
@@ -1006,7 +1006,7 @@ else
 					echo "\t\t\t\t\t\t\$b=i;\n";
 					echo "\t\t\t\t\t\t\$b += '';\n";
 					echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
-					echo "\t\t\t\t\t\t\$hiddenname=\"$fieldname\"+\$b;\n";
+					echo "\t\t\t\t\t\t\$hiddenname=\"d$fieldname\"+\$b;\n";
 					echo "\t\t\t\t\t\t\$cutname=\"CUT\"+i;\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
 					echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
@@ -1034,13 +1034,13 @@ else
 					echo "\t\t\t\t\tif (cutindex > 1)\n";
 					echo "\t\t\t\t\t\t{\n";
 					echo "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
-					echo "\t\t\t\t\t\t\$cut2name=\"$fieldname\"+(cutindex);\n";
+					echo "\t\t\t\t\t\t\$cut2name=\"d$fieldname\"+(cutindex);\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\telse\n";
 					echo "\t\t\t\t\t\t{\n";
-					echo "\t\t\t\t\t\t\$cut2name=\"$fieldname\"+(cutindex);\n";
+					echo "\t\t\t\t\t\t\$cut2name=\"d$fieldname\"+(cutindex);\n";
 					echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
 					echo "\t\t\t\t\t\t}\n";
 					echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
@@ -1083,7 +1083,7 @@ else
 							$ranklist .= "'";
 							}
 						$ranklist .= " onFocus=\"this.blur()\">\n";
-						$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$fieldname$i' value='";
+						$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='d$fieldname$i' value='";
 						$chosen[]=""; //create array
 						if ($_SESSION[$myfname]) 
 							{
@@ -1097,7 +1097,7 @@ else
 							$ranklist .= "style='display:none'";
 							}
 						$mfn=$fieldname.$i;
-						$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(RANK$i.value, '$mfn.value', RANK$i.name, this.name)\"><br />\n\n";
+						$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(RANK$i.value, d$fieldname$i.value, RANK$i.name, this.name)\"><br />\n\n";
 						}
 					
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
