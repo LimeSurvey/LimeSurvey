@@ -655,7 +655,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 	else
 		{
 		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
-		if ($move == " "._NEXT." >> ")
+		if (returnglobal('move') == " "._NEXT." >> ")
 			{
 			$currentquestion++;
 			$ia=$_SESSION['fieldarray'][$currentquestion];
@@ -679,7 +679,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 				exit;
 				}
 			}
-		elseif ($move == " << "._PREV." ")
+		elseif (returnglobal('move') == " << "._PREV." ")
 			{
 			$currentquestion--;
 			$ia=$_SESSION['fieldarray'][$currentquestion];
