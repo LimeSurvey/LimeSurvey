@@ -40,17 +40,33 @@ if ($sid)
 	$surveysummary .= "<!--\n";
 	$surveysummary .= "\tfunction showdetails(action)\n";
 	$surveysummary .= "\t\t{\n";
-	$surveysummary .= "\t\tif (action == \"hide\")\n";
+	$surveysummary .= "\t\tif (action == \"hides\")\n";
 	$surveysummary .= "\t\t\t{\n";
-	$surveysummary .= "\t\t\tfor (i=0; i<=11; i++)\n";
+	$surveysummary .= "\t\t\tfor (i=0; i<=10; i++)\n";
 	$surveysummary .= "\t\t\t\t{\n";
 	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
 	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='none';\n";
 	$surveysummary .= "\t\t\t\t}\n";
 	$surveysummary .= "\t\t\t}\n";
-	$surveysummary .= "\t\telse\n";
+	$surveysummary .= "\t\telse if (action == \"shows\")\n";
 	$surveysummary .= "\t\t\t{\n";
-	$surveysummary .= "\t\t\tfor (i=0; i<=11; i++)\n";
+	$surveysummary .= "\t\t\tfor (i=0; i<=10; i++)\n";
+	$surveysummary .= "\t\t\t\t{\n";
+	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
+	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='';\n";
+	$surveysummary .= "\t\t\t\t}\n";
+	$surveysummary .= "\t\t\t}\n";
+	$surveysummary .= "\t\telse if (action == \"hideg\")\n";
+	$surveysummary .= "\t\t\t{\n";
+	$surveysummary .= "\t\t\tfor (i=11; i<=13; i++)\n";
+	$surveysummary .= "\t\t\t\t{\n";
+	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
+	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='none';\n";
+	$surveysummary .= "\t\t\t\t}\n";
+	$surveysummary .= "\t\t\t}\n";
+	$surveysummary .= "\t\telse if (action == \"showg\")\n";
+	$surveysummary .= "\t\t\t{\n";
+	$surveysummary .= "\t\t\tfor (i=11; i<=13; i++)\n";
 	$surveysummary .= "\t\t\t\t{\n";
 	$surveysummary .= "\t\t\t\tvar name='surveydetails'+i;\n";
 	$surveysummary .= "\t\t\t\tdocument.getElementById(name).style.display='';\n";
@@ -66,8 +82,8 @@ if ($sid)
 		{
 		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n";
 		$surveysummary .= "\t<td>";
-		$surveysummary .= "<img src='./images/plus.gif' alt='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"show\")'>";
-		$surveysummary .= "<img src='./images/minus.gif' alt='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hide\")'>\n";
+		$surveysummary .= "<img src='./images/plus.gif' alt='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"shows\")'>";
+		$surveysummary .= "<img src='./images/minus.gif' alt='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hides\")'>\n";
 		$surveysummary .= "$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
 		if ($s1row['private'] != "N") {$surveysummary .= "This survey is anonymous";}
 		else {$surveysummary .= "This survey is <b>not</b> anonymous";}
@@ -86,11 +102,13 @@ if ($sid)
 		$surveysummary .= "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails3'><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
 		if ($s1row['expires'] != "0000-00-00") 
 			{
-			$surveysummary .= "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
-			$surveysummary .= "\t<td>$setfont {$s1row['expires']}</font></td></tr>\n";
+			$expdate=$s1row['expires'];
 			}
+		$expdate="Never";
+		$surveysummary .= "\t<td>$setfont$expdate</font></td></tr>\n";
 		$activated = $s1row['active'];
 		$surveysummary .= "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<b>Template:</b></font></td>\n";
 		$surveysummary .= "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n";
@@ -146,7 +164,7 @@ if ($sid)
 	$surveysummary .= "</td></tr>\n";
 	
 	//OPTIONS
-	$surveysummary .= "\t<tr><td colspan='2' align='right'>\n";
+	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td colspan='2' align='right'>\n";
 	$surveysummary .= "\t\t<input type='submit' $btstyle value='Export' title='Export Survey Structure..' onClick=\"window.open('dumpsurvey.php?sid=$sid', '_top')\">\n";
 	if ($activated == "N") 
 		{
@@ -178,14 +196,16 @@ if ($gid)
 		if ($qid) {$gshowstyle="style='display: none'";}
 		$groupsummary .= "\t<tr><td width='20%' align='right'>$setfont<b>Group Title:</b></font></td>\n";
 		$groupsummary .="\t<td>";
+		$groupsummary .= "<img src='./images/plus.gif' alt='Show All Details' align='right' border='0' hspace='0' onclick='showdetails(\"showg\")'>";
+		$groupsummary .= "<img src='./images/minus.gif' alt='Minimal Details' align='right' border='0' hspace='0' onclick='showdetails(\"hideg\")'>\n";
 		$groupsummary .="$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n";
-		$groupsummary .= "\t<tr $gshowstyle id='surveydetails10'><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
+		$groupsummary .= "\t<tr $gshowstyle id='surveydetails11'><td valign='top' align='right'>$setfont<b>Description:</b></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
 		}
-	$groupsummary .="\t<tr $gshowstyle id='surveydetails11'><td align='right'>$setfont<b>Questions:</b></font></td>\n";
+	$groupsummary .="\t<tr $gshowstyle id='surveydetails12'><td align='right'>$setfont<b>Questions:</b></font></td>\n";
 	$groupsummary .="\t<td><select $slstyle name='qid' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 	$groupsummary .= getquestions();
 	$groupsummary .= "\n\t\t</select></td></tr>\n";
-	$groupsummary .= "\n\t<tr><td colspan='2' align='right'>\n";
+	$groupsummary .= "\n\t<tr $gshowstyle id='surveydetails13'><td colspan='2' align='right'>\n";
 	$groupsummary .= "\t\t<input type='submit' $btstyle value='Edit Group' onClick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">\n";
 	if ($activated == "N") {$groupsummary .= "\t\t<input type='submit' $btstyle value='Add Question' onClick=\"window.open('$scriptname?action=addquestion&sid=$sid&gid=$gid', '_top')\">\n";}
 	$qquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid ORDER BY title";
@@ -278,7 +298,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 			}
 		else
 			{
-			$vasummary .= "$setfont<font size='1'>{$cdrow['code']}";
+			$vasummary .= "$setfont<font size='1'>{$cdrow['code']}<input type='hidden' name='code' value='{$cdrow['code']}'>";
 			}
 		$vasummary .="</td>\n";
 		$vasummary .= "\t\t<td align='center'><input name='answer' type='text' $btstyle value=\"{$cdrow['answer']}\" size='50'></td>\n";
@@ -290,7 +310,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 			}
 		else
 			{
-			$vasummary .= "$setfont<font size='1'>{$cdrow['default']}";
+			$vasummary .= "$setfont<font size='1'>{$cdrow['default']}<input type='hidden' name='default' value='{$cdrow['default']}'>";
 			}
 		$vasummary .= "\t\t<td align='center'>";
 		if ($position > 0) {$vasummary .= "<input name='ansaction' $btstyle type='submit' value='Up'>";}
