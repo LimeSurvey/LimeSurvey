@@ -761,6 +761,7 @@ if ($action == "addquestion")
 	$labelsets=getlabelsets();
 	if (count($labelsets)>0)
 		{
+		$newquestion .= "\t\t\t<option value=''>"._AD_CHOOSE."</option>\n";
 		foreach ($labelsets as $lb)
 			{
 			$newquestion .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
@@ -847,6 +848,10 @@ if ($action == "copyquestion")
 		$labelsets=getlabelsets();
 		if (count($labelsets)>0)
 			{
+			if (!$eqrow['lid'])
+				{
+				$editquestion .= "\t\t\t<option value=''>"._AD_CHOOSE."</option>\n";
+				}
 			foreach ($labelsets as $lb)
 				{
 				$editquestion .= "\t\t\t<option value='{$lb[0]}'";
@@ -955,6 +960,10 @@ if ($action == "editquestion")
 			$labelsets=getlabelsets();
 			if (count($labelsets)>0)
 				{
+				if (!$eqrow['lid'])
+					{
+					$editquestion .= "\t\t\t<option value=''>"._AD_CHOOSE."</option>\n";
+					}
 				foreach ($labelsets as $lb)
 					{
 					$editquestion .= "\t\t\t<option value='{$lb[0]}'";
