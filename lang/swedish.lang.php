@@ -76,6 +76,7 @@ define("_MANDATORY", "Denna fråga är obligatorisk");
 define("_MANDATORY_PARTS", "Var god, fyll i alla delar");
 define("_MANDATORY_CHECK", "Välj minst ett objekt");
 define("_MANDATORY_RANK", "Rangordna alla alternativen");
+define("_MANDATORY_POPUP", "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"); //NEW in 0.98rc4
 define("_DATEFORMAT", "Format: ÅÅÅÅ-MM-DD");
 define("_DATEFORMATEG", "(tex: 2003-12-24 för Julafton)");
 define("_REMOVEITEM", "Ta bort detta objekt");

@@ -76,6 +76,7 @@ define("_MANDATORY", "Esta pregunta es requerida");
 define("_MANDATORY_PARTS", "Favor de completar todas las partes");
 define("_MANDATORY_CHECK", "Favor de seleccionar al menos un elemento");
 define("_MANDATORY_RANK", "Favor de clasificar todos los elementos");
+define("_MANDATORY_POPUP", "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"); //NEW in 0.98rc4
 define("_DATEFORMAT", "Formato: AAAA-MM-DD");
 define("_DATEFORMATEG", "(pej: 2003-12-25 para Navidad)");
 define("_REMOVEITEM", "Eliminar este elemento");

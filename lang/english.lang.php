@@ -72,6 +72,7 @@ define("_MANDATORY", "This question is mandatory");
 define("_MANDATORY_PARTS", "Please complete all parts");
 define("_MANDATORY_CHECK", "Please check at least one item");
 define("_MANDATORY_RANK", "Please rank all items");
+define("_MANDATORY_POPUP", "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"); //NEW in 0.98rc4
 define("_DATEFORMAT", "Format: YYYY-MM-DD");
 define("_DATEFORMATEG", "(eg: 2003-12-25 for Christmas day)");
 define("_REMOVEITEM", "Remove this item");
@@ -92,7 +93,7 @@ define("_CONFIRMCLEAR", "Are you sure you want to clear all your responses?");
 define("_EXITCLEAR", "Exit and Clear Survey");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Cannot submit results - there are none to submit.");
-define("_BADSUBMIT2", "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.");
+define("_BADSUBMIT2", "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem.");
 define("_NOTACTIVE1", "Your survey responses have not been recorded. This survey is not yet active.");
 define("_CLEARRESP", "Clear Responses");
 define("_THANKS", "Thank you");
