@@ -350,13 +350,6 @@ if ($grouparray)
 							{
 							$aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
 							$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
-							//$qidpos = "('";
-							//$astart = strpos($aa, "$qidpos")+2;
-							//$aend = strpos($aa, "'", $astart)-$astart;
-							//$codepos1=strpos($aa, "', '")+4;
-							//$codepos2=strpos($aa, "', '", strpos($aa, "', '")+1);
-							//$codelength=$codepos2-$codepos1;
-							//$code = substr($aa, $codepos1, $codelength);
 							$code=$aacfieldcontents[array_search("code", $aafieldorders)];
 							$thisqid=$aacfieldcontents[array_search("qid", $aafieldorders)];
 							if ($thisqid == $qid)

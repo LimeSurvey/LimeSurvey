@@ -195,12 +195,16 @@ if ($labelsetsarray)
 	{
 	foreach ($labelsetsarray as $lsa)
 		{
-		$start = strpos($lsa, "VALUES ('")+strlen("VALUES ('");
-		$end = strpos($lsa, "'", $start)-$start;
-		$oldlid=substr($lsa, $start, $end);
+		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
+		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
+
+		$oldlidpos=array_search("lid", $fieldorders);
+		$oldlid=$fieldcontents[$oldlidpos];
+		
 		$lsainsert = str_replace("VALUES ('$oldlid", "VALUES ('", $lsa);
-		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert);
+		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
 		$lsiresult=mysql_query($lsainsert);
+		
 		//GET NEW LID
 		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
 		$nlidresult=mysql_query($nlidquery);
@@ -210,13 +214,15 @@ if ($labelsetsarray)
 			{
 			foreach ($labelsarray as $la)
 				{
-				$lstart=strpos($la, "VALUES ('")+strlen("VALUES ('");
-				$lend = strpos($la, "'", $lstart)-$lstart;
-				$labellid=substr($la, $lstart, $lend);
+				$lfieldorders=convertToArray($la, "`, `", "(`", "`)");
+				$lfieldcontents=convertToArray($la, "', '", "('", "')");
+	
+				$labellidpos=array_search("lid", $lfieldorders);
+				$labellid=$lfieldcontents[$labellidpos];
 				if ($labellid == $oldlid)
 					{
 					$lainsert = str_replace("VALUES ('$labellid", "VALUES ('$newlid", $la);
-					$lainsert = str_replace("INTO labels", "INTO {$dbprefix}labels", $lainsert);
+					$lainsert = str_replace ("INTO labels", "INTO {$dbprefix}labels", $lainsert);
 					$liresult=mysql_query($lainsert);
 					}
 				}
@@ -224,23 +230,24 @@ if ($labelsetsarray)
 		}
 	}
 
-
 // QUESTIONS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if ($questionarray)
 	{
 	foreach ($questionarray as $qa)
 		{
-		$oldqidpos=strpos($qa, "VALUES ('") + strlen("VALUES ('");
-		$oldqid=substr($qa, $oldqidpos, (strpos($qa, "', '", $oldqidpos))-$oldqidpos);
-		$oldsidpos=strpos($qa, "', '", $oldqidpos+1)+strlen("', '");
-		$oldsid=substr($qa, $oldsidpos, (strpos($qa, "', '", $oldsidpos))-$oldsidpos);
-		$oldgidpos=strpos($qa, "', '", $oldsidpos+1)+strlen("', '");
-		$oldgid=substr($qa, $oldgidpos, (strpos($qa, "', '", $oldgidpos))-$oldgidpos);
-		$qinsert = str_replace("('$oldqid', '$oldsid', '$oldgid',", "('$sid', '$gid',", $qa);
-		$qinsert = str_replace("(`qid`, ", "(", $qinsert);
+		$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
+		$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
+		$oldsid=$qacfieldcontents[array_search("sid", $qafieldorders)];
+		$oldgid=$qacfieldcontents[array_search("gid", $qafieldorders)];
+		$oldqid=$qacfieldcontents[array_search("qid", $qafieldorders)];
+		$qinsert=str_replace("'$oldqid'", "''", $qa);
+		$qinsert=str_replace("'$oldsid'", "'$sid'", $qinsert);
+		$qinsert=str_replace("'$oldgid'", "'$gid'", $qinsert);
+		
 		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
+		
 		$qres = mysql_query($qinsert) or die ("<b>"._ERROR.":</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
-		//GET NEW QID
+		//GET NEW QID, AND WHILE WE'RE AT IT - THE TYPE!
 		$qidquery = "SELECT qid, lid, type FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
 		$qidres = mysql_query($qidquery);
 		while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0]; $oldlid=$qrow[1]; $type=$qrow[2];}
@@ -265,16 +272,11 @@ if ($questionarray)
 			{
 			foreach ($answerarray as $aa)
 				{
-				$qidpos = "('";
-				$astart = strpos($aa, "$qidpos")+2;
-				$aend = strpos($aa, "'", $astart)-$astart;
-				$codepos1=strpos($aa, "', '")+4;
-				$codepos2=strpos($aa, "', '", strpos($aa, "', '")+1);
-				$codelength=$codepos2-$codepos1;
-				$code = substr($aa, $codepos1, $codelength);
-				//echo "DOING $aa<br />\n";
-				//echo "SUBTR:".substr($aa, $astart, $aend). " VS $oldqid<br />\n";
-				if (substr($aa, $astart, $aend) == ($oldqid))
+				$aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
+				$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
+				$code=$aacfieldcontents[array_search("code", $aafieldorders)];
+				$thisqid=$aacfieldcontents[array_search("qid", $aafieldorders)];
+				if ($thisqid == $oldqid)
 					{
 					$ainsert = str_replace("('$oldqid", "('$newqid", $aa);
 					$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
@@ -340,4 +342,14 @@ echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open(
 echo "</td></tr></table>\n";
 echo "</body>\n</html>";
 unlink($the_full_file_path);
+
+function convertToArray($string, $seperator, $start, $end)
+	{
+	$begin=strpos($string, $start)+strlen($start);
+	$len=strpos($string, $end)-$begin;
+	$order=substr($string, $begin, $len);
+	$orders=explode($seperator, $order);
+	
+	return $orders;
+	}
 ?>
