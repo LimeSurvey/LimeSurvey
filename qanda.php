@@ -1254,6 +1254,7 @@ function do_array_flexible($ia)
 	{
 	global $dbprefix;
 	global $shownoanswer;
+	global $repeatheadings;
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -1304,6 +1305,20 @@ function do_array_flexible($ia)
 		$ansresult = mysql_query($ansquery);
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
+			if (isset($repeatheadings) && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0) 
+				{
+				$answer .= "\t\t\t\t<tr>\n"
+				 		 . "\t\t\t\t\t<td></td>\n";
+				foreach ($labelans as $ld)
+					{
+					$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
+					}
+				if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+					{
+					$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></td>\n";
+					}
+				$answer .= "\t\t\t\t</tr>\n";
+				}
 			$myfname = $ia[1].$ansrow['code'];
 			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n"
@@ -1326,6 +1341,7 @@ function do_array_flexible($ia)
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 			$answer .= "'>\n";
 			$inputnames[]=$myfname;
+			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
 			$fn++;
 			}
 		$answer .= "\t\t\t</table>\n";
