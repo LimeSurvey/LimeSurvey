@@ -87,7 +87,13 @@ switch ($ia[4])
 			{
 			$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' <id='$ia[1]$fp' value='$fp'";
 			if ($_SESSION[$ia[1]] == $fp) {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]$fp'>$fp</label>\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]$fp' class='answertext'>$fp</label>\n";
+			}
+		if ($ia[6] != "Y") // Add "No Answer" option if question is not mandatory
+			{
+			$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' <id='NoAnswer' value=''";
+			if (!$_SESSION[$ia[1]]) {$answer .= " checked";}
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='NoAnswer'>"._NOTAPPLICABLE."</label>\n";
 			}
 		$answer .= "\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n";
 		$inputnames[]=$ia[1];
@@ -138,12 +144,12 @@ switch ($ia[4])
 					$answer .= " checked";
 					}
 				elseif ($ansrow['default'] == "Y") {$answer .= " checked"; $defexists = "Y";}
-				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}'>{$ansrow['answer']}</label><br />\n";
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 				}
 			if (((!$_SESSION[$ia[1]] && !$defexists) || ($_SESSION[$ia[1]] == ' ' && !$defexists)) && $ia[6] != "Y") 
 				{
 				$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='$ia[1] ' value=' ' checked onClick='checkconditions(this.value, this.name, this.type)' />";
-				$answer .= "<label for='$ia[1] '>"._NOANSWER."</label>\n";
+				$answer .= "<label for='$ia[1] ' class='answertext'>"._NOANSWER."</label>\n";
 				}
 			elseif ($_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") 
 				{
@@ -190,7 +196,7 @@ switch ($ia[4])
 					{
 					$answer .= " />";
 					}
-				$answer .= "<label for='$ia[1] '>"._NOANSWER."</label>\n";
+				$answer .= "<label for='$ia[1] ' class='answertext'>"._NOANSWER."</label>\n";
 				}
 			$answer .= "\t\t\t\t\t</td>\n";
 			$fname2 = $ia[1]."comment";
@@ -479,7 +485,7 @@ switch ($ia[4])
 			$multifields .= "$fname{$ansrow['code']}|";
 			$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='$ia[1]{$ansrow['code']}' value='Y'";
 			if ($_SESSION[$myfname] == "Y") {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}'>{$ansrow['answer']}</label><br />\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 			$fn++;
 			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
 			$inputnames[]=$myfname;
@@ -541,7 +547,7 @@ switch ($ia[4])
 			$answer .= "\t\t\t\t\t\t\t\t<td>\n";
 			$answer .= "\t\t\t\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$myfname' id='$myfname' value='Y'";
 			if ($_SESSION[$myfname] == "Y") {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$myfname'>{$ansrow['answer']}</label>\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$myfname' class='answertext'>{$ansrow['answer']}</label>\n";
 			$answer .= "\t\t\t\t\t\t\t\t</td>\n";
 			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
 			$fn++;
@@ -653,15 +659,15 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t<td>\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]Y' value='Y'";
 		if ($_SESSION[$ia[1]] == "Y") {$answer .= " checked";}
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]Y'>"._YES."</label><br />\n";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]Y' class='answertext'>"._YES."</label><br />\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]N' value='N'";
 		if ($_SESSION[$ia[1]] == "N") {$answer .= " checked";}
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]N'>"._NO."</label><br />\n";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]N' class='answertext'>"._NO."</label><br />\n";
 		if ($ia[6] != "Y")
 			{
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1] ' value=''";
 			if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1] '>"._NOANSWER."</label><br />\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1] ' class='answertext'>"._NOANSWER."</label><br />\n";
 			}
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
@@ -675,15 +681,15 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t<td>\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]F' value='F'";
 		if ($_SESSION[$ia[1]] == "F") {$answer .= " checked";}
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]F'>"._FEMALE."</label><br />\n";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]F' class='answertext'>"._FEMALE."</label><br />\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]M' value='M'";
 		if ($_SESSION[$ia[1]] == "M") {$answer .= " checked";}
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]M'>"._MALE."</label><br />\n";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]M' class='answertext'>"._MALE."</label><br />\n";
 		if ($ia[6] != "Y")
 			{
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1] ' value=''";
 			if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1] '>"._NOANSWER."</label>\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1] ' class='answertext'>"._NOANSWER."</label>\n";
 			}
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
@@ -706,6 +712,10 @@ switch ($ia[4])
 			{
 			$answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
 			}
+		if ($ia[6] != "Y") //Question is not mandatory
+			{
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
+			}
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
@@ -717,6 +727,12 @@ switch ($ia[4])
 				{
 				$answer .= "\t\t\t\t\t<td><input class='radio' type='radio' name='$myfname' value='$i'";
 				if ($_SESSION[$myfname] == $i) {$answer .= " checked";}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+				}
+			if ($ia[6] != "Y")
+				{
+				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
+				if ($_SESSION[$myfname] == "") {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			$answer .= "\t\t\t\t</tr>\n";
@@ -752,6 +768,10 @@ switch ($ia[4])
 			{
 			$answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
 			}
+		if ($ia[6] != "Y") //Question is not mandatory
+			{
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
+			}
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
@@ -763,6 +783,12 @@ switch ($ia[4])
 				{
 				$answer .= "\t\t\t\t\t\t<td><input class='radio' type='radio' name='$myfname' value='$i'";
 				if ($_SESSION[$myfname] == $i) {$answer .= " checked";}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+				}
+			if ($ia[6] != "Y")
+				{
+				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
+				if ($_SESSION[$myfname] == "") {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			$answer .= "\t\t\t\t</tr>\n";
@@ -796,6 +822,10 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._YES."</td>\n";
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._UNCERTAIN."</td>\n";
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NO."</td>\n";
+		if ($ia[6] != "Y") //Question is not mandatory
+			{
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
+			}
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
@@ -812,6 +842,12 @@ switch ($ia[4])
 			$answer .= "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='N'";
 			if ($_SESSION[$myfname] == "N") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+			if ($ia[6] != "Y")
+				{
+				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
+				if ($_SESSION[$myfname] == "") {$answer .= " checked";}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+				}
 			$answer .= "\t\t\t\t</tr>\n";
 			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
 			$inputnames[]=$myfname;
@@ -843,6 +879,10 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._INCREASE."</td>\n";
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._SAME."</td>\n";
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._DECREASE."</td>\n";
+		if ($ia[6] != "Y") //Question is not mandatory
+			{
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
+			}
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
@@ -859,6 +899,12 @@ switch ($ia[4])
 			$answer .= "\t\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='D'";
 			if ($_SESSION[$myfname] == "D") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+			if ($ia[6] != "Y")
+				{
+				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
+				if ($_SESSION[$myfname] == "") {$answer .= " checked";}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+				}
 			$answer .= "\t\t\t\t</tr>\n";
 			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
 			$inputnames[]=$myfname;
@@ -895,9 +941,16 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td></td>\n";
+		$cellwidth=count($labelans);
+		if ($ia[6] != "Y") {$cellwidth++;}
+		$cellwidth=100/$cellwidth;
 		foreach ($labelans as $ld)
 			{
-			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</td>\n";
+			$answer .= "\t\t\t\t\t<td align='center' class='array1' width='$cellwidth%'><font size='1'>".$ld."</td>\n";
+			}
+		if ($ia[6] != "Y") //Question is not mandatory
+			{
+			$answer .= "\t\t\t\t\t<td align='center' class='array1' width='$cellwidth%'><font size='1'>"._NOTAPPLICABLE."</td>\n";
 			}
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
@@ -910,6 +963,12 @@ switch ($ia[4])
 				{
 				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='$ld'";
 				if ($_SESSION[$myfname] == $ld['code']) {$answer .= " checked";}
+				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
+				}
+			if ($ia[6] != "Y")
+				{
+				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
+				if ($_SESSION[$myfname] == "") {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			$answer .= "\t\t\t\t</tr>\n";
