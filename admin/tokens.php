@@ -119,28 +119,7 @@ while ($chrow = mysql_fetch_array($chresult))
 $tkquery = "SELECT * FROM {$dbprefix}tokens_$sid";
 if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens table exists
 	{
-	if (!isset($_GET['createtable']) || !$_GET['createtable']) //Offer to initialise Tokens Table
-		{
-		echo "\t<tr>\n"
-			."\t\t<td align='center'>\n"
-			."\t\t\t$setfont<br /><font color='red'><b>"._WARNING."</b></font><br />\n"
-			."\t\t\t<b>"._TC_NOTINITIALISED."</b><br /><br />\n"
-			."\t\t\t"._TC_INITINFO
-			."\t\t\t<br /><br />\n"
-			."\t\t\t"._TC_INITQ."<br /><br />\n"
-			."\t\t\t<input type='submit' $btstyle value='"
-			._TC_INITTOKENS."' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n"
-			."\t\t\t<input type='submit' $btstyle value='"
-			._GO_ADMIN."' onClick=\"window.open('admin.php?sid=$sid', '_top')\"><br /><br />\n"
-			."\t\t</font></td>\n"
-			."\t</tr>\n"
-			."</table>\n"
-			."<table height='1'><tr><td></td></tr></table>\n"
-			."</td></tr></table>\n"
-			.htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions");
-		exit;
-		}
-	else //Create Tokens Table
+	if (isset($_GET['createtable']) && $_GET['createtable']=="Y") 
 		{
 		$createtokentable = "CREATE TABLE {$dbprefix}tokens_$sid (\n"
 						  . "tid int NOT NULL auto_increment,\n "
@@ -162,6 +141,72 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."\t\t\t<input type='submit' $btstyle value='"
 			._CONTINUE."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n"
 			."\t\t</font></td>\n"
+			."\t</tr>\n"
+			."</table>\n"
+			."<table height='1'><tr><td></td></tr></table>\n"
+			."</td></tr></table>\n"
+			.htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions");
+		exit;
+		}
+	elseif (isset($_GET['restoretable']) && $_GET['restoretable'] == "Y" && isset($_GET['oldtable']) && $_GET['oldtable'])
+		{
+		$query = "RENAME TABLE `".$_GET['oldtable']."` TO `{$dbprefix}tokens_$sid`";
+		$result=mysql_query($query) or die("Failed Rename!<br />".$query."<br />".mysql_error());
+		echo "\t<tr>\n"
+			."\t\t<td align='center'>\n"
+			."\t\t\t$setfont<br /><br />\n"
+			."\t\t\t"._TC_CREATED." (\"tokens_$sid\")<br /><br />\n"
+			."\t\t\t<input type='submit' $btstyle value='"
+			._CONTINUE."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n"
+			."\t\t</font></td>\n"
+			."\t</tr>\n"
+			."</table>\n"
+			."<table height='1'><tr><td></td></tr></table>\n"
+			."</td></tr></table>\n"
+			.htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions");
+		exit;
+		}
+	else
+		{
+		$query="SHOW TABLES LIKE '{$dbprefix}old_tokens_".$sid."_%'";
+		$result=mysql_query($query) or die("COuldn't get old table list<br />".$query."<br />".mysql_error());
+		$tcount=mysql_num_rows($result);
+		if ($tcount > 0) 
+			{
+		    while($rows=mysql_fetch_row($result))
+				{
+				$oldlist[]=$rows[0];
+				}
+			}
+		echo "\t<tr>\n"
+			."\t\t<td align='center'>\n"
+			."\t\t\t$setfont<br /><font color='red'><b>"._WARNING."</b></font><br />\n"
+			."\t\t\t<b>"._TC_NOTINITIALISED."</b><br /><br />\n"
+			."\t\t\t"._TC_INITINFO
+			."\t\t\t<br /><br />\n"
+			."\t\t\t"._TC_INITQ;
+		echo "<br /><br />\n";
+		echo "\t\t\t<input type='submit' $btstyle value='"
+			._TC_INITTOKENS."' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n"
+			."\t\t\t<input type='submit' $btstyle value='"
+			._GO_ADMIN."' onClick=\"window.open('admin.php?sid=$sid', '_top')\"><br /><br />\n";
+		if ($tcount>0)
+			{
+			echo "<form action='tokens.php'>\n"
+				 ."The following old token tables have been found:<br />\n"
+				 ."<select $slstyle2 size='4' name='oldtable'>\n";
+			foreach($oldlist as $ol)
+				{
+				echo "<option>".$ol."</option>\n";
+				}
+			echo "</select><br />\n"
+				 ."<input type='submit' $btstyle value='Restore'>\n"
+				 ."<input type='hidden' name='restoretable' value='Y'>\n"
+				 ."<input type='hidden' name='sid' value='$sid'>\n"
+				 ."</form>\n";
+			}
+
+		echo "\t\t</font></td>\n"
 			."\t</tr>\n"
 			."</table>\n"
 			."<table height='1'><tr><td></td></tr></table>\n"
