@@ -197,7 +197,7 @@ if ($noconditions != "Y")
 	$stoppoint = count($bigarray)-1;
 	for ($i=0; $i<=$stoppoint+1; $i++)
 		{
-		if ($i<$stoppoint-2) {$labelsarray[] = $bigarray[$i];}
+		if ($i<$stoppoint-1) {$labelsarray[] = $bigarray[$i];}
 		unset($bigarray[$i]);
 		}
 	}
@@ -242,12 +242,24 @@ if ($labelsetsarray)
 	{
 	foreach ($labelsetsarray as $lsa)
 		{
-		$start = strpos($lsa, "VALUES ('")+strlen("VALUES ('");
-		$end = strpos($lsa, "'", $start)-$start;
-		$oldlid=substr($lsa, $start, $end);
+		//GET ORDER OF FIELDS
+		$fostart=strpos($lsa, "(`")+2;
+		$folen=strpos($lsa, "`)")-$fostart;
+		$fieldorder=substr($lsa, $fostart, $folen);
+		$fieldorders=explode("`, `", $fieldorder);
+		//GET CONTENTS OF FIELDS
+		$fcstart=strpos($lsa, "('")+2;
+		$fclen=strpos($lsa, "')")-$fcstart;
+		$fieldcontent=substr($lsa, $fcstart, $fclen);
+		$fieldcontents=explode("', '", $fieldcontent);
+
+		$oldlidpos=array_search("lid", $fieldorders);
+		$oldlid=$fieldcontents[$oldlidpos];
+		
 		$lsainsert = str_replace("VALUES ('$oldlid", "VALUES ('", $lsa);
 		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
 		$lsiresult=mysql_query($lsainsert);
+		
 		//GET NEW LID
 		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
 		$nlidresult=mysql_query($nlidquery);
@@ -257,9 +269,19 @@ if ($labelsetsarray)
 			{
 			foreach ($labelsarray as $la)
 				{
-				$lstart=strpos($la, "VALUES ('")+strlen("VALUES ('");
-				$lend = strpos($la, "'", $lstart)-$lstart;
-				$labellid=substr($la, $lstart, $lend);
+				//GET ORDER OF FIELDS
+				$lfostart=strpos($la, "(`")+2;
+				$lfolen=strpos($la, "`)")-$lfostart;
+				$lfieldorder=substr($la, $lfostart, $lfolen);
+				$lfieldorders=explode("`, `", $lfieldorder);
+				//GET CONTENTS OF FIELDS
+				$lfcstart=strpos($la, "('")+2;
+				$lfclen=strpos($la, "')")-$lfcstart;
+				$lfieldcontent=substr($la, $lfcstart, $lfclen);
+				$lfieldcontents=explode("', '", $lfieldcontent);
+	
+				$labellidpos=array_search("lid", $lfieldorders);
+				$labellid=$lfieldcontents[$labellidpos];
 				if ($labellid == $oldlid)
 					{
 					$lainsert = str_replace("VALUES ('$labellid", "VALUES ('$newlid", $la);
@@ -345,7 +367,7 @@ if ($grouparray)
 								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
 								//$ainsert = substr(trim($ainsert), 0, -1);
 								$ares = mysql_query($ainsert) or die ("<b>"._ERROR."</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
-								if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P")
+								if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P" || $type == "F")
 									{
 									$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
 									if ($type == "P")
@@ -401,20 +423,25 @@ if ($conditionsarray) //ONLY DO THIS IF THERE ARE CONDITIONS!
 	{
 	foreach ($conditionsarray as $car)
 		{
-		$startpos=strpos($car, "('")+2;
-		$nextpos=strpos($car, "', '", $startpos);
-		$oldcid=substr($car, $startpos, $nextpos-$startpos);
-		$startpos=$nextpos+4;
-		$nextpos=strpos($car, "', '", $startpos);
-		$oldqid=substr($car, $startpos, $nextpos-$startpos);
-		$startpos=$nextpos+4;
-		$nextpos=strpos($car, "', '", $startpos);
-		$oldcqid=substr($car, $startpos, $nextpos-$startpos);
-		$startpos=$nextpos+4;
-		$nextpos=strpos($car, "', '", $startpos);
-		$oldcfieldname=substr($car, $startpos, $nextpos-$startpos);
-		$toreplace="('$oldcid', '$oldqid', '$oldcqid', '$oldcfieldname'";
-		echo "REPLACING $toreplace ";
+		//GET ORDER OF FIELDS
+		$fostart=strpos($car, "(`")+2;
+		$folen=strpos($car, "`)")-$fostart;
+		$fieldorder=substr($car, $fostart, $folen);
+		$fieldorders=explode("`, `", $fieldorder);
+		//GET CONTENTS OF FIELDS
+		$fcstart=strpos($car, "('")+2;
+		$fclen=strpos($car, "')")-$fcstart;
+		$fieldcontent=substr($car, $fcstart, $fclen);
+		$fieldcontents=explode("', '", $fieldcontent);
+
+		$oldcidpos=array_search("cid", $fieldorders);
+		$oldcid=$fieldcontents[$oldcidpos];
+		$oldqidpos=array_search("qid", $fieldorders);
+		$oldqid=$fieldcontents[$oldqidpos];
+		$oldcfieldnamepos=array_search("cfieldname", $fieldorders);
+		$oldcfieldname=$fieldcontents[$oldcfieldnamepos];
+		$oldcqidpos=array_search("cqid", $fieldorders);
+		$oldcqid=$fieldcontents[$oldcqidpos];
 		foreach ($substitutions as $subs)
 			{
 			if ($oldqid==$subs[2])	{$newqid=$subs[5];}
@@ -423,14 +450,14 @@ if ($conditionsarray) //ONLY DO THIS IF THERE ARE CONDITIONS!
 		foreach($fieldnames as $fns)
 			{
 			if ($oldcfieldname==$fns[0]) {$newcfieldname=$fns[1];}
-			echo "(OLD FIELDNAME=$fns[0], NEW FIELDNAME=$fns[1])<br />\n";
 			}
-		$replacewith="('', '$newqid', '$newcqid', '$newcfieldname'";
-		echo "WITH $replacewith!<br />\n";
-		$insert=str_replace($toreplace, $replacewith, $car);
+		//$replacewith="('', '$newqid', '$newcfieldname',";
+		$insert=str_replace("'$oldcid'", "''", $car); //replace cid (remove it)
+		$insert=str_replace("'$oldqid'", "'$newqid'", $insert); //replace qid
+		$insert=str_replace("'$oldcfieldname'", "'$newcfieldname'", $insert); //replace cfieldname
+		//$insert=str_replace($toreplace, $replacewith, $car); //replace first section
+		$insert=str_replace("$oldcqid')", "$newcqid')", $insert); //replace cqid
 		$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
-		echo "OLD INSERT=$car<br />\n";
-		echo "NEW INSERT=$insert<br />\n";
 		$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
 		}
 	}
