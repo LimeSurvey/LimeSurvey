@@ -252,6 +252,21 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				echo "\t\t\t</table>\n";
 				break;
+			case "Q":  //MULTIPLE SHORT TEXT
+				echo "\t\t\t$setfont<u>Please write your answer(s) here:</u><br />\n";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$mearesult = mysql_query($meaquery);
+				echo "\t\t\t<table border='0'>\n";
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td>$setfont{$mearow['answer']}: <input type='text' size='60' name='$fieldname{$mearow['code']}' value=''";
+					if ($mearow[3] == "Y") {echo " checked";}
+					echo " /> </td>\n";
+					echo "\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t</table>\n";
+				break;
 			case "S":  //SHORT TEXT
 				echo "\t\t\t$setfont<u>Please write your answer here:</u><br />\n";
 				echo "\t\t\t<input type='text' name='$fieldname' size='60' $boxstyle />\n";
