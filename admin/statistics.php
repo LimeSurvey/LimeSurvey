@@ -90,7 +90,7 @@ foreach ($filters as $flt)
 	if ($counter == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
 	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
 	//headings
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>";
 		echo "$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
@@ -270,6 +270,40 @@ foreach ($filters as $flt)
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
 			break;
+		case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
+			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0][]'";
+			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
+			$counter2=0;
+			while ($row=mysql_fetch_row($result))
+				{
+				$myfield2 = $myfield . "$row[0]";
+				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
+				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
+				echo "<input type='radio' name='summary' value='$myfield2'";
+				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
+				echo ">&nbsp;";
+				echo "<img src='speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
+				echo "<br />\n";
+
+				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
+				echo "\t\t\t\t\t<option value='I'";
+				if (is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected";}
+				echo ">Increase</option>\n";
+				echo "\t\t\t\t\t<option value='S'";
+				if (is_array($_POST[$myfield2]) && in_array("S", $_POST[$myfield2])) {echo " selected";}
+				echo ">Same</option>\n";
+				echo "\t\t\t\t\t<option value='D'";
+				if (is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {echo " selected";}
+				echo ">Decrease</option>\n";
+				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+				$counter2++;
+				$allfields[]=$myfield2;
+				}
+			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+			$counter=0;
+			break;
 		case "R": //RANKING
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]' ORDER BY code";
@@ -319,7 +353,7 @@ foreach ($filters as $flt)
 				}
 			break;
 		}
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R") //Have to make an exception for these types!
 		{
 		echo "\n\t\t\t\t</td>\n";
 		}
@@ -702,6 +736,21 @@ if ($_POST['summary'])
 						$alist[]=array("Y", "Yes");
 						$alist[]=array("N", "No");
 						$alist[]=array("U", "Uncertain");
+						$atext=$qrow[1];
+						}
+					$qquestion .= "<br />\n[".$atext."]";
+					$qtitle .= "($qanswer)";
+					break;
+				case "E": //Array of Yes/No/Uncertain
+					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
+					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY CODE";
+					//echo $qquery; //debugging line
+					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
+					while ($qrow=mysql_fetch_row($qresult))
+						{
+						$alist[]=array("I", "Increase");
+						$alist[]=array("S", "Same");
+						$alist[]=array("D", "Decrease");
 						$atext=$qrow[1];
 						}
 					$qquestion .= "<br />\n[".$atext."]";

@@ -71,7 +71,7 @@ if ($action == "insert")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R")
+		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			$col_name .= "$fieldname, \n";
@@ -256,7 +256,7 @@ elseif ($action == "edit")
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
-		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "P")
+		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "P")
 			{
 			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY answer";
 			$fnrresult = mysql_query($fnrquery);
@@ -326,7 +326,7 @@ elseif ($action == "edit")
 			echo "\t<tr>\n";
 			echo "\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont";
 			echo "<b>\n";
-			if ($fnames[$i][3] != "A" && $fnames[$i][3] != "B" && $fnames[$i][3]!="C" && $fnames[$i][3]!="P" && $fnames[$i][3] != "M") 
+			if ($fnames[$i][3] != "A" && $fnames[$i][3] != "B" && $fnames[$i][3]!="C" && $fnames[$i][3] != "E" && $fnames[$i][3]!="P" && $fnames[$i][3] != "M") 
 				{
 				echo "\t\t\t{$fnames[$i][2]}\n";
 				}
@@ -701,6 +701,30 @@ elseif ($action == "edit")
 					$i--;
 					echo "</table>\n";
 					break;
+				case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+					echo "<table>\n";
+					while ($fnames[$i][3] == "C")
+						{
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n";
+						echo "\t\t<td>$setfont\n";
+						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='I'";
+						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
+						echo " />Increase&nbsp;\n";
+						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='S'";
+						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
+						echo " />Same&nbsp\n";
+						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='D'";
+						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
+						echo " />Decrease&nbsp;\n";
+						echo "\t\t</td>\n";
+						echo "\t</tr>\n";
+						$i++;
+						}
+					$i--;
+					echo "</table>\n";
+					break;
 				default: //This really only applies to tokens for non-private surveys
 					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
 					echo $idrow[$fnames[$i][0]] . "'>\n";
@@ -740,7 +764,7 @@ elseif ($action == "update")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "O" && $irow['type'] != "R")
+		if ($irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (get_magic_quotes_gpc())
@@ -1318,7 +1342,7 @@ else
 					echo "</table>\n";
 					break;
 				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answers";
+					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 					$mearesult=mysql_query($meaquery);
 					echo "<table>\n";
 					while ($mearow = mysql_fetch_array($mearesult))
@@ -1341,6 +1365,26 @@ else
 						//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='N'";
 						//if ($idrow[$i]== "N") {echo " checked";}
 						//echo " />No&nbsp;\n";
+						echo "\t\t</td>\n";
+						echo "</tr>\n";
+						}
+					echo "</table>\n";
+					break;
+				case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+					$mearesult=mysql_query($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".mysql_error());
+					echo "<table>\n";
+					while ($mearow = mysql_fetch_array($mearesult))
+						{
+						echo "\t<tr>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td>\n";
+						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						echo "\t\t\t\t<option value=''>Please choose..</option>\n";
+						echo "\t\t\t\t<option value='I'>Increase</option>\n";
+						echo "\t\t\t\t<option value='S'>Same</option>\n";
+						echo "\t\t\t\t<option value='D'>Decrease</option>\n";
+						echo "\t\t\t</select>\n";
 						echo "\t\t</td>\n";
 						echo "</tr>\n";
 						}

@@ -42,9 +42,9 @@ if (!$_GET['ok'])
 	//  # "O" -> LIST WITH COMMENT
 	//  # "M" -> MULTIPLE OPTIONS
 	//	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
-	//	# "A", "B", "C" -> Various Array Types
+	//	# "A", "B", "C", "E" -> Various Array Types
 	//  # "R" -> RANKING
-	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'R')";
+	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'R')";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
@@ -196,7 +196,7 @@ else
 	//echo "<br /><br />$aquery<br /><br />\n";
 	while ($arow=mysql_fetch_array($aresult))
 		{
-		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" &&$arow['type'] !="P" && $arow['type'] != "R")
+		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] !="P" && $arow['type'] != "R")
 			{
 			$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 			switch($arow['type'])
@@ -230,7 +230,7 @@ else
 							break;
 				}
 			}
-		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
+		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "P")
 			{
 			//MULTI ENTRY
 			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY answers.answer";

@@ -140,7 +140,7 @@ if ($action == "id")
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
-		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "P")
+		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "P")
 			{
 			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY answer";
 			$fnrresult = mysql_query($fnrquery);
@@ -263,7 +263,7 @@ elseif ($action == "all")
 	
 	foreach ($fnrows as $fnrow)
 		{
-		if ($fnrow['type'] != "M" && $fnrow['type'] != "A" && $fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "P" && $fnrow['type'] != "O" && $fnrow['type'] != "R")
+		if ($fnrow['type'] != "M" && $fnrow['type'] != "A" && $fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "E" && $fnrow['type'] != "P" && $fnrow['type'] != "O" && $fnrow['type'] != "R")
 			{
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
