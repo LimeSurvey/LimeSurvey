@@ -173,7 +173,7 @@ echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
 function helpscreen()
 	{
 	global $homeurl, $langdir;
-	global $sid, $gid, $qid;
+	global $sid, $gid, $qid, $action;
 	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n";
 	echo "\t\t\t<table width='100%'><tr><td><table width='100%' height='100%' align='center' cellspacing='0'>\n";
 	echo "\t\t\t\t<tr>\n";
@@ -189,11 +189,14 @@ function helpscreen()
 	echo "\t\t\t\t</tr>\n";
 	echo "\t\t\t\t<tr>\n";
 	echo "\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
-	
 	//determine which help document to show
-	if (!$sid)
+	if (!$sid && $action != "editusers")
 		{
 		$helpdoc = "$langdir/admin.html";
+		}
+	elseif (!$sid && $action=="editusers")
+		{
+		$helpdoc = "$langdir/users.html";
 		}
 	elseif ($sid && !$gid)
 		{
