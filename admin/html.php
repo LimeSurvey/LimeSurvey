@@ -654,14 +654,27 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Fax To</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='20' name='faxto' value='{$esrow['faxto']}'></td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Private?</b></font></td>\n";
-		$editsurvey .= "\t\t<td><select name='private'>\n";
-		$editsurvey .= "\t\t\t<option value='Y'";
-		if ($esrow['private'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">Yes</option>\n";
-		$editsurvey .= "\t\t\t<option value='N'";
-		if ($esrow['private'] != "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">No</option>\n";
-		$editsurvey .= "</select>\n\t\t</td></tr>\n";
+				
+		if ($esrow['active'] == "Y")
+			{
+			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
+			if ($esrow['private'] == "N") {$editsurvey .= " This survey is <b>not</b> anonymous";}
+			else {$editsurvey .= "This survey <b>is</b> anonymous";}
+			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n";
+			$editsurvey .= "\t\t</td>\n";
+			}
+		else
+			{
+			$editsurvey .= "\t\t<td><select name='private'>\n";
+			$editsurvey .= "\t\t\t<option value='Y'";
+			if ($esrow['private'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">Yes</option>\n";
+			$editsurvey .= "\t\t\t<option value='N'";
+			if ($esrow['private'] != "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">No</option>\n";
+			$editsurvey .= "</select>\n\t\t</td>\n";
+			}
+		$editsurvey .= "</tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<b>Expiry Date</b></font></td>\n";
 		$editsurvey .= "\t\t<td><input type='text' size='10' name='expires' value='{$esrow['expires']}'></td></tr>\n";
 		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Survey'></td>\n";
