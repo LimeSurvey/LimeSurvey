@@ -57,7 +57,7 @@ $query = "SELECT id, $column FROM {$dbprefix}survey_$sid WHERE $column != ''";
 
 if ($sql && $sql != "NULL")
 	{
-	$query .= " AND ".urldecode($sql);
+	$query .= " AND ".auto_unescape(urldecode($sql));
 	}
 
 if ($order == "alpha")
