@@ -7,7 +7,7 @@
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
 	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 20 February 2003								#
+	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
 	# perform data-entry on surveys.							#
@@ -31,7 +31,7 @@
 	# Public License along with this program; if not, write to 	#
 	# the Free Software Foundation, Inc., 59 Temple Place - 	#
 	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################	
+	#############################################################
 */
 
 session_start();
@@ -56,13 +56,13 @@ if ($_POST['lastgroupname']) {$lastgroupname = $_POST['lastgroupname'];}
 if ($_POST['newgroup']) {$newgroup = $_POST['newgroup'];}
 if ($_POST['lastfield']) {$lastfield = $_POST['lastfield'];}
 
-if ($move == "clearall" || $move == "here" || $move == "completed") 
+if ($move == "clearall" || $move == "here" || $move == "completed")
 	{
 	session_unset();
 	session_destroy();
 	}
 
-if ($fvalue) 
+if ($fvalue)
 	{
 	if ($fvalue == " ")
 		{
@@ -133,7 +133,7 @@ if ($sid)
 	$desresult = mysql_query($desquery) or die ("Couldn't get survey with sid of $sid<br />$desquery<br />".mysql_error());
 	$descount = mysql_num_rows($desresult);
 	while ($desr = mysql_fetch_array($desresult)) {$expirydate = $desr['expires'];}
-	if ($descount == 0) 
+	if ($descount == 0)
 		{
 		echo "There is no survey with that SID. Sorry. [$descount][$desquery]";
 		echo "</body>\n</html>";
@@ -283,7 +283,7 @@ if ($move == " last ")
 	echo "</table>\n";
 	//debugging info
 	echo "<!-- DEBUG INFO \n";
-	foreach ($_SESSION['insertarray'] as $posted) 
+	foreach ($_SESSION['insertarray'] as $posted)
 		{
 		echo "$posted: ".$_SESSION[$posted] ."\n";
 		}
@@ -400,7 +400,7 @@ if ($move == " submit ")
 	
 	// debugging info
 	echo "<!-- DEBUG INFO \n";
-	foreach ($_SESSION['insertarray'] as $posted) 
+	foreach ($_SESSION['insertarray'] as $posted)
 		{
 		echo "$posted: ".$_SESSION[$posted] ."\n";
 		}
@@ -481,17 +481,10 @@ if (!$_SESSION['step'])
 	echo "\t\t\tClick \"Next\" to begin.<br />&nbsp;\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td align='center' colspan='2' bgcolor='#DDDDDD'>\n";
-	echo "\t\t\t$setfont There are {$_SESSION['totalsteps']} questions in this survey.\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
 	echo "\t<form method='post'>\n";
 	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
 	echo "\t<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td align='center' colspan='2'>\n";
-
+	
 #	session_register("fieldarray");
 #	$_SESSION['step'] = $step; // session_register("step") causes really strange session behavior on PHP 4.3.0, Apache 2.0.43, WinXP
 #	session_register("totalsteps");
@@ -505,11 +498,28 @@ if (!$_SESSION['step'])
 	if ($_SESSION['totalsteps'] == "0")
 		{
 		//break out and crash if there are no questions!
+		echo "\t<tr>\n";
+		echo "\t\t<td align='center' colspan='2'>\n";
 		echo "$setfont<center><b>$sitename</b><br />\n<br />\n<b>This survey does not yet have any questions, and so cannot be accessed.</b><br />\n";
 		echo "<br />\nPlease contact $siteadminemail for information.<br /><br />\n";
-		echo "<a href=\"javascript:window.close()\">Close Window</a>\n";		
+		echo "<a href=\"javascript:window.close()\">Close Window</a>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "</table>\n";
+		echo "</body>\n</html>";
 		exit;
 		}
+	else
+		{
+		echo "\t<tr>\n";
+		echo "\t\t<td align='center' colspan='2' bgcolor='#DDDDDD'>\n";
+		echo "\t\t\t$setfont There are {$_SESSION['totalsteps']} questions in this survey.\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		}
+	
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center' colspan='2'>\n";
 	
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($arow = mysql_fetch_assoc($aresult)) {$arows[] = $arow;} // Get table output into array
@@ -539,13 +549,13 @@ if (!$_SESSION['step'])
 				$_SESSION['insertarray'][] = "F$fieldname".$abrow['code'];
 				$alsoother = "";
 				if ($abrow['other'] == "Y") {$alsoother = "Y";}
-				if ($arow['type'] == "P") 
+				if ($arow['type'] == "P")
 					{
 #					session_register("F$fieldname".$abrow['code']."comment");
 					$_SESSION['insertarray'][] = "F$fieldname".$abrow['code']."comment";	
 					}
 				}
-			if ($alsoother) 
+			if ($alsoother)
 				{
 #				session_register("F$fieldname"."other");
 				$_SESSION['insertarray'][] = "F$fieldname"."other";
@@ -593,7 +603,7 @@ else
 	$v = $t-1;
 	$u = $_SESSION['totalsteps'];
 	$chart = (($s-1)/$u*100);
-
+	
 	// GET AND SHOW GROUP NAME
 	$gdquery = "SELECT group_name, groups.description FROM groups, questions WHERE groups.gid=questions.gid and qid={$_SESSION['fieldarray'][$t][0]}";
 	$gdresult = mysql_query($gdquery);
@@ -607,7 +617,7 @@ else
 		echo "\t</tr>\n";
 		$groupdescription = $gdrow['description'];
 		}
-
+	
 	//if (($currentgroupname != $lastgroupname) && ($move != " << prev "))
 	if ($_SESSION['fieldarray'][$t][5] != $_SESSION['fieldarray'][$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev ")
 		{
@@ -1049,7 +1059,7 @@ else
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
 				break;
 			}	
-
+		
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
@@ -1059,8 +1069,8 @@ else
 		echo "\t\t\t</table>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
-
-
+		
+		
 		//SHOW HELP INFORMATION IF THERE IS ANY
 		$helpquery = "SELECT help FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
 		$helpresult = mysql_query($helpquery);
