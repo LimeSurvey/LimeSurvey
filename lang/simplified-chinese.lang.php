@@ -130,60 +130,53 @@ define("_CONFIRMATION_MESSAGE2", "一份新的回答被录入到您的问卷"); //NEW for 098r
 define("_CONFIRMATION_MESSAGE3", "点击下面的链接查看单个回答："); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "点击这里查看统计结果："); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
-						  ."This survey is anonymous.<br />"
-						  ."The record kept of your survey responses does not contain any "
-						  ."identifying information about you unless a specific question "
-						  ."in the survey has asked for this. If you have responded to a "
-						  ."survey that used an identifying token to allow you to access "
-						  ."the survey, you can rest assured that the identifying token "
-						  ."is not kept with your responses. It is managed in a seperate "
-						  ."database, and will only be updated to indicate that you have "
-						  ."(or haven't) completed this survey. There is no way of matching "
-						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9
+define("_PRIVACY_MESSAGE", "<b><i>隐私申明</i></b><br />"
+						  ."此问卷是匿名调查.<br />"
+						  ."除非某个具体问题问到相关信息，"
+						  ."您的回答记录不包括任何个人信息。"
+						  ."如果您接受了一个采用了身份令牌的问卷调查，"
+						  ."您可以放心身份令牌不会和您的回答一起被保存。"
+						  ."身份令牌由单独的数据库管理，仅用来更新您是否完成问卷调查的信息。"
+						  ."身份令牌与问卷调查的回答没有任何关联。"); //New for 0.98rc9
 
-define("_THEREAREXQUESTIONS", "There are {NUMBEROFQUESTIONS} questions in this survey."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
-define("_THEREAREXQUESTIONS_SINGLE", "There is 1 question in this survey."); //New for 0.98rc9 - singular version of above
+define("_THEREAREXQUESTIONS", "此问卷调查包括{NUMBEROFQUESTIONS}个问题。"); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
+define("_THEREAREXQUESTIONS_SINGLE", "此问卷调查包括1个问题。"); //New for 0.98rc9 - singular version of above
 
-define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
-define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
-						."Enter your details below, and an email containing the link to "
-						."participate in this survey will be sent immediately."); //NEW for 0.98rc9
-define ("_RG_EMAIL", "Email Address"); //NEW for 0.98rc9
-define ("_RG_FIRSTNAME", "First Name"); //NEW for 0.98rc9
-define ("_RG_LASTNAME", "Last Name"); //NEW for 0.98rc9
-define ("_RG_INVALIDEMAIL", "The email you used is not valid. Please try again.");//NEW for 0.98rc9
-define ("_RG_USEDEMAIL", "The email you used has already been registered.");//NEW for 0.98rc9
-define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registration Confirmation");//NEW for 0.98rc9
-define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in this survey.<br /><br />\n"
-								   ."An email has been sent to the address you provided with access details "
-								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+define ("_RG_REGISTER1", "您必须注册才能完成此问卷调查。"); //NEW for 0.98rc9
+define ("_RG_REGISTER2", "如果愿意，您可以注册参加此问卷调查。<br />\n"
+						."输入您的信息，我们将立刻发送一个包含参与此问卷调查链接的e-mail给您。"); //NEW for 0.98rc9
+define ("_RG_EMAIL", "E-mail地址"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "名"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "姓"); //NEW for 0.98rc9
+define ("_RG_INVALIDEMAIL", "您使用的e-mail无效，请重试。");//NEW for 0.98rc9
+define ("_RG_USEDEMAIL", "您使用的e-mail已经被注册。");//NEW for 0.98rc9
+define ("_RG_EMAILSUBJECT", "{SURVEYNAME}注册确认");//NEW for 0.98rc9
+define ("_RG_REGISTRATIONCOMPLETE", "感谢您注册参与此问卷调查。<br /><br />\n"
+								   ."我们已经发送了一个包含参与细节的e-mail到您提供的地址。请使用其中的链接进行问卷调查。<br /><br />\n"
+								   ."问卷调查管理者 {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Thank You<br /><br />"
-					   ."You have completed answering the questions in this survey.</b><br /><br />"
-					   ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
-define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
-					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
-					."through your responses."); //New for 0.98finalRC1
+define("_SM_COMPLETED", "<b>谢谢您！<br /><br />"
+					   ."您已经回答了此问卷调查的所有问题。</b><br /><br />"
+					   ."点击["._SUBMIT."]以完成调查并保存回答。"); //New for 0.98finalRC1
+define("_SM_REVIEW", "如果您想检查您的回答，并且/或者修改它们，"
+					."您可以点击[<< "._PREV."]按钮，然后查看您的回答。"); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following"); //New for 0.98finalRC1
-define("_PS_WRITE", "Please write your answer here"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "Please choose the appropriate response for each item"); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Please write your answer(s) here"); //New for 0.98finalRC1
-define("_PS_DATE", "Please enter a date"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Make a comment on your choice here"); //New for 0.98finalRC1
-define("_PS_RANKING", "Please number each box in order of preference from 1 to"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Submit Your Survey"); //New for 0.98finalRC1
-define("_PS_THANKYOU", "Thank you for completing this survey."); //New for 0.98finalRC1
-define("_PS_FAXTO", "Please fax your completed survey to:"); //New for 0.98finaclRC1
+define("_PS_CHOOSEONE", "请选择下列中<b>唯一</b>的一个项目"); //New for 0.98finalRC1
+define("_PS_WRITE", "请在此填写您的回答"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "请选择<b>所有</b>适合的项目"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "请选择所有适合的项目并提供解释意见"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "请为每一项目选择适合的回答"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "请在此填写您的回答"); //New for 0.98finalRC1
+define("_PS_DATE", "请填写日期"); //New for 0.98finalRC1
+define("_PS_COMMENT", "请在此解释您的选择"); //New for 0.98finalRC1
+define("_PS_RANKING", "请为每一项目按喜好排名从1到"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "提交您的问卷调查"); //New for 0.98finalRC1
+define("_PS_THANKYOU", "感谢您完成此问卷调查。"); //New for 0.98finalRC1
+define("_PS_FAXTO", "请将您完成的问卷传真到："); //New for 0.98finaclRC1
 
-define("_PS_CON_ONLYANSWER", "Only answer this question"); //New for 0.98finalRC1
-define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
-define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
-define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
-define("_PS_CON_OR", "or"); //New for 0.98finalRC2
+define("_PS_CON_ONLYANSWER", "仅回答此问题"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "如果您回答了"); //New for 0.98finalRC1
+define("_PS_CON_JOINER", "和"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "到问题"); //New for 0.98finalRC1
 ?>
