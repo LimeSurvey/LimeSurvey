@@ -292,17 +292,18 @@ while ($degrow = mysql_fetch_array($degresult))
 				$dearesult = mysql_query($deaquery);
 				$deacount=mysql_num_rows($dearesult);
 				if ($deqrow['other'] == "Y") {$deacount++;}
-				if ($deacount > $dcols)
+				if ($dcols > 0 && $deacount > $dcols)
 					{
-					$columns=$deacount/$dcols;
-					$spacing=sprintf("%02d", 100/$columns);
+				    $width=sprintf("%0d", 100/$dcols);
+					$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+					$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
 					$upto=0;
-					echo "<table><tr><td valign='top'>$setfont\n";
+					echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
 					while ($dearow = mysql_fetch_array($dearesult))
 						{
-						if ($upto == $dcols) 
+						if ($upto == $maxrows) 
 							{
-						    echo "</td><td valign='top'>$setfont";
+						    echo $divider;
 							$upto=0;
 							}
 						echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
@@ -364,17 +365,18 @@ while ($degrow = mysql_fetch_array($degresult))
 				$mearesult = mysql_query($meaquery);
 				$meacount = mysql_num_rows($mearesult);
 				if ($deqrow['other'] == "Y") {$meacount++;}
-				if ($meacount > $dcols)
+				if ($dcols > 0 && $meacount > $dcols)
 					{
-					$columns=$deacount/$dcols;
-					$spacing=sprintf("%02d", 100/$columns);
+				    $width=sprintf("%0d", 100/$dcols);
+					$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+					$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
 					$upto=0;
-					echo "<table><tr><td valign='top'>$setfont\n";
-				while ($mearow = mysql_fetch_array($mearesult))
-					{
-						if ($upto == $dcols) 
+					echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+					while ($mearow = mysql_fetch_array($mearesult))
+						{
+						if ($upto == $maxrows) 
 							{
-						    echo "</td><td valign='top'>$setfont";
+						    echo $divider;
 							$upto=0;
 							}
 						echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />{$mearow['answer']}<br />\n";

@@ -878,6 +878,16 @@ elseif ($action == "edit" || $action == "editsaved")
 					break;
 
 				case "M": //MULTIPLE OPTIONS checkbox
+					$qidattributes=getQuestionAttributes($fnames[$i][7]);
+					if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+						{
+					    $dcols=$displaycols['value'];
+						}
+					else
+						{
+						$dcols=0;
+						}
+					
 					while ($fnames[$i][3] == "M" && $question != "" && $question == $fnames[$i][2])
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
@@ -1786,18 +1796,59 @@ else
 					unset($answers);
 					break;
 				case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
+					$qidattributes=getQuestionAttributes($deqrow['qid']);
+					if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+						{
+					    $dcols=$displaycols['value'];
+						}
+					else
+						{
+						$dcols=0;
+						}
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = mysql_query($meaquery);
-					while ($mearow = mysql_fetch_array($mearesult))
+					$meacount = mysql_num_rows($mearesult);
+					if ($deqrow['other'] == "Y") {$meacount++;}
+					if ($dcols > 0 && $meacount > $dcols)
 						{
-						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
-						if ($mearow['default_value'] == "Y") {echo " checked";}
-						echo " />{$mearow['answer']}<br />\n";
+					    $width=sprintf("%0d", 100/$dcols);
+						$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+						$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+						$upto=0;
+						echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+						while ($mearow = mysql_fetch_array($mearesult))
+							{
+							if ($upto == $maxrows) 
+								{
+							    echo $divider;
+								$upto=0;
+								}
+							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='$fieldname{$mearow['code']}' value='Y'";
+							if ($mearow['default_value'] == "Y") {echo " checked";}
+							echo " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
+							$upto++;
+							}
+						if ($deqrow['other'] == "Y")
+							{
+							echo "\t\t\t"._OTHER." <input type='text' name='$fieldname";
+							echo "other' />\n";
+							}
+						echo "</td></tr></table>\n";
+					    //Let's break the presentation into columns.
 						}
-					if ($deqrow['other'] == "Y")
+					else 
 						{
-						echo "\t\t\tOther: <input type='text' name='$fieldname";
-						echo "other' />\n";
+						while ($mearow = mysql_fetch_array($mearesult))
+							{
+							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='$fieldname{$mearow['code']}' value='Y'";
+							if ($mearow['default_value'] == "Y") {echo " checked";}
+							echo " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
+							}
+						if ($deqrow['other'] == "Y")
+							{
+							echo "\t\t\t"._OTHER." <input type='text' name='$fieldname";
+							echo "other' />\n";
+							}
 						}
 					break;
 				case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
