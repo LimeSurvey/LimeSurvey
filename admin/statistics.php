@@ -131,9 +131,11 @@ foreach ($filters as $flt)
 			echo "&nbsp;<img src='speaker.jpg' align='bottom' alt='$flt[5] [$row[1]]' onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
 			echo "<br />\n";
 			echo "\t\t\t\t\t<font size='1'>Date (YYYY-MM-DD) equals:<br />\n";
-			echo "\t\t\t\t\t<input type='text' ".substr($slstyle2, 0, -13) ."; width:80'><br />\n";
+			$myfield3="$myfield2=";
+			echo "\t\t\t\t\t<input name='$myfield3' type='text' value='$_POST[$myfield3]' ".substr($slstyle2, 0, -13) ."; width:80'><br />\n";
 			echo "\t\t\t\t\t&nbsp;&nbsp;OR between:<br />\n";
-			echo "\t\t\t\t\t<input type='text' ".substr($slstyle2, 0, -13) ."; width:65'> & <input type='text' ".substr($slstyle2, 0, -13) ."; width:65'>\n";
+			$myfield4="$myfield2<"; $myfield5="$myfield2>";
+			echo "\t\t\t\t\t<input name='$myfield4' value='$_POST[$myfield4]' type='text' ".substr($slstyle2, 0, -13) ."; width:65'> & <input  name='$myfield5' value='$_POST[$myfield5]' type='text' ".substr($slstyle2, 0, -13) ."; width:65'>\n";
 			break;
 		case "5": // 5 point choice
 			for ($i=1; $i<=5; $i++)
@@ -265,6 +267,8 @@ foreach ($filters as $flt)
 echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 echo "\t\t</td></tr>\n";
 echo "\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n";
+echo "\t\t\t<img src='help.gif' align='left' alt='Statistics Help' onClick=\"window.open('instructions.html#statistics', '_blank')\">\n";
+echo "\t\t\t<img src='help.gif' align='right' alt='Statistics Help' onClick=\"window.open('instructions.html#statistics', '_blank')\">\n";
 echo "\t\t\t<input $btstyle type='submit' value='View Stats'>\n";
 echo "\t\t\t<input $btstyle type='button' value='Clear' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n";
 echo "\t\t<br />&nbsp;\n\t\t</td></tr>\n";
@@ -284,7 +288,7 @@ if ($_POST['display'])
 	foreach ($postvars as $pv) 
 		{
 		$firstletter=substr($pv,0,1);
-		if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $pv != "summary") //pull out just the fieldnames
+		if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $pv != "summary") //pull out just the fieldnames
 			{
 			$thisquestion = "$pv IN (";
 			foreach ($$pv as $condition)
@@ -316,6 +320,25 @@ if ($_POST['display'])
 		elseif (substr($pv, 0, 1) == "T" && $_POST[$pv] != "")
 			{
 			$selects[]=substr($pv, 1, strlen($pv))." like '%".$_POST[$pv]."%'";
+			}
+		elseif (substr($pv, 0, 1) == "D" && $_POST[$pv] != "")
+			{
+			if (substr($pv, -1, 1) == "=")
+				{
+				$selects[] = substr($pv, 1, strlen($pv)-2)." = '".$_POST[$pv]."'";
+				}
+			else
+				{
+				if (substr($pv, -1, 1) == "<")
+					{
+					$selects[]=substr($pv, 1, strlen($pv)-2) . " > '".$_POST[$pv]."'";
+					}
+				if (substr($pv, -1, 1) == ">")
+					{
+					$selects[]=substr($pv, 1, strlen($pv)-2) . " < '".$_POST[$pv]."'";
+					}
+				}
+			
 			}
 		}
 	// 2: Do SQL query
