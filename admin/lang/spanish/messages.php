@@ -256,6 +256,7 @@ define(_MESSAGE, "Mensaje"); //For emails
 define(_RELOADING, "Recargando la pantalla. Favor de esperar.");
 define(_ADD, "Agregar");
 define(_UPDATE, "Actualizar");
+define(_BROWSE, "Browse"); //New in 098rc5
 
 //SURVEY STATUS MESSAGES (new in 0.98rc3)
 define(_SS_NOGROUPS, "N&uacute;mero de grupos en la encuesta:"); //NEW for release 0.98rc3
