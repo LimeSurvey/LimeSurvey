@@ -653,29 +653,29 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 	}
 echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
-echo "\n\n<!-- INPUT NAMES -->\n";
-echo "\t<input type='hidden' name='fieldnames' value='";
-echo implode("|", $inputnames);
-echo "'>\n";
+echo "\n\n<!-- INPUT NAMES -->\n"
+	."\t<input type='hidden' name='fieldnames' value='"
+	.implode("|", $inputnames)
+	."'>\n";
 
 foreach(file("$thistpl/welcome.pstpl") as $op)
 	{
 	echo templatereplace($op);
 	}
 
-echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
-echo "\t<script type='text/javascript'>\n";
-echo "\t<!--\n";
-echo "\t\tfunction checkconditions(value, name, type)\n";
-echo "\t\t\t{\n";
-if (is_array($conditions))
+echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
+	."\t<script type='text/javascript'>\n"
+	."\t<!--\n"
+	."\t\tfunction checkconditions(value, name, type)\n"
+	."\t\t\t{\n";
+if (isset($conditions) && is_array($conditions))
 	{
 	if (!isset($endzone)) {$endzone="";}
-	echo "\t\t\tif (type == 'radio')\n";
-	echo "\t\t\t\t{\n";
-	echo "\t\t\t\tvar hiddenformname='java'+name;\n";
-	echo "\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n";
-	echo "\t\t\t\t}\n";
+	echo "\t\t\tif (type == 'radio')\n"
+		."\t\t\t\t{\n"
+		."\t\t\t\tvar hiddenformname='java'+name;\n"
+		."\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n"
+		."\t\t\t\t}\n";
 	$java="";
 	$cqcount=1;
 	foreach ($conditions as $cd)
@@ -716,16 +716,16 @@ if (is_array($conditions))
 			}
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
 			{
-			$endzone = "))\n";
-			$endzone .= "\t\t\t\t{\n";
-			$endzone .= "\t\t\t\tdocument.getElementById('$cd[0]').style.display='';\n";
-			$endzone .= "\t\t\t\tdocument.getElementById('display$cd[0]').value='on';\n";
-			$endzone .= "\t\t\t\t}\n";
-			$endzone .= "\t\t\telse\n";
-			$endzone .= "\t\t\t\t{\n";
-			$endzone .= "\t\t\t\tdocument.getElementById('$cd[0]').style.display='none';\n";
-			$endzone .= "\t\t\t\tdocument.getElementById('display$cd[0]').value='';\n";
-			$endzone .= "\t\t\t\t}\n";
+			$endzone = "))\n"
+					 . "\t\t\t\t{\n"
+					 . "\t\t\t\tdocument.getElementById('$cd[0]').style.display='';\n"
+					 . "\t\t\t\tdocument.getElementById('display$cd[0]').value='on';\n"
+					 . "\t\t\t\t}\n"
+					 . "\t\t\telse\n"
+					 . "\t\t\t\t{\n"
+					 . "\t\t\t\tdocument.getElementById('$cd[0]').style.display='none';\n"
+					 . "\t\t\t\tdocument.getElementById('display$cd[0]').value='';\n"
+					 . "\t\t\t\t}\n";
 			$cqcount++;
 			}
 		$oldq = $cd[0]; //Update oldq for next loop
@@ -734,9 +734,9 @@ if (is_array($conditions))
 	$java .= $endzone;
 	}
 echo $java;
-echo "\t\t\t}\n";
-echo "\t//-->\n";
-echo "\t</script>\n\n";
+echo "\t\t\t}\n"
+	."\t//-->\n"
+	."\t</script>\n\n";
 
 foreach ($_SESSION['grouplist'] as $gl)
 	{

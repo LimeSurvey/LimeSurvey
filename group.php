@@ -704,7 +704,7 @@ echo "\t<script type='text/javascript'>\n";
 echo "\t<!--\n";
 echo "\t\tfunction checkconditions(value, name, type)\n";
 echo "\t\t\t{\n";
-if (is_array($conditions))
+if (isset($conditions) && is_array($conditions))
 	{
 	if (!isset($endzone)) {$endzone="";}
 	echo "\t\t\tif (type == 'radio')\n";
@@ -769,11 +769,11 @@ if (is_array($conditions))
 		}
 	$java .= $endzone;
 	}
-echo $java;
-echo "\t\t\t}\n";
-echo "\t//-->\n";
-echo "\t</script>\n\n";
-echo "\n\n<!-- START THE GROUP -->\n";
+if (isset($java)) {echo $java;}
+echo "\t\t\t}\n"
+	."\t//-->\n"
+	."\t</script>\n\n"
+	."\n\n<!-- START THE GROUP -->\n";
 foreach(file("$thistpl/startgroup.pstpl") as $op)
 	{
 	echo "\t".templatereplace($op);
