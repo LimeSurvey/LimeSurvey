@@ -97,7 +97,6 @@ while ($degrow = mysql_fetch_array($degresult))
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	$gid = $degrow['gid'];
-	echo "\t<form action='dataentry.php' name='addsurvey'>\n";
 	//Alternate bgcolor for different groups
 	if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
 	else {$bgc = "#EEEEEE";}
@@ -108,10 +107,13 @@ while ($degrow = mysql_fetch_array($degresult))
 		$qid = $deqrow['qid'];
 		$fieldname = "$sid"."X"."$gid"."X"."$qid";
 		echo "\t<tr bgcolor='$bgc'>\n";
-		echo "\t\t<td valign='top' width='1%'>$setfont{$deqrow['title']}</td>\n";
-		echo "\t\t<td valign='top' align='right' width='30%'>\n";
+		echo "\t\t<td valign='top' align='left' colspan='3'>\n";
 		echo "\t\t\t<b>$setfont{$deqrow['question']}</b>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
 		//DIFFERENT TYPES OF DATA FIELD HERE
+		echo "\t<tr bgcolor='$bgc'>\n";
+		echo "\t\t<td width='15%' valign='top'>\n";
 		if ($deqrow['help'])
 			{
 			$hh = $deqrow['help'];
@@ -294,7 +296,6 @@ echo "\t\t\t\t</tr>\n";
 echo "\t\t\t</table>\n";
 echo "\t\t</td>\n";
 echo "\t</tr>\n";
-echo "\t</form>\n";
 echo "</table>\n";
 echo "</body>\n</html>";
 
