@@ -137,6 +137,7 @@ define(_EMAIL, "Email Address"); //FOR LATER RELEASE
 //GENERAL WORDS AND PHRASES
 define(_YES, "Yes");
 define(_NO, "No");
+define(_CANCEL, "Cancel");
 define(_ERROR, "Error");
 define(_REQ, "*Required");
 define(_ADDS, "Add Survey");
@@ -173,4 +174,22 @@ define(_UC_TURNON_MESSAGE2, "It is highly recommended that once your security sy
 define(_UC_INITIALISE, "Initialise Security");
 define(_UC_NOUSERS, "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.");
 define(_UC_TURNOFF, "Turn Off Security");
+
+define(_AC_MULTI_NOANSWER, "This question is a multiple answer type question but has no answers.");
+define(_AC_NOTYPE, "This question does not have a question 'type' set.");
+define(_AC_CON_OUTOFORDER, "This question has a condition set, however the condition is based on a question that appears after it.");
+define(_AC_FAIL, "Survey does not pass consistency check");
+define(_AC_PROBS, "The following problems have been found:");
+define(_AC_CANNOTACTIVATE, "The survey cannot be activated until these problems have been resolved");
+define(_AC_READCAREFULLY, "READ THIS CAREFULLY BEFORE PROCEEDING");
+define(_AC_ACTIVATE_MESSAGE1, "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.");
+define(_AC_ACTIVATE_MESSAGE2, "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>");
+define(_AC_ACTIVATE_MESSAGE3, "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>");
+define(_AC_ACTIVATE_MESSAGE4, "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a seperate archived table.");
+define(_AC_ACTIVATE, "Activate");
+define(_AC_ACTIVATED, "Survey has been activated. Results table has been succesfully created.");
+define(_AC_NOTACTIVATED, "Survey could not be actived.");
+define(_AC_NOTPRIVATE, "This is not an anonymous survey. A token table must also be created.");
+define(_AC_CREATETOKENS, "Initialise Tokens");
+define(_AC_SURVEYACTIVE, "This survey is now active, and responses can be recorded.");
 ?>
