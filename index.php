@@ -256,6 +256,22 @@ switch ($thissurvey['format'])
 		require_once("question.php");
 	}
 
+function getTokenData($sid, $token)
+	{
+	global $dbprefix;
+	$query = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token=$token";
+	$result = mysql_query($query) or die("Couldn't get token info in getTemplateData()<br />".$query."<br />".mysql_error());
+	while($row=mysql_fetch_array($result))
+		{
+		$thistoken=array("firstname"=>$row['firstname'],
+						 "lastname"=>$row['lastname'],
+						 "email"=>$row['email'],
+						 "attribute_1"=>$row['attribute_1'],
+						 "attribute_2"=>$row['attribute_2']);
+		} // while
+	return $thistoken;
+	}
+
 function templatereplace($line)
 	{
 	global $thissurvey;
@@ -330,6 +346,16 @@ function templatereplace($line)
 	$line=str_replace("{PRIVACYMESSAGE}", _PRIVACY_MESSAGE, $line);
 	$line=str_replace("{CLEARALL}", $clearall, $line);
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
+	
+	if (isset($_SESSION['thistoken']))
+		{
+	    $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
+		$line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
+		$line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
+		$line=str_replace("{TOKEN:ATTRIBUTE_1}", $_SESSION['thistoken']['attribute_1'], $line);
+		$line=str_replace("{TOKEN:ATTRIBUTE_2}", $_SESSION['thistoken']['attribute_2'], $line);
+		}
+
 	return $line;
 	}
 
@@ -1004,7 +1030,7 @@ function buildsurveysession()
 	unset($_SESSION['grouplist']);
 	unset($_SESSION['fieldarray']);
 	unset($_SESSION['insertarray']);
-	
+	unset($_SESSION['thistoken']);
 	//1. SESSION VARIABLE: grouplist
 	//A list of groups in this survey, ordered by group name.
 
@@ -1080,7 +1106,13 @@ function buildsurveysession()
 		$_SESSION['token'] = returnglobal('token');
 		$_SESSION['insertarray'][]= "token";
 		}
-
+	
+	if ($tokensexist == 1 && $thissurvey['private'] == "N") 
+		{
+		//Gather survey data for "non anonymous" surveys, for use in presenting questions
+	    $_SESSION['thistoken']=getTokenData($sid, returnglobal('token'));
+		}
+	
 	foreach ($arows as $arow)
 		{
 		//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
