@@ -299,15 +299,15 @@ elseif ($action == "edit")
 	usort($fnrows, 'CompareGroupThenTitle');
 	
 	// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist) 
-	$fnames[] = array("id", "id", "id", "id", "id", "id", "id");
+	$fnames[] = array("id", "id", "id", "id", "id", "id", "id", "");
 
 	if ($private == "N") //show token info if survey not private
 		{
-		$fnames[] = array ("token", "Token ID", "Token", "token", "TID", "");
+		$fnames[] = array ("token", "Token ID", "Token", "token", "TID", "", "");
 		}
 	if ($datestamp == "Y")
 		{
-		$fnames[] = array ("datestamp", "Date Stamp", "Datestamp", "datestamp", "datestamp", "");
+		$fnames[] = array ("datestamp", "Date Stamp", "Datestamp", "datestamp", "datestamp", "", "");
 		}
 
 	foreach ($fnrows as $fnrow)
@@ -358,23 +358,23 @@ elseif ($action == "edit")
 			{
 			if (!isset($fnrrow)) {$fnrrow=array("code"=>"", "answer"=>"");}
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-			//$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "", "", "", "");
+			if ($fnrow['type'] == "L" && $fnrow['other'] =="Y")
+				{
+			    $fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
+				}
 			}
-		//$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}");
-		//echo "$field | $ftitle | $fquestion<br />\n";
 		}
-	//echo "<pre>"; print_r($fnames); echo "</pre>"; //Debugging info
 	$nfncount = count($fnames)-1;
 
-	foreach ($fnames as $fnm)
-		{
-		echo "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6]";
-		if (isset($fnm[7])){echo $fnm[7];}
-		echo ",";
-		if (isset($fnm[8])) {echo $fnm[8];}
-		echo " -->\n";
-		}
-	
+//	foreach ($fnames as $fnm)
+//		{
+		//echo "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6]";
+		//if (isset($fnm[7])){echo $fnm[7];}
+		//echo ",";
+		//if (isset($fnm[8])) {echo $fnm[8];}
+		//echo " -->\n";
+//		}
+
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
@@ -438,20 +438,28 @@ elseif ($action == "edit")
 						."\t\t\t<select>\n";
 					break;
 				case "L": //LIST drop-down/radio-button list
-					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
-					$lresult = mysql_query($lquery);
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
-						."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">"._PLEASECHOOSE."..</option>\n";
-					
-					while ($llrow = mysql_fetch_array($lresult))
+					if (substr($fnames[$i][0], -5) == "other")
 						{
-						echo "\t\t\t\t<option value='{$llrow['code']}'";
-						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
-						echo ">{$llrow['answer']}</option>\n";
+						echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 						}
-					echo "\t\t\t</select>\n";
+					else
+						{
+						$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
+						$lresult = mysql_query($lquery);
+						echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+							."\t\t\t\t<option value=''";
+						if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+						echo ">"._PLEASECHOOSE."..</option>\n";
+						
+						while ($llrow = mysql_fetch_array($lresult))
+							{
+							echo "\t\t\t\t<option value='{$llrow['code']}'";
+							if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
+							echo ">{$llrow['answer']}</option>\n";
+							}
+						echo "\t\t\t</select>\n";
+						}
 					break;
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
@@ -573,6 +581,7 @@ elseif ($action == "edit")
 									}
 								}
 							}
+						if (!isset($ranklist)) {$ranklist="";}
 						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$j:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$j' id='RANK$j'";
 						if ($currentvalues[$k])
 							{
@@ -596,7 +605,7 @@ elseif ($action == "edit")
 							}
 						$ranklist .= " id='cut_$thisqid$j' name='cut$j' onClick=\"deletethis(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"><br />\n\n";
 						}
-					
+					if (!isset($choicelist)) {$choicelist="";}
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
 						{
@@ -606,7 +615,6 @@ elseif ($action == "edit")
 							}
 						}
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
-	
 					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
 						."\t\t\t\t<tr>\n"
 						."\t\t\t\t</tr>\n"
@@ -624,7 +632,9 @@ elseif ($action == "edit")
 						."\t\t\t\t</tr>\n"
 						."\t\t\t</table>\n"
 						."\t\t\t<input type='hidden' name='multi' value='$anscount' />\n"
-						."\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
+						."\t\t\t<input type='hidden' name='lastfield' value='";
+					if (isset($multifields)) {echo $multifields;}
+					echo "' />\n";
 					$choicelist="";
 					$ranklist="";
 					unset($answers);
@@ -654,8 +664,8 @@ elseif ($action == "edit")
 					echo "<table>\n";
 					while ($fnames[$i][3] == "P")
 						{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
-						if (substr($fnames[$i][0], -7) == "comment")
+						$thefieldname=$fnames[$i][0];
+						if (substr($thefieldname, -7) == "comment")
 							{
 							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value='"
 								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></td>\n"
@@ -811,7 +821,7 @@ elseif ($action == "edit")
 				case "F": //ARRAY (Flexible Labels)
 					echo "<table>\n";
 					$thisqid=$fnames[$i][7];
-					while ($fnames[$i][7] == $thisqid)
+					while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
@@ -875,20 +885,22 @@ elseif ($action == "update")
 		if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
+			if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
 			if (get_magic_quotes_gpc())
 				//{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
-				{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
+				{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
 			else
 				{
 				if (phpversion() >= "4.3.0")
 					{
-					$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+					$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
 					}
 				else
 					{
-					$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+					$updateqr .= "`$fieldname` = '" . mysql_escape_string($thisvalue) . "', \n";
 					}
 				}
+			unset($thisvalue);
 			}
 		elseif ($irow['type'] == "O")
 			{
@@ -940,42 +952,46 @@ elseif ($action == "update")
 			while ($i2row = mysql_fetch_array($i2result))
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-				$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";
+				if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
+				$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";
 				if ($i2row['other'] == "Y") {$otherexists = "Y";}
 				if ($irow['type'] == "P")
 					{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
 					if (get_magic_quotes_gpc())
-						{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
+						{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
 					else
 						{
 						if (phpversion() >= "4.3.0")
 							{
-							$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+							$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
 							}
 						else
 							{
-							$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+							$updateqr .= "`$fieldname` = '" . mysql_escape_string($thisvalue) . "', \n";
 							}
 						}
 					}
+				unset($thisvalue);
 				}
 			if ($otherexists == "Y") 
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
+				if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
 				if (get_magic_quotes_gpc())
-					{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
+					{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
 				else
 					{
 					if (phpversion() >= "4.3.0")
 						{
-						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
 						}
 					else
 						{
-						$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+						$updateqr .= "`$fieldname` = '" . mysql_escape_string($thisvalue) . "', \n";
 						}
 					}
+				unset($thisvalue);
 				}
 			}	
 		}
