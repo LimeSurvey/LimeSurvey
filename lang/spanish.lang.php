@@ -72,12 +72,12 @@ define("_SUBMIT", "enviar");
 define("_CHOOSEONE", "Favor de elijir uno de los siguientes");
 define("_ENTERCOMMENT", "Favor de teclear su comentario aquí");
 define("_NUMERICAL_PS", "Sólo se aceptan números en este campo");
-define("_CLEARALL", "Salir y Limpiar Encuesta");
+define("_CLEARALL", "Salir y Aclarar la Encuesta"); //Better word choice from John Krikorian
 define("_MANDATORY", "Esta pregunta es requerida");
 define("_MANDATORY_PARTS", "Favor de completar todas las partes");
 define("_MANDATORY_CHECK", "Favor de seleccionar al menos un elemento");
 define("_MANDATORY_RANK", "Favor de clasificar todos los elementos");
-define("_MANDATORY_POPUP", "Unas o más preguntas obligatorias no se han contestado. Usted no puede proceder hasta que se han terminado éstos"); //NEW in 0.98rc4
+define("_MANDATORY_POPUP", "Unas o más preguntas obligatorias no se han contestado. Usted no puede proceder hasta que se hayan terminado éstos"); //NEW in 0.98rc4 - Mod by John Krikorian
 define("_DATEFORMAT", "Formato: AAAA-MM-DD");
 define("_DATEFORMATEG", "(pej: 2003-12-25 para Navidad)");
 define("_REMOVEITEM", "Eliminar este elemento");
@@ -95,7 +95,7 @@ define("_ANSCLEAR", "Respuestas quitadas");
 define("_RESTART", "Reiniciar la Encuesta");
 define("_CLOSEWIN_PS", "Cerrar esta Ventana");
 define("_CONFIRMCLEAR", "¿Está seguro de eliminar todas sus respuestas?");
-define("_EXITCLEAR", "Salir y Limpiar la Encuesta");
+define("_EXITCLEAR", "Salir y Aclarar la Encuesta"); //Mod by John Krikorian
 //From QUESTION.PHP
 define("_BADSUBMIT1", "No se pueden enviar los resultados - no hay resultados por enviar.");
 define("_BADSUBMIT2", "Este error puede ocurrir si envió sus respuestas y presionó 'renovar' en su navegador. En este caso, sus respuestas ya fueron guardadas.");
@@ -132,20 +132,12 @@ define("_CONFIRMATION_MESSAGE2", "Una nueva respuesta fue incorporada para su ex
 define("_CONFIRMATION_MESSAGE3", "Chasque el acoplamiento siguiente para ver la respuesta individual:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Estadística de la visión chascando aquí:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
-						  ."This survey is anonymous.<br />"
-						  ."The record kept of your survey responses does not contain any "
-						  ."identifying information about you unless a specific question "
-						  ."in the survey has asked for this. If you have responded to a "
-						  ."survey that used an identifying token to allow you to access "
-						  ."the survey, you can rest assured that the identifying token "
-						  ."is not kept with your responses. It is managed in a seperate "
-						  ."database, and will only be updated to indicate that you have "
-						  ."(or haven't) completed this survey. There is no way of matching "
-						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9
+define("_PRIVACY_MESSAGE", "<b><i>Una nota sobre privacidad.</i></b><br />"
+        ."Este examen es anónimo.<br />"
+        ."No se guardará ninguna información sobre usted."); //New for 0.98rc9 - Translation by John Krikorian
 
-define("_THEREAREXQUESTIONS", "There are {NUMBEROFQUESTIONS} questions in this survey."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
-define("_THEREAREXQUESTIONS_SINGLE", "There is 1 question in this survey."); //New for 0.98rc9 - singular version of above
+define("_THEREAREXQUESTIONS", "Hay {NUMBEROFQUESTIONS} preguntas en este examen."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count. - Translation by John Krikorian
+define("_THEREAREXQUESTIONS_SINGLE", "Hay una pregunta en este examen."); //New for 0.98rc9 - singular version of above - Translation by John Krikorian
 
 define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
 define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
