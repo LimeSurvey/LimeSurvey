@@ -112,7 +112,7 @@ elseif ($action == "delgroup")
 elseif ($action == "delgroupall")
 	{
 	if (!isset($gid)) {returnglobal('gid');}
-	$query = "SELECT qid FROM {$dbprefix}groups, {$dbprefix}questions WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid";
+	$query = "SELECT qid FROM {$dbprefix}groups, {$dbprefix}questions WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid AND {$dbprefix}groups.gid=$gid";
 	if ($result = mysql_query($query))
 		{
 		$qtodel=mysql_num_rows($result);
