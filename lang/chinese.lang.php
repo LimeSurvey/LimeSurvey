@@ -122,9 +122,9 @@ define("_SURVEYEXPIRED", "本問卷已停用.");
 
 define("_SURVEYCOMPLETE", "您已完成本回卷"); //NEW FOR 0.98rc6
 
-
 define("_INSTRUCTION_LIST", "請選擇一項"); //NEW for 098rc3
 define("_INSTRUCTION_MULTI", "可選多個答案"); //NEW for 098rc3
+
 define("_CONFIRMATION_MESSAGE1", "已送出問卷"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "恭喜您！您收到一份剛完成的問卷"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Click 這連結查看個別的問卷內容:"); //NEW for 098rc5
