@@ -117,7 +117,7 @@ if ($questionscount > 0)
 		else {$shortquestion=$rows['question'];}
 		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C")
 			{
-			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY answer";
+			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".mysql_error());
 			while ($arows = mysql_fetch_array($aresult))
 				{
@@ -150,7 +150,7 @@ if ($questionscount > 0)
 			}
 		elseif ($rows['type'] == "R")
 			{
-			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY answer";
+			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 			$acount=mysql_num_rows($aresult);
 			while ($arow=mysql_fetch_array($aresult))
@@ -192,7 +192,7 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
 					break;
 				default:
-					$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY answer";
+					$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
 					$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 					while ($arows=mysql_fetch_array($aresult))
 						{
