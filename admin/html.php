@@ -148,7 +148,7 @@ if ($qid)
 			$questionsummary .= getanswers();
 			$questionsummary .= "\n\t\t</select>\n\t</td></tr>\n";
 			}
-		if ($qrrow['type'] == "M" or $eqrow['type'] == "P")
+		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
 			$questionsummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Other?</b></font></td>\n\t<td>$setfont{$qrrow['other']}</td></tr>\n";
 			}
