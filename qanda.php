@@ -89,13 +89,13 @@ switch ($ia[4])
 	case "5": //5 POINT CHOICE radio-buttons
 		for ($fp=1; $fp<=5; $fp++)
 			{
-			$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' <id='$ia[1]$fp' value='$fp'";
+			$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]$fp' value='$fp'";
 			if ($_SESSION[$ia[1]] == $fp) {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]$fp' class='answertext'>$fp</label>\n";
 			}
 		if ($ia[6] != "Y") // Add "No Answer" option if question is not mandatory
 			{
-			$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' <id='NoAnswer' value=''";
+			$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
 			if (!$_SESSION[$ia[1]]) {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='NoAnswer'>"._NOTAPPLICABLE."</label>\n";
 			}
