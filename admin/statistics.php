@@ -501,8 +501,9 @@ if ($_POST['summary'])
 			$query = "SELECT count({$_POST['summary']}) FROM survey_$sid WHERE {$_POST['summary']} = '$al[0]'";
 			//echo $query; //debugging line
 			}
-		if ($sql) {$query .= " AND $sql";}
+		if ($sql != "NULL") {$query .= " AND $sql";}
 		$result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
+		echo "\n<!-- ($sql): $query -->\n\n";
 		while ($row=mysql_fetch_row($result))
 			{
 			if ($al[0] == "") {$fname="No Answer";} else {$fname="$al[1] ($al[0])";}
