@@ -37,7 +37,7 @@ $sid = $_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
 $gid = $_GET['gid']; if (!$gid) {$gid=$_POST['gid'];}
 $qid = $_GET['qid']; if (!$qid) {$qid=$_POST['qid'];}
 $code = $_GET['code']; if (!$code) {$code=$_POST['code'];}
-$activate = $_GET['action']; if (!$activate) {$active=$_POST['action'];}
+$action = $_GET['action']; if (!$action) {$action=$_POST['action'];}
 $ok = $_GET['ok']; if (!$ok) {$ok = $_POST['ok'];}
 $user = $_GET['user']; if (!$user) {$user = $_POST['user'];}
 
