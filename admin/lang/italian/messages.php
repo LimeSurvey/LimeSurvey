@@ -592,4 +592,21 @@ define("_PS_CHECKDBINTEGRITY", "Check PHPSurveyor Data Integrity"); //New with 0
 define("_NT_NONE", "Nessuna notifica del email"); //New with 098rc5
 define("_NT_SINGLE", "Notifica di base del email"); //New with 098rc5
 define("_NT_RESULTS", "Trasmetta la notifica del email con i codici di risultato"); //New with 098rc5
+
+//CONDITIONS TRANSLATIONS
+define("_CD_CONDITIONDESIGNER", "Condition Designer"); //New with 098rc9
+define("_CD_ONLYSHOW", "Only show question {QID} IF"); //New with 098rc9 - {QID} is repleaced leave there
+define("_CD_AND", "AND"); //New with 098rc9
+define("_CD_COPYCONDITIONS", "Copy Conditions"); //New with 098rc9
+define("_CD_CONDITION", "Condition"); //New with 098rc9
+define("_CD_ADDCONDITION", "Add Condition"); //New with 098rc9
+define("_CD_EQUALS", "Equals"); //New with 098rc9
+define("_CD_COPYRUSURE", "Are you sure you want to copy these condition(s) to the questions you have selected?"); //New with 098rc9
+define("_CD_NODIRECT", "You cannot run this script directly."); //New with 098rc9
+define("_CD_NOSID", "You have not selected a Survey."); //New with 098rc9
+define("_CD_NOQID", "You have not selected a Question."); //New with 098rc9
+define("_CD_DIDNOTCOPYQ", "Did not copy questions"); //New with 098rc9
+define("_CD_NOCONDITIONTOCOPY", "No condition selected to copy from"); //New with 098rc9
+define("_CD_NOQUESTIONTOCOPYTO", "No question selected to copy condition to"); //New with 098rc9
+
 ?>
