@@ -124,7 +124,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	{
 	//SHOW HEADER
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n";
-	if (!$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
+	if (!isset($_POST['sql']) || !$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
 	echo "</table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n";
 	
@@ -196,7 +196,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE ";
-	if ($_POST['sql'])
+	if (isset($_POST['sql']) && $_POST['sql'])
 		{
 		if (get_magic_quotes_gpc) {$idquery .= stripslashes($_POST['sql']);}
 		else {$idquery .= "{$_POST['sql']}";}
@@ -246,7 +246,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		."<table width='99%' align='center'>\n"
 		."\t<tr>\n"
 		."\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
-	if ($_POST['sql']) {echo "\t\t\t<input type='submit' $btstyle value='Close Window' onClick=\"window.close();\" />\n";}
+	if (isset($_POST['sql']) && $_POST['sql']) {echo "\t\t\t<input type='submit' $btstyle value='Close Window' onClick=\"window.close();\" />\n";}
 	echo "\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n";
