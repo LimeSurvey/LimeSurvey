@@ -358,7 +358,7 @@ if ($qid)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<b>"._QL_HELP."</b></font></td>\n\t<td>$setfont{$qrrow['help']}</td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}";
-		if ($qrrow['type'] == "F") {$questionsummary .= " (LID: {$qrrow['lid']})";}
+		if ($qrrow['type'] == "F") {$questionsummary .= " (LID: {$qrrow['lid']}) <input align='middle' type='image' src='./images/labels.gif' height='15' width='15' hspace='0' title='"._Q_LABELS_BT."' onClick=\"window.open('labels.php?lid={$eqrow['lid']}', '_blank')\">\n";}
 		$questionsummary .="</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"))
 			{
