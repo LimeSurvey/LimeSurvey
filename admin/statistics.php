@@ -104,14 +104,13 @@ foreach ($filters as $flt)
 		if ($flt[2] != "N") {echo "\t\t\t\t<select name='";}
 		if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {echo "M";}
 		if ($flt[2] != "N") {echo "{$sid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";}
+		$allfields[]=$myfield;
 		}
 	echo "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
 	switch ($flt[2])
 		{
 		case "T": // Long free text
-			
 			$myfield2="T$myfield";
-			
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
 			echo "&nbsp;<img src='speaker.jpg' align='bottom' alt=\"$flt[5]\" [$row[1]]' onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
 			echo "<br />\n";
@@ -119,9 +118,7 @@ foreach ($filters as $flt)
 			echo "\t\t\t\t\t<textarea $slstyle2 name='$myfield2' rows='3'>".$_POST[$myfield2]."</textarea>";
 			break;
 		case "S": // Short free text
-			
 			$myfield2="T$myfield";
-			
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
 			echo "&nbsp;<img src='speaker.jpg' align='bottom' alt=\"$flt[5] [$row[1]]\" onClick=\"alert('QUESTION: $flt[5] [$row[1]]')\">";
 			echo "<br />\n";
@@ -136,6 +133,7 @@ foreach ($filters as $flt)
 			$myfield3="{$myfield}L";
 			echo "\t\t\t\t\tNumber less than:<br />\n";
 			echo "\t\t\t\t\t<input type='text' $slstyle2 name='$myfield3' value='".$_POST[$myfield3]."'><br />\n";
+			$allfields[]=$myfield2;
 			break;
 		case "D": // Date
 			$myfield2="D$myfield";
@@ -201,6 +199,7 @@ foreach ($filters as $flt)
 					}
 				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$counter2++;
+				$allfields[]=$myfield2;
 				}
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
@@ -232,6 +231,7 @@ foreach ($filters as $flt)
 					}
 				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$count2++;
+				$allfields[]=$myfield2;
 				}
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
@@ -265,6 +265,7 @@ foreach ($filters as $flt)
 				echo ">No</option>\n";
 				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$counter2++;
+				$allfields[]=$myfield2;
 				}
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
@@ -301,6 +302,7 @@ foreach ($filters as $flt)
 					}
 				echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$counter2++;
+				$allfields[]=$myfield2;
 				}
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
@@ -324,7 +326,12 @@ foreach ($filters as $flt)
 	$currentgroup=$flt[1];
 	$counter++;
 	}
-echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
+echo "\n\t\t\t\t</td></tr>\n";
+$allfield=implode("|", $allfields);
+echo "\t\t\t\t<tr><td align='center' colspan='4'>$setfont<input type='radio' name='summary' value='$allfield'";
+if ($_POST['summary'] == "$allfield") {echo " CHECKED";}
+echo ">View summary of all available fields</td></tr>\n";
+echo "\t\t\t</table>\n";
 echo "\t\t</td></tr>\n";
 echo "\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n";
 echo "\t\t\t<input $btstyle type='submit' value='View Stats'>\n";
@@ -459,313 +466,320 @@ if ($_POST['display'])
 
 if ($_POST['summary'])
 	{
-	// 1. Get answers for question
-	if (substr($_POST['summary'], 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS. HOW THE HELL DO WE DO THIS ONE?
+	$pipepos=strpos($_POST['summary'], "|");
+	if ($pipepos == 0) {$runthrough[]=$_POST['summary'];}
+	else {$runthrough=explode("|", $_POST['summary']);}
+	foreach ($runthrough as $rt)
 		{
-		
-		list($qsid, $qgid, $qqid) = explode("X", substr($_POST['summary'], 1, strlen($_POST['summary'])));
-		$nquery = "SELECT title, type, question FROM questions WHERE qid='$qqid'";
-		$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-		while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]);}
-		
-		//1. Get list of answers
-		$query="SELECT code, answer FROM answers WHERE qid='$qqid'";
-		$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
-		while ($row=mysql_fetch_row($result))
+		// 1. Get answers for question
+		if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS. HOW THE HELL DO WE DO THIS ONE?
 			{
-			$mfield=substr($_POST['summary'], 1, strlen($_POST['summary']))."$row[0]";
-			$alist[]=array("$row[0]", "$row[1]", $mfield);
-			}
-		 
-		}
-	elseif (substr($_POST['summary'], 0, 1) == "R") //RANKING OPTION THEREFORE CONFUSING
-		{
-		$lengthofnumeral=substr($_POST['summary'], strchr($_POST['summary'], "-"), 1);
-		list($qsid, $qgid, $qqid) = explode("X", substr($_POST['summary'], 1, strchr($_POST['summary'], "-")-($lengthofnumeral+1)));
-
-		$nquery = "SELECT title, type, question FROM questions WHERE qid='$qqid'";
-		$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-		while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]. " [".substr($_POST['summary'], strchr($_POST['summary'], "-")-($lengthofnumeral+1), $lengthofnumeral)."]"; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]). "[Rank ".substr($_POST['summary'], strchr($_POST['summary'], "-")-($lengthofnumeral+1), $lengthofnumeral)."]";}
-		
-		$query="SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY code";
-		$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
-		while ($row=mysql_fetch_row($result))
-			{
-			$mfield=substr($_POST['summary'], 1, strchr($_POST['summary'], "-")-($lengthofnumeral));
-			$alist[]=array("$row[0]", "$row[1]", $mfield);
-			//echo $row[0]."-".$row[1];
-			}
-		}
-	elseif (substr($_POST['summary'], 0, 1) == "N") //NUMERICAL TYPE
-		{
-		list($qsid, $qgid, $qqid) = explode("X", $_POST['summary']);
-		$nquery = "SELECT title, type, question, qid FROM questions WHERE qid='$qqid'";
-		//echo $nquery; //debugging line
-		$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-		while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];}
-		echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
-		echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>";
-		echo "</td></tr>\n";
-		echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n";
-		echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Calculation</b></font></td>\n";
-		echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Result</b></font></td>\n";
-		echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b></b></font></td>\n";
-		echo "\t</tr>\n";
-		$fieldname=substr($_POST['summary'], 1, strlen($_POST['summary']));
-		$query = "SELECT STDDEV(`$fieldname`) as stdev";
-		$query .= ", SUM(`$fieldname`*1) as sum";
-		$query .= ", AVG(`$fieldname`*1) as average";
-		$query .= ", MIN(`$fieldname`*1) as minimum";
-		$query .= ", MAX(`$fieldname`*1) as maximum";
-		$query .= " FROM survey_$sid";
-		if ($sql != "NULL") {$query .= " WHERE $sql";}
-		$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
-		while ($row=mysql_fetch_array($result))
-			{
-			$showem[]=array("Sum", $row['sum']);
-			$showem[]=array("Standard Deviation", $row['stdev']);
-			$showem[]=array("Average", $row['average']);
-			$showem[]=array("Minimum", $row['minimum']);
-			$maximum=$row['maximum']; //we're going to put this after the quartiles for neatness
-			$minimum=$row['minimum'];
-			}
-		
-		//CALCULATE QUARTILES
-		$query ="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
-		if ($sql != "NULL") {$query .= " AND $sql";}
-		$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
-		$querystarter="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
-		if ($sql != "NULL") {$querystarter .= " AND $sql";}
-		$medcount=mysql_num_rows($result);
-		
-		//1ST QUARTILE (Q1)
-		//$q1=(($medcount+1)/4)-1;
-		$q1=(1/4)*($medcount+1);
-		//$q1b=(int)((($medcount+1)/4)-1);
-		$q1b=(int)((1/4)*($medcount+1));
-		$q1c=$q1b-1;
-		$q1diff=$q1-$q1b;
-		//$q1diff=(((($medcount+1)/4)-1) - ((int)((($medcount+1)/4)-1)));
-		$total=0;
-		if ($q1 != $q1b)
-			{
-			//ODD NUMBER
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1c, 2";
-			$result=mysql_query($query) or die("1st Quartile query failed<br />".mysql_error());
-			while ($row=mysql_fetch_array($result))	
+			
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
+			$nquery = "SELECT title, type, question FROM questions WHERE qid='$qqid'";
+			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
+			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]);}
+			
+			//1. Get list of answers
+			$query="SELECT code, answer FROM answers WHERE qid='$qqid'";
+			$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
+			while ($row=mysql_fetch_row($result))
 				{
-				if ($total == 0) 	{$total=$total-$row[$fieldname];}
-				else				{$total=$total+$row[$fieldname];}
-				$lastnumber=$row[$fieldname];
+				$mfield=substr($rt, 1, strlen($rt))."$row[0]";
+				$alist[]=array("$row[0]", "$row[1]", $mfield);
 				}
-			$q1total=$lastnumber-(1-($total*$q1diff));
-			if ($q1total < $minimum) {$q1total=$minimum;}
-			$showem[]=array("1st Quartile (Q1)", $q1total);
+			 
 			}
-		else
+		elseif (substr($rt, 0, 1) == "R") //RANKING OPTION THEREFORE CONFUSING
 			{
-			//EVEN NUMBER
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1c, 1";
-			$result=mysql_query($query) or die ("1st Quartile query failed<br />".mysql_error());
-			while ($row=mysql_fetch_array($result)) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}
-			}
-		$total=0;
-		//MEDIAN (Q2)
-		$median=(1/2)*($medcount+1);
-		$medianb=(int)((1/2)*($medcount+1));
-		$medianc=$medianb-1;
-		$mediandiff=$median-$medianb;
-		if ($median != (int)((($medcount+1)/2)-1)) 
-			{
-			//remainder
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medianc, 2";
-			$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
-			while ($row=mysql_fetch_array($result))	{$total=$total+$row[$fieldname];}
-			$showem[]=array("2nd Quartile (Median)", $total/2);
-			}
-		else
-			{
-			//EVEN NUMBER
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medianc, 1";
-			$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
-			while ($row=mysql_fetch_array($result))	{$showem[]=array("Median Value", $row[$fieldname]);}
-			}
-		$total=0;
-		//3RD QUARTILE (Q3)
-		$q3=(3/4)*($medcount+1);
-		$q3b=(int)((3/4)*($medcount+1));
-		$q3c=$q3b-1;
-		$q3diff=$q3-$q3b;
-		if ($q3 != $q3b)
-			{
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 2";
-			$result = mysql_query($query) or die("3rd Quartile query failed<br />".mysql_error());
-			$lastnumber='';
-			while ($row=mysql_fetch_array($result)) 
+			$lengthofnumeral=substr($rt, strchr($rt, "-"), 1);
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strchr($rt, "-")-($lengthofnumeral+1)));	
+	
+			$nquery = "SELECT title, type, question FROM questions WHERE qid='$qqid'";
+			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
+			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]. " [".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]"; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]). "[Rank ".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]";}
+			
+			$query="SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY code";
+			$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
+			while ($row=mysql_fetch_row($result))
 				{
-				if ($total == 0)	{$total=$total-$row[$fieldname];}
-				else				{$total=$total+$row[$fieldname];}
-				if (!$lastnumber) {$lastnumber=$row[$fieldname];}
+				$mfield=substr($rt, 1, strchr($rt, "-")-($lengthofnumeral));
+				$alist[]=array("$row[0]", "$row[1]", $mfield);
+				//echo $row[0]."-".$row[1];
 				}
-			$q3total=$lastnumber+($total*$q3diff);
-			if ($q3total < $maximum) {$q1total=$maximum;}
-			$showem[]=array("3rd Quartile (Q3)", $q3total);
 			}
-		else
+		elseif (substr($rt, 0, 1) == "N") //NUMERICAL TYPE
 			{
-			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 1";
-			$result = mysql_query($query) or die("3rd Quartile even query failed<br />".mysql_error());
-			while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
-			}
-		$total=0;
-		$showem[]=array("Maximum", $maximum);
-		foreach ($showem as $shw)
-			{
+			list($qsid, $qgid, $qqid) = explode("X", $rt);
+			$nquery = "SELECT title, type, question, qid FROM questions WHERE qid='$qqid'";
+			//echo $nquery; //debugging line
+			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
+			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];}
+			echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
+			echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>";
+			echo "</td></tr>\n";
+			echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n";
+			echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Calculation</b></font></td>\n";
+			echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Result</b></font></td>\n";
+			echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b></b></font></td>\n";
+			echo "\t</tr>\n";
+			$fieldname=substr($rt, 1, strlen($rt));
+			$query = "SELECT STDDEV(`$fieldname`) as stdev";
+			$query .= ", SUM(`$fieldname`*1) as sum";
+			$query .= ", AVG(`$fieldname`*1) as average";
+			$query .= ", MIN(`$fieldname`*1) as minimum";
+			$query .= ", MAX(`$fieldname`*1) as maximum";
+			$query .= " FROM survey_$sid";
+			if ($sql != "NULL") {$query .= " WHERE $sql";}
+			$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
+			while ($row=mysql_fetch_array($result))
+				{
+				$showem[]=array("Sum", $row['sum']);
+				$showem[]=array("Standard Deviation", $row['stdev']);
+				$showem[]=array("Average", $row['average']);
+				$showem[]=array("Minimum", $row['minimum']);
+				$maximum=$row['maximum']; //we're going to put this after the quartiles for neatness
+				$minimum=$row['minimum'];
+				}
+			
+			//CALCULATE QUARTILES
+			$query ="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
+			if ($sql != "NULL") {$query .= " AND $sql";}
+			$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
+			$querystarter="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
+			if ($sql != "NULL") {$querystarter .= " AND $sql";}
+			$medcount=mysql_num_rows($result);
+			
+			//1ST QUARTILE (Q1)
+			//$q1=(($medcount+1)/4)-1;
+			$q1=(1/4)*($medcount+1);
+			//$q1b=(int)((($medcount+1)/4)-1);
+			$q1b=(int)((1/4)*($medcount+1));
+			$q1c=$q1b-1;
+			$q1diff=$q1-$q1b;
+			//$q1diff=(((($medcount+1)/4)-1) - ((int)((($medcount+1)/4)-1)));
+			$total=0;
+			if ($q1 != $q1b)
+				{
+				//ODD NUMBER
+				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1c, 2";
+				$result=mysql_query($query) or die("1st Quartile query failed<br />".mysql_error());
+				while ($row=mysql_fetch_array($result))	
+					{
+					if ($total == 0) 	{$total=$total-$row[$fieldname];}
+					else				{$total=$total+$row[$fieldname];}
+					$lastnumber=$row[$fieldname];
+					}
+				$q1total=$lastnumber-(1-($total*$q1diff));
+				if ($q1total < $minimum) {$q1total=$minimum;}
+				$showem[]=array("1st Quartile (Q1)", $q1total);
+				}
+			else
+				{
+				//EVEN NUMBER
+				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1c, 1";
+				$result=mysql_query($query) or die ("1st Quartile query failed<br />".mysql_error());
+				while ($row=mysql_fetch_array($result)) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}
+				}
+			$total=0;
+			//MEDIAN (Q2)
+			$median=(1/2)*($medcount+1);
+			$medianb=(int)((1/2)*($medcount+1));
+			$medianc=$medianb-1;
+			$mediandiff=$median-$medianb;
+			if ($median != (int)((($medcount+1)/2)-1)) 
+				{
+				//remainder
+				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medianc, 2";
+				$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
+				while ($row=mysql_fetch_array($result))	{$total=$total+$row[$fieldname];}
+				$showem[]=array("2nd Quartile (Median)", $total/2);
+				}
+			else
+				{
+				//EVEN NUMBER
+				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $medianc, 1";
+				$result=mysql_query($query) or die("What a complete mess<br />".mysql_error());
+				while ($row=mysql_fetch_array($result))	{$showem[]=array("Median Value", $row[$fieldname]);}
+				}
+			$total=0;
+			//3RD QUARTILE (Q3)
+			$q3=(3/4)*($medcount+1);
+			$q3b=(int)((3/4)*($medcount+1));
+			$q3c=$q3b-1;
+			$q3diff=$q3-$q3b;
+			if ($q3 != $q3b)
+				{
+				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 2";
+				$result = mysql_query($query) or die("3rd Quartile query failed<br />".mysql_error());
+				$lastnumber='';
+				while ($row=mysql_fetch_array($result)) 
+					{
+					if ($total == 0)	{$total=$total-$row[$fieldname];}
+					else				{$total=$total+$row[$fieldname];}
+					if (!$lastnumber) {$lastnumber=$row[$fieldname];}
+					}
+				$q3total=$lastnumber+($total*$q3diff);
+				if ($q3total < $maximum) {$q1total=$maximum;}
+				$showem[]=array("3rd Quartile (Q3)", $q3total);
+				}
+			else
+				{
+				$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 1";
+				$result = mysql_query($query) or die("3rd Quartile even query failed<br />".mysql_error());
+				while ($row=mysql_fetch_array($result)) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
+				}
+			$total=0;
+			$showem[]=array("Maximum", $maximum);
+			foreach ($showem as $shw)
+				{
+				echo "\t<tr>\n";
+				echo "\t\t<td align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$shw[0]</font></font></td>\n";
+				echo "\t\t<td align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$shw[1]</td>\n";
+				echo "\t\t<td bgcolor='#666666'></td>\n";
+				echo "\t</tr>\n";
+				}
 			echo "\t<tr>\n";
-			echo "\t\t<td align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$shw[0]</font></font></td>\n";
-			echo "\t\t<td align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$shw[1]</td>\n";
-			echo "\t\t<td bgcolor='#666666'></td>\n";
+			echo "\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n";
+			echo "\t\t\t$setfont<font size='1'>*Null values are ignored in calculations<br />\n";
+			echo "\t\t\t*Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>";
+			echo "</font></font>\n";
+			echo "\t\t</td>\n";
 			echo "\t</tr>\n";
 			}
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n";
-		echo "\t\t\t$setfont<font size='1'>*Null values are ignored in calculations<br />\n";
-		echo "\t\t\t*Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>";
-		echo "</font></font>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		}
-	else // NICE SIMPLE SINGLE OPTION ANSWERS
-		{
-		list($qsid, $qgid, $qqid) = explode("X", $_POST['summary']);
-		$nquery = "SELECT title, type, question, qid FROM questions WHERE qid='$qqid'";
-		//echo $nquery; //debugging line
-		$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
-		while ($nrow=mysql_fetch_row($nresult)) 
+		else // NICE SIMPLE SINGLE OPTION ANSWERS
 			{
-			$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];
-			}
-		$alist[]=array("", "No Answer");
-		switch($qtype)
-			{
-			case "A": //Array of 5 point choices
-				$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
-				$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY CODE";
-				//echo $qquery; //debugging line
-				$qresult=mysql_query($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".mysql_error());
-				while ($qrow=mysql_fetch_row($qresult))
-					{
+			list($qsid, $qgid, $qqid) = explode("X", $rt);
+			$nquery = "SELECT title, type, question, qid FROM questions WHERE qid='$qqid'";
+			//echo $nquery; //debugging line
+			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
+			while ($nrow=mysql_fetch_row($nresult)) 
+				{
+				$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3];
+				}
+			$alist[]=array("", "No Answer");
+			switch($qtype)
+				{
+				case "A": //Array of 5 point choices
+					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
+					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY CODE";
+					//echo $qquery; //debugging line
+					$qresult=mysql_query($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".mysql_error());
+					while ($qrow=mysql_fetch_row($qresult))
+						{
+						for ($i=1; $i<=5; $i++)
+							{
+							$alist[]=array("$i", "$i");
+							}
+						$atext=$qrow[1];
+						}
+					$qquestion .= "<br />\n[".$atext."]";
+					$qtitle .= "($qanswer)";
+					break;
+				case "B": //Array of 10 point choices
+					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
+					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY CODE";
+					//echo $qquery; //debugging line
+					$qresult=mysql_query($qquery) or die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".mysql_error());
+					while ($qrow=mysql_fetch_row($qresult))
+						{
+						for ($i=1; $i<=10; $i++)
+							{
+							$alist[]=array("$i", "$i");
+							}
+						$atext=$qrow[1];
+						}
+					$qquestion .= "<br />\n[".$atext."]";
+					$qtitle .= "($qanswer)";
+					break;
+				case "C": //Array of Yes/No/Uncertain
+					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
+					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY CODE";
+					//echo $qquery; //debugging line
+					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
+					while ($qrow=mysql_fetch_row($qresult))
+						{
+						$alist[]=array("Y", "Yes");
+						$alist[]=array("N", "No");
+						$alist[]=array("U", "Uncertain");
+						$atext=$qrow[1];
+						}
+					$qquestion .= "<br />\n[".$atext."]";
+					$qtitle .= "($qanswer)";
+					break;
+				case "G": //Gender
+					$alist[]=array("F", "Female");
+					$alist[]=array("M", "Male");
+					break;
+				case "Y": //Yes\No
+					$alist[]=array("Y", "Yes");
+					$alist[]=array("N", "No");
+					break;
+				case "5": //5 Point
 					for ($i=1; $i<=5; $i++)
 						{
 						$alist[]=array("$i", "$i");
 						}
-					$atext=$qrow[1];
-					}
-				$qquestion .= "<br />\n[".$atext."]";
-				$qtitle .= "($qanswer)";
-				break;
-			case "B": //Array of 10 point choices
-				$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
-				$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY CODE";
-				//echo $qquery; //debugging line
-				$qresult=mysql_query($qquery) or die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".mysql_error());
-				while ($qrow=mysql_fetch_row($qresult))
-					{
-					for ($i=1; $i<=10; $i++)
+				default:
+					$qquery = "SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY code";
+					$qresult = mysql_query($qquery) or die ("Couldn't get answers list<br />$qquery<br />".mysql_error());
+					while ($qrow=mysql_fetch_row($qresult))
 						{
-						$alist[]=array("$i", "$i");
+						$alist[]=array("$qrow[0]", "$qrow[1]");
 						}
-					$atext=$qrow[1];
-					}
-				$qquestion .= "<br />\n[".$atext."]";
-				$qtitle .= "($qanswer)";
-				break;
-			case "C": //Array of Yes/No/Uncertain
-				$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
-				$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY CODE";
-				//echo $qquery; //debugging line
-				$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
-				while ($qrow=mysql_fetch_row($qresult))
-					{
-					$alist[]=array("Y", "Yes");
-					$alist[]=array("N", "No");
-					$alist[]=array("U", "Uncertain");
-					$atext=$qrow[1];
-					}
-				$qquestion .= "<br />\n[".$atext."]";
-				$qtitle .= "($qanswer)";
-				break;
-			case "G": //Gender
-				$alist[]=array("F", "Female");
-				$alist[]=array("M", "Male");
-				break;
-			case "Y": //Yes\No
-				$alist[]=array("Y", "Yes");
-				$alist[]=array("N", "No");
-				break;
-			case "5": //5 Point
-				for ($i=1; $i<=5; $i++)
-					{
-					$alist[]=array("$i", "$i");
-					}
-			default:
-				$qquery = "SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY code";
-				$qresult = mysql_query($qquery) or die ("Couldn't get answers list<br />$qquery<br />".mysql_error());
-				while ($qrow=mysql_fetch_row($qresult))
-					{
-					$alist[]=array("$qrow[0]", "$qrow[1]");
-					}
+				}
 			}
-		}
-
-	//foreach ($alist as $al) {echo "$al[0] - $al[1]<br />";} //debugging line
-	//foreach ($fvalues as $fv) {echo "$fv | ";} //debugging line
 	
-	//2. Display results
-	if ($alist) //JUST IN CASE SOMETHING GOES WRONG
-		{
-		echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
-		echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>";
-		echo "</td></tr>\n";
-		echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n";
-		echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Answer</b></font></td>\n";
-		echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Count</b></font></td>\n";
-		echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Percentage</b></font></td>\n";
-		echo "\t</tr>\n";
-		foreach ($alist as $al)
+		//foreach ($alist as $al) {echo "$al[0] - $al[1]<br />";} //debugging line
+		//foreach ($fvalues as $fv) {echo "$fv | ";} //debugging line
+		
+		//2. Display results
+		if ($alist) //JUST IN CASE SOMETHING GOES WRONG
 			{
-			if ($al[2]) //picks out alist that come from the multiple list above
+			echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n";
+			echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>Field Summary for $qtitle:</b>";
+			echo "</td></tr>\n";
+			echo "\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n";
+			echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Answer</b></font></td>\n";
+			echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Count</b></font></td>\n";
+			echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>Percentage</b></font></td>\n";
+			echo "\t</tr>\n";
+			foreach ($alist as $al)
 				{
-				if (substr($_POST['summary'], 0, 1) == "R")
+				if ($al[2]) //picks out alist that come from the multiple list above
 					{
-					$query = "SELECT count($al[2]) FROM survey_$sid WHERE $al[2] = '$al[0]'";
+					if (substr($rt, 0, 1) == "R")
+						{
+						$query = "SELECT count($al[2]) FROM survey_$sid WHERE $al[2] = '$al[0]'";
+						}
+					else
+						{
+						$query = "SELECT count($al[2]) FROM survey_$sid WHERE $al[2] = 'Y'";
+						}
 					}
 				else
 					{
-					$query = "SELECT count($al[2]) FROM survey_$sid WHERE $al[2] = 'Y'";
+					$query = "SELECT count($rt) FROM survey_$sid WHERE $rt = '$al[0]'";
+					//echo $query; //debugging line
+					}
+				if ($sql != "NULL") {$query .= " AND $sql";}
+				$result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
+				echo "\n<!-- ($sql): $query -->\n\n";
+				while ($row=mysql_fetch_row($result))
+					{
+					if ($al[0] == "") {$fname="No Answer";} else {$fname="$al[1] ($al[0])";}
+					echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$fname\n\t\t</td>\n";
+					echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$row[0]";
+					if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
+					echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp";
+					echo "\t\t</td></tr>\n";
 					}
 				}
-			else
-				{
-				$query = "SELECT count({$_POST['summary']}) FROM survey_$sid WHERE {$_POST['summary']} = '$al[0]'";
-				//echo $query; //debugging line
-				}
-			if ($sql != "NULL") {$query .= " AND $sql";}
-			$result=mysql_query($query) or die ("Couldn't do count of values<br />$query<br />".mysql_error());
-			echo "\n<!-- ($sql): $query -->\n\n";
-			while ($row=mysql_fetch_row($result))
-				{
-				if ($al[0] == "") {$fname="No Answer";} else {$fname="$al[1] ($al[0])";}
-				echo "\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$fname\n\t\t</td>\n";
-				echo "\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$row[0]";
-				if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
-				echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp";
-				echo "\t\t</td></tr>\n";
-				}
 			}
+		echo "</table>\n";
+		unset ($alist);
 		}
-	echo "</table>\n<br />";
 	}
-echo "&nbsp;";
+echo "<br />&nbsp;";
 echo htmlfooter("instructions.html#statistics", "Using PHPSurveyors Statistics Function");
 ?>
