@@ -299,7 +299,6 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		}
 	}
 }
-
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if ($grouparray) {
 	foreach ($grouparray as $ga) {
@@ -359,6 +358,7 @@ if ($grouparray) {
 						}
 					}
 					$newrank=0;
+					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					//NOW DO NESTED ANSWERS FOR THIS QID
 					if ($answerarray) {
 						foreach ($answerarray as $aa) {
@@ -430,13 +430,11 @@ if ($grouparray) {
 													"newfieldname"=>$newsid."X".$newgid."X".$newqid."comment");
 							}
 						}
-						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					} else {
 						$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
 											"newcfieldname"=>$newsid."X".$newgid."X".$newqid, 
 											"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
 											"newfieldname"=>$newsid."X".$newgid."X".$newqid);
-						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					}
 				}
 			}
@@ -445,7 +443,6 @@ if ($grouparray) {
 }
 //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions.
-
 if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
 	foreach ($conditionsarray as $car) {
 		$fieldorders=convertToArray($car, "`, `", "(`", "`)");
@@ -455,22 +452,37 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		$oldqid=$fieldcontents[array_search("qid", $fieldorders)];
 		$oldcfieldname=$fieldcontents[array_search("cfieldname", $fieldorders)];
 		$oldcqid=$fieldcontents[array_search("cqid", $fieldorders)];
+		$thisvalue=$fieldcontents[array_search("value", $fieldorders)];
 		foreach ($substitutions as $subs) {
 			if ($oldqid==$subs[2])	{$newqid=$subs[5];}
 			if ($oldcqid==$subs[2])	{$newcqid=$subs[5];}
 		}
 		foreach($fieldnames as $fns) {
-			if ($oldcfieldname==$fns['oldcfieldname']) {$newcfieldname=$fns['newcfieldname'];}
+		//if the $fns['oldcfieldname'] is not the same as $fns['oldfieldname'] then this is a multiple type question
+			if ($fns['oldcfieldname'] == $fns['oldfieldname']) { //The normal method - non multiples
+				if ($oldcfieldname==$fns['oldcfieldname']) {
+					$newcfieldname=$fns['newcfieldname'];
+				}
+			} else {
+				if ($oldcfieldname == $fns['oldcfieldname'] && $oldcfieldname.$thisvalue == $fns['oldfieldname']) {
+					$newcfieldname=$fns['newcfieldname'];
+				}
+			}
 		}
 		if (!isset($newcfieldname)) {$newcfieldname="";}
 		$newfieldcontents[array_search("cid", $fieldorders)]="";
 		$newfieldcontents[array_search("qid", $fieldorders)]=$newqid;
 		$newfieldcontents[array_search("cfieldname", $fieldorders)]=$newcfieldname;
-		$newfieldcontents[array_search("cqid", $fieldorders)]=$newcqid;
-		$newvalues="('".implode("', '", $newfieldcontents)."')";
-		$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $car);
-		$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
-		$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
+		if (isset($newcqid)) {
+			$newfieldcontents[array_search("cqid", $fieldorders)]=$newcqid;
+			$newvalues="('".implode("', '", $newfieldcontents)."')";
+			$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $car);
+			$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
+			$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
+		} else {
+			echo "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
+		}
+		unset($newcqid);
 	}
 }
 
