@@ -55,11 +55,11 @@ if ($action != "upload")
 		{
 		echo "<br /><table class='outlinetable' align='center'>
 		<form enctype='multipart/form-data' method='post'>
-		<tr><th colspan=2>Import a VV survey file</th></tr>
-		<tr><td>File:</td><td><input type='file' name='the_file'></td></tr>
-		<tr><td>Survey ID:</td><td><input type='text' size=2 name='sid' value='$sid' readonly></td></tr>
-		<tr><td>Exclude id?</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
-		<tr><td>&nbsp;</td><td><input type='submit' value='Upload'></td></tr>
+		<tr><th colspan=2>"._VV_IMPORTFILE."</th></tr>
+		<tr><td>"._VV_FILE."</td><td><input type='file' name='the_file'></td></tr>
+		<tr><td>"._VV_SURVEYID."</td><td><input type='text' size=2 name='sid' value='$sid' readonly></td></tr>
+		<tr><td>"._VV_EXCLUDEID."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
+		<tr><td>&nbsp;</td><td><input type='submit' value='"._TP_UPLOADFILE."'></td></tr>
 		<input type='hidden' name='action' value='upload'>
 		</form>
 		</table>";

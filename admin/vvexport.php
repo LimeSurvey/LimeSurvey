@@ -74,7 +74,7 @@ if (!$action == "export")
 	}
 elseif (isset($sid) && $sid)
 	{
-	//Export is happening, first lets do the exporting
+	//Export is happening
 	header("Content-Disposition: attachment; filename=vvexport_$sid.xls");
 	header("Content-type: application/vnd.ms-excel");
 	$s="\t";
@@ -101,7 +101,7 @@ elseif (isset($sid) && $sid)
 		//echo "<pre>";print_r($fielddata);echo "</pre>";
 		if (count($fielddata) < 1) {$firstline.=$field;}
 		else 
-			{$firstline.=str_replace("\n", " ", str_replace("\t", "   ", $fielddata['question']));}
+			{$firstline.=str_replace("\n", " ", str_replace("\t", "   ", strip_tags($fielddata['question'])));}
 		$firstline .= $s;
 		$secondline .= $field.$s;
 		}
@@ -114,11 +114,17 @@ elseif (isset($sid) && $sid)
 		{
 		foreach ($fieldnames as $field)
 			{
-			$value=str_replace("\n", "{newline}", $row[$field]);
+			$value=trim($row[$field]);
+			$value=str_replace("\n", "{newline}", $value);
 			$value=str_replace("\r", "", $value);
+			if (strpos($value, "\t")) {echo "[$value] - tab found";}
 			$value=str_replace("\t", "{tab}", $value);
-			echo $value.$s;
+			$sun[]=$value;
+			//echo $value.$s;
 			}
+		$beach=implode($s, $sun);
+		echo $beach;
+		unset($sun);
 		echo "\n";
 		}
 	
