@@ -643,34 +643,11 @@ if ($_SESSION['step'] == "0") {$currentquestion=$_SESSION['step'];}
 else {$currentquestion=$_SESSION['step']-1;}
 $ia=$_SESSION['fieldarray'][$currentquestion];
 
-foreach ($_SESSION['grouplist'] as $gl)
-	{
-	if ($gl[0] == $ia[5])
-		{
-		$gid=$gl[0];
-		$groupname=$gl[1];
-		$groupdescription=$gl[2];
-		if (isset($_POST['lastgroupname']) && $_POST['lastgroupname'] != $groupname && $groupdescription) 
-			{
-			$newgroup = "Y";
-			}
-		else 
-			{
-			$newgroup = "N";
-			}
-		if (!isset($_POST['lastgroupname'])) {$newgroup="Y";}
-		}
-	}
-
-if ($newgroup == "Y" && $_POST['move'] == " << "._PREV." " && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
-	{
-	$currentquestion++; 
-	$ia=$_SESSION['fieldarray'][$currentquestion]; 
-	$_SESSION['step']++;
-	}
+list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 // MANAGE CONDITIONAL QUESTIONS
 $conditionforthisquestion=$ia[7];
+$questionsSkipped=0;
 while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
 	{
 	$cquery="SELECT distinct cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
@@ -712,10 +689,14 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 	else
 		{
 		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
+		$questionsSkipped++;
 		if (returnglobal('move') == " "._NEXT." >> ")
 			{
 			$currentquestion++;
-			$ia=$_SESSION['fieldarray'][$currentquestion];
+			if(isset($_SESSION['fieldarray'][$currentquestion]))
+				{
+				$ia=$_SESSION['fieldarray'][$currentquestion];
+				}
 			$_SESSION['step']++;
 			foreach ($_SESSION['grouplist'] as $gl)
 				{
@@ -745,6 +726,16 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		$conditionforthisquestion=$ia[7];
 		}
 	}
+
+if ($questionsSkipped == 0 && $newgroup == "Y" && $_POST['move'] == " << "._PREV." " && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
+	{
+	//This does not work properly in all instances.
+	$currentquestion++; 
+	$ia=$_SESSION['fieldarray'][$currentquestion]; 
+	$_SESSION['step']++;
+	}
+
+list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 include("qanda.php");
 
@@ -982,5 +973,28 @@ function last()
 	echo "\n<input type='hidden' name='sid' value='$sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token'>\n";
 	echo "\n</form>\n</html>";
+	}
+
+function checkIfNewGroup($ia)
+	{
+	foreach ($_SESSION['grouplist'] as $gl)
+		{
+		if ($gl[0] == $ia[5])
+			{
+			$gid=$gl[0];
+			$groupname=$gl[1];
+			$groupdescription=$gl[2];
+			if (isset($_POST['lastgroupname']) && $_POST['lastgroupname'] != $groupname && $groupdescription) 
+				{
+				$newgroup = "Y";
+				}
+			else 
+				{
+				$newgroup = "N";
+				}
+			if (!isset($_POST['lastgroupname'])) {$newgroup="Y";}
+			}
+		}
+	return array($newgroup, $gid, $groupname, $groupdescription, $gl);
 	}
 ?>
