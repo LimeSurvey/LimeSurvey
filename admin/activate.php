@@ -240,6 +240,9 @@ else
 				case "T":  //LONG TEXT
 					$createsurvey .= " TEXT";
 					break;
+				case "U":  //HUGE TEXT
+					$createsurvey .= " TEXT";
+					break;
 				case "D":  //DATE
 					$createsurvey .= " DATE";
 					break;
