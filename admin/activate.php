@@ -84,13 +84,13 @@ else
 	$createsurvey .= "  id INT(11) NOT NULL auto_increment,\n";
 	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
 	$aresult = mysql_query($aquery);
-	//echo "<BR><BR>$aquery<BR><BR>\n";
-	while ($arow=mysql_fetch_row($aresult))
+	//echo "<br /><br />$aquery<br /><br />\n";
+	while ($arow=mysql_fetch_array($aresult))
 		{
-		if ($arow[3] != "M" && $arow[3] != "A" && $arow[3] != "B" && $arow[3] !="C" &&$arow[3] !="P")
+		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" &&$arow['type'] !="P")
 			{
-			$createsurvey .= "  $arow[1]"."X"."$arow[2]"."X"."$arow[0]";
-			switch($arow[3])
+			$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+			switch($arow['type'])
 				{
 						case "S":  //SHORT TEXT
 							$createsurvey .= " VARCHAR(200)";
@@ -99,7 +99,7 @@ else
 							$createsurvey .= " VARCHAR(5)";
 							break;
 						case "O": //DROPDOWN LIST WITH COMMENT
-							$createsurvey .= " VARCHAR(5),\n $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."comment TEXT";
+							$createsurvey .= " VARCHAR(5),\n {$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment TEXT";
 							break;
 						case "T":  //LONG TEXT
 							$createsurvey .= " TEXT";
@@ -118,26 +118,26 @@ else
 							break;
 				}
 			}
-		elseif ($arow[3] == "M" || $arow[3] == "A" || $arow[3] == "B" || $arow[3] == "C" || $arow[3] == "P")
+		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
 			{
 			//MULTI ENTRY
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid=$arow[0] ORDER BY code";
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY code";
 			$abresult=mysql_query($abquery);
-			while ($abrow=mysql_fetch_row($abresult))
+			while ($abrow=mysql_fetch_array($abresult))
 				{
-				$createsurvey .= "  $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."$abrow[1] VARCHAR(5),\n";
-				if ($abrow[4]=="Y") {$alsoother="Y";}
-				if ($arow[3] == "P")
+				$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']} VARCHAR(5),\n";
+				if ($abrow['other']=="Y") {$alsoother="Y";}
+				if ($arow['type'] == "P")
 					{
-					$createsurvey .= "  $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."$abrow[1]comment VARCHAR(100),\n";
+					$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment VARCHAR(100),\n";
 					}
 				}
-			if ($alsoother=="Y" && ($arow[3]=="M" || $arow[3]=="P"))
+			if ($alsoother=="Y" && ($arow['type']=="M" || $arow['type']=="P"))
 				{
-				$createsurvey .= " $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."other VARCHAR(100),\n";
-				if ($arow[3]=="P")
+				$createsurvey .= " {$arow['sid']}X{$arow['gid']}X{$arow['qid']}other VARCHAR(100),\n";
+				if ($arow['type']=="P")
 					{
-					$createsurvey .= " $arow[1]"."X"."$arow[2]"."X"."$arow[0]"."othercomment VARCHAR(100),\n";
+					$createsurvey .= " {$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment VARCHAR(100),\n";
 					}
 				}
 			
@@ -151,7 +151,14 @@ else
 	$createsurvey .= ") TYPE=MyISAM;";
 	//echo "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
 	
-	$createtable=mysql_query($createsurvey) or die ("Could not activate this survey. <br />\n".mysql_error() . "<br /><br />\n<a href='$scriptname?sid=$sid'>Back to Admin</a>\n");
+	$createtable=mysql_query($createsurvey) or die 
+		(
+		"<center>Could not activate this survey.</center>\n" .
+		"<pre>$createsurvey</pre>\n" .
+		mysql_error() . "<br /><br />\n" .
+		"<center><a href='$scriptname?sid=$sid'>Back to Admin</a></center>\n" .
+		"</body>\n<html>"
+		);
 	
 	echo "<font color='green'>Results Table has been created!<br /><br />\n";
 	
