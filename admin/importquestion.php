@@ -99,10 +99,17 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 $bigarray = array_values($bigarray);
 
 //ANSWERS
-$stoppoint = count($bigarray)-2;
-for ($i=0; $i<=$stoppoint+1; $i++)
+if (array_search("#</pre>\n", $bigarray))
 	{
-	if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
+	$stoppoint = array_search("#</pre>\n", $bigarray);
+	}
+else
+	{
+	$stoppoint = count($bigarray)-1;
+	}
+for ($i=0; $i<$stoppoint; $i++)
+	{
+	$answerarray[] = $bigarray[$i];
 	echo "($i)[$stoppoint]An Answer! - {$bigarray[$i]}<br />";
 	unset($bigarray[$i]);
 	}
