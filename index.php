@@ -85,6 +85,7 @@ if ($multi)
 		$mylist = "fvalue$i";
 		$arrayno = $i-1;
 		$_SESSION[$myfields[$arrayno]] = $_POST[$mylist];
+		//echo "$mylist -> " . $_POST[$mylist] ." -> " . $myfields[$arrayno] . " -> {$_SESSION[$myfields[$arrayno]]}<br />";
 		//echo "$mylist: " . $_POST[$mylist] . " (session: " . $myfields[$arrayno] . ")<br />";
 		if ($_POST[$mylist]) {$multimandatory="Y";} //if there are any answers, set this to true
 		}
@@ -560,27 +561,32 @@ if (!$_SESSION['step'])
 			$abresult = mysql_query($abquery);
 			while ($abrow = mysql_fetch_array($abresult))
 				{
-#				session_register("F$fieldname".$abrow['code']); //THE F HAS TO GO IN FRONT OF THE FIELDNAME SO THAT PHP RECOGNISES IT AS A VARIABLE
 				$_SESSION['insertarray'][] = "F$fieldname".$abrow['code'];
 				$alsoother = "";
 				if ($abrow['other'] == "Y") {$alsoother = "Y";}
 				if ($arow['type'] == "P")
 					{
-#					session_register("F$fieldname".$abrow['code']."comment");
 					$_SESSION['insertarray'][] = "F$fieldname".$abrow['code']."comment";	
 					}
 				}
 			if ($alsoother)
 				{
-#				session_register("F$fieldname"."other");
 				$_SESSION['insertarray'][] = "F$fieldname"."other";
 				if ($arow['type'] == "P")
 					{
-#					session_register("F$fieldname"."othercomment");
 					$_SESSION['insertarray'][] = "F$fieldname"."othercomment";	
 					}
 				}
-			
+			}
+		elseif ($arow['type'] == "R")
+			{
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
+			$abresult = mysql_query($abquery);
+			$abcount = mysql_num_rows($abresult);
+			for ($i=1; $i<=$abcount; $i++)
+				{
+				$_SESSION['insertarray'][] = "F$fieldname".$i;
+				}			
 			}
 		elseif ($arow['type'] == "O")
 			{
@@ -666,7 +672,7 @@ else
 		echo "\t</tr>\n";
 		
 		// PRESENT QUESTION
-		echo "\t<form method='post'>\n";
+		echo "\t<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
 		echo "\t<input type='hidden' name='sid' value='$sid' />\n";
 		echo "\t<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
 		
@@ -816,6 +822,153 @@ else
 				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 				echo "\t\t\t</table>\n";
+				break;
+			case "R": //RANKING STYLE
+				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
+				$ansresult = mysql_query($ansquery);
+				$anscount = mysql_num_rows($ansresult);
+				echo "\t\t\t<script type='text/javascript'>\n";
+				echo "\t\t\t<!--\n";
+				echo "\t\t\t\tfunction rankthis(\$code, \$value)\n";
+				echo "\t\t\t\t\t{\n";
+				echo "\t\t\t\t\t\$index=document.phpsurveyor.CHOICES.selectedIndex;\n";
+				echo "\t\t\t\t\tdocument.phpsurveyor.CHOICES.selectedIndex=-1;\n";
+				echo "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
+				echo "\t\t\t\t\t\t{\n";
+				echo "\t\t\t\t\t\t\$b=i;\n";
+				echo "\t\t\t\t\t\t\$b += '';\n";
+				echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
+				echo "\t\t\t\t\t\t\$hiddenname=\"fvalue\"+\$b;\n";
+				echo "\t\t\t\t\t\t\$cutname=\"CUT\"+i;\n";
+				echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
+				echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
+				echo "\t\t\t\t\t\t\t{\n";
+				echo "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
+				echo "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
+				echo "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
+				echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES').options.length-1; b>=0; b--)\n";
+				echo "\t\t\t\t\t\t\t\t{\n";
+				echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES').options[b].value == \$code)\n";
+				echo "\t\t\t\t\t\t\t\t\t{\n";
+				echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES').options[b] = null;\n";
+				echo "\t\t\t\t\t\t\t\t\t}\n";
+				echo "\t\t\t\t\t\t\t\t}\n";
+				echo "\t\t\t\t\t\t\ti=$anscount;\n";
+				echo "\t\t\t\t\t\t\t}\n";
+				echo "\t\t\t\t\t\t}\n";
+				echo "\t\t\t\t\t}\n";
+				echo "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
+				echo "\t\t\t\t\t{\n";
+				echo "\t\t\t\t\tvar cutindex=\$thisname.substring(3,6);\n";
+				echo "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
+				echo "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
+				echo "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
+				echo "\t\t\t\t\tif (cutindex > 1)\n";
+				echo "\t\t\t\t\t\t{\n";
+				echo "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
+				echo "\t\t\t\t\t\t\$cut2name=\"fvalue\"+(cutindex);\n";
+				echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
+				echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
+				echo "\t\t\t\t\t\t}\n";
+				echo "\t\t\t\t\telse\n";
+				echo "\t\t\t\t\t\t{\n";
+				echo "\t\t\t\t\t\t\$cut2name=\"fvalue\"+(cutindex);\n";
+				echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
+				echo "\t\t\t\t\t\t}\n";
+				echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
+				echo "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
+				echo "\t\t\t\t\t}\n";
+				echo "\t\t\t//-->\n";
+				echo "\t\t\t</script>\n";	
+				while ($ansrow = mysql_fetch_array($ansresult))
+					{
+					$answers[] = array($ansrow['code'], $ansrow['answer']);
+					}
+
+				for ($i=1; $i<=$anscount; $i++)
+					{
+					$myfname=$fname.$i;
+					if ($_SESSION[$myfname])
+						{
+						$existing++;
+						}
+					}
+				for ($i=1; $i<=$anscount; $i++)
+					{
+					$myfname = $fname.$i;
+					$multifields .= "$fname$i|";
+					if ($_SESSION[$myfname])
+						{
+						foreach ($answers as $ans)
+							{
+							if ($ans[0] == $_SESSION[$myfname])
+								{
+								$thiscode=$ans[0];
+								$thistext=$ans[1];
+								}
+							}
+						}
+					$ranklist .= "\t\t\t\t\t\t$i:<input $slstyle name='RANK$i' id='RANK$i'";
+					if ($_SESSION[$myfname])
+						{
+						$ranklist .= " value='";
+						$ranklist .= $thistext;
+						$ranklist .= "'";
+						}
+					$ranklist .= " onFocus=\"this.blur()\">\n";
+					$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='fvalue$i' value='";
+					$chosen[]=""; //create array
+					if ($_SESSION[$myfname]) 
+						{
+						$ranklist .= $thiscode;
+						$chosen[]=array($thiscode, $thistext);
+						}
+					$ranklist .= "'>\n";
+					$ranklist .= "\t\t\t\t\t\t<img src='cut.gif' title='Remove this item' ";
+					if ($i != $existing)
+						{
+						$ranklist .= "style='display:none'";
+						}
+					$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(RANK$i.value, fvalue$i.value, RANK$i.name, this.name)\"><br />\n";
+					}
+				
+				$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 14; color: #000080; width: 150'>\n";
+				foreach ($answers as $ans)
+					{
+					if (!in_array($ans, $chosen))
+						{
+						$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+						}
+					}
+				$choicelist .= "\t\t\t\t\t\t</select>\n";
+
+				echo "\t<tr>\n";
+				echo "\t\t<td colspan='2'>\n";
+				echo "\t\t\t<table align='center' border='0'>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
+				echo "\t\t\t\t\t\tClick on an item in the list on the left, starting with your<br />";
+				echo "\t\t\t\t\t\thighest ranking item, moving through to the last one.";
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td align='right'>\n";
+				echo $choicelist;
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t\t<td align='left'>$setfont\n";
+				$fn = 1;
+				echo $ranklist;
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t\t<tr>\n";
+				echo "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
+				echo "\t\t\t\t\t\tClick on the scissors next to each item on the right<br />";
+				echo "\t\t\t\t\t\tto remove the last entry in your ranked list.";
+				echo "\t\t\t\t\t</td>\n";
+				echo "\t\t\t\t</tr>\n";
+				echo "\t\t\t</table>\n";
+				echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
+				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
 				break;
 			case "M": //MULTIPLE OPTIONS checkbox
 				echo "\t<tr>\n";
