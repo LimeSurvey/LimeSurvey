@@ -248,7 +248,6 @@ if ($labelsetsarray)
 		}
 	}
 
-foreach ($labelreplacements as $lrt) {echo "OLD: ".$lrt[0]." - NEW: ".$lrt[1];}
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if ($grouparray)
 	{
@@ -299,7 +298,6 @@ if ($grouparray)
 							if ($lrp[0] == $oldlid)
 								{
 								$lrupdate="UPDATE questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
-								echo $lrupdate;
 								$lrresult=mysql_query($lrupdate);
 								}
 							}
