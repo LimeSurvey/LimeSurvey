@@ -35,8 +35,8 @@
 	#															#
 	# This language file kindly provided by Ulrika Olsson		#
 	#															#
-	# Updated for 0.98rc9 and slightly edited by				#
-	# Björn Mildh - bjorn at mildh dot se - 2004-06-30			#
+	# Updated for 0.98rc9 and higher by	             			#
+	# Björn Mildh - bjorn at mildh dot se - 2005-03-05			#
 	#															#
 	#############################################################
 */
@@ -82,8 +82,8 @@ define("_MANDATORY_PARTS", "Du måste fylla i alla delar");
 define("_MANDATORY_CHECK", "Välj minst ett objekt");
 define("_MANDATORY_RANK", "Rangordna alla alternativen");
 define("_MANDATORY_POPUP", "En eller flera obligatoriska frågor har inte besvarats. Du kan inte fortsätta innan de är besvarade"); //NEW in 0.98rc4
-define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
-define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
+define("_VALIDATION", "Den här frågan måste besvaras korrekt"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "En eller flera frågor har inte besvarats på rätt sätt. Du kan inte fortsätta förrän dessa svar är korrekta"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format: ÅÅÅÅ-MM-DD");
 define("_DATEFORMATEG", "(tex: 2004-12-24 för Julafton)");
 define("_REMOVEITEM", "Ta bort detta objekt");
@@ -101,7 +101,7 @@ define("_ANSCLEAR", "Svaren rensade");
 define("_RESTART", "Starta om enkäten");
 define("_CLOSEWIN_PS", "Stäng fönstret");
 define("_CONFIRMCLEAR", "Är du säker på att du vill rensa dina svar?");
-define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
+define("_CONFIRMSAVE", "Är du säker på att du vill spara dina svar?");
 define("_EXITCLEAR", "Lämna och rensa enkäten");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Kan inte skicka resultaten - det finns inga att skicka.");
@@ -115,10 +115,10 @@ define("_DIDNOTSAVE", "Sparade inte");
 define("_DIDNOTSAVE2", "Ett oväntat fel har uppstått och dina svar kan inte sparas.");
 define("_DIDNOTSAVE3", "Dina svar har inte försvunnit, utan de har mailats till enkätadministratören och kommer att läggas in i databasen vid ett senare tillfälle.");
 define("_DNSAVEEMAIL1", "Ett fel uppstod under försök att spara svaret till enkät-id");
-define("_DNSAVEEMAIL2", "DATA SKALL FYLLAS I");
-define("_DNSAVEEMAIL3", "SQL-KOD SOM HAR MISSLYCKATS");
-define("_DNSAVEEMAIL4", "FELMEDDELANDE");
-define("_DNSAVEEMAIL5", "FEL VID SPARANDET");
+define("_DNSAVEEMAIL2", "Data skall fyllas i");
+define("_DNSAVEEMAIL3", "Sql-kod som har misslyckats");
+define("_DNSAVEEMAIL4", "Felmeddelande");
+define("_DNSAVEEMAIL5", "Fel vid sparandet");
 define("_SUBMITAGAIN", "Försök att skicka igen");
 define("_SURVEYNOEXIST", "Tyvärr. Det finns ingen matchade enkät.");
 define("_NOTOKEN1", "Detta är en kontrollerad enkät. Du behöver en giltlig behörigetskod för att delta");
@@ -194,48 +194,48 @@ define("_PS_CON_ONLYANSWER", "Svara bara på denna fråga"); //New for 0.98finalRC
 define("_PS_CON_IFYOU", "om du svarat"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "och"); //New for 0.98finalRC1
 define("_PS_CON_TOQUESTION", "på fråga"); //New for 0.98finalRC1
-define("_PS_CON_OR", "or"); //New for 0.98finalRC2
+define("_PS_CON_OR", "eller"); //New for 0.98finalRC2
 
 //Save Messages
-define("_SAVE_AND_RETURN", "Save your responses so far");
-define("_SAVEHEADING", "Save Your Unfinished Survey");
-define("_RETURNTOSURVEY", "Return To Survey");
-define("_SAVENAME", "Name");
-define("_SAVEPASSWORD", "Password");
-define("_SAVEPASSWORDRPT", "Repeat Password");
-define("_SAVE_EMAIL", "Your Email");
-define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
-				  ."Your survey will be saved using that name and password, and can be "
-				  ."completed later by logging in with the same name and password.<br /><br />\n"
-				  ."If you give an email address, an email containing the details will be sent "
-				  ."to you.");
-define("_SAVESUBMIT", "Save Now");
-define("_SAVENONAME", "You must supply a name for this saved session.");
-define("_SAVENOPASS", "You must supply a password for this saved session.");
-define("_SAVENOMATCH", "Your passwords do not match.");
-define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
-define("_SAVETRYAGAIN", "Please try again.");
-define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
-define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
-						 ."a survey in progress. The following details can be used "
-						 ."to return to this survey and continue where you left "
-						 ."off.");
-define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
-define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
-define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
-define("_SAVE_EMAILSENT", "An email has been sent with details about your saved survey.");
+define("_SAVE_AND_RETURN", "Spara dina svar så här långt");
+define("_SAVEHEADING", "Spara din oavslutade enkät");
+define("_RETURNTOSURVEY", "Tillbaka till enkäten");
+define("_SAVENAME", "Namn");
+define("_SAVEPASSWORD", "Lösenord");
+define("_SAVEPASSWORDRPT", "Upprepa lösenord");
+define("_SAVE_EMAIL", "Din e-postadress");
+define("_SAVEEXPLANATION", "Fyll i namn och lösenord för den här enkäten och klicka nedan.<br />\n"
+				  ."Din enkät kommer att sparas med hjälp av det namnet och lösenordet och du kan "
+				  ."senare fortsätta fylla i den genom att logga in med samma namn och lösenord.<br /><br />\n"
+				  ."Om du anger en e-postadress skickas uppgifterna till dig med e-post "
+				  ."på den adressen.");
+define("_SAVESUBMIT", "Spara nu");
+define("_SAVENONAME", "Du måste ange ett namn för den här omgången svar.");
+define("_SAVENOPASS", "Du måste ange ett lösenord för den här omgången svar.");
+define("_SAVENOMATCH", "Lösenorden stömmer inte överens.");
+define("_SAVEDUPLICATE", "Det här namnet har redan använts för denna enkät. Du måste ange ett unikt namn när du sparar.");
+define("_SAVETRYAGAIN", "Var vänlig försök igen.");
+define("_SAVE_EMAILSUBJECT", "Sparade enkätsvar");
+define("_SAVE_EMAILTEXT", "Du, eller någon annan som angett din e-postadress, har sparat "
+						 ."en oavslutad enkät. Följande uppgifter kan användas "
+						 ."för att återvända till enkäten och fortsätta där du "
+						 ."lämnade den.");
+define("_SAVE_EMAILURL", "Uppdatera din enkät genom att klicka på följande länk:");
+define("_SAVE_SUCCEEDED", "Dina enkätsvar har sparats");
+define("_SAVE_FAILED", "Ett fel uppstod och dina enkätsvar har inte sparats.");
+define("_SAVE_EMAILSENT", "Ett e-postmeddelande med detaljer om din sparade enkät har skickats.");
 
 //Load Messages
-define("_LOAD_SAVED", "Load unfinished survey");
-define("_LOADHEADING", "Load A Previously Saved Survey");
-define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
-			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
-define("_LOADNAME", "Saved name");
-define("_LOADPASSWORD", "Password");
-define("_LOADSUBMIT", "Load Now");
-define("_LOADNONAME", "You did not provide a name");
-define("_LOADNOPASS", "You did not provide a password");
-define("_LOADNOMATCH", "There is no matching saved survey");
+define("_LOAD_SAVED", "Öppna ofullständigt besvarad enkät");
+define("_LOADHEADING", "Öppnar tidigare sparad enkät");
+define("_LOADEXPLANATION", "Du kan öppna en enkät som du tidigare sparat från denna sida.<br />\n"
+			  ."Fyll i samma 'namn' och 'lösenord' som du använde för att spara enkäten.<br /><br />\n");
+define("_LOADNAME", "Sparat namn");
+define("_LOADPASSWORD", "Lösenord");
+define("_LOADSUBMIT", "Öppna nu");
+define("_LOADNONAME", "Du angav inget namn");
+define("_LOADNOPASS", "Du angav inget lösenord");
+define("_LOADNOMATCH", "Det finns ingen enkät som stämmer överens");
 
-define("_ASSESSMENT_HEADING", "Your Assessment");
+define("_ASSESSMENT_HEADING", "Din uppskattning");
 ?>
