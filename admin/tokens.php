@@ -390,12 +390,12 @@ if ($action == "remind")
 	else
 		{
 		echo "Sending reminder email!";
-		$ctquery="SELECT firstname FROM tokens_$sid WHERE completed !='Y' AND sent='Y' AND token !=''";
-		if ($last_tid) {$ctquery .= " AND tid > '$last_tid'";}
+		$ctquery="SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !=''";
+		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		$ctresult=mysql_query($ctquery);
 		$ctcount=mysql_num_rows($ctresult);
-		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_$sid WHERE completed != 'Y' AND sent = 'Y' AND token !=''";
-		if ($last_tid) {$emquery .= " AND tid > '$last_tid'";}
+		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !=''";
+		if ($_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
 		$emresult=mysql_query($emquery) or die ("Couldn't do query.<BR>$emquery<BR>".mysql_error());
 		$emcount=mysql_num_rows($emresult);
@@ -408,12 +408,12 @@ if ($action == "remind")
 				{
 				$to=$emrow['email'];
 				$sendmessage = "Dear {$emrow['firstname']},\n\n";
-				$sendmessage .= str_replace("\'", "'", $message);
+				$sendmessage .= str_replace("\'", "'", $_POST['message']);
 				$sendmessage .= "\n\n-------------------------------------------\n\n";
 				$sendmessage .= "Click here to do this survey:\n\n";
-				$sendmessage .= "$publicurl/index.php?sid=$sid&token={$emrow['token']}\n\n";
+				$sendmessage .= "$publicurl/index.php?sid={$_POST['sid']}&token={$emrow['token']}\n\n";
 				//echo "Message:". str_replace("\n", "<BR>", $sendmessage) . "<P>";
-				mail($to, $subject, $sendmessage, $headers);
+				mail($to, $_POST['subject'], $sendmessage, $headers);
 				echo "[Reminder Sent to {$emrow['firstname']} {$emrow['lastname']}]({$emrow['tid']}) ";
 				$lasttid=$emrow['tid'];
 				}
@@ -428,10 +428,10 @@ if ($action == "remind")
 				echo "<input type='submit' value='Send More'></TD>\n";
 				echo "<input type='hidden' name='ok' value='absolutely'>\n";
 				echo "<input type='hidden' name='action' value='remind'>\n";
-				echo "<input type='hidden' name='sid' value='$sid'>\n";
-				echo "<input type='hidden' name='from' value='$from'>\n";
-				echo "<input type='hidden' name='subject' value='$subject'>\n";
-				echo "<input type='hidden' name='message' value='$message'>\n";
+				echo "<input type='hidden' name='sid' value='{$_POST['sid']}'>\n";
+				echo "<input type='hidden' name='from' value='{$_POST['from']}'>\n";
+				echo "<input type='hidden' name='subject' value='{$_POST['subject']}'>\n";
+				echo "<input type='hidden' name='message' value='{$_POST['message']}'>\n";
 				echo "<input type='hidden' name='last_tid' value='$lasttid'>\n";
 				echo "</form>\n";
 				}
