@@ -236,7 +236,6 @@ $sffieldcontents=explode("', '", $sffieldcontent);
 $sidpos=array_search("sid", $sfieldorders);
 $sid=$sffieldcontents[$sidpos];
 
-//$sid = substr($tablearray[0], strpos($tablearray[0], "('")+2, (strpos($tablearray[0], "',")-(strpos($tablearray[0], "('")+2)));
 if (!$sid) 
 	{
 	echo "<br /><b><font color='red'>"._ERROR."</b></font><br />\n";
@@ -488,12 +487,10 @@ if ($conditionsarray) //ONLY DO THIS IF THERE ARE CONDITIONS!
 			{
 			if ($oldcfieldname==$fns[0]) {$newcfieldname=$fns[1];}
 			}
-		//$replacewith="('', '$newqid', '$newcfieldname',";
 		$insert=str_replace("'$oldcid'", "''", $car); //replace cid (remove it)
 		$insert=str_replace("'$oldqid'", "'$newqid'", $insert); //replace qid
 		$insert=str_replace("'$oldcfieldname'", "'$newcfieldname'", $insert); //replace cfieldname
-		//$insert=str_replace($toreplace, $replacewith, $car); //replace first section
-		$insert=str_replace("$oldcqid')", "$newcqid')", $insert); //replace cqid
+		$insert=str_replace("$oldcqid'", "$newcqid'", $insert); //replace cqid
 		$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
 		$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
 		}
