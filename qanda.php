@@ -1803,7 +1803,8 @@ function do_array_flexible($ia)
             $ansrowcount++;
             $ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
             }
-        $ansrowavg=(($ansrowtotallength/$ansrowcount)/2);
+        $ansrowavg=0;    
+        if ($ansrowcount > 0) {$ansrowavg=(($ansrowtotallength/$ansrowcount)/2);}
         if ($ansrowavg > 54) {$percwidth=60;}
         elseif ($ansrowavg < 5) {$percwidth=5;}
         else {$percwidth=$ansrowavg*1.2;}
