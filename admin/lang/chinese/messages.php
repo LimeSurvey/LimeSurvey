@@ -163,6 +163,7 @@ define("_GL_DESCRIPTION", "說明:");
 //questions
 define("_QL_CODE", "編號:");
 define("_QL_QUESTION", "題目:");
+define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
 define("_QL_HELP", "求助說明:");
 define("_QL_TYPE", "類型:");
 define("_QL_GROUP", "題目組別:");

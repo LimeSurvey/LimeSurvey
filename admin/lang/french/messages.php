@@ -201,6 +201,7 @@ define("_GL_DESCRIPTION", "Description:");
 define("_QL_CODE", "Code:");
 define("_QL_QUESTION", "Question:");
 define("_QL_HELP", "Aide:");
+define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
 define("_QL_TYPE", "Type:");
 define("_QL_GROUP", "Groupe:");
 define("_QL_MANDATORY", "Obligatoire:");

@@ -169,6 +169,7 @@ define("_GL_UPDATEQUESTION", "Actualizar Pregunta");
 define("_QL_CODE", "C&oacute;digo:");
 define("_QL_QUESTION", "Pregunta:");
 define("_QL_HELP", "Ayuda:");
+define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
 define("_QL_TYPE", "Tipo:");
 define("_QL_GROUP", "Grupo:");
 define("_QL_MANDATORY", "Requerida:");
