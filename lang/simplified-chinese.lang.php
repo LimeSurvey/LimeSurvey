@@ -179,4 +179,5 @@ define("_PS_CON_ONLYANSWER", "仅回答此问题"); //New for 0.98finalRC1
 define("_PS_CON_IFYOU", "如果您回答了"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "和"); //New for 0.98finalRC1
 define("_PS_CON_TOQUESTION", "到问题"); //New for 0.98finalRC1
+define("_PS_CON_OR", "or"); //New for 0.98finalRC2
 ?>
