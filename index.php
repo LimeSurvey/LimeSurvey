@@ -914,7 +914,7 @@ function sendsubmitnotification($sendnotification)
 	$message = crlf_lineendings($message);
 	$headers = "From: {$thissurvey['adminemail']}\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/plain; charset=" .encode_lang($thissurvey['language']) . "\r\n";		
+    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";		
 	
 	if ($recips=explode(";", $thissurvey['adminemail'])) 
 		{
