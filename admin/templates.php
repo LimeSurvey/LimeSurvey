@@ -261,7 +261,7 @@ function templatereplace($line)
 	$groupdescription="This group description is fairly vacuous, but quite important.";
 	$navigator="<input class='submit' type='submit' value=' next >> ' name='move' />";
 	if ($screenname != _TP_WELCOMEPAGE) {$navigator = "<input class='submit' type='submit' value=' << prev ' name='move' />\n".$navigator;}
-	$help="Help me";
+	$help="This is some help text";
 	$totalquestions="10";
 	$surveyformat="Format";
 	$completed="Survey is completed and saved.";
@@ -290,9 +290,15 @@ function templatereplace($line)
 	$line=str_replace("{TOKEN}", $token, $line);
 	$line=str_replace("{SID}", $sid, $line);
 	if ($help) 
-		{$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' align='left'>".$help, $line);}
+		{
+		$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' align='left'>".$help, $line);
+		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+		}
 	else
-		{$line=str_replace("{QUESTIONHELP}", $help, $line);}
+		{
+		$line=str_replace("{QUESTIONHELP}", $help, $line);
+		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+		}
 	$line=str_replace("{NAVIGATOR}", $navigator, $line);
 	//$submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move'>";
 	$submitbutton="<input class='submit' type='submit' value=' Submit ' name='move'>";
