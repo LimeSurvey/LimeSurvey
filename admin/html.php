@@ -1199,7 +1199,7 @@ if ($action == "editsurvey")
 if ($action == "newsurvey")
 	{
 	$newsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-	$newsurvey .= "\t\t<b>$setfont<font color='white'>Create New Survey</font></font></b></td></tr>\n";
+	$newsurvey .= "\t\t<b>$setfont<font color='white'>"._CREATESURVEY."</font></font></b></td></tr>\n";
 	$newsurvey .= "\t<TR><FORM NAME='addnewsurvey' ACTION='$scriptname' METHOD='POST'>\n";
 	$newsurvey .= "\t\t<td align='right'><b>$setfont"._SL_TITLE."</font></b></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='20' name='short_title'></td></tr>\n";
@@ -1269,17 +1269,17 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t\t<td><input type='text' size='50' name='url' value='http://{$esrow['url']}'></td></tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<b>"._SL_URLDESCRIP."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n";
-	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Create Survey'></td>\n";
+	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._CREATESURVEY."'></td>\n";
 	$newsurvey .= "\t<input type='hidden' name='action' value='insertnewsurvey'>\n";
 	$newsurvey .= "\t</form></tr>\n";	
 	$newsurvey .= "</table>\n";
-	$newsurvey .= "<center><b>OR</b></center>\n";
+	$newsurvey .= "<center><b>"._AD_OR."</b></center>\n";
 	$newsurvey .= "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
-	$newsurvey .= "\t\t<b>$setfont<font color='white'>Import Survey</font></font></b></td></tr>\n\t<tr>";
+	$newsurvey .= "\t\t<b>$setfont<font color='white'>"._IMPORTSURVEY."</font></font></b></td></tr>\n\t<tr>";
 	$newsurvey .= "\t<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n";
 	$newsurvey .= "\t\t<td align='right'>$setfont<b>"._SL_SELSQL."</b></font></td>\n";
 	$newsurvey .= "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n";
-	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Import Survey'></TD>\n";
+	$newsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._IMPORTSURVEY."'></TD>\n";
 	$newsurvey .= "\t<input type='hidden' name='action' value='importsurvey'>\n";
 	$newsurvey .= "\t</tr></form>\n</table>\n";
 	}
