@@ -456,10 +456,9 @@ if ($surveyexists <1)
 	exit;
 	}
 
-//RUN THIS IF THIS IS THE FIRST TIME ######################################################
+//RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
 if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
-	//if ($tokensexist == 1 && (!isset($_GET['token']) || !$_GET['token']) && (!isset($_POST['token']) || !$_POST['token']) )
 	if ($tokensexist == 1 && !returnglobal('token'))
 		{
 		sendcacheheaders();
@@ -496,7 +495,6 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 			}
 		exit;
 		}
-	//if ($tokensexist == 1 && ((isset($_GET['token']) && $_GET['token']) || (isset($_POST['token']) && $_POST['token'])))
 	if ($tokensexist == 1 && returnglobal('token'))
 		{
 		$token=returnglobal('token');
