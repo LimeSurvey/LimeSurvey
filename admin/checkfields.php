@@ -182,7 +182,27 @@ function checktable($tablename)
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
 		}
 	}
-echo "</font></td></tr>\n<tr><td align='center' bgcolor='#CCCCCC'>\n";
+
+if ($checkfororphans)
+	{
+	$query  = "SELECT {$dbprefix}questions.qid as nullqid, {$dbprefix}answers.* "
+			. "FROM {$dbprefix}answers "
+			. "LEFT JOIN {$dbprefix}questions "
+			. "ON {$dbprefix}answers.qid={$dbprefix}questions.qid "
+			. "WHERE {$dbprefix}questions.qid IS NULL";
+	$result = mysql_query($query) or die("Orphan check failed.<br />$query<br />".mysql_error());
+	if ($result)
+		{
+		echo "<br /><b>Orphan Database Entries</b><br />\n";
+		while ($row = mysql_fetch_array($result))
+			{
+			echo "$setfont ANSWER: ".$row['qid']." - ".$row['code']."<br />\n";
+			}
+		}
+	}
+
+echo "</font></td></tr>\n";
+echo "<tr><td align='center' bgcolor='#CCCCCC'>\n";
 echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 
 echo "</td></tr></table>\n";
