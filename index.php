@@ -62,7 +62,7 @@ if ($move == "clearall" || $move == "here" || $move == "completed")
 	session_destroy();
 	}
 
-if ($fvalue)
+if ($fvalue || $fvalue == "0")
 	{
 	if ($fvalue == " ")
 		{
@@ -108,7 +108,7 @@ if ($multi)
 	}
 
 //This section handles the question number that will be answered - moving backwards and forwards as required
-if ($_POST['mandatory'] == "Y" && (!$_POST['fvalue'] || $_POST['fvalue'] == " ") && !$multimandatory) //if the last question was mandatory but there is no data
+if ($_POST['mandatory'] == "Y" && ($_POST['fvalue'] != "0" && !$_POST['fvalue'] || $_POST['fvalue'] == " ") && !$multimandatory) //if the last question was mandatory but there is no data
 	{
 	//Repeat last question until an answer is shown
 	if ($move == " last ") {$move = " next >> ";} //avoids going to submit if last question isn't answered
@@ -1132,7 +1132,9 @@ else
 				echo "\t<tr>\n";
 				echo "\t\t<td colspan='2' align='center'>\n";
 				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<input type='text' size='10' name='fvalue' value=\"{$_SESSION[$fname]}\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n";
+				echo "\t\t\t<input type='text' size='10' name='fvalue' value=\"";
+				echo $_SESSION[$fname];
+				echo "\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n";
 				echo "\t\t\t<font size='1'><i>Only numbers can be entered in this field</i></font>\n";
 				break;
 			case "S": //SHORT FREE TEXT
