@@ -905,6 +905,23 @@ if ($surveyformat == "S")
 $answer .= "'>\n"; //for conditional mandatory questions
 
 $qtitle=$ia[3];
+
+
+switch ($ia[4])
+	{
+	case "L":
+	case "O":
+		$qtitle .= "<br />\n</b><i><font size='1'>";
+		$qtitle .= _INSTRUCTION_LIST;
+		break;
+	case "M":
+	case "P":
+		$qtitle .= "<br />\n</b><i><font size='1'>";
+		$qtitle .= _INSTRUCTION_MULTI;
+		break;
+	
+	}
+
 if (is_array($notanswered))
 	{
 	if (in_array($ia[1], $notanswered))
