@@ -54,6 +54,9 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
+$csarray=buildLabelsetCSArray();
+//$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
+
 echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n";
 echo _IS_OKUPLOAD."<br /><br />\n";
 echo _IS_READFILE."<br />\n";
@@ -140,8 +143,8 @@ if ($labelsetarray)
 		
 		$lsainsert = str_replace("'$oldlid'", "''", $lsa);
 		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
-		echo "<b>New LID:</b> $newlid<br />\n";
 		$lsiresult=mysql_query($lsainsert) or die ("ERROR Inserting<br />$lsainsert<br />".mysql_error());
+		$newlid=mysql_insert_id();
 		
 		//GET NEW LID
 		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
@@ -172,7 +175,45 @@ else
 	echo "<b>No Labelsets Found!</b><br /><br />\n";
 	}
 
+//NOW CHECK THAT THE NEW LABELSET ISN'T A REPLICA
+$thisset="";
+$query2 = "SELECT code, title, sortorder
+		   FROM {$dbprefix}labels
+		   WHERE lid=".$newlid."
+		   ORDER BY sortorder, code";
+$result2 = mysql_query($query2) or die("Died querying labelset $lid<br />$query2<br />".mysql_error());
+$numfields=mysql_num_fields($result2);
+while($row2=mysql_fetch_row($result2))
+	{
+	for ($i=0; $i<=$numfields-1; $i++)
+		{
+		$thisset .= $row2[$i];
+		}
+	} // while
+$newcs=dechex(crc32($thisset)*1);
+if (isset($csarray))
+	{
+	foreach($csarray as $key=>$val)
+		{
+		if ($val == $newcs)
+			{
+		    $lsmatch=$key;
+			}
+		}
+	}
+if (isset($lsmatch))
+	{
+    //There is a matching labelset. So, we will delete this one and refer
+	//to the matched one.
+	$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
+	$result=mysql_query($query) or die("Couldn't delete labels<br />$query<br />".mysql_error());
+	$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
+	$result=mysql_query($query) or die("Couldn't delete labelset<br />$query<br />".mysql_error());
+	$newlid=$lsmatch;
+	echo "<p><i><font color='red'>"._IL_DUPLICATE."</font></i></p>\n";
+	}
 
+echo "<b>LID:</b> $newlid<br />\n";
 echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
 echo "<b><u>"._IQ_IMPORTSUMMARY."</u></b><br />\n";
 echo "\t<li>"._LABELSETS.": $countlabelsets</li>\n";
