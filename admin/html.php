@@ -317,8 +317,8 @@ if ($qid)
 		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='Edit Group' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">";
-		if ($qct == 0 && $activated=="N") {$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='Delete Group' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='Edit Question' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";
+		if ($qct == 0 && $activated=="N") {$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='Delete Question' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">";}
 		else				 {$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='Export Survey' align='left' border='0' hspace='0' onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
