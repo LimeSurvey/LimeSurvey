@@ -39,14 +39,8 @@ $sid = $_GET['sid'];
 $boxstyle = "style='border-color: #111111; border-width: 1; border-style: solid'";
 include("config.php");
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                                                     // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");                          // HTTP/1.0
-//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ")
-//echo $htmlheader;
+sendcacheheaders();
+
 echo "<html>\n<head>\n";
 echo "<meta http-equiv='content-script-type' content='text/javascript' />\n";
 echo "</head>\n<body>\n";
@@ -279,7 +273,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
 					echo "\t\t\t\t\t<td>$setfont";
 					for ($i=1; $i<=5; $i++)
 						{
@@ -298,7 +292,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
 					for ($i=1; $i<=10; $i++)
 						{
@@ -317,7 +311,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'>Yes&nbsp;\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U'>Uncertain&nbsp;\n";
@@ -335,12 +329,49 @@ while ($degrow = mysql_fetch_array($degresult))
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='I'>Increase&nbsp;\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='S'>Same&nbsp;\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D'>Decrease&nbsp;\n";
 					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t</table>\n";
+				break;
+			case "F": //ARRAY (Flexible Labels)
+				//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
+				$headstyle="style='padding-left: 20px; padding-right: 7px'";
+				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$mearesult = mysql_query($meaquery);
+				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />\n";
+				echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
+				$fquery = "SELECT * FROM labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
+				$fresult = mysql_query($fquery);
+				$fcount = mysql_num_rows($fresult);
+				$fwidth = "120";
+				$i=0;
+				while ($frow = mysql_fetch_array($fresult))
+					{
+					echo "\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</td>\n";
+					$i++;
+					}
+				echo "\t\t\t\t\t\t</tr>\n";
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
+					//echo "\t\t\t\t\t<td>";
+					for ($i=1; $i<=$fcount; $i++)
+						{
+						
+						echo "\t\t\t\t\t<td align='center'";
+						if ($i > 1) {echo " $headstyle";}
+						echo ">$setfont\n";
+						echo "\t\t\t\t\t\t<input type='checkbox'>\n";
+						echo "\t\t\t\t\t</td>\n";
+						}
+					//echo "\t\t\t\t\t</tr></table></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
