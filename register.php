@@ -145,16 +145,24 @@ $subject=str_replace("{ADMINEMAIL}", $surveyadminemail, $subject);
 $subject=str_replace("{SURVEYNAME}", $surveyname, $subject);
 $subject=str_replace("{SURVEYDESCRIPTION}", $surveydescription, $subject);
 
+$message=crlf_lineendings($message);
+
+$html=""; //Set variable
+
 if (mail(returnglobal('register_email'), $subject, $message, $headers))
 	{
 	$query = "UPDATE {$dbprefix}tokens_$sid\n"
 			."SET sent='Y' WHERE tid=$tid";
 	$result=mysql_query($query) or die ("$query<br />".mysql_error());
-	$html="<center>"._RG_REGISTRATIONCOMPLETE;
+	$html.="<center>"._RG_REGISTRATIONCOMPLETE;
 	$html=str_replace("{ADMINNAME}", $surveyadmin, $html);
 	$html=str_replace("{ADMINEMAIL}", $surveyadminemail, $html);
 	$html=str_replace("{SURVEYNAME}", $surveyname, $html);
-	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: self.close()' value='"._CLOSEWIN."'></center>\n";
+	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: self.close()' value='"._CLOSEWIN_PS."'></center>\n";
+	}
+else
+	{
+	$html="Email Error";
 	}
 
 //PRINT COMPLETED PAGE
