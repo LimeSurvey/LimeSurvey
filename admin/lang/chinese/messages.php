@@ -672,6 +672,7 @@ define("_TP_QUESTIONPAGE", "Question Page"); //New with 098rc9
 define("_TP_SUBMITPAGE", "Submit Page");
 define("_TP_COMPLETEDPAGE", "Completed Page"); //New with 098rc9
 define("_TP_CLEARALLPAGE", "Clear All Page"); //New with 098rc9
+define("_TP_REGISTERPAGE", "Register Page"); //New with 098finalRC1
 define("_TP_EXPORT", "Export Template"); //New with 098rc10
 
 ?>
