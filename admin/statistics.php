@@ -87,21 +87,32 @@ foreach ($filters as $flt)
 		echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3]<br />\n";
 		echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1][]' multiple $slstyle2>\n";
 		}
+	$myfield = "QID$flt[0]GID$flt[1]";
 	switch ($flt[2])
 		{
 		case "5": // 5 point choice
 			for ($i=1; $i<=5; $i++)
 				{
-				echo "\t\t\t\t\t<option value='$i'>$i</option>\n";
+				echo "\t\t\t\t\t<option value='$i'";
+				if (is_array($_POST[$myfield]) && in_array($i, $_POST[$myfield])) {echo " selected";}
+				echo ">$i</option>\n";
 				}
 			break;
 		case "G": // Gender
-			echo "\t\t\t\t\t<option value='F'>Female</option>\n";
-			echo "\t\t\t\t\t<option value='M'>Male</option>\n";
+			echo "\t\t\t\t\t<option value='F'";
+			if (is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {echo " selected";}
+			echo ">Female</option>\n";
+			echo "\t\t\t\t\t<option value='M'";
+			if (is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {echo " selected";}
+			echo ">Male</option>\n";
 			break;
 		case "Y": // Yes\No
-			echo "\t\t\t\t\t<option value='Y'>Yes</option>\n";
-			echo "\t\t\t\t\t<option value='N'>No</option>\n";
+			echo "\t\t\t\t\t<option value='Y'";
+			if (is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {echo " selected";}
+			echo ">Yes</option>\n";
+			echo "\t\t\t\t\t<option value='N'";
+			if (is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {echo " selected";}
+			echo ">No</option>\n";
 			break;
 		// ARRAYS
 		case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
@@ -110,11 +121,17 @@ foreach ($filters as $flt)
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
+				$myfield2 = $myfield."ANS$row[0]";
+				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
+				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0]' multiple $slstyle2>\n";
+				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0][]' multiple $slstyle2>\n";
 				for ($i=1; $i<=5; $i++)
 					{
-					echo "\t\t\t\t\t<option value='$i'>$i</option>\n";
+					echo "\t\t\t\t\t<option value='$i'";
+					if (is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {echo " selected";}
+					if ($_POST[$myfield2] == $i) {echo " selected";}
+					echo ">$i</option>\n";
 					}
 				echo "\t\t\t\t</select>\n";
 				}
@@ -126,11 +143,17 @@ foreach ($filters as $flt)
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
+				$myfield2 = $myfield . "ANS$row[0]";
+				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
+				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0]' multiple $slstyle2>\n";
+				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0][]' multiple $slstyle2>\n";
 				for ($i=1; $i<=10; $i++)
 					{
-					echo "\t\t\t\t\t<option value='$i'>$i</option>\n";
+					echo "\t\t\t\t\t<option value='$i'";
+					if (is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {echo " selected";}
+					if ($_POST[$myfield2] == $i) {echo " selected";}
+					echo ">$i</option>\n";
 					}
 				echo "\t\t\t\t</select>\n";
 				}
@@ -138,15 +161,23 @@ foreach ($filters as $flt)
 			break;
 		case "C": // ARRAY OF YES\No\Uncertain QUESTIONS
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]'";
+			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0][]'";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
+				$myfield2 = $myfield . "ANS$row[0]";
+				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0]' multiple $slstyle2>\n";
-				echo "\t\t\t\t\t<option value='Y'>Yes</option>\n";
-				echo "\t\t\t\t\t<option value='U'>Uncertain</option>\n";
-				echo "\t\t\t\t\t<option value='N'>No</option>\n";
+				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0][]' multiple $slstyle2>\n";
+				echo "\t\t\t\t\t<option value='Y'";
+				if (is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected";}
+				echo ">Yes</option>\n";
+				echo "\t\t\t\t\t<option value='U'";
+				if (is_array($_POST[$myfield2]) && in_array("U", $_POST[$myfield2])) {echo " selected";}
+				echo ">Uncertain</option>\n";
+				echo "\t\t\t\t\t<option value='N'";
+				if (is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {echo " selected";}
+				echo ">No</option>\n";
 				echo "\t\t\t\t</select>\n";
 				}
 			$counter=0;
@@ -155,12 +186,10 @@ foreach ($filters as $flt)
 			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]'";
 			$result = mysql_query($query) or die("Couldn't get answers!<br />$query<br />".mysql_error());
 			
-			//$myfield = "QID$flt[0]GID$flt[1][]";
-			
 			while ($row=mysql_fetch_row($result))
 				{
 				echo "\t\t\t\t\t\t<option value='$row[0]'";
-				//if (in_array($row[0], $$myfield)) {echo " selected";}
+				if (is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected";}
 				echo ">$row[1]</option>\n";
 				}
 		}
@@ -173,11 +202,39 @@ foreach ($filters as $flt)
 	}
 echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 echo "\t\t</td></tr>\n";
-echo "\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<input $btstyle type='submit'>\n\t\t</td></tr>\n";
+echo "\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n";
+echo "\t\t\t<input $btstyle type='submit' value='View Stats'>\n";
+echo "\t\t\t<input $btstyle type='button' value='Clear' onClick=\"window.open('statistics.php?sid=$sid', '_top')\">\n";
+echo "\t\t</td></tr>\n";
 echo "\t<input type='hidden' name='sid' value='$sid'>\n";
 echo "\t<input type='hidden' name='display' value='stats'>\n";
-echo "\t</form>\n</table>\n";
+echo "\t</form>\n";
+echo "</table>\n";
 
+
+/// MUCKING AROUND ----
+echo count($_POST) . " elements<br />";
+foreach ($_POST as $post)
+	{
+	if (is_array($post))
+		{
+		foreach ($post as $pst)
+			{
+			echo "$pst<br />\n";
+			}
+		}
+	else
+		{
+		echo "$post<br />\n";
+		}
+	echo "<br />\n";
+	}
+
+//for($i=0;$i<count($_POST);$i++){
+//$tmpvar=$_POST[$i];
+// echo("Key: ".$tmpvar.key()." Value: ".$tmpvar.value());
+//}
+// -----------
 
 if ($display)
 	{
