@@ -98,6 +98,14 @@ function BuildOutput($Query)
 	return $Output;
 	}
 
+//header("Content-Type: application/msword"); //EXPORT INTO MSWORD
+header("Content-Disposition: attachment; filename=$fn");
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
+                                                     // always modified
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");  
+	
 //0: Groups Table
 $gquery = "SELECT * FROM {$dbprefix}groups WHERE gid=$gid";
 $gdump = BuildOutput($gquery);
@@ -124,13 +132,7 @@ $ldump = BuildOutput($lquery);
 
 $fn = "group_$gid.sql";
 
-//header("Content-Type: application/msword"); //EXPORT INTO MSWORD
-header("Content-Disposition: attachment; filename=$fn");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-                                                     // always modified
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");                          // HTTP/1.0
+                        // HTTP/1.0
 echo "#<pre>\n";
 echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump;
 echo "#</pre>\n";
