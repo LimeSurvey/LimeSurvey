@@ -291,7 +291,8 @@ elseif ($action == "insertnewsurvey")
 			}
 		else
 			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your survey could not be created!\")\n //-->\n</script>\n";
+			$errormsg="Your survey could not be created - ".mysql_error();
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
 			}
 		}
 	}
