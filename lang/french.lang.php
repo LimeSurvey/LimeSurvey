@@ -76,7 +76,7 @@ define("_MANDATORY", "Cette question est obligatoire");
 define("_MANDATORY_PARTS", "Complétez toutes les parties SVP");
 define("_MANDATORY_CHECK", "Veuillez choisir au moins un élément SVP");
 define("_MANDATORY_RANK", "Veuillez classer tous les éléments SVP");
-define("_MANDATORY_POPUP", "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"); //NEW in 0.98rc4
+define("_MANDATORY_POPUP", "Une ou plusieurs questions obligatoires n'ont pas été répondues. Vous ne pouvez pas procéder jusqu'à ce que ceux-ci aient été accomplis"); //NEW in 0.98rc4
 define("_DATEFORMAT", "Format: AAAA-MM-JJ");
 define("_DATEFORMATEG", "(ex: 2003-12-25 pour Noël)");
 define("_REMOVEITEM", "Enlever cet élément");
