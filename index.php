@@ -485,7 +485,7 @@ function checkgroupfordisplay($gid)
 			$countQuestionsInThisGroup++;
 			if ($ia[7] == "Y") //This question is conditional
 				{
-			    $countConditionalQuestionsInThisGroup++;
+				$countConditionalQuestionsInThisGroup++;
 				$checkConditions[]=$ia; //Create an array containing all the conditional questions
 				}
 			}
@@ -560,24 +560,25 @@ function checkgroupfordisplay($gid)
 						}
 					}
 				} // while
+			foreach($distinctcqids as $key=>$val)
+				{
+				//Because multiple cqids are treated as "AND", we only check
+				//one condition per conditional qid (cqid). As long as one
+				//match is found for each distinct cqid, then the condition is met.
+				$totalands=$totalands+$val;
+				}
+			if ($totalands >= count($distinctcqids))
+				{
+				//The number of matches to conditions exceeds the number of distinct 
+				//conditional questions, therefore a condition has been met.
+				//As soon as any condition for a question is met, we MUST show the group.
+				return true;
+				}
+			unset($distinctcqids);
 			}
-		foreach($distinctcqids as $key=>$val)
-			{
-			//Because multiple cqids are treated as "AND", we only check
-			//one condition per conditional qid (cqid). As long as one
-			//match is found for each distinct cqid, then the condition is met.
-			$totalands=$totalands+$val;
-			}
-		if ($totalands >= count($distinctcqids))
-			{
-			//The number of matches to conditions exceeds the number of distinct 
-			//conditional questions, therefore a condition has been met.
-			return true;
-			}
-		else
-			{
+			//Since we made it this far, there mustn't have been any conditions met.
+			//Therefore the group should not be displayed.
 			return false;
-			}
 		}
 	}
 
