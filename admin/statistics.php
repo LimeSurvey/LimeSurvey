@@ -133,7 +133,7 @@ foreach ($filters as $flt)
 			$myfield3="{$myfield}L";
 			echo "\t\t\t\t\tNumber less than:<br />\n";
 			echo "\t\t\t\t\t<input type='text' $slstyle2 name='$myfield3' value='".$_POST[$myfield3]."'><br />\n";
-			$allfields[]=$myfield2;
+			//$allfields[]=$myfield2;
 			break;
 		case "D": // Date
 			$myfield2="D$myfield";
