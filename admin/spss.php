@@ -11,11 +11,7 @@ $query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET L
 $result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 $num_results = mysql_num_rows($result);
 # Build array that has to be returned
-for ($i=0; $i < $num_results; $i++) {
-	$row = mysql_fetch_array($result);
-	$legitqs[] = $row['qid']; //this creates an array of question id's'
-}
-
+$fieldmap=createFieldMap($sid);
 #See if tokens are being used
 $tresult = @mysql_list_tables($databasename) or die ("Error getting table list<br />".mysql_error());
 while($tbl = @mysql_tablename($tresult, $i++))
@@ -39,12 +35,32 @@ for ($i=0; $i < $num_results; $i++) {
 $fieldno=0;
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
-	$fields=array(
-		$fieldno++ =>array("id"=>"fname","name"=>_TL_FIRST,"code"=>"", "qid"=>0,"type"=>"A40" ) , 
-		$fieldno++ =>array("id"=>"lname","name"=>_TL_LAST,"code"=>"", "qid"=>0,"type"=>"A40" ) , 
-		$fieldno++ =>array("id"=>"email","name"=>_TL_EMAIL,"code"=>"", "qid"=>0,"type"=>"A100") , 
-		$fieldno++ =>array("id"=>"attr1","name"=>$attr1_name,"code"=>"", "qid"=>0,"type"=>"A100") , 
-		$fieldno++ =>array("id"=>"attr2","name"=>$attr2_name,"code"=>"", "qid"=>0,"type"=>"A100"));
+	$query="SHOW COLUMNS FROM {$dbprefix}tokens_$sid";
+	$result=mysql_query($query) or die("Couldn't count fields in tokens<br />$query<br />".mysql_error());
+	while ($row=mysql_fetch_row($result)) {
+			$token_fields[]=$row[0];
+		}
+	if (in_array("firstname", $token_fields)) {
+	    $fields[$fieldno++]=array("id"=>"fname","name"=>_TL_FIRST,"code"=>"", "qid"=>0,"type"=>"A40" );
+	}
+	if (in_array("lastname", $token_fields)) {
+	    $fields[$fieldno++]=array("id"=>"lname","name"=>_TL_LAST,"code"=>"", "qid"=>0,"type"=>"A40" );
+	}
+	if (in_array("email", $token_fields)) {
+	    $fields[$fieldno++]=array("id"=>"email","name"=>_TL_EMAIL,"code"=>"", "qid"=>0,"type"=>"A100");
+	}
+	if (in_array("attribute_1", $token_fields)) {
+	    $fields[$fieldno++]=array("id"=>"attr1","name"=>$attr1_name,"code"=>"", "qid"=>0,"type"=>"A100");
+	}
+	if (in_array("attribute_2", $token_fields)) {
+	    $fields[$fieldno++]=array("id"=>"attr2","name"=>$attr2_name,"code"=>"", "qid"=>0,"type"=>"A100");
+	}
+//	$fields=array(
+//		$fieldno++ =>array("id"=>"fname","name"=>_TL_FIRST,"code"=>"", "qid"=>0,"type"=>"A40" ) , 
+//		$fieldno++ =>array("id"=>"lname","name"=>_TL_LAST,"code"=>"", "qid"=>0,"type"=>"A40" ) , 
+//		$fieldno++ =>array("id"=>"email","name"=>_TL_EMAIL,"code"=>"", "qid"=>0,"type"=>"A100") , 
+//		$fieldno++ =>array("id"=>"attr1","name"=>$attr1_name,"code"=>"", "qid"=>0,"type"=>"A100") , 
+//		$fieldno++ =>array("id"=>"attr2","name"=>$attr2_name,"code"=>"", "qid"=>0,"type"=>"A100"));
 } else {
 	$fields=array();
 }
@@ -74,21 +90,16 @@ for ($i=0; $i < $num_results; $i++) {
 	}
 	#Get qid (question id)
 	$code="";
-	if ($fieldname == "id" OR $fieldname=="token" OR $fieldname=="stamp"){
+	if ($fieldname == "id" OR $fieldname=="token" OR $fieldname=="stamp" OR $fieldname=="attribute_1" OR $fieldname=="attribute_2"){
 		$qid = 0;
 	}else{
-		#Split the fieldname into three parts
-		list($fsid, $fgid, $fqid) = split("X", $fieldname);
-		#Determine if the question id is in the array above
-		while (!in_array($fqid, $legitqs)){
-			$fqid = substr($fqid, 0, strlen($fqid)-1); //keeps cutting off the end until it finds the real qid
-		}
-		$qid = $fqid;
-		#Get the code
-		#Reload the fqid
-		list($fsid, $fgid, $fqid) = split("X", $fieldname);
-		#load 'code' in code
-		$code = substr($fqid,strlen($qid));
+		//GET FIELD DATA
+		$fielddata=arraySearchByKey($fieldname, $fieldmap, "fieldname", 1);
+		$qid=$fielddata['qid'];
+		$ftype=$fielddata['type'];
+		$fsid=$fielddata['sid'];
+		$fgid=$fielddata['gid'];
+		$code=$fielddata['aid'];
 	}
 	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype"));
 	$fields = $fields + $tempArray;
@@ -111,10 +122,14 @@ echo "BEGIN DATA<br>";
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 $query="SELECT `{$dbprefix}tokens_$sid`.`firstname`   ,
 	       `{$dbprefix}tokens_$sid`.`lastname`    ,
-	       `{$dbprefix}tokens_$sid`.`email`       ,
-	       `{$dbprefix}tokens_$sid`.`attribute_1` ,
-	       `{$dbprefix}tokens_$sid`.`attribute_2` ,
-	       `{$dbprefix}survey_$sid`.* 
+	       `{$dbprefix}tokens_$sid`.`email`";
+if (in_array("attribute_1", $token_fields)) {
+    $query .= ",\n		`{$dbprefix}tokens_$sid`.`attribute_1`";
+}
+if (in_array("attribute_2", $token_fields)) {
+    $query .= ",\n		`{$dbprefix}tokens_$sid`.`attribute_2`";
+}
+$query .= ",\n	       `{$dbprefix}survey_$sid`.* 
 	FROM `{$dbprefix}survey_$sid`
 	LEFT JOIN `{$dbprefix}tokens_$sid` ON `{$dbprefix}survey_$sid`.`token` = `{$dbprefix}tokens_$sid`.`token`";
 } else {
