@@ -34,8 +34,58 @@
 	#############################################################	
 */
 
-if (!$ok)
+if (!$_GET['ok'])
 	{
+	//CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
+	//THESE QUESTION TYPES ARE:
+	//	# "L" -> LIST
+	//  # "O" -> LIST WITH COMMENT
+	//  # "M" -> MULTIPLE OPTIONS
+	//	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
+	//	# "A", "B", "C" -> Various Array Types
+	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C')";
+	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
+	while ($chkrow = mysql_fetch_array($chkresult))
+		{
+		$chaquery = "SELECT * FROM answers WHERE qid = {$chkrow['qid']}";
+		$charesult=mysql_query($chaquery);
+		$chacount=mysql_num_rows($charesult);
+		if (!$chacount > 0) 
+			{
+			$failedcheck[]=array($chkrow['qid'], $chkrow['question']);
+			}
+		}
+	if ($failedcheck)
+		{
+		echo "<table width='350' align='center'>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td align='center' bgcolor='pink'>\n";
+		echo "\t\t\t<font color='red'>$setfont<b>:ERROR:</b><br />\n";
+		echo "\t\t\tSurvey does not pass consistency check</font></font>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td>\n";
+		echo "\t\t\t$setfont<b>The following problems have been found:</b><br />\n";
+		echo "\t\t\t<ul>\n";
+		foreach ($failedcheck as $fc)
+			{
+			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"{$fc[1]}\") is a multiple answer style question "
+				."but does not have any answers.</li>\n";
+			}
+		echo "\t\t\t</ul>\n";
+		echo "\t\t\tThe survey cannot be activated until these problems have been resolved.\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td align='center'>\n";
+		echo "\t\t\t<input type='submit' $btstyle value='Return to Admin' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "</table>\n";
+		exit;		
+		}
+	
 	echo "<table width='350' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' bgcolor='pink'>\n";
@@ -70,8 +120,8 @@ if (!$ok)
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='I`m Unsure' onclick=\"window.open('$scriptname?sid=$sid', '_top')\"><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='Activate' onClick=\"window.open('$scriptname?action=activate&ok=Y&sid=$sid', '_top')\">\n";
+	echo "\t\t\t<input type='submit' $btstyle value='I`m Unsure' onclick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Activate' onClick=\"window.open('$scriptname?action=activate&ok=Y&sid={$_GET['sid']}', '_top')\">\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -80,15 +130,15 @@ if (!$ok)
 	}
 else
 	{
-	$createsurvey = "CREATE TABLE survey_$sid (\n";
+	$createsurvey = "CREATE TABLE survey_{$_GET['sid']} (\n";
 	$createsurvey .= "  id INT(11) NOT NULL auto_increment,\n";
-	$pquery = "SELECT private FROM surveys WHERE sid=$sid";
+	$pquery = "SELECT private FROM surveys WHERE sid={$_GET['sid']}";
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
 		{
 		if ($prow['private'] == "N") {$createsurvey .= "  token VARCHAR(10),\n";}
 		}
-	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
+	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid={$_GET['sid']} ORDER BY group_name, title";
 	$aresult = mysql_query($aquery);
 	//echo "<br /><br />$aquery<br /><br />\n";
 	while ($arow=mysql_fetch_array($aresult))
@@ -127,7 +177,7 @@ else
 		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
 			{
 			//MULTI ENTRY
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY code";
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY code";
 			$abresult=mysql_query($abquery);
 			while ($abrow=mysql_fetch_array($abresult))
 				{
@@ -158,7 +208,7 @@ else
 	$createtable=mysql_query($createsurvey) or die 
 		(
 		"<center><h3>Could not activate this survey.</h3></center><br />\n" .
-		"<center><a href='$scriptname?sid=$sid'>Back to Admin</a></center>\n" .
+		"<center><a href='$scriptname?sid={$_GET['sid']}'>Back to Admin</a></center>\n" .
 		"The database reported:<br />\n<font color='red'>" . mysql_error() . "</font>\n" .
 		"<pre>$createsurvey</pre>\n" .
 		"</body>\n</html>"
@@ -166,11 +216,11 @@ else
 	
 	echo "<center><font color='green'>Results Table has been created!<br /><br />\n";
 	
-	$acquery = "UPDATE surveys SET active='Y' WHERE sid=$sid";
+	$acquery = "UPDATE surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
 	
 	echo "Survey is now active and data entry can proceed!<br /><br />\n";
-	echo "<a href='$scriptname?sid=$sid'>Return to administration</a></center>\n";
+	echo "<a href='$scriptname?sid={$_GET['sid']}'>Return to administration</a></center>\n";
 	echo "</body>\n</html>";
 	}	
 ?>
