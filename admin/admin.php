@@ -194,26 +194,29 @@ function helpscreen()
 	echo "\t\t\t\t</tr>\n";
 	echo "\t\t\t\t<tr>\n";
 	echo "\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
+	
 	//determine which help document to show
+	$langdir="$homeurl/lang/$defaultlang";
+	if (!is_dir($langdir)) {$langdir="$homeurl/lang/english";} //default to english if there is no matching language dir
 	if (!$sid)
 		{
-		$helpdoc = "$homeurl/lang/$defaultlang/admin.html";
+		$helpdoc = "$langdir/admin.html";
 		}
 	elseif ($sid && !$gid)
 		{
-		$helpdoc = "$homeurl/lang/$defaultlang/survey.html";
+		$helpdoc = "$langdir/survey.html";
 		}
 	elseif ($sid && $gid && !$qid)
 		{
-		$helpdoc = "$homeurl/lang/$defaultlang/group.html";
+		$helpdoc = "$langdir/group.html";
 		}
 	elseif ($sid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
 		{
-		$helpdoc = "$homeurl/lang/$defaultlang/question.html";
+		$helpdoc = "$langdir/question.html";
 		}
 	elseif ($sid && $gid && $qid && ($_GET['viewanswer'] || $_POST['viewanswer']))
 		{
-		$helpdoc = "$homeurl/lang/$defaultlang/answer.html";
+		$helpdoc = "$langdir/answer.html";
 		}
 	echo "\t\t\t\t\t\t<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n";
 	echo "\t\t\t\t\t\t</iframe>\n";
