@@ -143,7 +143,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'])
 		else{$multiname="MULTI$cmfns[$mi]";}
 		//$dccm="display$ccm";
 		$dccm="display$cmfns[$mi]";
-		if (($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && $_POST[$dccm] == "on")//There is an answer
+		if (isset($_SESSION[$ccm]) && ($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && $_POST[$dccm] == "on")//There is an answer
 			{
 			}
 		elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
