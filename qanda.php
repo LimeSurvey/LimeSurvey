@@ -226,7 +226,7 @@ switch ($ia[4])
 			if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
 			$answer .= "\t\t\t\t\t<td valign='top'>\n"
 					 . "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' rows='$tarows' cols='30'>";
-			if ($_SESSION[$fname2]) 
+			if (isset($_SESSION[$fname2]) && $_SESSION[$fname2]) 
 				{
 				$answer .= str_replace("\\", "", $_SESSION[$fname2]);
 				}
