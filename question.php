@@ -35,10 +35,10 @@
 */
 	
 //Move current step
-if ($_POST['move'] == " << prev " && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $_POST['thisstep']-1;}
-elseif ($_POST['move'] == " << prev " && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $_POST['thisstep'];}
-if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
-if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if ($_POST['move'] == " << "._PREV." " && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $_POST['thisstep']-1;}
+elseif ($_POST['move'] == " << "._PREV." " && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $_POST['thisstep'];}
+if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES 
 if ($_POST['fieldnames'])
@@ -64,9 +64,9 @@ if ($_POST['mandatory'])
 				{
 				if ($$multiname == $$multiname2) //The number of questions not answered is equal to the number of questions
 					{
-					if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-					if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
+					if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+					if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 				    $notanswered[]=substr($multiname, 5, strlen($multiname));
 					$$multiname=0;
 					$$multiname2=0;
@@ -83,9 +83,9 @@ if ($_POST['mandatory'])
 		elseif (!$_POST[$multiname])
 			{
 			//One of the mandatory questions hasn't been asnwered
-			if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
+			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$mfns[$mi];
 			}
 		else
@@ -101,9 +101,9 @@ if ($_POST['mandatory'])
 		if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 			//The number of questions not answered is equal to the number of questions
-			if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
+			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 		    $notanswered[]=substr($multiname, 5, strlen($multiname));
 			$$multiname="";
 			$$multiname2="";
@@ -129,9 +129,9 @@ if ($_POST['conmandatory'])
 		if ($_POST[$dccm] == "on" && (!$_SESSION[$ccm] && $_SESSION[$ccm] != "0") && !$_POST[$multiname])
 			{
 			//One of the conditional mandatory questions was on, but hasn't been answered
-			if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
+			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 			$notanswered[]=$cmfns[$mi];
 			}
 		elseif ($_POST[$dccm] == "on" && !$_SESSION[$ccm] && $_POST[$multiname])
@@ -144,15 +144,15 @@ if ($_POST['conmandatory'])
 	    if (count($notanswered) == count($chkcmands)) //
 			{
 			//The number of questions not answered is equal to the number of questions
-			if ($_POST['move'] == " << prev ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " next >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if ($_POST['move'] == " last ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " next >> ";}
+			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if ($_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
 		    }
 		}
 	}
 
 //SUBMIT
-if ($_POST['move'] == " submit ")
+if ($_POST['move'] == " "._SUBMIT." ")
 	{
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -289,7 +289,7 @@ if ($_POST['move'] == " submit ")
 	}
 
 //LAST PHASE
-if ($_POST['move'] == " last " && !$notanswered)
+if ($_POST['move'] == " "._LAST." " && !$notanswered)
 	{
 	last();
 	exit;
@@ -304,7 +304,7 @@ if ($surveyexists <1)
 		echo templatereplace($op);
 		}
 	echo "\t<center><br />\n";
-	echo "\tSorry. There is no matching survey.<br />&nbsp;\n";	
+	echo "\t"._SURVEYNOEXIST."<br />&nbsp;\n";	
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -375,12 +375,10 @@ if (!$_SESSION['step'])
 				echo "\t".templatereplace($op);
 				}
 			echo "\t<center><br />\n";
-			echo "\tThis survey, titled <b>$surveyname</b>, is a controlled survey. You need a valid\n";
-			echo "\ttoken to participate.<br /><br />\n";
-			echo "\tThe token you have provided is either not valid, or has already been used. Please\n";
-			echo "\tcontact $surveyadminname at <a href='mailto:$surveyadminemail'>$surveyadminemail</a>\n";
-			echo "\tfor more information.<br /><br />\n";
-			echo "\t<a href='javascript:window.close()'>Close this window</a><br />&nbsp;\n";
+			echo "\t"._NOTOKEN1."<br /><br />\n";
+			echo "\t"._NOTOKEN3."\n";
+			echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a><br /><br />\n";
+			echo "\t<a href='javascript:window.close()'>"._CLOSEWINDOW."</a><br />&nbsp;\n";
 			foreach(file("$thistpl/endpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -413,11 +411,9 @@ if (!$_SESSION['step'])
 			echo "\t".templatereplace($op);
 			}
 		echo "\t<center><br />\n";
-		echo "\tThis survey, titled <b>$surveyname</b>, does not yet have any questions and cannot\n";
-		echo "\tbe tested or completed.<br /><br />\n";
-		echo "\tContact $surveyadminname at <a href='mailto:$surveyadminemail'>$surveyadminemail</a>\n";
-		echo "\tfor more information.<br /><br />\n";
-		echo "\t<a href='javascript:window.close()'>Close this window</a><br />&nbsp;\n";
+		echo "\t"._NOQUESTIONS."<br /><br />\n";
+		echo "\t"._FURTHERINFO." $surveyadminname (<a href='mailto:$surveyadminemail'>$surveyadminemail</a>)<br /><br />\n";
+		echo "\t<a href='javascript:window.close()'>"._CLOSEWINDOW."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -516,7 +512,7 @@ if (!$_SESSION['step'])
 		{
 		echo templatereplace($op);
 		}
-	if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>This survey is not currently active. You will not be able to save your responses.</font></center>\n";}
+	if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -548,7 +544,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 		}
 	}
 
-if ($newgroup == "Y" && $_POST['move'] == " << prev " && $_POST['grpdesc']=="Y") //a small trick to manage moving backwards from a group description
+if ($newgroup == "Y" && $_POST['move'] == " << "._PREV." " && $_POST['grpdesc']=="Y") //a small trick to manage moving backwards from a group description
 	{
 	$currentquestion++; 
 	$ia=$_SESSION['fieldarray'][$currentquestion]; 
@@ -598,7 +594,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 	else
 		{
 		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
-		if ($move == " next >> ")
+		if ($move == " "._NEXT." >> ")
 			{
 			$currentquestion++;
 			$ia=$_SESSION['fieldarray'][$currentquestion];
@@ -622,7 +618,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 				exit;
 				}
 			}
-		elseif ($move == " << prev ")
+		elseif ($move == " << "._PREV." ")
 			{
 			$currentquestion--;
 			$ia=$_SESSION['fieldarray'][$currentquestion];
@@ -649,7 +645,7 @@ foreach(file("$thistpl/survey.pstpl") as $op)
 	echo "\t".templatereplace($op);
 	}
 
-if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << prev ")
+if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << "._PREV." ")
 	{
 	$presentinggroupdescription = "yes";
 	echo "\n\n<!-- START THE GROUP DESCRIPTION -->\n";
@@ -738,7 +734,7 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 	}
 echo "\n";
 
-if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>This survey is not currently active. You will not be able to save your responses.</font></center>\n";}
+if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
 foreach(file("$thistpl/endpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
@@ -757,7 +753,7 @@ if (is_array($conditions)) //if conditions exist, create hidden inputs for previ
 	}
 
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT (But only when a question is showing)
-if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << prev ")
+if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << "._PREV." ")
 	{}
 else
 	{echo "<input type='hidden' name='fieldnames' value='";
@@ -796,15 +792,15 @@ function surveymover()
 	{
 	global $sid, $presentinggroupdescription;
 	if ($_SESSION['step'])
-		{$surveymover .= "<input class='submit' type='submit' value=' << prev ' name='move' />\n";}
+		{$surveymover .= "<input class='submit' type='submit' value=' << "._PREV." ' name='move' />\n";}
 	if ($_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
-		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' next >> ' name='move' />\n";}
+		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
 	if (!$_SESSION['step'])
-		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' next >> ' name='move' />\n";}
+		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
-		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' next >> ' name='move' />\n";}
+		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' "._NEXT." >> ' name='move' />\n";}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
-		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' last ' name='move' />\n";}
+		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' "._LAST." ' name='move' />\n";}
 	return $surveymover;	
 	}
 

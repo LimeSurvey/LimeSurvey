@@ -90,11 +90,20 @@ while ($row=mysql_fetch_array($result))
 	$surveyurl = $row['url'];
 	$surveyurldescrip = $row['urldescrip'];
 	$surveyformat = $row['format'];
+	$surveylanguage = $row['language'];
 	}
 
 //SET THE TEMPLATE DIRECTORY
 if (!$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
+
+//REQUIRE THE LANGUAGE FILE
+$langdir="$publicdir/lang";
+$langfilename="$langdir/$surveylanguage.lang.php";
+
+if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
+require($langfilename);
+
 //CLEAR SESSION IF REQUESTED
 if ($_GET['move'] == "clearall")
 	{
@@ -115,9 +124,9 @@ if ($_GET['move'] == "clearall")
 	echo "\t<br />\n";
 	echo "\t<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>\n";
 	echo "\t\t<font face='arial' size='2'>\n";
-	echo "\t\t<b><font color='red'>Answers Cleared.</b></font><br /><br />";
-	echo "<a href='$PHP_SELF?sid=$sid'>Restart This Survey</a><br />\n";
-	echo "\t\t<a href='javascript: window.close()'>Close Window</a>\n";
+	echo "\t\t<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />";
+	echo "<a href='$PHP_SELF?sid=$sid'>"._RESTART."</a><br />\n";
+	echo "\t\t<a href='javascript: window.close()'>"._CLOSEWIN."</a>\n";
 	echo "\t\t</font>\n";
 	echo "\t</td></tr>\n";
 	echo "\t</table>\n\t<br />\n";
@@ -171,12 +180,12 @@ function templatereplace($line)
 	if ($templatedir) {$templateurl="$publicurl/templates/$templatedir/";}
 	else {$templateurl="$publicurl/templates/default/";}
 
-	$clearall = "\t\t\t\t\t<div class='clearall'><a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall' onClick='return confirm(\"Are you sure you want to clear all your responses?\")'>[Exit and Clear Survey]</a></div>\n";
+	$clearall = "\t\t\t\t\t<div class='clearall'><a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall' onClick='return confirm(\""._CONFIRMCLEAR."\")'>["._EXITCLEAR."]</a></div>\n";
 	
 	
 	if (ereg("^<body", $line))
 		{
-		if (!ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && ($_POST['move'] != " last " || ($_POST['move'] == " last " && $notanswered)) && ($_POST['move'] != " submit " || ($_POST['move']== " submit " && $notanswered)))
+		if (!ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && ($_POST['move'] != " last " || ($_POST['move'] == " "._LAST." " && $notanswered)) && ($_POST['move'] != " "._SUBMIT." " || ($_POST['move']== " "._SUBMIT." " && $notanswered)))
 			{
 			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
 			}
@@ -197,7 +206,7 @@ function templatereplace($line)
 	else
 		{$line=str_replace("{QUESTIONHELP}", $help, $line);}
 	$line=str_replace("{NAVIGATOR}", $navigator, $line);
-	$submitbutton="<input class='submit' type='submit' value=' submit ' name='move'>";
+	$submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move'>";
 	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
 	$line=str_replace("{COMPLETED}", $completed, $line);
 	if (!$surveyurldescrip) {$linkreplace="<a href='$surveyurl'>$surveyurl</a>";}
@@ -218,8 +227,8 @@ function makegraph($thisstep, $total)
 	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n";
 	$graph .= "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n";
 	$graph .= "<tr><td align='right' width='40'>0%</td>\n";
-	$size=($thisstep-1)/$total*100;
-	$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% complete'></td>\n";
+	$size=intval(($thisstep-1)/$total*100);
+	$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% "._COMPLETE."'></td>\n";
 	$graph .= "<td align='left' width='40'>100%</td></tr>\n";
 	$graph .= "</table>\n";
 	$graph .= "</td></tr>\n</table>\n";

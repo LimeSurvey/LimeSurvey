@@ -95,8 +95,8 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td>\n";
-		$answer .= "\t\t\t\t\t\t<font size='1'>Format: YYYY-MM-DD<br />\n";
-		$answer .= "\t\t\t\t\t\t(eg: 2003-12-25 for Christmas day)\n";
+		$answer .= "\t\t\t\t\t\t<font size='1'>"._DATEFORMAT."<br />\n";
+		$answer .= "\t\t\t\t\t\t"._DATEFORMATEG."\n";
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t</table>\n";
@@ -118,8 +118,8 @@ switch ($ia[4])
 				elseif ($ansrow['default'] == "Y") {$answer .= " selected"; $defexists = "Y";}
 				$answer .= ">{$ansrow['answer']}</option>\n";
 				}
-			if (!$_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' ' selected>Please choose..</option>\n";}
-			if ($_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' '>No answer</option>\n";}
+			if (!$_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' ' selected>"._PLEASECHOOSE."..</option>\n";}
+			if ($_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
 			$answer .= "\t\t\t\t\t</select>\n";
 			}
 		elseif ($dropdowns == "R")
@@ -140,12 +140,12 @@ switch ($ia[4])
 			if (((!$_SESSION[$ia[1]] && !$defexists) || ($_SESSION[$ia[1]] == ' ' && !$defexists)) && $ia[6] != "Y") 
 				{
 				$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' value=' ' checked onClick='checkconditions(this.value, this.name, this.type)' />";
-				$answer .= "No answer\n";
+				$answer .= _NOANSWER."\n";
 				}
 			elseif ($_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") 
 				{
 				$answer .= "\t\t\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' />";
-				$answer .= "No answer\n";
+				$answer .= _NOANSWER."\n";
 				}
 			$answer .= "\t\t\t\t\t\t\t</td>\n";
 			$answer .= "\t\t\t\t\t\t</tr>\n";
@@ -162,8 +162,8 @@ switch ($ia[4])
 			{
 			$answer .= "\t\t\t<table class='question'>\n";
 			$answer .= "\t\t\t\t<tr>\n";
-			$answer .= "\t\t\t\t\t<td><u>Choose one of the following:</u></td>\n";
-			$answer .= "\t\t\t\t\t<td><u>Please enter your comment here:</td>\n";
+			$answer .= "\t\t\t\t\t<td><u>"._CHOOSEONE.":</u></td>\n";
+			$answer .= "\t\t\t\t\t<td><u>"._ENTERCOMMENT.":</td>\n";
 			$answer .= "\t\t\t\t</tr>\n";
 			$answer .= "\t\t\t\t<tr>\n";
 			$answer .= "\t\t\t\t\t<td valign='top'>\n";
@@ -181,12 +181,12 @@ switch ($ia[4])
 				if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) 
 					{
 					$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' checked onChange='checkconditions(this.value, this.name, this.type)' />";
-					$answer .= "No answer\n";
+					$answer .= _NOANSWER."\n";
 					}
 				elseif ($_SESSION[$ia[1]] && !$defexists) 
 					{
 					$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' onChange='checkconditions(this.value, this.name, this.type)' />";
-					$answer .= "No answer\n";
+					$answer .= _NOANSWER."\n";
 					}
 				}
 			$answer .= "\t\t\t\t\t</td>\n";
@@ -228,11 +228,11 @@ switch ($ia[4])
 				{
 				if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) 
 					{
-					$answer .= "\t\t\t\t\t\t<option value=' ' selected>No answer</option>\n";
+					$answer .= "\t\t\t\t\t\t<option value=' ' selected>"._NOANSWER."</option>\n";
 					}
 				elseif ($_SESSION[$ia[1]] && !$defexists) 
 					{
-					$answer .= "\t\t\t\t\t\t<option value=' '>No answer</option>\n";
+					$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";
 					}
 				}
 			$answer .= "\t\t\t\t\t</select>\n";
@@ -380,7 +380,7 @@ switch ($ia[4])
 				$chosen[]=array($thiscode, $thistext);
 				}
 			$ranklist .= "' />\n";
-			$ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' title='Remove this item' ";
+			$ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' title='"._REMOVEITEM."' ";
 			if ($i != $existing)
 				{
 				$ranklist .= "style='display:none'";
@@ -420,13 +420,13 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table border='0' cellspacing='5' class='rank'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n";
-		$answer .= "\t\t\t\t\t\tClick on an item in the choices list, starting with your highest<br />";
-		$answer .= "\t\t\t\t\t\tranking item, moving through to your lowest ranking item.";
+		$answer .= "\t\t\t\t\t\t"._RANK_1."<br />";
+		$answer .= "\t\t\t\t\t\t"._RANK_2;
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td align='left' valign='top' class='rank'>\n";
-		$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;Your Choices:</b><br />\n";
+		$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;"._YOURCHOICES.":</b><br />\n";
 		$answer .= "&nbsp;".$choicelist;
 		$answer .= "\t\t\t\t\t&nbsp;</td>\n";
 		if ($maxselectlength > 60) 
@@ -434,20 +434,20 @@ switch ($ia[4])
 			$answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
 			$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' class='rank'>\n";
-			$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;Your Ranking:</b><br />\n";
+			$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;"._YOURRANKING.":</b><br />\n";
 			}
 		else
 			{
 			$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>\n";
-			$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Ranking:</b><br />\n";
+			$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURRANKING.":</b><br />\n";
 			}
 		$answer .= $ranklist;
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n";
-		$answer .= "\t\t\t\t\t\tClick on the scissors next to each ranked item<br />";
-		$answer .= "\t\t\t\t\t\tto remove the last entry in your ranked list.";
+		$answer .= "\t\t\t\t\t\t"._RANK_3."<br />";
+		$answer .= "\t\t\t\t\t\t"._RANK_4."";
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t</table>\n";
@@ -593,7 +593,7 @@ switch ($ia[4])
 	case "N": //NUMERICAL QUESTION TYPE
 		$answer .= keycontroljs();
 		$answer .= "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n";
-		$answer .= "\t\t\t<font size='1'><i>Only numbers can be entered in this field</i></font>\n";
+		$answer .= "\t\t\t<font size='1'><i>"._NUMERICAL."</i></font>\n";
 		$inputnames[]=$ia[1];
 		break;
 	case "S": //SHORT FREE TEXT
@@ -612,10 +612,10 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t<td>\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value='Y'";
 		if ($_SESSION[$ia[1]] == "Y") {$answer .= " checked";}
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />Yes<br />\n";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"._YES."<br />\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value='N'";
 		if ($_SESSION[$ia[1]] == "N") {$answer .= " checked";}
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />No<br />\n";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"._NO."<br />\n";
 		if ($ia[6] != "Y")
 			{
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=''";
@@ -634,15 +634,15 @@ switch ($ia[4])
 		$answer .= "\t\t\t\t\t<td>\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value='F'";
 		if ($_SESSION[$ia[1]] == "F") {$answer .= " checked";}
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />Female<br />\n";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"._FEMALE."<br />\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value='M'";
 		if ($_SESSION[$ia[1]] == "M") {$answer .= " checked";}
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />Male<br />\n";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"._MALE."<br />\n";
 		if ($ia[6] != "Y")
 			{
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=''";
 			if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />No Answer\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"._NOANSWER."\n";
 			}
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
@@ -752,9 +752,9 @@ switch ($ia[4])
 		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td></td>\n";
-		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Yes</td>\n";
-		$answer .= "\t\t\t\t\t<td align='center' class='array1'>Uncertain</td>\n";
-		$answer .= "\t\t\t\t\t<td align='center' class='array1'>No</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._YES."</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._UNCERTAIN."</td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NO."</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
@@ -848,13 +848,13 @@ if (is_array($notanswered))
 	{
 	if (in_array($ia[1], $notanswered))
 		{
-		$qtitle = "</b><font color='red' size='1'>This question is mandatory.";
+		$qtitle = "</b><font color='red' size='1'>"._MANDATORY.".";
 		if ($ia[4] == "A" || $ia[4] == "B" || $ia[4] == "C")
-			{ $qtitle .= "<br />\nPlease answer all parts."; }
+			{ $qtitle .= "<br />\n"._MANDATORY_PARTS."."; }
 		if ($ia[4] == "M" || $ia[4] == "P")
-			{ $qtitle .= "<br />\nPlease check at least one item.";}
+			{ $qtitle .= "<br />\n"._MANDATORY_CHECK.".";}
 		if ($ia[4] == "R")
-			{ $qtitle .= "<br />\nPlease rank every item."; }
+			{ $qtitle .= "<br />\n"._MANDATORY_RANK."."; }
 		$qtitle .= "</font><b><br />\n";
 		$qtitle .= $ia[3];
 		}
