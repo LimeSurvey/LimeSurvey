@@ -330,6 +330,8 @@ if ($qid)
 		else				 {$questionsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"._Q_EXPORT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/copy.gif' border='0' hspace='0' align='left' title='"._Q_COPY_BT."' onclick=\"window.open('$scriptname?action=copyquestion&sid=$sid&gid=$gid&qid=$qid', '_top')\">\n";
+		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='./images/conditions.gif' border='0' hspace='0' align='left' title='"._Q_CONDITIONS_BT."' onClick=\"window.open('conditions.php?sid=$sid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=350, width=560, scrollbars=yes, resizable=yes')\">\n";
 		$questionsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
