@@ -44,7 +44,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	//	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
 	//	# "A", "B", "C", "E", "F" -> Various Array Types
 	//  # "R" -> RANKING
-	$chkquery = "SELECT qid, question FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R')";
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R')";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
@@ -53,23 +53,23 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		$chacount=mysql_num_rows($charesult);
 		if (!$chacount > 0) 
 			{
-			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_MULTI_NOANSWER);
+			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_MULTI_NOANSWER, $chkrow['gid']);
 			}
 		}
 		
 	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
-	$chkquery = "SELECT qid, question FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type = ''";
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type = ''";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing types<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
-		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOTYPE);
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOTYPE, $chkrow['gid']);
 		}
 	
 	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
-	$chkquery = "SELECT qid, question FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H') AND lid = 0";
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H') AND lid = 0";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".mysql_error());
 	while($chkrow = mysql_fetch_array($chkresult)){
-		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOLID);
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOLID, $chkrow['gid']);
 	} // while
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
@@ -96,7 +96,11 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		}
 	$qordercount="";
 	//1: Get each condition's question id
-	$conquery="SELECT {$dbprefix}conditions.qid, cqid, {$dbprefix}questions.question FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY qid";
+	$conquery= "SELECT {$dbprefix}conditions.qid, cqid, {$dbprefix}questions.question, "
+			 . "{$dbprefix}questions.gid "
+			 . "FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}groups "
+			 . "WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid "
+			 . "AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY qid";
 	$conresult=mysql_query($conquery) or die("Couldn't check conditions for relative consistency<br />$conquery<br />".mysql_error());
 	//2: Check each conditions cqid that it occurs later than the cqid
 	while ($conrow=mysql_fetch_array($conresult))
@@ -118,7 +122,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 				}
 			if ($qidfound == 1)
 				{
-				$failedcheck[]=array($conrow['qid'], $conrow['question'], ": "._AC_CON_OUTOFORDER);
+				$failedcheck[]=array($conrow['qid'], $conrow['question'], ": "._AC_CON_OUTOFORDER, $conrow['gid']);
 				}
 			$b++;
 			}
@@ -140,7 +144,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		echo "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 			{
-			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"{$fc[1]}\") {$fc[2]}</li>\n";
+			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$sid&gid=$fc[3]&qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</li>\n";
 			}
 		echo "\t\t\t</ul>\n";
 		echo "\t\t\t"._AC_CANNOTACTIVATE."\n";
