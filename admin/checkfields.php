@@ -136,6 +136,7 @@ $allfields[]=array("{$dbprefix}saved", "identifier", "identifier text NOT NULL")
 $allfields[]=array("{$dbprefix}saved", "access_code", "access_code text NOT NULL");
 $allfields[]=array("{$dbprefix}saved", "fieldname", "fieldname text NOT NULL");
 $allfields[]=array("{$dbprefix}saved", "value", "value text NOT NULL");
+$allfields[]=array("{$dbprefix}saved", "email", "email varchar(200)");
 
 echo $htmlheader;
 
