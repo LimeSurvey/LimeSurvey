@@ -37,6 +37,7 @@
 # TOKENS FILE
 
 //Create global $action variable
+$THISOS="";
 
 include("config.php");
 if (!isset($action)) {$action=returnglobal('action');}
@@ -763,7 +764,15 @@ if ($action == "tokenify")
 			$insert = "NO";
 			while ($insert != "OK")
 				{
-				$newtoken = sprintf("%010s", rand(1, 10000000000));
+				if ($THISOS == "solaris")
+					{
+					$nt1=mysql_query("SELECT RAND()");
+					while ($row=mysql_fetch_row($nt1)) {$newtoken=(int)(sprintf("%010s", $row[0]*1000000000));}
+					}
+				else
+					{
+					$newtoken = sprintf("%010s", rand(1, 10000000000));
+					}
 				$ntquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='$newtoken'";
 				$ntresult = mysql_query($ntquery);
 				if (!mysql_num_rows($ntresult)) {$insert = "OK";}
