@@ -682,8 +682,8 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 					. "\t\t\t\t<option value='Y'>"._AD_YES."</option>\n"
 					. "\t\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
 					. "\t\t\t</select></td>\n"
-					. "\t\t<td></td>\n"
 					. "\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='"._AL_ADD."'></td>\n"
+					. "\t\t<td></td>\n"
 					. "\t<input type='hidden' name='sid' value='$sid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
@@ -694,7 +694,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 	if ($cdcount > 0)
 		{
 		$vasummary .= "<tr><form action='admin.php' method='post'><td colspan='3'></td>"
-					. "<td align='center'><input $btstyle type='submit' name='ansaction' value='"._AL_FIXSORT."'></td><td></td>\n"
+					. "<td></td><td align='center'><input $btstyle type='submit' name='ansaction' value='"._AL_FIXSORT."'></td>\n"
 					. "\t<input type='hidden' name='sid' value='$sid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
