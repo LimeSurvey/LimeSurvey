@@ -55,32 +55,32 @@ if (!$style)
 		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"._EX_HEADINGS."</b></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
-		."\t\t\t$setfont<input type='radio' checked name='style' value='abrev'><font size='1'>"
-		._EX_HEAD_ABBREV."<br />\n"
-		."\t\t\t<input type='radio' name='style' value='full'><font size='1'>"
-		._EX_HEAD_FULL."\n"
+		."\t\t\t$setfont<input type='radio' name='style' value='abrev' id='headabbrev'><label for='headabbrev'><font size='1'>"
+		._EX_HEAD_ABBREV."</label><br />\n"
+		."\t\t\t<input type='radio' checked name='style' value='full' id='headfull'><label for='headfull'><font size='1'>"
+		._EX_HEAD_FULL."</label>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"
 		._EX_ANSWERS."</b></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
-		."\t\t\t$setfont<input type='radio' checked name='answers' value='short'><font size='1'>"
-		._EX_ANS_ABBREV."<br />\n"
-		."\t\t\t<input type='radio' name='answers' value='long'><font size='1'>"
-		._EX_ANS_FULL."\n"
+		."\t\t\t$setfont<input type='radio' name='answers' value='short' id='ansabbrev'><label for='ansabbrev'><font size='1'>"
+		._EX_ANS_ABBREV."</label><br />\n"
+		."\t\t\t<input type='radio' checked name='answers' value='long' id='ansfull'><label for='ansfull'><font size='1'>"
+		._EX_ANS_FULL."</label>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr><td height='8' bgcolor='silver'><font size='1'><b>"
 		._EX_FORMAT."</b></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
-		."\t\t\t$setfont<input type='radio' checked name='type' value='doc'><font size='1'>"
-		._EX_FORM_WORD."<br />\n"
-		."\t\t\t<input type='radio' name='type' value='xls' checked><font size='1'>"
-		._EX_FORM_EXCEL."<br />\n"
-		."\t\t\t<input type='radio' name='type' value='csv'><font size='1'>"
-		._EX_FORM_CSV."\n"
+		."\t\t\t$setfont<input type='radio' name='type' value='doc' id='worddoc'><label for='worddoc'><font size='1'>"
+		._EX_FORM_WORD."</label><br />\n"
+		."\t\t\t<input type='radio' name='type' value='xls' checked id='exceldoc'><label for='exceldoc'><font size='1'>"
+		._EX_FORM_EXCEL."</label><br />\n"
+		."\t\t\t<input type='radio' name='type' value='csv' id='csvdoc'><label for='csvdoc'><font size='1'>"
+		._EX_FORM_CSV."</label>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
@@ -198,7 +198,7 @@ for ($i=0; $i<$fieldcount; $i++)
 	else //A normal question field. Break the fieldname up into constituent parts to find $sid, $gid, and $qid
 		{
 		list($fsid, $fgid, $fqid) = split("X", $fieldinfo);
-		if ($style == "abrev")
+		if ($style == "abrev") //Print out abbreviated question title
 			{
 			if (!$fqid) {$fqid = 0;}
 			$oldfqid=$fqid;
@@ -226,7 +226,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			if ($type == "csv") {$firstline .= "\"";}
 			$firstline .= "$s";
 			}
-		else
+		else //Print out extended question title
 			{
 			if (!$fqid) {$fqid = 0;}
 			$oldfqid=$fqid;
@@ -296,7 +296,7 @@ for ($i=0; $i<$fieldcount; $i++)
 							$fquest .= " [".$lrow['answer']."]";
 							}
 						}
-					if ($comment == true) {$fquest .= " - comment"; $comment=false;}
+					if (isset($comment) && $comment == true) {$fquest .= " - comment"; $comment=false;}
 					break;
 				case "A":
 				case "B":
@@ -312,23 +312,25 @@ for ($i=0; $i<$fieldcount; $i++)
 						}
 					break;
 				default:
-					if (mysql_field_name($dresult, $i) == "token")
-						{
-						$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$sid WHERE token='$drow[$i]'";
-						if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
-						while ($tokenrow=mysql_fetch_array($tokenresult))
-							{
-							echo "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
-							}
-						else
-							{
-							echo "Not found";
-							}
-						}
-					else
-						{
-						echo str_replace("\r\n", " ", $drow[$i]);
-						}
+					//echo "---------- $ftype ----------";
+					//if (mysql_field_name($dresult, $i) == "token")
+					//	{
+					//	$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$sid WHERE token='$drow[$i]'";
+					//	if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
+					//	while ($tokenrow=mysql_fetch_array($tokenresult))
+					//		{
+					//		echo "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
+					//		}
+					//	else
+					//		{
+					//		echo "Not found";
+					//		}
+					//	}
+					//else
+					//	{
+					//	echo str_replace("\r\n", " ", $drow[$i]);
+					//	}
+					break;
 				}
 			$fquest = strip_tags($fquest);
 			$fquest = str_replace("\n", " ", $fquest);
@@ -390,20 +392,37 @@ elseif ($answers == "long")
 			}
 		for ($i=0; $i<$fieldcount; $i++)
 			{
-			list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
-			if (!$fqid) {$fqid = 0;}
-			$oldfqid=$fqid;
-			while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list
+			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "token")
 				{
-				$fqid = substr($fqid, 0, strlen($fqid)-1);
+				list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
 				}
-			$qq = "SELECT type, lid FROM {$dbprefix}questions WHERE qid=$fqid";
-			$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
-			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
-				{$ftype = $qrow['type']; $lid=$qrow['lid'];}
+			else
+				{
+				$fsid=""; $fgid=""; $fqid="";
+				}
+			if (!$fqid) {$fqid = 0;}
+			if ($fqid == 0) 
+				{
+			    $ftype = "-";
+				}
+			else
+				{
+				$oldfqid=$fqid;
+				while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list
+					{
+					$fqid = substr($fqid, 0, strlen($fqid)-1);
+					}
+				$qq = "SELECT type, lid FROM {$dbprefix}questions WHERE qid=$fqid";
+				$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
+				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
+					{$ftype = $qrow['type']; $lid=$qrow['lid'];}
+				}
 			if ($type == "csv") {echo "\"";}
 			switch ($ftype)
 				{
+				case "-": //JASONS SPECIAL TYPE
+					echo $drow[$i];
+					break;
 				case "R": //RANKING TYPE
 					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$drow[$i]'";
 					$lr = mysql_query($lq);
@@ -497,7 +516,7 @@ elseif ($answers == "long")
 					break;
 				case "F":
 					$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code='$drow[$i]'";
-					$fresult = mysql_query($fquery);
+					$fresult = mysql_query($fquery) or die("ERROR:".$fquery."\n".$qq."\n".mysql_error());
 					while ($frow = mysql_fetch_array($fresult))
 						{
 						echo $frow['title'];
