@@ -66,7 +66,7 @@ echo "</script>\n";
 echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n";
 echo "\t<tr>\n";
 echo "\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
-echo "\t\t<table height='1'><tr><td></td></tr></table>\n";
+echo "\t\t\t<table height='1' cellspacing='1'><tr><td></td></tr></table>\n";
 echo "\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'><font size='1' face='verdana' color='white'><b>"._LABELCONTROL."</b></td></tr>\n";
 echo "\t\t\t\t<tr bgcolor='#999999'>\n";
@@ -164,14 +164,14 @@ if (isset($lid) && ($action != "editset"))
 		echo "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._L_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('labels.php?action=editset&lid=$lid', '_top')\">";
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t</tr>\n";
-		echo "\t\t\t\t<tr bgcolor='#DDDDDD'>\n";
-		echo "\t\t\t\t\t<td>\n";
+		echo "\t\t\t</table>\n";
 		}
 	//LABEL ANSWERS
 	$query = "SELECT * FROM labels WHERE lid=$lid ORDER BY sortorder, code";
 	$result = mysql_query($query);
 	$labelcount = mysql_num_rows($result);
-	echo "\t\t\t<table width='100%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n";
+	echo "\t\t<table height='1'><tr><td></td></tr></table>\n";
+	echo "\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n";
 	echo "\t\t\t\t<tr bgcolor='#555555' height='4'>\n";
 	echo "\t\t\t\t\t<td colspan='4'><b><font size='1' face='verdana' color='white'>\n";
 	echo _LABELANS;
@@ -200,14 +200,14 @@ if (isset($lid) && ($action != "editset"))
 		echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='5' value=\"{$row['code']}\">\n";
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t\t<td>\n";
-		echo "\t\t\t\t\t<input type='text' $slstyle name='title' value=\"{$row['title']}\">\n";
+		echo "\t\t\t\t\t<input type='text' $slstyle name='title' size='35' value=\"{$row['title']}\">\n";
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t\t<td>\n";
 		if ($position > 0)
 			{
 			echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_UP."'>\n";
 			}
-		else {echo "&nbsp;&nbsp;&nbsp;&nbsp;";}
+		else {echo "<img src='./images/spacer.gif' width='21' height='5' align='left'></font>";}
 		if ($position < $labelcount-1)
 			{
 			echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DN."'>\n";
@@ -233,7 +233,7 @@ if (isset($lid) && ($action != "editset"))
 	echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='5'>\n";
 	echo "\t\t\t\t\t</td>\n";
 	echo "\t\t\t\t\t<td>\n";
-	echo "\t\t\t\t\t<input type='text' $slstyle name='title'>\n";
+	echo "\t\t\t\t\t<input type='text' $slstyle name='title' size='35'>\n";
 	echo "\t\t\t\t\t</td>\n";
 	echo "\t\t\t\t\t<td>\n";
 	echo "\t\t\t\t\t</td>\n";
@@ -251,10 +251,7 @@ if (isset($lid) && ($action != "editset"))
 	echo "\t\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n";
 	echo "\t\t\t\t</form></tr>\n";
 	echo "\t\t\t</table>\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t</table>\n";
-	echo "\t\t<table height='1'><tr><td></td></tr></table>\n";
+	echo "\t\t\t<table height='1'><tr><td></td></tr></table>\n";
 	}
 
 
