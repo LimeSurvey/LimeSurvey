@@ -230,7 +230,7 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t<a href='labels.php?action=delset&lid=$lid'>"
             ."<img src='$imagefiles/delete.gif' title='"
             ._L_DEL_BT."' align='left' border='0' hspace='0' "
-            ."onClick=\"return confirm('Are you sure?')\">\n"
+            ."onClick=\"return confirm('Are you sure?')\"></a>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
             ._EXPORTLABEL."' align='left' border='0' hspace='0' "
             ."onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n"
