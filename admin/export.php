@@ -257,7 +257,7 @@ if ($type == "doc")
 	{
 	header("Content-Disposition: attachment; filename=survey.doc");
 	header("Content-type: application/vnd.ms-word");
-	$s="\t";
+	$s="\n\n";
 	}
 elseif ($type == "xls") 
 	{
@@ -522,7 +522,22 @@ for ($i=0; $i<$fieldcount; $i++)
 	}
 $firstline = trim($firstline);
 $firstline .= "\n";
-echo $firstline; //Sending the header row
+
+if ($type == "doc") 
+	{
+	$flarray=explode($s, $firstline);
+	$fli=0;
+	foreach ($flarray as $fl)
+		{
+		$fieldmap[$fli]['title']=$fl;
+		$fli++;
+		}
+	//print_r($fieldmap);
+	}
+else
+	{
+	echo $firstline; //Sending the header row
+	}
 
 
 //Now dump the data
@@ -586,6 +601,10 @@ elseif ($answers == "long")
 	$fieldcount = mysql_num_fields($dresult);
 	while ($drow = mysql_fetch_array($dresult))
 		{
+		if ($type == "doc")
+			{
+		    echo "\n\n\nNEW RECORD\n";
+			}
 		if (!ini_get('safe_mode'))
 			{
 			set_time_limit(3); //Give each record 3 seconds	
@@ -602,6 +621,10 @@ elseif ($answers == "long")
 				$fsid=$fielddata['sid'];
 				$fgid=$fielddata['gid'];
 				$faid=$fielddata['aid'];
+				if ($type == "doc")
+					{
+				    $ftitle=$fielddata['title'];
+					}
 				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid";
 				$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
 				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
@@ -610,6 +633,11 @@ elseif ($answers == "long")
 			else
 				{
 				$fsid=""; $fgid=""; $fqid="";
+				if ($type == "doc") 
+					{
+					$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+					$ftitle=$fielddata['title'].":";
+					}
 				}
 			if (!$fqid) {$fqid = "0";}
 			if ($fqid == 0) 
@@ -617,6 +645,7 @@ elseif ($answers == "long")
 				$ftype = "-";
 				}
 			if ($type == "csv") {echo "\"";}
+			if ($type == "doc") {echo "\n$ftitle\n\t";}
 			switch ($ftype)
 				{
 				case "-": //JASONS SPECIAL TYPE
