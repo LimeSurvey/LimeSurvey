@@ -108,6 +108,12 @@ if ($action == "importsurvey")
 	include("importsurvey.php");
 	exit;
 	}
+if ($action == "importquestion")
+	{
+	echo "<center><b>Importing Question</b></center><br /><br />\n";
+	include("importquestion.php");
+	exit;
+	}
 
 //CHECK THAT SURVEYS MARKED AS ACTIVE ACTUALLY HAVE MATCHING TABLES
 checkactivations();
