@@ -35,6 +35,8 @@
 */
 include("config.php");
 
+sendcacheheaders();
+
 if (!isset($sid)) {$sid=returnglobal('sid');}
 if (!isset($column)) {$column=returnglobal('column');}
 if (!isset($order)) {$order=returnglobal('order');}
@@ -56,7 +58,6 @@ if ($order == "alpha")
 	}
 
 $result=mysql_query($query) or die("Error with query: ".$query."<br />".mysql_error());
-sendcacheheaders();
 echo "<html><body topmargin='0' leftmargin='0' bgcolor='black'>\n";
 echo "<table width='98%' align='center' border='1' bordercolor='#111111' cellspacing='0' bgcolor='white'>\n";
 echo "<tr><td bgcolor='black' valign='top'><input type='image' src='./images/downarrow.gif' align='left' onclick=\"window.open('listcolumn.php?sid=$sid&column=$column&order=id', '_top')\"></td>\n";
