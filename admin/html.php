@@ -41,24 +41,34 @@ if ($sid)
 	$surveysummary = "<table width='100%' align='center' bgcolor='silver' border='0'>\n";
 	while ($s1row = mysql_fetch_array($sumresult1))
 		{
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n\t<td>$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Title:</b></font></td>\n";
+		$surveysummary .= "\t<td>$setfont<font color='#000080'><b>{$s1row['short_title']} (ID {$s1row['sid']})</b><br />";
 		if ($s1row['private'] != "N") {$surveysummary .= "This survey is anonymous";}
 		else {$surveysummary .= "This survey is <b>not</b> anonymous";}
 		if ($s1row['format'] != "A") {$surveysummary .= " and is presented question by question.";}
 		else {$surveysummary .= " and is presented as one single page.";}
 		$surveysummary .= "</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['description']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['welcome']}</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
-		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['faxto']}</font></td></tr>\n";
-		if ($s1row['expires'] != "0000-00-00") {$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont {$s1row['expires']}</font></td></tr>\n";}
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Description:</b></font></td>\n";
+		$surveysummary .= "\t<td>$setfont {$s1row['description']}</font></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Welcome:</b></font></td>\n";
+		$surveysummary .= "\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Admin:</b></font></td>\n";
+		$surveysummary .= "\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n";
+		$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Fax To:</b></font></td>\n";
+		$surveysummary .= "\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n";
+		if ($s1row['expires'] != "0000-00-00") 
+			{
+			$surveysummary .= "\t<tr><td align='right' valign='top'>$setfont<b>Expires:</b></font></td>\n";
+			$surveysummary .= "\t<td>$setfont {$s1row['expires']}</font></td></tr>\n";
+			}
 		$activated = $s1row['active'];
 		}
 	
 	$sumquery2 = "SELECT * FROM groups WHERE sid=$sid";
 	$sumresult2 = mysql_query($sumquery2);
 	$sumcount2 = mysql_num_rows($sumresult2);
-	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Groups:</b></font></td>\n\t<td bgcolor='#DDDDDD'>$setfont";
+	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Groups:</b></font></td>\n";
+	$surveysummary .= "\t<td>$setfont";
 	if ($groupselect)
 		{
 		$surveysummary .= "\t\t<select $slstyle name='groupselect' onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
@@ -72,7 +82,8 @@ if ($sid)
 
 	$surveysummary .= "\t<font size='1'>($sumcount2 groups, $sumcount3 questions)</font></td></tr>\n";
 
-	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Activation</b></font></td>\n\t<td valign='top' bgcolor='#DDDDDD'>$setfont";
+	$surveysummary .= "\t<tr><td align='right'>$setfont<b>Activation</b></font></td>\n";
+	$surveysummary .= "\t<td valign='top'>$setfont";
 	if ($activated == "N" && $sumcount3 > 0)
 		{
 		$surveysummary .= "\t\t<input $btstyle type='submit' value='Activate' onClick=\"window.open('$scriptname?action=activate&sid=$sid', '_top')\">\n";
