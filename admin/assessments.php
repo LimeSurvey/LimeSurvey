@@ -158,7 +158,7 @@ foreach($assessments as $assess) {
 			 <input type='hidden' name='id' value='".$assess['id']."'>
 			 </form>
 			 <form method='post'>
-			 <td><input $btstyle type='submit' value='"._AS_DELETE."'></td>
+			 <td><input $btstyle type='submit' value='"._AS_DELETE."' onClick='return confirm(\""._DR_RUSURE."\")'></td>
 			 <input type='hidden' name='action' value='delete'>
 			 <input type='hidden' name='id' value='".$assess['id']."'>
 			 </form>
