@@ -937,7 +937,15 @@ function do_ranking($ia)
 function do_multiplechoice($ia)
 	{
 	global $dbprefix;
-	
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+		{
+	    $dcols=$displaycols['value'];
+		}
+	else
+		{
+		$dcols=0;
+		}
 	$answer  = "\t\t\t<table class='question'>\n"
 			 . "\t\t\t\t<tr>\n"
 			 . "\t\t\t\t\t<td>&nbsp;</td>\n"
@@ -950,13 +958,23 @@ function do_multiplechoice($ia)
 	$anscount = mysql_num_rows($ansresult);
 	if ($other == "Y") {$anscount++;} //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
+	$divider="";
+	$maxrows=0;
+	if ($dcols >0 && $anscount > $dcols) //Break into columns
+		{
+	    $denominator=$dcols; //Change this to set the number of columns
+		$width=sprintf("%0d", 100/$denominator);
+		$maxrows=sprintf("%0d", $anscount/$denominator)+1;
+		$answer .= "<table><tr>\n <td valign='top' width='$width%' nowrap>";
+		$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+		}	
 	$fn = 1;
 	if (!isset($multifields)) {$multifields="";}
+	$rowcounter=0;
 	while ($ansrow = mysql_fetch_array($ansresult))
 		{
+		$rowcounter++;
 		$myfname = $ia[1].$ansrow['code'];
-		//LOOK HERE: TAKE OUT/MODIFY
-		//$multifields .= "$fname{$ansrow['code']}|";
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='$ia[1]{$ansrow['code']}' value='Y'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
 		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
@@ -965,9 +983,11 @@ function do_multiplechoice($ia)
 		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 		$answer .= "'>\n";
 		$inputnames[]=$myfname;
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 		}
 	if ($other == "Y")
 		{
+		$rowcounter++;
 		$myfname = $ia[1]."other";
 		$answer .= "\t\t\t\t\t\t<label for='$myfname'>"._OTHER.":</label> <input class='text' type='text' name='$myfname' id='$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".$_SESSION[$myfname]."'";}
@@ -977,6 +997,7 @@ function do_multiplechoice($ia)
 		$answer .= "'>\n";
 		$inputnames[]=$myfname;
 		$anscount++;
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 		}
 	$answer .= "\t\t\t\t\t</td>\n"
 			 . "\t\t\t\t\t<td>&nbsp;</td>\n"
