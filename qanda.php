@@ -121,7 +121,7 @@ switch ($ia[4])
 				elseif ($ansrow['default'] == "Y") {$answer .= " selected"; $defexists = "Y";}
 				$answer .= ">{$ansrow['answer']}</option>\n";
 				}
-			if (!$_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' ' selected>"._PLEASECHOOSE."..</option>\n";}
+			if (!$_SESSION[$ia[1]] && !$defexists) {$answer .= "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n";}
 			if ($_SESSION[$ia[1]] && !$defexists && $ia[6] != "Y") {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
 			$answer .= "\t\t\t\t\t</select>\n";
 			}
