@@ -96,7 +96,15 @@ if ($sid)
 		}
 	else
 		{
-		$surveysummary .= "<font size='1'>Survey cannot yet be activated";
+		$surveysummary .= "<font size='1'>Survey cannot be activated yet.\n";
+		if ($sumcount2 == 0) 
+			{
+			$surveysummary .= "\t<font color='green'>[You need to Add Groups]</font>";
+			}
+		if ($sumcount3 == 0)
+			{
+			$surveysummary .= "\t<font color='green'>[You need to Add Questions]</font>";
+			}
 		}
 	$surveysummary .= "</td></tr>\n";
 	
