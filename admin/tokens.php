@@ -49,7 +49,9 @@ header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
-echo $htmlheader;
+if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL=$PHP_SELF?action=browse&sid={$_GET['sid']}\"", $htmlheader);}
+else {echo $htmlheader;}
+
 echo "<table width='100%'>\n";
 echo "\t<tr><td bgcolor='#BBBBBB' align='center'>$setfont<b>Token Control</b></td></tr>\n";
 
@@ -671,7 +673,8 @@ if ($action == "delete")
 	{
 	$dlquery = "DELETE FROM tokens_$sid WHERE tid={$_GET['tid']}";
 	$dlresult = mysql_query($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".mysql_error());
-	echo "<br /><b>Record has been deleted.</b>\n";
+	echo "<br /><b>Record has been deleted.</b><br />\n";
+	echo "<font size='1'><i>Reloading browse screen. Please wait...</i></font>\n";
 	}
 
 
