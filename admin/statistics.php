@@ -181,7 +181,7 @@ foreach ($filters as $flt)
 				{
 				$myfield2 = $myfield."$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
-				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
 				echo "<input type='radio' name='summary' value='$myfield2'";
@@ -213,7 +213,7 @@ foreach ($filters as $flt)
 				{
 				$myfield2 = $myfield . "$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
-				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
 				echo "<input type='radio' name='summary' value='$myfield2'";
@@ -245,7 +245,7 @@ foreach ($filters as $flt)
 				{
 				$myfield2 = $myfield . "$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
-				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
@@ -279,7 +279,7 @@ foreach ($filters as $flt)
 				{
 				$myfield2 = $myfield . "$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
-				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
+				if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])"; //heading
 				echo "<input type='radio' name='summary' value='$myfield2'";
 				if ($_POST['summary'] == "$myfield2") {echo " CHECKED";}
@@ -680,6 +680,7 @@ if ($_POST['summary'])
 			echo "</font></font>\n";
 			echo "\t\t</td>\n";
 			echo "\t</tr>\n";
+			unset($showem);
 			}
 		else // NICE SIMPLE SINGLE OPTION ANSWERS
 			{
