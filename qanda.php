@@ -489,7 +489,7 @@ switch ($ia[4])
 		if ($other == "Y")
 			{
 			$myfname = $ia[1]."other";
-			$answer .= "\t\t\t\t\t\tOther: <input class='text' type='text' name='$myfname'";
+			$answer .= "\t\t\t\t\t\t"._OTHER.": <input class='text' type='text' name='$myfname'";
 			if ($_SESSION[$myfname]) {$answer .= " value='".$_SESSION[$myfname]."'";}
 			$answer .= " />\n";
 			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
@@ -562,7 +562,7 @@ switch ($ia[4])
 			$anscount = $anscount + 2;
 			$answer .= "\t\t\t\t\t\t\t<tr>\n";
 			$answer .= "\t\t\t\t\t\t\t\t<td>\n";
-			$answer .= "\t\t\t\t\t\t\t\t\tOther:<input class='text' type='text' name='$myfname' size='10'";
+			$answer .= "\t\t\t\t\t\t\t\t\t"._OTHER.":<input class='text' type='text' name='$myfname' size='10'";
 			if ($_SESSION[$myfname]) {$answer .= " value='".$_SESSION[$myfname]."'";}
 			$answer .= " />\n";
 			$answer .= "\t\t\t\t\t\t\t\t</td>\n";
