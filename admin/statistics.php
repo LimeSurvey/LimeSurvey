@@ -79,7 +79,7 @@ if (!$sid)
 deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 
 //Get the menubar
-$surveyoptions=browsemenubar();
+$surveyidoptions=browsemenubar();
 
 echo "\t<script type='text/javascript'>
       <!--
@@ -95,7 +95,7 @@ echo "\t<script type='text/javascript'>
 echo "<table height='1'><tr><td></td></tr></table>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
     ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._STATISTICS."</b></td></tr>\n";
-echo $surveyoptions;
+echo $surveyidoptions;
 echo "</table>\n"
     ."<table height='1'><tr><td></td></tr></table>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
@@ -109,9 +109,9 @@ echo "</table>\n"
 //Select public language file
 $query = "SELECT language, datestamp FROM {$dbprefix}surveys WHERE sid=$sid";
 $result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language']; $datestamp=$row['datestamp'];}
+while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language']; $datestamp=$row['datestamp'];}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
+$langfilename="$langdir/$surveyidlanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename); 
 

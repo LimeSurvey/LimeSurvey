@@ -46,13 +46,13 @@ sendcacheheaders();
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
 $result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language'];}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
+$langfilename="$langdir/$surveyidlanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 
-$surveyoptions = browsemenubar();
+$surveyidoptions = browsemenubar();
 echo $htmlheader;
 echo "<table height='1'><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
@@ -92,12 +92,12 @@ if ($actcount > 0)
 	{
 	while ($actrow = mysql_fetch_array($actresult))
 		{
-		$surveytable = "{$dbprefix}survey_{$actrow['sid']}";
-		$surveyname = "{$actrow['short_title']}";
+		$surveyidtable = "{$dbprefix}survey_{$actrow['sid']}";
+		$surveyidname = "{$actrow['short_title']}";
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 			{
 			echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-				. _BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n"
+				. _BROWSERESPONSES.": <font color='silver'>$surveyidname</b></td></tr>\n"
 				."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 				."<b><font color='red'>"._ERROR."</font></b><br />\n"
 				. _BR_NOTACTIVATED."<br /><br />\n"
@@ -127,8 +127,8 @@ else //SURVEY MATCHING $SID DOESN'T EXIST
 if ($action == "id") // Looking at a SINGLE entry
 	{
 	//SHOW HEADER
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyname</b></td></tr>\n";
-	if (!isset($_POST['sql']) || !$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES.": <font color='silver'>$surveyidname</b></td></tr>\n";
+	if (!isset($_POST['sql']) || !$_POST['sql']) {echo "$surveyidoptions";} // Don't show options if coming from tokens script
 	echo "</table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n";
 	
@@ -203,7 +203,7 @@ if ($action == "id") // Looking at a SINGLE entry
 
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
-	$idquery = "SELECT * FROM $surveytable WHERE ";
+	$idquery = "SELECT * FROM $surveyidtable WHERE ";
 	if (isset($_POST['sql']) && $_POST['sql'])
 		{
 		if (get_magic_quotes_gpc()) {$idquery .= stripslashes($_POST['sql']);}
@@ -222,18 +222,18 @@ if ($action == "id") // Looking at a SINGLE entry
 		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
 		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='$imagefiles/edit.gif' title='"
-		. _BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n"
-		."\t\t\t<a href='dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable'>"
+		. _BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveyidtable','_top')\" />\n"
+		."\t\t\t<a href='dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveyidtable'>"
 		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.gif' title='"
 		. _BR_DELRESPONSE."' onClick=\"return confirm('"._DR_RUSURE."')\" /></a>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 		."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
-		. _D_BACK."' onClick=\"window.open('browse.php?action=id&id=$last&sid=$sid&surveytable=$surveytable','_top')\" />\n"
+		. _D_BACK."' onClick=\"window.open('browse.php?action=id&id=$last&sid=$sid&surveytable=$surveyidtable','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 		."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
-		. _D_FORWARD."' onClick=\"window.open('browse.php?action=id&id=$next&sid=$sid&surveytable=$surveytable','_top')\" />\n"
+		. _D_FORWARD."' onClick=\"window.open('browse.php?action=id&id=$next&sid=$sid&surveytable=$surveyidtable','_top')\" />\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
@@ -266,10 +266,10 @@ if ($action == "id") // Looking at a SINGLE entry
 elseif ($action == "all")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n";
+		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyidname</font></font></td></tr>\n";
 	
 	if (!isset($_POST['sql']))
-		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
+		{echo "$surveyidoptions";} //don't show options when called from another script with a filter on
 	else
 		{
 		echo "\n<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
@@ -394,7 +394,7 @@ elseif ($action == "all")
 	if (!isset($start)) {$start = 0;}
 		
 	//LETS COUNT THE DATA
-	$dtquery = "SELECT count(*) FROM $surveytable";
+	$dtquery = "SELECT count(*) FROM $surveyidtable";
 	$dtresult=mysql_query($dtquery);
 	while ($dtrow=mysql_fetch_row($dtresult)) {$dtcount=$dtrow[0];}
 	
@@ -403,12 +403,12 @@ elseif ($action == "all")
 	//NOW LETS SHOW THE DATA
 	if (isset($_POST['sql']))
 		{
-		if ($_POST['sql'] == "NULL") {$dtquery = "SELECT * FROM $surveytable ORDER BY id";}
-		else {$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
+		if ($_POST['sql'] == "NULL") {$dtquery = "SELECT * FROM $surveyidtable ORDER BY id";}
+		else {$dtquery = "SELECT * FROM $surveyidtable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
 		}
 	else
 		{
-		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
+		$dtquery = "SELECT * FROM $surveyidtable ORDER BY id";
 		}
 	if ($order == "desc") {$dtquery .= " DESC LIMIT $limit";}
 	if (isset($start) && isset($limit) && !isset($order)) {$dtquery .= " LIMIT $start, $limit";}
@@ -440,10 +440,10 @@ elseif ($action == "all")
 			."\t\t\t<input type='image' name='DataBegin' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
 			. _D_BEGIN."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=0&limit=$limit','_top')\" />\n"
 			."\t\t\t<input type='image' name='DataBack' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
-			. _D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$last&limit=$limit','_top')\" />\n"
+			. _D_BACK."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveyidtable&start=$last&limit=$limit','_top')\" />\n"
 			."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='-'>\n"
 			."\t\t\t<input type='image' name='DataForward' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
-			. _D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveytable&start=$next&limit=$limit','_top')\" />\n"
+			. _D_FORWARD."' onClick=\"window.open('browse.php?action=all&sid=$sid&surveytable=$surveyidtable&start=$next&limit=$limit','_top')\" />\n"
 			."\t\t\t<input type='image' name='DataEnd' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
 			. _D_END."' onClick=\"window.open('browse.php?action=all&sid=$sid&start=$end&limit=$limit','_top')\" />\n"
 			."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='|'>\n";
@@ -516,10 +516,10 @@ echo 	 "\t\t</form>\n"
 else
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
-		. $surveyoptions;
+		. _BROWSERESPONSES.":</b> <font color='#EEEEEE'>$surveyidname</font></font></td></tr>\n"
+		. $surveyidoptions;
 	echo "</table>\n";
-	$gnquery = "SELECT count(id) FROM $surveytable";
+	$gnquery = "SELECT count(id) FROM $surveyidtable";
 	$gnresult = mysql_query($gnquery);
 	while ($gnrow = mysql_fetch_row($gnresult))
 		{

@@ -38,11 +38,11 @@ include("config.php");
 $action = returnglobal('action');
 $sid = returnglobal('sid');
 $id = returnglobal('id');
-$surveytable = returnglobal('surveytable');
+$surveyidtable = returnglobal('surveytable');
 
 sendcacheheaders();
 
-$surveyoptions = browsemenubar();
+$surveyidoptions = browsemenubar();
 echo $htmlheader;
 echo "<table height='1'><tr><td></td></tr></table>\n";
 
@@ -388,8 +388,8 @@ if ($action == "insert")
 			$insertqr .= ", '{$_POST['datestamp']}'";
 			}
 //		echo "\t\t\t<b>Inserting data</b><br />\n"
-//			."SID: $sid, ($surveytable)<br /><br />\n";
-		$SQL = "INSERT INTO $surveytable 
+//			."SID: $sid, ($surveyidtable)<br /><br />\n";
+		$SQL = "INSERT INTO $surveyidtable 
 				($col_name)
 				VALUES 
 				($insertqr)";
@@ -414,7 +414,7 @@ if ($action == "insert")
 			}
 		echo "\t\t\t<font color='green'><b>"._SUCCESS."</b></font><br />\n";
 		
-		$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
+		$fquery = "SELECT id FROM $surveyidtable ORDER BY id DESC LIMIT 1";
 		$fresult = mysql_query($fquery);
 		while ($frow = mysql_fetch_array($fresult))
 			{
@@ -441,8 +441,8 @@ elseif ($action == "edit" || $action == "editsaved")
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._BROWSERESPONSES."</b></td></tr>\n";
-	if (isset($surveyheader)) {echo $surveyheader;}
-	echo $surveyoptions
+	if (isset($surveyidheader)) {echo $surveyidheader;}
+	echo $surveyidoptions
 		."</table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n";
 
@@ -536,7 +536,7 @@ elseif ($action == "edit" || $action == "editsaved")
 	//SHOW INDIVIDUAL RECORD
 	if ($action == "edit")
 		{
-		$idquery = "SELECT * FROM $surveytable WHERE id=$id";
+		$idquery = "SELECT * FROM $surveyidtable WHERE id=$id";
 		$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
 		while ($idrow = mysql_fetch_assoc($idresult))
 			{
@@ -1179,7 +1179,7 @@ elseif ($action == "update")
 	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
-	$updateqr = "UPDATE $surveytable SET \n";
+	$updateqr = "UPDATE $surveyidtable SET \n";
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
@@ -1328,7 +1328,7 @@ elseif ($action == "delete")
 		."\t\t\t$setfont".$thissurvey['description']."\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
-	$delquery = "DELETE FROM $surveytable WHERE id=$id";
+	$delquery = "DELETE FROM $surveyidtable WHERE id=$id";
 	echo "\t<tr>\n";
 	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
 	echo "\t\t<td align='center'><br />$setfont<b>"._DE_DELRECORD." (ID: $id)</b><br /><br />\n"
@@ -1347,10 +1347,10 @@ else
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._BROWSERESPONSES."</b></td></tr>\n"
-		.$surveyoptions;
+		.$surveyidoptions;
 	loadPublicLangFile($sid);
 	$thissurvey=getSurveyInfo($sid);
-	$surveytable = "{$dbprefix}survey_$sid";
+	$surveyidtable = "{$dbprefix}survey_$sid";
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><b>"
@@ -2076,7 +2076,7 @@ else
 		exit;
 		}
 	echo "\t<input type='hidden' name='action' value='insert' />\n";
-	echo "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
+	echo "\t<input type='hidden' name='surveytable' value='$surveyidtable' />\n";
 	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
 	echo "\t</form>\n";
 	echo "</table>\n";

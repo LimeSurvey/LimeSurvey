@@ -29,12 +29,12 @@ for ($i=0; $i < $num_results; $i++) {
         $row = mysql_fetch_array($result);
 	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_TL_ATTR1;}
 	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_TL_ATTR2;}
-	$surveyprivate=$row['private'];
+	$surveyidprivate=$row['private'];
 }
 
 $fieldno=0;
 
-if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+if (isset($tokensexist) && $tokensexist == 1 && $surveyidprivate == "N") {
 	$query="SHOW COLUMNS FROM {$dbprefix}tokens_$sid";
 	$result=mysql_query($query) or die("Couldn't count fields in tokens<br />$query<br />".mysql_error());
 	while ($row=mysql_fetch_row($result)) {
@@ -119,7 +119,7 @@ echo "\n";
 #echo "*Begin data\n";
 echo "BEGIN DATA<br>";
 
-if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+if (isset($tokensexist) && $tokensexist == 1 && $surveyidprivate == "N") {
 $query="SELECT `{$dbprefix}tokens_$sid`.`firstname`   ,
 	       `{$dbprefix}tokens_$sid`.`lastname`    ,
 	       `{$dbprefix}tokens_$sid`.`email`";

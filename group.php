@@ -269,7 +269,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 	}
 
 //SEE IF $sid EXISTS ####################################################################
-if ($surveyexists <1)
+if ($surveyidexists <1)
 	{
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	foreach(file("$thistpl/startpage.pstpl") as $op)

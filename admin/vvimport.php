@@ -116,7 +116,7 @@ else
 		}
 	fclose($handle);
 	
-	$surveytable = "survey_$sid";
+	$surveyidtable = "survey_$sid";
 	
 	unlink($the_full_file_path); //delete the uploaded file
 	unset($bigarray[0]); //delete the first line
@@ -129,7 +129,7 @@ else
 		$fieldcount--;
 		}
 
-	$fldlist = mysql_list_fields($databasename, $surveytable);
+	$fldlist = mysql_list_fields($databasename, $surveyidtable);
 	$columns = mysql_num_fields($fldlist);
 	for ($i = 0; $i < $columns; $i++)
 		{
@@ -201,7 +201,7 @@ else
 			else if ($insertstyle=="replace" && !$noid)
 				$insert = "REPLACE";
 			else $insert = "INSERT";
-			$insert .= " INTO $surveytable\n";
+			$insert .= " INTO $surveyidtable\n";
 			$insert .= "(".implode(", ", $fieldnames).")\n";
 			$insert .= "VALUES\n";
 			$insert .= "('".implode("', '", $fieldvalues)."')\n";
@@ -214,7 +214,7 @@ else
 					// try again, without the 'id' field.
 					unset($fieldnames[$idkey]);
 					unset($fieldvalues[$idkey]);
-					$insert = "INSERT INTO $surveytable\n";
+					$insert = "INSERT INTO $surveyidtable\n";
 					$insert .= "(".implode(", ", $fieldnames).")\n";
 					$insert .= "VALUES\n";
 					$insert .= "('".implode("', '", $fieldvalues)."')\n";

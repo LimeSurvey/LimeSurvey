@@ -254,11 +254,11 @@ else
 		if ($prow['private'] == "N") 
 			{
 			$createsurvey .= "  token VARCHAR(10),\n";
-			$surveynotprivate="TRUE";
+			$surveyidnotprivate="TRUE";
 			}
 		if ($prow['allowregister'] == "Y") 
 			{
-			$surveyallowsregistration="TRUE";
+			$surveyidallowsregistration="TRUE";
 			}
 		if ($prow['datestamp'] == "Y")
 			{
@@ -420,12 +420,12 @@ else
 	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
 	
-	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
+	if (isset($surveyidnotprivate) && $surveyidnotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 		{
 		echo _AC_NOTPRIVATE."<br /><br />\n";
 		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
 		}
-	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
+	elseif (isset($surveyidallowsregistration) && $surveyidallowsregistration == "TRUE")
 		{
 		echo _AC_REGISTRATION."<br /><br />\n";
 		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";

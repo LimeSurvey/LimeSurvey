@@ -129,8 +129,8 @@ function savedmenubar()
 	{
 	global $sid, $scriptname, $imagefiles;
 	//BROWSE MENU BAR
-	if (!isset($surveyoptions)) {$surveyoptions="";}
-	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
+	if (!isset($surveyidoptions)) {$surveyidoptions="";}
+	$surveyidoptions .= "\t<tr bgcolor='#999999'>\n"
 					. "\t\t<td>\n"
 					. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
 					. _B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$sid', '_top')\">\n"
@@ -145,6 +145,6 @@ function savedmenubar()
 					. "\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
 					. "\t\t</td>\n"
 					. "\t</tr>\n";
-	return $surveyoptions;
+	return $surveyidoptions;
 	}
 ?>

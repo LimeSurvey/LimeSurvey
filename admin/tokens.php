@@ -112,7 +112,7 @@ while ($chrow = mysql_fetch_array($chresult))
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._TOKENCONTROL.":</b> "
 		."<font color='silver'>{$chrow['short_title']}</font></font></td></tr>\n";
-	$surveyprivate = $chrow['private'];
+	$surveyidprivate = $chrow['private'];
 	}
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
@@ -506,7 +506,7 @@ if ($action == "browse" || $action == "search")
 			._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$sid&action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />";
 		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$sid&token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
-		if ($brow['completed'] == "Y" && $surveyprivate == "N")
+		if ($brow['completed'] == "Y" && $surveyidprivate == "N")
 			{
 			echo "\t\t<form action='$homeurl/browse.php' method='post' target='_blank'>\n"
 				."\t\t<td align='center' valign='top'>\n"

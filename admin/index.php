@@ -233,7 +233,7 @@ echo "</td><td valign='top' bgcolor='#DDDDDD' width='90%'>";
 //	exit;
 //	}
 
-//if (isset($surveysummary)) {echo $surveysummary;}
+//if (isset($surveyidsummary)) {echo $surveyidsummary;}
 //if (isset($sid) && $sid) {echo javadropdown($sid, $gid, $qid);}
 echo javadropdown($sid, $gid, $qid);
 if (!empty($sid) && call_user_func($auth_function)) {

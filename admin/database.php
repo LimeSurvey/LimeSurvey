@@ -606,7 +606,7 @@ elseif ($action == "insertnewsurvey")
 			$isquery .= " AND description like '{$_POST['description']}' AND admin like '{$_POST['admin']}'";
 			$isresult = mysql_query($isquery);
 			while ($isr = mysql_fetch_array($isresult)) {$sid = $isr['sid'];}
-			$surveyselect = getsurveylist();
+			$surveyidselect = getsurveylist();
 			}
 		else
 			{
@@ -656,7 +656,7 @@ elseif ($action == "updatesurvey")
 	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
 	if ($usresult)
 		{
-		$surveyselect = getsurveylist();
+		$surveyidselect = getsurveylist();
 		}
 	else
 		{
@@ -671,7 +671,7 @@ elseif ($action == "delsurvey") //can only happen if there are no groups, no que
 	if ($result)
 		{
 		$sid = "";
-		$surveyselect = getsurveylist();
+		$surveyidselect = getsurveylist();
 		}
 	else
 		{

@@ -207,7 +207,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
     }
 
 //SEE IF $sid EXISTS
-if ($surveyexists <1)
+if ($surveyidexists <1)
     {
     sendcacheheaders();
     echo "<html>\n";

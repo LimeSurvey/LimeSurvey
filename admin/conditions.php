@@ -41,9 +41,9 @@ $sid=returnglobal('sid');
 
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
 $result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language'];}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
+$langfilename="$langdir/$surveyidlanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 

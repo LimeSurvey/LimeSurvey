@@ -80,11 +80,11 @@ elseif (isset($sid) && $sid)
 	$s="\t";
 	
 	$fieldmap=createFieldMap($sid, "full");
-	$surveytable = "{$dbprefix}survey_$sid";
+	$surveyidtable = "{$dbprefix}survey_$sid";
 	
 	loadPublicLangFile($sid);
 	
-	$fldlist = mysql_list_fields($databasename, $surveytable);
+	$fldlist = mysql_list_fields($databasename, $surveyidtable);
 	$columns = mysql_num_fields($fldlist);
 	for ($i = 0; $i < $columns; $i++)
 		{
@@ -108,7 +108,7 @@ elseif (isset($sid) && $sid)
 		}
 	echo $firstline."\n";
 	echo $secondline."\n";
-	$query = "SELECT * FROM $surveytable";
+	$query = "SELECT * FROM $surveyidtable";
 	$result = mysql_query($query) or die("Error:<br />$query<br />".mysql_error());
 	
 	while ($row=mysql_fetch_array($result))

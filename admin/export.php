@@ -139,8 +139,8 @@ if (!$style)
 		."</td>";
 	$query="SELECT private FROM {$dbprefix}surveys WHERE sid=$sid"; //Find out if tokens are used
 	$result=mysql_query($query) or die("Couldn't get privacy data<br />$query<br />".mysql_error());
-	while ($rows = mysql_fetch_array($result)) {$surveyprivate=$rows['private'];}
-	if ($surveyprivate == "N")
+	while ($rows = mysql_fetch_array($result)) {$surveyidprivate=$rows['private'];}
+	if ($surveyidprivate == "N")
 		{
 		$query="SHOW TABLES LIKE '{$dbprefix}tokens_$sid'"; //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
 		$result=mysql_query($query) or die("Couldn't get table list<br />$query<br />".mysql_error());
@@ -278,9 +278,9 @@ default:
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
 $result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+while ($row=mysql_fetch_array($result)) {$surveyidlanguage = $row['language'];}
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
+$langfilename="$langdir/$surveyidlanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);	
 
@@ -289,19 +289,19 @@ require($langfilename);
 $fieldmap=createFieldMap($sid);
 
 //Get the fieldnames from the survey table for column headings
-$surveytable = "{$dbprefix}survey_$sid";
+$surveyidtable = "{$dbprefix}survey_$sid";
 if (isset($_POST['colselect']))
 	{
 	$selectfields="";
     foreach($_POST['colselect'] as $cs)
 		{
-		$selectfields.= "$surveytable.`$cs`, ";
+		$selectfields.= "$surveyidtable.`$cs`, ";
 		}
 	$selectfields = substr($selectfields, 0, strlen($selectfields)-2);
 	}
 else
 	{
-	$selectfields="$surveytable.*";
+	$selectfields="$surveyidtable.*";
 	}
 
 $dquery = "SELECT $selectfields";
@@ -325,12 +325,12 @@ if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
 	{
 	$dquery .= ", {$dbprefix}tokens_$sid.attribute_2";
 	}
-$dquery .= " FROM $surveytable";
+$dquery .= " FROM $surveyidtable";
 if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on") || (isset($_POST['email_address']) && $_POST['email_address']=="on")) 
 	{
 	$dquery .= ""
 			 . " LEFT OUTER JOIN {$dbprefix}tokens_$sid"
-			 . " ON $surveytable.token = {$dbprefix}tokens_$sid.token";
+			 . " ON $surveyidtable.token = {$dbprefix}tokens_$sid.token";
 	}
 $dquery .=" ORDER BY id LIMIT 1";
 $dresult = mysql_query($dquery) or die(_ERROR." getting results<br />$dquery<br />".mysql_error());
@@ -564,13 +564,13 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 		{
 		$dquery .= ", {$dbprefix}tokens_$sid.attribute_2";
 		}
-	$dquery	.= " FROM $surveytable "
+	$dquery	.= " FROM $surveyidtable "
 			. "LEFT OUTER JOIN {$dbprefix}tokens_$sid "
-			. "ON $surveytable.token={$dbprefix}tokens_$sid.token ";
+			. "ON $surveyidtable.token={$dbprefix}tokens_$sid.token ";
 	}
 else // this applies for exporting everything
 	{
-	$dquery = "SELECT $selectfields FROM $surveytable ";
+	$dquery = "SELECT $selectfields FROM $surveyidtable ";
 	}
 
 if (isset($_POST['sql'])) //this applies if export has been called from the statistics package
@@ -578,7 +578,7 @@ if (isset($_POST['sql'])) //this applies if export has been called from the stat
 	if ($_POST['sql'] != "NULL") {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
 	}
 
-$dquery .= "ORDER BY $surveytable.id";
+$dquery .= "ORDER BY $surveyidtable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
 	{
 	$dresult = mysql_query($dquery);

@@ -294,7 +294,7 @@ $navigator="<input class='submit' type='submit' value=' next >> ' name='move' />
 if ($screenname != _TP_WELCOMEPAGE) {$navigator = "<input class='submit' type='submit' value=' << prev ' name='move' />\n".$navigator;}
 $help="This is some help text";
 $totalquestions="10";
-$surveyformat="Format";
+$surveyidformat="Format";
 $completed="Survey is completed and saved.";
 $notanswered="5";
 $privacy="";

@@ -82,8 +82,8 @@ function surveyNavigator($sid, $gid, $qid) {
 			$menu00->addItem($$nodename);
 			$i++;
 		}
-	$surveymenu = &new HTML_TreeMenu_DHTMLXL($menu00, array("images"=>"classes/TMimages"));
-	$_SESSION['java_allsurveys']=$surveymenu->toHTML();
+	$surveyidmenu = &new HTML_TreeMenu_DHTMLXL($menu00, array("images"=>"classes/TMimages"));
+	$_SESSION['java_allsurveys']=$surveyidmenu->toHTML();
 	$_SESSION['java_exclude']=$sid;
 	}
 	
@@ -132,7 +132,7 @@ function surveyNavigator($sid, $gid, $qid) {
 	 </form>
 	 </tr>
 	 <tr><td bgcolor='#BBBBBB' id='allsurveys' $display>";
-	//$surveymenu->printMenu();
+	//$surveyidmenu->printMenu();
 	echo $_SESSION['java_allsurveys'];
 	echo "</td></tr></table>
 	<table cellspacing='0' cellpadding='0' width='250'><tr><td height='4'></td></tr></table>
@@ -332,9 +332,9 @@ function surveyDetails($sid, $gid, $qid) {
 	$pages[_SN_SV_MISC]=array(_SL_ATTRIBUTENAMES, _SL_NOTIFICATION, _SL_AUTONUMBER, _SL_ALLOWPREV);
 	
 	if ($thissurvey['active'] == "Y") {
-	    $surveystatus="<img src='$imagefiles/blank.gif' width='50' height='1'><a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, surveyactivation, '180px')\"><img src='{$imagefiles}/active.gif' border='0' hspace='0'>"._S_ACTIVE_BT."</a>";
+	    $surveyidstatus="<img src='$imagefiles/blank.gif' width='50' height='1'><a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, surveyactivation, '180px')\"><img src='{$imagefiles}/active.gif' border='0' hspace='0'>"._S_ACTIVE_BT."</a>";
 	} else {
-		$surveystatus="<img src='$imagefiles/blank.gif' width='195' height='1'><a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, surveyactivation, '180px')\"><img src='{$imagefiles}/inactive.gif' border='0' hspace='0'>"._S_INACTIVE_BT."</a>";
+		$surveyidstatus="<img src='$imagefiles/blank.gif' width='195' height='1'><a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, surveyactivation, '180px')\"><img src='{$imagefiles}/inactive.gif' border='0' hspace='0'>"._S_INACTIVE_BT."</a>";
 	}
 	
 	$contents = buildSummaryRows($fields, 'surveysummary', $display, $pages);
@@ -356,7 +356,7 @@ function surveyDetails($sid, $gid, $qid) {
 	if ($thissurvey['active'] == "Y") {
 		echo "	  <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, surveyactive, '290px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_ACTIVESURVEYOPTIONS."</a>";
 	}
-	echo "$surveystatus
+	echo "$surveyidstatus
 		 </td>
 		<tr>
 	   </table>
@@ -1169,7 +1169,7 @@ function checkSettings($dbprefix) {
 	
 	$query = "SELECT sid FROM {$dbprefix}surveys";
 	$result = mysql_query($query);
-	$surveycount=mysql_num_rows($result);
+	$surveyidcount=mysql_num_rows($result);
 	$query = "SELECT sid FROM {$dbprefix}surveys WHERE active='Y'";
 	$result = mysql_query($query);
 	$activesurveycount=mysql_num_rows($result);
@@ -1233,7 +1233,7 @@ function checkSettings($dbprefix) {
 			   </tr>
 			   <tr>
 				<td align='right'><b>"._SURVEYS.":</b></td>
-				<td>$surveycount</td>
+				<td>$surveyidcount</td>
 			   </tr>
 			   <tr>
 			    <td align='right'><b>"._PS_ACTIVESURVEYS.":</b></td>
@@ -1261,7 +1261,7 @@ function checkSettings($dbprefix) {
 
 
 function getSurveysBrief($user=null, $sid=null, $notsid=null) {
-	$surveyList=array();
+	$surveyidList=array();
 	$query = "SELECT * FROM surveys ";
 	if ($sid !== null) {
 	    $query .= "WHERE sid=$sid ";
@@ -1272,11 +1272,11 @@ function getSurveysBrief($user=null, $sid=null, $notsid=null) {
 	$query .= "ORDER BY short_title";
 	$result = mysql_query($query) or die($query ."<br />".mysql_error());
 	while($row=mysql_fetch_array($result)) {
-		$surveyList[]=array("title"=>$row['short_title'],
+		$surveyidList[]=array("title"=>$row['short_title'],
 						  "sid"=>$row['sid'],
 						  "active"=>$row['active']);
 	} // while
-	return $surveyList;	
+	return $surveyidList;	
 }
 function getGroupsBrief($sid) {
 	$groupList=array();

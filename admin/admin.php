@@ -160,7 +160,7 @@ if ($action == "newsurvey")
 	exit;
 	}
 
-if (isset($surveysummary)) {echo $surveysummary;}
+if (isset($surveyidsummary)) {echo $surveyidsummary;}
 if (isset($cssummary)) {echo $cssummary;}
 if (isset($usersummary)) {echo $usersummary;}
 if (isset($addsummary)) {echo $addsummary;}
