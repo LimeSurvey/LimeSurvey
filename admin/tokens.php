@@ -247,7 +247,7 @@ if ($action == "browse")
 			echo "\t\t<input type='hidden' name='sql' value=\"token='{$brow['token']}'\" />\n";
 			echo "\t\t</form>\n";
 			}
-		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['send'] != "Y")
+		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] != "Y")
 			{
 			echo "\t\t<td align='center'>\n";
 			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='I' title='Send Invitation Email' onClick=\"window.open('$PHP_SELF?sid=$sid&action=email&tid=$brow[0]', '_top')\" />";
