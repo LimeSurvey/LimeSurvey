@@ -53,9 +53,9 @@ if (!$style)
 	foreach ($fieldmap as $fm) 
 		{
 		$query="SELECT group_name, title\n"
-			  ."FROM questions, groups\n"
-			  ."WHERE questions.gid=groups.gid\n"
-			  ."AND questions.qid='".$fm['qid']."'";
+			  ."FROM {$dbprefix}questions, {$dbprefix}groups\n"
+			  ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
+			  ."AND {$dbprefix}questions.qid='".$fm['qid']."'";
 		$result=mysql_query($query) or die("EXPORT: Fieldmap-$query<br />".mysql_error());
 		while ($row=mysql_fetch_array($result))
 			{
