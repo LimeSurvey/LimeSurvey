@@ -232,12 +232,14 @@ echo "\tvar Qcqids = new Array();\n";
 $jn=0;
 foreach($canswers as $can)
 	{
+	$an=str_replace("'", "`", $can[2]);
 	echo "\t\tFieldnames[$jn]='$can[0]';\n";
 	echo "\t\tCodes[$jn]='$can[1]';\n";
-	echo "\t\tAnswers[$jn]='$can[2]';\n";
+	echo "\t\tAnswers[$jn]='$an';\n";
 	$jn++;
 	}
 $jn=0;
+
 foreach ($cquestions as $cqn)
 	{
 	echo "\t\tQFieldnames[$jn]='$cqn[3]';\n";
