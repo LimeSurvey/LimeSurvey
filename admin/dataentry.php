@@ -964,6 +964,7 @@ else
 	// PRESENT SURVEY DATAENTRY SCREEN
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
+	echo $surveyoptions;
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery);
 	while ($desrow = mysql_fetch_array($desresult))
