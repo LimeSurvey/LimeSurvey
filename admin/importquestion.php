@@ -163,32 +163,64 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 	}
 $bigarray = array_values($bigarray);
 
-//ANSWERS
-if (array_search("#</pre>\n", $bigarray))
+//LABELS
+if (array_search("# QUESTION_ATTRIBUTES TABLE\n", $bigarray))
 	{
-	$stoppoint = array_search("#</pre>\n", $bigarray);
+	$stoppoint = array_search("# QUESTION_ATTRIBUTES TABLE\n", $bigarray);
 	}
-if (array_search("#</pre>\r\n", $bigarray))
+elseif (array_search("# QUESTION_ATTRIBUTES TABLE\r\n", $bigarray))
 	{
-	$stoppoint = array_search("#</pre>\r\n", $bigarray);
+	$stoppoint = array_search("# QUESTION_ATTRIBUTES TABLE\r\n", $bigarray);
 	}
 else
 	{
 	$stoppoint = count($bigarray)-1;
 	}
-for ($i=0; $i<$stoppoint; $i++)
+for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-	$labelsarray[] = $bigarray[$i];
-	//echo "($i)[$stoppoint]An Answer! - {$bigarray[$i]}<br />";
+	if ($i<$stoppoint-2) {$labelsarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 	}
 $bigarray = array_values($bigarray);
+
+//LAST LOT (now question_attributes)
+if (!isset($noconditions) || $noconditions != "Y")
+	{
+	$stoppoint = count($bigarray)-1;
+	for ($i=0; $i<=$stoppoint+1; $i++)
+		{
+		if ($i<$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
+		unset($bigarray[$i]);
+		}
+	}
+$bigarray = array_values($bigarray);
+////ANSWERS
+//if (array_search("#</pre>\n", $bigarray))
+//	{
+//	$stoppoint = array_search("#</pre>\n", $bigarray);
+//	}
+//if (array_search("#</pre>\r\n", $bigarray))
+//	{
+//	$stoppoint = array_search("#</pre>\r\n", $bigarray);
+//	}
+//else
+//	{
+//	$stoppoint = count($bigarray)-1;
+//	}
+//for ($i=0; $i<$stoppoint; $i++)
+//	{
+//	$labelsarray[] = $bigarray[$i];
+//	//echo "($i)[$stoppoint]An Answer! - {$bigarray[$i]}<br />";
+//	unset($bigarray[$i]);
+//	}
+//$bigarray = array_values($bigarray);
 
 
 if (isset($questionarray)) {$countquestions = count($questionarray);}
 if (isset($answerarray)) {$countanswers = count($answerarray);}
 if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);}
 if (isset($labelsarray)) {$countlabels = count($labelsarray);}
+if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
 
 // GET SURVEY AND GROUP DETAILS
 $sid=$_POST['sid'];
@@ -369,6 +401,27 @@ if (isset($questionarray) && $questionarray)
 				}
 			$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 			}
+		//NOW DO question_attributes if there are any
+		if (isset($question_attributesarray) && $question_attributesarray) 
+			{//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
+			foreach ($question_attributesarray as $qar) 
+				{
+				$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
+				$fieldcontents=convertToArray($qar, "', '", "('", "')");
+				$newfieldcontents=$fieldcontents;
+				$oldqid=$fieldcontents[array_search("qid", $fieldorders)];
+				
+				$newfieldcontents[array_search("qid", $fieldorders)]=$newqid;
+				$newfieldcontents[array_search("qaid", $fieldorders)]="";
+				
+				$newvalues="('".implode("', '", $newfieldcontents)."')";
+				$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $qar);
+				$insert=str_replace("INTO question_attributes", "INTO {$dbprefix}question_attributes", $insert);
+				$result=mysql_query($insert) or die ("Couldn't insert question_attribute<br />$insert<br />".mysql_error());
+		
+				unset($newcqid);
+				}
+			}
 		}
 	}
 
@@ -389,7 +442,10 @@ echo "</li><br />\n"
 if (isset($countlabelsets)) {echo $countlabelsets;}
 echo " (";
 if (isset($countlabels)) {echo $countlabels;}
-echo ")</li></ul><br />\n";
+echo ")</li><br />\n";
+echo "\t<li>"._QL_QUESTIONATTRIBUTES;
+if (isset($countquestion_attributes)) {echo $countquestion_attributes;}
+echo "</li></ul><br />\n";
 
 echo "<b>"._IS_SUCCESS."</b><br />\n"
 	."<input $btstyle type='submit' value='"

@@ -133,9 +133,12 @@ $lsdump = BuildOutput($lsquery);
 $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type='F' AND gid=$gid";
 $ldump = BuildOutput($lquery);
 
+//8: Question Attributes
+$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$sid AND {$dbprefix}.questions.gid=$gid";
+$qadump = BuildOutput($query);
                         // HTTP/1.0
 echo "#<pre>\n";
-echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump;
+echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump;
 echo "#</pre>\n";
 
 ?>

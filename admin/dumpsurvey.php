@@ -134,6 +134,10 @@ $lsdump = BuildOutput($lsquery);
 $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type='F' AND sid=$sid";
 $ldump = BuildOutput($lquery);
 
+//8: Question Attributes
+$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$sid";
+$qadump = BuildOutput($query);
+
 $fn = "survey_$sid.sql";
 
 header("Content-Type: application/download");
@@ -145,6 +149,6 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
 echo "#<pre>\n"
-	.$dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump
+	.$dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump
 	."#</pre>\n";
 ?>
