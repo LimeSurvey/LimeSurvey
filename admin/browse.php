@@ -265,7 +265,6 @@ elseif ($action == "all")
 			$ftitle .= "[comment]";
 			$fquestion .= " (comment)";
 			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
-			$fncount++;
 			}
 		else
 			{
@@ -278,25 +277,22 @@ elseif ($action == "all")
 				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Opt{$i2row['code']}";
 				if ($i2row['other'] == "Y") {$otherexists = "Y";}
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]", "{$fnrow['gid']}");
-				if ($fnrow['type'] == "P") {$fnames[] = array("$field"."comment", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]<br />\n[Comment]", "{$fnrow['gid']}"); $fncount++;}
-				$fncount++;
+				if ($fnrow['type'] == "P") {$fnames[] = array("$field"."comment", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]<br />\n[Comment]", "{$fnrow['gid']}");}
 				}
 			if ($otherexists == "Y") 
 				{
 				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}"."other";
 				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}OptOther";
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[Other]", "{$fnrow['gid']}");
-				$fncount++;
 				if ($fnrow['type'] == "P")
 					{
 					$fnames[] = array("$field"."comment", "$ftitle"."Comment", "{$fnrow['question']}<br />\n[Other]<br />\n[Comment]", "{$fnrow['gid']}");
-					$fncount++;
 					}
-				}			
-			
+				}
 			}
 		//echo "$field | $ftitle | $fquestion<br />\n";
 		}
+	$fncount = count($fnames);
 	
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
 	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
@@ -364,7 +360,7 @@ elseif ($action == "all")
 			$i++;
 			}
 		
-		for ($i; $i<=$fncount; $i++)
+		for ($i; $i<$fncount; $i++)
 			{
 			echo "\t\t<td align='center'><font size='1'>";
 			echo htmlspecialchars($dtrow[$fnames[$i][0]]);
