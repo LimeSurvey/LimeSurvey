@@ -2,11 +2,29 @@
 //THE TABLE STRUCTURE, TABLE BY TABLE AND FIELD BY FIELD
 include("config.php");
 
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
+                                                     // always modified
+header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");                          // HTTP/1.0
+//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
+
+
 //TABLES THAT SHOULD EXIST
 $alltables=array("surveys", "groups", "questions", "answers", "conditions", "users");
 
+//KEYS
+$keyinfo[]=array("surveys", "sid");
+$keyinfo[]=array("groups", "gid");
+$keyinfo[]=array("questions", "qid");
+$keyinfo[]=array("conditions", "cid");
 
 //FIELDS THAT SHOULD EXIST
+$allfields[]=array("users", "user", "user varchar(20) NOT NULL default ''");
+$allfields[]=array("users", "password", "password varchar(20) NOT NULL default ''");
+$allfields[]=array("users", "security", "security varchar(10) NOT NULL default ''");
+
 $allfields[]=array("answers", "qid", "qid int(11) NOT NULL default '0'");
 $allfields[]=array("answers", "code", "code varchar(5) NOT NULL default ''");
 $allfields[]=array("answers", "answer", "answer text NOT NULL");
@@ -65,6 +83,10 @@ while ($row = mysql_fetch_row($result))
 	{
 	$tablelist[]=$row[0];
     }
+if (!is_array($tablelist))
+	{
+	$tablelist[]="empty";
+	}
 foreach ($alltables as $at)
 	{
 	echo "<b>-></b>"._CF_CHECKING." <b>$at</b>..<br />";
@@ -76,13 +98,21 @@ foreach ($alltables as $at)
 			{
 			if ($af[0] == $at)
 				{
-				$ctquery .= $af[2]."\n";
+				$ctquery .= $af[2].",\n";
 				}
 			}
+		foreach($keyinfo as $ki)
+			{
+			if ($ki[0] == $at)
+				{
+				$ctquery .= "PRIMARY KEY ({$ki[1]}),\n";
+				}
+			}
+		$ctquery = substr($ctquery, 0, -2);
 		$ctquery .= ")\n";
-		$ctquery .= "TYPE=MyISAM";
+		$ctquery .= "TYPE=MyISAM\n";
 		$ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error);
-		echo _CF_TABLECREATED."! ($at)";
+		echo _CF_TABLECREATED."! ($at)<br />\n";
 		}
 	else
 		{
@@ -147,7 +177,7 @@ function checktable($tablename)
 		}
 	}
 echo "</font></td></tr>\n<tr><td align='center' bgcolor='#CCCCCC'>\n";
-echo "<a href='admin.php'>"._GO_ADMIN."</a>\n";
+echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 
 echo "</td></tr></table>\n";
 echo "<br />\n";
