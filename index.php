@@ -839,7 +839,7 @@ else
 				echo "\t\t\t\t\t\t\$b += '';\n";
 				echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
 				echo "\t\t\t\t\t\t\$hiddenname=\"fvalue\"+\$b;\n";
-				echo "\t\t\t\t\t\t\$cutname=\"CUT\"+i;\n";
+				echo "\t\t\t\t\t\t\$cutname=\"cut\"+i;\n";
 				echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
 				echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
 				echo "\t\t\t\t\t\t\t{\n";
@@ -916,7 +916,7 @@ else
 						$ranklist .= "'";
 						}
 					$ranklist .= " onFocus=\"this.blur()\">\n";
-					$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='fvalue$i' value='";
+					$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='fvalue$i' id='fvalue$i' value='";
 					$chosen[]=""; //create array
 					if ($_SESSION[$myfname]) 
 						{
@@ -929,7 +929,7 @@ else
 						{
 						$ranklist .= "style='display:none'";
 						}
-					$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(RANK$i.value, fvalue$i.value, RANK$i.name, this.name)\"><br />\n";
+					$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(document.phpsurveyor.RANK$i.value, document.phpsurveyor.fvalue$i.value, document.phpsurveyor.RANK$i.name, this.id)\"><br />\n";
 					}
 				
 				$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
