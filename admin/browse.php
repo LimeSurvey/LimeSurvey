@@ -39,6 +39,7 @@ if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($sid)) {$sid=returnglobal('sid');}
 if (!isset($id)) {$id=returnglobal('id');}
 if (!isset($action)) {$action=returnglobal('action');}
+if (!isset($order)) {$order=returnglobal('order');}
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
@@ -126,7 +127,6 @@ if ($action == "id") // Looking at a SINGLE entry
 	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
-	//echo "$fnquery<br /><br />\n";
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp'];} // Get table output into array
@@ -390,8 +390,8 @@ elseif ($action == "all")
 		{
 		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
 		}
-	if ($limit && !isset($start)) {$dtquery .= " DESC LIMIT $limit";}
-	if (isset($start) && isset($limit)) {$dtquery = "SELECT * FROM $surveytable LIMIT $start, $limit";}
+	if ($order == "desc") {$dtquery .= " DESC LIMIT $limit";}
+	if (isset($start) && isset($limit) && !isset($order)) {$dtquery = "SELECT * FROM $surveytable LIMIT $start, $limit";}
 	if (!isset($limit)) {$dtquery .= " LIMIT $limit";}
 	if (!isset($start)) {$start = 0;}
 	$dtresult = mysql_query($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".mysql_error());
