@@ -124,9 +124,9 @@ switch ($ia[4])
 			}
 		elseif ($dropdowns == "R")
 			{
-			$answer .= "\n\t\t\t\t\t<table align='center'>\n";
+			$answer .= "\n\t\t\t\t\t<table class='question'>\n";
 			$answer .= "\t\t\t\t\t\t<tr>\n";
-			$answer .= "\t\t\t\t\t\t\t<td>$setfont\n";
+			$answer .= "\t\t\t\t\t\t\t<td>\n";
 			while ($ansrow = mysql_fetch_array($ansresult))
 				{
 				$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]'";
@@ -160,13 +160,13 @@ switch ($ia[4])
 		$anscount = mysql_num_rows($ansresult);
 		if ($lwcdropdowns == "R")
 			{
-			$answer .= "\t\t\t<table align='center'>\n";
+			$answer .= "\t\t\t<table class='question'>\n";
 			$answer .= "\t\t\t\t<tr>\n";
-			$answer .= "\t\t\t\t\t<td>$setfont<u>Choose one of the following:</u></td>\n";
-			$answer .= "\t\t\t\t\t<td>$setfont<u>Please enter your comment here:</td>\n";
+			$answer .= "\t\t\t\t\t<td><u>Choose one of the following:</u></td>\n";
+			$answer .= "\t\t\t\t\t<td><u>Please enter your comment here:</td>\n";
 			$answer .= "\t\t\t\t</tr>\n";
 			$answer .= "\t\t\t\t<tr>\n";
-			$answer .= "\t\t\t\t\t<td valign='top'>$setfont\n";
+			$answer .= "\t\t\t\t\t<td valign='top'>\n";
 			
 			while ($ansrow=mysql_fetch_array($ansresult))
 				{
@@ -208,7 +208,7 @@ switch ($ia[4])
 			}
 		else //Dropdown list
 			{
-			$answer .= "\t\t\t<table align='center'>\n";
+			$answer .= "\t\t\t<table class='question'>\n";
 			$answer .= "\t\t\t\t<tr>\n";
 			$answer .= "\t\t\t\t\t<td valign='top' align='center'>\n";
 			$answer .= "\t\t\t\t\t<select class='select' name='$ia[1]' onClick='checkconditions(this.value, this.name, this.type)'>\n";
@@ -353,7 +353,7 @@ switch ($ia[4])
 						}
 					}
 				}
-			$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input class='text' type='text' name='RANK$i' id='RANK$i'";
+			$ranklist .= "\t\t\t\t\t\t&nbsp;$i:&nbsp;<input class='text' type='text' name='RANK$i' id='RANK$i'";
 			if ($_SESSION[$myfname])
 				{
 				$ranklist .= " value='";
@@ -417,35 +417,35 @@ switch ($ia[4])
 
 		//$answer .= "\t<tr>\n";
 		//$answer .= "\t\t<td colspan='2'>\n";
-		$answer .= "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
+		$answer .= "\t\t\t<table border='0' cellspacing='5' class='rank'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
-		$answer .= "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
+		$answer .= "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n";
 		$answer .= "\t\t\t\t\t\tClick on an item in the choices list, starting with your highest<br />";
 		$answer .= "\t\t\t\t\t\tranking item, moving through to your lowest ranking item.";
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td align='left' valign='top' class='rank'>\n";
-		$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;Your Choices:</b><br />\n";
+		$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;Your Choices:</b><br />\n";
 		$answer .= "&nbsp;".$choicelist;
 		$answer .= "\t\t\t\t\t&nbsp;</td>\n";
 		if ($maxselectlength > 60) 
 			{
 			$answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
-			$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' class='rank'>$setfont\n";
-			$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;Your Ranking:</b><br />\n";
+			$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' class='rank'>\n";
+			$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;Your Ranking:</b><br />\n";
 			}
 		else
 			{
-			$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>$setfont\n";
-			$answer .= "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Ranking:</b><br />\n";
+			$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>\n";
+			$answer .= "\t\t\t\t\t\t<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Ranking:</b><br />\n";
 			}
 		$answer .= $ranklist;
 		$answer .= "\t\t\t\t\t</td>\n";
 		$answer .= "\t\t\t\t</tr>\n";
 		$answer .= "\t\t\t\t<tr>\n";
-		$answer .= "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
+		$answer .= "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n";
 		$answer .= "\t\t\t\t\t\tClick on the scissors next to each ranked item<br />";
 		$answer .= "\t\t\t\t\t\tto remove the last entry in your ranked list.";
 		$answer .= "\t\t\t\t\t</td>\n";
@@ -453,7 +453,7 @@ switch ($ia[4])
 		$answer .= "\t\t\t</table>\n";
 		break;
 	case "M": //MULTIPLE OPTIONS checkbox
-		$answer .= "\t\t\t<table align='center' border='0'>\n";
+		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td>&nbsp;</td>\n";
 		$answer .= "\t\t\t\t\t<td align='left'>\n";
@@ -469,7 +469,7 @@ switch ($ia[4])
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			$multifields .= "$fname{$ansrow['code']}|";
-			$answer .= "\t\t\t\t\t\t$setfont<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' value='Y'";
+			$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' value='Y'";
 			if ($_SESSION[$myfname] == "Y") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />{$ansrow['answer']}<br />\n";
 			$fn++;
@@ -512,7 +512,7 @@ switch ($ia[4])
 		$answer .= "\t\t\t</table>\n";
 		break;
 	case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
-		$answer .= "\t\t\t<table align='center' border='0'>\n";
+		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
 		$answer .= "\t\t\t\t\t<td>&nbsp;</td>\n";
 		$answer .= "\t\t\t\t\t<td align='left'>\n";
@@ -524,13 +524,13 @@ switch ($ia[4])
 		$anscount = mysql_num_rows($ansresult)*2;
 		$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 		$fn = 1;
-		$answer .= "\t\t\t\t\t\t<table border='0'>\n";
+		$answer .= "\t\t\t\t\t\t<table class='question'>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			$myfname2 = $myfname."comment";
 			$answer .= "\t\t\t\t\t\t\t<tr>\n";
-			$answer .= "\t\t\t\t\t\t\t\t<td>$setfont\n";
+			$answer .= "\t\t\t\t\t\t\t\t<td>\n";
 			$answer .= "\t\t\t\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$myfname' value='Y'";
 			if ($_SESSION[$myfname] == "Y") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />{$ansrow['answer']}\n";
@@ -607,9 +607,9 @@ switch ($ia[4])
 		$inputnames[]=$ia[1];
 		break;
 	case "Y": //YES/NO radio-buttons
-		$answer .= "\t\t\t<table align='center'>\n";
+		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
-		$answer .= "\t\t\t\t\t<td>$setfont\n";
+		$answer .= "\t\t\t\t\t<td>\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value='Y'";
 		if ($_SESSION[$ia[1]] == "Y") {$answer .= " checked";}
 		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />Yes<br />\n";
@@ -629,9 +629,9 @@ switch ($ia[4])
 		$inputnames[]=$ia[1];
 		break;
 	case "G": //GENDER drop-down list
-		$answer .= "\t\t\t<table align='center'>\n";
+		$answer .= "\t\t\t<table class='question'>\n";
 		$answer .= "\t\t\t\t<tr>\n";
-		$answer .= "\t\t\t\t\t<td>$setfont\n";
+		$answer .= "\t\t\t\t\t<td>\n";
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value='F'";
 		if ($_SESSION[$ia[1]] == "F") {$answer .= " checked";}
 		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />Female<br />\n";
@@ -658,18 +658,18 @@ switch ($ia[4])
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$fn = 1;
-		$answer .= "\t\t\t<table align='center' border='0'>\n";
+		$answer .= "\t\t\t<table class='question'>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			//$multifields .= "$fname{$ansrow['code']}|";
 			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n";
-			$answer .= "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
+			$answer .= "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
 			$answer .= "\t\t\t\t\t<td>";
 			for ($i=1; $i<=5; $i++)
 				{
-				$answer .= "\t\t\t\t\t$setfont<input class='radio' type='radio' name='$myfname' value='$i'";
+				$answer .= "\t\t\t\t\t<input class='radio' type='radio' name='$myfname' value='$i'";
 				if ($_SESSION[$myfname] == $i) {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />$i&nbsp;\n";
 				}
@@ -700,17 +700,17 @@ switch ($ia[4])
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$fn = 1;
-		$answer .= "\t\t\t<table align='center'>\n";
+		$answer .= "\t\t\t<table class='question'>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n";
-			$answer .= "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
+			$answer .= "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
 			$answer .= "\t\t\t\t\t<td>\n";
 			for ($i=1; $i<=10; $i++)
 				{
-				$answer .= "\t\t\t\t\t\t$setfont<input class='radio' type='radio' name='$myfname' value='$i'";
+				$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$myfname' value='$i'";
 				if ($_SESSION[$myfname] == $i) {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />$i&nbsp;\n";
 				}
@@ -740,21 +740,21 @@ switch ($ia[4])
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
 		$fn = 1;
-		$answer .= "\t\t\t<table align='center'>\n";
+		$answer .= "\t\t\t<table class='question'>\n";
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n";
-			$answer .= "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
+			$answer .= "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
 			$answer .= "\t\t\t\t\t<td>\n";
-			$answer .= "\t\t\t\t\t\t$setfont<input class='radio' type='radio' name='$myfname' value='Y'";
+			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$myfname' value='Y'";
 			if ($_SESSION[$myfname] == "Y") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />Yes&nbsp;\n";
-			$answer .= "\t\t\t\t\t\t$setfont<input class='radio' type='radio' name='$myfname' value='U'";
+			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$myfname' value='U'";
 			if ($_SESSION[$myfname] == "U") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />Uncertain&nbsp;\n";
-			$answer .= "\t\t\t\t\t\t$setfont<input class='radio' type='radio' name='$myfname' value='N'";
+			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$myfname' value='N'";
 			if ($_SESSION[$myfname] == "N") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' />No&nbsp;\n";
 			$answer .= "\t\t\t\t\t</td>\n";
