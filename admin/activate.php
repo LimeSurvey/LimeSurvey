@@ -82,6 +82,12 @@ else
 	{
 	$createsurvey = "CREATE TABLE survey_$sid (\n";
 	$createsurvey .= "  id INT(11) NOT NULL auto_increment,\n";
+	$pquery = "SELECT private FROM surveys WHERE sid=$sid";
+	$presult=mysql_query($pquery);
+	while($prow=mysql_fetch_array($presult))
+		{
+		if ($prow['private'] == "N") {$createsurvey .= "  token VARCHAR(10),\n";}
+		}
 	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
 	$aresult = mysql_query($aquery);
 	//echo "<br /><br />$aquery<br /><br />\n";
