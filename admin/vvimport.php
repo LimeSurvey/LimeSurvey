@@ -44,16 +44,39 @@ if ($action != "upload")
 	{
     //PRESENT FORM
 	echo $htmlheader;
-	echo "<br /><table class='outlinetable' align='center'>
-	<form enctype='multipart/form-data' method='post'>
-	<tr><th colspan=2>Import a VV survey file</th></tr>
-	<tr><td>File:</td><td><input type='file' name='the_file'></td></tr>
-	<tr><td>Survey ID:</td><td><input type='text' size=2 name='sid'></td></tr>
-	<tr><td>Exclude id?</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
-	<tr><td>&nbsp;</td><td><input type='submit' value='Upload'></td></tr>
-	<input type='hidden' name='action' value='upload'>
-	</form>
-	</table>";
+	
+	//Make sure that the survey is active
+	$result = mysql_list_tables($databasename);
+	while ($row = mysql_fetch_row($result))
+		{
+		$tablelist[]=$row[0];
+	    }
+	if (in_array("survey_$sid", $tablelist))
+		{
+		echo "<br /><table class='outlinetable' align='center'>
+		<form enctype='multipart/form-data' method='post'>
+		<tr><th colspan=2>Import a VV survey file</th></tr>
+		<tr><td>File:</td><td><input type='file' name='the_file'></td></tr>
+		<tr><td>Survey ID:</td><td><input type='text' size=2 name='sid' value='$sid' readonly></td></tr>
+		<tr><td>Exclude id?</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
+		<tr><td>&nbsp;</td><td><input type='submit' value='Upload'></td></tr>
+		<input type='hidden' name='action' value='upload'>
+		</form>
+		</table>";
+		}
+	else
+		{
+		echo "<br /><table class='outlinetable' align='center'>
+		<tr><th colspan=2>Import a VV survey file</th></tr>
+		<tr><td colspan='2' align='center'>
+		<b>Cannot import</b><br /><br />
+		This survey is not active. You must activate the survey before attempting to import a VVexport file.<br /><br />
+		[<a href='$scriptname?sid=4'>"._B_ADMIN_BT."</a>]
+		</td></tr>
+		</table>";		
+		}
+	
+
 	}
 else
 	{
@@ -80,8 +103,7 @@ else
 	$handle = fopen($the_full_file_path, "r");
 	while (!feof($handle))
 		{
-		//$buffer = fgets($handle, 1024); //Length parameter is required for PHP versions < 4.2.0
-		$buffer = fgets($handle, 10240); //To allow for very long survey welcomes (up to 10k)
+		$buffer = fgets($handle, 10240); //To allow for very long lines (up to 10k)
 		$bigarray[] = $buffer;
 		}
 	fclose($handle);
@@ -99,22 +121,42 @@ else
 		$fieldcount--;
 		}
 	if ($noid == "noid") {unset($fieldnames[0]);}
-//	echo "FIELDS: Count - ".count($fieldnames);
+
+	$fldlist = mysql_list_fields($databasename, $surveytable);
+	$columns = mysql_num_fields($fldlist);
+	for ($i = 0; $i < $columns; $i++)
+		{
+		$realfieldnames[] = mysql_field_name($fldlist, $i);
+		}
+	if ($noid == "noid") {unset($realfieldnames[0]);}
 	unset($bigarray[1]); //delete the second line
 	
-//	echo "[$noid]<br />";
+//	echo "<tr><td valign='top'><b>Import Fields:<pre>"; print_r($fieldnames); echo "</pre></td>";
+//	echo "<td valign='top'><b>Actual Fields:<pre>"; print_r($realfieldnames); echo '</pre></td></tr>';
+	
+	//See if any fields in the import file don't exist in the active survey
+	$missing = array_diff($fieldnames, $realfieldnames);
+	if (is_array($missing) && count($missing) > 0)	
+		{
+		foreach ($missing as $key=>$val)
+			{
+			$donotimport[]=$key;
+			unset($fieldnames[$key]);
+			}
+		}
 	
 	foreach($bigarray as $row)
 		{
 		if (trim($row) != "")
 			{
 			$fieldvalues=explode("\t", mysql_escape_string(str_replace("\n", "", $row)), $fieldcount+1);
-//			if (trim($fieldvalues[count($fieldvalues)-1]) == "") //Get rid of a blank entry at the end
-//				{
-//			    unset($fieldvalues[count($fieldvalues)-1]);
-//				}
-//			echo "INSERT: Count - ".count($fieldvalues);
-//			echo "<pre>";print_r($fieldvalues);echo "</pre>";
+			if (isset($donotimport))
+				{
+				foreach ($donotimport as $not)
+					{
+				    unset($fieldvalues[$not]);
+					}
+				}
 			if ($noid == "noid") {unset($fieldvalues[0]);}
 			$insert = "INSERT INTO $surveytable\n";
 			$insert .= "(".implode(", ", $fieldnames).")\n";
@@ -125,12 +167,14 @@ else
 				{
 			    echo "Failed insert: <pre>$insert</pre>".mysql_error();
 				}
-			//echo $insert."<br />\n";
+
 			}
 		}
 	
-//	echo "<pre>";print_r($bigarray);echo "</pre>";
-	
+	echo "<font color='green'>"._SUCCESS."</font>
+		  File upload completed.<br /><br />
+		  <i>Note: Do NOT refresh this page</i><br /><br />";
+	echo "[<a href='$scriptname?sid=4'>"._B_ADMIN_BT."</a>]";
 	echo "</td></tr></table>";
 	}
 ?>
