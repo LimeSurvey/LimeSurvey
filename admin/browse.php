@@ -109,21 +109,27 @@ if ($action == "id")
 	{
 	echo "$surveyheader";
 	
-	echo "$surveyoptions"; // Don't show options if coming from statistics script
+	if (!$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
 	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name";
+	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow;} // Get table output into array
+	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
 	
 	$fnames[] = array("id", "id", "id");
+	
+	if ($private == "N") //add token to top ofl ist is survey is not private
+		{
+		$fnames[] = array("token", "token", "Token ID");		
+		}
+	
 	foreach ($fnrows as $fnrow)
 		{
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
@@ -160,9 +166,12 @@ if ($action == "id")
 
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
-	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
-	$idresult = mysql_query($idquery);
-	echo "<table>\n";
+	$idquery = "SELECT * FROM $surveytable WHERE ";
+	if ($_POST['sql']) {$idquery .= "{$_POST['sql']}";}
+	else {$idquery .= "id=$id";}
+	$idresult = mysql_query($idquery) or die ("Couldn't get entry<br />$idquery<br />".mysql_error());
+	while ($idrow = mysql_fetch_array($idresult)) {$id=$idrow['id'];}
+	echo "<table align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td colspan='2' bgcolor='#DDDDDD' align='center'>$setfont\n";
 	echo "\t\t\t<b>Viewing Answer ID $id</b><br />\n";
@@ -171,6 +180,7 @@ if ($action == "id")
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+	$idresult = mysql_query($idquery) or die ("Couldn't get entry<br />$idquery<br />".mysql_error());
 	while ($idrow = mysql_fetch_array($idresult))
 		{
 		$i=0;
@@ -190,6 +200,7 @@ if ($action == "id")
 	echo "\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
 	echo "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('dataentry.php?action=edit&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
 	echo "\t\t\t<input type='submit' $btstyle value='Delete' onClick=\"window.open('dataentry.php?action=delete&id=$id&sid=$sid&surveytable=$surveytable','_top')\" />\n";
+	if ($_POST['sql']) {echo "\t\t\t<input type='submit' $btstyle value='Close Window' onClick=\"javascript(window.close())\">\n";}
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -201,7 +212,7 @@ elseif ($action == "all")
 	{
 	echo "$surveyheader";
 	if (!$_POST['sql'])
-		{echo "$surveyoptions";} //don't show options when called from statistics script
+		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
 	else
 		{
 		echo "\n<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n";
@@ -215,16 +226,21 @@ elseif ($action == "all")
 		
 		}
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name";
+	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow;} // Get table output into array
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
+	
+	if ($private == "N") //Add token to list
+		{
+		$fnames[] = array("token", "Token", "Token ID", "0");
+		}
 	
 	foreach ($fnrows as $fnrow)
 		{
