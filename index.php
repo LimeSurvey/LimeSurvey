@@ -311,8 +311,8 @@ function templatereplace($line)
 	else
 		{
 		$line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS, $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
-		$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
 		}
+	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
 	$line=str_replace("{TOKEN}", $token, $line);
 	$line=str_replace("{SID}", $sid, $line);
 	if ($help) {
