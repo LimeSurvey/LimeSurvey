@@ -347,10 +347,19 @@ elseif ($action == "all")
 			else {$bgcc = "#EEEEEE";}
 			}
 		echo "\t<tr bgcolor='$bgcc' valign='top'>\n";
+		
 		echo "\t\t<td align='center'><font size='1'>\n";
 		echo "\t\t\t<a href='browse.php?sid=$sid&action=id&id={$dtrow['id']}' title='View this record'>";
 		echo "{$dtrow['id']}</a>\n";
-		for ($i=0; $i<=$fncount; $i++)
+		
+		$SQL = "Select * FROM tokens_$sid WHERE token='{$dtrow[$fnames[0][0]]}'";
+		$SQLResult = mysql_query($SQL) or die(mysql_error());
+		$TokenRow = mysql_fetch_assoc($SQLResult);
+		echo "\t\t<td align='center'><font size='1'>\n";
+		echo "\t\t<a href='tokens.php?sid=$sid&action=edit&tid={$TokenRow['tid']}' title='Edit this token'>";
+		echo "{$dtrow['token']}</a>\n";
+		
+		for ($i=1; $i<=$fncount; $i++)
 			{
 			echo "\t\t<td align='center'><font size='1'>";
 			echo htmlspecialchars($dtrow[$fnames[$i][0]]);
