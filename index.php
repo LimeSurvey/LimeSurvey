@@ -261,22 +261,25 @@ if ($move == " submit ")
 	echo "\t\t\t\t\t\t<br /><b>Results are being submitted...<br /><br />\n";
 	echo "\t\t\t\t\t</td>\n";
 	echo "\t\t\t\t</tr>\n";
-	$subquery = "INSERT INTO $surveytable VALUES ('',";
-	foreach ($insertarray as $in)
+	$subquery = "INSERT INTO $surveytable ";
+	foreach ($insertarray as $value)
 		{
+		$col_name .= "," . substr($value, 1); //Strip off leadinf 'F'
 		if (get_magic_quotes_gpc()=="0")
 			{
-			$subquery .= "'". addcslashes($$in, "'") . "',";
+			$values .= ",'" . addcslashes($$value, "'") . "'";
 			}
 		else
 			{
-			$subquery .= "'".$$in."',";
+			$values .= ",'" . $$value . "'";
 			}
-		//echo "$in<br />\n";
+		//echo "$value<br />\n"; //Debugging info
 		}
-	$subquery = substr($subquery, 0, strlen($subquery)-1);
-	$subquery .= ")";
-	//echo $subquery;
+	$col_name = substr($col_name, 1); //Strip off inital comma
+	$values = substr($values, 1); //Strip off leading comma
+	$subquery .= "($col_name) VALUES ($values)";
+	echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
+	
 	if ($surveyactive == "Y")
 		{
 		$subresult=mysql_query($subquery) or die ("Couldn't update $surveytable<br />\n".mysql_error()."<br />\n<br />\n$subquery");
