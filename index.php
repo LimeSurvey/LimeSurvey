@@ -251,81 +251,7 @@ if ($move == "completed")
 // Here we present the user with the option to submit their responses and provide general information about stopping, and privacy (if appropriate)
 if ($move == " last ")
 	{
-	echo $surveyheader;
-	$s = $_SESSION['step']-1;
-	$t = $s-1;
-	$u = $_SESSION['totalsteps'];
-	$chart = 105;
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
-	echo "\t\t\tSurvey Complete<br />\n";
-	echo "\t\t\t<table width='175' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td width='35' align='right'><font size='1'>0%</td>\n";
-	echo "\t\t\t\t\t<td width='105'><img src='chart.jpg' height='15' width='$chart'></td>\n";
-	echo "\t\t\t\t\t<td width='35'><font size='1'>100%</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t</table>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "<form method='post'>\n";
-	echo "<input type='hidden' name='sid' value='$sid' />\n";
-	echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td>\n";
-	echo "\t\t\t<table border='0' width='100%'>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
-	echo "\t\t\t\t\t<td align='center' width='500'>\n";
-	echo "$setfont<p><b>Congratulations. You have completed answering the questions in this survey.</b>\n";
-	echo "<p>Click on \"Submit\" now to complete the process and submit your answers to our records. ";
-	echo "If you want to check any of the answers you have made, and/or change them, you can do that now by ";
-	echo "clicking on the \" << prev \" button and browsing through your responses.<br />\n";
-	echo "&nbsp;<br />\n";
-	echo "<input type='submit' value=' submit ' name='move' /><br />&nbsp;\n";
-	if ($surveyprivate != "N")
-		{
-		echo "\t\t\t\t\t\t<table align='center' width='400' bgcolor='#EFEFEF' border='0'>\n";
-		echo "\t\t\t\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t\t\t\t<td align='center'>\n";
-		echo "$setfont<b>A note on privacy</b><br />\n";
-		echo "<font size='1'>The record kept of this survey does not contain any identifying information about you unless ";
-		echo "a specific question in the survey has asked for this. If you have responded to a survey that ";
-		echo "used an identifying token to allow you to access the survey, you can rest assured that the ";
-		echo "identifying token is not kept with your responses. It is managed in a seperate database, and will ";
-		echo "only be updated to indicate that you have (or haven't) completed this survey. There is no way of ";
-		echo "matching identification tokens with survey responses in this system.\n";
-		echo "\t\t\t\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t\t\t\t</tr>\n";
-		echo "\t\t\t\t\t\t</table>\n";
-		}
-	else
-		{
-		// Just in case we want to add a comment for non-private surveys
-		}
-	echo "<font size='1'>&nbsp;<br />\nIf you do not wish to submit responses to this survey, ";
-	echo "and you would like to delete all records on your computer that may have saved your responses, ";
-	echo "click <a href='index.php?move=clearall&sid=$sid'>here</a><br />&nbsp;\n";
-	//echo "<input type='submit' name='move' value='here' style='height:15; font-size:9; font-family:verdana' onclick=\"window.open('index.php?clearall', '_top')\" />\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t</table>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo surveymover();
-	echo "</table>\n";
-	//debugging info - hidden in html, but should be commented out for release 1
-	echo "<!-- DEBUG INFO \n";
-	foreach ($_SESSION['insertarray'] as $posted)
-		{
-		echo "$posted: ".$_SESSION[$posted] ."\n";
-		}
-	echo "SID: $sid\n";
-	echo "Token: $token\n";
-	echo "-->\n";
-	// end debugging info
-	echo "</body>\n</html>";
+	submit($surveyheader, $_SESSION['step'], $_SESSION['totalsteps'], $sid, $setfont, $surveyprivate);
 	exit;
 	}
 
@@ -524,12 +450,6 @@ if (!$_SESSION['step'])
 	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
 	echo "\t<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
 	
-#	session_register("fieldarray");
-#	$_SESSION['step'] = $step; // session_register("step") causes really strange session behavior on PHP 4.3.0, Apache 2.0.43, WinXP
-#	session_register("totalsteps");
-#	session_register("insertarray");
-#	session_register("sid");
-	
 	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
 	$aresult = mysql_query($aquery);
 	$_SESSION['totalsteps'] = mysql_num_rows($aresult);
@@ -626,11 +546,20 @@ if (!$_SESSION['step'])
 #				session_register("F$fieldname");
 				$_SESSION['insertarray'][] = "F$fieldname";
 				}
+
+			//Check to see if there are any conditions set for this question
+			if (conditionscount($arow['qid']) > 0)
+				{
+				$conditions = "Y";
+				} else {
+				$conditions = "N";
+				}
 			//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
 			//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
 			//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
-			//                 [4]=questions.type, [5]=questions.gid, [6]=questions.mandatory
-			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}");
+			//                 [4]=questions.type, [5]=questions.gid, [6]=questions.mandatory, [7]=conditionsexist?
+			
+			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}", $conditions);
 			}
 		}
 	//echo count($_SESSION['fieldarray']);
@@ -641,15 +570,97 @@ if (!$_SESSION['step'])
 
 else
 	{
-	echo $surveyheader;
-	//echo "STEP: $_SESSION['step'], TOTALSTEPS: {$_SESSION['totalsteps']}, LASTFIELD: $lastfield";
-	echo "<!-- DEBUG: _POST['mandatory'] = {$_POST['mandatory']}\n _POST['fvalue'] = {$_POST['fvalue']} -->\n";
 	$s = $_SESSION['step'];
 	//$t indicates which question in the array we should be displaying
 	$t = $s-1;
 	$v = $t-1;
 	$u = $_SESSION['totalsteps'];
 	$chart = (($s-1)/$u*100);
+
+	// CHECK FOR CONDITIONS. This will keep cycling through questions until it finds a question where the conditions are not met
+	$conditionforthisquestion=$_SESSION['fieldarray'][$t][7];
+	while ($conditionforthisquestion == "Y")
+		{
+		//There are conditions for this question, so lets see whether they are met:
+		//First lets make sure we haven't started a new group
+		$gdquery = "SELECT group_name, groups.description FROM groups, questions WHERE groups.gid=questions.gid and qid={$_SESSION['fieldarray'][$t][0]}";
+		$gdresult = mysql_query($gdquery);
+		while ($gdrow = mysql_fetch_array($gdresult))
+			{
+			$currentgroupname = $gdrow['group_name'];
+			$groupdescription = $gdrow['description'];
+			}
+		if ($_SESSION['fieldarray'][$t][5] != $_SESSION['fieldarray'][$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev " && !$repeatmandatory)
+			{ 
+			//If a new group is starting, just go to the group description if there is one.
+			$conditionforthisquestion="N";
+			}
+		else
+			{
+			$cquery="SELECT distinct cqid FROM conditions WHERE qid={$_SESSION['fieldarray'][$t][0]}";
+			$cresult=mysql_query($cquery) or die("Couldn't count cqids<br />$cquery<br />".mysql_error());
+			$cqidcount=mysql_num_rows($cresult);
+			$cqidmatches=0;
+			while ($crows=mysql_fetch_array($cresult))
+				{
+				//cycle through each distinct cqid
+				$qquery="SELECT qid FROM conditions WHERE qid={$_SESSION['fieldarray'][$t][0]} AND cqid={$crows['cqid']}";
+				$qresult=mysql_query($qquery) or die("Couldn't count conditions for this cqid<br />$qquery<br />".mysql_error());
+				$cconcount[$crows['cqid']]=mysql_num_rows($qresult);
+				//See if either of the conditions in this cqid match
+				$cqquery = "SELECT cfieldname, value, cqid FROM conditions WHERE qid={$_SESSION['fieldarray'][$t][0]} AND cqid={$crows['cqid']}";
+				$cqresult = mysql_query($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".mysql_error());
+				$amatchhasbeenfound="N";
+				while ($cqrows=mysql_fetch_array($cqresult))
+					{
+					$currentcqid=$cqrows['cqid'];
+					$conditionfieldname="F".$cqrows['cfieldname'];
+					if (!$cqrows['value']) {$conditionvalue="NULL";} else {$conditionvalue=$cqrows['value'];}
+					if (!$_SESSION[$conditionfieldname]) {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
+					if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
+					}
+				if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
+				}
+			if ($cqidmatches == $cqidcount)
+				{
+				//a match has been found in BOTH distinct cqids. The question WILL be displayed
+				$conditionforthisquestion="N";
+				}
+			else
+				{
+				//matches have not been found in BOTH distinct cqids. The question WILL NOT be displayed
+				echo "<!-- DEBUG - CONDITIONS ARE NOT MET IN THIS ROUND -->\n";
+				if ($move == " next >> ")
+					{
+					$_SESSION['step']++;
+					$s = $_SESSION['step'];
+					$t++;
+					$v++;
+					$chart = (($s-1)/$u*100);
+					if ($t == $u) 
+						{
+						//The last question was conditional and has been skipped. Move into panic mode.
+						$conditionforthisquestion="N";
+						submit($surveyheader, $_SESSION['step'], $_SESSION['totalsteps'], $sid, $setfont, $surveyprivate);
+						exit;
+						}
+					}
+				elseif ($move == " << prev ")
+					{
+					$_SESSION['step']--;
+					$s = $_SESSION['step'];
+					$t--;
+					$v--;
+					$chart = (($s-1)/$u*100);
+					}
+				$conditionforthisquestion=$_SESSION['fieldarray'][$t][7];
+				}
+				}
+		}
+
+	echo $surveyheader;
+	//echo "STEP: $_SESSION['step'], TOTALSTEPS: {$_SESSION['totalsteps']}, LASTFIELD: $lastfield";
+	echo "<!-- DEBUG: _POST['mandatory'] = {$_POST['mandatory']}\n _POST['fvalue'] = {$_POST['fvalue']} -->\n";
 	
 	// GET AND SHOW GROUP NAME
 	$gdquery = "SELECT group_name, groups.description FROM groups, questions WHERE groups.gid=questions.gid and qid={$_SESSION['fieldarray'][$t][0]}";
@@ -702,6 +713,7 @@ else
 		
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
+		
 		
 		// PRESENT QUESTION
 		echo "\t<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
@@ -1367,5 +1379,74 @@ function surveymover()
 	$surveymover .= "\t\t</td>\n";
 	$surveymover .= "\t</tr>\n";
 	return $surveymover;	
+	}
+
+function submit($surveyheader, $step, $totalsteps, $sid, $setfont, $surveyprivate)
+	{
+	echo $surveyheader;
+	$s = $step-1;
+	$t = $s-1;
+	$u = $totalsteps;
+	$chart = 105;
+	echo "\t<tr>\n";
+	echo "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
+	echo "\t\t\tSurvey Complete<br />\n";
+	echo "\t\t\t<table width='175' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td width='35' align='right'><font size='1'>0%</td>\n";
+	echo "\t\t\t\t\t<td width='105'><img src='chart.jpg' height='15' width='$chart'></td>\n";
+	echo "\t\t\t\t\t<td width='35'><font size='1'>100%</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t</table>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "<form method='post'>\n";
+	echo "<input type='hidden' name='sid' value='$sid' />\n";
+	echo "<input type='hidden' name='thisstep' value='$step' />\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td>\n";
+	echo "\t\t\t<table border='0' width='100%'>\n";
+	echo "\t\t\t\t<tr>\n";
+	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
+	echo "\t\t\t\t\t<td align='center' width='500'>\n";
+	echo "$setfont<p><b>Congratulations. You have completed answering the questions in this survey.</b>\n";
+	echo "<p>Click on \"Submit\" now to complete the process and submit your answers to our records. ";
+	echo "If you want to check any of the answers you have made, and/or change them, you can do that now by ";
+	echo "clicking on the \" << prev \" button and browsing through your responses.<br />\n";
+	echo "&nbsp;<br />\n";
+	echo "<input type='submit' value=' submit ' name='move' /><br />&nbsp;\n";
+	if ($surveyprivate != "N")
+		{
+		echo "\t\t\t\t\t\t<table align='center' width='400' bgcolor='#EFEFEF' border='0'>\n";
+		echo "\t\t\t\t\t\t\t<tr>\n";
+		echo "\t\t\t\t\t\t\t\t<td align='center'>\n";
+		echo "$setfont<b>A note on privacy</b><br />\n";
+		echo "<font size='1'>The record kept of this survey does not contain any identifying information about you unless ";
+		echo "a specific question in the survey has asked for this. If you have responded to a survey that ";
+		echo "used an identifying token to allow you to access the survey, you can rest assured that the ";
+		echo "identifying token is not kept with your responses. It is managed in a seperate database, and will ";
+		echo "only be updated to indicate that you have (or haven't) completed this survey. There is no way of ";
+		echo "matching identification tokens with survey responses in this system.\n";
+		echo "\t\t\t\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t\t\t\t</tr>\n";
+		echo "\t\t\t\t\t\t</table>\n";
+		}
+	else
+		{
+		// Just in case we want to add a comment for non-private surveys
+		}
+	echo "<font size='1'>&nbsp;<br />\nIf you do not wish to submit responses to this survey, ";
+	echo "and you would like to delete all records on your computer that may have saved your responses, ";
+	echo "click <a href='index.php?move=clearall&sid=$sid'>here</a><br />&nbsp;\n";
+	//echo "<input type='submit' name='move' value='here' style='height:15; font-size:9; font-family:verdana' onclick=\"window.open('index.php?clearall', '_top')\" />\n";
+	echo "\t\t\t\t\t</td>\n";
+	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
+	echo "\t\t\t\t</tr>\n";
+	echo "\t\t\t</table>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo surveymover();
+	echo "</table>\n";
+	echo "</body>\n</html>";	
 	}
 ?>
