@@ -603,6 +603,7 @@ function checkconditionalmandatorys($backok=null)
 			$dccm="display$cmfns[$mi]";
 			if (isset($_SESSION[$ccm]) && ($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && isset($_POST[$dccm]) && $_POST[$dccm] == "on") //There is an answer
 				{
+				//The question has an answer, and the answer was displaying
 				}
 			elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
 				{
@@ -800,7 +801,17 @@ function sendsubmitnotification($sendnotification)
 	$message.= "PHP Surveyor";
 	$message = crlf_lineendings($message);
 	$headers = "From: {$thissurvey['adminemail']}\r\n";
-	mail($thissurvey['adminemail'], $subject, $message, $headers);	
+	if ($recips=explode(";", $thissurvey['adminemail'])) 
+		{
+	    foreach ($recips as $rc) 
+			{
+			mail (trim($rc), $subject, $message, $headers);
+			}
+		}
+	else
+		{
+		mail($thissurvey['adminemail'], $subject, $message, $headers);	
+		}
 	}
 
 function submitfailed()
