@@ -271,7 +271,7 @@ echo "//-->\n";
 echo "</script>\n";	
 
 //SHOW FORM TO CREATE IT!
-echo "<table width='98%' align='center' cellspacing='1' cellpadding='0'>\n";
+echo "<table width='98%' align='center' cellspacing='0' cellpadding='0'>\n";
 echo "\t<tr bgcolor='#CDCDCD'>\n";
 echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t$setfont<b>Only show question $questiontitle<img src='speaker.jpg' alt='$questiontext' onClick=\"alert('$questiontext')\"> if:</b></font>\n";
@@ -279,16 +279,30 @@ echo "\t\t</td>\n";
 echo "\t</tr>\n";
 
 //3: Get other conditions currently set for this question
-$query = "SELECT conditions.cid, conditions.cqid, conditions.cfieldname, conditions.value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid=$qid";
+$query = "SELECT conditions.cid, conditions.cqid, conditions.cfieldname, conditions.value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid=$qid ORDER BY conditions.cfieldname";
 $result = mysql_query($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".mysql_error());
 $conditionscount=mysql_num_rows($result);
 if ($conditionscount > 0)
 	{
 	while ($rows=mysql_fetch_array($result))
 		{
-		echo "\t<tr bgcolor='FFFFFF'>\n";
+		if ($currentfield && $currentfield != $rows['cfieldname'])
+			{
+			echo "\t\t\t\t<tr bgcolor='#FFFFFF'>\n";
+			echo "\t\t\t\t\t<td colspan='3' align='center'>\n";
+			echo "$setfont<font size='1'>AND</font></font>";
+			}
+		elseif ($currentfield)
+			{
+			echo "\t\t\t\t<tr bgcolor='#EFEFEF'>\n";
+			echo "\t\t\t\t\t<td colspan='3' align='center'>\n";
+			echo "$setfont<font size='1'>OR</font></font>";
+			}
+		echo "\t\t\t\t\t</td>\n";
+		echo "\t\t\t\t</tr>\n";
+		echo "\t<tr bgcolor='#EFEFEF'>\n";
 		echo "\t<form name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n";
-		echo "\t\t<td align='right'><font size='1' face='verdana'>\n";
+		echo "\t\t<td align='right' valign='middle'><font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
 			{
@@ -298,11 +312,11 @@ if ($conditionscount > 0)
 				}
 			}
 		echo "\t\t</font></td>\n";
-		echo "<td align='center'><font size='1'>equals</font></td>";
+		echo "\t\t<td align='center' valign='middle'><font size='1'>equals</font></td>";
 		echo "\t\t<td>\n";
 		echo "\t\t\t<table border='0' cellpadding='0' cellspacing='0' width='99%'>\n";
 		echo "\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t<td align='left'>\n";
+		echo "\t\t\t\t\t<td align='left' valign='middle'>\n";
 		echo "\t\t\t\t\t\t<font size='1' face='verdana'>\n";
 		foreach ($canswers as $can)
 			{
@@ -314,7 +328,7 @@ if ($conditionscount > 0)
 				}
 			}
 		echo "\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t\t<td align='right'>\n";
+		echo "\t\t\t\t\t<td align='right' valign='middle'>\n";
 		echo "\t\t\t\t\t\t<input type='submit' value='Del' style='font-face: verdana; font-size: 8; height:13' align='right'>\n";
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t</tr>\n";
@@ -326,6 +340,7 @@ if ($conditionscount > 0)
 		echo "\t<input type='hidden' name='qid' value='$qid'>\n";
 		echo "\t</form>\n";
 		echo "\t</tr>\n";
+		$currentfield=$rows['cfieldname'];
 		}
 	echo "\t<tr>\n";
 	echo "\t\t<td colspan='3' height='3'>\n";
