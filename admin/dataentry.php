@@ -90,8 +90,9 @@ if ($action == "edit" || $action == "")
 	{
 	$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
 	$result = mysql_query($query);
+	if (!isset($tpldir)) {$tpldir=$publicdir."/templates";}
 	while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
-	if (!$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
+	if (!isset($templatedir) || !$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
 	if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 	$langdir="$publicdir/lang";
 	$langfilename="$langdir/$surveylanguage.lang.php";
@@ -277,12 +278,11 @@ if ($action == "insert")
 
 elseif ($action == "edit")
 	{
-
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._BROWSERESPONSES."</b></td></tr>\n"
-		.$surveyheader
-		.$surveyoptions
+		._BROWSERESPONSES."</b></td></tr>\n";
+	if (isset($surveyheader)) {echo $surveyheader;}
+	echo $surveyoptions
 		."</table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n";
 
@@ -356,7 +356,9 @@ elseif ($action == "edit")
 			}
 		else
 			{
+			if (!isset($fnrrow)) {$fnrrow=array("code"=>"", "answer"=>"");}
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
+			//$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "", "", "", "");
 			}
 		//$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}");
 		//echo "$field | $ftitle | $fquestion<br />\n";
@@ -366,7 +368,11 @@ elseif ($action == "edit")
 
 	foreach ($fnames as $fnm)
 		{
-		echo "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6], $fnm[7], $fnm[8] -->\n";
+		echo "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6]";
+		if (isset($fnm[7])){echo $fnm[7];}
+		echo ",";
+		if (isset($fnm[8])) {echo $fnm[8];}
+		echo " -->\n";
 		}
 	
 	//SHOW INDIVIDUAL RECORD
@@ -624,7 +630,7 @@ elseif ($action == "edit")
 				case "M": //MULTIPLE OPTIONS checkbox
 					while ($fnames[$i][3] == "M")
 						{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						//echo substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
 						if (substr($fnames[$i][0], -5) == "other")
 							{
@@ -710,7 +716,7 @@ elseif ($action == "edit")
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 						{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
 							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
 							."\t\t<td>$setfont\n";
@@ -732,7 +738,7 @@ elseif ($action == "edit")
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 						{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
 							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
 							."\t\t<td>$setfont\n";
@@ -754,7 +760,7 @@ elseif ($action == "edit")
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 						{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
 							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
 							."\t\t<td>$setfont\n"
@@ -779,7 +785,7 @@ elseif ($action == "edit")
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 						{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
 							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
 							."\t\t<td>$setfont\n"
@@ -804,7 +810,7 @@ elseif ($action == "edit")
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 						{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i]));
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
 							."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</td>\n";
 						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$fnames[$i][8]}'";
