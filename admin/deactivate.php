@@ -35,44 +35,64 @@
 */
 $date = date(YmdHi); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
-if (!$ok)
+if (!$_GET['ok'])
 	{
-	
-	echo "<TABLE WIDTH='350' ALIGN='CENTER'><TR><TD ALIGN='CENTER' BGCOLOR='PINK'><FONT COLOR='RED'>$setfont<B>";
-	echo ":WARNING:<BR>READ THIS CAREFULLY BEFORE PROCEEDING</TD></TR>\n";
-	echo "<TR><TD>$setfont";
-	echo "In an active survey, a table is created to store all the data-entry records.";
-	echo "<P>When you de-activate a survey all the data entered in the original table will ";
-	echo "be moved elsewhere, and when you activate the survey again, the table will be empty.<P>";
-	echo "If you click on OK below, your survey will be de-activated, and all the data in the ";
-	echo "existing table will be moved to a new table name called <B><I>old_{$sid}_{$date}</I></B> ";
-	echo "and the existing table <B><I>survey_{$sid}</I></B> will no longer exist.<P>";
-	echo "De-activated survey data can only be accessed by system administrators using a MySQL ";
-	echo "data access tool like phpmyadmin.<P>";
-	echo "The point we are trying to make here is... DON'T DO THIS IF YOU ARE UNSURE.";
-	echo "</TD></TR>";
-	echo "<TR><TD ALIGN='CENTER'>";
-	echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='I`m Unsure' onclick=\"window.open('$scriptname?sid=$sid', '_top')\"><BR>\n";
-	echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='De-activate' onClick=\"window.open('$scriptname?action=deactivate&ok=Y&sid=$sid', '_top')\">";
-	echo "</TD></TR></TABLE>\n";
+	echo "<table width='350' align='center'>";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center' bgcolor='pink'>\n";
+	echo "\t\t\t<font color='red'>$setfont<b>";
+	echo ":WARNING:<br />READ THIS CAREFULLY BEFORE PROCEEDING";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<tr>";
+	echo "\t\t<td>\n";
+	echo "\t\t\t{$setfont}In an active survey, a table is created to store all the data-entry records.\n";
+	echo "\t\t\t<p>When you de-activate a survey all the data entered in the original table will \n";
+	echo "\t\t\tbe moved elsewhere, and when you activate the survey again, the table will be empty.</p>\n";
+	echo "\t\t\t<p>If you click on OK below, your survey will be de-activated, and all the data in the \n";
+	echo "\t\t\texisting table will be moved to a new table name called <b><i>old_{$_GET['sid']}_{$date}</i></b> \n";
+	echo "\t\t\tand the existing table <b><i>survey_{$_GET['sid']}</i></b> will no longer exist.</p>\n";
+	echo "\t\t\t<p>De-activated survey data can only be accessed by system administrators using a MySQL \n";
+	echo "\t\t\tdata access tool like phpmyadmin.</p>\n";
+	echo "\t\t\tThe point we are trying to make here is... DON'T DO THIS IF YOU ARE UNSURE.\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'>\n";
+	echo "\t\t\t<input type='submit' $btstyle value='I`m Unsure' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='De-activate' onClick=\"window.open('$scriptname?action=deactivate&ok=Y&sid={$_GET['sid']}', '_top')\">\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
 	}
 
 else
 	{
-	$oldtable="survey_{$sid}";
-	$newtable="old_{$sid}_{$date}";
+	$oldtable="survey_{$_GET['sid']}";
+	$newtable="old_{$_GET['sid']}_{$date}";
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
-	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid=$sid'>Admin</a>");
-	echo "<TABLE WIDTH='350' ALIGN='CENTER'><TR><TD ALIGN='CENTER'>$setfont<B>";
-	echo "Survey Has Been De-Activated</TD></TR>\n";
-	echo "<TR><TD>The survey named $oldtable has been renamed to ";
-	echo "$newtable and is now no longer accessible using the Surveyor scripts.<P>";
-	echo "You should write down the name of this table and keep it somewhere safe ";
-	echo "in case you ever need to access this information again. Or, in case you ";
-	echo "want your system administrator to completely delete the old table.";
-	echo "</TD></TR>\n";
-	echo "<TR><TD ALIGN='CENTER'><INPUT TYPE='SUBMIT' VALUE='Admin Page' onClick=\"window.open('$scriptname?sid=$sid', '_top')\">\n";
-	echo "</TD></TR></TABLE>\n";
+	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+	echo "<table width='350' align='center'>";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'>\n";
+	echo "\t\t\t$setfont<b>Survey Has Been De-Activated\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td>\n";
+	echo "\t\t\tThe survey named $oldtable has been renamed to \n";
+	echo "\t\t\t$newtable and is now no longer accessible using the PHPSurveyor scripts.\n";
+	echo "\t\t\t<p>You should write down the name of this table and keep it somewhere safe \n";
+	echo "\t\t\tin case you ever need to access this information again. Or, in case you \n";
+	echo "\t\t\twant your system administrator to completely delete the old table.</p>\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td align='center'>\n";
+	echo "\t\t\t<input type='submit' $btstyle value='Admin Page' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+	echo "\t\t</td>\n";
+	echo "\t</tr>\n";
+	echo "</table>\n";
 	}
 
 ?>
