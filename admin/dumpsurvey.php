@@ -116,6 +116,14 @@ $adump = BuildOutput($aquery);
 $cquery = "SELECT conditions.* FROM conditions, questions WHERE conditions.qid=questions.qid AND questions.sid=$sid";
 $cdump = BuildOutput($cquery);
 
+//6: Label Sets
+$lsquery = "SELECT DISTINCT labelsets.lid, label_name FROM labelsets, questions WHERE labelsets.lid=questions.lid AND sid=$sid";
+$lsdump = BuildOutput($lsquery);
+
+//7: Labels
+$lquery = "SELECT DISTINCT labels.lid, labels.code, labels.title, labels.sortorder FROM labels, questions WHERE labels.lid=questions.lid AND sid=$sid";
+$ldump = BuildOutput($lquery);
+
 $fn = "survey_$sid.sql";
 
 //header("Content-Type: application/msword"); //EXPORT INTO MSWORD
@@ -126,7 +134,7 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 echo "#<pre>\n";
-echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump;
+echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump;
 echo "#</pre>\n";
 
 ?>
