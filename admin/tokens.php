@@ -69,10 +69,10 @@ echo "<script type='text/javascript'>\n"
 	."-->\n"
 	."</script>\n";
 
-echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
+echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 	."\t<tr>\n"
 	."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n"
-	."\t\t<table height='1' ><tr><td></td></tr></table>\n";
+	."\t\t<table height='1'><tr><td></td></tr></table>\n";
 
 echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
@@ -80,7 +80,7 @@ echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpa
 if (!isset($sid) || !$sid)
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TOKENCONTROL.":</b></td></tr>\n"
+		._TOKENCONTROL.":</b></font></td></tr>\n"
 		."\t<tr><td align='center'>$setfont<br /><font color='red'><b>"
 		._ERROR."</b></font><br />"._TC_NOSID."<br /><br />"
 		."<input $btstyle type='submit' value='"
@@ -97,7 +97,7 @@ $chcount=mysql_num_rows($chresult);
 if (!$chcount)
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TOKENCONTROL.":</b></td></tr>\n"
+		._TOKENCONTROL.":</b></font></td></tr>\n"
 		."\t<tr><td align='center'>$setfont<br /><font color='red'><b>"
 		._ERROR."</b></font><br />"._DE_NOEXIST
 		."<br /><br />\n\t<input $btstyle type='submit' value='"
@@ -111,7 +111,7 @@ while ($chrow = mysql_fetch_array($chresult))
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
 		._TOKENCONTROL.":</b> "
-		."<font color='silver'>{$chrow['short_title']}</td></tr>\n";
+		."<font color='silver'>{$chrow['short_title']}</font></font></td></tr>\n";
 	$surveyprivate = $chrow['private'];
 	}
 
@@ -123,7 +123,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 		{
 		echo "\t<tr>\n"
 			."\t\t<td align='center'>\n"
-			."\t\t\t$setfont<br /><font color='red'><b>"._WARNING."</font></b><br />\n"
+			."\t\t\t$setfont<br /><font color='red'><b>"._WARNING."</b></font><br />\n"
 			."\t\t\t<b>"._TC_NOTINITIALISED."</b><br /><br />\n"
 			."\t\t\t"._TC_INITINFO
 			."\t\t\t<br /><br />\n"
@@ -132,12 +132,12 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			._TC_INITTOKENS."' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n"
 			."\t\t\t<input type='submit' $btstyle value='"
 			._GO_ADMIN."' onClick=\"window.open('admin.php?sid=$sid', '_top')\"><br /><br />\n"
-			."\t\t</td>\n"
+			."\t\t</font></td>\n"
 			."\t</tr>\n"
 			."</table>\n"
 			."<table height='1'><tr><td></td></tr></table>\n"
-			.htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions")
-			."</body>\n</html>";
+			."</td></tr></table>\n"
+			.htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions");
 		exit;
 		}
 	else //Create Tokens Table
@@ -161,12 +161,12 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."\t\t\t"._TC_CREATED." (\"tokens_$sid\")<br /><br />\n"
 			."\t\t\t<input type='submit' $btstyle value='"
 			._CONTINUE."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n"
-			."\t\t</td>\n"
+			."\t\t</font></td>\n"
 			."\t</tr>\n"
 			."</table>\n"
 			."<table height='1'><tr><td></td></tr></table>\n"
-			.htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions")
-			."</body>\n</html>";
+			."</td></tr></table>\n"
+			.htmlfooter("instructions.html", "Information about PHPSurveyor Tokens Functions");
 		exit;
 		}
 	}
@@ -174,34 +174,34 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
 echo "\t<tr bgcolor='#999999'>\n"
 	."\t\t<td>\n"
-	."\t\t\t<input type='image' src='./images/showhelp.gif' title='"
+	."\t\t\t<input type='image' name='HelpButton' src='./images/showhelp.gif' title='"
 	._A_HELP_BT."' align='right' hspace='0' border='0' onClick=\"showhelp('show')\">\n"
-	."\t\t\t<input type='image' src='./images/home.gif' title='"
+	."\t\t\t<input type='image' name='HomeButton' src='./images/home.gif' title='"
 	._B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$sid', '_top')\">\n"
-	."\t\t\t<img src='./images/blank.gif' width='11' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<input type='image' src='./images/summary.gif' title='"
+	."\t\t\t<img src='./images/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<input type='image' name='SummaryButton' src='./images/summary.gif' title='"
 	._B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n"
-	."\t\t\t<input type='image' src='./images/document.gif' title='"
+	."\t\t\t<input type='image' name='ViewAllButton' src='./images/document.gif' title='"
 	._T_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=browse', '_top')\">\n"
-	."\t\t\t<img src='./images/blank.gif' width='20' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<input type='image' src='./images/add.gif' title='"
+	."\t\t\t<img src='./images/blank.gif' alt='-' width='20' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<input type='image' name='AddNewButton' src='./images/add.gif' title='"
 	._T_ADD_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=addnew', '_top')\">\n"
-	."\t\t\t<input type='image' src='./images/export.gif' title='"
+	."\t\t\t<input type='image' name='ExportButton' src='./images/export.gif' title='"
 	._T_EXPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=export', '_top')\">\n"
-	."\t\t\t<input type='image' src='./images/import.gif' title='"
+	."\t\t\t<input type='image' name='ImportButton' src='./images/import.gif' title='"
 	._T_IMPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=import', '_top')\">\n"
-	."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<input type='image' src='./images/invite.gif' title='"
+	."\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<input type='image' name='InviteButton' src='./images/invite.gif' title='"
 	._T_INVITE_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=email', '_top')\">\n"
-	."\t\t\t<input type='image' src='./images/remind.gif' title='"
+	."\t\t\t<input type='image' name='RemindButton' src='./images/remind.gif' title='"
 	._T_REMIND_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=remind', '_top')\">\n"
-	."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<input type='image' src='./images/tokenify.gif' title='"
+	."\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<input type='image' name='TokenifyButton' src='./images/tokenify.gif' title='"
 	._T_TOKENIFY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify', '_top')\">\n"
-	."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<input type='image' src='./images/delete.gif' title='"
+	."\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<input type='image' name='DeleteTokensButton' src='./images/delete.gif' title='"
 	._T_KILL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('tokens.php?sid=$sid&action=kill', '_top')\">\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
@@ -216,20 +216,20 @@ echo "\t<tr>\n"
 	."\t\t\t<table align='center' bgcolor='#DDDDDD' cellpadding='2' style='border: 1px solid #555555'>\n"
 	."\t\t\t\t<tr>\n"
 	."\t\t\t\t\t<td align='center'>\n"
-	."\t\t\t\t\t<b>$setfont "._TC_TOTALCOUNT." $tkcount</b><br />\n";
+	."\t\t\t\t\t$setfont<b>"._TC_TOTALCOUNT." $tkcount</b><br />\n";
 $tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE token IS NULL OR token=''";
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
-	{echo "\t\t\t\t\t\t$setfont"._TC_NOTOKENCOUNT." $tkr[0] / $tkcount<br />\n";}
+	{echo "\t\t\t\t\t\t"._TC_NOTOKENCOUNT." $tkr[0] / $tkcount<br />\n";}
 $tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE sent='Y'";
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
-	{echo "\t\t\t\t\t\t$setfont"._TC_INVITECOUNT." $tkr[0] / $tkcount<br />\n";}
+	{echo "\t\t\t\t\t\t"._TC_INVITECOUNT." $tkr[0] / $tkcount<br />\n";}
 $tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE completed='Y'";
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
-	{echo "\t\t\t\t\t\t$setfont"._TC_COMPLETEDCOUNT." $tkr[0] / $tkcount\n";}
-echo "\t\t\t\t\t</td>\n"
+	{echo "\t\t\t\t\t\t"._TC_COMPLETEDCOUNT." $tkr[0] / $tkcount\n";}
+echo "\t\t\t\t\t</font></td>\n"
 	."\t\t\t\t</tr>\n"
 	."\t\t\t</table>\n"
 	."\t\t\t<br />\n"
@@ -270,10 +270,10 @@ if ($action == "cleartokens")
 if (!$action)
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TOKENDBADMIN.":</b></td></tr>\n"
+		._TOKENDBADMIN.":</b></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center'>\n"
-		."\t\t\t<span style='display: block; text-align: left; width: 300'>"
+		."\t\t\t<table align='center'><tr><td>\n"
 		."\t\t\t$setfont<br />\n"
 		."\t\t\t<ul><li><a href='tokens.php?sid=$sid&action=clearinvites' onClick='return confirm(\""
 		._TC_CLEARINV_RUSURE."\")'>"._TC_CLEARINVITES."</a></li>\n"
@@ -283,7 +283,7 @@ if (!$action)
 		._TC_DELETEALL_RUSURE."\")'>"._TC_DELETEALL."</a></li>\n"
 		."\t\t\t<li><a href='tokens.php?sid=$sid&action=kill'>"._T_KILL_BT."</a></li></ul>\n"
 		."\t\t\t</font>\n"
-		."\t\t\t</span>\n"
+		."\t\t\t</td></tr></table>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n";
@@ -305,21 +305,22 @@ if ($action == "browse" || $action == "search")
 	
 	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._VIEWCONTROL.":</b></td></tr>\n"
+		._VIEWCONTROL.":</b></font></td></tr>\n"
 		."\t<tr bgcolor='#999999'><td align='left'>\n"
-		."\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n"
-		."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
-		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"
+		."\t\t\t<img src='./images/blank.gif' alt='-' width='31' height='20' border='0' hspace='0' align='left'>\n"
+		."\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+		."\t\t\t<input type='image' name='DBeginButton' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"
 		._D_BEGIN."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=0&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
-		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databack.gif' title='"
+		."\t\t\t<input type='image' name='DBackButton' align='left' hspace='0' border='0' src='./images/databack.gif' title='"
 		._D_BACK."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$last&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
-		."\t\t\t<img src='./images/blank.gif' width='13' height='20' border='0' hspace='0' align='left'>\n"
-		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"
+		."\t\t\t<img src='./images/blank.gif' alt='-' width='13' height='20' border='0' hspace='0' align='left'>\n"
+		."\t\t\t<input type='image' name='DForwardButton' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"
 		._D_FORWARD."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$next&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
-		."\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"
+		."\t\t\t<input type='image' name='DEndButton' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"
 		._D_END."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$end&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n"
-		."\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n"
-		."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'><tr><form method='post' action='tokens.php'>\n"
+		."\t\t\t<img src='./images/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+		."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>"
+		."\t\t\t<tr><form method='post' action='tokens.php'>\n"
 		."\t\t\t\t<td>\n"
 		."\t\t\t\t\t<input $slstyle type='text' name='searchstring' value='$searchstring'>\n"
 		."\t\t\t\t\t<input $btstyle type='submit' value='"._SEARCH."'>\n"
@@ -330,11 +331,10 @@ if ($action == "browse" || $action == "search")
 		."\t\t\t</tr></form></table>\n"
 		."\t\t</td>\n"
 		."\t\t<form action='tokens.php'>\n"
-		."\t\t<td align='right'><font size='1' face='verdana'>\n"
-		."\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='right'>\n"
-		."\t\t\t"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$limit' name='limit'>\n"
-		."\t\t\t"._BR_STARTING."<input type='text' $slstyle size='4' value='$start' name='start'>\n"
-		."\t\t\t<input type='submit' value='"._BR_SHOW."' $btstyle>\n"
+		."\t\t<td align='right'><font size='1' face='verdana'>"
+		."&nbsp;"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$limit' name='limit'>"
+		."&nbsp;"._BR_STARTING."<input type='text' $slstyle size='4' value='$start' name='start'>"
+		."&nbsp;<input type='submit' value='"._BR_SHOW."' $btstyle>\n"
 		."\t\t</font></td>\n"
 		."\t\t<input type='hidden' name='sid' value='$sid'>\n"
 		."\t\t<input type='hidden' name='action' value='browse'>\n"
@@ -407,10 +407,11 @@ if ($action == "browse" || $action == "search")
 			."<img src='./images/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_ATTR2."' border='0' align='left'></a>$setfont"._TL_ATTR2."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
+			."<a href='tokens.php?sid=$sid&action=browse&order=mpid&start=$start&limit=$limit&searchstring=$searchstring'>"
 			."<img src='./images/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_MPID."' border='0' align='left'></a>$setfont"._TL_MPID."</font></th>\n";
 		}
-	echo "\t\t<th align='left' valign='top' colspan='2'>$setfont"._TL_ACTION."</th>\n"
+	echo "\t\t<th align='left' valign='top' colspan='2'>$setfont"._TL_ACTION."</font></th>\n"
 		."\t</tr>\n";
 	
 	while ($brow = mysql_fetch_array($bresult))
@@ -420,7 +421,7 @@ if ($action == "browse" || $action == "search")
 		echo "\t<tr bgcolor='$bgc'>\n";
 		for ($i=0; $i<=$bfieldcount; $i++)
 			{
-			echo "\t\t<td>$setfont$brow[$i]</td>\n";
+			echo "\t\t<td>$setfont$brow[$i]</font></td>\n";
 			}
 		echo "\t\t<td align='left'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='"
@@ -469,21 +470,20 @@ if ($action == "browse" || $action == "search")
 if ($action == "kill")
 	{
 	$date = date('YmdHi');
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DROPTOKENS.":</b></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4' align='center'>"
+		."<font size='1' face='verdana' color='white'><b>"
+		._DROPTOKENS.":</b></font></td></tr>\n"
 		."\t<tr><td colspan='2' align='center'>\n"
 		."$setfont<br />\n";
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 		{
-		echo "<span style='display: block; text-align: center; width: 70%'>\n"
-			."<font color='red'><b>"._WARNING."</b></font></br>\n"
+		echo "<font color='red'><b>"._WARNING."</b></font><br />\n"
 			._TC_DELTOKENSINFO."<br />\n"
 			."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
 			."<input type='submit' $btstyle value='"
 			._TC_DELETETOKENS."' onClick=\"window.open('tokens.php?sid=$sid&action=kill&ok=surething', '_top')\" /><br />\n"
 			."<input type='submit' $btstyle value='"
-			._AD_CANCEL."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n"
-			."</span>\n";
+			._AD_CANCEL."' onClick=\"window.open('tokens.php?sid=$sid', '_top')\" />\n";
 		}
 	elseif (isset($_GET['ok']) && $_GET['ok'] == "surething")
 		{
@@ -499,7 +499,7 @@ if ($action == "kill")
 			._GO_ADMIN."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
 			."</span>\n";
 		}
-	echo "</td></tr></table>\n"
+	echo "</font></td></tr></table>\n"
 		."<table height='1'><tr><td></td></tr></table>\n";
 
 	}	
@@ -507,9 +507,10 @@ if ($action == "kill")
 
 if (returnglobal('action') == "email")
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._EMAILINVITE.":</b></td></tr>\n"
-		."\t<tr><td colspan='2' align='center'>\n";
+	echo "\t<tr bgcolor='#555555'>\n\t\t<td colspan='2' height='4'>"
+		."<font size='1' face='verdana' color='white'><b>"
+		._EMAILINVITE.":</b></font></td>\n\t</tr>\n"
+		."\t<tr>\n\t\t<td colspan='2' align='center'>\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
@@ -527,19 +528,23 @@ if (returnglobal('action') == "email")
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."<form method='post'>\n";
 		//echo "\t<tr><td colspan='2' bgcolor='#555555' align='center'>$setfont<font color='white'><b>Send Invitation";
-		if (isset($_GET['tid']) && $_GET['tid']) {echo " to TokenID No {$_GET['tid']}";}
-		echo "</b></td></tr>\n"
-			."\t<tr>\n"
-			."\t\t<td align='right'>$setfont<b>"._FROM.":</b></td>\n"
-			."\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadmin <$surveyadminemail>' /></td>\n"
+		if (isset($_GET['tid']) && $_GET['tid']) 
+			{
+			echo "<tr><td bgcolor='silver' colspan='2'>$setfont<font size='1'>"
+				."to TokenID No {$_GET['tid']}"
+				."</font></font></td></tr>";
+			}
+		echo "\t<tr>\n"
+			."\t\t<td align='right'>$setfont<b>"._FROM.":</b></font></td>\n"
+			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"$surveyadmin <$surveyadminemail>\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td align='right'>$setfont<b>"._SUBJECT.":</b></td>\n";
+			."\t\t<td align='right'>$setfont<b>"._SUBJECT.":</b></font></td>\n";
 		$subject=str_replace("{SURVEYNAME}", $surveyname, _TC_INVITESUBJECT);
-		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='$subject' /></td>\n"
+		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value=\"$subject\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td align='right' valign='top'>$setfont<b>"._MESSAGE.":</b></td>\n"
+			."\t\t<td align='right' valign='top'>$setfont<b>"._MESSAGE.":</b></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
 		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
@@ -582,7 +587,7 @@ if (returnglobal('action') == "email")
 			."\t<input type='hidden' name='ok' value='absolutely' />\n"
 			."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
 			."\t<input type='hidden' name='action' value='email' />\n";
-		if (isset($_GET['tid']) && $_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'";}
+		if (isset($_GET['tid']) && $_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}' />";}
 		echo "</form>\n"
 			."</table>\n";
 		}
@@ -683,7 +688,7 @@ if (returnglobal('action') == "email")
 if (returnglobal('action') == "remind")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._EMAILREMIND.":</b></td></tr>\n"
+		._EMAILREMIND.":</b></font></td></tr>\n"
 		."\t<tr><td colspan='2' align='center'>\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
@@ -702,30 +707,33 @@ if (returnglobal('action') == "remind")
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."\t<form method='post' action='tokens.php'>\n"
 			."\t<tr>\n"
-			."\t\t<td align='right' width='150'>$setfont<b>"._FROM.":</td>\n"
-			."\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadmin <$surveyadminemail>' /></td>\n"
+			."\t\t<td align='right' width='150'>$setfont<b>"._FROM.":</b></font></td>\n"
+			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"$surveyadmin <$surveyadminemail>\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td align='right' width='150'>$setfont<b>"._SUBJECT.":</td>\n";
+			."\t\t<td align='right' width='150'>$setfont<b>"._SUBJECT.":</b></font></td>\n";
 		$subject=str_replace("{SURVEYNAME}", $surveyname, _TC_REMINDSUBJECT);
 		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='$subject' /></td>\n"
 			."\t</tr>\n";
 		if (!isset($_GET['tid']) || !$_GET['tid'])
 			{
 			echo "\t<tr>\n"
-				."\t\t<td align='right' width='150' valign='top'>$setfont<b>"._TC_REMINDSTARTAT."</b></td>\n"
+				."\t\t<td align='right' width='150' valign='top'>$setfont<b>"
+				._TC_REMINDSTARTAT."</b></font></td>\n"
 				."\t\t<td><input type='text' $slstyle size='5' name='last_tid' /></td>\n"
 				."\t</tr>\n";
 			}
 		else
 			{
 			echo "\t<tr>\n"
-				."\t\t<td align='right' width='150' valign='top'>$setfont<b>"._TC_REMINDTID."</b></td>\n"
-				."\t\t<td>$setfont{$_GET['tid']}</td>\n"
+				."\t\t<td align='right' width='150' valign='top'>$setfont<b>"
+				._TC_REMINDTID."</b></font></td>\n"
+				."\t\t<td>$setfont{$_GET['tid']}</font></td>\n"
 				."\t</tr>\n";
 			}
 		echo "\t<tr>\n"
-			."\t\t<td align='right' width='150' valign='top'>$setfont<b>"._MESSAGE.":</b></td>\n"
+			."\t\t<td align='right' width='150' valign='top'>$setfont<b>"
+			._MESSAGE.":</b></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
 		//CHECK THAT INVITATION FILE EXISTS IN SURVEY TEMPLATE FOLDER - IF NOT, GO TO DEFAULT TEMPLATES. IF IT STILL DOESN'T EXIST - CRASH
@@ -864,11 +872,11 @@ if (returnglobal('action') == "remind")
 
 if ($action == "tokenify")
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TOKENIFY.":</b></td></tr>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TOKENIFY.":</b></font></td></tr>\n";
 	echo "\t<tr><td align='center'>$setfont<br />\n";
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 		{
-		echo "<br />$setfont"._TC_CREATETOKENSINFO."<br /><br />\n"
+		echo "<br />"._TC_CREATETOKENSINFO."<br /><br />\n"
 			."<input type='submit' $btstyle value='"
 			._AD_YES."' onClick=\"window.open('tokens.php?sid=$sid&action=tokenify&ok=Y', '_top')\" />\n"
 			."<input type='submit' $btstyle value='"
@@ -909,7 +917,7 @@ if ($action == "tokenify")
 		$message=str_replace("{TOKENCOUNT}", $newtokencount, _TC_TOKENSCREATED);
 		echo "<br /><b>$message</b><br /><br />\n";
 		}
-	echo "\t</td></tr></table>\n";
+	echo "\t</font></td></tr></table>\n";
 	}
 
 if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
@@ -953,7 +961,6 @@ if ($action == "delete")
 		."\t</td></tr></table>\n";
 	}
 
-
 if ($action == "edit" || $action == "addnew")
 	{
 	if ($action == "edit")
@@ -974,33 +981,34 @@ if ($action == "edit" || $action == "addnew")
 		$edfieldcount = mysql_num_fields($edresult);
 		}
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TC_ADDEDIT."</b></td></tr>\n"
+		._TC_ADDEDIT."</b></font></td></tr>\n"
 		."\t<tr><td align='center'>\n"
 		."<table width='100%' bgcolor='#CCCCCC' align='center'>\n"
 		."<form method='post' action='tokens.php'>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>ID:</b></td><td bgcolor='#EEEEEE'>$setfont Auto</td>\n"
+		."\t<td align='right' width='20%'>$setfont<b>ID:</b></font></td>\n"
+		."\t<td bgcolor='#EEEEEE'>{$setfont}Auto</font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_FIRST.":</b></td>\n"
+		."\t<td align='right' width='20%'>$setfont<b>"._TL_FIRST.":</b></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='firstname' value=\"";
 	if (isset($firstname)) {echo $firstname;}
-	echo "\"></td>\n"
+	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_LAST.":</b></td>\n"
+		."\t<td align='right' width='20%'>$setfont<b>"._TL_LAST.":</b></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='lastname' value=\"";
 	if (isset($lastname)) {echo $lastname;}
-	echo "\"></td>\n"
+	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_EMAIL.":</b></td>\n"
+		."\t<td align='right' width='20%'>$setfont<b>"._TL_EMAIL.":</b></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='50' name='email' value=\"";
 	if (isset($email)) {echo $email;}
-	echo "\"></td>\n"
+	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_TOKEN.":</b></td>\n"
+		."\t<td align='right' width='20%'>$setfont<b>"._TL_TOKEN.":</b></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value=\"";
 	if (isset($token)) {echo $token;}
 	echo "\">\n";
@@ -1008,34 +1016,34 @@ if ($action == "edit" || $action == "addnew")
 		{
 		echo "\t\t$setfont<font size='1' color='red'>"._TC_TOKENCREATEINFO."</font></font>\n";
 		}
-	echo "\t</td>\n"
+	echo "\t</font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_INVITE.":</b></td>\n"
+		."\t<td align='right' width='20%'>$setfont<b>"._TL_INVITE.":</b></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='sent' value=\"";
 	if (isset($sent)) {echo $sent;}	
-	echo "\"></td>\n"
+	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_DONE.":</b></td>\n"
+		."\t<td align='right' width='20%'>$setfont<b>"._TL_DONE.":</b></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='completed' value=\"";
 	if (isset($completed)) {echo $completed;}
 	if ($edfieldcount > 7) 
 		{
-		echo "\"></td>\n"
+		echo "\"></font></td>\n"
 			."</tr>\n"
 			."<tr>\n"
-			."\t<td align='right' width='20%'>$setfont<b>"._TL_ATTR1.":</b></td>\n"
+			."\t<td align='right' width='20%'>$setfont<b>"._TL_ATTR1.":</b></font></td>\n"
 			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' $slstyle name='attribute1' value=\"";
 		if (isset($attribute_1)) {echo $attribute_1;}
-		echo "\"></td>\n"
+		echo "\"></font></td>\n"
 			."</tr>\n"
 			."<tr>\n"
-			."\t<td align='right' width='20%'>$setfont<b>"._TL_ATTR2.":</b></td>\n"
+			."\t<td align='right' width='20%'>$setfont<b>"._TL_ATTR2.":</b></font></td>\n"
 			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' $slstyle name='attribute2' value=\"";
 		if (isset($attribute_2)) {echo $attribute_2;}
 		}
-	echo "\"></td>\n"
+	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td colspan='2' align='center'>";
@@ -1121,16 +1129,17 @@ if ($action == _ADD)
 
 if ($action == "import")
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._UPLOADCSV."</b></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
+		."<font size='1' face='verdana' color='white'><b>"
+		._UPLOADCSV."</b></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	form();
 	echo "<table width='400' bgcolor='#eeeeee'>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t<font size='1'><b>Note:</b><br />\n"
-		."\t\t\t"._TC_UPLOADINFO."</i>\n"
-		."\t\t</td>\n"
+		."\t\t\t"._TC_UPLOADINFO."\n"
+		."\t\t</font></td>\n"
 		."\t</tr>\n"
 		."</table><br />\n"
 		."</td></tr></table>\n";
@@ -1224,20 +1233,20 @@ if ($action == "upload")
 		fclose($handle);
 		unlink($the_full_file_path);
 		}
-	echo "</td></tr></table>\n";
+	echo "\t\t\t</td></tr></table>\n";
 	}
 
-//echo "ACTION: $action (POST: {$_POST['action']})<br />THEFILE: $the_file (FILES: {$_FILES['the_file']['tmp_name']})<br />THEFILENAME: $the_file_name (FILES: {$_FILES['the_file']['name']})";
-echo "</center>\n"
-	."&nbsp;"
-	."<table height='1'><tr><td></td></tr></table>\n";
+//echo "</center>\n";
+//echo "&nbsp;"
+echo "\t\t<table height='1'><tr><td></td></tr></table>\n"
+	."\t\t</td>\n";
 
-echo "</td>\n"
-	.helpscreen()
+//echo "</td>\n";
+echo helpscreen()
 	."</tr></table>\n";
 
-echo htmlfooter("instructions.html#tokens", "Using PHPSurveyors Tokens Function")
-	."</body>\n</html>";
+echo htmlfooter("instructions.html#tokens", "Using PHPSurveyors Tokens Function");
+//	."</body>\n</html>";
 
 
 function form($error=false) {
@@ -1245,31 +1254,32 @@ global $sid, $btstyle, $slstyle, $setfont;
 
 	if ($error) {print $error . "<br /><br />\n";}
 	
-	print "\n<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n"
+	print "\n$setfont<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n"
 		. "<input type='hidden' name='action' value='upload' />\n"
 		. "<input type='hidden' name='sid' value='$sid' />\n"
-		. "$setfont Upload a file<br />\n"
+		. "Upload a file<br />\n"
 		. "<input type='file' $slstyle name='the_file' size='35' /><br />\n"
 		. "<input type='submit' $btstyle value='Upload' />\n"
-		. "</form>\n\n";
+		. "</form></font>\n\n";
 
 } # END form
 
 function helpscreen()
 	{
 	global $homeurl, $langdir;
-	global $action;
-	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
+	global $action, $setfont;
+	echo "<!-- HELP SCREEN / RIGHT HAND CELL -->\n"
+		."\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
 		."\t\t\t<table width='100%'><tr><td><table width='100%' height='100%' align='center' cellspacing='0'>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
-		."\t\t\t\t\t\t<font color='white' size='1'><b>"._HELP."\n"
-		."\t\t\t\t\t</td>\n"
+		."\t\t\t\t\t\t$setfont<font color='white' size='1'><b>"._HELP."</b>\n"
+		."\t\t\t\t\t</font></font></td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
-		."\t\t\t\t\t\t<img src='./images/blank.gif' width='20' hspace='0' border='0' align='left'>\n"
-		."\t\t\t\t\t\t<input type='image' src='./images/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
+		."\t\t\t\t\t\t<img src='./images/blank.gif' alt='-' width='20' hspace='0' border='0' align='left'>\n"
+		."\t\t\t\t\t\t<input type='image' name='CloseHelpButton' src='./images/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
 		."\t\t\t\t\t</td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
@@ -1279,19 +1289,19 @@ function helpscreen()
 	switch ($action)
 		{
 		case "browse":
-			$helpdoc .= "#Display Tokens";
+			$helpdoc .= "#Display%20Tokens";
 			break;
 		case "email":
-			$helpdoc .= "#E Invitiation";
+			$helpdoc .= "#E%20Invitiation";
 			break;
 		case "addnew":
-			$helpdoc .= "#Add new token entry";
+			$helpdoc .= "#Add%20new%20token%20entry";
 			break;
 		case "import":
-			$helpdoc .= "#Import/Upload CSV File";
+			$helpdoc .= "#Import/Upload%20CSV%20File";
 			break;
 		case "tokenify":
-			$helpdoc .= "#Generate Tokens";
+			$helpdoc .= "#Generate%20Tokens";
 			break;
 		}
 	echo "\t\t\t\t\t\t<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
