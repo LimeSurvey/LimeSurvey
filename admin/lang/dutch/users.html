@@ -1,65 +1,40 @@
 <body bgcolor="#E5E5E5">
 
-<p><font face="Verdana" style="font-size: 8pt; font-weight: 700">You are currently viewing the
-<u>User Control</u> section of PHPSurveyor.</font></p>
+<p><font face="Verdana" style="font-size: 8pt; font-weight: 700">U bekijkt momenteel de
+<u>Gebruikersbeheer</u> sectie van PHPSurveyor.</font></p>
 
-<p><font face="Verdana" style="font-size: 8pt">From this point you can view and 
-edit the security settings and user access rights for your script.</font></p>
+<p><font face="Verdana" style="font-size: 8pt">Van hieruit kunt u de beveilingsinstellingen en gebruikersrechten van dit script bepalen.</font></p>
 
-<p><font face="Verdana" style="font-size: 8pt">PHPSurveyor security settings 
-rely on the Apache directory security system. If you are not using the Apache 
-web surver, you cannot use these security settings and you should initialise 
-directory security using your servers standard methods.</font></p>
+<p><font face="Verdana" style="font-size: 8pt">PHPSurveyors beveiligingsinstellingen 
+maken gebruik van het Apache beveiligingssysteem. Als uw server geen Apache webserver is, kunt u deze instellingen niet gebruiken en moet u zelf de instellingen vanuit uw webserver maken.</font></p>
 
-<p><font face="Verdana"><font style="font-size: 8pt"><u><b>Initialising Security<br>
-</b></u>The first time you run security from PHPSurveyor, it will 'initialise' 
-the security settings. When it 'initialises', the script finds the Apache &quot;htpasswd&quot; 
-executable file and creates a 'user' file. It also creates a 'htaccess' file in 
-your admin directory that restricts access to the admin directory to only those 
-users in the htpasswd file. The initial username and password are determined by 
-the 'default' settings in your config.php file. Once you have initialised 
-security succesfully, your browser will ask for this username and password 
-before allowing you to continue using the administration scripts of PHPSurveyor.</font></font></p>
+<p><font face="Verdana"><font style="font-size: 8pt"><u><b>Opstarten beveiliging<br>
+</b></u>De eerste keer dat u de beveiliging van PHPSurveyor opent, worden de beveiligingsinstellingen opgestart. Bij het opstarten zoekt het script het bestand &quot;htpasswd&quot; 
+en maakt vervolgens een 'user' bestand aan. Het maakt ook een 'htaccess' bestand aan in de admin map die enkel de gebruikers uit de htpasswd file toelaat. De standaard login en paswoord worden bepaald door wat ingesteld staat in config.php. Eens u de instellingen opgestart heeft, zal de browser een login en paswoord vragen om in de admin sectie van PHPSurveyor te komen.</font></font></p>
 
-<p><font face="Verdana" style="font-size: 8pt"><u><b>Adding Users</b></u><br>
-Once you have initialised security and 'logged in', you will be able to view the 
-existing users on your system, add new users, delete users or modify users. This 
-is fairly straight forward. In the list of users that displays, click on the 
-&quot;edit&quot; button to modify an entry, or the &quot;del&quot; button to delete it. If there is 
-only one entry in the user table you will not be able to delete that.</font></p>
+<p><font face="Verdana" style="font-size: 8pt"><u><b>Toevoegen gebruikers</b></u><br>
+Eens u de beveiliging opgestart heeft en ingelogd bent, kunt u de bestaande gebruikers bekijken, nieuwe gebruikers toevoegen, gebruikers wissen en gebruikers bewerken. Dit is redelijk eenvoudig. In de lijst van de gebruikers die verschijnt, klikt u op de 
+&quot;bewerk&quot; knop om de gebruiker aan te passen of de &quot;wis&quot; knop om hem/haar te wissen. Als er maar één gebruiker is, kunt u deze niet wissen.</font></p>
 
 <p>
 <font face="Verdana" style="font-size: 8pt; font-weight: 700; text-decoration: underline">
-Turning Off Security<br>
-</font><font face="Verdana" style="font-size: 8pt">To turn off PHPSurveyors 
-security settings, click on the &quot;Turn Off Security&quot; button. This will delete the 
-htpasswd, htaccess file and all user information from the directories.</font></p>
+Beveiliging uitzetten<br>
+</font><font face="Verdana" style="font-size: 8pt">Om de beveiliging uit te zetten, klikt u op de &quot;Beveiliging uitzetten&quot; knop. Dit wist alle bestanden die met gebruikers te maken hebben.</font></p>
 
-<p><font face="Verdana" style="font-size: 8pt"><u><b>Limitations of PHPSurveyor 
-Security</b></u><br>
-Until a more flexible security system is implemented, it should be remembered 
-that the PHPSurveyor security settings are an 'all-or-nothing' affair. Users 
-either have access to ALL administration functions, or they have none. 
-Eventually a system is planned that allows you to set levels of access. Note 
-especially that the user security feature is accessible to all users, including 
-the PLAIN-TEXT PASSWORDS.</font></p>
+<p><font face="Verdana" style="font-size: 8pt"><u><b>Beperkingen van de beveiligingsmodule</b></u><br>
+Tot er een meer flexibel systeem is uitgewerkt, moet u er rekening meer houden dat de beveiliging momenteel 'alles-of-niets' is. Gebruikers hebben ofwel toegang tot ALLE functies, ofwel tot geen enkele. 
+Uiteindelijk zal een systeem uitgewerkt worden die toelaat verschillende toegangsniveaus in te stellen. Weet ook dat momenteel alle gebruikers ook de paswoorden van andere gebruikers kunnen bekijken.</font></p>
 
-<p><font face="Verdana" style="font-size: 8pt"><u><b>Troubleshooting</b></u><br>
-If you are having trouble setting up security:</font></p>
+<p><font face="Verdana" style="font-size: 8pt"><u><b>Problemen</b></u><br>
+Als u problemen ondervindt bij het instellen van de beveiliging:</font></p>
 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber1">
   <tr>
     <td valign="top"><font style="font-size: 8pt" face="Verdana">1.</font></td>
-    <td><font face="Verdana" style="font-size: 8pt">Make sure you have 
-    read/write permissions in the admin directory. PHPSurveyor needs to be able 
-    to create a .htpasswd and .htaccess file here.</font></td>
+    <td><font face="Verdana" style="font-size: 8pt">Zorg ervoor dat u lees/schrijfrechten heeft in de admin map. PHPSurveyor moet een .htpasswd en .htaccess bestand kunnen aanmaken in deze map.</font></td>
   </tr>
   <tr>
     <td valign="top"><font style="font-size: 8pt" face="Verdana">2.</font></td>
-    <td><font face="Verdana" style="font-size: 8pt">Make sure you have access to 
-    the htpasswd executable file. On windows servers in particular, a copy of 
-    this will almost certainly need to be placed in the /phpsurveyor/admin 
-    directory along with the other scripts. On Linux servers, the script will 
-    attempt to find the htpasswd executable using &quot;find&quot;.</font></td>
+    <td><font face="Verdana" style="font-size: 8pt">Zorg er ook voor dat u toegang heeft tot het htpasswd bestand. Vooral op Windows servers zal het nodig zijn een kopie hiervan te maken in de admin map. Op Linux servers zal het script zelf proberen het bestand te vinden via de &quot;find&quot; functie van het systeem.</font></td>
   </tr>
 </table>
 &nbsp;<p>&nbsp;</p>

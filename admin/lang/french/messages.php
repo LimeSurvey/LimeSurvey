@@ -1,41 +1,40 @@
 <?php
 /*
-	#################################################################
-	# >>> PHP Surveyor  						#
-	#################################################################
-	# > Author:  Jason Cleeland					#
-	# > E-mail:  jason@cleeland.org					#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,		#
-	# >          CARLTON SOUTH 3053, AUSTRALIA			#
-	# > Date: 	 20 February 2003				#
-	#								#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.				#
-	#################################################################
-	#	Copyright (C) 2003  Jason Cleeland			#
-	#								#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 		#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.					#
-	#								#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.						#
-	#								#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.			#
-	#################################################################
-	#								#
-	# This language file provided by Pascal BASTIEN 20/07/2004	#
-	# Version 1.4.1							#
-	#								#
-	#################################################################
+    #################################################################
+    # >>> PHP Surveyor                                              #
+    #################################################################
+    # > Author:  Jason Cleeland                                     #
+    # > E-mail:  jason@cleeland.org                                 #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+    # > Date:    20 February 2003                                   #
+    #                                                               #
+    # This set of scripts allows you to develop, publish and        #
+    # perform data-entry on surveys.                                #
+    #################################################################
+    #   Copyright (C) 2003  Jason Cleeland                          #
+    #                                                               #
+    # This program is free software; you can redistribute           #
+    # it and/or modify it under the terms of the GNU General        #
+    # Public License as published by the Free Software              #
+    # Foundation; either version 2 of the License, or (at your      #
+    # option) any later version.                                    #
+    #                                                               #
+    # This program is distributed in the hope that it will be       #
+    # useful, but WITHOUT ANY WARRANTY; without even the            #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+    # PARTICULAR PURPOSE.  See the GNU General Public License       #
+    # for more details.                                             #
+    #                                                               #
+    # You should have received a copy of the GNU General            #
+    # Public License along with this program; if not, write to      #
+    # the Free Software Foundation, Inc., 59 Temple Place -         #
+    # Suite 330, Boston, MA  02111-1307, USA.                       #
+    #################################################################
+    #                                                               #
+    # This language file provided by Pascal BASTIEN 20/07/2004      #
+    # Version 1.4.1                                                 #
+    #################################################################
 */
 
 //BUTTON BAR TITLES
@@ -643,36 +642,36 @@ define("_TC_REMINDSENTTO", "Rappel envoyé à:"); //is followed by token name
 define("_TC_UPDATEDB", "Mettre à jour la table d'invitation (Tokens) avec des nouveaux champs"); //New for 0.98rc7
 define("_TC_EMAILINVITE_SUBJ", "Invitation to participate in survey"); //New for 0.99dev01
 define("_TC_EMAILINVITE", "{FIRSTNAME},\n\nVous avez été invité à participer à un questionnaire.\n\n"
-						 ."Celui-ci est intitulé:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
-						 ."Pour participer, veuillez cliquer sur le lien ci-dessous.\n\nCordialement,\n\n"
-						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
-						 ."----------------------------------------------\n"
-						 ."Cliquer ici pour faire le questionnaire:\n"
-						 ."{SURVEYURL}"); //New for 0.98rc9 - Email d'Invitation par défaut
+                         ."Celui-ci est intitulé:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
+                         ."Pour participer, veuillez cliquer sur le lien ci-dessous.\n\nCordialement,\n\n"
+                         ."{ADMINNAME} ({ADMINEMAIL})\n\n"
+                         ."----------------------------------------------\n"
+                         ."Cliquer ici pour faire le questionnaire:\n"
+                         ."{SURVEYURL}"); //New for 0.98rc9 - Email d'Invitation par défaut
 define("_TC_EMAILREMIND_SUBJ", "Reminder to participate in survey"); //New for 0.99dev01
 define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez été invité à participer à un questionnaire récemment.\n\n"
-						 ."Nous avons pris en compte que vous n avez pas encore completé le questionnaire, et nous vous rappelons que celui-ci est toujours disponible si vous souhaitez participer.\n\n"
-						 ."Le questionnaire est intitulé:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
-						 ."Pour participer, veuillez cliquer sur le lien ci-dessous.\n\nCordialement,\n\n"
-						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
-						 ."----------------------------------------------\n"
-						 ."Cliquez ici pour faire le questionnaire:\n"
-						 ."{SURVEYURL}"); //New for 0.98rc9 - Email de rappel par defaut
+                         ."Nous avons pris en compte que vous n avez pas encore completé le questionnaire, et nous vous rappelons que celui-ci est toujours disponible si vous souhaitez participer.\n\n"
+                         ."Le questionnaire est intitulé:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
+                         ."Pour participer, veuillez cliquer sur le lien ci-dessous.\n\nCordialement,\n\n"
+                         ."{ADMINNAME} ({ADMINEMAIL})\n\n"
+                         ."----------------------------------------------\n"
+                         ."Cliquez ici pour faire le questionnaire:\n"
+                         ."{SURVEYURL}"); //New for 0.98rc9 - Email de rappel par defaut
 define("_TC_EMAILREGISTER_SUBJ", "Survey Registration Confirmation"); //New for 0.99dev01
 define("_TC_EMAILREGISTER", "{FIRSTNAME},\n\n"
-						  ."Vous (ou quelqu un utilisant votre adresse email) êtes enregistrés pour "
-						  ."participer à un questionnaire en ligne intitulé:\n\"{SURVEYNAME}\"\n\n"
-						  ."Pour compléter ce questionnaire, cliquez sur le lien suivant:\n\n"
-						  ."{SURVEYURL}\n\n"
-						  ."Quel que soit votre question à propos de ce questionnaire, ou si vous "
-						  ."ne vous êtes pas enregistré pour participer à celui-ci et croyez qu il s agit "
-						  ."d une erreur, veuillez contacter {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+                          ."Vous (ou quelqu un utilisant votre adresse email) êtes enregistrés pour "
+                          ."participer à un questionnaire en ligne intitulé:\n\"{SURVEYNAME}\"\n\n"
+                          ."Pour compléter ce questionnaire, cliquez sur le lien suivant:\n\n"
+                          ."{SURVEYURL}\n\n"
+                          ."Quel que soit votre question à propos de ce questionnaire, ou si vous "
+                          ."ne vous êtes pas enregistré pour participer à celui-ci et croyez qu il s agit "
+                          ."d une erreur, veuillez contacter {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 define("_TC_EMAILCONFIRM_SUBJ", "Confirmation of completed survey"); //New for 0.99dev01
 define("_TC_EMAILCONFIRM", "{FIRSTNAME},\n\nCet email vous confirme que vous avez completé le questionnaire intitulé {SURVEYNAME} "
-						  ."et votre réponse à été enregistrée. Merci.\n\n"
-						  ."Si vous avez des questions à propos de cet email, veuillez contacter {ADMINNAME} ({ADMINEMAIL}).\n\n"
-						  ."Cordialement,\n\n"
-						  ."{ADMINNAME}"); //New for 0.98rc9 - Confirmation Email
+                          ."et votre réponse à été enregistrée. Merci.\n\n"
+                          ."Si vous avez des questions à propos de cet email, veuillez contacter {ADMINNAME} ({ADMINEMAIL}).\n\n"
+                          ."Cordialement,\n\n"
+                          ."{ADMINNAME}"); //New for 0.98rc9 - Confirmation Email
 
 //labels.php
 define("_LB_NEWSET", "Créer Nouveau Jeu d'Etiquette");
@@ -796,4 +795,9 @@ define("_AS_EDIT", "Edit");
 define("_AS_DELETE", "Delete");
 define("_AS_ADD", "Add");
 define("_AS_UPDATE", "Update");
+
+//Question Number regeneration
+define("_RE_REGENNUMBER", "Regenerate Question Numbers:"); //NEW for release 0.99dev2
+define("_RE_STRAIGHT", "Straight"); //NEW for release 0.99dev2
+define("_RE_BYGROUP", "By Group"); //NEW for release 0.99dev2
 ?>

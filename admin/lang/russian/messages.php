@@ -760,4 +760,9 @@ define("_AS_EDIT", "Edit");
 define("_AS_DELETE", "Delete");
 define("_AS_ADD", "Add");
 define("_AS_UPDATE", "Update");
+
+//Question Number regeneration
+define("_RE_REGENNUMBER", "Regenerate Question Numbers:"); //NEW for release 0.99dev2
+define("_RE_STRAIGHT", "Straight"); //NEW for release 0.99dev2
+define("_RE_BYGROUP", "By Group"); //NEW for release 0.99dev2
 ?>

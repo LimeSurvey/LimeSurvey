@@ -1,157 +1,157 @@
 <?php
-
+// Translation kindly provided by Peter De Berdt
 
 //BUTTON BAR TITLES
-define("_ADMINISTRATION", "Administration");
-define("_SURVEY", "Survey");
-define("_GROUP", "Group");
-define("_QUESTION", "Question");
-define("_ANSWERS", "Answers");
-define("_CONDITIONS", "Conditions");
+define("_ADMINISTRATION", "Administratie");
+define("_SURVEY", "Vragenlijst");
+define("_GROUP", "Groep");
+define("_QUESTION", "Vraag");
+define("_ANSWERS", "Antwoorden");
+define("_CONDITIONS", "Condities");
 define("_HELP", "Help");
-define("_USERCONTROL", "User Control");
-define("_ACTIVATE", "Activate Survey");
-define("_DEACTIVATE", "Deactivate Survey");
-define("_CHECKFIELDS", "Check Database Fields");
-define("_CREATEDB", "Create Database");
-define("_CREATESURVEY", "Create Survey"); //New for 0.98rc4
-define("_SETUP", "PHPSurveyor Setup");
-define("_DELETESURVEY", "Delete Survey");
-define("_EXPORTQUESTION", "Export Question");
-define("_EXPORTSURVEY", "Export Survey");
-define("_EXPORTLABEL", "Export Label Set");
-define("_IMPORTQUESTION", "Import Question");
-define("_IMPORTGROUP", "Import Group"); //New for 0.98rc5
-define("_IMPORTSURVEY", "Import Survey");
-define("_IMPORTLABEL", "Import Label Set");
-define("_EXPORTRESULTS", "Export Responses");
-define("_BROWSERESPONSES", "Browse Responses");
+define("_USERCONTROL", "Gebruikersbeheer");
+define("_ACTIVATE", "Activateren vragenlijst");
+define("_DEACTIVATE", "Deactiveren vragenlijst");
+define("_CHECKFIELDS", "Controleren database velden");
+define("_CREATEDB", "Toevoegen database");
+define("_CREATESURVEY", "Toevoegen vragenlijst"); //New for 0.98rc4
+define("_SETUP", "PHPSurveyor Configuratie");
+define("_DELETESURVEY", "Wissen vragenlijst");
+define("_EXPORTQUESTION", "Exporteren vraag");
+define("_EXPORTSURVEY", "Exporteren vragenlijst");
+define("_EXPORTLABEL", "Exporteren label set");
+define("_IMPORTQUESTION", "Importeren vraag");
+define("_IMPORTGROUP", "Importeren groep"); //New for 0.98rc5
+define("_IMPORTSURVEY", "Importeren vragenlijst");
+define("_IMPORTLABEL", "Importeren label set");
+define("_EXPORTRESULTS", "Exporteren antwoorden");
+define("_BROWSERESPONSES", "Bekijken deelnames");
 define("_BROWSESAVED", "Browse Saved Responses");
-define("_STATISTICS", "Quick Statistics");
-define("_VIEWRESPONSE", "View Response");
-define("_VIEWCONTROL", "Data View Control");
-define("_DATAENTRY", "Data Entry");
-define("_TOKENCONTROL", "Token Control");
-define("_TOKENDBADMIN", "Token Database Administration Options");
-define("_DROPTOKENS", "Delete Tokens Table");
-define("_EMAILINVITE", "Email Invitation");
-define("_EMAILREMIND", "Email Reminder");
-define("_TOKENIFY", "Create Tokens");
-define("_UPLOADCSV", "Upload CSV File");
-define("_LABELCONTROL", "Label Sets Administration"); //NEW with 0.98rc3
-define("_LABELSET", "Label Set"); //NEW with 0.98rc3
+define("_STATISTICS", "Snelle statistieken");
+define("_VIEWRESPONSE", "Bekijken deelname");
+define("_VIEWCONTROL", "Controle dataweergave");
+define("_DATAENTRY", "Ingave data");
+define("_TOKENCONTROL", "Controle toegangscodes");
+define("_TOKENDBADMIN", "Toegangscode Administratie Opties");
+define("_DROPTOKENS", "Wissen toegangscodetabel");
+define("_EMAILINVITE", "E-mail uitnodiging");
+define("_EMAILREMIND", "E-mail herinnering");
+define("_TOKENIFY", "Maak toegangscodes");
+define("_UPLOADCSV", "Upload CSV bestand");
+define("_LABELCONTROL", "Label sets administratie"); //NEW with 0.98rc3
+define("_LABELSET", "Label set"); //NEW with 0.98rc3
 define("_LABELANS", "Labels"); //NEW with 0.98rc3
 define("_OPTIONAL", "Optional"); //NEW with 0.98finalRC1
 
 //DROPDOWN HEADINGS
-define("_SURVEYS", "Surveys");
-define("_GROUPS", "Groups");
-define("_QUESTIONS", "Questions");
-define("_QBYQ", "Question by Question");
-define("_GBYG", "Group by Group");
-define("_SBYS", "All in one");
+define("_SURVEYS", "Vragenlijsten");
+define("_GROUPS", "Groepen");
+define("_QUESTIONS", "Vragen");
+define("_QBYQ", "Vraag per vraag");
+define("_GBYG", "Groep per groep");
+define("_SBYS", "Alles ineens");
 define("_LABELSETS", "Sets"); //New with 0.98rc3
 
 //BUTTON MOUSEOVERS
 //administration bar
-define("_A_HOME_BT", "Default Administration Page");
-define("_A_SECURITY_BT", "Modify Security Settings");
-define("_A_BADSECURITY_BT", "Activate Security");
-define("_A_CHECKDB_BT", "Check Database");
-define("_A_DELETE_BT", "Delete Entire Survey");
-define("_A_ADDSURVEY_BT", "Create or Import New Survey");
-define("_A_HELP_BT", "Show Help");
-define("_A_CHECKSETTINGS", "Check Settings");
+define("_A_HOME_BT", "Standaard administratie pagina");
+define("_A_SECURITY_BT", "Wijzigen beveiligingsinstellingen");
+define("_A_BADSECURITY_BT", "Activeer beveiliging");
+define("_A_CHECKDB_BT", "Controleren database");
+define("_A_DELETE_BT", "Wissen volledige vragenlijst");
+define("_A_ADDSURVEY_BT", "Toevoegen of importeren nieuwe vragenlijst");
+define("_A_HELP_BT", "Toon help");
+define("_A_CHECKSETTINGS", "Controleren instellingen");
 define("_A_BACKUPDB_BT", "Backup Entire Database"); //New for 0.98rc10
 define("_A_TEMPLATES_BT", "Template Editor"); //New for 0.98rc9
 //Survey bar
-define("_S_ACTIVE_BT", "This survey is currently active");
-define("_S_INACTIVE_BT", "This survey is not currently active");
-define("_S_ACTIVATE_BT", "Activate this Survey");
-define("_S_DEACTIVATE_BT", "De-activate this Survey");
-define("_S_CANNOTACTIVATE_BT", "Cannot Activate this Survey");
-define("_S_DOSURVEY_BT", "Do Survey");
-define("_S_DATAENTRY_BT", "Dataentry Screen for Survey");
-define("_S_PRINTABLE_BT", "Printable Version of Survey");
-define("_S_EDIT_BT", "Edit Current Survey");
-define("_S_DELETE_BT", "Delete Current Survey");
-define("_S_EXPORT_BT", "Export this Survey");
-define("_S_BROWSE_BT", "Browse Responses for this Survey");
-define("_S_TOKENS_BT", "Activate/Edit Tokens for this Survey");
-define("_S_ADDGROUP_BT", "Add New Group to Survey");
-define("_S_MINIMISE_BT", "Hide Details of this Survey");
-define("_S_MAXIMISE_BT", "Show Details of this Survey");
-define("_S_CLOSE_BT", "Close this Survey");
+define("_S_ACTIVE_BT", "Deze vragenlijst is momenteel actief");
+define("_S_INACTIVE_BT", "Deze vragenlijst is momenteel niet actief");
+define("_S_ACTIVATE_BT", "Activeer deze vragenlijst");
+define("_S_DEACTIVATE_BT", "Deactiveer deze vragenlijst");
+define("_S_CANNOTACTIVATE_BT", "Kan deze vragenlijst niet activeren");
+define("_S_DOSURVEY_BT", "Test vragenlijst");
+define("_S_DATAENTRY_BT", "Ingavescherm van de vragenlijst");
+define("_S_PRINTABLE_BT", "Printvriendelijke versie van de vragenlijst");
+define("_S_EDIT_BT", "Bewerk huidige vragenlijst");
+define("_S_DELETE_BT", "Wis huidige vragenlijst");
+define("_S_EXPORT_BT", "Exporteer huidige vragenlijst");
+define("_S_BROWSE_BT", "Bekijk deelnames van deze vragenlijst");
+define("_S_TOKENS_BT", "Activeer/Bewerk toegangscodes voor deze vragenlijst");
+define("_S_ADDGROUP_BT", "Nieuwe groep aan deze vragenlijst toevoegen");
+define("_S_MINIMISE_BT", "Verberg details van deze vragenlijst");
+define("_S_MAXIMISE_BT", "Toon details van deze vragenlijst");
+define("_S_CLOSE_BT", "Sluit deze vragenlijst");
 define("_S_SAVED_BT", "View Saved but not submitted Responses"); //New in 0.99dev01
 define("_S_ASSESSMENT_BT", "Set assessment rules"); //New in  0.99dev01
 //Group bar
-define("_G_EDIT_BT", "Edit Current Group");
-define("_G_EXPORT_BT", "Export Current Group"); //New in 0.98rc5
-define("_G_DELETE_BT", "Delete Current Group");
-define("_G_ADDQUESTION_BT", "Add New Question to Group");
-define("_G_MINIMISE_BT", "Hide Details of this Group");
-define("_G_MAXIMISE_BT", "Show Details of this Group");
-define("_G_CLOSE_BT", "Close this Group");
+define("_G_EDIT_BT", "Bewerk huidige groep");
+define("_G_EXPORT_BT", "Exporteer huidige groep"); //New in 0.98rc5
+define("_G_DELETE_BT", "Wis huidige groep");
+define("_G_ADDQUESTION_BT", "Toevoegen nieuwe vraag aan deze groep");
+define("_G_MINIMISE_BT", "Verberg details van deze groep");
+define("_G_MAXIMISE_BT", "Toon details van deze groep");
+define("_G_CLOSE_BT", "Sluit deze groep");
 //Question bar
-define("_Q_EDIT_BT", "Edit Current Question");
-define("_Q_COPY_BT", "Copy Current Question"); //New in 0.98rc4
-define("_Q_DELETE_BT", "Delete Current Question");
-define("_Q_EXPORT_BT", "Export this Question");
-define("_Q_CONDITIONS_BT", "Set Conditions for this Question");
-define("_Q_ANSWERS_BT", "Edit/Add Answers for this Question");
-define("_Q_LABELS_BT", "Edit/Add Label Sets");
-define("_Q_MINIMISE_BT", "Hide Details of this Question");
-define("_Q_MAXIMISE_BT", "Show Details of this Question");
-define("_Q_CLOSE_BT", "Close this Question");
+define("_Q_EDIT_BT", "Bewerk huidige vraag");
+define("_Q_COPY_BT", "Kopieer huidige vraag"); //New in 0.98rc4
+define("_Q_DELETE_BT", "Wis huidige vraag");
+define("_Q_EXPORT_BT", "Exporteer huidige vraag");
+define("_Q_CONDITIONS_BT", "Stel condities voor deze vraag in");
+define("_Q_ANSWERS_BT", "Bewerken/Toevoegen van antwoorden bij deze vraag");
+define("_Q_LABELS_BT", "Bewerken/Toevoegen van label sets");
+define("_Q_MINIMISE_BT", "Verberg details van deze vraag");
+define("_Q_MAXIMISE_BT", "Toon details van deze vraag");
+define("_Q_CLOSE_BT", "Sluit deze vraag");
 //Browse Button Bar
-define("_B_ADMIN_BT", "Return to Survey Administration");
-define("_B_SUMMARY_BT", "Show summary information");
-define("_B_ALL_BT", "Display Responses");
-define("_B_LAST_BT", "Display Last 50 Responses");
-define("_B_STATISTICS_BT", "Get statistics from these responses");
-define("_B_EXPORT_BT", "Export Results to Application");
-define("_B_BACKUP_BT", "Backup results table as SQL file");
+define("_B_ADMIN_BT", "Keer terug naar Vragenlijst Administratie");
+define("_B_SUMMARY_BT", "Toon samenvatting");
+define("_B_ALL_BT", "Toon deelnames");
+define("_B_LAST_BT", "Toon laatste 50 deelnames");
+define("_B_STATISTICS_BT", "Toon statistieken van deze deelnames");
+define("_B_EXPORT_BT", "Exporteer deelnames naar programma");
+define("_B_BACKUP_BT", "Backup deelnametabel als SQL bestand");
 //Tokens Button Bar
-define("_T_ALL_BT", "Display Tokens");
-define("_T_ADD_BT", "Add new token entry");
-define("_T_IMPORT_BT", "Import Tokens from CSV File");
-define("_T_EXPORT_BT", "Export Tokens to CSV file"); //New for 0.98rc7
-define("_T_INVITE_BT", "Send email invitation");
-define("_T_REMIND_BT", "Send email reminder");
-define("_T_TOKENIFY_BT", "Generate Tokens");
-define("_T_KILL_BT", "Drop tokens table");
+define("_T_ALL_BT", "Toon toegangscodes");
+define("_T_ADD_BT", "Toevoegen nieuwe toegangscode");
+define("_T_IMPORT_BT", "Importeer toegangscodes uit CSV bestand");
+define("_T_EXPORT_BT", "Exporteer toegangscodes uit CSV bestand"); //New for 0.98rc7
+define("_T_INVITE_BT", "Verstuur e-mail uitnodiging");
+define("_T_REMIND_BT", "Verstuur e-mail herinnering");
+define("_T_TOKENIFY_BT", "Maak toegangscodes aan");
+define("_T_KILL_BT", "Wis toegangscodetabel");
 //Labels Button Bar
-define("_L_ADDSET_BT", "Add new label set");
-define("_L_EDIT_BT", "Edit label set");
-define("_L_DEL_BT", "Delete label set");
+define("_L_ADDSET_BT", "Toevoegen nieuwe label set");
+define("_L_EDIT_BT", "Bewerk label set");
+define("_L_DEL_BT", "Wis label set");
 //Datacontrols
-define("_D_BEGIN", "Show start..");
-define("_D_BACK", "Show last..");
-define("_D_FORWARD", "Show next..");
-define("_D_END", "Show last..");
+define("_D_BEGIN", "Toon begin..");
+define("_D_BACK", "Toon einde..");
+define("_D_FORWARD", "Toon volgende..");
+define("_D_END", "Toon laatste..");
 
 //DATA LABELS
 //surveys
-define("_SL_TITLE", "Title:");
-define("_SL_SURVEYURL", "Survey URL:"); //new in 0.98rc5
-define("_SL_DESCRIPTION", "Description:");
-define("_SL_WELCOME", "Welcome:");
-define("_SL_ADMIN", "Administrator:");
-define("_SL_EMAIL", "Admin Email:");
-define("_SL_FAXTO", "Fax To:");
-define("_SL_ANONYMOUS", "Anonymous?");
-define("_SL_EXPIRES", "Expires:");
-define("_SL_FORMAT", "Format:");
-define("_SL_DATESTAMP", "Date Stamp?");
-define("_SL_TEMPLATE", "Template:");
-define("_SL_LANGUAGE", "Language:");
+define("_SL_TITLE", "Titel:");
+define("_SL_SURVEYURL", "Vragenlijst URL:"); //new in 0.98rc5
+define("_SL_DESCRIPTION", "Omschrijving:");
+define("_SL_WELCOME", "Welkom:");
+define("_SL_ADMIN", "Verantwoordelijke:");
+define("_SL_EMAIL", "E-mail verantwoordelijke:");
+define("_SL_FAXTO", "Fax naar:");
+define("_SL_ANONYMOUS", "Anoniem?");
+define("_SL_EXPIRES", "Vervalt:");
+define("_SL_FORMAT", "Formaat:");
+define("_SL_DATESTAMP", "Datum?");
+define("_SL_TEMPLATE", "Sjabloon:");
+define("_SL_LANGUAGE", "Taal:");
 define("_SL_LINK", "Link:");
-define("_SL_URL", "End URL:");
-define("_SL_URLDESCRIP", "URL Descrip:");
+define("_SL_URL", "URL op einde:");
+define("_SL_URLDESCRIP", "URL beschrijving:");
 define("_SL_STATUS", "Status:");
-define("_SL_SELSQL", "Select SQL File:");
-define("_SL_USECOOKIES", "Use Cookies?"); //NEW with 098rc3
-define("_SL_NOTIFICATION", "Notification:"); //New with 098rc5
+define("_SL_SELSQL", "Selecteer SQL bestand:");
+define("_SL_USECOOKIES", "Gebruiken Cookies?"); //NEW with 098rc3
+define("_SL_NOTIFICATION", "Verwittiging:"); //New with 098rc5
 define("_SL_ALLOWREGISTER", "Allow public registration?"); //New with 0.98rc9
 define("_SL_ATTRIBUTENAMES", "Token Attribute Names:"); //New with 0.98rc9
 define("_SL_EMAILINVITE_SUBJ", "Invitation Email Subject:"); //New with 0.99dev01
@@ -171,328 +171,328 @@ define("_SL_USE_DEFAULT","Use default");
 define("_SL_UPD_SURVEY","Update survey");
 
 //groups
-define("_GL_TITLE", "Title:");
-define("_GL_DESCRIPTION", "Description:");
+define("_GL_TITLE", "Titel:");
+define("_GL_DESCRIPTION", "Omschrijving:");
 //questions
 define("_QL_CODE", "Code:");
-define("_QL_QUESTION", "Question:");
+define("_QL_QUESTION", "Vraag:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
 define("_QL_HELP", "Help:");
 define("_QL_TYPE", "Type:");
-define("_QL_GROUP", "Group:");
-define("_QL_MANDATORY", "Mandatory:");
-define("_QL_OTHER", "Other:");
-define("_QL_LABELSET", "Label Set:");
-define("_QL_COPYANS", "Copy Answers?"); //New in 0.98rc3
+define("_QL_GROUP", "Groep:");
+define("_QL_MANDATORY", "Verplicht:");
+define("_QL_OTHER", "Andere:");
+define("_QL_LABELSET", "Label set:");
+define("_QL_COPYANS", "Kopieer antwoorden?"); //New in 0.98rc3
 define("_QL_QUESTIONATTRIBUTES", "Question Attributes:"); //New in 0.99dev01
 define("_QL_COPYATT", "Copy Attributes?"); //New in 0.99dev01
 //answers
 define("_AL_CODE", "Code");
-define("_AL_ANSWER", "Answer");
-define("_AL_DEFAULT", "Default");
-define("_AL_MOVE", "Move");
-define("_AL_ACTION", "Action");
-define("_AL_UP", "Up");
-define("_AL_DN", "Dn");
-define("_AL_SAVE", "Save");
-define("_AL_DEL", "Del");
-define("_AL_ADD", "Add");
-define("_AL_FIXSORT", "Fix Sort");
+define("_AL_ANSWER", "Antwoord");
+define("_AL_DEFAULT", "Standaard");
+define("_AL_MOVE", "Verplaats");
+define("_AL_ACTION", "Bewerking");
+define("_AL_UP", "Hoger");
+define("_AL_DN", "Lager");
+define("_AL_SAVE", "Bewaar");
+define("_AL_DEL", "Wis");
+define("_AL_ADD", "Toevoegen");
+define("_AL_FIXSORT", "Herstel sorteervolgorde");
 define("_AL_SORTALPHA", "Sort Alpha"); //New in 0.98rc8 - Sort Answers Alphabetically
 //users
-define("_UL_USER", "User");
-define("_UL_PASSWORD", "Password");
-define("_UL_SECURITY", "Security");
-define("_UL_ACTION", "Action");
-define("_UL_EDIT", "Edit");
-define("_UL_DEL", "Delete");
-define("_UL_ADD", "Add");
-define("_UL_TURNOFF", "Turn Off Security");
+define("_UL_USER", "Gebruiker");
+define("_UL_PASSWORD", "Paswoord");
+define("_UL_SECURITY", "Beveiliging");
+define("_UL_ACTION", "Bewerking");
+define("_UL_EDIT", "Bewerk");
+define("_UL_DEL", "Wis");
+define("_UL_ADD", "Toevoegen");
+define("_UL_TURNOFF", "Zet beveiliging af");
 //tokens
-define("_TL_FIRST", "First Name");
-define("_TL_LAST", "Last Name");
-define("_TL_EMAIL", "Email");
-define("_TL_TOKEN", "Token");
-define("_TL_INVITE", "Invite sent?");
-define("_TL_DONE", "Completed?");
-define("_TL_ACTION", "Actions");
+define("_TL_FIRST", "Voornaam");
+define("_TL_LAST", "Naam");
+define("_TL_EMAIL", "E-mail");
+define("_TL_TOKEN", "Toegangscode");
+define("_TL_INVITE", "Uitnodiging sturen?");
+define("_TL_DONE", "Beëindigd?");
+define("_TL_ACTION", "Bewerkingen");
 define("_TL_ATTR1", "Att_1"); //New for 0.98rc7
 define("_TL_ATTR2", "Att_2"); //New for 0.98rc7
 define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
-define("_LL_NAME", "Set Name"); //NEW with 098rc3
+define("_LL_NAME", "Naam"); //NEW with 098rc3
 define("_LL_CODE", "Code"); //NEW with 098rc3
-define("_LL_ANSWER", "Title"); //NEW with 098rc3
-define("_LL_SORTORDER", "Order"); //NEW with 098rc3
-define("_LL_ACTION", "Action"); //New with 098rc3
+define("_LL_ANSWER", "Titel"); //NEW with 098rc3
+define("_LL_SORTORDER", "Volgorde"); //NEW with 098rc3
+define("_LL_ACTION", "Bewerking"); //New with 098rc3
 
 //QUESTION TYPES
-define("_5PT", "5 Point Choice");
-define("_DATE", "Date");
-define("_GENDER", "Gender");
-define("_LIST", "List (Radio)"); //Changed with 0.99dev01
-define("_LIST_DROPDOWN", "List (Dropdown)"); //New with 0.99dev01
-define("_LISTWC", "List With Comment");
-define("_MULTO", "Multiple Options");
-define("_MULTOC", "Multiple Options with Comments");
-define("_MULTITEXT", "Multiple Short Text");
-define("_NUMERICAL", "Numerical Input");
-define("_RANK", "Ranking");
-define("_STEXT", "Short free text");
-define("_LTEXT", "Long free text");
+define("_5PT", "5 punt keuze");
+define("_DATE", "Datum");
+define("_GENDER", "Geslacht");
+define("_LIST", "Eénkeuze (Radio)"); //Changed with 0.99dev01
+define("_LIST_DROPDOWN", "Eénkeuze (Dropdown)"); //New with 0.99dev01
+define("_LISTWC", "Eénkeuze met opmerkingen");
+define("_MULTO", "Meerkeuze");
+define("_MULTOC", "Meerkeuze met opmerkingen");
+define("_MULTITEXT", "Meerdere korte antwoorden");
+define("_NUMERICAL", "Numerische vraag");
+define("_RANK", "Schaal");
+define("_STEXT", "Kort vrij antwoord");
+define("_LTEXT", "Lang vrij antwoord");
 define("_HTEXT", "Huge free text"); //New with 0.99dev01
-define("_YESNO", "Yes/No");
-define("_ARR5", "Array (5 Point Choice)");
-define("_ARR10", "Array (10 Point Choice)");
-define("_ARRYN", "Array (Yes/No/Uncertain)");
-define("_ARRMV", "Array (Increase, Same, Decrease)");
-define("_ARRFL", "Array (Flexible Labels)"); //Release 0.98rc3
+define("_YESNO", "Ja/Nee");
+define("_ARR5", "Matrix (5 punten)");
+define("_ARR10", "Matrix (10 punten)");
+define("_ARRYN", "Matrix (Ja/Nee/Misschien)");
+define("_ARRMV", "Matrix (Meer, Gelijk, Minder)");
+define("_ARRFL", "Matrix (flexibele labels)"); //Release 0.98rc3
 define("_ARRFLC", "Array (Flexible Labels) by Column"); //Release 0.98rc8
-define("_SINFL", "Single (Flexible Labels)"); //(FOR LATER RELEASE)
-define("_EMAIL", "Email Address"); //FOR LATER RELEASE
-define("_BOILERPLATE", "Boilerplate Question"); //New in 0.98rc6
+define("_SINFL", "Enkel (flexibele labels)"); //(FOR LATER RELEASE)
+define("_EMAIL", "E-mailadres"); //FOR LATER RELEASE
+define("_BOILERPLATE", "Hangijzervraag"); //New in 0.98rc6
 define("_LISTFL_DROPDOWN", "List (Flexible Labels) (Dropdown)"); //New in 0.99dev01
 define("_LISTFL_RADIO", "List (Flexible Labels) (Radio)"); //New in 0.99dev01
 
 //GENERAL WORDS AND PHRASES
-define("_AD_YES", "Yes");
-define("_AD_NO", "No");
-define("_AD_CANCEL", "Cancel");
-define("_AD_CHOOSE", "Please Choose..");
-define("_AD_OR", "OR"); //New in 0.98rc4
-define("_ERROR", "Error");
-define("_SUCCESS", "Success");
-define("_REQ", "*Required");
-define("_ADDS", "Add Survey");
-define("_ADDG", "Add Group");
-define("_ADDQ", "Add Question");
-define("_ADDA", "Add Answer"); //New in 0.98rc4
-define("_COPYQ", "Copy Question"); //New in 0.98rc4
-define("_ADDU", "Add User");
-define("_SEARCH", "Search"); //New in 0.98rc4
-define("_SAVE", "Save Changes");
-define("_NONE", "None"); //as in "Do not display anything", "or none chosen";
-define("_GO_ADMIN", "Main Admin Screen"); //text to display to return/display main administration screen
-define("_CONTINUE", "Continue");
-define("_WARNING", "Warning");
-define("_USERNAME", "User name");
-define("_PASSWORD", "Password");
-define("_DELETE", "Delete");
-define("_CLOSEWIN", "Close Window");
-define("_TOKEN", "Token");
-define("_DATESTAMP", "Date Stamp"); //Referring to the datestamp or time response submitted
-define("_COMMENT", "Comment");
-define("_FROM", "From"); //For emails
-define("_SUBJECT", "Subject"); //For emails
-define("_MESSAGE", "Message"); //For emails
-define("_RELOADING", "Reloading Screen. Please wait.");
-define("_ADD", "Add");
-define("_UPDATE", "Update");
-define("_BROWSE", "Browse"); //New in 098rc5
+define("_AD_YES", "Ja");
+define("_AD_NO", "Nee");
+define("_AD_CANCEL", "Annuleer");
+define("_AD_CHOOSE", "Maak uw keuze..");
+define("_AD_OR", "OF"); //New in 0.98rc4
+define("_ERROR", "Fout");
+define("_SUCCESS", "Succesvol");
+define("_REQ", "*Verplicht");
+define("_ADDS", "Toevoegen vragenlijst");
+define("_ADDG", "Toevoegen groep");
+define("_ADDQ", "Toevoegen vraag");
+define("_ADDA", "Toevoegen antwoord"); //New in 0.98rc4
+define("_COPYQ", "Kopieer vraag"); //New in 0.98rc4
+define("_ADDU", "Toevoegen gebruiker");
+define("_SEARCH", "Zoeken"); //New in 0.98rc4
+define("_SAVE", "Bewaar aanpassingen");
+define("_NONE", "Geen"); //as in "Do not display anything", "or none chosen";
+define("_GO_ADMIN", "Hoofd Administratie scherm"); //text to display to return/display main administration screen
+define("_CONTINUE", "Ga verder");
+define("_WARNING", "Waarschuwing");
+define("_USERNAME", "Gebruikersnaam");
+define("_PASSWORD", "Paswoord");
+define("_DELETE", "Wis");
+define("_CLOSEWIN", "Sluit venster");
+define("_TOKEN", "Toegangscode");
+define("_DATESTAMP", "Datum"); //Referring to the datestamp or time response submitted
+define("_COMMENT", "Opmerking");
+define("_FROM", "Van"); //For emails
+define("_SUBJECT", "Onderwerp"); //For emails
+define("_MESSAGE", "Bericht"); //For emails
+define("_RELOADING", "Opnieuw laden van het scherm. Gelieve te wachten.");
+define("_ADD", "Toevoegen");
+define("_UPDATE", "Bijwerken");
+define("_BROWSE", "Bladeren"); //New in 098rc5
 define("_AND", "and"); //New with 0.98rc8
 define("_SQL", "SQL"); //New with 0.98rc8
 define("_PERCENTAGE", "Percentage"); //New with 0.98rc8
 define("_COUNT", "Count"); //New with 0.98rc8
 
 //SURVEY STATUS MESSAGES (new in 0.98rc3)
-define("_SS_NOGROUPS", "Number of groups in survey:"); //NEW for release 0.98rc3
-define("_SS_NOQUESTS", "Number of questions in survey:"); //NEW for release 0.98rc3
-define("_SS_ANONYMOUS", "This survey is anonymous."); //NEW for release 0.98rc3
-define("_SS_TRACKED", "This survey is NOT anonymous."); //NEW for release 0.98rc3
-define("_SS_DATESTAMPED", "Responses will be date stamped"); //NEW for release 0.98rc3
-define("_SS_COOKIES", "It uses cookies for access control."); //NEW for release 0.98rc3
-define("_SS_QBYQ", "It is presented question by question."); //NEW for release 0.98rc3
-define("_SS_GBYG", "It is presented group by group."); //NEW for release 0.98rc3
-define("_SS_SBYS", "It is presented on one single page."); //NEW for release 0.98rc3
-define("_SS_ACTIVE", "Survey is currently active."); //NEW for release 0.98rc3
-define("_SS_NOTACTIVE", "Survey is not currently active."); //NEW for release 0.98rc3
-define("_SS_SURVEYTABLE", "Survey table name is:"); //NEW for release 0.98rc3
-define("_SS_CANNOTACTIVATE", "Survey cannot be activated yet."); //NEW for release 0.98rc3
-define("_SS_ADDGROUPS", "You need to add groups"); //NEW for release 0.98rc3
-define("_SS_ADDQUESTS", "You need to add questions"); //NEW for release 0.98rc3
+define("_SS_NOGROUPS", "Aantal groepen in vragenlijst:"); //NEW for release 0.98rc3
+define("_SS_NOQUESTS", "Aantal vragen in vragenlijst:"); //NEW for release 0.98rc3
+define("_SS_ANONYMOUS", "Deze vragenlijst is anoniem."); //NEW for release 0.98rc3
+define("_SS_TRACKED", "Deze vragenlijst is NIET anoniem."); //NEW for release 0.98rc3
+define("_SS_DATESTAMPED", "Deelnames zullen met datum bijgehouden worden"); //NEW for release 0.98rc3
+define("_SS_COOKIES", "Er worden cookies gebruikt voor controle."); //NEW for release 0.98rc3
+define("_SS_QBYQ", "Weergave vraag per vraag."); //NEW for release 0.98rc3
+define("_SS_GBYG", "Weergave groep per groep."); //NEW for release 0.98rc3
+define("_SS_SBYS", "Weergave op één pagina."); //NEW for release 0.98rc3
+define("_SS_ACTIVE", "Vragenlijst is momenteel actief."); //NEW for release 0.98rc3
+define("_SS_NOTACTIVE", "Vragenlijst is momenteel niet actief."); //NEW for release 0.98rc3
+define("_SS_SURVEYTABLE", "Naam vragenlijsttabel is:"); //NEW for release 0.98rc3
+define("_SS_CANNOTACTIVATE", "Vragenlijst kan nog niet geactiveerd worden."); //NEW for release 0.98rc3
+define("_SS_ADDGROUPS", "U moet nog groepen toevoegen"); //NEW for release 0.98rc3
+define("_SS_ADDQUESTS", "U moet nog vragen toevoegen"); //NEW for release 0.98rc3
 define("_SS_ALLOWREGISTER", "If tokens are used, the public may register for this survey"); //NEW for release 0.98rc9
 define("_SS_ALLOWSAVE", "Participants can save partially finished surveys"); //NEW for release 0.99dev01
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
-define("_QS_MANDATORY", "Mandatory Question"); //New for release 0.98rc4
-define("_QS_OPTIONAL", "Optional Question"); //New for release 0.98rc4
-define("_QS_NOANSWERS", "You need to add answers to this question"); //New for release 0.98rc4
-define("_QS_NOLID", "You need to choose a Label Set for this question"); //New for release 0.98rc4
-define("_QS_COPYINFO", "Note: You MUST enter a new question code"); //New for release 0.98rc4
+define("_QS_MANDATORY", "Verplichte vraag"); //New for release 0.98rc4
+define("_QS_OPTIONAL", "Optionele vraag"); //New for release 0.98rc4
+define("_QS_NOANSWERS", "U moet nog antwoorden aan deze vraag toevoegen"); //New for release 0.98rc4
+define("_QS_NOLID", "U moet nog een label set voor deze vraag kiezen"); //New for release 0.98rc4
+define("_QS_COPYINFO", "Nota: u MOET een nieuwe code voor de vraag opgeven"); //New for release 0.98rc4
 
 //General Setup Messages
-define("_ST_NODB1", "The defined surveyor database does not exist");
-define("_ST_NODB2", "Either your selected database has not yet been created or there is a problem accessing it.");
-define("_ST_NODB3", "PHPSurveyor can attempt to create this database for you.");
-define("_ST_NODB4", "Your selected database name is:");
-define("_ST_CREATEDB", "Create Database");
+define("_ST_NODB1", "De ingestelde vragenlijst database bestaat niet");
+define("_ST_NODB2", "Ofwel is uw database nog niet aangemaakt, ofwel is er iets verkeerd mee.");
+define("_ST_NODB3", "PHPSurveyor kan proberen de database voor u aan te maken.");
+define("_ST_NODB4", "Uw ingestelde database naam is:");
+define("_ST_CREATEDB", "Maak database");
 
 //USER CONTROL MESSAGES
-define("_UC_CREATE", "Creating default htaccess file");
-define("_UC_NOCREATE", "Couldn't create htaccess file. Check your config.php for \$homedir setting, and that you have write permission in the correct directory.");
-define("_UC_SEC_DONE", "Security Levels are now set up!");
-define("_UC_CREATE_DEFAULT", "Creating default users");
-define("_UC_UPDATE_TABLE", "Updating users table");
-define("_UC_HTPASSWD_ERROR", "Error occurred creating htpasswd file");
-define("_UC_HTPASSWD_EXPLAIN", "If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/");
-define("_UC_SEC_REMOVE", "Removing security settings");
-define("_UC_ALL_REMOVED", "Access file, password file and user database deleted");
-define("_UC_ADD_USER", "Adding User");
-define("_UC_ADD_MISSING", "Could not add user. Username and/or password were not supplied");
-define("_UC_DEL_USER", "Deleting User");
-define("_UC_DEL_MISSING", "Could not delete user. Username was not supplied.");
-define("_UC_MOD_USER", "Modifying User");
-define("_UC_MOD_MISSING", "Could not modify user. Username and/or password were not supplied");
-define("_UC_TURNON_MESSAGE1", "You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\nIf you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts.");
-define("_UC_TURNON_MESSAGE2", "It is highly recommended that once your security system has been initialised you change this default password.");
-define("_UC_INITIALISE", "Initialise Security");
-define("_UC_NOUSERS", "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.");
-define("_UC_TURNOFF", "Turn Off Security");
+define("_UC_CREATE", "Aanmaken standaard htaccess bestand");
+define("_UC_NOCREATE", "Kon het htaccess bestand niet maken. Controleer config.php op \$homedir instelling, en op schrijfrechten in de juiste mappen.");
+define("_UC_SEC_DONE", "Beveiligingsniveaus zijn nu ingesteld!");
+define("_UC_CREATE_DEFAULT", "Bezig met het aanmaken van de standaardgebruikers");
+define("_UC_UPDATE_TABLE", "Bijwerken gebruikertabel");
+define("_UC_HTPASSWD_ERROR", "Er deed zich een fout voor bij het aanmaken van het htpasswd bestand");
+define("_UC_HTPASSWD_EXPLAIN", "Als u een Windows server gebruikt, is het aanbevolen dat u het apache htpasswd.exe bestand in uw admin map kopieert om deze functie te kunnen gebruiken. Het bestand wordt meestal gevonden in /apache group/apache/bin/");
+define("_UC_SEC_REMOVE", "Verwijderen beveiligingsinstellingen");
+define("_UC_ALL_REMOVED", "Toegangsbestand, paswoordbestand en gebruikersdatabase gewist");
+define("_UC_ADD_USER", "Bezig met het toevoegen van de gebruiker");
+define("_UC_ADD_MISSING", "Kon de gebruiker niet toevoegen. Gebruikersnaam en/of paswoord zijn niet opgegeven");
+define("_UC_DEL_USER", "Bezig met het wissen van de gebruiker");
+define("_UC_DEL_MISSING", "Kon de gebruiker niet wissen. Gebruikersnaam is niet opgegeven.");
+define("_UC_MOD_USER", "Bezig met het bewerken van de gebruiker");
+define("_UC_MOD_MISSING", "Kon de gebruiker niet bewerken. Gebruikersnaam en/of paswoord zijn niet opgegeven");
+define("_UC_TURNON_MESSAGE1", "U hebt de beveiligingsinstellingen van uw vragenlijst administratie nog niet opgestart en daardoor zijn er geen beperkingen op de toegang.</p>\nAls u op 'Opstarten beveiliging' hieronder drukt, wordt de standaard APACHE beveiliging toegepast op de administratiesectie van deze site. Vanaf dan zijn een gebruikersnaam en paswoord verplicht om toegang te krijgen.");
+define("_UC_TURNON_MESSAGE2", "Het is aanbevolen dat u dit standaard paswoord na het starten van het beveiligingssysteem verandert.");
+define("_UC_INITIALISE", "Opstarten beveiliging");
+define("_UC_NOUSERS", "Er bestaan geen gebruikers in uw tabel. Het is aanbevolen de beveiliging af te zetten. Daarna kunt u het terug aan zetten.");
+define("_UC_TURNOFF", "Afzetten beveiliging");
 
 //Activate and deactivate messages
-define("_AC_MULTI_NOANSWER", "This question is a multiple answer type question but has no answers.");
-define("_AC_NOTYPE", "This question does not have a question 'type' set.");
+define("_AC_MULTI_NOANSWER", "Deze vraag is een meerkeuzevraag maar er zijn geen antwoorden.");
+define("_AC_NOTYPE", "Er is bij deze vraag geen type gedefineerd.");
 define("_AC_NOLID", "This question requires a Labelset, but none is set."); //New for 0.98rc8
-define("_AC_CON_OUTOFORDER", "This question has a condition set, however the condition is based on a question that appears after it.");
-define("_AC_FAIL", "Survey does not pass consistency check");
-define("_AC_PROBS", "The following problems have been found:");
-define("_AC_CANNOTACTIVATE", "The survey cannot be activated until these problems have been resolved");
-define("_AC_READCAREFULLY", "READ THIS CAREFULLY BEFORE PROCEEDING");
-define("_AC_ACTIVATE_MESSAGE1", "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.");
-define("_AC_ACTIVATE_MESSAGE2", "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>");
-define("_AC_ACTIVATE_MESSAGE3", "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>");
-define("_AC_ACTIVATE_MESSAGE4", "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.");
-define("_AC_ACTIVATE", "Activate");
-define("_AC_ACTIVATED", "Survey has been activated. Results table has been succesfully created.");
-define("_AC_NOTACTIVATED", "Survey could not be actived.");
-define("_AC_NOTPRIVATE", "This is not an anonymous survey. A token table must also be created.");
+define("_AC_CON_OUTOFORDER", "Deze vraag heeft een conditie, maar de conditie is bepaald op een vraag die erna verschijnt.");
+define("_AC_FAIL", "Deze vragenlijst is niet consistent bevonden");
+define("_AC_PROBS", "De volgende problemen zijn gevonden:");
+define("_AC_CANNOTACTIVATE", "Deze vragenlijst kan niet worden geactiveerd zolang deze problemen niet zijn opgelost");
+define("_AC_READCAREFULLY", "LEES DIT ZORGVULDIG ALVORENS VERDER TE GAAN");
+define("_AC_ACTIVATE_MESSAGE1", "U kunt best een vragenlijst pas activeren wanneer u er absoluut zeker van bent dat de opstelling klaar is en u geen aanpassingen meer zult moeten doen.");
+define("_AC_ACTIVATE_MESSAGE2", "Eens een vragenlijst geactiveerd is, kunt u volgende zaken niet meer:<ul><li>Toevoegen en wissen van groepen</li><li>Toevoegen of wissen van antwoorden in meerkeuzevragen</li><li>Toevoegen of wissen van antwoorden</li></ul>");
+define("_AC_ACTIVATE_MESSAGE3", "U kan wel nog:<ul><li>De code, tekst of het tupe veranderen</li><li>De namen van de groepen veranderen</li><li>Voorgedefinieerde antwoorden (uitgezonderd meerkeuzeantwoorden) toevoegen, wissen of aanpassen</li><li>De naam of omschrijving van de vragenlijst wijzigen</li></ul>");
+define("_AC_ACTIVATE_MESSAGE4", "Eens gegevens in deze vragenlijst zijn ingebracht, zal u de vragenlijst moeten deactiveren om groepen of vragen toe te voegen of verwijderen, alle bestaande gegevens worden dan naar een archief verplaatst.");
+define("_AC_ACTIVATE", "Activeer");
+define("_AC_ACTIVATED", "Vragenlijst is geactiveerd. Deelnametabel is met succes aangemaakt.");
+define("_AC_NOTACTIVATED", "Vragenlijst kon niet worden geactiveerd.");
+define("_AC_NOTPRIVATE", "Dit is geen anonieme vragenlijst. Er moet ook een toegangscodetabel aangemaakt worden.");
 define("_AC_REGISTRATION", "This survey allows public registration. A token table must also be created.");
-define("_AC_CREATETOKENS", "Initialise Tokens");
-define("_AC_SURVEYACTIVE", "This survey is now active, and responses can be recorded.");
-define("_AC_DEACTIVATE_MESSAGE1", "In an active survey, a table is created to store all the data-entry records.");
-define("_AC_DEACTIVATE_MESSAGE2", "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.");
-define("_AC_DEACTIVATE_MESSAGE3", "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.");
-define("_AC_DEACTIVATE_MESSAGE4", "Your responses table will be renamed to:");
-define("_AC_DEACTIVATE_MESSAGE5", "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.");
-define("_AC_DEACTIVATE", "De-Activate");
-define("_AC_DEACTIVATED_MESSAGE1", "The responses table has been renamed to: ");
-define("_AC_DEACTIVATED_MESSAGE2", "The responses to this survey are no longer available using PHPSurveyor.");
-define("_AC_DEACTIVATED_MESSAGE3", "You should note the name of this table in case you need to access this information later.");
-define("_AC_DEACTIVATED_MESSAGE4", "The tokens table associated with this survey has been renamed to: ");
+define("_AC_CREATETOKENS", "Instellen toegangscodes");
+define("_AC_SURVEYACTIVE", "Deze vragenlijst is nu actief en deelnames zullen opgeslagen worden.");
+define("_AC_DEACTIVATE_MESSAGE1", "Voor een actieve vragenlijst wordt een tabel aangemaakt die alle gegevens bewaard.");
+define("_AC_DEACTIVATE_MESSAGE2", "Wanneer u een vragenlijst deactiveert, worden deze gegevens naar een andere tabel verplaatst en bij heractivatie is de tabel opnieuw leeg. Je kan dan deze gegevens niet langer met PHPSurveyor consulteren.");
+define("_AC_DEACTIVATE_MESSAGE3", "Gedeactiveerde vragenlijstgegevens kunnen momenteel alleen door systeembeheerders met een MySQL tool zoals phpMyAdmin geconsulteerd worden. Als uw vragenlijst toegangscodes gebruikt, zal ook deze tabel hernoemd worden en enkel door systeembeheerder toegankelijk zijn.");
+define("_AC_DEACTIVATE_MESSAGE4", "Uw deelnametabel wordt hernoemd naar:");
+define("_AC_DEACTIVATE_MESSAGE5", "U exporteert best de deelnames alvorens te deactiveren. Klik \"Annuleer\" om naar het hoofdmenu terug te keren zonder deze vragenlijst te deactiveren");
+define("_AC_DEACTIVATE", "Deactiveer");
+define("_AC_DEACTIVATED_MESSAGE1", "De deelnametabel wordt hernoemd naar: ");
+define("_AC_DEACTIVATED_MESSAGE2", "De deelnames van deze vragenlijst zijn niet langer beschikbaar in PHPSurveyor.");
+define("_AC_DEACTIVATED_MESSAGE3", "U noteert best de naam van deze tabel voor het geval u deze informatie later nog nodig heeft.");
+define("_AC_DEACTIVATED_MESSAGE4", "De toegangscodetabel van deze vragenlijst is hernoemd naar: ");
 
 //CHECKFIELDS
-define("_CF_CHECKTABLES", "Checking to ensure all tables exist");
-define("_CF_CHECKFIELDS", "Checking to ensure all fields exist");
-define("_CF_CHECKING", "Checking");
-define("_CF_TABLECREATED", "Table Created");
-define("_CF_FIELDCREATED", "Field Created");
+define("_CF_CHECKTABLES", "Bezig met verifiëren of alle tabellen bestaan");
+define("_CF_CHECKFIELDS", "Bezig met verifiëren of alle velden bestaan");
+define("_CF_CHECKING", "Bezig met controleren");
+define("_CF_TABLECREATED", "Tabel aangemaakt");
+define("_CF_FIELDCREATED", "Veld aangemaakt");
 define("_CF_OK", "OK");
-define("_CFT_PROBLEM", "It appears as if some tables or fields are missing from your database.");
+define("_CFT_PROBLEM", "Er blijken bepaalde tabellen of velden in de database te ontbreken.");
 
 //CREATE DATABASE (createdb.php)
-define("_CD_DBCREATED", "Database has been created.");
-define("_CD_POPULATE_MESSAGE", "Please click below to populate the database");
-define("_CD_POPULATE", "Populate Database");
-define("_CD_NOCREATE", "Could not create database");
-define("_CD_NODBNAME", "Database Information not provided. This script must be run from admin.php only.");
+define("_CD_DBCREATED", "Database is aangemaakt.");
+define("_CD_POPULATE_MESSAGE", "Gelieve hieronder te klikken om de database te vullen");
+define("_CD_POPULATE", "Vul database");
+define("_CD_NOCREATE", "Kon de database niet aanmaken");
+define("_CD_NODBNAME", "Database informatie niet ingevuld. Dit script mag enkel vanuit admin.php gestart worden.");
 
 //DATABASE MODIFICATION MESSAGES
-define("_DB_FAIL_GROUPNAME", "Group could not be added. It is missing the mandatory group name");
-define("_DB_FAIL_GROUPUPDATE", "Group could not be updated");
-define("_DB_FAIL_GROUPDELETE", "Group could not be deleted");
-define("_DB_FAIL_NEWQUESTION", "Question could not be created.");
-define("_DB_FAIL_QUESTIONTYPECONDITIONS", "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.");
-define("_DB_FAIL_QUESTIONUPDATE", "Question could not be updated");
-define("_DB_FAIL_QUESTIONDELCONDITIONS", "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed");
-define("_DB_FAIL_QUESTIONDELETE", "Question could not be deleted");
-define("_DB_FAIL_NEWANSWERMISSING", "Answer could not be added. You must include both a Code and an Answer");
-define("_DB_FAIL_NEWANSWERDUPLICATE", "Answer could not be added. There is already an answer with this code");
-define("_DB_FAIL_ANSWERUPDATEMISSING", "Answer could not be updated. You must include both a Code and an Answer");
-define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "Answer could not be updated. There is already an answer with this code");
-define("_DB_FAIL_ANSWERUPDATECONDITIONS", "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.");
-define("_DB_FAIL_ANSWERDELCONDITIONS", "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed");
-define("_DB_FAIL_NEWSURVEY_TITLE", "Survey could not be created because it did not have a short title");
-define("_DB_FAIL_NEWSURVEY", "Survey could not be created");
-define("_DB_FAIL_SURVEYUPDATE", "Survey could not be updated");
-define("_DB_FAIL_SURVEYDELETE", "Survey could not be deleted");
+define("_DB_FAIL_GROUPNAME", "Groep kon niet aangemaakt worden. De verplichte groepnaam ontbreekt");
+define("_DB_FAIL_GROUPUPDATE", "Groep kon niet bijgewerkt worden");
+define("_DB_FAIL_GROUPDELETE", "Groep kon niet gewist worden");
+define("_DB_FAIL_NEWQUESTION", "Vraag kon niet aangemaakt worden");
+define("_DB_FAIL_QUESTIONTYPECONDITIONS", "De vraag kon niet bijgewerkt worden. Er zijn condities voor andere vragen die afhangen van antwoorden in deze vraag en het veranderen van het type zou voor problemen zorgen. U moet deze condities verwijderen voor u het type van deze vraag kunt veranderen.");
+define("_DB_FAIL_QUESTIONUPDATE", "Vraag kon niet bijgewerkt worden");
+define("_DB_FAIL_QUESTIONDELCONDITIONS", "Vraag kon niet gewist worden. There are conditions for other questions that rely on this question. Er zijn condities voor andere vragen die afhangen van antwoorden in deze vraag en het verwijderen van deze vraag zou voor problemen zorgen. U moet deze condities verwijderen voor u deze vraag kunt wissen.");
+define("_DB_FAIL_QUESTIONDELETE", "Vraag kon niet gewist worden");
+define("_DB_FAIL_NEWANSWERMISSING", "Antwoord kon niet toegevoegd worden. U moet zowel een code als een antwoord opgeven");
+define("_DB_FAIL_NEWANSWERDUPLICATE", "Antwoord kon niet toegevoegd worden. Er is al een antwoord met deze code");
+define("_DB_FAIL_ANSWERUPDATEMISSING", "Antwoord kon niet bijgewerkt worden. U moet zowel een code als een antwoord opgeven");
+define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "Antwoord kon niet bijgewerkt worden. Er is al een antwoord met deze code");
+define("_DB_FAIL_ANSWERUPDATECONDITIONS", "Antwoord kon niet bijgewerkt worden. U heeft de code verandert, maar er zijn condities voor andere vragen die afhangen van antwoorden in deze vraag en het veranderen van de code van dit antwoord zou voor problemen zorgen. U moet deze condities verwijderen voor u deze code kunt veranderen");
+define("_DB_FAIL_ANSWERDELCONDITIONS", "Antwoord kon niet verwijderd worden. Er zijn condities voor andere vragen die afhangen van antwoorden in deze vraag en het verwijderen van dit antwoord zou voor problemen zorgen. U moet deze condities verwijderen voor u dit antwoord kunt wissen");
+define("_DB_FAIL_NEWSURVEY_TITLE", "Vragenlijst kon niet aangemaakt worden omdat er geen korte titel opgegeven is");
+define("_DB_FAIL_NEWSURVEY", "Vragenlijst kon niet aangemaakt worden");
+define("_DB_FAIL_SURVEYUPDATE", "Vragenlijst kon niet bijgewerkt worden");
+define("_DB_FAIL_SURVEYDELETE", "Vragenlijst kon niet gewist worden");
 
 //DELETE SURVEY MESSAGES
-define("_DS_NOSID", "You have not selected a survey to delete");
-define("_DS_DELMESSAGE1", "You are about to delete this survey");
-define("_DS_DELMESSAGE2", "This process will delete this survey, and all related groups, questions answers and conditions.");
-define("_DS_DELMESSAGE3", "We recommend that before you delete this survey you export the entire survey from the main administration screen.");
-define("_DS_SURVEYACTIVE", "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey.");
-define("_DS_SURVEYTOKENS", "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.");
-define("_DS_DELETED", "This survey has been deleted.");
+define("_DS_NOSID", "U heeft geen onderzoek geselecteerd om te wissen");
+define("_DS_DELMESSAGE1", "U staat op het punt deze vragenlijst te wissen");
+define("_DS_DELMESSAGE2", "Deze handeling zal de vragenlijst verwijderen, met hieraan vast alle groepen, vragen, antwoorden en condities.");
+define("_DS_DELMESSAGE3", "Het is aanbevolen de vragenlijst vanop het hoofdmenu te exporteren alvorens deze definitief te wissen.");
+define("_DS_SURVEYACTIVE", "Deze vragenlijst is actief en er bestaat een deelnametabel. Als u deze vragenlijst wist, zullen ook de deelnames gewist worden. Het is aanbevolen deze eerst te exporteren alvorens deze vragenlijst te wissen.");
+define("_DS_SURVEYTOKENS", "Deze vragenlijst heeft een toegangscodetabel. Als u de vragenlijst wist, zal ook deze tabel gewist worden. Het is aan te raden deze tabel te exporteren of te backuppen alvorens deze vragenlijst te wissen.");
+define("_DS_DELETED", "Deze vragenlijst is gewist.");
 
 //DELETE QUESTION AND GROUP MESSAGES
-define("_DG_RUSURE", "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"); //New for 098rc5
-define("_DQ_RUSURE", "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"); //New for 098rc5
+define("_DG_RUSURE", "Het wissen van deze groep zal ook alle vragen en antwoorden erbij wissen. Bent u zeker dat u wil verdergaan?"); //New for 098rc5
+define("_DQ_RUSURE", "Het wissen van deze veraag zal ook alle antwoorden erbij wissen. Bent u zeker dat u wil verdergaan?"); //New for 098rc5
 
 //EXPORT MESSAGES
-define("_EQ_NOQID", "No QID has been provided. Cannot dump question.");
-define("_ES_NOSID", "No SID has been provided. Cannot dump survey");
+define("_EQ_NOQID", "Er werd geen QID opgegeven. Kan de vraag niet dumpen.");
+define("_ES_NOSID", "Er werd geen SID opgegeven. Kan de vragenlijst niet dumpen.");
 
 //EXPORT RESULTS
-define("_EX_FROMSTATS", "Filtered from Statistics Script");
-define("_EX_HEADINGS", "Questions");
-define("_EX_ANSWERS", "Answers");
-define("_EX_FORMAT", "Format");
-define("_EX_HEAD_ABBREV", "Abbreviated headings");
-define("_EX_HEAD_FULL", "Full headings");
-define("_EX_ANS_ABBREV", "Answer Codes");
-define("_EX_ANS_FULL", "Full Answers");
+define("_EX_FROMSTATS", "Gefilterd uit de statistieken");
+define("_EX_HEADINGS", "Vragen");
+define("_EX_ANSWERS", "Antwoorden");
+define("_EX_FORMAT", "Formaat");
+define("_EX_HEAD_ABBREV", "Afgekorte hoofding");
+define("_EX_HEAD_FULL", "Volledige hoofding");
+define("_EX_ANS_ABBREV", "Antwoordcodes");
+define("_EX_ANS_FULL", "Volledige antwoorden");
 define("_EX_FORM_WORD", "Microsoft Word");
 define("_EX_FORM_EXCEL", "Microsoft Excel");
-define("_EX_FORM_CSV", "CSV Comma Delimited");
-define("_EX_EXPORTDATA", "Export Data");
-define("_EX_COLCONTROLS", "Column Control"); //New for 0.98rc7
-define("_EX_TOKENCONTROLS", "Token Control"); //New for 0.98rc7
-define("_EX_COLSELECT", "Choose columns"); //New for 0.98rc7
-define("_EX_COLOK", "Choose the columns you wish to export. Leave all unselected to export all columns."); //New for 0.98rc7
-define("_EX_COLNOTOK", "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."); //New for 0.98rc7
-define("_EX_TOKENMESSAGE", "Your survey can export associated token data with each response. Select any additional fields you would like to export."); //New for 0.98rc7
-define("_EX_TOKSELECT", "Choose Token Fields"); //New for 0.98rc7
+define("_EX_FORM_CSV", "CSV Komma gescheiden");
+define("_EX_EXPORTDATA", "Exporteer gegevens");
+define("_EX_COLCONTROLS", "Beheer kolommen"); //New for 0.98rc7
+define("_EX_TOKENCONTROLS", "Beheer toegangscodes"); //New for 0.98rc7
+define("_EX_COLSELECT", "Kies kolommen"); //New for 0.98rc7
+define("_EX_COLOK", "Kies de kolommen die u wenst te exporteren. Selecteer geen enkele om alle kolommen te exporteren."); //New for 0.98rc7
+define("_EX_COLNOTOK", "Uw vragenlijst bevat meer dan 255 kolommen aan antwoorden. Bepaalde spreadsheet applicaties zoals Excel laten slechts toe er 255 te importeren. Selecteer hieronder de kolommen die u wenst te exporteren."); //New for 0.98rc7
+define("_EX_TOKENMESSAGE", "Uw vragenlijst kan de gegevens van de toegangscodes bij elk antwoord exporteren. Selecteer eventueel de extra velden die u wenst te exporteren."); //New for 0.98rc7
+define("_EX_TOKSELECT", "Kies velden uit de toegangscodes"); //New for 0.98rc7
 
 //IMPORT SURVEY MESSAGES
-define("_IS_FAILUPLOAD", "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.");
-define("_IS_OKUPLOAD", "File upload succeeded.");
-define("_IS_READFILE", "Reading file..");
-define("_IS_WRONGFILE", "This file is not a PHPSurveyor survey file. Import failed.");
-define("_IS_IMPORTSUMMARY", "Survey Import Summary");
-define("_IS_SUCCESS", "Import of Survey is completed.");
-define("_IS_IMPFAILED", "Import of this survey file failed");
-define("_IS_FILEFAILS", "File does not contain PHPSurveyor data in the correct format.");
+define("_IS_FAILUPLOAD", "Er deed zich een fout voor bij het uploaden van uw bestand. Dit kan onjuiste rechten in uw admin map veroorzaken.");
+define("_IS_OKUPLOAD", "Upload geslaagd.");
+define("_IS_READFILE", "Bezig met lezen van het bestand..");
+define("_IS_WRONGFILE", "Dit bestand is geen PHPSurveyor bestand. Import mislukt.");
+define("_IS_IMPORTSUMMARY", "Samenvatting van import vragenlijst");
+define("_IS_SUCCESS", "Import van de vragenlijst is voltooid.");
+define("_IS_IMPFAILED", "Import van deze vragenlijst is mislukt");
+define("_IS_FILEFAILS", "Bestand bevat geen PHPSurveyor gegevens in een correct formaat");
 
 //IMPORT GROUP MESSAGES
-define("_IG_IMPORTSUMMARY", "Group Import Summary");
-define("_IG_SUCCESS", "Import of Group is completed.");
-define("_IG_IMPFAILED", "Import of this group file failed");
-define("_IG_WRONGFILE", "This file is not a PHPSurveyor group file. Import failed.");
+define("_IG_IMPORTSUMMARY", "Samenvatting van import groep");
+define("_IG_SUCCESS", "Import van de groep is voltooid.");
+define("_IG_IMPFAILED", "Import van deze groep is mislukt");
+define("_IG_WRONGFILE", "Dit bestand is geen PHPSurveyor groep bestand. Import mislukt");
 
 //IMPORT QUESTION MESSAGES
-define("_IQ_NOSID", "No SID (Survey) has been provided. Cannot import question.");
-define("_IQ_NOGID", "No GID (Group) has been provided. Cannot import question");
-define("_IQ_WRONGFILE", "This file is not a PHPSurveyor question file. Import failed.");
-define("_IQ_IMPORTSUMMARY", "Question Import Summary");
-define("_IQ_SUCCESS", "Import of Question is completed");
+define("_IQ_NOSID", "Er werd geen SID (Vragenlijst) opgegeven. Kan de vraag niet importeren");
+define("_IQ_NOGID", "Er werd geen GID (Groep) opgegeven. Kan de vraag niet importeren");
+define("_IQ_WRONGFILE", "Dit bestand is geen PHPSurveyor vraagbestand. Import mislukt");
+define("_IQ_IMPORTSUMMARY", "Samenvatting van import vraag");
+define("_IQ_SUCCESS", "Import van de vraag is voltooid.");
 
 //IMPORT LABELSET MESSAGES
 define("_IL_DUPLICATE", "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.");
 
 //BROWSE RESPONSES MESSAGES
-define("_BR_NOSID", "You have not selected a survey to browse.");
-define("_BR_NOTACTIVATED", "This survey has not been activated. There are no results to browse.");
-define("_BR_NOSURVEY", "There is no matching survey.");
-define("_BR_EDITRESPONSE", "Edit this entry");
-define("_BR_DELRESPONSE", "Delete this entry");
-define("_BR_DISPLAYING", "Records Displayed:");
-define("_BR_STARTING", "Starting From:");
-define("_BR_SHOW", "Show");
-define("_DR_RUSURE", "Are you sure you want to delete this entry?"); //New for 0.98rc6
+define("_BR_NOSID", "U hebt geen vragenlijst opgegeven om te bekijken.");
+define("_BR_NOTACTIVATED", "Deze vragenlijst is niet geactiveerd. Er zijn geen deelnames om te bekijken.");
+define("_BR_NOSURVEY", "Er is geen bijhorende vragenlijst.");
+define("_BR_EDITRESPONSE", "Bewerk deelname");
+define("_BR_DELRESPONSE", "Wis deelname");
+define("_BR_DISPLAYING", "Records weergegeven:");
+define("_BR_STARTING", "Starten vanaf:");
+define("_BR_SHOW", "Toon");
+define("_DR_RUSURE", "Weet u zeker dat u deze deelname wil wissen?"); //New for 0.98rc6
 
 //STATISTICS MESSAGES
-define("_ST_FILTERSETTINGS", "Filter Settings");
+define("_ST_FILTERSETTINGS", "Filter instellingen");
 define("_ST_VIEWALL", "View summary of all available fields"); //New with 0.98rc8
 define("_ST_SHOWRESULTS", "View Stats"); //New with 0.98rc8
 define("_ST_CLEAR", "Clear"); //New with 0.98rc8
@@ -520,24 +520,24 @@ define("_ST_NULLIGNORED", "*Null values are ignored in calculations"); //New wit
 define("_ST_QUARTMETHOD", "*Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"); //New with 0.98rc8
 
 //DATA ENTRY MESSAGES
-define("_DE_NOMODIFY", "Cannot be modified");
-define("_DE_UPDATE", "Update Entry");
-define("_DE_NOSID", "You have not selected a survey for data-entry.");
-define("_DE_NOEXIST", "The survey you selected does not exist");
-define("_DE_NOTACTIVE", "This survey is not yet active. Your response cannot be saved");
-define("_DE_INSERT", "Inserting Data");
-define("_DE_RECORD", "The entry was assigned the following record id: ");
-define("_DE_ADDANOTHER", "Add Another Record");
-define("_DE_VIEWTHISONE", "View This Record");
-define("_DE_BROWSE", "Browse Responses");
-define("_DE_DELRECORD", "Record Deleted");
-define("_DE_UPDATED", "Record has been updated.");
-define("_DE_EDITING", "Editing Response");
-define("_DE_QUESTIONHELP", "Help about this question");
-define("_DE_CONDITIONHELP1", "Only answer this if the following conditions are met:"); 
-define("_DE_CONDITIONHELP2", "to question {QUESTION}, you answered {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
-define("_DE_AND", "AND");
-define("_DE_OR", "OR");
+define("_DE_NOMODIFY", "Kan niet aangepast worden");
+define("_DE_UPDATE", "Bijwerken deelname");
+define("_DE_NOSID", "U heeft geen vragenlijst voor ingave geselecteerd.");
+define("_DE_NOEXIST", "De vragenlijst die u selecteerde bestaat niet");
+define("_DE_NOTACTIVE", "Deze vragenlijst is nog niet actief. Uw antwoorden worden niet bewaard");
+define("_DE_INSERT", "Invoegen gegevens");
+define("_DE_RECORD", "De deelname kreeg volgend record id: ");
+define("_DE_ADDANOTHER", "Toevoegen extra record");
+define("_DE_VIEWTHISONE", "Bekijk dit record");
+define("_DE_BROWSE", "Bekijk deelnames");
+define("_DE_DELRECORD", "Record gewist");
+define("_DE_UPDATED", "Record bijgewerkt.");
+define("_DE_EDITING", "Bezig met bewerken deelname");
+define("_DE_QUESTIONHELP", "Help over deze vraag");
+define("_DE_CONDITIONHELP1", "Enkel antwoord als de volgende voorwaarden zijn voldaan:"); 
+define("_DE_CONDITIONHELP2", "op vraag {QUESTION}, antwoordde u {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define("_DE_AND", "EN");
+define("_DE_OR", "OF");
 define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01
 define("_DE_SAVEID", "Identifier:"); //New in 0.99dev01
 define("_DE_SAVEPW", "Password:"); //New in 0.99dev01
@@ -545,65 +545,65 @@ define("_DE_SAVEPWCONFIRM", "Confirm Password:"); //New in 0.99dev01
 define("_DE_SAVEEMAIL", "Email:"); //New in 0.99dev01
 
 //TOKEN CONTROL MESSAGES
-define("_TC_TOTALCOUNT", "Total Records in this Token Table:"); //New in 0.98rc4
-define("_TC_NOTOKENCOUNT", "Total With No Unique Token:"); //New in 0.98rc4
-define("_TC_INVITECOUNT", "Total Invitations Sent:"); //New in 0.98rc4
-define("_TC_COMPLETEDCOUNT", "Total Surveys Completed:"); //New in 0.98rc4
-define("_TC_NOSID", "You have not selected a survey");
-define("_TC_DELTOKENS", "About to delete tokens table for this survey.");
-define("_TC_DELTOKENSINFO", "If you delete this table tokens will no longer be required to access this survey. A backup of this table will be made if you proceed. Your system administrator will be able to access this table.");
-define("_TC_DELETETOKENS", "Delete Tokens");
-define("_TC_TOKENSGONE", "The tokens table has now been removed and tokens are no longer required to access this survey. A backup of this table has been made and can be accessed by your system administrator.");
-define("_TC_NOTINITIALISED", "Tokens have not been initialised for this survey.");
-define("_TC_INITINFO", "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token.");
-define("_TC_INITQ", "Do you want to create a tokens table for this survey?");
-define("_TC_INITTOKENS", "Initialise Tokens");
-define("_TC_CREATED", "A token table has been created for this survey.");
-define("_TC_DELETEALL", "Delete all token entries");
-define("_TC_DELETEALL_RUSURE", "Are you really sure you want to delete ALL token entries?");
-define("_TC_ALLDELETED", "All token entries have been deleted");
-define("_TC_CLEARINVITES", "Set all entries to 'N' invitation sent");
-define("_TC_CLEARINV_RUSURE", "Are you really sure you want to reset all invitation records to NO?");
-define("_TC_CLEARTOKENS", "Delete all unique token numbers");
-define("_TC_CLEARTOKENS_RUSURE", "Are you sure you want to delete all unique token numbers?");
-define("_TC_TOKENSCLEARED", "All unique token numbers have been removed");
-define("_TC_INVITESCLEARED", "All invite entries have been set to N");
-define("_TC_EDIT", "Edit Token Entry");
-define("_TC_DEL", "Delete Token Entry");
-define("_TC_DO", "Do Survey");
-define("_TC_VIEW", "View Response");
-define("_TC_INVITET", "Send invitation email to this entry");
-define("_TC_REMINDT", "Send reminder email to this entry");
-define("_TC_INVITESUBJECT", "Invitation to participate in {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
-define("_TC_REMINDSUBJECT", "Reminder to participate in {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
-define("_TC_REMINDSTARTAT", "Start at TID No:");
-define("_TC_REMINDTID", "Sending to TID No:");
-define("_TC_CREATETOKENSINFO", "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?");
-define("_TC_TOKENSCREATED", "{TOKENCOUNT} tokens have been created"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
-define("_TC_TOKENDELETED", "Token has been deleted.");
-define("_TC_SORTBY", "Sort by: ");
-define("_TC_ADDEDIT", "Add or Edit Token");
-define("_TC_TOKENCREATEINFO", "You can leave this blank, and automatically generate tokens using 'Create Tokens'");
-define("_TC_TOKENADDED", "Added New Token");
-define("_TC_TOKENUPDATED", "Updated Token");
-define("_TC_UPLOADINFO", "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\".");
-define("_TC_UPLOADFAIL", "Upload file not found. Check your permissions and path for the upload directory"); //New for 0.98rc5
-define("_TC_IMPORT", "Importing CSV File");
-define("_TC_CREATE", "Creating Token Entries");
-define("_TC_TOKENS_CREATED", "{TOKENCOUNT} Records Created");
-define("_TC_NONETOSEND", "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.");
-define("_TC_NOREMINDERSTOSEND", "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.");
-define("_TC_NOEMAILTEMPLATE", "Invitation Template cannot be found. This file must exist in the default template folder.");
-define("_TC_NOREMINDTEMPLATE", "Reminder Template cannot be found. This file must exist in the default template folder.");
-define("_TC_SENDEMAIL", "Send Invitations");
-define("_TC_SENDINGEMAILS", "Sending Invitations");
-define("_TC_SENDINGREMINDERS", "Sending Reminders");
-define("_TC_EMAILSTOGO", "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.");
-define("_TC_EMAILSREMAINING", "There are {EMAILCOUNT} emails still to be sent."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
-define("_TC_SENDREMIND", "Send Reminders");
-define("_TC_INVITESENTTO", "Invitation Sent To:"); //is followed by token name
-define("_TC_REMINDSENTTO", "Reminder Sent To:"); //is followed by token name
-define("_TC_UPDATEDB", "Update tokens table with new fields"); //New for 0.98rc7
+define("_TC_TOTALCOUNT", "Totaal aantal records in deze toegangscodetabel:"); //New in 0.98rc4
+define("_TC_NOTOKENCOUNT", "Totaal zonder unieke toegangscode:"); //New in 0.98rc4
+define("_TC_INVITECOUNT", "Totaal aantal uitnodigingen verstuurd:"); //New in 0.98rc4
+define("_TC_COMPLETEDCOUNT", "Totaal aantal vragenlijsten voltooid:"); //New in 0.98rc4
+define("_TC_NOSID", "U heeft geen vragenlijst geselecteerd");
+define("_TC_DELTOKENS", "De toegangscodetabel wordt dadelijk gewist.");
+define("_TC_DELTOKENSINFO", "Als u deze tabel wist, zal er niet langer een toegangscode nodig zijn om deze vragenlijst in te vullen. Er wordt een backup van deze tabel gemaakt als u verdergaat. Enkel de systeembeheerder kan nog in deze backup.");
+define("_TC_DELETETOKENS", "Wis toegangscodes");
+define("_TC_TOKENSGONE", "De toegangscodetabel is nu verwijderd en er is geen toegangscode meer nodig om de vragenlijst in te vullen. Er is een backup gemaakt waar enkel nog de systeembeheerder aan kan.");
+define("_TC_NOTINITIALISED", "Toegangscodes zijn niet geactiveerd voor deze vragenlijst.");
+define("_TC_INITINFO", "Als u de toegangscodes voor deze vragenlijst activeert, zal deze vragenlijst enkel toegangelijk zijn voor gebruikers die een toegangscode ontvangen hebben.");
+define("_TC_INITQ", "Wilt u een toegangscodetabel voor deze vragenlijst aanmaken?");
+define("_TC_INITTOKENS", "Activeer toegangscodes");
+define("_TC_CREATED", "Er werd een toegangscodetabel voor deze vragenlijst aangemaakt.");
+define("_TC_DELETEALL", "Wis alle toegangscodes");
+define("_TC_DELETEALL_RUSURE", "Weet u zeker dat u ALLE toegangscodes wil wissen?");
+define("_TC_ALLDELETED", "Alle toegangscodes werden gewist");
+define("_TC_CLEARINVITES", "Stel alle gebruikers op 'N'iet uitgenodigd");
+define("_TC_CLEARINV_RUSURE", "Weet u zeker dat u alle uitnodigingen op NEE wil plaatsen?");
+define("_TC_CLEARTOKENS", "Wis alle unieke toegangscodes");
+define("_TC_CLEARTOKENS_RUSURE", "Weet u zeker dat u alle unieke toegangscodes wil wissen?");
+define("_TC_TOKENSCLEARED", "Alle unieke toegangscodes werden gewist");
+define("_TC_INVITESCLEARED", "Alle uitnodigingen werden terug op NEE geplaatst");
+define("_TC_EDIT", "Wijzig deelnemer");
+define("_TC_DEL", "Wis deelnemer");
+define("_TC_DO", "Neem vragenlijst af");
+define("_TC_VIEW", "Toon deelname");
+define("_TC_INVITET", "Verstuur uitnodigingsmail naar deze deelnemer");
+define("_TC_REMINDT", "Verstuur herinneringsmail naar deze deelnemer");
+define("_TC_INVITESUBJECT", "Uitnodiging om deel te nemen aan {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
+define("_TC_REMINDSUBJECT", "Herinnering om deel te nemen aan {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
+define("_TC_REMINDSTARTAT", "Start vanaf TID nr.:");
+define("_TC_REMINDTID", "Versturen naar TID nr.:");
+define("_TC_CREATETOKENSINFO", "Als u bevestigd zullen toegangscodes voor alle deelnemers in de lijst die geen paswoord hebben automatisch aangemaakt worden. Is dit OK?");
+define("_TC_TOKENSCREATED", "{TOKENCOUNT} toegangscodes zijn aangemaakt"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
+define("_TC_TOKENDELETED", "Toegangscode is gewist.");
+define("_TC_SORTBY", "Sorteer op: ");
+define("_TC_ADDEDIT", "Toevoegen of bewerken toegangscode");
+define("_TC_TOKENCREATEINFO", "U kan dit leeg laten en automatisch toegangscodes genereren met 'Aanmaken toegangscodes'");
+define("_TC_TOKENADDED", "Nieuwe toegangscodes toegevoegd");
+define("_TC_TOKENUPDATED", "Toegangscode bijgewerkt");
+define("_TC_UPLOADINFO", "Het bestand moet een standaard CSV (kommagescheiden) bestand zijn zonder aanhalingstekens. De eerste lijn moet de hoofding bevatten (zal niet geïmporteerd worden. De gegevens dienen geordend worden als 'voornaam, naam, e-mail, [paswoord], [attribute1], [attribute2]'.");
+define("_TC_UPLOADFAIL", "Uploadbestand niet gevonden. Controleer de rechten en het path naar de upload map"); //New for 0.98rc5
+define("_TC_IMPORT", "Bezig met het importeren van het CSV bestand");
+define("_TC_CREATE", "Bezig met het aanmaken van de deelnemers");
+define("_TC_TOKENS_CREATED", "{TOKENCOUNT} records aangemaakt");
+define("_TC_NONETOSEND", "Er waren geen e-mails te versturen. De mogelijke oorzaken hiervan zijn - niet hebben van een e-mailadres, reeds een uitnodiging verstuurd, de vragenlijst al ingevuld met een toegangscode.");
+define("_TC_NOREMINDERSTOSEND", "Er waren geen e-mails te versturen. De mogelijke oorzaken hiervan zijn - niet hebben van een e-mailadres, reeds een herinnering verstuurd, de vragenlijst al ingevuld..");
+define("_TC_NOEMAILTEMPLATE", "Sjabloon uitnodiging niet gevonden. Dit bestand moet bestaan in de standaard sjabloon map.");
+define("_TC_NOREMINDTEMPLATE", "Herinnering sjabloon niet gevonden. Dit bestand moet bestaan in de standaard sjabloon map.");
+define("_TC_SENDEMAIL", "Verstuur uitnodigingen");
+define("_TC_SENDINGEMAILS", "Bezig met versturen van uitnodigingen");
+define("_TC_SENDINGREMINDERS", "Bezig met versturen van herinneringen");
+define("_TC_EMAILSTOGO", "Er zijn meer e-mails lopende dan in één keer kunnen verstuurd worden. Ga verder met het versturen door hieronder te klikken.");
+define("_TC_EMAILSREMAINING", "Er zijn nog {EMAILCOUNT} e-mails te versturen."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
+define("_TC_SENDREMIND", "Verstuur herinneringen");
+define("_TC_INVITESENTTO", "Uitnodiging verzonden naar:"); //is followed by token name
+define("_TC_REMINDSENTTO", "Herinnering verzonden naar:"); //is followed by token name
+define("_TC_UPDATEDB", "Update toegangscodetabel met nieuwe velden"); //New for 0.98rc7
 define("_TC_EMAILINVITE_SUBJ", "Invitation to participate in survey"); //New for 0.99dev01
 define("_TC_EMAILINVITE", "Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\n"
 						 ."The survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
@@ -638,34 +638,34 @@ define("_TC_EMAILCONFIRM", "Dear {FIRSTNAME},\n\nThis email is to confirm that y
 						  ."{ADMINNAME}"); //New for 0.98rc9 - Confirmation Email
 
 //labels.php
-define("_LB_NEWSET", "Create New Label Set");
-define("_LB_EDITSET", "Edit Label Set");
-define("_LB_FAIL_UPDATESET", "Update of Label Set failed");
-define("_LB_FAIL_INSERTSET", "Insert of new Label Set failed");
-define("_LB_FAIL_DELSET", "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.");
-define("_LB_ACTIVEUSE", "You cannot change codes, add or delete entries in this label set because it is being used by an active survey.");
-define("_LB_TOTALUSE", "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.");
+define("_LB_NEWSET", "Toevoegen label set");
+define("_LB_EDITSET", "Bewerk label set");
+define("_LB_FAIL_UPDATESET", "Bijwerken van label set mislukt");
+define("_LB_FAIL_INSERTSET", "Toevoegen van label set mislukt");
+define("_LB_FAIL_DELSET", "Kon label set niet wissen - Er zijn vragen die ervan afhangen. U moet deze eerst wissen.");
+define("_LB_ACTIVEUSE", "U kan de codes niet veranderen, items toevoegen of wissen omdat deze label set in een actieve vragenlijst wordt gebruikt.");
+define("_LB_TOTALUSE", "Er zijn vragenlijsten die momenteel deze label set gebruiken. Codes wijzigen, toevoegen of verwijderen in deze label set zou ongewenste gevolgen kunnen hebben.");
 //Export Labels
-define("_EL_NOLID", "No LID has been provided. Cannot dump label set.");
+define("_EL_NOLID", "Er werd geen LID opgegeven. Kan label set niet dumpen.");
 //Import Labels
-define("_IL_GOLABELADMIN", "Return to Labels Admin");
+define("_IL_GOLABELADMIN", "Terug naar Label Administratie");
 
 //PHPSurveyor System Summary
-define("_PS_TITLE", "PHPSurveyor System Summary");
-define("_PS_DBNAME", "Database Name");
-define("_PS_DEFLANG", "Default Language");
-define("_PS_CURLANG", "Current Language");
-define("_PS_USERS", "Users");
-define("_PS_ACTIVESURVEYS", "Active Surveys");
-define("_PS_DEACTSURVEYS", "De-activated Surveys");
-define("_PS_ACTIVETOKENS", "Active Token Tables");
-define("_PS_DEACTTOKENS", "De-activated Token Tables");
+define("_PS_TITLE", "Samenvatting PHPSurveyor Systeem");
+define("_PS_DBNAME", "Naam database");
+define("_PS_DEFLANG", "Standaardtaal");
+define("_PS_CURLANG", "Huidige taal");
+define("_PS_USERS", "Gebruikers");
+define("_PS_ACTIVESURVEYS", "Actieve vragenlijsten");
+define("_PS_DEACTSURVEYS", "Gedeactiveerde vragenlijsten");
+define("_PS_ACTIVETOKENS", "Actieve toegangscodetabellen");
+define("_PS_DEACTTOKENS", "Gedeactiveerde toegangscodetabellen");
 define("_PS_CHECKDBINTEGRITY", "Check PHPSurveyor Data Integrity"); //New with 0.98rc8
 
 //Notification Levels
-define("_NT_NONE", "No email notification"); //New with 098rc5
-define("_NT_SINGLE", "Basic email notification"); //New with 098rc5
-define("_NT_RESULTS", "Send email notification with result codes"); //New with 098rc5
+define("_NT_NONE", "Geen e-mail verwittiging"); //New with 098rc5
+define("_NT_SINGLE", "Eenvoudige e-mail verwittiging"); //New with 098rc5
+define("_NT_RESULTS", "E-mail verwittiging met resultaten (codes)"); //New with 098rc5
 
 //CONDITIONS TRANSLATIONS
 define("_CD_CONDITIONDESIGNER", "Condition Designer"); //New with 098rc9
@@ -759,4 +759,9 @@ define("_AS_EDIT", "Edit");
 define("_AS_DELETE", "Delete");
 define("_AS_ADD", "Add");
 define("_AS_UPDATE", "Update");
+
+//Question Number regeneration
+define("_RE_REGENNUMBER", "Regenerate Question Numbers:"); //NEW for release 0.99dev2
+define("_RE_STRAIGHT", "Straight"); //NEW for release 0.99dev2
+define("_RE_BYGROUP", "By Group"); //NEW for release 0.99dev2
 ?>

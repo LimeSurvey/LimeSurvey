@@ -389,13 +389,13 @@ if ($sid)
 				$surveysummary2 .= _NT_RESULTS."<br />\n";
 				break;
 			}
-		$surveysummary2 .= "Regenerate Question Numbers: "
-						 . "[<a href='$scriptname?action=renumberquestions&sid=$sid&style=straight' "
+		$surveysummary2 .= _RE_REGENNUMBER
+						 . " [<a href='$scriptname?action=renumberquestions&sid=$sid&style=straight' "
 						 . "onClick='return confirm(\"Are you sure?\")' "
-						 . ">Straight</a>] "
+						 . ">"._RE_STRAIGHT."</a>] "
 						 . "[<a href='$scriptname?action=renumberquestions&sid=$sid&style=bygroup' "
 						 . "onClick='return confirm(\"Are you sure?\")' "
-						 . ">By Group</a>]";
+						 . ">"._RE_BYGROUP."</a>]";
 		$surveysummary2 .= "</font></font></td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails11'>"
 			. "<td align='right' valign='top'>$setfont<b>"
