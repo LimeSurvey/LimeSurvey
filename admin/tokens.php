@@ -391,9 +391,12 @@ if ($action == "remind")
 		{
 		echo "Sending reminder email!";
 		$ctquery="SELECT firstname FROM tokens_$sid WHERE completed !='Y' AND sent='Y' AND token !=''";
+		if ($last_tid) {$ctquery .= " AND tid > '$last_tid'";}
 		$ctresult=mysql_query($ctquery);
 		$ctcount=mysql_num_rows($ctresult);
-		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_$sid WHERE completed != 'Y' AND sent = 'Y' AND token !='' LIMIT $maxemails";
+		$emquery="SELECT firstname, lastname, email, token, tid FROM tokens_$sid WHERE completed != 'Y' AND sent = 'Y' AND token !=''";
+		if ($last_tid) {$emquery .= " AND tid > '$last_tid'";}
+		$emquery .= " ORDER BY tid LIMIT $maxemails";
 		$emresult=mysql_query($emquery) or die ("Couldn't do query.<BR>$emquery<BR>".mysql_error());
 		$emcount=mysql_num_rows($emresult);
 		$headers = "From: $from\r\n";
@@ -401,21 +404,18 @@ if ($action == "remind")
 		echo "<table width='500' align='CENTER' bgcolor='#EEEEEE'><tr><td><font size='1'>\n";
 		if ($emcount > 0)
 			{
-			while ($emrow=mysql_fetch_row($emresult))
+			while ($emrow=mysql_fetch_array($emresult))
 				{
-				$to=$emrow[2];
-				//echo "To: $to ($emrow[0] $emrow[1])<BR>";
-				//$from=$surveyadminemail;
-				//echo "From: $from<BR>";
-				//echo "Subject: $subject<BR>";
-				$sendmessage = "Dear $emrow[0],\n\n";
+				$to=$emrow['email'];
+				$sendmessage = "Dear {$emrow['firstname']},\n\n";
 				$sendmessage .= str_replace("\'", "'", $message);
 				$sendmessage .= "\n\n-------------------------------------------\n\n";
 				$sendmessage .= "Click here to do this survey:\n\n";
-				$sendmessage .= "$publicurl/index.php?sid=$sid&token=$emrow[3]\n\n";
+				$sendmessage .= "$publicurl/index.php?sid=$sid&token={$emrow['token']}\n\n";
 				//echo "Message:". str_replace("\n", "<BR>", $sendmessage) . "<P>";
 				mail($to, $subject, $sendmessage, $headers);
-				echo "[Reminder Sent to $emrow[0] $emrow[1]] ";
+				echo "[Reminder Sent to {$emrow['firstname']} {$emrow['lastname']}]({$emrow['tid']}) ";
+				$lasttid=$emrow['tid'];
 				}
 			if ($ctcount > $emcount)
 				{
@@ -432,6 +432,7 @@ if ($action == "remind")
 				echo "<input type='hidden' name='from' value='$from'>\n";
 				echo "<input type='hidden' name='subject' value='$subject'>\n";
 				echo "<input type='hidden' name='message' value='$message'>\n";
+				echo "<input type='hidden' name='last_tid' value='$lasttid'>\n";
 				echo "</form>\n";
 				}
 			}
