@@ -478,6 +478,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					foreach ($legitqs as $lq) { echo "DEBUG UNUSED LEGIT QUESTIONS: $lq\n";}
 					echo "QUESTION TYPE: ".$qrow['type']."\n";
 					echo "Other Debug Info: $debug\n";
+					foreach ($origlegitqs as $olq) {echo "DEBUG ORIGINAL LEGIT QUESTIONS: $olq\n";}
 					die("An Export Error Occurred With Field [$fieldinfo]");
 					}
 				}
@@ -505,11 +506,14 @@ for ($i=0; $i<$fieldcount; $i++)
 					}
 				elseif ($ftype == "O") //List with Comment
 					{
+					$debug .= "DOING A COMMENT TYPE ONE\n";
 					$thisacount=2;
 					if (!isset($usedanswers)) {$usedanswers=0;}
 					$usedanswers++;
+					$debug .= "USEDANSWERS = $usedanswers AND THISACOUNT = $thisacount\n";
 					if (isset($usedanswers) && isset($thisacount) && $usedanswers == $thisacount)
 						{
+						$debug .= "Iterating through legit questions..\n";
 					    foreach ($legitqs as $lgqs)
 							{
 							if ($lgqs != $fqid) {$nlegitqs[]=$lgqs;}
@@ -559,6 +563,7 @@ for ($i=0; $i<$fieldcount; $i++)
 						$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
 						$debug .= "LAST SELECT TO GET ACOUNT: $aq |";
 						$thisacount = mysql_num_rows($ar);
+						if ($ftype == "P") {$thisacount=$thisacount*2;}
 						if ($fother == "Y") {$thisacount++;}
 						}
 					if(!isset($usedanswers)) {$usedanswers=0;}
@@ -860,6 +865,7 @@ elseif ($answers == "long")
 					$aq = "SELECT code FROM {$dbprefix}answers WHERE qid=$fqid"; //We just want to count how many answers so we can delete the legitq entry when they're all used up
 					$ar = mysql_query($aq) or die ("Couldnt' count answers to question<br />".$aq."<br />".mysql_error());
 					$thisacount = mysql_num_rows($ar);
+					if ($ftype == "P") {$thisacount=$thisacount*2;}
 					if ($fother == "Y") {$thisacount++;}
 					}
 				if(!isset($usedanswers)) {$usedanswers=0;}
