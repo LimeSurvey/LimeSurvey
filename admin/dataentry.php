@@ -1272,16 +1272,16 @@ elseif ($action == "update")
 					{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
 					if (get_magic_quotes_gpc())
-						{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
+						{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
 					else
 						{
 						if (_PHPVERSION >= "4.3.0")
 							{
-							$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
+							$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
 							}
 						else
 							{
-							$updateqr .= "`$fieldname` = '" . mysql_escape_string($thisvalue) . "', \n";
+							$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 							}
 						}
 					}
@@ -1313,6 +1313,13 @@ elseif ($action == "update")
 	if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 	$updateqr .= " WHERE id=$id";
 	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
+	$thissurvey=getSurveyInfo($sid);
+	if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect']=='Y' && $thissurvey['url']) {
+	    session_write_close();
+	    $url=$thissurvey['url'];
+	    header("Location: $url");
+	}
+	ob_end_flush();
 	echo "<font color='green'><b>"._SUCCESS."</b></font><br />\n"
 		._DE_UPDATED."<br /><br />\n"
 		."<a href='browse.php?sid=$sid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
