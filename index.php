@@ -6,7 +6,7 @@
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
+	# >          CARLTON SOUTH 3053, AUSTRALIA					#
 	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
@@ -34,1437 +34,169 @@
 	#############################################################
 */
 
+
 session_start();
-
-if ($_GET['sid']) {$_SESSION['sid'] = $_GET['sid'];}
-if ($_POST['sid']) {$_SESSION['sid'] = $_POST['sid'];}
-$sid = $_SESSION['sid'];
-if ($_GET['token']) {$_SESSION['token'] = $_GET['token'];}
-if ($_POST['token']) {$_SESSION['token'] = $_POST['token'];}
-$token = $_SESSION['token'];
-if ($_GET['move']) {$move = $_GET['move'];}
-if ($_POST['move']) {$move = $_POST['move'];}
-if ($_POST['fvalue']) {$fvalue = $_POST['fvalue'];}
-if ($_POST['fvalue1']) {$fvalue1 = $_POST['fvalue1'];}
-if ($_POST['multi']) {$multi = $_POST['multi'];}
-if ($_POST['thisstep']) {$thisstep = $_POST['thisstep'];}
-//$thisstep = $_POST['thisstep']; if (!$thisstep) {$thisstep=$_SESSION['thisstep'];}
-#$totalsteps = $_SESSION['totalsteps'];
-#$fieldarray = $_SESSION['fieldarray'];
-#$insertarray = $_SESSION['insertarray'];
-if ($_POST['lastgroupname']) {$lastgroupname = $_POST['lastgroupname'];}
-if ($_POST['newgroup']) {$newgroup = $_POST['newgroup'];}
-if ($_POST['lastfield']) {$lastfield = $_POST['lastfield'];}
-
-if ($move == "clearall" || $move == "here" || $move == "completed")
-	{
-	session_unset();
-	session_destroy();
-	}
-
-if ($fvalue || $fvalue == "0")
-	{
-	if ($fvalue == " ")
-		{
-		//$$lastfield = "";
-		$_SESSION[$lastfield] = "";
-		}
-	else
-		{
-		//$$lastfield = $fvalue;
-		$_SESSION[$lastfield] = $fvalue;
-		}
-	}
-
-if ($multi)
-	{
-	$myfields = explode("|", $lastfield);
-	$multimandatory="N";
-	$j=0;
-	for ($i=1; $i<=$multi; $i++)
-		{
-		$mylist = "fvalue$i";
-		$arrayno = $i-1;
-		$_SESSION[$myfields[$arrayno]] = $_POST[$mylist];
-		//echo "$mylist -> " . $_POST[$mylist] ." -> " . $myfields[$arrayno] . " -> {$_SESSION[$myfields[$arrayno]]}<br />";
-		//echo "$mylist: " . $_POST[$mylist] . " (session: " . $myfields[$arrayno] . ")<br />";
-		if ($_POST[$mylist]) {$multimandatory="Y";} //if there are any answers, set this to true
-		if ($_POST[$mylist] && ($_POST['lasttype'] == "R" || $_POST['lasttype'] == "A" || $_POST['lasttype'] == "B" || $_POST['lasttype'] == "C"))
-			{
-			$j++;
-			}
-		}
-	if ($_POST['lasttype'] == "R" || $_POST['lasttype'] == "A" || $_POST['lasttype'] == "B" || $_POST['lasttype'] == "C") 
-		{
-		//echo "$j == $i == $multi";
-		if ($j == $multi)	
-			{
-			$multimandatory="Y";
-			} else	{
-			$multimandatory="N";
-			}
-		}
-	$mylist = substr($mylist, 0, strlen($mylist)-1);
-	}
-
-//This section handles the question number that will be answered - moving backwards and forwards as required
-if ($_POST['mandatory'] == "Y" && ($_POST['fvalue'] != "0" && !$_POST['fvalue'] || $_POST['fvalue'] == " ") && !$multimandatory) //if the last question was mandatory but there is no data
-	{
-	//Repeat last question until an answer is shown
-	if ($move == " last ") {$move = " next >> ";} //avoids going to submit if last question isn't answered
-	$repeatmandatory="Y"; //avoids repeating group description if this is the first question of a group (see group description section at top of else{})
-	}
-elseif ($_POST['mandatory'] == "Y" && $multi && $multimandatory != "Y")
-	{
-	if ($move == " last ") {$move = " next >> ";}
-	$repeatmandatory="Y"; //avoids repeating group description if this is the first question of a group
-	}
-else
-	{
-	if ($move == " << prev " && $newgroup != "yes") {$_SESSION['step'] = $thisstep-1;} else {$_SESSION['step'] = $thisstep;}
-	if ($move == " next >> ") {$_SESSION['step'] = $thisstep+1;}
-	if ($move == " last ") {$_SESSION['step'] = $thisstep+1;}
-	}
 
 include("./admin/config.php");
 
-//if ($sid != $_GET['sid'] && $sid != $_POST['sid']){$sid = $_GET['sid'];}
-
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-                                                     // always modified
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
 header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
+//DEFAULT SETTINGS FOR TEMPLATES
+if (!$publicdir) {$publicdir=".";}
+$tpldir="$publicdir/templates";
 
-echo "<html>\n<head>\n<title>$sitename</title>\n</head>\n<body>\n<font face='Verdana'>\n";
-
-//FIRST, LETS HANDLE SOME CONTINGENCIES
-
-if (!$sid && (!$move == "clearall" || !$move=="here"))
+//CHECK FOR REQUIRED INFORMATION (sid)
+if (!$_GET['sid'] && !$_POST['sid'])
 	{
-	echo "<center><b>$sitename</b><br />\n<br />\n<b>You cannot access this website without a valid Survey ID code.</b><br />\n";
-	echo "<br />\nPlease contact $siteadminemail for information.";
-	echo "</body>\n</html>";
+	//A nice crashout
+	$output=file("$tpldir/default/startpage.pstpl");
+	foreach($output as $op)
+		{
+		echo templatereplace($op);
+		}
+	echo "\t\t<center><br />\n";
+	echo "\t\t\t<font color='RED'><b>ERROR:</b></font><br />\n";
+	echo "\t\t\tYou have not provided a survey identification number.<br /><br />\n";
+	echo "\t\t\tPlease contact <i>$siteadminname</i> at <i>$siteadminemail</i> for further assistance.<br /><br />\n";
+	$output=file("$tpldir/default/endpage.pstpl");
+	foreach($output as $op)
+		{
+		echo templatereplace($op);
+		}
 	exit;
 	}
 
-if (!mysql_selectdb ($databasename, $connect))
+//GET BASIC INFORMATION ABOUT THIS SURVEY
+$sid=$_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
+$query="SELECT * FROM surveys WHERE sid=$sid";
+$result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
+$surveyexists=mysql_num_rows($result);
+while ($row=mysql_fetch_array($result))
 	{
-	echo "<center><b>$sitename<br />\n<br />\n<font color='red'>ERROR</font></b><br />\n<br />\n";
-	echo "This system has not yet been installed properly.<br />\n";
-	echo "Contact your $siteadminemail for information";
-	echo "</body>\n</html>";
-	exit;
+	$surveyname=$row['short_title'];
+	$surveydescription=$row['description'];
+	$surveywelcome=$row['welcome'];
+	$templatedir=$row['template'];
+	$surveyadminname=$row['admin'];
+	$surveyadminemail=$row['adminemail'];
+	$surveyactive = $row['active'];
+	$surveyexpiry = $row['expires'];
+	$surveyprivate = $row['private'];
+	$surveytable = "survey_{$row['sid']}";
+	$surveyurl = $row['url'];
+	$surveyurldescrip = $row['urldescrip'];
+	$surveyformat = $row['format'];
 	}
 
-// NOW LETS GATHER SOME INFORMATION ABOUT THIS PARTICULAR SURVEY (This happens on every page)
-if ($sid && $move != "clearall" && $move != "completed")
+//SET THE TEMPLATE DIRECTORY
+if (!$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
+if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
+//CLEAR SESSION IF REQUESTED
+if ($_GET['move'] == "clearall")
 	{
-	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
-	$desresult = mysql_query($desquery) or die ("Couldn't get survey with sid of $sid<br />$desquery<br />".mysql_error());
-	$descount = mysql_num_rows($desresult);
-	while ($desr = mysql_fetch_array($desresult)) {$expirydate = $desr['expires'];}
-	if ($descount == 0)
+	echo "<html>\n";
+	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
-		echo "There is no survey with that SID. Sorry. [$descount][$desquery]";
-		echo "</body>\n</html>";
-		exit;
+		echo templatereplace($op);
 		}
-	elseif ($expirydate < date("Y-m-d") && $expirydate != "0000-00-00")
+	echo "\t<br />\n";
+	echo "\t<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>\n";
+	echo "\t\t<font face='arial' size='2'>\n";
+	echo "\t\t<b><font color='red'>Answers Cleared.</b></font><br /><br />";
+	echo "<a href='$PHP_SELF?sid=$sid'>Restart This Survey</a><br />\n";
+	echo "\t\t<a href='javascript: window.close()'>Close Window</a>\n";
+	echo "\t\t</font>\n";
+	echo "\t</td></tr>\n";
+	echo "\t</table>\n\t<br />\n";
+	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
-		echo "<center><b>$sitename<br />\n<br />\n<font color='red'>ERROR</font></b><br />\n<br />\n";
-		echo "Sorry. This survey has expired and is no longer available.<br />\n(Expiry date $expirydate)";
-		echo "</body>\n</html>";
-		exit;
+		echo templatereplace($op);
 		}
-	$desresult = mysql_query($desquery);
-	while ($desrow = mysql_fetch_array($desresult))
-		{
-		$surveyname = $desrow['short_title'];
-		$surveydesc = $desrow['description'];
-		$surveyactive = $desrow['active'];
-		$surveytable = "survey_{$desrow['sid']}";
-		$surveywelcome = $desrow['welcome'];
-		$surveyadminname = $desrow['admin'];
-		$surveyadminemail = $desrow['adminemail'];
-		$surveyprivate = $desrow['private'];
-		$surveyformat = $desrow['format'];
-		}
-	$surveyheader = "<table width='95%' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
-	$surveyheader .= "\t<tr>\n";
-	$surveyheader .= "\t\t<td colspan='2' bgcolor='silver' align='center' valign='middle' style='padding: 1em 1em 1em 1em'>\n";
-	$surveyheader .= "\t\t\t<font color='#000080' size='4'><b>$surveyname</b></font><br />\n";
-	$surveyheader .= "\t\t\t<font size='1' color='#444444'>$surveydesc\n";
-	$surveyheader .= "\t\t</td>\n";
-	$surveyheader .= "\t</tr>\n";	
 	
-	//LETS SEE IF THERE ARE TOKENS FOR THIS SURVEY
-	$i = 0; $tokensexist = 0;
-	$tresult = @mysql_list_tables($databasename);
-	while($tbl = @mysql_tablename($tresult, $i++))
-		{
-		if ($tbl == "tokens_$sid") {$tokensexist = 1;}
-		}
+	session_unset();
+	session_destroy();
+	exit;	
 	}
 
-//THIS CLEARS ALL DATA WHEN CLEARALL OR FINISH HAS BEEN CHOSEN
-if ($move == "clearall" || $move == "here")
+//CALL APPROPRIATE SCRIPT
+switch ($surveyformat)
 	{
-	$fieldname = "";
-	$_SESSION['fieldarray'] = "";
-	$_SESSION['step'] = "";
-	$_SESSION['totalsteps'] = "";
-	$_SESSION['token'] = "";
-	echo "<br />\n&nbsp;<br />\n";
-	echo "<center>All data has been deleted.<br />\n&nbsp;<br />\n";
-	echo "<a href='javascript:window.close()'>Close</a><br />\n<br />\n&nbsp;</center>\n";
-	echo "</body>\n</html>";
-	exit;
+	case "A": //All in one
+		include("survey.php");
+		break;
+	case "S": //One at a time
+		include("question.php");
+		break;
+	case "G": //Group at a time
+		include("group.php");
+		break;		
+	default:
+		include("question.php");
 	}
 
-
-// This is the LAST POINT. The survey is completed and saved and now we're just letting the user close the window
-if ($move == "completed")
+function templatereplace($line)
 	{
-	echo "<table width='95%' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' bgcolor='silver' align='center'>\n";
-	echo "\t\t\t<font color='#000080' size='4'><b>$sitename</b></font><br />\n";
-	echo "\t\t\t<font color='#444444' size='1'>&nbsp;\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";	
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' align='center'>\n";
-	echo "\t\t\t$setfont<br />\nThis is the \"$sitename\" Survey site.<br />\n";
-	echo "\t\t\t<br />\n";
-	echo "\t\t\t<a href='javascript: window.close()'>Close Window</a><br />\n";
-	echo "\t\t\t<br />\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "<table>\n";
-	echo "</body>\n</html>";
-	exit;
-	}
-
-// Here we present the user with the option to submit their responses and provide general information about stopping, and privacy (if appropriate)
-if ($move == " last ")
-	{
-	submit($surveyheader, $_SESSION['step'], $_SESSION['totalsteps'], $sid, $setfont, $surveyprivate);
-	exit;
-	}
-
-//THIS IS THE SECOND LAST POINT. HERE, WE GATHER ALL THE SESSION VARIABLES AND INSERT THEM INTO THE DATABASE.
-if ($move == " submit ")
-	{
-	echo "$surveyheader";
-	//echo $surveyactive;
-	echo "\t<tr>\n";
-	echo "\t\t<td>\n";
-	echo "\t\t\t<br />&nbsp;<br />\n";
-	echo "\t\t\t<table width='250' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#CCCCCC'>\n";
-	echo "\t\t\t\t\t\t<br /><b>Results are being submitted...<br /><br />\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	$subquery = "INSERT INTO $surveytable ";
-	foreach ($_SESSION['insertarray'] as $value)
-		{
-		$col_name .= ", " . substr($value, 1); //Add separator and strip off leading 'F'
-		if (get_magic_quotes_gpc() == "0")
-			{
-			if (phpversion() >= "4.3.0")
-				{
-				$values .= ", '" . mysql_real_escape_string($_SESSION[$value], "'") . "'";	
-				}
-			else
-				{
-				$values .= ", '" . mysql_escape_string($_SESSION[$value]) . "'";
-				}
-			}
-		else
-			{
-			$values .= ", '" . $_SESSION[$value] . "'";
-			}
-		//echo "$value<br />\n"; //Debugging info
-		}
-	$col_name = substr($col_name, 2); //Strip off first comma & space
-	$values = substr($values, 2); //Strip off first comma & space
-	$subquery .= "\n($col_name) \nVALUES \n($values)";
-	//echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
+	global $surveyname, $surveydescription;
+	global $surveywelcome, $percentcomplete;
+	global $groupname, $groupdescription, $question;
+	global $questioncode, $answer, $navigator;
+	global $help, $totalquestions;
+	global $completed, $surveyurl, $surveyurldescrip;
+	global $notanswered, $privacy, $sid;
 	
-	if ($surveyactive == "Y")
+	$clearall = "\t\t\t\t\t<div class='clearall'><a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall' onClick='return confirm(\"Are you sure you want to clear all your responses?\")'>[Exit and Clear Survey]</a></div>\n";
+	
+	
+	if (ereg("^<body", $line))
 		{
-		$subresult = mysql_query($subquery) or die ("</table>\n</td>\n</tr>\n</table>\nCouldn't update $surveytable<br />\n".mysql_error()."<br />\n<pre>$subquery</pre>\n");
-		echo "\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
-		echo "\t\t\t\t\t\t<br /><font color='red'>Thank you!</font><br />\n";
-		echo "\t\t\t\t\t\tResults have been successfully updated.<br />&nbsp;\n";
-		echo "\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t</tr>\n";
-		if ($token)
+		if (!ereg("^checkconditions()", $line) && ($_SESSION['step'] || $_SESSION['step'] > 0) && ($_POST['move'] != " last " || ($_POST['move'] == " last " && $notanswered)) && ($_POST['move'] != " submit " || ($_POST['move']== " submit " && $notanswered)))
 			{
-			$utquery = "UPDATE tokens_$sid SET completed='Y' WHERE token='$token'";
-			$utresult = mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
-			
-			//MAIL CONFIRMATION TO PARTICIPANT
-			$cnfquery = "SELECT * FROM tokens_$sid WHERE token='$token' AND completed='Y'";
-			$cnfresult = mysql_query($cnfquery);
-			while ($cnfrow = mysql_fetch_array($cnfresult))
-				{
-				$headers = "From: $surveyadminemail\r\n";
-				$headers .= "X-Mailer: $sitename Email Inviter";
-				$to = $cnfrow['email'];
-				$subject = "Confirmation: $surveyname Survey Completed";
-				$message = "Dear {$cnfrow['firstname']},\n\n";
-				$message .= "This email is to confirm that you have completed the survey titled \"$surveyname\" ";
-				$message .= "and your response has been saved. Thank you for participating.\n\n";
-				if ($surveyprivate != "N")
-					{
-					$message .= "Please note that your survey submission does not contain any link to your personal ";
-					$message .= "information used to send you this confirmation or the original invitation.\n";
-					$message .= "The information you submitted in the survey is anonymous unless a question in the ";
-					$message .= "survey itself actually asks for such information.\n\n";
-					}
-				else
-					{
-					//just in case we want to add info about it not being private
-					}
-				$message .= "If you have any questions about this survey please contact $surveyadminname on ";
-				$message .= "$surveyadminemail.\n\n";
-				$message .= "Sincerely,\n\n";
-				$message .= "$surveyadminname";
-				if ($cnfrow['email']) {mail($to, $subject, $message, $headers);} //Only send confirmation email if there is an email address
-				}
+			$line=str_replace("<body", "<body onload=\"checkconditions()\"", $line);
 			}
 		}
+	
+	$line=str_replace("{SURVEYNAME}", $surveyname, $line);
+	$line=str_replace("{SURVEYDESCRIPTION}", $surveydescription, $line);
+	$line=str_replace("{WELCOME}", $surveywelcome, $line);
+	$line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
+	$line=str_replace("{GROUPNAME}", $groupname, $line);
+	$line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
+	$line=str_replace("{QUESTION}", $question, $line);
+	$line=str_replace("{QUESTION_CODE}", $questioncode, $line);
+	$line=str_replace("{ANSWER}", $answer, $line);
+	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
+	if ($help) 
+		{$line=str_replace("{QUESTIONHELP}", "<img src='help.gif' align='left'>".$help, $line);}
 	else
-		{
-		echo "\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
-		echo "\t\t\t\t\t\t<br /><font color='red'>Sorry!</font><br />\n";
-		echo "\t\t\t\t\t\tCould not submit results - survey has not been activated<br />&nbsp;\n";
-		echo "\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t</tr>\n";
-		// debugging info
-		echo "<!-- DEBUG (\$subquery): $subquery -->\n";
-		// end debugging info
-		}
-	echo "\t\t\t</table>\n";
-	echo "\t\t\t<center><br /><a href='index.php?move=completed&sid=$sid'>Finish</a></center><br />\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "</table>\n";
-	
-	// debugging info
-	echo "<!-- DEBUG INFO (\$insertarray)\n";
-	
-	foreach ($_SESSION['insertarray'] as $posted)
-		{
-		echo "$posted: ".$_SESSION[$posted] ."\n";
-		}
-	echo "SID: $sid\n";
-	echo "Token: $token\n";
-	echo "-->\n";
-	// end debugging info
-	echo "</body>\n</html>";
-	exit;
-	}
-	
-// THIS IS FOR WHEN THE SURVEY SCRIPTS AND STUFF HAVEN'T STARTED YET
-if (!$_SESSION['step'])
-	{
-	if ($tokensexist == 1 && !$_GET['token'])
-		{
-		echo "<center><b>$sitename</b><br />\n<br />\n<b>You cannot access this website without a valid token.</b><br />\n";
-		echo "Tokens are issued to invited participants. If you have been invited to participate in this<br />\n";
-		echo "survey but have not got a token, please contact $siteadminemail for information.<br />\n&nbsp;";
-		echo "<table align='center' bgcolor='#EEEEEE'>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<form method='post'>\n";
-		echo "\t\t<td align='center'>\n";
-		echo "\t\t\tIf you have been issued a token, please enter it here to proceed:<br />\n";
-		echo "\t\t\t<input type='text' size='10' name='token' /><br />\n";
-		echo "\t\t\t<input type='submit' value='Go' />\n";
-		echo "\t\t</td>\n";
-		echo "\t<input type='hidden' name='sid' value='$sid' />\n";
-		echo "\t</tr>\n";
-		echo "\t</form>\n";
-		echo "</table>\n";
-		echo "</body>\n</html>";
-		exit;
-		}
-	if ($tokensexist == 1 && $_GET['token'])
-		{
-		//check if token actually does exist
-		$tkquery = "SELECT * FROM tokens_$sid WHERE token='{$_GET['token']}' AND completed != 'Y'";
-		$tkresult = mysql_query($tkquery);
-		$tkexist = mysql_num_rows($tkresult);
-		if ($tkexist > 0)
-			{
-#			session_register("token"); //No need to register $token as long as it's passed via GET
-			}
-		else
-			{
-			echo "<center><b>$sitename</b><br />\n<br />\n<b>The token you have submitted has either been used or does not exist.</b><br />\n";
-			echo "Tokens are issued to invited participants. If you have been invited to participate in this<br />\n";
-			echo "survey but your token has failed, please contact $siteadminemail for more information.<br />\n&nbsp;";
-			echo "<table align='center' bgcolor='#EEEEEE'>\n";
-			echo "\t<tr><form method='post'>\n";
-			echo "\t\t<td align='center'>\n";
-			echo "\t\t\tIf you have been issued a token, please enter it here to proceed:<br />\n";
-			echo "\t\t\t<input type='text' size='10' name='token' /><br />\n";
-			echo "\t\t\t<input type='submit' value='Go' />\n";
-			echo "\t\t</td>\n";
-			echo "\t\t<input type='hidden' name='sid' value='$sid' />\n";
-			echo "\t</form></tr>\n";
-			echo "</table>\n";
-			echo "</body>\n</html>";
-			exit;
-			}
-		}
-	echo "<table width='95%' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' bgcolor='silver' align='center'><font color='#000080'><b>$sitename</b></font></td>\n";
-	echo "\t</tr>\n";	
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' bgcolor='#dddddd' align='center'><font size='4'><b>Welcome</b></font></td>\n";
-	echo "\t</tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' align='center'>&nbsp;<br />\n";
-	echo "\t\t\t<b>$surveyname</b><br />\n";
-	//echo "\t\t\t$setfont<i>$surveydesc</i><br />\n";
-	echo "\t\t\t<table width='80%' align='center'>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td align='center'>\n";
-	echo "\t\t\t\t\t\t$setfont<br />$surveywelcome<br />&nbsp;\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t</table>\n";
-	echo "\t\t\tClick \"Next\" to begin.<br />&nbsp;\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "\t<form method='post'>\n";
-	echo "\t<input type='hidden' name='sid' value='$sid' />\n";
-	echo "\t<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
-	
-	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
-	$aresult = mysql_query($aquery);
-	$_SESSION['totalsteps'] = mysql_num_rows($aresult);
-	
-	if ($_SESSION['totalsteps'] == "0")	//break out and crash if there are no questions!
-		{
-		echo "\t<tr>\n";
-		echo "\t\t<td align='center' colspan='2'>\n";
-		echo "$setfont<center><b>$sitename</b><br />\n<br />\n<b>This survey does not yet have any questions, and so cannot be accessed.</b><br />\n";
-		echo "<br />\nPlease contact $siteadminemail for information.<br /><br />\n";
-		echo "<a href=\"javascript:window.close()\">Close Window</a>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "</table>\n";
-		echo "</body>\n</html>";
-		exit;
-		}
-	else
-		{
-		echo "\t<tr>\n";
-		echo "\t\t<td align='center' colspan='2' bgcolor='#DDDDDD'>\n";
-		echo "\t\t\t$setfont There are {$_SESSION['totalsteps']} questions in this survey.\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		}
-	
-	echo "\t<tr>\n";
-	echo "\t\t<td align='center' colspan='2'>\n";
-	
-	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($arow = mysql_fetch_assoc($aresult)) {$arows[] = $arow;} // Get table output into array
-	
-	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
-	usort($arows, 'CompareGroupThenTitle');
-	
-	if (!$_SESSION['insertarray'])
-		{
-		if ($surveyprivate == "N")
-			{
-	#		session_register("Ftoken");
-	#		$Ftoken=$token;
-			$_SESSION['Ftoken'] = $token;
-			$_SESSION['insertarray'][]= "Ftoken";
-			}
-	
-		foreach ($arows as $arow)
-			{
-			//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
-			$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P")
-				{
-				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
-				$abresult = mysql_query($abquery);
-				while ($abrow = mysql_fetch_array($abresult))
-					{
-					$_SESSION['insertarray'][] = "F$fieldname".$abrow['code'];
-					$alsoother = "";
-					if ($abrow['other'] == "Y") {$alsoother = "Y";}
-					if ($arow['type'] == "P")
-						{
-						$_SESSION['insertarray'][] = "F$fieldname".$abrow['code']."comment";	
-						}
-					}
-				if ($alsoother)
-					{
-					$_SESSION['insertarray'][] = "F$fieldname"."other";
-					if ($arow['type'] == "P")
-						{
-						$_SESSION['insertarray'][] = "F$fieldname"."othercomment";	
-						}
-					}
-				}
-			elseif ($arow['type'] == "R")
-				{
-				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
-				$abresult = mysql_query($abquery);
-				$abcount = mysql_num_rows($abresult);
-				for ($i=1; $i<=$abcount; $i++)
-					{
-					$_SESSION['insertarray'][] = "F$fieldname".$i;
-					}			
-				}
-			elseif ($arow['type'] == "O")
-				{
-#				session_register("F$fieldname");
-				$_SESSION['insertarray'][] = "F$fieldname";
-				$fn2 = "F$fieldname"."comment";
-#				session_register("$fn2");
-				$_SESSION['insertarray'][] = "$fn2";
-				
-				}
-			else
-				{
-#				session_register("F$fieldname");
-				$_SESSION['insertarray'][] = "F$fieldname";
-				}
-
-			//Check to see if there are any conditions set for this question
-			if (conditionscount($arow['qid']) > 0)
-				{
-				$conditions = "Y";
-				} else {
-				$conditions = "N";
-				}
-			//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
-			//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
-			//ARRAY CONTENTS - [0]=questions.qid, [1]=fieldname, [2]=questions.title, [3]=questions.question
-			//                 [4]=questions.type, [5]=questions.gid, [6]=questions.mandatory, [7]=conditionsexist?
-			
-			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}", $conditions);
-			}
-		}
-	//echo count($_SESSION['fieldarray']);
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	//$_SESSION['step'] = 1;
+		{$line=str_replace("{QUESTIONHELP}", $help, $line);}
+	$line=str_replace("{NAVIGATOR}", $navigator, $line);
+	$submitbutton="<input class='submit' type='submit' value=' submit ' name='move'>";
+	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
+	$line=str_replace("{COMPLETED}", $completed, $line);
+	$line=str_replace("{URL}", "<a href='$surveyurl'>$surveyurldescrip</a>", $line);
+	$line=str_replace("{PRIVACY}", $privacy, $line);
+	$line=str_replace("{CLEARALL}", $clearall, $line);
+	return $line;
 	}
 
-else
+function makegraph($thisstep, $total)
 	{
-	$s = $_SESSION['step'];
-	//$t indicates which question in the array we should be displaying
-	$t = $s-1;
-	$v = $t-1;
-	$u = $_SESSION['totalsteps'];
-	$chart = (($s-1)/$u*100);
-
-	// CHECK FOR CONDITIONS. This will keep cycling through questions until it finds a question where the conditions are not met
-	$conditionforthisquestion=$_SESSION['fieldarray'][$t][7];
-	while ($conditionforthisquestion == "Y")
-		{
-		//There are conditions for this question, so lets see whether they are met:
-		//First lets make sure we haven't started a new group
-		$gdquery = "SELECT group_name, groups.description FROM groups, questions WHERE groups.gid=questions.gid and qid={$_SESSION['fieldarray'][$t][0]}";
-		$gdresult = mysql_query($gdquery);
-		while ($gdrow = mysql_fetch_array($gdresult))
-			{
-			$currentgroupname = $gdrow['group_name'];
-			$groupdescription = $gdrow['description'];
-			}
-		if ($_SESSION['fieldarray'][$t][5] != $_SESSION['fieldarray'][$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev " && !$repeatmandatory)
-			{ 
-			//If a new group is starting, just go to the group description if there is one.
-			$conditionforthisquestion="N";
-			}
-		else
-			{
-			$cquery="SELECT distinct cqid FROM conditions WHERE qid={$_SESSION['fieldarray'][$t][0]}";
-			$cresult=mysql_query($cquery) or die("Couldn't count cqids<br />$cquery<br />".mysql_error());
-			$cqidcount=mysql_num_rows($cresult);
-			$cqidmatches=0;
-			while ($crows=mysql_fetch_array($cresult))
-				{
-				//cycle through each distinct cqid
-				$qquery="SELECT qid FROM conditions WHERE qid={$_SESSION['fieldarray'][$t][0]} AND cqid={$crows['cqid']}";
-				$qresult=mysql_query($qquery) or die("Couldn't count conditions for this cqid<br />$qquery<br />".mysql_error());
-				$cconcount[$crows['cqid']]=mysql_num_rows($qresult);
-				//See if either of the conditions in this cqid match
-				$cqquery = "SELECT cfieldname, value, cqid FROM conditions WHERE qid={$_SESSION['fieldarray'][$t][0]} AND cqid={$crows['cqid']}";
-				$cqresult = mysql_query($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".mysql_error());
-				$amatchhasbeenfound="N";
-				while ($cqrows=mysql_fetch_array($cqresult))
-					{
-					$currentcqid=$cqrows['cqid'];
-					$conditionfieldname="F".$cqrows['cfieldname'];
-					if (!$cqrows['value']) {$conditionvalue="NULL";} else {$conditionvalue=$cqrows['value'];}
-					if (!$_SESSION[$conditionfieldname]) {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
-					if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
-					}
-				if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
-				}
-			if ($cqidmatches == $cqidcount)
-				{
-				//a match has been found in BOTH distinct cqids. The question WILL be displayed
-				$conditionforthisquestion="N";
-				}
-			else
-				{
-				//matches have not been found in BOTH distinct cqids. The question WILL NOT be displayed
-				echo "<!-- DEBUG - CONDITIONS ARE NOT MET IN THIS ROUND -->\n";
-				if ($move == " next >> ")
-					{
-					$_SESSION['step']++;
-					$s = $_SESSION['step'];
-					$t++;
-					$v++;
-					$chart = (($s-1)/$u*100);
-					if ($t == $u) 
-						{
-						//The last question was conditional and has been skipped. Move into panic mode.
-						$conditionforthisquestion="N";
-						submit($surveyheader, $_SESSION['step'], $_SESSION['totalsteps'], $sid, $setfont, $surveyprivate);
-						exit;
-						}
-					}
-				elseif ($move == " << prev ")
-					{
-					$_SESSION['step']--;
-					$s = $_SESSION['step'];
-					$t--;
-					$v--;
-					$chart = (($s-1)/$u*100);
-					}
-				$conditionforthisquestion=$_SESSION['fieldarray'][$t][7];
-				}
-				}
-		}
-
-	echo $surveyheader;
-	//echo "STEP: $_SESSION['step'], TOTALSTEPS: {$_SESSION['totalsteps']}, LASTFIELD: $lastfield";
-	echo "<!-- DEBUG: _POST['mandatory'] = {$_POST['mandatory']}\n _POST['fvalue'] = {$_POST['fvalue']} -->\n";
-	
-	// GET AND SHOW GROUP NAME
-	$gdquery = "SELECT group_name, groups.description FROM groups, questions WHERE groups.gid=questions.gid and qid={$_SESSION['fieldarray'][$t][0]}";
-	$gdresult = mysql_query($gdquery);
-	while ($gdrow = mysql_fetch_array($gdresult))
-		{
-		$currentgroupname = $gdrow['group_name'];
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2' align='center' bgcolor='#DDDDDD'>\n";
-		echo "\t\t\t$setfont<font color='#800000'><b>$currentgroupname</b></font>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		$groupdescription = $gdrow['description'];
-		}
-	
-	//if (($currentgroupname != $lastgroupname) && ($move != " << prev "))
-	//SHOWS GROUP DESCRIPTION AT BEGINNING OF A GROUP
-	if ($_SESSION['fieldarray'][$t][5] != $_SESSION['fieldarray'][$v][5] && $newgroup != "yes" && $groupdescription  && $move != " << prev " && !$repeatmandatory)
-		{
-		$presentinggroupdescription = "yes";
-		echo "\t<form method='post'>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2' align='center'>\n";
-		echo "\t\t\t<table width='80%' align='center'>\n";
-		echo "\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t<td align='center'>\n";
-		echo "\t\t\t\t\t\t$setfont<br />$groupdescription<br />&nbsp;\n";
-		echo "\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t</tr>\n";
-		echo "\t\t\t</table>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<input type='hidden' name='sid' value='$sid' />\n";
-		echo "\t<input type='hidden' name='thisstep' value='$t' />\n";
-		echo "\t<input type='hidden' name='newgroup' value='yes' />\n";
-		}
-	else
-		{
-		// SHOW % CHART
-		echo "\t<tr>\n";;
-		echo "\t\t<td colspan='2' align='center' bgcolor='EEEEEE'>$setfont\n";
-		
-		echo "\t\t\t<table width='175' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
-		echo "\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t<td width='35' align='right'><font size='1'>0%</td>\n";
-		echo "\t\t\t\t\t<td width='105'><img src='chart.jpg' height='15' width='$chart'></td>\n";
-		echo "\t\t\t\t\t<td width='35'><font size='1'>100%</td>\n";
-		echo "\t\t\t\t</tr>\n";
-		echo "\t\t\t</table>\n";
-		
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		
-		
-		// PRESENT QUESTION
-		echo "\t<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
-		echo "\t<input type='hidden' name='sid' value='$sid' />\n";
-		echo "\t<input type='hidden' name='thisstep' value='{$_SESSION['step']}' />\n";
-		echo "\t<input type='hidden' name='lasttype' value='{$_SESSION['fieldarray'][$t][4]}' />\n";
-		
-		// QUESTION STUFF
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2'>\n";
-		echo "<!-- THE QUESTION IS HERE -->\n";
-		echo "<table width='100%' border='0'>\n";
-		echo "\t<tr><td colspan='2' height='20'></td></tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2' height='4'>\n";
-		echo "\t\t\t<table width='50%' align='center'>\n";
-		echo "\t\t\t\t<tr><td bgcolor='#888888' height='3'></td></tr>\n";
-		echo "\t\t\t</table>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2' align='center' valign='top'>\n";
-		echo "\t\t\t<b><font color='#000080'>\n";
-		echo nl2br($_SESSION['fieldarray'][$t][3])."\n";
-		echo "\t\t\t</font></b>\n";
-		if ($_SESSION['fieldarray'][$t][6] == "Y") //question is mandatory: inform participant
-			{
-			echo "\t\t\t<input type='hidden' name='mandatory' value='Y'>\n";
-			//if ($_POST['mandatory'] == "Y" && ($_POST['fvalue']==" " || !$_POST['fvalue'])) //If we are repeating a question because it wasn't answered, tell the participant why
-			if ($repeatmandatory)
-				{
-				echo "\t\t\t<br /><font size='1' color='red'>This is required information";
-				if ($_POST['lasttype'] == "R" || $_POST['lasttype'] == "A" || $_POST['lasttype'] == "B" || $_POST['lasttype'] == "C") 
-					{echo ". Please complete all sections.";}
-				echo "</font>\n";
-				}
-			}
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2' height='4'>\n";
-		echo "\t\t\t<table width='50%' align='center'>\n";
-		echo "\t\t\t\t<tr><td bgcolor='silver' height='3'></td></tr>\n";
-		echo "\t\t\t</table>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		$fname = "F".$_SESSION['fieldarray'][$t][1];
-		
-		// THE FOLLOWING PRESENTS THE QUESTION BASED ON THE QUESTION TYPE
-		switch ($_SESSION['fieldarray'][$t][4])
-			{
-			case "5": //5 POINT CHOICE radio-buttons
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				for ($fp=1; $fp<=5; $fp++)
-					{
-					echo "\t\t\t<input type='radio' name='fvalue' value='$fp'";
-					if ($_SESSION[$fname] == $fp) {echo " checked";}
-					echo " />$fp\n";
-					}
-				break;
-			case "D": //DATE
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<input type='text' size=10 name='fvalue' value=\"".$_SESSION[$fname]."\" />\n";
-				echo "\t\t\t<table width='230' align='center' bgcolor='#EEEEEE'>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='center'>\n";
-				echo "\t\t\t\t\t\t<font size='1'>Format: YYYY-MM-DD<br />\n";
-				echo "\t\t\t\t\t\t(eg: 2003-12-25 for Christmas day)\n";
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t</table>\n";
-				break;
-			case "L": //LIST drop-down/radio-button list
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
-				$ansresult = mysql_query($ansquery);
-				if ($dropdowns == "L" || !$dropdowns)
-					{
-					echo "\t\t\t<select name='fvalue'>\n";
-					while ($ansrow = mysql_fetch_array($ansresult))
-						{
-						echo "\t\t\t\t  <option value='{$ansrow['code']}'";
-						if ($_SESSION[$fname] == $ansrow['code'])
-							{ echo " selected"; }
-						elseif ($ansrow['default'] == "Y") {echo " selected"; $defexists = "Y";}
-						echo ">{$ansrow['answer']}</option>\n";
-						}
-					if (!$_SESSION[$fname] && !$defexists) {echo "\t\t\t\t  <option value=' ' selected>Please choose..</option>\n";}
-					if ($_SESSION[$fname] && !$defexists) {echo "\t\t\t\t  <option value=' '>No answer</option>\n";}
-					echo "\t\t\t</select>\n";
-					}
-				elseif ($dropdowns == "R")
-					{
-					echo "\t\t\t<table align='center'>\n";
-					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td>$setfont\n";
-					while ($ansrow = mysql_fetch_array($ansresult))
-						{
-						echo "\t\t\t\t\t\t  <input type='radio' value='{$ansrow['code']}' name='fvalue'";
-						if ($_SESSION[$fname] == $ansrow['code'])
-							{ echo " checked"; }
-						elseif ($ansrow['default'] == "Y") {echo " checked"; $defexists = "Y";}
-						echo " />{$ansrow['answer']}<br />\n";
-						}
-					if (!$_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t  <input type='radio' name='fvalue' value=' ' checked />No answer\n";}
-					elseif ($_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t  <input type='radio' name='fvalue' value=' ' />No answer\n";}
-					echo "\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t</tr>\n";
-					echo "\t\t\t</table>\n";
-					}
-				break;
-			case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2' align='center'>\n";
-				//echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
-				$ansresult = mysql_query($ansquery);
-				$anscount = mysql_num_rows($ansresult);
-				echo "\t\t\t<table align='center'>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td>$setfont<u>Choose one of the following:</u></td>\n";
-				echo "\t\t\t\t\t<td>$setfont<u>Please enter your comment here:</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td valign='top'>$setfont\n";
-				
-				while ($ansrow=mysql_fetch_array($ansresult))
-					{
-					echo "\t\t\t\t\t\t<input type='radio' value='{$ansrow['code']}' name='fvalue1'";
-					if ($_SESSION[$fname] == $ansrow['code'])
-						{ echo " checked"; }
-					elseif ($ansrow['default'] == "Y") {echo " checked"; $defexists = "Y";}
-					echo " />{$ansrow['answer']}<br />\n";
-					}
-				if ($_SESSION['fieldarray'][$t][6] != "Y")
-					{
-					if (!$_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' checked />No answer\n";}
-					elseif ($_SESSION[$fname] && !$defexists) {echo "\t\t\t\t\t\t<input type='radio' name='fvalue1' value=' ' />No answer\n";}
-					}
-				echo "\t\t\t\t\t</td>\n";
-				$fname2 = $fname."comment";
-				if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
-				echo "\t\t\t\t\t<td valign='top'>\n";
-				echo "\t\t\t\t\t\t<textarea name='fvalue2' rows='$tarows' cols='30'>".$_SESSION[$fname2]."</textarea>\n";
-				$multifields = "$fname|$fname"."comment|";
-				echo "\t\t\t\t\t\t<input type='hidden' name='multi' value='2' />\n";
-				echo "\t\t\t\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t</table>\n";
-				break;
-			case "R": //RANKING STYLE
-				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
-				$ansresult = mysql_query($ansquery);
-				$anscount = mysql_num_rows($ansresult);
-				echo "\t\t\t<script type='text/javascript'>\n";
-				echo "\t\t\t<!--\n";
-				echo "\t\t\t\tfunction rankthis(\$code, \$value)\n";
-				echo "\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\$index=document.phpsurveyor.CHOICES.selectedIndex;\n";
-				echo "\t\t\t\t\tdocument.phpsurveyor.CHOICES.selectedIndex=-1;\n";
-				echo "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n";
-				echo "\t\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\t\$b=i;\n";
-				echo "\t\t\t\t\t\t\$b += '';\n";
-				echo "\t\t\t\t\t\t\$inputname=\"RANK\"+\$b;\n";
-				echo "\t\t\t\t\t\t\$hiddenname=\"fvalue\"+\$b;\n";
-				echo "\t\t\t\t\t\t\$cutname=\"cut\"+i;\n";
-				echo "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n";
-				echo "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n";
-				echo "\t\t\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n";
-				echo "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n";
-				echo "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n";
-				echo "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES').options.length-1; b>=0; b--)\n";
-				echo "\t\t\t\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES').options[b].value == \$code)\n";
-				echo "\t\t\t\t\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES').options[b] = null;\n";
-				echo "\t\t\t\t\t\t\t\t\t}\n";
-				echo "\t\t\t\t\t\t\t\t}\n";
-				echo "\t\t\t\t\t\t\ti=$anscount;\n";
-				echo "\t\t\t\t\t\t\t}\n";
-				echo "\t\t\t\t\t\t}\n";
-				echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length == 0)\n";
-				echo "\t\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=true;\n";
-				echo "\t\t\t\t\t\t}\n";
-				echo "\t\t\t\t\t}\n";
-				echo "\t\t\t\tfunction deletethis(\$text, \$value, \$name, \$thisname)\n";
-				echo "\t\t\t\t\t{\n";
-				echo "\t\t\t\t\tvar cutindex=\$thisname.substring(3,6);\n";
-				echo "\t\t\t\t\tcutindex=parseFloat(cutindex);\n";
-				echo "\t\t\t\t\tdocument.getElementById(\$name).value='';\n";
-				echo "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n";
-				echo "\t\t\t\t\tif (cutindex > 1)\n";
-				echo "\t\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\t\$cut1name=\"cut\"+(cutindex-1);\n";
-				echo "\t\t\t\t\t\t\$cut2name=\"fvalue\"+(cutindex);\n";
-				echo "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n";
-				echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
-				echo "\t\t\t\t\t\t}\n";
-				echo "\t\t\t\t\telse\n";
-				echo "\t\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\t\$cut2name=\"fvalue\"+(cutindex);\n";
-				echo "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n";
-				echo "\t\t\t\t\t\t}\n";
-				echo "\t\t\t\t\tvar i=document.getElementById('CHOICES').options.length;\n";
-				echo "\t\t\t\t\tdocument.getElementById('CHOICES').options[i] = new Option(\$text, \$value);\n";
-				echo "\t\t\t\t\tif (document.getElementById('CHOICES').options.length > 0)\n";
-				echo "\t\t\t\t\t\t{\n";
-				echo "\t\t\t\t\t\tdocument.getElementById('CHOICES').disabled=false;\n";
-				echo "\t\t\t\t\t\t}\n";
-				echo "\t\t\t\t\t}\n";
-				echo "\t\t\t//-->\n";
-				echo "\t\t\t</script>\n";	
-				while ($ansrow = mysql_fetch_array($ansresult))
-					{
-					$answers[] = array($ansrow['code'], $ansrow['answer']);
-					}
-
-				for ($i=1; $i<=$anscount; $i++)
-					{
-					$myfname=$fname.$i;
-					if ($_SESSION[$myfname])
-						{
-						$existing++;
-						}
-					}
-				for ($i=1; $i<=$anscount; $i++)
-					{
-					$myfname = $fname.$i;
-					$multifields .= "$fname$i|";
-					if ($_SESSION[$myfname])
-						{
-						foreach ($answers as $ans)
-							{
-							if ($ans[0] == $_SESSION[$myfname])
-								{
-								$thiscode=$ans[0];
-								$thistext=$ans[1];
-								}
-							}
-						}
-					$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$i' id='RANK$i'";
-					if ($_SESSION[$myfname])
-						{
-						$ranklist .= " value='";
-						$ranklist .= $thistext;
-						$ranklist .= "'";
-						}
-					$ranklist .= " onFocus=\"this.blur()\">\n";
-					$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='fvalue$i' id='fvalue$i' value='";
-					$chosen[]=""; //create array
-					if ($_SESSION[$myfname]) 
-						{
-						$ranklist .= $thiscode;
-						$chosen[]=array($thiscode, $thistext);
-						}
-					$ranklist .= "'>\n";
-					$ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' title='Remove this item' ";
-					if ($i != $existing)
-						{
-						$ranklist .= "style='display:none'";
-						}
-					$ranklist .= " id='cut$i' name='cut$i' onClick=\"deletethis(document.phpsurveyor.RANK$i.value, document.phpsurveyor.fvalue$i.value, document.phpsurveyor.RANK$i.name, this.id)\"><br />\n";
-					}
-				
-				$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES' onClick=\"rankthis(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080'>\n";
-				foreach ($answers as $ans)
-					{
-					if (!in_array($ans, $chosen))
-						{
-						$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-						}
-					}
-				$choicelist .= "\t\t\t\t\t\t</select>\n";
-
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2'>\n";
-				echo "\t\t\t<table align='center' border='0' cellspacing='5'>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
-				echo "\t\t\t\t\t\tClick on an item in the list on the left, starting with your<br />";
-				echo "\t\t\t\t\t\thighest ranking item, moving through to the last one.";
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='left' valign='top' style='border: solid 1 #111111' bgcolor='silver'>\n";
-				echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Choices:</b><br />\n";
-				echo "&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist;
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n";
-				echo "\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Ranking:</b><br />\n";
-				echo $ranklist;
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td colspan='2' align='center'>$setfont<font size='1'>\n";
-				echo "\t\t\t\t\t\tClick on the scissors next to each item on the right<br />";
-				echo "\t\t\t\t\t\tto remove the last entry in your ranked list.";
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t</table>\n";
-				echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
-				break;
-			case "M": //MULTIPLE OPTIONS checkbox
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2'>\n";
-				echo "\t\t\t<table align='center' border='0'>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
-				echo "\t\t\t\t\t<td align='left'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
-				$qresult = mysql_query($qquery);
-				while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
-				$ansresult = mysql_query($ansquery);
-				$anscount = mysql_num_rows($ansresult);
-				$fn = 1;
-				while ($ansrow = mysql_fetch_array($ansresult))
-					{
-					$myfname = $fname.$ansrow['code'];
-					$multifields .= "$fname{$ansrow['code']}|";
-					echo "\t\t\t\t\t\t$setfont<input type='checkbox' name='fvalue$fn' value='Y'";
-					if ($_SESSION[$myfname] == "Y") {echo " checked";}
-					echo " />{$ansrow['answer']}<br />\n";
-					$fn++;
-					}
-				$multifields = substr($multifields, 0, strlen($multifields)-1);
-				if ($other == "Y")
-					{
-					$myfname = $fname."other";
-					echo "\t\t\t\t\t\tOther: <input type='text' name='fvalue$fn'";
-					if ($$myfname) {echo " value='".$$myfname."'";}
-					echo " />\n";
-					$multifields .= "|$fname"."other";
-					$anscount++;
-					}
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t</table>\n";
-				echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
-				break;
-			case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2'>\n";
-				echo "\t\t\t<table align='center' border='0'>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
-				echo "\t\t\t\t\t<td align='left'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
-				$qresult = mysql_query($qquery);
-				while ($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
-				$ansresult = mysql_query($ansquery);
-				$anscount = mysql_num_rows($ansresult)*2;
-				$fn = 1;
-				echo "\t\t\t\t\t\t<table border='0'>\n";
-				while ($ansrow = mysql_fetch_array($ansresult))
-					{
-					$myfname = $fname.$ansrow['code'];
-					$myfname2 = $myfname."comment";
-					$multifields .= "$fname{$ansrow['code']}|$fname{$ansrow['code']}comment|";
-					echo "\t\t\t\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t\t\t\t<td>$setfont\n";
-					echo "\t\t\t\t\t\t\t\t\t<input type='checkbox' name='fvalue$fn' value='Y'";
-					if ($_SESSION[$myfname] == "Y") {echo " checked";}
-					echo " />{$ansrow['answer']}\n";
-					echo "\t\t\t\t\t\t\t\t</td>\n";
-					$fn++;
-					echo "\t\t\t\t\t\t\t\t<td>\n";
-					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$_SESSION[$myfname2]."' />\n";
-					echo "\t\t\t\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t\t\t\t</tr>\n";
-					$fn++;
-					}
-				$multifields = substr($multifields, 0, strlen($multifields)-1);
-				if ($other == "Y")
-					{
-					$myfname = $fname."other";
-					$myfname2 = $myfname."comment";
-					$multifields .= "|$fname"."other|$fname"."othercomment";
-					$anscount = $anscount + 2;
-					echo "\t\t\t\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t\t\t\t<td>$setfont\n";
-					echo "\t\t\t\t\t\t\t\t\tOther:<br /><input $slstyle type='text' name='fvalue$fn' size='10'";
-					if ($_SESSION[$myfname]) {echo " value='".$_SESSION[$myfname]."'";}
-					echo " />\n";
-					echo "\t\t\t\t\t\t\t\t</td>\n";
-					$fn++;
-					echo "\t\t\t\t\t\t\t\t<td valign='bottom'>\n";
-					echo "\t\t\t\t\t\t\t\t\t<input style='background-color: #EEEEEE; height:18; font-face: verdana; font-size: 9' type='text' size='40' name='fvalue$fn' value='".$_SESSION[$myfname2]."' />\n";
-					echo "\t\t\t\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t\t\t\t</tr>\n";
-					}
-				echo "\t\t\t\t\t\t</table>\n";
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t\t<td>&nbsp;</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t</table>\n";
-				echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
-				break;
-			case "N": //NUMERICAL QUESTION TYPE
-				echo keycontroljs();
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<input type='text' size='10' name='fvalue' value=\"";
-				echo $_SESSION[$fname];
-				echo "\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n";
-				echo "\t\t\t<font size='1'><i>Only numbers can be entered in this field</i></font>\n";
-				break;
-			case "S": //SHORT FREE TEXT
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<input type='text' size='50' name='fvalue' value=\"".str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$fname]))."\" />\n";
-				break;
-			case "T": //LONG FREE TEXT
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<textarea name='fvalue' rows='5' cols='40'>";
-				if ($_SESSION[$fname]) {echo str_replace("\\", "", $_SESSION[$fname]);}	
-				echo "</textarea>\n";
-				break;
-			case "Y": //YES/NO radio-buttons
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='1' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<table align='center'>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td>$setfont\n";
-				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='Y'";
-				if ($_SESSION[$fname] == "Y") {echo " checked";}
-				echo " />Yes<br />\n";
-				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='N'";
-				if ($_SESSION[$fname] == "N") {echo " checked";}
-				echo " />No<br />\n";
-				if ($_SESSION['fieldarray'][$t][6] != "Y")
-					{
-					echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value=''";
-					if ($_SESSION[$fname] == "") {echo " checked";}
-					echo " />No Answer<br />\n";
-					}
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t</table>\n";
-				break;
-			case "G": //GENDER drop-down list
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='1' align='center'>\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$fname' />\n";
-				echo "\t\t\t<table align='center'>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td>$setfont\n";
-				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='F'";
-				if ($_SESSION[$fname] == "F") {echo " checked";}
-				echo " />Female<br />\n";
-				echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value='M'";
-				if ($_SESSION[$fname] == "M") {echo " checked";}
-				echo " />Male<br />\n";
-				if ($_SESSION['fieldarray'][$t][6] != "Y")
-					{
-					echo "\t\t\t\t\t\t<input type='radio' name='fvalue' value=''";
-					if ($_SESSION[$fname] == "") {echo " checked";}
-					echo " />No Answer\n";
-					}
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t</table>\n";
-				//echo "\t\t\t<select name='fvalue'>\n";
-				//echo "\t\t\t\t<option value='F'";
-				//if ($_SESSION[$fname] == "F") {echo " selected";}
-				//echo ">Female</option>\n";
-				//echo "\t\t\t\t<option value='M'";
-				//if ($_SESSION[$fname] == "M") {echo " selected";}
-				//echo ">Male</option>\n";
-				//echo "\t\t\t\t<option value=' '";
-				//if ($_SESSION[$fname] != "F" && $_SESSION[$fname] !="M") {echo " selected";}
-				//echo ">Please choose</option>\n";
-				//echo "\t\t\t</select>\n";
-				break;
-			case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
-				$qresult = mysql_query($qquery);
-				while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
-				$ansresult = mysql_query($ansquery);
-				$anscount = mysql_num_rows($ansresult);
-				$fn = 1;
-				echo "\t\t\t<table align='center' border='0'>\n";
-				while ($ansrow = mysql_fetch_array($ansresult))
-					{
-					$myfname = $fname.$ansrow['code'];
-					$multifields .= "$fname{$ansrow['code']}|";
-					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
-					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
-					echo "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
-					echo "\t\t\t\t\t<td>";
-					for ($i=1; $i<=5; $i++)
-						{
-						echo "\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='$i'";
-						if ($_SESSION[$myfname] == $i) {echo " checked";}
-						echo " />$i&nbsp;\n";
-						}
-					echo "\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t</tr>\n";
-					$fn++;
-					}			
-				echo "\t\t\t</table>\n";
-				echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
-				break;
-			case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
-				$qresult = mysql_query($qquery);
-				while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
-				$ansresult = mysql_query($ansquery);
-				$anscount = mysql_num_rows($ansresult);
-				$fn = 1;
-				echo "\t\t\t<table align='center'>\n";
-				while ($ansrow = mysql_fetch_array($ansresult))
-					{
-					$myfname = $fname.$ansrow['code'];
-					$multifields .= "$fname{$ansrow['code']}|";
-					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
-					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
-					echo "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
-					echo "\t\t\t\t\t<td>\n";
-					for ($i=1; $i<=10; $i++)
-						{
-						echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='$i'";
-						if ($_SESSION[$myfname] == $i) {echo " checked";}
-						echo " />$i&nbsp;\n";
-						}
-					echo "\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t</tr>\n";
-					$fn++;
-					}			
-				echo "\t\t\t</table>\n";
-				echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
-				break;
-			case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2'>\n";
-				$qquery = "SELECT other FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
-				$qresult = mysql_query($qquery);
-				while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
-				$ansquery = "SELECT * FROM answers WHERE qid={$_SESSION['fieldarray'][$t][0]} ORDER BY code";
-				$ansresult = mysql_query($ansquery);
-				$anscount = mysql_num_rows($ansresult);
-				$fn = 1;
-				echo "\t\t\t<table align='center'>\n";
-				while ($ansrow = mysql_fetch_array($ansresult))
-					{
-					$myfname = $fname.$ansrow['code'];
-					$multifields .= "$fname{$ansrow['code']}|";
-					if ($trbc == "#E1E1E1" || !$trbc) {$trbc = "#F1F1F1";} else {$trbc = "#E1E1E1";}
-					echo "\t\t\t\t<tr bgcolor='$trbc'>\n";
-					echo "\t\t\t\t\t<td align='right'>$setfont{$ansrow['answer']}</td>\n";
-					echo "\t\t\t\t\t<td>\n";
-					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='Y'";
-					if ($_SESSION[$myfname] == "Y") {echo " checked";}
-					echo " />Yes&nbsp;\n";
-					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='U'";
-					if ($_SESSION[$myfname] == "U") {echo " checked";}
-					echo " />Uncertain&nbsp;\n";
-					echo "\t\t\t\t\t\t$setfont<input type='radio' name='fvalue$fn' value='N'";
-					if ($_SESSION[$myfname] == "N") {echo " checked";}
-					echo " />No&nbsp;\n";
-					echo "\t\t\t\t\t</td>\n";
-					echo "\t\t\t\t</tr>\n";
-					$fn++;
-					}			
-				echo "\t\t\t</table>\n";
-				echo "\t\t\t<input type='hidden' name='multi' value='$anscount' />\n";
-				echo "\t\t\t<input type='hidden' name='lastfield' value='$multifields' />\n";
-				break;
-			}	
-		
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td colspan='2' height='4'>\n";
-		echo "\t\t\t<table width='50%' align='center'>\n";
-		echo "\t\t\t\t<tr><td bgcolor='silver' height='3'></td></tr>\n";
-		echo "\t\t\t</table>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		
-		
-		//SHOW HELP INFORMATION IF THERE IS ANY
-		$helpquery = "SELECT help FROM questions WHERE qid=".$_SESSION['fieldarray'][$t][0];
-		$helpresult = mysql_query($helpquery);
-		while ($helprow = mysql_fetch_array($helpresult))
-			{
-			if ($helprow['help'])
-				{
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='2'>\n";
-				echo "\t\t\t<table width='50%' align='center' cellspacing='0'>\n";
-				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td bgcolor='#DEDEDE' valign='top'>\n";
-				echo "\t\t\t\t\t\t<img src='help.gif' vspace='1' align='left' alt='Help for this question..'>\n";
-				echo "\t\t\t\t\t</td>\n";
-				echo "\t\t\t\t\t<td bgcolor='#DEDEDE'>\n";
-				echo "\t\t\t\t\t\t<font size='1'>{$helprow['help']}</td>\n";
-				echo "\t\t\t\t</tr>\n";
-				echo "\t\t\t</table>\n";
-				echo "\t\t</td>\n";
-				echo "\t</tr>\n";
-				}
-			}
-		
-		echo "\t<tr><td colspan='2' height='20'></td></tr>\n";
-		echo "</table>\n";
-		echo "<!-- END OF QUESTION -->\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		//echo "<tr><td colspan='2'>$token</td></tr>\n";
-		}
-	}
-
-echo surveymover();
-echo "\t<input type='hidden' name='lastgroupname' value='$currentgroupname' />\n";
-echo "\t</form>\n";
-if ($surveyactive != "Y")
-	{
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' align='center'>\n";
-	echo "\t\t\t$setfont<font color='red'>Warning: Survey Not Active. Your survey results will not be recorded.\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	}
-echo "</table>\n";
-echo "</body>\n</html>";
-
-function surveymover()
-	{
-	global $presentinggroupdescription;
-	$surveymover = "\t<tr>\n";
-	$surveymover .= "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
-	$surveymover .= "\t\t\t<table width='50%' align='center'>\n";
-	$surveymover .= "\t\t\t\t<tr>\n";
-	$surveymover .= "\t\t\t\t\t<td align='center'>\n";
-	if ($_SESSION['step'] > 0)
-		{$surveymover .= "\t\t\t\t\t\t<input type='submit' value=' << prev ' name='move' />\n";}
-	if ($_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
-		{$surveymover .=  "\t\t\t\t\t\t<input type='submit' value=' next >> ' name='move' />";}
-	if (!$_SESSION['step'])
-		{$surveymover .=  "\t\t\t\t\t\t<input type='submit' value=' next >> ' name='move' />";}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
-		{$surveymover .=  "\t\t\t\t\t\t<input type='submit' value=' next >> ' name='move' />";}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
-		{$surveymover .= "\t\t\t\t\t\t <input type='submit' value=' last ' name='move' />";}
-	//if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']+1))
-		//{$surveymover .= "\t\t\t\t\t\t<input type='submit' value=' submit ' name='move' />";}
-	//$surveymover .= " <a href='?move=clearall&sid={$_SESSION['sid']}'>X</a>";
-	$surveymover .= "\t\t\t\t\t</td>\n";
-	$surveymover .= "\t\t\t\t</tr>\n";
-	$surveymover .= "\t\t\t</table>\n";
-	$surveymover .= "\t\t\t<font size='1'>[<a href='index.php?sid={$_SESSION['sid']}&move=clearall'>Exit and Clear Survey</a>]\n";
-	$surveymover .= "\t\t</td>\n";
-	$surveymover .= "\t</tr>\n";
-	return $surveymover;	
-	}
-
-function submit($surveyheader, $step, $totalsteps, $sid, $setfont, $surveyprivate)
-	{
-	echo $surveyheader;
-	$s = $step-1;
-	$t = $s-1;
-	$u = $totalsteps;
-	$chart = 105;
-	echo "\t<tr>\n";
-	echo "\t\t<td colspan='2' align='center' bgcolor='#EEEEEE'>\n";
-	echo "\t\t\tSurvey Complete<br />\n";
-	echo "\t\t\t<table width='175' align='center' style='border-collapse: collapse; border: 1px solid #111111'>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td width='35' align='right'><font size='1'>0%</td>\n";
-	echo "\t\t\t\t\t<td width='105'><img src='chart.jpg' height='15' width='$chart'></td>\n";
-	echo "\t\t\t\t\t<td width='35'><font size='1'>100%</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t</table>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "<form method='post'>\n";
-	echo "<input type='hidden' name='sid' value='$sid' />\n";
-	echo "<input type='hidden' name='thisstep' value='$step' />\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td>\n";
-	echo "\t\t\t<table border='0' width='100%'>\n";
-	echo "\t\t\t\t<tr>\n";
-	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
-	echo "\t\t\t\t\t<td align='center' width='500'>\n";
-	echo "$setfont<p><b>Congratulations. You have completed answering<br />the questions in this survey.</b>\n";
-	echo "<p>Click on \"Submit\" now to complete the process and submit your answers to our records. ";
-	echo "If you want to check any of the answers you have made, and/or change them, you can do that now by ";
-	echo "clicking on the \" << prev \" button and browsing through your responses.<br />\n";
-	echo "&nbsp;<br />\n";
-	echo "<input type='submit' value=' submit ' name='move' /><br />&nbsp;\n";
-	if ($surveyprivate != "N")
-		{
-		echo "\t\t\t\t\t\t<table align='center' width='400' bgcolor='#EFEFEF' border='0'>\n";
-		echo "\t\t\t\t\t\t\t<tr>\n";
-		echo "\t\t\t\t\t\t\t\t<td align='center'>\n";
-		echo "$setfont<b>A note on privacy</b><br />\n";
-		echo "<font size='1'>The record kept of your survey responses does not contain any identifying information about you unless ";
-		echo "a specific question in the survey has asked for this. If you have responded to a survey that ";
-		echo "used an identifying token to allow you to access the survey, you can rest assured that the ";
-		echo "identifying token is not kept with your responses. It is managed in a seperate database, and will ";
-		echo "only be updated to indicate that you have (or haven't) completed this survey. There is no way of ";
-		echo "matching identification tokens with survey responses in this survey.\n";
-		echo "\t\t\t\t\t\t\t\t</td>\n";
-		echo "\t\t\t\t\t\t\t</tr>\n";
-		echo "\t\t\t\t\t\t</table>\n";
-		}
-	else
-		{
-		// Just in case we want to add a comment for non-private surveys
-		}
-	echo "<font size='1'>&nbsp;<br />\nIf you do not wish to submit responses to this survey, ";
-	echo "and you would like to delete<br />all the responses you have made, ";
-	echo "click <a href='index.php?move=clearall&sid=$sid'>here</a><br />&nbsp;\n";
-	//echo "<input type='submit' name='move' value='here' style='height:15; font-size:9; font-family:verdana' onclick=\"window.open('index.php?clearall', '_top')\" />\n";
-	echo "\t\t\t\t\t</td>\n";
-	echo "\t\t\t\t\t<td>&nbsp;</td>\n";
-	echo "\t\t\t\t</tr>\n";
-	echo "\t\t\t</table>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo surveymover();
-	echo "</table>\n";
-	echo "</body>\n</html>";	
+	global $thistpl, $templatedir, $publicurl;
+	$chart=$thistpl."/chart.jpg";
+	if (!is_file($chart)) {$shchart="chart.jpg";}
+	else {$shchart = "$publicurl/templates/$templatedir/chart.jpg";}
+	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n";
+	$graph .= "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0'>\n";
+	$graph .= "<tr><td align='right' width='40'><font size='1' face='verdana'>0%</td>\n";
+	$size=($thisstep-1)/$total*100;
+	$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% complete'></td>\n";
+	$graph .= "<td align='left' width='40'><font size='1' face='verdana'>100%</td></tr>\n";
+	$graph .= "</table>\n";
+	$graph .= "</td></tr>\n</table>\n";
+	return $graph;
 	}
 ?>
