@@ -44,6 +44,7 @@ if (!isset($sid)) {$sid=returnglobal('sid');}
 if (!isset($order)) {$order=returnglobal('order');}
 if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($start)) {$start=returnglobal('start');}
+if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 
 sendcacheheaders();
 
@@ -193,19 +194,19 @@ echo "\t\t<td align='center'>\n";
 echo "\t\t\t<table align='center' bgcolor='#DDDDDD' cellpadding='2' style='border: 1px solid #555555'>\n";
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
-echo "\t\t\t\t\t<b>$setfont There are $tkcount records in your token table for this survey.</b><br />\n";
-$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE sent='Y'";
-$tksr = mysql_query($tksq);
-while ($tkr = mysql_fetch_row($tksr))
-	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount have been sent an invitation to participate.<br />\n";}
-$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE completed='Y'";
-$tksr = mysql_query($tksq);
-while ($tkr = mysql_fetch_row($tksr))
-	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount entries have completed the survey.<br />\n";}
+echo "\t\t\t\t\t<b>$setfont "._TC_TOTALCOUNT." $tkcount</b><br />\n";
 $tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE token IS NULL OR token=''";
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
-	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount have not had a token generated.\n";}
+	{echo "\t\t\t\t\t\t$setfont"._TC_NOTOKENCOUNT." $tkr[0] / $tkcount<br />\n";}
+$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE sent='Y'";
+$tksr = mysql_query($tksq);
+while ($tkr = mysql_fetch_row($tksr))
+	{echo "\t\t\t\t\t\t$setfont"._TC_INVITECOUNT." $tkr[0] / $tkcount<br />\n";}
+$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE completed='Y'";
+$tksr = mysql_query($tksq);
+while ($tkr = mysql_fetch_row($tksr))
+	{echo "\t\t\t\t\t\t$setfont"._TC_COMPLETEDCOUNT." $tkr[0] / $tkcount\n";}
 echo "\t\t\t\t\t</td>\n";
 echo "\t\t\t\t</tr>\n";
 echo "\t\t\t</table>\n";
@@ -262,7 +263,7 @@ if (!$action)
 	echo "</table>\n";
 	}
 
-if ($action == "browse")
+if ($action == "browse" || $action == "search")
 	{
 	if (!isset($limit)) {$limit = 50;}
 	if (!isset($start)) {$start = 0;}
@@ -282,12 +283,21 @@ if ($action == "browse")
 	echo "\t<tr bgcolor='#999999'><td align='left'>\n";
 	echo "\t\t\t<img src='./images/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n";
 	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"._D_BEGIN."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=0&limit=$limit','_top')\" />\n";
-	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databack.gif' title='"._D_BACK."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&surveytable=$surveytable&start=$last&limit=$limit','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databegin.gif' title='"._D_BEGIN."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=0&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/databack.gif' title='"._D_BACK."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&surveytable=$surveytable&start=$last&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n";
 	echo "\t\t\t<img src='./images/blank.gif' width='13' height='20' border='0' hspace='0' align='left'>\n";
-	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"._D_FORWARD."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&surveytable=$surveytable&start=$next&limit=$limit','_top')\" />\n";
-	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"._D_END."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$end&limit=$limit','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataforward.gif' title='"._D_FORWARD."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&surveytable=$surveytable&start=$next&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n";
+	echo "\t\t\t<input type='image' align='left' hspace='0' border='0' src='./images/dataend.gif' title='"._D_END."' onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$end&limit=$limit&order=$order&searchstring=$searchstring','_top')\" />\n";
 	echo "\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
+	echo "\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'><tr><form method='post' action='tokens.php'>\n";
+	echo "\t\t\t\t<td>\n";
+	echo "\t\t\t\t\t<input $slstyle type='text' name='searchstring' value='$searchstring'>\n";
+	echo "\t\t\t\t\t<input $btstyle type='submit' value='"._SEARCH."'>\n";
+	echo "\t\t\t\t</td>\n";
+	echo "\t\t\t\t<input type='hidden' name='order' value='$order'>\n";
+	echo "\t\t\t\t<input type='hidden' name='action' value='search'>\n";
+	echo "\t\t\t\t<input type='hidden' name='sid' value='$sid'>\n";
+	echo "\t\t\t</tr></form></table>\n";
 	echo "\t\t</td>\n";
 	echo "\t\t<form action='tokens.php'>\n";
 	echo "\t\t<td align='right'><font size='1' face='verdana'>\n";
@@ -298,6 +308,8 @@ if ($action == "browse")
 	echo "\t\t</font></td>\n";
 	echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
 	echo "\t\t<input type='hidden' name='action' value='browse'>\n";
+	echo "\t\t<input type='hidden' name='order' value='$order'>\n";
+	echo "\t\t<input type='hidden' name='searchstring' value='$searchstring'>\n";
 	echo "\t\t</form>\n";
 	echo "\t</tr>\n";
 
@@ -306,17 +318,21 @@ if ($action == "browse")
 	echo "<table width='100%' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
 	//COLUMN HEADINGS
 	echo "\t<tr>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=tid&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY."ID' border='0' align='left'></a>$setfont"."ID</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=firstname&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_FIRST."' border='0' align='left'></a>$setfont"._TL_FIRST."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=lastname&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_LAST."' border='0' align='left'></a>$setfont"._TL_LAST."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=email&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_EMAIL."' border='0' align='left'></a>$setfont"._TL_EMAIL."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=token&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_TOKEN."' border='0' align='left'></a>$setfont"._TL_TOKEN."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_INVITE."' border='0' align='left'></a>$setfont"._TL_INVITE."</th>\n";
-	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc&start=$start&limit=$limit'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_DONE."' border='0' align='left'></a>$setfont"._TL_DONE."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=tid&start=$start&limit=$limit&searchstring=$searchstring'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY."ID' border='0' align='left'></a>$setfont"."ID</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=firstname&start=$start&limit=$limit&searchstring=$searchstring'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_FIRST."' border='0' align='left'></a>$setfont"._TL_FIRST."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=lastname&start=$start&limit=$limit&searchstring=$searchstring'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_LAST."' border='0' align='left'></a>$setfont"._TL_LAST."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=email&start=$start&limit=$limit&searchstring=$searchstring'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_EMAIL."' border='0' align='left'></a>$setfont"._TL_EMAIL."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=token&start=$start&limit=$limit&searchstring=$searchstring'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_TOKEN."' border='0' align='left'></a>$setfont"._TL_TOKEN."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc&start=$start&limit=$limit&searchstring=$searchstring'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_INVITE."' border='0' align='left'></a>$setfont"._TL_INVITE."</th>\n";
+	echo "\t\t<th align='left' valign='top'><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc&start=$start&limit=$limit&searchstring=$searchstring'><img src='./images/DownArrow.gif' alt='"._TC_SORTBY._TL_DONE."' border='0' align='left'></a>$setfont"._TL_DONE."</th>\n";
 	echo "\t\t<th align='left' valign='top' colspan='2'>$setfont"._TL_ACTION."</th>\n";
 	echo "\t</tr>\n";
 	
 	$bquery = "SELECT * FROM {$dbprefix}tokens_$sid";
+	if ($searchstring)
+		{
+		$bquery .= " WHERE firstname LIKE '%$searchstring%' OR lastname LIKE '%$searchstring' OR email LIKE '%$searchstring%' OR token LIKE '%$searchstring%'";
+		}
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
 	$bquery .= " LIMIT $start, $limit";
@@ -332,7 +348,7 @@ if ($action == "browse")
 		echo "\t\t<td align='left'>\n";
 		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='"._TC_EDIT."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\" />\n";
 		echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"._TC_DEL."' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />\n";
-		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$sid&token={$brow['token']}', '_blank')\" />\n";}
+		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$sid&token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
 			{
