@@ -241,9 +241,9 @@ elseif ($action == "all")
 	$tableheader .= " </TR>\n\n";
 	
 	//NOW LETS SHOW THE DATA
-	if ($sql)
+	if ($_POST['sql'])
 		{
-		$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($sql)." ORDER BY id";
+		$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";
 		}
 	else
 		{
