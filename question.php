@@ -698,7 +698,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 				$conditionfieldname .= $conditionvalue;
 				$conditionvalue = "Y";
 				}
-			if (!$_SESSION[$conditionfieldname]) {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
+			if (!isset($_SESSION[$conditionfieldname]) || !$_SESSION[$conditionfieldname]) {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
 			if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
 			}
 		if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
