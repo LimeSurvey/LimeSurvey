@@ -142,6 +142,7 @@ define(_REQ, "*Required");
 define(_ADDS, "Add Survey");
 define(_ADDG, "Add Group");
 define(_ADDQ, "Add Question");
+define(_ADDU, "Add User");
 define(_SAVE, "Save Changes");
 define(_CHOOSE, "Please Choose..");
 define(_NONE, "None"); //as in "Do not display anything, or none chosen";
@@ -171,4 +172,5 @@ define(_UC_TURNON_MESSAGE1, "You have not yet initialised security settings for 
 define(_UC_TURNON_MESSAGE2, "It is highly recommended that once your security system has been initialised you change this default password.");
 define(_UC_INITIALISE, "Initialise Security");
 define(_UC_NOUSERS, "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.");
+define(_UC_TURNOFF, "Turn Off Security");
 ?>
