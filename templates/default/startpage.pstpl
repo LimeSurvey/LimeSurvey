@@ -22,6 +22,12 @@ body.default
 	font-family: verdana;
 	font-size: 11;
 	}
+.errormandatory 
+	{
+	font-size:12px;
+	font-weight:bold;
+	color:RED;
+	}
 </style>
 </head>
 <body class='default'>

@@ -82,6 +82,12 @@
 	font-family: verdana;
 	font-size: 10;
 	}
+.errormandatory 
+	{
+	font-size:12px;
+	font-weight:bold;
+	color:RED;
+	}
 </style>
 </head>
 <body bgcolor='#000000'><font face='verdana' size='2'>
