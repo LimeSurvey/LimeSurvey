@@ -287,6 +287,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			$qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
 			$values=do_longfreetext($ia);
 			break;
+		case "U": //HUGE FREE TEXT
+			$qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
+			$values=do_hugefreetext($ia);
+			break;
 		case "Y": //YES/NO radio-buttons
 			$values=do_yesno($ia);
 			break;
@@ -515,9 +519,50 @@ function do_list_dropdown($ia)
 		$answer .= ">{$ansrow['answer']}</option>\n";
 		}
 	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
+	if (isset($other) && $other=="Y") 
+		{
+		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
+		if ($_SESSION[$ia[1]] == "-oth-")
+			{
+			$answer .= " selected";
+			}
+		$answer .= ">"._OTHER."</option>\n";
+		}
 	if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
 	$answer .= "\t\t\t\t\t</select>\n";
-	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n".$answer;
+	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)";
+	if (isset($other) && $other=="Y")
+		{
+		$sselect .= "; showhideother(this.name, this.value)";
+		}
+	$sselect .= "'>\n";
+	$answer = $sselect.$answer;
+	if (isset($other) && $other=="Y") 
+		{
+		$answer = "\n<SCRIPT TYPE=\"text/javascript\">\n"
+			."<!--\n"
+			."function showhideother(name, value)\n"
+			."\t{\n"
+			."\tvar hiddenothername='othertext'+name;\n"
+			."\tif (value == \"-oth-\")\n"
+			."\t\t{\n"
+			."\t\tdocument.getElementById(hiddenothername).style.display='';\n"
+			."\t\tdocument.getElementById(hiddenothername).focus();\n"
+			."\t\t}\n"
+			."\telse\n"
+			."\t\t{\n"
+			."\t\tdocument.getElementById(hiddenothername).style.display='none';\n"
+			."\t\t}\n"
+			."\t}\n"
+			."//--></SCRIPT>\n".$answer;
+		$answer .= "<input type='text' id='othertext".$ia[1]."' name='$ia[1]other' style='display:";
+		if ($_SESSION[$ia[1]] != "-oth-")
+			{
+			$answer .= " none";
+			}
+		$answer .= "'>";
+		}
+
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 	}
@@ -1062,6 +1107,15 @@ function do_shortfreetext($ia)
 function do_longfreetext($ia)
 	{
 	$answer = "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' rows='5' cols='40'>";
+	if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}	
+	$answer .= "</textarea>\n";
+	$inputnames[]=$ia[1];
+	return array($answer, $inputnames);
+	}
+
+function do_hugefreetext($ia)
+	{
+	$answer = "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' rows='30' cols='70'>";
 	if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}	
 	$answer .= "</textarea>\n";
 	$inputnames[]=$ia[1];
