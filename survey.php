@@ -607,6 +607,25 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 				$fn2 = "$fieldname"."comment";
 				$_SESSION['insertarray'][] = "$fn2";
 				} 
+			elseif ($arow['type'] == "L")
+				{
+				$_SESSION['insertarray'][] = "$fieldname";
+				if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = "{$fieldname}other";}
+				//go through answers, and if there is a default, register it now so that conditions work properly the first time
+				$abquery = "SELECT {$dbprefix}answers.* "
+						 . "FROM {$dbprefix}answers, {$dbprefix}questions "
+						 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$sid "
+						 . "AND {$dbprefix}questions.qid={$arow['qid']} "
+						 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$abresult = mysql_query($abquery);
+				while($abrow = mysql_fetch_array($abresult))
+					{
+					if ($abrow['default_value'] == "Y") 
+						{
+					    $_SESSION[$fieldname] = $abrow['code'];
+						}
+					}
+				}
 			else
 				{
 				$_SESSION['insertarray'][] = "$fieldname";
