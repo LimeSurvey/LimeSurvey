@@ -54,8 +54,8 @@ if ($action == "insertnewgroup")
 		
 		if ($result)
 			{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ($group_name) has been created for survey id $sid\")\n //-->\n</script>\n";
-			$query = "SELECT gid FROM {$dbprefix}groups WHERE group_name='$group_name' AND sid={$_POST['sid']}";
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $sid\")\n //-->\n</script>\n";
+			$query = "SELECT gid FROM {$dbprefix}groups WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
 			$result = mysql_query($query);
 			while ($res = mysql_fetch_array($result)) {$gid = $res['gid'];}
 			$groupselect = getgrouplist($gid);
