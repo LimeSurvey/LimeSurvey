@@ -923,19 +923,19 @@ if ($action == "tokenify")
 if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
         {
         $bquery = "SELECT * FROM {$dbprefix}tokens_$sid";
-        $bquery .= " ORDER BY email";
+        $bquery .= " ORDER BY tid";
 
         $bresult = mysql_query($bquery) or die ("$bquery<br />".mysql_error());
 		$bfieldcount=mysql_num_fields($bresult);
 		
         echo "\t<textarea rows=20 cols=120>\n";
+		echo "Tid, Firstname, Lastname, Email, Token [, attribute1, attribute2, mpid]\n";
         while ($brow = mysql_fetch_array($bresult))
                 {
-                if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
-                
-                echo trim($brow['email']).",";
+                echo trim($brow['tid']).",";
                 echo trim($brow['firstname']).",";
                 echo trim($brow['lastname']).",";
+                echo trim($brow['email']).",";
                 echo trim($brow['token']);
 				if($bfieldcount > 7) 
 					{
