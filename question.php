@@ -178,7 +178,7 @@ if ($_POST['move'] == " "._SUBMIT." ")
 				{
 				if (phpversion() >= "4.3.0")
 					{
-					$values .= ", '" . mysql_real_escape_string($_SESSION[$value], "'") . "'";	
+					$values .= ", '" . mysql_real_escape_string($_SESSION[$value]) . "'";	
 					}
 				else
 					{
