@@ -341,10 +341,6 @@ function makegraph($thisstep, $total)
 function checkgroupfordisplay($gid)
 	{
 	global $dbprefix;
-//	$grouparrayno=$_SESSION['step']-1;
-//	$gid=$_SESSION['grouplist'][$grouparrayno][0];
-//	$groupname=$_SESSION['grouplist'][$grouparrayno][1];
-//	$groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
 	$countQuestionsInThisGroup=0;
 	$countConditionalQuestionsInThisGroup=0;
 	foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
@@ -361,13 +357,12 @@ function checkgroupfordisplay($gid)
 		}
 	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup)
 		{
-		unset($checkConditions); // We can safely delete this because it won't be needed.
+		unset($checkConditions); // We can safely delete this variable because it won't be needed.
 		return true;
 		}
 	else
 		{
-		$conditionsToMeet=count($checkConditions);
-		$totalConditionsMet=0;
+		$totalands=0;
 		foreach ($checkConditions as $cc)
 			{
 			$query = "SELECT * FROM {$dbprefix}conditions WHERE qid=$cc[0] ORDER BY cqid";
@@ -376,13 +371,24 @@ function checkgroupfordisplay($gid)
 				{
 				if ($_SESSION[$row['cfieldname']] == $row['value'])
 					{
-					$totalConditionsMet++;
+					$distinctcqids[$row['cqid']]=1;
+					}
+				else
+					{
+					if (!isset($distinctcqids[$row['cqid']])) 
+						{
+						$distinctcqids[$row['cqid']]=0;
+						}
 					}
 				} // while
+			foreach($distinctcqids as $key=>$val)
+				{
+				$totalands=$totalands+$val;
+				}
 			}
-		if ($totalConditionsMet > 0)
+		if ($totalands == count($distinctcqids)) 
 			{
-			return true;
+		    return true;
 			}
 		else
 			{
