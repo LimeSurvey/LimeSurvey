@@ -352,14 +352,19 @@ elseif ($action == "all")
 		echo "\t\t\t<a href='browse.php?sid=$sid&action=id&id={$dtrow['id']}' title='View this record'>";
 		echo "{$dtrow['id']}</a>\n";
 		
-		$SQL = "Select * FROM tokens_$sid WHERE token='{$dtrow[$fnames[0][0]]}'";
-		$SQLResult = mysql_query($SQL) or die(mysql_error());
-		$TokenRow = mysql_fetch_assoc($SQLResult);
-		echo "\t\t<td align='center'><font size='1'>\n";
-		echo "\t\t<a href='tokens.php?sid=$sid&action=edit&tid={$TokenRow['tid']}' title='Edit this token'>";
-		echo "{$dtrow['token']}</a>\n";
+		$i = 0;
+		if ($private == "N")
+			{
+			$SQL = "Select * FROM tokens_$sid WHERE token='{$dtrow['token']}'";
+			$SQLResult = mysql_query($SQL) or die(mysql_error());
+			$TokenRow = mysql_fetch_assoc($SQLResult);
+			echo "\t\t<td align='center'><font size='1'>\n";
+			echo "\t\t<a href='tokens.php?sid=$sid&action=edit&tid={$TokenRow['tid']}' title='Edit this token'>";
+			echo "{$dtrow['token']}</a>\n";
+			$i++;
+			}
 		
-		for ($i=1; $i<=$fncount; $i++)
+		for ($i; $i<=$fncount; $i++)
 			{
 			echo "\t\t<td align='center'><font size='1'>";
 			echo htmlspecialchars($dtrow[$fnames[$i][0]]);
