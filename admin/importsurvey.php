@@ -39,7 +39,7 @@ $the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<b><center>Something went horribly wrong. See system administrator.</center></b>\n";
+	echo "<b><center>A major error occurred and your file cannot be uploaded. See system administrator.</center></b>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
