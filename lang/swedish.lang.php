@@ -121,4 +121,7 @@ define("_NOTACTIVE", "Denna enkät är inte aktiv för tillfället. Du kan därför in
 
 define("_SURVEYCOMPLETE", "You have already completed this survey.");
 
+define("_INSTRUCTION_LIST", "Choose only one of the following"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "Check any that apply"); //NEW for 098rc3
+
 ?>

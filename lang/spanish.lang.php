@@ -121,4 +121,7 @@ define("_NOTACTIVE", "Esta encuesta no está activa. No podrá guardar sus respues
 
 define("_SURVEYCOMPLETE", "Usted ha terminado ya este examen.");
 
+define("_INSTRUCTION_LIST", "Choose only one of the following"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "Check any that apply"); //NEW for 098rc3
+
 ?>

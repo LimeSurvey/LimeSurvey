@@ -121,4 +121,7 @@ define("_NOTACTIVE", "Ce sondage n'est pas actif. Vous ne pourrez pas sauver vos
 
 define("_SURVEYCOMPLETE", "Vous avez déjà accompli cet aperçu.");
 
+define("_INSTRUCTION_LIST", "Choose only one of the following"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "Check any that apply"); //NEW for 098rc3
+
 ?>
