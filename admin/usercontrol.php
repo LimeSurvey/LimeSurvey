@@ -43,18 +43,18 @@ if (!file_exists("$homedir/.htaccess"))
 		{
 		//DON'T DO ANYTHING UNLESS IT HAS BEEN ASKED FOR
 		//CREATE HTACCESS FILE
-		$addsummary .= "Creating default htaccess file<br />\n";
+		$addsummary .= _UC_CREATE."<br />\n";
 		$fname="$homedir/.htaccess";
 		echo "<font color='white'>";
-		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<b>Error.</b><br />\nCouldn't create htaccess file. Have you set your config.php properly? Check the '\$homedir' setting in particular!\nThis error can also occur if you do not have correct permissions in your admin directory.\n<p><a href='$scriptname'>Back to admin</a></p>\n</td>\n</tr>\n</table>\n");
+		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<b>"._ERROR."</b><br />\n"._UC_NOCREATE."\n<p><a href='$scriptname'>"._GO_ADMIN."</a></p>\n</td>\n</tr>\n</table>\n");
 		echo "</font>";
 		fputs($handle, $htaccess);
 		fclose($handle);
-		$addsummary .= "Security Levels are now set up!<br />\n<br />\n";
-		$addsummary .= "<a href='$scriptname?action=editusers'>Finished</a>\n";
+		$addsummary .= _UC_SEC_DONE."<br />\n<br />\n";
+		$addsummary .= "<a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
 		
 		//CREATE DEFAULT USER AND PASS
-		$addsummary = "Creating default users<br />\n";
+		$addsummary = _UC_CREATE_DEFAULT."<br />\n";
 		if ($htpasswddir) {$htpasswd = "\"$htpasswddir/htpasswd\"";} else {$htpasswd = "htpasswd";}
 		
 		# Form command line. Redirect STDERR to STDOUT using 2>&1
@@ -73,40 +73,37 @@ if (!file_exists("$homedir/.htaccess"))
 		
 		if (file_exists("$homedir/.htpasswd"))
 			{
-			$addsummary .= "Updating users table<br />\n";
+			$addsummary .= _UC_UPDATE_TABLE."<br />\n";
 			$uquery="INSERT INTO users VALUES ('$defaultuser', '$defaultpass', '5')";
 			$uresult=mysql_query($uquery);
 			}
 		else
 			{
 			unlink($fname);
-			$addsummary .= "Error occurred creating htpasswd file. Sorry.<br /><br />\n<font size='1'>If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/<br /></font>\n";
+			$addsummary .= _UC_HTPASSWD_ERROR."<br /><br />\n<font size='1'>"._UC_HTPASSWD_EXPLAIN."<br /></font>\n";
 			}
-		$addsummary .= "<br />\n<a href='$scriptname?action=editusers'>Finished</a>\n";
+		$addsummary .= "<br />\n<a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
 		}
 	}
 
 elseif ($action == "deleteall")
 	{
-	$addsummary = "<b>DELETING SECURITY...</b><br />\n";
+	$addsummary = "<b>"._UC_SEC_REMOVE."..</b><br />\n";
 	$fname1="$homedir/.htaccess";
 	unlink($fname1);
-	$addsummary .= "Access file removed<br />\n";
 	$fname1="$homedir/.htpasswd";
 	unlink($fname1);
-	$addsummary .= "Password file removed<br />\n";
 	$dq="DELETE FROM users";
 	$dr=mysql_query($dq);
-	$addsummary .= "User records removed.";
-	$addsummary .= "<br /><br /><a href='$scriptname'>Finished</a>\n";
+	$addsummary .= _UC_ALL_REMOVED;
+	$addsummary .= "<br /><br /><a href='$scriptname'>"._GO_ADMIN."</a>\n";
 	}
 	
 elseif ($action == "adduser")
 	{
-	$addsummary = "<b>ADDING USER...</b><br />\n";
+	$addsummary = "<b>"._UC_ADD_USER."</b><br />\n";
 	if ($user && $pass)
 		{
-		$addsummary .= "Adding user $user with password $pass<br />\n";
 		if ($htpasswddir) {$htpasswd="\"$htpasswddir/htpasswd\"";} else {$htpasswd="htpasswd";}
 		$command="$htpasswd -b .htpasswd $user $pass 2>&1";
 		exec($command, $CommandResult, $CommandStatus);
@@ -118,20 +115,21 @@ elseif ($action == "adduser")
 			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
 			$addsummary .= "</pre>\n";
 			}
-		$uquery = "INSERT INTO users VALUES ('$user', '$pass', '$level')";
+		$uquery = "INSERT INTO users VALUES ('$user', '$pass', '{$_POST['level']}')";
+		echo $uquery;
 		$uresult = mysql_query($uquery);
 		
 		}
 	else
 		{
-		$addsummary .= "Could not add user. Username and/or password were not supplied<br />\n";
+		$addsummary .= _UC_ADD_MISSING."<br />\n";
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>Finished</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
 	}
 
 elseif ($action == "deluser")
 	{
-	$addsummary = "DELETING USER...<br />\n";
+	$addsummary = "<b>"._UC_DEL_USER."</b><br />\n";
 	if ($user)
 		{
 		$fname="$homedir/.htpasswd";
@@ -141,7 +139,7 @@ elseif ($action == "deluser")
 			list ($fuser, $fpass) = split(":", $htp);
 			if ($fuser == $user)
 				{
-				$addsummary .= "User found!<br />\n";
+				//$addsummary .= "User found!<br />\n";
 				}
 			else
 				{
@@ -156,25 +154,25 @@ elseif ($action == "deluser")
 			fputs($fp, $nhtp);
 			}
 		fclose($fp);
-		$addsummary .= "User password deleted<br />\n";
+		//$addsummary .= "User deleted<br />\n";
 		//DELETE USER FROM TABLE
 		$dquery="DELETE FROM users WHERE user='$user'";
 		$dresult=mysql_query($dquery);
-		$addsummary .= "User records deleted.";
+		//$addsummary .= "User records deleted.";
 		}
 	else
 		{
-		$addsummary .= "Could not delete user. Username not supplied!<br />\n";
+		$addsummary .= _UC_DEL_MISSING."<br />\n";
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>Finished</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
 	}
 
 elseif ($action == "moduser")
 	{
-	$addsummary = "<b>MODIFYING USER...</b><br />\n";
+	$addsummary = "<b>"._UC_MOD_USER."</b><br />\n";
 	if ($user && $pass)
 		{
-		$addsummary .= "Modifying user $user with password $pass<br />\n";
+		//$addsummary .= "Modifying user $user with password $pass<br />\n";
 		if ($htpasswddir) {$htpasswd = "\"$htpasswddir/htpasswd\"";} else {$htpasswd = "htpasswd";}
 		$command="$htpasswd -b .htpasswd $user $pass 2>&1";
 		exec($command, $CommandResult, $CommandStatus);
@@ -188,12 +186,12 @@ elseif ($action == "moduser")
 			}
 		$uquery = "UPDATE users SET password='$pass', security='$level' WHERE user='$user'";
 		$uresult = mysql_query($uquery);
-		$addsummary .= "User added!";
+		//$addsummary .= "User added!";
 		}
 	else
 		{
-		$addsummary .= "Could not modify user. Username and/or password were not supplied!";
+		$addsummary .= _UC_MOD_MISSING;
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>Finished</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
 	}
 ?>
