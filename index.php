@@ -187,6 +187,42 @@ if (isset($oldsid) && $oldsid && $oldsid != $sid)
 	$_SESSION['oldsid']=$sid;
 	}
 
+//Check if TOKEN is used for EVERY PAGE
+//This function fixes bug #998700 - Users able to submit two surveys/votes
+//by checking that the token has not been used at each page displayed.
+if ($tokensexist == 1 && returnglobal('token'))
+	{
+	//check if token actually does exist
+	$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='".trim(returnglobal('token'))."' AND completed != 'Y'";
+	$tkresult = mysql_query($tkquery);
+	$tkexist = mysql_num_rows($tkresult);
+	if (!$tkexist)
+		{
+		sendcacheheaders();
+		echo "<html>\n";
+		//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+		foreach(file("$thistpl/startpage.pstpl") as $op)
+			{
+			echo templatereplace($op);
+			}
+		foreach(file("$thistpl/survey.pstpl") as $op)
+			{
+			echo "\t".templatereplace($op);
+			}
+		echo "\t<center><br />\n"
+			."\t"._NOTOKEN1."<br /><br />\n"
+			."\t"._NOTOKEN3."\n"
+			."\t"._FURTHERINFO." {$thissurvey['adminname']} "
+			."(<a href='mailto:{$thissurvey['adminemail']}'>"
+			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
+			."\t<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
+		foreach(file("$thistpl/endpage.pstpl") as $op)
+			{
+			echo templatereplace($op);
+			}
+		exit;
+		}
+	}
 //CLEAR SESSION IF REQUESTED
 if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	{
