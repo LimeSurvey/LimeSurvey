@@ -186,38 +186,34 @@ else
 	//echo "<br /><br />$aquery<br /><br />\n";
 	while ($arow=mysql_fetch_array($aresult))
 		{
-		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && $arow['type'] !="P" && $arow['type'] != "R")
+		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && $arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && $arow['type'] !="P" && $arow['type'] != "R" && $arow['type'] != "Q")
 			{
 			$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 			switch($arow['type'])
 				{
-						case "N":  //NUMERICAL
-							$createsurvey .= " TINYTEXT";
-							break;
-						case "S":  //SHORT TEXT
-							$createsurvey .= " VARCHAR(200)";
-							break;
-						case "L":  //DROPDOWN LIST
-							$createsurvey .= " VARCHAR(5)";
-							break;
-						case "O": //DROPDOWN LIST WITH COMMENT
-							$createsurvey .= " VARCHAR(5),\n {$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment TEXT";
-							break;
-						case "T":  //LONG TEXT
-							$createsurvey .= " TEXT";
-							break;
-						case "D":  //DATE
-							$createsurvey .= " DATE";
-							break;
-						case "5":  //5 Point Choice
-							$createsurvey .= " VARCHAR(1)";
-							break;
-						case "G":  //Gender
-							$createsurvey .= " VARCHAR(1)";
-							break;
-						case "Y":  //YesNo
-							$createsurvey .= " VARCHAR(1)";
-							break;
+				case "N":  //NUMERICAL
+					$createsurvey .= " TINYTEXT";
+					break;
+				case "S":  //SHORT TEXT
+					$createsurvey .= " VARCHAR(200)";
+					break;
+				case "L":  //DROPDOWN LIST
+					$createsurvey .= " VARCHAR(5)";
+					break;
+				case "O": //DROPDOWN LIST WITH COMMENT
+					$createsurvey .= " VARCHAR(5),\n {$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment TEXT";
+					break;
+				case "T":  //LONG TEXT
+					$createsurvey .= " TEXT";
+					break;
+				case "D":  //DATE
+					$createsurvey .= " DATE";
+					break;
+				case "5":  //5 Point Choice
+				case "G":  //Gender
+				case "Y":  //YesNo
+					$createsurvey .= " VARCHAR(1)";
+					break;
 				}
 			}
 		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "P")
@@ -241,6 +237,15 @@ else
 					{
 					$createsurvey .= " {$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment VARCHAR(100),\n";
 					}
+				}
+			}
+		elseif ($arow['type'] == "Q")
+			{
+			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY answers.sortorder, answers.answer";
+			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
+			while ($abrow=mysql_fetch_array($abresult))
+				{
+				$createsurvey .= "  {$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']} VARCHAR(100),\n";
 				}
 			}
 		elseif ($arow['type'] == "R")

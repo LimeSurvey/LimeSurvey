@@ -263,6 +263,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "C":
 				case "E":
 				case "F":
+				case "Q":
 					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code= '$faid'";
 					$lr = mysql_query($lq);
 					while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))

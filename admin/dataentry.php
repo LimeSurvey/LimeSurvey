@@ -108,7 +108,7 @@ if ($action == "insert")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R")
+		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			$col_name .= "$fieldname, \n";
@@ -310,7 +310,7 @@ elseif ($action == "edit")
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
-		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "P")
+		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "P" || $fnrow['type'] == "Q")
 			{
 			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 			$fnrresult = mysql_query($fnrquery);
@@ -858,7 +858,7 @@ elseif ($action == "update")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "O" && $irow['type'] != "R")
+		if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "O" && $irow['type'] != "R")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (get_magic_quotes_gpc())
@@ -1181,6 +1181,20 @@ else
 					echo "\t\t\t\t<option value='F'>"._FEMALE."</option>\n";
 					echo "\t\t\t\t<option value='M'>"._MALE."</option>\n";
 					echo "\t\t\t</select>\n";
+					break;
+				case "Q": //MULTIPLE SHORT TEXT
+					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$dearesult = mysql_query($deaquery);
+					echo "\t\t\t<table>\n";
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						echo "\t\t\t\t<tr><td align='right'>$setfont";
+						echo $dearow['answer'];
+						echo "</td>\n";
+						echo "\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}'></td>\n";
+						echo "\t\t\t\t</tr>\n";
+						}
+					echo "\t\t\t</table>\n";
 					break;
 				case "L": //LIST drop-down/radio-button list
 					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";

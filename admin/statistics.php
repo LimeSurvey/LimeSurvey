@@ -96,7 +96,7 @@ foreach ($filters as $flt)
 	if ($counter == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
 	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
 	//headings
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>";
 		echo "$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
@@ -115,6 +115,9 @@ foreach ($filters as $flt)
 	echo "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
 	switch ($flt[2])
 		{
+		case "Q":
+			//DO NUSSINK
+			break;
 		case "T": // Long free text
 			$myfield2="T$myfield";
 			echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"; //heading
@@ -392,7 +395,7 @@ foreach ($filters as $flt)
 				}
 			break;
 		}
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "T" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q") //Have to make an exception for these types!
 		{
 		echo "\n\t\t\t\t</td>\n";
 		}
