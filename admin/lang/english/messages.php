@@ -34,6 +34,9 @@ define(_EMAILINVITE, "Email Invitation");
 define(_EMAILREMIND, "Email Reminder");
 define(_TOKENIFY, "Create Tokens");
 define(_UPLOADCSV, "Upload CSV File");
+define(_LABELCONTROL, "Label Sets Administration"); //NEW with 0.98rc3
+define(_LABELSET, "Label Set"); //NEW with 0.98rc3
+define(_LABELANS, "Label Answers"); //NEW with 0.98rc3
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -42,6 +45,7 @@ define(_QUESTIONS, "Questions");
 define(_QBYQ, "Question by Question");
 define(_GBYG, "Group by Group");
 define(_SBYS, "All in one");
+define(_LABELSETS, "Sets"); //New with 0.98rc3
 
 //BUTTON MOUSEOVERS
 //administration bar
@@ -83,7 +87,7 @@ define(_Q_DELETE_BT, "Delete Current Question");
 define(_Q_EXPORT_BT, "Export this Question");
 define(_Q_CONDITIONS_BT, "Set Conditions for this Question");
 define(_Q_ANSWERS_BT, "Edit/Add Answers for this Question");
-define(_Q_LABELS_BT, "Edit/Add Labels to this Question");
+define(_Q_LABELS_BT, "Edit/Add Label Sets");
 define(_Q_MINIMISE_BT, "Hide Details of this Question");
 define(_Q_MAXIMISE_BT, "Show Details of this Question");
 define(_Q_CLOSE_BT, "Close this Question");
@@ -103,7 +107,9 @@ define(_T_INVITE_BT, "Send email invitation");
 define(_T_REMIND_BT, "Send email reminder");
 define(_T_TOKENIFY_BT, "Generate Tokens");
 define(_T_KILL_BT, "Drop tokens table");
-
+//Labels Button Bar
+define(_L_ADDSET_BT, "Add new label set");
+define(_L_EDIT_BT, "Edit label set");
 //Datacontrols
 define(_D_BEGIN, "Show start..");
 define(_D_BACK, "Show last..");
@@ -129,7 +135,7 @@ define(_SL_URL, "End URL:");
 define(_SL_URLDESCRIP, "URL Descrip:");
 define(_SL_STATUS, "Status:");
 define(_SL_SELSQL, "Select SQL File:");
-define(_SL_USECOOKIES, "Use Cookies?"); //NEW IN RELEASE 0.98rc3
+define(_SL_USECOOKIES, "Use Cookies?"); //NEW with 098rc3
 //groups
 define(_GL_TITLE, "Title:");
 define(_GL_DESCRIPTION, "Description:");
@@ -141,6 +147,7 @@ define(_QL_TYPE, "Type:");
 define(_QL_GROUP, "Group:");
 define(_QL_MANDATORY, "Mandatory:");
 define(_QL_OTHER, "Other:");
+define(_QL_LABELSET, "Label Set:");
 //answers
 define(_AL_CODE, "Code");
 define(_AL_ANSWER, "Answer");
@@ -170,6 +177,12 @@ define(_TL_TOKEN, "Token");
 define(_TL_INVITE, "Invite sent?");
 define(_TL_DONE, "Completed?");
 define(_TL_ACTION, "Actions");
+//labels
+define(_LL_NAME, "Set Name"); //NEW with 098rc3
+define(_LL_CODE, "Code"); //NEW with 098rc3
+define(_LL_ANSWER, "Title"); //NEW with 098rc3
+define(_LL_SORTORDER, "Order"); //NEW with 098rc3
+define(_LL_ACTION, "Action"); //New with 098rc3
 
 //QUESTION TYPES
 define(_5PT, "5 Point Choice");
@@ -465,4 +478,10 @@ define(_TC_EMAILSREMAINING, "There are {EMAILCOUNT} emails still to be sent."); 
 define(_TC_SENDREMIND, "Send Reminders");
 define(_TC_INVITESENTTO, "Invitation Sent To:"); //is followed by token name
 define(_TC_REMINDSENTTO, "Reminder Sent To:"); //is followed by token name
+
+//labels.php
+define(_LB_NEWSET, "Create New Label Set");
+define(_LB_EDITSET, "Edit Label Set");
+define(_LB_FAIL_UPDATESET, "Update of Label Set failed");
+define(_LB_FAIL_INSERTSET, "Insert of new Label Set failed");
 ?>
