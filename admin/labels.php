@@ -124,7 +124,7 @@ if ($action == "newset" || $action == "editset")
 	echo "\t\t\t</tr>\n";
 	echo "\t\t\t<tr>\n";
 	echo "\t\t\t\t<td align='right' width='15%'>\n";
-	echo "\t\t\t\t\t$setfont<b>"._LB_NAME.":</b></font>";
+	echo "\t\t\t\t\t$setfont<b>"._LL_NAME.":</b></font>";
 	echo "\t\t\t\t</td>\n";
 	echo "\t\t\t\t<td>\n";
 	echo "\t\t\t\t\t<input type='text' $slstyle name='label_name' value='$lbname'>\n";
@@ -145,6 +145,25 @@ if ($action == "newset" || $action == "editset")
 	echo "'>\n";
 	if ($action == "editset") {echo "\t\t<input type='hidden' name='lid' value='$lblid'>\n";}
 	echo "\t\t</form>\n";
+	if ($action == "newset")
+		{
+		echo "\t\t\t<tr><td colspan='2' align='center'>\n";
+		echo "\t\t\t\t$setfont<b>OR</b></font>\n";
+		echo "\t\t\t</td></tr>\n";
+		echo "\t\t\t<tr bgcolor='black'>\n";
+		echo "\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><b>\n";
+		echo "\t\t\t\t"._IMPORTLABEL."\n";
+		echo "\t\t\t\t</font></font></b></td>\n";
+		echo "\t\t\t</tr>\n";
+		echo "\t\t\t<tr>\n";
+		echo "\t\t\t<form enctype='multipart/form-data' name='importlabels' action='labels.php' method='post'>\n";
+		echo "\t\t\t\t<td align='right'>$setfont<b>"._SL_SELSQL."</b></font></td>\n";
+		echo "\t\t<td><input $btstyle name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n";
+		echo "\t<tr><td></td><td><input type='submit' $btstyle value='"._IMPORTLABEL."'></TD>\n";
+		echo "\t<input type='hidden' name='action' value='importlabels'>\n";
+		echo "\t</tr></form>\n</table>\n";
+		
+		}
 	echo "\t\t</table>\n";
 	}
 //SET SELECTED
@@ -162,8 +181,9 @@ if (isset($lid) && ($action != "editset"))
 		echo "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		echo "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
 		echo "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
-		echo "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._L_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('labels.php?action=editset&lid=$lid', '_top')\">";
-		echo "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._L_DEL_BT."' align='left' border='0' hspace='0' onClick=\"window.open('labels.php?action=delset&lid=$lid', '_top')\">";
+		echo "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._L_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('labels.php?action=editset&lid=$lid', '_top')\">\n";
+		echo "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._L_DEL_BT."' align='left' border='0' hspace='0' onClick=\"window.open('labels.php?action=delset&lid=$lid', '_top')\">\n";
+		echo "\t\t\t\t\t<input type='image' src='./images/export.gif' title='"._EXPORTLABEL."' align='left' border='0' hspace='0' onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n";
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t</tr>\n";
 		echo "\t\t\t</table>\n";
