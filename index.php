@@ -172,7 +172,7 @@ if (isset($_SESSION['oldsid'])) {$oldsid=$_SESSION['oldsid'];}
 
 if (!isset($oldsid)) {$_SESSION['oldsid'] = $sid;}
 
-if ($oldsid && $oldsid != $sid)
+if (isset($oldsid) && $oldsid && $oldsid != $sid)
 	{
 	session_unset();
 	$_SESSION['oldsid']=$sid;
