@@ -665,8 +665,16 @@ if (isset($_POST['display']) && $_POST['display'])
 			."\t\t<form action='export.php' method='post' target='_blank'><td width='50%'>\n"
 			."\t\t<input type='submit' value='Export' $btstyle>\n"
 			."\t\t\t<input type='hidden' name='sid' value='$sid'>\n"
-			."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n"
-			."\t\t</td></form>\n\t</tr>\n";
+			."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n";
+		    //Add the fieldnames
+			if (isset($_POST['summary']) && $_POST['summary'])
+				{
+				foreach($_POST['summary'] as $viewfields) 
+					{
+					echo "\t\t\t<input type='hidden' name='summary[]' value='$viewfields'>\n";
+					}
+				}
+		echo "\t\t</td></form>\n\t</tr>\n";
 		}
 	echo "</table>\n";
 	}
