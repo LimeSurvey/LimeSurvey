@@ -11,6 +11,7 @@ define(_HELP, "Help");
 define(_USERCONTROL, "User Control");
 define(_ACTIVATE, "Activate Survey");
 define(_DEACTIVATE, "Deactivate Survey");
+define(_CHECKFIELDS, "Check Database Fields");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -213,6 +214,12 @@ define(_AC_DEACTIVATED_MESSAGE2, "The responses to this survey are no longer ava
 define(_AC_DEACTIVATED_MESSAGE3, "You should note the name of this table in case you need to access this information later.");
 define(_AC_DEACTIVATED_MESSAGE4, "The tokens table associated with this survey has been renamed to: ");
 
-
+//CHECKFIELDS
+define(_CF_CHECKTABLES, "Checking to ensure all tables exist");
+define(_CF_CHECKFIELDS, "Checking to ensure all fields exist");
+define(_CF_CHECKING, "Checking");
+define(_CF_TABLECREATED, "Table Created");
+define(_CF_FIELDCREATED, "Field Created");
+define(_CF_OK, "OK");
 
 ?>
