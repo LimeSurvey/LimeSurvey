@@ -944,31 +944,45 @@ switch ($ia[4])
 				 . "\t\t\t\t\t<td></td>\n";
 		$cellwidth=count($labelans);
 		if ($ia[6] != "Y") {$cellwidth++;}
-		$cellwidth=100/$cellwidth;
+		$cellwidth=60/$cellwidth;
 		foreach ($labelans as $ld)
 			{
-			$answer .= "\t\t\t\t\t<td align='center' class='array1' width='$cellwidth%'><font size='1'>".$ld."</td>\n";
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</td>\n";
 			}
 		if ($ia[6] != "Y") //Question is not mandatory
 			{
-			$answer .= "\t\t\t\t\t<td align='center' class='array1' width='$cellwidth%'><font size='1'>"._NOTAPPLICABLE."</td>\n";
+			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</td>\n";
 			}
 		$answer .= "\t\t\t\t</tr>\n";
+		$ansrowcount=0;
+		$ansrowtotallength=0;
+		while ($ansrow = mysql_fetch_array($ansresult))
+			{
+			$ansrowcount++;
+			$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
+			}
+		$ansrowavg=(($ansrowtotallength/$ansrowcount)/2);
+		if ($ansrowavg > 54) {$percwidth=60;}
+		elseif ($ansrowavg < 5) {$percwidth=5;}
+		//elseif ($ansrowavg > 25) {$percwidth=30;}
+		else {$percwidth=$ansrowavg*1.2;}
+		$otherwidth=(100-$percwidth)/$cellwidth;
+		$ansresult = mysql_query($ansquery);
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n"
-					 . "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
+					 . "\t\t\t\t\t<td align='right' width='$percwidth%'>{$ansrow['answer']}</td>\n";
 			foreach ($labelcode as $ld)
 				{
-				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value='$ld'";
+				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value='$ld'";
 				if ($_SESSION[$myfname] == $ld['code']) {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			if ($ia[6] != "Y")
 				{
-				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
+				$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value=''";
 				if ($_SESSION[$myfname] == "") {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
