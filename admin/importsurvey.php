@@ -374,12 +374,24 @@ if ($grouparray) {
 								//$ainsert = str_replace("'$qid'", "'$newqid'", $aa);
 								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
 								$ares = mysql_query($ainsert) or die ("<b>"._ERROR."</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
-								if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P" || $type == "F" || $type == "H") {
+								if ($type == "M" || $type == "P") {
 									//$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
-									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, "newcfieldname"=>$newsid."X".$newgid."X".$newqid, "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code, "newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
+									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
+														"newcfieldname"=>$newsid."X".$newgid."X".$newqid, 
+														"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code, 
+														"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
 									if ($type == "P") {
-										$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment", "newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment", "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."comment", "newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment");
+										$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment", 
+															"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment", 
+															"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."comment", 
+															"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment");
 									}
+								}
+								elseif ($type == "A" || $type == "B" || $type == "C" || $type == "F" || $type == "H") {
+									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code, 
+														"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code, 
+														"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code, 
+														"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
 								}
 								elseif ($type == "R") {
 									$newrank++;
@@ -387,25 +399,43 @@ if ($grouparray) {
 							}			
 						}
 						if (($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P" || $type == "L") && ($other == "Y")) {
-							$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."other", "newcfieldname"=>$newsid."X".$newgid."X".$newqid."other", "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."other", "newfieldname"=>$newsid."X".$newgid."X".$newqid."other");
+							$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."other", 
+												"newcfieldname"=>$newsid."X".$newgid."X".$newqid."other", 
+												"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."other", 
+												"newfieldname"=>$newsid."X".$newgid."X".$newqid."other");
 							if ($type == "P") {
-								$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."othercomment", "newcfieldname"=>$newsid."X".$newgid."X".$newqid."othercomment", "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."othercomment", "newfieldname"=>$newsid."X".$newgid."X".$newqid."othercomment");
+								$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."othercomment", 
+													"newcfieldname"=>$newsid."X".$newgid."X".$newqid."othercomment", 
+													"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."othercomment", 
+													"newfieldname"=>$newsid."X".$newgid."X".$newqid."othercomment");
 							}
 						}
 						if ($type == "R" && $newrank >0) {
 							for ($i=1; $i<=$newrank; $i++) {
-								$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$i, "newcfieldname"=>$newsid."X".$newgid."X".$newqid.$i, "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$i, "newfieldname"=>$newsid."X".$newgid."X".$newqid.$i);
+								$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$i, 
+													"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$i, 
+													"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$i, 
+													"newfieldname"=>$newsid."X".$newgid."X".$newqid.$i);
 							}
 						}
 						if ($type != "A" && $type != "B" && $type != "C" && $type != "R" && $type != "M" && $type != "P") {
-							$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, "newcfieldname"=>$newsid."X".$newgid."X".$newqid, "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid, "newfieldname"=>$newsid."X".$newgid."X".$newqid);
+							$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
+												"newcfieldname"=>$newsid."X".$newgid."X".$newqid, 
+												"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
+												"newfieldname"=>$newsid."X".$newgid."X".$newqid);
 							if ($type == "O") {
-								$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment", "newcfieldname"=>$newsid."X".$newgid."X".$newqid."comment", "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment", "newfieldname"=>$newsid."X".$newgid."X".$newqid."comment");
+								$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment", 
+													"newcfieldname"=>$newsid."X".$newgid."X".$newqid."comment", 
+													"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment", 
+													"newfieldname"=>$newsid."X".$newgid."X".$newqid."comment");
 							}
 						}
 						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					} else {
-						$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, "newcfieldname"=>$newsid."X".$newgid."X".$newqid, "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid, "newfieldname"=>$newsid."X".$newgid."X".$newqid);
+						$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
+											"newcfieldname"=>$newsid."X".$newgid."X".$newqid, 
+											"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
+											"newfieldname"=>$newsid."X".$newgid."X".$newqid);
 						$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					}
 				}
@@ -440,7 +470,6 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		$newvalues="('".implode("', '", $newfieldcontents)."')";
 		$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $car);
 		$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
-		echo "CONDITIONS INSERT: $insert<br />\n";
 		$result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
 	}
 }
