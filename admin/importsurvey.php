@@ -251,7 +251,7 @@ $sidquery = "SELECT sid FROM {$dbprefix}surveys ORDER BY sid DESC LIMIT 1";
 $sidres = mysql_query($sidquery);
 while ($srow = mysql_fetch_row($sidres)) {$newsid = $srow[0];}
 
-//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
+//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIE NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
 	foreach ($labelsetsarray as $lsa) {
 		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
@@ -301,6 +301,15 @@ if ($grouparray) {
 		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
 		$gidpos=array_search("gid", $gafieldorders);
 		$gid=$gacfieldcontents[$gidpos];
+		$sidpos=array_search("sid", $gafieldorders);
+		$gsid=$gacfieldcontents[$sidpos];
+		if ($gsid != $sid) 
+			{
+			echo "<br />\n<font color='red'><b>"._ERROR."</b></font>"
+				."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n"
+				."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
+			exit;
+			}
 		//$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
 		$ginsert = str_replace("('$gid', '$sid',", "('', '$newsid',", $ga);
 		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
