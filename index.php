@@ -74,6 +74,14 @@ if (!$_GET['sid'] && !$_POST['sid'])
 
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 $sid=$_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
+if (!$token) 
+	{
+	$token=$_GET['token'];
+	if (!$token)
+		{
+		$token=$_POST['token'];
+		}
+	}
 $query="SELECT * FROM surveys WHERE sid=$sid";
 $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
 $surveyexists=mysql_num_rows($result);
