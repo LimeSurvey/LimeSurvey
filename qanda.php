@@ -224,6 +224,7 @@ function retrieveAnswers($ia, $notanswered=null)
 			$values=do_5pointchoice($ia);
 			break;
 		case "D": //DATE
+			$qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
 			$values=do_date($ia);
 			break;
 		case "L": //LIST drop-down/radio-button list
@@ -265,6 +266,7 @@ function retrieveAnswers($ia, $notanswered=null)
 			$values=do_multipleshorttext($ia);
 			break;
 		case "N": //NUMERICAL QUESTION TYPE
+			$qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
 			$values=do_numerical($ia);
 			break;
 		case "S": //SHORT FREE TEXT
@@ -413,7 +415,7 @@ function do_5pointchoice($ia)
 
 function do_date($ia)
 	{
-	$answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' value=\"".$_SESSION[$ia[1]]."\" />\n"
+	$answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' id='{$ia[1]}' value=\"".$_SESSION[$ia[1]]."\" />\n"
 			 . "\t\t\t<table class='question'>\n"
 			 . "\t\t\t\t<tr>\n"
 			 . "\t\t\t\t\t<td>\n"
@@ -846,7 +848,7 @@ function do_multiplechoice($ia)
 	if ($other == "Y")
 		{
 		$myfname = $ia[1]."other";
-		$answer .= "\t\t\t\t\t\t"._OTHER.": <input class='text' type='text' name='$myfname'";
+		$answer .= "\t\t\t\t\t\t<label for='$myfname'>"._OTHER.":</label> <input class='text' type='text' name='$myfname' id='$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".$_SESSION[$myfname]."'";}
 		$answer .= " />\n"
 				 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
@@ -911,7 +913,7 @@ function do_multiplechoice_withcomments($ia)
 		$anscount = $anscount + 2;
 		$answer .= "\t\t\t\t\t\t\t<tr>\n"
 				 . "\t\t\t\t\t\t\t\t<td class='answertext'>\n"
-				 . "\t\t\t\t\t\t\t\t\t"._OTHER.":<input class='text' type='text' name='$myfname' size='10'";
+				 . "\t\t\t\t\t\t\t\t\t<label for='$myfname'>"._OTHER.":</label><input class='text' type='text' name='$myfname' id='$myfname' size='10'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".$_SESSION[$myfname]."'";}
 		$fn++;
 		$answer .= " />\n"
@@ -966,7 +968,7 @@ function do_multipleshorttext($ia)
 function do_numerical($ia)
 	{
 	$answer = keycontroljs()
-			 . "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n"
+			 . "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' id='{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\"/><br />\n"
 			 . "\t\t\t<font size='1'><i>"._NUMERICAL_PS."</i></font>\n";
 	$inputnames[]=$ia[1];
 	$mandatory=null;
@@ -1281,11 +1283,11 @@ function do_array_flexible($ia)
 				 . "\t\t\t\t\t<td></td>\n";
 		foreach ($labelans as $ld)
 			{
-			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
+			$answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>".$ld."</font></th>\n";
 			}
 		if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
 			{
-			$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></td>\n";
+			$answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></th>\n";
 			}
 		$answer .= "\t\t\t\t</tr>\n";
 		$ansrowcount=0;
