@@ -135,8 +135,8 @@ if ($_COOKIE[$cookiename] == "COMPLETE" && $surveyusecookie == "Y" && $tokensexi
 		}
 	echo "\t\t<center><br />\n";
 	echo "\t\t\t<font color='RED'><b>"._ERROR."</b></font><br />\n";
-	echo "\t\t\tYou have already completed this survey.<br /><br />\n";
-	echo "\t\t\tPlease contact <i>$siteadminname</i> at <i>$siteadminemail</i> for further assistance.<br /><br />\n";
+	echo "\t\t\t"._SURVEYCOMPLETE."<br /><br />\n";
+	echo "\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "._CONTACT2."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
 		{
