@@ -484,6 +484,7 @@ switch ($ia[4])
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
+		if ($other == "Y") {$anscount++;} //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 		$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 		$fn = 1;
 		if (!isset($multifields)) {$multifields="";}
@@ -491,7 +492,7 @@ switch ($ia[4])
 			{
 			$myfname = $ia[1].$ansrow['code'];
 			//LOOK HERE: TAKE OUT/MODIFY
-			$multifields .= "$fname{$ansrow['code']}|";
+			//$multifields .= "$fname{$ansrow['code']}|";
 			$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='$ia[1]{$ansrow['code']}' value='Y'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
@@ -734,23 +735,25 @@ switch ($ia[4])
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
-			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
+			if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n"
 					 . "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
 			for ($i=1; $i<=5; $i++)
 				{
 				$answer .= "\t\t\t\t\t<td><input class='radio' type='radio' name='$myfname' value='$i'";
-				if ($_SESSION[$myfname] == $i) {$answer .= " checked";}
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			if ($ia[6] != "Y")
 				{
 				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
-				if ($_SESSION[$myfname] == "") {$answer .= " checked";}
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "") {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			$answer .= "\t\t\t\t</tr>\n"
-					 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
+					 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
+			$answer .= "'>\n";
 			$fn++;
 			$inputnames[]=$myfname;
 			if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array
@@ -790,23 +793,25 @@ switch ($ia[4])
 		while ($ansrow = mysql_fetch_array($ansresult))
 			{
 			$myfname = $ia[1].$ansrow['code'];
-			if ($trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
+			if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
 			$answer .= "\t\t\t\t<tr class='$trbc'>\n";
 			$answer .= "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
 			for ($i=1; $i<=10; $i++)
 				{
 				$answer .= "\t\t\t\t\t\t<td><input class='radio' type='radio' name='$myfname' value='$i'";
-				if ($_SESSION[$myfname] == $i) {$answer .= " checked";}
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			if ($ia[6] != "Y")
 				{
 				$answer .= "\t\t\t\t\t<td align='center'><input class='radio' type='radio' name='$myfname' value=''";
-				if ($_SESSION[$myfname] == "") {$answer .= " checked";}
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "") {$answer .= " checked";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 				}
 			$answer .= "\t\t\t\t</tr>\n"
-					 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='{$_SESSION[$myfname]}'>\n";
+					 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
+			$answer .= "'>\n";
 			$inputnames[]=$myfname;
 			$fn++;
 			if ($ia[6] == "Y" && $ia[7] != "Y") //Question is mandatory. Add to mandatory array

@@ -46,6 +46,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	foreach ($postedfieldnames as $pf)
 		{
 		if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
+		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
 		}
 	}
 
@@ -135,6 +136,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'])
 					}
 			    }
 			$multiname="MULTI$cmfns[$mi]"; 
+			$multiname2=$multiname."2"; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
 			$$multiname=0; 
 			$$multiname2=0;
 			}
@@ -144,7 +146,7 @@ if (isset($_POST['conmandatory']) && $_POST['conmandatory'])
 		if (($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && $_POST[$dccm] == "on")//There is an answer
 			{
 			}
-		elseif ($_POST[$dccm] == "on" && !$_POST[$multiname]) //Question is on, there is no answer, but it's a multiple
+		elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
 			{
 			if ($_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
 			if ($_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}

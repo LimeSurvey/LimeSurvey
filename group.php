@@ -48,12 +48,14 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	foreach ($postedfieldnames as $pf)
 		{
 		if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
+		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";} //delete any pre-existing values
 		}
 	}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
 if ($allowmandatorybackwards==1 && isset($_POST['move']) &&  $_POST['move'] == " << "._PREV." ") {$backok="Y";}
-if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $backok != "Y"))
+
+if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $backok != "Y"))
 	{
 	$chkmands=explode("|", $_POST['mandatory']);
 	$mfns=explode("|", $_POST['mandatoryfn']);
@@ -82,7 +84,7 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $ba
 			}
 		else {$multiname="MULTI$mfns[$mi]";}
 		//if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
-		if (isset($_SESSION[$cm]))
+		if (isset($_SESSION[$cm]) && ($_SESSION[$cm] == "0" || $_SESSION[$cm]))
 			{
 			}
 		elseif (!isset($_POST[$multiname]) || !$_POST[$multiname])
@@ -95,7 +97,7 @@ if (isset($_POST['mandatory']) && $_POST['mandatory'] && (!isset($backok) || $ba
 			}
 		else
 			{
-			//One of the mandatory questions hasn't been asnwered
+			//One of the mandatory questions hasn't been answered
 			$$multiname++;
 			}
 		$$multiname2++;
