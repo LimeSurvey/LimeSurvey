@@ -216,7 +216,7 @@ if ($action == "modifyuser")
 	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
 	while ($mrw = mysql_fetch_array($mur))
 		{
-		$usersummary .= "\t<td>$setfont<b>$mrw[0]</b></font></td>\n";
+		$usersummary .= "\t<td>$setfont<b>{$mrw['user']}</b></font></td>\n";
 		$usersummary .= "\t\t<input type='hidden' name='user' value='{$mrw['user']}'>\n";
 		$usersummary .= "\t<td>\n\t\t<input type='text' name='pass' value='{$mrw['password']}'></td>\n";
 		$usersummary .= "\t<td>\n\t\t<input type='text' size='2' name='level' value='{$mrw['security']}'></td>\n";
@@ -231,49 +231,92 @@ if ($action == "editusers")
 	{
 	if (!file_exists("$homedir/.htaccess"))
 		{
-		$usersummary = "<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>\n";
-		$usersummary .= "\t\t<b>$setfont<font color='WHITE'>Security Control</font></font></b></td></tr>\n";
-		$usersummary .= "\t<tr><td>$setfont<font color='RED'><b>Warning:</font></font></b><br />\n";
-		$usersummary .= "\t\tYou have not yet initialised security settings for your survey system \n";
-		$usersummary .= "\t\tand subsequently there are no restrictions on access.\n";
-		$usersummary .= "\t\t<p>If you click on the 'initialise security' button below, standard APACHE \n";
-		$usersummary .= "\t\tsecurity settings will be added to the administration directory of this \n";
-		$usersummary .= "\t\tscript. You will then need to use the default access username and password \n";
-		$usersummary .= "\t\tto access the administration and dataentry scripts.</p>\n";
-		$usersummary .= "\t\t<p>USERNAME: $defaultuser<BR>PASSWORD: $defaultpass</p>\n";
-		$usersummary .= "\t\t<p>It is highly recommended that once your security system has been initialised \n";
-		$usersummary .= "\t\tyou change this default password.</p></td></tr>\n";
-		$usersummary .= "\t<tr><td align='center'><input type='submit' $btstyle value='Initialise Security' onClick=\"window.open('$scriptname?action=setupsecurity', '_top')\"></td></tr>\n";
+		$usersummary = "<table width='100%' border='0'>\n";
+		$usersummary .= "\t<tr>\n";
+		$usersummary .= "\t\t<td bgcolor='black' align='center'>\n";
+		$usersummary .= "\t\t\t<b>$setfont<font color='WHITE'>Security Control</font></font></b>\n";
+		$usersummary .= "\t\t</td>\n";
+		$usersummary .= "\t</tr>\n";
+		$usersummary .= "\t<tr>\n";
+		$usersummary .= "\t\t<td>\n";
+		$usersummary .= "\t\t\t$setfont<font color='RED'><b>Warning:</font></font></b><br />\n";
+		$usersummary .= "\t\t\tYou have not yet initialised security settings for your survey system \n";
+		$usersummary .= "\t\t\tand subsequently there are no restrictions on access.\n";
+		$usersummary .= "\t\t\t<p>If you click on the 'initialise security' button below, standard APACHE \n";
+		$usersummary .= "\t\t\tsecurity settings will be added to the administration directory of this \n";
+		$usersummary .= "\t\t\tscript. You will then need to use the default access username and password \n";
+		$usersummary .= "\t\t\tto access the administration and dataentry scripts.</p>\n";
+		$usersummary .= "\t\t\t<p>USERNAME: $defaultuser<br />PASSWORD: $defaultpass</p>\n";
+		$usersummary .= "\t\t\t<p>It is highly recommended that once your security system has been initialised \n";
+		$usersummary .= "\t\t\tyou change this default password.</p>\n";
+		$usersummary .= "\t\t</td>\n";
+		$usersummary .= "\t</tr>\n";
+		$usersummary .= "\t<tr>\n";
+		$usersummary .= "\t\t<td align='center'>\n";
+		$usersummary .= "\t\t\t<input type='submit' $btstyle value='Initialise Security' onClick=\"window.open('$scriptname?action=setupsecurity', '_top')\">\n";
+		$usersummary .= "\t\t</td>\n";
+		$usersummary .= "\t</tr>\n";
 		$usersummary .= "</table>\n";
 		}
 	else
 		{
-		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='BLACK' align='center'>\n";
-		$usersummary .= "\t\t<b>$setfont<font color='WHITE'>List of users</font><font></b></td></tr>\n";
-		$usersummary .= "\t<tr bgcolor='#444444'><td>$setfont<font color='WHITE'><b>User</td>\n\t<td>$setfont<font color='WHITE'><b>Password</b></font></font></td>";
-		$usersummary .= "\t<td>$setfont<font color='WHITE'><b>Security</b></font></font></td>\n\t<td>$setfont<font color='WHITE'><b>Actions</b></font></font></td></tr>\n";
+		$usersummary = "<table width='100%' border='0'>\n";
+		$usersummary .= "\t<tr>\n";
+		$usersummary .= "\t\t<td colspan='4' bgcolor='black' align='center'>\n";
+		$usersummary .= "\t\t\t<b>$setfont<font color='white'>List of users</font><font></b>\n";
+		$usersummary .= "\t\t</td>\n";
+		$usersummary .= "\t</tr>\n";
+		$usersummary .= "\t<tr bgcolor='#444444'>\n";
+		$usersummary .= "\t\t<td>$setfont<font color='white'><b>User</b></td>\n";
+		$usersummary .= "\t\t<td>$setfont<font color='white'><b>Password</b></font></font></td>\n";
+		$usersummary .= "\t\t<td>$setfont<font color='white'><b>Security</b></font></font></td>\n";
+		$usersummary .= "\t\t<td>$setfont<font color='white'><b>Actions</b></font></font></td>\n";
+		$usersummary .= "\t</tr>\n";
 		$userlist = getuserlist();
 		$ui = count($userlist);
-		if ($ui < 1) {$usersummary .= "<center>WARNING: No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.</center>";}
+		if ($ui < 1)
+			{
+			$usersummary .= "\t<tr>\n";
+			$usersummary .= "\t\t<td>\n";
+			$usersummary .= "\t\t\t<center>WARNING: No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.</center>";
+			$usersummary .= "\t\t</td>\n";
+			$usersummary .= "\t</tr>\n";
+			}
 		else
 			{
 			foreach ($userlist as $usr)
 				{
-				$usersummary .= "\t<tr><td>$setfont<b>$usr[0]</b></font></td>\n\t<td>$setfont$usr[1]</font></td>\n\t<td>$setfont$usr[2]</td>\n";
-				$usersummary .= "\t<td><input type='submit' $btstyle value='Edit' onClick=\"window.open('$scriptname?action=modifyuser&user=$usr[0]', '_top')\">\n";
-				if ($ui > 1 ) {$usersummary .= "\t\t<input type='submit' $btstyle value='Del' onClick=\"window.open('$scriptname?action=deluser&user=$usr[0]', '_top')\">\n";}
-				$usersummary .= "\t</td></tr>\n";
+				$usersummary .= "\t<tr>\n";
+				$usersummary .= "\t<td>$setfont<b>{$usr['user']}</b></font></td>\n";
+				$usersummary .= "\t\t<td>$setfont{$usr['password']}</font></td>\n";
+				$usersummary .= "\t\t<td>$setfont{$usr['security']}</td>\n";
+				$usersummary .= "\t\t<td>\n";
+				$usersummary .= "\t\t\t<input type='submit' $btstyle value='Edit' onClick=\"window.open('$scriptname?action=modifyuser&user={$usr['user']}', '_top')\" />\n";
+				if ($ui > 1 )
+					{
+					$usersummary .= "\t\t\t<input type='submit' $btstyle value='Del' onClick=\"window.open('$scriptname?action=deluser&user={$usr['user']}', '_top')\" />\n";
+					}
+				$usersummary .= "\t\t</td>\n";
+				$usersummary .= "\t</tr>\n";
 				$ui++;
 				}
 			}
-		$usersummary .= "\t<tr bgcolor='#EEEFFF'><form action='$scriptname' method='post'>\n\t<td>\n";
-		$usersummary .= "\t\t<input type='text' $slstyle name='user'></td>\n";
-		$usersummary .= "\t<td><input type='text' $slstyle name='pass'></td>\n";
-		$usersummary .= "\t<td><input type='text' $slstyle name='level' size='2'></td>\n";
-		$usersummary .= "\t<td><input type='submit' $btstyle value='Add New User'></td></tr>\n";
-		$usersummary .= "\t\t<input type='hidden' name='action' value='adduser'></form>\n";
-		$usersummary .= "\t<tr><td colspan='3'></td>\n\t<td><input type='submit' $btstyle value='Turn Off Security' ";
-		$usersummary .= "onClick=\"window.open('$scriptname?action=turnoffsecurity', '_top')\"></td></tr>\n";		
+		$usersummary .= "\t\t<form action='$scriptname' method='post'>\n";
+		$usersummary .= "\t\t<tr bgcolor='#EEEFFF'>\n";
+		$usersummary .= "\t\t<td><input type='text' $slstyle name='user'></td>\n";
+		$usersummary .= "\t\t<td><input type='text' $slstyle name='pass'></td>\n";
+		$usersummary .= "\t\t<td><input type='text' $slstyle name='level' size='2'></td>\n";
+		$usersummary .= "\t\t<td><input type='submit' $btstyle value='Add New User'></td>\n";
+		$usersummary .= "\t</tr>\n";
+		$usersummary .= "\t<tr>\n";
+		$usersummary .= "\t\t<td><input type='hidden' name='action' value='adduser'></td>\n";
+		$usersummary .= "\t</tr>\n";
+		$usersummary .= "\t</form>\n";
+		$usersummary .= "\t<tr>\n";
+		$usersummary .= "\t\t<td colspan='3'></td>\n";
+		$usersummary .= "\t\t<td><input type='submit' $btstyle value='Turn Off Security' ";
+		$usersummary .= "onClick=\"window.open('$scriptname?action=turnoffsecurity', '_top')\" /></td>\n";
+		$usersummary .= "\t</tr>\n";		
 		$usersummary .= "</table>\n";
 		}
 	}
