@@ -129,7 +129,7 @@ switch ($ia[4])
 					{
 					$answer .= " selected"; 
 					}
-				elseif ($ansrow['default'] == "Y") {$answer .= " selected"; $defexists = "Y";}
+				elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
 				$answer .= ">{$ansrow['answer']}</option>\n";
 				}
 			if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer .= "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n";}
@@ -148,7 +148,7 @@ switch ($ia[4])
 					{
 					$answer .= " checked";
 					}
-				elseif ($ansrow['default'] == "Y") {$answer .= " checked"; $defexists = "Y";}
+				elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 				}
 			if (((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && !$defexists)) && $ia[6] != "Y") 
@@ -187,7 +187,7 @@ switch ($ia[4])
 				$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='$ia[1]{$ansrow['code']}'";
 				if ($_SESSION[$ia[1]] == $ansrow['code'])
 					{$answer .= " checked";}
-				elseif ($ansrow['default'] == "Y") {$answer .= " checked"; $defexists = "Y";}
+				elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}'>{$ansrow['answer']}</label><br />\n";
 				}
 			if ($ia[6] != "Y")
@@ -231,7 +231,7 @@ switch ($ia[4])
 				$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 				if ($_SESSION[$ia[1]] == $ansrow['code'])
 					{$answer .= " selected";}
-				elseif ($ansrow['default'] == "Y") {$answer .= " selected"; $defexists = "Y";}
+				elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
 				$answer .= ">{$ansrow['answer']}</option>\n";
 				if (strlen($ansrow['answer']) > $maxoptionsize) 
 					{
