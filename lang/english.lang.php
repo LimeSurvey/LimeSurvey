@@ -42,6 +42,7 @@ define("_TOKENS", "Tokens");
 define("_FEMALE", "Female");
 define("_MALE", "Male");
 define("_NOANSWER", "No answer");
+define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Other");
 define("_PLEASECHOOSE", "Please choose");
 define("_ERROR", "Error");

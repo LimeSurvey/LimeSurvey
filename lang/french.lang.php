@@ -46,6 +46,7 @@ define("_TOKENS", "Invitations");
 define("_FEMALE", "Femme");
 define("_MALE", "Homme");
 define("_NOANSWER", "Pas de réponse");
+define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Autre");
 define("_PLEASECHOOSE", "Choisissez s'il vous plaît");
 define("_ERROR", "Erreur");

@@ -46,6 +46,7 @@ define("_TOKENS", "Behörighetskoder");
 define("_FEMALE", "Kvinna");
 define("_MALE", "Man");
 define("_NOANSWER", "Inget svar");
+define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Annat");
 define("_PLEASECHOOSE", "Välj");
 define("_ERROR", "Fel");
