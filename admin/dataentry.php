@@ -407,6 +407,9 @@ elseif ($action == "edit")
 			//echo "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info
 			switch ($fnames[$i][3])
 				{
+				case "X": //Boilerplate question
+					echo "";
+					break;
 				case "id":
 					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>"._DE_NOMODIFY."</font>\n";
 					break;

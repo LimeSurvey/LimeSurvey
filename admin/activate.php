@@ -225,6 +225,7 @@ else
 				case "5":  //5 Point Choice
 				case "G":  //Gender
 				case "Y":  //YesNo
+				case "X":  //Boilerplate
 					$createsurvey .= " VARCHAR(1)";
 					break;
 				}
