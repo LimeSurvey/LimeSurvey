@@ -231,121 +231,117 @@ elseif ($action == "delquestion")
 			}
 		}
 	}
-
-elseif ($action == "insertnewanswer")
-	{
-	if (!$_POST['code'] || !$_POST['answer'])
-		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be created! It does not contain both an answer code and answer text (which are required).\")\n //-->\n</script>\n";
-		}
-	else
-		{
-		$iaquery="SELECT * FROM answers WHERE qid={$_POST['qid']} AND code='{$_POST['code']}'";
-		$iaresult=mysql_query($iaquery) or die ("Error checking for answers with the same code<br />$iaquery<br />".mysql_error());
-		$matchcount=mysql_num_rows($iaresult);
-		if ($matchcount)
-			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be created! There is already an answer to this question which has the same code. Your codes should be unique for each answer.\")\n //-->\n</script>\n";
-			}
-		else
-			{
-			if (get_magic_quotes_gpc() == "0")
-				{
-				$_POST['answer'] = addcslashes($_POST['answer'], "'");
-				}
-			$iaquery = "INSERT INTO answers (qid, code, answer, `default`, sortorder) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['default']}', '{$_POST['sortorder']}')";
-			$iaresult = mysql_query ($iaquery);
-			if ($iaresult)
-				{
-				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your New Answer has been added!\")\n //-->\n</script>\n";
-				$surveyselect = getsurveylist();
-				}
-			else
-				{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be created!\")\n //-->\n</script>\n";
-				}
-			}
-		}	
-	}
-
-elseif ($action == "updateanswer")
+	
+elseif ($action == "modanswer")
 	{
 	if (get_magic_quotes_gpc() == "0")
 		{
+		$_POST['code'] = addcslashes($_POST['code'], "'");
+		$_POST['oldcode'] = addcslashes($_POST['oldcode'], "'");
 		$_POST['answer'] = addcslashes($_POST['answer'], "'");
+		$_POST['oldanswer'] = addcslashes($_POST['oldanswer'], "'");
 		}
-	if ($_POST['code'] != $_POST['old_code'])
+	switch ($_POST['ansaction'])
 		{
-		$uaquery = "SELECT * FROM answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
-		$uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
-		$matchcount = mysql_num_rows($uaresult);
-		$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['old_code']}'";
-		$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
-		$cccount=mysql_num_rows($ccresult);
-		while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
-		if ($qidarray) {$qidlist=implode(", ", $qidarray);}
-		}
-	if ($matchcount)
-		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated! There is another answer to this question with the same code. All codes should be unique.\")\n //-->\n</script>\n";
-		}
-	else
-		{
-		if ($ccount) // there are conditions dependent upon this answer to this question
-			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated! You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question (qid $qidlist). You must delete these conditions before you can change this answer code.\")\n //-->\n</script>\n";
-			}
-			else
+		case "Add":
+			if (!$_POST['code'] || !$_POST['answer'])
 				{
-			$uaquery = "UPDATE answers SET code='{$_POST['code']}', answer='{$_POST['answer']}', `default`='{$_POST['default']}', sortorder='{$_POST['sortorder']}' WHERE qid={$_POST['qid']} AND code='{$_POST['old_code']}'";
-			//echo $uaquery;
-			$uaresult = mysql_query($uaquery);
-			if ($uaresult)
-				{
-				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Answer ($qid, $code) has been updated!\")\n //-->\n</script>\n";
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not add answer. You must include both a Code AND an Answer\")\n //-->\n</script>\n";
 				}
 			else
 				{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated!\")\n //-->\n</script>\n";
+				$uaquery = "SELECT * FROM answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
+				$uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
+				$matchcount = mysql_num_rows($uaresult);
+				if ($matchcount) //another answer exists with the same code
+					{
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not add ahswer. There is already an answer with this code\")\n //-->\n</script>\n";
+					}
+				else
+					{
+					$cdquery = "INSERT INTO answers (qid, code, answer, sortorder, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
+					$cdresult = mysql_query($cdquery) or die ("Couldn't add answer<br />$cdquery<br />".mysql_error());
+					}
 				}
-			}
-		}
-	}
-
-elseif ($action == "delanswer")
-	{
-	//make sure that no conditions rely upon this particular answer - a bit complicated because of different question types, and values
-	//build a cfieldname for this question.
-	$cfieldname="{$sid}X{$gid}X{$qid}";
-	$qquery="SELECT type FROM questions WHERE qid=$qid";
-	$qresult=mysql_query($qquery) or die ("Couldn't get question information for this answer.<br />$qquery<br />".mysql_error());
-	while ($qrow=mysql_fetch_array($qresult)) {$qtype=$qrow['type'];}
-	if ($qtype == "A" || $qtype == "B" || $qtype == "C" || $qtype == "M" || $qtype == "O") {$cfieldname .= $code; $multitype=true;}
-
-	if ($multitype==true) {$ccquery = "SELECT * FROM conditions WHERE cfieldname='$cfieldname'";}
-	else {$ccquery = "SELECT * FROM conditions WHERE cqid=$qid AND value='$code'";}
-	$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
-	$cccount=mysql_num_rows($ccresult);
-	while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
-	if ($qidarray) {$qidlist=implode(", ", $qidarray);}
-	
-	if ($cccount) //A condition relies upon this answer. Do not delete
-		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED! There are conditions for other questions which rely upon this answer (qid $qidlist). You must delete these conditions before you can delete this answer.\")\n //-->\n</script>\n";
-		}
-	else
-		{
-		$query = "DELETE FROM answers WHERE qid=$qid AND code='$code'";
-		$result = mysql_query($query);
-		if ($result)
-			{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid ($code) has been deleted!\")\n //-->\n</script>\n";
-			$code = "";
-			}
-		else
-			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid was NOT DELETED!\n$error\")\n //-->\n</script>\n";
-			}
+			break;
+		case "Save":
+			if (!$_POST['code'] || !$_POST['answer'])
+				{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not save changes. You must include both a Code AND an Answer\")\n //-->\n</script>\n";
+				}
+			else
+				{
+				if ($_POST['code'] != $_POST['oldcode']) //code is being changed. Check against other codes and conditions
+					{
+					$uaquery = "SELECT * FROM answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
+					$uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
+					$matchcount = mysql_num_rows($uaresult);
+					$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
+					$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
+					$cccount=mysql_num_rows($ccresult);
+					while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
+					if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+					}
+				if ($matchcount) //another answer exists with the same code
+					{
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\"Could not save changes. There is already an answer with this code\")\n //-->\n</script>\n";
+					}
+				else
+					{
+					if ($cccount) // there are conditions dependent upon this answer to this question
+						{
+						echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be updated! You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question (qid $qidlist). You must delete these conditions before you can change this answer code.\")\n //-->\n</script>\n";
+						}
+					else
+						{
+						$cdquery = "UPDATE answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', `default`='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
+						$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
+						}
+					}
+				}
+			break;
+		case "Del":
+			$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
+			$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
+			$cccount=mysql_num_rows($ccresult);
+			while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
+			if ($qidarray) {$qidlist=implode(", ", $qidarray);}
+			if ($cccount)
+				{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your answer could not be deleted! There are conditions to other questions which are dependant upon the answer code to this question (qid $qidlist). You must delete these conditions before you can delete this answer code.\")\n //-->\n</script>\n";
+				}
+			else
+				{
+				$cdquery = "DELETE FROM answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
+				$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
+				}
+			fixsortorder($qid);
+			break;
+		case "Up":
+			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
+			$replacesortorder=$newsortorder;
+			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
+			$cdquery = "UPDATE answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$cdquery = "UPDATE answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			break;
+		case "Dn":
+			$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
+			$replacesortorder=$newsortorder;
+			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
+			$newreplace2=sprintf("%05d", $_POST['sortorder']);
+			$cdquery = "UPDATE answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$cdquery = "UPDATE answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
+			$cdresult=mysql_query($cdquery) or die(mysql_error());
+			break;
+		default:
+			break;
 		}
 	}
 
