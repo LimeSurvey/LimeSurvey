@@ -43,7 +43,7 @@ if (!file_exists("$homedir/.htaccess"))
 		{
 		//DON'T DO ANYTHING UNLESS IT HAS BEEN ASKED FOR
 		//CREATE HTACCESS FILE
-		$addsummary .= _UC_CREATE."<br />\n";
+		$addsummary .= "<br />"._UC_CREATE."<br />\n";
 		$fname="$homedir/.htaccess";
 		echo "<font color='white'>";
 		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<b>"._ERROR."</b><br />\n"._UC_NOCREATE."\n<p><a href='$scriptname'>"._GO_ADMIN."</a></p>\n</td>\n</tr>\n</table>\n");
@@ -54,7 +54,7 @@ if (!file_exists("$homedir/.htaccess"))
 		$addsummary .= "<a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
 		
 		//CREATE DEFAULT USER AND PASS
-		$addsummary = _UC_CREATE_DEFAULT."<br />\n";
+		$addsummary = "<br />"._UC_CREATE_DEFAULT."<br />\n";
 		if ($htpasswddir) {$htpasswd = "\"$htpasswddir/htpasswd\"";} else {$htpasswd = "htpasswd";}
 		
 		# Form command line. Redirect STDERR to STDOUT using 2>&1
@@ -82,13 +82,13 @@ if (!file_exists("$homedir/.htaccess"))
 			unlink($fname);
 			$addsummary .= _UC_HTPASSWD_ERROR."<br /><br />\n<font size='1'>"._UC_HTPASSWD_EXPLAIN."<br /></font>\n";
 			}
-		$addsummary .= "<br />\n<a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
+		$addsummary .= "<br />\n<a href='$scriptname?action=editusers'>"._CONTINUE."</a><br />&nbsp;\n";
 		}
 	}
 
 elseif ($action == "deleteall")
 	{
-	$addsummary = "<b>"._UC_SEC_REMOVE."..</b><br />\n";
+	$addsummary = "<br /><b>"._UC_SEC_REMOVE."..</b><br />\n";
 	$fname1="$homedir/.htaccess";
 	unlink($fname1);
 	$fname1="$homedir/.htpasswd";
@@ -96,12 +96,14 @@ elseif ($action == "deleteall")
 	$dq="DELETE FROM {$dbprefix}users";
 	$dr=mysql_query($dq);
 	$addsummary .= _UC_ALL_REMOVED;
-	$addsummary .= "<br /><br /><a href='$scriptname'>"._GO_ADMIN."</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname'>"._GO_ADMIN."</a><br />&nbsp;\n";
 	}
 	
 elseif ($action == "adduser")
 	{
-	$addsummary = "<b>"._UC_ADD_USER."</b><br />\n";
+	$addsummary = "<br /><b>"._UC_ADD_USER."</b><br />\n";
+	$user=preg_replace("/\W/","",$user);
+	$pass=preg_replace("/\W/","",$pass);  
 	if ($user && $pass)
 		{
 		if ($htpasswddir) {$htpasswd="\"$htpasswddir/htpasswd\"";} else {$htpasswd="htpasswd";}
@@ -109,27 +111,26 @@ elseif ($action == "adduser")
 		exec($command, $CommandResult, $CommandStatus);
 		if ($CommandStatus) //0=success, for other possibilities see http://httpd.apache.org/docs/programs/htpasswd.html
 			{
-			$addsummary .= "<pre>";
-			$addsummary .= "\$CommandStatus = $CommandStatus\n";
-			$addsummary .= "\$CommandResult = \n";
+			$addsummary .= "<pre>"
+						 . "\$CommandStatus = $CommandStatus\n"
+						 . "\$CommandResult = \n";
 			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
 			$addsummary .= "</pre>\n";
 			}
 		$uquery = "INSERT INTO {$dbprefix}users VALUES ('$user', '$pass', '{$_POST['level']}')";
-		echo $uquery;
 		$uresult = mysql_query($uquery);
-		
+		$addsummary .= "<br />"._USERNAME.": $user<br />"._PASSWORD.": $pass<br />";
 		}
 	else
 		{
 		$addsummary .= _UC_ADD_MISSING."<br />\n";
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a><br />&nbsp;\n";
 	}
 
 elseif ($action == "deluser")
 	{
-	$addsummary = "<b>"._UC_DEL_USER."</b><br />\n";
+	$addsummary = "<br /><b>"._UC_DEL_USER."</b><br />\n";
 	if ($user)
 		{
 		$fname="$homedir/.htpasswd";
@@ -154,22 +155,22 @@ elseif ($action == "deluser")
 			fputs($fp, $nhtp);
 			}
 		fclose($fp);
-		//$addsummary .= "User deleted<br />\n";
 		//DELETE USER FROM TABLE
 		$dquery="DELETE FROM {$dbprefix}users WHERE user='$user'";
 		$dresult=mysql_query($dquery);
-		//$addsummary .= "User records deleted.";
 		}
 	else
 		{
-		$addsummary .= _UC_DEL_MISSING."<br />\n";
+		$addsummary .= "<br />"._UC_DEL_MISSING."<br />\n";
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a><br />&nbsp;\n";
 	}
 
 elseif ($action == "moduser")
 	{
-	$addsummary = "<b>"._UC_MOD_USER."</b><br />\n";
+	$addsummary = "<br /><b>"._UC_MOD_USER."</b><br />\n";
+	$user=preg_replace("/\W/","",$user);
+	$pass=preg_replace("/\W/","",$pass);  
 	if ($user && $pass)
 		{
 		//$addsummary .= "Modifying user $user with password $pass<br />\n";
@@ -186,12 +187,13 @@ elseif ($action == "moduser")
 			}
 		$uquery = "UPDATE {$dbprefix}users SET password='$pass', security='$level' WHERE user='$user'";
 		$uresult = mysql_query($uquery);
-		//$addsummary .= "User added!";
+		
+		$addsummary .= "<br />"._USERNAME.": $user<br />"._PASSWORD.": $pass<br />\n";
 		}
 	else
 		{
 		$addsummary .= _UC_MOD_MISSING;
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a>\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._CONTINUE."</a><br />&nbsp;\n";
 	}
 ?>
