@@ -528,6 +528,7 @@ if ($_POST['summary'])
 			$showem[]=array("Average", $row['average']);
 			$showem[]=array("Minimum", $row['minimum']);
 			$maximum=$row['maximum']; //we're going to put this after the quartiles for neatness
+			$minimum=$row['minimum'];
 			}
 		
 		//CALCULATE QUARTILES
@@ -548,7 +549,9 @@ if ($_POST['summary'])
 			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q1b, 2";
 			$result=mysql_query($query) or die("1st Quartile query failed<br />".mysql_error());
 			while ($row=mysql_fetch_array($result))	{$total=$total-$row[$fieldname];}
-			$showem[]=array("1st Quartile", -$total * $q1diff);
+			$q1total=-$total*$q1diff;
+			if ($q1total < $minimum) {$q1total=$minimum;}
+			$showem[]=array("1st Quartile", $q1total);
 			}
 		else
 			{
@@ -586,8 +589,10 @@ if ($_POST['summary'])
 			$q3c=$q3b-2;
 			$query = $querystarter . " ORDER BY $fieldname*1 LIMIT $q3c, 2";
 			$result = mysql_query($query) or die("3rd Quartile query failed<br />".mysql_error());
-			while ($row=mysql_fetch_array($result)) {$total=$total-$row[$fieldname]; echo " ".$row[$fieldname]." - ";}
-			$showem[]=array("3rd Quartile", -$total * $q3diff);
+			while ($row=mysql_fetch_array($result)) {$total=$total-$row[$fieldname];}
+			$q3total=-$total * $q3diff;
+			if ($q3total > $maximum) {$q3total=$maximum;}
+			$showem[]=array("3rd Quartile", $q3total);
 			}
 		else
 			{
