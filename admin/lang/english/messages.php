@@ -406,6 +406,12 @@ define(_IS_SUCCESS, "Import of Survey is completed.");
 define(_IS_IMPFAILED, "Import of this survey file failed");
 define(_IS_FILEFAILS, "File does not contain PHPSurveyor data in the correct format.");
 
+//IMPORT GROUP MESSAGES
+define(_IG_IMPORTSUMMARY, "Group Import Summary");
+define(_IG_SUCCESS, "Import of Group is completed.");
+define(_IG_IMPFAILED, "Import of this group file failed");
+define(_IG_WRONGFILE, "This file is not a PHPSurveyor group file. Import failed.");
+
 //IMPORT QUESTION MESSAGES
 define(_IQ_NOSID, "No SID (Survey) has been provided. Cannot import question.");
 define(_IQ_NOGID, "No GID (Group) has been provided. Cannot import question");

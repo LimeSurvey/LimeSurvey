@@ -411,6 +411,12 @@ define(_IS_SUCCESS, "Se complet&oacute; con &eacute;xito la importaci&oacute;n d
 define(_IS_IMPFAILED, "La importaci&oacute;n de la encuesta fall&oacute;.");
 define(_IS_FILEFAILS, "El archivo no contiene un formato PHPSurveyor válido.");
 
+//IMPORT GROUP MESSAGES
+define(_IG_IMPORTSUMMARY, "Resumen de la Importaci&oacute;n de la Grupo");
+define(_IG_SUCCESS, "Se complet&oacute; con &eacute;xito la importaci&oacute;n de la grupo.");
+define(_IG_IMPFAILED, "La importaci&oacute;n de la grupo fall&oacute;.");
+define(_IG_WRONGFILE, "El archivo no contiene un formato PHPSurveyor válido.");
+
 //IMPORT QUESTION MESSAGES
 define(_IQ_NOSID, "No se indic&oacute; un SID (Encuesta). No se pudo importar la pregunta.");
 define(_IQ_NOGID, "No se indic&oacute; un GID (Grupo). No se pudo importar la pregunta");

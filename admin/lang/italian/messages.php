@@ -407,6 +407,12 @@ define(_IS_SUCCESS, "Importazione indagine completata.");
 define(_IS_IMPFAILED, "Importazione indagine non riuscita");
 define(_IS_FILEFAILS, "Il file non contiene dati PHPSurveyor nel formato corretto.");
 
+//IMPORT GROUP MESSAGES
+define(_IG_IMPORTSUMMARY, "Riepilogo importazione gruppo");
+define(_IG_SUCCESS, "Importazione gruppo completata.");
+define(_IG_IMPFAILED, "Importazione gruppo non riuscita");
+define(_IG_WRONGFILE, "Il file non contiene dati PHPSurveyor nel formato corretto.");
+
 //IMPORT QUESTION MESSAGES
 define(_IQ_NOSID, "IL SID (ID Indagine) non &egrave; stato inserito. Impossibile importare la domanda.");
 define(_IQ_NOGID, "Il GID (ID Gruppo) non &egrave; stato inserito. Impossibile importare la domanda.");
