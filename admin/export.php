@@ -108,16 +108,20 @@ header("Pragma: no-cache");                          // HTTP/1.0
 include ("config.php");
 //echo "$htmlheader";
 //STEP 1: First line is column headings
-$cquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid";
+$cquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid=$sid";
 $cresult = mysql_query($cquery);
 $crows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-while ($crow = mysql_fetch_assoc($cresult)) {$crows[] = $crow;} // Get table output into array
+while ($crow = mysql_fetch_assoc($cresult)) {$crows[] = $crow; $privatesurvey = $crow['private'];} // Get table output into array
 
 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
 usort($crows, 'CompareGroupThenTitle');
 
 $s = "\t";
 $firstline = "id$s ";
+
+if ($privatesurvey == "N" && $answers == "short") {$firstline .= "Token$s ";}
+if ($privatesurvey == "N" && $answers == "long") {$firstline .= "Participant Name$s ";}
+
 foreach ($crows as $crow)
 	{
 	if ($style == "abrev")
@@ -272,7 +276,19 @@ elseif ($answers == "long")
 						}
 					break;
 				default:
-					echo str_replace("\r\n", " ", $drow[$i]);
+					if (mysql_field_name($dresult, $i) == "token")
+						{
+						$tokenquery = "SELECT firstname, lastname FROM tokens_$sid WHERE token='$drow[$i]'";
+						$tokenresult = mysql_query($tokenquery) or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
+						while ($tokenrow=mysql_fetch_array($tokenresult))
+							{
+							echo "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
+							}
+						}
+					else
+						{
+						echo str_replace("\r\n", " ", $drow[$i]);
+						}
 				}
 			echo "$s";
 			$ftype = "";
