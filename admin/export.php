@@ -126,7 +126,7 @@ include ("config.php");
 
 //STEP 1: First line is column headings
 $s = "\t";
-$lq = "SELECT DISTINCT qid FROM questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
+$lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$sid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
 $lr = mysql_query($lq);
 $legitqs[] = "DUMMY ENTRY";
 while ($lw = mysql_fetch_array($lr))
@@ -135,7 +135,7 @@ while ($lw = mysql_fetch_array($lr))
 	}
 
 //Get the fieldnames from the survey table
-$surveytable = "survey_$sid";
+$surveytable = "{$dbprefix}survey_$sid";
 $dquery = "SELECT * FROM $surveytable ORDER BY id LIMIT 1";
 $dresult = mysql_query($dquery);
 $fieldcount = mysql_num_fields($dresult);
@@ -176,7 +176,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				$oldfqid="";
 				}
 			//Now we know what the qid is, we'll get the question text and then print it out (in abbreviate format of course)
-			$qq = "SELECT question FROM questions WHERE qid=$fqid";
+			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid";
 			$qr = mysql_query($qq);
 			while ($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
 				{$qname=$qrow['question'];}
@@ -199,7 +199,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				$faid = substr($oldfqid, strlen($fqid), strlen($oldfqid)-strlen($fqid));
 				$oldfqid="";
 				}
-			$qq = "SELECT question, type FROM questions WHERE qid=$fqid"; //get the question
+			$qq = "SELECT question, type FROM {$dbprefix}questions WHERE qid=$fqid"; //get the question
 			$qr = mysql_query($qq);
 			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 				{
@@ -209,7 +209,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			switch ($ftype)
 				{
 				case "R": //RANKING TYPE
-					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code = '$faid'";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
 					$lr = mysql_query($lq);
 					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
@@ -229,7 +229,7 @@ for ($i=0; $i<$fieldcount; $i++)
 						}
 					else
 						{
-						$lq = "SELECT * FROM answers WHERE qid=$fqid AND code = '$faid'";
+						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
 						$lr = mysql_query($lq);
 						while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 							{
@@ -249,7 +249,7 @@ for ($i=0; $i<$fieldcount; $i++)
 						}
 					else
 						{
-						$lq = "SELECT * FROM answers WHERE qid=$fqid AND code = '$faid'";
+						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
 						$lr = mysql_query($lq);
 						while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 							{
@@ -264,7 +264,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "E":
 				case "F":
 				case "Q":
-					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code= '$faid'";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
 					$lr = mysql_query($lq);
 					while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
@@ -274,7 +274,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				default:
 					if (mysql_field_name($dresult, $i) == "token")
 						{
-						$tokenquery = "SELECT firstname, lastname FROM tokens_$sid WHERE token='$drow[$i]'";
+						$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$sid WHERE token='$drow[$i]'";
 						if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
 						while ($tokenrow=mysql_fetch_array($tokenresult))
 							{
@@ -339,14 +339,14 @@ elseif ($answers == "long")
 				{
 				$fqid = substr($fqid, 0, strlen($fqid)-1);
 				}
-			$qq = "SELECT type, lid FROM questions WHERE qid=$fqid";
+			$qq = "SELECT type, lid FROM {$dbprefix}questions WHERE qid=$fqid";
 			$qr = mysql_query($qq);
 			while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
 				{$ftype = $qrow['type']; $lid=$qrow['lid'];}
 			switch ($ftype)
 				{
 				case "R": //RANKING TYPE
-					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code = '$drow[$i]'";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$drow[$i]'";
 					$lr = mysql_query($lq);
 					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
@@ -354,7 +354,7 @@ elseif ($answers == "long")
 						}
 					break;
 				case "L": //DROPDOWN LIST
-					$lq = "SELECT * FROM answers WHERE qid=$fqid AND code ='$drow[$i]'";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code ='$drow[$i]'";
 					$lr = mysql_query($lq);
 					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
@@ -363,7 +363,7 @@ elseif ($answers == "long")
 						}
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
-					$lq = "SELECT * FROM answers WHERE qid=$fqid ORDER BY answer";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid ORDER BY answer";
 					$lr = mysql_query($lq) or die ("Could do it<br />$lq<br />".mysql_error());
 					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
@@ -437,7 +437,7 @@ elseif ($answers == "long")
 						}
 					break;
 				case "F":
-					$fquery = "SELECT * FROM labels WHERE lid=$lid AND code='$drow[$i]'";
+					$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code='$drow[$i]'";
 					$fresult = mysql_query($fquery);
 					while ($frow = mysql_fetch_array($fresult))
 						{
@@ -447,7 +447,7 @@ elseif ($answers == "long")
 				default:
 					if (mysql_field_name($dresult, $i) == "token")
 						{
-						$tokenquery = "SELECT firstname, lastname FROM tokens_$sid WHERE token='$drow[$i]'";
+						$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$sid WHERE token='$drow[$i]'";
 						if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
 						while ($tokenrow=mysql_fetch_array($tokenresult))
 							{

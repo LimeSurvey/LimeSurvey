@@ -117,7 +117,7 @@ if ($action == "newset" || $action == "editset")
 	{
 	if ($action == "editset")
 		{
-		$query = "SELECT * FROM labelsets WHERE lid=$lid";
+		$query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
 		$result=mysql_query($query);
 		while ($row=mysql_fetch_array($result)) {$lbname=$row['label_name']; $lblid=$row['lid'];}
 		}
@@ -177,16 +177,16 @@ if ($action == "newset" || $action == "editset")
 if (isset($lid) && ($action != "editset") && $lid)
 	{
 	//CHECK TO SEE IF ANY ACTIVE SURVEYS ARE USING THIS LABELSET (Don't let it be changed if this is the case)
-	$query = "SELECT surveys.short_title FROM questions, surveys WHERE questions.sid=surveys.sid AND questions.lid=$lid AND surveys.active='Y'";
+	$query = "SELECT {$dbprefix}surveys.short_title FROM {$dbprefix}questions, {$dbprefix}surveys WHERE {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.lid=$lid AND {$dbprefix}surveys.active='Y'";
 	$result = mysql_query($query);
 	$activeuse=mysql_num_rows($result);
 	while ($row=mysql_fetch_array($result)) {$activesurveys[]=$row['short_title'];}
 	//NOW ALSO COUNT UP HOW MANY QUESTIONS ARE USING THIS LABELSET, TO GIVE WARNING ABOUT CHANGES
-	$query = "SELECT * FROM questions WHERE lid=$lid";
+	$query = "SELECT * FROM {$dbprefix}questions WHERE lid=$lid";
 	$result = mysql_query($query);
 	$totaluse=mysql_num_rows($result);
 	//NOW GET THE ANSWERS AND DISPLAY THEM
-	$query = "SELECT * FROM labelsets WHERE lid=$lid";
+	$query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
 	$result = mysql_query($query);
 	while ($row=mysql_fetch_array($result)) 
 		{
@@ -207,7 +207,7 @@ if (isset($lid) && ($action != "editset") && $lid)
 		echo "\t\t\t</table>\n";
 		}
 	//LABEL ANSWERS
-	$query = "SELECT * FROM labels WHERE lid=$lid ORDER BY sortorder, code";
+	$query = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
 	$result = mysql_query($query);
 	$labelcount = mysql_num_rows($result);
 	echo "\t\t<table height='1'><tr><td></td></tr></table>\n";
@@ -335,11 +335,12 @@ echo htmlfooter("instructions.html#labels", "Using PHPSurveyor's Labels Editor")
 //************************FUNCTIONS********************************
 function updateset($lid)
 	{
+	global $dbprefix;
 	if (get_magic_quotes_gpc() == "0")
 		{
 		$_POST['label_name'] = addcslashes($_POST['label_name'], "'");
 		}
-	$query = "UPDATE labelsets SET label_name='{$_POST['label_name']}' WHERE lid=$lid";
+	$query = "UPDATE {$dbprefix}labelsets SET label_name='{$_POST['label_name']}' WHERE lid=$lid";
 	if (!$result = mysql_query($query))
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
@@ -347,8 +348,9 @@ function updateset($lid)
 	}
 function delset($lid)
 	{
+	global $dbprefix;
 	//CHECK THAT THERE ARE NO QUESTIONS THAT RELY ON THIS LID
-	$query = "SELECT qid FROM questions WHERE lid=$lid";
+	$query = "SELECT qid FROM {$dbprefix}questions WHERE lid=$lid";
 	$result = mysql_query($query);
 	$count=mysql_num_rows($result);
 	if ($count > 0)
@@ -358,20 +360,21 @@ function delset($lid)
 		}
 	else //There are no dependencies. We can delete this safely
 		{
-		$query = "DELETE FROM labels WHERE lid=$lid";
+		$query = "DELETE FROM {$dbprefix}labels WHERE lid=$lid";
 		$result = mysql_query($query);
-		$query = "DELETE FROM labelsets WHERE lid=$lid";
+		$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$lid";
 		$result = mysql_query($query);
 		return true;
 		}
 	}
 function insertset()
 	{
+	global $dbprefix;
 	if (get_magic_quotes_gpc() == "0")
 		{
 		$_POST['label_name'] = addcslashes($_POST['label_name'], "'");
 		}
-	$query = "INSERT INTO labelsets (lid, label_name) VALUES ('', '{$_POST['label_name']}')";
+	$query = "INSERT INTO {$dbprefix}labelsets (lid, label_name) VALUES ('', '{$_POST['label_name']}')";
 	if (!$result = mysql_query($query))
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
@@ -379,6 +382,7 @@ function insertset()
 	}
 function modanswers($lid)
 	{
+	global $dbprefix;
 	if (get_magic_quotes_gpc() == "0")
 		{
 		$_POST['title'] = addcslashes($_POST['title'], "'");
@@ -387,14 +391,14 @@ function modanswers($lid)
 	switch($_POST['method'])
 		{
 		case _ADD:
-			$query = "INSERT INTO labels (lid, code, title, sortorder) VALUES ($lid, '{$_POST['code']}', '{$_POST['title']}', '{$_POST['sortorder']}')";
+			$query = "INSERT INTO {$dbprefix}labels (lid, code, title, sortorder) VALUES ($lid, '{$_POST['code']}', '{$_POST['title']}', '{$_POST['sortorder']}')";
 			if (!$result = mysql_query($query))
 				{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_INSERTANS." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
 				}
 			break;
 		case _AL_SAVE:
-			$query = "UPDATE labels SET code='{$_POST['code']}', title='{$_POST['title']}', sortorder='{$_POST['sortorder']}' WHERE lid=$lid AND code='{$_POST['old_code']}'";
+			$query = "UPDATE {$dbprefix}labels SET code='{$_POST['code']}', title='{$_POST['title']}', sortorder='{$_POST['sortorder']}' WHERE lid=$lid AND code='{$_POST['old_code']}'";
 			if (!$result = mysql_query($query))
 				{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_EDITANS." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
@@ -404,11 +408,11 @@ function modanswers($lid)
 			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
 			$replacesortorder=$newsortorder;
 			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-			$cdquery = "UPDATE labels SET sortorder='PEND' WHERE lid=$lid AND sortorder='$newsortorder'";
+			$cdquery = "UPDATE {$dbprefix}labels SET sortorder='PEND' WHERE lid=$lid AND sortorder='$newsortorder'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE labels SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder='$newreplacesortorder'";
+			$cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder='$newreplacesortorder'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE labels SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
+			$cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
 			break;
 		case _AL_DN:
@@ -416,15 +420,15 @@ function modanswers($lid)
 			$replacesortorder=$newsortorder;
 			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
 			$newreplace2=sprintf("%05d", $_POST['sortorder']);
-			$cdquery = "UPDATE labels SET sortorder='PEND' WHERE lid=$lid AND sortorder='$newsortorder'";
+			$cdquery = "UPDATE {$dbprefix}labels SET sortorder='PEND' WHERE lid=$lid AND sortorder='$newsortorder'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE labels SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
+			$cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE labels SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
+			$cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
 			break;
 		case _AL_DEL:
-			$query = "DELETE FROM labels WHERE lid=$lid AND code='{$_POST['old_code']}'";
+			$query = "DELETE FROM {$dbprefix}labels WHERE lid=$lid AND code='{$_POST['old_code']}'";
 			if (!$result = mysql_query($query))
 				{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELANS." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
@@ -437,7 +441,8 @@ function modanswers($lid)
 	}
 function fixorder($lid) //Function rewrites the sortorder for a group of answers
 	{
-	$query = "SELECT * FROM labels WHERE lid=$lid ORDER BY sortorder, code";
+	global $dbprefix;
+	$query = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
 	$result = mysql_query($query);
 	$position=0;
 	while ($row=mysql_fetch_array($result))
@@ -451,7 +456,7 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
 			{
 			$title = mysql_escape_string($row['title']);
 			}
-		$query2="UPDATE labels SET sortorder='$position' WHERE lid={$row['lid']} AND code='{$row['code']}' AND title='$title'";
+		$query2="UPDATE {$dbprefix}labels SET sortorder='$position' WHERE lid={$row['lid']} AND code='{$row['code']}' AND title='$title'";
 		$result2=mysql_query($query2) or die ("Couldn't update sortorder<br />$query2<br />".mysql_error());
 		$position++;
 		}

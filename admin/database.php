@@ -49,13 +49,13 @@ if ($action == "insertnewgroup")
 			$_POST['group_name'] = addcslashes($_POST['group_name'], "'");
 			}
 
-		$query = "INSERT INTO groups (sid, group_name, description) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}')";
+		$query = "INSERT INTO {$dbprefix}groups (sid, group_name, description) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}')";
 		$result = mysql_query($query);
 		
 		if ($result)
 			{
 			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ($group_name) has been created for survey id $sid\")\n //-->\n</script>\n";
-			$query = "SELECT gid FROM groups WHERE group_name='$group_name' AND sid={$_POST['sid']}";
+			$query = "SELECT gid FROM {$dbprefix}groups WHERE group_name='$group_name' AND sid={$_POST['sid']}";
 			$result = mysql_query($query);
 			while ($res = mysql_fetch_array($result)) {$gid = $res['gid'];}
 			$groupselect = getgrouplist($gid);
@@ -79,7 +79,7 @@ elseif ($action == "updategroup")
 		$_POST['group_name'] = addcslashes($_POST['group_name'], "'");
 		}
 
-	$ugquery = "UPDATE groups SET group_name='{$_POST['group_name']}', description='{$_POST['description']}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
+	$ugquery = "UPDATE {$dbprefix}groups SET group_name='{$_POST['group_name']}', description='{$_POST['description']}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
 	$ugresult = mysql_query($ugquery);
 	if ($ugresult)
 		{
@@ -95,7 +95,7 @@ elseif ($action == "updategroup")
 
 elseif ($action == "delgroup")
 	{
-	$query = "DELETE FROM groups WHERE sid=$sid AND gid=$gid";
+	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -117,7 +117,7 @@ elseif ($action == "insertnewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other, mandatory, lid)"
+	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid)"
 			." VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
@@ -127,7 +127,7 @@ elseif ($action == "insertnewquestion")
 		}
 	else
 		{
-		$query = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1"; //get last question id
+		$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //get last question id
 		$result=mysql_query($query);
 		while ($row=mysql_fetch_array($result)) {$qid = $row['qid'];}
 		}
@@ -135,13 +135,13 @@ elseif ($action == "insertnewquestion")
 
 elseif ($action == "updatequestion")
 	{
-	$cqquery = "SELECT type FROM questions WHERE qid={$_POST['qid']}";
+	$cqquery = "SELECT type FROM {$dbprefix}questions WHERE qid={$_POST['qid']}";
 	$cqresult=mysql_query($cqquery) or die ("Couldn't get question type to check for change<br />$cqquery<br />".mysql_error());
 	while ($cqr=mysql_fetch_array($cqresult)) {$oldtype=$cqr['type'];}
 	if ($oldtype != $_POST['type'])
 		{
 		//Make sure there are no conditions based on this question, since we are changing the type
-		$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']}";
+		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']}";
 		$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
 		$cccount=mysql_num_rows($ccresult);
 		while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
@@ -159,7 +159,7 @@ elseif ($action == "updatequestion")
 		}
 	else
 		{
-		$uqquery = "UPDATE questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
+		$uqquery = "UPDATE {$dbprefix}questions SET type='{$_POST['type']}', title='{$_POST['title']}', "
 				. "question='{$_POST['question']}', help='{$_POST['help']}', gid='{$_POST['gid']}', "
 				. "other='{$_POST['other']}', mandatory='{$_POST['mandatory']}', lid='{$_POST['lid']}' "
 				. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
@@ -183,7 +183,7 @@ elseif ($action == "copynewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
+	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -192,14 +192,14 @@ elseif ($action == "copynewquestion")
 	//echo "COPYANSWERS: $copyanswers, OLDQID: $oldqid";
 	if ($copyanswers == "Y")
 		{
-		$q2 = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
+		$q2 = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
 		$r2 = mysql_query($q2);
 		while ($qr2 = mysql_fetch_array($r2)) {$newqid = $qr2['qid'];}
-		$q1 = "SELECT * FROM answers WHERE qid='$oldqid' ORDER BY code";
+		$q1 = "SELECT * FROM {$dbprefix}answers WHERE qid='$oldqid' ORDER BY code";
 		$r1 = mysql_query($q1);
 		while ($qr1 = mysql_fetch_array($r1))
 			{
-			$i1 = "INSERT INTO answers (qid, code, answer, `default`) VALUES ('$newqid', '{$qr1['code']}', '{$qr1['answer']}', '{$qr1['default']}')";
+			$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, `default`) VALUES ('$newqid', '{$qr1['code']}', '{$qr1['answer']}', '{$qr1['default']}')";
 			$ir1 = mysql_query($i1);
 			}		
 		}	
@@ -209,7 +209,7 @@ elseif ($action == "delquestion")
 	{
 	if (!isset($qid)) {returnglobal('qid');}
 	//check if any other questions have conditions which rely on this question. Don't delete if there are.
-	$ccquery = "SELECT * FROM conditions WHERE cqid={$_GET['qid']}";
+	$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
 	$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
 	$cccount=mysql_num_rows($ccresult);
 	while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
@@ -221,9 +221,9 @@ elseif ($action == "delquestion")
 	else
 		{
 		//see if there are any conditions for this question, and delete them now as well
-		$cquery = "DELETE FROM conditions WHERE qid=$qid";
+		$cquery = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
 		$cresult = mysql_query($cquery);
-		$query = "DELETE FROM questions WHERE qid=$qid";
+		$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
 		$result = mysql_query($query);
 		if ($result)
 			{
@@ -241,7 +241,7 @@ elseif ($action == "modanswer")
 	{
 	if (($_POST['olddefault'] != $_POST['default'] && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _AL_ADD)) //TURN ALL OTHER DEFAULT SETTINGS TO NO
 		{
-		$query = "UPDATE answers SET `default` = 'N' WHERE qid={$_POST['qid']}";
+		$query = "UPDATE {$dbprefix}answers SET `default` = 'N' WHERE qid={$_POST['qid']}";
 		$result=mysql_query($query) or die("Error occurred updating default settings");
 		}
 	if (get_magic_quotes_gpc() == "0")
@@ -263,7 +263,7 @@ elseif ($action == "modanswer")
 				}
 			else
 				{
-				$uaquery = "SELECT * FROM answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
+				$uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
 				$uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
 				$matchcount = mysql_num_rows($uaresult);
 				if ($matchcount) //another answer exists with the same code
@@ -272,7 +272,7 @@ elseif ($action == "modanswer")
 					}
 				else
 					{
-					$cdquery = "INSERT INTO answers (qid, code, answer, sortorder, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
+					$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, `default`) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
 					$cdresult = mysql_query($cdquery) or die ("Couldn't add answer<br />$cdquery<br />".mysql_error());
 					}
 				}
@@ -286,10 +286,10 @@ elseif ($action == "modanswer")
 				{
 				if ($_POST['code'] != $_POST['oldcode']) //code is being changed. Check against other codes and conditions
 					{
-					$uaquery = "SELECT * FROM answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
+					$uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
 					$uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
 					$matchcount = mysql_num_rows($uaresult);
-					$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
+					$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
 					$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
 					$cccount=mysql_num_rows($ccresult);
 					while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
@@ -307,14 +307,14 @@ elseif ($action == "modanswer")
 						}
 					else
 						{
-						$cdquery = "UPDATE answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', `default`='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
+						$cdquery = "UPDATE {$dbprefix}answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', `default`='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
 						$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
 						}
 					}
 				}
 			break;
 		case _AL_DEL:
-			$ccquery = "SELECT * FROM conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
+			$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
 			$ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
 			$cccount=mysql_num_rows($ccresult);
 			while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
@@ -325,7 +325,7 @@ elseif ($action == "modanswer")
 				}
 			else
 				{
-				$cdquery = "DELETE FROM answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
+				$cdquery = "DELETE FROM {$dbprefix}answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
 				$cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
 				}
 			fixsortorder($qid);
@@ -334,11 +334,11 @@ elseif ($action == "modanswer")
 			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
 			$replacesortorder=$newsortorder;
 			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-			$cdquery = "UPDATE answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
 			break;
 		case _AL_DN:
@@ -346,11 +346,11 @@ elseif ($action == "modanswer")
 			$replacesortorder=$newsortorder;
 			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
 			$newreplace2=sprintf("%05d", $_POST['sortorder']);
-			$cdquery = "UPDATE answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
-			$cdquery = "UPDATE answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
 			$cdresult=mysql_query($cdquery) or die(mysql_error());
 			break;
 		default:
@@ -373,7 +373,7 @@ elseif ($action == "insertnewsurvey")
 			$_POST['description'] = addcslashes($_POST['description'], "'");
 			$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 			}
-		$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires,";
+		$isquery = "INSERT INTO {$dbprefix}surveys (sid, short_title, description, admin, active, welcome, expires,";
 		$isquery .= " adminemail, private, faxto, format, template, url, urldescrip, language, datestamp, usecookie)";
 		$isquery .= " VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',";
 		$isquery .= " '{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',";
@@ -384,7 +384,7 @@ elseif ($action == "insertnewsurvey")
 		if ($isresult)
 			{
 			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Survey ($short_title) has been created!\")\n //-->\n</script>\n";
-			$isquery = "SELECT sid FROM surveys WHERE short_title like '{$_POST['short_title']}'";
+			$isquery = "SELECT sid FROM {$dbprefix}surveys WHERE short_title like '{$_POST['short_title']}'";
 			$isquery .= " AND description like '{$_POST['description']}' AND admin like '{$_POST['admin']}'";
 			$isresult = mysql_query($isquery);
 			while ($isr = mysql_fetch_array($isresult)) {$sid = $isr['sid'];}
@@ -407,7 +407,7 @@ elseif ($action == "updatesurvey")
 		$_POST['description'] = addcslashes($_POST['description'], "'");
 		$_POST['welcome'] = addcslashes($_POST['welcome'], "'");
 		}
-	$usquery = "UPDATE surveys SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',";
+	$usquery = "UPDATE {$dbprefix}surveys SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',";
 	$usquery .= " admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',";
 	$usquery .= " expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',";
 	$usquery .= " private='{$_POST['private']}', faxto='{$_POST['faxto']}',";
@@ -430,7 +430,7 @@ elseif ($action == "updatesurvey")
 
 elseif ($action == "delsurvey") //can only happen if there are no groups, no questions, no answers etc.
 	{
-	$query = "DELETE FROM surveys WHERE sid=$sid";
+	$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$sid";
 	$result = mysql_query($query);
 	if ($result)
 		{

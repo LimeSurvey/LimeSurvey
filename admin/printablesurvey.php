@@ -47,14 +47,14 @@ echo "</head>\n<body>\n";
 
 // PRESENT SURVEY DATAENTRY SCREEN
 
-$desquery = "SELECT * FROM surveys WHERE sid=$sid";
+$desquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 $desresult = mysql_query($desquery);
 while ($desrow = mysql_fetch_array($desresult))
 	{
 	$surveyname = $desrow['short_title'];
 	$surveydesc = $desrow['description'];
 	$surveyactive = $desrow['active'];
-	$surveytable = "survey_{$desrow['sid']}";
+	$surveytable = "{$dbprefix}survey_{$desrow['sid']}";
 	$surveyexpirydate = $desrow['expires'];
 	$surveyfaxto = $desrow['faxto'];
 	}
@@ -72,12 +72,12 @@ echo "\t\t</td>\n";
 echo "\t</tr>\n";
 // SURVEY NAME AND DESCRIPTION TO GO HERE
 
-$degquery = "SELECT * FROM groups WHERE sid=$sid ORDER BY group_name";
+$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid ORDER BY group_name";
 $degresult = mysql_query($degquery);
 // GROUP NAME
 while ($degrow = mysql_fetch_array($degresult))
 	{
-	$deqquery = "SELECT * FROM questions WHERE sid=$sid AND gid={$degrow['gid']} ORDER BY title";
+	$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid={$degrow['gid']} ORDER BY title";
 	$deqresult = mysql_query($deqquery);
 	$deqrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($deqrow = mysql_fetch_array($deqresult)) {$deqrows[] = $deqrow;} // Get table output into array
@@ -101,13 +101,13 @@ while ($degrow = mysql_fetch_array($degresult))
 		//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 		$explanation = ""; //reset conditions explanation
 		$x=0;
-		$distinctquery="SELECT DISTINCT cqid, questions.title FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid={$deqrow['qid']} ORDER BY cqid";
+		$distinctquery="SELECT DISTINCT cqid, {$dbprefix}questions.title FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid={$deqrow['qid']} ORDER BY cqid";
 		$distinctresult=mysql_query($distinctquery);
 		while ($distinctrow=mysql_fetch_array($distinctresult))
 			{
 			if ($x > 0) {$explanation .= " <i>and</i> ";}
 			$explanation .= "if you answered ";
-			$conquery="SELECT cid, cqid, questions.title, questions.question, value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.cqid={$distinctrow['cqid']} AND conditions.qid={$deqrow['qid']}";
+			$conquery="SELECT cid, cqid, {$dbprefix}questions.title, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
 			$conresult=mysql_query($conquery);
 			while ($conrow=mysql_fetch_array($conresult))
 				{
@@ -122,7 +122,7 @@ while ($degrow = mysql_fetch_array($degresult))
 							$conditions[]="No";
 						}
 					}
-				$ansquery="SELECT answer FROM answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
+				$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
 				$ansresult=mysql_query($ansquery);
 				while ($ansrow=mysql_fetch_array($ansresult))
 					{
@@ -189,7 +189,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "L":  //LIST
 				echo "\t\t\t$setfont<u>Please tick <b>only one</b> of the following:</u><br />\n";
-				$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$dearesult = mysql_query($deaquery);
 				while ($dearow = mysql_fetch_array($dearesult))
 					{
@@ -198,7 +198,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "O":  //LIST WITH COMMENT
 				echo "\t\t\t$setfont<u>Please tick <b>only one</b> of the following:</u><br />\n";
-				$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$dearesult = mysql_query($deaquery);
 				while ($dearow = mysql_fetch_array($dearesult))
 					{
@@ -208,7 +208,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname"."comment"."'></textarea>\n";
 				break;
 			case "R":  //RANKING Type Question
-				$reaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$reaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$rearesult = mysql_query($reaquery) or die ("Couldn't get ranked answers<br />".mysql_error());
 				$reacount = mysql_num_rows($rearesult);
 				echo "\t\t\t$setfont<u>Please number each box in order of preference from 1 to $reacount</u><br />\n";
@@ -220,7 +220,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
 				echo "\t\t\t$setfont<u>Please tick <b>any</b> that apply</u><br />\n";
-				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$mearesult = mysql_query($meaquery);
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
@@ -232,7 +232,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				break;
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
-				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$mearesult = mysql_query($meaquery);
 				echo "\t\t\t$setfont<u>Please tick any that apply and provide a comment</u><br />\n";
 				echo "\t\t\t<table border='0'>\n";
@@ -266,7 +266,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' />No<br />\n";
 				break;
 			case "A":  //ARRAY (5 POINT CHOICE)
-				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$mearesult = mysql_query($meaquery);
 				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />\n";
 				echo "\t\t\t<table>\n";
@@ -285,7 +285,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t</table>\n";
 				break;
 			case "B":  //ARRAY (10 POINT CHOICE)
-				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$mearesult = mysql_query($meaquery);
 				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />";
 				echo "\t\t\t<table border='0'>\n";
@@ -304,7 +304,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t</table>\n";
 				break;
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
-				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$mearesult = mysql_query($meaquery);
 				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />\n";
 				echo "\t\t\t<table>\n";
@@ -322,7 +322,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t</table>\n";
 				break;
 			case "E":  //ARRAY (Increase/Same/Decrease)
-				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$mearesult = mysql_query($meaquery);
 				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />\n";
 				echo "\t\t\t<table>\n";
@@ -342,11 +342,11 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "F": //ARRAY (Flexible Labels)
 				//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-				$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY answer";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY answer";
 				$mearesult = mysql_query($meaquery);
 				echo "\t\t\t$setfont<u>Please tick the appropriate response for each item</u><br />\n";
 				echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
-				$fquery = "SELECT * FROM labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
+				$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
 				$fresult = mysql_query($fquery);
 				$fcount = mysql_num_rows($fresult);
 				$fwidth = "120";

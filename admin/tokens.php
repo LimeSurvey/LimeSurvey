@@ -87,7 +87,7 @@ if (!$sid)
 	}
 
 // MAKE SURE THAT THE SURVEY EXISTS
-$chquery = "SELECT * FROM surveys WHERE sid=$sid";
+$chquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 $chresult=mysql_query($chquery);
 $chcount=mysql_num_rows($chresult);
 if (!$chcount)
@@ -108,7 +108,7 @@ while ($chrow = mysql_fetch_array($chresult))
 	}
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-$tkquery = "SELECT * FROM tokens_$sid";
+$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid";
 if (!$tkresult = mysql_query($tkquery))
 	{
 	if (!$_GET['createtable']) //Initialise Tokens Table
@@ -132,7 +132,7 @@ if (!$tkresult = mysql_query($tkquery))
 		}
 	else
 		{
-		$createtokentable = "CREATE TABLE tokens_$sid (\n";
+		$createtokentable = "CREATE TABLE {$dbprefix}tokens_$sid (\n";
 		$createtokentable .= "tid int NOT NULL auto_increment,\n ";
 		$createtokentable .= "firstname varchar(40) NULL,\n ";
 		$createtokentable .= "lastname varchar(40) NULL,\n ";
@@ -194,15 +194,15 @@ echo "\t\t\t<table align='center' bgcolor='#DDDDDD' cellpadding='2' style='borde
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
 echo "\t\t\t\t\t<b>$setfont There are $tkcount records in your token table for this survey.</b><br />\n";
-$tksq = "SELECT count(*) FROM tokens_$sid WHERE sent='Y'";
+$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE sent='Y'";
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
 	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount have been sent an invitation to participate.<br />\n";}
-$tksq = "SELECT count(*) FROM tokens_$sid WHERE completed='Y'";
+$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE completed='Y'";
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
 	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount entries have completed the survey.<br />\n";}
-$tksq = "SELECT count(*) FROM tokens_$sid WHERE token IS NULL OR token=''";
+$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$sid WHERE token IS NULL OR token=''";
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
 	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount have not had a token generated.\n";}
@@ -222,7 +222,7 @@ echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpa
 
 if ($action == "deleteall")
 	{
-	$query="DELETE FROM tokens_$sid";
+	$query="DELETE FROM {$dbprefix}tokens_$sid";
 	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
 	echo "<tr><td bgcolor='silver' align='center'><b>$setfont<font color='green'>"._TC_ALLDELETED."</font></font></td></tr>\n";
 	$action="";
@@ -230,7 +230,7 @@ if ($action == "deleteall")
 
 if ($action == "clearinvites")
 	{
-	$query="UPDATE tokens_$sid SET sent='N'";
+	$query="UPDATE {$dbprefix}tokens_$sid SET sent='N'";
 	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
 	echo "<tr><td bgcolor='silver' align='center'><b>$setfont<font color='green'>"._TC_INVITESCLEARED."</font></font></td></tr>\n";
 	$action="";
@@ -238,7 +238,7 @@ if ($action == "clearinvites")
 
 if ($action == "cleartokens")
 	{
-	$query="UPDATE tokens_$sid SET token=''";
+	$query="UPDATE {$dbprefix}tokens_$sid SET token=''";
 	$result=mysql_query($query) or die("Couldn't reset the tokens field<br />$query<br />".mysql_error());
 	echo "<tr><td align='center' bgcolor='silver'><b>$setfont<font color='green'>"._TC_TOKENSCLEARED."</font></font></td></tr>\n";
 	$action="";
@@ -316,7 +316,7 @@ if ($action == "browse")
 	echo "\t\t<th align='left' valign='top' colspan='2'>$setfont"._TL_ACTION."</th>\n";
 	echo "\t</tr>\n";
 	
-	$bquery = "SELECT * FROM tokens_$sid";
+	$bquery = "SELECT * FROM {$dbprefix}tokens_$sid";
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
 	$bquery .= " LIMIT $start, $limit";
@@ -386,13 +386,13 @@ if ($action == "kill")
 		}
 	elseif ($_GET['ok'] == "surething")
 		{
-		$oldtable = "tokens_$sid";
-		$newtable = "old_tokens_$sid_$date";
+		$oldtable = "{$dbprefix}tokens_$sid";
+		$newtable = "{$dbprefix}old_tokens_$sid_$date";
 		$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 		$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<br />\n".mysql_error()."<br /><br />\n<a href='$scriptname?sid=$sid'>Admin</a>\n");
 		echo "<span style='display: block; text-align: center; width: 70%'>\n";
 		echo _TC_TOKENSGONE."<br />\n";
-		echo "has been made, and is called \"old_tokens_{$_GET['sid']}_$date\". This can be<br />\n";
+		echo "has been made, and is called \"{$dbprefix}old_tokens_{$_GET['sid']}_$date\". This can be<br />\n";
 		echo "recovered by a systems administrator.<br /><br />\n";
 		echo "<input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n";
 		echo "</span>\n";
@@ -410,7 +410,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 	if (!$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
-		$esquery = "SELECT * FROM surveys WHERE sid=$sid";
+		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 		$esresult = mysql_query($esquery);
 		while ($esrow = mysql_fetch_array($esresult))
 			{
@@ -487,12 +487,12 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo _TC_SENDINGEMAILS;
 		if ($_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
 		echo "<br />\n";
-		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !='' AND email != ''";
+		$ctquery = "SELECT firstname FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !='' AND email != ''";
 		if ($_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
 		echo "<!-- ctquery: $ctquery -->\n";
 		$ctresult = mysql_query($ctquery) or die("Database error!<br />\n" . mysql_error());
 		$ctcount = mysql_num_rows($ctresult);
-		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' AND email != ''";
+		$emquery = "SELECT firstname, lastname, email, token, tid FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' AND email != ''";
 		if ($_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
 		$emquery .= " LIMIT $maxemails";
 		echo "\n\n<!-- emquery: $emquery -->\n\n";
@@ -518,7 +518,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
 				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
 				mail($to, $_POST['subject'], $sendmessage, $headers);
-				$udequery = "UPDATE tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
+				$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 				$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
 				echo "["._TC_INVITESENTTO."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 				}
@@ -561,7 +561,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 	if (!$_POST['ok'])
 		{
 		//GET SURVEY DETAILS
-		$esquery = "SELECT * FROM surveys WHERE sid=$sid";
+		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 		$esresult = mysql_query($esquery);
 		while ($esrow = mysql_fetch_array($esresult))
 			{
@@ -651,12 +651,12 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		echo _TC_SENDINGREMINDERS;
 		if ($_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
 		if ($_POST['tid']) {echo " ("._TO." TID: {$_POST['tid']})";}
-		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
+		$ctquery = "SELECT firstname FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
 		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if ($_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
 		$ctresult = mysql_query($ctquery);
 		$ctcount = mysql_num_rows($ctresult);
-		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !='' AND EMAIL !=''";
+		$emquery = "SELECT firstname, lastname, email, token, tid FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !='' AND EMAIL !=''";
 		if ($_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if ($_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
@@ -740,7 +740,7 @@ if ($action == "tokenify")
 			srand((double)microtime()*1000000);
 			}
 		$newtokencount = 0;
-		$tkquery = "SELECT * FROM tokens_$sid WHERE token IS NULL OR token=''";
+		$tkquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token IS NULL OR token=''";
 		$tkresult = mysql_query($tkquery) or die ("Mucked up!<br />$tkquery<br />".mysql_error());
 		while ($tkrow = mysql_fetch_array($tkresult))
 			{
@@ -748,11 +748,11 @@ if ($action == "tokenify")
 			while ($insert != "OK")
 				{
 				$newtoken = sprintf("%010s", rand(1, 10000000000));
-				$ntquery = "SELECT * FROM tokens_$sid WHERE token='$newtoken'";
+				$ntquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='$newtoken'";
 				$ntresult = mysql_query($ntquery);
 				if (!mysql_num_rows($ntresult)) {$insert = "OK";}
 				}
-			$itquery = "UPDATE tokens_$sid SET token='$newtoken' WHERE tid={$tkrow['tid']}";
+			$itquery = "UPDATE {$dbprefix}tokens_$sid SET token='$newtoken' WHERE tid={$tkrow['tid']}";
 			$itresult = mysql_query($itquery);
 			$newtokencount++;
 			}
@@ -765,7 +765,7 @@ if ($action == "tokenify")
 
 if ($action == "delete")
 	{
-	$dlquery = "DELETE FROM tokens_$sid WHERE tid={$_GET['tid']}";
+	$dlquery = "DELETE FROM {$dbprefix}tokens_$sid WHERE tid={$_GET['tid']}";
 	$dlresult = mysql_query($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".mysql_error());
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DELETE."</b></td></tr>\n";
 	echo "\t<tr><td align='center'>$setfont<br />\n";
@@ -779,7 +779,7 @@ if ($action == "edit" || $action == "addnew")
 	{
 	if ($action == "edit")
 		{
-		$edquery = "SELECT * FROM tokens_$sid WHERE tid={$_GET['tid']}";
+		$edquery = "SELECT * FROM {$dbprefix}tokens_$sid WHERE tid={$_GET['tid']}";
 		$edresult = mysql_query($edquery);
 		while($edrow = mysql_fetch_array($edresult))
 			{
@@ -848,7 +848,7 @@ if ($action == _UPDATE)
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TC_ADDEDIT."</b></td></tr>\n";
 	echo "\t<tr><td align='center'>\n";
-	$udquery = "UPDATE tokens_$sid SET firstname='{$_POST['firstname']}', lastname='{$_POST['lastname']}', email='{$_POST['email']}', token='{$_POST['token']}', sent='{$_POST['sent']}', completed='{$_POST['completed']}' WHERE tid={$_POST['tid']}";
+	$udquery = "UPDATE {$dbprefix}tokens_$sid SET firstname='{$_POST['firstname']}', lastname='{$_POST['lastname']}', email='{$_POST['email']}', token='{$_POST['token']}', sent='{$_POST['sent']}', completed='{$_POST['completed']}' WHERE tid={$_POST['tid']}";
 	$udresult = mysql_query($udquery) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".mysql_error());
 	echo "<br />$setfont<font color='green'><b>"._SUCCESS."</b></font><br />\n";
 	echo "<br />"._TC_TOKENUPDATED."<br /><br />\n";
@@ -861,7 +861,7 @@ if ($action == _ADD)
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TC_ADDEDIT."</b></td></tr>\n";
 	echo "\t<tr><td align='center'>\n";
-	$inquery = "INSERT into tokens_$sid \n";
+	$inquery = "INSERT into {$dbprefix}tokens_$sid \n";
 	$inquery .= "(firstname, lastname, email, token, sent, completed) \n";
 	$inquery .= "VALUES ('{$_POST['firstname']}', '{$_POST['lastname']}', '{$_POST['email']}', '{$_POST['token']}', '{$_POST['sent']}', '{$_POST['completed']}')";
 	$inresult = mysql_query($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".mysql_error());
@@ -952,7 +952,7 @@ if ($action == "upload")
 						$xy++;
 						}
 					//CHECK FOR DUPLICATES?
-					$iq = "INSERT INTO tokens_$sid \n";
+					$iq = "INSERT INTO {$dbprefix}tokens_$sid \n";
 					$iq .= "(firstname, lastname, email, token) \n";
 					$iq .= "VALUES ('$firstname', '$lastname', '$email', '$token')";
 					//echo "<pre style='text-align: left'>$iq</pre>\n"; //Debugging info

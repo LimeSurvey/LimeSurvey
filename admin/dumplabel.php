@@ -94,11 +94,11 @@ function BuildOutput($Query)
 	}
 
 //1: Questions Table
-$qquery = "SELECT * FROM labelsets WHERE lid=$lid";
+$qquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
 $qdump = BuildOutput($qquery);
 
 //2: Answers table
-$aquery = "SELECT * FROM labels WHERE lid=$lid";
+$aquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid";
 $adump = BuildOutput($aquery);
 
 $fn = "labelset_$lid.sql";

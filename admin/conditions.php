@@ -66,7 +66,7 @@ if ($_POST['action'] == "insertcondition")
 		}
 	else
 		{
-		$query = "INSERT INTO conditions (qid, cqid, cfieldname, value) VALUES "
+		$query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, value) VALUES "
 			   . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['canswers']}')";
 		$result = mysql_query($query) or die ("Couldn't insert new condition<br />$query<br />".mysql_error());
 		}
@@ -74,7 +74,7 @@ if ($_POST['action'] == "insertcondition")
 //DELETE ENTRY IF THIS IS DELETE
 if ($_POST['action'] == "delete")
 	{
-	$query = "DELETE FROM conditions WHERE cid={$_POST['cid']}";
+	$query = "DELETE FROM {$dbprefix}conditions WHERE cid={$_POST['cid']}";
 	$result = mysql_query($query) or die ("Couldn't delete condition<br />$query<br />".mysql_error());
 	}
 
@@ -89,7 +89,7 @@ unset($canswers);
 $qid=$_GET['qid']; if (!$qid) {$qid=$_POST['qid'];}
 $sid=$_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
 
-$query = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND qid=$qid";
+$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND qid=$qid";
 $result = mysql_query($query) or die ("Couldn't get information for question $qid<br />$query<br />".mysql_error());
 while ($rows=mysql_fetch_array($result))
 	{
@@ -100,7 +100,7 @@ while ($rows=mysql_fetch_array($result))
 	}
 
 //2: Get all other questions that occur before this question that are pre-determined answer types
-$query = "SELECT questions.qid, questions.sid, questions.gid, questions.question, questions.type, questions.lid FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid AND (groups.group_name < '$questiongroupname' OR (groups.group_name = '$questiongroupname' AND questions.title < '$questiontitle')) AND questions.type NOT IN ('S', 'D', 'T', 'Q') ORDER BY CONCAT(groups.group_name, questions.title)";
+$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid AND ({$dbprefix}groups.group_name < '$questiongroupname' OR ({$dbprefix}groups.group_name = '$questiongroupname' AND {$dbprefix}questions.title < '$questiontitle')) AND {$dbprefix}questions.type NOT IN ('S', 'D', 'T', 'Q') ORDER BY CONCAT({$dbprefix}groups.group_name, {$dbprefix}questions.title)";
 echo "<!-- DEBUG: \n";
 echo $query;
 echo "\n-->\n";
@@ -119,7 +119,7 @@ if ($questionscount > 0)
 		else {$shortquestion=$rows['question'];}
 		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F")
 			{
-			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
+			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".mysql_error());
 			while ($arows = mysql_fetch_array($aresult))
 				{
@@ -152,7 +152,7 @@ if ($questionscount > 0)
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", "Decrease");
 						break;
 					case "F":
-						$fquery = "SELECT * FROM labels WHERE lid={$rows['lid']} ORDER BY sortorder, code";
+						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$rows['lid']} ORDER BY sortorder, code";
 						$fresult = mysql_query($fquery);
 						while ($frow=mysql_fetch_array($fresult))
 							{
@@ -165,7 +165,7 @@ if ($questionscount > 0)
 			}
 		elseif ($rows['type'] == "R")
 			{
-			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
+			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 			$acount=mysql_num_rows($aresult);
 			while ($arow=mysql_fetch_array($aresult))
@@ -207,7 +207,7 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
 					break;
 				default:
-					$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
+					$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
 					$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 					while ($arows=mysql_fetch_array($aresult))
 						{
@@ -299,7 +299,7 @@ echo "\t\t</td>\n";
 echo "\t</tr>\n";
 
 //3: Get other conditions currently set for this question
-$query = "SELECT conditions.cid, conditions.cqid, conditions.cfieldname, conditions.value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid=$qid ORDER BY conditions.cfieldname";
+$query = "SELECT {$dbprefix}conditions.cid, {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname, {$dbprefix}conditions.value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid=$qid ORDER BY {$dbprefix}conditions.cfieldname";
 $result = mysql_query($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".mysql_error());
 $conditionscount=mysql_num_rows($result);
 

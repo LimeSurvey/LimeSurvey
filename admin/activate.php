@@ -44,11 +44,11 @@ if (!$_GET['ok'])
 	//	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
 	//	# "A", "B", "C", "E", "F" -> Various Array Types
 	//  # "R" -> RANKING
-	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R')";
+	$chkquery = "SELECT qid, question FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R')";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
-		$chaquery = "SELECT * FROM answers WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
+		$chaquery = "SELECT * FROM {$dbprefix}answers WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
 		$charesult=mysql_query($chaquery);
 		$chacount=mysql_num_rows($charesult);
 		if (!$chacount > 0) 
@@ -58,7 +58,7 @@ if (!$_GET['ok'])
 		}
 		
 	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
-	$chkquery = "SELECT qid, question FROM questions WHERE sid={$_GET['sid']} AND type = ''";
+	$chkquery = "SELECT qid, question FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type = ''";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing types<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
@@ -67,7 +67,7 @@ if (!$_GET['ok'])
 	
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
-	$qorderquery="SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid={$_GET['sid']} ORDER BY group_name, questions.title";
+	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, {$dbprefix}questions.title";
 	$qorderresult=mysql_query($qorderquery) or die("Couldn't generate a list of questions in order<br />$qorderquery<br />".mysql_error());
 	$qordercount=mysql_num_rows($qorderresult);
 	$c=0;
@@ -77,7 +77,7 @@ if (!$_GET['ok'])
 		$c++;
 		}
 	//1: Get each condition's question id
-	$conquery="SELECT conditions.qid, cqid, questions.question FROM conditions, questions, groups WHERE conditions.qid=questions.qid AND questions.gid=groups.gid ORDER BY qid";
+	$conquery="SELECT {$dbprefix}conditions.qid, cqid, {$dbprefix}questions.question FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY qid";
 	$conresult=mysql_query($conquery) or die("Couldn't check conditions for relative consistency<br />$conquery<br />".mysql_error());
 	//2: Check each conditions cqid that it occurs later than the cqid
 	while ($conrow=mysql_fetch_array($conresult))
@@ -165,9 +165,9 @@ if (!$_GET['ok'])
 	}
 else
 	{
-	$createsurvey = "CREATE TABLE survey_{$_GET['sid']} (\n";
+	$createsurvey = "CREATE TABLE {$dbprefix}survey_{$_GET['sid']} (\n";
 	$createsurvey .= "  id INT(11) NOT NULL auto_increment,\n";
-	$pquery = "SELECT private, datestamp FROM surveys WHERE sid={$_GET['sid']}";
+	$pquery = "SELECT private, datestamp FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
 		{
@@ -181,7 +181,7 @@ else
 			$createsurvey .= " datestamp DATETIME NOT NULL,\n";
 			}
 		}
-	$aquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid={$_GET['sid']} ORDER BY group_name, title";
+	$aquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, title";
 	$aresult = mysql_query($aquery);
 	//echo "<br /><br />$aquery<br /><br />\n";
 	while ($arow=mysql_fetch_array($aresult))
@@ -219,7 +219,7 @@ else
 		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || $arow['type'] == "P")
 			{
 			//MULTI ENTRY
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY answers.sortorder, answers.answer";
+			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			while ($abrow=mysql_fetch_array($abresult))
 				{
@@ -241,7 +241,7 @@ else
 			}
 		elseif ($arow['type'] == "Q")
 			{
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY answers.sortorder, answers.answer";
+			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			while ($abrow=mysql_fetch_array($abresult))
 				{
@@ -251,7 +251,7 @@ else
 		elseif ($arow['type'] == "R")
 			{
 			//MULTI ENTRY
-			$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid={$_GET['sid']} AND questions.qid={$arow['qid']} ORDER BY answers.sortorder, answers.answer";
+			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
 			$abcount=mysql_num_rows($abresult);
 			for ($i=1; $i<=$abcount; $i++)
@@ -283,7 +283,7 @@ else
 	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($sid)</b></td></tr>\n";
 	echo "\t\t\t\t<tr><td align='center'><font color='green'>"._AC_ACTIVATED."<br /><br />\n";
 	
-	$acquery = "UPDATE surveys SET active='Y' WHERE sid={$_GET['sid']}";
+	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = mysql_query($acquery);
 	
 	if ($surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist

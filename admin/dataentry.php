@@ -84,7 +84,7 @@ if (!$sid && !$action)
 
 if ($action == "edit" || $action == "")
 	{
-	$query = "SELECT language FROM surveys WHERE sid=$sid";
+	$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$sid";
 	$result = mysql_query($query);
 	while ($row=mysql_fetch_row($result)) {$surveylanguage = $row['language'];}
 	if (!$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
@@ -103,7 +103,7 @@ if ($action == "insert")
 	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 	echo "\t\t\t<b>Inserting data</b><br />\n";
 	echo "SID: $sid, ($surveytable)<br /><br />\n";
-	$iquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
+	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
 	while ($irow = mysql_fetch_array($iresult))
@@ -147,7 +147,7 @@ if ($action == "insert")
 			}
 		elseif ($irow['type'] == "R")
 			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY answers.sortorder, answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			$i2count = mysql_num_rows($i2result);
 			for ($i=1; $i<=$i2count; $i++)
@@ -171,7 +171,7 @@ if ($action == "insert")
 			}
 		else
 			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY answers.sortorder, answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			while ($i2row = mysql_fetch_array($i2result))
 				{
@@ -282,7 +282,7 @@ elseif ($action == "edit")
 	echo "<table height='1'><tr><td></td></tr></table>\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND questions.sid=surveys.sid AND questions.sid='$sid'";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$sid'";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
@@ -312,7 +312,7 @@ elseif ($action == "edit")
 		$fquestion = $fnrow['question'];
 		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "P" || $fnrow['type'] == "Q")
 			{
-			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
+			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 			$fnrresult = mysql_query($fnrquery);
 			while ($fnrrow = mysql_fetch_array($fnrresult))
 				{
@@ -333,7 +333,7 @@ elseif ($action == "edit")
 			}
 		elseif ($fnrow['type'] == "R")
 			{
-			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
+			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 			$fnrresult = mysql_query($fnrquery);
 			$fnrcount = mysql_num_rows($fnrresult);
 			for ($j=1; $j<=$fnrcount; $j++)
@@ -422,7 +422,7 @@ elseif ($action == "edit")
 					echo "\t\t\t<select>\n";
 					break;
 				case "L": //LIST drop-down/radio-button list
-					$lquery = "SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
+					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 					$lresult = mysql_query($lquery);
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
 					echo "\t\t\t\t<option value=''";
@@ -438,7 +438,7 @@ elseif ($action == "edit")
 					echo "\t\t\t</select>\n";
 					break;
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-					$lquery = "SELECT * FROM answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
+					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 					$lresult = mysql_query($lquery);
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n";
 					echo "\t\t\t\t<option value=''";
@@ -471,7 +471,7 @@ elseif ($action == "edit")
 							}
 						$i++;
 						}
-					$ansquery = "SELECT * FROM answers WHERE qid=$thisqid ORDER BY sortorder, answer";
+					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = mysql_query($ansquery);
 					$anscount = mysql_num_rows($ansresult);
 					echo "\t\t\t<script type='text/javascript'>\n";
@@ -836,7 +836,7 @@ elseif ($action == "edit")
 	echo "\t\t\t<input type='hidden' name='id' value='$id'>\n";
 	echo "\t\t\t<input type='hidden' name='sid' value='$sid'>\n";
 	echo "\t\t\t<input type='hidden' name='action' value='update'>\n";
-	echo "\t\t\t<input type='hidden' name='surveytable' value='survey_$sid'>\n";
+	echo "\t\t\t<input type='hidden' name='surveytable' value='{$dbprefix}survey_$sid'>\n";
 	echo "\t\t</td>\n";
 	echo "\t\t</form>\n";
 	echo "\t</tr>\n";
@@ -851,7 +851,7 @@ elseif ($action == "update")
 	//echo "$surveyoptions";
 	echo "\t<tr><td align='center'>\n";
 	//echo "<br /><b>Updating data for Survey $sid, tablename $surveytable - Record No $id</b><br /><br />\n";
-	$iquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
+	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
 	
 	$updateqr = "UPDATE $surveytable SET \n";
@@ -897,7 +897,7 @@ elseif ($action == "update")
 			}
 		elseif ($irow['type'] == "R")
 			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY answers.sortorder, answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			$i2count = mysql_num_rows($i2result);
 			for ($x=1; $x<=$i2count; $x++)
@@ -920,7 +920,7 @@ elseif ($action == "update")
 			}
 		else
 			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$irow['qid']} AND questions.sid=$sid ORDER BY answers.sortorder, answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			//echo $i2query;
 			$i2result = mysql_query($i2query);
 			$otherexists = "";
@@ -1007,7 +1007,7 @@ else
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._BROWSERESPONSES."</b></td></tr>\n";
 	echo $surveyoptions;
-	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
+	$desquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 	$desresult = mysql_query($desquery);
 	while ($desrow = mysql_fetch_array($desresult))
 		{
@@ -1015,7 +1015,7 @@ else
 		$surveydesc = $desrow['description'];
 		$surveyactive = $desrow['active'];
 		$surveyprivate = $desrow['private'];
-		$surveytable = "survey_{$desrow['sid']}";
+		$surveytable = "{$dbprefix}survey_{$desrow['sid']}";
 		$surveydatestamp = $desrow['datestamp'];
 		}
 	//if ($surveyactive == "Y") {echo "$surveyoptions\n";}
@@ -1052,12 +1052,12 @@ else
 		}
 
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
-	$degquery = "SELECT * FROM groups WHERE sid=$sid ORDER BY group_name";
+	$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid ORDER BY group_name";
 	$degresult = mysql_query($degquery);
 	// GROUP NAME
 	while ($degrow = mysql_fetch_array($degresult))
 		{
-		$deqquery = "SELECT * FROM questions WHERE sid=$sid AND gid={$degrow['gid']}";
+		$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid={$degrow['gid']}";
 		$deqresult = mysql_query($deqquery);
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<b>{$degrow['group_name']}</td>\n";
@@ -1080,13 +1080,13 @@ else
 			//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 			$explanation = ""; //reset conditions explanation
 			$x=0;
-			$distinctquery="SELECT DISTINCT cqid, questions.title FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.qid={$deqrow['qid']} ORDER BY cqid";
+			$distinctquery="SELECT DISTINCT cqid, {$dbprefix}questions.title FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid={$deqrow['qid']} ORDER BY cqid";
 			$distinctresult=mysql_query($distinctquery);
 			while ($distinctrow=mysql_fetch_array($distinctresult))
 				{
 				if ($x > 0) {$explanation .= " <i>"._DE_AND."</i><br />";}
 				//$explanation .= "if you answered ";
-				$conquery="SELECT cid, cqid, questions.title, questions.question, value, questions.type FROM conditions, questions WHERE conditions.cqid=questions.qid AND conditions.cqid={$distinctrow['cqid']} AND conditions.qid={$deqrow['qid']}";
+				$conquery="SELECT cid, cqid, {$dbprefix}questions.title, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
 				$conresult=mysql_query($conquery);
 				while ($conrow=mysql_fetch_array($conresult))
 					{
@@ -1114,7 +1114,7 @@ else
 								break;
 							}
 						}
-					$ansquery="SELECT answer FROM answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
+					$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
 					$ansresult=mysql_query($ansquery);
 					while ($ansrow=mysql_fetch_array($ansresult))
 						{
@@ -1183,7 +1183,7 @@ else
 					echo "\t\t\t</select>\n";
 					break;
 				case "Q": //MULTIPLE SHORT TEXT
-					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = mysql_query($deaquery);
 					echo "\t\t\t<table>\n";
 					while ($dearow = mysql_fetch_array($dearesult))
@@ -1197,7 +1197,7 @@ else
 					echo "\t\t\t</table>\n";
 					break;
 				case "L": //LIST drop-down/radio-button list
-					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = mysql_query($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = mysql_fetch_array($dearesult))
@@ -1210,7 +1210,7 @@ else
 					echo "\t\t\t</select>\n";
 					break;
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-					$deaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = mysql_query($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = mysql_fetch_array($dearesult))
@@ -1227,7 +1227,7 @@ else
 					break;
 				case "R": //RANKING TYPE QUESTION
 					$thisqid=$deqrow['qid'];
-					$ansquery = "SELECT * FROM answers WHERE qid=$thisqid ORDER BY sortorder, answer";
+					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = mysql_query($ansquery);
 					$anscount = mysql_num_rows($ansresult);
 					echo "\t\t\t<script type='text/javascript'>\n";
@@ -1376,7 +1376,7 @@ else
 					unset($answers);
 					break;
 				case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
-					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = mysql_query($meaquery);
 					while ($mearow = mysql_fetch_array($mearesult))
 						{
@@ -1392,7 +1392,7 @@ else
 					break;
 				case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					echo "<table border='0'>\n";
-					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = mysql_query($meaquery);
 					while ($mearow = mysql_fetch_array($mearesult))
 						{
@@ -1437,7 +1437,7 @@ else
 					echo "\t\t\t</select>\n";
 					break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = mysql_query($meaquery);
 					echo "<table>\n";
 					while ($mearow = mysql_fetch_array($mearesult))
@@ -1458,7 +1458,7 @@ else
 					echo "</table>\n";
 					break;
 				case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = mysql_query($meaquery);
 					echo "<table>\n";
 					while ($mearow = mysql_fetch_array($mearesult))
@@ -1479,7 +1479,7 @@ else
 					echo "</table>\n";
 					break;
 				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=mysql_query($meaquery);
 					echo "<table>\n";
 					while ($mearow = mysql_fetch_array($mearesult))
@@ -1499,7 +1499,7 @@ else
 					echo "</table>\n";
 					break;
 				case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=mysql_query($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".mysql_error());
 					echo "<table>\n";
 					while ($mearow = mysql_fetch_array($mearesult))
@@ -1519,7 +1519,7 @@ else
 					echo "</table>\n";
 					break;
 				case "F": //ARRAY (Flexible Labels)
-					$meaquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=mysql_query($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".mysql_error());
 					echo "<table>\n";
 					while ($mearow = mysql_fetch_array($mearesult))
@@ -1529,7 +1529,7 @@ else
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
-						$fquery = "SELECT * FROM labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
+						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 						$fresult = mysql_query($fquery);
 						while ($frow = mysql_fetch_array($fresult))
 							{

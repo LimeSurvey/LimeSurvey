@@ -91,13 +91,13 @@ if ($sid)
 	$surveysummary .= "\t\t}\n";
 	$surveysummary .= "-->\n";
 	$surveysummary .= "</script>\n";
-	$sumquery3 = "SELECT * FROM questions WHERE sid=$sid"; //Getting a count of questions for this survey
+	$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid"; //Getting a count of questions for this survey
 	$sumresult3 = mysql_query($sumquery3);
 	$sumcount3 = mysql_num_rows($sumresult3);
-	$sumquery2 = "SELECT * FROM groups WHERE sid=$sid"; //Getting a count of groups for this survey
+	$sumquery2 = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid"; //Getting a count of groups for this survey
 	$sumresult2 = mysql_query($sumquery2);
 	$sumcount2 = mysql_num_rows($sumresult2);
-	$sumquery1 = "SELECT * FROM surveys WHERE sid=$sid"; //Getting data for this survey
+	$sumquery1 = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid"; //Getting data for this survey
 	$sumresult1 = mysql_query($sumquery1);
 	$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($s1row = mysql_fetch_array($sumresult1))
@@ -250,10 +250,10 @@ if ($sid)
 
 if ($gid)
 	{
-	$sumquery4 = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid"; //Getting a count of questions for this survey
+	$sumquery4 = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid=$gid"; //Getting a count of questions for this survey
 	$sumresult4 = mysql_query($sumquery4);
 	$sumcount4 = mysql_num_rows($sumresult4);
-	$grpquery ="SELECT * FROM groups WHERE gid=$gid ORDER BY group_name";
+	$grpquery ="SELECT * FROM {$dbprefix}groups WHERE gid=$gid ORDER BY group_name";
 	$grpresult = mysql_query($grpquery);
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = mysql_fetch_array($grpresult))
@@ -307,10 +307,10 @@ if ($gid)
 
 if ($qid)
 	{
-	$qrq = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
+	$qrq = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
 	$qrr = mysql_query($qrq);
 	$qct = mysql_num_rows($qrr);
-	$qrquery = "SELECT * FROM questions WHERE gid=$gid AND sid=$sid AND qid=$qid";
+	$qrquery = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid AND sid=$sid AND qid=$qid";
 	$qrresult = mysql_query($qrquery);
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = mysql_fetch_array($qrresult))
@@ -379,13 +379,13 @@ if ($qid)
 if ($_GET['viewanswer'] || $_POST['viewanswer'])
 	{
 	echo keycontroljs();
-	$qquery = "SELECT type FROM questions WHERE qid=$qid";
+	$qquery = "SELECT type FROM {$dbprefix}questions WHERE qid=$qid";
 	$qresult = mysql_query($qquery);
 	while ($qrow=mysql_fetch_array($qresult)) {$qtype=$qrow['type'];}
 	if (!$_POST['ansaction'])
 		{
 		//check if any nulls exist. If they do, redo the sortorders
-		$caquery="SELECT * FROM answers WHERE qid=$qid AND sortorder is null";
+		$caquery="SELECT * FROM {$dbprefix}answers WHERE qid=$qid AND sortorder is null";
 		$caresult=mysql_query($caquery);
 		$cacount=mysql_num_rows($caresult);
 		if ($cacount)
@@ -395,7 +395,7 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		}
 	$vasummary .= "<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n";
 	$vasummary .= "<tr bgcolor='#555555'><td colspan='5'><font size='1' color='white'><b>"._ANSWERS."</b></td></tr>\n";
-	$cdquery = "SELECT * FROM answers WHERE qid=$qid ORDER BY sortorder, answer";
+	$cdquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
 	$cdresult = mysql_query($cdquery);
 	$cdcount = mysql_num_rows($cdresult);
 	$vasummary .= "\t<tr><th>$setfont"._AL_CODE."</th><th>$setfont"._AL_ANSWER."</th><th>$setfont"._AL_DEFAULT."</th><th>$setfont"._AL_MOVE."</th><th>$setfont"._AL_ACTION."</th></tr>\n";
@@ -520,7 +520,7 @@ if ($action == "modifyuser")
 	{
 	$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n";
 	$usersummary .= "\t\t<b>$setfont<font color='white'>Modify User</td></tr>\n";
-	$muq = "SELECT * FROM users WHERE user='$user' LIMIT 1";
+	$muq = "SELECT * FROM {$dbprefix}users WHERE user='$user' LIMIT 1";
 	$mur = mysql_query($muq);
 	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
 	while ($mrw = mysql_fetch_array($mur))
@@ -703,7 +703,7 @@ if ($action == "addquestion")
 
 if ($action == "copyquestion")
 	{
-	$eqquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
+	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
@@ -800,7 +800,7 @@ if ($action == "copyquestion")
 if ($action == "addanswer")
 	{
 	//Get sortorder number that is one greater than the last.
-	$saquery="SELECT sortorder FROM answers WHERE qid=$qid ORDER BY sortorder desc LIMIT 1";
+	$saquery="SELECT sortorder FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder desc LIMIT 1";
 	$saresult=mysql_query($saquery) or die ("Couldn't get last sortorder<br />$saquery<br />".mysql_error());
 	while ($sarow=mysql_fetch_array($saresult)) {$lastsa=$sarow['sortorder'];}
 	if ($lastsa) 
@@ -838,7 +838,7 @@ if ($action == "addanswer")
 
 if ($action == "editanswer")
 	{
-	$eaquery = "SELECT * FROM answers WHERE qid=$qid AND code='$code'";
+	$eaquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid AND code='$code'";
 	$earesult = mysql_query($eaquery);
 	while ($earow = mysql_fetch_array($earesult))
 		{
@@ -882,7 +882,7 @@ if ($action == "addgroup")
 
 if ($action == "editgroup")
 	{
-	$egquery = "SELECT * FROM groups WHERE sid=$sid AND gid=$gid";
+	$egquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$sid AND gid=$gid";
 	$egresult = mysql_query($egquery);
 	while ($esrow = mysql_fetch_array($egresult))	
 		{
@@ -904,7 +904,7 @@ if ($action == "editgroup")
 	
 if ($action == "editquestion")
 	{
-	$eqquery = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
+	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$sid AND gid=$gid AND qid=$qid";
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
@@ -1013,7 +1013,7 @@ if ($action == "editquestion")
 
 if ($action == "editsurvey")
 	{
-	$esquery = "SELECT * FROM surveys WHERE sid=$sid";
+	$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 	$esresult = mysql_query($esquery);
 	while ($esrow = mysql_fetch_array($esresult))	
 		{

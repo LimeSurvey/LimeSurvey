@@ -79,14 +79,14 @@ if (!$sid && !$action) //NO SID OR ACTION PROVIDED
 	}
 
 //CHECK IF SURVEY IS ACTIVATED AND EXISTS
-$actquery = "SELECT * FROM surveys WHERE sid=$sid";
+$actquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 $actresult = mysql_query($actquery);
 $actcount = mysql_num_rows($actresult);
 if ($actcount > 0)
 	{
 	while ($actrow = mysql_fetch_array($actresult))
 		{
-		$surveytable = "survey_{$actrow['sid']}";
+		$surveytable = "{$dbprefix}survey_{$actrow['sid']}";
 		$surveyname = "{$actrow['short_title']}";
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 			{
@@ -124,7 +124,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	echo "<table height='1'><tr><td></td></tr></table>\n";
 	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid='$sid' ORDER BY group_name";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	
@@ -152,7 +152,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		$fquestion = $fnrow['question'];
 		if ($fnrow['type'] == "Q" || $fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "P")
 			{
-			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
+			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 			$fnrresult = mysql_query($fnrquery);
 			while ($fnrrow = mysql_fetch_array($fnrresult))
 				{
@@ -166,7 +166,7 @@ if ($action == "id") // Looking at a SINGLE entry
 			}
 		elseif ($fnrow['type'] == "R")
 			{
-			$fnrquery = "SELECT * FROM answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
+			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 			$fnrresult = mysql_query($fnrquery);
 			$fnrcount = mysql_num_rows($fnrresult);
 			for ($i=1; $i<=$fnrcount; $i++)
@@ -267,7 +267,7 @@ elseif ($action == "all")
 		}
 	echo "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM questions, groups, surveys WHERE questions.gid=groups.gid AND groups.sid=surveys.sid AND questions.sid='$sid' ORDER BY group_name";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$sid' ORDER BY group_name";
 	$fnresult = mysql_query($fnquery);
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
@@ -308,7 +308,7 @@ elseif ($action == "all")
 			}
 		elseif ($fnrow['type'] == "R")
 			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY answers.sortorder, answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			$i2count = mysql_num_rows($i2result);
 			for ($i=1; $i<=$i2count; $i++)
@@ -320,7 +320,7 @@ elseif ($action == "all")
 			}
 		else
 			{
-			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$fnrow['qid']} AND questions.sid=$sid ORDER BY answers.sortorder, answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = mysql_query($i2query);
 			$otherexists = "";
 			while ($i2row = mysql_fetch_array($i2result))
@@ -454,7 +454,7 @@ elseif ($action == "all")
 		$i = 0;
 		if ($private == "N")
 			{
-			$SQL = "Select * FROM tokens_$sid WHERE token='{$dtrow['token']}'";
+			$SQL = "Select * FROM {$dbprefix}tokens_$sid WHERE token='{$dtrow['token']}'";
 			$SQLResult = mysql_query($SQL) or die(mysql_error());
 			$TokenRow = mysql_fetch_assoc($SQLResult);
 			echo "\t\t<td align='center'><font size='1'>\n";

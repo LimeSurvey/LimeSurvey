@@ -5,74 +5,74 @@ include("config.php");
 sendcacheheaders();
 
 //TABLES THAT SHOULD EXIST
-$alltables=array("surveys", "groups", "questions", "answers", "conditions", "users", "labelsets", "labels");
+$alltables=array("{$dbprefix}surveys", "{$dbprefix}groups", "{$dbprefix}questions", "{$dbprefix}answers", "{$dbprefix}conditions", "{$dbprefix}users", "{$dbprefix}labelsets", "{$dbprefix}labels");
 
 //KEYS
-$keyinfo[]=array("surveys", "sid");
-$keyinfo[]=array("groups", "gid");
-$keyinfo[]=array("questions", "qid");
-$keyinfo[]=array("conditions", "cid");
-$keyinfo[]=array("labelsets", "lid");
+$keyinfo[]=array("{$dbprefix}surveys", "sid");
+$keyinfo[]=array("{$dbprefix}groups", "gid");
+$keyinfo[]=array("{$dbprefix}questions", "qid");
+$keyinfo[]=array("{$dbprefix}conditions", "cid");
+$keyinfo[]=array("{$dbprefix}labelsets", "lid");
 
 //FIELDS THAT SHOULD EXIST
-$allfields[]=array("labelsets", "lid", "lid int(11) NOT NULL auto_increment");
-$allfields[]=array("labelsets", "label_name", "label_name varchar(100) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}labelsets", "lid", "lid int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}labelsets", "label_name", "label_name varchar(100) NOT NULL default ''");
 
-$allfields[]=array("labels", "lid", "lid int(11) NOT NULL default '0'");
-$allfields[]=array("labels", "code", "code varchar(5) NOT NULL default ''");
-$allfields[]=array("labels", "title", "title varchar(50) NOT NULL default ''");
-$allfields[]=array("labels", "sortorder", "sortorder varchar(5) NULL");
+$allfields[]=array("{$dbprefix}labels", "lid", "lid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}labels", "code", "code varchar(5) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}labels", "title", "title varchar(50) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}labels", "sortorder", "sortorder varchar(5) NULL");
 
-$allfields[]=array("users", "user", "user varchar(20) NOT NULL default ''");
-$allfields[]=array("users", "password", "password varchar(20) NOT NULL default ''");
-$allfields[]=array("users", "security", "security varchar(10) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}users", "user", "user varchar(20) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}users", "password", "password varchar(20) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}users", "security", "security varchar(10) NOT NULL default ''");
 
-$allfields[]=array("answers", "qid", "qid int(11) NOT NULL default '0'");
-$allfields[]=array("answers", "code", "code varchar(5) NOT NULL default ''");
-$allfields[]=array("answers", "answer", "answer text NOT NULL");
-$allfields[]=array("answers", "default", "`default` char(1) NOT NULL default 'N'");
-$allfields[]=array("answers", "sortorder", "sortorder varchar(5) NULL");
+$allfields[]=array("{$dbprefix}answers", "qid", "qid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}answers", "code", "code varchar(5) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}answers", "answer", "answer text NOT NULL");
+$allfields[]=array("{$dbprefix}answers", "default", "`default` char(1) NOT NULL default 'N'");
+$allfields[]=array("{$dbprefix}answers", "sortorder", "sortorder varchar(5) NULL");
 
-$allfields[]=array("conditions", "cid", "cid int(11) NOT NULL auto_increment");
-$allfields[]=array("conditions", "qid", "qid int(11) NOT NULL default '0'");
-$allfields[]=array("conditions", "cqid", "cqid int(11) NOT NULL default '0'");
-$allfields[]=array("conditions", "cfieldname", "cfieldname varchar(50) NOT NULL default ''");
-$allfields[]=array("conditions", "method", "method char(2) NOT NULL default ''");
-$allfields[]=array("conditions", "value", "value varchar(5) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}conditions", "cid", "cid int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}conditions", "qid", "qid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}conditions", "cqid", "cqid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}conditions", "cfieldname", "cfieldname varchar(50) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}conditions", "method", "method char(2) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}conditions", "value", "value varchar(5) NOT NULL default ''");
 
-$allfields[]=array("groups", "gid", "gid int(11) NOT NULL auto_increment");
-$allfields[]=array("groups", "sid", "sid int(11) NOT NULL default '0'");
-$allfields[]=array("groups", "group_name", "group_name varchar(100) NOT NULL default ''");
-$allfields[]=array("groups", "description", "description text");
+$allfields[]=array("{$dbprefix}groups", "gid", "gid int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}groups", "sid", "sid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}groups", "group_name", "group_name varchar(100) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}groups", "description", "description text");
 
-$allfields[]=array("questions", "qid", "qid int(11) NOT NULL auto_increment");
-$allfields[]=array("questions", "sid", "sid int(11) NOT NULL default '0'");
-$allfields[]=array("questions", "gid", "gid int(11) NOT NULL default '0'");
-$allfields[]=array("questions", "type", "type char(1) NOT NULL default 'T'");
-$allfields[]=array("questions", "title", "title varchar(20) NOT NULL default ''");
-$allfields[]=array("questions", "question", "question text NOT NULL");
-$allfields[]=array("questions", "help", "help text");
-$allfields[]=array("questions", "other", "other char(1) NOT NULL default 'N'");
-$allfields[]=array("questions", "mandatory", "mandatory char(1) default NULL");
-$allfields[]=array("questions", "lid", "lid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}questions", "qid", "qid int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}questions", "sid", "sid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}questions", "gid", "gid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}questions", "type", "type char(1) NOT NULL default 'T'");
+$allfields[]=array("{$dbprefix}questions", "title", "title varchar(20) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}questions", "question", "question text NOT NULL");
+$allfields[]=array("{$dbprefix}questions", "help", "help text");
+$allfields[]=array("{$dbprefix}questions", "other", "other char(1) NOT NULL default 'N'");
+$allfields[]=array("{$dbprefix}questions", "mandatory", "mandatory char(1) default NULL");
+$allfields[]=array("{$dbprefix}questions", "lid", "lid int(11) NOT NULL default '0'");
 
-$allfields[]=array("surveys", "sid", "sid int(11) NOT NULL auto_increment");
-$allfields[]=array("surveys", "short_title", "short_title varchar(50) NOT NULL default ''");
-$allfields[]=array("surveys", "description", "description text");
-$allfields[]=array("surveys", "admin", "admin varchar(20) default NULL");
-$allfields[]=array("surveys", "active", "active char(1) NOT NULL default 'N'");
-$allfields[]=array("surveys", "welcome", "welcome text");
-$allfields[]=array("surveys", "expires", "expires date default NULL");
-$allfields[]=array("surveys", "adminemail", "adminemail varchar(100) default NULL");
-$allfields[]=array("surveys", "private", "private char(1) default NULL");
-$allfields[]=array("surveys", "faxto", "faxto varchar(20) default NULL");
-$allfields[]=array("surveys", "format", "format char(1) default NULL");
-$allfields[]=array("surveys", "template", "template varchar(100) default 'default'");
-$allfields[]=array("surveys", "url", "url varchar(255) default NULL");
-$allfields[]=array("surveys", "urldescrip", "urldescrip varchar(255) default NULL");
-$allfields[]=array("surveys", "language", "language varchar(50) default ''");
-$allfields[]=array("surveys", "datestamp", "datestamp char(1) default 'N'");
-$allfields[]=array("surveys", "usecookie", "usecookie char(1) default 'N'");
+$allfields[]=array("{$dbprefix}surveys", "sid", "sid int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}surveys", "short_title", "short_title varchar(50) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}surveys", "description", "description text");
+$allfields[]=array("{$dbprefix}surveys", "admin", "admin varchar(20) default NULL");
+$allfields[]=array("{$dbprefix}surveys", "active", "active char(1) NOT NULL default 'N'");
+$allfields[]=array("{$dbprefix}surveys", "welcome", "welcome text");
+$allfields[]=array("{$dbprefix}surveys", "expires", "expires date default NULL");
+$allfields[]=array("{$dbprefix}surveys", "adminemail", "adminemail varchar(100) default NULL");
+$allfields[]=array("{$dbprefix}surveys", "private", "private char(1) default NULL");
+$allfields[]=array("{$dbprefix}surveys", "faxto", "faxto varchar(20) default NULL");
+$allfields[]=array("{$dbprefix}surveys", "format", "format char(1) default NULL");
+$allfields[]=array("{$dbprefix}surveys", "template", "template varchar(100) default 'default'");
+$allfields[]=array("{$dbprefix}surveys", "url", "url varchar(255) default NULL");
+$allfields[]=array("{$dbprefix}surveys", "urldescrip", "urldescrip varchar(255) default NULL");
+$allfields[]=array("{$dbprefix}surveys", "language", "language varchar(50) default ''");
+$allfields[]=array("{$dbprefix}surveys", "datestamp", "datestamp char(1) default 'N'");
+$allfields[]=array("{$dbprefix}surveys", "usecookie", "usecookie char(1) default 'N'");
 
 echo $htmlheader;
 

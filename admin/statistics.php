@@ -34,17 +34,10 @@
 	#############################################################	
 */
 
-$sid = $_GET['sid']; if (!$sid) {$sid = $_POST['sid'];}
-
 include("config.php");
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-                                                     // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");                          // HTTP/1.0
-//Send ("Expires: " & Format$(Date - 30, "ddd, d mmm yyyy") & " " & Format$(Time, "hh:mm:ss") & " GMT ") 
+if (!isset($sid)) {$sid=returnglobal('sid');}
+sendcacheheaders();
 
 $slstyle2 = "style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080; width: 150'";
 
@@ -70,7 +63,7 @@ echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpa
 echo "<tr><td align='center' bgcolor='#555555'><font size='2' face='verdana' color='orange'><b>"._ST_FILTERSETTINGS."</b></td></tr>\n";
 echo "\t<form method='post'>\n";
 // 1: Get list of questions from survey
-$query = "SELECT qid, questions.gid, type, title, group_name, question, lid FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid='$sid' ORDER BY group_name, title";
+$query = "SELECT qid, {$dbprefix}questions.gid, type, title, group_name, question, lid FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid='$sid' ORDER BY group_name, title";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while ($row=mysql_fetch_row($result))
 	{
@@ -183,7 +176,7 @@ foreach ($filters as $flt)
 		// ARRAYS
 		case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
+			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			$counter2=0;
 			while ($row=mysql_fetch_row($result))
@@ -215,7 +208,7 @@ foreach ($filters as $flt)
 			break;
 		case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
+			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			$counter2=0;
 			while ($row=mysql_fetch_row($result))
@@ -247,7 +240,7 @@ foreach ($filters as $flt)
 			break;
 		case "C": // ARRAY OF YES\No\Uncertain QUESTIONS
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0][]' ORDER BY sortorder, answer";
+			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0][]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			$counter2=0;
 			while ($row=mysql_fetch_row($result))
@@ -281,7 +274,7 @@ foreach ($filters as $flt)
 			break;
 		case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0][]' ORDER BY sortorder, answer";
+			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0][]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			$counter2=0;
 			while ($row=mysql_fetch_row($result))
@@ -315,7 +308,7 @@ foreach ($filters as $flt)
 			break;
 		case "F": // ARRAY OF Flexible QUESTIONS
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0][]' ORDER BY sortorder, answer";
+			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0][]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			$counter2=0;
 			while ($row=mysql_fetch_row($result))
@@ -348,7 +341,7 @@ foreach ($filters as $flt)
 			break;
 		case "R": //RANKING
 			echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
+			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			$count = mysql_num_rows($result);
 			while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
@@ -384,7 +377,7 @@ foreach ($filters as $flt)
 			$counter=0;
 			break;
 		default:
-			$query = "SELECT code, answer FROM answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
+			$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
 			$result = mysql_query($query) or die("Couldn't get answers!<br />$query<br />".mysql_error());
 			
 			while ($row=mysql_fetch_row($result))
@@ -403,7 +396,10 @@ foreach ($filters as $flt)
 	$counter++;
 	}
 echo "\n\t\t\t\t</td></tr>\n";
-$allfield=implode("|", $allfields);
+if (isset($allfields))
+	{
+	$allfield=implode("|", $allfields);
+	}
 
 echo "\t\t\t</table>\n";
 echo "\t\t</td></tr>\n";
@@ -447,7 +443,7 @@ if ($_POST['display'])
 		elseif (substr($pv, 0, 1) == "M")
 			{
 			list($lsid, $lgid, $lqid) = explode("X", $pv);
-			$aquery="SELECT code FROM answers WHERE qid=$lqid ORDER BY sortorder, answer";
+			$aquery="SELECT code FROM {$dbprefix}answers WHERE qid=$lqid ORDER BY sortorder, answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers<br />$aquery<br />".mysql_error());
 			while ($arow=mysql_fetch_row($aresult)) // go through every possible answer
 				{
@@ -498,7 +494,7 @@ if ($_POST['display'])
 			}
 		}
 	// 2: Do SQL query
-	$query = "SELECT count(*) FROM survey_$sid";
+	$query = "SELECT count(*) FROM {$dbprefix}survey_$sid";
 	$result = mysql_query($query) or die ("Couldn't get total<br />$query<br />".mysql_error());
 	while ($row=mysql_fetch_row($result)) {$total=$row[0];}
 	if ($selects) 
@@ -556,12 +552,12 @@ if ($_POST['summary'])
 			{
 			
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)));
-			$nquery = "SELECT title, type, question, lid FROM questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qlid=$nrow[3];}
 			
 			//1. Get list of answers
-			$query="SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY sortorder, answer";
+			$query="SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qqid' ORDER BY sortorder, answer";
 			$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
@@ -575,11 +571,11 @@ if ($_POST['summary'])
 			$lengthofnumeral=substr($rt, strchr($rt, "-"), 1);
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strchr($rt, "-")-($lengthofnumeral+1)));	
 	
-			$nquery = "SELECT title, type, question FROM questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question FROM {$dbprefix}questions WHERE qid='$qqid'";
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]. " [".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]"; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]). "[Rank ".substr($rt, strchr($rt, "-")-($lengthofnumeral+1), $lengthofnumeral)."]";}
 			
-			$query="SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY sortorder, answer";
+			$query="SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qqid' ORDER BY sortorder, answer";
 			$result=mysql_query($query) or die("Couldn't get list of answers for multitype<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
@@ -591,7 +587,7 @@ if ($_POST['summary'])
 		elseif (substr($rt, 0, 1) == "N") //NUMERICAL TYPE
 			{
 			list($qsid, $qgid, $qqid) = explode("X", $rt);
-			$nquery = "SELECT title, type, question, qid, lid FROM questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, qid, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
 			//echo $nquery; //debugging line
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
@@ -609,7 +605,7 @@ if ($_POST['summary'])
 			$query .= ", AVG(`$fieldname`*1) as average";
 			$query .= ", MIN(`$fieldname`*1) as minimum";
 			$query .= ", MAX(`$fieldname`*1) as maximum";
-			$query .= " FROM survey_$sid";
+			$query .= " FROM {$dbprefix}survey_$sid";
 			if ($sql != "NULL") {$query .= " WHERE $sql";}
 			$result=mysql_query($query) or die("Couldn't do maths testing<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_array($result))
@@ -623,7 +619,7 @@ if ($_POST['summary'])
 				}
 			
 			//CALCULATE QUARTILES
-			$query ="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
+			$query ="SELECT $fieldname FROM {$dbprefix}survey_$sid WHERE $fieldname IS NOT null";
 			if ($sql != "NULL") {$query .= " AND $sql";}
 			$result=mysql_query($query) or die("Disaster during median calculation<br />$query<br />".mysql_error());
 			$querystarter="SELECT $fieldname FROM survey_$sid WHERE $fieldname IS NOT null";
@@ -731,7 +727,7 @@ if ($_POST['summary'])
 		else // NICE SIMPLE SINGLE OPTION ANSWERS
 			{
 			list($qsid, $qgid, $qqid) = explode("X", $rt);
-			$nquery = "SELECT title, type, question, qid, lid FROM questions WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, qid, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
 			//echo $nquery; //debugging line
 			$nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
 			while ($nrow=mysql_fetch_row($nresult)) 
@@ -743,7 +739,7 @@ if ($_POST['summary'])
 				{
 				case "A": //Array of 5 point choices
 					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
-					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
+					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					//echo $qquery; //debugging line
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -759,7 +755,7 @@ if ($_POST['summary'])
 					break;
 				case "B": //Array of 10 point choices
 					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
-					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
+					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					//echo $qquery; //debugging line
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -775,7 +771,7 @@ if ($_POST['summary'])
 					break;
 				case "C": //Array of Yes/No/Uncertain
 					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
-					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
+					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					//echo $qquery; //debugging line
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -790,7 +786,7 @@ if ($_POST['summary'])
 					break;
 				case "E": //Array of Yes/No/Uncertain
 					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
-					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
+					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					//echo $qquery; //debugging line
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -805,7 +801,7 @@ if ($_POST['summary'])
 					break;
 				case "F": //Array of Flexible
 					$qanswer=substr($qqid, strlen($qiqid), strlen($qqid));
-					$qquery = "SELECT code, answer FROM answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
+					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qiqid' AND code='$qanswer' ORDER BY sortorder, answer";
 					//echo $qquery; //debugging line
 					$qresult=mysql_query($qquery) or die ("Couldn't get answer details<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
@@ -835,7 +831,7 @@ if ($_POST['summary'])
 						$alist[]=array("$i", "$i");
 						}
 				default:
-					$qquery = "SELECT code, answer FROM answers WHERE qid='$qqid' ORDER BY sortorder, answer";
+					$qquery = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$qqid' ORDER BY sortorder, answer";
 					$qresult = mysql_query($qquery) or die ("Couldn't get answers list<br />$qquery<br />".mysql_error());
 					while ($qrow=mysql_fetch_row($qresult))
 						{
@@ -864,16 +860,16 @@ if ($_POST['summary'])
 					{
 					if (substr($rt, 0, 1) == "R")
 						{
-						$query = "SELECT count($al[2]) FROM survey_$sid WHERE $al[2] = '$al[0]'";
+						$query = "SELECT count($al[2]) FROM {$dbprefix}survey_$sid WHERE $al[2] = '$al[0]'";
 						}
 					else
 						{
-						$query = "SELECT count($al[2]) FROM survey_$sid WHERE $al[2] = 'Y'";
+						$query = "SELECT count($al[2]) FROM {$dbprefix}survey_$sid WHERE $al[2] = 'Y'";
 						}
 					}
 				else
 					{
-					$query = "SELECT count($rt) FROM survey_$sid WHERE $rt = '$al[0]'";
+					$query = "SELECT count($rt) FROM {$dbprefix}survey_$sid WHERE $rt = '$al[0]'";
 					//echo $query; //debugging line
 					}
 				if ($sql != "NULL") {$query .= " AND $sql";}

@@ -77,12 +77,12 @@ if (!$ok)
 	echo "\t\t\t"._DS_DELMESSAGE2."<br /><br />\n";
 	echo "\t\t\t"._DS_DELMESSAGE3."\n";
 
-	if (in_array("survey_$sid", $tablelist))
+	if (in_array("{$dbprefix}survey_$sid", $tablelist))
 		{
 		echo "\t\t\t<br /><br />\n"._DS_SURVEYACTIVE."<br /><br />\n";
 		}
 	
-	if (in_array("tokens_$sid", $tablelist))
+	if (in_array("{$dbprefix}tokens_$sid", $tablelist))
 		{
 		echo "\t\t\t"._DS_SURVEYTOKENS."<br /><br />\n";
 		}
@@ -106,35 +106,35 @@ else //delete the survey
 		$tablelist[]=$row[0];
 	    }
 
-	if (in_array("survey_$sid", $tablelist)) //delete the survey_$sid table
+	if (in_array("{$dbprefix}survey_$sid", $tablelist)) //delete the survey_$sid table
 		{
-		$dsquery = "DROP TABLE `survey_$sid`";
+		$dsquery = "DROP TABLE `{$dbprefix}survey_$sid`";
 		$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
 		}
 
-	if (in_array("tokens_$sid", $tablelist)) //delete the tokens_$sid table
+	if (in_array("{$dbprefix}tokens_$sid", $tablelist)) //delete the tokens_$sid table
 		{
 		$dsquery = "DROP TABLE `tokens_$sid`";
 		$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
 		}
 	
-	$dsquery = "SELECT qid FROM questions WHERE sid=$sid";
+	$dsquery = "SELECT qid FROM {$dbprefix}questions WHERE sid=$sid";
 	$dsresult = mysql_query($dsquery) or die ("Couldn't find matching survey to delete<br />$dsquery<br />".mysql_error());
 	while ($dsrow = mysql_fetch_array($dsresult))
 		{
-		$asdel = "DELETE FROM answers WHERE qid={$dsrow['qid']}";
+		$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
 		$asres = mysql_query($asdel);
-		$cddel = "DELETE FROM conditions WHERE qid={$dsrow['qid']}";
+		$cddel = "DELETE FROM {$dbprefix}conditions WHERE qid={$dsrow['qid']}";
 		$cdres = mysql_query($cddel) or die ("Delete conditions failed<br />$cddel<br />".mysql_error());
 		}
 	
-	$qdel = "DELETE FROM questions WHERE sid=$sid";
+	$qdel = "DELETE FROM {$dbprefix}questions WHERE sid=$sid";
 	$qres = mysql_query($qdel);
 	
-	$gdel = "DELETE FROM groups WHERE sid=$sid";
+	$gdel = "DELETE FROM {$dbprefix}groups WHERE sid=$sid";
 	$gres = mysql_query($gdel);
 	
-	$sdel = "DELETE FROM surveys WHERE sid=$sid";
+	$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$sid";
 	$sres = mysql_query($sdel);
 	
 	echo "<table width='100%' align='center'>\n";

@@ -183,9 +183,10 @@ if ($labelsetsarray)
 		$end = strpos($lsa, "'", $start)-$start;
 		$oldlid=substr($lsa, $start, $end);
 		$lsainsert = str_replace("VALUES ('$oldlid", "VALUES ('", $lsa);
+		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert);
 		$lsiresult=mysql_query($lsainsert);
 		//GET NEW LID
-		$nlidquery="SELECT lid FROM labelsets ORDER BY lid DESC LIMIT 1";
+		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
 		$nlidresult=mysql_query($nlidquery);
 		while ($nlidrow=mysql_fetch_array($nlidresult)) {$newlid=$nlidrow['lid'];}
 		$labelreplacements[]=array($oldlid, $newlid);
@@ -199,6 +200,7 @@ if ($labelsetsarray)
 				if ($labellid == $oldlid)
 					{
 					$lainsert = str_replace("VALUES ('$labellid", "VALUES ('$newlid", $la);
+					$lainsert = str_replace("INTO labels", "INTO {$dbprefix}labels", $lainsert);
 					$liresult=mysql_query($lainsert);
 					}
 				}
@@ -220,9 +222,10 @@ if ($questionarray)
 		$oldgid=substr($qa, $oldgidpos, (strpos($qa, "', '", $oldgidpos))-$oldgidpos);
 		$qinsert = str_replace("('$oldqid', '$oldsid', '$oldgid',", "('$sid', '$gid',", $qa);
 		$qinsert = str_replace("(`qid`, ", "(", $qinsert);
+		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions");
 		$qres = mysql_query($qinsert) or die ("<b>"._ERROR.":</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
 		//GET NEW QID
-		$qidquery = "SELECT qid, lid, type FROM questions ORDER BY qid DESC LIMIT 1";
+		$qidquery = "SELECT qid, lid, type FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
 		$qidres = mysql_query($qidquery);
 		while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0]; $oldlid=$qrow[1]; $type=$qrow[2];}
 
@@ -233,7 +236,7 @@ if ($questionarray)
 				{
 				if ($lrp[0] == $oldlid)
 					{
-					$lrupdate="UPDATE questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
+					$lrupdate="UPDATE {$dbprefix}questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
 					$lrresult=mysql_query($lrupdate);
 					}
 				}
@@ -258,6 +261,7 @@ if ($questionarray)
 				if (substr($aa, $astart, $aend) == ($oldqid))
 					{
 					$ainsert = str_replace("('$oldqid", "('$newqid", $aa);
+					$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
 					//$ainsert = substr(trim($ainsert), 0, -1);
 					//echo "$ainsert<br />\n";
 					$ares = mysql_query($ainsert) or die ("<b>"._ERROR.":</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");

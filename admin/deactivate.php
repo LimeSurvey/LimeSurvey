@@ -50,7 +50,7 @@ if (!$_GET['ok'])
 	echo "\t\t\t$setfont"._AC_DEACTIVATE_MESSAGE1."\n";
 	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE2."</p>\n";
 	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE3."</p>\n";
-	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE4." old_{$_GET['sid']}_{$date}</p>\n";
+	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE4." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
 	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE5."</p>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
@@ -71,15 +71,15 @@ else
 		{
 		$tablelist[]=$row[0];
 	    }
-	if (in_array("tokens_{$_GET['sid']}", $tablelist))
+	if (in_array("{$dbprefix}tokens_{$_GET['sid']}", $tablelist))
 		{
-		$toldtable="tokens_{$_GET['sid']}";
-		$tnewtable="old_tokens_{$_GET['sid']}_{$date}";
+		$toldtable="{$dbprefix}tokens_{$_GET['sid']}";
+		$tnewtable="{$dbprefix}old_tokens_{$_GET['sid']}_{$date}";
 		$tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
 		$tdeactivateresult = mysql_query($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".mysql_error()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a>");
 		}
-	$oldtable="survey_{$_GET['sid']}";
-	$newtable="old_{$_GET['sid']}_{$date}";
+	$oldtable="{$dbprefix}survey_{$_GET['sid']}";
+	$newtable="{$dbprefix}old_{$_GET['sid']}_{$date}";
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";

@@ -74,7 +74,7 @@ if (!file_exists("$homedir/.htaccess"))
 		if (file_exists("$homedir/.htpasswd"))
 			{
 			$addsummary .= _UC_UPDATE_TABLE."<br />\n";
-			$uquery="INSERT INTO users VALUES ('$defaultuser', '$defaultpass', '5')";
+			$uquery="INSERT INTO {$dbprefix}users VALUES ('$defaultuser', '$defaultpass', '5')";
 			$uresult=mysql_query($uquery);
 			}
 		else
@@ -93,7 +93,7 @@ elseif ($action == "deleteall")
 	unlink($fname1);
 	$fname1="$homedir/.htpasswd";
 	unlink($fname1);
-	$dq="DELETE FROM users";
+	$dq="DELETE FROM {$dbprefix}users";
 	$dr=mysql_query($dq);
 	$addsummary .= _UC_ALL_REMOVED;
 	$addsummary .= "<br /><br /><a href='$scriptname'>"._GO_ADMIN."</a>\n";
@@ -115,7 +115,7 @@ elseif ($action == "adduser")
 			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
 			$addsummary .= "</pre>\n";
 			}
-		$uquery = "INSERT INTO users VALUES ('$user', '$pass', '{$_POST['level']}')";
+		$uquery = "INSERT INTO {$dbprefix}users VALUES ('$user', '$pass', '{$_POST['level']}')";
 		echo $uquery;
 		$uresult = mysql_query($uquery);
 		
@@ -156,7 +156,7 @@ elseif ($action == "deluser")
 		fclose($fp);
 		//$addsummary .= "User deleted<br />\n";
 		//DELETE USER FROM TABLE
-		$dquery="DELETE FROM users WHERE user='$user'";
+		$dquery="DELETE FROM {$dbprefix}users WHERE user='$user'";
 		$dresult=mysql_query($dquery);
 		//$addsummary .= "User records deleted.";
 		}
@@ -184,7 +184,7 @@ elseif ($action == "moduser")
 			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
 			$addsummary .= "</pre>\n";
 			}
-		$uquery = "UPDATE users SET password='$pass', security='$level' WHERE user='$user'";
+		$uquery = "UPDATE {$dbprefix}users SET password='$pass', security='$level' WHERE user='$user'";
 		$uresult = mysql_query($uquery);
 		//$addsummary .= "User added!";
 		}

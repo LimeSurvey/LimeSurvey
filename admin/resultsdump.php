@@ -65,7 +65,7 @@ if (!file_exists($mysqldump))
 	exit;
 	}
 
-$command="$mysqlbin/mysqldump -u $databaseuser --password=$databasepass $databasename survey_$sid > $filename";
+$command="$mysqlbin/mysqldump -u $databaseuser --password=$databasepass $databasename {$dbprefix}survey_$sid > $filename";
 
 $backup = popen("$command","r");
 pclose($backup);
