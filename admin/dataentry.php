@@ -863,6 +863,7 @@ elseif ($action == "edit" || $action == "editsaved")
 					$choicelist="";
 					$ranklist="";
 					unset($answers);
+					$i--;
 					break;
 
 				case "M": //MULTIPLE OPTIONS checkbox
