@@ -94,8 +94,6 @@ if (!$style)
 	}
 else
 	{
-	//header("Content-Type: application/vnd.ms-excel"); //EXCEL FILE
-	//header("Content-Type: application/msword"); //EXPORT INTO MSWORD
 	if ($type == "doc") {header("Content-Disposition: attachment; filename=survey.doc");}
 	elseif ($type == "xls") {header("Content-Disposition: attachment; filename=survey.xls");}
 	elseif ($type == "csv") {header("Content-Disposition: attachment; filename=survey.csv");}
@@ -181,14 +179,16 @@ else
 	$legitqs[] = "DUMMY ENTRY";
 	while ($lw = mysql_fetch_array($lr))
 		{
-		$legitqs[] = $lw[0];
+		$legitqs[] = $lw[0]; //this creates an array of question id's'
 		}
+	
 	$surveytable = "survey_{$sid}";
-	if ($_POST['sql'])
+	
+	if ($_POST['sql']) //this applies if export has been called from the statistics package
 		{
 		$dquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";
 		}
-	else
+	else // this applies for exporting everything
 		{
 		$dquery = "SELECT * FROM $surveytable ORDER BY id";
 		}
@@ -196,7 +196,11 @@ else
 	$fieldcount = mysql_num_fields($dresult);
 	while ($drow = mysql_fetch_array($dresult))
 		{
-		if ($answers == "short") {echo implode($s, str_replace("\r\n", " ", $drow)) . "\n";}
+		if ($answers == "short") 
+			{
+			echo implode($s, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
+			}
+
 		elseif ($answers == "long")
 			{
 			$i = 0;
@@ -204,14 +208,14 @@ else
 				{
 				list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
 				if (!$fqid) {$fqid = 0;}
-				while (!in_array($fqid, $legitqs))
+				while (!in_array($fqid, $legitqs)) //checks that the qid exists in our list
 					{
 					$fqid = substr($fqid, 0, strlen($fqid)-1);
 					}
 				$qq = "SELECT type FROM questions WHERE qid=$fqid";
 				$qr = mysql_query($qq);
 				while ($qrow = mysql_fetch_array($qr))
-					{$ftype = $qrow['qid'];}
+					{$ftype = $qrow['type'];}
 				switch ($ftype)
 					{
 					case "L": //DROPDOWN LIST
