@@ -35,30 +35,39 @@
 */
 if ($action == "insertnewgroup")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (get_magic_quotes_gpc() == "0")
 		{
 		$description = addcslashes($description, "'");
 		$group_name = addcslashes($group_name, "'");
 		}
 
-	$query = "INSERT INTO groups VALUES ('', '$sid', '$group_name', '$description')";
-	$result=mysql_query($query);
+	$query = "INSERT INTO groups (sid, group_name, description) VALUES ('$sid', '$group_name', '$description')";
+	$result = mysql_query($query);
+	
 	if ($result)
 		{
 		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"New group ($group_name) has been created for survey id $sid\")\n //-->\n</script>\n";
 		$query = "SELECT gid FROM groups WHERE group_name='$group_name' AND sid=$sid";
-		$result=mysql_query($query);
+		$result = mysql_query($query);
 		while ($res = mysql_fetch_row($result))
 			{
-			$gid=$res[0];
+			$gid = $res['gid'];
 			}
 		$groupselect = getgrouplist($gid);
+		}
+	else
+		{
+		echo "The database reported the following error:<br />\n";
+		echo "<font color='red'>" . mysql_error() . "</font>\n";
+		echo "<pre>$query</pre>\n";
+		echo "</body>\n</html>";
+		exit;
 		}
 	}
 
 elseif ($action == "updategroup")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (get_magic_quotes_gpc() == "0")
 		{
 		$description = addcslashes($description, "'");
 		$group_name = addcslashes($group_name, "'");
@@ -85,7 +94,7 @@ elseif ($action == "delgroup")
 	if ($result)
 		{
 		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Group id($gid) for survey $sid has been deleted!\")\n //-->\n</script>\n";
-		$gid="";
+		$gid = "";
 		$groupselect = getgrouplist($gid);
 		}
 	else
@@ -96,13 +105,13 @@ elseif ($action == "delgroup")
 
 elseif ($action == "insertnewquestion")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (get_magic_quotes_gpc() == "0")
 		{
 		$title = addcslashes($title, "'");
 		$question = addcslashes($question, "'");
 		$help = addcslashes($help, "'");
 		}
-	$query = "INSERT INTO questions VALUES ('', '$sid', '$gid', '$type', '$title', '$question', '$help', '$other')";
+	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other) VALUES ('', '$sid', '$gid', '$type', '$title', '$question', '$help', '$other')";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -113,7 +122,7 @@ elseif ($action == "insertnewquestion")
 
 elseif ($action == "updatequestion")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (get_magic_quotes_gpc() == "0")
 		{
 		$title = addcslashes($title, "'");
 		$question = addcslashes($question, "'");
@@ -134,13 +143,13 @@ elseif ($action == "updatequestion")
 
 elseif ($action == "copynewquestion")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (get_magic_quotes_gpc() == "0")
 		{
 		$title = addcslashes($title, "'");
 		$question = addcslashes($question, "'");
 		$help = addcslashes($help, "'");
 		}
-	$query = "INSERT INTO questions VALUES ('', '$sid', '$gid', '$type', '$title', '$question', '$help', '$other')";
+	$query = "INSERT INTO questions (qid, sid, gid, type, title, question, help, other) VALUES ('', '$sid', '$gid', '$type', '$title', '$question', '$help', '$other')";
 	$result = mysql_query($query);
 	if ($result)
 		{
@@ -149,15 +158,15 @@ elseif ($action == "copynewquestion")
 	//echo "COPYANSWERS: $copyanswers, OLDQID: $oldqid";
 	if ($copyanswers == "Y")
 		{
-		$q2="SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
-		$r2=mysql_query($q2);
-		while ($qr2=mysql_fetch_row($r2)) {$newqid=$qr2[0];}
-		$q1="SELECT * FROM answers WHERE qid='$oldqid' ORDER BY code";
-		$r1=mysql_query($q1);
+		$q2 = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
+		$r2 = mysql_query($q2);
+		while ($qr2 = mysql_fetch_row($r2)) {$newqid = qr2['qid'];}
+		$q1 = "SELECT * FROM answers WHERE qid='$oldqid' ORDER BY code";
+		$r1 = mysql_query($q1);
 		while ($qr1 = mysql_fetch_row($r1))
 			{
-			$i1="INSERT INTO answers VALUES ('$newqid', '$qr1[1]', '$qr1[2]', '$qr1[3]')";
-			$ir1=mysql_query($i1);
+			$i1 = "INSERT INTO answers (qid, code, answer default) VALUES ('$newqid', '{$qr1['code']}', '{$qr1['answer']}', '{$qr1['default']}')";
+			$ir1 = mysql_query($i1);
 			}		
 		}	
 	}	
@@ -169,7 +178,7 @@ elseif ($action == "delquestion")
 	if ($result)
 		{
 		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Question id($qid) has been deleted!\")\n //-->\n</script>\n";
-		$qid="";
+		$qid = "";
 		}
 	else
 		{
@@ -179,11 +188,11 @@ elseif ($action == "delquestion")
 
 elseif ($action == "insertnewanswer")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (get_magic_quotes_gpc() == "0")
 		{
 		$answer = addcslashes($answer, "'");
 		}
-	$iaquery = "INSERT INTO answers VALUES ('$qid', '$code', '$answer', '$default')";
+	$iaquery = "INSERT INTO answers (qid, code, answer default) VALUES ('$qid', '$code', '$answer', '$default')";
 	$iaresult = mysql_query ($iaquery);
 	if ($iaresult)
 		{
@@ -199,7 +208,7 @@ elseif ($action == "insertnewanswer")
 
 elseif ($action == "updateanswer")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (get_magic_quotes_gpc() == "0")
 		{
 		$answer = addcslashes($answer, "'");
 		}
@@ -224,7 +233,7 @@ elseif ($action == "delanswer")
 	if ($result)
 		{
 		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Answer for question $qid ($code) has been deleted!\")\n //-->\n</script>\n";
-		$code="";
+		$code = "";
 		}
 	else
 		{
@@ -239,7 +248,7 @@ elseif ($action == "insertnewsurvey")
 		$short_title = addcslashes($short_title, "'");
 		$description = addcslashes($description, "'");
 		}
-	$isquery = "INSERT INTO surveys VALUES ('', '$short_title', '$description', '$admin', 'N', '".str_replace("\n", "<BR>", $welcome)."', '$expires', '$adminemail')";
+	$isquery = "INSERT INTO surveys (sid, short_title, description, admin, active, welcome, expires, adminemail) VALUES ('', '$short_title', '$description', '$admin', 'N', '".str_replace("\n", "<BR>", $welcome)."', '$expires', '$adminemail')";
 	$isresult = mysql_query ($isquery);
 	if ($isresult)
 		{
@@ -260,7 +269,7 @@ elseif ($action == "insertnewsurvey")
 
 elseif ($action == "updatesurvey")
 	{
-	if (get_magic_quotes_gpc()=="0")
+	if (get_magic_quotes_gpc() == "0")
 		{
 		$short_title = addcslashes($short_title, "'");
 		$description = addcslashes($description, "'");
@@ -288,7 +297,7 @@ elseif ($action == "delsurvey")
 	if ($result)
 		{
 		echo "<SCRIPT TYPE=\"text/javascript\">\n<!--\n alert(\"Survey id($sid) has been deleted!\")\n //-->\n</script>\n";
-		$sid="";
+		$sid = "";
 		$surveyselect = getsurveylist();
 		}
 	else
