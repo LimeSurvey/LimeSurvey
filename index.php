@@ -255,7 +255,7 @@ function templatereplace($line)
 	$line=str_replace("{ANSWER}", $answer, $line);
 	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
 	if ($help) 
-		{$line=str_replace("{QUESTIONHELP}", "<img src='help.gif' align='left'>".$help, $line);}
+		{$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' align='left'>".$help, $line);}
 	else
 		{$line=str_replace("{QUESTIONHELP}", $help, $line);}
 	$line=str_replace("{NAVIGATOR}", $navigator, $line);
