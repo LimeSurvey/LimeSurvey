@@ -230,7 +230,8 @@ foreach ($qrows as $qrow) //Go through each question until we reach the current 
 		}
 	}
 
-if (is_array($questionlist))
+$theserows=array();
+if (isset($questionlist) && is_array($questionlist))
 	{
 	foreach ($questionlist as $ql)
 		{
