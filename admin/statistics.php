@@ -366,6 +366,7 @@ if ($_POST['display'])
 	echo "\t\t<font size='1'><b>SQL:</b> $query\n";
 	echo "\t</td></tr>\n";
 	if ($selects) {$sql=implode(" AND ", $selects);}
+	if (!$sql) {$sql="NULL";}
 	if ($results > 0)
 		{
 		echo "\t<tr>";
