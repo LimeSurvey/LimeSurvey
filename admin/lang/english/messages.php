@@ -39,6 +39,9 @@ define(_UPLOADCSV, "Upload CSV File");
 define(_SURVEYS, "Surveys");
 define(_GROUPS, "Groups");
 define(_QUESTIONS, "Questions");
+define(_QBYQ, "Question by Question");
+define(_GBYG, "Group by Group");
+define(_SBYS, "All in one");
 
 //BUTTON MOUSEOVERS
 //administration bar
@@ -189,9 +192,10 @@ define(_SINFL, "Single (Flexible Labels)"); //(FOR LATER RELEASE)
 define(_EMAIL, "Email Address"); //FOR LATER RELEASE
 
 //GENERAL WORDS AND PHRASES
-define(_YES, "Yes");
-define(_NO, "No");
-define(_CANCEL, "Cancel");
+define(_AD_YES, "Yes");
+define(_AD_NO, "No");
+define(_AD_CANCEL, "Cancel");
+define(_AD_CHOOSE, "Please Choose..");
 define(_ERROR, "Error");
 define(_SUCCESS, "Success");
 define(_REQ, "*Required");
@@ -200,7 +204,6 @@ define(_ADDG, "Add Group");
 define(_ADDQ, "Add Question");
 define(_ADDU, "Add User");
 define(_SAVE, "Save Changes");
-define(_CHOOSE, "Please Choose..");
 define(_NONE, "None"); //as in "Do not display anything, or none chosen";
 define(_GO_ADMIN, "Main Admin Screen"); //text to display to return/display main administration screen
 define(_CONTINUE, "Continue");
@@ -386,6 +389,10 @@ define(_DE_DELRECORD, "Record Deleted");
 define(_DE_UPDATED, "Record has been updated.");
 define(_DE_EDITING, "Editing Response");
 define(_DE_QUESTIONHELP, "Help about this question");
+define(_DE_CONDITIONHELP1, "Only answer this if the following conditions are met:"); 
+define(_DE_CONDITIONHELP2, "to question {QUESTION}, you answered {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define(_DE_AND, "AND");
+define(_DE_OR, "OR");
 
 //TOKEN CONTROL MESSAGES
 define(_TC_NOSID, "You have not selected a survey");
