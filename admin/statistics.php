@@ -86,7 +86,7 @@ foreach ($filters as $flt)
 		$counter=0;
 		}
 	//echo $flt[2];	//debugging line
-	if ($counter == 5) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>";}
+	if ($counter == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>";}
 	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
 	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C") //Have to make an exception for these types!
 		{
