@@ -80,7 +80,7 @@ header("Pragma: no-cache");                          // HTTP/1.0
 $handle=fopen("$filename", "r");
 while (!feof($handle))
 	{
-	$buffer=fgets($handle);
+	$buffer=fgets($handle, 1024);
 	echo $buffer;
 	}
 fclose($handle);
