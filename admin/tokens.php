@@ -192,8 +192,12 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			._GO_ADMIN."' onClick=\"window.open('admin.php?sid=$sid', '_top')\"><br /><br />\n";
 		if ($tcount>0)
 			{
-			echo "<form action='tokens.php'>\n"
-				 ."The following old token tables have been found:<br />\n"
+			echo "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
+				 ."<tr><td bgcolor='#666666'>$setfont<font color='white' size='1'>Restore Options:\n"
+				 ."</font></font></td></tr>\n"
+				 ."<tr>\n"
+				 ."<form action='tokens.php'><td bgcolor='#DDDDDD' align='center'>$setfont\n"
+				 ."The following old token tables could be restored:<br />\n"
 				 ."<select $slstyle2 size='4' name='oldtable'>\n";
 			foreach($oldlist as $ol)
 				{
@@ -203,7 +207,8 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 				 ."<input type='submit' $btstyle value='Restore'>\n"
 				 ."<input type='hidden' name='restoretable' value='Y'>\n"
 				 ."<input type='hidden' name='sid' value='$sid'>\n"
-				 ."</form>\n";
+				 ."</font></td></form>\n"
+				 ."</tr></table>\n";
 			}
 
 		echo "\t\t</font></td>\n"
