@@ -125,7 +125,8 @@ define("_SURVEYEXPIRED", "Ce questionnaire n&acute;est plus disponible."); //NEW
 define("_SURVEYCOMPLETE", "Vous avez d&eacute;j&agrave; complet&eacute; ce questionnaire.");
 
 define("_INSTRUCTION_LIST", "Veuillez s&eacute;lectionner seulement une r&eacute;ponse ci-dessous"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Cochez la (ou les) r&eacute;ponse(s)"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "Cochez la (ou les) r&eacute;ponses"); //NEW for 098rc3
+
 define("_CONFIRMATION_MESSAGE1", "Questionnaire envoy&eacute;"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Une nouvelle r&eacute;ponse a &eacute;t&eacute; saisie dans votre questionnaire"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Cliquez sur le lien suivant pour voir votre r&eacute;ponse personnelle:"); //NEW for 098rc5
@@ -160,4 +161,74 @@ define ("_RG_REGISTRATIONCOMPLETE", "Merci de vous enregistre pour participer &a
                                                                    ."Un email a &eacute;t&eacute; envoy&eacute; &agrave; l&acute;adresse que vous avez fournie dans les d&eacute;tails d&acute;acc&eacute;s "
                                                                    ."pour ce questionnaire. Veuillez suivre ce lien dans cet email pour participer.<br /><br />\n"
                                                                    ."Administrateur du questionnaire {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+
+define("_SM_COMPLETED", "<b>Merci<br /><br />"
+					   ."Vous venez de répondre à l'ensemble des questions de cette enquête.</b><br /><br />"
+					   ."Veuillez cliquer sur le bouton ["._SUBMIT."], afin de procéder à l'enregistrement de vos réponses."); //New for 0.98finalRC1
+define("_SM_REVIEW", "Si vous souhaitez vérifier ou changer certaines de vos réponses, "
+					."vous pouvez le faire en cliquant sur le bouton en bas de cette page ["._PREV."], "
+					."afin de passer en revue vos réponses.");
+					
+//For the "printable" survey
+define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following:"); //New for 0.98finalRC1
+define("_PS_WRITE", "Please write your answer here:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment:"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "Please choose the appropriate response for each item:"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "Please write your answer(s) here:"); //New for 0.98finalRC1
+define("_PS_DATE", "Please enter a date:"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Make a comment on your choice here:"); //New for 0.98finalRC1
+define("_PS_RANKING", "Please number each box in order of preference from 1 to"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "Submit Your Survey."); //New for 0.98finalRC1
+define("_PS_THANKYOU", "Thank you for completing this survey."); //New for 0.98finalRC1
+define("_PS_FAXTO", "Please fax your completed survey to:"); //New for 0.98finaclRC1
+
+define("_PS_CON_ONLYANSWER", "Only answer this question"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
+define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
+define("_PS_CON_OR", "or"); //New for 0.98finalRC2
+
+//Save Messages
+define("_SAVE_AND_RETURN", "Save your responses so far");
+define("_SAVEHEADING", "Save Your Unfinished Survey");
+define("_RETURNTOSURVEY", "Return To Survey");
+define("_SAVENAME", "Name");
+define("_SAVEPASSWORD", "Password");
+define("_SAVEPASSWORDRPT", "Repeat Password");
+define("_SAVE_EMAIL", "Your Email");
+define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
+				  ."Your survey will be saved using that name and password, and can be "
+				  ."completed later by logging in with the same name and password.<br /><br />\n"
+				  ."If you give an email address, an email containing the details will be sent "
+				  ."to you.");
+define("_SAVESUBMIT", "Save Now");
+define("_SAVENONAME", "You must supply a name for this saved session.");
+define("_SAVENOPASS", "You must supply a password for this saved session.");
+define("_SAVENOMATCH", "Your passwords do not match.");
+define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
+define("_SAVETRYAGAIN", "Please try again.");
+define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
+define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
+						 ."a survey in progress. The following details can be used "
+						 ."to return to this survey and continue where you left "
+						 ."off.");
+define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
+define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
+define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
+define("_SAVE_EMAILSENT", "An email has been sent with details about your saved survey.");
+
+//Load Messages
+define("_LOAD_SAVED", "Load unfinished survey");
+define("_LOADHEADING", "Load A Previously Saved Survey");
+define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
+			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
+define("_LOADNAME", "Saved name");
+define("_LOADPASSWORD", "Password");
+define("_LOADSUBMIT", "Load Now");
+define("_LOADNONAME", "You did not provide a name");
+define("_LOADNOPASS", "You did not provide a password");
+define("_LOADNOMATCH", "There is no matching saved survey");
+
+define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>
