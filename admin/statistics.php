@@ -60,7 +60,7 @@ echo "<table width='100%' border='0' bgcolor='#555555'><tr><td align='center'><f
 echo "<table width='100%'>\n";
 echo "\t<form method='post'>\n";
 // 1: Get list of questions with predefined answers from survey
-$query = "SELECT qid, gid, type, title FROM questions WHERE sid='$sid' AND type IN ('5', 'G', 'L', 'O', 'M', 'P', 'Y', 'A', 'B', 'C')";
+$query = "SELECT qid, gid, type, title FROM questions WHERE sid='$sid' AND type IN ('5', 'G', 'L', 'O', 'M', 'P', 'Y', 'A', 'B', 'C') ORDER BY gid";
 $result = mysql_query($query) or die("Couldn't do it!<br />$query<br />".mysql_error());
 while ($row=mysql_fetch_row($result))
 	{
@@ -125,11 +125,11 @@ foreach ($filters as $flt)
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
-				$myfield2 = $myfield."X$row[0]";
+				$myfield2 = $myfield."$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
 				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}X{$row[0]}[]' multiple $slstyle2>\n";
+				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
 				for ($i=1; $i<=5; $i++)
 					{
 					echo "\t\t\t\t\t<option value='$i'";
@@ -147,11 +147,11 @@ foreach ($filters as $flt)
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
-				$myfield2 = $myfield . "X$row[0]";
+				$myfield2 = $myfield . "$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
 				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}X{$row[0]}[]' multiple $slstyle2>\n";
+				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
 				for ($i=1; $i<=10; $i++)
 					{
 					echo "\t\t\t\t\t<option value='$i'";
@@ -169,10 +169,10 @@ foreach ($filters as $flt)
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
-				$myfield2 = $myfield . "X$row[0]";
+				$myfield2 = $myfield . "$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}X{$row[0]}[]' multiple $slstyle2>\n";
+				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
 				echo "\t\t\t\t\t<option value='Y'";
 				if (is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected";}
 				echo ">Yes</option>\n";
