@@ -45,6 +45,7 @@ sendcacheheaders();
 if ($action == "updateset") {updateset($lid);}
 if ($action == "insertset") {insertset();}
 if ($action == "modanswers") {modanswers($lid);}
+if ($action == "delset") {if (delset($lid)) {unset($lid);}}
 
 echo $htmlheader;
 echo "<script type='text/javascript'>\n";
@@ -162,6 +163,7 @@ if (isset($lid) && ($action != "editset"))
 		echo "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
 		echo "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		echo "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._L_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('labels.php?action=editset&lid=$lid', '_top')\">";
+		echo "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._L_DEL_BT."' align='left' border='0' hspace='0' onClick=\"window.open('labels.php?action=delset&lid=$lid', '_top')\">";
 		echo "\t\t\t\t\t</td>\n";
 		echo "\t\t\t\t</tr>\n";
 		echo "\t\t\t</table>\n";
@@ -275,6 +277,26 @@ function updateset($lid)
 	if (!$result = mysql_query($query))
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+		}
+	}
+function delset($lid)
+	{
+	//CHECK THAT THERE ARE NO QUESTIONS THAT RELY ON THIS LID
+	$query = "SELECT qid FROM questions WHERE lid=$lid";
+	$result = mysql_query($query);
+	$count=mysql_num_rows($result);
+	if ($count > 0)
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELSET." \")\n //-->\n</script>\n";
+		return false;
+		}
+	else //There are no dependencies. We can delete this safely
+		{
+		$query = "DELETE FROM labels WHERE lid=$lid";
+		$result = mysql_query($query);
+		$query = "DELETE FROM labelsets WHERE lid=$lid";
+		$result = mysql_query($query);
+		return true;
 		}
 	}
 function insertset()
