@@ -145,7 +145,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		}
 	elseif ($fieldinfo == "id")
 		{
-		$firstline .= "ID$s";
+		$firstline .= "id$s";
 		}
 	elseif ($fieldinfo == "timestamp")
 		{
