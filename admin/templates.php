@@ -447,6 +447,7 @@ if ($handle = opendir($dirloc)) {
 //****************************************************************
 //** OUTPUT STARTS HERE
 //****************************************************************
+sendcacheheaders();
 echo $htmlheader;
 echo "<script type='text/javascript'>\n"
 	."<!--\n"
@@ -478,9 +479,7 @@ echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='60' height='10' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>"
 	."</td><td align='right'>\n"
-	."<input type='image' src='$imagefiles/close.gif' title='"._CLOSEWIN."' hspace='0' alt='"._CLOSEWIN."'"
-	." align='right' onClick='javascript: self.close()'>"
-	."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='40' height='10'>"
+	."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10'>"
 	."<img src='$imagefiles/seperator.gif' alt='|' align='right' alt='minimise' border='0' hspace='0'>"
 	."<input type='image' src='$imagefiles/add.gif' align='right' hspace='0' title='"._TP_CREATENEW."' "
 	."onClick=\"javascript: copyprompt('"._TP_NEWTEMPLATECALLED."', '"._TP_DEFAULTNEWTEMPLATE."', 'default', 'copy')\">"
