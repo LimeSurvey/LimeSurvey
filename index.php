@@ -170,6 +170,7 @@ if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
         $_POST['loadall']="reload";
 		$_POST['loadname']=returnglobal('loadname');
 		$_POST['loadpass']=returnglobal('loadpass');
+		$_POST['scid']=returnglobal('scid');
 		}
 	}
 //Load saved survey
@@ -184,10 +185,12 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		{
 		$errormsg .= _LOADNOPASS."<br />\n";
 		}
-	$query = "SELECT * FROM {$dbprefix}saved\n"
-			."WHERE sid=$sid\n"
-			."AND identifier='".$_POST['loadname']."'\n"
-			."AND access_code='".md5($_POST['loadpass'])."'\n";
+	$query = "SELECT * FROM {$dbprefix}saved, {$dbprefix}saved_control
+			  WHERE {$dbprefix}saved.scid={$dbprefix}saved_control.scid 
+			  AND sid=$sid
+			  AND {$dbprefix}saved.scid=".$_POST['scid']."
+			  AND identifier='".$_POST['loadname']."'
+			  AND access_code='".md5($_POST['loadpass'])."'\n";
 	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
 	if (mysql_num_rows($result) < 1)
 		{
@@ -208,6 +211,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 				{
 				$_SESSION[$row['fieldname']]=$row['value'];
 				$_SESSION['step']=$row['saved_thisstep'];
+				$_SESSION['scid']=$row['scid'];
 				}
 			} // while
 		$_SESSION['savename']=$_POST['loadname']; //This session variable hangs around

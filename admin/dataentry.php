@@ -87,158 +87,6 @@ if ($action == "edit" || $action == "" || $action == "editsaved")
 	
 if ($action == "insert")
 	{
-	//BUILD THE SQL TO INSERT RESPONSES
-	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
-	$iresult = mysql_query($iquery);
-	$col_name="";
-	$insertqr="";
-	while ($irow = mysql_fetch_array($iresult))
-		{
-		if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q")
-			{
-			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			if (isset($_POST[$fieldname]))
-				{
-				$col_name .= "`$fieldname`, \n";
-				if (get_magic_quotes_gpc())
-					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
-				else
-					{
-					if (_PHPVERSION >= "4.3.0")
-						{
-						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-						}
-					else
-						{
-						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-						}
-					}
-			    }
-			}
-		elseif ($irow['type'] == "O")
-			{
-			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$fieldname2 = $fieldname . "comment";
-			$col_name .= "`$fieldname`, \n`$fieldname2`, \n";
-			if (get_magic_quotes_gpc())
-				{$insertqr .= "'" . $_POST[$fieldname] . "', \n'" . $_POST[$fieldname2] . "', \n";}
-			else
-				{
-				if (_PHPVERSION >= "4.3.0")
-					{
-					$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
-					}
-				else
-					{
-					$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
-					}
-				}
-			}
-		elseif ($irow['type'] == "R")
-			{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$i2result = mysql_query($i2query);
-			$i2count = mysql_num_rows($i2result);
-			for ($i=1; $i<=$i2count; $i++)
-				{
-				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$i";
-				$col_name .= "`$fieldname`, \n";		
-				if (get_magic_quotes_gpc())
-					{$insertqr .= "'" . $_POST["d$fieldname"] . "', \n";}
-				else
-					{
-					if (_PHPVERSION >= "4.3.0")
-						{
-						$insertqr .= "'" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
-						}
-					else
-						{
-						$insertqr .= "'" . mysql_escape_string($_POST["d$fieldname"]) . "', \n";
-						}
-					}
-				}
-			}
-		else
-			{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$i2result = mysql_query($i2query);
-			while ($i2row = mysql_fetch_array($i2result))
-				{
-				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-				if (isset($_POST[$fieldname]))
-					{
-					$col_name .= "`$fieldname`, \n";
-					if (get_magic_quotes_gpc())
-						{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
-					else
-						{
-						if (_PHPVERSION >= "4.3.0")
-							{
-							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-							}
-						else
-							{
-							$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-							}
-						}
-					$otherexists = "";
-					if ($i2row['other'] == "Y") {$otherexists = "Y";}
-					if ($irow['type'] == "P")
-						{
-						$fieldname2 = $fieldname."comment";
-						$col_name .= "`$fieldname2`, \n";
-						if (get_magic_quotes_gpc())
-							{$insertqr .= "'" . $_POST[$fieldname2] . "', \n";}
-						else
-							{
-							if (_PHPVERSION >= "4.3.0")
-								{
-								$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
-								}
-							else
-								{
-								$insertqr .= "'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
-								}
-							}
-						}				    
-					}
-				}
-			if (isset($otherexists) && $otherexists == "Y") 
-				{
-				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
-				$col_name .= "`$fieldname`, \n";
-				if (get_magic_quotes_gpc())
-					{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
-				else
-					{
-					if (_PHPVERSION >= "4.3.0")
-						{
-						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-						}
-					else
-						{
-						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-						}
-					}
-				}
-			}
-		}
-	
-	$col_name = substr($col_name, 0, -3); //Strip off the last comma-space
-	$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
-	
-	//NOW SHOW SCREEN
-	if (isset($_POST['token']) && $_POST['token']) //handle tokens if survey needs them
-		{
-		$col_name .= ", token\n";
-		$insertqr .= ", '{$_POST['token']}'";
-		}
-	if (isset($_POST['datestamp']) && $_POST['datestamp']) //handle datestamp if needed
-		{
-		$col_name .= ", datestamp\n";
-		$insertqr .= ", '{$_POST['datestamp']}'";
-		}
-
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
@@ -253,6 +101,7 @@ if ($action == "insert")
 		$saver['password']=returnglobal('save_password');
 		$saver['passwordconfirm']=returnglobal('save_confirmpassword');
 		$saver['email']=returnglobal('save_email');
+		$saver['scid']=returnglobal('save_scid');
 		if (!returnglobal('redo'))
 			{
 		    $password=md5($saver['password']);
@@ -268,7 +117,7 @@ if ($action == "insert")
 		if (!$errormsg && $saver['identifier'] && !returnglobal('redo'))
 			{
 		    //All the fields are correct. Now make sure there's not already a matching saved item
-			$query = "SELECT * FROM {$dbprefix}saved\n"
+			$query = "SELECT * FROM {$dbprefix}saved_control\n"
 					."WHERE sid=$sid\n"
 					."AND identifier='".$saver['identifier']."'\n"
 					."AND access_code='$password'\n";
@@ -317,86 +166,263 @@ if ($action == "insert")
 				{
 				//Delete all the existing entries
 				$delete="DELETE FROM {$dbprefix}saved
-						 WHERE sid=$sid
-						 AND identifier='".mysql_escape_string($saver['identifier'])."'
-						 AND access_code='$password'";
-				$result=mysql_query($delete) or die("Couldn't delete old record<br />".mysql_error());
-			    }
-			foreach ($_POST as $key=>$val)
+						 WHERE scid=".$saver['scid'];
+				$result=mysql_query($delete) or die("Couldn't delete old record<br />$delete<br />".mysql_error());
+			    $delete="DELETE FROM {$dbprefix}saved_control
+						 WHERE scid=".$saver['scid'];
+				$result=mysql_query($delete) or die("Couldn't delete old record<br />$delete<br />".mysql_error());
+				}
+			$insert1="INSERT INTO {$dbprefix}saved_control
+					  (`scid`, `sid`, `identifier`, `access_code`,
+					   `email`, `ip`, `saved_thisstep`, `status`, `saved_date`)
+					  VALUES ('',
+					  '$sid',
+					  '".mysql_escape_string($saver['identifier'])."',
+					  '$password',
+					  '".$saver['email']."',
+					  '".$_SERVER['REMOTE_ADDR']."',
+					  0,
+					  'S',
+					  '".date("Y-m-d H:i:s")."')";
+			if ($result1=mysql_query($insert1))
 				{
-				if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp")
+				//control table entry worked, lets do the rest
+				$scid=mysql_insert_id();
+				foreach ($_POST as $key=>$val)
 					{
-					if($val)
+					if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp")
 						{
-						$insert="INSERT INTO {$dbprefix}saved\n"
-							   . "(`saved_id`, `sid`, `saved_thisstep`, `saved_ip`,\n"
-							   . "`saved_date`, `identifier`, `access_code`, `fieldname`,\n"
-							   . "`value`, `email`)\n"
-							   ."VALUES ('',\n"
-							   ."'$sid',\n"
-							   ."'0',\n"
-							   ."'".$_SERVER['REMOTE_ADDR']."',\n"
-							   ."'".date("Y-m-d H:i:s")."',\n"
-							   ."'".mysql_escape_string($saver['identifier'])."',\n"
-							   ."'$password',\n"
-							   ."'".$key."',\n"
-							   ."'".$val."',\n"
-							   ."'".$saver['email']."')";
-						//echo "$insert<br />\n";
-						if (!$result=mysql_query($insert))
+						if($val)
 							{
-							$failed=1;
+							$insert="INSERT INTO {$dbprefix}saved\n"
+								   . "(`saved_id`, `scid`, `datestamp`, `fieldname`,\n"
+								   . "`value`)\n"
+								   ."VALUES ('',\n"
+								   ."'$scid',\n"
+								   ."'".date("Y-m-d H:i:s")."',\n"
+								   ."'".$key."',\n"
+								   ."'".$val."')";
+							//echo "$insert<br />\n";
+							if (!$result=mysql_query($insert))
+								{
+								$failed=1;
+								}
 							}
 						}
 					}
-				}
-			if (!isset($failed) || $failed < 1) 
-				{
-			    echo "<font color='green'>"._SAVE_SUCCEEDED."</font><br />\n";
-				if ($saver['email'])
+				if (!isset($failed) || $failed < 1) 
 					{
-				    //Send email
-					if (validate_email($saver['email']) && !returnglobal('redo'))
+				    echo "<font color='green'>"._SAVE_SUCCEEDED."</font><br />\n";
+					if ($saver['email'])
 						{
-						$subject=_SAVE_EMAILSUBJECT;
-						$message=_SAVE_EMAILTEXT;
-						$message.="\n\n".$thissurvey['name']."\n\n";
-						$message.=_SAVENAME.": ".$saver['identifier']."\n";
-						$message.=_SAVEPASSWORD.": ".$saver['password']."\n\n";
-						$message.=_SAVE_EMAILURL.":\n";
-						$message.=$homeurl."/dataentry.php?sid=$sid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
-						$message=crlf_lineendings($message);
-						$headers = "From: {$thissurvey['adminemail']}\r\n";
-						if (mail($saver['email'], $subject, $message, $headers))
+					    //Send email
+						if (validate_email($saver['email']) && !returnglobal('redo'))
 							{
-							$emailsent="Y";
-							echo "<font color='green'>"._SAVE_EMAILSENT."</font><br />\n";
+							$subject=_SAVE_EMAILSUBJECT;
+							$message=_SAVE_EMAILTEXT;
+							$message.="\n\n".$thissurvey['name']."\n\n";
+							$message.=_SAVENAME.": ".$saver['identifier']."\n";
+							$message.=_SAVEPASSWORD.": ".$saver['password']."\n\n";
+							$message.=_SAVE_EMAILURL.":\n";
+							$message.=$homeurl."/dataentry.php?sid=$sid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
+							$message=crlf_lineendings($message);
+							$headers = "From: {$thissurvey['adminemail']}\r\n";
+							if (mail($saver['email'], $subject, $message, $headers))
+								{
+								$emailsent="Y";
+								echo "<font color='green'>"._SAVE_EMAILSENT."</font><br />\n";
+								}
+							}
+						}
+					}
+				else
+					{
+					echo "<font color='red'>"._SAVE_FAILED."</font><br />\n";
+					}			    
+				}
+			else
+				{
+				echo "ERROR: $insert1<br />".mysql_error();
+				}
+			}
+		}
+	else
+		{
+		//BUILD THE SQL TO INSERT RESPONSES
+		$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$sid ORDER BY group_name, title";
+		$iresult = mysql_query($iquery);
+		$col_name="";
+		$insertqr="";
+		while ($irow = mysql_fetch_array($iresult))
+			{
+			if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q")
+				{
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
+				if (isset($_POST[$fieldname]))
+					{
+					$col_name .= "`$fieldname`, \n";
+					if (get_magic_quotes_gpc())
+						{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
+					else
+						{
+						if (_PHPVERSION >= "4.3.0")
+							{
+							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+							}
+						else
+							{
+							$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+							}
+						}
+				    }
+				}
+			elseif ($irow['type'] == "O")
+				{
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
+				$fieldname2 = $fieldname . "comment";
+				$col_name .= "`$fieldname`, \n`$fieldname2`, \n";
+				if (get_magic_quotes_gpc())
+					{$insertqr .= "'" . $_POST[$fieldname] . "', \n'" . $_POST[$fieldname2] . "', \n";}
+				else
+					{
+					if (_PHPVERSION >= "4.3.0")
+						{
+						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
+						}
+					else
+						{
+						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
+						}
+					}
+				}
+			elseif ($irow['type'] == "R")
+				{
+				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$i2result = mysql_query($i2query);
+				$i2count = mysql_num_rows($i2result);
+				for ($i=1; $i<=$i2count; $i++)
+					{
+					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$i";
+					$col_name .= "`$fieldname`, \n";		
+					if (get_magic_quotes_gpc())
+						{$insertqr .= "'" . $_POST["d$fieldname"] . "', \n";}
+					else
+						{
+						if (_PHPVERSION >= "4.3.0")
+							{
+							$insertqr .= "'" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
+							}
+						else
+							{
+							$insertqr .= "'" . mysql_escape_string($_POST["d$fieldname"]) . "', \n";
 							}
 						}
 					}
 				}
 			else
 				{
-				echo "<font color='red'>"._SAVE_FAILED."</font><br />\n";
+				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$sid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$i2result = mysql_query($i2query);
+				while ($i2row = mysql_fetch_array($i2result))
+					{
+					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
+					if (isset($_POST[$fieldname]))
+						{
+						$col_name .= "`$fieldname`, \n";
+						if (get_magic_quotes_gpc())
+							{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
+						else
+							{
+							if (_PHPVERSION >= "4.3.0")
+								{
+								$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+								}
+							else
+								{
+								$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+								}
+							}
+						$otherexists = "";
+						if ($i2row['other'] == "Y") {$otherexists = "Y";}
+						if ($irow['type'] == "P")
+							{
+							$fieldname2 = $fieldname."comment";
+							$col_name .= "`$fieldname2`, \n";
+							if (get_magic_quotes_gpc())
+								{$insertqr .= "'" . $_POST[$fieldname2] . "', \n";}
+							else
+								{
+								if (_PHPVERSION >= "4.3.0")
+									{
+									$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
+									}
+								else
+									{
+									$insertqr .= "'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
+									}
+								}
+							}				    
+						}
+					}
+				if (isset($otherexists) && $otherexists == "Y") 
+					{
+					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
+					$col_name .= "`$fieldname`, \n";
+					if (get_magic_quotes_gpc())
+						{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
+					else
+						{
+						if (_PHPVERSION >= "4.3.0")
+							{
+							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
+							}
+						else
+							{
+							$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
+							}
+						}
+					}
 				}
 			}
-		}
-	else
-		{
-		echo "\t\t\t<b>Inserting data</b><br />\n"
-			."SID: $sid, ($surveytable)<br /><br />\n";
-		$SQL = "INSERT INTO $surveytable \n($col_name) \nVALUES \n($insertqr)";
+		
+		$col_name = substr($col_name, 0, -3); //Strip off the last comma-space
+		$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
+		
+		//NOW SHOW SCREEN
+		if (isset($_POST['token']) && $_POST['token']) //handle tokens if survey needs them
+			{
+			$col_name .= ", token\n";
+			$insertqr .= ", '{$_POST['token']}'";
+			}
+		if (isset($_POST['datestamp']) && $_POST['datestamp']) //handle datestamp if needed
+			{
+			$col_name .= ", datestamp\n";
+			$insertqr .= ", '{$_POST['datestamp']}'";
+			}
+//		echo "\t\t\t<b>Inserting data</b><br />\n"
+//			."SID: $sid, ($surveytable)<br /><br />\n";
+		$SQL = "INSERT INTO $surveytable 
+				($col_name)
+				VALUES 
+				($insertqr)";
 		//echo $SQL; //Debugging line
-		$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
+		$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />$SQL<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
 		if (returnglobal('redo')=="yes")
 			{
 			//This submission of data came from a saved session. Must delete the
 			//saved session now that it has been recorded in the responses table
-			$dquery = "DELETE FROM {$dbprefix}saved
-					  WHERE sid=$sid
-					  AND identifier='".$_POST['save_identifier']."'
-					  AND access_code='".$_POST['save_password']."'";
-			$dresult=mysql_query($dquery) or die("Couldn't delete saved data<br />$dquery<br />".mysql_error());
+			$dquery = "DELETE FROM {$dbprefix}saved_control
+					  WHERE scid=".$saver['scid'];
+			if ($dresult=mysql_query($dquery)) 
+				{
+				$dquery = "DELETE FROM {$dbprefix}saved
+						  WHERE scid=".$saver['scid'];
+				$dresult=mysql_query($dquery) or die("Couldn't delete saved data<br />$dquery<br />".mysql_error());
+			    } 
+			else
+				{
+				echo "Couldn't delete saved data<br />$dquery<br />".mysql_error();
+				}
 			}
 		echo "\t\t\t<font color='green'><b>"._SUCCESS."</b></font><br />\n";
 		
@@ -539,16 +565,22 @@ elseif ($action == "edit" || $action == "editsaved")
 			{
 			$password=$_GET['accesscode'];
 			}
-		$svquery = "SELECT * FROM {$dbprefix}saved
-					WHERE sid=$sid 
+		$svquery = "SELECT * FROM {$dbprefix}saved_control
+					WHERE sid=$sid
 					AND identifier='".$_GET['identifier']."'
-					AND access_code = '".$password."'";
+					AND access_code='".$password."'";
 		$svresult=mysql_query($svquery) or die("Error getting save<br />$svquery<br />".mysql_error());
 		while($svrow=mysql_fetch_array($svresult))
 			{
-			$responses[$svrow['fieldname']]=$svrow['value'];
 			$saver['email']=$svrow['email'];
+			$saver['scid']=$svrow['scid'];
 			}
+		$svquery = "SELECT * FROM {$dbprefix}saved WHERE scid=".$saver['scid'];
+		$svresult=mysql_query($svquery) or die("Error getting saved info<br />$svquery<br />".mysql_error());
+		while($svrow=mysql_fetch_array($svresult))
+			{
+			$responses[$svrow['fieldname']]=$svrow['value'];
+			} // while
 		$fieldmap = createFieldMap($sid);
 		foreach($fieldmap as $fm)
 			{
@@ -1123,6 +1155,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			."<input type='hidden' name='save_password' value='".returnglobal('accesscode')."'>\n"
 			."<input type='hidden' name='save_confirmpassword' value='".returnglobal('accesscode')."'>\n"
 			."<input type='hidden' name='save_email' value='".$saver['email']."'>\n"
+			."<input type='hidden' name='save_scid' value='".$saver['scid']."'>\n"
 			."<input type='hidden' name='redo' value='yes'>\n"
 			."</div>\n";
 		echo "	<tr>

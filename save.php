@@ -74,7 +74,7 @@ if (isset($source))
 	if (!$errormsg && !isset($_SESSION['savename']))
 		{
 	    //All the fields are correct. Now make sure there's not already a matching saved item
-		$query = "SELECT * FROM {$dbprefix}saved\n"
+		$query = "SELECT * FROM {$dbprefix}saved_control\n"
 				."WHERE sid=$sid\n"
 				."AND identifier='".$_POST['savename']."'\n"
 				."AND access_code='".md5($_POST['savepass'])."'\n";
@@ -152,8 +152,8 @@ if (!isset($source))
 
 //Script has been run by itself
 
-//This data will be saved to the "saved" table, which is a normalised
-//table with one row per response. Each row also saves:
+//This data will be saved to the "saved_control" and "saved" tables, which are normalised
+//tables with one row per response. 
 // - a unique "saved_id" value (autoincremented)
 // - the "sid" for this survey
 // - "saved_thisstep" which is the step the user is up to in this survey
@@ -173,93 +173,113 @@ $sdata = array("thisstep"=>$_POST['thisstep'],
 			   "code"=>md5($_POST['savepass']),
 			   "email"=>$_POST['saveemail']);
 
-if (isset($_SESSION['savename']))
+if (isset($_SESSION['scid']))
 	{
 	//This person has loaded a previously saved session, so before we
 	//save it again, we should delete the old one.
-    $query = "DELETE FROM {$dbprefix}saved\n"
-			."WHERE sid=$sid\n"
-			."AND identifier='".$_SESSION['savename']."'";
+    $query = "DELETE FROM {$dbprefix}saved
+			  WHERE scid=".$_SESSION['scid'];
+	$result=mysql_query($query) or die("Couldn't delete existing saved survey.<br />$query<br />".mysql_error());
+	$query = "DELETE FROM {$dbprefix}saved_control
+			  WHERE scid=".$_SESSION['scid'];
 	$result=mysql_query($query) or die("Couldn't delete existing saved survey.<br />$query<br />".mysql_error());
 	}
 
-foreach ($_SESSION['insertarray'] as $sia)
+//1: Create entry in "saved_control"
+$query = "INSERT INTO `{$dbprefix}saved_control`
+		  (`scid`, `sid`, `identifier`, `access_code`,
+		   `email`, `ip`, `saved_thisstep`, `status`, `saved_date`)
+		   VALUES ('',
+		   '".$sdata['sid']."',
+		   '".mysql_escape_string($sdata['identifier'])."',
+		   '".$sdata['code']."',
+		   '".$sdata['email']."',
+		   '".$sdata['ip']."',
+		   '".$sdata['thisstep']."',
+		   'S',
+		   '".$sdata['date']."')";
+if ($result=mysql_query($query))
 	{
-	if (isset($_SESSION[$sia]) && ($_SESSION[$sia] || $_SESSION[$sia] == "0")) 
+	//Saved control entry worked, now lets save the data
+    $sdata['scid']=mysql_insert_id();
+	foreach ($_SESSION['insertarray'] as $sia)
 		{
-		$iquery = "INSERT INTO `{$dbprefix}saved`\n"
-				. "(`saved_id`, `sid`, `saved_thisstep`, `saved_ip`,\n"
-				. "`saved_date`, `identifier`, `access_code`, `fieldname`,\n"
-				. "`value`, `email`)\n"
-				. "VALUES ('',\n"
-				. "'".$sdata['sid']."',\n"
-				. "'".$sdata['thisstep']."',\n"
-				. "'".$sdata['ip']."',\n"
-				. "'".$sdata['date']."',\n"
-				. "'".mysql_escape_string($sdata['identifier'])."',\n"
-				. "'".$sdata['code']."',\n"
-				. "'".$sia."',\n"
-				. "'".mysql_escape_string($_SESSION[$sia])."',\n"
-				. "'".$sdata['email']."')";
-		if (!$result=mysql_query($iquery))
+		if (isset($_SESSION[$sia]) && ($_SESSION[$sia] || $_SESSION[$sia] == "0")) 
 			{
-			$failed=1;
-			}
-		}
-	}
-if (returnglobal('token'))
-	{
-	$iquery = "INSERT INTO `{$dbprefix}saved`\n"
-			. "(`saved_id`, `sid`, `saved_thisstep`, `saved_ip`,\n"
-			. "`saved_date`, `identifier`, `access_code`, `fieldname`,\n"
-			. "`value`)\n"
-			. "VALUES ('',\n"
-			. "'".$sdata['sid']."',\n"
-			. "'".$sdata['thisstep']."',\n"
-			. "'".$sdata['ip']."',\n"
-			. "'".$sdata['date']."',\n"
-			. "'".mysql_escape_string($sdata['identifier'])."',\n"
-			. "'".$sdata['code']."',\n"
-			. "'token',\n"
-			. "'".returnglobal('token')."')";
-	if (!$result=mysql_query($iquery))
-		{
-		$failed=1;
-		}
-	}
-
-if (isset($failed))
-	{
-	//delete any entries that were saved. It's got to be all or nothing!
-	$query = "DELETE FROM {$dbprefix}saved\n"
-		."WHERE sid=$sid\n"
-		."AND identifier = '".$sdata['identifier']."'";
-	}
-else
-	{
-	//Email if needed
-	if (isset($_POST['saveemail']))
-		{
-		if (validate_email($_POST['saveemail']))
-			{
-			$subject=_SAVE_EMAILSUBJECT;
-			$message=_SAVE_EMAILTEXT;
-			$message.="\n\n".$thissurvey['name']."\n\n";
-			$message.=_SAVENAME.": ".$_POST['savename']."\n";
-			$message.=_SAVEPASSWORD.": ".$_POST['savepass']."\n\n";
-			$message.=_SAVE_EMAILURL.":\n";
-			$message.=$publicurl."/index.php?sid=$sid&loadall=reload&loadname=".$_POST['savename']."&loadpass=".$_POST['savepass'];
-			$message=crlf_lineendings($message);
-			$headers = "From: {$thissurvey['adminemail']}\r\n";
-			if (mail($_POST['saveemail'], $subject, $message, $headers))
+			$iquery = "INSERT INTO `{$dbprefix}saved`\n"
+					. "(`saved_id`, `scid`, `datestamp`, `fieldname`,\n"
+					. "`value`)\n"
+					. "VALUES ('',\n"
+					. "'".$sdata['scid']."',\n"
+					. "'".$sdata['date']."',\n"
+					. "'".$sia."',\n"
+					. "'".mysql_escape_string($_SESSION[$sia])."')";
+			if (!$iresult=mysql_query($iquery))
 				{
-				$emailsent="Y";
+				$failed=1;
+				echo mysql_error();
 				}
 			}
 		}
-	session_unset();
-	session_destroy();
+	if (returnglobal('token'))
+		{
+		$iquery = "INSERT INTO `{$dbprefix}saved`\n"
+				. "(`saved_id`, `scid`, `datestamp`, `fieldname`,\n"
+				. "`value`)\n"
+				. "VALUES ('',\n"
+				. "'".$sdata['scid']."',\n"
+				. "'".$sdata['date']."',\n"
+				. "'token',\n"
+				. "'".returnglobal('token')."')";
+		if (!$result=mysql_query($iquery))
+			{
+			$failed=1;
+			echo $query;
+			echo mysql_error();
+			}
+		}
+	if (isset($failed))
+		{
+		//delete any entries that were saved. It's got to be all or nothing!
+		$query = "DELETE FROM {$dbprefix}saved
+				  WHERE scid=".$sdata['scid'];
+		$result=mysql_query($query);
+		$query = "DELETE FROM {$dbprefix}saved_control
+				  WHERE scid=".$sdata['scid'];
+		$result=mysql_query($query);
+		}
+	else
+		{
+		//Email if needed
+		if (isset($_POST['saveemail']))
+			{
+			if (validate_email($_POST['saveemail']))
+				{
+				$subject=_SAVE_EMAILSUBJECT;
+				$message=_SAVE_EMAILTEXT;
+				$message.="\n\n".$thissurvey['name']."\n\n";
+				$message.=_SAVENAME.": ".$_POST['savename']."\n";
+				$message.=_SAVEPASSWORD.": ".$_POST['savepass']."\n\n";
+				$message.=_SAVE_EMAILURL.":\n";
+				$message.=$publicurl."/index.php?sid=$sid&loadall=reload&scid=".$sdata['scid']."&loadname=".$_POST['savename']."&loadpass=".$_POST['savepass'];
+				$message=crlf_lineendings($message);
+				$headers = "From: {$thissurvey['adminemail']}\r\n";
+				if (mail($_POST['saveemail'], $subject, $message, $headers))
+					{
+					$emailsent="Y";
+					}
+				}
+			}
+		session_unset();
+		session_destroy();
+		}
 	}
+else
+	{
+	echo "Error:<br />$query<br />".mysql_error();
+	}
+
+
 
 sendcacheheaders();
 echo "<html>\n";

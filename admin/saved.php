@@ -36,6 +36,7 @@
 include_once("config.php");
 $sid=returnglobal('sid');
 $action=returnglobal('action');
+$scid=returnglobal('scid');
 if (!$sid) {echo _ERROR;}
 
 sendcacheheaders();
@@ -43,12 +44,25 @@ sendcacheheaders();
 $thissurvey=getSurveyInfo($sid);
 echo $htmlheader;
 
-if ($action == "delete" && $sid) 
+if ($action == "delete" && $sid && $scid) 
 	{
-    $query = "DELETE FROM {$dbprefix}saved\n"
-			."WHERE sid=$sid\n"
-			."AND identifier='".returnglobal('identifier')."'";
-	$result = mysql_query($query) or die("Couldn't delete<br />$query<br />".mysql_error());
+    $query = "DELETE FROM {$dbprefix}saved_control
+			  WHERE scid=$scid
+			  AND sid=$sid
+			  AND identifier='".returnglobal('identifier')."'";
+	if ($result = mysql_query($query)) 
+		{
+		//If we were succesful deleting the saved_control entry, 
+		//then delete the rest
+		$query = "DELETE FROM {$dbprefix}saved
+				  WHERE scid=$scid";
+		$result = mysql_query($query) or die("Couldn't delete");
+	    
+		} 
+	else
+		{
+		echo  "Couldn't delete<br />$query<br />".mysql_error();
+		}
 	}
 
 echo "<table height='1'><tr><td></td></tr></table>\n"
@@ -64,6 +78,7 @@ switch ($action)
 	{
 	case "all":
 	case "delete":
+		echo "<center>".$setfont._SV_RESPONSES . " ". getSavedCount($sid)."</font></center>";
 		showSavedList($sid);
 		break;
 	default:
@@ -74,38 +89,37 @@ echo "</td></tr></table>\n";
 function showSavedList($sid)
 	{
 	global $dbprefix;
-	$query = "SELECT COUNT(*) as counter, identifier, saved_ip, saved_date, email, access_code\n"
-			."FROM {$dbprefix}saved\n"
+	$query = "SELECT scid, identifier, ip, saved_date, email, access_code\n"
+			."FROM {$dbprefix}saved_control\n"
 			."WHERE sid=$sid\n"
-			."GROUP BY identifier\n"
 			."ORDER BY saved_date desc";
 	$result = mysql_query($query) or die ("Couldn't summarise saved entries<br />$query<br />".mysql_error());
 	if (mysql_num_rows($result) > 0)
 		{
 		echo "<table class='outlinetable' cellspacing='0' align='center'>\n";
-		echo "<tr><th>"._SV_IDENTIFIER."</th><th>"
+		echo "<tr><th>SCID</th><th>"
+			._SV_IDENTIFIER."</th><th>"
 			._SV_IP."</th><th>"
 			._SV_DATE."</th><th>"
 			._EMAIL."</th><th>"
-			._SV_RESPONSECOUNT."</th><th>"
 			._AL_ACTION."</th>"
 			."</tr>\n";
 		while($row=mysql_fetch_array($result))
 			{
-			echo "<tr>"
-				."<td>".$row['identifier']."</td>"
-				."<td>".$row['saved_ip']."</td>"
-				."<td>".$row['saved_date']."</td>"
-				."<td><a href='mailto:".$row['email']."'>".$row['email']."</td>"
-				."<td align='center'>".$row['counter']."</td>"
-				."<td align='center'>"
-				."[<a href='saved.php?sid=$sid&action=delete&identifier=".$row['identifier']."'"
-				."onClick='return confirm(\""._DR_RUSURE."\")'"
-				.">"._DELETE."</a>]"
-				."[<a href='saved.php?sid=$sid&action=remind&identifier=".$row['identifier']."'>"._SV_REMIND."</a>]"
-				."[<a href='dataentry.php?sid=$sid&action=editsaved&identifier=".$row['identifier']."&accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]"
-				."</td>"
-				."</tr>\n";
+			echo "<tr>
+				<td>".$row['scid']."</td>
+				<td>".$row['identifier']."</td>
+				<td>".$row['ip']."</td>
+				<td>".$row['saved_date']."</td>
+				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
+				<td align='center'>
+				[<a href='saved.php?sid=$sid&action=delete&scid=".$row['scid']."&identifier=".$row['identifier']."'"
+				." onClick='return confirm(\""._DR_RUSURE."\")'"
+				.">"._DELETE."</a>]
+				[<a href='saved.php?sid=$sid&action=remind&identifier=".$row['identifier']."'>"._SV_REMIND."</a>]
+				[<a href='dataentry.php?sid=$sid&action=editsaved&identifier=".$row['identifier']."&accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]
+				</td>
+			   </tr>\n";
 			} // while
 		echo "</table>\n";
 		}

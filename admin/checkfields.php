@@ -47,7 +47,8 @@ $alltables=array("{$dbprefix}surveys",
 				 "{$dbprefix}users", 
 				 "{$dbprefix}labelsets", 
 				 "{$dbprefix}labels",
-				 "{$dbprefix}saved");
+				 "{$dbprefix}saved",
+				 "{$dbprefix}saved_control");
 
 //KEYS
 $keyinfo[]=array("{$dbprefix}surveys", "sid");
@@ -56,6 +57,7 @@ $keyinfo[]=array("{$dbprefix}questions", "qid");
 $keyinfo[]=array("{$dbprefix}conditions", "cid");
 $keyinfo[]=array("{$dbprefix}labelsets", "lid");
 $keyinfo[]=array("{$dbprefix}saved", "saved_id");
+$keyinfo[]=array("{$dbprefix}saved_control", "scid");
 
 //FIELDS THAT SHOULD EXIST
 $allfields[]=array("{$dbprefix}labelsets", "lid", "lid int(11) NOT NULL auto_increment");
@@ -128,15 +130,20 @@ $allfields[]=array("{$dbprefix}surveys", "email_confirm", "email_confirm text");
 $allfields[]=array("{$dbprefix}surveys", "allowsave","allowsave char(1) default 'Y'");
 
 $allfields[]=array("{$dbprefix}saved", "saved_id", "saved_id int(11) NOT NULL auto_increment");
-$allfields[]=array("{$dbprefix}saved", "sid", "sid int(11) NOT NULL default '0'");
-$allfields[]=array("{$dbprefix}saved", "saved_thisstep", "saved_thisstep text NOT NULL");
-$allfields[]=array("{$dbprefix}saved", "saved_ip", "saved_ip text NOT NULL");
-$allfields[]=array("{$dbprefix}saved", "saved_date", "saved_date datetime NOT NULL default '0000-00-00 00:00:00'");
-$allfields[]=array("{$dbprefix}saved", "identifier", "identifier text NOT NULL");
-$allfields[]=array("{$dbprefix}saved", "access_code", "access_code text NOT NULL");
+$allfields[]=array("{$dbprefix}saved", "scid", "scid int(11) NOT NULL");
+$allfields[]=array("{$dbprefix}saved", "datestamp", "datestamp datetime NOT NULL default '0000-00-00 00:00:00'");
 $allfields[]=array("{$dbprefix}saved", "fieldname", "fieldname text NOT NULL");
 $allfields[]=array("{$dbprefix}saved", "value", "value text NOT NULL");
-$allfields[]=array("{$dbprefix}saved", "email", "email varchar(200)");
+
+$allfields[]=array("{$dbprefix}saved_control", "scid", "scid int(11) NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}saved_control", "sid", "sid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}saved_control", "identifier", "identifier text NOT NULL");
+$allfields[]=array("{$dbprefix}saved_control", "access_code", "access_code text NOT NULL");
+$allfields[]=array("{$dbprefix}saved_control", "email", "email varchar(200)");
+$allfields[]=array("{$dbprefix}saved_control", "ip", "ip text NOT NULL");
+$allfields[]=array("{$dbprefix}saved_control", "saved_thisstep", "saved_thisstep text NOT NULL");
+$allfields[]=array("{$dbprefix}saved_control", "status", "status char(1) NOT NULL");
+$allfields[]=array("{$dbprefix}saved_control", "saved_date", "saved_date datetime NOT NULL default '0000-00-00 00:00:00'");
 
 echo $htmlheader;
 
