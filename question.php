@@ -692,6 +692,10 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
 		if (returnglobal('move') == " "._NEXT." >> ")
 			{
+			if (isset($_SESSION[$_SESSION['fieldarray'][$currentquestion][1]])) //Removes answers to conditional questions that are no longer applicable
+				{
+				unset($_SESSION[$_SESSION['fieldarray'][$currentquestion][1]]);
+				}
 			$currentquestion++;
 			$ia=$_SESSION['fieldarray'][$currentquestion];
 			$_SESSION['step']++;
