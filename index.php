@@ -369,7 +369,24 @@ function checkgroupfordisplay($gid)
 			$result = mysql_query($query) or die("Couldn't check conditions<br />$query<br />".mysql_error());
 			while($row=mysql_fetch_array($result))
 				{
-				if ($_SESSION[$row['cfieldname']] == $row['value'])
+				$query2="SELECT type FROM {$dbprefix}questions WHERE qid={$row['cqid']}";
+				$result2=mysql_query($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".mysql_error());
+				while($row2=mysql_fetch_array($result2))
+					{
+					$thistype=$row2['type'];
+					}
+				if ($thistype == "M" || $thistype == "P")
+					{
+					$fieldname=$row['cfieldname'].$row['value'];
+					$cfieldname=$_SESSION[$fieldname];
+					$cvalue="Y";
+					}
+				else
+					{
+					$cfieldname=$_SESSION[$row['cfieldname']];
+					$cvalue=$row['value'];
+					}
+				if ($cfieldname == $cvalue)
 					{
 					$distinctcqids[$row['cqid']]=1;
 					}
