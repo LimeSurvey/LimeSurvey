@@ -325,7 +325,7 @@ if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
 	$dquery .= ", {$dbprefix}tokens_$sid.attribute_2";
 	}
 $dquery .= " FROM $surveytable";
-if ((isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on") || (isset($_POST['email_address']) && $_POST['email_address']=="on")) 
+if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on") || (isset($_POST['email_address']) && $_POST['email_address']=="on")) 
 	{
 	$dquery .= ""
 			 . " LEFT OUTER JOIN {$dbprefix}tokens_$sid"
@@ -562,7 +562,7 @@ if (isset($_POST['sql'])) //this applies if export has been called from the stat
 	if ($_POST['sql'] == "NULL") {$dquery = "SELECT $selectfields FROM $surveytable ORDER BY id";}
 	else {$dquery = "SELECT $selectfields FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
 	}
-elseif ((isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
+elseif ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
 	{
 	$dquery = "SELECT $selectfields";
 	if (isset($_POST['first_name']) && $_POST['first_name']=="on")
@@ -655,7 +655,7 @@ elseif ($answers == "long")
 					echo $drow[$i];
 					break;
 				case "R": //RANKING TYPE
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$drow[$i]'";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '".mysql_escape_string($drow[$i])."'";
 					$lr = mysql_query($lq);
 					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
@@ -663,8 +663,8 @@ elseif ($answers == "long")
 						}
 					break;
 				case "L": //DROPDOWN LIST
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code ='$drow[$i]'";
-					$lr = mysql_query($lq);
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code ='".mysql_escape_string($drow[$i])."'";
+					$lr = mysql_query($lq) or die($lq."<br />ERROR:<br />".mysql_error());
 					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
 						//if ($lrow['code'] == $drow[$i]) {echo $lrow['answer'];} 
