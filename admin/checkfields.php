@@ -60,6 +60,7 @@ $keyinfo[]=array("{$dbprefix}labelsets", "lid");
 $keyinfo[]=array("{$dbprefix}saved", "saved_id");
 $keyinfo[]=array("{$dbprefix}saved_control", "scid");
 $keyinfo[]=array("{$dbprefix}question_attributes", "qaid");
+$keyinfo[]=array("{$dbprefix}assessments", "id");
 
 //FIELDS THAT SHOULD EXIST
 $allfields[]=array("{$dbprefix}labelsets", "lid", "lid int(11) NOT NULL auto_increment");
@@ -130,7 +131,7 @@ $allfields[]=array("{$dbprefix}surveys", "email_remind", "email_remind text");
 $allfields[]=array("{$dbprefix}surveys", "email_register", "email_register text");
 $allfields[]=array("{$dbprefix}surveys", "email_confirm", "email_confirm text");
 $allfields[]=array("{$dbprefix}surveys", "allowsave","allowsave char(1) default 'Y'");
-$allfields[]=array("{$dbprefix}surveys", "autonumber_start", "autonumber_start int(11) default 0");
+$allfields[]=array("{$dbprefix}surveys", "autonumber_start", "autonumber_start bigint(11) default 0");
 
 $allfields[]=array("{$dbprefix}saved", "saved_id", "saved_id int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}saved", "scid", "scid int(11) NOT NULL");
@@ -152,7 +153,6 @@ $allfields[]=array("{$dbprefix}question_attributes", "qaid", "qaid int(11) NOT N
 $allfields[]=array("{$dbprefix}question_attributes", "qid", "qid int(11) NOT NULL");
 $allfields[]=array("{$dbprefix}question_attributes", "attribute", "attribute varchar(50)");
 $allfields[]=array("{$dbprefix}question_attributes", "value", "value varchar(5)");
-
 
 echo $htmlheader;
 
