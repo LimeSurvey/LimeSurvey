@@ -1,41 +1,41 @@
 <?php
 /*
-	#############################################################
-	# >>> PHP Surveyor  										#
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA					#
-	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################
-	#                                                           #
-	#     Translation by Mikkel Skovgaard Sørensen              #
-	#                and Rolf Njor Jensen                       #                    #
-	#############################################################
+    #############################################################
+    # >>> PHP Surveyor                                          #
+    #############################################################
+    # > Author:  Jason Cleeland                                 #
+    # > E-mail:  jason@cleeland.org                             #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,           #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                  #
+    # > Date:    20 February 2003                               #
+    #                                                           #
+    # This set of scripts allows you to develop, publish and    #
+    # perform data-entry on surveys.                            #
+    #############################################################
+    #                                                           #
+    #   Copyright (C) 2003  Jason Cleeland                      #
+    #                                                           #
+    # This program is free software; you can redistribute       #
+    # it and/or modify it under the terms of the GNU General    #
+    # Public License as published by the Free Software          #
+    # Foundation; either version 2 of the License, or (at your  #
+    # option) any later version.                                #
+    #                                                           #
+    # This program is distributed in the hope that it will be   #
+    # useful, but WITHOUT ANY WARRANTY; without even the        #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A      #
+    # PARTICULAR PURPOSE.  See the GNU General Public License   #
+    # for more details.                                         #
+    #                                                           #
+    # You should have received a copy of the GNU General        #
+    # Public License along with this program; if not, write to  #
+    # the Free Software Foundation, Inc., 59 Temple Place -     #
+    # Suite 330, Boston, MA  02111-1307, USA.                   #
+    #############################################################
+    #                                                           #
+    #     Translation by Mikkel Skovgaard S&oslash;rensen       #
+    #                and Rolf Njor Jensen                       #
+    #############################################################
 */
 //SINGLE WORDS
 define("_YES", "Ja");
@@ -63,7 +63,7 @@ define("_CONTINUE_PS", "Fors&aelig;t");
 //BUTTONS
 define("_ACCEPT", "Accepter");
 define("_PREV", "forrige");
-define("_NEXT", "næste");
+define("_NEXT", "n&aelig;ste");
 define("_LAST", "afslut");
 define("_SUBMIT", "afsend");
 
@@ -137,24 +137,24 @@ define("_CONFIRMATION_MESSAGE3", "Klik p&aring; nedenst&aring;ende link for at s
 define("_CONFIRMATION_MESSAGE4", "Vis statistikken her:"); //NEW for 098rc5
 
 define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
-						  ."This survey is anonymous.<br />"
-						  ."The record kept of your survey responses does not contain any "
-						  ."identifying information about you unless a specific question "
-						  ."in the survey has asked for this. If you have responded to a "
-						  ."survey that used an identifying token to allow you to access "
-						  ."the survey, you can rest assured that the identifying token "
-						  ."is not kept with your responses. It is managed in a seperate "
-						  ."database, and will only be updated to indicate that you have "
-						  ."(or haven't) completed this survey. There is no way of matching "
-						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9
+                          ."This survey is anonymous.<br />"
+                          ."The record kept of your survey responses does not contain any "
+                          ."identifying information about you unless a specific question "
+                          ."in the survey has asked for this. If you have responded to a "
+                          ."survey that used an identifying token to allow you to access "
+                          ."the survey, you can rest assured that the identifying token "
+                          ."is not kept with your responses. It is managed in a seperate "
+                          ."database, and will only be updated to indicate that you have "
+                          ."(or haven't) completed this survey. There is no way of matching "
+                          ."identification tokens with survey responses in this survey."); //New for 0.98rc9
 
 define("_THEREAREXQUESTIONS", "Der er {NUMBEROFQUESTIONS} sp&oslash;rgsm&aring;l i denne unders&oslash;gelse."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "Der er et sp&oslash;rgsm&aring;l i denne unders&oslash;gelse."); //New for 0.98rc9 - singular version of above
 
 define ("_RG_REGISTER1", "Du skal v&aelig;re registeret for at udfylde denne unders&oslash;gelse"); //NEW for 0.98rc9
 define ("_RG_REGISTER2", "Du kan deltage i denne unders&oslash;gelse ved at udfylde skemaet herunder.<br />\n"
-						."Udfyld nedenst&aring;ende formular og et link/url s&aring;"
-						."du kan deltage i unders&oslash;gelsen vil blive tilsendt p&aring; e-mail."); //NEW for 0.98rc9
+                        ."Udfyld nedenst&aring;ende formular og et link/url s&aring;"
+                        ."du kan deltage i unders&oslash;gelsen vil blive tilsendt p&aring; e-mail."); //NEW for 0.98rc9
 define ("_RG_EMAIL", "E-mail adrese"); //NEW for 0.98rc9
 define ("_RG_FIRSTNAME", "Fornavn"); //NEW for 0.98rc9
 define ("_RG_LASTNAME", "Efternavn"); //NEW for 0.98rc9
@@ -162,34 +162,34 @@ define ("_RG_INVALIDEMAIL", "Den angivne e-mail adresse er ugyldig.");//NEW for 
 define ("_RG_USEDEMAIL", "Den angivne e-mail adresse er allerede registeret.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registering er gennemf&oslash;rt");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "Tak fordi du v&aelig;lger at deltage i unders&oslash;gelsen.<br /><br />\n"
-								   ."En e-mail er sendt til den angivne e-mail adresse, hvor i der findes"
-								   ."informationer om hvordan du deltager i unders&oslash;gelsen. Benyt linket i e-mailen for at deltage.<br /><br />\n"
-								   ."Venlig hilsen <br /> {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+                                   ."En e-mail er sendt til den angivne e-mail adresse, hvor i der findes"
+                                   ."informationer om hvordan du deltager i unders&oslash;gelsen. Benyt linket i e-mailen for at deltage.<br /><br />\n"
+                                   ."Venlig hilsen <br /> {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
 define("_SM_COMPLETED", "<b>Tak<br /><br />"
-					   ."Du har nu besvaret alle spørgsmålene i denne undersøgelse.</b><br /><br />"
-					   ."Klik på ["._SUBMIT."] for at afslutte undersøgelsen og indsende dine svar."); //New for 0.98finalRC1
+                       ."Du har nu besvaret alle sp&oslash;rgsm&aring;lene i denne unders&oslash;gelse.</b><br /><br />"
+                       ."Klik p&aring; ["._SUBMIT."] for at afslutte unders&oslash;gelsen og indsende dine svar."); //New for 0.98finalRC1
 
-define("_SM_REVIEW", "Hvis du vil tjekke et eller flere af dine svar og evt. rette i dem, kan du gøre det ved at klikke på [<< "._PREV."] knappen og gennemgå dine besvarelse."); //New for 0.98finalRC1
+define("_SM_REVIEW", "Hvis du vil tjekke et eller flere af dine svar og evt. rette i dem, kan du g&oslash;re det ved at klikke p&aring; [<< "._PREV."] knappen og gennemg&aring; dine besvarelse."); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Vælg venligst <b>kun een</b> af de følgende"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "V&aelig;lg venligst <b>kun een</b> af de f&oslash;lgende"); //New for 0.98finalRC1
 define("_PS_WRITE", "Indtast venligst dit svar her"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Vælg venligst alle de muligheder der passer"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Vælg venligst alle de muligheder der passer, og tilføj en kommentar"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "V&aelig;lg venligst alle de muligheder der passer"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "V&aelig;lg venligst alle de muligheder der passer, og tilf&oslash;j en kommentar"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Please choose the appropriate response for each item"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Indtast venligst dine svar her"); //New for 0.98finalRC1
 define("_PS_DATE", "Indtast venligst en dato"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Tilføj en kommentar til dit svar her"); //New for 0.98finalRC1
-define("_PS_RANKING", "Angiv et tal for hver boks i præference orden fra 1 til"); //New for 0.98finalRC1
+define("_PS_COMMENT", "Tilf&oslash;j en kommentar til dit svar her"); //New for 0.98finalRC1
+define("_PS_RANKING", "Angiv et tal for hver boks i pr&aelig;ference orden fra 1 til"); //New for 0.98finalRC1
 define("_PS_SUBMIT", "Indsend dit besvarelse"); //New for 0.98finalRC1
 define("_PS_THANKYOU", "Tak for din besvarelse."); //New for 0.98finalRC1
 define("_PS_FAXTO", "Fax venligst den udfyldte besvarelse til:"); //New for 0.98finaclRC1
 
-define("_PS_CON_ONLYANSWER", "Svar kun på dette spørgsmål"); //New for 0.98finalRC1
+define("_PS_CON_ONLYANSWER", "Svar kun p&aring; dette sp&oslash;rgsm&aring;l"); //New for 0.98finalRC1
 define("_PS_CON_IFYOU", "hvis du svarede"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "og"); //New for 0.98finalRC1
-define("_PS_CON_TOQUESTION", "til spørgsmål"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "til sp&oslash;rgsm&aring;l"); //New for 0.98finalRC1
 define("_PS_CON_OR", "eller"); //New for 0.98final (translated by machine)
 
 //Save Messages
@@ -201,10 +201,10 @@ define("_SAVEPASSWORD", "Password");
 define("_SAVEPASSWORDRPT", "Repeat Password");
 define("_SAVE_EMAIL", "Your Email");
 define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
-				  ."Your survey will be saved using that name and password, and can be "
-				  ."completed later by logging in with the same name and password.<br /><br />\n"
-				  ."If you give an email address, an email containing the details will be sent "
-				  ."to you.");
+                  ."Your survey will be saved using that name and password, and can be "
+                  ."completed later by logging in with the same name and password.<br /><br />\n"
+                  ."If you give an email address, an email containing the details will be sent "
+                  ."to you.");
 define("_SAVESUBMIT", "Save Now");
 define("_SAVENONAME", "You must supply a name for this saved session.");
 define("_SAVENOPASS", "You must supply a password for this saved session.");
@@ -213,9 +213,9 @@ define("_SAVEDUPLICATE", "This name has already been used for this survey. You m
 define("_SAVETRYAGAIN", "Please try again.");
 define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
 define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
-						 ."a survey in progress. The following details can be used "
-						 ."to return to this survey and continue where you left "
-						 ."off.");
+                         ."a survey in progress. The following details can be used "
+                         ."to return to this survey and continue where you left "
+                         ."off.");
 define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
 define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
 define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
@@ -225,7 +225,7 @@ define("_SAVE_EMAILSENT", "An email has been sent with details about your saved 
 define("_LOAD_SAVED", "Load unfinished survey");
 define("_LOADHEADING", "Load A Previously Saved Survey");
 define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
-			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
+              ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
 define("_LOADNAME", "Saved name");
 define("_LOADPASSWORD", "Password");
 define("_LOADSUBMIT", "Load Now");

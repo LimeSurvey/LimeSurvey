@@ -1,36 +1,36 @@
 <?php
 /*
 	#############################################################
-	# >>> PHP Surveyor  							
+	# >>> PHP Surveyor  										#
 	#############################################################
-	# > Author:  Jason Cleeland						
-	# > E-mail:  jason@cleeland.org					
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,		
-	# >          CARLTON SOUTH 3053, AUSTRALIA			
-	# > Date: 	 20 February 2003						
-	#										
-	# This set of scripts allows you to develop, publish and	
-	# perform data-entry on surveys.					
+	# > Author:  Jason Cleeland									#
+	# > E-mail:  jason@cleeland.org								#
+	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
+	# >          CARLTON SOUTH 3053, AUSTRALIA					#
+	# > Date: 	 20 February 2003								#
+	#															#
+	# This set of scripts allows you to develop, publish and	#	
+	# perform data-entry on surveys.							#
 	#############################################################
-	#										
-	#	Copyright (C) 2003  Jason Cleeland				
-	#										
-	# This program is free software; you can redistribute 	
-	# it and/or modify it under the terms of the GNU General 	
-	# Public License as published by the Free Software 		
-	# Foundation; either version 2 of the License, or (at your 	
-	# option) any later version.						
-	#										
-	# This program is distributed in the hope that it will be 	
-	# useful, but WITHOUT ANY WARRANTY; without even the 		
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 	
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	
-	# for more details.							
-	#										
-	# You should have received a copy of the GNU General 		
-	# Public License along with this program; if not, write to 	
-	# the Free Software Foundation, Inc., 59 Temple Place - 	
-	# Suite 330, Boston, MA  02111-1307, USA.				
+	#															#
+	#	Copyright (C) 2003  Jason Cleeland						#
+	#															#
+	# This program is free software; you can redistribute 		#	
+	# it and/or modify it under the terms of the GNU General 	#
+	# Public License as published by the Free Software 			#
+	# Foundation; either version 2 of the License, or (at your 	#
+	# option) any later version.								#
+	#															#
+	# This program is distributed in the hope that it will be 	#
+	# useful, but WITHOUT ANY WARRANTY; without even the 		#
+	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
+	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
+	# for more details.											#
+	#															#
+	# You should have received a copy of the GNU General 		#
+	# Public License along with this program; if not, write to 	#	
+	# the Free Software Foundation, Inc., 59 Temple Place - 	#
+	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################
 */
 
@@ -70,15 +70,15 @@ define("_SUBMIT", "Versturen");
 
 //MESSAGES
 //From QANDA.PHP
-define("_CHOOSEONE", "Kies één van de volgende");
+define("_CHOOSEONE", "Kies &eacute;&eacute;n van de volgende");
 define("_ENTERCOMMENT", "Geef uw opmerkingen hier in");
 define("_NUMERICAL_PS", "In dit veld kunnen enkel nummers ingegeven worden");
 define("_CLEARALL", "Afbreken en antwoorden verwijderen");
 define("_MANDATORY", "Dit is een verplichte vraag");
 define("_MANDATORY_PARTS", "Vervolledig alle velden");
-define("_MANDATORY_CHECK", "Kies minimum één optie");
+define("_MANDATORY_CHECK", "Kies minimum &eacute;&eacute;n optie");
 define("_MANDATORY_RANK", "Rangschik alle opties");
-define("_MANDATORY_POPUP", "Eén of meerdere verplichte velden zijn niet ingevuld. U kan niet verdergaan zonder deze te beantwoorden."); //NEW in 0.98rc4
+define("_MANDATORY_POPUP", "E&eacute;n of meerdere verplichte velden zijn niet ingevuld. U kan niet verdergaan zonder deze te beantwoorden."); //NEW in 0.98rc4
 define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
 define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Formaat: JJJJ-MM-DD");
@@ -128,7 +128,7 @@ define("_SURVEYEXPIRED", "Deze enquete is niet meer beschikbaar.");
 
 define("_SURVEYCOMPLETE", "U hebt deze enquete reeds beantwoord."); //NEW FOR 0.98rc6
 
-define("_INSTRUCTION_LIST", "Kies één van volgende opties"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "Kies &eacute;&eacute;n van volgende opties"); //NEW for 098rc3
 define("_INSTRUCTION_MULTI", "Selecteer alle toepasselijke opties"); //NEW for 098rc3
 
 define("_CONFIRMATION_MESSAGE1", "Enquete verzonden"); //NEW for 098rc5
@@ -171,7 +171,7 @@ define("_SM_REVIEW", "Indien u uw antwoorden nog eens wil nakijken of wijzigen, 
 					."blader dan door de enquete met de [<< "._PREV."] en ["._NEXT." >>] knoppen.");
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Kies <b>één</b> van volgende antwoorden"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Kies <b>&eacute;&eacute;n</b> van volgende antwoorden"); //New for 0.98finalRC1
 define("_PS_WRITE", "Type uw antwoord hier"); //New for 0.98finalRC1
 define("_PS_CHOOSEANY", "Selecteer alle toepasselijke antwoorden"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Selecteer alle toepasselijke antwoorden en geef uw commentaar"); //New for 0.98finalRC1

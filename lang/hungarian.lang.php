@@ -43,99 +43,99 @@ define("_YES", "Igen");
 define("_NO", "Nem");
 define("_UNCERTAIN", "Nem tudom");
 define("_ADMIN", "Admin");
-define("_TOKENS", "Kódok");
-define("_FEMALE", "Nõ");
-define("_MALE", "Férfi");
-define("_NOANSWER", "Nincs válasz");
+define("_TOKENS", "K&oacute;dok");
+define("_FEMALE", "N&otilde;");
+define("_MALE", "F&eacute;rfi");
+define("_NOANSWER", "Nincs v&aacute;lasz");
 define("_NOTAPPLICABLE", "???"); //New for 0.98rc5
-define("_OTHER", "Más");
-define("_PLEASECHOOSE", "Kérem válasszon");
+define("_OTHER", "M&aacute;s");
+define("_PLEASECHOOSE", "K&eacute;rem v&aacute;lasszon");
 define("_ERROR_PS", "Hiba");
 define("_COMPLETE", "teljes");
-define("_INCREASE", "Növel"); //NEW WITH 0.98
+define("_INCREASE", "N&ouml;vel"); //NEW WITH 0.98
 define("_SAME", "Ugyanaz"); //NEW WITH 0.98
-define("_DECREASE", "Csökkent"); //NEW WITH 0.98
+define("_DECREASE", "Cs&ouml;kkent"); //NEW WITH 0.98
 define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
-define("_CONFIRMATION", "Megerõsítés");
-define("_TOKEN_PS", "Kód");
-define("_CONTINUE_PS", "Folytatás");
+define("_CONFIRMATION", "Meger&otilde;s&iacute;t&eacute;s");
+define("_TOKEN_PS", "K&oacute;d");
+define("_CONTINUE_PS", "Folytat&aacute;s");
 
 //BUTTONS
 define("_ACCEPT", "Elfogadom");
-define("_PREV", "elõzõ");
-define("_NEXT", "következõ");
-define("_LAST", "utolsó");
-define("_SUBMIT", "Elküldöm");
+define("_PREV", "el&otilde;z&otilde;");
+define("_NEXT", "k&ouml;vetkez&otilde;");
+define("_LAST", "utols&oacute;");
+define("_SUBMIT", "Elk&uuml;ld&ouml;m");
 
 
 //MESSAGES
 //From QANDA.PHP
-define("_CHOOSEONE", "Kérem válsszon egyet az alábbiak közül");
-define("_ENTERCOMMENT", "Az Ön megjegyzése ehhez");
-define("_NUMERICAL_PS", "Ebbe a mezõbe csak számokat írhat");
-define("_CLEARALL", "Kilépés és a kérdõív törlése");
-define("_MANDATORY", "Erre a kérdésre kötelezõ válszolni");
-define("_MANDATORY_PARTS", "Kérem töltsön ki mindent");
-define("_MANDATORY_CHECK", "Jelöljön be legalább egy válszt");
-define("_MANDATORY_RANK", "Rangsorolja az összeset");
-define("_MANDATORY_POPUP", "Legalább egy kötelezõen kitöltendõ kérdésre nem válszolt. Addig nem léphet tovább, amíg ezeket nem tölti ki!"); //NEW in 0.98rc4
+define("_CHOOSEONE", "K&eacute;rem v&aacute;lsszon egyet az al&aacute;bbiak k&ouml;z&uuml;l");
+define("_ENTERCOMMENT", "Az &Ouml;n megjegyz&eacute;se ehhez");
+define("_NUMERICAL_PS", "Ebbe a mez&otilde;be csak sz&aacute;mokat &iacute;rhat");
+define("_CLEARALL", "Kil&eacute;p&eacute;s &eacute;s a k&eacute;rd&otilde;&iacute;v t&ouml;rl&eacute;se");
+define("_MANDATORY", "Erre a k&eacute;rd&eacute;sre k&ouml;telez&otilde; v&aacute;lszolni");
+define("_MANDATORY_PARTS", "K&eacute;rem t&ouml;lts&ouml;n ki mindent");
+define("_MANDATORY_CHECK", "Jel&ouml;lj&ouml;n be legal&aacute;bb egy v&aacute;lszt");
+define("_MANDATORY_RANK", "Rangsorolja az &ouml;sszeset");
+define("_MANDATORY_POPUP", "Legal&aacute;bb egy k&ouml;telez&otilde;en kit&ouml;ltend&otilde; k&eacute;rd&eacute;sre nem v&aacute;lszolt. Addig nem l&eacute;phet tov&aacute;bb, am&iacute;g ezeket nem t&ouml;lti ki!"); //NEW in 0.98rc4
 define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
 define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
-define("_DATEFORMAT", "Dátum formátum: ÉÉÉÉ-HH-NN");
-define("_DATEFORMATEG", "(pl: karácsony napja: 2003-12-25)");
-define("_REMOVEITEM", "E tétel eltávolítása");
-define("_RANK_1", "A bal oldali listában kattintson elõször a legfontosabbra,");
-define("_RANK_2", "majd sorban a legkevésbé fontosig az összesre");
-define("_YOURCHOICES", "Lehetõségek");
-define("_YOURRANKING", "Az Ön rangsora");
-define("_RANK_3", "Egy tétel eltávolításához kattintson a mellette található");
-define("_RANK_4", "ollóra. Így az utolsó tétel lekerül a listáról");
+define("_DATEFORMAT", "D&aacute;tum form&aacute;tum: &Eacute;&Eacute;&Eacute;&Eacute;-HH-NN");
+define("_DATEFORMATEG", "(pl: kar&aacute;csony napja: 2003-12-25)");
+define("_REMOVEITEM", "E t&eacute;tel elt&aacute;vol&iacute;t&aacute;sa");
+define("_RANK_1", "A bal oldali list&aacute;ban kattintson el&otilde;sz&ouml;r a legfontosabbra,");
+define("_RANK_2", "majd sorban a legkev&eacute;sb&eacute; fontosig az &ouml;sszesre");
+define("_YOURCHOICES", "Lehet&otilde;s&eacute;gek");
+define("_YOURRANKING", "Az &Ouml;n rangsora");
+define("_RANK_3", "Egy t&eacute;tel elt&aacute;vol&iacute;t&aacute;s&aacute;hoz kattintson a mellette tal&aacute;lhat&oacute;");
+define("_RANK_4", "oll&oacute;ra. Így az utols&oacute; t&eacute;tel leker&uuml;l a list&aacute;r&oacute;l");
 //From INDEX.PHP
-define("_NOSID", "Nem adott meg kérdõív-azonosítót");
-define("_CONTACT1", "A további teendõk ügyében vegye fel a kapcsolatot:");
+define("_NOSID", "Nem adott meg k&eacute;rd&otilde;&iacute;v-azonos&iacute;t&oacute;t");
+define("_CONTACT1", "A tov&aacute;bbi teend&otilde;k &uuml;gy&eacute;ben vegye fel a kapcsolatot:");
 define("_CONTACT2", "");
-define("_ANSCLEAR", "A válaszok törölve");
-define("_RESTART", "A kérdõív újrakezdése");
-define("_CLOSEWIN_PS", "Ablak bezárása");
-define("_CONFIRMCLEAR", "Biztosan törölni akarja a válaszait?");
+define("_ANSCLEAR", "A v&aacute;laszok t&ouml;r&ouml;lve");
+define("_RESTART", "A k&eacute;rd&otilde;&iacute;v újrakezd&eacute;se");
+define("_CLOSEWIN_PS", "Ablak bez&aacute;r&aacute;sa");
+define("_CONFIRMCLEAR", "Biztosan t&ouml;r&ouml;lni akarja a v&aacute;laszait?");
 define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
-define("_EXITCLEAR", "Kilépés és a kérdõív törlése");
+define("_EXITCLEAR", "Kil&eacute;p&eacute;s &eacute;s a k&eacute;rd&otilde;&iacute;v t&ouml;rl&eacute;se");
 //From QUESTION.PHP
-define("_BADSUBMIT1", "Nem tudom elküldeni az eredményeket, mert nincsenek válaszok.");
-define("_BADSUBMIT2", "Ez a hiba akkor fordul elõ, ha már elküldte a válaszait és utána megnyomta a 'Frissítés' gombot a böngészõn. Ebben az esetben a válaszai már el vannak küldve.<br /><br />Ha viszont ezt a hibát a kérdõív kitöltése közben kapta, akkor nyomja meg a böngészõ '<- VISSZA/BACK' gombját, és az így megjelenõ oldalt frissítse. Így az utolsó oldal válaszait elveszti, de minden elõzõ megmarad. Ez a hiba akkor szokott elõfordulni, ha a szerver túl van terhelve. Elnézést kérünk a kellemetlenségért.");
+define("_BADSUBMIT1", "Nem tudom elk&uuml;ldeni az eredm&eacute;nyeket, mert nincsenek v&aacute;laszok.");
+define("_BADSUBMIT2", "Ez a hiba akkor fordul el&otilde;, ha m&aacute;r elk&uuml;ldte a v&aacute;laszait &eacute;s ut&aacute;na megnyomta a 'Friss&iacute;t&eacute;s' gombot a b&ouml;ng&eacute;sz&otilde;n. Ebben az esetben a v&aacute;laszai m&aacute;r el vannak k&uuml;ldve.<br /><br />Ha viszont ezt a hib&aacute;t a k&eacute;rd&otilde;&iacute;v kit&ouml;lt&eacute;se k&ouml;zben kapta, akkor nyomja meg a b&ouml;ng&eacute;sz&otilde; '<- VISSZA/BACK' gombj&aacute;t, &eacute;s az &iacute;gy megjelen&otilde; oldalt friss&iacute;tse. Így az utols&oacute; oldal v&aacute;laszait elveszti, de minden el&otilde;z&otilde; megmarad. Ez a hiba akkor szokott el&otilde;fordulni, ha a szerver túl van terhelve. Eln&eacute;z&eacute;st k&eacute;r&uuml;nk a kellemetlens&eacute;g&eacute;rt.");
 define("_NOTACTIVE1", "Your survey responses have not been recorded. This survey is not yet active.");
-define("_CLEARRESP", "Válaszok törlése");
-define("_THANKS", "Köszönjük");
-define("_SURVEYREC", "Válaszait rögzítettük");
-define("_SURVEYCPL", "Vége a kérdõívnek");
-define("_DIDNOTSAVE", "Nem sikerült elmenteni");
-define("_DIDNOTSAVE2", "Váratlan hiba következett be, válaszait nem sikerült rögzíteni.");
-define("_DIDNOTSAVE3", "De a bevitt adatok nem vesztek el, hanem emailben továbbítottuk a rendszer karbantartójának, aki késõbb ezeket be fogja vinni az adatbázisba.");
-define("_DNSAVEEMAIL1", "Hiba lépett fel a következõ kérdõív rögzítésekor:");
+define("_CLEARRESP", "V&aacute;laszok t&ouml;rl&eacute;se");
+define("_THANKS", "K&ouml;sz&ouml;nj&uuml;k");
+define("_SURVEYREC", "V&aacute;laszait r&ouml;gz&iacute;tett&uuml;k");
+define("_SURVEYCPL", "V&eacute;ge a k&eacute;rd&otilde;&iacute;vnek");
+define("_DIDNOTSAVE", "Nem siker&uuml;lt elmenteni");
+define("_DIDNOTSAVE2", "V&aacute;ratlan hiba k&ouml;vetkezett be, v&aacute;laszait nem siker&uuml;lt r&ouml;gz&iacute;teni.");
+define("_DIDNOTSAVE3", "De a bevitt adatok nem vesztek el, hanem emailben tov&aacute;bb&iacute;tottuk a rendszer karbantart&oacute;j&aacute;nak, aki k&eacute;s&otilde;bb ezeket be fogja vinni az adatb&aacute;zisba.");
+define("_DNSAVEEMAIL1", "Hiba l&eacute;pett fel a k&ouml;vetkez&otilde; k&eacute;rd&otilde;&iacute;v r&ouml;gz&iacute;t&eacute;sekor:");
 define("_DNSAVEEMAIL2", "DATA TO BE ENTERED");
 define("_DNSAVEEMAIL3", "SQL CODE THAT FAILED");
 define("_DNSAVEEMAIL4", "ERROR MESSAGE");
 define("_DNSAVEEMAIL5", "ERROR SAVING");
-define("_SUBMITAGAIN", "Próbálja meg újra elküldeni");
-define("_SURVEYNOEXIST", "Nincs ilyen kérdõív.");
-define("_NOTOKEN1", "Ez a kérdõív zártkörû, a felmérésben való részvételehez egy kódra van szüksége.");
-define("_NOTOKEN2", "Ha kapott ilyen kódot, írja be az alábbi mezõbe, majd kattintson a 'Tovább' gombra.");
-define("_NOTOKEN3", "A megadott kód érvénytelen vagy már valaki felhasználta egy kérdõív kitöltéséhez.");
-define("_NOQUESTIONS", "Ez a kérdõív egyelõre nem tartalmaz kérdéseket, ezért nem lehet kipróbálni vagy kitölteni.");
-define("_FURTHERINFO", "További információ:");
-define("_NOTACTIVE", "Ez a kérdõív egyelõre nem aktív, ezért a válaszokat nem lehet elmenteni.");
-define("_SURVEYEXPIRED", "Ez a kérdõív már lejárt, nem lehet kitölteni.");
+define("_SUBMITAGAIN", "Pr&oacute;b&aacute;lja meg újra elk&uuml;ldeni");
+define("_SURVEYNOEXIST", "Nincs ilyen k&eacute;rd&otilde;&iacute;v.");
+define("_NOTOKEN1", "Ez a k&eacute;rd&otilde;&iacute;v z&aacute;rtk&ouml;rû, a felm&eacute;r&eacute;sben val&oacute; r&eacute;szv&eacute;telehez egy k&oacute;dra van sz&uuml;ks&eacute;ge.");
+define("_NOTOKEN2", "Ha kapott ilyen k&oacute;dot, &iacute;rja be az al&aacute;bbi mez&otilde;be, majd kattintson a 'Tov&aacute;bb' gombra.");
+define("_NOTOKEN3", "A megadott k&oacute;d &eacute;rv&eacute;nytelen vagy m&aacute;r valaki felhaszn&aacute;lta egy k&eacute;rd&otilde;&iacute;v kit&ouml;lt&eacute;s&eacute;hez.");
+define("_NOQUESTIONS", "Ez a k&eacute;rd&otilde;&iacute;v egyel&otilde;re nem tartalmaz k&eacute;rd&eacute;seket, ez&eacute;rt nem lehet kipr&oacute;b&aacute;lni vagy kit&ouml;lteni.");
+define("_FURTHERINFO", "Tov&aacute;bbi inform&aacute;ci&oacute;:");
+define("_NOTACTIVE", "Ez a k&eacute;rd&otilde;&iacute;v egyel&otilde;re nem akt&iacute;v, ez&eacute;rt a v&aacute;laszokat nem lehet elmenteni.");
+define("_SURVEYEXPIRED", "Ez a k&eacute;rd&otilde;&iacute;v m&aacute;r lej&aacute;rt, nem lehet kit&ouml;lteni.");
 
-define("_SURVEYCOMPLETE", "A kérdõívet már kitöltötte egyszer"); //NEW FOR 0.98rc6
+define("_SURVEYCOMPLETE", "A k&eacute;rd&otilde;&iacute;vet m&aacute;r kit&ouml;lt&ouml;tte egyszer"); //NEW FOR 0.98rc6
 
-define("_INSTRUCTION_LIST", "Válasszon egyet az alábbiak közül"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Válasszon ki egyet vagy többet az alábbiak közül"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "V&aacute;lasszon egyet az al&aacute;bbiak k&ouml;z&uuml;l"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "V&aacute;lasszon ki egyet vagy t&ouml;bbet az al&aacute;bbiak k&ouml;z&uuml;l"); //NEW for 098rc3
 
-define("_CONFIRMATION_MESSAGE1", "Kitöltött kérdõív érkezett"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE2", "Válaszok érkeztek a következõ kérdõívhez"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE3", "Kattintson ide e kérdõív megtekintéséhez:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE4", "Itt tekintheti meg a statisztikákat:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE1", "Kit&ouml;lt&ouml;tt k&eacute;rd&otilde;&iacute;v &eacute;rkezett"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "V&aacute;laszok &eacute;rkeztek a k&ouml;vetkez&otilde; k&eacute;rd&otilde;&iacute;vhez"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "Kattintson ide e k&eacute;rd&otilde;&iacute;v megtekint&eacute;s&eacute;hez:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "Itt tekintheti meg a statisztik&aacute;kat:"); //NEW for 098rc5
 
 define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
 						  ."This survey is anonymous.<br />"

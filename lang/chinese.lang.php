@@ -1,157 +1,158 @@
-<?php
+ï»¿<?php
 /*
-	#############################################################
-	# >>> PHP Surveyor  										#
-	#############################################################
-	# > Author:  Jason Cleeland								
-	# > E-mail:  jason@cleeland.org							
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,		
-	# > Translated by: Mark Yeung (kaisuny@yahoo.com) of    www.pstudy.net	
-	# >          CARLTON SOUTH 3053, AUSTRALIA					#
-	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################
+    #############################################################
+    # >>> PHP Surveyor                                          #
+    #############################################################
+    # > Author:  Jason Cleeland                                 #
+    # > E-mail:  jason@cleeland.org                             #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,           #
+    # > Translated by: Mark Yeung (kaisuny@yahoo.com)           #
+    # >                of www.pstudy.net                        #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                  #
+    # > Date:    20 February 2003                               #
+    #                                                           #
+    # This set of scripts allows you to develop, publish and    #
+    # perform data-entry on surveys.                            #
+    #############################################################
+    #                                                           #
+    #   Copyright (C) 2003  Jason Cleeland                      #
+    #                                                           #
+    # This program is free software; you can redistribute       #
+    # it and/or modify it under the terms of the GNU General    #
+    # Public License as published by the Free Software          #
+    # Foundation; either version 2 of the License, or (at your  #
+    # option) any later version.                                #
+    #                                                           #
+    # This program is distributed in the hope that it will be   #
+    # useful, but WITHOUT ANY WARRANTY; without even the        #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A      #
+    # PARTICULAR PURPOSE.  See the GNU General Public License   #
+    # for more details.                                         #
+    #                                                           #
+    # You should have received a copy of the GNU General        #
+    # Public License along with this program; if not, write to  #
+    # the Free Software Foundation, Inc., 59 Temple Place -     #
+    # Suite 330, Boston, MA  02111-1307, USA.                   #
+    #############################################################
 */
 //SINGLE WORDS
-define("_YES", "¬O");
-define("_NO", "§_");
-define("_UNCERTAIN", "µL·N¨£");
-define("_ADMIN", "ºŞ²z");
-define("_TOKENS", "¥N¹ô");
-define("_FEMALE", "¤k");
-define("_MALE", "¨k");
-define("_NOANSWER", "¥¼¦³¦^µª");
-define("_NOTAPPLICABLE", "¤£¾A¥Î"); //New for 0.98rc5
-define("_OTHER", "¨ä¥L");
-define("_PLEASECHOOSE", "½Ğ¿ï¾Ü");
-define("_ERROR_PS", "¥X¿ù");
-define("_COMPLETE", "§¹¦¨");
-define("_INCREASE", "¼W¥["); //NEW WITH 0.98
-define("_SAME", "¬Û¦P"); //NEW WITH 0.98
-define("_DECREASE", "¤U­°"); //NEW WITH 0.98
+define("_YES", "æ˜¯");
+define("_NO", "å¦");
+define("_UNCERTAIN", "ç„¡æ„è¦‹");
+define("_ADMIN", "ç®¡ç†");
+define("_TOKENS", "ä»£å¹£");
+define("_FEMALE", "å¥³");
+define("_MALE", "ç”·");
+define("_NOANSWER", "æœªæœ‰å›ç­”");
+define("_NOTAPPLICABLE", "ä¸é©ç”¨"); //New for 0.98rc5
+define("_OTHER", "å…¶ä»–");
+define("_PLEASECHOOSE", "è«‹é¸æ“‡");
+define("_ERROR_PS", "å‡ºéŒ¯");
+define("_COMPLETE", "å®Œæˆ");
+define("_INCREASE", "å¢åŠ "); //NEW WITH 0.98
+define("_SAME", "ç›¸åŒ"); //NEW WITH 0.98
+define("_DECREASE", "ä¸‹é™"); //NEW WITH 0.98
 define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
-define("_CONFIRMATION", "½T»{");
-define("_TOKEN_PS", "¾Ş§@¥N½X");
-define("_CONTINUE_PS", "Ä~Äò");
+define("_CONFIRMATION", "ç¢ºèª");
+define("_TOKEN_PS", "æ“ä½œä»£ç¢¼");
+define("_CONTINUE_PS", "ç¹¼çºŒ");
 
 //BUTTONS
-define("_ACCEPT", "±µ¨ü");
-define("_PREV", "¤W¤@ÃD");
-define("_NEXT", "¤U¤@ÃD");
-define("_LAST", "§¹¦¨");
-define("_SUBMIT", "°e¥X");
+define("_ACCEPT", "æ¥å—");
+define("_PREV", "ä¸Šä¸€é¡Œ");
+define("_NEXT", "ä¸‹ä¸€é¡Œ");
+define("_LAST", "å®Œæˆ");
+define("_SUBMIT", "é€å‡º");
 
 
 //MESSAGES
 //From QANDA.PHP
-define("_CHOOSEONE", "½Ğ¿ï¾Ü");
-define("_ENTERCOMMENT", "½Ğ¿é¤Jµû»y");
-define("_NUMERICAL_PS", "¥»Äæ¦ì­­¿é¤J¼Æ­È");
-define("_CLEARALL", "²M°£°İ¨÷¤º®e«áÂ÷¶}");
-define("_MANDATORY", "¥»ÃD¥²¶·¦^µª");
-define("_MANDATORY_PARTS", "½Ğ¦^µª¥ş³¡°İ¨÷¤º®e");
-define("_MANDATORY_CHECK", "½Ğ¦b¶µ¥Ø¥´¹_");
-define("_MANDATORY_RANK", "½Ğ¬°©Ò¦³¶µ¥Ø±Æ§Ç");
-define("_MANDATORY_POPUP", "©|¦³³¡¥÷ÃD¥Ø¥¼§¹¦¨§@µª¡A½Ğ§¹¦¨«á¤~Ä~Äò¶ñ¼g°İ¨÷ä¾¤UªºÃD¥Ø"); //NEW in 0.98rc4
+define("_CHOOSEONE", "è«‹é¸æ“‡");
+define("_ENTERCOMMENT", "è«‹è¼¸å…¥è©•èª");
+define("_NUMERICAL_PS", "æœ¬æ¬„ä½é™è¼¸å…¥æ•¸å€¼");
+define("_CLEARALL", "æ¸…é™¤å•å·å…§å®¹å¾Œé›¢é–‹");
+define("_MANDATORY", "æœ¬é¡Œå¿…é ˆå›ç­”");
+define("_MANDATORY_PARTS", "è«‹å›ç­”å…¨éƒ¨å•å·å…§å®¹");
+define("_MANDATORY_CHECK", "è«‹åœ¨é …ç›®æ‰“é‰¤");
+define("_MANDATORY_RANK", "è«‹ç‚ºæ‰€æœ‰é …ç›®æ’åº");
+define("_MANDATORY_POPUP", "å°šæœ‰éƒ¨ä»½é¡Œç›®æœªå®Œæˆä½œç­”ï¼Œè«‹å®Œæˆå¾Œæ‰ç¹¼çºŒå¡«å¯«å•å·é˜ä¸‹çš„é¡Œç›®"); //NEW in 0.98rc4
 define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
 define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
-define("_DATEFORMAT", "¤é´Á®æ¦¡: YYYY-MM-DD");
-define("_DATEFORMATEG", "(¨Ò: 2003-12-25 ¬O¸t½Ï¸`)");
-define("_REMOVEITEM", "²¾°£¥»¶µ");
-define("_RANK_1", "Click ¥ª¤è¦Cªíªº¤@­Ó¶µ¥Ø, ¶}©l±zªº");
-define("_RANK_2", "³Ì°ª±Æ¦Wªº¶µ¥Ø, ²¾¨ì±Æ¦Wªº³Ì§C¦ì¸m.");
-define("_YOURCHOICES", "±zªº¿ï¾Ü");
-define("_YOURRANKING", "±zªº±Æ¦W");
-define("_RANK_3", "Click ¥k¤è¶µ¥Ø®Çªº°Å¤M");
-define("_RANK_4", "²¾°£±Æ¦Wªíªº³Ì«á¤@­Ó¶µ¥Ø");
+define("_DATEFORMAT", "æ—¥æœŸæ ¼å¼: YYYY-MM-DD");
+define("_DATEFORMATEG", "(ä¾‹: 2003-12-25 æ˜¯è–èª•ç¯€)");
+define("_REMOVEITEM", "ç§»é™¤æœ¬é …");
+define("_RANK_1", "Click å·¦æ–¹åˆ—è¡¨çš„ä¸€å€‹é …ç›®, é–‹å§‹æ‚¨çš„");
+define("_RANK_2", "æœ€é«˜æ’åçš„é …ç›®, ç§»åˆ°æ’åçš„æœ€ä½ä½ç½®.");
+define("_YOURCHOICES", "æ‚¨çš„é¸æ“‡");
+define("_YOURRANKING", "æ‚¨çš„æ’å");
+define("_RANK_3", "Click å³æ–¹é …ç›®æ—çš„å‰ªåˆ€");
+define("_RANK_4", "ç§»é™¤æ’åè¡¨çš„æœ€å¾Œä¸€å€‹é …ç›®");
 //From INDEX.PHP
-define("_NOSID", "±z¥¼´£¨Ñ°İ¨÷½s¸¹");
-define("_CONTACT1", "½ĞÁpµ¸");
-define("_CONTACT2", "¶i¤@¨B¨ó§U");
-define("_ANSCLEAR", "µª®×³Q²M°£");
-define("_RESTART", "­«·s¶}©l°İ¨÷");
-define("_CLOSEWIN_PS", "Ãö³¬¥»µøµ¡");
-define("_CONFIRMCLEAR", "±zªÖ©w­n²M°£¥ş³¡°İ¨÷¤º®e¶Ü?");
+define("_NOSID", "æ‚¨æœªæä¾›å•å·ç·¨è™Ÿ");
+define("_CONTACT1", "è«‹è¯çµ¡");
+define("_CONTACT2", "é€²ä¸€æ­¥å”åŠ©");
+define("_ANSCLEAR", "ç­”æ¡ˆè¢«æ¸…é™¤");
+define("_RESTART", "é‡æ–°é–‹å§‹å•å·");
+define("_CLOSEWIN_PS", "é—œé–‰æœ¬è¦–çª—");
+define("_CONFIRMCLEAR", "æ‚¨è‚¯å®šè¦æ¸…é™¤å…¨éƒ¨å•å·å…§å®¹å—?");
 define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
-define("_EXITCLEAR", "Â÷¶}¤Î²M°£°İ¨÷");
+define("_EXITCLEAR", "é›¢é–‹åŠæ¸…é™¤å•å·");
 //From QUESTION.PHP
-define("_BADSUBMIT1", "¤£¯à°e¥X°İ¨÷µ²ªG - ¥¼¦³¤H¦^µª°İ¨÷.");
-define("_BADSUBMIT2", "·Ó²z±z¤w§¹¦¨¤Î°e¥X°İ¨÷<br /><br />¦pªG±z¬O¦b¶ñ¼g°İ¨÷´Á¶¡¥X²{¥»°T®§¡A½Ğ«öÂsÄı¾¹ªº '<- ªğ¦^' Áä¤Î«ö[­«·s¾ã²z]Áä§ó·s¤W¤@­¶­±¡C³o±¡ªp¥i¯à¬O¦]¬°¨t²Î¸ê·½¤£¨¬³y¦¨³¡¥÷µªÃD¤º®e´²¥¢¡A¹ï¦¹§Ú­Ì·P¨ì¿ò¾Ñ¡C");
-define("_NOTACTIVE1", "¥Ñ©ó¥»°İ¨÷¤w°±¥Î¡A©Ò¥H±zªº°İ¨÷¥¼³QÀx¦s.");
-define("_CLEARRESP", "²M°£°İ¨÷¤º®e");
-define("_THANKS", "¦hÁÂ");
-define("_SURVEYREC", "±zªº°İ¨÷¤º®e¤w³QÀx¦s.");
-define("_SURVEYCPL", "°İ¨÷§¹¦¨");
-define("_DIDNOTSAVE", "¥¼³QÀx¦s");
-define("_DIDNOTSAVE2", "¨t²Î¥X¿ù¡AµLªkÀx¦s§¹¦¨ªº°İ¨÷.");
-define("_DIDNOTSAVE3", "±z§¹¦¨ªº°İ¨÷¤w°e¥æºôºŞ§@¶i¤@¨B³B²z.");
-define("_DNSAVEEMAIL1", "µLªkÀx¦s¨ì¥»°İ¨÷ id");
-define("_DNSAVEEMAIL2", "¶·¿é¤J¼Æ¾Ú");
-define("_DNSAVEEMAIL3", "SQL CODE ¥X¿ù");
-define("_DNSAVEEMAIL4", "°T®§¥X¿ù");
-define("_DNSAVEEMAIL5", "Àx¦s¥X¿ù");
-define("_SUBMITAGAIN", "¹Á¸Õ¦A°e¥X°İ¨÷");
-define("_SURVEYNOEXIST", "¹ï¤£°_¡I§ä¤£¨ì¬ÛÃöªº°İ¨÷.");
-define("_NOTOKEN1", "¥»°İ¨÷­­©ó¾Ö¦³¥N¹ôªº¤H¤h¤~¥i¥H§@µª.");
-define("_NOTOKEN2", "¦pªG±z¤w¾Ö¦³¥N¹ô¡A½Ğ¿é¤J¥»¤è®æ¤º¡A¦AÄ~Äò§@µª.");
-define("_NOTOKEN3", "±z´£¨Ñªº¥N¹ôµL®Ä¡A©Î¤w³Q¨Ï¥Î.");
-define("_NOQUESTIONS", "¥»°İ¨÷¥¼¦³ÃD¥Ø¡A©Ò¥H±zµLªk§¹¦¨§@µª.");
-define("_FURTHERINFO", "¦p¦³¬d°İ¡A½ĞÁpµ¸");
-define("_NOTACTIVE", "¥»°İ¨÷¤wÃö³¬. ±z¤£¯àÀx¦s°İ¨÷.");
-define("_SURVEYEXPIRED", "¥»°İ¨÷¤w°±¥Î.");
+define("_BADSUBMIT1", "ä¸èƒ½é€å‡ºå•å·çµæœ - æœªæœ‰äººå›ç­”å•å·.");
+define("_BADSUBMIT2", "ç…§ç†æ‚¨å·²å®ŒæˆåŠé€å‡ºå•å·<br /><br />å¦‚æœæ‚¨æ˜¯åœ¨å¡«å¯«å•å·æœŸé–“å‡ºç¾æœ¬è¨Šæ¯ï¼Œè«‹æŒ‰ç€è¦½å™¨çš„ '<- è¿”å›' éµåŠæŒ‰[é‡æ–°æ•´ç†]éµæ›´æ–°ä¸Šä¸€é é¢ã€‚é€™æƒ…æ³å¯èƒ½æ˜¯å› ç‚ºç³»çµ±è³‡æºä¸è¶³é€ æˆéƒ¨ä»½ç­”é¡Œå…§å®¹æ•£å¤±ï¼Œå°æ­¤æˆ‘å€‘æ„Ÿåˆ°éºæ†¾ã€‚");
+define("_NOTACTIVE1", "ç”±æ–¼æœ¬å•å·å·²åœç”¨ï¼Œæ‰€ä»¥æ‚¨çš„å•å·æœªè¢«å„²å­˜.");
+define("_CLEARRESP", "æ¸…é™¤å•å·å…§å®¹");
+define("_THANKS", "å¤šè¬");
+define("_SURVEYREC", "æ‚¨çš„å•å·å…§å®¹å·²è¢«å„²å­˜.");
+define("_SURVEYCPL", "å•å·å®Œæˆ");
+define("_DIDNOTSAVE", "æœªè¢«å„²å­˜");
+define("_DIDNOTSAVE2", "ç³»çµ±å‡ºéŒ¯ï¼Œç„¡æ³•å„²å­˜å®Œæˆçš„å•å·.");
+define("_DIDNOTSAVE3", "æ‚¨å®Œæˆçš„å•å·å·²é€äº¤ç¶²ç®¡ä½œé€²ä¸€æ­¥è™•ç†.");
+define("_DNSAVEEMAIL1", "ç„¡æ³•å„²å­˜åˆ°æœ¬å•å· id");
+define("_DNSAVEEMAIL2", "é ˆè¼¸å…¥æ•¸æ“š");
+define("_DNSAVEEMAIL3", "SQL CODE å‡ºéŒ¯");
+define("_DNSAVEEMAIL4", "è¨Šæ¯å‡ºéŒ¯");
+define("_DNSAVEEMAIL5", "å„²å­˜å‡ºéŒ¯");
+define("_SUBMITAGAIN", "å˜—è©¦å†é€å‡ºå•å·");
+define("_SURVEYNOEXIST", "å°ä¸èµ·ï¼æ‰¾ä¸åˆ°ç›¸é—œçš„å•å·.");
+define("_NOTOKEN1", "æœ¬å•å·é™æ–¼æ“æœ‰ä»£å¹£çš„äººå£«æ‰å¯ä»¥ä½œç­”.");
+define("_NOTOKEN2", "å¦‚æœæ‚¨å·²æ“æœ‰ä»£å¹£ï¼Œè«‹è¼¸å…¥æœ¬æ–¹æ ¼å…§ï¼Œå†ç¹¼çºŒä½œç­”.");
+define("_NOTOKEN3", "æ‚¨æä¾›çš„ä»£å¹£ç„¡æ•ˆï¼Œæˆ–å·²è¢«ä½¿ç”¨.");
+define("_NOQUESTIONS", "æœ¬å•å·æœªæœ‰é¡Œç›®ï¼Œæ‰€ä»¥æ‚¨ç„¡æ³•å®Œæˆä½œç­”.");
+define("_FURTHERINFO", "å¦‚æœ‰æŸ¥å•ï¼Œè«‹è¯çµ¡");
+define("_NOTACTIVE", "æœ¬å•å·å·²é—œé–‰. æ‚¨ä¸èƒ½å„²å­˜å•å·.");
+define("_SURVEYEXPIRED", "æœ¬å•å·å·²åœç”¨.");
 
-define("_SURVEYCOMPLETE", "±z¤w§¹¦¨¥»¦^¨÷"); //NEW FOR 0.98rc6
+define("_SURVEYCOMPLETE", "æ‚¨å·²å®Œæˆæœ¬å›å·"); //NEW FOR 0.98rc6
 
-define("_INSTRUCTION_LIST", "½Ğ¿ï¾Ü¤@¶µ"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "¥i¿ï¦h­Óµª®×"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "è«‹é¸æ“‡ä¸€é …"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "å¯é¸å¤šå€‹ç­”æ¡ˆ"); //NEW for 098rc3
 
-define("_CONFIRMATION_MESSAGE1", "¤w°e¥X°İ¨÷"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE2", "®¥³ß±z¡I±z¦¬¨ì¤@¥÷­è§¹¦¨ªº°İ¨÷"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE3", "Click ³o³sµ²¬d¬İ­Ó§Oªº°İ¨÷¤º®e:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE4", "Click ³o¸Ì¬d¬İ²Î­p¸ê®Æ:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE1", "å·²é€å‡ºå•å·"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "æ­å–œæ‚¨ï¼æ‚¨æ”¶åˆ°ä¸€ä»½å‰›å®Œæˆçš„å•å·"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "Click é€™é€£çµæŸ¥çœ‹å€‹åˆ¥çš„å•å·å…§å®¹:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "Click é€™è£¡æŸ¥çœ‹çµ±è¨ˆè³‡æ–™:"); //NEW for 098rc5
 
 define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
-						  ."This survey is anonymous.<br />"
-						  ."The record kept of your survey responses does not contain any "
-						  ."identifying information about you unless a specific question "
-						  ."in the survey has asked for this. If you have responded to a "
-						  ."survey that used an identifying token to allow you to access "
-						  ."the survey, you can rest assured that the identifying token "
-						  ."is not kept with your responses. It is managed in a seperate "
-						  ."database, and will only be updated to indicate that you have "
-						  ."(or haven't) completed this survey. There is no way of matching "
-						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9
+                          ."This survey is anonymous.<br />"
+                          ."The record kept of your survey responses does not contain any "
+                          ."identifying information about you unless a specific question "
+                          ."in the survey has asked for this. If you have responded to a "
+                          ."survey that used an identifying token to allow you to access "
+                          ."the survey, you can rest assured that the identifying token "
+                          ."is not kept with your responses. It is managed in a seperate "
+                          ."database, and will only be updated to indicate that you have "
+                          ."(or haven't) completed this survey. There is no way of matching "
+                          ."identification tokens with survey responses in this survey."); //New for 0.98rc9
 
 define("_THEREAREXQUESTIONS", "There are {NUMBEROFQUESTIONS} questions in this survey."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "There is 1 question in this survey."); //New for 0.98rc9 - singular version of above
 
 define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
 define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
-						."Enter your details below, and an email containing the link to "
-						."participate in this survey will be sent immediately."); //NEW for 0.98rc9
+                        ."Enter your details below, and an email containing the link to "
+                        ."participate in this survey will be sent immediately."); //NEW for 0.98rc9
 define ("_RG_EMAIL", "Email Address"); //NEW for 0.98rc9
 define ("_RG_FIRSTNAME", "First Name"); //NEW for 0.98rc9
 define ("_RG_LASTNAME", "Last Name"); //NEW for 0.98rc9
@@ -159,16 +160,16 @@ define ("_RG_INVALIDEMAIL", "The email you used is not valid. Please try again."
 define ("_RG_USEDEMAIL", "The email you used has already been registered.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registration Confirmation");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in this survey.<br /><br />\n"
-								   ."An email has been sent to the address you provided with access details "
-								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+                                   ."An email has been sent to the address you provided with access details "
+                                   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
+                                   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
 define("_SM_COMPLETED", "<b>Thank You<br /><br />"
-					   ."You have completed answering the questions in this survey.</b><br /><br />"
-					   ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
+                       ."You have completed answering the questions in this survey.</b><br /><br />"
+                       ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
 define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
-					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
-					."through your responses."); //New for 0.98finalRC1
+                    ."you can do that now by clicking on the [<< "._PREV."] button and browsing "
+                    ."through your responses."); //New for 0.98finalRC1
 
 //For the "printable" survey
 define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following:"); //New for 0.98finalRC1
@@ -199,10 +200,10 @@ define("_SAVEPASSWORD", "Password");
 define("_SAVEPASSWORDRPT", "Repeat Password");
 define("_SAVE_EMAIL", "Your Email");
 define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
-				  ."Your survey will be saved using that name and password, and can be "
-				  ."completed later by logging in with the same name and password.<br /><br />\n"
-				  ."If you give an email address, an email containing the details will be sent "
-				  ."to you.");
+                  ."Your survey will be saved using that name and password, and can be "
+                  ."completed later by logging in with the same name and password.<br /><br />\n"
+                  ."If you give an email address, an email containing the details will be sent "
+                  ."to you.");
 define("_SAVESUBMIT", "Save Now");
 define("_SAVENONAME", "You must supply a name for this saved session.");
 define("_SAVENOPASS", "You must supply a password for this saved session.");
@@ -211,9 +212,9 @@ define("_SAVEDUPLICATE", "This name has already been used for this survey. You m
 define("_SAVETRYAGAIN", "Please try again.");
 define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
 define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
-						 ."a survey in progress. The following details can be used "
-						 ."to return to this survey and continue where you left "
-						 ."off.");
+                         ."a survey in progress. The following details can be used "
+                         ."to return to this survey and continue where you left "
+                         ."off.");
 define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
 define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
 define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
@@ -223,7 +224,7 @@ define("_SAVE_EMAILSENT", "An email has been sent with details about your saved 
 define("_LOAD_SAVED", "Load unfinished survey");
 define("_LOADHEADING", "Load A Previously Saved Survey");
 define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
-			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
+              ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
 define("_LOADNAME", "Saved name");
 define("_LOADPASSWORD", "Password");
 define("_LOADSUBMIT", "Load Now");
