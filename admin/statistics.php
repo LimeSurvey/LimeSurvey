@@ -671,7 +671,37 @@ if (isset($_POST['display']) && $_POST['display'])
 				{
 				foreach($_POST['summary'] as $viewfields) 
 					{
-					echo "\t\t\t<input type='hidden' name='summary[]' value='$viewfields'>\n";
+					switch(substr($viewfields, 0, 1))
+						{
+					    case "N":
+						case "T":
+							$field = substr($viewfields, 1, strlen($viewfields)-1);
+							echo "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
+							break;
+						case "M":
+							list($lsid, $lgid, $lqid) = explode("X", substr($viewfields, 1, strlen($viewfields)-1));
+							$aquery="SELECT code FROM {$dbprefix}answers WHERE qid=$lqid ORDER BY sortorder, answer";
+							$aresult=mysql_query($aquery) or die ("Couldn't get answers<br />$aquery<br />".mysql_error());
+							while ($arow=mysql_fetch_row($aresult)) // go through every possible answer
+								{
+								$field = substr($viewfields, 1, strlen($viewfields)-1).$arow[0];
+								echo "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
+								}
+							$aquery = "SELECT other FROM {$dbprefix}questions WHERE qid=$lqid";
+							$aresult = mysql_query($aquery);
+							while($arow = mysql_fetch_row($aresult)){
+								if ($arow[0] == "Y") {
+									echo $arow[0];
+									$field = substr($viewfields, 1, strlen($viewfields)-1)."other";
+								    echo "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
+								}
+							} // while
+							break;
+						default:
+							$field = $viewfields;
+							echo "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
+							break;
+						}
 					}
 				}
 		echo "\t\t</td></form>\n\t</tr>\n";
