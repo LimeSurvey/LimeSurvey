@@ -54,6 +54,12 @@ if (!$sid)
 
 if (!$ok)
 	{
+	$result = mysql_list_tables($databasename);
+	while ($row = mysql_fetch_row($result))
+		{
+		$tablelist[]=$row[0];
+	    }
+
 	echo "<table width='100%' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>$setfont<br />\n";
@@ -62,6 +68,21 @@ if (!$ok)
 	echo "\t\t\tIf you select \"OK\" below to delete this survey<br />\n";
 	echo "\t\t\tyou will lose all your work on this survey. You'd want<br />\n";
 	echo "\t\t\tto be pretty sure about that!<br /><br />\n";
+
+	if (in_array("survey_$sid", $tablelist))
+		{
+		echo "\t\t\t<b>This survey is currently active and a results table exists.</b></b><br />\n";
+		echo "\t\t\tIf you select \"OK\" below to delete this survey<br />\n";
+		echo "\t\t\tthis table will also be deleted and the responses lost.<br /><br />\n";
+		}
+	
+	if (in_array("tokens_$sid", $tablelist))
+		{
+		echo "\t\t\t<b>A tokens table exists for this survey.</b></b><br />\n";
+		echo "\t\t\tIf you select \"OK\" below to delete this survey<br />\n";
+		echo "\t\t\tthis tokens table and the contents will be lost.<br /><br />\n";
+		}
+
 	echo "\t\t\tYou could consider 'exporting' the survey before deleting<br />\n";
 	echo "\t\t\tit, and then if you change your mind later you could<br />\n";
 	echo "\t\t\tre-install it. If you want to do this, click on 'cancel'<br />\n";
@@ -79,8 +100,26 @@ if (!$ok)
 	echo "</body>\n</html>";
 	}
 
-else
+else //delete the survey
 	{
+	$result = mysql_list_tables($databasename);
+	while ($row = mysql_fetch_row($result))
+		{
+		$tablelist[]=$row[0];
+	    }
+
+	if (in_array("survey_$sid", $tablelist)) //delete the survey_$sid table
+		{
+		$dsquery = "DROP TABLE `survey_$sid`";
+		$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
+		}
+
+	if (in_array("tokens_$sid", $tablelist)) //delete the tokens_$sid table
+		{
+		$dsquery = "DROP TABLE `tokens_$sid`";
+		$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
+		}
+	
 	$dsquery = "SELECT qid FROM questions WHERE sid=$sid";
 	$dsresult = mysql_query($dsquery) or die ("Couldn't find matching survey to delete<br />$dsquery<br />".mysql_error());
 	while ($dsrow = mysql_fetch_array($dsresult))
@@ -103,7 +142,7 @@ else
 	echo "<table width='100%' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>$setfont<br />\n";
-	echo "\t\t\t<b>All bits of survey $sid have been deleted.<br /><br />\n";
+	echo "\t\t\t<b>All questions, answers, conditions and related tables of survey $sid have been deleted.<br /><br />\n";
 	echo "\t\t\t<a href='admin.php'>Return to Admin Page</a>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
