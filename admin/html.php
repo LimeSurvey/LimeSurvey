@@ -250,6 +250,9 @@ if ($sid)
 
 if ($gid)
 	{
+	$sumquery4 = "SELECT * FROM questions WHERE sid=$sid AND gid=$gid"; //Getting a count of questions for this survey
+	$sumresult4 = mysql_query($sumquery4);
+	$sumcount4 = mysql_num_rows($sumresult4);
 	$grpquery ="SELECT * FROM groups WHERE gid=$gid ORDER BY group_name";
 	$grpresult = mysql_query($grpquery);
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
@@ -266,7 +269,7 @@ if ($gid)
 		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/edit.gif' title='"._G_EDIT_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=editgroup&sid=$sid&gid=$gid', '_top')\">";
-		if ($sumcount3 == 0) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._G_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
+		if ($sumcount4 == 0) {$groupsummary .= "\t\t\t\t\t<input type='image' src='./images/delete.gif' title='"._G_DELETE_BT."' align='left' border='0' hspace='0' onclick=\"window.open('$scriptname?action=delgroup&sid=$sid&gid=$gid', '_top')\">";}
 		else				 {$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";}
 		$groupsummary .= "\t\t\t\t\t<img src='./images/blank.gif' width='20' align='left' border='0' hspace='0'>\n";
 		$groupsummary .= "\t\t\t\t\t<img src='./images/seperator.gif' border='0' hspace='0' align='left'>\n";
