@@ -284,6 +284,8 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 					$to = $cnfrow['email'];
 					$subject = _CONFIRMATION.": $surveyname "._SURVEYCPL;
 					$message="";
+					if (!$surveyadminemail) {$surveyadminemail=$siteadminemail;}
+					if (!$surveyadminname) {$surveyadmin=$siteadminname;}
 					foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
 						{
 						$add=$ce;
