@@ -42,22 +42,22 @@ define("_YES", "Ja");
 define("_NO", "Nej");
 define("_UNCERTAIN", "Ved ikke");
 define("_ADMIN", "Admin");
-define("_TOKENS", "Nøgler");
+define("_TOKENS", "N&oslash;gler");
 define("_FEMALE", "Kvinde");
 define("_MALE", "Mand");
 define("_NOANSWER", "Intet svar");
 define("_NOTAPPLICABLE", "Ved ikke"); //New for 0.98rc5
 define("_OTHER", "Andet");
-define("_PLEASECHOOSE", "Vælg venligst");
+define("_PLEASECHOOSE", "V&aelig;lg venligst");
 define("_ERROR_PS", "Fejl");
-define("_COMPLETE", "gennemført");
-define("_INCREASE", "Hæv"); //NEW WITH 0.98
+define("_COMPLETE", "gennemf&oslash;rt");
+define("_INCREASE", "H&aelig;v"); //NEW WITH 0.98
 define("_SAME", "Samme"); //NEW WITH 0.98
-define("_DECREASE", "Sænk"); //NEW WITH 0.98
+define("_DECREASE", "S&aelig;nk"); //NEW WITH 0.98
 //from questions.php
-define("_CONFIRMATION", "Bekræftelse");
-define("_TOKEN_PS", "Nøgle");
-define("_CONTINUE_PS", "Forsæt");
+define("_CONFIRMATION", "Bekr&aelig;ftelse");
+define("_TOKEN_PS", "N&oslash;gle");
+define("_CONTINUE_PS", "Fors&aelig;t");
 
 //BUTTONS
 define("_ACCEPT", "Accepter");
@@ -69,67 +69,67 @@ define("_SUBMIT", "afsend");
 
 //MESSAGES
 //From QANDA.PHP
-define("_CHOOSEONE", "Vælg en af følgende");
+define("_CHOOSEONE", "V&aelig;lg en af f&oslash;lgende");
 define("_ENTERCOMMENT", "Skriv dine kommentarer her");
 define("_NUMERICAL_PS", "Det felt kan kun indeholde tal/numeriske tegn");
-define("_CLEARALL", "Nulstil og forlad undersøgelsen");
-define("_MANDATORY", "Dette spørgsmål er obligatorisk");
+define("_CLEARALL", "Nulstil og forlad unders&oslash;gelsen");
+define("_MANDATORY", "Dette sp&oslash;rgsm&aring;l er obligatorisk");
 define("_MANDATORY_PARTS", "Udfyld venligst alle dele");
 define("_MANDATORY_CHECK", "Afkryds som minimum en mulighed");
 define("_MANDATORY_RANK", "Afgiv venligst en score i alle felter");
-define("_MANDATORY_POPUP", "En eller flere felter som skal udfyldes er ikke udfyldt - der kan ikke forsættes før disse er udfyldt"); //NEW in 0.98rc4
-define("_DATEFORMAT", "Datoformat: ÅÅÅÅ-MM-DD");
+define("_MANDATORY_POPUP", "En eller flere felter som skal udfyldes er ikke udfyldt - der kan ikke fors&aelig;ttes f&oslash;r disse er udfyldt"); //NEW in 0.98rc4
+define("_DATEFORMAT", "Datoformat: &Aring;&Aring;&Aring;&Aring;-MM-DD");
 define("_DATEFORMATEG", "(eg: 2003-12-24 hvis der skal angives juledag)");
 define("_REMOVEITEM", "Fjern denne mulighed");
-define("_RANK_1", "Klik på et emne i listen til venstre, startende med det du");
-define("_RANK_2", "vurdere højst, og klik derefter nedefter til det lavest vurderede emne.");
+define("_RANK_1", "Klik p&aring; et emne i listen til venstre, startende med det du");
+define("_RANK_2", "vurdere h&oslash;jst, og klik derefter nedefter til det lavest vurderede emne.");
 define("_YOURCHOICES", "Dine valg");
 define("_YOURRANKING", "Din vurdering");
-define("_RANK_3", "Klik på saks ikonet til højre for");
-define("_RANK_4", "at fjerne det nederst emne på din vurderingsliste");
+define("_RANK_3", "Klik p&aring; saks ikonet til h&oslash;jre for");
+define("_RANK_4", "at fjerne det nederst emne p&aring; din vurderingsliste");
 //From INDEX.PHP
-define("_NOSID", "Der mangler at blive angivet en undersøgelses nøgle/id");
+define("_NOSID", "Der mangler at blive angivet en unders&oslash;gelses n&oslash;gle/id");
 define("_CONTACT1", "Kontakt venligst");
 define("_CONTACT2", "for videre assistance");
-define("_ANSCLEAR", "Svar gennemført");
+define("_ANSCLEAR", "Svar gennemf&oslash;rt");
 define("_RESTART", "Nulstil og start forfra");
 define("_CLOSEWIN_PS", "Luk dette vindue");
-define("_CONFIRMCLEAR", "Er du sikker på at du vil nulstille alle dine spørgsmål?");
-define("_EXITCLEAR", "Nulstil og forlad undersøgelsen.");
+define("_CONFIRMCLEAR", "Er du sikker p&aring; at du vil nulstille alle dine sp&oslash;rgsm&aring;l?");
+define("_EXITCLEAR", "Nulstil og forlad unders&oslash;gelsen.");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Kan ikke gemme besvarelsen - der er ikke noget at gemme.");
-define("_BADSUBMIT2", "Denne fejl er opstået fordi du allerede har gemt dine svar og har trykket på 'Opdater' i din browser. Dine besvarelser er allerede gemt.<br /><br />Hvis du har fået denne fejlmeddelse midt i en spørgeskema undersøgelse bør du trykke på '<- Tilbage' knappen i din browser og tryk på 'Opdater'. Dermed vil dit forrige svar gå tabt men alle andre tidligere svar er gemt, vi beklager de gener dette måtte medføre.");
-define("_NOTACTIVE1", "Dine besvarelser er ikke gemt - undersøgelsen er endnu ikke sat igang.");
+define("_BADSUBMIT2", "Denne fejl er opst&aring;et fordi du allerede har gemt dine svar og har trykket p&aring; 'Opdater' i din browser. Dine besvarelser er allerede gemt.<br /><br />Hvis du har f&aring;et denne fejlmeddelse midt i en sp&oslash;rgeskema unders&oslash;gelse b&oslash;r du trykke p&aring; '<- Tilbage' knappen i din browser og tryk p&aring; 'Opdater'. Dermed vil dit forrige svar g&aring; tabt men alle andre tidligere svar er gemt, vi beklager de gener dette m&aring;tte medf&oslash;re.");
+define("_NOTACTIVE1", "Dine besvarelser er ikke gemt - unders&oslash;gelsen er endnu ikke sat igang.");
 define("_CLEARRESP", "Nulstil svar");
 define("_THANKS", "Tak");
 define("_SURVEYREC", "Dine besvarelser er blevet gemt.");
-define("_SURVEYCPL", "Undersøgelsen er gennemført");
+define("_SURVEYCPL", "Unders&oslash;gelsen er gennemf&oslash;rt");
 define("_DIDNOTSAVE", "Kunne ikke gemme");
 define("_DIDNOTSAVE2", "Der skete en uventet fejl og dine besvarelser kunne ikke gemmes.");
-define("_DIDNOTSAVE3", "Dine besvarelser er ikke gået tabt - men er sendt til administratoren af undersøgelsen som så senere tilføjer disse.");
+define("_DIDNOTSAVE3", "Dine besvarelser er ikke g&aring;et tabt - men er sendt til administratoren af unders&oslash;gelsen som s&aring; senere tilf&oslash;jer disse.");
 define("_DNSAVEEMAIL1", "An error occurred saving a response to survey id");
 define("_DNSAVEEMAIL2", "DATA TO BE ENTERED");
 define("_DNSAVEEMAIL3", "SQL CODE THAT FAILED");
 define("_DNSAVEEMAIL4", "ERROR MESSAGE");
 define("_DNSAVEEMAIL5", "ERROR SAVING");
-define("_SUBMITAGAIN", "Prøv igen");
-define("_SURVEYNOEXIST", "Desværre, kunne ikke finde undersøgelses nøgle/id der matcher det valgte.");
-define("_NOTOKEN1", "Dette er en lukket undersøgelse og kræver at du har en undersøgelses nøgle/id for at deltage.");
-define("_NOTOKEN2", "Hvis du har en undersøgelses nøgle/id så indtast den herunder.");
-define("_NOTOKEN3", "Den undersøgelses nøgle/id du har angivet er ugyldig eller er allerede brugt.");
-define("_NOQUESTIONS", "Denne undersøgelse har endnu ingen spørgsmål og kan derfor ikke benyttes.");
+define("_SUBMITAGAIN", "Pr&oslash;v igen");
+define("_SURVEYNOEXIST", "Desv&aelig;rre, kunne ikke finde unders&oslash;gelses n&oslash;gle/id der matcher det valgte.");
+define("_NOTOKEN1", "Dette er en lukket unders&oslash;gelse og kr&aelig;ver at du har en unders&oslash;gelses n&oslash;gle/id for at deltage.");
+define("_NOTOKEN2", "Hvis du har en unders&oslash;gelses n&oslash;gle/id s&aring; indtast den herunder.");
+define("_NOTOKEN3", "Den unders&oslash;gelses n&oslash;gle/id du har angivet er ugyldig eller er allerede brugt.");
+define("_NOQUESTIONS", "Denne unders&oslash;gelse har endnu ingen sp&oslash;rgsm&aring;l og kan derfor ikke benyttes.");
 define("_FURTHERINFO", "For yderligere information kontakt");
-define("_NOTACTIVE", "Denne undersøgelse er ikke aktiv og du kan derfor ikke deltage.");
-define("_SURVEYEXPIRED", "Denne undersøgelse er ikke længere aktiv og du kan derfor ikke deltage.");
+define("_NOTACTIVE", "Denne unders&oslash;gelse er ikke aktiv og du kan derfor ikke deltage.");
+define("_SURVEYEXPIRED", "Denne unders&oslash;gelse er ikke l&aelig;ngere aktiv og du kan derfor ikke deltage.");
 
-define("_SURVEYCOMPLETE", "Du har allerede gennemført denne undersøgelse."); //NEW FOR 0.98rc6
+define("_SURVEYCOMPLETE", "Du har allerede gennemf&oslash;rt denne unders&oslash;gelse."); //NEW FOR 0.98rc6
 
-define("_INSTRUCTION_LIST", "Vælg kun en af nedenstående"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Vælg alle du er enig i"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "V&aelig;lg kun en af nedenst&aring;ende"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "V&aelig;lg alle du er enig i"); //NEW for 098rc3
 
-define("_CONFIRMATION_MESSAGE1", "Undersøgelsen er gemt"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE2", "Et nyt svar er gemt i undersøgelsen"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE3", "Klik på nedenstående link for at se de individuelle svar:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE1", "Unders&oslash;gelsen er gemt"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE2", "Et nyt svar er gemt i unders&oslash;gelsen"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "Klik p&aring; nedenst&aring;ende link for at se de individuelle svar:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Vis statistikken her:"); //NEW for 098rc5
 
 define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
@@ -144,23 +144,23 @@ define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
 						  ."(or haven't) completed this survey. There is no way of matching "
 						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9
 
-define("_THEREAREXQUESTIONS", "There are {NUMBEROFQUESTIONS} questions in this survey."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
-define("_THEREAREXQUESTIONS_SINGLE", "There is 1 question in this survey."); //New for 0.98rc9 - singular version of above
+define("_THEREAREXQUESTIONS", "Der er {NUMBEROFQUESTIONS} sp&oslash;rgsm&aring;l i denne unders&oslash;gelse."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
+define("_THEREAREXQUESTIONS_SINGLE", "Der er et sp&oslash;rgsm&aring;l i denne unders&oslash;gelse."); //New for 0.98rc9 - singular version of above
 
-define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
-define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
-						."Enter your details below, and an email containing the link to "
-						."participate in this survey will be sent immediately."); //NEW for 0.98rc9
-define ("_RG_EMAIL", "Email Address"); //NEW for 0.98rc9
-define ("_RG_FIRSTNAME", "First Name"); //NEW for 0.98rc9
-define ("_RG_LASTNAME", "Last Name"); //NEW for 0.98rc9
-define ("_RG_INVALIDEMAIL", "The email you used is not valid. Please try again.");//NEW for 0.98rc9
-define ("_RG_USEDEMAIL", "The email you used has already been registered.");//NEW for 0.98rc9
-define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registration Confirmation");//NEW for 0.98rc9
-define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in this survey.<br /><br />\n"
-								   ."An email has been sent to the address you provided with access details "
-								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+define ("_RG_REGISTER1", "Du skal v&aelig;re registeret for at udfylde denne unders&oslash;gelse"); //NEW for 0.98rc9
+define ("_RG_REGISTER2", "Du kan deltage i denne unders&oslash;gelse ved at udfylde skemaet herunder.<br />\n"
+						."Udfyld nedenst&aring;ende formular og et link/url s&aring;"
+						."du kan deltage i unders&oslash;gelsen vil blive tilsendt p&aring; e-mail."); //NEW for 0.98rc9
+define ("_RG_EMAIL", "E-mail adrese"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "Fornavn"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "Efternavn"); //NEW for 0.98rc9
+define ("_RG_INVALIDEMAIL", "Den angivne e-mail adresse er ugyldig.");//NEW for 0.98rc9
+define ("_RG_USEDEMAIL", "Den angivne e-mail adresse er allerede registeret.");//NEW for 0.98rc9
+define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registering er gennemf&oslash;rt");//NEW for 0.98rc9
+define ("_RG_REGISTRATIONCOMPLETE", "Tak fordi du v&aelig;lger at deltage i unders&oslash;gelsen.<br /><br />\n"
+								   ."En e-mail er sendt til den angivne e-mail adresse, hvor i der findes"
+								   ."informationer om hvordan du deltager i unders&oslash;gelsen. Benyt linket i e-mailen for at deltage.<br /><br />\n"
+								   ."Venlig hilsen <br /> {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
 define("_SM_COMPLETED", "<b>Thank You<br /><br />"
 					   ."You have completed answering the questions in this survey.</b><br /><br />"
