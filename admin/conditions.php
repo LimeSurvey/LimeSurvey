@@ -60,7 +60,7 @@ if (!isset($_GET['qid']) && !isset($_POST['qid']))
 //ADD NEW ENTRY IF THIS IS AN ADD
 if (isset($_POST['action']) && $_POST['action'] == "insertcondition")
 	{
-	if (!$_POST['canswers'] || !$_POST['cquestions'])
+	if (!isset($_POST['canswers']) || !isset($_POST['cquestions']))
 		{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.\")\n //-->\n</script>\n";				
 		}
@@ -239,7 +239,10 @@ if ($questionscount > 0)
 						$theanswer = addcslashes($arows['answer'], "'");
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
 						}
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
+					if ($rows['type'] != "M" && $rows['type'] != "P")
+						{
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
+						}
 					break;
 				}
 			}
