@@ -65,7 +65,7 @@ function createfiles($folder) { //Places basic files into new template directory
 
 //PUBLIC LANGUAGE FILE
 $langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
+$langfilename="$langdir/$defaultlang.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 
@@ -242,7 +242,13 @@ switch($screenname) {
 		foreach ($Question as $qs) {
 			$files[]=array("name"=>$qs);
 		}
-		$myoutput[]="<html>";
+		$myoutput[]="<html>\n";
+		$myoutput[]="<meta http-equiv=\"expires\" content=\"Wed, 26 Feb 1997 08:21:57 GMT\">\n";
+		$myoutput[]="<meta http-equiv=\"Last-Modified\" content=\"".gmdate('D, d M Y H:i:s'). " GMT\">\n";
+		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\">\n";
+		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\">\n";
+		$myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
+		$myoutput[]="</head>\n";
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startpage.pstpl"));
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/survey.pstpl"));
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startgroup.pstpl"));
@@ -339,8 +345,8 @@ switch($screenname) {
 		break;
 }
 $myoutput[]="</html>";
-
 function doreplacement($file) { //Produce sample page from template file
+	$output=array();
 	foreach(file($file) as $op) {
 		$output[]=templatereplace($op);
 	}
@@ -518,28 +524,96 @@ echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1
 	."\t<tr>\n"
 	."\t\t<td width=90% align='center' bgcolor='#EEEEEE'>\n";
 
+
+unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
+$time=date("ymdHis");
+$fnew=fopen("$tempdir/template_temp_$time.html", "w+");
+foreach($myoutput as $line) {
+	fwrite($fnew, $line);
+}
+fclose($fnew);
+
 echo "<font face='verdana' size='2'><b>Sample $screenname in $templatename template</b><br />\n"
-	."<iframe width='95%' height='400' name='sample'></iframe>\n"
+	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample'></iframe>\n"
 	."<br />&nbsp;<br />";
 
 //IFRAMES JAVASCRIPT
-echo "<script><!--\n"
-	."	i=frames[\"sample\"];\n"
-	."	i.document.open;\n";
+//echo "<script><!--\n"
+//	."	i=frames[\"sample\"];\n"
+//	."	i.document.open;\n";
 //foreach (file("$homedir/templates.html") as $line) {
-foreach($myoutput as $line) {
-	$niceline=addslashes($line);
-	if ($addbr !== false) {
-	    $niceline=nl2br($niceline);
-	}
-	$niceline=str_replace("\r\n", "", $niceline);
-	$niceline=str_replace("\n", "", $niceline);
-	echo "	i.document.writeln(\"$niceline\");\n";
-}
-echo "	i.document.close;\n";
-echo "//--></script>\n";
+//foreach($myoutput as $line) {
+//	$niceline=addslashes($line);
+//	if ($addbr !== false) {
+//	    $niceline=nl2br($niceline);
+//	}
+//	$niceline=str_replace("\r\n", "", $niceline);
+//	$niceline=str_replace("\n", "", $niceline);
+//	echo "	i.document.writeln(\"$niceline\");\n";
+//}
+//ho "	i.document.close;\n";
+//echo "//--></script>\n";
 //END MAIN SECTION
 echo "</td></tr></table>\n";
 echo htmlfooter("", "");
+
+function unlink_wc($dir, $pattern){
+   if ($dh = opendir($dir)) { 
+       
+       //List and put into an array all files
+       while (false !== ($file = readdir($dh))){
+           if ($file != "." && $file != "..") {
+               $files[] = $file;
+           }
+       }
+       closedir($dh);
+       
+       
+       //Split file name and extenssion
+       if(strpos($pattern,".")) {
+           $baseexp=substr($pattern,0,strpos($pattern,"."));
+           $typeexp=substr($pattern,strpos($pattern,".")+1,strlen($pattern));
+       }else{ 
+           $baseexp=$pattern;
+           $typeexp="";
+       } 
+       
+       //Escape all regexp Characters 
+       $baseexp=preg_quote($baseexp); 
+       $typeexp=preg_quote($typeexp); 
+       
+       // Allow ? and *
+       $baseexp=str_replace(array("\*","\?"), array(".*","."), $baseexp);
+       $typeexp=str_replace(array("\*","\?"), array(".*","."), $typeexp);
+       
+       //Search for pattern match
+       $i=0;
+       foreach($files as $file) {
+           $filename=basename($file);
+           if(strpos($filename,".")) {
+               $base=substr($filename,0,strpos($filename,"."));
+               $type=substr($filename,strpos($filename,".")+1,strlen($filename));
+           }else{
+               $base=$filename;
+               $type="";
+           }
+       
+           if(preg_match("/^".$baseexp."$/i",$base) && preg_match("/^".$typeexp."$/i",$type))  {
+               $matches[$i]=$file;
+               $i++;
+           }
+       }
+       if (isset($matches)) {
+	       while(list($idx,$val) = each($matches)){
+	           if (substr($dir,-1) == "/"){
+	               unlink($dir.$val);
+	           }else{
+	               unlink($dir."/".$val);
+	           }
+       		}
+       }
+       
+   }
+}
 
 ?>
