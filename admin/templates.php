@@ -248,7 +248,6 @@ switch($screenname) {
 		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\">\n";
 		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\">\n";
 		$myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
-		$myoutput[]="</head>\n";
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startpage.pstpl"));
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/survey.pstpl"));
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startgroup.pstpl"));
@@ -289,7 +288,7 @@ switch($screenname) {
 		$myoutput[]= "<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>";
 		$myoutput[]= "<font face='arial' size='2'>";
 		$myoutput[]= "<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />";
-		$myoutput[]= "<a href='{$_SERVER['PHP_SELF']}?sid=$sid'>"._RESTART."</a><br />";
+		$myoutput[]= "<a href='{$_SERVER['PHP_SELF']}?sid=x'>"._RESTART."</a><br />";
 		$myoutput[]= "<a href='javascript: window.close()'>"._CLOSEWIN."</a>";
 		$myoutput[]= "</font>";
 		$myoutput[]= "</td></tr>";
