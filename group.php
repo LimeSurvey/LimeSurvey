@@ -46,7 +46,6 @@ if ($_POST['fieldnames'])
 	foreach ($postedfieldnames as $pf)
 		{
 		$_SESSION[$pf] = $_POST[$pf];
-		//echo "<!-- SAVING $pf: $_SESSION[$pf] -->\n";
 		}
 	}
 
@@ -112,7 +111,7 @@ if ($_POST['mandatory'])
 		}
 	}
 
-if ($_POST['conmandatory'])
+if ($_POST['conmandatory']) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
 	{
 	$chkcmands=explode("|", $_POST['conmandatory']);
 	$cmfns=explode("|", $_POST['conmandatoryfn']);
@@ -139,7 +138,6 @@ if ($_POST['conmandatory'])
 			$$multiname2=0;
 			}
 		else{$multiname="MULTI$cmfns[$mi]";}
-		//$dccm="display$ccm";
 		$dccm="display$cmfns[$mi]";
 		if (($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && $_POST[$dccm] == "on")//There is an answer
 			{
@@ -171,45 +169,6 @@ if ($_POST['conmandatory'])
 			}
 		}
 	}
-//DEBUG - FOLLOWING SECTION CAN GO ONCE SCRIPT IS OK
-//What answers have been made so far?
-//echo "<hr>\n";
-//echo "<!-- DEBUG: ANSWERFIELDS AND ANSWERS SO FAR\n";
-//foreach (array_keys($_SESSION) as $SESak)
-//	{
-//	echo "$SESak: " . $_SESSION[$SESak] . "\n";
-//	}
-//echo "-->\n";
-
-//echo "<!-- DEBUG: POSTED VARIABLES\n";
-//foreach (array_keys($_POST) as $POSak)
-//	{
-//	echo "$POSak: ". $_POST[$POSak] . "\n";
-//	}
-//echo "-->\n";
-
-//echo "<!-- DEBUG: GROUPLIST\n";
-//foreach (array_keys($_SESSION['grouplist']) as $GLak)
-//	{
-//	echo "** $GLak: \n";
-//	foreach (array_keys($_SESSION['grouplist'][$GLak]) as $GL2ak)
-//		{
-//		echo "\t$GL2ak: ".$_SESSION['grouplist'][$GLak][$GL2ak]."\n";
-//		}
-//	}
-//echo "-->\n";
-
-//echo "<!-- DEBUG: FIELDARRAY\n";
-//foreach (array_keys($_SESSION['fieldarray']) as $FAak)
-//	{
-//	echo "** $FAak:\n";
-//	foreach (array_keys($_SESSION['fieldarray'][$FAak]) as $FA2ak)
-//		{
-//		echo "\t$FA2ak: ".$_SESSION['fieldarray'][$FAak][$FA2ak]."\n";
-//		}
-//	}
-//echo "-->\n";
-//END DEBUG
 
 //SUBMIT
 if ($_POST['move'] == " submit ")
@@ -354,7 +313,6 @@ if ($_POST['move'] == " submit ")
 if ($_POST['move'] == " last " && !$notanswered)
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-	//echo "--- $surveyprivate ---<br />";
 	if ($surveyprivate != "N")
 		{
 		$privacy="";
@@ -368,11 +326,6 @@ if ($_POST['move'] == " last " && !$notanswered)
 		echo templatereplace($op);
 		}
 	echo "\n<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
-	//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
-	//echo "\n\n<!-- INPUT NAMES -->\n";
-	//echo "\t\t<input type='hidden' name='fieldnames' value='";
-	//echo implode("|", $inputnames);
-	//echo "'>\n";
 	
 	echo "\n\n<!-- START THE SURVEY -->\n";
 	foreach(file("$thistpl/survey.pstpl") as $op)
@@ -432,10 +385,6 @@ while($tbl = @mysql_tablename($tresult, $i++))
 //RUN THIS IF THIS IS THE FIRST TIME
 if (!$_SESSION['step'])
 	{
-	//*****************************************************************************************************
-	//PREPARE SURVEY
-	//*****************************************************************************************************
-
 	if ($tokensexist == 1 && !$_GET['token'])
 		{
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
@@ -511,7 +460,10 @@ if (!$_SESSION['step'])
 	$query = "SELECT * FROM groups WHERE groups.sid=$sid ORDER BY group_name";
 	$result = mysql_query($query) or die ("Couldn't get group list<br />$query<br />".mysql_error());
 	$_SESSION['totalsteps'] = mysql_num_rows($result);
-	while ($row = mysql_fetch_array($result)){$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);}
+	while ($row = mysql_fetch_array($result))
+		{
+		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
+		}
 	//NOW LETS BUILD THE SESSION VARIABLES
 	$query = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
 	$result = mysql_query($query);
@@ -542,7 +494,7 @@ if (!$_SESSION['step'])
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
 	while ($row = mysql_fetch_assoc($result)) {$arows[] = $row;} // Get table output into array
 	usort($arows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-		if (!$_SESSION['insertarray'])
+	if (!$_SESSION['insertarray'])
 		{
 		if ($surveyprivate == "N")
 			{
@@ -554,7 +506,8 @@ if (!$_SESSION['step'])
 			{
 			//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
 			$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P") {
+			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P") 
+				{
 				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
 				$abresult = mysql_query($abquery);
 				while ($abrow = mysql_fetch_array($abresult))
@@ -583,11 +536,15 @@ if (!$_SESSION['step'])
 					{
 					$_SESSION['insertarray'][] = "$fieldname".$i;
 					}			
-				} elseif ($arow['type'] == "O")	{
+				}
+			elseif ($arow['type'] == "O")	
+				{
 				$_SESSION['insertarray'][] = "$fieldname";
 				$fn2 = "$fieldname"."comment";
 				$_SESSION['insertarray'][] = "$fn2";
-				} else	{
+				}
+			else
+				{
 				$_SESSION['insertarray'][] = "$fieldname";
 				}
 
@@ -595,7 +552,9 @@ if (!$_SESSION['step'])
 			if (conditionscount($arow['qid']) > 0)
 				{
 				$conditions = "Y";
-				} else {
+				}
+			else
+				{
 				$conditions = "N";
 				}
 			//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
@@ -606,8 +565,6 @@ if (!$_SESSION['step'])
 			}
 		}
 
-	
-	
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -621,20 +578,15 @@ if (!$_SESSION['step'])
 		echo "\t\t\t".templatereplace($op);
 		}
 	echo "\n";
-	//DEBUG FIELDARRAY
-	//echo "<ul>\n";
-	//foreach ($_SESSION['fieldarray'] as $fa)
-	//	{
-	//	echo "<li>QID: $fa[0], FIELDNAME: $fa[1], TITLE: $fa[2], QUESTION: $fa[3], TYPE: $fa[4], GID: $fa[5], MANDATORY: $fa[6], CONDITIONSEXIST?: $fa[7]</li>\n";
-	//	}
-	//echo "</ul>\n";
-	//END DEBUG
 	$navigator = surveymover();
 	foreach(file("$thistpl/navigator.pstpl") as $op)
 		{
 		echo templatereplace($op);
 		}
-	if ($surveyactive != "Y") {echo "\t\t<center><font color='red' size='2'>This survey is not currently active. You will not be able to save your responses.</font></center>\n";}
+	if ($surveyactive != "Y") 
+		{
+		echo "\t\t<center><font color='red' size='2'>This survey is not currently active. You will not be able to save your responses.</font></center>\n";
+		}
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -645,7 +597,6 @@ if (!$_SESSION['step'])
 	exit;
 	}
 
-	
 //******************************************************************************************************
 //PRESENT SURVEY
 //******************************************************************************************************
@@ -716,12 +667,19 @@ if (is_array($conditions))
 		else				{$idname=$cd[2];}
 		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
 		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
-		//if ($cd[4] == "M" || $cd[4] == "O")
 			
-		if ($cd[3] == '') {$java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";}
+		if ($cd[3] == '') 
+			{
+			$java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
+			}
 		elseif ($cd[4] == "M" || $cd[4] == "O")
-			{$java .= "document.getElementById('$idname').checked";}
-		else {$java .= "document.getElementById('$idname').value == '$cd[3]'";}
+			{
+			$java .= "document.getElementById('$idname').checked";
+			}
+		else 
+			{
+			$java .= "document.getElementById('$idname').value == '$cd[3]'";
+			}
 		if ($oldq != $cd[0])//Close if statement
 			{
 			$endzone = "))\n";
@@ -745,7 +703,6 @@ echo $java;
 echo "\t\t\t}\n";
 echo "\t//-->\n";
 echo "\t</script>\n\n";
-//echo "&nbsp;\n";
 echo "\n\n<!-- START THE GROUP -->\n";
 foreach(file("$thistpl/startgroup.pstpl") as $op)
 	{
@@ -761,7 +718,6 @@ if ($groupdescription)
 		}
 	}
 echo "\n";
-
 
 echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 if (is_array($qanda))
@@ -788,8 +744,6 @@ foreach(file("$thistpl/endgroup.pstpl") as $op)
 	echo "\t\t\t\t".templatereplace($op);
 	}
 echo "\n";
-
-//echo "&nbsp;\n";
 
 $navigator = surveymover();
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
@@ -856,8 +810,6 @@ function surveymover()
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' next >> ' name='move' />\n";}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
 		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' last ' name='move' />\n";}
-	//$surveymover .= "\t\t\t\t\t<br />\n";
-	//$surveymover .= "\t\t\t\t\t<font size='1'>[<a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall'>Exit and Clear Survey</a>]\n";
 	return $surveymover;	
 	}
 

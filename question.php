@@ -47,7 +47,6 @@ if ($_POST['fieldnames'])
 	foreach ($postedfieldnames as $pf)
 		{
 		$_SESSION[$pf] = $_POST[$pf];
-		//echo "<!-- SAVING $pf: $_SESSION[$pf] -->\n";
 		}
 	}
 
@@ -60,8 +59,6 @@ if ($_POST['mandatory'])
 	foreach ($chkmands as $cm)
 		{
 		$multiname="MULTI$mfns[$mi]";
-		//echo "Checking Mandatory: $cm<br />";
-		//echo "Mandatory $cm is ".$_SESSION[$cm]."<br />\n";
 		if ($_SESSION[$cm] == "0" || $_SESSION[$cm])
 			{
 			}
@@ -130,51 +127,6 @@ if ($_POST['conmandatory'])
 		    }
 		}
 	}
-//DEBUG - FOLLOWING SECTION CAN GO ONCE SCRIPT IS OK
-//What answers have been made so far?
-//echo "<hr>\n";
-//echo "<!-- DEBUG: ANSWERFIELDS AND ANSWERS SO FAR\n";
-//foreach (array_keys($_SESSION) as $SESak)
-//	{
-//	echo "$SESak: " . $_SESSION[$SESak] . "\n";
-//	}
-//echo "-->\n";
-//
-//echo "<!-- DEBUG: POSTED VARIABLES\n";
-//foreach (array_keys($_POST) as $POSak)
-//	{
-//	echo "$POSak: ". $_POST[$POSak] . "\n";
-//	}
-//echo "-->\n";
-//
-//echo "<!-- DEBUG: GROUPLIST\n";
-//foreach (array_keys($_SESSION['grouplist']) as $GLak)
-//	{
-//	echo "** $GLak: \n";
-//	foreach (array_keys($_SESSION['grouplist'][$GLak]) as $GL2ak)
-//		{
-//		echo "\t$GL2ak: ".$_SESSION['grouplist'][$GLak][$GL2ak]."\n";
-//		}
-//	}
-//echo "-->\n";
-//
-//echo "<!-- DEBUG: POST ARRAY\n";
-//foreach (array_keys($_POST) as $Pak)
-//	{
-//	echo "** $Pak: {$_POST[$Pak]}<br />\n";
-//	}
-//echo "-->\n";
-//echo "<!-- DEBUG: FIELDARRAY\n";
-//foreach (array_keys($_SESSION['fieldarray']) as $FAak)
-//	{
-//	echo "** $FAak:\n";
-//	foreach (array_keys($_SESSION['fieldarray'][$FAak]) as $FA2ak)
-//		{
-//		echo "\t$FA2ak: ".$_SESSION['fieldarray'][$FAak][$FA2ak]."\n";
-//		}
-//	}
-//echo "-->\n";
-//END DEBUG
 
 //SUBMIT
 if ($_POST['move'] == " submit ")
@@ -300,7 +252,6 @@ if ($_POST['move'] == " submit ")
 				}
 			}
 		}
-	//$GLOBALS["completed"]=$completed;
 	foreach(file("$thistpl/completed.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -347,13 +298,8 @@ while($tbl = @mysql_tablename($tresult, $i++))
 	}
 
 //RUN THIS IF THIS IS THE FIRST TIME
-//if ((!$_SESSION['step'] && $_SESSION['step'] != "0") || $_SESSION['step'] < 0 )
 if (!$_SESSION['step'])
 	{
-	//*****************************************************************************************************
-	//PREPARE SURVEY
-	//*****************************************************************************************************
-
 	if ($tokensexist == 1 && !$_GET['token'])
 		{
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
@@ -394,7 +340,6 @@ if (!$_SESSION['step'])
 		$tkquery = "SELECT * FROM tokens_$sid WHERE token='{$_GET['token']}' AND completed != 'Y'";
 		$tkresult = mysql_query($tkquery);
 		$tkexist = mysql_num_rows($tkresult);
-
 		if (!$tkexist)
 			{
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
@@ -428,7 +373,6 @@ if (!$_SESSION['step'])
 	//LETS COUNT THE NUMBER OF GROUPS (That's how many steps there will be)
 	$query = "SELECT * FROM groups WHERE groups.sid=$sid ORDER BY group_name";
 	$result = mysql_query($query) or die ("Couldn't get group list<br />$query<br />".mysql_error());
-	//$_SESSION['totalsteps'] = mysql_num_rows($result);
 	while ($row = mysql_fetch_array($result)){$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);}
 	//NOW LETS BUILD THE SESSION VARIABLES
 	$query = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name";
@@ -473,7 +417,8 @@ if (!$_SESSION['step'])
 			{
 			//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
 			$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P") {
+			if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || $arow['type'] == "C" || $arow['type'] == "P") 
+				{
 				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
 				$abresult = mysql_query($abquery);
 				while ($abrow = mysql_fetch_array($abresult))
@@ -494,7 +439,9 @@ if (!$_SESSION['step'])
 						$_SESSION['insertarray'][] = "$fieldname"."othercomment";	
 						}
 					}
-				} elseif ($arow['type'] == "R") {
+				} 
+			elseif ($arow['type'] == "R") 
+				{
 				$abquery = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND sid=$sid AND questions.qid={$arow['qid']} ORDER BY answers.code";
 				$abresult = mysql_query($abquery);
 				$abcount = mysql_num_rows($abresult);
@@ -502,11 +449,15 @@ if (!$_SESSION['step'])
 					{
 					$_SESSION['insertarray'][] = "$fieldname".$i;
 					}			
-				} elseif ($arow['type'] == "O")	{
+				}
+			elseif ($arow['type'] == "O")	
+				{
 				$_SESSION['insertarray'][] = "$fieldname";
 				$fn2 = "$fieldname"."comment";
 				$_SESSION['insertarray'][] = "$fn2";
-				} else	{
+				}
+			else
+				{
 				$_SESSION['insertarray'][] = "$fieldname";
 				}
 
@@ -514,7 +465,9 @@ if (!$_SESSION['step'])
 			if (conditionscount($arow['qid']) > 0)
 				{
 				$conditions = "Y";
-				} else {
+				}
+			else
+				{
 				$conditions = "N";
 				}
 			//echo "F$fieldname, {$arow['title']}, {$arow['question']}, {$arow['type']}<br />\n"; //MORE DEBUGGING STUFF
@@ -524,30 +477,17 @@ if (!$_SESSION['step'])
 			$_SESSION['fieldarray'][] = array("{$arow['qid']}", "$fieldname", "{$arow['title']}", "{$arow['question']}", "{$arow['type']}", "{$arow['gid']}", "{$arow['mandatory']}", $conditions);
 			}
 		}
-
-	
-	
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
 		}
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
-	
 	echo "\n\n<!-- START THE SURVEY -->\n";
-
 	foreach(file("$thistpl/welcome.pstpl") as $op)
 		{
 		echo "\t\t\t".templatereplace($op);
 		}
 	echo "\n";
-	//DEBUG FIELDARRAY
-	//echo "<ul>\n";
-	//foreach ($_SESSION['fieldarray'] as $fa)
-	//	{
-	//	echo "<li>QID: $fa[0], FIELDNAME: $fa[1], TITLE: $fa[2], QUESTION: $fa[3], TYPE: $fa[4], GID: $fa[5], MANDATORY: $fa[6], CONDITIONSEXIST?: $fa[7]</li>\n";
-	//	}
-	//echo "</ul>\n";
-	//END DEBUG
 	$navigator = surveymover();
 	foreach(file("$thistpl/navigator.pstpl") as $op)
 		{
@@ -563,19 +503,11 @@ if (!$_SESSION['step'])
 	echo "\n</form>\n</html>";
 	exit;
 	}
-
 	
 //******************************************************************************************************
 //PRESENT SURVEY
 //******************************************************************************************************
 
-//GET GROUP DETAILS
-
-//$grouparrayno=$_SESSION['step']-1;
-//echo "--- GROUP: ".$_SESSION['fieldarray'][$_SESSION['step']-1][5]." ---<br />\n";
-//echo "--- FACOUNT: ".count($_SESSION['fieldarray'])." ---<br />";
-//echo "--- STEP: ".$_SESSION['step']." ---<br />";
-//echo "--- TOTALSTEPS: ".$_SESSION['totalsteps']." ---<br />";
 //GET GROUP DETAILS
 
 if ($_SESSION['step'] == "0") {$currentquestion=$_SESSION['step'];}
@@ -603,87 +535,79 @@ if ($newgroup == "Y" && $_POST['move'] == " << prev " && $_POST['grpdesc']=="Y")
 // MANAGE CONDITIONAL QUESTIONS
 $conditionforthisquestion=$ia[7];
 while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
+	{
+	$cquery="SELECT distinct cqid FROM conditions WHERE qid={$ia[0]}";
+	$cresult=mysql_query($cquery) or die("Couldn't count cqids<br />$cquery<br />".mysql_error());
+	$cqidcount=mysql_num_rows($cresult);
+	$cqidmatches=0;
+	while ($crows=mysql_fetch_array($cresult))//Go through each condition for this current question
+		{
+		//Check if the condition is multiple type
+		$ccquery="SELECT type FROM questions WHERE qid={$crows['cqid']}";
+		$ccresult=mysql_query($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".mysql_error());
+		while($ccrows=mysql_fetch_array($ccresult))
 			{
-			$cquery="SELECT distinct cqid FROM conditions WHERE qid={$ia[0]}";
-			$cresult=mysql_query($cquery) or die("Couldn't count cqids<br />$cquery<br />".mysql_error());
-			$cqidcount=mysql_num_rows($cresult);
-			$cqidmatches=0;
-			while ($crows=mysql_fetch_array($cresult))//Go through each condition for this current question
+			$thistype=$ccrows['type'];
+			} 
+		$cqquery = "SELECT cfieldname, value, cqid FROM conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
+		$cqresult = mysql_query($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".mysql_error());
+		$amatchhasbeenfound="N";
+		while ($cqrows=mysql_fetch_array($cqresult))
+			{
+			$currentcqid=$cqrows['cqid'];
+			$conditionfieldname=$cqrows['cfieldname'];
+			if (!$cqrows['value']) {$conditionvalue="NULL";} else {$conditionvalue=$cqrows['value'];}
+			if ($thistype == "M" || $thistype == "O")
 				{
-				//Check if the condition is multiple type
-				$ccquery="SELECT type FROM questions WHERE qid={$crows['cqid']}";
-				$ccresult=mysql_query($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".mysql_error());
-				while($ccrows=mysql_fetch_array($ccresult))
-					{
-					$thistype=$ccrows['type'];
-					} 
-				$cqquery = "SELECT cfieldname, value, cqid FROM conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
-				$cqresult = mysql_query($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".mysql_error());
-				$amatchhasbeenfound="N";
-				while ($cqrows=mysql_fetch_array($cqresult))
-					{
-					$currentcqid=$cqrows['cqid'];
-					$conditionfieldname=$cqrows['cfieldname'];
-					if (!$cqrows['value']) {$conditionvalue="NULL";} else {$conditionvalue=$cqrows['value'];}
-					if ($thistype == "M" || $thistype == "O")
-						{
-						$conditionfieldname .= $conditionvalue;
-						$conditionvalue = "Y";
-						}
-					if (!$_SESSION[$conditionfieldname]) {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
-					if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
-					//echo "!- $conditionfieldname -- ". $currentvalue . "---". $conditionvalue."-- <br />";
-					}
-				if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
+				$conditionfieldname .= $conditionvalue;
+				$conditionvalue = "Y";
 				}
-			if ($cqidmatches == $cqidcount)
+			if (!$_SESSION[$conditionfieldname]) {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
+			if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
+			}
+		if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
+		}
+	if ($cqidmatches == $cqidcount)
+		{
+		//a match has been found in ALL distinct cqids. The question WILL be displayed
+		$conditionforthisquestion="N";
+		}
+	else
+		{
+		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
+		if ($move == " next >> ")
+			{
+			$currentquestion++;
+			$ia=$_SESSION['fieldarray'][$currentquestion];
+			$_SESSION['step']++;
+			foreach ($_SESSION['grouplist'] as $gl)
 				{
-				//a match has been found in ALL distinct cqids. The question WILL be displayed
+				if ($gl[0] == $ia[5])
+					{
+					$gid=$gl[0];
+					$groupname=$gl[1];
+					$groupdescription=$gl[2];
+					if ($_POST['lastgroupname'] != $groupname) {$newgroup = "Y";} else {$newgroup == "N";}
+					}
+				}
+	
+			if ($_SESSION['step'] > $_SESSION['totalsteps']) 
+				{
+				//The last question was conditional and has been skipped. Move into panic mode.
 				$conditionforthisquestion="N";
-				}
-			else
-				{
-				//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
-				//echo "<!-- DEBUG - CONDITIONS ARE NOT MET IN THIS ROUND -->\n";
-				if ($move == " next >> ")
-					{
-					$currentquestion++;
-					$ia=$_SESSION['fieldarray'][$currentquestion];
-					$_SESSION['step']++;
-					foreach ($_SESSION['grouplist'] as $gl)
-						{
-						if ($gl[0] == $ia[5])
-							{
-							$gid=$gl[0];
-							$groupname=$gl[1];
-								$groupdescription=$gl[2];
-							if ($_POST['lastgroupname'] != $groupname) {$newgroup = "Y";} else {$newgroup == "N";}
-							}
-						}
-
-					if ($_SESSION['step'] > $_SESSION['totalsteps']) 
-						{
-						//The last question was conditional and has been skipped. Move into panic mode.
-						$conditionforthisquestion="N";
-						last();
-						exit;
-					//	submit($surveyheader, $_SESSION['step'], $_SESSION['totalsteps'], $sid, $setfont, $surveyprivate);
-					//	exit;
-						}
-					}
-				elseif ($move == " << prev ")
-					{
-					$currentquestion--;
-					$ia=$_SESSION['fieldarray'][$currentquestion];
-					$_SESSION['step']--;
-					//$s = $_SESSION['step'];
-					//$t--;
-					//$v--;
-					//$chart = (($s-1)/$u*100);
-					}
-				$conditionforthisquestion=$ia[7];
+				last();
+				exit;
 				}
 			}
+		elseif ($move == " << prev ")
+			{
+			$currentquestion--;
+			$ia=$_SESSION['fieldarray'][$currentquestion];
+			$_SESSION['step']--;
+			}
+		$conditionforthisquestion=$ia[7];
+		}
+	}
 
 include("qanda.php");
 
@@ -695,11 +619,6 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 	echo templatereplace($op);
 	}
 echo "\n<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
-//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
-//echo "\n\n<!-- INPUT NAMES -->\n";
-//echo "\t<input type='hidden' name='fieldnames' value='";
-//echo implode("|", $inputnames);
-//echo "'>\n";
 
 echo "\n\n<!-- START THE SURVEY -->\n";
 foreach(file("$thistpl/survey.pstpl") as $op)
@@ -712,7 +631,6 @@ if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << prev ")
 	$presentinggroupdescription = "yes";
 	echo "\n\n<!-- START THE GROUP DESCRIPTION -->\n";
 	echo "\t\t\t<input type='hidden' name='grpdesc' value='Y'>\n";
-	//echo "\t\t\t&nbsp;\n";
 	foreach(file("$thistpl/startgroup.pstpl") as $op)
 		{
 		echo "\t".templatereplace($op);
@@ -736,7 +654,6 @@ if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << prev ")
 	echo "\t\t\t}\n";
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
-//	echo "&nbsp;\n";
 	echo "\n\n<!-- END THE GROUP -->\n";
 	foreach(file("$thistpl/endgroup.pstpl") as $op)
 		{
@@ -744,28 +661,17 @@ if ($newgroup == "Y" && $groupdescription && $_POST['move'] != " << prev ")
 		}
 	echo "\n";
 
-//	echo "&nbsp;\n";
 	$_SESSION['step']--;
 	echo "\t\t\t<input type='hidden' name='newgroupondisplay' value='Y'>\n";
 	}
 else
 	{
 	echo "\n\n<!-- START THE GROUP -->\n";
-//	echo "\t&nbsp;\n";
 	foreach(file("$thistpl/startgroup.pstpl") as $op)
 		{
 		echo "\t".templatereplace($op);
 		}
 	echo "\n";
-	
-	//if ($groupdescription)
-	//	{
-	//	foreach(file("$thistpl/groupdescription.pstpl") as $op)
-	//		{
-	//		echo "\t\t".templatereplace($op);
-	//		}
-	//	}
-	//echo "\n";
 	
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
 	echo "\t<script type='text/javascript'>\n";
@@ -775,8 +681,6 @@ else
 	echo "\t\t\t}\n";
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
-//	echo "&nbsp;\n";
-	
 	
 	echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 	if (is_array($qanda))
@@ -785,7 +689,6 @@ else
 			{
 			echo "\n\t<!-- NEW QUESTION -->\n";
 			echo "\t\t\t\t<div name='$qa[4]' id='$qa[4]'>";
-			//if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
 			$question=$qa[0];
 			$answer=$qa[1];
 			$help=$qa[2];
@@ -803,8 +706,6 @@ else
 		echo "\t\t\t\t".templatereplace($op);
 		}
 	echo "\n";
-
-//	echo "&nbsp;\n";
 	}
 $navigator = surveymover();
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
@@ -881,7 +782,6 @@ function surveymover()
 		{$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' value=' next >> ' name='move' />\n";}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
 		{$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' value=' last ' name='move' />\n";}
-	//$surveymover .= "\t\t\t\t\t<br />\n";
 	return $surveymover;	
 	}
 
