@@ -614,7 +614,7 @@ if ($qid)
 						  . _QL_HELP."</b></font></td>\n\t<td>$setfont{$qrrow['help']}</font></td></tr>\n";
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"
-						  ._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}</font>";
+						  ._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}";
 		if ($qrrow['type'] == "F") 
 			{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
@@ -622,7 +622,7 @@ if ($qid)
 							  . _Q_LABELS_BT."' height='15' width='15' hspace='0' name='EditThisLabelSet' "
 							  . "onClick=\"window.open('labels.php?lid={$qrrow['lid']}', '_blank')\">\n";
 			}
-		$questionsummary .="</td></tr>\n";
+		$questionsummary .="</font></td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"))
 			{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td>"
