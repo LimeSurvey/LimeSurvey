@@ -48,7 +48,7 @@ if (!$style)
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
 	echo "\t\t\t$setfont<b>Export Data";
-	if ($sql) {echo " from Statistics Filter";}
+	if ($_POST['sql']) {echo " from Statistics Filter";}
 	echo "</b>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
@@ -82,7 +82,7 @@ if (!$style)
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<input type='hidden' name='sid' value='$sid'>\n";
-	if ($sql) {echo "\t<input type='hidden' name='sql' value=\"".stripcslashes($sql)."\">\n";}
+	if ($_POST['sql']) {echo "\t<input type='hidden' name='sql' value=\"".stripcslashes($_POST['sql'])."\">\n";}
 	echo "\t</form>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align=\"center\">\n";
@@ -184,9 +184,9 @@ else
 		$legitqs[] = $lw[0];
 		}
 	$surveytable = "survey_{$sid}";
-	if ($sql)
+	if ($_POST['sql'])
 		{
-		$dquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($sql)." ORDER BY id";
+		$dquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";
 		}
 	else
 		{
