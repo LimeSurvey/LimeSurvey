@@ -388,7 +388,10 @@ function modanswers($lid)
 	global $dbprefix;
 	if (get_magic_quotes_gpc() == "0")
 		{
-		$_POST['title'] = addcslashes($_POST['title'], "'");
+		if (isset($_POST['title'])) 
+			{
+			$_POST['title'] = addcslashes($_POST['title'], "'");
+			}
 		}
 	
 	switch($_POST['method'])
