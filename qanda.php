@@ -1485,39 +1485,4 @@ function retrieve_Answer($code)
 		}
 	return $return;
 	}
-
-function addtoarray_single($array1, $array2)
-	{
-	//Takes two single element arrays and adds second to end of first if value exists
-	if (is_array($array2)) 
-		{
-		foreach ($array2 as $ar)
-			{
-			if ($ar && $ar !== null)
-				{
-			    $array1[]=$ar;
-				}
-			}
-		}
-	return $array1;
-	}
-
-function remove_nulls_from_array($array)
-	{
-	foreach ($array as $ar)
-		{
-		if ($ar !== null)
-			{
-		    $return[]=$ar;
-			}
-		}
-	if (isset($return)) 
-		{
-		return $return;
-		}
-	else
-		{
-		return false;
-		}
-	}
 ?>
