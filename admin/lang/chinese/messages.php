@@ -156,6 +156,7 @@ define("_SL_EMAILREMIND", "Email Reminder:"); //New with 0.98rc9
 define("_SL_EMAILREGISTER", "Public registration Email:"); //New with 0.98rc9
 define("_SL_EMAILCONFIRM", "Confirmation Email"); //New with 0.98rc9
 define("_SL_REPLACEOK", "This will replace the existing text. Continue?"); //New with 0.98rc9
+define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
 
 //groups
 define("_GL_TITLE", "標題:");
@@ -225,6 +226,7 @@ define("_NUMERICAL", "數值欄位");
 define("_RANK", "排列級別");
 define("_STEXT", "自由短答");
 define("_LTEXT", "自由長答");
+define("_HTEXT", "Huge free text"); //New with 0.99dev01
 define("_YESNO", "是/否");
 define("_ARR5", "Array (5項式選擇)");
 define("_ARR10", "Array (10項式選擇)");
@@ -678,5 +680,6 @@ define("_TP_COMPLETEDPAGE", "Completed Page"); //New with 098rc9
 define("_TP_CLEARALLPAGE", "Clear All Page"); //New with 098rc9
 define("_TP_REGISTERPAGE", "Register Page"); //New with 098finalRC1
 define("_TP_EXPORT", "Export Template"); //New with 098rc10
-
+define("_TP_LOADPAGE", "Load Page"); //New with 0.99dev01
+define("_TP_SAVEPAGE", "Save Page"); //New with 0.99dev01
 ?>

@@ -156,6 +156,7 @@ define("_SL_EMAILREMIND", "Email Reminder:"); //New with 0.98rc9
 define("_SL_EMAILREGISTER", "Public registration Email:"); //New with 0.98rc9
 define("_SL_EMAILCONFIRM", "Confirmation Email"); //New with 0.98rc9
 define("_SL_REPLACEOK", "This will replace the existing text. Continue?"); //New with 0.98rc9
+define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
 
 //groups
 define("_GL_TITLE", "Titolo:");
@@ -225,6 +226,7 @@ define("_NUMERICAL", "Numeri");
 define("_RANK", "Classifica");
 define("_STEXT", "Testo libero breve");
 define("_LTEXT", "Testo libero lungo");
+define("_HTEXT", "Huge free text"); //New with 0.99dev01
 define("_YESNO", "Si/No");
 define("_ARR5", "Scelta (5 opzioni)");
 define("_ARR10", "Scelta (10 opzioni)");
@@ -678,5 +680,6 @@ define("_TP_COMPLETEDPAGE", "Completed Page"); //New with 098rc9
 define("_TP_CLEARALLPAGE", "Clear All Page"); //New with 098rc9
 define("_TP_REGISTERPAGE", "Register Page"); //New with 098finalRC1
 define("_TP_EXPORT", "Export Template"); //New with 098rc10
-
+define("_TP_LOADPAGE", "Load Page"); //New with 0.99dev01
+define("_TP_SAVEPAGE", "Save Page"); //New with 0.99dev01
 ?>
