@@ -91,7 +91,7 @@ if (!$ok)
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='"._CANCEL."' onClick=\"window.open('admin.php?sid=$sid', '_top')\" /><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='"._AD_CANCEL."' onClick=\"window.open('admin.php?sid=$sid', '_top')\" /><br />\n";
 	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='"._DELETE."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$sid&ok=Y','_top')\" />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
