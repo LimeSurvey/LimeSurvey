@@ -2,7 +2,8 @@
 	<tr>
 		<td align='center'>
 			{NAVIGATOR}<br />
-			<font size='1'>{CLEARALL}</font>
+			<font size='1'>{CLEARALL}</font><br />
+			<font size='1'>{SAVE}</font>
 		</td>
 	</tr>
 </table>
