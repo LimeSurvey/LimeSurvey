@@ -390,7 +390,7 @@ if ($action == "addquestion")
 	$newquestion .= "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n";
 	$newquestion .= "\t\tdocument.addnewquestion.other[1].checked = true;\n";
 	$newquestion .= "\t\t}\n";
-	$newquestion .= "\tif (QuestionType == 'S' || QuestionType == 'T')\n";
+	$newquestion .= "\tif (QuestionType == 'S' || QuestionType == 'T' || QuestionType == '')\n";
 	$newquestion .= "\t\t{\n";
 	$newquestion .= "\t\tdocument.getElementById('MandatorySelection').style.display = 'none';\n";
 	$newquestion .= "\t\tdocument.editquestion.mandatory[1].checked=true;\n";
