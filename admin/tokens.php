@@ -72,6 +72,7 @@ if (!$chresult = mysql_query($chquery))
 while ($chrow = mysql_fetch_array($chresult))
 	{
 	echo "\t<tr><td colspan='2' align='center'>$setfont<b>Survey $sid - {$chrow['short_title']}</td></tr>\n";
+	$surveyprivate = $chrow['private'];
 	}
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
@@ -166,14 +167,14 @@ if ($action == "browse")
 	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=email'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Email</b></td>\n";
 	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=token'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Token</b></td>\n";
 	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Invite?</b></td>\n";
-	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Complete?</b></td>\n";
+	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Done?</b></td>\n";
 	echo "\t\t<td>$setfont<b>Action</b></td>\n";
 	echo "\t</tr>\n";
 	$bquery = "SELECT * FROM tokens_$sid";
 	if (!$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order";}
 	$bresult = mysql_query($bquery);
-	while ($brow = mysql_fetch_row($bresult))
+	while ($brow = mysql_fetch_array($bresult))
 		{
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
 		echo "\t<tr bgcolor='$bgc'>\n";
@@ -181,10 +182,33 @@ if ($action == "browse")
 			{
 			echo "\t\t<td>$setfont$brow[$i]</td>\n";
 			}
-		echo "\t\t<td align='center'>\n";
-		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='Edit' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\">\n";
-		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\">\n";
-		echo "\t\t</td>\n";
+		echo "\t\t<td align='left'>\n";
+		echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='Edit' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\">";
+		echo "&nbsp;<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\">";
+		if ($brow['completed'] != "Y" && $brow['token']) {echo "&nbsp;<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='Do Survey' onClick=\"window.open('$publicurl/index.php?sid=$sid&token={$brow['token']}', '_blank')\">";}
+		echo "\n\t\t</td>\n";
+		if ($brow['completed'] == "Y" && $surveyprivate == "N")
+			{
+			echo "\t\t<form action='browse.php' method='post' target='_blank'>\n";
+			echo "\t\t<td align='center'>\n";
+			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='V' title='View Response'>\n";
+			echo "\t\t</td>\n";
+			echo "\t\t<input type='hidden' name='sid' value='$sid'>\n";
+			echo "\t\t<input type='hidden' name='action' value='id'>\n";
+			echo "\t\t<input type='hidden' name='sql' value=\"token='{$brow['token']}'\">\n";
+			echo "\t\t</form>\n";
+			}
+		elseif ($brow['completed'] != "Y" && $brow['token'])
+			{
+			echo "\t\t<td align='center'>\n";
+			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='R' title='Send Reminder Email' onClick=\"window.open('$PHP_SELF?sid=$sid&action=remind&tid=$brow[0]', '_top')\">";
+			echo "\t\t</td>\n";
+			}
+		else
+			{
+			echo "\t\t<td>\n";
+			echo "\t\t</td>\n";
+			}
 		echo "\t</tr>\n";
 		}
 	echo "</table>\n";
@@ -359,6 +383,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		echo "\t<form method='post' action='tokens.php'>\n";
 		echo "\t<tr><td colspan='2' bgcolor='black' align='center'>\n";
 		echo "\t\t$setfont<font color='white'><b>Send Reminder\n";
+		if ($_GET['tid']) {echo " to TokenID No {$_GET['tid']}";}
 		echo "\t</td></tr>\n";
 		echo "\t<tr><td align='right'>\n";
 		echo "\t\t$setfont<b>From:</td>\n";
@@ -367,9 +392,12 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		echo "\t<tr><td align='right'>\n\t\t$setfont<b>Subject:\n\t</td>\n\t<td>\n";
 		echo "\t\t<input type='text' $slstyle size='50' name='subject' value='Reminder to participate in $surveyname'>\n";
 		echo "\t</td></tr>\n";
-		echo "\t<tr><td align='right' valign='top'>\n\t\t$setfont<b>Start at ID:\n\t</td>\n";
-		echo "\t\t<td><input type='text' $slstyle size='5' name='last_tid'>\n";
-		echo "\t</td></tr>\n";
+		if (!$_GET['tid'])
+			{
+			echo "\t<tr><td align='right' valign='top'>\n\t\t$setfont<b>Start at ID:\n\t</td>\n";
+			echo "\t\t<td><input type='text' $slstyle size='5' name='last_tid'>\n";
+			echo "\t</td></tr>\n";
+			}
 		echo "\t<tr><td align='right' valign='top'>\n\t\t$setfont<b>Message:\n\t</td>\n";
 		echo "\t<td>\n\t\t$setfont<b>The following will be added to the top of your message:</b>\n";
 		echo "\t\t\t<table width='500' bgcolor='#EEEEEE' border='1' cellpadding='0' cellspacing='0'>\n\t\t\t\t<tr><td>\n";
@@ -397,18 +425,22 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		echo "\t\t<input type='hidden' name='ok' value='absolutely'>\n";
 		echo "\t\t<input type='hidden' name='sid' value='{$_GET['sid']}'>\n";
 		echo "\t\t<input type='hidden' name='action' value='remind'>\n";
+		if ($_GET['tid']) {echo "\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";}
 		echo "\t</form>\n</table>\n";
 		}
 	else
 		{
 		echo "Sending reminder email!";
 		if ($_POST['last_tid']) {echo " (Starting after {$_POST['last_tid']})";}
+		if ($_POST['tid']) {echo " (Sending just to TokenID {$_POST['tid']})";}
 		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !=''";
 		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
+		if ($_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
 		$ctresult = mysql_query($ctquery);
 		$ctcount = mysql_num_rows($ctresult);
 		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !=''";
 		if ($_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
+		if ($_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
 		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />$emquery<br />".mysql_error());
 		$emcount = mysql_num_rows($emresult);
@@ -455,7 +487,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 			}
 		else
 			{
-			echo "<center><b>WARNING:</b><br />There were no token recipients who have not yet responded.";
+			echo "<center><b>WARNING:</b><br />There were no token recipients who have been sent an invitation but have not yet responded.";
 			echo "<br /><br />";
 			echo "No invitations have been sent out!";
 			}
