@@ -87,6 +87,8 @@ else
 		{
 		$asdel = "DELETE FROM answers WHERE qid={$dsrow['qid']}";
 		$asres = mysql_query($asdel);
+		$cddel = "DELETE FROM conditions WHERE qid={$dsrow['qid']}";
+		$cdres = mysql_query($cddel) or die ("Delete conditions failed<br />$cddel<br />".mysql_error());
 		}
 	
 	$qdel = "DELETE FROM questions WHERE sid=$sid";
