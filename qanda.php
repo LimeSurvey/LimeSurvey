@@ -1229,6 +1229,7 @@ function do_array_increasesamedecrease($ia)
 function do_array_flexible($ia)
 	{
 	global $dbprefix;
+	global $shownoanswer;
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -1241,7 +1242,7 @@ function do_array_flexible($ia)
 		$labelcode[]=$lrow['code'];
 		}
 	$cellwidth=60/count($labelans);
-	if ($ia[6] != "Y") {$cellwidth++;}
+	if ($ia[6] != "Y" && $shownoanswer == 1) {$cellwidth++;}
 	//$cellwidth=sprintf("%02d", 60/$cellwidth);
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 	$ansresult = mysql_query($ansquery);
@@ -1254,7 +1255,7 @@ function do_array_flexible($ia)
 		{
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
 		}
-	if ($ia[6] != "Y") //Question is not mandatory
+	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
 		{
 		$answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></td>\n";
 		}
@@ -1286,7 +1287,7 @@ function do_array_flexible($ia)
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
 			}
-		if ($ia[6] != "Y")
+		if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
 			$answer .= "\t\t\t\t\t<td align='center' width='$otherwidth%'><input class='radio' type='radio' name='$myfname' value=''";
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
@@ -1308,6 +1309,7 @@ function do_array_flexible($ia)
 function do_array_flexiblecolumns($ia)
 	{
 	global $dbprefix;
+	global $shownoanswer;
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
 	$qresult = mysql_query($qquery);
 	while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -1319,7 +1321,7 @@ function do_array_flexiblecolumns($ia)
 		$labelcode[]=$lrow['code'];
 		$labels[]=array("answer"=>$lrow['title'], "code"=>$lrow['code']);
 		}
-	if ($ia[6] != "Y") {
+	if ($ia[6] != "Y" && $shownoanswer == 1) {
 	    $labelcode[]="";
 		$labelans[]=_NOTAPPLICABLE;
 		$labels[]=array("answer"=>_NOTAPPLICABLE, "code"=>"");
@@ -1343,7 +1345,8 @@ function do_array_flexiblecolumns($ia)
 	foreach ($answers as $ld)
 		{
 		if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
-		$answer .= "\t\t\t\t\t<td align='center' class='$trbc'><span class='answertext'>".$ld."</span></td>\n";
+		$answer .= "\t\t\t\t\t<td align='center' class='$trbc'><span class='answertext'>"
+				. $ld."</span></td>\n";
 		}
 	unset($trbc);
 	$answer .= "\t\t\t\t</tr>\n";
@@ -1354,6 +1357,7 @@ function do_array_flexiblecolumns($ia)
 		$ansrowcount++;
 		$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
 		}
+	$percwidth=100/($ansrowcount + 1);
 	foreach($labels as $ansrow)
 		{
 		//$myfname = $ia[1].$ansrow['code'];
@@ -1363,7 +1367,7 @@ function do_array_flexiblecolumns($ia)
 			{
 			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$myfname=$ia[1].$ld;
-			$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$otherwidth%'>";
+			$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$percwidth%'>";
 			$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked";}
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
