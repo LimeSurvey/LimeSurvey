@@ -410,7 +410,14 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$vasummary .= "\t\t<td align='center'>";
 		if (($activated == "Y" && $qtype == "L") || ($activated == "N"))
 			{
-			$vasummary .= "<input name='default' type='text' $btstyle value=\"{$cdrow['default']}\" size='2'></td>\n";
+			$vasummary .= "\t\t\t<select name='default' $btstyle>\n";
+			$vasummary .= "\t\t\t\t<option value='Y'";
+			if ($cdrow['default'] == "Y") {$vasummary .= " selected";};
+			$vasummary .= ">"._AD_YES."</option>\n";
+			$vasummary .= "\t\t\t\t<option value='N'";
+			if ($cdrow['default'] != "Y") {$vasummary .= " selected";};
+			$vasummary .= ">"._AD_NO."</option>\n";
+			$vasummary .= "\t\t\t</select></td>\n";
 			}
 		else
 			{
@@ -450,7 +457,12 @@ if ($_GET['viewanswer'] || $_POST['viewanswer'])
 		$vasummary .= "\t\t<td align='center'><input name='code' type='text' $btstyle size='5'></td>\n";
 		$vasummary .="\t\t<td align='center'><input name='answer' type='text' $btstyle size='50'></td>\n";
 		$vasummary .="\t\t<input name='sortorder' type='hidden' $btstyle value='$position'>\n";
-		$vasummary .="\t\t<td align='center'><input name='default' type='text' $btstyle value='N' size='2'></td>\n";
+		$vasummary .="\t\t<td align='center'>";
+		//"<input name='default' type='text' $btstyle value='N' size='2'></td>\n";
+		$vasummary .= "\t\t\t<select name='default' $btstyle>\n";
+		$vasummary .= "\t\t\t\t<option value='Y'>"._AD_YES."</option>\n";
+		$vasummary .= "\t\t\t\t<option value='N' selected>"._AD_NO."</option>\n";
+		$vasummary .= "\t\t\t</select></td>\n";
 		$vasummary .= "\t\t<td></td>\n";
 		$vasummary .="\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='"._AL_ADD."'></td>\n";
 		$vasummary .= "\t<input type='hidden' name='sid' value='$sid'>\n";
