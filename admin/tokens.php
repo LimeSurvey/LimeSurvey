@@ -691,7 +691,12 @@ if ($action == "edit" || $action == "add")
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td align='right' width='20%'>$setfont<b>Token:</b></td>\n";
-	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value='$token'></td>\n";
+	echo "\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value='$token'>\n";
+	if ($action == "add")
+		{
+		echo "\t\t$setfont<font size='1' color='red'>You should leave this blank and generate the token using 'tokenify'</font></font>\n";
+		}
+	echo "\t</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td align='right' width='20%'>$setfont<b>Sent?:</b></td>\n";
