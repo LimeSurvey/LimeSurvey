@@ -67,18 +67,11 @@ if (!$_GET['sid'] && !$_POST['sid'])
 	exit;
 	}
 
+
+
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 if (!isset($sid)) {$sid=returnglobal('sid');}
 if (!isset($token)) {$token=returnglobal('token');}
-//$sid=$_GET['sid']; if (!$sid) {$sid=$_POST['sid'];}
-//if (!$token) 
-//	{
-//	$token=$_GET['token'];
-//	if (!$token)
-//		{
-//		$token=$_POST['token'];
-//		}
-//	}
 $query="SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
 $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
 $surveyexists=mysql_num_rows($result);
@@ -145,6 +138,23 @@ if ($_COOKIE[$cookiename] == "COMPLETE" && $surveyusecookie == "Y" && $tokensexi
 	echo "</html>\n";
 	exit;
 	}
+
+//CHECK IF SURVEY ID DETAILS HAVE CHANGED
+if (!isset($oldsid)) {$oldsid=returnglobal('oldsid');}
+if ($oldsid && $oldsid != $sid) //Must be an 'oldsid' and this must not match up with current sid
+	{ // SURVEY HAS CHANGED
+	foreach ($_SESSION as $SES)
+		{
+		session_unset();
+		}
+	//Add here an option to save old results when this capability is added.
+	//exit;
+	}
+if (!isset($oldsid))
+	{
+	$_SESSION['oldsid'] = $sid;
+	}
+
 
 //CLEAR SESSION IF REQUESTED
 if ($_GET['move'] == "clearall")
