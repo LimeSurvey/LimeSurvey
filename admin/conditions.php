@@ -65,9 +65,16 @@ if (!$_GET['qid'] && !$_POST['qid'])
 //ADD NEW ENTRY IF THIS IS AN ADD
 if ($_POST['action'] == "insertcondition")
 	{
-	$query = "INSERT INTO conditions (qid, cqid, cfieldname, value) VALUES "
-		   . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['canswers']}')";
-	$result = mysql_query($query) or die ("Couldn't insert new condition<br />$query<br />".mysql_error());
+	if (!$_POST['canswers'] || !$_POST['cquestions'])
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.\")\n //-->\n</script>\n";				
+		}
+	else
+		{
+		$query = "INSERT INTO conditions (qid, cqid, cfieldname, value) VALUES "
+			   . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['canswers']}')";
+		$result = mysql_query($query) or die ("Couldn't insert new condition<br />$query<br />".mysql_error());
+		}
 	}
 //DELETE ENTRY IF THIS IS DELETE
 if ($_POST['action'] == "delete")
