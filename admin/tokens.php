@@ -339,11 +339,11 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "</b></td></tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='right'>$setfont<b>From:</b></td>\n";
-		echo "\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadminemail' /></td>\n";
+		echo "\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadmin <$surveyadminemail>' /></td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='right'>$setfont<b>Subject:</b></td>\n";
-		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='Invitation to participate in $surveyname survey' /></td>\n";
+		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='Invitation to participate in $surveyname' /></td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='right' valign='top'>$setfont<b>Message:</b></td>\n";
@@ -419,6 +419,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 			{
 			while ($emrow = mysql_fetch_array($emresult))
 				{
+				//$to = $emrow['email'];
 				$to = $emrow['email'];
 				$sendmessage = $message;
 				$sendmessage = str_replace("{FIRSTNAME}", $emrow['firstname'], $sendmessage);
@@ -427,7 +428,7 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 				mail($to, $_POST['subject'], $sendmessage, $headers);
 				$udequery = "UPDATE tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 				$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
-				echo "[Invite Sent to {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+				echo "[Invite Sent to {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 				}
 			if ($ctcount > $emcount)
 				{
@@ -491,7 +492,7 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='right'>$setfont<b>From:</td>\n";
-		echo "\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadminemail' /></td>\n";
+		echo "\t\t<td><input type='text' $slstyle size='50' name='from' value='$surveyadmin <$surveyadminemail>' /></td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='right'>$setfont<b>Subject:</td>\n";
