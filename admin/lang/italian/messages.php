@@ -126,6 +126,7 @@ define(_D_END, "fine");
 //DATA LABELS
 //surveys
 define(_SL_TITLE, "Titolo:");
+define(_SL_SURVEYURL, "Indagine URL:"); //new in 0.98rc5
 define(_SL_DESCRIPTION, "Descrizione:");
 define(_SL_WELCOME, "Benvenuto:");
 define(_SL_ADMIN, "Amministratore:");
