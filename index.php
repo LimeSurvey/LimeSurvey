@@ -36,6 +36,7 @@
 
 
 session_start();
+ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 require_once("./admin/config.php");
 
 if (!isset($sid)) {$sid=returnglobal('sid');}
