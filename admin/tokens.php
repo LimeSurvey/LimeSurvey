@@ -219,8 +219,8 @@ if ($action == "browse")
 	echo "\t</tr>\n";
 	
 	$bquery = "SELECT * FROM tokens_$sid";
-	if (!$_GET['order']) {$bquery .= " ORDER BY tid";}
-	else {$bquery .= " ORDER BY {$_GET['order']}";}
+	if (!$_GET['order'] && !$_POST['order']) {$bquery .= " ORDER BY tid";}
+	else { $bquery .= " ORDER BY {$_GET['order']}"; }
 	$bquery .= " LIMIT {$_GET['start']}, {$_GET['limit']}";
 	$bresult = mysql_query($bquery);
 	while ($brow = mysql_fetch_array($bresult))
@@ -272,8 +272,12 @@ if ($action == "browse")
 	$movenext = $_GET['start'] + $_GET['limit'] + 1;
 	if ($movenext > $tkcount) {$movenext = $tkcount;}
 	echo "\t<tr>\n";
-	echo "\t\t<td colspan='4' align='left'><input type='submit' value='<<' $btstyle onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$movelast&limit={$_GET['limit']}', '_top')\"></td>\n";
-	echo "\t\t<td colspan='5' align='right'><input type='submit' value='>>' $btstyle onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$movenext&limit={$_GET['limit']}', '_top')\"></td>\n";
+	echo "\t\t<td colspan='4' align='left'><input type='submit' value='<<' $btstyle onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$movelast&limit={$_GET['limit']}";
+	if ($_GET['order']) {echo "&order={$_GET['order']}";}
+	echo "', '_top')\"></td>\n";
+	echo "\t\t<td colspan='5' align='right'><input type='submit' value='>>' $btstyle onClick=\"window.open('tokens.php?action=browse&sid=$sid&start=$movenext&limit={$_GET['limit']}";
+	if ($_GET['order']) {echo "&order={$_GET['order']}";}
+	echo "', '_top')\"></td>\n";
 	echo "\t</tr>\n";
 
 	echo "</table>\n";
