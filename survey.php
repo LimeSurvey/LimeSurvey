@@ -353,7 +353,7 @@ if ($_POST['move'] == " "._LAST." " && !$notanswered)
 		{
 		echo templatereplace($op);
 		}
-	echo "\n<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 	
 	echo "\n\n<!-- START THE SURVEY -->\n";
 	foreach(file("$thistpl/survey.pstpl") as $op)
@@ -618,7 +618,7 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
 	}
-echo "\n<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
+echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n\n<!-- INPUT NAMES -->\n";
 echo "\t<input type='hidden' name='fieldnames' value='";

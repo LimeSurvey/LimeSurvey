@@ -670,7 +670,7 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
 	}
-echo "\n<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
+echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 
 echo "\n\n<!-- START THE SURVEY -->\n";
 foreach(file("$thistpl/survey.pstpl") as $op)
@@ -862,7 +862,7 @@ function last()
 	echo "\t\t\t}\n";
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
-	echo "\n<form method='post' action='$PHP_SELF' id='phpsurveyor' name='phpsurveyor'>\n";
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 	$GLOBALS["privacy"]=$privacy;
 	echo "\n\n<!-- START THE SURVEY -->\n";
 	foreach(file("$thistpl/survey.pstpl") as $op)
