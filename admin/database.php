@@ -160,7 +160,7 @@ elseif ($action == "insertnewquestion")
 	$result = mysql_query($query);
 	if (!$result)
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\\n".mysql_error()."\")\n //-->\n</script>\n";
 		}
 	else
 		{
@@ -226,12 +226,12 @@ elseif ($action == "copynewquestion")
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
 		}
-	if (!isset($_POST['lid'])) {$_POST['lid']=="";}
+	if (!isset($_POST['lid'])) {$_POST['lid']="";}
 	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
 	if (!$result)
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\n".mysql_error()."\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\\n".mysql_error()."\")\n //-->\n</script>\n";
 		}
 	if (returnglobal('copyanswers') == "Y")
 		{
@@ -488,7 +488,7 @@ elseif ($action == "insertnewsurvey")
 				  . "(sid, short_title, description, admin, active, welcome, expires, "
 				  . "adminemail, private, faxto, format, template, url, urldescrip, "
 				  . "language, datestamp, usecookie, notification, allowregister, attribute1, attribute2, "
-				  . "email_invite, email_remind, email_register, email_confirm)\n"
+				  . "email_invite, email_remind, email_register, email_confirm, allowsave)\n"
 				  . "VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',\n"
 				  . "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
 				  . "'{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',\n"
@@ -496,7 +496,8 @@ elseif ($action == "insertnewsurvey")
 				  . "'{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}',\n"
 				  . "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
 				  . "'{$_POST['attribute1']}', '{$_POST['attribute2']}', '{$_POST['email_invite']}', \n"
-				  . "'{$_POST['email_remind']}', '{$_POST['email_register']}', '{$_POST['email_confirm']}')";
+				  . "'{$_POST['email_remind']}', '{$_POST['email_register']}', '{$_POST['email_confirm']}', \n"
+				  . "'{$_POST['allowsave']}')";
 		$isresult = mysql_query ($isquery);
 		if ($isresult)
 			{
@@ -541,7 +542,7 @@ elseif ($action == "updatesurvey")
 			  . "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
 			  . "attribute2='{$_POST['attribute2']}', email_invite='{$_POST['email_invite']}',\n"
 			  . "email_remind='{$_POST['email_remind']}', email_register='{$_POST['email_register']}',\n"
-			  . "email_confirm='{$_POST['email_confirm']}'\n"
+			  . "email_confirm='{$_POST['email_confirm']}', allowsave='{$_POST['allowsave']}'\n"
 			  . "WHERE sid={$_POST['sid']}";
 	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
 	if ($usresult)
