@@ -117,12 +117,13 @@ if ($questionscount > 0)
 		else {$shortquestion=$rows['question'];}
 		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C")
 			{
-			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']}";
+			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".mysql_error());
 			while ($arows = mysql_fetch_array($aresult))
 				{
-				if (strlen($arows['answer']) > 15) {$shortanswer=substr($arows['answer'], 0, 15).".. ";}
+				if (strlen($arows['answer']) > 10) {$shortanswer=substr($arows['answer'], 0, 10).".. ";}
 				else {$shortanswer = $arows['answer'];}
+				$shortanswer .= " [{$arows['code']}]";
 				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
 				switch ($rows['type'])
 					{
@@ -149,12 +150,17 @@ if ($questionscount > 0)
 			}
 		elseif ($rows['type'] == "R")
 			{
-			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']}";
+			$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY answer";
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 			$acount=mysql_num_rows($aresult);
 			while ($arow=mysql_fetch_array($aresult))
 				{
-				$quicky[]=array($arow['code'], $arow['answer']);
+				if (get_magic_quotes_gpc() == "0")
+					{
+					$theanswer = addcslashes($arows['answer'], "'");
+					}
+				else {$theanswer=$arows['answer'];}
+				$quicky[]=array($arow['code'], $theanswer);
 				}
 			for ($i=1; $i<=$acount; $i++)
 				{
@@ -190,11 +196,16 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
 					break;
 				default:
-					$aquery="SELECT * FROM answers WHERE qid={$rows['qid']}";
+					$aquery="SELECT * FROM answers WHERE qid={$rows['qid']} ORDER BY answer";
 					$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 					while ($arows=mysql_fetch_array($aresult))
 						{
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $arows['answer']);
+						if (get_magic_quotes_gpc() == "0")
+							{
+							$theanswer = addcslashes($arows['answer'], "'");
+							}
+						else {$theanswer=$arows['answer'];}
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
 						}
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", "No Answer");
 					break;
