@@ -36,12 +36,11 @@
 
 
 session_start();
+require_once("./admin/config.php");
 
-if (!isset($sid)) {$sid=$_GET['sid'];}
-if (!isset($sid)) {$sid=$_POST['sid'];}
-if (phpversion() >= '4.2.0') {settype($sid, "int");} else {settype($sid, "integer");}
-
-include("./admin/config.php");
+if (!isset($sid)) {$sid=returnglobal('sid');}
+//This next line is for security reasons. It ensures that the $sid value is never anything but a number.
+if (phpversion() >= '4.2.0') {settype($sid, "int");} else {settype($sid, "integer");} 
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
@@ -50,7 +49,7 @@ $tpldir="$publicdir/templates";
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$sid)
 	{
-	//A nice crashout
+	//A nice exit
 	sendcacheheaders();
 	echo "<html>\n";
 	$output=file("$tpldir/default/startpage.pstpl");
@@ -58,10 +57,10 @@ if (!$sid)
 		{
 		echo templatereplace($op);
 		}
-	echo "\t\t<center><br />\n";
-	echo "\t\t\t<font color='RED'><b>ERROR</b></font><br />\n";
-	echo "\t\t\tYou have not provided a survey identification number.<br /><br />\n";
-	echo "\t\t\tPlease contact <i>$siteadminname</i> at <i>$siteadminemail</i> for further assistance.<br /><br />\n";
+	echo "\t\t<center><br />\n"
+		."\t\t\t<font color='RED'><b>ERROR</b></font><br />\n"
+		."\t\t\tYou have not provided a survey identification number.<br /><br />\n"
+		."\t\t\tPlease contact <i>$siteadminname</i> at <i>$siteadminemail</i> for further assistance.<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
 		{
@@ -71,8 +70,6 @@ if (!$sid)
 	exit;
 	}
 
-
-
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 if (!isset($token)) {$token=returnglobal('token');}
 $query="SELECT * FROM {$dbprefix}surveys WHERE sid=$sid";
@@ -80,12 +77,12 @@ $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".
 $surveyexists=mysql_num_rows($result);
 while ($row=mysql_fetch_array($result))
 	{
-	$surveyname=$row['short_title'];
-	$surveydescription=$row['description'];
-	$surveywelcome=$row['welcome'];
-	$templatedir=$row['template'];
-	$surveyadminname=$row['admin'];
-	$surveyadminemail=$row['adminemail'];
+	$surveyname = $row['short_title'];
+	$surveydescription = $row['description'];
+	$surveywelcome = $row['welcome'];
+	$templatedir = $row['template'];
+	$surveyadminname = $row['admin'];
+	$surveyadminemail = $row['adminemail'];
 	$surveyactive = $row['active'];
 	$surveyexpiry = $row['expires'];
 	$surveyprivate = $row['private'];
@@ -114,7 +111,7 @@ if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 //REQUIRE THE LANGUAGE FILE
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
-
+//Use the default language file if the $surveylanguage file doesn't exist
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require($langfilename);
 
@@ -128,9 +125,10 @@ if ($surveyexpiry < date("Y-m-d") && $surveyexpiry != "0000-00-00")
 		{
 		echo templatereplace($op);
 		}
-	echo "\t\t<center><br />\n";
-	echo "\t\t\t"._SURVEYEXPIRED."<br /><br />\n";
-	echo "\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "._CONTACT2."<br /><br />\n";
+	echo "\t\t<center><br />\n"
+		."\t\t\t"._SURVEYEXPIRED."<br /><br />\n"
+		."\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "
+		._CONTACT2."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach ($output as $op)
 		{
@@ -152,10 +150,11 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $surv
 		{
 		echo templatereplace($op);
 		}
-	echo "\t\t<center><br />\n";
-	echo "\t\t\t<font color='RED'><b>"._ERROR_PS."</b></font><br />\n";
-	echo "\t\t\t"._SURVEYCOMPLETE."<br /><br />\n";
-	echo "\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "._CONTACT2."<br /><br />\n";
+	echo "\t\t<center><br />\n"
+		."\t\t\t<font color='RED'><b>"._ERROR_PS."</b></font><br />\n"
+		."\t\t\t"._SURVEYCOMPLETE."<br /><br />\n"
+		."\t\t\t"._CONTACT1." <i>$siteadminname</i> (<i>$siteadminemail</i>) "
+		._CONTACT2."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
 		{
@@ -191,24 +190,24 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 		{
 		echo templatereplace($op);
 		}
-	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
-	echo "\t<script type='text/javascript'>\n";
-	echo "\t<!--\n";
-	echo "\t\tfunction checkconditions(value, name, type)\n";
-	echo "\t\t\t{\n";
-	echo "\t\t\t}\n";
-	echo "\t//-->\n";
-	echo "\t</script>\n\n";
+	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
+		."\t<script type='text/javascript'>\n"
+		."\t<!--\n"
+		."\t\tfunction checkconditions(value, name, type)\n"
+		."\t\t\t{\n"
+		."\t\t\t}\n"
+		."\t//-->\n"
+		."\t</script>\n\n";
 
-	echo "\t<br />\n";
-	echo "\t<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>\n";
-	echo "\t\t<font face='arial' size='2'>\n";
-	echo "\t\t<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />";
-	echo "<a href='{$_SERVER['PHP_SELF']}?sid=$sid'>"._RESTART."</a><br />\n";
-	echo "\t\t<a href='javascript: window.close()'>"._CLOSEWIN_PS."</a>\n";
-	echo "\t\t</font>\n";
-	echo "\t</td></tr>\n";
-	echo "\t</table>\n\t<br />\n";
+	echo "\t<br />\n"
+		."\t<table align='center' cellpadding='30'><tr><td align='center' bgcolor='white'>\n"
+		."\t\t<font face='arial' size='2'>\n"
+		."\t\t<b><font color='red'>"._ANSCLEAR."</b></font><br /><br />"
+		."<a href='{$_SERVER['PHP_SELF']}?sid=$sid'>"._RESTART."</a><br />\n"
+		."\t\t<a href='javascript: window.close()'>"._CLOSEWIN_PS."</a>\n"
+		."\t\t</font>\n"
+		."\t</td></tr>\n"
+		."\t</table>\n\t<br />\n";
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -236,16 +235,16 @@ sendcacheheaders();
 switch ($surveyformat)
 	{
 	case "A": //All in one
-		include("survey.php");
+		require_once("survey.php");
 		break;
 	case "S": //One at a time
-		include("question.php");
+		require_once("question.php");
 		break;
 	case "G": //Group at a time
-		include("group.php");
+		require_once("group.php");
 		break;		
 	default:
-		include("question.php");
+		require_once("question.php");
 	}
 
 function templatereplace($line)
@@ -290,7 +289,7 @@ function templatereplace($line)
 	$line=str_replace("{TOKEN}", $token, $line);
 	$line=str_replace("{SID}", $sid, $line);
 	if ($help) 
-		{$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' align='left'>".$help, $line);}
+		{$line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' alt='Help' align='left'>".$help, $line);}
 	else
 		{$line=str_replace("{QUESTIONHELP}", $help, $line);}
 	$line=str_replace("{NAVIGATOR}", $navigator, $line);
@@ -312,14 +311,14 @@ function makegraph($thisstep, $total)
 	$chart=$thistpl."/chart.jpg";
 	if (!is_file($chart)) {$shchart="chart.jpg";}
 	else {$shchart = "$publicurl/templates/$templatedir/chart.jpg";}
-	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n";
-	$graph .= "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n";
-	$graph .= "<tr><td align='right' width='40'>0%</td>\n";
+	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
+		   . "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
+		   . "<tr><td align='right' width='40'>0%</td>\n";
 	$size=intval(($thisstep-1)/$total*100);
-	$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% "._COMPLETE."'></td>\n";
-	$graph .= "<td align='left' width='40'>100%</td></tr>\n";
-	$graph .= "</table>\n";
-	$graph .= "</td></tr>\n</table>\n";
+	$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% "._COMPLETE."'></td>\n"
+		    . "<td align='left' width='40'>100%</td></tr>\n"
+		    . "</table>\n"
+		    . "</td></tr>\n</table>\n";
 	return $graph;
 	}
 ?>
