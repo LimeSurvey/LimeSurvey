@@ -87,7 +87,7 @@ if ($action == "insert")
 		elseif ($irow['type'] == "O")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-			$fieldname2 .= $fieldname . "comment";
+			$fieldname2 = $fieldname . "comment";
 			$col_name .= "$fieldname, \n$fieldname2, \n";
 			if (get_magic_quotes_gpc())
 				{$insertqr .= "'" . $$fieldname . "', \n'" . $$fieldname2 . "', \n";}
