@@ -20,6 +20,7 @@ define(_EXPORTQUESTION, "Export Question");
 define(_EXPORTSURVEY, "Export Survey");
 define(_IMPORTQUESTION, "Import Question");
 define(_IMPORTSURVEY, "Import Survey");
+define(_IMPORTQUESTION, "Import Question");
 define(_EXPORTRESULTS, "Export Responses");
 
 //DROPDOWN HEADINGS
@@ -299,5 +300,11 @@ define(_IS_SUCCESS, "Import of Survey is completed.");
 define(_IS_IMPFAILED, "Import of this survey file failed");
 define(_IS_FILEFAILS, "File does not contain PHPSurveyor data in the correct format.");
 
+//IMPORT QUESTION MESSAGES
+define(_IQ_NOSID, "No SID (Survey) has been provided. Cannot import question.");
+define(_IQ_NOGID, "No GID (Group) has been provided. Cannot import question");
+define(_IQ_WRONGFILE, "This file is not a PHPSurveyor question file. Import failed.");
+define(_IQ_IMPORTSUMMARY, "Question Import Summary");
+define(_IQ_SUCCESS, "Import of Question is completed");
 
 ?>
