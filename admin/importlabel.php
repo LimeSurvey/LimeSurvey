@@ -127,39 +127,49 @@ $bigarray = array_values($bigarray);
 $countlabelsets = count($labelsetarray);
 $countlabels = count($labelarray);
 
+
 if ($labelsetarray)
 	{
 	foreach ($labelsetarray as $lsa)
 		{
-		$oldlidpos=strpos($lsa, "VALUES ('") + strlen("VALUES ('");
-		$oldlid=substr($lsa, $oldlidpos, (strpos($lsa, "', '", $oldlidpos))-$oldlidpos);
-		$lsinsert = str_replace("('$oldlid',", "('',", $lsa);
-		$lsinsert = str_replace("labelsets", "{$dbprefix}labelsets", $lsinsert);
-		$lsres = mysql_query($lsinsert) or die ("<b>"._ERROR.":</b> Failed to insert label set<br />\n$lsinsert<br />\n".mysql_error());
+		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
+		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
+
+		$oldlidpos=array_search("lid", $fieldorders);
+		$oldlid=$fieldcontents[$oldlidpos];
+		
+		$lsainsert = str_replace("'$oldlid'", "''", $lsa);
+		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
+		echo "<b>New LID:</b> $newlid<br />\n";
+		$lsiresult=mysql_query($lsainsert) or die ("ERROR Inserting<br />$lsainsert<br />".mysql_error());
+		
 		//GET NEW LID
-		$lidquery = "SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
-		$lidres = mysql_query($lidquery);
-		while ($lirow = mysql_fetch_row($lidres)) {$newlid = $lirow[0];}
-		$newrank=0;
-		//NOW DO NESTED LABELS FOR THIS LID
-		//echo "<br />COUNT: ".count($answerarray);
+		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
+		$nlidresult=mysql_query($nlidquery);
+		while ($nlidrow=mysql_fetch_array($nlidresult)) {$newlid=$nlidrow['lid'];}
+		$labelreplacements[]=array($oldlid, $newlid);
 		if ($labelarray)
 			{
 			foreach ($labelarray as $la)
 				{
-				$lidpos = "('";
-				$astart = strpos($la, $lidpos)+2;
-				$aend = strpos($la, "'", $astart)-$astart;
-				if (substr($la, $astart, $aend) == $oldlid) //This label belongs to this label set
+				$lfieldorders=convertToArray($la, "`, `", "(`", "`)");
+				$lfieldcontents=convertToArray($la, "', '", "('", "')");
+	
+				$labellidpos=array_search("lid", $lfieldorders);
+				$labellid=$lfieldcontents[$labellidpos];
+				if ($labellid == $oldlid)
 					{
-					$ainsert = str_replace("('$oldlid", "('$newlid", $la);
-					$ainsert = str_replace("labels", "{$dbprefix}labels", $ainsert);
-					$aresult=mysql_query($ainsert);
-					//echo $ainsert;
+					$lainsert = str_replace("'$labellid'", "'$newlid'", $la);
+					$lainsert = str_replace ("INTO labels", "INTO {$dbprefix}labels", $lainsert);
+					$liresult=mysql_query($lainsert);
 					}
 				}
 			}
 		}
+	}
+else
+	{
+	echo "<b>No Labelsets Found!</b><br /><br />\n";
 	}
 
 
@@ -174,4 +184,14 @@ echo "<input $btstyle type='submit' value='"._IL_GOLABELADMIN."' onClick=\"windo
 echo "</td></tr></table>\n";
 echo "</body>\n</html>";
 unlink($the_full_file_path);
+
+function convertToArray($string, $seperator, $start, $end)
+	{
+	$begin=strpos($string, $start)+strlen($start);
+	$len=strpos($string, $end)-$begin;
+	$order=substr($string, $begin, $len);
+	$orders=explode($seperator, $order);
+	
+	return $orders;
+	}
 ?>

@@ -261,7 +261,7 @@ if ($labelsetsarray)
 		$oldlidpos=array_search("lid", $fieldorders);
 		$oldlid=$fieldcontents[$oldlidpos];
 		
-		$lsainsert = str_replace("VALUES ('$oldlid", "VALUES ('", $lsa);
+		$lsainsert = str_replace("'$oldlid'", "''", $lsa);
 		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
 		$lsiresult=mysql_query($lsainsert);
 		
@@ -281,7 +281,7 @@ if ($labelsetsarray)
 				$labellid=$lfieldcontents[$labellidpos];
 				if ($labellid == $oldlid)
 					{
-					$lainsert = str_replace("VALUES ('$labellid", "VALUES ('$newlid", $la);
+					$lainsert = str_replace("'$labellid'", "'$newlid'", $la);
 					$lainsert = str_replace ("INTO labels", "INTO {$dbprefix}labels", $lainsert);
 					$liresult=mysql_query($lainsert);
 					}
