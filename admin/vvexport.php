@@ -101,7 +101,8 @@ elseif (isset($sid) && $sid)
 		//echo "<pre>";print_r($fielddata);echo "</pre>";
 		if (count($fielddata) < 1) {$firstline.=$field;}
 		else 
-			{$firstline.=str_replace("\n", " ", str_replace("\t", "   ", strip_tags($fielddata['question'])));}
+			//{$firstline.=str_replace("\n", " ", str_replace("\t", "   ", strip_tags($fielddata['question'])));}
+			{$firstline.=preg_replace('/\s+/',' ',strip_tags($fielddata['question']));
 		$firstline .= $s;
 		$secondline .= $field.$s;
 		}
@@ -115,10 +116,18 @@ elseif (isset($sid) && $sid)
 		foreach ($fieldnames as $field)
 			{
 			$value=trim($row[$field]);
-			$value=str_replace("\n", "{newline}", $value);
-			$value=str_replace("\r", "", $value);
-			if (strpos($value, "\t")) {echo "[$value] - tab found";}
-			$value=str_replace("\t", "{tab}", $value);
+			// sunscreen for the value. necessary for the beach.
+			// careful about the order of these arrays:
+			// lbrace has to be substituted *first*
+			$value=str_replace(array("{",
+									 "\n",
+									 "\r",
+									 "\t"),
+							   array("{lbrace}",
+							   		 "{newline}",
+									 "{cr}",
+									 "{tab}"), 
+							   $value);
 			$sun[]=$value;
 			//echo $value.$s;
 			}
@@ -153,6 +162,18 @@ elseif (isset($sid) && $sid)
 				}
 			$oldtable="{$dbprefix}survey_{$_GET['sid']}";
 			$newtable="{$dbprefix}old_{$_GET['sid']}_{$date}";
+			
+			//Update the auto_increment value from the table before renaming
+			$query = "SELECT id FROM $oldtable ORDER BY id desc LIMIT 1";
+			$result = mysql_query($query) or die("Couldn't get latest id from table<br />$query<br />".mysql_error());
+			while ($row=mysql_fetch_array($result))
+				{
+				$new_autonumber_start=$row['id']+1;
+				} 
+			$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$sid";
+			$result = mysql_query($query); //Note this won't kill the script if it fails
+			
+			//Rename survey responses table
 			$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 			$deactivateresult = mysql_query($deactivatequery) or die ("\n\n"._ERROR."Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 			break;

@@ -152,6 +152,17 @@ else
 			{
 			$recordcount++;
 			$fieldvalues=explode("\t", mysql_escape_string(str_replace("\n", "", $row)), $fieldcount+1);
+			// careful about the order of these arrays:
+			// lbrace has to be substituted *last*
+			$fieldvalues=str_replace(array("{newline}",
+										   "{cr}",
+										   "{tab}",
+										   "{lbrace}"),
+									 array("\n",
+									 	   "\r",
+										   "\t",
+										   "{"),
+									 $fieldvalues);
 			if (isset($donotimport)) //remove any fields which no longer exist
 				{
 				foreach ($donotimport as $not)
