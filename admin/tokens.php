@@ -383,12 +383,12 @@ if ($_GET['action'] == "email" || $_POST['action'] == "email")
 		echo "Sending email!";
 		if ($_POST['tid']) {echo " (Sending just to TokenID {$_POST['tid']})";}
 		echo "<br />\n";
-		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !=''";
+		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !='' AND email != ''";
 		if ($_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
 		echo "<!-- ctquery: $ctquery -->\n";
 		$ctresult = mysql_query($ctquery) or die("Database error!<br />\n" . mysql_error());
 		$ctcount = mysql_num_rows($ctresult);
-		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !=''";
+		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' AND email != ''";
 		if ($_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
 		$emquery .= " LIMIT $maxemails";
 		echo "<!-- emquery: $emquery -->\n";
@@ -543,12 +543,12 @@ if ($_GET['action'] == "remind" || $_POST['action'] == "remind")
 		echo "Sending reminder email!\n";
 		if ($_POST['last_tid']) {echo " (Starting after {$_POST['last_tid']})";}
 		if ($_POST['tid']) {echo " (Sending just to TokenID {$_POST['tid']})";}
-		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !=''";
+		$ctquery = "SELECT firstname FROM tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
 		if ($_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if ($_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
 		$ctresult = mysql_query($ctquery);
 		$ctcount = mysql_num_rows($ctresult);
-		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !=''";
+		$emquery = "SELECT firstname, lastname, email, token, tid FROM tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !='' AND EMAIL !=''";
 		if ($_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if ($_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
