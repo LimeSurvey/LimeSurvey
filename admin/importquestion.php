@@ -34,21 +34,29 @@
 	#############################################################	
 */
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
-echo "<center><b>Importing Question</b></center><br /><br />\n";
+
+echo "<br />\n";
+echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._IMPORTQUESTION."</b></td></tr>\n";
+echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $homedir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<b><center>A major error occurred and your file cannot be uploaded. See system administrator.</center></b>\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _IS_FAILUPLOAD."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<br />\n<b>IMPORTING QUESTION FILE</b><br />Question file succesfully uploaded<br /><br />\n";
-echo "Reading File...<br />\n";
+echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n";
+echo _IS_OKUPLOAD."<br /><br />\n";
+echo _IS_READFILE."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 	{
@@ -60,19 +68,26 @@ fclose($handle);
 
 if (!$_POST['sid'])
 	{
-	echo "No Survey ID (\$sid) has been provided. Import aborted!\n";
+	echo _IQ_NOSID."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
 if (!$_POST['gid'])
 	{
-	echo "No Group ID (\$gid) has been provided. Import aborted!\n";
+	echo _IQ_NOGID."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
 if (!$bigarray[0] == "# SURVEYOR QUESTION DUMP")
 	{
-	echo "This is NOT a Surveyor Question Dump File. Import aborted!\n";
+	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo _IQ_WRONGFILE."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
 	}
@@ -139,14 +154,14 @@ if ($questionarray)
 		$oldgid=substr($qa, $oldgidpos, (strpos($qa, "', '", $oldgidpos))-$oldgidpos);
 		$qinsert = str_replace("('$oldqid', '$oldsid', '$oldgid',", "('$sid', '$gid',", $qa);
 		$qinsert = str_replace("(`qid`, ", "(", $qinsert);
-		$qres = mysql_query($qinsert) or die ("<b>ERROR:</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
+		$qres = mysql_query($qinsert) or die ("<b>"._ERROR.":</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
 		//GET NEW QID
 		$qidquery = "SELECT qid FROM questions ORDER BY qid DESC LIMIT 1";
 		$qidres = mysql_query($qidquery);
 		while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0];}
 		$newrank=0;
 		//NOW DO NESTED ANSWERS FOR THIS QID
-		echo "<br />COUNT: ".count($answerarray);
+		//echo "<br />COUNT: ".count($answerarray);
 		if ($answerarray)
 			{
 			foreach ($answerarray as $aa)
@@ -158,14 +173,14 @@ if ($questionarray)
 				$codepos2=strpos($aa, "', '", strpos($aa, "', '")+1);
 				$codelength=$codepos2-$codepos1;
 				$code = substr($aa, $codepos1, $codelength);
-				echo "DOING $aa<br />\n";
-				echo "SUBTR:".substr($aa, $astart, $aend). " VS $oldqid<br />\n";
+				//echo "DOING $aa<br />\n";
+				//echo "SUBTR:".substr($aa, $astart, $aend). " VS $oldqid<br />\n";
 				if (substr($aa, $astart, $aend) == ($oldqid))
 					{
 					$ainsert = str_replace("('$oldqid", "('$newqid", $aa);
 					//$ainsert = substr(trim($ainsert), 0, -1);
-					echo "$ainsert<br />\n";
-					$ares = mysql_query($ainsert) or die ("<b>ERROR:</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
+					//echo "$ainsert<br />\n";
+					$ares = mysql_query($ainsert) or die ("<b>"._ERROR.":</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
 					if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P")
 						{
 						$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
@@ -213,12 +228,15 @@ if ($questionarray)
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions.
 
 
-echo "QUESTION SUMMARY:<br />\n";
-echo "<ul>\n\t<li>Questions: $countquestions</li>\n";
-echo "\t<li>Answers: $countanswers</li>\n</ul>\n";
+echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
+echo "<b><u>"._IQ_IMPORTSUMMARY."</u></b><br />\n";
+echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
+echo "\t<li>"._ANSWERS.": $countanswers</li></ul><br />\n";
 
-echo "<b>Question Import has been completed. <a href='admin.php?sid=$sid&gid=$gid&qid=$newqid'>Administration</a></b>";
+echo "<b>"._IS_SUCCESS."</b><br />\n";
+echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$sid&gid=$gid&qid=$newqid', '_top')\">\n";
 
+echo "</td></tr></table>\n";
 echo "</body>\n</html>";
 unlink($the_full_file_path);
 ?>
