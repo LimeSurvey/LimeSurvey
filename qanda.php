@@ -355,7 +355,7 @@ switch ($ia[4])
 		for ($i=1; $i<=$anscount; $i++)
 			{
 			$myfname=$ia[1].$i;
-			if ($_SESSION[$myfname])
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 				{
 				$existing++;
 				}
@@ -363,7 +363,7 @@ switch ($ia[4])
 		for ($i=1; $i<=$anscount; $i++)
 			{
 			$myfname = $ia[1].$i;
-			if ($_SESSION[$myfname])
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 				{
 				foreach ($answers as $ans)
 					{
@@ -375,7 +375,7 @@ switch ($ia[4])
 					}
 				}
 			$ranklist .= "\t\t\t\t\t\t&nbsp;$i:&nbsp;<input class='text' type='text' name='RANK_{$ia[0]}$i' id='RANK_{$ia[0]}$i'";
-			if ($_SESSION[$myfname])
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 				{
 				$ranklist .= " value='";
 				$ranklist .= $thistext;
@@ -395,7 +395,7 @@ switch ($ia[4])
 				}
 
 			$chosen[]=""; //create array
-			if ($_SESSION[$myfname])
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 				{
 				$ranklist .= $thiscode;
 				$chosen[]=array($thiscode, $thistext);
@@ -410,8 +410,10 @@ switch ($ia[4])
 			$inputnames[]=$myfname;
 			}
 
-		$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES_{$ia[0]}' $choicewidth id='CHOICES_{$ia[0]}' onClick=\"rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
-		if ($parser_version <= "4.2.0")
+		$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES_{$ia[0]}' ";
+		if (isset($choicewidth)) {$choicelist.=$choicewidth;}
+		$choicelist .= " id='CHOICES_{$ia[0]}' onClick=\"rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
+		if (phpversion() <= "4.2.0")
 			{
 			foreach ($chosen as $chs) {$choose[]=$chs[0];}
 			foreach ($answers as $ans)
@@ -430,7 +432,7 @@ switch ($ia[4])
 				if (!in_array($ans, $chosen))
 					{
 					$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-					if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
+					if (isset($maxselectlength) && strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
 					}
 				}
 			}
@@ -448,7 +450,7 @@ switch ($ia[4])
 				 . "\t\t\t\t\t\t<b>&nbsp;&nbsp;"._YOURCHOICES.":</b><br />\n"
 				 . "&nbsp;".$choicelist
 				 . "\t\t\t\t\t&nbsp;</td>\n";
-		if ($maxselectlength > 60) 
+		if (isset($maxselectlength) && $maxselectlength > 60) 
 			{
 			$ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
 			$answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"
