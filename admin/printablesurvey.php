@@ -280,6 +280,33 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
 				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$dearesult = mysql_query($deaquery);
+				$deacount=mysql_num_rows($dearesult);
+				if ($deqrow['other'] == "Y") {$deacount++;}
+				if ($deacount > $repeatheadings)
+					{
+					$columns=$deacount/$repeatheadings;
+					$spacing=sprintf("%02d", 100/$columns);
+					$upto=0;
+					echo "<table><tr><td valign='top'>$setfont\n";
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						if ($upto == $repeatheadings) 
+							{
+						    echo "</td><td valign='top'>$setfont";
+							$upto=0;
+							}
+						echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
+						$upto++;
+						}
+					if ($deqrow['other'] == "Y")
+						{
+					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+						}
+					echo "</td></tr></table>\n";
+				    //Let's break the presentation into columns.
+					}
+				else
+					{
 				while ($dearow = mysql_fetch_array($dearesult))
 					{
 					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
@@ -315,13 +342,40 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEANY."</u><br />\n";
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
+				$meacount = mysql_num_rows($mearesult);
+				if ($deqrow['other'] == "Y") {$meacount++;}
+				if ($meacount > $repeatheadings)
+					{
+					$columns=$deacount/$repeatheadings;
+					$spacing=sprintf("%02d", 100/$columns);
+					$upto=0;
+					echo "<table><tr><td valign='top'>$setfont\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
+						if ($upto == $repeatheadings) 
+							{
+						    echo "</td><td valign='top'>$setfont";
+							$upto=0;
+							}
+						echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />{$mearow['answer']}<br />\n";
+						$upto++;
+						}
+					if ($deqrow['other'] == "Y")
+						{
+						echo "\t\t\t"._OTHER.": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+						}
+					echo "</td></tr></table>\n";
+					}
+				else
+					{
+					while ($mearow = mysql_fetch_array($mearesult))
+						{
 					echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />{$mearow['answer']}<br />\n";
 					}
-				if ($deqrow['other'] == "Y")
-					{
-					echo "\t\t\t"._OTHER.": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+					if ($deqrow['other'] == "Y")
+						{
+						echo "\t\t\t"._OTHER.": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+						}
 					}
 				break;
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
