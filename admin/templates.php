@@ -33,8 +33,8 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-$file_version="PHPSurveyor Template Editor Version 0.98rc9";
 require_once("config.php");
+$file_version="PHPSurveyor Template Editor ".$versionnumber;
 $slstyle3=$slstyle2;
 if(get_magic_quotes_gpc())
 	{
