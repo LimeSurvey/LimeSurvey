@@ -1,5 +1,7 @@
 <?php
 
+
+//BUTTON BAR TITLES
 define("_ADMINISTRATION", "管理");
 define("_SURVEY", "問卷");
 define("_GROUP", "題目組別");
@@ -39,7 +41,6 @@ define("_LABELCONTROL", "標籤集管理台"); //NEW with 0.98rc3
 define("_LABELSET", "標籤集"); //NEW with 0.98rc3
 define("_LABELANS", "標籤"); //NEW with 0.98rc3
 
-
 //DROPDOWN HEADINGS
 define("_SURVEYS", "問卷");
 define("_GROUPS", "題目組別");
@@ -77,7 +78,6 @@ define("_S_ADDGROUP_BT", "把新增的題目組別加入問卷內");
 define("_S_MINIMISE_BT", "隱藏本問卷的詳細資料");
 define("_S_MAXIMISE_BT", "顯示本問卷的詳細資料");
 define("_S_CLOSE_BT", "關閉本問卷");
-
 //Group bar
 define("_G_EDIT_BT", "修改目前的題目組別");
 define("_G_EXPORT_BT", "輸出目前的題目組別"); //New in 0.98rc5
@@ -97,7 +97,6 @@ define("_Q_LABELS_BT", "修改/新增標籤集");
 define("_Q_MINIMISE_BT", "隱藏本題目的詳細資料");
 define("_Q_MAXIMISE_BT", "顯示本題目的詳細資料");
 define("_Q_CLOSE_BT", "關閉本題目");
-
 //Browse Button Bar
 define("_B_ADMIN_BT", "返回問卷管理");
 define("_B_SUMMARY_BT", "顯示簡報資料");
@@ -147,7 +146,6 @@ define("_SL_STATUS", "狀態:");
 define("_SL_SELSQL", "選擇 SQL 檔案:");
 define("_SL_USECOOKIES", "使用 Cookies 嗎?"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "通知:"); //New with 098rc5
-
 //groups
 define("_GL_TITLE", "標題:");
 define("_GL_DESCRIPTION", "說明:");
@@ -173,7 +171,6 @@ define("_AL_SAVE", "儲存");
 define("_AL_DEL", "刪除");
 define("_AL_ADD", "新增");
 define("_AL_FIXSORT", "修正排序");
-
 //users
 define("_UL_USER", "用戶");
 define("_UL_PASSWORD", "密碼");
@@ -191,7 +188,9 @@ define("_TL_TOKEN", "操作代碼");
 define("_TL_INVITE", "已送出邀請嗎?");
 define("_TL_DONE", "已完成問卷嗎?");
 define("_TL_ACTION", "管理動作");
-
+define("_TL_ATTR1", "Att_1"); //New for 0.98rc7 (Attribute 1)
+define("_TL_ATTR2", "Att_2"); //New for 0.98rc7 (Attribute 2)
+define("_TL_MPID", "MPID"); //New for 0.98rc7   (MPID - short for "Master Preferences ID")
 //labels
 define("_LL_NAME", "設定名字"); //NEW with 098rc3
 define("_LL_CODE", "編號"); //NEW with 098rc3
@@ -275,7 +274,6 @@ define("_SS_CANNOTACTIVATE", "問卷無法啟用."); //NEW for release 0.98rc3
 define("_SS_ADDGROUPS", "您需要新增題目組別"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "您需要新增題目"); //NEW for release 0.98rc3
 
-
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "必須回應的問題"); //New for release 0.98rc4
 define("_QS_OPTIONAL", "選擇性回應的問題"); //New for release 0.98rc4
@@ -289,7 +287,6 @@ define("_ST_NODB2", "原因有二︰1.您選擇的數據庫仍未建立. 2. 存取資料發生故障.");
 define("_ST_NODB3", "PHPSurveyor 試圖為您建立數據庫.");
 define("_ST_NODB4", "您選擇的數據庫名稱是:");
 define("_ST_CREATEDB", "建立數據庫");
-
 
 //USER CONTROL MESSAGES
 define("_UC_CREATE", "建立預設的 htaccess 檔");
@@ -342,8 +339,6 @@ define("_AC_DEACTIVATED_MESSAGE2", "回應的問卷不再能透過PHPSurveyor使用.");
 define("_AC_DEACTIVATED_MESSAGE3", "請您記下這資料表的名稱，以便日後有需要時，您可以存取這些資料.");
 define("_AC_DEACTIVATED_MESSAGE4", "連結本問卷的操作代碼表已經改名為: ");
 
-
-
 //CHECKFIELDS
 define("_CF_CHECKTABLES", "正在檢查表格是否齊備");
 define("_CF_CHECKFIELDS", "正在檢查所有欄位是否齊備");
@@ -359,6 +354,7 @@ define("_CD_POPULATE_MESSAGE", "請 click 下方以組建資料庫");
 define("_CD_POPULATE", "組建資料庫");
 define("_CD_NOCREATE", "不能建立資料庫");
 define("_CD_NODBNAME", "未提供資料庫的資料，本程式必須透過admin.php 執行.");
+
 //DATABASE MODIFICATION MESSAGES
 define("_DB_FAIL_GROUPNAME", "它缺少了必須的組別名稱，因此不能新增題目組別");
 define("_DB_FAIL_GROUPUPDATE", "不能更新題目組別");
@@ -378,8 +374,6 @@ define("_DB_FAIL_NEWSURVEY_TITLE", "不能建立問卷，因為它沒有短標題.");
 define("_DB_FAIL_NEWSURVEY", "不能建立問卷");
 define("_DB_FAIL_SURVEYUPDATE", "不能更新問卷");
 define("_DB_FAIL_SURVEYDELETE", "不能刪除問卷");
-
-
 
 //DELETE SURVEY MESSAGES
 define("_DS_NOSID", "您未選擇問卷，所以未能刪除問卷.");
@@ -411,6 +405,13 @@ define("_EX_FORM_WORD", "Microsoft Word");
 define("_EX_FORM_EXCEL", "Microsoft Excel");
 define("_EX_FORM_CSV", "CSV 逗號分隔");
 define("_EX_EXPORTDATA", "輸出數據");
+define("_EX_COLCONTROLS", "Column Control"); //New for 0.98rc7
+define("_EX_TOKENCONTROLS", "Token Control"); //New for 0.98rc7
+define("_EX_COLSELECT", "Choose columns"); //New for 0.98rc7
+define("_EX_COLOK", "Choose the columns you wish to export. Leave all unselected to export all columns."); //New for 0.98rc7
+define("_EX_COLNOTOK", "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."); //New for 0.98rc7
+define("_EX_TOKENMESSAGE", "Your survey can export associated token data with each response. Select any additional fields you would like to export."); //New for 0.98rc7
+define("_EX_TOKSELECT", "Choose Token Fields"); //New for 0.98rc7
 
 //IMPORT SURVEY MESSAGES
 define("_IS_FAILUPLOAD", "上傳檔案時出錯，可能是您對 admin 資料夾的使用權限設定出錯.");
@@ -528,7 +529,6 @@ define("_TC_EMAILSREMAINING", "還有 {EMAILCOUNT} 封電郵有待寄出。"); //Leave {EM
 define("_TC_SENDREMIND", "送出提示單");
 define("_TC_INVITESENTTO", "邀請寄給:"); //is followed by token name
 define("_TC_REMINDSENTTO", "提示單寄給:"); //is followed by token name
-
 
 //labels.php
 define("_LB_NEWSET", "新增標籤集");
