@@ -91,6 +91,7 @@ while ($row=mysql_fetch_array($result))
 	$surveyurldescrip = $row['urldescrip'];
 	$surveyformat = $row['format'];
 	$surveylanguage = $row['language'];
+	$surveydatestamp = $row['datestamp'];
 	}
 
 //SET THE TEMPLATE DIRECTORY

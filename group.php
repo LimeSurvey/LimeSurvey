@@ -178,6 +178,13 @@ if ($_POST['move'] == " "._SUBMIT." ")
 		echo templatereplace($op);
 		}
 	
+	//If survey has datestamp turned on, add $localtimedate to sessions
+	if ($surveydatestamp == "Y")
+		{
+		$_SESSION['insertarray'][] = "datestamp";
+		$_SESSION['datestamp'] = $localtimedate;
+		}
+
 	//DEVELOP SQL TO INSERT RESPONSES
 	$subquery = "INSERT INTO $surveytable ";
 	if (is_array($_SESSION['insertarray']))
