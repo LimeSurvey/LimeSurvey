@@ -198,7 +198,7 @@ if ($sid)
 					. "\t\t\t}\n"
 					. "\t\telse if (action == \"hideq\")\n"
 					. "\t\t\t{\n"
-					. "\t\t\tfor (i=30; i<=36; i++)\n"
+					. "\t\t\tfor (i=30; i<=37; i++)\n"
 					. "\t\t\t\t{\n"
 					. "\t\t\t\tvar name='surveydetails'+i;\n"
 					. "\t\t\t\tdocument.getElementById(name).style.display='none';\n"
@@ -206,7 +206,7 @@ if ($sid)
 					. "\t\t\t}\n"
 					. "\t\telse if (action == \"showq\")\n"
 					. "\t\t\t{\n"
-					. "\t\t\tfor (i=30; i<=36; i++)\n"
+					. "\t\t\tfor (i=30; i<=37; i++)\n"
 					. "\t\t\t\t{\n"
 					. "\t\t\t\tvar name='surveydetails'+i;\n"
 					. "\t\t\t\tdocument.getElementById(name).style.display='';\n"
@@ -623,8 +623,14 @@ if ($qid)
 						  . _QL_QUESTION."</b></font></td>\n\t<td>$setfont{$qrrow['question']}</font></td></tr>\n"
 						  . "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<b>"
 						  . _QL_HELP."</b></font></td>\n\t<td>$setfont{$qrrow['help']}</font></td></tr>\n";
+		if ($qrrow['preg'])
+			{
+		    $questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"
+							  . _QL_VALIDATION."</b></font></td>\n\t<td>$setfont{$qrrow['preg']}"
+							  . "</font></td></tr>\n";
+			}
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<b>"
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'>$setfont<b>"
 						  ._QL_TYPE."</b></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}";
 		if ($qrrow['type'] == "F" ||$qrrow['type'] == "H") 
 			{
@@ -636,7 +642,7 @@ if ($qid)
 		$questionsummary .="</font></td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 			{
-			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails34'><td></td><td>"
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td>"
 							 . "<font face='verdana' size='1' color='green'>"
 							 . _WARNING.": ". _QS_NOANSWERS." "
 							 . "<input type='image' src='$imagefiles/answers.gif' title='"
@@ -645,13 +651,13 @@ if ($qid)
 			}
 		if (!$qrrow['lid'] && ($qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 			{
-			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td>"
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails36'><td></td>"
 							  . "<td><font face='verdana' size='1' color='green'>"
 							  . _WARNING.": "._QS_NOLID."</font></td></tr>\n";
 			}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 			{
-			$questionsummary .= "\t<tr $qshowstyle id='surveydetails36'>"
+			$questionsummary .= "\t<tr $qshowstyle id='surveydetails37'>"
 							  . "<td align='right' valign='top'>$setfont<b>"
 							  . _QL_OTHER."</b></font></td>\n"
 							  . "\t<td>$setfont{$qrrow['other']}</td></tr>\n";
@@ -965,8 +971,16 @@ if ($action == "addquestion")
 				  . "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 				  . "$qtypeselect"
 				  . "\t\t</select></td>\n"
-				  . "\t</tr>\n"
-				  . "\t<tr id='LabelSets' style='display: none'>\n"
+				  . "\t</tr>\n";
+
+	$newquestion .= "\t<tr id='Validation'>\n"
+				  . "\t\t<td align='right'>$setfont<b>"._QL_VALIDATION."</b></font></td>\n"
+				  . "\t\t<td>$setfont\n"
+				  . "\t\t<input type='text' $slstyle name='preg' size=50>\n"
+				  . "\t\t</td>\n"
+				  . "\t</tr>\n";
+	
+	$newquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
 				  . "\t\t<td align='right'>$setfont<b>"._QL_LABELSET."</b></font></td>\n"
 				  . "\t\t<td>$setfont\n"
 				  . "\t\t<select name='lid' $slstyle>\n";
@@ -982,7 +996,7 @@ if ($action == "addquestion")
 	$newquestion .= "\t\t</select>\n"
 				  . "\t\t</font></td>\n"
 				  . "\t</tr>\n";
-	
+				  
 	$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
 				  . "\t\t<td align='right'>$setfont<b>"._QL_OTHER."</b></font></td>\n"
 				  . "\t\t<td>$setfont\n"
@@ -1059,6 +1073,13 @@ if ($action == "copyquestion")
 					  . "\t\t<td><select $slstyle name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 					  . getqtypelist($eqrow['type'])
 					  . "\t\t</select></td>\n"
+					  . "\t</tr>\n";
+
+		$editquestion .= "\t<tr id='Validation'>\n"
+					  . "\t\t<td align='right'>$setfont<b>"._QL_VALIDATION."</b></font></td>\n"
+					  . "\t\t<td>$setfont\n"
+					  . "\t\t<input type='text' $slstyle name='preg' size=50 value=\"".$eqrow['preg']."\">\n"
+					  . "\t\t</td>\n"
 					  . "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
@@ -1171,6 +1192,14 @@ if ($action == "editquestion")
 						   . "\t\t\t<input type='hidden' name='type' value='{$eqrow['type']}'>\n"
 						   . "\t\t</font></td>\n";
 			}
+
+		$editquestion .= "\t<tr id='Validation'>\n"
+					  . "\t\t<td align='right'>$setfont<b>"._QL_VALIDATION."</b></font></td>\n"
+					  . "\t\t<td>$setfont\n"
+					  . "\t\t<input type='text' $slstyle name='preg' size=50 value=\"".$eqrow['preg']."\">\n"
+					  . "\t\t</td>\n"
+					  . "\t</tr>\n";
+
 		$editquestion .= "\t</tr>\n"
 					   . "\t<tr id='LabelSets' style='display: none'>\n"
 					   . "\t\t<td align='right'>$setfont<b>"._QL_LABELSET."</b></font></td>\n"
@@ -1606,16 +1635,25 @@ function questionjavascript($type)
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
 				 . "\t\t}\n"
 				 . "\telse if (QuestionType == 'F' || QuestionType == 'H')\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+				 . "\t\t}\n"
+				 . "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'N' || QuestionType=='')\n"
+				 . "\t\t{\n"
+				 . "\t\tdocument.getElementById('Validation').style.display = '';\n"
+				 . "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
+				 . "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
 				 . "\t\t}\n"
 				 . "\telse\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
 				 //. "\t\tdocument.addnewquestion.other[1].checked = true;\n"
 				 . "\t\t}\n"
 				 . "\t}\n"

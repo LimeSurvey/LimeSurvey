@@ -151,11 +151,12 @@ elseif ($action == "insertnewquestion")
 		$_POST['title'] = addcslashes($_POST['title'], "'");
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
+		$_POST['preg'] = mysql_escape_string($_POST['preg']);
 		}
 	if (!isset($_POST['lid'])) {$_POST['lid']="";}
-	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid)"
+	$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid)"
 			." VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-			." '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
+			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = mysql_query($query);
 	if (!$result)
 		{
@@ -188,6 +189,7 @@ elseif ($action == "updatequestion")
 		$_POST['title'] = addcslashes($_POST['title'], "'");
 		$_POST['question'] = addcslashes($_POST['question'], "'");
 		$_POST['help'] = addcslashes($_POST['help'], "'");
+		$_POST['preg'] = mysql_escape_string($_POST['preg']);
 		}
 	if (isset($cccount) && $cccount)
 		{
@@ -199,11 +201,11 @@ elseif ($action == "updatequestion")
 			{
 			$uqquery = "UPDATE {$dbprefix}questions "
 					. "SET type='".returnglobal('type')."', title='".returnglobal('title')."', "
-					. "question='".returnglobal('question')."', help='".returnglobal('help')."', "
+					. "question='".returnglobal('question')."', preg='".returnglobal('preg')."', help='".returnglobal('help')."', "
 					. "gid='".returnglobal('gid')."', other='".returnglobal('other')."', "
 					. "mandatory='".returnglobal('mandatory')."', lid='".returnglobal('lid')."' "
 					. "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
-			$uqresult = mysql_query($uqquery);
+			$uqresult = mysql_query($uqquery) or die ("Error Update Question: $uqquery<br />".mysql_error());
 			if (!$uqresult)
 				{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\n".mysql_error()."\")\n //-->\n</script>\n";
