@@ -26,6 +26,7 @@ define(_BROWSERESPONSES, "Browse Responses");
 define(_STATISTICS, "Quick Statistics");
 define(_VIEWRESPONSE, "View Response");
 define(_VIEWCONTROL, "Data View Control");
+define(_DATAENTRY, "Data Entry");
 
 //DROPDOWN HEADINGS
 define(_SURVEYS, "Surveys");
@@ -336,4 +337,20 @@ define(_BR_SHOW, "Show");
 
 //STATISTICS MESSAGES
 define(_ST_FILTERSETTINGS, "Filter Settings");
+
+//DATA ENTRY MESSAGES
+define(_DE_NOMODIFY, "Cannot be modified");
+define(_DE_UPDATE, "Update Entry");
+define(_DE_NOSID, "You have not selected a survey for data-entry.");
+define(_DE_NOEXIST, "The survey you selected does not exist");
+define(_DE_NOTACTIVE, "This survey is not yet active. Your response cannot be saved");
+define(_DE_INSERT, "Inserting Data");
+define(_DE_RECORD, "The entry was assigned the following record id: ");
+define(_DE_ADDANOTHER, "Add Another Record");
+define(_DE_VIEWTHISONE, "View This Record");
+define(_DE_BROWSE, "Browse Responses");
+define(_DE_DELRECORD, "Record Deleted");
+define(_DE_UPDATED, "Record has been updated.");
+
+
 ?>
