@@ -192,7 +192,7 @@ echo htmlfooter("", "");
 
 function getAssessments($sid) {
 	global $dbprefix;
-	$query = "SELECT *
+	$query = "SELECT id, sid, scope, gid, minimum, maximum, name, message, link
 			  FROM {$dbprefix}assessments
 			  WHERE sid=$sid
 			  ORDER BY scope, gid";
