@@ -46,7 +46,7 @@ if (!file_exists("$homedir/.htaccess"))
 		$addsummary .= "Creating default htaccess file<br />\n";
 		$fname="$homedir/.htaccess";
 		echo "<font color='white'>";
-		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<b>Error.</b><br />\nCouldn't create htaccess file. Have you set your config.php properly? Check the '\$homedir' setting in particular!\n<p><a href='$scriptname'>Back to admin</a></p>\n</td>\n</tr>\n</table>\n");
+		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<b>Error.</b><br />\nCouldn't create htaccess file. Have you set your config.php properly? Check the '\$homedir' setting in particular!\nThis error can also occur if you do not have correct permissions in your admin directory.\n<p><a href='$scriptname'>Back to admin</a></p>\n</td>\n</tr>\n</table>\n");
 		echo "</font>";
 		fputs($handle, $htaccess);
 		fclose($handle);
@@ -80,7 +80,7 @@ if (!file_exists("$homedir/.htaccess"))
 		else
 			{
 			unlink($fname);
-			$addsummary .= "Error occurred creating htpasswd file. Sorry.<br />\n";
+			$addsummary .= "Error occurred creating htpasswd file. Sorry.<br /><br />\n<font size='1'>If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/<br /></font>\n";
 			}
 		$addsummary .= "<br />\n<a href='$scriptname?action=editusers'>Finished</a>\n";
 		}
