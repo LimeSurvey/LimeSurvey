@@ -46,13 +46,14 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");                          // HTTP/1.0
 
 echo $htmlheader;
-echo "<TABLE WIDTH='100%'><TR><TD BGCOLOR='#BBBBBB' COLSPAN='2' ALIGN='CENTER'>$setfont<B>Token Control</TD></TR>\n";
+echo "<table width='100%'>\n";
+echo "\t<tr><td bgcolor='#BBBBBB' colspan='2' align='center'>$setfont<b>Token Control</b></td></tr>\n";
 
 // MAKE SURE THAT THERE IS A SID
 if (!$sid)
 	{
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<BR><BR>Sorry, you have not chosen a survey_id!</tD></TR>\n";
-	echo "</TABLE>\n";
+	echo "\t<tr><td colspan='2' align='center'>$setfont<br /><br />Sorry, you have not chosen a survey_id!</td></tr>\n";
+	echo "</table>\n";
 	exit;
 	}
 
@@ -60,13 +61,13 @@ if (!$sid)
 $chquery = "SELECT * FROM surveys WHERE sid=$sid";
 if (!$chresult=mysql_query($chquery))
 	{
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<BR><BR>Sorry, this survey does not exist</TD></TR>\n";
-	echo "</TABLE>\n";
+	echo "\t<tr><td colspan='2' align='center'>$setfont<br /><br />Sorry, this survey does not exist</td></tR>\n";
+	echo "</table>\n";
 	exit;
 	}
 while ($chrow=mysql_fetch_row($chresult))
 	{
-	echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<B>Survey $sid - $chrow[1]</TD></TR>\n";
+	echo "\t<tr><td colspan='2' align='center'>$setfont<b>Survey $sid - $chrow[1]</td></tr>\n";
 	}
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
@@ -75,21 +76,29 @@ if (!$tkresult=mysql_query($tkquery))
 	{
 	if (!$createtable)
 		{
-		echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<BR><BR>No token system has been created for this survey. Do you want to create one now?";
-		echo "<BR><BR><INPUT TYPE='SUBMIT' $btstyle VALUE='Create Token Table' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><BR>";
-		echo "<INPUT TYPE='SUBMIT' $btstyle VALUE='Return to Admin' onClick=\"window.open('admin.php?sid=$sid', '_top')\">";
-		echo "</TD></TR>\n";
-		echo "</TABLE>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2' align='center'>\n";
+		echo "\t\t\t$setfont<br /><br />\n";
+		echo "\t\t\tNo token system has been created for this survey. Do you want to create one now?<br /><br />\n";
+		echo "\t\t\t<input type='submit' $btstyle value='Create Token Table' onClick=\"window.open('tokens.php?sid=$sid&createtable=Y', '_top')\"><br />\n";
+		echo "\t\t\t<input type='submit' $btstyle value='Return to Admin' onClick=\"window.open('admin.php?sid=$sid', '_top')\">\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "</table>\n";
 		exit;
 		}
 	else
 		{
 		$createtokentable="CREATE TABLE tokens_$sid (\n  tid int NOT NULL auto_increment,\n  firstname varchar(40) NULL,  lastname varchar(40) NULL,\n  email varchar(100) NULL,  token varchar(10) NULL,\n sent varchar(1) NULL DEFAULT 'N', completed varchar(1) NULL DEFAULT 'N',  PRIMARY KEY (tid)\n) TYPE=MyISAM;";
-		$ctresult=mysql_query($createtokentable) or die ("Completely mucked up<BR>$createtokentable<BR><BR>".mysql_error());
-		echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>$setfont<BR><BR>A token table has been created for this survey, called \"tokens_$sid\"";
-		echo "<BR><BR><INPUT TYPE='SUBMIT' $btstyle VALUE='Continue' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">";
-		echo "</TD></TR>\n";
-		echo "</TABLE>\n";
+		$ctresult=mysql_query($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".mysql_error());
+		echo "\t<tr>\n";
+		echo "\t\t<td colspan='2' align='center'>\n";
+		echo "\t\t\t$setfont<br /><br />\n";
+		echo "\t\t\tA token table has been created for this survey, called \"tokens_$sid\"<br /><br />\n";
+		echo "\t\t\t<input type='submit' $btstyle value='Continue' onClick=\"window.open('tokens.php?sid=$sid', '_top')\">\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "</table>\n";
 		exit;
 		
 		}
@@ -97,53 +106,62 @@ if (!$tkresult=mysql_query($tkquery))
 
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
 
-$tokenmenu = "<TR><TD BGCOLOR='#EEEEEE' COLSPAN='2' ALIGN='CENTER' STYLE='border-top-style: solid; border-top-width: 1; border-top-color:#BBBBBB; border-left-color:#BBBBBB; border-left-width:1; border-left-style:solid; border-right-style: solid; border-right-width:1; border-right-color:#BBBBBB'>";
-$tokenmenu .="[<a href='admin.php?sid=$sid'>admin</a>] ";
-$tokenmenu .="[<a href='tokens.php?sid=$sid&action=browse'>browse</a>] ";
-$tokenmenu .="[<a href='tokens.php?sid=$sid&action=add'>add</a>] ";
-$tokenmenu .="[<a href='tokens.php?sid=$sid&action=import'>import</a>] ";
-$tokenmenu .="[<a href='tokens.php?sid=$sid&action=email'>invite</a>] ";
-$tokenmenu .="[<a href='tokens.php?sid=$sid&action=tokenify'>tokenify</a>] ";
-$tokenmenu .="[<a href='tokens.php?sid=$sid&action=kill'>drop tokens</a>] ";
-$tokenmenu .="</TD></TR>\n";
+$tokenmenu = "\t<tr>\n";
+$tokenmenu .= "\t\t<td bgcolor='#EEEEEE' colspan='2' align='center' style='border-top-style: solid; border-top-width: 1; border-top-color:#BBBBBB; border-left-color:#BBBBBB; border-left-width:1; border-left-style:solid; border-right-style: solid; border-right-width:1; border-right-color:#BBBBBB'>\n";
+$tokenmenu .= "\t\t\t[<a href='admin.php?sid=$sid'>admin</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=browse'>browse</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=add'>add</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=import'>import</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=email'>invite</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=tokenify'>tokenify</a>] \n";
+$tokenmenu .= "\t\t\t[<a href='tokens.php?sid=$sid&action=kill'>drop tokens</a>] \n";
+$tokenmenu .= "\t\t</td>\n";
+$tokenmenu .= "\t</tr>\n";
 
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
 $tkcount=mysql_num_rows($tkresult);
 echo "$tokenmenu";
-echo "<TR><TD COLSPAN='2' ALIGN='CENTER'>There are $tkcount records in your token table for this survey.</TD></TR>\n";
+echo "\t<tr><td colspan='2' align='center'>There are $tkcount records in your token table for this survey.</td></tr>\n";
 
 // GIVE SOME INFORMATION ABOUT THE TOKENS
-echo "<TR><TD COLSPAN='2' ALIGN='CENTER'><TABLE WIDTH='400' ALIGN='CENTER' BGCOLOR='#DDDDDD'><TR><TD ALIGN='CENTER'>";
+echo "\t<tr>\n";
+echo "\t\t<td colspan='2' align='center'>\n";
+echo "\t\t\t<table width='400' align='center' bgcoloR='#DDDDDD'>\n";
+echo "\t\t\t\t<tr>\n";
+echo "\t\t\t\t\t<td align='center'>\n";
 $tksq="SELECT count(*) FROM tokens_$sid WHERE sent='Y'";
 $tksr=mysql_query($tksq);
 while ($tkr=mysql_fetch_row($tksr))
-	{echo "$setfont$tkr[0] of $tkcount have been sent an invitation to participate<BR>";}
+	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount have been sent an invitation to participate<br />\n";}
 $tksq="SELECT count(*) FROM tokens_$sid WHERE completed='Y'";
 $tksr=mysql_query($tksq);
 while ($tkr=mysql_fetch_row($tksr))
-	{echo "$setfont$tkr[0] of $tkcount entries have completed the survey<BR>";}
+	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount entries have completed the survey<br />\n";}
 $tksq="SELECT count(*) FROM tokens_$sid WHERE token IS NULL OR token=''";
 $tksr=mysql_query($tksq);
 while ($tkr=mysql_fetch_row($tksr))
-	{echo "$setfont$tkr[0] of $tkcount have not had a token generated";}
-echo "</TD></TR></TABLE>\n";
-
+	{echo "\t\t\t\t\t\t$setfont$tkr[0] of $tkcount have not had a token generated\n";}
+echo "\t\t\t\t\t</td>\n";
+echo "\t\t\t\t</tr>\n";
+echo "\t\t\t</table>\n";
 
 
 
 
 if ($action == "browse")
 	{
-	echo "<BR><TABLE WIDTH='600' CELLPADDING='1' CELLSPACING='1' ALIGN='CENTER' BGCOLOR='#CCCCCC'>\n";
+	echo "<br>\n<table width='600' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
 	//COLUMN HEADINGS
-	echo "<TR><TD><A HREF='tokens.php?sid=$sid&action=browse&order=tid'><IMG SRC='DownArrow.gif' BORDER='0' ALIGN='LEFT'></a>$setfont<B>ID</TD>";
-	echo "<TD><A HREF='tokens.php?sid=$sid&action=browse&order=firstname'><IMG SRC='DownArrow.gif' BORDER='0' ALIGN='LEFT'></a>$setfont<B>First</TD>";
-	echo "<TD><A HREF='tokens.php?sid=$sid&action=browse&order=lastname'><IMG SRC='DownArrow.gif' BORDER='0' ALIGN='LEFT'></a>$setfont<B>Last</TD>";
-	echo "<TD><A HREF='tokens.php?sid=$sid&action=browse&order=email'><IMG SRC='DownArrow.gif' BORDER='0' ALIGN='LEFT'></a>$setfont<B>Email</TD>";
-	echo "<TD><A HREF='tokens.php?sid=$sid&action=browse&order=token'><IMG SRC='DownArrow.gif' BORDER='0' ALIGN='LEFT'></a>$setfont<B>Token</TD>";
-	echo "<TD><A HREF='tokens.php?sid=$sid&action=browse&order=sent%20desc'><IMG SRC='DownArrow.gif' BORDER='0' ALIGN='LEFT'></a>$setfont<B>Invite?</TD>";
-	echo "<TD><A HREF='tokens.php?sid=$sid&action=browse&order=completed%20desc'><IMG SRC='DownArrow.gif' BORDER='0' ALIGN='LEFT'></a>$setfont<B>Complete?</TD>";
-	echo "<TD>$setfont<B>Action</TD></TR>\n";
+	echo "\t<tr>\n";
+	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=tid'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>ID</b></td>\n";
+	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=firstname'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>First</b></td>\n";
+	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=lastname'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Last</b></td>\n";
+	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=email'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Email</b></td>\n";
+	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=token'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Token</b></td>\n";
+	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=sent%20desc'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Invite?</b></td>\n";
+	echo "\t\t<td><a href='tokens.php?sid=$sid&action=browse&order=completed%20desc'><img src='DownArrow.gif' border='0' align='left'></a>$setfont<b>Complete?</b></td>\n";
+	echo "\t\t<td>$setfont<b>Action</b></td>\n";
+	echo "\t</tr>\n";
 	$bquery="SELECT * FROM tokens_$sid";
 	if (!$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order";}
@@ -151,15 +169,17 @@ if ($action == "browse")
 	while ($brow=mysql_fetch_row($bresult))
 		{
 		if ($bgc=="#EEEEEE") {$bgc="#DDDDDD";} else {$bgc="#EEEEEE";}
-		echo "<TR BGCOLOR='$bgc'>";
+		echo "\t<tr bgcolor='$bgc'>\n";
 		for ($i=0; $i<=6; $i++)
 			{
-			echo "<TD>$setfont$brow[$i]</TD>";
+			echo "\t\t<td>$setfont$brow[$i]</td>\n";
 			}
-		echo "<TD ALIGN='CENTER'><INPUT STYLE='height: 14; font-size: 8; font-face: verdana' TYPE='SUBMIT' VALUE='E' TITLE='Edit' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\">";
-		echo "<INPUT STYLE='height: 14; font-size: 8; font-face: verdana' TYPE='SUBMIT' VALUE='D' TITLE='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\">";
-		echo "</TD>";
-		echo "</TR>\n";
+		echo "\t\t<td align='center'>\n";
+		echo "\t\t\t<input style='height: 14; width: 14px; font-size: 8; font-face: verdana' type='submit' value='E' title='Edit' onClick=\"window.open('$PHP_SELF?sid=$sid&action=edit&tid=$brow[0]', '_top')\">\n";
+		echo "\t\t\t<input style='height: 14; width: 14px; font-size: 8; font-face: verdana' type='submit' value='D' title='Delete' onClick=\"window.open('$PHP_SELF?sid=$sid&action=delete&tid=$brow[0]', '_top')\">\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>\n";
+		echo "</table>\n";
 		}
 	}
 
@@ -469,7 +489,9 @@ if ($action == "upload")
 	}
 
 //echo "ACTION: $action<BR>THEFILE: $the_file<BR>THEFILENAME: $the_file_name";
-echo "</TD></TR>\n</TABLE>\n";
+echo "\t\t</td>\n";
+echo "\t</tr>\n";
+echo "</table>\n";
 
 
 function form($error=false) {
