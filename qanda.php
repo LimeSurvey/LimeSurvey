@@ -173,7 +173,7 @@ switch ($ia[4])
 			
 			while ($ansrow=mysql_fetch_array($ansresult))
 				{
-				$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]'";
+				$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='$ia[1]{$ansrow['code']}'";
 				if ($_SESSION[$ia[1]] == $ansrow['code'])
 					{$answer .= " checked";}
 				elseif ($ansrow['default'] == "Y") {$answer .= " checked"; $defexists = "Y";}
@@ -183,12 +183,12 @@ switch ($ia[4])
 				{
 				if ((!$_SESSION[$ia[1]] && !$defexists) ||($_SESSION[$ia[1]] == ' ' && !$defexists)) 
 					{
-					$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' checked onChange='checkconditions(this.value, this.name, this.type)' />";
+					$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]' value=' ' checked onClick='checkconditions(this.value, this.name, this.type)' />";
 					$answer .= _NOANSWER."\n";
 					}
 				elseif ($_SESSION[$ia[1]] && !$defexists) 
 					{
-					$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' onChange='checkconditions(this.value, this.name, this.type)' />";
+					$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' />";
 					$answer .= _NOANSWER."\n";
 					}
 				}
