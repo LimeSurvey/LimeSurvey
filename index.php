@@ -131,6 +131,16 @@ if ($_GET['move'] == "clearall")
 	exit;	
 	}
 
+if ($_GET['newtest'] == "Y")
+	{
+	foreach ($_SESSION as $SES)
+		{
+		session_unset();
+		}
+	//session_unset();
+	//session_destroy();
+	}
+
 //CALL APPROPRIATE SCRIPT
 switch ($surveyformat)
 	{
