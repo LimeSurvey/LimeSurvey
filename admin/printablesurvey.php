@@ -178,6 +178,8 @@ while ($degrow = mysql_fetch_array($degresult))
 							}
 					case "F":
 					case "H":
+					case "W":
+					case "L":
 						$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
 						$fquery = "SELECT * FROM {$dbprefix}labels\n"
 								. "WHERE lid='{$conrow['lid']}'\n"
@@ -275,6 +277,58 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='F' readonly='readonly' />"._FEMALE."<br />\n";
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />"._MALE."<br />\n";
+				break;
+			case "W": //Flexible List
+			case "Z":
+				$qidattributes=getQuestionAttributes($deqrow['qid']);
+				if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+					{
+				    $dcols=$displaycols['value'];
+					}
+				else
+					{
+					$dcols=0;
+					}
+				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
+				$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, title";
+				$dearesult = mysql_query($deaquery) or die("ERROR: $deaquery<br />\n".mysql_error());
+				$deacount=mysql_num_rows($dearesult);
+				if ($deqrow['other'] == "Y") {$deacount++;}
+				if ($dcols > 0 && $deacount > $dcols)
+					{
+				    $width=sprintf("%0d", 100/$dcols);
+					$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+					$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+					$upto=0;
+					echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						if ($upto == $maxrows) 
+							{
+						    echo $divider;
+							$upto=0;
+							}
+						echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['title']}<br />\n";
+						$upto++;
+						}
+					if ($deqrow['other'] == "Y")
+						{
+					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+						}
+					echo "</td></tr></table>\n";
+				    //Let's break the presentation into columns.
+					}
+				else
+					{
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['title']}<br />\n";
+						}
+					if ($deqrow['other'] == "Y")
+						{
+					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+						}
+					}
 				break;
 			case "L":  //LIST
 			case "!":
