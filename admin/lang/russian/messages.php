@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 //Translation kindly provided by Alexei G. Tchernov  (alexei_g_chernov[at]mail[dot]ru)
 
 //BUTTON BAR TITLES
@@ -173,7 +173,11 @@ define("_SL_UPD_SURVEY","Обновить опрос");
 //groups
 define("_GL_TITLE", "Заголовок:");
 define("_GL_DESCRIPTION", "Описание:");
+define("_GL_EDITGROUP","Edit Group for Survey ID"); // New with 0.99dev02
+define("_GL_UPDATEGROUP","Update Group"); // New with 0.99dev02
 //questions
+define("_QL_EDITQUESTION", "Edit Question");// New with 0.99dev02
+define("_QL_UPDATEQUESTION", "Update Question");// New with 0.99dev02
 define("_QL_CODE", "Код:");
 define("_QL_QUESTION", "Вопрос:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION

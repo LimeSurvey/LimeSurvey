@@ -1197,7 +1197,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		{
 		$editquestion = "<table width='100%' border='0'><tr>"
 					   . "<td colspan='2' bgcolor='black' align='center'>"
-					   . "\t\t\t$setfont<font color='white'><b>Edit Question $qid</b></font></font>\n"
+					   . "\t\t\t$setfont<font color='white'><b>"._QL_EDITQUESTION." $qid</b></font></font>\n"
 					   . "\t\t</td>\n"
 					   . "\t</tr>\n"
 					   . "\t<tr>\n"
@@ -1310,7 +1310,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		
 		$editquestion .= "\t<tr>\n"
 					   . "\t\t<td colspan='2' align='center'>"
-					   . "<input type='submit' $btstyle value='Update Question'></td>\n"
+					   . "<input type='submit' $btstyle value='"._QL_UPDATEQUESTION."'></td>\n"
 					   . "\t<input type='hidden' name='action' value='updatequestion'>\n"
 					   . "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					   . "\t<input type='hidden' name='qid' value='$qid'>\n"
@@ -1398,13 +1398,13 @@ if ($action == "editgroup")
 	while ($esrow = mysql_fetch_array($egresult))	
 		{
 		$editgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-					. "\t\t<b>$setfont<font color='white'>Edit Group for Survey ID($surveyid)</font></font></b></td></tr>\n"
+					. "\t\t<b>$setfont<font color='white'>"._GL_EDITGROUP."($surveyid)</font></font></b></td></tr>\n"
 					. "\t<tr><form action='$scriptname' name='editgroup' method='post'>\n"
 					. "\t\t<td align='right' width='20%'>$setfont<b>"._GL_TITLE."</b></font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='group_name' value='{$esrow['group_name']}'></td></tr>\n"
 					. "\t<tr><td align='right'>$setfont<b>"._GL_DESCRIPTION."</b>(optional)</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-					. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='Update Group'></td>\n"
+					. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._GL_UPDATEGROUP."'></td>\n"
 					. "\t<input type='hidden' name='action' value='updategroup'>\n"
 					. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"

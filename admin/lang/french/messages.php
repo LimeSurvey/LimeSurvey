@@ -209,7 +209,11 @@ define("_SL_UPD_SURVEY","Update survey");
 //groups
 define("_GL_TITLE", "Titre:");
 define("_GL_DESCRIPTION", "Description:");
+define("_GL_EDITGROUP","Edit Group for Survey ID"); // New with 0.99dev02
+define("_GL_UPDATEGROUP","Update Group"); // New with 0.99dev02
 //questions
+define("_QL_EDITQUESTION", "Edit Question");// New with 0.99dev02
+define("_QL_UPDATEQUESTION", "Update Question");// New with 0.99dev02
 define("_QL_CODE", "Code:");
 define("_QL_QUESTION", "Question:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION

@@ -178,7 +178,11 @@ define("_GL_UPDATEGROUP", "Actualizar Grupo");
 define("_GL_EDITQUESTION", "Modificar Pregunta");
 define("_GL_EDITGROUP", "Editar Grupo para la Encuesta con ");
 define("_GL_UPDATEQUESTION", "Actualizar Pregunta");
+define("_GL_EDITGROUP","Edit Group for Survey ID"); // New with 0.99dev02
+define("_GL_UPDATEGROUP","Update Group"); // New with 0.99dev02
 //questions
+define("_QL_EDITQUESTION", "Edit Question");// New with 0.99dev02
+define("_QL_UPDATEQUESTION", "Update Question");// New with 0.99dev02
 define("_QL_CODE", "C&oacute;digo:");
 define("_QL_QUESTION", "Pregunta:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION

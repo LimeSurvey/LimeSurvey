@@ -171,11 +171,16 @@ define("_SL_ALLOWPREV", "[<< Zur&uuml;ck] Button zeigen");
 define("_SL_USE_DEFAULT","Standardwerte setzen");
 define("_SL_UPD_SURVEY","Umfrage aktualisieren");
 
-//groups
+//Gruppen
 define("_GL_TITLE", "Titel:");
 define("_GL_DESCRIPTION", "Beschreibung:");
-//Frages
+define("_GL_EDITGROUP","Bearbeite Gruppe für Umfrage-ID "); // New with 0.99dev02
+define("_GL_UPDATEGROUP","Gruppe aktualisieren"); // New with 0.99dev02
+
+//Fragen
 define("_QL_CODE", "Code:");
+define("_QL_EDITQUESTION", "Bearbeite Frage");// New with 0.99dev02
+define("_QL_UPDATEQUESTION", "Frage aktualisieren");// New with 0.99dev02
 define("_QL_QUESTION", "Frage:");
 define("_QL_HELP", "Hilfetext:");
 define("_QL_VALIDATION", "Validierung:");
@@ -762,7 +767,7 @@ define("_AS_ADD", "Hinzuf&uuml;gen");
 define("_AS_UPDATE", "Aktualisieren");
 
 //Question Number regeneration
-define("_RE_REGENNUMBER", "Regenerate Question Numbers:"); //NEW for release 0.99dev2
-define("_RE_STRAIGHT", "Straight"); //NEW for release 0.99dev2
-define("_RE_BYGROUP", "By Group"); //NEW for release 0.99dev2
+define("_RE_REGENNUMBER", "Fragen-Codes neu erzeugen:"); //NEW for release 0.99dev2
+define("_RE_STRAIGHT", "Normal aufsteigend"); //NEW for release 0.99dev2
+define("_RE_BYGROUP", "Nach Gruppen"); //NEW for release 0.99dev2
 ?>
