@@ -215,6 +215,7 @@ define("_ARRMV", "Scelta (crescente, uguale, descrescente)");
 define("_ARRFL", "Scelta (Flessibile)"); //(FOR LATER RELEASE)
 define("_SINFL", "Campo unico (Flessibile)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Indirizzo Email"); //FOR LATER RELEASE
+define("_BOILERPLATE", "Boilerplate Question"); //New in 0.98rc6
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Si");

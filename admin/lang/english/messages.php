@@ -215,6 +215,7 @@ define("_ARRMV", "Array (Increase, Same, Decrease)");
 define("_ARRFL", "Array (Flexible Labels)"); //Release 0.98rc3
 define("_SINFL", "Single (Flexible Labels)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Email Address"); //FOR LATER RELEASE
+define("_BOILERPLATE", "Boilerplate Question"); //New in 0.98rc6
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Yes");

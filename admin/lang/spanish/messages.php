@@ -221,6 +221,7 @@ define("_ARRMV", "Arreglo (Ampliar, Mantener, Reducir)");
 define("_ARRFL", "Arreglo (Etiquetas Flexibles)"); //Release 0.98rc3
 define("_SINFL", "Sencillo (Etiquetas Flexibles)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Correo electr&oacute;nico"); //FOR LATER RELEASE
+define("_BOILERPLATE", "Boilerplate Question"); //New in 0.98rc6
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Si");
