@@ -108,11 +108,17 @@ header("Pragma: no-cache");                          // HTTP/1.0
 include ("config.php");
 //echo "$htmlheader";
 //STEP 1: First line is column headings
-$cquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid ORDER BY group_name, title";
+$cquery = "SELECT * FROM questions, groups WHERE questions.gid=groups.gid AND questions.sid=$sid";
 $cresult = mysql_query($cquery);
+$crows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+while ($crow = mysql_fetch_assoc($cresult)) {$crows[] = $crow;} // Get table output into array
+
+// Perform a case insensitive natural sort on group name then question title of a multidimensional array
+usort($crows, 'CompareGroupThenTitle');
+
 $s = "\t";
 $firstline = "id$s ";
-while ($crow = mysql_fetch_array($cresult))
+foreach ($crows as $crow)
 	{
 	if ($style == "abrev")
 		{
@@ -127,13 +133,13 @@ while ($crow = mysql_fetch_array($cresult))
 			}
 		else
 			{
-			$i2query="SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$crow['qid']} AND questions.sid=$sid ORDER BY code";
-			$i2result=mysql_query($i2query);
-			while ($i2row=mysql_fetch_array($i2result))
+			$i2query = "SELECT answers.*, questions.other FROM answers, questions WHERE answers.qid=questions.qid AND questions.qid={$crow['qid']} AND questions.sid=$sid ORDER BY code";
+			$i2result = mysql_query($i2query);
+			while ($i2row = mysql_fetch_array($i2result))
 				{
-				$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}Opt$i2row[1]$s ";
-				if ($i2row[4] == "Y") {$otherexists="Y";}
-				if ($crow['type'] == "P") {$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}Opt$i2row[1]comment$s ";}
+				$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}Opt{$i2row['code']}$s ";
+				if ($i2row['other'] == "Y") {$otherexists = "Y";}
+				if ($crow['type'] == "P") {$firstline .= "Grp{$crow['sid']}Qst{$crow['title']}Opt{$i2row['code']}comment$s ";}
 				}
 			if ($otherexists == "Y") 
 				{
@@ -208,8 +214,7 @@ elseif ($answers == "long")
 	$fieldcount = mysql_num_fields($dresult);
 	while ($drow = mysql_fetch_array($dresult))
 		{
-		$i = 0;
-		for ($i; $i<$fieldcount; $i++)
+		for ($i=0; $i<$fieldcount; $i++)
 			{
 			list($fsid, $fgid, $fqid) = split("X", mysql_field_name($dresult, $i));
 			if (!$fqid) {$fqid = 0;}
