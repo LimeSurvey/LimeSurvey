@@ -177,7 +177,6 @@ if ($_POST['move'] == " submit ")
 		{
 		echo templatereplace($op);
 		}
-	echo "\n<br />\n";
 	
 	//DEVELOP SQL TO INSERT RESPONSES
 	$subquery = "INSERT INTO $surveytable ";

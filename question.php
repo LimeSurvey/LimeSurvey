@@ -158,7 +158,7 @@ if ($_POST['move'] == " submit ")
 		{
 		echo templatereplace($op);
 		}
-	echo "\n<br />\n";
+	//echo "\n<br />\n";
 	//DEVELOP SQL TO INSERT RESPONSES
 	$subquery = "INSERT INTO $surveytable ";
 	if (is_array($_SESSION['insertarray']))
