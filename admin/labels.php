@@ -257,10 +257,10 @@ if (isset($lid) && ($action != "editset") && $lid)
         ._LL_ANSWER
         ."\t\t\t\t\t</b></font></td>\n"
         ."\t\t\t\t\t<td><b><font size='1' face='verdana'>\n"
-        ._LL_SORTORDER
+        ._LL_ACTION
         ."\t\t\t\t\t</b></font></td>\n"
         ."\t\t\t\t\t<td><b><font size='1' face='verdana'>\n"
-        ._LL_ACTION
+         ._LL_SORTORDER
         ."\t\t\t\t\t</b></font></td>\n"
         ."\t\t\t\t</tr>\n";
     $position=0;
@@ -294,7 +294,7 @@ if (isset($lid) && ($action != "editset") && $lid)
             {
             echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_UP."' />\n";
             }
-        else {echo "<img src='$imagefiles/spacer.gif' width='21' height='5' align='left'></font>";}
+        else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left'></font>";}
         if ($position < $labelcount-1)
             {
             echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DN."' />\n";
