@@ -207,7 +207,7 @@ if ($action == "browse")
 	
 	$_GET['start']--;
 	
-	echo "<table width='600' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
+	echo "<table cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
 	//COLUMN HEADINGS
 	echo "\t<tr>\n";
 	echo "\t\t<th align='left'><a href='tokens.php?sid=$sid&action=browse&order=tid'><img src='DownArrow.gif' alt='Sort by ID' border='0' align='left'></a>$setfont"."ID</th>\n";
@@ -241,7 +241,7 @@ if ($action == "browse")
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
 			{
 			echo "\t\t<form action='browse.php' method='post' target='_blank'>\n";
-			echo "\t\t<td align='center'>\n";
+			echo "\t\t<td align='center' valign='top'>\n";
 			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='V' title='View Response' />\n";
 			echo "\t\t</td>\n";
 			echo "\t\t<input type='hidden' name='sid' value='$sid' />\n";
@@ -251,13 +251,13 @@ if ($action == "browse")
 			}
 		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] != "Y")
 			{
-			echo "\t\t<td align='center'>\n";
+			echo "\t\t<td align='center' valign='top'>\n";
 			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='I' title='Send Invitation Email' onClick=\"window.open('$PHP_SELF?sid=$sid&action=email&tid=$brow[0]', '_top')\" />";
 			echo "\t\t</td>\n";
 			}
 		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] == "Y")
 			{
-			echo "\t\t<td align='center'>\n";
+			echo "\t\t<td align='center' valign='top'>\n";
 			echo "\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='R' title='Send Reminder Email' onClick=\"window.open('$PHP_SELF?sid=$sid&action=remind&tid=$brow[0]', '_top')\" />";
 			echo "\t\t</td>\n";
 			}
