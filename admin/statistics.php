@@ -119,6 +119,30 @@ foreach ($rows as $row)
 					 strip_tags($row['question']), 
 					 $row['lid']);
 	}
+
+// SHOW ID FIELD
+echo "\t\t<tr><td align='center'>
+		<table align='center'><tr>\n";
+$myfield = "id";
+$myfield2=$myfield."G";
+$myfield3=$myfield."L";
+$myfield4=$myfield."=";
+echo "<td align='center'>$setfont<b>id</b><br />";
+echo "\t\t\t\t\t<font size='1'>"._ST_NOGREATERTHAN.":<br />\n"
+		."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
+	if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
+	echo "'><br />\n"
+		."\t\t\t\t\t"._ST_NOLESSTHAN.":<br />\n"
+		."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield3' value='";
+	if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
+	echo "'><br />\n";
+	echo "\t\t\t\t\t=<br />
+			<input type='text' $slstyle2 name='$myfield4' value='";
+	if (isset($_POST[$myfield4])) {echo $_POST[$myfield4];}
+	echo "'><br />\n";
+	$allfields[]=$myfield2;
+	$allfields[]=$myfield3;
+	$allfields[]=$myfield4;
 // 2: Get answers for each question
 if (!isset($currentgroup)) {$currentgroup="";}
 foreach ($filters as $flt)
@@ -214,7 +238,7 @@ foreach ($filters as $flt)
 			echo "'><br />\n"
 				."\t\t\t\t\t"._ST_NOLESSTHAN.":<br />\n"
 				."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield3' value='";
-			if (isset($_POST[$myfield2])) {echo $_POST[$myfield3];}
+			if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
 			echo "'><br />\n";
 			$allfields[]=$myfield2;
 			$allfields[]=$myfield3;
@@ -577,7 +601,7 @@ if (isset($_POST['display']) && $_POST['display'])
 		if (in_array($pv, $allfields)) //Only do this if there is actually a value for the $pv
 			{
 			$firstletter=substr($pv,0,1);
-			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary") //pull out just the fieldnames
+			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary" && substr($pv, 0, 2) != "id") //pull out just the fieldnames
 				{
 				$thisquestion = "`$pv` IN (";
 				foreach ($_POST[$pv] as $condition)
@@ -615,6 +639,22 @@ if (isset($_POST['display']) && $_POST['display'])
 				if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
 					{
 					$selects[]="`".substr($pv, 1, -1)."` < '".$_POST[$pv]."'";
+					}
+				}
+			elseif (substr($pv, 0, 2) == "id")
+				{
+				echo "Hi";
+				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
+					{
+				    $selects[]="`".substr($pv, 0, -1)."` > '".$_POST[$pv]."'";
+					}
+				if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
+					{
+					$selects[]="`".substr($pv, 0, -1)."` < '".$_POST[$pv]."'";
+					}
+				if (substr($pv, strlen($pv)-1, 1) == "=" && $_POST[$pv] != "")
+					{
+				    $selects[]="`".substr($pv, 0, -1)."` = '".$_POST[$pv]."'";
 					}
 				}
 			elseif (substr($pv, 0, 1) == "T" && $_POST[$pv] != "")
