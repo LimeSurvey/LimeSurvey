@@ -54,6 +54,7 @@ define("_COMPLETE", "completo");
 define("_INCREASE", "Aumento"); //NEW WITH 0.98 BABELFISH TRANSLATION
 define("_SAME", "Iguales"); //NEW WITH 0.98 BABELFISH TRANSLATION
 define("_DECREASE", "Disminución"); //NEW WITH 0.98 BABELFISH TRANSLATION
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Confirmación");
 define("_TOKEN_PS", "Token");

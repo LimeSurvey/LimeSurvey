@@ -52,6 +52,7 @@ define("_COMPLETE", "完成");
 define("_INCREASE", "增加"); //NEW WITH 0.98
 define("_SAME", "相同"); //NEW WITH 0.98
 define("_DECREASE", "减少"); //NEW WITH 0.98
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "确认");
 define("_TOKEN_PS", "令牌");

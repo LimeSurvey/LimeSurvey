@@ -54,6 +54,7 @@ define("_COMPLETE", "gennemf&oslash;rt");
 define("_INCREASE", "H&aelig;v"); //NEW WITH 0.98
 define("_SAME", "Samme"); //NEW WITH 0.98
 define("_DECREASE", "S&aelig;nk"); //NEW WITH 0.98
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Bekr&aelig;ftelse");
 define("_TOKEN_PS", "N&oslash;gle");

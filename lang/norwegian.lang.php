@@ -54,6 +54,7 @@ define("_COMPLETE", "komplett");
 define("_INCREASE", "&Oslash;k"); //NEW WITH 0.98
 define("_SAME", "Samme"); //NEW WITH 0.98
 define("_DECREASE", "Minsk"); //NEW WITH 0.98
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Bekreftelse");
 define("_TOKEN_PS", "ID");

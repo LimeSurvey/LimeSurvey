@@ -55,6 +55,7 @@ define("_COMPLETE", "teljes");
 define("_INCREASE", "Növel"); //NEW WITH 0.98
 define("_SAME", "Ugyanaz"); //NEW WITH 0.98
 define("_DECREASE", "Csökkent"); //NEW WITH 0.98
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Megerõsítés");
 define("_TOKEN_PS", "Kód");

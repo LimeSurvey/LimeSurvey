@@ -61,6 +61,7 @@ define("_CONTINUE_PS", "Fortsätt");
 define("_INCREASE", "Öka"); //NEW WITH 0.98
 define("_SAME", "Samma"); //NEW WITH 0.98
 define("_DECREASE", "Minska"); //NEW WITH 0.98
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 
 //BUTTONS
 define("_ACCEPT", "Acceptera");

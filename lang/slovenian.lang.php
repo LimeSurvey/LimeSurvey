@@ -56,6 +56,7 @@ define("_COMPLETE", "Zakljuèeno");
 define("_INCREASE", "Poveèalo"); //NEW WITH 0.98
 define("_SAME", "Ostalo enako"); //NEW WITH 0.98
 define("_DECREASE", "Zmanj¹alo"); //NEW WITH 0.98
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Potrditev");
 define("_TOKEN_PS", "Geslo");

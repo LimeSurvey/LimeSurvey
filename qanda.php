@@ -48,6 +48,8 @@
  */
 function retrieveConditionInfo($ia)
 	{
+	//This function returns an array containing all related conditions
+	//for a question - the array contains the fields from the conditions table
 	global $dbprefix;
 	if ($ia[7] == "Y")
 		{ //DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
@@ -317,6 +319,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		}
 	$answer .= "'>\n"; //for conditional mandatory questions
 	
+	if ($ia[6] == "Y")
+		{
+	    $qtitle = _REQUIRED.$qtitle;
+		}
 	//If this question is mandatory but wasn't answered in the last page
 	//add a message HIGHLIGHTING the question
 	$qtitle .= mandatory_message($ia);

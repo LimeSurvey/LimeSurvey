@@ -50,6 +50,7 @@ define("_COMPLETE", "complete");
 define("_INCREASE", "Increase"); //NEW WITH 0.98
 define("_SAME", "Same"); //NEW WITH 0.98
 define("_DECREASE", "Decrease"); //NEW WITH 0.98
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Confirmation");
 define("_TOKEN_PS", "Token");
