@@ -444,7 +444,7 @@ if ($surveyexists <1)
 //RUN THIS IF THIS IS THE FIRST TIME
 if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
-	if ($tokensexist == 1 && !$_GET['token'])
+	if ($tokensexist == 1 && (!isset($_GET['token']) || !$_GET['token']))
 		{
 		echo "<html>\n";
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
