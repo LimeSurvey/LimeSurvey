@@ -92,6 +92,16 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				   . _NOTACTIVE1."<br /><br />\n"
 				   . "<a href='{$_SERVER['PHP_SELF']}?sid=$sid&move=clearall'>"._CLEARRESP."</a><br /><br />\n"
 				   . "<font size='1'>$subquery</font>\n";
+		if (isset($_SESSION['savename'])) 
+			{
+			//Delete the saved survey
+			$query = "DELETE FROM {$dbprefix}saved\n"
+					."WHERE sid=$sid\n"
+					."AND identifier = '".$_SESSION['savename']."'";
+			$result = mysql_query($query);
+			//Should put an email to administrator here
+			//if the delete doesn't work.
+			}
 		}
 	else
 		{
@@ -105,6 +115,17 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
 				setcookie("$cookiename", "COMPLETE", time() + 31536000); //365 days
+				}
+			
+			if (isset($_SESSION['savename'])) 
+				{
+				//Delete the saved survey
+			    $query = "DELETE FROM {$dbprefix}saved\n"
+						."WHERE sid=$sid\n"
+						."AND identifier = '".$_SESSION['savename']."'";
+				$result = mysql_query($query);
+				//Should put an email to administrator here
+				//if the delete doesn't work.
 				}
 			
 			//Start to print the final page
