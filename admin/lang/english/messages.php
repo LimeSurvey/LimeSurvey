@@ -144,6 +144,7 @@ define(_SL_URLDESCRIP, "URL Descrip:");
 define(_SL_STATUS, "Status:");
 define(_SL_SELSQL, "Select SQL File:");
 define(_SL_USECOOKIES, "Use Cookies?"); //NEW with 098rc3
+define(_SL_NOTIFICATION, "Notification:"); //New with 098rc5
 //groups
 define(_GL_TITLE, "Title:");
 define(_GL_DESCRIPTION, "Description:");
@@ -529,5 +530,8 @@ define(_PS_DEACTSURVEYS, "De-activated Surveys");
 define(_PS_ACTIVETOKENS, "Active Token Tables");
 define(_PS_DEACTTOKENS, "De-activated Token Tables");
 
-
+//Notification Levels
+define(_NT_NONE, "No email notification"); //New with 098rc5
+define(_NT_SINGLE, "Basic email notification"); //New with 098rc5
+define(_NT_RESULTS, "Send email notification with result codes"); //New with 098rc5
 ?>

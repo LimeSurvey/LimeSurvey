@@ -142,6 +142,7 @@ define(_SL_URLDESCRIP, "Texto del URL:");
 define(_SL_STATUS, "Est&aacute;tus:");
 define(_SL_SELSQL, "Seleccionar Archivo SQL:");
 define(_SL_USECOOKIES, "&iquest;Utilizar Cookies?"); //NEW with 098rc3
+define(_SL_NOTIFICATION, "Notification:"); //New with 098rc5
 //groups
 define(_GL_TITLE, "T&iacute;tulo:");
 define(_GL_DESCRIPTION, "Descripci&oacute;n:");
@@ -534,5 +535,8 @@ define(_PS_DEACTSURVEYS, "Encuestas Desactivadas");
 define(_PS_ACTIVETOKENS, "Tablas de Tokens Activadas");
 define(_PS_DEACTTOKENS, "Tablas de Tokens Desactivadas");
 
-
+//Notification Levels
+define(_NT_NONE, "Ninguna notificación del email"); //New with 098rc5
+define(_NT_SINGLE, "Notificación básica del email"); //New with 098rc5
+define(_NT_RESULTS, "Envíe la notificación del email con códigos del resultado"); //New with 098rc5
 ?>

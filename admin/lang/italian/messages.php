@@ -145,6 +145,7 @@ define(_SL_STATUS, "Status:");
 define(_SL_SELSQL, "Seleziona File SQL:");
 define(_SL_USECOOKIES, "Abilita Cookies?"); //NEW with 098rc3
 define(_SL_SURVEYURL, "URL questionario"); //NEW with 098rc3
+define(_SL_NOTIFICATION, "Notification:"); //New with 098rc5
 //groups
 define(_GL_TITLE, "Titolo:");
 define(_GL_DESCRIPTION, "Descrizione:");
@@ -530,5 +531,8 @@ define(_PS_DEACTSURVEYS, "Indagini disattivate");
 define(_PS_ACTIVETOKENS, "Tavole di token attive");
 define(_PS_DEACTTOKENS, "Tavole di token disattivate");
 
-
+//Notification Levels
+define(_NT_NONE, "Nessuna notifica del email"); //New with 098rc5
+define(_NT_SINGLE, "Notifica di base del email"); //New with 098rc5
+define(_NT_RESULTS, "Trasmetta la notifica del email con i codici di risultato"); //New with 098rc5
 ?>
