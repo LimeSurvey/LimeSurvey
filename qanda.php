@@ -187,6 +187,7 @@ switch ($ia[4])
 		$inputnames[]=$ia[1];
 		break;
 	case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+		if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
 		$ansresult = mysql_query($ansquery);
 		$anscount = mysql_num_rows($ansresult);
@@ -279,7 +280,7 @@ switch ($ia[4])
 			if ($maxoptionsize > 70) {$maxoptionsize=70;}
 			$answer .= "\t\t\t\t\t<td valign='top'>\n";
 			$answer .= "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' rows='$tarows' cols='$maxoptionsize'>";
-			if ($_SESSION[$fname2]) 
+			if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
 				{
 				$answer .= str_replace("\\", "", $_SESSION[$fname2]);
 				}
