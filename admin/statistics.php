@@ -85,9 +85,13 @@ foreach ($filters as $flt)
 	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C") //Have to make an exception for these types!
 		{
 		echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3]<br />\n";
-		echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1][]' multiple $slstyle2>\n";
+		echo "\t\t\t\t<select name='";
+		if ($flt[2] == "M" || $flt[2] == "P") {echo "M";}
+		echo "{$sid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
 		}
-	$myfield = "QID$flt[0]GID$flt[1]";
+	$myfield = "{$sid}X{$flt[1]}X{$flt[0]}";
+	if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
+	echo "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
 	switch ($flt[2])
 		{
 		case "5": // 5 point choice
@@ -121,11 +125,11 @@ foreach ($filters as $flt)
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
-				$myfield2 = $myfield."ANS$row[0]";
+				$myfield2 = $myfield."X$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
 				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0][]' multiple $slstyle2>\n";
+				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}X{$row[0]}[]' multiple $slstyle2>\n";
 				for ($i=1; $i<=5; $i++)
 					{
 					echo "\t\t\t\t\t<option value='$i'";
@@ -143,11 +147,11 @@ foreach ($filters as $flt)
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
-				$myfield2 = $myfield . "ANS$row[0]";
+				$myfield2 = $myfield . "X$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
 				
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0][]' multiple $slstyle2>\n";
+				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}X{$row[0]}[]' multiple $slstyle2>\n";
 				for ($i=1; $i<=10; $i++)
 					{
 					echo "\t\t\t\t\t<option value='$i'";
@@ -165,10 +169,10 @@ foreach ($filters as $flt)
 			$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
 			while ($row=mysql_fetch_row($result))
 				{
-				$myfield2 = $myfield . "ANS$row[0]";
+				$myfield2 = $myfield . "X$row[0]";
 				echo "<!-- $myfield2 -- $_POST[$myfield2] -->\n";
 				echo "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])<br />\n";
-				echo "\t\t\t\t<select name='QID$flt[0]GID$flt[1]ANS$row[0][]' multiple $slstyle2>\n";
+				echo "\t\t\t\t<select name='{$sid}X{$flt[1]}X{$flt[0]}X{$row[0]}[]' multiple $slstyle2>\n";
 				echo "\t\t\t\t\t<option value='Y'";
 				if (is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected";}
 				echo ">Yes</option>\n";
@@ -211,24 +215,27 @@ echo "\t<input type='hidden' name='display' value='stats'>\n";
 echo "\t</form>\n";
 echo "</table>\n";
 
-
 /// MUCKING AROUND ----
-echo count($_POST) . " elements<br />";
-foreach ($_POST as $post)
-	{
-	if (is_array($post))
-		{
-		foreach ($post as $pst)
-			{
-			echo "$pst<br />\n";
-			}
-		}
-	else
-		{
-		echo "$post<br />\n";
-		}
-	echo "<br />\n";
-	}
+//phpinfo();
+
+//echo count($_POST) . " elements<br />";
+//foreach ($_POST as $post)
+//	{
+//	if (is_array($post))
+//		{
+//		foreach ($post as $pst)
+//			{
+//			echo "$pst<br />\n";
+//			}
+//		}
+//	else
+//		{
+//		echo "$post<br />\n";
+//		}
+//	echo "<br />\n";
+//	}
+	
+
 
 //for($i=0;$i<count($_POST);$i++){
 //$tmpvar=$_POST[$i];
@@ -239,9 +246,47 @@ foreach ($_POST as $post)
 if ($display)
 	{
 	// 1: Get list of questions with answers chosen
-	
+	for (reset($_POST); $key=key($_POST);
+	next($_POST)) { $postvars[]=$key;} // creates array of post variable names
+	foreach ($postvars as $pv) 
+		{
+		if ($pv != "sid" && $pv != "display" && substr($pv, 0, 1) != "M") //pull out just the fieldnames
+			{
+			foreach ($$pv as $condition)
+				{
+				$selects[]="$pv = '$condition'";
+				}
+			}
+		elseif (substr($pv, 0, 1) == "M")
+			{
+			list($lsid, $lgid, $lqid) = explode("X", $pv);
+			$aquery="SELECT code FROM answers WHERE qid=$lqid";
+			$aresult=mysql_query($aquery) or die ("Couldn't get answers<br />$aquery<br />".mysql_error());
+			while ($arow=mysql_fetch_row($aresult))
+				{
+				if (in_array($arow[0], $$pv))
+					{
+					$selects[]=substr($pv, 1, strlen($pv))."$arow[0] = 'Y'";
+					}
+				}
+			
+			}
+		}
 	// 2: Develop SQL query
-	
-	// 3: Present results
+	$query = "SELECT count(*) FROM survey_$sid";
+	if ($selects) 
+		{
+		$query .= " WHERE ";
+		$query .= implode(" AND ", $selects);
+		}
+	$result=mysql_query($query) or die("Couldn't get results<br />$query<br />".mysql_error());
+	while ($row=mysql_fetch_row($result)) {$total=$row[0];}
+	// 3: Present results including option to view those rows
+	echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='0' cellspacing='0' bordercolor='black'>\n";
+	echo "\t<tr><td align='center'><b>$setfont<font color='orange'>Results:</b></td></tr>\n";
+	echo "\t<tr><td align='center'>$setfont<font color='#EEEEEE'>";
+	echo "<B>Your query returns $total records!</b><br />\n\t\t<br />\n\t\t<font size='1'>$query";
+	echo "</td></tr>\n";
+	echo "</table>\n";
 	}
 ?>
