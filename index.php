@@ -259,8 +259,8 @@ switch ($thissurvey['format'])
 function getTokenData($sid, $token)
 	{
 	global $dbprefix;
-	$query = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token=$token";
-	$result = mysql_query($query) or die("Couldn't get token info in getTemplateData()<br />".$query."<br />".mysql_error());
+	$query = "SELECT * FROM {$dbprefix}tokens_$sid WHERE token='$token'";
+	$result = mysql_query($query) or die("Couldn't get token info in getTokenData()<br />".$query."<br />".mysql_error());
 	while($row=mysql_fetch_array($result))
 		{
 		$thistoken=array("firstname"=>$row['firstname'],
