@@ -681,6 +681,7 @@ if (returnglobal('action') == "email")
 				$sendmessage = str_replace("{FIRSTNAME}", $emrow['firstname'], $sendmessage);
 				$sendmessage = str_replace("{LASTNAME}", $emrow['lastname'], $sendmessage);
 				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
+				$sendmessage = str_replace("{TOKEN}", $emrow['token'], $sendmessage);
 				if (isset($emrow['attribute_1'])) 
 					{
 				    $sendmessage = str_replace("{ATTRIBUTE_1}", $emrow['attribute_1'], $sendmessage);
@@ -855,6 +856,7 @@ if (returnglobal('action') == "remind")
 				$sendmessage = str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$sid&token={$emrow['token']}", $sendmessage);
 				$sendmessage = str_replace("{ATTRIBUTE1}", $emrow['attribute_1'], $sendmessage);
 				$sendmessage = str_replace("{ATTRIBUTE2}", $emrow['attribute_2'], $sendmessage);
+				$sendmessage = str_replace("{TOKEN}", $emrow['token'], $sendmessage);
 				$sendmessage=crlf_lineendings($sendmessage);
 				// Uncomment the next line if your mail clients can't handle emails containing <CR><LF> 
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
