@@ -943,18 +943,25 @@ if ($action == "editquestion")
 		$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n";
 		$editquestion .= "\t\t<td align='right'>$setfont<b>"._QL_LABELSET."</b></font></td>\n";
 		$editquestion .= "\t\t<td>$setfont\n";
-		$editquestion .= "\t\t<select name='lid' $slstyle>\n";
-		$labelsets=getlabelsets();
-		if (count($labelsets)>0)
+		if ($activated != "Y")
 			{
-			foreach ($labelsets as $lb)
+			$editquestion .= "\t\t<select name='lid' $slstyle>\n";
+			$labelsets=getlabelsets();
+			if (count($labelsets)>0)
 				{
-				$editquestion .= "\t\t\t<option value='{$lb[0]}'";
-				if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
-				$editquestion .= ">{$lb[1]}</option>\n";
+				foreach ($labelsets as $lb)
+					{
+					$editquestion .= "\t\t\t<option value='{$lb[0]}'";
+					if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
+					$editquestion .= ">{$lb[1]}</option>\n";
+					}
 				}
+			$editquestion .= "\t\t</select>\n";
 			}
-		$editquestion .= "\t\t</select>\n";
+		else
+			{
+			$editquestion .= "[{$eqrow['lid']}] - Cannot be changed in activated survey.\n";
+			}
 		$editquestion .= "\t\t</td>\n";
 		$editquestion .= "\t</tr>\n";
 		
