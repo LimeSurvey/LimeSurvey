@@ -72,6 +72,13 @@
 	border-color: #333399;
 	background-color: #FFD1A4;
 	}
+.innergraph
+	{
+	background-color: #FFD1A4;
+	color: #FF9933;
+	font-size: 8pt;
+	font-family: verdana;
+	}
 .rank
 	{
 	background-color: #FFE4CA;
