@@ -88,6 +88,8 @@ if ($move == " last ") {$step = $thisstep+1;}
 
 include("./admin/config.php");
 
+if ($sid != $_GET['sid'] && $sid != $_POST['sid']){$sid = $_GET['sid'];}
+
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
                                                      // always modified
@@ -119,7 +121,7 @@ if (!mysql_selectdb ($databasename, $connect))
 if ($sid)
 	{
 	$desquery = "SELECT * FROM surveys WHERE sid=$sid";
-	$desresult = mysql_query($desquery);
+	$desresult = mysql_query($desquery) or die ("Couldn't get survey with sid of $sid<br />$desquery<br />".mysql_error());
 	$descount = mysql_num_rows($desresult);
 	while ($desr = mysql_fetch_array($desresult)) {$expirydate = $desr['expires'];}
 	if ($descount == 0) 
@@ -268,6 +270,16 @@ if ($move == " last ")
 	echo "\t</tr>\n";
 	echo surveymover();
 	echo "</table>\n";
+	//debugging info
+	echo "<!-- DEBUG INFO \n";
+	foreach ($insertarray as $posted) 
+		{
+		echo "$posted: ".$_SESSION[$posted] ."\n";
+		}
+	echo "SID: $sid\n";
+	echo "Token: $token\n";
+	echo "-->\n";
+	// end debugging info
 	echo "</body>\n</html>";
 	exit;
 	}
@@ -310,7 +322,7 @@ if ($move == " submit ")
 	$col_name = substr($col_name, 2); //Strip off first comma & space
 	$values = substr($values, 2); //Strip off first comma & space
 	$subquery .= "\n($col_name) \nVALUES \n($values)";
-	echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
+	//echo "<pre style='text-align: left'>$subquery</pre>\n"; //Debugging info
 	
 	if ($surveyactive == "Y")
 		{
@@ -370,10 +382,23 @@ if ($move == " submit ")
 		echo "\t\t\t\t</tr>\n";
 		}
 	echo "\t\t\t</table>\n";
-	echo "\t\t\t<center><br /><a href='?move=completed'>Finish</a></center><br />\n";
+	echo "\t\t\t<center><br /><a href='index.php?move=completed&sid=$sid'>Finish</a></center><br />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
+	
+	// debugging info
+	echo "<!-- DEBUG INFO \n";
+	foreach ($insertarray as $posted) 
+		{
+		echo "$posted: ".$_SESSION[$posted] ."\n";
+		}
+	echo "SID: $sid\n";
+	echo "Token: $token\n";
+	echo "-->\n";
+	// end debugging info
+
+	
 	echo "</body>\n</html>";
 	exit;
 	}
