@@ -338,7 +338,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			session_destroy();
 			}
 		else
-			{
+			{//Submit of Responses Failed
 			echo "<html>\n";
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -346,7 +346,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 				}
 			$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n";
 			$completed .= _DIDNOTSAVE2."<br /><br />\n";
-			if ($adminemail)
+			if (isset($adminemail) && $adminemail)
 				{	
 				$completed .= _DIDNOTSAVE3."<br /><br />\n";
 				$email=_DNSAVEEMAIL1." $sid\n\n";
@@ -364,7 +364,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 			else
 				{
 				$completed .= "<a href='javascript:location.reload()'>"._SUBMITAGAIN."</a><br /><br />\n";
-				$completed .= $subquery;
+				$completed .= $subquery . "<br />".mysql_error();
 				}
 			}
 		}
