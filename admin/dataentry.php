@@ -1011,11 +1011,18 @@ else
 			switch($deqrow['type'])
 				{
 				case "5": //5 POINT CHOICE radio-buttons
-					echo "\t\t\t<input type='radio' name='$fieldname' value='1' />1 \n";
-					echo "\t\t\t<input type='radio' name='$fieldname' value='2' />2 \n";
-					echo "\t\t\t<input type='radio' name='$fieldname' value='3' />3 \n";
-					echo "\t\t\t<input type='radio' name='$fieldname' value='4' />4 \n";
-					echo "\t\t\t<input type='radio' name='$fieldname' value='5' />5 \n";
+					echo "\t\t\t<select name='$fieldname'>\n";
+					echo "\t\t\t\t<option value=''>No Answer</option>\n";
+					for ($x=1; $x<=5; $x++)
+						{
+						echo "\t\t\t\t<option value='$x'>$x</option>\n";
+						}
+					echo "\t\t\t</select>\n";
+					//echo "\t\t\t<input type='radio' name='$fieldname' value='1' />1 \n";
+					//echo "\t\t\t<input type='radio' name='$fieldname' value='2' />2 \n";
+					//echo "\t\t\t<input type='radio' name='$fieldname' value='3' />3 \n";
+					//echo "\t\t\t<input type='radio' name='$fieldname' value='4' />4 \n";
+					//echo "\t\t\t<input type='radio' name='$fieldname' value='5' />5 \n";
 					break;
 				case "D": //DATE
 					echo "\t\t\t<input type='text' name='$fieldname' size='10' />\n";
@@ -1256,7 +1263,7 @@ else
 					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname'></textarea>\n";
 					break;
 				case "Y": //YES/NO radio-buttons
-					echo "\t\t\t<Select name='$fieldname'>\n";
+					echo "\t\t\t<select name='$fieldname'>\n";
 					echo "\t\t\t\t<option selected value=''>Please choose..</option>\n";
 					echo "\t\t\t\t<option value='Y'>Yes</option>\n";
 					echo "\t\t\t\t<option value='N'>No</option>\n";
@@ -1271,12 +1278,16 @@ else
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
 						echo "\t\t<td>$setfont\n";
+						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						echo "\t\t\t\t<option value=''>Please choose..</option>\n";
 						for ($i=1; $i<=5; $i++)
 							{
-							echo "\t\t\t<input type='radio' name='$fieldname{$mearow['code']}' value='$i'";
-							if ($idrow[$i] == $i) {echo " checked";}
-							echo " />$i&nbsp;\n";
+							echo "\t\t\t\t<option value='$i'>$i</option>\n";
+							//echo "\t\t\t<input type='radio' name='$fieldname{$mearow['code']}' value='$i'";
+							//if ($idrow[$i] == $i) {echo " checked";}
+							//echo " />$i&nbsp;\n";
 							}
+						echo "\t\t\t</select>\n";
 						echo "\t\t</td>\n";
 						echo "\t</tr>\n";
 						}
@@ -1291,12 +1302,16 @@ else
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
 						echo "\t\t<td>\n";
+						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						echo "\t\t\t\t<option value=''>Please choose..</option>\n";
 						for ($i=1; $i<=10; $i++)
 							{
-							echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='$i'";
-							if ($idrow[$i] == $i) {echo " checked";}
-							echo " />$i&nbsp;\n";
+							echo "\t\t\t\t<option value='$i'>$i</option>\n";
+							//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='$i'";
+							//if ($idrow[$i] == $i) {echo " checked";}
+							//echo " />$i&nbsp;\n";
 							}
+						echo "</select>\n";
 						echo "\t\t</td>\n";
 						echo "\t</tr>\n";
 						}
@@ -1311,15 +1326,21 @@ else
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
 						echo "\t\t<td>\n";
-						echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='Y'";
-						if ($idrow[$i]== "Y") {echo " checked";}
-						echo " />Yes&nbsp;\n";
-						echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='U'";
-						if ($idrow[$i]== "U") {echo " checked";}
-						echo " />Uncertain&nbsp;\n";
-						echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='N'";
-						if ($idrow[$i]== "N") {echo " checked";}
-						echo " />No&nbsp;\n";
+						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						echo "\t\t\t\t<option value=''>Please choose..</option>\n";
+						echo "\t\t\t\t<option value='Y'>Yes</option>\n";
+						echo "\t\t\t\t<option value='U'>Uncertain</option>\n";
+						echo "\t\t\t\t<option value='N'>No</option>\n";
+						echo "\t\t\t</select>\n";
+						//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='Y'";
+						//if ($idrow[$i]== "Y") {echo " checked";}
+						//echo " />Yes&nbsp;\n";
+						//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='U'";
+						//if ($idrow[$i]== "U") {echo " checked";}
+						//echo " />Uncertain&nbsp;\n";
+						//echo "\t\t\t$setfont<input type='radio' name='$fieldname{$mearow['code']}' value='N'";
+						//if ($idrow[$i]== "N") {echo " checked";}
+						//echo " />No&nbsp;\n";
 						echo "\t\t</td>\n";
 						echo "</tr>\n";
 						}
