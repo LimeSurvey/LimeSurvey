@@ -892,7 +892,7 @@ function sendsubmitnotification($sendnotification)
 	$message = _CONFIRMATION_MESSAGE1." {$thissurvey['name']}\r\n"
 			 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
 			 . _CONFIRMATION_MESSAGE3."\r\n"
-			 . "  $homeurl/browse.php?sid=$surveyid&amp;action=id&amp;id=$savedid\r\n\r\n"
+			 . "  $homeurl/browse.php?sid=$surveyid&action=id&id=$savedid\r\n\r\n"
 			 . _CONFIRMATION_MESSAGE4."\r\n"
 			 . "  $homeurl/statistics.php?sid=$surveyid\r\n\r\n";
 	if ($sendnotification > 1)

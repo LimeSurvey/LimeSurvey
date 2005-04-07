@@ -136,7 +136,10 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 		if (mysql_query($subquery)) //submit of responses was successful
 			{
 			//UPDATE COOKIE IF REQUIRED
-			$savedid=mysql_insert_id();
+			$idquerytext = "SELECT LAST_INSERT_ID()";
+			$idquery = mysql_query ($idquerytext);
+			$idquery_row = mysql_fetch_row ($idquery);
+			$savedid=$idquery_row[0];
 			
 			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
 				{
