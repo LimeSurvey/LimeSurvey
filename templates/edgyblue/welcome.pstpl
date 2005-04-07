@@ -19,7 +19,7 @@
 	<tr>
 		<td></td>
 		<td align='center'>
-			<font size='2'><br />{WELCOME}<br /><br />
+			<div style="margin:10px 50px 10px 50px; text-align: left;"><font size='2'><br />{WELCOME}<br /><br /></div>
 			<i>{THEREAREXQUESTIONS}</i><br />&nbsp;
 		</td>
 		<td></td>

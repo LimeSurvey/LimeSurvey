@@ -75,7 +75,7 @@
 .innergraph
 	{
 	background-color: #FFD1A4;
-	color: #FF9933;
+	color: #C86400;
 	font-size: 8pt;
 	font-family: verdana;
 	}

@@ -22,9 +22,9 @@
 				</tr>
 				<tr bgcolor='#FFD1A4'>
 					<td background='{TEMPLATEURL}orange2_left.gif' width='10'></td>
-					<td bgcolor='white' align='center' width='100%'>
+					<td bgcolor='white' width='100%'><div style="margin:10px 50px 10px 50px">
 						{ANSWER}
-					</td>
+					</div></td>
 					<td background='{TEMPLATEURL}orange2_right.gif' width='10'></td>
 				</tr>
 				<tr bgcolor='#FFD1A4'>
