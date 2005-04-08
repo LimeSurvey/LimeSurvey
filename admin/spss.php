@@ -7,6 +7,7 @@ if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
 
 #Get all legitimate question ids
+sendcacheheaders();
 $query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
 $result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 $num_results = mysql_num_rows($result);
