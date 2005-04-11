@@ -505,7 +505,7 @@ function checkconfield($value)
 			$result=mysql_query($query) or die($query."<br />".mysql_error());
 			while($rows = mysql_fetch_array($result))
 				{
-				if($rows['type'] == "M" || $rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "P")
+				if($rows['type'] == "M" || $rows['type'] == "P")
 					{
 					$matchfield=$rows['cfieldname'].$rows['value'];
 					$matchvalue="Y";
