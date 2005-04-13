@@ -112,8 +112,7 @@ $fn = "labelset_$lid.sql";
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
-                                                     // always modified
-header("Cache-Control: post-check=0, pre-check=0", false);
+Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 echo "#<pre>\n";
 echo $dumphead, $qdump, $adump;

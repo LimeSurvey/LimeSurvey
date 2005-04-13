@@ -77,6 +77,7 @@ elseif (isset($surveyid) && $surveyid)
 	//Export is happening
 	header("Content-Disposition: attachment; filename=vvexport_$surveyid.xls");
 	header("Content-type: application/vnd.ms-excel");
+    Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	$s="\t";
 	
 	$fieldmap=createFieldMap($surveyid, "full");

@@ -56,6 +56,7 @@ foreach($tables as $table) {
 $file_name = "PHPSurveyor_{$databasename}_dump_".date("Y-m-d").".sql";
 Header("Content-type: application/octet-stream"); 
 Header("Content-Disposition: attachment; filename=$file_name");
+Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 echo $export; 
 exit;
 

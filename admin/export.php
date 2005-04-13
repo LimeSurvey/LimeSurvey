@@ -275,6 +275,8 @@ default:
         break;
 }
 
+Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = mysql_query($query);
