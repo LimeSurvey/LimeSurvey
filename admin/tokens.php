@@ -956,7 +956,7 @@ if ($action == "tokenify")
 					}
 				else
 					{
-					$newtoken = sprintf("%010s", rand(1, 10000000000));
+					$newtoken = sprintf("%010s", rand(1, getrandmax()));
 					}
 				$ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
 				$ntresult = mysql_query($ntquery);
