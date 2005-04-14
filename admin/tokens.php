@@ -1261,10 +1261,10 @@ if ($action == "upload")
 							{
 							if ($xy == 0) {$firstname = $el;}
 							if ($xy == 1) {$lastname = $el;}
-							if ($xy == 2) {$email = $el;}
-							if ($xy == 3) {$token = $el;}
-							if ($xy == 4) {$attribute1 = $el;}
-							if ($xy == 5) {$attribute2 = $el;}
+							if ($xy == 2) {$email = trim($el);}
+							if ($xy == 3) {$token = trim($el);}
+							if ($xy == 4) {$attribute1 = trim($el);}
+							if ($xy == 5) {$attribute2 = trim($el);}
 							}
 						$xy++;
 						}
