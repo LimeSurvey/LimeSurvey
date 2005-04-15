@@ -107,7 +107,7 @@ $allfields[]=array("{$dbprefix}questions", "mandatory", "mandatory char(1) defau
 $allfields[]=array("{$dbprefix}questions", "lid", "lid int(11) NOT NULL default '0'");
 
 $allfields[]=array("{$dbprefix}surveys", "sid", "sid int(11) NOT NULL auto_increment");
-$allfields[]=array("{$dbprefix}surveys", "short_title", "short_title varchar(50) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}surveys", "short_title", "short_title varchar(200) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}surveys", "description", "description text");
 $allfields[]=array("{$dbprefix}surveys", "admin", "admin varchar(50) default NULL");
 $allfields[]=array("{$dbprefix}surveys", "active", "active char(1) NOT NULL default 'N'");
