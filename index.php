@@ -835,7 +835,7 @@ function submittokens()
 		$headers = "From: {$thissurvey['adminname']} <{$thissurvey['adminemail']}>\r\n";
 		$headers .= "X-Mailer: $sitename Email Inviter\r\n";
         $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/plain; charset=" .encode_lang($thissurvey['language']) . "\r\n";		
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";		
 		
 		$to = $cnfrow['email'];
 		$subject = $thissurvey['email_confirm_subj'];
