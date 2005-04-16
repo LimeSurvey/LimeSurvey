@@ -410,7 +410,7 @@ function adminmenu() {
 		    <table width='100%' align='center' cellspacing='0' cellpadding='0' border='0'>
 			 <tr>
 			  <td width='250' align='center'>
-			   <a href='http://phpsurveyor.sourceforge.net' target='_blank'><img src='{$imagefiles}/cloudlogo.jpg' border='0' hspace='0' vspace='0'></a>
+			   <a href='http://phpsurveyor.sourceforge.net' target='_blank'><img src='{$imagefiles}/phpslogo.png' border='0' hspace='0' vspace='0'></a>
 			  </td>
 			  <td valign='top'>
 			   <table align='center' width='100%' cellspacing='0' cellpadding='0'>
@@ -423,7 +423,7 @@ function adminmenu() {
 				</tr>
 				<tr>
 			     <td valign='bottom' class='headingtable' height='24' bgcolor='#999999'>
-			      <img src='{$imagefiles}/admincrnr.jpg' border='0' align='left' hspace='0' vspace='0'>
+			      <img src='{$imagefiles}/admincrnr.png' border='0' align='left' hspace='0' vspace='0'>
 			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, system, '165px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_OPTIONS."</a>
 			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, systemdb, '240px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_ACTIONS."</a>
 			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, systemother, '220px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_OTHER."</a>
@@ -449,6 +449,7 @@ function footer($url, $explanation)
 				. "\t\t\t<img align='left' alt='Help - $explanation' src='$imagefiles/help.gif' "
 				. "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
 				. "onMouseOut=\"document.body.style.cursor='auto'\">\n"
+				. "<font color='white' size='1'>This is an experimental interface. If you experience problems please use the <a href='admin.php'>normal interface.</a></font><br> \n"
 				. "Ver $versionnumber\n"
 				. "\t\t</font></font></td>\n"
 				. "\t</tr>\n"
