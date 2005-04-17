@@ -1421,7 +1421,7 @@ else
 			while ($distinctrow=mysql_fetch_array($distinctresult))
 				{
 				if ($x > 0) {$explanation .= " <i>"._DE_AND."</i><br />";}
-				$conquery="SELECT cid, cqid, cfieldname, {$dbprefix}questions.title, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
+				$conquery="SELECT cid, cqid, cfieldname, {$dbprefix}questions.title, {$dbprefix}questions.lid, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
 				$conresult=mysql_query($conquery);
 				while ($conrow=mysql_fetch_array($conresult))
 					{
