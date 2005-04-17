@@ -168,7 +168,7 @@ function mkdir_p($target){
 	//        0 for other errors
 	if(file_exists($target) || is_dir($target))
 		return 2; 
-	if(mkdir($target)){ 
+	if(mkdir($target,0777)){ 
 		return 1; 
   	} 
 	if(mkdir_p(substr($target, 0, (strrpos($target, '/')))) == 1){ 
