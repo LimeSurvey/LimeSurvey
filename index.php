@@ -1369,10 +1369,13 @@ function doAssessment($surveyid)
 			$total=0;
 			foreach($fieldmap as $field) 
 				{
-				$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];
-				$groups[]=$field['gid'];
-				$total=$total+$_SESSION[$field['fieldname']];
-				$i++;
+				if ($field['fieldname'] != "datestamp") 
+					{
+					$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];
+					$groups[]=$field['gid'];
+					$total=$total+$_SESSION[$field['fieldname']];
+					$i++;
+					}
 				}
 			
 			$groups=array_unique($groups);
@@ -1382,10 +1385,10 @@ function doAssessment($surveyid)
 				$grouptotal=0;
 				foreach ($fieldmap as $field) 
 					{
-					if ($field['gid'] == $group) 
-						{
-					    $grouptotal=$grouptotal+$field['answer'];
-						}
+						if ($field['gid'] == $group && isset($field['answer'])) 
+							{
+						    $grouptotal=$grouptotal+$field['answer'];
+							}
 					}
 				$subtotal[$group]=$grouptotal;
 				}
