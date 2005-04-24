@@ -195,14 +195,14 @@ define("_QL_COPYATT", "Attribute kopieren?");
 //answers
 define("_AL_CODE", "Code");
 define("_AL_ANSWER", "Antwort");
-define("_AL_DEFAULT", "Vorgew&auml;hlt");
+define("_AL_DEFAULT", "Vorgewählt");
 define("_AL_MOVE", "Bewegen");
 define("_AL_ACTION", "Aktion");
 define("_AL_UP", "Hoch");
 define("_AL_DN", "Runter");
 define("_AL_SAVE", "Speichern");
-define("_AL_DEL", "L&ouml;schen");
-define("_AL_ADD", "Hinzuf&uuml;gen");
+define("_AL_DEL", "Löschen");
+define("_AL_ADD", "Hinzufügen");
 define("_AL_FIXSORT", "Sort Check");
 define("_AL_SORTALPHA", "Alph. Sortieren"); // Sort Answers Alphabetically
 //users
