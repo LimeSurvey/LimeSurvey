@@ -218,7 +218,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 			} // while
 		$_SESSION['savename']=$_POST['loadname']; //This session variable hangs around
 		                                           //for later use.
-		$_POST['move'] = _NEXT; //Just to stop a bug
+		$_POST['move'] = " "._NEXT." >> "; //Just to stop a bug
 		if (isset($_GET['loadall']))
 			{
 			buildsurveysession();
