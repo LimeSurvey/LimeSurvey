@@ -125,8 +125,8 @@ if ($action == "edit") {
 				 $groupselect,
 				 "<input type='text' name='minimum' value='".$editdata['minimum']."'>",
 				 "<input type='text' name='maximum' value='".$editdata['maximum']."'>",
-				 "<input type='text' name='name' value='".stripslashes($editdata['name'])."'>",
-				 "<textarea name='message'>".stripslashes($editdata['message'])."</textarea>",
+				 "<input type='text' name='name' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."'>",
+				 "<textarea name='message'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
 				 "<input type='text' name='link' value='".$editdata['link']."'>");
 	$actiontitle=_AS_EDIT;
 	$actionbutton=_AS_UPDATE;
