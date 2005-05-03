@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //Translation kindly provided by Alexei G. Tchernov  (alexei_g_chernov[at]mail[dot]ru)
 
 //BUTTON BAR TITLES
