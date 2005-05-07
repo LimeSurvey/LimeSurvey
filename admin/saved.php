@@ -49,7 +49,7 @@ if ($action == "delete" && $surveyid && $scid)
     $query = "DELETE FROM {$dbprefix}saved_control
 			  WHERE scid=$scid
 			  AND sid=$surveyid
-			  AND identifier='".returnglobal('identifier')."'";
+			  ";
 	if ($result = mysql_query($query)) 
 		{
 		//If we were succesful deleting the saved_control entry, 
@@ -113,17 +113,19 @@ function showSavedList($surveyid)
 				<td>".$row['saved_date']."</td>
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
 				<td align='center'>
-				[<a href='saved.php?sid=$surveyid&action=delete&scid=".$row['scid']."&identifier=".$row['identifier']."'"
+				[<a href='saved.php?sid=$surveyid&amp;action=delete&amp;scid=".$row['scid']."'"
 				." onClick='return confirm(\""._DR_RUSURE."\")'"
 				.">"._DELETE."</a>]
-				[<a href='saved.php?sid=$surveyid&action=remind&identifier=".$row['identifier']."'>"._SV_REMIND."</a>]
-				[<a href='dataentry.php?sid=$surveyid&action=editsaved&identifier=".$row['identifier']."&accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]
+				[<a href='dataentry.php?sid=$surveyid&action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]
 				</td>
 			   </tr>\n";
 			} // while
 		echo "</table>\n";
 		}
 	}
+
+//				[<a href='saved.php?sid=$surveyid&amp;action=remind&amp;scid=".$row['scid']."'>"._SV_REMIND."</a>]
+//               c_schmitz: Since its without function at the moment i removed it from the above lines
 
 function savedmenubar()
 	{

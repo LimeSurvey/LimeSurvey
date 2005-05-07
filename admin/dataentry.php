@@ -39,6 +39,7 @@ $action = returnglobal('action');
 $surveyid = returnglobal('sid');
 $id = returnglobal('id');
 $surveytable = returnglobal('surveytable');
+$saver['scid']=returnglobal('save_scid');
 
 sendcacheheaders();
 
@@ -101,7 +102,6 @@ if ($action == "insert")
 		$saver['password']=returnglobal('save_password');
 		$saver['passwordconfirm']=returnglobal('save_confirmpassword');
 		$saver['email']=returnglobal('save_email');
-		$saver['scid']=returnglobal('save_scid');
 		if (!returnglobal('redo'))
 			{
 		    $password=md5($saver['password']);
