@@ -224,7 +224,7 @@ foreach ($filters as $flt)
         if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
             {echo " CHECKED";}
         echo ">&nbsp;"
-            ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
+            ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></b>"
             ."<br />\n";
         if ($flt[2] != "N") {echo "\t\t\t\t<select name='";}
         if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {echo "M";}
@@ -240,16 +240,16 @@ foreach ($filters as $flt)
         case "T": // Long free text
         case "U": // Huge free text
             $myfield2="T$myfield";
-            echo "\t\t\t\t<td align='center' valign='top'>";
+            echo "\t\t\t\t<td align='center' valign='top'>"
+                ."$setfont<b>$flt[3]</b>";
             echo "<input type='checkbox' name='summary[]' value='$myfield2'";
             if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
-                ."$setfont<b>$flt[3]</b>"
                 ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
-                .str_replace("\"", "`", $flt[5])." [$row[1]]\" "
+                .str_replace("\"", "`", $flt[5])." \" "
                 ."onClick=\"alert('"._QUESTION.": ".$niceqtext." "
-                .str_replace("'", "`", $row[1])."')\">"
+                ."')\">"
                 ."<br />\n"
                 ."\t\t\t\t\t<font size='1'>"._ST_RESPONECONT.":</font><br />\n"
                 ."\t\t\t\t\t<textarea $slstyle2 name='$myfield2' rows='3'>";
@@ -582,7 +582,7 @@ foreach ($filters as $flt)
             if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
-                ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('QUESTION: ".$niceqtext."')\"></b>"
+                ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></b>"
                 ."<br />\n";
             echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
             $allfields[]=$myfield;
