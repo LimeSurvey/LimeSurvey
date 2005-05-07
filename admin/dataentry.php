@@ -1145,7 +1145,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			  <td><input type='text' name='save_identifier'";
 		if (returnglobal('identifier')) 
 			{
-		    echo " value='".returnglobal('identifier')."'";
+		    echo " value=\"".stripslashes(stripslashes(returnglobal('identifier')))."\"";
 			}
 		echo "></td></tr>
 			  </table>\n";
