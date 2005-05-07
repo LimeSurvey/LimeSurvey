@@ -259,16 +259,16 @@ foreach ($filters as $flt)
             break;
         case "S": // Short free text
             $myfield2="T$myfield";
-            echo "\t\t\t\t<td align='center' valign='top'>";
+            echo "\t\t\t\t<td align='center' valign='top'>"
+                ."$setfont<b>$flt[3]</b>";
             echo "<input type='checkbox' name='summary[]' value='$myfield2'";
             if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
-                ."$setfont<b>$flt[3]</b>"
                 ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
                 .str_replace("\"", "`", $flt[5])
                 ." [$flt[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
-                .str_replace("'", "`", $flt[1])."')\">"
+                ."')\">"
                 ."<br />\n"
                 ."\t\t\t\t\t<font size='1'>"._ST_RESPONECONT.":</font><br />\n"
                 ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
@@ -297,8 +297,8 @@ foreach ($filters as $flt)
             echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
                 ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
                 .str_replace("\"", "`", $flt[5])
-                ." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
-                .str_replace("'", "`", $row[1])."')\">"
+                ." \" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
+                ."')\">"
                 ."<br />\n"
                 ."\t\t\t\t\t<font size='1'>"._ST_DATEEQUALS.":<br />\n"
                 ."\t\t\t\t\t<input name='$myfield3' type='text' value='";
