@@ -407,7 +407,7 @@ foreach ($filters as $flt)
                     echo ">$i</option>\n";
                     }
                 echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
-                $count2++;
+                $counter2++;
                 $allfields[]=$myfield2;
                 }
             echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
@@ -1100,6 +1100,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 $q1c=$q1b-1;
                 $q1diff=$q1-$q1b;
                 $total=0;
+                if ($q1c<1) {$q1c=1;$lastnumber=0;}  // fix if there are too few values to evaluate.
                 if ($q1 != $q1b)
                     {
                     //ODD NUMBER
