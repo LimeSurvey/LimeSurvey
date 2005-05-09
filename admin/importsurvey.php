@@ -533,6 +533,7 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 		$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($qar, "', '", "('", "')");
 		$newfieldcontents=$fieldcontents;
+		$newqid="";
 		$oldqid=$fieldcontents[array_search("qid", $fieldorders)];
 		foreach ($substitutions as $subs) {
 			if ($oldqid==$subs[2]) {$newqid=$subs[5];}
