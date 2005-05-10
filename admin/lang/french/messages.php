@@ -581,7 +581,7 @@ define("_DE_UPDATED", "L&#146;enregistrement a &eacute;t&eacute; mis &agrave; jo
 define("_DE_EDITING", "Editer une r&eacute;ponse");
 define("_DE_QUESTIONHELP", "Aide sur cette question");
 define("_DE_CONDITIONHELP1", "R&eacute;pondez seulement &agrave; ceci si les conditions suivantes sont r&eacute;unies :"); 
-define("_DE_CONDITIONHELP2", "&agrave; la question {QUESTION}, vous avez r&eacute;pondu {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define("_DE_CONDITIONHELP2", "&agrave; la question {QUESTION}, vous avez r&eacute;pondu {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "ET (AND)");
 define("_DE_OR", "OU (OR)");
 define("_DE_SAVEENTRY", "Sauvegarder les r&ecute;ponses partielles au questionnaire"); //New in 0.99dev01

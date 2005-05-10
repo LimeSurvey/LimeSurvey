@@ -539,7 +539,7 @@ define("_DE_UPDATED", "Record bijgewerkt.");
 define("_DE_EDITING", "Bezig met bewerken deelname");
 define("_DE_QUESTIONHELP", "Help over deze vraag");
 define("_DE_CONDITIONHELP1", "Enkel antwoord als de volgende voorwaarden zijn voldaan:"); 
-define("_DE_CONDITIONHELP2", "op vraag {QUESTION}, antwoordde u {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define("_DE_CONDITIONHELP2", "op vraag {QUESTION}, antwoordde u {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "EN");
 define("_DE_OR", "OF");
 define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01

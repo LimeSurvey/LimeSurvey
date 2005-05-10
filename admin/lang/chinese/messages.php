@@ -540,7 +540,7 @@ define("_DE_UPDATED", "記錄已被更新.");
 define("_DE_EDITING", "修改回應結果");
 define("_DE_QUESTIONHELP", "有關本問題的求助說明");
 define("_DE_CONDITIONHELP1", "符合條件才可回答本題目:"); 
-define("_DE_CONDITIONHELP2", "問題: {QUESTION}, 您的答案: {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define("_DE_CONDITIONHELP2", "問題: {QUESTION}, 您的答案: {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "及");
 define("_DE_OR", "或");
 define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01

@@ -541,7 +541,7 @@ define("_DE_UPDATED", "Datensatz aktualisiert.");
 define("_DE_EDITING", "Antwort &auml;ndern");
 define("_DE_QUESTIONHELP", "Hilfe zu dieser Frage");
 define("_DE_CONDITIONHELP1", "Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:"); 
-define("_DE_CONDITIONHELP2", "Die Frage {QUESTION} haben sie mit {ANSWER} beantwortet"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define("_DE_CONDITIONHELP2", "Die Frage {QUESTION} haben sie mit {ANSWER} beantwortet"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "UND");
 define("_DE_OR", "ODER");
 define("_DE_SAVEENTRY", "Teilweise beantworteten Fragebogen zwischenspeichern");

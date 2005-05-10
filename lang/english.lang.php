@@ -139,7 +139,7 @@ define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
 						  ."in the survey has asked for this. If you have responded to a "
 						  ."survey that used an identifying token to allow you to access "
 						  ."the survey, you can rest assured that the identifying token "
-						  ."is not kept with your responses. It is managed in a seperate "
+						  ."is not kept with your responses. It is managed in a separate "
 						  ."database, and will only be updated to indicate that you have "
 						  ."(or haven't) completed this survey. There is no way of matching "
 						  ."identification tokens with survey responses in this survey."); //New for 0.98rc9

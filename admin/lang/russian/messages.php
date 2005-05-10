@@ -365,7 +365,7 @@ define("_AC_READCAREFULLY", "ВНИМАТЕЛЬНО ПРОЧИТАЙТЕ ПЕР�
 define("_AC_ACTIVATE_MESSAGE1", "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.");
 define("_AC_ACTIVATE_MESSAGE2", "Once a survey is activated you can no longer:<ul><li>Добавить или delete groups</li><li>Добавить или remove answers to Multiple Answer questions</li><li>Добавить или delete questions</li></ul>");
 define("_AC_ACTIVATE_MESSAGE3", "Однако Вы все же можете:<ul><li>Редактировать (менять) коды вопросов, текст или тип</li><li>Редактировать (менять) имена групп</li><li>Добавлять, Удалять или Редактировать предопределенные ответы (исключая вопрoсы с многожественными ответами)</li><li>Менять имя опроса или его описание</li></ul>");
-define("_AC_ACTIVATE_MESSAGE4", "Once data has been entered into this survey, if you want to add или remove groups или questions, you will need to de-activate this survey, which will move all data that has already been entered into a seperate archived table.");
+define("_AC_ACTIVATE_MESSAGE4", "Once data has been entered into this survey, if you want to add или remove groups или questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.");
 define("_AC_ACTIVATE", "Активировать");
 define("_AC_ACTIVATED", "Опрос активирован. Табица результатов успешно создана.");
 define("_AC_NOTACTIVATED", "Опрос не может быть активирован.");
@@ -539,7 +539,7 @@ define("_DE_UPDATED", "Запись обновлена.");
 define("_DE_EDITING", "Редатирование ответа");
 define("_DE_QUESTIONHELP", "Справка по данному вопросу");
 define("_DE_CONDITIONHELP1", "Отвечать только если выполняются след. условия:"); 
-define("_DE_CONDITIONHELP2", "по вопроса {QUESTION}, Вы ответили {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define("_DE_CONDITIONHELP2", "по вопроса {QUESTION}, Вы ответили {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "И");
 define("_DE_OR", "ИЛИ");
 define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01

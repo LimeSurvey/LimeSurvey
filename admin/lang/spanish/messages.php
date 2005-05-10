@@ -546,7 +546,7 @@ define("_DE_UPDATED", "El registro ha sido actualizado.");
 define("_DE_EDITING", "Modificando Contestaci&oacute;n");
 define("_DE_QUESTIONHELP", "Ayuda sobre esta pregunta");
 define("_DE_CONDITIONHELP1", "Contesta esta pregunta solo bajo las siguientes condiciones:");
-define("_DE_CONDITIONHELP2", "a la pregunta {QUESTION}, contestaste {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, seperated by _DE_OR (OR).
+define("_DE_CONDITIONHELP2", "a la pregunta {QUESTION}, contestaste {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "Y");
 define("_DE_OR", "O");
 define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01
