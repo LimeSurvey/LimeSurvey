@@ -515,7 +515,7 @@ if ($gid)
 					   . "onclick=\"window.open('dumpgroup.php?sid=$surveyid&amp;gid=$gid', '_top')\">"
 					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
 					   . "\t\t\t\t\t</td>\n"
-					   . "\t\t\t\t\t<td align='right' width='340'>\n";
+					   . "\t\t\t\t\t<td align='right' width='350'>\n";
 		if (!$qid) 
 			{
 			$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
