@@ -1387,7 +1387,8 @@ function doAssessment($surveyid)
 					{
 						if ($field['gid'] == $group && isset($field['answer'])) 
 							{
-						    $grouptotal=$grouptotal+$field['answer'];
+						    //$grouptotal=$grouptotal+$field['answer'];
+							$grouptotal=$grouptotal+$_SESSION[$field['fieldname']];
 							}
 					}
 				$subtotal[$group]=$grouptotal;
