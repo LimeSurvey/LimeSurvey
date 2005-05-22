@@ -733,6 +733,7 @@ if (returnglobal('viewanswer'))
 						. "<input type='hidden' name='code' value='{$cdrow['code']}'>";
 			}
 		$vasummary .="</td>\n";
+		$cdrow['answer']=htmlspecialchars($cdrow['answer']);  // So HTML-Code can be used in answers
 		$vasummary .= "\t\t<td align='center'><input name='answer' "
 					. "type='text' $btstyle value=\"{$cdrow['answer']}\" size='50'></td>\n"
 					. "\t\t<input name='sortorder' type='hidden' $btstyle value=\"$position\">"
