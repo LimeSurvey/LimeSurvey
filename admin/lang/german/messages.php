@@ -580,8 +580,8 @@ define("_TC_DO", "Umfrage ausführen");
 define("_TC_VIEW", "Antwort anzeigen");
 define("_TC_INVITET", "Sende eine Einladungs-E-Mail für diesen Eintrag");
 define("_TC_REMINDT", "Sende eine Erinnerungs-E-Mail für diesen Eintrag");
-define("_TC_INVITESUBJECT", "Einladung zur Teilnahme an der Umfrage {SURVEYNAME}"); //Leave {SurveyNAME} for replacement in scripts
-define("_TC_REMINDSUBJECT", "Erinnerung zur Teilnahme an der Umfrage {SURVEYNAME}"); //Leave {SurveyNAME} for replacement in scripts
+define("_TC_INVITESUBJECT", "Einladung zur Teilnahme an der Umfrage {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
+define("_TC_REMINDSUBJECT", "Erinnerung zur Teilnahme an der Umfrage {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
 define("_TC_REMINDSTARTAT", "Start mit TID-Nr:");
 define("_TC_REMINDTID", "Sende an TID-Nr:");
 define("_TC_CREATETOKENSINFO", "Wenn Sie auf Ja klicken, wird für alle Probanden ohne eindeutigen Zugangsschlüssel ein entsprechende Schlüssel generiert. OK?");

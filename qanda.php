@@ -895,7 +895,7 @@ function do_listwithcomment($ia)
             if ($_SESSION[$ia[1]] == $ansrow['code'])
                 {$answer .= " checked";}
             elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
-            $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}'>{$ansrow['answer']}</label><br />\n";
+            $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
             }
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
