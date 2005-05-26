@@ -164,7 +164,7 @@ function setman_questionandcode($ia)
         $mandatorys[]=$ia[1].$ansrow['code'];
         $mandatoryfns[]=$ia[1];
         }
-    if ($other == "Y")
+    if ($other == "Y" and ($ia[4]=="!" or $ia[4]=="L" or $ia[4]=="M" or $ia[4]=="P"))    
         {
         $mandatorys[]=$ia[1]."other";
         $mandatoryfns[]=$ia[1];
