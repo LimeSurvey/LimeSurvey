@@ -133,7 +133,7 @@ $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbpr
 $ldump = BuildOutput($lquery);
 
 //8: Question Attributes
-$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}.questions.gid=$gid";
+$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}questions.gid=$gid";
 $qadump = BuildOutput($query);
                         // HTTP/1.0
 echo "#<pre>\n";
