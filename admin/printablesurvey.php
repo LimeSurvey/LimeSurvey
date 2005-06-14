@@ -70,7 +70,7 @@ while ($desrow = mysql_fetch_array($desresult))
 	$surveyexpirydate = $desrow['expires'];
 	$surveyfaxto = $desrow['faxto'];
 	}
-if (!isset($surveyfaxto) || !$surveyfaxto) 
+if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber)) 
 	{
     $surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
 	}
