@@ -331,7 +331,7 @@ if ($action == "insert")
 								}
 							}
 						$otherexists = "";
-						if ($i2row['other'] == "Y") {$otherexists = "Y";}
+						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P")) {$otherexists = "Y";}
 						if ($irow['type'] == "P")
 							{
 							$fieldname2 = $fieldname."comment";
@@ -1481,13 +1481,17 @@ else
 						case "B":
 						case "C":
 						case "E":
+						case "F":
+						case "H":
 							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}'";
 							$ansresult=mysql_query($ansquery);
+							$i=0;
 							while ($ansrow=mysql_fetch_array($ansresult))
 								{
-								$answer_section=" (".$ansrow['answer'].")";
+								$conditions[sizeof($conditions)-1]="(".$ansrow['answer'].") : ".end($conditions); //
 								}
+							$operator=_DE_AND;	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
 							break;
 						default:
 							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
@@ -1496,12 +1500,13 @@ else
 								{
 								$conditions[]=$ansrow['answer'];
 								}
+							$operator=_DE_OR;	
 							break;
 						}
 					}
 				if (isset($conditions) && count($conditions) > 1)
 					{
-					$conanswers = "'".implode("' "._DE_OR." '", $conditions)."'";
+					$conanswers = "'".implode("' ".$operator." '", $conditions)."'";
 					$explanation .= " -" . str_replace("{ANSWER}", $conanswers, _DE_CONDITIONHELP2);
 					}
 				else

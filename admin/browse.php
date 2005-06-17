@@ -168,7 +168,7 @@ if ($action == "id") // Looking at a SINGLE entry
 				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
 				if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");}
 				}
-			if ($fnrow['other'] == "Y")
+			if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
 				{
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
 				}
