@@ -121,6 +121,8 @@ $subject=str_replace("{ADMINNAME}", $thissurvey['adminname'], $subject);
 $subject=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $subject);
 $subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $subject);
 $subject=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $subject);
+$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
+
 
 $message=crlf_lineendings($message);
 

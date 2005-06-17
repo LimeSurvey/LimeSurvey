@@ -256,6 +256,7 @@ if ($result=mysql_query($query))
 			if (validate_email($_POST['saveemail']))
 				{
 				$subject=_SAVE_EMAILSUBJECT;
+      			$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 				$message=_SAVE_EMAILTEXT;
 				$message.="\n\n".$thissurvey['name']."\n\n";
 				$message.=_SAVENAME.": ".$_POST['savename']."\n";

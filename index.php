@@ -838,7 +838,7 @@ function submittokens()
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";		
 		
 		$to = $cnfrow['email'];
-		$subject = $thissurvey['email_confirm_subj'];
+		$subject = "=?UTF-8?B?" . base64_encode($thissurvey['email_confirm_subj']) . "?=";
 //		$subject = _CONFIRMATION.": {$thissurvey['name']} "._SURVEYCPL;
 		$message="";
 //		foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
@@ -888,7 +888,8 @@ function sendsubmitnotification($sendnotification)
 	global $thissurvey;
 	global $savedid, $dbprefix;
 	global $sitename, $homeurl, $surveyid;
-	$subject = "$sitename Survey Submitted";
+
+	$subject = "=?UTF-8?B?" . base64_encode("$sitename Survey Submitted") . "?=";
 	$message = _CONFIRMATION_MESSAGE1." {$thissurvey['name']}\r\n"
 			 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
 			 . _CONFIRMATION_MESSAGE3."\r\n"
