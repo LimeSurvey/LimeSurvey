@@ -219,6 +219,7 @@ if ($action == "insert")
 						if (validate_email($saver['email']) && !returnglobal('redo'))
 							{
 							$subject=_SAVE_EMAILSUBJECT;
+							$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 							$message=_SAVE_EMAILTEXT;
 							$message.="\n\n".$thissurvey['name']."\n\n";
 							$message.=_SAVENAME.": ".$saver['identifier']."\n";

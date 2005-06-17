@@ -698,6 +698,8 @@ if (returnglobal('action') == "email")
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
 				// cause problems with certain email server
 				//$sendmessage = str_replace("\r", "", $sendmessage);
+
+     			$msgsubject = "=?UTF-8?B?" . base64_encode($msgsubject) . "?=";
 				if (mail($to, $msgsubject, $sendmessage, $headers)) 
 					{
 					$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
@@ -875,6 +877,8 @@ if (returnglobal('action') == "remind")
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
 				// cause problems with certain email server
 				//$sendmessage = str_replace("\r", "", $sendmessage);
+
+     			$msgsubject = "=?UTF-8?B?" . base64_encode($msgsubject) . "?=";
 				if (mail($to, $msgsubject, $sendmessage, $headers))
 					{
 					echo "\t\t\t({$emrow['tid']})["._TC_REMINDSENTTO." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
