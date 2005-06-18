@@ -1,91 +1,134 @@
-<body bgcolor="#E5E5E5">
-
-<p><span style="font-weight: 700"><font face="Verdana" style="font-size: 8pt">
-Label Set Administration</font></span><font face="Verdana" style="font-size: 8pt; font-weight: 700">:<br>
-You are currently viewing the <u>Label Sets Administration</u> section of PHPSurveyor. </font></p>
-<p><font face="Verdana" style="font-size: 8pt">From this point you can create, 
-edit or delete Label Sets for use in the 'flexible labels' question type(s). 
-Label Sets allow you to pre-define a series of options against which various 
-answers can be checked. For example, in may surveys you may want to ask the 
-participant for a response to a particular statement or scenario and give them a 
-list of choices for each one. An example is show below:</font></p>
-<div align="left">
-<table border="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber2" bgcolor="#FFFFFF">
-  <tr>
-    <td colspan="6">
-    <font face="Verdana" style="font-size: 8pt; font-weight:700">Please indicate the extent to 
-which you agree with the following statements:</font></td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td width="65" align="center" valign="bottom"><font face="Verdana" size="1">Agree Strongly</font></td>
-    <td width="65" align="center" valign="bottom"><font face="Verdana" size="1">Agree Somewhat</font></td>
-    <td width="65" align="center" valign="bottom"><font face="Verdana" size="1">Neither Agree Nor Disagree</font></td>
-    <td width="65" align="center" valign="bottom"><font face="Verdana" size="1">Disagree Somewhat</font></td>
-    <td width="65" align="center" valign="bottom"><font face="Verdana" size="1">Disagree Strongly</font></td>
-  </tr>
-  <tr>
-    <td><font face="Verdana" size="1">I am a very strange person</font></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-  </tr>
-  <tr>
-    <td><font face="Verdana" size="1">I love ice cream</font></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-  </tr>
-  <tr>
-    <td><font face="Verdana" size="1">Green is a lovely colour</font></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-    <td align="center" width="65"><input type='radio'></td>
-  </tr>
-</table>
-</div>
-<p><font style="font-size: 8pt" face="Verdana">Using Label Sets you can create 
-your own column headings for these sorts of questions.</font></p>
-<p><font face="Verdana" style="font-size: 8pt">The following options are 
-available in the Label Sets Administration Toolbar:</font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber1">
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/home.gif" width="20" height="20"></font></td>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-    <b>Home</b> Click on this icon to return to the main PHPSurveyor 
-    administration screen</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/add.gif" width="20" height="20"></font></td>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-    <b>Add Label Set</b>: Click here to create a new label set or import a label 
-    set from 
-    a file</font></td>
-  </tr>
-</table>
-<p><font face="Verdana" style="font-size: 8pt">
-<br>
-<u><b><a name="Adding a New Labelset">Adding a New Labelset</a></b></u><br>
-Click on
-<img border="0" src="../../images/add.gif" width="20" height="20"> to create or 
-import a new label set.</font></p>
-<p><font face="Verdana" style="font-size: 8pt">A labelset requires just a name. 
-Each label set is also automatically given a unique &quot;LID&quot; (or Labelset InDex) 
-number. You can create a labelset with the same name as another label set, 
-although generally this is not recommended (as it tends to confuse things). The 
-label set will be distinguishable from any with a different name by its LID 
-number.</font></p>
-<p><font face="Verdana" style="font-size: 8pt"><b>Importing a Label Set</b><br>
-You can use the Import Label Set option at the bottom of the screen to import a 
-label set. Click 
-on browse, choose the PHPSurveyor *.sql file containing your label set and then 
-click on the Import button.</font></p>
-<p>&nbsp;</p>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<BODY LANG="fr-FR" BGCOLOR="#e5e5e5" DIR="LTR">
+<P><B><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Administration
+des jeux d'&eacute;tiquettes :<BR>Vous &ecirc;tes dans la section
+d'<U>administration des jeux d'&eacute;tiquettes</U> de PHPSurveyor. </FONT></FONT></B>
+</P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">A cet
+endroit, vous pouvez Cr&eacute;er, editer ou Supprimer des jeux
+d'&eacute;tiquettes utilis&eacute;s dans les questions
+&quot;personnalisables&quot;. Les jeux d'&eacute;tiquettes vous
+permettent de d&eacute;finir une s&eacute;rie d'options pour
+lesquelles vou pourrez choisir diff&eacute;rentes r&eacute;ponses.
+Par exemple, dans un questionnaire vous voudriez demander leur avis
+aux participants sur un sc&eacute;nario en leur donnant une liste de
+choix pour chacun. For example, in may surveys you may want to ask
+the participant for a response to a particular statement or scenario
+and give them a list of choices for each one. Un exemple est montr&eacute;
+ci-dessous :</FONT></FONT></P><A NAME="AutoNumber2"></A>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#ffffff">
+	<TR>
+		<TD COLSPAN=6>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B>Please
+			indicate the extent to which you agree with the following
+			statements:</B></FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>&nbsp;</P>
+		</TD>
+		<TD WIDTH=65 VALIGN=BOTTOM>
+			<P ALIGN=CENTER><FONT FACE="Verdana"><FONT SIZE=1>Fortement  POUR</FONT></FONT></P>
+		</TD>
+		<TD WIDTH=65 VALIGN=BOTTOM>
+			<P ALIGN=CENTER><FONT FACE="Verdana"><FONT SIZE=1>L&eacute;g&eacute;rement
+			POUR</FONT></FONT></P>
+		</TD>
+		<TD WIDTH=65 VALIGN=BOTTOM>
+			<P ALIGN=CENTER><FONT FACE="Verdana"><FONT SIZE=1>ni POUR ni
+			CONTRE</FONT></FONT></P>
+		</TD>
+		<TD WIDTH=65 VALIGN=BOTTOM>
+			<P ALIGN=CENTER><FONT FACE="Verdana"><FONT SIZE=1>L&eacute;g&eacute;rement
+			CONTRE</FONT></FONT></P>
+		</TD>
+		<TD WIDTH=65 VALIGN=BOTTOM>
+			<P ALIGN=CENTER><FONT FACE="Verdana"><FONT SIZE=1>Fortement CONTRE</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><FONT FACE="Verdana"><FONT SIZE=1>Le petit-d&eacute;jeuner pris
+			au travail</FONT></FONT></P>
+		</TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><FONT FACE="Verdana"><FONT SIZE=1>Le d&eacute;jeuner pris au
+			travail</FONT></FONT></P>
+		</TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><FONT FACE="Verdana"><FONT SIZE=1>Le souper pris au travail</FONT></FONT></P>
+		</TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+		<TD WIDTH=65></TD>
+	</TR>
+</TABLE>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">En
+utilisant les jeux d'&eacute;tiquettes, vous pouvez cr&eacute;er vos
+propres ent&ecirc;tes de colonnes pour ces types de questions.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Les
+options suivantes sont disponibles dans la barre d'outils
+d'administration des jeux d'&eacute;tiquettes :</FONT></FONT></P><A NAME="AutoNumber1"></A>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR VALIGN=TOP>
+		<TD>
+			<P><IMG SRC="../../images/home.gif" NAME="Image1" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B>Ecran
+			principal d'administration </B>: Cliquez ici pour retourner &agrave;
+			l'&eacute;cran principal d'administartion de PHPSurveyor.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD>
+			<P><IMG SRC="../../images/add.gif" NAME="Image2" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B>Ajouter
+			un jeu d'&eacute;tiquettes </B>: Cliquez ici pour cr&eacute;er un
+			nouveau jeu d'&eacute;tiquettes ou en importer un depuis un
+			fichier.</FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><A NAME="Adding a New Labelset"></A><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><BR><B><U>Ajouter
+un nouveau jeu d'&eacute;tiquettes</U></B><BR>Cliquez sur 
+<IMG SRC="../../images/add.gif" NAME="Image3" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0>
+pour cr&eacute;er ou importer un nouveau jeu d'&eacute;tiquettes.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Un jeu
+d'&eacute;tiquettes ne n&eacute;cessite qu'un nom. Chaque &eacute;tiquette
+re&ccedil;oit automatiquement un num&eacute;ro unique &quot;LID&quot;
+(pour Labelset InDex). Vous pouvez cr&eacute;er un jeu d'&eacute;tiquettes
+avec le m&ecirc;me nom qu'un autre existant bien que cela ne soit pas
+recommand&eacute; (pour &eacute;viter les confusions). Ce jeu
+d'&eacute;tiquettes se distinguera des autres par son num&eacute;ro
+&quot;LID&quot;.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B>Importer
+un jeu d'&eacute;tiquettes</B><BR>Vous pouvez utiliser la
+fonctionnalit&eacute; &quot;Importer un jeu d'&eacute;tiquettes&quot;
+en bas de l'&eacute;cran pour importer un jeu d'&eacute;tiquettes.
+Cliquez sur &quot;Parcourir&quot; et choisissez le fichier .SQL
+contenant le jeu d'&eacute;tiquettes de PHPSurveyor. Cliquez sur
+&quot;Importer&quot; pour d&eacute;marrer l'importation.</FONT></FONT></P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

@@ -57,7 +57,6 @@ define("_COMPLETE", "Termin&eacute;");
 define("_INCREASE", "Augmenter"); //NEW WITH 0.98
 define("_SAME", "Sans Changement"); //NEW WITH 0.98
 define("_DECREASE", "Diminuer"); //NEW WITH 0.98
-define("_REQUIRED", "<font color='red'>*</font>");
 //from questions.php
 define("_CONFIRMATION", "Confirmation");
 define("_TOKEN_PS", "Invitation");
@@ -134,15 +133,15 @@ define("_INSTRUCTION_MULTI", "Cochez la (ou les) r&eacute;ponses"); //NEW for 09
 define("_CONFIRMATION_MESSAGE1", "Questionnaire envoy&eacute;"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Une nouvelle r&eacute;ponse a &eacute;t&eacute; saisie dans votre questionnaire"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Cliquez sur le lien suivant pour voir votre r&eacute;ponse personnelle"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE4", "Visualiser les statistiques cliquant ici"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "Visualiser les statistiques en cliquant ici"); //NEW for 098rc5
 
 define("_PRIVACY_MESSAGE", "<b><i>Note sur la protection de la vie priv&eacute;e</i></b><br />"
                                                   ."Ce questionnaire est anonyme.<br />"
                                                   ."Les enregistrements conserv&eacute;s de votre questionnaire ne contiennent aucune "
                                                   ."information d&#146;identification &agrave; moins bien s&ucirc;r qu&#146;une question  "
                                                   ."sur votre identit&eacute; ai &eacute;t&eacute; pos&eacute;e dans le questionnaire. Si vous avez r&eacute;pondu &agrave; "
-                                                  ."un questionnaire utilisant une invitation pour vous permettre d&#146;acc&eacute;der au "
-                                                  ."questionnaire, vous pouvez &ecirc;tre assur&eacute;s que cet identifiant. "
+                                                  ."un questionnaire utilisant une invitation pour vous permettre d&#146;y acc&eacute;der, "
+                                                  ."vous pouvez &ecirc;tre assur&eacute;s que cet identifiant. "
                                                   ."n&#146;est pas conserv&eacute; avec vos r&eacute;ponses. Il est ger&eacute; dans une base de donn&eacute;es s&eacute;par&eacute;e "
                                                   ."et ne pourra pas &ecirc;tre mis &agrave; jour pour indiquer que vous "
                                                   ."avez complet&eacute; ce questionnaire. Il n&#146;y a aucun moyen pour faire correspondre "
@@ -155,15 +154,15 @@ define ("_RG_REGISTER1", "Vous devez &ecirc;tre enregistr&eacute; pour r&eacute;
 define ("_RG_REGISTER2", "Vous devez &ecirc;tre enregistr&eacute; pour ce questionnaire si vous d&eacute;sirez y participer.<br />\n"
                                                 ."Saisissez vos coordonn&eacute;es ci-dessous, et un mail contenant le lien pour "
                                                 ."participer &agrave; ce questionnaire vous sera imm&eacute;diatement envoy&eacute;."); //NEW for 0.98rc9
-define ("_RG_EMAIL", "Addresse mail"); //NEW for 0.98rc9
-define ("_RG_FIRSTNAME", "Nom"); //NEW for 0.98rc9
-define ("_RG_LASTNAME", "Pr&eacute;nom"); //NEW for 0.98rc9
+define ("_RG_EMAIL", "Adresse mail"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "Pr&eacute;nom"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "Nom"); //NEW for 0.98rc9
 define ("_RG_INVALIDEMAIL", "L&#146;adresse mail utilis&eacute;e n&#146;est pas valide. Veuillez re&eacute;ssayer.");//NEW for 0.98rc9
 define ("_RG_USEDEMAIL", "L&#146;adressemail utilis&eacutee; a d&eacute;j&agrave; &eacute;t&eacute; enregistr&eacute;.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "Confirmation d&#146;enregistrement de {SURVEYNAME}");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "Merci de vous enregistrer pour participer &agrave; ce questionnaire.<br /><br />\n"
                                                                    ."Un mail a &eacute;t&eacute; envoy&eacute; &agrave; l&#146;adresse que vous avez fournie dans les d&eacute;tails d&#146;acc&eacute;s "
-                                                                   ."pour ce questionnaire. Veuillez suivre ce lien dans cet mail pour participer.<br /><br />\n"
+                                                                   ."pour ce questionnaire. Veuillez suivre le lien dans ce mail pour participer.<br /><br />\n"
                                                                    ."Administrateur du questionnaire {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
 define("_SM_COMPLETED", "<b>Merci<br /><br />"
@@ -178,13 +177,13 @@ define("_PS_CHOOSEONE", "Choisissez <b>seulement une</b> des r&eacute;ponses sui
 define("_PS_WRITE", "Ecrivez votre r&eacute;ponse ici :"); //New for 0.98finalRC1
 define("_PS_CHOOSEANY", "Choisissez <b>toutes</b> les r&eacute;ponses qui conviennent :"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Choisissez toutes les r&eacute;ponses qui conviennent et laisser un commentaire :"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "Choisissez la r&eacute;ponse appropri&eacute; pour chaque &eacute;l&eacute;ment :"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "Choisissez la r&eacute;ponse appropri&eacute;e pour chaque &eacute;l&eacute;ment :"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Ecrivez votre r&eacute;ponse ici :"); //New for 0.98finalRC1
 define("_PS_DATE", "Entrez une date :"); //New for 0.98finalRC1
 define("_PS_COMMENT", "Faites le commentaire de votre choix ici :"); //New for 0.98finalRC1
 define("_PS_RANKING", "Num&eacute;rotez chaque case dans l&#146;ordre de vos pr&eacute;f&eacute;rences de 1 &agrave;"); //New for 0.98finalRC1
 define("_PS_SUBMIT", "Envoyer votre questionnaire."); //New for 0.98finalRC1
-define("_PS_THANKYOU", "Merci d'avoir compl&eacute;t&eacute; ce questionnaire."); //New for 0.98finalRC1
+define("_PS_THANKYOU", "Merci d&#146;avoir compl&eacute;t&eacute; ce questionnaire."); //New for 0.98finalRC1
 define("_PS_FAXTO", "SVP faxez ce questionnaire rempli &agrave; :"); //New for 0.98finaclRC1
 
 define("_PS_CON_ONLYANSWER", "R&eacute;pondez &agrave; cette question"); //New for 0.98finalRC1
@@ -195,36 +194,36 @@ define("_PS_CON_OR", "ou"); //New for 0.98finalRC2
 
 //Save Messages
 define("_SAVE_AND_RETURN", "Sauvegarder vos r&eacute;ponses et continuer le questionnaire");
-define("_SAVEHEADING", "Sauvegarder vos r&eacute; partielles");
+define("_SAVEHEADING", "Sauvegarde des r&eacute;ponses partielles");
 define("_RETURNTOSURVEY", "Retourner au questionnaire");
 define("_SAVENAME", "Nom");
 define("_SAVEPASSWORD", "Mot de passe");
 define("_SAVEPASSWORDRPT", "R&eacute;p&eacute;tez le mot de passe");
 define("_SAVE_EMAIL", "Votre adresse mail");
 define("_SAVEEXPLANATION", "Entrez un nom et un mot de passe pour ce questionnaire et cliquez sur Sauvegarder en bas.<br />\n"
-				  ."Vos réponses au questionnaire seront sauvegard&eacute;es en utilisant ce nom et ce mot de passe, et pourront "
+				  ."Vos rè¯¯nses au questionnaire seront sauvegard&eacute;es en utilisant ce nom et ce mot de passe, et pourront "
 				  ."&ecirc;tre compl&eacute;t&eacute;es plus tard en vous connectant avec ce nom et ce mot de passe.<br /><br />\n"
-				  ."Si vous donnez une adresse mail, un mail contenant ces détails vous sera envoy&eacute;");
+				  ."Si vous donnez une adresse mail, un mail contenant ces dè³¡ils vous sera envoy&eacute;");
 define("_SAVESUBMIT", "Sauvegarder maintenant");
-define("_SAVENONAME", "Vous devez fournir un nom pour cette session sauvegard&eacute;e.");
-define("_SAVENOPASS", "Vous devez fournir un mot de passe pour cette session sauvegard&eacute;e.");
-define("_SAVENOMATCH", "Vos mot de passe ne correspondent pas.");
+define("_SAVENONAME", "Vous devez fournir un nom pour sauvegarder vos r&è¢µte;ponses &agrave; ce questionnaire.");
+define("_SAVENOPASS", "Vous devez fournir un mot de passe pour sauvegarder vos r&eacute;ponses &agrave ce questionnaire.");
+define("_SAVENOMATCH", "Vos mots de passe ne correspondent pas.");
 define("_SAVEDUPLICATE", "Ce nom a d&eacute;j&agrave; &eacute;t&eacute; utilis&eacute; pour ce questionnaire. Vous devez en choisir un autre.");
 define("_SAVETRYAGAIN", "Essayer encore SVP.");
 define("_SAVE_EMAILSUBJECT", "D&eacute;tails sur le questionnaire que vous avez sauvegard&eacute;");
 define("_SAVE_EMAILTEXT", "Vous, ou quelqu&#146;un utilisant votre adresse mail, a sauvegard&eacute; "
-						 ."ses réponses partielles &agrave; un questionnaire. Les informations suivantes peuvent &ecirc;tre utilis&eacute;es "
-						 ."pour retourner à ce questionnaire et le continuer o&ugrave; vous en &eacute;tiez.");
+						 ."ses rè¯¯nses partielles &agrave; un questionnaire. Les informations suivantes peuvent &ecirc;tre utilis&eacute;es "
+						 ."pour retourner ï¿½e questionnaire et le continuer o&ugrave; vous en &eacute;tiez.");
 define("_SAVE_EMAILURL", "Rechargez votre questionnaire en cliquant sur l&#146;URL suivante :");
 define("_SAVE_SUCCEEDED", "Vos r&eacute;ponses &agrave; ce questionnaire ont &eacute;t&eacute, sauvegard&eacute;es avec succ&egrave;s");
 define("_SAVE_FAILED", "une erreur est survenue et vos r&eacute;ponses n&#146;ont pas &eacute;t&eacute; sauvegard&eacute;es.");
-define("_SAVE_EMAILSENT", "Un mail vous a&eacute;t&eacute; envoy&eacute; avec les d&eacute;tails sur le questionnaire enregistr&eacute;.");
+define("_SAVE_EMAILSENT", "Un mail vous a&eacute;t&eacute; envoy&eacute; avec les d&eacute;tails de ce questionnaire.");
 
 //Load Messages
-define("_LOAD_SAVED", "Chargement du questionnaire rempli partiellement");
+define("_LOAD_SAVED", "Chargement des r&eacuteponses d&eacute;j&agrave; enregistr&eacute;es pour ce questionnaire");
 define("_LOADHEADING", "Chargement d&#146;un questionnaire pr&eacute;c&eacute;demment sauvegard&eacute;");
 define("_LOADEXPLANATION", "Vous pouvez charger un questionnaire que vous avez pr&eacute;c&eacute;demment sauvegard&eacute; depuis cet &eacute;cran.<br />\n"
-			  ."Entrez le nom utilis&eacute; lors de la sauvegarde et le mot de passe.<br /><br />\n");
+			  ."Entrez le nom et le mot de passe utilis&eacute;s lors de la sauvegarde.<br /><br />\n");
 define("_LOADNAME", "Nom");
 define("_LOADPASSWORD", "Mot de passe");
 define("_LOADSUBMIT", "Charger maintenant");
