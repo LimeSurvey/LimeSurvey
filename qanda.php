@@ -1478,7 +1478,7 @@ function do_hugefreetext($ia)
                //-->
                </script>\n";
     $answer .= "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' "
-             ."\"\"rows='30' cols='70' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\">";
+              ."rows='30' cols='70' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\">";             
     if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}   
     $answer .= "</textarea>\n";
     $inputnames[]=$ia[1];
