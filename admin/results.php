@@ -173,7 +173,7 @@ if (!empty($_GET['debug'])) {
 //		echo "<table width='400' align='center' border='1'>\n";
 //		echo "<tr><td colspan='2' align='center' bgcolor='silver'>".$sum['question']."</td></tr>\n";
 //		foreach ($sum['summary'] as $key=>$val) {
-//			echo "<tr><td align='right' valign='top'><b>$key</b></td><td>$val</td></tr>\n";
+//			echo "<tr><td align='right' valign='top'><strong>$key</strong></td><td>$val</td></tr>\n";
 //		}
 //		echo "</table><br />";
 //	}

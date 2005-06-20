@@ -77,7 +77,7 @@ if ($action != "upload")
 		echo "<br /><table class='outlinetable' align='center'>
 		<tr><th colspan=2>Import a VV survey file</th></tr>
 		<tr><td colspan='2' align='center'>
-		<b>Cannot import</b><br /><br />
+		<strong>Cannot import</strong><br /><br />
 		This survey is not active. You must activate the survey before attempting to import a VVexport file.<br /><br />
 		[<a href='$scriptname?sid=4'>"._B_ADMIN_BT."</a>]
 		</td></tr>
@@ -96,7 +96,7 @@ else
 	
 	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 		{
-		echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+		echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
 		echo _IS_FAILUPLOAD."<br /><br />\n";
 		//echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "</font></td></tr></table>\n";
@@ -105,7 +105,7 @@ else
 		}
 	// IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 	
-	echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n";
+	echo "<strong><font color='green'>"._SUCCESS."</font></strong><br />\n";
 	echo _IS_OKUPLOAD."<br /><br />\n";
 	echo _IS_READFILE."<br />\n";
 	$handle = fopen($the_full_file_path, "r");
@@ -138,8 +138,8 @@ else
 	if ($noid == "noid") {unset($realfieldnames[0]);}
 	unset($bigarray[1]); //delete the second line
 	
-//	echo "<tr><td valign='top'><b>Import Fields:<pre>"; print_r($fieldnames); echo "</pre></td>";
-//	echo "<td valign='top'><b>Actual Fields:<pre>"; print_r($realfieldnames); echo '</pre></td></tr>';
+//	echo "<tr><td valign='top'><strong>Import Fields:<pre>"; print_r($fieldnames); echo "</pre></td>";
+//	echo "<td valign='top'><strong>Actual Fields:<pre>"; print_r($realfieldnames); echo '</pre></td></tr>';
 	
 	//See if any fields in the import file don't exist in the active survey
 	$missing = array_diff($fieldnames, $realfieldnames);
@@ -237,7 +237,7 @@ else
 	
 	if ($noid == "noid" || $insertstyle == "renumber")
 		{
-		echo "<br /><i><b><font color='red'>"._VV_DONOTREFRESH."</font></b></i><br /><br />";
+		echo "<br /><i><strong><font color='red'>"._VV_DONOTREFRESH."</font></strong></i><br /><br />";
 		}
 	echo _VV_IMPORTNUMBER." ".$importcount."<br /><br />";
 	echo "[<a href='browse.php?sid=$surveyid'>"._BROWSERESPONSES."</a>]";

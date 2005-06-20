@@ -234,40 +234,40 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             $values=do_list_flexible_radio($ia);
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
                 {
-                $qtitle .= "<br />\n</b><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><b>";
+                $qtitle .= "<br />\n</strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i><strong>";
                 }
             break;
         case "L": //LIST drop-down/radio-button list
             $values=do_list_radio($ia);
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
                 {
-                $qtitle .= "<br />\n</b><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><b>";
+                $qtitle .= "<br />\n</strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i><strong>";
                 }
             break;
         case "W": //List - dropdown
             $values=do_list_flexible_dropdown($ia);
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
                 {
-                $qtitle .= "<br />\n</b><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><b>";
+                $qtitle .= "<br />\n</strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i><strong>";
                 }
             break;
         case "!": //List - dropdown
             $values=do_list_dropdown($ia);
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
                 {
-                $qtitle .= "<br />\n</b><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><b>";
+                $qtitle .= "<br />\n</strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i><strong>";
                 }
             break;
         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
             $values=do_listwithcomment($ia);
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
                 {
-                $qtitle .= "<br />\n</b><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><b>";
+                $qtitle .= "<br />\n</strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i><strong>";
                 }
             break;
         case "R": //RANKING STYLE
@@ -277,16 +277,16 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             $values=do_multiplechoice($ia);
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
                 {
-                    $qtitle .= "<br />\n</b><i><font size='1'>"
-                         . _INSTRUCTION_MULTI."</font></i><b>";
+                    $qtitle .= "<br />\n</strong><i><font size='1'>"
+                         . _INSTRUCTION_MULTI."</font></i><strong>";
                 }
             break;
         case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
             $values=do_multiplechoice_withcomments($ia);
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
                 {
-                $qtitle .= "<br />\n</b><i><font size='1'>"
-                         . _INSTRUCTION_MULTI."</font></i><b>";
+                $qtitle .= "<br />\n</strong><i><font size='1'>"
+                         . _INSTRUCTION_MULTI."</font></i><strong>";
                 }
             break;
         case "Q": //MULTIPLE SHORT TEXT
@@ -383,7 +383,7 @@ function validation_message($ia)
         global $validationpopup, $popup;
         if (in_array($ia[1], $notvalidated))
             {
-            $qtitle .= "</b><br /><span class='errormandatory'>"._VALIDATION." $help</span><b><br />\n";
+            $qtitle .= "</strong><br /><span class='errormandatory'>"._VALIDATION." $help</span><strong><br />\n";
             }
         }
     return $qtitle;
@@ -400,7 +400,7 @@ function mandatory_message($ia)
         global $mandatorypopup, $popup;
         if (in_array($ia[1], $notanswered))
             {
-            $qtitle .= "</b><br /><span class='errormandatory'>"._MANDATORY.".";
+            $qtitle .= "</strong><br /><span class='errormandatory'>"._MANDATORY.".";
             switch($ia[4])
                 {
                 case "A":
@@ -419,7 +419,7 @@ function mandatory_message($ia)
                     $qtitle .= "<br />\n"._MANDATORY_CHECK.".";
                     break;
                 } // end switch
-            $qtitle .= "</font></span><b><br />\n";
+            $qtitle .= "</font></span><strong><br />\n";
             }
         }
     return $qtitle;
@@ -1155,7 +1155,7 @@ function do_ranking($ia)
              . "\t\t\t\t</tr>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td align='left' valign='top' class='rank'>\n"
-             . "\t\t\t\t\t\t<b>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>"._YOURCHOICES.":</label></b><br />\n"
+             . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>"._YOURCHOICES.":</label></strong><br />\n"
              . "&nbsp;".$choicelist
              . "\t\t\t\t\t&nbsp;</td>\n";
     if (isset($maxselectlength) && $maxselectlength > 60) 
@@ -1163,12 +1163,12 @@ function do_ranking($ia)
         $ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
         $answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"
                  . "\t\t\t\t\t<td align='left' bgcolor='silver' class='rank'>\n"
-                 . "\t\t\t\t\t\t<b>&nbsp;&nbsp;"._YOURRANKING.":</b><br />\n";
+                 . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;"._YOURRANKING.":</strong><br />\n";
         }
     else
         {
         $answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>\n"
-                 . "\t\t\t\t\t\t<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURRANKING.":</b><br />\n";
+                 . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURRANKING.":</strong><br />\n";
         }
     $answer .= $ranklist
              . "\t\t\t\t\t</td>\n"

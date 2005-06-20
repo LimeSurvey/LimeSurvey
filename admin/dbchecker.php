@@ -63,7 +63,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		. "cellpadding='1' cellspacing='0' width='450'>\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
-		. "\t\t\t<b>"._DC_TITLE."</b>\n"
+		. "\t\t\t<strong>"._DC_TITLE."</strong>\n"
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr><td align='center'>$setfont";
@@ -100,7 +100,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	if (isset($cdelete) && $cdelete)
 		{
-		echo "<b>"._DC_CONDITIONSTODELETE.":</b><br /><font size='1'>\n";
+		echo "<strong>"._DC_CONDITIONSTODELETE.":</strong><br /><font size='1'>\n";
 		foreach ($cdelete as $cd) {
 			echo "CID: {$cd['cid']} because {$cd['reason']}<br />\n";
 		}
@@ -108,7 +108,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	else
 		{
-		echo "<b>"._DC_CONDITIONSSOK."</b><br />\n";
+		echo "<strong>"._DC_CONDITIONSSOK."</strong><br />\n";
 		}
 	
 	// Check question_attributes to delete
@@ -124,13 +124,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 		} // while
 	if (isset($qadelete) && $qadelete) {
-	    echo "<b>"._DC_QATODELETE.":</b><br /><font size='1'>\n";
+	    echo "<strong>"._DC_QATODELETE.":</strong><br /><font size='1'>\n";
 		foreach ($qadelete as $qad) {echo "QAID `{$qad['qaid']}` ATTRIBUTE `{$qad['attribute']}` because `{$qad['reason']}`<br />\n";}
 		echo "</font><br />\n";
 	}
 	else
 		{
-		echo "<b>"._DC_QAOK."</b><br />\n";
+		echo "<strong>"._DC_QAOK."</strong><br />\n";
 		}
 
 	// Check assessments
@@ -160,23 +160,23 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 
 	if (isset($assdelete) && $assdelete) 
 		{
-	    echo "<b>"._DC_ASSESSTODELETE.":</b><br /><font size='1'>\n";
+	    echo "<strong>"._DC_ASSESSTODELETE.":</strong><br /><font size='1'>\n";
 		foreach ($assdelete as $ass) {echo "ID `{$ass['id']}` ASSESSMENT `{$ass['assessment']}` because `{$ass['reason']}`<br />\n";}
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<b>"._DC_ASSESSOK."</b><br />\n";
+		echo "<strong>"._DC_ASSESSOK."</strong><br />\n";
 		}
 	if (isset($asgdelete) && $asgdelete) 
 		{
-	    echo "<b>"._DC_ASSESSTODELETE.":</b><br /><font size='1'>\n";
+	    echo "<strong>"._DC_ASSESSTODELETE.":</strong><br /><font size='1'>\n";
 		foreach ($asgdelete as $asg) {echo "ID `{$asg['id']}` ASSESSMENT `{$asg['assessment']}` because `{$asg['reason']}`<br />\n";}
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<b>"._DC_ASSESSOK."</b><br />\n";
+		echo "<strong>"._DC_ASSESSOK."</strong><br />\n";
 		}
 		
 	// Check answers
@@ -195,13 +195,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	if (isset($adelete) && $adelete)
 		{
-		echo "<b>"._DC_ANSWERSTODELETE.":</b><br /><font size='1'>\n";
+		echo "<strong>"._DC_ANSWERSTODELETE.":</strong><br /><font size='1'>\n";
 		foreach ($adelete as $ad) {echo "QID `{$ad['qid']}` CODE `{$ad['code']}` because `{$ad['reason']}`<br />\n";}
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<b>"._DC_ANSWERSOK."</b><br />\n";
+		echo "<strong>"._DC_ANSWERSOK."</strong><br />\n";
 		}
 	
 	//check questions
@@ -222,13 +222,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	if (isset($qdelete) && $qdelete)
 		{
-		echo "<b>"._DC_QUESTIONSTODELETE.":</b><br /><font size='1'>\n";
+		echo "<strong>"._DC_QUESTIONSTODELETE.":</strong><br /><font size='1'>\n";
 		foreach ($qdelete as $qd) {echo "QID `{$qd['qid']}` because `{$qd['reason']}`<br />\n";}
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<b>"._DC_QUESTIONSOK."</b><br />\n";
+		echo "<strong>"._DC_QUESTIONSOK."</strong><br />\n";
 		}
 	//check groups
 	$query = "SELECT * FROM {$dbprefix}groups ORDER BY sid, gid";
@@ -243,13 +243,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	if (isset($gdelete) && $gdelete)
 		{
-		echo "<b>"._DC_GROUPSTODELETE.":</b><br /><font size='1'>\n";
+		echo "<strong>"._DC_GROUPSTODELETE.":</strong><br /><font size='1'>\n";
 		echo implode(", ", $gdelete);
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<b>"._DC_GROUPSOK."</b><br />\n";
+		echo "<strong>"._DC_GROUPSOK."</strong><br />\n";
 		}
 //NOW CHECK FOR STRAY SURVEY RESPONSE TABLES AND TOKENS TABLES
 	if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) && !isset($gdelete) && !isset($asgdelete) && !isset($assdelete) && !isset($qadelete)) {
@@ -310,7 +310,7 @@ elseif ($ok == "Y")
 		. "cellpadding='1' cellspacing='0' width='450'>\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
-		. "\t\t\t<b>"._DC_TITLE."</b>\n"
+		. "\t\t\t<strong>"._DC_TITLE."</strong>\n"
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr><td align='center'>$setfont";

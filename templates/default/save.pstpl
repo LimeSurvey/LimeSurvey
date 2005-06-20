@@ -1,6 +1,6 @@
 <center>
 <font color='red'>{SAVEERROR}</font>
-<p><b><font size='+1'>{SAVEHEADING}</font></b></p>
+<p><strong><font size='+1'>{SAVEHEADING}</font></strong></p>
 <p>{SAVEMESSAGE}</p>
 <p>{SAVEFORM}</p>
 {RETURNTOSURVEY}

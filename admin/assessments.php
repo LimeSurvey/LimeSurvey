@@ -71,15 +71,15 @@ if ($action == _AS_ADD) {
 echo $htmlheader;
 echo "<table height='1'><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-	. _AS_TITLE."</b></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	. _AS_TITLE."</strong></td></tr>\n";
 
 echo "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
-	. _B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
-	. "\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	. _B_ADMIN_BT."' alt='". _B_ADMIN_BT."'border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
+	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
 echo "</table>";	

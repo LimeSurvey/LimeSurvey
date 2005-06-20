@@ -136,7 +136,7 @@ define("_CONFIRMATION_MESSAGE2", "Uma nova resposta foi incorporada para seu exa
 define("_CONFIRMATION_MESSAGE3", "Clique no link abaixo para ver a resposta individual:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Clique aqui para ver a Estatística:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
 						  ."This survey is anonymous.<br />"
 						  ."The record kept of your survey responses does not contain any "
 						  ."identifying information about you unless a specific question "
@@ -166,17 +166,17 @@ define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in
 								   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
 								   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Thank You<br /><br />"
-					   ."You have completed answering the questions in this survey.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Thank You<br /><br />"
+					   ."You have completed answering the questions in this survey.</strong><br /><br />"
 					   ."Click on ["._SUBMIT."] now to complete the process and save your answers.");
 define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
 					."you can do that now by clicking on the [<< "._PREV."] button and browsing "
 					."through your responses.");
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following:"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Please choose <strong>only one</strong> of the following:"); //New for 0.98finalRC1
 define("_PS_WRITE", "Please write your answer here:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Please choose <strong>all</strong> that apply:"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment:"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Please choose the appropriate response for each item:"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Please write your answer(s) here:"); //New for 0.98finalRC1

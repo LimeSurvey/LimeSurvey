@@ -186,16 +186,16 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	if (isset($failedcheck) && $failedcheck)
 		{
 		echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($surveyid)</b></td></tr>\n";
+		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._ACTIVATE." ($surveyid)</strong></td></tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center' bgcolor='pink'>\n";
-		echo "\t\t\t<font color='red'>$setfont<b>"._ERROR."</b><br />\n";
+		echo "\t\t\t<font color='red'>$setfont<strong>"._ERROR."</strong><br />\n";
 		echo "\t\t\t"._AC_FAIL."</font></font>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td>\n";
-		echo "\t\t\t$setfont<b>"._AC_PROBS."</b><br />\n";
+		echo "\t\t\t$setfont<strong>"._AC_PROBS."</strong><br />\n";
 		echo "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 			{
@@ -215,10 +215,10 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		}
 	
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($surveyid)</b></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._ACTIVATE." ($surveyid)</strong></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' bgcolor='pink'>\n";
-	echo "\t\t\t<font color='red'>$setfont<b>"._WARNING."</b><br />\n";
+	echo "\t\t\t<font color='red'>$setfont<strong>"._WARNING."</strong><br />\n";
 	echo "\t\t\t"._AC_READCAREFULLY."\n";
 	echo "\t\t\t</font></font>\n";
 	echo "\t\t</td>\n";
@@ -364,7 +364,7 @@ else
 	$createtable=mysql_query($createsurvey) or die 
 		(
 		"<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
-		"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($surveyid)</b></td></tr>\n" .
+		"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._ACTIVATE." ($surveyid)</strong></td></tr>\n" .
 		"<tr><td>\n" .
 		"<font color='red'>"._AC_NOTACTIVATED."</font></center><br />\n" .
 		"<center><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a></center>\n" .
@@ -414,7 +414,7 @@ else
 		}
 	
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><b>"._ACTIVATE." ($surveyid)</b></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._ACTIVATE." ($surveyid)</strong></td></tr>\n";
 	echo "\t\t\t\t<tr><td align='center'>$setfont<font color='green'>"._AC_ACTIVATED."<br /><br />\n";
 	
 	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";

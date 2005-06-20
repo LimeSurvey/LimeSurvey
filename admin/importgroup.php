@@ -37,14 +37,14 @@
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._IMPORTGROUP."</b></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._IMPORTGROUP."</strong></td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
 	echo _IS_FAILUPLOAD."<br /><br />\n";
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
@@ -54,7 +54,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n";
+echo "<strong><font color='green'>"._SUCCESS."</font></strong><br />\n";
 echo _IS_OKUPLOAD."<br /><br />\n";
 echo _IS_READFILE."<br />\n";
 $handle = fopen($the_full_file_path, "r");
@@ -68,7 +68,7 @@ fclose($handle);
 
 if (substr($bigarray[1], 0, 21) != "# SURVEYOR GROUP DUMP")
 	{
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
 	echo _IG_WRONGFILE."<br /><br />\n";
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
@@ -345,7 +345,7 @@ if (isset($grouparray) && $grouparray) {
 					$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 					$type = $qacfieldcontents[array_search("type", $qafieldorders)]; //Get the type
 					$other = $qacfieldcontents[array_search("other", $qafieldorders)]; //Get 'other';
-					$qres = mysql_query($qinsert) or die ("<b>"._ERROR."</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
+					$qres = mysql_query($qinsert) or die ("<strong>"._ERROR."</strong> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = mysql_query($qidquery);
 					while ($qrow = mysql_fetch_array($qidres)) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
@@ -372,7 +372,7 @@ if (isset($grouparray) && $grouparray) {
 								$ainsert = str_replace("('".implode("', '", $aacfieldcontents)."')", $newvalues, $aa);
 								//$ainsert = str_replace("'$qid'", "'$newqid'", $aa);
 								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
-								$ares = mysql_query($ainsert) or die ("<b>"._ERROR."</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
+								$ares = mysql_query($ainsert) or die ("<strong>"._ERROR."</strong> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
 								if ($type == "M" || $type == "P") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
 														"newcfieldname"=>$newsid."X".$newgid."X".$newqid, 
@@ -495,8 +495,8 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 	}
 }
 
-echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n"
-	."<b><u>"._IG_IMPORTSUMMARY."</u></b><br />\n"
+echo "<br />\n<strong><font color='green'>"._SUCCESS."</font></strong><br />\n"
+	."<strong><u>"._IG_IMPORTSUMMARY."</u></strong><br />\n"
 	."<ul>\n\t<li>"._GROUPS.": ";
 if (isset($countgroups)) {echo $countgroups;}
 echo "</li>\n"
@@ -517,7 +517,7 @@ echo ")</li>\n";
 echo "\t<li>"._QL_QUESTIONATTRIBUTES;
 if (isset($countquestion_attributes)) {echo " $countquestion_attributes";}
 echo ")</li>\n</ul>\n";
-echo "<b>"._IG_SUCCESS."</b><br />\n"
+echo "<strong>"._IG_SUCCESS."</strong><br />\n"
 	."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";

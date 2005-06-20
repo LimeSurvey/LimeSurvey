@@ -8,4 +8,4 @@
 	<tr>
 		<td background='{TEMPLATEURL}single_left.gif'></td>
 		<td align='center'>
-			<font face='verdana' size='2' color='#000080'><b>{GROUPNAME}</b></font>
+			<font face='verdana' size='2' color='#000080'><strong>{GROUPNAME}</strong></font>

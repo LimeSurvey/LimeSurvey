@@ -37,15 +37,15 @@
 
 echo "<br />\n"
 	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-	._IMPORTQUESTION."</b></td></tr>\n"
+	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	._IMPORTQUESTION."</strong></td></tr>\n"
 	."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n"
+	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		._IS_FAILUPLOAD."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
 		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
@@ -56,7 +56,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n"
+echo "<strong><font color='green'>"._SUCCESS."</font></strong><br />\n"
 	._IS_OKUPLOAD."<br /><br />\n"
 	._IS_READFILE."<br />\n";
 $handle = fopen($the_full_file_path, "r");
@@ -88,7 +88,7 @@ if (!$_POST['gid'])
 	}
 if (substr($bigarray[1], 0, 24) != "# SURVEYOR QUESTION DUMP")
 	{
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n"
+	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		._IQ_WRONGFILE."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
 		._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\">\n"
@@ -326,7 +326,7 @@ if (isset($questionarray) && $questionarray)
 		
 		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 		
-		$qres = mysql_query($qinsert) or die ("<b>"._ERROR.":</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
+		$qres = mysql_query($qinsert) or die ("<strong>"._ERROR.":</strong> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
 		//GET NEW QID, AND WHILE WE'RE AT IT - THE TYPE!
 		$qidquery = "SELECT qid, lid, type FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
 		$qidres = mysql_query($qidquery);
@@ -361,7 +361,7 @@ if (isset($questionarray) && $questionarray)
 					$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
 					//$ainsert = substr(trim($ainsert), 0, -1);
 					//echo "$ainsert<br />\n";
-					$ares = mysql_query($ainsert) or die ("<b>"._ERROR.":</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
+					$ares = mysql_query($ainsert) or die ("<strong>"._ERROR.":</strong> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
 					if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P")
 						{
 						$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
@@ -430,8 +430,8 @@ if (isset($questionarray) && $questionarray)
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions.
 
 
-echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n"
-	."<b><u>"._IQ_IMPORTSUMMARY."</u></b><br />\n"
+echo "<br />\n<strong><font color='green'>"._SUCCESS."</font></strong><br />\n"
+	."<strong><u>"._IQ_IMPORTSUMMARY."</u></strong><br />\n"
 	."\t<li>"._QUESTIONS.": ";
 if (isset($countquestions)) {echo $countquestions;}
 echo "</li>\n"
@@ -447,7 +447,7 @@ echo "\t<li>"._QL_QUESTIONATTRIBUTES;
 if (isset($countquestion_attributes)) {echo $countquestion_attributes;}
 echo "</li></ul><br />\n";
 
-echo "<b>"._IS_SUCCESS."</b><br />\n"
+echo "<strong>"._IS_SUCCESS."</strong><br />\n"
 	."<input $btstyle type='submit' value='"
 	._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$newqid', '_top')\">\n"
 	."</td></tr></table>\n"

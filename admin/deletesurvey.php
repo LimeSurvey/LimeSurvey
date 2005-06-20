@@ -44,12 +44,12 @@ echo $htmlheader;
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._DELETESURVEY."</b></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._DELETESURVEY."</strong></td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 if (!isset($surveyid) || !$surveyid)
 	{
-	echo "<br /><font color='red'><b>"._ERROR."</b></font><br />\n";
+	echo "<br /><font color='red'><strong>"._ERROR."</strong></font><br />\n";
 	echo _DS_NOSID."<br /><br />\n";
 	echo "<input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
@@ -68,8 +68,8 @@ if (!isset($ok) || !$ok)
 	echo "<table width='100%' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>$setfont<br />\n";
-	echo "\t\t\t<font color='red'><b>"._WARNING."</b></font><br />\n";
-	echo "\t\t\t<b>"._DS_DELMESSAGE1." ($surveyid)</b><br /><br />\n";
+	echo "\t\t\t<font color='red'><strong>"._WARNING."</strong></font><br />\n";
+	echo "\t\t\t<strong>"._DS_DELMESSAGE1." ($surveyid)</strong><br /><br />\n";
 	echo "\t\t\t"._DS_DELMESSAGE2."<br /><br />\n";
 	echo "\t\t\t"._DS_DELMESSAGE3."\n";
 
@@ -141,7 +141,7 @@ else //delete the survey
 	echo "<table width='100%' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>$setfont<br />\n";
-	echo "\t\t\t<b>"._DS_DELETED."<br /><br />\n";
+	echo "\t\t\t<strong>"._DS_DELETED."<br /><br />\n";
 	echo "\t\t\t<input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";

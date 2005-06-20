@@ -80,7 +80,7 @@ echo "\t<tr>\n";
 echo "\t\t<td colspan='3' align='center'><font color='black'>\n";
 echo "\t\t\t<table border='1' style='border-collapse: collapse; border-color: #111111; width: 100%'>\n";
 echo "\t\t\t\t<tr><td align='center'>\n";
-echo "\t\t\t\t\t<font size='5' face='verdana'><b>$surveyname</b></font>\n";
+echo "\t\t\t\t\t<font size='5' face='verdana'><strong>$surveyname</strong></font>\n";
 echo "\t\t\t\t\t<font size='4' face='verdana'><br />$setfont$surveydesc</font>\n";
 echo "\t\t\t\t</td></tr>\n";
 echo "\t\t\t</table>\n";
@@ -105,7 +105,7 @@ while ($degrow = mysql_fetch_array($degresult))
 	
 	echo "\t<tr>\n";
 	echo "\t\t<td colspan='3' align='center' bgcolor='#EEEEEE' style='border-width: 1; border-style: double; border-color: #111111'>\n";
-	echo "\t\t\t<font size='3' face='verdana'><b>{$degrow['group_name']}</b></font>\n";
+	echo "\t\t\t<font size='3' face='verdana'><strong>{$degrow['group_name']}</strong></font>\n";
 	if ($degrow['description'])
 		{
 		echo "\t\t\t<br /><font size='2' face='verdana'>{$degrow['description']}</font>\n";
@@ -246,7 +246,7 @@ while ($degrow = mysql_fetch_array($degresult))
 			{
 		    echo _REQUIRED;
 			}
-		echo "\t\t\t<b>$setfont{$deqrow['title']}: {$deqrow['question']}</b>\n";
+		echo "\t\t\t<strong>$setfont{$deqrow['title']}: {$deqrow['question']}</strong>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		//DIFFERENT TYPES OF DATA FIELD HERE
@@ -629,7 +629,7 @@ echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t<table width='100%' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
-echo "\t\t\t\t\t\t$setfont<b>"._PS_SUBMIT."</b><br />\n";
+echo "\t\t\t\t\t\t$setfont<strong>"._PS_SUBMIT."</strong><br />\n";
 echo "\t\t\t\t\t\t"._PS_THANKYOU." "._PS_FAXTO." $surveyfaxto";
 if ($surveyexpirydate && $surveyexpirydate != "0000-00-00")
 	{

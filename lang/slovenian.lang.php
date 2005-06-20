@@ -138,7 +138,7 @@ define("_CONFIRMATION_MESSAGE2", "Vaša anketa je dobila nov odgovor"); //NEW fo
 define("_CONFIRMATION_MESSAGE3", "Individualni potatki so vam na voljo tukaj:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Osnovne statistike so vam na voljo tukaj:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>Obvestilo o varovanju zasebnosti</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>Obvestilo o varovanju zasebnosti</i></strong><br />"
 						  ."Ta anketa je anonimna.<br />"
 						  ."Vaši odgovori na anketna vprašanja, ki se shranjujejo v bazo odgovorov ne vsebujejo "
 						  ."nobenih informacij, prek katerih bi vas bilo mogoče identificirati razen v primeru "
@@ -168,17 +168,17 @@ define ("_RG_REGISTRATIONCOMPLETE", "Hvala ker ste se prijavili za sodelovanje v
 								   ."Za nadaljevanje upoštevajte ta navodila.<br /><br />\n"
 								   ."Lep pozdrav, {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Najlepša hvala<br /><br />"
-					   ."Z odgovarjanjem na anketo ste zaključili.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Najlepša hvala<br /><br />"
+					   ."Z odgovarjanjem na anketo ste zaključili.</strong><br /><br />"
 					   ."S klikom na ["._SUBMIT."] boste shranili vaše odgovore."); //New for 0.98finalRC1
 define("_SM_REVIEW", "Če želite preveriti vaše odgovore ali jih popraviti, "
 					."lahko to storite s klikanjem na gumb [<< "._PREV."] ."); //New for 0.98finalRC1
 
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Prosimo, izberite  <b>eno</b> izmed možnosti:"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Prosimo, izberite  <strong>eno</strong> izmed možnosti:"); //New for 0.98finalRC1
 define("_PS_WRITE", "Vpišite vaš odgovor:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Možnih je <b>več</b> odgovorov:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Možnih je <strong>več</strong> odgovorov:"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Izberite ustrezne odgovore in podajte komentar:"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Izberite primeren odgovor za vsako trditev."); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Prosimo, vpišite odgovor:"); //New for 0.98finalRC1

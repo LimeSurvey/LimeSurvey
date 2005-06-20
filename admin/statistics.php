@@ -94,7 +94,7 @@ echo "\t<script type='text/javascript'>
 
 echo "<table height='1'><tr><td></td></tr></table>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._STATISTICS."</b></td></tr>\n";
+    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._STATISTICS."</strong></td></tr>\n";
 echo $surveyoptions;
 echo "</table>\n"
     ."<table height='1'><tr><td></td></tr></table>\n"
@@ -102,7 +102,7 @@ echo "</table>\n"
     ." cellspacing='0' bordercolor='#555555'>\n"
     ."<tr><td align='center' bgcolor='#555555' height='22'>"
     ."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"filtersettings\"); hide(\"sqlbuilder\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"filtersettings\")'>"
-    ."<font size='2' face='verdana' color='orange'><b>"._ST_FILTERSETTINGS."</b>"
+    ."<font size='2' face='verdana' color='orange'><strong>"._ST_FILTERSETTINGS."</strong>"
     ."</td></tr>\n"
     ."<form method='post' name='formbuilder'>\n";
 
@@ -144,7 +144,7 @@ $myfield = "id";
 $myfield2=$myfield."G";
 $myfield3=$myfield."L";
 $myfield4=$myfield."=";
-echo "<td align='center'>$setfont<b>id</b><br />";
+echo "<td align='center'>$setfont<strong>id</strong><br />";
 echo "\t\t\t\t\t<font size='1'>"._ST_NOGREATERTHAN.":<br />\n"
         ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
     if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
@@ -169,7 +169,7 @@ if ($datestamp == "Y") {
     $myfield3="$myfield2=";
     $myfield4="$myfield2<"; $myfield5="$myfield2>";
     echo "<td width='40'></td>";
-    echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>datestamp</b>"
+    echo "\t\t\t\t<td align='center' valign='top'>$setfont<strong>datestamp</strong>"
         ."<br />\n"
         ."\t\t\t\t\t<font size='1'>"._ST_DATEEQUALS.":<br />\n"
         ."\t\t\t\t\t<input name='$myfield3' type='text' value='";
@@ -202,7 +202,7 @@ foreach ($filters as $flt)
             echo "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
             }
         echo "\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
-            ."\t\t<font size='1' face='verdana'><b>$flt[4]</b> ("._GROUP." $flt[1])</font></td></tr>\n\t\t"
+            ."\t\t<font size='1' face='verdana'><strong>$flt[4]</strong> ("._GROUP." $flt[1])</font></td></tr>\n\t\t"
             ."<tr><td align='center'>\n"
             ."\t\t\t<table align='center'><tr>\n";
         $counter=0;
@@ -217,14 +217,14 @@ foreach ($filters as $flt)
     if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z") //Have to make an exception for these types!
         {
         echo "\t\t\t\t<td align='center'>"
-            ."$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
+            ."$setfont<strong>$flt[3]&nbsp;"; //Heading (Question No)
         if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {$myfield = "M$myfield";}
         if ($flt[2] == "N") {$myfield = "N$myfield";}
         echo "<input type='checkbox' name='summary[]' value='$myfield'";
         if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
             {echo " CHECKED";}
         echo ">&nbsp;"
-            ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></b>"
+            ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></strong>"
             ."<br />\n";
         if ($flt[2] != "N") {echo "\t\t\t\t<select name='";}
         if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {echo "M";}
@@ -241,7 +241,7 @@ foreach ($filters as $flt)
         case "U": // Huge free text
             $myfield2="T$myfield";
             echo "\t\t\t\t<td align='center' valign='top'>"
-                ."$setfont<b>$flt[3]</b>";
+                ."$setfont<strong>$flt[3]</strong>";
             echo "<input type='checkbox' name='summary[]' value='$myfield2'";
             if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
@@ -260,7 +260,7 @@ foreach ($filters as $flt)
         case "S": // Short free text
             $myfield2="T$myfield";
             echo "\t\t\t\t<td align='center' valign='top'>"
-                ."$setfont<b>$flt[3]</b>";
+                ."$setfont<strong>$flt[3]</strong>";
             echo "<input type='checkbox' name='summary[]' value='$myfield2'";
             if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
@@ -294,7 +294,7 @@ foreach ($filters as $flt)
             $myfield2="D$myfield";
             $myfield3="$myfield2=";
             $myfield4="$myfield2<"; $myfield5="$myfield2>";
-            echo "\t\t\t\t<td align='center' valign='top'>$setfont<b>$flt[3]</b>"
+            echo "\t\t\t\t<td align='center' valign='top'>$setfont<strong>$flt[3]</strong>"
                 ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
                 .str_replace("\"", "`", $flt[5])
                 ." \" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
@@ -577,12 +577,12 @@ foreach ($filters as $flt)
         case "W":
         case "Z":
             echo "\t\t\t\t<td align='center'>"
-                ."$setfont<b>$flt[3]&nbsp;"; //Heading (Question No)
+                ."$setfont<strong>$flt[3]&nbsp;"; //Heading (Question No)
             echo "<input type='checkbox' name='summary[]' value='$myfield'";
             if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
-                ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></b>"
+                ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></strong>"
                 ."<br />\n";
             echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
             $allfields[]=$myfield;
@@ -698,7 +698,7 @@ echo "</table>\n"
     ." cellspacing='0' bordercolor='#555555'>\n"
     ."<tr><td align='center' bgcolor='#555555' height='22'>"
     ."<input type='image' src='$imagefiles/plus.gif' align='right' hspace='0' border='0' onClick='show(\"sqlbuilder\"); hide(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' border='0' onClick='hide(\"sqlbuilder\")' hspace='0'>"
-    ."<font size='2' face='verdana' color='orange'><b>SQL Builder</b>"
+    ."<font size='2' face='verdana' color='orange'><strong>SQL Builder</strong>"
     ."</td></tr>\n"
     ."<form method='post' name='sqlbuilder'>\n";
 
@@ -887,11 +887,11 @@ if (isset($_POST['display']) && $_POST['display'])
     // 3: Present results including option to view those rows
     echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' "
         ."cellpadding='2' cellspacing='0' bordercolor='black'>\n"
-        ."\t<tr><td colspan='2' align='center'><b>$setfont<font color='orange'>"
-        ._ST_RESULTS."</b></td></tr>\n"
+        ."\t<tr><td colspan='2' align='center'><strong>$setfont<font color='orange'>"
+        ._ST_RESULTS."</strong></td></tr>\n"
         ."\t<tr><td colspan='2' align='center' bgcolor='#666666'>"
         ."$setfont<font color='#EEEEEE'>"
-        ."<b>"._ST_RECORDSRETURNED.": $results </b><br />\n\t\t"
+        ."<strong>"._ST_RECORDSRETURNED.": $results </strong><br />\n\t\t"
         ._ST_TOTALRECORDS.": $total<br />\n";
     if ($total)
         {
@@ -900,7 +900,7 @@ if (isset($_POST['display']) && $_POST['display'])
             .": $percent%<br />";
         }
     echo "\n\t\t<br />\n"
-        ."\t\t<font size='1'><b>"._SQL.":</b> $query\n"
+        ."\t\t<font size='1'><strong>"._SQL.":</strong> $query\n"
         ."\t</td></tr>\n";
     if (isset ($selects) && $selects) {$sql=implode(" AND ", $selects);}
     elseif (!empty($newsql)) {$sql = $newsql;}
@@ -1058,14 +1058,14 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 $nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
                 while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
                 echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
-                    ."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>"._ST_FIELDSUMMARY." $qtitle:</b>"
+                    ."\t<tr><td colspan='3' align='center'><strong>$setfont<font color='orange'>"._ST_FIELDSUMMARY." $qtitle:</strong>"
                     ."</td></tr>\n"
-                    ."\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>$qquestion</b></font></font></td></tr>\n"
-                    ."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>"
-                    ._ST_CALCULATION."</b></font></td>\n"
-                    ."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b>"
-                    ._ST_RESULT."</b></font></td>\n"
-                    ."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><b></b></font></td>\n"
+                    ."\t<tr><td colspan='3' align='center'><strong>$setfont<font color='#EEEEEE'>$qquestion</strong></font></font></td></tr>\n"
+                    ."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><strong>"
+                    ._ST_CALCULATION."</strong></font></td>\n"
+                    ."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><strong>"
+                    ._ST_RESULT."</strong></font></td>\n"
+                    ."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'><strong></strong></font></td>\n"
                     ."\t</tr>\n";
                 $fieldname=substr($rt, 1, strlen($rt));
                 $query = "SELECT STDDEV(`$fieldname`) as stdev";
@@ -1332,17 +1332,17 @@ if (isset($_POST['summary']) && $_POST['summary'])
         if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
             {
             echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
-                ."\t<tr><td colspan='3' align='center'><b>$setfont<font color='orange'>"
-                ._ST_FIELDSUMMARY." $qtitle:</b>"
+                ."\t<tr><td colspan='3' align='center'><strong>$setfont<font color='orange'>"
+                ._ST_FIELDSUMMARY." $qtitle:</strong>"
                 ."</td></tr>\n"
-                ."\t<tr><td colspan='3' align='center'><b>$setfont<font color='#EEEEEE'>"
-                ."$qquestion</b></font></font></td></tr>\n"
+                ."\t<tr><td colspan='3' align='center'><strong>$setfont<font color='#EEEEEE'>"
+                ."$qquestion</strong></font></font></td></tr>\n"
                 ."\t<tr>\n\t\t<td width='50%' align='center' bgcolor='#666666'>$setfont"
-                ."<font color='#EEEEEE'><b>"._AL_ANSWER."</b></font></td>\n"
+                ."<font color='#EEEEEE'><strong>"._AL_ANSWER."</strong></font></td>\n"
                 ."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont"
-                ."<font color='#EEEEEE'><b>"._COUNT."</b></font></td>\n"
+                ."<font color='#EEEEEE'><strong>"._COUNT."</strong></font></td>\n"
                 ."\t\t<td width='25%' align='center' bgcolor='#666666'>$setfont"
-                ."<font color='#EEEEEE'><b>"._PERCENTAGE."</b></font></td>\n"
+                ."<font color='#EEEEEE'><strong>"._PERCENTAGE."</strong></font></td>\n"
                 ."\t</tr>\n";
             foreach ($alist as $al)
                 {

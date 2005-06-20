@@ -6,7 +6,7 @@
 	</tr>
 	<tr bgcolor='#333399'>
 		<td align='center' colspan='3'>
-			<font size='4' color='yellow'><b>{SURVEYNAME}</b></font><br />
+			<font size='4' color='yellow'><strong>{SURVEYNAME}</strong></font><br />
 			<font size='2' color='#CCCCCC'>{SURVEYDESCRIPTION}</font>
 		</td>
 	</tr>

@@ -137,7 +137,7 @@ define("_CONFIRMATION_MESSAGE2", "Et nytt svar var gitt for din unders&oslash;ke
 define("_CONFIRMATION_MESSAGE3", "Klikk p&aring; f&oslash;lgende link for &aring; se de individuelle svarene:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Se statistikken ved &aring; klikke her:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
 						  ."Denne unders&oslash;kelsen er anonym.<br />"
 						  ."Svarene dine inneholder ikke noen informasjon om deg med mindre "
 						  ."et spesifikt sp&oslash;rsm&aring;l i unders&oslash;kelsen sp&oslash;rr om dette. Hvis du "
@@ -167,17 +167,17 @@ define ("_RG_REGISTRATIONCOMPLETE", "Takk for at du registrerte deg for &aring; 
 								   ."for unders&oslash;kelsen. Vennligst f&oslash;lg lenken i eposten for &aring; fortsette.<br /><br />\n"
 								   ."Unders&oslash;kelsesleder {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Takk<br /><br />"
-					   ."Du har n&aring; fullf&oslash;rt unders&oslash;kelsen.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Takk<br /><br />"
+					   ."Du har n&aring; fullf&oslash;rt unders&oslash;kelsen.</strong><br /><br />"
 					   ."Trykk ["._SUBMIT."] for &aring; lagre svarene dine."); //New for 0.98finalRC1
 define("_SM_REVIEW", "Hvis du &oslash;nsker &aring; kontrollere eller &aring; endre svarene dine "
 					."kan du trykke [<< "._PREV."]"
 					."."); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Vennligst velg  <b>kun en</b> av f&oslash;lgende"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Vennligst velg  <strong>kun en</strong> av f&oslash;lgende"); //New for 0.98finalRC1
 define("_PS_WRITE", "Vennligst skriv svaret ditt her"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Vennligts velg <b>alt</b> som passer"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Vennligts velg <strong>alt</strong> som passer"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Vennligst velg alt som passer og gi en kommentar"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "vennligst velg et passende svar for hvert element"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "vennligst skriv svarene dine her"); //New for 0.98finalRC1

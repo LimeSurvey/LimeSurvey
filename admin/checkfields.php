@@ -175,10 +175,10 @@ echo $htmlheader;
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._CHECKFIELDS."</b></font></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._CHECKFIELDS."</strong></font></td></tr>\n";
 echo "\t<tr bgcolor='#CCCCCC'><td>\n";
 
-echo "$setfont<b>"._CF_CHECKTABLES.":</b><br /><font size='1'>\n";
+echo "$setfont<strong>"._CF_CHECKTABLES.":</strong><br /><font size='1'>\n";
 
 if (!isset($databasetabletype)) {$databasetabletype="MyISAM";}
 
@@ -193,7 +193,7 @@ if (!isset($tablelist) || !is_array($tablelist))
     }
 foreach ($alltables as $at)
     {
-    echo "<b>-></b>"._CF_CHECKING." <b>$at</b>..<br />";
+    echo "<strong>-></strong>"._CF_CHECKING." <strong>$at</strong>..<br />";
     if (!in_array($at, $tablelist))
         {
         //Create table
@@ -227,7 +227,7 @@ foreach ($alltables as $at)
 echo "<br /></font>\n";
 
 
-echo "$setfont<b>"._CF_CHECKFIELDS.":</b><br /><font size='1'>\n";
+echo "$setfont<strong>"._CF_CHECKFIELDS.":</strong><br /><font size='1'>\n";
 
 //GET LIST OF TABLES
 $tables = mysql_list_tables($databasename);
@@ -253,7 +253,7 @@ foreach ($tablenames as $tn)
 function checktable($tablename)
     {
     global $databasename, $allfields;
-    echo "<b>-></b>"._CF_CHECKING." <b>$tablename</b>..<br />";
+    echo "<strong>-></strong>"._CF_CHECKING." <strong>$tablename</strong>..<br />";
     $fields=mysql_list_fields($databasename, $tablename);
     $numfields=mysql_num_fields($fields);
     for ($i=0; $i<$numfields; $i++)
@@ -308,7 +308,7 @@ if (isset($checkfororphans) && $checkfororphans)
     $result = mysql_query($query) or die("Orphan check failed.<br />$query<br />".mysql_error());
     if ($result)
         {
-        echo "<br /><b>Orphan Database Entries</b><br />\n";
+        echo "<br /><strong>Orphan Database Entries</strong><br />\n";
         while ($row = mysql_fetch_array($result))
             {
             echo "$setfont ANSWER: ".$row['qid']." - ".$row['code']."<br />\n";

@@ -136,7 +136,7 @@ define("_CONFIRMATION_MESSAGE2", "Et nyt svar er gemt i unders&oslash;gelsen"); 
 define("_CONFIRMATION_MESSAGE3", "Klik p&aring; nedenst&aring;ende link for at se de individuelle svar:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Vis statistikken her:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>A Note On Privacy</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
                           ."This survey is anonymous.<br />"
                           ."The record kept of your survey responses does not contain any "
                           ."identifying information about you unless a specific question "
@@ -166,14 +166,14 @@ define ("_RG_REGISTRATIONCOMPLETE", "Tak fordi du v&aelig;lger at deltage i unde
                                    ."informationer om hvordan du deltager i unders&oslash;gelsen. Benyt linket i e-mailen for at deltage.<br /><br />\n"
                                    ."Venlig hilsen <br /> {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Tak<br /><br />"
-                       ."Du har nu besvaret alle sp&oslash;rgsm&aring;lene i denne unders&oslash;gelse.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Tak<br /><br />"
+                       ."Du har nu besvaret alle sp&oslash;rgsm&aring;lene i denne unders&oslash;gelse.</strong><br /><br />"
                        ."Klik p&aring; ["._SUBMIT."] for at afslutte unders&oslash;gelsen og indsende dine svar."); //New for 0.98finalRC1
 
 define("_SM_REVIEW", "Hvis du vil tjekke et eller flere af dine svar og evt. rette i dem, kan du g&oslash;re det ved at klikke p&aring; [<< "._PREV."] knappen og gennemg&aring; dine besvarelse."); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "V&aelig;lg venligst <b>kun een</b> af de f&oslash;lgende"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "V&aelig;lg venligst <strong>kun een</strong> af de f&oslash;lgende"); //New for 0.98finalRC1
 define("_PS_WRITE", "Indtast venligst dit svar her"); //New for 0.98finalRC1
 define("_PS_CHOOSEANY", "V&aelig;lg venligst alle de muligheder der passer"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "V&aelig;lg venligst alle de muligheder der passer, og tilf&oslash;j en kommentar"); //New for 0.98finalRC1

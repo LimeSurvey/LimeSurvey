@@ -61,7 +61,7 @@ if (!$surveyid)
 		echo templatereplace($op);
 		}
 	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='RED'><b>ERROR</b></font><br />\n"
+		."\t\t\t<font color='RED'><strong>ERROR</strong></font><br />\n"
 		."\t\t\tYou have not provided a survey identification number.<br /><br />\n"
 		."\t\t\tPlease contact <i>$siteadminname</i> at <i>$siteadminemail</i> for further assistance.<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
@@ -133,7 +133,7 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 		echo templatereplace($op);
 		}
 	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='RED'><b>"._ERROR_PS."</b></font><br />\n"
+		."\t\t\t<font color='RED'><strong>"._ERROR_PS."</strong></font><br />\n"
 		."\t\t\t"._SURVEYCOMPLETE."<br /><br />\n"
 		."\t\t\t"._CONTACT1." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
 		._CONTACT2."<br /><br />\n";
@@ -810,7 +810,7 @@ function createinsertquery()
 			{
 			echo templatereplace($op);
 			}
-		echo "<br /><center><font face='verdana' size='2'><font color='red'><b>"._ERROR_PS."</b></font><br /><br />\n";
+		echo "<br /><center><font face='verdana' size='2'><font color='red'><strong>"._ERROR_PS."</strong></font><br /><br />\n";
 		echo _BADSUBMIT1."<br /><br />\n";
 		echo "<font size='1'>"._BADSUBMIT2."<br />\n";
 		echo "</font></center><br /><br />";
@@ -940,8 +940,8 @@ function submitfailed()
 		{
 		echo templatereplace($op);
 		}
-	$completed = "<br /><b><font size='2' color='red'>"
-			   . _DIDNOTSAVE."</b></font><br /><br />\n\n"
+	$completed = "<br /><strong><font size='2' color='red'>"
+			   . _DIDNOTSAVE."</strong></font><br /><br />\n\n"
 			   . _DIDNOTSAVE2."<br /><br />\n";
 	if ($thissurvey['adminemail'])
 		{	

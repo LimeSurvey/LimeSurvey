@@ -132,7 +132,7 @@ define("_CONFIRMATION_MESSAGE2", "Šiai apklausai buvo įvesti jūsų nauji atsa
 define("_CONFIRMATION_MESSAGE3", "Paspauskite šią nuorodą norėdami peržiūrėti atskirus atsakymus:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Paspauskite šią nuorodą norėdami peržiūrėti statistiką:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>Apklausos anonimiškumas</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>Apklausos anonimiškumas</i></strong><br />"
 						  ."Ši apklausa yr anoniminė.<br />"
 						  ."Jūsų pateiktuose apklausos atsakymuose nėra "
 						  ."jokių duomenų, kurie jus identifikuotų, nebent buvo užduotas "
@@ -162,17 +162,17 @@ define ("_RG_REGISTRATIONCOMPLETE", "Ačiū kad užsiregistravote dalyvauti šio
 								   ."šią apklausą. Pasinaudokite ta nuoroda, kad ją pasiektumėte.<br /><br />\n"
 								   ."Apklausos administratorius {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Ačiū<br /><br />"
-					   ."Jūs baigėte šią apklausą.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Ačiū<br /><br />"
+					   ."Jūs baigėte šią apklausą.</strong><br /><br />"
 					   ."Paspauskite šią nuorodą  ["._SUBMIT."] ir jūsų atsakymai bus išsaugoti.");
 define("_SM_REVIEW", "Jei notite patikrinti jūsų įvestus atsakymus ir/arba juos pakeisti, "
 					."paspauskite nršyklės mygtuką [<< "._PREV."] "
 					."ir galėsite atsakymus peržiūrėti.");
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Pasirinkite <b>tik vieną</b> iš sekančių:"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Pasirinkite <strong>tik vieną</strong> iš sekančių:"); //New for 0.98finalRC1
 define("_PS_WRITE", "Įrašykite savo atsakymą čia:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Pasirinkite <b>visus</b> kurie tinka"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Pasirinkite <strong>visus</strong> kurie tinka"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Pasirinkite visus kurie tinka ir pakomentuokite"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Pasirinkite atitinkamą atsakymą/komentarą kiekvienam"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Savo atsakymą (-us) rašykite čia"); //New for 0.98finalRC1

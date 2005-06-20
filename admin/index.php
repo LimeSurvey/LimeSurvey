@@ -96,7 +96,7 @@ $htmlheader = "<html>\n<head>\n"
 //			. "<table width='100%' align='center' bgcolor='#000000'>\n"
 //			. "\t<tr>\n"
 //			. "\t\t<td align='center'>\n"
-//			. "\t\t\t$setfont<font color='white' size='4'><b>$sitename</b></font></font>\n"
+//			. "\t\t\t$setfont<font color='white' size='4'><strong>$sitename</strong></font></font>\n"
 //			. "\t\t</td>\n"
 //			. "\t</tr>\n"
 //			. "</table>\n";
@@ -129,12 +129,12 @@ if (!mysql_selectdb ($databasename, $connect))
 	{
 	echo "<br />\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._SETUP."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._SETUP."</strong></td></tr>\n"
 		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."<b><font color='red'>"
+		."<strong><font color='red'>"
 		._ERROR."<br />\n"
-		._ST_NODB1."</font></b><br /><br />\n"
+		._ST_NODB1."</font></strong><br /><br />\n"
 		._ST_NODB2."<br />\n"
 		._ST_NODB3."<br /><br />\n"
 		._ST_NODB4." $databasename<br />\n"
@@ -335,13 +335,13 @@ function helpscreen()
 		."<table width='100%' align='center' cellspacing='0'>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
-		."\t\t\t\t\t\t$setfont<font color='white' size='1'><b>"
-		._HELP."</b>\n"
+		."\t\t\t\t\t\t$setfont<font color='white' size='1'><strong>"
+		._HELP."</strong>\n"
 		."\t\t\t\t\t</font></font></td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
-		."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' hspace='0' border='0' align='left'>\n"
+		."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left'>\n"
 		."\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
 		."\t\t\t\t\t</td>\n"
 		."\t\t\t\t</tr>\n"
@@ -418,7 +418,7 @@ function adminmenu() {
 				 <td background='{$imagefiles}/adminbg.jpg' height='26' valign='bottom'>
 			      <img src='{$imagefiles}/showhelp.gif' align='right'>
 			      <img src='$imagefiles/blank.gif' width='5' height='1'>
-			      <a href='$scriptname' title='"._A_HOME_BT."'><img src='{$imagefiles}/home.gif' border='0'></a>
+			      <a href='$scriptname' title='"._A_HOME_BT."'><img src='{$imagefiles}/home.gif' alt='"._A_HOME_BT."' border='0'></a>
 				 </td>
 				</tr>
 				<tr>

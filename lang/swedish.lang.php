@@ -139,7 +139,7 @@ define("_CONFIRMATION_MESSAGE2", "Ett nytt svar till din enk&auml;t har l&auml;m
 define("_CONFIRMATION_MESSAGE3", "Se det enskilda svaret genom att klicka h&auml;r:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Se statistik f&ouml;r enk&auml;ten genom att klicka h&auml;r:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>Hantering av personuppgifter. </i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>Hantering av personuppgifter. </i></strong><br />"
                           ."Den h&auml;r enk&auml;ten &auml;r anonym.<br />"
                           ."De svar p&aring; enk&auml;ten som sparas inneh&aring;ller ingen information som "
                           ."kan identifiera den som svarat utom om denna fr&aring;ga specifikt st&auml;llts "
@@ -169,17 +169,17 @@ define ("_RG_REGISTRATIONCOMPLETE", "Tack f&ouml;r att du registerat dig f&ouml;
                                    ."F&ouml;lj den bifogade l&auml;nken i e-postmeddelandet f&ouml;r att forts&auml;tta.<br /><br />\n"
                                    ."Enk&auml;t-ansvarig {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Tack!<br /><br />"
-    ."Du har besvarat alla fr&aring;gor i den h&auml;r enk&auml;ten.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Tack!<br /><br />"
+    ."Du har besvarat alla fr&aring;gor i den h&auml;r enk&auml;ten.</strong><br /><br />"
     ."Klicka p&aring; ["._SUBMIT."] f&ouml;r att slutf&ouml;ra och spara dina svar."); //New for 0.98finalRC1 - by Bjorn Mildh
 define("_SM_REVIEW", "Om du vill kontrollera dina svar och/eller &auml;ndra dem, "
     ."kan du g&ouml;ra det genom att klicka p&aring; [<< "._PREV."]-knappen och bl&auml;ddra "
     ."genom dina svar."); //New for 0.98finalRC1 - by Bjorn Mildh
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "V&auml;lj <b>endast en</b> av f&ouml;ljande:"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "V&auml;lj <strong>endast en</strong> av f&ouml;ljande:"); //New for 0.98finalRC1
 define("_PS_WRITE", "Skriv ditt svar h&auml;r:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "V&auml;lj <b>alla</b> som st&auml;mmer:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "V&auml;lj <strong>alla</strong> som st&auml;mmer:"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "V&auml;lj alla som st&auml;mmer och skriv en kommentar:"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "V&auml;lj det korrekta svaret f&ouml;r varje punkt:"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Skriv ditt/dina svar h&auml;r:"); //New for 0.98finalRC1

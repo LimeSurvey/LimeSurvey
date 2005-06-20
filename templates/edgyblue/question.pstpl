@@ -7,7 +7,7 @@
 	<tr bgcolor='#FFD1A4'>
 		<td width='10' background='{TEMPLATEURL}orange_left.gif'></td>
 		<td width='100%' align='center' bgcolor='#FFD1A4'>
-			<font size='2' color='#333399'><b>{QUESTION}</b><br />&nbsp;
+			<font size='2' color='#333399'><strong>{QUESTION}</strong><br />&nbsp;
 		</td>
 		<td width='10' background='{TEMPLATEURL}orange_right.gif'></td>
 	</tr>

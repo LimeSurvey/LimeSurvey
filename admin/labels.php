@@ -78,28 +78,28 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
     ."\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' "
     ."cellpadding='1' cellspacing='0'>\n"
     ."\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'>"
-    ."<font size='1' face='verdana' color='white'><b>"
-    ._LABELCONTROL."</b></font></td></tr>\n"
+    ."<font size='1' face='verdana' color='white'><strong>"
+    ._LABELCONTROL."</strong></font></td></tr>\n"
     ."\t\t\t\t<tr bgcolor='#999999'>\n"
     ."\t\t\t\t\t<td>\n"
     ."\t\t\t\t\t<input type='image' src='$imagefiles/home.gif' title='"
-    ._B_ADMIN_BT."' align='left' "
+    ._B_ADMIN_BT."' alt='"._B_ADMIN_BT."' align='left' "
     ."onClick=\"window.open('$scriptname', '_top')\">\n"
     ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left' alt=''>\n"
     ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
     ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt=''>\n"
     ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
     ."\t\t\t\t\t</td>\n"
-    ."\t\t\t\t\t<td align='right' width='320'>\n"
+    ."\t\t\t\t\t<td align='right' width='620'>\n"
     ."\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.gif' title='"
-    ._A_HELP_BT."' align='right'  "
+    ._A_HELP_BT."' alt='"._A_HELP_BT."' align='right'  "
     ."onClick=\"showhelp('show')\">\n"
     ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'  alt=''>\n"
     ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt=''>\n"
     ."\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' align='right' title='"
-    ._L_ADDSET_BT."' onClick=\"window.open('labels.php?action=newset', '_top')\">\n"
-    ."\t\t\t\t\t$setfont<font size='1'><b>"
-    ._LABELSETS.":</b> "
+    ._L_ADDSET_BT."' alt='"._L_ADDSET_BT."' onClick=\"window.open('labels.php?action=newset', '_top')\">\n"
+    ."\t\t\t\t\t$setfont<font size='1'><strong>"
+    ._LABELSETS.":</strong> "
     ."\t\t\t\t\t<select style='font-size: 9; font-family: verdana; font-color: #333333; background: SILVER; width: 160' "
     ."onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 $labelsets=getlabelsets();
@@ -133,17 +133,17 @@ if ($action == "newset" || $action == "editset")
         }
     echo "\t\t<table width='100%' bgcolor='#DDDDDD'>\n"
         ."\t\t\t<tr bgcolor='black'>\n"
-        ."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><b>\n"
+        ."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><strong>\n"
         ."\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' "
         ."onClick=\"window.open('labels.php?lid=$lid', '_top')\">\n";
     if ($action == "newset") {echo _LB_NEWSET;}
     else {echo _LB_EDITSET;}
-    echo "\t\t\t\t</font></font></b></td>\n"
+    echo "\t\t\t\t</font></font></strong></td>\n"
         ."\t\t\t</tr>\n"
         ."\t\t<form method='post' action='labels.php'>\n"
         ."\t\t\t<tr>\n"
         ."\t\t\t\t<td align='right' width='15%'>\n"
-        ."\t\t\t\t\t$setfont<b>"._LL_NAME.":</b></font>"
+        ."\t\t\t\t\t$setfont<strong>"._LL_NAME.":</strong></font>"
         ."\t\t\t\t</td>\n"
         ."\t\t\t\t<td>\n"
         ."\t\t\t\t\t<input type='text' $slstyle name='label_name' value='";
@@ -169,18 +169,18 @@ if ($action == "newset" || $action == "editset")
     if ($action == "newset")
         {
         echo "\t\t\t<tr><td colspan='2' align='center'>\n"
-            ."\t\t\t\t$setfont<b>OR</b></font>\n"
+            ."\t\t\t\t$setfont<strong>OR</strong></font>\n"
             ."\t\t\t</td></tr>\n"
             ."\t\t\t<tr bgcolor='black'>\n"
-            ."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><b>\n"
+            ."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><strong>\n"
             ."\t\t\t\t"._IMPORTLABEL."\n"
-            ."\t\t\t\t</font></font></b></td>\n"
+            ."\t\t\t\t</font></font></strong></td>\n"
             ."\t\t\t</tr>\n"
             ."\t\t\t<tr>\n"
             ."\t\t\t<form enctype='multipart/form-data' name='importlabels' action='labels.php' "
             ."method='post'>\n"
-            ."\t\t\t\t<td align='right'>$setfont<b>"
-            ._SL_SELSQL."</b></font></td>\n"
+            ."\t\t\t\t<td align='right'>$setfont<strong>"
+            ._SL_SELSQL."</strong></font></td>\n"
             ."\t\t<td><input $btstyle name=\"the_file\" type=\"file\" size=\"35\">"
             ."</td></tr>\n"
             ."\t<tr><td></td><td><input type='submit' $btstyle value='"._IMPORTLABEL."'></TD>\n"
@@ -213,8 +213,8 @@ if (isset($lid) && ($action != "editset") && $lid)
         {
         echo "\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
             ."\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'>"
-            ."<font size='1' face='verdana' color='white'><b>"
-            ._LABELSET.":</b> {$row['label_name']}</td></tr>\n"
+            ."<font size='1' face='verdana' color='white'><strong>"
+            ._LABELSET.":</strong> {$row['label_name']}</td></tr>\n"
             ."\t\t\t\t<tr bgcolor='#999999'>\n"
             ."\t\t\t\t\t<td>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
@@ -245,23 +245,23 @@ if (isset($lid) && ($action != "editset") && $lid)
     echo "\t\t<table height='1'><tr><td></td></tr></table>\n"
         ."\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
         ."\t\t\t\t<tr bgcolor='#555555' height='4'>\n"
-        ."\t\t\t\t\t<td colspan='4'><b><font size='1' face='verdana' color='white'>\n"
+        ."\t\t\t\t\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
         ._LABELANS
-        ."\t\t\t\t\t</b></font></td>\n"
+        ."\t\t\t\t\t</strong></font></td>\n"
         ."\t\t\t\t</tr>\n"
         ."\t\t\t\t<tr bgcolor='#BBBBBB'>\n"
-        ."\t\t\t\t\t<td><b><font size='1' face='verdana'>\n"
+        ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
         ._LL_CODE
-        ."\t\t\t\t\t</b></font></td>\n"
-        ."\t\t\t\t\t<td><b><font size='1' face='verdana'>\n"
+        ."\t\t\t\t\t</strong></font></td>\n"
+        ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
         ._LL_ANSWER
-        ."\t\t\t\t\t</b></font></td>\n"
-        ."\t\t\t\t\t<td><b><font size='1' face='verdana'>\n"
+        ."\t\t\t\t\t</strong></font></td>\n"
+        ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
         ._LL_ACTION
-        ."\t\t\t\t\t</b></font></td>\n"
-        ."\t\t\t\t\t<td><b><font size='1' face='verdana'>\n"
+        ."\t\t\t\t\t</strong></font></td>\n"
+        ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
          ._LL_SORTORDER
-        ."\t\t\t\t\t</b></font></td>\n"
+        ."\t\t\t\t\t</strong></font></td>\n"
         ."\t\t\t\t</tr>\n";
     $position=0;
     while ($row=mysql_fetch_array($result))
@@ -336,8 +336,8 @@ if (isset($lid) && ($action != "editset") && $lid)
         {
         echo "\t\t\t\t<tr>\n"
             ."\t\t\t\t\t<td colspan='4' align='center'>\n"
-            ."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><b>"
-            ._WARNING."</b>: "._LB_ACTIVEUSE."</i></font></font>\n"
+            ."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><strong>"
+            ._WARNING."</strong>: "._LB_ACTIVEUSE."</i></font></font>\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t</tr>\n";
         }
@@ -355,8 +355,8 @@ if (isset($lid) && ($action != "editset") && $lid)
         {
         echo "\t\t\t\t<tr>\n"
             ."\t\t\t\t\t<td colspan='4' align='center'>\n"
-            ."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><b>"
-            ._WARNING."</b>: "._LB_TOTALUSE."</i><br />";
+            ."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><strong>"
+            ._WARNING."</strong>: "._LB_TOTALUSE."</i><br />";
         foreach ($qidarray as $qd) {echo "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
         echo "</font></font>\n"
             ."\t\t\t\t\t</td>\n"
@@ -524,7 +524,7 @@ function helpscreen()
     echo "\t\t\t<table width='100%'><tr><td><table width='100%' align='center' cellspacing='0'>\n";
     echo "\t\t\t\t<tr>\n";
     echo "\t\t\t\t\t<td bgcolor='#555555' height='8'>\n";
-    echo "\t\t\t\t\t\t<font color='white' size='1'><b>"._HELP."</b></font>\n";
+    echo "\t\t\t\t\t\t<font color='white' size='1'><strong>"._HELP."</strong></font>\n";
     echo "\t\t\t\t\t</td>\n";
     echo "\t\t\t\t</tr>\n";
     echo "\t\t\t\t<tr>\n";

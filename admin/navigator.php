@@ -93,7 +93,7 @@ function surveyNavigator($surveyid, $gid, $qid) {
 	  <table width='250' border='0' cellpadding='0' cellspacing='0' class='menutable'>
 		<tr>
 		 <th nowrap>
-		  <b>"._SN_TITLE."</b>
+		  <strong>"._SN_TITLE."</strong>
 		 </th>
 		</tr>
 		<tr>
@@ -152,7 +152,7 @@ function labelsetDetails($lid = null) {
 	   <table width='100%' border='0' cellpadding='0' cellspacing='0' class='menutable' align='center'>
 		<tr>
 		 <th>
-		  <b>"._LABELCONTROL."</b>
+		  <strong>"._LABELCONTROL."</strong>
 		 </th>
 		</tr>
 		<tr>
@@ -345,7 +345,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 	   <table width='100%' border='0' cellpadding='0' cellspacing='0' class='menutable' align='center'>
 		<tr>
 		 <th>
-		  <b>"._SURVEY.": ".$fields[_SL_TITLE]."</b>
+		  <strong>"._SURVEY.": ".$fields[_SL_TITLE]."</strong>
 		 </th>
 		</tr>
 		<tr>
@@ -499,7 +499,7 @@ function groupDetails($surveyid, $gid, $qid) {
 	   <table width='100%' border='0' cellpadding='0' cellspacing='0' class='menutable' align='center'>
 		<tr>
 		 <th>
-		  <b>"._GROUP.": ".$thisgroup['group_name']."</b>
+		  <strong>"._GROUP.": ".$thisgroup['group_name']."</strong>
 		 </th>
 		</tr>
 		<tr>
@@ -621,7 +621,7 @@ function questionEdit($surveyid, $gid, $qid) {
 		$thissurvey = getSurveyInfo($surveyid);
 	    $thisquestion = getQuestionInfo($qid);
 		$thisquestion['title']="";
-		$title="<img src='$imagefiles/copy.gif' align='left' border='0'>"._Q_COPY_BT;
+		$title="<img src='$imagefiles/copy.gif' align='left' border='0' alt='". _Q_COPY_BT."' >"._Q_COPY_BT;
 		$button = _COPYQ;
 	} elseif ($action == "addquestion") {
 		$thissurvey=getSurveyInfo($surveyid);
@@ -742,7 +742,7 @@ function questionResultSummary($surveyid, $gid, $qid) {
 	   <table width='100%' border='0' cellpadding='0' cellspacing='0' class='menutable' align='center'>
 		<tr>
 		 <th>
-		  <b>"._SN_RESULTS.":</b> [".$thisquestion['title']."]
+		  <strong>"._SN_RESULTS.":</strong> [".$thisquestion['title']."]
 		 </th>
 		</tr>
 		<tr>
@@ -758,7 +758,7 @@ function questionResultSummary($surveyid, $gid, $qid) {
 			echo "<table id='questionresults' class='resultstable' align='center' width='100%' cellspacing='0'>\n";
 			foreach ($sum['summary'] as $key=>$val) {
 				$percentage=sprintf("%02.2f", ($val/$total)*100);
-				echo "<tr><td align='right' valign='top' nowrap><b>$key</b></td><td class='result' nowrap>$percentage% ($val)</td></tr>\n";
+				echo "<tr><td align='right' valign='top' nowrap><strong>$key</strong></td><td class='result' nowrap>$percentage% ($val)</td></tr>\n";
 			}
 			echo "</table>";
 		}
@@ -807,7 +807,7 @@ function assessmentDetails($surveyid) {
 		 <table width='100%' border='0' cellpadding='0' cellspacing='0' class='menutable' align='center'>
 		  <tr>
 		   <th>
-		    <b>"._AS_TITLE.": ".$thissurvey['name']."</b>
+		    <strong>"._AS_TITLE.": ".$thissurvey['name']."</strong>
 		   </th>
 		  </tr>
 		  <tr>
@@ -916,7 +916,7 @@ function answerDetails($surveyid, $gid, $qid) {
 	   <table width='100%' border='0' cellpadding='0' cellspacing='0' class='menutable' align='center'>
 		<tr>
 		 <th>
-		  <b>"._ANSWERS.":</b> [".$thisquestion['title']."]
+		  <strong>"._ANSWERS.":</strong> [".$thisquestion['title']."]
 		 </th>
 		</tr>
 		<tr>
@@ -1018,7 +1018,7 @@ function attributeDetails($surveyid, $gid, $qid) {
 	   <table width='100%' border='0' cellpadding='0' cellspacing='0' class='menutable' align='center'>
 		<tr>
 		 <th>
-		  <b>"._QL_QUESTIONATTRIBUTES."</b> [".$thisquestion['title']."]
+		  <strong>"._QL_QUESTIONATTRIBUTES."</strong> [".$thisquestion['title']."]
 		 </th>
 		</tr>
 		<tr>
@@ -1201,21 +1201,21 @@ function checkSettings($dbprefix) {
 		{$activetokens=count($tokenlist);} else {$activetokens=0;}
 	echo  "		<table cellspacing='0'><tr><td height='3'></td></tr></table>
 				<table align='center' class='menutable' width='100%' cellspacing='0' cellpadding='0'>
-				<tr><th><b>"._PS_TITLE."</td></tr>
+				<tr><th><strong>"._PS_TITLE."</td></tr>
 				<tr><td height='23'><img src='{$imagefiles}/summary.gif' align='left' border='0'></td></tr>
 				</table>
 				<table cellspacing='0' cellpadding='0'><tr><td height='4'></td></tr></table>
 				<table align='center' class='outlinetable' cellpadding='1' cellspacing='0' width='100%'>
 				 <tr>
-				  <td width='50%' align='right'><b>"._PS_DBNAME.":</b></td>
+				  <td width='50%' align='right'><strong>"._PS_DBNAME.":</strong></td>
 				  <td>$databasename</td>
 				 </tr>
 				 <tr>
-				  <td align='right'><b>"._PS_DEFLANG.":</b></td>
+				  <td align='right'><strong>"._PS_DEFLANG.":</strong></td>
 				  <td>$realdefaultlang</td>
 				 </tr>
 				 <tr>
-				  <td align='right'><b>"._PS_CURLANG.":</b></td>
+				  <td align='right'><strong>"._PS_CURLANG.":</strong></td>
 				  <form action='$scriptname'>
 				  <td>
 				   <select name='lang' onChange='form.submit()'>\n";
@@ -1228,27 +1228,27 @@ function checkSettings($dbprefix) {
 				</form>
 			   </tr>
 			   <tr>
-				<td align='right'><b>"._PS_USERS.":</b></td>
+				<td align='right'><strong>"._PS_USERS.":</strong></td>
 				<td>$usercount</td>
 			   </tr>
 			   <tr>
-				<td align='right'><b>"._SURVEYS.":</b></td>
+				<td align='right'><strong>"._SURVEYS.":</strong></td>
 				<td>$surveycount</td>
 			   </tr>
 			   <tr>
-			    <td align='right'><b>"._PS_ACTIVESURVEYS.":</b></td>
+			    <td align='right'><strong>"._PS_ACTIVESURVEYS.":</strong></td>
 				<td>$activesurveycount</td>
 			   </tr>
 			   <tr>
-			    <td align='right'><b>"._PS_DEACTSURVEYS.":</b></td>
+			    <td align='right'><strong>"._PS_DEACTSURVEYS.":</strong></td>
 				<td>$deactivatedsurveys</td>
 			   </tr>
 			   <tr>
-			    <td align='right'><b>"._PS_ACTIVETOKENS.":</b></td>
+			    <td align='right'><strong>"._PS_ACTIVETOKENS.":</strong></td>
 				<td>$activetokens</td>
 			   </tr>
 			   <tr>
-			    <td align='right'><b>"._PS_DEACTTOKENS.":</b></td>
+			    <td align='right'><strong>"._PS_DEACTTOKENS.":</strong></td>
 				<td>$deactivatedtokens</td>
 			   </tr>
 			  </table>
@@ -1800,7 +1800,7 @@ if(!empty($surveyid)) {
 			$menu['questionoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=delquestion'><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._Q_DELETE_BT."</a><br />";
 	    }
 	    $menu['questionoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid&qid=$qid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._Q_EXPORT_BT."</a><br />";
-	    $menu['questionoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=copyquestion'><img src='{$imagefiles}/copy.gif' align='left' border='0' height='15' width='15'>"._Q_COPY_BT."</a><br />";
+	    $menu['questionoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=copyquestion'><img src='{$imagefiles}/copy.gif' align='left' border='0' height='15' width='15' alt='". _Q_COPY_BT."'>"._Q_COPY_BT."</a><br />";
 
 		$thisquestion=getQuestionInfo($qid);
 		switch($thisquestion['type']){
@@ -1810,7 +1810,7 @@ if(!empty($surveyid)) {
 				break;
 		} // switch
 		$menu["questionactions"]["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showattributes'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._QL_QUESTIONATTRIBUTES."</a><br />";
-		$menu["questionactions"]["2"]="<a href=\\\"#\\\" onclick=\\\"window.open('{$homeurl}/conditions.php?sid=$surveyid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\\\"><img src='{$imagefiles}/conditions.gif' align='left' border='0' height='15' width='15'>"._Q_CONDITIONS_BT."</a><br />";
+		$menu["questionactions"]["2"]="<a href=\\\"#\\\" onclick=\\\"window.open('{$homeurl}/conditions.php?sid=$surveyid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\\\"><img src='{$imagefiles}/conditions.gif' align='left' border='0' height='15' width='15'  alt='". _Q_CONDITIONS_BT."'>"._Q_CONDITIONS_BT."</a><br />";
 		$menu["questionactions"]["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showpreview'><img src='{$imagefiles}/templates.gif' align='left' border='0' height='15' width='15'>"._Q_PREVIEWQUESTION."</a><br />";	
 		if($thissurvey['active'] == "Y") {
 			$menu['activequestion']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showsummary'><img src='{$imagefiles}/browse.gif' align='left' border='0' height='15' width='15'>"._Q_VIEWSUMMARY."</a><br />";

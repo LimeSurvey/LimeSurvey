@@ -52,10 +52,10 @@ if (!mysql_selectdb ($databasename, $connect))
 	//echo "</table>\n";
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._DATAENTRY."</strong></td></tr>\n"
 		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."<b><font color='red'>"._ERROR."</font></b><br />\n"
+		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		._ST_NODB1."<br />\n"
 		._ST_NODB2."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
@@ -69,10 +69,10 @@ if (!$surveyid && !$action)
 	//echo "</table>\n";
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._DATAENTRY."</strong></td></tr>\n"
 		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."<b><font color='red'>"._ERROR."</font></b><br />\n"
+		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		._DE_NOSID."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
 		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
@@ -90,8 +90,8 @@ if ($action == "insert")
 	{
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._DATAENTRY."</strong></td></tr>\n"
 		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 	if (isset($_POST['save']) && $_POST['save'] == "on")
@@ -388,7 +388,7 @@ if ($action == "insert")
 			$col_name .= ", datestamp\n";
 			$insertqr .= ", '{$_POST['datestamp']}'";
 			}
-//		echo "\t\t\t<b>Inserting data</b><br />\n"
+//		echo "\t\t\t<strong>Inserting data</strong><br />\n"
 //			."SID: $surveyid, ($surveytable)<br /><br />\n";
 		$SQL = "INSERT INTO $surveytable 
 				($col_name)
@@ -413,7 +413,7 @@ if ($action == "insert")
 				echo "Couldn't delete saved data<br />$dquery<br />".mysql_error();
 				}
 			}
-		echo "\t\t\t<font color='green'><b>"._SUCCESS."</b></font><br />\n";
+		echo "\t\t\t<font color='green'><strong>"._SUCCESS."</strong></font><br />\n";
 		
 		$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
 		$fresult = mysql_query($fquery);
@@ -440,8 +440,8 @@ if ($action == "insert")
 elseif ($action == "edit" || $action == "editsaved")
 	{
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._BROWSERESPONSES."</b></td></tr>\n";
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._BROWSERESPONSES."</strong></td></tr>\n";
 	if (isset($surveyheader)) {echo $surveyheader;}
 	echo $surveyoptions
 		."</table>\n"
@@ -589,10 +589,10 @@ elseif ($action == "edit" || $action == "editsaved")
 //	echo "<pre>";print_r($results);echo "</pre>";
 
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._DATAENTRY."</strong></td></tr>\n"
 		."<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n"
-		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<b>"
+		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<strong>"
 		._DE_EDITING." (ID $id)</td></tr>\n"
 		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 
@@ -606,7 +606,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			$question=$fnames[$i][2];
 			echo "\t<tr>\n"
 				."\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont"
-				."<b>\n";
+				."<strong>\n";
 			if ($fnames[$i][3] != "A" && $fnames[$i][3] != "B" && $fnames[$i][3]!="C" && $fnames[$i][3] != "E" && $fnames[$i][3]!="P" && $fnames[$i][3] != "M") 
 				{
 				echo "\t\t\t{$fnames[$i][2]}\n";
@@ -846,13 +846,13 @@ elseif ($action == "edit" || $action == "editsaved")
 						."\t\t\t\t</tr>\n"
 						."\t\t\t\t<tr>\n"
 						."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
-						."\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURCHOICES.":</b><br />\n"
+						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+						._YOURCHOICES.":</strong><br />\n"
 						."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
 						."\t\t\t\t\t</td>\n"
 						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n"
-						."\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURRANKING.":</b><br />\n"
+						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+						._YOURRANKING.":</strong><br />\n"
 						.$ranklist
 						."\t\t\t\t\t</td>\n"
 						."\t\t\t\t</tr>\n"
@@ -1175,8 +1175,8 @@ elseif ($action == "edit" || $action == "editsaved")
 elseif ($action == "update")
 	{
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._DATAENTRY."</strong></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
@@ -1310,7 +1310,7 @@ elseif ($action == "update")
 	    header("Location: $url");
 	}
 	ob_end_flush();
-	echo "<font color='green'><b>"._SUCCESS."</b></font><br />\n"
+	echo "<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		._DE_UPDATED."<br /><br />\n"
 		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
 		."<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a><br />\n"
@@ -1323,17 +1323,17 @@ elseif ($action == "delete")
 	$thissurvey=getSurveyInfo($surveyid);
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._DATAENTRY."</strong></td></tr>\n"
 		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."\t\t\t<b>".$thissurvey['name']."</b><br />\n"
+		."\t\t\t<strong>".$thissurvey['name']."</strong><br />\n"
 		."\t\t\t$setfont".$thissurvey['description']."\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 	$delquery = "DELETE FROM $surveytable WHERE id=$id";
 	echo "\t<tr>\n";
 	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
-	echo "\t\t<td align='center'><br />$setfont<b>"._DE_DELRECORD." (ID: $id)</b><br /><br />\n"
+	echo "\t\t<td align='center'><br />$setfont<strong>"._DE_DELRECORD." (ID: $id)</strong><br /><br />\n"
 		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -1347,19 +1347,19 @@ else
 	$fieldmap=createFieldMap($surveyid);
 	// PRESENT SURVEY DATAENTRY SCREEN
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._BROWSERESPONSES."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._BROWSERESPONSES."</strong></td></tr>\n"
 		.$surveyoptions;
 	loadPublicLangFile($surveyid);
 	$thissurvey=getSurveyInfo($surveyid);
 	$surveytable = "{$dbprefix}survey_$surveyid";
 	echo "<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DATAENTRY."</b></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._DATAENTRY."</strong></td></tr>\n"
 		."\t<tr bgcolor='#777777'>\n"
 		."\t\t<td colspan='3' align='center'><font color='white'>\n"
-		."\t\t\t<b>".$thissurvey['name']."</b>\n"
+		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
 		."\t\t\t<br>$setfont".$thissurvey['description']."\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -1369,7 +1369,7 @@ else
 		{
 		echo "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'>$setfont<b>"._TOKEN.":</b></font></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"._TOKEN.":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n"
 			."\t\t\t<input type='text' name='token'>\n"
 			."\t\t</td>\n"
@@ -1379,8 +1379,8 @@ else
 		{
 		echo "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'>$setfont<b>"
-			._DATESTAMP.":</b></font></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
+			._DATESTAMP.":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n"
 			."\t\t\t<input type='text' name='datestamp' value='$localtimedate'>\n"
 			."\t\t</td>\n"
@@ -1396,7 +1396,7 @@ else
 		$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']}";
 		$deqresult = mysql_query($deqquery);
 		echo "\t<tr>\n"
-			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<b>{$degrow['group_name']}</td>\n"
+			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<strong>{$degrow['group_name']}</td>\n"
 			."\t</tr>\n";
 		$gid = $degrow['gid'];
 		
@@ -1536,7 +1536,7 @@ else
 				{
 				echo "<font color='red'>*</font>";
 				}
-			echo "</font><b>{$deqrow['question']}</b></td>\n"
+			echo "</font><strong>{$deqrow['question']}</strong></td>\n"
 				."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
 			//DIFFERENT TYPES OF DATA FIELD HERE
 			if ($deqrow['help'])
@@ -1778,13 +1778,13 @@ else
 						."\t\t\t\t</tr>\n"
 						."\t\t\t\t<tr>\n"
 						."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
-						."\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURCHOICES.":</b><br />\n"
+						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+						._YOURCHOICES.":</strong><br />\n"
 						."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
 						."\t\t\t\t\t</td>\n"
 						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n"
-						."\t\t\t\t\t\t$setfont<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURRANKING.":</b><br />\n"
+						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+						._YOURRANKING.":</strong><br />\n"
 						.$ranklist
 						."\t\t\t\t\t</td>\n"
 						."\t\t\t\t</tr>\n"
@@ -2063,7 +2063,7 @@ else
 		{
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-		echo "\t\t\t<font color='red'><b>"._DE_NOTACTIVE."\n";
+		echo "\t\t\t<font color='red'><strong>"._DE_NOTACTIVE."\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";	
 		}
@@ -2072,7 +2072,7 @@ else
 		echo "</form>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-		echo "\t\t\t<font color='red'><b>"._ERROR."</b></font><br />\n";
+		echo "\t\t\t<font color='red'><strong>"._ERROR."</strong></font><br />\n";
 		echo "\t\t\t"._DE_NOEXIST."<br /><br />\n";
 		echo "\t\t\t<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "\t\t</td>\n";

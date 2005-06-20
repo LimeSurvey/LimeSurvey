@@ -134,7 +134,7 @@ define("_CONFIRMATION_MESSAGE2", "一份新的回答被录入到您的问卷"); 
 define("_CONFIRMATION_MESSAGE3", "点击下面的链接查看单个回答："); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "点击这里查看统计结果："); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>隐私申明</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>隐私申明</i></strong><br />"
 						  ."此问卷是匿名调查.<br />"
 						  ."除非某个具体问题问到相关信息，"
 						  ."您的回答记录不包括任何个人信息。"
@@ -164,16 +164,16 @@ define ("_RG_REGISTRATIONCOMPLETE", "感谢您注册参与此问卷调查。<br 
 								   ."问卷调查管理者 {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
 
-define("_SM_COMPLETED", "<b>谢谢您！<br /><br />"
-					   ."您已经回答了此问卷调查的所有问题。</b><br /><br />"
+define("_SM_COMPLETED", "<strong>谢谢您！<br /><br />"
+					   ."您已经回答了此问卷调查的所有问题。</strong><br /><br />"
 					   ."点击["._SUBMIT."]以完成调查并保存回答。"); //New for 0.98finalRC1
 define("_SM_REVIEW", "如果您想检查您的回答，并且/或者修改它们，"
 					."您可以点击[<< "._PREV."]按钮，然后查看您的回答。"); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "请选择下列中<b>唯一</b>的一个项目:"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "请选择下列中<strong>唯一</strong>的一个项目:"); //New for 0.98finalRC1
 define("_PS_WRITE", "请在此填写您的回答:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "请选择<b>所有</b>适合的项目:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "请选择<strong>所有</strong>适合的项目:"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "请选择所有适合的项目并提供解释意见:"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "请为每一项目选择适合的回答:"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "请在此填写您的回答:"); //New for 0.98finalRC1

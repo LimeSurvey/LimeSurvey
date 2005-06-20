@@ -67,8 +67,8 @@ if ($action == "delete" && $surveyid && $scid)
 
 echo "<table height='1'><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-	. _BROWSESAVED.":</b> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	. _BROWSESAVED.":</strong> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
 echo savedmenubar();
 echo "</table>\n";
 echo "<table height='1'><tr><td></td></tr></table>\n"
@@ -136,8 +136,8 @@ function savedmenubar()
 					. "\t\t<td>\n"
 					. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
 					. _B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
-					. "\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
-					. "\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+					. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
+					. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 					. "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.gif' title='"
 					. _B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.gif' title='"

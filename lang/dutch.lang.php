@@ -136,7 +136,7 @@ define("_CONFIRMATION_MESSAGE2", "Er is weer een enquete beantwoord"); //NEW for
 define("_CONFIRMATION_MESSAGE3", "Klik de volgende link om de individuele antwoorden te zien:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Bekijk statistieken -> klik hier:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>Privacy verklaring</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>Privacy verklaring</i></strong><br />"
 						  ."Deze enquete is anoniem.<br />"
 						  ."De bewaarde antwoorden bevatten geen identiteitsgegevens "
 						  ."tenzij u bij een bepaalde vraag identiteitsgegevens hebt ingevi=uld."
@@ -164,14 +164,14 @@ define ("_RG_REGISTRATIONCOMPLETE", "Bedankt voor uw registratie om deel te neme
 							."voor deze enquete. Volg de link in deze email om de enquete te starten.<br /><br />\n"
 							."Enquete verantwoordelijke {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Dank u<br /><br />"
-					   ."U hebt alle vragen in deze enquete beantwoord.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Dank u<br /><br />"
+					   ."U hebt alle vragen in deze enquete beantwoord.</strong><br /><br />"
 					   ."Klik op ["._SUBMIT."] om uw antwoorden te bewaren.");
 define("_SM_REVIEW", "Indien u uw antwoorden nog eens wil nakijken of wijzigen, "
 					."blader dan door de enquete met de [<< "._PREV."] en ["._NEXT." >>] knoppen.");
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Kies <b>&eacute;&eacute;n</b> van volgende antwoorden"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Kies <strong>&eacute;&eacute;n</strong> van volgende antwoorden"); //New for 0.98finalRC1
 define("_PS_WRITE", "Type uw antwoord hier"); //New for 0.98finalRC1
 define("_PS_CHOOSEANY", "Selecteer alle toepasselijke antwoorden"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Selecteer alle toepasselijke antwoorden en geef uw commentaar"); //New for 0.98finalRC1

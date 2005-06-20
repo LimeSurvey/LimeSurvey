@@ -79,10 +79,10 @@ echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpa
 // MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid)
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TOKENCONTROL.":</b></font></td></tr>\n"
-		."\t<tr><td align='center'>$setfont<br /><font color='red'><b>"
-		._ERROR."</b></font><br />"._TC_NOSID."<br /><br />"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._TOKENCONTROL.":</strong></font></td></tr>\n"
+		."\t<tr><td align='center'>$setfont<br /><font color='red'><strong>"
+		._ERROR."</strong></font><br />"._TC_NOSID."<br /><br />"
 		."<input $btstyle type='submit' value='"
 		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
 		."</table>\n"
@@ -96,10 +96,10 @@ $chresult=mysql_query($chquery);
 $chcount=mysql_num_rows($chresult);
 if (!$chcount)
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TOKENCONTROL.":</b></font></td></tr>\n"
-		."\t<tr><td align='center'>$setfont<br /><font color='red'><b>"
-		._ERROR."</b></font><br />"._DE_NOEXIST
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._TOKENCONTROL.":</strong></font></td></tr>\n"
+		."\t<tr><td align='center'>$setfont<br /><font color='red'><strong>"
+		._ERROR."</strong></font><br />"._DE_NOEXIST
 		."<br /><br />\n\t<input $btstyle type='submit' value='"
 		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
 		."</table>\n"
@@ -109,8 +109,8 @@ if (!$chcount)
 // A survey DOES exist
 while ($chrow = mysql_fetch_array($chresult))
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TOKENCONTROL.":</b> "
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._TOKENCONTROL.":</strong> "
 		."<font color='silver'>{$chrow['short_title']}</font></font></td></tr>\n";
 	$surveyprivate = $chrow['private'];
 	}
@@ -181,8 +181,8 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			}
 		echo "\t<tr>\n"
 			."\t\t<td align='center'>\n"
-			."\t\t\t$setfont<br /><font color='red'><b>"._WARNING."</b></font><br />\n"
-			."\t\t\t<b>"._TC_NOTINITIALISED."</b><br /><br />\n"
+			."\t\t\t$setfont<br /><font color='red'><strong>"._WARNING."</strong></font><br />\n"
+			."\t\t\t<strong>"._TC_NOTINITIALISED."</strong><br /><br />\n"
 			."\t\t\t"._TC_INITINFO
 			."\t\t\t<br /><br />\n"
 			."\t\t\t"._TC_INITQ;
@@ -229,29 +229,29 @@ echo "\t<tr bgcolor='#999999'>\n"
 	._A_HELP_BT."' align='right' hspace='0' border='0' onClick=\"showhelp('show')\">\n"
 	."\t\t\t<input type='image' name='HomeButton' src='$imagefiles/home.gif' title='"
 	._B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
-	."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='SummaryButton' src='$imagefiles/summary.gif' title='"
 	._B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\">\n"
 	."\t\t\t<input type='image' name='ViewAllButton' src='$imagefiles/document.gif' title='"
 	._T_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=browse', '_top')\">\n"
-	."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='AddNewButton' src='$imagefiles/add.gif' title='"
 	._T_ADD_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=addnew', '_top')\">\n"
 	."\t\t\t<input type='image' name='ExportButton' src='$imagefiles/export.gif' title='"
 	._T_EXPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=export', '_top')\">\n"
 	."\t\t\t<input type='image' name='ImportButton' src='$imagefiles/import.gif' title='"
 	._T_IMPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=import', '_top')\">\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='InviteButton' src='$imagefiles/invite.gif' title='"
 	._T_INVITE_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=email', '_top')\">\n"
 	."\t\t\t<input type='image' name='RemindButton' src='$imagefiles/remind.gif' title='"
 	._T_REMIND_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=remind', '_top')\">\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='TokenifyButton' src='$imagefiles/tokenify.gif' title='"
 	._T_TOKENIFY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=tokenify', '_top')\">\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='DeleteTokensButton' src='$imagefiles/delete.gif' title='"
 	._T_KILL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=kill', '_top')\">\n"
 	."\t\t</td>\n"
@@ -267,7 +267,7 @@ echo "\t<tr>\n"
 	."\t\t\t<table align='center' bgcolor='#DDDDDD' cellpadding='2' style='border: 1px solid #555555'>\n"
 	."\t\t\t\t<tr>\n"
 	."\t\t\t\t\t<td align='center'>\n"
-	."\t\t\t\t\t$setfont<b>"._TC_TOTALCOUNT." $tkcount</b><br />\n";
+	."\t\t\t\t\t$setfont<strong>"._TC_TOTALCOUNT." $tkcount</strong><br />\n";
 $tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE token IS NULL OR token=''";
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
@@ -298,7 +298,7 @@ if ($action == "deleteall")
 	{
 	$query="DELETE FROM {$dbprefix}tokens_$surveyid";
 	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
-	echo "<tr><td bgcolor='silver' align='center'><b>$setfont<font color='green'>"._TC_ALLDELETED."</font></font></td></tr>\n";
+	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._TC_ALLDELETED."</font></font></td></tr>\n";
 	$action="";
 	}
 
@@ -306,7 +306,7 @@ if ($action == "clearinvites")
 	{
 	$query="UPDATE {$dbprefix}tokens_$surveyid SET sent='N'";
 	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
-	echo "<tr><td bgcolor='silver' align='center'><b>$setfont<font color='green'>"._TC_INVITESCLEARED."</font></font></td></tr>\n";
+	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._TC_INVITESCLEARED."</font></font></td></tr>\n";
 	$action="";
 	}
 
@@ -314,7 +314,7 @@ if ($action == "cleartokens")
 	{
 	$query="UPDATE {$dbprefix}tokens_$surveyid SET token=''";
 	$result=mysql_query($query) or die("Couldn't reset the tokens field<br />$query<br />".mysql_error());
-	echo "<tr><td align='center' bgcolor='silver'><b>$setfont<font color='green'>"._TC_TOKENSCLEARED."</font></font></td></tr>\n";
+	echo "<tr><td align='center' bgcolor='silver'><strong>$setfont<font color='green'>"._TC_TOKENSCLEARED."</font></font></td></tr>\n";
 	$action="";
 	}
 
@@ -338,8 +338,8 @@ if ($action == "updatedb" && $surveyid)
 	
 if (!$action)
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TOKENDBADMIN.":</b></font></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._TOKENDBADMIN.":</strong></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t<table align='center'><tr><td>\n"
@@ -380,21 +380,21 @@ if ($action == "browse" || $action == "search")
 	if ($end < 0) {$end=0;}
 	
 	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._VIEWCONTROL.":</b></font></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._VIEWCONTROL.":</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#999999'><td align='left'>\n"
-		."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='31' height='20' border='0' hspace='0' align='left'>\n"
-		."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+		."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left'>\n"
+		."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<input type='image' name='DBeginButton' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
 		._D_BEGIN."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<input type='image' name='DBackButton' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
 		._D_BACK."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
-		."\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='13' height='20' border='0' hspace='0' align='left'>\n"
+		."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<input type='image' name='DForwardButton' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
 		._D_FORWARD."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<input type='image' name='DEndButton' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
 		._D_END."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
-		."\t\t\t<img src='$imagefiles/seperator.gif' alt='|' border='0' hspace='0' align='left'>\n"
+		."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>"
 		."\t\t\t<tr><form method='post' action='$homeurl/tokens.php'>\n"
 		."\t\t\t\t<td>\n"
@@ -547,13 +547,13 @@ if ($action == "kill")
 	{
 	$date = date('YmdHi');
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4' align='center'>"
-		."<font size='1' face='verdana' color='white'><b>"
-		._DROPTOKENS.":</b></font></td></tr>\n"
+		."<font size='1' face='verdana' color='white'><strong>"
+		._DROPTOKENS.":</strong></font></td></tr>\n"
 		."\t<tr><td colspan='2' align='center'>\n"
 		."$setfont<br />\n";
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 		{
-		echo "<font color='red'><b>"._WARNING."</b></font><br />\n"
+		echo "<font color='red'><strong>"._WARNING."</strong></font><br />\n"
 			._TC_DELTOKENSINFO."<br />\n"
 			."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
 			."<input type='submit' $btstyle value='"
@@ -584,8 +584,8 @@ if ($action == "kill")
 if (returnglobal('action') == "email")
 	{
 	echo "\t<tr bgcolor='#555555'>\n\t\t<td colspan='2' height='4'>"
-		."<font size='1' face='verdana' color='white'><b>"
-		._EMAILINVITE.":</b></font></td>\n\t</tr>\n"
+		."<font size='1' face='verdana' color='white'><strong>"
+		._EMAILINVITE.":</strong></font></td>\n\t</tr>\n"
 		."\t<tr>\n\t\t<td colspan='2' align='center'>\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
@@ -601,16 +601,16 @@ if (returnglobal('action') == "email")
 				."</font></font></td></tr>";
 			}
 		echo "\t<tr>\n"
-			."\t\t<td align='right'>$setfont<b>"._FROM.":</b></font></td>\n"
+			."\t\t<td align='right'>$setfont<strong>"._FROM.":</strong></font></td>\n"
 			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td align='right'>$setfont<b>"._SUBJECT.":</b></font></td>\n";
+			."\t\t<td align='right'>$setfont<strong>"._SUBJECT.":</strong></font></td>\n";
 		$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_invite_subj']);
 		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value=\"$subject\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td align='right' valign='top'>$setfont<b>"._MESSAGE.":</b></font></td>\n"
+			."\t\t<td align='right' valign='top'>$setfont<strong>"._MESSAGE.":</strong></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
 		$textarea = $thissurvey['email_invite'];
@@ -718,7 +718,7 @@ if (returnglobal('action') == "email")
 				echo "\t\t</td>\n"
 					."\t</tr>\n"
 					."\t<tr>\n"
-					."\t\t<td align='center'>$setfont<b>"._WARNING."</b><br />\n"
+					."\t\t<td align='center'>$setfont<strong>"._WARNING."</strong><br />\n"
 					."\t\t\t<form method='post'>\n"
 					._TC_EMAILSTOGO."<br /><br />\n";
 				echo str_replace("{EMAILCOUNT}", "$lefttosend", _TC_EMAILSREMAINING);
@@ -736,7 +736,7 @@ if (returnglobal('action') == "email")
 			}
 		else
 			{
-			echo "<center><b>"._WARNING."</b><br />\n"._TC_NONETOSEND."</center>\n";
+			echo "<center><strong>"._WARNING."</strong><br />\n"._TC_NONETOSEND."</center>\n";
 			}
 		echo "\t\t</td>\n";
 		
@@ -746,8 +746,8 @@ if (returnglobal('action') == "email")
 	
 if (returnglobal('action') == "remind")
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._EMAILREMIND.":</b></font></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._EMAILREMIND.":</strong></font></td></tr>\n"
 		."\t<tr><td colspan='2' align='center'>\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
@@ -757,33 +757,33 @@ if (returnglobal('action') == "remind")
 		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."\t<form method='post' action='$homeurl/tokens.php'>\n"
 			."\t<tr>\n"
-			."\t\t<td align='right' width='150'>$setfont<b>"._FROM.":</b></font></td>\n"
+			."\t\t<td align='right' width='150'>$setfont<strong>"._FROM.":</strong></font></td>\n"
 			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td align='right' width='150'>$setfont<b>"._SUBJECT.":</b></font></td>\n";
+			."\t\t<td align='right' width='150'>$setfont<strong>"._SUBJECT.":</strong></font></td>\n";
 		$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_remind_subj']);
 		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='$subject' /></td>\n"
 			."\t</tr>\n";
 		if (!isset($_GET['tid']) || !$_GET['tid'])
 			{
 			echo "\t<tr>\n"
-				."\t\t<td align='right' width='150' valign='top'>$setfont<b>"
-				._TC_REMINDSTARTAT."</b></font></td>\n"
+				."\t\t<td align='right' width='150' valign='top'>$setfont<strong>"
+				._TC_REMINDSTARTAT."</strong></font></td>\n"
 				."\t\t<td><input type='text' $slstyle size='5' name='last_tid' /></td>\n"
 				."\t</tr>\n";
 			}
 		else
 			{
 			echo "\t<tr>\n"
-				."\t\t<td align='right' width='150' valign='top'>$setfont<b>"
-				._TC_REMINDTID."</b></font></td>\n"
+				."\t\t<td align='right' width='150' valign='top'>$setfont<strong>"
+				._TC_REMINDTID."</strong></font></td>\n"
 				."\t\t<td>$setfont{$_GET['tid']}</font></td>\n"
 				."\t</tr>\n";
 			}
 		echo "\t<tr>\n"
-			."\t\t<td align='right' width='150' valign='top'>$setfont<b>"
-			._MESSAGE.":</b></font></td>\n"
+			."\t\t<td align='right' width='150' valign='top'>$setfont<strong>"
+			._MESSAGE.":</strong></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
 
@@ -896,7 +896,7 @@ if (returnglobal('action') == "remind")
 					."\t</tr>\n"
 					."\t<tr><form method='post' action='$homeurl/tokens.php'>\n"
 					."\t\t<td align='center'>\n"
-					."\t\t\t$setfont<b>"._WARNING."</b><br /><br />\n"
+					."\t\t\t$setfont<strong>"._WARNING."</strong><br /><br />\n"
 					._TC_EMAILSTOGO."<br /><br />\n"
 					.str_replace("{EMAILCOUNT}", $lefttosend, _TC_EMAILSREMAINING)
 					."<br />\n"
@@ -915,7 +915,7 @@ if (returnglobal('action') == "remind")
 			}
 		else
 			{
-			echo "<center><b>"._WARNING."</b><br />\n"
+			echo "<center><strong>"._WARNING."</strong><br />\n"
 				._TC_NOREMINDERSTOSEND."\n"
 				."<br /><br />\n"
 				."\t\t</td>\n";
@@ -928,7 +928,7 @@ if (returnglobal('action') == "remind")
 
 if ($action == "tokenify")
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"._TOKENIFY.":</b></font></td></tr>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._TOKENIFY.":</strong></font></td></tr>\n";
 	echo "\t<tr><td align='center'>$setfont<br />\n";
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 		{
@@ -971,7 +971,7 @@ if ($action == "tokenify")
 			$newtokencount++;
 			}
 		$message=str_replace("{TOKENCOUNT}", $newtokencount, _TC_TOKENSCREATED);
-		echo "<br /><b>$message</b><br /><br />\n";
+		echo "<br /><strong>$message</strong><br /><br />\n";
 		}
 	echo "\t</font></td></tr></table>\n";
 	}
@@ -1009,10 +1009,10 @@ if ($action == "delete")
 	{
 	$dlquery = "DELETE FROM {$dbprefix}tokens_$surveyid WHERE tid={$_GET['tid']}";
 	$dlresult = mysql_query($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".mysql_error());
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._DELETE."</b></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._DELETE."</strong></td></tr>\n"
 		."\t<tr><td align='center'>$setfont<br />\n"
-		."<br /><b>"._TC_TOKENDELETED."</b><br />\n"
+		."<br /><strong>"._TC_TOKENDELETED."</strong><br />\n"
 		."<font size='1'><i>"._RELOADING."</i><br /><br /></font>\n"
 		."\t</td></tr></table>\n";
 	}
@@ -1036,35 +1036,35 @@ if ($action == "edit" || $action == "addnew")
 		$edresult = mysql_query($edquery);
 		$edfieldcount = mysql_num_fields($edresult);
 		}
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TC_ADDEDIT."</b></font></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._TC_ADDEDIT."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n"
 		."<table width='100%' bgcolor='#CCCCCC' align='center'>\n"
 		."<form method='post' action='$homeurl/tokens.php'>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>ID:</b></font></td>\n"
+		."\t<td align='right' width='20%'>$setfont<strong>ID:</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>{$setfont}Auto</font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_FIRST.":</b></font></td>\n"
+		."\t<td align='right' width='20%'>$setfont<strong>"._TL_FIRST.":</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='firstname' value=\"";
 	if (isset($firstname)) {echo $firstname;}
 	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_LAST.":</b></font></td>\n"
+		."\t<td align='right' width='20%'>$setfont<strong>"._TL_LAST.":</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='lastname' value=\"";
 	if (isset($lastname)) {echo $lastname;}
 	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_EMAIL.":</b></font></td>\n"
+		."\t<td align='right' width='20%'>$setfont<strong>"._TL_EMAIL.":</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='50' name='email' value=\"";
 	if (isset($email)) {echo $email;}
 	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_TOKEN.":</b></font></td>\n"
+		."\t<td align='right' width='20%'>$setfont<strong>"._TL_TOKEN.":</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value=\"";
 	if (isset($token)) {echo $token;}
 	echo "\">\n";
@@ -1075,13 +1075,13 @@ if ($action == "edit" || $action == "addnew")
 	echo "\t</font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_INVITE.":</b></font></td>\n"
+		."\t<td align='right' width='20%'>$setfont<strong>"._TL_INVITE.":</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='sent' value=\"";
 	if (isset($sent)) {echo $sent;}	
 	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'>$setfont<b>"._TL_DONE.":</b></font></td>\n"
+		."\t<td align='right' width='20%'>$setfont<strong>"._TL_DONE.":</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='completed' value=\"";
 	if (isset($completed)) {echo $completed;}
 	if ($edfieldcount > 7) 
@@ -1089,13 +1089,13 @@ if ($action == "edit" || $action == "addnew")
 		echo "\"></font></td>\n"
 			."</tr>\n"
 			."<tr>\n"
-			."\t<td align='right' width='20%'>$setfont<b>"._TL_ATTR1.":</b></font></td>\n"
+			."\t<td align='right' width='20%'>$setfont<strong>"._TL_ATTR1.":</strong></font></td>\n"
 			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' $slstyle name='attribute1' value=\"";
 		if (isset($attribute_1)) {echo $attribute_1;}
 		echo "\"></font></td>\n"
 			."</tr>\n"
 			."<tr>\n"
-			."\t<td align='right' width='20%'>$setfont<b>"._TL_ATTR2.":</b></font></td>\n"
+			."\t<td align='right' width='20%'>$setfont<strong>"._TL_ATTR2.":</strong></font></td>\n"
 			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' $slstyle name='attribute2' value=\"";
 		if (isset($attribute_2)) {echo $attribute_2;}
 		}
@@ -1123,8 +1123,8 @@ if ($action == "edit" || $action == "addnew")
 
 if ($action == _UPDATE)
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TC_ADDEDIT."</b></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._TC_ADDEDIT."</strong></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	$_POST['firstname']=mysql_escape_string($_POST['firstname']);
 	$_POST['lastname']=mysql_escape_string($_POST['lastname']);
@@ -1141,7 +1141,7 @@ if ($action == _UPDATE)
 	
 	$udquery .= " WHERE tid={$_POST['tid']}";
 	$udresult = mysql_query($udquery) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".mysql_error());
-	echo "<br />$setfont<font color='green'><b>"._SUCCESS."</b></font><br />\n"
+	echo "<br />$setfont<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		."<br />"._TC_TOKENUPDATED."<br /><br />\n"
 		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse'>"._T_ALL_BT."</a><br /><br />\n"
 		."\t</td></tr></table>\n";
@@ -1149,8 +1149,8 @@ if ($action == _UPDATE)
 
 if ($action == _ADD)
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._TC_ADDEDIT."</b></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._TC_ADDEDIT."</strong></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	$inquery = "INSERT into {$dbprefix}tokens_$surveyid \n";
 	$inquery .= "(firstname, lastname, email, token, sent, completed";
@@ -1176,7 +1176,7 @@ if ($action == _ADD)
 		}
 	$inquery .= ")";
 	$inresult = mysql_query($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".mysql_error());
-	echo "<br />$setfont<font color='green'><b>"._SUCCESS."</b></font><br />\n"
+	echo "<br />$setfont<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		."<br />"._TC_TOKENADDED."<br /><br />\n"
 		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse'>"._T_ALL_BT."</a><br />\n"
 		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse'>"._T_ADD_BT."</a><br /><br />\n"
@@ -1186,14 +1186,14 @@ if ($action == _ADD)
 if ($action == "import")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
-		."<font size='1' face='verdana' color='white'><b>"
-		._UPLOADCSV."</b></font></td></tr>\n"
+		."<font size='1' face='verdana' color='white'><strong>"
+		._UPLOADCSV."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	form();
 	echo "<table width='400' bgcolor='#eeeeee'>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center'>\n"
-		."\t\t\t<font size='1'><b>Note:</b><br />\n"
+		."\t\t\t<font size='1'><strong>Note:</strong><br />\n"
 		."\t\t\t"._TC_UPLOADINFO."\n"
 		."\t\t</font></td>\n"
 		."\t</tr>\n"
@@ -1204,8 +1204,8 @@ if ($action == "import")
 
 if ($action == "upload") 
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-		._UPLOADCSV."</b></td></tr>\n"
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._UPLOADCSV."</strong></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	if (!isset($tempdir))
 		{
@@ -1220,12 +1220,12 @@ if ($action == "upload")
 	$the_full_file_path = $the_path."/".$the_file_name;
 	if (!@move_uploaded_file($the_file, $the_full_file_path))
 		{
-		$errormessage="<b><font color='red'>"._ERROR.":</font> "._TC_UPLOADFAIL."</b>\n";
+		$errormessage="<strong><font color='red'>"._ERROR.":</font> "._TC_UPLOADFAIL."</strong>\n";
 		form($errormessage);
 		}
 		else
 		{
-		echo "<br /><b>"._TC_IMPORT."</b><br />\n<font color='green'>"._SUCCESS."</font><br /><br />\n"
+		echo "<br /><strong>"._TC_IMPORT."</strong><br />\n<font color='green'>"._SUCCESS."</font><br /><br />\n"
 			._TC_CREATE."<br />\n";
 		$xz = 0; $xx = 0;
 		$handle = fopen($the_full_file_path, "r");
@@ -1335,12 +1335,12 @@ function helpscreen()
 		."\t\t\t<table width='100%'><tr><td><table width='100%' align='center' cellspacing='0'>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
-		."\t\t\t\t\t\t$setfont<font color='white' size='1'><b>"._HELP."</b>\n"
+		."\t\t\t\t\t\t$setfont<font color='white' size='1'><strong>"._HELP."</strong>\n"
 		."\t\t\t\t\t</font></font></td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
-		."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' hspace='0' border='0' align='left'>\n"
+		."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left'>\n"
 		."\t\t\t\t\t\t<input type='image' name='CloseHelpButton' src='$imagefiles/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
 		."\t\t\t\t\t</td>\n"
 		."\t\t\t\t</tr>\n"

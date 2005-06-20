@@ -653,7 +653,7 @@ elseif ($action == "updatesurvey")
 			  . "email_confirm='{$_POST['email_confirm']}', allowsave='{$_POST['allowsave']}',\n"
 			  . "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
 			  . "WHERE sid={$_POST['sid']}";
-	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><b>".mysql_error());
+	$usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><strong>".mysql_error());
 	if ($usresult)
 		{
 		$surveyselect = getsurveylist();

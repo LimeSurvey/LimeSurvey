@@ -134,7 +134,7 @@ define("_CONFIRMATION_MESSAGE2", "Una nueva respuesta fue incorporada para su ex
 define("_CONFIRMATION_MESSAGE3", "Chasque el acoplamiento siguiente para ver la respuesta individual:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Estad&iacute;stica de la visi&oacute;n chascando aqu&iacute;:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>Una nota sobre privacidad.</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>Una nota sobre privacidad.</i></strong><br />"
         ."Este examen es an&oacute;nimo.<br />"
         ."No se guardar&aacute; ninguna informaci&oacute;n sobre usted."); //New for 0.98rc9 - Translation by John Krikorian
 
@@ -156,17 +156,17 @@ define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in
                                    ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
                                    ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Thank You<br /><br />"
-                       ."You have completed answering the questions in this survey.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Thank You<br /><br />"
+                       ."You have completed answering the questions in this survey.</strong><br /><br />"
                        ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
 define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
                     ."you can do that now by clicking on the [<< "._PREV."] button and browsing "
                     ."through your responses."); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Please choose <b>only one</b> of the following:"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Please choose <strong>only one</strong> of the following:"); //New for 0.98finalRC1
 define("_PS_WRITE", "Please write your answer here:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Please choose <b>all</b> that apply:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Please choose <strong>all</strong> that apply:"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment:"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Please choose the appropriate response for each item:"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Please write your answer(s) here:"); //New for 0.98finalRC1

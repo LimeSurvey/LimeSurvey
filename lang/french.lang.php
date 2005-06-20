@@ -135,7 +135,7 @@ define("_CONFIRMATION_MESSAGE2", "Une nouvelle r&eacute;ponse a &eacute;t&eacute
 define("_CONFIRMATION_MESSAGE3", "Cliquez sur le lien suivant pour voir votre r&eacute;ponse personnelle"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Visualiser les statistiques en cliquant ici"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<b><i>Note sur la protection de la vie priv&eacute;e</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>Note sur la protection de la vie priv&eacute;e</i></strong><br />"
                                                   ."Ce questionnaire est anonyme.<br />"
                                                   ."Les enregistrements conserv&eacute;s de votre questionnaire ne contiennent aucune "
                                                   ."information d&#146;identification &agrave; moins bien s&ucirc;r qu&#146;une question  "
@@ -165,17 +165,17 @@ define ("_RG_REGISTRATIONCOMPLETE", "Merci de vous enregistrer pour participer &
                                                                    ."pour ce questionnaire. Veuillez suivre le lien dans ce mail pour participer.<br /><br />\n"
                                                                    ."Administrateur du questionnaire {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<b>Merci<br /><br />"
-					   ."Vous venez de r&eacute;pondre &agrave; l&#146;ensemble des questions de ce questionnaire.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Merci<br /><br />"
+					   ."Vous venez de r&eacute;pondre &agrave; l&#146;ensemble des questions de ce questionnaire.</strong><br /><br />"
 					   ."Veuillez cliquer sur le bouton ["._SUBMIT."], afin de proc&eacute;der &agrave; l&#146;enregistrement de vos r&eacute;ponses."); //New for 0.98finalRC1
 define("_SM_REVIEW", "Si vous souhaitez v&eacute;rifier ou changer certaines de vos r&eacute;ponses, "
 					."vous pouvez le faire en cliquant sur le bouton ["._PREV."] en bas de cette page, "
 					."afin de passer en revue vos r&eacute;ponses.");
 					
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Choisissez <b>seulement une</b> des r&eacute;ponses suivantes :"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Choisissez <strong>seulement une</strong> des r&eacute;ponses suivantes :"); //New for 0.98finalRC1
 define("_PS_WRITE", "Ecrivez votre r&eacute;ponse ici :"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Choisissez <b>toutes</b> les r&eacute;ponses qui conviennent :"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Choisissez <strong>toutes</strong> les r&eacute;ponses qui conviennent :"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Choisissez toutes les r&eacute;ponses qui conviennent et laisser un commentaire :"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Choisissez la r&eacute;ponse appropri&eacute;e pour chaque &eacute;l&eacute;ment :"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Ecrivez votre r&eacute;ponse ici :"); //New for 0.98finalRC1

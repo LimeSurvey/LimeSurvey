@@ -137,7 +137,7 @@ define("_CONFIRMATION_MESSAGE2", "Es sind neue Umfragedaten vorhanden.");
 define("_CONFIRMATION_MESSAGE3", "Klicken Sie hier, um die einzelnen Antworten zu sehen:");
 define("_CONFIRMATION_MESSAGE4", "Ansichtstatistiken, bitte hier klicken:");
 
-define("_PRIVACY_MESSAGE", "<b><i>Schutz Ihrer Privatsph&auml;re</i></b><br />"
+define("_PRIVACY_MESSAGE", "<strong><i>Schutz Ihrer Privatsph&auml;re</i></strong><br />"
                           ."Diese Umfrage ist anonym.<br />"
                           ."Die Daten, die wir aus dieser Umfrage erhalten, enthalten "
                           ."keinerlei Informationen, mit denen man Sie identifizieren k&ouml;nnte,"
@@ -167,17 +167,17 @@ define ("_RG_REGISTRATIONCOMPLETE", "Vielen Dank, dass Sie sich f&uuml;r die Tei
                                    ."an der Umfrage enth&auml;lt. Bitte klicken Sie auf den Link innerhalb der Email um fortzufahren.<br />\n"
                                    ."Mit freundlichen Gr&uuml;ssen<br /><br />\n"
                                    ."{ADMINNAME} ({ADMINEMAIL})");
-define("_SM_COMPLETED", "<b>Vielen Dank!<br /><br />"
-                       ."Sie haben nun alle Fragen dieser Umfrage beantwortet.</b><br /><br />"
+define("_SM_COMPLETED", "<strong>Vielen Dank!<br /><br />"
+                       ."Sie haben nun alle Fragen dieser Umfrage beantwortet.</strong><br /><br />"
                        ."Klicken Sie jetzt auf 'Absenden', um diese Umfrage abzuschliessen und Ihre Antworten endg&uuml;ltig zu speichern.");
 define("_SM_REVIEW", "Wenn Sie Ihre Antworten nochmal &uuml;berpr&uuml;fen und/oder &auml;ndern wollen, "
                     ."dann klicken Sie bitte auf den Knopf 'Zur&uuml;ck', um durch Ihre Antworten zu bl&auml;ttern.");
 
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Bitte <b>nur eine Antwort</b> aus folgenden M&ouml;glichkeiten w&auml;hlen"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Bitte <strong>nur eine Antwort</strong> aus folgenden M&ouml;glichkeiten w&auml;hlen"); //New for 0.98finalRC1
 define("_PS_WRITE", "Bitte schreiben Sie Ihre Antwort hier"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Bitte <b>alle</b> ausw&auml;hlen, die zutreffen"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "Bitte <strong>alle</strong> ausw&auml;hlen, die zutreffen"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Bitte alle ausw&auml;hlen die zutreffen und einen Kommentar dazuschreiben"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Bitte w&auml;hlen Sie die zutreffende Antwort aus"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Bitte Ihre Antwort(en) hierher schreiben"); //New for 0.98finalRC1

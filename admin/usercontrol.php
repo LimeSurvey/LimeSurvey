@@ -47,7 +47,7 @@ if (!file_exists("$homedir/.htaccess"))
 		$addsummary = "<br />"._UC_CREATE."<br />\n";
 		$fname="$homedir/.htaccess";
 		echo "<font color='white'>";
-		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<b>"._ERROR."</b><br />\n"._UC_NOCREATE."\n<p><a href='$scriptname'>"._GO_ADMIN."</a></p>\n</td>\n</tr>\n</table>\n");
+		$handle=fopen($fname, 'a') or die ("<table width='250' border='1' align='center'>\n<tr>\n<td align='center'>\n<strong>"._ERROR."</strong><br />\n"._UC_NOCREATE."\n<p><a href='$scriptname'>"._GO_ADMIN."</a></p>\n</td>\n</tr>\n</table>\n");
 		echo "</font>";
 		fputs($handle, $htaccess);
 		fclose($handle);
@@ -89,7 +89,7 @@ if (!file_exists("$homedir/.htaccess"))
 
 elseif ($action == "deleteall")
 	{
-	$addsummary = "<br /><b>"._UC_SEC_REMOVE."..</b><br />\n";
+	$addsummary = "<br /><strong>"._UC_SEC_REMOVE."..</strong><br />\n";
 	$fname1="$homedir/.htaccess";
 	unlink($fname1);
 	$fname1="$homedir/.htpasswd";
@@ -102,7 +102,7 @@ elseif ($action == "deleteall")
 	
 elseif ($action == "adduser")
 	{
-	$addsummary = "<br /><b>"._UC_ADD_USER."</b><br />\n";
+	$addsummary = "<br /><strong>"._UC_ADD_USER."</strong><br />\n";
 	$user=preg_replace("/\W/","",$user);
 	$pass=preg_replace("/\W/","",$pass);  
 	if ($user && $pass)
@@ -131,7 +131,7 @@ elseif ($action == "adduser")
 
 elseif ($action == "deluser")
 	{
-	$addsummary = "<br /><b>"._UC_DEL_USER."</b><br />\n";
+	$addsummary = "<br /><strong>"._UC_DEL_USER."</strong><br />\n";
 	if ($user)
 		{
 		$fname="$homedir/.htpasswd";
@@ -169,7 +169,7 @@ elseif ($action == "deluser")
 
 elseif ($action == "moduser")
 	{
-	$addsummary = "<br /><b>"._UC_MOD_USER."</b><br />\n";
+	$addsummary = "<br /><strong>"._UC_MOD_USER."</strong><br />\n";
 	$user=preg_replace("/\W/","",$user);
 	$pass=preg_replace("/\W/","",$pass);  
 	if ($user && $pass)

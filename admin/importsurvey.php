@@ -37,15 +37,15 @@
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><b>"
-._IMPORTSURVEY."</b></font></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+._IMPORTSURVEY."</strong></font></td></tr>\n";
 echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
 	echo _IS_FAILUPLOAD."<br /><br />\n";
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</font></td></tr></table>\n";
@@ -55,7 +55,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<b><font color='green'>"._SUCCESS."</font></b><br />\n";
+echo "<strong><font color='green'>"._SUCCESS."</font></strong><br />\n";
 echo _IS_OKUPLOAD."<br /><br />\n";
 echo _IS_READFILE."<br />\n";
 $handle = fopen($the_full_file_path, "r");
@@ -69,7 +69,7 @@ fclose($handle);
 
 if (substr($bigarray[1], 0, 22) != "# SURVEYOR SURVEY DUMP")
 	{
-	echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
 	echo _IS_WRONGFILE."<br /><br />\n";
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</font></td></tr></table>\n";
@@ -282,7 +282,7 @@ $surveyid=$sffieldcontents[$surveyidpos];
 
 if (!$surveyid) 
 	{
-	echo "<br /><b><font color='red'>"._ERROR."</b></font><br />\n";
+	echo "<br /><strong><font color='red'>"._ERROR."</strong></font><br />\n";
 	echo _IS_IMPFAILED."<br />\n";
 	echo _IS_FILEFAILS."<br />\n"; //Couldn't find the SID - cannot continue
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
@@ -396,7 +396,7 @@ if ($grouparray) {
 		$gsid=$gacfieldcontents[$surveyidpos];
 		if ($gsid != $surveyid) 
 			{
-			echo "<br />\n<font color='red'><b>"._ERROR."</b></font>"
+			echo "<br />\n<font color='red'><strong>"._ERROR."</strong></font>"
 				."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n"
 				."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 			exit;
@@ -405,7 +405,7 @@ if ($grouparray) {
 		$ginsert = str_replace("('$gid', '$surveyid',", "('', '$newsid',", $ga);
 		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
 		$oldgid=$gid;
-		$gres = mysql_query($ginsert) or die("<b>"._ERROR."</b> Failed to insert group<br />\n$ginsert<br />\n".mysql_error()."</body>\n</html>");
+		$gres = mysql_query($ginsert) or die("<strong>"._ERROR."</strong> Failed to insert group<br />\n$ginsert<br />\n".mysql_error()."</body>\n</html>");
 		//GET NEW GID
 		$gidquery = "SELECT gid FROM {$dbprefix}groups ORDER BY gid DESC LIMIT 1";
 		$gidres = mysql_query($gidquery);
@@ -428,7 +428,7 @@ if ($grouparray) {
 					$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 					$type = $qacfieldcontents[array_search("type", $qafieldorders)]; //Get the type
 					$other = $qacfieldcontents[array_search("other", $qafieldorders)]; //Get 'other';
-					$qres = mysql_query($qinsert) or die ("<b>"._ERROR."</b> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
+					$qres = mysql_query($qinsert) or die ("<strong>"._ERROR."</strong> Failed to insert question<br />\n$qinsert<br />\n".mysql_error()."</body>\n</html>");
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = mysql_query($qidquery);
 					while ($qrow = mysql_fetch_array($qidres)) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
@@ -458,7 +458,7 @@ if ($grouparray) {
 								$ainsert = str_replace("('".implode("', '", $aacfieldcontents)."')", $newvalues, $aa);
 								//$ainsert = str_replace("'$qid'", "'$newqid'", $aa);
 								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
-								$ares = mysql_query($ainsert) or die ("<b>"._ERROR."</b> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
+								$ares = mysql_query($ainsert) or die ("<strong>"._ERROR."</strong> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
 								if ($type == "M" || $type == "P") {
 									//$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
@@ -619,8 +619,8 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 	}
 }
 
-echo "<br />\n<b><font color='green'>"._SUCCESS."</font></b><br />\n";
-echo "<b><u>"._IS_IMPORTSUMMARY."</u></b><br />\n";
+echo "<br />\n<strong><font color='green'>"._SUCCESS."</font></strong><br />\n";
+echo "<strong><u>"._IS_IMPORTSUMMARY."</u></strong><br />\n";
 echo "<ul>\n\t<li>"._SURVEYS.": $countsurveys</li>\n";
 echo "\t<li>"._GROUPS.": $countgroups</li>\n";
 echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
@@ -630,7 +630,7 @@ echo "\t<li>"._LABELSET.": $countlabelsets ("._LABELANS.": $countlabels)</li>\n"
 echo "\t<li>"._QL_QUESTIONATTRIBUTES." $countquestion_attributes</li>\n";
 echo "\t<li>"._AS_TITLE." $countassessments</li>\n</ul>\n";
 
-echo "<b>"._IS_SUCCESS."</b><br />\n";
+echo "<strong>"._IS_SUCCESS."</strong><br />\n";
 echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 
 echo "</font></td></tr></table>\n";

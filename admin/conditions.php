@@ -56,24 +56,24 @@ if(isset($_POST['cquestions'])) {
 }
 
 echo "<table width='100%' border='0' bgcolor='#555555'>\n"
-	."\t<tr><td align='center'>$setfont<font color='white'><b>"
-	._CD_CONDITIONDESIGNER."</b></font></font></td></tr>\n"
+	."\t<tr><td align='center'>$setfont<font color='white'><strong>"
+	._CD_CONDITIONDESIGNER."</strong></font></font></td></tr>\n"
 	."</table>\n";
 
 
 if (!isset($surveyid))
 	{
-	echo "<br /><center>$setfont<b>"
+	echo "<br /><center>$setfont<strong>"
 		._CD_NOSID." "._CD_NODIRECT
-		."</b></font></center>\n"
+		."</strong></font></center>\n"
 		."</body></html>\n";
 	exit;
 	}
 if (!isset($_GET['qid']) && !isset($_POST['qid']))
 	{
-	echo "<br /><center>$setfont<b>"
+	echo "<br /><center>$setfont<strong>"
 		._CD_NOQID." "._CD_NODIRECT
-		."</b></font></center>\n"
+		."</strong></font></center>\n"
 		."</body></html>\n";
 	exit;
 	}
@@ -473,7 +473,7 @@ $showreplace="$questiontitle<img src='$imagefiles/speaker.jpg' alt='"
 	. addslashes(strip_tags($questiontext))
 	. "')\">";
 $onlyshow=str_replace("{QID}", $showreplace, _CD_ONLYSHOW);
-echo "\t\t\t$setfont<b>$onlyshow</b></font>\n"
+echo "\t\t\t$setfont<strong>$onlyshow</strong></font>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 
@@ -494,15 +494,15 @@ if ($conditionscount > 0)
 			{
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 				."\t\t\t\t\t<td colspan='3' align='center'>\n"
-				."$setfont<font size='1'><b>"
-				._AND."</b></font></font>";
+				."$setfont<font size='1'><strong>"
+				._AND."</strong></font></font>";
 			}
 		elseif (isset($currentfield))
 			{
 			echo "\t\t\t\t<tr bgcolor='E1FFE1'>\n"
 				."\t\t\t\t\t<td colspan='3' align='center'>\n"
-				."$setfont<font size='1'><b>"
-				._AD_OR."</b></font></font>";
+				."$setfont<font size='1'><strong>"
+				._AD_OR."</strong></font></font>";
 			}
 		echo "\t\t\t\t\t</td>\n"
 			."\t\t\t\t</tr>\n"
@@ -576,8 +576,8 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 
 	echo "\t<tr bgcolor='#CDCDCD'>\n"
 		."\t\t<td colspan='3' align='center'>\n"
-		."\t\t$setfont<b>"
-		._CD_COPYCONDITIONS."</b></font>\n"
+		."\t\t$setfont<strong>"
+		._CD_COPYCONDITIONS."</strong></font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
@@ -622,17 +622,17 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	
 echo "\t<tr bgcolor='#CDCDCD'>\n"
 	."\t\t<td colspan='3' align='center'>\n"
-	."\t\t\t$setfont<b>"._CD_ADDCONDITION."</b></font>\n"
+	."\t\t\t$setfont<strong>"._CD_ADDCONDITION."</strong></font>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n"
 	."\t<tr bgcolor='#EFEFEF'>\n"
 	."\t\t<th width='40%'>\n"
-	."\t\t\t$setfont<b>"._QUESTION."</b></font>\n"
+	."\t\t\t$setfont<strong>"._QUESTION."</strong></font>\n"
 	."\t\t</th>\n"
 	."\t\t<th width='20%'>\n"
 	."\t\t</th>\n"
 	."\t\t<th width='40%'>\n"
-	."\t\t\t$setfont<b>"._AL_ANSWER."</b></font>\n"
+	."\t\t\t$setfont<strong>"._AL_ANSWER."</strong></font>\n"
 	."\t\t</th>\n"
 	."\t</tr>\n";
 echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditions' method='post'>\n"

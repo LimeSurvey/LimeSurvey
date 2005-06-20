@@ -102,7 +102,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				}
 			}
 
-		$completed = "<br /><b><font size='2' color='red'>"._DIDNOTSAVE."</b></font><br /><br />\n\n"
+		$completed = "<br /><strong><font size='2' color='red'>"._DIDNOTSAVE."</strong></font><br /><br />\n\n"
 				   . _NOTACTIVE1."<br /><br />\n"
 				   . "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&move=clearall'>"._CLEARRESP."</a><br /><br />\n"
 				   . "<font size='1'>$subquery</font>\n";
@@ -168,8 +168,8 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				}
 	
 			//Create text for use in later print section
-			$completed = "<br /><b><font size='2'><font color='green'>"
-					   . _THANKS."</b></font><br /><br />\n\n"
+			$completed = "<br /><strong><font size='2'><font color='green'>"
+					   . _THANKS."</strong></font><br /><br />\n\n"
 					   . _SURVEYREC."<br />\n"
 					   . "<a href='javascript:window.close()'>"
 					   . _CLOSEWIN_PS."</a></font><br /><br />\n";

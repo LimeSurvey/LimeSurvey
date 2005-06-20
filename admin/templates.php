@@ -121,7 +121,7 @@ if ($action == "upload") {
 	//Uploads the file into the appropriate directory
 	$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
 	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
-		echo "<b><font color='red'>"._ERROR."</font></b><br />\n";
+		echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
 		echo _IS_FAILUPLOAD."<br /><br />\n";
 		echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "</td></tr></table>\n";
@@ -502,7 +502,7 @@ echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><b>".$file_version."</b>\n"
+	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$file_version."</strong>\n"
 	. "\t\t\t\t</font></font></td>\n"
 	. "\t\t\t</tr>\n"
 	. "\t\t\t<tr bgcolor='#999999'>\n"
@@ -510,16 +510,16 @@ echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	. "\t\t\t\t\t<input type='image' src='$imagefiles/home.gif' name='HomeButton' alt='"
 	. _A_HOME_BT."' title='"
 	. _A_HOME_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname', '_top')\">\n"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='60' height='10' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>"
+	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>"
+	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>"
 	."</td><td align='right'>\n"
 	."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10'>"
-	."<img src='$imagefiles/seperator.gif' alt='|' align='right' alt='minimise' border='0' hspace='0'>"
+	."<img src='$imagefiles/seperator.gif' alt='' align='right' alt='minimise' border='0' hspace='0'>"
 	."<input type='image' src='$imagefiles/add.gif' align='right' hspace='0' title='"._TP_CREATENEW."' "
 	."onClick=\"javascript: copyprompt('"._TP_NEWTEMPLATECALLED."', '"._TP_DEFAULTNEWTEMPLATE."', 'default', 'copy')\">"
-	."<font face='verdana' size='2' color='white'><b>"._SL_TEMPLATE."</b> </font>"
+	."<font face='verdana' size='2' color='white'><strong>"._SL_TEMPLATE."</strong> </font>"
 	."<select $slstyle name='templatedir' onchange='javascript: window.open(\"templates.php?editfile=$editfile&screenname=$screenname&templatename=\"+this.value, \"_top\")'>\n"
 	.makeoptions($templates, "name", "name", $templatename)
 	."</select>&nbsp;\n"
@@ -530,7 +530,7 @@ echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><b>"._SL_TEMPLATE." <i>$templatename</i></b>\n"
+	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._SL_TEMPLATE." <i>$templatename</i></strong>\n"
 	. "\t\t\t\t</font></font></td>\n"
 	. "\t\t\t</tr>\n"
 	. "\t\t\t<tr bgcolor='#999999'>\n"
@@ -540,28 +540,28 @@ if (is_writable("$publicdir/templates/$templatename")) {
 	} else {
 	echo "\t\t\t\t\t<img src='$imagefiles/trafficred.gif' alt='"._TP_CANNOTMODIFY."' hspace='0' align='left'>\n";
 	}
-echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='11' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='60' height='10' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>\n"
+echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+	."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\t\t<input type='image' name='EditName' src='$imagefiles/edit.gif' align='left' hspace='0' "
 	."border='0' title='"._TP_RENAME."'"
 	." onClick=\"javascript: copyprompt('"._TP_RENAMETO."', '$templatename', '$templatename', 'rename')\"";
 if ($templatename == "default") {echo " disabled";}
 echo ">";
-echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' height='10' border='0' hspace='0' align='left'>\n"
+echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\t\t<input type='image' name='Export' src='$imagefiles/export.gif' align='left' hspace='0' "
 	."border='0' title='"._TP_EXPORT."'"
 	." onClick='javascript:window.open(\"templates.php?action=zip&editfile=$editfile&screenname=$screenname&templatename=$templatename\", \"_top\")'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='-' border='0' hspace='0' align='left'>\n"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.gif' align='left' hspace='0' "
 	."border='0' title='"._TP_COPY."'"
 	." onClick=\"javascript: copyprompt('"._TP_COPYTO."', '"._TP_COPYOF."$templatename', '$templatename', 'copy')\">"
 	."</td><td align='right'>\n"
-	."<img src='./images/blank.gif' align='right' alt='-' border='0' hspace='0' width='60' height='10'>"
-	."<img src='$imagefiles/seperator.gif' alt='|' align='right' alt='minimise' border='0' hspace='0'>"
-	."<img src='$imagefiles/blank.gif' alt='-' width='23' align='right' alt='minimise' border='0' hspace='0'>"
-	."<font face='verdana' size='2' color='white'><b>"._TP_SCREEN."</b> </font>"
+	."<img src='./images/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10'>"
+	."<img src='$imagefiles/seperator.gif' alt='' align='right' alt='minimise' border='0' hspace='0'>"
+	."<img src='$imagefiles/blank.gif' alt='' width='23' align='right' alt='minimise' border='0' hspace='0'>"
+	."<font face='verdana' size='2' color='white'><strong>"._TP_SCREEN."</strong> </font>"
 	. "<select name='screenname' $slstyle onchange='javascript: window.open(\"templates.php?templatename=$templatename&editfile=$editfile&screenname=\"+this.value, \"_top\")'>\n"
 	. makeoptions($screens, "name", "name", $screenname)
 	. "</select>&nbsp;\n"
@@ -572,7 +572,7 @@ echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='-' width='20' height='10' 
 echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><b>"._TP_FILECONTROL."</b>\n"
+	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._TP_FILECONTROL."</strong>\n"
 	. "\t\t\t\t</font></font></td>\n"
 	. "\t\t\t</tr>\n"
 	. "\t\t\t<tr bgcolor='#999999'>"
@@ -586,13 +586,13 @@ echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1
 echo "\t\t\t\t<table width='100%' border='0'>\n"
 	."\t\t\t\t\t<tr>\n"
 	."\t\t\t\t\t\t<td align='left' valign='top' width='150'>"
-	."$setfont<b>"._TP_STANDARDFILES."</b><font size='1'><br />\n"
+	."$setfont<strong>"._TP_STANDARDFILES."</strong><font size='1'><br />\n"
 	."<select size='12' $slstyle2 name='editfile' onChange='javascript: window.open(\"templates.php?templatename=$templatename&screenname=$screenname&editfile=\"+this.value, \"_top\")'>\n"
 	.makeoptions($files, "name", "name", $editfile)
 	."</select><br /><br />\n"
 	."\t\t\t\t\t\t</font></font></td>\n"
 	."\t\t\t\t\t\t<td align='center' valign='top'>"
-	."$setfont<b>"._TP_NOWEDITING." <i>$editfile</i></b><font size='1'><br />\n"
+	."$setfont<strong>"._TP_NOWEDITING." <i>$editfile</i></strong><font size='1'><br />\n"
 	."<textarea $slstyle3 name='changes' id='changes' cols='110' rows='12'>";
 if ($editfile) {
 	echo filetext($editfile);
@@ -608,7 +608,7 @@ echo ">";
 echo "<br />\n"
 	. "</font></font></td></form>\n"
 	."\t\t\t\t\t\t<form action='templates.php' method='post'><td valign='top' align='right'>"
-	. "$setfont<b>"._TP_OTHERFILES."</b><br />\n"
+	. "$setfont<strong>"._TP_OTHERFILES."</strong><br />\n"
 	//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
 	. "<select size='9' $slstyle2 name='otherfile' id='otherfile' style='width: 120'>\n"
 	.makeoptions($otherfiles, "name", "name", "")
@@ -650,7 +650,7 @@ echo "></font></td>\n"
 echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><b>"._TP_PREVIEW."</b>\n"
+	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._TP_PREVIEW."</strong>\n"
 	. "\t\t\t\t</font></font></td>\n"
 	. "\t\t\t</tr>\n"
 	."\t<tr>\n"
