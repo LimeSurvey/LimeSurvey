@@ -40,7 +40,7 @@ define("_YES", "是");
 define("_NO", "否");
 define("_UNCERTAIN", "無意見");
 define("_ADMIN", "管理");
-define("_TOKENS", "代幣");
+define("_TOKENS", "代碼");
 define("_FEMALE", "女");
 define("_MALE", "男");
 define("_NOANSWER", "未有回答");
@@ -72,21 +72,21 @@ define("_CHOOSEONE", "請選擇");
 define("_ENTERCOMMENT", "請輸入評語");
 define("_NUMERICAL_PS", "本欄位限輸入數值");
 define("_CLEARALL", "清除問卷內容後離開");
-define("_MANDATORY", "本題必須回答");
+define("_MANDATORY", "本題必須作答");
 define("_MANDATORY_PARTS", "請回答全部問卷內容");
 define("_MANDATORY_CHECK", "請在項目打鉤");
 define("_MANDATORY_RANK", "請為所有項目排序");
-define("_MANDATORY_POPUP", "尚有部份題目未完成作答，請完成後才繼續填寫問卷靘下的題目"); //NEW in 0.98rc4
-define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
-define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
+define("_MANDATORY_POPUP", "尚有部份題目未完成作答，請完成後才繼續填寫問卷餘下的題目"); //NEW in 0.98rc4
+define("_VALIDATION", "請正確地回答這條問題"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "一或更多問題未被有被正確地回答。  請先更正然後前進。"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "日期格式: YYYY-MM-DD");
 define("_DATEFORMATEG", "(例: 2003-12-25 是聖誕節)");
 define("_REMOVEITEM", "移除本項");
-define("_RANK_1", "Click 左方列表的一個項目, 開始您的");
+define("_RANK_1", "點擊左方列表的一個項目, 開始您的");
 define("_RANK_2", "最高排名的項目, 移到排名的最低位置.");
 define("_YOURCHOICES", "您的選擇");
 define("_YOURRANKING", "您的排名");
-define("_RANK_3", "Click 右方項目旁的剪刀");
+define("_RANK_3", "點擊右方項目旁的剪刀");
 define("_RANK_4", "移除排名表的最後一個項目");
 //From INDEX.PHP
 define("_NOSID", "您未提供問卷編號");
@@ -96,7 +96,7 @@ define("_ANSCLEAR", "答案被清除");
 define("_RESTART", "重新開始問卷");
 define("_CLOSEWIN_PS", "關閉本視窗");
 define("_CONFIRMCLEAR", "您肯定要清除全部問卷內容嗎?");
-define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
+define("_CONFIRMSAVE", "您肯定要儲存問卷內容嗎?");
 define("_EXITCLEAR", "離開及清除問卷");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "不能送出問卷結果 - 未有人回答問卷.");
@@ -131,106 +131,93 @@ define("_INSTRUCTION_MULTI", "可選多個答案"); //NEW for 098rc3
 
 define("_CONFIRMATION_MESSAGE1", "已送出問卷"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "恭喜您！您收到一份剛完成的問卷"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE3", "Click 這連結查看個別的問卷內容:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE4", "Click 這裡查看統計資料:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE3", "點擊此連結查看個別的問卷內容:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE4", "點擊這裡查看統計資料:"); //NEW for 098rc5
 
-define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
-                          ."This survey is anonymous.<br />"
-                          ."The record kept of your survey responses does not contain any "
-                          ."identifying information about you unless a specific question "
-                          ."in the survey has asked for this. If you have responded to a "
-                          ."survey that used an identifying token to allow you to access "
-                          ."the survey, you can rest assured that the identifying token "
-                          ."is not kept with your responses. It is managed in a separate "
-                          ."database, and will only be updated to indicate that you have "
-                          ."(or haven't) completed this survey. There is no way of matching "
-                          ."identification tokens with survey responses in this survey."); //New for 0.98rc9
+define("_PRIVACY_MESSAGE", "<b><i>私隱聲明</i></b><br />"
+                          ."這是一份不記名的問卷.<br />"
+                          ."問卷內容並不包含任何可辨認身份的資料，除非問卷內有此具體問題。 "
+                          ."如果您參與了一個以代碼(token)作為通入控制的問卷， "
+                          ."請放心，該個代碼(token)並不與您的答案儲存在一起。  "
+                          ."系統只會在您更改或完成問卷時才更新該個代碼。  "
+                          ."我們並不能將代碼和問卷匹對上."); //New for 0.98rc9
 
-define("_THEREAREXQUESTIONS", "There are {NUMBEROFQUESTIONS} questions in this survey."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
-define("_THEREAREXQUESTIONS_SINGLE", "There is 1 question in this survey."); //New for 0.98rc9 - singular version of above
+define("_THEREAREXQUESTIONS", "此問卷有{NUMBEROFQUESTIONS}條問題."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
+define("_THEREAREXQUESTIONS_SINGLE", "此問卷有一條問題."); //New for 0.98rc9 - singular version of above
 
-define ("_RG_REGISTER1", "You must be registered to complete this survey"); //NEW for 0.98rc9
-define ("_RG_REGISTER2", "You may register for this survey if you wish to take part.<br />\n"
-                        ."Enter your details below, and an email containing the link to "
-                        ."participate in this survey will be sent immediately."); //NEW for 0.98rc9
-define ("_RG_EMAIL", "Email Address"); //NEW for 0.98rc9
-define ("_RG_FIRSTNAME", "First Name"); //NEW for 0.98rc9
-define ("_RG_LASTNAME", "Last Name"); //NEW for 0.98rc9
-define ("_RG_INVALIDEMAIL", "The email you used is not valid. Please try again.");//NEW for 0.98rc9
-define ("_RG_USEDEMAIL", "The email you used has already been registered.");//NEW for 0.98rc9
-define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registration Confirmation");//NEW for 0.98rc9
-define ("_RG_REGISTRATIONCOMPLETE", "Thank you for registering to participate in this survey.<br /><br />\n"
-                                   ."An email has been sent to the address you provided with access details "
-                                   ."for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-                                   ."Survey Administrator {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+define ("_RG_REGISTER1", "請先登記然後再填此問卷"); //NEW for 0.98rc9
+define ("_RG_REGISTER2", "如果您希望參與這次問卷,請先登記您的細節。  一份內有這次問卷詳情的電子郵件即將奉上。"); //NEW for 0.98rc9
+define ("_RG_EMAIL", "電郵"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "名"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "姓"); //NEW for 0.98rc9
+define ("_RG_INVALIDEMAIL", "您輸入的電郵有誤。  請再輸入。");//NEW for 0.98rc9
+define ("_RG_USEDEMAIL", "您輸入的電郵已被登記。");//NEW for 0.98rc9
+define ("_RG_EMAILSUBJECT", "{SURVEYNAME} 確認登記");//NEW for 0.98rc9
+define ("_RG_REGISTRATIONCOMPLETE", "多謝登記參與這次問卷。<br /><br />\n"
+                                   ."您將收到一份內有這次問卷網址及通入細節的電子郵件。  請點擊該郵件內的連線繼續進行。<br /><br />\n"
+                                   ."問卷主任 {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
-define("_SM_COMPLETED", "<strong>Thank You<br /><br />"
-                       ."You have completed answering the questions in this survey.</strong><br /><br />"
-                       ."Click on ["._SUBMIT."] now to complete the process and save your answers."); //New for 0.98finalRC1
-define("_SM_REVIEW", "If you want to check any of the answers you have made, and/or change them, "
-                    ."you can do that now by clicking on the [<< "._PREV."] button and browsing "
-                    ."through your responses."); //New for 0.98finalRC1
+define("_SM_COMPLETED", "<b>多謝<br /><br />"
+                       ."您已完成這份問卷.</b><br /><br />"
+                       ."請按 ["._SUBMIT."] 把答案遞送給我們."); //New for 0.98finalRC1
+define("_SM_REVIEW", "如果您想要檢查您之前的答案或予以更改, 請按 [<< "._PREV."]."); //New for 0.98finalRC1
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Please choose <strong>only one</strong> of the following:"); //New for 0.98finalRC1
-define("_PS_WRITE", "Please write your answer here:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANY", "Please choose <strong>all</strong> that apply:"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Please choose all that apply and provide a comment:"); //New for 0.98finalRC1
-define("_PS_EACHITEM", "Please choose the appropriate response for each item:"); //New for 0.98finalRC1
-define("_PS_WRITEMULTI", "Please write your answer(s) here:"); //New for 0.98finalRC1
-define("_PS_DATE", "Please enter a date:"); //New for 0.98finalRC1
-define("_PS_COMMENT", "Make a comment on your choice here:"); //New for 0.98finalRC1
-define("_PS_RANKING", "Please number each box in order of preference from 1 to"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "Submit Your Survey."); //New for 0.98finalRC1
-define("_PS_THANKYOU", "Thank you for completing this survey."); //New for 0.98finalRC1
-define("_PS_FAXTO", "Please fax your completed survey to:"); //New for 0.98finaclRC1
+define("_PS_CHOOSEONE", "請任選其<b>一</b>:"); //New for 0.98finalRC1
+define("_PS_WRITE", "請在這兒填上您的答案:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANY", "請選擇<b>所有</b>適用的答案:"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "請選擇所有適用的答案申請及提供意見:"); //New for 0.98finalRC1
+define("_PS_EACHITEM", "請為以下各項選擇適當答案:"); //New for 0.98finalRC1
+define("_PS_WRITEMULTI", "請在這兒填上您的答案:"); //New for 0.98finalRC1
+define("_PS_DATE", "請填上日期:"); //New for 0.98finalRC1
+define("_PS_COMMENT", "請為您的答案作注解:"); //New for 0.98finalRC1
+define("_PS_RANKING", "請順序按偏好編號各箱子從１至"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "遞上您的問卷."); //New for 0.98finalRC1
+define("_PS_THANKYOU", "多謝您完成這份問卷."); //New for 0.98finalRC1
+define("_PS_FAXTO", "請將問卷傳真至:"); //New for 0.98finaclRC1
 
-define("_PS_CON_ONLYANSWER", "Only answer this question"); //New for 0.98finalRC1
-define("_PS_CON_IFYOU", "if you answered"); //New for 0.98finalRC1
-define("_PS_CON_JOINER", "and"); //New for 0.98finalRC1
-define("_PS_CON_TOQUESTION", "to question"); //New for 0.98finalRC1
-define("_PS_CON_OR", "or"); //New for 0.98finalRC2
+define("_PS_CON_ONLYANSWER", "回答這條問題"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "如果您有回答"); //New for 0.98finalRC1
+define("_PS_CON_JOINER", "和"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "於問題"); //New for 0.98finalRC1
+define("_PS_CON_OR", "或"); //New for 0.98finalRC2
 
 //Save Messages
-define("_SAVE_AND_RETURN", "Save your responses so far");
-define("_SAVEHEADING", "Save Your Unfinished Survey");
-define("_RETURNTOSURVEY", "Return To Survey");
-define("_SAVENAME", "Name");
-define("_SAVEPASSWORD", "Password");
-define("_SAVEPASSWORDRPT", "Repeat Password");
-define("_SAVE_EMAIL", "Your Email");
-define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
-                  ."Your survey will be saved using that name and password, and can be "
-                  ."completed later by logging in with the same name and password.<br /><br />\n"
-                  ."If you give an email address, an email containing the details will be sent "
-                  ."to you.");
-define("_SAVESUBMIT", "Save Now");
-define("_SAVENONAME", "You must supply a name for this saved session.");
-define("_SAVENOPASS", "You must supply a password for this saved session.");
-define("_SAVENOMATCH", "Your passwords do not match.");
-define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
-define("_SAVETRYAGAIN", "Please try again.");
-define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
-define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
-                         ."a survey in progress. The following details can be used "
-                         ."to return to this survey and continue where you left "
-                         ."off.");
-define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
-define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
-define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
-define("_SAVE_EMAILSENT", "An email has been sent with details about your saved survey.");
+define("_SAVE_AND_RETURN", "儲存您到目前為止的答案");
+define("_SAVEHEADING", "儲存末完成的問卷");
+define("_RETURNTOSURVEY", "返回問卷");
+define("_SAVENAME", "名稱");
+define("_SAVEPASSWORD", "密碼");
+define("_SAVEPASSWORDRPT", "重複密碼");
+define("_SAVE_EMAIL", "電郵");
+define("_SAVEEXPLANATION", "為這問卷輸入一個名字和密碼然後點擊「儲存」。<br />\n"
+                  ."您的問卷將會以這個名字和密碼儲存在系統內，日後您可以用這個名字和密碼登入繼續完成問卷。<br /><br />\n"
+                  ."如果您填上電郵地址，以下細節會以電郵送上。");
+define("_SAVESUBMIT", "儲存");
+define("_SAVENONAME", "請填上名字。");
+define("_SAVENOPASS", "請填上密碼。");
+define("_SAVENOMATCH", "密碼不匹對。");
+define("_SAVEDUPLICATE", "這個名字已經被使用。  您必須使用一個獨特的名字。");
+define("_SAVETRYAGAIN", "請再試。");
+define("_SAVE_EMAILSUBJECT", "已儲存的問卷之細節");
+define("_SAVE_EMAILTEXT", "您,或一個使用您電郵的人,儲存了一個未完成的問卷。  "
+                         ."您可使用以下細節返回並繼續完成該問卷。");
+define("_SAVE_EMAILURL", "請點擊以下URL去檢索您的問卷:");
+define("_SAVE_SUCCEEDED", "您的問卷經已成功存檔");
+define("_SAVE_FAILED", "存檔其間發生了錯誤，您的問卷並未被保存。");
+define("_SAVE_EMAILSENT", "您問卷的細節已用電子郵件送上。");
 
 //Load Messages
-define("_LOAD_SAVED", "Load unfinished survey");
-define("_LOADHEADING", "Load A Previously Saved Survey");
-define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
-              ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
-define("_LOADNAME", "Saved name");
-define("_LOADPASSWORD", "Password");
-define("_LOADSUBMIT", "Load Now");
-define("_LOADNONAME", "You did not provide a name");
-define("_LOADNOPASS", "You did not provide a password");
-define("_LOADNOMATCH", "There is no matching saved survey");
+define("_LOAD_SAVED", "檢索未完成的問卷");
+define("_LOADHEADING", "檢索先前儲存好的問卷");
+define("_LOADEXPLANATION", "您可在這兒檢索您先前儲存了的問卷。<br />\n"
+              ."請輸入該問卷的名字及密碼。<br /><br />\n");
+define("_LOADNAME", "名字");
+define("_LOADPASSWORD", "密碼");
+define("_LOADSUBMIT", "檢索");
+define("_LOADNONAME", "您沒有輸入名字");
+define("_LOADNOPASS", "您沒有輸入密碼");
+define("_LOADNOMATCH", "找不到相對的問卷");
 
-define("_ASSESSMENT_HEADING", "Your Assessment");
+define("_ASSESSMENT_HEADING", "您的評估");
 ?>
