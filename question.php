@@ -499,6 +499,7 @@ else
         foreach ($qanda as $qa)
             {
             echo "\n\t<!-- NEW QUESTION -->\n";
+            echo "\n\t<!-- QUESTION TYPE ".$qa[5]."-->\n";
             echo "\t\t\t\t<div name='$qa[4]' id='$qa[4]'>";
             $question="<label for='$ia[7]'>" . $qa[0] . "</label>";
             $answer=$qa[1];

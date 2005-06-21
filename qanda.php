@@ -491,7 +491,7 @@ function do_5pointchoice($ia)
         {
         $answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
         if (!$_SESSION[$ia[1]]) {$answer .= " checked";}
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='NoAnswer'>"._NOTAPPLICABLE."</label>\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='NoAnswer'>"._NOANSWER."</label>\n";
         }
     $answer .= "\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n";
     $inputnames[]=$ia[1];
@@ -740,7 +740,7 @@ function do_list_radio($ia)
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>"._OTHER."</label>\n";
         $answer .= "<label for='$ia[1]othertext'><input type='text' class='text' id='$ia[1]othertext' name='$ia[1]other' size='20' title='"._OTHER."' ";
         $thisfieldname=$ia[1]."other";
-        if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".$_SESSION[$thisfieldname]."' ";}
+        if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
         $answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"></label><br />\n";
         $inputnames[]=$thisfieldname;
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
@@ -840,7 +840,7 @@ function do_list_flexible_radio($ia)
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>"._OTHER."</label>\n";
         $answer .= "<label for='$ia[1]othertext'><input type='text' class='text' id='$ia[1]othertext' name='$ia[1]other' size='20' title='"._OTHER."' ";
         $thisfieldname=$ia[1]."other";
-        if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".$_SESSION[$thisfieldname]."' ";}
+        if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
         $answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"></label><br />\n";
         $inputnames[]=$thisfieldname;
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
@@ -1245,10 +1245,11 @@ function do_multiplechoice($ia)
         $rowcounter++;
         $myfname = $ia[1]."other";
         $answer .= "\t\t\t\t\t\t<label for='$myfname'>"._OTHER.":</label> <input class='text' type='text' name='$myfname' id='$myfname'";
-        if (isset($_SESSION[$myfname])) {$answer .= " value='".$_SESSION[$myfname]."'";}
+        if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
         $answer .= " />\n"
                  . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+        if (isset($_SESSION[$myfname])) {$answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);}
+        
         $answer .= "'>\n";
         $inputnames[]=$myfname;
         $anscount++;
@@ -1321,13 +1322,13 @@ function do_multiplechoice_withcomments($ia)
         $answer .= "\t\t\t\t\t\t\t<tr>\n"
                  . "\t\t\t\t\t\t\t\t<td class='answertext'>\n"
                  . "\t\t\t\t\t\t\t\t\t<label for='$myfname'>"._OTHER.":</label><input class='text' type='text' name='$myfname' id='$myfname' title='"._OTHER."' size='10'";
-        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".$_SESSION[$myfname]."'";}
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
         $fn++;
         $answer .= " />\n"
                  . "\t\t\t\t\t\t\t\t</td>\n"
                  . "\t\t\t\t\t\t\t\t<td valign='bottom'><label for='$myfname2'>\n"
                  . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname2' id='$myfname2' title='"._PS_COMMENT."' value='";
-        if (isset($_SESSION[$myfname2])) {$answer .= $_SESSION[$myfname2];}
+        if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         $answer .= "' />\n"
                  . "\t\t\t\t\t\t\t\t</label></td>\n"
                  . "\t\t\t\t\t\t\t</tr>\n";
@@ -1557,7 +1558,7 @@ function do_array_5point($ia)
         }
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
+        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = mysql_fetch_array($ansresult))
@@ -1576,7 +1577,7 @@ function do_array_5point($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='$myfname-'>"
-                    ."<input class='radio' type='radio' name='$myfname' id='$myfname-' value='' title='"._NOTAPPLICABLE."'";
+                    ."<input class='radio' type='radio' name='$myfname' id='$myfname-' value='' title='"._NOANSWER."'";
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
             }
@@ -1611,7 +1612,7 @@ function do_array_10point($ia)
         }
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
+        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = mysql_fetch_array($ansresult))
@@ -1630,7 +1631,7 @@ function do_array_10point($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='$myfname-'>"
-                    ."<input class='radio' type='radio' name='$myfname' id='$myfname-' value='' tite='"._NOTAPPLICABLE."'";
+                    ."<input class='radio' type='radio' name='$myfname' id='$myfname-' value='' tite='"._NOANSWER."'";
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
             }
@@ -1663,7 +1664,7 @@ function do_array_yesnouncertain($ia)
              . "\t\t\t\t\t<td align='center' class='array1'>"._NO."</td>\n";
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
+        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = mysql_fetch_array($ansresult))
@@ -1687,7 +1688,7 @@ function do_array_yesnouncertain($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='$myfname-'>"
-                    ."<input class='radio' type='radio' name='$myfname' id='$myfname-' value='' title='"._NOTAPPLICABLE."'";
+                    ."<input class='radio' type='radio' name='$myfname' id='$myfname-' value='' title='"._NOANSWER."'";
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
             }
@@ -1721,7 +1722,7 @@ function do_array_increasesamedecrease($ia)
              . "\t\t\t\t\t<td align='center' class='array1'>"._DECREASE."</td>\n";
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOTAPPLICABLE."</td>\n";
+        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = mysql_fetch_array($ansresult))
@@ -1745,7 +1746,7 @@ function do_array_increasesamedecrease($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='$myfname-'>"
-                    ."<input class='radio' type='radio' name='$myfname' id='$myfname-' value='' title='"._NOTAPPLICABLE."'";
+                    ."<input class='radio' type='radio' name='$myfname' id='$myfname-' value='' title='"._NOANSWER."'";
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></td>\n";
             }
@@ -1796,7 +1797,7 @@ function do_array_flexible($ia)
             }
         if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
             {
-            $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></th>\n";
+            $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>"._NOANSWER."</font></th>\n";
             }
         $answer .= "\t\t\t\t</tr>\n";
          
@@ -1813,7 +1814,7 @@ function do_array_flexible($ia)
                     }
                 if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
                     {
-                    $answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOTAPPLICABLE."</font></td>\n";
+                    $answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOANSWER."</font></td>\n";
                     }
                 $answer .= "\t\t\t\t</tr>\n";
                 }
@@ -1834,7 +1835,7 @@ function do_array_flexible($ia)
             if ($ia[6] != "Y" && $shownoanswer == 1)
                 {
                 $answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='$myfname-'>"
-                        ."<input class='radio' type='radio' name='$myfname' value='' id='$myfname-' title='"._NOTAPPLICABLE."'";
+                        ."<input class='radio' type='radio' name='$myfname' value='' id='$myfname-' title='"._NOANSWER."'";
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
                 $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
                 }
@@ -1873,8 +1874,8 @@ function do_array_flexiblecolumns($ia)
         }
     if ($ia[6] != "Y" && $shownoanswer == 1) {
         $labelcode[]="";
-        $labelans[]=_NOTAPPLICABLE;
-        $labels[]=array("answer"=>_NOTAPPLICABLE, "code"=>"");
+        $labelans[]=_NOANSWER;
+        $labels[]=array("answer"=>_NOANSWER, "code"=>"");
     }
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
     $ansresult = mysql_query($ansquery);
@@ -2023,7 +2024,7 @@ function retrieve_Answer($code)
             }
         else
             {
-            $return=_NOTAPPLICABLE;
+            $return=_NOANSWER;
             }
         }
     else
