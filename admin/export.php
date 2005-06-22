@@ -730,12 +730,12 @@ elseif ($answers == "long")
 				case "O": //DROPDOWN LIST WITH COMMENT
 					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid ORDER BY answer";
 					$lr = mysql_query($lq) or die ("Could do it<br />$lq<br />".mysql_error());
+					$found = "";
 					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
 						{
 						if ($lrow['code'] == $drow[$i]) {echo $lrow['answer']; $found = "Y";}
 						}
 					if ($found != "Y") {if ($type == "csv") {echo str_replace("\"", "\"\"", $drow[$i]);} else {echo str_replace("\r\n", " ", $drow[$i]);}}
-					$found = "";
 					break;
 				case "Y": //YES\NO
 					switch($drow[$i])
