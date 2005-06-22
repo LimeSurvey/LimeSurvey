@@ -618,7 +618,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				echo "\t\t\t</table>\n";
 				break;
-			case "H": //ARRAY (Flexible Labels)
+			case "H": //ARRAY (Flexible Labels) by Column
 				//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
 				$fquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
@@ -632,14 +632,14 @@ while ($degrow = mysql_fetch_array($degresult))
 				$i=0;
 				while ($frow = mysql_fetch_array($fresult))
 					{
-					echo "\t\t\t\t\t<td align='left'>$setfont{$frow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='center'>$setfont{$frow['answer']}</td>\n";
 					$i++;
 					}
 				echo "\t\t\t\t\t\t</tr>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$mearow['title']}</td>\n";
+					echo "\t\t\t\t\t\t<td align='left' valign='bottom' $headstyle><font size='1'>{$mearow['title']}</td>\n";
 					//echo "\t\t\t\t\t<td>";
 					for ($i=1; $i<=$fcount; $i++)
 						{
