@@ -618,6 +618,43 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				echo "\t\t\t</table>\n";
 				break;
+			case "H": //ARRAY (Flexible Labels)
+				//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
+				$headstyle="style='padding-left: 20px; padding-right: 7px'";
+				$fquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+				$fresult = mysql_query($fquery);
+				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br />\n";
+				echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
+				$meaquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
+				$mearesult = mysql_query($meaquery);
+				$fcount = mysql_num_rows($fresult);
+				$fwidth = "120";
+				$i=0;
+				while ($frow = mysql_fetch_array($fresult))
+					{
+					echo "\t\t\t\t\t<td align='left'>$setfont{$frow['answer']}</td>\n";
+					$i++;
+					}
+				echo "\t\t\t\t\t\t</tr>\n";
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t\t<tr>\n";
+					echo "\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$mearow['title']}</td>\n";
+					//echo "\t\t\t\t\t<td>";
+					for ($i=1; $i<=$fcount; $i++)
+						{
+						
+						echo "\t\t\t\t\t<td align='center'";
+						if ($i > 1) {echo " $headstyle";}
+						echo ">$setfont\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
+						echo "\t\t\t\t\t</td>\n";
+						}
+					//echo "\t\t\t\t\t</tr></table></td>\n";
+					echo "\t\t\t\t</tr>\n";
+					}
+				echo "\t\t\t</table>\n";
+				break;
 			}
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";

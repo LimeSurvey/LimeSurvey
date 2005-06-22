@@ -184,7 +184,7 @@ define("_PS_WRITEMULTI", "Bitte Ihre Antwort(en) hierher schreiben"); //New for 
 define("_PS_DATE", "Bitte ein datum eingeben"); //New for 0.98finalRC1
 define("_PS_COMMENT", "Bitte schreiben Sie einen Kommentar zu Ihrer Auswahl"); //New for 0.98finalRC1
 define("_PS_RANKING", "Bitte nummerieren Sie jede Box in der Reigenfolge Ihrer Pr&auml;ferenz, beginnen mit 1 bis"); //New for 0.98finalRC1
-define("_PS_SUBMIT", "&uuml;bermittlung Ihres ausgef&uuml;llten Fragebogens:"); //New for 0.98finalRC1
+define("_PS_SUBMIT", "&Uuml;bermittlung Ihres ausgef&uuml;llten Fragebogens:"); //New for 0.98finalRC1
 define("_PS_THANKYOU", "Vielen Dank f&uuml;r die Beantwortung des Fragebogens."); //New for 0.98finalRC1
 define("_PS_FAXTO", "Bitte faxen Sie den ausgef&uuml;llten Fragebogen an"); //New for 0.98finaclRC1
 
