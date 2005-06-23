@@ -650,6 +650,45 @@ elseif ($action == "edit" || $action == "editsaved")
 					echo ">"._MALE."</option>\n"
 						."\t\t\t<select>\n";
 					break;
+				case "W":
+				case "Z":
+					if (substr($fnames[$i][0], -5) == "other")
+						{
+						echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+						}
+					else
+						{
+						$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$fnames[$i][8]} ORDER BY sortorder, code";
+						$lresult = mysql_query($lquery);
+						//$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
+						//$lresult = mysql_query($lquery);
+						echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+							."\t\t\t\t<option value=''";
+						if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+						echo ">"._PLEASECHOOSE."..</option>\n";
+						
+						while ($llrow = mysql_fetch_array($lresult))
+							{
+							echo "\t\t\t\t<option value='{$llrow['code']}'";
+							if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
+							echo ">{$llrow['title']}</option>\n";
+							}
+						$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$fnames[$i][7]}";
+						$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
+						while($orow = mysql_fetch_array($oresult))
+							{
+							$fother=$orow['other'];
+							}
+						if ($fother =="Y") 
+							{
+						    echo "<option value='-oth-'";
+							if ($idrow[$fnames[$i][0]] == "-oth-"){echo " selected";}
+							echo ">"._OTHER."</option>\n";
+							}
+						echo "\t\t\t</select>\n";
+						}
+					break;
 				case "L": //LIST drop-down
 				case "!": //List (Radio)
 					if (substr($fnames[$i][0], -5) == "other")
@@ -1579,6 +1618,36 @@ else
 							."\t\t\t\t</tr>\n";
 						}
 					echo "\t\t\t</table>\n";
+					break;
+				case "W": //Flexible List drop-down/radio-button
+				case "Z":
+					$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
+					$dearesult = mysql_query($deaquery);
+					echo "\t\t\t<select name='$fieldname'>\n";
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						echo "\t\t\t\t<option value='{$dearow['code']}'";
+						echo ">{$dearow['title']}</option>\n";
+						}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
+
+					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
+					$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
+					while($orow = mysql_fetch_array($oresult))
+						{
+						$fother=$orow['other'];
+						}
+					if ($fother == "Y") 
+						{
+					    echo "<option value='-oth-'>"._OTHER."</option>\n";
+						}
+					echo "\t\t\t</select>\n";
+					if ($fother == "Y")
+						{
+						echo "\t\t\t$setfont"
+							._OTHER.":"
+							."<input type='text' name='{$fieldname}other' value='' />\n";
+						}
 					break;
 				case "L": //LIST drop-down/radio-button list
 				case "!":
