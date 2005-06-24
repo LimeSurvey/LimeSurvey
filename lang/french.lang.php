@@ -31,11 +31,11 @@
         # the Free Software Foundation, Inc., 59 Temple Place -         #
         # Suite 330, Boston, MA  02111-1307, USA.                       #
         #################################################################
-        # This language file kindly provided by François Tissandier     #
+        # This language file kindly provided by Fran�ois Tissandier     #
         # and corrected by Pascal Bastien 20/07/2004                    #
         # Version 1.3                                                   #
         #                                                               #
-        # Version 1.5.0 - corrceted by Sébastien GAUGRY                 #
+        # Version 1.5.0 - corrected by S�bastien GAUGRY                 #
         # Note for french translators : ' is &#146;                     #
         #                                                               #
         #################################################################
@@ -57,6 +57,7 @@ define("_COMPLETE", "Termin&eacute;");
 define("_INCREASE", "Augmenter"); //NEW WITH 0.98
 define("_SAME", "Sans Changement"); //NEW WITH 0.98
 define("_DECREASE", "Diminuer"); //NEW WITH 0.98
+define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Confirmation");
 define("_TOKEN_PS", "Invitation");
@@ -81,6 +82,8 @@ define("_MANDATORY_PARTS", "Veuillez compl&eacute;ter toutes les parties SVP");
 define("_MANDATORY_CHECK", "Veuillez choisir au moins un &eacute;l&eacute;ment SVP");
 define("_MANDATORY_RANK", "Veuillez classer tous les &eacute;l&eacute;ments SVP");
 define("_MANDATORY_POPUP", "Vous n&acute;avez pas r&eacute;pondu &agrave; une ou plusieurs questions obligatoires. Vous ne pouvez pas enregister vos r&eacute;ponses au questionnaire tant que vous n&acute;avez r&eacute;pondu &agrave; celles-ci"); //NEW in 0.98rc4
+define("_VALIDATION", "Vous devez r&eacute;pondre correctement &agrave; cette question"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "Vous n&#146;avez pas r&eacute;pondu correctement &agrave; une ou plusieurs questions. Vous ne pouvez pas continuer tant que ces r&eacute;ponses ne sont pas valides"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format : AAAA-MM-JJ");
 define("_DATEFORMATEG", "(ex : 2003-12-25 pour No&euml;l)");
 define("_REMOVEITEM", "Enlever cet &eacute;l&eacute;ment");
@@ -91,13 +94,14 @@ define("_YOURRANKING", "Votre classement");
 define("_RANK_3", "Cliquer sur les ciseaux &agrave; droite de chaque &eacute;l&eacute;ment");
 define("_RANK_4", "pour enlever le dernier &eacute;l&eacute;ment de votre classement");
 //From INDEX.PHP
-define("_NOSID", "Vous n&acute;avez pas fourni d&acute;identifiant de sondage");
+define("_NOSID", "Vous n&acute;avez pas fourni d&acute;identifiant de questionnaire");
 define("_CONTACT1", "Veuillez contacter");
 define("_CONTACT2", "pour plus d&#146;aide");
 define("_ANSCLEAR", "R&eacute;ponses effac&eacute;es");
 define("_RESTART", "Recommencer ce questionnaire");
 define("_CLOSEWIN_PS", "Fermer cette fen&ecirc;tre");
 define("_CONFIRMCLEAR", "Etes-vous s&ucirc;r de vouloir effacer toutes les r&eacute;ponses ?");
+define("_CONFIRMSAVE", "Etes-vous s&ucirc;r de vouloir sauvegarder vos r�eacute;ponses ?");
 define("_EXITCLEAR", "Sortir et effacer le questionnaire");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Impossible d&#146;envoyer les r&eacute;ponses car il n&#146;y en a aucune (vide).");
@@ -176,7 +180,7 @@ define("_SM_REVIEW", "Si vous souhaitez v&eacute;rifier ou changer certaines de 
 define("_PS_CHOOSEONE", "Choisissez <strong>seulement une</strong> des r&eacute;ponses suivantes :"); //New for 0.98finalRC1
 define("_PS_WRITE", "Ecrivez votre r&eacute;ponse ici :"); //New for 0.98finalRC1
 define("_PS_CHOOSEANY", "Choisissez <strong>toutes</strong> les r&eacute;ponses qui conviennent :"); //New for 0.98finalRC1
-define("_PS_CHOOSEANYCOMMENT", "Choisissez toutes les r&eacute;ponses qui conviennent et laisser un commentaire :"); //New for 0.98finalRC1
+define("_PS_CHOOSEANYCOMMENT", "Choisissez toutes les r&eacute;ponses qui conviennent et laissez un commentaire :"); //New for 0.98finalRC1
 define("_PS_EACHITEM", "Choisissez la r&eacute;ponse appropri&eacute;e pour chaque &eacute;l&eacute;ment :"); //New for 0.98finalRC1
 define("_PS_WRITEMULTI", "Ecrivez votre r&eacute;ponse ici :"); //New for 0.98finalRC1
 define("_PS_DATE", "Entrez une date :"); //New for 0.98finalRC1
@@ -201,22 +205,22 @@ define("_SAVEPASSWORD", "Mot de passe");
 define("_SAVEPASSWORDRPT", "R&eacute;p&eacute;tez le mot de passe");
 define("_SAVE_EMAIL", "Votre adresse mail");
 define("_SAVEEXPLANATION", "Entrez un nom et un mot de passe pour ce questionnaire et cliquez sur Sauvegarder en bas.<br />\n"
-				  ."Vos r误nses au questionnaire seront sauvegard&eacute;es en utilisant ce nom et ce mot de passe, et pourront "
+				  ."Vos r&eacute;ponses au questionnaire seront sauvegard&eacute;es en utilisant ce nom et ce mot de passe, et pourront "
 				  ."&ecirc;tre compl&eacute;t&eacute;es plus tard en vous connectant avec ce nom et ce mot de passe.<br /><br />\n"
-				  ."Si vous donnez une adresse mail, un mail contenant ces d賡ils vous sera envoy&eacute;");
+				  ."Si vous donnez une adresse mail, un mail contenant ces d&eacute;tails vous sera envoy&eacute;");
 define("_SAVESUBMIT", "Sauvegarder maintenant");
-define("_SAVENONAME", "Vous devez fournir un nom pour sauvegarder vos r&袵te;ponses &agrave; ce questionnaire.");
-define("_SAVENOPASS", "Vous devez fournir un mot de passe pour sauvegarder vos r&eacute;ponses &agrave ce questionnaire.");
+define("_SAVENONAME", "Vous devez fournir un nom pour sauvegarder vos r&eacute;ponses &agrave; ce questionnaire.");
+define("_SAVENOPASS", "Vous devez fournir un mot de passe pour sauvegarder vos r&eacute;ponses &agrave; ce questionnaire.");
 define("_SAVENOMATCH", "Vos mots de passe ne correspondent pas.");
 define("_SAVEDUPLICATE", "Ce nom a d&eacute;j&agrave; &eacute;t&eacute; utilis&eacute; pour ce questionnaire. Vous devez en choisir un autre.");
 define("_SAVETRYAGAIN", "Essayer encore SVP.");
 define("_SAVE_EMAILSUBJECT", "D&eacute;tails sur le questionnaire que vous avez sauvegard&eacute;");
 define("_SAVE_EMAILTEXT", "Vous, ou quelqu&#146;un utilisant votre adresse mail, a sauvegard&eacute; "
-						 ."ses r误nses partielles &agrave; un questionnaire. Les informations suivantes peuvent &ecirc;tre utilis&eacute;es "
-						 ."pour retourner �e questionnaire et le continuer o&ugrave; vous en &eacute;tiez.");
+						 ."ses r&eacute;ponses partielles &agrave; un questionnaire. Les informations suivantes peuvent &ecirc;tre utilis&eacute;es "
+						 ."pour retourner &agrave; ce questionnaire et le continuer o&ugrave; vous en &eacute;tiez.");
 define("_SAVE_EMAILURL", "Rechargez votre questionnaire en cliquant sur l&#146;URL suivante :");
 define("_SAVE_SUCCEEDED", "Vos r&eacute;ponses &agrave; ce questionnaire ont &eacute;t&eacute, sauvegard&eacute;es avec succ&egrave;s");
-define("_SAVE_FAILED", "une erreur est survenue et vos r&eacute;ponses n&#146;ont pas &eacute;t&eacute; sauvegard&eacute;es.");
+define("_SAVE_FAILED", "Une erreur est survenue et vos r&eacute;ponses n&#146;ont pas &eacute;t&eacute; sauvegard&eacute;es.");
 define("_SAVE_EMAILSENT", "Un mail vous a&eacute;t&eacute; envoy&eacute; avec les d&eacute;tails de ce questionnaire.");
 
 //Load Messages
