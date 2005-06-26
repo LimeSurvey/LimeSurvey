@@ -64,7 +64,7 @@ function retrieveConditionInfo($ia)
                 ."{$dbprefix}questions "
                 ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
                 ."AND {$dbprefix}conditions.qid=$ia[0] "
-                ."ORDER BY {$dbprefix}conditions.cqid";
+                ."ORDER BY {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname";
         $cresult = mysql_query($cquery) or die ("OOPS<BR />$cquery<br />".mysql_error());
         while ($crow = mysql_fetch_array($cresult))
             {
