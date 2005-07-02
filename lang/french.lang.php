@@ -31,11 +31,11 @@
         # the Free Software Foundation, Inc., 59 Temple Place -         #
         # Suite 330, Boston, MA  02111-1307, USA.                       #
         #################################################################
-        # This language file kindly provided by François Tissandier     #
+        # This language file kindly provided by FranÃ§ois Tissandier     #
         # and corrected by Pascal Bastien 20/07/2004                    #
         # Version 1.3                                                   #
         #                                                               #
-        # Version 1.5.0 - corrected by Sébastien GAUGRY                 #
+        # Version 1.5.0 - corrected by SÃ©bastien GAUGRY                 #
         # Note for french translators : ' is &#146;                     #
         #                                                               #
         #################################################################
@@ -101,7 +101,7 @@ define("_ANSCLEAR", "R&eacute;ponses effac&eacute;es");
 define("_RESTART", "Recommencer ce questionnaire");
 define("_CLOSEWIN_PS", "Fermer cette fen&ecirc;tre");
 define("_CONFIRMCLEAR", "Etes-vous s&ucirc;r de vouloir effacer toutes les r&eacute;ponses ?");
-define("_CONFIRMSAVE", "Etes-vous s&ucirc;r de vouloir sauvegarder vos réeacute;ponses ?");
+define("_CONFIRMSAVE", "Etes-vous s&ucirc;r de vouloir sauvegarder vos rÃ©eacute;ponses ?");
 define("_EXITCLEAR", "Sortir et effacer le questionnaire");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Impossible d&#146;envoyer les r&eacute;ponses car il n&#146;y en a aucune (vide).");
