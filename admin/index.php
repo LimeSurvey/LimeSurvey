@@ -324,7 +324,7 @@ echo "</table>\n";
 echo "</td></tr></table>";
 //
 
-echo footer("instructions.html", "Using PHPSurveyors Admin Script");
+echo footer("$langdir/instructions.html", "Using PHPSurveyors Admin Script");
 
 function helpscreen()
 	{

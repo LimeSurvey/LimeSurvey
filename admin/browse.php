@@ -528,6 +528,6 @@ else
 			."</table>\n";
 		}
 	}
-echo htmlfooter("instructions.html#browse", "Using PHPSurveyors Browse Function");
+echo htmlfooter("$langdir/instructions.html#browse", "Using PHPSurveyors Browse Function");
 
 ?>

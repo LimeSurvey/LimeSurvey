@@ -686,6 +686,6 @@ echo "\t<tr>\n"
 echo "\t<tr height='3'><td colspan='3'></td></tr>\n"
 	."</table>\n";
 
-echo htmlfooter("instructions.html#conditions", "Using PHPSurveyor`s Conditions");
+echo htmlfooter("$langdir/instructions.html#conditions", "Using PHPSurveyor`s Conditions");
 
 ?>

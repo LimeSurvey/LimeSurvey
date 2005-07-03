@@ -372,7 +372,7 @@ echo "\t</td>\n"; //END OF MAIN CELL
 helpscreen();
 echo "</table>\n";
 
-echo htmlfooter("instructions.html#labels", "Using PHPSurveyor`s Labels Editor");
+echo htmlfooter("$langdir/instructions.html#labels", "Using PHPSurveyor`s Labels Editor");
 
 //************************FUNCTIONS********************************
 function updateset($lid)

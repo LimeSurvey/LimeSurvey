@@ -669,7 +669,7 @@ echo "<font face='verdana' size='2'><br />\n"
 	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'></iframe>\n"
 	."<br />&nbsp;<br />"
 	."</td></tr></table>\n"
-	.htmlfooter("instructions.html#Templates", "");
+	.htmlfooter("$langdir/instructions.html#Templates", "");
 
 function unlink_wc($dir, $pattern){
    if ($dh = opendir($dir)) { 

@@ -247,7 +247,7 @@ if (!$style)
 	echo "</tr>\n"
 		."\t</form>\n"
 		."</table><br />\n"
-		.htmlfooter("instructions.html", "General PHPSurveyor Instructions");
+		.htmlfooter("$langdir/instructions.html", "General PHPSurveyor Instructions");
 	exit;
 	}
 

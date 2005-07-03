@@ -1522,7 +1522,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
         }
     }
 echo "<br />&nbsp;";
-echo htmlfooter("instructions.html#statistics", "Using PHPSurveyors Statistics Function");
+echo htmlfooter("$langdir/instructions.html#statistics", "Using PHPSurveyors Statistics Function");
 
 function deletePattern($dir, $pattern = "")
    {

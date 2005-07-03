@@ -322,6 +322,6 @@ echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open(
 
 echo "</td></tr></table>\n";
 echo "<br />\n";
-echo htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
+echo htmlfooter("$langdir/instructions.html", "Using PHPSurveyors Admin Script");
 
 ?>
