@@ -127,7 +127,7 @@ $cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix
 $cdump = BuildOutput($cquery);
 
 //6: Label Sets
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type='F' AND sid=$surveyid";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type IN ('F', 'H', 'W', 'Z') AND sid=$surveyid";
 $lsdump = BuildOutput($lsquery);
 
 //7: Labels
