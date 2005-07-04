@@ -320,6 +320,8 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		$lsiresult=mysql_query($lsainsert);
 		$newlid=mysql_insert_id();
 
+		echo "OLDLID: $oldlid   NEWLID: $newlid";
+
 		if ($labelsarray) {
 			foreach ($labelsarray as $la) {
 				//GET ORDER OF FIELDS
@@ -432,7 +434,7 @@ if ($grouparray) {
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = mysql_query($qidquery);
 					while ($qrow = mysql_fetch_array($qidres)) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
-					if ($type == "F" || $type == "H") {//IF this is a flexible label array, update the lid entry
+					if ($type == "F" || $type == "H" || $type = "W" || $type == "Z") {//IF this is a flexible label array, update the lid entry
 						if (isset($labelreplacements)) {
 							foreach ($labelreplacements as $lrp) {
 								if ($lrp[0] == $oldlid) {
