@@ -132,10 +132,10 @@ define("_SURVEYCOMPLETE", "Sie haben diese Umfrage bereits durchgef&uuml;hrt.");
 define("_INSTRUCTION_LIST", "Bitte w&auml;hlen Sie einen Punkt aus der Liste aus.");
 define("_INSTRUCTION_MULTI", "Bitte w&auml;hlen Sie einen oder mehrere Punkte aus der Liste aus.");
 
-define("_CONFIRMATION_MESSAGE1", "Ihre Umfragedaten wurden &uuml;bermittelt.");
-define("_CONFIRMATION_MESSAGE2", "Es sind neue Umfragedaten vorhanden.");
+define("_CONFIRMATION_MESSAGE1", "Umfrage wurde ausgefüllt");
+define("_CONFIRMATION_MESSAGE2", "Es sind neue Daten in Ihrer Umfrage vorhanden.");
 define("_CONFIRMATION_MESSAGE3", "Klicken Sie hier, um die einzelnen Antworten zu sehen:");
-define("_CONFIRMATION_MESSAGE4", "Ansichtstatistiken, bitte hier klicken:");
+define("_CONFIRMATION_MESSAGE4", "Klicken Sie hier, um die Gesamtstatistik zu sehen:");
 
 define("_PRIVACY_MESSAGE", "<strong><i>Schutz Ihrer Privatsph&auml;re</i></strong><br />"
                           ."Diese Umfrage ist anonym.<br />"
