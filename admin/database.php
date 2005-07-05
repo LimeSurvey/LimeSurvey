@@ -235,7 +235,7 @@ elseif ($action == "renumberquestions")
 			}
 		//echo "GROUP: ".$grow['group_name']."<br />";
 		$usql="UPDATE {$dbprefix}questions\n"
-			."SET title='".$question_number."'\n"
+			."SET title='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
 			."WHERE qid=".$grow['qid'];
 		//echo "[$sql]";
 		$uresult=mysql_query($usql) or die("Error:".mysql_error());
