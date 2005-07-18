@@ -1,5 +1,5 @@
 <?php
-// New translation and maintenance by Mario Marani - Initial File Translation by  Gabriele "Pentothal" Carioli -  //
+// New translation and maintenance by Mario Marani IRRE Puglia - Bari - Initial File Translation by  Gabriele "Pentothal" Carioli -  //
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Amministrazione");
@@ -14,7 +14,7 @@ define("_ACTIVATE", "Attivazione indagine");
 define("_DEACTIVATE", "Disattivazione indagine");
 define("_CHECKFIELDS", "Verifica campi nel database");
 define("_CREATEDB", "Crea database");
-define("_CREATESURVEY", "Crea l&#039;indagine"); //New for 0.98rc4
+define("_CREATESURVEY", "Crea nuova indagine"); //New for 0.98rc4
 define("_SETUP", "Impostazioni PHPSurveyor");
 define("_DELETESURVEY", "Elimina indagine");
 define("_EXPORTQUESTION", "Esporta domanda");
