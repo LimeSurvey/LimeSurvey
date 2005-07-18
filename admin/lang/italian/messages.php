@@ -1,5 +1,5 @@
 <?php
-// New translation and maintenance by Mario Marani IRRE Puglia - Bari - Initial File Translation by  Gabriele "Pentothal" Carioli -  //
+// New translation and maintenance by Mario Marani - Initial File Translation by  Gabriele "Pentothal" Carioli -  //
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Amministrazione");
@@ -47,8 +47,8 @@ define("_OPTIONAL", "Opzionale"); //NEW with 0.98finalRC1
 define("_SURVEYS", "Indagini");
 define("_GROUPS", "Gruppi");
 define("_QUESTIONS", "Domande");
-define("_QBYQ", "Visualizza per domande");
-define("_GBYG", "Visualizza per gruppi");
+define("_QBYQ", "Visualizza per domanda");
+define("_GBYG", "Visualizza per gruppo");
 define("_SBYS", "Visualizza tutto");
 define("_LABELSETS", "Gruppo"); //New with 0.98rc3
 
@@ -146,11 +146,11 @@ define("_SL_DATESTAMP", "Data fine indagine");
 define("_SL_TEMPLATE", "Template:");
 define("_SL_LANGUAGE", "Lingua:");
 define("_SL_LINK", "Link:");
-define("_SL_URL", "Reinvia a URL:");
+define("_SL_URL", "Rinvia a URL:");
 define("_SL_URLDESCRIP", "Testo URL:");
 define("_SL_STATUS", "Stato:");
 define("_SL_SELSQL", "Seleziona File SQL:");
-define("_SL_USECOOKIES", "Abilita Cookies?"); //NEW with 098rc3
+define("_SL_USECOOKIES", "Uso dei cookie"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Notifica:"); //New with 098rc5
 define("_SL_ALLOWREGISTER", "Permetti una registrazione pubblica?"); //New with 0.98rc9
 define("_SL_ATTRIBUTENAMES", "Nomi degli attributi degli identificativi:"); //New with 0.98rc9
@@ -163,10 +163,10 @@ define("_SL_EMAILREGISTER", "Testo della e-mail di risposta alla registrazione p
 define("_SL_EMAILCONFIRM_SUBJ", "Oggetto della e-mail di conferma completamento indagine"); //New with 0.99dev01
 define("_SL_EMAILCONFIRM", "Testo e-mail di conferma completamento indagine"); //New with 0.98rc9
 define("_SL_REPLACEOK", "Questo rimpiazzer&agrave; il testo esistente. Vuoi preseguire?"); //New with 0.98rc9
-define("_SL_ALLOWSAVE", "Permetti i salvataggi?"); //New with 0.99dev01
+define("_SL_ALLOWSAVE", "Permetti il salvataggio"); //New with 0.99dev01
 define("_SL_AUTONUMBER", "Fai partire gli ID dal numero:"); //New with 0.99dev01
 define("_SL_AUTORELOAD", "Carica automaticamente l&#039;URL quando l&#039;indagine &egrave; completa?"); //New with 0.99dev01
-define("_SL_ALLOWPREV", "Mostra il pulsante [<< Prev>>]"); //New with 0.99dev01
+define("_SL_ALLOWPREV", "Mostra il pulsante [Indietro]"); //New with 0.99dev01
 define("_SL_USE_DEFAULT","Usa il default");
 define("_SL_UPD_SURVEY","Aggiorna l&#039;indagine");
 
@@ -181,7 +181,7 @@ define("_QL_UPDATEQUESTION", "Aggiorna domanda");// New with 0.99dev02
 define("_QL_CODE", "Codice:");
 define("_QL_QUESTION", "Domanda:");
 define("_QL_VALIDATION", "Convalida:"); //New in VALIDATION VERSION
-define("_QL_HELP", "Nota:");
+define("_QL_HELP", "Nota di spiegazione:");
 define("_QL_TYPE", "Tipologia:");
 define("_QL_GROUP", "Gruppo:");
 define("_QL_MANDATORY", "Obbligatorio:");
@@ -250,13 +250,13 @@ define("_ARR5", "Scelta (5 opzioni)");
 define("_ARR10", "Scelta (10 opzioni)");
 define("_ARRYN", "Scelta (SI/NO/NON SO)");
 define("_ARRMV", "Scelta (Crescente, Uguale, Descrescente)");
-define("_ARRFL", "Scelta (Flessibile)"); //(FOR LATER RELEASE)
-define("_ARRFLC", "Matrice (Array) (Etichette flessibili) by Column"); //Release 0.98rc8
+define("_ARRFL", "Scelta (Variabile)"); //(FOR LATER RELEASE)
+define("_ARRFLC", "Matrice (Array) (Etichetta variabile  per colonna)"); //Release 0.98rc8
 define("_SINFL", "Campo unico (Flessibile)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Indirizzo e-mail"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Domande Boilerplate"); //New in 0.98rc6
-define("_LISTFL_DROPDOWN", "Lista (Etichette flessibili) (Dropdown)"); //New in 0.99dev01
-define("_LISTFL_RADIO", "Lista (Etichette flessibili) (Radio)"); //New in 0.99dev01
+define("_LISTFL_DROPDOWN", "Lista (Etichetta variabile) (Dropdown)"); //New in 0.99dev01
+define("_LISTFL_RADIO", "Lista (Etichetta variabile) (Radio)"); //New in 0.99dev01
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "SI");
@@ -671,13 +671,13 @@ define("_PS_DEACTTOKENS", "Tabelle degli identificativi disattivati");
 define("_PS_CHECKDBINTEGRITY", "Controlla l&#039;integrit&agrave; dei dati di PHPSurveyor"); //New with 0.98rc8
 
 //Notification Levels
-define("_NT_NONE", "Nessuna notifica delle e-mail"); //New with 098rc5
-define("_NT_SINGLE", "Notifica di base delle e-mail"); //New with 098rc5
-define("_NT_RESULTS", "Trasmetti la notifica delle e-mail con i codici di risultato"); //New with 098rc5
+define("_NT_NONE", "Nessuna e-mail di notifica"); //New with 098rc5
+define("_NT_SINGLE", "e-mail di notifica standard"); //New with 098rc5
+define("_NT_RESULTS", "e-mail di notifica con le rsiposte inviate"); //New with 098rc5
 
 //CONDITIONS TRANSLATIONS
-define("_CD_CONDITIONDESIGNER", "Progettista delle Condizioni"); //New with 098rc9
-define("_CD_ONLYSHOW", "Mostra questa domanda {QID} solo SE"); //New with 098rc9 - {QID} is repleaced leave there
+define("_CD_CONDITIONDESIGNER", "Definizione delle Condizioni"); //New with 098rc9
+define("_CD_ONLYSHOW", "Mostra questa domanda con codice {QID} solo SE"); //New with 098rc9 - {QID} is repleaced leave there
 define("_CD_AND", "AND"); //New with 098rc9
 define("_CD_COPYCONDITIONS", "Copia condizioni"); //New with 098rc9
 define("_CD_CONDITION", "Condizione"); //New with 098rc9
@@ -758,12 +758,12 @@ define("_VV_RUSURE", "Se hai scelto di esportare e disattivare, questo rinominer
 define("_AS_TITLE", "Valutazioni");
 define("_AS_DESCRIPTION", "Se crei una valutazione per l&#039;indagine corrente questa sar&agrave; aggiornata alla fine dell&#039;indagine dopo il suo invio");
 define("_AS_NOSID", "Nessun SID (ID dell&#039;indagine) fornito");
-define("_AS_SCOPE", "Scope");
+define("_AS_SCOPE", "Campo applicazione");
 define("_AS_MINIMUM", "Minimo");
 define("_AS_MAXIMUM", "Massimo");
 define("_AS_GID", "Gruppo");
 define("_AS_NAME", "Nome/Header");
-define("_AS_HEADING", "Heading");
+define("_AS_HEADING", "Intestazione");
 define("_AS_MESSAGE", "Messaggio");
 define("_AS_URL", "URL");
 define("_AS_SCOPE_GROUP", "Gruppo");
