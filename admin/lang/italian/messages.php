@@ -1,5 +1,5 @@
 <?php
-// New translation and maintenance by Mario Marani - Initial File Translation by  Gabriele "Pentothal" Carioli -  //
+// New translation and maintenance by Mario Marani - IRRE Puglia - Bari//
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Amministrazione");
@@ -27,16 +27,16 @@ define("_IMPORTLABEL", "Importa etichetta");
 define("_EXPORTRESULTS", "Esporta risposte");
 define("_BROWSERESPONSES", "Sfoglia risposte");
 define("_BROWSESAVED", "Sfoglia le risposte salvate");
-define("_STATISTICS", "Statistiche rapide");
+define("_STATISTICS", "Statistiche");
 define("_VIEWRESPONSE", "Visualizza risposta");
-define("_VIEWCONTROL", "Visualizzazione dei dati");
+define("_VIEWCONTROL", "Visualizzazione dati");
 define("_DATAENTRY", "Data entry");
-define("_TOKENCONTROL", "Controlla identificativo");
-define("_TOKENDBADMIN", "Amministrazione Database degli identificativi");
-define("_DROPTOKENS", "Elimina tabella degli identificativi");
+define("_TOKENCONTROL", "Gestione identificativi");
+define("_TOKENDBADMIN", "Amministrazione Database identificativi");
+define("_DROPTOKENS", "Elimina tabella identificativi");
 define("_EMAILINVITE", "Invia invito");
 define("_EMAILREMIND", "Invia sollecita");
-define("_TOKENIFY", "Genera identificativo");
+define("_TOKENIFY", "Genera identificativi");
 define("_UPLOADCSV", "Fai Upload del File CSV");
 define("_LABELCONTROL", "Gestione etichette"); //NEW with 0.98rc3
 define("_LABELSET", "Gruppo di etichette"); //NEW with 0.98rc3
@@ -77,10 +77,10 @@ define("_S_EDIT_BT", "Modifica indagine");
 define("_S_DELETE_BT", "Elimina indagine");
 define("_S_EXPORT_BT", "Esporta indagine");
 define("_S_BROWSE_BT", "Sfoglia risposte");
-define("_S_TOKENS_BT", "Genera gli identificativi");
+define("_S_TOKENS_BT", "Genera identificativi");
 define("_S_ADDGROUP_BT", "Aggiungi gruppo");
-define("_S_MINIMISE_BT", "Nascondi dettagli dell&#039;indagine");
-define("_S_MAXIMISE_BT", "Mostra dettagli dell&#039;indagine");
+define("_S_MINIMISE_BT", "Nascondi dettagli indagine");
+define("_S_MAXIMISE_BT", "Mostra dettagli indagine");
 define("_S_CLOSE_BT", "Chiudi indagine");
 define("_S_SAVED_BT", "Visualizza le risposte salvate ma non inviate"); //New in 0.99dev01
 define("_S_ASSESSMENT_BT", "Stabilisci le regole di valutazione"); //New in  0.99dev01
@@ -108,7 +108,7 @@ define("_B_ADMIN_BT", "Amministrazione generale");
 define("_B_SUMMARY_BT", "Riepilogo");
 define("_B_ALL_BT", "Mostra risposte");
 define("_B_LAST_BT", "Ultime 50 risposte");
-define("_B_STATISTICS_BT", "Statistiche sulle risposte");
+define("_B_STATISTICS_BT", "Statistiche");
 define("_B_EXPORT_BT", "Esporta risultati");
 define("_B_BACKUP_BT", "Backup dei risultati in file SQL");
 //Tokens Button Bar
@@ -118,7 +118,7 @@ define("_T_IMPORT_BT", "Importa file CSV");
 define("_T_EXPORT_BT", "Esporta gli identificativi come file CSV"); //New for 0.98rc7
 define("_T_INVITE_BT", "Invia invito");
 define("_T_REMIND_BT", "Invia sollectito");
-define("_T_TOKENIFY_BT", "Genera identificativo");
+define("_T_TOKENIFY_BT", "Genera password di identificazione");
 define("_T_KILL_BT", "Elimina le tabelle degli identificativi");
 //Labels Button Bar
 define("_L_ADDSET_BT", "Aggiungi nuovo gruppo di etichette");
@@ -133,7 +133,7 @@ define("_D_END", "Fine");
 //DATA LABELS
 //surveys
 define("_SL_TITLE", "Titolo:");
-define("_SL_SURVEYURL", "UTL dell&#039;indagine:"); //new in 0.98rc5
+define("_SL_SURVEYURL", "URL dell&#039;indagine:"); //new in 0.98rc5
 define("_SL_DESCRIPTION", "Descrizione:");
 define("_SL_WELCOME", "Benvenuto:");
 define("_SL_ADMIN", "Amministratore:");
@@ -152,8 +152,8 @@ define("_SL_STATUS", "Stato:");
 define("_SL_SELSQL", "Seleziona File SQL:");
 define("_SL_USECOOKIES", "Uso dei cookie"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Notifica:"); //New with 098rc5
-define("_SL_ALLOWREGISTER", "Permetti una registrazione pubblica?"); //New with 0.98rc9
-define("_SL_ATTRIBUTENAMES", "Nomi degli attributi degli identificativi:"); //New with 0.98rc9
+define("_SL_ALLOWREGISTER", "Permetti una registrazione pubblica"); //New with 0.98rc9
+define("_SL_ATTRIBUTENAMES", "Nomi dei campi degli attributi degli identificativi:"); //New with 0.98rc9
 define("_SL_EMAILINVITE_SUBJ", "Oggetto della e-mail di invito:"); //New with 0.99dev01
 define("_SL_EMAILINVITE", "Testo della e-mail di invito:"); //New with 0.98rc9
 define("_SL_EMAILREMIND_SUBJ", "Oggetto della e-mail di sollecito:"); //New with 0.99dev01
@@ -165,7 +165,7 @@ define("_SL_EMAILCONFIRM", "Testo e-mail di conferma completamento indagine"); /
 define("_SL_REPLACEOK", "Questo rimpiazzer&agrave; il testo esistente. Vuoi preseguire?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Permetti il salvataggio"); //New with 0.99dev01
 define("_SL_AUTONUMBER", "Fai partire gli ID dal numero:"); //New with 0.99dev01
-define("_SL_AUTORELOAD", "Carica automaticamente l&#039;URL quando l&#039;indagine &egrave; completa?"); //New with 0.99dev01
+define("_SL_AUTORELOAD", "Carica automaticamente l&#039;URL quando l&#039;indagine &egrave; completa"); //New with 0.99dev01
 define("_SL_ALLOWPREV", "Mostra il pulsante [Indietro]"); //New with 0.99dev01
 define("_SL_USE_DEFAULT","Usa il default");
 define("_SL_UPD_SURVEY","Aggiorna l&#039;indagine");
@@ -231,7 +231,7 @@ define("_LL_SORTORDER", "Ordine"); //NEW with 098rc3
 define("_LL_ACTION", "Azione"); //New with 098rc3
 
 //QUESTION TYPES
-define("_5PT", "Lista con 5 opzioni");
+define("_5PT", "Attribuzione punteggio (1-5)");
 define("_DATE", "Data");
 define("_GENDER", "Genere");
 define("_LIST", "Lista (Radio)"); //Changed with 0.99dev01
@@ -239,19 +239,19 @@ define("_LIST_DROPDOWN", "Lista (Dropdown)"); //New with 0.99dev01
 define("_LISTWC", "Lista con commento");
 define("_MULTO", "Scelta multipla");
 define("_MULTOC", "Scelta multipla con commenti");
-define("_MULTITEXT", "Diversi testi brevi");
-define("_NUMERICAL", "Numeri");
-define("_RANK", "Classifica");
+define("_MULTITEXT", "Testo breve multiplo");
+define("_NUMERICAL", "Inserimento numerico");
+define("_RANK", "Classifica/Ordinamento");
 define("_STEXT", "Testo libero breve");
 define("_LTEXT", "Testo libero lungo");
 define("_HTEXT", "Testo libero maxi"); //New with 0.99dev01
 define("_YESNO", "SI/NO");
-define("_ARR5", "Scelta (5 opzioni)");
-define("_ARR10", "Scelta (10 opzioni)");
+define("_ARR5", "Scelta (punteggio 1-5)");
+define("_ARR10", "Scelta (punteggio 1-10)");
 define("_ARRYN", "Scelta (SI/NO/NON SO)");
-define("_ARRMV", "Scelta (Crescente, Uguale, Descrescente)");
-define("_ARRFL", "Scelta (Variabile)"); //(FOR LATER RELEASE)
-define("_ARRFLC", "Matrice (Array) (Etichetta variabile  per colonna)"); //Release 0.98rc8
+define("_ARRMV", "Scelta (in aumento, costante, in diminuzione)");
+define("_ARRFL", "Scelta (Etichetta variabile)"); //(FOR LATER RELEASE)
+define("_ARRFLC", "Scelta (Etichetta variabile per colonna)"); //Release 0.98rc8
 define("_SINFL", "Campo unico (Flessibile)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Indirizzo e-mail"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Domande Boilerplate"); //New in 0.98rc6
@@ -284,7 +284,7 @@ define("_PASSWORD", "Password");
 define("_DELETE", "Elimina indagine");
 define("_CLOSEWIN", "Chiudi finestra");
 define("_TOKEN", "Identificativo");
-define("_DATESTAMP", "Data fine indagine"); //Referring to the datestamp or time response submitted
+define("_DATESTAMP", "Data invio indagine"); //Referring to the datestamp or time response submitted
 define("_COMMENT", "Commento");
 define("_FROM", "Da"); //For emails
 define("_SUBJECT", "Oggetto"); //For emails
@@ -442,7 +442,7 @@ define("_EX_FROMSTATS", "Filtra Script delle Statistiche");
 define("_EX_HEADINGS", "Domande");
 define("_EX_ANSWERS", "Risposte");
 define("_EX_FORMAT", "Formato");
-define("_EX_HEAD_ABBREV", "Abbreviazioni dei titoli");
+define("_EX_HEAD_ABBREV", "Titoli abbreviati");
 define("_EX_HEAD_FULL", "Titoli completi");
 define("_EX_ANS_ABBREV", "Codice risposte");
 define("_EX_ANS_FULL", "Risposte complete");
@@ -490,14 +490,14 @@ define("_BR_NOTACTIVATED", "L&#039;indagine non &egrave; attiva. Non ci sono dat
 define("_BR_NOSURVEY", "L&#039;indagine non esiste.");
 define("_BR_EDITRESPONSE", "Modifica risposta");
 define("_BR_DELRESPONSE", "Elimina risposta");
-define("_BR_DISPLAYING", "Dati visualizzati:");
-define("_BR_STARTING", "Da:");
+define("_BR_DISPLAYING", "Record visualizzati:");
+define("_BR_STARTING", "Inizio da:");
 define("_BR_SHOW", "Mostra");
 define("_DR_RUSURE", "Sei sicuro di voler cancellare quanto hai inserito?"); //New for 0.98rc6
 
 //STATISTICS MESSAGES
 define("_ST_FILTERSETTINGS", "Imposta filtro");
-define("_ST_VIEWALL", "Vista sommaria di tutti i campi disponibili"); //New with 0.98rc8
+define("_ST_VIEWALL", "Vista delle Stats di tutte le domande disponibili"); //New with 0.98rc8
 define("_ST_SHOWRESULTS", "Vista delle statistiche"); //New with 0.98rc8
 define("_ST_CLEAR", "Annulla"); //New with 0.98rc8
 define("_ST_RESPONECONT", "Risposte contenenti"); //New with 0.98rc8
@@ -507,7 +507,7 @@ define("_ST_DATEEQUALS", "Data (YYYY-MM-DD) eguaglia"); //New with 0.98rc8
 define("_ST_ORBETWEEN", "OR tra"); //New with 0.98rc8
 define("_ST_RESULTS", "Risultati"); //New with 0.98rc8 (Plural)
 define("_ST_RESULT", "Risultato"); //New with 0.98rc8 (Singular)
-define("_ST_RECORDSRETURNED", "Numero di records in questa query"); //New with 0.98rc8
+define("_ST_RECORDSRETURNED", "Numero di record in questa query"); //New with 0.98rc8
 define("_ST_TOTALRECORDS", "Record totali nell&#039;indagine"); //New with 0.98rc8
 define("_ST_PERCENTAGE", "Percentuale del totale"); //New with 0.98rc8
 define("_ST_FIELDSUMMARY", "Campo sommario per"); //New with 0.98rc8
@@ -520,7 +520,7 @@ define("_ST_MAX", "Massimo"); //New with 0.98rc8 - Mathematical
 define("_ST_Q1", "Primo Quartile (Q1)"); //New with 0.98rc8 - Mathematical
 define("_ST_Q2", "Secondo Quartile (Mediana)"); //New with 0.98rc8 - Mathematical
 define("_ST_Q3", "Terzo Quartile (Q3)"); //New with 0.98rc8 - Mathematical
-define("_ST_NULLIGNORED", "*VAlori nulli sono ignorati bei calcoli"); //New with 0.98rc8
+define("_ST_NULLIGNORED", "*Valori nulli sono ignorati nei calcoli"); //New with 0.98rc8
 define("_ST_QUARTMETHOD", "*Q1 and Q3 sono calcolati utilizzando il <a href=&#039;http://mathforum.org/library/drmath/view/60969.html&#039; target=&#039;_blank&#039;>metodo minitab</a>"); //New with 0.98rc8
 
 //DATA ENTRY MESSAGES
@@ -573,7 +573,7 @@ define("_TC_CLEARTOKENS", "Elimina codici associati agli identificativi");
 define("_TC_CLEARTOKENS_RUSURE", "Elimina tutti i codici associati agli identificativi?");
 define("_TC_TOKENSCLEARED", "I codici associati agli identificativi sono stati eliminati");
 define("_TC_INVITESCLEARED", "Gli inviti non verranno spediti");
-define("_TC_EDIT", "Genera identificativi");
+define("_TC_EDIT", "Genera idenficativi");
 define("_TC_DEL", "Elimina identificativi");
 define("_TC_DO", "Prova Indagine");
 define("_TC_VIEW", "Mostra Risposta");
@@ -583,7 +583,7 @@ define("_TC_INVITESUBJECT", "Invito a partecipare all&#039;indagine {SURVEYNAME}
 define("_TC_REMINDSUBJECT", "Sollecito a partecipare all&#039;indagine {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
 define("_TC_REMINDSTARTAT", "Incomincia dall&#039;ID dell&#039;identificativo n.:");
 define("_TC_REMINDTID", "Invia a ID dell&#039;identificativo n.:");
-define("_TC_CREATETOKENSINFO", "Cliccando su SI verranno generati automaticamente i codici e gli identificativi per tutti gli utenti che ne sono ancora sprovvisti. Procedere?");
+define("_TC_CREATETOKENSINFO", "Facendo clic su SI verranno generati automaticamente i codici e le password di identificazione per tutti gli utenti che ne sono ancora sprovvisti. Procedere?");
 define("_TC_TOKENSCREATED", "{TOKENCOUNT} identificativi sono stati creati"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
 define("_TC_TOKENDELETED", "Identificativo eliminato.");
 define("_TC_SORTBY", "Ordina: ");
@@ -673,11 +673,11 @@ define("_PS_CHECKDBINTEGRITY", "Controlla l&#039;integrit&agrave; dei dati di PH
 //Notification Levels
 define("_NT_NONE", "Nessuna e-mail di notifica"); //New with 098rc5
 define("_NT_SINGLE", "e-mail di notifica standard"); //New with 098rc5
-define("_NT_RESULTS", "e-mail di notifica con le rsiposte inviate"); //New with 098rc5
+define("_NT_RESULTS", "e-mail di notifica con risposte"); //New with 098rc5
 
 //CONDITIONS TRANSLATIONS
 define("_CD_CONDITIONDESIGNER", "Definizione delle Condizioni"); //New with 098rc9
-define("_CD_ONLYSHOW", "Mostra questa domanda con codice {QID} solo SE"); //New with 098rc9 - {QID} is repleaced leave there
+define("_CD_ONLYSHOW", "Mostra questa domanda con codice   {QID}   solo SE:"); //New with 098rc9 - {QID} is repleaced leave there
 define("_CD_AND", "AND"); //New with 098rc9
 define("_CD_COPYCONDITIONS", "Copia condizioni"); //New with 098rc9
 define("_CD_CONDITION", "Condizione"); //New with 098rc9
@@ -736,11 +736,11 @@ define("_SV_REMIND", "Ricorda");
 define("_SV_EDIT", "Modifica");
 
 //VVEXPORT/IMPORT
-define("_VV_IMPORTFILE", "Importa file indagine VV");
-define("_VV_EXPORTFILE", "Esporta file indagine VV");
+define("_VV_IMPORTFILE", "Importa file VV indagine");
+define("_VV_EXPORTFILE", "Esporta file VV indagine");
 define("_VV_FILE", "File:");
 define("_VV_SURVEYID", "ID dell&#039;indagine:");
-define("_VV_EXCLUDEID", "Escludi ID dei record?");
+define("_VV_EXCLUDEID", "Escludi ID dei record");
 define("_VV_INSERT", "Quando un record importato &egrave; simile ad un record esistente con ID:");
 define("_VV_INSERT_ERROR", "Segnala un errore (e salta ad un nuovo record).");
 define("_VV_INSERT_RENUMBER", "Rinumera il nuovo record.");
@@ -748,11 +748,11 @@ define("_VV_INSERT_IGNORE", "Ignora il nuovo record.");
 define("_VV_INSERT_REPLACE", "Sostituisci il record esistente.");
 define("_VV_DONOTREFRESH", "Nota importante:<br />NON AGGIORNARE questa pagina, pech&egrave; questo comporta l&#039;importazione di un nuovo file e  produrr&agrave; duplicati");
 define("_VV_IMPORTNUMBER", "Totale dei record importati:");
-define("_VV_ENTRYFAILED", "Importazione fallitasul record");
+define("_VV_ENTRYFAILED", "Importazione fallita sul record");
 define("_VV_BECAUSE", "perch&egrave;");
 define("_VV_EXPORTDEACTIVATE", "Esporta, quindi disattiva l&#039;indagine");
 define("_VV_EXPORTONLY", "Esporta ma lascia attiva l&#039;indagine");
-define("_VV_RUSURE", "Se hai scelto di esportare e disattivare, questo rinominer&agrave; la tabella corrente delle risposte e non sar&agrave; facile ripristinare. Sei sicuro?");
+define("_VV_RUSURE", "Se hai scelto di esportare disattivando l'indagine la tabella corrente delle risposte verrà rinominata e non sar&agrave; facile ripristinarla. Sei sicuro di voler procedere?");
 
 //ASSESSMENTS
 define("_AS_TITLE", "Valutazioni");
@@ -771,7 +771,7 @@ define("_AS_SCOPE_TOTAL", "Totale");
 define("_AS_ACTIONS", "Azioni");
 define("_AS_EDIT", "Modifica");
 define("_AS_DELETE", "Cancella");
-define("_AS_ADD", "Aggiungi");
+define("_AS_ADD", "Aggiungi/Modifica");
 define("_AS_UPDATE", "Aggiorna");
 
 //Question Number regeneration
