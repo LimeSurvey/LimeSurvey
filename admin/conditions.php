@@ -372,6 +372,18 @@ if ($questionscount > 0)
 						}
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
 					break;
+				case "W":
+				case "Z":
+					$fquery = "SELECT * FROM {$dbprefix}labels\n"
+						. "WHERE lid={$rows['lid']}\n"
+						. "ORDER BY sortorder, code";
+					
+					$fresult = mysql_query($fquery);
+					while ($frow=mysql_fetch_array($fresult))
+						{
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
+						}
+					break;
 				default:
 					$aquery="SELECT * FROM {$dbprefix}answers\n"
 						   ."WHERE qid={$rows['qid']}\n"
