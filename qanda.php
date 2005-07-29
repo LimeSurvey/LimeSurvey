@@ -34,7 +34,7 @@
     #############################################################
 */
 
-if (!defined(_YES)) {die ("Cannot run this script directly");}
+if (!defined("_YES")) {die ("Cannot run this script directly");}
 
 /*
  * Let's explain what this strange $ia var means
