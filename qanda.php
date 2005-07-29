@@ -33,6 +33,9 @@
     # Suite 330, Boston, MA  02111-1307, USA.                   #
     #############################################################
 */
+
+if (!defined(_YES)) {die ("Cannot run this script directly");}
+
 /*
  * Let's explain what this strange $ia var means
  *
