@@ -142,7 +142,7 @@ define("_SL_FAXTO", "Fax:");
 define("_SL_ANONYMOUS", "Anonimo");
 define("_SL_EXPIRES", "Scadenza:");
 define("_SL_FORMAT", "Formato:");
-define("_SL_DATESTAMP", "Data fine indagine");
+define("_SL_DATESTAMP", "Data invio questionario completato");
 define("_SL_TEMPLATE", "Template:");
 define("_SL_LANGUAGE", "Lingua:");
 define("_SL_LINK", "Link:");
@@ -165,7 +165,7 @@ define("_SL_EMAILCONFIRM", "Testo e-mail di conferma completamento indagine"); /
 define("_SL_REPLACEOK", "Questo rimpiazzer&agrave; il testo esistente. Vuoi preseguire?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Permetti il salvataggio"); //New with 0.99dev01
 define("_SL_AUTONUMBER", "Fai partire gli ID dal numero:"); //New with 0.99dev01
-define("_SL_AUTORELOAD", "Carica automaticamente l&#039;URL quando l&#039;indagine &egrave; completa"); //New with 0.99dev01
+define("_SL_AUTORELOAD", "Rinvia automaticamente ad URL"); //New with 0.99dev01
 define("_SL_ALLOWPREV", "Mostra il pulsante [Indietro]"); //New with 0.99dev01
 define("_SL_USE_DEFAULT","Usa il default");
 define("_SL_UPD_SURVEY","Aggiorna l&#039;indagine");
@@ -284,7 +284,7 @@ define("_PASSWORD", "Password");
 define("_DELETE", "Elimina indagine");
 define("_CLOSEWIN", "Chiudi finestra");
 define("_TOKEN", "Identificativo");
-define("_DATESTAMP", "Data invio indagine"); //Referring to the datestamp or time response submitted
+define("_DATESTAMP", "Data invio questionario completato"); //Referring to the datestamp or time response submitted
 define("_COMMENT", "Commento");
 define("_FROM", "Da"); //For emails
 define("_SUBJECT", "Oggetto"); //For emails
@@ -715,7 +715,7 @@ define("_TP_OTHERFILES", "Altri File:"); //New with 098rc9
 define("_TP_PREVIEW", "Anteprima:"); //New with 098rc9
 define("_TP_DELETEFILE", "Cancella"); //New with 098rc9
 define("_TP_UPLOADFILE", "Upload"); //New with 098rc9
-define("_TP_SCREEN", "Schermata:"); //New with 098rc9
+define("_TP_SCREEN", "Finestra:"); //New with 098rc9
 define("_TP_WELCOMEPAGE", "Pagina Benvenuto"); //New with 098rc9
 define("_TP_QUESTIONPAGE", "Pagina Domanda"); //New with 098rc9
 define("_TP_SUBMITPAGE", "Pagina Invio");
