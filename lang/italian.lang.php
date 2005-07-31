@@ -15,7 +15,7 @@
     #                                                           #
     #   Copyright (C) 2003  Jason Cleeland                      #
     #                                                           #
-    # Thiss program is free software; you can redistribute       #
+    # This program is free software; you can redistribute       #
     # it and/or modify it under the terms of the GNU General    #
     # Public License as published by the Free Software          #
     # Foundation; either version 2 of the License, or (at your  #
@@ -51,9 +51,9 @@ define("_OTHER", "Altro");
 define("_PLEASECHOOSE", "Seleziona");
 define("_ERROR_PS", "Errore");
 define("_COMPLETE", "Completato");
-define("_INCREASE", "Crescente"); //NEW WITH 0.98
+define("_INCREASE", "In aumento"); //NEW WITH 0.98
 define("_SAME", "Uguale"); //NEW WITH 0.98
-define("_DECREASE", "Descrescente"); //NEW WITH 0.98
+define("_DECREASE", "In diminuzione"); //NEW WITH 0.98
 define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Conferma");
@@ -76,19 +76,19 @@ define("_NUMERICAL_PS", "Inserire solo numeri");
 define("_CLEARALL", "Azzera e esci dall&#039;indagine");
 define("_MANDATORY", "Domanda obbligatoria");
 define("_MANDATORY_PARTS", "Si prega di completare tutti i campi");
-define("_MANDATORY_CHECK", "Si prega di selezionare almeno un&#039;opzione");
+define("_MANDATORY_CHECK", "Si prega di selezionare almeno una opzione");
 define("_MANDATORY_RANK", "Seleziona tutti i campi");
 define("_MANDATORY_POPUP", "Non hai risposto ad una o più domande obbligatorie. Non è possibile continuare senza che queste siano state completate"); //NEW in 0.98rc4
 define("_VALIDATION", "Devi rispondere correttamente a questa domanda"); //NEW in VALIDATION VERSION
-define("_VALIDATION_POPUP", "Non hai risposto in modo valido ad una o più domande. Non è possibile continuare finch&ugrave; queste risposte non siano valide"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "Non hai risposto in modo valido ad una o più domande. Non è possibile continuare finchè queste risposte non siano valide"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Formato: AAAA-MM-GG");
 define("_DATEFORMATEG", "(ad es.: 2004-12-25 giorno di Natale)");
 define("_REMOVEITEM", "Azzera");
-define("_RANK_1", "Fai clic su un&#039;opzione della lista a sinistra, incominciando");
+define("_RANK_1", "Fai clic su una opzione della lista a sinistra, incominciando");
 define("_RANK_2", "dal pi&ugrave; basso al pi&ugrave; alto.");
 define("_YOURCHOICES", "Le tue scelte");
 define("_YOURRANKING", "La tua classifica");
-define("_RANK_3", "FAi clic sulla icona delle forbici a destra di ogni articolo");
+define("_RANK_3", "Fai clic sulla icona delle forbici a destra di ogni articolo");
 define("_RANK_4", "per eliminare l&#039;ultimo dato inserito nella classifica");
 //From INDEX.PHP
 define("_NOSID", "Inserire il numero di identificazione dell&#039;indagine");
@@ -141,8 +141,8 @@ define("_PRIVACY_MESSAGE", "<b><i>Note sulla Privacy</i></b><br />"
 						  ."I dati che stai fornendo verranno trattati unicamente a fini"
 						  ."di ricerca "
 						  ."e nel rispetto della privacy. Se fai clic "
-						  ."sul pulsante Invia accetti queste condizion,i altrimenti fai clic su Azzera ed esci dall'indagine "
-						  ."per uscire dal questionario."); //New for 0.98rc9
+						  ."sul pulsante Invia accetti queste condizioni altrimenti fai clic su 'Azzera ed esci dall'indagine' "
+						  ."per abbandonare il questionario."); //New for 0.98rc9
 
 define("_THEREAREXQUESTIONS", "Vi sono {NUMBEROFQUESTIONS} domande in questa indagine."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "Vi &egrave; 1 domanda in questa indagine."); //New for 0.98rc9 - singular version of above
@@ -164,8 +164,8 @@ define ("_RG_REGISTRATIONCOMPLETE", "Grazie per esserti registrato per participa
 
 define("_SM_COMPLETED", "<b>Grazie,<br /><br />"
 					   ."per aver risposto alle domande del questionario.</b><br /><br />"
-					   ."Fai clic su ["._SUBMIT."] per completare le procedure e salvare le tue risposte."); //New for 0.98finalRC1
-define("_SM_REVIEW", "Se vuoi controllare ciascuna risposta data e cambiarne qualcuna "
+					   ."Fai clic sul pulsante ["._SUBMIT."] per completare il questionario e salvare le risposte fornite."); //New for 0.98finalRC1
+define("_SM_REVIEW", "Se vuoi controllare le risposte date e, eventualmente, cambiarne qualcuna "
 					."fai clic sul pulsante [<< "._PREV."]"); //New for 0.98finalRC1
 
 //For the "printable" survey
