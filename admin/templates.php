@@ -664,12 +664,12 @@ foreach($myoutput as $line) {
 	fwrite($fnew, $line);
 }
 fclose($fnew);
-
+$langdir_template="$homeurl/lang/$defaultlang";
 echo "<font face='verdana' size='2'><br />\n"
 	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'></iframe>\n"
 	."<br />&nbsp;<br />"
 	."</td></tr></table>\n"
-	.htmlfooter("$langdir/instructions.html#Templates", "");
+	.htmlfooter("$langdir_template/instructions.html#Templates", "");
 
 function unlink_wc($dir, $pattern){
    if ($dh = opendir($dir)) { 
