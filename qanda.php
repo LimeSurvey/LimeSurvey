@@ -1567,9 +1567,10 @@ function do_array_5point($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $myfname = $ia[1].$ansrow['code'];
+		$answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                 . "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
+                 . "\t\t\t\t\t<td align='right'>$answertext</td>\n";
         for ($i=1; $i<=5; $i++)
             {
             $answer .= "\t\t\t\t\t<td><label for='$myfname-$i'>"
@@ -1621,9 +1622,10 @@ function do_array_10point($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $myfname = $ia[1].$ansrow['code'];
+		$answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n";
-        $answer .= "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n";
+        $answer .= "\t\t\t\t\t<td align='right'>$answertext</td>\n";
         for ($i=1; $i<=10; $i++)
             {
             $answer .= "\t\t\t\t\t\t<td><label for='$myfname-$i'>"
@@ -1673,9 +1675,10 @@ function do_array_yesnouncertain($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $myfname = $ia[1].$ansrow['code'];
+		$answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                 . "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n"
+                 . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='$myfname-Y'>"
                  ."<input class='radio' type='radio' name='$myfname' id='$myfname-Y' value='Y' title='"._YES."'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
@@ -1731,9 +1734,10 @@ function do_array_increasesamedecrease($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $myfname = $ia[1].$ansrow['code'];
+		$answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                 . "\t\t\t\t\t<td align='right'>{$ansrow['answer']}</td>\n"
+                 . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='$myfname-I'>"
                  ."<input class='radio' type='radio' name='$myfname' id='$myfname-I' value='I' title='"._INCREASE."'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "I") {$answer .= " checked";}
@@ -1796,8 +1800,8 @@ function do_array_flexible($ia)
                  . "\t\t\t\t\t<td></td>\n";
         foreach ($labelans as $ld)
             {
-            $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>".$ld."</font></th>\n";
-            }
+	        $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>".$ld."</font></th>\n";
+	        }
         if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
             {
             $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>"._NOANSWER."</font></th>\n";
@@ -1823,8 +1827,9 @@ function do_array_flexible($ia)
                 }
             $myfname = $ia[1].$ansrow['code'];
             if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+			$answertext=answer_replace($ansrow['answer']);
             $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                     . "\t\t\t\t\t<td align='right' class='answertext' width='20%'>{$ansrow['answer']}</td>\n";
+                     . "\t\t\t\t\t<td align='right' class='answertext' width='20%'>$answertext</td>\n";
             $thiskey=0;
             foreach ($labelcode as $ld)
                 {
@@ -1893,7 +1898,7 @@ function do_array_flexiblecolumns($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $anscode[]=$ansrow['code'];
-        $answers[]=$ansrow['answer'];
+        $answers[]=answer_replace($ansrow['answer']);
         }
     foreach ($answers as $ld)
         {
@@ -1942,6 +1947,17 @@ function do_array_flexiblecolumns($ia)
     return array($answer, $inputnames);
     }
 
+function answer_replace($text) {
+	while (strpos($text, "{INSERTANS:") !== false) 
+        {
+        $replace=substr($text, strpos($ld, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
+        $replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
+        $replace3=retrieve_Answer($replace2);
+        $text=str_replace($replace, $replace3, $text);
+        } //while
+	return $text;
+}
+	
 function retrieve_Answer($code)
     {
     //This function checks to see if there is an answer saved in the survey session
