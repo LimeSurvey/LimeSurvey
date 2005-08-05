@@ -143,9 +143,9 @@ define("_PRIVACY_MESSAGE", "<strong><i>Note sur la protection de la vie priv&eac
                                                   ."Ce questionnaire est anonyme.<br />"
                                                   ."Les enregistrements conserv&eacute;s de votre questionnaire ne contiennent aucune "
                                                   ."information d&#146;identification &agrave; moins bien s&ucirc;r qu&#146;une question  "
-                                                  ."sur votre identit&eacute; ai &eacute;t&eacute; pos&eacute;e dans le questionnaire. Si vous avez r&eacute;pondu &agrave; "
+                                                  ."sur votre identit&eacute; ait &eacute;t&eacute; pos&eacute;e dans le questionnaire. Si vous avez r&eacute;pondu &agrave; "
                                                   ."un questionnaire utilisant une invitation pour vous permettre d&#146;y acc&eacute;der, "
-                                                  ."vous pouvez &ecirc;tre assur&eacute;s que cet identifiant. "
+                                                  ."vous pouvez &ecirc;tre assur&eacute; que cet identifiant. "
                                                   ."n&#146;est pas conserv&eacute; avec vos r&eacute;ponses. Il est ger&eacute; dans une base de donn&eacute;es s&eacute;par&eacute;e "
                                                   ."et ne pourra pas &ecirc;tre mis &agrave; jour pour indiquer que vous "
                                                   ."avez complet&eacute; ce questionnaire. Il n&#146;y a aucun moyen pour faire correspondre "
@@ -162,7 +162,7 @@ define ("_RG_EMAIL", "Adresse mail"); //NEW for 0.98rc9
 define ("_RG_FIRSTNAME", "Pr&eacute;nom"); //NEW for 0.98rc9
 define ("_RG_LASTNAME", "Nom"); //NEW for 0.98rc9
 define ("_RG_INVALIDEMAIL", "L&#146;adresse mail utilis&eacute;e n&#146;est pas valide. Veuillez re&eacute;ssayer.");//NEW for 0.98rc9
-define ("_RG_USEDEMAIL", "L&#146;adressemail utilis&eacutee; a d&eacute;j&agrave; &eacute;t&eacute; enregistr&eacute;.");//NEW for 0.98rc9
+define ("_RG_USEDEMAIL", "L&#146;adresse mail utilis&eacutee; a d&eacute;j&agrave; &eacute;t&eacute; enregistr&eacute;.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "Confirmation d&#146;enregistrement de {SURVEYNAME}");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "Merci de vous enregistrer pour participer &agrave; ce questionnaire.<br /><br />\n"
                                                                    ."Un mail a &eacute;t&eacute; envoy&eacute; &agrave; l&#146;adresse que vous avez fournie dans les d&eacute;tails d&#146;acc&eacute;s "
@@ -221,7 +221,7 @@ define("_SAVE_EMAILTEXT", "Vous, ou quelqu&#146;un utilisant votre adresse mail,
 define("_SAVE_EMAILURL", "Rechargez votre questionnaire en cliquant sur l&#146;URL suivante :");
 define("_SAVE_SUCCEEDED", "Vos r&eacute;ponses &agrave; ce questionnaire ont &eacute;t&eacute, sauvegard&eacute;es avec succ&egrave;s");
 define("_SAVE_FAILED", "Une erreur est survenue et vos r&eacute;ponses n&#146;ont pas &eacute;t&eacute; sauvegard&eacute;es.");
-define("_SAVE_EMAILSENT", "Un mail vous a&eacute;t&eacute; envoy&eacute; avec les d&eacute;tails de ce questionnaire.");
+define("_SAVE_EMAILSENT", "Un mail vous a &eacute;t&eacute; envoy&eacute; avec les d&eacute;tails de ce questionnaire.");
 
 //Load Messages
 define("_LOAD_SAVED", "Chargement des r&eacuteponses d&eacute;j&agrave; enregistr&eacute;es pour ce questionnaire");
