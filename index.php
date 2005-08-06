@@ -62,8 +62,8 @@ if (!$surveyid)
 		}
 	echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><strong>ERROR</strong></font><br />\n"
-		."\t\t\tYou have not provided a survey identification number.<br /><br />\n"
-		."\t\t\tPlease contact <i>$siteadminname</i> at <i>$siteadminemail</i> for further assistance.<br /><br />\n";
+		."\t\t\t"._NOSID."\n"
+		."\t\t\t"._CONTACT1." $siteadminname ( $siteadminemail ) "._CONTACT2."\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
 		{
