@@ -35,7 +35,7 @@
 */
 
 //Ensure script is not run directly, avoid path disclosure
-if (!defined("_YES")) {die ("Cannot run this script directly");}
+if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
 if ($action == "checksettings" || $action == "changelang")
 	{
