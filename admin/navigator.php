@@ -1,6 +1,9 @@
 <?php
 //require_once("config.php");
 
+//Ensure script is not run directly, avoid path disclosure
+if (!defined("_YES")) {die ("Cannot run this script directly");}
+
 require_once("{$homedir}/classes/TreeMenuXL.php");
 
 $scriptname="index.php"; //REMOVE WHEN FINALLY INTEGRATED - THIS JUST OVERRIDES THE 'admin.php' setting

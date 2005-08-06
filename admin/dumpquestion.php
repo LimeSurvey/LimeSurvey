@@ -40,6 +40,9 @@
 // 1. questions
 // 2. answers
 
+//Ensure script is not run directly, avoid path disclosure
+if (empty($_GET['qid'])) {die ("Cannot run this script directly");}
+
 $qid = $_GET['qid'];
 
 require_once("config.php");

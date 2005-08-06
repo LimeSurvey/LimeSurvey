@@ -6,6 +6,7 @@ if (!isset($style)) {$style=returnglobal('style');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
 
+if (empty($surveyid)) {die("Cannot run this script directly");}
 #Get all legitimate question ids
 sendcacheheaders();
 $query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER

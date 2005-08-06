@@ -33,6 +33,8 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
+//Ensure script is not run directly, avoid path disclosure
+if (empty($_GET['sid'])) {die ("Cannot run this script directly");}
 
 $surveyid = $_GET['sid'];
 

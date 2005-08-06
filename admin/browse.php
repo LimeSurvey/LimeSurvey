@@ -41,6 +41,9 @@ if (!isset($id)) {$id=returnglobal('id');}
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($order)) {$order=returnglobal('order');}
 
+//Ensure script is not run directly, avoid path disclosure
+if (empty($surveyid)) {die("No SID provided.");}
+
 sendcacheheaders();
 
 //Select public language file

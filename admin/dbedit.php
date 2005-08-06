@@ -33,6 +33,10 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
+
+//Ensure script is not run directly, avoid path disclosure
+if (!defined("_YES")) {die ("Cannot run this script directly");}
+
 if (call_user_func($auth_function)) {
 	switch($dbaction){
 		case "addlabelset":

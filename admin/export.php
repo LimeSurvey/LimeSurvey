@@ -41,6 +41,10 @@ if (!isset($style)) {$style=returnglobal('style');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
 
+
+//Ensure script is not run directly, avoid path disclosure
+if (empty($surveyid)) {die ("Cannot run this script directly");}
+
 if (!$style)
 	{
 	sendcacheheaders();

@@ -33,6 +33,9 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
+//Ensure script is not run directly, avoid path disclosure
+if (empty($_GET['dbname'])) {die ("Cannot run this script directly");}
+
 $dbname = $_GET['dbname'];
 
 require_once("config.php");

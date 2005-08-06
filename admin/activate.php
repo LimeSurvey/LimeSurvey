@@ -34,6 +34,9 @@
 	#############################################################	
 */
 
+//Ensure script is not run directly, avoid path disclosure
+if (!defined("_YES")) {die ("Cannot run this script directly");}
+
 if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 	if (isset($_GET['fixnumbering']) && $_GET['fixnumbering'])

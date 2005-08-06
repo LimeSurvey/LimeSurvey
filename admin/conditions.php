@@ -39,6 +39,9 @@ require_once("config.php");
 
 $surveyid=returnglobal('sid');
 
+//Ensure script is not run directly, avoid path disclosure
+if (empty($surveyid)) {die("No SID provided.");}
+
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
 while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}

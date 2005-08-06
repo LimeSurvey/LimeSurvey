@@ -1493,7 +1493,9 @@ if (isset($_POST['summary']) && $_POST['summary'])
                         $p1->value->SetColor("#555555");
                     } else { //Pie Chart
                         $p1 = new PiePlot3d($gdata);
-                        $p1->SetTheme("earth");
+                        echo "<pre>";print_r($lbl);echo "</pre>";
+                        echo "<pre>";print_r($gdata);echo "</pre>";
+						$p1->SetTheme("earth");
                         $p1->SetLegends($lbl);
                         $p1->SetSize(200);
                         $p1->SetCenter(0.375,$setcentrey);

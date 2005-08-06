@@ -44,6 +44,9 @@ require_once("config.php");
 $gid = returnglobal('gid');
 $surveyid = returnglobal('sid');
 
+//Ensure script is not run directly, avoid path disclosure
+if (empty($gid)) {die ("Cannot run this script directly");}
+
 //echo $htmlheader;
 if (!$gid)
 	{

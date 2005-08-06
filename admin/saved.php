@@ -37,7 +37,9 @@ include_once("config.php");
 $surveyid=returnglobal('sid');
 $action=returnglobal('action');
 $scid=returnglobal('scid');
-if (!$surveyid) {echo _ERROR;}
+
+//Ensure script is not run directly, avoid path disclosure
+if (empty($surveyid)) {die (_ERROR." - Cannot run this script directly");}
 
 sendcacheheaders();
 
