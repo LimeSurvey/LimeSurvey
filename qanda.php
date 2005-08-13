@@ -34,7 +34,7 @@
     #############################################################
 */
 
-if (!defined("_YES")) {die ("Cannot run this script directly");}
+if (empty($publicdir)) {die ("Cannot run this script directly (qanda.php)");}
 
 /*
  * Let's explain what this strange $ia var means
