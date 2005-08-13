@@ -35,7 +35,7 @@
 */
 
 //Ensure script is not run directly, avoid path disclosure
-if (!defined("_YES")) {die ("Cannot run this script directly");}
+if (empty($homedir)) {die ("Cannot run this script directly (dbedit.php)");}
 
 if (call_user_func($auth_function)) {
 	switch($dbaction){

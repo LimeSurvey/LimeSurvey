@@ -2,7 +2,7 @@
 //require_once("config.php");
 
 //Ensure script is not run directly, avoid path disclosure
-if (!defined("_YES")) {die ("Cannot run this script directly");}
+if (empty($homedir)) {die ("Cannot run this script directly (navigator.php)");}
 
 require_once("{$homedir}/classes/TreeMenuXL.php");
 
