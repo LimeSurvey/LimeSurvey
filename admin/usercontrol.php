@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-if (!$homedir) {exit;}
+if (empty($homedir)) {die("Cannot run this script directly");}
 if ($accesscontrol <> 1) {exit;}
 
 if (!file_exists("$homedir/.htaccess"))
