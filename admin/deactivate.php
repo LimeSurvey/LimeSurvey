@@ -34,7 +34,7 @@
 	#############################################################	
 */
 //Ensure script is not run directly, avoid path disclosure
-if (!defined("_YES")) {die ("Cannot run this script directly");}
+if (empty($homedir)) {die ("Cannot run this script directly");}
 
 $date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 

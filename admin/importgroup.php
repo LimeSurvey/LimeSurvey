@@ -34,7 +34,7 @@
 	#############################################################	
 */
 //Ensure script is not run directly, avoid path disclosure
-if (!defined("_YES")) {die ("Cannot run this script directly");}
+if (empty($homedir)) {die ("Cannot run this script directly");}
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 

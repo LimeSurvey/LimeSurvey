@@ -1529,7 +1529,10 @@ else
 							$i=0;
 							while ($ansrow=mysql_fetch_array($ansresult))
 								{
-								$conditions[sizeof($conditions)-1]="(".$ansrow['answer'].") : ".end($conditions); //
+								if (isset($conditions) && count($conditions) > 0)
+									{
+									$conditions[sizeof($conditions)-1]="(".$ansrow['answer'].") : ".end($conditions); 
+									}
 								}
 							$operator=_DE_AND;	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
 							break;
