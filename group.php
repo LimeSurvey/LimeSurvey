@@ -34,7 +34,7 @@
 	#############################################################
 */
 
-if (!defined("_YES")) {die ("Cannot run this script directly");}
+if (empty($homedir)) {die ("Cannot run this script directly");}
 	
 //Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
