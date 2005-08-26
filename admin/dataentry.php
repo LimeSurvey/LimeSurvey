@@ -228,6 +228,8 @@ if ($action == "insert")
 							$message.=$homeurl."/dataentry.php?sid=$surveyid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
 							$message=crlf_lineendings($message);
 							$headers = "From: {$thissurvey['adminemail']}\r\n";
+                                     . "MIME-Version: 1.0\r\n"
+                                     . "Content-Type: text/plain; charset=utf-8\r\n";		
 							if (mail($saver['email'], $subject, $message, $headers))
 								{
 								$emailsent="Y";

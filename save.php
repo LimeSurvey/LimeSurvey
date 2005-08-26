@@ -264,7 +264,10 @@ if ($result=mysql_query($query))
 				$message.=_SAVE_EMAILURL.":\n";
 				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$sdata['scid']."&loadname=".$_POST['savename']."&loadpass=".$_POST['savepass'];
 				$message=crlf_lineendings($message);
-				$headers = "From: {$thissurvey['adminemail']}\r\n";
+				$headers = "From: {$thissurvey['adminemail']}\r\n"
+                         . "MIME-Version: 1.0\r\n"
+                         . "Content-Type: text/plain; charset=utf-8\r\n";		
+				
 				if (mail($_POST['saveemail'], $subject, $message, $headers))
 					{
 					$emailsent="Y";

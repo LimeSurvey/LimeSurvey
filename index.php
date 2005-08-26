@@ -838,11 +838,13 @@ function submittokens()
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";		
 		
 		$to = $cnfrow['email'];
-		$subject = "=?UTF-8?B?" . base64_encode($thissurvey['email_confirm_subj']) . "?=";
-//		$subject = _CONFIRMATION.": {$thissurvey['name']} "._SURVEYCPL;
+        $subject=$thissurvey['email_confirm_subj'];
+        $subject=str_replace("{ADMINNAME}", $thissurvey['adminname'], $subject);
+        $subject=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $subject);
+        $subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $subject);
+        $subject=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $subject);
+		$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 		$message="";
-//		foreach (file("$thistpl/confirmationemail.pstpl") as $ce)
-//			{
 		if ($thissurvey['email_confirm']) 
 			{
 			$add=$thissurvey['email_confirm'];

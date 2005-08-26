@@ -114,7 +114,9 @@ $message=str_replace("{ATTRIBUTE_2}", returnglobal('register_attribute2'), $mess
 //$message=str_replace("\n", "\r\n", $message);
 
 $headers = "From: {$thissurvey['adminname']} <{$thissurvey['adminemail']}>\r\n"
-		 . "X-Mailer: $sitename Emailer (phpsurveyor.sourceforge.net)\r\n";
+		 . "X-Mailer: $sitename Emailer (phpsurveyor.sourceforge.net)\r\n"
+         . "MIME-Version: 1.0\r\n"
+         . "Content-Type: text/plain; charset=utf-8\r\n";		
 
 $subject=$thissurvey['email_register_subj'];
 $subject=str_replace("{ADMINNAME}", $thissurvey['adminname'], $subject);
