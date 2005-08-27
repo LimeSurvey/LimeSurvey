@@ -334,12 +334,12 @@ if ($questionscount > 0)
 			{
 			$aquery="SELECT * FROM {$dbprefix}answers\n"
 				   ."WHERE qid={$rows['qid']}\n"
-				   ."ORDER BY sortorder, answer";
+				   ."ORDER BY sortorder, answer"; 
 			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
 			$acount=mysql_num_rows($aresult);
 			while ($arow=mysql_fetch_array($aresult))
 				{
-				$theanswer = addcslashes($arows['answer'], "'");
+				$theanswer = addcslashes($arow['answer'], "'");
 				$quicky[]=array($arow['code'], $theanswer);
 				}
 			for ($i=1; $i<=$acount; $i++)
