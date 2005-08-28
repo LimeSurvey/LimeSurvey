@@ -65,7 +65,7 @@ define("_CONTINUE_PS", "Continuer");
 
 //BUTTONS
 define("_ACCEPT", "Accepter");
-define("_PREV", "Pr&eacute;c&eacute;dent");
+define("_PREV", "Précédent");
 define("_NEXT", "Suivant");
 define("_LAST", "Fin");
 define("_SUBMIT", "Envoyer");
