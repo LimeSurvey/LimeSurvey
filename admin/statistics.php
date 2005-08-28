@@ -527,7 +527,7 @@ foreach ($filters as $flt)
             $counter=0;
             break;
         case "R": //RANKING
-            echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+            echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\nwiki";
             $query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
             $result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
             $count = mysql_num_rows($result);
@@ -1493,8 +1493,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
                         $p1->value->SetColor("#555555");
                     } else { //Pie Chart
                         $p1 = new PiePlot3d($gdata);
-                        echo "<pre>";print_r($lbl);echo "</pre>";
-                        echo "<pre>";print_r($gdata);echo "</pre>";
+//                        echo "<pre>";print_r($lbl);echo "</pre>";
+//                        echo "<pre>";print_r($gdata);echo "</pre>";
 						$p1->SetTheme("earth");
                         $p1->SetLegends($lbl);
                         $p1->SetSize(200);

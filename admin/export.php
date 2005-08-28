@@ -271,7 +271,7 @@ case "xls":
         break;
 case "csv":
         header("Content-Disposition: attachment; filename=survey.csv");
-        header("Content-type: text/comma-separated-values; charset=ISO-8859-15");
+        header("Content-type: text/comma-separated-values; charset=UTF-8");
         $s=",";
         break;
 default:
