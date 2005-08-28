@@ -1,0 +1,14 @@
+<table align='center' width='100%' cellpadding='25' cellspacing='0' border='1' style='border-collapse: collapse' bordercolor='#111111'>
+	<tr>
+		<td align='center' bgcolor='#E5F9FF'>
+			<font size='5' color='#0A47FF'><b>{SURVEYNAME}</b></font><br /><br />
+			<font size='2' color='#111111'>{SURVEYDESCRIPTION}</font>
+		</td>
+	</tr>
+	<tr>
+		<td align='center' bgcolor='#FFFFFF'>
+			<font size='2' color='#0033CC'>{WELCOME}<br /><br />
+			<i>{THEREAREXQUESTIONS}</i>
+		</td>
+	</tr>
+</table>

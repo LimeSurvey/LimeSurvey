@@ -1,0 +1,102 @@
+<head>
+	<title>
+	A SURVEY: {SURVEYNAME}
+	</title>
+<style>
+.submit
+	{
+	background-color: #0A47FF;
+	color: #FFFFFF;
+	font-size: 9pt;
+	font-family: verdana;
+	}
+.text
+	{
+	background-color: #CCCCFF;
+	color: #800000;
+	font-size: 9pt;
+	font-family: verdana;
+	}
+.answertext
+               {
+               color: #0033CC;
+               }
+.radio
+	{
+	}
+.checkbox
+	{
+	}
+.select
+	{
+	}
+.textarea
+	{
+	background-color: #E5F9FF;
+	color: #333333;
+	font-size: 9pt;
+	font-family: verdana;
+                width: 400;
+                height: 100;
+	}
+.clearall
+	{
+	font-size: 8pt;
+	}
+.clearall
+	A:link
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: #000080;
+	}
+.clearall
+	A:visited
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: #000080;
+	}
+.clearall
+	A:active
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: #000080;
+	}
+.clearall
+	A:hover
+	{
+	text-decoration: underline;
+	font-family: verdana;
+	color: red;
+	}
+.graph
+	{
+	border: solid;
+	border-width: 1;
+	border-color: #0A47FF;
+	background-color: #E5F9FF;
+	}
+.innergraph
+	{
+	font-family: verdana;
+	font-size: 10;
+	}
+.question
+	{
+	font-family: verdana;
+	font-size: 10;
+	}
+.errormandatory 
+	{
+	font-size:12px;
+	font-weight:bold;
+	color:RED;
+	}
+</style>
+</head>
+<body bgcolor='#0099CC' link='#000080' vlink='#000080' alink='#FFFF00'><font face='verdana' size='2'>
+<table width='95%' align='center' style='border-collapse: collapse' bordercolor='#0A47FF' bgcolor='#E5F9FF' border='1' cellspacing='0'>
+	<tr>
+		<td>
