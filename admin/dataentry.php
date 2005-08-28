@@ -1093,13 +1093,13 @@ elseif ($action == "edit" || $action == "editsaved")
 							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
 							."\t\t<td>$setfont\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='I'";
-						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
+						if ($idrow[$fnames[$i][0]] == "I") {echo " checked";}
 						echo " />Increase&nbsp;\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='S'";
-						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
+						if ($idrow[$fnames[$i][0]] == "I") {echo " checked";}
 						echo " />Same&nbsp\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='D'";
-						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
+						if ($idrow[$fnames[$i][0]] == "D") {echo " checked";}
 						echo " />Decrease&nbsp;\n"
 							."\t\t</td>\n"
 							."\t</tr>\n";
