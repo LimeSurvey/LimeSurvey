@@ -1245,6 +1245,26 @@ elseif ($action == "update")
 					}
 				}
 			unset($thisvalue);
+			// handle ! other
+			if ($irow['type'] == "!" && $irow['other'] == "Y")
+				{
+				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
+				if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
+				if (get_magic_quotes_gpc())
+					{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
+				else
+					{
+					if (_PHPVERSION >= "4.3.0")
+						{
+						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
+						}
+					else
+						{
+						$updateqr .= "`$fieldname` = '" . mysql_escape_string($thisvalue) . "', \n";
+						}
+					}
+				unset($thisvalue);
+				}
 			}
 		elseif ($irow['type'] == "O")
 			{
