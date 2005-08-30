@@ -92,19 +92,19 @@ echo "\t<script type='text/javascript'>
       //-->
       </script>\n";
 
-echo "<table height='1'><tr><td></td></tr></table>\n"
+echo "<table><tr><td></td></tr></table>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._STATISTICS."</strong></td></tr>\n";
+    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._STATISTICS."</strong></font></td></tr>\n";
 echo $surveyoptions;
 echo "</table>\n"
-    ."<table height='1'><tr><td></td></tr></table>\n"
+    ."<table ><tr><td></td></tr></table>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
-    ." cellspacing='0' bordercolor='#555555'>\n"
+    ." cellspacing='0'>\n"
     ."<tr><td align='center' bgcolor='#555555' height='22'>"
     ."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"filtersettings\"); hide(\"sqlbuilder\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"filtersettings\")'>"
-    ."<font size='2' face='verdana' color='orange'><strong>"._ST_FILTERSETTINGS."</strong>"
+    ."<font size='2' face='verdana' color='orange'><strong>"._ST_FILTERSETTINGS."</strong></font>"
     ."</td></tr>\n"
-    ."<form method='post' name='formbuilder'>\n";
+    ."<form method='post' name='formbuilder' action='statistics.php'>\n";
 
 //Select public language file
 $query = "SELECT language, datestamp FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -527,7 +527,7 @@ foreach ($filters as $flt)
             $counter=0;
             break;
         case "R": //RANKING
-            echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\nwiki";
+            echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
             $query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
             $result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
             $count = mysql_num_rows($result);
@@ -693,9 +693,9 @@ foreach ($fieldmap as $field)
     }
 
 echo "</table>\n"
-    ."<table height='1'><tr><td></td></tr></table>\n"
+    ."<table ><tr><td></td></tr></table>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
-    ." cellspacing='0' bordercolor='#555555'>\n"
+    ." cellspacing='0'>\n"
     ."<tr><td align='center' bgcolor='#555555' height='22'>"
     ."<input type='image' src='$imagefiles/plus.gif' align='right' hspace='0' border='0' onClick='show(\"sqlbuilder\"); hide(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' border='0' onClick='hide(\"sqlbuilder\")' hspace='0'>"
     ."<font size='2' face='verdana' color='orange'><strong>SQL Builder</strong>"
@@ -886,7 +886,7 @@ if (isset($_POST['display']) && $_POST['display'])
     
     // 3: Present results including option to view those rows
     echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' "
-        ."cellpadding='2' cellspacing='0' bordercolor='black'>\n"
+        ."cellpadding='2' cellspacing='0' >\n"
         ."\t<tr><td colspan='2' align='center'><strong>$setfont<font color='orange'>"
         ._ST_RESULTS."</strong></td></tr>\n"
         ."\t<tr><td colspan='2' align='center' bgcolor='#666666'>"
@@ -1057,7 +1057,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 $nquery = "SELECT title, type, question, qid, lid FROM {$dbprefix}questions WHERE qid='$qqid'";
                 $nresult = mysql_query($nquery) or die ("Couldn't get question<br />$nquery<br />".mysql_error());
                 while ($nrow=mysql_fetch_row($nresult)) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
-                echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
+                echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' >\n"
                     ."\t<tr><td colspan='3' align='center'><strong>$setfont<font color='orange'>"._ST_FIELDSUMMARY." $qtitle:</strong>"
                     ."</td></tr>\n"
                     ."\t<tr><td colspan='3' align='center'><strong>$setfont<font color='#EEEEEE'>$qquestion</strong></font></font></td></tr>\n"
@@ -1331,7 +1331,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
         //2. Collect and Display results #######################################################################
         if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
             {
-            echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' bordercolor='black'>\n"
+            echo "<br />\n<table align='center' width='95%' border='1' bgcolor='#444444' cellpadding='2' cellspacing='0' >\n"
                 ."\t<tr><td colspan='3' align='center'><strong>$setfont<font color='orange'>"
                 ._ST_FIELDSUMMARY." $qtitle:</strong>"
                 ."</td></tr>\n"
