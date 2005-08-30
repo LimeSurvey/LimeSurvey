@@ -43,7 +43,6 @@ if (!isset($gl)) {$gl=array("null");}
 if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
 if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step']=$_POST['thisstep']+1;}
 if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
-
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES #################################################
 if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	{

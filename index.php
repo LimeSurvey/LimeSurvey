@@ -194,13 +194,9 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	$query .="AND {$dbprefix}saved_control.identifier='".auto_escape($_POST['loadname'])."'
 			  AND {$dbprefix}saved_control.access_code='".md5(auto_unescape($_POST['loadpass']))."'\n";
 	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
-	if (mysql_num_rows($result) < 1)
+	if (mysql_num_rows($result) > 0)
 		{
-	    $errormsg .= _LOADNOMATCH."<br />\n";
-		}
-	else
-		{
-		//A match has been found. Let's load the values!
+		//A match has been found. Let's load the values if there are saved responses!
 		//If this is from an email, build surveysession first
 		while($row=mysql_fetch_array($result))
 			{
@@ -212,18 +208,19 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 			else
 				{
 				$_SESSION[$row['fieldname']]=$row['value'];
-				$_SESSION['step']=$row['saved_thisstep'];
+				$_POST['thisstep']=$row['saved_thisstep']-1;
 				$_SESSION['scid']=$row['scid'];
 				}
 			} // while
+		}	
 		$_SESSION['savename']=$_POST['loadname']; //This session variable hangs around
 		                                           //for later use.
-		$_POST['move'] = " "._NEXT." >> "; //Just to stop a bug
+		$_POST['move'] = " "._NEXT." >> "; 
 		if (isset($_GET['loadall']))
 			{
 			buildsurveysession();
 			}
-		}
+		
 	
 	if ($errormsg)
 		{
@@ -238,7 +235,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == _LOAD_SAVED)
 
 
 //Check if TOKEN is used for EVERY PAGE
-//This function fixes bug #998700 - Users able to submit two surveys/votes
+//This function fixes a bug where users able to submit two surveys/votes
 //by checking that the token has not been used at each page displayed.
 if ($tokensexist == 1 && returnglobal('token'))
 	{
