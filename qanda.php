@@ -111,13 +111,13 @@ function create_mandatorylist($ia)
         if ($ia[7] != "Y" && isset($thismandatory)) //Question is not conditional - addto mandatory arrays
             {
             $mandatory=$thismandatory;
-            }   
+            }
         if ($ia[7] == "Y" && isset($thismandatory)) //Question IS conditional - add to conmandatory arrays
             {
             $conmandatory=$thismandatory;
             }
         }
-    
+
     if (isset($mandatory))
         {
         return array($mandatory, null);
@@ -167,7 +167,7 @@ function setman_questionandcode($ia)
         $mandatorys[]=$ia[1].$ansrow['code'];
         $mandatoryfns[]=$ia[1];
         }
-    if ($other == "Y" and ($ia[4]=="!" or $ia[4]=="L" or $ia[4]=="M" or $ia[4]=="P"))    
+    if ($other == "Y" and ($ia[4]=="!" or $ia[4]=="L" or $ia[4]=="M" or $ia[4]=="P"))
         {
         $mandatorys[]=$ia[1]."other";
         $mandatoryfns[]=$ia[1];
@@ -185,7 +185,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
     global $dbprefix, $shownoanswer; //These are from the confir.php file
     //-----
     global $thissurvey, $gl; //These are set by index.php
-    
+
     //DISPLAY
     $display = $ia[7];
 
@@ -194,14 +194,14 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
     $qtitle=$ia[3];
     //Replace INSERTANS statements with previously provided answers;
-    while (strpos($qtitle, "{INSERTANS:") !== false) 
+    while (strpos($qtitle, "{INSERTANS:") !== false)
         {
         $replace=substr($qtitle, strpos($qtitle, "{INSERTANS:"), strpos($qtitle, "}", strpos($qtitle, "{INSERTANS:"))-strpos($qtitle, "{INSERTANS:")+1);
         $replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
         $replace3=retrieve_Answer($replace2);
         $qtitle=str_replace($replace, $replace3, $qtitle);
         } //while
-    
+
     //GET HELP
     $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0]";
     $hresult=mysql_query($hquery);
@@ -235,7 +235,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case "Z": //LIST Flexible drop-down/radio-button list
             $values=do_list_flexible_radio($ia);
-            if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+            if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n</strong><i><font size='1'>"
                          . _INSTRUCTION_LIST."</font></i><strong>";
@@ -243,7 +243,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case "L": //LIST drop-down/radio-button list
             $values=do_list_radio($ia);
-            if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+            if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n</strong><i><font size='1'>"
                          . _INSTRUCTION_LIST."</font></i><strong>";
@@ -251,7 +251,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case "W": //List - dropdown
             $values=do_list_flexible_dropdown($ia);
-            if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+            if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n</strong><i><font size='1'>"
                          . _INSTRUCTION_LIST."</font></i><strong>";
@@ -259,7 +259,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case "!": //List - dropdown
             $values=do_list_dropdown($ia);
-            if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+            if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n</strong><i><font size='1'>"
                          . _INSTRUCTION_LIST."</font></i><strong>";
@@ -267,7 +267,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
             $values=do_listwithcomment($ia);
-            if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+            if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n</strong><i><font size='1'>"
                          . _INSTRUCTION_LIST."</font></i><strong>";
@@ -278,7 +278,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case "M": //MULTIPLE OPTIONS checkbox
             $values=do_multiplechoice($ia);
-            if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+            if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                     $qtitle .= "<br />\n</strong><i><font size='1'>"
                          . _INSTRUCTION_MULTI."</font></i><strong>";
@@ -286,7 +286,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
             $values=do_multiplechoice_withcomments($ia);
-            if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1)) 
+            if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n</strong><i><font size='1'>"
                          . _INSTRUCTION_MULTI."</font></i><strong>";
@@ -334,7 +334,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case "H": //ARRAY (Flexible) - Column Format
             $values=do_array_flexiblecolumns($ia);
-            break;      
+            break;
         } //End Switch
 
     if (isset($values)) //Break apart $values array returned from switch
@@ -350,7 +350,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
         $answer .= "on"; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
         }
     $answer .= "'>\n"; //for conditional mandatory questions
-    
+
     if ($ia[6] == "Y")
         {
         $qtitle = _REQUIRED.$qtitle;
@@ -360,7 +360,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
     $qtitle .= mandatory_message($ia);
 
     $qtitle .= validation_message($ia);
-    
+
     $qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0], $ia[1]);
     //New Return
     return array($qanda, $inputnames);
@@ -414,10 +414,10 @@ function mandatory_message($ia)
                 case "H":
                     $qtitle .= "<br />\n"._MANDATORY_PARTS.".";
                     break;
-                case "R": 
+                case "R":
                     $qtitle .= "<br />\n"._MANDATORY_RANK.".";
                     break;
-                case "M": 
+                case "M":
                 case "P":
                     $qtitle .= "<br />\n"._MANDATORY_CHECK.".";
                     break;
@@ -427,7 +427,7 @@ function mandatory_message($ia)
         }
     return $qtitle;
     }
-    
+
 function mandatory_popup($ia, $notanswered=null)
     {
     //This sets the mandatory popup message to show if required
@@ -538,13 +538,13 @@ function do_list_dropdown($ia)
         $answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
         if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
-            $answer .= " selected"; 
+            $answer .= " selected";
             }
         elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
         $answer .= ">{$ansrow['answer']}</option>\n";
         }
     if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
-    if (isset($other) && $other=="Y") 
+    if (isset($other) && $other=="Y")
         {
         $answer .= "\t\t\t\t\t\t<option value='-oth-'";
         if ($_SESSION[$ia[1]] == "-oth-")
@@ -562,7 +562,7 @@ function do_list_dropdown($ia)
         }
     $sselect .= "'>\n";
     $answer = $sselect.$answer;
-    if (isset($other) && $other=="Y") 
+    if (isset($other) && $other=="Y")
         {
         $answer = "\n<SCRIPT TYPE=\"text/javascript\">\n"
             ."<!--\n"
@@ -624,12 +624,12 @@ function do_list_flexible_dropdown($ia)
         $answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
         if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
-            $answer .= " selected"; 
+            $answer .= " selected";
             }
         $answer .= ">{$ansrow['title']}</option>\n";
         }
     if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
-    if (isset($other) && $other=="Y") 
+    if (isset($other) && $other=="Y")
         {
         $answer .= "\t\t\t\t\t\t<option value='-oth-'";
         if ($_SESSION[$ia[1]] == "-oth-")
@@ -647,7 +647,7 @@ function do_list_flexible_dropdown($ia)
         }
     $sselect .= "'>\n";
     $answer = $sselect.$answer;
-    if (isset($other) && $other=="Y") 
+    if (isset($other) && $other=="Y")
         {
         $answer = "\n<SCRIPT TYPE=\"text/javascript\">\n"
             ."<!--\n"
@@ -713,7 +713,7 @@ function do_list_radio($ia)
         $answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
         $divider=" </td>\n <td valign='top' width='$width%' nowrap>";
         }
-    else 
+    else
         {
         $answer .= "\n\t\t\t\t\t<table class='question'>\n"
                  . "\t\t\t\t\t\t<tr>\n"
@@ -732,11 +732,11 @@ function do_list_radio($ia)
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
         }
-    if (isset($other) && $other=="Y") 
+    if (isset($other) && $other=="Y")
         {
         $rowcounter++;
         $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
-        if ($_SESSION[$ia[1]] == "-oth-") 
+        if ($_SESSION[$ia[1]] == "-oth-")
             {
             $answer .= " checked";
             }
@@ -814,7 +814,7 @@ function do_list_flexible_radio($ia)
         $answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
         $divider=" </td>\n <td valign='top' width='$width%' nowrap>";
         }
-    else 
+    else
         {
         $answer .= "\n\t\t\t\t\t<table class='question'>\n"
                  . "\t\t\t\t\t\t<tr>\n"
@@ -832,11 +832,11 @@ function do_list_flexible_radio($ia)
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['title']}</label><br />\n";
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
         }
-    if (isset($other) && $other=="Y") 
+    if (isset($other) && $other=="Y")
         {
         $rowcounter++;
         $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
-        if ($_SESSION[$ia[1]] == "-oth-") 
+        if ($_SESSION[$ia[1]] == "-oth-")
             {
             $answer .= " checked";
             }
@@ -891,7 +891,7 @@ function do_listwithcomment($ia)
                  . "\t\t\t\t</tr>\n"
                  . "\t\t\t\t<tr>\n"
                  . "\t\t\t\t\t<td valign='top'>\n";
-        
+
         while ($ansrow=mysql_fetch_array($ansresult))
             {
             $answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='$ia[1]{$ansrow['code']}'";
@@ -903,11 +903,11 @@ function do_listwithcomment($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' ";
-            if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists))) 
+            if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
                 {
                 $answer .= "checked />";
                 }
-            elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) 
+            elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
                 {
                 $answer .= " />";
                 }
@@ -918,7 +918,7 @@ function do_listwithcomment($ia)
         if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
         $answer .= "\t\t\t\t\t<td valign='top'>\n"
                  . "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' id='$ia[1]comment' rows='$tarows' cols='30'>";
-        if (isset($_SESSION[$fname2]) && $_SESSION[$fname2]) 
+        if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
             {
             $answer .= str_replace("\\", "", $_SESSION[$fname2]);
             }
@@ -943,7 +943,7 @@ function do_listwithcomment($ia)
                 {$answer .= " selected";}
             elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
             $answer .= ">{$ansrow['answer']}</option>\n";
-            if (strlen($ansrow['answer']) > $maxoptionsize) 
+            if (strlen($ansrow['answer']) > $maxoptionsize)
                 {
                 $maxoptionsize = strlen($ansrow['answer']);
                 }
@@ -1062,7 +1062,7 @@ function do_ranking($ia)
              . "\t\t\t\t\tcheckconditions('');\n"
              . "\t\t\t\t\t}\n"
              . "\t\t\t//-->\n"
-             . "\t\t\t</script>\n"; 
+             . "\t\t\t</script>\n";
     unset($answers);
     //unset($inputnames);
     unset($chosen);
@@ -1161,7 +1161,7 @@ function do_ranking($ia)
              . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>"._YOURCHOICES.":</label></strong><br />\n"
              . "&nbsp;".$choicelist
              . "\t\t\t\t\t&nbsp;</td>\n";
-    if (isset($maxselectlength) && $maxselectlength > 60) 
+    if (isset($maxselectlength) && $maxselectlength > 60)
         {
         $ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
         $answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"
@@ -1225,7 +1225,7 @@ function do_multiplechoice($ia)
         $answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
         $divider=" </td>\n <td valign='top' width='$width%' nowrap>";
         $closetable=true;
-        }   
+        }
     $fn = 1;
     if (!isset($multifields)) {$multifields="";}
     $rowcounter=0;
@@ -1252,7 +1252,7 @@ function do_multiplechoice($ia)
         $answer .= " />\n"
                  . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
         if (isset($_SESSION[$myfname])) {$answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);}
-        
+
         $answer .= "'>\n";
         $inputnames[]=$myfname;
         $anscount++;
@@ -1260,7 +1260,7 @@ function do_multiplechoice($ia)
         }
     if ($closetable) $answer.="</td></tr></table>\n";
     $answer .= "\t\t\t\t\t</td>\n";
-    if ($dcols <1) 
+    if ($dcols <1)
         { //This just makes a single column look a bit nicer
         $answer .= "\t\t\t\t\t<td>&nbsp;</td>\n";
         }
@@ -1446,6 +1446,30 @@ function do_longfreetext($ia)
         {
         $maxsize=65525;
         }
+
+// --> START ENHANCEMENT - DISPLAY ROWS
+    if ($displayrows=arraySearchByKey("display_rows", $qidattributes, "attribute", 1))
+    {
+    $drows=$displayrows['value'];
+    }
+    else
+    {
+    $drows=5;
+    }
+// <-- END ENHANCEMENT - DISPLAY ROWS
+
+// --> START ENHANCEMENT - TEXT INPUT WIDTH
+    if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+        {
+        $tiwidth=$maxchars['value'];
+        }
+    else
+        {
+        $tiwidth=40;
+        }
+// <-- END ENHANCEMENT - TEXT INPUT WIDTH
+
+
     $answer = "<script type='text/javascript'>
                <!--
                function textLimit(field, maxlen) {
@@ -1454,9 +1478,15 @@ function do_longfreetext($ia)
                 }
                //-->
                </script>\n";
+
+// --> START ENHANCEMENT - DISPLAY ROWS
+// --> START ENHANCEMENT - TEXT INPUT WIDTH
     $answer .= "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' "
-              ."rows='5' cols='40' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\">";
-    if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}   
+              ."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\">";
+// <-- END ENHANCEMENT - TEXT INPUT WIDTH
+// <-- END ENHANCEMENT - DISPLAY ROWS
+
+    if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
     $answer .= "</textarea>\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -1473,6 +1503,29 @@ function do_hugefreetext($ia)
         {
         $maxsize=65525;
         }
+
+// --> START ENHANCEMENT - DISPLAY ROWS
+    if ($displayrows=arraySearchByKey("display_rows", $qidattributes, "attribute", 1))
+    {
+    $drows=$displayrows['value'];
+    }
+    else
+    {
+    $drows=30;
+    }
+// <-- END ENHANCEMENT - DISPLAY ROWS
+
+// --> START ENHANCEMENT - TEXT INPUT WIDTH
+    if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+        {
+        $tiwidth=$maxchars['value'];
+        }
+    else
+        {
+        $tiwidth=70;
+        }
+// <-- END ENHANCEMENT - TEXT INPUT WIDTH
+
     $answer = "<script type='text/javascript'>
                <!--
                function textLimit(field, maxlen) {
@@ -1481,9 +1534,14 @@ function do_hugefreetext($ia)
                 }
                //-->
                </script>\n";
-    $answer .= "<textarea class='textarea' name='{$ia[1]}' id='{$ia[1]}' "
-              ."rows='30' cols='70' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\">";             
-    if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}   
+// --> START ENHANCEMENT - DISPLAY ROWS
+// --> START ENHANCEMENT - TEXT INPUT WIDTH
+    $answer .= "<textarea class='textarea'  class='display' name='{$ia[1]}' id='{$ia[1]}' "
+             ."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\">";
+// <-- END ENHANCEMENT - TEXT INPUT WIDTH
+// <-- END ENHANCEMENT - DISPLAY ROWS
+
+    if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
     $answer .= "</textarea>\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -1567,7 +1625,7 @@ function do_array_5point($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $myfname = $ia[1].$ansrow['code'];
-		$answertext=answer_replace($ansrow['answer']);
+        $answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n";
@@ -1591,8 +1649,8 @@ function do_array_5point($ia)
         $answer .= "'>\n";
         $fn++;
         $inputnames[]=$myfname;
-        }           
-    
+        }
+
     $answer .= "\t\t\t</table>\n";
     return array($answer, $inputnames);
     }
@@ -1622,7 +1680,7 @@ function do_array_10point($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $myfname = $ia[1].$ansrow['code'];
-		$answertext=answer_replace($ansrow['answer']);
+        $answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n";
         $answer .= "\t\t\t\t\t<td align='right'>$answertext</td>\n";
@@ -1646,7 +1704,7 @@ function do_array_10point($ia)
         $answer .= "'>\n";
         $inputnames[]=$myfname;
         $fn++;
-        }           
+        }
     $answer .= "\t\t\t</table>\n";
     return array($answer, $inputnames);
     }
@@ -1675,7 +1733,7 @@ function do_array_yesnouncertain($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $myfname = $ia[1].$ansrow['code'];
-		$answertext=answer_replace($ansrow['answer']);
+        $answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
@@ -1704,7 +1762,7 @@ function do_array_yesnouncertain($ia)
         $answer .= "'>\n";
         $inputnames[]=$myfname;
         $fn++;
-        }           
+        }
     $answer .= "\t\t\t</table>\n";
     return array($answer, $inputnames);
     }
@@ -1734,7 +1792,7 @@ function do_array_increasesamedecrease($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $myfname = $ia[1].$ansrow['code'];
-		$answertext=answer_replace($ansrow['answer']);
+        $answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
@@ -1763,7 +1821,7 @@ function do_array_increasesamedecrease($ia)
         $answer .= "'>\n";
         $inputnames[]=$myfname;
         $fn++;
-        }           
+        }
     $answer .= "\t\t\t</table>\n";
     return array($answer, $inputnames);
     }
@@ -1789,7 +1847,7 @@ function do_array_flexible($ia)
         $numrows=count($labelans);
         if ($ia[6] != "Y" && $shownoanswer == 1) {$numrows++;}
         $cellwidth=80/$numrows;
-        
+
         $cellwidth=sprintf("%02d", $cellwidth);
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
         $ansresult = mysql_query($ansquery);
@@ -1800,18 +1858,18 @@ function do_array_flexible($ia)
                  . "\t\t\t\t\t<td></td>\n";
         foreach ($labelans as $ld)
             {
-	        $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>".$ld."</font></th>\n";
-	        }
+            $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>".$ld."</font></th>\n";
+            }
         if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
             {
             $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>"._NOANSWER."</font></th>\n";
             }
         $answer .= "\t\t\t\t</tr>\n";
-         
+
         $ansresult = mysql_query($ansquery);
         while ($ansrow = mysql_fetch_array($ansresult))
             {
-            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0) 
+            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
                 {
                 $answer .= "\t\t\t\t<tr>\n"
                          . "\t\t\t\t\t<td></td>\n";
@@ -1827,7 +1885,7 @@ function do_array_flexible($ia)
                 }
             $myfname = $ia[1].$ansrow['code'];
             if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
-			$answertext=answer_replace($ansrow['answer']);
+            $answertext=answer_replace($ansrow['answer']);
             $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                      . "\t\t\t\t\t<td align='right' class='answertext' width='20%'>$answertext</td>\n";
             $thiskey=0;
@@ -1893,7 +1951,7 @@ function do_array_flexiblecolumns($ia)
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td></td>\n";
     $cellwidth=$anscount;
-    
+
     $cellwidth=50/$cellwidth;
     while ($ansrow = mysql_fetch_array($ansresult))
         {
@@ -1934,30 +1992,30 @@ function do_array_flexiblecolumns($ia)
         $answer .= "\t\t\t\t</tr>\n";
         $fn++;
         }
-    
-    foreach($anscode as $ld) 
+
+    foreach($anscode as $ld)
         {
         $myfname=$ia[1].$ld;
         $answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
         if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
         $answer .= "'>\n";
         $inputnames[]=$myfname;
-        }           
+        }
     $answer .= "\t\t\t</table>\n";
     return array($answer, $inputnames);
     }
 
 function answer_replace($text) {
-	while (strpos($text, "{INSERTANS:") !== false) 
+    while (strpos($text, "{INSERTANS:") !== false)
         {
         $replace=substr($text, strpos($ld, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
         $replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
         $replace3=retrieve_Answer($replace2);
         $text=str_replace($replace, $replace3, $text);
         } //while
-	return $text;
+    return $text;
 }
-	
+
 function retrieve_Answer($code)
     {
     //This function checks to see if there is an answer saved in the survey session
@@ -1971,7 +2029,7 @@ function retrieve_Answer($code)
     //Find question details
     if (isset($_SESSION[$code]))
         {
-        $questiondetails=getsidgidqid($code); 
+        $questiondetails=getsidgidqid($code);
         //the getsidgidqid function is in common.php and returns
         //a SurveyID, GroupID, QuestionID and an Answer code
         //extracted from a "fieldname" - ie: 1X2X3a
