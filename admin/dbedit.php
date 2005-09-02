@@ -54,6 +54,9 @@ if (call_user_func($auth_function)) {
 		case "deleteassessment":
 			delAssessment($surveyid, $dbprefix);
 			break;
+		case "delsurvey":
+			delSurvey($surveyid, $dbprefix);
+			break;
 		case "addassessment":
 			addAssessment($surveyid, $dbprefix);
 			break;
@@ -362,6 +365,57 @@ function delAnswer($qid, $dbprefix) {
 			  WHERE qid=$qid
 			  AND code='".returnglobal('code')."'";
 	$result = mysql_query($query);
+}
+
+function delSurvey($surveyid, $dbprefix) {
+	global $databasename;
+	if (!is_numeric($surveyid)) { //make sure it's just a number!
+	    return _ERROR." "._DS_NOSID;
+	} elseif ($_GET['ok'] == "yes") {
+		$result = mysql_list_tables($databasename); //Get a list of table names
+		while ($row = mysql_fetch_row($result))
+			{
+			$tablelist[]=$row[0]; //Put it in an array
+		    }
+	
+		if (in_array("{$dbprefix}survey_$surveyid", $tablelist)) //delete the survey_$surveyid table
+			{
+			$dsquery = "DROP TABLE `{$dbprefix}survey_$surveyid`";
+			$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
+			}
+	
+		if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
+			{
+			$dsquery = "DROP TABLE `{$dbprefix}tokens_$surveyid`";
+			$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
+			}
+		
+		$dsquery = "SELECT qid FROM {$dbprefix}questions WHERE sid=$surveyid";
+		$dsresult = mysql_query($dsquery) or die ("Couldn't find matching survey to delete<br />$dsquery<br />".mysql_error());
+		while ($dsrow = mysql_fetch_array($dsresult))
+			{
+			$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
+			$asres = mysql_query($asdel);
+			$cddel = "DELETE FROM {$dbprefix}conditions WHERE qid={$dsrow['qid']}";
+			$cdres = mysql_query($cddel) or die ("Delete conditions failed<br />$cddel<br />".mysql_error());
+			$qadel = "DELETE FROM {$dbprefix}question_attributes WHERE qid={$dsrow['qid']}";
+			$qares = mysql_query($qadel);
+			}
+		
+		$qdel = "DELETE FROM {$dbprefix}questions WHERE sid=$surveyid";
+		$qres = mysql_query($qdel);
+	
+		$scdel = "DELETE FROM {$dbprefix}assessments WHERE sid=$surveyid";
+		$scres = mysql_query($scdel);
+		
+		$gdel = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid";
+		$gres = mysql_query($gdel);
+		
+		$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
+		$sres = mysql_query($sdel);		
+	} else {
+	   echo $_GET['ok'];
+	}
 }
 
 function updateAnswer($qid, $dbprefix) {

@@ -220,28 +220,12 @@ echo "<table width='100%' cellspacing='0' cellpadding='0'>
 	<tr><td valign='top' bgcolor='#CCCCCC' width='10%'>";
 surveyNavigator($surveyid, $gid, $qid);
 echo "</td><td valign='top' bgcolor='#DDDDDD' width='90%'>";
-//
 
-//if ($action == "newsurvey")
-//	{
-//	echo "$newsurvey\n"
-//		."\t\t</td>\n";
-//	helpscreen();
-//	echo "\t</tr>\n"
-//		."</table>\n"
-//		.htmlfooter("instructions.html", "Using PHPSurveyors Admin Script");
-//	exit;
-//	}
-
-//if (isset($surveysummary)) {echo $surveysummary;}
-//if (isset($surveyid) && $surveyid) {echo javadropdown($surveyid, $gid, $qid);}
 echo javadropdown($surveyid, $gid, $qid);
-if (!empty($surveyid) && call_user_func($auth_function)) {
+if (!empty($surveyid) && call_user_func($auth_function) && $action != "delsurvey" && $dbaction != "delsurvey") {
 	surveyDetails($surveyid, $gid, $qid);
 }
 
-//if (isset($surveyid) && $surveyid) {surveyDetails($surveyid, $gid, $qid);}
-//if (isset($gid) && $gid) {groupDetails($surveyid, $gid, $qid);}
 if (!empty($gid) && call_user_func($auth_function)) {groupDetails($surveyid, $gid, $qid);}
 if (!empty($qid) && call_user_func($auth_function)) {questionDetails($surveyid, $gid, $qid, $action);}
 
@@ -250,6 +234,9 @@ if (isset($action) && call_user_func($auth_function)) {
 		case "editsurvey":
 		case "addsurvey":
 			surveyEdit($surveyid);
+			break;
+		case "delsurvey":
+			surveyDel($surveyid);
 			break;
 		case "editgroup":
 		case "addgroup":
@@ -295,24 +282,7 @@ if (isset($action) && call_user_func($auth_function)) {
 			break;
 	}
 }
-//if (isset($action) && $action == "editsurvey" && isset($surveyid)) {surveyEdit($surveyid);}
-//if (isset($action) && $action == "showattributes" && isset($qid) && $qid) {attributeDetails($surveyid, $gid, $qid);}
-//if (isset($action) && $action == "showanswers" && isset($qid) && $qid) {answerDetails($surveyid, $gid, $qid);}
 
-//if (isset($cssummary)) {echo $cssummary;}
-//if (isset($usersummary)) {echo $usersummary;}
-//if (isset($addsummary)) {echo $addsummary;}
-//if (isset($editsurvey)) {echo $editsurvey;}
-//if (isset($newgroup)) {echo $newgroup;}
-//if (isset($groupsummary)) {echo $groupsummary;}
-//if (isset($editgroup)) {echo $editgroup;}
-//if (isset($newquestion)) {echo $newquestion;}
-//if (isset($questionsummary)) {echo $questionsummary;}
-//if (isset($editquestion)) {echo $editquestion;}
-//if (isset($newanswer)) {echo $newanswer;}
-//if (isset($answersummary)) {echo $answersummary;}
-//if (isset($vasummary)) {echo $vasummary;}
-//if (isset($editanswer)) {echo $editanswer;}
 echo "\t\t</td>\n";
 
 helpscreen();

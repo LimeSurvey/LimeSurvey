@@ -302,7 +302,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 	
 	if ((isset($gid) && $gid) || returnglobal('action') == "editsurvey" || returnglobal('action') == "addsurvey" || returnglobal('action') == "editgroup" || returnglobal('action') == "addgroup" || returnglobal('action') == "showassessments") {$display="none";} else {$display="";}
 	$fields=array(_SL_TITLE=>$thissurvey['name'],
-				  _SL_LINK=>"<a href='".$publicurl."?sid=$surveyid' target='_blank'>".$publicurl."?sid=$surveyid</a>",
+				  _SL_LINK=>"<a href='".$publicurl."/index.php?sid=$surveyid' target='_blank'>".$publicurl."/index.php?sid=$surveyid</a>",
 				  _SL_DESCRIPTION=>$thissurvey['description'],
 				  _SL_WELCOME=>$thissurvey['welcome'],
 				  _SL_ADMIN=>$thissurvey['adminname']." (<a href='mailto:".$thissurvey['adminemail']."'>".$thissurvey['adminemail']."</a>)",
@@ -367,6 +367,19 @@ function surveyDetails($surveyid, $gid, $qid) {
 	  </td>
 	 </tr>
 	</table>\n";
+}
+
+function surveyDel($surveyid) {
+	global $dbprefix, $databasename;
+	if (!is_numeric($surveyid)) { //make sure it's just a number!
+	    return _ERROR." "._DS_NOSID;
+	} else {
+		echo "<p align='center'>";
+	    echo _DS_DELMESSAGE1."<br />"._DS_DELMESSAGE2."<br />"._DS_DELMESSAGE3."<br />";
+		echo "<input type='submit' value='"._AD_YES."' onClick='window.open(\"index.php?sid=$surveyid&dbaction=delsurvey&ok=yes\", \"_top\")'>";
+		echo "<input type='submit' value='"._AD_NO."' onClick='window.open(\"index.php?sid=$surveyid\", \"_top\")'>";
+		echo "</p>";
+	}
 }
 
 function surveyEdit($surveyid) {
