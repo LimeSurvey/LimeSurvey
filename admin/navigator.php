@@ -531,6 +531,24 @@ function groupDetails($surveyid, $gid, $qid) {
 	</table>\n";
 }
 
+function questionDel($surveyid, $gid, $qid) {
+	global $publicurl, $imagefiles, $scriptname, $action;
+	echo "<p align='center'>";
+    echo _DQ_RUSURE."<br />";
+	echo "<input type='submit' value='"._AD_YES."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid&qid=$qid&dbaction=delquestion&ok=yes\", \"_top\")'>";
+	echo "<input type='submit' value='"._AD_NO."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid&qid=$qid\", \"_top\")'>";
+	echo "</p>";
+}
+
+function groupDel($surveyid, $gid) {
+    global $publicurl, $imagefiles, $scriptname, $action;
+	echo "<p align='center'>";
+    echo _DG_RUSURE."<br />";
+	echo "<input type='submit' value='"._AD_YES."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid&dbaction=delgroup&ok=yes\", \"_top\")'>";
+	echo "<input type='submit' value='"._AD_NO."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid\", \"_top\")'>";
+	echo "</p>";	
+}
+
 function groupEdit($surveyid, $gid) {
 	global $publicurl, $imagefiles, $scriptname, $action;
 	if ($action == "editgroup") {

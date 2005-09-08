@@ -222,12 +222,18 @@ surveyNavigator($surveyid, $gid, $qid);
 echo "</td><td valign='top' bgcolor='#DDDDDD' width='90%'>";
 
 echo javadropdown($surveyid, $gid, $qid);
-if (!empty($surveyid) && call_user_func($auth_function) && $action != "delsurvey" && $dbaction != "delsurvey") {
+if (!empty($surveyid) && call_user_func($auth_function) 
+	&& $action != "delsurvey" && $dbaction != "delsurvey"
+	) {
 	surveyDetails($surveyid, $gid, $qid);
 }
 
-if (!empty($gid) && call_user_func($auth_function)) {groupDetails($surveyid, $gid, $qid);}
-if (!empty($qid) && call_user_func($auth_function)) {questionDetails($surveyid, $gid, $qid, $action);}
+if (!empty($gid) && call_user_func($auth_function)
+	&& $action != "delgroup" && $dbaction != "delgroup") 
+   {groupDetails($surveyid, $gid, $qid);}
+if (!empty($qid) && call_user_func($auth_function)
+	&& $action != "delquestion" && $dbaction != "delquestion") 
+	{questionDetails($surveyid, $gid, $qid, $action);}
 
 if (isset($action) && call_user_func($auth_function)) {
     switch($action) {
@@ -238,9 +244,15 @@ if (isset($action) && call_user_func($auth_function)) {
 		case "delsurvey":
 			surveyDel($surveyid);
 			break;
+		case "delgroup":
+			groupDel($surveyid, $gid);
+			break;
 		case "editgroup":
 		case "addgroup":
 			groupEdit($surveyid, $gid);
+			break;
+		case "delquestion":
+			questionDel($surveyid, $gid, $qid);
 			break;
 		case "editquestion":
 		case "addquestion":

@@ -57,6 +57,11 @@ if (call_user_func($auth_function)) {
 		case "delsurvey":
 			delSurvey($surveyid, $dbprefix);
 			break;
+		case "delgroup":
+			if (delGroup($surveyid, $gid, $dbprefix)) {
+			    $gid="";
+			};
+			break;
 		case "addassessment":
 			addAssessment($surveyid, $dbprefix);
 			break;
@@ -82,6 +87,11 @@ if (call_user_func($auth_function)) {
 		case "editgroup":
 		case "addgroup":
 			$gid=editGroup($surveyid, $gid, $dbprefix, $dbaction);
+			break;
+		case "delquestion":
+			if (delQuestion($surveyid, $qid, $dbprefix)) {
+			    $qid = "";
+			}
 			break;
 		case "editquestion":
 		case "addquestion":
@@ -236,6 +246,30 @@ function editGroup($surveyid, $gid, $dbprefix, $dbaction) {
 	return $gid;
 }
 
+function delQuestion($surveyid, $qid, $dbprefix) {
+	global $databasename;
+	if (!is_numeric($qid)) {
+	    return FALSE;
+	} elseif ($_GET['ok'] == "yes") {
+		if (!isActivated($surveyid)) {
+			$query = "DELETE FROM {$dbprefix}answers WHERE qid = ".$qid;
+			$result = mysql_query($query);
+			//2: Delete all conditions to questions in this group
+			$query = "DELETE FROM {$dbprefix}conditions WHERE qid = ".$qid;
+			$result = mysql_query($query);
+			//3: Delete all question_attributes to questions in this group
+			$query = "DELETE FROM {$dbprefix}question_attributes WHERE qid = ".$qid;
+			$result = mysql_query($query);
+			//4: Delete all questions in this group
+			$query = "DELETE FROM {$dbprefix}questions WHERE qid = ".$qid;
+			$result = mysql_query($query);
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+
 function editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction) {
 	$tablefields=array("sid",
 					   "gid",
@@ -367,6 +401,40 @@ function delAnswer($qid, $dbprefix) {
 	$result = mysql_query($query);
 }
 
+function delGroup($surveyid, $gid, $dbprefix) {
+	global $databasename;
+	if (!is_numeric($gid)) {
+	    return _ERROR;
+	} elseif ($_GET['ok'] == "yes") {
+		if (!isActivated($surveyid)) {
+			$query = "SELECT qid FROM {$dbprefix}questions WHERE gid=".$gid;
+			$result = mysql_query($query);
+			$qids=array();
+			while($row = mysql_fetch_row($result)){
+				$qids[]=$row[0];
+			} // while
+			$qids="'".implode("', '",$qids)."'";
+			//1: Delete all answers to questions in this group
+			$query = "DELETE FROM {$dbprefix}answers WHERE qid IN (".$qids.")";
+			$result = mysql_query($query);
+			//2: Delete all conditions to questions in this group
+			$query = "DELETE FROM {$dbprefix}conditions WHERE qid IN (".$qids.")";
+			$result = mysql_query($query);
+			//3: Delete all question_attributes to questions in this group
+			$query = "DELETE FROM {$dbprefix}question_attributes WHERE qid IN (".$qids.")";
+			$result = mysql_query($query);
+			//4: Delete all questions in this group
+			$query = "DELETE FROM {$dbprefix}questions WHERE qid IN (".$qids.")";
+			$result = mysql_query($query);
+			//5: Delete Group
+			$query = "DELETE FROM {$dbprefix}groups WHERE gid = ".$gid;
+			$result = mysql_query($query);
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
 function delSurvey($surveyid, $dbprefix) {
 	global $databasename;
 	if (!is_numeric($surveyid)) { //make sure it's just a number!
@@ -484,4 +552,16 @@ function matchExists($table, $where) {
 	}
 }
 
+function isActivated($surveyid) {
+	//This function will return true if a survey is currently active
+	//and false if not
+	$query = "SELECT active FROM surveys WHERE sid=".$surveyid;
+	$result = mysql_query($query);
+	while ($row=mysql_fetch_row($result)) {
+		if ($row[0] == "Y") {
+		    return TRUE;
+		}
+	}
+	return FALSE;
+}
 ?>
