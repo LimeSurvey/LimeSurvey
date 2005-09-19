@@ -590,7 +590,7 @@ define("_TC_ADDEDIT", "Toevoegen of bewerken toegangscode");
 define("_TC_TOKENCREATEINFO", "U kan dit leeg laten en automatisch toegangscodes genereren met 'Aanmaken toegangscodes'");
 define("_TC_TOKENADDED", "Nieuwe toegangscodes toegevoegd");
 define("_TC_TOKENUPDATED", "Toegangscode bijgewerkt");
-define("_TC_UPLOADINFO", "Het bestand moet een standaard CSV (kommagescheiden) bestand zijn zonder aanhalingstekens. De eerste lijn moet de hoofding bevatten (zal niet geïmporteerd worden. De gegevens dienen geordend worden als 'voornaam, naam, e-mail, [paswoord], [attribute1], [attribute2]'.");
+define("_TC_UPLOADINFO", "Het bestand moet een standaard CSV (kommagescheiden) bestand zijn zonder aanhalingstekens. De eerste lijn moet de hoofding bevatten (zal niet geÃ¯mporteerd worden. De gegevens dienen geordend worden als 'voornaam, naam, e-mail, [paswoord], [attribute1], [attribute2]'.");
 define("_TC_UPLOADFAIL", "Uploadbestand niet gevonden. Controleer de rechten en het path naar de upload map"); //New for 0.98rc5
 define("_TC_IMPORT", "Bezig met het importeren van het CSV bestand");
 define("_TC_CREATE", "Bezig met het aanmaken van de deelnemers");
@@ -768,4 +768,21 @@ define("_AS_UPDATE", "Update");
 define("_RE_REGENNUMBER", "Regenerate Question Numbers:"); //NEW for release 0.99dev2
 define("_RE_STRAIGHT", "Straight"); //NEW for release 0.99dev2
 define("_RE_BYGROUP", "By Group"); //NEW for release 0.99dev2
+
+// Databse Consistency Check
+define ("_DC_TITLE", "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"); // New with 0.99stable
+define ("_DC_QUESTIONSOK", "All questions meet consistency standards"); // New with 0.99stable
+define ("_DC_ANSWERSOK", "All answers meet consistency standards"); // New with 0.99stable
+define ("_DC_CONDITIONSSOK", "All conditions meet consistency standards"); // New with 0.99stable
+define ("_DC_GROUPSOK", "All groups meet consistency standards"); // New with 0.99stable
+define ("_DC_NOACTIONREQUIRED", "No database action required"); // New with 0.99stable
+define ("_DC_QUESTIONSTODELETE", "The following questions should be deleted"); // New with 0.99stable
+define ("_DC_ANSWERSTODELETE", "The following answers should be deleted"); // New with 0.99stable
+define ("_DC_CONDITIONSTODELETE", "The following conditions should be deleted"); // New with 0.99stable
+define ("_DC_GROUPSTODELETE", "The following groups should be deleted"); // New with 0.99stable
+define ("_DC_ASSESSTODELETE", "The following assessments should be deleted"); // New with 0.99stable
+define ("_DC_QATODELETE", "The following question attributes should be deleted"); // New with 0.99stable
+define ("_DC_QAOK", "All question_attributes meet consistency standards"); // New with 0.99stable
+define ("_DC_ASSESSOK", "All assessments meet consistency standards"); // New with 0.99stable
+
 ?>

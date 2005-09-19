@@ -752,7 +752,7 @@ define("_VV_ENTRYFAILED", "Importazione fallita sul record");
 define("_VV_BECAUSE", "perch&egrave;");
 define("_VV_EXPORTDEACTIVATE", "Esporta, quindi disattiva l&#039;indagine");
 define("_VV_EXPORTONLY", "Esporta ma lascia attiva l&#039;indagine");
-define("_VV_RUSURE", "Se hai scelto di esportare disattivando l'indagine la tabella corrente delle risposte verrà rinominata e non sar&agrave; facile ripristinarla. Sei sicuro di voler procedere?");
+define("_VV_RUSURE", "Se hai scelto di esportare disattivando l'indagine la tabella corrente delle risposte verrÃ  rinominata e non sar&agrave; facile ripristinarla. Sei sicuro di voler procedere?");
 
 //ASSESSMENTS
 define("_AS_TITLE", "Valutazioni");
@@ -775,7 +775,24 @@ define("_AS_ADD", "Aggiungi/Modifica");
 define("_AS_UPDATE", "Aggiorna");
 
 //Question Number regeneration
-define("_RE_REGENNUMBER", "Rigenera numeri domande:"); //NEW for release 0.99dev2
-define("_RE_STRAIGHT", "Tutti"); //NEW for release 0.99dev2
-define("_RE_BYGROUP", "Per gruppo"); //NEW for release 0.99dev2
+define("_RE_REGENNUMBER", "Rigenera numeri domande:"); 
+define("_RE_STRAIGHT", "Tutti"); 
+define("_RE_BYGROUP", "Per gruppo");
+
+// Database Consistency Check
+define ("_DC_TITLE", "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"); // New with 0.99stable
+define ("_DC_QUESTIONSOK", "All questions meet consistency standards"); // New with 0.99stable
+define ("_DC_ANSWERSOK", "All answers meet consistency standards"); // New with 0.99stable
+define ("_DC_CONDITIONSSOK", "All conditions meet consistency standards"); // New with 0.99stable
+define ("_DC_GROUPSOK", "All groups meet consistency standards"); // New with 0.99stable
+define ("_DC_NOACTIONREQUIRED", "No database action required"); // New with 0.99stable
+define ("_DC_QUESTIONSTODELETE", "The following questions should be deleted"); // New with 0.99stable
+define ("_DC_ANSWERSTODELETE", "The following answers should be deleted"); // New with 0.99stable
+define ("_DC_CONDITIONSTODELETE", "The following conditions should be deleted"); // New with 0.99stable
+define ("_DC_GROUPSTODELETE", "The following groups should be deleted"); // New with 0.99stable
+define ("_DC_ASSESSTODELETE", "The following assessments should be deleted"); // New with 0.99stable
+define ("_DC_QATODELETE", "The following question attributes should be deleted"); // New with 0.99stable
+define ("_DC_QAOK", "All question_attributes meet consistency standards"); // New with 0.99stable
+define ("_DC_ASSESSOK", "All assessments meet consistency standards"); // New with 0.99stable
+
 ?>

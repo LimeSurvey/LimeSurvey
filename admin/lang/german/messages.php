@@ -81,7 +81,7 @@ define("_S_TOKENS_BT", "Probanden aktivieren/bearbeiten für diese Umfrage");
 define("_S_ADDGROUP_BT", "Neue Gruppe hinzufügen");
 define("_S_MINIMISE_BT", "Details verstecken für diese Umfrage");
 define("_S_MAXIMISE_BT", "Details anzeigen für diese Umfrage");
-define("_S_CLOSE_BT", "Diese Umfrage schliessen");
+define("_S_CLOSE_BT", "Diese Umfrage schließen");
 define("_S_SAVED_BT", "Zeige zwischengespeicherte Antworten"); 
 define("_S_ASSESSMENT_BT", "Bewertungsregeln setzen"); 
 
@@ -92,7 +92,7 @@ define("_G_DELETE_BT", "Diese Gruppe l&ouml;schen");
 define("_G_ADDQUESTION_BT", "Neue Frage zu dieser Gruppe hinzufügen");
 define("_G_MINIMISE_BT", "Details dieser Gruppe verstecken");
 define("_G_MAXIMISE_BT", "Details dieser Gruppe anzeigen");
-define("_G_CLOSE_BT", "Diese Gruppe schliessen");
+define("_G_CLOSE_BT", "Diese Gruppe schließen");
 //Question bar
 define("_Q_EDIT_BT", "Diese Frage bearbeiten");
 define("_Q_COPY_BT", "Diese Frage kopieren");
@@ -103,7 +103,7 @@ define("_Q_ANSWERS_BT", "Antworten hinzufügen/bearbeiten für diese Frage");
 define("_Q_LABELS_BT", "Vordefinierte Beschriftung-Sets hinzufügen/bearbeiten");
 define("_Q_MINIMISE_BT", "Details verstecken für diese Frage");
 define("_Q_MAXIMISE_BT", "Details anzeigen für diese Frage");
-define("_Q_CLOSE_BT", "Diese Frage schliessen");
+define("_Q_CLOSE_BT", "Diese Frage schließen");
 //Browse Button Bar
 define("_B_ADMIN_BT", "Zur Umfragen-Administration zurückkehren");
 define("_B_SUMMARY_BT", "Zeige Zusammenfassung");
@@ -284,7 +284,7 @@ define("_WARNING", "Warnung!");
 define("_USERNAME", "Benutzername");
 define("_PASSWORD", "Passwort");
 define("_DELETE", "L&ouml;schen");
-define("_CLOSEWIN", "Fenster schliessen");
+define("_CLOSEWIN", "Fenster schließen");
 define("_TOKEN", "Probanden");
 define("_DATESTAMP", "Zeitstempel"); //Referring to the datestamp or time response submitted
 define("_COMMENT", "Kommentar");
@@ -323,8 +323,8 @@ define("_SS_ALLOWSAVE", "Teilehmer k&ouml;nnen teilweise fertiggestellte Umfrage
 define("_QS_MANDATORY", "Pflichtfrage");
 define("_QS_OPTIONAL", "Optionale Frage");
 define("_QS_NOANSWERS", "Noch keine Antworten definiert");
-define("_QS_NOLID", "Sie müssen ein Beschriftung-Set für diese Frage ausw&auml;hlen");
-define("_QS_COPYINFO", "Anmerkung: Sie MüSSEN einen neuen Frage-Code eingeben");
+define("_QS_NOLID", "Sie müssen ein Beschriftung-Set für diese Frage auswählen");
+define("_QS_COPYINFO", "Anmerkung: Sie MÜSSEN einen neuen Frage-Code eingeben");
 
 //General Setup Messages
 define("_ST_NODB1", "Die angegebene PHPSurveyor Datenbank existiert nicht.");
@@ -349,7 +349,7 @@ define("_UC_DEL_USER", "L&ouml;sche Benutzer");
 define("_UC_DEL_MISSING", "Konnte Benutzer nicht l&ouml;schen. Kein Benutzername angegeben.");
 define("_UC_MOD_USER", "&Auml;ndere Benutzer");
 define("_UC_MOD_MISSING", "Konnte Benutzer nicht ab&auml;ndern. Benutzername und/oder Passwort wurden nicht angegeben.");
-define("_UC_TURNON_MESSAGE1", "Sie haben die Sicherheitseinstellungen für das Umfrage-System noch nicht initialisiert. Dadurch ist der Administrator-Zugang v&ouml;llig ungeschützt!</p>\nWenn Sie unten auf 'Sicherheitseinstellungen initialisieren' klicken, werden standardm&auml;ssige Apache-Sicherheitseinstellungen zum Admin-Verzeichnis hinzugefügt. Sie ben&ouml;tigen dann den Standard-Benutzernamen und Passwort, um auf die Admin-Seiten zu gelangen.");
+define("_UC_TURNON_MESSAGE1", "Sie haben die Sicherheitseinstellungen für das Umfrage-System noch nicht initialisiert. Dadurch ist der Administrator-Zugang v&ouml;llig ungeschützt!</p>\nWenn Sie unten auf 'Sicherheitseinstellungen initialisieren' klicken, werden standardmäßige Apache-Sicherheitseinstellungen zum Admin-Verzeichnis hinzugefügt. Sie ben&ouml;tigen dann den Standard-Benutzernamen und Passwort, um auf die Admin-Seiten zu gelangen.");
 define("_UC_TURNON_MESSAGE2", "Nach der Initialisierung der Sicherheitseinstellungen sollten sie unbedingt das Standard-Passwort neu setzen.");
 define("_UC_INITIALISE", "Initialisiere Sicherheitseinstellungen");
 define("_UC_NOUSERS", "Es sind momentan keine Benutzer angelegt. Wir empfehlen, dass die die Sicherheit ausschalten. Sie k&ouml;nnen sie dann wieder einschalten.");
@@ -503,7 +503,7 @@ define("_ST_VIEWALL", "Zusammenfassung aller zur Verfügung stehenden Felder anz
 define("_ST_SHOWRESULTS", "Statistik anzeigen");
 define("_ST_CLEAR", "L&ouml;schen");
 define("_ST_RESPONECONT", "Antworten enthalten");
-define("_ST_NOGREATERTHAN", "Werte gr&ouml;sser als");
+define("_ST_NOGREATERTHAN", "Werte größer als");
 define("_ST_NOLESSTHAN", "Werte kleiner als");
 define("_ST_DATEEQUALS", "Datum (YYYY-MM-DD) ist gleich");
 define("_ST_ORBETWEEN", "ODER zwischen");
@@ -613,7 +613,7 @@ define("_TC_UPDATEDB", "Zugangsschlüssel-Tabelle mit neuen Feldern aktualisiere
 define("_TC_EMAILINVITE_SUBJ", "Einladung zur Teilnahme an einer Umfrage"); 
 define("_TC_EMAILINVITE", "Hallo {FIRSTNAME},\n\nHiermit m&ouml;chten wir Sie zu einer Umfrage einladen.\n\n"
                          ."Der Titel der Umfrage ist \n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
-                         ."Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n Mit freundlichen Grüssen,\n\n"
+                         ."Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n Mit freundlichen Grüßen,\n\n"
                          ."{ADMINNAME} ({ADMINEMAIL})\n\n"
                          ."----------------------------------------------\n"
                          ."Klicken Sie hier um die Umfrage zu starten:\n"
@@ -622,7 +622,7 @@ define("_TC_EMAILREMIND_SUBJ", "Erinnerung an Teilnahme an einer Umfrage");
 define("_TC_EMAILREMIND", "Hallo {FIRSTNAME},\n\nVor kurzem haben wir Sie zu einer Umfrage eingeladen.\n\n"
                          ."Zu unserem Bedauern haben wir bemerkt, dass Sie die Umfrage noch nicht ausgefüllt haben. Wir m&ouml;chten Ihnen mitteilen, dass die Umfrage noch aktiv ist und würden uns freuen, wenn Sie teilnehmen k&ouml;nnten.\n\n"
                          ."Der Titel der Umfrage ist \n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
-                         ."Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n Mit freundlichen Grüssen,\n\n"
+                         ."Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n Mit freundlichen Grüßen,\n\n"
                          ."{ADMINNAME} ({ADMINEMAIL})\n\n"
                          ."----------------------------------------------\n"
                          ."Klicken Sie hier um die Umfrage zu starten:\n"
@@ -640,7 +640,7 @@ define("_TC_EMAILCONFIRM_SUBJ", "Abschlussbest&auml;tigung einer Umfrage");
 define("_TC_EMAILCONFIRM", "Hallo {FIRSTNAME},\n\nVielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. "
                           ."Ihre Antworten wurden bei uns gespeichert.\n\n"
                           ."Wenn Sie irgendwelche Fragen zu dieser Email haben, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.\n\n"
-                          ."Mit freundlichen Grüssen,\n\n"
+                          ."Mit freundlichen Grüßen,\n\n"
                           ."{ADMINNAME}");
 
 //labels.php
@@ -770,4 +770,22 @@ define("_AS_UPDATE", "Aktualisieren");
 define("_RE_REGENNUMBER", "Fragen-Codes neu erzeugen:"); //NEW for release 0.99dev2
 define("_RE_STRAIGHT", "Normal aufsteigend"); //NEW for release 0.99dev2
 define("_RE_BYGROUP", "Nach Gruppen"); //NEW for release 0.99dev2
+
+// Database Consistency Check
+define ("_DC_TITLE", "Überprüfung der Datenkonsitenz<br /><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. </font>"); // New with 0.99stable
+define ("_DC_QUESTIONSOK", "Alle Fragen sind konsistent."); 
+define ("_DC_ANSWERSOK", "Alle Antworten sind konsistent."); 
+define ("_DC_CONDITIONSSOK", "Alle Bedingungen sind konsistent."); 
+define ("_DC_GROUPSOK", "Alle Gruppen sind konsistent."); 
+define ("_DC_NOACTIONREQUIRED", "Es sind keine Datenänderungen notwendig."); 
+define ("_DC_QUESTIONSTODELETE", "Die folgenden Fragen sollten gelöscht werden:"); 
+define ("_DC_ANSWERSTODELETE", "Die folgenden Antworten sollten gelöscht werden:"); 
+define ("_DC_CONDITIONSTODELETE", "Die folgenden Bedingungen sollten gelöscht werden:");
+define ("_DC_GROUPSTODELETE", "Die folgenden Gruppen sollten gelöscht werden:"); 
+define ("_DC_ASSESSTODELETE", "Die folgenden Bewertungen sollten gelöscht werden:"); 
+define ("_DC_QATODELETE", "Die folgenden Fragenattribute sollten gelöscht werden:"); 
+define ("_DC_QAOK", "Alle Fragenattribute sind konsistent."); 
+define ("_DC_ASSESSOK", "Alle Bewertungen sind konsistent."); 
+
+
 ?>

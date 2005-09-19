@@ -36,27 +36,13 @@
 
 require_once("config.php");
 
-//The following will be moved into language file when completed
-define ("_DC_TITLE", "Data Consistency Check<br /><font size='1'>This script is still under development and should be treated with caution. Please backup database before continuing with this script</font>");
-define ("_DC_QUESTIONSOK", "All questions meet consistency standards");
-define ("_DC_ANSWERSOK", "All answers meet consistency standards");
-define ("_DC_CONDITIONSSOK", "All conditions meet consistency standards");
-define ("_DC_GROUPSOK", "All groups meet consistency standards");
-define ("_DC_NOACTIONREQUIRED", "No database action required");
-define ("_DC_QUESTIONSTODELETE", "The following questions should be deleted");
-define ("_DC_ANSWERSTODELETE", "The following answers should be deleted");
-define ("_DC_CONDITIONSTODELETE", "The following conditions should be deleted");
-define ("_DC_GROUPSTODELETE", "The following groups should be deleted");
-define ("_DC_ASSESSTODELETE", "The following assessments should be deleted");
-define ("_DC_QATODELETE", "The following question attributes should be deleted");
-define ("_DC_QAOK", "All question_attributes meet consistency standards");
-define ("_DC_ASSESSOK", "All assessments meet consistency standards");
 // THIS FILE CHECKS THE CONSISTENCY OF THE DATABASE, IT LOOKS FOR 
 // STRAY QUESTIONS, ANSWERS, CONDITIONS OR GROUPS AND DELETES THEM
 $ok=returnglobal('ok');
 
 if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 	{
+    sendcacheheaders();		
 	echo $htmlheader;
 	echo "<table><tr><td height='1'></td></tr></table>\n"
 		. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "

@@ -810,4 +810,21 @@ define("_AS_UPDATE", "Mettre &agrave; jour");
 define("_RE_REGENNUMBER", "R&eacute;g&eacute;n&eacute;ration de la num&eacute;rotation des questions :"); //NEW for release 0.99dev2
 define("_RE_STRAIGHT", "Complet"); //NEW for release 0.99dev2
 define("_RE_BYGROUP", "Par groupe"); //NEW for release 0.99dev2
+
+// Database Consistency Check
+define ("_DC_TITLE", "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"); // New with 0.99stable
+define ("_DC_QUESTIONSOK", "All questions meet consistency standards"); // New with 0.99stable
+define ("_DC_ANSWERSOK", "All answers meet consistency standards"); // New with 0.99stable
+define ("_DC_CONDITIONSSOK", "All conditions meet consistency standards"); // New with 0.99stable
+define ("_DC_GROUPSOK", "All groups meet consistency standards"); // New with 0.99stable
+define ("_DC_NOACTIONREQUIRED", "No database action required"); // New with 0.99stable
+define ("_DC_QUESTIONSTODELETE", "The following questions should be deleted"); // New with 0.99stable
+define ("_DC_ANSWERSTODELETE", "The following answers should be deleted"); // New with 0.99stable
+define ("_DC_CONDITIONSTODELETE", "The following conditions should be deleted"); // New with 0.99stable
+define ("_DC_GROUPSTODELETE", "The following groups should be deleted"); // New with 0.99stable
+define ("_DC_ASSESSTODELETE", "The following assessments should be deleted"); // New with 0.99stable
+define ("_DC_QATODELETE", "The following question attributes should be deleted"); // New with 0.99stable
+define ("_DC_QAOK", "All question_attributes meet consistency standards"); // New with 0.99stable
+define ("_DC_ASSESSOK", "All assessments meet consistency standards"); // New with 0.99stable
+
 ?>
