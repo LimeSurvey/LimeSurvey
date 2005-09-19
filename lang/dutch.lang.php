@@ -191,45 +191,43 @@ define("_PS_CON_TOQUESTION", "op vraag"); //New for 0.98finalRC1
 define("_PS_CON_OR", "or"); //New for 0.98finalRC2
 
 //Save Messages
-define("_SAVE_AND_RETURN", "Save your responses so far");
-define("_SAVEHEADING", "Save Your Unfinished Survey");
-define("_RETURNTOSURVEY", "Return To Survey");
-define("_SAVENAME", "Name");
-define("_SAVEPASSWORD", "Password");
-define("_SAVEPASSWORDRPT", "Repeat Password");
-define("_SAVE_EMAIL", "Your Email");
-define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
-				  ."Your survey will be saved using that name and password, and can be "
-				  ."completed later by logging in with the same name and password.<br /><br />\n"
-				  ."If you give an email address, an email containing the details will be sent "
-				  ."to you.");
-define("_SAVESUBMIT", "Save Now");
-define("_SAVENONAME", "You must supply a name for this saved session.");
-define("_SAVENOPASS", "You must supply a password for this saved session.");
-define("_SAVENOMATCH", "Your passwords do not match.");
-define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
-define("_SAVETRYAGAIN", "Please try again.");
-define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
-define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
-						 ."a survey in progress. The following details can be used "
-						 ."to return to this survey and continue where you left "
-						 ."off.");
-define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
-define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
-define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
-define("_SAVE_EMAILSENT", "An email has been sent with details about your saved survey.");
+define("_SAVE_AND_RETURN", "Sla uw antwoorden zover op");
+define("_SAVEHEADING", "Sla uw onvoltooide enquete op");
+define("_RETURNTOSURVEY", "Terug naar de enqeute");
+define("_SAVENAME", "Naam");
+define("_SAVEPASSWORD", "Wachtwoord");
+define("_SAVEPASSWORDRPT", "Herhaal wachtwoord");
+define("_SAVE_EMAIL", "Uw e-mail adres");
+define("_SAVEEXPLANATION", "Vul een naam en wachtwoord in voor deze enquete en druk op save.<br />\n"
+				  ."Uw enquete wordt opgeslagen en kan later worden aangevuld door in te loggen "
+				  ."met de door u opgegeven inloggevens.<br /><br />\n"
+				  ."Als u een e-mail adres op geeft sturen we u de details per e-mail").
+define("_SAVESUBMIT", "Nu opslaan");
+define("_SAVENONAME", "Vul a.u.b een naam in voor de opgeslagen sessie.");
+define("_SAVENOPASS", "Vul a.u.b. een wachtwoord in voor de opgeslagen sessie.");
+define("_SAVENOMATCH", "De wachtwoorden komen niet overeen.");
+define("_SAVEDUPLICATE", "De naam voor de enquete is reeds ingebruik, de naam moet uniek zijn.");
+define("_SAVETRYAGAIN", "Probeert u het nog eens.");
+define("_SAVE_EMAILSUBJECT", "Opgeslagen enquete details");
+define("_SAVE_EMAILTEXT", "U, of iemand anders die uw e-mail adres heeft gebruikt"
+						 ."heeft tijdelijk zijn antwoorden op een enquete opgeslagen."
+						 ."De volgende details kunt u gebruiken om de enquete te vervolgen.");
+define("_SAVE_EMAILURL", "Herlaad de enquete door op de volgende link te klikken:");
+define("_SAVE_SUCCEEDED", "Uw antwoorden zijn succesvol opgeslagen.");
+define("_SAVE_FAILED", "Er heeft zich een onverwachte fout voorgedaan, uw antwoorden zijn niet opgeslagen.");
+define("_SAVE_EMAILSENT", "Uw heeft een e-mail toegezonden gekregen met details over de opgeslagen enquete.");
 
 //Load Messages
-define("_LOAD_SAVED", "Load unfinished survey");
-define("_LOADHEADING", "Load A Previously Saved Survey");
-define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
-			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
-define("_LOADNAME", "Saved name");
-define("_LOADPASSWORD", "Password");
-define("_LOADSUBMIT", "Load Now");
-define("_LOADNONAME", "You did not provide a name");
-define("_LOADNOPASS", "You did not provide a password");
-define("_LOADNOMATCH", "There is no matching saved survey");
+define("_LOAD_SAVED", "Laad onvoltooide enquete");
+define("_LOADHEADING", "Laad een eerder opgeslagen enquete");
+define("_LOADEXPLANATION", "U kunt een enquete laden die u hier eerder heeft opgeslagen.<br />\n"
+			  ."Vul de eerder door u verzonnen naam en wachtwoord in<br /><br />\n");
+define("_LOADNAME", "Naam");
+define("_LOADPASSWORD", "Wachtwoord");
+define("_LOADSUBMIT", "Laad nu");
+define("_LOADNONAME", "U heeft geen naam opgegeven");
+define("_LOADNOPASS", "U heeft geen wachtwoord opgegeven");
+define("_LOADNOMATCH", "Er is geen enquete gevonden met deze naam");
 
-define("_ASSESSMENT_HEADING", "Your Assessment");
+define("_ASSESSMENT_HEADING", "Uw toetsing");
 ?>
