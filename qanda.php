@@ -237,40 +237,40 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             $values=do_list_flexible_radio($ia);
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
-                $qtitle .= "<br />\n</strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><strong>";
+                $qtitle .= "<br />\n<strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i></strong>";
                 }
             break;
         case "L": //LIST drop-down/radio-button list
             $values=do_list_radio($ia);
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
-                $qtitle .= "<br />\n</strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><strong>";
+                $qtitle .= "<br />\n<strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i></strong>";
                 }
             break;
         case "W": //List - dropdown
             $values=do_list_flexible_dropdown($ia);
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
-                $qtitle .= "<br />\n</strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><strong>";
+                $qtitle .= "<br />\n<strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i></strong>";
                 }
             break;
         case "!": //List - dropdown
             $values=do_list_dropdown($ia);
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
-                $qtitle .= "<br />\n</strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><strong>";
+                $qtitle .= "<br />\n<strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i></strong>";
                 }
             break;
         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
             $values=do_listwithcomment($ia);
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
-                $qtitle .= "<br />\n</strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i><strong>";
+                $qtitle .= "<br />\n<strong><i><font size='1'>"
+                         . _INSTRUCTION_LIST."</font></i></strong>";
                 }
             break;
         case "R": //RANKING STYLE
@@ -280,16 +280,16 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             $values=do_multiplechoice($ia);
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
-                    $qtitle .= "<br />\n</strong><i><font size='1'>"
-                         . _INSTRUCTION_MULTI."</font></i><strong>";
+                    $qtitle .= "<br />\n<strong><i><font size='1'>"
+                         . _INSTRUCTION_MULTI."</font></i></strong>";
                 }
             break;
         case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
             $values=do_multiplechoice_withcomments($ia);
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
-                $qtitle .= "<br />\n</strong><i><font size='1'>"
-                         . _INSTRUCTION_MULTI."</font></i><strong>";
+                $qtitle .= "<br />\n<strong><i><font size='1'>"
+                         . _INSTRUCTION_MULTI."</font></i></strong>";
                 }
             break;
         case "Q": //MULTIPLE SHORT TEXT
@@ -386,7 +386,7 @@ function validation_message($ia)
         global $validationpopup, $popup;
         if (in_array($ia[1], $notvalidated))
             {
-            $qtitle .= "</strong><br /><span class='errormandatory'>"._VALIDATION." $help</span><strong><br />\n";
+            $qtitle .= "<strong><br /><span class='errormandatory'>"._VALIDATION." $help</span></strong><br />\n";
             }
         }
     return $qtitle;
@@ -403,7 +403,7 @@ function mandatory_message($ia)
         global $mandatorypopup, $popup;
         if (in_array($ia[1], $notanswered))
             {
-            $qtitle .= "</strong><br /><span class='errormandatory'>"._MANDATORY.".";
+            $qtitle .= "<strong><br /><span class='errormandatory'>"._MANDATORY.".";
             switch($ia[4])
                 {
                 case "A":
@@ -422,7 +422,7 @@ function mandatory_message($ia)
                     $qtitle .= "<br />\n"._MANDATORY_CHECK.".";
                     break;
                 } // end switch
-            $qtitle .= "</font></span><strong><br />\n";
+            $qtitle .= "</font></span></strong><br />\n";
             }
         }
     return $qtitle;
