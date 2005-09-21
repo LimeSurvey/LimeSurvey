@@ -1,0 +1,108 @@
+<head>
+	<title>
+	{SURVEYNAME}
+	</title>
+<style>
+
+body {
+	color: black;
+	background-color: #FFFFFF;
+	font-family: Verdana;
+	font-size: 12px;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+font{
+	font-family: Verdana;
+	font-size: 10px;
+}
+.submit
+	{
+	background-color: #CCCCFF;
+	}
+.text
+	{
+	font-family: Verdana;
+	font-size: 10px;
+	}
+.radio
+	{
+	}
+.checkbox
+	{
+	}
+.select
+	{
+	background-color: #EFEFEF;
+	color: #555555;
+	}
+.textarea
+	{
+	background-color: #EFEFEF;
+	width: 400;
+	}
+.clearall
+	A:link
+	{
+	text-decoration: none;
+	}
+.clearall
+	A:visited
+	{
+	text-decoration: none;
+	}
+.clearall
+	A:active
+	{
+	text-decoration: none;
+	}
+.clearall
+	A:hover
+	{
+	text-decoration: underline;
+	}
+.graph	
+	{
+	border: solid;
+	border-width: 1;
+	border-color: #FFFFFF;
+	background-color: EFEFEF;
+	font-family: Verdana;
+	font-size: 10px;
+	}
+.innergraph
+	{
+	background-color: EFEFEF;
+	color: #777777;
+	font-family: Verdana;
+	font-size: 10px;
+	}
+.rank	
+	{
+	background-color: #E1E1E1;
+	color: #777777;
+	}
+.array1 
+	{
+	background-color: #D1D1D1;
+	text-alignment: left;
+	}
+.array2
+	{
+	background-color: #EFEFEF;
+	}
+.question
+	{
+	background-color: #FFFFFF;
+	font-family: Verdana;
+	font-size: 10px;
+	}
+</style>
+</head>
+<body><font color='#444444'>
+<br/>
+<table width='85%' align='center' style='border-collapse: collapse' bordercolor='#999999' bgcolor='#E9E9E9' border='2' cellspacing='0'>
+	<tr>
+		<td style="font-family:Verdana; font-size:12px;">

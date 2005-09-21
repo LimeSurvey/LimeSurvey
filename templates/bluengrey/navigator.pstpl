@@ -1,0 +1,8 @@
+<table width='100%' align='center'>
+	<tr>
+		<td align='center'>
+			<font>{NAVIGATOR}</font><br />
+			<font>{CLEARALL}</font>
+		</td>
+	</tr>
+</table>

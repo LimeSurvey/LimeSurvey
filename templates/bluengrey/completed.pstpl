@@ -1,0 +1,10 @@
+<br />
+<table width='75%' align='center' border='1' style='border-collapse: collapse' bordercolor='#111111' bgcolor='white'>
+	<tr>
+		<td align='center'>
+			<font >{COMPLETED}<br /><br />
+
+			{URL}<br /><br /></font>
+		</td>
+	</tr>
+</table>
