@@ -165,7 +165,7 @@ define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registrierungsbest&auml;tigung");
 define ("_RG_REGISTRATIONCOMPLETE", "Vielen Dank, dass Sie sich f&uuml;r die Teilnahme an dieser Umfrage angemeldet haben.<br /><br />\n"
                                    ."Es wurde eine Email an die von Ihnen angegebene Adresse versandt, die weitere Details f&uuml;r die Teilnahme "
                                    ."an der Umfrage enth&auml;lt. Bitte klicken Sie auf den Link innerhalb der Email um fortzufahren.<br />\n"
-                                   ."Mit freundlichen Gr&uuml;ssen<br /><br />\n"
+                                   ."Mit freundlichen Grüßen<br /><br />\n"
                                    ."{ADMINNAME} ({ADMINEMAIL})");
 define("_SM_COMPLETED", "<strong>Vielen Dank!<br /><br />"
                        ."Sie haben nun alle Fragen dieser Umfrage beantwortet.</strong><br /><br />"
