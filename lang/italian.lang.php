@@ -49,7 +49,7 @@ define("_NOANSWER", "Nessuna risposta");
 define("_NOTAPPLICABLE", "N/A"); //New for 0.98rc5
 define("_OTHER", "Altro");
 define("_PLEASECHOOSE", "Seleziona");
-define("_ERROR_PS", "Errore");
+define("_ERROR_PS", "ERRORE");
 define("_COMPLETE", "Completato");
 define("_INCREASE", "In aumento"); //NEW WITH 0.98
 define("_SAME", "Uguale"); //NEW WITH 0.98
@@ -91,9 +91,9 @@ define("_YOURRANKING", "La tua classifica");
 define("_RANK_3", "Fai clic sulla icona delle forbici a destra di ogni articolo");
 define("_RANK_4", "per eliminare l&#039;ultimo dato inserito nella classifica");
 //From INDEX.PHP
-define("_NOSID", "Inserire il numero di identificazione dell&#039;indagine");
+define("_NOSID", "Inserire il numero di identificazione dell&#039;indagine.");
 define("_CONTACT1", "Contattare");
-define("_CONTACT2", "Per ulteriori informazioni");
+define("_CONTACT2", "per ulteriori informazioni");
 define("_ANSCLEAR", "Risposte azzerate");
 define("_RESTART", "Avvia di nuovo l&#039;indagine");
 define("_CLOSEWIN_PS", "Chiudi finestra");
