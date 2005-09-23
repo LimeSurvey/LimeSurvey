@@ -518,7 +518,7 @@ function do_date($ia)
 
 function do_list_dropdown($ia)
     {
-    global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
+    global $dbprefix,  $dropdownthreshold, $lwcdropdowns;
     global $shownoanswer;
     $qidattributes=getQuestionAttributes($ia[0]);
     $answer="";
@@ -595,7 +595,7 @@ function do_list_dropdown($ia)
 
 function do_list_flexible_dropdown($ia)
     {
-    global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
+    global $dbprefix, $dropdownthreshold, $lwcdropdowns;
     global $shownoanswer;
     $qidattributes=getQuestionAttributes($ia[0]);
     $answer="";
@@ -679,7 +679,7 @@ function do_list_flexible_dropdown($ia)
 
 function do_list_radio($ia)
     {
-    global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
+    global $dbprefix, $dropdownthreshold, $lwcdropdowns;
     global $shownoanswer;
     $answer="";
     $qidattributes=getQuestionAttributes($ia[0]);
@@ -770,7 +770,7 @@ function do_list_radio($ia)
 
 function do_list_flexible_radio($ia)
     {
-    global $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
+    global $dbprefix, $dropdownthreshold, $lwcdropdowns;
     global $shownoanswer;
     $answer="";
     $qidattributes=getQuestionAttributes($ia[0]);
@@ -870,7 +870,7 @@ function do_list_flexible_radio($ia)
 
 function do_listwithcomment($ia)
     {
-    global $maxoptionsize, $dbprefix, $dropdowns, $dropdownthreshold, $lwcdropdowns;
+    global $maxoptionsize, $dbprefix, $dropdownthreshold, $lwcdropdowns;
     global $shownoanswer;
     $answer="";
     $qidattributes=getQuestionAttributes($ia[0]);

@@ -454,14 +454,14 @@ if (isset($conditions) && is_array($conditions))
 			$java .= "\n\t\t\tif ((";
 			}
 		if (!isset($oldcq) || !$oldcq) {$oldcq = $cd[2];}
-		if ($cd[4] == "L" && $dropdowns == "R") //Just in case the dropdown threshold is being applied, check number of answers here
+		if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
 			{
 			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
 			$cccresult=mysql_query($cccquery);
 			$cccount=mysql_num_rows($cccresult);
 			}
 		if ($cd[4] == "R") 	{$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);}
-		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "H" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $dropdowns == "R" && $cccount <= $dropdownthreshold))
+		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "H" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $cccount <= $dropdownthreshold))
 							{$idname="java$cd[2]";}
 		elseif ($cd[4] == "M" || $cd[4] == "P")
 							{$idname="java$cd[2]$cd[3]";}
