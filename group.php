@@ -119,7 +119,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 
 		$completed = "<br /><strong><font size='2' color='red'>"._DIDNOTSAVE."</strong></font><br /><br />\n\n";
 		$completed .= _NOTACTIVE1."<br /><br />\n";
-		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&move=clearall'>"._CLEARRESP."</a><br /><br />\n";
+		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._CLEARRESP."</a><br /><br />\n";
 		$completed .= "<font size='1'>$subquery</font>\n";
 		if (isset($_SESSION['savename'])) 
 			{
@@ -268,7 +268,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
-	echo '\n</form>\n';
+	echo "\n</form>\n";
 	doFooter();
 	exit;
 	}
@@ -324,7 +324,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
-	echo '\n</form>\n';
+	echo "\n</form>\n";
 	doFooter();
 	exit;
 	}

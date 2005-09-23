@@ -65,8 +65,9 @@ if (!$surveyid)
 		}
 	echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><strong>ERROR</strong></font><br />\n"
-		."\t\t\t"._NOSID."\n"
-		."\t\t\t"._CONTACT1." $siteadminname ( $siteadminemail ) "._CONTACT2."\n";
+		."\t\t\t"._NOSID."<br />\n"
+		."\t\t\t"._CONTACT1." $siteadminname ( $siteadminemail ) "._CONTACT2."\n"
+		."\t\t</center><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
 		{
