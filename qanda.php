@@ -422,7 +422,7 @@ function mandatory_message($ia)
                     $qtitle .= "<br />\n"._MANDATORY_CHECK.".";
                     break;
                 } // end switch
-            $qtitle .= "</font></span></strong><br />\n";
+            $qtitle .= "</span></strong><br />\n";
             }
         }
     return $qtitle;

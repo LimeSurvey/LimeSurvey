@@ -152,7 +152,7 @@ if (!$thissurvey['template']) {$thistpl="$publicdir/templates/default";} else {$
 if (!is_dir($thistpl)) {$thistpl="$publicdir/templates/default";}
 
 sendcacheheaders();
-echo "<html>\n";
+doHeader();
 
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
@@ -167,6 +167,7 @@ foreach(file("$thistpl/endpage.pstpl") as $op)
 	{
 	echo templatereplace1($op);
 	}
+doFooter();
 	
 function templatereplace1($line)
 	{

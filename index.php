@@ -39,6 +39,9 @@ session_start();
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 require_once("./admin/config.php");
 
+if ( $embedded_inc != '' )
+	require_once( $embedded_inc );
+
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
 if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");} 
@@ -54,7 +57,7 @@ if (!$surveyid)
 	require($langfilename);
 	//A nice exit
 	sendcacheheaders();
-	echo "<html>\n";
+	doHeader();
 	$output=file("$tpldir/default/startpage.pstpl");
 	foreach($output as $op)
 		{
@@ -69,7 +72,7 @@ if (!$surveyid)
 		{
 		echo templatereplace($op);
 		}
-	echo "</html>\n";
+	doFooter();
 	exit;
 	}
 
@@ -101,7 +104,7 @@ require_once($langfilename);
 if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['expiry'] != "0000-00-00")
 	{
 	sendcacheheaders();
-	echo "<html>\n";
+	doHeader();
 	$output=file("$tpldir/default/startpage.pstpl");
 	foreach ($output as $op)
 		{
@@ -116,7 +119,7 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['expiry'] != "0000-00-0
 		{
 		echo templatereplace($op);
 		}
-	echo "</html>\n";
+	doFooter();
 	exit;
 	}
 	
@@ -126,7 +129,7 @@ $cookiename="PHPSID".returnglobal('sid')."STATUS";
 if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1 && (!isset($_GET['newtest']) || $_GET['newtest'] != "Y"))
 	{
 	sendcacheheaders();
-	echo "<html>\n";
+	doHeader();
 	$output=file("$tpldir/default/startpage.pstpl");
 	foreach($output as $op)
 		{
@@ -142,7 +145,7 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 		{
 		echo templatereplace($op);
 		}
-	echo "</html>\n";
+	doFooter();
 	exit;
 	}
 
@@ -246,7 +249,7 @@ if ($tokensexist == 1 && returnglobal('token'))
 	if (!$tkexist)
 		{
 		sendcacheheaders();
-		echo "<html>\n";
+		doHeader();
 		//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -280,7 +283,7 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	    session_write_close();
 	    header("Location: {$_GET['redirect']}");
 	}
-	echo "<html>\n";
+	doHeader();
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -304,7 +307,7 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 		{
 		echo templatereplace($op);
 		}
-	echo "</html>\n";
+	doFooter();
 	exit;	
 	}
 
@@ -802,7 +805,7 @@ function createinsertquery()
 	else
 		{
 		sendcacheheaders();
-		echo "<html>\n";
+		doHeader();
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -934,7 +937,7 @@ function submitfailed()
 	global $thissurvey;
 	global $thistpl, $subquery, $surveyid;
 	sendcacheheaders();
-	echo "<html>\n";
+	doHeader();
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -985,7 +988,7 @@ function buildsurveysession()
 	if ($tokensexist == 1 && !returnglobal('token'))
 		{
 		sendcacheheaders();
-		echo "<html>\n";
+		doHeader();
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
@@ -1038,7 +1041,7 @@ function buildsurveysession()
 		if (!$tkexist)
 			{
 			sendcacheheaders();
-			echo "<html>\n";
+			doHeader();
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -1103,7 +1106,7 @@ function buildsurveysession()
 	if ($totalquestions == "0")	//break out and crash if there are no questions!
 		{
 		sendcacheheaders();
-		echo "<html>\n";
+		doHeader();
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
 			echo templatereplace($op);

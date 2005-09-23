@@ -101,7 +101,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 	if ($thissurvey['active'] != "Y")
 		{
 		sendcacheheaders();
-		echo "<html>\n";
+		doHeader();
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -167,7 +167,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				header("Location: {$thissurvey['url']}");
 			    }
 
-			echo "<html>\n";
+			doHeader();
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -268,7 +268,8 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
-	echo "\n</form>\n</html>";
+	echo '\n</form>\n';
+	doFooter();
 	exit;
 	}
 
@@ -294,7 +295,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 	$totalquestions = buildsurveysession();
 	sendcacheheaders();
-	echo "<html>\n";
+	doHeader();
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -323,7 +324,8 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
-	echo "\n</form>\n</html>";
+	echo '\n</form>\n';
+	doFooter();
 	exit;
 	}
 
@@ -402,7 +404,7 @@ $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 sendcacheheaders();
-echo "<html>\n";
+doHeader();
 if (isset($popup)) {echo $popup;}
 if (isset($vpopup)) {echo $vpopup;}
 foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -604,6 +606,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 echo "<input type='hidden' name='token' value='$token' id='token'>\n";
-echo "</form>\n</html>";
+echo "</form>\n";
+doFooter();
 
 ?>

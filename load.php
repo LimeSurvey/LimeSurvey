@@ -38,7 +38,7 @@ require_once("./admin/config.php");
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($thistpl)) {die ("Error!");}
 sendcacheheaders();
-echo "<html>\n";
+doHeader();
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
@@ -68,6 +68,6 @@ foreach(file("$thistpl/endpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
 	}
-echo "</html>\n";
+doFooter();
 exit;
 ?>

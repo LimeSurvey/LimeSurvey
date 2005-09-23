@@ -112,7 +112,7 @@ if (!isset($source))
 			}
 		}
 	sendcacheheaders();
-	echo "<html>\n";
+	doHeader();
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -146,7 +146,7 @@ if (!isset($source))
 		{
 		echo templatereplace($op);
 		}
-	echo "</html>\n";
+	doFooter();
 	exit;
 	}
 
@@ -290,7 +290,7 @@ else
 
 
 sendcacheheaders();
-echo "<html>\n";
+doHeader();
 foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
@@ -336,7 +336,7 @@ foreach(file("$thistpl/endpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
 	}
-echo "</html>\n";
+doFooter();
 exit;
 
 

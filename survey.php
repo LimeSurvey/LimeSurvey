@@ -88,7 +88,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 	if ($thissurvey['active'] != "Y")
 		{
 		sendcacheheaders();
-		echo "<html>\n";
+		doHeader();
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -146,14 +146,14 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			
 			//Start to print the final page
 			sendcacheheaders();
-			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+			if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
 				{
 			    //Automatically redirect the page to the "url" setting for the survey
 				session_write_close();
 				header("Location: {$thissurvey['url']}");
 			    }
 
-			echo "<html>\n";
+			doHeader();
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -216,7 +216,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	sendcacheheaders();
-	echo "<html>\n";
+	doHeader();
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -248,7 +248,8 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 		."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
 		."\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
 		."\n<input type='hidden' name='token' value='$token' id='token'>\n"
-		."\n</form>\n</html>";
+		.'\n</form>\n';
+		doFooter();
 	exit;
 	}
 
@@ -256,7 +257,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 if ($surveyexists <1)
 	{
 	sendcacheheaders();
-	echo "<html>\n";
+	doHeader();
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -345,7 +346,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 sendcacheheaders();
-echo "<html>\n";
+doHeader();
 if(isset($popup)) {echo $popup;}
 if(isset($vpopup)) {echo $vpopup;}
 foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -550,6 +551,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
 	."<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
 	."<input type='hidden' name='token' value='$token' id='token'>\n"
-	."</form>\n</html>";
+	.'</form>\n';
+	doFooter();
 
 ?>
