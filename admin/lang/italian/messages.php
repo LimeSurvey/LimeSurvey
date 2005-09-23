@@ -780,19 +780,19 @@ define("_RE_STRAIGHT", "Tutti");
 define("_RE_BYGROUP", "Per gruppo");
 
 // Database Consistency Check
-define ("_DC_TITLE", "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"); // New with 0.99stable
-define ("_DC_QUESTIONSOK", "All questions meet consistency standards"); // New with 0.99stable
-define ("_DC_ANSWERSOK", "All answers meet consistency standards"); // New with 0.99stable
-define ("_DC_CONDITIONSSOK", "All conditions meet consistency standards"); // New with 0.99stable
-define ("_DC_GROUPSOK", "All groups meet consistency standards"); // New with 0.99stable
-define ("_DC_NOACTIONREQUIRED", "No database action required"); // New with 0.99stable
-define ("_DC_QUESTIONSTODELETE", "The following questions should be deleted"); // New with 0.99stable
-define ("_DC_ANSWERSTODELETE", "The following answers should be deleted"); // New with 0.99stable
-define ("_DC_CONDITIONSTODELETE", "The following conditions should be deleted"); // New with 0.99stable
-define ("_DC_GROUPSTODELETE", "The following groups should be deleted"); // New with 0.99stable
-define ("_DC_ASSESSTODELETE", "The following assessments should be deleted"); // New with 0.99stable
-define ("_DC_QATODELETE", "The following question attributes should be deleted"); // New with 0.99stable
-define ("_DC_QAOK", "All question_attributes meet consistency standards"); // New with 0.99stable
-define ("_DC_ASSESSOK", "All assessments meet consistency standards"); // New with 0.99stable
+define ("_DC_TITLE", "Controllo consistenza dati<br /><font size='1'>Se vengono indicati degli errori si dovrebbe eseguire nuovamente questo script. </font>"); // New with 0.99stable
+define ("_DC_QUESTIONSOK", "Tutte le domande soddisfano gli standard di consistenza"); // New with 0.99stable
+define ("_DC_ANSWERSOK", "Tutte le risposte soddisfano gli standard di consistenza"); // New with 0.99stable
+define ("_DC_CONDITIONSSOK", "Tutte le condizioni soddisfano gli standard di consistenza"); // New with 0.99stable
+define ("_DC_GROUPSOK", "Tutti i gruppi soddisfano gli standard di consistenza"); // New with 0.99stable
+define ("_DC_NOACTIONREQUIRED", "Non si richiede alcuna azione sul database"); // New with 0.99stable
+define ("_DC_QUESTIONSTODELETE", "Le seguenti domande dovrebbero essere eliminate"); // New with 0.99stable
+define ("_DC_ANSWERSTODELETE", "Le seguenti risposte dovrebbero essere eliminate"); // New with 0.99stable
+define ("_DC_CONDITIONSTODELETE", "Le seguenti condizioni dovrebbero essere eliminate"); // New with 0.99stable
+define ("_DC_GROUPSTODELETE", "I seguenti gruppi dovrebbero essere eliminati"); // New with 0.99stable
+define ("_DC_ASSESSTODELETE", "Le seguenti valutazioni-punteggi dovrebbero essere eliminate"); // New with 0.99stable
+define ("_DC_QATODELETE", "I seguenti attributi delle domande devorebbero essere eliminati"); // New with 0.99stable
+define ("_DC_QAOK", "Tutti gli attributi delle domande soddisfano gli standard di consistenza"); // New with 0.99stable
+define ("_DC_ASSESSOK", "Tutte la valutazioni-punteggi soddisfano gli standard di consistenza"); // New with 0.99stable
 
 ?>
