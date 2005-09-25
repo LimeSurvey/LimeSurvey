@@ -263,7 +263,7 @@ if ($surveyid)
 							. "alt='"._S_CANNOTACTIVATE_BT."' border='0' align='left' hspace='0'>\n";
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "\t\t\t\t\t<input type='image' src='$imagefiles/do.gif' title='"._S_DOSURVEY_BT."' "
+						. "\t\t\t\t\t<input type='image' accesskey='d' src='$imagefiles/do.gif' title='"._S_DOSURVEY_BT."' "
 						. "name='DoSurvey' align='left' alt='"._S_DOSURVEY_BT."' "
 						. "onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\">\n"
 						. "\t\t\t\t\t<input type='image' src='$imagefiles/dataentry.gif' "
