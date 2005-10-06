@@ -138,6 +138,7 @@ define("_CONFIRMATION_MESSAGE1", "Enk&auml;ten skickad"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Ett nytt svar till din enk&auml;t har l&auml;mnats"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Se det enskilda svaret genom att klicka h&auml;r:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Se statistik f&ouml;r enk&auml;ten genom att klicka h&auml;r:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Hantering av personuppgifter. </i></strong><br />"
                           ."Den h&auml;r enk&auml;ten &auml;r anonym.<br />"

@@ -577,6 +577,7 @@ define("_TC_EDIT", "Genera idenficativi");
 define("_TC_DEL", "Elimina identificativi");
 define("_TC_DO", "Prova Indagine");
 define("_TC_VIEW", "Mostra Risposta");
+define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
 define("_TC_INVITET", "Invia invito a questo utente");
 define("_TC_REMINDT", "Invia sollecito a questo utente");
 define("_TC_INVITESUBJECT", "Invito a partecipare all&#039;indagine {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts

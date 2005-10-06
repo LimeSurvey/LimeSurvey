@@ -140,6 +140,7 @@ define("_CONFIRMATION_MESSAGE1", "Deine Umfragedaten wurden &uuml;bermittelt.");
 define("_CONFIRMATION_MESSAGE2", "Es sind neue Umfragedaten vorhanden.");
 define("_CONFIRMATION_MESSAGE3", "Klicke hier, um die einzelnen Antworten zu sehen:");
 define("_CONFIRMATION_MESSAGE4", "Ansichtstatistiken, bitte hier klicken:");
+define("_CONFIRMATION_MESSAGE5", "Klicke auf den folgenden Link um die Antwortdaten direkt zu editieren:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Schutz deiner Privatsph&auml;re</i></strong><br />"
                           ."Diese Umfrage ist anonym.<br />"

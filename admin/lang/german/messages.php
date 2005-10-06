@@ -15,7 +15,7 @@ define("_DEACTIVATE", "Befragung deaktivieren");
 define("_CHECKFIELDS", "Datenbankfelder 체berpr체fen");
 define("_CREATEDB", "Erstelle Datenbank");
 define("_CREATESURVEY", "Erstelle Umfrage");
-define("_SETUP", "PHPSurveyor Einrichten");
+define("_SETUP", "PHP Surveyor Einrichten");
 define("_DELETESURVEY", "Umfrage l&ouml;schen");
 define("_EXPORTQUESTION", "Fragen exportieren");
 define("_EXPORTSURVEY", "Umfrage exportieren");
@@ -577,7 +577,8 @@ define("_TC_INVITESCLEARED", "Alle Einladungs-Eintr&auml;ge wurden auf Nein zur�
 define("_TC_EDIT", "Proband bearbeiten");
 define("_TC_DEL", "Proband l&ouml;schen");
 define("_TC_DO", "Umfrage ausf체hren");
-define("_TC_VIEW", "Antwort anzeigen");
+define("_TC_VIEW", "Antworten anzeigen");
+define("_TC_UPDATE", "Antworten bearbeiten");
 define("_TC_INVITET", "Sende eine Einladungs-E-Mail f체r diesen Eintrag");
 define("_TC_REMINDT", "Sende eine Erinnerungs-E-Mail f체r diesen Eintrag");
 define("_TC_INVITESUBJECT", "Einladung zur Teilnahme an der Umfrage {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts

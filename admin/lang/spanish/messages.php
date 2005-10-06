@@ -583,6 +583,7 @@ define("_TC_EDIT", "Modificar Token");
 define("_TC_DEL", "Borrar Token");
 define("_TC_DO", "Realizar Encuesta");
 define("_TC_VIEW", "Ver Contestaci&oacute;n");
+define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
 define("_TC_INVITET", "Enviar invitaci&oacute;n (email) a esta entrada");
 define("_TC_REMINDT", "Enviar recordatorio (email) a esta entrada");
 define("_TC_INVITESUBJECT", "Invitaci&oacute;n para participar en la encuesta {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts

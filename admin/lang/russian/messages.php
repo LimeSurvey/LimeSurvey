@@ -576,6 +576,7 @@ define("_TC_EDIT", "Изменение кл. фразы");
 define("_TC_DEL", "Удаление кл. фразы");
 define("_TC_DO", "Провести опрос");
 define("_TC_VIEW", "Смотреть ответы");
+define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
 define("_TC_INVITET", "Отправить email приглашение для этого элемента");
 define("_TC_REMINDT", "Отправить email напоминание для этого элемента");
 define("_TC_INVITESUBJECT", "Приглашение участнику опроса {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts

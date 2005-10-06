@@ -135,6 +135,7 @@ define("_CONFIRMATION_MESSAGE1", "Enquete verzonden"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Er is weer een enquete beantwoord"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Klik de volgende link om de individuele antwoorden te zien:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Bekijk statistieken -> klik hier:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Privacy verklaring</i></strong><br />"
 						  ."Deze enquete is anoniem.<br />"

@@ -618,6 +618,7 @@ define("_TC_EDIT", "Editer l&#146;invitation");
 define("_TC_DEL", "Supprimer l&#146;invitation");
 define("_TC_DO", "Faire le questionnaire");
 define("_TC_VIEW", "Voir les r&eacute;ponses");
+define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
 define("_TC_INVITET", "Envoyer une invitation par mail &agrave; cette entr&eacute;e");
 define("_TC_REMINDT", "Envoyer un rappel par mail &agrave; cette entr&eacute;e");
 define("_TC_INVITESUBJECT", "Invitation pour r&eacute;pondre au questionnaire {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts

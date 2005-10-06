@@ -133,6 +133,7 @@ define("_CONFIRMATION_MESSAGE1", "Examen Sometido"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Una nueva respuesta fue incorporada para su examen"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Chasque el acoplamiento siguiente para ver la respuesta individual:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Estad&iacute;stica de la visi&oacute;n chascando aqu&iacute;:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Una nota sobre privacidad.</i></strong><br />"
         ."Este examen es an&oacute;nimo.<br />"

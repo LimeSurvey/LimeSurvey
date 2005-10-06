@@ -517,6 +517,20 @@ if ($action == "browse" || $action == "search")
 				."\t\t<input type='hidden' name='action' value='id' />\n"
 				."\t\t<input type='hidden' name='sql' value=\"token='{$brow['token']}'\" />\n"
 				."\t\t</form>\n";
+
+				// TLR Add an UPDATE button to the tokens display in the MPID Actions column 
+ 				$query="SELECT * FROM {$dbprefix}survey_$surveyid WHERE token='$brow[4]'"; 
+				$result=mysql_query($query) or die ("<br />Could not find token!<br />\n" . mysql_error()); 
+				$id=mysql_result($result,0,"id"); 
+				echo "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n" 
+				."\t\t<td align='center' valign='top'>\n" 
+				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='U' title='"
+				._TC_UPDATE."' />\n"
+				."\t\t<input type='hidden' name='sid' value='$surveyid' />\n" 
+				."\t\t<input type='hidden' name='action' value='edit' />\n" 
+				."\t\t<input type='hidden' name='surveytable' value='survey_$surveyid' />\n"  
+				."\t\t<input type='hidden' name='id' value='$id' />\n" 
+				."\t\t</form>\n";  
 			}
 		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] != "Y")
 			{

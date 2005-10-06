@@ -133,6 +133,7 @@ define("_CONFIRMATION_MESSAGE1", "问卷已提交"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "一份新的回答被录入到您的问卷"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "点击下面的链接查看单个回答："); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "点击这里查看统计结果："); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>隐私申明</i></strong><br />"
 						  ."此问卷是匿名调查.<br />"

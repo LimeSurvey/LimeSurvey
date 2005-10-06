@@ -33,7 +33,7 @@
     # Suite 330, Boston, MA  02111-1307, USA.                   #
     #############################################################
     #                                                           #
-    # This language file kindly provided by Frederik Kunz, and  #
+    # This language file kindly provided by Frederik Kunz,      #
     # corrections/updates by Ralph Kampmann, Carsten Schmitz    #
     #############################################################
 */
@@ -136,6 +136,7 @@ define("_CONFIRMATION_MESSAGE1", "Umfrage wurde ausgefüllt");
 define("_CONFIRMATION_MESSAGE2", "Es sind neue Daten in Ihrer Umfrage vorhanden.");
 define("_CONFIRMATION_MESSAGE3", "Klicken Sie hier, um die einzelnen Antworten zu sehen:");
 define("_CONFIRMATION_MESSAGE4", "Klicken Sie hier, um die Gesamtstatistik zu sehen:");
+define("_CONFIRMATION_MESSAGE5", "Klicken Sie auf den folgenden Link um die Antwortdaten direkt zu editieren:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Schutz Ihrer Privatsph&auml;re</i></strong><br />"
                           ."Diese Umfrage ist anonym.<br />"

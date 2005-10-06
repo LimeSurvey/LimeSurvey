@@ -131,6 +131,7 @@ define("_CONFIRMATION_MESSAGE1", "Ответы сохранены"); //NEW for 0
 define("_CONFIRMATION_MESSAGE2", "Новый ответ добавлен в опросник"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Выбарите следующую ссылку для просмота индивидуальный ответов:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Для просмотра статистики нажмите здесь:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Замечания о приватности</i></strong><br />"
 						  ."Этот опрос являкется анонимным.<br />"

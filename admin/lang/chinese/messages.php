@@ -577,6 +577,7 @@ define("_TC_EDIT", "修改操作代碼項目");
 define("_TC_DEL", "刪除操作代碼項目");
 define("_TC_DO", "填寫問卷");
 define("_TC_VIEW", "查看回應結果");
+define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
 define("_TC_INVITET", "送出本項目的邀請電郵");
 define("_TC_REMINDT", "送出本項目的提示電郵");
 define("_TC_INVITESUBJECT", "參與 {SURVEYNAME}的邀請單"); //Leave {SURVEYNAME} for replacement in scripts

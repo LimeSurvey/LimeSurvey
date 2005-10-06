@@ -581,6 +581,7 @@ define("_TC_EDIT", "Modificar Senha");
 define("_TC_DEL", "Apagar Senha");
 define("_TC_DO", "Responder Questionário");
 define("_TC_VIEW", "Ver Resposta");
+define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
 define("_TC_INVITET", "Enviar e-mail para esta entrada");
 define("_TC_REMINDT", "Reenviar e-mail para esta entrada");
 define("_TC_INVITESUBJECT", "Convite para participar do questionário {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts

@@ -897,6 +897,9 @@ function sendsubmitnotification($sendnotification)
 			 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
 			 . _CONFIRMATION_MESSAGE3."\r\n"
 			 . "  $homeurl/browse.php?sid=$surveyid&action=id&id=$savedid\r\n\r\n"
+             // Add link to edit individual responses from notification email  
+			 . _CONFIRMATION_MESSAGE5."\r\n"
+             . " $homeurl/dataentry.php?sid=$surveyid&action=edit&surveytable=survey_$surveyid&id=$savedid\r\n\r\n"  
 			 . _CONFIRMATION_MESSAGE4."\r\n"
 			 . "  $homeurl/statistics.php?sid=$surveyid\r\n\r\n";
 	if ($sendnotification > 1)

@@ -131,6 +131,7 @@ define("_CONFIRMATION_MESSAGE1", "Survey Submitted"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "A new response was entered for your survey"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Click the following link to see the individual response:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "View statistics by clicking here:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
 						  ."This survey is anonymous.<br />"

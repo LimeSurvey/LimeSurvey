@@ -576,6 +576,7 @@ define("_TC_EDIT", "Edit Token Entry");
 define("_TC_DEL", "Delete Token Entry");
 define("_TC_DO", "Do Survey");
 define("_TC_VIEW", "View Response");
+define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
 define("_TC_INVITET", "Send invitation email to this entry");
 define("_TC_REMINDT", "Send reminder email to this entry");
 define("_TC_INVITESUBJECT", "Invitation to participate in {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts

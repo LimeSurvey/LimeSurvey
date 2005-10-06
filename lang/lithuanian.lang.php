@@ -131,6 +131,7 @@ define("_CONFIRMATION_MESSAGE1", "Apklausa atlikta"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Šiai apklausai buvo įvesti jūsų nauji atsakymai"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Paspauskite šią nuorodą norėdami peržiūrėti atskirus atsakymus:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Paspauskite šią nuorodą norėdami peržiūrėti statistiką:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Apklausos anonimiškumas</i></strong><br />"
 						  ."Ši apklausa yr anoniminė.<br />"

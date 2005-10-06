@@ -136,6 +136,7 @@ define("_CONFIRMATION_MESSAGE1", "Kit&ouml;lt&ouml;tt k&eacute;rd&otilde;&iacute
 define("_CONFIRMATION_MESSAGE2", "V&aacute;laszok &eacute;rkeztek a k&ouml;vetkez&otilde; k&eacute;rd&otilde;&iacute;vhez"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Kattintson ide e k&eacute;rd&otilde;&iacute;v megtekint&eacute;s&eacute;hez:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Itt tekintheti meg a statisztik&aacute;kat:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
 						  ."This survey is anonymous.<br />"

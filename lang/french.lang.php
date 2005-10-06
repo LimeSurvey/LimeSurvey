@@ -138,6 +138,7 @@ define("_CONFIRMATION_MESSAGE1", "Questionnaire envoy&eacute;"); //NEW for 098rc
 define("_CONFIRMATION_MESSAGE2", "Une nouvelle r&eacute;ponse a &eacute;t&eacute; saisie dans votre questionnaire"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Cliquez sur le lien suivant pour voir votre r&eacute;ponse personnelle"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Visualiser les statistiques en cliquant ici"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Note sur la protection de la vie priv&eacute;e</i></strong><br />"
                                                   ."Ce questionnaire est anonyme.<br />"

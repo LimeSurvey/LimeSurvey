@@ -136,6 +136,7 @@ define("_CONFIRMATION_MESSAGE1", "Unders&oslash;kelse sendt"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Et nytt svar var gitt for din unders&oslash;kelse"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Klikk p&aring; f&oslash;lgende link for &aring; se de individuelle svarene:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Se statistikken ved &aring; klikke her:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
 						  ."Denne unders&oslash;kelsen er anonym.<br />"

@@ -135,6 +135,7 @@ define("_CONFIRMATION_MESSAGE1", "Indagine presentata"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Una nuova risposta &egrave; stata inserita per la tua indagine"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Fai clic sul seguente collegamento per vedere la risposta specifica:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Fai clic qui per vedere le statistiche:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<b><i>Note sulla Privacy</i></b><br />"
 						  ."Questa indagine &egrave; anonima.<br />"

@@ -130,6 +130,7 @@ define("_CONFIRMATION_MESSAGE1", "Въпросникът изпратен"); //N
 define("_CONFIRMATION_MESSAGE2", "Въведен е нов отговор на Вашия въпросник"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Щракнете на следния линк, за да видите индивидуалния отговор:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Щракнете тук, за да изведете статистика:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<b><i>Защита на личните данни</i></b><br />"
 						  ."Този въпросник може да бъде анонимен.<br />"

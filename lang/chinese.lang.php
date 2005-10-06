@@ -133,6 +133,7 @@ define("_CONFIRMATION_MESSAGE1", "已送出問卷"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "恭喜您！您收到一份剛完成的問卷"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "點擊此連結查看個別的問卷內容:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "點擊這裡查看統計資料:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<b><i>私隱聲明</i></b><br />"
                           ."這是一份不記名的問卷.<br />"

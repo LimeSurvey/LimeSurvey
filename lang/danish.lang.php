@@ -135,6 +135,7 @@ define("_CONFIRMATION_MESSAGE1", "Unders&oslash;gelsen er gemt"); //NEW for 098r
 define("_CONFIRMATION_MESSAGE2", "Et nyt svar er gemt i unders&oslash;gelsen"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Klik p&aring; nedenst&aring;ende link for at se de individuelle svar:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Vis statistikken her:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
                           ."This survey is anonymous.<br />"

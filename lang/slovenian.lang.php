@@ -137,6 +137,7 @@ define("_CONFIRMATION_MESSAGE1", "Anketa je bila poslana"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Vaša anketa je dobila nov odgovor"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Individualni potatki so vam na voljo tukaj:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Osnovne statistike so vam na voljo tukaj:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Obvestilo o varovanju zasebnosti</i></strong><br />"
 						  ."Ta anketa je anonimna.<br />"

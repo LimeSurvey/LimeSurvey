@@ -135,6 +135,7 @@ define("_CONFIRMATION_MESSAGE1", "Questionário Enviado"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Uma nova resposta foi incorporada para seu exame"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Clique no link abaixo para ver a resposta individual:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Clique aqui para ver a Estatística:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
 						  ."This survey is anonymous.<br />"

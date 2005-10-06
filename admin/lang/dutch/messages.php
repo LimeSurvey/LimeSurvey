@@ -576,6 +576,7 @@ define("_TC_EDIT", "Wijzig deelnemer");
 define("_TC_DEL", "Wis deelnemer");
 define("_TC_DO", "Neem vragenlijst af");
 define("_TC_VIEW", "Toon deelname");
+define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
 define("_TC_INVITET", "Verstuur uitnodigingsmail naar deze deelnemer");
 define("_TC_REMINDT", "Verstuur herinneringsmail naar deze deelnemer");
 define("_TC_INVITESUBJECT", "Uitnodiging om deel te nemen aan {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
@@ -590,7 +591,7 @@ define("_TC_ADDEDIT", "Toevoegen of bewerken toegangscode");
 define("_TC_TOKENCREATEINFO", "U kan dit leeg laten en automatisch toegangscodes genereren met 'Aanmaken toegangscodes'");
 define("_TC_TOKENADDED", "Nieuwe toegangscodes toegevoegd");
 define("_TC_TOKENUPDATED", "Toegangscode bijgewerkt");
-define("_TC_UPLOADINFO", "Het bestand moet een standaard CSV (kommagescheiden) bestand zijn zonder aanhalingstekens. De eerste lijn moet de hoofding bevatten (zal niet geïmporteerd worden. De gegevens dienen geordend worden als 'voornaam, naam, e-mail, [paswoord], [attribute1], [attribute2]'.");
+define("_TC_UPLOADINFO", "Het bestand moet een standaard CSV (kommagescheiden) bestand zijn zonder aanhalingstekens. De eerste lijn moet de hoofding bevatten (zal niet geÃ¯mporteerd worden. De gegevens dienen geordend worden als 'voornaam, naam, e-mail, [paswoord], [attribute1], [attribute2]'.");
 define("_TC_UPLOADFAIL", "Uploadbestand niet gevonden. Controleer de rechten en het path naar de upload map"); //New for 0.98rc5
 define("_TC_IMPORT", "Bezig met het importeren van het CSV bestand");
 define("_TC_CREATE", "Bezig met het aanmaken van de deelnemers");
