@@ -77,7 +77,7 @@ define("_NUMERICAL_PS", "In dieses Feld d&uuml;rfen nur Ziffern eingetragen werd
 define("_CLEARALL", "Ergebnisse verwerfen und Befragung beenden"); 
 define("_MANDATORY", "Bitte beantworten Sie diese Frage"); 
 define("_MANDATORY_PARTS", "Bitte beenden Sie alle Bereiche/Teile"); 
-define("_MANDATORY_CHECK", "Bitte machen Sie mindestens ein Kreuzchen"); 
+define("_MANDATORY_CHECK", "Bitte machen Sie mindestens ein Kreuz"); 
 define("_MANDATORY_RANK", "Bitte bringen Sie alle Elemente in eine Rangfolge"); 
 define("_MANDATORY_POPUP", "Eine oder mehr vorgeschriebene Fragen sind nicht beantwortet worden. Sie k&ouml;nnen nicht fortfahren, bis diese beantwortet wurden!");
 define("_VALIDATION", "Diese Frage muss korrekt beantwortet werden");
