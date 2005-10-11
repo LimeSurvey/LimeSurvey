@@ -670,7 +670,7 @@ function questionEdit($surveyid, $gid, $qid) {
 							  "lid"=>"",
 							  "preg"=>"");
 		$title = "<img src='$imagefiles/add.gif' align='left' border='0'>"._G_ADDQUESTION_BT;
-		$button = _ADDS;
+		$button = _ADDQ;
 	}
 
 	$fields=array(_QL_TYPE=>questionTypeSelect($thisquestion['type'], "type", "onChange='otherSelection(this.value)'".autoComparitor($thissurvey['active'], "Y", " disabled")).autoComparitor($thissurvey['active'], "Y", _SN_CANNOTCHANGE_SURVEYACTIVE),
@@ -787,9 +787,11 @@ function questionResultSummary($surveyid, $gid, $qid) {
 	   </table>";
 
 	if ($summary=makeSummaryFromRawData($results, $surveyid, $gid, $qid)) {
+		//echo "<pre>";print_r($summary);echo "</pre>";
 		foreach ($summary as $sum) {
 			echo "<table height='1'><tr><td></td></tr></table>\n";
 			echo "<table id='questionresults' class='resultstable' align='center' width='100%' cellspacing='0'>\n";
+			echo "<tr><th colspan='2'>".$sum['question']."</th></tr>\n";
 			foreach ($sum['summary'] as $key=>$val) {
 				$percentage=sprintf("%02.2f", ($val/$total)*100);
 				echo "<tr><td align='right' valign='top' nowrap><strong>$key</strong></td><td class='result' nowrap>$percentage% ($val)</td></tr>\n";
@@ -1171,7 +1173,7 @@ function showPreview($surveyid, $gid, $qid=null) {
 		{
 		$output[]=templatereplace($op)."\n";
 		}
-	
+	$output[] = "</html>";
 	unlink_wc($tempdir, "preview_temp_*.html"); //Delete any older template files
 	$time=date("ymdHis");
 	$fnew=fopen("$tempdir/preview_temp_$time.html", "w+");
