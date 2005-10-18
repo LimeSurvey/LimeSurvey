@@ -57,7 +57,7 @@ define("_COMPLETE", "Termin&eacute;");
 define("_INCREASE", "Augmenter"); //NEW WITH 0.98
 define("_SAME", "Sans Changement"); //NEW WITH 0.98
 define("_DECREASE", "Diminuer"); //NEW WITH 0.98
-define("_REQUIRED", "<font color='red'>*</font>"); //NEW WITH 0.99dev01
+define("_REQUIRED", "<font color='red'>* </font>"); //NEW WITH 0.99dev01
 //from questions.php
 define("_CONFIRMATION", "Confirmation");
 define("_TOKEN_PS", "Invitation");
@@ -81,7 +81,7 @@ define("_MANDATORY", "Cette question est obligatoire");
 define("_MANDATORY_PARTS", "Veuillez compl&eacute;ter toutes les parties SVP");
 define("_MANDATORY_CHECK", "Veuillez choisir au moins un &eacute;l&eacute;ment SVP");
 define("_MANDATORY_RANK", "Veuillez classer tous les &eacute;l&eacute;ments SVP");
-define("_MANDATORY_POPUP", "Vous n&acute;avez pas r&eacute;pondu &agrave; une ou plusieurs questions obligatoires. Vous ne pouvez pas enregister vos r&eacute;ponses au questionnaire tant que vous n&acute;avez r&eacute;pondu &agrave; celles-ci"); //NEW in 0.98rc4
+define("_MANDATORY_POPUP", "Vous n'avez pas répondu à une ou plusieurs questions obligatoires. Vous ne pouvez pas enregistrer vos réponses au questionnaire tant que vous n'avez répondu à celles-ci"); //NEW in 0.98rc4
 define("_VALIDATION", "Vous devez r&eacute;pondre correctement &agrave; cette question"); //NEW in VALIDATION VERSION
 define("_VALIDATION_POPUP", "Vous n&#146;avez pas r&eacute;pondu correctement &agrave; une ou plusieurs questions. Vous ne pouvez pas continuer tant que ces r&eacute;ponses ne sont pas valides"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format : AAAA-MM-JJ");
@@ -129,16 +129,16 @@ define("_FURTHERINFO", "Pour plus d&#146;informations veuillez contacter");
 define("_NOTACTIVE", "Ce questionnaire n&#146;est pas activ&eacute;. Vous ne pourrez pas sauver vos r&eacute;ponses.");
 define("_SURVEYEXPIRED", "Ce questionnaire n&#146;est plus disponible."); //NEW for 098rc5
 
-define("_SURVEYCOMPLETE", "Vous avez d&eacute;j&agrave; complet&eacute; ce questionnaire.");
+define("_SURVEYCOMPLETE", "Vous avez d&eacute;j&agrave; compl&eacute;t&eacute; ce questionnaire.");
 
 define("_INSTRUCTION_LIST", "Veuillez s&eacute;lectionner seulement une r&eacute;ponse ci-dessous"); //NEW for 098rc3
-define("_INSTRUCTION_MULTI", "Cochez la (ou les) r&eacute;ponses"); //NEW for 098rc3
+define("_INSTRUCTION_MULTI", "Cochez la ou les r&eacute;ponses"); //NEW for 098rc3
 
 define("_CONFIRMATION_MESSAGE1", "Questionnaire envoy&eacute;"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Une nouvelle r&eacute;ponse a &eacute;t&eacute; saisie dans votre questionnaire"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Cliquez sur le lien suivant pour voir votre r&eacute;ponse personnelle"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Visualiser les statistiques en cliquant ici"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
+define("_CONFIRMATION_MESSAGE5", "Cliquez sur le lien suivant pour &eacute;diter cette réponse :"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Note sur la protection de la vie priv&eacute;e</i></strong><br />"
                                                   ."Ce questionnaire est anonyme.<br />"
@@ -149,7 +149,7 @@ define("_PRIVACY_MESSAGE", "<strong><i>Note sur la protection de la vie priv&eac
                                                   ."vous pouvez &ecirc;tre assur&eacute; que cet identifiant. "
                                                   ."n&#146;est pas conserv&eacute; avec vos r&eacute;ponses. Il est ger&eacute; dans une base de donn&eacute;es s&eacute;par&eacute;e "
                                                   ."et ne pourra pas &ecirc;tre mis &agrave; jour pour indiquer que vous "
-                                                  ."avez complet&eacute; ce questionnaire. Il n&#146;y a aucun moyen pour faire correspondre "
+                                                  ."avez compl&eacute;t&eacute; ce questionnaire. Il n&#146;y a aucun moyen pour faire correspondre "
                                                   ."les invitations avec les r&eacute;ponses au questionnaire."); //New for 0.98rc9
 
 define("_THEREAREXQUESTIONS", "Il y a {NUMBEROFQUESTIONS} questions dans ce questionnaire."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
@@ -160,8 +160,8 @@ define ("_RG_REGISTER2", "Vous devez &ecirc;tre enregistr&eacute; pour ce questi
                                                 ."Saisissez vos coordonn&eacute;es ci-dessous, et un mail contenant le lien pour "
                                                 ."participer &agrave; ce questionnaire vous sera imm&eacute;diatement envoy&eacute;."); //NEW for 0.98rc9
 define ("_RG_EMAIL", "Adresse mail"); //NEW for 0.98rc9
-define ("_RG_FIRSTNAME", "Pr&eacute;nom"); //NEW for 0.98rc9
-define ("_RG_LASTNAME", "Nom"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "Nom"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "Pr&eacute;nom"); //NEW for 0.98rc9
 define ("_RG_INVALIDEMAIL", "L&#146;adresse mail utilis&eacute;e n&#146;est pas valide. Veuillez re&eacute;ssayer.");//NEW for 0.98rc9
 define ("_RG_USEDEMAIL", "L&#146;adresse mail utilis&eacutee; a d&eacute;j&agrave; &eacute;t&eacute; enregistr&eacute;.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "Confirmation d&#146;enregistrement de {SURVEYNAME}");//NEW for 0.98rc9
@@ -225,7 +225,7 @@ define("_SAVE_FAILED", "Une erreur est survenue et vos r&eacute;ponses n&#146;on
 define("_SAVE_EMAILSENT", "Un mail vous a &eacute;t&eacute; envoy&eacute; avec les d&eacute;tails de ce questionnaire.");
 
 //Load Messages
-define("_LOAD_SAVED", "Chargement des r&eacuteponses d&eacute;j&agrave; enregistr&eacute;es pour ce questionnaire");
+define("_LOAD_SAVED", "Chargement des r&eacute;ponses d&eacute;j&agrave; enregistr&eacute;es pour ce questionnaire");
 define("_LOADHEADING", "Chargement d&#146;un questionnaire pr&eacute;c&eacute;demment sauvegard&eacute;");
 define("_LOADEXPLANATION", "Vous pouvez charger un questionnaire que vous avez pr&eacute;c&eacute;demment sauvegard&eacute; depuis cet &eacute;cran.<br />\n"
 			  ."Entrez le nom et le mot de passe utilis&eacute;s lors de la sauvegarde.<br /><br />\n");
