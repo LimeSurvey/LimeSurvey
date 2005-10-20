@@ -542,7 +542,7 @@ if (isset($conditions) && is_array($conditions)) //if conditions exist, create h
         {
         if (in_array($SESak, $_SESSION['insertarray']))
             {
-            echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . $_SESSION[$SESak] . "'>\n";
+            echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES) . "'>\n";
             }
         }
     }
