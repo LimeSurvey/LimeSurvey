@@ -73,6 +73,7 @@ if ($action == "checksettings" || $action == "changelang")
 	if(isset($tokenlist) && is_array($tokenlist)) 
 		{$activetokens=count($tokenlist);} else {$activetokens=0;}
 	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
+				. "<form action='$scriptname'>"
 				. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 				. "cellpadding='1' cellspacing='0' width='450'>\n"
 				. "\t<tr>\n"
@@ -95,9 +96,9 @@ if ($action == "checksettings" || $action == "changelang")
 				. "\t\t</font></td>\n"
 				. "\t</tr>\n"
 				. "\t<tr>\n"
-				. "\t\t<td align='right'>$setfont\n"
+				. "\t\t<td align='right' >$setfont\n"
 				. "\t\t\t<strong>"._PS_CURLANG.":</strong>\n"
-				. "\t\t</font></td><td><form action='$scriptname'>$setfont\n"
+				. "\t\t</font></td><td>$setfont\n"
 				. "\t\t\t<select name='lang' $slstyle onChange='form.submit()'>\n";
 	foreach (getadminlanguages() as $language)
 		{
@@ -107,7 +108,7 @@ if ($action == "checksettings" || $action == "changelang")
 		}
 	$cssummary .= "\t\t\t</select>\n"
 				. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
-				. "\t\t</font></form></td>\n"
+				. "\t\t</font></td>\n"
 				. "\t</tr>\n"
 				. "\t<tr>\n"
 				. "\t\t<td align='right'>$setfont\n"
@@ -151,7 +152,7 @@ if ($action == "checksettings" || $action == "changelang")
 				. "\t\t\t$deactivatedtokens\n"
 				. "\t\t</font></td>\n"
 				. "\t</tr>\n"
-				. "</table>\n"
+				. "</table></form>\n"
 				. "<table><tr><td height='1'></td></tr></table>\n";
 	$cssummary .= "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 				. "cellpadding='1' cellspacing='0' width='450'>\n"

@@ -188,7 +188,7 @@ function helpscreen()
 	{
 	global $homeurl, $langdir, $setfont, $imagefiles;
 	global $surveyid, $gid, $qid, $action;
-	echo "\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
+	echo "\t\t<td id='help' width='200' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
 		."\t\t\t<table width='100%'><tr><td>"
 		."<table width='100%' align='center' cellspacing='0'>\n"
 		."\t\t\t\t<tr>\n"
@@ -231,7 +231,7 @@ function helpscreen()
 		{
 		$helpdoc = "$langdir/answer.html";
 		}
-	echo "\t\t\t\t\t\t<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
+	echo "\t\t\t\t\t\t<iframe width='200' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
 		."\t\t\t\t\t\t</iframe>\n"
 		."\t\t\t\t\t</td>"
 		."\t\t\t\t</tr>\n"
