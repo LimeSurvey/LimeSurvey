@@ -623,22 +623,21 @@ elseif ($action == "insertnewsurvey")
 elseif ($action == "updatesurvey")
     {
     if ($_POST['url'] == "http://") {$_POST['url']="";}
-    if (get_magic_quotes_gpc() == "0")
-        {
-        $_POST['short_title'] = addcslashes($_POST['short_title'], "'");
-        $_POST['description'] = addcslashes($_POST['description'], "'");
-        $_POST['welcome'] = addcslashes($_POST['welcome'], "'");
-        $_POST['attribute1'] = addcslashes($_POST['attribute1'], "'");
-        $_POST['attribute2'] = addcslashes($_POST['attribute2'], "'");
-        $_POST['email_invite_subj'] = addcslashes($_POST['email_invite_subj'], "'");
-        $_POST['email_invite'] = addcslashes($_POST['email_invite'], "'");
-        $_POST['email_remind_subj'] = addcslashes($_POST['email_remind_subj'], "'");
-        $_POST['email_remind'] = addcslashes($_POST['email_remind'], "'");
-        $_POST['email_register_subj'] = addcslashes($_POST['email_register_subj'], "'");
-        $_POST['email_register'] = addcslashes($_POST['email_register'], "'");
-        $_POST['email_confirm_subj'] = addcslashes($_POST['email_confirm_subj'], "'");
-        $_POST['email_confirm'] = addcslashes($_POST['email_confirm'], "'");
-        }
+    $_POST['short_title'] = htmlspecialchars($_POST['short_title'],ENT_QUOTES);
+    $_POST['description'] = htmlspecialchars($_POST['description'], ENT_QUOTES);
+    $_POST['admin'] = htmlspecialchars($_POST['admin'], ENT_QUOTES);
+    $_POST['welcome'] = htmlspecialchars($_POST['welcome'], ENT_QUOTES);
+    $_POST['attribute1'] = htmlspecialchars($_POST['attribute1'], ENT_QUOTES);
+    $_POST['attribute2'] = htmlspecialchars($_POST['attribute2'], ENT_QUOTES);
+    $_POST['email_invite_subj'] = htmlspecialchars($_POST['email_invite_subj'], ENT_QUOTES);
+    $_POST['email_invite'] = htmlspecialchars($_POST['email_invite'], ENT_QUOTES);
+    $_POST['email_remind_subj'] = htmlspecialchars($_POST['email_remind_subj'], ENT_QUOTES);
+    $_POST['email_remind'] = htmlspecialchars($_POST['email_remind'], ENT_QUOTES);
+    $_POST['email_register_subj'] = htmlspecialchars($_POST['email_register_subj'], ENT_QUOTES);
+    $_POST['email_register'] = htmlspecialchars($_POST['email_register'], ENT_QUOTES);
+    $_POST['email_confirm_subj'] = htmlspecialchars($_POST['email_confirm_subj'], ENT_QUOTES);
+    $_POST['email_confirm'] = htmlspecialchars($_POST['email_confirm'], ENT_QUOTES);
+
     $usquery = "UPDATE {$dbprefix}surveys \n"
               . "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
               . "admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
