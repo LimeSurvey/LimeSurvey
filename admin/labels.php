@@ -1,7 +1,7 @@
 <?php
 /*
     #############################################################
-    # >>> PHPSurveyor                                          #
+    # >>> PHPSurveyor                                           #
     #############################################################
     # > Author:  Jason Cleeland                                 #
     # > E-mail:  jason@cleeland.org                             #
@@ -214,7 +214,7 @@ if (isset($lid) && ($action != "editset") && $lid)
         echo "\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
             ."\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'>"
             ."<font size='1' face='verdana' color='white'><strong>"
-            ._LABELSET.":</strong> {$row['label_name']}</td></tr>\n"
+            ._LABELSET.":</strong> {$row['label_name']}</font></td></tr>\n"
             ."\t\t\t\t<tr bgcolor='#999999'>\n"
             ."\t\t\t\t\t<td>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
@@ -226,8 +226,8 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"
             ._L_EDIT_BT."' align='left' border='0' hspace='0' "
-            ."onclick=\"window.open('labels.php?action=editset&lid=$lid', '_top')\">\n"
-            ."\t\t\t\t\t<a href='labels.php?action=delset&lid=$lid'>"
+            ."onclick=\"window.open('labels.php?action=editset&amp;lid=$lid', '_top')\">\n"
+            ."\t\t\t\t\t<a href='labels.php?action=delset&amp;lid=$lid'>"
             ."<img src='$imagefiles/delete.gif' title='"
             ._L_DEL_BT."' align='left' border='0' hspace='0' "
             ."onClick=\"return confirm('Are you sure?')\"></a>\n"
@@ -242,26 +242,25 @@ if (isset($lid) && ($action != "editset") && $lid)
     $query = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
     $result = mysql_query($query) or die(mysql_error());
     $labelcount = mysql_num_rows($result);
-    echo "\t\t<table height='1'><tr><td></td></tr></table>\n"
-        ."\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
+    echo "\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
         ."\t\t\t\t<tr bgcolor='#555555' height='4'>\n"
         ."\t\t\t\t\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
         ._LABELANS
-        ."\t\t\t\t\t</strong></font></td>\n"
+        ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t</tr>\n"
         ."\t\t\t\t<tr bgcolor='#BBBBBB'>\n"
         ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
         ._LL_CODE
-        ."\t\t\t\t\t</strong></font></td>\n"
+        ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
         ._LL_ANSWER
-        ."\t\t\t\t\t</strong></font></td>\n"
+        ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
         ._LL_ACTION
-        ."\t\t\t\t\t</strong></font></td>\n"
+        ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
          ._LL_SORTORDER
-        ."\t\t\t\t\t</strong></font></td>\n"
+        ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t</tr>\n";
     $position=0;
     while ($row=mysql_fetch_array($result))
@@ -300,13 +299,13 @@ if (isset($lid) && ($action != "editset") && $lid)
             echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DN."' />\n";
             }
         echo "\t\t\t\t\t</td>\n"
-            ."\t\t\t\t</tr>\n"
             ."\t\t\t\t<input type='hidden' name='sortorder' value='{$row['sortorder']}'>\n"
             ."\t\t\t\t<input type='hidden' name='old_title' value='{$row['title']}'>\n"
             ."\t\t\t\t<input type='hidden' name='old_code' value='{$row['code']}'>\n"
             ."\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"
             ."\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n"
-            ."\t\t\t\t</form>\n";
+            ."\t\t\t\t</form>\n"
+            ."\t\t\t\t</tr>\n";
         $position++;
         }
     $position=sprintf("%05d", $position);
@@ -362,8 +361,7 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t</tr>\n";
         }
-    echo "\t\t\t</table>\n"
-        ."\t\t\t<table height='1'><tr><td></td></tr></table>\n";
+    echo "\t\t\t</table>\n";
     }
 
 

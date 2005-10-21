@@ -283,7 +283,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		echo "</form>\n";
 		}
 	echo "<br /><br /><a href='$scriptname'>"._B_ADMIN_BT."</a><br /><br />\n"
-		."</td></tr></table>\n"
+		."</font></td></tr></table>\n"
 		."<table><tr><td height='1'></td></tr></table>\n";
 	echo htmlfooter("", "");
 	}
