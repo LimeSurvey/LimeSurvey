@@ -336,7 +336,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 	
 	if ((isset($gid) && $gid) || returnglobal('action') == "editsurvey" || returnglobal('action') == "addsurvey" || returnglobal('action') == "editgroup" || returnglobal('action') == "addgroup" || returnglobal('action') == "showassessments") {$display="none";} else {$display="";}
 	$fields=array(_SL_TITLE=>$thissurvey['name'],
-				  _SL_LINK=>"<a href='".$publicurl."/index.php?sid=$surveyid' target='_blank'>".$publicurl."/index.php?sid=$surveyid</a>",
+				  _SL_SURVEYURL=>"<a href='".$publicurl."/index.php?sid=$surveyid' target='_blank'>".$publicurl."/index.php?sid=$surveyid</a>",
 				  _SL_DESCRIPTION=>$thissurvey['description'],
 				  _SL_WELCOME=>$thissurvey['welcome'],
 				  _SL_ADMIN=>$thissurvey['adminname']." (<a href='mailto:".$thissurvey['adminemail']."'>".$thissurvey['adminemail']."</a>)",
@@ -363,7 +363,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 				  _SL_AUTONUMBER=>$thissurvey['autonumber_start'],
 				  _SL_ALLOWPREV=>yesno($thissurvey['allowprev']));
 
-	$pages[_SN_SV_GENERAL]=array(_SL_EXPIRES, _SL_TITLE, _SL_LINK, _SL_DESCRIPTION, _SL_WELCOME, _SL_ADMIN, _SL_FAXTO);
+	$pages[_SN_SV_GENERAL]=array(_SL_EXPIRES, _SL_TITLE, _SL_SURVEYURL, _SL_DESCRIPTION, _SL_WELCOME, _SL_ADMIN, _SL_FAXTO);
 	$pages[_SN_SV_EXTRA]=array(_SL_TEMPLATE, _SL_LANGUAGE, _SL_URL, _SL_AUTORELOAD, _SL_FORMAT, _SL_ALLOWSAVE, _SL_ANONYMOUS, _SL_DATESTAMP);
 	$pages[_SN_SV_EMAIL]=array(_SL_EMAILINVITE_SUBJ, _SL_EMAILINVITE, _SL_EMAILREMIND_SUBJ, _SL_EMAILREMIND, _SL_EMAILCONFIRM_SUBJ,_SL_EMAILCONFIRM, _SL_EMAILREGISTER_SUBJ, _SL_EMAILREGISTER);
 	$pages[_SN_SV_MISC]=array(_SL_ATTRIBUTENAMES, _SL_NOTIFICATION, _SL_AUTONUMBER, _SL_ALLOWPREV);

@@ -433,13 +433,14 @@ if ($surveyid)
 						. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
 						. _SL_LANGUAGE."</strong></font></td>\n";
 		if (!$s1row['language']) {$language=$defaultlang;} else {$language=$s1row['language'];}
+		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
 		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
 						. _SL_LINK."</strong></font></td>\n"
-						. "\t\t<td>$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>"
-						. "{$s1row['urldescrip']}</a></font></td></tr>\n";
-		}
-	
+						. "\t\t<td>";
+		if ($s1row['url']!="") {$surveysummary .="$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>{$s1row['urldescrip']}</a></font>";}
+		$surveysummary .="</td></tr>\n";
+    } 	
 	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<strong>"
 					. _SL_STATUS."</strong></font></td>\n"
 					. "\t<td valign='top'>$setfont"
@@ -587,7 +588,7 @@ if ($qid)
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='20' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='". _Q_EDIT_BT."' alt='". _Q_EDIT_BT."' align='left' border='0' hspace='0' name='EditQuestion' "
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='". _Q_EDIT_BT."' alt='". _Q_EDIT_BT."' align='left' name='EditQuestion' "
 						  . "onclick=\"window.open('$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\">\n";
 		if (($qct == 0 && $activated != "Y") || $activated != "Y") 
 			{
@@ -598,27 +599,27 @@ if ($qid)
 			}
 		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";}
 		$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
-						  . _Q_EXPORT_BT."' alt='". _Q_EXPORT_BT."'align='left' border='0' hspace='0' name='ExportQuestion' "
+						  . _Q_EXPORT_BT."' alt='". _Q_EXPORT_BT."'align='left' name='ExportQuestion' "
 						  . "onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<input type='image' src='$imagefiles/copy.gif' title='"
-						  . _Q_COPY_BT."' alt='". _Q_COPY_BT."' border='0' hspace='0' align='left' name='CopyQuestion' "
+						  . _Q_COPY_BT."' alt='". _Q_COPY_BT."' align='left' name='CopyQuestion' "
 						  . "onclick=\"window.open('$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.gif' title='"
-						  . _Q_CONDITIONS_BT."' alt='". _Q_CONDITIONS_BT."' border='0' hspace='0' align='left' name='SetQuestionConditions' "
+						  . _Q_CONDITIONS_BT."' alt='". _Q_CONDITIONS_BT."' align='left' name='SetQuestionConditions' "
 						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$surveyid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
 			$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/answers.gif' title='"
-							  . _Q_ANSWERS_BT."' border='0' hspace='0' align='left' name='ViewAnswers' "
+							  . _Q_ANSWERS_BT."' align='left' name='ViewAnswers' "
 							  . "onClick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\">\n";
 			}
 		$questionsummary .= "\t\t\t\t\t</td>\n"
 						  . "\t\t\t\t\t<td align='right' width='330'>\n"
 						  . "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
-						  . _Q_CLOSE_BT."' alt='". _Q_CLOSE_BT."' align='right' border='0' hspace='0' name='CloseQuestionWindow' "
+						  . _Q_CLOSE_BT."' alt='". _Q_CLOSE_BT."' align='right' name='CloseQuestionWindow' "
 						  . "onclick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\">\n"
 						  . "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
 						  . _Q_MAXIMISE_BT."'  alt='". _Q_MAXIMISE_BT."'align='right'  name='MaximiseQuestionWindow' "

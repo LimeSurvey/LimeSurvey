@@ -86,8 +86,10 @@ define("_S_RENUMBER_BT", "Renumber Questions in Survey");
 define("_S_RENUMBERSURVEYWARNING", "This will consecutively renumber all questions in this survey. Are you sure you want to continue?");
 
 //This overrides the common.php setting until this gets merged back..
-$htmlheader = "<html>\n<head>\n"
+$htmlheader = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
+			. "<html>\n<head>\n"
 			. "<title>$sitename</title>\n"
+            . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
 			. "<meta http-equiv='content-script-type' content='text/javascript' />\n"
 			. "<meta http-equiv='Content-Style-Type' content='text/css'>\n"
 			. "<link href=\"$homeurl/phpsurveyor.css\" rel=\"stylesheet\" type=\"text/css\">\n"
