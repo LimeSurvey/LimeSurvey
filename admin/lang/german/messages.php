@@ -15,7 +15,7 @@ define("_DEACTIVATE", "Befragung deaktivieren");
 define("_CHECKFIELDS", "Datenbankfelder überprüfen");
 define("_CREATEDB", "Erstelle Datenbank");
 define("_CREATESURVEY", "Erstelle Umfrage");
-define("_SETUP", "PHP Surveyor Einrichten");
+define("_SETUP", "PHPSurveyor Einrichten");
 define("_DELETESURVEY", "Umfrage l&ouml;schen");
 define("_EXPORTQUESTION", "Fragen exportieren");
 define("_EXPORTSURVEY", "Umfrage exportieren");

@@ -1,7 +1,7 @@
 <?php
 /*
 	#############################################################
-	# >>> PHP Surveyor  										#
+	# >>> PHPSurveyor  											#
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
@@ -917,7 +917,7 @@ function sendsubmitnotification($sendnotification)
 			}
 		$message .= "----------------------------\r\n\r\n";
 		}
-	$message.= "PHP Surveyor";
+	$message.= "PHPSurveyor";
 	$message = crlf_lineendings($message);
 	$headers = "From: {$thissurvey['adminemail']}\r\n";
     $headers .= "MIME-Version: 1.0\r\n";

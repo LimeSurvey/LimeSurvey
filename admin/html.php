@@ -1,7 +1,7 @@
 <?php
 /*
 	#############################################################
-	# >>> PHP Surveyor  										#
+	# >>> PHPSurveyor  										#
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
@@ -1415,7 +1415,7 @@ if ($action == "editsurvey")
 					. "\t\t<strong>$setfont<font color='white'>Edit Survey</font></font></strong></td></tr>\n"
 					. "\t<tr><form name='addnewsurvey' action='$scriptname' method='post'>\n"
 					. "\t\t<td align='right' width='25%'>$setfont<strong>"._SL_TITLE."</strong></font></td>\n"
-					. "\t\t<td><input $slstyle type='text' size='50' name='short_title' value='{$esrow['short_title']}'></td></tr>\n"
+					. "\t\t<td><input $slstyle type='text' size='50' name='short_title' value='".$esrow['short_title']."'></td></tr>\n"
 					. "\t<tr><td align='right' valign='top'><strong>$setfont"._SL_DESCRIPTION."</font></strong></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
 					. "\t<tr><td align='right' valign='top'>$setfont<strong>"._SL_WELCOME."</strong></font></td>\n"
