@@ -145,7 +145,7 @@ define("_SL_FORMAT", "Format:");
 define("_SL_DATESTAMP", "Date Stamp?");
 define("_SL_TEMPLATE", "Template:");
 define("_SL_LANGUAGE", "Language:");
-define("_SL_LINK", "Link:");
+define("_SL_LINK", "Exit Link:");  //Modified in 0.99
 define("_SL_URL", "End URL:");
 define("_SL_URLDESCRIP", "URL Descrip:");
 define("_SL_STATUS", "Status:");

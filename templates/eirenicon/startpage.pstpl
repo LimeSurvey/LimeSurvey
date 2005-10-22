@@ -1,0 +1,90 @@
+<head>
+	<title>
+	eirenicon's Survey System: {SURVEYNAME}
+	</title>
+<style>
+.submit
+	{
+	background-color: #EDEDED;
+	color: #042455;
+	font-size: 10pt;
+	font-family: verdana;
+	}
+.text
+	{
+	background-color: #EDEDED;
+	color: #042455;
+	font-size: 10pt;
+	font-family: verdana;
+	}
+.radio
+	{
+	}
+.checkbox
+	{
+	}
+.select
+	{
+	}
+.textarea
+	{
+	background-color: #EDEDED;
+	color: #042455;
+	font-size: 10pt;
+	font-family: verdana;
+	}
+.clearall
+	{
+	font-size: 10pt
+	}
+.clearall
+	A:link
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: white;
+	}
+.clearall
+	A:visited
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: white;
+	}
+.clearall
+	A:active
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: white;
+	}
+.clearall
+	A:hover
+	{
+	text-decoration: underline;
+	font-family: verdana;
+	color: white;
+	}
+.graph
+	{
+	border: solid;
+	border-width: 1;
+	border-color: #042455;
+	background-color: #DDDDDD;
+	}
+.innergraph
+	{
+	font-family: verdana;
+	font-size: 10;
+	}
+.question
+	{
+	font-family: verdana;
+	font-size: 10;
+	}
+</style>
+</head>
+<body bgcolor='#C0C0C0'><font face='verdana' size='2'>
+<table width='75%' align='center' style='border-collapse: collapse' bordercolor='#333333' bgcolor='#EDEDED' border='1' cellspacing='0'>
+	<tr>
+		<td>
