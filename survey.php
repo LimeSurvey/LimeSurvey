@@ -170,7 +170,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				}
 	
 			//Create text for use in later print section
-			$completed = "<br /><strong><font size='2'><font color='green'>"
+			$completed = "<br /><font size='2'><font color='green'><strong>"
 					   . _THANKS."</strong></font><br /><br />\n\n"
 					   . _SURVEYREC."<br />\n"
 					   . "<a href='javascript:window.close()'>"

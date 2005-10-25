@@ -117,7 +117,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				}
 			}
 
-		$completed = "<br /><strong><font size='2' color='red'>"._DIDNOTSAVE."</strong></font><br /><br />\n\n";
+		$completed = "<br /><strong><font size='2' color='red'>"._DIDNOTSAVE."</font></strong><br /><br />\n\n";
 		$completed .= _NOTACTIVE1."<br /><br />\n";
 		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._CLEARRESP."</a><br /><br />\n";
 		$completed .= "<font size='1'>$subquery</font>\n";
@@ -183,7 +183,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 					}
 				}
 
-			$completed = "<br /><strong><font size='2'><font color='green'>"
+			$completed = "<br /><font size='2'><font color='green'><strong>"
 						._THANKS."</strong></font><br /><br />\n\n"
 						. _SURVEYREC."<br />\n"
 						. "<a href='javascript:window.close()'>"
@@ -228,6 +228,8 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+    sendcacheheaders();
+	doHeader();
 	if ($thissurvey['private'] != "N")
 		{
 		$privacy="";
@@ -260,15 +262,15 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 		echo "\t\t".templatereplace($op);
 		}
 	echo "\n";
-	foreach(file("$thistpl/endpage.pstpl") as $op)
-		{
-		echo templatereplace($op);
-		}
-	echo "\n";
 	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
 	echo "\n</form>\n";
+	echo "\n";
+	foreach(file("$thistpl/endpage.pstpl") as $op)
+		{
+		echo templatereplace($op);
+		}
 	doFooter();
 	exit;
 	}
@@ -529,7 +531,7 @@ if (isset($qanda) && is_array($qanda))
 	foreach ($qanda as $qa)
 		{
 		echo "\n\t<!-- NEW QUESTION -->\n";
-		echo "\t\t\t\t<div name='$qa[4]' id='$qa[4]'";
+		echo "\t\t\t\t<div id='div$qa[4]'";
 		if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
 		$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
 		$answer=$qa[1];
@@ -563,11 +565,7 @@ if ($thissurvey['active'] != "Y")
 	echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";
 	}
 
-foreach(file("$thistpl/endpage.pstpl") as $op)
-	{
-	echo templatereplace($op);
-	}
-echo "\n";
+
 
 echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
 
@@ -607,6 +605,11 @@ echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thiss
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 echo "<input type='hidden' name='token' value='$token' id='token'>\n";
 echo "</form>\n";
+foreach(file("$thistpl/endpage.pstpl") as $op)
+	{
+	echo templatereplace($op);
+	}
+echo "\n";
 doFooter();
 
 ?>

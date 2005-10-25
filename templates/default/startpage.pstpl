@@ -1,13 +1,22 @@
 <head>
-	<title>
+	<title>{SURVEYNAME}
 	</title>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">	
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">	
 <style type='text/css'>
 body.default
 	{
 	font-family: verdana;
 	font-size: 11;
 	}
+.question
+        {
+        font-family: verdana;
+        font-size: 11;
+        }
+.clearall
+        {
+        font-size: 11;
+        }
 .answertext
 	{
 	font-family: verdana;

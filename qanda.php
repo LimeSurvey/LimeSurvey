@@ -1233,7 +1233,7 @@ function do_multiplechoice($ia)
         {
         $rowcounter++;
         $myfname = $ia[1].$ansrow['code'];
-        $answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='$ia[1]{$ansrow['code']}' value='Y'";
+        $answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='question$ia[1]{$ansrow['code']}' value='Y'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
         $fn++;
@@ -1247,7 +1247,7 @@ function do_multiplechoice($ia)
         {
         $rowcounter++;
         $myfname = $ia[1]."other";
-        $answer .= "\t\t\t\t\t\t<label for='$myfname'>"._OTHER.":</label> <input class='text' type='text' name='$myfname' id='$myfname'";
+        $answer .= "\t\t\t\t\t\t<label for='$myfname'>"._OTHER.":</label> <input class='text' type='text' name='$myfname' id='question$myfname'";
         if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
         $answer .= " />\n"
                  . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
