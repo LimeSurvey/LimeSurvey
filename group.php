@@ -318,13 +318,13 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
 		echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";
 		}
+	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
+	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
+	echo "\n</form>\n";
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
 		}
-	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
-	echo "\n</form>\n";
 	doFooter();
 	exit;
 	}
