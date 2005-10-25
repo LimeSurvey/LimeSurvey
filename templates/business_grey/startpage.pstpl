@@ -2,13 +2,24 @@
 	<title>
 	A SURVEY: {SURVEYNAME}
 	</title>
-<style>
+       <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+
+body
+       {
+        color: #444444;
+	background-color: #B7B7B7;
+	font-family: arial;
+	font-size: 9pt;
+        }
+
 .submit
 	{
 	background-color: #CCCCFF;
 	font-size: 9pt;
 	font-family: arial;
 	}
+
 .text
 	{
 	background-color: #EFEFEF;
@@ -106,7 +117,7 @@
 	}
 </style>
 </head>
-<body bgcolor='#B7B7B7'><font face='arial' size='2' color='#444444'>
-<table width='500' align='center' style='border-collapse: collapse' bordercolor='#FFFFFF' bgcolor='#E1E1E1' border='4' cellspacing='0'>
+<body>
+<table width='500' align='center' style='border-collapse: collapse' bgcolor='#E1E1E1' border='4' cellspacing='0'>
 	<tr>
 		<td>
