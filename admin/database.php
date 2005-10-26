@@ -623,10 +623,10 @@ elseif ($action == "insertnewsurvey")
 elseif ($action == "updatesurvey")
     {
     if ($_POST['url'] == "http://") {$_POST['url']="";}
-    $_POST['short_title'] = htmlspecialchars($_POST['short_title'],ENT_QUOTES);
-    $_POST['description'] = htmlspecialchars($_POST['description'], ENT_QUOTES);
+    $_POST['short_title'] = addcslashes($_POST['short_title'],"'");
+    $_POST['description'] = addcslashes($_POST['description'], "'");
     $_POST['admin'] = htmlspecialchars($_POST['admin'], ENT_QUOTES);
-    $_POST['welcome'] = htmlspecialchars($_POST['welcome'], ENT_QUOTES);
+    $_POST['welcome'] = addcslashes($_POST['welcome'], "'");
     $_POST['attribute1'] = htmlspecialchars($_POST['attribute1'], ENT_QUOTES);
     $_POST['attribute2'] = htmlspecialchars($_POST['attribute2'], ENT_QUOTES);
     $_POST['email_invite_subj'] = htmlspecialchars($_POST['email_invite_subj'], ENT_QUOTES);
