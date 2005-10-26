@@ -328,7 +328,7 @@ echo "</p>";
 echo "<a href='index.php?sid=$surveyid";
 if (returnglobal('token'))
 	{
-	echo "&token=".returnglobal('token');
+	echo "&amp;token=".returnglobal('token');
 	}
 echo "'>"._RETURNTOSURVEY."</a>";
 echo "</center>\n";

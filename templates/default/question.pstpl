@@ -13,8 +13,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td align='center' bgcolor='#EEEEEE'>
-						<font size='1'>{QUESTIONHELP}</font>
+					<td class='questionhelp' align='center' bgcolor='#EEEEEE'>
+						{QUESTIONHELP}
 					</td>
 				</tr>
 			</table>

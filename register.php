@@ -106,7 +106,7 @@ $message=str_replace("{ADMINNAME}", $thissurvey['adminname'], $message);
 $message=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $message);
 $message=str_replace("{SURVEYNAME}", $thissurvey['name'], $message);
 $message=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $message);
-$message=str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$surveyid&token=$newtoken", $message);
+$message=str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$surveyid&amp;token=$newtoken", $message);
 $message=str_replace("{FIRSTNAME}", returnglobal('register_firstname'), $message);
 $message=str_replace("{LASTNAME}", returnglobal('register_lastname'), $message);
 $message=str_replace("{ATTRIBUTE_1}", returnglobal('register_attribute1'), $message);

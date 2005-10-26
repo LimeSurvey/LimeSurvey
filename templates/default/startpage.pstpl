@@ -9,14 +9,18 @@ body.default
 	font-size: 11;
 	}
 .question
-        {
-        font-family: verdana;
-        font-size: 11;
-        }
+    {
+    font-family: verdana;
+    font-size: 11;
+    }
+.questionhelp
+    {
+	font-size: 11;
+    }        
 .clearall
-        {
-        font-size: 11;
-        }
+    {
+    font-size: 11;
+    }
 .answertext
 	{
 	font-family: verdana;

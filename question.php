@@ -99,7 +99,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
                 }
             }
 
-        $completed = "<br /><strong><font size='2' color='red'>"._DIDNOTSAVE."</strong></font><br /><br />\n\n";
+        $completed = "<br /><strong><font size='2' color='red'>"._DIDNOTSAVE."</font></strong><br /><br />\n\n";
         $completed .= _NOTACTIVE1."<br /><br />\n";
         $completed .= "<a href='".$_SERVER['PHP_SELF']."?sid=$surveyid&amp;move=clearall'>"._CLEARRESP."</a><br /><br />\n";
         $completed .= "<font size='1'>$subquery</font>\n";
@@ -252,14 +252,14 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
         echo templatereplace($op);
         }
     if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
-    foreach(file("$thistpl/endpage.pstpl") as $op)
-        {
-        echo templatereplace($op);
-        }
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
     echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
     echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname'>\n"; //This is to ensure consistency with mandatory checks, and new group test
     echo "\n</form>\n";
+    foreach(file("$thistpl/endpage.pstpl") as $op)
+        {
+        echo templatereplace($op);
+        }
     doFooter();
     exit;
     }
@@ -502,7 +502,7 @@ else
             {
             echo "\n\t<!-- NEW QUESTION -->\n";
             echo "\n\t<!-- QUESTION TYPE ".$qa[5]."-->\n";
-            echo "\t\t\t\t<div name='$qa[4]' id='$qa[4]'>";
+            echo "\t\t\t\t<div id='question$qa[4]'>";
             $question="<label for='$ia[7]'>" . $qa[0] . "</label>";
             $answer=$qa[1];
             $help=$qa[2];
@@ -530,10 +530,6 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 echo "\n";
 
 if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
-foreach(file("$thistpl/endpage.pstpl") as $op)
-    {
-    echo templatereplace($op);
-    }
 echo "\n";
     
 if (isset($conditions) && is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
@@ -582,6 +578,10 @@ echo "<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 echo "<input type='hidden' name='token' value='$token' id='token'>\n";
 echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars($groupname)."' id='lastgroupname'>\n";
 echo "</form>\n";
+foreach(file("$thistpl/endpage.pstpl") as $op)
+    {
+    echo templatereplace($op);
+    }
 doFooter();
 
 function last()
@@ -631,15 +631,14 @@ function last()
         echo "\t\t".templatereplace($op);
         }
     echo "\n";
-    foreach(file("$thistpl/endpage.pstpl") as $op)
-        {
-        echo templatereplace($op);
-        }
-    echo "\n";
     echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
     echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
     echo "\n</form>\n";
+    foreach(file("$thistpl/endpage.pstpl") as $op)
+        {
+        echo templatereplace($op);
+        }
     doFooter();
     }
 

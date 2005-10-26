@@ -504,7 +504,7 @@ if ($action == "browse" || $action == "search")
 			._TC_EDIT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&action=edit&tid=$brow[0]', '_top')\" />"
 			."<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"
 			._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />";
-		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&token=".trim($brow['token'])."', '_blank')\" />\n";}
+		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
 			{
@@ -689,7 +689,7 @@ if (returnglobal('action') == "email")
 													"{ATTRIBUTE_2}"),
 											  array($emrow['firstname'],
 											  		$emrow['lastname'],
-													"$publicurl/index.php?sid=$surveyid&token={$emrow['token']}",
+													"$publicurl/index.php?sid=$surveyid&amp;token={$emrow['token']}",
 													$emrow['token'],
 													$emrow['attribute_1'],
 													$emrow['attribute_2']),
@@ -702,7 +702,7 @@ if (returnglobal('action') == "email")
 												 "{ATTRIBUTE_2}"),
 										   array($emrow['firstname'],
 											  	 $emrow['lastname'],
-												 "$publicurl/index.php?sid=$surveyid&token={$emrow['token']}",
+												 "$publicurl/index.php?sid=$surveyid&amp;token={$emrow['token']}",
 												 $emrow['token'],
 												 $emrow['attribute_1'],
 												 $emrow['attribute_2']),
@@ -868,7 +868,7 @@ if (returnglobal('action') == "remind")
 													"{ATTRIBUTE_2}"),
 											  array($emrow['firstname'],
 											  		$emrow['lastname'],
-													"$publicurl/index.php?sid=$surveyid&token={$emrow['token']}",
+													"$publicurl/index.php?sid=$surveyid&amp;token={$emrow['token']}",
 													$emrow['token'],
 													$emrow['attribute_1'],
 													$emrow['attribute_2']),
@@ -881,7 +881,7 @@ if (returnglobal('action') == "remind")
 												 "{ATTRIBUTE_2}"),
 										   array($emrow['firstname'],
 											  	 $emrow['lastname'],
-												 "$publicurl/index.php?sid=$surveyid&token={$emrow['token']}",
+												 "$publicurl/index.php?sid=$surveyid&amp;token={$emrow['token']}",
 												 $emrow['token'],
 												 $emrow['attribute_1'],
 												 $emrow['attribute_2']),
