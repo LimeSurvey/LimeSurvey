@@ -202,7 +202,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		echo "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 			{
-			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</li>\n";
+			echo "\t\t\t\t<li>Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</li>\n";
 			}
 		echo "\t\t\t</ul>\n";
 		echo "\t\t\t"._AC_CANNOTACTIVATE."\n";

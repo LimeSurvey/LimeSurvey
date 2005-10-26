@@ -567,7 +567,7 @@ foreach ($filters as $flt)
             //Link to rankwinner script - awaiting completion
 //          echo "\t\t\t\t</tr>\n\t\t\t\t<tr bgcolor='#DDDDDD'>\n"
 //              ."<td colspan=$count align=center>$setfont"
-//              ."<input $btstyle type='button' value='Show Rank Summary' onClick=\"window.open('rankwinner.php?sid=$surveyid&qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
+//              ."<input $btstyle type='button' value='Show Rank Summary' onClick=\"window.open('rankwinner.php?sid=$surveyid&amp;qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
 //              ."</td></tr>\n\t\t\t\t<tr>\n";
             $counter=0;
             unset($answers);

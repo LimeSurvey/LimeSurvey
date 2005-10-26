@@ -593,7 +593,7 @@ if ($qid)
 		if (($qct == 0 && $activated != "Y") || $activated != "Y") 
 			{
 			$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'>"
-							  . "<image src='$imagefiles/delete.gif' name='DeleteWholeQuestion' title='"
+							  . "<img src='$imagefiles/delete.gif' name='DeleteWholeQuestion' title='"
 							  . _Q_DELETE_BT."' align='left' border='0' hspace='0' "
 							  . "onclick=\"return confirm('"._DQ_RUSURE."')\"></a>\n";
 			}
@@ -608,7 +608,7 @@ if ($qid)
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.gif' title='"
 						  . _Q_CONDITIONS_BT."' alt='". _Q_CONDITIONS_BT."' align='left' name='SetQuestionConditions' "
-						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$surveyid&qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\">\n"
+						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
