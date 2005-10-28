@@ -54,7 +54,7 @@ if (!mysql_selectdb ($databasename, $connect))
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._DATAENTRY."</strong></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		._ST_NODB1."<br />\n"
 		._ST_NODB2."<br /><br />\n"
@@ -71,7 +71,7 @@ if (!$surveyid && !$action)
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._DATAENTRY."</strong></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		._DE_NOSID."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
@@ -92,7 +92,7 @@ if ($action == "insert")
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._DATAENTRY."</strong></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 	if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
@@ -1386,7 +1386,7 @@ elseif ($action == "delete")
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._DATAENTRY."</strong></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong><br />\n"
 		."\t\t\t$setfont".$thissurvey['description']."\n"
 		."\t\t</td>\n"

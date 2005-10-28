@@ -42,7 +42,7 @@ echo "<br />\n"
 	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._IMPORTQUESTION."</strong></td></tr>\n"
-	."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 

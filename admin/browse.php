@@ -64,7 +64,7 @@ if (!mysql_selectdb($databasename, $connect)) //DATABASE DOESN'T EXIST OR CAN'T 
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		. _BROWSERESPONSES."</strong></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		. _ST_NODB1."<br />\n"
 		. _ST_NODB2."<br /><br />\n"
@@ -77,7 +77,7 @@ if (!$surveyid && !$action) //NO SID OR ACTION PROVIDED
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		. _BROWSERESPONSES."</strong></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		. _BR_NOSID."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
@@ -101,7 +101,7 @@ if ($actcount > 0)
 			{
 			echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 				. _BROWSERESPONSES.": <font color='silver'>$surveyname</strong></td></tr>\n"
-				."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+				."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 				."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 				. _BR_NOTACTIVATED."<br /><br />\n"
 				."<input $btstyle type='submit' value='"
@@ -116,7 +116,7 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		. _BROWSERESPONSES."</strong></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		. _BR_NOSURVEY." ($surveyid)<br /><br />\n"
 		."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"

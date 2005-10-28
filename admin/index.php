@@ -133,7 +133,7 @@ if (!mysql_selectdb ($databasename, $connect))
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._SETUP."</strong></td></tr>\n"
-		."\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"
 		._ERROR."<br />\n"
 		._ST_NODB1."</font></strong><br /><br />\n"

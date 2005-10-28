@@ -46,7 +46,7 @@ echo $htmlheader;
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._CREATEDB."</strong></td></tr>\n";
-echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 if (!$dbname)
 	{

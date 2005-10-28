@@ -1043,7 +1043,7 @@ function answerDetails($surveyid, $gid, $qid) {
 		 || $thisquestion['type'] == "R")) {
 	    
 	} else {
-		echo "		  <tr height='8'>
+		echo "		  <tr>
 			  <td colspan='5'>
 			  </td>
 			 </tr>
@@ -1119,7 +1119,7 @@ function attributeDetails($surveyid, $gid, $qid) {
 		 </td>
 		</tr>\n";
 	 }
-	echo "		<tr height='5'><td colspan='3'></td></tr>
+	echo "		<tr ><td colspan='3'></td></tr>
 		  <tr><form method='post' action='$scriptname'>
 		   <td align='center'><select name='attribute' id='QTlist'>";
 	foreach(questionAttributes() as $qey=>$qat) {
@@ -1403,7 +1403,7 @@ function buildSummaryRows($fields, $elementName, $display="", $pages=null) {
 					//-->
 					</script>";
 		$summary .= "				<tr><td colspan='2'>
-					  <table cellspacing='1' cellpadding='0'><tr height='3'><td colspan='".count($pages)."'></td></tr>
+					  <table cellspacing='1' cellpadding='0'><tr><td colspan='".count($pages)."'></td></tr>
 					  <tr>";
 		$headerno=1;
 		foreach(array_keys($pages) as $page) {

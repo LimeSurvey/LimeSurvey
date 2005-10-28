@@ -54,7 +54,7 @@ if (!$qid)
 	echo "<br />\n";
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._EXPORTQUESTION."</strong></td></tr>\n";
-	echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+	echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 	echo "$setfont<br /><strong><font color='red'>"._ERROR."</font></strong><br />\n"._EQ_NOQID."<br />\n";
 	echo "<br /><input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "\t</td></tr>\n";

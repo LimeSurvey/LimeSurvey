@@ -583,7 +583,7 @@ else
 		."\t</tr>\n";
 	}
 
-echo "\t<tr height='5' bgcolor='#555555'><td colspan='3'></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 
 if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 0) 
 	{
@@ -631,10 +631,13 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 		."<input type='hidden' name='qid' value='$qid'>\n"
 		."</form>\n";
 
-	echo "\t<tr height='5'><td colspan='3'></td></tr>\n"
-		."\t<tr height='5' bgcolor='#555555'><td colspan='3'></td></tr>\n";
+	echo "\t<tr ><td colspan='3'></td></tr>\n"
+		."\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 	}
 	
+echo "</table>\n";
+echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditions' method='post'>\n";
+echo "<table width='100%' border='0'>";
 echo "\t<tr bgcolor='#CDCDCD'>\n"
 	."\t\t<td colspan='3' align='center'>\n"
 	."\t\t\t$setfont<strong>"._CD_ADDCONDITION."</strong></font>\n"
@@ -649,8 +652,7 @@ echo "\t<tr bgcolor='#CDCDCD'>\n"
 	."\t\t<th width='40%'>\n"
 	."\t\t\t$setfont<strong>"._AL_ANSWER."</strong></font>\n"
 	."\t\t</th>\n"
-	."\t</tr>\n";
-echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditions' method='post'>\n"
+	."\t</tr>\n"
 	."\t<tr>\n"
 	."\t\t<td valign='top'>\n"
 	."\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
@@ -686,19 +688,19 @@ echo "<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='qid' value='$qid' />\n"
 	."<input type='hidden' name='action' value='insertcondition' />\n"
 	."<input type='hidden' name='cqid' id='cqid' value='' />\n"
-	."</form>\n";
-echo "\t<tr height='3'><td colspan='3'></td></tr>\n"
+	."</table>\n"
+	."</form>\n"
+	."<table width='100%'  border='0'>\n";
+echo "\t<tr><td colspan='3'></td></tr>\n"
 	."\t<tr bgcolor='#555555'>\n"
 	."\t\t<td height='5' colspan='3'>\n"
-	."\t\t</td>\n"
-	."\t</tr>\n";
-echo "\t<tr>\n"
-	."\t<tr bgcolor='#CDCDCD' height=10><td colspan=3></td></tr>\n"
-	."\t\t<td colspan='3' align='center'>\n"
+	."\t\t</td>\n";
+echo "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
+	."\t\t<tr><td colspan='3' align='center'>\n"
 	."\t\t\t<input type='submit' value='"._CLOSEWIN."' onClick=\"window.close()\" $btstyle>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
-echo "\t<tr height='3'><td colspan='3'></td></tr>\n"
+echo "\t<tr><td colspan='3'></td></tr>\n"
 	."</table>\n";
 
 echo htmlfooter("$langdir/instructions.html#conditions", "Using PHPSurveyor`s Conditions");
