@@ -44,8 +44,8 @@ echo $htmlheader;
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._DELETESURVEY."</strong></td></tr>\n";
-echo "\t<tr height='22' bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._DELETESURVEY."</strong></font></td></tr>\n";
+echo "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
 
 if (!isset($surveyid) || !$surveyid)
 	{
@@ -83,12 +83,12 @@ if (!isset($ok) || !$ok)
 		echo "\t\t\t"._DS_SURVEYTOKENS."<br /><br />\n";
 		}
 
-	echo "\t\t</td>\n";
+	echo "\t\t</font></td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='"._AD_CANCEL."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle style='width:100' value='"._DELETE."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&ok=Y','_top')\" />\n";
+	echo "\t\t\t<input type='submit' $btstyle  value='"._AD_CANCEL."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle  value='"._DELETE."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;ok=Y','_top')\" />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -143,7 +143,7 @@ else //delete the survey
 	echo "\t\t<td align='center'>$setfont<br />\n";
 	echo "\t\t\t<strong>"._DS_DELETED."<br /><br />\n";
 	echo "\t\t\t<input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "\t\t</td>\n";
+	echo "\t\t</strong></font></td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
 	}

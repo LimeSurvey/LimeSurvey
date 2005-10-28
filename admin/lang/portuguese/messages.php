@@ -370,7 +370,7 @@ define("_AC_READCAREFULLY", "LEIA CUIDADOSAMENTE ANTES DE PROSSEGUIR");
 define("_AC_ACTIVATE_MESSAGE1", "Ative um questionário somente quando estiver absolutamente seguro(a) de que a configuração do questionário está correta e que não haverá mais mudanças.");
 define("_AC_ACTIVATE_MESSAGE2", "Após a ativação do questionário você não poderá: Adicionar ou apagar Grupos. Adicionar ou apagar respostas a perguntas de Múltiplas Opções. Adicionar ou apagar perguntas");
 define("_AC_ACTIVATE_MESSAGE3", "Porém, poderá: Modificar os códigos das perguntas, texto ou tipo. Modificar os nomes dos grupos. Adicionar, apagar ou modificar respostas pré-definidas (exceto perguntas de múltiplas respostas). Modificar o nome ou descrição do questionário");
-define("_AC_ACTIVATE_MESSAGE4", "Se deseja adicionar ou apagar grupos ou perguntas uma vez que o questionário já tenha sido respondido pelo menos uma vez, deverá desativar o questionário, com o que, moverá toda informação já existente a outra tabela para ser arquivada.")
+define("_AC_ACTIVATE_MESSAGE4", "Se deseja adicionar ou apagar grupos ou perguntas uma vez que o questionário já tenha sido respondido pelo menos uma vez, deverá desativar o questionário, com o que, moverá toda informação já existente a outra tabela para ser arquivada.");
 define("_AC_ACTIVATE", "Ativar");
 define("_AC_ACTIVATED", "O questionário foi ativado. A tabela de resultados foi criada com êxito.");
 define("_AC_NOTACTIVATED", "O questionário não pode ser ativado.");

@@ -404,8 +404,9 @@ if ($surveyid)
 		$surveysummary .= "\t\t<td>$setfont <a href='$tmp_url' target='_blank'>$tmp_url</a>"
 						. "</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<strong>"
-						. _SL_DESCRIPTION."</strong></font></td>\n"
-						. "\t\t<td>$setfont {$s1row['description']}</font></td></tr>\n"
+						. _SL_DESCRIPTION."</strong></font></td>\n\t\t<td>";
+						if (trim($s1row['description'])!='') {$surveysummary .= "$setfont {$s1row['description']}</font>";}
+		$surveysummary .= "</td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails3'>\n"
 						. "\t\t<td align='right' valign='top'>$setfont<strong>"
 						. _SL_WELCOME."</strong></font></td>\n"
@@ -414,8 +415,9 @@ if ($surveyid)
 						. _SL_ADMIN."</strong></font></td>\n"
 						. "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<strong>"
-						. _SL_FAXTO."</strong></font></td>\n"
-						. "\t\t<td>$setfont {$s1row['faxto']}</font></td></tr>\n"
+						. _SL_FAXTO."</strong></font></td>\n\t\t<td>";
+						if (trim($s1row['faxto'])!='') {$surveysummary .= "$setfont {$s1row['faxto']}</font>";}
+		$surveysummary .= "</td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<strong>"
 						. _SL_EXPIRES."</strong></font></td>\n";
 		if ($s1row['expires'] != "0000-00-00") 
@@ -561,7 +563,9 @@ if ($gid)
 					   . "\t<td>"
 					   . "$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n"
 					   . "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'>$setfont<strong>"
-					   . _GL_DESCRIPTION."</strong></font></td>\n\t<td>$setfont{$grow['description']}</font></td></tr>\n";
+					   . _GL_DESCRIPTION."</strong></font></td>\n\t<td>";
+					   if (trim($grow['description'])!='') {$groupsummary .="$setfont{$grow['description']}</font>";}
+		$groupsummary .= "</td></tr>\n";
 		}
 	$groupsummary .= "\n</table>\n";
 	}
@@ -642,7 +646,9 @@ if ($qid)
 						  . "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'>$setfont<strong>"
 						  . _QL_QUESTION."</strong></font></td>\n\t<td>$setfont{$qrrow['question']}</font></td></tr>\n"
 						  . "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<strong>"
-						  . _QL_HELP."</strong></font></td>\n\t<td>$setfont{$qrrow['help']}</font></td></tr>\n";
+						  . _QL_HELP."</strong></font></td>\n\t<td>";
+						  if (trim($qrrow['help'])!=''){$questionsummary .= "$setfont{$qrrow['help']}</font>";}
+		$questionsummary .= "</td></tr>\n";
 		if ($qrrow['preg'])
 			{
 		    $questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<strong>"
@@ -1188,26 +1194,26 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
-		$editquestion = "<table width='100%' border='0'><tr>"
-					   . "<td colspan='2' bgcolor='black' align='center'>"
-					   . "\t\t\t$setfont<font color='white'><strong>"._QL_EDITQUESTION." $qid</strong></font></font>\n"
-					   . "\t\t</td>\n"
-					   . "\t</tr>\n"
-					   . "\t<tr>\n"
-					   . "\t\t<td valign='top'><table width='100%' border='0'>\n"
-					   . "\t<tr>\n"
-					   . "\t<tr><form action='$scriptname' name='editquestion' method='post'>\n"
-					   . "\t\t<td align='right'>$setfont<strong>"._QL_CODE."</strong></font></td>\n"
-					   . "\t\t<td><input $slstyle type='text' size='20' name='title' value='{$eqrow['title']}'></td>\n"
-					   . "\t</tr>\n"
-					   . "\t<tr>\n"
-					   . "\t\t<td align='right' valign='top'>$setfont<strong>"._QL_QUESTION."</strong></font></td>\n"
-					   . "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n"
-					   . "\t</tr>\n"
-					   . "\t<tr>\n"
-					   . "\t\t<td align='right' valign='top'>$setfont<strong>"._QL_HELP."</strong></font></td>\n"
-					   . "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n"
-					   . "\t</tr>\n";
+		$editquestion = "<tr><td>\n"
+						."<table width='100%' border='0'><tr>"
+					    . "<td colspan='3' bgcolor='black' align='center'>"
+					    . "\t\t\t$setfont<font color='white'><strong>"._QL_EDITQUESTION." $qid</strong></font></font>\n"
+					    . "\t\t</td>\n"
+					    . "\t</tr>\n"
+					    . "\t<tr>\n"
+					    . "\t\t<td valign='top'><form action='$scriptname' name='editquestion' method='post'><table width='100%' border='0'>\n"
+					    . "\t<tr>\n"
+					    . "\t\t<td align='right'>$setfont<strong>"._QL_CODE."</strong></font></td>\n"
+					    . "\t\t<td><input $slstyle type='text' size='20' name='title' value='{$eqrow['title']}'></td>\n"
+					    . "\t</tr>\n"
+					    . "\t<tr>\n"
+					    . "\t\t<td align='right' valign='top'>$setfont<strong>"._QL_QUESTION."</strong></font></td>\n"
+					    . "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n"
+					    . "\t</tr>\n"
+					    . "\t<tr>\n"
+					    . "\t\t<td align='right' valign='top'>$setfont<strong>"._QL_HELP."</strong></font></td>\n"
+					    . "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n"
+					    . "\t</tr>\n";
 		//question type:
 		$editquestion .= "\t<tr>\n"
 					   . "\t\t<td align='right'>$setfont<strong>"._QL_TYPE."</strong></font></td>\n";
@@ -1229,11 +1235,10 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					  . "\t\t<td align='right'>$setfont<strong>"._QL_VALIDATION."</strong></font></td>\n"
 					  . "\t\t<td>$setfont\n"
 					  . "\t\t<input type='text' $slstyle name='preg' size=50 value=\"".$eqrow['preg']."\">\n"
-					  . "\t\t</td>\n"
+					  . "\t\t</font></td>\n"
 					  . "\t</tr>\n";
 
-		$editquestion .= "\t</tr>\n"
-					   . "\t<tr id='LabelSets' style='display: none'>\n"
+		$editquestion  .="\t<tr id='LabelSets' style='display: none'>\n"
 					   . "\t\t<td align='right'>$setfont<strong>"._QL_LABELSET."</strong></font></td>\n"
 					   . "\t\t<td>$setfont\n";
 		if ($activated != "Y")
@@ -1307,26 +1312,27 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					   . "\t<input type='hidden' name='action' value='updatequestion'>\n"
 					   . "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					   . "\t<input type='hidden' name='qid' value='$qid'>\n"
-					   . "\t</form></tr>\n"
-					   . "</table></td>\n";
+					   . "\t</tr>\n"
+					   . "</table></form></td><td>\n";
 		}
 
 	$qidattributes=getQuestionAttributes($qid);
 	$editquestion .= "\t\t\t<td valign='top' width='35%'><table width='100%' border='0' cellspacing='0'>
 					   <tr>
 					    <td colspan='2' align='center'>
-						 <table class='outlinetable' cellspacing='0' width='90%'><tr id='QTattributes'><form action='$scriptname' method='post'>
-						<tr>
-						   <th colspan='4'>{$setfont}"._QL_QUESTIONATTRIBUTES."</font></th>
-						  </tr>
+						  <form action='$scriptname' method='post'><table class='outlinetable' cellspacing='0' width='90%'>
+						  <tr id='QTattributes'>
+						    <th colspan='4'>{$setfont}"._QL_QUESTIONATTRIBUTES."</font></th>
+   					      </tr>
 						  <tr><th colspan='4' height='5'></th></tr>
-						  <th colspan=2 nowrap align='right'><select id='QTlist' name='attribute_name' $slstyle>
-						  </select></th><th><input type='text' id='QTtext' size='6' name='attribute_value' $slstyle></th>
-						  <th><input type='submit' value='"._ADD."' $btstyle></th>
+                          <tr>  			  
+						  <td colspan=2 nowrap align='right'><select id='QTlist' name='attribute_name' $slstyle>
+						  </select></td><td><input type='text' id='QTtext' size='6' name='attribute_value' $slstyle></td>
+						  <td><input type='submit' value='"._ADD."' $btstyle></td>
 						  <input type='hidden' name='action' value='addattribute'>
 						  <input type='hidden' name='sid' value='$surveyid'>
 					      <input type='hidden' name='qid' value='$qid'>
-					      <input type='hidden' name='gid' value='$gid'></form></tr>
+					      <input type='hidden' name='gid' value='$gid'></tr>
 					     <tr><th colspan='4' height='10'></th></tr>\n";
 	foreach ($qidattributes as $qa)
 		{
@@ -1351,10 +1357,10 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					   . "\t<input type='hidden' name='qid' value='$qid'>\n"
 					   . "\t<input type='hidden' name='gid' value='$gid'>\n"
 					   . "\t<input type='hidden' name='qaid' value='".$qa['qaid']."'>\n"
-					   . "</form></tr>";
+					   . "</tr>";
 		}
-	$editquestion .= "\t\t\t	</table>";
-	$editquestion .= "</td></tr></table>\n";
+	$editquestion .= "\t\t\t	</table></form>";
+	$editquestion .= "</td></tr></table></table>\n";
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 	}
 
@@ -1390,9 +1396,10 @@ if ($action == "editgroup")
 	$egresult = mysql_query($egquery);
 	while ($esrow = mysql_fetch_array($egresult))	
 		{
-		$editgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		$editgroup =  "<form action='$scriptname' name='editgroup' method='post'>"
+		 			. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 					. "\t\t<strong>$setfont<font color='white'>"._GL_EDITGROUP."($surveyid)</font></font></strong></td></tr>\n"
-					. "\t<tr><form action='$scriptname' name='editgroup' method='post'>\n"
+					. "\t<tr>\n"
 					. "\t\t<td align='right' width='20%'>$setfont<strong>"._GL_TITLE."</strong></font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='group_name' value='{$esrow['group_name']}'></td></tr>\n"
 					. "\t<tr><td align='right'>$setfont<strong>"._GL_DESCRIPTION."</strong>(optional)</font></td>\n"
@@ -1401,8 +1408,9 @@ if ($action == "editgroup")
 					. "\t<input type='hidden' name='action' value='updategroup'>\n"
 					. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
-					. "\t</form></tr>\n"
-					. "</table>\n";
+					. "\t</tr>\n"
+					. "</table>\n"
+					. "\t</form>\n";
 		}
 	}
 

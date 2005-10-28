@@ -218,21 +218,21 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t<tr bgcolor='#999999'>\n"
             ."\t\t\t\t\t<td>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
-            ._CLOSEWIN."' align='right' border='0' hspace='0' "
+            ._CLOSEWIN."' align='right' "
             ."onClick=\"window.open('labels.php', '_top')\">\n"
             ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n"
             ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
             ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n"
             ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"
-            ._L_EDIT_BT."' align='left' border='0' hspace='0' "
+            ._L_EDIT_BT."' align='left' "
             ."onclick=\"window.open('labels.php?action=editset&amp;lid=$lid', '_top')\">\n"
             ."\t\t\t\t\t<a href='labels.php?action=delset&amp;lid=$lid'>"
-            ."<img src='$imagefiles/delete.gif' title='"
-            ._L_DEL_BT."' align='left' border='0' hspace='0' "
+            ."<img src='$imagefiles/delete.gif' border='0' title='"
+            ._L_DEL_BT."' align='left' "
             ."onClick=\"return confirm('Are you sure?')\"></a>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
-            ._EXPORTLABEL."' align='left' border='0' hspace='0' "
+            ._EXPORTLABEL."' align='left' "
             ."onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t</tr>\n"
@@ -242,32 +242,33 @@ if (isset($lid) && ($action != "editset") && $lid)
     $query = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
     $result = mysql_query($query) or die(mysql_error());
     $labelcount = mysql_num_rows($result);
-    echo "\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
-        ."\t\t\t\t<tr bgcolor='#555555' height='4'>\n"
+    echo "\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'><thead align='center'>\n"
+        ."\t\t\t\t<tr bgcolor='#555555' >\n"
         ."\t\t\t\t\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
         ._LABELANS
         ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t</tr>\n"
         ."\t\t\t\t<tr bgcolor='#BBBBBB'>\n"
-        ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
+        ."\t\t\t\t\t<td width='10%'><strong><font size='1' face='verdana'>\n"
         ._LL_CODE
         ."\t\t\t\t\t</font></strong></td>\n"
-        ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
+        ."\t\t\t\t\t<td width='50%'><strong><font size='1' face='verdana'>\n"
         ._LL_ANSWER
         ."\t\t\t\t\t</font></strong></td>\n"
-        ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
+        ."\t\t\t\t\t<td width='20%'><strong><font size='1' face='verdana'>\n"
         ._LL_ACTION
         ."\t\t\t\t\t</font></strong></td>\n"
-        ."\t\t\t\t\t<td><strong><font size='1' face='verdana'>\n"
+        ."\t\t\t\t\t<td width='20%'><strong><font size='1' face='verdana'>\n"
          ._LL_SORTORDER
         ."\t\t\t\t\t</font></strong></td>\n"
-        ."\t\t\t\t</tr>\n";
+        ."\t\t\t\t</tr></thead>\n"
+        ."\t\t\t\t\n";
     $position=0;
     while ($row=mysql_fetch_array($result))
         {
-        echo "\t\t\t\t<tr>\n"
-            ."\t\t\t\t<form method='post' action='labels.php'>\n"
-            ."\t\t\t\t\t<td>\n";
+    	echo "\t\t\t<tr><td colspan='4'><form method='post' action='labels.php'>\n"
+			."\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
+        	."\t\t\t\t<tr><td width='10%'>\n";
         if ($activeuse > 0)
             {
             echo "\t\t\t\t\t$setfont{$row['code']}</font>"
@@ -275,13 +276,13 @@ if (isset($lid) && ($action != "editset") && $lid)
             }
         else
             {
-            echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='5' value=\"{$row['code']}\">\n";
+            echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='7' value=\"{$row['code']}\">\n";
             }
         echo "\t\t\t\t\t</td>\n"
-            ."\t\t\t\t\t<td>\n"
-            ."\t\t\t\t\t<input type='text' $slstyle name='title' size='35' value=\"{$row['title']}\">\n"
+            ."\t\t\t\t\t<td width='50%'>\n"
+            ."\t\t\t\t\t<input type='text' $slstyle name='title' size='60' value=\"{$row['title']}\">\n"
             ."\t\t\t\t\t</td>\n"
-            ."\t\t\t\t\t<td>\n"
+            ."\t\t\t\t\t<td width='20%'>\n"
             ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_SAVE."' />\n";
         if ($activeuse == 0)
             {
@@ -293,33 +294,33 @@ if (isset($lid) && ($action != "editset") && $lid)
             {
             echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_UP."' />\n";
             }
-        else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left'></font>";}
+        else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left'>";}
         if ($position < $labelcount-1)
             {
             echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DN."' />\n";
             }
-        echo "\t\t\t\t\t</td>\n"
+        echo "\t\t\t\t\t</td></tbody></table>\n"
             ."\t\t\t\t<input type='hidden' name='sortorder' value='{$row['sortorder']}'>\n"
             ."\t\t\t\t<input type='hidden' name='old_title' value='{$row['title']}'>\n"
             ."\t\t\t\t<input type='hidden' name='old_code' value='{$row['code']}'>\n"
             ."\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"
             ."\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n"
-            ."\t\t\t\t</form>\n"
-            ."\t\t\t\t</tr>\n";
+            ."\t\t\t\t</form>\n</td></tr>";
         $position++;
         }
     $position=sprintf("%05d", $position);
     if ($activeuse == 0)
         {
-        echo "\t\t\t\t<tr>\n"
+        echo "\t\t\t\t<tr><td colspan='4'>\n"
             ."\t\t\t\t<form method='post' action='labels.php'>\n"
-            ."\t\t\t\t\t<td>\n"
-            ."\t\t\t\t\t<input type='text' $slstyle name='code' size='5' id='addnewlabelcode'>\n"
+			."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
+            ."\t\t\t\t\t<tr><td width='10%'>\n"
+            ."\t\t\t\t\t<input type='text' $slstyle name='code' size='7' id='addnewlabelcode'>\n"
             ."\t\t\t\t\t</td>\n"
-            ."\t\t\t\t\t<td>\n"
-            ."\t\t\t\t\t<input type='text' $slstyle name='title' size='35'>\n"
+            ."\t\t\t\t\t<td width='50%'>\n"
+            ."\t\t\t\t\t<input type='text' $slstyle name='title' size='60'>\n"
             ."\t\t\t\t\t</td>\n"
-            ."\t\t\t\t\t<td>\n"
+            ."\t\t\t\t\t<td width='20%'>\n"
             ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_ADD."'>\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td>\n"
@@ -343,13 +344,16 @@ if (isset($lid) && ($action != "editset") && $lid)
     echo "\t\t\t\t<input type='hidden' name='sortorder' value='$position'>\n"
         ."\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"
         ."\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n"
-        ."\t\t\t\t</form>\n"
-        ."\t\t\t\t<tr><form action='labels.php' method='post'><td colspan='2'></td>"
-        ."\t\t\t\t<td></td><td align='left'><input $btstyle type='submit' name='method' value='"
+        ."\t\t\t\t</tbody></table></form>\n"
+        ."\t\t\t\t<tr><td colspan='4'><form action='labels.php' method='post'>"
+		."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
+		."\t\t\t\t\t<tr><td width='80%'></td>"
+        ."\t\t\t\t<td></td><td><input $btstyle type='submit' name='method' value='"
         ._AL_FIXSORT."'></td>\n"
+        ."\t\t\t\t</tr></tbody></table>"
         ."\t\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"
         ."\t\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n"
-        ."\t\t\t\t</form></tr>\n";
+        ."\t\t\t\t\t</form>\n";
     if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
         {
         echo "\t\t\t\t<tr>\n"
