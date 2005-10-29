@@ -239,8 +239,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 		{
 		echo "\t\t".templatereplace($op);
 		}
-	echo "\n";
-		."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
+	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
 		."\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
 		."\n<input type='hidden' name='token' value='$token' id='token'>\n"
 		."\n</form>\n";
