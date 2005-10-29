@@ -691,12 +691,7 @@ define("_CD_NOQID", "Non hai selezionato alcuna domanda."); //New with 098rc9
 define("_CD_DIDNOTCOPYQ", "Non hai copiato domande"); //New with 098rc9
 define("_CD_NOCONDITIONTOCOPY", "Nessuna condizione da selezionata per copiarla"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "Nessuna domanda selezionata per copiare le condizioni a "); //New with 098rc9
-
-
-
-
-
-
+define("_CD_COPYTO", "copy to"); //New with 0.991
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Crea nuovo template"); //New with 098rc9
@@ -753,7 +748,7 @@ define("_VV_ENTRYFAILED", "Importazione fallita sul record");
 define("_VV_BECAUSE", "perch&egrave;");
 define("_VV_EXPORTDEACTIVATE", "Esporta, quindi disattiva l&#039;indagine");
 define("_VV_EXPORTONLY", "Esporta ma lascia attiva l&#039;indagine");
-define("_VV_RUSURE", "Se hai scelto di esportare disattivando l'indagine la tabella corrente delle risposte verrÃ  rinominata e non sar&agrave; facile ripristinarla. Sei sicuro di voler procedere?");
+define("_VV_RUSURE", "Se hai scelto di esportare disattivando l'indagine la tabella corrente delle risposte verrÃƒÂ  rinominata e non sar&agrave; facile ripristinarla. Sei sicuro di voler procedere?");
 
 //ASSESSMENTS
 define("_AS_TITLE", "Valutazioni");

@@ -688,6 +688,8 @@ define("_CD_NOQID", "Вы не выбрали вопрос."); //New with 098rc9
 define("_CD_DIDNOTCOPYQ", "Вопросы не скопированы"); //New with 098rc9
 define("_CD_NOCONDITIONTOCOPY", "Нет условия для копирования из"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "Нет условия для копирования в"); //New with 098rc9
+define("_CD_COPYTO", "copy to"); //New with 0.991
+
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Создать новый шаблон"); //New with 098rc9

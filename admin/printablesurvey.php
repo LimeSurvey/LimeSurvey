@@ -55,8 +55,10 @@ require($langfilename);
 
 sendcacheheaders();
 
-echo "<html>\n<head>\n";
-echo "<meta http-equiv='content-script-type' content='text/javascript' />\n";
+DoHeader();
+echo "<head>\n"
+   . "<meta http-equiv='content-script-type' content='text/javascript' />\n"
+   . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n";
 echo "</head>\n<body>\n";
 
 // PRESENT SURVEY DATAENTRY SCREEN
@@ -79,11 +81,11 @@ if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 
 echo "<table width='100%' cellspacing='0'>\n";
 echo "\t<tr>\n";
-echo "\t\t<td colspan='3' align='center'><font color='black'>\n";
+echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t<table border='1' style='border-collapse: collapse; border-color: #111111; width: 100%'>\n";
 echo "\t\t\t\t<tr><td align='center'>\n";
 echo "\t\t\t\t\t<font size='5' face='verdana'><strong>$surveyname</strong></font>\n";
-echo "\t\t\t\t\t<font size='4' face='verdana'><br />$setfont$surveydesc</font>\n";
+echo "\t\t\t\t\t<br />$setfont$surveydesc</font>\n";
 echo "\t\t\t\t</td></tr>\n";
 echo "\t\t\t</table>\n";
 echo "\t\t</td>\n";
@@ -248,7 +250,7 @@ while ($degrow = mysql_fetch_array($degresult))
 			{
 		    echo _REQUIRED;
 			}
-		echo "\t\t\t<strong>$setfont{$deqrow['title']}: {$deqrow['question']}</strong>\n";
+		echo "\t\t\t<strong>$setfont{$deqrow['title']}: {$deqrow['question']}</font></strong>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		//DIFFERENT TYPES OF DATA FIELD HERE
@@ -257,7 +259,7 @@ while ($degrow = mysql_fetch_array($degresult))
 		if ($deqrow['help'])
 			{
 			$hh = $deqrow['help'];
-			echo "\t\t\t<table width='100%' border='1'><tr><td align='center'><font size='1'>$hh</td></tr></table>\n";
+			echo "\t\t\t<table width='100%' border='1'><tr><td align='center'><font size='1'>$hh</font></td></tr></table>\n";
 
 			}
 		echo "\t\t</td>\n";
@@ -291,7 +293,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					{
 					$dcols=0;
 					}
-				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u></font><br />\n";
 				$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, title";
 				$dearesult = mysql_query($deaquery) or die("ERROR: $deaquery<br />\n".mysql_error());
 				$deacount=mysql_num_rows($dearesult);
@@ -300,9 +302,9 @@ while ($degrow = mysql_fetch_array($degresult))
 					{
 				    $width=sprintf("%0d", 100/$dcols);
 					$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
-					$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+					$divider="</td>\n <td valign='top' width='$width%' nowrap>";
 					$upto=0;
-					echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+					echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>$setfont";
 					while ($dearow = mysql_fetch_array($dearesult))
 						{
 						if ($upto == $maxrows) 
@@ -322,6 +324,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				else
 					{
+					echo $setfont;	
 					while ($dearow = mysql_fetch_array($dearesult))
 						{
 						echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['title']}<br />\n";
@@ -658,9 +661,9 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t</table>\n";
 				break;
 			}
-		echo "\t\t</td>\n";
+		echo "\t\t</font></td>\n";
 		echo "\t</tr>\n";
-		echo "\t<tr><td height='3' colspan='3'><hr noshade size='1' color='#111111'></td></tr>\n";
+		echo "\t<tr><td height='3' colspan='3'><hr noshade size='1'></td></tr>\n";
 		}
 	}
 echo "\t<tr>\n";
@@ -668,7 +671,7 @@ echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t<table width='100%' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
-echo "\t\t\t\t\t\t$setfont<strong>"._PS_SUBMIT."</strong><br />\n";
+echo "\t\t\t\t\t\t$setfont<strong>"._PS_SUBMIT."</strong></font><br />\n";
 echo "\t\t\t\t\t\t"._PS_THANKYOU." "._PS_FAXTO." $surveyfaxto";
 if ($surveyexpirydate && $surveyexpirydate != "0000-00-00")
 	{

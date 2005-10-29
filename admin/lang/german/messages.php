@@ -689,6 +689,7 @@ define("_CD_NOQID", "Sie haben keine Frage ausgew&auml;hlt.");
 define("_CD_DIDNOTCOPYQ", "Fragen wurden nicht kopiert");
 define("_CD_NOCONDITIONTOCOPY", "Keine Bedingung zum Kopieren ausgew&auml;hlt");
 define("_CD_NOQUESTIONTOCOPYTO", "Keine Zielfrage zum Kopieren der Bedingung ausgew&auml;hlt");
+define("_CD_COPYTO", "kopieren nach"); //New with 0.991
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Neue Vorlage erstellen");

@@ -729,6 +729,7 @@ define("_CD_NOQID", "Vous n&#0027;avez pas s&eacute;lectionn&eacute; de question
 define("_CD_DIDNOTCOPYQ", "Questions non copi&eacute;es"); //New with 098rc9
 define("_CD_NOCONDITIONTOCOPY", "Aucune condition &agrave; copier s&eacute;lectionn&eacute;e"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "Aucune question s&eacute;lectionn&eacute;e pour copier la condition &agrave;"); //New with 098rc9
+define("_CD_COPYTO", "copy to"); //New with 0.991
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Cr&eacute;er un nouveau mod&egrave;le"); //New with 098rc9

@@ -1423,9 +1423,9 @@ if ($action == "editsurvey")
 	$esresult = mysql_query($esquery);
 	while ($esrow = mysql_fetch_array($esresult))	
 		{
-		$editsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"
+		$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"
 					. "\t\t<strong>$setfont<font color='white'>Edit Survey</font></font></strong></td></tr>\n"
-					. "\t<tr><form name='addnewsurvey' action='$scriptname' method='post'>\n"
+					. "\t<tr>"
 					. "\t\t<td align='right' width='25%'>$setfont<strong>"._SL_TITLE."</strong></font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='short_title' value='".$esrow['short_title']."'></td></tr>\n"
 					. "\t<tr><td align='right' valign='top'><strong>$setfont"._SL_DESCRIPTION."</font></strong></td>\n"
@@ -1480,7 +1480,7 @@ if ($action == "editsurvey")
 					. "\t\t\t<option value='Y'";
 		if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._AD_YES."</option>\n"
-					. "\t\t\<option value='N'";
+					. "\t\t<option value='N'";
 		if ($esrow['allowsave'] == "N") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._AD_NO."</option>\n"
 					. "\t\t</select></td>\n"
@@ -1622,7 +1622,7 @@ if ($action == "editsurvey")
 					 . "\t\t<td><input $slstyle type='text' size='50' name='url' value='{$esrow['url']}'></td></tr>\n"
 					 . "\t<tr><td align='right'>$setfont<strong>"._SL_URLDESCRIP."</strong></font></td>\n"
 					 . "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n"
-					 . "\t<tr><td align='right'>$setfont<strong>"._SL_AUTORELOAD."</strong><font></td>\n"
+					 . "\t<tr><td align='right'>$setfont<strong>"._SL_AUTORELOAD."</strong></font></td>\n"
 					 . "\t\t<td><select $slstyle name='autoredirect'>";
 		$editsurvey .= "\t\t\t<option value='Y'";
 		if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected";}
@@ -1635,8 +1635,8 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._SL_UPD_SURVEY."'></td>\n"
 					 . "\t<input type='hidden' name='action' value='updatesurvey'>\n"
 					 . "\t<input type='hidden' name='sid' value='{$esrow['sid']}'>\n"
-					 . "\t</tr></form>\n"
-					 . "</table>\n";
+					 . "\t</tr>\n"
+					 . "</table></form>\n";
 		}
 	}
 	

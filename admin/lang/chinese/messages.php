@@ -688,6 +688,7 @@ define("_CD_NOQID", "You have not selected a Question."); //New with 098rc9
 define("_CD_DIDNOTCOPYQ", "Did not copy questions"); //New with 098rc9
 define("_CD_NOCONDITIONTOCOPY", "No condition selected to copy from"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "No question selected to copy condition to"); //New with 098rc9
+define("_CD_COPYTO", "copy to"); //New with 0.991
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Create new template"); //New with 098rc9

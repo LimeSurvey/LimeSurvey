@@ -514,16 +514,14 @@ if ($conditionscount > 0)
 			}
 		elseif (isset($currentfield))
 			{
-			echo "\t\t\t\t<tr bgcolor='E1FFE1'>\n"
+			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 				."\t\t\t\t\t<td colspan='3' align='center'>\n"
 				."$setfont<font size='1'><strong>"
 				._AD_OR."</strong></font></font>";
 			}
-		echo "\t\t\t\t\t</td>\n"
-			."\t\t\t\t</tr>\n"
-			."\t<tr bgcolor='#E1FFE1'>\n"
-			."\t<form name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
-			."\t\t<td align='right' valign='middle'><font size='1' face='verdana'>\n";
+		echo "\t<tr bgcolor='#E1FFE1'>\n"
+			."\t<td colspan='3'><form name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
+			."\t\t<table width='100%'><tr><td align='right' valign='middle'><font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
 			{
@@ -541,7 +539,7 @@ if ($conditionscount > 0)
 		echo "\t\t</font></td>\n"
 			."\t\t<td align='center' valign='middle'>$setfont<font size='1'>"
 			._CD_EQUALS."</font></font></td>"
-			."\t\t<td>\n"
+			."\t\t<td'>\n"
 			."\t\t\t<table border='0' cellpadding='0' cellspacing='0' width='99%'>\n"
 			."\t\t\t\t<tr>\n"
 			."\t\t\t\t\t<td align='left' valign='middle'>\n"
@@ -555,7 +553,7 @@ if ($conditionscount > 0)
 				echo "\t\t\t\t\t\t$can[2] ($can[1])\n";
 				}
 			}
-		echo "\t\t\t\t\t</td>\n"
+		echo "\t\t\t\t\t</font></td>\n"
 			."\t\t\t\t\t<td align='right' valign='middle'>\n"
 			."\t\t\t\t\t\t<input type='submit' value='Del' style='font-face: verdana; font-size: 8; height:13' align='right'>\n"
 			."\t\t\t\t\t</td>\n"
@@ -566,7 +564,7 @@ if ($conditionscount > 0)
 			."\t<input type='hidden' name='cid' value='{$rows['cid']}'>\n"
 			."\t<input type='hidden' name='sid' value='$surveyid'>\n"
 			."\t<input type='hidden' name='qid' value='$qid'>\n"
-			."\t</form>\n"
+			."\t</tr></table></form>\n"
 			."\t</tr>\n";
 		$currentfield=$rows['cfieldname'];
 		}
@@ -587,9 +585,9 @@ echo "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 
 if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 0) 
 	{
-	echo "<form action='".$_SERVER['PHP_SELF']."' name='copyconditions' id='copyconditions' method='post'>\n";
+	echo "<tr bgcolor='#555555'><td colspan='3'><form action='".$_SERVER['PHP_SELF']."' name='copyconditions' id='copyconditions' method='post'>\n";
 
-	echo "\t<tr bgcolor='#CDCDCD'>\n"
+	echo "\t<table width='100%'><tr bgcolor='#CDCDCD'>\n"
 		."\t\t<td colspan='3' align='center'>\n"
 		."\t\t$setfont<strong>"
 		._CD_COPYCONDITIONS."</strong></font>\n"
@@ -597,12 +595,12 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 		."\t</tr>\n";
 
 	echo "\t<tr>\n"
-		."\t\t<th>{$setfont}"._CD_CONDITION."</th><th></th><th>{$setfont}"._QUESTION."</th>\n"
+		."\t\t<th>{$setfont}"._CD_CONDITION."</font></th><th></th><th>{$setfont}"._QUESTION."</font></th>\n"
 		."\t</tr>\n";
 	
 	echo "\t<tr>\n"
-		."\t\t<td>\n"
-		."\t\t<select name='copyconditionsfrom[]' multiple style='font-face:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4'>\n";
+		."\t\t<td align='center'>\n"
+		."\t\t<select name='copyconditionsfrom[]' multiple style='font-face:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4' >\n";
 	foreach ($conditionsList as $cl)
 		{
 		echo "<option value='".$cl['cid']."'>".$cl['text']."</option>\n";
@@ -610,9 +608,9 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	echo "\t\t</select>\n"
 		."\t\t</td>\n"
 		."\t\t<td align='center'>$setfont\n"
-		."\t\tcopy to\n"
-		."\t\t</font></font></td>\n"
-		."\t\t<td>\n"
+		."\t\t"._CD_COPYTO."\n"
+		."\t\t</font></td>\n"
+		."\t\t<td align='center'>\n"
 		."\t\t<select name='copyconditionsto[]' multiple style='font-face:verdana; font-size:10; width:220' size='4'>\n";
 	foreach ($pquestions as $pq)
 		{
@@ -629,7 +627,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	echo "<input type='hidden' name='action' value='copyconditions'>\n"
 		."<input type='hidden' name='sid' value='$surveyid'>\n"
 		."<input type='hidden' name='qid' value='$qid'>\n"
-		."</form>\n";
+		."</table></form>\n";
 
 	echo "\t<tr ><td colspan='3'></td></tr>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
