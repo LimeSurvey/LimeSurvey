@@ -58,7 +58,7 @@ if(isset($_POST['cquestions'])) {
 	echo $htmlheader;
 }
 
-echo "<table width='100%' border='0' bgcolor='#555555'>\n"
+echo "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
 	."\t<tr><td align='center'>$setfont<font color='white'><strong>"
 	._CD_CONDITIONDESIGNER."</strong></font></font></td></tr>\n"
 	."</table>\n";
@@ -481,7 +481,7 @@ echo "\t\t\t\tdocument.getElementById('canswers').options[document.getElementByI
 //SHOW FORM TO CREATE IT!
 echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-size: 1; border-color: #555555'>\n"
 	."\t<tr bgcolor='#CCFFCC'>\n"
-	."\t\t<td colspan='3' align='center'>\n";
+	."\t\t<td  align='center' >\n";
 $showreplace="$questiontitle<img src='$imagefiles/speaker.jpg' alt='"
 	. addslashes($questiontext)
 	. "' onClick=\"alert('"
@@ -508,20 +508,20 @@ if ($conditionscount > 0)
 		if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 			{
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
-				."\t\t\t\t\t<td colspan='3' align='center'>\n"
+				."\t\t\t\t\t<td valign='middle' align='center'>\n"
 				."$setfont<font size='1'><strong>"
 				._AND."</strong></font></font>";
 			}
 		elseif (isset($currentfield))
 			{
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
-				."\t\t\t\t\t<td colspan='3' align='center'>\n"
+				."\t\t\t\t\t<td valign='top' align='center'>\n"
 				."$setfont<font size='1'><strong>"
 				._AD_OR."</strong></font></font>";
 			}
 		echo "\t<tr bgcolor='#E1FFE1'>\n"
-			."\t<td colspan='3'><form name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
-			."\t\t<table width='100%'><tr><td align='right' valign='middle'><font size='1' face='verdana'>\n";
+			."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
+			."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='right' width='50%'><font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
 			{
@@ -537,12 +537,10 @@ if ($conditionscount > 0)
 				}
 			}
 		echo "\t\t</font></td>\n"
-			."\t\t<td align='center' valign='middle'>$setfont<font size='1'>"
+			."\t\t<td align='center' valign='middle' width='15%'>$setfont<font size='1'>"
 			._CD_EQUALS."</font></font></td>"
-			."\t\t<td'>\n"
-			."\t\t\t<table border='0' cellpadding='0' cellspacing='0' width='99%'>\n"
-			."\t\t\t\t<tr>\n"
-			."\t\t\t\t\t<td align='left' valign='middle'>\n"
+			."\t\t\t\t\n"
+			."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
 			."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
 		foreach ($canswers as $can)
 			{
@@ -554,22 +552,19 @@ if ($conditionscount > 0)
 				}
 			}
 		echo "\t\t\t\t\t</font></td>\n"
-			."\t\t\t\t\t<td align='right' valign='middle'>\n"
-			."\t\t\t\t\t\t<input type='submit' value='Del' style='font-face: verdana; font-size: 8; height:13' align='right'>\n"
+			."\t\t\t\t\t<td align='right' valign='middle' >\n"
+			."\t\t\t\t\t\t<input type='submit' value='Del' style='font-face: verdana; font-size: 8; height:15'>\n"
+			."\t\t\t\t\t<input type='hidden' name='action' value='delete'>\n"
+			."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}'>\n"
+			."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
+			."\t\t\t\t\t<input type='hidden' name='qid' value='$qid'>\n"
 			."\t\t\t\t\t</td>\n"
-			."\t\t\t\t</tr>\n"
-			."\t\t\t</table>\n"
-			."\t\t</td>\n"
-			."\t<input type='hidden' name='action' value='delete'>\n"
-			."\t<input type='hidden' name='cid' value='{$rows['cid']}'>\n"
-			."\t<input type='hidden' name='sid' value='$surveyid'>\n"
-			."\t<input type='hidden' name='qid' value='$qid'>\n"
-			."\t</tr></table></form>\n"
+			."\t</table></form>\n"
 			."\t</tr>\n";
 		$currentfield=$rows['cfieldname'];
 		}
 	echo "\t<tr>\n"
-		."\t\t<td colspan='3' height='3'>\n"
+		."\t\t<td height='3'>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 	}
@@ -635,7 +630,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	
 echo "</table>\n";
 echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditions' method='post'>\n";
-echo "<table width='100%' border='0'>";
+echo "<table width='100%' border='0' >";
 echo "\t<tr bgcolor='#CDCDCD'>\n"
 	."\t\t<td colspan='3' align='center'>\n"
 	."\t\t\t$setfont<strong>"._CD_ADDCONDITION."</strong></font>\n"
@@ -652,7 +647,7 @@ echo "\t<tr bgcolor='#CDCDCD'>\n"
 	."\t\t</th>\n"
 	."\t</tr>\n"
 	."\t<tr>\n"
-	."\t\t<td valign='top'>\n"
+	."\t\t<td valign='top' align='center'>\n"
 	."\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
 foreach ($cquestions as $cqn)
 	{
@@ -671,7 +666,7 @@ echo "\t\t\t</select>\n"
 //echo "\t\t\t</select>\n";
 echo "\t\t\t"._CD_EQUALS."\n"
 	."\t\t</font></td>\n"
-	."\t\t<td valign='top'>\n"
+	."\t\t<td valign='top' align='center'>\n"
 	."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
 
 echo "\t\t\t</select>\n"

@@ -716,16 +716,16 @@ if (returnglobal('viewanswer'))
 	$cdquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
 	$cdresult = mysql_query($cdquery);
 	$cdcount = mysql_num_rows($cdresult);
-	$vasummary .= "\t<tr><th>$setfont"._AL_CODE."</font></th><th>$setfont"._AL_ANSWER."</font></th>"
-				. "<th>$setfont"._AL_DEFAULT."</font></th><th>$setfont"._AL_ACTION."</font></th>"
+	$vasummary .= "\t<tr><th width='10%'>$setfont"._AL_CODE."</font></th><th width='50%'>$setfont"._AL_ANSWER."</font></th>"
+				. "<th width='10%'>$setfont"._AL_DEFAULT."</font></th><th width='15%'>$setfont"._AL_ACTION."</font></th>"
 				. "<th>$setfont"._AL_MOVE."</font></th></tr>\n";
 	$position=0;
 	while ($cdrow = mysql_fetch_array($cdresult))
 		{
 		$position=sprintf("%05d", $position);
 		if ($cdrow['sortorder'] || $cdrow['sortorder'] == "0") {$position=$cdrow['sortorder'];}
-		$vasummary .= "\t<tr><form action='".$scriptname."' method='post'>\n";
-		$vasummary .= "\t\t<td align='center'>";
+		$vasummary .= "\t<tr><td colspan='5'><form style='margin-bottom:0;' action='".$scriptname."' method='post'>\n";
+		$vasummary .= "\t<table width='100%' cellspacing='0' cellpadding='0'><tr><td align='center' width='10%'>";
 		if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
 			{
 			$vasummary .="<input name='code' type='text' $btstyle value=\"{$cdrow['code']}\" maxlength='5' size='5' "
@@ -739,10 +739,10 @@ if (returnglobal('viewanswer'))
 			}
 		$vasummary .="</td>\n";
 		$cdrow['answer']=htmlspecialchars($cdrow['answer']);  // So HTML-Code can be used in answers
-		$vasummary .= "\t\t<td align='center'><input name='answer' "
+		$vasummary .= "\t\t<td align='center' width='50%'><input name='answer' "
 					. "type='text' $btstyle value=\"{$cdrow['answer']}\" size='50'></td>\n"
 					. "\t\t<input name='sortorder' type='hidden' $btstyle value=\"$position\">"
-					. "\t\t<td align='center'>";
+					. "\t\t<td align='center' width='10%'>";
 		if (($activated == "Y" && ($qtype == "L" || $qtype =="!")) || ($activated == "N"))
 			{
 			$vasummary .= "\t\t\t<select name='default' $btstyle>\n"
@@ -761,7 +761,7 @@ if (returnglobal('viewanswer'))
 			}
 		if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
 			{
-			$vasummary .= "\t\t<td align='center'>\n"
+			$vasummary .= "\t\t<td align='center' width='15%'>\n"
 						. "\t\t\t<input name='ansaction' $btstyle type='submit' value='"._AL_SAVE."'>"
 						. "<input name='ansaction' $btstyle type='submit' value='"._AL_DEL."'>\n"
 						. "\t\t</td>\n";
@@ -785,32 +785,32 @@ if (returnglobal('viewanswer'))
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
 					. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
-					. "\t</form></tr>\n";
+					. "\t</table></form></tr>\n";
 		$position++;
 		}
 	if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
 		{
 		$position=sprintf("%05d", $position);
-		$vasummary .= "\t<tr><form action='".$scriptname."' method='post'>\n"
-					. "\t\t<td align='center'><input name='code' type='text' $btstyle size='5' maxlength='5' "
+		$vasummary .= "\t<tr><td colspan='5'><form style='margin-bottom:0;' action='".$scriptname."' method='post'>\n"
+					. "\t<table width='100%'><tr><td align='center' width='10%'><input name='code' type='text' $btstyle size='5' maxlength='5' "
 					. "id='addanswercode' "
 					. "onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\">"
 					. "</td>\n"
-					. "\t\t<td align='center'><input name='answer' type='text' $btstyle size='50'></td>\n"
+					. "\t\t<td align='center' width='50%'><input name='answer' type='text' $btstyle size='50'></td>\n"
 					. "\t\t<input name='sortorder' type='hidden' $btstyle value='$position'>\n"
-					. "\t\t<td align='center'>"
+					. "\t\t<td align='center' width='10%'>"
 					. "\t\t\t<select name='default' $btstyle>\n"
 					. "\t\t\t\t<option value='Y'>"._AD_YES."</option>\n"
 					. "\t\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
 					. "\t\t\t</select></td>\n"
-					. "\t\t<td align='center'><input name='ansaction' $btstyle type='submit' value='"._AL_ADD."'></td>\n"
+					. "\t\t<td align='center' width='15%'><input name='ansaction' $btstyle type='submit' value='"._AL_ADD."'></td>\n"
 					. "\t\t<td></td>\n"
 					. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
 					. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
-					. "\t</form></tr>\n";
+					. "\t</table></form></tr>\n";
 		$vasummary .= "<script type='text/javascript' language='javascript'>\n"
 					. "<!--\n"
 					. "document.getElementById('addanswercode').focus();\n"
@@ -819,22 +819,23 @@ if (returnglobal('viewanswer'))
 		}
 	if ($cdcount > 0)
 		{
-		$vasummary .= "<tr><td colspan='3'></td>"
-					. "<form action='".$scriptname."' method='post'><td align='center'>"
-					. "<input $btstyle type='submit' name='ansaction' value='"._AL_SORTALPHA."'></td>\n"
+		$vasummary .= "<tr><td colspan='3'></td><td align='center'>"
+					. "<form style='margin-bottom:0;' action='".$scriptname."' method='post'>"
+					. "<input $btstyle type='submit' name='ansaction' value='"._AL_SORTALPHA."'>\n"
 					. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
-					. "\t<input type='hidden' name='viewanswer' value='Y'></form>\n"
-					. "<form action='".$scriptname."' method='post'>"
-					. "<td align='center'><input $btstyle type='submit' name='ansaction' value='"._AL_FIXSORT."'></td>\n"
+					. "\t<input type='hidden' name='viewanswer' value='Y'></form>\n</td>"
+					. "\t<td align='center'>\n"
+					. "\t<form style='margin-bottom:0;' action='".$scriptname."' method='post'>"
+					. "<input $btstyle type='submit' name='ansaction' value='"._AL_FIXSORT."'>\n"
 					. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
 					. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
-					. "</form></tr>\n";
+					. "</form></td>\n";
 		}
 
 	$vasummary .= "</table>\n";

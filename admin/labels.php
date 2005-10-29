@@ -140,7 +140,7 @@ if ($action == "newset" || $action == "editset")
     else {echo _LB_EDITSET;}
     echo "\t\t\t\t</font></font></strong></td>\n"
         ."\t\t\t</tr>\n"
-        ."\t\t<form method='post' action='labels.php'>\n"
+        ."\t\t<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
         ."\t\t\t<tr>\n"
         ."\t\t\t\t<td align='right' width='15%'>\n"
         ."\t\t\t\t\t$setfont<strong>"._LL_NAME.":</strong></font>"
@@ -312,7 +312,7 @@ if (isset($lid) && ($action != "editset") && $lid)
     if ($activeuse == 0)
         {
         echo "\t\t\t\t<tr><td colspan='4'>\n"
-            ."\t\t\t\t<form method='post' action='labels.php'>\n"
+            ."\t\t\t\t<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
 			."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
             ."\t\t\t\t\t<tr><td width='10%'>\n"
             ."\t\t\t\t\t<input type='text' $slstyle name='code' size='7' id='addnewlabelcode'>\n"
@@ -345,7 +345,7 @@ if (isset($lid) && ($action != "editset") && $lid)
         ."\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"
         ."\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n"
         ."\t\t\t\t</tbody></table></form>\n"
-        ."\t\t\t\t<tr><td colspan='4'><form action='labels.php' method='post'>"
+        ."\t\t\t\t<tr><td colspan='4'><form style='margin-bottom:0;' action='labels.php' method='post'>"
 		."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
 		."\t\t\t\t\t<tr><td width='80%'></td>"
         ."\t\t\t\t<td></td><td><input $btstyle type='submit' name='method' value='"
