@@ -6,6 +6,7 @@
     <font color='red'><strong>{ANSWERSCLEARED}</strong></font><br /><br />
 	{RESTART}<br />
 	{CLOSEWINDOW}
+	</font>
    </td>
   </tr>
  </table>
