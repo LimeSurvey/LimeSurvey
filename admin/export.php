@@ -503,6 +503,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "F":
 				case "H":
 				case "Q":
+				case "^":
 					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
 					$lr = mysql_query($lq);
 					$debug .= " | QUERY FOR ANSWER CODE [$lq]";

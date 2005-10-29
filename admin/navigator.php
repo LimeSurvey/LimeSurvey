@@ -770,7 +770,7 @@ function questionEdit($surveyid, $gid, $qid) {
 				document.getElementById('OtherSelection').style.display = '';
 				document.getElementById('LabelSets').style.display = 'none';
 				document.getElementById('Validation').style.display = 'none';
-			} else if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z') {
+			} else if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z' || QuestionType == '^') {
 				document.getElementById('LabelSets').style.display = '';
 				document.getElementById('OtherSelection').style.display = 'none';
 				document.getElementById('Validation').style.display = 'none';
@@ -1179,6 +1179,13 @@ function showPreview($surveyid, $gid, $qid=null) {
 	$GLOBALS['thissurvey']=$thissurvey;
 	
 	$output=array();
+	
+    $output[] = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
+   	$output[] = "<head><link type=\"text/css\" rel=\"StyleSheet\" href=\"../slider/swing.css\" />\n";
+	$output[] = "<script type=\"text/javascript\" src=\"../slider/range.js\"></script>\n";
+	$output[] = "<script type=\"text/javascript\" src=\"../slider/timer.js\"></script>\n";
+	$output[] = "<script type=\"text/javascript\" src=\"../slider/slider.js\"></script>\n</head>\n";
+	$output[] = "<html>\n";
 	
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
@@ -1638,7 +1645,8 @@ function questionTypes() {
 			"H"=>_ARRFLC,
 			"X"=>_BOILERPLATE,
 			"W"=>_LISTFL_DROPDOWN,
-			"Z"=>_LISTFL_RADIO
+			"Z"=>_LISTFL_RADIO,
+			"^"=>_SLIDER,
 			);
 		array_multisort($qtypes);
 		return $qtypes;
@@ -1875,8 +1883,8 @@ if(!empty($surveyid)) {
 		$thisquestion=getQuestionInfo($qid);
 		switch($thisquestion['type']){
 			case "L": case "M": case "O": case "!": case "A": case "B": case "C": case "E": case "F":
-			case "P": case "Q": case "R": case "H":
-				$menu["questionactions"]["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=showanswers'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._Q_ANSWERS_BT."</a><br />";
+			case "P": case "Q": case "R": case "H": case "^":
+				$menu["questionactions"]["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&qid=$qid&action=showanswers'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._Q_ANSWERS_BT."</a><br />";
 				break;
 		} // switch
 		$menu["questionactions"]["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=showattributes'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._QL_QUESTIONATTRIBUTES."</a><br />";

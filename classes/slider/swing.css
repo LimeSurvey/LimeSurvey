@@ -1,0 +1,82 @@
+/*
+	dark rgb(102,102,102)
+	medium	rgb(152,153,153)
+	gray:	rgb(204,204,204)
+	bright: white;
+	*/
+
+.dynamic-slider-control {
+	position:			relative;
+	background-color:	rgb(204,204,204);
+	-moz-user-focus:	normal;
+	-moz-user-select:	none;
+	cursor:				default;
+}
+
+.horizontal {
+	width:				200px;
+	height:				27px;
+}
+
+.vertical {
+	width:				29px;
+	height:				200px;
+}
+
+.dynamic-slider-control input {
+	display:	none;
+}
+
+.dynamic-slider-control .handle {
+	position:			absolute;	
+	font-size:			1px;
+	overflow:			hidden;
+	-moz-user-select:	none;
+	cursor:				default;
+}
+
+.dynamic-slider-control.horizontal .handle {
+	width:				15px;
+	height:				16px;
+	background-image:	url("handle.horizontal.png");
+}
+
+.dynamic-slider-control.horizontal .handle div {}
+.dynamic-slider-control.horizontal .handle.hover {}
+
+.dynamic-slider-control.vertical .handle {
+	width:				16px;
+	height:				15px;
+	background-image:	url("handle.vertical.png");
+}
+
+.dynamic-slider-control.vertical .handle.hover {}
+
+.dynamic-slider-control .line {
+	position:			absolute;
+	font-size:			0.01mm;
+	overflow:			hidden;
+	border:				1px solid;
+	border-color:		rgb(102,102,102) white
+						white rgb(102,102,102);
+	
+	behavior:			url("css/boxsizing.htc"); /* ie path bug */
+	box-sizing:			content-box;
+	-moz-box-sizing:	content-box;
+}
+.dynamic-slider-control.vertical .line {
+	width:				4px;
+}
+
+.dynamic-slider-control.horizontal .line {
+	height:				4px;
+}
+
+.dynamic-slider-control .line div {
+	width:		2px;
+	height:		2px;
+	
+	border:				1px solid;
+	border-color:		rgb(152,153,153) rgb(102,102,102)
+						rgb(102,102,102) rgb(152,153,153);
+}

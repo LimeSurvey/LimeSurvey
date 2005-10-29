@@ -297,7 +297,7 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 	}
 
 	//Fix the output for multiple
-	if ($thisquestion['type'] == "M" || $thisquestion['type'] == "P") {
+	if ($thisquestion['type'] == "M" || $thisquestion['type'] == "P" || $thisquestion['type'] == "^") {
 	    if (isset($newarray)) {unset($newarray);}
 		$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['question']=$thisquestion['question'];
 		foreach ($summary as $sum) {

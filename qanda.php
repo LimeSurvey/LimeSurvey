@@ -335,6 +335,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
         case "H": //ARRAY (Flexible) - Column Format
             $values=do_array_flexiblecolumns($ia);
             break;
+		case "^": //SLIDER CONTROL
+			$values=do_slider($ia);
+			break;
         } //End Switch
 
     if (isset($values)) //Break apart $values array returned from switch
@@ -1767,6 +1770,105 @@ function do_array_yesnouncertain($ia)
     return array($answer, $inputnames);
     }
 
+function do_slider($ia) {
+	global $shownoanswer;
+	global $dbprefix;
+
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($defaultvalue=arraySearchByKey("default_value", $qidattributes, "attribute", 1)) {
+	 $defaultvalue=$defaultvalue['value'];
+	} else {$defaultvalue=0;}
+	if ($minimumvalue=arraySearchByKey("minimum_value", $qidattributes, "attribute", 1)) {
+		$minimumvalue=$minimumvalue['value'];
+	} else {
+	    $minimumvalue=0;
+	}
+	if ($maximumvalue=arraySearchByKey("maximum_value", $qidattributes, "attribute", 1)) {
+		$maximumvalue=$maximumvalue['value'];
+	} else {
+		$maximumvalue=50;
+	}
+	
+	//Get answers
+    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+    $ansresult = mysql_query($ansquery);
+    $anscount = mysql_num_rows($ansresult);
+
+	//Get labels
+    $qquery = "SELECT lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
+    $qresult = mysql_query($qquery);
+    while($qrow = mysql_fetch_array($qresult)) {$lid = $qrow['lid'];}
+    $lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
+    $lresult = mysql_query($lquery);
+	
+	$answer = "\t\t\t<table class='question'>\n";
+	$answer .= "\t\t\t\t<tr><th></th>\n";
+	$lcolspan=mysql_num_rows($lresult);
+	$lcount=1;
+	while($lrow=mysql_fetch_array($lresult)) {
+		$answer .= "<th align='";
+		if ($lcount == 1) {
+		    $answer .= "left";
+		} elseif ($lcount == $lcolspan) {
+			$answer .= "right";
+		} else {
+			$answer .= "center";
+		}
+		$answer .= "' class='array1'><font size='1'>".$lrow['title']."</font></th>\n";
+		$lcount++;
+	}
+	$answer .= "\t\t\t\t</tr>\n";
+	
+	
+	$answer .="\t\t\t\t<tr>\n"
+			. "\t\t\t\t\t<td>\n"
+			. "\t\t\t\t\t\t";
+	$fn=1;
+    while ($ansrow = mysql_fetch_array($ansresult))
+        {
+		//A row for each slider control
+        $myfname = $ia[1].$ansrow['code'];
+        $answertext=answer_replace($ansrow['answer']);
+        if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+        $answer .= "\t\t\t\t<tr class='$trbc'>\n"
+                 . "\t\t\t\t\t<td align='right'>$answertext</td>\n";
+		$answer .= "\t\t\t\t\t<td width='80%' colspan='$lcolspan'>"
+				 . "<div class=\"slider\" id=\"slider-$myfname\" style='width:100%'>"
+				 . "<input class=\"slider-input\" id=\"slider-input-$myfname\" name=\"$myfname\" />"
+				 . "</div>";
+		$answer .= "
+<script type=\"text/javascript\">
+
+var s = new Slider(document.getElementById(\"slider-$myfname\"),
+                   document.getElementById(\"slider-input-$myfname\"));
+	s.setValue(";
+		if (isset($_SESSION[$myfname])) {
+		    $answer .= $_SESSION[$myfname];
+		} else {
+			$answer .= $defaultvalue;
+		}
+$answer .= ");
+	s.setMinimum($minimumvalue);
+	s.setMaximum($maximumvalue);
+</script>\n"
+				 . "</td>\n";
+        $answer .= "\t\t\t\t</tr>\n"
+                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+        if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+        $answer .= "'>\n";
+        $inputnames[]=$myfname;
+        $fn++;
+		}
+	
+	$answer .="\t\t\t\t\t</td>\n"
+			. "\t\t\t\t</tr>\n"
+			. "\t\t\t</table>\n";
+
+	$inputnames[]=$ia[1];
+    
+	return array($answer, $inputnames);
+}
+	
 function do_array_increasesamedecrease($ia)
     {
     global $dbprefix;
