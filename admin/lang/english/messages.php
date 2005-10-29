@@ -360,7 +360,7 @@ define("_AC_NOLID", "This question requires a Labelset, but none is set."); //Ne
 define("_AC_CON_OUTOFORDER", "This question has a condition set, however the condition is based on a question that appears after it.");
 define("_AC_FAIL", "Survey does not pass consistency check");
 define("_AC_PROBS", "The following problems have been found:");
-define("_AC_CANNOTACTIVATE", "The survey cannot be activated until these problems have been resolved");
+define("_AC_CANNOTACTIVATE", "The survey cannot be activated until these problems have been resolved.");
 define("_AC_READCAREFULLY", "READ THIS CAREFULLY BEFORE PROCEEDING");
 define("_AC_ACTIVATE_MESSAGE1", "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.");
 define("_AC_ACTIVATE_MESSAGE2", "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>");
@@ -555,9 +555,9 @@ define("_TC_INVITECOUNT", "Total Invitations Sent:"); //New in 0.98rc4
 define("_TC_COMPLETEDCOUNT", "Total Surveys Completed:"); //New in 0.98rc4
 define("_TC_NOSID", "You have not selected a survey");
 define("_TC_DELTOKENS", "About to delete tokens table for this survey.");
-define("_TC_DELTOKENSINFO", "If you delete this table tokens will no longer be required to access this survey. A backup of this table will be made if you proceed. Your system administrator will be able to access this table.");
+define("_TC_DELTOKENSINFO", "If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table.");
 define("_TC_DELETETOKENS", "Delete Tokens");
-define("_TC_TOKENSGONE", "The tokens table has now been removed and tokens are no longer required to access this survey. A backup of this table has been made and can be accessed by your system administrator.");
+define("_TC_TOKENSGONE", "The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator.");
 define("_TC_NOTINITIALISED", "Tokens have not been initialised for this survey.");
 define("_TC_INITINFO", "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token.");
 define("_TC_INITQ", "Do you want to create a tokens table for this survey?");
@@ -565,13 +565,13 @@ define("_TC_INITTOKENS", "Initialise Tokens");
 define("_TC_CREATED", "A token table has been created for this survey.");
 define("_TC_DELETEALL", "Delete all token entries");
 define("_TC_DELETEALL_RUSURE", "Are you really sure you want to delete ALL token entries?");
-define("_TC_ALLDELETED", "All token entries have been deleted");
-define("_TC_CLEARINVITES", "Set all entries to 'N' invitation sent");
+define("_TC_ALLDELETED", "All token entries have been deleted.");
+define("_TC_CLEARINVITES", "Set all entries to 'No invitation sent'.");
 define("_TC_CLEARINV_RUSURE", "Are you really sure you want to reset all invitation records to NO?");
 define("_TC_CLEARTOKENS", "Delete all unique token numbers");
 define("_TC_CLEARTOKENS_RUSURE", "Are you sure you want to delete all unique token numbers?");
-define("_TC_TOKENSCLEARED", "All unique token numbers have been removed");
-define("_TC_INVITESCLEARED", "All invite entries have been set to N");
+define("_TC_TOKENSCLEARED", "All unique token numbers have been removed.");
+define("_TC_INVITESCLEARED", "All invite entries have been set to 'Not Invited'.");
 define("_TC_EDIT", "Edit Token Entry");
 define("_TC_DEL", "Delete Token Entry");
 define("_TC_DO", "Do Survey");

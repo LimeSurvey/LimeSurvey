@@ -72,7 +72,7 @@ echo "<script type='text/javascript'>\n"
 echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 	."\t<tr>\n"
 	."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n"
-	."\t\t<table height='1'><tr><td></td></tr></table>\n";
+	."\t\t<table><tr><td></td></tr></table>\n";
 
 echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
@@ -144,7 +144,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."\t\t</font></td>\n"
 			."\t</tr>\n"
 			."</table>\n"
-			."<table height='1'><tr><td></td></tr></table>\n"
+			."<table><tr><td></td></tr></table>\n"
 			."</td></tr></table>\n"
 			.htmlfooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
 		exit;
@@ -162,7 +162,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."\t\t</font></td>\n"
 			."\t</tr>\n"
 			."</table>\n"
-			."<table height='1'><tr><td></td></tr></table>\n"
+			."<table><tr><td></td></tr></table>\n"
 			."</td></tr></table>\n"
 			.htmlfooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
 		exit;
@@ -188,16 +188,16 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."\t\t\t"._TC_INITQ;
 		echo "<br /><br />\n";
 		echo "\t\t\t<input type='submit' $btstyle value='"
-			._TC_INITTOKENS."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&createtable=Y', '_top')\"><br />\n"
+			._TC_INITTOKENS."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;createtable=Y', '_top')\"><br />\n"
 			."\t\t\t<input type='submit' $btstyle value='"
-			._GO_ADMIN."' onClick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\"><br /><br />\n";
+			._GO_ADMIN."' onClick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\"><br /><br /></font>\n";
 		if ($tcount>0)
 			{
 			echo "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
-				 ."<tr><td bgcolor='#666666'>$setfont<font color='white' size='1'>Restore Options:\n"
+				 ."<td bgcolor='#666666'>$setfont<font color='white' size='1'>Restore Options:\n"
 				 ."</font></font></td></tr>\n"
 				 ."<tr>\n"
-				 ."<form action='$homeurl/tokens.php'><td bgcolor='#DDDDDD' align='center'>$setfont\n"
+				 ."<td bgcolor='#DDDDDD' align='center'><form action='$homeurl/tokens.php'>$setfont\n"
 				 ."The following old token tables could be restored:<br />\n"
 				 ."<select $slstyle2 size='4' name='oldtable'>\n";
 			foreach($oldlist as $ol)
@@ -208,14 +208,14 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 				 ."<input type='submit' $btstyle value='Restore'>\n"
 				 ."<input type='hidden' name='restoretable' value='Y'>\n"
 				 ."<input type='hidden' name='sid' value='$surveyid'>\n"
-				 ."</font></td></form>\n"
+				 ."</font></form></td>\n"
 				 ."</tr></table>\n";
 			}
 
-		echo "\t\t</font></td>\n"
+		echo "\t\t</td>\n"
 			."\t</tr>\n"
 			."</table>\n"
-			."<table height='1'><tr><td></td></tr></table>\n"
+			."<table><tr><td></td></tr></table>\n"
 			."</td></tr></table>\n"
 			.htmlfooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
 		exit;
@@ -226,34 +226,34 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 echo "\t<tr bgcolor='#999999'>\n"
 	."\t\t<td>\n"
 	."\t\t\t<input type='image' name='HelpButton' src='$imagefiles/showhelp.gif' title='"
-	._A_HELP_BT."' align='right' hspace='0' border='0' onClick=\"showhelp('show')\">\n"
+	._A_HELP_BT."' align='right'  onClick=\"showhelp('show')\">\n"
 	."\t\t\t<input type='image' name='HomeButton' src='$imagefiles/home.gif' title='"
-	._B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+	._B_ADMIN_BT."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='SummaryButton' src='$imagefiles/summary.gif' title='"
-	._B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\">\n"
+	._B_SUMMARY_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\">\n"
 	."\t\t\t<input type='image' name='ViewAllButton' src='$imagefiles/document.gif' title='"
-	._T_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=browse', '_top')\">\n"
+	._T_ALL_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=browse', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='AddNewButton' src='$imagefiles/add.gif' title='"
-	._T_ADD_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=addnew', '_top')\">\n"
+	._T_ADD_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=addnew', '_top')\">\n"
 	."\t\t\t<input type='image' name='ExportButton' src='$imagefiles/export.gif' title='"
-	._T_EXPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=export', '_top')\">\n"
+	._T_EXPORT_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=export', '_top')\">\n"
 	."\t\t\t<input type='image' name='ImportButton' src='$imagefiles/import.gif' title='"
-	._T_IMPORT_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=import', '_top')\">\n"
+	._T_IMPORT_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=import', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='InviteButton' src='$imagefiles/invite.gif' title='"
-	._T_INVITE_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=email', '_top')\">\n"
+	._T_INVITE_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=email', '_top')\">\n"
 	."\t\t\t<input type='image' name='RemindButton' src='$imagefiles/remind.gif' title='"
-	._T_REMIND_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=remind', '_top')\">\n"
+	._T_REMIND_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=remind', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='TokenifyButton' src='$imagefiles/tokenify.gif' title='"
-	._T_TOKENIFY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=tokenify', '_top')\">\n"
+	._T_TOKENIFY_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify', '_top')\">\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<input type='image' name='DeleteTokensButton' src='$imagefiles/delete.gif' title='"
-	._T_KILL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=kill', '_top')\">\n"
+	._T_KILL_BT."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=kill', '_top')\">\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 
@@ -287,7 +287,7 @@ echo "\t\t\t\t\t</font></td>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n"
 	."</table>\n"
-	."<table height='1'><tr><td></td></tr></table>\n";
+	."<table ><tr><td></td></tr></table>\n";
 
 echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
@@ -298,7 +298,7 @@ if ($action == "deleteall")
 	{
 	$query="DELETE FROM {$dbprefix}tokens_$surveyid";
 	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
-	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._TC_ALLDELETED."</font></font></td></tr>\n";
+	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._TC_ALLDELETED."</font></font></strong></td></tr>\n";
 	$action="";
 	}
 
@@ -306,7 +306,7 @@ if ($action == "clearinvites")
 	{
 	$query="UPDATE {$dbprefix}tokens_$surveyid SET sent='N'";
 	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
-	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._TC_INVITESCLEARED."</font></font></td></tr>\n";
+	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._TC_INVITESCLEARED."</font></font></strong></td></tr>\n";
 	$action="";
 	}
 
@@ -314,7 +314,7 @@ if ($action == "cleartokens")
 	{
 	$query="UPDATE {$dbprefix}tokens_$surveyid SET token=''";
 	$result=mysql_query($query) or die("Couldn't reset the tokens field<br />$query<br />".mysql_error());
-	echo "<tr><td align='center' bgcolor='silver'><strong>$setfont<font color='green'>"._TC_TOKENSCLEARED."</font></font></td></tr>\n";
+	echo "<tr><td align='center' bgcolor='silver'><strong>$setfont<font color='green'>"._TC_TOKENSCLEARED."</font></font></strong></td></tr>\n";
 	$action="";
 	}
 
@@ -343,22 +343,21 @@ if (!$action)
 		."\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t<table align='center'><tr><td>\n"
-		."\t\t\t$setfont<br />\n"
-		."\t\t\t<ul><li><a href='$homeurl/tokens.php?sid=$surveyid&action=clearinvites' onClick='return confirm(\""
+		."\t\t\t<br />\n"
+		."\t\t\t<ul><li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=clearinvites' onClick='return confirm(\""
 		._TC_CLEARINV_RUSURE."\")'>"._TC_CLEARINVITES."</a></li>\n"
-		."\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&action=cleartokens' onClick='return confirm(\""
+		."\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=cleartokens' onClick='return confirm(\""
 		._TC_CLEARTOKENS_RUSURE."\")'>"._TC_CLEARTOKENS."</a></li>\n"
-		."\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&action=deleteall' onClick='return confirm(\""
+		."\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=deleteall' onClick='return confirm(\""
 		._TC_DELETEALL_RUSURE."\")'>"._TC_DELETEALL."</a></li>\n";
 	$bquery = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1";
 	$bresult = mysql_query($bquery) or die(_ERROR." counting fields<br />".mysql_error());
 	$bfieldcount=mysql_num_fields($bresult);
 	if ($bfieldcount==7)
 		{
-		echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&action=updatedb'>"._TC_UPDATEDB."</a></li>\n";
+		echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=updatedb'>"._TC_UPDATEDB."</a></li>\n";
 		}
-	echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&action=kill'>"._T_KILL_BT."</a></li></ul>\n"
-		."\t\t\t</font>\n"
+	echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=kill'>"._T_KILL_BT."</a></li></ul>\n"
 		."\t\t\t</td></tr></table>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -445,45 +444,45 @@ if ($action == "browse" || $action == "search")
 	//COLUMN HEADINGS
 	echo "\t<tr>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=tid&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=tid&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY."ID' border='0' align='left' hspace='0'></a>$setfont"."ID</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=firstname&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=firstname&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_FIRST."' border='0' align='left'></a>$setfont"._TL_FIRST."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=lastname&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=lastname&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_LAST."' border='0' align='left'></a>$setfont"._TL_LAST."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=email&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=email&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_EMAIL."' border='0' align='left'></a>$setfont"._TL_EMAIL."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=token&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=token&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_TOKEN."' border='0' align='left'></a>$setfont"._TL_TOKEN."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=sent%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=sent%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_INVITE."' border='0' align='left'></a>$setfont"._TL_INVITE."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=completed%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=completed%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_DONE."' border='0' align='left'></a>$setfont"._TL_DONE."</font></th>\n";
 	if ($bfieldcount == 9) 
 		{
 		echo "\t\t<th align='left' valign='top'>"
-			."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=attribute_1&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=attribute_1&start=$start&limit=$limit&searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_ATTR1."' border='0' align='left'></a>$setfont"._TL_ATTR1."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
-			."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=attribute_2&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=attribute_2&start=$start&limit=$limit&searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_ATTR2."' border='0' align='left'></a>$setfont"._TL_ATTR2."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
-			."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse&order=mpid&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=mpid&start=$start&limit=$limit&searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_MPID."' border='0' align='left'></a>$setfont"._TL_MPID."</font></th>\n";
 		}
@@ -501,9 +500,9 @@ if ($action == "browse" || $action == "search")
 			}
 		echo "\t\t<td align='left'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='"
-			._TC_EDIT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&action=edit&tid=$brow[0]', '_top')\" />"
+			._TC_EDIT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=edit&tid=$brow[0]', '_top')\" />"
 			."<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"
-			._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />";
+			._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />";
 		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
@@ -536,14 +535,14 @@ if ($action == "browse" || $action == "search")
 			{
 			echo "\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='I' title='"
-				._TC_INVITET."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&action=email&tid=$brow[0]', '_top')\" />"
+				._TC_INVITET."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=email&tid=$brow[0]', '_top')\" />"
 				."\t\t</td>\n";
 			}
 		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] == "Y")
 			{
 			echo "\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='R' title='"
-				._TC_REMINDT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&action=remind&tid=$brow[0]', '_top')\" />"
+				._TC_REMINDT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=remind&tid=$brow[0]', '_top')\" />"
 				."\t\t</td>\n";
 			}
 		else
@@ -571,7 +570,7 @@ if ($action == "kill")
 			._TC_DELTOKENSINFO."<br />\n"
 			."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
 			."<input type='submit' $btstyle value='"
-			._TC_DELETETOKENS."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=kill&ok=surething', '_top')\" /><br />\n"
+			._TC_DELETETOKENS."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=kill&amp;ok=surething', '_top')\" /><br />\n"
 			."<input type='submit' $btstyle value='"
 			._AD_CANCEL."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\" />\n";
 		}
@@ -583,14 +582,13 @@ if ($action == "kill")
 		$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<br />\n".mysql_error()."<br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		echo "<span style='display: block; text-align: center; width: 70%'>\n"
 			._TC_TOKENSGONE."<br />\n"
-			."has been made, and is called \"{$dbprefix}old_tokens_{$_GET['sid']}_$date\". This can be<br />\n"
-			."recovered by a systems administrator.<br /><br />\n"
+			."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
 			."<input type='submit' $btstyle value='"
 			._GO_ADMIN."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
 			."</span>\n";
 		}
 	echo "</font></td></tr></table>\n"
-		."<table height='1'><tr><td></td></tr></table>\n";
+		."<table><tr><td></td></tr></table>\n";
 
 	}	
 
@@ -948,7 +946,7 @@ if ($action == "tokenify")
 		{
 		echo "<br />"._TC_CREATETOKENSINFO."<br /><br />\n"
 			."<input type='submit' $btstyle value='"
-			._AD_YES."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&action=tokenify&ok=Y', '_top')\" />\n"
+			._AD_YES."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify&ok=Y', '_top')\" />\n"
 			."<input type='submit' $btstyle value='"
 			._AD_NO."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\" />\n"
 			."<br /><br />\n";
@@ -1157,7 +1155,7 @@ if ($action == _UPDATE)
 	$udresult = mysql_query($udquery) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".mysql_error());
 	echo "<br />$setfont<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		."<br />"._TC_TOKENUPDATED."<br /><br />\n"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse'>"._T_ALL_BT."</a><br /><br />\n"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._T_ALL_BT."</a><br /><br />\n"
 		."\t</td></tr></table>\n";
 	}
 
@@ -1192,8 +1190,8 @@ if ($action == _ADD)
 	$inresult = mysql_query($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".mysql_error());
 	echo "<br />$setfont<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		."<br />"._TC_TOKENADDED."<br /><br />\n"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse'>"._T_ALL_BT."</a><br />\n"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&action=browse'>"._T_ADD_BT."</a><br /><br />\n"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._T_ALL_BT."</a><br />\n"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._T_ADD_BT."</a><br /><br />\n"
 		."\t</td></tr></table>\n";
 	}
 
@@ -1314,7 +1312,7 @@ if ($action == "upload")
 
 //echo "</center>\n";
 //echo "&nbsp;"
-echo "\t\t<table height='1'><tr><td></td></tr></table>\n"
+echo "\t\t<table><tr><td></td></tr></table>\n"
 	."\t\t</td>\n";
 
 //echo "</td>\n";
@@ -1355,7 +1353,7 @@ function helpscreen()
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
 		."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left'>\n"
-		."\t\t\t\t\t\t<input type='image' name='CloseHelpButton' src='$imagefiles/close.gif' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
+		."\t\t\t\t\t\t<input type='image' name='CloseHelpButton' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\">\n"
 		."\t\t\t\t\t</td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
