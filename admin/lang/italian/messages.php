@@ -257,6 +257,7 @@ define("_EMAIL", "Indirizzo e-mail"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Domande Boilerplate"); //New in 0.98rc6
 define("_LISTFL_DROPDOWN", "Lista (Etichetta variabile) (Dropdown)"); //New in 0.99dev01
 define("_LISTFL_RADIO", "Lista (Etichetta variabile) (Radio)"); //New in 0.99dev01
+define("_SLIDER", "Slider"); //New for slider mod
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "SI");

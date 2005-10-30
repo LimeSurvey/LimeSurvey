@@ -259,6 +259,7 @@ define("_EMAIL", "E-Mail Adresse");
 define("_BOILERPLATE", "Textbaustein (nur Anzeige)");
 define("_LISTFL_DROPDOWN", "Liste (Flexible Beschriftungen) (Klappbox)"); 
 define("_LISTFL_RADIO", "Liste (Flexible Beschriftungen) (Optionsfelder)");
+define("_SLIDER", "Slider"); //New for slider mod
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Ja");

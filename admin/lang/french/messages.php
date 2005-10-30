@@ -299,6 +299,7 @@ define("_EMAIL", "Adresse mail"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Texte fixe"); //New in 0.98rc6
 define("_LISTFL_DROPDOWN", "Liste d&eacute;roulante et &eacute;tiquettes personnali&eacute;es"); //New in 0.99dev01
 define("_LISTFL_RADIO", "Bouton radio et &eacute;tiquettes personnalis&eacute;es"); //New in 0.99dev01
+define("_SLIDER", "Slider"); //New for slider mod
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Oui");
