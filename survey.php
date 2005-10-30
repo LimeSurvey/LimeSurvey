@@ -170,7 +170,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				}
 	
 			//Create text for use in later print section
-			$completed = "<br /><font size='2'><font color='green'><strong>"
+			$completed = "<br /><strong><font size='2'><font color='green'>"
 					   . _THANKS."</strong></font><br /><br />\n\n"
 					   . _SURVEYREC."<br />\n"
 					   . "<a href='javascript:window.close()'>"
@@ -239,14 +239,16 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 		{
 		echo "\t\t".templatereplace($op);
 		}
-	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
-		."\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
-		."\n<input type='hidden' name='token' value='$token' id='token'>\n"
-		."\n</form>\n";
+	echo "\n";
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
 		}
+	echo "\n"
+		."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
+		."\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
+		."\n<input type='hidden' name='token' value='$token' id='token'>\n"
+		."\n</form>\n";
 		doFooter();
 	exit;
 	}

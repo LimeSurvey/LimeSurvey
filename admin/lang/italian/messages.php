@@ -1,5 +1,45 @@
 <?php
-// New translation and maintenance by Mario Marani - IRRE Puglia - Bari//
+/*
+    #################################################################
+    # >>> PHPSurveyor                                               #
+    #################################################################
+    # > Author:  Jason Cleeland                                     #
+    # > E-mail:  jason@cleeland.org                                 #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+    # > Date:    20 February 2003                                   #
+    #                                                               #
+    # This set of scripts allows you to develop, publish and        #
+    # perform data-entry on surveys.                                #
+    #################################################################
+    #   Copyright (C) 2003  Jason Cleeland                          #
+    #                                                               #
+    # This program is free software; you can redistribute           #
+    # it and/or modify it under the terms of the GNU General        #
+    # Public License as published by the Free Software              #
+    # Foundation; either version 2 of the License, or (at your      #
+    # option) any later version.                                    #
+    #                                                               #
+    # This program is distributed in the hope that it will be       #
+    # useful, but WITHOUT ANY WARRANTY; without even the            #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+    # PARTICULAR PURPOSE.  See the GNU General Public License       #
+    # for more details.                                             #
+    #                                                               #
+    # You should have received a copy of the GNU General            #
+    # Public License along with this program; if not, write to      #
+    # the Free Software Foundation, Inc., 59 Temple Place -         #
+    # Suite 330, Boston, MA  02111-1307, USA.                       #
+    #################################################################
+    #                                                               #
+    #  New translation and maintenance by 							#
+    #  Mario Marani - IRRE Puglia - Bari							#
+    #                                                               #
+    #  Edit this file with an UTF-8 capable editor only!            #
+    #                                                               #
+    #################################################################
+*/
+
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Amministrazione");
@@ -162,7 +202,7 @@ define("_SL_EMAILREGISTER_SUBJ", "Oggetto della e-mail di risposta alla registra
 define("_SL_EMAILREGISTER", "Testo della e-mail di risposta alla registrazione pubblica:"); //New with 0.98rc9
 define("_SL_EMAILCONFIRM_SUBJ", "Oggetto della e-mail di conferma completamento indagine"); //New with 0.99dev01
 define("_SL_EMAILCONFIRM", "Testo e-mail di conferma completamento indagine"); //New with 0.98rc9
-define("_SL_REPLACEOK", "Questo rimpiazzer&agrave; il testo esistente. Vuoi preseguire?"); //New with 0.98rc9
+define("_SL_REPLACEOK", "Questo rimpiazzerà il testo esistente. Vuoi preseguire?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Permetti il salvataggio"); //New with 0.99dev01
 define("_SL_AUTONUMBER", "Fai partire gli ID dal numero:"); //New with 0.99dev01
 define("_SL_AUTORELOAD", "Rinvia automaticamente ad URL"); //New with 0.99dev01
@@ -197,7 +237,7 @@ define("_AL_DEFAULT", "Default");
 define("_AL_MOVE", "Sposta");
 define("_AL_ACTION", "Attiva");
 define("_AL_UP", "Su");
-define("_AL_DN", "Gi&ugrave;");
+define("_AL_DN", "Giù");
 define("_AL_SAVE", "Salva");
 define("_AL_DEL", "Elimina");
 define("_AL_ADD", "Aggiungi");
@@ -302,20 +342,20 @@ define("_COUNT", "Conta"); //New with 0.98rc8
 //SURVEY STATUS MESSAGES (new in 0.98rc3)
 define("_SS_NOGROUPS", "Numero di gruppi in questa indagine:"); //NEW for release 0.98rc3
 define("_SS_NOQUESTS", "Numero di domande in questa indagine:"); //NEW for release 0.98rc3
-define("_SS_ANONYMOUS", "Questa indagine &egrave; anonima."); //NEW for release 0.98rc3
-define("_SS_TRACKED", "Questa indagine NON &egrave; anonima."); //NEW for release 0.98rc3
+define("_SS_ANONYMOUS", "Questa indagine è anonima."); //NEW for release 0.98rc3
+define("_SS_TRACKED", "Questa indagine NON è anonima."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Le risposte verranno datate"); //NEW for release 0.98rc3
 define("_SS_COOKIES", "Utilizza i cookie per il controllo degli accessi."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Viene visualizzata domanda per domanda."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Viene visualizzata gruppo per gruppo."); //NEW for release 0.98rc3
 define("_SS_SBYS", "Viene visualizzata in una sola pagina."); //NEW for release 0.98rc3
-define("_SS_ACTIVE", "L&#039;indagine &egrave; attiva."); //NEW for release 0.98rc3
-define("_SS_NOTACTIVE", "L&#039;indagine non &egrave; al momento attiva."); //NEW for release 0.98rc3
-define("_SS_SURVEYTABLE", "Il nome della tabella per l&#039;indagine &egrave;:"); //NEW for release 0.98rc3
-define("_SS_CANNOTACTIVATE", "L&#039;indagine non pu&ograve; essere ancora attivata."); //NEW for release 0.98rc3
+define("_SS_ACTIVE", "L&#039;indagine è attiva."); //NEW for release 0.98rc3
+define("_SS_NOTACTIVE", "L&#039;indagine non è al momento attiva."); //NEW for release 0.98rc3
+define("_SS_SURVEYTABLE", "Il nome della tabella per l&#039;indagine è:"); //NEW for release 0.98rc3
+define("_SS_CANNOTACTIVATE", "L&#039;indagine non può essere ancora attivata."); //NEW for release 0.98rc3
 define("_SS_ADDGROUPS", "E&#039; necessario aggiungere dei gruppi"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "E&#039; necessario aggiungere delle domande"); //NEW for release 0.98rc3
-define("_SS_ALLOWREGISTER", "Se sono stati usati degli identificativi, il pubblico pu&ograve; registrarsi per questa indagine"); //NEW for release 0.98rc9
+define("_SS_ALLOWREGISTER", "Se sono stati usati degli identificativi, il pubblico può registrarsi per questa indagine"); //NEW for release 0.98rc9
 define("_SS_ALLOWSAVE", "I partecipanti possono salvare questionari completati parzialmente "); //NEW for release 0.99dev01
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
@@ -323,12 +363,12 @@ define("_QS_MANDATORY", "Domanda obbligatoria"); //New for release 0.98rc4
 define("_QS_OPTIONAL", "Domanda opzionale"); //New for release 0.98rc4
 define("_QS_NOANSWERS", "E&#039; necessario inserire delle risposte per questa domanda"); //New for release 0.98rc4
 define("_QS_NOLID", "E&#039; necessario inserire un gruppo di etichette per questa domanda"); //New for release 0.98rc4
-define("_QS_COPYINFO", "Nota: &egrave; obbligatorio inserire un nuovo codice domanda"); //New for release 0.98rc4
+define("_QS_COPYINFO", "Nota: è obbligatorio inserire un nuovo codice domanda"); //New for release 0.98rc4
 
 //General Setup Messages
-define("_ST_NODB1", "Il database di questa indagine &egrave; inesistente");
-define("_ST_NODB2", "Il database selezionato non &egrave; stato ancora creato oppure &egrave; impossibile accedervi.");
-define("_ST_NODB3", "PHPSurveyor tenter&agrave; di creare il database.");
+define("_ST_NODB1", "Il database di questa indagine è inesistente");
+define("_ST_NODB2", "Il database selezionato non è stato ancora creato oppure è impossibile accedervi.");
+define("_ST_NODB3", "PHPSurveyor tenterà di creare il database.");
 define("_ST_NODB4", "Il database selezionato si chiama:");
 define("_ST_CREATEDB", "Crea Database");
 
@@ -345,43 +385,43 @@ define("_UC_ALL_REMOVED", "Il file di accesso, il password file e lo user databa
 define("_UC_ADD_USER", "Aggiungi utente");
 define("_UC_ADD_MISSING", "Impossibile aggiungere utente. Il nome utente e/o la password non sono stati inseriti");
 define("_UC_DEL_USER", "Elimina utente");
-define("_UC_DEL_MISSING", "Impossibile eliminare utente. Il nome utente non &egrave; stato inserito.");
+define("_UC_DEL_MISSING", "Impossibile eliminare utente. Il nome utente non è stato inserito.");
 define("_UC_MOD_USER", "Modifica utente");
 define("_UC_MOD_MISSING", "Impossibile modificare utente. Il nome utente e/o la password non sono stati inseriti");
 define("_UC_TURNON_MESSAGE1", "Le impostazioni di sicurezza non sono attive, pertanto non ci sono restrizioni sull&#039;accesso.</p>\nClicca su &#039;Inizializza sicurezza&#039;, per impostare gli standard di sicurezza del web server APACHE nella directory di amministrazione di questo script. Utilizzare lo username e password di default per accedere all&#039;amministrazione e agli script per l&#039;inserimento dei dati.");
 define("_UC_TURNON_MESSAGE2", "Si consiglia di modificare la password di default una volta attivate le impostazioni di sicurezza.");
 define("_UC_INITIALISE", "Inizializza sicurezza");
-define("_UC_NOUSERS", "Non esistono utenti nella tabella. Si consiglia di &#039;disattivare&#039; la sicurezza. Si pu&ograve;; &#039;riattivare&#039; in un secondo momento.");
+define("_UC_NOUSERS", "Non esistono utenti nella tabella. Si consiglia di &#039;disattivare&#039; la sicurezza. Si può; &#039;riattivare&#039; in un secondo momento.");
 define("_UC_TURNOFF", "Disattiva sicurezza");
 
 //Activate and deactivate messages
-define("_AC_MULTI_NOANSWER", "Questa domanda &egrave; una domanda a scelta multipla senza risposte.");
+define("_AC_MULTI_NOANSWER", "Questa domanda è una domanda a scelta multipla senza risposte.");
 define("_AC_NOTYPE", "Questa domanda non contiene il parametro &#039;tipologia&#039;.");
-define("_AC_NOLID", "Questa domanda richiede un set di etichette. Nessuna etichetta &egrave; stata impostata."); //New for 0.98rc8
+define("_AC_NOLID", "Questa domanda richiede un set di etichette. Nessuna etichetta è stata impostata."); //New for 0.98rc8
 define("_AC_CON_OUTOFORDER", "Domanda condizionata. La condizione dipende da una domanda successiva.");
-define("_AC_FAIL", "L&#039;indagine non &egrave; coerente");
+define("_AC_FAIL", "L&#039;indagine non è coerente");
 define("_AC_PROBS", "Sono stati riscontrati i seguenti problemi:");
-define("_AC_CANNOTACTIVATE", "L&#039;indagine non pu&ograve; essere attivata prima di risolvere i problemi emersi");
+define("_AC_CANNOTACTIVATE", "L&#039;indagine non può essere attivata prima di risolvere i problemi emersi");
 define("_AC_READCAREFULLY", "LEGGERE ATTENTAMENTE PRIMA DI PROCEDERE");
 define("_AC_ACTIVATE_MESSAGE1", "Attivare un&#039;indagine solo dopo aver inserito tutti i dati e quando non sono necessarie ulteriori modifiche.");
-define("_AC_ACTIVATE_MESSAGE2", "Una volta attivata l&#039;indagine non &egrave; pi&ugrave; possibile:<ul><li>Aggiungere o eliminare gruppi</li><li>Aggiungere o eliminare risposte a domande a scelta multipla</li><li>Aggiungere o eliminare domande</li></ul>");
+define("_AC_ACTIVATE_MESSAGE2", "Una volta attivata l&#039;indagine non è più possibile:<ul><li>Aggiungere o eliminare gruppi</li><li>Aggiungere o eliminare risposte a domande a scelta multipla</li><li>Aggiungere o eliminare domande</li></ul>");
 define("_AC_ACTIVATE_MESSAGE3", "E&#039; possibile:<ul><li>Modificare il codice, il testo o la tipologia della domanda</li><li>Modificare i nomi dei gruppi</li><li>Aggiungere, eliminare o modificare domande a risposta pre-definita (ad esclusione delle domande a scelta multipla)</li><li>Modificare il nome o la descrizione dell&#039;indagine</li></ul>");
-define("_AC_ACTIVATE_MESSAGE4", "Una volta inseriti tutti i dati, per eliminare o aggiungere nuovi gruppi, &egrave; necessario disattivare l&#039;indagine. Tutti i dati inseriti verranno esportati in un altro file.");
+define("_AC_ACTIVATE_MESSAGE4", "Una volta inseriti tutti i dati, per eliminare o aggiungere nuovi gruppi, è necessario disattivare l&#039;indagine. Tutti i dati inseriti verranno esportati in un altro file.");
 define("_AC_ACTIVATE", "Attiva");
-define("_AC_ACTIVATED", "L&#039;indagine &egrave; stata attivata. Le tabelle dei risultati sono state create.");
+define("_AC_ACTIVATED", "L&#039;indagine è stata attivata. Le tabelle dei risultati sono state create.");
 define("_AC_NOTACTIVATED", "Impossibile attivare l&#039;indagine.");
-define("_AC_NOTPRIVATE", "Questa indagine &egrave; anonima. Crea una tabella degli identificativi.");
+define("_AC_NOTPRIVATE", "Questa indagine è anonima. Crea una tabella degli identificativi.");
 define("_AC_REGISTRATION", "Questa indagine consente una registrazione pubblica. E&#039; necessario creare una tabella degli identificativi.");
 define("_AC_CREATETOKENS", "Genera gli identificativi");
-define("_AC_SURVEYACTIVE", "Indagine attiva. Si pu&ograve; procedere con l&#039;inserimento delle domande.");
+define("_AC_SURVEYACTIVE", "Indagine attiva. Si può procedere con l&#039;inserimento delle domande.");
 define("_AC_DEACTIVATE_MESSAGE1", "Un&#039;indagine attiva contiene un database dove vengono memorizzati tutti i dati.");
-define("_AC_DEACTIVATE_MESSAGE2", "Disattivando l&#039;indagine tutti i dati inseriti verranno spostati altrove. Il database verr&agrave; svuotato attivando di nuovo l&#039;indagine. Non sar&agrave; pi&ugrave; possibile accedere a queste informazioni tramite PHPSurveyor.");
-define("_AC_DEACTIVATE_MESSAGE3", "Le informazioni di un&#039;indagine disattivata possono essere visualizzate solo dall&#039;amministratore mediante uno strumento MySQL come PhpMyAdmin. Se l&#039;indagine utilizza identificativi, la tabella delle risposte verr&agrave; rinominata e sar&agrave; accessibile solo dall&#039;amministratore.");
-define("_AC_DEACTIVATE_MESSAGE4", "La tabella delle risposte verr&agrave; rinominata:");
+define("_AC_DEACTIVATE_MESSAGE2", "Disattivando l&#039;indagine tutti i dati inseriti verranno spostati altrove. Il database verrà svuotato attivando di nuovo l&#039;indagine. Non sarà più possibile accedere a queste informazioni tramite PHPSurveyor.");
+define("_AC_DEACTIVATE_MESSAGE3", "Le informazioni di un&#039;indagine disattivata possono essere visualizzate solo dall&#039;amministratore mediante uno strumento MySQL come PhpMyAdmin. Se l&#039;indagine utilizza identificativi, la tabella delle risposte verrà rinominata e sarà accessibile solo dall&#039;amministratore.");
+define("_AC_DEACTIVATE_MESSAGE4", "La tabella delle risposte verrà rinominata:");
 define("_AC_DEACTIVATE_MESSAGE5", "Si consiglia di esportare le risposte prima di disattivare l&#039;indagine. Clicca su Chiudi per ritornare alla schermata principale dell&#039;amministrazione senza disattivare questa indagine.");
 define("_AC_DEACTIVATE", "Disattiva");
-define("_AC_DEACTIVATED_MESSAGE1", "Il database delle risposte &egrave; stato rinominato: ");
-define("_AC_DEACTIVATED_MESSAGE2", "Le risposte di questa indagine non sono pi&ugrave; disponibili tramite PHPSurveyor.");
+define("_AC_DEACTIVATED_MESSAGE1", "Il database delle risposte è stato rinominato: ");
+define("_AC_DEACTIVATED_MESSAGE2", "Le risposte di questa indagine non sono più disponibili tramite PHPSurveyor.");
 define("_AC_DEACTIVATED_MESSAGE3", "Non dimenticare il nome di questo database per poter accedere in seguito alle informazioni in esso contenute.");
 define("_AC_DEACTIVATED_MESSAGE4", "Le tabelle degli identificativi associate a questa indagine sono state rinominate: ");
 
@@ -389,32 +429,32 @@ define("_AC_DEACTIVATED_MESSAGE4", "Le tabelle degli identificativi associate a 
 define("_CF_CHECKTABLES", "Verifica delle seguenti tabelle");
 define("_CF_CHECKFIELDS", "Verifica dei seguenti campi");
 define("_CF_CHECKING", "Verifica");
-define("_CF_TABLECREATED", "La tabella &egrave; stata creata");
+define("_CF_TABLECREATED", "La tabella è stata creata");
 define("_CF_FIELDCREATED", "I campi sono stati creati");
 define("_CF_OK", "OK");
 define("_CFT_PROBLEM", "Alcune tabelle o campi non sono presenti nel database.");
 
 //CREATE DATABASE (createdb.php)
-define("_CD_DBCREATED", "Il database &egrave; stato creato.");
+define("_CD_DBCREATED", "Il database è stato creato.");
 define("_CD_POPULATE_MESSAGE", "Fai clic sul seguente link per l&#039;inserimento dei dati nel database");
 define("_CD_POPULATE", "Inserisci dati nel Database");
 define("_CD_NOCREATE", "Impossibile creare database");
-define("_CD_NODBNAME", "Non ci sono dati nel database. Questo script pu&ograve; essere caricato solo da admin.php.");
+define("_CD_NODBNAME", "Non ci sono dati nel database. Questo script può essere caricato solo da admin.php.");
 
 //DATABASE MODIFICATION MESSAGES
 define("_DB_FAIL_GROUPNAME", "Impossibile aggiungere gruppo. Inserire il nome del gruppo nel campo obbligatorio nome del gruppo");
 define("_DB_FAIL_GROUPUPDATE", "Impossibile aggiornare gruppo");
 define("_DB_FAIL_GROUPDELETE", "Impossibile eliminare gruppo");
 define("_DB_FAIL_NEWQUESTION", "Impossibile creare domande.");
-define("_DB_FAIL_QUESTIONTYPECONDITIONS", "Impossibile aggiornare domande. Le condizioni di alcune domande dipendono dalla risposta di questa domanda. Cambiare il tipo di domanda causer&agrave; dei problemi al sistema. Elimina le condizioni prima di modificare il tipo di domanda.");
+define("_DB_FAIL_QUESTIONTYPECONDITIONS", "Impossibile aggiornare domande. Le condizioni di alcune domande dipendono dalla risposta di questa domanda. Cambiare il tipo di domanda causerà dei problemi al sistema. Elimina le condizioni prima di modificare il tipo di domanda.");
 define("_DB_FAIL_QUESTIONUPDATE", "Impossibile aggiornare domanda");
 define("_DB_FAIL_QUESTIONDELCONDITIONS", "Impossibile eliminare la domanda. Alcune domande dipendono dalle condizioni imposte a questa domanda. Elimina le condizioni prima di eliminare la domanda");
 define("_DB_FAIL_QUESTIONDELETE", "Impossibile eliminare la domanda");
 define("_DB_FAIL_NEWANSWERMISSING", "Impossibile aggiungere la domanda. Inserire Codice e Risposta");
-define("_DB_FAIL_NEWANSWERDUPLICATE", "Impossibile aggiungere la domanda. Domanda con codice gi&agrave; esistente");
+define("_DB_FAIL_NEWANSWERDUPLICATE", "Impossibile aggiungere la domanda. Domanda con codice già esistente");
 define("_DB_FAIL_ANSWERUPDATEMISSING", "Impossibile aggiornare la domanda. Inserire Codice e Risposta");
-define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "Impossibile aggiornare la domanda. Domanda ha un codice gi&agrave; esistente");
-define("_DB_FAIL_ANSWERUPDATECONDITIONS", "Impossibile aggiornare la domanda. Il codice della domande &egrave; stato modificato. Alcune domande dipendono dalle condizioni associate alla domanda con il vecchio codice. Elimina le condizioni prima di modifcare il codice di questa domanda.");
+define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "Impossibile aggiornare la domanda. Domanda ha un codice già esistente");
+define("_DB_FAIL_ANSWERUPDATECONDITIONS", "Impossibile aggiornare la domanda. Il codice della domande è stato modificato. Alcune domande dipendono dalle condizioni associate alla domanda con il vecchio codice. Elimina le condizioni prima di modifcare il codice di questa domanda.");
 define("_DB_FAIL_ANSWERDELCONDITIONS", "Impossibile eliminare la risposta. Alcune domande dipendono dalle condizioni imposte a questa risposta. Elimina le condizioni prima di eliminare questa risposta");
 define("_DB_FAIL_NEWSURVEY_TITLE", "Impossibile creare l&#039;indagine. Inserire un titolo");
 define("_DB_FAIL_NEWSURVEY", "Impossibile creare l&#039;indagine");
@@ -422,21 +462,21 @@ define("_DB_FAIL_SURVEYUPDATE", "Impossibile aggiornare l&#039;indagine");
 define("_DB_FAIL_SURVEYDELETE", "Impossibile eliminare l&#039;indagine");
 
 //DELETE SURVEY MESSAGES
-define("_DS_NOSID", "Non &egrave; stato selezionata alcuna indagine da eliminare");
+define("_DS_NOSID", "Non è stato selezionata alcuna indagine da eliminare");
 define("_DS_DELMESSAGE1", "Eliminare questa indagine?");
-define("_DS_DELMESSAGE2", "Questa operazione eliminer&agrave; l&#039;indagine e tutti i relativi gruppi, domande, risposte e condizioni.");
+define("_DS_DELMESSAGE2", "Questa operazione eliminerà l&#039;indagine e tutti i relativi gruppi, domande, risposte e condizioni.");
 define("_DS_DELMESSAGE3", "Si consiglia di esportare l&#039;indagine dalla pagina di amministrazione generale prima di eliminarla.");
-define("_DS_SURVEYACTIVE", "Questa indagine &egrave; attiva ed esiste un database delle risposte. Eliminando l&#039;indagine si eliminano anche le risposte. Si consiglia di esportare le risposte prima di eliminare l&#039;indagine.");
-define("_DS_SURVEYTOKENS", "Questa indagine &egrave; associata ad una tabella di identificativi. Eliminando l&#039;indagine si eliminano anche tutti gli identificativi. Si consiglia di esportare o fare il backup degli identificativi prima di eliminare l&#039;indagine.");
-define("_DS_DELETED", "L&#039;indagine &egrave; stata eliminata.");
+define("_DS_SURVEYACTIVE", "Questa indagine è attiva ed esiste un database delle risposte. Eliminando l&#039;indagine si eliminano anche le risposte. Si consiglia di esportare le risposte prima di eliminare l&#039;indagine.");
+define("_DS_SURVEYTOKENS", "Questa indagine è associata ad una tabella di identificativi. Eliminando l&#039;indagine si eliminano anche tutti gli identificativi. Si consiglia di esportare o fare il backup degli identificativi prima di eliminare l&#039;indagine.");
+define("_DS_DELETED", "L&#039;indagine è stata eliminata.");
 
 //DELETE QUESTION AND GROUP MESSAGES
 define("_DG_RUSURE", "Cancellando questo gruppo si cancelleranno anche le domande e le risposte che contiene. Sei sicuro di voler continuare?"); //New for 098rc5
 define("_DQ_RUSURE", "Cancellando questa domanda si cancelleranno tutte le risposte che include. Sei sicuro di voler continuare?"); //New for 098rc5
 
 //EXPORT MESSAGES
-define("_EQ_NOQID", "L&#039;ID delle domande (QID) non &egrave; stato inserito. Impossibile fare il dump della domanda.");
-define("_ES_NOSID", "L&#039;ID dell&#039;indagine (SID) non &egrave; stato inserito. Impossibile fare il dump dell&#039;indagine");
+define("_EQ_NOQID", "L&#039;ID delle domande (QID) non è stato inserito. Impossibile fare il dump della domanda.");
+define("_ES_NOSID", "L&#039;ID dell&#039;indagine (SID) non è stato inserito. Impossibile fare il dump dell&#039;indagine");
 
 //EXPORT RESULTS
 define("_EX_FROMSTATS", "Filtra Script delle Statistiche");
@@ -455,15 +495,15 @@ define("_EX_COLCONTROLS", "Controllo di colonna"); //New for 0.98rc7
 define("_EX_TOKENCONTROLS", "Controllo degli identificativi"); //New for 0.98rc7
 define("_EX_COLSELECT", "Scegli colonne"); //New for 0.98rc7
 define("_EX_COLOK", "Scegli le colonne che desideri esportare. Non selezionare nulla per esportare tutte le colonne."); //New for 0.98rc7
-define("_EX_COLNOTOK", "La tua indagine contiene pi&ugrave; di 255 colonne di risposte. I Fogli ci Calcolo come Excel non ne prevedono pi&ugrave; di 255. Seleziona le colonne che desideri esportare nella lista qui sotto"); //New for 0.98rc7
-define("_EX_TOKENMESSAGE", "La tua indagine pu&ograve; esportare gli identificativi associati a ciascuna risposta. Seleziona gli altri campi che desideri esportare."); //New for 0.98rc7
+define("_EX_COLNOTOK", "La tua indagine contiene più di 255 colonne di risposte. I Fogli ci Calcolo come Excel non ne prevedono più di 255. Seleziona le colonne che desideri esportare nella lista qui sotto"); //New for 0.98rc7
+define("_EX_TOKENMESSAGE", "La tua indagine può esportare gli identificativi associati a ciascuna risposta. Seleziona gli altri campi che desideri esportare."); //New for 0.98rc7
 define("_EX_TOKSELECT", "Scegli i campi degli identificativi"); //New for 0.98rc7
 
 //IMPORT SURVEY MESSAGES
-define("_IS_FAILUPLOAD", "Errore durante l&#039;upload del file. Il problema pu&ograve; essere dovuto a identificativi errati nella cartella admin.");
+define("_IS_FAILUPLOAD", "Errore durante l&#039;upload del file. Il problema può essere dovuto a identificativi errati nella cartella admin.");
 define("_IS_OKUPLOAD", "Upload del file completato.");
 define("_IS_READFILE", "Lettura del file..");
-define("_IS_WRONGFILE", "Il file non &egrave; un file PHPSurveyor. Importazione non riuscita.");
+define("_IS_WRONGFILE", "Il file non è un file PHPSurveyor. Importazione non riuscita.");
 define("_IS_IMPORTSUMMARY", "Riepilogo importazione indagine");
 define("_IS_SUCCESS", "Importazione indagine completata.");
 define("_IS_IMPFAILED", "Importazione indagine non riuscita");
@@ -476,18 +516,18 @@ define("_IG_IMPFAILED", "Importazione gruppo non riuscita");
 define("_IG_WRONGFILE", "Il file non contiene dati PHPSurveyor nel formato corretto.");
 
 //IMPORT QUESTION MESSAGES
-define("_IQ_NOSID", "IL SID (ID Indagine) non &egrave; stato inserito. Impossibile importare la domanda.");
-define("_IQ_NOGID", "Il GID (ID Gruppo) non &egrave; stato inserito. Impossibile importare la domanda.");
-define("_IQ_WRONGFILE", "Il file non &egrave; un file per le domande PHPSurveyor. L&#039;importazione non &egrave; riuscita.");
+define("_IQ_NOSID", "IL SID (ID Indagine) non è stato inserito. Impossibile importare la domanda.");
+define("_IQ_NOGID", "Il GID (ID Gruppo) non è stato inserito. Impossibile importare la domanda.");
+define("_IQ_WRONGFILE", "Il file non è un file per le domande PHPSurveyor. L&#039;importazione non è riuscita.");
 define("_IQ_IMPORTSUMMARY", "Riepilogo importazione domande");
 define("_IQ_SUCCESS", "Importazione delle domande completata");
 
 //IMPORT LABELSET MESSAGES
-define("_IL_DUPLICATE", "E&#039; presente un labelset duplicato, per questo motivo questo insieme non &egrave; stato importato. Verr&agrave; usato il duplicato.");
+define("_IL_DUPLICATE", "E&#039; presente un labelset duplicato, per questo motivo questo insieme non è stato importato. Verrà usato il duplicato.");
 
 //BROWSE RESPONSES MESSAGES
-define("_BR_NOSID", "L&#039;indagine non &egrave; stata selezionata.");
-define("_BR_NOTACTIVATED", "L&#039;indagine non &egrave; attiva. Non ci sono dati da visionare.");
+define("_BR_NOSID", "L&#039;indagine non è stata selezionata.");
+define("_BR_NOTACTIVATED", "L&#039;indagine non è attiva. Non ci sono dati da visionare.");
 define("_BR_NOSURVEY", "L&#039;indagine non esiste.");
 define("_BR_EDITRESPONSE", "Modifica risposta");
 define("_BR_DELRESPONSE", "Elimina risposta");
@@ -502,8 +542,8 @@ define("_ST_VIEWALL", "Vista delle Stats di tutte le domande disponibili"); //Ne
 define("_ST_SHOWRESULTS", "Vista delle statistiche"); //New with 0.98rc8
 define("_ST_CLEAR", "Annulla"); //New with 0.98rc8
 define("_ST_RESPONECONT", "Risposte contenenti"); //New with 0.98rc8
-define("_ST_NOGREATERTHAN", "Numero pi&ugrave; grande di"); //New with 0.98rc8
-define("_ST_NOLESSTHAN", "Numero pi&ugrave; piccolo di"); //New with 0.98rc8
+define("_ST_NOGREATERTHAN", "Numero più grande di"); //New with 0.98rc8
+define("_ST_NOLESSTHAN", "Numero più piccolo di"); //New with 0.98rc8
 define("_ST_DATEEQUALS", "Data (YYYY-MM-DD) eguaglia"); //New with 0.98rc8
 define("_ST_ORBETWEEN", "OR tra"); //New with 0.98rc8
 define("_ST_RESULTS", "Risultati"); //New with 0.98rc8 (Plural)
@@ -527,9 +567,9 @@ define("_ST_QUARTMETHOD", "*Q1 and Q3 sono calcolati utilizzando il <a href=&#03
 //DATA ENTRY MESSAGES
 define("_DE_NOMODIFY", "Impossibile modificare");
 define("_DE_UPDATE", "Aggiorna");
-define("_DE_NOSID", "Non &egrave; stata selezionata nessuna indagine per l&#039;inserimento dei dati.");
-define("_DE_NOEXIST", "L&#039;indagine selezionata &egrave; inesistente");
-define("_DE_NOTACTIVE", "L&#039;indagine non &egrave; attiva. Impossibile salvare le risposte");
+define("_DE_NOSID", "Non è stata selezionata nessuna indagine per l&#039;inserimento dei dati.");
+define("_DE_NOEXIST", "L&#039;indagine selezionata è inesistente");
+define("_DE_NOTACTIVE", "L&#039;indagine non è attiva. Impossibile salvare le risposte");
 define("_DE_INSERT", "Inserisci dati");
 define("_DE_RECORD", "E&#039; stato assegnato il seguente ID: ");
 define("_DE_ADDANOTHER", "Aggiungi dati");
@@ -557,11 +597,11 @@ define("_TC_INVITECOUNT", "Totale inviti inviati:"); //New in 0.98rc4
 define("_TC_COMPLETEDCOUNT", "Totale questionari completati:"); //New in 0.98rc4
 define("_TC_NOSID", "Nessuna indagine selezionata");
 define("_TC_DELTOKENS", "Elimina identificativi per questa indagine.");
-define("_TC_DELTOKENSINFO", "L&#039;eliminanazione della tabella degli identificativi, render&agrave; l&#039;indagine aperta a tutti. Verr&agrave; eseguito un backup dei dati a cui solo l&#039;amministratore di sistema avr&agrave; accesso.");
+define("_TC_DELTOKENSINFO", "L&#039;eliminanazione della tabella degli identificativi, renderà l&#039;indagine aperta a tutti. Verrà eseguito un backup dei dati a cui solo l&#039;amministratore di sistema avrà accesso.");
 define("_TC_DELETETOKENS", "Elimina tabella degli identificativi");
-define("_TC_TOKENSGONE", "La tabella degli identificativi &egrave; stata eliminata e non &egrave; pi&ugrave; obbligatorio avere un identificativo di ingresso per accedere all&#039;indagine. Se si procede verr&agrave; eseguito un backup dei dati al quale solo l&#039;amministratore di sistema avr&agrave; accesso.");
+define("_TC_TOKENSGONE", "La tabella degli identificativi è stata eliminata e non è più obbligatorio avere un identificativo di ingresso per accedere all&#039;indagine. Se si procede verrà eseguito un backup dei dati al quale solo l&#039;amministratore di sistema avrà accesso.");
 define("_TC_NOTINITIALISED", "Gli identificativi non sono stati attivati.");
-define("_TC_INITINFO", "Attivando gli identificativi per questa indagine, l&#039;accesso all&#039;indagine sar&agrave; riservata solo agli utenti con un identificativo.");
+define("_TC_INITINFO", "Attivando gli identificativi per questa indagine, l&#039;accesso all&#039;indagine sarà riservata solo agli utenti con un identificativo.");
 define("_TC_INITQ", "Creare una tabella degli identificativi per questa indagine?");
 define("_TC_INITTOKENS", "Genera identificativi");
 define("_TC_CREATED", "E&#039; stata creata una tabella degli identificativi per questa indagine.");
@@ -590,16 +630,16 @@ define("_TC_TOKENSCREATED", "{TOKENCOUNT} identificativi sono stati creati"); //
 define("_TC_TOKENDELETED", "Identificativo eliminato.");
 define("_TC_SORTBY", "Ordina: ");
 define("_TC_ADDEDIT", "Aggiungi o genera identificativi");
-define("_TC_TOKENCREATEINFO", "Si pu&ograve; scegliere di lasciare questo campo vuoto e generare i identificativi automaticamente usando &#039;Genera identificativi&#039;");
-define("_TC_TOKENADDED", "Un nuovo identificativo &egrave; stato creato");
+define("_TC_TOKENCREATEINFO", "Si può scegliere di lasciare questo campo vuoto e generare i identificativi automaticamente usando &#039;Genera identificativi&#039;");
+define("_TC_TOKENADDED", "Un nuovo identificativo è stato creato");
 define("_TC_TOKENUPDATED", "Aggiorna identificativi");
-define("_TC_UPLOADINFO", "Il file deve essere un file CSV standard (delimitato da virgole) senza apici. La prima riga deve contenere i dati dell&#039;header (che verr&agrave; rimossa). I dati devono seguire il seguente ordine &#039;nome, cognome, email, [Token], [Attribute1], [Attribute2]&#039;.");
-define("_TC_UPLOADFAIL", "Lista di upload non trovata. Controlla i tuoi permessi ed il percorso per vedere se c&#039;&egrave; l&#039;indice di upload"); //New for 0.98rc5 (babelfish translation)
+define("_TC_UPLOADINFO", "Il file deve essere un file CSV standard (delimitato da virgole) senza apici. La prima riga deve contenere i dati dell&#039;header (che verrà rimossa). I dati devono seguire il seguente ordine &#039;nome, cognome, email, [Token], [Attribute1], [Attribute2]&#039;.");
+define("_TC_UPLOADFAIL", "Lista di upload non trovata. Controlla i tuoi permessi ed il percorso per vedere se c&#039;è l&#039;indice di upload"); //New for 0.98rc5 (babelfish translation)
 define("_TC_IMPORT", "Importazione File CSV");
 define("_TC_CREATE", "Crea voce identificativi");
 define("_TC_TOKENS_CREATED", "{TOKENCOUNT} voci sono state create");
-define("_TC_NONETOSEND", "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, non &egrave; stato ancora inviato un invito, l&#039;indagine &egrave; gi&agrave; stata completata, l&#039;utente ha gi&agrave; un identificativo");
-define("_TC_NOREMINDERSTOSEND", "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, un invito &egrave; gi&agrave; stato inviato ma l&#039;indagine non &egrave; stata completata.");
+define("_TC_NONETOSEND", "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, non è stato ancora inviato un invito, l&#039;indagine è già stata completata, l&#039;utente ha già un identificativo");
+define("_TC_NOREMINDERSTOSEND", "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, un invito è già stato inviato ma l&#039;indagine non è stata completata.");
 define("_TC_NOEMAILTEMPLATE", "Impossibile trovare il template degli inviti. Il file dovrebbe essere nella cartella template di default.");
 define("_TC_NOREMINDTEMPLATE", "Promemoria Impossibile trovare Template degli inviti. Il file dovrebbe essere nella cartella template di default.");
 define("_TC_SENDEMAIL", "Invia inviti");
@@ -613,7 +653,7 @@ define("_TC_REMINDSENTTO", "Sollecito inviato a:"); //is followed by token name
 define("_TC_UPDATEDB", "Aggiorna la tabella degli identificativi con nuovi campi"); //New for 0.98rc7
 define("_TC_EMAILINVITE_SUBJ", "Invito a partecipare ad una indagine on line"); //New for 0.99dev01
 define("_TC_EMAILINVITE", "Caro {FIRSTNAME},\n\n sei invitato a partecipare ad una indagine on line.\n\n"
-						 ."L'indagine &egrave; intitolata:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
+						 ."L'indagine è intitolata:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
 						 ."Per partecipare fai clic sul link qui sotto e rispondi alle domande del questionario.\n\nCordiali saluti,\n\n"
 						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
 						 ."----------------------------------------------\n"
@@ -621,8 +661,8 @@ define("_TC_EMAILINVITE", "Caro {FIRSTNAME},\n\n sei invitato a partecipare ad u
 						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Invitation
 define("_TC_EMAILREMIND_SUBJ", "Sollecito a partecipare all'indagine on line"); //New for 0.99dev01
 define("_TC_EMAILREMIND", "Caro {FIRSTNAME},\n\nRecentemente ti abbiamo invitato  a partecipare ad una indagine on line.\n\n"
-						 ."Abbiamo notato che non hai ancora completato il questionario. Con l'occasione ti ricordiamo che il questionario &egrave; ancora disponibile.\n\n"
-						 ."L'indagine &egrave; intitolata:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
+						 ."Abbiamo notato che non hai ancora completato il questionario. Con l'occasione ti ricordiamo che il questionario è ancora disponibile.\n\n"
+						 ."L'indagine è intitolata:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
 						 ."Per partecipare fai clic sul link qui sotto.\n\nCordiali saluti,\n\n"
 						 ."{ADMINNAME} ({ADMINEMAIL})\n\n"
 						 ."----------------------------------------------\n"
@@ -640,7 +680,7 @@ define("_TC_EMAILREGISTER", "Caro {FIRSTNAME},\n\n"
 						  ."affatto registrato e ritieni che questa e-mail sia errata "
 						  ."sei pregato di contattare {ADMINNAME} al seguente indirizzo {ADMINEMAIL}.");//NEW for 0.98rc9
 define("_TC_EMAILCONFIRM_SUBJ", "Conferma del completamento dell'indagine on line"); //New for 0.99dev01
-define("_TC_EMAILCONFIRM", "Caro {FIRSTNAME},\n\nQuesta e-mail ti &egrave; stata inviata per confermarti che hai completato corretamente l'indagine initolata {SURVEYNAME} "
+define("_TC_EMAILCONFIRM", "Caro {FIRSTNAME},\n\nQuesta e-mail ti è stata inviata per confermarti che hai completato corretamente l'indagine initolata {SURVEYNAME} "
 						  ." e che le tue risposte sono state salvate. Grazie per la partecipazione.\n\n"
 						  ."Se hai ulteriori domande circa questo messaggio, contatta {ADMINNAME} all&#039;indirizzo e-mail {ADMINEMAIL}.\n\n"
 						  ."Cordiali saluti\n\n"
@@ -652,11 +692,11 @@ define("_LB_EDITSET", "Modifica gruppo di etichette");
 define("_LB_FAIL_UPDATESET", "Aggiornamento del gruppo di etichette non riuscito");
 define("_LB_FAIL_INSERTSET", "Inserimento del nuovo gruppo di etichette non riuscito");
 define("_LB_FAIL_DELSET", "Impossibile cancellare il gruppo di etichette - Ci sono delle domande che dipendono da esso. E&#039; necessario eliminare prima queste domande.");
-define("_LB_ACTIVEUSE", "Impossibile modificare i codici, aggiungere o eliminare elementi in questo gruppo di etichette perch&egrave; &egrave; utilizzato da un&#039;indagine attiva.");
-define("_LB_TOTALUSE", "Alcune indagini usano questo gruppo di etichette. Modificare i codici, aggiungere o eliminare elementi in questo gruppo di etichette pu&ograve; portare a risultati non desiderati sulle altre indagini.");
+define("_LB_ACTIVEUSE", "Impossibile modificare i codici, aggiungere o eliminare elementi in questo gruppo di etichette perchè è utilizzato da un&#039;indagine attiva.");
+define("_LB_TOTALUSE", "Alcune indagini usano questo gruppo di etichette. Modificare i codici, aggiungere o eliminare elementi in questo gruppo di etichette può portare a risultati non desiderati sulle altre indagini.");
 
 //Export Labels
-define("_EL_NOLID", "Non &egrave; stato fornito un identificatore di etichetta (LID). Impossibile salvare il gruppo di etichette.");
+define("_EL_NOLID", "Non è stato fornito un identificatore di etichetta (LID). Impossibile salvare il gruppo di etichette.");
 //Import Labels
 define("_IL_GOLABELADMIN", "Ritorna alla gestione delle etichette");
 
@@ -670,7 +710,7 @@ define("_PS_ACTIVESURVEYS", "Indagini attive");
 define("_PS_DEACTSURVEYS", "Indagini disattivate");
 define("_PS_ACTIVETOKENS", "Tabelle degli identificativi attivi");
 define("_PS_DEACTTOKENS", "Tabelle degli identificativi disattivati");
-define("_PS_CHECKDBINTEGRITY", "Controlla l&#039;integrit&agrave; dei dati di PHPSurveyor"); //New with 0.98rc8
+define("_PS_CHECKDBINTEGRITY", "Controlla l&#039;integrità dei dati di PHPSurveyor"); //New with 0.98rc8
 
 //Notification Levels
 define("_NT_NONE", "Nessuna e-mail di notifica"); //New with 098rc5
@@ -698,8 +738,8 @@ define("_CD_COPYTO", "copy to"); //New with 0.991
 define("_TP_CREATENEW", "Crea nuovo template"); //New with 098rc9
 define("_TP_NEWTEMPLATECALLED", "Crea nuovo template con nome:"); //New with 098rc9
 define("_TP_DEFAULTNEWTEMPLATE", "NewTemplate"); //New with 098rc9 (default name for new template)
-define("_TP_CANMODIFY", "Questo template pu&ograve; essere modificato"); //New with 098rc9
-define("_TP_CANNOTMODIFY", "Questo template non pu&ograve; essere modificato"); //New with 098rc9
+define("_TP_CANMODIFY", "Questo template può essere modificato"); //New with 098rc9
+define("_TP_CANNOTMODIFY", "Questo template non può essere modificato"); //New with 098rc9
 define("_TP_RENAME", "Rinomina questo template");  //New with 098rc9
 define("_TP_RENAMETO", "Rinomina questo template come:"); //New with 098rc9
 define("_TP_COPY", "Fai una copia di questo template");  //New with 098rc9
@@ -738,22 +778,22 @@ define("_VV_EXPORTFILE", "Esporta file VV indagine");
 define("_VV_FILE", "File:");
 define("_VV_SURVEYID", "ID dell&#039;indagine:");
 define("_VV_EXCLUDEID", "Escludi ID dei record");
-define("_VV_INSERT", "Quando un record importato &egrave; simile ad un record esistente con ID:");
+define("_VV_INSERT", "Quando un record importato è simile ad un record esistente con ID:");
 define("_VV_INSERT_ERROR", "Segnala un errore (e salta ad un nuovo record).");
 define("_VV_INSERT_RENUMBER", "Rinumera il nuovo record.");
 define("_VV_INSERT_IGNORE", "Ignora il nuovo record.");
 define("_VV_INSERT_REPLACE", "Sostituisci il record esistente.");
-define("_VV_DONOTREFRESH", "Nota importante:<br />NON AGGIORNARE questa pagina, pech&egrave; questo comporta l&#039;importazione di un nuovo file e  produrr&agrave; duplicati");
+define("_VV_DONOTREFRESH", "Nota importante:<br />NON AGGIORNARE questa pagina, pechè questo comporta l&#039;importazione di un nuovo file e  produrrà duplicati");
 define("_VV_IMPORTNUMBER", "Totale dei record importati:");
 define("_VV_ENTRYFAILED", "Importazione fallita sul record");
-define("_VV_BECAUSE", "perch&egrave;");
+define("_VV_BECAUSE", "perchè");
 define("_VV_EXPORTDEACTIVATE", "Esporta, quindi disattiva l&#039;indagine");
 define("_VV_EXPORTONLY", "Esporta ma lascia attiva l&#039;indagine");
-define("_VV_RUSURE", "Se hai scelto di esportare disattivando l'indagine la tabella corrente delle risposte verrÃƒÂ  rinominata e non sar&agrave; facile ripristinarla. Sei sicuro di voler procedere?");
+define("_VV_RUSURE", "Se hai scelto di esportare disattivando l'indagine la tabella corrente delle risposte verrÃƒÆ’Ã‚Â  rinominata e non sarà facile ripristinarla. Sei sicuro di voler procedere?");
 
 //ASSESSMENTS
 define("_AS_TITLE", "Valutazioni");
-define("_AS_DESCRIPTION", "Se crei una valutazione per l&#039;indagine corrente questa sar&agrave; aggiornata alla fine dell&#039;indagine dopo il suo invio");
+define("_AS_DESCRIPTION", "Se crei una valutazione per l&#039;indagine corrente questa sarà aggiornata alla fine dell&#039;indagine dopo il suo invio");
 define("_AS_NOSID", "Nessun SID (ID dell&#039;indagine) fornito");
 define("_AS_SCOPE", "Campo applicazione");
 define("_AS_MINIMUM", "Minimo");
