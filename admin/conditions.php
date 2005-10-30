@@ -1,13 +1,13 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  										    #
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 19 April 2003								#
+	# >          CARLTON SOUTH 3053, AUSTRALIA					#
+ 	# > Date: 	 19 April 2003								    #
 	#															#
 	# This set of scripts allows you to develop, publish and	#
 	# perform data-entry on surveys.							#
@@ -416,22 +416,28 @@ echo "<script type='text/javascript'>\n"
 	."\tvar QFieldnames = new Array();\n"
 	."\tvar Qcqids = new Array();\n";
 $jn=0;
-foreach($canswers as $can)
+if (isset($canswers))
 	{
-	$an=str_replace("'", "`", $can[2]);
-	echo "\t\tFieldnames[$jn]='$can[0]';\n"
-		."\t\tCodes[$jn]='$can[1]';\n"
-		."\t\tAnswers[$jn]='$an';\n";
-	$jn++;
+	foreach($canswers as $can)
+		{
+		$an=str_replace("'", "`", $can[2]);
+		echo "\t\tFieldnames[$jn]='$can[0]';\n"
+			."\t\tCodes[$jn]='$can[1]';\n"
+			."\t\tAnswers[$jn]='$an';\n";
+		$jn++;
 	}
+}
 $jn=0;
 
-foreach ($cquestions as $cqn)
+if (isset($cquestions))
 	{
-	echo "\t\tQFieldnames[$jn]='$cqn[3]';\n"
-		."\t\tQcqids[$jn]='$cqn[1]';\n";
-	$jn++;
-	}
+	foreach ($cquestions as $cqn)
+		{
+		echo "\t\tQFieldnames[$jn]='$cqn[3]';\n"
+			."\t\tQcqids[$jn]='$cqn[1]';\n";
+		$jn++;
+		}
+}	
 echo "\n"
 	."\tfunction clearAnswers()\n"
 	."\t\t{\n"
@@ -617,12 +623,12 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	
 	echo "\t<tr><td colspan='3' align='center'>$setfont\n"
 		."<input type='submit' value='"._CD_COPYCONDITIONS."' $btstyle onclick=\"return confirm('"._CD_COPYRUSURE."')\">"
-		."\t\t</font></td></tr>\n";
+		."\t\t</font>\n";
 		
 	echo "<input type='hidden' name='action' value='copyconditions'>\n"
 		."<input type='hidden' name='sid' value='$surveyid'>\n"
 		."<input type='hidden' name='qid' value='$qid'>\n"
-		."</table></form>\n";
+		."</td></tr></table></form>\n";
 
 	echo "\t<tr ><td colspan='3'></td></tr>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
@@ -649,14 +655,17 @@ echo "\t<tr bgcolor='#CDCDCD'>\n"
 	."\t<tr>\n"
 	."\t\t<td valign='top' align='center'>\n"
 	."\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
-foreach ($cquestions as $cqn)
+if (isset($cquestions))
 	{
-	echo "\t\t\t\t<option value='$cqn[3]'";
-	if (isset($_POST['cquestions']) && $cqn[3] == $_POST['cquestions']) {
-	    echo " selected";
-	}
-	echo ">$cqn[0]</option>\n";
-	}
+	foreach ($cquestions as $cqn)
+		{
+		echo "\t\t\t\t<option value='$cqn[3]'";
+		if (isset($_POST['cquestions']) && $cqn[3] == $_POST['cquestions']) {
+	    	echo " selected";
+		}
+		echo ">$cqn[0]</option>\n";
+		}
+	}	
 echo "\t\t\t</select>\n"
 	."\t\t</td>\n"
 	."\t\t<td align='center'>$setfont\n";
@@ -675,12 +684,12 @@ echo "\t\t\t</select>\n"
 	."\t\t<td colspan='3' align='center'>\n"
 	."\t\t\t<input type='reset' value='"._ST_CLEAR."' onClick=\"clearAnswers()\" $btstyle />\n"
 	."\t\t\t<input type='submit' value='"._CD_ADDCONDITION."' $btstyle />\n"
-	."\t\t</td>\n"
-	."\t</tr>\n";
-echo "<input type='hidden' name='sid' value='$surveyid' />\n"
+	."<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='qid' value='$qid' />\n"
 	."<input type='hidden' name='action' value='insertcondition' />\n"
 	."<input type='hidden' name='cqid' id='cqid' value='' />\n"
+	."\t\t</td>\n"
+	."\t</tr>\n"
 	."</table>\n"
 	."</form>\n"
 	."<table width='100%'  border='0'>\n";

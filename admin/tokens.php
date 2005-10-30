@@ -384,38 +384,38 @@ if ($action == "browse" || $action == "search")
 		."\t<tr bgcolor='#999999'><td align='left'>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left'>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-		."\t\t\t<input type='image' name='DBeginButton' align='left' hspace='0' border='0' src='$imagefiles/databegin.gif' title='"
+		."\t\t\t<input type='image' name='DBeginButton' align='left' src='$imagefiles/databegin.gif' title='"
 		._D_BEGIN."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
-		."\t\t\t<input type='image' name='DBackButton' align='left' hspace='0' border='0' src='$imagefiles/databack.gif' title='"
+		."\t\t\t<input type='image' name='DBackButton' align='left' src='$imagefiles/databack.gif' title='"
 		._D_BACK."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left'>\n"
-		."\t\t\t<input type='image' name='DForwardButton' align='left' hspace='0' border='0' src='$imagefiles/dataforward.gif' title='"
+		."\t\t\t<input type='image' name='DForwardButton' align='left' src='$imagefiles/dataforward.gif' title='"
 		._D_FORWARD."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
-		."\t\t\t<input type='image' name='DEndButton' align='left' hspace='0' border='0' src='$imagefiles/dataend.gif' title='"
+		."\t\t\t<input type='image' name='DEndButton' align='left'  src='$imagefiles/dataend.gif' title='"
 		._D_END."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-		."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>"
-		."\t\t\t<tr><form method='post' action='$homeurl/tokens.php'>\n"
-		."\t\t\t\t<td>\n"
+		."\t\t\t\n"
+		."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>\n"
+		."\t\t\t\t<tr><td><form method='post' action='$homeurl/tokens.php'>\n"
 		."\t\t\t\t\t<input $slstyle type='text' name='searchstring' value='$searchstring'>\n"
 		."\t\t\t\t\t<input $btstyle type='submit' value='"._SEARCH."'>\n"
-		."\t\t\t\t</td>\n"
 		."\t\t\t\t<input type='hidden' name='order' value='$order'>\n"
 		."\t\t\t\t<input type='hidden' name='action' value='search'>\n"
 		."\t\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		."\t\t\t</tr></form></table>\n"
+		."\t\t\t\t</form></td>\n"
+		."\t\t\t</tr></table>\n"
 		."\t\t</td>\n"
-		."\t\t<form action='$homeurl/tokens.php'>\n"
-		."\t\t<td align='right'><font size='1' face='verdana'>"
+		."\t\t<td align='right'><form action='$homeurl/tokens.php'>\n"
+		."\t\t<font size='1' face='verdana'>"
 		."&nbsp;"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$limit' name='limit'>"
 		."&nbsp;"._BR_STARTING."<input type='text' $slstyle size='4' value='$start' name='start'>"
 		."&nbsp;<input type='submit' value='"._BR_SHOW."' $btstyle>\n"
-		."\t\t</font></td>\n"
+		."\t\t</font>\n"
 		."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t<input type='hidden' name='action' value='browse'>\n"
 		."\t\t<input type='hidden' name='order' value='$order'>\n"
 		."\t\t<input type='hidden' name='searchstring' value='$searchstring'>\n"
-		."\t\t</form>\n"
+		."\t\t</form></td>\n"
 		."\t</tr>\n";
 	$bquery = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1";
 	$bresult = mysql_query($bquery) or die(_ERROR." counting fields<br />".mysql_error());
@@ -444,45 +444,45 @@ if ($action == "browse" || $action == "search")
 	//COLUMN HEADINGS
 	echo "\t<tr>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=tid&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY."ID' border='0' align='left' hspace='0'></a>$setfont"."ID</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=firstname&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=firstname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_FIRST."' border='0' align='left'></a>$setfont"._TL_FIRST."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=lastname&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=lastname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_LAST."' border='0' align='left'></a>$setfont"._TL_LAST."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=email&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=email&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_EMAIL."' border='0' align='left'></a>$setfont"._TL_EMAIL."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=token&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_TOKEN."' border='0' align='left'></a>$setfont"._TL_TOKEN."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=sent%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=sent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_INVITE."' border='0' align='left'></a>$setfont"._TL_INVITE."</font></th>\n"
 		."\t\t<th align='left' valign='top'>"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=completed%20desc&start=$start&limit=$limit&searchstring=$searchstring'>"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/DownArrow.gif' alt='"
 		._TC_SORTBY._TL_DONE."' border='0' align='left'></a>$setfont"._TL_DONE."</font></th>\n";
 	if ($bfieldcount == 9) 
 		{
 		echo "\t\t<th align='left' valign='top'>"
-			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=attribute_1&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=attribute_1&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_ATTR1."' border='0' align='left'></a>$setfont"._TL_ATTR1."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
-			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=attribute_2&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=attribute_2&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_ATTR2."' border='0' align='left'></a>$setfont"._TL_ATTR2."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
-			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&order=mpid&start=$start&limit=$limit&searchstring=$searchstring'>"
+			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=mpid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 			."<img src='$imagefiles/DownArrow.gif' alt='"
 			._TC_SORTBY._TL_MPID."' border='0' align='left'></a>$setfont"._TL_MPID."</font></th>\n";
 		}
@@ -500,9 +500,9 @@ if ($action == "browse" || $action == "search")
 			}
 		echo "\t\t<td align='left'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='"
-			._TC_EDIT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=edit&tid=$brow[0]', '_top')\" />"
+			._TC_EDIT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=edit&amp;tid=$brow[0]', '_top')\" />"
 			."<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"
-			._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=delete&tid=$brow[0]&limit=$limit&start=$start&order=$order', '_top')\" />";
+			._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=delete&amp;tid=$brow[0]&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
 		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] == "Y" && $surveyprivate == "N")
@@ -535,14 +535,14 @@ if ($action == "browse" || $action == "search")
 			{
 			echo "\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='I' title='"
-				._TC_INVITET."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=email&tid=$brow[0]', '_top')\" />"
+				._TC_INVITET."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=email&amp;tid=$brow[0]', '_top')\" />"
 				."\t\t</td>\n";
 			}
 		elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] == "Y")
 			{
 			echo "\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='R' title='"
-				._TC_REMINDT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=remind&tid=$brow[0]', '_top')\" />"
+				._TC_REMINDT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=remind&amp;tid=$brow[0]', '_top')\" />"
 				."\t\t</td>\n";
 			}
 		else
@@ -604,8 +604,8 @@ if (returnglobal('action') == "email")
 		//GET SURVEY DETAILS
 		$thissurvey=getSurveyInfo($surveyid);
 		if (!$thissurvey['email_invite']) {$thissurvey['email_invite']=str_replace("\n", "\r\n", _TC_EMAILINVITE);}
-		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
-			."<form method='post'>\n";
+		echo "<form method='post' action='tokens.php?sid=$surveyid'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
+			."\n";
 		if (isset($_GET['tid']) && $_GET['tid']) 
 			{
 			echo "<tr><td bgcolor='silver' colspan='2'>$setfont<font size='1'>"
@@ -635,13 +635,13 @@ if (returnglobal('action') == "email")
 			."\t\t</td>\n"
 			."\t</tr>\n"
 			."\t<tr><td></td><td align='left'><input type='submit' $btstyle value='"
-			._TC_SENDEMAIL."'></td></tr>\n"
+			._TC_SENDEMAIL."'>\n"
 			."\t<input type='hidden' name='ok' value='absolutely' />\n"
 			."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
-			."\t<input type='hidden' name='action' value='email' />\n";
+			."\t<input type='hidden' name='action' value='email' /></td></tr>\n";
 		if (isset($_GET['tid']) && $_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}' />";}
-		echo "</form>\n"
-			."</table>\n";
+		echo "\n"
+			."</table></form>\n";
 		}
 	else
 		{
@@ -766,8 +766,8 @@ if (returnglobal('action') == "remind")
 		//GET SURVEY DETAILS
 		$thissurvey=getSurveyInfo($surveyid);
 		if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", _TC_EMAILREMIND);}
-		echo "<table width='100%' align='center' bgcolor='#DDDDDD'>\n"
-			."\t<form method='post' action='$homeurl/tokens.php'>\n"
+		echo "<form method='post' action='$homeurl/tokens.php'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
+			."\t\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' width='150'>$setfont<strong>"._FROM.":</strong></font></td>\n"
 			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
@@ -813,14 +813,14 @@ if (returnglobal('action') == "remind")
 			."\t\t<td></td>\n"
 			."\t\t<td align='left'>\n"
 			."\t\t\t<input type='submit' $btstyle value='"._TC_SENDREMIND."' />\n"
-			."\t\t</td>\n"
-			."\t</tr>\n"
 			."\t<input type='hidden' name='ok' value='absolutely'>\n"
 			."\t<input type='hidden' name='sid' value='{$_GET['sid']}'>\n"
-			."\t<input type='hidden' name='action' value='remind'>\n";
+			."\t<input type='hidden' name='action' value='remind'>\n"
+			."\t\t</td>\n"
+			."\t</tr>\n";
 		if (isset($_GET['tid']) && $_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";}
-		echo "\t</form>\n"
-			."</table>\n";
+		echo "\t</table>\n"
+			."</form>\n";
 		}
 	else
 		{
@@ -946,7 +946,7 @@ if ($action == "tokenify")
 		{
 		echo "<br />"._TC_CREATETOKENSINFO."<br /><br />\n"
 			."<input type='submit' $btstyle value='"
-			._AD_YES."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify&ok=Y', '_top')\" />\n"
+			._AD_YES."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify&amp;ok=Y', '_top')\" />\n"
 			."<input type='submit' $btstyle value='"
 			._AD_NO."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\" />\n"
 			."<br /><br />\n";
@@ -1051,8 +1051,8 @@ if ($action == "edit" || $action == "addnew")
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._TC_ADDEDIT."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n"
-		."<table width='100%' bgcolor='#CCCCCC' align='center'>\n"
 		."<form method='post' action='$homeurl/tokens.php'>\n"
+		."<table width='100%' bgcolor='#CCCCCC' align='center'>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<strong>ID:</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>{$setfont}Auto</font></td>\n"
@@ -1127,8 +1127,8 @@ if ($action == "edit" || $action == "addnew")
 		}
 	echo "\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t</td>\n"
-		."</tr>\n</form>\n"
-		."</table>\n"
+		."</tr>\n\n"
+		."</table></form>\n"
 		."</td></tr></table>\n";
 	}
 

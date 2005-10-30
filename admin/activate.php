@@ -431,19 +431,19 @@ else
 	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 		{
 		echo _AC_NOTPRIVATE."<br /><br />\n";
-		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
+		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\">\n";
 		}
 	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
 		{
 		echo _AC_REGISTRATION."<br /><br />\n";
-		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&createtable=Y', '_top')\">\n";
+		echo "<input type='submit' value='"._AC_CREATETOKENS."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\">\n";
 		}
 	else
 		{
 		echo _AC_SURVEYACTIVE."<br /><br />\n";
 		echo "<input type='submit' value='"._GO_ADMIN."' $btstyle onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 		}
-	echo "\t\t\t\t</font></td></tr></table>\n";
+	echo "\t\t\t\t</font></font></td></tr></table>\n";
 	echo "</body>\n</html>";
 	}	
 ?>

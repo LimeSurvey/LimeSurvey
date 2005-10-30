@@ -1,7 +1,7 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  										    #
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
@@ -597,7 +597,7 @@ if ($qid)
 		if (($qct == 0 && $activated != "Y") || $activated != "Y") 
 			{
 			$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'>"
-							  . "<img src='$imagefiles/delete.gif' name='DeleteWholeQuestion' title='"
+							  . "<img src='$imagefiles/delete.gif' name='DeleteWholeQuestion' alt= '"._Q_DELETE_BT."' title='"
 							  . _Q_DELETE_BT."' align='left' border='0' hspace='0' "
 							  . "onclick=\"return confirm('"._DQ_RUSURE."')\"></a>\n";
 			}
@@ -968,27 +968,27 @@ if ($action == "editusers")
 	}
 if ($action == "addquestion")
 	{
-	$newquestion = "<table width='100%' border='0'>\n\n"
+	$newquestion =  "\t<form action='$scriptname' name='addnewquestion' method='post'>\n"
+				  . "<table width='100%' border='0'>\n\n"
 				  . "\t<tr>\n"
 				  . "\t\t<td colspan='2' bgcolor='black' align='center'>"
 				  . "\t\t<strong>$setfont<font color='white'>"._ADDQ."\n"
 				  . "\t\t</font></font></strong></td>\n"
 				  . "\t</tr>\n"
-				  . "\t<form action='$scriptname' name='addnewquestion' method='post'>\n"
 				  . "\t<tr>\n"
-				  . "\t\t<td align='right'>$setfont<strong>"._QL_CODE."</strong></font></td>\n"
+				  . "\t\t<td align='right'  width='35%'>$setfont<strong>"._QL_CODE."</strong></font></td>\n"
 				  . "\t\t<td><input $slstyle type='text' size='20' name='title'>"
 				  . "<font color='red' face='verdana' size='1'>"._REQ."</font></td></tr>\n"
 				  . "\t<tr>\n"
-				  . "\t\t<td align='right'>$setfont<strong>"._QL_QUESTION."</strong></font></td>\n"
+				  . "\t\t<td align='right' width='35%'>$setfont<strong>"._QL_QUESTION."</strong></font></td>\n"
 				  . "\t\t<td><textarea $slstyle2 cols='50' rows='3' name='question'></textarea></td>\n"
 				  . "\t</tr>\n"
 				  . "\t<tr>\n"
-				  . "\t\t<td align='right'>$setfont<strong>"._QL_HELP."</strong></font></td>\n"
+				  . "\t\t<td align='right' width='35%'>$setfont<strong>"._QL_HELP."</strong></font></td>\n"
 				  . "\t\t<td><textarea $slstyle2 cols='50' rows='3' name='help'></textarea></td>\n"
 				  . "\t</tr>\n"
 				  . "\t<tr>\n"
-				  . "\t\t<td align='right'>$setfont<strong>"._QL_TYPE."</strong></font></td>\n"
+				  . "\t\t<td align='right' width='35%'>$setfont<strong>"._QL_TYPE."</strong></font></td>\n"
 				  . "\t\t<td><select $slstyle name='type' id='question_type' "
 				  . "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 				  . "$qtypeselect"
@@ -998,7 +998,7 @@ if ($action == "addquestion")
 	$newquestion .= "\t<tr id='Validation'>\n"
 				  . "\t\t<td align='right'>$setfont<strong>"._QL_VALIDATION."</strong></font></td>\n"
 				  . "\t\t<td>$setfont\n"
-				  . "\t\t<input type='text' $slstyle name='preg' size=50>\n"
+				  . "\t\t<input type='text' $slstyle name='preg' size=50></font>\n"
 				  . "\t\t</td>\n"
 				  . "\t</tr>\n";
 	
@@ -1047,32 +1047,33 @@ if ($action == "addquestion")
 						<td><select id='QTlist' name='attribute_name' $slstyle>
 						</select>
 						<input type='text' id='QTtext' name='attribute_value' $slstyle></td></tr>\n";
+	$newquestion .= "\t<tr>\n"
+				  . "\t\t<td colspan='2' align='center'>";
 	
 	if (isset($eqrow)) {$newquestion .= questionjavascript($eqrow['type'], $qattributes);}
 	else {$newquestion .= questionjavascript('', $qattributes);}
 
-	$newquestion .= "\t<tr>\n"
-				  . "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='"
-				  . _ADDQ."' /></td>\n"
-				  . "\t</tr>\n"
+	$newquestion .= "<input type='submit' $btstyle value='"
+				  . _ADDQ."' />\n"
+				  . "\t\n"
 				  . "\t<input type='hidden' name='action' value='insertnewquestion' />\n"
 				  . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 				  . "\t<input type='hidden' name='gid' value='$gid' />\n"
+				  . "</td></tr></table>\n"
 				  . "\t</form>\n"
-				  . "</table>\n"
-				  . "$setfont<center><strong>"._AD_OR."</strong></center>\n</font>"
-				  . "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+				  . "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post'>\n"
+				  . "<table width='100%' border='0' >\n\t"
+				  . "<tr><td colspan='2' align='center'>$setfont<strong>"._AD_OR."</strong></font></td></tr>\n"
+				  . "<tr><td colspan='2' bgcolor='black' align='center'>\n"
 				  . "\t\t<strong>$setfont<font color='white'>"._IMPORTQUESTION."</font></font></strong></td></tr>\n\t<tr>"
-				  . "\t<form enctype='multipart/form-data' name='importquestion' "
-				  . "action='$scriptname' method='post'>\n"
-				  . "\t\t<td align='right'>$setfont<strong>"._SL_SELSQL."</strong></font></td>\n"
-				  . "\t\t<td><input $slstyle name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
+				  . "\t\t<td align='right' width='35%'>$setfont<strong>"._SL_SELSQL."</strong></font></td>\n"
+				  . "\t\t<td><input $slstyle name=\"the_file\" type=\"file\" size=\"50\"></td></tr>\n"
 				  . "\t<tr><td colspan='2' align='center'><input type='submit' "
-				  . "$btstyle value='"._IMPORTQUESTION."'></TD>\n"
+				  . "$btstyle value='"._IMPORTQUESTION."'>\n"
 				  . "\t<input type='hidden' name='action' value='importquestion'>\n"
 				  . "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 				  . "\t<input type='hidden' name='gid' value='$gid'>\n"
-				  . "\t</tr></form>\n</table>\n";
+				  . "\t</td></tr></table></form>\n\n";
 	}
 
 if ($action == "copyquestion")
@@ -1165,12 +1166,13 @@ if ($action == "copyquestion")
 		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked";}
 		$editquestion .= " />\n"
 					   . "\t\t</font></td>\n"
-					   . "\t</tr>\n";
+					   . "\t</tr>\n"
+					   . "\t<tr>\n"
+					   . "\t\t<td align='right'>";
 		
 		$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 		
-		$editquestion .= "\t<tr>\n"
-					   . "\t\t<td align='right'>$setfont<strong>"._QL_COPYANS."</strong></font></td>\n"
+		$editquestion .= "$setfont<strong>"._QL_COPYANS."</strong></font></td>\n"
 					   . "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y' />"
 					   . "</font></td>\n"
 					   . "\t</tr>\n"
@@ -1180,11 +1182,11 @@ if ($action == "copyquestion")
 					   . "</font></td>\n"
 					   . "\t</tr>\n"
 					   . "\t<tr>\n"
-					   . "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='"._COPYQ."'></td>\n"
+					   . "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='"._COPYQ."'>\n"
 					   . "\t\t<input type='hidden' name='action' value='copynewquestion'>\n"
 					   . "\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 					   . "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
-					   . "\t</tr>\n"
+					   . "\t</td></tr>\n"
 					   . "</table>\n</form>\n";
 		}
 	}
@@ -1309,11 +1311,11 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		
 		$editquestion .= "\t<tr>\n"
 					   . "\t\t<td colspan='2' align='center'>"
-					   . "<input type='submit' $btstyle value='"._QL_UPDATEQUESTION."'></td>\n"
+					   . "<input type='submit' $btstyle value='"._QL_UPDATEQUESTION."'>\n"
 					   . "\t<input type='hidden' name='action' value='updatequestion'>\n"
 					   . "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					   . "\t<input type='hidden' name='qid' value='$qid'>\n"
-					   . "\t</tr>\n"
+					   . "\t</td></tr>\n"
 					   . "</table></form></td><td>\n";
 		}
 
@@ -1329,12 +1331,12 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
                           <tr>  			  
 						  <td nowrap width='50%' ><select id='QTlist' name='attribute_name' $slstyle>
 						  </select></td><td align='center' width='20%'><input type='text' id='QTtext' size='6' name='attribute_value' $slstyle></td>
-						  <td align='center'><input type='submit' value='"._ADD."' $btstyle></td>
+						  <td align='center'><input type='submit' value='"._ADD."' $btstyle>
 						  <input type='hidden' name='action' value='addattribute'>
 						  <input type='hidden' name='sid' value='$surveyid'>
 					      <input type='hidden' name='qid' value='$qid'>
-					      <input type='hidden' name='gid' value='$gid'></tr>
-					     <tr><th colspan='4' height='10'></th></tr>\n";
+					      <input type='hidden' name='gid' value='$gid'></td></tr>
+					      <tr><th colspan='4' height='10'></th></tr>\n";
 	$editquestion .= "\t\t\t</table></form>\n";
 	foreach ($qidattributes as $qa)
 		{
@@ -1346,22 +1348,22 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					   <td align='center' width='25%'><input type='text' name='attribute_value' size='5' $slstyle value='"
 					   .$qa['value']."' /></td>
 					   <td ><input type='submit' $btstyle value='"
-					   ._AL_SAVE."' /></td>
+					   ._AL_SAVE."' />
 					   <input type='hidden' name='action' value='editattribute'>\n
 					   <input type='hidden' name='sid' value='$surveyid'>\n
 					   <input type='hidden' name='gid' value='$gid'>\n
 					   <input type='hidden' name='qid' value='$qid'>\n
 					   <input type='hidden' name='qaid' value='".$qa['qaid']."'>\n"
-					   ."\t\t\t</tr></table></form></td><td>
+					   ."\t\t\t</td></tr></table></form></td><td>
 					   <form action='$scriptname' method='post'><table width='100%'><tr><td width='5%'>
 					   <input type='submit' $btstyle value='"
-					   ._DELETE."' /></td>"
+					   ._DELETE."' />"
 					   . "\t<input type='hidden' name='action' value='delattribute'>\n"
 					   . "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					   . "\t<input type='hidden' name='qid' value='$qid'>\n"
 					   . "\t<input type='hidden' name='gid' value='$gid'>\n"
 					   . "\t<input type='hidden' name='qaid' value='".$qa['qaid']."'>\n"
-					   . "</tr></table>\n"
+					   . "</td></tr></table>\n"
 					   . "</form>\n</table>";
 		}
 	$editquestion .= "</td></tr></table></table>\n";
@@ -1370,28 +1372,29 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 
 if ($action == "addgroup")
 	{
-	$newgroup = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+	$newgroup = "<tr><td><form action='$scriptname' name='addnewgroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 			   . "\t\t<strong>$setfont<font color='white'>"._ADDG."</font></font></strong></td></tr>\n"
-			   . "\t<tr><form action='$scriptname' name='addnewgroup' method='post'>\n"
+			   . "\t<tr>\n"
 			   . "\t\t<td align='right'>$setfont<strong>"._GL_TITLE."</strong></font></td>\n"
 			   . "\t\t<td><input $slstyle type='text' size='50' name='group_name'><font color='red' face='verdana' size='1'>"._REQ."</font></td></tr>\n"
 			   . "\t<tr><td align='right'>$setfont<strong>"._GL_DESCRIPTION."</strong>("._OPTIONAL.")</font></td>\n"
 			   . "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='description'></textarea></td></tr>\n"
-			   . "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._ADDG."'></td>\n"
+			   . "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._ADDG."'>\n"
 			   . "\t<input type='hidden' name='action' value='insertnewgroup'>\n"
 			   . "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-			   . "\t</form></tr>\n"
-			   . "</table>\n"
-			   . "<center>$setfont<strong>"._AD_OR."</strong></font></center>\n"
+			   . "\t</td></table>\n"
+			   . "</form></td></tr>\n"
+			   . "<tr><td align='center'>$setfont<strong>"._AD_OR."</strong></font></td></tr>\n"
+			   . "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post'>"
 			   . "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 			   . "\t\t<strong>$setfont<font color='white'>"._IMPORTGROUP."</font></font></strong></td></tr>\n\t<tr>"
-			   . "\t<form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post'>\n"
+			   . "\t\n"
 			   . "\t\t<td align='right'>$setfont<strong>"._SL_SELSQL."</strong></font></td>\n"
 			   . "\t\t<td><input $slstyle2 name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
-			   . "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._IMPORTGROUP."'></TD>\n"
+			   . "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._IMPORTGROUP."'>\n"
 			   . "\t<input type='hidden' name='action' value='importgroup'>\n"
 			   . "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-			   . "\t</tr></form>\n</table>\n";
+			   . "\t</td></tr>\n</table></form>\n";
 	}
 
 if ($action == "editgroup")
@@ -1408,11 +1411,11 @@ if ($action == "editgroup")
 					. "\t\t<td><input $slstyle type='text' size='50' name='group_name' value='{$esrow['group_name']}'></td></tr>\n"
 					. "\t<tr><td align='right'>$setfont<strong>"._GL_DESCRIPTION."</strong>(optional)</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-					. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._GL_UPDATEGROUP."'></td>\n"
+					. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._GL_UPDATEGROUP."'>\n"
 					. "\t<input type='hidden' name='action' value='updategroup'>\n"
 					. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
-					. "\t</tr>\n"
+					. "\t</td></tr>\n"
 					. "</table>\n"
 					. "\t</form>\n";
 		}

@@ -1,7 +1,7 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  										    #
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
@@ -69,15 +69,15 @@ if ($action == _AS_ADD) {
 
 
 echo $htmlheader;
-echo "<table height='1'><tr><td></td></tr></table>\n"
+echo "<table><tr><td height='1'></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _AS_TITLE."</strong></td></tr>\n";
+	. _AS_TITLE."</strong></font></td></tr>\n";
 
 echo "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
-	. _B_ADMIN_BT."' alt='". _B_ADMIN_BT."'border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+	. _B_ADMIN_BT."' alt='". _B_ADMIN_BT."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	. "\t\t</td>\n"
@@ -138,7 +138,7 @@ if ($action == "edit") {
 echo "<br /><table align='center' class='outlinetable' cellspacing='0' width='90%'>
 	<tr><th>"._AS_DESCRIPTION."</th></tr>
 	<tr><td>";
-echo "<table cellspacing='1' align='center'>
+echo "<table cellspacing='1' align='center' width='90%'>
 	<tr><th>ID</th><th>SID</th>\n";
 foreach ($headings as $head) {
 	echo "<th>$head</th>\n";
@@ -152,13 +152,13 @@ foreach($assessments as $assess) {
 	}
 	echo "<td>
 	 	   <table width='100%'>
-		    <tr><form method='post'>
-			 <td><input $btstyle type='submit' value='"._AS_EDIT."'></td>
+		    <tr><td align='center'><form method='post' action='assessments.php?sid=$surveyid'>
+			 <input $btstyle type='submit' value='"._AS_EDIT."'>
 			 <input type='hidden' name='action' value='edit'>
 			 <input type='hidden' name='id' value='".$assess['id']."'>
-			 </form>
-			 <form method='post'>
-			 <td><input $btstyle type='submit' value='"._AS_DELETE."' onClick='return confirm(\""._DR_RUSURE."\")'></td>
+			 </form></td>
+			 <td align='center'><form method='post' action='assessments.php?sid=$surveyid'>
+			 <input $btstyle type='submit' value='"._AS_DELETE."' onClick='return confirm(\""._DR_RUSURE."\")'>
 			 <input type='hidden' name='action' value='delete'>
 			 <input type='hidden' name='id' value='".$assess['id']."'>
 			 </form>
@@ -169,7 +169,7 @@ foreach($assessments as $assess) {
 	echo "</tr>\n";
 }
 echo "</table>";
-echo "<br /><table align='center' cellspacing='1'><form method='post'>\n";
+echo "<br /><form method='post' action='assessments.php?sid=$surveyid'><table align='center' cellspacing='1'>\n";
 echo "<tr><th colspan='2'>$actiontitle</th></tr>\n";
 $i=0;
 
@@ -177,13 +177,12 @@ foreach ($headings as $head) {
 	echo "<tr><th>$head</th><td>".$inputs[$i]."</td></tr>\n";
 	$i++;
 }
-echo "<tr><th colspan='2'><input type='submit' value='$actionbutton'></th></tr></table>\n";
-echo"</td></tr>
-	<input type='hidden' name='sid' value='$surveyid'>
-	<input type='hidden' name='action' value='$actionbutton'>
-	<input type='hidden' name='id' value='$thisid'>
-	</form>
-	</table><br />";
+echo "<tr><th colspan='2'><input type='submit' value='$actionbutton'></th></tr><tr><td>\n";
+echo "<input type='hidden' name='sid' value='$surveyid'>\n"
+    ."<input type='hidden' name='action' value='$actionbutton'>\n"
+    ."<input type='hidden' name='id' value='$thisid'>\n"
+    ."</td></tr>\n"
+    ."</table></form></table><br />\n";
 
 
 	

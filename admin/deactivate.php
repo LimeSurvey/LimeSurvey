@@ -41,16 +41,16 @@ $date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple dea
 if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._DEACTIVATE." ($surveyid)</strong></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._DEACTIVATE." ($surveyid)</strong></font></td></tr>\n";
 	echo "\t<tr>\n";
-	echo "\t\t<td align='center' bgcolor='pink'>\n";
+	echo "\t\t<td align='center' bgcolor='#FFEEEE'>\n";
 	echo "\t\t\t<font color='red'>$setfont<strong>";
 	echo _WARNING."<br />"._AC_READCAREFULLY;
-	echo "\t\t</td>\n";
+	echo "\t\t</strong></font></font></td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>";
 	echo "\t\t<td>\n";
-	echo "\t\t\t$setfont"._AC_DEACTIVATE_MESSAGE1."\n";
+	echo "\t\t\t"._AC_DEACTIVATE_MESSAGE1."\n";
 	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE2."</p>\n";
 	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE3."</p>\n";
 	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE4." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
@@ -109,11 +109,11 @@ else
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._DEACTIVATE." ($surveyid)</strong></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._DEACTIVATE." ($surveyid)</strong></font></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
 	echo "\t\t\t$setfont<strong>Survey Has Been De-Activated\n";
-	echo "\t\t</td>\n";
+	echo "\t\t</strong></font></td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td>\n";
