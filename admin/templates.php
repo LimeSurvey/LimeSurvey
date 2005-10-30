@@ -6,7 +6,7 @@
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
+	# >          CARLTON SOUTH 3053, AUSTRALIA					#
  	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
@@ -510,8 +510,8 @@ echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>"
 	."</td><td align='right'>\n"
-	."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10'>"
-	."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0'>"
+	."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10' alt=''>"
+	."<img src='$imagefiles/seperator.gif' align='right' alt='' border='0' hspace='0'>"
 	."<input type='image' src='$imagefiles/add.gif' align='right' title='"._TP_CREATENEW."' "
 	."onClick=\"javascript: copyprompt('"._TP_NEWTEMPLATECALLED."', '"._TP_DEFAULTNEWTEMPLATE."', 'default', 'copy')\">"
 	."<font face='verdana' size='2' color='white'><strong>"._SL_TEMPLATE."</strong> </font>"
@@ -614,11 +614,12 @@ echo "<br />\n"
 if ($templatename == "default") {
     echo " disabled";
 }
-echo "></font></td>\n"
+echo "></font>\n"
 	."<input type='hidden' name='editfile' value='$editfile'>\n"
 	."<input type='hidden' name='screenname' value='$screenname'>\n"
 	."<input type='hidden' name='templatename' value='$templatename'>\n"
 	."<input type='hidden' name='action' value='delete'>\n"
+	."</td>\n"
 	."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
 	."<form enctype='multipart/form-data' name='importsurvey' action='templates.php' method='post'>\n"
 	."<table><tr $btstyle> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
@@ -627,12 +628,12 @@ echo "></font></td>\n"
 if ($templatename == "default") {
     echo " disabled";
 }
-echo "></td>\n"
+echo ">\n"
 	."<input type='hidden' name='editfile' value='$editfile'>\n"
 	."<input type='hidden' name='screenname' value='$screenname'>\n"
 	."<input type='hidden' name='templatename' value='$templatename'>\n"
 	."<input type='hidden' name='action' value='upload'>\n"
-	."</table></form>\n"
+	."</td></table></form>\n"
 	."\t\t\t\t\t\t</td>\n"
 	."\t\t\t\t\t</tr>\n"
 	."\t\t\t\t</table>\n"
@@ -649,7 +650,7 @@ echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1
 	. "\t\t\t\t</font></font></td>\n"
 	. "\t\t\t</tr>\n"
 	."\t<tr>\n"
-	."\t\t<td width=90% align='center' bgcolor='#555555'>\n";
+	."\t\t<td width='90%' align='center' bgcolor='#555555'>\n";
 
 
 unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files

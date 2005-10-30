@@ -348,10 +348,10 @@ if ($surveyid)
 			{
 			$surveysummary .= getgrouplist($gid);
 			}
-		//else
-			//{
-			//$surveysummary .= "<option>No Groups</option>\n";
-			//}
+		else
+			{
+			$surveysummary .= "<option>"._NONE."</option>\n";
+			}
 		$surveysummary .= "</select>\n"
 						. "\t\t\t\t</font></font></td>"
 						. "</tr>\n"

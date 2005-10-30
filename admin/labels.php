@@ -31,7 +31,7 @@
     # Public License along with this program; if not, write to  #
     # the Free Software Foundation, Inc., 59 Temple Place -     #
     # Suite 330, Boston, MA  02111-1307, USA.                   #
-    #############################################################    
+    #############################################################
 */
 
 require_once("config.php");
@@ -131,23 +131,23 @@ if ($action == "newset" || $action == "editset")
         $result=mysql_query($query);
         while ($row=mysql_fetch_array($result)) {$lbname=$row['label_name']; $lblid=$row['lid'];}
         }
-    echo "\t\t<table width='100%' bgcolor='#DDDDDD'>\n"
+    echo "\t\t<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
+		."\t\t<table width='100%' bgcolor='#DDDDDD'>\n"
         ."\t\t\t<tr bgcolor='black'>\n"
         ."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><strong>\n"
         ."\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' "
         ."onClick=\"window.open('labels.php?lid=$lid', '_top')\">\n";
     if ($action == "newset") {echo _LB_NEWSET;}
     else {echo _LB_EDITSET;}
-    echo "\t\t\t\t</font></font></strong></td>\n"
+    echo "\t\t\t\t</strong></font></font></td>\n"
         ."\t\t\t</tr>\n"
-        ."\t\t<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
         ."\t\t\t<tr>\n"
         ."\t\t\t\t<td align='right' width='15%'>\n"
         ."\t\t\t\t\t$setfont<strong>"._LL_NAME.":</strong></font>"
         ."\t\t\t\t</td>\n"
         ."\t\t\t\t<td>\n"
         ."\t\t\t\t\t<input type='text' $slstyle name='label_name' value='";
-    if (isset($lbname)) {echo $lbname;} 
+    if (isset($lbname)) {echo $lbname;}
     echo "'>\n"
         ."\t\t\t\t</td>\n"
         ."\t\t\t</tr>\n"
@@ -158,37 +158,35 @@ if ($action == "newset" || $action == "editset")
     if ($action == "newset") {echo _ADD;}
     else {echo _UPDATE;}
     echo "'>\n"
-        ."\t\t\t\t</td>\n"
-        ."\t\t\t</tr>\n"
         ."\t\t<input type='hidden' name='action' value='";
     if ($action == "newset") {echo "insertset";}
     else {echo "updateset";}
     echo "'>\n";
     if ($action == "editset") {echo "\t\t<input type='hidden' name='lid' value='$lblid'>\n";}
-    echo "\t\t</form>\n";
+    echo "\t\t</td>\n"
+        ."\t</tr>\n";
+    echo "\t\t</table></form>\n";
     if ($action == "newset")
         {
-        echo "\t\t\t<tr><td colspan='2' align='center'>\n"
+        echo "\t\t<form enctype='multipart/form-data' name='importlabels' action='labels.php' method='post'>\n"
+			."\t\t<table width='100%' bgcolor='#DDDDDD'>\n"
+        	."\t\t\t<tr><td colspan='2' align='center'>\n"
             ."\t\t\t\t$setfont<strong>OR</strong></font>\n"
             ."\t\t\t</td></tr>\n"
             ."\t\t\t<tr bgcolor='black'>\n"
             ."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><strong>\n"
             ."\t\t\t\t"._IMPORTLABEL."\n"
-            ."\t\t\t\t</font></font></strong></td>\n"
+            ."\t\t\t\t</strong></font></font></td>\n"
             ."\t\t\t</tr>\n"
             ."\t\t\t<tr>\n"
-            ."\t\t\t<form enctype='multipart/form-data' name='importlabels' action='labels.php' "
-            ."method='post'>\n"
             ."\t\t\t\t<td align='right'>$setfont<strong>"
             ._SL_SELSQL."</strong></font></td>\n"
             ."\t\t<td><input $btstyle name=\"the_file\" type=\"file\" size=\"35\">"
             ."</td></tr>\n"
-            ."\t<tr><td></td><td><input type='submit' $btstyle value='"._IMPORTLABEL."'></TD>\n"
-            ."\t<input type='hidden' name='action' value='importlabels'>\n"
-            ."\t</tr></form>\n";
-        
+            ."\t<tr><td></td><td><input type='submit' $btstyle value='"._IMPORTLABEL."'>\n"
+            ."\t<input type='hidden' name='action' value='importlabels'></TD>\n"
+            ."\t</tr></table></form>\n";
         }
-    echo "\t\t</table>\n";
     }
 //SET SELECTED
 if (isset($lid) && ($action != "editset") && $lid)
@@ -209,7 +207,7 @@ if (isset($lid) && ($action != "editset") && $lid)
     //NOW GET THE ANSWERS AND DISPLAY THEM
     $query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
     $result = mysql_query($query);
-    while ($row=mysql_fetch_array($result)) 
+    while ($row=mysql_fetch_array($result))
         {
         echo "\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
             ."\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'>"
@@ -220,18 +218,18 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
             ._CLOSEWIN."' align='right' "
             ."onClick=\"window.open('labels.php', '_top')\">\n"
-            ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left'>\n"
-            ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
-            ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left'>\n"
-            ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
+            ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt=''>\n"
+            ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
+            ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt=''>\n"
+            ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"
             ._L_EDIT_BT."' align='left' "
             ."onclick=\"window.open('labels.php?action=editset&amp;lid=$lid', '_top')\">\n"
             ."\t\t\t\t\t<a href='labels.php?action=delset&amp;lid=$lid'>"
-            ."<img src='$imagefiles/delete.gif' border='0' title='"
+            ."<img src='$imagefiles/delete.gif' border='0' alt='"._L_DEL_BT."' title='"
             ._L_DEL_BT."' align='left' "
             ."onClick=\"return confirm('Are you sure?')\"></a>\n"
-            ."\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
+            ."\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' alt='"._EXPORTLABEL."' title='"
             ._EXPORTLABEL."' align='left' "
             ."onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n"
             ."\t\t\t\t\t</td>\n"
@@ -294,7 +292,7 @@ if (isset($lid) && ($action != "editset") && $lid)
             {
             echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_UP."' />\n";
             }
-        else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left'>";}
+        else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left' alt=''>";}
         if ($position < $labelcount-1)
             {
             echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DN."' />\n";
@@ -323,14 +321,19 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t<td width='20%'>\n"
             ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_ADD."'>\n"
             ."\t\t\t\t\t</td>\n"
-            ."\t\t\t\t\t<td>\n"
-            ."\t\t\t\t\t</td>\n"
-            ."\t\t\t\t</tr>\n";
+            ."\t\t\t\t\t<td>\n";
         echo "<script type='text/javascript' language='javascript'>\n"
-            . "<!--\n"
-            . "document.getElementById('addnewlabelcode').focus();\n"
-            . "//-->\n"
-            . "</script>\n";
+            ."<!--\n"
+            ."document.getElementById('addnewlabelcode').focus();\n"
+            ."//-->\n"
+            ."</script>\n"
+    		."\t\t\t\t\t<input type='hidden' name='sortorder' value='$position'>\n"
+        	."\t\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"
+        	."\t\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n"
+            ."\t\t\t\t\t</td>\n"
+            ."\t\t\t\t</tr>\n"
+    		."\t\t\t\t</tbody></table></form>\n";
+
         }
     else
         {
@@ -339,13 +342,10 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><strong>"
             ._WARNING."</strong>: "._LB_ACTIVEUSE."</i></font></font>\n"
             ."\t\t\t\t\t</td>\n"
-            ."\t\t\t\t</tr>\n";
+            ."\t\t\t\t</tr>\n"
+    		."\t\t\t\t</tbody></table>\n";
         }
-    echo "\t\t\t\t<input type='hidden' name='sortorder' value='$position'>\n"
-        ."\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"
-        ."\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n"
-        ."\t\t\t\t</tbody></table></form>\n"
-        ."\t\t\t\t<tr><td colspan='4'><form style='margin-bottom:0;' action='labels.php' method='post'>"
+    echo "\t\t\t\t<tr><td colspan='4'><form style='margin-bottom:0;' action='labels.php' method='post'>"
 		."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
 		."\t\t\t\t\t<tr><td width='80%'></td>"
         ."\t\t\t\t<td></td><td><input $btstyle type='submit' name='method' value='"
@@ -433,7 +433,7 @@ function modanswers($lid)
     global $dbprefix;
     if (get_magic_quotes_gpc() == "0")
         {
-        if (isset($_POST['title'])) 
+        if (isset($_POST['title']))
             {
             $_POST['title'] = addcslashes($_POST['title'], "'");
             }
@@ -517,7 +517,7 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
         $position++;
         }
     }
-    
+
 function helpscreen()
     {
     global $homeurl, $langdir, $imagefiles;
