@@ -230,7 +230,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             $values=do_5pointchoice($ia);
             break;
         case "D": //DATE
-            $qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
             $values=do_date($ia);
             break;
         case "Z": //LIST Flexible drop-down/radio-button list
@@ -296,19 +295,15 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             $values=do_multipleshorttext($ia);
             break;
         case "N": //NUMERICAL QUESTION TYPE
-            $qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
             $values=do_numerical($ia);
             break;
         case "S": //SHORT FREE TEXT
-            $qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
             $values=do_shortfreetext($ia);
             break;
         case "T": //LONG FREE TEXT
-            $qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
             $values=do_longfreetext($ia);
             break;
         case "U": //HUGE FREE TEXT
-            $qtitle = "<label for='{$ia[1]}'>$qtitle</label>";
             $values=do_hugefreetext($ia);
             break;
         case "Y": //YES/NO radio-buttons
@@ -763,9 +758,9 @@ function do_list_radio($ia)
                  . "<label for='answer$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
         }
-    $answer .= "\t\t\t\t\t\t\t</td>\n"
+    $answer .= "\t\t\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
+             . "\t\t\t\t\t\t\t</td>\n"
              . "\t\t\t\t\t\t</tr>\n"
-             . "\t\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
              . "\t\t\t\t\t</table>\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -863,9 +858,9 @@ function do_list_flexible_radio($ia)
                  . "<label for='answer$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
         }
-    $answer .= "\t\t\t\t\t\t\t</td>\n"
+    $answer .= "\t\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
+    		 . "\t\t\t\t\t\t\t</td>\n"
              . "\t\t\t\t\t\t</tr>\n"
-             . "\t\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
              . "\t\t\t\t\t</table>\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -926,9 +921,9 @@ function do_listwithcomment($ia)
             $answer .= str_replace("\\", "", $_SESSION[$fname2]);
             }
         $answer .= "</textarea>\n"
+                 . "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
                  . "\t\t\t\t\t</td>\n"
                  . "\t\t\t\t</tr>\n"
-                 . "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
                  . "\t\t\t</table>\n";
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1]."comment";
@@ -979,9 +974,9 @@ function do_listwithcomment($ia)
             $answer .= str_replace("\\", "", $_SESSION[$fname2]);
             }
         $answer .= "</textarea>\n"
+                 . "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
                  . "\t\t\t\t\t</td>\n"
                  . "\t\t\t\t</tr>\n"
-                 . "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
                  . "\t\t\t</table>\n";
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1]."comment";
@@ -1304,8 +1299,8 @@ function do_multiplechoice_withcomments($ia)
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"
                  . "<label for='answer$myfname' class='answertext'>"
                  . $ansrow['answer']."</label>\n"
-                 . "\t\t\t\t\t\t\t\t</td>\n"
-                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='"
+                 . "\t\t\t\t\t\t\t\t</td>\n";
         if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
         $answer .= "'>\n";
         $fn++;
@@ -1568,9 +1563,9 @@ function do_yesno($ia)
         if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1] ' class='answertext'>"._NOANSWER."</label><br />\n";
         }
-    $answer .= "\t\t\t\t\t</td>\n"
+    $answer .= "\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
+    		 . "\t\t\t\t\t</td>\n"
              . "\t\t\t\t</tr>\n"
-             . "\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
              . "\t\t\t</table>\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -1595,9 +1590,9 @@ function do_gender($ia)
         if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1] ' class='answertext'>"._NOANSWER."</label>\n";
         }
-    $answer .= "\t\t\t\t\t</td>\n"
+    $answer .= "\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
+    		 . "\t\t\t\t\t</td>\n"
              . "\t\t\t\t</tr>\n"
-             . "\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n"
              . "\t\t\t</table>\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -1631,7 +1626,10 @@ function do_array_5point($ia)
         $answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                 . "\t\t\t\t\t<td align='right'>$answertext</td>\n";
+                 . "\t\t\t\t\t<td align='right'>$answertext\n"
+                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+        		 if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
+        		 $answer .= "'></td>\n";
         for ($i=1; $i<=5; $i++)
             {
             $answer .= "\t\t\t\t\t<td><label for='answer$myfname-$i'>"
@@ -1646,10 +1644,7 @@ function do_array_5point($ia)
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
             }
-        $answer .= "\t\t\t\t</tr>\n"
-                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
-        $answer .= "'>\n";
+        $answer .= "\t\t\t\t</tr>\n";
         $fn++;
         $inputnames[]=$myfname;
         }
@@ -1686,7 +1681,11 @@ function do_array_10point($ia)
         $answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n";
-        $answer .= "\t\t\t\t\t<td align='right'>$answertext</td>\n";
+        $answer .= "\t\t\t\t\t<td align='right'>$answertext\n"
+                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+        		 if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
+        		 $answer .= "'></td>\n";
+        
         for ($i=1; $i<=10; $i++)
             {
             $answer .= "\t\t\t\t\t\t<td><label for='answer$myfname-$i'>"
@@ -1701,10 +1700,7 @@ function do_array_10point($ia)
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
             }
-        $answer .= "\t\t\t\t</tr>\n"
-                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
-        $answer .= "'>\n";
+        $answer .= "\t\t\t\t</tr>\n";
         $inputnames[]=$myfname;
         $fn++;
         }
@@ -1751,7 +1747,11 @@ function do_array_yesnouncertain($ia)
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-N'>"
                  ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-N' value='N' title='"._NO."'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "N") {$answer .= " checked";}
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label>\n"
+                . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+        		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+        		$answer .= "'></td>\n";
+        
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
@@ -1759,10 +1759,7 @@ function do_array_yesnouncertain($ia)
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
             }
-        $answer .= "\t\t\t\t</tr>\n"
-                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-        $answer .= "'>\n";
+        $answer .= "\t\t\t\t</tr>\n";
         $inputnames[]=$myfname;
         $fn++;
         }
@@ -1851,11 +1848,11 @@ $answer .= ");
 	s.setMinimum($minimumvalue);
 	s.setMaximum($maximumvalue);
 </script>\n"
-				 . "</td>\n";
-        $answer .= "\t\t\t\t</tr>\n"
+				 . "\n";
+        $answer .= "\t\t\t\t\n"
                  . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
         if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-        $answer .= "'>\n";
+        $answer .= "'>\n</td></tr>";
         $inputnames[]=$myfname;
         $fn++;
 		}
@@ -1909,7 +1906,11 @@ function do_array_increasesamedecrease($ia)
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-D'>"
                  ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-D' value='D' title='"._DECREASE."'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "D") {$answer .= " checked";}
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label>\n"
+                . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+        		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+        		$answer .= "'></td>\n";
+        
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
@@ -1917,10 +1918,7 @@ function do_array_increasesamedecrease($ia)
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
             }
-        $answer .= "\t\t\t\t</tr>\n"
-                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-        $answer .= "'>\n";
+        $answer .= "\t\t\t\t</tr>\n";
         $inputnames[]=$myfname;
         $fn++;
         }
@@ -1989,8 +1987,11 @@ function do_array_flexible($ia)
             if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
             $answertext=answer_replace($ansrow['answer']);
             $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                     . "\t\t\t\t\t<td align='right' class='answertext' width='20%'>$answertext</td>\n";
-            $thiskey=0;
+                    . "\t\t\t\t\t<td align='right' class='answertext' width='20%'>$answertext\n"
+                 	. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+		         	if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+        			$answer .= "'></td>\n";
+            $thiskey=0;            
             foreach ($labelcode as $ld)
                 {
                 $answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-$ld'>";
@@ -1998,6 +1999,7 @@ function do_array_flexible($ia)
                          . $labelans[$thiskey]."'";
                 if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
                 $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
+                
                 $thiskey++;
                 }
             if ($ia[6] != "Y" && $shownoanswer == 1)
@@ -2007,10 +2009,7 @@ function do_array_flexible($ia)
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
                 $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /></label></td>\n";
                 }
-            $answer .= "\t\t\t\t</tr>\n"
-                     . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-            if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-            $answer .= "'>\n";
+            $answer .= "\t\t\t\t</tr>\n";
             $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
@@ -2095,6 +2094,7 @@ function do_array_flexiblecolumns($ia)
         $fn++;
         }
 
+    $answer .= "\t\t\t</table>\n";
     foreach($anscode as $ld)
         {
         $myfname=$ia[1].$ld;
@@ -2103,7 +2103,6 @@ function do_array_flexiblecolumns($ia)
         $answer .= "'>\n";
         $inputnames[]=$myfname;
         }
-    $answer .= "\t\t\t</table>\n";
     return array($answer, $inputnames);
     }
 

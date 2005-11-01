@@ -453,7 +453,6 @@ foreach ($_SESSION['grouplist'] as $gl)
 	$gid=$gl[0];
 	$groupname=$gl[1];
 	$groupdescription=$gl[2];
-//	echo "&nbsp;\n";
 	echo "\n\n<!-- START THE GROUP -->\n";
 	foreach(file("$thistpl/startgroup.pstpl") as $op)
 		{
@@ -478,9 +477,9 @@ foreach ($_SESSION['grouplist'] as $gl)
 			if ($gl[0] == $qa[6])
 				{
 				echo "\n\t<!-- NEW QUESTION -->\n";
-				echo "\t\t\t\t<div name='$qa[4]' id='$qa[4]'";
+				echo "\t\t\t\t<div id='question$qa[4]'";
 				if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
-				$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
+				$question="<label for='question$qa[4]'>" . $qa[0] . "</label>";
 				$answer=$qa[1];
 				$help=$qa[2];
 				$questioncode=$qa[5];
@@ -510,22 +509,9 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 echo "\n";
 
 if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
-foreach(file("$thistpl/endpage.pstpl") as $op)
-	{
-	echo templatereplace($op);
-	}
-echo "\n";
+
 	
-if (is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
-	{
-	foreach (array_keys($_SESSION) as $SESak)
-		{
-		if (in_array($SESak, $_SESSION['insertarray']))
-			{
-			echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . $_SESSION[$SESak] . "'>\n";
-			}
-		}
-	}
+
 //SOME STUFF FOR MANDATORY QUESTIONS
 if (remove_nulls_from_array($mandatorys))
 	{
@@ -552,6 +538,11 @@ echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thiss
 	."<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
 	."<input type='hidden' name='token' value='$token' id='token'>\n"
 	."</form>\n";
+	foreach(file("$thistpl/endpage.pstpl") as $op)
+	{
+	echo templatereplace($op);
+	}
+echo "\n";
 	doFooter();
 
 ?>
