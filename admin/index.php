@@ -90,11 +90,11 @@ $htmlheader = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
 			. "<html>\n<head>\n"
 			. "<title>$sitename</title>\n"
             . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
-			. "<meta http-equiv='content-script-type' content='text/javascript' />\n"
-			. "<meta http-equiv='Content-Style-Type' content='text/css'>\n"
+			. "<meta http-equiv=\"content-script-type\" content=\"text/javascript\">\n"
+			. "<meta http-equiv=\"Content-Style-Type\" content=\"text/css\">\n"
 			. "<link href=\"$homeurl/phpsurveyor.css\" rel=\"stylesheet\" type=\"text/css\">\n"
 			. "<script src=\"$homeurl/classes/TreeMenu.js\" language=\"JavaScript\" type=\"text/javascript\"></script>\n"
-			. "</head>\n<body topmargin='0' leftmargin='0' marginheight='0' marginwidth='0'>\n";
+			. "</head>\n<body>\n";
 //			. "<table width='100%' align='center' bgcolor='#000000'>\n"
 //			. "\t<tr>\n"
 //			. "\t\t<td align='center'>\n"
@@ -325,8 +325,8 @@ function helpscreen()
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
-		."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left'>\n"
-		."\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' border='0' hspace='0' onClick=\"showhelp('hide')\">\n"
+		."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' hspace='0' border='0' align='left' alt=''>\n"
+		."\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' onClick=\"showhelp('hide')\">\n"
 		."\t\t\t\t\t</td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
@@ -391,27 +391,27 @@ function adminmenu() {
 	echo "		<table width='100%' border='0' bgcolor='#DDDDDD'>
 		  <tr>
 		   <td>
-		    <table width='100%' align='center' cellspacing='0' cellpadding='0' border='0'>
+		    <table style='margin:0;' width='100%' align='center' cellspacing='0' cellpadding='0' border='0'>
 			 <tr>
 			  <td width='250' align='center'>
-			   <a href='http://phpsurveyor.sourceforge.net' target='_blank'><img src='{$imagefiles}/phpslogo.png' border='0' hspace='0' vspace='0'></a>
+			   <a href='http://www.phpsurveyor.org' target='_blank'><img src='{$imagefiles}/phpslogo.png' border='0' hspace='0' vspace='0' alt='PHPSurveyor Logo'></a>
 			  </td>
 			  <td valign='top'>
 			   <table align='center' width='100%' cellspacing='0' cellpadding='0'>
 			    <tr>
-				 <td background='{$imagefiles}/adminbg.jpg' height='26' valign='bottom'>
-			      <img src='{$imagefiles}/showhelp.gif' align='right'>
-			      <img src='$imagefiles/blank.gif' width='5' height='1'>
+				 <td style='background-image:url($imagefiles/adminbg.jpg)' height='26' valign='bottom'>
+			      <img src='{$imagefiles}/showhelp.gif' align='right' alt='Show Help'>
+			      <img src='$imagefiles/blank.gif' width='5' height='1' alt=''>
 			      <a href='$scriptname' title='"._A_HOME_BT."'><img src='{$imagefiles}/home.gif' alt='"._A_HOME_BT."' border='0'></a>
 				 </td>
 				</tr>
 				<tr>
 			     <td valign='bottom' class='headingtable' height='24' bgcolor='#999999'>
-			      <img src='{$imagefiles}/admincrnr.png' border='0' align='left' hspace='0' vspace='0'>
-			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, system, '165px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_OPTIONS."</a>
-			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, systemdb, '240px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_ACTIONS."</a>
-			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, systemother, '220px')\"><img src='$imagefiles/down.gif' border='0' hspace='0'>"._SN_OTHER."</a>
-			      <img src='{$imagefiles}/blank.gif' width='20' height='1' border='0'>
+			      <img src='{$imagefiles}/admincrnr.png' border='0' align='left' hspace='0' vspace='0' alt=''>
+			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, system, '165px')\"><img src='$imagefiles/down.gif' border='0' hspace='0' alt='"._SN_OPTIONS."'>"._SN_OPTIONS."</a>
+			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, systemdb, '240px')\"><img src='$imagefiles/down.gif' border='0' hspace='0' alt='"._SN_ACTIONS."'>"._SN_ACTIONS."</a>
+			      <a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, systemother, '220px')\"><img src='$imagefiles/down.gif' border='0' hspace='0' alt='"._SN_OTHER."'>"._SN_OTHER."</a>
+			      <img src='{$imagefiles}/blank.gif' width='20' height='1' border='0' alt=''>
 			     </td>
 			    </tr>
 			   </table>
@@ -437,6 +437,7 @@ function footer($url, $explanation)
 				. "Ver $versionnumber\n"
 				. "\t\t</font></font></td>\n"
 				. "\t</tr>\n"
+				. "</table>\n"
 				. "</table>\n"
 				. "</body>\n</html>";
 	return $htmlfooter;
