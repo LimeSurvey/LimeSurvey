@@ -369,11 +369,12 @@ if ($surveyid)
 		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td>"
 						. "<td>$setfont<font size='1' color='#000080'>\n";
 		if ($s1row['private'] != "N") {$surveysummary2 .= _SS_ANONYMOUS."<br />\n";}
-		else {$surveysummary2 .= _SS_TRACKED;}
+		else {$surveysummary2 .= _SS_TRACKED."<br />\n";}
 		if ($s1row['format'] == "S") {$surveysummary2 .= _SS_QBYQ."<br />\n";}
 		elseif ($s1row['format'] == "G") {$surveysummary2 .= _SS_GBYG."<br />\n";}
-		else {$surveysummary2 .= _SS_SBYS;}
+		else {$surveysummary2 .= _SS_SBYS."<br />\n";}
 		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _SS_DATESTAMPED."<br />\n";}
+		if ($s1row['ipaddr'] == "Y") {$surveysummary2 .= _SS_IPADDRESS."<br />\n";}
 		if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _SS_COOKIES."<br />\n";}
 		if ($s1row['allowregister'] == "Y") {$surveysummary2 .= _SS_ALLOWREGISTER."<br />\n";}
 		if ($s1row['allowsave'] == "Y") {$surveysummary2 .= _SS_ALLOWSAVE."<br />\n";}
@@ -740,8 +741,8 @@ if (returnglobal('viewanswer'))
 		$vasummary .="</td>\n";
 		$cdrow['answer']=htmlspecialchars($cdrow['answer']);  // So HTML-Code can be used in answers
 		$vasummary .= "\t\t<td align='center' width='50%'><input name='answer' "
-					. "type='text' $btstyle value=\"{$cdrow['answer']}\" size='50'></td>\n"
-					. "\t\t<input name='sortorder' type='hidden' $btstyle value=\"$position\">"
+					. "type='text' $btstyle value=\"{$cdrow['answer']}\" size='50'>\n"
+					. "\t\t<input name='sortorder' type='hidden' $btstyle value=\"$position\"></td>"
 					. "\t\t<td align='center' width='10%'>";
 		if (($activated == "Y" && ($qtype == "L" || $qtype =="!")) || ($activated == "N"))
 			{
@@ -776,7 +777,7 @@ if (returnglobal('viewanswer'))
 		else {$vasummary .= "&nbsp;&nbsp;&nbsp;&nbsp;";}
 		if ($position < $cdcount-1) {$vasummary .= "<input name='ansaction' $btstyle type='submit' value='"._AL_DN."'>";}
 		else {$vasummary .= "&nbsp;&nbsp;&nbsp;&nbsp;";}
-		$vasummary .= "\t\t</td>\n";
+		$vasummary .= "\t\t\n";
 		$vasummary .= "\t<input type='hidden' name='oldcode' value=\"{$cdrow['code']}\">\n"
 					. "\t<input type='hidden' name='oldanswer' value=\"{$cdrow['answer']}\">\n"
 					. "\t<input type='hidden' name='olddefault' value=\"{$cdrow['default_value']}\">\n"
@@ -785,7 +786,7 @@ if (returnglobal('viewanswer'))
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
 					. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
-					. "\t</table></form></tr>\n";
+					. "\t</td></table></form></tr>\n";
 		$position++;
 		}
 	if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
@@ -804,13 +805,13 @@ if (returnglobal('viewanswer'))
 					. "\t\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
 					. "\t\t\t</select></td>\n"
 					. "\t\t<td align='center' width='15%'><input name='ansaction' $btstyle type='submit' value='"._AL_ADD."'></td>\n"
-					. "\t\t<td></td>\n"
+					. "\t\t<td>\n"
 					. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
 					. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
-					. "\t</table></form></tr>\n";
+					. "\t</td></table></form></tr>\n";
 		$vasummary .= "<script type='text/javascript' language='javascript'>\n"
 					. "<!--\n"
 					. "document.getElementById('addanswercode').focus();\n"
@@ -867,14 +868,14 @@ if ($action == "modifyuser")
 	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
 	while ($mrw = mysql_fetch_array($mur))
 		{
-		$usersummary .= "\t<td>$setfont<strong>{$mrw['user']}</strong></font></td>\n"
-					  . "\t\t<input type='hidden' name='user' value='{$mrw['user']}'>\n"
+		$usersummary .= "\t<td>$setfont<strong>{$mrw['user']}</strong></font>\n"
+					  . "\t\t<input type='hidden' name='user' value='{$mrw['user']}'></td>\n"
 					  . "\t<td>\n\t\t<input $slstyle type='text' name='pass' value='{$mrw['password']}'></td>\n"
 					  . "\t<td>\n\t\t<input $slstyle type='text' size='2' name='level' value='{$mrw['security']}'></td>\n";
 		}
 	$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n"
-				  . "\t\t<input type='submit' $btstyle value='"._UPDATE."'></td></tr>\n"
-				  . "<input type='hidden' name='action' value='moduser'>\n"
+				  . "\t\t<input type='submit' $btstyle value='"._UPDATE."'>\n"
+				  . "<input type='hidden' name='action' value='moduser'></td></tr>\n"
 				  . "</form></table>\n";
 	}
 
@@ -1514,8 +1515,8 @@ if ($action == "editsurvey")
 			if ($esrow['private'] == "N") {$editsurvey .= " This survey is <strong>not</strong> anonymous";}
 			else {$editsurvey .= "This survey <strong>is</strong> anonymous";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
-						 . "\t\t</font></font></td>\n";
-			$editsurvey .= "<input type='hidden' name='private' value='".$esrow['private']."'>\n";
+						 . "\t\t</font></font>n";
+			$editsurvey .= "<input type='hidden' name='private' value='".$esrow['private']."'></td>\n";
 			}
 		else
 			{
@@ -1600,8 +1601,8 @@ if ($action == "editsurvey")
 			if ($esrow['datestamp'] != "Y") {$editsurvey .= " Responses <strong>will not</strong> be date stamped.";}
 			else {$editsurvey .= "Responses <strong>will</strong> be date stamped";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
-						 . "\t\t</font></font></td>\n";
-			$editsurvey .= "<input type='hidden' name='datestamp' value='".$esrow['datestamp']."'>\n";
+						 . "\t\t</font></font>\n";
+			$editsurvey .= "<input type='hidden' name='datestamp' value='".$esrow['datestamp']."'></td>\n";
 			}
 		else
 			{
@@ -1615,6 +1616,29 @@ if ($action == "editsurvey")
 						 . "</select>\n\t\t</td>\n";
 			}
 		$editsurvey .= "</tr>\n";
+
+		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_IPADDRESS."</strong></font></td>\n";
+
+		if ($esrow['active'] == "Y")
+			{
+			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
+			if ($esrow['ipaddr'] != "Y") {$editsurvey .= " Responses <strong>will not</strong> have the IP address logged.";}
+			else {$editsurvey .= "Responses <strong>will</strong> have the IP address logged";}
+			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
+						 . "\t\t</font></font>\n";
+			$editsurvey .= "<input type='hidden' name='ipaddr' value='".$esrow['ipaddr']."'>\n</td>";
+			}
+		else
+			{
+			$editsurvey .= "\t\t<td><select $slstyle name='ipaddr'>\n"
+						 . "\t\t\t<option value='Y'";
+			if ($esrow['ipaddr'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._AD_YES."</option>\n"
+						 . "\t\t\t<option value='N'";
+			if ($esrow['ipaddr'] != "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._AD_NO."</option>\n"
+						 . "</select>\n\t\t</td>\n";
+			}
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_LANGUAGE."</strong></font></td>\n"
 					 . "\t\t<td><select $slstyle name='language'>\n";
 		foreach (getlanguages() as $langname)
@@ -1766,6 +1790,11 @@ if ($action == "newsurvey")
 				. "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
 				. "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
 				. "\t\t</select></td>\n\t</tr>\n";
+	// IP Address
+	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_IPADDRESS."</strong></font></td>\n"
+                                . "\t\t<td><select $slstyle name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
+                                . "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
+                                . "\t\t</select></td>\n\t</tr>\n";
 	//NOTIFICATION
 	//LANGUAGE
 	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_LANGUAGE."</strong></font></td>\n"

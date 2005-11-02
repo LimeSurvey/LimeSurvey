@@ -144,7 +144,7 @@ if ($action == "insert")
 				   <td><input type='text' name='save_email' value='".$_POST['save_email']."'></td></tr>\n";
 			foreach ($_POST as $key=>$val)
 				{
-				if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp")
+				if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
 					{
 					echo "<input type='hidden' name='$key' value='$val'>\n";
 					}
@@ -158,7 +158,10 @@ if ($action == "insert")
 				{
 			    echo "<input type='hidden' name='datestamp' value='".$_POST['datestamp']."'>\n";
 				}
-			echo "</form></table>\n";
+			if (isset($_POST['ipaddr'])) 
+				{
+			    echo "<input type='hidden' name='ipaddr' value='".$_POST['ipaddr']."'>\n";
+				}echo "</form></table>\n";
 			} 
 		else 
 			{
@@ -190,18 +193,19 @@ if ($action == "insert")
 				$scid=mysql_insert_id();
 				foreach ($_POST as $key=>$val)
 					{
-					if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp")
+					if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && key != "ipaddr")
 						{
 						if($val)
 							{
 							$insert="INSERT INTO {$dbprefix}saved\n"
-								   . "(`saved_id`, `scid`, `datestamp`, `fieldname`,\n"
+								   . "(`saved_id`, `scid`, `datestamp`, `fieldname`, `ipaddr`\n"
 								   . "`value`)\n"
 								   ."VALUES ('',\n"
 								   ."'$scid',\n"
 								   ."'".date("Y-m-d H:i:s")."',\n"
 								   ."'".$key."',\n"
-								   ."'".$val."')";
+								   ."'".$val."',
+								   . NULL)";
 							//echo "$insert<br />\n";
 							if (!$result=mysql_query($insert))
 								{
@@ -390,6 +394,11 @@ if ($action == "insert")
 			$col_name .= ", datestamp\n";
 			$insertqr .= ", '{$_POST['datestamp']}'";
 			}
+		if (isset($_POST['ipaddr']) && $_POST['ipaddr']) //handle datestamp if needed
+			{
+			$col_name .= ", ipaddr\n";
+			$insertqr .= ", '{$_POST['ipaddr']}'";
+			}
 //		echo "\t\t\t<strong>Inserting data</strong><br />\n"
 //			."SID: $surveyid, ($surveytable)<br /><br />\n";
 		$SQL = "INSERT INTO $surveytable 
@@ -455,7 +464,7 @@ elseif ($action == "edit" || $action == "editsaved")
 	$fncount = mysql_num_rows($fnresult);
 	//echo "$fnquery<br /><br />\n";
 	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private=$fnrow['private']; $datestamp=$fnrow['datestamp'];} // Get table output into array
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private=$fnrow['private']; $datestamp=$fnrow['datestamp'];$ipaddr=$fnrow['ipaddr'];} // Get table output into array
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
 	// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist) 
@@ -468,6 +477,10 @@ elseif ($action == "edit" || $action == "editsaved")
 	if ($datestamp == "Y")
 		{
 		$fnames[] = array ("datestamp", "Date Stamp", "Datestamp", "datestamp", "datestamp", "", "");
+		}
+	if ($ipaddr == "Y")
+		{
+		$fnames[] = array ("ipaddr", "IP Adress", "IPAddress", "ipaddr", "ipaddr", "", "");
 		}
 	$fcount=0;
 	foreach ($fnrows as $fnrow)
@@ -586,6 +599,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			}
 		$results1['id']="";
 		$results1['datestamp']=date("Y-m-d H:i:s");
+		$results1['ipaddr']="NULL";
 		$results[]=$results1;	
 		}
 //	echo "<pre>";print_r($results);echo "</pre>";
@@ -1361,6 +1375,7 @@ elseif ($action == "update")
 		}
 	$updateqr = substr($updateqr, 0, -3);
 	if (isset($_POST['datestampe']) && $_POST['datestamp']) {$updateqr .= ", datestamp='{$_POST['datestamp']}'";}
+	if (isset($_POST['ipaddr']) && $_POST['ipaddr']) {$updateqr .= ", ipaddr='{$_POST['ipaddr']}'";}
 	if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 	$updateqr .= " WHERE id=$id";
 	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
@@ -1370,7 +1385,7 @@ elseif ($action == "update")
 	    $url=$thissurvey['url'];
 	    header("Location: $url");
 	}
-	@ob_end_flush();
+	ob_end_flush();
 	echo "<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		._DE_UPDATED."<br /><br />\n"
 		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
@@ -1447,6 +1462,18 @@ else
 			."\t\t</td>\n"
 			."\t</tr>\n";
 		}
+	if ($thissurvey['ipaddr'] == "Y") //Give ipaddress field
+		{
+		echo "\t<tr>\n"
+			."\t\t<td valign='top' width='1%'></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
+			._IPADDRESS.":</strong></font></td>\n"
+			."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n"
+			."\t\t\t<input type='text' name='ipaddr' value='NULL'>\n"
+			."\t\t</td>\n"
+			."\t</tr>\n";
+		}
+
 
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
 	$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";

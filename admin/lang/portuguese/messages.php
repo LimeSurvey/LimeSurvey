@@ -1,5 +1,45 @@
 <?php
-// PORTUGUESE TRANSLATION PROVIDED BY ROSAURA GAZZOLA/JOB LÚCIO VIEIRA
+<?php
+/*
+    #################################################################
+    # >>> PHPSurveyor                                               #
+    #################################################################
+    # > Author:  Jason Cleeland                                     #
+    # > E-mail:  jason@cleeland.org                                 #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+    # > Date:    20 February 2003                                   #
+    #                                                               #
+    # This set of scripts allows you to develop, publish and        #
+    # perform data-entry on surveys.                                #
+    #################################################################
+    #   Copyright (C) 2003  Jason Cleeland                          #
+    #                                                               #
+    # This program is free software; you can redistribute           #
+    # it and/or modify it under the terms of the GNU General        #
+    # Public License as published by the Free Software              #
+    # Foundation; either version 2 of the License, or (at your      #
+    # option) any later version.                                    #
+    #                                                               #
+    # This program is distributed in the hope that it will be       #
+    # useful, but WITHOUT ANY WARRANTY; without even the            #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+    # PARTICULAR PURPOSE.  See the GNU General Public License       #
+    # for more details.                                             #
+    #                                                               #
+    # You should have received a copy of the GNU General            #
+    # Public License along with this program; if not, write to      #
+    # the Free Software Foundation, Inc., 59 Temple Place -         #
+    # Suite 330, Boston, MA  02111-1307, USA.                       #
+    #################################################################
+    #                                                               #
+    #  TRANSLATION PROVIDED BY ROSAURA GAZZOLA/JOB LÚCIO VIEIRA		#
+    #  																#
+    #                                                               #
+    #  Edit this file with an UTF-8 capable editor only!            #
+    #                                                               #
+    #################################################################
+*/
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Administração");
@@ -143,6 +183,7 @@ define("_SL_ANONYMOUS", "Anônimo?");
 define("_SL_EXPIRES", "Expira:");
 define("_SL_FORMAT", "Formato:");
 define("_SL_DATESTAMP", "Colocar data?");
+define("_SL_IPADDRESS", "IP Address"); //New with 0.991
 define("_SL_TEMPLATE", "Planilha:");
 define("_SL_LANGUAGE", "Idioma:");
 define("_SL_LINK", "Link:");
@@ -175,9 +216,6 @@ define("_GL_TITLE", "Título:");
 define("_GL_DESCRIPTION", "Descrição:");
 define("_GL_EDITGROUP", "Editar grupo para o questionário com");
 define("_GL_UPDATEGROUP", "Atualizar grupo");
-
-
-
 //questions
 define("_QL_EDITQUESTION", "Modificar pergunta");
 define("_QL_UPDATEQUESTION", "Atualizar pergunta");
@@ -225,8 +263,6 @@ define("_TL_DONE", "Completo?");
 define("_TL_ACTION", "Ações");
 define("_TL_ATTR1", "Atributo_1"); //New for 0.98rc7
 define("_TL_ATTR2", "Atributo_2"); //New for 0.98rc7
-
-
 define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
 define("_LL_NAME", "Nome do conjunto"); //NEW with 098rc3
@@ -291,6 +327,7 @@ define("_DELETE", "Apagar");
 define("_CLOSEWIN", "Fechar Janela");
 define("_TOKEN", "Senha");
 define("_DATESTAMP", "Data"); //Referring to the datestamp or time response submitted
+define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Comentário");
 define("_FROM", "De:"); //For emails
 define("_SUBJECT", "Assunto:"); //For emails
@@ -310,6 +347,7 @@ define("_SS_NOQUESTS", "Número de perguntas do questionário:"); //NEW for rele
 define("_SS_ANONYMOUS", "Este questionário é anônimo."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Este questionário NÃO é anônimo."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "As respostas conterão a data"); //NEW for release 0.98rc3
+define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
 define("_SS_COOKIES", "Utiliza \"cookies\" para o controle de acesso."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Mostrar pergunta por pergunta."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Mostrar grupo por grupo."); //NEW for release 0.98rc3
@@ -695,7 +733,6 @@ define("_CD_NOCONDITIONTOCOPY", "No condition selected to copy from"); //New wit
 define("_CD_NOQUESTIONTOCOPYTO", "No question selected to copy condition to"); //New with 098rc9
 define("_CD_COPYTO", "copy to"); //New with 0.991
 
-
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Create new template"); //New with 098rc9
 define("_TP_NEWTEMPLATECALLED", "Create new template called:"); //New with 098rc9
@@ -777,7 +814,6 @@ define("_AS_UPDATE", "Update");
 define("_RE_REGENNUMBER", "Regenerate Question Numbers:"); //NEW for release 0.99dev2
 define("_RE_STRAIGHT", "Straight"); //NEW for release 0.99dev2
 define("_RE_BYGROUP", "By Group"); //NEW for release 0.99dev2
-
 
 // Database Consistency Check
 define ("_DC_TITLE", "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"); // New with 0.99stable

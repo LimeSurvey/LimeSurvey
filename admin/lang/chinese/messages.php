@@ -1,4 +1,44 @@
 <?php
+/*
+    #################################################################
+    # >>> PHPSurveyor                                               #
+    #################################################################
+    # > Author:  Jason Cleeland                                     #
+    # > E-mail:  jason@cleeland.org                                 #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+    # > Date:    20 February 2003                                   #
+    #                                                               #
+    # This set of scripts allows you to develop, publish and        #
+    # perform data-entry on surveys.                                #
+    #################################################################
+    #   Copyright (C) 2003  Jason Cleeland                          #
+    #                                                               #
+    # This program is free software; you can redistribute           #
+    # it and/or modify it under the terms of the GNU General        #
+    # Public License as published by the Free Software              #
+    # Foundation; either version 2 of the License, or (at your      #
+    # option) any later version.                                    #
+    #                                                               #
+    # This program is distributed in the hope that it will be       #
+    # useful, but WITHOUT ANY WARRANTY; without even the            #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+    # PARTICULAR PURPOSE.  See the GNU General Public License       #
+    # for more details.                                             #
+    #                                                               #
+    # You should have received a copy of the GNU General            #
+    # Public License along with this program; if not, write to      #
+    # the Free Software Foundation, Inc., 59 Temple Place -         #
+    # Suite 330, Boston, MA  02111-1307, USA.                       #
+    #################################################################
+    #                                                               #
+    #   								 							#
+    #  																#
+    #                                                               #
+    #  Edit this file with an UTF-8 capable editor only!            #
+    #                                                               #
+    #################################################################
+*/
 
 
 //BUTTON BAR TITLES
@@ -143,6 +183,7 @@ define("_SL_ANONYMOUS", "要保持匿名方式回應嗎?");
 define("_SL_EXPIRES", "有效期:");
 define("_SL_FORMAT", "格式:");
 define("_SL_DATESTAMP", "要建立日期印章嗎?");
+define("_SL_IPADDRESS", "IP Address"); //New with 0.991
 define("_SL_TEMPLATE", "風格模組:");
 define("_SL_LANGUAGE", "語言:");
 define("_SL_LINK", "連結:");
@@ -178,7 +219,6 @@ define("_GL_UPDATEGROUP","Update Group"); // New with 0.99dev02
 //questions
 define("_QL_EDITQUESTION", "Edit Question");// New with 0.99dev02
 define("_QL_UPDATEQUESTION", "Update Question");// New with 0.99dev02
-
 define("_QL_CODE", "編號:");
 define("_QL_QUESTION", "題目:");
 define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
@@ -287,6 +327,7 @@ define("_DELETE", "刪除");
 define("_CLOSEWIN", "關閉視窗");
 define("_TOKEN", "操作代碼");
 define("_DATESTAMP", "日期印章"); //Referring to the datestamp or time response submitted
+define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "評語");
 define("_FROM", "由"); //For emails
 define("_SUBJECT", "標題"); //For emails
@@ -306,6 +347,7 @@ define("_SS_NOQUESTS", "問卷的題目數目:"); //NEW for release 0.98rc3
 define("_SS_ANONYMOUS", "本問卷是採用匿名方式."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "本問卷並非採用匿名方式."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "回應的問卷會被加上日期的印章"); //NEW for release 0.98rc3
+define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
 define("_SS_COOKIES", "它採用 cookies 控制問卷的使用權限."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "它是採用逐題回應的方式."); //NEW for release 0.98rc3
 define("_SS_GBYG", "它是採用逐個題目組別的回應方式."); //NEW for release 0.98rc3

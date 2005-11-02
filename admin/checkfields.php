@@ -122,6 +122,7 @@ $allfields[]=array("{$dbprefix}surveys", "url", "url varchar(255) default NULL")
 $allfields[]=array("{$dbprefix}surveys", "urldescrip", "urldescrip varchar(255) default NULL");
 $allfields[]=array("{$dbprefix}surveys", "language", "language varchar(50) default ''");
 $allfields[]=array("{$dbprefix}surveys", "datestamp", "datestamp char(1) default 'N'");
+$allfields[]=array("{$dbprefix}surveys", "ipaddr", "ipaddr char(1) default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "usecookie", "usecookie char(1) default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "notification", "notification char(1) default '0'");
 $allfields[]=array("{$dbprefix}surveys", "allowregister", "allowregister char(1) default 'N'");
@@ -143,6 +144,7 @@ $allfields[]=array("{$dbprefix}surveys", "allowprev","allowprev char(1) default 
 $allfields[]=array("{$dbprefix}saved", "saved_id", "saved_id int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}saved", "scid", "scid int(11) NOT NULL");
 $allfields[]=array("{$dbprefix}saved", "datestamp", "datestamp datetime NOT NULL default '0000-00-00 00:00:00'");
+$allfields[]=array("{$dbprefix}saved", "ipaddr", "ipaddr MEDIUMTEXT default NULL");
 $allfields[]=array("{$dbprefix}saved", "fieldname", "fieldname text NOT NULL");
 $allfields[]=array("{$dbprefix}saved", "value", "value text NOT NULL");
 

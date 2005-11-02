@@ -183,6 +183,7 @@ define("_SL_ANONYMOUS", "Anonyme :");
 define("_SL_EXPIRES", "Date limite de r&eacute;ponse :");
 define("_SL_FORMAT", "Format :");
 define("_SL_DATESTAMP", "R&eacute;ponses dat&eacute;es :");
+define("_SL_IPADDRESS", "IP Address"); //New with 0.991
 define("_SL_TEMPLATE", "Mod&egrave;le :");
 define("_SL_LANGUAGE", "Langue :");
 define("_SL_LINK", "Lien :");
@@ -345,6 +346,7 @@ define("_SS_NOQUESTS", "Nombre de question(s) dans le questionnaire :"); //NEW f
 define("_SS_ANONYMOUS", "Ce questionnaire est anonyme."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Ce questionnaire n&#039;EST PAS anonyme."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Les r&eacute;ponses seront dat&eacute;es"); //NEW for release 0.98rc3
+define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
 define("_SS_COOKIES", "Utilisation des cookies pour le contr&ocirc;le d&#039;acc&eacute;es."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Pr&eacute;sentation : une question par page."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Pr&eacute;sentation : un groupe de questions par page."); //NEW for release 0.98rc3

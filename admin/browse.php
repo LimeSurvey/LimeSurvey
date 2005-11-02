@@ -141,7 +141,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	$fncount = mysql_num_rows($fnresult);
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp'];} // Get table output into array
+	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -156,13 +156,20 @@ if ($action == "id") // Looking at a SINGLE entry
 		{
 		$fnames[] = array("datestamp", "datestamp", "Date Stamp");
 		}
-	
+        if ($ipaddr == "Y") //add ipaddr to list if survey should save submitters IP address
+                {
+                 $fnames[] = array("ipaddr", "ipaddr", "IP Address");
+                }	
 	foreach ($fnrows as $fnrow)
 		{
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
-		if ($fnrow['type'] == "Q" || $fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "^")
+		if ($fnrow['type'] == "Q" || $fnrow['type'] == "M" || 
+			$fnrow['type'] == "A" || $fnrow['type'] == "B" || 
+			$fnrow['type'] == "C" || $fnrow['type'] == "E" || 
+			$fnrow['type'] == "F" || $fnrow['type'] == "H" || 
+			$fnrow['type'] == "P" || $fnrow['type'] == "^")
 			{
 			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 			$fnrresult = mysql_query($fnrquery);
@@ -292,7 +299,7 @@ elseif ($action == "all")
 	$fncount = mysql_num_rows($fnresult);
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp'];} // Get table output into array
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -301,9 +308,13 @@ elseif ($action == "all")
 		{
 		$fnames[] = array("token", "Token", "Token ID", "0");
 		}
-	if ($datestamp == "Y") //Acd datestamp
+	if ($datestamp == "Y") //Add datestamp
 		{
 		$fnames[] = array("datestamp", "Datestamp", "Date Stamp", "0");
+		}
+        if ($ipaddr == "Y") // Add IP Address
+		{
+                $fnames[] = array("ipaddr", "IPAddress", "IP Address", "0");
 		}
 	foreach ($fnrows as $fnrow)
 		{

@@ -1,5 +1,45 @@
 <?php
-//Translation kindly provided by Alexei G. Tchernov  (alexei_g_chernov[at]mail[dot]ru)
+/*
+    #################################################################
+    # >>> PHPSurveyor                                               #
+    #################################################################
+    # > Author:  Jason Cleeland                                     #
+    # > E-mail:  jason@cleeland.org                                 #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+    # > Date:    20 February 2003                                   #
+    #                                                               #
+    # This set of scripts allows you to develop, publish and        #
+    # perform data-entry on surveys.                                #
+    #################################################################
+    #   Copyright (C) 2003  Jason Cleeland                          #
+    #                                                               #
+    # This program is free software; you can redistribute           #
+    # it and/or modify it under the terms of the GNU General        #
+    # Public License as published by the Free Software              #
+    # Foundation; either version 2 of the License, or (at your      #
+    # option) any later version.                                    #
+    #                                                               #
+    # This program is distributed in the hope that it will be       #
+    # useful, but WITHOUT ANY WARRANTY; without even the            #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+    # PARTICULAR PURPOSE.  See the GNU General Public License       #
+    # for more details.                                             #
+    #                                                               #
+    # You should have received a copy of the GNU General            #
+    # Public License along with this program; if not, write to      #
+    # the Free Software Foundation, Inc., 59 Temple Place -         #
+    # Suite 330, Boston, MA  02111-1307, USA.                       #
+    #################################################################
+    #                                                               #
+    #  Translation kindly provided by Alexei G. Tchernov			#
+    # (alexei_g_chernov[at]mail[dot]ru) 							#
+    #                                                               #
+    #  Edit this file with an UTF-8 capable editor only!            #
+    #                                                               #
+    #################################################################
+*/
+
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Администрирование");
@@ -143,6 +183,7 @@ define("_SL_ANONYMOUS", "Анонимный?");
 define("_SL_EXPIRES", "Окончание:");
 define("_SL_FORMAT", "Формат:");
 define("_SL_DATESTAMP", "Отмечать время?");
+define("_SL_IPADDRESS", "IP Address"); //New with 0.991
 define("_SL_TEMPLATE", "Шаблон:");
 define("_SL_LANGUAGE", "Язык:");
 define("_SL_LINK", "Ссылка:");
@@ -286,6 +327,7 @@ define("_DELETE", "Удалить");
 define("_CLOSEWIN", "Закрыть окно");
 define("_TOKEN", "Ключ. фраза");
 define("_DATESTAMP", "Дата и время"); //Referring to the datestamp или time response submitted
+define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Комментарий");
 define("_FROM", "От"); //For emails
 define("_SUBJECT", "Тема"); //For emails
@@ -305,6 +347,7 @@ define("_SS_NOQUESTS", "Число вопросов в опросе:"); //NEW fo
 define("_SS_ANONYMOUS", "Этот опрос анонимный."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Этот опрос НЕ анонимный."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Ответы имеют дату"); //NEW for release 0.98rc3
+define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
 define("_SS_COOKIES", "Используются cookie для контроля доступа."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Форма \"Вопрос за Вопросом\"."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Форма \"Группа за Группой\"."); //NEW for release 0.98rc3
@@ -336,7 +379,7 @@ define("_ST_CREATEDB", "Создать БД");
 define("_UC_CREATE", "Создание htaccess файла по умолчанию");
 define("_UC_NOCREATE", "Не могу создать htaccess файл. Проверьте в файле config.php строку с \$homedir установками и наличие прав на запись в соответсвующий каталог.");
 define("_UC_SEC_DONE", "Настройте уровни режима безопастности!");
-define("_UC_CREATE_DEFAULT", "Создание пользователей по умолчанию");
+define("_UC_CREATE_DEFAULT", "Создани5 пользователей по умолчанию");
 define("_UC_UPDATE_TABLE", "Обновление таблицы пользователей");
 define("_UC_HTPASSWD_ERROR", "Ошибка при создании htpasswd файла");
 define("_UC_HTPASSWD_EXPLAIN", "Если Вы используете windows сервер, то рекомендуем скопировать  htpasswd.exe файл из Apache в Ваш каталог admin  для правитьной работы. Этот файл обычно находится в каталоге /apache group/apache/bin/");
@@ -584,8 +627,7 @@ define("_TC_INVITESUBJECT", "Приглашение участнику опро�
 define("_TC_REMINDSUBJECT", "Напоминание участнику опроса {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
 define("_TC_REMINDSTARTAT", "Начать с TID No:");
 define("_TC_REMINDTID", "Отправка для TID No:");
-define("_TC_CREATETOKENSINFO", "Выбор ДА приведет к генерации кл. фраз
-для всех в списке кто не имел такие. Все правильно?");
+define("_TC_CREATETOKENSINFO", "Выбор ДА приведет к генерации кл. фраздля всех в списке кто не имел такие. Все правильно?");
 define("_TC_TOKENSCREATED", "{TOKENCOUNT} кл. фраз создано"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
 define("_TC_TOKENDELETED", "Кл.фраза удалена.");
 define("_TC_SORTBY", "Сортировка по: ");
@@ -690,7 +732,6 @@ define("_CD_DIDNOTCOPYQ", "Вопросы не скопированы"); //New w
 define("_CD_NOCONDITIONTOCOPY", "Нет условия для копирования из"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "Нет условия для копирования в"); //New with 098rc9
 define("_CD_COPYTO", "copy to"); //New with 0.991
-
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Создать новый шаблон"); //New with 098rc9

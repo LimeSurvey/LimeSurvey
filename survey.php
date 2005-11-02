@@ -80,6 +80,15 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			}
 		$_SESSION['datestamp'] = $localtimedate;
 		}
+	//If survey has ipaddr turned on, add IP Address to sessions
+	if ($thissurvey['ipaddr'] == "Y")
+		{
+		if (!in_array("ipaddr", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
+			{
+		    $_SESSION['insertarray'][] = "ipaddr";
+			}
+		$_SESSION['ipaddr'] = $_SERVER['REMOTE_ADDR'];
+		}
 
 	//DEVELOP SQL TO INSERT RESPONSES
 	$subquery = createinsertquery();

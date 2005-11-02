@@ -250,7 +250,7 @@ else
 	$createsurvey = "CREATE TABLE {$dbprefix}survey_{$_GET['sid']} (\n";
 	$createsurvey .= "  id BIGINT(11) NOT NULL auto_increment,\n";
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
-	$pquery = "SELECT private, allowregister, datestamp FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
+	$pquery = "SELECT private, allowregister, datestamp, ipaddr FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
 		{
@@ -267,7 +267,11 @@ else
 			{
 			$createsurvey .= " datestamp DATETIME NOT NULL,\n";
 			}
-		}
+		if ($prow['ipaddr'] == "Y")
+			{
+			$createsurvey .= " ipaddr MEDIUMTEXT,\n";
+			}
+}
 	//Get list of questions
 	$aquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, title";
 	$aresult = mysql_query($aquery);

@@ -155,6 +155,7 @@ function editSurvey($surveyid, $dbprefix, $dbaction) {
 					   "urldescrip",
 					   "language",
 					   "datestamp",
+                       "ipaddr",
 					   "usecookie",
 					   "notification",
 					   "allowregister",

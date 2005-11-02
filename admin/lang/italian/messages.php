@@ -183,6 +183,7 @@ define("_SL_ANONYMOUS", "Anonimo");
 define("_SL_EXPIRES", "Scadenza:");
 define("_SL_FORMAT", "Formato:");
 define("_SL_DATESTAMP", "Data invio questionario completato");
+define("_SL_IPADDRESS", "IP Address"); //New with 0.991
 define("_SL_TEMPLATE", "Template:");
 define("_SL_LANGUAGE", "Lingua:");
 define("_SL_LINK", "Link:");
@@ -326,6 +327,7 @@ define("_DELETE", "Elimina indagine");
 define("_CLOSEWIN", "Chiudi finestra");
 define("_TOKEN", "Identificativo");
 define("_DATESTAMP", "Data invio questionario completato"); //Referring to the datestamp or time response submitted
+define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Commento");
 define("_FROM", "Da"); //For emails
 define("_SUBJECT", "Oggetto"); //For emails
@@ -345,6 +347,7 @@ define("_SS_NOQUESTS", "Numero di domande in questa indagine:"); //NEW for relea
 define("_SS_ANONYMOUS", "Questa indagine è anonima."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Questa indagine NON è anonima."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Le risposte verranno datate"); //NEW for release 0.98rc3
+define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
 define("_SS_COOKIES", "Utilizza i cookie per il controllo degli accessi."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Viene visualizzata domanda per domanda."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Viene visualizzata gruppo per gruppo."); //NEW for release 0.98rc3

@@ -410,6 +410,11 @@ for ($i=0; $i<$fieldcount; $i++)
 		if ($type == "csv") {$firstline .= "\"Time Submitted\"$s";}
 		else {$firstline .= "Time Submitted$s";}
 		}
+	elseif ($fieldinfo == "ipaddr")
+		{
+		if ($type == "csv") {$firstline .= "\""._IP_ADDRESS."\"$s";}
+		else {$firstline .= _IP_ADDRESS."$s";}
+		}
 	else
 		{
 		//Data fields!
@@ -620,7 +625,7 @@ elseif ($answers == "long")
 			{
 			$debug .= "\n";
 			$fieldinfo=mysql_field_name($dresult, $i);
-			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "token" && mysql_field_name($dresult, $i) != "firstname" && mysql_field_name($dresult, $i) != "lastname" && mysql_field_name($dresult, $i) != "email" && mysql_field_name($dresult, $i) != "attribute_1" && mysql_field_name($dresult, $i) != "attribute_2")
+			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "ipaddr"&& mysql_field_name($dresult, $i) != "token" && mysql_field_name($dresult, $i) != "firstname" && mysql_field_name($dresult, $i) != "lastname" && mysql_field_name($dresult, $i) != "email" && mysql_field_name($dresult, $i) != "attribute_1" && mysql_field_name($dresult, $i) != "attribute_2")
 				{
 				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
 				$fqid=$fielddata['qid'];

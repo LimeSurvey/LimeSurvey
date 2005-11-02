@@ -1380,7 +1380,8 @@ function doAssessment($surveyid)
 			$total=0;
 			foreach($fieldmap as $field) 
 				{
-				if ($field['fieldname'] != "datestamp") 
+				if (($field['fieldname'] != "datestamp") and 
+                                    ($field['fieldname'] != "ipaddr"))
 					{
 					$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];
 					$groups[]=$field['gid'];

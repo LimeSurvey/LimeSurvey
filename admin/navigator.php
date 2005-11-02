@@ -350,6 +350,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 				  _SL_ALLOWSAVE=>yesno($thissurvey['allowsave']),
 				  _SL_ANONYMOUS=>yesno($thissurvey['private']),
 				  _SL_DATESTAMP=>yesno($thissurvey['datestamp']),
+				  _SL_IPADDRESS=>yesno($thissurvey['ipaddr']),
 				  _SL_EMAILINVITE_SUBJ=>$thissurvey['email_invite_subj'],
 				  _SL_EMAILINVITE=>nl2br($thissurvey['email_invite']),
 				  _SL_EMAILREMIND_SUBJ=>$thissurvey['email_remind_subj'],
@@ -364,7 +365,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 				  _SL_ALLOWPREV=>yesno($thissurvey['allowprev']));
 
 	$pages[_SN_SV_GENERAL]=array(_SL_EXPIRES, _SL_TITLE, _SL_SURVEYURL, _SL_DESCRIPTION, _SL_WELCOME, _SL_ADMIN, _SL_FAXTO);
-	$pages[_SN_SV_EXTRA]=array(_SL_TEMPLATE, _SL_LANGUAGE, _SL_URL, _SL_AUTORELOAD, _SL_FORMAT, _SL_ALLOWSAVE, _SL_ANONYMOUS, _SL_DATESTAMP);
+	$pages[_SN_SV_EXTRA]=array(_SL_TEMPLATE, _SL_LANGUAGE, _SL_URL, _SL_AUTORELOAD, _SL_FORMAT, _SL_ALLOWSAVE, _SL_ANONYMOUS, _SL_DATESTAMP, _SL_IPADDRESS);
 	$pages[_SN_SV_EMAIL]=array(_SL_EMAILINVITE_SUBJ, _SL_EMAILINVITE, _SL_EMAILREMIND_SUBJ, _SL_EMAILREMIND, _SL_EMAILCONFIRM_SUBJ,_SL_EMAILCONFIRM, _SL_EMAILREGISTER_SUBJ, _SL_EMAILREGISTER);
 	$pages[_SN_SV_MISC]=array(_SL_ATTRIBUTENAMES, _SL_NOTIFICATION, _SL_AUTONUMBER, _SL_ALLOWPREV);
 	
@@ -443,6 +444,7 @@ function surveyEdit($surveyid) {
 						  "allowsave"=>"N",
 						  "private"=>"Y",
 						  "datestamp"=>"N",
+						  "ipaddr"=>"N",
 						  "allowregister"=>"N",
 						  "email_invite_subj"=>_TC_EMAILINVITE_SUBJ,
 						  "email_invite"=>_TC_EMAILINVITE,
@@ -478,7 +480,8 @@ function surveyEdit($surveyid) {
 				  _SL_ALLOWSAVE=>yesnoSelect($thissurvey['allowsave'], "allowsave"),
 				  _SL_ANONYMOUS=>yesnoSelect($thissurvey['private'], "private", autoComparitor($thissurvey['active'], "Y", "disabled")).autoComparitor($thissurvey['active'], "Y", _SN_CANNOTCHANGE_SURVEYACTIVE),
 				  _SL_DATESTAMP=>yesnoSelect($thissurvey['datestamp'], "datestamp", autoComparitor($thissurvey['active'], "Y", "disabled")).autoComparitor($thissurvey['active'], "Y", _SN_CANNOTCHANGE_SURVEYACTIVE),
-				  _SL_ALLOWREGISTER=>yesnoSelect($thissurvey['allowregister'], "allowregister"),
+				  _SL_IPADDRESS=>yesnoSelect($thissurvey['ipaddr'], "ipaddr", autoComparitor($thissurvey['active'], "Y", "disabled")).autoComparitor($thissurvey['active'], "Y", _SN_CANNOTCHANGE_SURVEYACTIVE),
+			      _SL_ALLOWREGISTER=>yesnoSelect($thissurvey['allowregister'], "allowregister"),
 				  _SL_EMAILINVITE_SUBJ=>textinput($thissurvey['email_invite_subj'], "email_invite_subj", "size='60'"),
 				  _SL_EMAILINVITE=>textarea($thissurvey['email_invite'], "email_invite", "rows='6' cols='70'"),
 				  _SL_EMAILREMIND_SUBJ=>textinput($thissurvey['email_remind_subj'], "email_remind_subj", "size='60'"),

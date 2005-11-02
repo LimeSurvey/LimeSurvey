@@ -1,5 +1,45 @@
 <?php
-// SPANISH TRANSLATION PROVIDED BY JOSE LUIS RAMIREZ
+/*
+    #################################################################
+    # >>> PHPSurveyor                                               #
+    #################################################################
+    # > Author:  Jason Cleeland                                     #
+    # > E-mail:  jason@cleeland.org                                 #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+    # > Date:    20 February 2003                                   #
+    #                                                               #
+    # This set of scripts allows you to develop, publish and        #
+    # perform data-entry on surveys.                                #
+    #################################################################
+    #   Copyright (C) 2003  Jason Cleeland                          #
+    #                                                               #
+    # This program is free software; you can redistribute           #
+    # it and/or modify it under the terms of the GNU General        #
+    # Public License as published by the Free Software              #
+    # Foundation; either version 2 of the License, or (at your      #
+    # option) any later version.                                    #
+    #                                                               #
+    # This program is distributed in the hope that it will be       #
+    # useful, but WITHOUT ANY WARRANTY; without even the            #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+    # PARTICULAR PURPOSE.  See the GNU General Public License       #
+    # for more details.                                             #
+    #                                                               #
+    # You should have received a copy of the GNU General            #
+    # Public License along with this program; if not, write to      #
+    # the Free Software Foundation, Inc., 59 Temple Place -         #
+    # Suite 330, Boston, MA  02111-1307, USA.                       #
+    #################################################################
+    #  TRANSLATION PROVIDED BY JOSE LUIS RAMIREZ					#
+    #   								 							#
+    #  																#
+    #                                                               #
+    #  Edit this file with an UTF-8 capable editor only!            #
+    #                                                               #
+    #################################################################
+*/
+
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Administraci&oacute;n");
@@ -143,6 +183,7 @@ define("_SL_ANONYMOUS", "&iquest;An&oacute;nimo?");
 define("_SL_EXPIRES", "Expiraci&oacute;n:");
 define("_SL_FORMAT", "Formato:");
 define("_SL_DATESTAMP", "&iquest;Estampar con Fecha?");
+define("_SL_IPADDRESS", "IP Address"); //New with 0.991
 define("_SL_TEMPLATE", "Plantilla:");
 define("_SL_LANGUAGE", "Idioma:");
 define("_SL_LINK", "Liga:");
@@ -173,13 +214,8 @@ define("_SL_UPD_SURVEY","Update survey");
 //groups
 define("_GL_TITLE", "T&iacute;tulo:");
 define("_GL_DESCRIPTION", "Descripci&oacute;n:");
-define("_GL_OPTIONAL", "(opcional)");
-define("_GL_UPDATEGROUP", "Actualizar Grupo");
-define("_GL_EDITQUESTION", "Modificar Pregunta");
 define("_GL_EDITGROUP", "Editar Grupo para la Encuesta con ");
-define("_GL_UPDATEQUESTION", "Actualizar Pregunta");
-define("_GL_EDITGROUP","Edit Group for Survey ID"); // New with 0.99dev02
-define("_GL_UPDATEGROUP","Update Group"); // New with 0.99dev02
+define("_GL_UPDATEGROUP", "Actualizar Grupo");
 //questions
 define("_QL_EDITQUESTION", "Edit Question");// New with 0.99dev02
 define("_QL_UPDATEQUESTION", "Update Question");// New with 0.99dev02
@@ -220,8 +256,6 @@ define("_UL_TURNOFF", "Desactivar Seguridad");
 //tokens
 define("_TL_FIRST", "Nombre");
 define("_TL_LAST", "Apellidos");
-define("_TL_LASTMOTHERS", "Apellido Materno");
-define("_TL_LASTFATHERS", "Apellido Paterno");
 define("_TL_EMAIL", "Email");
 define("_TL_TOKEN", "Token");
 define("_TL_INVITE", "&iquest;Invitaci&oacute;n enviada?");
@@ -293,6 +327,7 @@ define("_DELETE", "Borrar");
 define("_CLOSEWIN", "Cerrar Ventana");
 define("_TOKEN", "Token");
 define("_DATESTAMP", "Fecha"); //Referring to the datestamp or time response submitted
+define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Comentario");
 define("_FROM", "De"); //For emails
 define("_SUBJECT", "Asunto"); //For emails
@@ -312,6 +347,7 @@ define("_SS_NOQUESTS", "N&uacute;mero de preguntas en la encuesta:"); //NEW for 
 define("_SS_ANONYMOUS", "Esta encuesta es an&oacute;nima."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Esta encuesta NO es an&oacute;nima."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Las respuestas tendr&aacute;n estampado de fecha"); //NEW for release 0.98rc3
+define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
 define("_SS_COOKIES", "Utiliza \"cookies\" para el control de acceso."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Es presentado pregunta por pregunta."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Es presentado grupo por grupo."); //NEW for release 0.98rc3
@@ -696,7 +732,6 @@ define("_CD_DIDNOTCOPYQ", "Did not copy questions"); //New with 098rc9
 define("_CD_NOCONDITIONTOCOPY", "No condition selected to copy from"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "No question selected to copy condition to"); //New with 098rc9
 define("_CD_COPYTO", "copy to"); //New with 0.991
-
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Create new template"); //New with 098rc9

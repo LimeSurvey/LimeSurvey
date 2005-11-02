@@ -144,6 +144,7 @@ define("_SL_ANONYMOUS", "Anonym?");
 define("_SL_EXPIRES", "Umfrage endet am:");
 define("_SL_FORMAT", "Format:");
 define("_SL_DATESTAMP", "Zeit-/Datumsstempel?");
+define("_SL_IPADDRESS", "IP-Adresse protokollieren?");
 define("_SL_TEMPLATE", "Vorlage:");
 define("_SL_LANGUAGE", "Sprache:");
 define("_SL_LINK", "Link:");
@@ -288,6 +289,7 @@ define("_DELETE", "L&ouml;schen");
 define("_CLOSEWIN", "Fenster schließen");
 define("_TOKEN", "Probanden");
 define("_DATESTAMP", "Zeitstempel"); //Referring to the datestamp or time response submitted
+define("_IPADDRESS", "IP-Adresse"); //Referring to the ip address of the submitter
 define("_COMMENT", "Kommentar");
 define("_FROM", "Von"); //For emails
 define("_SUBJECT", "Betreff"); //For emails
@@ -307,6 +309,7 @@ define("_SS_NOQUESTS", "Anzahl Fragen in der Umfrage:");
 define("_SS_ANONYMOUS", "Dies ist eine anonyme Umfrage.");
 define("_SS_TRACKED", "Diese Umfrage ist nicht anonym.");
 define("_SS_DATESTAMPED", "Antworten werden mit einem Zeitstempel versehen.");
+define("_SS_IPADDRESS", "IP-Adressen der Antwortenden werden protokolliert.");
 define("_SS_COOKIES", "Es werden Cookies für die Zugriffskontrolle benutzt.");
 define("_SS_QBYQ", "Es wird Frage für Frage gestellt.");
 define("_SS_GBYG", "Es wird Gruppe für Gruppe angezeigt.");

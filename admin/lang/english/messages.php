@@ -183,6 +183,7 @@ define("_SL_ANONYMOUS", "Anonymous?");
 define("_SL_EXPIRES", "Expires:");
 define("_SL_FORMAT", "Format:");
 define("_SL_DATESTAMP", "Date Stamp?");
+define("_SL_IPADDRESS", "IP Address"); //New with 0.991
 define("_SL_TEMPLATE", "Template:");
 define("_SL_LANGUAGE", "Language:");
 define("_SL_LINK", "Exit Link:");  //Modified in 0.99
@@ -298,6 +299,7 @@ define("_BOILERPLATE", "Boilerplate Question"); //New in 0.98rc6
 define("_LISTFL_DROPDOWN", "List (Flexible Labels) (Dropdown)"); //New in 0.99dev01
 define("_LISTFL_RADIO", "List (Flexible Labels) (Radio)"); //New in 0.99dev01
 define("_SLIDER", "Slider"); //New for slider mod
+
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Yes");
 define("_AD_NO", "No");
@@ -325,6 +327,7 @@ define("_DELETE", "Delete");
 define("_CLOSEWIN", "Close Window");
 define("_TOKEN", "Token");
 define("_DATESTAMP", "Date Stamp"); //Referring to the datestamp or time response submitted
+define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Comment");
 define("_FROM", "From"); //For emails
 define("_SUBJECT", "Subject"); //For emails
@@ -344,6 +347,7 @@ define("_SS_NOQUESTS", "Number of questions in survey:"); //NEW for release 0.98
 define("_SS_ANONYMOUS", "This survey is anonymous."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "This survey is NOT anonymous."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Responses will be date stamped"); //NEW for release 0.98rc3
+define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
 define("_SS_COOKIES", "It uses cookies for access control."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "It is presented question by question."); //NEW for release 0.98rc3
 define("_SS_GBYG", "It is presented group by group."); //NEW for release 0.98rc3

@@ -1,5 +1,45 @@
 <?php
-// Translation kindly provided by Peter De Berdt
+/*
+    #################################################################
+    # >>> PHPSurveyor                                               #
+    #################################################################
+    # > Author:  Jason Cleeland                                     #
+    # > E-mail:  jason@cleeland.org                                 #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+    # > Date:    20 February 2003                                   #
+    #                                                               #
+    # This set of scripts allows you to develop, publish and        #
+    # perform data-entry on surveys.                                #
+    #################################################################
+    #   Copyright (C) 2003  Jason Cleeland                          #
+    #                                                               #
+    # This program is free software; you can redistribute           #
+    # it and/or modify it under the terms of the GNU General        #
+    # Public License as published by the Free Software              #
+    # Foundation; either version 2 of the License, or (at your      #
+    # option) any later version.                                    #
+    #                                                               #
+    # This program is distributed in the hope that it will be       #
+    # useful, but WITHOUT ANY WARRANTY; without even the            #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+    # PARTICULAR PURPOSE.  See the GNU General Public License       #
+    # for more details.                                             #
+    #                                                               #
+    # You should have received a copy of the GNU General            #
+    # Public License along with this program; if not, write to      #
+    # the Free Software Foundation, Inc., 59 Temple Place -         #
+    # Suite 330, Boston, MA  02111-1307, USA.                       #
+    #################################################################
+    #                                                               #
+    #  Translation kindly provided by Peter De Berdt				#
+    #  																#
+    #                                                               #
+    #  Edit this file with an UTF-8 capable editor only!            #
+    #                                                               #
+    #################################################################
+*/
+
 
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Administratie");
@@ -143,6 +183,7 @@ define("_SL_ANONYMOUS", "Anoniem?");
 define("_SL_EXPIRES", "Vervalt:");
 define("_SL_FORMAT", "Formaat:");
 define("_SL_DATESTAMP", "Datum?");
+define("_SL_IPADDRESS", "IP Address"); //New with 0.991
 define("_SL_TEMPLATE", "Sjabloon:");
 define("_SL_LANGUAGE", "Taal:");
 define("_SL_LINK", "Link:");
@@ -286,6 +327,7 @@ define("_DELETE", "Wis");
 define("_CLOSEWIN", "Sluit venster");
 define("_TOKEN", "Toegangscode");
 define("_DATESTAMP", "Datum"); //Referring to the datestamp or time response submitted
+define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Opmerking");
 define("_FROM", "Van"); //For emails
 define("_SUBJECT", "Onderwerp"); //For emails
@@ -305,6 +347,7 @@ define("_SS_NOQUESTS", "Aantal vragen in vragenlijst:"); //NEW for release 0.98r
 define("_SS_ANONYMOUS", "Deze vragenlijst is anoniem."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Deze vragenlijst is NIET anoniem."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Deelnames zullen met datum bijgehouden worden"); //NEW for release 0.98rc3
+define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
 define("_SS_COOKIES", "Er worden cookies gebruikt voor controle."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Weergave vraag per vraag."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Weergave groep per groep."); //NEW for release 0.98rc3
