@@ -73,7 +73,11 @@ if (isset($source))
 	$errormsg="";
 	if (!isset($_POST['savename']) || !$_POST['savename']) {$errormsg.=_SAVENONAME."<br />\n";}
 	if (!isset($_POST['savepass']) || !$_POST['savepass']) {$errormsg.=_SAVENOPASS."<br />\n";}
-	if (!isset($_POST['savepass']) && isset($_POST['savepass2']) && $_POST['savepass'] != $_POST['savepass2'])
+	if (!isset($_POST['savepass2']) || !$_POST['savepass2']){$errormsg.=_SAVENOPASS2."<br />\n";}	
+	// modified logic so that it correctly checks to see if (savepass != savepass2)
+	// isset(savepass) and isset(savepass2) have already been checked and do not
+	// need to be checked again
+    if ($_POST['savepass'] != $_POST['savepass2'])
 		{$errormsg.=_SAVENOMATCH."<br />\n";}
 	if (!$errormsg && !isset($_SESSION['savename']))
 		{
