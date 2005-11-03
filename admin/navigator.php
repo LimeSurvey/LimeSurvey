@@ -1618,6 +1618,7 @@ function labelsets() {
 	$query = "SELECT * FROM {$dbprefix}labelsets
 			  ORDER BY label_name";
 	$result=mysql_query($query) or die(mysql_error());
+	$output=array();
 	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {$output[]=$row;}
 	return $output;
 }
