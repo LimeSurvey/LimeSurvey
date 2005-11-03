@@ -206,6 +206,7 @@ define("_SAVEEXPLANATION", "Enter a name and password for this survey and click 
 define("_SAVESUBMIT", "Save Now");
 define("_SAVENONAME", "You must supply a name for this saved session.");
 define("_SAVENOPASS", "You must supply a password for this saved session.");
+define("_SAVENOPASS2", "You must re-enter a password for this saved session.");
 define("_SAVENOMATCH", "Your passwords do not match.");
 define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
 define("_SAVETRYAGAIN", "Please try again.");
