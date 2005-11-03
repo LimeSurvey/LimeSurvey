@@ -40,7 +40,7 @@ if (empty($homedir)) {die ("Cannot run this script directly (dbedit.php)");}
 if (call_user_func($auth_function)) {
 	switch($dbaction){
 		case "addlabelset":
-			$lid=addLabel($dbprefix);
+			$lid=addLabelset($dbprefix);
 			break;
 		case "addattribute": 
 			addAttribute($qid, $dbprefix);
@@ -95,12 +95,16 @@ if (call_user_func($auth_function)) {
 			break;
 		case "editquestion":
 		case "addquestion":
+		case "copyquestion":
 			$qid=editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction);
 			break;
 		case "renumbergroup":
 		case "renumbersurvey":
 			renumber($surveyid, $gid, $dbprefix);
 			break;
+		case "editlabel":
+		case "addlabel":
+		    editLabel($lid, $dbprefix, $dbaction);
 	} // switch
 }
 
@@ -131,12 +135,28 @@ function renumber($surveyid, $gid=null, $dbprefix) {
 	}
 }
 
-function addLabel($dbprefix) {
+function addLabelset($dbprefix) {
 	$query = "INSERT INTO {$dbprefix}labelsets
 			  (`label_name`)
 			  VALUES ('".auto_escape($_POST['label_name'])."')";
 	$result=mysql_query($query);
 	return mysql_insert_id();
+}
+
+function editLabel($lid, $dbprefix, $dbaction) {
+    switch($dbaction) {
+	  case "addlabel":
+	    echo "Hi";
+		$query = "INSERT INTO {$dbprefix}labels
+				  VALUES ('$lid',
+				  	      '".auto_escape($_POST['code'])."',
+						  '".auto_escape($_POST['title'])."',
+						  '".auto_escape($_POST['sortorder'])."')";
+		$result = mysql_query($query);
+	  	break;
+	  case "editlabelset":
+	    break;
+	}
 }
 
 function editSurvey($surveyid, $dbprefix, $dbaction) {
@@ -297,6 +317,8 @@ function editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction) {
 			$result = mysql_query($query);
 			
 			break;
+		case "copyquestion":
+		    $oldqid=$qid;
 		case "addquestion":
 			$query = "INSERT INTO {$dbprefix}questions\n";
 			foreach ($tablefields as $tf) {
@@ -316,6 +338,31 @@ function editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction) {
 				}
 			break;
 	}
+    if ($dbaction == "copyquestion") { //Also copy the answers and the attributes
+		$query="SELECT * FROM {$dbprefix}answers
+				WHERE qid=$oldqid";
+		$results=mysql_query($query);
+		while($row=mysql_fetch_array($results)) {
+		  $qinsert="INSERT INTO {$dbprefix}answers
+		  			VALUES ('$qid',
+							'".auto_escape($row['code'])."',
+							'".auto_escape($row['answer'])."',
+							'".auto_escape($row['default_value'])."',
+							'".auto_escape($row['sortorder'])."')";
+		   $qresult=mysql_query($qinsert);
+		}
+	    $query="SELECT * FROM {$dbprefix}question_attributes
+				WHERE qid=$oldqid";
+		$results=mysql_query($query);
+		while($row=mysql_fetch_array($results)) {
+		  $qinsert="INSERT INTO {$dbprefix}question_attributes
+		  			VALUES ('',
+						    '$qid',
+							'".auto_escape($row['attribute'])."',
+							'".auto_escape($row['value'])."')";
+		  $qresult=mysql_query($qinsert);
+		}
+    }
 	return $qid;
 }
 

@@ -243,10 +243,15 @@ function labelsetDetails($lid = null) {
 		if (count($activeqids) < 1) {
 		    echo "		<tr><td colspan='4' height='5'></td></tr>
 						<tr>
+						 <form method='post' action='index.php?action=showlabelsets&lid=$lid'>
 						 <td align='center'><input type='text' name='code' size='5'></td>
 						 <td align='center'><input type='text' name='title' size='60'></td>
 						 <td align='center'><input type='submit' class='buttons' value='"._AL_ADD."'></td>
 						 <td></td>
+						 <input type='hidden' name='dbaction' value='addlabel'>
+						 <input type='hidden' name='lid' value='$lid'>
+						 <input type='hidden' name='sortorder' value='".(count($theselabels)+1)."'>
+						 </form>
 						</tr>\n";
 		}
 		echo $notes;
@@ -722,7 +727,7 @@ function questionEdit($surveyid, $gid, $qid) {
 	if ($action == "copyquestion") {
 	    $fields[_QL_COPYANS]=yesnoSelect("Y", "copyanswers");
 		$fields[_QL_COPYATT]=yesnoSelect("Y", "copyattributes");
-		$qid="";
+		//$qid="";
 	}
 	
    	echo "<table width='100%' cellpadding='3' cellspacing='0' border='0' bgcolor='#CCCCCC' align='center'>
@@ -762,8 +767,8 @@ function questionEdit($surveyid, $gid, $qid) {
 		  <input type='hidden' name='gid' value='$gid'>
 		  <input type='hidden' name='qid' value='$qid'>
 		  <input type='hidden' name='action' value='showquestion'>
-		  <input type='hidden' name='dbaction' value='$action'>
-		  </form>
+		  <input type='hidden' name='dbaction' value='$action'>";
+	echo "			  </form>
 		  </table>";
 	echo "		<script type='text/javascript'>
 		function otherSelection(QuestionType) {
