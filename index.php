@@ -77,7 +77,7 @@ if (!$surveyid)
 	exit;
 	}
 
-if (!isset($token)) {$token=returnglobal('token');}
+if (!isset($token)) {$token=trim(returnglobal('token'));}
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 $thissurvey=getSurveyInfo($surveyid);
 if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
