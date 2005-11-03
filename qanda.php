@@ -1608,9 +1608,15 @@ function do_array_5point($ia)
     $ansresult = mysql_query($ansquery);
     $anscount = mysql_num_rows($ansresult);
     $fn = 1;
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+	   $answerwidth=$answerwidth['value'];
+	} else {
+	   $answerwidth=20;
+	}
     $answer = "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
-             . "\t\t\t\t\t<td></td>\n";
+             . "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
     for ($xc=1; $xc<=5; $xc++)
         {
         $answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
@@ -1626,7 +1632,7 @@ function do_array_5point($ia)
         $answertext=answer_replace($ansrow['answer']);
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                 . "\t\t\t\t\t<td align='right'>$answertext\n"
+                 . "\t\t\t\t\t<td align='right' width='$answerwidth%'>$answertext\n"
                  . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
         		 if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
         		 $answer .= "'></td>\n";
@@ -1663,9 +1669,15 @@ function do_array_10point($ia)
     $ansresult = mysql_query($ansquery);
     $anscount = mysql_num_rows($ansresult);
     $fn = 1;
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+	   $answerwidth=$answerwidth['value'];
+	} else {
+	   $answerwidth=20;
+	}
     $answer = "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
-             . "\t\t\t\t\t<td></td>\n";
+             . "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
     for ($xc=1; $xc<=10; $xc++)
         {
         $answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
@@ -1718,9 +1730,15 @@ function do_array_yesnouncertain($ia)
     $ansresult = mysql_query($ansquery);
     $anscount = mysql_num_rows($ansresult);
     $fn = 1;
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+	   $answerwidth=$answerwidth['value'];
+	} else {
+	   $answerwidth=20;
+	}
     $answer = "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
-             . "\t\t\t\t\t<td></td>\n"
+             . "\t\t\t\t\t<td width='$answerwidth%'></td>\n"
              . "\t\t\t\t\t<td align='center' class='array1'>"._YES."</td>\n"
              . "\t\t\t\t\t<td align='center' class='array1'>"._UNCERTAIN."</td>\n"
              . "\t\t\t\t\t<td align='center' class='array1'>"._NO."</td>\n";
@@ -1785,6 +1803,12 @@ function do_slider($ia) {
 	} else {
 		$maximumvalue=50;
 	}
+	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+	   $answerwidth=$answerwidth['value'];
+	} else {
+	   $answerwidth=20;
+	}
+	$sliderwidth=100-$answerwidth;
 	
 	//Get answers
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
@@ -1799,7 +1823,7 @@ function do_slider($ia) {
     $lresult = mysql_query($lquery);
 	
 	$answer = "\t\t\t<table class='question'>\n";
-	$answer .= "\t\t\t\t<tr><th></th>\n";
+	$answer .= "\t\t\t\t<tr><th width='$answerwidth%'></th>\n";
 	$lcolspan=mysql_num_rows($lresult);
 	$lcount=1;
 	while($lrow=mysql_fetch_array($lresult)) {
@@ -1829,7 +1853,7 @@ function do_slider($ia) {
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n";
-		$answer .= "\t\t\t\t\t<td width='80%' colspan='$lcolspan'>"
+		$answer .= "\t\t\t\t\t<td width='$sliderwidth%' colspan='$lcolspan'>"
 				 . "<div class=\"slider\" id=\"slider-$myfname\" style='width:100%'>"
 				 . "<input class=\"slider-input\" id=\"slider-input-$myfname\" name=\"$myfname\" />"
 				 . "</div>";
@@ -1877,9 +1901,15 @@ function do_array_increasesamedecrease($ia)
     $ansresult = mysql_query($ansquery);
     $anscount = mysql_num_rows($ansresult);
     $fn = 1;
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+	   $answerwidth=$answerwidth['value'];
+	} else {
+	   $answerwidth=20;
+	}
     $answer = "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
-             . "\t\t\t\t\t<td></td>\n"
+             . "\t\t\t\t\t<td width='$answerwidth%'></td>\n"
              . "\t\t\t\t\t<td align='center' class='array1'>"._INCREASE."</td>\n"
              . "\t\t\t\t\t<td align='center' class='array1'>"._SAME."</td>\n"
              . "\t\t\t\t\t<td align='center' class='array1'>"._DECREASE."</td>\n";
@@ -1936,6 +1966,14 @@ function do_array_flexible($ia)
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
     $lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
 
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+	   $answerwidth=$answerwidth['value'];
+	} else {
+	   $answerwidth=20;
+	}
+	$columnswidth=100-$answerwidth;
+	
     $lresult = mysql_query($lquery);
     if (mysql_num_rows($lresult) > 0)
         {
@@ -1946,7 +1984,7 @@ function do_array_flexible($ia)
             }
         $numrows=count($labelans);
         if ($ia[6] != "Y" && $shownoanswer == 1) {$numrows++;}
-        $cellwidth=80/$numrows;
+        $cellwidth=$columnswidth/$numrows;
 
         $cellwidth=sprintf("%02d", $cellwidth);
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
@@ -1955,14 +1993,14 @@ function do_array_flexible($ia)
         $fn=1;
         $answer = "\t\t\t<table class='question'>\n"
                  . "\t\t\t\t<tr>\n"
-                 . "\t\t\t\t\t<td></td>\n";
+                 . "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
         foreach ($labelans as $ld)
             {
-            $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>".$ld."</font></th>\n";
+            $answer .= "\t\t\t\t\t<th align='center' class='array1' width='$cellwidth%'><font size='1'>".$ld."</font></th>\n";
             }
         if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
             {
-            $answer .= "\t\t\t\t\t<th align='center' class='array1'><font size='1'>"._NOANSWER."</font></th>\n";
+            $answer .= "\t\t\t\t\t<th align='center' class='array1' width='$cellwidth%'><font size='1'>"._NOANSWER."</font></th>\n";
             }
         $answer .= "\t\t\t\t</tr>\n";
 
@@ -1987,7 +2025,7 @@ function do_array_flexible($ia)
             if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
             $answertext=answer_replace($ansrow['answer']);
             $answer .= "\t\t\t\t<tr class='$trbc'>\n"
-                    . "\t\t\t\t\t<td align='right' class='answertext' width='20%'>$answertext\n"
+                    . "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
                  	. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		         	if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
         			$answer .= "'></td>\n";
