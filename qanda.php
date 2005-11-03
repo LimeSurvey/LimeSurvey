@@ -1097,7 +1097,7 @@ function do_ranking($ia)
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
             {
             $ranklist .= " value='";
-            $ranklist .= $thistext;
+            $ranklist .= htmlspecialchars($thistext, ENT_QUOTES);
             $ranklist .= "'";
             }
         $ranklist .= " onFocus=\"this.blur()\">\n";
@@ -1299,15 +1299,15 @@ function do_multiplechoice_withcomments($ia)
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' />"
                  . "<label for='answer$myfname' class='answertext'>"
                  . $ansrow['answer']."</label>\n"
-                 . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='"
+                 . "\t\t\t\t\t\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+        		 if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+		 $answer .= "'>\n"
                  . "\t\t\t\t\t\t\t\t</td>\n";
-        if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-        $answer .= "'>\n";
         $fn++;
         $answer .= "\t\t\t\t\t\t\t\t<td>\n"
                  . "\t\t\t\t\t\t\t\t\t<label for='answer$myfname2'>"
-                 ."<input class='text' type='text' size='40' id='answer$myfname2' name='answer$myfname2' title='"._PS_COMMENT."' value='";
-        if (isset($_SESSION[$myfname2])) {$answer .= $_SESSION[$myfname2];}
+                 ."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='"._PS_COMMENT."' value='";
+        if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         $answer .= "' /></label>\n"
                  . "\t\t\t\t\t\t\t\t</td>\n"
                  . "\t\t\t\t\t\t\t</tr>\n";
