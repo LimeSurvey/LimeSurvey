@@ -53,6 +53,10 @@ if (!isset($_SESSION))
 	
 	//SET THE TEMPLATE DIRECTORY
 	if (!$thissurvey['templatedir']) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/{$thissurvey['templatedir']}";}
+	$_POST['savename']= html_escape(auto_unescape($_POST['savename']));
+	$_POST['savepass'] = html_escape(auto_unescape($_POST['savepass']));
+	$_POST['savepass2'] = html_escape(auto_unescape($_POST['savepass2']));
+	$_POST['saveemail'] = html_escape(auto_unescape($_POST['saveemail']));	
 	if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 	
 	//REQUIRE THE LANGUAGE FILE
