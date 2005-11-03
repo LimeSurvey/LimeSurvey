@@ -797,8 +797,8 @@ if (returnglobal('viewanswer'))
 					. "id='addanswercode' "
 					. "onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\">"
 					. "</td>\n"
-					. "\t\t<td align='center' width='50%'><input name='answer' type='text' $btstyle size='50'></td>\n"
-					. "\t\t<input name='sortorder' type='hidden' $btstyle value='$position'>\n"
+					. "\t\t<td align='center' width='50%'><input name='answer' type='text' $btstyle size='50'>\n"
+					. "\t\t<input name='sortorder' type='hidden' $btstyle value='$position'></td>\n"
 					. "\t\t<td align='center' width='10%'>"
 					. "\t\t\t<select name='default' $btstyle>\n"
 					. "\t\t\t\t<option value='Y'>"._AD_YES."</option>\n"
@@ -810,13 +810,13 @@ if (returnglobal('viewanswer'))
 					. "\t<input type='hidden' name='gid' value='$gid'>\n"
 					. "\t<input type='hidden' name='qid' value='$qid'>\n"
 					. "\t<input type='hidden' name='action' value='modanswer'>\n"
-					. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
-					. "\t</td></table></form></tr>\n";
+					. "\t<input type='hidden' name='viewanswer' value='Y'>\n";
 		$vasummary .= "<script type='text/javascript' language='javascript'>\n"
 					. "<!--\n"
 					. "document.getElementById('addanswercode').focus();\n"
 					. "//-->\n"
-					. "</script>\n";
+					. "</script>\n"
+					. "\t</td></table></form></tr>\n";
 		}
 	if ($cdcount > 0)
 		{
