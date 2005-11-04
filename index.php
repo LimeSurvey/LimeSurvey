@@ -181,11 +181,13 @@ if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
 if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	{
 	$errormsg="";
-	if (!isset($_POST['loadname']) || (!$_POST['loadname'] && !$_POST['loadname'] == 0))
+	// if (loadname is not set) or if ((loadname is set) and (loadname is NULL))
+	if (!isset($_POST['loadname']) || (isset($_POST['loadname']) && ($_POST['loadname'] == null)))		
 		{
 	    $errormsg .= _LOADNONAME."<br />\n";
 		}
-	if (!isset($_POST['loadpass']) || (!$_POST['loadpass'] && !$_POST['loadpass'] == 0))
+	// if (loadpass is not set) or if ((loadpass is set) and (loadpass is NULL))
+	if (!isset($_POST['loadpass']) || (isset($_POST['loadpass']) && ($_POST['loadpass'] == null)))
 		{
 		$errormsg .= _LOADNOPASS."<br />\n";
 		}
@@ -216,7 +218,11 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 				$_SESSION['scid']=$row['scid'];
 				}
 			} // while
-		}	
+		}
+		else
+    		{
+    		$errormsg .= _LOADNOMATCH."<br />\n";
+    		}			
 		$_SESSION['savename']=$_POST['loadname']; //This session variable hangs around
 		                                           //for later use.
 		$_POST['move'] = " "._NEXT." >> "; 
