@@ -271,6 +271,7 @@ if ($result=mysql_query($query))
 				$message.=_SAVEPASSWORD.": ".$_POST['savepass']."\n\n";
 				$message.=_SAVE_EMAILURL.":\n";
 				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$sdata['scid']."&loadname=".$_POST['savename']."&loadpass=".$_POST['savepass'];
+				if (returnglobal('token')){$message.="&token=".returnglobal('token');}				
 				$message=crlf_lineendings($message);
 				$headers = "From: {$thissurvey['adminemail']}\r\n"
                          . "MIME-Version: 1.0\r\n"
