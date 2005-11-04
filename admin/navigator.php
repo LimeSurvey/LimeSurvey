@@ -724,12 +724,16 @@ function questionEdit($surveyid, $gid, $qid) {
 				  _QL_LABELSET=>labelsetSelect($thisquestion['lid'], "lid", "id='LabelSets'".autoComparitor($thissurvey['active'], "Y", " disabled")).autoComparitor($thissurvey['active'], "Y", _SN_CANNOTCHANGE_SURVEYACTIVE),
 				  _QL_VALIDATION=>textinput($thisquestion['preg'], "preg", "id='Validation' size='40'"));
 
+	if ($action == "editquestion" || $action == "copyquestion") {
+		$fields[_QL_GROUP]=groupSelect($thisquestion['gid'], "gid", "");
+	}	
+
 	if ($action == "copyquestion") {
 	    $fields[_QL_COPYANS]=yesnoSelect("Y", "copyanswers");
 		$fields[_QL_COPYATT]=yesnoSelect("Y", "copyattributes");
 		//$qid="";
 	}
-	
+
    	echo "<table width='100%' cellpadding='3' cellspacing='0' border='0' bgcolor='#CCCCCC' align='center'>
 		  <form method='post' action='$scriptname'>
 		  <tr><td>
@@ -764,10 +768,12 @@ function questionEdit($surveyid, $gid, $qid) {
 		   </td>
 		  </tr>
 		  <input type='hidden' name='sid' value='$surveyid'>
-		  <input type='hidden' name='gid' value='$gid'>
 		  <input type='hidden' name='qid' value='$qid'>
 		  <input type='hidden' name='action' value='showquestion'>
 		  <input type='hidden' name='dbaction' value='$action'>";
+	if ($action == "addquestion") {
+	  echo "    		  <input type='hidden' name='gid' value='$gid'>";
+	}
 	echo "			  </form>
 		  </table>";
 	echo "		<script type='text/javascript'>
@@ -1713,6 +1719,17 @@ function labelsetSelect($value=null, $name, $extras=null) {
 	$labelsets=labelsets();
 	foreach($labelsets as $label) {
 		$output .= "<option value='".$label['lid']."'".autoComparitor($value, $label['lid'], " selected").">".$label['label_name']."</option>\n";
+	}
+	$output .= "</select>";
+	return $output;
+}
+
+function groupSelect($value=null, $name="gid", $extras=null) {
+	global $surveyid;
+    $output = "<select name='$name' $extras>\n";
+	$groups=getGroupsBrief($surveyid);
+	foreach($groups as $group) {
+	    $output .= "<option value='".$group['gid']."'".autoComparitor($value, $group['gid'], " selected").">".$group['group_name']."</option>\n";
 	}
 	$output .= "</select>";
 	return $output;
