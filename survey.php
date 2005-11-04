@@ -437,12 +437,12 @@ if (isset($conditions) && is_array($conditions))
 			{
 			$endzone = "))\n"
 					 . "\t\t\t\t{\n"
-					 . "\t\t\t\tdocument.getElementById('$cd[0]').style.display='';\n"
+					 . "\t\t\t\tdocument.getElementById('question$cd[0]').style.display='';\n"
 					 . "\t\t\t\tdocument.getElementById('display$cd[0]').value='on';\n"
 					 . "\t\t\t\t}\n"
 					 . "\t\t\telse\n"
 					 . "\t\t\t\t{\n"
-					 . "\t\t\t\tdocument.getElementById('$cd[0]').style.display='none';\n"
+					 . "\t\t\t\tdocument.getElementById('question$cd[0]').style.display='none';\n"
 					 . "\t\t\t\tdocument.getElementById('display$cd[0]').value='';\n"
 					 . "\t\t\t\t}\n";
 			$cqcount++;

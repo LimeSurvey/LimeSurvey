@@ -492,7 +492,7 @@ function do_5pointchoice($ia)
         {
         $answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
         if (!$_SESSION[$ia[1]]) {$answer .= " checked";}
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='NoAnswer'>"._NOANSWER."</label>\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='NoAnswer' class='answertext'>"._NOANSWER."</label>\n";
         }
     $answer .= "\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n";
     $inputnames[]=$ia[1];

@@ -496,12 +496,12 @@ if (isset($conditions) && is_array($conditions))
 			{
 			$endzone = "))\n";
 			$endzone .= "\t\t\t\t{\n";
-			$endzone .= "\t\t\t\tdocument.getElementById('$cd[0]').style.display='';\n";
+			$endzone .= "\t\t\t\tdocument.getElementById('question$cd[0]').style.display='';\n";
 			$endzone .= "\t\t\t\tdocument.getElementById('display$cd[0]').value='on';\n";
 			$endzone .= "\t\t\t\t}\n";
 			$endzone .= "\t\t\telse\n";
 			$endzone .= "\t\t\t\t{\n";
-			$endzone .= "\t\t\t\tdocument.getElementById('$cd[0]').style.display='none';\n";
+			$endzone .= "\t\t\t\tdocument.getElementById('question$cd[0]').style.display='none';\n";
 			$endzone .= "\t\t\t\tdocument.getElementById('display$cd[0]').value='';\n";
 			$endzone .= "\t\t\t\t}\n";
 			$cqcount++;
@@ -539,7 +539,7 @@ if (isset($qanda) && is_array($qanda))
 	foreach ($qanda as $qa)
 		{
 		echo "\n\t<!-- NEW QUESTION -->\n";
-		echo "\t\t\t\t<div id='div$qa[4]'";
+		echo "\t\t\t\t<div id='question$qa[4]'";
 		if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
 		$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
 		$answer=$qa[1];

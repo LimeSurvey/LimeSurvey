@@ -64,7 +64,7 @@ if (!$qid)
 	}
 $dumphead = "# SURVEYOR QUESTION DUMP\n";
 $dumphead .= "#\n# This is a dumped question from the PHPSurveyor Script\n";
-$dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
+$dumphead .= "# http://www.phpsurveyor.org/\n";
 
 function BuildOutput($Query)
 	{

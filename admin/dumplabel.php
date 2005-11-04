@@ -64,7 +64,7 @@ if (!$lid)
 	}
 $dumphead = "# SURVEYOR LABEL SET DUMP\n";
 $dumphead .= "#\n# This is a dumped label set from the PHPSurveyor Script\n";
-$dumphead .= "# http://phpsurveyor.sourceforge.net/\n";
+$dumphead .= "# http://www.phpsurveyor.org/\n";
 
 function BuildOutput($Query)
 	{
