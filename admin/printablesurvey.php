@@ -56,10 +56,9 @@ require($langfilename);
 sendcacheheaders();
 
 DoHeader();
-echo "<head>\n"
-   . "<meta http-equiv='content-script-type' content='text/javascript' />\n"
+echo "<meta http-equiv='content-script-type' content='text/javascript' />\n"
    . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n";
-echo "</head>\n<body>\n";
+echo "<title>"._S_PRINTABLE_BT."</title></head>\n<body>\n";
 
 // PRESENT SURVEY DATAENTRY SCREEN
 
@@ -267,7 +266,7 @@ while ($degrow = mysql_fetch_array($degresult))
 		switch($deqrow['type'])
 			{
 			case "5":  //5 POINT CHOICE
-				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br /></font>\n";
 				for ($i=1; $i<=5; $i++) 
 					{
 					echo "\t\t\t<input type='checkbox' name='$fieldname' value='$i' readonly='readonly' />$i \n";
@@ -275,12 +274,12 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "D":  //DATE
 				echo "\t\t\t$setfont<u>"._PS_DATE."</u><br />\n";
-				echo "\t\t\t<input type='text' $boxstyle name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' readonly='readonly' />\n";
+				echo "\t\t\t<input type='text' $boxstyle name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' readonly='readonly' /></font>\n";
 				break;
 			case "G":  //GENDER
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='F' readonly='readonly' />"._FEMALE."<br />\n";
-				echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />"._MALE."<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />"._MALE."<br /></font>\n";
 				break;
 			case "W": //Flexible List
 			case "Z":
@@ -319,7 +318,7 @@ while ($degrow = mysql_fetch_array($degresult))
 						{
 					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
 						}
-					echo "</td></tr></table>\n";
+					echo "</font></td></tr></table>\n";
 				    //Let's break the presentation into columns.
 					}
 				else
@@ -333,6 +332,7 @@ while ($degrow = mysql_fetch_array($degresult))
 						{
 					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
 						}
+					echo "\t\t\t</font>";	
 					}
 				break;
 			case "L":  //LIST
@@ -346,7 +346,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					{
 					$dcols=0;
 					}
-				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br /></font>\n";
 				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$dearesult = mysql_query($deaquery);
 				$deacount=mysql_num_rows($dearesult);
@@ -395,18 +395,18 @@ while ($degrow = mysql_fetch_array($degresult))
 					{
 					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
 					}
-				echo "\t\t\t<u>"._PS_COMMENT."</u><br />\n";
+				echo "\t\t\t<u>"._PS_COMMENT."</u><br /></font>\n";
 				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname"."comment"."' readonly='readonly'></textarea>\n";
 				break;
 			case "R":  //RANKING Type Question
 				$reaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$rearesult = mysql_query($reaquery) or die ("Couldn't get ranked answers<br />".mysql_error());
 				$reacount = mysql_num_rows($rearesult);
-				echo "\t\t\t$setfont<u>"._PS_RANKING." $reacount</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_RANKING." $reacount</u><br /></font>\n";
 				while ($rearow = mysql_fetch_array($rearesult))
 					{
 					echo "\t\t\t<table cellspacing='1' cellpadding='0'><tr><td width='20' height='20' bgcolor='white' style='border: solid 1 #111111'>&nbsp;</td>\n";
-					echo "\t\t\t<td valign='middle'>$setfont{$rearow['answer']}</td></tr></table>\n";
+					echo "\t\t\t<td valign='middle'>$setfont{$rearow['answer']}</font></td></tr></table>\n";
 					}
 				break;
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
@@ -419,7 +419,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					{
 					$dcols=0;
 					}
-				echo "\t\t\t$setfont<u>"._PS_CHOOSEANY."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_CHOOSEANY."</u><br /></font>\n";
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
 				$meacount = mysql_num_rows($mearesult);
@@ -462,22 +462,22 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>"._PS_CHOOSEANYCOMMENT."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_CHOOSEANYCOMMENT."</u><br /></font>\n";
 				echo "\t\t\t<table border='0'>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
 					if ($mearow[3] == "Y") {echo " checked";}
-					echo " readonly='readonly' />{$mearow['answer']} </td>\n";
+					echo " readonly='readonly' />{$mearow['answer']} </font></td>\n";
 					//This is the commments field:
-					echo "\t\t\t\t\t<td>$setfont<input type='text' $boxstyle name='$fieldname{$mearow['code']}comment' size='60' readonly='readonly' /></td>\n";
+					echo "\t\t\t\t\t<td>$setfont<input type='text' $boxstyle name='$fieldname{$mearow['code']}comment' size='60' readonly='readonly' /></font></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
 				break;
 			case "Q":  //MULTIPLE SHORT TEXT
-				echo "\t\t\t$setfont<u>"._PS_WRITEMULTI."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_WRITEMULTI."</u><br /></font>\n";
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
 				echo "\t\t\t<table border='0'>\n";
@@ -486,47 +486,47 @@ while ($degrow = mysql_fetch_array($degresult))
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont{$mearow['answer']}: <input type='text' size='60' name='$fieldname{$mearow['code']}' value=''";
 					if ($mearow[3] == "Y") {echo " checked";}
-					echo " readonly='readonly' /> </td>\n";
+					echo " readonly='readonly' /></font></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
 				break;
 			case "S":  //SHORT TEXT
-				echo "\t\t\t$setfont<u>"._PS_WRITE."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_WRITE."</u><br /></font>\n";
 				echo "\t\t\t<input type='text' name='$fieldname' size='60' $boxstyle readonly='readonly' />\n";
 				break;
 			case "T":  //LONG TEXT
-				echo "\t\t\t$setfont<u>"._PS_WRITE."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_WRITE."</u><br /></font>\n";
 				echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname' readonly='readonly'></textarea>\n";
 				break;
 			case "U":  //HUGE TEXT
-				echo "\t\t\t$setfont<u>"._PS_WRITE."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_WRITE."</u><br /></font>\n";
 				echo "\t\t\t<textarea $boxstyle cols='70' rows='50' name='$fieldname' readonly='readonly'></textarea>\n";
  				break;
 			case "N":  //NUMERICAL
 				echo "\t\t\t$setfont<u>"._PS_WRITE."</u><br />\n";
-				echo "\t\t\t<input type='text' size='40' $boxstyle readonly='readonly' />\n";
+				echo "\t\t\t<input type='text' size='40' $boxstyle readonly='readonly' /></font>\n";
 				break;
 			case "Y":  //YES/NO
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='Y' readonly='readonly' />"._YES."<br />\n";
-				echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />"._NO."<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />"._NO."<br /></font>\n";
 				break;
 			case "A":  //ARRAY (5 POINT CHOICE)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
 					echo "\t\t\t\t\t<td>$setfont";
 					for ($i=1; $i<=5; $i++)
 						{
 						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
 						}
-					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t\t</font></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
@@ -534,18 +534,18 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "B":  //ARRAY (10 POINT CHOICE)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br />";
+				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>";
 				echo "\t\t\t<table border='0'>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
 					for ($i=1; $i<=10; $i++)
 						{
 						echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
 						}
-					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t\t</font></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
@@ -553,17 +553,17 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />"._YES."&nbsp;\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U' readonly='readonly' />"._UNCERTAIN."&nbsp;\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N' readonly='readonly' />"._NO."&nbsp;\n";
-					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t\t</font></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
@@ -571,17 +571,17 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "E":  //ARRAY (Increase/Same/Decrease)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='I' readonly='readonly' />"._INCREASE."&nbsp;\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='S' readonly='readonly' />"._SAME."&nbsp;\n";
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D' readonly='readonly' />"._DECREASE."&nbsp;\n";
-					echo "\t\t\t\t\t</td>\n";
+					echo "\t\t\t\t\t</font></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
 				echo "\t\t\t</table>\n";
@@ -591,7 +591,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);
-				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 				$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
 				$fresult = mysql_query($fquery);
@@ -600,14 +600,14 @@ while ($degrow = mysql_fetch_array($degresult))
 				$i=0;
 				while ($frow = mysql_fetch_array($fresult))
 					{
-					echo "\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</td>\n";
+					echo "\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</font></td>\n";
 					$i++;
 					}
 				echo "\t\t\t\t\t\t</tr>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
 					//echo "\t\t\t\t\t<td>";
 					for ($i=1; $i<=$fcount; $i++)
 						{
@@ -615,7 +615,7 @@ while ($degrow = mysql_fetch_array($degresult))
 						echo "\t\t\t\t\t<td align='center'";
 						if ($i > 1) {echo " $headstyle";}
 						echo ">$setfont\n";
-						echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' /></font>\n";
 						echo "\t\t\t\t\t</td>\n";
 						}
 					//echo "\t\t\t\t\t</tr></table></td>\n";
@@ -628,7 +628,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
 				$fquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$fresult = mysql_query($fquery);
-				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br />\n";
+				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 				$meaquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
 				$mearesult = mysql_query($meaquery);
@@ -637,14 +637,14 @@ while ($degrow = mysql_fetch_array($degresult))
 				$i=0;
 				while ($frow = mysql_fetch_array($fresult))
 					{
-					echo "\t\t\t\t\t<td align='center'>$setfont{$frow['answer']}</td>\n";
+					echo "\t\t\t\t\t<td align='center'>$setfont{$frow['answer']}</font></td>\n";
 					$i++;
 					}
 				echo "\t\t\t\t\t\t</tr>\n";
 				while ($mearow = mysql_fetch_array($mearesult))
 					{
 					echo "\t\t\t\t<tr>\n";
-					echo "\t\t\t\t\t\t<td align='left' valign='bottom' $headstyle><font size='1'>{$mearow['title']}</td>\n";
+					echo "\t\t\t\t\t\t<td align='left' valign='bottom' $headstyle><font size='1'>{$mearow['title']}</font></td>\n";
 					//echo "\t\t\t\t\t<td>";
 					for ($i=1; $i<=$fcount; $i++)
 						{
@@ -652,7 +652,7 @@ while ($degrow = mysql_fetch_array($degresult))
 						echo "\t\t\t\t\t<td align='center'";
 						if ($i > 1) {echo " $headstyle";}
 						echo ">$setfont\n";
-						echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
+						echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' /></font>\n";
 						echo "\t\t\t\t\t</td>\n";
 						}
 					//echo "\t\t\t\t\t</tr></table></td>\n";
@@ -661,14 +661,14 @@ while ($degrow = mysql_fetch_array($degresult))
 				echo "\t\t\t</table>\n";
 				break;
 			}
-		echo "\t\t</font></td>\n";
+		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "\t<tr><td height='3' colspan='3'><hr noshade size='1'></td></tr>\n";
 		}
 	}
 echo "\t<tr>\n";
 echo "\t\t<td colspan='3' align='center'>\n";
-echo "\t\t\t<table width='100%' border='1' style='border-collapse: collapse' bordercolor='#111111'>\n";
+echo "\t\t\t<table width='100%' border='1' style='border-collapse: collapse'>\n";
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
 echo "\t\t\t\t\t\t$setfont<strong>"._PS_SUBMIT."</strong></font><br />\n";

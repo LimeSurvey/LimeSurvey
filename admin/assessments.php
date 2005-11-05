@@ -115,9 +115,9 @@ if ($action == "edit") {
 	while($row=mysql_fetch_array($results, MYSQL_ASSOC)) {
 		$editdata=$row;
 	}
-	$scopeselect = "<select name='scope'><option value='T'";
-	if ($editdata['scope'] == "T") {$scopeselect .= " selected";}
-	$scopeselect .= "'>"._AS_SCOPE_TOTAL."</option><option value='G'";
+	$scopeselect = "<select name='scope'><option ";
+	if ($editdata['scope'] == "T") {$scopeselect .= "selected ";}
+	$scopeselect .= "value='T'>"._AS_SCOPE_TOTAL."</option><option value='G'";
 	if ($editdata['scope'] == "G") {$scopeselect .= " selected";}
 	$scopeselect .= "'>"._AS_SCOPE_GROUP."</option></select>";
 	$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
