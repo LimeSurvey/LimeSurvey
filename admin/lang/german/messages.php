@@ -1,6 +1,45 @@
 <?php
-// GERMAN TRANSLATION KINDLY PROVIDED BY DANIEL EGGEL, RALPH KAMPMANN, CARSTEN SCHMITZ
-// Last Update: 02/23/2005 Carsten Schmitz
+/*
+    #################################################################
+    # >>> PHPSurveyor                                               #
+    #################################################################
+    # > Author:  Jason Cleeland                                     #
+    # > E-mail:  jason@cleeland.org                                 #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,               #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                      #
+    # > Date:    20 February 2003                                   #
+    #                                                               #
+    # This set of scripts allows you to develop, publish and        #
+    # perform data-entry on surveys.                                #
+    #################################################################
+    #   Copyright (C) 2003  Jason Cleeland                          #
+    #                                                               #
+    # This program is free software; you can redistribute           #
+    # it and/or modify it under the terms of the GNU General        #
+    # Public License as published by the Free Software              #
+    # Foundation; either version 2 of the License, or (at your      #
+    # option) any later version.                                    #
+    #                                                               #
+    # This program is distributed in the hope that it will be       #
+    # useful, but WITHOUT ANY WARRANTY; without even the            #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A          #
+    # PARTICULAR PURPOSE.  See the GNU General Public License       #
+    # for more details.                                             #
+    #                                                               #
+    # You should have received a copy of the GNU General            #
+    # Public License along with this program; if not, write to      #
+    # the Free Software Foundation, Inc., 59 Temple Place -         #
+    # Suite 330, Boston, MA  02111-1307, USA.                       #
+    #################################################################
+    #                                                               #
+    #   German translation kindly provided by                       #
+    #   Daniel Eggel - Ralp Kampmann - Carsten Schmitz              #
+    #                                                               #
+    #  Edit this file with an UTF-8 capable editor only!            #
+    #                                                               #
+    #################################################################
+*/
+
 //BUTTON BAR TITLES
 define("_ADMINISTRATION", "Administration");
 define("_SURVEY", "Befragung");
@@ -82,8 +121,8 @@ define("_S_ADDGROUP_BT", "Neue Gruppe hinzufügen");
 define("_S_MINIMISE_BT", "Details verstecken für diese Umfrage");
 define("_S_MAXIMISE_BT", "Details anzeigen für diese Umfrage");
 define("_S_CLOSE_BT", "Diese Umfrage schließen");
-define("_S_SAVED_BT", "Zeige zwischengespeicherte Antworten"); 
-define("_S_ASSESSMENT_BT", "Bewertungsregeln setzen"); 
+define("_S_SAVED_BT", "Zeige zwischengespeicherte Antworten");
+define("_S_ASSESSMENT_BT", "Bewertungsregeln setzen");
 
 //Group bar
 define("_G_EDIT_BT", "Diese Gruppe bearbeiten");
@@ -156,19 +195,19 @@ define("_SL_USECOOKIES", "Cookies benutzen?");
 define("_SL_NOTIFICATION", "Benachrichtigung:");
 define("_SL_ALLOWREGISTER", "Offene Registrierung erlauben?");
 define("_SL_ATTRIBUTENAMES", "Probanden Schlüssel:");
-define("_SL_EMAILINVITE_SUBJ", "Einladungs-Email Betreff:"); 
+define("_SL_EMAILINVITE_SUBJ", "Einladungs-Email Betreff:");
 define("_SL_EMAILINVITE", "Text der Einladungs-Email:");
-define("_SL_EMAILREMIND_SUBJ", "Erinnerungs-Email Betreff:"); 
+define("_SL_EMAILREMIND_SUBJ", "Erinnerungs-Email Betreff:");
 define("_SL_EMAILREMIND", "Text der Erinnerungs-Email:");
 define("_SL_EMAILREGISTER_SUBJ", "Offene Registrierung Email Betreff:");
 define("_SL_EMAILREGISTER", "Text der Registrierungs-Email:");
-define("_SL_EMAILCONFIRM_SUBJ", "Best&auml;tigungs-Email Betreff:"); 
+define("_SL_EMAILCONFIRM_SUBJ", "Best&auml;tigungs-Email Betreff:");
 define("_SL_EMAILCONFIRM", "Text der Best&auml;tigung-Email:");
 define("_SL_REPLACEOK", "Der bestehende Text wird ersetzt. Fortfahren?");
 define("_SL_ALLOWSAVE", "Zwischenspeichern erlauben?");
 define("_SL_AUTONUMBER", "ID Nummern starten bei:");
-define("_SL_AUTORELOAD", "URL automatisch laden, wenn die Umfrage abgeschlossen ist?"); 
-define("_SL_ALLOWPREV", "[<< Zurück] Button zeigen"); 
+define("_SL_AUTORELOAD", "URL automatisch laden, wenn die Umfrage abgeschlossen ist?");
+define("_SL_ALLOWPREV", "[<< Zurück] Button zeigen");
 define("_SL_USE_DEFAULT","Standardwerte setzen");
 define("_SL_UPD_SURVEY","Umfrage aktualisieren");
 
@@ -191,7 +230,7 @@ define("_QL_MANDATORY", "Pflichtangabe:");
 define("_QL_OTHER", "'Sonstige:' Angabe m&ouml;glich:");
 define("_QL_LABELSET", "Beschriftung-Set:");
 define("_QL_COPYANS", "Fragen kopieren?");
-define("_QL_QUESTIONATTRIBUTES", "Frage-Attribute:"); 
+define("_QL_QUESTIONATTRIBUTES", "Frage-Attribute:");
 define("_QL_COPYATT", "Attribute kopieren?");
 //answers
 define("_AL_CODE", "Code");
@@ -238,7 +277,7 @@ define("_5PT", "5 Punkte Auswahl");
 define("_DATE", "Datum");
 define("_GENDER", "Geschlecht");
 define("_LIST", "Liste (Optionsfelder)");
-define("_LIST_DROPDOWN", "Liste (Klappbox)"); 
+define("_LIST_DROPDOWN", "Liste (Klappbox)");
 define("_LISTWC", "Liste mit Kommentar");
 define("_MULTO", "Mehrfachauswahl");
 define("_MULTOC", "Mehrfachauswahl mit Kommentar");
@@ -247,7 +286,7 @@ define("_NUMERICAL", "Zahleneingabe");
 define("_RANK",  "Reihenfolge");
 define("_STEXT", "Kurzer freier Text");
 define("_LTEXT", "Langer freier Text");
-define("_HTEXT", "Ausführlicher Freitext"); 
+define("_HTEXT", "Ausführlicher Freitext");
 define("_YESNO", "Ja/Nein");
 define("_ARR5",  "Feld (5 Punkte Auswahl)");
 define("_ARR10", "Feld (10 Punkte Auswahl)");
@@ -256,9 +295,9 @@ define("_ARRMV", "Feld (Zunahme, gleich, Abnahme)");
 define("_ARRFL", "Feld (Flexible Beschriftungen)");
 define("_ARRFLC","Array (Flexible Beschriftungen) nach Spalte");
 define("_SINFL", "Einfach (Flexible Beschriftungen)");
-define("_EMAIL", "E-Mail Adresse"); 
+define("_EMAIL", "E-Mail Adresse");
 define("_BOILERPLATE", "Textbaustein (nur Anzeige)");
-define("_LISTFL_DROPDOWN", "Liste (Flexible Beschriftungen) (Klappbox)"); 
+define("_LISTFL_DROPDOWN", "Liste (Flexible Beschriftungen) (Klappbox)");
 define("_LISTFL_RADIO", "Liste (Flexible Beschriftungen) (Optionsfelder)");
 define("_SLIDER", "Slider"); //New for slider mod
 
@@ -266,7 +305,7 @@ define("_SLIDER", "Slider"); //New for slider mod
 define("_AD_YES", "Ja");
 define("_AD_NO", "Nein");
 define("_AD_CANCEL", "Abbrechen");
-define("_AD_CHOOSE", "Bitte ausw&auml;hlen..");
+define("_AD_CHOOSE", "Bitte auswählen..");
 define("_AD_OR", "oder");
 define("_ERROR", "Fehler");
 define("_SUCCESS", "Erfolgreich");
@@ -321,7 +360,7 @@ define("_SS_CANNOTACTIVATE", "Die Umfrage kann noch nicht aktiviert werden.");
 define("_SS_ADDGROUPS", "Sie müssen Gruppen hinzufügen.");
 define("_SS_ADDQUESTS", "Sie müssen Fragen hinzufügen.");
 define("_SS_ALLOWREGISTER", "Wenn Zugangsschlüssel benutzt werden, kann man sich für diesen Fragebogen selbst registrieren.");
-define("_SS_ALLOWSAVE", "Teilehmer k&ouml;nnen teilweise fertiggestellte Umfrage zwischenspeichern."); 
+define("_SS_ALLOWSAVE", "Teilehmer k&ouml;nnen teilweise fertiggestellte Umfrage zwischenspeichern.");
 
 //QUESTION STATUS MESSAGES
 define("_QS_MANDATORY", "Pflichtfrage");
@@ -544,15 +583,15 @@ define("_DE_DELRECORD", "Datensatz gel&ouml;scht");
 define("_DE_UPDATED", "Datensatz aktualisiert.");
 define("_DE_EDITING", "Antwort &auml;ndern");
 define("_DE_QUESTIONHELP", "Hilfe zu dieser Frage");
-define("_DE_CONDITIONHELP1", "Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:"); 
+define("_DE_CONDITIONHELP1", "Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:");
 define("_DE_CONDITIONHELP2", "Die Frage {QUESTION} haben sie mit {ANSWER} beantwortet"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "UND");
 define("_DE_OR", "ODER");
 define("_DE_SAVEENTRY", "Teilweise beantworteten Fragebogen zwischenspeichern");
-define("_DE_SAVEID", "Name:"); 
+define("_DE_SAVEID", "Name:");
 define("_DE_SAVEPW", "Passwort:");
-define("_DE_SAVEPWCONFIRM", "Passwort best&auml;tigen:"); 
-define("_DE_SAVEEMAIL", "Email:"); 
+define("_DE_SAVEPWCONFIRM", "Passwort best&auml;tigen:");
+define("_DE_SAVEEMAIL", "Email:");
 
 //TOKEN CONTROL MESSAGES
 define("_TC_TOTALCOUNT", "Anzahl Probanden");
@@ -615,7 +654,7 @@ define("_TC_SENDREMIND", "Sende Erinnerungen");
 define("_TC_INVITESENTTO", "Einladung versandt an:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Erinnerung versandt an:"); //is followed by token name
 define("_TC_UPDATEDB", "Zugangsschlüssel-Tabelle mit neuen Feldern aktualisieren");
-define("_TC_EMAILINVITE_SUBJ", "Einladung zur Teilnahme an einer Umfrage"); 
+define("_TC_EMAILINVITE_SUBJ", "Einladung zur Teilnahme an einer Umfrage");
 define("_TC_EMAILINVITE", "Hallo {FIRSTNAME},\n\nHiermit m&ouml;chten wir Sie zu einer Umfrage einladen.\n\n"
                          ."Der Titel der Umfrage ist \n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
                          ."Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n Mit freundlichen Grüßen,\n\n"
@@ -641,7 +680,7 @@ define("_TC_EMAILREGISTER", "Hallo {FIRSTNAME},\n\n"
                           ."Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ "
                           ."für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise "
                           ."zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.");
-define("_TC_EMAILCONFIRM_SUBJ", "Abschlussbest&auml;tigung einer Umfrage"); 
+define("_TC_EMAILCONFIRM_SUBJ", "Abschlussbest&auml;tigung einer Umfrage");
 define("_TC_EMAILCONFIRM", "Hallo {FIRSTNAME},\n\nVielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. "
                           ."Ihre Antworten wurden bei uns gespeichert.\n\n"
                           ."Wenn Sie irgendwelche Fragen zu dieser Email haben, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.\n\n"
@@ -661,7 +700,7 @@ define("_EL_NOLID", "Keine LID angegeben. Kann Beschriftung-Set nicht exportiere
 //Import Labels
 define("_IL_GOLABELADMIN", "Zurück zur Beschriftung-Set Administration");
 
-//PHPSurveyor System Summary 
+//PHPSurveyor System Summary
 define("_PS_TITLE", "PHPSurveyor Systemübersicht");
 define("_PS_DBNAME", "Datenbank-Name");
 define("_PS_DEFLANG", "Standard Sprache");
@@ -721,8 +760,8 @@ define("_TP_COMPLETEDPAGE", "Abschluss-Seite");
 define("_TP_CLEARALLPAGE", "Erneut-Seite");
 define("_TP_REGISTERPAGE", "Registrierungs-Seite");
 define("_TP_EXPORT", "Vorlage exportieren");
-define("_TP_LOADPAGE", "Seite laden"); 
-define("_TP_SAVEPAGE", "Seite speichern"); 
+define("_TP_LOADPAGE", "Seite laden");
+define("_TP_SAVEPAGE", "Seite speichern");
 
 //Saved Surveys
 define("_SV_RESPONSES", "Zwischengespeicherte Antworten:");
@@ -779,19 +818,19 @@ define("_RE_BYGROUP", "Nach Gruppen"); //NEW for release 0.99dev2
 
 // Database Consistency Check
 define ("_DC_TITLE", "Überprüfung der Datenkonsitenz<br /><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. </font>"); // New with 0.99stable
-define ("_DC_QUESTIONSOK", "Alle Fragen sind konsistent."); 
-define ("_DC_ANSWERSOK", "Alle Antworten sind konsistent."); 
-define ("_DC_CONDITIONSSOK", "Alle Bedingungen sind konsistent."); 
-define ("_DC_GROUPSOK", "Alle Gruppen sind konsistent."); 
-define ("_DC_NOACTIONREQUIRED", "Es sind keine Datenänderungen notwendig."); 
-define ("_DC_QUESTIONSTODELETE", "Die folgenden Fragen sollten gelöscht werden:"); 
-define ("_DC_ANSWERSTODELETE", "Die folgenden Antworten sollten gelöscht werden:"); 
+define ("_DC_QUESTIONSOK", "Alle Fragen sind konsistent.");
+define ("_DC_ANSWERSOK", "Alle Antworten sind konsistent.");
+define ("_DC_CONDITIONSSOK", "Alle Bedingungen sind konsistent.");
+define ("_DC_GROUPSOK", "Alle Gruppen sind konsistent.");
+define ("_DC_NOACTIONREQUIRED", "Es sind keine Datenänderungen notwendig.");
+define ("_DC_QUESTIONSTODELETE", "Die folgenden Fragen sollten gelöscht werden:");
+define ("_DC_ANSWERSTODELETE", "Die folgenden Antworten sollten gelöscht werden:");
 define ("_DC_CONDITIONSTODELETE", "Die folgenden Bedingungen sollten gelöscht werden:");
-define ("_DC_GROUPSTODELETE", "Die folgenden Gruppen sollten gelöscht werden:"); 
-define ("_DC_ASSESSTODELETE", "Die folgenden Bewertungen sollten gelöscht werden:"); 
-define ("_DC_QATODELETE", "Die folgenden Fragenattribute sollten gelöscht werden:"); 
-define ("_DC_QAOK", "Alle Fragenattribute sind konsistent."); 
-define ("_DC_ASSESSOK", "Alle Bewertungen sind konsistent."); 
+define ("_DC_GROUPSTODELETE", "Die folgenden Gruppen sollten gelöscht werden:");
+define ("_DC_ASSESSTODELETE", "Die folgenden Bewertungen sollten gelöscht werden:");
+define ("_DC_QATODELETE", "Die folgenden Fragenattribute sollten gelöscht werden:");
+define ("_DC_QAOK", "Alle Fragenattribute sind konsistent.");
+define ("_DC_ASSESSOK", "Alle Bewertungen sind konsistent.");
 
 
 ?>
