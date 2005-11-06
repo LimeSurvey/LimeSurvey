@@ -1,7 +1,7 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  										    #
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
@@ -71,8 +71,8 @@ if (!$style)
 			}
 	echo $htmlheader
 		."<br />\n"
-		."<table align='center'><tr>"
 		."<form action='export.php' method='post'>\n"
+		."<table align='center'><tr>"
 		."<td valign='top'>\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
@@ -124,9 +124,9 @@ if (!$style)
 		."\t\t<td align='center' bgcolor='silver'>\n"
 		."\t\t\t$setfont<input $btstyle type='submit' value='"
 		._EX_EXPORTDATA."'>\n"
+		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t</font></td>\n"
-		."\t</tr>\n"
-		."\t<input type='hidden' name='sid' value='$surveyid'>\n";
+		."\t</tr>\n";
 	if (isset($_POST['sql'])) 
 		{
 		echo "\t<input type='hidden' name='sql' value=\""
@@ -160,7 +160,7 @@ if (!$style)
 		."\t<tr>\n"
 		."\t\t<td bgcolor='silver' height='8'><strong>$setfont<font size='1'>\n"
 		."\t\t\t"._EX_COLSELECT.":\n"
-		."\t\t</font></font></td>\n"
+		."\t\t</font></font></strong></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>$setfont\n";
@@ -176,7 +176,7 @@ if (!$style)
 			._EX_COLOK
 			."\")'>";
 		}
-	echo "\t\t</font></font></td>\n"
+	echo "\t\t</font></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center'>$setfont<font size='1'>\n"
@@ -200,7 +200,7 @@ if (!$style)
 		$i++;
 		}
 	echo "\t\t\t</select><br />\n"
-		."\t\t<img src='$imagefiles/blank.gif' height='7' alt=''></td>\n"
+		."\t\t<img src='$imagefiles/blank.gif' height='7' alt=''></font></font></td>\n"
 		."\t</tr>\n"
 		."</table>\n"
 		."</td>\n";
@@ -249,8 +249,8 @@ if (!$style)
 			}
 		}
 	echo "</tr>\n"
-		."\t</form>\n"
 		."</table><br />\n"
+		."\t</form>\n"
 		.htmlfooter("$langdir/instructions.html", "General PHPSurveyor Instructions");
 	exit;
 	}

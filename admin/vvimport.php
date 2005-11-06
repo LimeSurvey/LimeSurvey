@@ -1,12 +1,12 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  										    #
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
+	# >          CARLTON SOUTH 3053, AUSTRALIA                  #
  	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
@@ -54,8 +54,9 @@ if ($action != "upload")
 	    }
 	if (in_array("survey_$surveyid", $tablelist))
 		{
-		echo "<br /><table class='outlinetable' align='center'>
-		<form enctype='multipart/form-data' method='post'>
+		echo "<br />
+		<form enctype='multipart/form-data' method='post' action='vvimport.php?sid=$surveyid'>
+		<table class='outlinetable' align='center'>		
 		<tr><th colspan=2>"._VV_IMPORTFILE."</th></tr>
 		<tr><td>"._VV_FILE."</td><td><input type='file' name='the_file'></td></tr>
 		<tr><td>"._VV_SURVEYID."</td><td><input type='text' size=2 name='sid' value='$surveyid' readonly></td></tr>
@@ -67,10 +68,11 @@ if ($action != "upload")
         <option value='ignore'>"._VV_INSERT_IGNORE."</option>
         <option value='replace'>"._VV_INSERT_REPLACE."</option>
         </select></td></tr>
-		<tr><td>&nbsp;</td><td><input type='submit' value='"._TP_UPLOADFILE."'></td></tr>
+		<tr><td>&nbsp;</td><td><input type='submit' value='"._TP_UPLOADFILE."'>
 		<input type='hidden' name='action' value='upload'>
-		</form>
-		</table>";
+		</td></tr>
+		</table>
+		</form>";
 		}
 	else
 		{

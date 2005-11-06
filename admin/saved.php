@@ -67,13 +67,13 @@ if ($action == "delete" && $surveyid && $scid)
 		}
 	}
 
-echo "<table height='1'><tr><td></td></tr></table>\n"
+echo "<table><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	. _BROWSESAVED.":</strong> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
 echo savedmenubar();
 echo "</table>\n";
-echo "<table height='1'><tr><td></td></tr></table>\n"
+echo "<table><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "<tr><td>";
 switch ($action) 
@@ -118,7 +118,7 @@ function showSavedList($surveyid)
 				[<a href='saved.php?sid=$surveyid&amp;action=delete&amp;scid=".$row['scid']."'"
 				." onClick='return confirm(\""._DR_RUSURE."\")'"
 				.">"._DELETE."</a>]
-				[<a href='dataentry.php?sid=$surveyid&action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]
+				[<a href='dataentry.php?sid=$surveyid&amp;action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]
 				</td>
 			   </tr>\n";
 			} // while
@@ -137,16 +137,16 @@ function savedmenubar()
 	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
 					. "\t\t<td>\n"
 					. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
-					. _B_ADMIN_BT."' border='0' align='left' hspace='0' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+					. _B_ADMIN_BT."' align='left'  onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 					. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 					. "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.gif' title='"
-					. _B_SUMMARY_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$surveyid', '_top')\">\n"
+					. _B_SUMMARY_BT."'  align='left' onClick=\"window.open('saved.php?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.gif' title='"
-					. _B_ALL_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$surveyid&action=all', '_top')\">\n"
+					. _B_ALL_BT."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&amp;action=all', '_top')\">\n"
 					//. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.gif' title='"
-					//. _B_LAST_BT."' border='0' align='left' hspace='0' onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
-					. "\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'>\n"
+					//. _B_LAST_BT."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
+					. "\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 					. "\t\t</td>\n"
 					. "\t</tr>\n";
 	return $surveyoptions;
