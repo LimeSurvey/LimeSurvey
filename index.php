@@ -100,7 +100,9 @@ $langfilename="$langdir/{$thissurvey['language']}.lang.php";
 //Use the default language file if the $thissurvey['language'] file doesn't exist
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
 require_once($langfilename);
+$saveerror=error_reporting(3);
 require_once("$langdir/english.lang.php"); //Load missing values from english file
+error_reporting ($saveerror);
 
 //MAKE SURE SURVEY HASN'T EXPIRED
 if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['expiry'] != "0000-00-00")

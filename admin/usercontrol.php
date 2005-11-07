@@ -60,7 +60,7 @@ if (!file_exists("$homedir/.htaccess"))
 		
 		# Form command line. Redirect STDERR to STDOUT using 2>&1
 		$command = "$htpasswd -bc .htpasswd $defaultuser $defaultpass 2>&1";
-		$addsummary .= "<font size='1'>$command</font><br />\n<br />\n";
+		$addsummary .= "<font size='1'>".htmlspecialchars($command)."</font><br />\n<br />\n";
 		
 		exec($command, $CommandResult, $CommandStatus);
 		if ($CommandStatus) //0=success, for other possibilities see http://httpd.apache.org/docs/programs/htpasswd.html

@@ -427,7 +427,7 @@ if ($surveyid)
 			}
 		else 
 			{
-			$expdate="Never";
+			$expdate="-";
 			}
 		$surveysummary .= "\t<td>$setfont$expdate</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<strong>"

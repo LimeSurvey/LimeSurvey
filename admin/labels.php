@@ -342,8 +342,7 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><strong>"
             ._WARNING."</strong>: "._LB_ACTIVEUSE."</i></font></font>\n"
             ."\t\t\t\t\t</td>\n"
-            ."\t\t\t\t</tr>\n"
-    		."\t\t\t\t</tbody></table>\n";
+            ."\t\t\t\t</tr>\n";
         }
     echo "\t\t\t\t<tr><td colspan='4'><form style='margin-bottom:0;' action='labels.php' method='post'>"
 		."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
