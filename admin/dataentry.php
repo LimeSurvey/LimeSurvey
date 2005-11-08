@@ -198,14 +198,14 @@ if ($action == "insert")
 						if($val)
 							{
 							$insert="INSERT INTO {$dbprefix}saved\n"
-								   . "(`saved_id`, `scid`, `datestamp`, `fieldname`, `ipaddr`\n"
+								   . "(`saved_id`, `scid`,\n`datestamp`, `fieldname`,\n`ipaddr`,"
 								   . "`value`)\n"
 								   ."VALUES ('',\n"
 								   ."'$scid',\n"
 								   ."'".date("Y-m-d H:i:s")."',\n"
 								   ."'".$key."',\n"
-								   ."'".$val."',
-								   . NULL)";
+								   ."NULL,\n"
+								   ."'".$val."')\n";
 							//echo "$insert<br />\n";
 							if (!$result=mysql_query($insert))
 								{
@@ -244,7 +244,7 @@ if ($action == "insert")
 					}
 				else
 					{
-					echo "<font color='red'>"._SAVE_FAILED."</font><br />\n";
+					echo "<font color='red'>"._SAVE_FAILED."</font><br />\n<pre>$insert</pre>".mysql_error()."<br />\n";
 					}			    
 				}
 			else
