@@ -193,7 +193,7 @@ if ($action == "insert")
 				$scid=mysql_insert_id();
 				foreach ($_POST as $key=>$val)
 					{
-					if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && key != "ipaddr")
+					if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key != "ipaddr")
 						{
 						if($val)
 							{
