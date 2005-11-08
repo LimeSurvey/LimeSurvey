@@ -437,10 +437,15 @@ if ($action == "insert")
 
 	
 	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$surveyid'>"._DE_ADDANOTHER."</a>]<br />\n";
+	echo "[<a href='$scriptname?sid=$surveyid'>"._B_ADMIN_BT."</a><br />\n";
 	if (isset($thisid))
 		{
 		echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n";
 	    }
+	if (isset($_POST['save']) && $_POST['save'] == "on") 
+		{
+	    echo "\t\t\t[<a href='saved.php?sid=$surveyid&action=all'>"._BROWSESAVED."</a>]<br />\n";
+		}
 	echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n"
 		."\t</td></tr>\n"
 		."</table>\n"
