@@ -846,13 +846,21 @@ function submittokens()
 		$headers .= "X-Mailer: $sitename Email Inviter\r\n";
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";		
-		
 		$to = $cnfrow['email'];
+		
         $subject=$thissurvey['email_confirm_subj'];
-        $subject=str_replace("{ADMINNAME}", $thissurvey['adminname'], $subject);
-        $subject=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $subject);
-        $subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $subject);
-        $subject=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $subject);
+        
+        $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
+        $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+        $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+        $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+        $fieldsarray["{FIRSTNAME}"]=$thissurvey['firstname'];
+        $fieldsarray["{LASTNAME}"]=$thissurvey['lastname'];
+        $fieldsarray["{ATTRIBUTE_1}"]=$thissurvey['attribute_1'];
+        $fieldsarray["{ATTRIBUTE_2}"]=$thissurvey['attribute_2'];
+
+        $subject=Replacefields($subject, $fieldsarray);
+
 		$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 		$message="";
 		if ($thissurvey['email_confirm']) 
@@ -874,13 +882,10 @@ function submittokens()
 			echo "<!-- Sending Default Email -->\n";
 			$add = _TC_EMAILCONFIRM;
 			}
-		$add = str_replace("{FIRSTNAME}", $cnfrow['firstname'], $add);
-		$add = str_replace("{LASTNAME}", $cnfrow['lastname'], $add);
-		$add = str_replace("{ADMINNAME}", $thissurvey['adminname'], $add);
-		$add = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $add);
-		$add = str_replace("{SURVEYNAME}", $thissurvey['name'], $add);
 		$message .= $add;
 		$message=crlf_lineendings($message);
+        $message=Replacefields($message, $fieldsarray);
+        
 		//Only send confirmation email if there is a valid email address
 		if (validate_email($cnfrow['email'])) {mail($to, $subject, $message, $headers);} 
 		

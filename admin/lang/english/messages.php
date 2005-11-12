@@ -253,6 +253,7 @@ define("_UL_EDIT", "Edit");
 define("_UL_DEL", "Delete");
 define("_UL_ADD", "Add");
 define("_UL_TURNOFF", "Turn Off Security");
+
 //tokens
 define("_TL_FIRST", "First Name");
 define("_TL_LAST", "Last Name");
@@ -261,8 +262,8 @@ define("_TL_TOKEN", "Token");
 define("_TL_INVITE", "Invite sent?");
 define("_TL_DONE", "Completed?");
 define("_TL_ACTION", "Actions");
-define("_TL_ATTR1", "Att_1"); //New for 0.98rc7
-define("_TL_ATTR2", "Att_2"); //New for 0.98rc7
+define("_TL_ATTR1", "Name for Attribute 1"); //New for 0.98rc7
+define("_TL_ATTR2", "Name for Attribute 2"); //New for 0.98rc7
 define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
 define("_LL_NAME", "Set Name"); //NEW with 098rc3
@@ -653,6 +654,7 @@ define("_TC_SENDREMIND", "Send Reminders");
 define("_TC_INVITESENTTO", "Invitation Sent To:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Reminder Sent To:"); //is followed by token name
 define("_TC_UPDATEDB", "Update tokens table with new fields"); //New for 0.98rc7
+define("_TC_MAILTOFAILED", "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"); //New for 0.991
 define("_TC_EMAILINVITE_SUBJ", "Invitation to participate in survey"); //New for 0.99dev01
 define("_TC_EMAILINVITE", "Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\n"
 						 ."The survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"

@@ -262,8 +262,8 @@ define("_TL_TOKEN", "Token");
 define("_TL_INVITE", "Eingeladen?");
 define("_TL_DONE", "Ausgefüllt?");
 define("_TL_ACTION", "Aktionen");
-define("_TL_ATTR1", "Attribute_1");
-define("_TL_ATTR2", "Attribute_2");
+define("_TL_ATTR1", "Name Attribute 1");
+define("_TL_ATTR2", "Name Attribute 2");
 define("_TL_MPID", "MPID");
 //labels
 define("_LL_NAME", "Name setzen");
@@ -680,7 +680,7 @@ define("_TC_EMAILREGISTER", "Hallo {FIRSTNAME},\n\n"
                           ."Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ "
                           ."für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise "
                           ."zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.");
-define("_TC_EMAILCONFIRM_SUBJ", "Abschlussbest&auml;tigung einer Umfrage");
+define("_TC_EMAILCONFIRM_SUBJ", "Abschlussbestätigung einer Umfrage");
 define("_TC_EMAILCONFIRM", "Hallo {FIRSTNAME},\n\nVielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. "
                           ."Ihre Antworten wurden bei uns gespeichert.\n\n"
                           ."Wenn Sie irgendwelche Fragen zu dieser Email haben, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.\n\n"

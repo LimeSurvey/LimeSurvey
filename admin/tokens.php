@@ -6,7 +6,7 @@
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
+	# >          CARLTON SOUTH 3053, AUSTRALIA					#
 	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
@@ -604,6 +604,15 @@ if (returnglobal('action') == "email")
 		//GET SURVEY DETAILS
 		$thissurvey=getSurveyInfo($surveyid);
 		if (!$thissurvey['email_invite']) {$thissurvey['email_invite']=str_replace("\n", "\r\n", _TC_EMAILINVITE);}
+
+        $fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
+        $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+        $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+        $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+
+		$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
+		$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
+
 		echo "<form method='post' action='tokens.php?sid=$surveyid'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 			."\n";
 		if (isset($_GET['tid']) && $_GET['tid']) 
@@ -618,18 +627,12 @@ if (returnglobal('action') == "email")
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right'>$setfont<strong>"._SUBJECT.":</strong></font></td>\n";
-		$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_invite_subj']);
 		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value=\"$subject\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' valign='top'>$setfont<strong>"._MESSAGE.":</strong></font></td>\n"
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-		$textarea = $thissurvey['email_invite'];
-		$textarea = str_replace("{ADMINNAME}", $thissurvey['adminname'], $textarea);
-		$textarea = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $textarea);
-		$textarea = str_replace("{SURVEYNAME}", $thissurvey['name'], $textarea);
-		$textarea = str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $textarea);
 		echo $textarea;
 		echo "\t\t\t</textarea>\n"
 			."\t\t</td>\n"
@@ -670,6 +673,8 @@ if (returnglobal('action') == "email")
 		$message = str_replace("&quot;", '"', $message);
 		if (get_magic_quotes_gpc() != "0")
 			{$message = stripcslashes($message);}
+		
+       
 		echo "<table width='500px' align='center' bgcolor='#EEEEEE'>\n"
 			."\t<tr>\n"
 			."\t\t<td><font size='1'>\n";
@@ -677,42 +682,27 @@ if (returnglobal('action') == "email")
 			{
 			while ($emrow = mysql_fetch_array($emresult))
 				{
-				//$to = $emrow['email'];
 				$to = $emrow['email'];
-				$msgsubject=str_replace(array("{FIRSTNAME}",
-													"{LASTNAME}",
-													"{SURVEYURL}",
-													"{TOKEN}",
-													"{ATTRIBUTE_1}",
-													"{ATTRIBUTE_2}"),
-											  array($emrow['firstname'],
-											  		$emrow['lastname'],
-													"$publicurl/index.php?sid=$surveyid&amp;token={$emrow['token']}",
-													$emrow['token'],
-													$emrow['attribute_1'],
-													$emrow['attribute_2']),
-											  $_POST['subject']);
-				$sendmessage = str_replace(array("{FIRSTNAME}",
-												 "{LASTNAME}",
-												 "{SURVEYURL}",
-												 "{TOKEN}",
-												 "{ATTRIBUTE_1}",
-												 "{ATTRIBUTE_2}"),
-										   array($emrow['firstname'],
-											  	 $emrow['lastname'],
-												 "$publicurl/index.php?sid=$surveyid&amp;token={$emrow['token']}",
-												 $emrow['token'],
-												 $emrow['attribute_1'],
-												 $emrow['attribute_2']),
-										   $message);
-				$sendmessage=crlf_lineendings($sendmessage);
+				
+		        $fieldsarray["{EMAIL}"]=$emrow['email'];
+		        $fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
+		        $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
+		        $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}";
+		        $fieldsarray["{TOKEN}"]=$emrow['token'];
+		        $fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
+		        $fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+
+				$subject=Replacefields($_POST['subject'], $fieldsarray);
+				$message=Replacefields($message, $fieldsarray);
+				
+				$message=crlf_lineendings($message);
 				// Uncomment the next line if your mail clients can't handle emails containing <CR><LF> 
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
 				// cause problems with certain email server
 				//$sendmessage = str_replace("\r", "", $sendmessage);
 
-     			$msgsubject = "=?UTF-8?B?" . base64_encode($msgsubject) . "?=";
-				if (mail($to, $msgsubject, $sendmessage, $headers)) 
+     			$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
+				if (mail($to, $subject, $message, $headers)) 
 					{
 					$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 					$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
@@ -720,8 +710,8 @@ if (returnglobal('action') == "email")
 					}
 				else
 					{
-					echo "Mail to {$emrow['firstname']} {$emrow['lastname']} ($to) Failed";
-					echo "<br /><pre>$headers<br />$sendmessage</pre>";
+					echo ReplaceFields(_TC_MAILTOFAILED, $fieldsarray);
+					echo "<br /><pre>$headers<br />$message</pre>";
 					}
 				}
 			if ($ctcount > $emcount)
@@ -858,32 +848,18 @@ if (returnglobal('action') == "remind")
 			while ($emrow = mysql_fetch_array($emresult))
 				{
 				$to = $emrow['email'];
-				$msgsubject=str_replace(array("{FIRSTNAME}",
-													"{LASTNAME}",
-													"{SURVEYURL}",
-													"{TOKEN}",
-													"{ATTRIBUTE_1}",
-													"{ATTRIBUTE_2}"),
-											  array($emrow['firstname'],
-											  		$emrow['lastname'],
-													"$publicurl/index.php?sid=$surveyid&amp;token={$emrow['token']}",
-													$emrow['token'],
-													$emrow['attribute_1'],
-													$emrow['attribute_2']),
-											  $_POST['subject']);
-				$sendmessage = str_replace(array("{FIRSTNAME}",
-												 "{LASTNAME}",
-												 "{SURVEYURL}",
-												 "{TOKEN}",
-												 "{ATTRIBUTE_1}",
-												 "{ATTRIBUTE_2}"),
-										   array($emrow['firstname'],
-											  	 $emrow['lastname'],
-												 "$publicurl/index.php?sid=$surveyid&amp;token={$emrow['token']}",
-												 $emrow['token'],
-												 $emrow['attribute_1'],
-												 $emrow['attribute_2']),
-										   $message);
+
+		        $fieldsarray["{EMAIL}"]=$emrow['email'];
+		        $fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
+		        $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
+		        $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}";
+		        $fieldsarray["{TOKEN}"]=$emrow['token'];
+		        $fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
+		        $fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+
+				$msgsubject=Replacefields($_POST['subject'], $fieldsarray);
+				$sendmessage=Replacefields($message, $fieldsarray);
+				
 				$sendmessage=crlf_lineendings($sendmessage);
 				// Uncomment the next line if your mail clients can't handle emails containing <CR><LF> 
 				// line endings. This converts them to just <LF> line endings. This is not correct, and may 

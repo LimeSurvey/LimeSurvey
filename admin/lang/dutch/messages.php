@@ -261,8 +261,8 @@ define("_TL_TOKEN", "Toegangscode");
 define("_TL_INVITE", "Uitnodiging sturen?");
 define("_TL_DONE", "Be&euml;indigd?");
 define("_TL_ACTION", "Bewerkingen");
-define("_TL_ATTR1", "Att_1"); //New for 0.98rc7
-define("_TL_ATTR2", "Att_2"); //New for 0.98rc7
+define("_TL_ATTR1", "Name for Attribute 1"); //New for 0.98rc7
+define("_TL_ATTR2", "Name for Attribute 2"); //New for 0.98rc7
 define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
 define("_LL_NAME", "Naam"); //NEW with 098rc3
