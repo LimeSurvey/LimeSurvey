@@ -89,7 +89,10 @@ if (!$style)
 		._EX_HEAD_ABBREV."</label><br />\n"
 		."\t\t\t<input type='radio' checked name='style' value='full' id='headfull'>"
 		."<label for='headfull'>"
-		._EX_HEAD_FULL."</label>\n"
+		._EX_HEAD_FULL."</label><br />\n"
+		."\t\t\t<input type='radio' checked name='style' value='headcodes' id='headcodes'>"
+		."<label for='headcodes'>"
+		._EX_HEAD_CODES."</label>\n"
 		."\t\t</font></font></td>\n"
 		."\t</tr>\n"
 		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><strong>"
@@ -442,10 +445,13 @@ for ($i=0; $i<$fieldcount; $i++)
 			}
 		else
 			{
-			$qq = "SELECT question, type, other FROM {$dbprefix}questions WHERE qid=$fqid"; //get the question
+			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid order by gid, title"; //get the question
 			$qr = mysql_query($qq) or die ("ERROR:<br />".$qq."<br />".mysql_error());
 			while ($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
-				{$fquest=$qrow['question'];}
+				{
+					if ($style == "headcodes"){$fquest=$qrow['title'];}
+					else {$fquest=$qrow['question'];}
+				}
 			switch ($ftype)
 				{
 				case "R": //RANKING TYPE

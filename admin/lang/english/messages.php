@@ -489,6 +489,7 @@ define("_EX_ANSWERS", "Answers");
 define("_EX_FORMAT", "Format");
 define("_EX_HEAD_ABBREV", "Abbreviated headings");
 define("_EX_HEAD_FULL", "Full headings");
+define("_EX_HEAD_CODES", "Question Codes");
 define("_EX_ANS_ABBREV", "Answer Codes");
 define("_EX_ANS_FULL", "Full Answers");
 define("_EX_FORM_WORD", "Microsoft Word");
