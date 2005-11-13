@@ -1,12 +1,12 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  											#
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
+	# >          CARLTON SOUTH 3053, AUSTRALIA					#
  	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
@@ -99,7 +99,7 @@ function BuildOutput($Query)
 		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
 		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
 		
-		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues)\n";
+		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues);\n";
 		}
 	return $Output;
 	}

@@ -1676,9 +1676,9 @@ if ($action == "editsurvey")
 	
 if ($action == "newsurvey")
 	{
-	$newsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+	$newsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 				. "\t\t<strong>$setfont<font color='white'>"._CREATESURVEY."</font></font></strong></td></tr>\n"
-				. "\t<tr><form name='addnewsurvey' action='$scriptname' method='post'>\n"
+				. "\t<tr>\n"
 				. "\t\t<td align='right' width='25%'><strong>$setfont"._SL_TITLE."</font></strong></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='short_title'></td></tr>\n"
 				. "\t<tr><td align='right'><strong>$setfont"._SL_DESCRIPTION."</font></strong>	</td>\n"
@@ -1818,25 +1818,25 @@ if ($action == "newsurvey")
 				. "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='";
 	if (isset($esrow)) {$newsurvey .= $esrow['urldescrip'];}
 	$newsurvey .= "'></td></tr>\n"
-				 . "\t<tr><td align='right'>$setfont<strong>"._SL_AUTORELOAD."</strong><font></td>\n"
+				 . "\t<tr><td align='right'>$setfont<strong>"._SL_AUTORELOAD."</strong></font></td>\n"
 				 . "\t\t<td><select $slstyle name='autoredirect'>\n"
 				 . "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
 				 . "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
 				 . "</select></td></tr>"
-				. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._CREATESURVEY."'></td>\n"
-				. "\t<input type='hidden' name='action' value='insertnewsurvey'>\n"
-				. "\t</tr></form>\n"
-				. "</table>\n";
+				. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._CREATESURVEY."'>\n"
+				. "\t<input type='hidden' name='action' value='insertnewsurvey'></td>\n"
+				. "\t</tr>\n"
+				. "</table></form>\n";
 	$newsurvey .= "<center>$setfont<strong>"._AD_OR."</strong></font></center>\n";
-	$newsurvey .= "<table width='100%' border='0'>\n\t"
-				. "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n"
+	$newsurvey .= "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n"
+				. "<table width='100%' border='0'>\n"
 				. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
 				. "\t\t<strong>$setfont<font color='white'>"._IMPORTSURVEY."</font></font></strong></td></tr>\n\t<tr>"
 				. "\t\t<td align='right'>$setfont<strong>"._SL_SELSQL."</strong></font></td>\n"
 				. "\t\t<td><input $slstyle2 name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
-				. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._IMPORTSURVEY."'></TD>\n"
-				. "\t<input type='hidden' name='action' value='importsurvey'>\n"
-				. "\t</tr></form>\n</table>\n";
+				. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._IMPORTSURVEY."'>\n"
+				. "\t<input type='hidden' name='action' value='importsurvey'></TD>\n"
+				. "\t</tr>\n</table></form>\n";
 	}
 
 function replacenewline ($texttoreplace)
