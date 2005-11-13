@@ -101,44 +101,34 @@ $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
 $result = mysql_query($query) or die ($query."<br />".mysql_error());
 $tid=mysql_insert_id();
 
+
+$fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
+$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&amp;token=$newtoken";
+$fieldsarray["{FIRSTNAME}"]=returnglobal('register_firstname');
+$fieldsarray["{LASTNAME}"]=returnglobal('register_lastname');
+$fieldsarray["{ATTRIBUTE_1}"]=returnglobal('register_attribute1');
+$fieldsarray["{ATTRIBUTE_2}"]=returnglobal('register_attribute2');
+
 $message=$thissurvey['email_register'];
-$message=str_replace("{ADMINNAME}", $thissurvey['adminname'], $message);
-$message=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $message);
-$message=str_replace("{SURVEYNAME}", $thissurvey['name'], $message);
-$message=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $message);
-$message=str_replace("{SURVEYURL}", "$publicurl/index.php?sid=$surveyid&amp;token=$newtoken", $message);
-$message=str_replace("{FIRSTNAME}", returnglobal('register_firstname'), $message);
-$message=str_replace("{LASTNAME}", returnglobal('register_lastname'), $message);
-$message=str_replace("{ATTRIBUTE_1}", returnglobal('register_attribute1'), $message);
-$message=str_replace("{ATTRIBUTE_2}", returnglobal('register_attribute2'), $message);
-//$message=str_replace("\n", "\r\n", $message);
-
-$headers = "From: {$thissurvey['adminname']} <{$thissurvey['adminemail']}>\r\n"
-		 . "X-Mailer: $sitename Emailer (www.phpsurveyor.org)\r\n"
-         . "MIME-Version: 1.0\r\n"
-         . "Content-Type: text/plain; charset=utf-8\r\n";		
-
 $subject=$thissurvey['email_register_subj'];
-$subject=str_replace("{ADMINNAME}", $thissurvey['adminname'], $subject);
-$subject=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $subject);
-$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $subject);
-$subject=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $subject);
-$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 
+$message=Replacefields($message, $fieldsarray);
+$subject=Replacefields($subject, $fieldsarray);
 
-$message=crlf_lineendings($message);
+$from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
 $html=""; //Set variable
 
-if (mail(returnglobal('register_email'), $subject, $message, $headers))
+if (MailtextMessage($message, $subject, returnglobal('register_email'), $from, $sitename))
 	{
 	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 			."SET sent='Y' WHERE tid=$tid";
 	$result=mysql_query($query) or die ("$query<br />".mysql_error());
-	$html.="<center>"._RG_REGISTRATIONCOMPLETE;
-	$html=str_replace("{ADMINNAME}", $thissurvey['adminname'], $html);
-	$html=str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $html);
-	$html=str_replace("{SURVEYNAME}", $thissurvey['name'], $html);
+	$html="<center>"._RG_REGISTRATIONCOMPLETE;
+	$html=Replacefields($html, $fieldsarray);
 	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: self.close()' value='"._CLOSEWIN_PS."'></center>\n";
 	}
 else

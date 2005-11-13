@@ -264,7 +264,6 @@ if ($result=mysql_query($query))
 			if (validate_email($_POST['saveemail']))
 				{
 				$subject=_SAVE_EMAILSUBJECT;
-      			$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 				$message=_SAVE_EMAILTEXT;
 				$message.="\n\n".$thissurvey['name']."\n\n";
 				$message.=_SAVENAME.": ".$_POST['savename']."\n";
@@ -272,12 +271,9 @@ if ($result=mysql_query($query))
 				$message.=_SAVE_EMAILURL.":\n";
 				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$sdata['scid']."&loadname=".$_POST['savename']."&loadpass=".$_POST['savepass'];
 				if (returnglobal('token')){$message.="&token=".returnglobal('token');}				
-				$message=crlf_lineendings($message);
-				$headers = "From: {$thissurvey['adminemail']}\r\n"
-                         . "MIME-Version: 1.0\r\n"
-                         . "Content-Type: text/plain; charset=utf-8\r\n";		
+				$from=$thissurvey['adminemail'];
 				
-				if (mail($_POST['saveemail'], $subject, $message, $headers))
+				if (MailtextMessage($message, $subject, $_POST['saveemail'], $from, $sitename))
 					{
 					$emailsent="Y";
 					}

@@ -497,7 +497,7 @@ define("_EX_EXPORTDATA", "輸出數據");
 define("_EX_COLCONTROLS", "Column Control"); //New for 0.98rc7
 define("_EX_TOKENCONTROLS", "Token Control"); //New for 0.98rc7
 define("_EX_COLSELECT", "Choose columns"); //New for 0.98rc7
-define("_EX_COLOK", "Choose the columns you wish to export. Leave all unselected to export all columns."); //New for 0.98rc7
+define("_EX_COLOK", "Choose the columns you wish to export."); //New for 0.98rc7
 define("_EX_COLNOTOK", "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."); //New for 0.98rc7
 define("_EX_TOKENMESSAGE", "Your survey can export associated token data with each response. Select any additional fields you would like to export."); //New for 0.98rc7
 define("_EX_TOKSELECT", "Choose Token Fields"); //New for 0.98rc7

@@ -842,12 +842,8 @@ function submittokens()
 	$cnfresult = mysql_query($cnfquery);
 	while ($cnfrow = mysql_fetch_array($cnfresult))
 		{
-		$headers = "From: {$thissurvey['adminname']} <{$thissurvey['adminemail']}>\r\n";
-		$headers .= "X-Mailer: $sitename Email Inviter\r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";		
+		$from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 		$to = $cnfrow['email'];
-		
         $subject=$thissurvey['email_confirm_subj'];
         
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
@@ -861,11 +857,9 @@ function submittokens()
 
         $subject=Replacefields($subject, $fieldsarray);
 
-		$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
-		$message="";
 		if ($thissurvey['email_confirm']) 
 			{
-			$add=$thissurvey['email_confirm'];
+			$message=$thissurvey['email_confirm'];
 			}
 		else
 			{
@@ -880,14 +874,13 @@ function submittokens()
 				}
 			require("$langdir2/messages.php");
 			echo "<!-- Sending Default Email -->\n";
-			$add = _TC_EMAILCONFIRM;
+			$message = _TC_EMAILCONFIRM;
 			}
-		$message .= $add;
-		$message=crlf_lineendings($message);
+
         $message=Replacefields($message, $fieldsarray);
         
 		//Only send confirmation email if there is a valid email address
-		if (validate_email($cnfrow['email'])) {mail($to, $subject, $message, $headers);} 
+		if (validate_email($cnfrow['email'])) {MailTextMessage($message, $subject, $to, $from, $sitename);} 
 		
 		//DEBUG INFO: CAN BE REMOVED
 		echo "<!-- DEBUG: MAIL INFORMATION\n"
@@ -906,7 +899,7 @@ function sendsubmitnotification($sendnotification)
 	global $savedid, $dbprefix;
 	global $sitename, $homeurl, $surveyid;
 
-	$subject = "=?UTF-8?B?" . base64_encode("$sitename Survey Submitted") . "?=";
+	$subject = "$sitename Survey Submitted";
 	$message = _CONFIRMATION_MESSAGE1." {$thissurvey['name']}\r\n"
 			 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
 			 . _CONFIRMATION_MESSAGE3."\r\n"
@@ -932,21 +925,18 @@ function sendsubmitnotification($sendnotification)
 		$message .= "----------------------------\r\n\r\n";
 		}
 	$message.= "PHPSurveyor";
-	$message = crlf_lineendings($message);
-	$headers = "From: {$thissurvey['adminemail']}\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";		
+	$from = $thissurvey['adminemail'];
 	
 	if ($recips=explode(";", $thissurvey['adminemail'])) 
 		{
 	    foreach ($recips as $rc) 
 			{
-			mail (trim($rc), $subject, $message, $headers);
+			MailTextMessage($message, $subject, trim($rc), $from, $sitename);
 			}
 		}
 	else
 		{
-		mail($thissurvey['adminemail'], $subject, $message, $headers);	
+		MailTextMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename);			
 		}
 	}
 
@@ -976,8 +966,7 @@ function submitfailed()
 				. "$subquery\n\n"
 				. _DNSAVEEMAIL4.":\n"
 				. mysql_error()."\n\n";
-		$email=crlf_lineendings($email);
-		mail($thissurvey['adminemail'], _DNSAVEEMAIL5, $email);
+		MailTextMessage($email, _DNSAVEEMAIL5, $thissurvey['adminemail'], $thissurvey['adminemail'], "PHPSurveyor");
 		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.
 		session_unset();

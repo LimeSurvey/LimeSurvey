@@ -665,15 +665,7 @@ if (returnglobal('action') == "email")
 		echo "\n\n<!-- emquery: $emquery -->\n\n";
 		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".mysql_error());
 		$emcount = mysql_num_rows($emresult);
-		$headers = "From: {$_POST['from']}\r\n";
-		$headers .= "X-Mailer: $sitename Emailer (PHPSurveyor.sourceforge.net)\r\n";  
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/plain; charset=utf-8\r\n";		
-		$message = strip_tags($_POST['message']);
-		$message = str_replace("&quot;", '"', $message);
-		if (get_magic_quotes_gpc() != "0")
-			{$message = stripcslashes($message);}
-		
+		$from = $_POST['from'];
        
 		echo "<table width='500px' align='center' bgcolor='#EEEEEE'>\n"
 			."\t<tr>\n"
@@ -695,14 +687,7 @@ if (returnglobal('action') == "email")
 				$subject=Replacefields($_POST['subject'], $fieldsarray);
 				$message=Replacefields($message, $fieldsarray);
 				
-				$message=crlf_lineendings($message);
-				// Uncomment the next line if your mail clients can't handle emails containing <CR><LF> 
-				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
-				// cause problems with certain email server
-				//$sendmessage = str_replace("\r", "", $sendmessage);
-
-     			$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
-				if (mail($to, $subject, $message, $headers)) 
+				if (MailTextMessage($message, $subject, $to , $from, $sitename)) 
 					{
 					$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 					$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
@@ -832,17 +817,12 @@ if (returnglobal('action') == "remind")
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
 		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />$emquery<br />".mysql_error());
 		$emcount = mysql_num_rows($emresult);
-		$headers = "From: {$_POST['from']}\r\n";
-		$headers .= "X-Mailer: $sitename Email Reminder";  
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/plain; charset=utf-8\r\n";		
+		$from = $_POST['from'];
 		echo "<table width='500' align='center' bgcolor='#EEEEEE'>\n"
 			."\t<tr>\n"
 			."\t\t<td><font size='1'>\n";
-		$message = strip_tags($_POST['message']);
-		$message = str_replace("&quot;", '"', $message);
-		if (get_magic_quotes_gpc() != "0")
-			{$message = stripcslashes($message);}
+		$sendmessage = $_POST['message'];
+
 		if ($emcount > 0)
 			{
 			while ($emrow = mysql_fetch_array($emresult))
@@ -858,16 +838,9 @@ if (returnglobal('action') == "remind")
 		        $fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
 
 				$msgsubject=Replacefields($_POST['subject'], $fieldsarray);
-				$sendmessage=Replacefields($message, $fieldsarray);
-				
-				$sendmessage=crlf_lineendings($sendmessage);
-				// Uncomment the next line if your mail clients can't handle emails containing <CR><LF> 
-				// line endings. This converts them to just <LF> line endings. This is not correct, and may 
-				// cause problems with certain email server
-				//$sendmessage = str_replace("\r", "", $sendmessage);
+				$sendmessage=Replacefields($sendmessage, $fieldsarray);
 
-     			$msgsubject = "=?UTF-8?B?" . base64_encode($msgsubject) . "?=";
-				if (mail($to, $msgsubject, $sendmessage, $headers))
+				if (MailtextMessage($sendmessage, $msgsubject, $to, $from, $sitename))
 					{
 					echo "\t\t\t({$emrow['tid']})["._TC_REMINDSENTTO." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 					}

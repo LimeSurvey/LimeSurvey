@@ -223,18 +223,15 @@ if ($action == "insert")
 						if (validate_email($saver['email']) && !returnglobal('redo'))
 							{
 							$subject=_SAVE_EMAILSUBJECT;
-							$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 							$message=_SAVE_EMAILTEXT;
 							$message.="\n\n".$thissurvey['name']."\n\n";
 							$message.=_SAVENAME.": ".$saver['identifier']."\n";
 							$message.=_SAVEPASSWORD.": ".$saver['password']."\n\n";
 							$message.=_SAVE_EMAILURL.":\n";
 							$message.=$homeurl."/dataentry.php?sid=$surveyid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
-							$message=crlf_lineendings($message);
-							$headers = "From: {$thissurvey['adminemail']}\r\n"
-                                     . "MIME-Version: 1.0\r\n"
-                                     . "Content-Type: text/plain; charset=utf-8\r\n";		
-							if (mail($saver['email'], $subject, $message, $headers))
+							$from = $thissurvey['adminemail'];
+
+							if (MailTextMessage($message, $subject, $saver['email'], $from, $sitename))
 								{
 								$emailsent="Y";
 								echo "<font color='green'>"._SAVE_EMAILSENT."</font><br />\n";

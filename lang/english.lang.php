@@ -1,7 +1,7 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  											#
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
@@ -111,7 +111,7 @@ define("_DNSAVEEMAIL1", "An error occurred saving a response to survey id");
 define("_DNSAVEEMAIL2", "DATA TO BE ENTERED");
 define("_DNSAVEEMAIL3", "SQL CODE THAT FAILED");
 define("_DNSAVEEMAIL4", "ERROR MESSAGE");
-define("_DNSAVEEMAIL5", "ERROR SAVING");
+define("_DNSAVEEMAIL5", "Error saving survey results to database");
 define("_SUBMITAGAIN", "Try to submit again");
 define("_SURVEYNOEXIST", "Sorry. There is no matching survey.");
 define("_NOTOKEN1", "This is a controlled survey. You need a valid token to participate.");
