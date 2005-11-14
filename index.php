@@ -1018,17 +1018,17 @@ function buildsurveysession()
 	<center><br />
 	<?php echo _NOTOKEN1 ?><br /><br />
 	<?php echo _NOTOKEN2 ?><br />&nbsp;
-	<table align='center'>
 	<form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'>
-	<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid'>
+	<table align='center'>
 		<tr>
 			<td align='center' valign='middle'>
+			<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid'>
 			<?php echo _TOKEN_PS ?>: <input class='text' type='text' name='token'>
 			<input class='submit' type='submit' value='<?php echo _CONTINUE_PS ?>'>
 			</td>
 		</tr>
-	</form>
 	</table>
+	</form>
 	<br />&nbsp;</center>
 <?php
 			}
