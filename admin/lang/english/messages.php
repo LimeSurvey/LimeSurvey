@@ -262,8 +262,8 @@ define("_TL_TOKEN", "Token");
 define("_TL_INVITE", "Invite sent?");
 define("_TL_DONE", "Completed?");
 define("_TL_ACTION", "Actions");
-define("_TL_ATTR1", "Name for Attribute 1"); //New for 0.98rc7
-define("_TL_ATTR2", "Name for Attribute 2"); //New for 0.98rc7
+define("_TL_ATTR1", "Attribute 1"); //New for 0.98rc7
+define("_TL_ATTR2", "Attribute 2"); //New for 0.98rc7
 define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
 define("_LL_NAME", "Set Name"); //NEW with 098rc3

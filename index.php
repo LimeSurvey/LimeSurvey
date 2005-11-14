@@ -850,10 +850,10 @@ function submittokens()
         $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
         $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
         $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-        $fieldsarray["{FIRSTNAME}"]=$thissurvey['firstname'];
-        $fieldsarray["{LASTNAME}"]=$thissurvey['lastname'];
-        $fieldsarray["{ATTRIBUTE_1}"]=$thissurvey['attribute_1'];
-        $fieldsarray["{ATTRIBUTE_2}"]=$thissurvey['attribute_2'];
+        $fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
+        $fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
+        $fieldsarray["{ATTRIBUTE_1}"]=$cnfrow['attribute_1'];
+        $fieldsarray["{ATTRIBUTE_2}"]=$cnfrow['attribute_2'];
 
         $subject=Replacefields($subject, $fieldsarray);
 
@@ -884,10 +884,10 @@ function submittokens()
 		
 		//DEBUG INFO: CAN BE REMOVED
 		echo "<!-- DEBUG: MAIL INFORMATION\n"
+			."FROM: $from\n"
 			."TO: $to\n"
 			."SUBJECT: $subject\n"
 			."MESSAGE: $message\n"
-			."HEADERS: $headers\n"
 			."-->\n";
 		//END DEBUG
 		}	

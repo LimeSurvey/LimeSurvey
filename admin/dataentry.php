@@ -1935,7 +1935,7 @@ else
 					$mearesult = mysql_query($meaquery);
 					$meacount = mysql_num_rows($mearesult);
 					if ($deqrow['other'] == "Y") {$meacount++;}
-					if ($dcols > 0 && $meacount > $dcols)
+					if ($dcols > 0 && $meacount >= $dcols)
 						{
 					    $width=sprintf("%0d", 100/$dcols);
 						$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number

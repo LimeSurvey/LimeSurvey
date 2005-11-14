@@ -261,8 +261,8 @@ define("_TL_TOKEN", "Ключ. фраза");
 define("_TL_INVITE", "Приглашение отправлено?");
 define("_TL_DONE", "Окончено?");
 define("_TL_ACTION", "Действия");
-define("_TL_ATTR1", "Name for Attribute 1"); //New for 0.98rc7
-define("_TL_ATTR2", "Name for Attribute 2"); //New for 0.98rc7
+define("_TL_ATTR1", "Attribute 1"); //New for 0.98rc7
+define("_TL_ATTR2", "Attribute 2"); //New for 0.98rc7
 define("_TL_MPID", "MPID"); //New for 0.98rc7
 //labels
 define("_LL_NAME", "Имя набора"); //NEW with 098rc3

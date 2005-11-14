@@ -261,8 +261,8 @@ define("_TL_TOKEN", "操作代碼");
 define("_TL_INVITE", "已送出邀請嗎?");
 define("_TL_DONE", "已完成問卷嗎?");
 define("_TL_ACTION", "管理動作");
-define("_TL_ATTR1", "Name for Attribute 1"); //New for 0.98rc7 (Attribute 1)
-define("_TL_ATTR2", "Name for Attribute 2"); //New for 0.98rc7 (Attribute 2)
+define("_TL_ATTR1", "Attribute 1"); //New for 0.98rc7 (Attribute 1)
+define("_TL_ATTR2", "Attribute 2"); //New for 0.98rc7 (Attribute 2)
 define("_TL_MPID", "MPID"); //New for 0.98rc7   (MPID - short for "Master Preferences ID")
 //labels
 define("_LL_NAME", "設定名字"); //NEW with 098rc3

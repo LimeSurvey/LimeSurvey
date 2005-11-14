@@ -297,7 +297,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				$dearesult = mysql_query($deaquery) or die("ERROR: $deaquery<br />\n".mysql_error());
 				$deacount=mysql_num_rows($dearesult);
 				if ($deqrow['other'] == "Y") {$deacount++;}
-				if ($dcols > 0 && $deacount > $dcols)
+				if ($dcols > 0 && $deacount >= $dcols)
 					{
 				    $width=sprintf("%0d", 100/$dcols);
 					$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
@@ -351,7 +351,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				$dearesult = mysql_query($deaquery);
 				$deacount=mysql_num_rows($dearesult);
 				if ($deqrow['other'] == "Y") {$deacount++;}
-				if ($dcols > 0 && $deacount > $dcols)
+				if ($dcols > 0 && $deacount >= $dcols)
 					{
 				    $width=sprintf("%0d", 100/$dcols);
 					$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
@@ -424,7 +424,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				$mearesult = mysql_query($meaquery);
 				$meacount = mysql_num_rows($mearesult);
 				if ($deqrow['other'] == "Y") {$meacount++;}
-				if ($dcols > 0 && $meacount > $dcols)
+				if ($dcols > 0 && $meacount >= $dcols)
 					{
 				    $width=sprintf("%0d", 100/$dcols);
 					$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
