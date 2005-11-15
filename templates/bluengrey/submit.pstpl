@@ -1,12 +1,11 @@
-<br />
-<b><font style="font-family: Verdana; font-size: 12px;" color='#666666'>Thank you.</font><br />
-<font style="font-family: Verdana; font-size: 12px;" color='#666666'>You have completed answering the questions in this survey.</b></font><br /><br />
-<font style="font-family: Verdana; font-size: 12px;" color='#333333'>Click on "submit" now to complete the process and add your answers to our records.</font><br /><br />
+<br /><center>
+{SUBMITCOMPLETE}<br /><br />
 
-<center>{SUBMITBUTTON}</center><br /><br />
+{SUBMITBUTTON}<br /><br />
 
-
-<font style="font-family: Verdana; font-size: 12px;" color='#333333'>If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the " << prev " button and browsing through your responses.</font><br /><br />
+{SUBMITREVIEW}<br /><br />
 
 {PRIVACY}
+</center>
+
 <br />

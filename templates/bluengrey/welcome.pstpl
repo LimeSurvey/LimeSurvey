@@ -18,7 +18,7 @@
 			</td>
 			</tr>
 			</table>
-			<font color='#333333'>There are {NUMBEROFQUESTIONS} questions in this survey.</font>
+			<font color='#333333'>{THEREAREXQUESTIONS}</font>
 		</td>
 	</tr>
 </table>
