@@ -316,6 +316,13 @@ function editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction) {
 //			echo $query;
 			$result = mysql_query($query);
 			
+			if (isset($_POST['gid'])) {
+				$query = "UPDATE {$dbprefix}conditions
+						  SET cfieldname = '{$surveyid}X{$_POST['gid']}X{$qid}'
+						  WHERE cqid={$qid}";
+				$result = mysql_query($query);
+			}
+			
 			break;
 		case "copyquestion":
 		    $oldqid=$qid;
