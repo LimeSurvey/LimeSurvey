@@ -1140,7 +1140,7 @@ if ($action == _ADD)
 	echo "<br />$setfont<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		."<br />"._TC_TOKENADDED."<br /><br />\n"
 		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._T_ALL_BT."</a><br />\n"
-		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._T_ADD_BT."</a><br /><br />\n"
+		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=addnew'>"._T_ADD_BT."</a><br /><br />\n"
 		."\t</td></tr></table>\n";
 	}
 
