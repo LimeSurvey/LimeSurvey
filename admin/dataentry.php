@@ -45,39 +45,36 @@ sendcacheheaders();
 
 $surveyoptions = browsemenubar();
 echo $htmlheader;
-echo "<table height='1'><tr><td></td></tr></table>\n";
 
 if (!mysql_selectdb ($databasename, $connect))
 	{
 	//echo "</table>\n";
-	echo "<table height='1'><tr><td></td></tr></table>\n"
-		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></td></tr>\n"
+		._DATAENTRY."</strong></font></td></tr>\n"
 		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		._ST_NODB1."<br />\n"
 		._ST_NODB2."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"></font><br />\n"
 		."</td></tr></table>\n"
-		."</body>\n</html>";
+		."</body>\n";
 	exit;
 	}
 if (!$surveyid && !$action)
 	{
 	//echo "</table>\n";
-	echo "<table height='1'><tr><td></td></tr></table>\n"
-		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></td></tr>\n"
+		._DATAENTRY."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
 		._DE_NOSID."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
 		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
-		."</td></tr></table>\n"
-		."</body>\n</html>";
+		."</font></td></tr></table>\n"
+		."</body>\n";
 	exit;
 	}
 
@@ -88,10 +85,9 @@ if ($action == "edit" || $action == "" || $action == "editsaved")
 	
 if ($action == "insert")
 	{
-	echo "<table height='1'><tr><td></td></tr></table>\n"
-		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></td></tr>\n"
+		._DATAENTRY."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 	if (isset($_POST['save']) && $_POST['save'] == "on")
@@ -131,9 +127,9 @@ if ($action == "insert")
 			{
 		    echo $errormsg;
 			echo "Try again:<br />
+     			   <form method='post'>
 				  <table class='outlinetable' cellspacing='0' align='center'>
 				  <tr>
-				   <form method='post'>
 				   <td align='right'>"._DE_SAVEID."</td>
 				   <td><input type='text' name='save_identifier' value='".$_POST['save_identifier']."'></td></tr>
 				  <tr><td align='right'>"._DE_SAVEPW."</td>
@@ -141,7 +137,7 @@ if ($action == "insert")
 				  <tr><td align='right'>"._DE_SAVEPWCONFIRM."</td>
 				   <td><input type='password' name='save_confirmpassword' value='".$_POST['save_confirmpassword']."'></td></tr>
 				  <tr><td align='right'>"._DE_SAVEEMAIL."</td>
-				   <td><input type='text' name='save_email' value='".$_POST['save_email']."'></td></tr>\n";
+				   <td><input type='text' name='save_email' value='".$_POST['save_email']."'>\n";
 			foreach ($_POST as $key=>$val)
 				{
 				if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
@@ -149,11 +145,11 @@ if ($action == "insert")
 					echo "<input type='hidden' name='$key' value='$val'>\n";
 					}
 				}
-			echo "<tr><td></td><td><input type='submit' value='"._SUBMIT."'></td>
+			echo "</td></tr><tr><td></td><td><input type='submit' value='"._SUBMIT."'>
 				 <input type='hidden' name='sid' value='$surveyid'>
 				 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
 				 <input type='hidden' name='action' value='".$_POST['action']."'>
-				 <input type='hidden' name='save' value='on'>";
+				 <input type='hidden' name='save' value='on'></td>";
 			if (isset($_POST['datestamp'])) 
 				{
 			    echo "<input type='hidden' name='datestamp' value='".$_POST['datestamp']."'>\n";
@@ -161,7 +157,7 @@ if ($action == "insert")
 			if (isset($_POST['ipaddr'])) 
 				{
 			    echo "<input type='hidden' name='ipaddr' value='".$_POST['ipaddr']."'>\n";
-				}echo "</form></table>\n";
+				}echo "</table></form>\n";
 			} 
 		else 
 			{
@@ -403,7 +399,7 @@ if ($action == "insert")
 				VALUES 
 				($insertqr)";
 		//echo $SQL; //Debugging line
-		$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />$SQL<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n</html>");
+		$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />$SQL<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n");
 		if (returnglobal('redo')=="yes")
 			{
 			//This submission of data came from a saved session. Must delete the
@@ -446,19 +442,18 @@ if ($action == "insert")
 	echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n"
 		."\t</td></tr>\n"
 		."</table>\n"
-		."</body>\n</html>";
+		."</body>\n";
 	
 	}
 
 elseif ($action == "edit" || $action == "editsaved")
 	{
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	echo "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._BROWSERESPONSES."</strong></td></tr>\n";
+		._BROWSERESPONSES."</strong></font></td></tr>\n";
 	if (isset($surveyheader)) {echo $surveyheader;}
 	echo $surveyoptions
-		."</table>\n"
-		."<table height='1'><tr><td></td></tr></table>\n";
+		."</table>\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid'";
@@ -606,12 +601,12 @@ elseif ($action == "edit" || $action == "editsaved")
 		}
 //	echo "<pre>";print_r($results);echo "</pre>";
 
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	echo "<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n"
+		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></td></tr>\n"
-		."<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n"
+		._DATAENTRY."</strong></font></td></tr>\n"
 		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<strong>"
-		._DE_EDITING." (ID $id)</td></tr>\n"
+		._DE_EDITING." (ID $id)</strong></font></td></tr>\n"
 		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 
 	foreach ($results as $idrow)
@@ -623,17 +618,10 @@ elseif ($action == "edit" || $action == "editsaved")
 			$answer = $idrow[$fnames[$i][0]];
 			$question=$fnames[$i][2];
 			echo "\t<tr>\n"
-				."\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='20%'>$setfont"
-				."<strong>\n";
-			if ($fnames[$i][3] != "A" && $fnames[$i][3] != "B" && $fnames[$i][3]!="C" && $fnames[$i][3] != "E" && $fnames[$i][3]!="P" && $fnames[$i][3] != "M") 
-				{
-				echo "\t\t\t{$fnames[$i][2]}\n";
-				}
-			else
-				{
-				echo "\t\t\t{$fnames[$i][2]}\n";
-				}
-			echo "\t\t</td>\n"
+				."\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='25%'>$setfont"
+				."\n";
+			echo "\t\t\t<strong>{$fnames[$i][2]}</strong>\n";
+			echo "\t\t</font></td>\n"
 				."\t\t<td valign='top'>\n";
 			//echo "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info
 			switch ($fnames[$i][3])
@@ -641,6 +629,10 @@ elseif ($action == "edit" || $action == "editsaved")
 				case "X": //Boilerplate question
 					echo "";
 					break;
+				case "Q":
+					echo "\t\t\t{$fnames[$i][6]}&nbsp;<input type='text' name='{$fnames[$i][0]}' value='"
+						.$idrow[$fnames[$i][0]] . "'>\n";
+					break;	
 				case "id":
 					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>"._DE_NOMODIFY."</font>\n";
 					break;
@@ -666,14 +658,14 @@ elseif ($action == "edit" || $action == "editsaved")
 						."\t\t\t\t<option value='M'";
 					if ($idrow[$fnames[$i][0]] == "M") {echo " selected";}
 					echo ">"._MALE."</option>\n"
-						."\t\t\t<select>\n";
+						."\t\t\t</select>\n";
 					break;
 				case "W":
 				case "Z":
 					if (substr($fnames[$i][0], -5) == "other")
 						{
 						echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 						}
 					else
 						{
@@ -712,7 +704,7 @@ elseif ($action == "edit" || $action == "editsaved")
 					if (substr($fnames[$i][0], -5) == "other")
 						{
 						echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 						}
 					else
 						{
@@ -848,12 +840,19 @@ elseif ($action == "edit" || $action == "editsaved")
 						$answers[] = array($ansrow['code'], $ansrow['answer']);
 						}
 					//now find out how many existing values there are
-					$existing = count($currentvalues);
 					
+					$chosen[]=""; //create array
+					if (!isset($ranklist)) {$ranklist="";}
+					
+					if (isset($currentvalues))
+					{
+					$existing = count($currentvalues);
+					}
+					else {$existing=0;}
 					for ($j=1; $j<=$anscount; $j++) //go through each ranking and check for matching answer
 						{
 						$k=$j-1;
-						if ($currentvalues[$k]) 
+						if (isset($currentvalues) && $currentvalues[$k]) 
 							{
 							foreach ($answers as $ans)
 								{
@@ -864,9 +863,8 @@ elseif ($action == "edit" || $action == "editsaved")
 									}
 								}
 							}
-						if (!isset($ranklist)) {$ranklist="";}
-						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$j:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$j' id='RANK$j'";
-						if ($currentvalues[$k])
+						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$j:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' id='RANK_$thisqid$j'";
+						if (isset($currentvalues) && $currentvalues[$k])
 							{
 							$ranklist .= " value='"
 									   . $thistext
@@ -874,20 +872,20 @@ elseif ($action == "edit" || $action == "editsaved")
 							}
 						$ranklist .= " onFocus=\"this.blur()\">\n"
 								   . "\t\t\t\t\t\t<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
-						$chosen[]=""; //create array
-						if ($currentvalues[$k]) 
+						if (isset($currentvalues) && $currentvalues[$k]) 
 							{
 							$ranklist .= $thiscode;
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n"
-								   . "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' title='"._REMOVEITEM."' ";
+								   . "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='"._REMOVEITEM."' title='"._REMOVEITEM."' ";
 						if ($j != $existing)
 							{
 							$ranklist .= "style='display:none'";
 							}
-						$ranklist .= " id='cut_$thisqid$j' name='cut$j' onClick=\"deletethis(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$j' onClick=\"deletethis_$thisqid(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"></font><br />\n\n";
 						}
+
 					if (!isset($choicelist)) {$choicelist="";}
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
@@ -900,16 +898,14 @@ elseif ($action == "edit" || $action == "editsaved")
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
 					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
 						."\t\t\t\t<tr>\n"
-						."\t\t\t\t</tr>\n"
-						."\t\t\t\t<tr>\n"
 						."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
 						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 						._YOURCHOICES.":</strong><br />\n"
 						."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
-						."\t\t\t\t\t</td>\n"
-						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n"
+						."\t\t\t\t\t</font></td>\n"
+						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>\n"
 						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURRANKING.":</strong><br />\n"
+						._YOURRANKING.":</strong></font><br />\n"
 						.$ranklist
 						."\t\t\t\t\t</td>\n"
 						."\t\t\t\t</tr>\n"
@@ -942,13 +938,13 @@ elseif ($action == "edit" || $action == "editsaved")
 						if (substr($fnames[$i][0], -5) == "other")
 							{
 							echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
-								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 							}
 						else
 							{
 							echo "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-							echo " />{$fnames[$i][6]}<br />\n";
+							echo " />{$fnames[$i][6]}</font><br />\n";
 							}
 						if ($i<$nfncount) 
 							{
@@ -970,15 +966,14 @@ elseif ($action == "edit" || $action == "editsaved")
 						if (substr($thefieldname, -7) == "comment")
 							{
 							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value='"
-								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></td>\n"
+								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font></td>\n"
 								."\t</tr>\n";
 							}
 						elseif (substr($fnames[$i][0], -5) == "other")
 							{
 							echo "\t<tr>\n"
 								."\t\t<td>\n"
-								."\t\t\t<input type='text' name='{$fnames[$i][0]}' style='width: "
-								.strlen($idrow[$fnames[$i][0]])."em' value='"
+								."\t\t\t<input type='text' name='{$fnames[$i][0]}' size='30' value='"
 								.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n"
 								."\t\t</td>\n"
 								."\t\t<td>\n";
@@ -993,7 +988,7 @@ elseif ($action == "edit" || $action == "editsaved")
 							echo "\t<tr>\n"
 								."\t\t<td>$setfont<input type='checkbox' name=\"{$fnames[$i][0]}\" value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-							echo " />{$fnames[$i][6]}</td>\n";
+							echo " />{$fnames[$i][6]}</font></td>\n";
 							}
 						$i++;
 						}
@@ -1037,7 +1032,7 @@ elseif ($action == "edit" || $action == "editsaved")
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
-							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
+							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 							."\t\t<td>$setfont\n";
 						for ($j=1; $j<=5; $j++)
 							{
@@ -1045,7 +1040,7 @@ elseif ($action == "edit" || $action == "editsaved")
 							if ($idrow[$fnames[$i][0]] == $j) {echo " checked";}
 							echo " />$j&nbsp;\n";
 							}
-						echo "\t\t</td>\n"
+						echo "\t\t</font></td>\n"
 							."\t</tr>\n";
 						$i++;
 						}
@@ -1059,7 +1054,7 @@ elseif ($action == "edit" || $action == "editsaved")
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
-							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
+							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 							."\t\t<td>$setfont\n";
 						for ($j=1; $j<=10; $j++)
 							{
@@ -1067,7 +1062,7 @@ elseif ($action == "edit" || $action == "editsaved")
 							if ($idrow[$fnames[$i][0]] == $j) {echo " checked";}
 							echo " />$j&nbsp;\n";
 							}
-						echo "\t\t</td>\n"
+						echo "\t\t</font></td>\n"
 							."\t</tr>\n";
 						$i++;
 						}
@@ -1081,18 +1076,18 @@ elseif ($action == "edit" || $action == "editsaved")
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
-							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
+							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 							."\t\t<td>$setfont\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
 						echo " />"._YES."&nbsp;\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='U'";
 						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
-						echo " />"._UNCERTAIN."&nbsp\n"
+						echo " />"._UNCERTAIN."&nbsp;\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='N'";
 						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
 						echo " />"._NO."&nbsp;\n"
-							."\t\t</td>\n"
+							."\t\t</font></td>\n"
 							."\t</tr>\n";
 						$i++;
 						}
@@ -1106,18 +1101,18 @@ elseif ($action == "edit" || $action == "editsaved")
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
-							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</td>\n"
+							."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 							."\t\t<td>$setfont\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='I'";
 						if ($idrow[$fnames[$i][0]] == "I") {echo " checked";}
 						echo " />Increase&nbsp;\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='S'";
 						if ($idrow[$fnames[$i][0]] == "I") {echo " checked";}
-						echo " />Same&nbsp\n"
+						echo " />Same&nbsp;\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='D'";
 						if ($idrow[$fnames[$i][0]] == "D") {echo " checked";}
 						echo " />Decrease&nbsp;\n"
-							."\t\t</td>\n"
+							."\t\t</font></td>\n"
 							."\t</tr>\n";
 						$i++;
 						}
@@ -1132,8 +1127,8 @@ elseif ($action == "edit" || $action == "editsaved")
 						{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						echo "\t<tr>\n"
-							."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</td>\n";
-						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$fnames[$i][8]}'";
+							."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</font></td>\n";
+						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$fnames[$i][8]}' order by sortorder, code";
 						$fresult = mysql_query($fquery);
 						echo "\t\t<td>$setfont\n";
 						while ($frow=mysql_fetch_array($fresult))
@@ -1142,7 +1137,7 @@ elseif ($action == "edit" || $action == "editsaved")
 							if ($idrow[$fnames[$i][0]] == $frow['code']) {echo " checked";}
 							echo " />".$frow['title']."&nbsp;\n";
 							}
-						echo "\t\t</td>\n"
+						echo "\t\t</font></td>\n"
 							."\t</tr>\n";
 						$i++;
 						}
@@ -1163,7 +1158,6 @@ elseif ($action == "edit" || $action == "editsaved")
 			}
 		}
 	echo "</table>\n"
-		."<table height='1'><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	if ($action == "edit")
 		{
@@ -1206,14 +1200,14 @@ elseif ($action == "edit" || $action == "editsaved")
 		    echo " value=\"".stripslashes(stripslashes(returnglobal('identifier')))."\"";
 			}
 		echo "></td></tr>
-			  </table>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>"
+			  </table>\n"
 			."<input type='hidden' name='save_password' value='".returnglobal('accesscode')."'>\n"
 			."<input type='hidden' name='save_confirmpassword' value='".returnglobal('accesscode')."'>\n"
 			."<input type='hidden' name='save_email' value='".$saver['email']."'>\n"
 			."<input type='hidden' name='save_scid' value='".$saver['scid']."'>\n"
-			."<input type='hidden' name='redo' value='yes'>\n"
+			."<input type='hidden' name='redo' value='yes'>\n";
+		echo "\t\t</td>\n";
+		echo "\t</tr>"
 			."</div>\n";
 		echo "	<tr>
 				<td bgcolor='#CCCCCC' align='center'>
@@ -1224,8 +1218,9 @@ elseif ($action == "edit" || $action == "editsaved")
 				</td>
 			</tr>\n";
 		}
-	echo "\t</form>\n"
-		."</table>\n";
+	
+	echo  "</table>\n"
+     	 ."</form>\n";
 	}
 	
 
@@ -1233,7 +1228,7 @@ elseif ($action == "update")
 	{
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></td></tr>\n"
+		._DATAENTRY."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
 	$iresult = mysql_query($iquery);
@@ -1393,30 +1388,29 @@ elseif ($action == "update")
 		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
 		."<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a><br />\n"
 		."</td></tr></table>\n"
-		."</body>\n</html>\n";
+		."</body>\n";
 	}
 
 elseif ($action == "delete")
 	{
 	$thissurvey=getSurveyInfo($surveyid);
-	echo "<table height='1'><tr><td></td></tr></table>\n"
-		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></td></tr>\n"
+		._DATAENTRY."</strong></font></td></tr>\n"
 		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong><br />\n"
-		."\t\t\t$setfont".$thissurvey['description']."\n"
-		."\t\t</td>\n"
+		."\t\t\t".$thissurvey['description']."\n"
+		."\t\t</font></td>\n"
 		."\t</tr>\n";
 	$delquery = "DELETE FROM $surveytable WHERE id=$id";
 	echo "\t<tr>\n";
 	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
 	echo "\t\t<td align='center'><br />$setfont<strong>"._DE_DELRECORD." (ID: $id)</strong><br /><br />\n"
-		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a>\n"
+		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a></font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
-		."</body>\n</html>\n";
+		."</body>\n";
 	}
 	
 else
@@ -1424,31 +1418,34 @@ else
 	//This is the default, presenting a blank dataentry form
 	$fieldmap=createFieldMap($surveyid);
 	// PRESENT SURVEY DATAENTRY SCREEN
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	echo "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._BROWSERESPONSES."</strong></td></tr>\n"
-		.$surveyoptions;
+		._BROWSERESPONSES."</strong></font></td></tr>\n"
+		.$surveyoptions
+		."</table>";
+		
 	loadPublicLangFile($surveyid);
 	$thissurvey=getSurveyInfo($surveyid);
 	$surveytable = "{$dbprefix}survey_$surveyid";
-	echo "<table height='1'><tr><td></td></tr></table>\n"
+		
+
+	echo "<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></td></tr>\n"
+		._DATAENTRY."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#777777'>\n"
 		."\t\t<td colspan='3' align='center'><font color='white'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
-		."\t\t\t<br>$setfont".$thissurvey['description']."\n"
+		."\t\t\t<br>$setfont".$thissurvey['description']."</font></font>\n"
 		."\t\t</td>\n"
-		."\t</tr>\n"
-		."\t<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n";
+		."\t</tr>\n";
 	
 	if ($thissurvey['private'] == "N") //Give entry field for token id
 		{
 		echo "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"._TOKEN.":</strong></font></td>\n"
-			."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n"
+			."\t\t<td valign='top' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='token'>\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
@@ -1459,7 +1456,7 @@ else
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
 			._DATESTAMP.":</strong></font></td>\n"
-			."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n"
+			."\t\t<td valign='top' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='datestamp' value='$localtimedate'>\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
@@ -1470,7 +1467,7 @@ else
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
 			._IPADDRESS.":</strong></font></td>\n"
-			."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n"
+			."\t\t<td valign='top' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='ipaddr' value='NULL'>\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
@@ -1486,7 +1483,7 @@ else
 		$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']}";
 		$deqresult = mysql_query($deqquery);
 		echo "\t<tr>\n"
-			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<strong>{$degrow['group_name']}</td>\n"
+			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<strong>{$degrow['group_name']}</strong></font></td>\n"
 			."\t</tr>\n";
 		$gid = $degrow['gid'];
 		
@@ -1624,13 +1621,13 @@ else
 			$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
 			echo "\t<tr bgcolor='$bgc'>\n"
 				."\t\t<td valign='top' width='1%'>$setfont<font size='1'>{$deqrow['title']}</font></font></td>\n"
-				."\t\t<td valign='top' align='right' width='30%'>$setfont";
+				."\t\t<td valign='top' align='right' width='30%'>";
 			if ($deqrow['mandatory']=="Y") //question is mandatory
 				{
-				echo "<font color='red'>*</font>";
+				echo "$setfont<font color='red'>*</font></font>";
 				}
-			echo "</font><strong>{$deqrow['question']}</strong></td>\n"
-				."\t\t<td valign='top' style='padding-left: 20px'>$setfont\n";
+			echo "<strong>{$deqrow['question']}</strong></td>\n"
+				."\t\t<td valign='top' style='padding-left: 20px'>\n";
 			//DIFFERENT TYPES OF DATA FIELD HERE
 			if ($deqrow['help'])
 				{
@@ -1668,7 +1665,7 @@ else
 						{
 						echo "\t\t\t\t<tr><td align='right'>$setfont"
 							.$dearow['answer']
-							."</td>\n"
+							."</font></td>\n"
 							."\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}'></td>\n"
 							."\t\t\t\t</tr>\n";
 						}
@@ -1684,7 +1681,7 @@ else
 						echo "\t\t\t\t<option value='{$dearow['code']}'";
 						echo ">{$dearow['title']}</option>\n";
 						}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
+					echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";
 
 					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
 					$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
@@ -1700,12 +1697,13 @@ else
 					if ($fother == "Y")
 						{
 						echo "\t\t\t$setfont"
-							._OTHER.":"
+							._OTHER.":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
 					break;
 				case "L": //LIST drop-down/radio-button list
 				case "!":
+					$defexists="";				
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = mysql_query($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";
@@ -1731,11 +1729,12 @@ else
 					if ($fother == "Y")
 						{
 						echo "\t\t\t$setfont"
-							._OTHER.":"
+							._OTHER.":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
 					break;
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+					$defexists="";				
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = mysql_query($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";
@@ -1749,7 +1748,7 @@ else
 					echo "\t\t\t</select>\n"
 						."\t\t\t<br />"._COMMENT.":<br />\n"
 						."\t\t\t<textarea cols='40' rows='5' name='$fieldname"
-						."comment'>$idrow[$i]</textarea>\n";
+						."comment'></textarea>\n";
 					break;
 				case "R": //RANKING TYPE QUESTION
 					$thisqid=$deqrow['qid'];
@@ -1867,14 +1866,14 @@ else
 							$ranklist .= $thiscode;
 							$chosen[]=array($thiscode, $thistext);
 							}
-						$ranklist .= "'>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' title='"._REMOVEITEM."' ";
+						$ranklist .= "'></font>\n";
+						$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='"._REMOVEITEM."' title='"._REMOVEITEM."' ";
 						if (!isset($existing) || $i != $existing)
 							{
 							$ranklist .= "style='display:none'";
 							}
 						$mfn=$fieldname.$i;
-						$ranklist .= " id='cut_$thisqid$i' name='cut$i' onClick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$i' onClick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
 						}
 					if (!isset($choicelist)) {$choicelist="";}
 					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
@@ -1899,18 +1898,16 @@ else
 	
 					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
 						."\t\t\t\t<tr>\n"
-						."\t\t\t\t</tr>\n"
-						."\t\t\t\t<tr>\n"
 						."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
 						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURCHOICES.":</strong><br />\n"
+						._YOURCHOICES.":</strong></font><br />\n"
 						."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
 						."\t\t\t\t\t</td>\n"
-						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>$setfont\n"
+						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>\n"
 						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 						._YOURRANKING.":</strong><br />\n"
 						.$ranklist
-						."\t\t\t\t\t</td>\n"
+						."\t\t\t\t\t</font></td>\n"
 						."\t\t\t\t</tr>\n"
 						."\t\t\t</table>\n"
 						."\t\t\t<input type='hidden' name='multi' value='$anscount' />\n"
@@ -1949,9 +1946,9 @@ else
 							    echo $divider;
 								$upto=0;
 								}
-							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='$fieldname{$mearow['code']}' value='Y'";
+							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {echo " checked";}
-							echo " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
+							echo " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
 							$upto++;
 							}
 						if ($deqrow['other'] == "Y")
@@ -1966,9 +1963,9 @@ else
 						{
 						while ($mearow = mysql_fetch_array($mearesult))
 							{
-							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='$fieldname{$mearow['code']}' value='Y'";
+							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {echo " checked";}
-							echo " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
+							echo " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
 							}
 						if ($deqrow['other'] == "Y")
 							{
@@ -1988,7 +1985,7 @@ else
 						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
 						if ($mearow['default_value'] == "Y") {echo " checked";}
 						echo " />{$mearow['answer']}\n";
-						echo "\t\t</td>\n";
+						echo "\t\t</font></td>\n";
 						//This is the commments field:
 						echo "\t\t<td>\n";
 						echo "\t\t\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
@@ -1998,7 +1995,7 @@ else
 					if ($deqrow['other'] == "Y")
 						{
 						echo "\t<tr>\n";
-						echo "\t\t<td style='padding-left: 22px'>$setfont"._OTHER.":</td>\n";
+						echo "\t\t<td style='padding-left: 22px'>$setfont"._OTHER.":</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
 						echo "\t\t</td>\n";
@@ -2033,7 +2030,7 @@ else
 					while ($mearow = mysql_fetch_array($mearesult))
 						{
 						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>$setfont\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
@@ -2042,7 +2039,7 @@ else
 							echo "\t\t\t\t<option value='$i'>$i</option>\n";
 							}
 						echo "\t\t\t</select>\n";
-						echo "\t\t</td>\n";
+						echo "\t\t</font></td>\n";
 						echo "\t</tr>\n";
 						}
 					echo "</table>\n";
@@ -2054,7 +2051,7 @@ else
 					while ($mearow = mysql_fetch_array($mearesult))
 						{
 						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
@@ -2075,7 +2072,7 @@ else
 					while ($mearow = mysql_fetch_array($mearesult))
 						{
 						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
@@ -2095,7 +2092,7 @@ else
 					while ($mearow = mysql_fetch_array($mearesult))
 						{
 						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
@@ -2116,7 +2113,7 @@ else
 					while ($mearow = mysql_fetch_array($mearesult))
 						{
 						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</td>\n";
+						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
@@ -2174,13 +2171,13 @@ else
 				  <tr><td align='right'>"._DE_SAVEEMAIL."</td>
 				  <td><input type='text' name='save_email'></td></tr>
 				  </table>\n";
-			echo "\t\t</td>\n";
+			echo "\t\t</font></td>\n";
 			echo "\t</tr>\n";
 			}
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 		echo "\t\t\t<input type='submit' value='"._SUBMIT."' $btstyle/>\n";
-		echo "\t\t</td>\n";
+		echo "\t\t</font></td>\n";
 		echo "\t</tr>\n";
 		}
 	elseif ($thissurvey['active'] == "N")
@@ -2188,7 +2185,7 @@ else
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 		echo "\t\t\t<font color='red'><strong>"._DE_NOTACTIVE."\n";
-		echo "\t\t</td>\n";
+		echo "\t\t</strong></font></font></td>\n";
 		echo "\t</tr>\n";	
 		}
 	else
@@ -2197,25 +2194,26 @@ else
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 		echo "\t\t\t<font color='red'><strong>"._ERROR."</strong></font><br />\n";
-		echo "\t\t\t"._DE_NOEXIST."<br /><br />\n";
+		echo "\t\t\t"._DE_NOEXIST."</font><br /><br />\n";
 		echo "\t\t\t<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>";
 		echo htmlfooter("$langdir/instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
-		echo "</body></html>";
 		exit;
 		}
+	echo "\t<tr>\n";
+	echo "\t<td>\n";
 	echo "\t<input type='hidden' name='action' value='insert' />\n";
 	echo "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
 	echo "\t<input type='hidden' name='sid' value='$surveyid' />\n";
-	echo "\t</form>\n";
+	echo "\t</td>\n";
+	echo "\t</tr>\n";
 	echo "</table>\n";
-	//echo "</body>\n</html>";
+	echo "\t</form>\n";
 	}
 echo "&nbsp;";
 echo htmlfooter("$langdir/instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
-echo "</body>\n</html>";
 
 function array_in_array($needle, $haystack)
 	{
