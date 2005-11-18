@@ -1515,7 +1515,7 @@ if ($action == "editsurvey")
 			if ($esrow['private'] == "N") {$editsurvey .= " This survey is <strong>not</strong> anonymous";}
 			else {$editsurvey .= "This survey <strong>is</strong> anonymous";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
-						 . "\t\t</font></font>n";
+						 . "\t\t</font></font>\n";
 			$editsurvey .= "<input type='hidden' name='private' value='".$esrow['private']."'></td>\n";
 			}
 		else
