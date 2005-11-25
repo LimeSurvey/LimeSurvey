@@ -1607,7 +1607,7 @@ function showPosition($surveyid, $gid, $qid) {
 
 function makeJavaSafe($string, $maxlength) {
 	$string=strip_tags($string);
-	$string=htmlentities($string, ENT_QUOTES);
+//	$string=htmlentities($string, ENT_QUOTES);
 	$string=trim($string);
 	$string=str_replace(array("\n\r", "\n", "\r"), array(" ", " ", " "), $string);
 	//Reduce to $maxlength
