@@ -327,7 +327,7 @@ define("_DELETE", "Elimina indagine");
 define("_CLOSEWIN", "Chiudi finestra");
 define("_TOKEN", "Identificativo");
 define("_DATESTAMP", "Data invio questionario completato"); //Referring to the datestamp or time response submitted
-define("_IPADDRESS", "IP Adress"); //Referring to the Indirizzo IP of the submitter - New with 0.991
+define("_IPADDRESS", "Indirizzo IP"); //Referring to the Indirizzo IP of the submitter - New with 0.991
 define("_COMMENT", "Commento");
 define("_FROM", "Da"); //For emails
 define("_SUBJECT", "Oggetto"); //For emails
