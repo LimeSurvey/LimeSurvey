@@ -231,6 +231,7 @@ if ($surveyid)
 	$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($s1row = mysql_fetch_array($sumresult1))
 		{
+		$s1row = array_map('htmlspecialchars', $s1row);
 		$activated = $s1row['active'];
 		//BUTTON BAR
 		$surveysummary .= "\t<tr>\n"
@@ -441,7 +442,7 @@ if ($surveyid)
 						. "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
 						. _SL_LINK."</strong></font></td>\n"
 						. "\t\t<td>";
-		if ($s1row['url']!="") {$surveysummary .="$setfont <a href='{$s1row['url']}' title='{$s1row['url']}'>{$s1row['urldescrip']}</a></font>";}
+		if ($s1row['url']!="") {$surveysummary .="$setfont <a href=\"{$s1row['url']}\" title=\"{$s1row['url']}\">{$s1row['urldescrip']}</a></font>";}
 		$surveysummary .="</td></tr>\n";
     } 	
 	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<strong>"
@@ -485,6 +486,7 @@ if ($gid)
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = mysql_fetch_array($grpresult))
 		{
+		$grow = array_map('htmlspecialchars', $grow);
 		$groupsummary .= "\t<tr>\n"
 					   . "\t\t<td colspan='2'>\n"
 					   . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -582,6 +584,7 @@ if ($qid)
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = mysql_fetch_array($qrresult))
 		{
+		$qrrow = array_map('htmlspecialchars', $qrrow);
 		$questionsummary .= "\t<tr>\n"
 						  . "\t\t<td colspan='2'>\n"
 						  . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -723,6 +726,7 @@ if (returnglobal('viewanswer'))
 	$position=0;
 	while ($cdrow = mysql_fetch_array($cdresult))
 		{
+		$cdrow['code'] = htmlspecialchars($cdrow['code']);
 		$position=sprintf("%05d", $position);
 		if ($cdrow['sortorder'] || $cdrow['sortorder'] == "0") {$position=$cdrow['sortorder'];}
 		$vasummary .= "\t<tr><td colspan='5'><form style='margin-bottom:0;' action='".$scriptname."' method='post'>\n";
@@ -736,10 +740,11 @@ if (returnglobal('viewanswer'))
 		else
 			{
 			$vasummary .= "$setfont<font size='1'>{$cdrow['code']}"
-						. "<input type='hidden' name='code' value='{$cdrow['code']}'>";
+						. "<input type='hidden' name='code' value=\"{$cdrow['code']}\">";
 			}
 		$vasummary .="</td>\n";
 		$cdrow['answer']=htmlspecialchars($cdrow['answer']);  // So HTML-Code can be used in answers
+		$cdrow['default_value'] = htmlspecialchars($cdrow['default_value']);
 		$vasummary .= "\t\t<td align='center' width='50%'><input name='answer' "
 					. "type='text' $btstyle value=\"{$cdrow['answer']}\" size='50'>\n"
 					. "\t\t<input name='sortorder' type='hidden' $btstyle value=\"$position\"></td>"
@@ -758,7 +763,7 @@ if (returnglobal('viewanswer'))
 		else
 			{
 			$vasummary .= "$setfont<font size='1'>{$cdrow['default_value']}"
-						. "<input type='hidden' name='default' value='{$cdrow['default_value']}'>";
+						. "<input type='hidden' name='default' value=\"{$cdrow['default_value']}\">";
 			}
 		if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
 			{
@@ -868,10 +873,11 @@ if ($action == "modifyuser")
 	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
 	while ($mrw = mysql_fetch_array($mur))
 		{
+		$mrw = array_map('htmlspecialchars', $mrw);
 		$usersummary .= "\t<td>$setfont<strong>{$mrw['user']}</strong></font>\n"
-					  . "\t\t<input type='hidden' name='user' value='{$mrw['user']}'></td>\n"
-					  . "\t<td>\n\t\t<input $slstyle type='text' name='pass' value='{$mrw['password']}'></td>\n"
-					  . "\t<td>\n\t\t<input $slstyle type='text' size='2' name='level' value='{$mrw['security']}'></td>\n";
+					  . "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
+					  . "\t<td>\n\t\t<input $slstyle type='text' name='pass' value=\"{$mrw['password']}\"></td>\n"
+					  . "\t<td>\n\t\t<input $slstyle type='text' size='2' name='level' value=\"{$mrw['security']}\"></td>\n";
 		}
 	$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n"
 				  . "\t\t<input type='submit' $btstyle value='"._UPDATE."'>\n"
@@ -1084,6 +1090,7 @@ if ($action == "copyquestion")
 	$qattributes=questionAttributes();
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
+		$eqrow = array_map('htmlspecialchars', $eqrow);
 		$editquestion = "<form action='$scriptname' name='editquestion' method='post'>\n<table width='100%' border='0'>\n"
 					  . "\t<tr>\n"
 					  . "\t\t<td colspan='2' bgcolor='black' align='center'>\n"
@@ -1198,6 +1205,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$eqresult = mysql_query($eqquery);
 	while ($eqrow = mysql_fetch_array($eqresult))
 		{
+		$eqrow  = array_map('htmlspecialchars', $eqrow);
 		$editquestion = "<tr><td>\n"
 						."<table width='100%' border='0' bgcolor='#EEEEEE'><tr>"
 					    . "<td colspan='3' bgcolor='black' align='center'>"
@@ -1208,7 +1216,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					    . "\t\t<td valign='top'><form action='$scriptname' name='editquestion' method='post'><table width='100%' border='0'>\n"
 					    . "\t<tr>\n"
 					    . "\t\t<td align='right'>$setfont<strong>"._QL_CODE."</strong></font></td>\n"
-					    . "\t\t<td><input $slstyle type='text' size='20' name='title' value='{$eqrow['title']}'></td>\n"
+					    . "\t\t<td><input $slstyle type='text' size='20' name='title' value=\"{$eqrow['title']}\"></td>\n"
 					    . "\t</tr>\n"
 					    . "\t<tr>\n"
 					    . "\t\t<td align='right' valign='top'>$setfont<strong>"._QL_QUESTION."</strong></font></td>\n"
@@ -1267,7 +1275,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		else
 			{
 			$editquestion .= "[{$eqrow['lid']}] - "._DE_NOMODIFY." - "._SS_ACTIVE."\n"
-						   . "\t\t\t<input type='hidden' name='lid' value='{$eqrow['lid']}'>\n";
+						   . "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\">\n";
 			}
 		$editquestion .= "\t\t</font></td>\n"
 					   . "\t</tr>\n"
@@ -1293,7 +1301,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		else
 			{
 			$editquestion .= "<td>$setfont [{$eqrow['other']}] - "._DE_NOMODIFY." - "._SS_ACTIVE."\n"
-						   . "\t\t\t<input type='hidden' name='other' value='{$eqrow['other']}'></font></td>\n";
+						   . "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\"></font></td>\n";
 			}
 		$editquestion .= "\t</tr>\n";
 
@@ -1404,12 +1412,13 @@ if ($action == "editgroup")
 	$egresult = mysql_query($egquery);
 	while ($esrow = mysql_fetch_array($egresult))	
 		{
+		$esrow = array_map('htmlspecialchars', $esrow);
 		$editgroup =  "<form action='$scriptname' name='editgroup' method='post'>"
 		 			. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 					. "\t\t<strong>$setfont<font color='white'>"._GL_EDITGROUP."($surveyid)</font></font></strong></td></tr>\n"
 					. "\t<tr>\n"
 					. "\t\t<td align='right' width='20%'>$setfont<strong>"._GL_TITLE."</strong></font></td>\n"
-					. "\t\t<td><input $slstyle type='text' size='50' name='group_name' value='{$esrow['group_name']}'></td></tr>\n"
+					. "\t\t<td><input $slstyle type='text' size='50' name='group_name' value=\"{$esrow['group_name']}\"></td></tr>\n"
 					. "\t<tr><td align='right'>$setfont<strong>"._GL_DESCRIPTION."</strong>(optional)</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
 					. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._GL_UPDATEGROUP."'>\n"
@@ -1428,21 +1437,22 @@ if ($action == "editsurvey")
 	$esresult = mysql_query($esquery);
 	while ($esrow = mysql_fetch_array($esresult))	
 		{
+		$esrow = array_map('htmlspecialchars', $esrow);
 		$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"
 					. "\t\t<strong>$setfont<font color='white'>Edit Survey</font></font></strong></td></tr>\n"
 					. "\t<tr>"
 					. "\t\t<td align='right' width='25%'>$setfont<strong>"._SL_TITLE."</strong></font></td>\n"
-					. "\t\t<td><input $slstyle type='text' size='50' name='short_title' value='".$esrow['short_title']."'></td></tr>\n"
+					. "\t\t<td><input $slstyle type='text' size='50' name='short_title' value=\"{$esrow['short_title']}\"></td></tr>\n"
 					. "\t<tr><td align='right' valign='top'><strong>$setfont"._SL_DESCRIPTION."</font></strong></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
 					. "\t<tr><td align='right' valign='top'>$setfont<strong>"._SL_WELCOME."</strong></font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='welcome'>".str_replace("<br />", "\n", $esrow['welcome'])."</textarea></td></tr>\n"
 					. "\t<tr><td align='right'>$setfont<strong>"._SL_ADMIN."</strong></font></td>\n"
-					. "\t\t<td><input $slstyle type='text' size='50' name='admin' value='{$esrow['admin']}'></td></tr>\n"
+					. "\t\t<td><input $slstyle type='text' size='50' name='admin' value=\"{$esrow['admin']}\"></td></tr>\n"
 					. "\t<tr><td align='right'>$setfont<strong>"._SL_EMAIL."</strong></font></td>\n"
-					. "\t\t<td><input $slstyle type='text' size='50' name='adminemail' value='{$esrow['adminemail']}'></td></tr>\n"
+					. "\t\t<td><input $slstyle type='text' size='50' name='adminemail' value=\"{$esrow['adminemail']}\"></td></tr>\n"
 					. "\t<tr><td align='right'>$setfont<strong>"._SL_FAXTO."</strong></font></td>\n"
-					. "\t\t<td><input $slstyle type='text' size='50' name='faxto' value='{$esrow['faxto']}'></td></tr>\n";
+					. "\t\t<td><input $slstyle type='text' size='50' name='faxto' value=\"{$esrow['faxto']}\"></td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_FORMAT."</strong></font></td>\n"
 					. "\t\t<td><select $slstyle name='format'>\n"
 					. "\t\t\t<option value='S'";
@@ -1462,7 +1472,7 @@ if ($action == "editsurvey")
 		foreach (gettemplatelist() as $tname)
 			{
 			$editsurvey .= "\t\t\t<option value='$tname'";
-			if ($esrow['template'] && $tname == $esrow['template']) {$editsurvey .= " selected";}
+			if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {$editsurvey .= " selected";}
 			elseif (!$esrow['template'] && $tname == "default") {$editsurvey .= " selected";}
 			$editsurvey .= ">$tname</option>\n";
 			}
@@ -1516,7 +1526,7 @@ if ($action == "editsurvey")
 			else {$editsurvey .= "This survey <strong>is</strong> anonymous";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 						 . "\t\t</font></font>\n";
-			$editsurvey .= "<input type='hidden' name='private' value='".$esrow['private']."'></td>\n";
+			$editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\"></td>\n";
 			}
 		else
 			{
@@ -1540,32 +1550,32 @@ if ($action == "editsurvey")
 					 . "\t}\n"
 					 . "--></script>\n";
 		$editsurvey .= "\t$setfont<strong>"._SL_EMAILINVITE_SUBJ."</strong></font></td>\n"
-					 . "\t\t<td><input type='text' $slstyle size='54' name='email_invite_subj' id='email_invite_subj' value='".$esrow['email_invite_subj']."'>\n"
+					 . "\t\t<td><input type='text' $slstyle size='54' name='email_invite_subj' id='email_invite_subj' value=\"{$esrow['email_invite_subj']}\">\n"
 					 . "\t\t<input type='hidden' name='email_invite_subj_default' id='email_invite_subj_default' value='".html_escape(_TC_EMAILINVITE_SUBJ)."'>\n"
 					 . "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")'>\n"
 					 . "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EMAILINVITE."</strong></font></td>\n"
-					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_invite' id='email_invite'>".$esrow['email_invite']."</textarea>\n"
+					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_invite' id='email_invite'>{$esrow['email_invite']}</textarea>\n"
 					. "\t\t<input type='hidden' name='email_invite_default' id='email_invite_default' value='".html_escape(_TC_EMAILINVITE)."'>\n"
 					. "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"email_invite\",\"email_invite_default\")'>\n"
 					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EMAILREMIND_SUBJ."</strong></font></td>\n"
-					 . "\t\t<td><input type='text' $slstyle size='54' name='email_remind_subj' id='email_remind_subj' value='".html_escape($esrow['email_remind_subj'])."'>\n"
+					 . "\t\t<td><input type='text' $slstyle size='54' name='email_remind_subj' id='email_remind_subj' value=\"{$esrow['email_remind_subj']}\">\n"
 					 . "\t\t<input type='hidden' name='email_remind_subj_default' id='email_remind_subj_default' value='".html_escape(_TC_EMAILREMIND_SUBJ)."'>\n"
 					 . "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"email_remind_subj\",\"email_remind_subj_default\")'>\n"
 					 . "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EMAILREMIND."</strong></font></td>\n"
-					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_remind' id='email_remind'>".$esrow['email_remind']."</textarea>\n"
+					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_remind' id='email_remind'>{$esrow['email_remind']}</textarea>\n"
 					. "\t\t<input type='hidden' name='email_remind_default' id='email_remind_default' value='".html_escape(_TC_EMAILREMIND)."'>\n"
 					. "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"email_remind\",\"email_remind_default\")'>\n"
 					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EMAILCONFIRM_SUBJ."</strong></font></td>\n"
-					 . "\t\t<td><input type='text' $slstyle size='54' name='email_confirm_subj' id='email_confirm_subj' value='".html_escape($esrow['email_confirm_subj'])."'>\n"
+					 . "\t\t<td><input type='text' $slstyle size='54' name='email_confirm_subj' id='email_confirm_subj' value=\"{$esrow['email_confirm_subj']}\">\n"
 					 . "\t\t<input type='hidden' name='email_confirm_subj_default' id='email_confirm_subj_default' value='".html_escape(_TC_EMAILCONFIRM_SUBJ)."'>\n"
 					 . "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"email_confirm_subj\",\"email_confirm_subj_default\")'>\n"
 					 . "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EMAILCONFIRM."</strong></font></td>\n"
-					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_confirm' id='email_confirm'>".$esrow['email_confirm']."</textarea>\n"
+					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_confirm' id='email_confirm'>{$esrow['email_confirm']}</textarea>\n"
 					. "\t\t<input type='hidden' name='email_confirm_default' id='email_confirm_default' value='".html_escape(_TC_EMAILCONFIRM)."'>\n"
 					. "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript: fillin(\"email_confirm\",\"email_confirm_default\")'>\n"
 					. "\t</td></tr>\n";
@@ -1579,20 +1589,20 @@ if ($action == "editsurvey")
 		$editsurvey .= ">"._AD_NO."</option>\n"
 					. "\t\t</select></td>\n\t</tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EMAILREGISTER_SUBJ."</strong></font></td>\n"
-					 . "\t\t<td><input type='text' $slstyle size='54' name='email_register_subj' id='email_register_subj' value='".html_escape($esrow['email_register_subj'])."'>\n"
+					 . "\t\t<td><input type='text' $slstyle size='54' name='email_register_subj' id='email_register_subj' value=\"{$esrow['email_register_subj']}\">\n"
 					 . "\t\t<input type='hidden' name='email_register_subj_default' id='email_register_subj_default' value='".html_escape(_TC_EMAILREGISTER_SUBJ)."'>\n"
 					 . "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript:  fillin(\"email_register_subj\",\"email_register_subj_default\")'>\n"
 					 . "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EMAILREGISTER."</strong></font></td>\n"
-					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_register' id='email_register'>".html_escape($esrow['email_register'])."</textarea>\n"
+					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_register' id='email_register'>{$esrow['email_register']}</textarea>\n"
 					 . "\t\t<input type='hidden' name='email_register_default' id='email_register_default' value='".html_escape(_TC_EMAILREGISTER)."'>\n"
 					. "\t\t<input type='button' $slstyle value='"._SL_USE_DEFAULT."' onClick='javascript:  fillin(\"email_register\",\"email_register_default\")'>\n"
 					. "\t</td></tr>\n";
 		$editsurvey .= "\t<tr><td align='right' valign='top'>$setfont<strong>"._SL_ATTRIBUTENAMES."</strong></font></td>\n"
 					. "\t\t<td>$setfont<input $slstyle type='text' size='25' name='attribute1'"
-					. " value='".html_escape($esrow['attribute1'])."'>("._TL_ATTR1.")<br />"
+					. " value=\"{$esrow['attribute1']}\">("._TL_ATTR1.")<br />"
 					. "<input $slstyle type='text' size='25' name='attribute2'"
-					. " value='".html_escape($esrow['attribute2'])."'>("._TL_ATTR2.")</font></td>\n\t</tr>\n";
+					. " value=\"{$esrow['attribute2']}\">("._TL_ATTR2.")</font></td>\n\t</tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_DATESTAMP."</strong></font></td>\n";
 				
 		if ($esrow['active'] == "Y")
@@ -1602,7 +1612,7 @@ if ($action == "editsurvey")
 			else {$editsurvey .= "Responses <strong>will</strong> be date stamped";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 						 . "\t\t</font></font>\n";
-			$editsurvey .= "<input type='hidden' name='datestamp' value='".$esrow['datestamp']."'></td>\n";
+			$editsurvey .= "<input type='hidden' name='datestamp' value=\"{$esrow['datestamp']}\"></td>\n";
 			}
 		else
 			{
@@ -1644,18 +1654,18 @@ if ($action == "editsurvey")
 		foreach (getlanguages() as $langname)
 			{
 			$editsurvey .= "\t\t\t<option value='$langname'";
-			if ($esrow['language'] && $esrow['language'] == $langname) {$editsurvey .= " selected";}
+			if ($esrow['language'] && $esrow['language'] == htmlspecialchars($langname)) {$editsurvey .= " selected";}
 			if (!$esrow['language'] && $defaultlang && $defaultlang == $langname) {$editsurvey .= " selected";}
 			$editsurvey .= ">$langname</option>\n";
 			}
 		$editsurvey .= "\t\t</select></td>\n"
 					 . "\t</tr>\n";
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EXPIRES."</strong></font></td>\n"
-					 . "\t\t<td><input $slstyle type='text' size='12' name='expires' value='{$esrow['expires']}'></td></tr>\n"
+					 . "\t\t<td><input $slstyle type='text' size='12' name='expires' value=\"{$esrow['expires']}\"></td></tr>\n"
 					 . "\t<tr><td align='right'>$setfont<strong>"._SL_URL."</strong></font></td>\n"
-					 . "\t\t<td><input $slstyle type='text' size='50' name='url' value='{$esrow['url']}'></td></tr>\n"
+					 . "\t\t<td><input $slstyle type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
 					 . "\t<tr><td align='right'>$setfont<strong>"._SL_URLDESCRIP."</strong></font></td>\n"
-					 . "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='{$esrow['urldescrip']}'></td></tr>\n"
+					 . "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value=\"{$esrow['urldescrip']}\"></td></tr>\n"
 					 . "\t<tr><td align='right'>$setfont<strong>"._SL_AUTORELOAD."</strong></font></td>\n"
 					 . "\t\t<td><select $slstyle name='autoredirect'>";
 		$editsurvey .= "\t\t\t<option value='Y'";
@@ -1668,7 +1678,7 @@ if ($action == "editsurvey")
 
 		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._SL_UPD_SURVEY."'>\n"
 					 . "\t<input type='hidden' name='action' value='updatesurvey'>\n"
-					 . "\t<input type='hidden' name='sid' value='{$esrow['sid']}'>\n"
+					 . "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
 					 . "\t</td></tr>\n"
 					 . "</table></form>\n";
 		}

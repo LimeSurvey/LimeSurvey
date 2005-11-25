@@ -488,10 +488,10 @@ echo "\t\t\t\tdocument.getElementById('canswers').options[document.getElementByI
 echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-size: 1; border-color: #555555'>\n"
 	."\t<tr bgcolor='#CCFFCC'>\n"
 	."\t\t<td  align='center' >\n";
-$showreplace="$questiontitle<img src='$imagefiles/speaker.jpg' alt='"
-	. addslashes($questiontext)
-	. "' onClick=\"alert('"
-	. addslashes(strip_tags($questiontext))
+$showreplace="$questiontitle<img src='$imagefiles/speaker.jpg' alt=\""
+	. htmlspecialchars($questiontext)
+	. "\" onClick=\"alert('"
+	. htmlspecialchars(addslashes(strip_tags($questiontext)))
 	. "')\">";
 $onlyshow=str_replace("{QID}", $showreplace, _CD_ONLYSHOW);
 echo "\t\t\t$setfont<strong>$onlyshow</strong></font>\n"

@@ -38,6 +38,7 @@ require_once("config.php");
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
+if (!isset($lid)) {$lid=returnglobal('lid');}
 if (!isset($code)) {$code=returnglobal('code');}
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($ok)) {$ok=returnglobal('ok');}

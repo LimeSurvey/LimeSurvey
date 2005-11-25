@@ -38,11 +38,14 @@ if (!isset($dbprefix)) {die ("Cannot run this script directly [database.php]");}
 
 if (!isset($action)) {$action=returnglobal('action');}
 
+if (get_magic_quotes_gpc())
+    $_POST  = array_map('stripslashes', $_POST);
+
 if ($action == "delattribute")
     {
+    settype($_POST['qaid'], "integer");
     $query = "DELETE FROM {$dbprefix}question_attributes
-              WHERE qaid=".$_POST['qaid']."
-              AND qid=".$_POST['qid'];
+              WHERE qaid={$_POST['qaid']} AND qid={$_POST['qid']}";
     $result=mysql_query($query) or die("Couldn't delete attribute<br />$query<br />".mysql_error());
     }
 elseif ($action == "addattribute")
@@ -53,9 +56,9 @@ elseif ($action == "addattribute")
                   (qaid, qid, attribute, value)
                   VALUES
                   ('',
-                  '".$_POST['qid']."',
-                  '".$_POST['attribute_name']."',
-                  '".$_POST['attribute_value']."')";
+                  '{$_POST['qid']}',
+                  '".mysql_escape_string($_POST['attribute_name'])."',
+                  '".mysql_escape_string($_POST['attribute_value'])."')";
         $result = mysql_query($query) or die("Error<br />$query<br />".mysql_error());
         }
     }
@@ -63,8 +66,9 @@ elseif ($action == "editattribute")
     {
     if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
         {
+        settype($_POST['qaid'], "integer");
         $query = "UPDATE {$dbprefix}question_attributes
-                  SET value='".$_POST['attribute_value']."'
+                  SET value='".mysql_escape_string($_POST['attribute_value'])."'
                   WHERE qaid=".$_POST['qaid']."
                   AND qid=".$_POST['qid'];
         $result = mysql_query($query) or die("Error<br />$query<br />".mysql_error());
@@ -78,11 +82,7 @@ elseif ($action == "insertnewgroup")
         }
     else
         {
-        if (get_magic_quotes_gpc() == "0")
-            {
-            $_POST['description'] = addcslashes($_POST['description'], "'");
-            $_POST['group_name'] = addcslashes($_POST['group_name'], "'");
-            }
+        $_POST  = array_map('mysql_escape_string', $_POST);
 
         $query = "INSERT INTO {$dbprefix}groups (sid, group_name, description) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}')";
         $result = mysql_query($query);
@@ -108,11 +108,7 @@ elseif ($action == "insertnewgroup")
 
 elseif ($action == "updategroup")
     {
-    if (get_magic_quotes_gpc() == "0")
-        {
-        $_POST['description'] = addcslashes($_POST['description'], "'");
-        $_POST['group_name'] = addcslashes($_POST['group_name'], "'");
-        }
+    $_POST  = array_map('mysql_escape_string', $_POST);
 
     $ugquery = "UPDATE {$dbprefix}groups SET group_name='{$_POST['group_name']}', description='{$_POST['description']}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
     $ugresult = mysql_query($ugquery);
@@ -130,7 +126,7 @@ elseif ($action == "updategroup")
 
 elseif ($action == "delgroupnone")
     {
-    if (!isset($gid)) {returnglobal('gid');}
+    if (!isset($gid)) {$gid=returnglobal('gid');}
     $query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
     $result = mysql_query($query);
     if ($result)
@@ -146,7 +142,7 @@ elseif ($action == "delgroupnone")
 
 elseif ($action == "delgroup")
     {
-    if (!isset($gid)) {returnglobal('gid');}
+    if (!isset($gid)) {$gid=returnglobal('gid');}
     $query = "SELECT qid FROM {$dbprefix}groups, {$dbprefix}questions WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid AND {$dbprefix}groups.gid=$gid";
     if ($result = mysql_query($query))
         {
@@ -181,14 +177,9 @@ elseif ($action == "delgroup")
 
 elseif ($action == "insertnewquestion")
     {
-    if (get_magic_quotes_gpc() == "0")
-        {
-        $_POST['title'] = addcslashes($_POST['title'], "'");
-        $_POST['question'] = addcslashes($_POST['question'], "'");
-        $_POST['help'] = addcslashes($_POST['help'], "'");
-        $_POST['preg'] = mysql_escape_string($_POST['preg']);
-        }
-    if (!isset($_POST['lid'])) {$_POST['lid']="";}
+    $_POST  = array_map('mysql_escape_string', $_POST);
+
+    if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
     $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid)"
             ." VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
             ." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
@@ -261,13 +252,7 @@ elseif ($action == "updatequestion")
         while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
         if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
         }
-    if (get_magic_quotes_gpc() == "0")
-        {
-        $_POST['title'] = addcslashes($_POST['title'], "'");
-        $_POST['question'] = addcslashes($_POST['question'], "'");
-        $_POST['help'] = addcslashes($_POST['help'], "'");
-        $_POST['preg'] = mysql_escape_string($_POST['preg']);
-        }
+    $_POST  = array_map('mysql_escape_string', $_POST);
     if (isset($cccount) && $cccount)
         {
         echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONTYPECONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
@@ -277,10 +262,10 @@ elseif ($action == "updatequestion")
         if (isset($_POST['gid']) && $_POST['gid'] != "")
             {
             $uqquery = "UPDATE {$dbprefix}questions "
-                    . "SET type='".returnglobal('type')."', title='".returnglobal('title')."', "
-                    . "question='".returnglobal('question')."', preg='".returnglobal('preg')."', help='".returnglobal('help')."', "
-                    . "gid='".returnglobal('gid')."', other='".returnglobal('other')."', "
-                    . "mandatory='".returnglobal('mandatory')."', lid='".returnglobal('lid')."' "
+                    . "SET type='{$_POST['type']}', title='{$_POST['title']}', "
+                    . "question='{$_POST['question']}', preg='{$_POST['preg']}', help='{$_POST['help']}', "
+                    . "gid='{$_POST['gid']}', other='{$_POST['other']}', "
+                    . "mandatory='{$_POST['mandatory']}', lid='{$_POST['lid']}' "
                     . "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
             $uqresult = mysql_query($uqquery) or die ("Error Update Question: $uqquery<br />".mysql_error());
             if (!$uqresult)
@@ -297,13 +282,8 @@ elseif ($action == "updatequestion")
 
 elseif ($action == "copynewquestion")
     {
-    if (get_magic_quotes_gpc() == "0")
-        {
-        $_POST['title'] = addcslashes($_POST['title'], "'");
-        $_POST['question'] = addcslashes($_POST['question'], "'");
-        $_POST['help'] = addcslashes($_POST['help'], "'");
-        }
-    if (!isset($_POST['lid'])) {$_POST['lid']="";}
+    $_POST  = array_map('mysql_escape_string', $_POST);
+    if (!isset($_POST['lid'])) {$_POST['lid']=0;}
     $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
     $result = mysql_query($query);
     $newqid = mysql_insert_id();
@@ -319,9 +299,10 @@ elseif ($action == "copynewquestion")
         $r1 = mysql_query($q1);
         while ($qr1 = mysql_fetch_array($r1))
             {
+            $qr1 = array_map('mysql_escape_string', $qr1);
             $i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder) "
                 . "VALUES ('$newqid', '{$qr1['code']}', "
-                . "'".mysql_escape_string($qr1['answer'])."', '{$qr1['default_value']}', "
+                . "'{$qr1['answer']}', '{$qr1['default_value']}', "
                 . "'{$qr1['sortorder']}')";
             $ir1 = mysql_query($i1);
             }
@@ -334,6 +315,7 @@ elseif ($action == "copynewquestion")
         $r1 = mysql_query($q1);
         while($qr1 = mysql_fetch_array($r1))
             {
+            $qr1 = array_map('mysql_escape_string', $qr1);
             $i1 = "INSERT INTO {$dbprefix}question_attributes
                    (qid, attribute, value)
                    VALUES ('$newqid',
@@ -348,7 +330,7 @@ elseif ($action == "delquestion")
     {
     if (!isset($qid)) {$qid=returnglobal('qid');}
     //check if any other questions have conditions which rely on this question. Don't delete if there are.
-    $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
+    $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid=$qid";
     $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
     $cccount=mysql_num_rows($ccresult);
     while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
@@ -383,7 +365,7 @@ elseif ($action == "delquestion")
 
 elseif ($action == "delquestionall")
     {
-    if (!isset($qid)) {returnglobal('qid');}
+    if (!isset($qid)) {$qid=returnglobal('qid');}
     //check if any other questions have conditions which rely on this question. Don't delete if there are.
     $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
     $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
@@ -424,13 +406,11 @@ elseif ($action == "modanswer")
         $query = "UPDATE {$dbprefix}answers SET default_value = 'N' WHERE qid={$_POST['qid']}";
         $result=mysql_query($query) or die("Error occurred updating default_value settings");
         }
-    if (get_magic_quotes_gpc() == "0")
-        {
-        $_POST['code'] = addcslashes($_POST['code'], "'");
-        if (isset($_POST['oldcode'])) {$_POST['oldcode'] = addcslashes($_POST['oldcode'], "'");}
-        $_POST['answer'] = addcslashes($_POST['answer'], "'");
-        if (isset($_POST['oldanswer'])) {$_POST['oldanswer'] = addcslashes($_POST['oldanswer'], "'");}
-        }
+    if (isset($_POST['code'])) $_POST['code'] = mysql_escape_string($_POST['code']);
+    if (isset($_POST['oldcode'])) {$_POST['oldcode'] = mysql_escape_string($_POST['oldcode']);}
+    if (isset($_POST['answer'])) $_POST['answer'] = mysql_escape_string($_POST['answer']);
+    if (isset($_POST['oldanswer'])) {$_POST['oldanswer'] = mysql_escape_string($_POST['oldanswer']);}
+    if (isset($_POST['default_value'])) {$_POST['oldanswer'] = mysql_escape_string($_POST['default_value']);}
     switch ($_POST['ansaction'])
         {
         case _AL_FIXSORT:
@@ -567,22 +547,7 @@ elseif ($action == "insertnewsurvey")
         }
     else
         {
-        if (get_magic_quotes_gpc()=="0")
-            {
-            $_POST['short_title'] = addcslashes($_POST['short_title'], "'");
-            $_POST['description'] = addcslashes($_POST['description'], "'");
-            $_POST['welcome'] = addcslashes($_POST['welcome'], "'");
-            $_POST['attribute1'] = addcslashes($_POST['attribute1'], "'");
-            $_POST['attribute2'] = addcslashes($_POST['attribute2'], "'");
-            $_POST['email_invite_subj'] = addcslashes($_POST['email_invite_subj'], "'");
-            $_POST['email_invite'] = addcslashes($_POST['email_invite'], "'");
-            $_POST['email_remind_subj'] = addcslashes($_POST['email_remind_subj'], "'");
-            $_POST['email_remind'] = addcslashes($_POST['email_remind'], "'");
-            $_POST['email_register_subj'] = addcslashes($_POST['email_register_subj'], "'");
-            $_POST['email_register'] = addcslashes($_POST['email_register'], "'");
-            $_POST['email_confirm_subj'] = addcslashes($_POST['email_confirm_subj'], "'");
-            $_POST['email_confirm'] = addcslashes($_POST['email_confirm'], "'");
-            }
+        $_POST  = array_map('mysql_escape_string', $_POST);
         $isquery = "INSERT INTO {$dbprefix}surveys\n"
                   . "(sid, short_title, description, admin, active, welcome, expires, "
                   . "adminemail, private, faxto, format, template, url, urldescrip, "
@@ -623,20 +588,7 @@ elseif ($action == "insertnewsurvey")
 elseif ($action == "updatesurvey")
     {
     if ($_POST['url'] == "http://") {$_POST['url']="";}
-    $_POST['short_title'] = htmlspecialchars($_POST['short_title'],ENT_QUOTES);
-    $_POST['description'] = htmlspecialchars($_POST['description'], ENT_QUOTES);
-    $_POST['admin'] = htmlspecialchars($_POST['admin'], ENT_QUOTES);
-    $_POST['welcome'] = htmlspecialchars($_POST['welcome'], ENT_QUOTES);
-    $_POST['attribute1'] = htmlspecialchars($_POST['attribute1'], ENT_QUOTES);
-    $_POST['attribute2'] = htmlspecialchars($_POST['attribute2'], ENT_QUOTES);
-    $_POST['email_invite_subj'] = htmlspecialchars($_POST['email_invite_subj'], ENT_QUOTES);
-    $_POST['email_invite'] = htmlspecialchars($_POST['email_invite'], ENT_QUOTES);
-    $_POST['email_remind_subj'] = htmlspecialchars($_POST['email_remind_subj'], ENT_QUOTES);
-    $_POST['email_remind'] = htmlspecialchars($_POST['email_remind'], ENT_QUOTES);
-    $_POST['email_register_subj'] = htmlspecialchars($_POST['email_register_subj'], ENT_QUOTES);
-    $_POST['email_register'] = htmlspecialchars($_POST['email_register'], ENT_QUOTES);
-    $_POST['email_confirm_subj'] = htmlspecialchars($_POST['email_confirm_subj'], ENT_QUOTES);
-    $_POST['email_confirm'] = htmlspecialchars($_POST['email_confirm'], ENT_QUOTES);
+    $_POST  = array_map('mysql_escape_string', $_POST);
 
     $usquery = "UPDATE {$dbprefix}surveys \n"
               . "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
