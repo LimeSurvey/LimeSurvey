@@ -49,26 +49,16 @@ if (!$style)
 	{
 	sendcacheheaders();
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-	$query="SELECT * FROM {$dbprefix}survey_$surveyid LIMIT 1";
+	$query=" SELECT questions.gid, answers.qid , code FROM questions, answers,groups "
+		  ." where questions.sid=$surveyid and answers.qid=questions.qid and questions.gid=groups.gid "
+		  ." order by questions.gid, sortorder, answers.qid";
+//	$query="SELECT * FROM {$dbprefix}survey_$surveyid LIMIT 1";
 	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-	$afieldcount=mysql_num_fields($result);
-	$i=0;
-	$fieldmap=createFieldMap($surveyid, "full");
-	usort($fieldmap, 'CompareGroupThenTitle');
-	foreach ($fieldmap as $fm) 
+	$afieldcount = mysql_num_rows($result);
+	while ($rows = mysql_fetch_array($result)) 
 		{
-		$groupname=$fm['group_name'];
-		$title=$fm['title'];
-		if (!isset($groupname)) { $groupname="";}
-		if (!isset($title)) { $title="";}
-		$eachone[]=array("fieldname"=>$fm['fieldname'],
-						 "group_name"=>$groupname,
-						 "title"=>$title);
+			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$rows['code'];
 		}
-		foreach($eachone as $ea)
-			{
-			$excesscols[]=$ea['fieldname'];
-			}
 	echo $htmlheader
 		."<br />\n"
 		."<form action='export.php' method='post'>\n"
@@ -265,20 +255,22 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 case "doc":
         header("Content-Disposition: attachment; filename=survey.doc");
         header("Content-type: application/vnd.ms-word");
-        $s="\t";
+        $separator="\t";
         break;
 case "xls":
         header("Content-Disposition: attachment; filename=survey.xls");
         header("Content-type: application/vnd.ms-excel");
-        $s="\t";
+        $separator="\t";
         break;
 case "csv":
         header("Content-Disposition: attachment; filename=survey.csv");
         header("Content-type: text/comma-separated-values; charset=UTF-8");
-        $s=",";
+        $separator=",";
         break;
 default:
-        header("Content-Disposition: attachment; filename=survey.doc");
+        header("Content-Disposition: attachment; filename=survey.csv");
+        header("Content-type: text/comma-separated-values; charset=UTF-8");
+        $separator=",";
         break;
 }
 
@@ -357,11 +349,11 @@ for ($i=0; $i<$fieldcount; $i++)
 			{
 			if ($type == "csv") 
 				{
-				$firstline.="\""._TL_TOKEN."\"$s";
+				$firstline.="\""._TL_TOKEN."\"$separator";
 				}
 			else 
 				{
-				$firstline .= _TL_TOKEN."$s";
+				$firstline .= _TL_TOKEN."$separator";
 				}
 			}
 		if ($answers == "long") 
@@ -369,54 +361,54 @@ for ($i=0; $i<$fieldcount; $i++)
 			if ($style == "abrev")
 				{
 				if ($type == "csv") {$firstline .= "\""._TL_TOKEN."\"$s";}
-				else {$firstline .= _TL_TOKEN."$s";}
+				else {$firstline .= _TL_TOKEN."$separator";}
 				}
 			else 
 				{
 				if ($type == "csv") {$firstline .= "\""._TL_TOKEN."\"$s";}
-				else {$firstline .= _TL_TOKEN."$s";}
+				else {$firstline .= _TL_TOKEN."$separator";}
 				}
 			}
 		}
 	elseif ($fieldinfo == "lastname")
 		{
-		if ($type == "csv") {$firstline .= "\""._TL_LAST."\"$s";}
-		else {$firstline .= _TL_LAST."$s";}
+		if ($type == "csv") {$firstline .= "\""._TL_LAST."\"$separator";}
+		else {$firstline .= _TL_LAST."$separator";}
 		}
 	elseif ($fieldinfo == "firstname")
 		{
-		if ($type == "csv") {$firstline .= "\""._TL_FIRST."\"$s";}
-		else {$firstline .= _TL_FIRST."$s";}
+		if ($type == "csv") {$firstline .= "\""._TL_FIRST."\"$separator";}
+		else {$firstline .= _TL_FIRST."$separator";}
 		}
 	elseif ($fieldinfo == "email")
 		{
-		if ($type == "csv") {$firstline .= "\""._EMAIL."\"$s";}
-		else {$firstline .= _EMAIL."$s";}
+		if ($type == "csv") {$firstline .= "\""._EMAIL."\"$separator";}
+		else {$firstline .= _EMAIL."$separator";}
 		}
 	elseif ($fieldinfo == "attribute_1")
 		{
-		if ($type == "csv") {$firstline .= "\"attr1\"$s";}
-		else {$firstline .= _TL_ATTR1."$s";}
+		if ($type == "csv") {$firstline .= "\"attr1\"$separator";}
+		else {$firstline .= _TL_ATTR1."$separator";}
 		}
 	elseif ($fieldinfo == "attribute_2")
 		{
-		if ($type == "csv") {$firstline .= "\"attr2\"$s";}
-		else {$firstline .= _TL_ATTR2."$s";}
+		if ($type == "csv") {$firstline .= "\"attr2\"$separator";}
+		else {$firstline .= _TL_ATTR2."$separator";}
 		}
 	elseif ($fieldinfo == "id")
 		{
-		if ($type == "csv") {$firstline .= "\"id\"$s";}
-		else {$firstline .= "id$s";}
+		if ($type == "csv") {$firstline .= "\"id\"$separator";}
+		else {$firstline .= "id$separator";}
 		}
 	elseif ($fieldinfo == "datestamp")
 		{
-		if ($type == "csv") {$firstline .= "\"Time Submitted\"$s";}
-		else {$firstline .= "Time Submitted$s";}
+		if ($type == "csv") {$firstline .= "\"Time Submitted\"$separator";}
+		else {$firstline .= "Time Submitted$separator";}
 		}
 	elseif ($fieldinfo == "ipaddr")
 		{
-		if ($type == "csv") {$firstline .= "\""._IP_ADDRESS."\"$s";}
-		else {$firstline .= _IP_ADDRESS."$s";}
+		if ($type == "csv") {$firstline .= "\""._IP_ADDRESS."\"$separator";}
+		else {$firstline .= _IP_ADDRESS."$separator";}
 		}
 	else
 		{
@@ -441,7 +433,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			else {$firstline .= "$qname";}
 			if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
 			if ($type == "csv") {$firstline .= "\"";}
-			$firstline .= "$s";
+			$firstline .= "$separator";
 			}
 		else
 			{
@@ -529,11 +521,11 @@ for ($i=0; $i<$fieldcount; $i++)
 			$fquest = str_replace("\r", "", $fquest);
 			if ($type == "csv")
 				{
-				$firstline .="\"$fquest\"$s";
+				$firstline .="\"$fquest\"$separator";
 				}
 			else
 				{
-				$firstline .= "$fquest $s";
+				$firstline .= "$fquest $separator";
 				}
 			}		
 		}	
@@ -543,7 +535,7 @@ $firstline .= "\n";
 
 if ($type == "doc") 
 	{
-	$flarray=explode($s, $firstline);
+	$flarray=explode($separator, $firstline);
 	$fli=0;
 	foreach ($flarray as $fl)
 		{
@@ -604,11 +596,11 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 		{
 		if ($type == "csv")
 			{
-			echo "\"".implode("\"$s\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
+			echo "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
 			}
 		else
 			{
-			echo implode($s, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
+			echo implode($separator, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
 			}
 		}
 	}
@@ -849,7 +841,7 @@ elseif ($answers == "long")
 						}
 				}
 			if ($type == "csv") {echo "\"";}
-			echo "$s";
+			echo "$separator";
 			$ftype = "";
 			}
 		echo "\n";
