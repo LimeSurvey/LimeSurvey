@@ -204,7 +204,9 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		$qquery="SELECT * FROM {$dbprefix}surveys WHERE sid={$row['sid']}";
 		$qresult=mysql_query($qquery) or die ("Couldn't check surveys table for sids from questions<br />$qquery<br />".mysql_error());
 		$qcount=mysql_num_rows($qresult);
-		if (!$qcount) {if (!in_array($row['qid'], $qdelete)) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>"No matching Survey! ({$row['sid']})");}}
+		if (!$qcount) {
+			if (!isset($qdelete) || !in_array($row['qid'], $qdelete)) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>"No matching Survey! ({$row['sid']})");}
+			}
 		}
 	if (isset($qdelete) && $qdelete)
 		{
