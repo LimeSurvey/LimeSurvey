@@ -49,16 +49,55 @@ if (!$style)
 	{
 	sendcacheheaders();
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-	$query=" SELECT questions.gid, answers.qid , code FROM questions, answers,groups "
-		  ." where questions.sid=$surveyid and answers.qid=questions.qid and questions.gid=groups.gid "
-		  ." order by questions.gid, sortorder, answers.qid";
-//	$query="SELECT * FROM {$dbprefix}survey_$surveyid LIMIT 1";
+	$query=" SELECT other, questions.type, questions.gid, questions.qid FROM questions, groups "
+		  ." where questions.sid=$surveyid and questions.gid=groups.gid "
+		  ." order by group_name, questions.title";
 	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-	$afieldcount = mysql_num_rows($result);
 	while ($rows = mysql_fetch_array($result)) 
 		{
-			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$rows['code'];
+            if (($rows['type']=='A') || ($rows['type']=='B')||($rows['type']=='C')||($rows['type']=='M')||($rows['type']=='P')||($rows['type']=='Q')||($rows['type']=='E')||($rows['type']=='F')||($rows['type']=='H'))
+            {
+               	$detailquery="select code from answers where qid=".$rows['qid']." order by sortorder,code";
+               	$detailresult=mysql_query($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".mysql_error());
+			   	while ($detailrows = mysql_fetch_array($detailresult))
+			   	{
+          			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code'];
+				   	if ($rows['type']=='P')
+				   	{
+        	  			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code']."comment";
+				   	}
+			   	} 
+            }  
+            elseif ($rows['type']=='R')
+            {
+               	$detailquery="select code from answers where qid=".$rows['qid']." order by sortorder,code";
+               	$detailresult=mysql_query($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".mysql_error());
+               	$i=1;
+			   	while ($detailrows = mysql_fetch_array($detailresult))
+			   	{
+          			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$i;
+          			$i++;
+			   	} 
+            }  
+            else
+            {
+    			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'];
+			}
+		   	if ($rows['other']=="Y" && (($rows['type']=='M') || ($rows['type']=='!')|| ($rows['type']=='L')|| ($rows['type']=='P')))
+		   	{
+       			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid']."other";
+		   	}
+		   	if ($rows['other']=="Y" && ($rows['type']=='P' ))
+		   	{
+       			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid']."othercomment";
+		   	}
+		   	if ($rows['type']=='O' )
+		   	{
+       			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid']."comment";
+		   	}
+
 		}
+	$afieldcount = count($excesscols);
 	echo $htmlheader
 		."<br />\n"
 		."<form action='export.php' method='post'>\n"
