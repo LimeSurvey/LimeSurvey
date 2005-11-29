@@ -56,7 +56,7 @@ if (ini_get('safe_mode'))
 
 $filename="survey_{$surveyid}_dump.sql";
 $mysqldump="$mysqlbin/mysqldump";
-if (substr($OS, 0, 3) == "WIN") {$mysqldump .= ".exe";}
+if ((substr($OS, 0, 3) == "WIN") || (substr($OS, 0, 4) == "OS/2") ) {$mysqldump .= ".exe";}
 //Check that $mysqlbin/mysqldump actually exists
 if (!file_exists($mysqldump)) 
 	{

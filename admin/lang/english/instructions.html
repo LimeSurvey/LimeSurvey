@@ -1,66 +1,62 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html style="direction: ltr;"><head>
-<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"><title>PHPSurveyor
-Manual</title>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"><title>PHPSurveyor Manual</title>
 <meta name="CREATED" content="20040715;21074530"><meta name="CHANGEDBY" content="Jason Cleeland">
-<meta name="CHANGED" content="20040715;21133180"><meta http-equiv="Content-Language" content="en-us">
-</head>
-
-  <body style="direction: ltr;"><p style="margin-bottom: 0cm;" align="left">
+<meta name="CHANGED" content="20040715;21133180"><meta http-equiv="Content-Language" content="en-us"></head>
+<body style="direction: ltr;"><p style="margin-bottom: 0cm;" align="left">
 <font face="Verdana"><strong><u><font size="5"><span>PHP</span>Surveyor (V0.991)<br></font></u><i><font size="4">Instructions</font></i></strong></font></p>
 <hr><p align="left">
 <font face="Verdana"><font size="4"><u><strong>INDEX</strong></u></font></font>
 </p><ul>
 <li><p style="margin-bottom: 0cm;">
-<strong><a href="%20#Installation"><font size="2"><font face="Verdana">Installation</font></font></a></strong>
+<strong><a href="#Installation"><font size="2"><font face="Verdana">Installation</font></font></a></strong>
 </p><ul>
 <li><p style="margin-bottom: 0cm;">
-<a href="#INSTALLATION%20FAQ"><span><font size="1"><font face="Verdana">Installation FAQ</font></font></span></a>
-</p></li>
+<a href="#INSTALLATION_FAQ"><span><font size="1"><font face="Verdana">Installation FAQ</font></font></span></a></p></li><li><span><font size="1"><font face="Verdana"><a href="installation_on_os2warp.html" target="_blank">Installation on OS/2 Warp</a><br></font></font></span></li>
 </ul></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#Security%20Issues"><strong><font size="2"><font face="Verdana">Security Issues</font></font></strong></a>
+<a href="#Security_Issues"><strong><font size="2"><font face="Verdana">Security Issues</font></font></strong></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#Survey%20Design%20and%20Structure"><strong><span><font size="2"><font face="Verdana">Survey Design and
+<a href="#Survey_Design_and_Structure"><strong><span><font size="2"><font face="Verdana">Survey Design and
 Structure</font></font></span></strong></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#Creating%20Surveys"><strong><font size="2"><font face="Verdana">Creating Surveys</font></font></strong></a>
+<a href="#Creating_Surveys"><strong><font size="2"><font face="Verdana">Creating Surveys</font></font></strong></a>
 </p><ul>
 <li><p style="margin-bottom: 0cm;">
-<a href="#%28A%29%20Creating%20a%20NEW%20SURVEY"><font size="1"><font face="Verdana">Creating a New
+<a href="#Creating_a_NEW_SURVEY"><font size="1"><font face="Verdana">Creating a New
 Survey</font></font></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#Importing%20a%20Survey"><span><font size="1"><font face="Verdana">Importing a Survey</font></font></span></a>
+<a href="#Importing_a_Survey"><span><font size="1"><font face="Verdana">Importing a Survey</font></font></span></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#%28B%29%20Creating%20a%20NEW%20GROUP"><font size="1"><font face="Verdana">Creating a New
+<a href="#Creating_a_NEW_GROUP"><font size="1"><font face="Verdana">Creating a New
 Group</font></font></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#%28C%29%20Adding%20a%20QUESTION"><font size="1"><font face="Verdana">Adding a Question</font></font></a><br>
+<a href="#Adding_a_QUESTION"><font size="1"><font face="Verdana">Adding a Question</font></font></a><br>
 </p><ul>
-<li><a href="#Question%20Attributes"><font face="Verdana" size="1">Question Attributes</font></a>
+<li><a href="#Question_Attributes"><font face="Verdana" size="1">Question Attributes</font></a>
 </li><li>
-<a href="%20#Validation"><font face="Verdana" size="1">Validation</font></a>
+<a href="#Validation"><font face="Verdana" size="1">Validation</font></a>
 </li></ul>
 </li><li>
 <p style="margin-bottom: 0cm;"><a href="#Conditions"><span><font size="1"><font face="Verdana">Setting Conditions</font></font></span></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#%28D%29%20Adding%20ANSWERS"><font size="1"><font face="Verdana">Adding Answers</font></font></a>
+<a href="#Adding_ANSWERS"><font size="1"><font face="Verdana">Adding Answers</font></font></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#%28F%29%20Exporting%20a%20survey"><span><font size="1"><font face="Verdana">Exporting a Survey</font></font></span></a>
+<a href="#Exporting_a_survey"><span><font size="1"><font face="Verdana">Exporting a Survey</font></font></span></a>
 </p></li>
 </ul></li>
 <li><p style="margin-bottom: 0cm;">
 <a href="#Templates"><strong><font size="2"><font face="Verdana">Templates</font></font></strong></a>
 </p><ul>
 <li><p style="margin-bottom: 0cm;">
-<a href="#The%20PHPSurveyor%20Template%20Editor"><font size="1"><font face="Verdana">The PHPSurveyor
+<a href="#The_Template_Editor"><font size="1"><font face="Verdana">The PHPSurveyor
 Template Editor</font></font></a>
 </p></li>
 </ul></li>
@@ -68,11 +64,11 @@ Template Editor</font></font></a>
 <a href="#Localisation"><strong><span><font size="2"><font face="Verdana">Localisation</font></font></span></strong></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#Initialising%20a%20Survey"><strong><font size="2"><font face="Verdana">Activating a
+<a href="#Initialising_a_Survey"><strong><font size="2"><font face="Verdana">Activating a
 Survey</font></font></strong></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#Safely%20Running%20a%20Survey"><strong><span><font size="2"><font face="Verdana">Running a survey
+<a href="#Safely_Running_a_Survey"><strong><span><font size="2"><font face="Verdana">Running a survey
 safely</font></font></span></strong></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
@@ -86,7 +82,7 @@ Results</font></font></span></strong></a>
 <a href="#DataEntry"><strong><font size="2"><font face="Verdana">DataEntry</font></font></strong></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<a href="#Exporting%20Results"><strong><font size="2"><font face="Verdana">Exporting Results</font></font></strong></a>
+<a href="#Exporting_Results"><strong><font size="2"><font face="Verdana">Exporting Results</font></font></strong></a>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
 <a href="#Statistics"><strong><font size="2"><font face="Verdana">Statistics</font></font></strong></a>
@@ -2153,8 +2149,7 @@ unhealthy. You should stop smoking and start exercising</font>
 </tr><tr>
 <th bgcolor="#999999"><font color="#ffffff" face="Verdana" size="2">Message</font>
 </th><td>
-<font face="Verdana"><textarea name="message" rows="4" cols="20">
-</textarea></font></td>
+<font face="Verdana"><textarea name="message" rows="4" cols="20"></textarea></font></td>
 </tr><tr>
 <th bgcolor="#999999"><font color="#ffffff" face="Verdana" size="2">URL</font>
 </th><td>
@@ -2231,10 +2226,10 @@ Template Menu</strong></font></font>
 </p></td>
 </tr><tr bgcolor="#999999">
 <td height="20"><p>
-<img src="../../images/trafficgreen.gif" alt="This template can be modified" align="bottom" border="0" height="20" width="20"><img src="../../images/blank.gif" alt="-" align="bottom" border="0" height="11" width="11"><img src="%20../../images/seperator.gif" alt="-" align="bottom" border="0" height="20" width="11"><img src="images/blank.gif" alt="-" align="bottom" border="0" height="2" width="2"><img src="%20../../images/seperator.gif" alt="-" align="bottom" border="0" height="20" width="11">
-<img src="../../images/blank.gif" alt="-" align="bottom" border="0" height="10" width="40"><img src="%20../../images/seperator.gif" alt="-" align="bottom" border="0" height="20" width="11"></p>
+<img src="../../images/trafficgreen.gif" alt="This template can be modified" align="bottom" border="0" height="20" width="20"><img src="../../images/blank.gif" alt="-" align="bottom" border="0" height="11" width="11"><img src="../../images/%20../../images/seperator.gif" alt="-" align="bottom" border="0" height="20" width="11"><img src="../../images/images/blank.gif" alt="-" align="bottom" border="0" height="2" width="2"><img src="../../images/%20../../images/seperator.gif" alt="-" align="bottom" border="0" height="20" width="11">
+<img src="../../images/blank.gif" alt="-" align="bottom" border="0" height="10" width="40"><img src="../../images/%20../../images/seperator.gif" alt="-" align="bottom" border="0" height="20" width="11"></p>
 </td><td height="20">
-<p align="right"><img src="../../images/blank.gif" alt="-" align="right" border="0" height="10" width="60"><img src="../../images/seperator.gif" alt="|" align="right" border="0" height="20" width="11"><img src="%20../../images/blank.gif" alt="-" align="right" border="0" height="23" width="23"><font color="white" face="verdana" size="2"><strong>Screen:</strong></font> <select name="screenname" style="background-color: rgb(238, 239, 255); height: 18px; font-family: verdana; font-size: 10px; color: rgb(0, 0, 128);" onchange=' javascript: window.open("templates.php?templatename=default&editfile=screenname="+this.value, "_top")'><option value="Welcome Page" selected="selected">
+<p align="right"><img src="../../images/blank.gif" alt="-" align="right" border="0" height="10" width="60"><img src="../../images/seperator.gif" alt="|" align="right" border="0" height="20" width="11"><img src="../../images/%20../../images/blank.gif" alt="-" align="right" border="0" height="23" width="23"><font color="white" face="verdana" size="2"><strong>Screen:</strong></font> <select name="screenname" style="background-color: rgb(238, 239, 255); height: 18px; font-family: verdana; font-size: 10px; color: rgb(0, 0, 128);" onchange=' javascript: window.open("templates.php?templatename=default&editfile=screenname="+this.value, "_top")'><option value="Welcome Page" selected="selected">
 Welcome Page
 </option><option value="Question Page">Question Page
 </option><option value="Submit Page">Submit Page
