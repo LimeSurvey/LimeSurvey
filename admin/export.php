@@ -48,6 +48,8 @@ if (empty($surveyid)) {die ("Cannot run this script directly");}
 if (!$style)
 	{
 	sendcacheheaders();
+	$excesscols[]="id";	
+	$thissurvey=getSurveyInfo($surveyid);
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
 	$query=" SELECT other, questions.type, questions.gid, questions.qid FROM questions, groups "
 		  ." where questions.sid=$surveyid and questions.gid=groups.gid "
@@ -97,6 +99,10 @@ if (!$style)
 		   	}
 
 		}
+
+	if ($thissurvey["datestamp"]=='Y') {$excesscols[]='datestamp';}
+	if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
+	
 	$afieldcount = count($excesscols);
 	echo $htmlheader
 		."<br />\n"
