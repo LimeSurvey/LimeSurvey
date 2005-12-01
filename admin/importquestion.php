@@ -323,9 +323,9 @@ if (isset($questionarray) && $questionarray)
 		$oldsid=$qacfieldcontents[array_search("sid", $qafieldorders)];
 		$oldgid=$qacfieldcontents[array_search("gid", $qafieldorders)];
 		$oldqid=$qacfieldcontents[array_search("qid", $qafieldorders)];
-		$qinsert=str_replace("'$oldqid'", "''", $qa);
-		$qinsert=str_replace("'$oldsid'", "'$surveyid'", $qinsert);
-		$qinsert=str_replace("'$oldgid'", "'$gid'", $qinsert);
+		$qinsert=str_replace_once("'$oldqid'", "''", $qa);
+		$qinsert=str_replace_once("'$oldsid'", "'$surveyid'", $qinsert);
+		$qinsert=str_replace_once("'$oldgid'", "'$gid'", $qinsert);
 		
 		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 		
@@ -379,7 +379,7 @@ if (isset($questionarray) && $questionarray)
 						}
 					}			
 				}
-			if (($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P") && ($other == "Y"))
+			if (($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P") && isset($other) && ($other == "Y"))
 				{
 				$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid."other", $newsid."X".$newgid."X".$newqid."other");
 				if ($type == "P")
@@ -467,4 +467,17 @@ function convertToArray($string, $seperator, $start, $end)
 	
 	return $orders;
 	}
+
+function str_replace_once($needle, $replace, $haystack) 
+{
+   // Looks for the first occurence of $needle in $haystack
+   // and replaces it with $replace.
+   $pos = strpos($haystack, $needle);
+   if ($pos === false) {
+       // Nothing found
+       return $haystack;
+   }
+   return substr_replace($haystack, $replace, $pos, strlen($needle));
+} 	
+	
 ?>
