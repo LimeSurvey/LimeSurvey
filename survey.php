@@ -117,16 +117,6 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				   . _NOTACTIVE1."<br /><br />\n"
 				   . "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._CLEARRESP."</a><br /><br />\n"
 				   . "<font size='1'>$subquery</font>\n";
-		if (isset($_SESSION['savename'])) 
-			{
-			//Delete the saved survey
-			$query = "DELETE FROM {$dbprefix}saved\n"
-					."WHERE sid=$surveyid\n"
-					."AND identifier = '".$_SESSION['savename']."'";
-			$result = mysql_query($query);
-			//Should put an email to administrator here
-			//if the delete doesn't work.
-			}
 		}
 	else
 		{
@@ -196,6 +186,19 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				{
 				sendsubmitnotification($thissurvey['sendnotification']);
 				}
+
+		if (isset($_SESSION['scid'])) 
+			{
+				//Delete the saved survey
+				$query = "DELETE FROM {$dbprefix}saved
+				  		WHERE scid=".$_SESSION['scid'];
+				$result=mysql_query($query);
+				$query = "DELETE FROM {$dbprefix}saved_control
+				  		WHERE scid=".$_SESSION['scid'];
+				$result=mysql_query($query);
+				//Should put an email to administrator here
+				//if the delete doesn't work.
+			}
 
 			session_unset();
 			session_destroy();

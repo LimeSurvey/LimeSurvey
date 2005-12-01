@@ -194,6 +194,12 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		{
 		$errormsg .= _LOADNOPASS."<br />\n";
 		}
+		
+	// Load session before loading the values from the saved data	
+	if (isset($_GET['loadall']))
+		{
+		buildsurveysession();
+		}
 	$query = "SELECT * FROM {$dbprefix}saved, {$dbprefix}saved_control
 			  WHERE {$dbprefix}saved.scid={$dbprefix}saved_control.scid 
 			  AND {$dbprefix}saved_control.sid=$surveyid\n";
@@ -206,7 +212,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	if (mysql_num_rows($result) > 0)
 		{
 		//A match has been found. Let's load the values if there are saved responses!
-		//If this is from an email, build surveysession first
+		//If this is from an email,  surveysession was build first
 		while($row=mysql_fetch_array($result))
 			{
 			if ($row['fieldname'] == "token")
@@ -226,15 +232,11 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
     		{
     		$errormsg .= _LOADNOMATCH."<br />\n";
     		}			
-		$_SESSION['savename']=$_POST['loadname']; //This session variable hangs around
-		                                           //for later use.
-		$_POST['move'] = " "._NEXT." >> "; 
-		if (isset($_GET['loadall']))
-			{
-			buildsurveysession();
-			}
+	$_SESSION['savename']=$_POST['loadname']; //This session variable hangs around
+                                              //for later use.
+	$_POST['move'] = " "._NEXT." >> "; 
+
 		
-	
 	if ($errormsg)
 		{
 	    $_POST['loadall'] = _LOAD_SAVED;

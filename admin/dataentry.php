@@ -1402,7 +1402,7 @@ elseif ($action == "delete")
 		."\t\t\t".$thissurvey['description']."\n"
 		."\t\t</font></td>\n"
 		."\t</tr>\n";
-	$delquery = "DELETE FROM $surveytable WHERE id=$id";
+	$delquery = "DELETE FROM {$dbprefix}$surveytable WHERE id=$id";
 	echo "\t<tr>\n";
 	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
 	echo "\t\t<td align='center'><br />$setfont<strong>"._DE_DELRECORD." (ID: $id)</strong><br /><br />\n"

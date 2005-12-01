@@ -110,6 +110,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 		{
 		sendcacheheaders();
 		doHeader();
+		
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -129,16 +130,6 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 		$completed .= _NOTACTIVE1."<br /><br />\n";
 		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._CLEARRESP."</a><br /><br />\n";
 		$completed .= "<font size='1'>$subquery</font>\n";
-		if (isset($_SESSION['savename'])) 
-			{
-			//Delete the saved survey
-			$query = "DELETE FROM {$dbprefix}saved\n"
-					."WHERE sid=$surveyid\n"
-					."AND identifier = '".$_SESSION['savename']."'";
-			$result = mysql_query($query);
-			//Should put an email to administrator here
-			//if the delete doesn't work.
-			}
 		}
 	else
 		{
@@ -208,6 +199,18 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				{ 
 				sendsubmitnotification($thissurvey['sendnotification']);
 				}
+			if (isset($_SESSION['scid'])) 
+			{
+				//Delete the saved survey
+				$query = "DELETE FROM {$dbprefix}saved
+				  	WHERE scid=".$_SESSION['scid'];
+				$result=mysql_query($query);
+				$query = "DELETE FROM {$dbprefix}saved_control
+				  		WHERE scid=".$_SESSION['scid'];
+				$result=mysql_query($query);
+				//Should put an email to administrator here
+				//if the delete doesn't work.
+			}
 
 			session_unset();
 			session_destroy();
@@ -415,6 +418,7 @@ $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 sendcacheheaders();
 doHeader();
+
 if (isset($popup)) {echo $popup;}
 if (isset($vpopup)) {echo $vpopup;}
 foreach(file("$thistpl/startpage.pstpl") as $op)
