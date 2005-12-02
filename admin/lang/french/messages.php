@@ -137,14 +137,14 @@ define("_Q_EDIT_BT", "Editer la question en cours");
 define("_Q_COPY_BT", "Copier la question en cours"); //New in 0.98rc4
 define("_Q_DELETE_BT", "Supprimer la question en cours");
 define("_Q_EXPORT_BT", "Exporter cette question");
-define("_Q_CONDITIONS_BT", "Affecter des conditions &agrave; cette question");
+define("_Q_CONDITIONS_BT", "Affecter des conditions à cette question");
 define("_Q_ANSWERS_BT", "Editer/Ajouter des r&eacute;ponses pour cette question");
 define("_Q_LABELS_BT", "Editer/Ajouter des jeux d&#039;&eacute;tiquettes");
 define("_Q_MINIMISE_BT", "Masquer les d&eacute;tails de cette question");
 define("_Q_MAXIMISE_BT", "Afficher les d&eacute;tails de cette question");
 define("_Q_CLOSE_BT", "Fermer cette question");
 //Browse Button Bar
-define("_B_ADMIN_BT", "Retourner &agrave; l&#039;&eacute;cran d&#039;administration g&eacute;n&eacute;rale");
+define("_B_ADMIN_BT", "Retourner à l&#039;&eacute;cran d&#039;administration g&eacute;n&eacute;rale");
 define("_B_SUMMARY_BT", "Afficher un r&eacute;sum&eacute;");
 define("_B_ALL_BT", "Afficher les r&eacute;ponses");
 define("_B_LAST_BT", "Afficher les 50 derni&egrave;res r&eacute;ponses");
@@ -154,7 +154,7 @@ define("_B_BACKUP_BT", "Sauvegarder vers un fichier SQL la table de r&eacute;sul
 //Tokens Button Bar
 define("_T_ALL_BT", "Afficher les invitations");
 define("_T_ADD_BT", "Ajouter une nouvelle invitation");
-define("_T_IMPORT_BT", "Importer les invitations &agrave; partir d&#039;un fichier CSV");
+define("_T_IMPORT_BT", "Importer les invitations à partir d&#039;un fichier CSV");
 define("_T_EXPORT_BT", "Exporter des invitations vers un fichier CSV"); //New for 0.98rc7
 define("_T_INVITE_BT", "Envoyer les invitations par mail");
 define("_T_REMIND_BT", "Envoyer les rappels par mail");
@@ -178,7 +178,7 @@ define("_SL_DESCRIPTION", "Description :");
 define("_SL_WELCOME", "Message de bienvenue :");
 define("_SL_ADMIN", "Administrateur :");
 define("_SL_EMAIL", "Mail de l&#039;administrateur :");
-define("_SL_FAXTO", "Fax &agrave; :");
+define("_SL_FAXTO", "Fax à :");
 define("_SL_ANONYMOUS", "Anonyme :");
 define("_SL_EXPIRES", "Date limite de r&eacute;ponse :");
 define("_SL_FORMAT", "Format :");
@@ -205,20 +205,20 @@ define("_SL_EMAILCONFIRM_SUBJ", "Objet du mail de confirmation :"); //New with 0
 define("_SL_EMAILCONFIRM", "Confirmation par mail :"); //New with 0.98rc9
 define("_SL_REPLACEOK", "Cela remplacera le texte existant. Continuer ?"); //New with 0.98rc9
 define("_SL_ALLOWSAVE", "Autoriser les sauvegardes ?"); //New with 0.99dev01
-define("_SL_AUTONUMBER", "D&eacute;marrer la num&eacute;rotation des ID &agrave; :"); //New with 0.99dev01
+define("_SL_AUTONUMBER", "D&eacute;marrer la num&eacute;rotation des ID à :"); //New with 0.99dev01
 define("_SL_AUTORELOAD", "Charger automatiquement l&#039;URL quand le questionnaire est termin&eacute; ?"); //New with 0.99dev01
 define("_SL_ALLOWPREV", "Montrer le bouton [<< Pr&eacute;c]"); //New with 0.99dev01
 define("_SL_USE_DEFAULT","Utiliser les d&eacute;fauts");
-define("_SL_UPD_SURVEY","Mise &agrave; jour du questionnaire");
+define("_SL_UPD_SURVEY","Mise à jour du questionnaire");
 
 //groups
 define("_GL_TITLE", "Titre :");
 define("_GL_DESCRIPTION", "Description :");
 define("_GL_EDITGROUP","Edition du groupe pour le questionnaire ID"); // New with 0.99dev02
-define("_GL_UPDATEGROUP","Mise &agrave; jour du groupe"); // New with 0.99dev02
+define("_GL_UPDATEGROUP","Mise à jour du groupe"); // New with 0.99dev02
 //questions
 define("_QL_EDITQUESTION", "Editer la question");// New with 0.99dev02
-define("_QL_UPDATEQUESTION", "Mise &agrave; jour de la question");// New with 0.99dev02
+define("_QL_UPDATEQUESTION", "Mise à jour de la question");// New with 0.99dev02
 define("_QL_CODE", "Code :");
 define("_QL_QUESTION", "Question :");
 define("_QL_VALIDATION", "Validation :"); //New in VALIDATION VERSION
@@ -278,8 +278,8 @@ define("_GENDER", "Genre");
 define("_LIST", "Bouton radio");
 define("_LIST_DROPDOWN", "Liste d&eacute;roulante"); //New with 0.99dev01
 define("_LISTWC", "Liste d&eacute;roulante avec commentaire");
-define("_MULTO", "Case &agrave; cocher");
-define("_MULTOC", "Case &agrave; cocher avec commentaire");
+define("_MULTO", "Case à cocher");
+define("_MULTOC", "Case à cocher avec commentaire");
 define("_MULTITEXT", "Zone de texte court multilignes");
 define("_NUMERICAL", "Entr&eacute;e num&eacute;rique");
 define("_RANK", "Classement");
@@ -333,7 +333,7 @@ define("_SUBJECT", "Objet"); //For emails
 define("_MESSAGE", "Message"); //For emails
 define("_RELOADING", "Actualisation de l&#039;&eacute;cran. Veuillez patienter.");
 define("_ADD", "Ajouter");
-define("_UPDATE", "Mise &agrave; jour");
+define("_UPDATE", "Mise à jour");
 define("_BROWSE", "Parcourir"); //New in 098rc5
 define("_AND", "et"); //New with 0.98rc8
 define("_SQL", "SQL"); //New with 0.98rc8
@@ -363,7 +363,7 @@ define("_SS_ALLOWSAVE", "Les participants peuvent sauvegarder un remplissage par
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "Question obligatoire"); //New for release 0.98rc4
 define("_QS_OPTIONAL", "Question optionnelle"); //New for release 0.98rc4
-define("_QS_NOANSWERS", "Vous devez ajouter des r&eacute;ponses &agrave; cette question"); //New for release 0.98rc4
+define("_QS_NOANSWERS", "Vous devez ajouter des r&eacute;ponses à cette question"); //New for release 0.98rc4
 define("_QS_NOLID", "Vous devez choisir un jeu d&#039;&eacute;tiquettes pour cette question"); //New for release 0.98rc4
 define("_QS_COPYINFO", "Note : vous devez OBLIGATOIREMENT saisir un nouveau code pour la question"); //New for release 0.98rc4
 
@@ -379,7 +379,7 @@ define("_UC_CREATE", "Cr&eacute;er le fichier htaccess par d&eacute;faut");
 define("_UC_NOCREATE", "Impossible de cr&eacute;er le fichier htaccess. V&eacute;rifiez votre config.php sous \$homedir, et que vous avez les permissions d&#039;&eacute;criture dans le bon r&eacute;pertoire.");
 define("_UC_SEC_DONE", "Le niveau de s&eacute;curit&eacute; est maintenant configur&eacute; !");
 define("_UC_CREATE_DEFAULT", "Cr&eacute;er les utilisateurs par d&eacute;faut");
-define("_UC_UPDATE_TABLE", "Mise &agrave; jour de la table des utilisateurs");
+define("_UC_UPDATE_TABLE", "Mise à jour de la table des utilisateurs");
 define("_UC_HTPASSWD_ERROR", "Une erreur s&#039;est produite lors de la cr&eacute;ation du fichier htpasswd");
 define("_UC_HTPASSWD_EXPLAIN", "Si vous utilisez un serveur Windows il est recommand&eacute; de copier le fichier apache sous votre r&eacute;pertoire d&#039;administration pour que cette fonction fonctionne correctement. Ce fichier se trouve g&eacute;n&eacute;ralement sous /apache group/apache/bin/");
 define("_UC_SEC_REMOVE", "Enlever les param&egrave;tres de s&eacute;curit&eacute;");
@@ -390,25 +390,25 @@ define("_UC_DEL_USER", "Supprimer un utilisateur");
 define("_UC_DEL_MISSING", "Impossible de supprimer l&#039;utilisateur. Le nom d&#039;utilisateur n&#039;&eacute;tait pas rempli.");
 define("_UC_MOD_USER", "Modification de l&#039;utilisateur");
 define("_UC_MOD_MISSING", "Impossible de modifier l&#039;utilisateur. Le nom d&#039;utilisateur et/ou le mot de passe n&#039;&eacute;taient pas renseign&eacute;s");
-define("_UC_TURNON_MESSAGE1", "Vous n&#039;avez pas encore initialis&eacute; les param&egrave;tres de s&eacute;curit&eacute; pour votre syst&eacute;me de questionnaire et en cons&eacute;quence il n&#039;y a pas de restriction d&#039;acc&eacute;s.</p>\nSi vous cliquez sur le bouton INITIALISER LA SECURITE ci-dessous, les param&egrave;tres de s&eacute;curit&eacute; standard d&#039;Apache seront ajout&eacute;s au r&eacute;pertoire d&#039;administration de ce script. Vous aurez alors besoin d&#039;utiliser le nom d&#039;utilisateur et le mot de passe par d&eacute;faut pour acc&eacute;der &agrave; l&#039;administration et aux scripts de saisie de donn&eacute;es.");
+define("_UC_TURNON_MESSAGE1", "Vous n&#039;avez pas encore initialis&eacute; les param&egrave;tres de s&eacute;curit&eacute; pour votre syst&eacute;me de questionnaire et en cons&eacute;quence il n&#039;y a pas de restriction d&#039;acc&eacute;s.</p>\nSi vous cliquez sur le bouton INITIALISER LA SECURITE ci-dessous, les param&egrave;tres de s&eacute;curit&eacute; standard d&#039;Apache seront ajout&eacute;s au r&eacute;pertoire d&#039;administration de ce script. Vous aurez alors besoin d&#039;utiliser le nom d&#039;utilisateur et le mot de passe par d&eacute;faut pour acc&eacute;der à l&#039;administration et aux scripts de saisie de donn&eacute;es.");
 define("_UC_TURNON_MESSAGE2", "Il est fortement recommand&eacute;, une fois votre syst&eacute;me de s&eacute;curit&eacute; initialis&eacute;, de changer le mot de passe par d&eacute;faut.");
 define("_UC_INITIALISE", "Initialiser la s&eacute;curit&eacute;");
 define("_UC_NOUSERS", "Aucun utilisateur dans la table. Nous vous recommandons de DESACTIVER LA SECURITE et de la REACTIVER ensuite.");
 define("_UC_TURNOFF", "D&eacute;sactiver la s&eacute;curit&eacute;");
 
 //Activate and deactivate messages
-define("_AC_MULTI_NOANSWER", "Cette question est &agrave; r&eacute;ponses multiples mais n&#039;a aucune r&eacute;ponse de d&eacute;finie.");
+define("_AC_MULTI_NOANSWER", "Cette question est à r&eacute;ponses multiples mais n&#039;a aucune r&eacute;ponse de d&eacute;finie.");
 define("_AC_NOTYPE", "Cette question n&#039;a pas de type de question param&egrave;tr&eacute;.");
 define("_AC_NOLID", "Un jeu d&#039;&eacute;tiquettes est requis pour cette question. Aucun n&#039;est saisi."); //New for 0.98rc8
 define("_AC_CON_OUTOFORDER", "Cette question a une condition param&egrave;tr&eacute;e, toutefois la condition est bas&eacute;e sur une question qui appara&icirc;t apr&eacute;s elle.");
 define("_AC_FAIL", "Le questionnaire n&#039;est pas valid&eacute; par le contr&ocirc;le de coh&eacute;rence");
 define("_AC_PROBS", "Le probl&eacute;me suivant a &eacute;t&eacute; rencontr&eacute; :");
-define("_AC_CANNOTACTIVATE", "Le questionnaire ne peut pas &ecirc;tre activ&eacute; jusqu&#039;&agrave; ce que ces probl&eacute;mes soient r&eacute;solus");
+define("_AC_CANNOTACTIVATE", "Le questionnaire ne peut pas &ecirc;tre activ&eacute; jusqu&#039;à ce que ces probl&eacute;mes soient r&eacute;solus");
 define("_AC_READCAREFULLY", "LIRE CECI ATTENTIVEMENT AVANT DE POURSUIVRE");
 define("_AC_ACTIVATE_MESSAGE1", "Vous devriez activer un questionnaire seulement si vous &ecirc;tes absolument certain que votre questionnaire est correctement param&egrave;tr&eacute;/termin&eacute; et n&#039;aura pas besoin d&#039;&ecirc;tre modifi&eacute;.");
-define("_AC_ACTIVATE_MESSAGE2", "Un fois qu&#039;un questionnaire est activ&eacute; vous ne pouvez plus :<ul><li>Ajouter ou supprimer des groupes</li><li>Ajouter ou enlever des r&eacute;ponses aux questions &agrave; r&eacute;ponses multiples</li><li>Ajouter ou supprimer des questions</li></ul>");
-define("_AC_ACTIVATE_MESSAGE3", "Cependant vous pouvez toujours :<ul><li>Editer les codes de vos questions, le texte ou le type </li><li>Editer les noms de vos groupes</li><li>Ajouter, Enlever ou Editer les r&eacute;ponses des questions pr&eacute;d&eacute;finies (&agrave; l&#039;exception des questions &agrave; r&eacute;ponses multiples)</li><li>Changer le nom du questionnaire ou sa description</li></ul>");
-define("_AC_ACTIVATE_MESSAGE4", "Une fois que les donn&eacute;es sont saisies dans votre questionnaire, si vous voulez ajouter ou enlever des groupes ou questions, vous devez d&eacute;sactiver ce questionnaire, ce qui d&eacute;placera toutes les donn&eacute;es qui ont d&eacute;j&agrave; &eacute;t&eacute; saisies dans une table d&#146archivage s&eacute;par&eacute;e.");
+define("_AC_ACTIVATE_MESSAGE2", "Un fois qu&#039;un questionnaire est activ&eacute; vous ne pouvez plus :<ul><li>Ajouter ou supprimer des groupes</li><li>Ajouter ou enlever des r&eacute;ponses aux questions à r&eacute;ponses multiples</li><li>Ajouter ou supprimer des questions</li></ul>");
+define("_AC_ACTIVATE_MESSAGE3", "Cependant vous pouvez toujours :<ul><li>Editer les codes de vos questions, le texte ou le type </li><li>Editer les noms de vos groupes</li><li>Ajouter, Enlever ou Editer les r&eacute;ponses des questions pr&eacute;d&eacute;finies (à l&#039;exception des questions à r&eacute;ponses multiples)</li><li>Changer le nom du questionnaire ou sa description</li></ul>");
+define("_AC_ACTIVATE_MESSAGE4", "Une fois que les donn&eacute;es sont saisies dans votre questionnaire, si vous voulez ajouter ou enlever des groupes ou questions, vous devez d&eacute;sactiver ce questionnaire, ce qui d&eacute;placera toutes les donn&eacute;es qui ont d&eacute;jà &eacute;t&eacute; saisies dans une table d&#146archivage s&eacute;par&eacute;e.");
 define("_AC_ACTIVATE", "Activer");
 define("_AC_ACTIVATED", "Le questionnaire a &eacute;t&eacute; activ&eacute;. La table des r&eacute;ponses a &eacute;t&eacute; cr&eacute;&eacute;e avec succ&eacute;s.");
 define("_AC_NOTACTIVATED", "Le questionnaire ne peut pas &ecirc;tre activ&eacute;.");
@@ -417,15 +417,15 @@ define("_AC_REGISTRATION", "Ce questionnaire permet les enregistrements publics.
 define("_AC_CREATETOKENS", "Initialiser les invitations");
 define("_AC_SURVEYACTIVE", "Ce questionnaire est maintenant activ&eacute;, et les r&eacute;ponses peuvent &ecirc;tre enregistr&eacute;es.");
 define("_AC_DEACTIVATE_MESSAGE1", "Dans un questionnaire activ&eacute;, une table est cr&eacute;&eacute;e pour stocker toutes les donn&eacute;es saisies.");
-define("_AC_DEACTIVATE_MESSAGE2", "Lorsque vous d&eacute;sactivez un questionnaire, toutes les donn&eacute;es saisies dans la table originale seront d&eacute;plac&eacute;es ailleurs, ainsi lorsque vous r&eacute;activerez le questionnaire la table sera vide. Vous ne pourrez plus acc&eacute;der &agrave; ces donn&eacute;es avec PHPSurveyor.");
+define("_AC_DEACTIVATE_MESSAGE2", "Lorsque vous d&eacute;sactivez un questionnaire, toutes les donn&eacute;es saisies dans la table originale seront d&eacute;plac&eacute;es ailleurs, ainsi lorsque vous r&eacute;activerez le questionnaire la table sera vide. Vous ne pourrez plus acc&eacute;der à ces donn&eacute;es avec PHPSurveyor.");
 define("_AC_DEACTIVATE_MESSAGE3", "Seul un administrateur syst&eacute;me peut acc&eacute;der aux donn&eacute;es d&#039;un questionnaire d&eacute;sactiv&eacute; en utilisant un gestionnaire de bases de donn&eacute;es MySQL tel que PhpMyAdmin par exemple. Si votre questionnaire utilise des invitations, cette table sera &eacute;galement renomm&eacute;e et seul un administrateur syst&eacute;me y aura acc&eacute;s.");
 define("_AC_DEACTIVATE_MESSAGE4", "Votre table de r&eacute;ponses sera renomm&eacute;e en :");
-define("_AC_DEACTIVATE_MESSAGE5", "Vous devriez exporter vos r&eacute;ponses avant de d&eacute;sactiver. Cliquez sur \"Annuler\" pour retourner &agrave; l&#039;&eacute;cran principal d&#039;administration sans d&eacute;sactiver ce questionnaire.");
+define("_AC_DEACTIVATE_MESSAGE5", "Vous devriez exporter vos r&eacute;ponses avant de d&eacute;sactiver. Cliquez sur \"Annuler\" pour retourner à l&#039;&eacute;cran principal d&#039;administration sans d&eacute;sactiver ce questionnaire.");
 define("_AC_DEACTIVATE", "D&eacute;sactiver");
 define("_AC_DEACTIVATED_MESSAGE1", "La table r&eacute;ponses a &eacute;t&eacute; renomm&eacute;e en : ");
-define("_AC_DEACTIVATED_MESSAGE2", "Les r&eacute;ponses &agrave; ce questionnaire ne sont plus disponibles via PHPSurveyor.");
+define("_AC_DEACTIVATED_MESSAGE2", "Les r&eacute;ponses à ce questionnaire ne sont plus disponibles via PHPSurveyor.");
 ;define("_AC_DEACTIVATED_MESSAGE3", "Vous devriez noter le nom de cette table dans le cas o&ugrave; vous auriez besoin d&#039;y acc&eacute;der ult&eacute;rieurement.");
-define("_AC_DEACTIVATED_MESSAGE4", "La table d&#146invitations li&eacute;e &agrave; ce questionnaire a &eacute;t&eacute; renomm&eacute;e en : ");
+define("_AC_DEACTIVATED_MESSAGE4", "La table d&#146invitations li&eacute;e à ce questionnaire a &eacute;t&eacute; renomm&eacute;e en : ");
 
 //CHECKFIELDS
 define("_CF_CHECKTABLES", "V&eacute;rification pour s&#039;assurer que toutes les tables existent");
@@ -441,33 +441,33 @@ define("_CD_DBCREATED", "Base de donn&eacute;es cr&eacute;&eacute;e.");
 define("_CD_POPULATE_MESSAGE", "Veuillez cliquer ci-dessous pour peupler la base de donn&eacute;es");
 define("_CD_POPULATE", "Peupler la base de donn&eacute;es");
 define("_CD_NOCREATE", "Impossible de cr&eacute;er la base de donn&eacute;es");
-define("_CD_NODBNAME", "Les informations de la base de donn&eacute;es ne sont pas fournies. Ce script doit 鳲e &eacute;x&eacute;cut&eacute; &agrave; partir d&#039;admin.php seulement.");
+define("_CD_NODBNAME", "Les informations de la base de donn&eacute;es ne sont pas fournies. Ce script doit 鳲e &eacute;x&eacute;cut&eacute; à partir d&#039;admin.php seulement.");
 
 //DATABASE MODIFICATION MESSAGES
 define("_DB_FAIL_GROUPNAME", "Le groupe ne peut pas &ecirc;tre ajout&eacute;: nom du groupe obligatoire absent.");
-define("_DB_FAIL_GROUPUPDATE", "Le groupe ne peut pas &ecirc;tre mis &agrave; jour");
+define("_DB_FAIL_GROUPUPDATE", "Le groupe ne peut pas &ecirc;tre mis à jour");
 define("_DB_FAIL_GROUPDELETE", "Le groupe ne peut pas &ecirc;tre supprim&eacute;");
 define("_DB_FAIL_NEWQUESTION", "La question ne peut pas &ecirc;tre cr&eacute;e.");
-define("_DB_FAIL_QUESTIONTYPECONDITIONS", "La question ne peut pas &ecirc;tre mise &agrave; jour. Il y a des conditions pour d&#039;autres questions qui se fondent sur les r&eacute;ponses &agrave; cette question et changer le type poserait des probl&egrave;mes. Vous devez supprimer ces conditions avant de pouvoir changer le type de cette question.");
-define("_DB_FAIL_QUESTIONUPDATE", "La question ne peut pas &ecirc;tre mise &agrave; jour");
+define("_DB_FAIL_QUESTIONTYPECONDITIONS", "La question ne peut pas &ecirc;tre mise à jour. Il y a des conditions pour d&#039;autres questions qui se fondent sur les r&eacute;ponses à cette question et changer le type poserait des probl&egrave;mes. Vous devez supprimer ces conditions avant de pouvoir changer le type de cette question.");
+define("_DB_FAIL_QUESTIONUPDATE", "La question ne peut pas &ecirc;tre mise à jour");
 define("_DB_FAIL_QUESTIONDELCONDITIONS", "La question ne peut pas &ecirc;tre supprim&eacute;e. Il y a des conditions qui se fondent sur cette question.  Vous ne pourrez pas supprimer cette question tant que ces conditions ne sont pas enlev&eacute;es");
 define("_DB_FAIL_QUESTIONDELETE", "La question ne peut pas &ecirc;tre supprim&eacute;e");
 define("_DB_FAIL_NEWANSWERMISSING", "La r&eacute;ponse ne peut pas &ecirc;tre ajout&eacute;e. Vous devez inclure un code et une r&eacute;ponse");
-define("_DB_FAIL_NEWANSWERDUPLICATE", "La r&eacute;ponse ne peut pas &ecirc;tre ajout&eacute;e. Il y a d&eacute;j&agrave; une r&eacute;ponse avec ce code");
-define("_DB_FAIL_ANSWERUPDATEMISSING", "La r&eacute;ponse ne peut pas &ecirc;tre mise &agrave; jour. Vous devez inclure un code et une r&eacute;ponse");
-define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "La r&eacute;ponse ne peut pas &ecirc;tre mise &agrave; jour. Il y a d&eacute;j&agrave; une r&eacute;ponse avec ce code");
-define("_DB_FAIL_ANSWERUPDATECONDITIONS", "La r&eacute;ponse ne peut pas &ecirc;tre mise &agrave; jour. Vous avez modifi&eacute; le code de r&eacute;ponse, mais il y a des conditions pour d&#039;autres questions qui d&eacute;pendent de l&#039;ancien code de r&eacute;ponse de cette question.  Vous devez supprimer ces conditions avant de pouvoir modifier le code de cette r&eacute;ponse.");
-define("_DB_FAIL_ANSWERDELCONDITIONS", "La r&eacute;ponse ne peut pas &ecirc;tre supprim&eacute;e. Il y a des conditions pour d&#039;autres questions qui d&eacute;pendent de cette r&eacute;ponse.  Vous ne pouvez pas supprimer cette r&eacute;ponse jusqu&#039;&agrave; ce que ces conditions soient enlev&eacute;es");
+define("_DB_FAIL_NEWANSWERDUPLICATE", "La r&eacute;ponse ne peut pas &ecirc;tre ajout&eacute;e. Il y a d&eacute;jà une r&eacute;ponse avec ce code");
+define("_DB_FAIL_ANSWERUPDATEMISSING", "La r&eacute;ponse ne peut pas &ecirc;tre mise à jour. Vous devez inclure un code et une r&eacute;ponse");
+define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "La r&eacute;ponse ne peut pas &ecirc;tre mise à jour. Il y a d&eacute;jà une r&eacute;ponse avec ce code");
+define("_DB_FAIL_ANSWERUPDATECONDITIONS", "La r&eacute;ponse ne peut pas &ecirc;tre mise à jour. Vous avez modifi&eacute; le code de r&eacute;ponse, mais il y a des conditions pour d&#039;autres questions qui d&eacute;pendent de l&#039;ancien code de r&eacute;ponse de cette question.  Vous devez supprimer ces conditions avant de pouvoir modifier le code de cette r&eacute;ponse.");
+define("_DB_FAIL_ANSWERDELCONDITIONS", "La r&eacute;ponse ne peut pas &ecirc;tre supprim&eacute;e. Il y a des conditions pour d&#039;autres questions qui d&eacute;pendent de cette r&eacute;ponse.  Vous ne pouvez pas supprimer cette r&eacute;ponse jusqu&#039;à ce que ces conditions soient enlev&eacute;es");
 define("_DB_FAIL_NEWSURVEY_TITLE", "Le questionnaire ne peut pas &ecirc;tre cr&eacute;e parce qu&#039;il n&#039;a pas de titre court");
 define("_DB_FAIL_NEWSURVEY", "Le questionnaire ne peut pas &ecirc;tre cr&eacute;e");
-define("_DB_FAIL_SURVEYUPDATE", "Le questionnaire ne peut pas &ecirc;tre mis &agrave; jour");
+define("_DB_FAIL_SURVEYUPDATE", "Le questionnaire ne peut pas &ecirc;tre mis à jour");
 define("_DB_FAIL_SURVEYDELETE", "Le questionnaire ne peut pas &ecirc;tre supprim&eacute;");
 
 //DELETE SURVEY MESSAGES
-define("_DS_NOSID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de questionnaire &agrave; supprimer");
+define("_DS_NOSID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de questionnaire à supprimer");
 define("_DS_DELMESSAGE1", "Vous &ecirc;tes sur le point de supprimer ce questionnaire");
 define("_DS_DELMESSAGE2", "Cette proc&eacute;dure supprimera ce questionnaire, tous ses groupes associ&eacute;s, ses r&eacute;ponses des questions ainsi que ses conditions.");
-define("_DS_DELMESSAGE3", "Il est recommand&eacute; avant de supprimer ce questionnaire de l&#039;exporter enti&eacute;rement &agrave; partir de l&#039;&eacute;cran principal d&#039;administration.");
+define("_DS_DELMESSAGE3", "Il est recommand&eacute; avant de supprimer ce questionnaire de l&#039;exporter enti&eacute;rement à partir de l&#039;&eacute;cran principal d&#039;administration.");
 define("_DS_SURVEYACTIVE", "Ce questionnaire est activ&eacute; et une table des r&eacute;ponses existe. Si vous supprimez ce questionnaire, ses r&eacute;ponses seront supprim&eacute;es. Il est recommand&eacute; d&#039;exporter les r&eacute;ponses avant de supprimer ce questionnaire.");
 define("_DS_SURVEYTOKENS", "Ce questionnaire a une table d&#146invitations associ&eacute;e. Si vous supprimez ce questionnaire cette table d&#039;invitations sera supprim&eacute;e. Il est recommand&eacute; d&#039;exporter ou de faire une sauvegarde de ces invitations avant de supprimer ce questionnaire.");
 define("_DS_DELETED", "Ce questionnaire a &eacute;t&eacute; supprim&eacute;.");
@@ -497,7 +497,7 @@ define("_EX_COLCONTROLS", "Titre de la colonne"); //New for 0.98rc7
 define("_EX_TOKENCONTROLS", "Contr&ocirc;le des invitations"); //New for 0.98rc7
 define("_EX_COLSELECT", "Choisir les colonnes"); //New for 0.98rc7
 define("_EX_COLOK", "Choisissez les colonnes que vous voulez exporter. Ne rien toucher pour les exporter toutes."); //New for 0.98rc7
-define("_EX_COLNOTOK", "Votre questionnaire contient plus de 255 colonnes de r&eacute;ponses. Les tableurs comme Excel sont limit&eacute;s &agrave; 255. S&eacute;lectionnez les colonnes &agrave; exporter dans la liste ci-dessous.."); //New for 0.98rc7
+define("_EX_COLNOTOK", "Votre questionnaire contient plus de 255 colonnes de r&eacute;ponses. Les tableurs comme Excel sont limit&eacute;s à 255. S&eacute;lectionnez les colonnes à exporter dans la liste ci-dessous.."); //New for 0.98rc7
 define("_EX_TOKENMESSAGE", "Votre questionnaire peut exporter les donn&eacute;es des invitations associ&eacute;s avec chaque r&eacute;ponse. S&eacute;lectionnez tous les champs additionnels &agrav; exporter."); //New for 0.98rc7
 define("_EX_TOKSELECT", "Choisir les champs d&#039;invitations"); //New for 0.98rc7
 
@@ -525,11 +525,11 @@ define("_IQ_IMPORTSUMMARY", "R&eacute;sum&eacute; de l&#039;importation de quest
 define("_IQ_SUCCESS", "L&#039;importation de question(s) est termin&eacute;e");
 
 //IMPORT LABELSET MESSAGES
-define("_IL_DUPLICATE", "Il y a un doublon dans les jeux d&#039;&eacute;tiquettes donc ce jeu n&#039;a pas &eacute;t&eacute; import&eacute;. Le doublon sera utlis&eacute; &agrave; la place.");
+define("_IL_DUPLICATE", "Il y a un doublon dans les jeux d&#039;&eacute;tiquettes donc ce jeu n&#039;a pas &eacute;t&eacute; import&eacute;. Le doublon sera utlis&eacute; à la place.");
 
 //BROWSE RESPONSES MESSAGES
-define("_BR_NOSID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de questionnaire &agrave; parcourir.");
-define("_BR_NOTACTIVATED", "Ce questionnaire n&#039;a pas &eacute;t&eacute; activ&eacute;. Aucun r&eacute;sultat &agrave; parcourir.");
+define("_BR_NOSID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de questionnaire à parcourir.");
+define("_BR_NOTACTIVATED", "Ce questionnaire n&#039;a pas &eacute;t&eacute; activ&eacute;. Aucun r&eacute;sultat à parcourir.");
 define("_BR_NOSURVEY", "Il n&#039;y a pas de questionnaire associ&eacute;.");
 define("_BR_EDITRESPONSE", "Editer cette r&eacute;ponse");
 define("_BR_DELRESPONSE", "Supprimer cette r&eacute;ponse");
@@ -568,21 +568,21 @@ define("_ST_QUARTMETHOD", "*Q1 et Q3 ont &eacute;t&eacute; calcul&eacute;s avec 
 
 //DATA ENTRY MESSAGES
 define("_DE_NOMODIFY", "Ne peut pas &ecirc;tre modifi&eacute;");
-define("_DE_UPDATE", "Mettre &agrave; jour la r&eacute;ponse");
+define("_DE_UPDATE", "Mettre à jour la r&eacute;ponse");
 define("_DE_NOSID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de questionnaire pour la saisie des donn&eacute;es.");
 define("_DE_NOEXIST", "Le questionnaire que vous avez s&eacute;lectionn&eacute; n&#039;&eacute;xiste pas");
 define("_DE_NOTACTIVE", "Ce questionnaire n&#039;est pas encore activ&eacute;. Votre r&eacute;ponse ne peut pas &ecirc;tre sauvegard&eacute;e");
 define("_DE_INSERT", "Insertion de donn&eacute;es");
-define("_DE_RECORD", "L&#039;entr&eacute;e &eacute;tait assign&eacute;e &agrave; l&#039;ID de l&#039;enregistrement suivant : ");
+define("_DE_RECORD", "L&#039;entr&eacute;e &eacute;tait assign&eacute;e à l&#039;ID de l&#039;enregistrement suivant : ");
 define("_DE_ADDANOTHER", "Ajouter un autre enregistrement");
 define("_DE_VIEWTHISONE", "Visualiser cet enregistrement");
 define("_DE_BROWSE", "Parcourir les r&eacute;ponses");
 define("_DE_DELRECORD", "Enregistrement supprim&eacute;");
-define("_DE_UPDATED", "L&#039;enregistrement a &eacute;t&eacute; mis &agrave; jour.");
+define("_DE_UPDATED", "L&#039;enregistrement a &eacute;t&eacute; mis à jour.");
 define("_DE_EDITING", "Editer une r&eacute;ponse");
 define("_DE_QUESTIONHELP", "Aide sur cette question");
-define("_DE_CONDITIONHELP1", "R&eacute;pondre seulement &agrave; cette question si les conditions suivantes sont r&eacute;unies :"); 
-define("_DE_CONDITIONHELP2", "&agrave; la question {QUESTION}, vous avez r&eacute;pondu {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
+define("_DE_CONDITIONHELP1", "R&eacute;pondre seulement à cette question si les conditions suivantes sont r&eacute;unies :"); 
+define("_DE_CONDITIONHELP2", "à la question {QUESTION}, vous avez r&eacute;pondu {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "ET (AND)");
 define("_DE_OR", "OU (OR)");
 define("_DE_SAVEENTRY", "Sauvegarder les r&eacute;ponses partielles au questionnaire"); //New in 0.99dev01
@@ -598,9 +598,9 @@ define("_TC_INVITECOUNT", "Nombre total d&#039;invitations envoy&eacute;e(s) :")
 define("_TC_COMPLETEDCOUNT", "Nombre total de questionnaire(s) termin&eacute;(s) :"); //New in 0.98rc4
 define("_TC_NOSID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de questionnaire");
 define("_TC_DELTOKENS", "Au sujet de la suppression de la table des invitations pour ce questionnaire.");
-define("_TC_DELTOKENSINFO", "Si vous supprimez cette table, des invitations ne seront plus requises pour acc&eacute;der &agrave; ce questionnaire. Une sauvegarde de cette table sera effectu&eacute;e si vous la supprimez. Votre administrateur syst&eacute;me pourra acc&eacute;der &agrave; cette table.");
+define("_TC_DELTOKENSINFO", "Si vous supprimez cette table, des invitations ne seront plus requises pour acc&eacute;der à ce questionnaire. Une sauvegarde de cette table sera effectu&eacute;e si vous la supprimez. Votre administrateur syst&eacute;me pourra acc&eacute;der à cette table.");
 define("_TC_DELETETOKENS", "Supprimer les invitations");
-define("_TC_TOKENSGONE", "La table des invitations a &eacute;t&eacute; enlev&eacute;e maintenant et des invitations ne sont plus requises pour acc&eacute;der &agrave; ce questionnaire. Une sauvegarde de cette table a &eacute;t&eacute; effectu&eacute;e. L&#039;administrateur syst&eacute;me pourra y acc&eacute;der.");
+define("_TC_TOKENSGONE", "La table des invitations a &eacute;t&eacute; enlev&eacute;e maintenant et des invitations ne sont plus requises pour acc&eacute;der à ce questionnaire. Une sauvegarde de cette table a &eacute;t&eacute; effectu&eacute;e. L&#039;administrateur syst&eacute;me pourra y acc&eacute;der.");
 define("_TC_NOTINITIALISED", "Aucune invitation n&#039;a &eacute;t&eacute; initialis&eacute;e pour ce questionnaire.");
 define("_TC_INITINFO", "Si vous initialisez des invitations pour ce questionnaire, seuls les utilisateurs ayant une invitation pourront y acc&eacute;der.");
 define("_TC_INITQ", "Voulez-vous cr&eacute;er des invitations pour ce questionnaire ?");
@@ -609,51 +609,51 @@ define("_TC_CREATED", "Une table des invitations a &eacute;t&eacute; cr&eacute;&
 define("_TC_DELETEALL", "Supprimer toutes les invitations");
 define("_TC_DELETEALL_RUSURE", "Etes-vous s&ucirc;r de vouloir supprimer TOUTES les invitations?");
 define("_TC_ALLDELETED", "Toutes les invitations ont &eacute;t&eacute; supprim&eacute;es");
-define("_TC_CLEARINVITES", "Mettre toutes les invitations &agrave; NON envoy&eacute;es");
-define("_TC_CLEARINV_RUSURE", "Etes-vous s&ucirc;r de vouloir r&eacute;initialiser le statut de l&#039;envoi de toutes les invitations &agrave; NON envoy&eacute;es ?");
+define("_TC_CLEARINVITES", "Mettre toutes les invitations à NON envoy&eacute;es");
+define("_TC_CLEARINV_RUSURE", "Etes-vous s&ucirc;r de vouloir r&eacute;initialiser le statut de l&#039;envoi de toutes les invitations à NON envoy&eacute;es ?");
 define("_TC_CLEARTOKENS", "Supprimer tous les codes des invitations");
 define("_TC_CLEARTOKENS_RUSURE", "Etes-vous s&ucirc;r de vouloir supprimer tous les codes des invitations?");
 define("_TC_TOKENSCLEARED", "Tous les codes des invitations ont &eacute;t&eacute; enlev&eacute;s");
-define("_TC_INVITESCLEARED", "Tous les statuts d&#039;envoi des invitations ont &eacute;t&eacute; d&eacute;finis &agrave; N");
+define("_TC_INVITESCLEARED", "Tous les statuts d&#039;envoi des invitations ont &eacute;t&eacute; d&eacute;finis à N");
 define("_TC_EDIT", "Editer l&#039;invitation");
 define("_TC_DEL", "Supprimer l&#039;invitation");
 define("_TC_DO", "Faire le questionnaire");
 define("_TC_VIEW", "Voir les r&eacute;ponses");
 define("_TC_UPDATE", "Mettre à jour la r&eacute;ponse"); // New with 0.99 stable
-define("_TC_INVITET", "Envoyer une invitation par mail &agrave; cette entr&eacute;e");
-define("_TC_REMINDT", "Envoyer un rappel par mail &agrave; cette entr&eacute;e");
+define("_TC_INVITET", "Envoyer une invitation par mail à cette entr&eacute;e");
+define("_TC_REMINDT", "Envoyer un rappel par mail à cette entr&eacute;e");
 define("_TC_INVITESUBJECT", "Invitation pour r&eacute;pondre au questionnaire {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
 define("_TC_REMINDSUBJECT", "Rappel pour r&eacute;pondre au questionnaire {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
-define("_TC_REMINDSTARTAT", "Commencer &agrave; l&#039;IID (TID) No :");
-define("_TC_REMINDTID", "Envoy&eacute; &agrave;l&#039;IID (TID) No :");
+define("_TC_REMINDSTARTAT", "Commencer à l&#039;IID (TID) No :");
+define("_TC_REMINDTID", "Envoy&eacute; àl&#039;IID (TID) No :");
 define("_TC_CREATETOKENSINFO", "Cliquer sur OUI va g&eacute;n&eacute;rer des invitations pour ceux de la liste d&#039;invitations qui n&#039;en ont pas re&ccedil;ues. Etes-vous d&#039;accord ?");
 define("_TC_TOKENSCREATED", "{TOKENCOUNT} invitations ont &eacute;t&eacute; cr&eacute;&eacute;es"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
 define("_TC_TOKENDELETED", "Une invitation a &eacute;t&eacute; supprim&eacute;e.");
 define("_TC_SORTBY", "Tri par : ");
 define("_TC_ADDEDIT", "Ajouter ou &eacute;diter une invitation");
-define("_TC_TOKENCREATEINFO", "Vous pouvez laisser cela &agrave; blanc et g&eacute;n&eacute;rer automatiquement des invitations avec `G&eacute;n&eacute;rer les codes d&#039;invitations`");
+define("_TC_TOKENCREATEINFO", "Vous pouvez laisser cela à blanc et g&eacute;n&eacute;rer automatiquement des invitations avec `G&eacute;n&eacute;rer les codes d&#039;invitations`");
 define("_TC_TOKENADDED", "Ajouter une nouvelle invitation");
-define("_TC_TOKENUPDATED", "Mise &agrave; jour de l&#039;invitation");
+define("_TC_TOKENUPDATED", "Mise à jour de l&#039;invitation");
 define("_TC_UPLOADINFO", "Le fichier doit &ecirc;tre un fichier CSV standard (d&eacute;limiteur: virgule) sans guillements. La premi&eacute;re ligne doit contenir des informations d&#039;ent&ecirc;te (elle sera enlev&eacute;e). Les donn&eacute;es devront &ecirc;tre tri&eacute;es par \"Nom, Pr&eacute;nom, mail, [token], [attribute1], [attribute2]\".");
 define("_TC_UPLOADFAIL", "Fichier t&eacute;l&eacute;charg&eacute; non trouv&eacute;. V&eacute;rifier vos permissions et le chemin du r&eacute;pertoire de t&eacute;l&eacute;chargement (upload)"); //New for 0.98rc5
 define("_TC_IMPORT", "Importation du fichier CSV");
 define("_TC_CREATE", "Cr&eacute;ation des entr&eacute;es des invitations");
 define("_TC_TOKENS_CREATED", "{TOKENCOUNT} enregistrements cr&eacute;es");
-define("_TC_NONETOSEND", "Il n&#039;y avait aucun mail &eacute;ligible &agrave; envoyer : aucun n&#039;a satisfait les crit&egrave;res - mail valide, invitation d&eacute;j&agrave; envoy&eacute;e, questionnaire d&eacute;j&agrave; complet&eacute; et invitation obtenue.");
-define("_TC_NOREMINDERSTOSEND", "Il n&#039;y avait aucun mail &eacute;ligible &agrave; envoyer : aucun n&#039;a satisfait les crit&egrave;res - mail valide, invitation envoy&eacute;e mais questionnaire pas encore complet&eacute;.");
+define("_TC_NONETOSEND", "Il n&#039;y avait aucun mail &eacute;ligible à envoyer : aucun n&#039;a satisfait les crit&egrave;res - mail valide, invitation d&eacute;jà envoy&eacute;e, questionnaire d&eacute;jà complet&eacute; et invitation obtenue.");
+define("_TC_NOREMINDERSTOSEND", "Il n&#039;y avait aucun mail &eacute;ligible à envoyer : aucun n&#039;a satisfait les crit&egrave;res - mail valide, invitation envoy&eacute;e mais questionnaire pas encore complet&eacute;.");
 define("_TC_NOEMAILTEMPLATE", "Mod&egrave;le d&#039;invitation non trouv&eacute;. Ce fichier doit exister dans le r&eacute;pertoire  par d&eacute;faut des mod&egrave;les (Templates).");
 define("_TC_NOREMINDTEMPLATE", "Mod&egrave;le de rappel non trouv&eacute;. Ce fichier doit exister dans le r&eacute;pertoire  par d&eacute;faut des mod&egrave;les (Templates).");
 define("_TC_SENDEMAIL", "Envoyer invitations");
 define("_TC_SENDINGEMAILS", "Envoi invitations");
 define("_TC_SENDINGREMINDERS", "Envoi rappels");
 define("_TC_EMAILSTOGO", "Il y a plus de mail en suspens qui peuvent &ecirc;tre envoy&eacute;s en groupe (batch). Continuez d&#039;envoyer des mails en cliquant ci-dessous.");
-define("_TC_EMAILSREMAINING", "Il y a encore {EMAILCOUNT} &agrave; envoyer."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
+define("_TC_EMAILSREMAINING", "Il y a encore {EMAILCOUNT} à envoyer."); //Leave {EMAILCOUNT} for replacement in script by number of emails remaining
 define("_TC_SENDREMIND", "Envoyer rappels");
-define("_TC_INVITESENTTO", "Invitation envoy&eacute;e &agrave; :"); //is followed by token name
-define("_TC_REMINDSENTTO", "Rappel envoy&eacute; &agrave; :"); //is followed by token name
-define("_TC_UPDATEDB", "Mettre &agrave; jour la table d&#039;invitations avec des nouveaux champs"); //New for 0.98rc7
+define("_TC_INVITESENTTO", "Invitation envoy&eacute;e à :"); //is followed by token name
+define("_TC_REMINDSENTTO", "Rappel envoy&eacute; à :"); //is followed by token name
+define("_TC_UPDATEDB", "Mettre à jour la table d&#039;invitations avec des nouveaux champs"); //New for 0.98rc7
 define("_TC_EMAILINVITE_SUBJ", "Invitation à participer à un questionnaire"); //New for 0.99dev01
-define("_TC_EMAILINVITE", "{FIRSTNAME},\n\nVous avez &eacute;t&eacute; invit&eacute; &agrave; participer &agrave; un questionnaire.\n\n"
+define("_TC_EMAILINVITE", "{FIRSTNAME},\n\nVous avez &eacute;t&eacute; invit&eacute; à participer à un questionnaire.\n\n"
                          ."Celui-ci est intitul&eacute;:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
                          ."Pour participer, veuillez cliquer sur le lien ci-dessous.\n\nCordialement,\n\n"
                          ."{ADMINNAME} ({ADMINEMAIL})\n\n"
@@ -661,7 +661,7 @@ define("_TC_EMAILINVITE", "{FIRSTNAME},\n\nVous avez &eacute;t&eacute; invit&eac
                          ."Cliquer ici pour faire le questionnaire :\n"
                          ."{SURVEYURL}"); //New for 0.98rc9 - Email d`Invitation par d&eacute;faut
 define("_TC_EMAILREMIND_SUBJ", "Rappel pour répondre à un questionnaire"); //New for 0.99dev01
-define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez &eacute;t&eacute; invit&eacute; &agrave; participer &agrave; un questionnaire r&eacute;cemment.\n\n"
+define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez &eacute;t&eacute; invit&eacute; à participer à un questionnaire r&eacute;cemment.\n\n"
                          ."Nous avons pris en compte que vous n&#039;vez pas encore complet&eacute; le questionnaire, et nous vous rappelons que celui-ci est toujours disponible si vous souhaitez participer.\n\n"
                          ."Le questionnaire est intitul&eacute;:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
                          ."Pour participer, veuillez cliquer sur le lien ci-dessous.\n\nCordialement,\n\n"
@@ -672,23 +672,23 @@ define("_TC_EMAILREMIND", "{FIRSTNAME},\n\nVous avez &eacute;t&eacute; invit&eac
 define("_TC_EMAILREGISTER_SUBJ", "Confirmation de l'enregistrement de la participation au questionnaire"); //New for 0.99dev01
 define("_TC_EMAILREGISTER", "{FIRSTNAME},\n\n"
                           ."Vous (ou quelqu&#039;un utilisant votre adresse mail) &ecirc;tes enregistr&eacute; pour "
-                          ."participer &agrave; un questionnaire en ligne intitul&eacute;:\n\"{SURVEYNAME}\"\n\n"
+                          ."participer à un questionnaire en ligne intitul&eacute;:\n\"{SURVEYNAME}\"\n\n"
                           ."Pour compl&eacute;ter ce questionnaire, cliquez sur le lien suivant:\n\n"
                           ."{SURVEYURL}\n\n"
-                          ."Quel que soit votre question &agrave; propos de ce questionnaire, ou si vous "
-                          ."ne vous &ecirc;tes pas enregistr&eacute; pour participer &agrave; celui-ci et croyez q&#039;il s&#039;agit "
+                          ."Quel que soit votre question à propos de ce questionnaire, ou si vous "
+                          ."ne vous &ecirc;tes pas enregistr&eacute; pour participer à celui-ci et croyez q&#039;il s&#039;agit "
                           ."d&#039;une erreur, veuillez contacter {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 define("_TC_EMAILCONFIRM_SUBJ", "Confirmation de réponse à un questionnaire"); //New for 0.99dev01
 define("_TC_EMAILCONFIRM", "{FIRSTNAME},\n\nCe mail vous confirme que vous avez complet&eacute; le questionnaire intitul&eacute; {SURVEYNAME} "
-                          ."et que votre r&eacute;ponse &agrave; &eacute;t&eacute; enregistr&eacute;e. Merci.\n\n"
-                          ."Si vous avez des questions &agrave; propos de ce mail, veuillez contacter {ADMINNAME} ({ADMINEMAIL}).\n\n"
+                          ."et que votre r&eacute;ponse à &eacute;t&eacute; enregistr&eacute;e. Merci.\n\n"
+                          ."Si vous avez des questions à propos de ce mail, veuillez contacter {ADMINNAME} ({ADMINEMAIL}).\n\n"
                           ."Cordialement,\n\n"
                           ."{ADMINNAME}"); //New for 0.98rc9 - Confirmation Email
 
 //labels.php
 define("_LB_NEWSET", "Cr&eacute;er un nouveau jeu d&#039;&eacute;tiquettes");
 define("_LB_EDITSET", "Editer un jeu d&#039;&eacute;tiquettes");
-define("_LB_FAIL_UPDATESET", "La mise &agrave; jour du jeu d&#039;&eacute;tiquettes a &eacute;chou&eacute;");
+define("_LB_FAIL_UPDATESET", "La mise à jour du jeu d&#039;&eacute;tiquettes a &eacute;chou&eacute;");
 define("_LB_FAIL_INSERTSET", "L&#039;insertion du nouveau jeu d&#039;&eacute;tiquettes a &eacute;chou&eacute;");
 define("_LB_FAIL_DELSET", "Impossible de supprimer le jeu d&#039;&eacute;tiquettes - Il y a des questions qui y sont reli&eacute;es. Vous devez supprimer ces questions en premier.");
 define("_LB_ACTIVEUSE", "Vous ne pouvez pas changer des codes, ajouter ou supprimer des entr&eacute;es dans ce jeu d&#039;&eacute;tiquettes parce que celles-ci sont utilis&eacute;es par un questionnaire activ&eacute;.");
@@ -696,7 +696,7 @@ define("_LB_TOTALUSE", "Quelques questionnaires utilisent actuellement ce jeu d&
 //Export Labels
 define("_EL_NOLID", "Aucun JID (LID) fourni. Impossible d&#039;exporter ce jeu d&#039;&eacute;tiquettes.");
 //Import Labels
-define("_IL_GOLABELADMIN", "Retour &agrave; l&#039;administration des jeux d&#039;etiquettes");
+define("_IL_GOLABELADMIN", "Retour à l&#039;administration des jeux d&#039;etiquettes");
 
 //PHPSurveyor System Summary
 define("_PS_TITLE", "R&eacute;sum&eacute; syst&egrave;me PHPSurveyor");
@@ -728,8 +728,8 @@ define("_CD_NODIRECT", "Vous ne pouvez pas &eacute;xecuter directement ce script
 define("_CD_NOSID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de questionnaire."); //New with 098rc9
 define("_CD_NOQID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de question."); //New with 098rc9
 define("_CD_DIDNOTCOPYQ", "Questions non copi&eacute;es"); //New with 098rc9
-define("_CD_NOCONDITIONTOCOPY", "Aucune condition &agrave; copier s&eacute;lectionn&eacute;e"); //New with 098rc9
-define("_CD_NOQUESTIONTOCOPYTO", "Aucune question s&eacute;lectionn&eacute;e pour copier la condition &agrave;"); //New with 098rc9
+define("_CD_NOCONDITIONTOCOPY", "Aucune condition à copier s&eacute;lectionn&eacute;e"); //New with 098rc9
+define("_CD_NOQUESTIONTOCOPYTO", "Aucune question s&eacute;lectionn&eacute;e pour copier la condition à"); //New with 098rc9
 define("_CD_COPYTO", "copy to"); //New with 0.991
 
 //TEMPLATE EDITOR TRANSLATIONS
@@ -764,7 +764,7 @@ define("_TP_SAVEPAGE", "Sauvegarder la page"); //New with 0.99dev01
 //Saved Surveys
 define("_SV_RESPONSES", "R&eacute;ponse(s) sauvegard&eacute;e(s) :");
 define("_SV_IDENTIFIER", "Identification");
-define("_SV_RESPONSECOUNT", "Nombre de r&eacute;ponses d&eacute;j&agrave; donn&eacute;es");
+define("_SV_RESPONSECOUNT", "Nombre de r&eacute;ponses d&eacute;jà donn&eacute;es");
 define("_SV_IP", "Adresse IP");
 define("_SV_DATE", "Date de sauvegarde");
 define("_SV_REMIND", "Rappel");
@@ -776,7 +776,7 @@ define("_VV_EXPORTFILE", "Exporter vers un fichier VV");
 define("_VV_FILE", "Fichier :");
 define("_VV_SURVEYID", "ID du questionnaire :");
 define("_VV_EXCLUDEID", "Exclure les ID enregistr&eacute;s ?");
-define("_VV_INSERT", "Quand un enregistrement import&eacute; correspond &agrave; un enregistrement existant (ID): ");
+define("_VV_INSERT", "Quand un enregistrement import&eacute; correspond à un enregistrement existant (ID): ");
 define("_VV_INSERT_ERROR", "Reporter une erreur (et sauter le nouvel enregistrement).");
 define("_VV_INSERT_RENUMBER", "Renum&eacute;roter le nouvel enregistrement.");
 define("_VV_INSERT_IGNORE", "Ignorer le nouvel enregistrement.");
@@ -791,7 +791,7 @@ define("_VV_RUSURE", "Si vous choisissez d&#039;exporter et de d&eacute;sactiver
 
 //ASSESSMENTS
 define("_AS_TITLE", "Evaluations");
-define("_AS_DESCRIPTION", "Si vous cr&eacute;ez des &eacute;valuations sur cette page, pour le questionnaire s&eacute;lectionn&eacute;, celles-ci auront lieu &agrave; la fin du questionnaire apr&egrave;s l&#039;envoi d&eacute;finitif des r&eacute;ponses");
+define("_AS_DESCRIPTION", "Si vous cr&eacute;ez des &eacute;valuations sur cette page, pour le questionnaire s&eacute;lectionn&eacute;, celles-ci auront lieu à la fin du questionnaire apr&egrave;s l&#039;envoi d&eacute;finitif des r&eacute;ponses");
 define("_AS_NOSID", "Pas de SID (ID de questionnaire) fourni");
 define("_AS_SCOPE", "Portée");
 define("_AS_MINIMUM", "Minimum");
@@ -807,7 +807,7 @@ define("_AS_ACTIONS", "Actions");
 define("_AS_EDIT", "Editer");
 define("_AS_DELETE", "Effacer");
 define("_AS_ADD", "Ajouter");
-define("_AS_UPDATE", "Mettre &agrave; jour");
+define("_AS_UPDATE", "Mettre à jour");
 
 //Question Number regeneration
 define("_RE_REGENNUMBER", "R&eacute;g&eacute;n&eacute;ration de la num&eacute;rotation des questions :"); //NEW for release 0.99dev2
