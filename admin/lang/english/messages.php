@@ -774,7 +774,7 @@ define("_SV_DATE", "Date Saved");
 define("_SV_REMIND", "Remind");
 define("_SV_EDIT", "Edit");
 
-//VVEXPORT/IMPORT
+//VVExport/Import
 define("_VV_IMPORTFILE", "Import a VV survey file");
 define("_VV_EXPORTFILE", "Export a VV survey file");
 define("_VV_FILE", "File:");
@@ -793,7 +793,10 @@ define("_VV_EXPORTDEACTIVATE", "Export, then de-activate survey");
 define("_VV_EXPORTONLY", "Export but leave survey active");
 define("_VV_RUSURE", "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?");
 
-//ASSESSMENTS
+//SPSS Export
+define("_SPSS_EXPORTFILE", "Export result to a SPSS command file");
+
+//Assessments
 define("_AS_TITLE", "Assessments");
 define("_AS_DESCRIPTION", "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission");
 define("_AS_NOSID", "No SID Provided");
