@@ -51,15 +51,15 @@ if (!$style)
 	$excesscols[]="id";	
 	$thissurvey=getSurveyInfo($surveyid);
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-	$query=" SELECT other, questions.type, questions.gid, questions.qid FROM questions, groups "
-		  ." where questions.sid=$surveyid and questions.gid=groups.gid "
-		  ." order by group_name, questions.title";
+	$query=" SELECT other, {$dbprefix}questions.type, {$dbprefix}questions.gid, {$dbprefix}questions.qid FROM {$dbprefix}questions, {$dbprefix}groups "
+		  ." where {$dbprefix}questions.sid=$surveyid and {$dbprefix}questions.gid={$dbprefix}groups.gid "
+		  ." order by group_name, {$dbprefix}questions.title";
 	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 	while ($rows = mysql_fetch_array($result)) 
 		{
             if (($rows['type']=='A') || ($rows['type']=='B')||($rows['type']=='C')||($rows['type']=='M')||($rows['type']=='P')||($rows['type']=='Q')||($rows['type']=='E')||($rows['type']=='F')||($rows['type']=='H'))
             {
-               	$detailquery="select code from answers where qid=".$rows['qid']." order by sortorder,code";
+               	$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." order by sortorder,code";
                	$detailresult=mysql_query($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".mysql_error());
 			   	while ($detailrows = mysql_fetch_array($detailresult))
 			   	{
@@ -72,7 +72,7 @@ if (!$style)
             }  
             elseif ($rows['type']=='R')
             {
-               	$detailquery="select code from answers where qid=".$rows['qid']." order by sortorder,code";
+               	$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." order by sortorder,code";
                	$detailresult=mysql_query($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".mysql_error());
                	$i=1;
 			   	while ($detailrows = mysql_fetch_array($detailresult))

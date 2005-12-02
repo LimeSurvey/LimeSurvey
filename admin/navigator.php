@@ -1353,7 +1353,7 @@ function checkSettings($dbprefix) {
 
 function getSurveysBrief($user=null, $surveyid=null, $notsid=null) {
 	$surveyList=array();
-	$query = "SELECT * FROM surveys ";
+	$query = "SELECT * FROM {$dbprefix}surveys ";
 	if ($surveyid !== null) {
 	    $query .= "WHERE sid=$surveyid ";
 	}
@@ -1371,7 +1371,7 @@ function getSurveysBrief($user=null, $surveyid=null, $notsid=null) {
 }
 function getGroupsBrief($surveyid) {
 	$groupList=array();
-	$query = "SELECT * FROM groups WHERE sid=$surveyid ORDER BY group_name";
+	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
 	$result = mysql_query($query) or die($query."<br />".mysql_error());
 	while($row=mysql_fetch_array($result)) {
 		$groupList[]=array("group_name"=>$row['group_name'],
@@ -1383,7 +1383,7 @@ function getGroupsBrief($surveyid) {
 
 function getQuestionsBrief($gid) {
 	$questionList=array();
-	$query = "SELECT * FROM questions WHERE gid=$gid ORDER BY title";
+	$query = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid ORDER BY title";
 	$result = mysql_query($query);
 	while($row=mysql_fetch_array($result)) {
 		$questionList[]=array("title"=>$row['title'],

@@ -511,7 +511,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
                     .": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n";
-                $fquery = "SELECT * FROM labels WHERE lid={$flt[6]} ORDER BY sortorder, code";
+                $fquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$flt[6]} ORDER BY sortorder, code";
                 //echo $fquery;
                 $fresult = mysql_query($fquery);
                 echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
@@ -734,7 +734,7 @@ echo "       document.getElementById(value).style.display='';
 foreach ($answerselects as $as) {echo "$as\n";}
 if (!isset($_POST['sql'])) 
     {
-    $_POST['sql']="SELECT *\nFROM survey_$surveyid\n";
+    $_POST['sql']="SELECT *\nFROM {$dbprefix}survey_$surveyid\n";
     }
 echo "      </td>
        </tr>

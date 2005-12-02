@@ -610,7 +610,7 @@ function matchExists($table, $where) {
 function isActivated($surveyid) {
 	//This function will return true if a survey is currently active
 	//and false if not
-	$query = "SELECT active FROM surveys WHERE sid=".$surveyid;
+	$query = "SELECT active FROM {$dbprefix}surveys WHERE sid=".$surveyid;
 	$result = mysql_query($query);
 	while ($row=mysql_fetch_row($result)) {
 		if ($row[0] == "Y") {
