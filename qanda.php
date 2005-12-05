@@ -1600,7 +1600,7 @@ function do_gender($ia)
 
 function do_array_5point($ia)
     {
-    global $dbprefix, $shownoanswer;
+    global $dbprefix, $shownoanswer, $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = mysql_query($qquery);
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -1630,6 +1630,12 @@ function do_array_5point($ia)
         {
         $myfname = $ia[1].$ansrow['code'];
         $answertext=answer_replace($ansrow['answer']);
+        /* Check if this item has not been answered: the 'notanswered' variable must be an array,
+           containing a list of unanswered questions, the current question must be in the array,
+           and there must be no answer available for the item in this session. */
+        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+           $answertext = "<span class='errormandatory'>{$answertext}</span>";
+        }
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right' width='$answerwidth%'>$answertext\n"
@@ -1661,7 +1667,7 @@ function do_array_5point($ia)
 
 function do_array_10point($ia)
     {
-    global $dbprefix, $shownoanswer;
+    global $dbprefix, $shownoanswer, $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = mysql_query($qquery);
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -1691,6 +1697,12 @@ function do_array_10point($ia)
         {
         $myfname = $ia[1].$ansrow['code'];
         $answertext=answer_replace($ansrow['answer']);
+        /* Check if this item has not been answered: the 'notanswered' variable must be an array,
+           containing a list of unanswered questions, the current question must be in the array,
+           and there must be no answer available for the item in this session. */
+        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+           $answertext = "<span class='errormandatory'>{$answertext}</span>";
+        }
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n";
         $answer .= "\t\t\t\t\t<td align='right'>$answertext\n"
@@ -1722,7 +1734,7 @@ function do_array_10point($ia)
 
 function do_array_yesnouncertain($ia)
     {
-    global $dbprefix, $shownoanswer;
+    global $dbprefix, $shownoanswer, $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = mysql_query($qquery);
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -1751,6 +1763,12 @@ function do_array_yesnouncertain($ia)
         {
         $myfname = $ia[1].$ansrow['code'];
         $answertext=answer_replace($ansrow['answer']);
+        /* Check if this item has not been answered: the 'notanswered' variable must be an array,
+           containing a list of unanswered questions, the current question must be in the array,
+           and there must be no answer available for the item in this session. */
+        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+           $answertext = "<span class='errormandatory'>{$answertext}</span>";
+        }
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
@@ -1894,6 +1912,7 @@ function do_array_increasesamedecrease($ia)
     {
     global $dbprefix;
     global $shownoanswer;
+    global $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = mysql_query($qquery);
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
@@ -1922,6 +1941,12 @@ function do_array_increasesamedecrease($ia)
         {
         $myfname = $ia[1].$ansrow['code'];
         $answertext=answer_replace($ansrow['answer']);
+        /* Check if this item has not been answered: the 'notanswered' variable must be an array,
+           containing a list of unanswered questions, the current question must be in the array,
+           and there must be no answer available for the item in this session. */
+        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+           $answertext = "<span class='errormandatory'>{$answertext}</span>";
+        }
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
@@ -1961,6 +1986,7 @@ function do_array_flexible($ia)
     global $dbprefix;
     global $shownoanswer;
     global $repeatheadings;
+    global $notanswered;
     $qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = mysql_query($qquery);
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -2024,6 +2050,12 @@ function do_array_flexible($ia)
             $myfname = $ia[1].$ansrow['code'];
             if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
             $answertext=answer_replace($ansrow['answer']);
+           /* Check if this item has not been answered: the 'notanswered' variable must be an array,
+              containing a list of unanswered questions, the current question must be in the array,
+              and there must be no answer available for the item in this session. */
+            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+               $answertext = "<span class='errormandatory'>{$answertext}</span>";
+            }
             $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                     . "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
                  	. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
@@ -2066,6 +2098,7 @@ function do_array_flexiblecolumns($ia)
     {
     global $dbprefix;
     global $shownoanswer;
+    global $notanswered;
     $qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = mysql_query($qquery);
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -2100,6 +2133,12 @@ function do_array_flexiblecolumns($ia)
     foreach ($answers as $ld)
         {
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+        /* Check if this item has not been answered: the 'notanswered' variable must be an array,
+           containing a list of unanswered questions, the current question must be in the array,
+           and there must be no answer available for the item in this session. */
+        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+           $ld = "<span class='errormandatory'>{$ld}</span>";
+        }
         $answer .= "\t\t\t\t\t<td align='center' class='$trbc'><span class='answertext'>"
                 . $ld."</span></td>\n";
         }
