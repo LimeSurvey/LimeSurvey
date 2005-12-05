@@ -80,3 +80,10 @@
 	border-color:		rgb(152,153,153) rgb(102,102,102)
 						rgb(102,102,102) rgb(152,153,153);
 }
+
+.progressbar {
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+}
+

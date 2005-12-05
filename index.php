@@ -376,10 +376,16 @@ function makegraph($thisstep, $total)
 	else {$shchart = "$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";}
 	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
 		   . "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
-		   . "<tr><td align='right' width='40'>0%</td>\n";
+		   . "<tr><td align='right' width='40'>0%&nbsp;</td>\n";
 	$size=intval(($thisstep-1)/$total*100);
-	$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% "._COMPLETE."'></td>\n"
-		    . "<td align='left' width='40'>100%</td></tr>\n"
+	$graph .= "<td width='100' align='left'>\n"
+		    . "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
+		    . "<tr><td class='progressbar'>\n"
+		    . "<img src='$shchart' height='12' width='$size' align='left' alt='$size% "._COMPLETE."'>\n"
+		    . "</td></tr>\n"
+		    . "</table>\n"
+		    . "</td>\n"
+		    . "<td align='left' width='40'>&nbsp;100%</td></tr>\n"
 		    . "</table>\n"
 		    . "</td></tr>\n</table>\n";
 	return $graph;
@@ -1299,9 +1305,8 @@ function buildsurveysession()
 function surveymover()
 	{
 	//This function creates the form elements in the survey navigation bar
-	//with "<<PREV" or ">>NEXT" in them. MOdified by Mikkel Skovgaard Sørensen
-	//so that the "submit" value which determines how the script moves from
-	//one survey page to another is now a hidden element, updated by clicking
+	//with "<<PREV" or ">>NEXT" in them. The "submit" value determines how the script moves from
+	//one survey page to another. It is a hidden element, updated by clicking
 	//on the  relevant button - allowing "NEXT" to be the default setting when
 	//a user presses enter.
 	//
