@@ -709,7 +709,7 @@ if (returnglobal('action') == "email")
 					._TC_EMAILSTOGO."<br /><br />\n";
 				echo str_replace("{EMAILCOUNT}", "$lefttosend", _TC_EMAILSREMAINING);
 				echo "<br /><br />\n";
-				$message = str_replace('"', "&quot;", $message);
+				$message = str_replace('"', "&quot;", $_POST['message']);
 				echo "\t\t\t<input type='submit' value='"._CONTINUE."' />\n"
 					."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 					."\t\t\t<input type='hidden' name='action' value=\"email\" />\n"
