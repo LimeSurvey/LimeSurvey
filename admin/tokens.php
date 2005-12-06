@@ -685,8 +685,7 @@ if (returnglobal('action') == "email")
 		        $fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
 
 				$subject=Replacefields($_POST['subject'], $fieldsarray);
-				$message=Replacefields($message, $fieldsarray);
-				
+				$message=Replacefields($_POST['message'], $fieldsarray);
 				if (MailTextMessage($message, $subject, $to , $from, $sitename)) 
 					{
 					$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
@@ -821,7 +820,6 @@ if (returnglobal('action') == "remind")
 		echo "<table width='500' align='center' bgcolor='#EEEEEE'>\n"
 			."\t<tr>\n"
 			."\t\t<td><font size='1'>\n";
-		$sendmessage = $_POST['message'];
 
 		if ($emcount > 0)
 			{
@@ -838,7 +836,7 @@ if (returnglobal('action') == "remind")
 		        $fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
 
 				$msgsubject=Replacefields($_POST['subject'], $fieldsarray);
-				$sendmessage=Replacefields($sendmessage, $fieldsarray);
+				$sendmessage=Replacefields($_POST['message'], $fieldsarray);
 
 				if (MailtextMessage($sendmessage, $msgsubject, $to, $from, $sitename))
 					{
