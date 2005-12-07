@@ -422,6 +422,19 @@ function surveyDel($surveyid) {
 	}
 }
 
+function surveyImport() {
+    global $publicurl, $homeurl, $imagefiles, $scriptname, $slstyle, $action, $navigation;
+	echo "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n"
+		. "<table width='100%' border='0'>\n"
+		. "<tr><td>\n"
+		. _IMPORTSURVEY."</td></tr>\n\t<tr>"
+		. "\t\t<td>"._SL_SELSQL."</td>\n"
+		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._IMPORTSURVEY."'>\n"
+		. "\t<input type='hidden' name='action' value='importsurvey'></td>\n"
+		. "\t<input type='hidden' name='ok' value='yes'>\n"
+		. "\t</tr>\n</table></form>\n";}
+
 function surveyEdit($surveyid) {
 	global $publicurl, $homeurl, $imagefiles, $scriptname, $slstyle, $action, $navigation;
 

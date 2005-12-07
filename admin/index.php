@@ -166,17 +166,17 @@ if ($action == "deactivate")
 	exit;
 	}
 
-if ($action == "importsurvey")
+if ($action == "importsurvey" && (isset($_POST['ok']) && $_POST['ok'] == "yes"))
 	{
 	include("importsurvey.php");
 	exit;
 	}
-if ($action == "importgroup")
+if ($action == "importgroup" && (isset($_POST['ok']) && $_POST['ok'] == "yes"))
 	{
 	include("importgroup.php");
 	exit;
 	}
-if ($action == "importquestion")
+if ($action == "importquestion" && (isset($_POST['ok']) && $_POST['ok'] == "yes"))
 	{
 	include("importquestion.php");
 	exit;
@@ -242,6 +242,9 @@ if (isset($action) && call_user_func($auth_function)) {
 		case "editsurvey":
 		case "addsurvey":
 			surveyEdit($surveyid);
+			break;
+		case "importsurvey":
+			surveyImport();
 			break;
 		case "delsurvey":
 			surveyDel($surveyid);
