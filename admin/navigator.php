@@ -1352,6 +1352,7 @@ function checkSettings($dbprefix) {
 
 
 function getSurveysBrief($user=null, $surveyid=null, $notsid=null) {
+    global $dbprefix;
 	$surveyList=array();
 	$query = "SELECT * FROM {$dbprefix}surveys ";
 	if ($surveyid !== null) {
@@ -1370,6 +1371,7 @@ function getSurveysBrief($user=null, $surveyid=null, $notsid=null) {
 	return $surveyList;	
 }
 function getGroupsBrief($surveyid) {
+    global $dbprefix;
 	$groupList=array();
 	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
 	$result = mysql_query($query) or die($query."<br />".mysql_error());
@@ -1382,6 +1384,7 @@ function getGroupsBrief($surveyid) {
 }
 
 function getQuestionsBrief($gid) {
+    global $dbprefix;
 	$questionList=array();
 	$query = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid ORDER BY title";
 	$result = mysql_query($query);
