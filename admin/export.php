@@ -52,7 +52,7 @@ if (!$style)
 	$thissurvey=getSurveyInfo($surveyid);
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
 	$query=" SELECT other, {$dbprefix}questions.type, {$dbprefix}questions.gid, {$dbprefix}questions.qid FROM {$dbprefix}questions, {$dbprefix}groups "
-		  ." where {$dbprefix}questions.sid=$surveyid and {$dbprefix}questions.gid={$dbprefix}groups.gid "
+		  ." where {$dbprefix}questions.gid={$dbprefix}groups.gid and {$dbprefix}groups.sid=$surveyid"
 		  ." order by group_name, {$dbprefix}questions.title";
 	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
 	while ($rows = mysql_fetch_array($result)) 
@@ -575,7 +575,13 @@ for ($i=0; $i<$fieldcount; $i++)
 			}		
 		}	
 	}
-$firstline = trim($firstline);
+
+if ($type == "csv") { $firstline = substr(trim($firstline),0,strlen($firstline)-1);}
+  else 
+  { 
+  	$firstline = trim($firstline);
+  }
+
 $firstline .= "\n";
 
 if ($type == "doc") 
