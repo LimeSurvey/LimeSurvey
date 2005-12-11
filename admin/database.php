@@ -46,7 +46,7 @@ if ($action == "delattribute")
     settype($_POST['qaid'], "integer");
     $query = "DELETE FROM {$dbprefix}question_attributes
               WHERE qaid={$_POST['qaid']} AND qid={$_POST['qid']}";
-    $result=mysql_query($query) or die("Couldn't delete attribute<br />$query<br />".mysql_error());
+    $result=mysql_query($query) or die("Couldn't delete attribute<br />".htmlspecialchars($query)."<br />".htmlspecialchars(mysql_error()));
     }
 elseif ($action == "addattribute")
     {
@@ -58,7 +58,7 @@ elseif ($action == "addattribute")
                   ('{$_POST['qid']}',
                   '".mysql_escape_string($_POST['attribute_name'])."',
                   '".mysql_escape_string($_POST['attribute_value'])."')";
-        $result = mysql_query($query) or die("Error<br />$query<br />".mysql_error());
+        $result = mysql_query($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars(mysql_error()));
         }
     }
 elseif ($action == "editattribute")
@@ -70,7 +70,7 @@ elseif ($action == "editattribute")
                   SET value='".mysql_escape_string($_POST['attribute_value'])."'
                   WHERE qaid=".$_POST['qaid']."
                   AND qid=".$_POST['qid'];
-        $result = mysql_query($query) or die("Error<br />$query<br />".mysql_error());
+        $result = mysql_query($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars(mysql_error()));
         }
     }
 elseif ($action == "insertnewgroup")
@@ -97,8 +97,8 @@ elseif ($action == "insertnewgroup")
         else
             {
             echo _ERROR.": The database reported the following error:<br />\n";
-            echo "<font color='red'>" . mysql_error() . "</font>\n";
-            echo "<pre>$query</pre>\n";
+            echo "<font color='red'>" . htmlspecialchars(mysql_error()) . "</font>\n";
+            echo "<pre>".htmlspecialchars($query)."</pre>\n";
             echo "</body>\n</html>";
             exit;
             }
@@ -214,7 +214,7 @@ elseif ($action == "renumberquestions")
             ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
             ."AND {$dbprefix}questions.sid=$surveyid\n"
             ."ORDER BY group_name, title";
-    $gresult=mysql_query($gselect) or die (mysql_error());
+    $gresult=mysql_query($gselect) or die ("Error: ".htmlspecialchars(mysql_error()));
     $grows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
     while ($grow = mysql_fetch_array($gresult)) {$grows[] = $grow;} // Get table output into array
     usort($grows, 'CompareGroupThenTitle');
@@ -231,7 +231,7 @@ elseif ($action == "renumberquestions")
             ."SET title='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
             ."WHERE qid=".$grow['qid'];
         //echo "[$sql]";
-        $uresult=mysql_query($usql) or die("Error:".mysql_error());
+        $uresult=mysql_query($usql) or die("Error: ".htmlspecialchars(mysql_error()));
         $question_number++;
         $groupname=$grow['group_name'];
         }
@@ -240,13 +240,13 @@ elseif ($action == "renumberquestions")
 elseif ($action == "updatequestion")
     {
     $cqquery = "SELECT type FROM {$dbprefix}questions WHERE qid={$_POST['qid']}";
-    $cqresult=mysql_query($cqquery) or die ("Couldn't get question type to check for change<br />$cqquery<br />".mysql_error());
+    $cqresult=mysql_query($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars(mysql_error()));
     while ($cqr=mysql_fetch_array($cqresult)) {$oldtype=$cqr['type'];}
     if ($oldtype != $_POST['type'])
         {
         //Make sure there are no conditions based on this question, since we are changing the type
         $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']}";
-        $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
+        $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars(mysql_error()));
         $cccount=mysql_num_rows($ccresult);
         while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
         if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
@@ -421,7 +421,7 @@ elseif ($action == "modanswer")
             break;
         case _AL_SORTALPHA:
             $uaquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$_POST['qid']}' ORDER BY answer";
-            $uaresult = mysql_query($uaquery) or die("Cannot get answers<br />$uaquery<br />".mysql_error());
+            $uaresult = mysql_query($uaquery) or die("Cannot get answers<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars(mysql_error()));
             while($uarow=mysql_fetch_array($uaresult))
                 {
                 $orderedanswers[]=array("qid"=>$uarow['qid'],
@@ -447,7 +447,7 @@ elseif ($action == "modanswer")
             else
                 {
                 $uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
-                $uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
+                $uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars(mysql_error()));
                 $matchcount = mysql_num_rows($uaresult);
                 if ($matchcount) //another answer exists with the same code
                     {
@@ -456,7 +456,7 @@ elseif ($action == "modanswer")
                 else
                     {
                     $cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
-                    $cdresult = mysql_query($cdquery) or die ("Couldn't add answer<br />$cdquery<br />".mysql_error());
+                    $cdresult = mysql_query($cdquery) or die ("Couldn't add answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars(mysql_error()));
                     }
                 }
             break;
@@ -470,10 +470,10 @@ elseif ($action == "modanswer")
                 if ($_POST['code'] != $_POST['oldcode']) //code is being changed. Check against other codes and conditions
                     {
                     $uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
-                    $uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />$uaquery<br />".mysql_error());
+                    $uaresult = mysql_query($uaquery) or die ("Cannot check for duplicate codes<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars(mysql_error()));
                     $matchcount = mysql_num_rows($uaresult);
                     $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
-                    $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
+                    $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars(mysql_error()));
                     $cccount=mysql_num_rows($ccresult);
                     while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
                     if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
@@ -491,14 +491,14 @@ elseif ($action == "modanswer")
                     else
                         {
                         $cdquery = "UPDATE {$dbprefix}answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', default_value='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND qid='{$_POST['qid']}'";
-                        $cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
+                        $cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars(mysql_error()));
                         }
                     }
                 }
             break;
         case _AL_DEL:
             $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
-            $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />$ccquery<br />".mysql_error());
+            $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars(mysql_error()));
             $cccount=mysql_num_rows($ccresult);
             while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
             if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
@@ -509,7 +509,7 @@ elseif ($action == "modanswer")
             else
                 {
                 $cdquery = "DELETE FROM {$dbprefix}answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
-                $cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />$cdquery<br />".mysql_error());
+                $cdresult = mysql_query($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars(mysql_error()));
                 }
             fixsortorder($qid);
             break;
@@ -518,11 +518,11 @@ elseif ($action == "modanswer")
             $replacesortorder=$newsortorder;
             $newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
             $cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=mysql_query($cdquery) or die(htmlspecialchars(mysql_error()));
             $cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=mysql_query($cdquery) or die(htmlspecialchars(mysql_error()));
             $cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=mysql_query($cdquery) or die(htmlspecialchars(mysql_error()));
             break;
         case _AL_DN:
             $newsortorder=sprintf("%05d", $_POST['sortorder']+1);
@@ -530,11 +530,11 @@ elseif ($action == "modanswer")
             $newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
             $newreplace2=sprintf("%05d", $_POST['sortorder']);
             $cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=mysql_query($cdquery) or die(htmlspecialchars(mysql_error()));
             $cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=mysql_query($cdquery) or die(htmlspecialchars(mysql_error()));
             $cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=mysql_query($cdquery) or die(htmlspecialchars(mysql_error()));
             break;
         default:
             break;
@@ -591,7 +591,7 @@ elseif ($action == "insertnewsurvey")
             {
             $errormsg=_DB_FAIL_NEWSURVEY." - ".mysql_error();
             echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-            echo $isquery;
+            echo htmlspecialchars($isquery);
             }
         }
     }
@@ -627,7 +627,7 @@ elseif ($action == "updatesurvey")
               . "email_confirm='{$_POST['email_confirm']}', allowsave='{$_POST['allowsave']}',\n"
               . "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
               . "WHERE sid={$_POST['sid']}";
-    $usresult = mysql_query($usquery) or die("Error updating<br />$usquery<br /><br /><strong>".mysql_error());
+    $usresult = mysql_query($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars(mysql_error()));
     if ($usresult)
         {
         $surveyselect = getsurveylist();
