@@ -417,7 +417,7 @@ function insertset()
         {
         $_POST['label_name'] = addcslashes($_POST['label_name'], "'");
         }
-    $query = "INSERT INTO {$dbprefix}labelsets (lid, label_name) VALUES ('', '{$_POST['label_name']}')";
+    $query = "INSERT INTO {$dbprefix}labelsets (label_name) VALUES ('{$_POST['label_name']}')";
     if (!$result = mysql_query($query))
         {
         echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";

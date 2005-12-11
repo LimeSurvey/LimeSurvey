@@ -195,9 +195,9 @@ if (isset($_SESSION['scid']))
 
 //1: Create entry in "saved_control"
 $query = "INSERT INTO `{$dbprefix}saved_control`
-		  (`scid`, `sid`, `identifier`, `access_code`,
+		  ( `sid`, `identifier`, `access_code`,
 		   `email`, `ip`, `saved_thisstep`, `status`, `saved_date`)
-		   VALUES ('',
+		   VALUES (
 		   '".$sdata['sid']."',
 		   '".mysql_escape_string($sdata['identifier'])."',
 		   '".$sdata['code']."',

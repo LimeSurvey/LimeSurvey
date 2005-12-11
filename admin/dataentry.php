@@ -172,9 +172,9 @@ if ($action == "insert")
 				$result=mysql_query($delete) or die("Couldn't delete old record<br />$delete<br />".mysql_error());
 				}
 			$insert1="INSERT INTO {$dbprefix}saved_control
-					  (`scid`, `sid`, `identifier`, `access_code`,
+					  (`sid`, `identifier`, `access_code`,
 					   `email`, `ip`, `saved_thisstep`, `status`, `saved_date`)
-					  VALUES ('',
+					  VALUES (
 					  '$surveyid',
 					  '".mysql_escape_string($saver['identifier'])."',
 					  '$password',

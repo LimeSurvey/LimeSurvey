@@ -53,10 +53,9 @@ elseif ($action == "addattribute")
     if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
         {
         $query = "INSERT INTO {$dbprefix}question_attributes
-                  (qaid, qid, attribute, value)
+                  (qid, attribute, value)
                   VALUES
-                  ('',
-                  '{$_POST['qid']}',
+                  ('{$_POST['qid']}',
                   '".mysql_escape_string($_POST['attribute_name'])."',
                   '".mysql_escape_string($_POST['attribute_value'])."')";
         $result = mysql_query($query) or die("Error<br />$query<br />".mysql_error());
@@ -180,8 +179,8 @@ elseif ($action == "insertnewquestion")
     $_POST  = array_map('mysql_escape_string', $_POST);
 
     if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
-    $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid)"
-            ." VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
+    $query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, lid)"
+            ." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
             ." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
     $result = mysql_query($query);
     if (!$result)
@@ -197,9 +196,9 @@ elseif ($action == "insertnewquestion")
     if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
         {
         $query = "INSERT INTO {$dbprefix}question_attributes
-                  (qaid, qid, attribute, value)
+                  (qid, attribute, value)
                   VALUES
-                  ('',$qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
+                  ($qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
         $result = mysql_query($query);
         }
     }
@@ -265,8 +264,12 @@ elseif ($action == "updatequestion")
                     . "SET type='{$_POST['type']}', title='{$_POST['title']}', "
                     . "question='{$_POST['question']}', preg='{$_POST['preg']}', help='{$_POST['help']}', "
                     . "gid='{$_POST['gid']}', other='{$_POST['other']}', "
-                    . "mandatory='{$_POST['mandatory']}', lid='{$_POST['lid']}' "
-                    . "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
+                    . "mandatory='{$_POST['mandatory']}'";
+            if (isset($_POST['lid']) && trim($_POST['lid'])!="") 
+            	{ 
+            		$uqquery.=", lid='{$_POST['lid']}' ";
+            	}
+            $uqquery.= "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
             $uqresult = mysql_query($uqquery) or die ("Error Update Question: $uqquery<br />".mysql_error());
             if (!$uqresult)
                 {
@@ -284,7 +287,7 @@ elseif ($action == "copynewquestion")
     {
     $_POST  = array_map('mysql_escape_string', $_POST);
     if (!isset($_POST['lid'])) {$_POST['lid']=0;}
-    $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('', '{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
+    $query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
     $result = mysql_query($query);
     $newqid = mysql_insert_id();
     if (!$result)
@@ -548,16 +551,24 @@ elseif ($action == "insertnewsurvey")
     else
         {
         $_POST  = array_map('mysql_escape_string', $_POST);
+        if (trim($_POST['expires'])=="")
+        {
+        	$_POST['expires']='null';
+        }
+          else 
+          	{
+        	$_POST['expires']="'".$_POST['expires']."'";
+        	}
         $isquery = "INSERT INTO {$dbprefix}surveys\n"
-                  . "(sid, short_title, description, admin, active, welcome, expires, "
+                  . "(short_title, description, admin, active, welcome, expires, "
                   . "adminemail, private, faxto, format, template, url, urldescrip, "
                   . "language, datestamp, ipaddr, usecookie, notification, allowregister, attribute1, attribute2, "
                   . "email_invite_subj, email_invite, email_remind_subj, email_remind, "
                   . "email_register_subj, email_register, email_confirm_subj, email_confirm, "
                   . "allowsave, autoredirect, allowprev)\n"
-                  . "VALUES ('', '{$_POST['short_title']}', '{$_POST['description']}',\n"
+                  . "VALUES ('{$_POST['short_title']}', '{$_POST['description']}',\n"
                   . "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
-                  . "'{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['private']}',\n"
+                  . "{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"
                   . "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
                   . "'{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}', '{$_POST['ipaddr']}',\n"
                   . "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
@@ -590,10 +601,19 @@ elseif ($action == "updatesurvey")
     if ($_POST['url'] == "http://") {$_POST['url']="";}
     $_POST  = array_map('mysql_escape_string', $_POST);
 
+   if (trim($_POST['expires'])=="")
+   		{
+        	$_POST['expires']='null';
+        }
+          else 
+          	{
+        	$_POST['expires']="'".$_POST['expires']."'";
+        	}
+
     $usquery = "UPDATE {$dbprefix}surveys \n"
               . "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
               . "admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
-              . "expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',\n"
+              . "expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
               . "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
               . "format='{$_POST['format']}', template='{$_POST['template']}',\n"
               . "url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}',\n"
