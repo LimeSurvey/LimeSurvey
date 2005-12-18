@@ -212,6 +212,7 @@ define("_SAVEEXPLANATION", "Entrez un nom et un mot de passe pour ce questionnai
 define("_SAVESUBMIT", "Sauvegarder maintenant");
 define("_SAVENONAME", "Vous devez fournir un nom pour sauvegarder vos r&eacute;ponses &agrave; ce questionnaire.");
 define("_SAVENOPASS", "Vous devez fournir un mot de passe pour sauvegarder vos r&eacute;ponses &agrave; ce questionnaire.");
+define("_SAVENOPASS2", "Vous devez entrer de nouveau le mot de passe pour cette sauvegarde.");
 define("_SAVENOMATCH", "Vos mots de passe ne correspondent pas.");
 define("_SAVEDUPLICATE", "Ce nom a d&eacute;j&agrave; &eacute;t&eacute; utilis&eacute; pour ce questionnaire. Vous devez en choisir un autre.");
 define("_SAVETRYAGAIN", "Essayer encore SVP.");

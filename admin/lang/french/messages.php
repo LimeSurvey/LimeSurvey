@@ -183,7 +183,7 @@ define("_SL_ANONYMOUS", "Anonyme :");
 define("_SL_EXPIRES", "Date limite de r&eacute;ponse :");
 define("_SL_FORMAT", "Format :");
 define("_SL_DATESTAMP", "R&eacute;ponses dat&eacute;es :");
-define("_SL_IPADDRESS", "IP Address"); //New with 0.991
+define("_SL_IPADDRESS", "Adresse IP"); //New with 0.991
 define("_SL_TEMPLATE", "Mod&egrave;le :");
 define("_SL_LANGUAGE", "Langue :");
 define("_SL_LINK", "Lien :");
@@ -253,6 +253,7 @@ define("_UL_EDIT", "Editer");
 define("_UL_DEL", "Supprimer");
 define("_UL_ADD", "Ajout");
 define("_UL_TURNOFF", "D&eacute;sactiver la protection");
+
 //tokens
 define("_TL_FIRST", "Nom");
 define("_TL_LAST", "Pr&eacute;nom");
@@ -298,7 +299,7 @@ define("_EMAIL", "Adresse mail"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Texte fixe"); //New in 0.98rc6
 define("_LISTFL_DROPDOWN", "Liste d&eacute;roulante et &eacute;tiquettes personnali&eacute;es"); //New in 0.99dev01
 define("_LISTFL_RADIO", "Bouton radio et &eacute;tiquettes personnalis&eacute;es"); //New in 0.99dev01
-define("_SLIDER", "Slider"); //New for slider mod
+define("_SLIDER", "Curseur"); //New for slider mod
 
 //GENERAL WORDS AND PHRASES
 define("_AD_YES", "Oui");
@@ -327,6 +328,7 @@ define("_DELETE", "Supprimer");
 define("_CLOSEWIN", "Fermer la fen&ecirc;tre");
 define("_TOKEN", "Invitations");
 define("_DATESTAMP", "D&eacute;lai de r&eacute;ponse"); //Referring to the datestamp or time response submitted
+define("_IPADDRESS", "Adresse IP"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Commentaire");
 define("_FROM", "De"); //For emails
 define("_SUBJECT", "Objet"); //For emails
@@ -346,7 +348,7 @@ define("_SS_NOQUESTS", "Nombre de question(s) dans le questionnaire :"); //NEW f
 define("_SS_ANONYMOUS", "Ce questionnaire est anonyme."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Ce questionnaire n&#039;EST PAS anonyme."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Les r&eacute;ponses seront dat&eacute;es"); //NEW for release 0.98rc3
-define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
+define("_SS_IPADDRESS", "Les adresses IP seront enregistr&eacute;es"); //New with 0.991
 define("_SS_COOKIES", "Utilisation des cookies pour le contr&ocirc;le d&#039;acc&eacute;es."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Pr&eacute;sentation : une question par page."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Pr&eacute;sentation : un groupe de questions par page."); //NEW for release 0.98rc3
@@ -487,7 +489,8 @@ define("_EX_ANSWERS", "R&eacute;ponses");
 define("_EX_FORMAT", "Format");
 define("_EX_HEAD_ABBREV", "Ent&ecirc;te  abr&eacute;g&eacute;s");
 define("_EX_HEAD_FULL", "Ent&ecirc;te complet");
-define("_EX_ANS_ABBREV", "Codes de r&eacute;ponse");
+define("_EX_HEAD_CODES", "Codes de questions");
+define("_EX_ANS_ABBREV", "Codes des r&eacute;ponses");
 define("_EX_ANS_FULL", "R&eacute;ponses compl&eacute;te");
 define("_EX_FORM_WORD", "Microsoft Word");
 define("_EX_FORM_EXCEL", "Microsoft Excel");
@@ -652,6 +655,7 @@ define("_TC_SENDREMIND", "Envoyer rappels");
 define("_TC_INVITESENTTO", "Invitation envoy&eacute;e à :"); //is followed by token name
 define("_TC_REMINDSENTTO", "Rappel envoy&eacute; à :"); //is followed by token name
 define("_TC_UPDATEDB", "Mettre à jour la table d&#039;invitations avec des nouveaux champs"); //New for 0.98rc7
+define("_TC_MAILTOFAILED", "Le mail à {FIRSTNAME} {LASTNAME} ({EMAIL})a &eacute;chou&eacute;"); //New for 0.991
 define("_TC_EMAILINVITE_SUBJ", "Invitation à participer à un questionnaire"); //New for 0.99dev01
 define("_TC_EMAILINVITE", "{FIRSTNAME},\n\nVous avez &eacute;t&eacute; invit&eacute; à participer à un questionnaire.\n\n"
                          ."Celui-ci est intitul&eacute;:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
@@ -730,7 +734,7 @@ define("_CD_NOQID", "Vous n&#039;avez pas s&eacute;lectionn&eacute; de question.
 define("_CD_DIDNOTCOPYQ", "Questions non copi&eacute;es"); //New with 098rc9
 define("_CD_NOCONDITIONTOCOPY", "Aucune condition à copier s&eacute;lectionn&eacute;e"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "Aucune question s&eacute;lectionn&eacute;e pour copier la condition à"); //New with 098rc9
-define("_CD_COPYTO", "copy to"); //New with 0.991
+define("_CD_COPYTO", "copier à "); //New with 0.991
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Cr&eacute;er un nouveau mod&egrave;le"); //New with 098rc9
@@ -788,6 +792,9 @@ define("_VV_BECAUSE", "parce que");
 define("_VV_EXPORTDEACTIVATE", "Exporter et ensuite d&eacute;sactiver le questionnaire");
 define("_VV_EXPORTONLY", "Exporter mais laisser le questionnaire activ&eacute;");
 define("_VV_RUSURE", "Si vous choisissez d&#039;exporter et de d&eacute;sactiver le questionnaire, cela renommera votre table de r&eacute;ponses et cela ne sera pas facile de la restaurer. Etes-vous s&ucirc;r ?");
+
+//SPSS Export
+define("_SPSS_EXPORTFILE", "Exporter les r&eacute;sultats vers un fichier de commandes SPSS");
 
 //ASSESSMENTS
 define("_AS_TITLE", "Evaluations");
