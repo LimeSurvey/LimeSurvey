@@ -106,7 +106,7 @@ $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
 $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&amp;token=$newtoken";
+$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token=$newtoken";
 $fieldsarray["{FIRSTNAME}"]=returnglobal('register_firstname');
 $fieldsarray["{LASTNAME}"]=returnglobal('register_lastname');
 $fieldsarray["{ATTRIBUTE_1}"]=returnglobal('register_attribute1');
