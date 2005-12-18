@@ -440,7 +440,7 @@ elseif ($action == "modanswer")
                 } // foreach
             break;
         case _AL_ADD:
-            if (!$_POST['code'] || !$_POST['answer'])
+            if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
                 {
                 echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWANSWERMISSING."\")\n //-->\n</script>\n";
                 }
@@ -461,7 +461,7 @@ elseif ($action == "modanswer")
                 }
             break;
         case _AL_SAVE:
-            if (!$_POST['code'] || !$_POST['answer'])
+            if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
                 {
                 echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATEMISSING."\")\n //-->\n</script>\n";
                 }
