@@ -215,9 +215,9 @@ if ($result=mysql_query($query))
 		if (isset($_SESSION[$sia]) && ($_SESSION[$sia] || $_SESSION[$sia] == "0")) 
 			{
 			$iquery = "INSERT INTO `{$dbprefix}saved`\n"
-					. "(`saved_id`, `scid`, `datestamp`, `fieldname`,\n"
+					. "(`scid`, `datestamp`, `fieldname`,\n"
 					. "`value`)\n"
-					. "VALUES ('',\n"
+					. "VALUES (\n"
 					. "'".$sdata['scid']."',\n"
 					. "'".$sdata['date']."',\n"
 					. "'".$sia."',\n"
@@ -232,9 +232,9 @@ if ($result=mysql_query($query))
 	if (returnglobal('token'))
 		{
 		$iquery = "INSERT INTO `{$dbprefix}saved`\n"
-				. "(`saved_id`, `scid`, `datestamp`, `fieldname`,\n"
+				. "(`scid`, `datestamp`, `fieldname`,\n"
 				. "`value`)\n"
-				. "VALUES ('',\n"
+				. "VALUES (\n"
 				. "'".$sdata['scid']."',\n"
 				. "'".$sdata['date']."',\n"
 				. "'token',\n"
@@ -269,7 +269,8 @@ if ($result=mysql_query($query))
 				$message.=_SAVENAME.": ".$_POST['savename']."\n";
 				$message.=_SAVEPASSWORD.": ".$_POST['savepass']."\n\n";
 				$message.=_SAVE_EMAILURL.":\n";
-				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$sdata['scid']."&loadname=".$_POST['savename']."&loadpass=".$_POST['savepass'];
+				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$sdata['scid']."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
+				
 				if (returnglobal('token')){$message.="&token=".returnglobal('token');}				
 				$from=$thissurvey['adminemail'];
 				

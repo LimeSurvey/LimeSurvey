@@ -216,8 +216,8 @@ define("_SAVEDUPLICATE", "Dieser Name ist leider schon in Benutzung. Bitte benut
 define("_SAVETRYAGAIN", "Bitte versuchen Sie es erneut.");
 define("_SAVE_EMAILSUBJECT", "Details Ihrer gespeicherten Umfrage");
 define("_SAVE_EMAILTEXT", "Sie oder jemand, der Ihre Email-Adresse benutzt hat, hat eine Umfrage "
-						 ."Zwischengespeichert. Sie k&ouml;nnen die folgenden Informationen nutzen "
-						 ."um zu der Umfrage zur&uuml;ckzukehren und diese an der Stelle fortzuf&uuml;hren, "
+						 ."zwischengespeichert. Sie können die folgenden Informationen nutzen "
+						 ."um zu der Umfrage zuröckzukehren und diese an der Stelle fortzuführen, "
 						 ."an der Sie sie verlassen haben.");
 define("_SAVE_EMAILURL", "Rufen Sie die Umfrage auf, indem Sie auf folgende URL klicken:");
 define("_SAVE_SUCCEEDED", "Ihre Antworten auf diese Umfrage sind erfolgreich gespeichert worden.");
