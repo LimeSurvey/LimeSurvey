@@ -151,6 +151,8 @@ define("_B_LAST_BT", "Display Last 50 Responses");
 define("_B_STATISTICS_BT", "Get statistics from these responses");
 define("_B_EXPORT_BT", "Export Results to Application");
 define("_B_BACKUP_BT", "Backup results table as SQL file");
+define("_B_IMPORTOLDRESULTS_BT","Import answers from a deactivated survey table");
+
 //Tokens Button Bar
 define("_T_ALL_BT", "Display Tokens");
 define("_T_ADD_BT", "Add new token entry");
@@ -836,5 +838,12 @@ define ("_DC_ASSESSTODELETE", "The following assessments should be deleted"); //
 define ("_DC_QATODELETE", "The following question attributes should be deleted"); // New with 0.99stable
 define ("_DC_QAOK", "All question_attributes meet consistency standards"); // New with 0.99stable
 define ("_DC_ASSESSOK", "All assessments meet consistency standards"); // New with 0.99stable
+
+// Import old Responses dialogue
+
+define ("_IORD_TITLE", "Import responses from an old (deactivated) survey table into an active survey"); // New with 0.991stable
+define ("_IORD_TARGETID", "Target Survey ID"); // New with 0.991stable
+define ("_IORD_BTIMPORT", "Import Responses"); // New with 0.991stable
+
 
 ?>
