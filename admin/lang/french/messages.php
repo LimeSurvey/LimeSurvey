@@ -68,7 +68,7 @@ define("_EXPORTRESULTS", "Exporter les r&eacute;ponses");
 define("_BROWSERESPONSES", "Parcourir les r&eacute;ponses");
 define("_BROWSESAVED", "Parcourir les r&eacute;ponses sauvegard&eacute;es");
 define("_STATISTICS", "Statistiques flash");
-define("_VIEWRESPONSE", "Visualisation de la r&eacute;ponse d&#146ID ");
+define("_VIEWRESPONSE", "Visualisation de la r&eacute;ponse d&#039ID ");
 define("_VIEWCONTROL", "Navigation dans les donn&eacute;es ");
 define("_DATAENTRY", "Entr&eacute;e de donn&eacute;es");
 define("_TOKENCONTROL", "Contr&ocirc;le des invitations");
@@ -151,6 +151,8 @@ define("_B_LAST_BT", "Afficher les 50 derni&egrave;res r&eacute;ponses");
 define("_B_STATISTICS_BT", "Donner les statistiques de ces r&eacute;ponses");
 define("_B_EXPORT_BT", "Exporter les r&eacute;sultats vers une application");
 define("_B_BACKUP_BT", "Sauvegarder vers un fichier SQL la table de r&eacute;sultats");
+define("_B_IMPORTOLDRESULTS_BT","Importer les r&eacute;ponses depuis la table d&#039;un questionnaire d&eacute;sactiv&eacute;");
+
 //Tokens Button Bar
 define("_T_ALL_BT", "Afficher les invitations");
 define("_T_ADD_BT", "Ajouter une nouvelle invitation");
@@ -158,7 +160,7 @@ define("_T_IMPORT_BT", "Importer les invitations à partir d&#039;un fichier CSV
 define("_T_EXPORT_BT", "Exporter des invitations vers un fichier CSV"); //New for 0.98rc7
 define("_T_INVITE_BT", "Envoyer les invitations par mail");
 define("_T_REMIND_BT", "Envoyer les rappels par mail");
-define("_T_TOKENIFY_BT", "G&eacute;n&eacute;rer les codes d&#146invitations");
+define("_T_TOKENIFY_BT", "G&eacute;n&eacute;rer les codes d&#039invitations");
 define("_T_KILL_BT", "Effacer la table des invitations");
 //Labels Button Bar
 define("_L_ADDSET_BT", "Ajouter un nouveau jeu d&#039;&eacute;tiquettes");
@@ -183,7 +185,7 @@ define("_SL_ANONYMOUS", "Anonyme :");
 define("_SL_EXPIRES", "Date limite de r&eacute;ponse :");
 define("_SL_FORMAT", "Format :");
 define("_SL_DATESTAMP", "R&eacute;ponses dat&eacute;es :");
-define("_SL_IPADDRESS", "Adresse IP"); //New with 0.991
+define("_SL_IPADDRESS", "Adresse IP :"); //New with 0.991
 define("_SL_TEMPLATE", "Mod&egrave;le :");
 define("_SL_LANGUAGE", "Langue :");
 define("_SL_LINK", "Lien :");
@@ -349,7 +351,7 @@ define("_SS_ANONYMOUS", "Ce questionnaire est anonyme."); //NEW for release 0.98
 define("_SS_TRACKED", "Ce questionnaire n&#039;EST PAS anonyme."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Les r&eacute;ponses seront dat&eacute;es"); //NEW for release 0.98rc3
 define("_SS_IPADDRESS", "Les adresses IP seront enregistr&eacute;es"); //New with 0.991
-define("_SS_COOKIES", "Utilisation des cookies pour le contr&ocirc;le d&#039;acc&eacute;es."); //NEW for release 0.98rc3
+define("_SS_COOKIES", "Utilisation des cookies pour le contr&ocirc;le d&#039;acc&egrave;s."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Pr&eacute;sentation : une question par page."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Pr&eacute;sentation : un groupe de questions par page."); //NEW for release 0.98rc3
 define("_SS_SBYS", "Pr&eacute;sentation : une page unique."); //NEW for release 0.98rc3
@@ -410,12 +412,12 @@ define("_AC_READCAREFULLY", "LIRE CECI ATTENTIVEMENT AVANT DE POURSUIVRE");
 define("_AC_ACTIVATE_MESSAGE1", "Vous devriez activer un questionnaire seulement si vous &ecirc;tes absolument certain que votre questionnaire est correctement param&egrave;tr&eacute;/termin&eacute; et n&#039;aura pas besoin d&#039;&ecirc;tre modifi&eacute;.");
 define("_AC_ACTIVATE_MESSAGE2", "Un fois qu&#039;un questionnaire est activ&eacute; vous ne pouvez plus :<ul><li>Ajouter ou supprimer des groupes</li><li>Ajouter ou enlever des r&eacute;ponses aux questions à r&eacute;ponses multiples</li><li>Ajouter ou supprimer des questions</li></ul>");
 define("_AC_ACTIVATE_MESSAGE3", "Cependant vous pouvez toujours :<ul><li>Editer les codes de vos questions, le texte ou le type </li><li>Editer les noms de vos groupes</li><li>Ajouter, Enlever ou Editer les r&eacute;ponses des questions pr&eacute;d&eacute;finies (à l&#039;exception des questions à r&eacute;ponses multiples)</li><li>Changer le nom du questionnaire ou sa description</li></ul>");
-define("_AC_ACTIVATE_MESSAGE4", "Une fois que les donn&eacute;es sont saisies dans votre questionnaire, si vous voulez ajouter ou enlever des groupes ou questions, vous devez d&eacute;sactiver ce questionnaire, ce qui d&eacute;placera toutes les donn&eacute;es qui ont d&eacute;jà &eacute;t&eacute; saisies dans une table d&#146archivage s&eacute;par&eacute;e.");
+define("_AC_ACTIVATE_MESSAGE4", "Une fois que les donn&eacute;es sont saisies dans votre questionnaire, si vous voulez ajouter ou enlever des groupes ou questions, vous devez d&eacute;sactiver ce questionnaire, ce qui d&eacute;placera toutes les donn&eacute;es qui ont d&eacute;jà &eacute;t&eacute; saisies dans une table d&#039;archivage s&eacute;par&eacute;e.");
 define("_AC_ACTIVATE", "Activer");
 define("_AC_ACTIVATED", "Le questionnaire a &eacute;t&eacute; activ&eacute;. La table des r&eacute;ponses a &eacute;t&eacute; cr&eacute;&eacute;e avec succ&eacute;s.");
 define("_AC_NOTACTIVATED", "Le questionnaire ne peut pas &ecirc;tre activ&eacute;.");
 define("_AC_NOTPRIVATE", "Ce n&#039;est pas un questionnaire anonyme. Une table d&#039;invitations doit donc &ecirc;tre cr&eacute;&eacute;e.");
-define("_AC_REGISTRATION", "Ce questionnaire permet les enregistrements publics. Une table d&#146,invitations doit aussi &ecirc;tre cr&eacute;&eacute;e."); //New for 0.98finalRC1
+define("_AC_REGISTRATION", "Ce questionnaire permet les enregistrements publics. Une table d&#039;invitations doit aussi &ecirc;tre cr&eacute;&eacute;e."); //New for 0.98finalRC1
 define("_AC_CREATETOKENS", "Initialiser les invitations");
 define("_AC_SURVEYACTIVE", "Ce questionnaire est maintenant activ&eacute;, et les r&eacute;ponses peuvent &ecirc;tre enregistr&eacute;es.");
 define("_AC_DEACTIVATE_MESSAGE1", "Dans un questionnaire activ&eacute;, une table est cr&eacute;&eacute;e pour stocker toutes les donn&eacute;es saisies.");
@@ -426,8 +428,8 @@ define("_AC_DEACTIVATE_MESSAGE5", "Vous devriez exporter vos r&eacute;ponses ava
 define("_AC_DEACTIVATE", "D&eacute;sactiver");
 define("_AC_DEACTIVATED_MESSAGE1", "La table r&eacute;ponses a &eacute;t&eacute; renomm&eacute;e en : ");
 define("_AC_DEACTIVATED_MESSAGE2", "Les r&eacute;ponses à ce questionnaire ne sont plus disponibles via PHPSurveyor.");
-;define("_AC_DEACTIVATED_MESSAGE3", "Vous devriez noter le nom de cette table dans le cas o&ugrave; vous auriez besoin d&#039;y acc&eacute;der ult&eacute;rieurement.");
-define("_AC_DEACTIVATED_MESSAGE4", "La table d&#146invitations li&eacute;e à ce questionnaire a &eacute;t&eacute; renomm&eacute;e en : ");
+define("_AC_DEACTIVATED_MESSAGE3", "Vous devriez noter le nom de cette table dans le cas o&ugrave; vous auriez besoin d&#039;y acc&eacute;der ult&eacute;rieurement.");
+define("_AC_DEACTIVATED_MESSAGE4", "La table d&#039;invitations li&eacute;e à ce questionnaire a &eacute;t&eacute; renomm&eacute;e en : ");
 
 //CHECKFIELDS
 define("_CF_CHECKTABLES", "V&eacute;rification pour s&#039;assurer que toutes les tables existent");
@@ -471,7 +473,7 @@ define("_DS_DELMESSAGE1", "Vous &ecirc;tes sur le point de supprimer ce question
 define("_DS_DELMESSAGE2", "Cette proc&eacute;dure supprimera ce questionnaire, tous ses groupes associ&eacute;s, ses r&eacute;ponses des questions ainsi que ses conditions.");
 define("_DS_DELMESSAGE3", "Il est recommand&eacute; avant de supprimer ce questionnaire de l&#039;exporter enti&eacute;rement à partir de l&#039;&eacute;cran principal d&#039;administration.");
 define("_DS_SURVEYACTIVE", "Ce questionnaire est activ&eacute; et une table des r&eacute;ponses existe. Si vous supprimez ce questionnaire, ses r&eacute;ponses seront supprim&eacute;es. Il est recommand&eacute; d&#039;exporter les r&eacute;ponses avant de supprimer ce questionnaire.");
-define("_DS_SURVEYTOKENS", "Ce questionnaire a une table d&#146invitations associ&eacute;e. Si vous supprimez ce questionnaire cette table d&#039;invitations sera supprim&eacute;e. Il est recommand&eacute; d&#039;exporter ou de faire une sauvegarde de ces invitations avant de supprimer ce questionnaire.");
+define("_DS_SURVEYTOKENS", "Ce questionnaire a une table d&#039;invitations associ&eacute;e. Si vous supprimez ce questionnaire cette table d&#039;invitations sera supprim&eacute;e. Il est recommand&eacute; d&#039;exporter ou de faire une sauvegarde de ces invitations avant de supprimer ce questionnaire.");
 define("_DS_DELETED", "Ce questionnaire a &eacute;t&eacute; supprim&eacute;.");
 
 //DELETE QUESTION AND GROUP MESSAGES
@@ -628,7 +630,7 @@ define("_TC_REMINDT", "Envoyer un rappel par mail à cette entr&eacute;e");
 define("_TC_INVITESUBJECT", "Invitation pour r&eacute;pondre au questionnaire {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
 define("_TC_REMINDSUBJECT", "Rappel pour r&eacute;pondre au questionnaire {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
 define("_TC_REMINDSTARTAT", "Commencer à l&#039;IID (TID) No :");
-define("_TC_REMINDTID", "Envoy&eacute; àl&#039;IID (TID) No :");
+define("_TC_REMINDTID", "Envoy&eacute; à l&#039;IID (TID) No :");
 define("_TC_CREATETOKENSINFO", "Cliquer sur OUI va g&eacute;n&eacute;rer des invitations pour ceux de la liste d&#039;invitations qui n&#039;en ont pas re&ccedil;ues. Etes-vous d&#039;accord ?");
 define("_TC_TOKENSCREATED", "{TOKENCOUNT} invitations ont &eacute;t&eacute; cr&eacute;&eacute;es"); //Leave {TOKENCOUNT} for replacement in script with the number of tokens created
 define("_TC_TOKENDELETED", "Une invitation a &eacute;t&eacute; supprim&eacute;e.");
@@ -836,5 +838,12 @@ define ("_DC_ASSESSTODELETE", "Les &eacute;valuations suivantes peuvent &ecirc;t
 define ("_DC_QATODELETE", "Les attributs de question qui suivent peuvent &ecirc;tre effac&eacute;s"); // New with 0.99stable
 define ("_DC_QAOK", "Les attributs des questions sont coh&eacute;rents"); // New with 0.99stable
 define ("_DC_ASSESSOK", "Toutes les &eacute;valuations sont coh&eacute;rentes"); // New with 0.99stable
+
+// Import old Responses dialogue
+
+define ("_IORD_TITLE", "Importation de la table des r&eacute;ponses d&#039;un ancien (d&eacute;sactiv&eacute;) questionnaire dans un questionnaire activ&eacute;"); // New with 0.991stable
+define ("_IORD_TARGETID", "ID du questionnaire cible"); // New with 0.991stable
+define ("_IORD_BTIMPORT", "Importer les r&eacute;ponses"); // New with 0.991stable
+
 
 ?>
