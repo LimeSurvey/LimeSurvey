@@ -270,7 +270,7 @@ elseif ($action == "updatequestion")
             		$uqquery.=", lid='{$_POST['lid']}' ";
             	}
             $uqquery.= "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
-            $uqresult = mysql_query($uqquery) or die ("Error Update Question: $uqquery<br />".mysql_error());
+            $uqresult = mysql_query($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars(mysql_error()));
             if (!$uqresult)
                 {
                 echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\n".mysql_error()."\")\n //-->\n</script>\n";
@@ -334,7 +334,7 @@ elseif ($action == "delquestion")
     if (!isset($qid)) {$qid=returnglobal('qid');}
     //check if any other questions have conditions which rely on this question. Don't delete if there are.
     $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid=$qid";
-    $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
+    $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars(mysql_error()));
     $cccount=mysql_num_rows($ccresult);
     while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
     if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
@@ -371,7 +371,7 @@ elseif ($action == "delquestionall")
     if (!isset($qid)) {$qid=returnglobal('qid');}
     //check if any other questions have conditions which rely on this question. Don't delete if there are.
     $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
-    $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />$ccquery<br />".mysql_error());
+    $ccresult = mysql_query($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars(mysql_error()));
     $cccount=mysql_num_rows($ccresult);
     while ($ccr=mysql_fetch_array($ccresult)) {$qidarray[]=$ccr['qid'];}
     if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
