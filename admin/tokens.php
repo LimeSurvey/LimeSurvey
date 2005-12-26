@@ -675,7 +675,7 @@ if (returnglobal('action') == "email")
 			while ($emrow = mysql_fetch_array($emresult))
 				{
 				$to = $emrow['email'];
-				
+		        unset($fieldsarray);
 		        $fieldsarray["{EMAIL}"]=$emrow['email'];
 		        $fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
 		        $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
@@ -684,9 +684,10 @@ if (returnglobal('action') == "email")
 		        $fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
 		        $fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
 
-				$subject=Replacefields($_POST['subject'], $fieldsarray);
-				$message=Replacefields($_POST['message'], $fieldsarray);
-				if (MailTextMessage($message, $subject, $to , $from, $sitename)) 
+				$modsubject=Replacefields($_POST['subject'], $fieldsarray);
+				$modmessage=Replacefields($message, $fieldsarray);
+				
+				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename)) 
 					{
 					$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
 					$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
