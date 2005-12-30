@@ -199,7 +199,7 @@ foreach ($fields as $field){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
 					$row = mysql_fetch_array($result);
-					echo "VARIABLE LABELES ".$field["id"]." '".$question_text." - ".$row["answer"]."'.<br>";
+					echo "VARIABLE LABELS ".$field["id"]." '".$question_text." - ".$row["answer"]."'.<br>";
 				}
 			}
 
@@ -225,7 +225,7 @@ foreach ($fields as $field){
 		$num_results = mysql_num_rows($result);
 		$num_fields = $num_results;
 		if ($num_results >0){
-			echo "VALUE LABELES ".$field["id"]."<br>";
+			echo "VALUE LABELS ".$field["id"]."<br>";
 			# Build array that has to be returned
 			for ($i=0; $i < $num_results; $i++) {
 			        $row = mysql_fetch_array($result);
