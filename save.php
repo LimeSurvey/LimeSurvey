@@ -34,7 +34,7 @@
 	#############################################################
 */
 
-require_once("./admin/config.php");
+require_once(dirname(__FILE__).'/config.php');
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 //DEFAULT SETTINGS FOR TEMPLATES

@@ -37,7 +37,7 @@
 
 session_start();
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
-require_once("./admin/config.php");
+require_once(dirname(__FILE__).'/config.php');
 
 if ( $embedded_inc != '' )
 	require_once( $embedded_inc );
