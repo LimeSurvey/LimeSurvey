@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 if ($result=mysql_list_tables($databasename)) {
 	while($row=mysql_fetch_row($result)){

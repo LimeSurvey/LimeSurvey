@@ -39,7 +39,7 @@ if (empty($_GET['sid'])) {die ("Cannot run this script directly");}
 $surveyid = $_GET['sid'];
 
 $boxstyle = "style='border-color: #111111; border-width: 1; border-style: solid'";
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 //Get local language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";

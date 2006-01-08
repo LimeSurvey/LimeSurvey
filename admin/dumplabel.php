@@ -45,7 +45,7 @@ if (empty($_GET['lid'])) {die ("Cannot run this script directly");}
 
 $lid=$_GET['lid'];
 
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 //echo $htmlheader;
 if (!$lid)

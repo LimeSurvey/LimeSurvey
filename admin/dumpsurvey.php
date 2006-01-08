@@ -42,7 +42,7 @@
 // 3. questions
 // 4. answers
 
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 

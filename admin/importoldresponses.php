@@ -34,7 +34,7 @@
 	#############################################################	
 */
 //import responses from an old_ survey table into an active survey
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action = returnglobal('action');}

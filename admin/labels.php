@@ -34,7 +34,7 @@
     #############################################################
 */
 
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($lid)) {$lid=returnglobal('lid');}

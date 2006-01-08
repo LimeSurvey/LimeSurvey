@@ -37,8 +37,7 @@
 # TOKENS FILE
 
 $THISOS=""; //SET TO "solaris" if you are using solaris and experiencing the random number bug
-require_once("config.php");
-//include("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($order)) {$order=returnglobal('order');}

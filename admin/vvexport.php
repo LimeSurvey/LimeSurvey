@@ -34,7 +34,7 @@
     #############################################################
 */
 //Exports all responses to a survey in special "Verified Voting" format.
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action = returnglobal('action');}

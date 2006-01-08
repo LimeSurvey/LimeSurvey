@@ -36,7 +36,7 @@
 if (isset($_GET['sid'])) {$surveyid = $_GET['sid'];}
 if (isset($_GET['ok'])) {$ok = $_GET['ok'];}
 
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 sendcacheheaders();                      // HTTP/1.0
 

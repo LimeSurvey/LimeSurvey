@@ -33,7 +33,7 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-//require_once("config.php");
+//require_once(dirname(__FILE__).'/../config.php');
 
 //Ensure script is not run directly, avoid path disclosure
 if (empty($homedir)) {die ("Cannot run this script directly (navigator.php)");}

@@ -34,7 +34,7 @@
     #############################################################   
 */
 //THE TABLE STRUCTURE, TABLE BY TABLE AND FIELD BY FIELD
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 sendcacheheaders();
 

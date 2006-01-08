@@ -33,7 +33,7 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################	
 */
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($gid)) {$gid=returnglobal('gid');}

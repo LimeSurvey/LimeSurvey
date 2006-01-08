@@ -45,7 +45,7 @@ if (empty($_GET['qid'])) {die ("Cannot run this script directly");}
 
 $qid = $_GET['qid'];
 
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 //echo $htmlheader;
 if (!$qid)

@@ -38,7 +38,7 @@ if (empty($_GET['dbname'])) {die ("Cannot run this script directly");}
 
 $dbname = $_GET['dbname'];
 
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 sendcacheheaders();
 

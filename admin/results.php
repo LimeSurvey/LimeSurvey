@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-require_once("config.php");
+require_once(dirname(__FILE__).'/../config.php');
 
 //OK: Here's how it works so far!
 
