@@ -1638,7 +1638,7 @@ function templatereplace($line)
             {
             $registerform .= " value='".returnglobal('register_firstname')."'";
                 }
-        $registerform .= "</td></tr>"
+        $registerform .= "></td></tr>"
             ."<tr><td align='right'>"._RG_LASTNAME.":</td>\n"
             ."<td align='left'><input class='text' type='text' name='register_lastname'";
         if (isset($_POST['register_lastname']))
@@ -1652,7 +1652,7 @@ function templatereplace($line)
             {
             $registerform .= " value='".returnglobal('register_email')."'";
             }
-        $registerform .= "</td></tr>\n";
+        $registerform .= "></td></tr>\n";
         if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
             {
             $registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
