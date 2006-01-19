@@ -37,7 +37,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
-$versionnumber = "0.991RC1";
+$versionnumber = "0.992";
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
 ##################################################################################
@@ -1417,7 +1417,7 @@ function createFieldMap($surveyid, $style="null") {
                 }
             }
         }
-    return $fieldmap;
+    if (isset($fieldmap)) {return $fieldmap;}
 }
 
 function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {

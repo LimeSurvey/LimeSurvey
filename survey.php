@@ -491,7 +491,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 				echo "\n\t<!-- NEW QUESTION -->\n";
 				echo "\t\t\t\t<div id='question$qa[4]'";
 				if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
-				$question="<label for='question$qa[4]'>" . $qa[0] . "</label>";
+				$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
 				$answer=$qa[1];
 				$help=$qa[2];
 				$questioncode=$qa[5];
@@ -523,7 +523,16 @@ echo "\n";
 if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
 
 	
-
+if (is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
+	{
+	foreach (array_keys($_SESSION) as $SESak)
+		{
+		if (in_array($SESak, $_SESSION['insertarray']))
+			{
+			echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . $_SESSION[$SESak] . "'>\n";
+			}
+		}
+	}
 //SOME STUFF FOR MANDATORY QUESTIONS
 if (remove_nulls_from_array($mandatorys))
 	{

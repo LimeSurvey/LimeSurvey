@@ -45,7 +45,6 @@ body.default
 	{
 	font-size:10px;
 	font-weight:normal;
-	font-style:underline;
 	color:black;
 	background-color:#999999;
 	}
