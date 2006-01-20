@@ -452,8 +452,8 @@ for ($i=0; $i<$fieldcount; $i++)
 		}
 	elseif ($fieldinfo == "ipaddr")
 		{
-		if ($type == "csv") {$firstline .= "\""._IP_ADDRESS."\"$separator";}
-		else {$firstline .= _IP_ADDRESS."$separator";}
+		if ($type == "csv") {$firstline .= "\""._IPADDRESS."\"$separator";}
+		else {$firstline .= _IPADDRESS."$separator";}
 		}
 	else
 		{

@@ -328,9 +328,9 @@ define("_USERNAME", "User name");
 define("_PASSWORD", "Password");
 define("_DELETE", "Delete");
 define("_CLOSEWIN", "Close Window");
-define("_TOKEN", "Token");
+define("_TOKEN", "Token"); 
 define("_DATESTAMP", "Date Stamp"); //Referring to the datestamp or time response submitted
-define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
+define("_IPADDRESS", "IP Address"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Comment");
 define("_FROM", "From"); //For emails
 define("_SUBJECT", "Subject"); //For emails
