@@ -182,7 +182,8 @@ define("_SL_ADMIN", "Administrator:");
 define("_SL_EMAIL", "Admin Email:");
 define("_SL_FAXTO", "Fax To:");
 define("_SL_ANONYMOUS", "Anonymous?");
-define("_SL_EXPIRES", "Expires:");
+define("_SL_EXPIRY", "Expires:");
+define("_SL_EXPIRYDATE", "Expiry Date:");
 define("_SL_FORMAT", "Format:");
 define("_SL_DATESTAMP", "Date Stamp?");
 define("_SL_IPADDRESS", "IP Address"); //New with 0.991

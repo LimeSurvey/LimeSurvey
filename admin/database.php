@@ -553,14 +553,14 @@ elseif ($action == "insertnewsurvey")
         $_POST  = array_map('mysql_escape_string', $_POST);
         if (trim($_POST['expires'])=="")
         {
-        	$_POST['expires']='null';
+        	$_POST['expires']='1980-01-01';
         }
           else 
           	{
         	$_POST['expires']="'".$_POST['expires']."'";
         	}
         $isquery = "INSERT INTO {$dbprefix}surveys\n"
-                  . "(short_title, description, admin, active, welcome, expires, "
+                  . "(short_title, description, admin, active, welcome, useexpiry, expires, "
                   . "adminemail, private, faxto, format, template, url, urldescrip, "
                   . "language, datestamp, ipaddr, usecookie, notification, allowregister, attribute1, attribute2, "
                   . "email_invite_subj, email_invite, email_remind_subj, email_remind, "
@@ -568,7 +568,7 @@ elseif ($action == "insertnewsurvey")
                   . "allowsave, autoredirect, allowprev)\n"
                   . "VALUES ('{$_POST['short_title']}', '{$_POST['description']}',\n"
                   . "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
-                  . "{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"
+                  . "'{$_POST['useexpiry']}',{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"
                   . "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
                   . "'{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}', '{$_POST['ipaddr']}',\n"
                   . "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
@@ -603,7 +603,7 @@ elseif ($action == "updatesurvey")
 
    if (trim($_POST['expires'])=="")
    		{
-        	$_POST['expires']='null';
+        	$_POST['expires']='1980-01-01';
         }
           else 
           	{
@@ -613,7 +613,7 @@ elseif ($action == "updatesurvey")
     $usquery = "UPDATE {$dbprefix}surveys \n"
               . "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
               . "admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
-              . "expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
+              . "useexpiry='{$_POST['useexpiry']}', expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
               . "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
               . "format='{$_POST['format']}', template='{$_POST['template']}',\n"
               . "url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}',\n"

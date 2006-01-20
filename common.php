@@ -628,6 +628,7 @@ function getSurveyInfo($surveyid)
                         "adminname"=>$row['admin'],
                         "adminemail"=>$row['adminemail'],
                         "active"=>$row['active'],
+                        "useexpiry"=>$row['useexpiry'],
                         "expiry"=>$row['expires'],
                         "private"=>$row['private'],
                         "faxto"=>$row['faxto'],

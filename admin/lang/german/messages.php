@@ -180,7 +180,7 @@ define("_SL_ADMIN", "Administrator Name:");
 define("_SL_EMAIL", "Administrator Email:");
 define("_SL_FAXTO", "Faxnummer:");
 define("_SL_ANONYMOUS", "Anonym?");
-define("_SL_EXPIRES", "Umfrage endet am:");
+define("_SL_EXPIRYDATE", "Umfrage endet am:");
 define("_SL_FORMAT", "Format:");
 define("_SL_DATESTAMP", "Zeit-/Datumsstempel?");
 define("_SL_IPADDRESS", "IP-Adresse protokollieren?");

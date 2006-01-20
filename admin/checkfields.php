@@ -112,6 +112,7 @@ $allfields[]=array("{$dbprefix}surveys", "description", "description text");
 $allfields[]=array("{$dbprefix}surveys", "admin", "admin varchar(50) default NULL");
 $allfields[]=array("{$dbprefix}surveys", "active", "active char(1) NOT NULL default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "welcome", "welcome text");
+$allfields[]=array("{$dbprefix}surveys", "useexpiry", "useexpiry char(1) NOT NULL default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "expires", "expires date default NULL");
 $allfields[]=array("{$dbprefix}surveys", "adminemail", "adminemail varchar(100) default NULL");
 $allfields[]=array("{$dbprefix}surveys", "private", "private char(1) default NULL");

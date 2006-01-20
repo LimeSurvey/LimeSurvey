@@ -421,8 +421,8 @@ if ($surveyid)
 						if (trim($s1row['faxto'])!='') {$surveysummary .= "$setfont {$s1row['faxto']}</font>";}
 		$surveysummary .= "</td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<strong>"
-						. _SL_EXPIRES."</strong></font></td>\n";
-		if ($s1row['expires'] != "0000-00-00") 
+						. _SL_EXPIRYDATE."</strong></font></td>\n";
+		if ($s1row['useexpiry']== "Y") 
 			{
 			$expdate=$s1row['expires'];
 			}
@@ -1659,15 +1659,21 @@ if ($action == "editsurvey")
 			$editsurvey .= ">$langname</option>\n";
 			}
 		$editsurvey .= "\t\t</select></td>\n"
-					 . "\t</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EXPIRES."</strong></font></td>\n"
-					 . "\t\t<td><input $slstyle type='text' size='12' name='expires' value=\"{$esrow['expires']}\"></td></tr>\n"
-					 . "\t<tr><td align='right'>$setfont<strong>"._SL_URL."</strong></font></td>\n"
-					 . "\t\t<td><input $slstyle type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
-					 . "\t<tr><td align='right'>$setfont<strong>"._SL_URLDESCRIP."</strong></font></td>\n"
-					 . "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value=\"{$esrow['urldescrip']}\"></td></tr>\n"
-					 . "\t<tr><td align='right'>$setfont<strong>"._SL_AUTORELOAD."</strong></font></td>\n"
-					 . "\t\t<td><select $slstyle name='autoredirect'>";
+			    	. "\t</tr>\n"
+					. "\t<tr><td align='right'>$setfont<strong>"._SL_EXPIRYDATE."</strong></font></td>\n"
+					. "\t\t\t<td><select $slstyle name='useexpiry'><option value='Y'";
+		if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_YES."</option>\n"
+					. "\t\t\t<option value='N'";
+		if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected";}
+		$editsurvey .= ">"._AD_NO."</option></select></td></tr><tr><td></td>\n"
+					. "\t\t<td><input $slstyle type='text' size='12' name='expires' value=\"{$esrow['expires']}\"></td></tr>\n"
+					. "\t<tr><td align='right'>$setfont<strong>"._SL_URL."</strong></font></td>\n"
+					. "\t\t<td><input $slstyle type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
+					. "\t<tr><td align='right'>$setfont<strong>"._SL_URLDESCRIP."</strong></font></td>\n"
+					. "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value=\"{$esrow['urldescrip']}\"></td></tr>\n"
+					. "\t<tr><td align='right'>$setfont<strong>"._SL_AUTORELOAD."</strong></font></td>\n"
+					. "\t\t<td><select $slstyle name='autoredirect'>";
 		$editsurvey .= "\t\t\t<option value='Y'";
 		if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._AD_YES."</option>\n";
@@ -1817,8 +1823,10 @@ if ($action == "newsurvey")
 		}
 	$newsurvey .= "\t\t</select></td>\n"
 				. "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EXPIRES."</strong></font></td>\n"
-				. "\t\t<td>$setfont<input $slstyle type='text' size='12' name='expires'>"
+	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_EXPIRYDATE."</strong></font></td>\n"
+				. "\t\t\t<td><select $slstyle name='useexpiry'><option value='Y'>"._AD_YES."</option>\n"
+				. "\t\t\t<option value='N' selected>"._AD_NO."</option></select></td></tr><tr><td></td>\n"
+				. "\t\t<td>$setfont<input $slstyle type='text' size='12' name='expires' value='1980-01-01'>"
 				. "<font size='1'>Date Format: YYYY-MM-DD</font></font></td></tr>\n"
 				. "\t<tr><td align='right'>$setfont<strong>"._SL_URL."</strong></font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='url' value='http://";

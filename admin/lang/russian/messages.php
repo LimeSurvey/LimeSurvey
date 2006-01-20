@@ -180,7 +180,7 @@ define("_SL_ADMIN", "Администратор:");
 define("_SL_EMAIL", "Admin Email:");
 define("_SL_FAXTO", "Fax:");
 define("_SL_ANONYMOUS", "Анонимный?");
-define("_SL_EXPIRES", "Окончание:");
+define("_SL_EXPIRYDATE", "Окончание:");
 define("_SL_FORMAT", "Формат:");
 define("_SL_DATESTAMP", "Отмечать время?");
 define("_SL_IPADDRESS", "IP Address"); //New with 0.991

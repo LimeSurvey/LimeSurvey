@@ -105,7 +105,7 @@ require_once("$langdir/english.lang.php"); //Load missing values from english fi
 error_reporting ($saveerror);
 
 //MAKE SURE SURVEY HASN'T EXPIRED
-if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['expiry'] != "0000-00-00")
+if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 	{
 	sendcacheheaders();
 	doHeader();

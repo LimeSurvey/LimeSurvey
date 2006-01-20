@@ -180,7 +180,7 @@ define("_SL_ADMIN", "Administrador:");
 define("_SL_EMAIL", "Correo electr&oacute;nico del Admin:");
 define("_SL_FAXTO", "# Fax:");
 define("_SL_ANONYMOUS", "&iquest;An&oacute;nimo?");
-define("_SL_EXPIRES", "Expiraci&oacute;n:");
+define("_SL_EXPIRYDATE", "Expiraci&oacute;n:");
 define("_SL_FORMAT", "Formato:");
 define("_SL_DATESTAMP", "&iquest;Estampar con Fecha?");
 define("_SL_IPADDRESS", "IP Address"); //New with 0.991

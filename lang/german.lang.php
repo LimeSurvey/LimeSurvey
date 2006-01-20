@@ -125,7 +125,7 @@ define("_NOTOKEN3", "Das von ihnen angegebene Schlüsselwort ist entweder ungül
 define("_NOQUESTIONS", "Für diese Befragung wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden.");
 define("_FURTHERINFO", "Um weitere Informationen zu erhalten, kontaktieren Sie bitte");
 define("_NOTACTIVE", "Diese Befragung ist momentan nicht aktiv. Sie werden sie nicht abschließen können.");
-define("_SURVEYEXPIRED", "Diese Umfrage ist beendet und kann nicht mehr zur Verfügung.");
+define("_SURVEYEXPIRED", "Diese Umfrage ist beendet und steht nicht mehr zur Verfügung.");
 
 define("_SURVEYCOMPLETE", "Sie haben diese Umfrage bereits durchgeführt.");
 

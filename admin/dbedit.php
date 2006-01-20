@@ -165,6 +165,7 @@ function editSurvey($surveyid, $dbprefix, $dbaction) {
 					   "admin",
 					   "active",
 					   "welcome",
+					   "useexpiry",
 					   "expires",
 					   "adminemail",
 					   "private",

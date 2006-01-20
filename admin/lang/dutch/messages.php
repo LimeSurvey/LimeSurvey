@@ -180,7 +180,7 @@ define("_SL_ADMIN", "Verantwoordelijke:");
 define("_SL_EMAIL", "E-mail verantwoordelijke:");
 define("_SL_FAXTO", "Fax naar:");
 define("_SL_ANONYMOUS", "Anoniem?");
-define("_SL_EXPIRES", "Vervalt:");
+define("_SL_EXPIRYDATE", "Vervalt:");
 define("_SL_FORMAT", "Formaat:");
 define("_SL_DATESTAMP", "Datum?");
 define("_SL_IPADDRESS", "IP Address"); //New with 0.991

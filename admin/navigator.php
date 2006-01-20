@@ -346,7 +346,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 				  _SL_WELCOME=>$thissurvey['welcome'],
 				  _SL_ADMIN=>$thissurvey['adminname']." (<a href='mailto:".$thissurvey['adminemail']."'>".$thissurvey['adminemail']."</a>)",
 				  _SL_FAXTO=>$thissurvey['faxto'],
-				  _SL_EXPIRES=>$nicedate,
+				  _SL_EXPIRYDATE=>$nicedate,
 				  _SL_URL=>"<a href='".$thissurvey['url']."' target='_blank' title='".$thissurvey['url']."'>".$thissurvey['urldescrip']."</a>",
 				  _SL_AUTORELOAD=>yesno($thissurvey['autoredirect']),
 				  _SL_LANGUAGE=>$thissurvey['language'],
@@ -369,7 +369,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 				  _SL_AUTONUMBER=>$thissurvey['autonumber_start'],
 				  _SL_ALLOWPREV=>yesno($thissurvey['allowprev']));
 
-	$pages[_SN_SV_GENERAL]=array(_SL_EXPIRES, _SL_TITLE, _SL_SURVEYURL, _SL_DESCRIPTION, _SL_WELCOME, _SL_ADMIN, _SL_FAXTO);
+	$pages[_SN_SV_GENERAL]=array(_SL_EXPIRYDATE, _SL_TITLE, _SL_SURVEYURL, _SL_DESCRIPTION, _SL_WELCOME, _SL_ADMIN, _SL_FAXTO);
 	$pages[_SN_SV_EXTRA]=array(_SL_TEMPLATE, _SL_LANGUAGE, _SL_URL, _SL_AUTORELOAD, _SL_FORMAT, _SL_ALLOWSAVE, _SL_ANONYMOUS, _SL_DATESTAMP, _SL_IPADDRESS);
 	$pages[_SN_SV_EMAIL]=array(_SL_EMAILINVITE_SUBJ, _SL_EMAILINVITE, _SL_EMAILREMIND_SUBJ, _SL_EMAILREMIND, _SL_EMAILCONFIRM_SUBJ,_SL_EMAILCONFIRM, _SL_EMAILREGISTER_SUBJ, _SL_EMAILREGISTER);
 	$pages[_SN_SV_MISC]=array(_SL_ATTRIBUTENAMES, _SL_NOTIFICATION, _SL_AUTONUMBER, _SL_ALLOWPREV);
@@ -487,7 +487,8 @@ function surveyEdit($surveyid) {
 				  _SL_ADMIN=>textinput($thissurvey['adminname'], "admin", "size='30'"),
 				  _SL_EMAIL=>textinput($thissurvey['adminemail'], "adminemail", "size='30'"),
 				  _SL_FAXTO=>textinput($thissurvey['faxto'], "faxto", "size='30'"),
-				  _SL_EXPIRES=>textinput($thissurvey['expiry'], "expires"),
+				  _SL_EXPIRY=>yesnoSelect($thissurvey['useexpiry'], "useexpiry"),
+				  _SL_EXPIRYDATE=>textinput($thissurvey['expiry'], "expires"),
 				  _SL_URL=>textinput($thissurvey['url'], "url", "size='60'"),
 				  _SL_URLDESCRIP=>textinput($thissurvey['urldescrip'], "urldescrip", "size='60'"),
 				  _SL_AUTORELOAD=>yesnoSelect($thissurvey['autoredirect'], "autoredirect"),

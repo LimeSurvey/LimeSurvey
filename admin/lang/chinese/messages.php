@@ -180,7 +180,7 @@ define("_SL_ADMIN", "管理員:");
 define("_SL_EMAIL", "管理員電郵地址:");
 define("_SL_FAXTO", "傳真到學校傳真機:");
 define("_SL_ANONYMOUS", "要保持匿名方式回應嗎?");
-define("_SL_EXPIRES", "有效期:");
+define("_SL_EXPIRYDATE", "有效期:");
 define("_SL_FORMAT", "格式:");
 define("_SL_DATESTAMP", "要建立日期印章嗎?");
 define("_SL_IPADDRESS", "IP Address"); //New with 0.991

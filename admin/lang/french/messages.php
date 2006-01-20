@@ -182,7 +182,7 @@ define("_SL_ADMIN", "Administrateur :");
 define("_SL_EMAIL", "Mail de l&#039;administrateur :");
 define("_SL_FAXTO", "Fax à :");
 define("_SL_ANONYMOUS", "Anonyme :");
-define("_SL_EXPIRES", "Date limite de r&eacute;ponse :");
+define("_SL_EXPIRYDATE", "Date limite de r&eacute;ponse :");
 define("_SL_FORMAT", "Format :");
 define("_SL_DATESTAMP", "R&eacute;ponses dat&eacute;es :");
 define("_SL_IPADDRESS", "Adresse IP :"); //New with 0.991

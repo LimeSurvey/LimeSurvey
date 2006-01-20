@@ -180,7 +180,7 @@ define("_SL_ADMIN", "Amministratore:");
 define("_SL_EMAIL", "e-mail Amministratore:");
 define("_SL_FAXTO", "Fax:");
 define("_SL_ANONYMOUS", "Anonimo");
-define("_SL_EXPIRES", "Scadenza:");
+define("_SL_EXPIRYDATE", "Scadenza:");
 define("_SL_FORMAT", "Formato:");
 define("_SL_DATESTAMP", "Data invio questionario completato");
 define("_SL_IPADDRESS", "Indirizzo IP"); //New with 0.991

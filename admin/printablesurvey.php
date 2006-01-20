@@ -70,6 +70,7 @@ while ($desrow = mysql_fetch_array($desresult))
 	$surveydesc = $desrow['description'];
 	$surveyactive = $desrow['active'];
 	$surveytable = "{$dbprefix}survey_{$desrow['sid']}";
+	$surveyuseexpiry = $desrow['useexpiry'];
 	$surveyexpirydate = $desrow['expires'];
 	$surveyfaxto = $desrow['faxto'];
 	}
@@ -673,7 +674,7 @@ echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
 echo "\t\t\t\t\t\t$setfont<strong>"._PS_SUBMIT."</strong></font><br />\n";
 echo "\t\t\t\t\t\t"._PS_THANKYOU." "._PS_FAXTO." $surveyfaxto";
-if ($surveyexpirydate && $surveyexpirydate != "0000-00-00")
+if ($surveyuseexpiry=="Y")
 	{
 	echo " by $surveyexpirydate";
 	}
