@@ -295,7 +295,10 @@ if (!$surveyid)
     unlink($the_full_file_path); //Delete the uploaded file
     exit;
     }
-$insert = str_replace("'$surveyid'", "''", $tablearray[0]);
+$insert = str_replace("'$surveyid',", "", $tablearray[0]);
+$insert = str_replace("`sid`,", "", $insert);
+ 
+//$insert = str_replace("'$surveyid',", "", $tablearray[0]);
 $insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
 //$insert = substr($insert, 0, -1);
 $iresult = mysql_query($insert) or die("<br />"._IS_IMPFAILED."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . mysql_error() . "</body>\n</html>");
@@ -317,10 +320,11 @@ if (isset($labelsetsarray) && $labelsetsarray) {
         $oldlidpos=array_search("lid", $fieldorders);
         $oldlid=$fieldcontents[$oldlidpos];
         
-        $newfieldcontents[array_search("lid", $fieldorders)]="";
+        unset($newfieldcontents[array_search("lid", $fieldorders)]);
         $newvalues="('".implode("', '", $newfieldcontents)."')";
         $lsainsert = str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $lsa);
         $lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
+        $lsainsert = str_replace("`lid`,", "", $lsainsert); //db prefix handler
         $lsiresult=mysql_query($lsainsert);
         $newlid=mysql_insert_id();
 
@@ -408,7 +412,8 @@ if ($grouparray) {
             exit;
             }
         //$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
-        $ginsert = str_replace("('$gid', '$surveyid',", "('', '$newsid',", $ga);
+        $ginsert = str_replace("('$gid', '$surveyid',", "('$newsid',", $ga);
+        $ginsert = str_replace("(`gid`,", "(", $ginsert);
         $ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
         $oldgid=$gid;
         $gres = mysql_query($ginsert) or die("<strong>"._ERROR."</strong> Failed to insert group<br />\n$ginsert<br />\n".mysql_error()."</body>\n</html>");
@@ -425,12 +430,14 @@ if ($grouparray) {
                 $thisgid=$qacfieldcontents[array_search("gid", $qafieldorders)];
                 if ($thisgid == $gid) {
                     $qid = $qacfieldcontents[array_search("qid", $qafieldorders)];
-                    $newfieldcontents[array_search("qid", $qafieldorders)] = "";
+                    // Remove quid field
+                    unset($newfieldcontents[array_search("qid", $qafieldorders)]);
                     $newfieldcontents[array_search("sid", $qafieldorders)] = $newsid;
                     $newfieldcontents[array_search("gid", $qafieldorders)] = $newgid;
                     $oldqid=$qid;
                     $newvalues="('".implode("', '", $newfieldcontents)."')";
                     $qinsert = str_replace ("('".implode("', '", $qacfieldcontents)."')", $newvalues, $qa);
+                    $qinsert = str_replace ("(`qid`,", "(", $qinsert);
                     $qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
                     $type = $qacfieldcontents[array_search("type", $qafieldorders)]; //Get the type
                     $other = $qacfieldcontents[array_search("other", $qafieldorders)]; //Get 'other';
@@ -544,11 +551,12 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
             }
         
         $newfieldcontents[array_search("qid", $fieldorders)]=$newqid;
-        $newfieldcontents[array_search("qaid", $fieldorders)]="";
+        unset($newfieldcontents[array_search("qaid", $fieldorders)]);
         
         $newvalues="('".implode("', '", $newfieldcontents)."')";
         $insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $qar);
         $insert=str_replace("INTO question_attributes", "INTO {$dbprefix}question_attributes", $insert);
+        $insert=str_replace("`qaid`,", "", $insert);
         $result=mysql_query($insert) or die ("Couldn't insert question_attribute<br />$insert<br />".mysql_error());
 
         unset($newqid);
@@ -569,11 +577,12 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
         
         $newfieldcontents[array_search("sid", $fieldorders)]=$newsid;
         $newfieldcontents[array_search("gid", $fieldorders)]=$newgid;
-        $newfieldcontents[array_search("id", $fieldorders)]="";
+        unset($newfieldcontents[array_search("id", $fieldorders)]);
         
         $newvalues="('".implode("', '", $newfieldcontents)."')";
         $insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $qar);
         $insert=str_replace("INTO assessments", "INTO {$dbprefix}assessments", $insert);
+        $insert=str_replace("`id`,", "", $insert);
         $result=mysql_query($insert) or die ("Couldn't insert assessment<br />$insert<br />".mysql_error());
 
         unset($newgid);
@@ -607,7 +616,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
             }
         }
         if (!isset($newcfieldname)) {$newcfieldname="";}
-        $newfieldcontents[array_search("cid", $fieldorders)]="";
+        unset($newfieldcontents[array_search("cid", $fieldorders)]);
         $newfieldcontents[array_search("qid", $fieldorders)]=$newqid;
         $newfieldcontents[array_search("cfieldname", $fieldorders)]=$newcfieldname;
         if (isset($newcqid)) {
@@ -615,6 +624,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
             $newvalues="('".implode("', '", $newfieldcontents)."')";
             $insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $car);
             $insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
+            $insert=str_replace("`cid`,", "", $insert);
             $result=mysql_query($insert) or die ("Couldn't insert condition<br />$insert<br />".mysql_error());
         } else {
             echo "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
