@@ -84,8 +84,9 @@ if ($sourcefrom == "admin")
     include("sessioncontrol.php");
     }
 
-//Get rid of the "height" parameter in slstyle for slstyle2 (used for dropdowns)
-$slstyle2=eregi_replace("height:...;", "", $slstyle);
+$btstyle = "class='btstyle' ";
+$slstyle = "class='slstyle' ";
+$slstyle2= "class='slstyle2' ";
 
 //TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
 if (!ini_get('safe_mode'))
@@ -160,14 +161,7 @@ if ($sourcefrom == "admin")
                 ."<html>\n<head>\n"
                 . "<title>$sitename</title>\n"
                 . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
-                . "<style type=\"text/css\"><!--\n"
-                . "body { margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px },td,th,a,p{font-family:verdana,arial,sans-serif; font-size:10pt}\n"
-                . ".outlinetable{border: 1px solid #111111;}\n"
-                . ".outlinetable td{font-family:verdana,arial,sans-serif; font-size:10pt; background-color: #EEEEEE; border: 1px solid #CCCCCC}\n"
-                . ".outlinetable th{font-family:verdana,arial,sans-serif; font-size:10pt; background-color: #777777; color: #FFFFFF;}\n"
-				. "ul {font-family:verdana,arial,sans-serif; font-size:10pt; color: #000000;}\n"
-				. "td {font-family:verdana,arial,sans-serif; font-size:10pt; color: #000000;}\n"
-                . "//-->\n</style>\n"
+				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"adminstyle.css\">\n"
                 . "</head>\n<body>\n"
                 . "<table width='100%' align='center' bgcolor='#000000'>\n"
                 . "\t<tr>\n"

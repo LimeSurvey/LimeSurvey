@@ -112,9 +112,6 @@ $jpgraphdir         =   "/var/apache/htdocs/jpgraph"; //The location of the jpgr
                                                                // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\\Inetpub\\wwwroot\\jpgraph"
 $jpgraphfont        =   "FF_ARIAL"; //The font to use with graphs. A failsafe setting would be "FF_FONT1"
 
-//These lines control the look of select boxes and buttons in the admin screens
-$btstyle            =   "style='background-color: #EEEFFF; height: 18; font-family: verdana; font-size: 9; color: #000080'";
-$slstyle            =   "style='background-color: #EEEFFF; height: 18; font-family: verdana; font-size: 10; color: #000080'";
 // Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS
 $embedded = false;
 $embedded_inc = "";             // path to the header to include if any
