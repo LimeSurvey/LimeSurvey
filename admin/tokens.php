@@ -684,7 +684,7 @@ if (returnglobal('action') == "email")
 		        $fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
 
 				$modsubject=Replacefields($_POST['subject'], $fieldsarray);
-				$modmessage=Replacefields($message, $fieldsarray);
+				$modmessage=Replacefields($_POST['message'], $fieldsarray);
 				
 				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename)) 
 					{
