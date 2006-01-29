@@ -520,7 +520,7 @@ if ($action == "browse" || $action == "search")
  				$query="SELECT * FROM {$dbprefix}survey_$surveyid WHERE token='$brow[4]'"; 
 				$result=mysql_query($query) or die ("<br />Could not find token!<br />\n" . mysql_error()); 
 				$id=mysql_result($result,0,"id"); 
-				echo ."\t\t<td align='center' valign='top'>\n" 
+				echo "\t\t<td align='center' valign='top'>\n" 
 				. "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n" 
 				."\t\t<td align='center' valign='top'>\n" 
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='U' title='"
