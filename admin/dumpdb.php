@@ -45,12 +45,23 @@ if ($result=mysql_list_tables($databasename)) {
 $export="";
 $export .="#------------------------------------------"."\n";
 $export .="# PHPSurveyor Database Dump of `$databasename`"."\n";
+if ($allowexportalldb==0) {
+	$export .="# Only prefixed tables with: ". $dbprefix ."\n";
+}
 $export .="# Date of Dump: ". date("d-M-Y") ."\n";
 $export .="#------------------------------------------"."\n\n\n";
 
 foreach($tables as $table) {
-	$export .= defdump($table);
-	$export .= datadump($table);
+	if ($allowexportalldb==0) {
+		if ($dbprefix==substr($table, 0, strlen($dbprefix))) {
+			$export .= defdump($table);
+			$export .= datadump($table);
+		}
+		}
+	else {
+		$export .= defdump($table);
+		$export .= datadump($table);
+	}
 }
 
 $file_name = "PHPSurveyor_{$databasename}_dump_".date("Y-m-d").".sql";

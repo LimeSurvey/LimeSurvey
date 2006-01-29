@@ -92,9 +92,10 @@ $apachedir          =   ""; //If left empty, the script will attempt to find htp
 $mysqldir           =   ""; //If left empty the script will attempte to find mysql binary directory itself
                             //otherwise, set this to the location of the mysql binary files
 
-$timeadjust         =   0; //Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
+$timeadjust         =   0;      //Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
 $dbprefix           =   "";     //A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                 //a database with other applications. Suggested prefix is "phpsv_"
+$allowexportalldb   =   1; 		//0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
 $allowmandatorybackwards =   1; //Allow moving backwards (ie: << prev) through survey if a mandatory question
                                 //has not been answered. 1=Allow, 0=Deny
 $deletenonvalues    =   1; //By default, PHPSurveyor does not save responses to conditional questions that haven't been answered/shown. To have PHPSurveyor save these responses change this value to 0.
