@@ -81,8 +81,8 @@ define("_MANDATORY_PARTS", "Prosimo, odgovorite na vsa vprašanja");
 define("_MANDATORY_CHECK", "Prosimo, izberite vsaj eno izmed možnosti");
 define("_MANDATORY_RANK", "Prosimo, rangirajte vse");
 define("_MANDATORY_POPUP", "Niste odgovorili na eno ali več obveznih vprašanj, zato z anketo ne morete nadaljevati!"); //NEW in 0.98rc4
-define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
-define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
+define("_VALIDATION", "Na to vprašanje morate odgovoriti z veljavnim odgovorom."); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "Eno ali več vprašanj ni bilo odgovorjenih z veljavnim odgovorm. Z anketiranjem ne morete nadaljevati dokler ne popravite teh odgovorov."); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "V obliki: LLLL-MM-DD");
 define("_DATEFORMATEG", "(npr.: 2004-12-25 za Božič)");
 define("_REMOVEITEM", "Odstrani");
@@ -100,7 +100,7 @@ define("_ANSCLEAR", "Odgovori so izbrisani");
 define("_RESTART", "Ponovno začni z anketo");
 define("_CLOSEWIN_PS", "Zapri okno");
 define("_CONFIRMCLEAR", "Ali ste prepričani, da želite izbrisati vaše odgovore?");
-define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
+define("_CONFIRMSAVE", "Ali ste prepričani, da želite shraniti vaše odgovore?");
 define("_EXITCLEAR", "Zapusti anketo brez pošiljanja odgovorov");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Odgovorov ni mogoče poslati -- odgovorov ni.");
@@ -137,7 +137,7 @@ define("_CONFIRMATION_MESSAGE1", "Anketa je bila poslana"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Vaša anketa je dobila nov odgovor"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Individualni potatki so vam na voljo tukaj:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Osnovne statistike so vam na voljo tukaj:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
+define("_CONFIRMATION_MESSAGE5", "Kliknite na to povezavo za spremembo posameznega odgovora:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Obvestilo o varovanju zasebnosti</i></strong><br />"
 						  ."Ta anketa je anonimna.<br />"
@@ -197,45 +197,45 @@ define("_PS_CON_TOQUESTION", "na vprašanje"); //New for 0.98finalRC1
 define("_PS_CON_OR", "ali"); //New for 0.98finalRC2
 
 //Save Messages
-define("_SAVE_AND_RETURN", "Save your responses so far");
-define("_SAVEHEADING", "Save Your Unfinished Survey");
-define("_RETURNTOSURVEY", "Return To Survey");
-define("_SAVENAME", "Name");
-define("_SAVEPASSWORD", "Password");
-define("_SAVEPASSWORDRPT", "Repeat Password");
-define("_SAVE_EMAIL", "Your Email");
-define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
-				  ."Your survey will be saved using that name and password, and can be "
-				  ."completed later by logging in with the same name and password.<br /><br />\n"
-				  ."If you give an email address, an email containing the details will be sent "
-				  ."to you.");
-define("_SAVESUBMIT", "Save Now");
-define("_SAVENONAME", "You must supply a name for this saved session.");
-define("_SAVENOPASS", "You must supply a password for this saved session.");
-define("_SAVENOMATCH", "Your passwords do not match.");
-define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
-define("_SAVETRYAGAIN", "Please try again.");
-define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
-define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
-						 ."a survey in progress. The following details can be used "
-						 ."to return to this survey and continue where you left "
-						 ."off.");
-define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
-define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
-define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
-define("_SAVE_EMAILSENT", "An email has been sent with details about your saved survey.");
+define("_SAVE_AND_RETURN", "Shrani dosedanje odgovore");
+define("_SAVEHEADING", "Shrani nedokončano anketo");
+define("_RETURNTOSURVEY", "Nazaj na anketo");
+define("_SAVENAME", "Ime");
+define("_SAVEPASSWORD", "Geslo");
+define("_SAVEPASSWORDRPT", "Ponovi geslo");
+define("_SAVE_EMAIL", "Vaš e-mail");
+define("_SAVEEXPLANATION", "Vnesite ime in geslo za zo anketo in kliknite gumb Shrani<br />\n"
+				  ."Vaša anketa bo shranjena s tem imenom in geslom in jo lahko"
+				  ."dookončate kasneje.<br /><br />\n"
+				  ."Če boste vpisali še vaš e-mail naslov boste prejeli vse potrebne podatke prejeli tudi po"
+				  ."elektronski pošti.");
+define("_SAVESUBMIT", "Shrani");
+define("_SAVENONAME", "Za shranjeno anketo morate vpisati ime.");
+define("_SAVENOPASS", "Za shranjeno anketo morate vpisati geslo.");
+define("_SAVENOMATCH", "Geslo je napačno.");
+define("_SAVEDUPLICATE", "To ime je že uporabljeno za to anketo. Izbrati si morate unikatno ime.");
+define("_SAVETRYAGAIN", "Prosimo poskusite ponovno.");
+define("_SAVE_EMAILSUBJECT", "Podatki o shranjeni anketi");
+define("_SAVE_EMAILTEXT", "Vi ali nekdo drug je z uporabo vašega e-mail naslova "
+						 ."shranil anketo. Spodnje podatke lahko uporabite "
+						 ."za vrnitev na to anketo in nadaljevanje "
+						 ."izpolnjevanja od točke, kjer ste končali.");
+define("_SAVE_EMAILURL", "Ponovno lahko začnete z anketo s klikom na naslednjo povezavo:");
+define("_SAVE_SUCCEEDED", "Vaši odgovori so bili uspešno shranjeni");
+define("_SAVE_FAILED", "Prišlo je do napake in vaši odgovori niso bili shranjeni.");
+define("_SAVE_EMAILSENT", "Poslali smo van e-mail s podrobnejšimi podatki o vaši shranjeni anketi.");
 
 //Load Messages
-define("_LOAD_SAVED", "Load unfinished survey");
-define("_LOADHEADING", "Load A Previously Saved Survey");
-define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
-			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
-define("_LOADNAME", "Saved name");
-define("_LOADPASSWORD", "Password");
-define("_LOADSUBMIT", "Load Now");
-define("_LOADNONAME", "You did not provide a name");
-define("_LOADNOPASS", "You did not provide a password");
-define("_LOADNOMATCH", "There is no matching saved survey");
+define("_LOAD_SAVED", "Naloži nedokončano anketo");
+define("_LOADHEADING", "Naloži shranjeno anketo");
+define("_LOADEXPLANATION", "Ponovno lahko naložite vašo shranjeno anketo.<br />\n"
+			  ."Vpišite ime in geslo s katerim ste shranili anketo.<br /><br />\n");
+define("_LOADNAME", "Shranjeno ime");
+define("_LOADPASSWORD", "Geslo");
+define("_LOADSUBMIT", "Naloži anketo");
+define("_LOADNONAME", "Niste vpisali imena");
+define("_LOADNOPASS", "Niste vpisali gesla");
+define("_LOADNOMATCH", "Podatki se ne ujemajo z nobeno izmed shranjenih anket");
 
-define("_ASSESSMENT_HEADING", "Your Assessment");
+define("_ASSESSMENT_HEADING", "Vaša ocena");
 ?>
