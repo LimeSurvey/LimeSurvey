@@ -957,8 +957,8 @@ if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 				if($bfieldcount > 7) 
 					{
 					echo ",";
-					echo trim($brow['attribute1']).",";
-					echo trim($brow['attribute2']).",";
+					echo trim($brow['attribute_1']).",";
+					echo trim($brow['attribute_2']).",";
 					echo trim($brow['mpid']);
 					}
                 echo "\n";
