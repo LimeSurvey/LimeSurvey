@@ -32,13 +32,10 @@
         # Suite 330, Boston, MA  02111-1307, USA.                       #
         #################################################################
         # This language file kindly provided by François Tissandier     #
-        # and corrected by Pascal Bastien 20/07/2004                    #
-        # Version 1.3                                                   #
-        #                                                               #
+        # and corrected by Pascal Bastien 20/07/2004 - Version 1.3      #
         # Version 1.5.0 - corrected by Sébastien GAUGRY                 #
-        #                                                               #
-        # Version 1.5.1 for phpsurveyor 0.991RC1 tiny correction by     #
-        # Pascal BASTIEN: ' is #039 in UTF-8                            #
+        # Version 1.5.2 for phpsurveyor 0.991 some corrections by       #
+        # Pascal BASTIEN                                                #
         #                                                               #
         #################################################################
 */
@@ -83,55 +80,55 @@ define("_MANDATORY", "Cette question est obligatoire");
 define("_MANDATORY_PARTS", "Veuillez compléter toutes les parties SVP");
 define("_MANDATORY_CHECK", "Veuillez choisir au moins un élément SVP");
 define("_MANDATORY_RANK", "Veuillez classer tous les éléments SVP");
-define("_MANDATORY_POPUP", "Vous n&#039;avez pas répondu à une ou plusieurs questions obligatoires. Vous ne pouvez pas enregistrer vos réponses au questionnaire tant que vous n&#039;avez répondu à celles-ci"); //NEW in 0.98rc4
-define("_VALIDATION", "Vous devez répondre correctement &agrave; cette question"); //NEW in VALIDATION VERSION
-define("_VALIDATION_POPUP", "Vous n&#039;avez pas répondu correctement &agrave; une ou plusieurs questions. Vous ne pouvez pas continuer tant que ces réponses ne sont pas valides"); //NEW in VALIDATION VERSION
+define("_MANDATORY_POPUP", "Vous n'avez pas répondu à une ou plusieurs questions obligatoires. Vous ne pouvez pas enregistrer vos réponses au questionnaire tant que vous n'aurez pas répondu à celles-ci"); //NEW in 0.98rc4
+define("_VALIDATION", "Vous devez répondre correctement à cette question"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "Vous n'avez pas répondu correctement à une ou plusieurs questions. Vous ne pouvez pas continuer tant que ces réponses ne sont pas valides"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Format : AAAA-MM-JJ");
-define("_DATEFORMATEG", "(ex : 2003-12-25 pour No&euml;l)");
+define("_DATEFORMATEG", "(ex : 2003-12-25 pour Noël)");
 define("_REMOVEITEM", "Enlever cet élément");
 define("_RANK_1", "Cliquez sur un élément dans la liste de gauche ci-dessous.");
-define("_RANK_2", "Choisissez l&acute;élément le plus important pour finir par le moins important.");
+define("_RANK_2", "Choisissez l'élément le plus important pour finir par le moins important.");
 define("_YOURCHOICES", "Vos choix");
 define("_YOURRANKING", "Votre classement");
-define("_RANK_3", "Cliquer sur les ciseaux &agrave; droite de chaque élément");
+define("_RANK_3", "Cliquer sur les ciseaux à droite de chaque élément");
 define("_RANK_4", "pour enlever le dernier élément de votre classement");
 //From INDEX.PHP
-define("_NOSID", "Vous n&acute;avez pas fourni d&acute;identifiant de questionnaire");
+define("_NOSID", "Vous n'avez pas fourni d'identifiant de questionnaire");
 define("_CONTACT1", "Veuillez contacter");
-define("_CONTACT2", "pour plus d&#039;aide");
+define("_CONTACT2", "pour plus d'aide");
 define("_ANSCLEAR", "Réponses effacées");
 define("_RESTART", "Recommencer ce questionnaire");
-define("_CLOSEWIN_PS", "Fermer cette fen&ecirc;tre");
-define("_CONFIRMCLEAR", "Etes-vous s&ucirc;r de vouloir effacer toutes les réponses ?");
-define("_CONFIRMSAVE", "Etes-vous s&ucirc;r de vouloir sauvegarder vos réponses ?");
+define("_CLOSEWIN_PS", "Fermer cette fenêtre");
+define("_CONFIRMCLEAR", "Etes-vous sûr de vouloir effacer toutes les réponses ?");
+define("_CONFIRMSAVE", "Etes-vous sûr de vouloir sauvegarder vos réponses ?");
 define("_EXITCLEAR", "Sortir et effacer le questionnaire");
 //From QUESTION.PHP
-define("_BADSUBMIT1", "Impossible d&#039;envoyer les réponses car il n&#039;y en a aucune (vide).");
-define("_BADSUBMIT2", "Cette erreur peut se produire si vous avez déj&agrave; envoyé vos réponses et actualisé la page de votre naviguateur avec \"Actualiser\". Dans ce cas, vos réponses ont déj&agrave; été sauvées.");
-define("_NOTACTIVE1", "Vos réponses n&#039;ont pas été enregistrées. Ce questionnaire n&acute;est pas encore activé.");
+define("_BADSUBMIT1", "Impossible d'envoyer les réponses car il n'y en a aucune (vide).");
+define("_BADSUBMIT2", "Cette erreur peut se produire si vous avez déjà envoyé vos réponses et actualisé la page de votre naviguateur avec \"Actualiser\". Dans ce cas, vos réponses ont déjà été sauvées.");
+define("_NOTACTIVE1", "Vos réponses n'ont pas été enregistrées. Ce questionnaire n'est pas encore activé.");
 define("_CLEARRESP", "Effacer les réponses");
 define("_THANKS", "Merci");
 define("_SURVEYREC", "Vos réponses ont été enregistrées.");
 define("_SURVEYCPL", "Questionnaire complété");
 define("_DIDNOTSAVE", "Non sauvegardé");
-define("_DIDNOTSAVE2", "Une erreur non prévue s&#039;est produite et vos réponses n&#039;ont pas pu &ecirc;tre sauvées.");
-define("_DIDNOTSAVE3", "Vos réponses n&#039;ont pas été perdues et ont été mailées &agrave; l&#039;administrateur du questionnaire qui les saisira ultérieurement dans la base de données.");
-define("_DNSAVEEMAIL1", "Une erreur s&#039;est produite pendant la sauvegarde d&#039;une réponse");
+define("_DIDNOTSAVE2", "Une erreur non prévue s'est produite et vos réponses n'ont pas pu être sauvées.");
+define("_DIDNOTSAVE3", "Vos réponses n'ont pas été perdues et ont été mailées à l'administrateur du questionnaire qui les saisira ultérieurement dans la base de données.");
+define("_DNSAVEEMAIL1", "Une erreur s'est produite pendant la sauvegarde d'une réponse");
 define("_DNSAVEEMAIL2", "DONNEES A SAISIR");
 define("_DNSAVEEMAIL3", "CODE SQL QUI A ECHOUE");
-define("_DNSAVEEMAIL4", "MESSAGE D&#039;ERREUR");
+define("_DNSAVEEMAIL4", "MESSAGE D'ERREUR");
 define("_DNSAVEEMAIL5", "ERREUR DE SAUVEGARDE");
-define("_SUBMITAGAIN", "Essayez d&#039;envoyer &agrave; nouveau");
-define("_SURVEYNOEXIST", "Désolé. Il n&#039;y a pas de questionnaire correspondant.");
-define("_NOTOKEN1", "C&#039;est un questionnaire privé. Vous devez avoir une invitation pour y participer.");
-define("_NOTOKEN2", "Si vous avez re&ccedil;u une invitation, saisissez-la dans le champ ci-dessous et cliquez sur Continuer.");
-define("_NOTOKEN3", "L&#039;invitation que vous avez re&ccedil;ue n&#039;est pas valide, ou a déj&agrave; été utilisée.");
-define("_NOQUESTIONS", "Ce questionnaire n&#039;a pas encore de question et ne peut &ecirc;tre testé ou finalisé.");
-define("_FURTHERINFO", "Pour plus d&#039;informations veuillez contacter");
-define("_NOTACTIVE", "Ce questionnaire n&#039;est pas activé. Vous ne pourrez pas sauver vos réponses.");
-define("_SURVEYEXPIRED", "Ce questionnaire n&#039;est plus disponible."); //NEW for 098rc5
+define("_SUBMITAGAIN", "Essayez d'envoyer à nouveau");
+define("_SURVEYNOEXIST", "Désolé. Il n'y a pas de questionnaire correspondant.");
+define("_NOTOKEN1", "C'est un questionnaire privé. Vous devez avoir une invitation pour y participer.");
+define("_NOTOKEN2", "Si vous avez reçu une invitation, saisissez-la dans le champ ci-dessous et cliquez sur Continuer.");
+define("_NOTOKEN3", "L'invitation que vous avez reçue n'est pas valide, ou a déjà été utilisée.");
+define("_NOQUESTIONS", "Ce questionnaire n'a pas encore de question et ne peut être testé ou finalisé.");
+define("_FURTHERINFO", "Pour plus d'informations veuillez contacter");
+define("_NOTACTIVE", "Ce questionnaire n'est pas activé. Vous ne pourrez pas sauver vos réponses.");
+define("_SURVEYEXPIRED", "Ce questionnaire n'est plus disponible."); //NEW for 098rc5
 
-define("_SURVEYCOMPLETE", "Vous avez déj&agrave; complété ce questionnaire.");
+define("_SURVEYCOMPLETE", "Vous avez déjà complété ce questionnaire.");
 
 define("_INSTRUCTION_LIST", "Veuillez sélectionner seulement une réponse ci-dessous"); //NEW for 098rc3
 define("_INSTRUCTION_MULTI", "Cochez la ou les réponses"); //NEW for 098rc3
@@ -145,36 +142,36 @@ define("_CONFIRMATION_MESSAGE5", "Cliquez sur le lien suivant pour éditer cette
 define("_PRIVACY_MESSAGE", "<strong><i>Note sur la protection de la vie privée</i></strong><br />"
                                                   ."Ce questionnaire est anonyme.<br />"
                                                   ."Les enregistrements conservés de votre questionnaire ne contiennent aucune "
-                                                  ."information d&#039;identification &agrave; moins bien s&ucirc;r qu&#039;une question  "
-                                                  ."sur votre identité ait été posée dans le questionnaire. Si vous avez répondu &agrave; "
-                                                  ."un questionnaire utilisant une invitation pour vous permettre d&#039;y accéder, "
-                                                  ."vous pouvez &ecirc;tre assuré que cet identifiant. "
-                                                  ."n&#039;est pas conservé avec vos réponses. Il est geré dans une base de données séparée "
-                                                  ."et ne pourra pas &ecirc;tre mis &agrave; jour pour indiquer que vous "
-                                                  ."avez complété ce questionnaire. Il n&#039;y a aucun moyen pour faire correspondre "
+                                                  ."information d'identification à moins bien sûr qu'une question  "
+                                                  ."sur votre identité ait été posée dans le questionnaire. Si vous avez répondu à "
+                                                  ."un questionnaire utilisant une invitation pour vous permettre d'y accéder, "
+                                                  ."vous pouvez être assuré que cet identifiant. "
+                                                  ."n'est pas conservé avec vos réponses. Il est geré dans une base de données séparée "
+                                                  ."et ne pourra pas être mis à jour pour indiquer que vous "
+                                                  ."avez complété ce questionnaire. Il n'y a aucun moyen pour faire correspondre "
                                                   ."les invitations avec les réponses au questionnaire."); //New for 0.98rc9
 
 define("_THEREAREXQUESTIONS", "Il y a {NUMBEROFQUESTIONS} questions dans ce questionnaire."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "Il y a 1 question dans ce questionnaire."); //New for 0.98rc9 - singular version of above
 
-define ("_RG_REGISTER1", "Vous devez &ecirc;tre enregistré pour répondre &agrave; ce questionnaire"); //NEW for 0.98rc9
-define ("_RG_REGISTER2", "Vous devez &ecirc;tre enregistré pour ce questionnaire si vous désirez y participer.<br />\n"
+define ("_RG_REGISTER1", "Vous devez être enregistré pour répondre à ce questionnaire"); //NEW for 0.98rc9
+define ("_RG_REGISTER2", "Vous devez être enregistré pour ce questionnaire si vous désirez y participer.<br />\n"
                                                 ."Saisissez vos coordonnées ci-dessous, et un mail contenant le lien pour "
-                                                ."participer &agrave; ce questionnaire vous sera immédiatement envoyé."); //NEW for 0.98rc9
+                                                ."participer à ce questionnaire vous sera immédiatement envoyé."); //NEW for 0.98rc9
 define ("_RG_EMAIL", "Adresse mail"); //NEW for 0.98rc9
 define ("_RG_FIRSTNAME", "Nom"); //NEW for 0.98rc9
 define ("_RG_LASTNAME", "Prénom"); //NEW for 0.98rc9
-define ("_RG_INVALIDEMAIL", "L&#039;adresse mail utilisée n&#039;est pas valide. Veuillez reéssayer.");//NEW for 0.98rc9
-define ("_RG_USEDEMAIL", "L&#039;adresse mail utilis&eacutee; a déj&agrave; été enregistré.");//NEW for 0.98rc9
-define ("_RG_EMAILSUBJECT", "Confirmation d&#039;enregistrement de {SURVEYNAME}");//NEW for 0.98rc9
-define ("_RG_REGISTRATIONCOMPLETE", "Merci de vous enregistrer pour participer &agrave; ce questionnaire.<br /><br />\n"
-                                                                   ."Un mail a été envoyé &agrave; l&#039;adresse que vous avez fournie dans les détails d&#039;accés "
+define ("_RG_INVALIDEMAIL", "L'adresse mail utilisée n'est pas valide. Veuillez reéssayer.");//NEW for 0.98rc9
+define ("_RG_USEDEMAIL", "L'adresse mail utilisée a déjà été enregistrée.");//NEW for 0.98rc9
+define ("_RG_EMAILSUBJECT", "Confirmation d'enregistrement de {SURVEYNAME}");//NEW for 0.98rc9
+define ("_RG_REGISTRATIONCOMPLETE", "Merci de vous enregistrer pour participer à ce questionnaire.<br /><br />\n"
+                                                                   ."Un mail a été envoyé à l'adresse que vous avez fournie dans les détails d'accés "
                                                                    ."pour ce questionnaire. Veuillez suivre le lien dans ce mail pour participer.<br /><br />\n"
                                                                    ."Administrateur du questionnaire {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
 define("_SM_COMPLETED", "<strong>Merci<br /><br />"
-					   ."Vous venez de répondre &agrave; l&#039;ensemble des questions de ce questionnaire.</strong><br /><br />"
-					   ."Veuillez cliquer sur le bouton ["._SUBMIT."], afin de procéder &agrave; l&#039;enregistrement de vos réponses."); //New for 0.98finalRC1
+					   ."Vous venez de répondre à l'ensemble des questions de ce questionnaire.</strong><br /><br />"
+					   ."Veuillez cliquer sur le bouton ["._SUBMIT."], afin de procéder à l'enregistrement de vos réponses."); //New for 0.98finalRC1
 define("_SM_REVIEW", "Si vous souhaitez vérifier ou changer certaines de vos réponses, "
 					."vous pouvez le faire en cliquant sur le bouton ["._PREV."] en bas de cette page, "
 					."afin de passer en revue vos réponses.");
@@ -188,15 +185,15 @@ define("_PS_EACHITEM", "Choisissez la réponse appropriée pour chaque élément
 define("_PS_WRITEMULTI", "Ecrivez votre réponse ici :"); //New for 0.98finalRC1
 define("_PS_DATE", "Entrez une date :"); //New for 0.98finalRC1
 define("_PS_COMMENT", "Faites le commentaire de votre choix ici :"); //New for 0.98finalRC1
-define("_PS_RANKING", "Numérotez chaque case dans l&#039;ordre de vos préférences de 1 &agrave;"); //New for 0.98finalRC1
+define("_PS_RANKING", "Numérotez chaque case dans l'ordre de vos préférences de 1 à"); //New for 0.98finalRC1
 define("_PS_SUBMIT", "Envoyer votre questionnaire."); //New for 0.98finalRC1
-define("_PS_THANKYOU", "Merci d&#039;avoir complété ce questionnaire."); //New for 0.98finalRC1
-define("_PS_FAXTO", "SVP faxez ce questionnaire rempli &agrave; :"); //New for 0.98finaclRC1
+define("_PS_THANKYOU", "Merci d'avoir complété ce questionnaire."); //New for 0.98finalRC1
+define("_PS_FAXTO", "SVP faxez ce questionnaire rempli à :"); //New for 0.98finaclRC1
 
-define("_PS_CON_ONLYANSWER", "Répondez &agrave; cette question"); //New for 0.98finalRC1
+define("_PS_CON_ONLYANSWER", "Répondez à cette question"); //New for 0.98finalRC1
 define("_PS_CON_IFYOU", "si vous avez répondu"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "et"); //New for 0.98finalRC1
-define("_PS_CON_TOQUESTION", "&agrave; la  question"); //New for 0.98finalRC1
+define("_PS_CON_TOQUESTION", "à la  question"); //New for 0.98finalRC1
 define("_PS_CON_OR", "ou"); //New for 0.98finalRC2
 
 //Save Messages
@@ -209,34 +206,34 @@ define("_SAVEPASSWORDRPT", "Répétez le mot de passe");
 define("_SAVE_EMAIL", "Votre adresse mail");
 define("_SAVEEXPLANATION", "Entrez un nom et un mot de passe pour ce questionnaire et cliquez sur Sauvegarder en bas.<br />\n"
 				  ."Vos réponses au questionnaire seront sauvegardées en utilisant ce nom et ce mot de passe, et pourront "
-				  ."&ecirc;tre complétées plus tard en vous connectant avec ce nom et ce mot de passe.<br /><br />\n"
+				  ."être complétées plus tard en vous connectant avec ce nom et ce mot de passe.<br /><br />\n"
 				  ."Si vous donnez une adresse mail, un mail contenant ces détails vous sera envoyé");
 define("_SAVESUBMIT", "Sauvegarder maintenant");
-define("_SAVENONAME", "Vous devez fournir un nom pour sauvegarder vos réponses &agrave; ce questionnaire.");
-define("_SAVENOPASS", "Vous devez fournir un mot de passe pour sauvegarder vos réponses &agrave; ce questionnaire.");
+define("_SAVENONAME", "Vous devez fournir un nom pour sauvegarder vos réponses à ce questionnaire.");
+define("_SAVENOPASS", "Vous devez fournir un mot de passe pour sauvegarder vos réponses à ce questionnaire.");
 define("_SAVENOPASS2", "Vous devez entrer de nouveau le mot de passe pour cette sauvegarde.");
 define("_SAVENOMATCH", "Vos mots de passe ne correspondent pas.");
-define("_SAVEDUPLICATE", "Ce nom a déj&agrave; été utilisé pour ce questionnaire. Vous devez en choisir un autre.");
+define("_SAVEDUPLICATE", "Ce nom a déjà été utilisé pour ce questionnaire. Vous devez en choisir un autre.");
 define("_SAVETRYAGAIN", "Essayer encore SVP.");
 define("_SAVE_EMAILSUBJECT", "Détails sur le questionnaire que vous avez sauvegardé");
-define("_SAVE_EMAILTEXT", "Vous, ou quelqu&#039;un utilisant votre adresse mail, a sauvegardé "
-						 ."ses réponses partielles &agrave; un questionnaire. Les informations suivantes peuvent &ecirc;tre utilisées "
-						 ."pour retourner &agrave; ce questionnaire et le continuer o&ugrave; vous en étiez.");
-define("_SAVE_EMAILURL", "Rechargez votre questionnaire en cliquant sur l&#039;URL suivante :");
-define("_SAVE_SUCCEEDED", "Vos réponses &agrave; ce questionnaire ont ét&eacute, sauvegardées avec succ&egrave;s");
-define("_SAVE_FAILED", "Une erreur est survenue et vos réponses n&#039;ont pas été sauvegardées.");
+define("_SAVE_EMAILTEXT", "Vous, ou quelqu'un utilisant votre adresse mail, a sauvegardé "
+						 ."ses réponses partielles à un questionnaire. Les informations suivantes peuvent être utilisées "
+						 ."pour retourner à ce questionnaire et le continuer où vous en étiez.");
+define("_SAVE_EMAILURL", "Rechargez votre questionnaire en cliquant sur l'URL suivante :");
+define("_SAVE_SUCCEEDED", "Vos réponses à ce questionnaire ont été sauvegardées avec succès");
+define("_SAVE_FAILED", "Une erreur est survenue et vos réponses n'ont pas été sauvegardées.");
 define("_SAVE_EMAILSENT", "Un mail vous a été envoyé avec les détails de ce questionnaire.");
 
 //Load Messages
-define("_LOAD_SAVED", "Chargement des réponses déj&agrave; enregistrées pour ce questionnaire");
-define("_LOADHEADING", "Chargement d&#039;un questionnaire précédemment sauvegardé");
+define("_LOAD_SAVED", "Chargement des réponses déjà enregistrées pour ce questionnaire");
+define("_LOADHEADING", "Chargement d'un questionnaire précédemment sauvegardé");
 define("_LOADEXPLANATION", "Vous pouvez charger un questionnaire que vous avez précédemment sauvegardé depuis cet écran.<br />\n"
 			  ."Entrez le nom et le mot de passe utilisés lors de la sauvegarde.<br /><br />\n");
 define("_LOADNAME", "Nom");
 define("_LOADPASSWORD", "Mot de passe");
 define("_LOADSUBMIT", "Charger maintenant");
-define("_LOADNONAME", "Vous n&#039;avez pas fourni de nom");
-define("_LOADNOPASS", "Vous n&#039;avez pas fourni de mot de passe");
+define("_LOADNONAME", "Vous n'avez pas fourni de nom");
+define("_LOADNOPASS", "Vous n'avez pas fourni de mot de passe");
 define("_LOADNOMATCH", "Pas de questionnaire correspondant enregistré");
 
 define("_ASSESSMENT_HEADING", "Votre évaluation");
