@@ -1461,9 +1461,9 @@ function templatereplace($line)
                 {
                 $saveall = "<input type='submit' name='loadall' value='"._LOAD_SAVED."' class='saveall'>";
                 }
-            elseif (!isset($_POST['move']) || $_POST['move'] != " "._LAST." ")
+            elseif ($_SESSION['step'] < $_SESSION['totalsteps'])
                 {
-                $saveall = "<input type='submit' name='saveall' value='"._SAVE_AND_RETURN."' class='saveall'>";
+               	$saveall = "<input type='submit' name='saveall' value='"._SAVE_AND_RETURN."' class='saveall'>";
                 }
             else
                 {
