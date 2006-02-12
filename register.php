@@ -124,8 +124,13 @@ $html=""; //Set variable
 
 if (MailtextMessage($message, $subject, returnglobal('register_email'), $from, $sitename))
 	{
+			// TLR change to put date into sent
+//	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
+//			."SET sent='Y' WHERE tid=$tid";
+	$today = date("Y-m-d Hi");	
 	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
-			."SET sent='Y' WHERE tid=$tid";
+			."SET sent='$today' WHERE tid=$tid";
+//
 	$result=mysql_query($query) or die ("$query<br />".mysql_error());
 	$html="<center>"._RG_REGISTRATIONCOMPLETE;
 	$html=Replacefields($html, $fieldsarray);
