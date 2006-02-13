@@ -1987,6 +1987,7 @@ function do_array_flexible($ia)
     global $shownoanswer;
     global $repeatheadings;
     global $notanswered;
+    global $minrepeatheadings;
     $qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = mysql_query($qquery);
     while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -2030,22 +2031,24 @@ function do_array_flexible($ia)
             }
         $answer .= "\t\t\t\t</tr>\n";
 
-        $ansresult = mysql_query($ansquery);
         while ($ansrow = mysql_fetch_array($ansresult))
             {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
                 {
-                $answer .= "\t\t\t\t<tr>\n"
-                         . "\t\t\t\t\t<td></td>\n";
-                foreach ($labelans as $ld)
+                if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                     {
-                    $answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
+                    $answer .= "\t\t\t\t<tr>\n"
+                             . "\t\t\t\t\t<td></td>\n";
+                    foreach ($labelans as $ld)
+                        {
+                        $answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
+                        }
+                    if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+                        {
+                        $answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOANSWER."</font></td>\n";
+                        }
+                    $answer .= "\t\t\t\t</tr>\n";
                     }
-                if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
-                    {
-                    $answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOANSWER."</font></td>\n";
-                    }
-                $answer .= "\t\t\t\t</tr>\n";
                 }
             $myfname = $ia[1].$ansrow['code'];
             if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}

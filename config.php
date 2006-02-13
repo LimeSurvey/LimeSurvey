@@ -82,6 +82,7 @@ $lwcdropdowns       =   "R"; //SHOW LISTS WITH COMMENT in Public Survey as Radio
 $dropdownthreshold  =   "25";   //The number of answers to a list type question before it switches from Radio Buttons to List
                             //Only applicable, of course, if you have chosen "R" for $dropdowns and/or $lwcdropdowns
 $repeatheadings     =   "25"; //The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
+$minrepeatheadings  =   3; // The minimum number of remaing answers that are required before repeating the headings in array (flexible) questions.
 $maxemails          =   100; //The maximum number of emails to send in one go (this is to allow for script timeouts with large emails)
 $defaultlang        =   "english"; //The default language to use
 $OS                 =   PHP_OS;
