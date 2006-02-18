@@ -1,7 +1,7 @@
 <?php
 /*
     #############################################################
-    # >>> PHPSurveyor                                          #
+    # >>> PHPSurveyor                                           #
     #############################################################
     # > Author:  Jason Cleeland                                 #
     # > E-mail:  jason@cleeland.org                             #
@@ -79,7 +79,7 @@ define("_MANDATORY", "Bitte beantworten Sie diese Frage");
 define("_MANDATORY_PARTS", "Bitte beenden Sie alle Bereiche/Teile"); 
 define("_MANDATORY_CHECK", "Bitte machen Sie mindestens ein Kreuz"); 
 define("_MANDATORY_RANK", "Bitte bringen Sie alle Elemente in eine Rangfolge"); 
-define("_MANDATORY_POPUP", "Eine oder mehr vorgeschriebene Fragen sind nicht beantwortet worden. Sie können nicht fortfahren, bis diese beantwortet wurden!");
+define("_MANDATORY_POPUP", "Eine oder mehrere Pflichtfragen sind nicht beantwortet worden. Bitte beantworten Sie diese, um fortzufahren!");
 define("_VALIDATION", "Diese Frage muss korrekt beantwortet werden");
 define("_VALIDATION_POPUP", "Ein oder mehrere Fragen sind nicht korrekt beantwortet worden. Sie können nicht fortfahren, bevor Sie dies nicht getan haben.");
 define("_DATEFORMAT", "Format: JJJJ-MM-TT"); 
@@ -170,7 +170,7 @@ define ("_RG_REGISTRATIONCOMPLETE", "Vielen Dank, dass Sie sich für die Teilnah
                                    ."{ADMINNAME} ({ADMINEMAIL})");
 define("_SM_COMPLETED", "<strong>Vielen Dank!<br /><br />"
                        ."Sie haben nun alle Fragen dieser Umfrage beantwortet.</strong><br /><br />"
-                       ."Klicken Sie jetzt auf 'Absenden', um diese Umfrage abzuschließen und Ihre Antworten endgültig zu speichern.");
+                       ."Klicken Sie jetzt auf 'Absenden', um diese Umfrage abzuschließen und um Ihre Antworten endgültig zu speichern.");
 define("_SM_REVIEW", "Wenn Sie Ihre Antworten nochmal überprüfen und/oder ändern wollen, "
                     ."dann klicken Sie bitte auf den Knopf 'Zurück', um durch Ihre Antworten zu blättern.");
 

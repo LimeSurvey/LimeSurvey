@@ -81,7 +81,7 @@ define("_MANDATORY", "Bitte beantworte diese Frage");
 define("_MANDATORY_PARTS", "Bitte beende alle Bereiche/Teile"); 
 define("_MANDATORY_CHECK", "Bitte mache mindestens ein Kreuzchen"); 
 define("_MANDATORY_RANK", "Bitte bringe alle Elemente in eine Rangfolge"); 
-define("_MANDATORY_POPUP", "Eine oder mehr vorgeschriebene Fragen sind nicht beantwortet worden. Du kannst nicht fortfahren, bis diese beantwortet wurden!");
+define("_MANDATORY_POPUP", "Eine oder mehrere Pflichtfragen sind nicht beantwortet worden. Du kannst nicht fortfahren, bis diese beantwortet wurden!");
 define("_VALIDATION", "Diese Frage muss korrekt beantwortet werden");
 define("_VALIDATION_POPUP", "Ein oder mehrere Fragen sind nicht korrekt beantwortet worden. Sie k&ouml;nnen nicht fortfahren, bevor Sie dies nicht getan haben.");
 define("_DATEFORMAT", "Format: JJJJ-MM-TT"); 
@@ -174,7 +174,7 @@ define ("_RG_REGISTRATIONCOMPLETE", "Vielen Dank, dass du dich f&uuml;r die Teil
                                    ."{ADMINNAME} ({ADMINEMAIL})");
 define("_SM_COMPLETED", "<strong>Vielen Dank!<br /><br />"
                        ."du hast nun alle Fragen dieser Umfrage beantwortet.</strong><br /><br />"
-                       ."Klicke jetzt auf 'Absenden', um diese Umfrage abzuschliesen und deine Antworten endg&uuml;ltig zu speichern.");
+                       ."Klicke jetzt auf 'Absenden', um diese Umfrage abzuschliesen und um deine Antworten endg&uuml;ltig zu speichern.");
 define("_SM_REVIEW", "Wenn du deine Antworten nochmal &uuml;berpr&uuml;fen und/oder &auml;ndern willst, "
                     ."dann klicke bitte auf den Knopf 'Zur&uuml;ck', um durch deine Antworten zu bl&auml;ttern.");
 
