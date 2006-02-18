@@ -693,67 +693,6 @@ foreach ($fieldmap as $field)
         } // switch
     }
 
-echo "<table ><tr><td></td></tr></table>\n"
-    ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
-    ." cellspacing='0'>\n"
-    ."<tr><td align='center' bgcolor='#555555' height='22'>"
-    ."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"sqlbuilder\"); hide(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"sqlbuilder\")'>"
-    ."<font size='2' face='verdana' color='#FF9900'>\n"
-    ."<strong>SQL Builder</strong>\n"
-    ."</font></td></tr>\n"
-    ."</table>\n"
-    ."<form method='post' name='sqlbuild' action='statistics.php'>\n"
-    ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'";
-
-echo "      <tr><td>
-      <script type='text/javascript'>
-      <!--
-       function displayvalue(value) {
-         document.getElementById('fieldnametext').value=value;\n";
-foreach ($asnames as $as)
-    {
-    echo "      document.getElementById('$as').style.display='none';\n";
-    }
-echo "       document.getElementById(value).style.display='';
-       }
-      //-->
-      </script>
-      <table width='100%' align='center' cellspacing='0' cellpadding='0' style='display:none' id='sqlbuilder'>
-       <tr>
-        <td align='center'>Questions:<br />
-         <select size='5' style='width: 800; font-size: 8.5px' onClick='displayvalue(this.value)' onChange='displayvalue(this.value)'>$selectlist</select>
-        </td>
-       </tr>
-       <tr>
-        <td align='center'><br />
-         Field Name:<br /><input type='text' id='fieldnametext' size='50'>
-        </td>
-       </tr>
-       <tr>
-        <td align='center'>Answers:<br />\n";
-foreach ($answerselects as $as) {echo "$as\n";}
-if (!isset($_POST['sql'])) 
-    {
-    $_POST['sql']="SELECT *\nFROM {$dbprefix}survey_$surveyid\n";
-    }
-echo "      </td>
-       </tr>
-       <tr>
-        <td align='center'><br />
-         "._SQL.":<br />
-         <textarea name='sql' cols='60' rows='10'>".$_POST['sql']."</textarea>
-        </td>
-       </tr>
-       <tr>
-        <td align='center'>
-         <input type='submit' value='Query'>
-        </td>
-       </tr>
-      </table>
-      <input type='hidden' name='display' value=\"Hi\">
-      </td></tr>
-      </table></form>";
-//echo "<pre>";print_r($fieldmap);echo "</pre>";
 // DISPLAY RESULTS
 if (isset($_POST['display']) && $_POST['display'])
     {
