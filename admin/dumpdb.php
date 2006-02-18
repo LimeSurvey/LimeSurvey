@@ -80,11 +80,11 @@ function defdump($tablename)
         $def .="#------------------------------------------"."\n";
         $def .= "DROP TABLE IF EXISTS $tablename;"."\n"."\n";
         $def .= "CREATE TABLE $tablename ("."\n";
-        $result = @mysql_query("SHOW FIELDS FROM $tablename") or die("Table $tablename not existing in database");
+        $result = @mysql_query("SHOW COLUMNS FROM $tablename") or die("Table $tablename not existing in database");
         while($row = @mysql_fetch_array($result))
         {
           $def .= "    $row[Field] $row[Type]";
-          if ($row["Default"] != "") $def .= " DEFAULT '$row[Default]'";
+          if (!is_null($row["Default"])) $def .= " DEFAULT '$row[Default]'";
           if ($row["Null"] != "YES") $def .= " NOT NULL";
           if ($row["Extra"] != "") $def .= " $row[Extra]";
           $def .= ",\n";
