@@ -677,10 +677,7 @@ if (returnglobal('action') == "email")
 		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TC_REMINDTID." {$_POST['tid']})";}
 		echo "<br />\n";
 		
-	// TLR change to put date into sent and completed
-	//	$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent !='Y' AND token !='' AND email != ''";
-	//	$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent ='N' AND token !='' AND email != ''";
-		$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed ='N' AND sent ='N' AND token !='' AND email != ''";
+		$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
 		
 		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
 		echo "<!-- ctquery: $ctquery -->\n";
@@ -690,10 +687,7 @@ if (returnglobal('action') == "email")
 		$emquery = "SELECT firstname, lastname, email, token, tid";
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 		
-	// TLR change to put date into sent and completed
-	//	$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'Y' AND token !='' AND email != ''";
-	//	$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'N' AND token !='' AND email != ''";
-		$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed = 'N' AND sent = 'N' AND token !='' AND email != ''";
+		$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
 		
 		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
 		$emquery .= " LIMIT $maxemails";
