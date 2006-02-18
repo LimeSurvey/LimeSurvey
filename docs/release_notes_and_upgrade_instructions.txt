@@ -31,97 +31,74 @@ Ready to upgrade?
 
 The upgrade procedure step-by-step:
 
-1.)	Make a full backup of your PHPSurveyor database just in case!
+1.) Make a full backup of your PHPSurveyor database just in case!
 
-2.)	Make a full backup of your PHPSurveyor directory 
-	(especially the the file admin/config.php for reference)!
+2.) Make a full backup of your PHPSurveyor directory 
+    (especially the the file admin/config.php for reference)!
 
-3.)	Delete all files from your PHPSurveyor directory.
+3.) Delete all files from your PHPSurveyor directory.
 
-4.)	Upload the new files into your PHPSurveyor directory.
+4.) Upload the new files into your PHPSurveyor directory.
 
-5.)	Edit the config.php to match your existing database setup... 
-	Do NOT just copy over the old config.php!
+5.) Edit the config.php to match your existing database setup... 
+    Do NOT just copy over the old config.php!
 
-6.)	Run the admin/admin.php as usual!
+6.) Run the admin/admin.php as usual!
 
-7.)	Do a database check. Click on the brown container icon in the admin bar, 
-	then execute the database check. This will generate missing tables and/or fields.
+7.) Do a database check. Click on the brown container icon in the admin bar, 
+    then execute the database check. This will generate missing tables and/or fields.
 
-8.)	There are new template files required for this release. If you 
-    	have any templates you have created yourself, you need to 
-	ensure that they have a copy of the "assessments.pstpl", 
-	"save.pstpl" and "load.pstpl" templates in their directory. The 
-	templates admin screen will automatically copy the default 
-	version of these files into any template folder it views if they do 
-	not already exist.
+8.) There are new template files required for this release. If you 
+    have any templates you have created yourself, you need to 
+    ensure that they have a copy of the "assessments.pstpl", 
+    "save.pstpl" and "load.pstpl" templates in their directory. The 
+    templates admin screen will automatically copy the default 
+    version of these files into any template folder it views if they do 
+    not already exist.
 
 
+Thank you to everyone who helped with this new release!
 
-Changes from 0.99 to 0.991
+Changes from 0.991 to 0.992
 
 New features:
 
-- [Installation] Modifications and manual added to get PHPSurveyor to work under OS/2 Warp or eCS (by Lorne Tyndale)
-- [Installation] MySQL 5 strict compatibility
-- [Survey Design] Allow importing responses from deactivated survey tables 
-- [Import / Export] Export data to SPSS 
-- [Survey at Runtime] Participant's IP address can be saved now with every survey
-- [Survey at Runtime] Allow template-specific Javascript to run at onload 
-- [Import / Export] Export "question codes" for headings. 
-- [Survey Design] Copy question on experimental admin interface does now work 
+Added croatian language file (submitted by Ivana Pavic)!
+Change survey sent/taken from "Y" to the date:
+	When reviewing the tokens display, the fields telling if the survey request was sent, 
+	and the survey taken, display a N or Y. This was changed to be the actual date this event took place. 
+	This is giving some siginificant additional information to the survey author. (Patch by Thomas Ringate / tringate!)
+New global option that allows the administrator to specify what is the minimum number of remaining answers 
+	in an 'array - flexible' question that must be remaining before repeating the question headings. This 
+	avoids that the headings of the question are repeated if only a few answers are remaining. (Patch by Kris Ven !)
 
-
+Changes:
+Moved admin CSS styles to separate CSS file
+Updated slovenian language file
+Updated dutch language file
+Updated french language file (by Pascal Bastien/pascal-gnu)
+Moved config.php and common.php from admin directory to main one. This allow easy configuration of permission on IIS (patch #326 by freddy77)
+Use extensively dirname and __FILE__ constants. This allow inclusion using full path names limiting some possible security issues. (patch #326 by freddy77)
+Added XPertmailer class wich helps alot when sending email dealing with all the linefeed issues. SMTP function will be available in the next version.
 
 Bug Fixes:
 
-- [Language] Removed Junk characters (ctrl-M,crtl-M,LineFeed) at the end of french language files 
-- [Survey Design] Importing question did not work properly 
-- [Tokens] Saved survey did not perform properly 
-- [Data Entry (non public)] missing {$dbprefix} tags in some internal queries
-- [Survey Design] When importing a survey, the question attributes/coniditons were lost 
-- [Security] Fixed some security issues with SQL Injection using the SID variable 
-- [Language] Fixed problem with edit token in french language 
-- [Data Entry (non public)] Fixed some security issues by quoting error messages sent to browser 
-- [Survey at Runtime] Character encoding for "Saved Survey Details" was partially broken 
-- [Survey at Runtime] Temporary saving of results: link in email was broken when using spaces 
-- [Survey at Runtime] Email invitation Was sending incorrect link 
-- [Survey Design] Adding 0 (zero) as answer code or answer text was not possible
-- [Survey at Runtime] Review text didn`t show in submit page. 
-- [Survey at Runtime] {TOKEN} was not available in complete.pstpl when survey is not anonymous 
-- [Assessments] Invitation e-mails with same firstname and link 
-- [Import / Export] Exported surveys reimported with errors
-- [Survey at Runtime] Character encoding not working in popup window 
-- [Installation] possible error in common.php 
-- [Survey Design] html links disabled after editing survey 
-- [Survey at Runtime] Question attributes - display_columns with only one row 
-- [Import / Export] Sort order in Excel and cvs export is strange 
-- [Data Entry (non public)] Small update for Italian cvs 
-- [Survey Design] the experimental interface "Selected Survey" do not handle character encoding properly 
-- [Data Entry (non public)] Other problems with some characters 
-- [Data Entry (non public)] Patch for CVS italian 
-- [Tokens] Adding New Token Entries Manually 
-- [Data Entry (non public)] Labels missing on data edit screen for Multiple Short Text [Q] 
-- [Security] error on saving survey 
-- [Data Entry (non public)] Moving questions from one group to another breaks conditions pointing to them 
-- [Assessments] Question attributes - display_columns with only one row 
-- [Tokens] formfields in the emailconfirmation 
-- [Assessments] Exporting Group gives bad SQL 
-- [Tokens] E-mail problem/standardization needed 
-- [Installation] If phpsurveyoy is symlinked into the document root, $sourcefrom variable handling breaks. 
-- [Installation] Wrong characters of "end of the line" in french files 
-- [Security] when returning to a saved survey via token a failed login doesn't tell you login failed it just starts a new survey 
-- [Data Entry (non public)] user is asked to register again 
-- [Survey at Runtime] Data loss in fields including an apostrophe when [prev] button is used - multiple options with comments 
-- [Data Entry (non public)] passwords not match bug 
-- [Data Entry (non public)] inputs not checked for sql injection 
-- [Survey at Runtime] Invalid ID names in HTML 
-- [Data Entry (non public)] Problem with some characters 
-- [Survey Design] embedded html 
-
-
-New Features:
-
+Fixed bug #373: Setting Charset on MySQL connection
+Fixed bug #325: Spelling error in keyword fo SPSS export
+Fixed bug #331: Some conditions broken in 'All in one' survey mode
+Fixed bug #339: Input fields on "Register for survey "-page not constructed properly
+Fixed bug #339: Umlauts not showing up correctly in german formal language
+Fixed bug #348: Failed to import survey dumps when using MySQL version 5.x
+Fixed bug #345: Excel export reports "Use of undefined constant _IP_ADDRESS"
+Fixed bug #338: Message 'This survey is no longer available' if Expires: field is left empty when creating a survey by introducing a new field to the survey table since '0000-00-00' entries will be invalid under MySQL5 strict mode.
+Fixed bug #347: Invitation mail empty under certain server configurations
+Fixed bug 342: The "Export database" option exports all tables even if we use a prefix for tables
+Fixed bug #357: Error "Undefined index attribute..." in tokens.php when trying to export tokens
+Fixed bug #355: Save button on last page in group mode doesn't really make sense.
+Fixed bug #380: Can`t add a label with code 0
+Fixed bug #368: Conditionals on multiple option / checkbox question type was broken
+Fixed bug #372: Backup of entire database command does not create correct empty default values
+Fixed bug #374: Couldn't delete response record if using prefixed tables
 
 
 
@@ -149,14 +126,14 @@ sets of answers easier - one radio and one dropdown type
 * Question attributes, allows for better control over the display 
 and working of individual questions - for example:
 
-	- Have multiple choice or list questions display in multiple columns
-	- Set a maximum character length on text questions
-	- Adjust the width of  the input box in text questions
-	- Hide the tip "Please Choose One" of selected questions
+    - Have multiple choice or list questions display in multiple columns
+    - Set a maximum character length on text questions
+    - Adjust the width of  the input box in text questions
+    - Hide the tip "Please Choose One" of selected questions
         - Allow the user to select the number of lines the text area will have with long free text and huge free text
-	  Thank you very much to Shawn Wales (sf.net name: swales)!
-	- Allows the user to select the width of the text area with long free text and huge free text questions
-	  Thank you very much to Shawn Wales (sf.net name: swales)!
+      Thank you very much to Shawn Wales (sf.net name: swales)!
+    - Allows the user to select the width of the text area with long free text and huge free text questions
+      Thank you very much to Shawn Wales (sf.net name: swales)!
 
 * New system option to set the table type in MySQL
 
