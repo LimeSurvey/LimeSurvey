@@ -1,0 +1,207 @@
+Welcome to PHPSurveyor!
+
+HOW TO INSTALL
+---------------
+If you are doing a complete new installation please refer to the manual at
+/admin/manual.html.
+
+
+HOW TO UPGRADE from all earlier versions of PHPSurveyor
+-------------------------------------------------------
+
+IMPORTANT: Before you upgrade READ THIS:
+
+PHPSurveyor has been converted to UTF-8. That means that existing surveys 
+using an non-alphabetic (A..Z) charset like japanese or kyrillic WILL HAVE 
+TO be redone!
+
+If you have surveys in a such a language you will have to take the 
+pain and do this.
+
+There is no safe way around this (The only way might be an export of the database
+and editing the SQL file with an UTF-8 capable editor - but we never tried that.)
+
+The advantage on the other hand is that in this new version of PHPSurveyor you can 
+have your admin interface in russian but write chinese surveys for example - 
+and even mix it. You can use any writable char of any language without messing up 
+anything. No future language changes in PHPSurveyor will be necessary, new 
+languages will be supported out of the box.
+
+Ready to upgrade?
+
+The upgrade procedure step-by-step:
+
+1.)	Make a full backup of your PHPSurveyor database just in case!
+
+2.)	Make a full backup of your PHPSurveyor directory 
+	(especially the the file admin/config.php for reference)!
+
+3.)	Delete all files from your PHPSurveyor directory.
+
+4.)	Upload the new files into your PHPSurveyor directory.
+
+5.)	Edit the config.php to match your existing database setup... 
+	Do NOT just copy over the old config.php!
+
+6.)	Run the admin/admin.php as usual!
+
+7.)	Do a database check. Click on the brown container icon in the admin bar, 
+	then execute the database check. This will generate missing tables and/or fields.
+
+8.)	There are new template files required for this release. If you 
+    	have any templates you have created yourself, you need to 
+	ensure that they have a copy of the "assessments.pstpl", 
+	"save.pstpl" and "load.pstpl" templates in their directory. The 
+	templates admin screen will automatically copy the default 
+	version of these files into any template folder it views if they do 
+	not already exist.
+
+
+
+Changes from 0.99 to 0.991
+
+New features:
+
+- [Installation] Modifications and manual added to get PHPSurveyor to work under OS/2 Warp or eCS (by Lorne Tyndale)
+- [Installation] MySQL 5 strict compatibility
+- [Survey Design] Allow importing responses from deactivated survey tables 
+- [Import / Export] Export data to SPSS 
+- [Survey at Runtime] Participant's IP address can be saved now with every survey
+- [Survey at Runtime] Allow template-specific Javascript to run at onload 
+- [Import / Export] Export "question codes" for headings. 
+- [Survey Design] Copy question on experimental admin interface does now work 
+
+
+
+Bug Fixes:
+
+- [Language] Removed Junk characters (ctrl-M,crtl-M,LineFeed) at the end of french language files 
+- [Survey Design] Importing question did not work properly 
+- [Tokens] Saved survey did not perform properly 
+- [Data Entry (non public)] missing {$dbprefix} tags in some internal queries
+- [Survey Design] When importing a survey, the question attributes/coniditons were lost 
+- [Security] Fixed some security issues with SQL Injection using the SID variable 
+- [Language] Fixed problem with edit token in french language 
+- [Data Entry (non public)] Fixed some security issues by quoting error messages sent to browser 
+- [Survey at Runtime] Character encoding for "Saved Survey Details" was partially broken 
+- [Survey at Runtime] Temporary saving of results: link in email was broken when using spaces 
+- [Survey at Runtime] Email invitation Was sending incorrect link 
+- [Survey Design] Adding 0 (zero) as answer code or answer text was not possible
+- [Survey at Runtime] Review text didn`t show in submit page. 
+- [Survey at Runtime] {TOKEN} was not available in complete.pstpl when survey is not anonymous 
+- [Assessments] Invitation e-mails with same firstname and link 
+- [Import / Export] Exported surveys reimported with errors
+- [Survey at Runtime] Character encoding not working in popup window 
+- [Installation] possible error in common.php 
+- [Survey Design] html links disabled after editing survey 
+- [Survey at Runtime] Question attributes - display_columns with only one row 
+- [Import / Export] Sort order in Excel and cvs export is strange 
+- [Data Entry (non public)] Small update for Italian cvs 
+- [Survey Design] the experimental interface "Selected Survey" do not handle character encoding properly 
+- [Data Entry (non public)] Other problems with some characters 
+- [Data Entry (non public)] Patch for CVS italian 
+- [Tokens] Adding New Token Entries Manually 
+- [Data Entry (non public)] Labels missing on data edit screen for Multiple Short Text [Q] 
+- [Security] error on saving survey 
+- [Data Entry (non public)] Moving questions from one group to another breaks conditions pointing to them 
+- [Assessments] Question attributes - display_columns with only one row 
+- [Tokens] formfields in the emailconfirmation 
+- [Assessments] Exporting Group gives bad SQL 
+- [Tokens] E-mail problem/standardization needed 
+- [Installation] If phpsurveyoy is symlinked into the document root, $sourcefrom variable handling breaks. 
+- [Installation] Wrong characters of "end of the line" in french files 
+- [Security] when returning to a saved survey via token a failed login doesn't tell you login failed it just starts a new survey 
+- [Data Entry (non public)] user is asked to register again 
+- [Survey at Runtime] Data loss in fields including an apostrophe when [prev] button is used - multiple options with comments 
+- [Data Entry (non public)] passwords not match bug 
+- [Data Entry (non public)] inputs not checked for sql injection 
+- [Survey at Runtime] Invalid ID names in HTML 
+- [Data Entry (non public)] Problem with some characters 
+- [Survey Design] embedded html 
+
+
+New Features:
+
+
+
+
+Changes from 0.98 to 0.99
+=========================
+
+1.) New question types
+
+* List type question divided into two question types - radio 
+button or drop down, so you can choose on a question by 
+question basis whether or not to have radio buttons or a 
+dropdown list.
+
+* New "flexible" list type question uses labelsets to make reusing 
+sets of answers easier - one radio and one dropdown type
+
+* New "Huge" text question allows for a _really big_ textarea
+
+2.) New features
+
+* UTF-8 conversion. Use any char of any language mixed together. 
+  The problems with mixed up charsets are gone now hopefully. 
+  READ THE STATEMENT AT THE BEGINNING OF THIS FILE!!!!
+
+* Question attributes, allows for better control over the display 
+and working of individual questions - for example:
+
+	- Have multiple choice or list questions display in multiple columns
+	- Set a maximum character length on text questions
+	- Adjust the width of  the input box in text questions
+	- Hide the tip "Please Choose One" of selected questions
+        - Allow the user to select the number of lines the text area will have with long free text and huge free text
+	  Thank you very much to Shawn Wales (sf.net name: swales)!
+	- Allows the user to select the width of the text area with long free text and huge free text questions
+	  Thank you very much to Shawn Wales (sf.net name: swales)!
+
+* New system option to set the table type in MySQL
+
+* New "assessments" feature which allows you to sum the 
+answers to groups of questions, or the total survey, and then 
+present an "assessment" when the users submits the survey.
+
+* New survey options, including:
+ - the capacity to set the "subject" of emails on a survey-by-survey basis
+ - hide the "<< prev" button so users can only go forwards through a survey
+ - Allow users to save a partially completed survey and come back to complete it later
+ - Automatically load the "URL" when the user has completed the survey
+
+* VV Import and VV Export
+ - A way of exporting and importing results directly to the responses table - which not only allows merging of survey 
+   responses run on different servers, but also the ability to add or remove questions to a survey while preserving the existing 
+   responses.
+
+* New sample survey 
+
+* Added W3C HTML 4.01 transitional and WAI 508 compliance (not yet finished)
+
+* Basic ability to integrate into other CMS - thank you to asmaloney
+
+
+3.) New language translations
+
+* COMPLETE French translation of the instructions and updated french language file 
+  kindly provided by Sébastien GAUGRY !! (great work!)
+* COMPLETE Italian translation of the instructions and 
+  updated italian language file kindly provided by Mario Marani !! (great work!)
+* Bulgarian Language File kindly provided by Nikolay Tsanov <tsanov@tu...>
+* Added Portuguese language kindly provided by Rosaura Gazzola & Job Vieira Lúcio, Brazil
+* Updated german language files
+* Updated chinese language file thanks to Cha (sf.net name: cafetango)
+
+
+4.) New themes
+* Included "Blue Heaven" theme 
+* Included "BluenGrey" theme 
+* Included "Vallendar" theme 
+* Included "Business_Grey" theme 
+* Included "Eirenicon" theme 
+* Included "SoftGreenCurves" theme 
+
+
+... and tons of bugfixes - too many to write down here...
+
