@@ -1,37 +1,37 @@
 <?php
 /*
-	#############################################################
-	# >>> PHPSurveyor  										#
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA					#
-	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#	
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#	
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#	
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################
+    #############################################################
+    # >>> PHPSurveyor                                           #
+    #############################################################
+    # > Author:  Jason Cleeland                                 #
+    # > E-mail:  jason@cleeland.org                             #
+    # > Mail:    Box 99, Trades Hall, 54 Victoria St,           #
+    # >          CARLTON SOUTH 3053, AUSTRALIA                  #
+    # > Date:    20 February 2003                               #
+    #                                                           #
+    # This set of scripts allows you to develop, publish and    #   
+    # perform data-entry on surveys.                            #
+    #############################################################
+    #                                                           #
+    #   Copyright (C) 2003  Jason Cleeland                      #
+    #                                                           #
+    # This program is free software; you can redistribute       #   
+    # it and/or modify it under the terms of the GNU General    #
+    # Public License as published by the Free Software          #
+    # Foundation; either version 2 of the License, or (at your  #
+    # option) any later version.                                #
+    #                                                           #
+    # This program is distributed in the hope that it will be   #
+    # useful, but WITHOUT ANY WARRANTY; without even the        #
+    # implied warranty of MERCHANTABILITY or FITNESS FOR A      #
+    # PARTICULAR PURPOSE.  See the GNU General Public License   #
+    # for more details.                                         #
+    #                                                           #
+    # You should have received a copy of the GNU General        #
+    # Public License along with this program; if not, write to  #   
+    # the Free Software Foundation, Inc., 59 Temple Place -     #
+    # Suite 330, Boston, MA  02111-1307, USA.                   #
+    #############################################################
 */
 
 //DUTCH TRANSLATION
@@ -70,17 +70,17 @@ define("_SUBMIT", "Versturen");
 
 //MESSAGES
 //From QANDA.PHP
-define("_CHOOSEONE", "Kies &eacute;&eacute;n van de volgende");
+define("_CHOOSEONE", "Kies één van de volgende");
 define("_ENTERCOMMENT", "Geef uw opmerkingen hier in");
 define("_NUMERICAL_PS", "In dit veld kunnen enkel nummers ingegeven worden");
 define("_CLEARALL", "Afbreken en antwoorden verwijderen");
 define("_MANDATORY", "Dit is een verplichte vraag");
 define("_MANDATORY_PARTS", "Vervolledig alle velden");
-define("_MANDATORY_CHECK", "Kies minimum &eacute;&eacute;n optie");
+define("_MANDATORY_CHECK", "Kies minimum één optie");
 define("_MANDATORY_RANK", "Rangschik alle opties");
-define("_MANDATORY_POPUP", "E&eacute;n of meerdere verplichte velden zijn niet ingevuld. U kan niet verdergaan zonder deze te beantwoorden."); //NEW in 0.98rc4
-define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
-define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
+define("_MANDATORY_POPUP", "Eén of meerdere verplichte velden zijn niet ingevuld. U kan niet verdergaan zonder deze te beantwoorden."); 
+define("_VALIDATION", "Deze vraag dient correct beantwoord te worden."); 
+define("_VALIDATION_POPUP", "Een of meerdere vragen zijn niet correct beantwoord. U kunt niet doorgaan totdat de vragen correct beantwoord zijn.");
 define("_DATEFORMAT", "Formaat: JJJJ-MM-DD");
 define("_DATEFORMATEG", "(vb: 2003-12-25 voor Kerstmis)");
 define("_REMOVEITEM", "Verwijder dit antwoord");
@@ -98,7 +98,7 @@ define("_ANSCLEAR", "Antwoorden verwijderd");
 define("_RESTART", "Herstart deze enquete");
 define("_CLOSEWIN_PS", "Sluit dit venster");
 define("_CONFIRMCLEAR", "Bent u zeker dat u alle antwoorden wil verwijderen?");
-define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
+define("_CONFIRMSAVE", "Bent u zeker dat u de antwoorden wil opslaan?");
 define("_EXITCLEAR", "Afbreken en antwoorden verwijderen");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Gegevens kunnen niet verzonden worden. Er zijn er geen.");
@@ -128,7 +128,7 @@ define("_SURVEYEXPIRED", "Deze enquete is niet meer beschikbaar.");
 
 define("_SURVEYCOMPLETE", "U hebt deze enquete reeds beantwoord."); //NEW FOR 0.98rc6
 
-define("_INSTRUCTION_LIST", "Kies &eacute;&eacute;n van volgende opties"); //NEW for 098rc3
+define("_INSTRUCTION_LIST", "Kies één van volgende opties"); //NEW for 098rc3
 define("_INSTRUCTION_MULTI", "Selecteer alle toepasselijke opties"); //NEW for 098rc3
 
 define("_CONFIRMATION_MESSAGE1", "Enquete verzonden"); //NEW for 098rc5
@@ -138,22 +138,22 @@ define("_CONFIRMATION_MESSAGE4", "Bekijk statistieken -> klik hier:"); //NEW for
 define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Privacy verklaring</i></strong><br />"
-						  ."Deze enquete is anoniem.<br />"
-						  ."De bewaarde antwoorden bevatten geen identiteitsgegevens "
-						  ."tenzij u bij een bepaalde vraag identiteitsgegevens hebt ingevi=uld."
-						  ."Indien u via een code hebt ingelogd kunnen wij u verzekeren dat deze "
-						  ."niet bewaard werd in combinatie met uw antwoorden maar wel in een "
-						  ."alleenstaande, niet gekoppelde, tabel en dit enkel om na te kijken "
-						  ."of voor die code de enquete reeds werd ingevuld of niet. "
-						  ."Er is geen enkele manier om de codes te koppelen aan de antwoorden."); //New for 0.98rc9
+                          ."Deze enquete is anoniem.<br />"
+                          ."De bewaarde antwoorden bevatten geen identiteitsgegevens "
+                          ."tenzij u bij een bepaalde vraag identiteitsgegevens hebt ingevi=uld."
+                          ."Indien u via een code hebt ingelogd kunnen wij u verzekeren dat deze "
+                          ."niet bewaard werd in combinatie met uw antwoorden maar wel in een "
+                          ."alleenstaande, niet gekoppelde, tabel en dit enkel om na te kijken "
+                          ."of voor die code de enquete reeds werd ingevuld of niet. "
+                          ."Er is geen enkele manier om de codes te koppelen aan de antwoorden."); //New for 0.98rc9
 
 define("_THEREAREXQUESTIONS", "Er zijn {NUMBEROFQUESTIONS} vragen in deze enquete."); //New for 0.98rc9 Must contain {NUMBEROFQUESTIONS} which gets replaced with a question count.
 define("_THEREAREXQUESTIONS_SINGLE", "Er is slechts 1 vraag in deze enquete."); //New for 0.98rc9 - singular version of above
-						  
+                          
 define ("_RG_REGISTER1", "Registratie is vereist om deel te nemen aan deze enquete."); //NEW for 0.98rc9
 define ("_RG_REGISTER2", "U kan uzelf registreren om deel te nemen aan deze enquete.<br />\n"
-					."Vul volgende gegevens in en u zal onmiddellijk een email ontvangen met daarin "
-					."een link naar de enquete."); //NEW for 0.98rc9
+                    ."Vul volgende gegevens in en u zal onmiddellijk een email ontvangen met daarin "
+                    ."een link naar de enquete."); //NEW for 0.98rc9
 define ("_RG_EMAIL", "Email Adres"); //NEW for 0.98rc9
 define ("_RG_FIRSTNAME", "Voorname"); //NEW for 0.98rc9
 define ("_RG_LASTNAME", "Familiename"); //NEW for 0.98rc9
@@ -161,18 +161,18 @@ define ("_RG_INVALIDEMAIL", "Het emailadres dat u opgaf is niet geldig. Probeer 
 define ("_RG_USEDEMAIL", "Het emailadres dat u opgaf is reeds geregistreerd.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "{SURVEYNAME} Registratie Bevestiging");//NEW for 0.98rc9
 define ("_RG_REGISTRATIONCOMPLETE", "Bedankt voor uw registratie om deel te nemen aan deze enquete.<br /><br />\n"
-							."Er werd een email gestuurd naar het opgegeven adres met toegangsgegevens "
-							."voor deze enquete. Volg de link in deze email om de enquete te starten.<br /><br />\n"
-							."Enquete verantwoordelijke {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
+                            ."Er werd een email gestuurd naar het opgegeven adres met toegangsgegevens "
+                            ."voor deze enquete. Volg de link in deze email om de enquete te starten.<br /><br />\n"
+                            ."Enquete verantwoordelijke {ADMINNAME} ({ADMINEMAIL})");//NEW for 0.98rc9
 
 define("_SM_COMPLETED", "<strong>Dank u<br /><br />"
-					   ."U hebt alle vragen in deze enquete beantwoord.</strong><br /><br />"
-					   ."Klik op ["._SUBMIT."] om uw antwoorden te bewaren.");
+                       ."U hebt alle vragen in deze enquete beantwoord.</strong><br /><br />"
+                       ."Klik op ["._SUBMIT."] om uw antwoorden te bewaren.");
 define("_SM_REVIEW", "Indien u uw antwoorden nog eens wil nakijken of wijzigen, "
-					."blader dan door de enquete met de [<< "._PREV."] en ["._NEXT." >>] knoppen.");
+                    ."blader dan door de enquete met de [<< "._PREV."] en ["._NEXT." >>] knoppen.");
 
 //For the "printable" survey
-define("_PS_CHOOSEONE", "Kies <strong>&eacute;&eacute;n</strong> van volgende antwoorden"); //New for 0.98finalRC1
+define("_PS_CHOOSEONE", "Kies <strong>één</strong> van volgende antwoorden"); //New for 0.98finalRC1
 define("_PS_WRITE", "Type uw antwoord hier"); //New for 0.98finalRC1
 define("_PS_CHOOSEANY", "Selecteer alle toepasselijke antwoorden"); //New for 0.98finalRC1
 define("_PS_CHOOSEANYCOMMENT", "Selecteer alle toepasselijke antwoorden en geef uw commentaar"); //New for 0.98finalRC1
@@ -200,9 +200,9 @@ define("_SAVEPASSWORD", "Wachtwoord");
 define("_SAVEPASSWORDRPT", "Herhaal wachtwoord");
 define("_SAVE_EMAIL", "Uw e-mail adres");
 define("_SAVEEXPLANATION", "Vul een naam en wachtwoord in voor deze enquete en druk op save.<br />\n"
-				  ."Uw enquete wordt opgeslagen en kan later worden aangevuld door in te loggen "
-				  ."met de door u opgegeven inloggevens.<br /><br />\n"
-				  ."Als u een e-mail adres op geeft sturen we u de details per e-mail").
+                  ."Uw enquete wordt opgeslagen en kan later worden aangevuld door in te loggen "
+                  ."met de door u opgegeven inloggevens.<br /><br />\n"
+                  ."Als u een e-mail adres op geeft sturen we u de details per e-mail").
 define("_SAVESUBMIT", "Nu opslaan");
 define("_SAVENONAME", "Vul a.u.b een naam in voor de opgeslagen sessie.");
 define("_SAVENOPASS", "Vul a.u.b. een wachtwoord in voor de opgeslagen sessie.");
@@ -211,8 +211,8 @@ define("_SAVEDUPLICATE", "De naam voor de enquete is reeds ingebruik, de naam mo
 define("_SAVETRYAGAIN", "Probeert u het nog eens.");
 define("_SAVE_EMAILSUBJECT", "Opgeslagen enquete details");
 define("_SAVE_EMAILTEXT", "U, of iemand anders die uw e-mail adres heeft gebruikt"
-						 ."heeft tijdelijk zijn antwoorden op een enquete opgeslagen."
-						 ."De volgende details kunt u gebruiken om de enquete te vervolgen.");
+                         ."heeft tijdelijk zijn antwoorden op een enquete opgeslagen."
+                         ."De volgende details kunt u gebruiken om de enquete te vervolgen.");
 define("_SAVE_EMAILURL", "Herlaad de enquete door op de volgende link te klikken:");
 define("_SAVE_SUCCEEDED", "Uw antwoorden zijn succesvol opgeslagen.");
 define("_SAVE_FAILED", "Er heeft zich een onverwachte fout voorgedaan, uw antwoorden zijn niet opgeslagen.");
@@ -222,7 +222,7 @@ define("_SAVE_EMAILSENT", "Uw heeft een e-mail toegezonden gekregen met details 
 define("_LOAD_SAVED", "Laad onvoltooide enquete");
 define("_LOADHEADING", "Laad een eerder opgeslagen enquete");
 define("_LOADEXPLANATION", "U kunt een enquete laden die u hier eerder heeft opgeslagen.<br />\n"
-			  ."Vul de eerder door u verzonnen naam en wachtwoord in<br /><br />\n");
+              ."Vul de eerder door u verzonnen naam en wachtwoord in<br /><br />\n");
 define("_LOADNAME", "Naam");
 define("_LOADPASSWORD", "Wachtwoord");
 define("_LOADSUBMIT", "Laad nu");
