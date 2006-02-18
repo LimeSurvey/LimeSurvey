@@ -40,10 +40,12 @@ if (!isset($dbprefix)) {die("Cannot run this script directly");}
 $versionnumber = "0.992";
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
+
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
 
+require_once 'classes/XPertMailer.php'; 
 $realdefaultlang=$defaultlang;
 
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
@@ -1923,24 +1925,22 @@ function ReplaceFields ($text,$fieldsarray)
 
 function MailTextMessage($body, $subject, $to, $from, $sitename)
 {
-	$headers = "From: {$from}\r\n";
-	$headers .= "X-Mailer: $sitename Emailer (PHPSurveyor.sourceforge.net)\r\n";  
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/plain; charset=utf-8\r\n";		
-	
+	$mail = new XpertMailer();
+	$fromname='';
+	$fromemail=$from;
+	if (strpos($from,'<'))
+		{
+         	$fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
+         	$fromname=trim(substr($from,0, strpos($from,'<')-1));
+		}
+	$mail->from($fromemail, $fromname);
+	$header['X-Surveymailer'] = $sitename.' Emailer (PHPSurveyor.sourceforge.net)';
+    $mail->headers($header);
 	$body = strip_tags($body);
 	$body = str_replace("&quot;", '"', $body);
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
-
-	$body=crlf_lineendings($body);
-	// Uncomment the next line if your mail clients can't handle emails containing <CR><LF> 
-    // line endings. This converts them to just <LF> line endings. This is not correct, and may 
-	// cause problems with certain email server
-	//$body = str_replace("\r", "", $body);
-
 	$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
-	Return mail($to, $subject, $body, $headers);
-
+	Return  $mail->send($to, $subject, $body, false, 'utf-8');
 }
 
 ?>
