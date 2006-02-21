@@ -8,6 +8,8 @@
 		<td align='center' colspan='3'>
 			{NAVIGATOR}<br />
 			<font size='1'>{CLEARALL}</font>
+			{SAVE}
+
 		</td>
 	</tr>
 	<tr>

@@ -3,6 +3,8 @@
 		<td align='center'>
 			{NAVIGATOR}<br />
 			{CLEARALL}
+			{SAVE}
+
 		</td>
 	</tr>
 </table>
