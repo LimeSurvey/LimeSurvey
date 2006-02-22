@@ -286,7 +286,7 @@ elseif ($action == "updatequestion")
 elseif ($action == "copynewquestion")
     {
     $_POST  = array_map('mysql_escape_string', $_POST);
-    if (!isset($_POST['lid'])) {$_POST['lid']=0;}
+    if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
     $query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
     $result = mysql_query($query);
     $newqid = mysql_insert_id();

@@ -322,6 +322,8 @@ if (isset($grouparray) && $grouparray) {
 		$gidpos=array_search("gid", $gafieldorders);
 		$gid=$gacfieldcontents[$gidpos];
 		//$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
+		
+		// Todo: This has to be fixed fo MySQL 5
 		$ginsert = str_replace("('$gid', '$surveyid',", "('', '$newsid',", $ga);
 		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
 		$oldgid=$gid;

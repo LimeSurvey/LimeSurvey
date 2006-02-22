@@ -141,8 +141,8 @@ if (isset($_POST['action']) && $_POST['action'] == "copyconditions")
 				$count = mysql_num_rows($result);
 				if ($count == 0) //If there is no match, add the condition.
 					{
-					$query = "INSERT INTO {$dbprefix}conditions\n"
-							."VALUES ('', '$newqid', '".$pfc['cqid']."',"
+					$query = "INSERT INTO {$dbprefix}conditions ( qid,cqid,cfieldname,method,value) \n"
+							."VALUES ( '$newqid', '".$pfc['cqid']."',"
 							."'".$pfc['cfieldname']."', '".$pfc['method']."',"
 							."'".$pfc['value']."')";
 					$result=mysql_query($query) or die ("Couldn't insert query<br />$query<br />".mysql_error());

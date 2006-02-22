@@ -194,9 +194,9 @@ if ($action == "insert")
 						if($val)
 							{
 							$insert="INSERT INTO {$dbprefix}saved\n"
-								   . "(`saved_id`, `scid`,\n`datestamp`, `fieldname`,\n`ipaddr`,"
+								   . "(`scid`,\n`datestamp`, `fieldname`,\n`ipaddr`,"
 								   . "`value`)\n"
-								   ."VALUES ('',\n"
+								   ."VALUES (\n"
 								   ."'$scid',\n"
 								   ."'".date("Y-m-d H:i:s")."',\n"
 								   ."'".$key."',\n"

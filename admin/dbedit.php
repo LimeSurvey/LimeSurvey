@@ -363,9 +363,8 @@ function editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction) {
 				WHERE qid=$oldqid";
 		$results=mysql_query($query);
 		while($row=mysql_fetch_array($results)) {
-		  $qinsert="INSERT INTO {$dbprefix}question_attributes
-		  			VALUES ('',
-						    '$qid',
+		  $qinsert="INSERT INTO {$dbprefix}question_attributes (qid,attribute,value)
+		  			VALUES ('$qid',
 							'".auto_escape($row['attribute'])."',
 							'".auto_escape($row['value'])."')";
 		  $qresult=mysql_query($qinsert);
