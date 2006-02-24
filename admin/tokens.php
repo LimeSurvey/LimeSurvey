@@ -1,4 +1,4 @@
-<?php
+  <?php
 /*
 	#############################################################
 	# >>> PHPSurveyor  									     	#
@@ -275,7 +275,7 @@ while ($tkr = mysql_fetch_row($tksr))
 	
 // TLR change to put date into sent and completed
 //$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE sent='Y'";
-$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE sent!='N'";
+$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE (sent!='N' and sent<>'')";
 
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
@@ -283,7 +283,7 @@ while ($tkr = mysql_fetch_row($tksr))
 	
 					// TLR change to put date into sent and completed
 //$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE completed='Y'";
-$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE completed!='N'";
+$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE (sent!='N' and sent<>'')";
 
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
