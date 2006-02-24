@@ -256,10 +256,7 @@ if ($tokensexist == 1 && returnglobal('token'))
 	{
 	//check if token actually does exist
 	
-	// TLR change to put date into sent and completed
-//	$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND completed != 'Y'";
-	$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND completed = 'N'";
-	
+	$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
 	$tkresult = mysql_query($tkquery);
 	$tkexist = mysql_num_rows($tkresult);
 	if (!$tkexist)
@@ -857,8 +854,7 @@ function submittokens()
 	$utresult = mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
 	
 	// TLR change to put date into sent and completed
-//	$cnfquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}' AND completed='Y'";
-	$cnfquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}' AND completed!='N'";
+	$cnfquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}' AND completed!='N' AND completed!=''";
 	
 	$cnfresult = mysql_query($cnfquery);
 	while ($cnfrow = mysql_fetch_array($cnfresult))
@@ -1063,10 +1059,8 @@ function buildsurveysession()
 	elseif ($tokensexist == 1 && returnglobal('token'))
 		{
 		//check if token actually does exist
-		
-		// TLR change to put date into sent and completed
-	//	$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND completed != 'Y'";
-		$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND completed = 'N'";
+
+		$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
 		
 		$tkresult = mysql_query($tkquery);
 		$tkexist = mysql_num_rows($tkresult);

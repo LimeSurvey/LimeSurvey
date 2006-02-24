@@ -273,17 +273,12 @@ $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
 	{echo "\t\t\t\t\t\t"._TC_NOTOKENCOUNT." $tkr[0] / $tkcount<br />\n";}
 	
-// TLR change to put date into sent and completed
-//$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE sent='Y'";
 $tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE (sent!='N' and sent<>'')";
 
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
 	{echo "\t\t\t\t\t\t"._TC_INVITECOUNT." $tkr[0] / $tkcount<br />\n";}
-	
-					// TLR change to put date into sent and completed
-//$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE completed='Y'";
-$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE (sent!='N' and sent<>'')";
+$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE (completed!='N' and completed<>'')";
 
 $tksr = mysql_query($tksq);
 while ($tkr = mysql_fetch_row($tksr))
@@ -512,14 +507,9 @@ if ($action == "browse" || $action == "search")
 			."<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"
 			._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=delete&amp;tid=$brow[0]&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
 
-							// TLR change to put date into sent and completed	
-			//		if ($brow['completed'] != "Y" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
-					if ($brow['completed'] == "N" && $brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
+		if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
-		
-						// TLR change to put date into sent and completed	
-	//	if ($brow['completed'] == "Y" && $surveyprivate == "N")
-		if ($brow['completed'] != "N" && $surveyprivate == "N")
+		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
 			{
 			echo "\t\t<form action='$homeurl/browse.php' method='post' target='_blank'>\n"
 				."\t\t<td align='center' valign='top'>\n"
@@ -837,10 +827,7 @@ if (returnglobal('action') == "remind")
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
 		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TC_REMINDTID." TID: {$_POST['tid']})";}
 		
-	// TLR change to put date into sent and completed
-	//	$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent='Y' AND token !='' AND email != ''";
-	//	$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed !='Y' AND sent!='N' AND token !='' AND email != ''";
-		$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed ='N' AND sent!='N' AND token !='' AND email != ''";
+		$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> ''";
 		
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
@@ -852,9 +839,7 @@ if (returnglobal('action') == "remind")
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 		
 	// TLR change to put date into sent and completed
-	//	$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent = 'Y' AND token !='' AND EMAIL !=''";
-	//	$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed != 'Y' AND sent != 'N' AND token !='' AND EMAIL !=''";
-		$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE completed = 'N' AND sent != 'N' AND token !='' AND EMAIL !=''";
+		$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>''";
 		
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
@@ -1085,7 +1070,7 @@ if ($action == "edit" || $action == "addnew")
     //	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='sent' value=\"";
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='sent' value=\"";
 		
-	if (isset($sent)) {echo $sent;}	
+	if (isset($sent)) {echo $sent;}	else {echo "N";}
 	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
@@ -1095,7 +1080,7 @@ if ($action == "edit" || $action == "addnew")
 	//	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='completed' value=\"";
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='completed' value=\"";
 		
-	if (isset($completed)) {echo $completed;}
+	if (isset($completed)) {echo $completed;} else {echo "N";}
 	if ($edfieldcount > 7) 
 		{
 		echo "\"></font></td>\n"
