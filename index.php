@@ -942,7 +942,7 @@ function sendsubmitnotification($sendnotification)
 		$message .= "----------------------------\r\n\r\n";
 		}
 	$message.= "PHPSurveyor";
-	$from = $thissurvey['adminemail'];
+	$from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
 	
 	if ($recips=explode(";", $thissurvey['adminemail'])) 
 		{

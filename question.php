@@ -56,7 +56,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
     }
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
-if (isset($_POST['move']) && $allowmandatorybackwards==1 && $_POST['move'] == " << "._PREV." ") {$backok="Y";} else {$backok="N";}
+if (isset($_POST['move']) && $allowmandbackwards==1 && $_POST['move'] == " << "._PREV." ") {$backok="Y";} else {$backok="N";}
 
 $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandatorys($backok));
 

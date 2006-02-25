@@ -175,7 +175,7 @@ CREATE TABLE `saved_control` (
 #
 
 CREATE TABLE `surveys` (
-  `sid` int(11) NOT NULL,
+  `sid` int(11) NOT NULL auto_increment,
   `short_title` varchar(200) NOT NULL default '',
   `description` text,
   `admin` varchar(50) default NULL,

@@ -57,7 +57,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 
 //First, see if we are moving backwards, and its OK not to check:
-if ($allowmandatorybackwards==1 && isset($_POST['move']) &&  $_POST['move'] == " << "._PREV." ") {$backok="Y";} else {$backok="N";}
+if ($allowmandbackwards==1 && isset($_POST['move']) &&  $_POST['move'] == " << "._PREV." ") {$backok="Y";} else {$backok="N";}
 
 //Now, we check mandatory questions if necessary
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
