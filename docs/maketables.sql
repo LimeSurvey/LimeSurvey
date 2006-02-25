@@ -140,11 +140,12 @@ CREATE TABLE `questions` (
 #
 
 CREATE TABLE `saved` (
-  `saved_id` int(11) NOT NULL auto_increment,
+  `saved_id` int(11) NOT NULL,
   `scid` int(11) NOT NULL default '0',
   `datestamp` datetime NOT NULL default '0000-00-00 00:00:00',
   `fieldname` text NOT NULL,
   `value` text NOT NULL,
+  `ipaddr` mediumtext,
   PRIMARY KEY  (`saved_id`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
@@ -174,7 +175,7 @@ CREATE TABLE `saved_control` (
 #
 
 CREATE TABLE `surveys` (
-  `sid` int(11) NOT NULL auto_increment,
+  `sid` int(11) NOT NULL,
   `short_title` varchar(200) NOT NULL default '',
   `description` text,
   `admin` varchar(50) default NULL,
@@ -188,7 +189,7 @@ CREATE TABLE `surveys` (
   `template` varchar(100) default 'default',
   `url` varchar(255) default NULL,
   `urldescrip` varchar(255) default NULL,
-  `language` varchar(50) default '',
+  `language` varchar(50) default NULL,
   `datestamp` char(1) default 'N',
   `usecookie` char(1) default 'N',
   `notification` char(1) default '0',
@@ -207,8 +208,10 @@ CREATE TABLE `surveys` (
   `autonumber_start` bigint(11) default '0',
   `autoredirect` char(1) default 'N',
   `allowprev` char(1) default 'Y',
+  `ipaddr` char(1) default 'N',
+  `useexpiry` char(1) NOT NULL default 'N',
   PRIMARY KEY  (`sid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1;
 
 # --------------------------------------------------------
 
