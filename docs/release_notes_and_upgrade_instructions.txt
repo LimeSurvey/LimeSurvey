@@ -59,6 +59,19 @@ The upgrade procedure step-by-step:
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 0.992 to 0.993
+
+New features:
+Basic smtp email function can be configured in config.php now
+
+Bugfixes:
+- Resolved some serious issues with using tokens
+- Fixed copying of questions and conditions when using MySQL 5 server
+- Minor fixes und updates
+
+
+
 Changes from 0.991 to 0.992
 
 New features:
