@@ -45,7 +45,7 @@ define("_PHPVERSION", phpversion());
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
 
-require_once 'classes/XPertMailer.php'; 
+require_once 'classes/XPertMailer/XPertMailer.php'; 
 $realdefaultlang=$defaultlang;
 
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
