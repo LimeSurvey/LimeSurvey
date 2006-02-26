@@ -1,0 +1,53 @@
+
+HOW TO USE XPertMailer Class
+============================
+
+The names of the public functions in the XPertMailer class are eloquent so that they can be used without any confusions being made.
+The XPertMailer class functions are optimised to execute in a very small time and also to be easy to use. This reduces the size of the code and the time required to write it.
+
+
+BASICALY STEPS
+--------------
+
+I. Script execution time limit and display errors.
+   a. set_time_limit(0) - Limits the maximum execution time. 0 = No limit. Info: http://www.php.net/set_time_limit
+   b. error_reporting(E_ALL) - Sets which PHP errors are reported. E_ALL = All errors and warnings, as supported, except of level E_STRICT. Info: http://www.php.net/error_reporting , http://www.php.net/manual/en/ref.errorfunc.php#e-all
+   c. define('PRINT_ERROR', false) - Sets print errors from XPertMailer Class. False = Doesn't print errors.
+
+II. Path to the XPertMailer Class file (XPertMailer.php) for inclusion and initiate the XPertMailer Class.
+   a. require_once '/path/XPertMailer.php' - You can write the full or relative path. Info: http://www.php.net/require_once
+   b. $mail = new XpertMailer() - Initiate XPertMailer Class. Info: (PHP4) http://www.php.net/manual/en/language.oop.php , (PHP5) http://www.php.net/manual/en/language.oop5.php
+
+III. Setting your values. Some examples.
+   a. $mail->from('my@account.com') - Sets 'From:' e-mail header value.
+   b. $mail->send('username@example.com', 'subject', 'text message') - Send the e-mail.
+
+
+A SIMPLE EXAMPLE
+----------------
+
+<?php
+
+set_time_limit(0);
+
+require_once '/path/XPertMailer.php'; // <- change 'path' with your path name to the XPertMailer.php file
+
+$mail = new XpertMailer();
+
+$mail->from('my@account.com');
+
+$send = $mail->send('username@example.com', 'subject', 'text message');
+
+if($send){
+	echo "The e-mail has been succesfully sent.";
+}else{
+	echo "An error occured when tring to send the e-mail.";
+}
+
+?>
+
+
+MORE INFO
+---------
+
+For more informations read the file DOCUMENTATION (it is the documentation of the public functions from XPertMailer Class).
