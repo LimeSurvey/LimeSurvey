@@ -1528,8 +1528,11 @@ function templatereplace($line)
     if (isset($token)) {
     	$line=str_replace("{TOKEN}", $token, $line);
 		}
-	else {
+	elseif (isset($_POST['token'])) {
     		$line=str_replace("{TOKEN}", $_POST['token'], $line);
+		 }
+	else {
+    		$line=str_replace("{TOKEN}",'', $line);
 		 }
     $line=str_replace("{SID}", $surveyid, $line);
     if ($help) {
