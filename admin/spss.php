@@ -10,11 +10,7 @@ if (empty($surveyid)) {die("Cannot run this script directly");}
 #Get all legitimate question ids
 
 header("Content-Type: application/octetstream");
-header("Content-Disposition: ".
-       (strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
-                                           :"attachment; ").
-       "filename=survey.sav");
-
+header("Content-Disposition: ".(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?"":"attachment; ")."filename=survey.sav");
 
 sendcacheheaders();
 $query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
@@ -115,7 +111,7 @@ for ($i=0; $i < $num_results; $i++) {
 	$fields = $fields + $tempArray;
 }
 
-echo "DATA LIST LIST /";
+echo "DATA LIST LIST\n /";
 
 foreach ($fields as $field){
         echo $field["id"];
@@ -123,11 +119,10 @@ foreach ($fields as $field){
 }
 
 echo ".";
-echo "<br>";
 echo "\n";
 
-#echo "*Begin data\n";
-echo "BEGIN DATA<br>";
+echo "*Begin data\n";
+echo "BEGIN DATA.\n";
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 $query="SELECT `{$dbprefix}tokens_$surveyid`.`firstname`   ,
@@ -147,9 +142,9 @@ $query = "SELECT `{$dbprefix}survey_$surveyid`.*
 	FROM `{$dbprefix}survey_$surveyid`";
 }
 
-
 $result=mysql_query($query) or die("Couldn't get results<br />$query<br />".mysql_error());
 $num_results = mysql_num_rows($result);
+$num_fields = mysql_num_fields($result);
 for ($i=0; $i < $num_results; $i++) {
         $row = mysql_fetch_array($result);
 	$fieldno = 0;
@@ -163,16 +158,16 @@ for ($i=0; $i < $num_results; $i++) {
 		}
 		$fieldno++;
 	}
-	echo "<br>";
+	echo "\n";
         #Conditions for SPSS fields:
         # - Length may not be longer than 8 charac
 }
-echo "END DATA.<br>";
+echo "END DATA.\n";
 
-echo "*Define Variable Properties.<br>";
+echo "*Define Variable Properties.\n";
 foreach ($fields as $field){
 	if ($field["id"] == "fname" OR $field["id"]=="lname" OR $field["id"]=="email" OR $field["id"]=="attr1" OR $field["id"]=="attr2"){
-	        echo "VARIABLE LABELS ".$field["id"]." '".$field["name"]."'.<br>";
+	        echo "VARIABLE LABELS ".$field["id"]." '".$field["name"]."'.\n";
 	}else{
 		#If a split question
 		if ($field["code"] != ""){
@@ -199,7 +194,7 @@ foreach ($fields as $field){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
 					$row = mysql_fetch_array($result);
-					echo "VARIABLE LABELS ".$field["id"]." '".$question_text." - ".$row["answer"]."'.<br>";
+					echo "VARIABLE LABELS ".$field["id"]." '".$question_text." - ".$row["answer"]."'.\n";
 				}
 			}
 
@@ -216,7 +211,7 @@ foreach ($fields as $field){
 	}
 }
 
-echo "*Define Value labels.<br>";
+echo "*Define Value labels.\n";
 
 foreach ($fields as $field){
 	if ($field["qid"]!=0){
@@ -225,11 +220,11 @@ foreach ($fields as $field){
 		$num_results = mysql_num_rows($result);
 		$num_fields = $num_results;
 		if ($num_results >0){
-			echo "VALUE LABELS ".$field["id"]."<br>";
+			echo "VALUE LABELS ".$field["id"]."\n";
 			# Build array that has to be returned
 			for ($i=0; $i < $num_results; $i++) {
 			        $row = mysql_fetch_array($result);
-				echo $row["code"]." '".$row["answer"]."'<br>";
+				echo $row["code"]." '".$row["answer"]."'\n";
 			}
 		}
 	}
