@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
     #############################################################
     # >>> PHPSurveyor                                           #
@@ -35,8 +35,7 @@
     #                                                           #
     # This language file kindly provided by Ulrika Olsson       #
     #                                                           #
-    # Updated for 0.98rc9 and higher by                         #
-    # Björn Mildh - bjorn at mildh dot se - 2005-03-05          #
+    # Updates 2004-2006 by Björn Mildh - bjorn at mildh dot se  #
     #                                                           #
     #############################################################
 */
@@ -138,7 +137,7 @@ define("_CONFIRMATION_MESSAGE1", "Enkäten skickad"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Ett nytt svar till din enkät har lämnats"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Se det enskilda svaret genom att klicka här:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Se statistik för enkäten genom att klicka här:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
+define("_CONFIRMATION_MESSAGE5", "Klicka på följande länk för att ändra det enskilda svaret:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Hantering av personuppgifter. </i></strong><br />"
                           ."Den här enkäten är anonym.<br />"
@@ -172,10 +171,10 @@ define ("_RG_REGISTRATIONCOMPLETE", "Tack för att du registerat dig för att ge
 
 define("_SM_COMPLETED", "<strong>Tack!<br /><br />"
     ."Du har besvarat alla frågor i den här enkäten.</strong><br /><br />"
-    ."Klicka på ["._SUBMIT."] för att slutföra och spara dina svar."); //New for 0.98finalRC1 - by Bjorn Mildh
+    ."Klicka på ["._SUBMIT."] för att slutföra och spara dina svar."); //New for 0.98finalRC1
 define("_SM_REVIEW", "Om du vill kontrollera dina svar och/eller ändra dem, "
     ."kan du göra det genom att klicka på [<< "._PREV."]-knappen och bläddra "
-    ."genom dina svar."); //New for 0.98finalRC1 - by Bjorn Mildh
+    ."genom dina svar."); //New for 0.98finalRC1
 
 //For the "printable" survey
 define("_PS_CHOOSEONE", "Välj <strong>endast en</strong> av följande:"); //New for 0.98finalRC1
