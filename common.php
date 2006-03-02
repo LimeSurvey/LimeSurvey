@@ -150,7 +150,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 $connect=mysql_connect("$databaselocation:$databaseport", "$databaseuser", "$databasepass");
 $db=mysql_selectdb($databasename, $connect);
 //mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
-mysql_query("SET CHARACTER SET 'utf8'", $connect);
+$tmpresult=@mysql_query("SET CHARACTER SET 'utf8'", $connect);
 
 //Admin menus and standards
 if ($sourcefrom == "admin")
