@@ -91,7 +91,7 @@ $slstyle = "class='slstyle' ";
 $slstyle2= "class='slstyle2' ";
 
 //TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
-if (!ini_get('safe_mode'))
+if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions'))))
     {
     // Only do this if safe_mode is OFF
     if (isset($mysqldir)) {$mysqlbin=$mysqldir;}
@@ -101,13 +101,13 @@ if (!ini_get('safe_mode'))
         //USING LINUX: Find the location of various files and put that in the appropriate variables!
         if (!isset($mysqlbin) || !$mysqlbin)
             {
-            $temp=`which mysqldump`;
+            $temp=shell_exec('which mysqldump');
             list($mysqlbin, $discard)=explode(" ", $temp);
             $mysqlbin=substr($mysqlbin, 0, strlen($mysqlbin)-11);
             }
         if (!isset($apachedir) || !$apachedir)
             {
-            $temp=`which htpasswd`;
+            $temp=shell_exec('which htpasswd');
             list($htpasswddir, $discard)=explode(" ", $temp);
             $htpasswddir=substr($htpasswddir, 0, strlen($htpasswddir)-10);
             }
