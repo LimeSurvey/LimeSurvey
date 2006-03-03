@@ -115,6 +115,7 @@ define("_S_PRINTABLE_BT", "Druckbare Version der Umfrage");
 define("_S_EDIT_BT", "Diese Umfrage bearbeiten");
 define("_S_DELETE_BT", "Diese Umfrage l&ouml;schen");
 define("_S_EXPORT_BT", "Diese Umfrage exportieren");
+define("_S_EXPORT_BT_SINGLE", "Diese Antwort exportieren");
 define("_S_BROWSE_BT", "Ergebnisse dieser Umfrage ansehen");
 define("_S_TOKENS_BT", "Probanden aktivieren/bearbeiten für diese Umfrage");
 define("_S_ADDGROUP_BT", "Neue Gruppe hinzufügen");
@@ -484,6 +485,7 @@ define("_ES_NOSID", "Es wurde keine SID angegeben. Kann Umfrage nicht exportiere
 
 //EXPORT RESULTS
 define("_EX_FROMSTATS", "Gefiltert vom Statistik Skript");
+define("_EX_FROM_SINGLE_ANSWER", "Einzelne Antwort");
 define("_EX_HEADINGS", "Fragen");
 define("_EX_ANSWERS", "Antworten");
 define("_EX_FORMAT", "Format");

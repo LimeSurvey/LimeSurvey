@@ -138,7 +138,7 @@ if ($action == "delete") {
 }
 
 if ($action == "zip") {
-	require("classes/phpzip.inc.php");
+	require("classes/phpzip/phpzip.inc.php");
 	$z = new PHPZip();
 	$templatedir="$publicdir/templates/$templatename/";
 	$zipfile="$tempdir/$templatename.zip";

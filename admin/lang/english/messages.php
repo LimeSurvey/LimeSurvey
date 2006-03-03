@@ -116,6 +116,7 @@ define("_S_PRINTABLE_BT", "Printable Version of Survey");
 define("_S_EDIT_BT", "Edit Current Survey");
 define("_S_DELETE_BT", "Delete Current Survey");
 define("_S_EXPORT_BT", "Export this Survey");
+define("_S_EXPORT_BT_SINGLE", "Export this Response");
 define("_S_BROWSE_BT", "Browse Responses for this Survey");
 define("_S_TOKENS_BT", "Activate/Edit Tokens for this Survey");
 define("_S_ADDGROUP_BT", "Add New Group to Survey");
@@ -487,6 +488,7 @@ define("_ES_NOSID", "No SID has been provided. Cannot dump survey");
 
 //EXPORT RESULTS
 define("_EX_FROMSTATS", "Filtered from Statistics Script");
+define("_EX_FROM_SINGLE_ANSWER", "Single Response");
 define("_EX_HEADINGS", "Questions");
 define("_EX_ANSWERS", "Answers");
 define("_EX_FORMAT", "Format");

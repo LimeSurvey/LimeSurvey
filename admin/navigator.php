@@ -38,7 +38,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (empty($homedir)) {die ("Cannot run this script directly (navigator.php)");}
 
-require_once("{$homedir}/classes/TreeMenuXL.php");
+require_once("{$homedir}/classes/TreeMenu/TreeMenuXL.php");
 
 $scriptname="index.php"; //REMOVE WHEN FINALLY INTEGRATED - THIS JUST OVERRIDES THE 'admin.php' setting
 

@@ -45,13 +45,13 @@
   // Check local directory first, then check system directory.
   // This facilitates local mods and testing.
   $PHPLIBPATH=$homedir."/classes/";  // Where do you keep your PHP libraries?
-  if (file_exists( $homedir.'/classes/TreeMenu.php' ))
-    include_once( $homedir.'/classes/TreeMenu.php' );
+  if (file_exists( $homedir.'/classes/TreeMenu/TreeMenu.php' ))
+    include_once( $homedir.'/classes/TreeMenu/TreeMenu.php' );
   else include_once( $_SERVER['DOCUMENT_ROOT'] . $PHPLIBPATH . 'TreeMenu.php' );
 
   /* Not-quite Obsolete as of HTML_TreeMenu 1.1 */
-  if (file_exists( $homedir.'/classes/ccBrowserInfo.php' ))
-    include_once( $homedir.'/classes/ccBrowserInfo.php' );
+  if (file_exists( $homedir.'/classes/TreeMenu/ccBrowserInfo.php' ))
+    include_once( $homedir.'/classes/TreeMenu/ccBrowserInfo.php' );
   else include_once( $_SERVER['DOCUMENT_ROOT'] . $PHPLIBPATH . 'ccBrowserInfo.php' );
   
   // Browser detection determines whether we generate DHTML menus

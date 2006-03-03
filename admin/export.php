@@ -113,7 +113,8 @@ if (!$style)
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 		."<font size='1' face='verdana' color='white'><strong>"
 		._EXPORTRESULTS;
-	if (isset($_POST['sql'])) {echo " ("._EX_FROMSTATS.")";}
+	if (isset($_POST['sql'])) {echo " - "._EX_FROMSTATS;}  
+	if (returnglobal('id')<>'') {echo " - "._EX_FROM_SINGLE_ANSWER;}  
 	echo "</strong> ($afieldcount Cols)</font></td></tr>\n"
 		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><strong>"
 		._EX_HEADINGS."</strong></font></font></td></tr>\n"
@@ -164,16 +165,22 @@ if (!$style)
 		._EX_EXPORTDATA."'>\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t</font></td>\n"
-		."\t</tr>\n";
+		."\t</tr>\n"
+	    ."\t<tr>\n"
+		."\t\t<td align=\"center\" bgcolor='silver'>\n";
 	if (isset($_POST['sql'])) 
 		{
 		echo "\t<input type='hidden' name='sql' value=\""
 			.stripcslashes($_POST['sql'])
 			."\">\n";
 		}
-	echo "\t<tr>\n"
-		."\t\t<td align=\"center\" bgcolor='silver'>\n"
-		."\t\t\t<input $btstyle type='submit' value='"
+	if (returnglobal('id')<>'') 
+		{
+		echo "\t<input type='hidden' name='answerid' value=\""
+			.stripcslashes(returnglobal('id'))
+			."\">\n";
+		}
+		echo "\t\t\t<input $btstyle type='submit' value='"
 		._CLOSEWIN."' onClick=\"self.close()\">\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -638,6 +645,11 @@ if (isset($_POST['sql'])) //this applies if export has been called from the stat
 	{
 	if ($_POST['sql'] != "NULL") {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
 	}
+if (isset($_POST['answerid'])) //this applies if export has been called from single answer view
+	{
+	if ($_POST['answerid'] != "NULL") {$dquery .= "WHERE $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
+	}
+
 
 $dquery .= "ORDER BY $surveytable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
