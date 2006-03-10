@@ -100,7 +100,7 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
     ._L_ADDSET_BT."' alt='"._L_ADDSET_BT."' onClick=\"window.open('labels.php?action=newset', '_top')\">\n"
     ."\t\t\t\t\t$setfont<font size='1'><strong>"
     ._LABELSETS.":</strong> "
-    ."\t\t\t\t\t<select style='font-size: 9; font-family: verdana; font-color: #333333; background: SILVER; width: 160' "
+    ."\t\t\t\t\t<select style='font-size: 9; font-family: verdana; color: #333333; background: SILVER; width: 160' "
     ."onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 $labelsets=getlabelsets();
 if (count($labelsets)>0)

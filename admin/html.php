@@ -342,7 +342,7 @@ if ($surveyid)
 							. "onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\">\n";
 			}
 		$surveysummary .= "$setfont<font size='1' color='#222222'><strong>"._GROUPS.":</strong>"
-						. "\t\t<select style='font-size: 9; font-family: verdana; font-color: #222222; "
+						. "\t\t<select style='font-size: 9; font-family: verdana; color: #222222; "
 						. "background: silver; width: 160' name='groupselect' "
 						. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 		if (getgrouplist($gid))
@@ -550,7 +550,7 @@ if ($gid)
 			}
 		$groupsummary .= "\t\t\t\t\t$setfont<font size='1'><strong>"._QUESTIONS.":</strong> <select name='qid' "
 					   . "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\" "
-					   . "style='font-size:9; font-family: verdana; font-color: #333333; background-color: "
+					   . "style='font-size:9; font-family: verdana; color: #333333; background-color: "
 					   . "silver; width: 160'>\n"
 					   . getquestions()
 					   . "\t\t\t\t\t</select>\n"
