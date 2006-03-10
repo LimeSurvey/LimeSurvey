@@ -485,7 +485,7 @@ echo "\t\t\t\tdocument.getElementById('canswers').options[document.getElementByI
 	."</script>\n";	
 
 //SHOW FORM TO CREATE IT!
-echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-size: 1; border-color: #555555'>\n"
+echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
 	."\t<tr bgcolor='#CCFFCC'>\n"
 	."\t\t<td  align='center' >\n";
 $showreplace="$questiontitle<img src='$imagefiles/speaker.jpg' alt=\""
@@ -559,7 +559,7 @@ if ($conditionscount > 0)
 			}
 		echo "\t\t\t\t\t</font></td>\n"
 			."\t\t\t\t\t<td align='right' valign='middle' >\n"
-			."\t\t\t\t\t\t<input type='submit' value='Del' style='font-face: verdana; font-size: 8; height:15'>\n"
+			."\t\t\t\t\t\t<input type='submit' value='Del' style='font-family: verdana; font-size: 8; height:15'>\n"
 			."\t\t\t\t\t<input type='hidden' name='action' value='delete'>\n"
 			."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}'>\n"
 			."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -601,7 +601,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	
 	echo "\t<tr>\n"
 		."\t\t<td align='center'>\n"
-		."\t\t<select name='copyconditionsfrom[]' multiple style='font-face:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4' >\n";
+		."\t\t<select name='copyconditionsfrom[]' multiple style='font-family:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4' >\n";
 	foreach ($conditionsList as $cl)
 		{
 		echo "<option value='".$cl['cid']."'>".$cl['text']."</option>\n";
@@ -612,7 +612,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 		."\t\t"._CD_COPYTO."\n"
 		."\t\t</font></td>\n"
 		."\t\t<td align='center'>\n"
-		."\t\t<select name='copyconditionsto[]' multiple style='font-face:verdana; font-size:10; width:220' size='4'>\n";
+		."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:220' size='4'>\n";
 	foreach ($pquestions as $pq)
 		{
 		echo "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
@@ -654,7 +654,7 @@ echo "\t<tr bgcolor='#CDCDCD'>\n"
 	."\t</tr>\n"
 	."\t<tr>\n"
 	."\t\t<td valign='top' align='center'>\n"
-	."\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
+	."\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
 if (isset($cquestions))
 	{
 	foreach ($cquestions as $cqn)
@@ -669,14 +669,14 @@ if (isset($cquestions))
 echo "\t\t\t</select>\n"
 	."\t\t</td>\n"
 	."\t\t<td align='center'>$setfont\n";
-//echo "\t\t\t<select name='method' id='method' style='font-face:verdana; font-size:10'>\n";
+//echo "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
 //echo "\t\t\t\t<option value='='>Equals</option>\n";
 //echo "\t\t\t\t<option value='!'>Does not equal</option>\n";
 //echo "\t\t\t</select>\n";
 echo "\t\t\t"._CD_EQUALS."\n"
 	."\t\t</font></td>\n"
 	."\t\t<td valign='top' align='center'>\n"
-	."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-face:verdana; font-size:10; width:220' size='5'>\n";
+	."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
 
 echo "\t\t\t</select>\n"
 	."\t</tr>\n"

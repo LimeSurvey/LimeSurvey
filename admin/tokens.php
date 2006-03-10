@@ -502,18 +502,18 @@ if ($action == "browse" || $action == "search")
 			echo "\t\t<td>$setfont$brow[$i]</font></td>\n";
 			}
 		echo "\t\t<td align='left'>\n"
-			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='E' title='"
+			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='E' title='"
 			._TC_EDIT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=edit&amp;tid=$brow[0]', '_top')\" />"
-			."<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='D' title='"
+			."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
 			._TC_DEL."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=delete&amp;tid=$brow[0]&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
 
-		if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
+		if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='"._TC_DO."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
 		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
 			{
 			echo "\t\t<form action='$homeurl/browse.php' method='post' target='_blank'>\n"
 				."\t\t<td align='center' valign='top'>\n"
-				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='V' title='"
+				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='V' title='"
 				._TC_VIEW."' />\n"
 				."\t\t</td>\n"
 				."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -527,7 +527,7 @@ if ($action == "browse" || $action == "search")
 				$id=mysql_result($result,0,"id"); 
 				echo "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n" 
 				."\t\t<td align='center' valign='top'>\n" 
-				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='U' title='"
+				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
 				._TC_UPDATE."' />\n"
 				."\t\t</td>\n"
 				."\t\t<input type='hidden' name='sid' value='$surveyid' />\n" 
@@ -544,7 +544,7 @@ if ($action == "browse" || $action == "search")
 		
 			{
 			echo "\t\t<td align='center' valign='top'>\n"
-				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='I' title='"
+				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='I' title='"
 				._TC_INVITET."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=email&amp;tid=$brow[0]', '_top')\" />"
 				."\t\t</td>\n";
 			}
@@ -556,7 +556,7 @@ if ($action == "browse" || $action == "search")
 		
 			{
 			echo "\t\t<td align='center' valign='top'>\n"
-				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-face: verdana' type='submit' value='R' title='"
+				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='R' title='"
 				._TC_REMINDT."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=remind&amp;tid=$brow[0]', '_top')\" />"
 				."\t\t</td>\n";
 			}

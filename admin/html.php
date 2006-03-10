@@ -774,8 +774,8 @@ if (returnglobal('viewanswer'))
 			}
 		else
 			{
-			$vasummary .= "\t\t<td align='center'><input name='ansaction' "
-						. "$btstyle type='submit' value='Save'></td>\n";
+			$vasummary .= "\t\t<td align='center' width='15%'><input name='ansaction' "
+						. "$btstyle type='submit' value='"._AL_SAVE."'></td>\n";
 			}
 		$vasummary .= "\t\t<td align='center'>";
 		if ($position > 0) {$vasummary .= "<input name='ansaction' $btstyle type='submit' value='"._AL_UP."'>";}
