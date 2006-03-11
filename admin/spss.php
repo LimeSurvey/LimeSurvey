@@ -10,7 +10,7 @@ if (empty($surveyid)) {die("Cannot run this script directly");}
 #Get all legitimate question ids
 
 header("Content-Type: application/octetstream");
-header("Content-Disposition: ".(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?"":"attachment; ")."filename=survey.sav");
+header("Content-Disposition: ".(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?"":"attachment; ")."filename=survey".$surveyid.".sav");
 
 sendcacheheaders();
 $query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
@@ -92,7 +92,7 @@ for ($i=0; $i < $num_results; $i++) {
 	if ($fieldname=="stamp"){
 		$fieldtype = "DATETIME20.0";
 	} else {
-		$fieldtype = "A10";
+		$fieldtype = "A20";
 	}
 	#Get qid (question id)
 	$code="";
@@ -111,7 +111,7 @@ for ($i=0; $i < $num_results; $i++) {
 	$fields = $fields + $tempArray;
 }
 
-echo "DATA LIST LIST\n /";
+echo "DATA LIST FREE\n /";
 
 foreach ($fields as $field){
         echo $field["id"];
@@ -121,7 +121,6 @@ foreach ($fields as $field){
 echo ".";
 echo "\n";
 
-echo "*Begin data\n";
 echo "BEGIN DATA.\n";
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
@@ -149,12 +148,19 @@ for ($i=0; $i < $num_results; $i++) {
         $row = mysql_fetch_array($result);
 	$fieldno = 0;
 	while ($fieldno < $num_fields){
-		if ($fields[$fieldno]["id"]=="stamp"){
+		// if ($fields[$fieldno]["id"]=="stamp"){
+		// Must be changed if d2 is no longer the date field
+		if ($fields[$fieldno]["id"]=="d2"){
 			#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
 			list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
 			echo "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ";
 		}else {
-			echo "'".$row[$fieldno]."' ";
+			// Remove apostrophes (delimiters)
+			$temp = str_replace("'","",$row[$fieldno]);
+			// Remove extra spaces (delimiters)
+			$temp = str_replace(" ","",$temp);
+			// Only return first 5 characters
+			echo "'".substr($temp,0,5)."' ";
 		}
 		$fieldno++;
 	}
