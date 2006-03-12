@@ -299,7 +299,7 @@ if (!$surveyid)
 
 // A regex could do alot better here but I am bad on that so I am using the simple way.
 $insert=$tablearray[0];
-$start = stripos($insert, 'values'); 
+$start = strpos(strtolower ($insert), 'values'); 
 $start = strpos($insert, '(',$start)+1;
 $end  = strpos($insert, ',',$start)+1;
 $insert = substr($insert,0,$start).substr($insert,$end,strlen($insert));
@@ -307,10 +307,8 @@ $insert = substr($insert,0,$start).substr($insert,$end,strlen($insert));
 $start = strpos($insert, '(')+1; 
 $end = strpos($insert, ',')+1;
 $insert = substr($insert,0,$start).substr($insert,$end,strlen($insert));
-//$insert = str_replace("'$surveyid',", "", $tablearray[0]);
 
 $insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
-//$insert = substr($insert, 0, -1);
 $iresult = mysql_query($insert) or die("<br />"._IS_IMPFAILED."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . mysql_error() . "</body>\n</html>");
 
 $oldsid=$surveyid;
