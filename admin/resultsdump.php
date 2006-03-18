@@ -80,12 +80,20 @@ Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 
 $handle=fopen("$filename", "r");
-while (!feof($handle))
+if ($handle) 
+{
+	while (!feof($handle))
+		{
+		$buffer=fgets($handle, 1024);
+		echo $buffer;
+		}
+	fclose($handle);
+}
+else 
 	{
-	$buffer=fgets($handle, 1024);
-	echo $buffer;
+		echo 'ERROR: Cannot write result dump. Check the permissions on dir /admin';
 	}
-fclose($handle);
+
 
 unlink("$filename");
 ?>
