@@ -721,19 +721,19 @@ function do_list_radio($ia)
     while ($ansrow = mysql_fetch_array($ansresult))
         {
         $rowcounter++;
-        $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
+        $answer .= "\t\t\t\t\t\t\t\t<div style='text-indent: -22; margin: 0 0 0 22;'>  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
         if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
             $answer .= " checked";
             }
         elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br /></div>\n";
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
         }
     if (isset($other) && $other=="Y")
         {
         $rowcounter++;
-        $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
+        $answer .= "\t\t\t\t\t\t\t\t  <div style='text-indent: -22; margin: 0 0 0 22;'> <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
         if ($_SESSION[$ia[1]] == "-oth-")
             {
             $answer .= " checked";
@@ -742,7 +742,7 @@ function do_list_radio($ia)
         $answer .= "<label for='answer$ia[1]othertext'><input type='text' class='text' id='answer$ia[1]othertext' name='$ia[1]other' size='20' title='"._OTHER."' ";
         $thisfieldname=$ia[1]."other";
         if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
-        $answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"></label><br />\n";
+        $answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\"></label><br /></div>\n";
         $inputnames[]=$thisfieldname;
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
         }
