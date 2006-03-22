@@ -1235,7 +1235,7 @@ if ($action == "upload")
 			if (substr($buffer, -2) == "\r\n") {$buffer = substr($buffer, 0, -2);}
 			elseif (substr($buffer, -1) == "\n") {$buffer = substr($buffer, 0, -1);}
 			elseif (substr($buffer, -1) == "\r") {$buffer = substr($buffer, 0, -1);}
-			
+			$buffer=mb_convert_encoding($buffer,"UTF-8","auto");
 			$firstname = ""; $lastname = ""; $email = ""; $token = ""; //Clear out values from the last path, in case the next line is missing a value
 			if (!$xx)
 				{
