@@ -313,6 +313,7 @@ if ($action == "insert")
 				$i2result = mysql_query($i2query);
 				while ($i2row = mysql_fetch_array($i2result))
 					{
+     				$otherexists = "";
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 					if (isset($_POST[$fieldname]))
 						{
@@ -330,7 +331,6 @@ if ($action == "insert")
 								$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
 								}
 							}
-						$otherexists = "";
 						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P")) {$otherexists = "Y";}
 						if ($irow['type'] == "P")
 							{
