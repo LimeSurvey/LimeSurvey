@@ -204,7 +204,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
     //GET HELP
     $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0]";
-    $hresult=mysql_query($hquery);
+    $hresult=mysql_query($hquery) or die(mysql_error());
     $hcount=mysql_num_rows($hresult);
     if ($hcount > 0)
         {
