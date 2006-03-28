@@ -664,6 +664,8 @@ if (returnglobal('action') == "email")
 	else
 		{
 		echo _TC_SENDINGEMAILS;
+		$_POST['message']=auto_unescape($_POST['message']);
+		$_POST['subject']=auto_unescape($_POST['subject']);
 		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TC_REMINDTID." {$_POST['tid']})";}
 		echo "<br />\n";
 		
@@ -702,7 +704,6 @@ if (returnglobal('action') == "email")
 		        $fieldsarray["{TOKEN}"]=$emrow['token'];
 		        $fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
 		        $fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
-
 				$modsubject=Replacefields($_POST['subject'], $fieldsarray);
 				$modmessage=Replacefields($_POST['message'], $fieldsarray);
 				
@@ -734,7 +735,7 @@ if (returnglobal('action') == "email")
 					._TC_EMAILSTOGO."<br /><br />\n";
 				echo str_replace("{EMAILCOUNT}", "$lefttosend", _TC_EMAILSREMAINING);
 				echo "<br /><br />\n";
-				$message = str_replace('"', "&quot;", $_POST['message']);
+				$message = html_escape($_POST['message']);
 				echo "\t\t\t<input type='submit' value='"._CONTINUE."' />\n"
 					."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 					."\t\t\t<input type='hidden' name='action' value=\"email\" />\n"
