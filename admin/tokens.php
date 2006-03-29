@@ -825,6 +825,9 @@ if (returnglobal('action') == "remind")
 	else
 		{
 		echo _TC_SENDINGREMINDERS."<br />\n";
+		$_POST['message']=auto_unescape($_POST['message']);
+		$_POST['subject']=auto_unescape($_POST['subject']);
+		
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
 		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TC_REMINDTID." TID: {$_POST['tid']})";}
 		
@@ -897,7 +900,7 @@ if (returnglobal('action') == "remind")
 					."\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
 					."\t<input type='hidden' name='from' value=\"{$_POST['from']}\" />\n"
 					."\t<input type='hidden' name='subject' value=\"{$_POST['subject']}\" />\n";
-				$message = str_replace('"', "&quot;", $message);
+				$message = html_escape($_POST['message']);
 				echo "\t<input type='hidden' name='message' value=\"$message\" />\n"
 					."\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
 					."\t</form>\n";
