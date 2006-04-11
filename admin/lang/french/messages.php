@@ -117,6 +117,7 @@ define("_S_PRINTABLE_BT", "Version imprimable du questionnaire");
 define("_S_EDIT_BT", "Editer le questionnaire courant");
 define("_S_DELETE_BT", "Supprimer le questionnaire courant");
 define("_S_EXPORT_BT", "Exporter ce questionnaire");
+define("_S_EXPORT_BT_SINGLE", "Exporter cette réponse");
 define("_S_BROWSE_BT", "Parcourir les réponses pour ce questionnaire");
 define("_S_TOKENS_BT", "Activer/Editer les invitations pour ce questionnaire");
 define("_S_ADDGROUP_BT", "Ajouter un nouveau groupe au questionnaire");
@@ -183,6 +184,7 @@ define("_SL_ADMIN", "Administrateur :");
 define("_SL_EMAIL", "Mail de l&#039;administrateur :");
 define("_SL_FAXTO", "Fax à :");
 define("_SL_ANONYMOUS", "Anonyme :");
+define("_SL_EXPIRY", "Expire le :");
 define("_SL_EXPIRYDATE", "Date limite de réponse :");
 define("_SL_FORMAT", "Format :");
 define("_SL_DATESTAMP", "Réponses datées :");
@@ -487,14 +489,15 @@ define("_ES_NOSID", "Aucun QID n&#039;a été fourni. Impossible d&#039;exporter
 
 //EXPORT RESULTS
 define("_EX_FROMSTATS", "Filtré par le script des statistiques");
+define("_EX_FROM_SINGLE_ANSWER", "Réponse unique");
 define("_EX_HEADINGS", "Questions");
 define("_EX_ANSWERS", "Réponses");
 define("_EX_FORMAT", "Format");
-define("_EX_HEAD_ABBREV", "Entête  abrégés");
-define("_EX_HEAD_FULL", "Entête complet");
-define("_EX_HEAD_CODES", "Codes de questions");
+define("_EX_HEAD_ABBREV", "Entêtes abrégés");
+define("_EX_HEAD_FULL", "Entêtes complets");
+define("_EX_HEAD_CODES", "Codes des questions");
 define("_EX_ANS_ABBREV", "Codes des réponses");
-define("_EX_ANS_FULL", "Réponses compléte");
+define("_EX_ANS_FULL", "Réponses complètes");
 define("_EX_FORM_WORD", "Microsoft Word");
 define("_EX_FORM_EXCEL", "Microsoft Excel");
 define("_EX_FORM_CSV", "CSV-Texte (séparateur : virgule)");

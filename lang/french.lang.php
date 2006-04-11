@@ -75,7 +75,7 @@ define("_SUBMIT", "Envoyer");
 define("_CHOOSEONE", "Veuillez sélectionner une réponse ci-dessous");
 define("_ENTERCOMMENT", "Veuillez saisir votre commentaire ici");
 define("_NUMERICAL_PS", "Seuls les chiffres sont autorisés pour ce champ");
-define("_CLEARALL", "Sortir et effacer ce questionnaire");
+define("_CLEARALL", "Sortir et effacer les réponses");
 define("_MANDATORY", "Cette question est obligatoire");
 define("_MANDATORY_PARTS", "Veuillez compléter toutes les parties SVP");
 define("_MANDATORY_CHECK", "Veuillez choisir au moins un élément SVP");
@@ -101,7 +101,7 @@ define("_RESTART", "Recommencer ce questionnaire");
 define("_CLOSEWIN_PS", "Fermer cette fenêtre");
 define("_CONFIRMCLEAR", "Etes-vous sûr de vouloir effacer toutes les réponses ?");
 define("_CONFIRMSAVE", "Etes-vous sûr de vouloir sauvegarder vos réponses ?");
-define("_EXITCLEAR", "Sortir et effacer le questionnaire");
+define("_EXITCLEAR", "Sortir et effacer les réponses");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Impossible d'envoyer les réponses car il n'y en a aucune (vide).");
 define("_BADSUBMIT2", "Cette erreur peut se produire si vous avez déjà envoyé vos réponses et actualisé la page de votre naviguateur avec \"Actualiser\". Dans ce cas, vos réponses ont déjà été sauvées.");
@@ -159,8 +159,8 @@ define ("_RG_REGISTER2", "Vous devez être enregistré pour ce questionnaire si 
                                                 ."Saisissez vos coordonnées ci-dessous, et un mail contenant le lien pour "
                                                 ."participer à ce questionnaire vous sera immédiatement envoyé."); //NEW for 0.98rc9
 define ("_RG_EMAIL", "Adresse mail"); //NEW for 0.98rc9
-define ("_RG_FIRSTNAME", "Nom"); //NEW for 0.98rc9
-define ("_RG_LASTNAME", "Prénom"); //NEW for 0.98rc9
+define ("_RG_FIRSTNAME", "Prénom"); //NEW for 0.98rc9
+define ("_RG_LASTNAME", "Nom"); //NEW for 0.98rc9
 define ("_RG_INVALIDEMAIL", "L'adresse mail utilisée n'est pas valide. Veuillez reéssayer.");//NEW for 0.98rc9
 define ("_RG_USEDEMAIL", "L'adresse mail utilisée a déjà été enregistrée.");//NEW for 0.98rc9
 define ("_RG_EMAILSUBJECT", "Confirmation d'enregistrement de {SURVEYNAME}");//NEW for 0.98rc9
