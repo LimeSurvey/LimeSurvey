@@ -705,6 +705,6 @@ echo "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
 echo "\t<tr><td colspan='3'></td></tr>\n"
 	."</table>\n";
 
-echo htmlfooter("$langdir/instructions.html#conditions", "Using PHPSurveyor`s Conditions");
+echo getAdminFooter("$langdir/instructions.html#conditions", "Using PHPSurveyor`s Conditions");
 
 ?>

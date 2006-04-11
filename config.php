@@ -48,9 +48,9 @@ $useidprefix        =   0;             // Set this to 1 if you want to use a pre
 $idprefix           =   0;             // Leave this as 0 to use your server's IP address. Alternatively, use a number here - characters WILL NOT WORK.
 
 // FILE LOCATIONS
-$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/phpsurveyor"; //The root web url for your phpsurveyor installation
+$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/phpsurveyor"; //The root web url for your phpsurveyor installation. 
 
-$rootdir            =   dirname(__FILE__); // This is the physical disk location for your phpsurveyor installation. 
+$rootdir            =   dirname(__FILE__); // This is the physical disk location for your phpsurveyor installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\phpsurveyor"!
                                            // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/phpsurveyor"!
                                            // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/phpsurveyor";!
@@ -88,7 +88,6 @@ $dropdownthreshold  =   "25";             // The number of answers to a list typ
                                           // Only applicable, of course, if you have chosen "R" for $dropdowns and/or $lwcdropdowns
 $repeatheadings     =   "25";             // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
 $minrepeatheadings  =   3;                // The minimum number of remaing answers that are required before repeating the headings in array (flexible) questions.
-$maxemails          =   100;              // The maximum number of emails to send in one go (this is to allow for script timeouts with large emails)
 $defaultlang        =   "english";        // The default language to use
 $OS                 =   PHP_OS;
 
@@ -121,8 +120,10 @@ $emailmethod        =   2;                // The following values can be used:
                                           // 7 = SMTP_CLIENT_RELAY - 1'st SMTP_CLIENT, 2'nd if fail try SMTP_RELAY 
 
 $emailsmtphost      =   "";               // If you use $emailmethod 5-7 you have to set the SMTP relayhost here
-
-
+$maxemails          =   100;              // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+$mutemailerrors     =   0;                // If you want to mute annoying error messages from the emailscript set this to 1.
+                                          // This could be the case if your provider set a static sender_adress.
+                                          
 // JPGRAPH Settings
 // To use jpgraph you must install and set up jpgraph, available from http://www.aditus.nu/jpgraph/
 // PHPSurveyor has been tested using version 1.13. Documentation for this is available at the

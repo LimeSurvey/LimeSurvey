@@ -139,18 +139,11 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
                 //Should put an email to administrator here
                 //if the delete doesn't work.
                 }
-            sendcacheheaders();
-            if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
-                {
-                //Automatically redirect the page to the "url" setting for the survey
-                session_write_close();
-                header("Location: {$thissurvey['url']}");
-                }
-
-            doHeader();
+            
+            $output='';
             foreach(file("$thistpl/startpage.pstpl") as $op)
                 {
-                echo templatereplace($op);
+                $output.= templatereplace($op);
                 }
             
             //Check for assessments
@@ -159,7 +152,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
                 {
                 foreach(file("$thistpl/assessment.pstpl") as $op)
                     {
-                    echo templatereplace($op);
+                    $output.= templatereplace($op);
                     }
                 }
         
@@ -168,7 +161,6 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
                         ._SURVEYREC."<br />\n"
                         ."<a href='javascript:window.close()'>"
                         ._CLOSEWIN_PS."</a></font><br /><br />\n";
-
             //Update the token if needed and send a confirmation email
             if (isset($_POST['token']) && $_POST['token'])
                 {
@@ -196,6 +188,13 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
             
             session_unset();
             session_destroy();
+
+            if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+                {
+                //Automatically redirect the page to the "url" setting for the survey
+                header("Location: {$thissurvey['url']}");
+                }
+
             }
         else 
             {
@@ -203,6 +202,10 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
             $completed=submitfailed();
             }
         }
+        
+    sendcacheheaders();
+    doHeader();
+    echo $output;    
     foreach(file("$thistpl/completed.pstpl") as $op)
         {
         echo templatereplace($op);

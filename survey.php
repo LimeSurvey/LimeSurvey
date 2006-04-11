@@ -143,19 +143,12 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				//if the delete doesn't work.
 				}
 			
+			$content='';
+			
 			//Start to print the final page
-			sendcacheheaders();
-			if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
-				{
-			    //Automatically redirect the page to the "url" setting for the survey
-				session_write_close();
-				header("Location: {$thissurvey['url']}");
-			    }
-
-			doHeader();
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
-				echo templatereplace($op);
+				$content .= templatereplace($op);
 				}
 			
 			//Check for assessments
@@ -164,7 +157,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				{
 				foreach(file("$thistpl/assessment.pstpl") as $op)
 					{
-					echo templatereplace($op);
+					$content .= templatereplace($op);
 					}
 				}
 	
@@ -202,6 +195,17 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 
 			session_unset();
 			session_destroy();
+
+			sendcacheheaders();
+			if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+				{
+			    //Automatically redirect the page to the "url" setting for the survey
+				session_write_close();
+				header("Location: {$thissurvey['url']}");
+			    }
+
+			doHeader();
+			echo $content;
 			}
 		else
 			{

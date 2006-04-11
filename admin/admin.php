@@ -157,7 +157,7 @@ if ($action == "newsurvey")
 	helpscreen();
 	echo "\t</tr>\n"
 		."</table>\n"
-		.htmlfooter("$langdir/instructions.html", "Using PHPSurveyors Admin Script");
+		.getAdminFooter("$langdir/instructions.html", "Using PHPSurveyors Admin Script");
 	exit;
 	}
 
@@ -183,7 +183,7 @@ helpscreen();
 echo "\t</tr>\n";
 echo "</table>\n";
 
-echo htmlfooter("$langdir/instructions.html", "Using PHPSurveyors Admin Script");
+echo getAdminFooter("$langdir/instructions.html", "Using PHPSurveyors Admin Script");
 
 function helpscreen()
 	{

@@ -5,11 +5,21 @@ body 	{
 		margin-bottom:0px 
 		}
 
-td,th,a,p 
+
+td,th,a,p,div
 		{
 		font-family:verdana,arial,sans-serif; 
 		font-size:10pt
 		}
+
+.maintitle
+        {
+		font-size:14pt;
+		font-weight: bold;
+		color: #FFFFFF;
+		text-align:center;
+		margin:auto;
+        }
 
 .outlinetable
 		{
@@ -63,3 +73,10 @@ td 		{
 		font-size: 10; 
 		color: #000080
 		}
+
+.subtitle
+	 	{
+		font-family: verdana; 
+		font-size: 10; 
+		color: #FFFFFF
+	 	}

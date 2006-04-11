@@ -296,7 +296,7 @@ if (!$style)
 	echo "</tr>\n"
 		."</table><br />\n"
 		."\t</form>\n"
-		.htmlfooter("$langdir/instructions.html", "General PHPSurveyor Instructions");
+		.getAdminFooter("$langdir/instructions.html", "General PHPSurveyor Instructions");
 	exit;
 	}
 
@@ -559,13 +559,19 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "H":
 				case "Q":
 				case "^":
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
-					$lr = mysql_query($lq);
-					$debug .= " | QUERY FOR ANSWER CODE [$lq]";
-					while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
-						{
-						$fquest .= " [".$lrow['answer']."]";
-						}
+				    if ($answers == "short") {
+						$fquest .= " [$faid]";
+				    }
+				    else 
+				    	{
+						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
+						$lr = mysql_query($lq);
+						$debug .= " | QUERY FOR ANSWER CODE [$lq]";
+						while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
+							{
+							$fquest .= " [".$lrow['answer']."]";
+							}
+				    	}
 					break;
 				}
 			$fquest = strip_tags($fquest);

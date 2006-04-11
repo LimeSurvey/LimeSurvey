@@ -1,7 +1,8 @@
 <head>
 	<title>
-	A SURVEY: {SURVEYNAME}
+	{SURVEYNAME}
 	</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">	
 <style>
 .clearall
 	{

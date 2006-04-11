@@ -157,19 +157,10 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				//Should put an email to administrator here
 				//if the delete doesn't work.
 				}
-			
-			sendcacheheaders();
-			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
-				{
-			    //Automatically redirect the page to the "url" setting for the survey
-				session_write_close();
-				header("Location: {$thissurvey['url']}");
-			    }
-
-			doHeader();
+            $content='';
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
-				echo templatereplace($op);
+				$content .= templatereplace($op);
 				}
 			//echo $thissurvey['url'];	
 			//Check for assessments
@@ -178,7 +169,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				{
 				foreach(file("$thistpl/assessment.pstpl") as $op)
 					{
-					echo templatereplace($op);
+				    $content .=templatereplace($op);
 					}
 				}
 
@@ -214,6 +205,19 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 
 			session_unset();
 			session_destroy();
+
+
+			sendcacheheaders();
+			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+				{
+			    //Automatically redirect the page to the "url" setting for the survey
+				session_write_close();
+				header("Location: {$thissurvey['url']}");
+			    }
+
+			doHeader();
+            echo $content;
+
 			}
 		else
 			{

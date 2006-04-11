@@ -29,12 +29,20 @@ body.default
 	{
 	font-family: verdana;
 	font-size: 11;
+    text-align:center;
 	}
 .array2
 	{
 	font-family: verdana;
 	font-size: 11;
+    text-align:center;
 	}
+
+.arraycaptionleft
+    {
+    text-align:right;
+    }
+    
 .errormandatory 
 	{
 	font-size:12px;
@@ -48,6 +56,7 @@ body.default
 	color:black;
 	background-color:#999999;
 	}
+	
 </style>
 </head>
 <body class='default'>

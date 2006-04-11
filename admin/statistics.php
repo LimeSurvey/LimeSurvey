@@ -209,10 +209,7 @@ foreach ($filters as $flt)
         }
     if (isset($counter) && $counter == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
     $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
-    $niceqtext = str_replace("\"", "`", $flt[5]);
-    $niceqtext = str_replace("'", "`", $niceqtext);
-    $niceqtext = str_replace("\r", "", $niceqtext);
-    $niceqtext = str_replace("\n", "", $niceqtext);
+    $niceqtext = FlattenText($flt[5]);
     //headings
     if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z") //Have to make an exception for these types!
         {
@@ -236,7 +233,33 @@ foreach ($filters as $flt)
     switch ($flt[2])
         {
         case "Q":
-            //DO NUSSINK
+            echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+            $query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
+            $result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
+            $counter2=0;
+            while ($row=mysql_fetch_row($result))
+                {
+                $myfield2 = "Q".$myfield."$row[0]";
+       		    echo "\t\t\t\t<td align='center' valign='top'>$setfont<strong>$flt[3]-".$row[0]."</strong></font>";
+       	    	echo "<input type='checkbox' name='summary[]' value='$myfield2'";
+    	        if (isset($_POST['summary']) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $_POST['summary']) !== FALSE)) 
+		                {echo " CHECKED";}
+	            echo ">&nbsp;"
+                ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                .str_replace("\"", "`", $flt[5])
+                ." [$flt[1]]\" onClick=\"alert('"._QUESTION.": ".FlattenText($row[1])." "
+                ."')\">"
+                ."<br />\n"
+                ."\t\t\t\t\t<font size='1'>"._ST_RESPONECONT.":</font><br />\n"
+                ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
+	            if (isset($_POST[$myfield2])) 
+	               {echo $_POST[$myfield2];}
+            	echo "'>";
+                $counter2++;
+                $allfields[]=$myfield2;
+                }
+            echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+            $counter=0;
             break;
         case "T": // Long free text
         case "U": // Huge free text
@@ -647,6 +670,7 @@ foreach ($fieldmap as $field)
     //create a select list of all the possible answers to this question
     switch($field['type'])
         {
+        case "Q":
         case "S":
         case "T":
         case "U":
@@ -709,7 +733,7 @@ if (isset($_POST['display']) && $_POST['display'])
         if (in_array($pv, $allfields)) //Only do this if there is actually a value for the $pv
             {
             $firstletter=substr($pv,0,1);
-            if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "D" && $firstletter != "N" && $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
+            if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
                 {
                 $thisquestion = "`$pv` IN (";
                 foreach ($_POST[$pv] as $condition)
@@ -764,7 +788,7 @@ if (isset($_POST['display']) && $_POST['display'])
                     $selects[]="`".substr($pv, 0, -1)."` = '".$_POST[$pv]."'";
                     }
                 }
-            elseif (substr($pv, 0, 1) == "T" && $_POST[$pv] != "")
+            elseif ((substr($pv, 0, 1) == "T" || substr($pv, 0, 1) == "Q" ) && $_POST[$pv] != "")
                 {
                 $selects[]="`".substr($pv, 1, strlen($pv))."` like '%".$_POST[$pv]."%'";
                 }
@@ -961,6 +985,21 @@ if (isset($_POST['summary']) && $_POST['summary'])
             while ($nrow=mysql_fetch_row($nresult))
                 {
                 $qtitle=$nrow[0]; $qtype=$nrow[1];
+                $qquestion=strip_tags($nrow[2]);
+                }
+            $mfield=substr($rt, 1, strlen($rt));
+            $alist[]=array("Answers", _AL_ANSWER, $mfield);
+            $alist[]=array("NoAnswer", _NOANSWER, $mfield);
+            }
+        elseif (substr($rt, 0, 1) == "Q") //Multiple short text
+            {
+            list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+            $nquery = "SELECT title, type, question, other FROM {$dbprefix}questions WHERE qid='".substr($qqid, 0, strlen($qqid)-1)."'";
+            $nresult = mysql_query($nquery) or die("Couldn't get text question<br />$nquery<br />".mysql_error());
+            $count = substr($qqid, strlen($qqid)-1);
+            while ($nrow=mysql_fetch_row($nresult))
+                {
+                $qtitle=$nrow[0].'-'.$count; $qtype=$nrow[1];
                 $qquestion=strip_tags($nrow[2]);
                 }
             $mfield=substr($rt, 1, strlen($rt));
@@ -1305,7 +1344,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                         {
                         $query = "SELECT count(`$al[2]`) FROM {$dbprefix}survey_$surveyid WHERE `$al[2]` != ''";
                         }
-                    elseif ($qtype == "T" || $qtype == "S")
+                    elseif ($qtype == "T" || $qtype == "S" || $qtype == "Q")
                         {
                         if($al[0]=="Answers")
                             {
@@ -1342,7 +1381,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                         {$fname=_NOANSWER;} 
                     elseif ($al[0] == _OTHER || $al[0] == "Answers")
                         {$fname="$al[1] <input $btstyle type='submit' value='"._BROWSE."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
-                    elseif ($qtype == "S" || $qtype == "T")
+                    elseif ($qtype == "S" || $qtype == "T" || $qtype == "Q")
                         {
                         if ($al[0] == "Answer")
                             {
@@ -1476,7 +1515,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
         unset ($alist);
         }
     }
-echo htmlfooter("$langdir/instructions.html#statistics", "Using PHPSurveyors Statistics Function");
+echo getAdminFooter("$langdir/instructions.html#statistics", "Using PHPSurveyors Statistics Function");
 
 function deletePattern($dir, $pattern = "")
    {

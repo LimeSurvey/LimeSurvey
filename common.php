@@ -37,9 +37,10 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
-$versionnumber = "0.993";
+$versionnumber = "0.995";
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
+if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
@@ -160,19 +161,8 @@ if ($sourcefrom == "admin")
     * This is the html header text for all administration pages
     *
     */
-    $htmlheader = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
-                ."<html>\n<head>\n"
-                . "<title>$sitename</title>\n"
-                . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
-				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"adminstyle.css\">\n"
-                . "</head>\n<body>\n"
-                . "<table width='100%' align='center' bgcolor='#000000'>\n"
-                . "\t<tr>\n"
-                . "\t\t<td align='center'>\n"
-                . "\t\t\t$setfont<font color='white' size='4'><strong>$sitename</strong></font></font>\n"
-                . "\t\t</td>\n"
-                . "\t</tr>\n"
-                . "</table>\n";
+    $htmlheader = getAdminHeader();
+    
     }
     /**
      * showadminmenu() function returns html text for the administration button bar
@@ -867,28 +857,6 @@ EOF;
     return $kcjs;
     }
 
-function htmlfooter($url, $explanation)
-    {
-    global $versionnumber, $setfont, $imagefiles;
-    $htmlfooter = "<table width='100%' align='center' bgcolor='#000000'>\n"
-                . "\t<tr>\n"
-                . "\t\t<td align='center'>\n"
-                . "\t\t\t$setfont<font color='white' size='1'>\n"
-                . "\t\t\t<img align='right' alt='Help - $explanation' src='$imagefiles/help.gif' "
-                . "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
-                . "onMouseOut=\"document.body.style.cursor='auto'\">\n"
-                . "\t\t\t<img align='left' alt='Help - $explanation' src='$imagefiles/help.gif' "
-                . "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
-                . "onMouseOut=\"document.body.style.cursor='auto'\">\n"
-                . "\t\t\t<strong><i><a href='http://www.phpsurveyor.org' target='_blank'>"
-                . "<img src='$imagefiles/phpsurveyor_logo.jpg' border='0' alt='PHPSurveyor Logo'></a></i></strong>\n"
-                . "<br />Version $versionnumber\n"
-                . "\t\t</font></font></td>\n"
-                . "\t</tr>\n"
-                . "</table>\n"
-                . "</body>\n</html>";
-    return $htmlfooter;
-    }
 
 function fixsortorder($qid) //Function rewrites the sortorder for a group of answers
     {
@@ -1887,6 +1855,49 @@ function doHeader()
     echo getHeader();
 }
 
+function doAdminFooter()
+{
+    echo getAdminFooter();
+}
+
+function getAdminFooter($url, $explanation)
+{
+    global $versionnumber, $setfont, $imagefiles;
+    $strHTMLFooter = "<div style='color: #FFFFFF; text-align:center; background-color: #000000; padding:3px; '>\n"
+                . "\t\t\t<img  align='right' alt='Donate to PHPSurveyor' src='$imagefiles/donate.gif' "
+                . "onClick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
+                . "onMouseOut=\"document.body.style.cursor='auto'\">\n"
+                . "\t\t\t<img style='padding-right:87px' align='left' alt='Help - $explanation' src='$imagefiles/help.gif' "
+                . "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
+                . "onMouseOut=\"document.body.style.cursor='auto'\">\n"
+                . "\t\t\t<a href='http://www.phpsurveyor.org' class='subtitle' target='_blank'>"
+                . "PHPSurveyor</a><div class='subtitle'>Version $versionnumber</div> \n"
+                . "</div>\n"
+                . "</body>\n</html>";
+    return $strHTMLFooter;
+}
+
+
+function doAdminHeader()
+{
+    echo getAdminHeader();
+}
+
+function getAdminHeader()
+{
+ global $sitename, $sitename;
+ $strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
+                ."<html>\n<head>\n"
+                . "<title>$sitename</title>\n"
+                . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
+				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"adminstyle.css\">\n"
+                . "</head>\n<body>\n"
+                . "<div style='background-color:#000000;' class='maintitle'>\n"
+                . "\t\t$sitename\n"
+                . "</div>\n";
+  return $strAdminHeader;              
+}
+
 
 
 // This function returns the Footer as result string
@@ -1944,6 +1955,17 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
 	$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 	Return  $mail->send($to, $subject, $body, false, 'utf-8');
+}
+
+// This functions removes all tags, CRs, linefeeds and other strange chars from a given text
+function FlattenText($texttoflatten)
+{
+    $nicetext = strip_tags($texttoflatten);
+    $nicetext = str_replace("\"", "`", $nicetext);
+    $nicetext = str_replace("'", "`", $nicetext);
+    $nicetext = str_replace("\r", "", $nicetext);
+    $nicetext = trim(str_replace("\n", "", $nicetext));
+	return  $nicetext;
 }
 
 ?>

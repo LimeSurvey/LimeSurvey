@@ -547,6 +547,6 @@ else
 			."</table>\n";
 		}
 	}
-echo htmlfooter("$langdir/instructions.html#browse", "Using PHPSurveyors Browse Function");
+echo getAdminFooter("$langdir/instructions.html#browse", "Using PHPSurveyors Browse Function");
 
 ?>

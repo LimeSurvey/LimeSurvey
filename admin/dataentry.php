@@ -2199,7 +2199,7 @@ else
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>";
-		echo htmlfooter("$langdir/instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
+		echo getAdminFooter("$langdir/instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
 		exit;
 		}
 	echo "\t<tr>\n";
@@ -2213,7 +2213,7 @@ else
 	echo "\t</form>\n";
 	}
 echo "&nbsp;";
-echo htmlfooter("$langdir/instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
+echo getAdminFooter("$langdir/instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
 
 function array_in_array($needle, $haystack)
 	{

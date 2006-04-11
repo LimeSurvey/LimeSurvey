@@ -187,7 +187,7 @@ echo "<input type='hidden' name='sid' value='$surveyid'>\n"
 
 	
 
-echo htmlfooter("", "");
+echo getAdminFooter("", "");
 
 function getAssessments($surveyid) {
 	global $dbprefix;

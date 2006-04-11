@@ -146,7 +146,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."</table>\n"
 			."<table><tr><td></td></tr></table>\n"
 			."</td></tr></table>\n"
-			.htmlfooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
+			.getAdminFooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
 		exit;
 		}
 	elseif (isset($_GET['restoretable']) && $_GET['restoretable'] == "Y" && isset($_GET['oldtable']) && $_GET['oldtable'])
@@ -164,7 +164,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."</table>\n"
 			."<table><tr><td></td></tr></table>\n"
 			."</td></tr></table>\n"
-			.htmlfooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
+			.getAdminFooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
 		exit;
 		}
 	else
@@ -217,7 +217,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 			."</table>\n"
 			."<table><tr><td></td></tr></table>\n"
 			."</td></tr></table>\n"
-			.htmlfooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
+			.getAdminFooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
 		exit;
 		}
 	}
@@ -1308,7 +1308,7 @@ echo "\t\t<table><tr><td></td></tr></table>\n"
 echo helpscreen()
 	."</tr></table>\n";
 
-echo htmlfooter("$langdir/instructions.html#tokens", "Using PHPSurveyors Tokens Function");
+echo getAdminFooter("$langdir/instructions.html#tokens", "Using PHPSurveyors Tokens Function");
 //	."</body>\n</html>";
 
 

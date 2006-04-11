@@ -666,7 +666,7 @@ echo "<br />\n"
 	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
 	."<br />&nbsp;<br />"
 	."</td></tr></table>\n"
-	.htmlfooter("$langdir_template/instructions.html#Templates", "");
+	.getAdminFooter("$langdir_template/instructions.html#Templates", "");
 
 function unlink_wc($dir, $pattern){
    if ($dh = opendir($dir)) { 

@@ -60,6 +60,31 @@ The upgrade procedure step-by-step:
 Thank you to everyone who helped with this new release!
 
 
+
+Changes from 0.993 to 0.995
+
+
+Fixed bug #397: [Translation] Updated swedish lang-file (c_schmitz)
+Fixed bug #398: [Security] shell_exec not only disabled in safe_mode (c_schmitz)
+Fixed bug #400: [Documentation] Requirements for phpsurveyor (c_schmitz)
+Fixed bug #348: [Import / Export] Failed to import survey dumps when using MySQL version 5.x (c_schmitz)
+Fixed bug #403: [Import / Export] SPSS export does not work properly in 0.993 (c_schmitz)
+Fixed bug #411: [Survey at Runtime] Patch: Options List (do_list_radio function) (c_schmitz)
+Fixed bug #415: [Import / Export] Infinite loop in resultsdump.php (c_schmitz)
+Fixed bug #427: [Survey at Runtime] Error finding question attributes (c_schmitz)
+Fixed bug #424: [Tokens] /// in invitation text (c_schmitz)
+Fixed bug #419: [Tokens] Importing Tokens with pre-set token id not usable without editing (c_schmitz)
+Fixed bug #416: [Survey at Runtime] bug saving partially completed surveys - Multiple Options/Array. (c_schmitz)
+Fixed bug #425: [Tokens] Reminder emails with nothing but Subject line (c_schmitz)
+Fixed bug #432: [Survey at Runtime] Error finding question attributes (c_schmitz)
+Fixed bug #423: [Import / Export] wrong Excel export "Full headings" for matrix questions (c_schmitz)
+Fixed bug #422: [Survey at Runtime] $shownoanswer=0 - 5 point choice question shows the "No answer" option (c_schmitz)
+Fixed bug #434: [Survey at Runtime] Columns in array type questions no longer line up (c_schmitz)
+Fixed bug #428: [Survey at Runtime] Problems with public registration (c_schmitz)
+Fixed bug #437: [Import / Export] Exporting Question/Answer Codes returns Question Texts, not their codes (c_schmitz)
+
+
+
 Changes from 0.992 to 0.993
 
 New features:

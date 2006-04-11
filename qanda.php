@@ -481,6 +481,7 @@ function do_boilerplate($ia)
 
 function do_5pointchoice($ia)
     {
+    global $shownoanswer;
     $answer="";
     for ($fp=1; $fp<=5; $fp++)
         {
@@ -488,7 +489,7 @@ function do_5pointchoice($ia)
         if ($_SESSION[$ia[1]] == $fp) {$answer .= " checked";}
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]$fp' class='answertext'>$fp</label>\n";
         }
-    if ($ia[6] != "Y") // Add "No Answer" option if question is not mandatory
+    if ($ia[6] != "Y"  && $shownoanswer == 1) // Add "No Answer" option if question is not mandatory
         {
         $answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
         if (!$_SESSION[$ia[1]]) {$answer .= " checked";}
@@ -1619,11 +1620,11 @@ function do_array_5point($ia)
              . "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
     for ($xc=1; $xc<=5; $xc++)
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
+        $answer .= "\t\t\t\t\t<td class='array1'>$xc</td>\n";
         }
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOANSWER."</td>\n";
+        $answer .= "\t\t\t\t\t<td class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = mysql_fetch_array($ansresult))
@@ -1686,11 +1687,11 @@ function do_array_10point($ia)
              . "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
     for ($xc=1; $xc<=10; $xc++)
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>$xc</td>\n";
+        $answer .= "\t\t\t\t\t<td class='array1'>$xc</td>\n";
         }
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOANSWER."</td>\n";
+        $answer .= "\t\t\t\t\t<td  class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = mysql_fetch_array($ansresult))
@@ -1751,12 +1752,12 @@ function do_array_yesnouncertain($ia)
     $answer = "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td width='$answerwidth%'></td>\n"
-             . "\t\t\t\t\t<td align='center' class='array1'>"._YES."</td>\n"
-             . "\t\t\t\t\t<td align='center' class='array1'>"._UNCERTAIN."</td>\n"
-             . "\t\t\t\t\t<td align='center' class='array1'>"._NO."</td>\n";
+             . "\t\t\t\t\t<td class='array1'>"._YES."</td>\n"
+             . "\t\t\t\t\t<td class='array1'>"._UNCERTAIN."</td>\n"
+             . "\t\t\t\t\t<td class='array1'>"._NO."</td>\n";
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOANSWER."</td>\n";
+        $answer .= "\t\t\t\t\t<td  class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = mysql_fetch_array($ansresult))
@@ -1929,12 +1930,12 @@ function do_array_increasesamedecrease($ia)
     $answer = "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td width='$answerwidth%'></td>\n"
-             . "\t\t\t\t\t<td align='center' class='array1'>"._INCREASE."</td>\n"
-             . "\t\t\t\t\t<td align='center' class='array1'>"._SAME."</td>\n"
-             . "\t\t\t\t\t<td align='center' class='array1'>"._DECREASE."</td>\n";
+             . "\t\t\t\t\t<td class='array1'>"._INCREASE."</td>\n"
+             . "\t\t\t\t\t<td class='array1'>"._SAME."</td>\n"
+             . "\t\t\t\t\t<td class='array1'>"._DECREASE."</td>\n";
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td align='center' class='array1'>"._NOANSWER."</td>\n";
+        $answer .= "\t\t\t\t\t<td class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = mysql_fetch_array($ansresult))
@@ -2023,11 +2024,11 @@ function do_array_flexible($ia)
                  . "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
         foreach ($labelans as $ld)
             {
-            $answer .= "\t\t\t\t\t<th align='center' class='array1' width='$cellwidth%'><font size='1'>".$ld."</font></th>\n";
+            $answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$ld."</font></th>\n";
             }
         if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
             {
-            $answer .= "\t\t\t\t\t<th align='center' class='array1' width='$cellwidth%'><font size='1'>"._NOANSWER."</font></th>\n";
+            $answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>"._NOANSWER."</font></th>\n";
             }
         $answer .= "\t\t\t\t</tr>\n";
 
@@ -2041,11 +2042,11 @@ function do_array_flexible($ia)
                              . "\t\t\t\t\t<td></td>\n";
                     foreach ($labelans as $ld)
                         {
-                        $answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>".$ld."</font></td>\n";
+                        $answer .= "\t\t\t\t\t<td  class='array1'><font size='1'>".$ld."</font></td>\n";
                         }
                     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
                         {
-                        $answer .= "\t\t\t\t\t<td align='center' class='array1'><font size='1'>"._NOANSWER."</font></td>\n";
+                        $answer .= "\t\t\t\t\t<td class='array1'><font size='1'>"._NOANSWER."</font></td>\n";
                         }
                     $answer .= "\t\t\t\t</tr>\n";
                     }
@@ -2142,7 +2143,7 @@ function do_array_flexiblecolumns($ia)
         if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
            $ld = "<span class='errormandatory'>{$ld}</span>";
         }
-        $answer .= "\t\t\t\t\t<td align='center' class='$trbc'><span class='answertext'>"
+        $answer .= "\t\t\t\t\t<td class='$trbc'><span class='answertext'>"
                 . $ld."</span></td>\n";
         }
     unset($trbc);
@@ -2158,7 +2159,7 @@ function do_array_flexiblecolumns($ia)
     foreach($labels as $ansrow)
         {
         $answer .= "\t\t\t\t<tr>\n"
-                 . "\t\t\t\t\t<td align='right' class='array1' width='$percwidth%'>{$ansrow['answer']}</td>\n";
+                 . "\t\t\t\t\t<td class='arraycaptionleft'>{$ansrow['answer']}</td>\n";
         foreach ($anscode as $ld)
             {
             if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
