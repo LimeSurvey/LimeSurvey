@@ -79,7 +79,7 @@ CREATE TABLE `groups` (
 CREATE TABLE `labels` (
   `lid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
-  `title` varchar(50) NOT NULL default '',
+  `title` varchar(100) NOT NULL default '',
   `sortorder` varchar(5) default NULL
 ) TYPE=MyISAM;
 

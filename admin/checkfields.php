@@ -69,7 +69,7 @@ $allfields[]=array("{$dbprefix}labelsets", "label_name", "label_name varchar(100
 
 $allfields[]=array("{$dbprefix}labels", "lid", "lid int(11) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}labels", "code", "code varchar(5) NOT NULL default ''");
-$allfields[]=array("{$dbprefix}labels", "title", "title varchar(50) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}labels", "title", "title varchar(100) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}labels", "sortorder", "sortorder varchar(5) NULL");
 
 $allfields[]=array("{$dbprefix}users", "user", "user varchar(20) NOT NULL default ''");
