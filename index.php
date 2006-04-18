@@ -898,15 +898,6 @@ function submittokens()
         
 		//Only send confirmation email if there is a valid email address
 		if (validate_email($cnfrow['email'])) {MailTextMessage($message, $subject, $to, $from, $sitename);} 
-		
-		//DEBUG INFO: CAN BE REMOVED
-		echo "<!-- DEBUG: MAIL INFORMATION\n"
-			."FROM: $from\n"
-			."TO: $to\n"
-			."SUBJECT: $subject\n"
-			."MESSAGE: $message\n"
-			."-->\n";
-		//END DEBUG
 		}	
 	}
 	
