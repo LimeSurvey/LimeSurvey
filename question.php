@@ -209,7 +209,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 		doHeader(); 
 		}
 		
-    echo $output;    
+    if (isset($output)) {echo $output;}
     foreach(file("$thistpl/completed.pstpl") as $op)
         {
         echo templatereplace($op);

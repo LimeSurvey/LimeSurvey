@@ -59,6 +59,13 @@ The upgrade procedure step-by-step:
 
 Thank you to everyone who helped with this new release!
 
+Changes from 0.995 to 0.996
+
+Fixed bug #454: remote exploit where attacker was able to inject code into the log file using save.php and could execute the injected code and attached commands by a broken MySQL command. 
+This exploit is only working if the apache access.logs are made available (by mistake or a sloppy server configuration).
+Updated french language files & instructions by Sébastien Gaugry
+Removed 'Header already sent messages' when sending notifications or test-submitting in question-by-question mode
+
 
 
 Changes from 0.993 to 0.995
