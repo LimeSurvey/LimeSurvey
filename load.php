@@ -36,6 +36,9 @@
 
 require_once(dirname(__FILE__).'/config.php');
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+//This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
+if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");} 
+
 if (!isset($thistpl)) {die ("Error!");}
 sendcacheheaders();
 doHeader();
