@@ -38,8 +38,8 @@ require_once(dirname(__FILE__).'/../config.php');
 $action = returnglobal('action');
 $surveyid = returnglobal('sid');
 $id = returnglobal('id');
-$surveytable = returnglobal('surveytable');
 $saver['scid']=returnglobal('save_scid');
+$surveytable = "{$dbprefix}survey_$surveyid";
 
 sendcacheheaders();
 
@@ -1382,7 +1382,9 @@ elseif ($action == "update")
 	    $url=$thissurvey['url'];
 	    header("Location: $url");
 	}
-	ob_end_flush();
+	while (ob_get_level() > 0) {
+   		ob_end_flush();
+	}
 	echo "<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		._DE_UPDATED."<br /><br />\n"
 		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
