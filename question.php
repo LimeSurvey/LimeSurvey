@@ -292,6 +292,15 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 
 if ($_SESSION['step'] == "0") {$currentquestion=$_SESSION['step'];}
 else {$currentquestion=$_SESSION['step']-1;}
+
+
+if (session_id()=='') 
+ {
+ 	 echo "Sorry, your sessions seems to have expired. Please restart the survey. (1)";
+ 	 die();
+ }
+
+
 $ia=$_SESSION['fieldarray'][$currentquestion];
 
 list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
