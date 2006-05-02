@@ -1,7 +1,7 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  										    #
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
@@ -33,7 +33,8 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################
 	#															#
-	# This language file kindly provided by Rosaura Gazzola/Job Vieira Lúcio	#
+	# This language file kindly provided by 	                #
+	# Rosaura Gazzola/Job Vieira Lúcio	                        #
 	#															#
 	#############################################################
 */
