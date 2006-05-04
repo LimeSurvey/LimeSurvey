@@ -464,7 +464,7 @@ elseif ($action == "edit" || $action == "editsaved")
 	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private=$fnrow['private']; $datestamp=$fnrow['datestamp'];$ipaddr=$fnrow['ipaddr'];} // Get table output into array
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
-	// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist) 
+	// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
 	$fnames[] = array("id", "id", "id", "id", "id", "id", "id", "");
 
 	if ($private == "N") //show token info if survey not private
@@ -477,7 +477,7 @@ elseif ($action == "edit" || $action == "editsaved")
 		}
 	if ($ipaddr == "Y")
 		{
-		$fnames[] = array ("ipaddr", "IP Adress", "IPAddress", "ipaddr", "ipaddr", "", "");
+		$fnames[] = array ("ipaddr", "IP Address", "IP Address", "ipaddr", "ipaddr", "", "");
 		}
 	$fcount=0;
 	foreach ($fnrows as $fnrow)
@@ -575,6 +575,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			{
 			$saver['email']=$svrow['email'];
 			$saver['scid']=$svrow['scid'];
+			$saver['ip']=$svrow['ip'];   
 			}
 		$svquery = "SELECT * FROM {$dbprefix}saved WHERE scid=".$saver['scid'];
 		$svresult=mysql_query($svquery) or die("Error getting saved info<br />$svquery<br />".mysql_error());
@@ -596,7 +597,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			}
 		$results1['id']="";
 		$results1['datestamp']=date("Y-m-d H:i:s");
-		$results1['ipaddr']="NULL";
+		$results1['ipaddr']=$saver['ip'];
 		$results[]=$results1;	
 		}
 //	echo "<pre>";print_r($results);echo "</pre>";
