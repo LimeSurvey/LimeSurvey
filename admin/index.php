@@ -1,12 +1,12 @@
 <?php
 /*
 	#############################################################
-	# >>> PHPSurveyor  										#
+	# >>> PHPSurveyor  									    	#
 	#############################################################
 	# > Author:  Jason Cleeland									#
 	# > E-mail:  jason@cleeland.org								#
 	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
+	# >          CARLTON SOUTH 3053, AUSTRALIA                  #
  	# > Date: 	 20 February 2003								#
 	#															#
 	# This set of scripts allows you to develop, publish and	#
@@ -93,7 +93,7 @@ $htmlheader = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
 			. "<meta http-equiv=\"content-script-type\" content=\"text/javascript\">\n"
 			. "<meta http-equiv=\"Content-Style-Type\" content=\"text/css\">\n"
 			. "<link href=\"$homeurl/phpsurveyor.css\" rel=\"stylesheet\" type=\"text/css\">\n"
-			. "<script src=\"$homeurl/classes/TreeMenu.js\" language=\"JavaScript\" type=\"text/javascript\"></script>\n"
+			. "<script src=\"$homeurl/classes/TreeMenu/TreeMenu.js\" language=\"JavaScript\" type=\"text/javascript\"></script>\n"
 			. "</head>\n<body>\n";
 //			. "<table width='100%' align='center' bgcolor='#000000'>\n"
 //			. "\t<tr>\n"
@@ -402,7 +402,7 @@ function adminmenu() {
 			  <td valign='top'>
 			   <table align='center' width='100%' cellspacing='0' cellpadding='0'>
 			    <tr>
-				 <td style='background-image:url($imagefiles/adminbg.jpg)' height='26' valign='bottom'>
+				 <td height='26' valign='bottom'>
 			      <img src='{$imagefiles}/showhelp.gif' align='right' alt='Show Help'>
 			      <img src='$imagefiles/blank.gif' width='5' height='1' alt=''>
 			      <a href='$scriptname' title='"._A_HOME_BT."'><img src='{$imagefiles}/home.gif' alt='"._A_HOME_BT."' border='0'></a>
@@ -436,7 +436,7 @@ function footer($url, $explanation)
 				. "\t\t\t<img align='left' alt='Help - $explanation' src='$imagefiles/help.gif' "
 				. "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
 				. "onMouseOut=\"document.body.style.cursor='auto'\">\n"
-				. "<font color='white' size='1'>This is an experimental interface. If you experience problems please use the <a href='admin.php'>normal interface.</a></font><br> \n"
+				. "<font color='white' size='1'>This is an experimental interface - Do NOT use this for production!<BR> We do NOT give you support on issues you might have after using this interface. If you experience problems please use the <a href='admin.php'>normal interface.</a></font><br> \n"
 				. "Ver $versionnumber\n"
 				. "\t\t</font></font></td>\n"
 				. "\t</tr>\n"

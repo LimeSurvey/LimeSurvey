@@ -78,7 +78,7 @@ function surveyNavigator($surveyid, $gid, $qid) {
 			}
 		$menu01->addItem($node01);
 		}	
-		$surveyidmenu= &new HTML_TreeMenu_DHTMLXL($menu01, array("images"=>"classes/TMimages"));	
+		$surveyidmenu= &new HTML_TreeMenu_DHTMLXL($menu01, array("images"=>"classes/TreeMenu/TMimages"));	
 		//$surveyidmenu->printMenu();
 		$_SESSION['java_thissurvey']=$surveyidmenu->toHTML();
 	}
@@ -119,7 +119,7 @@ function surveyNavigator($surveyid, $gid, $qid) {
 			$menu00->addItem($$nodename);
 			$i++;
 		}
-	$surveymenu = &new HTML_TreeMenu_DHTMLXL($menu00, array("images"=>"classes/TMimages"));
+	$surveymenu = &new HTML_TreeMenu_DHTMLXL($menu00, array("images"=>"classes/TreeMenu/TMimages"));
 	$_SESSION['java_allsurveys']=$surveymenu->toHTML();
 	$_SESSION['java_exclude']=$surveyid;
 	}
