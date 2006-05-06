@@ -219,11 +219,12 @@ if ($result=mysql_query($query))
 		if (isset($_SESSION[$sia]) && ($_SESSION[$sia] || $_SESSION[$sia] == "0")) 
 			{
 			$iquery = "INSERT INTO `{$dbprefix}saved`\n"
-					. "(`scid`, `datestamp`, `fieldname`,\n"
+					. "(`scid`, `datestamp`, `ipaddr`, `fieldname`,\n"
 					. "`value`)\n"
 					. "VALUES (\n"
 					. "'".$sdata['scid']."',\n"
 					. "'".$sdata['date']."',\n"
+					. "'".$sdata['ip']."',\n"
 					. "'".$sia."',\n"
 					. "'".mysql_escape_string($_SESSION[$sia])."')";
 			if (!$iresult=mysql_query($iquery))
