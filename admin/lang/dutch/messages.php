@@ -33,7 +33,6 @@
     #################################################################
     #                                                               #
     #  Translation kindly provided by Peter De Berdt				#
-    #  																#
     #                                                               #
     #  Edit this file with an UTF-8 capable editor only!            #
     #                                                               #
