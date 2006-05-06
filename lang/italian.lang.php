@@ -38,7 +38,7 @@
 	#															#
 	#############################################################*/
 //SINGLE WORDS
-define("_YES", "S&igrave;");
+define("_YES", "Sì");
 define("_NO", "No");
 define("_UNCERTAIN", "Non so");
 define("_ADMIN", "Amministratore");
