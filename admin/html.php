@@ -1902,7 +1902,7 @@ function questionjavascript($type, $qattributes)
 						}
 					}
 				}";
-	$newquestion .="function OtherSelection(QuestionType)\n"
+	$newquestion .="\nfunction OtherSelection(QuestionType)\n"
 				 . "\t{\n"
 				 . "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
 				 . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
@@ -1921,12 +1921,14 @@ function questionjavascript($type, $qattributes)
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('Validation').style.display = '';\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
+				 . "\t\tdocument.getElementById('ON').checked = true;\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
 				 . "\t\t}\n"
 				 . "\telse\n"
 				 . "\t\t{\n"
 				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
 				 . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+				 . "\t\tdocument.getElementById('ON').checked = true;\n"
 				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
 				 //. "\t\tdocument.addnewquestion.other[1].checked = true;\n"
 				 . "\t\t}\n"
