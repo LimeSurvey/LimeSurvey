@@ -102,7 +102,7 @@ $allowexportalldb   =   1;      // 0 will only export prefixed tables when doing
 $allowmandbackwards =   1;      // Allow moving backwards (ie: << prev) through survey if a mandatory question
                                 // has not been answered. 1=Allow, 0=Deny
 $deletenonvalues    =   1;      // By default, PHPSurveyor does not save responses to conditional questions that haven't been answered/shown. To have PHPSurveyor save these responses change this value to 0.
-$shownoanswer       =   1;      // Show "no answer" for non mandatory questions 
+$shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 
 
 // Email Settings
@@ -110,7 +110,7 @@ $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 
 $siteadminemail     =   "your@email.org"; // The default email address of the site administrator
 $siteadminname      =   "Your Name";      // The name of the site administrator
-$emailmethod        =   2;                // The following values can be used: 
+$emailmethod        =   2;                // The following values can be used:
 									      // 1 = SMTP_LOCAL - Localhost
                                           // 2 = SMTP_CLIENT - MX host name(s)
                                           // 3 = SMTP_LOCAL_CLIENT - 1'st SMTP_LOCAL, 2'nd if fail try SMTP_CLIENT
@@ -119,7 +119,10 @@ $emailmethod        =   2;                // The following values can be used:
                                           // 6 = SMTP_RELAY_CLIENT, - 1'st SMTP_RELAY, 2'nd if fail try SMTP_CLIENT
                                           // 7 = SMTP_CLIENT_RELAY - 1'st SMTP_CLIENT, 2'nd if fail try SMTP_RELAY 
 
-$emailsmtphost      =   "";               // If you use $emailmethod 5-7 you have to set the SMTP relayhost here
+$emailsmtphost      =   "mail.mailhost.net";    // If you use $emailmethod 5-7 you have to set the SMTP relayhost here
+$emailsmtpuser      =   "your@mail.com";        // SMTP authorisation username
+$emailsmtppassword  =   "somepwd";              // SMTP authorisation password
+
 $maxemails          =   100;              // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 $mutemailerrors     =   0;                // If you want to mute annoying error messages from the emailscript set this to 1.
                                           // This could be the case if your provider set a static sender_adress.

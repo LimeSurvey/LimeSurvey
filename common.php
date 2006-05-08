@@ -150,8 +150,12 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 //CACHE DATA
 $connect=mysql_connect("$databaselocation:$databaseport", "$databaseuser", "$databasepass");
 $db=mysql_selectdb($databasename, $connect);
-//mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
+
+// The following line is for debug purposes
+//$tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
+
 $tmpresult=@mysql_query("SET CHARACTER SET 'utf8'", $connect);
+
 
 //Admin menus and standards
 if ($sourcefrom == "admin")
@@ -1939,7 +1943,12 @@ function ReplaceFields ($text,$fieldsarray)
 
 function MailTextMessage($body, $subject, $to, $from, $sitename)
 {
-	$mail = new XpertMailer();
+    global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
+
+    $mail = new XpertMailer($emailmethod,$emailsmtphost);
+	if ($emailmethod ==5 || $emailmethod ==6 || $emailmethod ==7)
+	   { $mail->auth($emailsmtpuser,$emailsmtppassword);
+       }
 	$fromname='';
 	$fromemail=$from;
 	if (strpos($from,'<'))
