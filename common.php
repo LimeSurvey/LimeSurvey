@@ -1946,9 +1946,10 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
     $mail = new XpertMailer($emailmethod,$emailsmtphost);
-	if ($emailmethod ==5 || $emailmethod ==6 || $emailmethod ==7)
+	if (($emailmethod ==5 || $emailmethod ==6 || $emailmethod ==7) && $emailsmtpuser!="" )
 	   { $mail->auth($emailsmtpuser,$emailsmtppassword);
        }
+
 	$fromname='';
 	$fromemail=$from;
 	if (strpos($from,'<'))
