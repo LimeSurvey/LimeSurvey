@@ -1274,13 +1274,16 @@ function buildsurveysession()
 			}
 
 		//3(b) See if any of the insertarray values have been passed in the query URL
-		foreach($_SESSION['insertarray'] as $field)
+		
+		if (isset($_SESSION['insertarray']))
+		{foreach($_SESSION['insertarray'] as $field)
 			{
 			if (isset($_GET[$field]))
 				{
 				$_SESSION[$field]=$_GET[$field];
 			    }
 			}
+		}
 
 		//4. SESSION VARIABLE: fieldarray
 		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
