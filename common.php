@@ -1842,10 +1842,10 @@ function getHeader()
     {
       return "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
         	."<head>\n"
-			."<link type=\"text/css\" rel=\"StyleSheet\" href=\"slider/swing.css\">\n"
-			."<script type=\"text/javascript\" src=\"slider/range.js\"></script>\n"
-			."<script type=\"text/javascript\" src=\"slider/timer.js\"></script>\n"
-			."<script type=\"text/javascript\" src=\"slider/slider.js\"></script>\n";
+			."<link type=\"text/css\" rel=\"StyleSheet\" href=\"classes/slider/swing.css\">\n"
+			."<script type=\"text/javascript\" src=\"classes/slider/range.js\"></script>\n"
+			."<script type=\"text/javascript\" src=\"classes/slider/timer.js\"></script>\n"
+			."<script type=\"text/javascript\" src=\"classes/slider/slider.js\"></script>\n";
     }
 
     global $embedded_headerfunc;
