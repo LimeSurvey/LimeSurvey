@@ -52,7 +52,7 @@ if ($action != "upload")
 		{
 		$tablelist[]=$row[0];
 	    }
-	if (in_array("survey_$surveyid", $tablelist))
+	if (in_array("{$dbprefix}survey_$surveyid", $tablelist))
 		{
 		echo "<br />
 		<form enctype='multipart/form-data' method='post' action='vvimport.php?sid=$surveyid'>
@@ -118,7 +118,7 @@ else
 		}
 	fclose($handle);
 	
-	$surveytable = "survey_$surveyid";
+	$surveytable = "{$dbprefix}survey_$surveyid";
 	
 	unlink($the_full_file_path); //delete the uploaded file
 	unset($bigarray[0]); //delete the first line
