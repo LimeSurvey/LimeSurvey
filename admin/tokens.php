@@ -524,17 +524,20 @@ if ($action == "browse" || $action == "search")
 				// TLR Add an UPDATE button to the tokens display in the MPID Actions column 
  				$query="SELECT * FROM {$dbprefix}survey_$surveyid WHERE token='$brow[4]'"; 
 				$result=mysql_query($query) or die ("<br />Could not find token!<br />\n" . mysql_error()); 
-				$id=mysql_result($result,0,"id"); 
-				echo "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n" 
-				."\t\t<td align='center' valign='top'>\n" 
-				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
-				._TC_UPDATE."' />\n"
-				."\t\t</td>\n"
-				."\t\t<input type='hidden' name='sid' value='$surveyid' />\n" 
-				."\t\t<input type='hidden' name='action' value='edit' />\n" 
-				."\t\t<input type='hidden' name='surveytable' value='survey_$surveyid' />\n"  
-				."\t\t<input type='hidden' name='id' value='$id' />\n" 
-				."\t\t</form>\n";  
+				if  (mysql_num_rows($result)>0)
+                {
+                    $id=mysql_result($result,0,"id");
+				    echo "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n"
+				    ."\t\t<td align='center' valign='top'>\n"
+				    ."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
+				    ._TC_UPDATE."' />\n"
+				    ."\t\t</td>\n"
+				    ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+				    ."\t\t<input type='hidden' name='action' value='edit' />\n"
+				    ."\t\t<input type='hidden' name='surveytable' value='survey_$surveyid' />\n"
+				    ."\t\t<input type='hidden' name='id' value='$id' />\n"
+				    ."\t\t</form>\n";
+                }
 			}
 			
 								// TLR change to put date into sent and completed
