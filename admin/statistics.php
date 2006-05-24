@@ -1467,7 +1467,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     }
                     $graph->title->SetColor("#EEEEEE");
                     $graph->SetMarginColor("#666666");
-                    $graph->img->SetAntiAliasing();
+                    $graph->SetAntiAliasing();
                     // Set A title for the plot
                     //$graph->title->Set($qquestion);
                     $graph->title->SetFont(constant($jpgraphfont),FS_BOLD,13); 
