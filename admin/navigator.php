@@ -450,6 +450,7 @@ function surveyEdit($surveyid) {
 						  "adminname"=>"",
 						  "adminemail"=>"",
 						  "faxto"=>"",
+						  "useexpiry"=>"Y",
 						  "expiry"=>"",
 						  "url"=>"",
 						  "active"=>"N",
