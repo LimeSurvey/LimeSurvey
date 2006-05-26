@@ -59,17 +59,42 @@ The upgrade procedure step-by-step:
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 0.996 to 1.0
+
+
+-Added SMTP relay and authorization
+-Added Japanese translation kindly provided by Masaru Ryumae
+-Added Greek translation file kindly provided by Artemis Mendrinos
+-Added Romanian translation kindly provided by Bogdan Anastasiei
+-Updated spanish translation kindly provided by Juan Rafael Fernàndez
+-Updated russian translation by Alexander Shilov
+-Fixed an error message showing up when a survey was deleted but the token still was set to 'completed = yes'
+-Fixed bug #470: VVimport fails (reports that an active survey is not currently active) if dbprefix is set
+-Fixed bug #465: Error messages if a question has no answers
+-Fixed bug #463: Checkbox with conditions = JS error on Firefox in 'All in one' mode
+-Fixed bug #457: SQL syntax error when having changed a question type from a question with activated 'other' option to a question type with no 'other' option and then activating the survey.
+-Fixed bug #456: Emails using local server (Postfix) rather than remote mail server as specified in config file
+-Fixed bug #455: Losing ip-address when editing a cached survey
+-Fixed bug #435: Basic handling of session timeouts.
+-Fixed bug #458: Wrong path for 2 files in experimental interface
+-Removed a possible error in relation to dbprefix settings.
+-Removed a small warning notice regarding flush_cache_ob.
+-Fixed swedish language file
+-Fixed small antialiasing bug with JPGraph
+
+
+
 Changes from 0.995 to 0.996
 
-Fixed bug #454: remote exploit where attacker was able to inject code into the log file using save.php and could execute the injected code and attached commands by a broken MySQL command. 
-This exploit is only working if the apache access.logs are made available (by mistake or a sloppy server configuration).
-Updated french language files & instructions by Sébastien Gaugry
-Removed 'Header already sent messages' when sending notifications or test-submitting in question-by-question mode
+-Fixed bug #454: remote exploit where attacker was able to inject code into the log file using save.php and could execute the injected code and attached commands by a broken MySQL command.
+ This exploit is only working if the apache access.logs are made available (by mistake or a sloppy server configuration).
+-Updated french language files & instructions by Sébastien Gaugry
+-Removed 'Header already sent messages' when sending notifications or test-submitting in question-by-question mode
 
 
 
 Changes from 0.993 to 0.995
-
 
 Fixed bug #397: [Translation] Updated swedish lang-file (c_schmitz)
 Fixed bug #398: [Security] shell_exec not only disabled in safe_mode (c_schmitz)
