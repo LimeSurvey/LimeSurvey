@@ -1843,7 +1843,7 @@ global $lid;
 
 //Menu entries go here
 //CREATENEW
-$menu['system']["0"]="<a href='$homeurl/authentication.php'><img src='$imagefiles/security.gif' align='left' border='0' height='15' width='15'>"._AUTHENTICATION_BT."<\/a><br />";
+//$menu['system']["0"]="<a href='$homeurl/authentication.php'><img src='$imagefiles/security.gif' align='left' border='0' height='15' width='15'>"._AUTHENTICATION_BT."<\/a><br />";
 $menu['system']["1"]="<a href='$homeurl/$scriptname?action=checksettings'><img src='$imagefiles/summary.gif' align='left' border='0' height='15' width='15'>"._SYSTEM_BT."<\/a><br />";
 
 $menu['systemdb']["0"]="<a href='$homeurl/checkfields.php'><img src='$imagefiles/checkdb.gif' align='left' border='0' height='15' width='15'>"._CHECKFIELDS."<\/a><br />";

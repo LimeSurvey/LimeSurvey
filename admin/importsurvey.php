@@ -314,9 +314,7 @@ $iresult = mysql_query($insert) or die("<br />"._IS_IMPFAILED."<br />\n<font siz
 $oldsid=$surveyid;
 
 //GET NEW SID
-$surveyidquery = "SELECT sid FROM {$dbprefix}surveys ORDER BY sid DESC LIMIT 1";
-$surveyidres = mysql_query($surveyidquery);
-while ($srow = mysql_fetch_row($surveyidres)) {$newsid = $srow[0];}
+$newsid = mysql_insert_id();
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIE NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
