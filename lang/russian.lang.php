@@ -32,6 +32,12 @@
 	# the Free Software Foundation, Inc., 59 Temple Place - 	#
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################
+    #                                                           #
+    # This language file kindly provided by ?                   #
+    #                                                           #
+    # Updates 2006 by Alexander Shilov - alexsh at cpart dot kz #
+    #                                                           #
+    #############################################################
 */
 //SINGLE WORDS
 define("_YES", "Да");
@@ -191,45 +197,44 @@ define("_PS_CON_TOQUESTION", "к вопросу"); //New for 0.98finalRC1
 define("_PS_CON_OR", "or"); //New for 0.98finalRC2
 
 //Save Messages
-define("_SAVE_AND_RETURN", "Save your responses so far");
-define("_SAVEHEADING", "Save Your Unfinished Survey");
-define("_RETURNTOSURVEY", "Return To Survey");
-define("_SAVENAME", "Name");
-define("_SAVEPASSWORD", "Password");
-define("_SAVEPASSWORDRPT", "Repeat Password");
-define("_SAVE_EMAIL", "Your Email");
-define("_SAVEEXPLANATION", "Enter a name and password for this survey and click save below.<br />\n"
-				  ."Your survey will be saved using that name and password, and can be "
-				  ."completed later by logging in with the same name and password.<br /><br />\n"
-				  ."If you give an email address, an email containing the details will be sent "
-				  ."to you.");
-define("_SAVESUBMIT", "Save Now");
-define("_SAVENONAME", "You must supply a name for this saved session.");
-define("_SAVENOPASS", "You must supply a password for this saved session.");
-define("_SAVENOMATCH", "Your passwords do not match.");
-define("_SAVEDUPLICATE", "This name has already been used for this survey. You must use a unique save name.");
-define("_SAVETRYAGAIN", "Please try again.");
+define("_SAVE_AND_RETURN", "Сохранить ответы и вернуться позже");
+define("_SAVEHEADING", "Сохранение незаконченного опроса");
+define("_RETURNTOSURVEY", "Вернуться к опросу");
+define("_SAVENAME", "Логин");
+define("_SAVEPASSWORD", "Пароль");
+define("_SAVEPASSWORDRPT", "Повторить пароль");
+define("_SAVE_EMAIL", "Ваш E-mail");
+define("_SAVEEXPLANATION", "Введите логин и пароль к этому опросу и сохраните Ваш незаконченный опрос.<br />\n"
+				  ."Вы сможете вернуться к опросу позже, введя этот логин и пароль и продолжить отвечать на вопросы.<br /><br />\n"
+				  ."Если Вы ввели e-mail, то на него придет письмо с подробным описанием.");
+define("_SAVESUBMIT", "сохранить");
+define("_SAVENONAME", "Вы должны ввести логин для сохраненного опроса.");
+define("_SAVENOPASS", "Вы должны ввести пароль для сохраненного опроса.");
+define("_SAVENOMATCH", "Пароль не совпадает, введите еще раз");
+define("_SAVEDUPLICATE", "Такой логин уже используется в настоящий момент. Введите пожалуйста другой уникальный логин.");
+define("_SAVETRYAGAIN", "Попробуйте еще раз.");
 define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
-define("_SAVE_EMAILTEXT", "You, or someone using your email address, have saved "
-						 ."a survey in progress. The following details can be used "
-						 ."to return to this survey and continue where you left "
-						 ."off.");
-define("_SAVE_EMAILURL", "Reload your survey by clicking on the following URL:");
-define("_SAVE_SUCCEEDED", "Your survey responses have been saved succesfully");
-define("_SAVE_FAILED", "An error occurred and your survey responses were not saved.");
-define("_SAVE_EMAILSENT", "An email has been sent with details about your saved survey.");
+define("_SAVE_EMAILTEXT", "Вы, или кто-то другой используя Ваш e-mail, сохранил незаконченный опрос."
+						 ."Используя нижепреведенные логин, пароль и ссылку Вы можете вернуться и продолжить опрос "
+						 ."с того места где остановились..");
+define("_SAVE_EMAILURL", "Чтобы загрузить опрос нижмите эту ссылку:");
+define("_SAVE_SUCCEEDED", "Ваши ответы были полностью сохранены");
+define("_SAVE_FAILED", "При сохранении Ваших ответов возникла ошибка.");
+define("_SAVE_EMAILSENT", "Сообщение с логином, паролем и ссылкой сохраненного опроса было послано на указанный e-mail.");
+
+
 
 //Load Messages
-define("_LOAD_SAVED", "Load unfinished survey");
-define("_LOADHEADING", "Load A Previously Saved Survey");
-define("_LOADEXPLANATION", "You can load a survey that you have previously saved from this screen.<br />\n"
-			  ."Type in the 'name' you used to save the survey, and the password.<br /><br />\n");
-define("_LOADNAME", "Saved name");
-define("_LOADPASSWORD", "Password");
-define("_LOADSUBMIT", "Load Now");
-define("_LOADNONAME", "You did not provide a name");
-define("_LOADNOPASS", "You did not provide a password");
-define("_LOADNOMATCH", "There is no matching saved survey");
+define("_LOAD_SAVED", "Загрузить незаконченный опрос");
+define("_LOADHEADING", "Загрузить сохраненный опрос");
+define("_LOADEXPLANATION", "Вы можете загрузить сохраненный опрос.<br />\n"
+			  ."Введите логин и пароль для Вашего сохраненного опроса.<br /><br />\n");
+define("_LOADNAME", "Логин");
+define("_LOADPASSWORD", "Пароль");
+define("_LOADSUBMIT", "Загрузить");
+define("_LOADNONAME", "Вы не ввели логин");
+define("_LOADNOPASS", "Вы не ввели пароль");
+define("_LOADNOMATCH", "Такого сохраненного опроса не найдено");
 
 define("_ASSESSMENT_HEADING", "Your Assessment");
 ?>
