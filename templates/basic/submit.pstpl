@@ -6,6 +6,6 @@
 <center>{SUBMITBUTTON}</center><p>
 
 {SUBMITREVIEW}.<p>
-
+{PRIVACY}
 <br />
 </td></tr></table>

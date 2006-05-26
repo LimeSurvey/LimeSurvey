@@ -1,16 +1,10 @@
 <center>
 <br />
-<b>Thank you.<br /><br />
-You have completed answering the questions in this survey.</b><br /><br />
-
-Click on "submit" now to complete the process and add your answers to our records.<br /><br />
+{SUBMITCOMPLETE}<br /><br />
 
 {SUBMITBUTTON}<br /><br />
 
-
-If you want to check any of the answers you have made, and/or change them,
-you can do that now by clicking on the " << prev " button and browsing
-through your responses.<br /><br />
+{SUBMITREVIEW}<br /><br />
 
 {PRIVACY}
 <br />
