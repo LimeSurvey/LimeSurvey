@@ -890,7 +890,6 @@ function submittokens()
 				$langdir2="$homedir/lang/english";
 				}
 			require("$langdir2/messages.php");
-			echo "<!-- Sending Default Email -->\n";
 			$message = _TC_EMAILCONFIRM;
 			}
 
