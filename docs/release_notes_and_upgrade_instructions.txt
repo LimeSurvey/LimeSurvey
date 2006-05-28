@@ -19,7 +19,7 @@ If you have surveys in a such a language you will have to take the
 pain and do this.
 
 There is no safe way around this (The only way might be an export of the database
-and editing the SQL file with an UTF-8 capable editor - but we never tried that.)
+and try converting the SQL file with an UTF-8 capable editor - but we never tried that.)
 
 The advantage on the other hand is that in this new version of PHPSurveyor you can 
 have your admin interface in russian but write chinese surveys for example - 
@@ -67,6 +67,7 @@ Changes from 0.996 to 1.0
 -Added Japanese translation kindly provided by Masaru Ryumae
 -Added Greek translation file kindly provided by Artemis Mendrinos
 -Added Romanian translation kindly provided by Bogdan Anastasiei
+-Added Swedish translation of administration kindly provided by Niklas Andersson
 -Updated spanish translation kindly provided by Juan Rafael Fernàndez
 -Updated russian translation by Alexander Shilov
 -Fixed an error message showing up when a survey was deleted but the token still was set to 'completed = yes'
@@ -114,7 +115,6 @@ Fixed bug #422: [Survey at Runtime] $shownoanswer=0 - 5 point choice question sh
 Fixed bug #434: [Survey at Runtime] Columns in array type questions no longer line up (c_schmitz)
 Fixed bug #428: [Survey at Runtime] Problems with public registration (c_schmitz)
 Fixed bug #437: [Import / Export] Exporting Question/Answer Codes returns Question Texts, not their codes (c_schmitz)
-
 
 
 Changes from 0.992 to 0.993
