@@ -240,6 +240,7 @@ foreach ($filters as $flt)
             while ($row=mysql_fetch_row($result))
                 {
                 $myfield2 = "Q".$myfield."$row[0]";
+                if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
        		    echo "\t\t\t\t<td align='center' valign='top'>$setfont<strong>$flt[3]-".$row[0]."</strong></font>";
        	    	echo "<input type='checkbox' name='summary[]' value='$myfield2'";
     	        if (isset($_POST['summary']) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $_POST['summary']) !== FALSE)) 
