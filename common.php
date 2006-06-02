@@ -37,7 +37,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
-$versionnumber = "1.0";
+$versionnumber = "1.01a";
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
 if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
@@ -428,6 +428,9 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
             "E"=>_ARRMV,
             "F"=>_ARRFL,
             "H"=>_ARRFLC,
+			"J"=>_FILECSVM,
+			"I"=>_FILECSVO,
+
             //"V"=>_JSVALIDATEDTEXT,
             "X"=>_BOILERPLATE,
             "W"=>_LISTFL_DROPDOWN,
@@ -1099,6 +1102,7 @@ function getextendedanswer($fieldcode, $value)
             case "!":
             case "O":
 			case "^":
+			case "I":
             case "R":
                 $query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid={$fields['qid']} AND code='".mysql_escape_string($value)."'";
                 $result = mysql_query($query) or die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".mysql_error());
@@ -1112,6 +1116,7 @@ function getextendedanswer($fieldcode, $value)
                     }
                 break;
             case "M":
+			case "J":
             case "P":
                 switch($value)
                     {
@@ -1249,7 +1254,7 @@ function createFieldMap($surveyid, $style="null") {
         if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && 
 			$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && 
 			$arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" && 
-			$arow['type'] != "Q" && $arow['type'] != "^")
+			$arow['type'] != "Q" && $arow['type'] != "J" && $arow['type'] != "^")
             {
             $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
             if ($style == "full")
@@ -1301,7 +1306,7 @@ function createFieldMap($surveyid, $style="null") {
             }
         elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" || 
 				$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" || 
-				$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^")
+				$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^" || $arow['type'] == "J")
             {
             //MULTI ENTRY
             $abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$surveyid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";

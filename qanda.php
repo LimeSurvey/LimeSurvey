@@ -92,6 +92,7 @@ function create_mandatorylist($ia)
                 $thismandatory=setman_ranking($ia);
                 break;
             case "M":
+			case "J":
             case "P":
             case "Q":
             case "A":
@@ -283,6 +284,23 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
                          . _INSTRUCTION_MULTI."</font></i></strong>";
                 }
             break;
+		case "J": //FILE CSV MORE
+			$values=do_multiplechoice_CSV($ia);
+			if (count($values[1]) > 1) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_MULTI."</font></i><b>";
+				}
+			break;
+
+		case "I": //FILE CSV ONE
+			$values=do_list_CSV($ia);
+			if (count($values[1]) > 1) 
+				{
+				$qtitle .= "<br />\n</b><i><font size='1'>"
+						 . _INSTRUCTION_LIST."</font></i><b>";
+				}
+			break;
         case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
             $values=do_multiplechoice_withcomments($ia);
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
@@ -409,6 +427,7 @@ function mandatory_message($ia)
                 case "C":
                 case "Q":
                 case "F":
+                case "J":
                 case "H":
                     $qtitle .= "<br />\n"._MANDATORY_PARTS.".";
                     break;
@@ -514,6 +533,31 @@ function do_date($ia)
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
     }
+
+
+function do_list_CSV($ia)
+	{
+	global $dbprefix;
+	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
+	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
+	$anscount = mysql_num_rows($ansresult);
+	while ($ansrow = mysql_fetch_array($ansresult))
+		{
+		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
+		if ($_SESSION[$ia[1]] == $ansrow['code'])
+			{
+			$answer .= " selected"; 
+			}
+		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
+			$answer .= ">{$ansrow['answer']}</option>\n";
+		}
+		if (!$_SESSION[$ia[1]]) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
+		$answer .= "\t\t\t\t\t</select>\n";
+		$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type)'>\n".$answer;
+	$inputnames[]=$ia[1];
+	return array($answer, $inputnames);
+	}
+
 
 function do_list_dropdown($ia)
     {
@@ -1344,6 +1388,39 @@ function do_multiplechoice_withcomments($ia)
              . "\t\t\t</table>\n";
     return array($answer, $inputnames);
     }
+
+
+function do_multiplechoice_CSV($ia)
+	{
+	global $dbprefix;
+	$answer  = "\t\t\t<table class='question'>\n"
+			 . "\t\t\t\t<tr>\n"
+			 . "\t\t\t\t\t<td>&nbsp;</td>\n"
+			 . "\t\t\t\t\t<td align='left' class='answertext'>\n";
+	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+	$ansresult = mysql_query($ansquery);
+	$anscount = mysql_num_rows($ansresult);
+	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
+	$fn = 1;
+	if (!isset($multifields)) {$multifields="";}
+	while ($ansrow = mysql_fetch_array($ansresult))
+		{
+		$myfname = $ia[1].$ansrow['code'];
+		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='$ia[1]{$ansrow['code']}' value='Y'";
+		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' /><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+		$fn++;
+		$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+		$answer .= "'>\n";
+		$inputnames[]=$myfname;
+		}
+	$answer .= "\t\t\t\t\t</td>\n"
+			 . "\t\t\t\t\t<td>&nbsp;</td>\n"
+			 . "\t\t\t\t</tr>\n"
+			 . "\t\t\t</table>\n";
+	return array($answer, $inputnames);
+	}
+
 
 function do_multipleshorttext($ia)
     {

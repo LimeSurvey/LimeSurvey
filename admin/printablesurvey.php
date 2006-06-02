@@ -460,6 +460,25 @@ while ($degrow = mysql_fetch_array($degresult))
 						}
 					}
 				break;
+			case "J":  //FILE CSV MORE
+				echo "\t\t\t$setfont<u>"._PS_CHOOSEANY."</u><br />\n";
+				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+				$mearesult = mysql_query($meaquery);
+				while ($mearow = mysql_fetch_array($mearesult))
+					{
+					echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' />{$mearow['answer']}<br />\n";
+					}
+				break;
+			case "I":  //FILE CSV ONE
+				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE.":</u><br />\n";
+				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+				$dearesult = mysql_query($deaquery);
+				while ($dearow = mysql_fetch_array($dearesult))
+					{
+					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' />{$dearow['answer']}<br />\n";
+					}
+				break;
+
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 				$mearesult = mysql_query($meaquery);

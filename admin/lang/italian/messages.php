@@ -55,6 +55,7 @@ define("_DEACTIVATE", "Disattivazione indagine");
 define("_CHECKFIELDS", "Verifica campi nel database");
 define("_CREATEDB", "Crea database");
 define("_CREATESURVEY", "Crea nuova indagine"); //New for 0.98rc4
+define("_CREATESURVEY", "Crea Indagine"); //New for 0.98rc4
 define("_SETUP", "Impostazioni PHPSurveyor");
 define("_DELETESURVEY", "Elimina indagine");
 define("_EXPORTQUESTION", "Esporta domanda");
@@ -463,6 +464,8 @@ define("_DB_FAIL_NEWSURVEY_TITLE", "Impossibile creare l&#039;indagine. Inserire
 define("_DB_FAIL_NEWSURVEY", "Impossibile creare l&#039;indagine");
 define("_DB_FAIL_SURVEYUPDATE", "Impossibile aggiornare l&#039;indagine");
 define("_DB_FAIL_SURVEYDELETE", "Impossibile eliminare l&#039;indagine");
+define("_DB_FAIL_ANSWERS", "Impossibile eliminare le risposte");
+define("_DB_FAIL_CODE", "Impossibile aggiungere domanda. Inserire il Codice nel campo obbligatorio");
 
 //DELETE SURVEY MESSAGES
 define("_DS_NOSID", "Non è stato selezionata alcuna indagine da eliminare");
@@ -774,6 +777,24 @@ define("_SV_IP", "Indirizzo IP");
 define("_SV_DATE", "Data salvata");
 define("_SV_REMIND", "Ricorda");
 define("_SV_EDIT", "Modifica");
+
+//TYPE CSV
+define("_FILECSVM", "File CSV More");
+define("_FILECSVO", "File CSV One");
+define("_UPLOADCSVFILE", "Carica un file CSV");
+define("_UPLOADFILE", "&Egrave; necessario caricare il file");
+define("_UPLOADCOMP", "Operazioni di caricamento completate");
+define("_VISUALIZATION", "Visualizza");
+define("_SELECTION", "Selezionare il n. del campo");
+define("_TRANSFERERROR", "Trasferimento del file non riuscito. Selezionare un file CSV");
+define("_UPLOADRUN", "Operazioni di caricamento del file CSV in corso");
+define("_NO_CSV", "impossibile caricare un file di tipo diverso da CSV");
+define("_EMPTY", "impossibile caricare un file vuoto");
+define("_CONT", "Continua");
+define("_UPFILE", "Upload file CSV");
+define("_ERR_NO_FILE", "nessun file è stato caricato");
+define("_UPLOAD_ERR_PARTIAL", "il file è stato parzialmente caricato");
+define("_ERR_INI_SIZE", "le dimensioni del file in upload sono maggiori del valore settato in upload_max_file nel file php.ini");
 
 //VVEXPORT/IMPORT
 define("_VV_IMPORTFILE", "Importa file VV indagine");

@@ -1217,7 +1217,9 @@ function buildsurveysession()
 				$_SESSION['insertarray'][] = "$fieldname".$i;
 				}			
 			}
-		elseif ($arow['type'] == "Q")
+
+
+		elseif ($arow['type'] == "Q" || $arow['type'] == "J" )
 			{
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
 					 . "FROM {$dbprefix}answers, {$dbprefix}questions\n"

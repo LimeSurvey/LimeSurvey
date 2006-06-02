@@ -460,6 +460,7 @@ define("_DB_FAIL_QUESTIONDELCONDITIONS", "Question could not be deleted. There a
 define("_DB_FAIL_QUESTIONDELETE", "Question could not be deleted");
 define("_DB_FAIL_NEWANSWERMISSING", "Answer could not be added. You must include both a Code and an Answer");
 define("_DB_FAIL_NEWANSWERDUPLICATE", "Answer could not be added. There is already an answer with this code");
+define("_DB_FAIL_CODE", "Answer could not be added. You must insert a code in the mandatory field");
 define("_DB_FAIL_ANSWERUPDATEMISSING", "Answer could not be updated. You must include both a Code and an Answer");
 define("_DB_FAIL_ANSWERUPDATEDUPLICATE", "Answer could not be updated. There is already an answer with this code");
 define("_DB_FAIL_ANSWERUPDATECONDITIONS", "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.");
@@ -468,6 +469,7 @@ define("_DB_FAIL_NEWSURVEY_TITLE", "Survey could not be created because it did n
 define("_DB_FAIL_NEWSURVEY", "Survey could not be created");
 define("_DB_FAIL_SURVEYUPDATE", "Survey could not be updated");
 define("_DB_FAIL_SURVEYDELETE", "Survey could not be deleted");
+define("_DB_FAIL_ANSWERS", "Answers can't be deleted");
 
 //DELETE SURVEY MESSAGES
 define("_DS_NOSID", "You have not selected a survey to delete");
@@ -778,6 +780,24 @@ define("_SV_IP", "IP Address");
 define("_SV_DATE", "Date Saved");
 define("_SV_REMIND", "Remind");
 define("_SV_EDIT", "Edit");
+
+//TYPE CSV
+define("_FILECSVM", "CSV-File based Multiple Choice Question");
+define("_FILECSVO", "CSV-File based Single Choice Question");
+define("_UPLOADCSVFILE", "You must upload a CSV file");
+define("_UPLOADFILE", "You need to upload the file");
+define("_UPLOADCOMP", "Upload completed");
+define("_VISUALIZATION", "Visualization");
+define("_SELECTION", "You must select the field number");
+define("_TRANSFERERROR", "Error on file transfer. You must select a CSV file");
+define("_UPLOADRUN", "Uploading CSV file");
+define("_NO_CSV", "It is impossible to upload a file other than CSV type");
+define("_EMPTY", "It is impossible to upload an empty file");
+define("_CONT", "Continue");
+define("_UPFILE", "Upload CSV file");
+define("_ERR_NO_FILE", "No file was uploaded");
+define("_UPLOAD_ERR_PARTIAL", "The file was only partially uploaded");
+define("_ERR_INI_SIZE", "The uploaded file is bigger than the upload_max_filesize directive in php.ini");
 
 //VVExport/Import
 define("_VV_IMPORTFILE", "Import a VV survey file");

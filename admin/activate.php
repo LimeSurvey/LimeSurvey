@@ -85,7 +85,10 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	//	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
 	//	# "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
 	//  # "R" -> RANKING
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', '!', '^')";
+	//  # "U" -> FILE CSV MORE
+	//  # "I" -> FILE CSV ONE
+	
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', 'I', '!', '^')";
 	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
 	while ($chkrow = mysql_fetch_array($chkresult))
 		{
@@ -280,7 +283,7 @@ else
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && 
 			$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && 
 			$arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" && 
-			$arow['type'] != "Q" && $arow['type'] != "^")
+			$arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J")
 			{
 			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
 			switch($arow['type'])
@@ -300,6 +303,9 @@ else
 						{
 						$createsurvey .= ",\n`{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` TEXT";
 						}
+					break;
+				case "I":  // CSV ONE
+					$createsurvey .= " VARCHAR(5)";
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
 					$createsurvey .= " VARCHAR(5),\n `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment` TEXT";
@@ -355,6 +361,15 @@ else
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` TINYTEXT,\n";
 				}
 			}
+		elseif ($arow['type'] == "J")
+			{
+			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
+			while ($abrow=mysql_fetch_array($abresult))
+				{
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` VARCHAR(5),\n";
+				}
+			}	
 		elseif ($arow['type'] == "R")
 			{
 			//MULTI ENTRY

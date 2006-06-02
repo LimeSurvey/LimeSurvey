@@ -169,6 +169,7 @@ if ($action == "id") // Looking at a SINGLE entry
 			$fnrow['type'] == "A" || $fnrow['type'] == "B" || 
 			$fnrow['type'] == "C" || $fnrow['type'] == "E" || 
 			$fnrow['type'] == "F" || $fnrow['type'] == "H" || 
+			$fnrow['type'] == "J" ||
 			$fnrow['type'] == "P" || $fnrow['type'] == "^")
 			{
 			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
@@ -322,7 +323,8 @@ elseif ($action == "all")
 		{
 		if ($fnrow['type'] != "Q" && $fnrow['type'] != "M" && $fnrow['type'] != "A" && 
 			$fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "E" && 
-			$fnrow['type'] != "F" && $fnrow['type'] != "H" && $fnrow['type'] != "P" && 
+			$fnrow['type'] != "F" && $fnrow['type'] != "H" && $fnrow['type'] != "P" &&
+			$fnrow['type'] != "J" &&
 			$fnrow['type'] != "O" && $fnrow['type'] != "R" && $fnrow['type'] != "^")
 			{
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";

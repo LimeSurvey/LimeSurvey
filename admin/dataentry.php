@@ -255,7 +255,7 @@ if ($action == "insert")
 		$insertqr="";
 		while ($irow = mysql_fetch_array($iresult))
 			{
-			if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q")
+			if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J")
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 				if (isset($_POST[$fieldname]))
@@ -486,7 +486,7 @@ elseif ($action == "edit" || $action == "editsaved")
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
-		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "^")
+		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
 			{
 			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 			$fnrresult = mysql_query($fnrquery);
@@ -959,6 +959,44 @@ elseif ($action == "edit" || $action == "editsaved")
 						}
 					$i--;
 					break;
+
+				case "J": //FILE CSV MORE 
+					while ($fnames[$i][3] == "U" && $question != "" && $question == $fnames[$i][2])
+						{
+						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+						echo "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
+        				if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
+						echo " />{$fnames[$i][6]}<br />\n";
+						if ($i<$nfncount) 
+							{
+							$i++;
+							}
+						else
+							{
+							$i++;
+							break;
+						    }
+						}
+					$i--;
+					break;
+
+				case "I": //FILE CSV ONE 
+					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
+					$lresult = mysql_query($lquery);
+					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+						."\t\t\t\t<option value=''";
+					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
+					echo ">"._PLEASECHOOSE."..</option>\n";
+						
+					while ($llrow = mysql_fetch_array($lresult))
+						{
+						echo "\t\t\t\t<option value='{$llrow['code']}'";
+						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
+						echo ">{$llrow['answer']}</option>\n";
+						}
+						echo "\t\t\t</select>\n";
+					break;
+
 				case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					echo "<table>\n";
 					while ($fnames[$i][3] == "P")
@@ -1238,7 +1276,7 @@ elseif ($action == "update")
 	
 	while ($irow = mysql_fetch_array($iresult))
 		{
-		if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "^")
+		if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "^" && $irow['type'] != "J")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
@@ -1976,6 +2014,28 @@ else
 							echo "other' />\n";
 							}
 						}
+					break;
+				case "J": //FILE CSV MORE 
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$mearesult = mysql_query($meaquery);
+					while ($mearow = mysql_fetch_array($mearesult))
+						{
+						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+						if ($mearow['default_value'] == "Y") {echo " checked";}
+						echo " />{$mearow['answer']}<br />\n";
+						}
+					break;
+				case "I": //FILE CSV ONE - LIST drop-down/radio-button list
+					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$dearesult = mysql_query($deaquery);
+					echo "\t\t\t<select name='$fieldname'>\n";
+					while ($dearow = mysql_fetch_array($dearesult))
+						{
+						echo "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
+						echo ">{$dearow['answer']}</option>\n";
+						}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
 					break;
 				case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					echo "<table border='0'>\n";

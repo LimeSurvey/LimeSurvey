@@ -175,6 +175,12 @@ elseif ($action == "delgroup")
     }
 
 elseif ($action == "insertnewquestion")
+	{
+	if (!$_POST['title'])
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_CODE."\")\n //-->\n</script>\n";		
+		}
+	else
     {
     $_POST  = array_map('mysql_escape_string', $_POST);
 
@@ -242,6 +248,14 @@ elseif ($action == "updatequestion")
     $cqquery = "SELECT type FROM {$dbprefix}questions WHERE qid={$_POST['qid']}";
     $cqresult=mysql_query($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars(mysql_error()));
     while ($cqr=mysql_fetch_array($cqresult)) {$oldtype=$cqr['type'];}
+
+	global $change;
+	$change = "0";
+	if (($oldtype == "J" && $_POST['type']== "I") || ($oldtype == "I" && $_POST['type']== "J") || ($oldtype == $_POST['type']))
+		{
+		$change = "1";
+		}
+
     if ($oldtype != $_POST['type'])
         {
         //Make sure there are no conditions based on this question, since we are changing the type
@@ -275,6 +289,15 @@ elseif ($action == "updatequestion")
                 {
                 echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\n".mysql_error()."\")\n //-->\n</script>\n";
                 }
+		   if ($oldtype !=  $_POST['type'] & $change == "0")
+		       {
+				$query = "DELETE FROM {$dbprefix}answers WHERE qid={$_POST['qid']}"; 
+				$result = mysql_query($query);	
+				if (!$result)
+					{
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERS."\n".mysql_error()."\")\n //-->\n</script>\n";
+					}
+			   }	
             }
         else
             {
@@ -284,6 +307,12 @@ elseif ($action == "updatequestion")
     }
 
 elseif ($action == "copynewquestion")
+	{
+	if (!$_POST['title'])
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_CODE."\")\n //-->\n</script>\n";		
+		}
+	else
     {
     $_POST  = array_map('mysql_escape_string', $_POST);
     if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
@@ -540,6 +569,33 @@ elseif ($action == "modanswer")
             break;
         }
     }
+
+
+elseif ($action == "insertCSV")
+	{
+		if (get_magic_quotes_gpc() == "0")
+			{
+			$_POST['svettore'] = addcslashes($_POST['svettore'], "'");
+			}
+		$vettore = explode ("^", $svettore );
+	$band = 0;
+	$indice = $_POST['numcol'] - 1;
+	foreach ($vettore as $k => $v)
+		{
+		$vettoreriga = explode ($elem, $v);
+		if ($band == 1)
+			{
+			$valore = $vettoreriga[$indice];
+			$valore = trim($valore);
+			if (!is_null($valore))
+				{ 
+				$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '$k', '$valore', '00000', 'N')";
+				$cdresult = $cdresult=mysql_query($cdquery) or die(mysql_error());
+				}
+			}
+		$band = 1;
+		}
+	}
 
 elseif ($action == "insertnewsurvey")
     {

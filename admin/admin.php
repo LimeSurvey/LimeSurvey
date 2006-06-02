@@ -44,6 +44,10 @@ if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($ok)) {$ok=returnglobal('ok');}
 if (!isset($user)) {$user=returnglobal('user');}
 if (!isset($pass)) {$pass=returnglobal('pass');}
+if (!isset($the_file)) {$the_file=returnglobal('the_file');}
+if (!isset($svettore)) {$svettore=returnglobal('svettore');}
+if (!isset($fp)) {$fp=returnglobal('filev');}
+if (!isset($elem)) {$elem=returnglobal('elem');}
 
 sendcacheheaders();
 
@@ -129,7 +133,7 @@ checkactivations();
 //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
 if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" || 
 	$action=="delquestion" || $action=="delquestionall" || $action == "insertnewsurvey" || 
-	$action == "copynewquestion" || $action == "insertnewgroup" || 
+	$action == "copynewquestion" || $action == "insertnewgroup" || $action == "insertCSV" || 
 	$action == "insertnewquestion" || $action == "updatesurvey" || $action=="updategroup" || 
 	$action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
 	$action == "delattribute" || $action == "addattribute" || $action == "editattribute")
@@ -176,6 +180,9 @@ if (isset($newanswer)) {echo $newanswer;}
 if (isset($answersummary)) {echo $answersummary;}
 if (isset($vasummary)) {echo $vasummary;}
 if (isset($editanswer)) {echo $editanswer;}
+if (isset($editcsv)) {echo $editcsv;}
+
+
 echo "\t\t</td>\n";
 
 helpscreen();

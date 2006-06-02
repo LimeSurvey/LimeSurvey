@@ -397,7 +397,8 @@ if ($questionscount > 0)
 						$theanswer = addcslashes($arows['answer'], "'");
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
 						}
-					if ($rows['type'] != "M" && $rows['type'] != "P")
+					if ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I")
+
 						{
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
 						}

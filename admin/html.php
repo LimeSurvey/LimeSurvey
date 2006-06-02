@@ -692,6 +692,23 @@ if ($qid)
 							  . _QL_OTHER."</strong></font></td>\n"
 							  . "\t<td>$setfont{$qrrow['other']}</td></tr>\n";
 			}
+		if ($qrrow['type'] == "J" || $qrrow['type'] == "I")
+			{
+			if ($action == "insertCSV")
+				{
+				$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails37'><td></td><td>"
+							 . "<font face='verdana' size='2' color='green'><b>
+							 ". _UPLOADCOMP."</font></b></td></tr>\n";
+				}
+			   elseif ($action == "editquestion" || $action == "copyquestion")
+				{
+				$questionsummary .= " ";
+				}
+			  elseif ($action == "insertnewquestion" || ($action == "updatequestion" && $change == "0"))
+				{
+				upload();
+				}
+			}
 		$qid_attributes=getQuestionAttributes($qid);
 		}
 	$questionsummary .= "</table>\n";
@@ -1179,6 +1196,20 @@ if ($action == "copyquestion")
 					   . "\t\t<td align='right'>";
 		
 		$editquestion .= questionjavascript($eqrow['type'], $qattributes);
+
+		if ($eqrow['type'] == "J" || $eqrow['type'] == "I")	
+			{
+			$editquestion .= "\t<tr>\n"
+						   . "\t\t<input type='hidden' name='copyanswers' value='Y'>\n" 	   
+						   . "\t\t<td colspan='2' align='center'><input type='submit' $btstyle value='"._COPYQ."'></td>\n"
+						   . "\t\t<input type='hidden' name='action' value='copynewquestion'>\n"
+						   . "\t\t<input type='hidden' name='sid' value='$sid' />\n"
+						   . "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
+						   . "\t</form></tr>\n"
+						   . "</table>\n";	
+			}
+		else 							   	
+			{	
 		
 		$editquestion .= "$setfont<strong>"._QL_COPYANS."</strong></font></td>\n"
 					   . "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y' />"
@@ -1196,6 +1227,7 @@ if ($action == "copyquestion")
 					   . "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
 					   . "\t</td></tr>\n"
 					   . "</table>\n</form>\n";
+			}
 		}
 	}
 
@@ -1689,6 +1721,40 @@ if ($action == "editsurvey")
 					 . "</table></form>\n";
 		}
 	}
+if ($action == "uploadf")
+	{
+	if (!isset($tempdir))
+		{
+		$the_path = $homedir;
+	   	}
+	else
+		{
+		$the_path = $tempdir;
+		}
+	$the_file_name = $_FILES['the_file']['name'];
+	$the_file = $_FILES['the_file']['tmp_name'];
+	$the_full_file_path = $the_path."/".$the_file_name;
+	switch($_FILES['the_file']['error'])
+		{
+		case UPLOAD_ERR_INI_SIZE:
+			upload();
+			$editcsv .="<b><font color='red'>"._ERROR.":</font> "._ERR_INI_SIZE."</b>\n";
+			break;
+		case UPLOAD_ERR_PARTIAL:	
+			upload();
+			$editcsv .="<b><font color='red'>"._ERROR.":</font> "._UPLOAD_ERR_PARTIAL."</b>\n";
+			break;
+		case UPLOAD_ERR_NO_FILE:
+			upload();	
+			$editcsv .="<b><font color='red'>"._ERROR.":</font> "._ERR_NO_FILE."</b>\n";
+			break;
+		case UPLOAD_ERR_OK:		     
+			control();
+			break;
+		default:
+			$editcsv .="<b><font color='red'>"._ERROR.":</font> "._TRANSFERERROR."</b>\n";
+		}	
+	}
 	
 if ($action == "newsurvey")
 	{
@@ -1940,4 +2006,102 @@ function questionjavascript($type, $qattributes)
 
 	return $newquestion;
 	}
+
+
+function upload()	
+	{
+	global $questionsummary, $sid, $qid, $gid;
+	$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails37'><td></td><td>"
+	  					 . "<font face='verdana' size='1' color='green'>"
+						 . _WARNING.": ". _UPLOADFILE." "
+						 . "\n$setfont<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n"
+						 . "<input type='hidden' name='action' value='uploadf' />\n"
+						 . "<input type='hidden' name='sid' value='$sid' />\n"
+						 . "<input type='hidden' name='gid' value='$gid' />\n"
+                         . "<input type='hidden' name='qid' value='$qid' />\n"
+						 . "<font face='verdana' size='2' color='green'><b>"
+                         . _UPLOADCSVFILE."</font><br />\n"
+ 						 . "<input type='file' $slstyle name='the_file' size='35' /><br />\n"
+						 . "<input type='submit' $btstyle value='"._UPFILE."' />\n"
+						 . "</form></font>\n\n";	
+	}
+	
+function control()
+	{
+	global $editcsv, $questionsummary, $sid, $qid, $gid;
+	$info = pathinfo($_FILES['the_file']['name']);
+	$ext = $info['extension'] ; 
+	if ($ext != "csv")
+		{
+		upload();		
+		$editcsv .="<b><font color='red'>"._ERROR.":</font> "._NO_CSV."</b>\n";
+		$questionsummary .= "</table>\n";
+		}
+	else
+		{
+		copy($_FILES['the_file']['tmp_name'],".\\".$_FILES['the_file']['name']);
+		unlink($_FILES['the_file']['tmp_name']);
+		$lines = file($_FILES['the_file']['name']);  
+		$result = count($lines);
+		if ($result <= 1)
+			{ 
+			upload();
+			$editcsv .="<b><font color='red'>"._ERROR.":</font> "._EMPTY."</b>\n";
+			$questionsummary .= "</table>\n";	
+			}
+		else 			
+			{
+			$editcsv  = "<table width='100%' align='center' border='0'>\n"
+				. "<tr bgcolor='#555555'><td colspan='2'><font color='white'><b>"
+				. _UPLOADRUN."</b></td></tr>\n";
+		    $editcsv .= "<tr><th>$setfont"._VISUALIZATION."</font></th><th>$setfont"._SELECTION."</font></th>"
+				. "</tr>\n";		
+			$ricorpv = substr_count($lines[0],";");
+			$ricorv = substr_count($lines[0],",");
+			if ($ricorpv > $ricorv)
+				{
+				$vettoreriga = explode(";",$lines[0]);
+				$elem = ";";
+				}
+			else 
+				{
+				$vettoreriga = explode(",",$lines[0]);
+				$elem = ",";
+				}
+			$editcsv .= "<tr><form action='".$scriptname."' method='post'>\n"
+				 . "<td align = 'center'><select name=\"$K\">\n";
+			$band = 0;
+			foreach ($lines as $K => $v)
+				{
+		  		if ($band == 1)
+	 				{
+					$editcsv .= "<option value=$lines[$K]>$lines[$K]</option>\n";
+				  	}
+		  		$band = 1;
+				}
+ 			$svettore = implode("^", $lines);
+ 			$editcsv .= "</select></td>\n";
+			$svettore = htmlspecialchars($svettore, ENT_QUOTES);
+			$editcsv.="<input type='hidden' name='sid' value='$sid'>\n"
+					. "\t<input type='hidden' name='gid' value='$gid'>\n"
+					. "\t<input type='hidden' name='qid' value='$qid'>\n"
+					. "\t<input type='hidden' name='elem' value='$elem'>\n"
+					. "\t<input type='hidden' name='svettore' value='".$svettore."'>\n";
+				
+			$editcsv.="\t\t\t<td align = 'center'><select name='numcol'>\n";
+			$numerocampo = 0; 
+			foreach ($vettoreriga as $K => $v)
+				{
+				$numerocampo = $numerocampo + 1;
+				$editcsv .= "\t\t<option value=$numerocampo>$numerocampo</option>\n";
+				}
+			$editcsv .= "</select></td>\n"
+					. "\t<input type='hidden' name='filev' value='$fp'>\n"
+					. "\t<input type='hidden' name='action' value='insertCSV'>\n"
+					. "\t<tr><td align='right'><input $btstyle type='submit' value='"
+					._CONT."'></td>\n";
+			}
+		}	
+	}	
+	
 ?>

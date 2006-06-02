@@ -215,7 +215,7 @@ foreach ($filters as $flt)
         {
         echo "\t\t\t\t<td align='center'>"
             ."$setfont<strong>$flt[3]&nbsp;"; //Heading (Question No)
-        if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {$myfield = "M$myfield";}
+        if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R" || $flt[2] == "J") {$myfield = "M$myfield";}
         if ($flt[2] == "N") {$myfield = "N$myfield";}
         echo "<input type='checkbox' name='summary[]' value='$myfield'";
         if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
@@ -225,7 +225,7 @@ foreach ($filters as $flt)
             ."<br />\n";
         if ($flt[2] == "N") {echo "</font>";}
         if ($flt[2] != "N") {echo "\t\t\t\t<select name='";}
-        if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R") {echo "M";}
+        if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R" || $flt[2] == "J") {echo "M";}
         if ($flt[2] != "N") {echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";}
         $allfields[]=$myfield;
         }
@@ -950,7 +950,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
     foreach ($runthrough as $rt)
         {
         // 1. Get answers for question ##############################################################
-        if (substr($rt, 0, 1) == "M") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
+        if (substr($rt, 0, 1) == "M" || substr($rt, 0, 1) == "J") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
             {
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
             $nquery = "SELECT title, type, question, lid, other FROM {$dbprefix}questions WHERE qid='$qqid'";
@@ -1404,8 +1404,13 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
                     echo "\t\t</td><td width='25%' align='center' bgcolor='#666666'>$setfont<font color='#EEEEEE'>$vp</font></font>"
                         ."\t\t</td>\n\t</tr>\n";
-                    if ($results > 0) {$gdata[] = ($row[0]/$results)*100;
-                                       } else {$gdata[] = 0;}
+                    if ($results > 0) 
+                    	{
+                    	$gdata[] = ($row[0]/$results)*100;
+                        } else 
+                        	{
+                        		$gdata[] = 0;
+                        	}
                     $grawdata[]=$row[0];
                     $label=strip_tags($fname);
                     $justcode[]=$al[0];
