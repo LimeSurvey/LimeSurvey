@@ -782,13 +782,13 @@ define("_SV_REMIND", "Remind");
 define("_SV_EDIT", "Edit");
 
 //TYPE CSV
-define("_FILECSVM", "CSV-File based Multiple Choice Question");
-define("_FILECSVO", "CSV-File based Single Choice Question");
+define("_FILECSVM", "Multiple Choice Question CSV-File based");
+define("_FILECSVO", "Single Choice Question CSV-File based");
 define("_UPLOADCSVFILE", "You must upload a CSV file");
 define("_UPLOADFILE", "You need to upload the file");
 define("_UPLOADCOMP", "Upload completed");
-define("_VISUALIZATION", "Visualization");
-define("_SELECTION", "You must select the field number");
+define("_VISUALIZATION", "Visualization:");
+define("_SELECTION", "Select the field number you would like to use for your answers:");
 define("_TRANSFERERROR", "Error on file transfer. You must select a CSV file");
 define("_UPLOADRUN", "Uploading CSV file");
 define("_NO_CSV", "It is impossible to upload a file other than CSV type");
