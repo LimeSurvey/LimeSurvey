@@ -208,7 +208,7 @@ elseif ($action == "insertnewquestion")
         $result = mysql_query($query);
         }
     }
-
+    }
 elseif ($action == "renumberquestions")
     {
     //Automatically renumbers the "question codes" so that they follow
@@ -357,7 +357,7 @@ elseif ($action == "copynewquestion")
             } // while
         }
     }
-
+    }
 elseif ($action == "delquestion")
     {
     if (!isset($qid)) {$qid=returnglobal('qid');}
