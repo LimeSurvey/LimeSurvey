@@ -89,7 +89,14 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			}
 		$_SESSION['ipaddr'] = $_SERVER['REMOTE_ADDR'];
 		}
-
+	if ($thissurvey['refurl'] == "Y")
+		{
+		if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
+			{
+		    $_SESSION['insertarray'][] = "refurl";
+			}
+		$_SESSION['refurl'] = $_SESSION['refurl'];
+		}
 	//DEVELOP SQL TO INSERT RESPONSES
 	$subquery = createinsertquery();
 

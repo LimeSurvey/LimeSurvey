@@ -180,6 +180,7 @@ if (!isset($source))
 $sdata = array("thisstep"=>$_POST['thisstep'],
 			   "sid"=>$surveyid,
 			   "ip"=>$_SERVER['REMOTE_ADDR'],
+			   "refurl"=>$_SESSION['refurl'],
 			   "date"=>date("Y-m-d H:i:s"),
 			   "identifier"=>$_POST['savename'],
 			   "code"=>md5($_POST['savepass']),
@@ -200,13 +201,14 @@ if (isset($_SESSION['scid']))
 //1: Create entry in "saved_control"
 $query = "INSERT INTO `{$dbprefix}saved_control`
 		  ( `sid`, `identifier`, `access_code`,
-		   `email`, `ip`, `saved_thisstep`, `status`, `saved_date`)
+		   `email`, `ip`,`refurl`, `saved_thisstep`, `status`, `saved_date`)
 		   VALUES (
 		   '".$sdata['sid']."',
 		   '".mysql_escape_string($sdata['identifier'])."',
 		   '".$sdata['code']."',
 		   '".$sdata['email']."',
 		   '".$sdata['ip']."',
+		   '".$sdata['refurl']."',
 		   '".$sdata['thisstep']."',
 		   'S',
 		   '".$sdata['date']."')";

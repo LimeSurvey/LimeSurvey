@@ -376,6 +376,7 @@ if ($surveyid)
 		else {$surveysummary2 .= _SS_SBYS."<br />\n";}
 		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _SS_DATESTAMPED."<br />\n";}
 		if ($s1row['ipaddr'] == "Y") {$surveysummary2 .= _SS_IPADDRESS."<br />\n";}
+		if ($s1row['refurl'] == "Y") {$surveysummary2 .= _SS_REFURL."<br />\n";}
 		if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _SS_COOKIES."<br />\n";}
 		if ($s1row['allowregister'] == "Y") {$surveysummary2 .= _SS_ALLOWREGISTER."<br />\n";}
 		if ($s1row['allowsave'] == "Y") {$surveysummary2 .= _SS_ALLOWSAVE."<br />\n";}
@@ -1681,6 +1682,31 @@ if ($action == "editsurvey")
 			$editsurvey .= ">"._AD_NO."</option>\n"
 						 . "</select>\n\t\t</td>\n";
 			}
+			
+	// begin REF URL Block
+	$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_REFURL."</strong></font></td>\n";
+	
+			if ($esrow['active'] == "Y")
+			{
+			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
+			if ($esrow['refurl'] != "Y") {$editsurvey .= " Responses <strong>will not</strong> have their referring URL logged.";}
+			else {$editsurvey .= "Responses <strong>will</strong> have their referring URL logged.";}
+			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
+						 . "\t\t</font></font>\n";
+			$editsurvey .= "<input type='hidden' name='refurl' value='".$esrow['refurl']."'>\n</td>";
+			}
+		else
+			{
+			$editsurvey .= "\t\t<td><select $slstyle name='refurl'>\n"
+						 . "\t\t\t<option value='Y'";
+			if ($esrow['refurl'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._AD_YES."</option>\n"
+						 . "\t\t\t<option value='N'";
+			if ($esrow['refurl'] != "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._AD_NO."</option>\n"
+						 . "</select>\n\t\t</td>\n";
+			}
+	// BENBUN - END REF URL Block
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_LANGUAGE."</strong></font></td>\n"
 					 . "\t\t<td><select $slstyle name='language'>\n";
 		foreach (getlanguages() as $langname)
@@ -1875,6 +1901,11 @@ if ($action == "newsurvey")
 	// IP Address
 	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_IPADDRESS."</strong></font></td>\n"
                                 . "\t\t<td><select $slstyle name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
+                                . "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
+                                . "\t\t</select></td>\n\t</tr>\n";
+	// Referring URL
+	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._SL_REFURL."</strong></font></td>\n"
+                                . "\t\t<td><select $slstyle name='refurl'>\n"                                . "\t\t\t<option value='Y'>"._AD_YES."</option>\n"
                                 . "\t\t\t<option value='N' selected>"._AD_NO."</option>\n"
                                 . "\t\t</select></td>\n\t</tr>\n";
 	//NOTIFICATION

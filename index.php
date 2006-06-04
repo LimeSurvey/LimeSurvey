@@ -76,6 +76,8 @@ if (!$surveyid)
 	doFooter();
 	exit;
 	}
+//Check to see if a refering URL has been captured.
+getreferringurl();
 
 if (!isset($token)) {$token=trim(returnglobal('token'));}
 //GET BASIC INFORMATION ABOUT THIS SURVEY
@@ -224,6 +226,8 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 				{
 				$_SESSION[$row['fieldname']]=$row['value'];
 				$_POST['thisstep']=$row['saved_thisstep']-1;
+				// Populate the esession variable with the referring URL saved in the db.
+				$_SESSION['refurl']=$row['refurl'];
 				$_SESSION['scid']=$row['scid'];
 				}
 			} // while

@@ -253,7 +253,7 @@ else
 	$createsurvey = "CREATE TABLE {$dbprefix}survey_{$_GET['sid']} (\n";
 	$createsurvey .= "  id BIGINT(11) NOT NULL auto_increment,\n";
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
-	$pquery = "SELECT private, allowregister, datestamp, ipaddr FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
+	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
 	$presult=mysql_query($pquery);
 	while($prow=mysql_fetch_array($presult))
 		{
@@ -273,6 +273,11 @@ else
 		if ($prow['ipaddr'] == "Y")
 			{
 			$createsurvey .= " ipaddr MEDIUMTEXT,\n";
+			}
+		//Check to see if 'refurl' field is required.
+        if ($prow['refurl'] == "Y")
+			{
+			$createsurvey .= " refurl MEDIUMTEXT,\n";
 			}
 }
 	//Get list of questions

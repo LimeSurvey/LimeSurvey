@@ -33,7 +33,6 @@
     # Suite 330, Boston, MA  02111-1307, USA.                   #
     #############################################################
 */
-
 if (empty($publicdir)) {die ("Cannot run this script directly (qanda.php)");}
 
 /*

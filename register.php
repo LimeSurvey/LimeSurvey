@@ -39,6 +39,7 @@ require_once(dirname(__FILE__).'/config.php');
 $surveyid=returnglobal('sid');
 
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
+if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");} 
 
 //Check that there is a SID
 if (!isset($surveyid))
@@ -47,7 +48,6 @@ if (!isset($surveyid))
 	include "index.php";
     exit;
 	}
-if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");} 
 
 $thissurvey=getSurveyInfo($surveyid);
 loadPublicLangFile($surveyid);

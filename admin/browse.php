@@ -141,7 +141,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	$fncount = mysql_num_rows($fnresult);
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr'];} // Get table output into array
+	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr'];$refurl=$fnrow['refurl'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -160,6 +160,10 @@ if ($action == "id") // Looking at a SINGLE entry
                 {
                  $fnames[] = array("ipaddr", "ipaddr", "IP Address");
                 }	
+  if ($refurl == "Y") //add refer_URL  to list if survey should save referring URL
+          {
+           $fnames[] = array("refurl", "refurl", "Referring URL");
+          }	
 	foreach ($fnrows as $fnrow)
 		{
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
@@ -302,7 +306,7 @@ elseif ($action == "all")
 	$fncount = mysql_num_rows($fnresult);
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr'];} // Get table output into array
+	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr'];$refurl=$fnrow['refurl'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -318,6 +322,10 @@ elseif ($action == "all")
         if ($ipaddr == "Y") // Add IP Address
 		{
                 $fnames[] = array("ipaddr", "IPAddress", "IP Address", "0");
+		}
+	 if ($refurl == "Y") // refurl
+		{
+    $fnames[] = array("refurl", "refurl", "Referring URL", "0");
 		}
 	foreach ($fnrows as $fnrow)
 		{

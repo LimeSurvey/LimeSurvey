@@ -634,6 +634,7 @@ function getSurveyInfo($surveyid)
                         "language"=>$row['language'],
                         "datestamp"=>$row['datestamp'],
                         "ipaddr"=>$row['ipaddr'],
+                        "refurl"=>$row['refurl'],
                         "usecookie"=>$row['usecookie'],
                         "sendnotification"=>$row['notification'],
                         "allowregister"=>$row['allowregister'],
@@ -1011,6 +1012,7 @@ function returnquestiontitlefromfieldcode($fieldcode)
     if ($fieldcode == "token") {return "Token";}
     if ($fieldcode == "datestamp") {return "Date Stamp";}
     if ($fieldcode == "ipaddr") {return "IP Address";}
+    if ($fieldcode == "refurl") {return "Referring URL";}
     global $dbprefix, $surveyid;
 
     //Find matching information;
@@ -1206,7 +1208,7 @@ function createFieldMap($surveyid, $style="null") {
         loadPublicLangFile($surveyid);
         }
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
-    $pquery = "SELECT private, datestamp, ipaddr FROM {$dbprefix}surveys WHERE sid=$surveyid";
+    $pquery = "SELECT private, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid=$surveyid";
     $presult=mysql_query($pquery);
     $counter=0;
     while($prow=mysql_fetch_array($presult))
@@ -1240,6 +1242,18 @@ function createFieldMap($surveyid, $style="null") {
                 {
                 $fieldmap[$counter]['title']="";
                 $fieldmap[$counter]['question']="ipaddr";
+                $fieldmap[$counter]['group_name']="";
+                }
+            $counter++;
+            }
+	// Add 'refurl' to fieldmap.
+	if ($prow['refurl'] == "Y")
+            {
+            $fieldmap[]=array("fieldname"=>"refurl", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+            if ($style == "full")
+                {
+                $fieldmap[$counter]['title']="";
+                $fieldmap[$counter]['question']="refurl";
                 $fieldmap[$counter]['group_name']="";
                 }
             $counter++;
@@ -1982,5 +1996,14 @@ function FlattenText($texttoflatten)
     $nicetext = trim(str_replace("\n", "", $nicetext));
 	return  $nicetext;
 }
-
+/**
+* getreferringurl() returns the reffering URL 
+*/
+function getreferringurl()
+    {
+    if (!isset($_SESSION['refurl']))
+    {
+    	if (!ereg(getenv("SERVER_NAME"), getenv("HTTP_REFERER"))) { $_SESSION['refurl'] = getenv("HTTP_REFERER"); }
+    }
+    }
 ?>

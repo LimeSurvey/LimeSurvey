@@ -188,6 +188,7 @@ define("_SL_EXPIRYDATE", "Expiry Date:");
 define("_SL_FORMAT", "Format:");
 define("_SL_DATESTAMP", "Date Stamp?");
 define("_SL_IPADDRESS", "IP Address"); //New with 0.991
+define("_SL_REFURL", "Referring URL"); //New with BENBUN
 define("_SL_TEMPLATE", "Template:");
 define("_SL_LANGUAGE", "Language:");
 define("_SL_LINK", "Exit Link:");  //Modified in 0.99
@@ -333,6 +334,7 @@ define("_CLOSEWIN", "Close Window");
 define("_TOKEN", "Token"); 
 define("_DATESTAMP", "Date Stamp"); //Referring to the datestamp or time response submitted
 define("_IPADDRESS", "IP Address"); //Referring to the ip address of the submitter - New with 0.991
+define("_REFURL", "Referring URL"); 
 define("_COMMENT", "Comment");
 define("_FROM", "From"); //For emails
 define("_SUBJECT", "Subject"); //For emails

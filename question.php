@@ -85,7 +85,14 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
             }
         $_SESSION['ipaddr'] = $_SERVER['REMOTE_ADDR'];
         }
- 
+    if ($thissurvey['refurl'] == "Y")
+        {
+        if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
+            {
+            $_SESSION['insertarray'][] = "refurl";
+            }
+        $_SESSION['refurl'] = $_SESSION['refurl']; 
+        }
     //DEVELOP SQL TO INSERT RESPONSES
     $subquery = createinsertquery();
 
@@ -296,7 +303,7 @@ else {$currentquestion=$_SESSION['step']-1;}
 
 if (session_id()=='') 
  {
- 	 echo "Sorry, your sessions seems to have expired. Please restart the survey. (1)";
+ 	 echo "Sorry, your session seems to have expired. Please restart the survey. (1)";
  	 die();
  }
 
