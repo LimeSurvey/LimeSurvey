@@ -37,7 +37,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
-$versionnumber = "1.01a";
+$versionnumber = "1.01alpha";
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
 if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
@@ -46,7 +46,7 @@ if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
 
-require_once (dirname(__FILE__).'/classes/XPertMailer/XPertMailer.php'); 
+require_once (dirname(__FILE__).'/classes/phpmailer/class.phpmailer.php');
 $realdefaultlang=$defaultlang;
 
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
@@ -1964,10 +1964,9 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
 {
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
-    $mail = new XpertMailer($emailmethod,$emailsmtphost);
-	if (($emailmethod ==5 || $emailmethod ==6 || $emailmethod ==7) && $emailsmtpuser!="" )
-	   { $mail->auth($emailsmtpuser,$emailsmtppassword);
-       }
+    $mail = new PHPMailer;
+    $mail->$Charset = "UTF-8";
+
 
 	$fromname='';
 	$fromemail=$from;
@@ -1976,14 +1975,24 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
          	$fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
          	$fromname=trim(substr($from,0, strpos($from,'<')-1));
 		}
-	$mail->from($fromemail, $fromname);
-	$header['X-Surveymailer'] = $sitename.' Emailer (PHPSurveyor.sourceforge.net)';
-    $mail->headers($header);
+    $mail->Mailer = $emailmethod;
+    if ($emailmethod=="smtp")
+        { $mail->host = $emailsmtphost;
+          $mail->username =$emailsmtpuser;
+          $mail->password =$emailsmtppassword;
+          if ($emailsmtpuser!="")
+            {$mail->SMTPAuth = true;}
+        }
+	$mail->from = $fromemail;
+	$mail->AddAddress($to);
+    $mail->fromname = $fromname;
+	$mail->AddCustomHeader("X-Surveymailer=$sitename Emailer (PHPSurveyor.sourceforge.net)");
 	$body = strip_tags($body);
 	$body = str_replace("&quot;", '"', $body);
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
-	$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
-	Return  $mail->send($to, $subject, $body, false, 'utf-8');
+	$mail->body = $body;
+	$mail->subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
+	Return $mail ->send;
 }
 
 // This functions removes all tags, CRs, linefeeds and other strange chars from a given text
