@@ -1,15 +1,16 @@
 <?php
 /*
     #############################################################
-    # >>> PHPSurveyor                                          #
+    # >>> PHPSurveyor                                           #
     #############################################################
     # > Author:  Jason Cleeland                                 #
     # > E-mail:  jason@cleeland.org                             #
     # > Mail:    Box 99, Trades Hall, 54 Victoria St,           #
-    # > Translated by: Mark Yeung (kaisuny@yahoo.com)           #
-    # >                of www.pstudy.net                        #
     # >          CARLTON SOUTH 3053, AUSTRALIA                  #
-    # > Date:    20 February 2003                               #
+	# > Date:    20 February 2003                               #
+    # > (UTF-8 Chinese-Traditional version translated by:       #
+	# > Mark Yeung (pstudy@gmail.com) of pstudy.net and         #
+    # > updated on 10-6-2006)                                   #
     #                                                           #
     # This set of scripts allows you to develop, publish and    #
     # perform data-entry on surveys.                            #
@@ -133,7 +134,7 @@ define("_CONFIRMATION_MESSAGE1", "已送出問卷"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "恭喜您！您收到一份剛完成的問卷"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "點擊此連結查看個別的問卷內容:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "點擊這裡查看統計資料:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
+define("_CONFIRMATION_MESSAGE5", "點擊以下連結修改個別的問卷內容:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<b><i>私隱聲明</i></b><br />"
                           ."這是一份不記名的問卷.<br />"
