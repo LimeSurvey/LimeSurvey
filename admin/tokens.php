@@ -1242,7 +1242,7 @@ if ($action == "upload")
 			if (substr($buffer, -2) == "\r\n") {$buffer = substr($buffer, 0, -2);}
 			elseif (substr($buffer, -1) == "\n") {$buffer = substr($buffer, 0, -1);}
 			elseif (substr($buffer, -1) == "\r") {$buffer = substr($buffer, 0, -1);}
-			$buffer=mb_convert_encoding($buffer,"UTF-8","auto");
+			if(function_exists('mb_convert_encoding')) {$buffer=mb_convert_encoding($buffer,"UTF-8","auto");} //Sometimes mb_convert_encoding doesn't exist
 			$firstname = ""; $lastname = ""; $email = ""; $token = ""; //Clear out values from the last path, in case the next line is missing a value
 			if (!$xx)
 				{
