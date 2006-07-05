@@ -76,7 +76,7 @@ echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='ve
 
 echo "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
-	. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
+	. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
 	. _B_ADMIN_BT."' alt='". _B_ADMIN_BT."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"

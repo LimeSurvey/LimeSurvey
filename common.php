@@ -192,7 +192,7 @@ if ($sourcefrom == "admin")
                     . "\t\t\t</tr>\n"
                     . "\t\t\t<tr bgcolor='#999999'>\n"
                     . "\t\t\t\t<td>\n"
-                    . "\t\t\t\t\t<input type='image' src='$imagefiles/home.gif' name='HomeButton' alt='"
+                    . "\t\t\t\t\t<input type='image' src='$imagefiles/home.png' name='HomeButton' alt='"
                     . _A_HOME_BT."' title='"
                     . _A_HOME_BT."' align='left' onClick=\"window.open('$scriptname', '_top')\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
@@ -202,7 +202,7 @@ if ($sourcefrom == "admin")
             $fhtaccess = "$homedir/.htaccess";
             if (!file_exists($fhtaccess))
                 {
-                $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/badsecurity.gif' name='AdminSecurity'"
+                $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/badsecurity.png' name='AdminSecurity'"
                             . " title='". _A_BADSECURITY_BT."' alt='". _A_BADSECURITY_BT."'  align='left' "
                             . "onClick=\"window.open('$scriptname?action=editusers', '_top')\">";
                 }
@@ -219,34 +219,34 @@ if ($sourcefrom == "admin")
             $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n";
             }
         $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
-                    . "\t\t\t\t\t<input type='image' src='$imagefiles/summary.gif' name='CheckSettings' title='"
+                    . "\t\t\t\t\t<input type='image' src='$imagefiles/summary.png' name='CheckSettings' title='"
                     . _A_CHECKSETTINGS."' alt='". _A_CHECKSETTINGS."' align='left' "
                     . "onClick=\"window.open('$scriptname?action=checksettings', '_top')\">"
                     //. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n";
 
-        $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/checkdb.gif' name='CheckDatabase' title='"
+        $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/checkdb.png' name='CheckDatabase' title='"
                     . _A_CHECKDB_BT."'  alt='"._A_CHECKDB_BT."' align='left' onClick=\"window.open('checkfields.php', '_top')\">\n";
 
         if ($surveyid)
             {
-            $adminmenu  .="\t\t\t\t\t<input type='image' src='$imagefiles/delete.gif' name='DeleteSurvey' alt='". _A_DELETE_BT." ($surveyid)' title='". _A_DELETE_BT." ($surveyid)' align='left' "
+            $adminmenu  .="\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _A_DELETE_BT." ($surveyid)' title='". _A_DELETE_BT." ($surveyid)' align='left' "
                         . "onClick=\"window.open('deletesurvey.php?sid=$surveyid', '_top')\">";
             }
         else
             {
             $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n";
             }
-        $adminmenu  .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' name='ExportDB' title='"
+        $adminmenu  .= "\t\t\t\t\t<input type='image' src='$imagefiles/backup.png' name='ExportDB' title='"
                     . _A_BACKUPDB_BT." ($surveyid)' alt='". _A_BACKUPDB_BT." ($surveyid)' align='left' "
                     . "onClick=\"window.open('dumpdb.php', '_top')\">"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n"
-                    . "\t\t\t\t\t<input type='image' src='$imagefiles/labels.gif' align='left' name='LabelsEditor' title='"
+                    . "\t\t\t\t\t<input type='image' src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
                     . _Q_LABELS_BT."' alt='". _Q_LABELS_BT."'onClick=\"window.open('labels.php', '_top')\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n";
-        $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/templates.gif' name='EditTemplates' title='"
+        $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/templates.png' name='EditTemplates' title='"
                     . _A_TEMPLATES_BT."' alt='". _A_TEMPLATES_BT."' align='left' "
                     . "onClick=\"window.open('templates.php', '_top')\">"
                     . "\t\t\t\t</td>\n";
@@ -255,7 +255,7 @@ if ($sourcefrom == "admin")
                     . _A_HELP_BT."' alt='". _A_HELP_BT."' align='right' onClick=\"showhelp('show')\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='42' height='20' align='right' >\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' >\n"
-                    . "\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' align='right' name='AddSurvey' title='"
+                    . "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' align='right' name='AddSurvey' title='"
                     . _A_ADDSURVEY_BT."' alt='". _A_ADDSURVEY_BT."' onClick=\"window.open('$scriptname?action=newsurvey', '_top')\">\n"
                     . "\t\t\t\t\t$setfont<font size='1'><strong>"._SURVEYS.":</strong> "
                     . "\t\t\t\t\t<select style='font-size: 9; font-family: verdana; color: #333333; background: SILVER; width: 160' "
@@ -896,11 +896,11 @@ function browsemenubar()
     if (!isset($surveyoptions)) {$surveyoptions="";}
     $surveyoptions .= "\t<tr bgcolor='#999999'>\n"
                     . "\t\t<td>\n"
-                    . "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
+                    . "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
                     . _B_ADMIN_BT."' alt='". _B_ADMIN_BT."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
                     . "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
-                    . "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.gif' title='"
+                    . "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.png' title='"
                     . _B_SUMMARY_BT."' align='left' onClick=\"window.open('browse.php?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.gif' title='"
                     . _B_ALL_BT."' align='left' onClick=\"window.open('browse.php?sid=$surveyid&amp;action=all', '_top')\">\n"

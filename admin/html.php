@@ -280,7 +280,7 @@ if ($surveyid)
 						. "onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\">\n";
 		if ($sumcount3 == 0 && $sumcount2 == 0)
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/delete.gif' title='"
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' title='"
 							. _S_DELETE_BT."' align='left' name='DeleteWholeSurvey' "
 							. "onclick=\"window.open('$scriptname?action=delsurvey&amp;sid=$surveyid', '_top')\">\n";
 			}
@@ -337,7 +337,7 @@ if ($surveyid)
 			}
 		else
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' title='"
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' title='"
 							. _S_ADDGROUP_BT."' alt='". _S_ADDGROUP_BT."'align='right'  name='AddNewGroup' "
 							. "onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\">\n";
 			}
@@ -506,7 +506,7 @@ if ($gid)
 		if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y") 
 			{
 			$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid'>"
-						   . "<img src='$imagefiles/delete.gif' alt='"
+						   . "<img src='$imagefiles/delete.png' alt='"
 						   . _G_DELETE_BT."' name='DeleteWholeGroup' title='"
 						   . _G_DELETE_BT."' align='left' border='0' hspace='0' "
 						   . "onclick=\"return confirm('"._DG_RUSURE."')\"></a>";
@@ -545,7 +545,7 @@ if ($gid)
 			}
 		else
 			{
-			$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.gif' title='"
+			$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' title='"
 						   . _G_ADDQUESTION_BT."'  alt='". _G_ADDQUESTION_BT."' align='right' name='AddNewQuestion' "
 						   . "onClick=\"window.open('$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid', '_top')\">\n";
 			}
@@ -602,7 +602,7 @@ if ($qid)
 		if (($qct == 0 && $activated != "Y") || $activated != "Y") 
 			{
 			$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'>"
-							  . "<img src='$imagefiles/delete.gif' name='DeleteWholeQuestion' alt= '"._Q_DELETE_BT."' title='"
+							  . "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '"._Q_DELETE_BT."' title='"
 							  . _Q_DELETE_BT."' align='left' border='0' hspace='0' "
 							  . "onclick=\"return confirm('"._DQ_RUSURE."')\"></a>\n";
 			}
@@ -666,7 +666,7 @@ if ($qid)
 		if ($qrrow['type'] == "F" ||$qrrow['type'] == "H") 
 			{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
-							  . "<input align='top' type='image' src='$imagefiles/labels.gif' title='"
+							  . "<input align='top' type='image' src='$imagefiles/labels.png' title='"
 							  . _Q_LABELS_BT."' height='15' width='15' hspace='0' name='EditThisLabelSet' "
 							  . "onClick=\"window.open('labels.php?lid={$qrrow['lid']}', '_blank')\">\n";
 			}

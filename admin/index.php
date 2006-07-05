@@ -405,7 +405,7 @@ function adminmenu() {
 				 <td height='26' valign='bottom'>
 			      <img src='{$imagefiles}/showhelp.gif' align='right' alt='Show Help'>
 			      <img src='$imagefiles/blank.gif' width='5' height='1' alt=''>
-			      <a href='$scriptname' title='"._A_HOME_BT."'><img src='{$imagefiles}/home.gif' alt='"._A_HOME_BT."' border='0'></a>
+			      <a href='$scriptname' title='"._A_HOME_BT."'><img src='{$imagefiles}/home.png' alt='"._A_HOME_BT."' border='0'></a>
 				 </td>
 				</tr>
 				<tr>

@@ -305,7 +305,7 @@ function labelAdd() {
 		</tr>
 		<tr>
 		 <td height='22' valign='top'>
-		 <img src='$imagefiles/labels.gif' align='left'>"._L_ADDSET_BT."
+		 <img src='$imagefiles/labels.png' align='left'>"._L_ADDSET_BT."
 		 </td>
 		</tr>
 	   </table>
@@ -478,7 +478,7 @@ function surveyEdit($surveyid) {
 						  "sendnotification"=>"0",
 						  "autonumber_start"=>"",
 						  "allowprev"=>"Y");
-		$title = "<img src='$imagefiles/add.gif' align='left' border='0'>"._A_ADDSURVEY_BT;
+		$title = "<img src='$imagefiles/add.png' align='left' border='0'>"._A_ADDSURVEY_BT;
 		$button = _ADDS;
 	}
 
@@ -616,7 +616,7 @@ function groupEdit($surveyid, $gid) {
 		//Set defaults for a new survey
 		$thisgroup=array("group_name"=>"",
 						  "description"=>"");
-		$title = "<img src='$imagefiles/add.gif' align='left' border='0'>"._S_ADDGROUP_BT;
+		$title = "<img src='$imagefiles/add.png' align='left' border='0'>"._S_ADDGROUP_BT;
 		$button = _ADDG;
 	}
 
@@ -726,7 +726,7 @@ function questionEdit($surveyid, $gid, $qid) {
 							  "mandatory"=>"N",
 							  "lid"=>"",
 							  "preg"=>"");
-		$title = "<img src='$imagefiles/add.gif' align='left' border='0'>"._G_ADDQUESTION_BT;
+		$title = "<img src='$imagefiles/add.png' align='left' border='0'>"._G_ADDQUESTION_BT;
 		$button = _ADDQ;
 	}
 
@@ -1258,7 +1258,7 @@ function showPreview($surveyid, $gid, $qid=null) {
 		  </th></tr>
 		  <tr><td height='22'>
 		  ".windowControl("preview", "?sid=$surveyid&amp;gid=$gid&amp;qid=$qid")."
-		   <img src='$imagefiles/templates.gif' align='left'>
+		   <img src='$imagefiles/templates.png' align='left'>
 		   "._Q_PREVIEWQUESTION."
 		  </td></tr>
 		  </table>
@@ -1308,7 +1308,7 @@ function checkSettings($dbprefix) {
 	echo  "		<table cellspacing='0'><tr><td height='3'></td></tr></table>
 				<table align='center' class='menutable' width='100%' cellspacing='0' cellpadding='0'>
 				<tr><th><strong>"._PS_TITLE."</td></tr>
-				<tr><td height='23'><img src='{$imagefiles}/summary.gif' align='left' border='0'></td></tr>
+				<tr><td height='23'><img src='{$imagefiles}/summary.png' align='left' border='0'></td></tr>
 				</table>
 				<table cellspacing='0' cellpadding='0'><tr><td height='4'></td></tr></table>
 				<table align='center' class='outlinetable' cellpadding='1' cellspacing='0' width='100%'>
@@ -1844,34 +1844,34 @@ global $lid;
 //Menu entries go here
 //CREATENEW
 //$menu['system']["0"]="<a href='$homeurl/authentication.php'><img src='$imagefiles/security.gif' align='left' border='0' height='15' width='15'>"._AUTHENTICATION_BT."<\/a><br />";
-$menu['system']["1"]="<a href='$homeurl/$scriptname?action=checksettings'><img src='$imagefiles/summary.gif' align='left' border='0' height='15' width='15'>"._SYSTEM_BT."<\/a><br />";
+$menu['system']["1"]="<a href='$homeurl/$scriptname?action=checksettings'><img src='$imagefiles/summary.png' align='left' border='0' height='15' width='15'>"._SYSTEM_BT."<\/a><br />";
 
-$menu['systemdb']["0"]="<a href='$homeurl/checkfields.php'><img src='$imagefiles/checkdb.gif' align='left' border='0' height='15' width='15'>"._CHECKFIELDS."<\/a><br />";
-$menu['systemdb']["1"]="<a href='$homeurl/dbchecker.php'><img src='$imagefiles/checkdb.gif' align='left' border='0' height='15' width='15'>"._PS_CHECKDBINTEGRITY."<\/a><br />";
-$menu['systemdb']["2"]="<a href='$homeurl/dumpdb.php'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._A_BACKUPDB_BT."<\/a><br />";
+$menu['systemdb']["0"]="<a href='$homeurl/checkfields.php'><img src='$imagefiles/checkdb.png' align='left' border='0' height='15' width='15'>"._CHECKFIELDS."<\/a><br />";
+$menu['systemdb']["1"]="<a href='$homeurl/dbchecker.php'><img src='$imagefiles/checkdb.png' align='left' border='0' height='15' width='15'>"._PS_CHECKDBINTEGRITY."<\/a><br />";
+$menu['systemdb']["2"]="<a href='$homeurl/dumpdb.php'><img src='$imagefiles/backup.png' align='left' border='0' height='15' width='15'>"._A_BACKUPDB_BT."<\/a><br />";
 
-$menu['systemother']["0"]="<a href='$homeurl/$scriptname?action=showlabelsets'><img src='$imagefiles/labels.gif' align='left' border='0' height='15' width='15'>"._Q_LABELS_BT."<\/a><br />";
+$menu['systemother']["0"]="<a href='$homeurl/$scriptname?action=showlabelsets'><img src='$imagefiles/labels.png' align='left' border='0' height='15' width='15'>"._Q_LABELS_BT."<\/a><br />";
 
-$menu['createnew']["2"]="<a href='$homeurl/$scriptname?action=addsurvey'><img src='$imagefiles/add.gif' align='left' border='0' height='15' width='15'>"._A_ADDSURVEY_BT."<\/a><br />";
+$menu['createnew']["2"]="<a href='$homeurl/$scriptname?action=addsurvey'><img src='$imagefiles/add.png' align='left' border='0' height='15' width='15'>"._A_ADDSURVEY_BT."<\/a><br />";
 $menu['importnew']["2"]="<a href='$homeurl/$scriptname?action=importsurvey'><img src='$imagefiles/import.gif' align='left' border='0' height='15' width='15'>"._IMPORTSURVEY."<\/a><br />";
 
-$menu['labeloptions']["0"]="<a href='$homeurl/$scriptname?action=addlabel'><img src='$imagefiles/add.gif' align='left' border='0' height='15' width='15'>"._LB_NEWSET."<\/a><br />";
+$menu['labeloptions']["0"]="<a href='$homeurl/$scriptname?action=addlabel'><img src='$imagefiles/add.png' align='left' border='0' height='15' width='15'>"._LB_NEWSET."<\/a><br />";
 if (!empty($lid)) {
 	$activeqids=labelsInActiveSurvey($lid);
 	if (count($activeqids) < 1) {
-	    $menu['labeloptions']["1"]="<a href='$homeurl/$scriptname?action=dellabel&lid=$lid'><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._L_DEL_BT."<\/a><br />";
+	    $menu['labeloptions']["1"]="<a href='$homeurl/$scriptname?action=dellabel&lid=$lid'><img src='$imagefiles/delete.png' align='left' border='0' height='15' width='15'>"._L_DEL_BT."<\/a><br />";
 	}
 }
 if(!empty($surveyid)) {
 	$thissurvey=getSurveyInfo($surveyid);
 	if ($thissurvey['active'] != "Y") {
-		$menu['createnew']["1"]="<a href='$homeurl/$scriptname?action=addgroup&amp;sid=$surveyid'><img src='$imagefiles/add.gif' align='left' border='0' height='15' width='15'>"._S_ADDGROUP_BT."<\/a><br />";
+		$menu['createnew']["1"]="<a href='$homeurl/$scriptname?action=addgroup&amp;sid=$surveyid'><img src='$imagefiles/add.png' align='left' border='0' height='15' width='15'>"._S_ADDGROUP_BT."<\/a><br />";
 		$menu['importnew']["1"]="<a href='$homeurl/$scriptname?action=importgroup&amp;sid=$surveyid'><img src='$imagefiles/import.gif' align='left' border='0' height='15' width='15'>"._IMPORTGROUP."<\/a><br />";
 	}
 
 	if(!empty($gid)) {
 		if ($thissurvey['active'] != "Y") {
-			$menu['createnew']["0"]="<a href='$homeurl/$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/add.gif' align='left' border='0' height='15' width='15'>"._G_ADDQUESTION_BT."<\/a><br />";
+			$menu['createnew']["0"]="<a href='$homeurl/$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/add.png' align='left' border='0' height='15' width='15'>"._G_ADDQUESTION_BT."<\/a><br />";
 			$menu['importnew']["0"]="<a href='$homeurl/$scriptname?action=importquestion&amp;sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/import.gif' align='left' border='0' height='15' width='15'>"._IMPORTQUESTION."<\/a><br />";
 		}
 	}
@@ -1892,7 +1892,7 @@ if(!empty($surveyid)) {
 	$menu['surveyoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=editsurvey'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._S_EDIT_BT."<\/a><br />";
 	$menu['surveyoptions']["2"]="<a href='{$homeurl}/dumpsurvey.php?sid=$surveyid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._S_EXPORT_BT."<\/a><br />";
 	if ($thissurvey['active'] != "Y") {
-		$menu['surveyoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=delsurvey' onclick=\\\"return confirm('"._DS_DELMESSAGE1." "._DS_DELMESSAGE2."')\\\"><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._S_DELETE_BT."<\/a><br />";
+		$menu['surveyoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=delsurvey' onclick=\\\"return confirm('"._DS_DELMESSAGE1." "._DS_DELMESSAGE2."')\\\"><img src='$imagefiles/delete.png' align='left' border='0' height='15' width='15'>"._S_DELETE_BT."<\/a><br />";
 	}
 	$menu['surveyoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=showassessments'><img src='$imagefiles/assessments.gif' align='left' border='0' height='15' width='15'>"._S_ASSESSMENT_BT."<\/a><br />";
 	
@@ -1908,7 +1908,7 @@ if(!empty($surveyid)) {
 	if (!empty($gid)) {
 	    $menu['groupoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&action=editgroup'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._G_EDIT_BT."<\/a><br />";
 		if ($thissurvey['active'] != "Y") {
-			$menu['groupoptions']["1"] = "<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&action=delgroup'><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._G_DELETE_BT."<\/a><br />";
+			$menu['groupoptions']["1"] = "<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&action=delgroup'><img src='$imagefiles/delete.png' align='left' border='0' height='15' width='15'>"._G_DELETE_BT."<\/a><br />";
 		}
 		$menu['groupoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._G_EXPORT_BT."<\/a><br />";
 	
@@ -1918,7 +1918,7 @@ if(!empty($surveyid)) {
 	if (!empty($qid)) {
 	    $menu['questionoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=editquestion'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._Q_EDIT_BT."<\/a><br />";
 	    if ($thissurvey['active'] != "Y") {
-			$menu['questionoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=delquestion'><img src='$imagefiles/delete.gif' align='left' border='0' height='15' width='15'>"._Q_DELETE_BT."<\/a><br />";
+			$menu['questionoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=delquestion'><img src='$imagefiles/delete.png' align='left' border='0' height='15' width='15'>"._Q_DELETE_BT."<\/a><br />";
 	    }
 	    $menu['questionoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._Q_EXPORT_BT."<\/a><br />";
 	    $menu['questionoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=copyquestion'><img src='{$imagefiles}/copy.gif' align='left' border='0' height='15' width='15' alt='". _Q_COPY_BT."'>"._Q_COPY_BT."<\/a><br />";
@@ -1932,7 +1932,7 @@ if(!empty($surveyid)) {
 		} // switch
 		$menu["questionactions"]["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=showattributes'><img src='{$imagefiles}/answers.gif' align='left' border='0' height='15' width='15'>"._QL_QUESTIONATTRIBUTES."<\/a><br />";
 		$menu["questionactions"]["2"]="<a href=\\\"#\\\" onclick=\\\"window.open('{$homeurl}/conditions.php?sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\\\"><img src='{$imagefiles}/conditions.gif' align='left' border='0' height='15' width='15'  alt='". _Q_CONDITIONS_BT."'>"._Q_CONDITIONS_BT."</a><br />";
-		$menu["questionactions"]["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=showpreview'><img src='{$imagefiles}/templates.gif' align='left' border='0' height='15' width='15'>"._Q_PREVIEWQUESTION."<\/a><br />";	
+		$menu["questionactions"]["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=showpreview'><img src='{$imagefiles}/templates.png' align='left' border='0' height='15' width='15'>"._Q_PREVIEWQUESTION."<\/a><br />";	
 		if($thissurvey['active'] == "Y") {
 			$menu['activequestion']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=showsummary'><img src='{$imagefiles}/browse.gif' align='left' border='0' height='15' width='15'>"._Q_VIEWSUMMARY."<\/a><br />";
 		}

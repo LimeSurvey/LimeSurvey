@@ -136,11 +136,11 @@ function savedmenubar()
 	if (!isset($surveyoptions)) {$surveyoptions="";}
 	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
 					. "\t\t<td>\n"
-					. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.gif' title='"
+					. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
 					. _B_ADMIN_BT."' align='left'  onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 					. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-					. "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.gif' title='"
+					. "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.png' title='"
 					. _B_SUMMARY_BT."'  align='left' onClick=\"window.open('saved.php?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.gif' title='"
 					. _B_ALL_BT."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&amp;action=all', '_top')\">\n"

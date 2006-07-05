@@ -239,7 +239,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		."\t\t\t<input type='image' align='left' src='$imagefiles/edit.gif' title='"
 		. _BR_EDITRESPONSE."' alt='"._BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
 		."\t\t\t<a href='dataentry.php?action=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'>"
-		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.gif' alt='"
+		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='"
 		. _BR_DELRESPONSE."' title='"
 		. _BR_DELRESPONSE."' onClick=\"return confirm('"._DR_RUSURE."')\" /></a>\n"
         . "\t\t\t<input type='image' name='Export' src='$imagefiles/export.gif' title='"
