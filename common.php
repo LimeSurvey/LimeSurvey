@@ -257,8 +257,8 @@ if ($sourcefrom == "admin")
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' >\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' align='right' name='AddSurvey' title='"
                     . _A_ADDSURVEY_BT."' alt='". _A_ADDSURVEY_BT."' onClick=\"window.open('$scriptname?action=newsurvey', '_top')\">\n"
-                    . "\t\t\t\t\t$setfont<font size='1'><strong>"._SURVEYS.":</strong> "
-                    . "\t\t\t\t\t<select style='font-size: 9; font-family: verdana; color: #333333; background: SILVER; width: 160' "
+                    . "\t\t\t\t\t$setfont<font size='2'><strong>"._SURVEYS.":</strong> "
+                    . "\t\t\t\t\t<select style='margin-top: 10px; height: 20px; font-size: 10; font-family: verdana; color: #333333; background: SILVER; width: 180' "
                     . "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
                     //. $surveyselect
                     . getsurveylist()
