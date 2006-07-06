@@ -377,7 +377,7 @@ function surveyDetails($surveyid, $gid, $qid) {
 	if ($thissurvey['active'] == "Y") {
 	    $surveystatus="<img src='$imagefiles/blank.gif' width='50' height='1' alt=''><a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, surveyactivation, '180px')\"><img src='{$imagefiles}/active.gif' border='0' hspace='0' alt='"._S_ACTIVE_BT."'>"._S_ACTIVE_BT."</a>";
 	} else {
-		$surveystatus="<img src='$imagefiles/blank.gif' width='195' height='1' alt=''><a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, surveyactivation, '180px')\"><img src='{$imagefiles}/inactive.gif' border='0' hspace='0' alt='"._S_INACTIVE_BT."'>"._S_INACTIVE_BT."</a>";
+		$surveystatus="<img src='$imagefiles/blank.gif' width='195' height='1' alt=''><a href='#' ".$navigation['dropdownaction']."=\"return dropdownmenu(this, event, surveyactivation, '180px')\"><img src='{$imagefiles}/inactive.png' border='0' hspace='0' alt='"._S_INACTIVE_BT."'>"._S_INACTIVE_BT."</a>";
 	}
 	
 	$contents = buildSummaryRows($fields, 'surveysummary', $display, $pages);
@@ -440,7 +440,7 @@ function surveyEdit($surveyid) {
 
 	if ($action == "editsurvey") {
 		$thissurvey=getSurveyInfo($surveyid);
-		$title="<img src='$imagefiles/edit.gif' align='left' border='0'>"._S_EDIT_BT;
+		$title="<img src='$imagefiles/edit.png' align='left' border='0'>"._S_EDIT_BT;
 		$button=_UPDATE;
 	} elseif ($action == "addsurvey") {
 		//Set defaults for a new survey
@@ -610,7 +610,7 @@ function groupEdit($surveyid, $gid) {
 	global $publicurl, $imagefiles, $scriptname, $action;
 	if ($action == "editgroup") {
 		$thisgroup=getGroupInfo($surveyid, $gid);
-		$title="<img src='$imagefiles/edit.gif' align='left' border='0'>"._G_EDIT_BT;
+		$title="<img src='$imagefiles/edit.png' align='left' border='0'>"._G_EDIT_BT;
 		$button=_UPDATE;
 	} elseif ($action == "addgroup") {
 		//Set defaults for a new survey
@@ -706,7 +706,7 @@ function questionEdit($surveyid, $gid, $qid) {
 	if ($action == "editquestion") {
 		$thissurvey = getSurveyInfo($surveyid);
 	    $thisquestion = getQuestionInfo($qid);
-		$title="<img src='$imagefiles/edit.gif' align='left' border='0'>"._Q_EDIT_BT;
+		$title="<img src='$imagefiles/edit.png' align='left' border='0'>"._Q_EDIT_BT;
 		$button = _UPDATE;
 	} elseif ($action == "copyquestion") {
 		$thissurvey = getSurveyInfo($surveyid);
@@ -1877,24 +1877,24 @@ if(!empty($surveyid)) {
 	}
 
 	
-	$menu['surveyactions']["0"]="<a href='{$publicurl}/$scriptname?sid=$surveyid&amp;newtest=Y' target='_blank'><img src='$imagefiles/do.gif' align='left' border='0' height='15' width='15'>"._S_DOSURVEY_BT."<\/a><br />";
-	$menu['surveyactions']["1"]="<a href='{$homeurl}/dataentry.php?sid=$surveyid' target='_blank'><img src='$imagefiles/dataentry.gif' align='left' border='0' height='15' width='15'>"._S_DATAENTRY_BT."<\/a><br />";
-	$menu['surveyactions']["2"]="<a href='{$homeurl}/printablesurvey.php?sid=$surveyid' target='_blank'><img src='$imagefiles/print.gif' align='left' border='0' height='15' width='15'>"._S_PRINTABLE_BT."<\/a><br />";
+	$menu['surveyactions']["0"]="<a href='{$publicurl}/$scriptname?sid=$surveyid&amp;newtest=Y' target='_blank'><img src='$imagefiles/do.png' align='left' border='0' height='15' width='15'>"._S_DOSURVEY_BT."<\/a><br />";
+	$menu['surveyactions']["1"]="<a href='{$homeurl}/dataentry.php?sid=$surveyid' target='_blank'><img src='$imagefiles/dataentry.png' align='left' border='0' height='15' width='15'>"._S_DATAENTRY_BT."<\/a><br />";
+	$menu['surveyactions']["2"]="<a href='{$homeurl}/printablesurvey.php?sid=$surveyid' target='_blank'><img src='$imagefiles/print.png' align='left' border='0' height='15' width='15'>"._S_PRINTABLE_BT."<\/a><br />";
 	$menu['surveyactions']["3"]="<a onClick='rusurelink(\\\""._S_RENUMBERSURVEYWARNING."\\\", \\\"$homeurl/$scriptname?sid=$surveyid&dbaction=renumbersurvey\\\")' href='#'><img src='$imagefiles/renumber.gif' align='left' border='0' height='15' width='15'>"._S_RENUMBER_BT."<\/a><br />";
 
 	
 	if ($thissurvey['active'] == "Y") {
-	    $menu['surveyactivation']["0"]="<a href='{$homeurl}/$scriptname?action=deactivate&amp;sid=$surveyid'><img src='$imagefiles/deactivate.gif' align='left' border='0' height='15' width='15'>"._S_DEACTIVATE_BT."<\/a><br />";
+	    $menu['surveyactivation']["0"]="<a href='{$homeurl}/$scriptname?action=deactivate&amp;sid=$surveyid'><img src='$imagefiles/deactivate.png' align='left' border='0' height='15' width='15'>"._S_DEACTIVATE_BT."<\/a><br />";
 	} else {
-		$menu['surveyactivation']["0"]="<a href='{$homeurl}/$scriptname?action=activate&amp;sid=$surveyid'><img src='$imagefiles/activate.gif' align='left' border='0' height='15' width='15'>"._S_ACTIVATE_BT."<\/a><br />";
+		$menu['surveyactivation']["0"]="<a href='{$homeurl}/$scriptname?action=activate&amp;sid=$surveyid'><img src='$imagefiles/activate.png' align='left' border='0' height='15' width='15'>"._S_ACTIVATE_BT."<\/a><br />";
 	}
 
-	$menu['surveyoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=editsurvey'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._S_EDIT_BT."<\/a><br />";
-	$menu['surveyoptions']["2"]="<a href='{$homeurl}/dumpsurvey.php?sid=$surveyid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._S_EXPORT_BT."<\/a><br />";
+	$menu['surveyoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=editsurvey'><img src='$imagefiles/edit.png' align='left' border='0' height='15' width='15'>"._S_EDIT_BT."<\/a><br />";
+	$menu['surveyoptions']["2"]="<a href='{$homeurl}/dumpsurvey.php?sid=$surveyid'><img src='$imagefiles/export.png' align='left' border='0' height='15' width='15'>"._S_EXPORT_BT."<\/a><br />";
 	if ($thissurvey['active'] != "Y") {
 		$menu['surveyoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=delsurvey' onclick=\\\"return confirm('"._DS_DELMESSAGE1." "._DS_DELMESSAGE2."')\\\"><img src='$imagefiles/delete.png' align='left' border='0' height='15' width='15'>"._S_DELETE_BT."<\/a><br />";
 	}
-	$menu['surveyoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=showassessments'><img src='$imagefiles/assessments.gif' align='left' border='0' height='15' width='15'>"._S_ASSESSMENT_BT."<\/a><br />";
+	$menu['surveyoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&action=showassessments'><img src='$imagefiles/assessments.png' align='left' border='0' height='15' width='15'>"._S_ASSESSMENT_BT."<\/a><br />";
 	
 	if ($thissurvey['active'] == "Y") {
 		$menu['surveyactive']["0"]="<a href='{$homeurl}/browse.php?sid=$surveyid'><img src='$imagefiles/browse.gif' align='left' border='0' height='15' width='15'>"._S_BROWSE_BT."<\/a><br />";
@@ -1906,21 +1906,21 @@ if(!empty($surveyid)) {
 	}
 	
 	if (!empty($gid)) {
-	    $menu['groupoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&action=editgroup'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._G_EDIT_BT."<\/a><br />";
+	    $menu['groupoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&action=editgroup'><img src='$imagefiles/edit.png' align='left' border='0' height='15' width='15'>"._G_EDIT_BT."<\/a><br />";
 		if ($thissurvey['active'] != "Y") {
 			$menu['groupoptions']["1"] = "<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&action=delgroup'><img src='$imagefiles/delete.png' align='left' border='0' height='15' width='15'>"._G_DELETE_BT."<\/a><br />";
 		}
-		$menu['groupoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._G_EXPORT_BT."<\/a><br />";
+		$menu['groupoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid'><img src='$imagefiles/export.png' align='left' border='0' height='15' width='15'>"._G_EXPORT_BT."<\/a><br />";
 	
 		$menu['groupactions']["0"]="<a href='$homeurl/$scriptname?sid=$surveyid&amp;gid=$gid&dbaction=renumbergroup'><img src='$imagefiles/renumber.gif' align='left' border='0' height='15' width='15'>"._G_RENUMBER_BT."<\/a><br />";
 	}
 
 	if (!empty($qid)) {
-	    $menu['questionoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=editquestion'><img src='$imagefiles/edit.gif' align='left' border='0' height='15' width='15'>"._Q_EDIT_BT."<\/a><br />";
+	    $menu['questionoptions']["0"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=editquestion'><img src='$imagefiles/edit.png' align='left' border='0' height='15' width='15'>"._Q_EDIT_BT."<\/a><br />";
 	    if ($thissurvey['active'] != "Y") {
 			$menu['questionoptions']["1"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=delquestion'><img src='$imagefiles/delete.png' align='left' border='0' height='15' width='15'>"._Q_DELETE_BT."<\/a><br />";
 	    }
-	    $menu['questionoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'><img src='$imagefiles/export.gif' align='left' border='0' height='15' width='15'>"._Q_EXPORT_BT."<\/a><br />";
+	    $menu['questionoptions']["2"]="<a href='{$homeurl}/dumpgroup.php?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'><img src='$imagefiles/export.png' align='left' border='0' height='15' width='15'>"._Q_EXPORT_BT."<\/a><br />";
 	    $menu['questionoptions']["3"]="<a href='{$homeurl}/$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=copyquestion'><img src='{$imagefiles}/copy.gif' align='left' border='0' height='15' width='15' alt='". _Q_COPY_BT."'>"._Q_COPY_BT."<\/a><br />";
 
 		$thisquestion=getQuestionInfo($qid);

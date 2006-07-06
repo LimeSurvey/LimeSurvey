@@ -243,9 +243,9 @@ if ($surveyid)
 						. "\t\t\t\t<tr bgcolor='#999999'><td align='right' height='22'>\n";
 		if ($activated == "N" && $sumcount3>0) 
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.gif' "
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' "
 							. "title='"._S_INACTIVE_BT."' alt='"._S_INACTIVE_BT."' border='0' hspace='0' align='left'>\n"
-							. "\t\t\t\t\t<input type='image' src='$imagefiles/activate.gif' name='ActivateSurvey' "
+							. "\t\t\t\t\t<input type='image' src='$imagefiles/activate.png' name='ActivateSurvey' "
 							. "title='"._S_ACTIVATE_BT."' alt='"._S_ACTIVATE_BT."' align='left' "
 							. "onClick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\">\n";
 			}
@@ -253,29 +253,29 @@ if ($surveyid)
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.gif' title='"._S_ACTIVE_BT."' "
 							. "alt='"._S_ACTIVE_BT."' align='left'>\n"
-							. "\t\t\t\t\t<input type='image' src='$imagefiles/deactivate.gif' name='DeactivateSurvey' "
+							. "\t\t\t\t\t<input type='image' src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
 							. "alt='"._S_DEACTIVATE_BT."' title='"._S_DEACTIVATE_BT."' align='left' "
 							. "onClick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\">\n";
 			}
 		elseif ($activated == "N")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.gif' title='"._S_INACTIVE_BT."' "
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' title='"._S_INACTIVE_BT."' "
 							. "alt='"._S_INACTIVE_BT."' border='0' hspace='0' align='left'>\n"
 							. "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' title='"._S_CANNOTACTIVATE_BT."' "
 							. "alt='"._S_CANNOTACTIVATE_BT."' border='0' align='left' hspace='0'>\n";
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "\t\t\t\t\t<input type='image' accesskey='d' src='$imagefiles/do.gif' title='"._S_DOSURVEY_BT."' "
+						. "\t\t\t\t\t<input type='image' accesskey='d' src='$imagefiles/do.png' title='"._S_DOSURVEY_BT."' "
 						. "name='DoSurvey' align='left' alt='"._S_DOSURVEY_BT."' "
 						. "onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\">\n"
-						. "\t\t\t\t\t<input type='image' src='$imagefiles/dataentry.gif' "
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/dataentry.png' "
 						. "title='"._S_DATAENTRY_BT."' align='left' alt='"._S_DATAENTRY_BT."'"
 						. "name='DoDataentry' onclick=\"window.open('".$homeurl."/dataentry.php?sid=$surveyid', '_blank')\">\n"
-						. "\t\t\t\t\t<input type='image' src='$imagefiles/print.gif' title='"._S_PRINTABLE_BT."' "
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/print.png' title='"._S_PRINTABLE_BT."' "
 						. "name='ShowPrintableSurvey' align='left' alt='"._S_PRINTABLE_BT."' "
 						. "onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$surveyid', '_blank')\">\n"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='"._S_EDIT_BT."' "
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='"._S_EDIT_BT."' "
 						. "name='EditSurvey' align='left' alt='"._S_EDIT_BT."'"
 						. "onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\">\n";
 		if ($sumcount3 == 0 && $sumcount2 == 0)
@@ -288,10 +288,10 @@ if ($surveyid)
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='". _S_EXPORT_BT."' alt='". _S_EXPORT_BT."' align='left' name='ExportSurvey' "
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.png' title='". _S_EXPORT_BT."' alt='". _S_EXPORT_BT."' align='left' name='ExportSurvey' "
 						. "onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\">\n";
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "<input type='image' src='$imagefiles/assessments.gif' title='". _S_ASSESSMENT_BT."' alt='". _S_ASSESSMENT_BT."' align='left' name='SurveyAssessment' "
+						. "<input type='image' src='$imagefiles/assessments.png' title='". _S_ASSESSMENT_BT."' alt='". _S_ASSESSMENT_BT."' align='left' name='SurveyAssessment' "
 						. "onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\">\n";		
 		
 		if ($activated == "Y")
@@ -500,7 +500,7 @@ if ($gid)
 					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 					   . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='20' border='0' hspace='0' align='left'>\n"
 					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-					   . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='". _G_EDIT_BT."' alt='". _G_EDIT_BT."' name='EditGroup' "
+					   . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='". _G_EDIT_BT."' alt='". _G_EDIT_BT."' name='EditGroup' "
 					   . "align='left'  onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid', "
 					   . "'_top')\">";
 		if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y") 
@@ -515,7 +515,7 @@ if ($gid)
 			{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.png' title='"
 					   . _G_EXPORT_BT."' alt='". _G_EXPORT_BT."'name='ExportGroup' "
 					   . "align='left' "
 					   . "onclick=\"window.open('dumpgroup.php?sid=$surveyid&amp;gid=$gid', '_top')\">"
@@ -597,7 +597,7 @@ if ($qid)
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='20' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.gif' title='". _Q_EDIT_BT."' alt='". _Q_EDIT_BT."' align='left' name='EditQuestion' "
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='". _Q_EDIT_BT."' alt='". _Q_EDIT_BT."' align='left' name='EditQuestion' "
 						  . "onclick=\"window.open('$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\">\n";
 		if (($qct == 0 && $activated != "Y") || $activated != "Y") 
 			{
@@ -607,7 +607,7 @@ if ($qid)
 							  . "onclick=\"return confirm('"._DQ_RUSURE."')\"></a>\n";
 			}
 		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";}
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.gif' title='"
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.png' title='"
 						  . _Q_EXPORT_BT."' alt='". _Q_EXPORT_BT."'align='left' name='ExportQuestion' "
 						  . "onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"

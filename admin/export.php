@@ -211,13 +211,13 @@ if (!$style)
 		."\t\t<td>$setfont\n";
 	if ($afieldcount > 255)
 		{
-		echo "\t\t\t<img src='$imagefiles/showhelp.gif' alt='"._HELP."' align='right' onclick='javascript:alert(\""
+		echo "\t\t\t<img src='$imagefiles/showhelp.png' alt='"._HELP."' align='right' onclick='javascript:alert(\""
 			._EX_COLNOTOK
 			."\")'>";
 		}
 	else
 		{
-		echo "\t\t\t<img src='$imagefiles/showhelp.gif' alt='"._HELP."' align='right' onclick='javascript:alert(\""
+		echo "\t\t\t<img src='$imagefiles/showhelp.png' alt='"._HELP."' align='right' onclick='javascript:alert(\""
 			._EX_COLOK
 			."\")'>";
 		}
@@ -268,7 +268,7 @@ if (!$style)
  			."\t</tr>\n"
  			."\t<tr>\n"
  			."\t\t<td>$setfont<font size='1'>"
- 			."<img src='$imagefiles/showhelp.gif' alt='"._HELP."' align='right' onclick='javascript:alert(\""
+ 			."<img src='$imagefiles/showhelp.png' alt='"._HELP."' align='right' onclick='javascript:alert(\""
  			._EX_TOKENMESSAGE
  			."\")'><br /><br />\n"
  			."<input type='checkbox' name='first_name' id='first_name'>"
