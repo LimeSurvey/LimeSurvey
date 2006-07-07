@@ -531,9 +531,9 @@ echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1
 	. "\t\t\t<tr bgcolor='#999999'>\n"
 	. "\t\t\t\t<td>\n";
 if (is_writable("$publicdir/templates/$templatename")) {
-    echo "\t\t\t\t\t<img src='$imagefiles/trafficgreen.gif' alt='"._TP_CANMODIFY."' hspace='0' align='left'>\n";
+    echo "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='"._TP_CANMODIFY."' hspace='0' align='left'>\n";
 	} else {
-	echo "\t\t\t\t\t<img src='$imagefiles/trafficred.gif' alt='"._TP_CANNOTMODIFY."' hspace='0' align='left'>\n";
+	echo "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='"._TP_CANNOTMODIFY."' hspace='0' align='left'>\n";
 	}
 echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"

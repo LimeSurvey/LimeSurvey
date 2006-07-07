@@ -1843,7 +1843,7 @@ global $lid;
 
 //Menu entries go here
 //CREATENEW
-//$menu['system']["0"]="<a href='$homeurl/authentication.php'><img src='$imagefiles/security.gif' align='left' border='0' height='15' width='15'>"._AUTHENTICATION_BT."<\/a><br />";
+//$menu['system']["0"]="<a href='$homeurl/authentication.php'><img src='$imagefiles/security.png' align='left' border='0' height='15' width='15'>"._AUTHENTICATION_BT."<\/a><br />";
 $menu['system']["1"]="<a href='$homeurl/$scriptname?action=checksettings'><img src='$imagefiles/summary.png' align='left' border='0' height='15' width='15'>"._SYSTEM_BT."<\/a><br />";
 
 $menu['systemdb']["0"]="<a href='$homeurl/checkfields.php'><img src='$imagefiles/checkdb.png' align='left' border='0' height='15' width='15'>"._CHECKFIELDS."<\/a><br />";
@@ -1901,7 +1901,7 @@ if(!empty($surveyid)) {
 		$menu['surveyactive']["1"]="<a href='{$homeurl}/statistics.php?sid=$surveyid'><img src='$imagefiles/statistics.png' alignt='left' border='0' height='15' width='15'>"._B_STATISTICS_BT."<\/a><br />";
 		$menu['surveyactive']["2"]="<a href='{$homeurl}/tokens.php?sid=$surveyid'><img src='$imagefiles/tokens.png' align='left' border='0' height='15' width='15'>"._S_TOKENS_BT."<\/a><br />";	
 		if ($thissurvey['allowsave'] == "Y") {
-			$menu['surveyactive']["3"]="<a href='{$homeurl}/saved.php?sid=$surveyid'><img src='$imagefiles/saved.gif' alignt='left' border='0' height='15' width='15'>"._S_SAVED_BT."<\/a><br />";
+			$menu['surveyactive']["3"]="<a href='{$homeurl}/saved.php?sid=$surveyid'><img src='$imagefiles/saved.png' alignt='left' border='0' height='15' width='15'>"._S_SAVED_BT."<\/a><br />";
 		}
 	}
 	

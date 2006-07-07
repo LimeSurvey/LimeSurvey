@@ -209,7 +209,7 @@ if ($sourcefrom == "admin")
             else
                 {
                 $securityok = checksecurity();
-                $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/security.gif' name='AdminSecurity' title='"
+                $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/security.png' name='AdminSecurity' title='"
                             . _A_SECURITY_BT."' alt='". _A_SECURITY_BT."' align='left' "
                             . "onClick=\"window.open('$scriptname?action=editusers', '_top')\">";
                 }
@@ -923,13 +923,13 @@ function browsemenubar()
                     . "\t\t\t<input type='image' name='SaveDump' src='$imagefiles/exportsql.png' title='"
                     . _B_BACKUP_BT."' align='left'  onclick=\"window.open('resultsdump.php?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
-                    . "\t\t\t<input type='image' src='$imagefiles/saved.gif' title='"._S_SAVED_BT."' "
+                    . "\t\t\t<input type='image' src='$imagefiles/saved.png' title='"._S_SAVED_BT."' "
                     . "align='left'  name='BrowseSaved' "
                     . "onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<a href='vvexport.php?sid=$surveyid'>\n"
-                    . "\t\t\t<a href='vvimport.php?sid=$surveyid'><img src='$imagefiles/vvimport.gif' align='left' title='"
+                    . "\t\t\t<a href='vvimport.php?sid=$surveyid'><img src='$imagefiles/importvv.png' align='left' title='"
                     . _VV_IMPORTFILE."' border='0' alt='". _VV_IMPORTFILE."'></a>\n"
-                    . "\t\t\t<a href='vvexport.php?sid=$surveyid'><img src='$imagefiles/vvexportsql.png' align='left' title='"
+                    . "\t\t\t<a href='vvexport.php?sid=$surveyid'><img src='$imagefiles/exportvv.png' align='left' title='"
                     . _VV_EXPORTFILE."' alt='". _VV_EXPORTFILE."' border='0'></a>\n"
                     . "\t\t</td>\n"
                     . "\t</tr>\n";

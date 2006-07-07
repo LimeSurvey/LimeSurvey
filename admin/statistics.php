@@ -221,7 +221,7 @@ foreach ($filters as $flt)
         if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
             {echo " CHECKED";}
         echo ">&nbsp;"
-            ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></strong>"
+            ."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></strong>"
             ."<br />\n";
         if ($flt[2] == "N") {echo "</font>";}
         if ($flt[2] != "N") {echo "\t\t\t\t<select name='";}
@@ -246,7 +246,7 @@ foreach ($filters as $flt)
     	        if (isset($_POST['summary']) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $_POST['summary']) !== FALSE)) 
 		                {echo " CHECKED";}
 	            echo ">&nbsp;"
-                ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                ."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                 .str_replace("\"", "`", $flt[5])
                 ." [$flt[1]]\" onClick=\"alert('"._QUESTION.": ".FlattenText($row[1])." "
                 ."')\">"
@@ -271,7 +271,7 @@ foreach ($filters as $flt)
             if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
-                ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                ."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                 .str_replace("\"", "`", $flt[5])." \" "
                 ."onClick=\"alert('"._QUESTION.": ".$niceqtext." "
                 ."')\">"
@@ -290,7 +290,7 @@ foreach ($filters as $flt)
             if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
-                ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                ."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                 .str_replace("\"", "`", $flt[5])
                 ." [$flt[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
                 ."')\">"
@@ -320,7 +320,7 @@ foreach ($filters as $flt)
             $myfield3="$myfield2=";
             $myfield4="$myfield2<"; $myfield5="$myfield2>";
             echo "\t\t\t\t<td align='center' valign='top'>$setfont<strong>$flt[3]</strong>"
-                ."&nbsp;<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                ."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                 .str_replace("\"", "`", $flt[5])
                 ." \" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
                 ."')\">"
@@ -382,7 +382,7 @@ foreach ($filters as $flt)
                     ."<input type='checkbox' name='summary[]' value='$myfield2'";
                 if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
                 echo ">&nbsp;"
-                    ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                    ."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION.": "
                     .$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
@@ -418,7 +418,7 @@ foreach ($filters as $flt)
                 echo "<input type='checkbox' name='summary[]' value='$myfield2'";
                 if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
                 echo ">&nbsp;"
-                    ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                    ."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                     .str_replace("\"", "`", $flt[5])
                     ." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
                     .str_replace("'", "`", $row[1])
@@ -456,7 +456,7 @@ foreach ($filters as $flt)
                 if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) 
                     {echo " CHECKED";}
                 echo ">&nbsp;"
-                    ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                    ."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION.": ".$niceqtext." "
                     .str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
@@ -493,7 +493,7 @@ foreach ($filters as $flt)
                     ."<input type='checkbox' name='summary[]' value='$myfield2'";
                 if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
                 echo ">&nbsp;"
-                    ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                    ."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
                     .": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
@@ -531,7 +531,7 @@ foreach ($filters as $flt)
                     ."<input type='checkbox' name='summary[]' value='$myfield2'";
                 if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {echo " CHECKED";}
                 echo ">&nbsp;"
-                    ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                    ."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
                     .": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n";
@@ -574,7 +574,7 @@ foreach ($filters as $flt)
                     ."<input type='checkbox' name='summary[]' value='$myfield2'";
                 if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary']) !== FALSE) {echo " CHECKED";}
                 echo ">&nbsp;"
-                    ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\""
+                    ."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._QUESTION
                     .": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
@@ -608,7 +608,7 @@ foreach ($filters as $flt)
             if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE)) 
                 {echo " CHECKED";}
             echo ">&nbsp;"
-                ."<img src='$imagefiles/speaker.jpg' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></strong>"
+                ."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._QUESTION.": ".$niceqtext."')\"></strong>"
                 ."<br />\n";
             echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
             $allfields[]=$myfield;

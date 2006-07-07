@@ -303,7 +303,7 @@ if ($surveyid)
 							. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 			if ($s1row['allowsave'] == "Y")
 				{
-				$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/saved.gif' title='"._S_SAVED_BT."' "
+				$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/saved.png' title='"._S_SAVED_BT."' "
 								. "align='left'  name='BrowseSaved' alt='"._S_SAVED_BT."' "
 								. "onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\">\n"
 								. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";

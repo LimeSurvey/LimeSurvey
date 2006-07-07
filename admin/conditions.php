@@ -489,7 +489,7 @@ echo "\t\t\t\tdocument.getElementById('canswers').options[document.getElementByI
 echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
 	."\t<tr bgcolor='#CCFFCC'>\n"
 	."\t\t<td  align='center' >\n";
-$showreplace="$questiontitle<img src='$imagefiles/speaker.jpg' alt=\""
+$showreplace="$questiontitle<img src='$imagefiles/speaker.png' alt=\""
 	. htmlspecialchars($questiontext)
 	. "\" onClick=\"alert('"
 	. htmlspecialchars(addslashes(strip_tags($questiontext)))
