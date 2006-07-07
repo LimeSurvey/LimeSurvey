@@ -1,4 +1,4 @@
 -- IMAGE INFORMATION --
 
-These images were created for PHPSurvey by Mitchell Butler & Carsten Schmitz,
+These images were created for PHPSurveyor by Mitchell Butler & Carsten Schmitz,
 partially based on images from the public domain library at openclipart.org.
