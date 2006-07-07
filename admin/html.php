@@ -251,7 +251,7 @@ if ($surveyid)
 			}
 		elseif ($activated == "Y")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.gif' title='"._S_ACTIVE_BT."' "
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.png' title='"._S_ACTIVE_BT."' "
 							. "alt='"._S_ACTIVE_BT."' align='left'>\n"
 							. "\t\t\t\t\t<input type='image' src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
 							. "alt='"._S_DEACTIVATE_BT."' title='"._S_DEACTIVATE_BT."' align='left' "
@@ -288,7 +288,7 @@ if ($surveyid)
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.png' title='". _S_EXPORT_BT."' alt='". _S_EXPORT_BT."' align='left' name='ExportSurvey' "
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title='". _S_EXPORT_BT."' alt='". _S_EXPORT_BT."' align='left' name='ExportSurvey' "
 						. "onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\">\n";
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
 						. "<input type='image' src='$imagefiles/assessments.png' title='". _S_ASSESSMENT_BT."' alt='". _S_ASSESSMENT_BT."' align='left' name='SurveyAssessment' "
@@ -297,7 +297,7 @@ if ($surveyid)
 		if ($activated == "Y")
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-							. "\t\t\t\t\t<input type='image' src='$imagefiles/browse.gif' title='"._S_BROWSE_BT."' "
+							. "\t\t\t\t\t<input type='image' src='$imagefiles/browse.png' title='"._S_BROWSE_BT."' "
 							. "align='left' name='BrowseSurveyResults' alt='"._S_BROWSE_BT."'"
 							. "onclick=\"window.open('".$homeurl."/browse.php?sid=$surveyid', '_top')\">\n"
 							. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
@@ -308,7 +308,7 @@ if ($surveyid)
 								. "onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\">\n"
 								. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 				}				
-			$surveysummary .="\t\t\t\t\t<input type='image' src='$imagefiles/tokens.gif' title='"._S_TOKENS_BT."' "
+			$surveysummary .="\t\t\t\t\t<input type='image' src='$imagefiles/tokens.png' title='"._S_TOKENS_BT."' "
 							. "align='left'  name='TokensControl' alt='"._S_TOKENS_BT."'"
 							. "onclick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\">\n";
 			}
@@ -515,7 +515,7 @@ if ($gid)
 			{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.png' title='"
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title='"
 					   . _G_EXPORT_BT."' alt='". _G_EXPORT_BT."'name='ExportGroup' "
 					   . "align='left' "
 					   . "onclick=\"window.open('dumpgroup.php?sid=$surveyid&amp;gid=$gid', '_top')\">"
@@ -607,21 +607,21 @@ if ($qid)
 							  . "onclick=\"return confirm('"._DQ_RUSURE."')\"></a>\n";
 			}
 		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";}
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/export.png' title='"
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title='"
 						  . _Q_EXPORT_BT."' alt='". _Q_EXPORT_BT."'align='left' name='ExportQuestion' "
 						  . "onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='$imagefiles/copy.gif' title='"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/copy.png' title='"
 						  . _Q_COPY_BT."' alt='". _Q_COPY_BT."' align='left' name='CopyQuestion' "
 						  . "onclick=\"window.open('$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.gif' title='"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.png' title='"
 						  . _Q_CONDITIONS_BT."' alt='". _Q_CONDITIONS_BT."' align='left' name='SetQuestionConditions' "
 						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
-			$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/answers.gif' title='"
+			$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/answers.png' title='"
 							  . _Q_ANSWERS_BT."' align='left' name='ViewAnswers' "
 							  . "onClick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\">\n";
 			}
@@ -676,7 +676,7 @@ if ($qid)
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td>"
 							 . "<font face='verdana' size='1' color='green'>"
 							 . _WARNING.": ". _QS_NOANSWERS." "
-							 . "<input type='image' src='$imagefiles/answers.gif' title='"
+							 . "<input type='image' src='$imagefiles/answers.png' title='"
 							 . _Q_ANSWERS_BT."' border='0' hspace='0' name='EditThisQuestionAnswers'"
 							 . "onClick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\"></font></td></tr>\n";
 			}

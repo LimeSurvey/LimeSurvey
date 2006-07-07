@@ -544,10 +544,10 @@ echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hs
 if ($templatename == "default") {echo " disabled";}
 echo ">";
 echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<input type='image' name='Export' src='$imagefiles/export.png' align='left' title='"._TP_EXPORT."'"
+	."\t\t\t\t\t<input type='image' name='Export' src='$imagefiles/exportsql.png' align='left' title='"._TP_EXPORT."'"
 	." onClick='javascript:window.open(\"templates.php?action=zip&amp;editfile=$editfile&amp;screenname=$screenname&amp;templatename=$templatename\", \"_top\")'>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.gif' align='left' title='"._TP_COPY."'"
+	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.png' align='left' title='"._TP_COPY."'"
 	." onClick=\"javascript: copyprompt('"._TP_COPYTO."', '"._TP_COPYOF."$templatename', '$templatename', 'copy')\">"
 	."</td><td align='right'>\n"
 	."<img src='./images/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10'>"

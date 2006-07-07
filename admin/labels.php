@@ -229,7 +229,7 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."<img src='$imagefiles/delete.png' border='0' alt='"._L_DEL_BT."' title='"
             ._L_DEL_BT."' align='left' "
             ."onClick=\"return confirm('Are you sure?')\"></a>\n"
-            ."\t\t\t\t\t<input type='image' src='$imagefiles/export.png' alt='"._EXPORTLABEL."' title='"
+            ."\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' alt='"._EXPORTLABEL."' title='"
             ._EXPORTLABEL."' align='left' "
             ."onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n"
             ."\t\t\t\t\t</td>\n"

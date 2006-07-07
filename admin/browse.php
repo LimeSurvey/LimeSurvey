@@ -242,7 +242,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='"
 		. _BR_DELRESPONSE."' title='"
 		. _BR_DELRESPONSE."' onClick=\"return confirm('"._DR_RUSURE."')\" /></a>\n"
-        . "\t\t\t<input type='image' name='Export' src='$imagefiles/export.png' title='"
+        . "\t\t\t<input type='image' name='Export' src='$imagefiles/exportsql.png' title='"
         . _S_EXPORT_BT_SINGLE."' alt='". _S_EXPORT_BT_SINGLE."'align='left'  onclick=\"window.open('export.php?sid=$surveyid&id=$id', '_blank')\">\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt=''>\n"
