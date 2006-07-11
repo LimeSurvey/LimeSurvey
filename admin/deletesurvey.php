@@ -59,11 +59,7 @@ if (!isset($surveyid) || !$surveyid)
 
 if (!isset($ok) || !$ok)
 	{
-	$result = mysql_list_tables($databasename);
-	while ($row = mysql_fetch_row($result))
-		{
-		$tablelist[]=$row[0];
-	    }
+	$tablelist = $connect->MetaTables();
 
 	echo "<table width='100%' align='center'>\n";
 	echo "\t<tr>\n";
@@ -96,47 +92,43 @@ if (!isset($ok) || !$ok)
 
 else //delete the survey
 	{
-	$result = mysql_list_tables($databasename);
-	while ($row = mysql_fetch_row($result))
-		{
-		$tablelist[]=$row[0];
-	    }
+	$tablelist = $connect->MetaTables();
 
 	if (in_array("{$dbprefix}survey_$surveyid", $tablelist)) //delete the survey_$surveyid table
 		{
 		$dsquery = "DROP TABLE `{$dbprefix}survey_$surveyid`";
-		$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
+		$dsresult = $connect->Execute($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 		}
 
 	if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
 		{
 		$dsquery = "DROP TABLE `{$dbprefix}tokens_$surveyid`";
-		$dsresult = mysql_query($dsquery) or die ("Couldn't \"$dsquery\" because <br />".mysql_error());
+		$dsresult = $connect->Execute($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 		}
 	
 	$dsquery = "SELECT qid FROM {$dbprefix}questions WHERE sid=$surveyid";
-	$dsresult = mysql_query($dsquery) or die ("Couldn't find matching survey to delete<br />$dsquery<br />".mysql_error());
-	while ($dsrow = mysql_fetch_array($dsresult))
+	$dsresult = db_execute_assoc($dsquery) or die ("Couldn't find matching survey to delete<br />$dsquery<br />".$connect->ErrorMsg());
+	while ($dsrow = $dsresult->FetchRow())
 		{
 		$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
-		$asres = mysql_query($asdel);
+		$asres = $connect->Execute($asdel);
 		$cddel = "DELETE FROM {$dbprefix}conditions WHERE qid={$dsrow['qid']}";
-		$cdres = mysql_query($cddel) or die ("Delete conditions failed<br />$cddel<br />".mysql_error());
+		$cdres = $connect->Execute($cddel) or die ("Delete conditions failed<br />$cddel<br />".$connect->ErrorMsg());
 		$qadel = "DELETE FROM {$dbprefix}question_attributes WHERE qid={$dsrow['qid']}";
-		$qares = mysql_query($qadel);
+		$qares = $connect->Execute($qadel);
 		}
 	
 	$qdel = "DELETE FROM {$dbprefix}questions WHERE sid=$surveyid";
-	$qres = mysql_query($qdel);
+	$qres = $connect->Execute($qdel);
 
 	$scdel = "DELETE FROM {$dbprefix}assessments WHERE sid=$surveyid";
-	$scres = mysql_query($scdel);
+	$scres = $connect->Execute($scdel);
 	
 	$gdel = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid";
-	$gres = mysql_query($gdel);
+	$gres = $connect->Execute($gdel);
 	
 	$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
-	$sres = mysql_query($sdel);
+	$sres = $connect->Execute($sdel);
 	
 	echo "<table width='100%' align='center'>\n";
 	echo "\t<tr>\n";

@@ -45,9 +45,9 @@ if (!$action == "import")
 	// show UI for choosing old table
 
 	$query = "SHOW TABLES LIKE '{$dbprefix}old\_{$surveyid}\_%'";
-	$result = mysql_query($query) or die("Error:<br />$query<br />".mysql_error());
+	$result = db_execute_num($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
 	$optionElements = '';
-	while ($row = mysql_fetch_array($result))
+	while ($row = $result->FetchRow())
 		{
 		$optionElements .= "\t\t\t<option>{$row[0]}</option>\n";
 		}
@@ -104,8 +104,8 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 	// fields we can import
 	$importablefields = array();	
 	$query = "SHOW COLUMNS FROM {$activetable}";
-	$result = mysql_query($query) or die("Error:<br />$query<br />".mysql_error());
-	while ($row = mysql_fetch_assoc($result))
+	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
+	while ($row = $result->FetchRow())
 		{
 		if (!in_array($row['Field'],$dontimportfields))
 			{
@@ -116,8 +116,8 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 	// fields we can supply
 	$availablefields = array();
 	$query = "SHOW COLUMNS FROM {$oldtable}";
-	$result = mysql_query($query) or die("Error:<br />$query<br />".mysql_error());
-	while ($row = mysql_fetch_assoc($result))
+	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
+	while ($row = $result->FetchRow())
 		{
 		$availablefields[] = $row['Field'];
 		}
@@ -149,7 +149,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 				 ." AND {$oldtable}.id <= {$importidrange['last']}";
 		}
 	
-	$result = mysql_query($query) or die("Error:<br />$query<br />".mysql_error());
+	$result = $connect->Execute($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
 
 	header("Location: {$homeurl}/browse.php?sid={$surveyid}");
 	}

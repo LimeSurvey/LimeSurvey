@@ -43,8 +43,8 @@ $surveyid=returnglobal('sid');
 if (empty($surveyid)) {die("No SID provided.");}
 
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
+while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
@@ -94,7 +94,7 @@ if (isset($_POST['action']) && $_POST['action'] == "insertcondition")
 			{
 			$query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, value) VALUES "
 				   . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '$ca')";
-			$result = mysql_query($query) or die ("Couldn't insert new condition<br />$query<br />".mysql_error());
+			$result = $connect->Execute($query) or die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 			}
 		}
 	}
@@ -102,7 +102,7 @@ if (isset($_POST['action']) && $_POST['action'] == "insertcondition")
 if (isset($_POST['action']) && $_POST['action'] == "delete")
 	{
 	$query = "DELETE FROM {$dbprefix}conditions WHERE cid={$_POST['cid']}";
-	$result = mysql_query($query) or die ("Couldn't delete condition<br />$query<br />".mysql_error());
+	$result = $connect->Execute($query) or die ("Couldn't delete condition<br />$query<br />".$connect->ErrorMsg());
 	}
 //COPY CONDITIONS IF THIS IS COPY
 if (isset($_POST['action']) && $_POST['action'] == "copyconditions") 
@@ -117,8 +117,8 @@ if (isset($_POST['action']) && $_POST['action'] == "copyconditions")
 				."WHERE cid in ('";
 		$query .= implode("', '", $copyconditionsfrom);
 		$query .= "')";
-		$result = mysql_query($query) or die("Couldn't get conditions for copy<br />$query<br />".mysql_error());
-		while($row=mysql_fetch_array($result))
+		$result = db_execute_assoc($query) or die("Couldn't get conditions for copy<br />$query<br />".$connect->ErrorMsg());
+		while($row=$result->FetchRow())
 			{
 			$proformaconditions[]=array("cqid"=>$row['cqid'],
 										"cfieldname"=>$row['cfieldname'],
@@ -137,15 +137,15 @@ if (isset($_POST['action']) && $_POST['action'] == "copyconditions")
 						."AND cfieldname='".$pfc['cfieldname']."'\n"
 						."AND method='".$pfc['method']."'\n"
 						."AND value='".$pfc['value']."'";
-				$result = mysql_query($query) or die("Couldn't check for existing condition<br />$query<br />".mysql_error());
-				$count = mysql_num_rows($result);
+				$result = $connect->Execute($query) or die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
+				$count = $result->RecordCount();
 				if ($count == 0) //If there is no match, add the condition.
 					{
 					$query = "INSERT INTO {$dbprefix}conditions ( qid,cqid,cfieldname,method,value) \n"
 							."VALUES ( '$newqid', '".$pfc['cqid']."',"
 							."'".$pfc['cfieldname']."', '".$pfc['method']."',"
 							."'".$pfc['value']."')";
-					$result=mysql_query($query) or die ("Couldn't insert query<br />$query<br />".mysql_error());
+					$result=$connect->Execute($query) or die ("Couldn't insert query<br />$query<br />".$connect->ErrorMsg());
 					}
 				}
 			}
@@ -179,8 +179,8 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 $query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
 		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
 		."AND qid=$qid";
-$result = mysql_query($query) or die ("Couldn't get information for question $qid<br />$query<br />".mysql_error());
-while ($rows=mysql_fetch_array($result))
+$result = db_execute_assoc($query) or die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
+while ($rows=$result->FetchRow())
 	{
 	$questiongroupname=$rows['group_name'];
 	$questiontitle=$rows['title'];
@@ -196,9 +196,8 @@ $qquery = "SELECT *\n"
 		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
 		."AND {$dbprefix}questions.sid=$surveyid\n";
 
-$qresult = mysql_query($qquery) or die ("$qquery<br />".mysql_error());
-$qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-while ($qrow = mysql_fetch_assoc($qresult)) {$qrows[] = $qrow;} // Get table output into array
+$qresult = db_execute_assoc($qquery) or die ("$qquery<br />".$connect->ErrorMsg());
+$qrows = $qresult->GetRows();
 usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
 
 $position="before";
@@ -239,9 +238,9 @@ if (isset($questionlist) && is_array($questionlist))
 	foreach ($questionlist as $ql)
 		{
 		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql";
-		$result=mysql_query($query) or die("Couldn't get question $qid");
-		$thiscount=mysql_num_rows($result);
-		while ($myrows=mysql_fetch_array($result)) 
+		$result=db_execute_assoc($query) or die("Couldn't get question $qid");
+		$thiscount=$result->RecordCount();
+		while ($myrows=$result->FetchRow()) 
 			{
 			$theserows[]=array("qid"=>$myrows['qid'], "sid"=>$myrows['sid'], "gid"=>$myrows['gid'], "question"=>$myrows['question'], "type"=>$myrows['type'], "lid"=>$myrows['lid'], "title"=>$myrows['title']);
 			}
@@ -253,9 +252,9 @@ if (isset($postquestionlist) && is_array($postquestionlist))
 	foreach ($postquestionlist as $pq)
 		{
 		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$pq";
-		$result = mysql_query($query) or die("Couldn't get postquestions $qid<br />$query<br />".mysql_error());
-		$postcount=mysql_num_rows($result);
-		while($myrows=mysql_fetch_array($result))
+		$result = db_execute_assoc($query) or die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
+		$postcount=$result->RecordCount();
+		while($myrows=$result->FetchRow())
 			{
 			$postrows[]=array("qid"=>$myrows['qid'], "sid"=>$myrows['sid'], "gid"=>$myrows['gid'], "question"=>$myrows['question'], "type"=>$myrows['type'], "lid"=>$myrows['lid'], "title"=>$myrows['title']);
 			} // while
@@ -284,8 +283,8 @@ if ($questionscount > 0)
 		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H")
 			{
 			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
-			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".mysql_error());
-			while ($arows = mysql_fetch_array($aresult))
+			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+			while ($arows = $aresult->FetchRow())
 				{
 				if (strlen($arows['answer']) > 10) {$shortanswer=substr($arows['answer'], 0, 10).".. ";}
 				else {$shortanswer = $arows['answer'];}
@@ -320,8 +319,8 @@ if ($questionscount > 0)
 						$fquery = "SELECT * FROM {$dbprefix}labels\n"
 								. "WHERE lid={$rows['lid']}\n"
 								. "ORDER BY sortorder, code";
-						$fresult = mysql_query($fquery);
-						while ($frow=mysql_fetch_array($fresult))
+						$fresult = db_execute_assoc($fquery);
+						while ($frow=$fresult->FetchRow())
 							{
 							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
 							}
@@ -335,9 +334,9 @@ if ($questionscount > 0)
 			$aquery="SELECT * FROM {$dbprefix}answers\n"
 				   ."WHERE qid={$rows['qid']}\n"
 				   ."ORDER BY sortorder, answer"; 
-			$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
-			$acount=mysql_num_rows($aresult);
-			while ($arow=mysql_fetch_array($aresult))
+			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
+			$acount=$aresult->RecordCount();
+			while ($arow=$aresult->FetchRow())
 				{
 				$theanswer = addcslashes($arow['answer'], "'");
 				$quicky[]=array($arow['code'], $theanswer);
@@ -381,8 +380,8 @@ if ($questionscount > 0)
 						. "WHERE lid={$rows['lid']}\n"
 						. "ORDER BY sortorder, code";
 					
-					$fresult = mysql_query($fquery);
-					while ($frow=mysql_fetch_array($fresult))
+					$fresult = db_execute_assoc($fquery);
+					while ($frow=$fresult->FetchRow())
 						{
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
 						}
@@ -391,8 +390,8 @@ if ($questionscount > 0)
 					$aquery="SELECT * FROM {$dbprefix}answers\n"
 						   ."WHERE qid={$rows['qid']}\n"
 						   ."ORDER BY sortorder, answer";
-					$aresult=mysql_query($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".mysql_error());
-					while ($arows=mysql_fetch_array($aresult))
+					$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
+					while ($arows=$aresult->FetchRow())
 						{
 						$theanswer = addcslashes($arows['answer'], "'");
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
@@ -505,12 +504,12 @@ $query = "SELECT {$dbprefix}conditions.cid, {$dbprefix}conditions.cqid, {$dbpref
 		."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid\n"
 		."AND {$dbprefix}conditions.qid=$qid\n"
 		."ORDER BY {$dbprefix}conditions.cfieldname";
-$result = mysql_query($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".mysql_error());
-$conditionscount=mysql_num_rows($result);
+$result = db_execute_assoc($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
+$conditionscount=$result->RecordCount();
 
 if ($conditionscount > 0)
 	{
-	while ($rows=mysql_fetch_array($result))
+	while ($rows=$result->FetchRow())
 		{
 		if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 			{

@@ -71,8 +71,8 @@ $dumphead .= "# http://www.phpsurveyor.org/\n";
 
 function BuildOutput($Query)
 	{
-	global $dbprefix;
-	$QueryResult = mysql_query($Query) or die("ERROR:\n".$Query."\n".mysql_error()."\n\n");
+	global $dbprefix, $connect;
+	$QueryResult = db_execute_assoc($Query) or die("ERROR:\n".$Query."\n".$connect->ErrorMsg()."\n\n");
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];
 	if ($dbprefix)
@@ -80,21 +80,14 @@ function BuildOutput($Query)
 		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
 		}
 	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
-	while ($Row = mysql_fetch_assoc($QueryResult))
+	while ($Row = $QueryResult->FetchRow())
 		{
 		$ColumnNames = "";
 		$ColumnValues = "";
 		foreach ($Row as $Key=>$Value)
 			{
 			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
-			if (_PHPVERSION >= "4.3.0")
-				{
-				$ColumnValues .= "'" . mysql_real_escape_string(str_replace("\r\n", "\n", $Value)) . "', ";
-				}
-			else
-				{
-				$ColumnValues .= "'" . mysql_escape_string(str_replace("\r\n", "\n", $Value)) . "', ";
-				}
+			$ColumnValues .= $connect->qstr(str_replace("\r\n", "\n", $Value)) . ", ";
 			}
 		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
 		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space

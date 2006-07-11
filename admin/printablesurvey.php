@@ -43,9 +43,9 @@ require_once(dirname(__FILE__).'/../config.php');
 
 //Get local language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = mysql_query($query) or die ("Couldn't get language file");
+$result = db_execute_assoc($query) or die ("Couldn't get language file");
 if (!isset($tpldir)) {$tpldir=$publicdir."/templates";}
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
 if (!isset($templatedir) || !$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 $langdir="$publicdir/lang";
@@ -63,8 +63,8 @@ echo "<title>"._S_PRINTABLE_BT."</title></head>\n<body>\n";
 // PRESENT SURVEY DATAENTRY SCREEN
 
 $desquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$desresult = mysql_query($desquery);
-while ($desrow = mysql_fetch_array($desresult))
+$desresult = db_execute_assoc($desquery);
+while ($desrow = $desresult->FetchRow())
 	{
 	$surveyname = $desrow['short_title'];
 	$surveydesc = $desrow['description'];
@@ -95,14 +95,14 @@ echo "\t</tr>\n";
 $fieldmap=createFieldMap($surveyid);
 
 $degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
-$degresult = mysql_query($degquery);
+$degresult = db_execute_assoc($degquery);
 // GROUP NAME
-while ($degrow = mysql_fetch_array($degresult))
+while ($degrow = $degresult->FetchRow())
 	{
 	$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']} ORDER BY title";
-	$deqresult = mysql_query($deqquery);
-	$deqrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($deqrow = mysql_fetch_array($deqresult)) {$deqrows[] = $deqrow;} // Get table output into array
+	$deqresult = db_execute_assoc($deqquery);
+	$deqrows = array(); //Create an empty array in case FetchRow does not return any rows
+	while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($deqrows, 'CompareGroupThenTitle');
@@ -127,8 +127,8 @@ while ($degrow = mysql_fetch_array($degresult))
 		$explanation = ""; //reset conditions explanation
 		$x=0;
 		$distinctquery="SELECT DISTINCT cqid, {$dbprefix}questions.title FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid={$deqrow['qid']} ORDER BY cqid";
-		$distinctresult=mysql_query($distinctquery);
-		while ($distinctrow=mysql_fetch_array($distinctresult))
+		$distinctresult=db_execute_assoc($distinctquery);
+		while ($distinctrow=$distinctresult->FetchRow())
 			{
 			if ($x > 0) {$explanation .= " <i>"._PS_CON_JOINER."</i> ";}
 			$explanation .= _PS_CON_IFYOU." ";
@@ -139,9 +139,9 @@ while ($degrow = mysql_fetch_array($degresult))
 					 ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid\n"
 					 ."AND {$dbprefix}conditions.cqid={$distinctrow['cqid']}\n"
 					 ."AND {$dbprefix}conditions.qid={$deqrow['qid']}";
-			$conresult=mysql_query($conquery) or die("$conquery<br />".mysql_error());
+			$conresult=db_execute_assoc($conquery) or die("$conquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			$conditions=array();
-			while ($conrow=mysql_fetch_array($conresult))
+			while ($conrow=$conresult->FetchRow())
 				{
 				$postans="";
 				$value=$conrow['value'];
@@ -188,8 +188,8 @@ while ($degrow = mysql_fetch_array($degresult))
 						$fquery = "SELECT * FROM {$dbprefix}labels\n"
 								. "WHERE lid='{$conrow['lid']}'\n"
 								. "AND code='{$conrow['value']}'";
-						$fresult=mysql_query($fquery) or die("$fquery<br />".mysql_error());
-						while($frow=mysql_fetch_array($fresult))
+						$fresult=db_execute_assoc($fquery) or die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+						while($frow=$fresult->FetchRow())
 							{
 							$postans=$frow['title'];
 							$conditions[]=$frow['title'];
@@ -205,16 +205,16 @@ while ($degrow = mysql_fetch_array($degresult))
 					case "E":
 						$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 						$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}'";
-						$ansresult=mysql_query($ansquery);
-						while ($ansrow=mysql_fetch_array($ansresult))
+						$ansresult=db_execute_assoc($ansquery);
+						while ($ansrow=$ansresult->FetchRow())
 							{
 							$answer_section=" (".$ansrow['answer'].")";
 							}
 						break;
 					default:
 						$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
-						$ansresult=mysql_query($ansquery);
-						while ($ansrow=mysql_fetch_array($ansresult))
+						$ansresult=db_execute_assoc($ansquery);
+						while ($ansrow=$ansresult->FetchRow())
 							{
 							$conditions[]=$ansrow['answer'];
 							}
@@ -295,8 +295,8 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u></font><br />\n";
 				$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, title";
-				$dearesult = mysql_query($deaquery) or die("ERROR: $deaquery<br />\n".mysql_error());
-				$deacount=mysql_num_rows($dearesult);
+				$dearesult = db_execute_assoc($deaquery) or die("ERROR: $deaquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+				$deacount=$dearesult->RecordCount();
 				if ($deqrow['other'] == "Y") {$deacount++;}
 				if ($dcols > 0 && $deacount >= $dcols)
 					{
@@ -305,7 +305,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					$divider="</td>\n <td valign='top' width='$width%' nowrap>";
 					$upto=0;
 					echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>$setfont";
-					while ($dearow = mysql_fetch_array($dearesult))
+					while ($dearow = $dearesult->FetchRow())
 						{
 						if ($upto == $maxrows) 
 							{
@@ -325,7 +325,7 @@ while ($degrow = mysql_fetch_array($degresult))
 				else
 					{
 					echo $setfont;	
-					while ($dearow = mysql_fetch_array($dearesult))
+					while ($dearow = $dearesult->FetchRow())
 						{
 						echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['title']}<br />\n";
 						}
@@ -349,8 +349,8 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br /></font>\n";
 				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$dearesult = mysql_query($deaquery);
-				$deacount=mysql_num_rows($dearesult);
+				$dearesult = db_execute_assoc($deaquery);
+				$deacount=$dearesult->RecordCount();
 				if ($deqrow['other'] == "Y") {$deacount++;}
 				if ($dcols > 0 && $deacount >= $dcols)
 					{
@@ -359,7 +359,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
 					$upto=0;
 					echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
-					while ($dearow = mysql_fetch_array($dearesult))
+					while ($dearow = $dearesult->FetchRow())
 						{
 						if ($upto == $maxrows) 
 							{
@@ -378,7 +378,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				else
 					{
-					while ($dearow = mysql_fetch_array($dearesult))
+					while ($dearow = $dearesult->FetchRow())
 						{
 						echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
 						}
@@ -391,8 +391,8 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "O":  //LIST WITH COMMENT
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
 				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$dearesult = mysql_query($deaquery);
-				while ($dearow = mysql_fetch_array($dearesult))
+				$dearesult = db_execute_assoc($deaquery);
+				while ($dearow = $dearesult->FetchRow())
 					{
 					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
 					}
@@ -401,10 +401,10 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "R":  //RANKING Type Question
 				$reaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$rearesult = mysql_query($reaquery) or die ("Couldn't get ranked answers<br />".mysql_error());
-				$reacount = mysql_num_rows($rearesult);
+				$rearesult = db_execute_assoc($reaquery) or die ("Couldn't get ranked answers<br />".htmlspecialchars($connect->ErrorMsg()));
+				$reacount = $rearesult->RecordCount();
 				echo "\t\t\t$setfont<u>"._PS_RANKING." $reacount</u><br /></font>\n";
-				while ($rearow = mysql_fetch_array($rearesult))
+				while ($rearow = $rearesult->FetchRow())
 					{
 					echo "\t\t\t<table cellspacing='1' cellpadding='0'><tr><td width='20' height='20' bgcolor='white' style='border: solid 1 #111111'>&nbsp;</td>\n";
 					echo "\t\t\t<td valign='middle'>$setfont{$rearow['answer']}</font></td></tr></table>\n";
@@ -422,8 +422,8 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEANY."</u><br /></font>\n";
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
-				$meacount = mysql_num_rows($mearesult);
+				$mearesult = db_execute_assoc($meaquery);
+				$meacount = $mearesult->RecordCount();
 				if ($deqrow['other'] == "Y") {$meacount++;}
 				if ($dcols > 0 && $meacount >= $dcols)
 					{
@@ -432,7 +432,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
 					$upto=0;
 					echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
-					while ($mearow = mysql_fetch_array($mearesult))
+					while ($mearow = $mearesult->FetchRow())
 						{
 						if ($upto == $maxrows) 
 							{
@@ -450,7 +450,7 @@ while ($degrow = mysql_fetch_array($degresult))
 					}
 				else
 					{
-					while ($mearow = mysql_fetch_array($mearesult))
+					while ($mearow = $mearesult->FetchRow())
 						{
 					echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />{$mearow['answer']}<br />\n";
 					}
@@ -481,10 +481,10 @@ while ($degrow = mysql_fetch_array($degresult))
 
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
+				$mearesult = db_execute_assoc($meaquery);
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEANYCOMMENT."</u><br /></font>\n";
 				echo "\t\t\t<table border='0'>\n";
-				while ($mearow = mysql_fetch_array($mearesult))
+				while ($mearow = $mearesult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
@@ -499,9 +499,9 @@ while ($degrow = mysql_fetch_array($degresult))
 			case "Q":  //MULTIPLE SHORT TEXT
 				echo "\t\t\t$setfont<u>"._PS_WRITEMULTI."</u><br /></font>\n";
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
+				$mearesult = db_execute_assoc($meaquery);
 				echo "\t\t\t<table border='0'>\n";
-				while ($mearow = mysql_fetch_array($mearesult))
+				while ($mearow = $mearesult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont{$mearow['answer']}: <input type='text' size='60' name='$fieldname{$mearow['code']}' value=''";
@@ -534,10 +534,10 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "A":  //ARRAY (5 POINT CHOICE)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
+				$mearesult = db_execute_assoc($meaquery);
 				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table>\n";
-				while ($mearow = mysql_fetch_array($mearesult))
+				while ($mearow = $mearesult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
@@ -553,10 +553,10 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "B":  //ARRAY (10 POINT CHOICE)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
+				$mearesult = db_execute_assoc($meaquery);
 				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>";
 				echo "\t\t\t<table border='0'>\n";
-				while ($mearow = mysql_fetch_array($mearesult))
+				while ($mearow = $mearesult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
@@ -572,10 +572,10 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
+				$mearesult = db_execute_assoc($meaquery);
 				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table>\n";
-				while ($mearow = mysql_fetch_array($mearesult))
+				while ($mearow = $mearesult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
@@ -590,10 +590,10 @@ while ($degrow = mysql_fetch_array($degresult))
 				break;
 			case "E":  //ARRAY (Increase/Same/Decrease)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
+				$mearesult = db_execute_assoc($meaquery);
 				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table>\n";
-				while ($mearow = mysql_fetch_array($mearesult))
+				while ($mearow = $mearesult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
@@ -610,21 +610,21 @@ while ($degrow = mysql_fetch_array($degresult))
 				//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
+				$mearesult = db_execute_assoc($meaquery);
 				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 				$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
-				$fresult = mysql_query($fquery);
-				$fcount = mysql_num_rows($fresult);
+				$fresult = db_execute_assoc($fquery);
+				$fcount = $fresult->RecordCount();
 				$fwidth = "120";
 				$i=0;
-				while ($frow = mysql_fetch_array($fresult))
+				while ($frow = $fresult->FetchRow())
 					{
 					echo "\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</font></td>\n";
 					$i++;
 					}
 				echo "\t\t\t\t\t\t</tr>\n";
-				while ($mearow = mysql_fetch_array($mearesult))
+				while ($mearow = $mearesult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
@@ -647,21 +647,21 @@ while ($degrow = mysql_fetch_array($degresult))
 				//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
 				$fquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$fresult = mysql_query($fquery);
+				$fresult = db_execute_assoc($fquery);
 				echo "\t\t\t$setfont<u>"._PS_EACHITEM."</u><br /></font>\n";
 				echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 				$meaquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
-				$mearesult = mysql_query($meaquery);
-				$fcount = mysql_num_rows($fresult);
+				$mearesult = db_execute_assoc($meaquery);
+				$fcount = $fresult->RecordCount();
 				$fwidth = "120";
 				$i=0;
-				while ($frow = mysql_fetch_array($fresult))
+				while ($frow = $fresult->FetchRow())
 					{
 					echo "\t\t\t\t\t<td align='center'>$setfont{$frow['answer']}</font></td>\n";
 					$i++;
 					}
 				echo "\t\t\t\t\t\t</tr>\n";
-				while ($mearow = mysql_fetch_array($mearesult))
+				while ($mearow = $mearesult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t\t<td align='left' valign='bottom' $headstyle><font size='1'>{$mearow['title']}</font></td>\n";

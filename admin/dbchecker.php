@@ -60,23 +60,23 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 //			."WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid "
 //			."ORDER BY qid, cqid, cfieldname, value";
 	$query = "SELECT * FROM {$dbprefix}conditions ORDER BY cid";
-	$result = mysql_query($query) or die("Couldn't get list of conditions from database<br />$query<br />".mysql_error());
-	while ($row=mysql_fetch_array($result))
+	$result = db_execute_assoc($query) or die("Couldn't get list of conditions from database<br />$query<br />".$connect->ErrorMsg());
+	while ($row=$result->FetchRow())
 		{
 		$qquery="SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['qid']}'";
-		$qresult=mysql_query($qquery) or die ("Couldn't check questions table for qids<br />$qquery<br />".mysql_error());
-		$qcount=mysql_num_rows($qresult);
+		$qresult=$connect->Execute($qquery) or die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
+		$qcount=$qresult->RecordCount();
 		if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>"No matching qid");}
 		$qquery = "SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['cqid']}'";
-		$qresult=mysql_query($qquery) or die ("Couldn't check questions table for qids<br />$qquery<br />".mysql_error());
-		$qcount=mysql_num_rows($qresult);
+		$qresult=$connect->Execute($qquery) or die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
+		$qcount=$qresult->RecordCount();
 		if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>"No matching Cqid");}
 		if ($row['cfieldname']) //Only do this if there actually is a "cfieldname"
 			{
 			list ($surveyid, $gid, $rest) = explode("X", $row['cfieldname']);
 			$qquery = "SELECT gid FROM {$dbprefix}groups WHERE gid=$gid";
-			$qresult = mysql_query($qquery) or die ("Couldn't check conditional group matches<br />$qquery<br />".mysql_error());
-			$qcount=mysql_num_rows($qresult);
+			$qresult = $connect->Execute($qquery) or die ("Couldn't check conditional group matches<br />$qquery<br />".$connect->ErrorMsg());
+			$qcount=$qresult->RecordCount();
 			if ($qcount < 1) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>"No matching CFIELDNAME Group! ($gid) ({$row['cfieldname']})");}
 			}
 		elseif (!$row['cfieldname'])
@@ -99,12 +99,12 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 	
 	// Check question_attributes to delete
 	$query = "SELECT * FROM {$dbprefix}question_attributes ORDER BY qid";
-	$result = mysql_query($query) or die(mysql_error());
-	while($row = mysql_fetch_array($result))
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	while($row = $result->FetchRow())
 		{
 		$aquery = "SELECT * FROM {$dbprefix}questions WHERE qid = {$row['qid']}";
-		$aresult = mysql_query($aquery) or die(mysql_error());
-		$qacount = mysql_num_rows($aresult);
+		$aresult = $connect->Execute($aquery) or die($connect->ErrorMsg());
+		$qacount = $aresult->RecordCount();
 		if (!$qacount) {
 		    $qadelete[]=array("qaid"=>$row['qaid'], "attribute"=>$row['attribute'], "reason"=>"No matching qid");
 		}
@@ -121,24 +121,24 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 
 	// Check assessments
 	$query = "SELECT * FROM {$dbprefix}assessments WHERE scope='T' ORDER BY sid";
-	$result = mysql_query($query) or die ("Couldn't get list of assessments<br />$query<br />".mysql_error());
-	while($row = mysql_fetch_array($result))
+	$result = db_execute_assoc($query) or die ("Couldn't get list of assessments<br />$query<br />".$connect->ErrorMsg());
+	while($row = $result->FetchRow())
 		{
 		$aquery = "SELECT * FROM {$dbprefix}surveys WHERE sid = {$row['sid']}";
-		$aresult = mysql_query($aquery) or die("Oh dear - died in assessments surveys:".$aquery ."<br />".mysql_error());
-		$acount = mysql_num_rows($aresult);
+		$aresult = db_execute_assoc($aquery) or die("Oh dear - died in assessments surveys:".$aquery ."<br />".$connect->ErrorMsg());
+		$acount = $aresult->RecordCount();
 		if (!$acount) {
 		    $assdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>"No matching survey");
 		}
 		} // while
 
 	$query = "SELECT * FROM {$dbprefix}assessments WHERE scope='G' ORDER BY gid";
-	$result = mysql_query($query) or die ("Couldn't get list of assessments<br />$query<br />".mysql_error());
-	while($row = mysql_fetch_array($result))
+	$result = db_execute_assoc($query) or die ("Couldn't get list of assessments<br />$query<br />".$connect->ErrorMsg());
+	while($row = $result->FetchRow())
 		{
 		$aquery = "SELECT * FROM {$dbprefix}groups WHERE gid = {$row['gid']}";
-		$aresult = mysql_query($aquery) or die("Oh dear - died:".$aquery ."<br />".mysql_error());
-		$acount = mysql_num_rows($aresult);
+		$aresult = $connect->Execute($aquery) or die("Oh dear - died:".$aquery ."<br />".$connect->ErrorMsg());
+		$acount = $aresult->RecordCount();
 		if (!$acount) {
 		    $asgdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>"No matching group");
 		}
@@ -167,13 +167,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		
 	// Check answers
 	$query = "SELECT * FROM {$dbprefix}answers ORDER BY qid";
-	$result = mysql_query($query) or die ("Couldn't get list of answers from database<br />$query<br />".mysql_error());
-	while ($row=mysql_fetch_array($result))
+	$result = db_execute_assoc($query) or die ("Couldn't get list of answers from database<br />$query<br />".$connect->ErrorMsg());
+	while ($row=$result->FetchRow())
 		{
 		//echo "Checking answer {$row['code']} to qid {$row['qid']}<br />\n";
 		$qquery="SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['qid']}'";
-		$qresult=mysql_query($qquery) or die ("Couldn't check questions table for qids from answers<br />$qquery<br />".mysql_error());
-		$qcount=mysql_num_rows($qresult);
+		$qresult=$connect->Execute($qquery) or die ("Couldn't check questions table for qids from answers<br />$qquery<br />".$connect->ErrorMsg());
+		$qcount=$qresult->RecordCount();
 		if (!$qcount) {
 			$adelete[]=array("qid"=>$row['qid'], "code"=>$row['code'], "reason"=>"No matching question");
 		}
@@ -192,18 +192,18 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 	
 	//check questions
 	$query = "SELECT * FROM {$dbprefix}questions ORDER BY sid, gid, qid";
-	$result = mysql_query($query) or die ("Couldn't get list of questions from database<br />$query<br />".mysql_error());
-	while ($row=mysql_fetch_array($result))
+	$result = db_execute_assoc($query) or die ("Couldn't get list of questions from database<br />$query<br />".$connect->ErrorMsg());
+	while ($row=$result->FetchRow())
 		{
 		//Make sure group exists
 		$qquery="SELECT * FROM {$dbprefix}groups WHERE gid={$row['gid']}";
-		$qresult=mysql_query($qquery) or die ("Couldn't check groups table for gids from questions<br />$qquery<br />".mysql_error());
-		$qcount=mysql_num_rows($qresult);
+		$qresult=$connect->Execute($qquery) or die ("Couldn't check groups table for gids from questions<br />$qquery<br />".$connect->ErrorMsg());
+		$qcount=$qresult->RecordCount();
 		if (!$qcount) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>"No matching Group ({$row['gid']})");}
 		//Make sure survey exists
 		$qquery="SELECT * FROM {$dbprefix}surveys WHERE sid={$row['sid']}";
-		$qresult=mysql_query($qquery) or die ("Couldn't check surveys table for sids from questions<br />$qquery<br />".mysql_error());
-		$qcount=mysql_num_rows($qresult);
+		$qresult=$connect->Execute($qquery) or die ("Couldn't check surveys table for sids from questions<br />$qquery<br />".$connect->ErrorMsg());
+		$qcount=$qresult->RecordCount();
 		if (!$qcount) {
 			if (!isset($qdelete) || !in_array($row['qid'], $qdelete)) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>"No matching Survey! ({$row['sid']})");}
 			}
@@ -220,13 +220,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	//check groups
 	$query = "SELECT * FROM {$dbprefix}groups ORDER BY sid, gid";
-	$result=mysql_query($query) or die ("Couldn't get list of groups for checking<br />$query<br />".mysql_error());
-	while ($row=mysql_fetch_array($result))
+	$result=db_execute_assoc($query) or die ("Couldn't get list of groups for checking<br />$query<br />".$connect->ErrorMsg());
+	while ($row=$result->FetchRow())
 		{
 		//make sure survey exists
 		$qquery = "SELECT * FROM {$dbprefix}groups WHERE sid={$row['sid']}";
-		$qresult=mysql_query($qquery) or die("Couldn't check surveys table for gids from groups<br />$qquery<br />".mysql_error());
-		$qcount=mysql_num_rows($qresult);
+		$qresult=$connect->Execute($qquery) or die("Couldn't check surveys table for gids from groups<br />$qquery<br />".$connect->ErrorMsg());
+		$qcount=$qresult->RecordCount();
 		if (!$qcount) {$gdelete[]=array($row['gid']);}
 		}
 	if (isset($gdelete) && $gdelete)
@@ -315,7 +315,7 @@ elseif ($ok == "Y")
 		foreach ($assdelete as $ass) {
 			echo "Deleting ID:".$ass."<br />\n";
 			$sql = "DELETE FROM {$dbprefix}assessments WHERE id=$ass";
-			$result = mysql_query($sql) or die ("Couldn't delete ($sql)<br />".mysql_error());
+			$result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
 		}
 	}
 	if (isset($asgdelete)) {
@@ -323,7 +323,7 @@ elseif ($ok == "Y")
 		foreach ($asgdelete as $asg) {
 			echo "Deleting ID:".$asg."<br />\n";
 			$sql = "DELETE FROM {$dbprefix}assessments WHERE id=$asg";
-			$result = mysql_query($sql) or die ("Couldn't delete ($sql)<br />".mysql_error());
+			$result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
 		}
 	}
 	if (isset($qadelete)) {
@@ -331,7 +331,7 @@ elseif ($ok == "Y")
 		foreach ($qadelete as $qad) {
 			echo "Deleting QAID:".$qad."<br />\n";
 			$sql = "DELETE FROM {$dbprefix}question_attributes WHERE qaid=$qad";
-			$result = mysql_query($sql) or die ("Couldn't delete ($sql)<br />".mysql_error());
+			$result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
 		}
 	}
 	if (isset($cdelete)) {
@@ -339,7 +339,7 @@ elseif ($ok == "Y")
 		foreach ($cdelete as $cd) {
 			echo "Deleting cid:".$cd."<br />\n";
 			$sql = "DELETE FROM {$dbprefix}conditions WHERE cid=$cd";
-			$result=mysql_query($sql) or die ("Couldn't Delete ($sql)<br />".mysql_error());
+			$result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
 		}
 		echo "</font><br />\n";
 	}
@@ -349,7 +349,7 @@ elseif ($ok == "Y")
 			list($ad1, $ad2)=explode("|", $ad);
 			echo "Deleting answer with qid:".$ad1." and code: ".$ad2."<br />\n";
 			$sql = "DELETE FROM {$dbprefix}answers WHERE qid=$ad1 AND code='$ad2'";
-			$result=mysql_query($sql) or die ("Couldn't Delete ($sql)<br />".mysql_error());
+			$result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
 		}
 		echo "</font><br />\n";
 	}
@@ -358,7 +358,7 @@ elseif ($ok == "Y")
 		foreach ($qdelete as $qd) {
 			echo "Deleting qid:".$qd."<br />\n";
 			$sql = "DELETE FROM {$dbprefix}questions WHERE qid=$qd";
-			$result=mysql_query($sql) or die ("Couldn't Delete ($sql)<br />".mysql_error());
+			$result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
 		}
 		echo "</font><br />\n";
 	}
@@ -367,7 +367,7 @@ elseif ($ok == "Y")
 		foreach ($gdelete as $gd) {
 			echo "Deleting gid:".$gd."<br />\n";
 			$sql = "DELETE FROM {$dbprefix}groups WHERE gid=$gd";
-			$result=mysql_query($sql) or die ("Couldn't Delete ($sql)<br />".mysql_error());
+			$result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
 		}
 		echo "</font><br />\n";
 	}

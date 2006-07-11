@@ -34,11 +34,9 @@
 	#############################################################	
 */
 //Ensure script is not run directly, avoid path disclosure
-if (empty($_GET['dbname'])) {die ("Cannot run this script directly");}
-
-$dbname = $_GET['dbname'];
-
 require_once(dirname(__FILE__).'/../config.php');
+
+$dbname = $databasename;
 
 sendcacheheaders();
 
@@ -57,10 +55,10 @@ if (!$dbname)
 	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick='location.href=\"$scriptname\"'>";
 	exit;
 	}
-$connect=mysql_connect("$databaselocation:$databaseport", "$databaseuser", "$databasepass");
-if (!mysql_selectdb ($dbname, $connect)) //Database named in config.php does not exist
+if (!$database_exists) //Database named in config.php does not exist
 	{
-	$createDb=mysql_query("CREATE DATABASE `$dbname`"); //Better than using mysql_create_db which is deprecated and does not work for MySQL 4 Client API
+	// TODO SQL: portable ??
+	$createDb=$connect->Execute("CREATE DATABASE `$dbname`"); //Better than using mysql_create_db which is deprecated and does not work for MySQL 4 Client API
 	if ($createDb) //Database has been succesfully created
 		{
 		echo "<br />$setfont<strong><font color='green'>\n";
@@ -72,7 +70,7 @@ if (!mysql_selectdb ($dbname, $connect)) //Database named in config.php does not
 		{
 		echo "<strong>$setfont<font color='red'>"._ERROR."</strong></font><br />\n";
 		echo _CD_NOCREATE." ($dbname)<br /><font size='1'>\n";
-		echo mysql_error();
+		echo $connect->ErrorMsg();
 		echo "</font><br /><br />\n";
 		echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick='location.href=\"$scriptname\"'>";
 		}

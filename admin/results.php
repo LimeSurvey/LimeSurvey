@@ -480,6 +480,7 @@ function buildQuestionFields($surveyid, $qid) {
 }
 
 function returnQuestionResults($surveyid, $questionfields, $sql=null) {
+	global $connect;
 	//Returns uninterpreted raw results from survey table for question(s)
 	//$table = survcey table name (ie: "survey_1")
 	//$questionfields should contain an array of the question fields that are being returned
@@ -504,21 +505,21 @@ function returnQuestionResults($surveyid, $questionfields, $sql=null) {
 	if (!empty($sql)) {
 	    $query .= "\nWHERE $sql";
 	}
-	$result = mysql_query($query) or die("error getting results in returnQuestionResults<br />$query<br />".mysql_error());
-	while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {
+	$result = db_execute_assoc($query) or die("error getting results in returnQuestionResults<br />$query<br />".$connect->ErrorMsg());
+	while($row=$result->FetchRow()) {
 		$output[]=$row;
 	} // while
 	return array($details, $output);
 }
 
 function getAnswersSingle($surveyid, $gid, $qid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * 
 			  FROM {$dbprefix}answers
 			  WHERE qid=$qid
 			  ORDER BY sortorder, answer";
-	$result = mysql_query($query);
-	while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	$result = db_execute_assoc($query);
+	while($row = $result->FetchRow()) {
 		$answer[]=array("code"=>$row['code'],
 						"answer"=>$row['answer']);
 	} // while
@@ -526,13 +527,13 @@ function getAnswersSingle($surveyid, $gid, $qid) {
 }
 
 function getLabelSet($lid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT *
 			  FROM {$dbprefix}labels
 			  WHERE lid=$lid
 			  ORDER BY sortorder, title";
-	$result = mysql_query($query) or die(mysql_error());
-	while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	while($row = $result->FetchRow()) {
 		$answer[]=array("code"=>$row['code'],
 						"answer"=>$row['title']);
 	} // while

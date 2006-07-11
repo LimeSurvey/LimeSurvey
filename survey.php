@@ -127,12 +127,12 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 		}
 	else
 		{
-		if (mysql_query($subquery)) 
+		if ($connect->Execute($subquery)) 
 			{
 			//save responses was succesful
 			
 			//UPDATE COOKIE IF REQUIRED
-			$savedid=mysql_insert_id();
+			$savedid=$connect->Insert_ID();
 			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
 				{
 				$cookiename="PHPSID".returnglobal('sid')."STATUS";
@@ -145,7 +145,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 			    $query = "DELETE FROM {$dbprefix}saved\n"
 						."WHERE sid=$surveyid\n"
 						."AND identifier = '".$_SESSION['savename']."'";
-				$result = mysql_query($query);
+				$result = $connect->Execute($query);
 				//Should put an email to administrator here
 				//if the delete doesn't work.
 				}
@@ -192,10 +192,10 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				//Delete the saved survey
 				$query = "DELETE FROM {$dbprefix}saved
 				  		WHERE scid=".$_SESSION['scid'];
-				$result=mysql_query($query);
+				$result=$connect->Execute($query);
 				$query = "DELETE FROM {$dbprefix}saved_control
 				  		WHERE scid=".$_SESSION['scid'];
-				$result=mysql_query($query);
+				$result=$connect->Execute($query);
 				//Should put an email to administrator here
 				//if the delete doesn't work.
 			}
@@ -425,8 +425,8 @@ if (isset($conditions) && is_array($conditions))
 		if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
 			{
 			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
-			$cccresult=mysql_query($cccquery);
-			$cccount=mysql_num_rows($cccresult);
+			$cccresult=$connect->Execute($cccquery);
+			$cccount=$cccresult->RecordCount();
 			}
 		if ($cd[4] == "R") 	{$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);}
 		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $cccount <= $dropdownthreshold))

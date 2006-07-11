@@ -86,12 +86,13 @@ if (isset($source))
 	if (!$errormsg && !isset($_SESSION['savename']))
 		{
 	    //All the fields are correct. Now make sure there's not already a matching saved item
-		$query = "SELECT * FROM {$dbprefix}saved_control\n"
+		$query = "SELECT COUNT(*) FROM {$dbprefix}saved_control\n"
 				."WHERE sid=$surveyid\n"
 				."AND identifier='".$_POST['savename']."'\n"
 				."AND access_code='".md5($_POST['savepass'])."'\n";
-		$result = mysql_query($query) or die("Error checking for duplicates!<br />$query<br />".mysql_error());
-		if (mysql_num_rows($result) > 0) 
+		$result = db_execute_num($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+		list($count) = $result->FetchRow();
+		if ($count > 0) 
 			{
 			$errormsg.=_SAVEDUPLICATE."<br />\n";
 			}
@@ -190,49 +191,44 @@ if (isset($_SESSION['scid']))
 	{
 	//This person has loaded a previously saved session, so before we
 	//save it again, we should delete the old one.
-    $query = "DELETE FROM {$dbprefix}saved
+	$query = "DELETE FROM {$dbprefix}saved
 			  WHERE scid=".$_SESSION['scid'];
-	$result=mysql_query($query) or die("Couldn't delete existing saved survey.<br />$query<br />".mysql_error());
+	$result=$connect->Execute($query) or die("Couldn't delete existing saved survey.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$query = "DELETE FROM {$dbprefix}saved_control
 			  WHERE scid=".$_SESSION['scid'];
-	$result=mysql_query($query) or die("Couldn't delete existing saved survey.<br />$query<br />".mysql_error());
+	$result=$connect->Execute($query) or die("Couldn't delete existing saved survey.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	}
 
 //1: Create entry in "saved_control"
-$query = "INSERT INTO `{$dbprefix}saved_control`
-		  ( `sid`, `identifier`, `access_code`,
-		   `email`, `ip`,`refurl`, `saved_thisstep`, `status`, `saved_date`)
-		   VALUES (
-		   '".$sdata['sid']."',
-		   '".mysql_escape_string($sdata['identifier'])."',
-		   '".$sdata['code']."',
-		   '".$sdata['email']."',
-		   '".$sdata['ip']."',
-		   '".$sdata['refurl']."',
-		   '".$sdata['thisstep']."',
-		   'S',
-		   '".$sdata['date']."')";
-if ($result=mysql_query($query))
+$query = $connect->GetInsertSQL("{$dbprefix}saved_control", array(
+	'sid' => $sdata['sid'],
+	'identifier' => $sdata['identifier'],
+	'access_code' => $sdata['code'],
+	'email' => $sdata['email'],
+	'ip' => $sdata['ip'],
+	'refurl' => $sdata['refurl'],
+	'saved_thisstep' => $sdata['thisstep'],
+	'status' => 'S',
+	'saved_date' => $sdata['date']));
+if ($result=$connect->Execute($query))
 	{
 	//Saved control entry worked, now lets save the data
-    $sdata['scid']=mysql_insert_id();
+	$sdata['scid']=$connect->Insert_ID();
 	foreach ($_SESSION['insertarray'] as $sia)
 		{
 		if (isset($_SESSION[$sia]) && ($_SESSION[$sia] || $_SESSION[$sia] == "0")) 
 			{
-			$iquery = "INSERT INTO `{$dbprefix}saved`\n"
-					. "(`scid`, `datestamp`, `ipaddr`, `fieldname`,\n"
-					. "`value`)\n"
-					. "VALUES (\n"
-					. "'".$sdata['scid']."',\n"
-					. "'".$sdata['date']."',\n"
-					. "'".$sdata['ip']."',\n"
-					. "'".$sia."',\n"
-					. "'".mysql_escape_string($_SESSION[$sia])."')";
-			if (!$iresult=mysql_query($iquery))
+			
+			$iquery = $connect->GetInsertSQL("{$dbprefix}saved", array(
+				'scid' => $sdata['scid'],
+				'datestamp' => $sdata['date'],
+				'ipaddr' => $sdata['ip'],
+				'fieldname' => $sia,
+				'value' => $_SESSION[$sia]));
+			if (!$iresult=$connect->Execute($iquery))
 				{
 				$failed=1;
-				echo mysql_error();
+				echo htmlspecialchars($connect->ErrorMsg());
 				}
 			}
 		}
@@ -246,11 +242,11 @@ if ($result=mysql_query($query))
 				. "'".$sdata['date']."',\n"
 				. "'token',\n"
 				. "'".returnglobal('token')."')";
-		if (!$result=mysql_query($iquery))
+		if (!$result=$connect->Execute($iquery))
 			{
 			$failed=1;
 			echo $query;
-			echo mysql_error();
+			echo htmlspecialchars($connect->ErrorMsg());
 			}
 		}
 	if (isset($failed))
@@ -258,10 +254,10 @@ if ($result=mysql_query($query))
 		//delete any entries that were saved. It's got to be all or nothing!
 		$query = "DELETE FROM {$dbprefix}saved
 				  WHERE scid=".$sdata['scid'];
-		$result=mysql_query($query);
+		$result=$connect->Execute($query);
 		$query = "DELETE FROM {$dbprefix}saved_control
 				  WHERE scid=".$sdata['scid'];
-		$result=mysql_query($query);
+		$result=$connect->Execute($query);
 		}
 	else
 		{
@@ -297,7 +293,7 @@ if ($result=mysql_query($query))
 	}
 else
 	{
-	echo "Error:<br />$query<br />".mysql_error();
+	echo "Error:<br />$query<br />".htmlspecialchars($connect->ErrorMsg());
 	}
 
 

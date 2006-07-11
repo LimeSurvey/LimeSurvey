@@ -75,8 +75,8 @@ if (!file_exists("$homedir/.htaccess"))
 		if (file_exists("$homedir/.htpasswd"))
 			{
 			$addsummary .= _UC_UPDATE_TABLE."<br />\n";
-			$uquery="INSERT INTO {$dbprefix}users VALUES ('$defaultuser', '$defaultpass', '5')";
-			$uresult=mysql_query($uquery);
+			$uquery="INSERT INTO ".db_table_name('users')." VALUES ('$defaultuser', '$defaultpass', '5')";
+			$uresult=$connect->Execute($uquery);
 			}
 		else
 			{
@@ -94,8 +94,8 @@ elseif ($action == "deleteall")
 	unlink($fname1);
 	$fname1="$homedir/.htpasswd";
 	unlink($fname1);
-	$dq="DELETE FROM {$dbprefix}users";
-	$dr=mysql_query($dq);
+	$dq="DELETE FROM ".db_table_name('users');
+	$dr=$connect->Execute($dq);
 	$addsummary .= _UC_ALL_REMOVED;
 	$addsummary .= "<br /><br /><a href='$scriptname'>"._GO_ADMIN."</a><br />&nbsp;\n";
 	}
@@ -118,8 +118,8 @@ elseif ($action == "adduser")
 			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
 			$addsummary .= "</pre>\n";
 			}
-		$uquery = "INSERT INTO {$dbprefix}users VALUES ('$user', '$pass', '{$_POST['level']}')";
-		$uresult = mysql_query($uquery);
+		$uquery = "INSERT INTO ".db_table_name('users')." VALUES ('$user', '$pass', '{$_POST['level']}')";
+		$uresult = $connect->Execute($uquery);
 		$addsummary .= "<br />"._USERNAME.": $user<br />"._PASSWORD.": $pass<br />";
 		}
 	else
@@ -157,8 +157,8 @@ elseif ($action == "deluser")
 			}
 		fclose($fp);
 		//DELETE USER FROM TABLE
-		$dquery="DELETE FROM {$dbprefix}users WHERE user='$user'";
-		$dresult=mysql_query($dquery);
+		$dquery="DELETE FROM ".db_table_name('users')." WHERE user='$user'";
+		$dresult=$connect->Execute($dquery);
 		}
 	else
 		{
@@ -186,8 +186,8 @@ elseif ($action == "moduser")
 			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
 			$addsummary .= "</pre>\n";
 			}
-		$uquery = "UPDATE {$dbprefix}users SET password='$pass', security='{$_POST['level']}' WHERE user='$user'";
-		$uresult = mysql_query($uquery);
+		$uquery = "UPDATE ".db_table_name('users')." SET password='$pass', security='{$_POST['level']}' WHERE user='$user'";
+		$uresult = $connect->Execute($uquery);
 		
 		$addsummary .= "<br />"._USERNAME.": $user<br />"._PASSWORD.": $pass<br />\n";
 		}

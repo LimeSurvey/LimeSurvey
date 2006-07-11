@@ -85,13 +85,7 @@ elseif (isset($surveyid) && $surveyid)
 
     loadPublicLangFile($surveyid);
 
-    $fldlist = mysql_list_fields($databasename, $surveytable);
-    $columns = mysql_num_fields($fldlist);
-    for ($i = 0; $i < $columns; $i++)
-        {
-        $fieldnames[] = mysql_field_name($fldlist, $i);
-        }
-
+    $fieldnames = array_values($connect->MetaColumnNames($surveytable, true));
 
     //Create the human friendly first line
     $firstline="";
@@ -110,9 +104,9 @@ elseif (isset($surveyid) && $surveyid)
     echo $firstline."\n";
     echo $secondline."\n";
     $query = "SELECT * FROM $surveytable";
-    $result = mysql_query($query) or die("Error:<br />$query<br />".mysql_error());
+    $result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
 
-    while ($row=mysql_fetch_array($result))
+    while ($row=$result->FetchRow())
         {
         foreach ($fieldnames as $field)
             {
@@ -156,34 +150,30 @@ elseif (isset($surveyid) && $surveyid)
         {
         case "deactivate": //Deactivate the survey
             $date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
-            $result = mysql_list_tables($databasename);
-            while ($row = mysql_fetch_row($result))
-                {
-                $tablelist[]=$row[0];
-                }
+            $tablelist = $connect->MetaTables();
             if (in_array("{$dbprefix}tokens_{$_GET['sid']}", $tablelist))
                 {
-                $toldtable="{$dbprefix}tokens_{$_GET['sid']}";
-                $tnewtable="{$dbprefix}old_tokens_{$_GET['sid']}_{$date}";
-                $tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
-                $tdeactivateresult = mysql_query($tdeactivatequery) or die ("\n\n"._ERROR."Couldn't deactivate tokens table because:<br />".mysql_error()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a>");
+                $toldtable="tokens_{$_GET['sid']}";
+                $tnewtable="old_tokens_{$_GET['sid']}_{$date}";
+                $tdeactivatequery = "RENAME TABLE ".db_table_name($toldtable)." TO ".db_table_name($tnewtable);
+                $tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("\n\n"._ERROR."Couldn't deactivate tokens table because:<br />".$connect->ErrorMsg()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a>");
                 }
-            $oldtable="{$dbprefix}survey_{$_GET['sid']}";
-            $newtable="{$dbprefix}old_{$_GET['sid']}_{$date}";
+            $oldtable="survey_{$_GET['sid']}";
+            $newtable="old_{$_GET['sid']}_{$date}";
 
             //Update the auto_increment value from the table before renaming
-            $query = "SELECT id FROM $oldtable ORDER BY id desc LIMIT 1";
-            $result = mysql_query($query) or die("Couldn't get latest id from table<br />$query<br />".mysql_error());
-            while ($row=mysql_fetch_array($result))
+            $query = "SELECT id FROM ".db_table_name($oldtable)." ORDER BY id desc LIMIT 1";
+            $result = db_execute_assoc($query) or die("Couldn't get latest id from table<br />$query<br />".$connect->ErrorMsg());
+            while ($row=$result->FetchRow())
                 {
                 $new_autonumber_start=$row['id']+1;
                 }
-            $query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$surveyid";
-            $result = mysql_query($query); //Note this won't kill the script if it fails
+            $query = "UPDATE ".db_table_name('surveys')." SET autonumber_start=$new_autonumber_start WHERE sid=$surveyid";
+            $result = $connect->Execute($query); //Note this won't kill the script if it fails
 
             //Rename survey responses table
-            $deactivatequery = "RENAME TABLE $oldtable TO $newtable";
-            $deactivateresult = mysql_query($deactivatequery) or die ("\n\n"._ERROR."Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+            $deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
+            $deactivateresult = $connect->Execute($deactivatequery) or die ("\n\n"._ERROR."Couldn't deactivate because:<BR>".$connect->ErrorMsg()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
             break;
         case "delete": //Delete the rows
             break;

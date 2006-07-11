@@ -123,12 +123,12 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
         }
     else //submit the responses
         {
-        if (mysql_query($subquery)) //submit was successful
+        if ($connect->Execute($subquery)) //submit was successful
             {
             //UPDATE COOKIE IF REQUIRED
 			$idquerytext = "SELECT LAST_INSERT_ID()";
-			$idquery = mysql_query ($idquerytext);
-			$idquery_row = mysql_fetch_row ($idquery);
+			$idquery = db_execute_num($idquerytext);
+			$idquery_row = $idquery->FetchRow();
 			$savedid=$idquery_row[0];
             
             if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
@@ -142,7 +142,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
                 $query = "DELETE FROM {$dbprefix}saved\n"
                         ."WHERE sid=$surveyid\n"
                         ."AND identifier = '".$_SESSION['savename']."'";
-                $result = mysql_query($query);
+                $result = $connect->Execute($query);
                 //Should put an email to administrator here
                 //if the delete doesn't work.
                 }
@@ -185,10 +185,10 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
             //Delete the saved survey
 			$query = "DELETE FROM {$dbprefix}saved
 				  	WHERE scid=".$_SESSION['scid'];
-			$result=mysql_query($query);
+			$result=$connect->Execute($query);
 			$query = "DELETE FROM {$dbprefix}saved_control
 				  	WHERE scid=".$_SESSION['scid'];
-			$result=mysql_query($query);
+			$result=$connect->Execute($query);
             //Should put an email to administrator here
             //if the delete doesn't work.
             }
@@ -318,22 +318,22 @@ $questionsSkipped=0;
 while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
     {
     $cquery="SELECT distinct cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
-    $cresult=mysql_query($cquery) or die("Couldn't count cqids<br />$cquery<br />".mysql_error());
-    $cqidcount=mysql_num_rows($cresult);
+    $cresult=db_execute_assoc($cquery) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+    $cqidcount=$cresult->RecordCount();
     $cqidmatches=0;
-    while ($crows=mysql_fetch_array($cresult))//Go through each condition for this current question
+    while ($crows=$cresult->FetchRow())//Go through each condition for this current question
         {
         //Check if the condition is multiple type
         $ccquery="SELECT type FROM {$dbprefix}questions WHERE qid={$crows['cqid']}";
-        $ccresult=mysql_query($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".mysql_error());
-        while($ccrows=mysql_fetch_array($ccresult))
+        $ccresult=db_execute_assoc($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
+        while($ccrows=$ccresult->FetchRow())
             {
             $thistype=$ccrows['type'];
             }
         $cqquery = "SELECT cfieldname, value, cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
-        $cqresult = mysql_query($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".mysql_error());
+        $cqresult = db_execute_assoc($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
         $amatchhasbeenfound="N";
-        while ($cqrows=mysql_fetch_array($cqresult)) //Check each condition
+        while ($cqrows=$cqresult->FetchRow()) //Check each condition
             {
             $currentcqid=$cqrows['cqid'];
             $conditionfieldname=$cqrows['cfieldname'];

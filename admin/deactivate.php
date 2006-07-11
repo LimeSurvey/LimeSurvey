@@ -69,17 +69,13 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 else
 	{
 	//See if there is a tokens table for this survey
-	$result = mysql_list_tables($databasename);
-	while ($row = mysql_fetch_row($result))
-		{
-		$tablelist[]=$row[0];
-	    }
+	$tablelist = $connect->MetaTables();
 	if (in_array("{$dbprefix}tokens_{$_GET['sid']}", $tablelist))
 		{
 		$toldtable="{$dbprefix}tokens_{$_GET['sid']}";
 		$tnewtable="{$dbprefix}old_tokens_{$_GET['sid']}_{$date}";
 		$tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
-		$tdeactivateresult = mysql_query($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".mysql_error()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a>");
+		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a>");
 		}
 	
 	$oldtable="{$dbprefix}survey_{$_GET['sid']}";
@@ -88,8 +84,8 @@ else
 	//Update the auto_increment value from the table before renaming
 	$new_autonumber_start=0;
 	$query = "SELECT id FROM $oldtable ORDER BY id desc LIMIT 1";
-	$result = mysql_query($query) or die("Error getting latest id number<br />$query<br />".mysql_error()); 
-	while ($row=mysql_fetch_array($result))
+	$result = db_execute_assoc($query) or die("Error getting latest id number<br />$query<br />".htmlspecialchars($connect->ErrorMsg())); 
+	while ($row=$result->FetchRow())
 		{
 		if (strlen($row['id']) > 12) //Handle very large autonumbers (like those using IP prefixes)
 			{
@@ -104,10 +100,10 @@ else
 			}
 		}
 	$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$surveyid";
-	@$result = mysql_query($query); //Note this won't die if it fails - that's deliberate.
+	@$result = $connect->Execute($query); //Note this won't die if it fails - that's deliberate.
 	
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
-	$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<BR>".mysql_error()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<BR>".htmlspecialchars($connect->ErrorMsg())."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._DEACTIVATE." ($surveyid)</strong></font></td></tr>\n";
 	echo "\t<tr>\n";

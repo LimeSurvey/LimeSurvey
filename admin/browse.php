@@ -48,8 +48,8 @@ sendcacheheaders();
 
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = mysql_query($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
+while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
@@ -60,7 +60,7 @@ echo $htmlheader;
 echo "<table><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
-if (!mysql_selectdb($databasename, $connect)) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
+if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		. _BROWSERESPONSES."</strong></font></td></tr>\n"
@@ -89,11 +89,11 @@ if (!$surveyid && !$action) //NO SID OR ACTION PROVIDED
 
 //CHECK IF SURVEY IS ACTIVATED AND EXISTS
 $actquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$actresult = mysql_query($actquery);
-$actcount = mysql_num_rows($actresult);
+$actresult = db_execute_assoc($actquery);
+$actcount = $actresult->RecordCount();
 if ($actcount > 0)
 	{
-	while ($actrow = mysql_fetch_array($actresult))
+	while ($actrow = $actresult->FetchRow())
 		{
 		$surveytable = "{$dbprefix}survey_{$actrow['sid']}";
 		$surveyname = "{$actrow['short_title']}";
@@ -137,11 +137,11 @@ if ($action == "id") // Looking at a SINGLE entry
 	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY group_name";
-	$fnresult = mysql_query($fnquery);
-	$fncount = mysql_num_rows($fnresult);
+	$fnresult = db_execute_assoc($fnquery);
+	$fncount = 0;
 	
 	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_array($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr'];$refurl=$fnrow['refurl'];} // Get table output into array
+	while ($fnrow = $fnresult->FetchRow()) {++$fncount; $fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr']; $refurl=$fnrow['refurl'];} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -177,8 +177,8 @@ if ($action == "id") // Looking at a SINGLE entry
 			$fnrow['type'] == "P" || $fnrow['type'] == "^")
 			{
 			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
-			$fnrresult = mysql_query($fnrquery);
-			while ($fnrrow = mysql_fetch_array($fnrresult))
+			$fnrresult = db_execute_assoc($fnrquery);
+			while ($fnrrow = $fnrresult->FetchRow())
 				{
 				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
 				if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");}
@@ -191,8 +191,8 @@ if ($action == "id") // Looking at a SINGLE entry
 		elseif ($fnrow['type'] == "R")
 			{
 			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
-			$fnrresult = mysql_query($fnrquery);
-			$fnrcount = mysql_num_rows($fnrresult);
+			$fnrresult = $connect->Execute($fnrquery);
+			$fnrcount = $fnrresult->RecordCount();
 			for ($i=1; $i<=$fnrcount; $i++)
 				{
 				$fnames[] = array("$field$i", "$ftitle ($i)", "{$fnrow['question']} ($i)");
@@ -225,8 +225,8 @@ if ($action == "id") // Looking at a SINGLE entry
 		else {$idquery .= "{$_POST['sql']}";}
 		}
 	else {$idquery .= "id=$id";}
-	$idresult = mysql_query($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".mysql_error());
-	while ($idrow = mysql_fetch_array($idresult)) {$id=$idrow['id'];}
+	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
+	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id'];}
 	$next=$id+1;
 	$last=$id-1;
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -254,8 +254,8 @@ if ($action == "id") // Looking at a SINGLE entry
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
-	$idresult = mysql_query($idquery) or die ("Couldn't get entry<br />$idquery<br />".mysql_error());
-	while ($idrow = mysql_fetch_array($idresult))
+	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
+	while ($idrow = $idresult->FetchRow())
 		{
 		$i=0;
 		for ($i; $i<$nfncount+1; $i++)
@@ -302,11 +302,19 @@ elseif ($action == "all")
 	echo "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY group_name";
-	$fnresult = mysql_query($fnquery);
-	$fncount = mysql_num_rows($fnresult);
+	$fnresult = db_execute_assoc($fnquery);
+	$fncount = 0;
 	
-	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr'];$refurl=$fnrow['refurl'];} // Get table output into array
+	$fnrows = array(); //Create an empty array in case FetchRow does not return any rows
+	while ($fnrow = $fnresult->FetchRow())
+		{
+		++$fncount;
+		$fnrows[] = $fnrow;
+		$private = $fnrow['private'];
+		$datestamp=$fnrow['datestamp'];
+		$ipaddr=$fnrow['ipaddr'];
+		$refurl=$fnrow['refurl'];
+		} // Get table output into array
 	
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
@@ -359,8 +367,8 @@ elseif ($action == "all")
 		elseif ($fnrow['type'] == "R")
 			{
 			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$i2result = mysql_query($i2query);
-			$i2count = mysql_num_rows($i2result);
+			$i2result = $connect->Execute($i2query);
+			$i2count = $i2result->RecordCount();
 			for ($i=1; $i<=$i2count; $i++)
 				{
 				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}$i";
@@ -371,9 +379,9 @@ elseif ($action == "all")
 		else
 			{
 			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$i2result = mysql_query($i2query);
+			$i2result = db_execute_assoc($i2query);
 			$otherexists = "";
-			while ($i2row = mysql_fetch_array($i2result))
+			while ($i2row = $i2result->FetchRow())
 				{
 				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$i2row['code']}";
 				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Opt{$i2row['code']}";
@@ -424,8 +432,8 @@ elseif ($action == "all")
 		
 	//LETS COUNT THE DATA
 	$dtquery = "SELECT count(*) FROM $surveytable";
-	$dtresult=mysql_query($dtquery);
-	while ($dtrow=mysql_fetch_row($dtresult)) {$dtcount=$dtrow[0];}
+	$dtresult=db_execute_num($dtquery);
+	while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 	
 	if ($limit > $dtcount) {$limit=$dtcount;}
 	
@@ -443,8 +451,8 @@ elseif ($action == "all")
 	if (isset($start) && isset($limit) && !isset($order)) {$dtquery .= " LIMIT $start, $limit";}
 	if (!isset($limit)) {$dtquery .= " LIMIT $limit";}
 	if (!isset($start)) {$start = 0;}
-	$dtresult = mysql_query($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".mysql_error());
-	$dtcount2 = mysql_num_rows($dtresult);
+	$dtresult = db_execute_assoc($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
+	$dtcount2 = $dtresult->RecordCount();
 	$cells = $fncount+1;
 
 	
@@ -498,7 +506,7 @@ echo 	 "\t\t</form></td>\n"
 
 	echo $tableheader;
 	
-	while ($dtrow = mysql_fetch_assoc($dtresult))
+	while ($dtrow = $dtresult->FetchRow())
 		{
 		if (!isset($bgcc)) {$bgcc="#EEEEEE";}
 		else
@@ -514,10 +522,10 @@ echo 	 "\t\t</form></td>\n"
 		$i = 0;
 		if ($private == "N")
 			{
-			$SQL = "Select * FROM {$dbprefix}tokens_$surveyid WHERE token='{$dtrow['token']}'";
-			if ($SQLResult = mysql_query($SQL))
+			$SQL = "Select * FROM {$dbprefix}tokens_$surveyid WHERE token=?";
+			if ($SQLResult = db_execute_assoc($SQL, $dtrow['token']))
 				{
-				$TokenRow = mysql_fetch_assoc($SQLResult);
+				$TokenRow = $SQLResult->FetchRow();
 				}
 			echo "\t\t<td align='center'><font size='1'>\n";
 			if (isset($TokenRow) && $TokenRow) 
@@ -549,11 +557,11 @@ else
 		. $surveyoptions;
 	echo "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";
-	$gnresult = mysql_query($gnquery);
-	while ($gnrow = mysql_fetch_row($gnresult))
+	$gnresult = db_execute_num($gnquery);
+	while ($gnrow = $gnresult->FetchRow())
 		{
 		echo "<table width='100%' border='0'>\n"
-			."\t<tr><td align='center'>$setfont$gnrow[0] responses in this database</font></td></tr>\n"
+			."\t<tr><td align='center'>$setfont{$gnrow[0]} responses in this database</font></td></tr>\n"
 			."</table>\n";
 		}
 	}

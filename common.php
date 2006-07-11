@@ -37,6 +37,8 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
+require_once(dirname(__FILE__).'/classes/adodb/adodb.inc.php');
+
 $versionnumber = "1.01alpha";
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
@@ -148,13 +150,17 @@ $setfont = "<font size='2' face='verdana'>";
 $singleborderstyle = "style='border: 1px solid #111111'";
 
 //CACHE DATA
-$connect=mysql_connect("$databaselocation:$databaseport", "$databaseuser", "$databasepass");
-$db=mysql_selectdb($databasename, $connect);
+$connect=&ADONewConnection($databasetype);
+$database_exists = FALSE;
+if ($connect->Connect("$databaselocation:$databaseport", $databaseuser, $databasepass, $databasename))
+    $database_exists = TRUE;
+else
+    $connect->Connect("$databaselocation:$databaseport", $databaseuser, $databasepass);
 
 // The following line is for debug purposes
 //$tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
 
-$tmpresult=@mysql_query("SET CHARACTER SET 'utf8'", $connect);
+$connect->Execute("SET CHARACTER SET 'utf8'");
 
 
 //Admin menus and standards
@@ -285,6 +291,35 @@ AuthGroupFile /dev/null
 Require valid-user
 EOF;
 
+function &db_execute_num($sql,$inputarr=false)
+{
+	global $connect;
+
+	$connect->SetFetchMode(ADODB_FETCH_NUM);
+	return $connect->Execute($sql,$inputarr);
+}
+
+function &db_execute_assoc($sql,$inputarr=false)
+{
+	global $connect;
+
+	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
+	return $connect->Execute($sql,$inputarr);
+}
+
+function db_quote_id($id)
+{
+	global $connect;
+	$quote = $connect->nameQuote;
+	return $quote.str_replace($quote,$quote.$quote,$id).$quote;
+}
+
+function db_table_name($name)
+{
+	global $dbprefix;
+	return db_quote_id($dbprefix.$name);
+}
+
 /**
 * getsurveylist() Queries the database (survey table) for a list of existing surveys
 * @global string $surveyid
@@ -295,16 +330,12 @@ EOF;
 */
 function getsurveylist()
     {
-    global $surveyid, $dbprefix, $scriptname;
-    $surveyidquery = "SELECT * FROM {$dbprefix}surveys ORDER BY short_title";
-    $surveyidresult = mysql_query($surveyidquery);
+    global $surveyid, $dbprefix, $scriptname, $connect;
+    $surveyidquery = 'SELECT sid, short_title FROM '.db_table_name('surveys').' ORDER BY short_title';
+    $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
-    $surveynames = array();
     $surveyselecter = "";
-    while ($surveyidrow = mysql_fetch_array($surveyidresult))
-        {
-        $surveynames[] = array($surveyidrow['sid'], $surveyidrow['short_title']);
-        }
+    $surveynames = $surveyidresult->GetRows();
     if ($surveynames)
         {
         foreach($surveynames as $sv)
@@ -330,11 +361,10 @@ function getsurveylist()
 */
 function getquestions()
     {
-    global $surveyid, $gid, $qid, $dbprefix, $scriptname;
-    $qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid";
-    $qresult = mysql_query($qquery);
-    $qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-    while ($qrow = mysql_fetch_array($qresult)) {$qrows[] = $qrow;} // Get table output into array
+    global $surveyid, $gid, $qid, $dbprefix, $scriptname, $connect;
+    $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid";
+    $qresult = db_execute_assoc($qquery);
+    $qrows = $qresult->GetRows();
 
     // Perform a case insensitive natural sort on group name then question title of a multidimensional array
     usort($qrows, 'CompareGroupThenTitle');
@@ -376,11 +406,11 @@ function getquestions()
 */
 function getanswers()
     {
-    global $surveyid, $gid, $qid, $code, $dbprefix;
-    $aquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
-    $aresult = mysql_query($aquery);
+    global $surveyid, $gid, $qid, $code, $dbprefix, $connect;
+    $aquery = 'SELECT code, answer FROM '.db_table_name('answers')." WHERE qid=$qid ORDER BY sortorder, answer";
+    $aresult = db_execute_assoc($aquery);
     $answerselecter = "";
-    while ($arow = mysql_fetch_array($aresult))
+    while ($arow = $aresult->FetchRow())
         {
         $answerselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;code={$arow['code']}'";
         if ($code == $arow['code']) {$answerselecter .= " selected"; $aexists="Y";}
@@ -482,25 +512,19 @@ function getNotificationlist($notificationcode)
 */
 function getgrouplist($gid)
     {
-    global $surveyid, $dbprefix, $scriptname;
+    global $surveyid, $dbprefix, $scriptname, $connect;
     $groupselecter="";
     if (!$surveyid) {$surveyid=$_POST['sid'];}
-    $gidquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
-    $gidresult = mysql_query($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".mysql_error());
-    $gidcount = mysql_num_rows($gidresult);
-    if ($gidcount)
-        {
-            while ($gidrow = mysql_fetch_array($gidresult))
-            {
-            $groupnames[] = array($gidrow['gid'], $gidrow['group_name']);
-            }
-        $groupselecter = "";
-        foreach($groupnames as $gv)
+    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_name";
+    $gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));
+    while($gv = $gidresult->FetchRow())
             {
             $groupselecter .= "\t\t<option";
             if ($gv[0] == $gid) {$groupselecter .= " selected"; $gvexist = 1;}
             $groupselecter .= " value='$scriptname?sid=$surveyid&amp;gid=$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
             }
+    if ($groupselecter)
+	{
         if (!isset($gvexist)) {$groupselecter = "\t\t<option selected>"._AD_CHOOSE."</option>\n".$groupselecter;}
         else {$groupselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid='>"._NONE."</option>\n";}
         }
@@ -509,24 +533,19 @@ function getgrouplist($gid)
 
 function getgrouplist2($gid)
     {
-    global $surveyid, $dbprefix;
+    global $surveyid, $dbprefix, $connect;
+    $groupselecter = "";
     if (!$surveyid) {$surveyid=$_POST['sid'];}
-    $gidquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
-    $gidresult = mysql_query($gidquery) or die("Plain old did not work!");
-    $gidcount = mysql_num_rows($gidresult);
-    if ($gidcount)
-        {
-            while ($gidrow = mysql_fetch_array($gidresult))
-            {
-            $groupnames[] = array($gidrow['gid'], $gidrow['group_name']);
-            }
-        $groupselecter = "";
-        foreach($groupnames as $gv)
+    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_name";
+    $gidresult = db_execute_num($gidquery) or die("Plain old did not work!");
+    while ($gv = $gidresult->FetchRow())
             {
             $groupselecter .= "\t\t<option";
             if ($gv[0] == $gid) {$groupselecter .= " selected"; $gvexist = 1;}
             $groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
             }
+    if ($groupselecter)
+ 	{
         if (!$gvexist) {$groupselecter = "\t\t<option selected>"._AD_CHOOSE."</option>\n".$groupselecter;}
         else {$groupselecter .= "\t\t<option value=''>"._NONE."</option>\n";}
         }
@@ -535,34 +554,26 @@ function getgrouplist2($gid)
 
 function getgrouplist3($gid)
     {
-    global $surveyid, $dbprefix;
+    global $surveyid, $dbprefix, $connect;
     if (!$surveyid) {$surveyid=$_POST['sid'];}
-    $gidquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
-    $gidresult = mysql_query($gidquery) or die("Plain old did not work!");
-    $gidcount = mysql_num_rows($gidresult);
-    if ($gidcount)
-        {
-            while ($gidrow = mysql_fetch_array($gidresult))
-            {
-            $groupnames[] = array($gidrow['gid'], $gidrow['group_name']);
-            }
         $groupselecter = "";
-        foreach($groupnames as $gv)
+    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_name";
+    $gidresult = db_execute_num($gidquery) or die("Plain old did not work!");
+    while ($gv = $gidresult->FetchRow())
             {
             $groupselecter .= "\t\t<option";
             if ($gv[0] == $gid) {$groupselecter .= " selected"; $gvexist = 1;}
             $groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
             }
-        }
     return $groupselecter;
     }
 
 function getuserlist()
     {
-    global $dbprefix;
-    $uquery = "SELECT * FROM {$dbprefix}users ORDER BY user";
-    $uresult = mysql_query($uquery);
-    while ($urow = mysql_fetch_array($uresult))
+    global $dbprefix, $connect;
+    $uquery = "SELECT * FROM ".db_table_name('users')." ORDER BY user";
+    $uresult = db_execute_assoc($uquery);
+    while ($urow = $uresult->FetchRow())
         {
         $userlist[] = array("user"=>$urow['user'], "password"=>$urow['password'], "security"=>$urow['security']);
         }
@@ -609,11 +620,10 @@ function getlanguages()
 
 function getSurveyInfo($surveyid)
     {
-    global $dbprefix, $siteadminname, $siteadminemail;
-    $query="SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-    $result=mysql_query($query) or die ("Couldn't access surveys<br />$query<br />".mysql_error());
-    $surveyexists=mysql_num_rows($result);
-    while ($row=mysql_fetch_array($result))
+    global $dbprefix, $siteadminname, $siteadminemail, $connect;
+    $query="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+    $result=db_execute_assoc($query) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+    while ($row=$result->FetchRow())
         {
         $thissurvey=array("name"=>$row['short_title'],
                         "description"=>$row['description'],
@@ -682,11 +692,11 @@ function getadminlanguages()
 
 function getlabelsets()
     {
-    global $dbprefix;
-    $query = "SELECT * FROM {$dbprefix}labelsets ORDER BY label_name";
-    $result = mysql_query($query) or die ("Couldn't get list of label sets<br />$query<br />".mysql_error());
+    global $dbprefix, $connect;
+    $query = "SELECT * FROM ".db_table_name('labelsets')." ORDER BY label_name";
+    $result = db_execute_assoc($query) or die ("Couldn't get list of label sets<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
     $labelsets=array();
-    while ($row=mysql_fetch_array($result))
+    while ($row=$result->FetchRow())
         {
         $labelsets[] = array($row['lid'], $row['lid'].": ".$row['label_name']);
         }
@@ -695,23 +705,23 @@ function getlabelsets()
 
 function checkactivations()
     {
-    global $databasename, $dbprefix;
-    $tables = mysql_list_tables($databasename);
+    global $dbprefix, $connect;
+    $tablelist = $connect->MetaTables();
     $tablenames[] = "ListofTables"; //dummy entry because in_array never finds the first one!
-    while ($trow = mysql_fetch_row($tables))
+    foreach ($tablelist as $tbl)
         {
-        $tablenames[] = $trow[0];
+        $tablenames[] = $tbl;
         }
-    $caquery = "SELECT * FROM {$dbprefix}surveys WHERE active='Y'";
-    $caresult = mysql_query($caquery);
+    $caquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
+    $caresult = db_execute_assoc($caquery);
     if (!$caresult) {return "Database Error";}
-    while ($carow = mysql_fetch_array($caresult))
+    while ($carow = $caresult->FetchRow())
         {
         $surveyname = "{$dbprefix}survey_{$carow['sid']}";
         if (!in_array($surveyname, $tablenames))
             {
-            $udquery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid={$carow['sid']}";
-            $udresult = mysql_query($udquery);
+            $udquery = "UPDATE ".db_table_name('surveys')." SET active='N' WHERE sid={$carow['sid']}";
+            $udresult = $connect->Execute($udquery);
             }
         }
     }
@@ -720,7 +730,7 @@ function checksecurity()
     {
     // Check that the names in the htpasswd file match up with the names in the database.
     // Any names missing in htpasswd file should be removed from users table
-    global $homedir, $dbprefix;
+    global $homedir, $dbprefix, $connect;
     $fname = "$homedir/.htpasswd";
     $htpasswds = file($fname);
     $realusers[] = "DUMMYRECORD"; //dummy entry because in_array never finds the first one!
@@ -729,22 +739,22 @@ function checksecurity()
         list ($fuser, $fpass) = split(":", $htp);
         $realusers[] = $fuser;
         }
-    $usquery = "SELECT user FROM {$dbprefix}users";
-    $usresult = mysql_query($usquery);
+    $usquery = "SELECT user FROM ".db_table_name('users');
+    $usresult = db_execute_assoc($usquery);
     if (!$usresult) {return "Database Error";}
-    while ($usrow = mysql_fetch_array($usresult))
+    while ($usrow = $usresult->FetchRow())
         {
         if (!array_search($usrow['user'], $realusers))
             {
-            $dlusquery = "DELETE FROM {$dbprefix}users WHERE user='{$usrow['user']}'";
-            $dlusresult = mysql_query($dlusquery);
+            $dlusquery = "DELETE FROM ".db_table_name('users')." WHERE user='{$usrow['user']}'";
+            $dlusresult = $connect->Execute($dlusquery);
             }
         }
     }
 
 function checkfortables()
     {
-    global $scriptname, $databasename, $btstyle, $dbprefix, $setfont;
+    global $scriptname, $btstyle, $dbprefix, $setfont, $connect;
     $alltables=array("{$dbprefix}surveys",
                      "{$dbprefix}groups",
                      "{$dbprefix}questions",
@@ -753,9 +763,7 @@ function checkfortables()
                      "{$dbprefix}users",
                      "{$dbprefix}labelsets",
                      "{$dbprefix}labels");
-    $tables = array();
-    $tablesResult = mysql_list_tables($databasename);
-    while ($row = mysql_fetch_row($tablesResult)) $tables[] = $row[0];
+    $tables = $connect->MetaTables();
 
     foreach($alltables as $at)
         {
@@ -819,10 +827,11 @@ function StandardSort($a, $b)
 
 function conditionscount($qid)
     {
-    global $dbprefix;
-    $query="SELECT * FROM {$dbprefix}conditions WHERE qid=$qid";
-    $result=mysql_query($query) or die ("Couldn't get conditions<br />$query<br />".mysql_error());
-    return mysql_num_rows($result);
+    global $dbprefix, $connect;
+    $query="SELECT COUNT(*) FROM ".db_table_name('conditions')." WHERE qid=$qid";
+    $result=db_execute_num($query) or die ("Couldn't get conditions<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+    list($count) = $result->FetchRow();
+    return $count;
     }
 
 function keycontroljs()
@@ -868,23 +877,14 @@ EOF;
 
 function fixsortorder($qid) //Function rewrites the sortorder for a group of answers
     {
-    global $dbprefix;
-    $cdquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
-    $cdresult = mysql_query($cdquery);
+    global $dbprefix, $connect;
+    $cdresult = db_execute_num("SELECT qid, code, answer FROM ".db_table_name('answers')." WHERE qid=? ORDER BY sortorder, answer", $qid);
     $position=0;
-    while ($cdrow=mysql_fetch_array($cdresult))
+    while ($cdrow=$cdresult->FetchRow())
         {
         $position=sprintf("%05d", $position);
-        if (_PHPVERSION >= "4.3.0")
-            {
-            $answer = mysql_real_escape_string($cdrow['answer']);
-            }
-        else
-            {
-            $answer = mysql_escape_string($cdrow['answer']);
-            }
-        $cd2query="UPDATE {$dbprefix}answers SET sortorder='$position' WHERE qid={$cdrow['qid']} AND code='{$cdrow['code']}' AND answer='$answer'";
-        $cd2result=mysql_query($cd2query) or die ("Couldn't update sortorder<br />$cd2query<br />".mysql_error());
+        $cd2query="UPDATE ".db_table_name('answers')." SET sortorder=? WHERE qid=? AND code=? AND answer=?";
+        $cd2result=$connect->Execute($cd2query, $position, $cdrow[0], $cdrow[1], $cdrow[2]) or die ("Couldn't update sortorder<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
         $position++;
         }
     }
@@ -996,14 +996,9 @@ function sendcacheheaders()
 function getLegitQids($surveyid)
     {
     global $dbprefix;
-    $lq = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
-    $lr = mysql_query($lq);
-    $legitqs[] = "DUMMY ENTRY";
-    while ($lw = mysql_fetch_array($lr))
-        {
-        $legitqs[] = $lw['qid']; //this creates an array of question id's'
-        }
-    return $legitqs;
+    $lq = "SELECT DISTINCT qid FROM ".db_table_name('questions')." WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
+    $lr = db_execute_num($lq);
+    return array_merge(array("DUMMY ENTRY"), $lr->GetRows());
     }
 
 function returnquestiontitlefromfieldcode($fieldcode)
@@ -1013,7 +1008,7 @@ function returnquestiontitlefromfieldcode($fieldcode)
     if ($fieldcode == "datestamp") {return "Date Stamp";}
     if ($fieldcode == "ipaddr") {return "IP Address";}
     if ($fieldcode == "refurl") {return "Referring URL";}
-    global $dbprefix, $surveyid;
+    global $dbprefix, $surveyid, $connect;
 
     //Find matching information;
     $detailsarray=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname");
@@ -1022,26 +1017,26 @@ function returnquestiontitlefromfieldcode($fieldcode)
     }
 
     $fqid=$details['qid'];
-    $qq = "SELECT question, other FROM {$dbprefix}questions WHERE qid=$fqid";
+    $qq = "SELECT question, other FROM ".db_table_name('questions')." WHERE qid=$fqid";
 
-    $qr = mysql_query($qq);
+    $qr = db_execute_assoc($qq);
     if (!$qr)
         {
-        echo "<!-- ERROR Finding Question Name for qid $fqid - $qq - ".mysql_error()."! -->";
+        echo "<!-- ERROR Finding Question Name for qid $fqid - $qq - ".htmlspecialchars($connect->ErrorMsg())."! -->";
         $qname="[QID: $fqid]";
         }
     else
         {
-        while($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
+        while($qrow=$qr->FetchRow())
             {
             $qname=strip_tags($qrow['question']);
             }
         }
     if (isset($details['aid']) && $details['aid']) //Add answer if necessary (array type questions)
         {
-        $qq = "SELECT answer FROM {$dbprefix}answers WHERE qid=$fqid AND code='{$details['aid']}'";
-        $qr = mysql_query($qq) or die ("ERROR: ".mysql_error()."<br />$qq");
-        while($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
+        $qq = "SELECT answer FROM ".db_table_name('answers')." WHERE qid=$fqid AND code='{$details['aid']}'";
+        $qr = db_execute_assoc($qq) or die ("ERROR: ".htmlspecialchars($connect->ErrorMsg())."<br />$qq");
+        while($qrow=$qr->FetchRow())
             {
             $qname.=" [".$qrow['answer']."]";
             }
@@ -1081,7 +1076,7 @@ function getsidgidqid($fieldcode)
 */
 function getextendedanswer($fieldcode, $value)
     {
-    global $dbprefix, $surveyid;
+    global $dbprefix, $surveyid, $connect;
     //Fieldcode used to determine question, $value used to match against answer code
     //Returns NULL if question type does not suit
     if (substr_count($fieldcode, "X") > 1) //Only check if it looks like a real fieldcode
@@ -1091,9 +1086,9 @@ function getextendedanswer($fieldcode, $value)
             $fields=$dt;
         }
         //Find out the question type
-        $query = "SELECT type, lid FROM {$dbprefix}questions WHERE qid={$fields['qid']}";
-        $result = mysql_query($query) or die ("Couldn't get question type - getextendedanswer() in common.php<br />".mysql_error());
-        while($row=mysql_fetch_array($result))
+        $query = "SELECT type, lid FROM ".db_table_name('questions')." WHERE qid={$fields['qid']}";
+        $result = db_execute_assoc($query) or die ("Couldn't get question type - getextendedanswer() in common.php<br />".htmlspecialchars($connect->ErrorMsg()));
+        while($row=$result->FetchRow())
             {
             $this_type=$row['type'];
             $this_lid=$row['lid'];
@@ -1106,9 +1101,9 @@ function getextendedanswer($fieldcode, $value)
 			case "^":
 			case "I":
             case "R":
-                $query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid={$fields['qid']} AND code='".mysql_escape_string($value)."'";
-                $result = mysql_query($query) or die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".mysql_error());
-                while($row=mysql_fetch_array($result))
+                $query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid=? AND code=?";
+                $result = db_execute_assoc($query, $fields['qid'], $value) or die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+                while($row=$result->FetchRow())
                     {
                     $this_answer=$row['answer'];
                     } // while
@@ -1161,9 +1156,9 @@ function getextendedanswer($fieldcode, $value)
             case "H":
             case "W":
             case "Z":
-                $query = "SELECT title FROM {$dbprefix}labels WHERE lid=$this_lid AND code='$value'";
-                $result = mysql_query($query) or die ("Couldn't get answer type F/H - getextendedanswer() in common.php");
-                while($row=mysql_fetch_array($result))
+                $query = "SELECT title FROM ".db_table_name('labels')." WHERE lid=$this_lid AND code='$value'";
+                $result = db_execute_assoc($query) or die ("Couldn't get answer type F/H - getextendedanswer() in common.php");
+                while($row=$result->FetchRow())
                     {
                     $this_answer=$row['title'];
                     } // while
@@ -1202,16 +1197,16 @@ function crlf_lineendings($text)
 function createFieldMap($surveyid, $style="null") {
     //This function generates an array containing the fieldcode, and matching data in the same
     //order as the activate script
-    global $dbprefix;
+    global $dbprefix, $connect;
     if (!defined("_YES"))
         {
         loadPublicLangFile($surveyid);
         }
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
-    $pquery = "SELECT private, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid=$surveyid";
-    $presult=mysql_query($pquery);
+    $pquery = "SELECT private, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+    $presult=db_execute_assoc($pquery);
     $counter=0;
-    while($prow=mysql_fetch_array($presult))
+    while($prow=$presult->FetchRow())
         {
         if ($prow['private'] == "N")
             {
@@ -1261,9 +1256,9 @@ function createFieldMap($surveyid, $style="null") {
 
         }
     //Get list of questions
-    $aquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
-    $aresult = mysql_query($aquery) or die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".mysql_error());
-    while ($arow=mysql_fetch_array($aresult)) //With each question, create the appropriate field(s)
+    $aquery = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid AND ".db_table_name('questions').".sid=$surveyid ORDER BY group_name, title";
+    $aresult = db_execute_assoc($aquery) or die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+    while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
         {
         if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && 
 			$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && 
@@ -1323,9 +1318,9 @@ function createFieldMap($surveyid, $style="null") {
 				$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^" || $arow['type'] == "J")
             {
             //MULTI ENTRY
-            $abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$surveyid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-            $abresult=mysql_query($abquery) or die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".mysql_error());
-            while ($abrow=mysql_fetch_array($abresult))
+            $abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM ".db_table_name('answers').", ".db_table_name('questions')." WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid AND sid=$surveyid AND ".db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+            $abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
+            while ($abrow=$abresult->FetchRow())
                 {
                 $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
                 if ($abrow['other']=="Y") {$alsoother="Y";}
@@ -1373,9 +1368,9 @@ function createFieldMap($surveyid, $style="null") {
             }
         elseif ($arow['type'] == "Q")
             {
-            $abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$surveyid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-            $abresult=mysql_query($abquery) or die ("Couldn't get list of answers in createFieldMap function (type Q)<br />$abquery<br />".mysql_error());
-            while ($abrow=mysql_fetch_array($abresult))
+            $abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM ".db_table_name('answers').", ".db_table_name('questions')." WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid AND sid=$surveyid AND ".db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+            $abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (type Q)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
+            while ($abrow=$abresult->FetchRow())
                 {
                 $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
                 if ($style == "full")
@@ -1390,16 +1385,16 @@ function createFieldMap($surveyid, $style="null") {
         elseif ($arow['type'] == "R")
             {
             //MULTI ENTRY
-            $abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid=$surveyid AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-            $abresult=mysql_query($abquery) or die ("Couldn't get list of answers in createFieldMap function (type R)<br />$abquery<br />".mysql_error());
-            $abcount=mysql_num_rows($abresult);
+            $abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM ".db_table_name('answers').", ".db_table_name('questions')." WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid AND sid=$surveyid AND ".db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+            $abresult=$connect->Execute($abquery) or die ("Couldn't get list of answers in createFieldMap function (type R)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
+            $abcount=$abresult->RecordCount();
             for ($i=1; $i<=$abcount; $i++)
                 {
                 $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$i);
                 if ($style == "full")
                     {
                     $fieldmap[$counter]['title']=$arow['title'];
-                    $fieldmap[$counter]['question']=$arow['question']."[".$i."]";
+                    $fieldmap[$counter]['question']=$arow['question']."[$i]";
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
                     }
                 $counter++;
@@ -1679,22 +1674,23 @@ function templatereplace($line)
 function getSavedCount($surveyid)
     {
     //This function returns a count of the number of saved responses to a survey
-    global $dbprefix;
-    $query = "SELECT * FROM {$dbprefix}saved_control WHERE sid=$surveyid";
-    $result=mysql_query($query) or die ("Couldn't get saved summary<br />$query<br />".mysql_error());
-    $count=mysql_num_rows($result);
+    global $dbprefix, $connect;
+    $query = "SELECT COUNT(*) FROM ".db_table_name('saved_control')." WHERE sid=$surveyid";
+    $result=db_execute_num($query) or die ("Couldn't get saved summary<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+    list($count) = $result->FetchRow();
     return $count;
     }
 
 function loadPublicLangFile($surveyid)
     {
+    global $connect;
     //This function loads the local language file applicable to a survey
     if (!defined("_YES")) //Only precede if it isn't already loaded
         {
         global $dbprefix, $publicdir, $defaultlang;
-        $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-        $result = mysql_query($query) or die ("Couldn't get language file");
-        while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+        $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+        $result = db_execute_num($query) or die ("Couldn't get language file");
+        while ($row=$result->FetchRow()) {$surveylanguage = $row[0];}
         $langdir="$publicdir/lang";
         $langfilename="$langdir/$surveylanguage.lang.php";
         if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
@@ -1704,27 +1700,23 @@ function loadPublicLangFile($surveyid)
 
 function buildLabelsetCSArray()
     {
-    global $dbprefix;
+    global $dbprefix, $connect;
     // BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
     $query = "SELECT lid
-              FROM {$dbprefix}labelsets
+              FROM ".db_table_name('labelsets')."
               ORDER BY lid";
-    $result = mysql_query($query) or die("Died collecting labelset ids<br />$query<br />".mysql_error());
-    while ($row=mysql_fetch_array($result))
+    $result = db_execute_assoc($query) or die("Died collecting labelset ids<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+    while ($row=$result->FetchRow())
         {
         $thisset="";
         $query2 = "SELECT code, title, sortorder
-                   FROM {$dbprefix}labels
-                   WHERE lid=".$row['lid']."
+                   FROM ".db_table_name('labels')."
+                   WHERE lid={$row['lid']}
                    ORDER BY sortorder, code";
-        $result2 = mysql_query($query2) or die("Died querying labelset $lid<br />$query2<br />".mysql_error());
-        $numfields=mysql_num_fields($result2);
-        while($row2=mysql_fetch_row($result2))
+        $result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".htmlspecialchars($connect->ErrorMsg()));
+        while($row2=$result2->FetchRow())
             {
-            for ($i=0; $i<=$numfields-1; $i++)
-                {
-                $thisset .= $row2[$i];
-                }
+	    $thisset .= implode('', $row2);
             } // while
         $csarray[$row['lid']]=dechex(crc32($thisset)*1);
         }
@@ -1733,11 +1725,11 @@ function buildLabelsetCSArray()
 
 function getQuestionAttributes($qid)
     {
-    global $dbprefix;
-    $query = "SELECT * FROM {$dbprefix}question_attributes WHERE qid=$qid";
-    $result = mysql_query($query) or die("Error finding question attributes");
+    global $dbprefix, $connect;
+    $query = "SELECT * FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
+    $result = db_execute_assoc($query) or die("Error finding question attributes");
     $qid_attributes=array();
-    while ($row=mysql_fetch_array($result))
+    while ($row=$result->FetchRow())
         {
         $qid_attributes[]=$row;
         }
@@ -1827,10 +1819,9 @@ function questionAttributes()
 // make sure the given string (which comes from a POST or GET variable)
 // is safe to use in MySQL.  This does nothing if gpc_magic_quotes is on.
 function auto_escape($str) {
+  global $connect;
   if (!get_magic_quotes_gpc()) {
-    if( function_exists( "mysql_real_escape_string" ) )
-      return mysql_real_escape_string( $str );
-    return mysql_escape_string( $str );
+    return $connect->escape($str);
   }
   return $str;
 }

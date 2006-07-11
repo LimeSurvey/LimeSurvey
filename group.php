@@ -145,12 +145,12 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 		}
 	else
 		{
-		if (mysql_query($subquery)) //submit of responses was successful
+		if ($connect->Execute($subquery)) //submit of responses was successful
 			{
 			//UPDATE COOKIE IF REQUIRED
 			$idquerytext = "SELECT LAST_INSERT_ID()";
-			$idquery = mysql_query ($idquerytext);
-			$idquery_row = mysql_fetch_row ($idquery);
+			$idquery = db_execute_num($idquerytext);
+			$idquery_row = $idquery->FetchRow();
 			$savedid=$idquery_row[0];
 			
 			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
@@ -165,7 +165,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 			    $query = "DELETE FROM {$dbprefix}saved\n"
 						."WHERE sid=$surveyid\n"
 						."AND identifier = '".$_SESSION['savename']."'";
-				$result = mysql_query($query);
+				$result = $connect->Execute($query);
 				//Should put an email to administrator here
 				//if the delete doesn't work.
 				}
@@ -207,10 +207,10 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				//Delete the saved survey
 				$query = "DELETE FROM {$dbprefix}saved
 				  	WHERE scid=".$_SESSION['scid'];
-				$result=mysql_query($query);
+				$result=$connect->Execute($query);
 				$query = "DELETE FROM {$dbprefix}saved_control
 				  		WHERE scid=".$_SESSION['scid'];
-				$result=mysql_query($query);
+				$result=$connect->Execute($query);
 				//Should put an email to administrator here
 				//if the delete doesn't work.
 			}
@@ -489,9 +489,9 @@ if (isset($conditions) && is_array($conditions))
 		if (!isset($oldcq) || !$oldcq) {$oldcq = $cd[2];}
 		if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
 			{
-			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
-			$cccresult=mysql_query($cccquery);
-			$cccount=mysql_num_rows($cccresult);
+			$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]}";
+			$cccresult=db_execute_num($cccquery);
+			list($cccount) = $cccresult->FetchRow();
 			}
 		if ($cd[4] == "R") 	{$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);}
 		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "H" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $cccount <= $dropdownthreshold))

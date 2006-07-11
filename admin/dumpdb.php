@@ -36,10 +36,8 @@
 
 require_once(dirname(__FILE__).'/../config.php');
 
-if ($result=mysql_list_tables($databasename)) {
-	while($row=mysql_fetch_row($result)){
-		$tables[]=$row[0];
-	} // while
+if ($database_exists)
+	$tables = $connect->MetaTables();
 }
 
 $export="";
@@ -74,14 +72,15 @@ exit;
 
 function defdump($tablename)
     {
+	global $connect;
         $def = "";
         $def .="#------------------------------------------"."\n";
         $def .="# Table definition for $tablename"."\n";
         $def .="#------------------------------------------"."\n";
         $def .= "DROP TABLE IF EXISTS $tablename;"."\n"."\n";
         $def .= "CREATE TABLE $tablename ("."\n";
-        $result = @mysql_query("SHOW COLUMNS FROM $tablename") or die("Table $tablename not existing in database");
-        while($row = @mysql_fetch_array($result))
+        $result = db_execute_assoc("SHOW COLUMNS FROM $tablename") or die("Table $tablename not existing in database");
+        while($row = $result->FetchRow())
         {
           $def .= "    $row[Field] $row[Type]";
           if (!is_null($row["Default"])) $def .= " DEFAULT '$row[Default]'";
@@ -91,8 +90,8 @@ function defdump($tablename)
         }
         $def = ereg_replace(",\n$","", $def);
 
-        $result = @mysql_query("SHOW KEYS FROM $tablename");
-        while($row = @mysql_fetch_array($result))
+        $result = db_execute_assoc("SHOW KEYS FROM $tablename");
+        while($row = $result->FetchRow())
         {
           $kname=$row["Key_name"];
           if(($kname != "PRIMARY") && ($row["Non_unique"] == 0)) $kname="UNIQUE|$kname";
@@ -115,15 +114,17 @@ function defdump($tablename)
 
 function datadump ($table) {
 	
+	global $connect;
+
 	$result = "#------------------------------------------"."\n";
 	$result .="# Table data for $table"."\n";
 	$result .="#------------------------------------------"."\n";
 	
-    $query = mysql_query("select * from $table");
-    $num_fields = @mysql_num_fields($query);
-    $numrow = mysql_num_rows($query);
+    $query = db_execute_num("select * from $table");
+    $num_fields = $query->FieldCount();
+    $numrow = $query->RecordCount();
 	
-	while($row=mysql_fetch_row($query)){
+	while($row=$query->FetchRow()){
 		set_time_limit(5);
 	    $result .= "INSERT INTO ".$table." VALUES(";
 	    for($j=0; $j<$num_fields; $j++) {

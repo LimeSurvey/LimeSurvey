@@ -90,9 +90,9 @@ if (!isset($surveyid) || !$surveyid)
 	}
 
 // MAKE SURE THAT THE SURVEY EXISTS
-$chquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$chresult=mysql_query($chquery);
-$chcount=mysql_num_rows($chresult);
+$chquery = "SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+$chresult=db_execute_assoc($chquery);
+$chcount=$chresult->RecordCount();
 if (!$chcount)
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
@@ -106,7 +106,7 @@ if (!$chcount)
 	exit;
 	}
 // A survey DOES exist
-while ($chrow = mysql_fetch_array($chresult))
+while ($chrow = $chresult->FetchRow())
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._TOKENCONTROL.":</strong> "
@@ -115,12 +115,12 @@ while ($chrow = mysql_fetch_array($chresult))
 	}
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid";
-if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens table exists
+$tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
 	{
 	if (isset($_GET['createtable']) && $_GET['createtable']=="Y") 
 		{
-		$createtokentable = "CREATE TABLE {$dbprefix}tokens_$surveyid (\n"
+		$createtokentable = "CREATE TABLE ".db_table_name("tokens_$surveyid")." (\n"
 						  . "tid int NOT NULL auto_increment,\n "
 						  . "firstname varchar(40) NULL,\n "
 						  . "lastname varchar(40) NULL,\n "
@@ -134,7 +134,7 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 						  . "mpid int NULL,\n"
 						  . "PRIMARY KEY (tid),\n"
 						  . "INDEX (token)) TYPE=MyISAM;";
-		$ctresult = mysql_query($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".mysql_error());
+		$ctresult = $connect->Execute($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".htmlspecialchars($connect->ErrorMsg()));
 		echo "\t<tr>\n"
 			."\t\t<td align='center'>\n"
 			."\t\t\t$setfont<br /><br />\n"
@@ -151,8 +151,8 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 		}
 	elseif (isset($_GET['restoretable']) && $_GET['restoretable'] == "Y" && isset($_GET['oldtable']) && $_GET['oldtable'])
 		{
-		$query = "RENAME TABLE `".$_GET['oldtable']."` TO `{$dbprefix}tokens_$surveyid`";
-		$result=mysql_query($query) or die("Failed Rename!<br />".$query."<br />".mysql_error());
+		$query = "RENAME TABLE ".db_quote_id($_GET['oldtable'])." TO ".db_table_name{"tokens_$surveyid");
+		$result=$connect->Execute($query) or die("Failed Rename!<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
 		echo "\t<tr>\n"
 			."\t\t<td align='center'>\n"
 			."\t\t\t$setfont<br /><br />\n"
@@ -170,11 +170,11 @@ if (!$tkresult = mysql_query($tkquery)) //If the query fails, assume no tokens t
 	else
 		{
 		$query="SHOW TABLES LIKE '{$dbprefix}old_tokens_".$surveyid."_%'";
-		$result=mysql_query($query) or die("COuldn't get old table list<br />".$query."<br />".mysql_error());
-		$tcount=mysql_num_rows($result);
+		$result=db_execute_num($query) or die("COuldn't get old table list<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$tcount=$result->RecordCount();
 		if ($tcount > 0) 
 			{
-		    while($rows=mysql_fetch_row($result))
+		    while($rows=$result->FetchRow())
 				{
 				$oldlist[]=$rows[0];
 				}
@@ -258,7 +258,7 @@ echo "\t<tr bgcolor='#999999'>\n"
 	."\t</tr>\n";
 
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
-$tkcount = mysql_num_rows($tkresult);
+$tkcount = $tkresult->RecordCount();
 
 echo "\t<tr><td align='center'><br /></td></tr>\n";
 // GIVE SOME INFORMATION ABOUT THE TOKENS
@@ -268,20 +268,20 @@ echo "\t<tr>\n"
 	."\t\t\t\t<tr>\n"
 	."\t\t\t\t\t<td align='center'>\n"
 	."\t\t\t\t\t$setfont<strong>"._TC_TOTALCOUNT." $tkcount</strong><br />\n";
-$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE token IS NULL OR token=''";
-$tksr = mysql_query($tksq);
-while ($tkr = mysql_fetch_row($tksr))
+$tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
+$tksr = db_execute_num($tksq);
+while ($tkr = $tksr->FetchRow())
 	{echo "\t\t\t\t\t\t"._TC_NOTOKENCOUNT." $tkr[0] / $tkcount<br />\n";}
 	
-$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE (sent!='N' and sent<>'')";
+$tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (sent!='N' and sent<>'')";
 
-$tksr = mysql_query($tksq);
-while ($tkr = mysql_fetch_row($tksr))
+$tksr = db_execute_num($tksq);
+while ($tkr = $tksr->FetchRow())
 	{echo "\t\t\t\t\t\t"._TC_INVITECOUNT." $tkr[0] / $tkcount<br />\n";}
-$tksq = "SELECT count(*) FROM {$dbprefix}tokens_$surveyid WHERE (completed!='N' and completed<>'')";
+$tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
 
-$tksr = mysql_query($tksq);
-while ($tkr = mysql_fetch_row($tksr))
+$tksr = db_execute_num($tksq);
+while ($tkr = $tksr->FetchRow())
 	{echo "\t\t\t\t\t\t"._TC_COMPLETEDCOUNT." $tkr[0] / $tkcount\n";}
 echo "\t\t\t\t\t</font></td>\n"
 	."\t\t\t\t</tr>\n"
@@ -299,24 +299,24 @@ echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpa
 
 if ($action == "deleteall")
 	{
-	$query="DELETE FROM {$dbprefix}tokens_$surveyid";
-	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
+	$query="DELETE FROM ".db_table_name("tokens_$surveyid");
+	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._TC_ALLDELETED."</font></font></strong></td></tr>\n";
 	$action="";
 	}
 
 if ($action == "clearinvites")
 	{
-	$query="UPDATE {$dbprefix}tokens_$surveyid SET sent='N'";
-	$result=mysql_query($query) or die ("Couldn't update sent field<br />$query<br />".mysql_error());
+	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N'";
+	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._TC_INVITESCLEARED."</font></font></strong></td></tr>\n";
 	$action="";
 	}
 
 if ($action == "cleartokens")
 	{
-	$query="UPDATE {$dbprefix}tokens_$surveyid SET token=''";
-	$result=mysql_query($query) or die("Couldn't reset the tokens field<br />$query<br />".mysql_error());
+	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
+	$result=$connect->Execute($query) or die("Couldn't reset the tokens field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	echo "<tr><td align='center' bgcolor='silver'><strong>$setfont<font color='green'>"._TC_TOKENSCLEARED."</font></font></strong></td></tr>\n";
 	$action="";
 	}
@@ -327,7 +327,7 @@ if ($action == "updatedb" && $surveyid)
 		   . "ADD `attribute_1` varchar(100) NULL,\n"
 		   . "ADD `attribute_2` varchar(100) NULL,\n"
 		   . "ADD `mpid` int NULL";
-	if ($result = mysql_query($query))
+	if ($result = $connect->Execute($query))
 		{
 		echo "<tr><td align='center'>"._SUCCESS."</td></tr>\n";
 		$action="";
@@ -353,9 +353,9 @@ if (!$action)
 		._TC_CLEARTOKENS_RUSURE."\")'>"._TC_CLEARTOKENS."</a></li>\n"
 		."\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=deleteall' onClick='return confirm(\""
 		._TC_DELETEALL_RUSURE."\")'>"._TC_DELETEALL."</a></li>\n";
-	$bquery = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1";
-	$bresult = mysql_query($bquery) or die(_ERROR." counting fields<br />".mysql_error());
-	$bfieldcount=mysql_num_fields($bresult);
+	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." LIMIT 1";
+	$bresult = $connect->Execute($bquery) or die(_ERROR." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bfieldcount=$bresult->FieldCount();
 	if ($bfieldcount==7)
 		{
 		echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=updatedb'>"._TC_UPDATEDB."</a></li>\n";
@@ -420,10 +420,10 @@ if ($action == "browse" || $action == "search")
 		."\t\t<input type='hidden' name='searchstring' value='$searchstring'>\n"
 		."\t\t</form></td>\n"
 		."\t</tr>\n";
-	$bquery = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1";
-	$bresult = mysql_query($bquery) or die(_ERROR." counting fields<br />".mysql_error());
-	$bfieldcount=mysql_num_fields($bresult)-1;
-	$bquery = "SELECT * FROM {$dbprefix}tokens_$surveyid";
+	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." LIMIT 1";
+	$bresult = $connect->Execute($bquery) or die(_ERROR." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bfieldcount=$bresult->FieldCount()-1;
+	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	if ($searchstring)
 		{
 		$bquery .= " WHERE firstname LIKE '%$searchstring%' "
@@ -439,7 +439,7 @@ if ($action == "browse" || $action == "search")
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
 	$bquery .= " LIMIT $start, $limit";
-	$bresult = mysql_query($bquery) or die (_ERROR.": $bquery<br />".mysql_error());
+	$bresult = db_execute_assoc($bquery) or die (_ERROR.": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bgc="";
 	
 	echo "<tr><td colspan='2'>\n"
@@ -492,7 +492,7 @@ if ($action == "browse" || $action == "search")
 	echo "\t\t<th align='left' valign='top' colspan='2'>$setfont"._TL_ACTION."</font></th>\n"
 		."\t</tr>\n";
 	
-	while ($brow = mysql_fetch_array($bresult))
+	while ($brow = $bresult->FetchRow())
 		{
 		$brow['token'] = trim($brow['token']);
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
@@ -521,12 +521,12 @@ if ($action == "browse" || $action == "search")
 				."\t\t<input type='hidden' name='sql' value=\"token='{$brow['token']}'\" />\n"
 				."\t\t</form>\n";
 
-				// TLR Add an UPDATE button to the tokens display in the MPID Actions column 
- 				$query="SELECT * FROM {$dbprefix}survey_$surveyid WHERE token='$brow[4]'"; 
-				$result=mysql_query($query) or die ("<br />Could not find token!<br />\n" . mysql_error()); 
-				if  (mysql_num_rows($result)>0)
+				// TLR Add an UPDATE button to the tokens display in the MPID Actions column
+				$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='$brow[4]'";
+				$result=db_execute_num($query) or die ("<br />Could not find token!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+				list($id) = $result->FetchRow();
+				if  ($id)
                 {
-                    $id=mysql_result($result,0,"id");
 				    echo "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n"
 				    ."\t\t<td align='center' valign='top'>\n"
 				    ."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
@@ -594,10 +594,10 @@ if ($action == "kill")
 		}
 	elseif (isset($_GET['ok']) && $_GET['ok'] == "surething")
 		{
-		$oldtable = "{$dbprefix}tokens_$surveyid";
-		$newtable = "{$dbprefix}old_tokens_{$surveyid}_$date";
-		$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
-		$deactivateresult = mysql_query($deactivatequery) or die ("Couldn't deactivate because:<br />\n".mysql_error()."<br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
+		$oldtable = "tokens_$surveyid";
+		$newtable = "old_tokens_{$surveyid}_$date";
+		$deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
+		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())."<br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		echo "<span style='display: block; text-align: center; width: 70%'>\n"
 			._TC_TOKENSGONE."<br />\n"
 			."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
@@ -672,23 +672,23 @@ if (returnglobal('action') == "email")
 		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TC_REMINDTID." {$_POST['tid']})";}
 		echo "<br />\n";
 		
-		$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
 		
 		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
 		echo "<!-- ctquery: $ctquery -->\n";
-		$ctresult = mysql_query($ctquery) or die("Database error!<br />\n" . mysql_error());
-		$ctcount = mysql_num_rows($ctresult);
-		$ctfieldcount = mysql_num_fields($ctresult);
+		$ctresult = $connect->Execute($ctquery) or die("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+		$ctcount = $ctresult->RecordCount();
+		$ctfieldcount = $ctresult->FieldCount();
 		$emquery = "SELECT firstname, lastname, email, token, tid";
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 		
-		$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
+		$emquery .= " FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
 		
 		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
 		$emquery .= " LIMIT $maxemails";
 		echo "\n\n<!-- emquery: $emquery -->\n\n";
-		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".mysql_error());
-		$emcount = mysql_num_rows($emresult);
+		$emresult = db_execute_assoc($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$emcount = $emresult->RecordCount();
 		$from = $_POST['from'];
        
 		echo "<table width='500px' align='center' bgcolor='#EEEEEE'>\n"
@@ -696,7 +696,7 @@ if (returnglobal('action') == "email")
 			."\t\t<td><font size='1'>\n";
 		if ($emcount > 0)
 			{
-			while ($emrow = mysql_fetch_array($emresult))
+			while ($emrow = $emresult->FetchRow())
 				{
 				$to = $emrow['email'];
 		        unset($fieldsarray);
@@ -715,10 +715,10 @@ if (returnglobal('action') == "email")
 			// TLR change to put date into sent and completed
 			//		$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";	
 					$today = date("Y-m-d Hi");	
-					$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']}\n"
+					$udequery = "UPDATE ".db_table_name("tokens_{$_POST['sid']}")."\n"
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
 			//		
-					$uderesult = mysql_query($udequery) or die ("Couldn't update tokens<br />$udequery<br />".mysql_error());
+					$uderesult = $connect->Execute($udequery) or die ("Couldn't update tokens<br />$udequery<br />".htmlspecialchars($connect->ErrorMsg()));
 					echo "["._TC_INVITESENTTO."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 					}
 				else
@@ -834,25 +834,25 @@ if (returnglobal('action') == "remind")
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {echo " ("._FROM." TID: {$_POST['last_tid']})";}
 		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._TC_REMINDTID." TID: {$_POST['tid']})";}
 		
-		$ctquery = "SELECT * FROM {$dbprefix}tokens_{$_POST['sid']} WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> ''";
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> ''";
 		
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
 		echo "<!-- ctquery: $ctquery -->\n";
-		$ctresult = mysql_query($ctquery) or die ("Database error!<br />\n" . mysql_error());
-		$ctcount = mysql_num_rows($ctresult);
-		$ctfieldcount = mysql_num_fields($ctresult);
+		$ctresult = $connect->Execute($ctquery) or die ("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+		$ctcount = $ctresult->RecordCount();
+		$ctfieldcount = $ctresult->FieldCount();
 		$emquery = "SELECT firstname, lastname, email, token, tid";
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 		
 	// TLR change to put date into sent and completed
-		$emquery .= " FROM {$dbprefix}tokens_{$_POST['sid']} WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>''";
+		$emquery .= " FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>''";
 		
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
-		$emresult = mysql_query($emquery) or die ("Couldn't do query.<br />$emquery<br />".mysql_error());
-		$emcount = mysql_num_rows($emresult);
+		$emresult = db_execute_assoc($emquery) or die ("Couldn't do query.<br />$emquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$emcount = $emresult->RecordCount();
 		$from = $_POST['from'];
 		echo "<table width='500' align='center' bgcolor='#EEEEEE'>\n"
 			."\t<tr>\n"
@@ -860,7 +860,7 @@ if (returnglobal('action') == "remind")
 
 		if ($emcount > 0)
 			{
-			while ($emrow = mysql_fetch_array($emresult))
+			while ($emrow = $emresult->FetchRow())
 				{
 				$to = $emrow['email'];
 
@@ -942,28 +942,28 @@ if ($action == "tokenify")
 			srand((double)microtime()*1000000);
 			}
 		$newtokencount = 0;
-		$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token IS NULL OR token=''";
-		$tkresult = mysql_query($tkquery) or die ("Mucked up!<br />$tkquery<br />".mysql_error());
-		while ($tkrow = mysql_fetch_array($tkresult))
+		$tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
+		$tkresult = db_execute_assoc($tkquery) or die ("Mucked up!<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		while ($tkrow = $tkresult->FetchRow())
 			{
 			$insert = "NO";
 			while ($insert != "OK")
 				{
 				if ($THISOS == "solaris")
 					{
-					$nt1=mysql_query("SELECT RAND()");
-					while ($row=mysql_fetch_row($nt1)) {$newtoken=(int)(sprintf("%010s", $row[0]*1000000000));}
+					$nt1=db_execute_num("SELECT RAND()");
+					while ($row=$nt1->FetchRow()) {$newtoken=(int)(sprintf("%010s", $row[0]*1000000000));}
 					}
 				else
 					{
 					$newtoken = sprintf("%010s", rand(1, getrandmax()));
 					}
-				$ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
-				$ntresult = mysql_query($ntquery);
-				if (!mysql_num_rows($ntresult)) {$insert = "OK";}
+				$ntquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='$newtoken'";
+				$ntresult = $connect->Execute($ntquery);
+				if (!$ntresult->RecordCount()) {$insert = "OK";}
 				}
-			$itquery = "UPDATE {$dbprefix}tokens_$surveyid SET token='$newtoken' WHERE tid={$tkrow['tid']}";
-			$itresult = mysql_query($itquery);
+			$itquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET token='$newtoken' WHERE tid={$tkrow['tid']}";
+			$itresult = $connect->Execute($itquery);
 			$newtokencount++;
 			}
 		$message=str_replace("{TOKENCOUNT}", $newtokencount, _TC_TOKENSCREATED);
@@ -974,15 +974,15 @@ if ($action == "tokenify")
 
 if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
         {
-        $bquery = "SELECT * FROM {$dbprefix}tokens_$surveyid";
+        $bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
         $bquery .= " ORDER BY tid";
 
-        $bresult = mysql_query($bquery) or die ("$bquery<br />".mysql_error());
-		$bfieldcount=mysql_num_fields($bresult);
+        $bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$bfieldcount=$bresult->FieldCount();
 		
         echo "\t<textarea rows=20 cols=120>\n";
 		echo "Tid, Firstname, Lastname, Email, Token [, attribute1, attribute2, mpid]\n";
-        while ($brow = mysql_fetch_array($bresult))
+        while ($brow = $bresult->FetchRow())
                 {
                 echo trim($brow['tid']).",";
                 echo trim($brow['firstname']).",";
@@ -1003,8 +1003,8 @@ if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 
 if ($action == "delete")
 	{
-	$dlquery = "DELETE FROM {$dbprefix}tokens_$surveyid WHERE tid={$_GET['tid']}";
-	$dlresult = mysql_query($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".mysql_error());
+	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$_GET['tid']}";
+	$dlresult = $connect->Execute($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".htmlspecialchars($connect->ErrorMsg()));
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._DELETE."</strong></td></tr>\n"
 		."\t<tr><td align='center'>$setfont<br />\n"
@@ -1017,10 +1017,10 @@ if ($action == "edit" || $action == "addnew")
 	{
 	if ($action == "edit")
 		{
-		$edquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE tid={$_GET['tid']}";
-		$edresult = mysql_query($edquery);
-		$edfieldcount = mysql_num_fields($edresult);
-		while($edrow = mysql_fetch_array($edresult))
+		$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$_GET['tid']}";
+		$edresult = db_execute_assoc($edquery);
+		$edfieldcount = $edresult->FieldCount();
+		while($edrow = $edresult->FetchRow())
 			{
 			//Create variables with the same names as the database column names and fill in the value
 			foreach ($edrow as $Key=>$Value) {$$Key = $Value;}
@@ -1028,9 +1028,9 @@ if ($action == "edit" || $action == "addnew")
 		}
 	if ($action != "edit") 
 		{
-		$edquery = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1";
-		$edresult = mysql_query($edquery);
-		$edfieldcount = mysql_num_fields($edresult);
+		$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." LIMIT 1";
+		$edresult = $connect->Execute($edquery);
+		$edfieldcount = $edresult->FieldCount();
 		}
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._TC_ADDEDIT."</strong></font></td></tr>\n"
@@ -1130,21 +1130,25 @@ if ($action == _UPDATE)
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._TC_ADDEDIT."</strong></td></tr>\n"
 		."\t<tr><td align='center'>\n";
-	$_POST['firstname']=mysql_escape_string($_POST['firstname']);
-	$_POST['lastname']=mysql_escape_string($_POST['lastname']);
-	$_POST['email']=mysql_escape_string($_POST['email']);
-	$udquery = "UPDATE {$dbprefix}tokens_$surveyid SET firstname='{$_POST['firstname']}', "
-			 . "lastname='{$_POST['lastname']}', email='{$_POST['email']}', "
-			 . "token='{$_POST['token']}', sent='{$_POST['sent']}', completed='{$_POST['completed']}'";
+	$data = array();
+	$data[] = $_POST['firstname'];
+	$data[] = $_POST['lastname'];
+	$data[] = $_POST['email'];
+	$data[] = $_POST['token'];
+	$data[] = $_POST['sent'];
+	$data[] = $_POST['completed'];
+	$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
+			 . "lastname=?, email=?, "
+			 . "token=?, sent=?, completed=?";
 	if (isset($_POST['attribute1'])) 
 		{
-		$_POST['attribute1']=mysql_escape_string($_POST['attribute1']);
-		$_POST['attribute2']=mysql_escape_string($_POST['attribute2']);
-		$udquery .= ", attribute_1='{$_POST['attribute1']}', attribute_2='{$_POST['attribute2']}'";
+		$data[] = $_POST['attribute1'];
+		$data[] = $_POST['attribute2'];
+		$udquery .= ", attribute_1=?, attribute_2=?";
 		}
 	
 	$udquery .= " WHERE tid={$_POST['tid']}";
-	$udresult = mysql_query($udquery) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".mysql_error());
+	$udresult = $connect->Execute($udquery, $data) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	echo "<br />$setfont<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		."<br />"._TC_TOKENUPDATED."<br /><br />\n"
 		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._T_ALL_BT."</a><br /><br />\n"
@@ -1156,30 +1160,19 @@ if ($action == _ADD)
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._TC_ADDEDIT."</strong></td></tr>\n"
 		."\t<tr><td align='center'>\n";
-	$inquery = "INSERT into {$dbprefix}tokens_$surveyid \n";
-	$inquery .= "(firstname, lastname, email, token, sent, completed";
+	$data = array('firstname' => $_POST['firstname'],
+		'lastname' => $_POST['lastname'],
+		'email' => $_POST['email'],
+		'token' => $_POST['token'],
+		'sent' => $_POST['sent'],
+		'completed' => $_POST['completed']);
 	if (isset($_POST['attribute1'])) 
 		{
-		$inquery .= ", attribute_1, attribute_2";
+		$data['attribute_1'] = $_POST['attribute1'];
+		$data['attribute_2'] = $_POST['attribute2'];
 		}
-	$inquery .=") \n";
-	$inquery .= "VALUES ('"
-			  . mysql_escape_string($_POST['firstname'])
-			  . "', '"
-			  . mysql_escape_string($_POST['lastname'])
-			  . "', '"
-			  . mysql_escape_string($_POST['email'])
-			  . "', '{$_POST['token']}', '{$_POST['sent']}', '{$_POST['completed']}'";
-	if (isset($_POST['attribute1'])) 
-		{
-		$inquery .= ", '"
-				  . mysql_escape_string($_POST['attribute1'])
-				  . "', '"
-				  . mysql_escape_string($_POST['attribute2'])
-				  . "'";
-		}
-	$inquery .= ")";
-	$inresult = mysql_query($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".mysql_error());
+	$inquery = $connect->GetInsertSQL("{$dbprefix}tokens_$surveyid", $data);
+	$inresult = $connect->Execute($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	echo "<br />$setfont<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
 		."<br />"._TC_TOKENADDED."<br /><br />\n"
 		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._T_ALL_BT."</a><br />\n"
@@ -1250,14 +1243,7 @@ if ($action == "upload")
 				}
 			else
 				{
-				if (_PHPVERSION >= "4.3.0")
-					{
-					$line = explode(",", mysql_real_escape_string($buffer));
-					}
-				else
-					{
-					$line = explode(",", mysql_escape_string($buffer));
-					}
+				$line = explode(",", $connect->escape($buffer));
 				$elements = count($line);
 				if ($elements > 1)
 					{
@@ -1277,7 +1263,7 @@ if ($action == "upload")
 						$xy++;
 						}
 					//CHECK FOR DUPLICATES?
-					$iq = "INSERT INTO {$dbprefix}tokens_$surveyid \n"
+					$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
 						. "(firstname, lastname, email, token";
 					if (isset($attribute1)) {$iq .= ", attribute_1";}
 					if (isset($attribute2)) {$iq .= ", attribute_2";}
@@ -1287,7 +1273,7 @@ if ($action == "upload")
 					if (isset($attribute2)) {$iq .= ", '$attribute2'";}
 					$iq .= ")";
 					//echo "<pre style='text-align: left'>$iq</pre>\n"; //Debugging info
-					$ir = mysql_query($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".mysql_error()."<pre style='text-align: left'>$iq</pre>\n");
+					$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
 					$xz++;
 					}
 				}

@@ -1271,32 +1271,32 @@ function showPreview($surveyid, $gid, $qid=null) {
 
 function checkSettings($dbprefix) {
 	//GET NUMBER OF SURVEYS
-	global $defaultlang, $databasename, $realdefaultlang, $scriptname, $homeurl, $imagefiles;
+	global $defaultlang, $databasename, $realdefaultlang, $scriptname, $homeurl, $imagefiles, $connect;
 	
 	$query = "SELECT sid FROM {$dbprefix}surveys";
-	$result = mysql_query($query);
-	$surveycount=mysql_num_rows($result);
+	$result = $connect->Execute($query);
+	$surveycount=$result->RecordCount();
 	$query = "SELECT sid FROM {$dbprefix}surveys WHERE active='Y'";
-	$result = mysql_query($query);
-	$activesurveycount=mysql_num_rows($result);
+	$result = $connect->Execute($query);
+	$activesurveycount=$result->RecordCount();
 	$query = "SELECT user FROM {$dbprefix}users";
-	$result = mysql_query($query);
-	$usercount = mysql_num_rows($result);
-	$result = mysql_list_tables($databasename);
-	while ($row = mysql_fetch_row($result))
+	$result = $connect->Execute($query);
+	$usercount = $result->RecordCount();
+	$tablelist = $connect->MetaTables();
+	foreach ($tablelist as $table)
 		{
 		$stlength=strlen($dbprefix).strlen("old");
-		if (substr($row[0], 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
+		if (substr($table, 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
 			{
-			$oldtokenlist[]=$row[0];
+			$oldtokenlist[]=$table;
 			}
-		elseif (substr($row[0], 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
+		elseif (substr($table, 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
 			{
-			$tokenlist[]=$row[0];
+			$tokenlist[]=$table;
 			}
-		elseif (substr($row[0], 0, $stlength) == $dbprefix."old")
+		elseif (substr($table, 0, $stlength) == $dbprefix."old")
 			{
-			$oldresultslist[]=$row[0];
+			$oldresultslist[]=$table;
 			}
 	    }
 	if(isset($oldresultslist) && is_array($oldresultslist)) 
@@ -1367,7 +1367,7 @@ function checkSettings($dbprefix) {
 
 
 function getSurveysBrief($user=null, $surveyid=null, $notsid=null) {
-    global $dbprefix;
+    global $dbprefix, $connect;
 	$surveyList=array();
 	$query = "SELECT * FROM {$dbprefix}surveys ";
 	if ($surveyid !== null) {
@@ -1377,8 +1377,8 @@ function getSurveysBrief($user=null, $surveyid=null, $notsid=null) {
 	    $query .= "WHERE sid != $notsid ";
 	}
 	$query .= "ORDER BY short_title";
-	$result = mysql_query($query) or die($query ."<br />".mysql_error());
-	while($row=mysql_fetch_array($result)) {
+	$result = db_execute_assoc($query) or die($query ."<br />".$connect->ErrorMsg());
+	while($row=$result->FetchRow()) {
 		$surveyList[]=array("title"=>$row['short_title'],
 						  "sid"=>$row['sid'],
 						  "active"=>$row['active']);
@@ -1386,11 +1386,11 @@ function getSurveysBrief($user=null, $surveyid=null, $notsid=null) {
 	return $surveyList;	
 }
 function getGroupsBrief($surveyid) {
-    global $dbprefix;
+    global $dbprefix, $connect;
 	$groupList=array();
 	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
-	$result = mysql_query($query) or die($query."<br />".mysql_error());
-	while($row=mysql_fetch_array($result)) {
+	$result = db_execute_assoc($query) or die($query."<br />".$connect->ErrorMsg());
+	while($row=$result->FetchRow()) {
 		$groupList[]=array("group_name"=>$row['group_name'],
 						 "gid"=>$row['gid']);
 	} // while
@@ -1399,11 +1399,11 @@ function getGroupsBrief($surveyid) {
 }
 
 function getQuestionsBrief($gid) {
-    global $dbprefix;
+	global $dbprefix, $connect;
 	$questionList=array();
 	$query = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid ORDER BY title";
-	$result = mysql_query($query);
-	while($row=mysql_fetch_array($result)) {
+	$result = db_execute_assoc($query);
+	while($row=$result->FetchRow()) {
 		$questionList[]=array("title"=>$row['title'],
 							  "question"=>$row['question'],
 							 "qid"=>$row['qid']);
@@ -1486,40 +1486,40 @@ function buildEditRows($fields, $elementName, $display="") {
 }
 
 function getGroupInfo($surveyid, $gid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
-	$result = mysql_query($query) or die("Couldn't get info for group $gid<br />$query<br />".mysql_error());
-	while($row=mysql_fetch_array($result)) {
+	$result = db_execute_assoc($query) or die("Couldn't get info for group $gid<br />$query<br />".$connect->ErrorMsg());
+	while($row=$result->FetchRow()) {
 		return $row;
 	} // while
 }
 
 function getQuestionInfo($qid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * FROM {$dbprefix}questions where qid=$qid";
-	$result = mysql_query($query) or die("Couldn't get info for question $qid<br />$query<br />".mysql_error());
-	while($row=mysql_fetch_array($result)) {
+	$result = db_execute_assoc($query) or die("Couldn't get info for question $qid<br />$query<br />".$connect->ErrorMsg());
+	while($row=$result->FetchRow()) {
 		return $row;
 	} // while
 }
 
 function getAnswerInfo($qid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, code";
-	$result = mysql_query($query) or die("Couldn't get info for answers $qid<br />$query<br />".mysql_error());
+	$result = db_execute_assoc($query) or die("Couldn't get info for answers $qid<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
-	while($row = mysql_fetch_array($result)){
+	while($row = $result->FetchRow()){
 		$output[] = $row;
 	} // while
 	return $output;
 }
 
 function getAttributeInfo($qid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * FROM {$dbprefix}question_attributes where qid=$qid";
-	$result = mysql_query($query) or die("Couldn't get info for question attributes $qid<br />$query<br />".mysql_error());
+	$result = db_execute_assoc($query) or die("Couldn't get info for question attributes $qid<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
-	while($row = mysql_fetch_array($result)){
+	while($row = $result->FetchRow()){
 		$output[] = $row;
 	} // while
 	return $output;
@@ -1527,43 +1527,43 @@ function getAttributeInfo($qid) {
 }
 
 function getAssessments($surveyid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT id, sid, scope, gid, minimum, maximum, name, message, link
 			  FROM {$dbprefix}assessments
 			  WHERE sid=$surveyid
 			  ORDER BY scope, gid";
-	$result=mysql_query($query) or die("Error getting assessments<br />$query<br />".mysql_error());
+	$result=db_execute_assoc($query) or die("Error getting assessments<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
-	while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while($row=$result->FetchRow()) {
 		$output[]=$row;
 	}
 	return $output;
 }
 
 function getLabelSetList() {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * FROM {$dbprefix}labelsets ORDER BY label_name";
-	$result = mysql_query($query);
+	$result = db_execute_assoc($query);
 	$output=array();
-	while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {$output[]=$row;}
+	while($row=$result->FetchRow()) {$output[]=$row;}
 	return $output;
 }
 
 function getLabels($lid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, title";
-	$result = mysql_query($query);
+	$result = db_execute_assoc($query);
 	$output=array();
-	while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {$output[]=$row;}
+	while($row=$result->FetchRow()) {$output[]=$row;}
 	return $output;
 }
 
 function getLabelSetInfo($lid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	if ($lid) {
 		$query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
-		$result = mysql_query($query) or die("Error getting labelset<br />$query<br />".mysql_error());
-		while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {
+		$result = db_execute_assoc($query) or die("Error getting labelset<br />$query<br />".$connect->ErrorMsg());
+		while($row=$result->FetchRow()) {
 			$output=$row;
 		}
 	} else {$output=array();}
@@ -1571,30 +1571,30 @@ function getLabelSetInfo($lid) {
 }
 
 function getAssessmentInfo($id) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * FROM {$dbprefix}assessments WHERE id=$id";
-	$result = mysql_query($query);
-	while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {
+	$result = db_execute_assoc($query);
+	while($row=$result->FetchRow()) {
 		$output=$row;
 	}
 	return $output;
 }
 //function getGroupList($surveyid) {
-//	global $dbprefix;
+//	global $dbprefix, $connect;
 //	$query = "SELECT gid, group_name
 //			  FROM {$dbprefix}groups
 //			  WHERE sid=$surveyid
 //			  ORDER BY group_name";
-//	$result = mysql_query($query) or die("Error getting groups<br />$query<br />".mysql_error());
+//	$result db_execute_assoc($query) or die("Error getting groups<br />$query<br />".$connect->ErrorMsg());
 //	$output=array();
-//	while($row=mysql_fetch_array($result)) {
+//	while($row=$result->FetchRow()) {
 //		$output[]=$row;
 //	}
 //	return $output;
 //}
 
 function showPosition($surveyid, $gid, $qid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT {$dbprefix}surveys.short_title";
 	$from = "\nFROM {$dbprefix}surveys";
 	$join = "\n";
@@ -1610,8 +1610,8 @@ function showPosition($surveyid, $gid, $qid) {
 		$where .= "\nAND {$dbprefix}questions.qid=$qid";
 	}
 	$sql=$query.$from.$join.$where;
-	$result=mysql_query($sql) or die("Couldn't do good join for position display<br />$query<br />".mysql_error());
-	while($row=mysql_fetch_array($result)) {
+	$result=db_execute_assoc($sql) or die("Couldn't do good join for position display<br />$query<br />".$connect->ErrorMsg());
+	while($row=$result->FetchRow()) {
 		$output = "[".$row['short_title']."]";
 		if (isset($gid) && $gid) {
 		    $output .= "->[".$row['group_name']."]";
@@ -1643,12 +1643,12 @@ function autoComparitor($value, $comparitor, $returnvalue) {
 }
 
 function labelsets() {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT * FROM {$dbprefix}labelsets
 			  ORDER BY label_name";
-	$result=mysql_query($query) or die(mysql_error());
+	$result=db_execute_assoc($query) or die($connect->ErrorMsg());
 	$output=array();
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {$output[]=$row;}
+	while ($row = $result->FetchRow()) {$output[]=$row;}
 	return $output;
 }
 
@@ -1799,16 +1799,16 @@ function notificationlist($value=null, $name, $extras=null) {
 }
 
 function labelsInActiveSurvey($lid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.qid 
 			  FROM {$dbprefix}questions, {$dbprefix}surveys
 			  WHERE {$dbprefix}questions.sid={$dbprefix}surveys.sid
 			  AND {$dbprefix}questions.lid=$lid
 			  AND {$dbprefix}surveys.active = 'Y'";
-	$result = mysql_query($query);
+	$result = db_execute_assoc($query);
 	$output=array();
 	$surveyid=null;
-	while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while($row=$result->FetchRow()) {
 		if ($row['sid'] != $surveyid) {
 		    $surveyid=$row['sid'];
 		}
@@ -1818,17 +1818,17 @@ function labelsInActiveSurvey($lid) {
 }
 
 function labelsInSurvey($lid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.qid 
 			  FROM {$dbprefix}questions, {$dbprefix}surveys
 			  WHERE {$dbprefix}questions.sid={$dbprefix}surveys.sid
 			  AND {$dbprefix}questions.lid=$lid
 			  AND {$dbprefix}surveys.active != 'Y'
 			  ORDER BY {$dbprefix}questions.sid, {$dbprefix}questions.qid";
-	$result = mysql_query($query);
+	$result = db_execute_assoc($query);
 	$output=array();
 	$surveyid=0;
-	while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while($row=$result->FetchRow()) {
 		if ($row['sid'] != $surveyid) {
 		    $surveyid=$row['sid'];
 		}

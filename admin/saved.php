@@ -52,18 +52,18 @@ if ($action == "delete" && $surveyid && $scid)
 			  WHERE scid=$scid
 			  AND sid=$surveyid
 			  ";
-	if ($result = mysql_query($query)) 
+	if ($result = $connect->Execute($query)) 
 		{
 		//If we were succesful deleting the saved_control entry, 
 		//then delete the rest
 		$query = "DELETE FROM {$dbprefix}saved
 				  WHERE scid=$scid";
-		$result = mysql_query($query) or die("Couldn't delete");
+		$result = $connect->Execute($query) or die("Couldn't delete");
 	    
 		} 
 	else
 		{
-		echo  "Couldn't delete<br />$query<br />".mysql_error();
+		echo  "Couldn't delete<br />$query<br />".$connect->ErrorMsg();
 		}
 	}
 
@@ -90,13 +90,13 @@ echo "</td></tr></table>\n";
 
 function showSavedList($surveyid)
 	{
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT scid, identifier, ip, saved_date, email, access_code\n"
 			."FROM {$dbprefix}saved_control\n"
 			."WHERE sid=$surveyid\n"
 			."ORDER BY saved_date desc";
-	$result = mysql_query($query) or die ("Couldn't summarise saved entries<br />$query<br />".mysql_error());
-	if (mysql_num_rows($result) > 0)
+	$result = db_execute_assoc($query) or die ("Couldn't summarise saved entries<br />$query<br />".$connect->ErrorMsg());
+	if ($result->RecordCount() > 0)
 		{
 		echo "<table class='outlinetable' cellspacing='0' align='center'>\n";
 		echo "<tr><th>SCID</th><th>"
@@ -106,7 +106,7 @@ function showSavedList($surveyid)
 			._EMAIL."</th><th>"
 			._AL_ACTION."</th>"
 			."</tr>\n";
-		while($row=mysql_fetch_array($result))
+		while($row=$result->FetchRow())
 			{
 			echo "<tr>
 				<td>".$row['scid']."</td>

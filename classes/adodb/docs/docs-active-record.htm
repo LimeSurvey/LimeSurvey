@@ -1,0 +1,524 @@
+<html>
+<style>
+pre {
+  background-color: #eee;
+  padding: 0.75em 1.5em;
+  font-size: 12px;
+  border: 1px solid #ddd;
+}
+
+li,p {
+font-family: Arial, Helvetica, sans-serif ;
+}
+</style>
+<title>ADOdb Active Record</title>
+<body>
+<h1>ADOdb Active Record</h1>
+<p> (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
+<p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
+  means you can use it in compiled proprietary and commercial products.</font></p>
+<p><hr>
+<ol>
+
+<h3><li>Introduction</h3>
+<p>
+ADOdb_Active_Record is an Object Relation Mapping (ORM) implementation using PHP. In an ORM system, the tables and rows of the database are abstracted into native PHP objects. This allows the programmer to focus more on manipulating the data and less on writing SQL queries.
+<p>
+This implementation differs from Zend Framework's implementation in the following ways:
+<ul>
+<li>Works with PHP4 and PHP5 and provides equivalent functionality in both versions of PHP.<p>
+<li>ADOdb_Active_Record works when you are connected to multiple databases. Zend's only works when connected to a default database.<p>
+<li>Support for $ADODB_ASSOC_CASE. The field names are upper-cased, lower-cased or left in natural case depending on this setting.<p>
+<li>No field name conversion to camel-caps style, unlike Zend's implementation which will convert field names such as 'first_name' to 'firstName'.<p>
+<li>New ADOConnection::GetActiveRecords() and ADOConnection::GetActiveRecordsClass() functions in adodb.inc.php.<p>
+<li>Caching of table metadata so it is only queried once per table, no matter how many Active Records are created.<p>
+<li>The additional functionality is described <a href=#additional>below</a>. 
+</ul>
+<P>
+ADOdb_Active_Record is designed upon the principles of the "ActiveRecord" design pattern, which was first described by Martin Fowler. The ActiveRecord pattern has been implemented in many forms across the spectrum of programming languages. ADOdb_Active_Record attempts to represent the database as closely to native PHP objects as possible.
+<p>
+ADOdb_Active_Record maps a database table to a PHP class, and each instance of that class represents a table row. Relations between tables can also be defined, allowing the ADOdb_Active_Record objects to be nested.
+<p>
+
+<h3><li>Setting the Database Connection</h3>
+<p>
+The first step to using  ADOdb_Active_Record is to set the default connection that an ADOdb_Active_Record objects will use to connect to a database. 
+
+<pre>
+require_once('adodb/adodb-active-record.php');
+
+$db = new ADOConnection('mysql://root:pwd@localhost/dbname');
+ADOdb_Active_Record::SetDatabaseAdapter($db);
+</pre>        
+
+<h3><li>Table Rows as Objects</h3>
+<p>
+First, let's create a temporary table in our MySQL database that we can use for demonstrative purposes throughout the rest of this tutorial. We can do this by sending a CREATE query:
+
+<pre>
+$db->Execute("CREATE TEMPORARY TABLE `persons` (
+                `id` int(10) unsigned NOT NULL auto_increment,
+                `name_first` varchar(100) NOT NULL default '',
+                `name_last` varchar(100) NOT NULL default '',
+                `favorite_color` varchar(100) NOT NULL default '',
+                PRIMARY KEY  (`id`)
+            ) ENGINE=MyISAM;
+           ");
+ </pre>   
+<p>
+ADOdb_Active_Record's are object representations of table rows. Each table in the database is represented by a class in PHP. To begin working with a table as a ADOdb_Active_Record, a class that extends ADOdb_Active_Records needs to be created for it.
+
+<pre>
+class Person extends ADOdb_Active_Record{}
+$person = new Person();
+</pre>   
+
+<p>
+In the above example, a new ADOdb_Active_Record object $person was created to access the "persons" table. Zend_Db_DataObject takes the name of the class, pluralizes it (according to American English rules), and assumes that this is the name of the table in the database.
+<p>
+This kind of behavior is typical of ADOdb_Active_Record. It will assume as much as possible by convention rather than explicit configuration. In situations where it isn't possible to use the conventions that ADOdb_Active_Record expects, options can be overridden as we'll see later.
+
+<h3><li>Table Columns as Object Properties</h3>
+<p>
+When the $person object was instantiated, ADOdb_Active_Record read the table metadata from the database itself, and then exposed the table's columns (fields) as object properties.
+<p>
+Our "persons" table has three fields: "name_first", "name_last", and "favorite_color". Each of these fields is now a property of the $person object. To see all these properties, use the ADOdb_Active_Record::getAttributeNames() method:
+<pre>
+var_dump($person->getAttributeNames());
+
+/**
+ * Outputs the following:
+ * array(4) {
+ *    [0]=>
+ *    string(2) "id"
+ *    [1]=>
+ *    string(9) "name_first"
+ *    [2]=>
+ *    string(8) "name_last"
+ *    [3]=>
+ *    string(13) "favorite_color"
+ *  }
+ */
+    </pre>   
+<p>
+One big difference between ADOdb and Zend's implementation is we do not automatically convert to camelCaps style.
+<p>
+<h3><li>Inserting and Updating a Record</h3><p>
+
+An ADOdb_Active_Record object is a representation of a single table row. However, when our $person object is instantiated, it does not reference any particular row. It is a blank record that does not yet exist in the database. An ADOdb_Active_Record object is considered blank when its primary key is NULL. The primary key in our persons table is "id".
+<p>
+To insert a new record into the database, change the object's properties and then call the ADOdb_Active_Record::save() method:
+<pre>
+$person = new Person();
+$person->nameFirst = 'Andi';
+$person->nameLast  = 'Gutmans';
+$person->save();
+ </pre>   
+<p>
+Oh, no! The above code snippet does not insert a new record into the database. Instead, outputs an error:
+<pre>
+1048: Column 'name_first' cannot be null
+ </pre>   
+<p>
+This error occurred because MySQL rejected the INSERT query that was generated by ADOdb_Active_Record. If exceptions are enabled in ADOdb and you are using PHP5, an error will be thrown. In the definition of our table, we specified all of the fields as NOT NULL; i.e., they must contain a value.
+<p>
+ADOdb_Active_Records are bound by the same contraints as the database tables they represent. If the field in the database cannot be NULL, the corresponding property in the ADOdb_Active_Record also cannot be NULL. In the example above, we failed to set the property $person->favoriteColor, which caused the INSERT to be rejected by MySQL.
+<p>
+To insert a new ADOdb_Active_Record in the database, populate all of ADOdb_Active_Record's properties so that they satisfy the constraints of the database table, and then call the save() method:
+<pre>
+/**
+ * Calling the save() method will successfully INSERT
+ * this $person into the database table.
+ */
+$person = new Person();
+$person->name_first     = 'Andi';
+$person->name_last      = 'Gutmans';
+$person->favorite_color = 'blue';
+$person->save();
+</pre>
+<p>
+Once this $person has been INSERTed into the database by calling save(), the primary key can now be read as a property. Since this is the first row inserted into our temporary table, its "id" will be 1:
+<pre>
+var_dump($person->id);
+
+/**
+ * Outputs the following:
+ * string(1)
+ */
+ </pre>       
+<p>
+From this point on, updating it is simply a matter of changing the object's properties and calling the save() method again:
+
+<pre>
+$person->favorite_color = 'red';
+$person->save();
+   </pre>
+<p>
+The code snippet above will change the favorite color to red, and then UPDATE the record in the database.
+
+<a name=additional>
+<h2>ADOdb Specific Functionality</h2>
+<h3><li>Setting the Table Name</h3>
+<p>The default behaviour on creating an ADOdb_Active_Record is to "pluralize" the class name and
+ use that as the table name. Often, this is not the case. For example, the Person class could be reading 
+ from the "People" table. 
+<p>We provide two ways to define your own table:
+<p>1. Use a constructor parameter to override the default table naming behaviour.
+<pre>
+	class Person extends ADOdb_Active_Record{}
+	$person = new Person('People');
+</pre>
+<p>2. Define it in a class declaration:
+<pre>
+	class Person extends ADOdb_Active_Record
+	{
+	var $_table = 'People';
+	}
+	$person = new Person();
+</pre>
+
+<h3><li>$ADODB_ASSOC_CASE</h3>
+<p>This allows you to control the case of field names and properties. For example, all field names in Oracle are upper-case by default. So you 
+can force field names to be lowercase using $ADODB_ASSOC_CASE. Legal values are as follows:
+<pre>
+ 0: lower-case
+ 1: upper-case
+ 2: native-case
+</pre>
+<p>So to force all Oracle field names to lower-case, use
+<pre>
+$ADODB_ASSOC_CASE = 0;
+$person = new Person('People');
+$person->name = 'Lily';
+$ADODB_ASSOC_CASE = 2;
+$person2 = new Person('People');
+$person2->NAME = 'Lily'; 
+</pre>
+
+<p>Also see <a href=http://phplens.com/adodb/reference.constants.adodb_assoc_case.html>$ADODB_ASSOC_CASE</a>.
+
+<h3><li>ADOdb_Active_Record::Save()</h3>
+<p>
+Saves a record by executing an INSERT or UPDATE SQL statement as appropriate. 
+<p>Returns false on  unsuccessful INSERT, true if successsful INSERT.
+<p>Returns 0 on failed UPDATE, and 1 on UPDATE if data has changed, and -1 if no data was changed, so no UPDATE statement was executed.
+
+<h3><li>ADOdb_Active_Record::Replace()</h3>
+<p>
+ADOdb supports replace functionality, whereby the record is inserted if it does not exists, or updated otherwise.
+<pre>
+$rec = new ADOdb_Active_Record("product");
+$rec->name = 'John';
+$rec->tel_no = '34111145';
+$ok = $rec->replace(); // 0=failure, 1=update, 2=insert
+</pre>
+
+
+<h3><li>ADOdb_Active_Record::Load($where)</h3>
+<p>Sometimes, we want to load a single record into an Active Record. We can do so using:
+<pre>
+$person->load("id=3");
+
+// or using bind parameters
+
+$person->load("id=?", array(3));
+</pre>
+<p>Returns false if an error occurs.
+
+<h3><li>ADOdb_Active_Record::Find($whereOrderBy, $bindarr=false, $pkeyArr=false)</h3>
+<p>We want to retrieve an array of active records based on some search criteria. For example:
+<pre>
+class Person extends ADOdb_Active_Record {
+var $_table = 'people';
+}
+
+$person = new Person();
+peopleArray =& $person->Find("name like ? order by age", array('Sm%'));
+</pre>
+
+<h3><li>Error Handling and Debugging</h3>
+<p>
+In PHP5, if adodb-exceptions.inc.php is included, then errors are thrown. Otherwise errors are handled by returning a value. False by default means an error has occurred. You can get the last error message using the ErrorMsg() function. 
+<p>
+To check for errors in ADOdb_Active_Record, do not poll ErrorMsg() as the last error message will always be returned, even if it occurred several operations ago. Do this instead:
+<pre>
+# right!
+$ok = $rec->Save();
+if (!$ok) $err = $rec->ErrorMsg();
+
+# wrong :(
+$rec->Save();
+if ($rec->ErrorMsg()) echo "Wrong way to detect error";
+</pre>
+<p>The ADOConnection::Debug property is obeyed. So
+if $db->debug is enabled, then ADOdb_Active_Record errors are also outputted to standard output and written to the browser.
+
+<h3><li>ADOdb_Active_Record::Set()</h3>
+<p>You can convert an array to an ADOdb_Active_Record using Set(). The array must be numerically indexed, and have all fields of the table defined in the array. The elements of the array must be in the table's natural order too.
+<pre>
+$row = $db->GetRow("select * from tablex where id=$id");
+
+# PHP4 or PHP5 without enabling exceptions
+$obj =& new ADOdb_Active_Record('Products');
+if ($obj->ErrorMsg()){
+	echo $obj->ErrorMsg();
+} else {
+	$obj->Set($row);
+}
+
+# in PHP5, with exceptions enabled:
+
+include('adodb-exceptions.inc.php');
+try {
+	$obj =& new ADOdb_Active_Record('Products');
+	$obj->Set($row);
+} catch(exceptions $e) {
+	echo $e->getMessage();
+}
+</pre>
+<p>
+<h3><li>Primary Keys</h3>
+<p>
+ADOdb_Active_Record does not require the table to have a primary key. You can insert records for such a table, but you will not be able to update nor delete. 
+<p>Sometimes you are retrieving data from a view or table that has no primary key, but has a unique index. You can dynamically set the primary key of a table through the constructor, or using ADOdb_Active_Record::SetPrimaryKeys():
+<pre>
+	$pkeys = array('category','prodcode');
+	
+	// set primary key using constructor
+	$rec = new ADOdb_Active_Record('Products', $pkeys);
+	
+	 // or use method
+	$rec->SetPrimaryKeys($pkeys);
+</pre>
+
+
+<h3><li>Retrieval of Auto-incrementing ID</h3>
+When creating a new record, the retrieval of the last auto-incrementing ID is not reliable for databases that do not support the Insert_ID() function call (check $connection->hasInsertID). In this case we perform a <b>SELECT MAX($primarykey) FROM $table</b>, which will not work reliably in a multi-user environment. You can override the ADOdb_Active_Record::LastInsertID() function in this case.
+
+<h3><li>Dealing with Multiple Databases</h3>
+<p>
+Sometimes we want to load  data from one database and insert it into another using ActiveRecords. This can be done using the optional parameter of the ADOdb_Active_Record constructor. In the following example, we read data from db.table1 and store it in db2.table2:
+<pre>
+$db = NewADOConnection(...);
+$db2 = NewADOConnection(...);
+
+ADOdb_Active_Record::SetDatabaseAdapter($db2);
+
+$activeRecs = $db->GetActiveRecords('table1');
+
+foreach($activeRecs as $rec) {
+	$rec2 = new ADOdb_Active_Record('table2',$db2);
+	$rec2->id = $rec->id;
+	$rec2->name = $rec->name;
+	
+	$rec2->Save();
+}
+</pre>
+<p>
+If you have to pass in a primary key called "id" and the 2nd db connection in the constructor, you can do so too:
+<pre>
+$rec = new ADOdb_Active_Record("table1",array("id"),$db2);
+</pre>
+
+<h3><li>$ADODB_ACTIVE_CACHESECS</h3>
+<p>You can cache the table metadata (field names, types, and other info such primary keys) in $ADODB_CACHE_DIR (which defaults to /tmp) by setting
+the global variable $ADODB_ACTIVE_CACHESECS to a value greater than 0. This will be the number of seconds to cache.
+ You should set this to a value of 30 seconds or greater for optimal performance.
+
+<h3><li>Active Record Considered Bad?</h3>
+<p>Although the Active Record concept is useful, you have to be aware of some pitfalls when using Active Record. The level of granularity of Active Record is individual records. It encourages code like the following, used to increase the price of all furniture products by 10%:
+<pre>
+ $recs = $db->GetActiveRecords("Products","category='Furniture'");
+ foreach($recs as $rec) {
+    $rec->price *= 1.1; // increase price by 10% for all Furniture products
+    $rec->save();
+ }
+</pre>
+Of course a SELECT statement is superior because it's simpler and much more efficient (probably by a factor of x10 or more):
+<pre>
+   $db->Execute("update Products set price = price * 1.1 where category='Furniture'");
+</pre>
+<p>Another issue is performance. For performance sensitive code, using direct SQL will always be faster than using Active Records due to overhead and the fact that all fields in a row are retrieved (rather than only the subset you need) whenever an Active Record is loaded.
+
+<h3><li>Transactions</h3>
+<p>
+The default transaction mode in ADOdb is autocommit. So that is the default with active record too. 
+The general rules for managing transactions still apply. Active Record to the database is a set of insert/update/delete statements, and the db has no knowledge of active records.
+<p>
+Smart transactions, that does an auto-rollback if an error occurs, is still the best method to multiple activities (inserts/updates/deletes) that need to be treated as a single transaction:
+<pre>
+$conn->StartTrans();
+$parent->save();
+$child->save();
+$conn->CompleteTrans();
+</pre>
+
+<h2>ADOConnection Supplement</h2>
+
+<h3><li>ADOConnection::GetActiveRecords()</h3>
+<p>
+This allows you to retrieve an array of ADOdb_Active_Records. Returns false if an error occurs.
+<pre>
+$table = 'products';
+$whereOrderBy = "name LIKE 'A%' ORDER BY Name";
+$activeRecArr = $db->GetActiveRecords($table, $whereOrderBy);
+foreach($activeRecArr as $rec) {
+	$rec->id = rand();
+	$rec->save();
+}
+</pre>
+<p>
+And to retrieve all records ordered by specific fields:
+<pre>
+$whereOrderBy = "1=1 ORDER BY Name";
+$activeRecArr = $db->ADOdb_Active_Records($table);
+</pre>
+<p>
+To use bind variables (assuming ? is the place-holder for your database):
+<pre>
+$activeRecArr = $db->GetActiveRecords($tableName, 'name LIKE ?',
+						array('A%'));
+</pre>
+<p>You can also define the primary keys of the table by passing an array of field names:
+<pre>
+$activeRecArr = $db->GetActiveRecords($tableName, 'name LIKE ?',
+						array('A%'), array('id'));
+</pre>
+
+<h3><li>ADOConnection::GetActiveRecordsClass()</h3>
+<p>
+This allows you to retrieve an array of objects derived from ADOdb_Active_Records. Returns false if an error occurs.
+<pre>
+class Product extends ADOdb_Active_Records{};
+$table = 'products';
+$whereOrderBy = "name LIKE 'A%' ORDER BY Name";
+$activeRecArr = $db->GetActiveRecordsClass('Product',$table, $whereOrderBy);
+
+# the objects in $activeRecArr are of class 'Product'
+foreach($activeRecArr as $rec) {
+	$rec->id = rand();
+	$rec->save();
+}
+</pre>
+<p>
+To use bind variables (assuming ? is the place-holder for your database):
+<pre>
+$activeRecArr = $db->GetActiveRecordsClass($className,$tableName, 'name LIKE ?',
+						array('A%'));
+</pre>
+<p>You can also define the primary keys of the table by passing an array of field names:
+<pre>
+$activeRecArr = $db->GetActiveRecordsClass($className,$tableName, 'name LIKE ?',
+						array('A%'), array('id'));
+</pre>
+
+</ol>
+
+<h2>Code Sample</h2>
+<p>The following works with PHP4 and PHP5
+<pre>
+include('../adodb.inc.php');
+include('../adodb-active-record.inc.php');
+
+// uncomment the following if you want to test exceptions
+#if (PHP_VERSION >= 5) include('../adodb-exceptions.inc.php');
+
+$db = NewADOConnection('mysql://root@localhost/northwind');
+$db->debug=1;
+ADOdb_Active_Record::SetDatabaseAdapter($db);
+
+$db->Execute("CREATE TEMPORARY TABLE `persons` (
+                `id` int(10) unsigned NOT NULL auto_increment,
+                `name_first` varchar(100) NOT NULL default '',
+                `name_last` varchar(100) NOT NULL default '',
+                `favorite_color` varchar(100) NOT NULL default '',
+                PRIMARY KEY  (`id`)
+            ) ENGINE=MyISAM;
+           ");
+		   
+class Person extends ADOdb_Active_Record{}
+$person = new Person();
+
+echo "&lt;p>Output of getAttributeNames: ";
+var_dump($person->getAttributeNames());
+
+/**
+ * Outputs the following:
+ * array(4) {
+ *    [0]=>
+ *    string(2) "id"
+ *    [1]=>
+ *    string(9) "name_first"
+ *    [2]=>
+ *    string(8) "name_last"
+ *    [3]=>
+ *    string(13) "favorite_color"
+ *  }
+ */
+
+$person = new Person();
+$person->nameFirst = 'Andi';
+$person->nameLast  = 'Gutmans';
+$person->save(); // this save() will fail on INSERT as favorite_color is a must fill...
+
+
+$person = new Person();
+$person->name_first     = 'Andi';
+$person->name_last      = 'Gutmans';
+$person->favorite_color = 'blue';
+$person->save(); // this save will perform an INSERT successfully
+
+echo "&lt;p>The Insert ID generated:"; print_r($person->id);
+
+$person->favorite_color = 'red';
+$person->save(); // this save() will perform an UPDATE
+
+$person = new Person();
+$person->name_first     = 'John';
+$person->name_last      = 'Lim';
+$person->favorite_color = 'lavender';
+$person->save(); // this save will perform an INSERT successfully
+
+// load record where id=2 into a new ADOdb_Active_Record
+$person2 = new Person();
+$person2->Load('id=2');
+var_dump($person2);
+
+// retrieve an array of records
+$activeArr = $db->GetActiveRecordsClass($class = "Person",$table = "persons","id=".$db->Param(0),array(2));
+$person2 =& $activeArr[0];
+echo "&lt;p>Name first (should be John): ",$person->name_first, "&lt;br>Class = ",get_class($person2);	
+</pre>
+
+ <h3>Todo (Code Contributions welcome)</h3>
+ <p>Check _original and current field values before update, only update changes. Also if the primary key value is changed, then on update, we should save and use the original primary key values in the WHERE clause!
+ <p>Handle 1-to-many relationships.
+ <p>PHP5 specific:  Make GetActiveRecords*() return an Iterator.
+ <p>PHP5 specific: Change PHP5 implementation of Active Record to use __get() and __set() for better performance.
+
+<h3> Change Log</h3>
+<p>0.04 5 June 2006 <br>
+<p>Added support for declaring table name in $_table in class declaration. Thx Bill Dueber for idea.
+<p>Added find($where,$bindarr=false) method to retrieve an array of active record objects.
+<p>0.03 <br>
+- Now we only update fields that have changed, using $this->_original.<br>
+- We do not include auto_increment fields in replace(). Thx Travis Cline<br>
+- Added ADODB_ACTIVE_CACHESECS.<br>
+
+<p>0.02 <br>
+- Much better error handling. ErrorMsg() implemented. Throw implemented if adodb-exceptions.inc.php detected.<br>
+- You can now define the primary keys of the view or table you are accessing manually.<br>
+- The Active Record allows you to create an object which does not have a primary key. You can INSERT but not UPDATE in this case.
+- Set() documented.<br>
+- Fixed _pluralize bug with y suffix.
+
+<p>
+ 0.01 6 Mar 2006<br>
+- Fixed handling of nulls when saving (it didn't save nulls, saved them as '').<br>
+- Better error handling messages.<br>
+- Factored out a new method GetPrimaryKeys().<br>
+ <p>
+ 0.00 5 Mar 2006<br>
+ 1st release
+</body>
+</html>

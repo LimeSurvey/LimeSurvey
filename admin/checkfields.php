@@ -187,11 +187,8 @@ echo "$setfont<strong>"._CF_CHECKTABLES.":</strong><br /><font size='1'>\n";
 
 if (!isset($databasetabletype)) {$databasetabletype="MyISAM";}
 
-$result = mysql_list_tables($databasename);
-while ($row = mysql_fetch_row($result))
-    {
-    $tablelist[]=$row[0];
-    }
+if ($database_exists)
+    $tablelist = $connect->MetaTables();
 if (!isset($tablelist) || !is_array($tablelist))
     {
     $tablelist[]="empty";
@@ -220,7 +217,7 @@ foreach ($alltables as $at)
         $ctquery = substr($ctquery, 0, -2);
         $ctquery .= ")\n";
         $ctquery .= "TYPE=$databasetabletype\n";
-        $ctresult=mysql_query($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".mysql_error());
+        $ctresult=$connect->Execute($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".htmlspecialchars($connect->ErrorMsg()));
         echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_TABLECREATED."! ($at)</font><br />\n";
         }
     else
@@ -235,11 +232,8 @@ echo "<br /></font>\n";
 echo "$setfont<strong>"._CF_CHECKFIELDS.":</strong><br /><font size='1'>\n";
 
 //GET LIST OF TABLES
-$tables = mysql_list_tables($databasename);
-while ($trow = mysql_fetch_row($tables))
-    {
-    $tablenames[] = $trow[0];
-    }
+if ($database_exists)
+    $tablenames = $connect->MetaTables();
 
 foreach ($tablenames as $tn)
     {
@@ -257,14 +251,9 @@ foreach ($tablenames as $tn)
 
 function checktable($tablename)
     {
-    global $databasename, $allfields;
+    global $databasename, $allfields, $connect;
     echo "<strong>-></strong>"._CF_CHECKING." <strong>$tablename</strong>..<br />";
-    $fields=mysql_list_fields($databasename, $tablename);
-    $numfields=mysql_num_fields($fields);
-    for ($i=0; $i<$numfields; $i++)
-        {
-        $fieldnames[]=mysql_field_name($fields, $i);
-        }
+    $fieldnames = array_values($connect->MetaColumnNames($tablename, true));
     foreach ($allfields as $af)
         {
         if ($af[0] == $tablename)
@@ -280,14 +269,14 @@ function checktable($tablename)
                     {
                     $thisfieldexists=1;
                     $query = "ALTER TABLE `$tablename` CHANGE `$fn` {$af[2]}";
-                    $result = mysql_query($query) or die("Couldn't change name of default field to default_value.<br />$query<br />".mysql_error());
+                    $result = $connect->Execute($query) or die("Couldn't change name of default field to default_value.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
                     echo "&nbsp;&nbsp;&nbsp;<font color='red'>Changed field name</font> ($af[1]) <br />\n";
                     }
                 }
             if ($thisfieldexists==0)
                 {
                 $query="ALTER TABLE `$tablename` ADD $af[2]";
-                $result=mysql_query($query) or die("Insert field failed.<br />$query<br />".mysql_error());
+                $result=$connect->Execute($query) or die("Insert field failed.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_FIELDCREATED."</font> ($af[1]) <br />\n";
                 $addedfield="Y";
                 }
@@ -310,11 +299,11 @@ if (isset($checkfororphans) && $checkfororphans)
             . "LEFT JOIN {$dbprefix}questions "
             . "ON {$dbprefix}answers.qid={$dbprefix}questions.qid "
             . "WHERE {$dbprefix}questions.qid IS NULL";
-    $result = mysql_query($query) or die("Orphan check failed.<br />$query<br />".mysql_error());
+    $result = db_execute_assoc($query) or die("Orphan check failed.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
     if ($result)
         {
         echo "<br /><strong>Orphan Database Entries</strong><br />\n";
-        while ($row = mysql_fetch_array($result))
+        while ($row = $result->FetchRow())
             {
             echo "$setfont ANSWER: ".$row['qid']." - ".$row['code']."<br />\n";
             }

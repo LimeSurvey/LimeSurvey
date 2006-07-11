@@ -71,7 +71,7 @@ echo "<script type='text/javascript'>\n"
 	."</script>\n";
 
 // CHECK IF FIRST USE!
-if (!mysql_selectdb ($databasename, $connect))
+if (!$database_exists)
 	{
 	echo "<br />\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -85,15 +85,13 @@ if (!mysql_selectdb ($databasename, $connect))
 		._ST_NODB3."<br /><br />\n"
 		._ST_NODB4." $databasename<br />\n"
 		."<br /><input $btstyle type='submit' value='"
-		._ST_CREATEDB."' onClick='location.href=\"createdb.php?dbname=$databasename\"' /></center>\n"
+		._ST_CREATEDB."' onClick='location.href=\"createdb.php\"' /></center>\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	exit;
 	}
 else
 	{
-	//OPEN DATABASE CONNECTION
-	$db = mysql_selectdb($databasename, $connect);
 	//DB EXISTS, CHECK FOR APPROPRIATE TABLES
 	checkfortables();
 	}

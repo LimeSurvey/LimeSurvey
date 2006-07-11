@@ -35,6 +35,7 @@
 */
 
 // === Basic Setup
+$databasetype       =   "mysql";  // ADOdb database driver
 $databaselocation   =   "localhost";   // Network location of your MySQL Database
 $databaseport       =   "3306";        // The port of your MySQL Database (3306 is default)
 $databasename       =   "phpsurveyor"; // The name of the database that we will create

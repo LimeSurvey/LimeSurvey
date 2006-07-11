@@ -146,13 +146,13 @@ if ($labelsetarray)
 		
 		$lsainsert = str_replace("'$oldlid'", "''", $lsa);
 		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
-		$lsiresult=mysql_query($lsainsert) or die ("ERROR Inserting<br />$lsainsert<br />".mysql_error());
-		$newlid=mysql_insert_id();
+		$lsiresult=$connect->Execute($lsainsert) or die ("ERROR Inserting<br />$lsainsert<br />".$connect->ErrorMsg());
+		$newlid=$connect->Insert_ID();
 		
 		//GET NEW LID
 		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
-		$nlidresult=mysql_query($nlidquery);
-		while ($nlidrow=mysql_fetch_array($nlidresult)) {$newlid=$nlidrow['lid'];}
+		$nlidresult=db_execute_assoc($nlidquery);
+		while ($nlidrow=$nlidresult->FetchRow()) {$newlid=$nlidrow['lid'];}
 		$labelreplacements[]=array($oldlid, $newlid);
 		if ($labelarray)
 			{
@@ -167,7 +167,7 @@ if ($labelsetarray)
 					{
 					$lainsert = str_replace("'$labellid'", "'$newlid'", $la);
 					$lainsert = str_replace ("INTO labels", "INTO {$dbprefix}labels", $lainsert);
-					$liresult=mysql_query($lainsert);
+					$liresult=$connect->Execute($lainsert);
 					}
 				}
 			}
@@ -184,14 +184,10 @@ $query2 = "SELECT code, title, sortorder
 		   FROM {$dbprefix}labels
 		   WHERE lid=".$newlid."
 		   ORDER BY sortorder, code";
-$result2 = mysql_query($query2) or die("Died querying labelset $lid<br />$query2<br />".mysql_error());
-$numfields=mysql_num_fields($result2);
-while($row2=mysql_fetch_row($result2))
+$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+while($row2=$result2->FetchRow())
 	{
-	for ($i=0; $i<=$numfields-1; $i++)
-		{
-		$thisset .= $row2[$i];
-		}
+	$thisset .= implode('',$row2);
 	} // while
 $newcs=dechex(crc32($thisset)*1);
 if (isset($csarray))
@@ -209,9 +205,9 @@ if (isset($lsmatch))
     //There is a matching labelset. So, we will delete this one and refer
 	//to the matched one.
 	$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-	$result=mysql_query($query) or die("Couldn't delete labels<br />$query<br />".mysql_error());
+	$result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
 	$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-	$result=mysql_query($query) or die("Couldn't delete labelset<br />$query<br />".mysql_error());
+	$result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 	$newlid=$lsmatch;
 	echo "<p><i><font color='red'>"._IL_DUPLICATE."</font></i></p>\n";
 	}

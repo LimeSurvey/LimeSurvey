@@ -39,32 +39,31 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
 
 if ($action == _AS_ADD) {
-    $query="INSERT into {$dbprefix}assessments
-			(sid, scope, gid, minimum, maximum, name, message, link)
-			VALUES ($surveyid,
-			'".$_POST['scope']."',
-			".$_POST['gid'].",
-			'".$_POST['minimum']."',
-			'".$_POST['maximum']."',
-			'".mysql_escape_string($_POST['name'])."',
-			'".mysql_escape_string($_POST['message'])."',
-			'".mysql_escape_string($_POST['link'])."')";
-	$result=mysql_query($query) or die("Error inserting<br />$query<br />".mysql_error());
+	$query = $connect->GetInsertSQL("{$dbprefix}assessments", array(
+		'sid' => $surveyid,
+		'scope' => $_POST['scope'],
+		'gid' => $_POST['gid'],
+		'minimum' => $_POST['minimum'],
+		'maximum' => $_POST['maximum'],
+		'name' => $_POST['name'],
+		'message' => $_POST['message'],
+		'link' => $_POST['link'] ));
+	$result=$connect->Execute($query) or die("Error inserting<br />$query<br />".$connect->ErrorMsg());
 } elseif ($action == _AS_UPDATE) {
 	$query = "UPDATE {$dbprefix}assessments
-			  SET scope='".$_POST['scope']."',
+			  SET scope=?,
 			  gid=".$_POST['gid'].",
-			  minimum='".$_POST['minimum']."',
-			  maximum='".$_POST['maximum']."',
-			  name='".mysql_escape_string($_POST['name'])."',
-			  message='".mysql_escape_string($_POST['message'])."',
-			  link='".mysql_escape_string($_POST['link'])."'
+			  minimum=?,
+			  maximum=?,
+			  name=?,
+			  message=?,
+			  link=?
 			  WHERE id=".$_POST['id'];
-	$result = mysql_query($query) or die("Error updating<br />$query<br />".mysql_error());
+	$result = $connect->Execute($query, $_POST['scope'], $_POST['minimum'], $_POST['maximum'], $_POST['name'], $_POST['message'], $_POST['link']) or die("Error updating<br />$query<br />".$connect->ErrorMsg());
 } elseif ($action == "delete") {
 	$query = "DELETE FROM {$dbprefix}assessments
 			  WHERE id=".$_POST['id'];
-	$result=mysql_query($query);
+	$result=$connect->Execute($query);
 }
 
 
@@ -111,8 +110,8 @@ $thisid="";
 
 if ($action == "edit") {
     $query = "SELECT * FROM {$dbprefix}assessments WHERE id=".$_POST['id'];
-	$results = mysql_query($query);
-	while($row=mysql_fetch_array($results, MYSQL_ASSOC)) {
+	$results = db_execute_assoc($query);
+	while($row=$results->FetchRow()) {
 		$editdata=$row;
 	}
 	$scopeselect = "<select name='scope'><option ";
@@ -190,28 +189,28 @@ echo "<input type='hidden' name='sid' value='$surveyid'>\n"
 echo getAdminFooter("", "");
 
 function getAssessments($surveyid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT id, sid, scope, gid, minimum, maximum, name, message, link
 			  FROM {$dbprefix}assessments
 			  WHERE sid=$surveyid
 			  ORDER BY scope, gid";
-	$result=mysql_query($query) or die("Error getting assessments<br />$query<br />".mysql_error());
+	$result=db_execute_assoc($query) or die("Error getting assessments<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
-	while($row=mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while($row=$result->FetchRow()) {
 		$output[]=$row;
 	}
 	return $output;
 }
 
 function getGroups($surveyid) {
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$query = "SELECT gid, group_name
 			  FROM {$dbprefix}groups
 			  WHERE sid=$surveyid
 			  ORDER BY group_name";
-	$result = mysql_query($query) or die("Error getting groups<br />$query<br />".mysql_error());
+	$result = db_execute_assoc($query) or die("Error getting groups<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
-	while($row=mysql_fetch_array($result)) {
+	while($row=$result->FetchRow()) {
 		$output[]=$row;
 	}
 	return $output;

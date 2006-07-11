@@ -52,7 +52,7 @@ function retrieveConditionInfo($ia)
     {
     //This function returns an array containing all related conditions
     //for a question - the array contains the fields from the conditions table
-    global $dbprefix;
+    global $dbprefix, $connect;
     if ($ia[7] == "Y")
         { //DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
         $cquery = "SELECT {$dbprefix}conditions.qid, "
@@ -67,8 +67,8 @@ function retrieveConditionInfo($ia)
                 ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
                 ."AND {$dbprefix}conditions.qid=$ia[0] "
                 ."ORDER BY {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname";
-        $cresult = mysql_query($cquery) or die ("OOPS<BR />$cquery<br />".mysql_error());
-        while ($crow = mysql_fetch_array($cresult))
+        $cresult = db_execute_assoc($cquery) or die ("OOPS<BR />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+        while ($crow = $cresult->FetchRow())
             {
             $conditions[] = array ($crow['qid'], $crow['cqid'], $crow['cfieldname'], $crow['value'], $crow['type'], $crow['sid']."X".$crow['gid']."X".$crow['cqid']);
             }
@@ -141,10 +141,10 @@ function setman_normal($ia)
 
 function setman_ranking($ia)
     {
-    global $dbprefix;
+    global $dbprefix, $connect;
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = $connect->Execute($ansquery);
+    $anscount = $ansresult->RecordCount();
     for ($i=1; $i<=$anscount; $i++)
         {
         $mandatorys[]=$ia[1].$i;
@@ -155,14 +155,14 @@ function setman_ranking($ia)
 
 function setman_questionandcode($ia)
     {
-    global $dbprefix;
+    global $dbprefix, $connect;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
+    $qresult = db_execute_num($qquery);
+    while(list($other) = $qresult->FetchRow())
+	;
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
-    while ($ansrow = mysql_fetch_array($ansresult))
+    $ansresult = db_execute_assoc($ansquery);
+    while ($ansrow = $ansresult->FetchRow())
         {
         $mandatorys[]=$ia[1].$ansrow['code'];
         $mandatoryfns[]=$ia[1];
@@ -185,6 +185,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
     global $dbprefix, $shownoanswer; //These are from the confir.php file
     //-----
     global $thissurvey, $gl; //These are set by index.php
+    global $connect;
 
     //DISPLAY
     $display = $ia[7];
@@ -204,16 +205,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
     //GET HELP
     $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0]";
-    $hresult=mysql_query($hquery) or die(mysql_error());
-    $hcount=mysql_num_rows($hresult);
-    if ($hcount > 0)
-        {
-        while ($hrow=mysql_fetch_array($hresult)) {$help=$hrow['help'];}
-        }
-    else
-        {
+    $hresult=db_execute_num($hquery) or or die(htmlspecialchars($connect->ErrorMsg());
         $help="";
-        }
+    while ($hrow=$hresult->FetchRow()) {$help=$hrow[0];}
 
     //A bit of housekeeping to stop PHP Notices
     $answer = "";
@@ -385,13 +379,13 @@ function validation_message($ia)
     {
     //This function checks to see if this question requires validation and
     //that validation has not been met.
-    global $notvalidated, $dbprefix;
+    global $notvalidated, $dbprefix, $connect;
     $help="";
     $helpselect="SELECT help\n"
                ."FROM {$dbprefix}questions\n"
                ."WHERE qid={$ia[0]}";
-    $helpresult=mysql_query($helpselect) or die("$helpselect<br />".mysql_error());
-    while ($helprow=mysql_fetch_array($helpresult))
+    $helpresult=db_execute_assoc($helpselect) or die("$helpselect<br />".htmlspecialchars($connect->ErrorMsg()));
+    while ($helprow=$helpresult->FetchRow())
         {
         $help=" <i>(".$helprow['help'].")</i>";
         }
@@ -560,22 +554,21 @@ function do_list_CSV($ia)
 
 function do_list_dropdown($ia)
     {
-    global $dbprefix,  $dropdownthreshold, $lwcdropdowns;
+    global $dbprefix,  $dropdownthreshold, $lwcdropdowns, $connect;
     global $shownoanswer;
     $qidattributes=getQuestionAttributes($ia[0]);
     $answer="";
     if (isset($defexists)) {unset ($defexists);}
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $result = mysql_query($query);
-    while($row = mysql_fetch_array($result)) {$other = $row['other'];}
+    $result = db_execute_assoc($query);
+    while($row = $result->FetchRow()) {$other = $row['other'];}
     if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
     }
-    $ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
-    $anscount = mysql_num_rows($ansresult);
-    while ($ansrow = mysql_fetch_array($ansresult))
+    $ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
+    while ($ansrow = $ansresult->FetchRow())
         {
         $answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
         if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -637,13 +630,13 @@ function do_list_dropdown($ia)
 
 function do_list_flexible_dropdown($ia)
     {
-    global $dbprefix, $dropdownthreshold, $lwcdropdowns;
+    global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
     global $shownoanswer;
     $qidattributes=getQuestionAttributes($ia[0]);
     $answer="";
     $qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($row = mysql_fetch_array($qresult)) {$other = $row['other']; $lid=$row['lid'];}
+    $qresult = db_execute_assoc($qquery);
+    while($row = $qresult->FetchRow()) {$other = $row['other']; $lid=$row['lid'];}
     $filter="";
     if ($code_filter=arraySearchByKey("code_filter", $qidattributes, "attribute", 1))
         {
@@ -659,9 +652,8 @@ function do_list_flexible_dropdown($ia)
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' ORDER BY sortorder, code";
     }
-    $ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
-    $anscount = mysql_num_rows($ansresult);
-    while ($ansrow = mysql_fetch_array($ansresult))
+    $ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
+    while ($ansrow = $ansresult->FetchRow())
         {
         $answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
         if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -721,7 +713,7 @@ function do_list_flexible_dropdown($ia)
 
 function do_list_radio($ia)
     {
-    global $dbprefix, $dropdownthreshold, $lwcdropdowns;
+    global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
     global $shownoanswer;
     $answer="";
     $qidattributes=getQuestionAttributes($ia[0]);
@@ -735,15 +727,15 @@ function do_list_radio($ia)
         }
     if (isset($defexists)) {unset ($defexists);}
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $result = mysql_query($query);
-    while($row = mysql_fetch_array($result)) {$other = $row['other'];}
+    $result = db_execute_assoc($query);
+    while($row = $result->FetchRow()) {$other = $row['other'];}
     if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
     }
-    $ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
+    $anscount = $ansresult->RecordCount();
     if ((isset($other) && $other=="Y") || ($ia[6] != "Y" && $shownoanswer == 1)) {$anscount++;} //Count "
     $divider="";
     $maxrows=0;
@@ -762,7 +754,7 @@ function do_list_radio($ia)
                  . "\t\t\t\t\t\t\t<td>\n";
         }
     $rowcounter=0;
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $rowcounter++;
         $answer .= "\t\t\t\t\t\t\t\t<div style='text-indent: -22; margin: 0 0 0 22;'>  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
@@ -812,7 +804,7 @@ function do_list_radio($ia)
 
 function do_list_flexible_radio($ia)
     {
-    global $dbprefix, $dropdownthreshold, $lwcdropdowns;
+    global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
     global $shownoanswer;
     $answer="";
     $qidattributes=getQuestionAttributes($ia[0]);
@@ -826,8 +818,8 @@ function do_list_flexible_radio($ia)
         }
     if (isset($defexists)) {unset ($defexists);}
     $query = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $result = mysql_query($query);
-    while($row = mysql_fetch_array($result)) {$other = $row['other']; $lid = $row['lid'];}
+    $result = db_execute_assoc($query);
+    while($row = $result->FetchRow()) {$other = $row['other']; $lid = $row['lid'];}
     $filter="";
     if ($code_filter=arraySearchByKey("code_filter", $qidattributes, "attribute", 1))
         {
@@ -843,8 +835,8 @@ function do_list_flexible_radio($ia)
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' ORDER BY sortorder, code";
     }
-    $ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
+    $anscount = $ansresult->RecordCount();
     if ((isset($other) && $other=="Y") || ($ia[6] != "Y" && $shownoanswer == 1)) {$anscount++;} //Count "
     $divider="";
     $maxrows=0;
@@ -863,7 +855,7 @@ function do_list_flexible_radio($ia)
                  . "\t\t\t\t\t\t\t<td>\n";
         }
     $rowcounter=0;
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $rowcounter++;
         $answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
@@ -922,8 +914,8 @@ function do_listwithcomment($ia)
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
     }
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
     if ($lwcdropdowns == "R" && $anscount <= $dropdownthreshold)
         {
         $answer .= "\t\t\t<table class='question'>\n"
@@ -934,7 +926,7 @@ function do_listwithcomment($ia)
                  . "\t\t\t\t<tr>\n"
                  . "\t\t\t\t\t<td valign='top'>\n";
 
-        while ($ansrow=mysql_fetch_array($ansresult))
+        while ($ansrow=$ansresult->FetchRow())
             {
             $answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
             if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -978,7 +970,7 @@ function do_listwithcomment($ia)
                  . "\t\t\t\t<tr>\n"
                  . "\t\t\t\t\t<td valign='top' align='center'>\n"
                  . "\t\t\t\t\t<select class='select' name='$ia[1]' id='answer$ia[1]' onClick='checkconditions(this.value, this.name, this.type)'>\n";
-        while ($ansrow=mysql_fetch_array($ansresult))
+        while ($ansrow=$ansresult->FetchRow())
             {
             $answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
             if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -1038,8 +1030,8 @@ function do_ranking($ia)
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
     }
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
     $answer .= "\t\t\t<script type='text/javascript'>\n"
              . "\t\t\t<!--\n"
              . "\t\t\t\tfunction rankthis_{$ia[0]}(\$code, \$value)\n"
@@ -1109,7 +1101,7 @@ function do_ranking($ia)
     //unset($inputnames);
     unset($chosen);
     $ranklist="";
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $answers[] = array($ansrow['code'], $ansrow['answer']);
         }
@@ -1246,15 +1238,15 @@ function do_multiplechoice($ia)
              . "\t\t\t\t\t<td>&nbsp;</td>\n"
              . "\t\t\t\t\t<td align='left' class='answertext'>\n";
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
+    $qresult = db_execute_assoc($qquery);
+    while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
     }
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
     if ($other == "Y") {$anscount++;} //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
     $answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
     $divider="";
@@ -1271,7 +1263,7 @@ function do_multiplechoice($ia)
     $fn = 1;
     if (!isset($multifields)) {$multifields="";}
     $rowcounter=0;
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $rowcounter++;
         $myfname = $ia[1].$ansrow['code'];
@@ -1320,19 +1312,19 @@ function do_multiplechoice_withcomments($ia)
              . "\t\t\t\t\t<td>&nbsp;</td>\n"
              . "\t\t\t\t\t<td align='left'>\n";
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while ($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
+    $qresult = db_execute_assoc($qquery);
+    while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY RAND()";
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
     }
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult)*2;
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount()*2;
     $answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n"
              . "\t\t\t\t\t\t<table class='question'>\n";
     $fn = 1;
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $myfname = $ia[1].$ansrow['code'];
         $myfname2 = $myfname."comment";
@@ -1430,12 +1422,12 @@ function do_multipleshorttext($ia)
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
     }
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult)*2;
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount()*2;
     //$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
     $fn = 1;
     $answer = "\t\t\t\t\t\t<table class='question'>\n";
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $myfname = $ia[1].$ansrow['code'];
         $answer .= "\t\t\t\t\t\t\t<tr>\n"
@@ -1679,11 +1671,11 @@ function do_array_5point($ia)
     {
     global $dbprefix, $shownoanswer, $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
+    $qresult = db_execute_assoc($qquery);
+    while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
     $fn = 1;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
@@ -1703,7 +1695,7 @@ function do_array_5point($ia)
         $answer .= "\t\t\t\t\t<td class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $myfname = $ia[1].$ansrow['code'];
         $answertext=answer_replace($ansrow['answer']);
@@ -1746,11 +1738,11 @@ function do_array_10point($ia)
     {
     global $dbprefix, $shownoanswer, $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
+    $qresult = db_execute_assoc($qquery);
+    while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
     $fn = 1;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
@@ -1770,7 +1762,7 @@ function do_array_10point($ia)
         $answer .= "\t\t\t\t\t<td  class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $myfname = $ia[1].$ansrow['code'];
         $answertext=answer_replace($ansrow['answer']);
@@ -1813,11 +1805,11 @@ function do_array_yesnouncertain($ia)
     {
     global $dbprefix, $shownoanswer, $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
+    $qresult = db_execute_assoc($qquery);
+    while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
     $fn = 1;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
@@ -1836,7 +1828,7 @@ function do_array_yesnouncertain($ia)
         $answer .= "\t\t\t\t\t<td  class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $myfname = $ia[1].$ansrow['code'];
         $answertext=answer_replace($ansrow['answer']);
@@ -1907,21 +1899,21 @@ function do_slider($ia) {
 	
 	//Get answers
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
 
 	//Get labels
     $qquery = "SELECT lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$lid = $qrow['lid'];}
+    $qresult = db_execute_assoc($qquery);
+    while($qrow = $qresult->FetchRow()) {$lid = $qrow['lid'];}
     $lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
-    $lresult = mysql_query($lquery);
+    $lresult = db_execute_assoc($lquery);
 	
 	$answer = "\t\t\t<table class='question'>\n";
 	$answer .= "\t\t\t\t<tr><th width='$answerwidth%'></th>\n";
-	$lcolspan=mysql_num_rows($lresult);
+	$lcolspan=$lresult->RecordCount();
 	$lcount=1;
-	while($lrow=mysql_fetch_array($lresult)) {
+	while($lrow=$lresult->FetchRow()) {
 		$answer .= "<th align='";
 		if ($lcount == 1) {
 		    $answer .= "left";
@@ -1940,7 +1932,7 @@ function do_slider($ia) {
 			. "\t\t\t\t\t<td>\n"
 			. "\t\t\t\t\t\t";
 	$fn=1;
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
 		//A row for each slider control
         $myfname = $ia[1].$ansrow['code'];
@@ -1991,11 +1983,11 @@ function do_array_increasesamedecrease($ia)
     global $shownoanswer;
     global $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other'];}
+    $qresult = db_execute_assoc($qquery);
+    while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
     $fn = 1;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
@@ -2014,7 +2006,7 @@ function do_array_increasesamedecrease($ia)
         $answer .= "\t\t\t\t\t<td class='array1'>"._NOANSWER."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $myfname = $ia[1].$ansrow['code'];
         $answertext=answer_replace($ansrow['answer']);
@@ -2060,14 +2052,14 @@ function do_array_increasesamedecrease($ia)
 
 function do_array_flexible($ia)
     {
-    global $dbprefix;
+    global $dbprefix, $connect;
     global $shownoanswer;
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
     $qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
+    $qresult = db_execute_assoc($qquery);
+    while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
     $lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
@@ -2078,10 +2070,10 @@ function do_array_flexible($ia)
 	}
 	$columnswidth=100-$answerwidth;
 	
-    $lresult = mysql_query($lquery);
-    if (mysql_num_rows($lresult) > 0)
+    $lresult = db_execute_assoc($lquery);
+    if ($lresult->RecordCount() > 0)
         {
-        while ($lrow=mysql_fetch_array($lresult))
+        while ($lrow=$lresult->FetchRow())
             {
             $labelans[]=$lrow['title'];
             $labelcode[]=$lrow['code'];
@@ -2092,8 +2084,8 @@ function do_array_flexible($ia)
 
         $cellwidth=sprintf("%02d", $cellwidth);
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-        $ansresult = mysql_query($ansquery);
-        $anscount = mysql_num_rows($ansresult);
+        $ansresult = db_execute_assoc($ansquery);
+        $anscount = $ansresult->RecordCount();
         $fn=1;
         $answer = "\t\t\t<table class='question'>\n"
                  . "\t\t\t\t<tr>\n"
@@ -2108,7 +2100,7 @@ function do_array_flexible($ia)
             }
         $answer .= "\t\t\t\t</tr>\n";
 
-        while ($ansrow = mysql_fetch_array($ansresult))
+        while ($ansrow = $ansresult->FetchRow())
             {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
                 {
@@ -2180,11 +2172,11 @@ function do_array_flexiblecolumns($ia)
     global $shownoanswer;
     global $notanswered;
     $qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0];
-    $qresult = mysql_query($qquery);
-    while($qrow = mysql_fetch_array($qresult)) {$other = $qrow['other']; $lid = $qrow['lid'];}
+    $qresult = db_execute_assoc($qquery);
+    while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
     $lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
-    $lresult = mysql_query($lquery);
-    while ($lrow=mysql_fetch_array($lresult))
+    $lresult = db_execute_assoc($lquery);
+    while ($lrow=$lresult->FetchRow())
         {
         $labelans[]=$lrow['title'];
         $labelcode[]=$lrow['code'];
@@ -2196,8 +2188,8 @@ function do_array_flexiblecolumns($ia)
         $labels[]=array("answer"=>_NOANSWER, "code"=>"");
     }
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-    $ansresult = mysql_query($ansquery);
-    $anscount = mysql_num_rows($ansresult);
+    $ansresult = db_execute_assoc($ansquery);
+    $anscount = $ansresult->RecordCount();
     $fn=1;
     $answer = "\t\t\t<table class='question' align='center'>\n"
              . "\t\t\t\t<tr>\n"
@@ -2205,7 +2197,7 @@ function do_array_flexiblecolumns($ia)
     $cellwidth=$anscount;
 
     $cellwidth=round(50/$cellwidth);
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $anscode[]=$ansrow['code'];
         $answers[]=answer_replace($ansrow['answer']);
@@ -2226,7 +2218,7 @@ function do_array_flexiblecolumns($ia)
     $answer .= "\t\t\t\t</tr>\n";
     $ansrowcount=0;
     $ansrowtotallength=0;
-    while ($ansrow = mysql_fetch_array($ansresult))
+    while ($ansrow = $ansresult->FetchRow())
         {
         $ansrowcount++;
         $ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
@@ -2283,7 +2275,7 @@ function retrieve_Answer($code)
     //IE: Q1: What is your name? [Jason]
     //    Q2: Hi [Jason] how are you ?
     //This function is called from the retriveAnswers function.
-    global $dbprefix;
+    global $dbprefix, $connect;
     //Find question details
     if (isset($_SESSION[$code]))
         {
@@ -2292,8 +2284,8 @@ function retrieve_Answer($code)
         //a SurveyID, GroupID, QuestionID and an Answer code
         //extracted from a "fieldname" - ie: 1X2X3a
         $query="SELECT type FROM {$dbprefix}questions WHERE qid=".$questiondetails['qid'];
-        $result=mysql_query($query) or die("Error getting reference question type<br />$query<br />".mysql_error());
-        while($row=mysql_fetch_array($result))
+        $result=db_execute_assoc($query) or die("Error getting reference question type<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+        while($row=$result->FetchRow())
             {
             $type=$row['type'];
             } // while
@@ -2318,8 +2310,8 @@ function retrieve_Answer($code)
                     else
                         {
                         $query="SELECT * FROM {$dbprefix}answers WHERE qid=".$questiondetails['qid']." AND code='".$_SESSION[$code]."'";
-                        $result=mysql_query($query) or die("Error getting answer<br />$query<br />".mysql_error());
-                        while($row=mysql_fetch_array($result))
+                        $result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+                        while($row=$result->FetchRow())
                             {
                             $return=$row['answer'];
                             } // while
@@ -2328,8 +2320,8 @@ function retrieve_Answer($code)
                 case "M":
                 case "P":
                     $query="SELECT * FROM {$dbprefix}answers WHERE qid=".$questiondetails['qid'];
-                    $result=mysql_query($query) or die("Error getting answer<br />$query<br />".mysql_error());
-                    while($row=mysql_fetch_array($result))
+                    $result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+                    while($row=$result->FetchRow())
                         {
                         if (isset($_SESSION[$code.$row['code']]) && $_SESSION[$code.$row['code']] == "Y")
                             {

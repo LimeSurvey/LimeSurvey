@@ -63,8 +63,8 @@ if (!validate_email(returnglobal('register_email')))
 //Check if this email already exists in token database
 $query = "SELECT email FROM {$dbprefix}tokens_$surveyid\n"
 	   . "WHERE email = '".returnglobal('register_email')."'";
-$result = mysql_query($query) or die ($query."<br />".mysql_error());
-if (mysql_num_rows($result) > 0)
+$result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
+if ($result->RecordCount()) > 0)
 	{
 	$register_errormsg=_RG_USEDEMAIL;
 	include "index.php";
@@ -80,29 +80,27 @@ while ($insert != "OK")
 	{
 	if (isset($THISOS) && $THISOS == "solaris")
 		{
-		$nt1=mysql_query("SELECT RAND()");
-		while ($row=mysql_fetch_row($nt1)) {$newtoken="R".(int)(sprintf("%09s", $row[0]*100000000));}
+		$nt1=db_execute_num("SELECT RAND()");
+		while ($row=$nt1->FetchRow())) {$newtoken="R".(int)(sprintf("%09s", $row[0]*100000000));}
 		}
 	else
 		{
 		$newtoken = "R".sprintf("%09s", rand(1, 1000000000));
 		}
 	$ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
-	$ntresult = mysql_query($ntquery);
-	if (!mysql_num_rows($ntresult)) {$insert = "OK";}
+	$ntresult = $connect->Execute($ntquery);
+	if (!$ntresult->RecordCount()) {$insert = "OK";}
 	}
 
 //Insert new entry into tokens db
 $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
 	   . "(`firstname`, `lastname`, `email`, `token`, `attribute_1`, `attribute_2`)\n"
-	   . "VALUES ('".mysql_escape_string(returnglobal('register_firstname'))."',\n"
-	   . "'".mysql_escape_string(returnglobal('register_lastname'))."',\n"
-	   . "'".mysql_escape_string(returnglobal('register_email'))."',\n"
-	   . "'$newtoken',\n"
-	   . "'".mysql_escape_string(returnglobal('register_attribute1'))."',\n"
-	   . "'".mysql_escape_string(returnglobal('register_attribute2'))."')";
-$result = mysql_query($query) or die ($query."<br />".mysql_error());
-$tid=mysql_insert_id();
+	   . "VALUES (?, ?, ?, ?, ?, ?)";
+$result = $connect->Execute($query, returnglobal('register_firstname'), returnglobal('register_lastname'),
+		returnglobal('register_email'), $newtoken, 
+		returnglobal('register_attribute1'), returnglobal('register_attribute2')
+		) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
+$tid=$connect->Insert_ID();
 
 
 $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
@@ -133,8 +131,7 @@ if (MailtextMessage($message, $subject, returnglobal('register_email'), $from, $
 	$today = date("Y-m-d Hi");	
 	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 			."SET sent='$today' WHERE tid=$tid";
-//
-	$result=mysql_query($query) or die ("$query<br />".mysql_error());
+	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$html="<center>"._RG_REGISTRATIONCOMPLETE;
 	$html=Replacefields($html, $fieldsarray);
 	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: self.close()' value='"._CLOSEWIN_PS."'></center>\n";

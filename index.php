@@ -86,8 +86,8 @@ if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
 
 //SEE IF SURVEY USES TOKENS
 $i = 0; $tokensexist = 0;
-$tresult = @mysql_list_tables($databasename) or die ("Error getting tokens<br />".mysql_error());
-while($tbl = @mysql_tablename($tresult, $i++))
+$tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
+foreach ($tablelist as $tbl)
 	{
 	if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist = 1;}
 	}
@@ -202,20 +202,20 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		{
 		buildsurveysession();
 		}
-	$query = "SELECT * FROM {$dbprefix}saved, {$dbprefix}saved_control
-			  WHERE {$dbprefix}saved.scid={$dbprefix}saved_control.scid 
-			  AND {$dbprefix}saved_control.sid=$surveyid\n";
+	$query = "SELECT * FROM ".db_table_name('saved').", ".db_table_name('saved_control')."
+			  WHERE ".db_table_name('saved').".scid=".db_table_name('saved_control').".scid 
+			  AND ".db_table_name('saved_control').".sid=$surveyid\n";
 	if (isset($_POST['scid'])) {
-	    $query .= "AND {$dbprefix}saved.scid=".auto_escape($_POST['scid'])."\n";
+	    $query .= "AND ".db_table_name('saved').".scid=".auto_escape($_POST['scid'])."\n";
 	}		  
-	$query .="AND {$dbprefix}saved_control.identifier='".auto_escape($_POST['loadname'])."'
-			  AND {$dbprefix}saved_control.access_code='".md5(auto_unescape($_POST['loadpass']))."'\n";
-	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
-	if (mysql_num_rows($result) > 0)
+	$query .="AND ".db_table_name('saved_control').".identifier='".auto_escape($_POST['loadname'])."'
+			  AND ".db_table_name('saved_control').".access_code='".md5(auto_unescape($_POST['loadpass']))."'\n";
+	$result = db_execute_assoc($query) or die ("Error loading results<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	if ($result->RecordCount() > 0)
 		{
 		//A match has been found. Let's load the values if there are saved responses!
 		//If this is from an email,  surveysession was build first
-		while($row=mysql_fetch_array($result))
+		while($row=$result->FetchRow())
 			{
 			if ($row['fieldname'] == "token")
 				{
@@ -260,9 +260,10 @@ if ($tokensexist == 1 && returnglobal('token'))
 	{
 	//check if token actually does exist
 	
-	$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
-	$tkresult = mysql_query($tkquery);
-	$tkexist = mysql_num_rows($tkresult);
+	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_$surveyid')." WHERE token='".trim(returnglobal('token'))."' AND AND (completed = 'N' or completed='')";
+	
+	$tkresult = db_execute_num($tkquery);
+	list($tkexist) = $tkresult->FetchRow();
 	if (!$tkexist)
 		{
 		sendcacheheaders();
@@ -358,10 +359,10 @@ switch ($thissurvey['format'])
 
 function getTokenData($surveyid, $token)
 	{
-	global $dbprefix;
-	$query = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$token'";
-	$result = mysql_query($query) or die("Couldn't get token info in getTokenData()<br />".$query."<br />".mysql_error());
-	while($row=mysql_fetch_array($result))
+	global $dbprefix, $connect;
+	$query = "SELECT * FROM ".db_table_name('tokens_$surveyid')." WHERE token='$token'";
+	$result = db_execute_assoc($query) or die("Couldn't get token info in getTokenData()<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
+	while($row=$result->FetchRow())
 		{
 		$thistoken=array("firstname"=>$row['firstname'],
 						 "lastname"=>$row['lastname'],
@@ -403,7 +404,7 @@ function checkgroupfordisplay($gid)
 	//If none of the questions in the group are set to display, then
 	//the function will return false, to indicate that the whole group
 	//should not display at all.
-	global $dbprefix;
+	global $dbprefix, $connect;
 	$countQuestionsInThisGroup=0;
 	$countConditionalQuestionsInThisGroup=0;
 	foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
@@ -433,16 +434,16 @@ function checkgroupfordisplay($gid)
 		foreach ($checkConditions as $cc)
 			{
 			$totalands=0;
-			$query = "SELECT * FROM {$dbprefix}conditions\n"
+			$query = "SELECT * FROM ".db_table_name('conditions')."\n"
 					."WHERE qid=$cc[0] ORDER BY cqid";
-			$result = mysql_query($query) or die("Couldn't check conditions<br />$query<br />".mysql_error());
-			while($row=mysql_fetch_array($result))
+			$result = db_execute_assoc($query) or die("Couldn't check conditions<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+			while($row=$result->FetchRow())
 				{
 				//Iterate through each condition for this question and check if it is met.
-				$query2= "SELECT type, gid FROM {$dbprefix}questions\n"
+				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
 						." WHERE qid={$row['cqid']}";
-				$result2=mysql_query($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".mysql_error());
-				while($row2=mysql_fetch_array($result2))
+				$result2=db_execute_assoc($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
+				while($row2=$result2->FetchRow())
 					{
 					$cq_gid=$row2['gid'];
 					//Find out the "type" of the question this condition uses
@@ -514,7 +515,7 @@ function checkgroupfordisplay($gid)
 
 function checkconfield($value)
 	{
-	global $dbprefix;
+	global $dbprefix, $connect;
 	foreach ($_SESSION['fieldarray'] as $sfa)
 		{
 		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value])
@@ -525,8 +526,8 @@ function checkconfield($value)
 				   . "WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
 				   . "AND {$dbprefix}conditions.qid=$sfa[0] "
 				   . "ORDER BY {$dbprefix}conditions.qid";
-			$result=mysql_query($query) or die($query."<br />".mysql_error());
-			while($rows = mysql_fetch_array($result))
+			$result=db_execute_assoc($query) or die($query."<br />".htmlspecialchars($connect->ErrorMsg()));
+			while($rows = $result->FetchRow())
 				{
 				if($rows['type'] == "M" || $rows['type'] == "P")
 					{
@@ -713,6 +714,7 @@ function checkconditionalmandatorys($backok=null)
 
 function checkpregs($backok=null)
 	{
+	global $connect;
 	if (!isset($backok) || $backok != "Y") 
 		{
 		global $dbprefix;
@@ -729,8 +731,8 @@ function checkpregs($backok=null)
 					$pregquery="SELECT preg\n"
 							  ."FROM {$dbprefix}questions\n"
 							  ."WHERE qid=".$fieldinfo['qid'];
-					$pregresult=mysql_query($pregquery) or die("ERROR: $pregquery<br />".mysql_error());
-					while($pregrow=mysql_fetch_array($pregresult))
+					$pregresult=db_execute_assoc($pregquery) or die("ERROR: $pregquery<br />".htmlspecialchars($connect->ErrorMsg()));
+					while($pregrow=$pregresult->FetchRow())
 						{
 						$preg=$pregrow['preg'];
 						} // while
@@ -794,7 +796,7 @@ function createinsertquery()
 	{
 	global $thissurvey;
 	global $deletenonvalues, $thistpl;
-	global $surveyid;
+	global $surveyid, $connect;
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
 	
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
@@ -811,7 +813,7 @@ function createinsertquery()
 				if($deletenonvalues==1) {checkconfield($value);}
 				//Only create column name and data entry if there is actually data!
 				$colnames[]=$value;
-			    $values[]=mysql_escape_string($_SESSION[$value]);
+			    $values[]=$connect->qstr($_SESSION[$value]);
 				}
 			}
 		if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
@@ -820,9 +822,10 @@ function createinsertquery()
 			
 			exit;		
 		    }
-		$query = "INSERT INTO {$thissurvey['tablename']}\n"
-				."(`".implode("`, `", $colnames)."`)\n"
-				."VALUES ('".implode("', '", $values)."')";
+		// TODO SQL: quote colum name correctly
+		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
+				."(".implode(', ', array_map('db_quote_id',$colnames)).")\n"
+				."VALUES (".implode(", ", $values).")";
 		return $query;
 		}
 	else
@@ -844,7 +847,7 @@ function createinsertquery()
 function submittokens()
 	{
 	global $thissurvey;
-	global $dbprefix, $surveyid;
+	global $dbprefix, $surveyid, $connect;
 	global $sitename, $thistpl;
 	
 	// TLR change to put date into sent and completed
@@ -855,13 +858,13 @@ function submittokens()
 			. "SET completed='$today'\n"
 			 
 			 . "WHERE token='{$_POST['token']}'";
-	$utresult = mysql_query($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".mysql_error());
+	$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	
 	// TLR change to put date into sent and completed
 	$cnfquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}' AND completed!='N' AND completed!=''";
 	
-	$cnfresult = mysql_query($cnfquery);
-	while ($cnfrow = mysql_fetch_array($cnfresult))
+	$cnfresult = db_execute_assoc($cnfquery);
+	while ($cnfrow = $cnfresult->FetchRow())
 		{
 		$from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 		$to = $cnfrow['email'];
@@ -954,7 +957,7 @@ function sendsubmitnotification($sendnotification)
 function submitfailed()
 	{
 	global $thissurvey;
-	global $thistpl, $subquery, $surveyid;
+	global $thistpl, $subquery, $surveyid, $connect;
 	sendcacheheaders();
 	doHeader();
 	foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -976,7 +979,7 @@ function submitfailed()
 		$email .= "\n"._DNSAVEEMAIL3.":\n"
 				. "$subquery\n\n"
 				. _DNSAVEEMAIL4.":\n"
-				. mysql_error()."\n\n";
+				. $connect->ErrorMsg()."\n\n";
 		MailTextMessage($email, _DNSAVEEMAIL5, $thissurvey['adminemail'], $thissurvey['adminemail'], "PHPSurveyor");
 		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.
@@ -995,7 +998,7 @@ function buildsurveysession()
 	{
 	global $thissurvey;
 	global $tokensexist, $thistpl;
-	global $surveyid, $dbprefix;
+	global $surveyid, $dbprefix, $connect;
 	global $register_errormsg;
 	
 	//This function builds all the required session variables when a survey is first started.
@@ -1053,11 +1056,9 @@ function buildsurveysession()
 	elseif ($tokensexist == 1 && returnglobal('token'))
 		{
 		//check if token actually does exist
-
-		$tkquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
-		
-		$tkresult = mysql_query($tkquery);
-		$tkexist = mysql_num_rows($tkresult);
+		$tkquery = "SELECT COUNT(*) FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
+		$tkresult = db_execute_num($tkquery);
+		list($tkexist) = $tkresult->FetchRow();
 		if (!$tkexist)
 			{
 			sendcacheheaders();
@@ -1095,8 +1096,8 @@ function buildsurveysession()
 	//A list of groups in this survey, ordered by group name.
 
 	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
-	$result = mysql_query($query) or die ("Couldn't get group list<br />$query<br />".mysql_error());
-	while ($row = mysql_fetch_array($result))
+	$result = db_execute_assoc($query) or die ("Couldn't get group list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	while ($row = $result->FetchRow())
 		{
 		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
 		}
@@ -1105,8 +1106,11 @@ function buildsurveysession()
 			."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
 			."AND {$dbprefix}questions.sid=$surveyid\n"
 			."ORDER BY group_name";
-	$result = mysql_query($query);
-	$totalquestions = mysql_num_rows($result);
+	$result = db_execute_assoc($query);
+
+	$arows = $result->GetRows(true);
+
+	$totalquestions = count($arows);
 
 	//2. SESSION VARIABLE: totalsteps
 	//The number of "pages" that will be presented in this survey
@@ -1148,12 +1152,6 @@ function buildsurveysession()
 		exit;
 		}
 
-	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($row = mysql_fetch_assoc($result)) 
-		{
-		$arows[] = $row;
-		} // Get table output into array
-	
 	//Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($arows, 'CompareGroupThenTitle'); 
 	
@@ -1186,8 +1184,8 @@ function buildsurveysession()
 					 . "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
 					 . "AND sid=$surveyid AND {$dbprefix}questions.qid={$arow['qid']}\n"
 					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$abresult = mysql_query($abquery);
-			while ($abrow = mysql_fetch_array($abresult))
+			$abresult = db_execute_assoc($abquery);
+			while ($abrow = $abresult->FetchRow())
 				{
 				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
 				$alsoother = "";
@@ -1214,8 +1212,8 @@ function buildsurveysession()
 					 . "AND sid=$surveyid\n"
 					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
 					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$abresult = mysql_query($abquery) or die("ERROR:<br />".$abquery."<br />".mysql_error());
-			$abcount = mysql_num_rows($abresult);
+			$abresult = $connect->Execute($abquery) or die("ERROR:<br />".$abquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$abcount = $abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)
 				{
 				$_SESSION['insertarray'][] = "$fieldname".$i;
@@ -1231,8 +1229,8 @@ function buildsurveysession()
 					 . "AND sid=$surveyid\n"
 					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
 					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$abresult = mysql_query($abquery);
-			while ($abrow = mysql_fetch_array($abresult))
+			$abresult = db_execute_assoc($abquery);
+			while ($abrow = $abresult->FetchRow())
 				{
 				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
 				}
@@ -1254,8 +1252,8 @@ function buildsurveysession()
 					 . "AND sid=$surveyid\n"
 					 . "AND {$dbprefix}questions.qid={$arow['qid']}\n"
 					 . "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$abresult = mysql_query($abquery);
-			while($abrow = mysql_fetch_array($abresult))
+			$abresult = db_execute_assoc($abquery);
+			while($abrow = $abresult->FetchRow())
 				{
 				if ($abrow['default_value'] == "Y") 
 					{
@@ -1368,15 +1366,15 @@ function surveymover()
 
 function doAssessment($surveyid) 
 	{
-	global $dbprefix, $thistpl;
+	global $dbprefix, $thistpl, $connect;
 	$query = "SELECT * FROM {$dbprefix}assessments
 			  WHERE sid=$surveyid
 			  ORDER BY scope";
-	if ($result = mysql_query($query)) 
+	if ($result = db_execute_assoc($query)) 
 		{
-	    if (mysql_num_rows($result) > 0) 
+	    if ($result->RecordCount() > 0) 
 			{
-			while ($row=mysql_fetch_array($result))
+			while ($row=$result->FetchRow())
 				{
 				if ($row['scope'] == "G") 
 					{

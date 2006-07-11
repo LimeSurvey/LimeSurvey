@@ -54,14 +54,14 @@ if (!$style)
 	$query=" SELECT other, {$dbprefix}questions.type, {$dbprefix}questions.gid, {$dbprefix}questions.qid FROM {$dbprefix}questions, {$dbprefix}groups "
 		  ." where {$dbprefix}questions.gid={$dbprefix}groups.gid and {$dbprefix}groups.sid=$surveyid"
 		  ." order by group_name, {$dbprefix}questions.title";
-	$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-	while ($rows = mysql_fetch_array($result)) 
+	$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	while ($rows = $result->FetchRow()) 
 		{
             if (($rows['type']=='A') || ($rows['type']=='B')||($rows['type']=='C')||($rows['type']=='M')||($rows['type']=='P')||($rows['type']=='Q')||($rows['type']=='E')||($rows['type']=='F')||($rows['type']=='H'))
             {
                	$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." order by sortorder,code";
-               	$detailresult=mysql_query($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".mysql_error());
-			   	while ($detailrows = mysql_fetch_array($detailresult))
+               	$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			   	while ($detailrows = $detailresult->FetchRow())
 			   	{
           			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code'];
 				   	if ($rows['type']=='P')
@@ -73,9 +73,9 @@ if (!$style)
             elseif ($rows['type']=='R')
             {
                	$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." order by sortorder,code";
-               	$detailresult=mysql_query($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".mysql_error());
+               	$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
                	$i=1;
-			   	while ($detailrows = mysql_fetch_array($detailresult))
+			   	while ($detailrows = $detailresult->FetchRow())
 			   	{
           			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$i;
           			$i++;
@@ -187,13 +187,13 @@ if (!$style)
 		."</table>\n"
 		."</td>";
 	$query="SELECT private FROM {$dbprefix}surveys WHERE sid=$surveyid"; //Find out if tokens are used
-	$result=mysql_query($query) or die("Couldn't get privacy data<br />$query<br />".mysql_error());
-	while ($rows = mysql_fetch_array($result)) {$surveyprivate=$rows['private'];}
+	$result=db_execute_assoc($query) or die("Couldn't get privacy data<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	while ($rows = $result->FetchRow()) {$surveyprivate=$rows['private'];}
 	if ($surveyprivate == "N")
 		{
 		$query="SHOW TABLES LIKE '{$dbprefix}tokens_$surveyid'"; //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
-		$result=mysql_query($query) or die("Couldn't get table list<br />$query<br />".mysql_error());
-		$tablecount=mysql_num_rows($result);
+		$result=$connect->Execute($query) or die("Couldn't get table list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+		$tablecount=$result->RecordCount();
 		}
 	echo "<td valign='top'>\n"
 		."<table align='center' width='150' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
@@ -278,8 +278,8 @@ if (!$style)
  			."<input type='checkbox' name='email_address' id='email_address'>"
  			."<label for='email_address'>"._TL_EMAIL."</label><br />\n";
  		$query = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
- 		$result = mysql_query($query) or die ($query."<br />".mysql_error());
- 		$rowcount = mysql_num_fields($result);
+ 		$result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
+ 		$rowcount = $result->FieldCount();
  		if ($rowcount > 7)
  			{
  			echo "<input type='checkbox' name='attribute_1' id='attribute_1'>"
@@ -330,8 +330,8 @@ Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {$surveylanguage = $row['language'];}
+$result = db_execute_assoc($query);
+while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
 if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
@@ -386,15 +386,15 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 			 . " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 	}
 $dquery .=" ORDER BY id LIMIT 1";
-$dresult = mysql_query($dquery) or die(_ERROR." getting results<br />$dquery<br />".mysql_error());
-$fieldcount = mysql_num_fields($dresult);
+$dresult = $connect->Execute($dquery) or die(_ERROR." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
+$fieldcount = $dresult->FieldCount();
 $firstline="";
 $faid="";
 $debug="";
 for ($i=0; $i<$fieldcount; $i++)
 	{
 	//Iterate through column names and output headings
-	$fieldinfo=mysql_field_name($dresult, $i);
+	$fieldinfo=$dresult->FetchField($i)->name;
 	if ($fieldinfo == "token")
 		{
 		if ($answers == "short") 
@@ -474,8 +474,8 @@ for ($i=0; $i<$fieldcount; $i++)
 		if ($style == "abrev")
 			{
 			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid";
-			$qr = mysql_query($qq);
-			while ($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
+			$qr = db_execute_assoc($qq);
+			while ($qrow=$qr->FetchRow())
 				{$qname=$qrow['question'];}
 			$qname=substr($qname, 0, 15)."..";
 			$qname=strip_tags($qname);
@@ -490,8 +490,8 @@ for ($i=0; $i<$fieldcount; $i++)
 		else
 			{
 			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid order by gid, title"; //get the question
-			$qr = mysql_query($qq) or die ("ERROR:<br />".$qq."<br />".mysql_error());
-			while ($qrow=mysql_fetch_array($qr, MYSQL_ASSOC))
+			$qr = db_execute_assoc($qq) or die ("ERROR:<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
+			while ($qrow=$qr->FetchRow())
 				{
 					if ($style == "headcodes"){$fquest=$qrow['title'];}
 					else {$fquest=$qrow['question'];}
@@ -523,8 +523,8 @@ for ($i=0; $i<$fieldcount; $i++)
 					else
 						{
 						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
-						$lr = mysql_query($lq);
-						while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+						$lr = db_execute_assoc($lq);
+						while ($lrow = $lr->FetchRow())
 							{
 							$fquest .= " [".$lrow['answer']."]";
 							}
@@ -543,8 +543,8 @@ for ($i=0; $i<$fieldcount; $i++)
 					else
 						{
 						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
-						$lr = mysql_query($lq);
-						while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+						$lr = db_execute_assoc($lq);
+						while ($lrow = $lr->FetchRow())
 							{
 							$fquest .= " [".$lrow['answer']."]";
 							}
@@ -565,9 +565,9 @@ for ($i=0; $i<$fieldcount; $i++)
 				    else 
 				    	{
 						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
-						$lr = mysql_query($lq);
+						$lr = db_execute_assoc($lq);
 						$debug .= " | QUERY FOR ANSWER CODE [$lq]";
-						while ($lrow=mysql_fetch_array($lr, MYSQL_ASSOC))
+						while ($lrow=$lr->FetchRow())
 							{
 							$fquest .= " [".$lrow['answer']."]";
 							}
@@ -660,8 +660,8 @@ if (isset($_POST['answerid'])) //this applies if export has been called from sin
 $dquery .= "ORDER BY $surveytable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
 	{
-	$dresult = mysql_query($dquery);
-	while ($drow = mysql_fetch_array($dresult, MYSQL_ASSOC))
+	$dresult = db_execute_assoc($dquery);
+	while ($drow = $dresult->FetchRow())
 		{
 		if ($type == "csv")
 			{
@@ -676,9 +676,9 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 elseif ($answers == "long")
 	{
 	$debug="";
-	$dresult = mysql_query($dquery) or die("ERROR: $dquery -".mysql_error());
-	$fieldcount = mysql_num_fields($dresult);
-	while ($drow = mysql_fetch_array($dresult))
+	$dresult = db_execute_num($dquery) or die("ERROR: $dquery -".htmlspecialchars($connect->ErrorMsg()));
+	$fieldcount = $dresult->FieldCount();
+	while ($drow = $dresult->FetchRow())
 		{
 		if ($type == "doc")
 			{
@@ -691,8 +691,8 @@ elseif ($answers == "long")
 		for ($i=0; $i<$fieldcount; $i++) //For each field, work out the QID
 			{
 			$debug .= "\n";
-			$fieldinfo=mysql_field_name($dresult, $i);
-			if (mysql_field_name($dresult, $i) != "id" && mysql_field_name($dresult, $i) != "datestamp" && mysql_field_name($dresult, $i) != "ipaddr"&& mysql_field_name($dresult, $i) != "token" && mysql_field_name($dresult, $i) != "firstname" && mysql_field_name($dresult, $i) != "lastname" && mysql_field_name($dresult, $i) != "email" && mysql_field_name($dresult, $i) != "attribute_1" && mysql_field_name($dresult, $i) != "attribute_2")
+			$fieldinfo=$dresult->FetchField($i)->name;
+			if ($fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
 				{
 				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
 				$fqid=$fielddata['qid'];
@@ -705,8 +705,8 @@ elseif ($answers == "long")
 				    $ftitle=$fielddata['title'];
 					}
 				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid";
-				$qr = mysql_query($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".mysql_error());
-				while ($qrow = mysql_fetch_array($qr, MYSQL_ASSOC))
+				$qr = db_execute_assoc($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
+				while ($qrow = $qr->FetchRow())
 					{$lid=$qrow['lid']; $fother=$qrow['other'];} // dgk bug fix. $ftype should not be modified here!
 				}
 			else
@@ -750,9 +750,9 @@ elseif ($answers == "long")
 					echo $drow[$i];
 					break;
 				case "R": //RANKING TYPE
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '".mysql_escape_string($drow[$i])."'";
-					$lr = mysql_query($lq);
-					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = ?";
+					$lr = db_execute_assoc($lq, $drow[$i]);
+					while ($lrow = $lr->FetchRow())
 						{
 						echo $lrow['answer'];
 						}
@@ -771,9 +771,9 @@ elseif ($answers == "long")
 							}
 						else
 							{
-							$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code ='".mysql_escape_string($drow[$i])."'";
-							$lr = mysql_query($lq) or die($lq."<br />ERROR:<br />".mysql_error());
-							while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+							$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = ?";
+							$lr = db_execute_assoc($lq, $drow[$i]) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
+							while ($lrow = $lr->FetchRow())
 								{
 								//if ($lrow['code'] == $drow[$i]) {echo $lrow['answer'];} 
 								echo $lrow['answer'];
@@ -796,8 +796,8 @@ elseif ($answers == "long")
 						else
 							{
 							$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code='$drow[$i]'";
-							$fresult = mysql_query($fquery) or die("ERROR:".$fquery."\n".$qq."\n".mysql_error());
-							while ($frow = mysql_fetch_array($fresult))
+							$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
+							while ($frow = $fresult->FetchRow())
 								{
 								echo $frow['title'];
 								}
@@ -806,9 +806,9 @@ elseif ($answers == "long")
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
 					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid ORDER BY answer";
-					$lr = mysql_query($lq) or die ("Could do it<br />$lq<br />".mysql_error());
+					$lr = db_execute_assoc($lq) or die ("Could do it<br />$lq<br />".htmlspecialchars($connect->ErrorMsg()));
 					$found = "";
-					while ($lrow = mysql_fetch_array($lr, MYSQL_ASSOC))
+					while ($lrow = $lr->FetchRow())
 						{
 						if ($lrow['code'] == $drow[$i]) {echo $lrow['answer']; $found = "Y";}
 						}
@@ -881,18 +881,18 @@ elseif ($answers == "long")
 				case "F":
 				case "H":
 					$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code='$drow[$i]'";
-					$fresult = mysql_query($fquery) or die("ERROR:".$fquery."\n".$qq."\n".mysql_error());
-					while ($frow = mysql_fetch_array($fresult))
+					$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
+					while ($frow = $fresult->FetchRow())
 						{
 						echo $frow['title'];
 						}
 					break;
 				default:
-					if (mysql_field_name($dresult, $i) == "token")
+					if ($dresult->FetchField($i)->name == "token")
 						{
 						$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$surveyid WHERE token='$drow[$i]'";
-						if ($tokenresult = mysql_query($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".mysql_error());
-						while ($tokenrow=mysql_fetch_array($tokenresult))
+						if ($tokenresult = db_execute_assoc($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".$connect->ErrorMsg());
+						while ($tokenrow=$tokenresult->FetchRow())
 							{
 							echo "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
 							}

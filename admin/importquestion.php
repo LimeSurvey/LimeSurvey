@@ -245,8 +245,8 @@ if (isset($labelsetsarray) && $labelsetsarray)
 		
 		$lsainsert = str_replace("'$oldlid'", "''", $lsa);
 		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
-		$lsiresult=mysql_query($lsainsert);
-		$newlid=mysql_insert_id();
+		$lsiresult=$connect->Execute($lsainsert);
+		$newlid=$connect->Insert_ID();
 
 		if ($labelsarray)
 			{
@@ -261,7 +261,7 @@ if (isset($labelsetsarray) && $labelsetsarray)
 					{
 					$lainsert = str_replace("'$labellid'", "'$newlid'", $la);
 					$lainsert = str_replace ("INTO labels", "INTO {$dbprefix}labels", $lainsert);
-					$liresult=mysql_query($lainsert);
+					$liresult=$connect->Execute($lainsert);
 					}
 				}
 			}
@@ -272,14 +272,10 @@ if (isset($labelsetsarray) && $labelsetsarray)
 				   FROM {$dbprefix}labels
 				   WHERE lid=".$newlid."
 				   ORDER BY sortorder, code";
-		$result2 = mysql_query($query2) or die("Died querying labelset $lid<br />$query2<br />".mysql_error());
-		$numfields=mysql_num_fields($result2);
-		while($row2=mysql_fetch_row($result2))
+		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+		while($row2=$result2->FetchRow())
 			{
-			for ($i=0; $i<=$numfields-1; $i++)
-				{
-				$thisset .= $row2[$i];
-				}
+			$thisset .= implode('',$row2);
 			} // while
 		$newcs=dechex(crc32($thisset)*1);
 		if (isset($csarray))
@@ -297,9 +293,9 @@ if (isset($labelsetsarray) && $labelsetsarray)
 		    //There is a matching labelset. So, we will delete this one and refer
 			//to the matched one.
 			$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-			$result=mysql_query($query) or die("Couldn't delete labels<br />$query<br />".mysql_error());
+			$result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
 			$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-			$result=mysql_query($query) or die("Couldn't delete labelset<br />$query<br />".mysql_error());
+			$result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 			$newlid=$lsmatch;
 			}
 		else
@@ -329,11 +325,11 @@ if (isset($questionarray) && $questionarray)
 		
 		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 		
-		$qres = mysql_query($qinsert) or die ("<strong>"._ERROR.":</strong> Failed to insert question<br />\n$qinsert<br />\n".mysql_error());
+		$qres = $connect->Execute($qinsert) or die ("<strong>"._ERROR.":</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 		//GET NEW QID, AND WHILE WE'RE AT IT - THE TYPE!
 		$qidquery = "SELECT qid, lid, type FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
-		$qidres = mysql_query($qidquery);
-		while ($qrow = mysql_fetch_row($qidres)) {$newqid = $qrow[0]; $oldlid=$qrow[1]; $type=$qrow[2];}
+		$qidres = db_execute_num($qidquery);
+		while ($qrow = $qidres->FetchRow()) {$newqid = $qrow[0]; $oldlid=$qrow[1]; $type=$qrow[2];}
 
 	
 		if ($type == "F" || $type == "H")
@@ -343,7 +339,7 @@ if (isset($questionarray) && $questionarray)
 				if ($lrp[0] == $oldlid)
 					{
 					$lrupdate="UPDATE {$dbprefix}questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
-					$lrresult=mysql_query($lrupdate);
+					$lrresult=$connect->Execute($lrupdate);
 					}
 				}
 			}
@@ -364,7 +360,7 @@ if (isset($questionarray) && $questionarray)
 					$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
 					//$ainsert = substr(trim($ainsert), 0, -1);
 					//echo "$ainsert<br />\n";
-					$ares = mysql_query($ainsert) or die ("<strong>"._ERROR.":</strong> Failed to insert answer<br />\n$ainsert<br />\n".mysql_error()."</body>\n</html>");
+					$ares = $connect->Execute($ainsert) or die ("<strong>"._ERROR.":</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 					if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P")
 						{
 						$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
@@ -420,7 +416,7 @@ if (isset($questionarray) && $questionarray)
 				$newvalues="('".implode("', '", $newfieldcontents)."')";
 				$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $qar);
 				$insert=str_replace("INTO question_attributes", "INTO {$dbprefix}question_attributes", $insert);
-				$result=mysql_query($insert) or die ("Couldn't insert question_attribute<br />$insert<br />".mysql_error());
+				$result=$connect->Execute($insert) or die ("Couldn't insert question_attribute<br />$insert<br />".$connect->ErrorMsg());
 		
 				unset($newcqid);
 				}

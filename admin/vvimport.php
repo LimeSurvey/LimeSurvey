@@ -41,17 +41,18 @@ if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($noid)) {$noid=returnglobal('noid');}
 if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
 
+function db_quote($str) {
+	global $connect;
+	return $connect->escape($str);
+}
+
 if ($action != "upload") 
 	{
     //PRESENT FORM
 	echo $htmlheader;
 	
 	//Make sure that the survey is active
-	$result = mysql_list_tables($databasename);
-	while ($row = mysql_fetch_row($result))
-		{
-		$tablelist[]=$row[0];
-	    }
+	$tablelist = $connect->MetaTables();
 	if (in_array("{$dbprefix}survey_$surveyid", $tablelist))
 		{
 		echo "<br />
@@ -131,12 +132,7 @@ else
 		$fieldcount--;
 		}
 
-	$fldlist = mysql_list_fields($databasename, $surveytable);
-	$columns = mysql_num_fields($fldlist);
-	for ($i = 0; $i < $columns; $i++)
-		{
-		$realfieldnames[] = mysql_field_name($fldlist, $i);
-		}
+	$realfieldnames = array_values($connect->MetaColumnNames($surveytable, true));
 	if ($noid == "noid") {unset($realfieldnames[0]);}
 	unset($bigarray[1]); //delete the second line
 	
@@ -196,7 +192,7 @@ else
 				}
 			// make this safe for mysql (*after* we undo first excel's
 			// and then our escaping).
-			$fieldvalues=array_map('mysql_escape_string',$fieldvalues);
+			$fieldvalues=array_map('db_quote',$fieldvalues);
 			// okay, now we should be good to go.
 			if ($insertstyle=="ignore" && !$noid)
 				$insert = "INSERT IGNORE";
@@ -208,7 +204,7 @@ else
 			$insert .= "VALUES\n";
 			$insert .= "('".implode("', '", $fieldvalues)."')\n";
 			
-			if (!$result = mysql_query($insert)) 
+			if (!$result = $connect->Execute($insert)) 
 				{
 				$idkey = array_search('id',$fieldnames);
 				if ($insertstyle=="renumber" && $idkey!==FALSE)
@@ -220,13 +216,13 @@ else
 					$insert .= "(".implode(", ", $fieldnames).")\n";
 					$insert .= "VALUES\n";
 					$insert .= "('".implode("', '", $fieldvalues)."')\n";
-					$result = mysql_query($insert);
+					$result = $connect->Execute($insert);
 					}
 				}
 			if (!$result)
 				{
 				echo "<table align='center' class='outlintable'>
-				      <tr><td>"._VV_ENTRYFAILED." $recordcount "._VV_BECAUSE." [".mysql_error()."]
+				      <tr><td>"._VV_ENTRYFAILED." $recordcount "._VV_BECAUSE." [".$connect->ErrorMsg()."]
 					  </td></tr></table>\n";
 			    }
 			else

@@ -41,29 +41,29 @@ if ($action == "checksettings" || $action == "changelang")
 	{
 	//GET NUMBER OF SURVEYS
 	$query = "SELECT sid FROM {$dbprefix}surveys";
-	$result = mysql_query($query);
-	$surveycount=mysql_num_rows($result);
+	$result = $connect->Execute($query);
+	$surveycount=$result->RecordCount();
 	$query = "SELECT sid FROM {$dbprefix}surveys WHERE active='Y'";
-	$result = mysql_query($query);
-	$activesurveycount=mysql_num_rows($result);
+	$result = $connect->Execute($query);
+	$activesurveycount=$result->RecordCount();
 	$query = "SELECT user FROM {$dbprefix}users";
-	$result = mysql_query($query);
-	$usercount = mysql_num_rows($result);
-	$result = mysql_list_tables($databasename);
-	while ($row = mysql_fetch_row($result))
+	$result = $connect->Execute($query);
+	$usercount = $result->RecordCount();
+	$tablelist = $connect->MetaTables();
+	foreach ($tablelist as $table)
 		{
 		$stlength=strlen($dbprefix).strlen("old");
-		if (substr($row[0], 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
+		if (substr($table, 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
 			{
-			$oldtokenlist[]=$row[0];
+			$oldtokenlist[]=$table;
 			}
-		elseif (substr($row[0], 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
+		elseif (substr($table, 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
 			{
-			$tokenlist[]=$row[0];
+			$tokenlist[]=$table;
 			}
-		elseif (substr($row[0], 0, $stlength) == $dbprefix."old")
+		elseif (substr($table, 0, $stlength) == $dbprefix."old")
 			{
-			$oldresultslist[]=$row[0];
+			$oldresultslist[]=$table;
 			}
 	    }
 	if(isset($oldresultslist) && is_array($oldresultslist)) 
@@ -221,15 +221,15 @@ if ($surveyid)
 					. "-->\n"
 					. "</script>\n";
 	$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid"; //Getting a count of questions for this survey
-	$sumresult3 = mysql_query($sumquery3);
-	$sumcount3 = mysql_num_rows($sumresult3);
+	$sumresult3 = $connect->Execute($sumquery3);
+	$sumcount3 = $sumresult3->RecordCount();
 	$sumquery2 = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid"; //Getting a count of groups for this survey
-	$sumresult2 = mysql_query($sumquery2);
-	$sumcount2 = mysql_num_rows($sumresult2);
+	$sumresult2 = $connect->Execute($sumquery2);
+	$sumcount2 = $sumresult2->RecordCount();
 	$sumquery1 = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid"; //Getting data for this survey
-	$sumresult1 = mysql_query($sumquery1);
+	$sumresult1 = db_execute_assoc($sumquery1);
 	$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
-	while ($s1row = mysql_fetch_array($sumresult1))
+	while ($s1row = $sumresult1->FetchRow())
 		{
 		$s1row = array_map('htmlspecialchars', $s1row);
 		$activated = $s1row['active'];
@@ -480,12 +480,12 @@ if ($surveyid)
 if ($gid)
 	{
 	$sumquery4 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid"; //Getting a count of questions for this survey
-	$sumresult4 = mysql_query($sumquery4);
-	$sumcount4 = mysql_num_rows($sumresult4);
+	$sumresult4 = $connect->Execute($sumquery4);
+	$sumcount4 = $sumresult4->RecordCount();
 	$grpquery ="SELECT * FROM {$dbprefix}groups WHERE gid=$gid ORDER BY group_name";
-	$grpresult = mysql_query($grpquery);
+	$grpresult = db_execute_assoc($grpquery);
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
-	while ($grow = mysql_fetch_array($grpresult))
+	while ($grow = $grpresult->FetchRow())
 		{
 		$grow = array_map('htmlspecialchars', $grow);
 		$groupsummary .= "\t<tr>\n"
@@ -578,12 +578,12 @@ if ($qid)
 	{
 	//Show Question Details
 	$qrq = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
-	$qrr = mysql_query($qrq);
-	$qct = mysql_num_rows($qrr);
+	$qrr = $connect->Execute($qrq);
+	$qct = $qrr->RecordCount();
 	$qrquery = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid AND sid=$surveyid AND qid=$qid";
-	$qrresult = mysql_query($qrquery) or die($qrquery."<br />".mysql_error());
+	$qrresult = db_execute_assoc($qrquery) or die($qrquery."<br />".$connect->ErrorMsg());
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
-	while ($qrrow = mysql_fetch_array($qrresult))
+	while ($qrrow = $qrresult->FetchRow())
 		{
 		$qrrow = array_map('htmlspecialchars', $qrrow);
 		$questionsummary .= "\t<tr>\n"
@@ -719,14 +719,14 @@ if (returnglobal('viewanswer'))
 	{
 	echo keycontroljs();
 	$qquery = "SELECT type FROM {$dbprefix}questions WHERE qid=$qid";
-	$qresult = mysql_query($qquery);
-	while ($qrow=mysql_fetch_array($qresult)) {$qtype=$qrow['type'];}
+	$qresult = db_execute_assoc($qquery);
+	while ($qrow=$qresult->FetchRow()) {$qtype=$qrow['type'];}
 	if (!isset($_POST['ansaction']))
 		{
 		//check if any nulls exist. If they do, redo the sortorders
 		$caquery="SELECT * FROM {$dbprefix}answers WHERE qid=$qid AND sortorder is null";
-		$caresult=mysql_query($caquery);
-		$cacount=mysql_num_rows($caresult);
+		$caresult=$connect->Execute($caquery);
+		$cacount=$caresult->RecordCount();
 		if ($cacount)
 			{
 			fixsortorder($qid);
@@ -736,13 +736,13 @@ if (returnglobal('viewanswer'))
 				. "<tr bgcolor='#555555'><td colspan='5'><font size='1' color='white'><strong>"
 				. _ANSWERS."</strong></font></td></tr>\n";
 	$cdquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
-	$cdresult = mysql_query($cdquery);
-	$cdcount = mysql_num_rows($cdresult);
+	$cdresult = db_execute_assoc($cdquery);
+	$cdcount = $cdresult->RecordCount();
 	$vasummary .= "\t<tr><th width='10%'>$setfont"._AL_CODE."</font></th><th width='50%'>$setfont"._AL_ANSWER."</font></th>"
 				. "<th width='10%'>$setfont"._AL_DEFAULT."</font></th><th width='15%'>$setfont"._AL_ACTION."</font></th>"
 				. "<th>$setfont"._AL_MOVE."</font></th></tr>\n";
 	$position=0;
-	while ($cdrow = mysql_fetch_array($cdresult))
+	while ($cdrow = $cdresult->FetchRow())
 		{
 		$cdrow['code'] = htmlspecialchars($cdrow['code']);
 		$position=sprintf("%05d", $position);
@@ -887,9 +887,9 @@ if ($action == "modifyuser")
 	$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
 				 . "\t\t<strong>$setfont<font color='white'>Modify User</td></tr>\n";
 	$muq = "SELECT * FROM {$dbprefix}users WHERE user='$user' LIMIT 1";
-	$mur = mysql_query($muq);
+	$mur = db_execute_assoc($muq);
 	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
-	while ($mrw = mysql_fetch_array($mur))
+	while ($mrw = $mur->FetchRow())
 		{
 		$mrw = array_map('htmlspecialchars', $mrw);
 		$usersummary .= "\t<td>$setfont<strong>{$mrw['user']}</strong></font>\n"
@@ -1104,9 +1104,9 @@ if ($action == "addquestion")
 if ($action == "copyquestion")
 	{
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
-	$eqresult = mysql_query($eqquery);
+	$eqresult = db_execute_assoc($eqquery);
 	$qattributes=questionAttributes();
-	while ($eqrow = mysql_fetch_array($eqresult))
+	while ($eqrow = $eqresult->FetchRow())
 		{
 		$eqrow = array_map('htmlspecialchars', $eqrow);
 		$editquestion = "<form action='$scriptname' name='editquestion' method='post'>\n<table width='100%' border='0'>\n"
@@ -1235,8 +1235,8 @@ if ($action == "copyquestion")
 if ($action == "editquestion" || $action == "editattribute" || $action == "delattribute" || $action == "addattribute")
 	{
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
-	$eqresult = mysql_query($eqquery);
-	while ($eqrow = mysql_fetch_array($eqresult))
+	$eqresult = db_execute_assoc($eqquery);
+	while ($eqrow = $eqresult->FetchRow())
 		{
 		$eqrow  = array_map('htmlspecialchars', $eqrow);
 		$editquestion = "<tr><td>\n"
@@ -1442,8 +1442,8 @@ if ($action == "addgroup")
 if ($action == "editgroup")
 	{
 	$egquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
-	$egresult = mysql_query($egquery);
-	while ($esrow = mysql_fetch_array($egresult))	
+	$egresult = db_execute_assoc($egquery);
+	while ($esrow = $egresult->FetchRow())	
 		{
 		$esrow = array_map('htmlspecialchars', $esrow);
 		$editgroup =  "<form action='$scriptname' name='editgroup' method='post'>"
@@ -1467,8 +1467,8 @@ if ($action == "editgroup")
 if ($action == "editsurvey")
 	{
 	$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-	$esresult = mysql_query($esquery);
-	while ($esrow = mysql_fetch_array($esresult))	
+	$esresult = db_execute_assoc($esquery);
+	while ($esrow = $esresult->FetchRow())	
 		{
 		$esrow = array_map('htmlspecialchars', $esrow);
 		$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"

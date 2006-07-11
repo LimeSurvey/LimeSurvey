@@ -46,7 +46,7 @@ sendcacheheaders();
 $surveyoptions = browsemenubar();
 echo $htmlheader;
 
-if (!mysql_selectdb ($databasename, $connect))
+if (!$database_exists)
 	{
 	//echo "</table>\n";
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -117,8 +117,8 @@ if ($action == "insert")
 					."WHERE sid=$surveyid\n"
 					."AND identifier='".$saver['identifier']."'\n"
 					."AND access_code='$password'\n";
-			$result = mysql_query($query) or die("Error checking for duplicates!<br />$query<br />".mysql_error());
-			if (mysql_num_rows($result) > 0) 
+			$result = $connect->Execute($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+			if ($result->RecordCount() > 0) 
 				{
 				$errormsg.=_SAVEDUPLICATE."<br />\n";
 				}
@@ -166,27 +166,25 @@ if ($action == "insert")
 				//Delete all the existing entries
 				$delete="DELETE FROM {$dbprefix}saved
 						 WHERE scid=".$saver['scid'];
-				$result=mysql_query($delete) or die("Couldn't delete old record<br />$delete<br />".mysql_error());
+				$result=$connect->Execute($delete) or die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
 			    $delete="DELETE FROM {$dbprefix}saved_control
 						 WHERE scid=".$saver['scid'];
-				$result=mysql_query($delete) or die("Couldn't delete old record<br />$delete<br />".mysql_error());
+				$result=$connect->Execute($delete) or die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
 				}
-			$insert1="INSERT INTO {$dbprefix}saved_control
-					  (`sid`, `identifier`, `access_code`,
-					   `email`, `ip`, `saved_thisstep`, `status`, `saved_date`)
-					  VALUES (
-					  '$surveyid',
-					  '".mysql_escape_string($saver['identifier'])."',
-					  '$password',
-					  '".$saver['email']."',
-					  '".$_SERVER['REMOTE_ADDR']."',
-					  0,
-					  'S',
-					  '".date("Y-m-d H:i:s")."')";
-			if ($result1=mysql_query($insert1))
+			$insert1=$connect->GetInsertSQL("{$dbprefix}saved_control", array(
+					'sid' => $surveyid,
+					'identifier' => $saver['identifier'],
+					'access_code' => $password,
+					'email' => $saver['email'],
+					'ip' => $_SERVER['REMOTE_ADDR'],
+					'saved_thisstep' => 0,
+					'status' => 'S',
+					// TODO SQL: correct ??
+					'saved_date' => date("Y-m-d H:i:s"));
+			if ($result1=$connect->Execute($insert1))
 				{
 				//control table entry worked, lets do the rest
-				$scid=mysql_insert_id();
+				$scid=$connect->Insert_ID();
 				foreach ($_POST as $key=>$val)
 					{
 					if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key != "ipaddr")
@@ -203,7 +201,7 @@ if ($action == "insert")
 								   ."NULL,\n"
 								   ."'".$val."')\n";
 							//echo "$insert<br />\n";
-							if (!$result=mysql_query($insert))
+							if (!$result=$connect->Execute($insert))
 								{
 								$failed=1;
 								}
@@ -237,12 +235,12 @@ if ($action == "insert")
 					}
 				else
 					{
-					echo "<font color='red'>"._SAVE_FAILED."</font><br />\n<pre>$insert</pre>".mysql_error()."<br />\n";
+					echo "<font color='red'>"._SAVE_FAILED."</font><br />\n<pre>$insert</pre>".htmlspecialchars($connect->ErrorMsg())."<br />\n";
 					}			    
 				}
 			else
 				{
-				echo "ERROR: $insert1<br />".mysql_error();
+				echo "ERROR: $insert1<br />".htmlspecialchars($connect->ErrorMsg());
 				}
 			}
 		}
@@ -250,10 +248,10 @@ if ($action == "insert")
 		{
 		//BUILD THE SQL TO INSERT RESPONSES
 		$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
-		$iresult = mysql_query($iquery);
+		$iresult = db_execute_assoc($iquery);
 		$col_name="";
 		$insertqr="";
-		while ($irow = mysql_fetch_array($iresult))
+		while ($irow = $iresult->FetchRow())
 			{
 			if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J")
 				{
@@ -269,86 +267,39 @@ if ($action == "insert")
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 				$fieldname2 = $fieldname . "comment";
 				$col_name .= "`$fieldname`, \n`$fieldname2`, \n";
-				if (get_magic_quotes_gpc())
-					{$insertqr .= "'" . $_POST[$fieldname] . "', \n'" . $_POST[$fieldname2] . "', \n";}
-				else
-					{
-					if (_PHPVERSION >= "4.3.0")
-						{
-						$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
-						}
-					else
-						{
-						$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
-						}
-					}
+				$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n'" . auto_escape($_POST[$fieldname2]) . "', \n";
 				}
 			elseif ($irow['type'] == "R")
 				{
 				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-				$i2result = mysql_query($i2query);
-				$i2count = mysql_num_rows($i2result);
+				$i2result = $connect->Execute($i2query);
+				$i2count = $i2result->RecordCount();
 				for ($i=1; $i<=$i2count; $i++)
 					{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$i";
 					$col_name .= "`$fieldname`, \n";		
-					if (get_magic_quotes_gpc())
-						{$insertqr .= "'" . $_POST["d$fieldname"] . "', \n";}
-					else
-						{
-						if (_PHPVERSION >= "4.3.0")
-							{
-							$insertqr .= "'" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
-							}
-						else
-							{
-							$insertqr .= "'" . mysql_escape_string($_POST["d$fieldname"]) . "', \n";
-							}
-						}
+					$insertqr .= "'" . auto_escape($_POST["d$fieldname"]) . "', \n";
 					}
 				}
 			else
 				{
 				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-				$i2result = mysql_query($i2query);
-				while ($i2row = mysql_fetch_array($i2result))
+				$i2result = db_execute_assoc($i2query);
+				while ($i2row = $i2result->FetchRow())
 					{
      				$otherexists = "";
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 					if (isset($_POST[$fieldname]))
 						{
 						$col_name .= "`$fieldname`, \n";
-						if (get_magic_quotes_gpc())
-							{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
-						else
-							{
-							if (_PHPVERSION >= "4.3.0")
-								{
-								$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-								}
-							else
-								{
-								$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-								}
-							}
+						$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+						$otherexists = "";
 						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P")) {$otherexists = "Y";}
 						if ($irow['type'] == "P")
 							{
 							$fieldname2 = $fieldname."comment";
 							$col_name .= "`$fieldname2`, \n";
-							if (get_magic_quotes_gpc())
-								{$insertqr .= "'" . $_POST[$fieldname2] . "', \n";}
-							else
-								{
-								if (_PHPVERSION >= "4.3.0")
-									{
-									$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname2]) . "', \n";
-									}
-								else
-									{
-									$insertqr .= "'" . mysql_escape_string($_POST[$fieldname2]) . "', \n";
-									}
-								}
+							$insertqr .= "'" . auto_escape($_POST[$fieldname2]) . "', \n";
 							}				    
 						}
 					}
@@ -356,19 +307,7 @@ if ($action == "insert")
 					{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 					$col_name .= "`$fieldname`, \n";
-					if (get_magic_quotes_gpc())
-						{$insertqr .= "'" . $_POST[$fieldname] . "', \n";}
-					else
-						{
-						if (_PHPVERSION >= "4.3.0")
-							{
-							$insertqr .= "'" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-							}
-						else
-							{
-							$insertqr .= "'" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-							}
-						}
+					$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
 					}
 				}
 			}
@@ -399,29 +338,29 @@ if ($action == "insert")
 				VALUES 
 				($insertqr)";
 		//echo $SQL; //Debugging line
-		$iinsert = mysql_query($SQL) or die ("Could not insert your data:<br />$SQL<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n");
+		$iinsert = $connect->Execute($SQL) or die ("Could not insert your data:<br />$SQL<br />\n" . htmlspecialchars($connect->ErrorMsg()) . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n");
 		if (returnglobal('redo')=="yes")
 			{
 			//This submission of data came from a saved session. Must delete the
 			//saved session now that it has been recorded in the responses table
 			$dquery = "DELETE FROM {$dbprefix}saved_control
 					  WHERE scid=".$saver['scid'];
-			if ($dresult=mysql_query($dquery)) 
+			if ($dresult=$connect->Execute($dquery)) 
 				{
 				$dquery = "DELETE FROM {$dbprefix}saved
 						  WHERE scid=".$saver['scid'];
-				$dresult=mysql_query($dquery) or die("Couldn't delete saved data<br />$dquery<br />".mysql_error());
+				$dresult=$connect->Execute($dquery) or die("Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			    } 
 			else
 				{
-				echo "Couldn't delete saved data<br />$dquery<br />".mysql_error();
+				echo "Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg());
 				}
 			}
 		echo "\t\t\t<font color='green'><strong>"._SUCCESS."</strong></font><br />\n";
 		
 		$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
-		$fresult = mysql_query($fquery);
-		while ($frow = mysql_fetch_array($fresult))
+		$fresult = db_execute_assoc($fquery);
+		while ($frow = $fresult->FetchRow())
 			{
 			echo "\t\t\t"._DE_RECORD." {$frow['id']}<br />\n";
 			$thisid=$frow['id'];
@@ -457,11 +396,17 @@ elseif ($action == "edit" || $action == "editsaved")
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid'";
-	$fnresult = mysql_query($fnquery);
-	$fncount = mysql_num_rows($fnresult);
+	$fnresult = db_execute_assoc($fnquery);
+	$fncount = $fnresult->RecordCount();
 	//echo "$fnquery<br /><br />\n";
-	$arows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($fnrow = mysql_fetch_assoc($fnresult)) {$fnrows[] = $fnrow; $private=$fnrow['private']; $datestamp=$fnrow['datestamp'];$ipaddr=$fnrow['ipaddr'];} // Get table output into array
+	$arows = array(); //Create an empty array in case FetchRow does not return any rows
+	while ($fnrow = $fnresult->FetchRow())
+		{
+		$fnrows[] = $fnrow;
+		$private=$fnrow['private'];
+		$datestamp=$fnrow['datestamp'];
+		$ipaddr=$fnrow['ipaddr'];
+		} // Get table output into array
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	usort($fnrows, 'CompareGroupThenTitle');
 	// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
@@ -489,8 +434,8 @@ elseif ($action == "edit" || $action == "editsaved")
 		if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
 			{
 			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
-			$fnrresult = mysql_query($fnrquery);
-			while ($fnrrow = mysql_fetch_array($fnrresult))
+			$fnrresult = db_execute_assoc($fnrquery);
+			while ($fnrrow = $fnrresult->FetchRow())
 				{
 				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				if ($fnrow['type'] == "P")
@@ -510,8 +455,8 @@ elseif ($action == "edit" || $action == "editsaved")
 		elseif ($fnrow['type'] == "R")
 			{
 			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
-			$fnrresult = mysql_query($fnrquery);
-			$fnrcount = mysql_num_rows($fnrresult);
+			$fnrresult = $connect->Execute($fnrquery);
+			$fnrcount = $fnrresult->RecordCount();
 			for ($j=1; $j<=$fnrcount; $j++)
 				{
 				$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "$j", "{$fnrow['qid']}", "{$fnrow['lid']}");
@@ -550,8 +495,8 @@ elseif ($action == "edit" || $action == "editsaved")
 	if ($action == "edit")
 		{
 		$idquery = "SELECT * FROM $surveytable WHERE id=$id";
-		$idresult = mysql_query($idquery) or die ("Couldn't get individual record<br />$idquery<br />".mysql_error());
-		while ($idrow = mysql_fetch_assoc($idresult))
+		$idresult = db_execute_assoc($idquery) or die ("Couldn't get individual record<br />$idquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		while ($idrow = $idresult->FetchRow())
 			{
 			$results[]=$idrow;
 			}
@@ -570,16 +515,16 @@ elseif ($action == "edit" || $action == "editsaved")
 					WHERE sid=$surveyid
 					AND identifier='".$_GET['identifier']."'
 					AND access_code='".$password."'";
-		$svresult=mysql_query($svquery) or die("Error getting save<br />$svquery<br />".mysql_error());
-		while($svrow=mysql_fetch_array($svresult))
+		$svresult=db_execute_assoc($svquery) or die("Error getting save<br />$svquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		while($svrow=$svresult->FetchRow())
 			{
 			$saver['email']=$svrow['email'];
 			$saver['scid']=$svrow['scid'];
 			$saver['ip']=$svrow['ip'];   
 			}
 		$svquery = "SELECT * FROM {$dbprefix}saved WHERE scid=".$saver['scid'];
-		$svresult=mysql_query($svquery) or die("Error getting saved info<br />$svquery<br />".mysql_error());
-		while($svrow=mysql_fetch_array($svresult))
+		$svresult=db_execute_assoc($svquery) or die("Error getting saved info<br />$svquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		while($svrow=$svresult->FetchRow())
 			{
 			$responses[$svrow['fieldname']]=$svrow['value'];
 			} // while
@@ -671,23 +616,23 @@ elseif ($action == "edit" || $action == "editsaved")
 					else
 						{
 						$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$fnames[$i][8]} ORDER BY sortorder, code";
-						$lresult = mysql_query($lquery);
+						$lresult = db_execute_assoc($lquery);
 						//$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
-						//$lresult = mysql_query($lquery);
+						//$lresult = $connect->Execute($lquery);
 						echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 							."\t\t\t\t<option value=''";
 						if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
 						echo ">"._PLEASECHOOSE."..</option>\n";
 						
-						while ($llrow = mysql_fetch_array($lresult))
+						while ($llrow = $lresult->FetchRow())
 							{
 							echo "\t\t\t\t<option value='{$llrow['code']}'";
 							if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
 							echo ">{$llrow['title']}</option>\n";
 							}
 						$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$fnames[$i][7]}";
-						$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
-						while($orow = mysql_fetch_array($oresult))
+						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+						while($orow = $oresult->FetchRow())
 							{
 							$fother=$orow['other'];
 							}
@@ -710,21 +655,21 @@ elseif ($action == "edit" || $action == "editsaved")
 					else
 						{
 						$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
-						$lresult = mysql_query($lquery);
+						$lresult = db_execute_assoc($lquery);
 						echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 							."\t\t\t\t<option value=''";
 						if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
 						echo ">"._PLEASECHOOSE."..</option>\n";
 						
-						while ($llrow = mysql_fetch_array($lresult))
+						while ($llrow = $lresult->FetchRow())
 							{
 							echo "\t\t\t\t<option value='{$llrow['code']}'";
 							if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
 							echo ">{$llrow['answer']}</option>\n";
 							}
 						$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$fnames[$i][7]}";
-						$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
-						while($orow = mysql_fetch_array($oresult))
+						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+						while($orow = $oresult->FetchRow())
 							{
 							$fother=$orow['other'];
 							}
@@ -739,13 +684,13 @@ elseif ($action == "edit" || $action == "editsaved")
 					break;
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
-					$lresult = mysql_query($lquery);
+					$lresult = db_execute_assoc($lquery);
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
 					echo ">"._PLEASECHOOSE."..</option>\n";
 					
-					while ($llrow = mysql_fetch_array($lresult))
+					while ($llrow = $lresult->FetchRow())
 						{
 						echo "\t\t\t\t<option value='{$llrow['code']}'";
 						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
@@ -771,8 +716,8 @@ elseif ($action == "edit" || $action == "editsaved")
 						$i++;
 						}
 					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid ORDER BY sortorder, answer";
-					$ansresult = mysql_query($ansquery);
-					$anscount = mysql_num_rows($ansresult);
+					$ansresult = db_execute_assoc($ansquery);
+					$anscount = $ansresult->RecordCount();
 					echo "\t\t\t<script type='text/javascript'>\n"
 						."\t\t\t<!--\n"
 						."\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n"
@@ -836,7 +781,7 @@ elseif ($action == "edit" || $action == "editsaved")
 						."\t\t\t\t\t}\n"
 						."\t\t\t//-->\n"
 						."\t\t\t</script>\n";	
-					while ($ansrow = mysql_fetch_array($ansresult)) //Now we're getting the codes and answers
+					while ($ansrow = $ansresult->FetchRow()) //Now we're getting the codes and answers
 						{
 						$answers[] = array($ansrow['code'], $ansrow['answer']);
 						}
@@ -1168,9 +1113,9 @@ elseif ($action == "edit" || $action == "editsaved")
 						echo "\t<tr>\n"
 							."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</font></td>\n";
 						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$fnames[$i][8]}' order by sortorder, code";
-						$fresult = mysql_query($fquery);
+						$fresult = db_execute_assoc($fquery);
 						echo "\t\t<td>$setfont\n";
-						while ($frow=mysql_fetch_array($fresult))
+						while ($frow=$fresult->FetchRow())
 							{
 							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='{$frow['code']}'";
 							if ($idrow[$fnames[$i][0]] == $frow['code']) {echo " checked";}
@@ -1270,49 +1215,24 @@ elseif ($action == "update")
 		._DATAENTRY."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
-	$iresult = mysql_query($iquery);
+	$iresult = db_execute_assoc($iquery);
 	
 	$updateqr = "UPDATE $surveytable SET \n";
 	
-	while ($irow = mysql_fetch_array($iresult))
+	while ($irow = $iresult->FetchRow())
 		{
 		if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "^" && $irow['type'] != "J")
 			{
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
-			if (get_magic_quotes_gpc())
-				//{$updateqr .= "$fieldname = '" . $_POST[$fieldname] . "', \n";}
-				{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
-			else
-				{
-				if (_PHPVERSION >= "4.3.0")
-					{
-					$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
-					}
-				else
-					{
-					$updateqr .= "`$fieldname` = '" . mysql_escape_string($thisvalue) . "', \n";
-					}
-				}
+			$updateqr .= "`$fieldname` = '" . auto_escape($thisvalue) . "', \n";
 			unset($thisvalue);
 			// handle ! other
 			if ($irow['type'] == "!" && $irow['other'] == "Y")
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 				if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-				if (get_magic_quotes_gpc())
-					{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
-				else
-					{
-					if (_PHPVERSION >= "4.3.0")
-						{
-						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
-						}
-					else
-						{
-						$updateqr .= "`$fieldname` = '" . mysql_escape_string($thisvalue) . "', \n";
-						}
-					}
+				$updateqr .= "`$fieldname` = '" . auto_escape($thisvalue) . "', \n";
 				unset($thisvalue);
 				}
 			}
@@ -1321,49 +1241,25 @@ elseif ($action == "update")
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 			$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";
 			$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}comment";
-			if (get_magic_quotes_gpc())
-				{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
-			else
-				{
-				if (_PHPVERSION >= "4.3.0")
-					{
-					$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-					}
-				else
-					{
-					$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-					}
-				}
+			$updateqr .= "`$fieldname` = '" . auto_escape($_POST[$fieldname]) . "', \n";
 			}
 		elseif ($irow['type'] == "R")
 			{
 			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$i2result = mysql_query($i2query);
-			$i2count = mysql_num_rows($i2result);
+			$i2result = $connect->Execute($i2query);
+			$i2count = $i2result->RecordCount();
 			for ($x=1; $x<=$i2count; $x++)
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$x";
-				if (get_magic_quotes_gpc())
-					{$updateqr .= "`$fieldname` = '" . $_POST["d$fieldname"] . "', \n";}
-				else
-					{
-					if (_PHPVERSION >= "4.3.0")
-						{
-						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST["d$fieldname"]) . "', \n";
-						}
-					else
-						{
-						$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST["d$fieldname"]) . "', \n";
-						}
-					}
+				$updateqr .= "`$fieldname` = '" . auto_escape($_POST["d$fieldname"]) . "', \n";
 				}
 			}
 		else
 			{
 			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$i2result = mysql_query($i2query);
+			$i2result = db_execute_assoc($i2query);
 			$otherexists = "";
-			while ($i2row = mysql_fetch_array($i2result))
+			while ($i2row = $i2result->FetchRow())
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 				if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
@@ -1372,19 +1268,7 @@ elseif ($action == "update")
 				if ($irow['type'] == "P")
 					{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
-					if (get_magic_quotes_gpc())
-						{$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";}
-					else
-						{
-						if (_PHPVERSION >= "4.3.0")
-							{
-							$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($_POST[$fieldname]) . "', \n";
-							}
-						else
-							{
-							$updateqr .= "`$fieldname` = '" . mysql_escape_string($_POST[$fieldname]) . "', \n";
-							}
-						}
+					$updateqr .= "`$fieldname` = '" . auto_escape($_POST[$fieldname]) . "', \n";
 					}
 				unset($thisvalue);
 				}
@@ -1392,19 +1276,7 @@ elseif ($action == "update")
 				{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 				if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-				if (get_magic_quotes_gpc())
-					{$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";}
-				else
-					{
-					if (_PHPVERSION >= "4.3.0")
-						{
-						$updateqr .= "`$fieldname` = '" . mysql_real_escape_string($thisvalue) . "', \n";
-						}
-					else
-						{
-						$updateqr .= "`$fieldname` = '" . mysql_escape_string($thisvalue) . "', \n";
-						}
-					}
+				$updateqr .= "`$fieldname` = '" . auto_escape($thisvalue) . "', \n";
 				unset($thisvalue);
 				}
 			}	
@@ -1414,7 +1286,7 @@ elseif ($action == "update")
 	if (isset($_POST['ipaddr']) && $_POST['ipaddr']) {$updateqr .= ", ipaddr='{$_POST['ipaddr']}'";}
 	if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 	$updateqr .= " WHERE id=$id";
-	$updateres = mysql_query($updateqr) or die("Update failed:<br />\n" . mysql_error() . "\n<pre style='text-align: left'>$updateqr</pre>");
+	$updateres = $connect->Execute($updateqr) or die("Update failed:<br />\n" . htmlspecialchars($connect->ErrorMsg()) . "\n<pre style='text-align: left'>$updateqr</pre>");
 	$thissurvey=getSurveyInfo($surveyid);
 	if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect']=='Y' && $thissurvey['url']) {
 	    session_write_close();
@@ -1445,7 +1317,7 @@ elseif ($action == "delete")
 		."\t</tr>\n";
 	$delquery = "DELETE FROM $surveytable WHERE id=$id";
 	echo "\t<tr>\n";
-	$delresult = mysql_query($delquery) or die ("Couldn't delete record $id<br />\n".mysql_error());
+	$delresult = $connect->Execute($delquery) or die ("Couldn't delete record $id<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	echo "\t\t<td align='center'><br />$setfont<strong>"._DE_DELRECORD." (ID: $id)</strong><br /><br />\n"
 		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a></font>\n"
 		."\t\t</td>\n"
@@ -1517,12 +1389,12 @@ else
 
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
 	$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
-	$degresult = mysql_query($degquery);
+	$degresult = db_execute_assoc($degquery);
 	// GROUP NAME
-	while ($degrow = mysql_fetch_array($degresult))
+	while ($degrow = $degresult->FetchRow())
 		{
 		$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']}";
-		$deqresult = mysql_query($deqquery);
+		$deqresult = db_execute_assoc($deqquery);
 		echo "\t<tr>\n"
 			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<strong>{$degrow['group_name']}</strong></font></td>\n"
 			."\t</tr>\n";
@@ -1534,8 +1406,8 @@ else
 		else {$bgc = "#EEEEEE";}
 		if (!$bgc) {$bgc = "#EEEEEE";}
 		
-		$deqrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-		while ($deqrow = mysql_fetch_array($deqresult)) {$deqrows[] = $deqrow;} //Get table output into array
+		$deqrows = array(); //Create an empty array in case FetchRow does not return any rows
+		while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} //Get table output into array
 		
 		// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 		usort($deqrows, 'CompareGroupThenTitle');
@@ -1546,13 +1418,13 @@ else
 			$explanation = ""; //reset conditions explanation
 			$x=0;
 			$distinctquery="SELECT DISTINCT cqid, {$dbprefix}questions.title FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid={$deqrow['qid']} ORDER BY cqid";
-			$distinctresult=mysql_query($distinctquery);
-			while ($distinctrow=mysql_fetch_array($distinctresult))
+			$distinctresult=db_execute_assoc($distinctquery);
+			while ($distinctrow=$distinctresult->FetchRow())
 				{
 				if ($x > 0) {$explanation .= " <i>"._DE_AND."</i><br />";}
 				$conquery="SELECT cid, cqid, cfieldname, {$dbprefix}questions.title, {$dbprefix}questions.lid, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
-				$conresult=mysql_query($conquery);
-				while ($conrow=mysql_fetch_array($conresult))
+				$conresult=db_execute_assoc($conquery);
+				while ($conrow=$conresult->FetchRow())
 					{
 					switch($conrow['type'])
 						{
@@ -1595,8 +1467,8 @@ else
 							$fquery = "SELECT * FROM {$dbprefix}labels\n"
 									. "WHERE lid='{$conrow['lid']}'\n"
 									. "AND code='{$conrow['value']}'";
-							$fresult=mysql_query($fquery) or die("$fquery<br />".mysql_error());
-							while($frow=mysql_fetch_array($fresult))
+							$fresult=db_execute_assoc($fquery) or die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+							while($frow=$fresult->FetchRow())
 								{
 								$postans=$frow['title'];
 								$conditions[]=$frow['title'];
@@ -1614,9 +1486,9 @@ else
 						case "H":
 							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}'";
-							$ansresult=mysql_query($ansquery);
+							$ansresult=db_execute_assoc($ansquery);
 							$i=0;
-							while ($ansrow=mysql_fetch_array($ansresult))
+							while ($ansrow=$ansresult->FetchRow())
 								{
 								if (isset($conditions) && count($conditions) > 0)
 									{
@@ -1627,8 +1499,8 @@ else
 							break;
 						default:
 							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
-							$ansresult=mysql_query($ansquery);
-							while ($ansrow=mysql_fetch_array($ansresult))
+							$ansresult=db_execute_assoc($ansquery);
+							while ($ansrow=$ansresult->FetchRow())
 								{
 								$conditions[]=$ansrow['answer'];
 								}
@@ -1700,9 +1572,9 @@ else
 				case "Q": //MULTIPLE SHORT TEXT
 				case "^": //Slider
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$dearesult = mysql_query($deaquery);
+					$dearesult = db_execute_assoc($deaquery);
 					echo "\t\t\t<table>\n";
-					while ($dearow = mysql_fetch_array($dearesult))
+					while ($dearow = $dearesult->FetchRow())
 						{
 						echo "\t\t\t\t<tr><td align='right'>$setfont"
 							.$dearow['answer']
@@ -1715,9 +1587,9 @@ else
 				case "W": //Flexible List drop-down/radio-button
 				case "Z":
 					$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
-					$dearesult = mysql_query($deaquery);
+					$dearesult = db_execute_assoc($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";
-					while ($dearow = mysql_fetch_array($dearesult))
+					while ($dearow = $dearesult->FetchRow())
 						{
 						echo "\t\t\t\t<option value='{$dearow['code']}'";
 						echo ">{$dearow['title']}</option>\n";
@@ -1725,8 +1597,8 @@ else
 					echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";
 
 					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
-					$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
-					while($orow = mysql_fetch_array($oresult))
+					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+					while($orow = $oresult->FetchRow())
 						{
 						$fother=$orow['other'];
 						}
@@ -1746,9 +1618,9 @@ else
 				case "!":
 					$defexists="";				
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$dearesult = mysql_query($deaquery);
+					$dearesult = db_execute_assoc($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";
-					while ($dearow = mysql_fetch_array($dearesult))
+					while ($dearow = $dearesult->FetchRow())
 						{
 						echo "\t\t\t\t<option value='{$dearow['code']}'";
 						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
@@ -1757,8 +1629,8 @@ else
 					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
 
 					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
-					$oresult=mysql_query($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".mysql_error());
-					while($orow = mysql_fetch_array($oresult))
+					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+					while($orow = $oresult->FetchRow())
 						{
 						$fother=$orow['other'];
 						}
@@ -1777,9 +1649,9 @@ else
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$defexists="";				
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$dearesult = mysql_query($deaquery);
+					$dearesult = db_execute_assoc($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";
-					while ($dearow = mysql_fetch_array($dearesult))
+					while ($dearow = $dearesult->FetchRow())
 						{
 						echo "\t\t\t\t<option value='{$dearow['code']}'";
 						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
@@ -1794,8 +1666,8 @@ else
 				case "R": //RANKING TYPE QUESTION
 					$thisqid=$deqrow['qid'];
 					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid ORDER BY sortorder, answer";
-					$ansresult = mysql_query($ansquery);
-					$anscount = mysql_num_rows($ansresult);
+					$ansresult = db_execute_assoc($ansquery);
+					$anscount = $ansresult->RecordCount();
 					echo "\t\t\t<script type='text/javascript'>\n"
 						."\t\t\t<!--\n"
 						."\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n"
@@ -1859,7 +1731,7 @@ else
 						."\t\t\t\t\t}\n"
 						."\t\t\t//-->\n"
 						."\t\t\t</script>\n";
-					while ($ansrow = mysql_fetch_array($ansresult))
+					while ($ansrow = $ansresult->FetchRow())
 						{
 						$answers[] = array($ansrow['code'], $ansrow['answer']);
 						}
@@ -1970,8 +1842,8 @@ else
 						$dcols=0;
 						}
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult = mysql_query($meaquery);
-					$meacount = mysql_num_rows($mearesult);
+					$mearesult = db_execute_assoc($meaquery);
+					$meacount = $mearesult->RecordCount();
 					if ($deqrow['other'] == "Y") {$meacount++;}
 					if ($dcols > 0 && $meacount >= $dcols)
 						{
@@ -1980,7 +1852,7 @@ else
 						$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
 						$upto=0;
 						echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
-						while ($mearow = mysql_fetch_array($mearesult))
+						while ($mearow = $mearesult->FetchRow())
 							{
 							if ($upto == $maxrows) 
 								{
@@ -2002,7 +1874,7 @@ else
 						}
 					else 
 						{
-						while ($mearow = mysql_fetch_array($mearesult))
+						while ($mearow = $mearesult->FetchRow())
 							{
 							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {echo " checked";}
@@ -2040,8 +1912,8 @@ else
 				case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					echo "<table border='0'>\n";
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult = mysql_query($meaquery);
-					while ($mearow = mysql_fetch_array($mearesult))
+					$mearesult = db_execute_assoc($meaquery);
+					while ($mearow = $mearesult->FetchRow())
 						{
 						echo "\t<tr>\n";
 						echo "\t\t<td>\n";
@@ -2088,9 +1960,9 @@ else
 					break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult = mysql_query($meaquery);
+					$mearesult = db_execute_assoc($meaquery);
 					echo "<table>\n";
-					while ($mearow = mysql_fetch_array($mearesult))
+					while ($mearow = $mearesult->FetchRow())
 						{
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
@@ -2109,9 +1981,9 @@ else
 					break;
 				case "B": //ARRAY (10 POINT CHOICE) radio-buttons
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult = mysql_query($meaquery);
+					$mearesult = db_execute_assoc($meaquery);
 					echo "<table>\n";
-					while ($mearow = mysql_fetch_array($mearesult))
+					while ($mearow = $mearesult->FetchRow())
 						{
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
@@ -2130,9 +2002,9 @@ else
 					break;
 				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult=mysql_query($meaquery);
+					$mearesult=db_execute_assoc($meaquery);
 					echo "<table>\n";
-					while ($mearow = mysql_fetch_array($mearesult))
+					while ($mearow = $mearesult->FetchRow())
 						{
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
@@ -2150,9 +2022,9 @@ else
 					break;
 				case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult=mysql_query($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".mysql_error());
+					$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					echo "<table>\n";
-					while ($mearow = mysql_fetch_array($mearesult))
+					while ($mearow = $mearesult->FetchRow())
 						{
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
@@ -2171,9 +2043,9 @@ else
 				case "F": //ARRAY (Flexible Labels)
 				case "H":
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult=mysql_query($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".mysql_error());
+					$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					echo "<table>\n";
-					while ($mearow = mysql_fetch_array($mearesult))
+					while ($mearow = $mearesult->FetchRow())
 						{
 						echo "\t<tr>\n";
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
@@ -2181,8 +2053,8 @@ else
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
 						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
-						$fresult = mysql_query($fquery);
-						while ($frow = mysql_fetch_array($fresult))
+						$fresult = db_execute_assoc($fquery);
+						while ($frow = $fresult->FetchRow())
 							{
 							echo "\t\t\t\t<option value='{$frow['code']}'>".$frow['title']."</option>\n";
 							}

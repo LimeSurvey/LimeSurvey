@@ -44,18 +44,18 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	    //Fix a question id - requires renumbering a question
 		$oldqid = $_GET['fixnumbering'];
 		$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
-		$result = mysql_query($query) or die("$query<br />".mysql_error());
-		while ($row=mysql_fetch_array($result)) {$lastqid=$row['qid'];}
+		$result = db_execute_assoc($query) or die("$query<br />".$connect->ErrorMsg());
+		while ($row=$result->FetchRow()) {$lastqid=$row['qid'];}
 		$newqid=$lastqid+1;
 		$query = "UPDATE {$dbprefix}questions SET qid=$newqid WHERE qid=$oldqid";
-		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		$result = $connect->Execute($query) or die("$query<br />".$connect->ErrorMsg());
 		//Update conditions.. firstly conditions FOR this question
 		$query = "UPDATE {$dbprefix}conditions SET qid=$newqid WHERE qid=$oldqid";
-		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		$result = $connect->Execute($query) or die("$query<br />".$connect->ErrorMsg());
 		//Now conditions based upon this question
 		$query = "SELECT cqid, cfieldname FROM {$dbprefix}conditions WHERE cqid=$oldqid";
-		$result = mysql_query($query) or die("$query<br />".mysql_error());
-		while ($row=mysql_fetch_array($result))
+		$result = db_execute_assoc($query) or die("$query<br />".$connect->ErrorMsg());
+		while ($row=$result->FetchRow())
 			{
 			$switcher[]=array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
 			}
@@ -67,15 +67,15 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 						  SET cqid=$newqid,
 						  cfieldname='".str_replace("X".$oldqid, "X".$newqid, $switch['cfieldname'])."'
 						  WHERE cqid=$oldqid";
-				$result = mysql_query($query) or die("$query<br />".mysql_error());
+				$result = $connect->Execute($query) or die("$query<br />".$connect->ErrorMsg());
 				}
 			}
 		//Now question_attributes
 		$query = "UPDATE {$dbprefix}question_attributes SET qid=$newqid WHERE qid=$oldqid";
-		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		$result = $connect->Execute($query) or die("$query<br />".$connect->ErrorMsg());
 		//Now answers
 		$query = "UPDATE {$dbprefix}answers SET qid=$newqid WHERE qid=$oldqid";
-		$result = mysql_query($query) or die("$query<br />".mysql_error());
+		$result = $connect->Execute($query) or die("$query<br />".$connect->ErrorMsg());
 		}
 	//CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 	//THESE QUESTION TYPES ARE:
@@ -89,12 +89,12 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	//  # "I" -> FILE CSV ONE
 	
 	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', 'I', '!', '^')";
-	$chkresult = mysql_query($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".mysql_error());
-	while ($chkrow = mysql_fetch_array($chkresult))
+	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
+	while ($chkrow = $chkresult->FetchRow())
 		{
 		$chaquery = "SELECT * FROM {$dbprefix}answers WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
-		$charesult=mysql_query($chaquery);
-		$chacount=mysql_num_rows($charesult);
+		$charesult=$connect->Execute($chaquery);
+		$chacount=$charesult->RecordCount();
 		if (!$chacount > 0) 
 			{
 			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_MULTI_NOANSWER, $chkrow['gid']);
@@ -103,34 +103,34 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		
 	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
 	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type = ''";
-	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing types<br />$chkquery<br />".mysql_error());
-	while ($chkrow = mysql_fetch_array($chkresult))
+	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't check questions for missing types<br />$chkquery<br />".$connect->ErrorMsg());
+	while ($chkrow = $chkresult->FetchRow())
 		{
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOTYPE, $chkrow['gid']);
 		}
 	
 	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
 	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z') AND (lid = 0 OR lid is null)";
-	$chkresult = mysql_query($chkquery) or die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".mysql_error());
-	while($chkrow = mysql_fetch_array($chkresult)){
+	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
+	while($chkrow = $chkresult->FetchRow()){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": "._AC_NOLID, $chkrow['gid']);
 	} // while
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
 //	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, {$dbprefix}questions.title";
-//	$qorderresult=mysql_query($qorderquery) or die("Couldn't generate a list of questions in order<br />$qorderquery<br />".mysql_error());
-//	$qordercount=mysql_num_rows($qorderresult);
+//	$qorderresult=$connect->Execute($qorderquery) or die("Couldn't generate a list of questions in order<br />$qorderquery<br />".$connect->ErrorMsg());
+//	$qordercount=$qorderresult->RecordCount();
 //	$c=0;
-//	while ($qorderrow=mysql_fetch_array($qorderresult)) 
+//	while ($qorderrow=$qorderresult->FetchRow()) 
 //		{
 //		$qidorder[]=array($c, $qorderrow['qid']);
 //		$c++;
 //		}
 	//TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
 	$qorderquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND type not in ('S', 'D', 'T', 'Q')";
-	$qorderresult = mysql_query($qorderquery) or die ("$qorderquery<br />".mysql_error());
-	$qrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
-	while ($qrow = mysql_fetch_array($qorderresult)) {$qrows[] = $qrow;} // Get table output into array
+	$qorderresult = db_execute_assoc($qorderquery) or die ("$qorderquery<br />".$connect->ErrorMsg());
+	$qrows = array(); //Create an empty array in case FetchRow does not return any rows
+	while ($qrow = $qorderresult->FetchRow()) {$qrows[] = $qrow;} // Get table output into array
 	usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
 	$c=0;
 	foreach ($qrows as $qr) 
@@ -145,9 +145,9 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 			 . "FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}groups "
 			 . "WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid "
 			 . "AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY qid";
-	$conresult=mysql_query($conquery) or die("Couldn't check conditions for relative consistency<br />$conquery<br />".mysql_error());
+	$conresult=db_execute_assoc($conquery) or die("Couldn't check conditions for relative consistency<br />$conquery<br />".$connect->ErrorMsg());
 	//2: Check each conditions cqid that it occurs later than the cqid
-	while ($conrow=mysql_fetch_array($conresult))
+	while ($conrow=$conresult->FetchRow())
 		{
 		$cqidfound=0;
 		$qidfound=0;
@@ -254,8 +254,8 @@ else
 	$createsurvey .= "  id BIGINT(11) NOT NULL auto_increment,\n";
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
-	$presult=mysql_query($pquery);
-	while($prow=mysql_fetch_array($presult))
+	$presult=db_execute_assoc($pquery);
+	while($prow=$presult->FetchRow())
 		{
 		if ($prow['private'] == "N") 
 			{
@@ -282,8 +282,8 @@ else
 }
 	//Get list of questions
 	$aquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, title";
-	$aresult = mysql_query($aquery);
-	while ($arow=mysql_fetch_array($aresult)) //With each question, create the appropriate field(s)
+	$aresult = db_execute_assoc($aquery);
+	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 		{
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" && 
 			$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" && 
@@ -338,8 +338,8 @@ else
 			{
 			//MULTI ENTRY
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
-			while ($abrow=mysql_fetch_array($abresult))
+			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+			while ($abrow=$abresult->FetchRow())
 				{
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` VARCHAR(5),\n";
 				if ($abrow['other']=="Y") {$alsoother="Y";}
@@ -360,8 +360,8 @@ else
 		elseif ($arow['type'] == "Q")
 			{
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
-			while ($abrow=mysql_fetch_array($abresult))
+			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+			while ($abrow=$abresult->FetchRow())
 				{
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` TINYTEXT,\n";
 				}
@@ -379,8 +379,8 @@ else
 			{
 			//MULTI ENTRY
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$abresult=mysql_query($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".mysql_error());
-			$abcount=mysql_num_rows($abresult);
+			$abresult=$connect->Execute($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+			$abcount=$abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)
 				{
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i` VARCHAR(5),\n";
@@ -393,29 +393,29 @@ else
 	$createsurvey .= ") TYPE=MyISAM;";
 	//echo "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
 	
-	$createtable=mysql_query($createsurvey) or die 
+	$createtable=$connect->Execute($createsurvey) or die 
 		(
 		"<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
 		"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._ACTIVATE." ($surveyid)</strong></font></td></tr>\n" .
 		"<tr><td>\n" .
 		"<font color='red'>"._AC_NOTACTIVATED."</font><br />\n" .
 		"<center><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a></center>\n" .
-		"DB "._ERROR.":<br />\n<font color='red'>" . mysql_error() . "</font>\n" .
+		"DB "._ERROR.":<br />\n<font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
 		"<pre>$createsurvey</pre>\n" .
 		"</td></tr></table>\n" .
 		"</body>\n</html>"
 		);
 	
 	$anquery = "SELECT autonumber_start FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
-	if ($anresult=mysql_query($anquery)) 
+	if ($anresult=db_execute_assoc($anquery)) 
 		{
 		//if there is an autonumber_start field, start auto numbering here
-		while($row=mysql_fetch_array($anresult))
+		while($row=$anresult->FetchRow())
 			{
 			if ($row['autonumber_start'] > 0) 
 				{
 				$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$row['autonumber_start'];
-				if ($result = mysql_query($autonumberquery))
+				if ($result = $connect->Execute($autonumberquery))
 					{
 					//We're happy it worked!
 					}
@@ -439,7 +439,7 @@ else
 			}
 		$idprefix = "{$idprefix}0000000"; //Setting 7 zeros at the end allows for up to 9,999,999 responses
 		$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$idprefix;
-		if (!$result = mysql_query($autonumberquery))
+		if (!$result = $connect->Execute($autonumberquery))
 			{
 		    echo "There was an error defining the autonumbering to start at $idprefix.<br />";
 			}
@@ -450,7 +450,7 @@ else
 	echo "\t\t\t\t<tr><td align='center'>$setfont<font color='green'>"._AC_ACTIVATED."<br /><br />\n";
 	
 	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
-	$acresult = mysql_query($acquery);
+	$acresult = $connect->Execute($acquery);
 	
 	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 		{

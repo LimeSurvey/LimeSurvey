@@ -13,26 +13,26 @@ header("Content-Type: application/octetstream");
 header("Content-Disposition: ".(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?"":"attachment; ")."filename=survey".$surveyid.".sav");
 
 sendcacheheaders();
-$query = "SELECT DISTINCT qid FROM {$dbprefix}questions WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
-$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-$num_results = mysql_num_rows($result);
+$query = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
+$result=$connect->Execute($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
+$num_results = $result->RecordCount();
 # Build array that has to be returned
 $fieldmap=createFieldMap($surveyid);
 #See if tokens are being used
-$tresult = @mysql_list_tables($databasename) or die ("Error getting table list<br />".mysql_error());
-while($tbl = @mysql_tablename($tresult, $i++))
+$tablelist = $connect->MetaTables() or die ("Error getting table list<br />".$connect->ErrorMsg());
+foreach ($tablelist as $tbl)
 	{
 	if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist = 1;}
 	}
 
 #Lookup the names of the attributes
-$query="SELECT sid, attribute1, attribute2, private FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-$num_results = mysql_num_rows($result);
+$query="SELECT sid, attribute1, attribute2, private FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
+$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
+$num_results = $result->RecordCount();
 $num_fields = $num_results;
 # Build array that has to be returned
 for ($i=0; $i < $num_results; $i++) {
-        $row = mysql_fetch_array($result);
+        $row = $result->FetchRow();
 	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_TL_ATTR1;}
 	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_TL_ATTR2;}
 	$surveyprivate=$row['private'];
@@ -41,9 +41,9 @@ for ($i=0; $i < $num_results; $i++) {
 $fieldno=0;
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
-	$query="SHOW COLUMNS FROM {$dbprefix}tokens_$surveyid";
-	$result=mysql_query($query) or die("Couldn't count fields in tokens<br />$query<br />".mysql_error());
-	while ($row=mysql_fetch_row($result)) {
+	$query="SHOW COLUMNS FROM ".db_table_name("tokens_$surveyid");
+	$result=db_execute_num($query) or die("Couldn't count fields in tokens<br />$query<br />".$connect->ErrorMsg());
+	while ($row=$result->FetchRow()) {
 			$token_fields[]=$row[0];
 		}
 	if (in_array("firstname", $token_fields)) {
@@ -71,13 +71,13 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	$fields=array();
 }
 
-$query="SHOW COLUMNS FROM {$dbprefix}survey_$surveyid";
-$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-$num_results = mysql_num_rows($result);
+$query="SHOW COLUMNS FROM ".db_table_name("survey_$surveyid");
+$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
+$num_results = $result->RecordCount();
 $num_fields = $num_results;
 # Build array that has to be returned
 for ($i=0; $i < $num_results; $i++) {
-        $row = mysql_fetch_array($result);
+        $row = $result->FetchRow();
         #Conditions for SPSS fields:
         # - Length may not be longer than 8 characters
         # - Name may not begin with a digit
@@ -124,9 +124,9 @@ echo "\n";
 echo "BEGIN DATA.\n";
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
-$query="SELECT `{$dbprefix}tokens_$surveyid`.`firstname`   ,
-	       `{$dbprefix}tokens_$surveyid`.`lastname`    ,
-	       `{$dbprefix}tokens_$surveyid`.`email`";
+$query="SELECT ".db_table_name("tokens_$surveyid").".".db_quote_id("firstname")." ,
+	       ".db_table_name("tokens_$surveyid").".".db_quote_id("lastname")."  ,
+	       ".db_table_name("tokens_$surveyid").".".db_quote_id("email");
 if (in_array("attribute_1", $token_fields)) {
     $query .= ",\n		`{$dbprefix}tokens_$surveyid`.`attribute_1`";
 }
@@ -141,11 +141,11 @@ $query = "SELECT `{$dbprefix}survey_$surveyid`.*
 	FROM `{$dbprefix}survey_$surveyid`";
 }
 
-$result=mysql_query($query) or die("Couldn't get results<br />$query<br />".mysql_error());
-$num_results = mysql_num_rows($result);
-$num_fields = mysql_num_fields($result);
+$result=db_execute_num($query) or die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
+$num_results = $result->RecordCount();
+$num_fields = $result->FieldCount();
 for ($i=0; $i < $num_results; $i++) {
-        $row = mysql_fetch_array($result);
+        $row = $result->FetchRow();
 	$fieldno = 0;
 	while ($fieldno < $num_fields){
 		// if ($fields[$fieldno]["id"]=="stamp"){
@@ -181,25 +181,25 @@ foreach ($fields as $field){
 
 			$query = "SELECT `{$dbprefix}questions`.`question` FROM {$dbprefix}questions WHERE ((`{$dbprefix}questions`.`sid` =".$surveyid.") AND (`{$dbprefix}questions`.`qid` =".$field["qid"]."))";
 			#echo $query;
-			$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-			$num_results = mysql_num_rows($result);
+			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
+			$num_results = $result->RecordCount();
 			$num_fields = $num_results;
 			if ($num_results >0){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
-					$row = mysql_fetch_array($result);
+					$row = $result->FetchRow();
 					$question_text = $row["question"];
 				}
 			}
 			#Lookup the answer
 			$query = "SELECT `{$dbprefix}answers`.`answer` FROM {$dbprefix}answers WHERE ((`{$dbprefix}answers`.`qid` =".$field["qid"].") AND (`{$dbprefix}answers`.`code` ='".$field["code"]."'))";
-			$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-			$num_results = mysql_num_rows($result);
+			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
+			$num_results = $result->RecordCount();
 			$num_fields = $num_results;
 			if ($num_results >0){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
-					$row = mysql_fetch_array($result);
+					$row = $result->FetchRow();
 					echo "VARIABLE LABELS ".$field["id"]." '".$question_text." - ".$row["answer"]."'.\n";
 				}
 			}
@@ -222,14 +222,14 @@ echo "*Define Value labels.\n";
 foreach ($fields as $field){
 	if ($field["qid"]!=0){
 		$query = "SELECT `{$dbprefix}answers`.`code`, `{$dbprefix}answers`.`answer` FROM {$dbprefix}answers WHERE (`{$dbprefix}answers`.`qid` = ".$field["qid"].")";
-		$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-		$num_results = mysql_num_rows($result);
+		$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
+		$num_results = $result->RecordCount();
 		$num_fields = $num_results;
 		if ($num_results >0){
 			echo "VALUE LABELS ".$field["id"]."\n";
 			# Build array that has to be returned
 			for ($i=0; $i < $num_results; $i++) {
-			        $row = mysql_fetch_array($result);
+			        $row = $result->FetchRow();
 				echo $row["code"]." '".$row["answer"]."'\n";
 			}
 		}

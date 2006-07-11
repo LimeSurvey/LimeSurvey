@@ -128,8 +128,8 @@ if ($action == "newset" || $action == "editset")
     if ($action == "editset")
         {
         $query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
-        $result=mysql_query($query);
-        while ($row=mysql_fetch_array($result)) {$lbname=$row['label_name']; $lblid=$row['lid'];}
+        $result=db_execute_assoc($query);
+        while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid'];}
         }
     echo "\t\t<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
 		."\t\t<table width='100%' bgcolor='#DDDDDD'>\n"
@@ -193,21 +193,21 @@ if (isset($lid) && ($action != "editset") && $lid)
     {
     //CHECK TO SEE IF ANY ACTIVE SURVEYS ARE USING THIS LABELSET (Don't let it be changed if this is the case)
     $query = "SELECT {$dbprefix}surveys.short_title FROM {$dbprefix}questions, {$dbprefix}surveys WHERE {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.lid=$lid AND {$dbprefix}surveys.active='Y'";
-    $result = mysql_query($query);
-    $activeuse=mysql_num_rows($result);
-    while ($row=mysql_fetch_array($result)) {$activesurveys[]=$row['short_title'];}
+    $result = db_execute_assoc($query);
+    $activeuse=$result->RecordCount();
+    while ($row=$result->FetchRow()) {$activesurveys[]=$row['short_title'];}
     //NOW ALSO COUNT UP HOW MANY QUESTIONS ARE USING THIS LABELSET, TO GIVE WARNING ABOUT CHANGES
     $query = "SELECT * FROM {$dbprefix}questions WHERE type IN ('F','H') AND lid=$lid";
-    $result = mysql_query($query);
-    $totaluse=mysql_num_rows($result);
-    while($row=mysql_fetch_array($result))
+    $result = db_execute_assoc($query);
+    $totaluse=$result->RecordCount();
+    while($row=$result->FetchRow())
         {
         $qidarray[]=array("url"=>"$scriptname?sid=".$row['sid']."&amp;gid=".$row['gid']."&amp;qid=".$row['qid'], "title"=>"QID: ".$row['qid']);
         } // while
     //NOW GET THE ANSWERS AND DISPLAY THEM
     $query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
-    $result = mysql_query($query);
-    while ($row=mysql_fetch_array($result))
+    $result = db_execute_assoc($query);
+    while ($row=$result->FetchRow())
         {
         echo "\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
             ."\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'>"
@@ -238,8 +238,8 @@ if (isset($lid) && ($action != "editset") && $lid)
         }
     //LABEL ANSWERS
     $query = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
-    $result = mysql_query($query) or die(mysql_error());
-    $labelcount = mysql_num_rows($result);
+    $result = db_execute_assoc($query) or die($connect->ErrorMsg());
+    $labelcount = $result->RecordCount();
     echo "\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'><thead align='center'>\n"
         ."\t\t\t\t<tr bgcolor='#555555' >\n"
         ."\t\t\t\t\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
@@ -262,7 +262,7 @@ if (isset($lid) && ($action != "editset") && $lid)
         ."\t\t\t\t</tr></thead>\n"
         ."\t\t\t\t\n";
     $position=0;
-    while ($row=mysql_fetch_array($result))
+    while ($row=$result->FetchRow())
         {
     	echo "\t\t\t<tr><td colspan='4'><form method='post' action='labels.php'>\n"
 			."\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
@@ -378,24 +378,24 @@ echo getAdminFooter("$langdir/instructions.html#labels", "Using PHPSurveyor`s La
 //************************FUNCTIONS********************************
 function updateset($lid)
     {
-    global $dbprefix;
+    global $dbprefix, $connect;
     if (get_magic_quotes_gpc() == "0")
         {
         $_POST['label_name'] = addcslashes($_POST['label_name'], "'");
         }
     $query = "UPDATE {$dbprefix}labelsets SET label_name='{$_POST['label_name']}' WHERE lid=$lid";
-    if (!$result = mysql_query($query))
+    if (!$result = $connect->Execute($query))
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         }
     }
 function delset($lid)
     {
-    global $dbprefix;
+    global $dbprefix, $connect;
     //CHECK THAT THERE ARE NO QUESTIONS THAT RELY ON THIS LID
     $query = "SELECT qid FROM {$dbprefix}questions WHERE type IN ('F','H') AND lid=$lid";
-    $result = mysql_query($query) or die("Error");
-    $count = mysql_num_rows($result);
+    $result = $connect->Execute($query) or die("Error");
+    $count = $result->RecordCount();
     if ($count > 0)
         {
         echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELSET."\")\n //-->\n</script>\n";
@@ -404,32 +404,32 @@ function delset($lid)
     else //There are no dependencies. We can delete this safely
         {
         $query = "DELETE FROM {$dbprefix}labels WHERE lid=$lid";
-        $result = mysql_query($query);
+        $result = $connect->Execute($query);
         $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$lid";
-        $result = mysql_query($query);
+        $result = $connect->Execute($query);
         return true;
         }
     }
 function insertset()
     {
-    global $dbprefix;
+    global $dbprefix, $connect;
     if (get_magic_quotes_gpc() == "0")
         {
         $_POST['label_name'] = addcslashes($_POST['label_name'], "'");
         }
     $query = "INSERT INTO {$dbprefix}labelsets (label_name) VALUES ('{$_POST['label_name']}')";
-    if (!$result = mysql_query($query))
+    if (!$result = $connect->Execute($query))
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         }
     else
         {
-        return mysql_insert_id();
+        return $connect->Insert_ID();
         }
     }
 function modanswers($lid)
     {
-    global $dbprefix;
+    global $dbprefix, $connect;
     if (get_magic_quotes_gpc() == "0")
         {
         if (isset($_POST['title']))
@@ -446,17 +446,17 @@ function modanswers($lid)
             if (isset($_POST['code']) && $_POST['code']!='')
                 {
                 $query = "INSERT INTO {$dbprefix}labels (lid, code, title, sortorder) VALUES ($lid, '{$_POST['code']}', '{$_POST['title']}', '{$_POST['sortorder']}')";
-                if (!$result = mysql_query($query))
+                if (!$result = $connect->Execute($query))
                     {
-                    echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_INSERTANS." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+                    echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_INSERTANS." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                     }
                 }
             break;
         case _AL_SAVE:
             $query = "UPDATE {$dbprefix}labels SET code='{$_POST['code']}', title='{$_POST['title']}', sortorder='{$_POST['sortorder']}' WHERE lid=$lid AND code='{$_POST['old_code']}'";
-            if (!$result = mysql_query($query))
+            if (!$result = $connect->Execute($query))
                 {
-                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_EDITANS." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_EDITANS." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                 }
             break;
         case _AL_UP:
@@ -464,11 +464,11 @@ function modanswers($lid)
             $replacesortorder=$newsortorder;
             $newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
             $cdquery = "UPDATE {$dbprefix}labels SET sortorder='PEND' WHERE lid=$lid AND sortorder='$newsortorder'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
             $cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder='$newreplacesortorder'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
             $cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
             break;
         case _AL_DN:
             $newsortorder=sprintf("%05d", $_POST['sortorder']+1);
@@ -476,17 +476,17 @@ function modanswers($lid)
             $newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
             $newreplace2=sprintf("%05d", $_POST['sortorder']);
             $cdquery = "UPDATE {$dbprefix}labels SET sortorder='PEND' WHERE lid=$lid AND sortorder='$newsortorder'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
             $cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
             $cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
-            $cdresult=mysql_query($cdquery) or die(mysql_error());
+            $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
             break;
         case _AL_DEL:
             $query = "DELETE FROM {$dbprefix}labels WHERE lid=$lid AND code='{$_POST['old_code']}'";
-            if (!$result = mysql_query($query))
+            if (!$result = $connect->Execute($query))
                 {
-                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELANS." - ".$query." - ".mysql_error()."\")\n //-->\n</script>\n";
+                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELANS." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                 }
             break;
         case _AL_FIXSORT:
@@ -496,23 +496,15 @@ function modanswers($lid)
     }
 function fixorder($lid) //Function rewrites the sortorder for a group of answers
     {
-    global $dbprefix;
-    $query = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid ORDER BY sortorder, code";
-    $result = mysql_query($query);
+    global $dbprefix, $connect;
+    $query = "SELECT lid, code, title FROM {$dbprefix}labels WHERE lid=? ORDER BY sortorder, code";
+    $result = db_execute_num($query, $lid);
     $position=0;
-    while ($row=mysql_fetch_array($result))
+    while ($row=$result->FetchRow())
         {
         $position=sprintf("%05d", $position);
-        if (_PHPVERSION >= "4.3.0")
-            {
-            $title = mysql_real_escape_string($row['title']);
-            }
-        else
-            {
-            $title = mysql_escape_string($row['title']);
-            }
-        $query2="UPDATE {$dbprefix}labels SET sortorder='$position' WHERE lid={$row['lid']} AND code='{$row['code']}' AND title='$title'";
-        $result2=mysql_query($query2) or die ("Couldn't update sortorder<br />$query2<br />".mysql_error());
+        $query2="UPDATE {$dbprefix}labels SET sortorder='$position' WHERE lid=? AND code=? AND title=?";
+        $result2=$connect->Execute($query2, $row[0], $row[1], $row[2]) or die ("Couldn't update sortorder<br />$query2<br />".$connect->ErrorMsg());
         $position++;
         }
     }
