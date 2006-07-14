@@ -222,6 +222,13 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		}
 	}
 
+#Lookup the names of the attributes
+$query = "SELECT attribute1, attribute2 FROM {$dbprefix}surveys WHERE sid=$surveyid";
+$result = mysql_query($query) or die("Couldn't execute query: <br />$query<br />".mysql_error());
+$row = mysql_fetch_array($result);
+if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_TL_ATTR1;}
+if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_TL_ATTR2;}
+
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
 echo "\t<tr bgcolor='#999999'>\n"
 	."\t\t<td>\n"
@@ -479,11 +486,11 @@ if ($action == "browse" || $action == "search")
 		echo "\t\t<th align='left' valign='top'>"
 			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=attribute_1&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 			."<img src='$imagefiles/downarrow.png' alt='"
-			._TC_SORTBY._TL_ATTR1."' border='0' align='left'></a>$setfont"._TL_ATTR1."</font></th>\n"
+			._TC_SORTBY._TL_ATTR1."' border='0' align='left'></a>$setfont".$attr1_name."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
 			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=attribute_2&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 			."<img src='$imagefiles/downarrow.png' alt='"
-			._TC_SORTBY._TL_ATTR2."' border='0' align='left'></a>$setfont"._TL_ATTR2."</font></th>\n"
+			._TC_SORTBY._TL_ATTR2."' border='0' align='left'></a>$setfont".$attr2_name."</font></th>\n"
 			."\t\t<th align='left' valign='top'>"
 			."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=mpid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 			."<img src='$imagefiles/downarrow.png' alt='"
@@ -1093,13 +1100,13 @@ if ($action == "edit" || $action == "addnew")
 		echo "\"></font></td>\n"
 			."</tr>\n"
 			."<tr>\n"
-			."\t<td align='right' width='20%'>$setfont<strong>"._TL_ATTR1.":</strong></font></td>\n"
+			."\t<td align='right' width='20%'>$setfont<strong>".$attr1_name.":</strong></font></td>\n"
 			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' $slstyle name='attribute1' value=\"";
 		if (isset($attribute_1)) {echo $attribute_1;}
 		echo "\"></font></td>\n"
 			."</tr>\n"
 			."<tr>\n"
-			."\t<td align='right' width='20%'>$setfont<strong>"._TL_ATTR2.":</strong></font></td>\n"
+			."\t<td align='right' width='20%'>$setfont<strong>".$attr2_name.":</strong></font></td>\n"
 			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' $slstyle name='attribute2' value=\"";
 		if (isset($attribute_2)) {echo $attribute_2;}
 		}
