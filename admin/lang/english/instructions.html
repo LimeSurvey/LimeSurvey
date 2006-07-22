@@ -1365,31 +1365,31 @@ set as NOT Anonymous (ie: tracked), and it needs to have a tokens table.<br>
 <br>The fields available for this are:</font>
 </p><ul>
 <li><p style="margin-bottom: 0cm;">
-<font face="Verdana"><font size="2">{TOKENS:FIRSTNAME}
+<font face="Verdana"><font size="2">{TOKEN:FIRSTNAME}
 - inserts the value from the "firstname" field in the tokens table</font></font>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<font face="Verdana"><font size="2">{TOKENS:LASTNAME}
+<font face="Verdana"><font size="2">{TOKEN:LASTNAME}
 - inserts the value from the "lastname" field in the tokens table</font></font>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<font face="Verdana"><font size="2">{TOKENS:EMAIL}
+<font face="Verdana"><font size="2">{TOKEN:EMAIL}
 - inserts the value from the "email" field in the tokens table</font></font>
 </p></li>
 <li><p style="margin-bottom: 0cm;">
-<font face="Verdana"><font size="2">{TOKENS:ATTRIBUTE_1}
+<font face="Verdana"><font size="2">{TOKEN:ATTRIBUTE_1}
 - inserts the value from the "attribute_1" field in the tokens table</font></font>
 </p></li>
 <li><p>
-<font face="Verdana"><font size="2">{TOKENS:ATTRIBUTE_2}
+<font face="Verdana"><font size="2">{TOKEN:ATTRIBUTE_2}
 - inserts the value from the "attribute_2" field in the tokens table</font></font>
 </p></li>
 </ul><p style="margin-bottom: 0cm;">
 <font face="Verdana"><font size="2">To use
 this functionality you must type the field text into your question
 exactly as listed above. For example:<br>
-<br><i>Hello {TOKENS:FIRSTNAME}. We sent an email to you
-using this address {TOKENS:EMAIL}. Is this correct?</i><br>
+<br><i>Hello {TOKEN:FIRSTNAME}. We sent an email to you
+using this address {TOKEN:EMAIL}. Is this correct?</i><br>
 <br>If there are spaces or typing mistakes, the script will not
 replace your field with the appropriate information.<br>
 <br><strong>PREVIOUS ANSWERS<br></strong> There
