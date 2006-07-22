@@ -31,7 +31,7 @@ define("_SUBMIT", "gửi");
 
 //MESSAGES
 //From QANDA.PHP
-define("_CHOOSEONE", "Xin chojn một trong các lựa chọn sau");
+define("_CHOOSEONE", "Xin chọn một trong các lựa chọn sau");
 define("_ENTERCOMMENT", "Xin điền lời bình ở đây");
 define("_NUMERICAL_PS", "Chỉ có thể điền số ở đây");
 define("_CLEARALL", "Thoát và xóa khảo sát đã làm");
