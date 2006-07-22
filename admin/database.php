@@ -617,14 +617,23 @@ elseif ($action == "insertnewsurvey")
           	{
         	$_POST['expires']="'".$_POST['expires']."'";
         	}
+        // Get random ids until one is found that is not used
+        do
+          {
+          $surveyid = getRandomID();
+          $isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$surveyid";
+          $isresult = db_execute_assoc($isquery);
+          }
+        while ($isresult->RecordCount()>0);
+
         $isquery = "INSERT INTO {$dbprefix}surveys\n"
-                  . "(short_title, description, admin, active, welcome, useexpiry, expires, "
+                  . "(sid, short_title, description, admin, active, welcome, useexpiry, expires, "
                   . "adminemail, private, faxto, format, template, url, urldescrip, "
                   . "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
                   . "email_invite_subj, email_invite, email_remind_subj, email_remind, "
                   . "email_register_subj, email_register, email_confirm_subj, email_confirm, "
                   . "allowsave, autoredirect, allowprev)\n"
-                  . "VALUES ('{$_POST['short_title']}', '{$_POST['description']}',\n"
+                  . "VALUES ($surveyid, '{$_POST['short_title']}', '{$_POST['description']}',\n"
                   . "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
                   . "'{$_POST['useexpiry']}',{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"
                   . "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
@@ -639,10 +648,6 @@ elseif ($action == "insertnewsurvey")
         $isresult = $connect->Execute($isquery);
         if ($isresult)
             {
-            $isquery = "SELECT sid FROM {$dbprefix}surveys WHERE short_title like '{$_POST['short_title']}'";
-            $isquery .= " AND description like '{$_POST['description']}' AND admin like '{$_POST['admin']}'";
-            $isresult = db_execute_assoc($isquery);
-            while ($isr = $isresult->FetchRow()) {$surveyid = $isr['sid'];}
             $surveyselect = getsurveylist();
             }
         else

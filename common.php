@@ -2006,4 +2006,16 @@ function getreferringurl()
     	if (!ereg(getenv("SERVER_NAME"), getenv("HTTP_REFERER"))) { $_SESSION['refurl'] = getenv("HTTP_REFERER"); }
     }
     }
+    
+function getRandomID()
+{        // Create a random survey ID - based on code from Ken Lyle
+        // Random sid/ question ID generator...
+        $totalChar = 5; // number of chars in the sid
+        $salt = "123456789"; // This is the char. that is possible to use
+        srand((double)microtime()*1000000); // start the random generator
+        $sid=""; // set the inital variable
+        for ($i=0;$i<$totalChar;$i++) // loop and create sid
+        $sid = $sid . substr ($salt, rand() % strlen($salt), 1);
+        return $sid;
+}
 ?>
