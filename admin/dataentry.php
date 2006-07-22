@@ -1463,6 +1463,7 @@ else
 								}
 						case "F":
 						case "H":
+						 default:
 							$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
 							$fquery = "SELECT * FROM {$dbprefix}labels\n"
 									. "WHERE lid='{$conrow['lid']}'\n"
@@ -1505,6 +1506,7 @@ else
 								$conditions[]=$ansrow['answer'];
 								}
 							$operator=_DE_OR;	
+                            $conditions = array_unique($conditions)
 							break;
 						}
 					}

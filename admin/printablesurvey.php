@@ -184,6 +184,7 @@ while ($degrow = $degresult->FetchRow())
 					case "H":
 					case "W":
 					case "L":
+					 default: 
 						$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
 						$fquery = "SELECT * FROM {$dbprefix}labels\n"
 								. "WHERE lid='{$conrow['lid']}'\n"
@@ -218,6 +219,7 @@ while ($degrow = $degresult->FetchRow())
 							{
 							$conditions[]=$ansrow['answer'];
 							}
+						$conditions = array_unique($conditions); 
 						break;
 					}
 				}
