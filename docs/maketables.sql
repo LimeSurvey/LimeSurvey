@@ -1,34 +1,38 @@
-# phpMyAdmin SQL Dump
-# Generation Time: Mar 03, 2005 at 09:43 AM
-# Server version: 3.23.52
-# PHP Version: 4.2.3
-# 
-# 
+-- phpMyAdmin SQL Dump
+-- version 2.8.0.2
+-- http://www.phpmyadmin.net
+-- 
+-- Host: localhost
+-- Generation Time: Jul 23, 2006 at 07:56 PM
+-- Server version: 5.0.20
+-- PHP Version: 5.1.4
+-- 
+-- Database: `phpsurveyor-development`
+-- 
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `answers`
-#
+-- 
+-- Table structure for table `answers`
+-- 
 
 CREATE TABLE `answers` (
   `qid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
   `answer` text NOT NULL,
   `default_value` char(1) NOT NULL default 'N',
-  `sortorder` varchar(5) default NULL
+  `sortorder` varchar(5) default NULL,
+  PRIMARY KEY  (`qid`,`code`)
 ) TYPE=MyISAM;
 
-ALTER TABLE `answers` ADD PRIMARY KEY ( `qid` , `code` ) ;
+-- --------------------------------------------------------
 
-# --------------------------------------------------------
-
-#
-# Table structure for table `assessments`
-#
+-- 
+-- Table structure for table `assessments`
+-- 
 
 CREATE TABLE `assessments` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL,
   `sid` int(11) NOT NULL default '0',
   `scope` varchar(5) NOT NULL default '',
   `gid` int(11) NOT NULL default '0',
@@ -40,86 +44,85 @@ CREATE TABLE `assessments` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `conditions`
-#
+-- 
+-- Table structure for table `conditions`
+-- 
 
 CREATE TABLE `conditions` (
-  `cid` int(11) NOT NULL auto_increment,
+  `cid` int(11) NOT NULL,
   `qid` int(11) NOT NULL default '0',
   `cqid` int(11) NOT NULL default '0',
   `cfieldname` varchar(50) NOT NULL default '',
   `method` char(2) NOT NULL default '',
   `value` varchar(5) NOT NULL default '',
   PRIMARY KEY  (`cid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=4 ;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `groups`
-#
+-- 
+-- Table structure for table `groups`
+-- 
 
 CREATE TABLE `groups` (
-  `gid` int(11) NOT NULL auto_increment,
+  `gid` int(11) NOT NULL,
   `sid` int(11) NOT NULL default '0',
   `group_name` varchar(100) NOT NULL default '',
+  `group_order` varchar(45) default NULL,
   `description` text,
   PRIMARY KEY  (`gid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=43 ;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `labels`
-#
+-- 
+-- Table structure for table `labels`
+-- 
 
 CREATE TABLE `labels` (
   `lid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
   `title` varchar(100) NOT NULL default '',
-  `sortorder` varchar(5) default NULL
+  `sortorder` varchar(5) default NULL,
+  PRIMARY KEY  (`lid`,`code`)
 ) TYPE=MyISAM;
 
-ALTER TABLE `labels` ADD PRIMARY KEY ( `lid` , `code` ) ;
+-- --------------------------------------------------------
 
-
-# --------------------------------------------------------
-
-#
-# Table structure for table `labelsets`
-#
+-- 
+-- Table structure for table `labelsets`
+-- 
 
 CREATE TABLE `labelsets` (
-  `lid` int(11) NOT NULL auto_increment,
+  `lid` int(11) NOT NULL,
   `label_name` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`lid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=8 ;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `question_attributes`
-#
+-- 
+-- Table structure for table `question_attributes`
+-- 
 
 CREATE TABLE `question_attributes` (
-  `qaid` int(11) NOT NULL auto_increment,
+  `qaid` int(11) NOT NULL,
   `qid` int(11) NOT NULL default '0',
   `attribute` varchar(50) default NULL,
   `value` varchar(20) default NULL,
   PRIMARY KEY  (`qaid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `questions`
-#
+-- 
+-- Table structure for table `questions`
+-- 
 
 CREATE TABLE `questions` (
-  `qid` int(11) NOT NULL auto_increment,
+  `qid` int(11) NOT NULL,
   `sid` int(11) NOT NULL default '0',
   `gid` int(11) NOT NULL default '0',
   `type` char(1) NOT NULL default 'T',
@@ -131,13 +134,13 @@ CREATE TABLE `questions` (
   `mandatory` char(1) default NULL,
   `lid` int(11) NOT NULL default '0',
   PRIMARY KEY  (`qid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=204 ;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `saved`
-#
+-- 
+-- Table structure for table `saved`
+-- 
 
 CREATE TABLE `saved` (
   `saved_id` int(11) NOT NULL,
@@ -147,16 +150,16 @@ CREATE TABLE `saved` (
   `value` text NOT NULL,
   `ipaddr` mediumtext,
   PRIMARY KEY  (`saved_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `saved_control`
-#
+-- 
+-- Table structure for table `saved_control`
+-- 
 
 CREATE TABLE `saved_control` (
-  `scid` int(11) NOT NULL auto_increment,
+  `scid` int(11) NOT NULL,
   `sid` int(11) NOT NULL default '0',
   `identifier` text NOT NULL,
   `access_code` text NOT NULL,
@@ -165,17 +168,18 @@ CREATE TABLE `saved_control` (
   `saved_thisstep` text NOT NULL,
   `status` char(1) NOT NULL default '',
   `saved_date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `refurl` text NOT NULL,
   PRIMARY KEY  (`scid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `surveys`
-#
+-- 
+-- Table structure for table `surveys`
+-- 
 
 CREATE TABLE `surveys` (
-  `sid` int(11) NOT NULL auto_increment,
+  `sid` int(11) NOT NULL,
   `short_title` varchar(200) NOT NULL default '',
   `description` text,
   `admin` varchar(50) default NULL,
@@ -210,14 +214,15 @@ CREATE TABLE `surveys` (
   `allowprev` char(1) default 'Y',
   `ipaddr` char(1) default 'N',
   `useexpiry` char(1) NOT NULL default 'N',
+  `refurl` char(1) default 'N',
   PRIMARY KEY  (`sid`)
-) TYPE=MyISAM AUTO_INCREMENT=1;
+) TYPE=MyISAM AUTO_INCREMENT=42 ;
 
-# --------------------------------------------------------
+-- --------------------------------------------------------
 
-#
-# Table structure for table `users`
-#
+-- 
+-- Table structure for table `users`
+-- 
 
 CREATE TABLE `users` (
   `user` varchar(20) NOT NULL default '',
