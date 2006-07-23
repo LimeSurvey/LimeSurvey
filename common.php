@@ -680,7 +680,7 @@ function getadminlanguages()
             {
             if (!is_file("$lloc/$file"))
                 {
-                if ($file != "." && $file != ".." && $file != "CVS")
+                if ($file != "." && $file != ".." && $file != "CVS" && $file !=".svn")
                     {
                     $langnames[]=$file;
                     }
