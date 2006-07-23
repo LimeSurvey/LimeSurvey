@@ -36,6 +36,8 @@
     #     Translation by Mikkel Skovgaard Sørensen              #
     #                and Rolf Njor Jensen                       #
     #                and Carsten Høilund                        #
+    # Edit this file only with an UTF-8 capable editor like     #
+    # Notepad2 or PSPad!!!!                                     #
     #############################################################
 */
 //SINGLE WORDS
