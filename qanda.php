@@ -205,7 +205,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
     //GET HELP
     $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0]";
-    $hresult=db_execute_num($hquery) or or die(htmlspecialchars($connect->ErrorMsg());
+    $hresult=db_execute_num($hquery) or die(htmlspecialchars($connect->ErrorMsg()));
         $help="";
     while ($hrow=$hresult->FetchRow()) {$help=$hrow[0];}
 
