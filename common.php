@@ -2027,7 +2027,7 @@ function getRandomID()
 * @global string $surveyid
 * @global string $gid
 * @global string $dbprefix
-* @return returns an array that contains arrays which have keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
+* @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
 */
 function getArrayFiltersForGroup()
     {
@@ -2037,7 +2037,7 @@ function getArrayFiltersForGroup()
     $qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid";
     $qresult = mysql_query($qquery);
     $grows = array(); //Create an empty array in case mysql_fetch_array does not return any rows 
-    // Create store each result as an array with in the $grows array
+    // Store each result as an array with in the $grows array
     while ($qrow = mysql_fetch_array($qresult)) {
     	$grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title']);
     }
@@ -2045,9 +2045,9 @@ function getArrayFiltersForGroup()
 	$grows2 = $grows;
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-    	$qquery = "SELECT value FROM {$dbprefix}question_attributes WHERE attribute='list_filter' AND qid='".$qrow['qid']."'";
+    	$qquery = "SELECT value FROM {$dbprefix}question_attributes WHERE attribute='array_filter' AND qid='".$qrow['qid']."'";
     	$qresult = mysql_query($qquery);
-    	if (mysql_numrows($qresult) == 1) // We Found a list_filter attribute
+    	if (mysql_numrows($qresult) == 1) // We Found a array_filter attribute
     	{
     		$val = mysql_fetch_row($qresult); // Get the Value of the Attribute ( should be a previous question's title in same group )
     		$qafound=0;
@@ -2055,14 +2055,14 @@ function getArrayFiltersForGroup()
     		{
     			if ($value['title'] == $val[0])
     			{
-    				$qafound = $value['qid']; // If list_filter value is a question in the group store it
+    				$qafound = $value['qid']; // If array_filter value is a question in the group store it
     				break;
     			}
 
     		}
     		reset($grows2);
     		if ($qafound > 1) // If not found remove that array element
-    		{ // If found we add it to our new list_filter matches array
+    		{ // If found we add it to our new array_filter matches array
 				$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $value['type'], 'fid' => $value['qid']);
     			array_push($attrmach,$filter);
     		}
