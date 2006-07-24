@@ -1706,7 +1706,14 @@ function do_array_5point($ia)
            $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
-        $answer .= "\t\t\t\t<tr class='$trbc'>\n"
+        $htmltbody2 == "";
+        if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
+        {
+                   $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";
+                   $htmldispbody = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+                   $htmltbody2 .= $htmldispbody;
+        }
+        $answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right' width='$answerwidth%'>$answertext\n"
                  . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
         		 if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
@@ -1773,8 +1780,15 @@ function do_array_10point($ia)
            $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
-        $answer .= "\t\t\t\t<tr class='$trbc'>\n";
-        $answer .= "\t\t\t\t\t<td align='right'>$answertext\n"
+        $htmltbody2 == "";
+        if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
+        {
+                   $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";
+                   $htmldispbody = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+                   $htmltbody2 .= $htmldispbody;
+        }
+        $answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
+        		 . "\t\t\t\t\t<td align='right'>$answertext\n"
                  . "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
         		 if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
         		 $answer .= "'></td>\n";
@@ -2128,7 +2142,14 @@ function do_array_flexible($ia)
             if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
                $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
-            $answer .= "\t\t\t\t<tr class='$trbc'>\n"
+            $htmltbody2 == "";
+        	if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
+        	{
+                   $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";
+                   $htmldispbody = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+                   $htmltbody2 .= $htmldispbody;
+        	}
+        	$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
                     . "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
                  	. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		         	if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
