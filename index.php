@@ -1108,9 +1108,9 @@ function buildsurveysession()
 			."ORDER BY group_name";
 	$result = db_execute_assoc($query);
 
-	$arows = $result->GetRows(true);
+	$arows = $result->GetRows();
 
-	$totalquestions = count($arows);
+	$totalquestions = $result->RecordCount();
 
 	//2. SESSION VARIABLE: totalsteps
 	//The number of "pages" that will be presented in this survey
@@ -1126,7 +1126,7 @@ function buildsurveysession()
 		case "S":
 			$_SESSION['totalsteps']=$totalquestions;
 		}
-	
+
 	if ($totalquestions == "0")	//break out and crash if there are no questions!
 		{
 		sendcacheheaders();
