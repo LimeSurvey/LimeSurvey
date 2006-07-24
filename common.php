@@ -1899,12 +1899,15 @@ function doAdminHeader()
 
 function getAdminHeader()
 {
- global $sitename, $sitename;
+ global $sitename, $sitename, $homeurl;
  $strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
                 ."<html>\n<head>\n"
+                . "<!--[if lt IE 7]>\n"
+                . "<script defer type=\"text/javascript\" src=\"/styles/pngfix.js\"></script>\n"
+                . "<![endif]-->\n"
                 . "<title>$sitename</title>\n"
                 . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
-				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"adminstyle.css\">\n"
+				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles/default/adminstyle.css\">\n"
                 . "</head>\n<body>\n"
                 . "<div style='background-color:#000000;' class='maintitle'>\n"
                 . "\t\t$sitename\n"
