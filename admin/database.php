@@ -61,8 +61,8 @@ elseif ($action == "addattribute")
         {
         $query = "INSERT INTO {$dbprefix}question_attributes
                   (qid, attribute, value)
-                  VALUES (?, ?, ?)";
-        $result = $connect->Execute($query, $_POST['qid'], $_POST['attribute_name'], $_POST['attribute_value']) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
+                  VALUES ('{$_POST['qid']}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
+        $result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
         }
     }
 elseif ($action == "editattribute")
@@ -71,8 +71,8 @@ elseif ($action == "editattribute")
         {
         settype($_POST['qaid'], "integer");
         $query = "UPDATE {$dbprefix}question_attributes
-                  SET value=? WHERE qaid=? AND qid=?";
-        $result = $connect->Execute($query, $_POST['attribute_value'], $_POST['qaid'], $_POST['qid']) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
+                  SET value='{$_POST['attribute_value']}' WHERE qaid='{$_POST['qaid']}' AND qid='{$_POST['qid']}'";
+        $result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
         }
     }
 elseif ($action == "insertnewgroup")
