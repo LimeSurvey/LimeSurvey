@@ -441,40 +441,55 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 	echo templatereplace($op);
 	}
-echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
-//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
-echo "\n\n<!-- INPUT NAMES -->\n";
-echo "\t<input type='hidden' name='fieldnames' value='";
-echo implode("|", $inputnames);
-echo "' id='fieldnames'>\n";
+$hiddenfieldnames=implode("|", $inputnames);
+print <<<END
+<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>
 
-echo "\n\n<!-- START THE SURVEY -->\n";
+<!-- INPUT NAMES -->
+<input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames'>
+
+<!-- START THE SURVEY -->
+
+
+END;
 foreach(file("$thistpl/survey.pstpl") as $op)
 	{
 	echo "\t".templatereplace($op);
 	}
-echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
-echo "\t<script type='text/javascript'>\n";
-echo "\t<!--\n";
-echo "\t\tfunction checkconditions(value, name, type)\n";
-echo "\t\t\t{\n";
+
+print <<<END
+
+<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+<script type='text/javascript'>
+<!--
+		function checkconditions(value, name, type)
+		{
+
+END;
+
 if (isset($conditions) && is_array($conditions))
 	{
 	if (!isset($endzone)) {$endzone="";}
-	echo "\t\t\tif (type == 'radio' || type == 'select-one')\n"
-		."\t\t\t\t{\n"
-		."\t\t\t\tvar hiddenformname='java'+name;\n"
-		."\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n"
-		."\t\t\t\t}\n"
-		."\t\t\tif (type == 'checkbox')\n"
-		."\t\t\t\t{\n"
-		."\t\t\t\tvar hiddenformname='java'+name;\n"
-		."\t\t\t\tvar chkname='answer'+name;\n"
-		."\t\t\t\tif (document.getElementById(chkname).checked) {\n"
-		."\t\t\t\t\tdocument.getElementById(hiddenformname).value='Y';}\n"
-		."\t\t\t\telse {\n"
-		."\t\t\t\t\tdocument.getElementById(hiddenformname).value='';}\n"
-		."\t\t\t\t}\n";
+print <<<END
+			if (type == 'radio' || type == 'select-one')
+			{
+				var hiddenformname='java'+name;
+				document.getElementById(hiddenformname).value=value;
+			}
+			
+			if (type == 'checkbox')
+			{
+				var hiddenformname='java'+name;
+				var chkname='answer'+name;
+				if (document.getElementById(chkname).checked)
+				{
+					document.getElementById(hiddenformname).value='Y';
+				} else {
+					document.getElementById(hiddenformname).value='';
+				}
+			}
+
+END;
 	$java="";
 	$cqcount=1;
 	foreach ($conditions as $cd)
@@ -533,7 +548,7 @@ if (isset($conditions) && is_array($conditions))
 	$java .= $endzone;
 	}
 if (isset($java)) {echo $java;}
-echo "\t\t\t}\n"
+echo "\t\t}\n"
 	."\t//-->\n"
 	."\t</script>\n\n";
 
