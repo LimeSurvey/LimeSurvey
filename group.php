@@ -288,12 +288,13 @@ if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notansw
 		{
 		echo "\t\t".templatereplace($op);
 		}
-	echo "\n";
-	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
-	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
-	echo "\n</form>\n";
-	echo "\n";
+print <<<END
+	<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>
+	<input type='hidden' name='sid' value='$surveyid' id='sid'>
+	<input type='hidden' name='token' value='$token' id='token'>
+	</form>
+
+END;
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -462,12 +463,33 @@ print <<<END
 <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 <script type='text/javascript'>
 <!--
+END;
+// Find out if there are any array_filter questions in this group
+$array_filterqs = getArrayFiltersForGroup();
+// Put in the radio button reset javascript for the array filter unselect
+if (isset($array_filterqs) && is_array($array_filterqs)) {
+print <<<END
+		function radio_unselect(radioObj)
+		{
+			var radioLength = radioObj.length;
+			for(var i = 0; i < radioLength; i++)
+			{
+				radioObj[i].checked = false;
+			}
+		}
+
+
+END;
+}
+
+print <<<END
 		function checkconditions(value, name, type)
 		{
 
 END;
 
-if (isset($conditions) && is_array($conditions))
+// If there are conditions or arrray_filter questions then include the appropriate Javascript
+if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && is_array($array_filterqs)))
 	{
 	if (!isset($endzone)) {$endzone="";}
 print <<<END
