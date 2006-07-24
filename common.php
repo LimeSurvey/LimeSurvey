@@ -1771,7 +1771,9 @@ function questionAttributes()
     $qattributes[]=array("name"=>"code_filter",
                          "types"=>"FGWZ",
                          "help"=>"Filter the available answers by this value");
-
+    $qattributes[]=array("name"=>"array_filter",
+                         "types"=>"ABF",
+                         "help"=>"Filter an Array's Answers from a Multiple Options Question");
 
 // --> START ENHANCEMENT - DISPLAY ROWS
     $qattributes[]=array("name"=>"display_rows",
