@@ -569,6 +569,42 @@ END;
 		}
 	$java .= $endzone;
 	}
+	
+if (isset($array_filterqs) && is_array($array_filterqs))
+{
+		foreach ($array_filterqs as $attralist)
+        {
+                //die(print_r($attrflist));
+                $qbase = $surveyid."X".$gid."X".$attralist['qid'];
+                $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
+                if ($attralist['type'] == "M")
+                {
+                        $qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' order by code;";
+                        $qresult = mysql_query($qquery);
+                        while ($fansrows = mysql_fetch_array($qresult))
+                        {
+                                $fquestans = "java".$qfbase.$fansrows['code'];
+                                $tbody = "javatbd".$qbase.$fansrows['code'];
+                                $dtbody = "tbdisp".$qbase.$fansrows['code'];
+                                $tbodyae = $qbase.$fansrows['code'];
+                                $appendj .= "\n\t\t\tif ((document.getElementById('$fquestans').value == 'Y'))\n";
+                                $appendj .= "\t\t\t{\n";
+                                $appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='';\n";
+                                $appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='on';\n";
+                                $appendj .= "\t\t\t}\n";
+                                $appendj .= "\t\t\telse\n";
+                                $appendj .= "\t\t\t{\n";
+                                $appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='none';\n";
+                                $appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='off';\n";
+                                $appendj .= "\t\t\t\tradio_unselect(document.forms['phpsurveyor'].elements['$tbodyae']);\n";
+                                $appendj .= "\t\t\t}\n";
+                        }
+                }
+        }
+        $java .= $appendj;
+}
+
+	
 if (isset($java)) {echo $java;}
 echo "\t\t}\n"
 	."\t//-->\n"
