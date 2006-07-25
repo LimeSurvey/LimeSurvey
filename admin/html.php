@@ -244,18 +244,26 @@ if ($surveyid)
 		if ($activated == "N" && $sumcount3>0) 
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' "
-							. "title='"._S_INACTIVE_BT."' alt='"._S_INACTIVE_BT."' border='0' hspace='0' align='left'>\n"
+							. "title='' alt='"._S_INACTIVE_BT."' border='0' hspace='0' align='left'"
+							. "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._S_INACTIVE_BT."');return false\">\n" 
 							. "\t\t\t\t\t<input type='image' src='$imagefiles/activate.png' name='ActivateSurvey' "
-							. "title='"._S_ACTIVATE_BT."' alt='"._S_ACTIVATE_BT."' align='left' "
-							. "onClick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\">\n";
+							. "title='' alt='"._S_ACTIVATE_BT."' align='left' "
+							. "onClick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
+							. "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._S_ACTIVATE_BT."');return false\">\n" ; 
 			}
 		elseif ($activated == "Y")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.png' title='"._S_ACTIVE_BT."' "
-							. "alt='"._S_ACTIVE_BT."' align='left'>\n"
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.png' title='' "
+							. "alt='"._S_ACTIVE_BT."' align='left'"
+							. "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._S_ACTIVE_BT."');return false\">\n" 
 							. "\t\t\t\t\t<input type='image' src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
-							. "alt='"._S_DEACTIVATE_BT."' title='"._S_DEACTIVATE_BT."' align='left' "
-							. "onClick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\">\n";
+							. "alt='"._S_DEACTIVATE_BT."' title='' align='left' "
+							. "onClick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\"" 
+							. "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._S_DEACTIVATE_BT."');return false\">\n" ; 
 			}
 		elseif ($activated == "N")
 			{
@@ -265,52 +273,71 @@ if ($surveyid)
 							. "alt='"._S_CANNOTACTIVATE_BT."' border='0' align='left' hspace='0'>\n";
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "\t\t\t\t\t<input type='image' accesskey='d' src='$imagefiles/do.png' title='"._S_DOSURVEY_BT."' "
+						. "\t\t\t\t\t<input type='image' accesskey='d' src='$imagefiles/do.png' title='' "
 						. "name='DoSurvey' align='left' alt='"._S_DOSURVEY_BT."' "
-						. "onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\">\n"
+						. "onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\"" 
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'"._S_DOSURVEY_BT."');return false\">\n"
 						. "\t\t\t\t\t<input type='image' src='$imagefiles/dataentry.png' "
-						. "title='"._S_DATAENTRY_BT."' align='left' alt='"._S_DATAENTRY_BT."'"
-						. "name='DoDataentry' onclick=\"window.open('".$homeurl."/dataentry.php?sid=$surveyid', '_blank')\">\n"
-						. "\t\t\t\t\t<input type='image' src='$imagefiles/print.png' title='"._S_PRINTABLE_BT."' "
+						. "title='' align='left' alt='"._S_DATAENTRY_BT."'"
+						. "name='DoDataentry' onclick=\"window.open('".$homeurl."/dataentry.php?sid=$surveyid', '_blank')\"" 
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'"._S_DATAENTRY_BT."');return false\">\n"
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/print.png' title='' "
 						. "name='ShowPrintableSurvey' align='left' alt='"._S_PRINTABLE_BT."' "
-						. "onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$surveyid', '_blank')\">\n"
+						. "onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$surveyid', '_blank')\""
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'"._S_PRINTABLE_BT."');return false\">\n"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='"._S_EDIT_BT."' "
+						. "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='' "
 						. "name='EditSurvey' align='left' alt='"._S_EDIT_BT."'"
-						. "onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\">\n";
+						. "onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\"" 
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'"._S_EDIT_BT."');return false\">\n" ;
 		if ($sumcount3 == 0 && $sumcount2 == 0)
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' title='"
-							. _S_DELETE_BT."' align='left' name='DeleteWholeSurvey' "
-							. "onclick=\"window.open('$scriptname?action=delsurvey&amp;sid=$surveyid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey' "
+							. "onclick=\"window.open('$scriptname?action=delsurvey&amp;sid=$surveyid', '_top')\""
+							. "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'". _S_DELETE_BT."');return false\">\n" ;
 			}
 		else
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title='". _S_EXPORT_BT."' alt='". _S_EXPORT_BT."' align='left' name='ExportSurvey' "
-						. "onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\">\n";
+		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title='' alt='". _S_EXPORT_BT."' align='left' name='ExportSurvey' "
+						. "onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\""
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'". _S_EXPORT_BT."');return false\">\n" ;
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "<input type='image' src='$imagefiles/assessments.png' title='". _S_ASSESSMENT_BT."' alt='". _S_ASSESSMENT_BT."' align='left' name='SurveyAssessment' "
-						. "onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\">\n";		
+						. "<input type='image' src='$imagefiles/assessments.png' title='' alt='". _S_ASSESSMENT_BT."' align='left' name='SurveyAssessment' "
+						. "onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\"" 
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'". _S_ASSESSMENT_BT."');return false\">\n" ;		
 		
 		if ($activated == "Y")
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-							. "\t\t\t\t\t<input type='image' src='$imagefiles/browse.png' title='"._S_BROWSE_BT."' "
+							. "\t\t\t\t\t<input type='image' src='$imagefiles/browse.png' title='' "
 							. "align='left' name='BrowseSurveyResults' alt='"._S_BROWSE_BT."'"
-							. "onclick=\"window.open('".$homeurl."/browse.php?sid=$surveyid', '_top')\">\n"
+							. "onclick=\"window.open('".$homeurl."/browse.php?sid=$surveyid', '_top')\"" 
+							. "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._S_BROWSE_BT."');return false\">\n" 
 							. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 			if ($s1row['allowsave'] == "Y")
 				{
-				$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/saved.png' title='"._S_SAVED_BT."' "
+				$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/saved.png' title='' "
 								. "align='left'  name='BrowseSaved' alt='"._S_SAVED_BT."' "
-								. "onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\">\n"
+								. "onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\"" 
+								. "onmouseout=\"hideTooltip()\"" 
+                    			. "onmouseover=\"showTooltip(event,'"._S_SAVED_BT."');return false\">\n" 
 								. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 				}				
-			$surveysummary .="\t\t\t\t\t<input type='image' src='$imagefiles/tokens.png' title='"._S_TOKENS_BT."' "
+			$surveysummary .="\t\t\t\t\t<input type='image' src='$imagefiles/tokens.png' title='' "
 							. "align='left'  name='TokensControl' alt='"._S_TOKENS_BT."'"
-							. "onclick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\">\n";
+							. "onclick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\"" 
+							. "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._S_TOKENS_BT."');return false\">\n" ;
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
 						. "\t\t\t\t</td>\n"
@@ -337,9 +364,11 @@ if ($surveyid)
 			}
 		else
 			{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' title='"
-							. _S_ADDGROUP_BT."' alt='". _S_ADDGROUP_BT."'align='right'  name='AddNewGroup' "
-							. "onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\">\n";
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' title='' " 
+							. "alt='". _S_ADDGROUP_BT."'align='right'  name='AddNewGroup' "
+							. "onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\"" 
+							. "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._S_ADDGROUP_BT."');return false\">\n" ;
 			}
 		$surveysummary .= "$setfont<font size='1' color='#222222'><strong>"._GROUPS.":</strong>"
 						. "\t\t<select style='font-size: 9; font-family: verdana; color: #222222; "
@@ -500,25 +529,30 @@ if ($gid)
 					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 					   . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='20' border='0' hspace='0' align='left'>\n"
 					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-					   . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='". _G_EDIT_BT."' alt='". _G_EDIT_BT."' name='EditGroup' "
+					   . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='' alt='". _G_EDIT_BT."' name='EditGroup' "
 					   . "align='left'  onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid', "
-					   . "'_top')\">";
+					   . "'_top')\"" 
+					   . "onmouseout=\"hideTooltip()\"" 
+                       . "onmouseover=\"showTooltip(event,'". _G_EDIT_BT."');return false\">\n" ;  
 		if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y") 
 			{
 			$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid'>"
 						   . "<img src='$imagefiles/delete.png' alt='"
-						   . _G_DELETE_BT."' name='DeleteWholeGroup' title='"
-						   . _G_DELETE_BT."' align='left' border='0' hspace='0' "
-						   . "onclick=\"return confirm('"._DG_RUSURE."')\"></a>";
+						   . _G_DELETE_BT."' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' "
+						   . "onclick=\"return confirm('"._DG_RUSURE."')\"" 
+						   . "onmouseout=\"hideTooltip()\"" 
+                           . "onmouseover=\"showTooltip(event,'". _G_DELETE_BT."');return false\"></a>";
 			}
 		else				
 			{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title='"
-					   . _G_EXPORT_BT."' alt='". _G_EXPORT_BT."'name='ExportGroup' "
+		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title=''" 
+					   . "alt='". _G_EXPORT_BT."'name='ExportGroup' "
 					   . "align='left' "
-					   . "onclick=\"window.open('dumpgroup.php?sid=$surveyid&amp;gid=$gid', '_top')\">"
+					   . "onclick=\"window.open('dumpgroup.php?sid=$surveyid&amp;gid=$gid', '_top')\"" 
+					   . "onmouseout=\"hideTooltip()\"" 
+                       . "onmouseover=\"showTooltip(event,'"._G_EXPORT_BT."');return false\">"
 					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 					   . "\t\t\t\t\t</td>\n"
 					   . "\t\t\t\t\t<td align='right' width='350'>\n";
@@ -545,9 +579,11 @@ if ($gid)
 			}
 		else
 			{
-			$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' title='"
-						   . _G_ADDQUESTION_BT."'  alt='". _G_ADDQUESTION_BT."' align='right' name='AddNewQuestion' "
-						   . "onClick=\"window.open('$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid', '_top')\">\n";
+			$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' title=''"
+						   . " alt='". _G_ADDQUESTION_BT."' align='right' name='AddNewQuestion' "
+						   . "onClick=\"window.open('$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid', '_top')\"" 
+						   . "onmouseout=\"hideTooltip()\"" 
+                           . "onmouseover=\"showTooltip(event,'"._G_ADDQUESTION_BT."');return false\">\n";
 			}
 		$groupsummary .= "\t\t\t\t\t$setfont<font size='1'><strong>"._QUESTIONS.":</strong> <select name='qid' "
 					   . "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\" "
@@ -597,33 +633,45 @@ if ($qid)
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='20' border='0' hspace='0' align='left'>\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='". _Q_EDIT_BT."' alt='". _Q_EDIT_BT."' align='left' name='EditQuestion' "
-						  . "onclick=\"window.open('$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\">\n";
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='' alt='". _Q_EDIT_BT."' align='left' name='EditQuestion' "
+						  . "onclick=\"window.open('$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\"" 
+						  . "onmouseout=\"hideTooltip()\"" 
+                          . "onmouseover=\"showTooltip(event,'". _Q_EDIT_BT."');return false\">\n";
 		if (($qct == 0 && $activated != "Y") || $activated != "Y") 
 			{
 			$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'>"
-							  . "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '"._Q_DELETE_BT."' title='"
-							  . _Q_DELETE_BT."' align='left' border='0' hspace='0' "
-							  . "onclick=\"return confirm('"._DQ_RUSURE."')\"></a>\n";
+							  . "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '"._Q_DELETE_BT."' title='' "
+							  ."align='left' border='0' hspace='0' "
+							  . "onclick=\"return confirm('"._DQ_RUSURE."')\"" 
+							  . "onmouseout=\"hideTooltip()\"" 
+                          	  . "onmouseover=\"showTooltip(event,'"._Q_DELETE_BT."');return false\"></a>\n";
 			}
 		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";}
-		$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title='"
-						  . _Q_EXPORT_BT."' alt='". _Q_EXPORT_BT."'align='left' name='ExportQuestion' "
-						  . "onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\">\n"
+		$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title=''"
+						  . "alt='". _Q_EXPORT_BT."'align='left' name='ExportQuestion' "
+						  . "onclick=\"window.open('dumpquestion.php?qid=$qid', '_top')\"" 
+						  . "onmouseout=\"hideTooltip()\"" 
+                          . "onmouseover=\"showTooltip(event,'"._Q_EXPORT_BT."');return false\">\n"  
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='$imagefiles/copy.png' title='"
-						  . _Q_COPY_BT."' alt='". _Q_COPY_BT."' align='left' name='CopyQuestion' "
-						  . "onclick=\"window.open('$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\">\n"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/copy.png' title=''"
+						  . " alt='". _Q_COPY_BT."' align='left' name='CopyQuestion' "
+						  . "onclick=\"window.open('$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\""
+						  . "onmouseout=\"hideTooltip()\"" 
+                          . "onmouseover=\"showTooltip(event,'". _Q_COPY_BT."');return false\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.png' title='"
-						  . _Q_CONDITIONS_BT."' alt='". _Q_CONDITIONS_BT."' align='left' name='SetQuestionConditions' "
-						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\">\n"
+						  . "\t\t\t\t\t<input type='image' src='$imagefiles/conditions.png' title='' " 
+						  . "alt='". _Q_CONDITIONS_BT."' align='left' name='SetQuestionConditions' "
+						  . "onClick=\"window.open('".$homeurl."/conditions.php?sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\"" 
+						  . "onmouseout=\"hideTooltip()\"" 
+                          . "onmouseover=\"showTooltip(event,'"._Q_CONDITIONS_BT."');return false\">\n"
 						  . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R") 
 			{
 			$questionsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/answers.png' title='"
 							  . _Q_ANSWERS_BT."' align='left' name='ViewAnswers' "
-							  . "onClick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\">\n";
+							  . "onClick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\"" 
+							  . "onmouseout=\"hideTooltip()\"" 
+                              . "onmouseover=\"showTooltip(event,'"._Q_ANSWERS_BT."');return false\">\n" ; 
 			}
 		$questionsummary .= "\t\t\t\t\t</td>\n"
 						  . "\t\t\t\t\t<td align='right' width='330'>\n"

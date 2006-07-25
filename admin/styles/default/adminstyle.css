@@ -1,10 +1,9 @@
-body 	{ 
-		margin-left:0px; 
-		margin-right:0px; 
-		margin-top:0px; 
-		margin-bottom:0px 
-		}
-
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
 
 td,th,a,p,div
 		{
@@ -17,6 +16,7 @@ td,th,a,p,div
 		font-size:14pt;
 		font-weight: bold;
 		color: #FFFFFF;
+		background-color:black;
 		text-align:center;
 		margin:auto;
         }
@@ -80,3 +80,40 @@ td 		{
 		font-size: 10; 
 		color: #FFFFFF
 	 	}
+.listboxsurveys
+        {
+        	margin-top: 10px; 
+        	height: 20px; 
+        	font-size: 10; 
+        	font-family: verdana; 
+        	color: #333333; 
+        	background: SILVER; 
+        	width: 180
+        }
+/**
+ *  CSS Classes related with the tooltips displayed over 
+ * 	the images. 
+ */ 	
+#dhtmlgoodies_tooltip{
+		background-color:#FFFF66;
+		border:1px solid #000;
+		position:absolute;
+		display:none;
+		z-index:20000;
+		padding:2px;
+		font-size:0.9em;
+		-moz-border-radius:6px;	/* Rounded edges in Firefox */
+		font-family: "Verdana", "Lucida Sans Unicode", Arial, sans-serif;		
+   }
+   
+#dhtmlgoodies_tooltipShadow{
+		position:absolute;
+		background-color:#555;
+		display:none;
+		z-index:10000;
+		opacity:0.7;
+		filter:alpha(opacity=70);
+		-khtml-opacity: 0.7;
+		-moz-opacity: 0.7;
+		-moz-border-radius:6px;	/* Rounded edges in Firefox */
+  }	 	

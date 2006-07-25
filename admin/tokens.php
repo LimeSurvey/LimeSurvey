@@ -151,7 +151,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		}
 	elseif (isset($_GET['restoretable']) && $_GET['restoretable'] == "Y" && isset($_GET['oldtable']) && $_GET['oldtable'])
 		{
-		$query = "RENAME TABLE ".db_quote_id($_GET['oldtable'])." TO ".db_table_name{"tokens_$surveyid");
+		$query = "RENAME TABLE ".db_quote_id($_GET['oldtable'])." TO ".db_table_name{"tokens_$surveyid"});
 		$result=$connect->Execute($query) or die("Failed Rename!<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
 		echo "\t<tr>\n"
 			."\t\t<td align='center'>\n"

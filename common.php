@@ -198,9 +198,10 @@ if ($sourcefrom == "admin")
                     . "\t\t\t</tr>\n"
                     . "\t\t\t<tr bgcolor='#999999'>\n"
                     . "\t\t\t\t<td>\n"
-                    . "\t\t\t\t\t<input type='image' src='$imagefiles/home.png' name='HomeButton' alt='"
-                    . _A_HOME_BT."' title='"
-                    . _A_HOME_BT."' align='left' onClick=\"window.open('$scriptname', '_top')\">\n"
+                    . "\t\t\t\t\t<input type='image' src='$imagefiles/home.png' name='HomeButton' alt='"._A_HOME_BT."' " 
+                    ."title=''" 
+                    ."align='left' onClick=\"window.open('$scriptname', '_top')\" onmouseout=\"hideTooltip()\"" 
+                    ."onmouseover=\"showTooltip(event,'"._A_HOME_BT."');return false\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
         if ($accesscontrol == 1)
@@ -209,15 +210,19 @@ if ($sourcefrom == "admin")
             if (!file_exists($fhtaccess))
                 {
                 $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/badsecurity.png' name='AdminSecurity'"
-                            . " title='". _A_BADSECURITY_BT."' alt='". _A_BADSECURITY_BT."'  align='left' "
-                            . "onClick=\"window.open('$scriptname?action=editusers', '_top')\">";
+                            . " title='' alt='"._A_BADSECURITY_BT."'  align='left' "
+                            . "onClick=\"window.open('$scriptname?action=editusers', '_top')\"" 
+                            . "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._A_BADSECURITY_BT."');return false\">";
                 }
             else
                 {
                 $securityok = checksecurity();
                 $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/security.png' name='AdminSecurity' title='"
                             . _A_SECURITY_BT."' alt='". _A_SECURITY_BT."' align='left' "
-                            . "onClick=\"window.open('$scriptname?action=editusers', '_top')\">";
+                            . "onClick=\"window.open('$scriptname?action=editusers', '_top')\"" 
+                            . "onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._A_SECURITY_BT."');return false\">";
                 }
             }
         else
@@ -226,45 +231,61 @@ if ($sourcefrom == "admin")
             }
         $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/summary.png' name='CheckSettings' title='"
-                    . _A_CHECKSETTINGS."' alt='". _A_CHECKSETTINGS."' align='left' "
-                    . "onClick=\"window.open('$scriptname?action=checksettings', '_top')\">"
+                    ."' alt='". _A_CHECKSETTINGS."' align='left' "
+                    . "onClick=\"window.open('$scriptname?action=checksettings', '_top')\"" 
+                    . "onmouseout=\"hideTooltip()\"" 
+                    . "onmouseover=\"showTooltip(event,'". _A_CHECKSETTINGS."');return false\">"
                     //. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n";
 
         $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/checkdb.png' name='CheckDatabase' title='"
-                    . _A_CHECKDB_BT."'  alt='"._A_CHECKDB_BT."' align='left' onClick=\"window.open('checkfields.php', '_top')\">\n";
+                    ."'  alt='"._A_CHECKDB_BT."' align='left' onClick=\"window.open('checkfields.php', '_top')\"" 
+                    ."onmouseout=\"hideTooltip()\"" 
+                    ."onmouseover=\"showTooltip(event,'"._A_CHECKDB_BT."');return false\">\n";
 
         if ($surveyid)
             {
-            $adminmenu  .="\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _A_DELETE_BT." ($surveyid)' title='". _A_DELETE_BT." ($surveyid)' align='left' "
-                        . "onClick=\"window.open('deletesurvey.php?sid=$surveyid', '_top')\">";
+            $adminmenu  .="\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _A_DELETE_BT." ($surveyid)' title='' align='left' "
+                        . "onClick=\"window.open('deletesurvey.php?sid=$surveyid', '_top')\"" 
+                        . "onmouseout=\"hideTooltip()\"" 
+                        . "onmouseover=\"showTooltip(event,'"._A_DELETE_BT."');return false\">\n";
             }
         else
             {
-            $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n";
+              $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n";
             }
-        $adminmenu  .= "\t\t\t\t\t<input type='image' src='$imagefiles/backup.png' name='ExportDB' title='"
-                    . _A_BACKUPDB_BT." ($surveyid)' alt='". _A_BACKUPDB_BT." ($surveyid)' align='left' "
-                    . "onClick=\"window.open('dumpdb.php', '_top')\">"
+        $adminmenu  .= "\t\t\t\t\t<input type='image' src='$imagefiles/backup.png' name='ExportDB' title='' "
+        			. "alt='". _A_BACKUPDB_BT."($surveyid)' align='left' "
+                    . "onClick=\"window.open('dumpdb.php', '_top')\""
+                    . "onmouseout=\"hideTooltip()\"" 
+                    . "onmouseover=\"showTooltip(event,'"._A_BACKUPDB_BT."');return false\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
-                    . _Q_LABELS_BT."' alt='". _Q_LABELS_BT."'onClick=\"window.open('labels.php', '_top')\">\n"
+                    . _Q_LABELS_BT."' alt='". _Q_LABELS_BT."'onClick=\"window.open('labels.php', '_top')\""
+                    . "onmouseout=\"hideTooltip()\"" 
+                    . "onmouseover=\"showTooltip(event,'"._Q_LABELS_BT."');return false\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n";
-        $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/templates.png' name='EditTemplates' title='"
-                    . _A_TEMPLATES_BT."' alt='". _A_TEMPLATES_BT."' align='left' "
-                    . "onClick=\"window.open('templates.php', '_top')\">"
+        $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/templates.png' name='EditTemplates' title='' " 
+        		    . "alt='". _A_TEMPLATES_BT."' align='left' "
+                    . "onClick=\"window.open('templates.php', '_top')\""
+                    . "onmouseout=\"hideTooltip()\"" 
+                    . "onmouseover=\"showTooltip(event,'"._A_TEMPLATES_BT."');return false\">\n"
                     . "\t\t\t\t</td>\n";
         $adminmenu .= "\t\t\t\t<td align='right' width='400'>\n"
-                    . "\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.png' name='ShowHelp' title='"
-                    . _A_HELP_BT."' alt='". _A_HELP_BT."' align='right' onClick=\"showhelp('show')\">\n"
+                    . "\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
+                    . "alt='". _A_HELP_BT."' align='right' onClick=\"showhelp('show')\"" 
+                    . "onmouseout=\"hideTooltip()\"" 
+                    . "onmouseover=\"showTooltip(event,'"._A_HELP_BT."');return false\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='42' height='20' align='right' >\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' >\n"
-                    . "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' align='right' name='AddSurvey' title='"
-                    . _A_ADDSURVEY_BT."' alt='". _A_ADDSURVEY_BT."' onClick=\"window.open('$scriptname?action=newsurvey', '_top')\">\n"
+                    . "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' align='right' name='AddSurvey' title=''" 
+                    . " alt='". _A_ADDSURVEY_BT."' onClick=\"window.open('$scriptname?action=newsurvey', '_top')\""
+                    . "onmouseout=\"hideTooltip()\"" 
+                    . "onmouseover=\"showTooltip(event,'"._A_ADDSURVEY_BT."');return false\">\n"
                     . "\t\t\t\t\t$setfont<font size='2'><strong>"._SURVEYS.":</strong> "
-                    . "\t\t\t\t\t<select style='margin-top: 10px; height: 20px; font-size: 10; font-family: verdana; color: #333333; background: SILVER; width: 180' "
+                    . "\t\t\t\t\t<select class=\"listboxsurveys\""
                     . "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
                     //. $surveyselect
                     . getsurveylist()
@@ -1887,7 +1908,7 @@ function getAdminFooter($url, $explanation)
                 . "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
                 . "onMouseOut=\"document.body.style.cursor='auto'\">\n"
                 . "\t\t\t<a href='http://www.phpsurveyor.org' class='subtitle' target='_blank'>"
-                . "PHPSurveyor</a><div class='subtitle'>Version $versionnumber</div> \n"
+                . "PHPSurveyor</a><div class='version'>Version $versionnumber</div> \n"
                 . "</div>\n"
                 . "</body>\n</html>";
     return $strHTMLFooter;
@@ -1905,13 +1926,14 @@ function getAdminHeader()
  $strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
                 ."<html>\n<head>\n"
                 . "<!--[if lt IE 7]>\n"
-                . "<script defer type=\"text/javascript\" src=\"/styles/pngfix.js\"></script>\n"
+                . "<script defer type=\"text/javascript\" src=\"/scripts/pngfix.js\"></script>\n"
                 . "<![endif]-->\n"
                 . "<title>$sitename</title>\n"
                 . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
 				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\">\n"
+				. "<script type=\"text/javascript\" src=\"tooltips.js\"></script>"
                 . "</head>\n<body>\n"
-                . "<div style='background-color:#000000;' class='maintitle'>\n"
+                . "<div class=\"maintitle\">\n"
                 . "\t\t$sitename\n"
                 . "</div>\n";
   return $strAdminHeader;              
