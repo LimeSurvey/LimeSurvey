@@ -36,9 +36,7 @@
 
 require_once(dirname(__FILE__).'/../config.php');
 
-if ($database_exists)
-	$tables = $connect->MetaTables();
-}
+if ($database_exists) $tables = $connect->MetaTables();
 
 $export="";
 $export .="#------------------------------------------"."\n";
