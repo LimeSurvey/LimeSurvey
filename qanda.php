@@ -441,14 +441,17 @@ function mandatory_message($ia)
 function mandatory_popup($ia, $notanswered=null)
     {
     //This sets the mandatory popup message to show if required
-    //Called from question.php, group.php or surveyo.php
+    //Called from question.php, group.php or survey.php
     if ($notanswered === null) {unset($notanswered);}
-    $qtitle="";
     if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         {
         global $mandatorypopup, $popup;
         //POPUP WARNING
-        if (!isset($mandatorypopup))
+        if (!isset($mandatorypopup) && ($ia[4] == "T" || $ia[4] == "S" || $ia[4] == "U"))
+            {
+            $popup="<script type=\"text/javascript\">\n<!--\n alert(\""._MANDATORY_POPUP_TEXT."\")\n //-->\n</script>\n";
+            $mandatorypopup="Y";
+            }else
             {
             $popup="<script type=\"text/javascript\">\n<!--\n alert(\""._MANDATORY_POPUP."\")\n //-->\n</script>\n";
             $mandatorypopup="Y";
