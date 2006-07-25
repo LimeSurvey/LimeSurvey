@@ -469,6 +469,7 @@ $array_filterqs = getArrayFiltersForGroup();
 // Put in the radio button reset javascript for the array filter unselect
 if (isset($array_filterqs) && is_array($array_filterqs)) {
 print <<<END
+
 		function radio_unselect(radioObj)
 		{
 			var radioLength = radioObj.length;
