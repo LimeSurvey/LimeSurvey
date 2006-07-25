@@ -1909,7 +1909,7 @@ function getAdminHeader()
                 . "<![endif]-->\n"
                 . "<title>$sitename</title>\n"
                 . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
-				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles/default/adminstyle.css\">\n"
+				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\">\n"
                 . "</head>\n<body>\n"
                 . "<div style='background-color:#000000;' class='maintitle'>\n"
                 . "\t\t$sitename\n"
