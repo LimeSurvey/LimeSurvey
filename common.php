@@ -153,9 +153,12 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 $connect=&ADONewConnection($databasetype);
 $database_exists = FALSE;
 if ($connect->Connect("$databaselocation:$databaseport", $databaseuser, $databasepass, $databasename))
-    $database_exists = TRUE;
-else
-    $connect->Connect("$databaselocation:$databaseport", $databaseuser, $databasepass);
+   { $database_exists = TRUE;}
+    else {
+         $connect->database = '';
+         $connect->Connect("$databaselocation:$databaseport", $databaseuser, $databasepass);
+         }
+
 
 // The following line is for debug purposes
 //$tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
