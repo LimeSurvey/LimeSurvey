@@ -61,6 +61,8 @@ if (!$database_exists) //Database named in config.php does not exist
 	$createDb=$connect->Execute("CREATE DATABASE `$dbname`"); //Better than using mysql_create_db which is deprecated and does not work for MySQL 4 Client API
 	if ($createDb) //Database has been succesfully created
 		{
+        $connect->database = $dbname;
+	    $connect->Execute("USE DATABASE `$dbname`");
 		echo "<br />$setfont<strong><font color='green'>\n";
 		echo _CD_DBCREATED."</font></strong><br /><br />\n";
 		echo _CD_POPULATE_MESSAGE."<br /><br />\n";
