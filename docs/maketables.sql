@@ -32,7 +32,7 @@ CREATE TABLE `answers` (
 -- 
 
 CREATE TABLE `assessments` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `scope` varchar(5) NOT NULL default '',
   `gid` int(11) NOT NULL default '0',
@@ -51,14 +51,14 @@ CREATE TABLE `assessments` (
 -- 
 
 CREATE TABLE `conditions` (
-  `cid` int(11) NOT NULL,
+  `cid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
   `cqid` int(11) NOT NULL default '0',
   `cfieldname` varchar(50) NOT NULL default '',
   `method` char(2) NOT NULL default '',
   `value` varchar(5) NOT NULL default '',
   PRIMARY KEY  (`cid`)
-) TYPE=MyISAM AUTO_INCREMENT=4 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -67,13 +67,13 @@ CREATE TABLE `conditions` (
 -- 
 
 CREATE TABLE `groups` (
-  `gid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `group_name` varchar(100) NOT NULL default '',
   `group_order` varchar(45) default NULL,
   `description` text,
   PRIMARY KEY  (`gid`)
-) TYPE=MyISAM AUTO_INCREMENT=43 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -96,10 +96,10 @@ CREATE TABLE `labels` (
 -- 
 
 CREATE TABLE `labelsets` (
-  `lid` int(11) NOT NULL,
+  `lid` int(11) NOT NULL auto_increment,
   `label_name` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`lid`)
-) TYPE=MyISAM AUTO_INCREMENT=8 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -108,7 +108,7 @@ CREATE TABLE `labelsets` (
 -- 
 
 CREATE TABLE `question_attributes` (
-  `qaid` int(11) NOT NULL,
+  `qaid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
   `attribute` varchar(50) default NULL,
   `value` varchar(20) default NULL,
@@ -122,7 +122,7 @@ CREATE TABLE `question_attributes` (
 -- 
 
 CREATE TABLE `questions` (
-  `qid` int(11) NOT NULL,
+  `qid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `gid` int(11) NOT NULL default '0',
   `type` char(1) NOT NULL default 'T',
@@ -134,7 +134,7 @@ CREATE TABLE `questions` (
   `mandatory` char(1) default NULL,
   `lid` int(11) NOT NULL default '0',
   PRIMARY KEY  (`qid`)
-) TYPE=MyISAM AUTO_INCREMENT=204 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -159,7 +159,7 @@ CREATE TABLE `saved` (
 -- 
 
 CREATE TABLE `saved_control` (
-  `scid` int(11) NOT NULL,
+  `scid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `identifier` text NOT NULL,
   `access_code` text NOT NULL,
@@ -216,7 +216,7 @@ CREATE TABLE `surveys` (
   `useexpiry` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
   PRIMARY KEY  (`sid`)
-) TYPE=MyISAM AUTO_INCREMENT=42 ;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
