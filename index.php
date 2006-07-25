@@ -609,10 +609,11 @@ function checkmandatorys($backok=null)
 				$$multiname2=0;
 				}
 			else {$multiname="MULTI$mfns[$mi]";}
+			$dtcm = "tbdisp$cm";
 			if (isset($_SESSION[$cm]) && ($_SESSION[$cm] == "0" || $_SESSION[$cm]))
 				{
 				}
-			elseif (!isset($_POST[$multiname]) || !$_POST[$multiname])
+			elseif ((!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtcm]) || $_POST[$dtcm] == "on"))
 				{
 				//One of the mandatory questions hasn't been asnwered
 				if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
@@ -677,11 +678,12 @@ function checkconditionalmandatorys($backok=null)
 				}
 			else{$multiname="MULTI$cmfns[$mi]";}
 			$dccm="display$cmfns[$mi]";
+			$dtccm = "tbdisp$ccm";
 			if (isset($_SESSION[$ccm]) && ($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && isset($_POST[$dccm]) && $_POST[$dccm] == "on") //There is an answer
 				{
 				//The question has an answer, and the answer was displaying
 				}
-			elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname])) //Question is on, there is no answer, but it's a multiple
+			elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answers is on, there is no answer, but it's a multiple
 				{
 				if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
 				if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
