@@ -154,7 +154,7 @@ CREATE TABLE `saved_control` (
   `saved_thisstep` text NOT NULL,
   `status` char(1) NOT NULL default '',
   `saved_date` datetime NOT NULL default '0000-00-00 00:00:00',
-  `refurl` text NOT NULL,
+  `refurl` text,
   PRIMARY KEY  (`scid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
