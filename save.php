@@ -216,71 +216,45 @@ if ($count > 0)
 	}
 else
 	{
-	if (!isset($_SESSION['srid']))
-		{
-		// INSERT BLANK RECORD INTO SURVEY_X
-		if ($thissurvey['datestamp'] == "Y")
-			{
-		    	$_SESSION['datestamp']=date("Y-m-d H:i:s");
-			}
-		// INSERT NEW ROW
-		$subquery = "INSERT INTO {$thissurvey['tablename']} "
-				."(`id`";
-		if ($thissurvey['datestamp'] == "Y")
-			{
-			$subquery .= ",`datestamp`";
-			}
-		if ($thissurvey['ipaddr'] == "Y")
-			{
-			$subquery .= ",`ipaddr`";
-			}
-		$subquery .=") ";
-		$subquery .="VALUES (''";
-		if ($thissurvey['datestamp'] == "Y")
-			{
-			$subquery .= ", '".$_SESSION['datestamp']."'";
-			}
-		if ($thissurvey['ipaddr'] == "Y")
-			{
-			$subquery .= ", '".$_SERVER['REMOTE_ADDR']."'";
-			}
-		$subquery .=")";
+	//INSERT BLANK RECORD INTO "survey_x"
+	$sdata = array("datestamp"=>date("Y-m-d H:i:s"),
+			"ipaddr"=>$_SERVER['REMOTE_ADDR'],
+			"refurl"=>getenv("HTTP_REFERER"));
 
-		if ($result=$connect->Execute($subquery))
-			{
-			$srid = $connect->Insert_ID();
-			}
-		if ($srid > 0)
-			{
-			// save $srid to session variable only if INSERT was performed
-			$_SESSION['srid'] = $srid;
-			}
+	if ($connect->AutoExecute("{$thissurvey['tablename']}", $sdata,'INSERT'))
+		{
+		$srid = $connect->Insert_ID();
+		$_SESSION['srid'] = $srid;
+		}
+	else
+		{
+		die("Unable to insert record into survey table.<br /><br />".htmlspecialchars($connect->ErrorMsg()));
 		}
 	
 
-	//Create entry in "saved_control"
-	$sdata = array("sid"=>$surveyid,
+	//CREATE ENTRY INTO "saved_control"
+	$scdata = array("sid"=>$surveyid,
 			"srid"=>$_SESSION['srid'],
 			"identifier"=>$_POST['savename'],
 			"access_code"=>md5($_POST['savepass']),
 			"email"=>$_POST['saveemail'],
 			"ip"=>$_SERVER['REMOTE_ADDR'],
-			"refurl"=>$_SESSION['refurl'],
+			"refurl"=>getenv("HTTP_REFERER"),
 			"saved_thisstep"=>$_POST['thisstep'],
 			"status"=>"S",
 			"saved_date"=>date("Y-m-d H:i:s"));
 
 
-	if ($connect->AutoExecute("{$dbprefix}saved_control", $sdata,'INSERT'))
+	if ($connect->AutoExecute("{$dbprefix}saved_control", $scdata,'INSERT'))
 		{
 		$scid = $connect->Insert_ID();
-		}
-
-	// save $scid to session variable
-	if ($scid > 0)
-		{
 		$_SESSION['scid'] = $scid;
 		}
+	else
+		{
+		die("Unable to insert record into saved_control table.<br /><br />".htmlspecialchars($connect->ErrorMsg()));
+		}
+
 	$_SESSION['holdname']=$_POST['savename']; //Session variable used to load answers every page.
 	$_SESSION['holdpass']=$_POST['savepass']; //Session variable used to load answers every page.
 	

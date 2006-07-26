@@ -94,7 +94,8 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
 
         if ($thissurvey['refurl'] == "Y")                 {
                 if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
-                        {                     $_SESSION['insertarray'][] = "refurl";
+                        {                     
+                        $_SESSION['insertarray'][] = "refurl";
                         }
                 $_SESSION['refurl'] = $_SESSION['refurl'];                 }
 
@@ -564,18 +565,20 @@ END;
 	}
 	
 if (isset($array_filterqs) && is_array($array_filterqs))
-{
-		foreach ($array_filterqs as $attralist)
-        {
+	{
+	if (!isset($appendj)) {$appendj="";}
+
+	foreach ($array_filterqs as $attralist)
+	        {
                 //die(print_r($attrflist));
                 $qbase = $surveyid."X".$gid."X".$attralist['qid'];
                 $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
                 if ($attralist['type'] == "M")
-                {
+	                {
                         $qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' order by code;";
                         $qresult = mysql_query($qquery);
                         while ($fansrows = mysql_fetch_array($qresult))
-                        {
+	                        {
                                 $fquestans = "java".$qfbase.$fansrows['code'];
                                 $tbody = "javatbd".$qbase.$fansrows['code'];
                                 $dtbody = "tbdisp".$qbase.$fansrows['code'];
@@ -591,11 +594,11 @@ if (isset($array_filterqs) && is_array($array_filterqs))
                                 $appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='off';\n";
                                 $appendj .= "\t\t\t\tradio_unselect(document.forms['phpsurveyor'].elements['$tbodyae']);\n";
                                 $appendj .= "\t\t\t}\n";
-                        }
-                }
-        }
+	                        }
+	                }
+	        }
         $java .= $appendj;
-}
+	}
 
 	
 if (isset($java)) {echo $java;}

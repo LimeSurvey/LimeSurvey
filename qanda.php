@@ -1834,7 +1834,7 @@ function do_array_5point($ia)
            $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
-        $htmltbody2 == "";
+        $htmltbody2 = "";
         if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
         {
                    $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";
@@ -1912,7 +1912,7 @@ function do_array_10point($ia)
            $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
-        $htmltbody2 == "";
+        $htmltbody2 = "";
         if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
         {
                    $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";
@@ -2299,7 +2299,7 @@ function do_array_flexible($ia)
             if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
                $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
-            $htmltbody2 == "";
+            $htmltbody2 = "";
         	if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
         	{
                    $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";

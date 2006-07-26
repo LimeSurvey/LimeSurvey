@@ -854,7 +854,7 @@ function createinsertquery()
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 		{
 		$inserts=array_unique($_SESSION['insertarray']);
-	    foreach ($inserts as $value)
+	    	foreach ($inserts as $value)
 			{
 			//Work out if the field actually exists in this survey
 			$fieldexists = arraySearchByKey($value, $fieldmap, "fieldname");
@@ -865,82 +865,82 @@ function createinsertquery()
 				if($deletenonvalues==1) {checkconfield($value);}
 				//Only create column name and data entry if there is actually data!
 				$colnames[]=$value;
-			    $values[]=$connect->qstr($_SESSION[$value]);
+			    	$values[]=$connect->qstr($_SESSION[$value]);
 				}
 			}
 		if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
 			{
 			echo submitfailed();
-			
 			exit;		
-		    }
-		// TODO SQL: quote colum name correctly
-		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
-				."(".implode(', ', array_map('db_quote_id',$colnames)).")\n"
-				."VALUES (".implode(", ", $values).")";
+		    	}
+
+		if ($thissurvey['datestamp'] == "Y")
+			{
+			$_SESSION['datestamp']=date("Y-m-d H:i:s");
+			}
 // --> START NEW FEATURE - SAVE
 	// CHECK TO SEE IF ROW ALREADY EXISTS
-	if (!isset($_SESSION['srid']))
-		{
-		if ($thissurvey['datestamp'] == "Y")
+		if (!isset($_SESSION['srid']))
 			{
-		    	$_SESSION['datestamp']=date("Y-m-d H:i:s");
-			}
-		// INSERT NEW ROW
-		// TODO SQL: quote colum name correctly
-		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
-				."(".implode(', ', array_map('db_quote_id',$colnames)).")\n";
-		if ($thissurvey['datestamp'] == "Y")
-			{
-			$query .= ",`datestamp`";
-			}
-		if ($thissurvey['ipaddr'] == "Y")
-			{
-			$query .= ",`ipaddr`";
-			}
-		$query .=") ";
-		$query .="VALUES (".implode(", ", $values);
-		if ($thissurvey['datestamp'] == "Y")
-			{
-			$query .= ", '".$_SESSION['datestamp']."'";
-			}
-		if ($thissurvey['ipaddr'] == "Y")
-			{
-			$query .= ", '".$_SERVER['REMOTE_ADDR']."'";
-			}
-		$query .=")";
-		}
-	else
-		{  // UPDATE EXISTING ROW
-// Updates only the MODIFIED fields posted on current page.
-		if (isset($_POST['modfields']) && $_POST['modfields'])
-			{
+			// INSERT NEW ROW
+			// TODO SQL: quote colum name correctly
+			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
+					."(".implode(', ', array_map('db_quote_id',$colnames)).")\n";
 			if ($thissurvey['datestamp'] == "Y")
 				{
-			    	$_SESSION['datestamp']=date("Y-m-d H:i:s");
-				}
-			$query = "UPDATE {$thissurvey['tablename']} SET ";
-			if ($thissurvey['datestamp'] == "Y")
-				{
-				$query .= "datestamp = '".$_SESSION['datestamp']."',";
+				$query .= ",`datestamp`";
 				}
 			if ($thissurvey['ipaddr'] == "Y")
 				{
-				$query .= "ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
+				$query .= ",`ipaddr`";
 				}
-			$fields=explode("|", $_POST['modfields']);
-			foreach ($fields as $field)
+			if ($thissurvey['refurl'] == "Y")
 				{
-				$query .= $field." = '".mysql_escape_string($_POST[$field])."',";
+				$query .= ",`refurl`";
 				}
-			$query .= "WHERE id=" . $_SESSION['srid'];
-			$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
+			$query .=") ";
+			$query .="VALUES (".implode(", ", $values);
+			if ($thissurvey['datestamp'] == "Y")
+				{
+				$query .= ", '".$_SESSION['datestamp']."'";
+				}
+			if ($thissurvey['ipaddr'] == "Y")
+				{
+				$query .= ", '".$_SERVER['REMOTE_ADDR']."'";
+				}
+			if ($thissurvey['refurl'] == "Y")
+				{
+				$query .= ", '".getenv("HTTP_REFERER")."'";
+				}
+			$query .=")";
 			}
 		else
-			{
-			$query = "";
+			{  // UPDATE EXISTING ROW
+			// Updates only the MODIFIED fields posted on current page.
+			if (isset($_POST['modfields']) && $_POST['modfields'])
+				{
+				$query = "UPDATE {$thissurvey['tablename']} SET ";
+				if ($thissurvey['datestamp'] == "Y")
+					{
+					$query .= "datestamp = '".$_SESSION['datestamp']."',";
+					}
+				if ($thissurvey['ipaddr'] == "Y")
+					{
+					$query .= "ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
+					}
+				$fields=explode("|", $_POST['modfields']);
+				foreach ($fields as $field)
+					{
+					$query .= $field." = '".mysql_escape_string($_POST[$field])."',";
+					}
+				$query .= "WHERE id=" . $_SESSION['srid'];
+				$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
+				}
+			else
+				{
+				$query = "";
+				}
 			}
-		}
 // <-- END NEW FEATURE - SAVE
 //DEBUG START
 //echo $query;
