@@ -1991,7 +1991,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
     $mail = new PHPMailer;
-    $mail->$Charset = "UTF-8";
+    $mail->CharSet = "UTF-8";
 
 
 	$fromname='';
@@ -2018,7 +2018,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
 	$mail->body = $body;
 	$mail->subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
-	Return $mail ->send;
+	return $mail->Send();
 }
 
 // This functions removes all tags, CRs, linefeeds and other strange chars from a given text
