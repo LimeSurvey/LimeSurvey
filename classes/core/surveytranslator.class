@@ -1,6 +1,6 @@
 <?php
 /*
- * $RCSfile: Translator.class,v $
+ * $RCSfile: SurveyTranslator.class,v $
  *
  * PHpSurveyor
  * This program is free software; you can redistribute it and/or modify
@@ -30,7 +30,7 @@
  * @package Classes
  * @subpackage Core
  */
-class Translator {
+class SurveyTranslator {
     /*
      * ****************************************
      *                 Members
@@ -67,7 +67,7 @@ class Translator {
      * ****************************************
      */
 
-    function GalleryTranslator() {
+    function SurveyTranslator() {
 	$this->_boundDomains = array();
     }
 
@@ -266,7 +266,7 @@ class Translator {
      */
     function getSupportedLanguages() {
 	/* Get our language data */
-	list ($supportedLanguages, $defaultCountry) = GalleryTranslator::getLanguageData();
+	list ($supportedLanguages, $defaultCountry) = SurveyTranslator::getLanguageData();
 	return $supportedLanguages;
     }
 
@@ -275,18 +275,18 @@ class Translator {
      *
      * @param string the language code hint (eg. 'en_US' or 'zh_CN')
      * @param boolean [optional] true if we should not use the database
-     * @return array object GalleryStatus a status code
+     * @return array object SurveyStatus a status code
      *               string language code
      */
     function init($languageCode=null, $dontUseDatabase=false) {
 	if (empty($languageCode) && !$dontUseDatabase) {
-	    list ($ret, $languageCode) = GalleryTranslator::getDefaultLanguageCode();
+	    list ($ret, $languageCode) = SurveyTranslator::getDefaultLanguageCode();
 	    if ($ret) {
 		return array($ret->wrap(__FILE__, __LINE__), null);
 	    }
 	}
 
-	list ($languageCode, $data) = GalleryTranslator::getSupportedLanguageCode($languageCode);
+	list ($languageCode, $data) = SurveyTranslator::getSupportedLanguageCode($languageCode);
 
 	/* If we're using gettext, try to bind to a language */
 	if (function_exists('dgettext')) {
@@ -298,7 +298,7 @@ class Translator {
 	    putenv("LANG=${languageCode}");
 	    putenv("LANGUAGE=${languageCode}");
 
-	    GalleryTranslator::_setlocale(LC_ALL, $languageCode);
+	    SurveyTranslator::_setlocale(LC_ALL, $languageCode);
 	}
 
 	$this->_languageCode = $languageCode;
@@ -316,7 +316,7 @@ class Translator {
      * @access private
      */
     function _setlocale($category, $locale) {
-	global $gallery;
+	global $Survey;
 
 	if (($ret = setlocale($category, $locale)) !== false) {
 	    return $ret;
@@ -338,33 +338,33 @@ class Translator {
 		return $ret;
 	    }
 	}
-	$gallery->debug("Warning: Unable to select locale $locale");
+	$Survey->debug("Warning: Unable to select locale $locale");
 	return false;
     }
 
     /**
      * Get default language code for this request.
      *
-     * @return array object GalleryStatus a status code
+     * @return array object SurveyStatus a status code
      *               string language code
      * @static
      */
     function getDefaultLanguageCode() {
 	list ($ret, $useBrowserPref) =
-	    GalleryCoreApi::getPluginParameter('module', 'core', 'language.useBrowserPref');
+	    SurveyCoreApi::getPluginParameter('module', 'core', 'language.useBrowserPref');
 	if ($ret) {
 	    return array($ret->wrap(__FILE__, __LINE__), null);
 	}
 
 	if ($useBrowserPref) {
 	    /* Check the user-agent's preferences */
-	    $languageCode = GalleryTranslator::getLanguageCodeFromRequest();
+	    $languageCode = SurveyTranslator::getLanguageCodeFromRequest();
 	}
 
 	if (empty($languageCode)) {
 	    /* Use the site-wide default language */
 	    list ($ret, $languageCode) =
-		GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
+		SurveyCoreApi::getPluginParameter('module', 'core', 'default.language');
 	    if ($ret) {
 		return array($ret->wrap(__FILE__, __LINE__), null);
 	    }
@@ -386,7 +386,7 @@ class Translator {
 	static $supportedLanguages;
 	static $defaultCountry;
 	if (!isset($supportedLanguages)) {
-	    list ($supportedLanguages, $defaultCountry) = GalleryTranslator::getLanguageData();
+	    list ($supportedLanguages, $defaultCountry) = SurveyTranslator::getLanguageData();
 	}
 
 	list ($language, $country) = preg_split('/[-_]/', "${languageCode}_");
@@ -416,10 +416,10 @@ class Translator {
      */
     function getLanguageCodeFromRequest() {
 	/* Take the first thing the browser accepts that we can use */
-	$httpAcceptLanguage = GalleryUtilities::getServerVar('HTTP_ACCEPT_LANGUAGE');
+	$httpAcceptLanguage = SurveyUtilities::getServerVar('HTTP_ACCEPT_LANGUAGE');
 	if (!empty($httpAcceptLanguage)) {
 	    foreach (explode(',', $httpAcceptLanguage) as $code) {
-		list ($languageCode) = GalleryTranslator::getSupportedLanguageCode($code, false);
+		list ($languageCode) = SurveyTranslator::getSupportedLanguageCode($code, false);
 		if (isset($languageCode)) {
 		    return $languageCode;
 		}
@@ -450,28 +450,28 @@ class Translator {
      * @param string the domain (eg, a module id)
      * @param string a directory
      * @param mixed a single string, or an array of parameters
-     * @return array object GalleryStatus a status code
+     * @return array object SurveyStatus a status code
      *               string the localized value
      */
     function translateDomain($domain, $data) {
-	global $gallery;
+	global $Survey;
 
 	/* Validate our parameters */
 	if (!(isset($data['text']) ||
 	      (isset($data['one']) && isset($data['many']) && isset($data['count'])))) {
-	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__),
+	    return array(SurveyCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__),
 			 null);
 	}
 
 	if (function_exists('dgettext') && $this->_languageCode != 'en_US') {
 	    if (isset($domain) && !isset($this->_boundDomains[$domain])) {
-		$platform =& $gallery->getPlatform();
+		$platform =& $Survey->getPlatform();
 		list ($componentType, $componentName) = split('_', $domain);
 		$basePath = sprintf('%s/%s/%s/locale',
 				    $platform->realpath(dirname(__FILE__) . '/../../..'),
 				    $componentType, $componentName);
-		if ($gallery->getDebug()) {
-		    $gallery->debug("Binding text domain: $domain -> $basePath");
+		if ($Survey->getDebug()) {
+		    $Survey->debug("Binding text domain: $domain -> $basePath");
 		}
 		bindtextdomain($domain, $basePath);
 		textdomain($domain);
@@ -513,7 +513,7 @@ class Translator {
 	     */
 	    if (!function_exists('bind_textdomain_codeset') &&
 		    version_compare(phpversion(), '4.2.0', '<')) {
-		$localized = GalleryCoreApi::convertToUtf8($localized);
+		$localized = SurveyCoreApi::convertToUtf8($localized);
 	    }
 	} else {
 	    /* en_US is selected or the server doesn't have gettext */
@@ -538,7 +538,7 @@ class Translator {
 
 	    /* Catch runaways */
 	    if ($i > 100) {
-		return array(GalleryCoreApi::error(ERROR_UNKNOWN, __FILE__, __LINE__), null);
+		return array(SurveyCoreApi::error(ERROR_UNKNOWN, __FILE__, __LINE__), null);
 	    }
 	}
 
