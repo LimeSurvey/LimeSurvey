@@ -442,7 +442,7 @@ echo "\t//-->\n";
 echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE
 
-<!-- START THE SURVEY -->
+// <-- START THE SURVEY -->
 
 END;
 foreach(file("$thistpl/survey.pstpl") as $op)
