@@ -1030,12 +1030,7 @@ function sendsubmitnotification($sendnotification)
 	{
 	global $thissurvey;
 	global $dbprefix;
-	global $sitename, $homeurl, $surveyid;
-
-
-
-
-
+	global $sitename, $homeurl, $surveyid, $publicurl, $savedid;
 
 	$subject = "$sitename Survey Submitted";
 	

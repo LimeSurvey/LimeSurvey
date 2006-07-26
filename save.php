@@ -98,9 +98,6 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 		if ($result=$connect->Execute($subquery))
 			{
 			$srid = $connect->Insert_ID();
-			}
-		if ($srid > 0)
-			{
 			$_SESSION['srid'] = $srid;
 			}
 		}
