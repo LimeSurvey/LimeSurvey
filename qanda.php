@@ -1149,7 +1149,7 @@ function do_ranking($ia)
             $chosen[]=array($thiscode, $thistext);
             }
         $ranklist .= "' />\n";
-        $ranklist .= "\t\t\t\t\t\t<img src='Cut.gif' alt='"._REMOVEITEM."' title='"._REMOVEITEM."' ";
+        $ranklist .= "\t\t\t\t\t\t<img src='cut.gif' alt='"._REMOVEITEM."' title='"._REMOVEITEM."' ";
         if ($i != $existing)
             {
             $ranklist .= "style='display:none'";
