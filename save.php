@@ -78,7 +78,7 @@ Redesigned 7/25/2006 - swales
 	1. A new column SRID has been added to saved_control.
 	2. saved table no longer exists.
 */
-
+global $connect;
 //First, save the posted data to session 
 //Doing this ensures that answers on the current page are saved as well.
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES
@@ -207,7 +207,6 @@ $query = "SELECT COUNT(*) FROM {$dbprefix}saved_control\n"
 		."WHERE sid=$surveyid\n"
 		."AND identifier='".$_POST['savename']."'\n"
 		."AND access_code='".md5($_POST['savepass'])."'\n";
-
 $result = db_execute_num($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 list($count) = $result->FetchRow();
 if ($count > 0)
@@ -258,33 +257,27 @@ else
 			}
 		}
 	
-	$sdata = array("thisstep"=>$_POST['thisstep'],
-				   "sid"=>$surveyid,
-				   "srid"=>$_SESSION['srid'],
-				   "ip"=>$_SERVER['REMOTE_ADDR'],
-				   "date"=>date("Y-m-d H:i:s"),
-				   "identifier"=>$_POST['savename'],
-				   "code"=>md5($_POST['savepass']),
-				   "email"=>$_POST['saveemail']);
 
 	//Create entry in "saved_control"
-	$query = $connect->GetInsertSQL("{$dbprefix}saved_control", array(
-		'sid' => $sdata['sid'],
-		'srid' => $sdata['srid'],
-		'identifier' => $sdata['identifier'],
-		'access_code' => $sdata['code'],
-		'email' => $sdata['email'],
-		'ip' => $sdata['ip'],
-		'refurl' => $sdata['refurl'],
-		'saved_thisstep' => $sdata['thisstep'],
-		'status' => 'S',
-		'saved_date' => $sdata['date']));
-	if ($result=$connect->Execute($query))
+	$sdata = array("sid"=>$surveyid,
+			"srid"=>$_SESSION['srid'],
+			"identifier"=>$_POST['savename'],
+			"access_code"=>md5($_POST['savepass']),
+			"email"=>$_POST['saveemail'],
+			"ip"=>$_SERVER['REMOTE_ADDR'],
+			"refurl"=>$_SESSION['refurl'],
+			"saved_thisstep"=>$_POST['thisstep'],
+			"status"=>"S",
+			"saved_date"=>date("Y-m-d H:i:s"));
+
+
+	if ($connect->AutoExecute("{$dbprefix}saved_control", $sdata,'INSERT'))
 		{
 		$scid = $connect->Insert_ID();
 		}
-	// save $srid to session variable
-	if ($srid > 0)
+
+	// save $scid to session variable
+	if ($scid > 0)
 		{
 		$_SESSION['scid'] = $scid;
 		}
