@@ -252,6 +252,9 @@ else
 	//Create the survey responses table
 	$createsurvey = "CREATE TABLE {$dbprefix}survey_{$_GET['sid']} (\n";
 	$createsurvey .= "  id BIGINT(11) NOT NULL auto_increment,\n";
+// --> START NEW FEATURE - SAVE
+	$createsurvey .= " submitdate datetime NOT NULL default '0000-00-00 00:00:00',\n";
+// --> END NEW FEATURE - SAVE
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
 	$presult=db_execute_assoc($pquery);

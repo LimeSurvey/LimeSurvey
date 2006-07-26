@@ -134,6 +134,9 @@ define("_CONFIRMATION_MESSAGE3", "Click the following link to see the individual
 define("_CONFIRMATION_MESSAGE4", "View statistics by clicking here:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
 
+// --> START ENHANCEMENT
+define("_CONFIRMATION_MESSAGE6", "Click the following link to reload the survey:");
+// <-- END ENHANCEMENT
 define("_PRIVACY_MESSAGE", "<strong><i>A Note On Privacy</i></strong><br />"
 						  ."This survey is anonymous.<br />"
 						  ."The record kept of your survey responses does not contain any "

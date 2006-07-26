@@ -166,11 +166,7 @@ if (isset($oldsid) && $oldsid && $oldsid != $surveyid)
 	$_SESSION['oldsid']=$surveyid;
 	}
 
-//Save and clear session if requested
-if (isset($_POST['saveall']) && $_POST['saveall'] == _SAVE_AND_RETURN) 
-	{
-	require_once("save.php");
-	}
+
 
 if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
 	{
@@ -182,7 +178,8 @@ if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
 		$_POST['scid']=returnglobal('scid');
 		}
 	}
-//Load saved survey
+
+//LOAD SAVED SURVEY
 if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	{
 	$errormsg="";
@@ -202,44 +199,14 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		{
 		buildsurveysession();
 		}
-	$query = "SELECT * FROM ".db_table_name('saved').", ".db_table_name('saved_control')."
-			  WHERE ".db_table_name('saved').".scid=".db_table_name('saved_control').".scid 
-			  AND ".db_table_name('saved_control').".sid=$surveyid\n";
-	if (isset($_POST['scid'])) {
-	    $query .= "AND ".db_table_name('saved').".scid=".auto_escape($_POST['scid'])."\n";
-	}		  
-	$query .="AND ".db_table_name('saved_control').".identifier='".auto_escape($_POST['loadname'])."'
-			  AND ".db_table_name('saved_control').".access_code='".md5(auto_unescape($_POST['loadpass']))."'\n";
-	$result = db_execute_assoc($query) or die ("Error loading results<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	if ($result->RecordCount() > 0)
-		{
-		//A match has been found. Let's load the values if there are saved responses!
-		//If this is from an email,  surveysession was build first
-		while($row=$result->FetchRow())
-			{
-			if ($row['fieldname'] == "token")
-				{
-			    $_POST['token']=$row['value'];
-				$token=$row['value'];
-				}
-			else
-				{
-				$_SESSION[$row['fieldname']]=$row['value'];
-				$_POST['thisstep']=$row['saved_thisstep']-1;
-				// Populate the esession variable with the referring URL saved in the db.
-				$_SESSION['refurl']=$row['refurl'];
-				$_SESSION['scid']=$row['scid'];
-				}
-			} // while
-		}
-		else
-    		{
-    		$errormsg .= _LOADNOMATCH."<br />\n";
-    		}			
-	$_SESSION['savename']=$_POST['loadname']; //This session variable hangs around
-                                              //for later use.
-	$_POST['move'] = " "._NEXT." >> "; 
+                                            //for later use.
+// --> START NEW FEATURE - SAVE
+	$_SESSION['holdname']=$_POST['loadname']; //Session variable used to load answers every page.
+	$_SESSION['holdpass']=$_POST['loadpass']; //Session variable used to load answers every page.
 
+	loadanswers();
+// <-- END NEW FEATURE - SAVE
+	$_POST['move'] = " "._NEXT." >> "; 
 		
 	if ($errormsg)
 		{
@@ -340,6 +307,24 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 	//echo "Reset Cookie!";
 	}
 
+// --> START NEW FEATURE - SAVE
+// SAVE POSTED ANSWERS TO DATABASE IF NEXT,PREV,LAST OR SUBMIT
+if (isset($_POST['move']) && ($_POST['move'] == " << "._PREV." " || $_POST['move'] == " "._NEXT." >> " || $_POST['move'] == " "._LAST." " || $_POST['move'] == " "._SUBMIT." ")) {
+	require_once("save.php");
+
+	// RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
+	if ($thissurvey['active'] == "Y" && $thissurvey['allowsave'] == "Y") {
+		loadanswers();
+		}
+	}
+
+if (isset($_POST['saveprompt'])) 	//Required when save form returns to save initial record
+	{
+	require_once("save.php");
+	}
+// --> END NEW FEATURE - SAVE
+
+
 sendcacheheaders();
 //CALL APPROPRIATE SCRIPT
 switch ($thissurvey['format'])
@@ -356,6 +341,71 @@ switch ($thissurvey['format'])
 	default:
 		require_once("question.php");
 	}
+
+// --> START NEW FEATURE - SAVE
+function loadanswers()
+	{
+	global $dbprefix,$surveyid,$errormsg;
+	global $thissurvey;
+
+	$query = "SELECT * FROM {$dbprefix}saved_control INNER JOIN {$thissurvey['tablename']}
+		ON {$dbprefix}saved_control.srid = {$thissurvey['tablename']}.id
+		WHERE {$dbprefix}saved_control.sid=$surveyid\n";
+	if (isset($_POST['scid'])) 
+		{
+		$query .= "AND {$dbprefix}saved_control.scid=".auto_escape($_POST['scid'])."\n";
+		}
+	$query .="AND {$dbprefix}saved_control.identifier='".auto_escape($_SESSION['holdname'])."'
+			  AND {$dbprefix}saved_control.access_code='".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+
+	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
+	
+	if (mysql_num_rows($result) < 1)
+		{
+	    $errormsg .= _LOADNOMATCH."<br />\n";
+		}
+	else
+		{
+		//A match has been found. Let's load the values!
+		//If this is from an email, build surveysession first
+		$row=mysql_fetch_row($result);
+		foreach ($row as $i => $value)
+			{
+			$column = mysql_field_name($result,$i);
+			if ($column == "token")
+				{
+			    	$_POST['token']=$value;
+				$token=$value;
+				}
+			if ($column == "saved_thisstep")
+				{
+			    	$_SESSION['step']=$value;
+				}
+			if ($column == "scid")
+				{
+			    	$_SESSION['scid']=$value;
+				}
+			if ($column == "srid")
+				{
+			    	$_SESSION['srid']=$value;
+				}
+			if ($column == "datestamp")
+				{
+			    	$_SESSION['datestamp']=$value;
+				}
+			else
+				{
+				//Only make session variables for those in insertarray[]
+				if (in_array($column, $_SESSION['insertarray']))
+					{
+					$_SESSION[$column]=$value;
+					}
+				}
+			} // foreach
+		}
+	return true;
+	}
+// --> END NEW FEATURE - SAVE
 
 function getTokenData($surveyid, $token)
 	{
@@ -828,6 +878,73 @@ function createinsertquery()
 		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
 				."(".implode(', ', array_map('db_quote_id',$colnames)).")\n"
 				."VALUES (".implode(", ", $values).")";
+// --> START NEW FEATURE - SAVE
+	// CHECK TO SEE IF ROW ALREADY EXISTS
+	if (!isset($_SESSION['srid']))
+		{
+		if ($thissurvey['datestamp'] == "Y")
+			{
+		    	$_SESSION['datestamp']=date("Y-m-d H:i:s");
+			}
+		// INSERT NEW ROW
+		// TODO SQL: quote colum name correctly
+		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
+				."(".implode(', ', array_map('db_quote_id',$colnames)).")\n";
+		if ($thissurvey['datestamp'] == "Y")
+			{
+			$query .= ",`datestamp`";
+			}
+		if ($thissurvey['ipaddr'] == "Y")
+			{
+			$query .= ",`ipaddr`";
+			}
+		$query .=") ";
+		$query .="VALUES (".implode(", ", $values);
+		if ($thissurvey['datestamp'] == "Y")
+			{
+			$query .= ", '".$_SESSION['datestamp']."'";
+			}
+		if ($thissurvey['ipaddr'] == "Y")
+			{
+			$query .= ", '".$_SERVER['REMOTE_ADDR']."'";
+			}
+		$query .=")";
+		}
+	else
+		{  // UPDATE EXISTING ROW
+// Updates only the MODIFIED fields posted on current page.
+		if (isset($_POST['modfields']) && $_POST['modfields'])
+			{
+			if ($thissurvey['datestamp'] == "Y")
+				{
+			    	$_SESSION['datestamp']=date("Y-m-d H:i:s");
+				}
+			$query = "UPDATE {$thissurvey['tablename']} SET ";
+			if ($thissurvey['datestamp'] == "Y")
+				{
+				$query .= "datestamp = '".$_SESSION['datestamp']."',";
+				}
+			if ($thissurvey['ipaddr'] == "Y")
+				{
+				$query .= "ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
+				}
+			$fields=explode("|", $_POST['modfields']);
+			foreach ($fields as $field)
+				{
+				$query .= $field." = '".mysql_escape_string($_POST[$field])."',";
+				}
+			$query .= "WHERE id=" . $_SESSION['srid'];
+			$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
+			}
+		else
+			{
+			$query = "";
+			}
+		}
+// <-- END NEW FEATURE - SAVE
+//DEBUG START
+//echo $query;
+//DEBUG END
 		return $query;
 		}
 	else
@@ -912,17 +1029,30 @@ function submittokens()
 function sendsubmitnotification($sendnotification)
 	{
 	global $thissurvey;
-	global $savedid, $dbprefix;
+	global $dbprefix;
 	global $sitename, $homeurl, $surveyid;
 
+
+
+
+
+
 	$subject = "$sitename Survey Submitted";
-	$message = _CONFIRMATION_MESSAGE1." {$thissurvey['name']}\r\n"
-			 . _CONFIRMATION_MESSAGE2."\r\n\r\n"
-			 . _CONFIRMATION_MESSAGE3."\r\n"
+	
+	$message = _CONFIRMATION_MESSAGE1." - {$thissurvey['name']}\r\n"
+			 . _CONFIRMATION_MESSAGE2."\r\n\r\n";
+	if ($thissurvey['allowsave'] == "Y")
+		{
+		$message .= _CONFIRMATION_MESSAGE1 . "\r\n";
+		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\r\n\r\n";
+		}
+			 
+	$message .= _CONFIRMATION_MESSAGE3."\r\n"
 			 . "  $homeurl/browse.php?sid=$surveyid&action=id&id=$savedid\r\n\r\n"
              // Add link to edit individual responses from notification email  
 			 . _CONFIRMATION_MESSAGE5."\r\n"
-             . " $homeurl/dataentry.php?sid=$surveyid&action=edit&surveytable=survey_$surveyid&id=$savedid\r\n\r\n"  
+
+             . "  $homeurl/dataentry.php?sid=$surveyid&action=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\r\n\r\n"  
 			 . _CONFIRMATION_MESSAGE4."\r\n"
 			 . "  $homeurl/statistics.php?sid=$surveyid\r\n\r\n";
 	if ($sendnotification > 1)

@@ -138,21 +138,6 @@ CREATE TABLE `questions` (
 
 -- --------------------------------------------------------
 
--- 
--- Table structure for table `saved`
--- 
-
-CREATE TABLE `saved` (
-  `saved_id` int(11) NOT NULL,
-  `scid` int(11) NOT NULL default '0',
-  `datestamp` datetime NOT NULL default '0000-00-00 00:00:00',
-  `fieldname` text NOT NULL,
-  `value` text NOT NULL,
-  `ipaddr` mediumtext,
-  PRIMARY KEY  (`saved_id`)
-) TYPE=MyISAM;
-
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `saved_control`
@@ -161,6 +146,7 @@ CREATE TABLE `saved` (
 CREATE TABLE `saved_control` (
   `scid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
+  `srid` int(11) NOT NULL default '0',
   `identifier` text NOT NULL,
   `access_code` text NOT NULL,
   `email` varchar(200) default NULL,

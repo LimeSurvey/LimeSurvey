@@ -43,16 +43,14 @@ if (!isset($gl)) {$gl=array("null");}
 if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
 if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step']=$_POST['thisstep']+1;}
 if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+
+// --> START NEW FEATURE - SAVE
+// So SAVE YOUR RESPONSES SO FAR stays on same page
+if (isset($_POST['saveall']) && $_POST['saveall'] == _SAVE_AND_RETURN) {$_SESSION['step']=$_POST['thisstep'];}
+// <-- END NEW FEATURE - SAVE
+
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES #################################################
-if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
-	{
-	$postedfieldnames=explode("|", $_POST['fieldnames']);
-	foreach ($postedfieldnames as $pf)
-		{
-		if (isset($_POST[$pf])) {$_SESSION[$pf] = auto_unescape($_POST[$pf]);}
-		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";} //delete any pre-existing values
-		}
-	}
+
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 
@@ -67,7 +65,6 @@ $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandator
 $notvalidated=checkpregs($backok);
 
 // Check for session timeout
-
 if (session_id()=='') 
  {
  	 echo "Sorry, your sessions seems to have expired. Please restart the survey. (1)";
@@ -79,7 +76,7 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " "._LA
 	{
 	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
 		{
-		if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_SESSION['step']-1;}
+		if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step']=$_SESSION['step']-1;}
 		if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step']=$_SESSION['step']+1;}
 		if ($_SESSION['step']-1 == $_SESSION['totalsteps'])
 			{
@@ -90,39 +87,23 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " "._LA
 	}
 
 //SUBMIT ###############################################################################
-if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSION['insertarray']))
+// --> START NEW FEATURE - SAVE
+if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ")
+// <-- END NEW FEATURE - SAVE
 	{
-	//If survey has datestamp turned on, add $localtimedate to sessions
-	if ($thissurvey['datestamp'] == "Y")
-		{
-		if (!in_array("datestamp", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
-			{
-		    $_SESSION['insertarray'][] = "datestamp";
-			}
-		$_SESSION['datestamp'] = $localtimedate;
-		}
-
-        //If survey has ipaddr turned on, add IP Address to sessions
-        if ($thissurvey['ipaddr'] == "Y")                 {
-                if (!in_array("ipaddr", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
-                        {                     $_SESSION['insertarray'][] = "ipaddr";
-                        }
-                $_SESSION['ipaddr'] = $_SERVER['REMOTE_ADDR'];                 }
 
         if ($thissurvey['refurl'] == "Y")                 {
                 if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
                         {                     $_SESSION['insertarray'][] = "refurl";
                         }
                 $_SESSION['refurl'] = $_SESSION['refurl'];                 }
-	//DEVELOP SQL TO INSERT RESPONSES
-	$subquery = createinsertquery();
+
 
 	//COMMIT CHANGES TO DATABASE
 	if ($thissurvey['active'] != "Y")
 		{
 		sendcacheheaders();
 		doHeader();
-		
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -145,13 +126,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 		}
 	else
 		{
-		if ($connect->Execute($subquery)) //submit of responses was successful
-			{
-			//UPDATE COOKIE IF REQUIRED
-			$idquerytext = "SELECT LAST_INSERT_ID()";
-			$idquery = db_execute_num($idquerytext);
-			$idquery_row = $idquery->FetchRow();
-			$savedid=$idquery_row[0];
+
 			
 			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
 				{
@@ -159,16 +134,6 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				setcookie("$cookiename", "COMPLETE", time() + 31536000);
 				}
 			
-			if (isset($_SESSION['savename'])) 
-				{
-				//Delete the saved survey
-			    $query = "DELETE FROM {$dbprefix}saved\n"
-						."WHERE sid=$surveyid\n"
-						."AND identifier = '".$_SESSION['savename']."'";
-				$result = $connect->Execute($query);
-				//Should put an email to administrator here
-				//if the delete doesn't work.
-				}
             $content='';
 			foreach(file("$thistpl/startpage.pstpl") as $op)
 				{
@@ -202,18 +167,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				{ 
 				sendsubmitnotification($thissurvey['sendnotification']);
 				}
-			if (isset($_SESSION['scid'])) 
-			{
-				//Delete the saved survey
-				$query = "DELETE FROM {$dbprefix}saved
-				  	WHERE scid=".$_SESSION['scid'];
-				$result=$connect->Execute($query);
-				$query = "DELETE FROM {$dbprefix}saved_control
-				  		WHERE scid=".$_SESSION['scid'];
-				$result=$connect->Execute($query);
-				//Should put an email to administrator here
-				//if the delete doesn't work.
-			}
+
 
 			session_unset();
 			session_destroy();
@@ -230,12 +184,6 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 			doHeader();
             echo $content;
 
-			}
-		else
-			{
-			//Submit of Responses Failed
-			$completed=submitfailed();
-			}
 		}
 	
 	foreach(file("$thistpl/completed.pstpl") as $op)
@@ -448,9 +396,52 @@ print <<<END
 
 <!-- INPUT NAMES -->
 <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames'>
+// --> START NEW FEATURE - SAVE
+// Used to keep track of the fields modified, so only those are updated during save
+echo "\t<input type='hidden' name='modfields' value='";
+
+// Debug - uncomment if you want to see the value of modfields on the next page source (to see what was modified)
+//         however doing so will cause the save routine to save all fields that have ever been modified whether
+//	   they are on the current page or not.  Recommend just using this for debugging.
+//if (isset($_POST['modfields']) && $_POST['modfields']) {
+//	$inputmodfields=explode("|", $_POST['modfields']);
+//	echo implode("|", $inputmodfields);
+//}
+
+echo "' id='modfields'>\n";
+echo "\n";
+echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
+echo "\t<script type='text/javascript'>\n";
+echo "\t<!--\n";
+echo "\t\tfunction modfield(name)\n";
+echo "\t\t\t{\n";
+echo "\t\t\t\ttemp=document.getElementById('modfields').value;\n";
+echo "\t\t\t\tif (temp=='') {\n";
+echo "\t\t\t\t\tdocument.getElementById('modfields').value=name;\n";
+echo "\t\t\t\t}\n";
+echo "\t\t\t\telse {\n";
+echo "\t\t\t\t\tmyarray=temp.split('|');\n";
+echo "\t\t\t\t\tif (!inArray(name, myarray)) {\n";
+echo "\t\t\t\t\t\tmyarray.push(name);\n";
+echo "\t\t\t\t\t\tdocument.getElementById('modfields').value=myarray.join('|');\n";
+echo "\t\t\t\t\t}\n";
+echo "\t\t\t\t}\n";
+echo "\t\t\t}\n";
+echo "\n";
+echo "\t\tfunction inArray(needle, haystack)\n";
+echo "\t\t\t{\n";
+echo "\t\t\t\tfor (h in haystack) {\n";
+echo "\t\t\t\t\tif (haystack[h] == needle) {\n";
+echo "\t\t\t\t\t\treturn true;\n";
+echo "\t\t\t\t\t}\n";
+echo "\t\t\t\t}\n";
+echo "\t\t\treturn false;\n";
+echo "\t\t\t} \n";
+echo "\t//-->\n";
+echo "\t</script>\n\n";
+// <-- END NEW FEATURE - SAVE
 
 <!-- START THE SURVEY -->
-
 
 END;
 foreach(file("$thistpl/survey.pstpl") as $op)

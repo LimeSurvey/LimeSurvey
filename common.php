@@ -1464,19 +1464,11 @@ function templatereplace($line)
     //Set up save/load feature
     if ($thissurvey['allowsave'] == "Y")
         {
-        if ($thissurvey['format'] == "A")
-            {
-            $saveall = "<input type='submit' name='loadall' value='"._LOAD_SAVED."' class='saveall'>&nbsp;"
-                    . "<input type='submit' name='saveall' value='"._SAVE_AND_RETURN."' class='saveall'>";
-
-            }
-        else
-            {
             if (!isset($_SESSION['step']) || !$_SESSION['step'])
                 {
                 $saveall = "<input type='submit' name='loadall' value='"._LOAD_SAVED."' class='saveall'>";
                 }
-            elseif ($_SESSION['step'] < $_SESSION['totalsteps'])
+            elseif ($_SESSION['step'] <= $_SESSION['totalsteps'])  //Also modified so Save So Far shows up on last page.
                 {
                	$saveall = "<input type='submit' name='saveall' value='"._SAVE_AND_RETURN."' class='saveall'>";
                 }
@@ -1484,7 +1476,6 @@ function templatereplace($line)
                 {
                 $saveall="";
                 }
-            }
         }
     else
         {
@@ -1566,6 +1557,18 @@ function templatereplace($line)
     $line=str_replace("{PRIVACY}", $privacy, $line);
     $line=str_replace("{PRIVACYMESSAGE}", _PRIVACY_MESSAGE, $line);
     $line=str_replace("{CLEARALL}", $clearall, $line);
+
+// --> START NEW FEATURE - SAVE
+    if (isset($_SESSION['datestamp']))
+    	{
+    	$line=str_replace("{DATESTAMP}", $_SESSION['datestamp'], $line);
+    	}
+    else
+    	{
+    	$line=str_replace("{DATESTAMP}", "-", $line);
+    	}
+// <-- END NEW FEATURE - SAVE
+
     $line=str_replace("{SAVE}", $saveall, $line);
     $line=str_replace("{TEMPLATEURL}", $templateurl, $line);
     $line=str_replace("{SUBMITCOMPLETE}", _SM_COMPLETED, $line);

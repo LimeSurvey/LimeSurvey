@@ -47,7 +47,7 @@ $alltables=array("{$dbprefix}surveys",
                  "{$dbprefix}users", 
                  "{$dbprefix}labelsets", 
                  "{$dbprefix}labels",
-                 "{$dbprefix}saved",
+
                  "{$dbprefix}saved_control",
                  "{$dbprefix}question_attributes",
                  "{$dbprefix}assessments");
@@ -58,7 +58,7 @@ $keyinfo[]=array("{$dbprefix}groups", "gid");
 $keyinfo[]=array("{$dbprefix}questions", "qid");
 $keyinfo[]=array("{$dbprefix}conditions", "cid");
 $keyinfo[]=array("{$dbprefix}labelsets", "lid");
-$keyinfo[]=array("{$dbprefix}saved", "saved_id");
+
 $keyinfo[]=array("{$dbprefix}saved_control", "scid");
 $keyinfo[]=array("{$dbprefix}question_attributes", "qaid");
 $keyinfo[]=array("{$dbprefix}assessments", "id");
@@ -143,15 +143,13 @@ $allfields[]=array("{$dbprefix}surveys", "autonumber_start", "autonumber_start b
 $allfields[]=array("{$dbprefix}surveys", "autoredirect", "autoredirect char(1) default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "allowprev","allowprev char(1) default 'Y'");
 
-$allfields[]=array("{$dbprefix}saved", "saved_id", "saved_id int(11) NOT NULL auto_increment");
-$allfields[]=array("{$dbprefix}saved", "scid", "scid int(11) NOT NULL");
-$allfields[]=array("{$dbprefix}saved", "datestamp", "datestamp datetime NOT NULL default '0000-00-00 00:00:00'");
-$allfields[]=array("{$dbprefix}saved", "ipaddr", "ipaddr MEDIUMTEXT default NULL");
-$allfields[]=array("{$dbprefix}saved", "fieldname", "fieldname text NOT NULL");
-$allfields[]=array("{$dbprefix}saved", "value", "value text NOT NULL");
+
 
 $allfields[]=array("{$dbprefix}saved_control", "scid", "scid int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}saved_control", "sid", "sid int(11) NOT NULL default '0'");
+// --> START NEW FEATURE - SAVE
+$allfields[]=array("{$dbprefix}saved_control", "srid", "srid int(11) NOT NULL default '0'");
+// --> END NEW FEATURE - SAVE
 $allfields[]=array("{$dbprefix}saved_control", "identifier", "identifier text NOT NULL");
 $allfields[]=array("{$dbprefix}saved_control", "access_code", "access_code text NOT NULL");
 $allfields[]=array("{$dbprefix}saved_control", "email", "email varchar(200)");
