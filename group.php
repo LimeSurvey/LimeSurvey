@@ -397,6 +397,7 @@ print <<<END
 <!-- INPUT NAMES -->
 <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames'>
 END;
+
 // --> START NEW FEATURE - SAVE
 // Used to keep track of the fields modified, so only those are updated during save
 echo "\t<input type='hidden' name='modfields' value='";
@@ -444,7 +445,6 @@ echo "\t</script>\n\n";
 
 // <-- START THE SURVEY -->
 
-END;
 foreach(file("$thistpl/survey.pstpl") as $op)
 	{
 	echo "\t".templatereplace($op);
