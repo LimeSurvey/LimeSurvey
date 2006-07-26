@@ -1,7 +1,7 @@
 <?php
 /*
         #############################################################
-        # >>> Tranlsation file for PHPSurveyor                      #
+        # >>> Translation file for PHPSurveyor                      #
         #############################################################
         # > Author:  Artemis Mendrinos                              #
         # > E-mail:  artemis@mendrinos.com                          #
@@ -40,7 +40,7 @@ define("_TOKENS", "Tokens");
 define("_FEMALE", "Γυναίκα");
 define("_MALE", "Άνδρας");
 define("_NOANSWER", "Καμία απάντηση");
-define("_NOTAPPLICABLE", "Μή εφαρμόσηνο"); //New for 0.98rc5
+define("_NOTAPPLICABLE", "Μή εφαρμόσημο"); //New for 0.98rc5
 define("_OTHER", "Άλλο");
 define("_PLEASECHOOSE", "Παρακαλώ επιλέξτε");
 define("_ERROR_PS", "Σφάλμα");
@@ -128,8 +128,8 @@ define("_INSTRUCTION_MULTI", "Επιλέξτε όποιο ισχύει"); //NEW 
 define("_CONFIRMATION_MESSAGE1", "Έρευνα καταχωρήθηκε"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE2", "Μια νέα απάντηση εισήχθη για την έρευνά σας"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Κάντε κλίκ στην ακόλουθη σύνδεση για να δείτε τη μεμονωμένη απάντηση:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE4", "Χτυπίστε εδώ για προβολή στατιστικών:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE5", "Χτυπήστε την ακόλουθη σύνδεση για να εκδώσετε τη μεμονωμένη απάντηση:"); //NEW for 0.99stable
+define("_CONFIRMATION_MESSAGE4", "Κάντε κλίκ εδώ για προβολή στατιστικών:"); //NEW for 098rc5
+define("_CONFIRMATION_MESSAGE5", "Κάντε κλίκ στην ακόλουθη σύνδεση για να εκδώσετε τη μεμονωμένη απάντηση:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Μια Παρατήρηση Ιδιοτικότητας</i></strong><br />"
 						  ."Η παρούσα Έρευνα είναι ανώνυμη.<br />"
