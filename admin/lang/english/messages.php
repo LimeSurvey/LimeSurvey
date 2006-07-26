@@ -367,6 +367,7 @@ define("_SS_ADDGROUPS", "You need to add groups"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "You need to add questions"); //NEW for release 0.98rc3
 define("_SS_ALLOWREGISTER", "If tokens are used, the public may register for this survey"); //NEW for release 0.98rc9
 define("_SS_ALLOWSAVE", "Participants can save partially finished surveys"); //NEW for release 0.99dev01
+define("_SS_REFURL","????");
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "Mandatory Question"); //New for release 0.98rc4
