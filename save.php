@@ -189,7 +189,7 @@ function savedcontrol()
 // - "value" which is the value of the response
 //We start by generating the first 5 values which are consistent for all rows.
 
-global $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust;
+global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust;
 
 //Check that the required fields have been completed.
 $errormsg="";
