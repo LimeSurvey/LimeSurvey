@@ -2063,46 +2063,83 @@ function getRandomID()
 * @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
 */
 function getArrayFiltersForGroup()
-    {
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $surveyid, $gid, $dbprefix;
-    // Get All Questions in Current Group
-    $qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid";
-    $qresult = mysql_query($qquery);
-    $grows = array(); //Create an empty array in case mysql_fetch_array does not return any rows 
-    // Store each result as an array with in the $grows array
-    while ($qrow = mysql_fetch_array($qresult)) {
-    	$grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title']);
-    }
+{
+	// TODO: Check list_filter values to make sure questions are previous?
+	global $surveyid, $gid, $dbprefix;
+	// Get All Questions in Current Group
+	$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid";
+	$qresult = mysql_query($qquery);
+	$grows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	// Store each result as an array with in the $grows array
+	while ($qrow = mysql_fetch_array($qresult)) {
+		$grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title']);
+	}
 	$attrmach = array(); // Stores Matches of filters that have their values as questions with in current group
 	$grows2 = $grows;
-    foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
-    {
-    	$qquery = "SELECT value FROM {$dbprefix}question_attributes WHERE attribute='array_filter' AND qid='".$qrow['qid']."'";
-    	$qresult = mysql_query($qquery);
-    	if (mysql_numrows($qresult) == 1) // We Found a array_filter attribute
-    	{
-    		$val = mysql_fetch_row($qresult); // Get the Value of the Attribute ( should be a previous question's title in same group )
-    		$qafound=0;
-    		while (list($key,$value) = each($grows2))
-    		{
-    			if ($value['title'] == $val[0])
-    			{
-    				$qafound = $value['qid']; // If array_filter value is a question in the group store it
-    				break;
-    			}
+	foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
+	{
+		$qquery = "SELECT value FROM {$dbprefix}question_attributes WHERE attribute='array_filter' AND qid='".$qrow['qid']."'";
+		$qresult = mysql_query($qquery);
+		if (mysql_numrows($qresult) == 1) // We Found a array_filter attribute
+		{
+			$val = mysql_fetch_row($qresult); // Get the Value of the Attribute ( should be a previous question's title in same group )
+			$qafound=0;
+			while (list($key,$value) = each($grows2))
+			{
+				if ($value['title'] == $val[0])
+				{
+					$qafound = $value['qid']; // If array_filter value is a question in the group store it
+					break;
+				}
 
-    		}
-    		reset($grows2);
-    		if ($qafound > 1) // If not found remove that array element
-    		{ // If found we add it to our new array_filter matches array
+			}
+			reset($grows2);
+			if ($qafound > 1) // If not found remove that array element
+			{ // If found we add it to our new array_filter matches array
 				$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $value['type'], 'fid' => $value['qid']);
-    			array_push($attrmach,$filter);
-    		}
+				array_push($attrmach,$filter);
+			}
 
-    	}
-    }
-    return $attrmach;
-    }
+		}
+	}
+	return $attrmach;
+}
+
+/**
+* getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
+* @global string $surveyid
+* @global string $gid
+* @global string $dbprefix
+* @return returns an array of codes that were selected else returns false
+*/
+function getArrayFiltersForQuestion($qid)
+{
+	// TODO: Check list_filter values to make sure questions are previous?
+	global $surveyid, $dbprefix;
+	$query = "SELECT value FROM {$dbprefix}question_attributes WHERE attribute='array_filter' AND qid='".(int)$qid."'";
+	$qresult = mysql_query($query);
+	if (mysql_numrows($qresult) == 1) // We Found a array_filter attribute
+	{
+		$val = mysql_fetch_row($qresult); // Get the Value of the Attribute ( should be a previous question's title in same group )
+		foreach ($_SESSION['fieldarray'] as $fields)
+		{
+			if ($fields[2] == $val)
+			{
+				// we found the target question, now we need to know what the answers where, we know its a multi!
+				$query = "SELECT code FROM {$dbprefix}answers where qid='{$fields[0]}' order by sortorder";
+				$qresult = mysql_query($query);
+				$numAnswers = mysql_numrows($qresult);
+				$codes = mysql_fetch_array($qresult);
+				foreach ($codes as $code)
+				{
+					if ($_SESSION[$fields[1].$code] == "Y") array_push($selected,$code);
+				}
+				return $selected;
+			}
+		}
+		return false;
+	}
+	return false;
+}
 
 ?>
