@@ -133,7 +133,7 @@ if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" 
 	$action=="delquestion" || $action=="delquestionall" || $action == "insertnewsurvey" || 
 	$action == "copynewquestion" || $action == "insertnewgroup" || $action == "insertCSV" || 
 	$action == "insertnewquestion" || $action == "updatesurvey" || $action=="updategroup" || 
-	$action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
+	$action=="reorderquestions" || $action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
 	$action == "delattribute" || $action == "addattribute" || $action == "editattribute")
 	{
 	include("database.php");
@@ -174,6 +174,7 @@ if (isset($editgroup)) {echo $editgroup;}
 if (isset($newquestion)) {echo $newquestion;}
 if (isset($questionsummary)) {echo $questionsummary;}
 if (isset($editquestion)) {echo $editquestion;}
+if (isset($orderquestions)) {echo $orderquestions;}
 if (isset($newanswer)) {echo $newanswer;}
 if (isset($answersummary)) {echo $answersummary;}
 if (isset($vasummary)) {echo $vasummary;}

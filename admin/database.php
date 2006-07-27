@@ -175,7 +175,17 @@ elseif ($action == "delgroup")
         echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPDELETE."\n$error\")\n //-->\n</script>\n";
         }
     }
-
+elseif ($action == "reorderquestions")
+	{
+		//Getting the hiddeNodeIds field and constructing the question order array
+		$questionorder=explode(",",$_POST['hiddenNodeIds']) ; 
+		
+		foreach($questionorder as $key =>$value)
+		{
+			$upordquery="UPDATE {$dbprefix}questions SET title='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
+			$upordresult=mysql_query($upordquery) or die(mysql_error()) ; 
+		}
+	}
 elseif ($action == "insertnewquestion")
 	{
 	if (!$_POST['title'])

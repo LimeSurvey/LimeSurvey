@@ -137,6 +137,7 @@ define("_G_CLOSE_BT", "Close this Group");
 define("_Q_EDIT_BT", "Edit Current Question");
 define("_Q_COPY_BT", "Copy Current Question"); //New in 0.98rc4
 define("_Q_DELETE_BT", "Delete Current Question");
+define("_Q_REORD_BT","Reorder the questions of this group"); //New in 1.01
 define("_Q_EXPORT_BT", "Export this Question");
 define("_Q_CONDITIONS_BT", "Set Conditions for this Question");
 define("_Q_ANSWERS_BT", "Edit/Add Answers for this Question");
@@ -153,7 +154,7 @@ define("_B_STATISTICS_BT", "Get statistics from these responses");
 define("_B_EXPORT_BT", "Export Results to Application");
 define("_B_BACKUP_BT", "Backup results table as SQL file");
 define("_B_IMPORTOLDRESULTS_BT","Import answers from a deactivated survey table");
-
+define("_Q_SAVEORD","Save Order"); //New in 1.01
 //Tokens Button Bar
 define("_T_ALL_BT", "Display Tokens");
 define("_T_ADD_BT", "Add new token entry");

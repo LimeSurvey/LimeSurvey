@@ -547,7 +547,13 @@ if ($gid)
 			{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title=''" 
+		$groupsummary .= "<input type='image' src='$imagefiles/reorder.png' title=''" 
+					   . "alt='"._Q_REORD_BT."'name='ReorderQuestions' "
+					   . "align='left' "
+					   . "onclick=\"window.open('$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid', '_top')\"" 
+					   . "onmouseout=\"hideTooltip()\"" 
+                       . "onmouseover=\"showTooltip(event,'"._Q_REORD_BT."');return false\">"
+					   ."\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title=''" 
 					   . "alt='". _G_EXPORT_BT."'name='ExportGroup' "
 					   . "align='left' "
 					   . "onclick=\"window.open('dumpgroup.php?sid=$surveyid&amp;gid=$gid', '_top')\"" 
@@ -1458,6 +1464,36 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		}
 	$editquestion .= "</td></tr></table></table>\n";
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
+	}
+//Constructing the drag and drop interface here... 
+if($action == "orderquestions")
+	{
+		
+	$oqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid order by title" ; 
+	$oqresult = mysql_query($oqquery) ; 
+	$orderquestions ="<p align='left'>" ;
+	$orderquestions="<ul id='arrangableNodes'>" ; 
+	while($oqrow = mysql_fetch_array($oqresult))
+	{
+		       $oqrow = array_map('htmlspecialchars',$oqrow) ; 	       
+		       $orderquestions.= "<li id='".$oqrow['qid']."'>".$oqrow['question']."</li>" ;
+	}
+	 
+	$orderquestions .="</ul>" ; 
+    $orderquestions .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._Q_SAVEORD."&nbsp;</a>" ;
+    				   
+	$orderquestions .="<div id=\"movableNode\"><ul></ul></div>	
+			   		   <div id=\"arrDestInditcator\"><img src=\"images/insert.gif\"></div>
+        			   <div id=\"arrDebug\"></div>" ; 					 
+	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ; 
+	$orderquestions .= "<form action='$scriptname' name='orderquestions' method='post'>
+						<input type='hidden' name='hiddenNodeIds'>
+						<input type='hidden' name='action' value='reorderquestions'> 
+						<input type='hidden' name='gid' value='$gid'>
+						<input type='hidden' name='sid' value='$surveyid'>
+						</form>" ; 
+    $orderquestions .="</p>" ;			
+		
 	}
 
 if ($action == "addgroup")
