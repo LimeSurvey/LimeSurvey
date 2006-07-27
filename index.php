@@ -1030,7 +1030,7 @@ function sendsubmitnotification($sendnotification)
 	{
 	global $thissurvey;
 	global $dbprefix;
-	global $sitename, $homeurl, $surveyid, $publicurl, $savedid;
+	global $sitename, $homeurl, $surveyid, $publicurl;
 
 	$subject = "$sitename Survey Submitted";
 	
@@ -1038,12 +1038,12 @@ function sendsubmitnotification($sendnotification)
 			 . _CONFIRMATION_MESSAGE2."\r\n\r\n";
 	if ($thissurvey['allowsave'] == "Y")
 		{
-		$message .= _CONFIRMATION_MESSAGE1 . "\r\n";
+		$message .= _CONFIRMATION_MESSAGE6 . "\r\n";
 		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\r\n\r\n";
 		}
 			 
 	$message .= _CONFIRMATION_MESSAGE3."\r\n"
-			 . "  $homeurl/browse.php?sid=$surveyid&action=id&id=$savedid\r\n\r\n"
+			 . "  $homeurl/browse.php?sid=$surveyid&action=id&id=".$_SESSION['srid']."\r\n\r\n"
              // Add link to edit individual responses from notification email  
 			 . _CONFIRMATION_MESSAGE5."\r\n"
 
