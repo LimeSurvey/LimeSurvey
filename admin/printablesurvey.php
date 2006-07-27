@@ -490,7 +490,7 @@ while ($degrow = $degresult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
-					if ($mearow[3] == "Y") {echo " checked";}
+					if ($mearow['default_value'] == "Y") {echo " checked";}
 					echo " readonly='readonly' />{$mearow['answer']} </font></td>\n";
 					//This is the commments field:
 					echo "\t\t\t\t\t<td>$setfont<input type='text' $boxstyle name='$fieldname{$mearow['code']}comment' size='60' readonly='readonly' /></font></td>\n";
@@ -507,7 +507,7 @@ while ($degrow = $degresult->FetchRow())
 					{
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td>$setfont{$mearow['answer']}: <input type='text' size='60' name='$fieldname{$mearow['code']}' value=''";
-					if ($mearow[3] == "Y") {echo " checked";}
+					if ($mearow['default_value'] == "Y") {echo " checked";}
 					echo " readonly='readonly' /></font></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
