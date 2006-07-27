@@ -179,8 +179,7 @@ if ($action == "insert")
 					'ip' => $_SERVER['REMOTE_ADDR'],
 					'saved_thisstep' => 0,
 					'status' => 'S',
-					// TODO SQL: correct ??
-					'saved_date' => date("Y-m-d H:i:s"));
+					'saved_date' => date("Y-m-d H:i:s")));
 			if ($result1=$connect->Execute($insert1))
 				{
 				//control table entry worked, lets do the rest
@@ -1506,7 +1505,7 @@ else
 								$conditions[]=$ansrow['answer'];
 								}
 							$operator=_DE_OR;	
-                            $conditions = array_unique($conditions)
+                            $conditions = array_unique($conditions);
 							break;
 						}
 					}
