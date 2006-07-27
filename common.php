@@ -1990,6 +1990,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
 {
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
+
     $mail = new PHPMailer;
     $mail->CharSet = "UTF-8";
 
@@ -2009,15 +2010,15 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
           if ($emailsmtpuser!="")
             {$mail->SMTPAuth = true;}
         }
-	$mail->from = $fromemail;
+	$mail->From = $fromemail;
 	$mail->AddAddress($to);
-    $mail->fromname = $fromname;
-	$mail->AddCustomHeader("X-Surveymailer=$sitename Emailer (PHPSurveyor.sourceforge.net)");
+    	$mail->fromname = $fromname;
+	$mail->AddCustomHeader("X-Surveymailer=$sitename Emailer (PHPSurveyor.sourceforge.net):");
 	$body = strip_tags($body);
 	$body = str_replace("&quot;", '"', $body);
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
-	$mail->body = $body;
-	$mail->subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
+	$mail->Body = $body;
+	$mail->Subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 	return $mail->Send();
 }
 
