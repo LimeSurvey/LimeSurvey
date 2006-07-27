@@ -2130,6 +2130,7 @@ function getArrayFiltersForQuestion($qid)
 				$qresult = mysql_query($query);
 				$numAnswers = mysql_numrows($qresult);
 				$codes = mysql_fetch_array($qresult);
+				$selected = array();
 				foreach ($codes as $code)
 				{
 					if ($_SESSION[$fields[1].$code] == "Y") array_push($selected,$code);
