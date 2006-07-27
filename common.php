@@ -2123,17 +2123,15 @@ function getArrayFiltersForQuestion($qid)
 		$val = mysql_fetch_row($qresult); // Get the Value of the Attribute ( should be a previous question's title in same group )
 		foreach ($_SESSION['fieldarray'] as $fields)
 		{
-			if ($fields[2] == $val)
+			if ($fields[2] == $val[0])
 			{
 				// we found the target question, now we need to know what the answers where, we know its a multi!
 				$query = "SELECT code FROM {$dbprefix}answers where qid='{$fields[0]}' order by sortorder";
 				$qresult = mysql_query($query);
-				$numAnswers = mysql_numrows($qresult);
-				$codes = mysql_fetch_array($qresult);
 				$selected = array();
-				foreach ($codes as $code)
+				while ($code = mysql_fetch_array($qresult))
 				{
-					if ($_SESSION[$fields[1].$code] == "Y") array_push($selected,$code);
+					if ($_SESSION[$fields[1].$code['code']] == "Y") array_push($selected,$code['code']);
 				}
 				return $selected;
 			}
