@@ -2004,15 +2004,15 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
 		}
     $mail->Mailer = $emailmethod;
     if ($emailmethod=="smtp")
-        { $mail->host = $emailsmtphost;
-          $mail->username =$emailsmtpuser;
-          $mail->password =$emailsmtppassword;
+        { $mail->Host = $emailsmtphost;
+          $mail->Username =$emailsmtpuser;
+          $mail->Password =$emailsmtppassword;
           if ($emailsmtpuser!="")
             {$mail->SMTPAuth = true;}
         }
 	$mail->From = $fromemail;
 	$mail->AddAddress($to);
-    	$mail->fromname = $fromname;
+    	$mail->FromName = $fromname;
 	$mail->AddCustomHeader("X-Surveymailer=$sitename Emailer (PHPSurveyor.sourceforge.net):");
 	$body = strip_tags($body);
 	$body = str_replace("&quot;", '"', $body);
