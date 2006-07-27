@@ -1,0 +1,902 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor German language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-27 19:07+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-SearchPath-1: D:\\xampp\\xampp\\htdocs\\phpsurveyor\\lang\n"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:37
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:37
+msgid "Yes"
+msgstr "Ja"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:38
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:38
+msgid "No"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:39
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:39
+msgid "Uncertain"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:40
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:40
+msgid "Admin"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:41
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:41
+msgid "Tokens"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:42
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:42
+msgid "Female"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:43
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:43
+msgid "Male"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:44
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:44
+msgid "No answer"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:45
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:45
+msgid "N/A"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:46
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:46
+msgid "Other"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:47
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:47
+msgid "Please choose"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:48
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:48
+msgid "Error"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:49
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:49
+msgid "complete"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:50
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:50
+msgid "Increase"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:51
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:51
+msgid "Same"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:52
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:52
+msgid "Decrease"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:53
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:53
+msgid "<font color='red'>*</font>"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:55
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:55
+msgid "Confirmation"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:56
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:56
+msgid "Token"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:57
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:57
+msgid "Continue"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:60
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:60
+msgid "Accept"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:61
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:61
+msgid "prev"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:62
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:62
+msgid "next"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:63
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:63
+msgid "last"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:64
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:64
+msgid "submit"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:69
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:69
+msgid "Please choose one of the following"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:70
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:70
+msgid "Please enter your comment here"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:71
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:71
+msgid "Only numbers may be entered in this field"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:72
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:98
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:72
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:98
+msgid "Exit and Clear Survey"
+msgstr "Umfrage beenden und neu starten"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:73
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:73
+msgid "This question is mandatory"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:74
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:74
+msgid "Please complete all parts"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:75
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:75
+msgid "Please check at least one item"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:76
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:76
+msgid "Please rank all items"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:77
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:77
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:78
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:78
+msgid "This question must be answered correctly"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:79
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:79
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:80
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:80
+msgid "Format: YYYY-MM-DD"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:81
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:81
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:82
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:82
+msgid "Remove this item"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:83
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:83
+msgid "Click on an item in the list on the left, starting with your"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:84
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:84
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:85
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:85
+msgid "Your Choices"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:86
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:86
+msgid "Your Ranking"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:87
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:87
+msgid "Click on the scissors next to each item on the right"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:88
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:88
+msgid "to remove the last entry in your ranked list"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:90
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:90
+msgid "You have not provided a survey identification number"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:91
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:91
+msgid "Please contact"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:92
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:92
+msgid "for further assistance"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:93
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:93
+msgid "Answers Cleared"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:94
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:94
+msgid "Restart this Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:95
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:95
+msgid "Close this Window"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:96
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:96
+msgid "Are you sure you want to clear all your responses?"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:97
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:97
+msgid "Are you sure you want to save your responses?"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:100
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:100
+msgid "Cannot submit results - there are none to submit."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:101
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:101
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:102
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:102
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:103
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:103
+msgid "Clear Responses"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:104
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:104
+msgid "Thank you"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:105
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:105
+msgid "Your survey responses have been recorded."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:106
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:106
+msgid "Survey Completed"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:107
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:107
+msgid "Did Not Save"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:108
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:108
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:109
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:109
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:110
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:110
+msgid "An error occurred saving a response to survey id"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:111
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:111
+msgid "DATA TO BE ENTERED"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:112
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:112
+msgid "SQL CODE THAT FAILED"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:113
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:113
+msgid "ERROR MESSAGE"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:114
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:114
+msgid "Error saving survey results to database"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:115
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:115
+msgid "Try to submit again"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:116
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:116
+msgid "Sorry. There is no matching survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:117
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:117
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:118
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:118
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:119
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:119
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:120
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:120
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:121
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:121
+msgid "For further information contact"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:122
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:122
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:123
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:123
+msgid "This survey is no longer available."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:125
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:125
+msgid "You have already completed this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:127
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:127
+msgid "Choose only one of the following"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:128
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:128
+msgid "Check any that apply"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:130
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:130
+msgid "Survey Submitted"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:131
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:131
+msgid "A new response was entered for your survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:132
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:132
+msgid "Click the following link to see the individual response:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:133
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:133
+msgid "View statistics by clicking here:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:134
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:134
+msgid "Click the following link to edit the individual response:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:136
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:136
+msgid "(<strong><i>A Note On Privacy</i></strong><br />"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:137
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:137
+msgid "This survey is anonymous.<br />"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:138
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:138
+msgid "The record kept of your survey responses does not contain any "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:139
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:139
+msgid "identifying information about you unless a specific question "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:140
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:140
+msgid "in the survey has asked for this. If you have responded to a "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:141
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:141
+msgid "survey that used an identifying token to allow you to access "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:142
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:142
+msgid "the survey, you can rest assured that the identifying token "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:143
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:143
+msgid "is not kept with your responses. It is managed in a separate "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:144
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:144
+msgid "database, and will only be updated to indicate that you have "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:145
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:145
+msgid "(or haven't) completed this survey. There is no way of matching "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:146
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:146
+msgid "identification tokens with survey responses in this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:148
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:148
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:149
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:149
+msgid "There is 1 question in this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:151
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:151
+msgid "You must be registered to complete this survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:152
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:152
+msgid ""
+"You may register for this survey if you wish to take part.<br />\n"
+")"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:153
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:153
+msgid "Enter your details below, and an email containing the link to "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:154
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:154
+msgid "participate in this survey will be sent immediately."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:155
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:155
+msgid "Email Address"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:156
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:156
+msgid "First Name"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:157
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:157
+msgid "Last Name"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:158
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:158
+msgid "The email you used is not valid. Please try again."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:159
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:159
+msgid "The email you used has already been registered."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:160
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:160
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:161
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:161
+msgid ""
+"Thank you for registering to participate in this survey.<br /><br />\n"
+")"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:162
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:162
+msgid "An email has been sent to the address you provided with access details "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:163
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:163
+msgid "for this survey. Please follow the link in that email to proceed.<br /><br />\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:164
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:164
+msgid "Survey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:166
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:166
+msgid "<strong>Thank You<br /><br />)"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:167
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:167
+msgid "You have completed answering the questions in this survey.</strong><br /><br />"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:168
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:168
+msgid "Click on ["
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:168
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:168
+msgid "] now to complete the process and save your answers."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:169
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:169
+msgid "If you want to check any of the answers you have made, and/or change them, )"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:170
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:170
+msgid "you can do that now by clicking on the [<< "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:170
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:170
+msgid "] button and browsing "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:171
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:171
+msgid "through your responses."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:174
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:174
+msgid "Please choose <strong>only one</strong> of the following:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:175
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:175
+msgid "Please write your answer here:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:176
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:176
+msgid "Please choose <strong>all</strong> that apply:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:177
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:177
+msgid "Please choose all that apply and provide a comment:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:178
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:178
+msgid "Please choose the appropriate response for each item:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:179
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:179
+msgid "Please write your answer(s) here:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:180
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:180
+msgid "Please enter a date:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:181
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:181
+msgid "Make a comment on your choice here:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:182
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:182
+msgid "Please number each box in order of preference from 1 to"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:183
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:183
+msgid "Submit Your Survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:184
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:184
+msgid "Thank you for completing this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:185
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:185
+msgid "Please fax your completed survey to:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:187
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:187
+msgid "Only answer this question"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:188
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:188
+msgid "if you answered"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:189
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:189
+msgid "and"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:190
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:190
+msgid "to question"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:191
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:191
+msgid "or"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:194
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:194
+msgid "Save your responses so far"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:195
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:195
+msgid "Save Your Unfinished Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:196
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:196
+msgid "Return To Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:197
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:197
+msgid "Name"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:198
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:229
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:198
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:229
+msgid "Password"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:199
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:199
+msgid "Repeat Password"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:200
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:200
+msgid "Your Email"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:201
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:201
+msgid ""
+"Enter a name and password for this survey and click save below.<br />\n"
+")"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:202
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:202
+msgid "Your survey will be saved using that name and password, and can be "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:203
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:203
+msgid "completed later by logging in with the same name and password.<br /><br />\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:204
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:204
+msgid "If you give an email address, an email containing the details will be sent "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:205
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:205
+msgid "to you."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:206
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:206
+msgid "Save Now"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:207
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:207
+msgid "You must supply a name for this saved session."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:208
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:208
+msgid "You must supply a password for this saved session."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:209
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:209
+msgid "You must re-enter a password for this saved session."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:210
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:210
+msgid "Your passwords do not match."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:211
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:211
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:212
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:212
+msgid "Please try again."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:213
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:213
+msgid "Saved Survey Details"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:214
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:214
+msgid "You, or someone using your email address, have saved "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:215
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:215
+msgid "a survey in progress. The following details can be used "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:216
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:216
+msgid "to return to this survey and continue where you left "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:217
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:217
+msgid "off."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:218
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:218
+msgid "Reload your survey by clicking on the following URL:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:219
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:219
+msgid "Your survey responses have been saved succesfully"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:220
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:220
+msgid "An error occurred and your survey responses were not saved."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:221
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:221
+msgid "An email has been sent with details about your saved survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:224
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:224
+msgid "Load unfinished survey"
+msgstr "Gespeicherte Umfrage laden"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:225
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:225
+msgid "Load A Previously Saved Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:226
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:226
+msgid "You can load a survey that you have previously saved from this screen.<br />\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:227
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:227
+msgid "Type in the 'name' you used to save the survey, and the password.<br /><br />\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:228
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:228
+msgid "Saved name"
+msgstr "Gesepeichert als"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:230
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:230
+msgid "Load Now"
+msgstr "Jetzt laden"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:231
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:231
+msgid "You did not provide a name"
+msgstr "Sie haben keinen Namen angegeben"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:232
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:232
+msgid "You did not provide a password"
+msgstr "Sie haben kein Kennwort angegeben"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:233
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:233
+msgid "There is no matching saved survey"
+msgstr "Es konnte keine passende Umfrage gefunden werden."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:235
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:235
+msgid "Your Assessment"
+msgstr "Ihre Bewertung"
+
