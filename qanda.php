@@ -1797,11 +1797,11 @@ function do_gender($ia)
 
 function do_array_5point($ia)
     {
-    global $dbprefix, $shownoanswer, $notanswered;
+    global $dbprefix, $shownoanswer, $notanswered, $thissurvey;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = db_execute_assoc($qquery);
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
+    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$ia[0]}' ORDER BY sortorder, answer";
     $ansresult = db_execute_assoc($ansquery);
     $anscount = $ansresult->RecordCount();
     $fn = 1;
@@ -1835,11 +1835,19 @@ function do_array_5point($ia)
         }
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $htmltbody2 = "";
-        if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
+        if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G")
+        {   
+        	$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        } else if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S")
         {
-                   $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";
-                   $htmldispbody = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
-                   $htmltbody2 .= $htmldispbody;
+        	$selected = getArrayFiltersForQuestion($ia[0]);
+        	if (!in_array($ansrow['code'],$selected))
+        	{
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        	} else 
+        	{
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
+        	}
         }
         $answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right' width='$answerwidth%'>$answertext\n"
@@ -1864,7 +1872,7 @@ function do_array_5point($ia)
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
 // --> END NEW FEATURE - SAVE
             }
-        $answer .= "\t\t\t\t</tr>\n";
+        $answer .= "\t\t\t\t</tr></tbody>\n";
         $fn++;
         $inputnames[]=$myfname;
         }
@@ -1875,7 +1883,7 @@ function do_array_5point($ia)
 
 function do_array_10point($ia)
     {
-    global $dbprefix, $shownoanswer, $notanswered;
+    global $dbprefix, $shownoanswer, $notanswered, $thissurvey;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = db_execute_assoc($qquery);
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -1913,11 +1921,19 @@ function do_array_10point($ia)
         }
         if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
         $htmltbody2 = "";
-        if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
+        if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G")
+        {   
+        	$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        } else if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S")
         {
-                   $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";
-                   $htmldispbody = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
-                   $htmltbody2 .= $htmldispbody;
+        	$selected = getArrayFiltersForQuestion($ia[0]);
+        	if (!in_array($ansrow['code'],$selected))
+        	{
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        	} else 
+        	{
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
+        	}
         }
         $answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
         		 . "\t\t\t\t\t<td align='right'>$answertext\n"
@@ -1945,7 +1961,7 @@ function do_array_10point($ia)
 // --> END NEW FEATURE - SAVE
 
             }
-        $answer .= "\t\t\t\t</tr>\n";
+        $answer .= "\t\t\t\t</tr></tbody>\n";
         $inputnames[]=$myfname;
         $fn++;
         }
@@ -2223,7 +2239,7 @@ function do_array_increasesamedecrease($ia)
 
 function do_array_flexible($ia)
     {
-    global $dbprefix, $connect;
+    global $dbprefix, $connect, $thissurvey;
     global $shownoanswer;
     global $repeatheadings;
     global $notanswered;
@@ -2300,11 +2316,19 @@ function do_array_flexible($ia)
                $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
             $htmltbody2 = "";
-        	if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
+        	if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G")
+        	{   
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        	} else if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S")
         	{
-                   $htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";
-                   $htmldispbody = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
-                   $htmltbody2 .= $htmldispbody;
+        		$selected = getArrayFiltersForQuestion($ia[0]);
+        		if (!in_array($ansrow['code'],$selected))
+        		{
+        			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        		} else 
+        		{
+        			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
+        		}
         	}
         	$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
                     . "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
@@ -2333,7 +2357,7 @@ function do_array_flexible($ia)
                 $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
 // --> END NEW FEATURE - SAVE
                 }
-            $answer .= "\t\t\t\t</tr>\n";
+            $answer .= "\t\t\t\t</tr></tbody>\n";
             $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
