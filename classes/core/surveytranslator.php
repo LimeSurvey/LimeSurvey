@@ -155,7 +155,9 @@
 	    $supportedLanguages['vn']['description'] = 'Vietnamese';
 	    $supportedLanguages['vn']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
 
-	    
+
+        Return $supportedLanguages;
+    }
 /*    // future languages
 
 	    // Afrikaans

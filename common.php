@@ -131,12 +131,10 @@ else
 //SET LANGUAGE DIRECTORY
 if ($sourcefrom == "admin")
     {
-    $langdir="$homeurl/lang/$currentlang";
-    $langdir2="$homedir/lang/$currentlang";
-    if (!is_dir($langdir2))
+    $langdir="$publicurl/locale/$currentlang/help";
+    if (!is_dir($langdir))
         {
-        $langdir="$homeurl/lang/english"; //default to english if there is no matching language dir
-        $langdir2="$homedir/lang/english";
+        $langdir="$publicurl/locale/en/help"; //default to english if there is no matching language dir
         }
     }
 //SET LOCAL TIME
