@@ -45,10 +45,8 @@ if (empty($surveyid)) {die("No SID provided.");}
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
 while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
-$langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
-if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-require($langfilename);
+echo(getLanguageCodefromLanguage($surveylanguage));
+$translator = new
 
 sendcacheheaders();
 
@@ -60,14 +58,14 @@ if(isset($_POST['cquestions'])) {
 
 echo "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
 	."\t<tr><td align='center'>$setfont<font color='white'><strong>"
-	._CD_CONDITIONDESIGNER."</strong></font></font></td></tr>\n"
+	._("Condition Designer")."</strong></font></font></td></tr>\n"
 	."</table>\n";
 
 
 if (!isset($surveyid))
 	{
 	echo "<br /><center>$setfont<strong>"
-		._CD_NOSID." "._CD_NODIRECT
+		._("You have not selected a Survey.")." "._("You cannot run this script directly.")
 		."</strong></font></center>\n"
 		."</body></html>\n";
 	exit;
@@ -75,7 +73,7 @@ if (!isset($surveyid))
 if (!isset($_GET['qid']) && !isset($_POST['qid']))
 	{
 	echo "<br /><center>$setfont<strong>"
-		._CD_NOQID." "._CD_NODIRECT
+		._("You have not selected a Question.")." "._("You cannot run this script directly.")
 		."</strong></font></center>\n"
 		."</body></html>\n";
 	exit;
@@ -152,14 +150,14 @@ if (isset($_POST['action']) && $_POST['action'] == "copyconditions")
 		}
 	else
 		{
-		$message = _CD_DIDNOTCOPYQ.": ";
+		$message = _("Did not copy questions").": ";
 		if (!isset($copyconditionsfrom))
 			{
-		    $message .= _CD_NOCONDITIONTOCOPY.". ";
+		    $message .= _("No condition selected to copy from").". ";
 			}
 		if (!isset($copyconditionsto)) 
 			{
-		    $message .= _CD_NOQUESTIONTOCOPYTO.".";
+		    $message .= _("No question selected to copy condition to").".";
 			}
 		echo "<script type=\"text/javascript\">\n<!--\nalert('$message');\n//-->\n</script>\n";
 		}
@@ -305,9 +303,9 @@ if ($questionscount > 0)
 							}
 						break;
 					case "C":
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", _YES);
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", _UNCERTAIN);
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", _NO);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", _("Yes"));
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", _("Uncertain"));
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", _("No"));
 						break;
 					case "E":
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", _INCREASE);
@@ -358,8 +356,8 @@ if ($questionscount > 0)
 			switch ($rows['type'])
 				{
 				case "Y":
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", _YES);
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", _NO);
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", _("Yes"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", _("No"));
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
 					break;
 				case "G":
@@ -493,7 +491,7 @@ $showreplace="$questiontitle<img src='$imagefiles/speaker.png' alt=\""
 	. "\" onClick=\"alert('"
 	. htmlspecialchars(addslashes(strip_tags($questiontext)))
 	. "')\">";
-$onlyshow=str_replace("{QID}", $showreplace, _CD_ONLYSHOW);
+$onlyshow=str_replace("{QID}", $showreplace, _("Only show question {QID} IF"));
 echo "\t\t\t$setfont<strong>$onlyshow</strong></font>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
@@ -516,14 +514,14 @@ if ($conditionscount > 0)
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 				."\t\t\t\t\t<td valign='middle' align='center'>\n"
 				."$setfont<font size='1'><strong>"
-				._AND."</strong></font></font>";
+				._("and")."</strong></font></font>";
 			}
 		elseif (isset($currentfield))
 			{
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 				."\t\t\t\t\t<td valign='top' align='center'>\n"
 				."$setfont<font size='1'><strong>"
-				._AD_OR."</strong></font></font>";
+				._("OR")."</strong></font></font>";
 			}
 		echo "\t<tr bgcolor='#E1FFE1'>\n"
 			."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
@@ -544,7 +542,7 @@ if ($conditionscount > 0)
 			}
 		echo "\t\t</font></td>\n"
 			."\t\t<td align='center' valign='middle' width='15%'>$setfont<font size='1'>"
-			._CD_EQUALS."</font></font></td>"
+			._("Equals")."</font></font></td>"
 			."\t\t\t\t\n"
 			."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
 			."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
@@ -591,12 +589,12 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	echo "\t<table width='100%'><tr bgcolor='#CDCDCD'>\n"
 		."\t\t<td colspan='3' align='center'>\n"
 		."\t\t$setfont<strong>"
-		._CD_COPYCONDITIONS."</strong></font>\n"
+		._("Copy Conditions")."</strong></font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
 	echo "\t<tr>\n"
-		."\t\t<th>{$setfont}"._CD_CONDITION."</font></th><th></th><th>{$setfont}"._QUESTION."</font></th>\n"
+		."\t\t<th>{$setfont}"._("Condition")."</font></th><th></th><th>{$setfont}"._("Question")."</font></th>\n"
 		."\t</tr>\n";
 	
 	echo "\t<tr>\n"
@@ -609,7 +607,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	echo "\t\t</select>\n"
 		."\t\t</td>\n"
 		."\t\t<td align='center'>$setfont\n"
-		."\t\t"._CD_COPYTO."\n"
+		."\t\t"._("copy to")."\n"
 		."\t\t</font></td>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:220' size='4'>\n";
@@ -622,7 +620,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 		."\t</tr>\n";
 	
 	echo "\t<tr><td colspan='3' align='center'>$setfont\n"
-		."<input type='submit' value='"._CD_COPYCONDITIONS."' $btstyle onclick=\"return confirm('"._CD_COPYRUSURE."')\">"
+		."<input type='submit' value='"._("Copy Conditions")."' $btstyle onclick=\"return confirm('"._("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\">"
 		."\t\t</font>\n";
 		
 	echo "<input type='hidden' name='action' value='copyconditions'>\n"
@@ -639,17 +637,17 @@ echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditio
 echo "<table width='100%' border='0' >";
 echo "\t<tr bgcolor='#CDCDCD'>\n"
 	."\t\t<td colspan='3' align='center'>\n"
-	."\t\t\t$setfont<strong>"._CD_ADDCONDITION."</strong></font>\n"
+	."\t\t\t$setfont<strong>"._("Add Condition")."</strong></font>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n"
 	."\t<tr bgcolor='#EFEFEF'>\n"
 	."\t\t<th width='40%'>\n"
-	."\t\t\t$setfont<strong>"._QUESTION."</strong></font>\n"
+	."\t\t\t$setfont<strong>"._("Question")."</strong></font>\n"
 	."\t\t</th>\n"
 	."\t\t<th width='20%'>\n"
 	."\t\t</th>\n"
 	."\t\t<th width='40%'>\n"
-	."\t\t\t$setfont<strong>"._AL_ANSWER."</strong></font>\n"
+	."\t\t\t$setfont<strong>"._("Answer")."</strong></font>\n"
 	."\t\t</th>\n"
 	."\t</tr>\n"
 	."\t<tr>\n"
@@ -673,7 +671,7 @@ echo "\t\t\t</select>\n"
 //echo "\t\t\t\t<option value='='>Equals</option>\n";
 //echo "\t\t\t\t<option value='!'>Does not equal</option>\n";
 //echo "\t\t\t</select>\n";
-echo "\t\t\t"._CD_EQUALS."\n"
+echo "\t\t\t"._("Equals")."\n"
 	."\t\t</font></td>\n"
 	."\t\t<td valign='top' align='center'>\n"
 	."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
@@ -682,8 +680,8 @@ echo "\t\t\t</select>\n"
 	."\t</tr>\n"
 	."\t<tr>\n"
 	."\t\t<td colspan='3' align='center'>\n"
-	."\t\t\t<input type='reset' value='"._ST_CLEAR."' onClick=\"clearAnswers()\" $btstyle />\n"
-	."\t\t\t<input type='submit' value='"._CD_ADDCONDITION."' $btstyle />\n"
+	."\t\t\t<input type='reset' value='"._("Clear")."' onClick=\"clearAnswers()\" $btstyle />\n"
+	."\t\t\t<input type='submit' value='"._("Add Condition")."' $btstyle />\n"
 	."<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='qid' value='$qid' />\n"
 	."<input type='hidden' name='action' value='insertcondition' />\n"
@@ -699,7 +697,7 @@ echo "\t<tr><td colspan='3'></td></tr>\n"
 	."\t\t</td>\n";
 echo "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
 	."\t\t<tr><td colspan='3' align='center'>\n"
-	."\t\t\t<input type='submit' value='"._CLOSEWIN."' onClick=\"window.close()\" $btstyle>\n"
+	."\t\t\t<input type='submit' value='"._("Close Window")."' onClick=\"window.close()\" $btstyle>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 echo "\t<tr><td colspan='3'></td></tr>\n"

@@ -2,7 +2,7 @@
 /*
  * $RCSfile: SurveyTranslator.class,v $
  *
- * PHpSurveyor
+ * PHPSurveyor
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or (at
@@ -16,119 +16,57 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
- */
-/** This package was originall taken from gallery 2 package and modified to work with PHpSurveyor
- * @version $Revision: 1.101 $ $Date: 2006/03/18 19:35:05 $
- * @package GalleryCore
- * @original author Bharat Mediratta <bharat@menalto.com>
- * @modifications Carsten Schmitz
- */
+ *
+*/
 
-/**
+/*
  * Internationalization and Localization utilities
  *
  * @package Classes
  * @subpackage Core
  */
-class SurveyTranslator {
-    /*
-     * ****************************************
-     *                 Members
-     * ****************************************
-     */
 
-    /**
-     * Keep track of the gettext domains we've already bound
-     *
-     * @var array $_boundDomains
-     * @access private
-     */
-    var $_boundDomains;
 
-    /**
-     * Currently selected locale
-     *
-     * @var string $_languageCode
-     * @access private
-     */
-    var $_languageCode;
-
-    /**
-     * Does the active language read right-to-left?
-     *
-     * @var boolean $_isRightToLeft
-     * @access private
-     */
-    var $_isRightToLeft;
-
-    /*
-     * ****************************************
-     *                 Methods
-     * ****************************************
-     */
-
-    function SurveyTranslator() {
-	$this->_boundDomains = array();
+    function getLanguageCodefromLanguage($languagetosearch)
+    {
+        $detaillanguages = getLanguageData();
+          foreach ($detaillanguages as $key2=>$languagename)
+          {
+            if ($languagetosearch==$languagename['description'])
+            {
+              return $key2;
+            }
+          }
+        // else return default en code
+        return "en";
     }
 
-    /**
-     * Can we translate?
-     *
-     * @return boolean
-     * @static
-     */
-    function canTranslate() {
-	return function_exists('dgettext');
-    }
 
-    /**
-     * Can we make plural translations?
-     *
-     * @return boolean
-     * @static
-     */
-    function canTranslatePlural() {
-	return function_exists('dngettext');
-    }
 
-    /**
-     * Does the active language read right-to-left?
-     *
-     * @return boolean
-     */
-    function isRightToLeft() {
-	return $this->_isRightToLeft;
-    }
-
-    /**
-     * Return our language data
-     *
-     * @return array array['language code']['country code'] = array('description', 'right-to-left'?)
-     *         array array('country' => 'default language code',
-     *                     'country' => 'default language code',
-     *                     ...)
-     * @static
-     */
     function getLanguageData() {
 	static $supportedLanguages = array();
-	static $defaultCountry = array();
 
 	if (empty($supportedLanguages)) {
-	    /* XXX: Move this information into a configuration file */
 	    /* English */
-	    $supportedLanguages['en']['US']['description'] = 'English (US)';
-	    $supportedLanguages['en']['GB']['description'] = 'English (UK)';
-	    $defaultCountry['en'] = 'US';
+
+	    $supportedLanguages['en']['description'] = 'English';
+	    $supportedLanguages['en']['nativedescription'] = 'English';
 
 	    // German
-	    $supportedLanguages['de']['DE']['description'] = 'Deutsch';
-	    $defaultCountry['de'] = 'DE';
+	    $supportedLanguages['de']['description'] = 'German';
+	    $supportedLanguages['de']['nativedescription'] = 'Deutsch';
 
-	    /* Afrikaans */
-/* 	    $supportedLanguages['af']['ZA']['description'] = 'Afrikaans';
+        // German informal
+	    $supportedLanguages['de_informal']['description'] = 'German informal';
+	    $supportedLanguages['de_informal']['nativedescription'] = 'Deutsch (Du)';
+
+
+/*
+	    // Afrikaans
+ 	    $supportedLanguages['af']['ZA']['description'] = 'Afrikaans';
 	    $defaultCountry['af'] = 'ZA';
 
-	    // Czech
+        // Czech
 	    $supportedLanguages['cs']['CZ']['description'] = '&#x010c;esky';
 	    $defaultCountry['cs'] = 'CZ';
 
@@ -254,7 +192,7 @@ class SurveyTranslator {
 	    $defaultCountry['he'] = 'IL';*/
 	}
 
-	return array($supportedLanguages, $defaultCountry);
+	return array($supportedLanguages);
     }
 
     /**
@@ -264,299 +202,4 @@ class SurveyTranslator {
      * @return array['language code']['country code'] =
      *              array('description', 'right-to-left'?)
      */
-    function getSupportedLanguages() {
-	/* Get our language data */
-	list ($supportedLanguages, $defaultCountry) = SurveyTranslator::getLanguageData();
-	return $supportedLanguages;
-    }
-
-    /**
-     * Initialize the translator with the specified language code hint
-     *
-     * @param string the language code hint (eg. 'en_US' or 'zh_CN')
-     * @param boolean [optional] true if we should not use the database
-     * @return array object SurveyStatus a status code
-     *               string language code
-     */
-    function init($languageCode=null, $dontUseDatabase=false) {
-	if (empty($languageCode) && !$dontUseDatabase) {
-	    list ($ret, $languageCode) = SurveyTranslator::getDefaultLanguageCode();
-	    if ($ret) {
-		return array($ret->wrap(__FILE__, __LINE__), null);
-	    }
-	}
-
-	list ($languageCode, $data) = SurveyTranslator::getSupportedLanguageCode($languageCode);
-
-	/* If we're using gettext, try to bind to a language */
-	if (function_exists('dgettext')) {
-	    $this->_isRightToLeft = isset($data['right-to-left']);
-	    /*
-	     * Some systems only require LANG, others (like Mandrake) seem to require
-	     * LANGUAGE also.
-	     */
-	    putenv("LANG=${languageCode}");
-	    putenv("LANGUAGE=${languageCode}");
-
-	    SurveyTranslator::_setlocale(LC_ALL, $languageCode);
-	}
-
-	$this->_languageCode = $languageCode;
-	return array(null, $languageCode);
-    }
-
-    /**
-     * Attempt to set the requested locale.
-     * Try fallbacks and character sets if needed to find a valid locale.
-     *
-     * @param mixed category
-     * @param string locale
-     * @return string locale selected or boolean false if none
-     * @static
-     * @access private
-     */
-    function _setlocale($category, $locale) {
-
-	if (($ret = setlocale($category, $locale)) !== false) {
-	    return $ret;
-	}
-	/* Try just selecting the language */
-	if (($i = strpos($locale, '_')) !== false
-		&& ($ret = setlocale($category, substr($locale, 0, $i))) !== false) {
-	    return $ret;
-	}
-	/*
-	 * Try appending some character set names; some systems (like FreeBSD) need this.
-	 * Some require a format with hyphen (e.g. gentoo) and others without (e.g. FreeBSD).
-	 */
-	foreach (array('UTF-8', 'UTF8', 'utf8',
-		       'ISO8859-1', 'ISO8859-2', 'ISO8859-5', 'ISO8859-7', 'ISO8859-9',
-		       'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-5', 'ISO-8859-7', 'ISO-8859-9',
-		       'EUC', 'Big5') as $charset) {
-	    if (($ret = setlocale($category, $locale . '.' . $charset)) !== false) {
-		return $ret;
-	    }
-	}
-	echo("Warning: Unable to select locale $locale");
-	return false;
-    }
-
-    /**
-     * Get default language code for this request.
-     *
-     * @return array object SurveyStatus a status code
-     *               string language code
-     * @static
-     */
-    function getDefaultLanguageCode() {
-	list ($ret, $useBrowserPref) =
-	    SurveyCoreApi::getPluginParameter('module', 'core', 'language.useBrowserPref');
-	if ($ret) {
-	    return array($ret->wrap(__FILE__, __LINE__), null);
-	}
-
-	if ($useBrowserPref) {
-	    /* Check the user-agent's preferences */
-	    $languageCode = SurveyTranslator::getLanguageCodeFromRequest();
-	}
-
-	if (empty($languageCode)) {
-	    /* Use the site-wide default language */
-	    list ($ret, $languageCode) =
-		SurveyCoreApi::getPluginParameter('module', 'core', 'default.language');
-	    if ($ret) {
-		return array($ret->wrap(__FILE__, __LINE__), null);
-	    }
-	}
-
-	return array(null, $languageCode);
-    }
-
-    /**
-     * Find a supported locale from given string.
-     *
-     * @param string the language code hint
-     * @param boolean (optional) if false, return array(null,null) for no match instead of en_US
-     * @return array (string a language code in <language>_<COUNTRY> format,
-     *                array data about this language code (description,right-to-left?))
-     * @static
-     */
-    function getSupportedLanguageCode($languageCode, $fallback=true) {
-	static $supportedLanguages;
-	static $defaultCountry;
-	if (!isset($supportedLanguages)) {
-	    list ($supportedLanguages, $defaultCountry) = SurveyTranslator::getLanguageData();
-	}
-
-	list ($language, $country) = preg_split('/[-_]/', "${languageCode}_");
-	$country = strtoupper($country);
-	if ((empty($country) || !isset($supportedLanguages[$language][$country]))
-		&& isset($defaultCountry[$language])) {
-	    /* Use default country if none specified or particular country not supported */
-	    $country = $defaultCountry[$language];
-	}
-	if (isset($supportedLanguages[$language][$country])) {
-	    return array("${language}_${country}", $supportedLanguages[$language][$country]);
-	}
-
-	if ($fallback) {
-	    return array('en_US', $supportedLanguages['en']['US']);
-	} else {
-	    return array(null, null);
-	}
-    }
-
-    /**
-     * Examine the incoming request and try to figure out what languages the
-     * browser will accept.  Take the first one that we can support.
-     *
-     * @return null or a language code in the <language>_<COUNTRY> format, eg: en_US
-     * @static
-     */
-    function getLanguageCodeFromRequest() {
-	/* Take the first thing the browser accepts that we can use */
-	$httpAcceptLanguage = SurveyUtilities::getServerVar('HTTP_ACCEPT_LANGUAGE');
-	if (!empty($httpAcceptLanguage)) {
-	    foreach (explode(',', $httpAcceptLanguage) as $code) {
-		list ($languageCode) = SurveyTranslator::getSupportedLanguageCode($code, false);
-		if (isset($languageCode)) {
-		    return $languageCode;
-		}
-	    }
-	}
-
-	return null;
-    }
-
-    /**
-     * Localize the given content
-     *
-     * Expected inputs are of the form:
-     *
-     * Example 1:
-     *  $data['text'] = 'Some text to localize with %d arguments'
-     *  $data['arg1'] = 5;
-     *
-     *  localized:  'Some text to localize with 5 arguments'
-     *
-     * Example 2:
-     *  $data['one'] =   'You have %d orange'
-     *  $data['many'] =  'You have %d oranges'
-     *  $data['count'] = 3 (or 1);
-     *
-     * localized:  'You have 3 oranges'  (or 'You have 1 orange')
-     *
-     * @param string the domain (eg, a module id)
-     * @param string a directory
-     * @param mixed a single string, or an array of parameters
-     * @return array object SurveyStatus a status code
-     *               string the localized value
-     */
-    function translateDomain($domain, $data) {
-	global $Survey;
-
-	/* Validate our parameters */
-	if (!(isset($data['text']) ||
-	      (isset($data['one']) && isset($data['many']) && isset($data['count'])))) {
-	    return array(SurveyCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__),
-			 null);
-	}
-
-	if (function_exists('dgettext') && $this->_languageCode != 'en_US') {
-	    if (isset($domain) && !isset($this->_boundDomains[$domain])) {
-		$platform =& $Survey->getPlatform();
-		list ($componentType, $componentName) = split('_', $domain);
-		$basePath = sprintf('%s/%s/%s/locale',
-				    $platform->realpath(dirname(__FILE__) . '/../../..'),
-				    $componentType, $componentName);
-		if ($Survey->getDebug()) {
-		    $Survey->debug("Binding text domain: $domain -> $basePath");
-		}
-		bindtextdomain($domain, $basePath);
-		textdomain($domain);
-		if (function_exists('bind_textdomain_codeset')) {
-		    bind_textdomain_codeset($domain, 'UTF-8');
-		}
-		$this->_boundDomains[$domain] = $basePath;
-	    }
-
-	    /*
-	     * We have to have dngettext (which is only available > PHP 4.2.0,
-	     * according to the PHP manual) in order to do pluralization
-	     * translations.  If we don't have have dngettext() we try to
-	     * gracefully degrade to using dgettext().
-	     */
-	    if (isset($data['one'])) {
-		if (function_exists('dngettext')) {
-		    $localized = dngettext($domain, $data['one'], $data['many'], $data['count']);
-		} else {
-		    /*
-		     * It would make more sense to fall back to $data['many']
-		     * here, since the odds are better that it will be more
-		     * applicable.  However, due to the way that we do the
-		     * pluralization, the keys will be organized by the
-		     * $data['one'] entry so there won't be a $data['many'] key
-		     * for dgettext() to use.  :-(
-		     */
-		    $localized = dgettext($domain, $data['one']);
-		}
-	    } else {
-		$localized = dgettext($domain, $data['text']);
-	    }
-
-	    /*
-	     * In PHP 4.1.x (before bind_textdomain_codeset) the string will be returned from
-	     * gettext in the default encoding for that language. Here we convert that encoding
-	     * to the active charset.  However, it seems newer versions of PHP that are missing
-	     * bind_textdomain_charset do return the output in UTF-8.
-	     */
-	    if (!function_exists('bind_textdomain_codeset') &&
-		    version_compare(phpversion(), '4.2.0', '<')) {
-		$localized = SurveyCoreApi::convertToUtf8($localized);
-	    }
-	} else {
-	    /* en_US is selected or the server doesn't have gettext */
-	    if (isset($data['text'])) {
-		$localized = $data['text'];
-	    } else if ($data['count'] == 1) {
-		$localized = $data['one'];
-	    } else {
-		$localized = $data['many'];
-	    }
-	    /* Strip out comment text used to assist translators */
-	    if (substr($localized, -3) == '-->' && $i = strpos($localized, ' <!--')) {
-		$localized = substr($localized, 0, $i);
-	    }
-	}
-
-	$i = 1;
-	$args = array();
-	while (isset($data['arg' . $i])) {
-	    $args[] = $data['arg' . $i];
-	    $i++;
-
-	    /* Catch runaways */
-	    if ($i > 100) {
-		return array(SurveyCoreApi::error(ERROR_UNKNOWN, __FILE__, __LINE__), null);
-	    }
-	}
-
-	/*
-	 * If we have arguments, then feed the localized string and the
-	 * arguments into sprintf.
-	 */
-	if (sizeof($args) > 0) {
-	    array_unshift($args, $localized);
-	    $localized = call_user_func_array('sprintf', $args);
-	}
-
-	/*
-	 * This is a useful debug routine.  Uncomment it to have every
-	 * string prefixed with the domain it was localized in.
-	 */
-	//$localized = "<font size=1 color=#C33>$domain:</font>$localized";
-
-	return array(null, $localized);
-    }
-}
 ?>

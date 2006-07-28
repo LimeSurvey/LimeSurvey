@@ -204,10 +204,10 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 					case "S":
 					case "H":
 					    if ($result[$row][1] != "") {
-							if (!isset($summary[$row]['summary'][_SV_RESPONSECOUNT])) {
-						        $summary[$row]['summary'][_SV_RESPONSECOUNT]=1;
+							if (!isset($summary[$row]['summary'][_("Answered")])) {
+						        $summary[$row]['summary'][_("Answered")]=1;
 							} else {
-						        $summary[$row]['summary'][_SV_RESPONSECOUNT]++;
+						        $summary[$row]['summary'][_("Answered")]++;
 							}
 						}
 						break;
@@ -247,9 +247,9 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
 				break;
 			case "C":
-				$answers[]=array("code"=>"Y", "answer"=>_YES);
-				$answers[]=array("code"=>"U", "answer"=>_UNCERTAIN);
-				$answers[]=array("code"=>"N", "answer"=>_NO);
+				$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
+				$answers[]=array("code"=>"U", "answer"=>_("Uncertain"));
+				$answers[]=array("code"=>"N", "answer"=>_("No"));
 				break;
 			case "E":
 				$answers[]=array("code"=>"I", "answer"=>_INCREASE);
@@ -259,12 +259,12 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 				break;
 			case "M":
 			case "P":
-				$answers[]=array("code"=>"Y", "answer"=>_YES);
+				$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
 				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
 				break;
 			case "Y":
-				$answers[]=array("code"=>"Y", "answer"=>_YES);
-				$answers[]=array("code"=>"N", "answer"=>_NO);
+				$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
+				$answers[]=array("code"=>"N", "answer"=>_("No"));
 				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
 				break;			
 			case "G":
@@ -275,7 +275,7 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 			case "T":
 			case "S":
 			case "U":
-				$answers[]=array("code"=>_SV_RESPONSECOUNT, "answer"=>_SV_RESPONSECOUNT);
+				$answers[]=array("code"=>_("Answered"), "answer"=>_("Answered"));
 				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
 				break;
 		} // switch
@@ -302,7 +302,7 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 		$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['question']=$thisquestion['question'];
 		foreach ($summary as $sum) {
 			ereg("\[(.*)\]", $sum['question'], $regs);
-			$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['summary'][$regs[1]]=$sum['summary'][_YES];
+			$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['summary'][$regs[1]]=$sum['summary'][_("Yes")];
 		}
 		$summary=$newarray;
 	}
@@ -350,8 +350,8 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 				$answers=getLabelSet($thisquestion['lid']);
 				break;
 			case "Y":
-				$answers[]=array("code"=>"Y", "answer"=>_YES);
-				$answers[]=array("code"=>"N", "answer"=>_NO);
+				$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
+				$answers[]=array("code"=>"N", "answer"=>_("No"));
 				break;
 			case "G":
 				$answers[]=array("code"=>"M", "answer"=>_MALE);
@@ -380,9 +380,9 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 			case "C":
 			case "M":
 			case "P":
-				$values[]=array("code"=>"Y", "answer"=>_YES);
-				$values[]=array("code"=>"U", "answer"=>_UNCERTAIN);
-				$values[]=array("code"=>"N", "answer"=>_NO);
+				$values[]=array("code"=>"Y", "answer"=>_("Yes"));
+				$values[]=array("code"=>"U", "answer"=>_("Uncertain"));
+				$values[]=array("code"=>"N", "answer"=>_("No"));
 				break;
 			case "F":
 			case "H":

@@ -138,10 +138,6 @@ if ($sourcefrom == "admin")
         $langdir="$homeurl/lang/english"; //default to english if there is no matching language dir
         $langdir2="$homedir/lang/english";
         }
-    require("$langdir2/messages.php");
-    $saveerror=error_reporting(3);
-    require("$homedir/lang/english/messages.php");  // If a string is missing then by this the string is loaded from the default english lang file.
-    error_reporting($saveerror);
     }
 //SET LOCAL TIME
 $localtimedate=(strftime("%Y-%m-%d %H:%M", mktime(date("H")+$timeadjust)));
@@ -198,15 +194,15 @@ if ($sourcefrom == "admin")
                     . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
                     . "\t\t\t<tr bgcolor='#555555'>\n"
                     . "\t\t\t\t<td colspan='2' height='8'>\n"
-                    . "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._ADMINISTRATION."</strong>\n"
+                    . "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Administration")."</strong>\n"
                     . "\t\t\t\t</font></font></td>\n"
                     . "\t\t\t</tr>\n"
                     . "\t\t\t<tr bgcolor='#999999'>\n"
                     . "\t\t\t\t<td>\n"
-                    . "\t\t\t\t\t<input type='image' src='$imagefiles/home.png' name='HomeButton' alt='"._A_HOME_BT."' " 
+                    . "\t\t\t\t\t<input type='image' src='$imagefiles/home.png' name='HomeButton' alt='"._("Default Administration Page")."' " 
                     ."title=''" 
                     ."align='left' onClick=\"window.open('$scriptname', '_top')\" onmouseout=\"hideTooltip()\"" 
-                    ."onmouseover=\"showTooltip(event,'"._A_HOME_BT."');return false\">\n"
+                    ."onmouseover=\"showTooltip(event,'"._("Default Administration Page")."');return false\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
         if ($accesscontrol == 1)
@@ -215,19 +211,19 @@ if ($sourcefrom == "admin")
             if (!file_exists($fhtaccess))
                 {
                 $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/badsecurity.png' name='AdminSecurity'"
-                            . " title='' alt='"._A_BADSECURITY_BT."'  align='left' "
+                            . " title='' alt='"._("Activate Security")."'  align='left' "
                             . "onClick=\"window.open('$scriptname?action=editusers', '_top')\"" 
                             . "onmouseout=\"hideTooltip()\"" 
-                    		. "onmouseover=\"showTooltip(event,'"._A_BADSECURITY_BT."');return false\">";
+                    		. "onmouseover=\"showTooltip(event,'"._("Activate Security")."');return false\">";
                 }
             else
                 {
                 $securityok = checksecurity();
                 $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/security.png' name='AdminSecurity' title='"
-                            . _A_SECURITY_BT."' alt='". _A_SECURITY_BT."' align='left' "
+                            . _("Modify Security Settings")."' alt='". _("Modify Security Settings")."' align='left' "
                             . "onClick=\"window.open('$scriptname?action=editusers', '_top')\"" 
                             . "onmouseout=\"hideTooltip()\"" 
-                    		. "onmouseover=\"showTooltip(event,'"._A_SECURITY_BT."');return false\">";
+                    		. "onmouseover=\"showTooltip(event,'"._("Modify Security Settings")."');return false\">";
                 }
             }
         else
@@ -236,60 +232,60 @@ if ($sourcefrom == "admin")
             }
         $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/summary.png' name='CheckSettings' title='"
-                    ."' alt='". _A_CHECKSETTINGS."' align='left' "
+                    ."' alt='". _("Check Settings")."' align='left' "
                     . "onClick=\"window.open('$scriptname?action=checksettings', '_top')\"" 
                     . "onmouseout=\"hideTooltip()\"" 
-                    . "onmouseover=\"showTooltip(event,'". _A_CHECKSETTINGS."');return false\">"
+                    . "onmouseover=\"showTooltip(event,'". _("Check Settings")."');return false\">"
                     //. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n";
 
         $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/checkdb.png' name='CheckDatabase' title='"
-                    ."'  alt='"._A_CHECKDB_BT."' align='left' onClick=\"window.open('checkfields.php', '_top')\"" 
+                    ."'  alt='"._("Check Database")."' align='left' onClick=\"window.open('checkfields.php', '_top')\"" 
                     ."onmouseout=\"hideTooltip()\"" 
-                    ."onmouseover=\"showTooltip(event,'"._A_CHECKDB_BT."');return false\">\n";
+                    ."onmouseover=\"showTooltip(event,'"._("Check Database")."');return false\">\n";
 
         if ($surveyid)
             {
-            $adminmenu  .="\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _A_DELETE_BT." ($surveyid)' title='' align='left' "
+            $adminmenu  .="\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _("Delete Entire Survey")." ($surveyid)' title='' align='left' "
                         . "onClick=\"window.open('deletesurvey.php?sid=$surveyid', '_top')\"" 
                         . "onmouseout=\"hideTooltip()\"" 
-                        . "onmouseover=\"showTooltip(event,'"._A_DELETE_BT."');return false\">\n";
+                        . "onmouseover=\"showTooltip(event,'"._("Delete Entire Survey")."');return false\">\n";
             }
         else
             {
               $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n";
             }
         $adminmenu  .= "\t\t\t\t\t<input type='image' src='$imagefiles/backup.png' name='ExportDB' title='' "
-        			. "alt='". _A_BACKUPDB_BT."($surveyid)' align='left' "
+        			. "alt='". _("Backup Entire Database")."($surveyid)' align='left' "
                     . "onClick=\"window.open('dumpdb.php', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
-                    . "onmouseover=\"showTooltip(event,'"._A_BACKUPDB_BT."');return false\">\n"
+                    . "onmouseover=\"showTooltip(event,'"._("Backup Entire Database")."');return false\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
-                    . _Q_LABELS_BT."' alt='". _Q_LABELS_BT."'onClick=\"window.open('labels.php', '_top')\""
+                    . _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."'onClick=\"window.open('labels.php', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
-                    . "onmouseover=\"showTooltip(event,'"._Q_LABELS_BT."');return false\">\n"
+                    . "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n";
         $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/templates.png' name='EditTemplates' title='' " 
-        		    . "alt='". _A_TEMPLATES_BT."' align='left' "
+        		    . "alt='". _("Template Editor")."' align='left' "
                     . "onClick=\"window.open('templates.php', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
-                    . "onmouseover=\"showTooltip(event,'"._A_TEMPLATES_BT."');return false\">\n"
+                    . "onmouseover=\"showTooltip(event,'"._("Template Editor")."');return false\">\n"
                     . "\t\t\t\t</td>\n";
         $adminmenu .= "\t\t\t\t<td align='right' width='400'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
-                    . "alt='". _A_HELP_BT."' align='right' onClick=\"showhelp('show')\"" 
+                    . "alt='". _("Show Help")."' align='right' onClick=\"showhelp('show')\"" 
                     . "onmouseout=\"hideTooltip()\"" 
-                    . "onmouseover=\"showTooltip(event,'"._A_HELP_BT."');return false\">\n"
+                    . "onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='42' height='20' align='right' >\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' >\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' align='right' name='AddSurvey' title=''" 
-                    . " alt='". _A_ADDSURVEY_BT."' onClick=\"window.open('$scriptname?action=newsurvey', '_top')\""
+                    . " alt='". _("Create or Import New Survey")."' onClick=\"window.open('$scriptname?action=newsurvey', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
-                    . "onmouseover=\"showTooltip(event,'"._A_ADDSURVEY_BT."');return false\">\n"
-                    . "\t\t\t\t\t$setfont<font size='2'><strong>"._SURVEYS.":</strong> "
+                    . "onmouseover=\"showTooltip(event,'"._("Create or Import New Survey")."');return false\">\n"
+                    . "\t\t\t\t\t$setfont<font size='2'><strong>"._("Surveys").":</strong> "
                     . "\t\t\t\t\t<select class=\"listboxsurveys\""
                     . "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
                     //. $surveyselect
@@ -371,8 +367,8 @@ function getsurveylist()
             $surveyselecter .=" value='$scriptname?sid=$sv[0]'>$sv[1]</option>\n";
             }
         }
-    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected>"._AD_CHOOSE."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>"._NONE."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected>"._("Please Choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>"._("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
     }
 
@@ -416,7 +412,7 @@ function getquestions()
 
     if (!isset($qexists))
         {
-        $questionselecter = "\t\t<option selected>"._AD_CHOOSE."</option>\n".$questionselecter;
+        $questionselecter = "\t\t<option selected>"._("Please Choose...")."</option>\n".$questionselecter;
         }
     return $questionselecter;
     }
@@ -442,7 +438,7 @@ function getanswers()
         if ($code == $arow['code']) {$answerselecter .= " selected"; $aexists="Y";}
         $answerselecter .= ">{$arow['code']}: {$arow['answer']}</option>\n";
         }
-    if (!$aexists) {$answerselecter = "\t\t<option selected>"._AD_CHOOSE."</option>\n".$answerselecter;}
+    if (!$aexists) {$answerselecter = "\t\t<option selected>"._("Please Choose...")."</option>\n".$answerselecter;}
     return $answerselecter;
     }
 
@@ -462,36 +458,36 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     if ($sourcefrom == "admin")
         {
         $qtypes = array(
-            "5"=>_5PT,
-            "D"=>_DATE,
-            //"X"=>_EMAIL,
-            "G"=>_GENDER,
-            "!"=>_LIST_DROPDOWN,
-            "L"=>_LIST,
-            "O"=>_LISTWC,
-            "M"=>_MULTO,
-            "P"=>_MULTOC,
-            "Q"=>_MULTITEXT,
-            "N"=>_NUMERICAL,
-            "R"=>_RANK,
-            "S"=>_STEXT,
-            "T"=>_LTEXT,
-            "U"=>_HTEXT,
-            "Y"=>_YESNO,
-            "A"=>_ARR5,
-            "B"=>_ARR10,
-            "C"=>_ARRYN,
-            "E"=>_ARRMV,
-            "F"=>_ARRFL,
-            "H"=>_ARRFLC,
-			"J"=>_FILECSVM,
-			"I"=>_FILECSVO,
+            "5"=>_("5 Point Choice"),
+            "D"=>_("Date"),
+            //"X"=>_("Email Address"),
+            "G"=>_("Gender"),
+            "!"=>_("List (Dropdown)"),
+            "L"=>_("List (Radio)"),
+            "O"=>_("List With Comment"),
+            "M"=>_("Multiple Options"),
+            "P"=>_("Multiple Options With Comments"),
+            "Q"=>_("Multiple Short Text"),
+            "N"=>_("Numerical Input"),
+            "R"=>_("Ranking"),
+            "S"=>_("Short free text"),
+            "T"=>_("Long free text"),
+            "U"=>_("Huge Free Text"),
+            "Y"=>_("Yes/No"),
+            "A"=>_("Array (5 Point Choice)"),
+            "B"=>_("Array (10 Point Choice)"),
+            "C"=>_("Array (Yes/No/Uncertain)"),
+            "E"=>_("Array (Increase, Same, Decrease)"),
+            "F"=>_("Array (Flexible Labels)"),
+            "H"=>_("Array (Flexible Labels) by Column"),
+//			"J"=>_("Multiple Choice Question CSV-File based"),
+//			"I"=>_("Single Choice Question CSV-File based"),
 
             //"V"=>_JSVALIDATEDTEXT,
-            "X"=>_BOILERPLATE,
-            "W"=>_LISTFL_DROPDOWN,
-            "Z"=>_LISTFL_RADIO
-//            "^"=>_SLIDER,
+            "X"=>_("Boilerplate Question"),
+            "W"=>_("List (Flexible Labels) (Dropdown)"),
+            "Z"=>_("List (Flexible Labels) (Radio)")
+//            "^"=>_("Slider"),
 			);
 
         if ($ReturnType == "array") {return $qtypes;}
@@ -514,9 +510,9 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 function getNotificationlist($notificationcode)
     {
     $ntypes = array(
-        "0"=>_NT_NONE,
-        "1"=>_NT_SINGLE,
-        "2"=>_NT_RESULTS
+        "0"=>_("No email notification"),
+        "1"=>_("Basic email notification"),
+        "2"=>_("Detailed email notification with result codes")
     );
     if (!isset($ntypeselector)) {$ntypeselector="";}
     foreach($ntypes as $ntcode=>$ntdescription)
@@ -551,8 +547,8 @@ function getgrouplist($gid)
             }
     if ($groupselecter)
 	{
-        if (!isset($gvexist)) {$groupselecter = "\t\t<option selected>"._AD_CHOOSE."</option>\n".$groupselecter;}
-        else {$groupselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid='>"._NONE."</option>\n";}
+        if (!isset($gvexist)) {$groupselecter = "\t\t<option selected>"._("Please Choose...")."</option>\n".$groupselecter;}
+        else {$groupselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid='>"._("None")."</option>\n";}
         }
     return $groupselecter;
     }
@@ -572,8 +568,8 @@ function getgrouplist2($gid)
             }
     if ($groupselecter)
  	{
-        if (!$gvexist) {$groupselecter = "\t\t<option selected>"._AD_CHOOSE."</option>\n".$groupselecter;}
-        else {$groupselecter .= "\t\t<option value=''>"._NONE."</option>\n";}
+        if (!$gvexist) {$groupselecter = "\t\t<option selected>"._("Please Choose...")."</option>\n".$groupselecter;}
+        else {$groupselecter .= "\t\t<option value=''>"._("None")."</option>\n";}
         }
     return $groupselecter;
     }
@@ -626,23 +622,9 @@ function gettemplatelist()
     return $list_of_files;
     }
 
-function getlanguages()
-    {
-    global $publicdir;
-    if (!$publicdir) {$publicdir = dirname(getcwd());}
-    $tloc="$publicdir/lang";
-    if ($handle = opendir($tloc))
-        {
-        while (($file = readdir($handle)) !== false)
-            {
-            if (!is_dir("$tloc/$file"))
-                {
-                $langnames[]=substr($file, 0, strpos($file, ".lang.php"));
-                }
-            }
-        }
-    return $langnames;
-    }
+
+// This function returns the list of available languages - there is no difference between client or admin language
+// if a language is not supported in admin or client the default english transaltion will be shown
 
 function getSurveyInfo($surveyid)
     {
@@ -804,14 +786,14 @@ function checkfortables()
         echo "<br />\n"
             ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
             ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-            ._SETUP."</strong></td></tr>\n"
+            ._("PHPSurveyor Setup")."</strong></td></tr>\n"
             ."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
             ."\t\t<font color='red'><strong>"
-            ._ERROR."</strong></font><br />\n"
+            ._("Error")."</strong></font><br />\n"
             ."\t\t"
-            ._CFT_PROBLEM."<br /><br />\n"
+            ._("It appears as if some tables or fields are missing from your database.")."<br /><br />\n"
             ."\t\t<input $btstyle type='submit' value='"
-            ._CHECKFIELDS."' onClick=\"window.open('checkfields.php', '_top')\">\n"
+            ._("Check Database Fields")."' onClick=\"window.open('checkfields.php', '_top')\">\n"
             ."\t</td></tr>\n"
             ."</table>\n"
             ."</body></html>\n";
@@ -923,40 +905,40 @@ function browsemenubar()
     $surveyoptions .= "\t<tr bgcolor='#999999'>\n"
                     . "\t\t<td>\n"
                     . "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
-                    . _B_ADMIN_BT."' alt='". _B_ADMIN_BT."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+                    . _("Return to Survey Administration")."' alt='". _("Return to Survey Administration")."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
                     . "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
                     . "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.png' title='"
-                    . _B_SUMMARY_BT."' align='left' onClick=\"window.open('browse.php?sid=$surveyid', '_top')\">\n"
+                    . _("Show summary information")."' align='left' onClick=\"window.open('browse.php?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.png' title='"
-                    . _B_ALL_BT."' align='left' onClick=\"window.open('browse.php?sid=$surveyid&amp;action=all', '_top')\">\n"
+                    . _("Display Responses")."' align='left' onClick=\"window.open('browse.php?sid=$surveyid&amp;action=all', '_top')\">\n"
                     . "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.png' title='"
-                    . _B_LAST_BT."' align='left' onClick=\"window.open('browse.php?sid=$surveyid&amp;action=all&amp;limit=50&amp;order=desc', '_top')\">\n"
+                    . _("Display Last 50 Responses")."' align='left' onClick=\"window.open('browse.php?sid=$surveyid&amp;action=all&amp;limit=50&amp;order=desc', '_top')\">\n"
                     . "\t\t\t<input type='image' name='DataEntry' src='$imagefiles/dataentry.png' title='"
-                    . _S_DATAENTRY_BT."' align='left'  onclick=\"window.open('dataentry.php?sid=$surveyid', '_top')\">\n"
+                    . _("Dataentry Screen for Survey")."' align='left'  onclick=\"window.open('dataentry.php?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<input type='image' name='Printable' src='$imagefiles/print.png' title='"
-                    . _S_PRINTABLE_BT."' align='left'  onclick=\"window.open('printablesurvey.php?sid=$surveyid', '_blank')\">\n"
+                    . _("Printable Version of Survey")."' align='left'  onclick=\"window.open('printablesurvey.php?sid=$surveyid', '_blank')\">\n"
                     . "\t\t\t<input type='image' name='Statistics' src='$imagefiles/statistics.png' title='"
-                    . _B_STATISTICS_BT."' align='left'  onclick=\"window.open('statistics.php?sid=$surveyid', '_top')\">\n"
+                    . _("Get statistics from these responses")."' align='left'  onclick=\"window.open('statistics.php?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
                     . "\t\t\t<input type='image' name='Export' src='$imagefiles/export.png' title='"
-                    . _B_EXPORT_BT."' alt='". _B_EXPORT_BT."'align='left'  onclick=\"window.open('export.php?sid=$surveyid', '_blank')\">\n"
+                    . _("Export Results to Application")."' alt='". _("Export Results to Application")."'align='left'  onclick=\"window.open('export.php?sid=$surveyid', '_blank')\">\n"
                     . "\t\t\t<a href='spss.php?sid=$surveyid'><img src='$imagefiles/exportspss.png' align='left' title='"
-                    . _SPSS_EXPORTFILE."' border='0' alt='". _SPSS_EXPORTFILE."'></a>\n"
+                    . _("Export result to a SPSS command file")."' border='0' alt='". _("Export result to a SPSS command file")."'></a>\n"
                     . "\t\t\t<input type='image' name='Export' src='$imagefiles/importold.png' title='"
-                    . _B_IMPORTOLDRESULTS_BT."' alt='". _B_IMPORTOLDRESULTS_BT."'align='left'  onclick=\"window.open('importoldresponses.php?sid=$surveyid', '_blank')\">\n"
+                    . _("Import answers from a deactivated survey table")."' alt='". _("Import answers from a deactivated survey table")."'align='left'  onclick=\"window.open('importoldresponses.php?sid=$surveyid', '_blank')\">\n"
                     . "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
                     . "\t\t\t<input type='image' name='SaveDump' src='$imagefiles/exportsql.png' title='"
-                    . _B_BACKUP_BT."' align='left'  onclick=\"window.open('resultsdump.php?sid=$surveyid', '_top')\">\n"
+                    . _("Backup results table as SQL file")."' align='left'  onclick=\"window.open('resultsdump.php?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
-                    . "\t\t\t<input type='image' src='$imagefiles/saved.png' title='"._S_SAVED_BT."' "
+                    . "\t\t\t<input type='image' src='$imagefiles/saved.png' title='"._("View Saved but not submitted Responses")."' "
                     . "align='left'  name='BrowseSaved' "
                     . "onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\">\n"
                     . "\t\t\t<a href='vvexport.php?sid=$surveyid'>\n"
                     . "\t\t\t<a href='vvimport.php?sid=$surveyid'><img src='$imagefiles/importvv.png' align='left' title='"
-                    . _VV_IMPORTFILE."' border='0' alt='". _VV_IMPORTFILE."'></a>\n"
+                    . _("Import a VV survey file")."' border='0' alt='". _("Import a VV survey file")."'></a>\n"
                     . "\t\t\t<a href='vvexport.php?sid=$surveyid'><img src='$imagefiles/exportvv.png' align='left' title='"
-                    . _VV_EXPORTFILE."' alt='". _VV_EXPORTFILE."' border='0'></a>\n"
+                    . _("Export a VV survey file")."' alt='". _("Export a VV survey file")."' border='0'></a>\n"
                     . "\t\t</td>\n"
                     . "\t</tr>\n";
     return $surveyoptions;
@@ -1143,14 +1125,14 @@ function getextendedanswer($fieldcode, $value)
             case "P":
                 switch($value)
                     {
-                    case "Y": $this_answer=_YES; break;
+                    case "Y": $this_answer=_("Yes"); break;
                     }
                 break;
             case "Y":
                 switch($value)
                     {
-                    case "Y": $this_answer=_YES; break;
-                    case "N": $this_answer=_NO; break;
+                    case "Y": $this_answer=_("Yes"); break;
+                    case "N": $this_answer=_("No"); break;
                     default: $this_answer=_NOANSWER;
                     }
                 break;
@@ -1165,9 +1147,9 @@ function getextendedanswer($fieldcode, $value)
             case "C":
                 switch($value)
                     {
-                    case "Y": $this_answer=_YES; break;
-                    case "N": $this_answer=_NO; break;
-                    case "U": $this_answer=_UNCERTAIN; break;
+                    case "Y": $this_answer=_("Yes"); break;
+                    case "N": $this_answer=_("No"); break;
+                    case "U": $this_answer=_("Uncertain"); break;
                     }
                 break;
             case "E":
@@ -1224,10 +1206,7 @@ function createFieldMap($surveyid, $style="null") {
     //This function generates an array containing the fieldcode, and matching data in the same
     //order as the activate script
     global $dbprefix, $connect;
-    if (!defined("_YES"))
-        {
-        loadPublicLangFile($surveyid);
-        }
+    loadPublicLangFile($surveyid);
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $pquery = "SELECT private, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
     $presult=db_execute_assoc($pquery);
@@ -1332,7 +1311,7 @@ function createFieldMap($surveyid, $style="null") {
                     if ($style == "full")
                         {
                         $fieldmap[$counter]['title']=$arow['title'];
-                        $fieldmap[$counter]['question']=$arow['question']."["._COMMENT."]";
+                        $fieldmap[$counter]['question']=$arow['question']."["._("Comment")."]";
                         $fieldmap[$counter]['group_name']=$arow['group_name'];
                         }
                     $counter++;
@@ -1714,17 +1693,11 @@ function loadPublicLangFile($surveyid)
     {
     global $connect;
     //This function loads the local language file applicable to a survey
-    if (!defined("_YES")) //Only precede if it isn't already loaded
-        {
         global $dbprefix, $publicdir, $defaultlang;
         $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
         $result = db_execute_num($query) or die ("Couldn't get language file");
         while ($row=$result->FetchRow()) {$surveylanguage = $row[0];}
-        $langdir="$publicdir/lang";
-        $langfilename="$langdir/$surveylanguage.lang.php";
-        if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-        require_once($langfilename);
-        }
+        echo(getLanguageCodefromLanguage($surveylanguage));
     }
 
 function buildLabelsetCSArray()

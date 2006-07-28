@@ -112,12 +112,12 @@ $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 $siteadminemail     =   "your@email.org"; // The default email address of the site administrator
 $siteadminname      =   "Your Name";      // The name of the site administrator
 
-$emailmethod        =   "mail";           // The following values can be used:
+$emailmethod        =   "smtp";           // The following values can be used:
 									      // mail      -  use internal PHP Mailer
                                           // sendmail  -  use Sendmail Mailer
                                           // smtp      -  use SMTP relaying
 
-$emailsmtphost      =   "mail.mailhost.net";    // Sets the SMTP host. All hosts must be separated by a semicolon.
+$emailsmtphost      =   "localhost";    // Sets the SMTP host. All hosts must be separated by a semicolon.
                                                 // You can also specify a different port for each host by using
                                                 // this format: [hostname:port] (e.g. "smtp1.example.com:25;smtp2.example.com").
 

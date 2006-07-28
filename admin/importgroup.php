@@ -40,16 +40,16 @@ if (empty($homedir)) {die ("Cannot run this script directly");}
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._IMPORTGROUP."</strong></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Import Group")."</strong></td></tr>\n";
 echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
-	echo _IS_FAILUPLOAD."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
+	echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -57,9 +57,9 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<strong><font color='green'>"._SUCCESS."</font></strong><br />\n";
-echo _IS_OKUPLOAD."<br /><br />\n";
-echo _IS_READFILE."<br />\n";
+echo "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
+echo _("File upload succeeded.")."<br /><br />\n";
+echo _("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 	{
@@ -71,9 +71,9 @@ fclose($handle);
 
 if (substr($bigarray[1], 0, 21) != "# SURVEYOR GROUP DUMP")
 	{
-	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
-	echo _IG_WRONGFILE."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
+	echo _("This file is not a PHPSurveyor group file. Import failed.")."<br /><br />\n";
+	echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	unlink($the_full_file_path);
@@ -346,7 +346,7 @@ if (isset($grouparray) && $grouparray) {
 					$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 					$type = $qacfieldcontents[array_search("type", $qafieldorders)]; //Get the type
 					$other = $qacfieldcontents[array_search("other", $qafieldorders)]; //Get 'other';
-					$qres = $connect->Execute($qinsert) or die ("<strong>"._ERROR."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+					$qres = $connect->Execute($qinsert) or die ("<strong>"._("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = db_execute_assoc($qidquery);
 					while ($qrow = $qidres->FetchRow()) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
@@ -373,7 +373,7 @@ if (isset($grouparray) && $grouparray) {
 								$ainsert = str_replace("('".implode("', '", $aacfieldcontents)."')", $newvalues, $aa);
 								//$ainsert = str_replace("'$qid'", "'$newqid'", $aa);
 								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
-								$ares = $connect->Execute($ainsert) or die ("<strong>"._ERROR."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+								$ares = $connect->Execute($ainsert) or die ("<strong>"._("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 								if ($type == "M" || $type == "P") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
 														"newcfieldname"=>$newsid."X".$newgid."X".$newqid, 
@@ -496,30 +496,30 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 	}
 }
 
-echo "<br />\n<strong><font color='green'>"._SUCCESS."</font></strong><br />\n"
-	."<strong><u>"._IG_IMPORTSUMMARY."</u></strong><br />\n"
-	."<ul>\n\t<li>"._GROUPS.": ";
+echo "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n"
+	."<strong><u>"._("Group Import Summary")."</u></strong><br />\n"
+	."<ul>\n\t<li>"._("Groups").": ";
 if (isset($countgroups)) {echo $countgroups;}
 echo "</li>\n"
-	."\t<li>"._QUESTIONS.": ";
+	."\t<li>"._("Questions").": ";
 if (isset($countquestions)) {echo $countquestions;}
 echo "</li>\n"
-	."\t<li>"._ANSWERS.": ";
+	."\t<li>"._("Answers").": ";
 if (isset($countanswers)) {echo $countanswers;}
 echo "</li>\n"
-	."\t<li>"._CONDITIONS.": ";
+	."\t<li>"._("Conditions").": ";
 if (isset($countconditions)) {echo $countconditions;}
 echo "</li>\n"
-	."\t<li>"._LABELSET.": ";
+	."\t<li>"._("Label Set").": ";
 if (isset($countlabelsets)) {echo $countlabelsets;}
-echo " ("._LABELANS.": ";
+echo " ("._("Labels").": ";
 if (isset($countlabels)) {echo $countlabels;}
 echo ")</li>\n";
-echo "\t<li>"._QL_QUESTIONATTRIBUTES;
+echo "\t<li>"._("Question Attributes:");
 if (isset($countquestion_attributes)) {echo " $countquestion_attributes";}
 echo ")</li>\n</ul>\n";
-echo "<strong>"._IG_SUCCESS."</strong><br />\n"
-	."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n"
+echo "<strong>"._("Import of Group is completed.")."</strong><br />\n"
+	."<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 

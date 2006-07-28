@@ -58,18 +58,18 @@ if ($action != "upload")
 		echo "<br />
 		<form enctype='multipart/form-data' method='post' action='vvimport.php?sid=$surveyid'>
 		<table class='outlinetable' align='center'>		
-		<tr><th colspan=2>"._VV_IMPORTFILE."</th></tr>
-		<tr><td>"._VV_FILE."</td><td><input type='file' name='the_file'></td></tr>
-		<tr><td>"._VV_SURVEYID."</td><td><input type='text' size=2 name='sid' value='$surveyid' readonly></td></tr>
-		<tr><td>"._VV_EXCLUDEID."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
+		<tr><th colspan=2>"._("Import a VV survey file")."</th></tr>
+		<tr><td>"._("File:")."</td><td><input type='file' name='the_file'></td></tr>
+		<tr><td>"._("Survey ID:")."</td><td><input type='text' size=2 name='sid' value='$surveyid' readonly></td></tr>
+		<tr><td>"._("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
         <!-- this next item should only appear if noid is not checked -->
-		<tr><td>"._VV_INSERT."</td><td><select name='insert' $slstyle>
-        <option value='error' selected>"._VV_INSERT_ERROR."</option>
-        <option value='renumber'>"._VV_INSERT_RENUMBER."</option>
-        <option value='ignore'>"._VV_INSERT_IGNORE."</option>
-        <option value='replace'>"._VV_INSERT_REPLACE."</option>
+		<tr><td>"._("When an imported record matches an existing record ID:")."</td><td><select name='insert' $slstyle>
+        <option value='error' selected>"._("Report an error (and skip the new record).")."</option>
+        <option value='renumber'>"._("Renumber the new record.")."</option>
+        <option value='ignore'>"._("Ignore the new record.")."</option>
+        <option value='replace'>"._("Replace the existing record.")."</option>
         </select></td></tr>
-		<tr><td>&nbsp;</td><td><input type='submit' value='"._TP_UPLOADFILE."'>
+		<tr><td>&nbsp;</td><td><input type='submit' value='"._("Upload")."'>
 		<input type='hidden' name='action' value='upload'>
 		</td></tr>
 		</table>
@@ -82,7 +82,7 @@ if ($action != "upload")
 		<tr><td colspan='2' align='center'>
 		<strong>Cannot import</strong><br /><br />
 		This survey is not active. You must activate the survey before attempting to import a VVexport file.<br /><br />
-		[<a href='$scriptname?sid=4'>"._B_ADMIN_BT."</a>]
+		[<a href='$scriptname?sid=4'>"._("Return to Survey Administration")."</a>]
 		</td></tr>
 		</table>";		
 		}
@@ -99,18 +99,18 @@ else
 	
 	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 		{
-		echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
-		echo _IS_FAILUPLOAD."<br /><br />\n";
-		//echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
+		echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+		//echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "</font></td></tr></table>\n";
 		echo "</body>\n</html>\n";
 		exit;
 		}
 	// IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 	
-	echo "<strong><font color='green'>"._SUCCESS."</font></strong><br />\n";
-	echo _IS_OKUPLOAD."<br /><br />\n";
-	echo _IS_READFILE."<br />\n";
+	echo "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
+	echo _("File upload succeeded.")."<br /><br />\n";
+	echo _("Reading file..")."<br />\n";
 	$handle = fopen($the_full_file_path, "r");
 	while (!feof($handle))
 		{
@@ -222,7 +222,7 @@ else
 			if (!$result)
 				{
 				echo "<table align='center' class='outlintable'>
-				      <tr><td>"._VV_ENTRYFAILED." $recordcount "._VV_BECAUSE." [".$connect->ErrorMsg()."]
+				      <tr><td>"._("Import Failed on Record")." $recordcount "._("because")." [".$connect->ErrorMsg()."]
 					  </td></tr></table>\n";
 			    }
 			else
@@ -235,10 +235,10 @@ else
 	
 	if ($noid == "noid" || $insertstyle == "renumber")
 		{
-		echo "<br /><i><strong><font color='red'>"._VV_DONOTREFRESH."</font></strong></i><br /><br />";
+		echo "<br /><i><strong><font color='red'>"._("Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates")."</font></strong></i><br /><br />";
 		}
-	echo _VV_IMPORTNUMBER." ".$importcount."<br /><br />";
-	echo "[<a href='browse.php?sid=$surveyid'>"._BROWSERESPONSES."</a>]";
+	echo _("Total records imported:")." ".$importcount."<br /><br />";
+	echo "[<a href='browse.php?sid=$surveyid'>"._("Browse Responses")."</a>]";
 	echo "</td></tr></table>";
 	}
 ?>

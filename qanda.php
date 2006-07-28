@@ -1733,13 +1733,13 @@ function do_yesno($ia)
              . "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]Y' value='Y'";
     if ($_SESSION[$ia[1]] == "Y") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
-    $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1]Y' class='answertext'>"._YES."</label><br />\n"
+    $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1]Y' class='answertext'>"._("Yes")."</label><br />\n"
              . "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]N' value='N'";
 // --> END NEW FEATURE - SAVE
     
     if ($_SESSION[$ia[1]] == "N") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
-    $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1]N' class='answertext'>"._NO."</label><br />\n";
+    $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1]N' class='answertext'>"._("No")."</label><br />\n";
 // --> END NEW FEATURE - SAVE
 
     if ($ia[6] != "Y" && $shownoanswer == 1)
@@ -1988,9 +1988,9 @@ function do_array_yesnouncertain($ia)
     $answer = "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td width='$answerwidth%'></td>\n"
-             . "\t\t\t\t\t<td class='array1'>"._YES."</td>\n"
-             . "\t\t\t\t\t<td class='array1'>"._UNCERTAIN."</td>\n"
-             . "\t\t\t\t\t<td class='array1'>"._NO."</td>\n";
+             . "\t\t\t\t\t<td class='array1'>"._("Yes")."</td>\n"
+             . "\t\t\t\t\t<td class='array1'>"._("Uncertain")."</td>\n"
+             . "\t\t\t\t\t<td class='array1'>"._("No")."</td>\n";
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
         $answer .= "\t\t\t\t\t<td  class='array1'>"._NOANSWER."</td>\n";
@@ -2010,19 +2010,19 @@ function do_array_yesnouncertain($ia)
         $answer .= "\t\t\t\t<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-Y'>"
-                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-Y' value='Y' title='"._YES."'";
+                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-Y' value='Y' title='"._("Yes")."'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-U'>"
-                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-U' value='U' title='"._UNCERTAIN."'";
+                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-U' value='U' title='"._("Uncertain")."'";
 // --> END NEW FEATURE - SAVE
 
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "U") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-N'>"
-                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-N' value='N' title='"._NO."'";
+                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-N' value='N' title='"._("No")."'";
 // --> END NEW FEATURE - SAVE
 
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "N") {$answer .= " checked";}

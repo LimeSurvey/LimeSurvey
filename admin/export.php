@@ -112,57 +112,57 @@ if (!$style)
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 		."<font size='1' face='verdana' color='white'><strong>"
-		._EXPORTRESULTS;
-	if (isset($_POST['sql'])) {echo " - "._EX_FROMSTATS;}  
-	if (returnglobal('id')<>'') {echo " - "._EX_FROM_SINGLE_ANSWER;}  
+		._("Export Responses");
+	if (isset($_POST['sql'])) {echo " - "._("Filtered from Statistics Script");}  
+	if (returnglobal('id')<>'') {echo " - "._("Single Response");}  
 	echo "</strong> ($afieldcount Cols)</font></td></tr>\n"
 		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><strong>"
-		._EX_HEADINGS."</strong></font></font></td></tr>\n"
+		._("Questions")."</strong></font></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
 		."\t\t\t$setfont<input type='radio' name='style' value='abrev' id='headabbrev'>"
 		."<font size='1'><label for='headabbrev'>"
-		._EX_HEAD_ABBREV."</label><br />\n"
+		._("Abbreviated headings")."</label><br />\n"
 		."\t\t\t<input type='radio' checked name='style' value='full' id='headfull'>"
 		."<label for='headfull'>"
-		._EX_HEAD_FULL."</label><br />\n"
+		._("Full headings")."</label><br />\n"
 		."\t\t\t<input type='radio' checked name='style' value='headcodes' id='headcodes'>"
 		."<label for='headcodes'>"
-		._EX_HEAD_CODES."</label>\n"
+		._("Question Codes")."</label>\n"
 		."\t\t</font></font></td>\n"
 		."\t</tr>\n"
 		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><strong>"
-		._EX_ANSWERS."</strong></font></font></td></tr>\n"
+		._("Answers")."</strong></font></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
 		."\t\t\t$setfont<input type='radio' name='answers' value='short' id='ansabbrev'>"
 		."<font size='1'><label for='ansabbrev'>"
-		._EX_ANS_ABBREV."</label><br />\n"
+		._("Answer Codes")."</label><br />\n"
 		."\t\t\t<input type='radio' checked name='answers' value='long' id='ansfull'>"
 		."<label for='ansfull'>"
-		._EX_ANS_FULL."</label>\n"
+		._("Full Answers")."</label>\n"
 		."\t\t</font></font></td>\n"
 		."\t</tr>\n"
 		."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><strong>"
-		._EX_FORMAT."</strong></font></font></td></tr>\n"
+		._("Format")."</strong></font></font></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>\n"
 		."\t\t\t$setfont<input type='radio' name='type' value='doc' id='worddoc'>"
 		."<font size='1'><label for='worddoc'>"
-		._EX_FORM_WORD."</label><br />\n"
+		._("Microsoft Word")."</label><br />\n"
 		."\t\t\t<input type='radio' name='type' value='xls' checked id='exceldoc'>"
 		."<label for='exceldoc'>"
-		._EX_FORM_EXCEL."</label><br />\n"
+		._("Microsoft Excel")."</label><br />\n"
 		."\t\t\t<input type='radio' name='type' value='csv' id='csvdoc'>"
 		."<label for='csvdoc'>"
-		._EX_FORM_CSV."</label>\n"
+		._("CSV Comma Delimited")."</label>\n"
 		."\t\t</font></font></td>\n"
 		."\t</tr>\n"
 		."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center' bgcolor='silver'>\n"
 		."\t\t\t$setfont<input $btstyle type='submit' value='"
-		._EX_EXPORTDATA."'>\n"
+		._("Export Data")."'>\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t</font></td>\n"
 		."\t</tr>\n"
@@ -181,7 +181,7 @@ if (!$style)
 			."\">\n";
 		}
 		echo "\t\t\t<input $btstyle type='submit' value='"
-		._CLOSEWIN."' onClick=\"self.close()\">\n"
+		._("Close Window")."' onClick=\"self.close()\">\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
@@ -199,26 +199,26 @@ if (!$style)
 		."<table align='center' width='150' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
 		."\t<tr>\n"
 		."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><strong>"
-		._EX_COLCONTROLS."</strong>\n"
+		._("Column Control")."</strong>\n"
 		."\t\t</font></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."\t\t<td bgcolor='silver' height='8'><strong>$setfont<font size='1'>\n"
-		."\t\t\t"._EX_COLSELECT.":\n"
+		."\t\t\t"._("Choose columns").":\n"
 		."\t\t</font></font></strong></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."\t\t<td>$setfont\n";
 	if ($afieldcount > 255)
 		{
-		echo "\t\t\t<img src='$imagefiles/showhelp.png' alt='"._HELP."' align='right' onclick='javascript:alert(\""
-			._EX_COLNOTOK
+		echo "\t\t\t<img src='$imagefiles/showhelp.png' alt='"._("Help")."' align='right' onclick='javascript:alert(\""
+			._("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.")
 			."\")'>";
 		}
 	else
 		{
-		echo "\t\t\t<img src='$imagefiles/showhelp.png' alt='"._HELP."' align='right' onclick='javascript:alert(\""
-			._EX_COLOK
+		echo "\t\t\t<img src='$imagefiles/showhelp.png' alt='"._("Help")."' align='right' onclick='javascript:alert(\""
+			._("Choose the columns you wish to export.")
 			."\")'>";
 		}
 	echo "\t\t</font></td>\n"
@@ -258,34 +258,34 @@ if (!$style)
  			."<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
  			."\t<tr>\n"
  			."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><strong>"
- 			._EX_TOKENCONTROLS."</strong>\n"
+ 			._("Token Control")."</strong>\n"
  			."\t\t</font></td>\n"
  			."\t</tr>\n"
  			."\t<tr>\n"
  			."\t\t<td bgcolor='silver' height='8'><strong>$setfont<font size='1'>\n"
- 			._EX_TOKSELECT.":"
+ 			._("Choose Token Fields").":"
  			."\t\t</font></font></strong></td>\n"
  			."\t</tr>\n"
  			."\t<tr>\n"
  			."\t\t<td>$setfont<font size='1'>"
- 			."<img src='$imagefiles/showhelp.png' alt='"._HELP."' align='right' onclick='javascript:alert(\""
- 			._EX_TOKENMESSAGE
+ 			."<img src='$imagefiles/showhelp.png' alt='"._("Help")."' align='right' onclick='javascript:alert(\""
+ 			._("Your survey can export associated token data with each response. Select any additional fields you would like to export.")
  			."\")'><br /><br />\n"
  			."<input type='checkbox' name='first_name' id='first_name'>"
- 			."<label for='first_name'>"._TL_FIRST."</label><br />\n"
+ 			."<label for='first_name'>"._("First Name")."</label><br />\n"
  			."<input type='checkbox' name='last_name' id='last_name'>"
- 			."<label for='last_name'>"._TL_LAST."</label><br />\n"
+ 			."<label for='last_name'>"._("Last Name")."</label><br />\n"
  			."<input type='checkbox' name='email_address' id='email_address'>"
- 			."<label for='email_address'>"._TL_EMAIL."</label><br />\n";
+ 			."<label for='email_address'>"._("Email")."</label><br />\n";
  		$query = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
  		$result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
  		$rowcount = $result->FieldCount();
  		if ($rowcount > 7)
  			{
  			echo "<input type='checkbox' name='attribute_1' id='attribute_1'>"
- 				."<label for='attribute_1'>"._TL_ATTR1."</label><br />\n"
+ 				."<label for='attribute_1'>"._("Attribute 1")."</label><br />\n"
  				."<input type='checkbox' name='attribute_2' id='attribute_2'>"
- 				."<label for='attribute_2'>"._TL_ATTR2."</label><br />\n";
+ 				."<label for='attribute_2'>"._("Attribute 2")."</label><br />\n";
  			}
  		echo "\t\t</font></font></td>\n"
  			."\t</tr>\n"
@@ -332,10 +332,8 @@ Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = db_execute_assoc($query);
 while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
-$langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
-if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-require($langfilename);	
+bindtextdomain($surveylanguage, dirname(__FILE__).'/locale');
+textdomain($surveylanguage);
 
 //STEP 1: First line is column headings
 
@@ -386,7 +384,7 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 			 . " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 	}
 $dquery .=" ORDER BY id LIMIT 1";
-$dresult = $connect->Execute($dquery) or die(_ERROR." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
+$dresult = $connect->Execute($dquery) or die(_("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 $fieldcount = $dresult->FieldCount();
 $firstline="";
 $faid="";
@@ -401,51 +399,51 @@ for ($i=0; $i<$fieldcount; $i++)
 			{
 			if ($type == "csv") 
 				{
-				$firstline.="\""._TL_TOKEN."\"$separator";
+				$firstline.="\""._("Token")."\"$separator";
 				}
 			else 
 				{
-				$firstline .= _TL_TOKEN."$separator";
+				$firstline .= _("Token")."$separator";
 				}
 			}
 		if ($answers == "long") 
 			{
 			if ($style == "abrev")
 				{
-				if ($type == "csv") {$firstline .= "\""._TL_TOKEN."\"$s";}
-				else {$firstline .= _TL_TOKEN."$separator";}
+				if ($type == "csv") {$firstline .= "\""._("Token")."\"$s";}
+				else {$firstline .= _("Token")."$separator";}
 				}
 			else 
 				{
-				if ($type == "csv") {$firstline .= "\""._TL_TOKEN."\"$s";}
-				else {$firstline .= _TL_TOKEN."$separator";}
+				if ($type == "csv") {$firstline .= "\""._("Token")."\"$s";}
+				else {$firstline .= _("Token")."$separator";}
 				}
 			}
 		}
 	elseif ($fieldinfo == "lastname")
 		{
-		if ($type == "csv") {$firstline .= "\""._TL_LAST."\"$separator";}
-		else {$firstline .= _TL_LAST."$separator";}
+		if ($type == "csv") {$firstline .= "\""._("Last Name")."\"$separator";}
+		else {$firstline .= _("Last Name")."$separator";}
 		}
 	elseif ($fieldinfo == "firstname")
 		{
-		if ($type == "csv") {$firstline .= "\""._TL_FIRST."\"$separator";}
-		else {$firstline .= _TL_FIRST."$separator";}
+		if ($type == "csv") {$firstline .= "\""._("First Name")."\"$separator";}
+		else {$firstline .= _("First Name")."$separator";}
 		}
 	elseif ($fieldinfo == "email")
 		{
-		if ($type == "csv") {$firstline .= "\""._EMAIL."\"$separator";}
-		else {$firstline .= _EMAIL."$separator";}
+		if ($type == "csv") {$firstline .= "\""._("Email Address")."\"$separator";}
+		else {$firstline .= _("Email Address")."$separator";}
 		}
 	elseif ($fieldinfo == "attribute_1")
 		{
 		if ($type == "csv") {$firstline .= "\"attr1\"$separator";}
-		else {$firstline .= _TL_ATTR1."$separator";}
+		else {$firstline .= _("Attribute 1")."$separator";}
 		}
 	elseif ($fieldinfo == "attribute_2")
 		{
 		if ($type == "csv") {$firstline .= "\"attr2\"$separator";}
-		else {$firstline .= _TL_ATTR2."$separator";}
+		else {$firstline .= _("Attribute 2")."$separator";}
 		}
 	elseif ($fieldinfo == "id")
 		{
@@ -459,8 +457,8 @@ for ($i=0; $i<$fieldcount; $i++)
 		}
 	elseif ($fieldinfo == "ipaddr")
 		{
-		if ($type == "csv") {$firstline .= "\""._IPADDRESS."\"$separator";}
-		else {$firstline .= _IPADDRESS."$separator";}
+		if ($type == "csv") {$firstline .= "\""._("IP-Address")."\"$separator";}
+		else {$firstline .= _("IP-Address")."$separator";}
 		}
 	else
 		{
@@ -499,7 +497,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			switch ($ftype)
 				{
 				case "R": //RANKING TYPE
-					$fquest .= " ["._RANK." $faid]";
+					$fquest .= " ["._("Ranking")." $faid]";
 					break;
 				case "L":
 				case "!":
@@ -717,19 +715,19 @@ elseif ($answers == "long")
 					switch($fieldinfo)
 						{
 						case "firstname":
-							$ftitle=_TL_FIRST.":";
+							$ftitle=_("First Name").":";
 							break;
 						case "lastname":
-							$ftitle=_TL_LAST.":";
+							$ftitle=_("Last Name").":";
 							break;
 						case "email":
-							$ftitle=_TL_EMAIL.":";
+							$ftitle=_("Email").":";
 							break;
 						case "attribute_1":
-							$ftitle=_TL_ATTR1.":";
+							$ftitle=_("Attribute 1").":";
 							break;
 						case "attribute_2":
-							$ftitle=_TL_ATTR2.":";
+							$ftitle=_("Attribute 2").":";
 							break;
 						default:
 						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
@@ -817,8 +815,8 @@ elseif ($answers == "long")
 				case "Y": //YES\NO
 					switch($drow[$i])
 						{
-						case "Y": echo _YES; break;
-						case "N": echo _NO; break;
+						case "Y": echo _("Yes"); break;
+						case "N": echo _("No"); break;
 						default: echo _NOTAPPLICABLE; break;
 						}
 					break;
@@ -844,9 +842,9 @@ elseif ($answers == "long")
 						{
 						switch($drow[$i])
 							{
-							case "Y": echo _YES; break;
-							case "N": echo _NO; break;
-							case "": echo _NO; break;
+							case "Y": echo _("Yes"); break;
+							case "N": echo _("No"); break;
+							case "": echo _("No"); break;
 							default: echo $drow[$i]; break;
 							}
 						}
@@ -855,13 +853,13 @@ elseif ($answers == "long")
 					switch($drow[$i])
 						{
 						case "Y":
-							echo _YES;
+							echo _("Yes");
 							break;
 						case "N":
-							echo _NO;
+							echo _("No");
 							break;
 						case "U":
-							echo _UNCERTAIN;
+							echo _("Uncertain");
 							break;
 						}
 				case "E":

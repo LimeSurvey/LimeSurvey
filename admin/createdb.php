@@ -43,16 +43,16 @@ sendcacheheaders();
 echo $htmlheader;
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._CREATEDB."</strong></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Create Database")."</strong></td></tr>\n";
 echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 if (!$dbname)
 	{
-	echo "<br /><strong>$setfont<font color='red'>"._ERROR."</font></strong><br />\n";
-	echo _CD_NODBNAME;
+	echo "<br /><strong>$setfont<font color='red'>"._("Error")."</font></strong><br />\n";
+	echo _("Database Information not provided. This script must be run from admin.php only.");
 	
 	echo "<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick='location.href=\"$scriptname\"'>";
+	echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
 	exit;
 	}
 if (!$database_exists) //Database named in config.php does not exist
@@ -64,17 +64,17 @@ if (!$database_exists) //Database named in config.php does not exist
         $connect->database = $dbname;
 	    $connect->Execute("USE DATABASE `$dbname`");
 		echo "<br />$setfont<strong><font color='green'>\n";
-		echo _CD_DBCREATED."</font></strong><br /><br />\n";
-		echo _CD_POPULATE_MESSAGE."<br /><br />\n";
-		echo "<input $btstyle type='submit' value='"._CD_POPULATE."' onClick='location.href=\"checkfields.php\"'>";
+		echo _("Database has been created.")."</font></strong><br /><br />\n";
+		echo _("Please click below to populate the database")."<br /><br />\n";
+		echo "<input $btstyle type='submit' value='"._("Populate Database")."' onClick='location.href=\"checkfields.php\"'>";
 		}
 	else
 		{
-		echo "<strong>$setfont<font color='red'>"._ERROR."</strong></font><br />\n";
-		echo _CD_NOCREATE." ($dbname)<br /><font size='1'>\n";
+		echo "<strong>$setfont<font color='red'>"._("Error")."</strong></font><br />\n";
+		echo _("Could not create database")." ($dbname)<br /><font size='1'>\n";
 		echo $connect->ErrorMsg();
 		echo "</font><br /><br />\n";
-		echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick='location.href=\"$scriptname\"'>";
+		echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
 		}
 	}
 echo "</td></tr></table>\n";

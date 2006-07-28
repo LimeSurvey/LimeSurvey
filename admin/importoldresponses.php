@@ -55,11 +55,11 @@ if (!$action == "import")
     echo $htmlheader;
 	echo "<br /><table align='center' class='outlinetable'>
 		<tr>
-			<th colspan='2'>"._IORD_TITLE."</th>
+			<th colspan='2'>"._("Import responses from an old (deactivated) survey table into an active survey")."</th>
 		</tr>
 		<form method='post'>
 		<tr>
-		 <td align='right'>"._IORD_TARGETID."</td>
+		 <td align='right'>"._("Target Survey ID")."</td>
 		 <td> $surveyid<input type='hidden' $slstyle value='$surveyid' name='sid'></td>
 		</tr>
 		<tr>
@@ -76,12 +76,12 @@ if (!$action == "import")
 		 <td>&nbsp;
 		 </td>
 		 <td>
-		  <input type='submit' value='"._IORD_BTIMPORT."' $btstyle onClick='return confirm(\"Are you sure?\")'>&nbsp;
+		  <input type='submit' value='"._("Import Responses")."' $btstyle onClick='return confirm(\"Are you sure?\")'>&nbsp;
 		 </td>
 		</tr>
 		 <input type='hidden' name='action' value='import'>
 		</form>
-		<tr><td colspan='2' align='center'>[<a href='browse.php?sid=$surveyid'>"._B_ADMIN_BT."</a>]</td></tr>
+		<tr><td colspan='2' align='center'>[<a href='browse.php?sid=$surveyid'>"._("Return to Survey Administration")."</a>]</td></tr>
 		</table>
 </body></html>";
 	}

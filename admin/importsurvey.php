@@ -42,16 +42,16 @@ if (empty($homedir)) {die ("Cannot run this script directly");}
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-._IMPORTSURVEY."</strong></font></td></tr>\n";
+._("Import Survey")."</strong></font></td></tr>\n";
 echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
     {
-    echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
-    echo _IS_FAILUPLOAD."<br /><br />\n";
-    echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+    echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
+    echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+    echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
     echo "</font></td></tr></table>\n";
     echo "</body>\n</html>\n";
     exit;
@@ -59,9 +59,9 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<strong><font color='green'>"._SUCCESS."</font></strong><br />\n";
-echo _IS_OKUPLOAD."<br /><br />\n";
-echo _IS_READFILE."<br />\n";
+echo "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
+echo _("File upload succeeded.")."<br /><br />\n";
+echo _("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
     {
@@ -73,9 +73,9 @@ fclose($handle);
 
 if (substr($bigarray[1], 0, 22) != "# SURVEYOR SURVEY DUMP")
     {
-    echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n";
-    echo _IS_WRONGFILE."<br /><br />\n";
-    echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+    echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
+    echo _("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
+    echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
     echo "</font></td></tr></table>\n";
     echo "</body>\n</html>\n";
     unlink($the_full_file_path);
@@ -286,10 +286,10 @@ $surveyid=$sffieldcontents[$surveyidpos];
 
 if (!$surveyid) 
     {
-    echo "<br /><strong><font color='red'>"._ERROR."</strong></font><br />\n";
-    echo _IS_IMPFAILED."<br />\n";
-    echo _IS_FILEFAILS."<br />\n"; //Couldn't find the SID - cannot continue
-    echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+    echo "<br /><strong><font color='red'>"._("Error")."</strong></font><br />\n";
+    echo _("Import of this survey file failed")."<br />\n";
+    echo _("File does not contain PHPSurveyor data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
+    echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
     echo "</font></td></tr></table>\n";
     echo "</body>\n</html>\n";
     unlink($the_full_file_path); //Delete the uploaded file
@@ -309,7 +309,7 @@ $end = strpos($insert, ',')+1;
 $insert = substr($insert,0,$start).substr($insert,$end,strlen($insert));
 
 $insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
-$iresult = $connect->Execute($insert) or die("<br />"._IS_IMPFAILED."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
+$iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
 
 $oldsid=$surveyid;
 
@@ -408,9 +408,9 @@ if ($grouparray) {
         $gsid=$gacfieldcontents[$surveyidpos];
         if ($gsid != $surveyid) 
             {
-            echo "<br />\n<font color='red'><strong>"._ERROR."</strong></font>"
+            echo "<br />\n<font color='red'><strong>"._("Error")."</strong></font>"
                 ."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n"
-                ."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
+                ."<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
             exit;
             }
         //$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
@@ -418,7 +418,7 @@ if ($grouparray) {
         $ginsert = str_replace("(`gid`,", "(", $ginsert);
         $ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
         $oldgid=$gid;
-        $gres = $connect->Execute($ginsert) or die("<strong>"._ERROR."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+        $gres = $connect->Execute($ginsert) or die("<strong>"._("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
         //GET NEW GID
         $gidquery = "SELECT gid FROM {$dbprefix}groups ORDER BY gid DESC LIMIT 1";
         $gidres = db_execute_num($gidquery);
@@ -443,7 +443,7 @@ if ($grouparray) {
                     $qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
                     $type = $qacfieldcontents[array_search("type", $qafieldorders)]; //Get the type
                     $other = $qacfieldcontents[array_search("other", $qafieldorders)]; //Get 'other';
-                    $qres = $connect->Execute($qinsert) or die ("<strong>"._ERROR."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+                    $qres = $connect->Execute($qinsert) or die ("<strong>"._("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
                     $qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
                     $qidres = db_execute_assoc($qidquery);
                     while ($qrow = $qidres->FetchRow()) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
@@ -472,7 +472,7 @@ if ($grouparray) {
                                 $newvalues="('".implode("', '", $newfieldcontents)."')";
                                 $ainsert = str_replace("('".implode("', '", $aacfieldcontents)."')", $newvalues, $aa);
                                 $ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
-                                $ares = $connect->Execute($ainsert) or die ("<strong>"._ERROR."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+                                $ares = $connect->Execute($ainsert) or die ("<strong>"._("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
                                 if ($type == "M" || $type == "P") {
                                     $fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid, 
                                                         "newcfieldname"=>$newsid."X".$newgid."X".$newqid, 
@@ -635,19 +635,19 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
     }
 }
 
-echo "<br />\n<strong><font color='green'>"._SUCCESS."</font></strong><br />\n";
-echo "<strong><u>"._IS_IMPORTSUMMARY."</u></strong><br />\n";
-echo "<ul>\n\t<li>"._SURVEYS.": $countsurveys</li>\n";
-echo "\t<li>"._GROUPS.": $countgroups</li>\n";
-echo "\t<li>"._QUESTIONS.": $countquestions</li>\n";
-echo "\t<li>"._ANSWERS.": $countanswers</li>\n";
-echo "\t<li>"._CONDITIONS.": $countconditions</li>\n";
-echo "\t<li>"._LABELSET.": $countlabelsets ("._LABELANS.": $countlabels)</li>\n";
-echo "\t<li>"._QL_QUESTIONATTRIBUTES." $countquestion_attributes</li>\n";
-echo "\t<li>"._AS_TITLE." $countassessments</li>\n</ul>\n";
+echo "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n";
+echo "<strong><u>"._("Survey Import Summary")."</u></strong><br />\n";
+echo "<ul>\n\t<li>"._("Surveys").": $countsurveys</li>\n";
+echo "\t<li>"._("Groups").": $countgroups</li>\n";
+echo "\t<li>"._("Questions").": $countquestions</li>\n";
+echo "\t<li>"._("Answers").": $countanswers</li>\n";
+echo "\t<li>"._("Conditions").": $countconditions</li>\n";
+echo "\t<li>"._("Label Set").": $countlabelsets ("._("Labels").": $countlabels)</li>\n";
+echo "\t<li>"._("Question Attributes:")." $countquestion_attributes</li>\n";
+echo "\t<li>"._("Assessments")." $countassessments</li>\n</ul>\n";
 
-echo "<strong>"._IS_SUCCESS."</strong><br />\n";
-echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
+echo "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
+echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 
 echo "</font></td></tr></table>\n";
 echo "</body>\n</html>";

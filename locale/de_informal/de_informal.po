@@ -1,0 +1,730 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-27 22:08+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: Carsten Schmitz <carsten.schmitz.hh@gmx.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German Informal\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:40
+msgid "Yes"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:41
+msgid "No"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:42
+msgid "Uncertain"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:43
+msgid "Admin"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:44
+msgid "Tokens"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:45
+msgid "Female"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:46
+msgid "Male"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:47
+msgid "No answer"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:48
+msgid "N/A"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:49
+msgid "Other"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:50
+msgid "Please choose"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:51
+msgid "Error"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:52
+msgid "complete"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:53
+msgid "Increase"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:54
+msgid "Same"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:55
+msgid "Decrease"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:56
+msgid "<font color='red'>*</font>"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:58
+msgid "Confirmation"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:59
+msgid "Token"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:60
+msgid "Continue"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:63
+msgid "Accept"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:64
+msgid "prev"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:65
+msgid "next"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:66
+msgid "last"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:67
+msgid "submit"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:72
+msgid "Please choose one of the following"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:73
+msgid "Please enter your comment here"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:74
+msgid "Only numbers may be entered in this field"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:75
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:101
+msgid "Exit and Clear Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:76
+msgid "This question is mandatory"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:77
+msgid "Please complete all parts"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:78
+msgid "Please check at least one item"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:79
+msgid "Please rank all items"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:80
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:81
+msgid "This question must be answered correctly"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:82
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:83
+msgid "Format: YYYY-MM-DD"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:84
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:85
+msgid "Remove this item"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:86
+msgid "Click on an item in the list on the left, starting with your"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:87
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:88
+msgid "Your Choices"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:89
+msgid "Your Ranking"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:90
+msgid "Click on the scissors next to each item on the right"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:91
+msgid "to remove the last entry in your ranked list"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:93
+msgid "You have not provided a survey identification number"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:94
+msgid "Please contact"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:95
+msgid "for further assistance"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:96
+msgid "Answers Cleared"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:97
+msgid "Restart this Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:98
+msgid "Close this Window"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:99
+msgid "Are you sure you want to clear all your responses?"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:100
+msgid "Are you sure you want to save your responses?"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:103
+msgid "Cannot submit results - there are none to submit."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:104
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:105
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:106
+msgid "Clear Responses"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:107
+msgid "Thank you"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:108
+msgid "Your survey responses have been recorded."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:109
+msgid "Survey Completed"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:110
+msgid "Did Not Save"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:111
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:112
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:113
+msgid "An error occurred saving a response to survey id"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:114
+msgid "DATA TO BE ENTERED"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:115
+msgid "SQL CODE THAT FAILED"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:116
+msgid "ERROR MESSAGE"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:117
+msgid "Error saving survey results to database"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:118
+msgid "Try to submit again"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:119
+msgid "Sorry. There is no matching survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:120
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:121
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:122
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:123
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:124
+msgid "For further information contact"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:125
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:126
+msgid "This survey is no longer available."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:128
+msgid "You have already completed this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:130
+msgid "Choose only one of the following"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:131
+msgid "Check any that apply"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:133
+msgid "Survey Submitted"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:134
+msgid "A new response was entered for your survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:135
+msgid "Click the following link to see the individual response:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:136
+msgid "View statistics by clicking here:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:137
+msgid "Click the following link to edit the individual response:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:139
+msgid "(<strong><i>A Note On Privacy</i></strong><br />"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:140
+msgid "This survey is anonymous.<br />"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:141
+msgid "The record kept of your survey responses does not contain any "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:142
+msgid "identifying information about you unless a specific question "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:143
+msgid "in the survey has asked for this. If you have responded to a "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:144
+msgid "survey that used an identifying token to allow you to access "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:145
+msgid "the survey, you can rest assured that the identifying token "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:146
+msgid "is not kept with your responses. It is managed in a separate "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:147
+msgid "database, and will only be updated to indicate that you have "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:148
+msgid "(or haven't) completed this survey. There is no way of matching "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:149
+msgid "identification tokens with survey responses in this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:151
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:152
+msgid "There is 1 question in this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:154
+msgid "You must be registered to complete this survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:155
+msgid ""
+"You may register for this survey if you wish to take part.<br />\n"
+")"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:156
+msgid "Enter your details below, and an email containing the link to "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:157
+msgid "participate in this survey will be sent immediately."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:158
+msgid "Email Address"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:159
+msgid "First Name"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:160
+msgid "Last Name"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:161
+msgid "The email you used is not valid. Please try again."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:162
+msgid "The email you used has already been registered."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:163
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:164
+msgid ""
+"Thank you for registering to participate in this survey.<br /><br />\n"
+")"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:165
+msgid "An email has been sent to the address you provided with access details "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:166
+msgid "for this survey. Please follow the link in that email to proceed.<br /><br />\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:167
+msgid "Survey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:169
+msgid "<strong>Thank You<br /><br />)"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:170
+msgid "You have completed answering the questions in this survey.</strong><br /><br />"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:171
+msgid "Click on ["
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:171
+msgid "] now to complete the process and save your answers."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:172
+msgid "If you want to check any of the answers you have made, and/or change them, )"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:173
+msgid "you can do that now by clicking on the [<< "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:173
+msgid "] button and browsing "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:174
+msgid "through your responses."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:177
+msgid "Please choose <strong>only one</strong> of the following:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:178
+msgid "Please write your answer here:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:179
+msgid "Please choose <strong>all</strong> that apply:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:180
+msgid "Please choose all that apply and provide a comment:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:181
+msgid "Please choose the appropriate response for each item:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:182
+msgid "Please write your answer(s) here:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:183
+msgid "Please enter a date:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:184
+msgid "Make a comment on your choice here:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:185
+msgid "Please number each box in order of preference from 1 to"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:186
+msgid "Submit Your Survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:187
+msgid "Thank you for completing this survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:188
+msgid "Please fax your completed survey to:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:190
+msgid "Only answer this question"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:191
+msgid "if you answered"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:192
+msgid "and"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:193
+msgid "to question"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:194
+msgid "or"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:197
+msgid "Save your responses so far"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:198
+msgid "Save Your Unfinished Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:199
+msgid "Return To Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:200
+msgid "Name"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:201
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:232
+msgid "Password"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:202
+msgid "Repeat Password"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:203
+msgid "Your Email"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:204
+msgid ""
+"Enter a name and password for this survey and click save below.<br />\n"
+")"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:205
+msgid "Your survey will be saved using that name and password, and can be "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:206
+msgid "completed later by logging in with the same name and password.<br /><br />\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:207
+msgid "If you give an email address, an email containing the details will be sent "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:208
+msgid "to you."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:209
+msgid "Save Now"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:210
+msgid "You must supply a name for this saved session."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:211
+msgid "You must supply a password for this saved session."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:212
+msgid "You must re-enter a password for this saved session."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:213
+msgid "Your passwords do not match."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:214
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:215
+msgid "Please try again."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:216
+msgid "Saved Survey Details"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:217
+msgid "You, or someone using your email address, have saved "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:218
+msgid "a survey in progress. The following details can be used "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:219
+msgid "to return to this survey and continue where you left "
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:220
+msgid "off."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:221
+msgid "Reload your survey by clicking on the following URL:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:222
+msgid "Your survey responses have been saved succesfully"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:223
+msgid "An error occurred and your survey responses were not saved."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:224
+msgid "An email has been sent with details about your saved survey."
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:227
+msgid "Load unfinished survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:228
+msgid "Load A Previously Saved Survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:229
+msgid "You can load a survey that you have previously saved from this screen.<br />\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:230
+msgid "Type in the 'name' you used to save the survey, and the password.<br /><br />\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:231
+msgid "Saved name"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:233
+msgid "Load Now"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:234
+msgid "You did not provide a name"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:235
+msgid "You did not provide a password"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:236
+msgid "There is no matching saved survey"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:238
+msgid "Your Assessment"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/php-gettext/examples/pigs_dropin.php:75
+msgid ""
+"This is how the story goes.\n"
+"\n"
+msgstr ""
+

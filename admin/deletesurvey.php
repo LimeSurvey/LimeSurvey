@@ -44,14 +44,14 @@ echo $htmlheader;
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._DELETESURVEY."</strong></font></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Delete Survey")."</strong></font></td></tr>\n";
 echo "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
 
 if (!isset($surveyid) || !$surveyid)
 	{
-	echo "<br /><font color='red'><strong>"._ERROR."</strong></font><br />\n";
-	echo _DS_NOSID."<br /><br />\n";
-	echo "<input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<br /><font color='red'><strong>"._("Error")."</strong></font><br />\n";
+	echo _("You have not selected a survey to delete")."<br /><br />\n";
+	echo "<input type='submit' $btstyle value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>";
 	exit;
@@ -64,27 +64,27 @@ if (!isset($ok) || !$ok)
 	echo "<table width='100%' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>$setfont<br />\n";
-	echo "\t\t\t<font color='red'><strong>"._WARNING."</strong></font><br />\n";
-	echo "\t\t\t<strong>"._DS_DELMESSAGE1." ($surveyid)</strong><br /><br />\n";
-	echo "\t\t\t"._DS_DELMESSAGE2."<br /><br />\n";
-	echo "\t\t\t"._DS_DELMESSAGE3."\n";
+	echo "\t\t\t<font color='red'><strong>"._("Warning")."</strong></font><br />\n";
+	echo "\t\t\t<strong>"._("You are about to delete this survey")." ($surveyid)</strong><br /><br />\n";
+	echo "\t\t\t"._("This process will delete this survey, and all related groups, questions answers and conditions.")."<br /><br />\n";
+	echo "\t\t\t"._("We recommend that before you delete this survey you export the entire survey from the main administration screen.")."\n";
 
 	if (in_array("{$dbprefix}survey_$surveyid", $tablelist))
 		{
-		echo "\t\t\t<br /><br />\n"._DS_SURVEYACTIVE."<br /><br />\n";
+		echo "\t\t\t<br /><br />\n"._("This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey.")."<br /><br />\n";
 		}
 	
 	if (in_array("{$dbprefix}tokens_$surveyid", $tablelist))
 		{
-		echo "\t\t\t"._DS_SURVEYTOKENS."<br /><br />\n";
+		echo "\t\t\t"._("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.")."<br /><br />\n";
 		}
 
 	echo "\t\t</font></td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle  value='"._AD_CANCEL."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle  value='"._DELETE."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;ok=Y','_top')\" />\n";
+	echo "\t\t\t<input type='submit' $btstyle  value='"._("Cancel")."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle  value='"._("Delete")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;ok=Y','_top')\" />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -133,8 +133,8 @@ else //delete the survey
 	echo "<table width='100%' align='center'>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>$setfont<br />\n";
-	echo "\t\t\t<strong>"._DS_DELETED."<br /><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "\t\t\t<strong>"._("This survey has been deleted.")."<br /><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "\t\t</strong></font></td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";

@@ -41,26 +41,26 @@ $date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple dea
 if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._DEACTIVATE." ($surveyid)</strong></font></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center' bgcolor='#FFEEEE'>\n";
 	echo "\t\t\t<font color='red'>$setfont<strong>";
-	echo _WARNING."<br />"._AC_READCAREFULLY;
+	echo _("Warning")."<br />"._("READ THIS CAREFULLY BEFORE PROCEEDING");
 	echo "\t\t</strong></font></font></td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>";
 	echo "\t\t<td>\n";
-	echo "\t\t\t"._AC_DEACTIVATE_MESSAGE1."\n";
-	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE2."</p>\n";
-	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE3."</p>\n";
-	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE4." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
-	echo "\t\t\t<p>"._AC_DEACTIVATE_MESSAGE5."</p>\n";
+	echo "\t\t\t"._("In an active survey, a table is created to store all the data-entry records.")."\n";
+	echo "\t\t\t<p>"._("When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.")."</p>\n";
+	echo "\t\t\t<p>"._("De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.")."</p>\n";
+	echo "\t\t\t<p>"._("Your responses table will be renamed to:")." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
+	echo "\t\t\t<p>"._("You should export your responses before de-activating. Click \")."</p>\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._AD_CANCEL."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._AC_DEACTIVATE."' onClick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
+	echo "\t\t\t<input type='submit' $btstyle value='"._("Cancel")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
+	echo "\t\t\t<input type='submit' $btstyle value='"._("De-Activate")."' onClick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -75,7 +75,7 @@ else
 		$toldtable="{$dbprefix}tokens_{$_GET['sid']}";
 		$tnewtable="{$dbprefix}old_tokens_{$_GET['sid']}_{$date}";
 		$tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
-		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._GO_ADMIN."</a>");
+		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._("Main Admin Screen")."</a>");
 		}
 	
 	$oldtable="{$dbprefix}survey_{$_GET['sid']}";
@@ -105,7 +105,7 @@ else
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
 	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<BR>".htmlspecialchars($connect->ErrorMsg())."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._DEACTIVATE." ($surveyid)</strong></font></td></tr>\n";
+	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
 	echo "\t\t\t$setfont<strong>Survey Has Been De-Activated\n";
@@ -113,18 +113,18 @@ else
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td>\n";
-	echo "\t\t\t"._AC_DEACTIVATED_MESSAGE1." $newtable.\n";
-	echo "\t\t\t"._AC_DEACTIVATED_MESSAGE2."\n";
-	echo "\t\t\t<p>"._AC_DEACTIVATED_MESSAGE3."</p>\n";
+	echo "\t\t\t"._("The responses table has been renamed to: ")." $newtable.\n";
+	echo "\t\t\t"._("The responses to this survey are no longer available using PHPSurveyor.")."\n";
+	echo "\t\t\t<p>"._("You should note the name of this table in case you need to access this information later.")."</p>\n";
 	if (isset($toldtable) && $toldtable)
 		{
-		echo "\t\t\t"._AC_DEACTIVATED_MESSAGE4." $tnewtable.\n";
+		echo "\t\t\t"._("The tokens table associated with this survey has been renamed to: ")." $tnewtable.\n";
 		}
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._GO_ADMIN."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+	echo "\t\t\t<input type='submit' $btstyle value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";

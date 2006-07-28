@@ -49,7 +49,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		. "cellpadding='1' cellspacing='0' width='450'>\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
-		. "\t\t\t<strong>"._DC_TITLE."</strong>\n"
+		. "\t\t\t<strong>"._("Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>")."</strong>\n"
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr><td align='center'>$setfont";
@@ -86,7 +86,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	if (isset($cdelete) && $cdelete)
 		{
-		echo "<strong>"._DC_CONDITIONSTODELETE.":</strong><br /><font size='1'>\n";
+		echo "<strong>"._("The following conditions should be deleted").":</strong><br /><font size='1'>\n";
 		foreach ($cdelete as $cd) {
 			echo "CID: {$cd['cid']} because {$cd['reason']}<br />\n";
 		}
@@ -94,7 +94,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	else
 		{
-		echo "<strong>"._DC_CONDITIONSSOK."</strong><br />\n";
+		echo "<strong>"._("All conditions meet consistency standards")."</strong><br />\n";
 		}
 	
 	// Check question_attributes to delete
@@ -110,13 +110,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 		} // while
 	if (isset($qadelete) && $qadelete) {
-	    echo "<strong>"._DC_QATODELETE.":</strong><br /><font size='1'>\n";
+	    echo "<strong>"._("The following question attributes should be deleted").":</strong><br /><font size='1'>\n";
 		foreach ($qadelete as $qad) {echo "QAID `{$qad['qaid']}` ATTRIBUTE `{$qad['attribute']}` because `{$qad['reason']}`<br />\n";}
 		echo "</font><br />\n";
 	}
 	else
 		{
-		echo "<strong>"._DC_QAOK."</strong><br />\n";
+		echo "<strong>"._("All question_attributes meet consistency standards")."</strong><br />\n";
 		}
 
 	// Check assessments
@@ -146,23 +146,23 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 
 	if (isset($assdelete) && $assdelete) 
 		{
-	    echo "<strong>"._DC_ASSESSTODELETE.":</strong><br /><font size='1'>\n";
+	    echo "<strong>"._("The following assessments should be deleted").":</strong><br /><font size='1'>\n";
 		foreach ($assdelete as $ass) {echo "ID `{$ass['id']}` ASSESSMENT `{$ass['assessment']}` because `{$ass['reason']}`<br />\n";}
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<strong>"._DC_ASSESSOK."</strong><br />\n";
+		echo "<strong>"._("All assessments meet consistency standards")."</strong><br />\n";
 		}
 	if (isset($asgdelete) && $asgdelete) 
 		{
-	    echo "<strong>"._DC_ASSESSTODELETE.":</strong><br /><font size='1'>\n";
+	    echo "<strong>"._("The following assessments should be deleted").":</strong><br /><font size='1'>\n";
 		foreach ($asgdelete as $asg) {echo "ID `{$asg['id']}` ASSESSMENT `{$asg['assessment']}` because `{$asg['reason']}`<br />\n";}
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<strong>"._DC_ASSESSOK."</strong><br />\n";
+		echo "<strong>"._("All assessments meet consistency standards")."</strong><br />\n";
 		}
 		
 	// Check answers
@@ -181,13 +181,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	if (isset($adelete) && $adelete)
 		{
-		echo "<strong>"._DC_ANSWERSTODELETE.":</strong><br /><font size='1'>\n";
+		echo "<strong>"._("The following answers should be deleted").":</strong><br /><font size='1'>\n";
 		foreach ($adelete as $ad) {echo "QID `{$ad['qid']}` CODE `{$ad['code']}` because `{$ad['reason']}`<br />\n";}
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<strong>"._DC_ANSWERSOK."</strong><br />\n";
+		echo "<strong>"._("All answers meet consistency standards")."</strong><br />\n";
 		}
 	
 	//check questions
@@ -210,13 +210,13 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	if (isset($qdelete) && $qdelete)
 		{
-		echo "<strong>"._DC_QUESTIONSTODELETE.":</strong><br /><font size='1'>\n";
+		echo "<strong>"._("The following questions should be deleted").":</strong><br /><font size='1'>\n";
 		foreach ($qdelete as $qd) {echo "QID `{$qd['qid']}` because `{$qd['reason']}`<br />\n";}
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<strong>"._DC_QUESTIONSOK."</strong><br />\n";
+		echo "<strong>"._("All questions meet consistency standards")."</strong><br />\n";
 		}
 	//check groups
 	$query = "SELECT * FROM {$dbprefix}groups ORDER BY sid, gid";
@@ -231,17 +231,17 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		}
 	if (isset($gdelete) && $gdelete)
 		{
-		echo "<strong>"._DC_GROUPSTODELETE.":</strong><br /><font size='1'>\n";
+		echo "<strong>"._("The following groups should be deleted").":</strong><br /><font size='1'>\n";
 		echo implode(", ", $gdelete);
 		echo "</font><br />\n";
 		}
 	else
 		{
-		echo "<strong>"._DC_GROUPSOK."</strong><br />\n";
+		echo "<strong>"._("All groups meet consistency standards")."</strong><br />\n";
 		}
 //NOW CHECK FOR STRAY SURVEY RESPONSE TABLES AND TOKENS TABLES
 	if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) && !isset($gdelete) && !isset($asgdelete) && !isset($assdelete) && !isset($qadelete)) {
-	    echo "<br />"._DC_NOACTIONREQUIRED;
+	    echo "<br />"._("No database action required");
 	} else {
 		echo "<br />Should we proceed with the delete?<br />\n";
 		echo "<form action='{$_SERVER['PHP_SELF']}' method='POST'>\n";
@@ -284,7 +284,7 @@ if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 		echo "<input type='submit' value='Yes - Delete Them!'>\n";
 		echo "</form>\n";
 		}
-	echo "<br /><br /><a href='$scriptname'>"._B_ADMIN_BT."</a><br /><br />\n"
+	echo "<br /><br /><a href='$scriptname'>"._("Return to Survey Administration")."</a><br /><br />\n"
 		."</font></td></tr></table>\n"
 		."<table><tr><td height='1'></td></tr></table>\n";
 	echo getAdminFooter("", "");
@@ -298,7 +298,7 @@ elseif ($ok == "Y")
 		. "cellpadding='1' cellspacing='0' width='450'>\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
-		. "\t\t\t<strong>"._DC_TITLE."</strong>\n"
+		. "\t\t\t<strong>"._("Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>")."</strong>\n"
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr><td align='center'>$setfont";
@@ -373,7 +373,7 @@ elseif ($ok == "Y")
 	}
 	echo "Check database again?<br />\n";
 	echo "<a href='dbchecker.php'>Check Again</a><br />\n";
-	echo "<a href='$scriptname'>"._B_ADMIN_BT."</a>";
+	echo "<a href='$scriptname'>"._("Return to Survey Administration")."</a>";
 	echo "</td></tr></table></body></html>\n";
 	}
 ?>

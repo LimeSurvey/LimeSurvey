@@ -41,17 +41,17 @@ if (empty($homedir)) {die ("Cannot run this script directly");}
 echo "<br />\n"
 	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	._IMPORTQUESTION."</strong></td></tr>\n"
+	._("Import Question")."</strong></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n"
-		._IS_FAILUPLOAD."<br /><br />\n"
+	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n"
+		._("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
+		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	exit;
@@ -59,9 +59,9 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<strong><font color='green'>"._SUCCESS."</font></strong><br />\n"
-	._IS_OKUPLOAD."<br /><br />\n"
-	._IS_READFILE."<br />\n";
+echo "<strong><font color='green'>"._("Success")."</font></strong><br />\n"
+	._("File upload succeeded.")."<br /><br />\n"
+	._("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 	{
@@ -73,28 +73,28 @@ fclose($handle);
 
 if (!$_POST['sid'])
 	{
-	echo _IQ_NOSID."<br /><br />\n"
+	echo _("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
+		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	exit;
 	}
 if (!$_POST['gid'])
 	{
-	echo _IQ_NOGID."<br /><br />\n"
+	echo _("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
+		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	exit;
 	}
 if (substr($bigarray[1], 0, 24) != "# SURVEYOR QUESTION DUMP")
 	{
-	echo "<strong><font color='red'>"._ERROR."</font></strong><br />\n"
-		._IQ_WRONGFILE."<br /><br />\n"
+	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n"
+		._("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\">\n"
+		._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	exit;
@@ -325,7 +325,7 @@ if (isset($questionarray) && $questionarray)
 		
 		$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
 		
-		$qres = $connect->Execute($qinsert) or die ("<strong>"._ERROR.":</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+		$qres = $connect->Execute($qinsert) or die ("<strong>"._("Error").":</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 		//GET NEW QID, AND WHILE WE'RE AT IT - THE TYPE!
 		$qidquery = "SELECT qid, lid, type FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
 		$qidres = db_execute_num($qidquery);
@@ -360,7 +360,7 @@ if (isset($questionarray) && $questionarray)
 					$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
 					//$ainsert = substr(trim($ainsert), 0, -1);
 					//echo "$ainsert<br />\n";
-					$ares = $connect->Execute($ainsert) or die ("<strong>"._ERROR.":</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+					$ares = $connect->Execute($ainsert) or die ("<strong>"._("Error").":</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 					if ($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P")
 						{
 						$fieldnames[]=array($oldsid."X".$oldgid."X".$oldqid.$code, $newsid."X".$newgid."X".$newqid.$code);
@@ -429,26 +429,26 @@ if (isset($questionarray) && $questionarray)
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions.
 
 
-echo "<br />\n<strong><font color='green'>"._SUCCESS."</font></strong><br />\n"
-	."<strong><u>"._IQ_IMPORTSUMMARY."</u></strong><br />\n"
-	."\t<li>"._QUESTIONS.": ";
+echo "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n"
+	."<strong><u>"._("Question Import Summary")."</u></strong><br />\n"
+	."\t<li>"._("Questions").": ";
 if (isset($countquestions)) {echo $countquestions;}
 echo "</li>\n"
-	."\t<li>"._ANSWERS.": ";
+	."\t<li>"._("Answers").": ";
 if (isset($countanswers)) {echo $countanswers;}
 echo "</li><br />\n"
-	."\t<li>"._LABELSETS.": ";
+	."\t<li>"._("Labelsets").": ";
 if (isset($countlabelsets)) {echo $countlabelsets;}
 echo " (";
 if (isset($countlabels)) {echo $countlabels;}
 echo ")</li><br />\n";
-echo "\t<li>"._QL_QUESTIONATTRIBUTES;
+echo "\t<li>"._("Question Attributes:");
 if (isset($countquestion_attributes)) {echo $countquestion_attributes;}
 echo "</li></ul><br />\n";
 
-echo "<strong>"._IS_SUCCESS."</strong><br />\n"
+echo "<strong>"._("Import of Survey is completed.")."</strong><br />\n"
 	."<input $btstyle type='submit' value='"
-	._GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$newqid', '_top')\">\n"
+	._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$newqid', '_top')\">\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	

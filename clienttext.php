@@ -35,12 +35,11 @@
 */
 //SINGLE WORDS
 
-// Todo: This whole file should be removed at a later time - Future text can be directly written in to the code
+// Todo: This whole file should be removed at a later time -
+// Future text can be directly written in to the code
+// DO NOT ADD ANYMORE CODE TO THIS FILE
 
-define("_YES", _("Yes"));
-define("_NO", _("No"));
-define("_UNCERTAIN", _("Uncertain"));
-define("_ADMIN", _("Admin"));
+
 define("_TOKENS", _("Tokens"));
 define("_FEMALE", _("Female"));
 define("_MALE", _("Male"));

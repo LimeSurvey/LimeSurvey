@@ -33,8 +33,8 @@ $num_fields = $num_results;
 # Build array that has to be returned
 for ($i=0; $i < $num_results; $i++) {
         $row = $result->FetchRow();
-	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_TL_ATTR1;}
-	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_TL_ATTR2;}
+	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_("Attribute 1");}
+	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_("Attribute 2");}
 	$surveyprivate=$row['private'];
 }
 
@@ -47,13 +47,13 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 			$token_fields[]=$row[0];
 		}
 	if (in_array("firstname", $token_fields)) {
-	    $fields[$fieldno++]=array("id"=>"fname","name"=>_TL_FIRST,"code"=>"", "qid"=>0,"type"=>"A40" );
+	    $fields[$fieldno++]=array("id"=>"fname","name"=>_("First Name"),"code"=>"", "qid"=>0,"type"=>"A40" );
 	}
 	if (in_array("lastname", $token_fields)) {
-	    $fields[$fieldno++]=array("id"=>"lname","name"=>_TL_LAST,"code"=>"", "qid"=>0,"type"=>"A40" );
+	    $fields[$fieldno++]=array("id"=>"lname","name"=>_("Last Name"),"code"=>"", "qid"=>0,"type"=>"A40" );
 	}
 	if (in_array("email", $token_fields)) {
-	    $fields[$fieldno++]=array("id"=>"email","name"=>_TL_EMAIL,"code"=>"", "qid"=>0,"type"=>"A100");
+	    $fields[$fieldno++]=array("id"=>"email","name"=>_("Email"),"code"=>"", "qid"=>0,"type"=>"A100");
 	}
 	if (in_array("attribute_1", $token_fields)) {
 	    $fields[$fieldno++]=array("id"=>"attr1","name"=>$attr1_name,"code"=>"", "qid"=>0,"type"=>"A100");
@@ -62,9 +62,9 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	    $fields[$fieldno++]=array("id"=>"attr2","name"=>$attr2_name,"code"=>"", "qid"=>0,"type"=>"A100");
 	}
 //	$fields=array(
-//		$fieldno++ =>array("id"=>"fname","name"=>_TL_FIRST,"code"=>"", "qid"=>0,"type"=>"A40" ) , 
-//		$fieldno++ =>array("id"=>"lname","name"=>_TL_LAST,"code"=>"", "qid"=>0,"type"=>"A40" ) , 
-//		$fieldno++ =>array("id"=>"email","name"=>_TL_EMAIL,"code"=>"", "qid"=>0,"type"=>"A100") , 
+//		$fieldno++ =>array("id"=>"fname","name"=>_("First Name"),"code"=>"", "qid"=>0,"type"=>"A40" ) , 
+//		$fieldno++ =>array("id"=>"lname","name"=>_("Last Name"),"code"=>"", "qid"=>0,"type"=>"A40" ) , 
+//		$fieldno++ =>array("id"=>"email","name"=>_("Email"),"code"=>"", "qid"=>0,"type"=>"A100") , 
 //		$fieldno++ =>array("id"=>"attr1","name"=>$attr1_name,"code"=>"", "qid"=>0,"type"=>"A100") , 
 //		$fieldno++ =>array("id"=>"attr2","name"=>$attr2_name,"code"=>"", "qid"=>0,"type"=>"A100"));
 } else {

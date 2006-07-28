@@ -39,7 +39,7 @@ $action=returnglobal('action');
 $scid=returnglobal('scid');
 
 //Ensure script is not run directly, avoid path disclosure
-if (empty($surveyid)) {die (_ERROR." - Cannot run this script directly");}
+if (empty($surveyid)) {die (_("Error")." - Cannot run this script directly");}
 
 sendcacheheaders();
 
@@ -70,7 +70,7 @@ if ($action == "delete" && $surveyid && $scid)
 echo "<table><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _BROWSESAVED.":</strong> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
+	. _("Browse Saved Responses").":</strong> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
 echo savedmenubar();
 echo "</table>\n";
 echo "<table><tr><td></td></tr></table>\n"
@@ -80,11 +80,11 @@ switch ($action)
 	{
 	case "all":
 	case "delete":
-		echo "<center>".$setfont._SV_RESPONSES . " ". getSavedCount($surveyid)."</font></center>";
+		echo "<center>".$setfont._("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
 		showSavedList($surveyid);
 		break;
 	default:
-		echo "<center>".$setfont._SV_RESPONSES . " ". getSavedCount($surveyid)."</font></center>";
+		echo "<center>".$setfont._("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
 	}
 echo "</td></tr></table>\n";
 
@@ -100,11 +100,11 @@ function showSavedList($surveyid)
 		{
 		echo "<table class='outlinetable' cellspacing='0' align='center'>\n";
 		echo "<tr><th>SCID</th><th>"
-			._SV_IDENTIFIER."</th><th>"
-			._SV_IP."</th><th>"
-			._SV_DATE."</th><th>"
-			._EMAIL."</th><th>"
-			._AL_ACTION."</th>"
+			._("Identifier")."</th><th>"
+			._("IP Address")."</th><th>"
+			._("Date Saved")."</th><th>"
+			._("Email Address")."</th><th>"
+			._("Action")."</th>"
 			."</tr>\n";
 		while($row=$result->FetchRow())
 			{
@@ -116,9 +116,9 @@ function showSavedList($surveyid)
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
 				<td align='center'>
 				[<a href='saved.php?sid=$surveyid&amp;action=delete&amp;scid=".$row['scid']."'"
-				." onClick='return confirm(\""._DR_RUSURE."\")'"
-				.">"._DELETE."</a>]
-				[<a href='dataentry.php?sid=$surveyid&amp;action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>"._SV_EDIT."</a>]
+				." onClick='return confirm(\""._("Are you sure you want t."\")'"
+				.">"._("Delete")."</a>]
+				[<a href='dataentry.php?sid=$surveyid&amp;action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>"._("Edit")."</a>]
 				</td>
 			   </tr>\n";
 			} // while
@@ -126,7 +126,7 @@ function showSavedList($surveyid)
 		}
 	}
 
-//				[<a href='saved.php?sid=$surveyid&amp;action=remind&amp;scid=".$row['scid']."'>"._SV_REMIND."</a>]
+//				[<a href='saved.php?sid=$surveyid&amp;action=remind&amp;scid=".$row['scid']."'>"._("Remind")."</a>]
 //               c_schmitz: Since its without function at the moment i removed it from the above lines
 
 function savedmenubar()
@@ -137,15 +137,15 @@ function savedmenubar()
 	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
 					. "\t\t<td>\n"
 					. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
-					. _B_ADMIN_BT."' align='left'  onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+					. _("Return to Survey Administration")."' align='left'  onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 					. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 					. "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.png' title='"
-					. _B_SUMMARY_BT."'  align='left' onClick=\"window.open('saved.php?sid=$surveyid', '_top')\">\n"
+					. _("Show summary information")."'  align='left' onClick=\"window.open('saved.php?sid=$surveyid', '_top')\">\n"
 					. "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.png' title='"
-					. _B_ALL_BT."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&amp;action=all', '_top')\">\n"
+					. _("Display Responses")."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&amp;action=all', '_top')\">\n"
 					//. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.png' title='"
-					//. _B_LAST_BT."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
+					//. _("Display Last 50 Responses")."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
 					. "\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 					. "\t\t</td>\n"
 					. "\t</tr>\n";

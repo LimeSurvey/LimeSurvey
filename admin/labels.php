@@ -79,11 +79,11 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
     ."cellpadding='1' cellspacing='0'>\n"
     ."\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'>"
     ."<font size='1' face='verdana' color='white'><strong>"
-    ._LABELCONTROL."</strong></font></td></tr>\n"
+    ._("Label Sets Administration")."</strong></font></td></tr>\n"
     ."\t\t\t\t<tr bgcolor='#999999'>\n"
     ."\t\t\t\t\t<td>\n"
     ."\t\t\t\t\t<input type='image' src='$imagefiles/home.png' title='"
-    ._B_ADMIN_BT."' alt='"._B_ADMIN_BT."' align='left' "
+    ._("Return to Survey Administration")."' alt='"._("Return to Survey Administration")."' align='left' "
     ."onClick=\"window.open('$scriptname', '_top')\">\n"
     ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left' alt=''>\n"
     ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
@@ -92,14 +92,14 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
     ."\t\t\t\t\t</td>\n"
     ."\t\t\t\t\t<td align='right' width='620'>\n"
     ."\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.png' title='"
-    ._A_HELP_BT."' alt='"._A_HELP_BT."' align='right'  "
+    ._("Show Help")."' alt='"._("Show Help")."' align='right'  "
     ."onClick=\"showhelp('show')\">\n"
     ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'  alt=''>\n"
     ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt=''>\n"
     ."\t\t\t\t\t<input type='image' src='$imagefiles/add.png' align='right' title='"
-    ._L_ADDSET_BT."' alt='"._L_ADDSET_BT."' onClick=\"window.open('labels.php?action=newset', '_top')\">\n"
+    ._("Add new label set")."' alt='"._("Add new label set")."' onClick=\"window.open('labels.php?action=newset', '_top')\">\n"
     ."\t\t\t\t\t$setfont<font size='1'><strong>"
-    ._LABELSETS.":</strong> "
+    ._("Labelsets").":</strong> "
     ."\t\t\t\t\t<select style='font-size: 9; font-family: verdana; color: #333333; background: SILVER; width: 160' "
     ."onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 $labelsets=getlabelsets();
@@ -114,7 +114,7 @@ if (count($labelsets)>0)
     }
 echo "\t\t\t\t\t\t<option value=''";
 if (!isset($lid) || $lid<1) {echo " selected";}
-echo ">"._AD_CHOOSE."</option>\n";
+echo ">"._("Please Choose...")."</option>\n";
 
 echo "\t\t\t\t\t</select></font></font>\n"
     ."\t\t\t\t\t</td>\n"
@@ -137,13 +137,13 @@ if ($action == "newset" || $action == "editset")
         ."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><strong>\n"
         ."\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' "
         ."onClick=\"window.open('labels.php?lid=$lid', '_top')\">\n";
-    if ($action == "newset") {echo _LB_NEWSET;}
-    else {echo _LB_EDITSET;}
+    if ($action == "newset") {echo _("Create New Label Set");}
+    else {echo _("Edit Label Set");}
     echo "\t\t\t\t</strong></font></font></td>\n"
         ."\t\t\t</tr>\n"
         ."\t\t\t<tr>\n"
         ."\t\t\t\t<td align='right' width='15%'>\n"
-        ."\t\t\t\t\t$setfont<strong>"._LL_NAME.":</strong></font>"
+        ."\t\t\t\t\t$setfont<strong>"._("Set Name").":</strong></font>"
         ."\t\t\t\t</td>\n"
         ."\t\t\t\t<td>\n"
         ."\t\t\t\t\t<input type='text' $slstyle name='label_name' value='";
@@ -155,8 +155,8 @@ if ($action == "newset" || $action == "editset")
         ."\t\t\t\t<td></td>\n"
         ."\t\t\t\t<td>\n"
         ."\t\t\t\t<input $btstyle type='submit' value='";
-    if ($action == "newset") {echo _ADD;}
-    else {echo _UPDATE;}
+    if ($action == "newset") {echo _("Add");}
+    else {echo _("Update");}
     echo "'>\n"
         ."\t\t<input type='hidden' name='action' value='";
     if ($action == "newset") {echo "insertset";}
@@ -175,15 +175,15 @@ if ($action == "newset" || $action == "editset")
             ."\t\t\t</td></tr>\n"
             ."\t\t\t<tr bgcolor='black'>\n"
             ."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><strong>\n"
-            ."\t\t\t\t"._IMPORTLABEL."\n"
+            ."\t\t\t\t"._("Import Label Set")."\n"
             ."\t\t\t\t</strong></font></font></td>\n"
             ."\t\t\t</tr>\n"
             ."\t\t\t<tr>\n"
             ."\t\t\t\t<td align='right'>$setfont<strong>"
-            ._SL_SELSQL."</strong></font></td>\n"
+            ._("Select SQL File:")."</strong></font></td>\n"
             ."\t\t<td><input $btstyle name=\"the_file\" type=\"file\" size=\"35\">"
             ."</td></tr>\n"
-            ."\t<tr><td></td><td><input type='submit' $btstyle value='"._IMPORTLABEL."'>\n"
+            ."\t<tr><td></td><td><input type='submit' $btstyle value='"._("Import Label Set")."'>\n"
             ."\t<input type='hidden' name='action' value='importlabels'></TD>\n"
             ."\t</tr></table></form>\n";
         }
@@ -212,25 +212,25 @@ if (isset($lid) && ($action != "editset") && $lid)
         echo "\t\t\t<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
             ."\t\t\t\t<tr bgcolor='#555555'><td height='4' colspan='2'>"
             ."<font size='1' face='verdana' color='white'><strong>"
-            ._LABELSET.":</strong> {$row['label_name']}</font></td></tr>\n"
+            ._("Label Set").":</strong> {$row['label_name']}</font></td></tr>\n"
             ."\t\t\t\t<tr bgcolor='#999999'>\n"
             ."\t\t\t\t\t<td>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
-            ._CLOSEWIN."' align='right' "
+            ._("Close Window")."' align='right' "
             ."onClick=\"window.open('labels.php', '_top')\">\n"
             ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt=''>\n"
             ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
             ."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt=''>\n"
             ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/edit.png' title='"
-            ._L_EDIT_BT."' align='left' "
+            ._("Edit label set")."' align='left' "
             ."onclick=\"window.open('labels.php?action=editset&amp;lid=$lid', '_top')\">\n"
             ."\t\t\t\t\t<a href='labels.php?action=delset&amp;lid=$lid'>"
-            ."<img src='$imagefiles/delete.png' border='0' alt='"._L_DEL_BT."' title='"
-            ._L_DEL_BT."' align='left' "
+            ."<img src='$imagefiles/delete.png' border='0' alt='"._("Delete label set")."' title='"
+            ._("Delete label set")."' align='left' "
             ."onClick=\"return confirm('Are you sure?')\"></a>\n"
-            ."\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' alt='"._EXPORTLABEL."' title='"
-            ._EXPORTLABEL."' align='left' "
+            ."\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' alt='"._("Export Label Set")."' title='"
+            ._("Export Label Set")."' align='left' "
             ."onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t</tr>\n"
@@ -243,21 +243,21 @@ if (isset($lid) && ($action != "editset") && $lid)
     echo "\t\t\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'><thead align='center'>\n"
         ."\t\t\t\t<tr bgcolor='#555555' >\n"
         ."\t\t\t\t\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
-        ._LABELANS
+        ._("Labels")
         ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t</tr>\n"
         ."\t\t\t\t<tr bgcolor='#BBBBBB'>\n"
         ."\t\t\t\t\t<td width='10%'><strong><font size='1' face='verdana'>\n"
-        ._LL_CODE
+        ._("Code")
         ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t\t<td width='50%'><strong><font size='1' face='verdana'>\n"
-        ._LL_ANSWER
+        ._("Title")
         ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t\t<td width='20%'><strong><font size='1' face='verdana'>\n"
-        ._LL_ACTION
+        ._("Action")
         ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t\t<td width='20%'><strong><font size='1' face='verdana'>\n"
-         ._LL_SORTORDER
+         ._("Order")
         ."\t\t\t\t\t</font></strong></td>\n"
         ."\t\t\t\t</tr></thead>\n"
         ."\t\t\t\t\n";
@@ -281,21 +281,21 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t<input type='text' $slstyle name='title' size='60' value=\"{$row['title']}\">\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td width='20%'>\n"
-            ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_SAVE."' />\n";
+            ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Save")."' />\n";
         if ($activeuse == 0)
             {
-            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DEL."' />\n";
+            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Del")."' />\n";
             }
         echo "\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td>\n";
         if ($position > 0)
             {
-            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_UP."' />\n";
+            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Up")."' />\n";
             }
         else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left' alt=''>";}
         if ($position < $labelcount-1)
             {
-            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_DN."' />\n";
+            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Dn")."' />\n";
             }
         echo "\t\t\t\t\t</td></tbody></table>\n"
             ."\t\t\t\t<input type='hidden' name='sortorder' value='{$row['sortorder']}'>\n"
@@ -319,7 +319,7 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t<input type='text' $slstyle name='title' size='60'>\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td width='20%'>\n"
-            ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._AL_ADD."'>\n"
+            ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Add")."'>\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td>\n";
         echo "<script type='text/javascript' language='javascript'>\n"
@@ -340,7 +340,7 @@ if (isset($lid) && ($action != "editset") && $lid)
         echo "\t\t\t\t<tr>\n"
             ."\t\t\t\t\t<td colspan='4' align='center'>\n"
             ."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><strong>"
-            ._WARNING."</strong>: "._LB_ACTIVEUSE."</i></font></font>\n"
+            ._("Warning")."</strong>: "._("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></font></font>\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t</tr>\n";
         }
@@ -348,7 +348,7 @@ if (isset($lid) && ($action != "editset") && $lid)
 		."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
 		."\t\t\t\t\t<tr><td width='80%'></td>"
         ."\t\t\t\t<td></td><td><input $btstyle type='submit' name='method' value='"
-        ._AL_FIXSORT."'></td>\n"
+        ._("Fix Sort")."'></td>\n"
         ."\t\t\t\t</tr></tbody></table>"
         ."\t\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"
         ."\t\t\t\t\t<input type='hidden' name='action' value='modanswers'>\n"
@@ -358,7 +358,7 @@ if (isset($lid) && ($action != "editset") && $lid)
         echo "\t\t\t\t<tr>\n"
             ."\t\t\t\t\t<td colspan='4' align='center'>\n"
             ."\t\t\t\t\t\t$setfont<font color='red' size='1'><i><strong>"
-            ._WARNING."</strong>: "._LB_TOTALUSE."</i><br />";
+            ._("Warning")."</strong>: "._("Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.")."</i><br />";
         foreach ($qidarray as $qd) {echo "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
         echo "</font></font>\n"
             ."\t\t\t\t\t</td>\n"
@@ -386,7 +386,7 @@ function updateset($lid)
     $query = "UPDATE {$dbprefix}labelsets SET label_name='{$_POST['label_name']}' WHERE lid=$lid";
     if (!$result = $connect->Execute($query))
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         }
     }
 function delset($lid)
@@ -398,7 +398,7 @@ function delset($lid)
     $count = $result->RecordCount();
     if ($count > 0)
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELSET."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.")."\")\n //-->\n</script>\n";
         return false;
         }
     else //There are no dependencies. We can delete this safely
@@ -420,7 +420,7 @@ function insertset()
     $query = "INSERT INTO {$dbprefix}labelsets (label_name) VALUES ('{$_POST['label_name']}')";
     if (!$result = $connect->Execute($query))
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_UPDATESET." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         }
     else
         {
@@ -438,11 +438,11 @@ function modanswers($lid)
             }
         }
     if (!isset($_POST['method'])) {
-        $_POST['method'] = _AL_SAVE;
+        $_POST['method'] = _("Save");
     }
 	switch($_POST['method'])
         {
-        case _AL_ADD:
+        case _("Add"):
             if (isset($_POST['code']) && $_POST['code']!='')
                 {
                 $query = "INSERT INTO {$dbprefix}labels (lid, code, title, sortorder) VALUES ($lid, '{$_POST['code']}', '{$_POST['title']}', '{$_POST['sortorder']}')";
@@ -452,14 +452,14 @@ function modanswers($lid)
                     }
                 }
             break;
-        case _AL_SAVE:
+        case _("Save"):
             $query = "UPDATE {$dbprefix}labels SET code='{$_POST['code']}', title='{$_POST['title']}', sortorder='{$_POST['sortorder']}' WHERE lid=$lid AND code='{$_POST['old_code']}'";
             if (!$result = $connect->Execute($query))
                 {
                 echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_EDITANS." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                 }
             break;
-        case _AL_UP:
+        case _("Up"):
             $newsortorder=sprintf("%05d", $_POST['sortorder']-1);
             $replacesortorder=$newsortorder;
             $newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
@@ -470,7 +470,7 @@ function modanswers($lid)
             $cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
             $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
             break;
-        case _AL_DN:
+        case _("Dn"):
             $newsortorder=sprintf("%05d", $_POST['sortorder']+1);
             $replacesortorder=$newsortorder;
             $newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
@@ -482,14 +482,14 @@ function modanswers($lid)
             $cdquery = "UPDATE {$dbprefix}labels SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
             $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
             break;
-        case _AL_DEL:
+        case _("Del"):
             $query = "DELETE FROM {$dbprefix}labels WHERE lid=$lid AND code='{$_POST['old_code']}'";
             if (!$result = $connect->Execute($query))
                 {
                 echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELANS." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                 }
             break;
-        case _AL_FIXSORT:
+        case _("Fix Sort"):
             fixorder($lid);
             break;
         }
@@ -517,7 +517,7 @@ function helpscreen()
     echo "\t\t\t<table width='100%'><tr><td><table width='100%' align='center' cellspacing='0'>\n";
     echo "\t\t\t\t<tr>\n";
     echo "\t\t\t\t\t<td bgcolor='#555555' height='8'>\n";
-    echo "\t\t\t\t\t\t<font color='white' size='1'><strong>"._HELP."</strong></font>\n";
+    echo "\t\t\t\t\t\t<font color='white' size='1'><strong>"._("Help")."</strong></font>\n";
     echo "\t\t\t\t\t</td>\n";
     echo "\t\t\t\t</tr>\n";
     echo "\t\t\t\t<tr>\n";

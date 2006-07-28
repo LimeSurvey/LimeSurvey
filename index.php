@@ -38,6 +38,7 @@
 session_start();
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 require_once(dirname(__FILE__).'/config.php');
+require_once('clienttext.php');
 
 if ( $embedded_inc != '' )
 	require_once( $embedded_inc );
@@ -53,8 +54,9 @@ $tpldir="$publicdir/templates";
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$surveyid)
 	{
-	$langfilename="$publicdir/lang/$defaultlang.lang.php";
-	require($langfilename);
+
+//	$langfilename="$publicdir/lang/$defaultlang.lang.php";
+//	require($langfilename);
 	//A nice exit
 	sendcacheheaders();
 	doHeader();
@@ -96,15 +98,11 @@ foreach ($tablelist as $tbl)
 if (!$thissurvey['templatedir']) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/{$thissurvey['templatedir']}";}
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 
-//REQUIRE THE LANGUAGE FILE
-$langdir="$publicdir/lang";
-$langfilename="$langdir/{$thissurvey['language']}.lang.php";
-//Use the default language file if the $thissurvey['language'] file doesn't exist
-if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-require_once($langfilename);
-$saveerror=error_reporting(3);
-require_once("$langdir/english.lang.php"); //Load missing values from english file
-error_reporting ($saveerror);
+//Set the appropiate language settings for gettext
+
+bindtextdomain($thissurvey['language'], dirname(__FILE__).'/locale');
+textdomain($thissurvey['language']);
+
 
 //MAKE SURE SURVEY HASN'T EXPIRED
 if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
@@ -1016,7 +1014,7 @@ function submittokens()
 				$langdir2="$homedir/lang/english";
 				}
 			require("$langdir2/messages.php");
-			$message = _TC_EMAILCONFIRM;
+			$message = _("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}");
 			}
 
         $message=Replacefields($message, $fieldsarray);

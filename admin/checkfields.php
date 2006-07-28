@@ -178,10 +178,10 @@ echo $htmlheader;
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._CHECKFIELDS."</strong></font></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Check Database Fields")."</strong></font></td></tr>\n";
 echo "\t<tr bgcolor='#CCCCCC'><td>\n";
 
-echo "$setfont<strong>"._CF_CHECKTABLES.":</strong><br /><font size='1'>\n";
+echo "$setfont<strong>"._("Checking to ensure all tables exist").":</strong><br /><font size='1'>\n";
 
 if (!isset($databasetabletype)) {$databasetabletype="MyISAM";}
 
@@ -193,7 +193,7 @@ if (!isset($tablelist) || !is_array($tablelist))
     }
 foreach ($alltables as $at)
     {
-    echo "<strong>-></strong>"._CF_CHECKING." <strong>$at</strong>..<br />";
+    echo "<strong>-></strong>"._("Checking")." <strong>$at</strong>..<br />";
     if (!in_array($at, $tablelist))
         {
         //Create table
@@ -216,18 +216,18 @@ foreach ($alltables as $at)
         $ctquery .= ")\n";
         $ctquery .= "TYPE=$databasetabletype\n";
         $ctresult=$connect->Execute($ctquery) or die ("Couldn't create $at table<br />$ctquery<br />".htmlspecialchars($connect->ErrorMsg()));
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_TABLECREATED."! ($at)</font><br />\n";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._("Table Created")."! ($at)</font><br />\n";
         }
     else
         {
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._("OK")."</font><br />\n";
         }
     //echo "<br />\n";
     }
 echo "<br /></font>\n";
 
 
-echo "$setfont<strong>"._CF_CHECKFIELDS.":</strong><br /><font size='1'>\n";
+echo "$setfont<strong>"._("Checking to ensure all fields exist").":</strong><br /><font size='1'>\n";
 
 //GET LIST OF TABLES
 if ($database_exists)
@@ -250,7 +250,7 @@ foreach ($tablenames as $tn)
 function checktable($tablename)
     {
     global $databasename, $allfields, $connect;
-    echo "<strong>-></strong>"._CF_CHECKING." <strong>$tablename</strong>..<br />";
+    echo "<strong>-></strong>"._("Checking")." <strong>$tablename</strong>..<br />";
     $fieldnames = array_values($connect->MetaColumnNames($tablename, true));
     foreach ($allfields as $af)
         {
@@ -275,7 +275,7 @@ function checktable($tablename)
                 {
                 $query="ALTER TABLE `$tablename` ADD $af[2]";
                 $result=$connect->Execute($query) or die("Insert field failed.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._CF_FIELDCREATED."</font> ($af[1]) <br />\n";
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._("Field Created")."</font> ($af[1]) <br />\n";
                 $addedfield="Y";
                 }
             else
@@ -286,7 +286,7 @@ function checktable($tablename)
         }
     if (isset($addedfield) && $addedfield != "Y")
         {
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._CF_OK."</font><br />\n";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._("OK")."</font><br />\n";
         }
     }
 
@@ -310,7 +310,7 @@ if (isset($checkfororphans) && $checkfororphans)
 
 echo "</font></font></font></td></tr>\n";
 echo "<tr><td align='center' bgcolor='#CCCCCC'>\n";
-echo "<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 
 echo "</td></tr></table>\n";
 echo "<br />\n";

@@ -50,10 +50,8 @@ sendcacheheaders();
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
 while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
-$langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
-if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
-require($langfilename);
+
+echo(getLanguageCodefromLanguage($surveylanguage));
 
 $surveyoptions = browsemenubar();
 echo $htmlheader;
@@ -63,12 +61,12 @@ echo "<table><tr><td></td></tr></table>\n"
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _BROWSERESPONSES."</strong></font></td></tr>\n"
+		. _("Browse Responses")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
-		. _ST_NODB1."<br />\n"
-		. _ST_NODB2."<br /><br />\n"
-		."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
+		. _("The defined surveyor database does not exist")."<br />\n"
+		. _("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
+		."<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>";
 	exit;
@@ -76,12 +74,12 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 if (!$surveyid && !$action) //NO SID OR ACTION PROVIDED
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _BROWSERESPONSES."</strong></font></td></tr>\n"
+		. _("Browse Responses")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
-		. _BR_NOSID."<br /><br />\n"
+		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
+		. _("You have not selected a survey to browse.")."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		. _GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		. _("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>";
 	exit;
@@ -100,12 +98,12 @@ if ($actcount > 0)
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 			{
 			echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-				. _BROWSERESPONSES.": <font color='silver'>$surveyname</font></strong></td></font></tr>\n"
+				. _("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></font></tr>\n"
 				."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-				."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
-				. _BR_NOTACTIVATED."<br /><br />\n"
+				."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
+				. _("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
 				."<input $btstyle type='submit' value='"
-				. _GO_ADMIN."' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
+				. _("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
 				."</td></tr></table>\n"
 				."</body>\n</html>";
 			exit;
@@ -115,11 +113,11 @@ if ($actcount > 0)
 else //SURVEY MATCHING $surveyid DOESN'T EXIST
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _BROWSERESPONSES."</strong></font></td></tr>\n"
+		. _("Browse Responses")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
-		. _BR_NOSURVEY." ($surveyid)<br /><br />\n"
-		."<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
+		. _("There is no matching survey.")." ($surveyid)<br /><br />\n"
+		."<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>";
 	exit;
@@ -130,7 +128,7 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 if ($action == "id") // Looking at a SINGLE entry
 	{
 	//SHOW HEADER
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._BROWSERESPONSES.": <font color='silver'>$surveyname</font></strong></font></td></tr>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Browse Responses").": <font color='silver'>$surveyname</font></strong></font></td></tr>\n";
 	if (!isset($_POST['sql']) || !$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
 	echo "</table>\n"
 		."<table><tr><td></td></tr></table>\n";
@@ -232,25 +230,25 @@ if ($action == "id") // Looking at a SINGLE entry
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'>\n"
 		."\t\t<td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _VIEWRESPONSE.":</strong> $id</font></td></tr>\n"
+		. _("View Response").":</strong> $id</font></td></tr>\n"
 		."\t<tr bgcolor='#999999'><td colspan='2'>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt=''>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 		."\t\t\t<input type='image' align='left' src='$imagefiles/edit.png' title='"
-		. _BR_EDITRESPONSE."' alt='"._BR_EDITRESPONSE."' onClick=\"window.open('dataentry.php?action=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
+		. _("Edit this entry")."' alt='"._("Edit this entry")."' onClick=\"window.open('dataentry.php?action=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
 		."\t\t\t<a href='dataentry.php?action=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'>"
 		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='"
-		. _BR_DELRESPONSE."' title='"
-		. _BR_DELRESPONSE."' onClick=\"return confirm('"._DR_RUSURE."')\" /></a>\n"
+		. _("Delete this entry")."' title='"
+		. _("Delete this entry")."' onClick=\"return confirm('"._("Are you sure you want t."')\" /></a>\n"
         . "\t\t\t<input type='image' name='Export' src='$imagefiles/exportsql.png' title='"
-        . _S_EXPORT_BT_SINGLE."' alt='". _S_EXPORT_BT_SINGLE."'align='left'  onclick=\"window.open('export.php?sid=$surveyid&id=$id', '_blank')\">\n"
+        . _("Export this Response")."' alt='". _("Export this Response")."'align='left'  onclick=\"window.open('export.php?sid=$surveyid&id=$id', '_blank')\">\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt=''>\n"
 		."\t\t\t<input type='image' name='DataBack' align='left' src='$imagefiles/databack.png' title='"
-		. _D_BACK."' onClick=\"window.open('browse.php?action=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
+		. _("Show last...")."' onClick=\"window.open('browse.php?action=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt=''>\n"
 		."\t\t\t<input type='image' name='DataForward' align='left' src='$imagefiles/dataforward.png' title='"
-		. _D_FORWARD."' onClick=\"window.open('browse.php?action=id&amp;id=$next&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
+		. _("Show next...")."' onClick=\"window.open('browse.php?action=id&amp;id=$next&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
@@ -283,7 +281,7 @@ if ($action == "id") // Looking at a SINGLE entry
 elseif ($action == "all")
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _BROWSERESPONSES.":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n";
+		. _("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n";
 	
 	if (!isset($_POST['sql']))
 		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
@@ -468,30 +466,30 @@ elseif ($action == "all")
 	echo "<table><tr><td></td></tr></table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _VIEWCONTROL.":</strong></font></td></tr>\n"
+		. _("Data View Control").":</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#999999'><td align='left'>\n";
 	if (!isset($_POST['sql']))
 		{
 		echo "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt=''>\n"
 			."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 			."\t\t\t<input type='image' name='DataBegin' align='left' src='$imagefiles/databegin.png' title='"
-			. _D_BEGIN."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit','_top')\" />\n"
+			. _("Show start..")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit','_top')\" />\n"
 			."\t\t\t<input type='image' name='DataBack' align='left'  src='$imagefiles/databack.png' title='"
-			. _D_BACK."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$last&amp;limit=$limit','_top')\" />\n"
+			. _("Show last...")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$last&amp;limit=$limit','_top')\" />\n"
 			."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt=''>\n"
 			."\t\t\t<input type='image' name='DataForward' align='left' src='$imagefiles/dataforward.png' title='"
-			. _D_FORWARD."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$next&amp;limit=$limit','_top')\" />\n"
+			. _("Show next...")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$next&amp;limit=$limit','_top')\" />\n"
 			."\t\t\t<input type='image' name='DataEnd' align='left' src='$imagefiles/dataend.png' title='"
-			. _D_END."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit','_top')\" />\n"
+			. _("Show last...")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit','_top')\" />\n"
 			."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n";
 		}
 	echo "\t\t</td>\n"
 		."\t\t<td align='right'>\n"
 		."\t\t<form action='browse.php' method='post'><font size='1' face='verdana'>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt=''>\n"
-		."\t\t\t"._BR_DISPLAYING."<input type='text' $slstyle size='4' value='$dtcount2' name='limit'>\n"
-		."\t\t\t"._BR_STARTING."<input type='text' $slstyle size='4' value='$start' name='start'>\n"
-		."\t\t\t<input type='submit' value='"._BR_SHOW."' $btstyle>\n"
+		."\t\t\t"._("Records Displayed:")."<input type='text' $slstyle size='4' value='$dtcount2' name='limit'>\n"
+		."\t\t\t"._("Starting From:")."<input type='text' $slstyle size='4' value='$start' name='start'>\n"
+		."\t\t\t<input type='submit' value='"._("Show")."' $btstyle>\n"
 		."\t\t</font>\n"
 		."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t<input type='hidden' name='action' value='all'>\n";
@@ -553,7 +551,7 @@ echo 	 "\t\t</form></td>\n"
 else
 	{
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _BROWSERESPONSES.":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
+		. _("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
 		. $surveyoptions;
 	echo "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";

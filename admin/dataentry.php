@@ -51,13 +51,13 @@ if (!$database_exists)
 	//echo "</table>\n";
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></font></td></tr>\n"
+		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
-		._ST_NODB1."<br />\n"
-		._ST_NODB2."<br /><br />\n"
+		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
+		._("The defined surveyor database does not exist")."<br />\n"
+		._("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"></font><br />\n"
+		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"></font><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n";
 	exit;
@@ -67,12 +67,12 @@ if (!$surveyid && !$action)
 	//echo "</table>\n";
 	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></font></td></tr>\n"
+		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."<strong><font color='red'>"._ERROR."</font></strong><br />\n"
-		._DE_NOSID."<br /><br />\n"
+		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
+		._("You have not selected a survey for data-entry.")."<br /><br />\n"
 		."<input $btstyle type='submit' value='"
-		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</font></td></tr></table>\n"
 		."</body>\n";
 	exit;
@@ -87,7 +87,7 @@ if ($action == "insert")
 	{
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></font></td></tr>\n"
+		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 	if (isset($_POST['save']) && $_POST['save'] == "on")
@@ -107,9 +107,9 @@ if ($action == "insert")
 			$password=$saver['password'];
 			}
 		$errormsg="";
-		if (!$saver['identifier']) {$errormsg .= _ERROR.": "._SAVENONAME;}
-		if (!$saver['password']) {$errormsg .= _ERROR.": "._SAVENOPASS;}
-		if ($saver['password'] != $saver['passwordconfirm']) {$errormsg .= _ERROR.": "._SAVENOMATCH;}
+		if (!$saver['identifier']) {$errormsg .= _("Error").": "._SAVENONAME;}
+		if (!$saver['password']) {$errormsg .= _("Error").": "._SAVENOPASS;}
+		if ($saver['password'] != $saver['passwordconfirm']) {$errormsg .= _("Error").": "._SAVENOMATCH;}
 		if (!$errormsg && $saver['identifier'] && !returnglobal('redo'))
 			{
 		    //All the fields are correct. Now make sure there's not already a matching saved item
@@ -130,13 +130,13 @@ if ($action == "insert")
      			   <form method='post'>
 				  <table class='outlinetable' cellspacing='0' align='center'>
 				  <tr>
-				   <td align='right'>"._DE_SAVEID."</td>
+				   <td align='right'>"._("Identifier:")."</td>
 				   <td><input type='text' name='save_identifier' value='".$_POST['save_identifier']."'></td></tr>
-				  <tr><td align='right'>"._DE_SAVEPW."</td>
+				  <tr><td align='right'>"._("Password:")."</td>
 				   <td><input type='password' name='save_password' value='".$_POST['save_password']."'></td></tr>
-				  <tr><td align='right'>"._DE_SAVEPWCONFIRM."</td>
+				  <tr><td align='right'>"._("Confirm Password:")."</td>
 				   <td><input type='password' name='save_confirmpassword' value='".$_POST['save_confirmpassword']."'></td></tr>
-				  <tr><td align='right'>"._DE_SAVEEMAIL."</td>
+				  <tr><td align='right'>"._("Email:")."</td>
 				   <td><input type='text' name='save_email' value='".$_POST['save_email']."'>\n";
 			foreach ($_POST as $key=>$val)
 				{
@@ -355,29 +355,29 @@ if ($action == "insert")
 				echo "Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg());
 				}
 			}
-		echo "\t\t\t<font color='green'><strong>"._SUCCESS."</strong></font><br />\n";
+		echo "\t\t\t<font color='green'><strong>"._("Success")."</strong></font><br />\n";
 		
 		$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
 		$fresult = db_execute_assoc($fquery);
 		while ($frow = $fresult->FetchRow())
 			{
-			echo "\t\t\t"._DE_RECORD." {$frow['id']}<br />\n";
+			echo "\t\t\t"._("The entry was assigned the following record id: ")." {$frow['id']}<br />\n";
 			$thisid=$frow['id'];
 			}
 		}
 
 	
-	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$surveyid'>"._DE_ADDANOTHER."</a>]<br />\n";
-	echo "[<a href='$scriptname?sid=$surveyid'>"._B_ADMIN_BT."</a><br />\n";
+	echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$surveyid'>"._("Add Another Record")."</a>]<br />\n";
+	echo "[<a href='$scriptname?sid=$surveyid'>"._("Return to Survey Administration")."</a><br />\n";
 	if (isset($thisid))
 		{
-		echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=id&id=$thisid'>"._DE_VIEWTHISONE."</a>]<br />\n";
+		echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=id&id=$thisid'>"._("View This Record")."</a>]<br />\n";
 	    }
 	if (isset($_POST['save']) && $_POST['save'] == "on") 
 		{
-	    echo "\t\t\t[<a href='saved.php?sid=$surveyid&action=all'>"._BROWSESAVED."</a>]<br />\n";
+	    echo "\t\t\t[<a href='saved.php?sid=$surveyid&action=all'>"._("Browse Saved Responses")."</a>]<br />\n";
 		}
-	echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=all&limit=50'>"._DE_BROWSE."</a>]<br />\n"
+	echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=all&limit=50'>"._("Browse Responses")."</a>]<br />\n"
 		."\t</td></tr>\n"
 		."</table>\n"
 		."</body>\n";
@@ -388,7 +388,7 @@ elseif ($action == "edit" || $action == "editsaved")
 	{
 	echo "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._BROWSERESPONSES."</strong></font></td></tr>\n";
+		._("Browse Responses")."</strong></font></td></tr>\n";
 	if (isset($surveyheader)) {echo $surveyheader;}
 	echo $surveyoptions
 		."</table>\n";
@@ -549,9 +549,9 @@ elseif ($action == "edit" || $action == "editsaved")
 	echo "<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></font></td></tr>\n"
+		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<strong>"
-		._DE_EDITING." (ID $id)</strong></font></td></tr>\n"
+		._("Editing Response")." (ID $id)</strong></font></td></tr>\n"
 		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 
 	foreach ($results as $idrow)
@@ -579,7 +579,7 @@ elseif ($action == "edit" || $action == "editsaved")
 						.$idrow[$fnames[$i][0]] . "'>\n";
 					break;	
 				case "id":
-					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>"._DE_NOMODIFY."</font>\n";
+					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>"._("Cannot be modified")."</font>\n";
 					break;
 				case "5": //5 POINT CHOICE radio-buttons
 					for ($x=1; $x<=5; $x++)
@@ -1002,10 +1002,10 @@ elseif ($action == "edit" || $action == "editsaved")
 					echo ">"._PLEASECHOOSE."..</option>\n"
 						."\t\t\t\t<option value='Y'";
 					if ($idrow[$fnames[$i][0]] == "Y") {echo " selected";}
-					echo ">"._YES."</option>\n"
+					echo ">"._("Yes")."</option>\n"
 						."\t\t\t\t<option value='N'";
 					if ($idrow[$fnames[$i][0]] == "N") {echo " selected";}
-					echo ">"._NO."</option>\n"
+					echo ">"._("No")."</option>\n"
 						."\t\t\t</select>\n";
 					break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1063,13 +1063,13 @@ elseif ($action == "edit" || $action == "editsaved")
 							."\t\t<td>$setfont\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-						echo " />"._YES."&nbsp;\n"
+						echo " />"._("Yes")."&nbsp;\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='U'";
 						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
-						echo " />"._UNCERTAIN."&nbsp;\n"
+						echo " />"._("Uncertain")."&nbsp;\n"
 							."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='N'";
 						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
-						echo " />"._NO."&nbsp;\n"
+						echo " />"._("No")."&nbsp;\n"
 							."\t\t</font></td>\n"
 							."\t</tr>\n";
 						$i++;
@@ -1146,7 +1146,7 @@ elseif ($action == "edit" || $action == "editsaved")
 		{
 		echo "	<tr>
 			 		<td bgcolor='#CCCCCC' align='center'>
-					 <input type='submit' $btstyle value='"._DE_UPDATE."'>
+					 <input type='submit' $btstyle value='"._("Update Entry")."'>
 					 <input type='hidden' name='id' value='$id'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='action' value='update'>
@@ -1173,10 +1173,10 @@ elseif ($action == "edit" || $action == "editsaved")
 			  </script>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-	    echo "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>"._DE_SAVEENTRY."</label>\n";
+	    echo "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>"._("Save as a partially completed survey")."</label>\n";
 		echo "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 		echo "<table align='center' class='outlinetable' cellspacing='0'>
-			  <tr><td align='right'>"._DE_SAVEID."</td>
+			  <tr><td align='right'>"._("Identifier:")."</td>
 			  <td><input type='text' name='save_identifier'";
 		if (returnglobal('identifier')) 
 			{
@@ -1211,7 +1211,7 @@ elseif ($action == "update")
 	{
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></font></td></tr>\n"
+		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
 	$iresult = db_execute_assoc($iquery);
@@ -1295,10 +1295,10 @@ elseif ($action == "update")
 	while (ob_get_level() > 0) {
    		ob_end_flush();
 	}
-	echo "<font color='green'><strong>"._SUCCESS."</strong></font><br />\n"
-		._DE_UPDATED."<br /><br />\n"
-		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>"._DE_VIEWTHISONE."</a>\n<br />\n"
-		."<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a><br />\n"
+	echo "<font color='green'><strong>"._("Success")."</strong></font><br />\n"
+		._("Record has been updated.")."<br /><br />\n"
+		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>"._("View This Record")."</a>\n<br />\n"
+		."<a href='browse.php?sid=$surveyid&action=all'>"._("Browse Responses")."</a><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n";
 	}
@@ -1308,7 +1308,7 @@ elseif ($action == "delete")
 	$thissurvey=getSurveyInfo($surveyid);
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></font></td></tr>\n"
+		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong><br />\n"
 		."\t\t\t".$thissurvey['description']."\n"
@@ -1317,8 +1317,8 @@ elseif ($action == "delete")
 	$delquery = "DELETE FROM $surveytable WHERE id=$id";
 	echo "\t<tr>\n";
 	$delresult = $connect->Execute($delquery) or die ("Couldn't delete record $id<br />\n".htmlspecialchars($connect->ErrorMsg()));
-	echo "\t\t<td align='center'><br />$setfont<strong>"._DE_DELRECORD." (ID: $id)</strong><br /><br />\n"
-		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>"._DE_BROWSE."</a></font>\n"
+	echo "\t\t<td align='center'><br />$setfont<strong>"._("Record Deleted")." (ID: $id)</strong><br /><br />\n"
+		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>"._("Browse Responses")."</a></font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
@@ -1332,7 +1332,7 @@ else
 	// PRESENT SURVEY DATAENTRY SCREEN
 	echo "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._BROWSERESPONSES."</strong></font></td></tr>\n"
+		._("Browse Responses")."</strong></font></td></tr>\n"
 		.$surveyoptions
 		."</table>";
 		
@@ -1344,7 +1344,7 @@ else
 	echo "<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._DATAENTRY."</strong></font></td></tr>\n"
+		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#777777'>\n"
 		."\t\t<td colspan='3' align='center'><font color='white'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
@@ -1356,7 +1356,7 @@ else
 		{
 		echo "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"._TOKEN.":</strong></font></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"._("Token").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='token'>\n"
 			."\t\t</td>\n"
@@ -1367,7 +1367,7 @@ else
 		echo "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
-			._DATESTAMP.":</strong></font></td>\n"
+			._("Datestamp").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='datestamp' value='$localtimedate'>\n"
 			."\t\t</td>\n"
@@ -1378,7 +1378,7 @@ else
 		echo "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
-			._IPADDRESS.":</strong></font></td>\n"
+			._("IP-Address").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='ipaddr' value='NULL'>\n"
 			."\t\t</td>\n"
@@ -1420,7 +1420,7 @@ else
 			$distinctresult=db_execute_assoc($distinctquery);
 			while ($distinctrow=$distinctresult->FetchRow())
 				{
-				if ($x > 0) {$explanation .= " <i>"._DE_AND."</i><br />";}
+				if ($x > 0) {$explanation .= " <i>"._("AND")."</i><br />";}
 				$conquery="SELECT cid, cqid, cfieldname, {$dbprefix}questions.title, {$dbprefix}questions.lid, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
 				$conresult=db_execute_assoc($conquery);
 				while ($conrow=$conresult->FetchRow())
@@ -1430,8 +1430,8 @@ else
 						case "Y": 
 							switch ($conrow['value'])
 								{
-								case "Y": $conditions[]=_YES; break;
-								case "N": $conditions[]=_NO; break;
+								case "Y": $conditions[]=_("Yes"); break;
+								case "N": $conditions[]=_("No"); break;
 								}
 							break;
 						case "G":
@@ -1448,9 +1448,9 @@ else
 						case "C":
 							switch($conrow['value'])
 								{
-								case "Y": $conditions[]=_YES; break;
-								case "U": $conditions[]=_UNCERTAIN; break;
-								case "N": $conditions[]=_NO; break;
+								case "Y": $conditions[]=_("Yes"); break;
+								case "U": $conditions[]=_("Uncertain"); break;
+								case "N": $conditions[]=_("No"); break;
 								} // switch
 							break;
 						case "E":
@@ -1495,7 +1495,7 @@ else
 									$conditions[sizeof($conditions)-1]="(".$ansrow['answer'].") : ".end($conditions); 
 									}
 								}
-							$operator=_DE_AND;	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
+							$operator=_("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
 							break;
 						default:
 							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
@@ -1504,7 +1504,7 @@ else
 								{
 								$conditions[]=$ansrow['answer'];
 								}
-							$operator=_DE_OR;	
+							$operator=_("OR");	
                             $conditions = array_unique($conditions);
 							break;
 						}
@@ -1512,11 +1512,11 @@ else
 				if (isset($conditions) && count($conditions) > 1)
 					{
 					$conanswers = "'".implode("' ".$operator." '", $conditions)."'";
-					$explanation .= " -" . str_replace("{ANSWER}", $conanswers, _DE_CONDITIONHELP2);
+					$explanation .= " -" . str_replace("{ANSWER}", $conanswers, _("to question {QUESTION}, you answered {ANSWER}"));
 					}
 				else
 					{
-					$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", _DE_CONDITIONHELP2);
+					$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", _("to question {QUESTION}, you answered {ANSWER}"));
 					}
 				unset($conditions);
 				$explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}$answer_section'", $explanation);
@@ -1525,7 +1525,7 @@ else
 
 			if ($explanation) 
 				{
-				$explanation = "<font color='maroon' size='1'>["._DE_CONDITIONHELP1."]<br />$explanation\n";
+				$explanation = "<font color='maroon' size='1'>["._("Only answer this if the following conditions are met:")."]<br />$explanation\n";
 				echo "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
 				}
 
@@ -1547,7 +1547,7 @@ else
 				{
 				$hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
 				$hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-				echo "\t\t\t<img src='$imagefiles/help.gif' alt='"._DE_QUESTIONHELP."' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+				echo "\t\t\t<img src='$imagefiles/help.gif' alt='"._("Help about this question")."' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
 				}
 			switch($deqrow['type'])
 				{
@@ -1660,7 +1660,7 @@ else
 						}
 					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
 					echo "\t\t\t</select>\n"
-						."\t\t\t<br />"._COMMENT.":<br />\n"
+						."\t\t\t<br />"._("Comment").":<br />\n"
 						."\t\t\t<textarea cols='40' rows='5' name='$fieldname"
 						."comment'></textarea>\n";
 					break;
@@ -1955,8 +1955,8 @@ else
 				case "Y": //YES/NO radio-buttons
 					echo "\t\t\t<select name='$fieldname'>\n";
 					echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";
-					echo "\t\t\t\t<option value='Y'>"._YES."</option>\n";
-					echo "\t\t\t\t<option value='N'>"._NO."</option>\n";
+					echo "\t\t\t\t<option value='Y'>"._("Yes")."</option>\n";
+					echo "\t\t\t\t<option value='N'>"._("No")."</option>\n";
 					echo "\t\t\t</select>\n";
 					break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
@@ -2012,9 +2012,9 @@ else
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
-						echo "\t\t\t\t<option value='Y'>"._YES."</option>\n";
-						echo "\t\t\t\t<option value='U'>"._UNCERTAIN."</option>\n";
-						echo "\t\t\t\t<option value='N'>"._NO."</option>\n";
+						echo "\t\t\t\t<option value='Y'>"._("Yes")."</option>\n";
+						echo "\t\t\t\t<option value='U'>"._("Uncertain")."</option>\n";
+						echo "\t\t\t\t<option value='N'>"._("No")."</option>\n";
 						echo "\t\t\t</select>\n";
 						echo "\t\t</td>\n";
 						echo "</tr>\n";
@@ -2095,16 +2095,16 @@ else
 				  </script>\n";
 			echo "\t<tr>\n";
 			echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-		    echo "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>"._DE_SAVEENTRY."</label>\n";
+		    echo "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>"._("Save as a partially completed survey")."</label>\n";
 			echo "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 			echo "<table align='center' class='outlinetable' cellspacing='0'>
-				  <tr><td align='right'>"._DE_SAVEID."</td>
+				  <tr><td align='right'>"._("Identifier:")."</td>
 				  <td><input type='text' name='save_identifier'></td></tr>
-				  <tr><td align='right'>"._DE_SAVEPW."</td>
+				  <tr><td align='right'>"._("Password:")."</td>
 				  <td><input type='password' name='save_password'></td></tr>
-				  <tr><td align='right'>"._DE_SAVEPWCONFIRM."</td>
+				  <tr><td align='right'>"._("Confirm Password:")."</td>
 				  <td><input type='password' name='save_confirmpassword'></td></tr>
-				  <tr><td align='right'>"._DE_SAVEEMAIL."</td>
+				  <tr><td align='right'>"._("Email:")."</td>
 				  <td><input type='text' name='save_email'></td></tr>
 				  </table>\n";
 			echo "\t\t</font></td>\n";
@@ -2120,7 +2120,7 @@ else
 		{
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-		echo "\t\t\t<font color='red'><strong>"._DE_NOTACTIVE."\n";
+		echo "\t\t\t<font color='red'><strong>"._("This survey is not yet active. Your response cannot be saved")."\n";
 		echo "\t\t</strong></font></font></td>\n";
 		echo "\t</tr>\n";	
 		}
@@ -2129,9 +2129,9 @@ else
 		echo "</form>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-		echo "\t\t\t<font color='red'><strong>"._ERROR."</strong></font><br />\n";
-		echo "\t\t\t"._DE_NOEXIST."</font><br /><br />\n";
-		echo "\t\t\t<input $btstyle type='submit' value='"._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "\t\t\t<font color='red'><strong>"._("Error")."</strong></font><br />\n";
+		echo "\t\t\t"._("The survey you selected does not exist")."</font><br /><br />\n";
+		echo "\t\t\t<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>";

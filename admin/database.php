@@ -79,7 +79,7 @@ elseif ($action == "insertnewgroup")
     {
     if (!$_POST['group_name'])
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPNAME."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be added. It is missing the mandatory group name")."\")\n //-->\n</script>\n";
         }
     else
         {
@@ -98,7 +98,7 @@ elseif ($action == "insertnewgroup")
             }
         else
             {
-            echo _ERROR.": The database reported the following error:<br />\n";
+            echo _("Error").": The database reported the following error:<br />\n";
             echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
             echo "<pre>".htmlspecialchars($query)."</pre>\n";
             echo "</body>\n</html>";
@@ -120,7 +120,7 @@ elseif ($action == "updategroup")
         }
     else
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPUPDATE."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be updated")."\")\n //-->\n</script>\n";
         }
 
     }
@@ -137,7 +137,7 @@ elseif ($action == "delgroupnone")
         }
     else
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPDELETE."\n$error\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
         }
     }
 
@@ -160,7 +160,7 @@ elseif ($action == "delgroup")
             }
         if ($total != $qtodel*3)
             {
-            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPDELETE."\")\n //-->\n</script>\n";
+            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\")\n //-->\n</script>\n";
             }
         }
     $query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
@@ -172,7 +172,7 @@ elseif ($action == "delgroup")
         }
     else
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_GROUPDELETE."\n$error\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
         }
     }
 elseif ($action == "reorderquestions")
@@ -190,7 +190,7 @@ elseif ($action == "insertnewquestion")
 	{
 	if (!$_POST['title'])
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_CODE."\")\n //-->\n</script>\n";		
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must insert a code in the mandatory field")."\")\n //-->\n</script>\n";		
 		}
 	else
     {
@@ -203,7 +203,7 @@ elseif ($action == "insertnewquestion")
     $result = $connect->Execute($query);
     if (!$result)
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         }
     else
         {
@@ -280,7 +280,7 @@ elseif ($action == "updatequestion")
     $_POST  = array_map('db_quote', $_POST);
     if (isset($cccount) && $cccount)
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONTYPECONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.")." ($qidlist)\")\n //-->\n</script>\n";
         }
     else
         {
@@ -299,7 +299,7 @@ elseif ($action == "updatequestion")
             $uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
             if (!$uqresult)
                 {
-                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                 }
 		   if ($oldtype !=  $_POST['type'] & $change == "0")
 		       {
@@ -307,13 +307,13 @@ elseif ($action == "updatequestion")
 				$result = mysql_query($query);	
 				if (!$result)
 					{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERS."\n".mysql_error()."\")\n //-->\n</script>\n";
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answers can't be deleted")."\n".mysql_error()."\")\n //-->\n</script>\n";
 					}
 			   }	
             }
         else
             {
-            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONUPDATE."\")\n //-->\n</script>\n";
+            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated")."\")\n //-->\n</script>\n";
             }
         }
     }
@@ -322,7 +322,7 @@ elseif ($action == "copynewquestion")
 	{
 	if (!$_POST['title'])
 		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_CODE."\")\n //-->\n</script>\n";		
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must insert a code in the mandatory field")."\")\n //-->\n</script>\n";		
 		}
 	else
     {
@@ -333,7 +333,7 @@ elseif ($action == "copynewquestion")
     $newqid = $connect->Insert_ID();
     if (!$result)
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWQUESTION."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         }
     if (returnglobal('copyanswers') == "Y")
         {
@@ -381,7 +381,7 @@ elseif ($action == "delquestion")
     if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
     if ($cccount) //there are conditions dependant on this question
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELCONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
         }
     else
         {
@@ -402,7 +402,7 @@ elseif ($action == "delquestion")
             }
         else
             {
-            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELETE."\n$error\")\n //-->\n</script>\n";
+            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted")."\n$error\")\n //-->\n</script>\n";
             }
         }
     }
@@ -418,7 +418,7 @@ elseif ($action == "delquestionall")
     if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
     if ($cccount) //there are conditions dependant on this question
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELCONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
         }
     else
         {
@@ -439,13 +439,13 @@ elseif ($action == "delquestionall")
             }
         else
             {
-            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_QUESTIONDELETE."\n$error\")\n //-->\n</script>\n";
+            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted")."\n$error\")\n //-->\n</script>\n";
             }
     }
 
 elseif ($action == "modanswer")
     {
-    if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _AL_ADD)) //TURN ALL OTHER DEFAULT SETTINGS TO NO
+    if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _("Add"))) //TURN ALL OTHER DEFAULT SETTINGS TO NO
         {
         $query = "UPDATE {$dbprefix}answers SET default_value = 'N' WHERE qid={$_POST['qid']}";
         $result=$connect->Execute($query) or die("Error occurred updating default_value settings");
@@ -457,10 +457,10 @@ elseif ($action == "modanswer")
     if (isset($_POST['default_value'])) {$_POST['oldanswer'] = db_quote($_POST['default_value']);}
     switch ($_POST['ansaction'])
         {
-        case _AL_FIXSORT:
+        case _("Fix Sort"):
             fixsortorder($_POST['qid']);
             break;
-        case _AL_SORTALPHA:
+        case _("Sort Alpha"):
             $uaquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$_POST['qid']}' ORDER BY answer";
             $uaresult = db_execute_assoc($uaquery) or die("Cannot get answers<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
             while($uarow=$uaresult->FetchRow())
@@ -480,10 +480,10 @@ elseif ($action == "modanswer")
                 $i++;
                 } // foreach
             break;
-        case _AL_ADD:
+        case _("Add"):
             if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
                 {
-                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWANSWERMISSING."\")\n //-->\n</script>\n";
+                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must include both a Code and an Answer")."\")\n //-->\n</script>\n";
                 }
             else
                 {
@@ -492,7 +492,7 @@ elseif ($action == "modanswer")
                 $matchcount = $uaresult->RecordCount();
                 if ($matchcount) //another answer exists with the same code
                     {
-                    echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWANSWERDUPLICATE."\")\n //-->\n</script>\n";
+                    echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. There is already an answer with this code")."\")\n //-->\n</script>\n";
                     }
                 else
                     {
@@ -501,10 +501,10 @@ elseif ($action == "modanswer")
                     }
                 }
             break;
-        case _AL_SAVE:
+        case _("Save"):
             if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
                 {
-                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATEMISSING."\")\n //-->\n</script>\n";
+                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. You must include both a Code and an Answer")."\")\n //-->\n</script>\n";
                 }
             else
                 {
@@ -521,13 +521,13 @@ elseif ($action == "modanswer")
                     }
                 if (isset($matchcount) && $matchcount) //another answer exists with the same code
                     {
-                    echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATEDUPLICATE."\")\n //-->\n</script>\n";
+                    echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. There is already an answer with this code")."\")\n //-->\n</script>\n";
                     }
                 else
                     {
                     if (isset($cccount) && $cccount) // there are conditions dependent upon this answer to this question
                         {
-                        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERUPDATECONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
+                        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.")." ($qidlist)\")\n //-->\n</script>\n";
                         }
                     else
                         {
@@ -537,7 +537,7 @@ elseif ($action == "modanswer")
                     }
                 }
             break;
-        case _AL_DEL:
+        case _("Del"):
             $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
             $ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
             $cccount=$ccresult->RecordCount();
@@ -545,7 +545,7 @@ elseif ($action == "modanswer")
             if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
             if ($cccount)
                 {
-                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_ANSWERDELCONDITIONS." ($qidlist)\")\n //-->\n</script>\n";
+                echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
                 }
             else
                 {
@@ -554,7 +554,7 @@ elseif ($action == "modanswer")
                 }
             fixsortorder($qid);
             break;
-        case _AL_UP:
+        case _("Up"):
             $newsortorder=sprintf("%05d", $_POST['sortorder']-1);
             $replacesortorder=$newsortorder;
             $newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
@@ -565,7 +565,7 @@ elseif ($action == "modanswer")
             $cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
             $cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
             break;
-        case _AL_DN:
+        case _("Dn"):
             $newsortorder=sprintf("%05d", $_POST['sortorder']+1);
             $replacesortorder=$newsortorder;
             $newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
@@ -614,7 +614,7 @@ elseif ($action == "insertnewsurvey")
     if ($_POST['url'] == "http://") {$_POST['url']="";}
     if (!$_POST['short_title'])
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_NEWSURVEY_TITLE."\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be created because it did not have a short title")."\")\n //-->\n</script>\n";
         }
     else
         {
@@ -662,7 +662,7 @@ elseif ($action == "insertnewsurvey")
             }
         else
             {
-            $errormsg=_DB_FAIL_NEWSURVEY." - ".$connect->ErrorMsg();
+            $errormsg=_("Survey could not be created")." - ".$connect->ErrorMsg();
             echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
             echo htmlspecialchars($isquery);
             }
@@ -707,7 +707,7 @@ elseif ($action == "updatesurvey")
         }
     else
         {
-        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._DB_FAIL_SURVEYUPDATE."\n".$connect->ErrorMsg() ." ($usquery)\")\n //-->\n</script>\n";
+        echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be updated")."\n".$connect->ErrorMsg() ." ($usquery)\")\n //-->\n</script>\n";
         }
     }
 

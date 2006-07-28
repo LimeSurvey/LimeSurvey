@@ -132,16 +132,16 @@ if (!$database_exists)
 	echo "<br />\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._SETUP."</strong></td></tr>\n"
+		._("PHPSurveyor Setup")."</strong></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"
-		._ERROR."<br />\n"
-		._ST_NODB1."</font></strong><br /><br />\n"
-		._ST_NODB2."<br />\n"
-		._ST_NODB3."<br /><br />\n"
-		._ST_NODB4." $databasename<br />\n"
+		._("Error")."<br />\n"
+		._("The defined surveyor database does not exist")."</font></strong><br /><br />\n"
+		._("Either your selected database has not yet been created or there is a problem accessing it.")."<br />\n"
+		._("PHPSurveyor can attempt to create this database for you.")."<br /><br />\n"
+		._("Your selected database name is:")." $databasename<br />\n"
 		."<br /><input $btstyle type='submit' value='"
-		._ST_CREATEDB."' onClick='location.href=\"createdb.php\"' /></center>\n"
+		._("Create Database")."' onClick='location.href=\"createdb.php\"' /></center>\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
 	exit;
@@ -321,7 +321,7 @@ function helpscreen()
 		."\t\t\t\t<tr>\n"
 		."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
 		."\t\t\t\t\t\t$setfont<font color='white' size='1'><strong>"
-		._HELP."</strong>\n"
+		._("Help")."</strong>\n"
 		."\t\t\t\t\t</font></font></td>\n"
 		."\t\t\t\t</tr>\n"
 		."\t\t\t\t<tr>\n"
@@ -403,7 +403,7 @@ function adminmenu() {
 				 <td height='26' valign='bottom'>
 			      <img src='{$imagefiles}/showhelp.png' align='right' alt='Show Help'>
 			      <img src='$imagefiles/blank.gif' width='5' height='1' alt=''>
-			      <a href='$scriptname' title='"._A_HOME_BT."'><img src='{$imagefiles}/home.png' alt='"._A_HOME_BT."' border='0'></a>
+			      <a href='$scriptname' title='"._("Default Administration Page")."'><img src='{$imagefiles}/home.png' alt='"._("Default Administration Page")."' border='0'></a>
 				 </td>
 				</tr>
 				<tr>

@@ -58,7 +58,7 @@ sendcacheheaders();
 DoHeader();
 echo "<meta http-equiv='content-script-type' content='text/javascript' />\n"
    . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n";
-echo "<title>"._S_PRINTABLE_BT."</title></head>\n<body>\n";
+echo "<title>"._("Printable Version of Survey")."</title></head>\n<body>\n";
 
 // PRESENT SURVEY DATAENTRY SCREEN
 
@@ -150,8 +150,8 @@ while ($degrow = $degresult->FetchRow())
 					case "Y": 
 						switch ($conrow['value'])
 							{
-							case "Y": $conditions[]=_YES; break;
-							case "N": $conditions[]=_NO; break;
+							case "Y": $conditions[]=_("Yes"); break;
+							case "N": $conditions[]=_("No"); break;
 							}
 						break;
 					case "G":
@@ -168,9 +168,9 @@ while ($degrow = $degresult->FetchRow())
 					case "C":
 						switch($conrow['value'])
 							{
-							case "Y": $conditions[]=_YES; break;
-							case "U": $conditions[]=_UNCERTAIN; break;
-							case "N": $conditions[]=_NO; break;
+							case "Y": $conditions[]=_("Yes"); break;
+							case "U": $conditions[]=_("Uncertain"); break;
+							case "N": $conditions[]=_("No"); break;
 							} // switch
 						break;
 					case "E":
@@ -531,8 +531,8 @@ while ($degrow = $degresult->FetchRow())
 				break;
 			case "Y":  //YES/NO
 				echo "\t\t\t$setfont<u>"._PS_CHOOSEONE."</u><br />\n";
-				echo "\t\t\t<input type='checkbox' name='$fieldname' value='Y' readonly='readonly' />"._YES."<br />\n";
-				echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />"._NO."<br /></font>\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='Y' readonly='readonly' />"._("Yes")."<br />\n";
+				echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />"._("No")."<br /></font>\n";
 				break;
 			case "A":  //ARRAY (5 POINT CHOICE)
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
@@ -582,9 +582,9 @@ while ($degrow = $degresult->FetchRow())
 					echo "\t\t\t\t<tr>\n";
 					echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
 					echo "\t\t\t\t\t<td>$setfont\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />"._YES."&nbsp;\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U' readonly='readonly' />"._UNCERTAIN."&nbsp;\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N' readonly='readonly' />"._NO."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />"._("Yes")."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U' readonly='readonly' />"._("Uncertain")."&nbsp;\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N' readonly='readonly' />"._("No")."&nbsp;\n";
 					echo "\t\t\t\t\t</font></td>\n";
 					echo "\t\t\t\t</tr>\n";
 					}
