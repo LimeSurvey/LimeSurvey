@@ -1101,7 +1101,7 @@ if ($action == "addquestion")
 	$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
 				  . "\t\t<td align='right'>$setfont<strong>"._("Other:")."</strong></font></td>\n"
 				  . "\t\t<td>$setfont\n"
-				  . "\t\t\t<label for='OY'>"._AD_("Yes")."</label>"
+				  . "\t\t\t<label for='OY'>"._("Yes")."</label>"
 				  . "<input id='OY' type='radio' name='other' value='Y' />&nbsp;&nbsp;\n"
 				  . "\t\t\t<label for='ON'>"._("No")."</label>"
 				  . "<input id='ON' type='radio' name='other' value='N' checked />\n"
@@ -1111,7 +1111,7 @@ if ($action == "addquestion")
 	$newquestion .= "\t<tr id='MandatorySelection'>\n"
 				  . "\t\t<td align='right'>$setfont<strong>"._("Mandatory:")."</strong></font></td>\n"
 				  . "\t\t<td>$setfont\n"
-				  . "\t\t\t<label for='MY'>"._AD_("Yes")."</label>"
+				  . "\t\t\t<label for='MY'>"._("Yes")."</label>"
 				  . "<input id='MY' type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
 				  . "\t\t\t<label for='MN'>"._("No")."</label>"
 				  . "<input id='MN' type='radio' name='mandatory' value='N' checked />\n"
@@ -1227,7 +1227,7 @@ if ($action == "copyquestion")
 					   . "\t\t<td align='right'>$setfont<strong>"._("Other:")."</strong></font></td>\n";
 		
 		$editquestion .= "\t\t<td>$setfont\n"
-					   . "\t\t\t"._AD_("Yes")." <input type='radio' name='other' value='Y'";
+					   . "\t\t\t"._("Yes")." <input type='radio' name='other' value='Y'";
 		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
 					   . "\t\t\t"._("No")." <input type='radio' name='other' value='N'";
@@ -1239,7 +1239,7 @@ if ($action == "copyquestion")
 		$editquestion .= "\t<tr id='MandatorySelection'>\n"
 					   . "\t\t<td align='right'>$setfont<strong>"._("Mandatory:")."</strong></font></td>\n"
 					   . "\t\t<td>$setfont\n"
-					   . "\t\t\t"._AD_("Yes")." <input type='radio' name='mandatory' value='Y'";
+					   . "\t\t\t"._("Yes")." <input type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
 					   . "\t\t\t"._("No")." <input type='radio' name='mandatory' value='N'";
@@ -1377,7 +1377,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		if ($activated != "Y") 
 			{
 			$editquestion .= "\t\t<td>$setfont\n"
-						   . "\t\t\t<label for='OY'>"._AD_("Yes")."</label><input id='OY' type='radio' name='other' value='Y'";
+						   . "\t\t\t<label for='OY'>"._("Yes")."</label><input id='OY' type='radio' name='other' value='Y'";
 			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
 			$editquestion .= " />&nbsp;&nbsp;\n"
 						   . "\t\t\t<label for='ON'>"._("No")."</label><input id='ON' type='radio' name='other' value='N'";
@@ -1395,7 +1395,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= "\t<tr id='MandatorySelection'>\n"
 					   . "\t\t<td align='right'>$setfont<strong>"._("Mandatory:")."</strong></font></td>\n"
 					   . "\t\t<td>$setfont\n"
-					   . "\t\t\t<label for='MY'>"._AD_("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
+					   . "\t\t\t<label for='MY'>"._("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
 					   . "\t\t\t<label for='MN'>"._("No")."</label><input id='MN' type='radio' name='mandatory' value='N'";
@@ -1602,7 +1602,7 @@ if ($action == "editsurvey")
 					 . "\t\t<td><select $slstyle name='usecookie'>\n"
 					 . "\t\t\t<option value='Y'";
 		if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._AD_("Yes")."</option>\n"
+		$editsurvey .= ">"._("Yes")."</option>\n"
 					 . "\t\t\t<option value='N'";
 		if ($esrow['usecookie'] != "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("No")."</option>\n"
@@ -1613,7 +1613,7 @@ if ($action == "editsurvey")
 					. "\t\t<td><select $slstyle name='allowsave'>\n"
 					. "\t\t\t<option value='Y'";
 		if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._AD_("Yes")."</option>\n"
+		$editsurvey .= ">"._("Yes")."</option>\n"
 					. "\t\t<option value='N'";
 		if ($esrow['allowsave'] == "N") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("No")."</option>\n"
@@ -1624,7 +1624,7 @@ if ($action == "editsurvey")
 					. "\t\t<td><select $slstyle name='allowprev'>\n"
 					. "\t\t\t<option value='Y'";
 		if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._AD_("Yes")."</option>\n"
+		$editsurvey .= ">"._("Yes")."</option>\n"
 					. "\t\t<option value='N'";
 		if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("No")."</option>\n"
@@ -1652,7 +1652,7 @@ if ($action == "editsurvey")
 			$editsurvey .= "\t\t<td><select $slstyle name='private'>\n"
 						 . "\t\t\t<option value='Y'";
 			if ($esrow['private'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._AD_("Yes")."</option>\n"
+			$editsurvey .= ">"._("Yes")."</option>\n"
 						 . "\t\t\t<option value='N'";
 			if ($esrow['private'] != "Y") {$editsurvey .= " selected";}
 			$editsurvey .= ">"._("No")."</option>\n"
@@ -1702,7 +1702,7 @@ if ($action == "editsurvey")
 					. "\t\t<td><select $slstyle name='allowregister'>\n"
 					. "\t\t\t<option value='Y'";
 		if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._AD_("Yes")."</option>\n"
+		$editsurvey .= ">"._("Yes")."</option>\n"
 					. "\t\t\t<option value='N'";
 		if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("No")."</option>\n"
@@ -1738,7 +1738,7 @@ if ($action == "editsurvey")
 			$editsurvey .= "\t\t<td><select $slstyle name='datestamp'>\n"
 						 . "\t\t\t<option value='Y'";
 			if ($esrow['datestamp'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._AD_("Yes")."</option>\n"
+			$editsurvey .= ">"._("Yes")."</option>\n"
 						 . "\t\t\t<option value='N'";
 			if ($esrow['datestamp'] != "Y") {$editsurvey .= " selected";}
 			$editsurvey .= ">"._("No")."</option>\n"
@@ -1762,7 +1762,7 @@ if ($action == "editsurvey")
 			$editsurvey .= "\t\t<td><select $slstyle name='ipaddr'>\n"
 						 . "\t\t\t<option value='Y'";
 			if ($esrow['ipaddr'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._AD_("Yes")."</option>\n"
+			$editsurvey .= ">"._("Yes")."</option>\n"
 						 . "\t\t\t<option value='N'";
 			if ($esrow['ipaddr'] != "Y") {$editsurvey .= " selected";}
 			$editsurvey .= ">"._("No")."</option>\n"
@@ -1786,7 +1786,7 @@ if ($action == "editsurvey")
 			$editsurvey .= "\t\t<td><select $slstyle name='refurl'>\n"
 						 . "\t\t\t<option value='Y'";
 			if ($esrow['refurl'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._AD_("Yes")."</option>\n"
+			$editsurvey .= ">"._("Yes")."</option>\n"
 						 . "\t\t\t<option value='N'";
 			if ($esrow['refurl'] != "Y") {$editsurvey .= " selected";}
 			$editsurvey .= ">"._("No")."</option>\n"
@@ -1812,7 +1812,7 @@ if ($action == "editsurvey")
 					. "\t<tr><td align='right'>$setfont<strong>"._("Expiry Date:")."</strong></font></td>\n"
 					. "\t\t\t<td><select $slstyle name='useexpiry'><option value='Y'";
 		if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._AD_("Yes")."</option>\n"
+		$editsurvey .= ">"._("Yes")."</option>\n"
 					. "\t\t\t<option value='N'";
 		if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("No")."</option></select></td></tr><tr><td></td>\n"
@@ -1825,7 +1825,7 @@ if ($action == "editsurvey")
 					. "\t\t<td><select $slstyle name='autoredirect'>";
 		$editsurvey .= "\t\t\t<option value='Y'";
 		if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._AD_("Yes")."</option>\n";
+		$editsurvey .= ">"._("Yes")."</option>\n";
 		$editsurvey .= "\t\t\t<option value='N'";
 		if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("No")."</option>\n"

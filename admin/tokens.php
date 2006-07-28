@@ -937,7 +937,7 @@ if ($action == "tokenify")
 		{
 		echo "<br />"._("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
 			."<input type='submit' $btstyle value='"
-			._AD_("Yes")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify&amp;ok=Y', '_top')\" />\n"
+			._("Yes")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify&amp;ok=Y', '_top')\" />\n"
 			."<input type='submit' $btstyle value='"
 			._("No")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\" />\n"
 			."<br /><br />\n";

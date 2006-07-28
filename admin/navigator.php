@@ -416,7 +416,7 @@ function surveyDel($surveyid) {
 	} else {
 		echo "<p align='center'>";
 	    echo _("You are about to delete this survey")."<br />"._("This process will delete this survey, and all related groups, questions answers and conditions.")."<br />"._("We recommend that before you delete this survey you export the entire survey from the main administration screen.")."<br />";
-		echo "<input type='submit' value='"._AD_("Yes")."' onClick='window.open(\"index.php?sid=$surveyid&dbaction=delsurvey&ok=yes\", \"_top\")'>";
+		echo "<input type='submit' value='"._("Yes")."' onClick='window.open(\"index.php?sid=$surveyid&dbaction=delsurvey&ok=yes\", \"_top\")'>";
 		echo "<input type='submit' value='"._("No")."' onClick='window.open(\"index.php?sid=$surveyid\", \"_top\")'>";
 		echo "</p>";
 	}
@@ -592,7 +592,7 @@ function questionDel($surveyid, $gid, $qid) {
 	global $publicurl, $imagefiles, $scriptname, $action;
 	echo "<p align='center'>";
     echo _("Deleting this question will also delete any answers it includes. Are you sure you want to continue?")."<br />";
-	echo "<input type='submit' value='"._AD_("Yes")."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid&amp;qid=$qid&dbaction=delquestion&ok=yes\", \"_top\")'>";
+	echo "<input type='submit' value='"._("Yes")."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid&amp;qid=$qid&dbaction=delquestion&ok=yes\", \"_top\")'>";
 	echo "<input type='submit' value='"._("No")."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid&amp;qid=$qid\", \"_top\")'>";
 	echo "</p>";
 }
@@ -601,7 +601,7 @@ function groupDel($surveyid, $gid) {
     global $publicurl, $imagefiles, $scriptname, $action;
 	echo "<p align='center'>";
     echo _("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?")."<br />";
-	echo "<input type='submit' value='"._AD_("Yes")."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid&dbaction=delgroup&ok=yes\", \"_top\")'>";
+	echo "<input type='submit' value='"._("Yes")."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid&dbaction=delgroup&ok=yes\", \"_top\")'>";
 	echo "<input type='submit' value='"._("No")."' onClick='window.open(\"index.php?sid=$surveyid&gid=$gid\", \"_top\")'>";
 	echo "</p>";	
 }
@@ -1037,7 +1037,7 @@ function answerDetails($surveyid, $gid, $qid) {
 					<td><input type='text' name='code[]' value='".$field[_("Code")]."' size='4' maxlength='5' onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\"".autoComparitor($thissurvey['active'], "Y", " readonly")."></td>
 					<td><input type='text' name='answer[]' value='".$field[_("Answer")]."' size='75'></td>
 					<td align='center'><select name='default_value[]'>
-						<option value='Y'".autoComparitor("Y", $field[_("Default")], " selected").">"._AD_("Yes")."</option>
+						<option value='Y'".autoComparitor("Y", $field[_("Default")], " selected").">"._("Yes")."</option>
 						<option value='N'".autoComparitor("N", $field[_("Default")], " selected").">"._("No")."</option>
 					</select></td>
 					<td align='center'><input type='button' class='buttons' value='"._("Del")."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&action=showanswers&dbaction=deleteanswer&code=".$field[_("Code")]."', '_top')\">
@@ -1081,7 +1081,7 @@ function answerDetails($surveyid, $gid, $qid) {
 			  <td><input type='text' size='4' name='code' id='addanswercode' maxlength='5' onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\"></td>
 			  <td><input type='text' size='75' name='answer'></td>
 			  <td align='center'><select name='default_value'>
-			    <option value='Y'>"._AD_("Yes")."</option>
+			    <option value='Y'>"._("Yes")."</option>
 				<option value='N' selected>"._("No")."</option>
 			  </select></td>
 			  <td align='center'><input type='submit' class='buttons' value='"._("Add")."'></td>
@@ -1687,7 +1687,7 @@ function questionTypes() {
 function yesno($value) {
 	switch($value){
 		case "Y": 
-			return _AD_("Yes");
+			return _("Yes");
 		case "N": 
 			return _("No");
 	} // switch
@@ -1727,7 +1727,7 @@ function textarea($value, $name, $extras=null) {
 
 function yesnoSelect($value=null, $name, $extras=null) {
 	return "<select name='$name' $extras>
-		<option value='Y'".autoComparitor($value, "Y", " selected").">"._AD_("Yes")."</option>
+		<option value='Y'".autoComparitor($value, "Y", " selected").">"._("Yes")."</option>
 		<option value='N'".autoComparitor($value, "N", " selected").">"._("No")."</option>
 		</select>";
 }
