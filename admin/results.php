@@ -359,7 +359,7 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 				break;
 		} // switch
 		$answers[]=array("code"=>"", "answer"=>_NOANSWER);
-		$answers[]=array("code"=>"-oth-", "answer"=>_OTHER);
+		$answers[]=array("code"=>"-oth-", "answer"=>_("Other"));
 
 		switch($questiontype) {
 			case "A":

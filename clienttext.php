@@ -45,7 +45,6 @@ define("_FEMALE", _("Female"));
 define("_MALE", _("Male"));
 define("_NOANSWER", _("No answer"));
 define("_NOTAPPLICABLE", _("N/A")); //New for 0.98rc)5
-define("_OTHER", _("Other"));
 define("_PLEASECHOOSE", _("Please choose"));
 define("_ERROR_PS", _("Error"));
 define("_COMPLETE", _("complete"));

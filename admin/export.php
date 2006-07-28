@@ -504,7 +504,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "W":
 				case "Z":
 					if ($faid == "other") {
-						$fquest .= " ["._OTHER."]";
+						$fquest .= " ["._("Other")."]";
 					} 
 					break;
 				case "O": //DROPDOWN LIST WITH COMMENT
@@ -516,7 +516,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "M": //multioption
 					if ($faid == "other")
 						{
-						$fquest .= " ["._OTHER."]";
+						$fquest .= " ["._("Other")."]";
 						}
 					else
 						{
@@ -536,7 +536,7 @@ for ($i=0; $i<$fieldcount; $i++)
 						}
 					if ($faid == "other")
 						{
-						$fquest .= " ["._OTHER."]";
+						$fquest .= " ["._("Other")."]";
 						}
 					else
 						{
@@ -765,7 +765,7 @@ elseif ($answers == "long")
 						{
 						if ($drow[$i] == "-oth-") 
 							{
-						    echo _OTHER;
+						    echo _("Other");
 							}
 						else
 							{
@@ -789,7 +789,7 @@ elseif ($answers == "long")
 						{
 						if ($drow[$i] == "-oth-") 
 							{
-						    echo _OTHER;
+						    echo _("Other");
 							}
 						else
 							{

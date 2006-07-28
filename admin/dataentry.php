@@ -639,7 +639,7 @@ elseif ($action == "edit" || $action == "editsaved")
 							{
 						    echo "<option value='-oth-'";
 							if ($idrow[$fnames[$i][0]] == "-oth-"){echo " selected";}
-							echo ">"._OTHER."</option>\n";
+							echo ">"._("Other")."</option>\n";
 							}
 						echo "\t\t\t</select>\n";
 						}
@@ -676,7 +676,7 @@ elseif ($action == "edit" || $action == "editsaved")
 							{
 						    echo "<option value='-oth-'";
 							if ($idrow[$fnames[$i][0]] == "-oth-"){echo " selected";}
-							echo ">"._OTHER."</option>\n";
+							echo ">"._("Other")."</option>\n";
 							}
 						echo "\t\t\t</select>\n";
 						}
@@ -1605,13 +1605,13 @@ else
 						}
 					if ($fother == "Y") 
 						{
-					    echo "<option value='-oth-'>"._OTHER."</option>\n";
+					    echo "<option value='-oth-'>"._("Other")."</option>\n";
 						}
 					echo "\t\t\t</select>\n";
 					if ($fother == "Y")
 						{
 						echo "\t\t\t$setfont"
-							._OTHER.":</font>"
+							._("Other").":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
 					break;
@@ -1637,13 +1637,13 @@ else
 						}
 					if ($fother == "Y") 
 						{
-					    echo "<option value='-oth-'>"._OTHER."</option>\n";
+					    echo "<option value='-oth-'>"._("Other")."</option>\n";
 						}
 					echo "\t\t\t</select>\n";
 					if ($fother == "Y")
 						{
 						echo "\t\t\t$setfont"
-							._OTHER.":</font>"
+							._("Other").":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
 					break;
@@ -1867,7 +1867,7 @@ else
 							}
 						if ($deqrow['other'] == "Y")
 							{
-							echo "\t\t\t"._OTHER." <input type='text' name='$fieldname";
+							echo "\t\t\t"._("Other")." <input type='text' name='$fieldname";
 							echo "other' />\n";
 							}
 						echo "</td></tr></table>\n";
@@ -1883,7 +1883,7 @@ else
 							}
 						if ($deqrow['other'] == "Y")
 							{
-							echo "\t\t\t"._OTHER." <input type='text' name='$fieldname";
+							echo "\t\t\t"._("Other")." <input type='text' name='$fieldname";
 							echo "other' />\n";
 							}
 						}
@@ -1931,7 +1931,7 @@ else
 					if ($deqrow['other'] == "Y")
 						{
 						echo "\t<tr>\n";
-						echo "\t\t<td style='padding-left: 22px'>$setfont"._OTHER.":</font></td>\n";
+						echo "\t\t<td style='padding-left: 22px'>$setfont"._("Other").":</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
 						echo "\t\t</td>\n";

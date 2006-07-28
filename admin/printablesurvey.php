@@ -319,7 +319,7 @@ while ($degrow = $degresult->FetchRow())
 						}
 					if ($deqrow['other'] == "Y")
 						{
-					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 						}
 					echo "</font></td></tr></table>\n";
 				    //Let's break the presentation into columns.
@@ -333,7 +333,7 @@ while ($degrow = $degresult->FetchRow())
 						}
 					if ($deqrow['other'] == "Y")
 						{
-					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 						}
 					echo "\t\t\t</font>";	
 					}
@@ -373,7 +373,7 @@ while ($degrow = $degresult->FetchRow())
 						}
 					if ($deqrow['other'] == "Y")
 						{
-					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 						}
 					echo "</td></tr></table>\n";
 				    //Let's break the presentation into columns.
@@ -386,7 +386,7 @@ while ($degrow = $degresult->FetchRow())
 						}
 					if ($deqrow['other'] == "Y")
 						{
-					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._OTHER." <input type='text' size='30' readonly='readonly' /><br />\n";
+					    echo "\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 						}
 					}
 				break;
@@ -446,7 +446,7 @@ while ($degrow = $degresult->FetchRow())
 						}
 					if ($deqrow['other'] == "Y")
 						{
-						echo "\t\t\t"._OTHER.": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+						echo "\t\t\t"._("Other").": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
 						}
 					echo "</td></tr></table>\n";
 					}
@@ -458,7 +458,7 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == "Y")
 						{
-						echo "\t\t\t"._OTHER.": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+						echo "\t\t\t"._("Other").": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
 						}
 					}
 				break;

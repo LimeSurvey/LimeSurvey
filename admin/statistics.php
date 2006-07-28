@@ -975,7 +975,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
             if ($qother == "Y")
                 {
                 $mfield=substr($rt, 1, strlen($rt))."other";
-                $alist[]=array(_OTHER, _OTHER, $mfield);
+                $alist[]=array(_("Other"), _("Other"), $mfield);
                 }
             }
         elseif (substr($rt, 0, 1) == "T" || substr($rt, 0, 1) == "S") //Short and long text
@@ -1313,7 +1313,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                         }
                     if (($qtype == "L" || $qtype == "!") && $qother == "Y") 
                         {
-                        $alist[]=array("-oth-", _OTHER);
+                        $alist[]=array("-oth-", _("Other"));
                         }
                 }
             }
@@ -1341,7 +1341,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 {
                 if (isset($al[2]) && $al[2]) //picks out alist that come from the multiple list above
                     {
-                    if ($al[1] == _OTHER)
+                    if ($al[1] == _("Other"))
                         {
                         $query = "SELECT count(`$al[2]`) FROM ".db_table_name("survey_$surveyid")." WHERE `$al[2]` != ''";
                         }
@@ -1380,7 +1380,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     {
                     if ($al[0] == "") 
                         {$fname=_NOANSWER;} 
-                    elseif ($al[0] == _OTHER || $al[0] == "Answers")
+                    elseif ($al[0] == _("Other") || $al[0] == "Answers")
                         {$fname="$al[1] <input $btstyle type='submit' value='"._("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
                     elseif ($qtype == "S" || $qtype == "T" || $qtype == "Q")
                         {

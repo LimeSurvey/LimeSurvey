@@ -1480,7 +1480,7 @@ if($action == "orderquestions")
 	}
 	 
 	$orderquestions .="</ul>" ; 
-    $orderquestions .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._Q_SAVEORD."&nbsp;</a>" ;
+    $orderquestions .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
     				   
 	$orderquestions .="<div id=\"movableNode\"><ul></ul></div>	
 			   		   <div id=\"arrDestInditcator\"><img src=\"images/insert.gif\"></div>

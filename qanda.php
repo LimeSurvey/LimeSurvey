@@ -600,7 +600,7 @@ function do_list_dropdown($ia)
             {
             $answer .= " selected";
             }
-        $answer .= ">"._OTHER."</option>\n";
+        $answer .= ">"._("Other")."</option>\n";
         }
     if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
     $answer .= "\t\t\t\t\t</select>\n";
@@ -695,7 +695,7 @@ function do_list_flexible_dropdown($ia)
             {
             $answer .= " selected";
             }
-        $answer .= ">"._OTHER."</option>\n";
+        $answer .= ">"._("Other")."</option>\n";
         }
     if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
     $answer .= "\t\t\t\t\t</select>\n";
@@ -805,10 +805,10 @@ function do_list_radio($ia)
             $answer .= " checked";
             }
 // --> START NEW FEATURE - SAVE
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='SOTH$ia[1]' class='answertext'>"._OTHER."</label>\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='SOTH$ia[1]' class='answertext'>"._("Other")."</label>\n";
 // --> END NEW FEATURE - SAVE
 
-        $answer .= "<label for='answer$ia[1]othertext'><input type='text' class='text' id='answer$ia[1]othertext' name='$ia[1]other' size='20' title='"._OTHER."' ";
+        $answer .= "<label for='answer$ia[1]othertext'><input type='text' class='text' id='answer$ia[1]othertext' name='$ia[1]other' size='20' title='"._("Other")."' ";
         $thisfieldname=$ia[1]."other";
         if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 // --> START NEW FEATURE - SAVE
@@ -916,10 +916,10 @@ function do_list_flexible_radio($ia)
             $answer .= " checked";
             }
 // --> START NEW FEATURE - SAVE
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='SOTH$ia[1]' class='answertext'>"._OTHER."</label>\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='SOTH$ia[1]' class='answertext'>"._("Other")."</label>\n";
 // --> END NEW FEATURE - SAVE
 
-        $answer .= "<label for='answer$ia[1]othertext'><input type='text' class='text' id='answer$ia[1]othertext' name='$ia[1]other' size='20' title='"._OTHER."' ";
+        $answer .= "<label for='answer$ia[1]othertext'><input type='text' class='text' id='answer$ia[1]othertext' name='$ia[1]other' size='20' title='"._("Other")."' ";
         $thisfieldname=$ia[1]."other";
         if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 // --> START NEW FEATURE - SAVE
@@ -1354,7 +1354,7 @@ function do_multiplechoice($ia)
         {
         $rowcounter++;
         $myfname = $ia[1]."other";
-        $answer .= "\t\t\t\t\t\t<label for='answer$myfname'>"._OTHER.":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
+        $answer .= "\t\t\t\t\t\t<label for='answer$myfname'>"._("Other").":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
         if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 // --> START NEW FEATURE - SAVE
         $answer .= " onChange='modfield(this.name)'/>\n"
@@ -1440,7 +1440,7 @@ function do_multiplechoice_withcomments($ia)
         $anscount = $anscount + 2;
         $answer .= "\t\t\t\t\t\t\t<tr>\n"
                  . "\t\t\t\t\t\t\t\t<td class='answertext'>\n"
-                 . "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>"._OTHER.":</label><input class='text' type='text' name='$myfname' id='answer$myfname' title='"._OTHER."' size='10'";
+                 . "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>"._("Other").":</label><input class='text' type='text' name='$myfname' id='answer$myfname' title='"._("Other")."' size='10'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
         $fn++;
 // --> START NEW FEATURE - SAVE
@@ -2513,7 +2513,7 @@ function retrieve_Answer($code)
                             }
                         else
                             {
-                            $return=_OTHER;
+                            $return=_("Other");
                             }
                         }
                     else

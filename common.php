@@ -1117,7 +1117,7 @@ function getextendedanswer($fieldcode, $value)
                     } // while
                 if ($value == "-oth-")
                     {
-                    $this_answer=_OTHER;
+                    $this_answer=_("Other");
                     }
                 break;
             case "M":
@@ -1294,7 +1294,7 @@ function createFieldMap($surveyid, $style="null") {
                         if ($style == "full")
                             {
                             $fieldmap[$counter]['title']=$arow['title'];
-                            $fieldmap[$counter]['question']=$arow['question']."["._OTHER."]";
+                            $fieldmap[$counter]['question']=$arow['question']."["._("Other")."]";
                             $fieldmap[$counter]['group_name']=$arow['group_name'];
                             }
                         $counter++;
@@ -1354,7 +1354,7 @@ function createFieldMap($surveyid, $style="null") {
                 if ($style == "full")
                     {
                     $fieldmap[$counter]['title']=$arow['title'];
-                    $fieldmap[$counter]['question']=$arow['question']."["._OTHER."]";
+                    $fieldmap[$counter]['question']=$arow['question']."["._("Other")."]";
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
                     }
                 $counter++;
@@ -1364,7 +1364,7 @@ function createFieldMap($surveyid, $style="null") {
                     if ($style == "full")
                         {
                         $fieldmap[$counter]['title']=$arow['title'];
-                        $fieldmap[$counter]['question']=$arow['question']."["._OTHER."comment]";
+                        $fieldmap[$counter]['question']=$arow['question']."["._("Other")."comment]";
                         $fieldmap[$counter]['group_name']=$arow['group_name'];
                         }
                     $counter++;
