@@ -943,7 +943,7 @@ function assessmentDetails($surveyid) {
 					<form action='$scriptname' method='post'>
 					<td  valign='top' align='center'>
 					 <input type='button' class='buttons' value='"._("Edit")."' onClick='window.open(\"{$homeurl}/$scriptname?action=showassessments&amp;sid=$surveyid&amp;id=".$field['id']."\", \"_top\")'>
-					 <input type='submit' class='buttons' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want t."\")'>
+					 <input type='submit' class='buttons' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry?")."\")'>
 					 <input type='hidden' name='action' value='showassessments'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='id' value='".$field['id']."'>

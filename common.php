@@ -132,11 +132,14 @@ else
 if ($sourcefrom == "admin")
     {
     $langdir="$publicurl/locale/".$_SESSION['adminlang']."/help";
-    if (!is_dir($langdir))
+    $langdirlocal="$rootdir/locale/".$_SESSION['adminlang']."/help";
+
+    if (!is_dir($langdirlocal))  // is_dir only works on local dirs
         {
         $langdir="$publicurl/locale/en/help"; //default to english if there is no matching language dir
         }
     }
+
 //SET LOCAL TIME
 $localtimedate=(strftime("%Y-%m-%d %H:%M", mktime(date("H")+$timeadjust)));
 

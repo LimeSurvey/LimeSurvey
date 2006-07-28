@@ -116,7 +116,7 @@ function showSavedList($surveyid)
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
 				<td align='center'>
 				[<a href='saved.php?sid=$surveyid&amp;action=delete&amp;scid=".$row['scid']."'"
-				." onClick='return confirm(\""._("Are you sure you want t."\")'"
+				." onClick='return confirm(\""._("Are you sure you want to delete this entry?")."\")'"
 				.">"._("Delete")."</a>]
 				[<a href='dataentry.php?sid=$surveyid&amp;action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>"._("Edit")."</a>]
 				</td>
