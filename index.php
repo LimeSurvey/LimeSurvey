@@ -76,13 +76,24 @@ if (!$surveyid)
 	doFooter();
 	exit;
 	}
+
+
 //Check to see if a refering URL has been captured.
 getreferringurl();
 
 if (!isset($token)) {$token=trim(returnglobal('token'));}
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 $thissurvey=getSurveyInfo($surveyid);
+
 if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
+
+// Check if the current survey language is set - if not set it
+// this way it can be changed later (for example by a special question type)
+if (!isset($_SESSION['publiclang']) || ($_SESSION['publiclang']==''))
+  {
+    $_SESSION['publiclang']=SetInterfaceLanguage(GetLanguageFromSurveyID($surveyid));
+  }
+
 
 //SEE IF SURVEY USES TOKENS
 $i = 0; $tokensexist = 0;
@@ -92,14 +103,12 @@ foreach ($tablelist as $tbl)
 	if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist = 1;}
 	}
 
+
+
 //SET THE TEMPLATE DIRECTORY
 if (!$thissurvey['templatedir']) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/{$thissurvey['templatedir']}";}
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 
-//Set the appropiate language settings for gettext
-
-bindtextdomain($thissurvey['language'], dirname(__FILE__).'/locale');
-textdomain($thissurvey['language']);
 
 
 //MAKE SURE SURVEY HASN'T EXPIRED
@@ -319,6 +328,7 @@ if (isset($_POST['saveprompt'])) 	//Required when save form returns to save init
 	require_once("save.php");
 	}
 // --> END NEW FEATURE - SAVE
+
 
 
 sendcacheheaders();
@@ -1003,15 +1013,12 @@ function submittokens()
 		else
 			{
 			//Get the default email_confirm from the default admin lang file
-			global $currentlang, $homedir, $homeurl;
-			$langdir="$homeurl/lang/$currentlang";
-			$langdir2="$homedir/lang/$currentlang";
+			global $currentadminlang, $homedir, $homeurl;
+			$langdir="$homeurl/lang/$currentadminlang";
 			if (!is_dir($langdir2)) 
 				{
 				$langdir="$homeurl/lang/english"; //default to english if there is no matching language dir
-				$langdir2="$homedir/lang/english";
 				}
-			require("$langdir2/messages.php");
 			$message = _("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}");
 			}
 

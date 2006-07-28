@@ -80,7 +80,7 @@ if (!$surveyid && !$action)
 
 if ($action == "edit" || $action == "" || $action == "editsaved")
 	{
-	loadPublicLangFile($surveyid);
+	GetLanguageFromSurveyID($surveyid);
 	}	
 	
 if ($action == "insert")
@@ -93,7 +93,7 @@ if ($action == "insert")
 	if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
 	    //Save this, don't submit to final response table
-		loadPublicLangFile($surveyid);
+		GetLanguageFromSurveyID($surveyid);
 		$saver['identifier']=returnglobal('save_identifier');
 		$saver['password']=returnglobal('save_password');
 		$saver['passwordconfirm']=returnglobal('save_confirmpassword');
@@ -1336,7 +1336,7 @@ else
 		.$surveyoptions
 		."</table>";
 		
-	loadPublicLangFile($surveyid);
+	GetLanguageFromSurveyID($surveyid);
 	$thissurvey=getSurveyInfo($surveyid);
 	$surveytable = "{$dbprefix}survey_$surveyid";
 		

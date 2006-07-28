@@ -89,7 +89,7 @@ $dropdownthreshold  =   "25";             // The number of answers to a list typ
                                           // Only applicable, of course, if you have chosen "R" for $dropdowns and/or $lwcdropdowns
 $repeatheadings     =   "25";             // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
 $minrepeatheadings  =   3;                // The minimum number of remaing answers that are required before repeating the headings in array (flexible) questions.
-$defaultlang        =   "de";        // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
+$defaultlang        =   "de";             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 
 $OS                 =   PHP_OS;
 

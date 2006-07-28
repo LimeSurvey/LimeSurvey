@@ -327,7 +327,7 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 	}
 //	echo "[$questiontype]<br />";
 	if ($output == "full") {
-		loadPublicLangFile($surveyid);
+		GetLanguageFromSurveyID($surveyid);
 		//echo "<pre>"; print_r($answers); echo "</pre>";
 		switch($questiontype) {
 			case "L":

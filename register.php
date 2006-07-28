@@ -50,7 +50,7 @@ if (!isset($surveyid))
 	}
 
 $thissurvey=getSurveyInfo($surveyid);
-loadPublicLangFile($surveyid);
+GetLanguageFromSurveyID($surveyid);
 
 //Check that the email is a valid style address
 if (!validate_email(returnglobal('register_email'))) 

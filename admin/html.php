@@ -103,7 +103,7 @@ if ($action == "checksettings" || $action == "changelang")
   	foreach (getlanguagedata() as $langkey=>$languagekind)
 	{
     	$cssummary .= "\t\t\t\t<option value='$langkey'";
-		if ($langkey == $currentlang) {$cssummary .= " selected";}
+		if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected";}
 		$cssummary .= ">".$languagekind['description']."</option>\n";
 	}
 	$cssummary .= "\t\t\t</select>\n"
@@ -466,7 +466,7 @@ if ($surveyid)
 						. "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
 						. _("Language:")."</strong></font></td>\n";
-		if (!$s1row['language']) {$language=$currentlang;} else {$language=$s1row['language'];}
+		if (!$s1row['language']) {$language=$currentadminlang;} else {$language=$s1row['language'];}
 		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
 		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
@@ -1801,7 +1801,7 @@ if ($action == "editsurvey")
     		$editsurvey .= "\t\t\t<option value='".$langkey2."'";
 			if ($esrow['language'] && $esrow['language'] == htmlspecialchars($langname['description'])) {$editsurvey .= " selected";}
              // if language has been renamed then default to DefaultLanguage
-			if (!$esrow['language'] && $currentlang && $currentlang == $langname) {$editsurvey .= " selected";}
+			if (!$esrow['language'] && $currentadminlang && $currentadminlang == $langname) {$editsurvey .= " selected";}
 			$editsurvey .= ">".$langname['description']."</option>\n";
 	    }
 		$editsurvey .= "\t\t</select></td>\n"
@@ -2004,7 +2004,7 @@ if ($action == "newsurvey")
 	    foreach ($languages as  $langkey2=>$langname)
             {
 	   	    $newsurvey .= "\t\t\t<option value='".$langkey2."'";
-    //		if ($currentlang && $currentlang == $langname) {$newsurvey .= " selected";}
+    //		if ($currentadminlang && $currentadminlang == $langname) {$newsurvey .= " selected";}
 	       	$newsurvey .= ">".$langname['description']."</option>\n";
             }
 		}

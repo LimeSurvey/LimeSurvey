@@ -131,7 +131,7 @@ else
 //SET LANGUAGE DIRECTORY
 if ($sourcefrom == "admin")
     {
-    $langdir="$publicurl/locale/$currentlang/help";
+    $langdir="$publicurl/locale/".$_SESSION['adminlang']."/help";
     if (!is_dir($langdir))
         {
         $langdir="$publicurl/locale/en/help"; //default to english if there is no matching language dir
@@ -988,9 +988,9 @@ function sendcacheheaders()
     {
     global $embedded;
     if ( $embedded ) return;
-    global $currentlang, $thissurvey;
+    global $currentadminlang, $thissurvey;
     if (isset($thissurvey['language'])) {$language=$thissurvey['language'];}
-    else {$language=$currentlang;} //$thissurvey['language'] will exist if this is a public survey
+    else {$language=$currentadminlang;} //$thissurvey['language'] will exist if this is a public survey
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
     header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
@@ -1204,7 +1204,7 @@ function createFieldMap($surveyid, $style="null") {
     //This function generates an array containing the fieldcode, and matching data in the same
     //order as the activate script
     global $dbprefix, $connect;
-    loadPublicLangFile($surveyid);
+    GetLanguageFromSurveyID($surveyid);
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $pquery = "SELECT private, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
     $presult=db_execute_assoc($pquery);
@@ -1687,15 +1687,23 @@ function getSavedCount($surveyid)
     return $count;
     }
 
-function loadPublicLangFile($surveyid)
+function GetLanguageFromSurveyID($surveyid)
     {
     global $connect;
     //This function loads the local language file applicable to a survey
-        global $dbprefix, $publicdir, $currentlang;
         $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
         $result = db_execute_num($query) or die ("Couldn't get language file");
         while ($row=$result->FetchRow()) {$surveylanguage = $row[0];}
+        return $surveylanguage;
     }
+
+function SetInterfaceLanguage($languagetoset)
+    {
+    bindtextdomain($languagetoset, dirname(__FILE__).'/locale');
+    textdomain($languagetoset);
+    return $languagetoset;
+    }
+
 
 function buildLabelsetCSArray()
     {

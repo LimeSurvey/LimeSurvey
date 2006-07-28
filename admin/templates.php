@@ -657,7 +657,7 @@ foreach($myoutput as $line) {
 	fwrite($fnew, $line);
 }
 fclose($fnew);
-$langdir_template="$homeurl/lang/$currentlang";
+$langdir_template="$homeurl/lang/$currentadminlang";
 echo "<br />\n"
 	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
 	."<br />&nbsp;<br />"

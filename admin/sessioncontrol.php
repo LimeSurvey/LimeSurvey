@@ -40,11 +40,16 @@
 session_name("PHPSurveyorAdmin");
 session_start();
 
+
+
 //LANGUAGE ISSUES
 if (returnglobal('action') == "changelang") 
 	{
-	$_SESSION['lang']=returnglobal('lang');
+    $_SESSION['adminlang']=SetInterfaceLanguage(returnglobal('lang'));
 	}
-//CHANGE LANGUAGE IF SESSION LANG DOESN'T MATCH DEFAULT LANG
-if (isset($_SESSION['lang'])) {$currentlang=$_SESSION['lang'];}
+	elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
+	{
+        $_SESSION['adminlang']=SetInterfaceLanguage($defaultlang);
+    }
+	
 ?>

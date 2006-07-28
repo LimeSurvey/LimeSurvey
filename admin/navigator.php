@@ -1188,7 +1188,7 @@ function showPreview($surveyid, $gid, $qid=null) {
 	if ($qid !== null) {
 	    $thisquestion=getQuestionInfo($qid);
 	}
-	loadPublicLangFile($surveyid);
+	GetLanguageFromSurveyID($surveyid);
 	$ia=array($qid, 
 			  "DUMMY", 
 			  $thisquestion['title'], 
@@ -1271,7 +1271,7 @@ function showPreview($surveyid, $gid, $qid=null) {
 
 function checkSettings($dbprefix) {
 	//GET NUMBER OF SURVEYS
-	global $currentlang, $databasename, $currentlang, $scriptname, $homeurl, $imagefiles, $connect;
+	global $currentadminlang, $databasename, $currentadminlang, $scriptname, $homeurl, $imagefiles, $connect;
 	
 	$query = "SELECT sid FROM {$dbprefix}surveys";
 	$result = $connect->Execute($query);
@@ -1318,7 +1318,7 @@ function checkSettings($dbprefix) {
 				 </tr>
 				 <tr>
 				  <td align='right'><strong>"._("Default Language").":</strong></td>
-				  <td>$currentlang</td>
+				  <td>$currentadminlang</td>
 				 </tr>
 				 <tr>
 				  <td align='right'><strong>"._("Current Language").":</strong></td>
@@ -1327,7 +1327,7 @@ function checkSettings($dbprefix) {
 				   <select name='lang' onChange='form.submit()'>\n";
 	foreach (getadminlanguages() as $language)
 		{
-		echo "\t\t\t\t<option value='$language'".autoComparitor($currentlang, $language, " selected").">$language</option>\n";
+		echo "\t\t\t\t<option value='$language'".autoComparitor($currentadminlang, $language, " selected").">$language</option>\n";
 		}
 	echo  "			</select>
 				<input type='hidden' name='action' value='changelang'></td>
