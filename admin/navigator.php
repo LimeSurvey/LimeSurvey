@@ -1325,9 +1325,9 @@ function checkSettings($dbprefix) {
 				  <form action='$scriptname'>
 				  <td>
 				   <select name='lang' onChange='form.submit()'>\n";
-	foreach (getadminlanguages() as $language)
+	foreach (getLanguageData() as $langkey=>$language)
 		{
-		echo "\t\t\t\t<option value='$language'".autoComparitor($currentadminlang, $language, " selected").">$language</option>\n";
+		echo "\t\t\t\t<option value='$langkey'".autoComparitor($currentadminlang, $language['description'], " selected").">".$language['description']."</option>\n";
 		}
 	echo  "			</select>
 				<input type='hidden' name='action' value='changelang'></td>

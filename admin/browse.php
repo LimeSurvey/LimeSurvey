@@ -49,9 +49,9 @@ sendcacheheaders();
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
-while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
 
-echo(getLanguageCodefromLanguage($surveylanguage));
+require_once(dirname(__FILE__).'/sessioncontrol.php');
+
 
 $surveyoptions = browsemenubar();
 echo $htmlheader;
@@ -239,7 +239,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		."\t\t\t<a href='dataentry.php?action=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'>"
 		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='"
 		. _("Delete this entry")."' title='"
-		. _("Delete this entry")."' onClick=\"return confirm('"._("Are you sure you want t."')\" /></a>\n"
+		. _("Delete this entry")."' onClick=\"return confirm('"._("Are you sure you want to delete this entry.")."')\" /></a>\n"
         . "\t\t\t<input type='image' name='Export' src='$imagefiles/exportsql.png' title='"
         . _("Export this Response")."' alt='". _("Export this Response")."'align='left'  onclick=\"window.open('export.php?sid=$surveyid&id=$id', '_blank')\">\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
@@ -280,8 +280,8 @@ if ($action == "id") // Looking at a SINGLE entry
 
 elseif ($action == "all")
 	{
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n";
+	echo ("\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		. _("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n");
 	
 	if (!isset($_POST['sql']))
 		{echo "$surveyoptions";} //don't show options when called from another script with a filter on
@@ -403,7 +403,7 @@ elseif ($action == "all")
 	
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
 	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
-	$tableheader = "\n\n<!-- DATA TABLE -->\n";
+	$tableheader = "<!-- DATA TABLE -->";
 	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	else {$fnwidth = (($fncount-1)*100); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	$tableheader .= "\t<tr bgcolor='#555555' valign='top'>\n"
@@ -483,7 +483,7 @@ elseif ($action == "all")
 			. _("Show last...")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit','_top')\" />\n"
 			."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n";
 		}
-	echo "\t\t</td>\n"
+	echo("\t\t</td>\n"
 		."\t\t<td align='right'>\n"
 		."\t\t<form action='browse.php' method='post'><font size='1' face='verdana'>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt=''>\n"
@@ -492,7 +492,7 @@ elseif ($action == "all")
 		."\t\t\t<input type='submit' value='"._("Show")."' $btstyle>\n"
 		."\t\t</font>\n"
 		."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		."\t\t<input type='hidden' name='action' value='all'>\n";
+		."\t\t<input type='hidden' name='action' value='all'>\n");
 if (isset($_POST['sql'])) 
 	{
 	echo "\t\t<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."'>\n";

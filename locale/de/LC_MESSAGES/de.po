@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-07-28 11:49+0100\n"
+"PO-Revision-Date: 2006-07-28 14:57+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -38,11 +38,6 @@ msgstr "Keine Antwort"
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:45
 msgid "N/A"
 msgstr "Keine Angabe"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:46
-# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:46
-msgid "Other"
-msgstr "Andere"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:47
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:47
@@ -954,25 +949,22 @@ msgstr ""
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:640
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1341
 msgid "Surveys"
-msgstr ""
+msgstr "Umfragen"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:47
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:47
-#, fuzzy
 msgid "Please Choose..."
-msgstr "Bitte wählen"
+msgstr "Bitte wählen..."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:38
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:38
-#, fuzzy
 msgid "None"
-msgstr "Nein"
+msgstr "Keine"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:85
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:85
-#, fuzzy
 msgid "5 Point Choice"
-msgstr "Ihre Auswahl"
+msgstr "5-Punkte Auswahl"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:462
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1658
@@ -1141,6 +1133,11 @@ msgid ""
 "\n"
 "{ADMINNAME}"
 msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:46
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:46
+msgid "Other"
+msgstr "Andere"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:37
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:37
@@ -1414,9 +1411,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:49
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:49
-#, fuzzy
 msgid "Scope"
-msgstr "komplett"
+msgstr "Bereich"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:99
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:100
@@ -1541,7 +1537,6 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:233
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:233
-#, fuzzy
 msgid "There is no matching survey."
 msgstr "Es konnte keine passende Umfrage gefunden werden."
 
@@ -1559,364 +1554,8 @@ msgstr ""
 msgid "Delete this entry"
 msgstr ""
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:242
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:946
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/saved.php:119
-msgid "Are you sure you want t."
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:242
-msgid ""
-")\\\" /></a>\\n"
-"\"\n"
-"        . \"\\t\\t\\t<input type="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:228
-# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:228
-#, fuzzy
-msgid " name="
-msgstr "Gespeichert als"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:243
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:247
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:250
-msgid " src="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:243
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:247
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:250
-msgid " title="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:243
-msgid ""
-"\n"
-"        . _("
-msgstr ""
-
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:244
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:248
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:251
-msgid ")."
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:244
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:245
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:246
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:249
-msgid " alt="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:244
-msgid ". _("
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:244
-msgid "align="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:244
-msgid "  onclick=\\\"window.open("
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:244
-msgid ", "
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:244
-msgid ""
-")\\\">\\n"
-"\"\n"
-"\t\t.\"\\t\\t\\t<img src="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:245
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:246
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:249
-msgid " border="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:245
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:246
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:249
-msgid " hspace="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:245
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:246
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:247
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:249
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:250
-msgid " align="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:245
-msgid ""
-">\\n"
-"\"\n"
-"\t\t.\"\\t\\t\\t<img src="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:246
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:249
-msgid " width="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:246
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:249
-msgid " height="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:246
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:249
-msgid ""
-">\\n"
-"\"\n"
-"\t\t.\"\\t\\t\\t<input type="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:247
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:250
-msgid ""
-"\n"
-"\t\t. _("
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:248
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:251
-msgid " onClick=\\\"window.open("
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:248
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:251
-msgid ","
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:248
-msgid ""
-")\\\" />\\n"
-"\"\n"
-"\t\t.\"\\t\\t\\t<img src="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:251
-msgid ""
-")\\\" />\\n"
-"\"\n"
-"\t\t.\"\\t\\t</td>\\n"
-"\"\n"
-"\t\t.\"\\t</tr>\\n"
-"\"\n"
-"\t\t.\"\\t<tr><td colspan="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:254
-msgid " bgcolor="
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:261
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:273
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:291
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:109
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:114
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:125
-msgid "\t<tr>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:262
-#, php-format
-msgid "\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:266
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:545
-msgid "</font></td>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:267
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:277
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:296
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:501
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:547
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:65
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:113
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:124
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:129
-msgid "\t</tr>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:268
-msgid "\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:271
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:278
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:297
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:300
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:502
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:556
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:563
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:66
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:130
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/saved.php:125
-msgid "</table>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:272
-msgid "<table width='99%' align='center'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:276
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:486
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:64
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:123
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:128
-msgid "\t\t</td>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:283
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:468
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:553
-msgid "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:290
-msgid ""
-"\n"
-"<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:293
-msgid "\t\t\tShowing Filtered Results<br />\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:294
-msgid "\t\t\t&nbsp;[<a href=\"javascript:window.close()\">Close</a>]"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:295
-msgid "\t\t</font></td>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:311
-msgid "private"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:312
-msgid "datestamp"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:313
-msgid "ipaddr"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:314
-msgid "refurl"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:346
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:358
-msgid "question"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:49
-# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:49
-#, fuzzy
-msgid "comment"
-msgstr "komplett"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:361
-msgid "[comment]"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:362
-msgid " (comment)"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:386
-msgid "Y"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:46
-# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:46
-#, fuzzy
-msgid "other"
-msgstr "Andere"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:405
-msgid "10%"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:405
-msgid "100"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:406
-msgid ""
-"\n"
-"\n"
-"<!-- DATA TABLE -->\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:407
-#, php-format
-msgid "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:409
-msgid "\t<tr bgcolor='#555555' valign='top'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:413
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:418
-msgid "#555555"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:417
-msgid "#666666"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:422
-msgid "</strong></font></td>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:424
-msgid ""
-"\t</tr>\n"
-"\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:442
-msgid " ORDER BY id"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:466
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:503
-msgid "<table><tr><td></td></tr></table>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:467
-msgid "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:469
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:393
-msgid "Data View Control"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:469
-msgid ":</strong></font></td></tr>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:470
-msgid "\t<tr bgcolor='#999999'><td align='left'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:476
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:398
-msgid "Show start.."
+msgid "Export this Response"
 msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:478
@@ -1931,20 +1570,14 @@ msgstr ""
 msgid "Show next..."
 msgstr ""
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:487
-msgid "\t\t<td align='right'>\n"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:469
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:393
+msgid "Data View Control"
 msgstr ""
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:488
-msgid "\t\t<form action='browse.php' method='post'><font size='1' face='verdana'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:490
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:491
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:116
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:117
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:121
-msgid "\t\t\t"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:476
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:398
+msgid "Show start.."
 msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:490
@@ -1958,68 +1591,8 @@ msgid "Starting From:"
 msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:492
-msgid "\t\t\t<input type='submit' value='"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:492
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:422
 msgid "Show"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:493
-msgid "\t\t</font>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:495
-msgid "\t\t<input type='hidden' name='action' value='all'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:498
-msgid "\t\t<input type='hidden' name='sql' value='"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:498
-msgid "'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:500
-msgid "\t\t</form></td>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:509
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:513
-msgid "#EEEEEE"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:512
-msgid "#CCCCCC"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:516
-msgid "\t\t<td align='center'><font face='verdana' size='1'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:528
-msgid "\t\t<td align='center'><font size='1'>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:536
-msgid "</a>\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:543
-msgid "\t\t<td align='center'><font size='1' face='verdana'>"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:549
-msgid ""
-"</table>\n"
-"<br />\n"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:561
-#, php-format
-msgid "<table width='100%' border='0'>\n"
 msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:184
@@ -2101,9 +1674,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:55
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:55
-#, fuzzy
 msgid "Condition"
-msgstr "Bestätigung"
+msgstr "Bedingung"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:597
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:645
@@ -2134,15 +1706,13 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:55
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:55
-#, fuzzy
 msgid "Add Condition"
-msgstr "Bestätigung"
+msgstr "Bedingung hinzufügen"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:44
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:44
-#, fuzzy
 msgid "Answer"
-msgstr "Keine Antwort"
+msgstr "Antwort"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:683
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:656
@@ -2245,9 +1815,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:51
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:51
-#, fuzzy
 msgid "Save"
-msgstr "Unverändert"
+msgstr "Speichern"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:507
 msgid "Answer could not be updated. You must include both a Code and an Answer"
@@ -2333,9 +1902,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:55
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:55
-#, fuzzy
 msgid "Confirm Password:"
-msgstr "Bestätigung"
+msgstr "Passwort bestätigen:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:139
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:2107
@@ -2560,6 +2128,39 @@ msgstr ""
 msgid "De-Activate"
 msgstr ""
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:276
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:486
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:64
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:123
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:128
+msgid "\t\t</td>\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:267
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:277
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:296
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:501
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:547
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:65
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:113
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:124
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:129
+msgid "\t</tr>\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:271
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:278
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:297
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:300
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:502
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:556
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:563
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:66
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:130
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/saved.php:125
+msgid "</table>\n"
+msgstr ""
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:99
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:949
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:992
@@ -2577,6 +2178,15 @@ msgstr ""
 msgid "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"
 msgstr ""
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:261
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:273
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:291
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:109
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:114
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:125
+msgid "\t<tr>\n"
+msgstr ""
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:110
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:126
 msgid "\t\t<td align='center'>\n"
@@ -2588,6 +2198,14 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:115
 msgid "\t\t<td>\n"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:490
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:491
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:116
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:117
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:121
+msgid "\t\t\t"
 msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:116
@@ -2717,9 +2335,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:44
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:44
-#, fuzzy
 msgid "Answers"
-msgstr "Keine Antwort"
+msgstr "Antworten"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:140
 msgid "Answer Codes"
@@ -3513,6 +3130,11 @@ msgstr ""
 msgid "Update Question"
 msgstr ""
 
+# D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:228
+# D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:228
+msgid "Save Order"
+msgstr "Reihenfolge speichern"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1502
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1508
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:620
@@ -3598,9 +3220,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:55
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:55
-#, fuzzy
 msgid "Notification:"
-msgstr "Bestätigung"
+msgstr "Benachrichtigung:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1640
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1950
@@ -3734,9 +3355,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:55
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:55
-#, fuzzy
 msgid "Confirmation Email"
-msgstr "Bestätigung"
+msgstr "Bestätigungs-Email"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1701
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1973
@@ -3933,9 +3553,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:55
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:55
-#, fuzzy
 msgid "Conditions"
-msgstr "Bestätigung"
+msgstr "Bedingungen"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:513
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:645
@@ -4049,9 +3668,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:51
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:51
-#, fuzzy
 msgid "Set Name"
-msgstr "Unverändert"
+msgstr "Namen angeben"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:226
 msgid "Edit label set"
@@ -4104,6 +3722,12 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:491
 msgid "Expires:"
+msgstr ""
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:242
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:946
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/saved.php:119
+msgid "Are you sure you want t."
 msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:949
@@ -4181,9 +3805,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:228
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:228
-#, fuzzy
 msgid "Saved Responses:"
-msgstr "Gespeichert als"
+msgstr "Gespeicherte Antworten:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/saved.php:103
 msgid "Identifier"
@@ -4253,9 +3876,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:80
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:80
-#, fuzzy
 msgid "Date (YYYY-MM-DD) equals"
-msgstr "Format: JJJJ-MM-TT"
+msgstr "Format: JJJJ-MM-TT "
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:178
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:332
@@ -4343,9 +3965,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:57
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:57
-#, fuzzy
 msgid "Count"
-msgstr "Fortfahren"
+msgstr "Anzahl"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1338
 msgid "Percentage"
@@ -4377,9 +3998,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:49
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:49
-#, fuzzy
 msgid "Completed Page"
-msgstr "komplett"
+msgstr "Komplett-Seite"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:219
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:401
@@ -4398,9 +4018,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:228
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:228
-#, fuzzy
 msgid "Save Page"
-msgstr "Gespeichert als"
+msgstr "Speichern-Seite"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:511
 msgid "Create new template"
@@ -4618,9 +4237,8 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/lang/english.lang.php:49
 # D:\xampp\xampp\htdocs\phpsurveyor\lang/english.lang.php:49
-#, fuzzy
 msgid "Completed?"
-msgstr "komplett"
+msgstr "Abgeschlossen?"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:497
 msgid "MPID"
@@ -4880,47 +4498,6 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:67
 msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:71
-msgid ""
-"</a>]</td></tr>\n"
-"        </table>\n"
-"        </form>"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:81
-msgid "\t"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:151
-msgid "deactivate"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:158
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:175
-msgid "RENAME TABLE "
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:158
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:175
-msgid " TO "
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:165
-msgid "SELECT id FROM "
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:165
-msgid " ORDER BY id desc LIMIT 1"
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:171
-msgid "UPDATE "
-msgstr ""
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:178
-msgid "delete"
 msgstr ""
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:61

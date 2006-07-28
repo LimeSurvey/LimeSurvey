@@ -45,11 +45,11 @@ session_start();
 //LANGUAGE ISSUES
 if (returnglobal('action') == "changelang") 
 	{
-    $_SESSION['adminlang']=SetInterfaceLanguage(returnglobal('lang'));
+    $_SESSION['adminlang']=returnglobal('lang');
 	}
-	elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
+elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 	{
-        $_SESSION['adminlang']=SetInterfaceLanguage($defaultlang);
+        $_SESSION['adminlang']=$defaultlang;
     }
-	
+SetInterfaceLanguage($_SESSION['adminlang']);
 ?>

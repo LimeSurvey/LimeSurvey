@@ -621,9 +621,6 @@ function gettemplatelist()
     }
 
 
-// This function returns the list of available languages - there is no difference between client or admin language
-// if a language is not supported in admin or client the default english transaltion will be shown
-
 function getSurveyInfo($surveyid)
     {
     global $dbprefix, $siteadminname, $siteadminemail, $connect;
@@ -675,26 +672,6 @@ function getSurveyInfo($surveyid)
     return $thissurvey;
     }
 
-function getadminlanguages()
-    {
-    global $homedir;
-    if (!$homedir) {$homedir = dirname(getcwd());}
-    $lloc="$homedir/lang";
-    if ($handle = opendir($lloc))
-        {
-        while (($file = readdir($handle)) !== false)
-            {
-            if (!is_file("$lloc/$file"))
-                {
-                if ($file != "." && $file != ".." && $file != "CVS" && $file !=".svn")
-                    {
-                    $langnames[]=$file;
-                    }
-                }
-            }
-        }
-    return $langnames;
-    }
 
 function getlabelsets()
     {
@@ -988,9 +965,6 @@ function sendcacheheaders()
     {
     global $embedded;
     if ( $embedded ) return;
-    global $currentadminlang, $thissurvey;
-    if (isset($thissurvey['language'])) {$language=$thissurvey['language'];}
-    else {$language=$currentadminlang;} //$thissurvey['language'] will exist if this is a public survey
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
     header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
@@ -1204,7 +1178,6 @@ function createFieldMap($surveyid, $style="null") {
     //This function generates an array containing the fieldcode, and matching data in the same
     //order as the activate script
     global $dbprefix, $connect;
-    GetLanguageFromSurveyID($surveyid);
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $pquery = "SELECT private, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
     $presult=db_execute_assoc($pquery);
@@ -1699,9 +1672,9 @@ function GetLanguageFromSurveyID($surveyid)
 
 function SetInterfaceLanguage($languagetoset)
     {
-    bindtextdomain($languagetoset, dirname(__FILE__).'/locale');
-    textdomain($languagetoset);
-    return $languagetoset;
+     bindtextdomain($languagetoset, dirname(__FILE__).'/locale');
+     bind_textdomain_codeset($languagetoset,'UTF-8');
+     return textdomain($languagetoset);
     }
 
 
