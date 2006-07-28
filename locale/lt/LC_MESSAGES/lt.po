@@ -1,0 +1,346 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor Lithuanian language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-29 01:29+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: lithuanian\n"
+"X-Poedit-Country: LITHUANIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+msgid "Yes"
+msgstr "Taip"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "Uncertain"
+msgstr "Neisitikinęs"
+
+msgid "Tokens"
+msgstr "Kodai"
+
+msgid "Female"
+msgstr "Moteris"
+
+msgid "Male"
+msgstr "Vyras"
+
+msgid "No answer"
+msgstr "Nėra atsakymo"
+
+msgid "NA"
+msgstr "Nesusiję"
+
+msgid "Other"
+msgstr "Kita"
+
+msgid "Please choose"
+msgstr "Pasirinkite"
+
+msgid "Error"
+msgstr "Klaida"
+
+msgid "complete"
+msgstr "Baigta"
+
+msgid "Increase"
+msgstr "Padidinti"
+
+msgid "Same"
+msgstr "Tas pats"
+
+msgid "Decrease"
+msgstr "Sumažinti"
+
+msgid "Confirmation"
+msgstr "Patvirtinimas"
+
+msgid "Token"
+msgstr "Kodas"
+
+msgid "Continue"
+msgstr "Tęsti"
+
+msgid "Accept"
+msgstr "Priimti"
+
+msgid "prev"
+msgstr "Ankstesnis"
+
+msgid "next"
+msgstr "Paskesnis"
+
+msgid "last"
+msgstr "paskutinis"
+
+msgid "submit"
+msgstr "Patvirtinti"
+
+msgid "Please choose one of the following"
+msgstr "Pasirinkite iš pateiktų variantų"
+
+msgid "Please enter your comment here"
+msgstr "Įveskite savo komentarą čia"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Į šį laukelį galima įvesti tik skaičius"
+
+msgid "Exit and Clear Survey"
+msgstr "Išeiti ir išvalyti apklausą"
+
+msgid "This question is mandatory"
+msgstr "Šis klausimas yra privalomas"
+
+msgid "Please complete all parts"
+msgstr "Užbaikite visas dalis"
+
+msgid "Please check at least one item"
+msgstr "Pasirinkite bent vieną"
+
+msgid "Please rank all items"
+msgstr "Įvertinkite visus pateiktus"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Vienas arba daugiau privalomų klausimų liko neatsakyti. Tęsti bus galima tik juos visus atsakius"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Formatas: MMMM-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(t.y.: 2003-12-25 šv. Kalėdų diena)"
+
+msgid "Remove this item"
+msgstr "Pašalinkite šį įrašą"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Paspauskite ant įrašo kairėje esančiame sąraše, pradedant nuo"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "įrašo kurį vertinate aukščiausiai, tęsiant iki žemiausiai vertinamo įrašo."
+
+msgid "Your Choices"
+msgstr "Jūsų pasirinkimai"
+
+msgid "Your Ranking"
+msgstr "Jūsų įvertinimai"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Paspauskite ant žirklių įrašo dešinėje"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "kad pašalintumėte žemiausiai įvertintą įrašą iš sąrašo"
+
+msgid "You have not provided a survey identification number"
+msgstr "Jūs neįvedėte apklausos identifikavimo numerio"
+
+msgid "Please contact"
+msgstr "Susisiekite"
+
+msgid "for further assistance"
+msgstr "jei reikia pagalbos"
+
+msgid "Answers Cleared"
+msgstr "Atsakymai panaikinti"
+
+msgid "Restart this Survey"
+msgstr "Pradėti apklausą iš naujo"
+
+msgid "Close this Window"
+msgstr "Uždaryti šį langą"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Ar tikrai norite panaikinti visus savo atsakymus?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Rezultatų perduoti neina, nes jų nėra."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Ši klaida atsiranda, jei jau buvote perdavę apklausos rezultatus ir paspaudėte REFRESH mygtuką naršyklėje. Šiuo atveju jūsų rezultatai buvo išsaugoti.<br ><br >Jei šį pranešimą gavote bepildydami apklausą, naršyklėje paspauskite BACK ir tada REFRESH. Nors jūs ir prarasite paskutiniuosius atsakymus, visi kiti liks. Ši problema atsiranda, jei naršyklė yra perkrauta. Atsiprašome už nepatogumus."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Jūsų atsakymai nebuvo išsaugoti. Ši apklausa dar neaktyvuota."
+
+msgid "Clear Responses"
+msgstr "Išvalyti atsakymus"
+
+msgid "Thank you"
+msgstr "Ačiū"
+
+msgid "Your survey responses have been recorded."
+msgstr "Jūsų atsakymai išsaugoti."
+
+msgid "Survey Completed"
+msgstr "Apklausa baigta"
+
+msgid "Did Not Save"
+msgstr "Neišsaugota"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Įvyko nežinoma klaida, todėl jūsų atsakymų išsaugoti neįmanoma."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Jūsų atsakymai nepradingo. Jie buvo išsiųsti elektroniniu paštu apklausos administratoriui ir bus įvesti vėliau."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Įvyko klaida išsaugant atsakymus aplausai, kurios ID"
+
+msgid "DATA TO BE ENTERED"
+msgstr "DUOMENYS, KURIUOS REIKIA ĮVESTI"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "SQL KODAS, KURIS NULŪŽO"
+
+msgid "ERROR MESSAGE"
+msgstr "KLAIDOS PRANEŠIMAS"
+
+msgid "Error saving survey results to database"
+msgstr "KLAIDA IŠSAUGANT"
+
+msgid "Try to submit again"
+msgstr "Pabandykite perduoti dar kartą"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Gaila, tačiau tokios apklausos nėra."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Ši apklausa yra kontroliuojama ir jums reikia galiojančio kodo."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Jei jums buvo duotas kodas, įveskite jš į žemiau esantį laukelį ir paspauskite mygtuką."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Kodas kurį įvedėte yra arba negaliojantis arba jau buvo panaudotas."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Ši apklausa neturi jokių klausimų, todėl jos neįmanoma išbandyti arba atlikti."
+
+msgid "For further information contact"
+msgstr "Norėdami papildomos informacijos susisiekite su"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Ši apklausa nėra aktyvuota. Jūs negalėsite išsaugoti savo atsakymų."
+
+msgid "This survey is no longer available."
+msgstr "Ši apklausa jau nebenaudojama."
+
+msgid "You have already completed this survey."
+msgstr "Šią apklausą jūs jau įvykdėte."
+
+msgid "Choose only one of the following"
+msgstr "Pasirinkite vieną iš sekančių"
+
+msgid "Check any that apply"
+msgstr "Pažymėkite visus, kurie tinka"
+
+msgid "Survey Submitted"
+msgstr "Apklausa atlikta"
+
+msgid "A new response was entered for your survey"
+msgstr "Šiai apklausai buvo įvesti jūsų nauji atsakymai"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Paspauskite šią nuorodą norėdami peržiūrėti atskirus atsakymus:"
+
+msgid "View statistics by clicking here:"
+msgstr "Paspauskite šią nuorodą norėdami peržiūrėti statistiką:"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<strong><i>Apklausos anonimiškumas<i><strong><br >Ši apklausa yr anoniminė.<br >Jūsų pateiktuose apklausos atsakymuose nėra jokių duomenų, kurie jus identifikuotų, nebent buvo užduotas toks klausimas apklausoje. Jei jūs dalyvavote apklausoje kuri naudojo specialų kodą, kad leistų jums ją atlikti, užtikriname jus, identifikavimo kodas nebuvo išsaugotas su jūsų atsakymais. Šie kodai yra saugomi atskiroje duomenų bazėje ir bus naudojami tik tam, kad patikrinti ar jūs atlikote šią apklausą. Būdo sugretinti identifikacinius kodus su apklausos atsakymais nėra."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Šioje apklausoje yra {NUMBEROFQUESTIONS} klausimų."
+
+msgid "There is 1 question in this survey."
+msgstr "Apklausoje yra tik vienas klausimas."
+
+msgid "You must be registered to complete this survey"
+msgstr "Jūs turite būti užsiregistravęs, jei norite dalyvauti šioje apklausoje."
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Užsiregistruokite, jei norite dalyvauti šioje apklausoje.<br >nĮveskite savo duomenis ir netrukus gausite elektroninį laišką su nuoroda kurią paspaudę galėsite sudalyvauti apklausoje."
+
+msgid "Email Address"
+msgstr "E-pašto adresas"
+
+msgid "First Name"
+msgstr "Vardas"
+
+msgid "Last Name"
+msgstr "Pavardė"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "Jūs įvedėte netinkamą elektroninio pašto adresą. Įveskite tinkamą."
+
+msgid "The email you used has already been registered."
+msgstr "Šis elektroninio pašto adresas jau buvo panaudotas."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "{SURVEYNAME} apklausos registracijos patvirtinimas"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Ačiū kad užsiregistravote dalyvauti šioje apklausoje.<br ><br >nĮ jūsų nurodytą adresą buvo išsiųstas laiškas su nuoroda į šią apklausą. Pasinaudokite ta nuoroda, kad ją pasiektumėte.<br ><br >nApklausos administratorius {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<strong>Ačiū<br ><br >Jūs baigėte šią apklausą.<strong><br ><br >Paspauskite šią nuorodą  [-._SUBMIT.-] ir jūsų atsakymai bus išsaugoti."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Jei notite patikrinti jūsų įvestus atsakymus irarba juos pakeisti, paspauskite nršyklės mygtuką [<< -._PREV.-] ir galėsite atsakymus peržiūrėti."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Pasirinkite <strong>tik vieną<strong> iš sekančių:"
+
+msgid "Please write your answer here:"
+msgstr "Įrašykite savo atsakymą čia:"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Pasirinkite <strong>visus<strong> kurie tinka"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Pasirinkite visus kurie tinka ir pakomentuokite"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Pasirinkite atitinkamą atsakymąkomentarą kiekvienam"
+
+msgid "Please write your answer(s) here:"
+msgstr "Savo atsakymą (-us) rašykite čia"
+
+msgid "Please enter a date:"
+msgstr "Įveskite datą"
+
+msgid "Make a comment on your choice here:"
+msgstr "Čia pakomentuokite savo pasirinkimą"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Sunumeruokite kiekviną laukelį savo nuožiūra nuo 1 iki"
+
+msgid "Submit Your Survey."
+msgstr "Įvesti apklausos rezultatus"
+
+msgid "Thank you for completing this survey."
+msgstr "Ačiū kad dalyvavote apklausoje."
+
+msgid "Please fax your completed survey to:"
+msgstr "Išsiųskite atliktą apklausą faksu:"
+
+msgid "Only answer this question"
+msgstr "Atsakykite tik į šį klausiąm"
+
+msgid "if you answered"
+msgstr "jei atsakėte"
+
+msgid "and"
+msgstr "ir"
+
+msgid "to question"
+msgstr "į klausimą"
+
+msgid "or"
+msgstr "arba"
+

@@ -1,0 +1,442 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor Croatian language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-29 01:32+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: croatian\n"
+"X-Poedit-Country: CROATIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "Uncertain"
+msgstr "Neodlučanna"
+
+msgid "Tokens"
+msgstr "Šifra"
+
+msgid "Female"
+msgstr "Ženski"
+
+msgid "Male"
+msgstr "Muški"
+
+msgid "No answer"
+msgstr "Bez odgovora"
+
+msgid "Other"
+msgstr "Drugo"
+
+msgid "Please choose"
+msgstr "Odaberite"
+
+msgid "Error"
+msgstr "Greška"
+
+msgid "complete"
+msgstr "Dovršeno"
+
+msgid "Increase"
+msgstr "Povećaj"
+
+msgid "Same"
+msgstr "Bez promjena"
+
+msgid "Decrease"
+msgstr "Smanji"
+
+msgid "<font color='red'>*<font>"
+msgstr "*"
+
+msgid "Confirmation"
+msgstr "Potvrdi"
+
+msgid "Token"
+msgstr "Šifra"
+
+msgid "Continue"
+msgstr "Nastavi"
+
+msgid "Accept"
+msgstr "Prihvati"
+
+msgid "prev"
+msgstr "Natrag"
+
+msgid "next"
+msgstr "Naprijed"
+
+msgid "last"
+msgstr "Na kraj"
+
+msgid "submit"
+msgstr "Spremi podatke"
+
+msgid "Please choose one of the following"
+msgstr "Molimo vas da odaberete jednu od sljedećih opcija"
+
+msgid "Please enter your comment here"
+msgstr "Molimo upišite komentar"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Ovdje možete upisivati isključivo znamenke"
+
+msgid "Exit and Clear Survey"
+msgstr "Zatvori bez slanja odgovora"
+
+msgid "This question is mandatory"
+msgstr "Na ovo pitanje obvezno je odgovoriti"
+
+msgid "Please complete all parts"
+msgstr "Molimo vas da odgovorite na sva pitanja"
+
+msgid "Please check at least one item"
+msgstr "Molimo vas da unesete bar jedan odgovor"
+
+msgid "Please rank all items"
+msgstr "Molimo vas da rangirajte sve odgovore"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Niste odgovorili na jedno ili više obaveznih pitanja. Da biste nastavili odgovorite na sva obavezna pitanja."
+
+msgid "This question must be answered correctly"
+msgstr "Na ovo pitanje morate točno odgovoriti"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Dali ste netočan odgovor na jedno ili više pitanja. Da biste nastavili unesite ispravan odgovor."
+
+msgid "Format: YYYY-MM-DD"
+msgstr "U obliku: LLLL-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(npr.: 2005-12-25 za Božić"
+
+msgid "Remove this item"
+msgstr "Ukloni"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Kliknite na listu s lijeve strane, počevši s vašim"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "poredaj od najvišeg prema najnižem"
+
+msgid "Your Choices"
+msgstr "Vaš izbor"
+
+msgid "Your Ranking"
+msgstr "Vaša ocijena"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Kliknite na škare na desnoj strani"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "Poništite zadnji unos"
+
+msgid "You have not provided a survey identification number"
+msgstr "Nemate identifikacijski broj"
+
+msgid "Please contact"
+msgstr "Molimo, javite se"
+
+msgid "for further assistance"
+msgstr "za daljnju pomoć"
+
+msgid "Answers Cleared"
+msgstr "Odgovori su obrisani"
+
+msgid "Restart this Survey"
+msgstr "Ponovo započni s ispunjavanjem upitnika"
+
+msgid "Close this Window"
+msgstr "Zatvori prozor"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Jeste li sigurni da želite obrisati sve odgovore?"
+
+msgid "Are you sure you want to save your responses?"
+msgstr "Želite li spremiti vaše odgovore?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Odgovori neće biti spremljeni - nema odgovora"
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Ova greška pojavljuje se ukoliko ste već spremili vaše odgovore te kliknuli 'referesh' u pregledniku. Vaši odgovori već su spremljeni.<br ><br >Ukoliko primite ovu poruku tokom ispunjavanja upitnika pritisnite za '<- NATRAG' ('<- BACK') u vašem pregledniku i stranica će se osvježiti. Izgubit ćete odgovore sa posljednje stranice, ali će ostali biti spremljeni. Ovaj problem može biti izazvan visokim opterećenjem web servera. Ispričavamo se zbog neugodnosti."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Vaši odgovori nisu spremljeni. Upitnik nije aktivan"
+
+msgid "Clear Responses"
+msgstr "Obriši sve odgovore."
+
+msgid "Thank you"
+msgstr "Hvala"
+
+msgid "Your survey responses have been recorded."
+msgstr "Vaši odgovori su spremljeni"
+
+msgid "Survey Completed"
+msgstr "Završili ste s ispunjavanjem upitnika"
+
+msgid "Did Not Save"
+msgstr "Nije spremljeno."
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Došlo je do neočekivane pogreške. Vaši odgovori ne mogu se spremiti."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Vaši odgovori nisu izgubljeni: poslani su administratoru upitnika i koji će ih naknadno uključiti u rezultate."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Greška pri pokušaju unosa identifikacijskog broja"
+
+msgid "DATA TO BE ENTERED"
+msgstr "Podaci za unos"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "Greška pri upisivanju SQL koda"
+
+msgid "ERROR MESSAGE"
+msgstr "GREŠKA"
+
+msgid "Error saving survey results to database"
+msgstr "GREŠKA U SPREMANJU"
+
+msgid "Try to submit again"
+msgstr "Pokušajte ponovno"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Ovaj upitnik ne postoji."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Ovaj upitnik nije dostupan javnosti. Za sudjelovanje je potrebna šifra."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Ukoliko ste dobili šifru, molimo, unesite je u donju kućicu i kliknite na dugme Nastavi."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Šifra koju ste unijeli je neispravna ili je već iskorištena."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Ovaj upitnik još nema pitanja, te ne može biti testiran ni završen."
+
+msgid "For further information contact"
+msgstr "Za dodatne informacije obratite se:"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Ovaj upitnik trenutno nije aktivan. Vaši odgovori neće biti spremljeni."
+
+msgid "This survey is no longer available."
+msgstr "Upitnik više nije dostupan."
+
+msgid "You have already completed this survey."
+msgstr "Ovaj upitnik ste već ispunili."
+
+msgid "Choose only one of the following"
+msgstr "Odaberite samo jedno od ponuđenog"
+
+msgid "Check any that apply"
+msgstr "Odaberite sve što se odnosi na tvrdnju"
+
+msgid "Survey Submitted"
+msgstr "Upitnik je poslan"
+
+msgid "A new response was entered for your survey"
+msgstr "Zabilježen je novi unos u upitniku"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Ako želite vidjeti odgovore kliknite na:"
+
+msgid "View statistics by clicking here:"
+msgstr "Statistike pogledajte ovdje:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "Kliknite na sljedeći link ako želite mijenjati vaše odgovore:"
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Ovaj upitnik sadrži {NUMBEROFQUESTIONS} pitanja."
+
+msgid "There is 1 question in this survey."
+msgstr "U ovom upitniku samo je jedno pitanje."
+
+msgid "You must be registered to complete this survey"
+msgstr "Ukoliko želite ispuniti ovaj upitnik, morate se registrirati."
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Ukoliko želite ispuniti ovaj upitnik, morate se registrirati.<br >nUpišite i pošaljite vaše podatke. Link za sudjelovanje primit ćete za nekoliko trenutaka putem maila. "
+
+msgid "Email Address"
+msgstr "E-mail adresa"
+
+msgid "First Name"
+msgstr "Ime"
+
+msgid "Last Name"
+msgstr "Prezime"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "Unešena e-mail adresa nije valjana. Pokušajte ponovo."
+
+msgid "The email you used has already been registered."
+msgstr "E- mail adresa je već registrirana."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "Potrda registracije -- {SURVEYNAME}"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Hvala što ste se prijavili za sudjelovanje u ovom istraživanju.<br ><br >nNa vašu e-mail adresu poslana poruka s podacima o pristupu upitniku Molimo vas provjerite e-mail i slijedite link kako biste ispunili upitnik.<br ><br >nHvala, {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<strong>Hvala<br ><br >Odgovorili ste na sva pitanja u upitniku.<strong><br ><br >Kliknite na [-._SUBMIT.-] da biste završili i spremili odgovore ."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Ukoliko želite provjeriti ili promijeniti odgovore, kliknite na [<< -._PREV.-]  ."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Molimo, odaberite  <strong> jedan <strong> od ponuđenih odgovora:"
+
+msgid "Please write your answer here:"
+msgstr "Ovdje upišite odgovor:"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Molimo odaberite <strong>sve<strong>što se odnosi na tvrdnju:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Molimo vas da odaberete sve što se odnosi na tvrdnju i unesete komentar:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Molimo vas da odaberete primjeren odgovor za svaku tvrdnju."
+
+msgid "Please write your answer(s) here:"
+msgstr "Molimo vas da upišite odgovor:"
+
+msgid "Please enter a date:"
+msgstr "Molimo vas da upišete datum:"
+
+msgid "Make a comment on your choice here:"
+msgstr "Komentirajte svoj izbor:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Molimo vas da obilježite svako polje s obzirom na vaše preferencije od 1 do 10"
+
+msgid "Submit Your Survey."
+msgstr "Pošalji upitnik."
+
+msgid "Thank you for completing this survey."
+msgstr "Zahvaljujemo na vašem sudjelovanju u upitniku."
+
+msgid "Please fax your completed survey to:"
+msgstr "Molimo, faksirajte vaš upitnik na:"
+
+msgid "Only answer this question"
+msgstr "Odgovorite samo na ovo pitanje"
+
+msgid "if you answered"
+msgstr "Ukoliko ste odgovorili"
+
+msgid "and"
+msgstr "i"
+
+msgid "to question"
+msgstr "na pitanje"
+
+msgid "or"
+msgstr "ili"
+
+msgid "Save your responses so far"
+msgstr "Spremi do sada unesene odgovore"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Spremi nedovršeni upitnik"
+
+msgid "Return To Survey"
+msgstr "Nastavi ispunjavati upitnik"
+
+msgid "Name"
+msgstr "Ime"
+
+msgid "Password"
+msgstr "Šifra"
+
+msgid "Repeat Password"
+msgstr "Šifra (potvrdi)"
+
+msgid "Your Email"
+msgstr "E-mail"
+
+msgid "Enter a name and password for this survey and click save below.<br >nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br ><br >nIf you give an email address, an email containing the details will be sent to you."
+msgstr "Unesite ime i šifru za ovaj upitnik i kliknite na spremi.<br >nVaš upitnik će biti spremljen pod navedenim imenom i šifrom: možete ga nastaviti ispunjati u bilo koje vrijeme koristeći iste podatke za pristup.<br ><br >nUkoliko unesete vašu e-mail adresu, poslat ćemo vam e-mail sa informacijama o upitniku. "
+
+msgid "Save Now"
+msgstr "Spremi"
+
+msgid "You must supply a name for this saved session."
+msgstr "Morate unijeti ime kako biste pristupili spremljenom upitniku."
+
+msgid "You must supply a password for this saved session."
+msgstr "Morate unijeti lozinku kako biste prisupili spremljenom upitniku."
+
+msgid "Your passwords do not match."
+msgstr "Vaše šifre nisu jednake."
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Ovo ime je već iskorišteno u ovom upitniku. Kako biste spremili upitnik, vaše ime mora biti jedinstveno."
+
+msgid "Please try again."
+msgstr "Molimo, pokušajte ponovno."
+
+msgid "Saved Survey Details"
+msgstr "Informacije o spremljenom upitniku"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Vi ili netko tko koristi vašu e-mail adresu spremio je nedovršeni upitnik. Koristite ove podatke kako bi nastavili s ispunjavanjem upitnika:"
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "Nastavite s ispunjavanjem upitnika klikom na ovaj URL:"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "Vaši odgovori su uspiješno spremljeni"
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "Došlo je do pogreška. Vaši odgovori nisu spremljeni"
+
+msgid "An email has been sent with details about your saved survey."
+msgstr "Poslan vam je e-mail s vašim odgovorima na upitnik."
+
+msgid "Load unfinished survey"
+msgstr "Učitaj nedovršeni upitnik"
+
+msgid "Load A Previously Saved Survey"
+msgstr "Učitaj prethodno spremljeni upitnik"
+
+msgid "You can load a survey that you have previously saved from this screen.<br >nType in the 'name' you used to save the survey, and the password.<br ><br >n"
+msgstr "Ovdje možete učitati prethodno spremljeni upitnik.<br >nUkucajte ime i šifru koju ste koristili pri spremanju upitnika.<br ><br >n"
+
+msgid "Saved name"
+msgstr "Spremljeno ime"
+
+msgid "Load Now"
+msgstr "Učitaj"
+
+msgid "You did not provide a name"
+msgstr "Niste upisali ime"
+
+msgid "You did not provide a password"
+msgstr "Niste upisali šifru"
+
+msgid "There is no matching saved survey"
+msgstr "Nema odgovarajućeg spremljenog upitnika"
+
+msgid "Your Assessment"
+msgstr "Vaša procjena"
+

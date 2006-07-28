@@ -1,0 +1,447 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor German language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-28 14:57+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: chinese-traditional\n"
+"X-Poedit-Country: chinese-traditional\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+msgid "Yes"
+msgstr "是"
+
+msgid "No"
+msgstr "否"
+
+msgid "Uncertain"
+msgstr "無意見"
+
+msgid "Admin"
+msgstr "管理"
+
+msgid "Tokens"
+msgstr "代碼"
+
+msgid "Female"
+msgstr "女"
+
+msgid "Male"
+msgstr "男"
+
+msgid "No answer"
+msgstr "未有回答"
+
+msgid "NA"
+msgstr "不適用"
+
+msgid "Other"
+msgstr "其他"
+
+msgid "Please choose"
+msgstr "請選擇"
+
+msgid "Error"
+msgstr "出錯"
+
+msgid "complete"
+msgstr "完成"
+
+msgid "Increase"
+msgstr "增加"
+
+msgid "Same"
+msgstr "相同"
+
+msgid "Decrease"
+msgstr "下降"
+
+msgid "Confirmation"
+msgstr "確認"
+
+msgid "Token"
+msgstr "操作代碼"
+
+msgid "Continue"
+msgstr "繼續"
+
+msgid "Accept"
+msgstr "接受"
+
+msgid "prev"
+msgstr "上一題"
+
+msgid "next"
+msgstr "下一題"
+
+msgid "last"
+msgstr "完成"
+
+msgid "submit"
+msgstr "送出"
+
+msgid "Please choose one of the following"
+msgstr "請選擇"
+
+msgid "Please enter your comment here"
+msgstr "請輸入評語"
+
+msgid "Only numbers may be entered in this field"
+msgstr "本欄位限輸入數值"
+
+msgid "Exit and Clear Survey"
+msgstr "清除問卷內容後離開"
+
+msgid "This question is mandatory"
+msgstr "本題必須作答"
+
+msgid "Please complete all parts"
+msgstr "請回答全部問卷內容"
+
+msgid "Please check at least one item"
+msgstr "請在項目打鉤"
+
+msgid "Please rank all items"
+msgstr "請為所有項目排序"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "尚有部份題目未完成作答，請完成後才繼續填寫問卷餘下的題目"
+
+msgid "This question must be answered correctly"
+msgstr "請正確地回答這條問題"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "一或更多問題未被有被正確地回答。  請先更正然後前進。"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "日期格式: YYYY-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(例: 2003-12-25 是聖誕節)"
+
+msgid "Remove this item"
+msgstr "移除本項"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "點擊左方列表的一個項目, 開始您的"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "最高排名的項目, 移到排名的最低位置."
+
+msgid "Your Choices"
+msgstr "您的選擇"
+
+msgid "Your Ranking"
+msgstr "您的排名"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "點擊右方項目旁的剪刀"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "移除排名表的最後一個項目"
+
+msgid "You have not provided a survey identification number"
+msgstr "您未提供問卷編號"
+
+msgid "Please contact"
+msgstr "請聯絡"
+
+msgid "for further assistance"
+msgstr "進一步協助"
+
+msgid "Answers Cleared"
+msgstr "答案被清除"
+
+msgid "Restart this Survey"
+msgstr "重新開始問卷"
+
+msgid "Close this Window"
+msgstr "關閉本視窗"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "您肯定要清除全部問卷內容嗎?"
+
+msgid "Are you sure you want to save your responses?"
+msgstr "您肯定要儲存問卷內容嗎?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "不能送出問卷結果 - 未有人回答問卷."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "照理您已完成及送出問卷<br ><br >如果您是在填寫問卷期間出現本訊息，請按瀏覽器的 '<- 返回' 鍵及按[重新整理]鍵更新上一頁面。這情況可能是因為系統資源不足造成部份答題內容散失，對此我們感到遺憾。"
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "由於本問卷已停用，所以您的問卷未被儲存."
+
+msgid "Clear Responses"
+msgstr "清除問卷內容"
+
+msgid "Thank you"
+msgstr "多謝"
+
+msgid "Your survey responses have been recorded."
+msgstr "您的問卷內容已被儲存."
+
+msgid "Survey Completed"
+msgstr "問卷完成"
+
+msgid "Did Not Save"
+msgstr "未被儲存"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "系統出錯，無法儲存完成的問卷."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "您完成的問卷已送交網管作進一步處理."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "無法儲存到本問卷 id"
+
+msgid "DATA TO BE ENTERED"
+msgstr "須輸入數據"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "SQL CODE 出錯"
+
+msgid "ERROR MESSAGE"
+msgstr "訊息出錯"
+
+msgid "Error saving survey results to database"
+msgstr "儲存出錯"
+
+msgid "Try to submit again"
+msgstr "嘗試再送出問卷"
+
+msgid "Sorry. There is no matching survey."
+msgstr "對不起！找不到相關的問卷."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "本問卷限於擁有代幣的人士才可以作答."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "如果您已擁有代幣，請輸入本方格內，再繼續作答."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "您提供的代幣無效，或已被使用."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "本問卷未有題目，所以您無法完成作答."
+
+msgid "For further information contact"
+msgstr "如有查問，請聯絡"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "本問卷已關閉. 您不能儲存問卷."
+
+msgid "This survey is no longer available."
+msgstr "本問卷已停用."
+
+msgid "You have already completed this survey."
+msgstr "您已完成本回卷"
+
+msgid "Choose only one of the following"
+msgstr "請選擇一項"
+
+msgid "Check any that apply"
+msgstr "可選多個答案"
+
+msgid "Survey Submitted"
+msgstr "已送出問卷"
+
+msgid "A new response was entered for your survey"
+msgstr "恭喜您！您收到一份剛完成的問卷"
+
+msgid "Click the following link to see the individual response:"
+msgstr "點擊此連結查看個別的問卷內容:"
+
+msgid "View statistics by clicking here:"
+msgstr "點擊這裡查看統計資料:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "點擊以下連結修改個別的問卷內容:"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<b><i>私隱聲明<i><b><br >這是一份不記名的問卷.<br >問卷內容並不包含任何可辨認身份的資料，除非問卷內有此具體問題。 如果您參與了一個以代碼(token)作為通入控制的問卷， 請放心，該個代碼(token)並不與您的答案儲存在一起。  系統只會在您更改或完成問卷時才更新該個代碼。  我們並不能將代碼和問卷匹對上."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "此問卷有{NUMBEROFQUESTIONS}條問題."
+
+msgid "There is 1 question in this survey."
+msgstr "此問卷有一條問題."
+
+msgid "You must be registered to complete this survey"
+msgstr "請先登記然後再填此問卷"
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "如果您希望參與這次問卷,請先登記您的細節。  一份內有這次問卷詳情的電子郵件即將奉上。"
+
+msgid "Email Address"
+msgstr "電郵"
+
+msgid "First Name"
+msgstr "名"
+
+msgid "Last Name"
+msgstr "姓"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "您輸入的電郵有誤。  請再輸入。"
+
+msgid "The email you used has already been registered."
+msgstr "您輸入的電郵已被登記。"
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "{SURVEYNAME} 確認登記"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "多謝登記參與這次問卷。<br ><br >n您將收到一份內有這次問卷網址及通入細節的電子郵件。  請點擊該郵件內的連線繼續進行。<br ><br >n問卷主任 {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<b>多謝<br ><br >您已完成這份問卷.<b><br ><br >請按 [-._SUBMIT.-] 把答案遞送給我們."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "如果您想要檢查您之前的答案或予以更改, 請按 [<< -._PREV.-]."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "請任選其<b>一<b>:"
+
+msgid "Please write your answer here:"
+msgstr "請在這兒填上您的答案:"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "請選擇<b>所有<b>適用的答案:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "請選擇所有適用的答案申請及提供意見:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "請為以下各項選擇適當答案:"
+
+msgid "Please write your answer(s) here:"
+msgstr "請在這兒填上您的答案:"
+
+msgid "Please enter a date:"
+msgstr "請填上日期:"
+
+msgid "Make a comment on your choice here:"
+msgstr "請為您的答案作注解:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "請順序按偏好編號各箱子從１至"
+
+msgid "Submit Your Survey."
+msgstr "遞上您的問卷."
+
+msgid "Thank you for completing this survey."
+msgstr "多謝您完成這份問卷."
+
+msgid "Please fax your completed survey to:"
+msgstr "請將問卷傳真至:"
+
+msgid "Only answer this question"
+msgstr "回答這條問題"
+
+msgid "if you answered"
+msgstr "如果您有回答"
+
+msgid "and"
+msgstr "和"
+
+msgid "to question"
+msgstr "於問題"
+
+msgid "or"
+msgstr "或"
+
+msgid "Save your responses so far"
+msgstr "儲存您到目前為止的答案"
+
+msgid "Save Your Unfinished Survey"
+msgstr "儲存末完成的問卷"
+
+msgid "Return To Survey"
+msgstr "返回問卷"
+
+msgid "Name"
+msgstr "名稱"
+
+msgid "Password"
+msgstr "密碼"
+
+msgid "Repeat Password"
+msgstr "重複密碼"
+
+msgid "Your Email"
+msgstr "電郵"
+
+msgid "Enter a name and password for this survey and click save below.<br >nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br ><br >nIf you give an email address, an email containing the details will be sent to you."
+msgstr "為這問卷輸入一個名字和密碼然後點擊「儲存」。<br >n您的問卷將會以這個名字和密碼儲存在系統內，日後您可以用這個名字和密碼登入繼續完成問卷。<br ><br >n如果您填上電郵地址，以下細節會以電郵送上。"
+
+msgid "Save Now"
+msgstr "儲存"
+
+msgid "You must supply a name for this saved session."
+msgstr "請填上名字。"
+
+msgid "You must supply a password for this saved session."
+msgstr "請填上密碼。"
+
+msgid "Your passwords do not match."
+msgstr "密碼不匹對。"
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "這個名字已經被使用。  您必須使用一個獨特的名字。"
+
+msgid "Please try again."
+msgstr "請再試。"
+
+msgid "Saved Survey Details"
+msgstr "已儲存的問卷之細節"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "您,或一個使用您電郵的人,儲存了一個未完成的問卷。  您可使用以下細節返回並繼續完成該問卷。"
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "請點擊以下URL去檢索您的問卷:"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "您的問卷經已成功存檔"
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "存檔其間發生了錯誤，您的問卷並未被保存。"
+
+msgid "An email has been sent with details about your saved survey."
+msgstr "您問卷的細節已用電子郵件送上。"
+
+msgid "Load unfinished survey"
+msgstr "檢索未完成的問卷"
+
+msgid "Load A Previously Saved Survey"
+msgstr "檢索先前儲存好的問卷"
+
+msgid "You can load a survey that you have previously saved from this screen.<br >nType in the 'name' you used to save the survey, and the password.<br ><br >n"
+msgstr "您可在這兒檢索您先前儲存了的問卷。<br >n請輸入該問卷的名字及密碼。<br ><br >n"
+
+msgid "Saved name"
+msgstr "名字"
+
+msgid "Load Now"
+msgstr "檢索"
+
+msgid "You did not provide a name"
+msgstr "您沒有輸入名字"
+
+msgid "You did not provide a password"
+msgstr "您沒有輸入密碼"
+
+msgid "There is no matching saved survey"
+msgstr "找不到相對的問卷"
+
+msgid "Your Assessment"
+msgstr "您的評估"
+

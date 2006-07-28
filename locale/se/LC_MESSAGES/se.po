@@ -1,0 +1,1219 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor Swedish language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-29 01:23+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: swedish\n"
+"X-Poedit-Country: SWEDEN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "Uncertain"
+msgstr "Vet ej"
+
+msgid "Tokens"
+msgstr "Behörighetskoder"
+
+msgid "Female"
+msgstr "Kvinna"
+
+msgid "Male"
+msgstr "Man"
+
+msgid "No answer"
+msgstr "Inget svar"
+
+msgid "Other"
+msgstr "Annat"
+
+msgid "Please choose"
+msgstr "Välj"
+
+msgid "Error"
+msgstr "Fel"
+
+msgid "complete"
+msgstr "komplett"
+
+msgid "Increase"
+msgstr "öka"
+
+msgid "Same"
+msgstr "Samma"
+
+msgid "Decrease"
+msgstr "Minska"
+
+msgid "Confirmation"
+msgstr "Bekräftelse"
+
+msgid "Token"
+msgstr "Behörighetskod"
+
+msgid "Continue"
+msgstr "Fortsätt"
+
+msgid "Accept"
+msgstr "Acceptera"
+
+msgid "prev"
+msgstr "föreg."
+
+msgid "next"
+msgstr "nästa"
+
+msgid "last"
+msgstr "sista"
+
+msgid "submit"
+msgstr "skicka"
+
+msgid "Please choose one of the following"
+msgstr "Välj ett av de följande"
+
+msgid "Please enter your comment here"
+msgstr "Skriv din kommentar här"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Endast nummer kan skrivas i detta fält"
+
+msgid "Exit and Clear Survey"
+msgstr "Lämna och rensa enkäten"
+
+msgid "This question is mandatory"
+msgstr "Denna fråga är obligatorisk"
+
+msgid "Please complete all parts"
+msgstr "Du måste fylla i alla delar"
+
+msgid "Please check at least one item"
+msgstr "Välj minst ett objekt"
+
+msgid "Please rank all items"
+msgstr "Rangordna alla alternativen"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "En eller flera obligatoriska frågor har inte besvarats. Du kan inte fortsätta innan de är besvarade"
+
+msgid "This question must be answered correctly"
+msgstr "Den här frågan måste besvaras korrekt"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "En eller flera frågor har inte besvarats på rätt sätt. Du kan inte fortsätta fürrän dessa svar är korrekta"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Format: åååå-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(tex: 2004-12-24 för Julafton)"
+
+msgid "Remove this item"
+msgstr "Ta bort detta objekt"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Klicka på ett objekt i listan till vänster, börja med ditt"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "högst rankade objekt, upprepa tills ditt lägst rankade objekt."
+
+msgid "Your Choices"
+msgstr "Dina val"
+
+msgid "Your Ranking"
+msgstr "Din rangordning"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Klicka på saxen till höger om objektet"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "för att ta bort det sist elementet i listan."
+
+msgid "You have not provided a survey identification number"
+msgstr "Du har inte angett ett id-nummer för enkäten"
+
+msgid "Please contact"
+msgstr "Var god kontakta"
+
+msgid "for further assistance"
+msgstr "för ytterligare assistans"
+
+msgid "Answers Cleared"
+msgstr "Svaren rensade"
+
+msgid "Restart this Survey"
+msgstr "Starta om enkäten"
+
+msgid "Close this Window"
+msgstr "Stäng fönstret"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "är du säker på att du vill rensa dina svar?"
+
+msgid "Are you sure you want to save your responses?"
+msgstr "är du säker på att du vill spara dina svar?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Kan inte skicka resultaten - det finns inga att skicka."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Detta fel kan uppstå om du redan har skickat dina svar och klickat på 'uppdatera' på din webbläsare. I så fall så är dina svar redan sparade."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Dina enkätsvar är inte sparade. Denna enkät är inte aktiviverad ännu."
+
+msgid "Clear Responses"
+msgstr "Rensa svaren"
+
+msgid "Thank you"
+msgstr "Tack"
+
+msgid "Your survey responses have been recorded."
+msgstr "Dina enkätsvar är sparade."
+
+msgid "Survey Completed"
+msgstr "Enkäten klar"
+
+msgid "Did Not Save"
+msgstr "Sparade inte"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Ett oväntat fel har uppstått och dina svar kan inte sparas."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Dina svar har inte försvunnit, utan de har mailats till enkätadministratören och kommer att läggas in i databasen vid ett senare tillfälle."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Ett fel uppstod under försök att spara svaret till enkät-id"
+
+msgid "DATA TO BE ENTERED"
+msgstr "Data skall fyllas i"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "Sql-kod som har misslyckats"
+
+msgid "ERROR MESSAGE"
+msgstr "Felmeddelande"
+
+msgid "Error saving survey results to database"
+msgstr "Fel vid sparandet"
+
+msgid "Try to submit again"
+msgstr "Försök att skicka igen"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Tyvärr. Det finns ingen matchade enkät."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Detta är en kontrollerad enkät. Du behöver en giltlig behörigetskod för att delta"
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Om du har fått en behörighetskod, skriv in den i rutan nedan och fortsätt."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Behörighetskoden som du angett är antingen ogiltlig eller redan använd."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Denna enkät har ännu inga frågor och kan inte testas eller färdigställas."
+
+msgid "For further information contact"
+msgstr "För ytterligare information kontakta"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Denna enkät är inte aktiv för tillfället. Du kan därför inte spara dina svar."
+
+msgid "This survey is no longer available."
+msgstr "Denna enkät är inte längre tillgänglig."
+
+msgid "You have already completed this survey."
+msgstr "Du har redan svarat på den här enkäten."
+
+msgid "Choose only one of the following"
+msgstr "Välj bara en av följande"
+
+msgid "Check any that apply"
+msgstr "Välj vilka som stämmer"
+
+msgid "Survey Submitted"
+msgstr "Enkäten skickad"
+
+msgid "A new response was entered for your survey"
+msgstr "Ett nytt svar till din enkät har lämnats"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Se det enskilda svaret genom att klicka här:"
+
+msgid "View statistics by clicking here:"
+msgstr "Se statistik för enkäten genom att klicka här:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "Klicka på följande länk för att ändra det enskilda svaret:"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<strong><i>Hantering av personuppgifter. <i><strong><br >Den här enkäten är anonym.<br >De svar på enkäten som sparas innehåller ingen information som kan identifiera den som svarat utom om denna fråga specifikt ställts i enkäten. även om det krävs ett id-nummer för att kunna besvara enkäten sparas inte denna personliga information tillsammans med enkätsvaret. Id-numret används endast för att avgöra om du har svarat (eller inte svarat) på enkäten och den informationen sparas separat. Det finns inget sätt att avgöra vilket id-nummer som hör ihop med ett visst svar i den här enkäten."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Den här undersökningen innehåller {NUMBEROFQUESTIONS} frågor."
+
+msgid "There is 1 question in this survey."
+msgstr "Det finns 1 fråga i enkäten."
+
+msgid "You must be registered to complete this survey"
+msgstr "Du måste vara registrerad för att genomföra den här enkäten"
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Du måste registrera dig innan du fyller i den här enkäten.<br >nFyll i dina uppgifter nedan och så skickas en länk till enkäten till dig med e-post genast."
+
+msgid "Email Address"
+msgstr "E-postadress"
+
+msgid "First Name"
+msgstr "Förnamn"
+
+msgid "Last Name"
+msgstr "Efternamn"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "E-postadressen du angav är inte giltig. Var vänlig försök igen."
+
+msgid "The email you used has already been registered."
+msgstr "Din e-postadress har redan anmälts."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "{SURVEYNAME} Bekräftelse på registrering"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Tack för att du registerat dig för att genomföra den här enkäten.<br ><br >nEtt e-postmeddelande med dina uppgifter har sänts till den adress du angav.Följ den bifogade länken i e-postmeddelandet för att fortsätta.<br ><br >nEnkät-ansvarig {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<strong>Tack!<br ><br >Du har besvarat alla frågor i den här enkäten.<strong><br ><br >Klicka på [-._SUBMIT.-] för att slutföra och spara dina svar."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Om du vill kontrollera dina svar ocheller ändra dem, kan du göra det genom att klicka på [<< -._PREV.-]-knappen och bläddra genom dina svar."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Välj <strong>endast en<strong> av följande:"
+
+msgid "Please write your answer here:"
+msgstr "Skriv ditt svar här:"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Välj <strong>alla<strong> som stämmer:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Välj alla som stämmer och skriv en kommentar:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Välj det korrekta svaret för varje punkt:"
+
+msgid "Please write your answer(s) here:"
+msgstr "Skriv dittdina svar här:"
+
+msgid "Please enter a date:"
+msgstr "Fyll i datum:"
+
+msgid "Make a comment on your choice here:"
+msgstr "Kommentera dina val här:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Rangordna i varje ruta med ett nummer från 1 till"
+
+msgid "Submit Your Survey."
+msgstr "Lämna in din enkät."
+
+msgid "Thank you for completing this survey."
+msgstr "Tack för att du svarat på denna enkät."
+
+msgid "Please fax your completed survey to:"
+msgstr "Faxa den ifyllda enkäten till:"
+
+msgid "Only answer this question"
+msgstr "Svara bara på denna fråga"
+
+msgid "if you answered"
+msgstr "om du svarat"
+
+msgid "and"
+msgstr "och"
+
+msgid "to question"
+msgstr "på fråga"
+
+msgid "or"
+msgstr "eller"
+
+msgid "Save your responses so far"
+msgstr "Spara dina svar så här långt"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Spara din oavslutade enkät"
+
+msgid "Return To Survey"
+msgstr "Tillbaka till enkäten"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "Password"
+msgstr "Lösenord"
+
+msgid "Repeat Password"
+msgstr "Upprepa lösenord"
+
+msgid "Your Email"
+msgstr "Din e-postadress"
+
+msgid "Enter a name and password for this survey and click save below.<br >nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br ><br >nIf you give an email address, an email containing the details will be sent to you."
+msgstr "Fyll i namn och lösenord för den här enkäten och klicka nedan.<br >nDin enkät kommer att sparas med hjälp av det namnet och lösenordet och du kan senare fortsätta fylla i den genom att logga in med samma namn och lösenord.<br ><br >nOm du anger en e-postadress skickas uppgifterna till dig med e-post på den adressen."
+
+msgid "Save Now"
+msgstr "Spara nu"
+
+msgid "You must supply a name for this saved session."
+msgstr "Du måste ange ett namn för den här omgången svar."
+
+msgid "You must supply a password for this saved session."
+msgstr "Du måste ange ett lösenord för den här omgången svar."
+
+msgid "Your passwords do not match."
+msgstr "Lösenorden stömmer inte överens."
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Det här namnet har redan använts för denna enkät. Du måste ange ett unikt namn när du sparar."
+
+msgid "Please try again."
+msgstr "Var vänlig försök igen."
+
+msgid "Saved Survey Details"
+msgstr "Sparade enkätsvar"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Du, eller någon annan som angett din e-postadress, har sparat en oavslutad enkät. Följande uppgifter kan användas för att återvända till enkäten och fortsätta där du lämnade den."
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "Uppdatera din enkät genom att klicka på följande länk:"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "Dina enkätsvar har sparats"
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "Ett fel uppstod och dina enkätsvar har inte sparats."
+
+msgid "An email has been sent with details about your saved survey."
+msgstr "Ett e-postmeddelande med detaljer om din sparade enkät har skickats."
+
+msgid "Load unfinished survey"
+msgstr "öppna ofullständigt besvarad enkät"
+
+msgid "Load A Previously Saved Survey"
+msgstr "öppnar tidigare sparad enkät"
+
+msgid "You can load a survey that you have previously saved from this screen.<br >nType in the 'name' you used to save the survey, and the password.<br ><br >n"
+msgstr "Du kan öppna en enkät som du tidigare sparat från denna sida.<br >nFyll i samma 'namn' och 'lösenord' som du använde för att spara enkäten.<br ><br >n"
+
+msgid "Saved name"
+msgstr "Sparat namn"
+
+msgid "Load Now"
+msgstr "öppna nu"
+
+msgid "You did not provide a name"
+msgstr "Du angav inget namn"
+
+msgid "You did not provide a password"
+msgstr "Du angav inget lösenord"
+
+msgid "There is no matching saved survey"
+msgstr "Det finns ingen enkät som stämmer överens"
+
+msgid "Your Assessment"
+msgstr "Din uppskattning"
+
+msgid "Group"
+msgstr "Grupp"
+
+msgid "Question"
+msgstr "Frga"
+
+msgid "Answers"
+msgstr "Svar"
+
+msgid "Conditions"
+msgstr "Villkor"
+
+msgid "Help"
+msgstr "Hjlp"
+
+msgid "User Control"
+msgstr "Anvndarkontroll"
+
+msgid "Check Database Fields"
+msgstr "Kontrollera Databas Flt"
+
+msgid "Create Database"
+msgstr "Skapa Databas"
+
+msgid "Export Question"
+msgstr "Exportera Frga"
+
+msgid "Export Label Set"
+msgstr "Exportera Label Set"
+
+msgid "Import Question"
+msgstr "Importera Frga"
+
+msgid "Import Group"
+msgstr "Importera Grupp"
+
+msgid "Import Label Set"
+msgstr "Importera Label Set"
+
+msgid "Export Responses"
+msgstr "Exportera Svar"
+
+msgid "Browse Responses"
+msgstr "Browse Svar"
+
+msgid "Browse Saved Responses"
+msgstr "Browse Saved Svar"
+
+msgid "View Response"
+msgstr "View Svar"
+
+msgid "Data View Control"
+msgstr "Data View Kontroll"
+
+msgid "Token Control"
+msgstr "Token Kontroll"
+
+msgid "Token Database Administration Options"
+msgstr "Token Databas Administration Options"
+
+msgid "Delete Tokens Table"
+msgstr "Radera Tokens Table"
+
+msgid "Email Invitation"
+msgstr "Email Inbjudning"
+
+msgid "Email Reminder"
+msgstr "Email Pminnelse"
+
+msgid "Create Tokens"
+msgstr "Skapa Tokens"
+
+msgid "Upload CSV File"
+msgstr "Ladda upp CSV Fil"
+
+msgid "Questions"
+msgstr "Frgor"
+
+msgid "All in one"
+msgstr "Alla Frgor Samtidigt"
+
+msgid "Modify Security Settings"
+msgstr "Modifiera Skerhets Instllningar"
+
+msgid "Activate Security"
+msgstr "Aktivera Skerhet"
+
+msgid "Check Database"
+msgstr "Kontrollera Databas"
+
+msgid "Show Help"
+msgstr "Visa Hjlp"
+
+msgid "Check Settings"
+msgstr "Kontrollera Instllningar"
+
+msgid "Backup Entire Database"
+msgstr "Backup Entire Databas"
+
+msgid "Template Editor"
+msgstr "Mall Editor"
+
+msgid "Export this Response"
+msgstr "Exportera detta Svar"
+
+msgid "View Saved but not submitted Responses"
+msgstr "Titta p sparade men inte skickade Svar"
+
+msgid "Set assessment rules"
+msgstr "Stt utvrderings regler"
+
+msgid "Edit Current Group"
+msgstr "Editera Denna Grupp"
+
+msgid "Export Current Group"
+msgstr "Exportera Denna Grupp"
+
+msgid "Delete Current Group"
+msgstr "Radera Denna Grupp"
+
+msgid "Add New Question to Group"
+msgstr "Lgg till Ny Frga to Grupp"
+
+msgid "Show Details of this Group"
+msgstr "Visa Detaljer of denna Grupp"
+
+msgid "Close this Group"
+msgstr "Stng denna Grupp"
+
+msgid "Edit Current Question"
+msgstr "Editera Denna Frga"
+
+msgid "Copy Current Question"
+msgstr "Kopiera Denna Frga"
+
+msgid "Delete Current Question"
+msgstr "Radera Denna Frga"
+
+msgid "Export this Question"
+msgstr "Exportera Denna Frga"
+
+msgid "EditAdd Answers for this Question"
+msgstr "EditeraLgg till Svar for denna Frga"
+
+msgid "EditAdd Label Sets"
+msgstr "EditeraLgg till Label Sets"
+
+msgid "Show Details of this Question"
+msgstr "Visa Detaljer of denna Frga"
+
+msgid "Close this Question"
+msgstr "Stng denna Frga"
+
+msgid "Show summary information"
+msgstr "Visa summerad information"
+
+msgid "Display Responses"
+msgstr "Visa Svar"
+
+msgid "Display Last 50 Responses"
+msgstr "Visa Sista 50 Svaren"
+
+msgid "Export Results to Application"
+msgstr "Exportera Resultat till Applikation"
+
+msgid "Backup results table as SQL file"
+msgstr "Ta Backup av resultattablellen till en SQL fil"
+
+msgid "Display Tokens"
+msgstr "Visa Tokens"
+
+msgid "Add new token entry"
+msgstr "Lgg till new token entry"
+
+msgid "Import Tokens from CSV File"
+msgstr "Importera Tokens frn CSV Fil"
+
+msgid "Export Tokens to CSV file"
+msgstr "Exportera Tokens till CSV fil"
+
+msgid "Send email invitation"
+msgstr "Skicka email inbjudan"
+
+msgid "Send email reminder"
+msgstr "Skicka email pminnelse"
+
+msgid "Generate Tokens"
+msgstr "Generera Tokens"
+
+msgid "Drop tokens table"
+msgstr "Droppa tokens tabell"
+
+msgid "Add new label set"
+msgstr "Lgg till new label set"
+
+msgid "Edit label set"
+msgstr "Editera label set"
+
+msgid "Delete label set"
+msgstr "Radera label set"
+
+msgid "Show next.."
+msgstr "Visa nsta.."
+
+msgid "Title:"
+msgstr "Titel:"
+
+msgid "Description:"
+msgstr "Besktivning:"
+
+msgid "Welcome:"
+msgstr "Vlkommen:"
+
+msgid "Fax To:"
+msgstr "Faxa Till:"
+
+msgid "Date Stamp?"
+msgstr "Datum stmpel?"
+
+msgid "IP Address"
+msgstr "IP Adress"
+
+msgid "Template:"
+msgstr "Mall:"
+
+msgid "Language:"
+msgstr "Srk:"
+
+msgid "End URL:"
+msgstr "Slut URL:"
+
+msgid "URL Descrip:"
+msgstr "URL Beskrivning:"
+
+msgid "Select SQL File:"
+msgstr "Vlj SQL Fil:"
+
+msgid "Use Cookies?"
+msgstr "Anvnd Cookies?"
+
+msgid "Notification:"
+msgstr "Notifiering:"
+
+msgid "Allow public registration?"
+msgstr "Tillt publik registrering?"
+
+msgid "Token Attribute Names:"
+msgstr "Token Attribut Namn:"
+
+msgid "Invitation Email Subject:"
+msgstr "Inbjudning Email Subject:"
+
+msgid "Invitation Email:"
+msgstr "Inbjudning Email:"
+
+msgid "Email Reminder Subject:"
+msgstr "Email Pminnelse Subject:"
+
+msgid "Email Reminder:"
+msgstr "Email Pminnelse:"
+
+msgid "Confirmation Email Subject"
+msgstr "Bekrftelse Email Subject"
+
+msgid "Confirmation Email"
+msgstr "Bekrftelse Email"
+
+msgid "This will replace the existing text. Continue?"
+msgstr "Detta kommer att erstta den existerande texten. Fortstta?"
+
+msgid "Allow Saves?"
+msgstr "Tillt sparningar?"
+
+msgid "Start ID numbers at:"
+msgstr "Starta ID nummmer med:"
+
+msgid "Show [<< Prev] button"
+msgstr "Visa [<< Prev] knappen"
+
+msgid "Update Group"
+msgstr "Uppdatera Grupp"
+
+msgid "Edit Question"
+msgstr "Editera Frga"
+
+msgid "Update Question"
+msgstr "Uppdatera Frga"
+
+msgid "Question:"
+msgstr "Frga:"
+
+msgid "Help:"
+msgstr "Hjlp:"
+
+msgid "Group:"
+msgstr "Grupp:"
+
+msgid "Copy Answers?"
+msgstr "Kopiera Svar?"
+
+msgid "Question Attributes:"
+msgstr "Frga Attributes:"
+
+msgid "Copy Attributes?"
+msgstr "Kopiera Attributes?"
+
+msgid "Save"
+msgstr "Spara"
+
+msgid "Add"
+msgstr "Lgg till"
+
+msgid "Security"
+msgstr "Skerhet"
+
+msgid "Edit"
+msgstr "Editera"
+
+msgid "Delete"
+msgstr "Radera"
+
+msgid "Turn Off Security"
+msgstr "Turn Off Skerhet"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Boilerplate Question"
+msgstr "Boilerplate Frga"
+
+msgid "Add Group"
+msgstr "Lgg till Grupp"
+
+msgid "Add Question"
+msgstr "Lgg till Frga"
+
+msgid "Add Answer"
+msgstr "Lgg till Answer"
+
+msgid "Copy Question"
+msgstr "Kopiera Frga"
+
+msgid "Add User"
+msgstr "Lgg till User"
+
+msgid "Save Changes"
+msgstr "Spara Changes"
+
+msgid "None-); as in -Do not display anything-, -or none chosen"
+msgstr "None'); as in 'Do not display anything', 'or none chosen"
+
+msgid "Close Window"
+msgstr "Stng Window"
+
+msgid "Update"
+msgstr "Uppdatera"
+
+msgid "Responses will be date stamped"
+msgstr "Svar kommer datumstmplas"
+
+msgid "IP Addresses will be logged"
+msgstr "IP Addressen kommer att loggas"
+
+msgid "It is presented on one single page."
+msgstr "Presenteras p en sida."
+
+msgid "You need to add questions"
+msgstr "Du mste skapa frgor"
+
+msgid "Mandatory Question"
+msgstr "Obligatorisk Frga"
+
+msgid "Optional Question"
+msgstr "Valfri Frga"
+
+msgid "You need to add answers to this question"
+msgstr "Du mste lgga till svarsalternativ till denna frga"
+
+msgid "You need to choose a Label Set for this question"
+msgstr "You need to choose a Label Set for denna question"
+
+msgid "Note: You MUST enter a new question code"
+msgstr "Kommentar: du mste ha en frgekod!"
+
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Antingen har den valda databasen inte skapats n eller s r det problem att accessa den"
+
+msgid "PHPSurveyor can attempt to create this database for you."
+msgstr "PHPSurveyor kan skapa denna databas t dig."
+
+msgid "Your selected database name is:"
+msgstr "Din valda databas heter:"
+
+msgid "Creating default htaccess file"
+msgstr "Skapar standard htaccess fil"
+
+msgid "Couldn't create htaccess file. Check your config.php for $homedir setting, and that you have write permission in the correct directory."
+msgstr "Kunde inte skapa htaccessfil. Kontrollera din config.php efter $homedir instllningen, och att du har skrivrttigheter i denna mapp."
+
+msgid "Security Levels are now set up!"
+msgstr "Skerhets Niver r nu instllda!"
+
+msgid "Creating default users"
+msgstr "Skapar standard anvndare"
+
+msgid "Updating users table"
+msgstr "Uppdaterar anvndar tabell"
+
+msgid "Error occurred creating htpasswd file"
+msgstr "Ett fel uppstod vid skapandet av htpasswd fil"
+
+msgid "Removing security settings"
+msgstr "Tar bort skerhetsinstllningar"
+
+msgid "Access file, password file and user database deleted"
+msgstr "Access fil, password fil och anvndardatabas raderade"
+
+msgid "Adding User"
+msgstr "Lgger till anvndare"
+
+msgid "Deleting User"
+msgstr "Raderar anvndare"
+
+msgid "Could not delete user. Username was not supplied."
+msgstr "Kunde inte radera anvndare. Anvndarnamn angavs inte."
+
+msgid "Modifying User"
+msgstr "Modifierar anvndare"
+
+msgid "Initialise Security"
+msgstr "Initialise Skerhet"
+
+msgid "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again."
+msgstr "No users exist in your tabell. We recommend you 'turn off' security. You can then 'turn it on' again."
+
+msgid "This question is a multiple answer type question but has no answers."
+msgstr "Denna question is a multiple answer type question but has no answers."
+
+msgid "This question does not have a question 'type' set."
+msgstr "Denna question does not have a question 'type' set."
+
+msgid "This question requires a Labelset, but none is set."
+msgstr "Denna question requires a Labelset, but none is set."
+
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Denna question has a condition set, however the condition is based on a question that appears after it."
+
+msgid "Activate"
+msgstr "Aktivera"
+
+msgid "Your responses table will be renamed to:"
+msgstr "Your responses tabell will be renamed to:"
+
+msgid "De-Activate"
+msgstr "De-Aktivera"
+
+msgid "The responses table has been renamed to: "
+msgstr "The responses tabell has been renamed to: "
+
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr "You should note the name of this tabell in case you need to access this information later."
+
+msgid "Table Created"
+msgstr "Table Skapad"
+
+msgid "Field Created"
+msgstr "Field Skapad"
+
+msgid "It appears as if some tables or fields are missing from your database."
+msgstr "It appears as if some tables or fields are missing frn your database."
+
+msgid "Database has been created."
+msgstr "Databas has been created."
+
+msgid "Populate Database"
+msgstr "Populate Databas"
+
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Databas Information not provided. This script must be run frn admin.php only."
+
+msgid "Group could not be added. It is missing the mandatory group name"
+msgstr "Grupp could not be added. It is missing the mandatory group name"
+
+msgid "Group could not be updated"
+msgstr "Grupp could not be updated"
+
+msgid "Group could not be deleted"
+msgstr "Grupp could not be raderad"
+
+msgid "Question could not be created."
+msgstr "Frga could not be created."
+
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Frga could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+
+msgid "Question could not be updated"
+msgstr "Frga could not be updated"
+
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Frga could not be raderad. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+
+msgid "Question could not be deleted"
+msgstr "Frga could not be raderad"
+
+msgid "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
+msgstr "Answer could not be raderad. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
+
+msgid "Filtered from Statistics Script"
+msgstr "Filtered frn Statistics Script"
+
+msgid "Single Response"
+msgstr "Single Svar"
+
+msgid "Question Codes"
+msgstr "Frga Codes"
+
+msgid "Full Answers"
+msgstr "Full Svar"
+
+msgid "Export Data"
+msgstr "Exportera Data"
+
+msgid "Column Control"
+msgstr "Column Kontroll"
+
+msgid "Choose Token Fields"
+msgstr "Choose Token Flt"
+
+msgid "File upload succeeded."
+msgstr "Fil upload succeeded."
+
+msgid "Reading file.."
+msgstr "Reading fil.."
+
+msgid "File does not contain PHPSurveyor data in the correct format."
+msgstr "Fil does not contain PHPSurveyor data in the correct format."
+
+msgid "Group Import Summary"
+msgstr "Grupp Importera Summary"
+
+msgid "Import of Group is completed."
+msgstr "Importera of Grupp is completed."
+
+msgid "Import of this group file failed"
+msgstr "Importera of this group fil failed"
+
+msgid "This file is not a PHPSurveyor group file. Import failed."
+msgstr "This fil is not a PHPSurveyor group fil. Importera failed."
+
+msgid "No GID (Group) has been provided. Cannot import question"
+msgstr "No GID (Grupp) has been provided. Cannot import question"
+
+msgid "This file is not a PHPSurveyor question file. Import failed."
+msgstr "This fil is not a PHPSurveyor question fil. Importera failed."
+
+msgid "Question Import Summary"
+msgstr "Frga Importera Summary"
+
+msgid "Import of Question is completed"
+msgstr "Importera of Frga is completed"
+
+msgid "Edit this entry"
+msgstr "Editera this entry"
+
+msgid "Delete this entry"
+msgstr "Radera this entry"
+
+msgid "Show"
+msgstr "Visa"
+
+msgid "Filter Settings"
+msgstr "Filter Instllningar"
+
+msgid "Responses Containing"
+msgstr "Svar Containing"
+
+msgid "Results"
+msgstr "Resultat"
+
+msgid "Update Entry"
+msgstr "Uppdatera Entry"
+
+msgid "Add Another Record"
+msgstr "Lgg till Another Record"
+
+msgid "Record Deleted"
+msgstr "Record Raderad"
+
+msgid "Editing Response"
+msgstr "Editing Svar"
+
+msgid "Help about this question"
+msgstr "Hjlp about this question"
+
+msgid "Delete Tokens"
+msgstr "Radera Tokens"
+
+msgid "Delete all token entries"
+msgstr "Radera all token entries"
+
+msgid "Set all entries to 'No invitation sent'."
+msgstr "Set all entries to 'No inbjudan sent'."
+
+msgid "Are you really sure you want to reset all invitation records to NO?"
+msgstr "Are you really sure you want to reset all inbjudan records to NO?"
+
+msgid "Delete all unique token numbers"
+msgstr "Radera all unique token numbers"
+
+msgid "Edit Token Entry"
+msgstr "Editera Token Entry"
+
+msgid "Delete Token Entry"
+msgstr "Radera Token Entry"
+
+msgid "Update Response"
+msgstr "Uppdatera Svar"
+
+msgid "Send invitation email to this entry"
+msgstr "Skicka inbjudan email to this entry"
+
+msgid "Send reminder email to this entry"
+msgstr "Skicka pminnelse email to this entry"
+
+msgid "Invitation to participate in {SURVEYNAME}"
+msgstr "Inbjudning to participate in {SURVEYNAME}"
+
+msgid "Reminder to participate in {SURVEYNAME}"
+msgstr "Pminnelse to participate in {SURVEYNAME}"
+
+msgid "Add or Edit Token"
+msgstr "Lgg till or Editera Token"
+
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "You can leave this blank, and automatically generate tokens using 'Skapa Tokens'"
+
+msgid "Added New Token"
+msgstr "Added Ny Token"
+
+msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as -firstname, lastname, email, [token], [attribute1], [attribute2]-."
+msgstr "Fil should be a standard CSV (comma delimited) fil with no quotes. The first line should contain header information (will be removed). Data should be ordered as "
+
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "Ladda upp fil not found. Kontrollera your permissions and path for the upload directory"
+
+msgid "Importing CSV File"
+msgstr "Importing CSV Fil"
+
+msgid "{TOKENCOUNT} Records Created"
+msgstr "{TOKENCOUNT} Records Skapad"
+
+msgid "Invitation Template cannot be found. This file must exist in the default template folder."
+msgstr "Inbjudning Mall cannot be found. This fil must exist in the default template folder."
+
+msgid "Reminder Template cannot be found. This file must exist in the default template folder."
+msgstr "Pminnelse Mall cannot be found. This fil must exist in the default template folder."
+
+msgid "Send Invitations"
+msgstr "Skicka Invitations"
+
+msgid "Send Reminders"
+msgstr "Skicka Reminders"
+
+msgid "Invitation Sent To:"
+msgstr "Inbjudning Sent To:"
+
+msgid "Reminder Sent To:"
+msgstr "Pminnelse Sent To:"
+
+msgid "Update tokens table with new fields"
+msgstr "Uppdatera tokens tabell with new fields"
+
+msgid "Create New Label Set"
+msgstr "Skapa Ny Label Set"
+
+msgid "Update of Label Set failed"
+msgstr "Uppdatera of Label Set failed"
+
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "Couldn't Radera Label Set - There are questions that rely on this. You must delete these questions first."
+
+msgid "Database Name"
+msgstr "Databas Name"
+
+msgid "Default Language"
+msgstr "Default Srk"
+
+msgid "Current Language"
+msgstr "Denna Srk"
+
+msgid "Check PHPSurveyor Data Integrity"
+msgstr "Kontrollera PHPSurveyor Data Integrity"
+
+msgid "Send email notification with result codes"
+msgstr "Skicka email notification with result codes"
+
+msgid "Copy Conditions"
+msgstr "Kopiera Villkor"
+
+msgid "Add Condition"
+msgstr "Lgg till Condition"
+
+msgid "You have not selected a Question."
+msgstr "You have not selected a Frga."
+
+msgid "No condition selected to copy from"
+msgstr "No condition selected to copy frn"
+
+msgid "Create new template"
+msgstr "Skapa new template"
+
+msgid "Create new template called:"
+msgstr "Skapa new template called:"
+
+msgid "Create a copy of this template called:"
+msgstr "Skapa a copy of this template called:"
+
+msgid "File Control:"
+msgstr "Fil Kontroll:"
+
+msgid "Upload"
+msgstr "Ladda upp"
+
+msgid "Question Page"
+msgstr "Frga Page"
+
+msgid "Export Template"
+msgstr "Exportera Mall"
+
+msgid "Save Page"
+msgstr "Spara Page"
+
+msgid "Saved Responses:"
+msgstr "Saved Svar:"
+
+msgid "File:"
+msgstr "Fil:"
+
+msgid "Important Note:<br >Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Important Note:<br >Do NOT refresh this page, as this will import the fil again and produce duplicates"
+
+msgid "Import Failed on Record"
+msgstr "Importera Failed on Record"
+
+msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
+msgstr "If you have chosen to export and de-activate, this will rename your current responses tabell and it will not be easy to restore it. Are you sure?"
+
+msgid "Export result to a SPSS command file"
+msgstr "Exportera result to a SPSS command fil"
+
+msgid "Regenerate Question Numbers:"
+msgstr "Regenerate Frga Numbers:"
+
+msgid "By Group"
+msgstr "By Grupp"
+
+msgid "Data Consistency Check<br ><font size='1'>If errors are showing up you might have to execute this script repeatedly. <font>"
+msgstr "Data Consistency Kontrollera<br ><font size='1'>If errors are showing up you might have to execute this script repeatedly. <font>"
+
+msgid "The following questions should be deleted"
+msgstr "The following questions should be raderad"
+
+msgid "The following answers should be deleted"
+msgstr "The following answers should be raderad"
+
+msgid "The following conditions should be deleted"
+msgstr "The following conditions should be raderad"
+
+msgid "The following assessments should be deleted"
+msgstr "The following assessments should be raderad"
+
+msgid "The following question attributes should be deleted"
+msgstr "The following question attributes should be raderad"
+
+msgid "Import Responses"
+msgstr "Importera Svar"
+

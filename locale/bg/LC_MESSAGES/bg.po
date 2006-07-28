@@ -1,0 +1,346 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor German language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-29 01:08+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: bulgarian\n"
+"X-Poedit-Country: bulgarian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "No"
+msgstr "Не"
+
+msgid "Uncertain"
+msgstr "Неопределен"
+
+msgid "Admin"
+msgstr "Администратор"
+
+msgid "Tokens"
+msgstr "Токени"
+
+msgid "Female"
+msgstr "Женски"
+
+msgid "Male"
+msgstr "Мъжки"
+
+msgid "No answer"
+msgstr "Няма отговор"
+
+msgid "Other"
+msgstr "Друго"
+
+msgid "Please choose"
+msgstr "Моля изберете"
+
+msgid "Error"
+msgstr "Грешка"
+
+msgid "complete"
+msgstr "попълнен"
+
+msgid "Increase"
+msgstr "Увеличава"
+
+msgid "Same"
+msgstr "Същият"
+
+msgid "Decrease"
+msgstr "Намалява"
+
+msgid "Confirmation"
+msgstr "Потвърждение"
+
+msgid "Token"
+msgstr "Токен"
+
+msgid "Continue"
+msgstr "Продължи"
+
+msgid "Accept"
+msgstr "Приема"
+
+msgid "prev"
+msgstr "Предишен"
+
+msgid "next"
+msgstr "Следващ"
+
+msgid "last"
+msgstr "Последен"
+
+msgid "submit"
+msgstr "Изпрати"
+
+msgid "Please choose one of the following"
+msgstr "Моля изберете едно от следните"
+
+msgid "Please enter your comment here"
+msgstr "Моля въведете своя коментар тук"
+
+msgid "Only numbers may be entered in this field"
+msgstr "В това поле могат да бъдат въвеждани само числа"
+
+msgid "Exit and Clear Survey"
+msgstr "Изход и нулиране на въпросника"
+
+msgid "This question is mandatory"
+msgstr "Този въпрос е задължителен"
+
+msgid "Please complete all parts"
+msgstr "Моля попълнете всички части"
+
+msgid "Please check at least one item"
+msgstr "Моля маркирайте поне един елемент"
+
+msgid "Please rank all items"
+msgstr "Моля подредете всички елементи"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "На един или повече от задължителните въпроси не е отговорено. Не можете да продължите без да има отговорите..."
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Формат: YYYY-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(напр.: 2003-12-25 за Коледа.)"
+
+msgid "Remove this item"
+msgstr "Изтриите този елемент"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Щракнете елемент от списъка в ляво, започвайки с Вашия"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "най-висок по ранг елемент, преминавайки през елементите с по-нисък ранг."
+
+msgid "Your Choices"
+msgstr "Вашият избор"
+
+msgid "Your Ranking"
+msgstr "Вашето подреждане по ранг"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Щракнете на ножиците, намиращи се в дясно от всеки елемент"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "за да премахнете последната въведена позиция във Вашия списък."
+
+msgid "You have not provided a survey identification number"
+msgstr "Не сте предоставили идентификационен номер на въпросника"
+
+msgid "Please contact"
+msgstr "Моля обърнете се към"
+
+msgid "for further assistance"
+msgstr "за допълнително съдействие."
+
+msgid "Answers Cleared"
+msgstr "Отговорите са изчистени"
+
+msgid "Restart this Survey"
+msgstr "Рестартиране на въпросника"
+
+msgid "Close this Window"
+msgstr "Затваряне на прозореца"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Сигурни ли сте, че желаете да изчистите всички свои отговори?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Резултатите не могат да бъдат изпратение - няма нищо за изпращане."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Тази грешка би могла да се получи ако вече сте изпратили  своите отговори и натиснете  'refresh' на Вашия браузър. В този случай Вашите отговори вече са били записани.<br ><br >Ако получавате това съобщение по време на попълването на въпросника, изберете '<- BACK' на Вашия браузър, след което refreshreload на предната страница. Ще загубите отговорите от последната страница, но всичко останало ще се запази. Този проблем може да се получи ако  web-сървърът  е претоварен. Извиняваме се за този проблем."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Вашите отговори на въпросника не са записани. Този въпросник все още не е активен."
+
+msgid "Clear Responses"
+msgstr "Изчисти отговорите"
+
+msgid "Thank you"
+msgstr "Благодаря"
+
+msgid "Your survey responses have been recorded."
+msgstr "Вашите отговори на въпросника са записани."
+
+msgid "Survey Completed"
+msgstr "Въпросникът попълнен"
+
+msgid "Did Not Save"
+msgstr "Не е записан"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Получена е неочаквана грешка и Вашите въпроси не могат да бъдат записани."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Вашите отговори не са загубени и са изпратени по e-mail на администратора на въпросника. Те ще бъдат въведени в базата данни по-късно."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Получена е грешка при записването на отговор в id на въпросника"
+
+msgid "DATA TO BE ENTERED"
+msgstr "ДА БЪДАТ ВЪВЕДЕНИ ДАННИ"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "SQL КОЙТО НЕ РАБОТИ"
+
+msgid "ERROR MESSAGE"
+msgstr "СЪОБЩЕНИЕ ЗА ГРЕШКА"
+
+msgid "Error saving survey results to database"
+msgstr "ГРЕШКА ПРИ ЗАПИС"
+
+msgid "Try to submit again"
+msgstr "Опитайте да изпратите отново"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Съжаляваме, но няма съответстващ въпросник."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Това е контролиран въпросник. Необходим Ви е токен за да участвате."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Ако сте получили токен, моля въведете го в реда по-долу и натиснете продължение."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Токенът, който сте предоставили е или невалиден, или вече е бил използван."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Този въпросник все още не съдържа никакви въпроси и не може да бъде тестван или попълван."
+
+msgid "For further information contact"
+msgstr "За допълнителна информация се обърнете към"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Този въпросник понастоящем не е активен. Няма да можете да запишете своите отговори."
+
+msgid "This survey is no longer available."
+msgstr "Този въпросник вече не е наличен."
+
+msgid "You have already completed this survey."
+msgstr "Вече сте попълнили този въпросник."
+
+msgid "Choose only one of the following"
+msgstr "Изберете само едно от следните"
+
+msgid "Check any that apply"
+msgstr "Изберете някой, които съответства"
+
+msgid "Survey Submitted"
+msgstr "Въпросникът изпратен"
+
+msgid "A new response was entered for your survey"
+msgstr "Въведен е нов отговор на Вашия въпросник"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Щракнете на следния линк, за да видите индивидуалния отговор:"
+
+msgid "View statistics by clicking here:"
+msgstr "Щракнете тук, за да изведете статистика:"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<b><i>Защита на личните данни<i><b><br >Този въпросник може да бъде анонимен.<br >Записът, съдържащ Вашите отговори не съдържа никаква лична информация,с изключение на отговорите на специфични въпроси от въпросника. Ако сте попълнили въпросник, който изполва идентификационен токенза достъп, допълнително Ви уверяваме,че идентификационният токенне се съхранява при Вашите отговори. Той се управлява чрез отделна база данни, и ще бъде използван само за да се определи, дали Вие сте(или не сте) попълвали въпросника. Не съществува начин за отъждествяване наидентификационните токени с отговорите на въпросите в даден въпросник."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Въпросникът съдържа {NUMBEROFQUESTIONS} въпроса."
+
+msgid "There is 1 question in this survey."
+msgstr "Въпросникът съдържа 1 въпрос."
+
+msgid "You must be registered to complete this survey"
+msgstr "За да попълните този въпросник трябва да се регистрирате"
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Можете да се регистрирате за този въпросник в случай, че желаете да участвате.<br >nПопълнете своите данни по-долу и веднага ще Ви бъде изпратен email,съдържащ линк към въпросника."
+
+msgid "Email Address"
+msgstr "Email адрес"
+
+msgid "First Name"
+msgstr "Име"
+
+msgid "Last Name"
+msgstr "Фамилия"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "Еmail-ът не е валиден. Моля въведете друг."
+
+msgid "The email you used has already been registered."
+msgstr "Еmail-ът, който сте въвели вече е регистриран."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "{SURVEYNAME} Потвърждение на регистрацията"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Благодаря за това, че се регистрирахте за този въпросник.<br ><br >nИзпратен е email на адреса, който сте посочили в данните за контакт  във връзка с този въпросник. Моля използвайте линк-а, който се съдържа в еmail-a.<br ><br >nАдминистратор на въпросника {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<b>Благодаря<br ><br >Вие приключихте с отговорите на въпросите от този въпросник.<b><br ><br >Щракнете върху [-._SUBMIT.-] за да завършите процеса и запишете своите отговори."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Ако желаете да проверите някои от отговорите си иили да ги промените, можете да направите това сега, щраквайки върху бутона [<< -._PREV.-] и прелиствайки своите отговори."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Моля изберете <b>само едно от <b> следните"
+
+msgid "Please write your answer here:"
+msgstr "Моля напишете своя отговор тук"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Моля изберете <b>всички,<b> които съответстват"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Моля изберете всички, които съответстват и напишете коментар"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Моля изберете подходящ отговор за всеки елемент"
+
+msgid "Please write your answer(s) here:"
+msgstr "Моля въведете своя(-ите) отговор(и) тук"
+
+msgid "Please enter a date:"
+msgstr "Моля въведете дата"
+
+msgid "Make a comment on your choice here:"
+msgstr "Коментирайте своя избор тук"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Моля номерирайте всеки правоъгълник според предпочитанията си от 1 до"
+
+msgid "Submit Your Survey."
+msgstr "Изпратете своя въпросник"
+
+msgid "Thank you for completing this survey."
+msgstr "Благодаря за попълването на този въпросник."
+
+msgid "Please fax your completed survey to:"
+msgstr "Моля изпратете попълнения въпросник на следния факс:"
+
+msgid "Only answer this question"
+msgstr "Отговорете на този въпрос само"
+
+msgid "if you answered"
+msgstr "ако сте отговорили на"
+
+msgid "and"
+msgstr "и"
+
+msgid "to question"
+msgstr "на въпрос"
+
+msgid "or"
+msgstr "или"
+

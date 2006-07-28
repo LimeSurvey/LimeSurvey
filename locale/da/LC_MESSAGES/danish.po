@@ -1,0 +1,436 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor German language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-29 01:09+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: danish\n"
+"X-Poedit-Country: danish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "Uncertain"
+msgstr "Ved ikke"
+
+msgid "Tokens"
+msgstr "Nøgler"
+
+msgid "Female"
+msgstr "Kvinde"
+
+msgid "Male"
+msgstr "Mand"
+
+msgid "No answer"
+msgstr "Intet svar"
+
+msgid "NA"
+msgstr "Ved ikke"
+
+msgid "Other"
+msgstr "Andet"
+
+msgid "Please choose"
+msgstr "Vælg venligst"
+
+msgid "Error"
+msgstr "Fejl"
+
+msgid "complete"
+msgstr "gennemført"
+
+msgid "Increase"
+msgstr "Hæv"
+
+msgid "Same"
+msgstr "Samme"
+
+msgid "Decrease"
+msgstr "Sænk"
+
+msgid "Confirmation"
+msgstr "Bekræftelse"
+
+msgid "Token"
+msgstr "Nøgle"
+
+msgid "Continue"
+msgstr "Fortsæt"
+
+msgid "Accept"
+msgstr "Accepter"
+
+msgid "prev"
+msgstr "forrige"
+
+msgid "next"
+msgstr "næste"
+
+msgid "last"
+msgstr "afslut"
+
+msgid "submit"
+msgstr "Indsend"
+
+msgid "Please choose one of the following"
+msgstr "Vælg en af følgende"
+
+msgid "Please enter your comment here"
+msgstr "Skriv dine kommentarer her"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Dette felt kan kun indeholde talnumeriske tegn"
+
+msgid "Exit and Clear Survey"
+msgstr "Nulstil og forlad undersøgelsen"
+
+msgid "This question is mandatory"
+msgstr "Dette spørgsmål er obligatorisk"
+
+msgid "Please complete all parts"
+msgstr "Udfyld venligst alle dele"
+
+msgid "Please check at least one item"
+msgstr "Afkryds som minimum en mulighed"
+
+msgid "Please rank all items"
+msgstr "Afgiv venligst en score i alle felter"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "En eller flere felter som skal udfyldes er ikke udfyldt - der kan ikke fortsættes før disse er udfyldt"
+
+msgid "This question must be answered correctly"
+msgstr "Dette spørgsmål skal besvares korrekt"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Et eller flere spørgsmål er ikke blevet besvaret korrekt. Du kan ikke fortsætte, før disse svar er gyldige"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Datoformat: ÅÅÅÅ-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(f.eks. 2003-12-24, hvis der skal angives juledag)"
+
+msgid "Remove this item"
+msgstr "Fjern denne mulighed"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Klik på et emne i listen til venstre, startende med det du"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "vurderer højest, og klik derefter nedefter til det lavest vurderede emne."
+
+msgid "Your Choices"
+msgstr "Dine valg"
+
+msgid "Your Ranking"
+msgstr "Din vurdering"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Klik på saksen til højre for at fjerne"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "det nederste emne på din vurderingsliste"
+
+msgid "You have not provided a survey identification number"
+msgstr "Der mangler at blive angivet en undersøgelses-nøgle"
+
+msgid "Please contact"
+msgstr "Kontakt venligst"
+
+msgid "for further assistance"
+msgstr "for videre assistance"
+
+msgid "Answers Cleared"
+msgstr "Undersøgelse nulstillet"
+
+msgid "Restart this Survey"
+msgstr "Nulstil og start forfra"
+
+msgid "Close this Window"
+msgstr "Luk dette vindue"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Er du sikker på at du vil nulstille alle dine spørgsmål?"
+
+msgid "Are you sure you want to save your responses?"
+msgstr "Er du sikker på at du vil gemme dine svar?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Kan ikke gemme besvarelsen - der er ikke noget at gemme."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Denne fejl er opstået fordi du allerede har gemt dine svar og har trykket på 'Opdater' i din browser. Dine besvarelser er allerede gemt.<br ><br >Hvis du har fået denne fejlmeddelse midt i en spørgeskema-undersøgelse bør du trykke på '<- Tilbage'-knappen i din browser efterfulgt af 'Opdater'. Dermed vil dit forrige svar gå tabt, men alle andre tidligere svar er gemt. Vi beklager de gener dette måtte medføre."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Dine besvarelser er ikke gemt - undersøgelsen er endnu ikke sat i gang."
+
+msgid "Clear Responses"
+msgstr "Nulstil svar"
+
+msgid "Thank you"
+msgstr "Tak"
+
+msgid "Your survey responses have been recorded."
+msgstr "Dine svar er blevet gemt."
+
+msgid "Survey Completed"
+msgstr "Undersøgelsen er gennemført"
+
+msgid "Did Not Save"
+msgstr "Kunne ikke gemme"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Der skete en uventet fejl og din besvarelse kunne ikke gemmes."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Din besvarelse er ikke gået tabt, men er sendt til administratoren af undersøgelsen, som så senere tilføjer disse."
+
+msgid "Error saving survey results to database"
+msgstr "ERROR SAVING"
+
+msgid "Try to submit again"
+msgstr "Prøv igen"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Beklager, men kunne ikke finde undersøgelses-nøgle der matcher det valgte."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Dette er en lukket undersøgelse og kræver at du har en undersøgelses-nøgle for at deltage."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Hvis du har en undersøgelses-nøgle så indtast den herunder."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Den undersøgelses-nøgle, du har angivet, er ugyldig, eller er allerede brugt."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Denne undersøgelse har endnu ingen spørgsmål og kan derfor ikke besvares."
+
+msgid "For further information contact"
+msgstr "For yderligere information kontakt"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Denne undersøgelse er ikke aktiv og du kan derfor ikke deltage."
+
+msgid "This survey is no longer available."
+msgstr "Denne undersøgelse er ikke længere aktiv og du kan derfor ikke deltage."
+
+msgid "You have already completed this survey."
+msgstr "Du har allerede gennemført denne undersøgelse."
+
+msgid "Choose only one of the following"
+msgstr "Vælg kun en af nedenstående"
+
+msgid "Check any that apply"
+msgstr "Vælg alle du er enig i"
+
+msgid "Survey Submitted"
+msgstr "Undersøgelsen er gemt"
+
+msgid "A new response was entered for your survey"
+msgstr "Et nyt svar er gemt i undersøgelsen"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Klik på nedenstående link for at se de individuelle svar:"
+
+msgid "View statistics by clicking here:"
+msgstr "Vis statistikken her:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "Klik på nedenstående link for at redigere de individuelle svar:"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<strong><i>Om beskyttelse af privatlivets fred<i><strong><br >Denne undersøgelse er anonym.<br >De gemte data indeholder ingen personhenførbare oplysninger, medmindre der i undersøgelsen er blevet spurgt specifikt efter dette. Hvis du har deltaget i en undersøgelse, der benytter nøgler som adgangskontrol, kan du være sikker på at nøglen ikke bliver gemt sammen med din besvarelse. Nøgler bliver gemt i en separat database, og bliver kun opdateret for at angive, om du har (eller ikke har) gennemført undersøgelsen. Det kan ikke lade sig gøre at sammenholde nøgler og besvarelser."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Der er {NUMBEROFQUESTIONS} spørgsmål i denne undersøgelse."
+
+msgid "There is 1 question in this survey."
+msgstr "Der er ét spørgsmål i denne undersøgelse."
+
+msgid "You must be registered to complete this survey"
+msgstr "Du skal være registreret for at deltage i denne undersøgelse"
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Du kan deltage i denne undersøgelse ved at udfylde skemaet herunder.<br >nUdfyld nedenstående formular og du vil få tilsendt ene-mail med en henvisning så du kan deltage i undersøgelsen."
+
+msgid "Email Address"
+msgstr "E-mail-adresse"
+
+msgid "First Name"
+msgstr "Fornavn"
+
+msgid "Last Name"
+msgstr "Efternavn"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "Den angivne e-mail-adresse er ugyldig."
+
+msgid "The email you used has already been registered."
+msgstr "Den angivne e-mail-adresse er allerede registeret."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "{SURVEYNAME} Registreringsbekræftelse"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Tak fordi du vælger at deltage i undersøgelsen.<br ><br >nEn e-mail er sendt til den angivne e-mail-adresse, hvori der findesinformationer om hvordan du deltager i undersøgelsen. Benyt henvisningen i e-mailen for at deltage.<br ><br >nVenlig hilsen <br > {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<strong>Tak<br ><br >Du har nu besvaret alle spørgsmålene i denne undersøgelse.<strong><br ><br >Klik på [-._SUBMIT.-] for at afslutte undersøgelsen og indsende dine svar."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Hvis du vil tjekke et eller flere af dine svar og evt. rette i dem, kan du gøre det ved at klikke på [<< -._PREV.-]-knappen og gennemgå din besvarelse"
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Vælg venligst <strong>kun een<strong> af de følgende:"
+
+msgid "Please write your answer here:"
+msgstr "Indtast venligst dit svar her:"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Vælg venligst alle de muligheder der passer:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Vælg venligst alle de muligheder der passer, og tilføj en kommentar:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Vælg venligst det passende svar til hvert punkt:"
+
+msgid "Please write your answer(s) here:"
+msgstr "Indtast venligst dine svar her:"
+
+msgid "Please enter a date:"
+msgstr "Indtast venligst en dato:"
+
+msgid "Make a comment on your choice here:"
+msgstr "Tilføj en kommentar til dit svar her:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Nummerer venligst hver boks i foretrukne rækkefølge fra 1 til"
+
+msgid "Submit Your Survey."
+msgstr "Indsend dit besvarelse:"
+
+msgid "Thank you for completing this survey."
+msgstr "Tak for din besvarelse."
+
+msgid "Please fax your completed survey to:"
+msgstr "Fax venligst den udfyldte besvarelse til:"
+
+msgid "Only answer this question"
+msgstr "Svar kun på dette spørgsmål"
+
+msgid "if you answered"
+msgstr "hvis du svarede"
+
+msgid "and"
+msgstr "og"
+
+msgid "to question"
+msgstr "til spørgsmål"
+
+msgid "or"
+msgstr "eller"
+
+msgid "Save your responses so far"
+msgstr "Gem dine foreløbige svar"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Gem din uafsluttede undersøgelse"
+
+msgid "Return To Survey"
+msgstr "Tilbage til undersøgelsen"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Password"
+msgstr "Kodeord"
+
+msgid "Repeat Password"
+msgstr "Gentag kodeord"
+
+msgid "Your Email"
+msgstr "Din e-mail-adresse"
+
+msgid "Enter a name and password for this survey and click save below.<br >nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br ><br >nIf you give an email address, an email containing the details will be sent to you."
+msgstr "Skriv et navn og et kodeord til dine svar og klik på gem herunder.<br >nDin besvarelse vil blive gemt under dette navn og kodeord, og kan færdiggøres senere ved at logge ind med det samme navn og kodeord.<br ><br >nHvis du angiver en e-mail-adresse, vil du få tilsendt detaljerne omkring din besvarelse."
+
+msgid "Save Now"
+msgstr "Gem nu"
+
+msgid "You must supply a name for this saved session."
+msgstr "Du skal give besvarelsen et navn."
+
+msgid "You must supply a password for this saved session."
+msgstr "Du skal skrive et kodeord til besvarelsen."
+
+msgid "You must re-enter a password for this saved session."
+msgstr "Du skal bekræfte kodeordet til besvarelsen."
+
+msgid "Your passwords do not match."
+msgstr "Dine kodeord er ikke ens."
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Dette navn er allerede i brug til denne undersøgelse. Vælg et andet."
+
+msgid "Please try again."
+msgstr "Prøv venligst igen."
+
+msgid "Saved Survey Details"
+msgstr "Detaljerne om din gemte undersøgelse"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Du, eller en der benytter din e-mail-adresse, har gemt en midlertidig besvarelse. De følgende oplysninger kan benyttes til at vende tilbage til undersøgelsen, og genoptage besvarelsen."
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "Genindlæs din besvarelse ved at klikke på følgende henvisning"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "Dine svar er blevet gemt."
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "Der skete en fejl, og dine svar blev ikke gemt."
+
+msgid "An email has been sent with details about your saved survey."
+msgstr "En e-mail er blevet sendt med detaljerne omkring din gemte undersøgelse."
+
+msgid "Load unfinished survey"
+msgstr "Hent en uafsluttet undersøgelse"
+
+msgid "Load A Previously Saved Survey"
+msgstr "Hent en gemt undersøgelse"
+
+msgid "You can load a survey that you have previously saved from this screen.<br >nType in the 'name' you used to save the survey, and the password.<br ><br >n"
+msgstr "Du har her mulighed for at hente en undersøgelse, du har gemt tidligere.<br >nSkriv navnet og kodeordet du brugte til at gemme undersøgelsen.<br ><br >n"
+
+msgid "Saved name"
+msgstr "Gemte navn"
+
+msgid "Load Now"
+msgstr "Hent nu"
+
+msgid "You did not provide a name"
+msgstr "Du angav ikke et navn"
+
+msgid "You did not provide a password"
+msgstr "Du angav ikke et kodeord"
+
+msgid "There is no matching saved survey"
+msgstr "Kunne ikke finde en undersøgelse med det angivne navn"
+
+msgid "Your Assessment"
+msgstr "Din evaluering"
+

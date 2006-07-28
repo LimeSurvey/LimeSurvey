@@ -1,0 +1,241 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor Hungay Language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-29 01:16+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: Hungarian\n"
+"X-Poedit-Country: HUNGARY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+msgid "Yes"
+msgstr "Igen"
+
+msgid "No"
+msgstr "Nem"
+
+msgid "Uncertain"
+msgstr "Nem tudom"
+
+msgid "Tokens"
+msgstr "K&oacute;dok"
+
+msgid "Female"
+msgstr "N&otilde;"
+
+msgid "Male"
+msgstr "F&eacute;rfi"
+
+msgid "No answer"
+msgstr "Nincs v&aacute;lasz"
+
+msgid "NA"
+msgstr "???"
+
+msgid "Other"
+msgstr "M&aacute;s"
+
+msgid "Please choose"
+msgstr "K&eacute;rem v&aacute;lasszon"
+
+msgid "Error"
+msgstr "Hiba"
+
+msgid "complete"
+msgstr "teljes"
+
+msgid "Increase"
+msgstr "N&ouml;vel"
+
+msgid "Same"
+msgstr "Ugyanaz"
+
+msgid "Decrease"
+msgstr "Cs&ouml;kkent"
+
+msgid "Confirmation"
+msgstr "Meger&otilde;s&iacute;t&eacute;s"
+
+msgid "Token"
+msgstr "K&oacute;d"
+
+msgid "Continue"
+msgstr "Folytat&aacute;s"
+
+msgid "Accept"
+msgstr "Elfogadom"
+
+msgid "prev"
+msgstr "elõzõ"
+
+msgid "next"
+msgstr "következõ"
+
+msgid "last"
+msgstr "utolsó"
+
+msgid "submit"
+msgstr "Elküldöm"
+
+msgid "Please choose one of the following"
+msgstr "K&eacute;rem v&aacute;lsszon egyet az al&aacute;bbiak k&ouml;z&uuml;l"
+
+msgid "Please enter your comment here"
+msgstr "Az &Ouml;n megjegyz&eacute;se ehhez"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Ebbe a mez&otilde;be csak sz&aacute;mokat &iacute;rhat"
+
+msgid "Exit and Clear Survey"
+msgstr "Kil&eacute;p&eacute;s &eacute;s a k&eacute;rd&otilde;&iacute;v t&ouml;rl&eacute;se"
+
+msgid "This question is mandatory"
+msgstr "Erre a k&eacute;rd&eacute;sre k&ouml;telez&otilde; v&aacute;lszolni"
+
+msgid "Please complete all parts"
+msgstr "K&eacute;rem t&ouml;lts&ouml;n ki mindent"
+
+msgid "Please check at least one item"
+msgstr "Jel&ouml;lj&ouml;n be legal&aacute;bb egy v&aacute;lszt"
+
+msgid "Please rank all items"
+msgstr "Rangsorolja az &ouml;sszeset"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Legal&aacute;bb egy k&ouml;telez&otilde;en kit&ouml;ltend&otilde; k&eacute;rd&eacute;sre nem v&aacute;lszolt. Addig nem l&eacute;phet tov&aacute;bb, am&iacute;g ezeket nem t&ouml;lti ki!"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "D&aacute;tum form&aacute;tum: &Eacute;&Eacute;&Eacute;&Eacute;-HH-NN"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(pl: kar&aacute;csony napja: 2003-12-25)"
+
+msgid "Remove this item"
+msgstr "E t&eacute;tel elt&aacute;vol&iacute;t&aacute;sa"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "A bal oldali list&aacute;ban kattintson el&otilde;sz&ouml;r a legfontosabbra,"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "majd sorban a legkev&eacute;sb&eacute; fontosig az &ouml;sszesre"
+
+msgid "Your Choices"
+msgstr "Lehet&otilde;s&eacute;gek"
+
+msgid "Your Ranking"
+msgstr "Az &Ouml;n rangsora"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Egy t&eacute;tel elt&aacute;vol&iacute;t&aacute;s&aacute;hoz kattintson a mellette tal&aacute;lhat&oacute;"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "oll&oacute;ra. Így az utols&oacute; t&eacute;tel leker&uuml;l a list&aacute;r&oacute;l"
+
+msgid "You have not provided a survey identification number"
+msgstr "Nem adott meg k&eacute;rd&otilde;&iacute;v-azonos&iacute;t&oacute;t"
+
+msgid "Please contact"
+msgstr "A tov&aacute;bbi teend&otilde;k &uuml;gy&eacute;ben vegye fel a kapcsolatot:"
+
+msgid "for further assistance"
+msgstr ""
+
+msgid "Answers Cleared"
+msgstr "A v&aacute;laszok t&ouml;r&ouml;lve"
+
+msgid "Restart this Survey"
+msgstr "A k&eacute;rd&otilde;&iacute;v újrakezd&eacute;se"
+
+msgid "Close this Window"
+msgstr "Ablak bez&aacute;r&aacute;sa"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Biztosan t&ouml;r&ouml;lni akarja a v&aacute;laszait?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Nem tudom elk&uuml;ldeni az eredm&eacute;nyeket, mert nincsenek v&aacute;laszok."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Ez a hiba akkor fordul el&otilde;, ha m&aacute;r elk&uuml;ldte a v&aacute;laszait &eacute;s ut&aacute;na megnyomta a 'Friss&iacute;t&eacute;s' gombot a b&ouml;ng&eacute;sz&otilde;n. Ebben az esetben a v&aacute;laszai m&aacute;r el vannak k&uuml;ldve.<br ><br >Ha viszont ezt a hib&aacute;t a k&eacute;rd&otilde;&iacute;v kit&ouml;lt&eacute;se k&ouml;zben kapta, akkor nyomja meg a b&ouml;ng&eacute;sz&otilde; '<- VISSZABACK' gombj&aacute;t, &eacute;s az &iacute;gy megjelen&otilde; oldalt friss&iacute;tse. Így az utols&oacute; oldal v&aacute;laszait elveszti, de minden el&otilde;z&otilde; megmarad. Ez a hiba akkor szokott el&otilde;fordulni, ha a szerver túl van terhelve. Eln&eacute;z&eacute;st k&eacute;r&uuml;nk a kellemetlens&eacute;g&eacute;rt."
+
+msgid "Clear Responses"
+msgstr "V&aacute;laszok t&ouml;rl&eacute;se"
+
+msgid "Thank you"
+msgstr "K&ouml;sz&ouml;nj&uuml;k"
+
+msgid "Your survey responses have been recorded."
+msgstr "V&aacute;laszait r&ouml;gz&iacute;tett&uuml;k"
+
+msgid "Survey Completed"
+msgstr "V&eacute;ge a k&eacute;rd&otilde;&iacute;vnek"
+
+msgid "Did Not Save"
+msgstr "Nem siker&uuml;lt elmenteni"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "V&aacute;ratlan hiba k&ouml;vetkezett be, v&aacute;laszait nem siker&uuml;lt r&ouml;gz&iacute;teni."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "De a bevitt adatok nem vesztek el, hanem emailben tov&aacute;bb&iacute;tottuk a rendszer karbantart&oacute;j&aacute;nak, aki k&eacute;s&otilde;bb ezeket be fogja vinni az adatb&aacute;zisba."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Hiba l&eacute;pett fel a k&ouml;vetkez&otilde; k&eacute;rd&otilde;&iacute;v r&ouml;gz&iacute;t&eacute;sekor:"
+
+msgid "Error saving survey results to database"
+msgstr "ERROR SAVING"
+
+msgid "Try to submit again"
+msgstr "Pr&oacute;b&aacute;lja meg újra elk&uuml;ldeni"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Nincs ilyen k&eacute;rd&otilde;&iacute;v."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Ez a k&eacute;rd&otilde;&iacute;v z&aacute;rtk&ouml;rû, a felm&eacute;r&eacute;sben val&oacute; r&eacute;szv&eacute;telehez egy k&oacute;dra van sz&uuml;ks&eacute;ge."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Ha kapott ilyen k&oacute;dot, &iacute;rja be az al&aacute;bbi mez&otilde;be, majd kattintson a 'Tov&aacute;bb' gombra."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "A megadott k&oacute;d &eacute;rv&eacute;nytelen vagy m&aacute;r valaki felhaszn&aacute;lta egy k&eacute;rd&otilde;&iacute;v kit&ouml;lt&eacute;s&eacute;hez."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Ez a k&eacute;rd&otilde;&iacute;v egyel&otilde;re nem tartalmaz k&eacute;rd&eacute;seket, ez&eacute;rt nem lehet kipr&oacute;b&aacute;lni vagy kit&ouml;lteni."
+
+msgid "For further information contact"
+msgstr "Tov&aacute;bbi inform&aacute;ci&oacute;:"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Ez a k&eacute;rd&otilde;&iacute;v egyel&otilde;re nem akt&iacute;v, ez&eacute;rt a v&aacute;laszokat nem lehet elmenteni."
+
+msgid "This survey is no longer available."
+msgstr "Ez a k&eacute;rd&otilde;&iacute;v m&aacute;r lej&aacute;rt, nem lehet kit&ouml;lteni."
+
+msgid "You have already completed this survey."
+msgstr "A k&eacute;rd&otilde;&iacute;vet m&aacute;r kit&ouml;lt&ouml;tte egyszer"
+
+msgid "Choose only one of the following"
+msgstr "V&aacute;lasszon egyet az al&aacute;bbiak k&ouml;z&uuml;l"
+
+msgid "Check any that apply"
+msgstr "V&aacute;lasszon ki egyet vagy t&ouml;bbet az al&aacute;bbiak k&ouml;z&uuml;l"
+
+msgid "Survey Submitted"
+msgstr "Kit&ouml;lt&ouml;tt k&eacute;rd&otilde;&iacute;v &eacute;rkezett"
+
+msgid "A new response was entered for your survey"
+msgstr "V&aacute;laszok &eacute;rkeztek a k&ouml;vetkez&otilde; k&eacute;rd&otilde;&iacute;vhez"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Kattintson ide e k&eacute;rd&otilde;&iacute;v megtekint&eacute;s&eacute;hez:"
+
+msgid "View statistics by clicking here:"
+msgstr "Itt tekintheti meg a statisztik&aacute;kat:"
+

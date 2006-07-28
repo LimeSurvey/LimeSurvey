@@ -1,0 +1,271 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor Japanese language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-29 01:30+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: japanese\n"
+"X-Poedit-Country: JAPAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+msgid "Yes"
+msgstr "はい"
+
+msgid "No"
+msgstr "いいえ"
+
+msgid "Uncertain"
+msgstr "わからない"
+
+msgid "Admin"
+msgstr "管理"
+
+msgid "Tokens"
+msgstr "トークン"
+
+msgid "Female"
+msgstr "女性"
+
+msgid "Male"
+msgstr "男性"
+
+msgid "No answer"
+msgstr "分からない"
+
+msgid "NA"
+msgstr "該当なし"
+
+msgid "Other"
+msgstr "その他"
+
+msgid "Please choose"
+msgstr "選んでください。"
+
+msgid "Error"
+msgstr "エラー"
+
+msgid "complete"
+msgstr "完了"
+
+msgid "Increase"
+msgstr "増加"
+
+msgid "Same"
+msgstr "同じ"
+
+msgid "Decrease"
+msgstr "減少"
+
+msgid "Confirmation"
+msgstr "確認"
+
+msgid "Token"
+msgstr "トークン"
+
+msgid "Continue"
+msgstr "続ける"
+
+msgid "Accept"
+msgstr "承諾する"
+
+msgid "prev"
+msgstr "前へ"
+
+msgid "next"
+msgstr "次へ"
+
+msgid "last"
+msgstr "最後へ"
+
+msgid "submit"
+msgstr "提出する"
+
+msgid "Exit and Clear Survey"
+msgstr "アンケートを削除する。"
+
+msgid "This question is mandatory"
+msgstr "次の質問へ行くにはこの質問に答えてください。"
+
+msgid "Please complete all parts"
+msgstr "すべての質問に答えてください。"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "質問に答えてください。 答えるまで先に進めません。"
+
+msgid "Answers Cleared"
+msgstr "返答を削除しました。"
+
+msgid "Restart this Survey"
+msgstr "もう一度このアンケートを始める。"
+
+msgid "Close this Window"
+msgstr "このウィンドウを閉じる。"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "すべての返答を削除しますか？"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Cannot submit results - none to submit."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "このアンケートはまだベータ版なので、返答内容を記録できません。"
+
+msgid "Clear Responses"
+msgstr "返答を削除する。"
+
+msgid "Thank you"
+msgstr "ありがとうございます。"
+
+msgid "Your survey responses have been recorded."
+msgstr "アンケートの内容が記録されました。"
+
+msgid "Survey Completed"
+msgstr "アンケートが完成しました。"
+
+msgid "Did Not Save"
+msgstr "アンケートの結果内容を記録しませんでした。"
+
+msgid "Error saving survey results to database"
+msgstr "ERROR SAVING"
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "残念ですが、このアンケートはコントロールされており、参加するには有効なトークンが必要です。"
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "トークンを発行されているなら、以下に入れて継続のクリックをしてください。"
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "あなたのトークンは有効でないか、もうすでに使われています。"
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "このアンケートはまだ準備中なので、テストや試すことはできません。"
+
+msgid "For further information contact"
+msgstr "質問があれば管理者に連絡を取ってください。 ===> "
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "このアンケートは現在有効でありません。そのため、アンケートの返答を記録することはできません。"
+
+msgid "Choose only one of the following"
+msgstr "以下から一つだけ選んでください。"
+
+msgid "Check any that apply"
+msgstr "すべて適当なものをチェックしてください。"
+
+msgid "Survey Submitted"
+msgstr "アンケートを提出しました。"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<b><i>A Note On Privacy<i><b><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a seperate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "このアンケートには {NUMBEROFQUESTIONS}問　質問があります。"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "ありがとうございました！<br　><br >アンケートのすべての質問が終わりました。.<br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Please choose <b>only one<b> of the following"
+
+msgid "Please write your answer here:"
+msgstr "Please write your answer here"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Please choose <b>all<b> that apply"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Please choose all that apply and provide a comment"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Please choose the appropriate response for each item"
+
+msgid "Please write your answer(s) here:"
+msgstr "Please write your answer(s) here"
+
+msgid "Please enter a date:"
+msgstr "Please enter a date"
+
+msgid "Make a comment on your choice here:"
+msgstr "Make a comment on your choice here"
+
+msgid "Submit Your Survey."
+msgstr "Submit Your Survey"
+
+msgid "Save your responses so far"
+msgstr "今までの返答を記録する。"
+
+msgid "Save Your Unfinished Survey"
+msgstr "終わらなかったアンケートの記録"
+
+msgid "Return To Survey"
+msgstr "アンケートに戻る。"
+
+msgid "Enter a name and password for this survey and click save below.<br >nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br ><br >nIf you give an email address, an email containing the details will be sent to you."
+msgstr "このアンケート用に名前とパスワードを入れて(英数字だけ、日本語文字不可）、下の記録するをクリックしてください。<br >nこのアンケートはその名前とパスワードを使って記録され、後で同じ名前とパスワードを使って完成することができます。<br ><br >nまた、電子メールアドレスを入れた場合は詳細のメールが届きます。"
+
+msgid "Save Now"
+msgstr "記録する"
+
+msgid "You must supply a name for this saved session."
+msgstr "この記録されたセッション用に名前を入れてください。"
+
+msgid "You must supply a password for this saved session."
+msgstr "この記録されたセッションようにパスワードを入れてください。"
+
+msgid "You must re-enter a password for this saved session."
+msgstr "この記録されたセッションようにもう一度パスワードを入れてください。"
+
+msgid "Your passwords do not match."
+msgstr "パスワードが合いません。"
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "この名前はこのアンケートにすでに使われています。違う名前を使って記録してください。"
+
+msgid "Please try again."
+msgstr "もう一回試してください。"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you leftoff."
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "アンケートの返答がすべて記録されました！"
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "残念ですが、エラーが起こり、アンケートの返答内容が記録できませんでした。"
+
+msgid "An email has been sent with details about your saved survey."
+msgstr "この記録されたアンケートの詳細がメールで送られました。"
+
+msgid "Load unfinished survey"
+msgstr "前回終わらなかったアンケートのデータを読み込んで続ける。"
+
+msgid "Load A Previously Saved Survey"
+msgstr "前回記録されたアンケートのデータ読み込み"
+
+msgid "You can load a survey that you have previously saved from this screen.<br >nType in the 'name' you used to save the survey, and the password.<br ><br >n"
+msgstr "この画面から前回記録されたアンケートのデータを読み込むことができます。<br >n記録したときに使った名前とパスワードを入れてください。<br ><br >n"
+
+msgid "Saved name"
+msgstr "記録された名前"
+
+msgid "Password"
+msgstr "パスワード"
+
+msgid "Load Now"
+msgstr "データの読み込み"
+
+msgid "You did not provide a name"
+msgstr "名前を入れてください。"
+
+msgid "You did not provide a password"
+msgstr "パスワードを入れてください。"
+
+msgid "There is no matching saved survey"
+msgstr "残念ですが、該当したアンケートは見つかりません。"
+

@@ -1,0 +1,456 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor German language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-28 14:57+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: greek\n"
+"X-Poedit-Country: greek\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+msgid "Yes"
+msgstr "Ναι"
+
+msgid "No"
+msgstr "Όχι"
+
+msgid "Admin"
+msgstr "Διαχειριστής"
+
+msgid "Female"
+msgstr "Γυναίκα"
+
+msgid "Male"
+msgstr "Άνδρας"
+
+msgid "No answer"
+msgstr "Καμία απάντηση"
+
+msgid "NA"
+msgstr "Μή εφαρμόσημο"
+
+msgid "Other"
+msgstr "Άλλο"
+
+msgid "Please choose"
+msgstr "Παρακαλώ επιλέξτε"
+
+msgid "Error"
+msgstr "Σφάλμα"
+
+msgid "complete"
+msgstr "πλήρης"
+
+msgid "Increase"
+msgstr "Αύξησε"
+
+msgid "Same"
+msgstr "Ίδιο"
+
+msgid "Decrease"
+msgstr "Μείωσε"
+
+msgid "Confirmation"
+msgstr "Επιβεβαίωση"
+
+msgid "Token"
+msgstr "Συμβολικός"
+
+msgid "Continue"
+msgstr "Συνέχεια"
+
+msgid "Accept"
+msgstr "Αποδοχή"
+
+msgid "prev"
+msgstr "Προηγούμενη"
+
+msgid "next"
+msgstr "Επόμενη"
+
+msgid "last"
+msgstr "Τελευταία"
+
+msgid "submit"
+msgstr "Υποβολή"
+
+msgid "Please choose one of the following"
+msgstr "Παρακαλώ επιλέξτε ένα από τα παρακάτω"
+
+msgid "Please enter your comment here"
+msgstr "Παρακαλώ καταχωρήστε τα σχόλιά σας εδώ"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Μόνο αριθμιτικές τιμές επιτρέπονται σε αυτό το πεδίο"
+
+msgid "Exit and Clear Survey"
+msgstr "Έξοδος και αρχικοποίηση Έρευνας"
+
+msgid "This question is mandatory"
+msgstr "Η ερώτηση αυτή είναι υποχρεωτική"
+
+msgid "Please complete all parts"
+msgstr "Παρακαλώ συμπληρώστε όλα τα μέρη"
+
+msgid "Please check at least one item"
+msgstr "Παρακαλώ επιλέξτε τουλάχιστον ένα στοιχείο"
+
+msgid "Please rank all items"
+msgstr "Παρακαλώ ταξινομήστε όλα τα στοιχεία"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Μια ή περισσότερες υποχρεωτικές ερωτήσεις δεν έχουν απαντηθεί. Δεν μπορείτε να προχωρήσετε μέχρις ότου απαντηθούν!"
+
+msgid "This question must be answered correctly"
+msgstr "Αυτή η ερώτηση πρέπει να απαντηθεί με σωστό τρόπο"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Μορφή: ΕΕΕΕ-ΜΜ-ΗΗ"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(πχ: 2003-12-25 για την ημέρα των Χριστουγέννων)"
+
+msgid "Remove this item"
+msgstr "Αφαίρεση αυτού του στοιχείου"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Επιλέξτε τα αντικείμενα στην λίστα αριστερά, ξεκινώντας από αυτό "
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "με την μεγαλύτερη δική σας βαθμολόγησηαξιολόγηση  μέχρι να φτάσετε σε αυτό με την χαμηλότερη."
+
+msgid "Your Choices"
+msgstr "Οι επιλογές σας"
+
+msgid "Your Ranking"
+msgstr "Η ταξινόμησή σας"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Πατήστε στο ψαλίδι στα δεξιά των αντικειμένων"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "για να αφαιρέσετε την τελευταία εισαγωγή στην λίστα αξιολόγησης"
+
+msgid "You have not provided a survey identification number"
+msgstr "Δέν έχει προσδιορίσθεί το ID της έρευνας"
+
+msgid "Please contact"
+msgstr "Παρακαλώ επικοινωνήστε"
+
+msgid "for further assistance"
+msgstr "για περεταίρω βοήθεια"
+
+msgid "Answers Cleared"
+msgstr "Οι απαντήσεις διαγράφησαν"
+
+msgid "Restart this Survey"
+msgstr "Επανεκκίνηση της Έρευνας"
+
+msgid "Close this Window"
+msgstr "Κλείσιμο Παραθύρου"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Είστε σήγουροι ότι επιθυμείτε την διαγραφή όλων των απαντήσεών σας?"
+
+msgid "Are you sure you want to save your responses?"
+msgstr "Είστε σήγουροι ότι επιθυμείτε την αποθήκευση των απαντήσεών σας?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Η υποβολή δέν είναι εφικτή - δέν υπάρχει τίποτα να υποβληθεί."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Το σφάλμα αυτό μπορεί να προκύψει εάν έχετε ήδη υποβάλει τις απαντήσεις σας και πατήσατε στο κουμπί «Ανανέωση» του φυλλομετρητή σας. Στην περίπτωση αυτή οι απαντήσεις σας έχουν ήδη αποθηκευτεί.<br ><br >Εάν λάβετε αυτό το μήνυμα κατά τη διάρκεια συμπλήρωσης της Έρευνας, πατήστε το κουμπί «Πίσω» του φυλλομετρητή σας και στη συνέχεια ΑνανέωσηΕπαναφόρτωση της προηγούμενης σελίδας. Με τον τρόπο αυτό, θα χάσετε τις απαντήσεις της τελευταίας σελίδας αλλά όλες οι άλλες θα συνεχίσουν να υπάρχουν. Το πρόβλημα αυτό μπορεί να προκύψει στην περίπτωση που ο διακομιστής έχει υπερφορτωθεί. Ζητούμε συγνώμη για το πρόβλημα αυτό."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Οι απαντήσεις της Έρευνάς σας δεν καταγράφηκαν. Η παρούσα Έρευνα δεν είναι ενεργή ακόμη."
+
+msgid "Clear Responses"
+msgstr "Διαγραφή Απαντήσεων"
+
+msgid "Thank you"
+msgstr "Σας ευχαρηστούμε"
+
+msgid "Your survey responses have been recorded."
+msgstr "Οι απαντήσεις σας στην έρευνα έχουν καταχωρηθεί."
+
+msgid "Survey Completed"
+msgstr "Η έρευνα ολοκληρώθηκε"
+
+msgid "Did Not Save"
+msgstr "Δέν αποθυκεύτηκε"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Ένα απρόσμενο σφάλμα συνέβη και οι απαντήσεις σας δε μπορούν να αποθηκευτούν."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Οι απαντήσεις σας δεν χάθηκαν και εστάλησαν μέσω ηλεκτρονικού ταχυδρομείου στον διαχειριστή της Έρευνας προκειμένου να καταχωρηθούν στην βάση δεδομένων μας στη συνέχεια."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Παρουσιάστηκε σφάλμα κατά την αποθήκευση μιας απάντησης στον κωδικό της Έρευνας"
+
+msgid "DATA TO BE ENTERED"
+msgstr "ΔΕΔΩΜΕΝΑ ΠΡΟΣ ΕΙΣΑΓΩΓΗ"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "ΚΩΔΙΚΑΣ SQL ΠΟΥ ΑΠΕΤΥΧΕ"
+
+msgid "ERROR MESSAGE"
+msgstr "ΜΗΝΗΜΑ ΣΦΑΛΜΑΤΟΣ"
+
+msgid "Error saving survey results to database"
+msgstr "Σφάλμα κατα την καταχώρηση των αποτελεσμτων της έρευνας στην Βάση Δεδομένων"
+
+msgid "Try to submit again"
+msgstr "Προσπαθήστε την υποβολή ξανά"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Λυπούμαστε. Δεν υπάρχει Έρευνα που να ταιριάζει."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Πρόκειται για ελεγχόμενη Έρευνα στην οποία θα χρειαστείτε έγκυρα στοιχεία για να συμμετέχετε."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Στην περίπτωση που δεν σας έχουν αποδοθεί στοιχεία, παρακαλείσθε να τα καταχωρήσετε στο παρακάτω πλαίσιο και να πατήσετε το κουμπί Συνέχεια."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Τα στοιχεία που δώσατε είτε είναι μη-έγκυρα είτε έχουν ήδη χρησιμοποιηθεί."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Η Έρευνα αυτή δεν περιέχει ερωτήσεις και επομένως δεν μπορεί να δοκιμαστεί ή να συμπληρωθεί."
+
+msgid "For further information contact"
+msgstr "Για περαιτέρω πληροφορίες επικοινωνήστε μαζί μας."
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Η Έρευνα αυτή δεν είναι ενεργή. Δεν θα μπορέσετε να αποθηκεύσετε τις απαντήσεις σας."
+
+msgid "This survey is no longer available."
+msgstr "Η Έρευνα αυτή δεν είναι πλέον διαθέσιμη."
+
+msgid "You have already completed this survey."
+msgstr "Έχετε ήδη συμπληρώσει αυτήν την έρευνα."
+
+msgid "Choose only one of the following"
+msgstr "Επιλέξτε μόνο ένα από τα παρακάτω"
+
+msgid "Check any that apply"
+msgstr "Επιλέξτε όποιο ισχύει"
+
+msgid "Survey Submitted"
+msgstr "Έρευνα καταχωρήθηκε"
+
+msgid "A new response was entered for your survey"
+msgstr "Μια νέα απάντηση εισήχθη για την έρευνά σας"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Κάντε κλίκ στην ακόλουθη σύνδεση για να δείτε τη μεμονωμένη απάντηση:"
+
+msgid "View statistics by clicking here:"
+msgstr "Κάντε κλίκ εδώ για προβολή στατιστικών:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "Κάντε κλίκ στην ακόλουθη σύνδεση για να εκδώσετε τη μεμονωμένη απάντηση:"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<strong><i>Μια Παρατήρηση Ιδιοτικότητας<i><strong><br >Η παρούσα Έρευνα είναι ανώνυμη.<br >Η καταγραφή των απαντήσεων σας δεν περιέχει καμία πληροφορία ταυτοποίησης σας εκτός και εάν σας ζητήθηκε από κάποια συγκεκριμένη ερώτηση της Έρευνας. Στην περίπτωση που απαντήσατε σε μια Έρευνα με χρήση διαπιστευτηρίου, για την μετέπειτα πρόσβαση σε αυτή, σας διαβεβαιώνουμε πως το διαπιστευτήριο ταυτοποίησης δεν αποθηκεύεται μαζί με τις απαντήσεις σας. Παραμένει σε ξεχωριστή Βάση Δεδομένων, και θα ενημερώνεται μόνο για την υπόδειξη πως ολοκληρώσατε (ή δεν ολοκληρώσατε) την Έρευνα. Δεν υπάρχει τρόπος αντιστοίχησης των διαπιστευτηρίων με τις απαντήσεις στην Έρευνα αυτή."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Υπάρχουν {NUMBEROFQUESTIONS} ερωτήσεις σε αυτήν την έρευνα."
+
+msgid "There is 1 question in this survey."
+msgstr "Υπάρχει 1 ερώτηση σε αυτήν την έρευνα."
+
+msgid "You must be registered to complete this survey"
+msgstr "Πρέπει να είστε εγγεγραμμένο μέλος για να συμπληρώσετε την παρούσα Έρευνα."
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Μπορείτε να εγγραφείτε για την Έρευνα αυτή εάν επιθυμείτε να λάβετε μέρος σε αυτή.<br >nΚαταχωρίστε τα στοιχεία σας παρακάτω και θα σας σταλεί άμεσα email με τον απαραίτητο σύνδεσμο προκειμένου να συμμετέχετε στην Έρευνα."
+
+msgid "Email Address"
+msgstr "Διεύθυνση Email"
+
+msgid "First Name"
+msgstr "Όνομα"
+
+msgid "Last Name"
+msgstr "Επίθετο"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "Το e-mail που δώσατε δέν είναι έγκυρο. Παρακαλώ προσπαθήστε ξανά."
+
+msgid "The email you used has already been registered."
+msgstr "Το e-mail που δώσατε χρησημοποιείτε ήδη."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "{SURVEYNAME} Επιβεβαίωση εγγραφής"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Σας ευχαριστούμε για την εγγραφή και συμμετοχή σε αυτήν την έρευνα.<br ><br >nΈνα e-mail σας έχει σταλεί στην διεύθηνση που δώσατε με περεταίρω πληροφορίες για την πρόσβαση σε αυτήν την έρευνα. Παρακαλώ ακολουθήστε τον σύνδεσμο που θα βρείτε στο e-mail για να προχωρήσετε.<br ><br >nΔιαχειριστής έρευνας {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<strong>Σας Ευχαριστούμε<br ><br >Ολοκληρώσατε τις απαντήσεις σας σε αυτή την Έρευνα.<strong><br ><br >Πατήστε στο [-._SUBMIT.-] τώρα για να ολοκληρώσετε την διαδικασία και να αποθηκεύσετε τις απαντήσεις σας."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Εάν θέλετε να ελέγξετε τις απαντήσεις σας ήκαι να τις αλλάξετε, μπορείτε να το κάνετε τώρα πατώντας στο κουμπί [<< -._PREV.-] και ανατρέχοντας σε αυτές."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Παρακαλώ επιλέξτε <strong>μόνο ένα<strong> από τα επόμενα:"
+
+msgid "Please write your answer here:"
+msgstr "Παρακαλώ γράψτε την απάντηση εδώ:"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Παρακαλώ επιλέξτε <strong>όλα<strong> όσα ισχύουν:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Παρακαλώ επιλέξτε όλα όσα ισχύουν και αφήστε κάποιο σχόλιο:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Παρακαλώ επιλέξε την κατάληλη απαντηση για κάθε στοιχείο"
+
+msgid "Please write your answer(s) here:"
+msgstr "Παρακαλώ γράψτε τηντις απάντηση(εις) εδώ:"
+
+msgid "Please enter a date:"
+msgstr "Παρακαλώ καταχωρήστε ημερομηνία:"
+
+msgid "Make a comment on your choice here:"
+msgstr "Σχολιάστε την επιλογή σας εδώ:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Παρακαλώ αριθμήστε κάθε κελί με σειρά προτήμισης από το 1 μέχρι"
+
+msgid "Submit Your Survey."
+msgstr "Υποβάλετε την έρενά σας."
+
+msgid "Thank you for completing this survey."
+msgstr "Ευχαριστούμε που συμπληρώσατε αυτήν την έρευνα."
+
+msgid "Please fax your completed survey to:"
+msgstr "Παρακαλώ να αποστείλετε με φάξ την συμπληρωμένη έρευνα στο:"
+
+msgid "Only answer this question"
+msgstr "Απαντήστε μόνο αυτήν την ερώτηση"
+
+msgid "if you answered"
+msgstr "Άν απαντήσατε"
+
+msgid "and"
+msgstr "και"
+
+msgid "to question"
+msgstr "στην ερώτηση"
+
+msgid "or"
+msgstr "ή"
+
+msgid "Save your responses so far"
+msgstr "Αποθηκεύστε τις απαντήσεις σας έως τώρα"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Αποθύκευση της μή-ολοκληρωμένης έρευνας"
+
+msgid "Return To Survey"
+msgstr "Επιστροφή στην έρευνα"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Password"
+msgstr "Κωδικός:"
+
+msgid "Repeat Password"
+msgstr "Επιβεβαίωση κωδικού:"
+
+msgid "Your Email"
+msgstr "Το e-mail σας:"
+
+msgid "Enter a name and password for this survey and click save below.<br >nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br ><br >nIf you give an email address, an email containing the details will be sent to you."
+msgstr " Δώστε ένα Όνομα και ένα Συνθηματικό για την παρούσα Έρευνα και πατήστε το κουμπί Αποθήκευση που βρίσκεται από κάτω.<br >nΗ Έρευνα αυτή, θα αποθηκευτεί ώστε να μπορείτε να το συμπληρώσετε αργότερα αφού πρώτα συνδεθείτε με το ίδιο όνομα και κωδικό.<br>Εάν συμπληρώσετε την ηλεκτρονική σας διεύθυνση, θα σας αποσταλεί ένα email με όλες τις σχετικές λεπτομέρειες."
+
+msgid "Save Now"
+msgstr "Αποθήκευση τώρα"
+
+msgid "You must supply a name for this saved session."
+msgstr "Πρέπει να δώσετε ένα όνομα για αυτή την αποθηκευμένη συνεδρία."
+
+msgid "You must supply a password for this saved session."
+msgstr "Πρέπει να δώσετε ένα συνθηματικό για αυτή την αποθηκευμένη συνεδρία."
+
+msgid "You must re-enter a password for this saved session."
+msgstr "Πρέπει να ξαναδώσετε ένα συνθηματικό για αυτή την αποθηκευμένη συνεδρία."
+
+msgid "Your passwords do not match."
+msgstr "Τα συνθηματικά σας δεν ταιριάζουν μεταξύ τους."
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Το όνομα αυτό έχει ήδη χρησιμοποιηθεί για αυτή την Έρευνα. Πρέπει να χρησιμοποιήσετε ένα μοναδικό όνομα αποθήκευσης."
+
+msgid "Please try again."
+msgstr "Παρακαλώ δοκιμάστε ξανά."
+
+msgid "Saved Survey Details"
+msgstr "Λεπτομέρειες Αποθηκευμένης Έρευνας"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Εσείς ή κάποιος που χρησιμοποιεί την ηλεκτρονική σας διεύθυνση έχει αποθηκεύσει μια Έρευνα που βρίσκεται σε εξέλιξη. Μπορείτε να χρησιμοποιήσετε τα παρακάτω στοιχεία για να επιστρέψετε στην Έρευνα αυτή και να συνεχίσετε από εκεί που την είχατε αφήσει"
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "Επαναφορτώστε την Έρευνά σας πατώντας στο παρακάτω URL:"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "Οι απαντήσεις της Έρευνάς σας αποθηκεύτηκαν με επιτυχία"
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "Παρουσιάστηκε σφάλμα και οι απαντήσεις της Έρευνάς σας δεν αποθηκεύτηκαν."
+
+msgid "An email has been sent with details about your saved survey."
+msgstr "Σας απεστάλει email με τις πληροφορίες για την αποθηκευμένη Έρευνά σας."
+
+msgid "Load unfinished survey"
+msgstr "Φόρτωση Ημιτελής Έρευνας"
+
+msgid "Load A Previously Saved Survey"
+msgstr "Φόρτωση Αποθηκευμένης Έρευνας"
+
+msgid "You can load a survey that you have previously saved from this screen.<br >nType in the 'name' you used to save the survey, and the password.<br ><br >n"
+msgstr "Μπορείτε να φορτώσετε μια Έρευνα που αποθηκεύσατε προηγουμένως από αυτή την οθόνη.<br >nΠληκτρολογήστε το όνομα και το συνθηματικό που χρησιμοποιήσατε για την αποθήκευση.<br ><br >n"
+
+msgid "Saved name"
+msgstr "Αποθυκευμένο όνομα"
+
+msgid "Load Now"
+msgstr "Φόρτωσε τώρα"
+
+msgid "You did not provide a name"
+msgstr "Δεν παρείχατε όνομα"
+
+msgid "You did not provide a password"
+msgstr "Δεν παρείχατε κωδικό"
+
+msgid "There is no matching saved survey"
+msgstr "Δεν υπάρχει αποθηκευμένη Έρευνα που να ταιριάζει"
+
+msgid "Your Assessment"
+msgstr "Η αξιολόγησή σας"
+
+msgid "None-); as in -Do not display anything-, -or none chosen"
+msgstr "None'); as in 'Do not display anything', 'or none chosen"
+
+msgid "You should export your responses before de-activating. Click -Cancel- to return to the main admin screen without de-activating this survey."
+msgstr "You should export your responses before de-activating. Click 'Cancel' to return to the main admin screen without de-activating this survey."
+
+msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as -firstname, lastname, email, [token], [attribute1], [attribute2]-."
+msgstr "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as "
+
+msgid "Dear {FIRSTNAME},nnYou have been invited to participate in a survey.nnThe survey is titled:n-{SURVEYNAME}-nn-{SURVEYDESCRIPTION}-nnTo participate, please click on the link below.nnSincerely,nn{ADMINNAME} ({ADMINEMAIL})nn----------------------------------------------nClick here to do the survey:n{SURVEYURL}"
+msgstr "Dear {FIRSTNAME},nnYou have been invited to participate in a survey.nnThe survey is titled:n'{SURVEYNAME}'nn'{SURVEYDESCRIPTION}'nnTo participate, please click on the link below.nnSincerely,nn{ADMINNAME} ({ADMINEMAIL})nn----------------------------------------------nClick here to do the survey:n{SURVEYURL}"
+
+msgid "Dear {FIRSTNAME},nnRecently we invited you to participate in a survey.nn-We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.nnThe survey is titled:n-{SURVEYNAME}-nn-{SURVEYDESCRIPTION}-nnTo participate, please click on the link below.nnSincerely,nn{ADMINNAME} ({ADMINEMAIL})nn----------------------------------------------nClick here to do the survey:n{SURVEYURL}"
+msgstr "Dear {FIRSTNAME},nnRecently we invited you to participate in a survey.nnWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.nnThe survey is titled:n'{SURVEYNAME}'nn'{SURVEYDESCRIPTION}'nnTo participate, please click on the link below.nnSincerely,nn{ADMINNAME} ({ADMINEMAIL})nn----------------------------------------------nClick here to do the survey:n{SURVEYURL}"
+

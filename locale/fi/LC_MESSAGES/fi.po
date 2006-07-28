@@ -1,0 +1,450 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor German language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-28 14:57+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: finnish\n"
+"X-Poedit-Country: finnish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+msgid "Yes"
+msgstr "Kyllä"
+
+msgid "No"
+msgstr "Ei"
+
+msgid "Uncertain"
+msgstr "En osaa sanoa"
+
+msgid "Admin"
+msgstr "Ylläpitäjä"
+
+msgid "Tokens"
+msgstr "Tunnisteet"
+
+msgid "Female"
+msgstr "Nainen"
+
+msgid "Male"
+msgstr "Mies"
+
+msgid "No answer"
+msgstr "Ei vastausta"
+
+msgid "NA"
+msgstr "Ei tietoa"
+
+msgid "Other"
+msgstr "Muu"
+
+msgid "Please choose"
+msgstr "Valitse"
+
+msgid "Error"
+msgstr "Virhe"
+
+msgid "complete"
+msgstr "valmis"
+
+msgid "Increase"
+msgstr "Kasvaa"
+
+msgid "Same"
+msgstr "Säilyy"
+
+msgid "Decrease"
+msgstr "Pienenee"
+
+msgid "Confirmation"
+msgstr "Vahvistus"
+
+msgid "Token"
+msgstr "Tunniste"
+
+msgid "Continue"
+msgstr "Jatka"
+
+msgid "Accept"
+msgstr "Hyväksy"
+
+msgid "prev"
+msgstr "Edellinen"
+
+msgid "next"
+msgstr "Seuraava"
+
+msgid "last"
+msgstr "Viimeinen"
+
+msgid "submit"
+msgstr "Lähetä"
+
+msgid "Please choose one of the following"
+msgstr "Valitse yksi seuraavista"
+
+msgid "Please enter your comment here"
+msgstr "Kommenttisi"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Anna vastauksesi numeroina"
+
+msgid "Exit and Clear Survey"
+msgstr "Poistu tallentamatta"
+
+msgid "This question is mandatory"
+msgstr "Kysymys on pakollinen"
+
+msgid "Please complete all parts"
+msgstr "Ole hyvä ja täydennä puuttuvat vastaukset"
+
+msgid "Please check at least one item"
+msgstr "Valitse vähintään yksi"
+
+msgid "Please rank all items"
+msgstr "Aseta kaikki kohdat järjestykseen"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Yhdestä tai useammasta pakollisesta kysymyksestä puuttuu vastaus. Täydennä vastaukset jatkaaksesi."
+
+msgid "This question must be answered correctly"
+msgstr "Vastauksen tulee olla oikeellisessa muodossa"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Yhden tai useamman kysymyken vastaus ei ole oikeellisessa muodossa. Korjaa vastaukset jatkaaksesi."
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Muodossa: VVVV-KK-PP"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(esim: 2003-12-25)"
+
+msgid "Remove this item"
+msgstr "Poista"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Klikkaa vasemmalla olevan listan kohtia tärkeysjärjestyksessä, aloittaen"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "kaikken tärkeimmästä. Viimeiseksi klikkaat siis vähiten tärkeintä."
+
+msgid "Your Choices"
+msgstr "Valinnat"
+
+msgid "Your Ranking"
+msgstr "Arviot"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Napsauttamalla saksia kunkin kohdan oikealla puolella"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "voit poistaa listan viimeisen kohdan"
+
+msgid "You have not provided a survey identification number"
+msgstr "Kyselyn tunnistenumero puuttuu"
+
+msgid "Please contact"
+msgstr "Yhteyshenkilönä toimiva"
+
+msgid "for further assistance"
+msgstr "auttaa ongelmatilanteissa"
+
+msgid "Answers Cleared"
+msgstr "Vastaukset tyhjennetty"
+
+msgid "Restart this Survey"
+msgstr "Palaa kyselyn alkuun"
+
+msgid "Close this Window"
+msgstr "Sulje ikkuna"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Vastauksiasi ei tallennneta. Oletko varma?"
+
+msgid "Are you sure you want to save your responses?"
+msgstr "Vastauksesi tallennetaan. Oletko varma?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Lomake on tyhjä joten sitä ei voitu lähettää"
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Mikäli olet jo lähettänyt vastauksesi ja jostain syystä painoit juuri selaimen 'Lataa uudelleen'-painiketta, vastauksesi on tallennettu - ei huolta.<br ><br >Mikäli vastaamisesi on vielä kesken, klikkaa selaimen 'Takaisin'-painiketta ja sen jälkeen napsauta 'Lataa uudelleen'. Joudut täyttämään kyseisen sivun vastaukset uudelleen mutta aikemmat vastauksesi ovat tallessa. Virheen syynä on ruuhkainen verkkopalvelimenne - olemme pahoillamme."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Vastauksia ei tallennettu. Kysely ei ole vielä aktiivinen."
+
+msgid "Clear Responses"
+msgstr "Tyhjennä vastaukset"
+
+msgid "Thank you"
+msgstr "Kiitokset"
+
+msgid "Your survey responses have been recorded."
+msgstr "Vastauksesi on tallennettu."
+
+msgid "Survey Completed"
+msgstr "Kysely on valmis"
+
+msgid "Did Not Save"
+msgstr "Vastauksia ei tallennettu"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Järjestelmävirheen vuoksi vastauksia ei voitu tallentaa"
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Vastaukset lähettiin ylläpitäjälle, joka tallentaa ne myöhemmin tietokantaan."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Lomakkeen tallennuksessa on tapahtunut virhe - kyselyn tunniste:"
+
+msgid "DATA TO BE ENTERED"
+msgstr "SYÖTETYT TIEDOT"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "SQL-LAUSE"
+
+msgid "ERROR MESSAGE"
+msgstr "VIRHEILMOITUS"
+
+msgid "Error saving survey results to database"
+msgstr "Virhe tallennettaessa vastauksia tietokantaan"
+
+msgid "Try to submit again"
+msgstr "Yritä uudelleen"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Pahoittelumme - ei kyselyä."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Kysely on kohdennettu tietylle vastaajaryhmälle. Tarvitset tunnisteen osallistuaksesi."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Kirjoita saamasi tunniste allaolevaan kenttään ja napsauta 'Jatka'"
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Tunniste on virheellinen tai se on jo käytetty."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Kyselyyn ei voi vielä vastata sillä siinä ei ole vielä kysymyksiä."
+
+msgid "For further information contact"
+msgstr "Lisätietoja:"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Kysely ei ole aktiivinen. Vastauksia ei tallenneta."
+
+msgid "This survey is no longer available."
+msgstr "Kysely ei ole enää saatavilla."
+
+msgid "You have already completed this survey."
+msgstr "Kyselyyn on jo vastattu."
+
+msgid "Choose only one of the following"
+msgstr "Valitse yksi seuraavista"
+
+msgid "Check any that apply"
+msgstr "Valitse mielestäsi sopivat"
+
+msgid "Survey Submitted"
+msgstr "Kysely on lähetetty"
+
+msgid "A new response was entered for your survey"
+msgstr "Uusi vastaus kyselyssä"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Klikkaa linkkiä vastaukseen:"
+
+msgid "View statistics by clicking here:"
+msgstr "Näytä tilastot klikkaamalla tästä:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "Klikkaa linkkä muokataksesi vastausta:"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<strong><i>Yksityisyyden suoja<i><strong><br >Kaikki vastaukset ovat anonyymejä.<br >Yksittäistä vastaajaa ei voida tunnistaa tallennettujen tietojen perusteella, ellei kyselyssä erikseen pyydetä tunnistamisen mahdollistavia tietoja. Suljetussa kyselyssäkäytetty tunnistekoodi pidetään erillään vastauksista ja  sitä ei voida käyttää yksittäisen vastaajan identifioimiseen. "
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Kyselylomakkeessa on {NUMBEROFQUESTIONS} kysymystä."
+
+msgid "There is 1 question in this survey."
+msgstr "Kyselyssä on vain yksi kysymys."
+
+msgid "You must be registered to complete this survey"
+msgstr "Rekisteröidy vastataksesi tutkimukseen"
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Tutkimukseen osallistuminen vaatii rekisteröinnin.<br >nTäydennä yhteystietosi ja saat välittömästi sähköpostitse linkin, jotka kautta voit osallistua tutkimukseen."
+
+msgid "Email Address"
+msgstr "Sähköposti"
+
+msgid "First Name"
+msgstr "Etunimi"
+
+msgid "Last Name"
+msgstr "Sukunimi"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "Sähköpostiosoite on virheellinen. Ole hyvä ja yritä uudelleen."
+
+msgid "The email you used has already been registered."
+msgstr "Sähköpostiosoitteeseen on jo lähetetty tutkimuslinkki."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "Osallistuminen {SURVEYNAME} -tutkimukseen"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Kiitos tutkimustamme kohtaan esittämästäsi mielenkiinnosta.<br ><br >nSähköpostiisi on lähetetty viesti, jossa on linkki kyselyymme. Klikkaa linkkiä päästäksesi kyselyyn.<br ><br >nYhteyshenkilö {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<strong>Kiitos!<br ><br >Olet vastannut kaikkiin kysymyksiin.<strong><br ><br >Klikkaa [-._SUBMIT.-] tallentaaksesi vastaukset."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Jos haluat tarkistaa tai korjata vastauksiasi, voit palata kysymyksiin klikkaamalla [<< -._PREV.-] -painiketta."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Valitse <strong>yksi<strong> seuraavista:"
+
+msgid "Please write your answer here:"
+msgstr "Vastauksesi:"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Valitse <strong>kaikki<strong> sopivat:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Valitse kaikki sopivat vaihtoehdot ja kommentoi:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Valitse sopivin vaihtoehto:"
+
+msgid "Please write your answer(s) here:"
+msgstr "Kirjoita vastauksesi tähän:"
+
+msgid "Please enter a date:"
+msgstr "Päivämäärä:"
+
+msgid "Make a comment on your choice here:"
+msgstr "Vastauskommentti:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Aseta kohdat järjestykseen välillä 1-"
+
+msgid "Submit Your Survey."
+msgstr "Lähetä vastaukset."
+
+msgid "Thank you for completing this survey."
+msgstr "Kiitos vastauksistasi!."
+
+msgid "Please fax your completed survey to:"
+msgstr "Faksaa täyttämäsi lomake numeroon:"
+
+msgid "Only answer this question"
+msgstr "Vastaa vain tähän kysymykseen"
+
+msgid "if you answered"
+msgstr "jos vastasit"
+
+msgid "and"
+msgstr "ja"
+
+msgid "to question"
+msgstr "kysymykseen"
+
+msgid "or"
+msgstr "tai"
+
+msgid "Save your responses so far"
+msgstr "Tallenna vastaukset ja jatka"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Tallennä keskeneräiset vastaukset"
+
+msgid "Return To Survey"
+msgstr "Palaa kyselyyn"
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Password"
+msgstr "Salasana"
+
+msgid "Repeat Password"
+msgstr "Toista salasana"
+
+msgid "Your Email"
+msgstr "Sähköposti"
+
+msgid "Enter a name and password for this survey and click save below.<br >nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br ><br >nIf you give an email address, an email containing the details will be sent to you."
+msgstr "Voit tallentaa keskeneräisen kyselyn jatkaaksesi sen täyttämistä myöhemmin.<br >nAnna kyselyvastauksillesi nimi ja salasana, joita käyttäen voit palata kyselyyn. Mikäli annat myös sähköpostiosoitteen, saat viestin jossa on linkki kyselyvastaukseesi.<br ><br >n"
+
+msgid "Save Now"
+msgstr "Tallenna"
+
+msgid "You must supply a name for this saved session."
+msgstr "Tallennettavalla kyselyllä tulee olla nimi"
+
+msgid "You must supply a password for this saved session."
+msgstr "Tallennettavalle kyselylle tulee antaa salasana."
+
+msgid "You must re-enter a password for this saved session."
+msgstr "Muistitko toistaa salasanan?"
+
+msgid "Your passwords do not match."
+msgstr "Salasanat eivät täsmää."
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Nimi on jo käytössä."
+
+msgid "Please try again."
+msgstr "Yritä uudelleen."
+
+msgid "Saved Survey Details"
+msgstr "Tallennettu kyselylomake"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Olet tallentanut keskeneräisen kyselyvastauksesi. Voit palata kyselyyn käyttäen allaolevia tietoja. "
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "Palaa kyselyyn:"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "Vastauksesi on tallennettu"
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "Pahoittelumme - järjestelmävirheen vuoksi vastauksiasi ei voitu tallentaa."
+
+msgid "An email has been sent with details about your saved survey."
+msgstr "Sähköpostiisi on lähetty viesti, jossa olevien ohjeiden mukaan voit jatkaa vastaamista myöhemmin."
+
+msgid "Load unfinished survey"
+msgstr "Palaa keskeneräiseen kyselyyn"
+
+msgid "Load A Previously Saved Survey"
+msgstr "Jatka vastaamista"
+
+msgid "You can load a survey that you have previously saved from this screen.<br >nType in the 'name' you used to save the survey, and the password.<br ><br >n"
+msgstr ""
+
+msgid "Saved name"
+msgstr "Nimi"
+
+msgid "Load Now"
+msgstr "Palaa kyselyyn"
+
+msgid "You did not provide a name"
+msgstr "Nimi puuttuu"
+
+msgid "You did not provide a password"
+msgstr "Salasana puuttuu"
+
+msgid "There is no matching saved survey"
+msgstr "Antamallasi nimellä ei ole tallennettu vastauksia"
+
+msgid "Your Assessment"
+msgstr "Arvio"
+

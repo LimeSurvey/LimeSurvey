@@ -1,0 +1,445 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPSurveyor Romanian language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-29 01:28+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Language: romanian\n"
+"X-Poedit-Country: ROMANIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
+msgstr "Nu"
+
+msgid "Uncertain"
+msgstr "Nu sunt sigur"
+
+msgid "Admin"
+msgstr "Administrator"
+
+msgid "Tokens"
+msgstr "Coduri"
+
+msgid "Female"
+msgstr "Feminin"
+
+msgid "Male"
+msgstr "Masculin"
+
+msgid "No answer"
+msgstr "Nu raspund"
+
+msgid "NA"
+msgstr "Nu se aplica"
+
+msgid "Other"
+msgstr "Altele"
+
+msgid "Please choose"
+msgstr "Va rugam alegeti"
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "complete"
+msgstr "Complet"
+
+msgid "Increase"
+msgstr "In crestere"
+
+msgid "Same"
+msgstr "La fel"
+
+msgid "Decrease"
+msgstr "In descrestere"
+
+msgid "Confirmation"
+msgstr "Confirmare"
+
+msgid "Token"
+msgstr "Cod"
+
+msgid "Continue"
+msgstr "Continua"
+
+msgid "Accept"
+msgstr "Accepta"
+
+msgid "prev"
+msgstr "inapoi"
+
+msgid "next"
+msgstr "inainte"
+
+msgid "last"
+msgstr "ultimul"
+
+msgid "submit"
+msgstr "trimite"
+
+msgid "Please choose one of the following"
+msgstr "Va rugam alegeti un raspuns dintre urmatoarele"
+
+msgid "Please enter your comment here"
+msgstr "Va rugam introduceti un comentariu aici"
+
+msgid "Only numbers may be entered in this field"
+msgstr "In acest camp pot fi introduse doar numere"
+
+msgid "Exit and Clear Survey"
+msgstr "Iesire si anulare ancheta"
+
+msgid "This question is mandatory"
+msgstr "Aceasta intrebare este obligatorie"
+
+msgid "Please complete all parts"
+msgstr "Va rugam completati in intregime"
+
+msgid "Please check at least one item"
+msgstr "Va rugam selectati cel putin un item"
+
+msgid "Please rank all items"
+msgstr "Va rugam ordonati toti itemii"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Nu ati raspuns la una sau mai multe intrebari obligatorii. Nu puteti continua pana nu oferiti raspunsuri complete"
+
+msgid "This question must be answered correctly"
+msgstr "La aceasta intrebare nu ati raspuns corect"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Nu puteti merge mai departe deoarece la una sau mai multe intrebari nu ati dat raspunsuri valide"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Format: AAAA-LL-ZZ"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(ex: 2005-12-25 pentru ziua de Craciun a anului 2005)"
+
+msgid "Remove this item"
+msgstr "Sterge acest item"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Faceti clic pe un item din lista din stanga, incepand cu"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "itemul de pe primul loc si continuand pana la itemul de pe ultimul loc."
+
+msgid "Your Choices"
+msgstr "Variantele de ordonat"
+
+msgid "Your Ranking"
+msgstr "Ordinea dumneavoastra"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Faceti clic pe foarfecele de langa fiecare item din dreapta"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "pentru a sterge ultimul element din lista"
+
+msgid "You have not provided a survey identification number"
+msgstr "Nu ati furnizat un cod de identificare pentru aceasta ancheta"
+
+msgid "Please contact"
+msgstr "Va rugam contactati"
+
+msgid "for further assistance"
+msgstr "pentru informatii suplimentare"
+
+msgid "Answers Cleared"
+msgstr "Raspunsurile au fost sterse"
+
+msgid "Restart this Survey"
+msgstr "Reluati aceasta ancheta"
+
+msgid "Close this Window"
+msgstr "Inchideti fereastra"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Sunteti sigur ca vreti sa stergeti toate raspunsurile?"
+
+msgid "Are you sure you want to save your responses?"
+msgstr "Sunteti sigur ca vreti sa salvati toate raspunsurile?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Nu se pot trimite rezultatele - nu exista nici unul."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Aceasta eroare poate surveni daca ati trimis deja raspunsurile si ati apasat butonul 'refresh' al browserului. In acest caz, raspunsurile dumneavoastra au fost deja salvate.<br ><br >Daca ati primit acest mesaj in timp ce completati chestionarul, apasati butonul '<- BACK' al browserului si reincarcati pagina anterioara. Desi veti pierde raspunsurile de pa ultima pagina, toate celelalte vor fi pastrate. Aceasta problema poate aparea daca serverul este supraincarcat sau excesiv utilizat. Ne cerem scuze pentru aceasta problema."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Raspunsurile dumneavoasra nu au fost inregistrate. Ancheta nu este activa."
+
+msgid "Clear Responses"
+msgstr "Sterge raspunsurile"
+
+msgid "Thank you"
+msgstr "Va multumim"
+
+msgid "Your survey responses have been recorded."
+msgstr "Raspunsurile dumneavoasra au fost inregistrate."
+
+msgid "Survey Completed"
+msgstr "Chestionarul a fost completat in intregime"
+
+msgid "Did Not Save"
+msgstr "Raspunsurile nu au fost salvate"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "S-a produs o eroare neasteptata si raspunsurile dumneavoastra nu pot fi salvate."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Raspunsurile dumneavoastra nu au fost pierdute. Ele au fost trimise prin email administratorului si vor fi introduse in baza de date mai tarziu."
+
+msgid "DATA TO BE ENTERED"
+msgstr "DATE DE INTRODUS"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "CODUL SQL A ESUAT"
+
+msgid "ERROR MESSAGE"
+msgstr "MESAJ DE EROARE"
+
+msgid "Error saving survey results to database"
+msgstr "EROARE LA SALVARE"
+
+msgid "Try to submit again"
+msgstr "Incercati sa trimiteti din nou"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Ne pare rau, nu exista o astfel de ancheta."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Aceasta este o ancheta controlata. Aveti nevoie de un numar de cod valid pentru a participa."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Daca vi s-a emis un numar de cod, va rugam sa-l introduceti in campul de mai jos si sa apasati pe butonul continua."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Numarul de cod furnizat de dumneavoastra nu este valid, sau a mai fost utilizat."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Acest chestionar nu are intrebari, deci nu poate fi testat sau completat."
+
+msgid "For further information contact"
+msgstr "Pentru informatii suplimentare contactati"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Aceast ancheta nu este valida. Nu veti putea salva raspunsurile."
+
+msgid "This survey is no longer available."
+msgstr "Aceasta ancheta nu mai este disponibila."
+
+msgid "You have already completed this survey."
+msgstr "Ati completat deja acest chestionar de ancheta."
+
+msgid "Choose only one of the following"
+msgstr "Alegeti o singura varianta din cele ce urmeaza"
+
+msgid "Check any that apply"
+msgstr "Marcati toate raspunsurile care corespund"
+
+msgid "Survey Submitted"
+msgstr "Chestionarul a fost inregistrat"
+
+msgid "A new response was entered for your survey"
+msgstr "Aveti un nou raspuns la ancheta dumneavoastra"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Apasati pe linkul urmator pentru a vedea raspunsurile:"
+
+msgid "View statistics by clicking here:"
+msgstr "Clic aici pentru a vedea statisticile:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "Clic pe acest link pentru a edita raspunsul:"
+
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr ""
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Sunt {NUMBEROFQUESTIONS} intrebari in acest chestionar."
+
+msgid "There is 1 question in this survey."
+msgstr "In acest chestionar exista o singura intrebare."
+
+msgid "You must be registered to complete this survey"
+msgstr "Trebuie sa va inregistrati pentru a completa acest chestionar"
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Daca doriti sa participati la aceasta ancheta, va puteti inregistra.<br >nIntroduceti datele dumneavostra, si un email cu linkul catre acest survey va va fi trimis imediat."
+
+msgid "Email Address"
+msgstr "Adresa de email"
+
+msgid "First Name"
+msgstr "Prenume"
+
+msgid "Last Name"
+msgstr "Nume"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "Adresa de email nu este valida. Incercati din nou."
+
+msgid "The email you used has already been registered."
+msgstr "Acest email a fost deja inregistrat."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "{SURVEYNAME} - inregistrare confirmata"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Va multumim pentru participarea la aceasta ancheta.<br ><br >nV-a fost trimis un email cu detaliile privind accesul la ancheta. Folositi linkul din mesaj pentru a continua.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<strong>Va multumin<br ><br >Ati raspuns la toate intrebarile acestui chestionar.<strong><br ><br >Faceti clic pe [-._SUBMIT.-] pentru a salva raspunsurile."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Daca dorti sa verificati raspunsurile sau sa le schimbati, puteti apasa pe butonul [<< -._PREV.-]  pentru a revedea raspunsurile."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Va rugam alegeti <strong>numai o varianta<strong> din urmatoarele:"
+
+msgid "Please write your answer here:"
+msgstr "Va rugam sa scrieti raspunsul aici:"
+
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Va rugam selectati <strong>toate variantele<strong> care corespund:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Va rugam selectati toate variantele care corespund si faceti un comentariu:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Va rugam sa alegeti raspunsul potrivit pentru fiecare item:"
+
+msgid "Please write your answer(s) here:"
+msgstr "Va rugam scrieti raspunsurile aici:"
+
+msgid "Please enter a date:"
+msgstr "Introduceti o data:"
+
+msgid "Make a comment on your choice here:"
+msgstr "Faceti un comentariu la alegere aici:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Va rugam sa numerotati fiecare casuta in ordinea preferintelor, de la 1 la"
+
+msgid "Submit Your Survey."
+msgstr "Trimiteti chestionarul."
+
+msgid "Thank you for completing this survey."
+msgstr "Va multumim pentru participarea la aceasta ancheta."
+
+msgid "Please fax your completed survey to:"
+msgstr "Va rugam trimiteti chestionarul completat prin fax la:"
+
+msgid "Only answer this question"
+msgstr "Raspundeti numai la aceasta intrebare"
+
+msgid "if you answered"
+msgstr "daca ati raspuns"
+
+msgid "and"
+msgstr "si"
+
+msgid "to question"
+msgstr "la intrebarea"
+
+msgid "or"
+msgstr "sau"
+
+msgid "Save your responses so far"
+msgstr "Salvati raspunsurile date pana acum"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Salvati chestionarul neterminat"
+
+msgid "Return To Survey"
+msgstr "Intoarcere la chestionar"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "Password"
+msgstr "Parola"
+
+msgid "Repeat Password"
+msgstr "Parola din nou"
+
+msgid "Your Email"
+msgstr "Email"
+
+msgid "Enter a name and password for this survey and click save below.<br >nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br ><br >nIf you give an email address, an email containing the details will be sent to you."
+msgstr "Introduceti un nume si o parola pentru aceasta ancheta si apasati butonul pentru salvare.<br >nAncheta va fi salvata sub numele si parola respectiva, si poate fi  completata mai tarziu daca faceti login cu acelasi nume si aceeasi parola.<br ><br >nDaca furnizati o adresa de email, veti primi un mesaj continand detalii."
+
+msgid "Save Now"
+msgstr "Salvati acum"
+
+msgid "You must supply a name for this saved session."
+msgstr "Trebuie sa dati un nume acestei sesiuni session."
+
+msgid "You must supply a password for this saved session."
+msgstr "Trebuie sa dati o parola pentru aceasta sesiune."
+
+msgid "Your passwords do not match."
+msgstr "Parolele nu corespund."
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Acest nume a mai fost utilizat in aceasta ancheta. Numele trebuie sa fie unic."
+
+msgid "Please try again."
+msgstr "Incercati din nou."
+
+msgid "Saved Survey Details"
+msgstr "Detalii pentru ancheta salvata"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Dumneavoastra, sau cineva care a folosit adresa dumneavoastra de email, a salvat o ancheta in desfasurare. Detaliile ce urmeaza pot fi utilizate pentru a va intoarce la ancheta respectiva, la punctul unde ati lasat-o."
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "Reincarcati ancheta apasand pe linkul urmator:"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "Raspunsurile dumneavoastra au fost salvate"
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "A survenit o eroare si raspunsurile nu au fost salvate."
+
+msgid "An email has been sent with details about your saved survey."
+msgstr "Veti primi un email cu detalii despre ancheta salvata."
+
+msgid "Load unfinished survey"
+msgstr "Incarcati chestionarul neterminat"
+
+msgid "Load A Previously Saved Survey"
+msgstr "Incarcati o ancheta salvata ulterior"
+
+msgid "You can load a survey that you have previously saved from this screen.<br >nType in the 'name' you used to save the survey, and the password.<br ><br >n"
+msgstr "Puteti incarca o ancheta pe care ati salvat-o anterior.<br >nIntroduceti 'numele' pe care l-ati folosit la salvare anchetei si parola.<br ><br >n"
+
+msgid "Saved name"
+msgstr "Nume salvat"
+
+msgid "Load Now"
+msgstr "Incarcati acum"
+
+msgid "You did not provide a name"
+msgstr "Nu ati furnizat un nume"
+
+msgid "You did not provide a password"
+msgstr "Nu ati furnizat o parola"
+
+msgid "There is no matching saved survey"
+msgstr "Nu a salvat nimeni o ancheta cu acest nume"
+
+msgid "Your Assessment"
+msgstr "Evaluarea dumneavoastra"
+
