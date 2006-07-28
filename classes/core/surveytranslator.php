@@ -57,12 +57,45 @@
 
 
     function getLanguageData() {
-	    /* English */
         unset($supportedLanguages);
+
+	    // Bulgarian
+	    $supportedLanguages['bg']['description'] = 'Bulgarian';
+	    $supportedLanguages['bg']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
+
+        // Chinese (Simplified)
+	    $supportedLanguages['cnt']['description'] = 'Chinese (Traditional)';
+	    $supportedLanguages['cnt']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
+
+        // Chinese (Traditional)
+	    $supportedLanguages['cns']['description'] = 'Chinese (Simplified)';
+	    $supportedLanguages['cns']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
+
+        // Croatian
+	    $supportedLanguages['hr']['description'] = 'Croatian';
+	    $supportedLanguages['hr']['nativedescription'] = 'Croatian';
+
+	    // Danish
+	    $supportedLanguages['da']['description'] = 'Danish';
+	    $supportedLanguages['da']['nativedescription'] = 'Dansk';
+
+	    // Dutch
+	    $supportedLanguages['nl']['description'] = 'Dutch';
+	    $supportedLanguages['nl']['nativedescription'] = 'Nederlands';
+
+	    /* English */
 	    $supportedLanguages['en']['description'] = 'English';
 	    $supportedLanguages['en']['nativedescription'] = 'English';
 
-	    // German
+	    // Finnish
+	    $supportedLanguages['fi']['description'] = 'Finnish';
+	    $supportedLanguages['fi']['nativedescription'] = 'Suomi';
+
+	    // French
+	    $supportedLanguages['fr']['description'] = 'French';
+	    $supportedLanguages['fr']['nativedescription'] = 'Fran&#231;ais';
+
+   	    // German
 	    $supportedLanguages['de']['description'] = 'German';
 	    $supportedLanguages['de']['nativedescription'] = 'Deutsch (Sie)';
 
@@ -70,145 +103,98 @@
 	    $supportedLanguages['de_informal']['description'] = 'German informal';
 	    $supportedLanguages['de_informal']['nativedescription'] = 'Deutsch (Du)';
 
-
-/*
-	    // Afrikaans
- 	    $supportedLanguages['af']['ZA']['description'] = 'Afrikaans';
-	    $defaultCountry['af'] = 'ZA';
-
-        // Czech
-	    $supportedLanguages['cs']['CZ']['description'] = '&#x010c;esky';
-	    $defaultCountry['cs'] = 'CZ';
-
-	    // Danish
-	    $supportedLanguages['da']['DK']['description'] = 'Dansk';
-	    $defaultCountry['da'] = 'DK';
-
-	    // Spanish
-	    $supportedLanguages['es']['ES']['description'] = 'Espa&#241;ol';
-	    $supportedLanguages['es']['MX']['description'] = 'Espa&#241;ol (MX)';
-	    $supportedLanguages['es']['AR']['description'] = 'Espa&#241;ol (AR)';
-	    $defaultCountry['es'] = 'ES';
-
-	    // Basque
-	    $supportedLanguages['eu']['ES']['description'] = 'Euskara';
-	    $defaultCountry['eu'] = 'ES';
-
-	    // French
-	    $supportedLanguages['fr']['FR']['description'] = 'Fran&#231;ais';
-	    $defaultCountry['fr'] = 'FR';
-
-	    // Irish
-	    $supportedLanguages['ga']['IE']['description'] = 'Gaeilge';
-	    $defaultCountry['ga'] = 'IE';
-
 	    // Greek
-	    $supportedLanguages['el']['GR']['description'] = 'Greek';
-	    $defaultCountry['el'] = 'GR';
-
-	    // Icelandic
-	    $supportedLanguages['is']['IS']['description'] = 'Icelandic';
-	    $defaultCountry['is'] = 'IS';
-
-	    // Italian
-	    $supportedLanguages['it']['IT']['description'] = 'Italiano';
-	    $defaultCountry['it'] = 'IT';
-
-	    // Latvian
-	    $supportedLanguages['lv']['LV']['description'] = 'Latvie&#353;u';
-	    $defaultCountry['lv'] = 'LV';
-
-	    // Lithuanian
-	    $supportedLanguages['lt']['LT']['description'] = 'Lietuvi&#371;';
-	    $defaultCountry['lt'] = 'LT';
+	    $supportedLanguages['gr']['description'] = 'Greek';
+	    $supportedLanguages['gr']['nativedescription'] = 'Greek?';
 
 	    // Hungarian
-	    $supportedLanguages['hu']['HU']['description'] = 'Magyar';
-	    $defaultCountry['hu'] = 'HU';
+	    $supportedLanguages['hu']['description'] = 'Hungarian';
+	    $supportedLanguages['hu']['nativedescription'] = 'Magyar';
 
-	    // Dutch
-	    $supportedLanguages['nl']['NL']['description'] = 'Nederlands';
-	    $defaultCountry['nl'] = 'NL';
-
-	    // Norwegian
-	    $supportedLanguages['no']['NO']['description'] = 'Norsk bokm&#229;l';
-	    $defaultCountry['no'] = 'NO';
-
-	    // Polish
-	    $supportedLanguages['pl']['PL']['description'] = 'Polski';
-	    $defaultCountry['pl'] = 'PL';
-
-	    // Portuguese
-	    $supportedLanguages['pt']['BR']['description'] = 'Portugu&#234;s Brasileiro';
-	    $supportedLanguages['pt']['PT']['description'] = 'Portugu&#234;s';
-	    $defaultCountry['pt'] = 'BR';
-
-	    // Slovenian
-	    $supportedLanguages['sl']['SI']['description'] = 'Sloven&#353;&#269;ina';
-	    $defaultCountry['sl'] = 'SI';
-
-	    // Serbian
-	    $supportedLanguages['sr']['YU']['description'] = 'Srpski';
-	    $defaultCountry['sr'] = 'YU';
-
-	    // Finnish
-	    $supportedLanguages['fi']['FI']['description'] = 'Suomi';
-	    $defaultCountry['fi'] = 'FI';
-
-	    // Swedish
-	    $supportedLanguages['sv']['SE']['description'] = 'Svenska';
-	    $defaultCountry['sv'] = 'SE';
-
-	    // Thai
-	    $supportedLanguages['th']['TH']['description'] = 'Thai';
-	    $defaultCountry['th'] = 'TH';
-
-	    // Vietnamese
-	    $supportedLanguages['vi']['VN']['description'] = 'Ti&#7871;ng Vi&#7879;t';
-	    $defaultCountry['vi'] = 'VN';
-
-	    // Turkish
-	    $supportedLanguages['tr']['TR']['description'] = 'T&#252;rk&#231;e';
-	    $defaultCountry['tr'] = 'TR';
-
-	    // Bulgarian
-	    $supportedLanguages['bg']['BG']['description'] =
-		'&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
-	    $defaultCountry['bg'] = 'BG';
-
-	    // Russian
-	    $supportedLanguages['ru']['RU']['description'] =
-		'&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
-	    $defaultCountry['ru'] = 'RU';
-
-	    // Chinese
-	    $supportedLanguages['zh']['CN']['description'] = '&#31616;&#20307;&#20013;&#25991;';
-	    $supportedLanguages['zh']['TW']['description'] = '&#32321;&#39636;&#20013;&#25991;';
-	    $defaultCountry['zh'] = 'CN';
+	    // Italian
+	    $supportedLanguages['it']['description'] = 'Italian';
+	    $supportedLanguages['it']['nativedescription'] = 'Italiano';
 
 	    // Japanese
-	    $supportedLanguages['ja']['JP']['description'] = '&#x65e5;&#x672c;&#x8a9e;';
-	    $defaultCountry['ja'] = 'JP';
+	    $supportedLanguages['jp']['description'] = 'Japanese';
+	    $supportedLanguages['jp']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
+
+	    // Lithuanian
+	    $supportedLanguages['lt']['description'] = 'Lithuanian';
+	    $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
+	    
+	    // Norwegian
+	    $supportedLanguages['no']['description'] = 'Norwegian';
+	    $supportedLanguages['no']['nativedescription'] = 'Norsk bokm&#229;l';
+
+	    // Portuguese
+	    $supportedLanguages['pt']['description'] = 'Portuguese';
+	    $supportedLanguages['pt']['nativedescription'] = 'Portugu&#234;s';
+
+	    // Russian
+	    $supportedLanguages['ru']['description'] = 'Russian';
+	    $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
+
+	    // Romanian
+	    $supportedLanguages['ro']['description'] = 'Romanian';
+	    $supportedLanguages['ro']['nativedescription'] = 'Romanian?';
+
+	    // Slovenian
+	    $supportedLanguages['si']['description'] = 'Slovenian';
+	    $supportedLanguages['si']['nativedescription'] = 'Sloven&#353;&#269;ina';
+
+	    // Spanish
+	    $supportedLanguages['es']['description'] = 'Spanish';
+	    $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
+
+	    // Swedish
+	    $supportedLanguages['se']['description'] = 'Swedish';
+	    $supportedLanguages['se']['nativedescription'] = 'Svenska';
+
+	    // Vietnamese
+	    $supportedLanguages['vn']['description'] = 'Vietnamese';
+	    $supportedLanguages['vn']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
+
+	    
+/*    // future languages
+
+	    // Afrikaans
+ 	    $supportedLanguages['za']['description'] = 'Afrikaans';
+
+        // Czech
+	    $supportedLanguages['cz']['description'] = '&#x010c;esky';
+
+	    // Irish
+	    $supportedLanguages['ie']['description'] = 'Gaeilge';
+
+	    // Icelandic
+	    $supportedLanguages['is']['description'] = 'Icelandic';
+
+	    // Latvian
+	    $supportedLanguages['lv']['description'] = 'Latvie&#353;u';
+
+	    // Lithuanian
+	    $supportedLanguages['lt']['description'] = 'Lietuvi&#371;';
+
+	    // Polish
+	    $supportedLanguages['pl']['description'] = 'Polski';
+
+	    // Serbian
+	    $supportedLanguages['yu']['description'] = 'Srpski';
+
+	    // Thai
+	    $supportedLanguages['th']['description'] = 'Thai';
+
+	    // Turkish
+	    $supportedLanguages['tr']['description'] = 'T&#252;rk&#231;e';
 
 	    // Arabic
-	    $supportedLanguages['ar']['SA']['description'] =
-		'&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;';
-	    $supportedLanguages['ar']['SA']['right-to-left'] = true;
-	    $defaultCountry['ar'] = 'SA';
+	    $supportedLanguages['sa']['description'] = '&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;';
+	    $supportedLanguages['sa']['right-to-left'] = true;
 
 	    // Hebrew
-	    $supportedLanguages['he']['IL']['description'] = '&#1506;&#1489;&#1512;&#1497;&#1514;';
-	    $supportedLanguages['he']['IL']['right-to-left'] = true;
-	    $defaultCountry['he'] = 'IL';*/
+	    $supportedLanguages['il']['description'] = '&#1506;&#1489;&#1512;&#1497;&#1514;';
+	    $supportedLanguages['il']['right-to-left'] = true;
 
-	return $supportedLanguages;
-    }
-
-    /**
-     * Return the list of languages that we support.
-     * Return our language data
-     *
-     * @return array['language code']['country code'] =
-     *              array('description', 'right-to-left'?)
      */
 ?>
