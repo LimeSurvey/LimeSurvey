@@ -50,7 +50,7 @@ if (!isset($templatedir) || !$templatedir) {$thistpl=$tpldir."/default";} else {
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
-if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
+if (!is_file($langfilename)) {$langfilename="$langdir/$currentlang.lang.php";}
 require($langfilename);	
 
 sendcacheheaders();

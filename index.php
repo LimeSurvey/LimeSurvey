@@ -55,8 +55,6 @@ $tpldir="$publicdir/templates";
 if (!$surveyid)
 	{
 
-//	$langfilename="$publicdir/lang/$defaultlang.lang.php";
-//	require($langfilename);
 	//A nice exit
 	sendcacheheaders();
 	doHeader();
@@ -1005,9 +1003,9 @@ function submittokens()
 		else
 			{
 			//Get the default email_confirm from the default admin lang file
-			global $defaultlang, $homedir, $homeurl;
-			$langdir="$homeurl/lang/$defaultlang";
-			$langdir2="$homedir/lang/$defaultlang";
+			global $currentlang, $homedir, $homeurl;
+			$langdir="$homeurl/lang/$currentlang";
+			$langdir2="$homedir/lang/$currentlang";
 			if (!is_dir($langdir2)) 
 				{
 				$langdir="$homeurl/lang/english"; //default to english if there is no matching language dir

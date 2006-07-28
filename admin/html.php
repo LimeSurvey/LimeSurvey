@@ -92,7 +92,7 @@ if ($action == "checksettings" || $action == "changelang")
 				. "\t\t<td align='right'>$setfont\n"
 				. "\t\t\t<strong>"._("Default Language").":</strong></font>\n"
 				. "\t\t</td><td>$setfont\n"
-				. "\t\t\t$realdefaultlang\n"
+				. "\t\t\t".getLanguageNameFromCode($defaultlang)."\n"
 				. "\t\t</font></td>\n"
 				. "\t</tr>\n"
 				. "\t<tr>\n"
@@ -100,12 +100,12 @@ if ($action == "checksettings" || $action == "changelang")
 				. "\t\t\t<strong>"._("Current Language").":</strong>\n"
 				. "\t\t</font></td><td>$setfont\n"
 				. "\t\t\t<select name='lang' $slstyle onChange='form.submit()'>\n";
-	foreach (getadminlanguages() as $language)
-		{
-		$cssummary .= "\t\t\t\t<option value='$language'";
-		if ($language == $defaultlang) {$cssummary .= " selected";}
-		$cssummary .= ">$language</option>\n";
-		}
+  	foreach (getlanguagedata() as $langkey=>$languagekind)
+	{
+    	$cssummary .= "\t\t\t\t<option value='$langkey'";
+		if ($langkey == $currentlang) {$cssummary .= " selected";}
+		$cssummary .= ">".$languagekind['description']."</option>\n";
+	}
 	$cssummary .= "\t\t\t</select>\n"
 				. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
 				. "\t\t</font></td>\n"
@@ -466,7 +466,7 @@ if ($surveyid)
 						. "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
 						. _("Language:")."</strong></font></td>\n";
-		if (!$s1row['language']) {$language=$defaultlang;} else {$language=$s1row['language'];}
+		if (!$s1row['language']) {$language=$currentlang;} else {$language=$s1row['language'];}
 		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
 		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
@@ -1796,17 +1796,14 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Language:")."</strong></font></td>\n"
 		 . "\t\t<td><select $slstyle name='language'>\n";
 		 
-    	foreach (getLanguageData() as $languages)
-	       	{
-		    foreach ($languages as  $langkey2=>$langname)
-            {
-			$editsurvey .= "\t\t\t<option value='".$langkey2."'";
+	    foreach (getLanguageData() as  $langkey2=>$langname)
+        {
+    		$editsurvey .= "\t\t\t<option value='".$langkey2."'";
 			if ($esrow['language'] && $esrow['language'] == htmlspecialchars($langname['description'])) {$editsurvey .= " selected";}
              // if language has been renamed then default to DefaultLanguage
-			if (!$esrow['language'] && $defaultlang && $defaultlang == $langname) {$editsurvey .= " selected";}
+			if (!$esrow['language'] && $currentlang && $currentlang == $langname) {$editsurvey .= " selected";}
 			$editsurvey .= ">".$langname['description']."</option>\n";
-			}
-			}
+	    }
 		$editsurvey .= "\t\t</select></td>\n"
 			    	. "\t</tr>\n"
 					. "\t<tr><td align='right'>$setfont<strong>"._("Expiry Date:")."</strong></font></td>\n"
@@ -2007,7 +2004,7 @@ if ($action == "newsurvey")
 	    foreach ($languages as  $langkey2=>$langname)
             {
 	   	    $newsurvey .= "\t\t\t<option value='".$langkey2."'";
-    //		if ($defaultlang && $defaultlang == $langname) {$newsurvey .= " selected";}
+    //		if ($currentlang && $currentlang == $langname) {$newsurvey .= " selected";}
 	       	$newsurvey .= ">".$langname['description']."</option>\n";
             }
 		}

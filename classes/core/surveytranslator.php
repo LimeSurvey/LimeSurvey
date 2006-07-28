@@ -43,18 +43,28 @@
 
 
 
+    function getLanguageNameFromCode($codetosearch)
+    {
+        $detaillanguages = getLanguageData();
+        if (isset($detaillanguages[$codetosearch]['description']))
+        {
+              return $detaillanguages[$codetosearch]['description'];
+        }
+          else
+        // else return default en code
+        return "English";
+    }
+
+
     function getLanguageData() {
-	static $supportedLanguages = array();
-
-	if (empty($supportedLanguages)) {
 	    /* English */
-
+        unset($supportedLanguages);
 	    $supportedLanguages['en']['description'] = 'English';
 	    $supportedLanguages['en']['nativedescription'] = 'English';
 
 	    // German
 	    $supportedLanguages['de']['description'] = 'German';
-	    $supportedLanguages['de']['nativedescription'] = 'Deutsch';
+	    $supportedLanguages['de']['nativedescription'] = 'Deutsch (Sie)';
 
         // German informal
 	    $supportedLanguages['de_informal']['description'] = 'German informal';
@@ -190,9 +200,8 @@
 	    $supportedLanguages['he']['IL']['description'] = '&#1506;&#1489;&#1512;&#1497;&#1514;';
 	    $supportedLanguages['he']['IL']['right-to-left'] = true;
 	    $defaultCountry['he'] = 'IL';*/
-	}
 
-	return array($supportedLanguages);
+	return $supportedLanguages;
     }
 
     /**

@@ -50,8 +50,8 @@ if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
 
 require_once (dirname(__FILE__).'/classes/phpmailer/class.phpmailer.php');
 require_once (dirname(__FILE__).'/classes/php-gettext/gettext.php');
-require_once (dirname(__FILE__).'/classes/core/surveytranslator.class');
-$realdefaultlang=$defaultlang;
+require_once (dirname(__FILE__).'/classes/core/surveytranslator.php');
+
 
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
     {
@@ -131,8 +131,8 @@ else
 //SET LANGUAGE DIRECTORY
 if ($sourcefrom == "admin")
     {
-    $langdir="$homeurl/lang/$defaultlang";
-    $langdir2="$homedir/lang/$defaultlang";
+    $langdir="$homeurl/lang/$currentlang";
+    $langdir2="$homedir/lang/$currentlang";
     if (!is_dir($langdir2))
         {
         $langdir="$homeurl/lang/english"; //default to english if there is no matching language dir
@@ -990,9 +990,9 @@ function sendcacheheaders()
     {
     global $embedded;
     if ( $embedded ) return;
-    global $defaultlang, $thissurvey;
+    global $currentlang, $thissurvey;
     if (isset($thissurvey['language'])) {$language=$thissurvey['language'];}
-    else {$language=$defaultlang;} //$thissurvey['language'] will exist if this is a public survey
+    else {$language=$currentlang;} //$thissurvey['language'] will exist if this is a public survey
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
     header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
@@ -1693,11 +1693,10 @@ function loadPublicLangFile($surveyid)
     {
     global $connect;
     //This function loads the local language file applicable to a survey
-        global $dbprefix, $publicdir, $defaultlang;
+        global $dbprefix, $publicdir, $currentlang;
         $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
         $result = db_execute_num($query) or die ("Couldn't get language file");
         while ($row=$result->FetchRow()) {$surveylanguage = $row[0];}
-        echo(getLanguageCodefromLanguage($surveylanguage));
     }
 
 function buildLabelsetCSArray()

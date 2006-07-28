@@ -112,7 +112,7 @@ $result = db_execute_assoc($query) or die("Error selecting language: <br />".$qu
 while ($row=$result->FetchRow()) {$surveylanguage = $row['language']; $datestamp=$row['datestamp'];}
 $langdir="$publicdir/lang";
 $langfilename="$langdir/$surveylanguage.lang.php";
-if (!is_file($langfilename)) {$langfilename="$langdir/$defaultlang.lang.php";}
+if (!is_file($langfilename)) {$langfilename="$langdir/$currentlang.lang.php";}
 require($langfilename); 
 
 // 1: Get list of questions from survey
