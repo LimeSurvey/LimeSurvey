@@ -2103,4 +2103,34 @@ function getArrayFiltersForQuestion($qid)
 	return false;
 }
 
+/**
+* getArrayFiltersForQuestion($qid) finds out if a question is in the currect group or not for array filter
+* @global string $surveyid
+* @global string $gid
+* @global string $dbprefix
+* @return returns true if its not in currect group and false if it is..
+*/
+function getArrayFiltersOutGroup($qid)
+{
+	// TODO: Check list_filter values to make sure questions are previous?
+	global $surveyid, $dbprefix, $gid;
+	$query = "SELECT value FROM {$dbprefix}question_attributes WHERE attribute='array_filter' AND qid='".(int)$qid."'";
+	$qresult = mysql_query($query);
+	if (mysql_numrows($qresult) == 1) // We Found a array_filter attribute
+	{
+		$val = mysql_fetch_row($qresult); // Get the Value of the Attribute ( should be a previous question's title in same group )
+		// we found the target question, now we need to know what the answers where, we know its a multi!
+		$query = "SELECT gid FROM questions where title='{$val[0]}'";
+		$qresult = mysql_query($query);
+		if (mysql_numrows($qresult) == 1)
+		{
+			$val2 = mysql_fetch_row($qresult);
+			if ($val2[0] != $gid) return true;
+			if ($val2[0] == $gid) return false;
+		}
+		return false;
+	}
+	return false;
+}
+
 ?>
