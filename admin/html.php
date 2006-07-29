@@ -294,10 +294,10 @@ if ($surveyid)
 						. "onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\"" 
 						. "onmouseout=\"hideTooltip()\"" 
                     	. "onmouseover=\"showTooltip(event,'"._("Edit Current Survey")."');return false\">\n" ;
-        $surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/reorder.png' title='' alt='"._G_ORDER_BT."' align='left' name='ordergroups' "
+        $surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups' "
 						. "onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
 						. "onmouseout=\"hideTooltip()\"" 
-                    	. "onmouseover=\"showTooltip(event,'"._G_ORDER_BT."');return false\">\n" ;
+                    	. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">\n" ;
 		if ($sumcount3 == 0 && $sumcount2 == 0)
 			{
 			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey' "
@@ -411,7 +411,7 @@ if ($surveyid)
 		else {$surveysummary2 .= _("It is presented on one single page.")."<br />\n";}
 		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _("Responses will be date stamped")."<br />\n";}
 		if ($s1row['ipaddr'] == "Y") {$surveysummary2 .= _("IP Addresses will be logged")."<br />\n";}
-		if ($s1row['refurl'] == "Y") {$surveysummary2 .= _SS_REFURL."<br />\n";}
+		if ($s1row['refurl'] == "Y") {$surveysummary2 .= _("Referer-URL")."<br />\n";}
 		if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _("It uses cookies for access control.")."<br />\n";}
 		if ($s1row['allowregister'] == "Y") {$surveysummary2 .= _("If tokens are used, the public may register for this survey")."<br />\n";}
 		if ($s1row['allowsave'] == "Y") {$surveysummary2 .= _("Participants can save partially finished surveys")."<br />\n";}
@@ -1489,7 +1489,7 @@ if($action == "orderquestions")
     $orderquestions .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
     				   
 	$orderquestions .="<div id=\"movableNode\"><ul></ul></div>	
-			   		   <div id=\"arrDestInditcator\"><img src=\"images/insert.gif\"></div>
+			   		   <div id=\"arrDestInditcator\"><img src=".$imagefiles."/insert.gif'></div>
         			   <div id=\"arrDebug\"></div>" ; 					 
 	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ; 
 	$orderquestions .= "<form action='$scriptname' name='orderquestions' method='post'>
