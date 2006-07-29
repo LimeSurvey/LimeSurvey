@@ -1973,7 +1973,7 @@ function do_array_10point($ia)
 
 function do_array_yesnouncertain($ia)
     {
-    global $dbprefix, $shownoanswer, $notanswered;
+    global $dbprefix, $shownoanswer, $notanswered, $thissurvey;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
     $qresult = db_execute_assoc($qquery);
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -2009,7 +2009,23 @@ function do_array_yesnouncertain($ia)
            $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
-        $answer .= "\t\t\t\t<tr class='$trbc'>\n"
+        $htmltbody2 = "";
+        if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G")
+        {   
+        	$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        } else if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S")
+        {
+        	$selected = getArrayFiltersForQuestion($ia[0]);
+        	if (!in_array($ansrow['code'],$selected))
+        	{
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        		$_SESSION[$myfname] = "";
+        	} else 
+        	{
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
+        	}
+        }
+        $answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-Y'>"
                  ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-Y' value='Y' title='"._("Yes")."'";
@@ -2044,7 +2060,7 @@ function do_array_yesnouncertain($ia)
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
 // --> END NEW FEATURE - SAVE
             }
-        $answer .= "\t\t\t\t</tr>\n";
+        $answer .= "\t\t\t\t</tr></tbody>\n";
         $inputnames[]=$myfname;
         $fn++;
         }
@@ -2159,7 +2175,7 @@ $answer .= ");
 	
 function do_array_increasesamedecrease($ia)
     {
-    global $dbprefix;
+    global $dbprefix, $thissurvey;
     global $shownoanswer;
     global $notanswered;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
@@ -2197,7 +2213,23 @@ function do_array_increasesamedecrease($ia)
            $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
-        $answer .= "\t\t\t\t<tr class='$trbc'>\n"
+        $htmltbody2 = "";
+        if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G")
+        {   
+        	$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        } else if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S")
+        {
+        	$selected = getArrayFiltersForQuestion($ia[0]);
+        	if (!in_array($ansrow['code'],$selected))
+        	{
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        		$_SESSION[$myfname] = "";
+        	} else 
+        	{
+        		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
+        	}
+        }
+        $answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-I'>"
                  ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-I' value='I' title='"._INCREASE."'";
@@ -2231,7 +2263,7 @@ function do_array_increasesamedecrease($ia)
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
 // --> END NEW FEATURE - SAVE
             }
-        $answer .= "\t\t\t\t</tr>\n";
+        $answer .= "\t\t\t\t</tbody></tr>\n";
         $inputnames[]=$myfname;
         $fn++;
         }

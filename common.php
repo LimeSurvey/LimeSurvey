@@ -1762,7 +1762,7 @@ function questionAttributes()
                          "types"=>"FGWZ",
                          "help"=>"Filter the available answers by this value");
     $qattributes[]=array("name"=>"array_filter",
-                         "types"=>"ABF",
+                         "types"=>"ABFCE",
                          "help"=>"Filter an Array's Answers from a Multiple Options Question");
 
 // --> START ENHANCEMENT - DISPLAY ROWS
