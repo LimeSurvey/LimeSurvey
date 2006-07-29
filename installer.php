@@ -5,8 +5,12 @@
  * 
  */
  
- 
- 
+ /*
+ if(file_exists('config.php'))
+ {
+ 	die("PHPSurveyor is allready installed") ; 
+ }
+ */
  
  
  
@@ -20,4 +24,8 @@
  	
  }
  
+ function writeConfiguration($configuration_array)
+ {
+ 	
+ }
 ?>

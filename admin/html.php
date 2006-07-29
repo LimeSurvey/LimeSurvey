@@ -396,7 +396,7 @@ if ($surveyid)
 						. "\t</tr>\n";
 		
 		//SURVEY SUMMARY
-		if ($gid || $qid || $action=="editsurvey" || $action=="addgroup") {$showstyle="style='display: none'";}
+		if ($gid || $qid || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups") {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
 						. "$setfont<strong>"._("Title:")."</strong></font></td>\n"
@@ -1858,8 +1858,28 @@ if ($action == "editsurvey")
 	}
 if ($action == "ordergroups")
 	{
+		$ordergroups = "<ul id='arrangableNodes'>";
+		//Get the groups from this survey
+		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by sortorder,group_name" ; 
+		$ogresult = mysql_query($ogquery) or die(mysql_error()) ; 
+		while($ogrows=mysql_fetch_array($ogresult))
+		{
+			$ordergroups.="<li id='".$ogrows['gid']."'>".$ogrows['group_name']."</li>\n" ; 
+		}
+		$ordergroups.="</ul>" ;
+		 
+    $ordergroups .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
+	$ordergroups .="<div id=\"movableNode\"><ul></ul></div>	
+			   		   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif'></div>
+        			   <div id=\"arrDebug\"></div>" ; 					 
+	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ; 
+	$ordergroups .= "<form action='$scriptname' name='ordergroups' method='post'>
+						<input type='hidden' name='hiddenNodeIds'>
+						<input type='hidden' name='action' value='reordergroups'> 
+						<input type='hidden' name='sid' value='$surveyid'>
+						</form>" ; 
+    $ordergroups .="</p>" ;			
 		
-		$ordergroups = "<ul>" ; 
 	}	
 if ($action == "uploadf")
 	{

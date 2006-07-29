@@ -131,7 +131,7 @@ checkactivations();
 //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
 if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" || 
 	$action=="delquestion" || $action=="delquestionall" || $action == "insertnewsurvey" || 
-	$action == "copynewquestion" || $action == "insertnewgroup" || $action == "insertCSV" || 
+	$action == "copynewquestion" || $action == "insertnewgroup" || $action=="reordergroups" || $action == "insertCSV" || 
 	$action == "insertnewquestion" || $action == "updatesurvey" || $action=="updategroup" || 
 	$action=="reorderquestions" || $action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
 	$action == "delattribute" || $action == "addattribute" || $action == "editattribute")

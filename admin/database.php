@@ -84,8 +84,8 @@ elseif ($action == "insertnewgroup")
     else
         {
         $_POST  = array_map('db_quote', $_POST);
-
-        $query = "INSERT INTO {$dbprefix}groups (sid, group_name, description) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}')";
+		 
+        $query = "INSERT INTO {$dbprefix}groups (sid, group_name, description,sortorder) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).")";
         $result = $connect->Execute($query);
 
         if ($result)
@@ -175,6 +175,16 @@ elseif ($action == "delgroup")
         echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
         }
     }
+elseif ($action == "reordergroups")
+	{
+		$grouporder = explode(",",$_POST['hiddenNodeIds']) ;
+		foreach($grouporder as $key =>$value)
+		{
+			$upgrorder_query="UPDATE {$dbprefix}groups SET sortorder=$key where gid=$value" ; 
+			$upgrorder_result=mysql_query($upgrorder_query) ;
+		}
+	}    
+    
 elseif ($action == "reorderquestions")
 	{
 		//Getting the hiddeNodeIds field and constructing the question order array

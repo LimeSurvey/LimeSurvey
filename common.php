@@ -419,6 +419,20 @@ function getquestions()
     }
 
 /**
+* getMaxgrouporder($surveyid) queries the database for the maximum sortorder of a group.  
+* @global string $surveyid
+*/
+function getMaxgrouporder($surveyid) 
+{
+	global $surveyid ; 
+	$max_sql = "SELECT max( sortorder ) AS max FROM groups WHERE sid =$surveyid" ; 
+	$max_result =db_execute_assoc($max_sql) ; 
+	$maxrow = $max_result->FetchRow() ; 
+	return $maxrow['max']; 
+}
+
+
+/**
 * getanswers() queries the database for a list of all answers matching the current question qid
 * @global string $surveyid
 * @global string $gid
@@ -538,7 +552,7 @@ function getgrouplist($gid)
     global $surveyid, $dbprefix, $scriptname, $connect;
     $groupselecter="";
     if (!$surveyid) {$surveyid=$_POST['sid'];}
-    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_name";
+    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY sortorder";
     $gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));
     while($gv = $gidresult->FetchRow())
             {
@@ -559,7 +573,7 @@ function getgrouplist2($gid)
     global $surveyid, $dbprefix, $connect;
     $groupselecter = "";
     if (!$surveyid) {$surveyid=$_POST['sid'];}
-    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_name";
+    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY sortorder";
     $gidresult = db_execute_num($gidquery) or die("Plain old did not work!");
     while ($gv = $gidresult->FetchRow())
             {
@@ -580,7 +594,7 @@ function getgrouplist3($gid)
     global $surveyid, $dbprefix, $connect;
     if (!$surveyid) {$surveyid=$_POST['sid'];}
         $groupselecter = "";
-    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_name";
+    $gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY sortorder";
     $gidresult = db_execute_num($gidquery) or die("Plain old did not work!");
     while ($gv = $gidresult->FetchRow())
             {
