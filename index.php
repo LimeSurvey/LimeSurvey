@@ -34,18 +34,22 @@
 	#############################################################
 */
 
-
-session_start();
-ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 require_once(dirname(__FILE__).'/config.php');
-require_once('clienttext.php');
+
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+//This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
+if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");}
+session_start();
+
+SetInterfaceLanguage(GetLanguageFromSurveyID($surveyid));
+require_once('clienttext.php');  // must be loaded AFTER set INTERFACE for now
+
+
+ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
 if ( $embedded_inc != '' )
 	require_once( $embedded_inc );
 
-if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-//This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
-if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");} 
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
@@ -64,7 +68,7 @@ if (!$surveyid)
 		echo templatereplace($op);
 		}
 	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='RED'><strong>ERROR</strong></font><br />\n"
+		."\t\t\t<font color='RED'><strong>"._('ERROR')."</strong></font><br />\n"
 		."\t\t\t"._NOSID."<br />\n"
 		."\t\t\t"._CONTACT1." $siteadminname ( $siteadminemail ) "._CONTACT2."\n"
 		."\t\t</center><br />\n";
@@ -77,7 +81,6 @@ if (!$surveyid)
 	exit;
 	}
 
-
 //Check to see if a refering URL has been captured.
 getreferringurl();
 
@@ -86,13 +89,6 @@ if (!isset($token)) {$token=trim(returnglobal('token'));}
 $thissurvey=getSurveyInfo($surveyid);
 
 if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
-
-// Check if the current survey language is set - if not set it
-// this way it can be changed later (for example by a special question type)
-if (!isset($_SESSION['publiclang']) || ($_SESSION['publiclang']==''))
-  {
-    $_SESSION['publiclang']=SetInterfaceLanguage(GetLanguageFromSurveyID($surveyid));
-  }
 
 
 //SEE IF SURVEY USES TOKENS
@@ -303,14 +299,12 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 
 if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 	{
-	foreach ($_SESSION as $SES)
-		{
-		session_unset();
-		}
+	session_unset();
 	//DELETE COOKIE (allow to use multiple times)
 	setcookie("$cookiename", "INCOMPLETE", time()-120);
 	//echo "Reset Cookie!";
 	}
+
 
 // --> START NEW FEATURE - SAVE
 // SAVE POSTED ANSWERS TO DATABASE IF NEXT,PREV,LAST OR SUBMIT
@@ -1437,6 +1431,9 @@ function buildsurveysession()
 										  $arow['mandatory'], 
 										  $conditions);
 		}
+    // Check if the current survey language is set - if not set it
+    // this way it can be changed later (for example by a special question type)
+
 	return $totalquestions;
 	}
 

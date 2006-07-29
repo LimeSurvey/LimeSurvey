@@ -1675,16 +1675,17 @@ function GetLanguageFromSurveyID($surveyid)
 
 function SetInterfaceLanguage($languagetoset)
     {
-    @$locale = (isset($_GET['lang']))? $_GET['lang'] : DEFAULT_LOCALE;
-    if (function_exists('T_setlocale')) T_setlocale(LC_MESSAGES, $locale);
+    
+    if (function_exists('T_setlocale'))  {@T_setlocale(LC_MESSAGES, $languagetoset); }
     @setlocale(LC_ALL, $languagetoset);
-    @putenv("LANG=$languagetoset");
-    @putenv("LANGUAGE=$languagetoset");
+    putenv("LANG=$languagetoset");
+    putenv("LANGUAGE=$languagetoset");
 
      bindtextdomain($languagetoset, dirname(__FILE__).'/locale');
      if (!function_exists('bind_textdomain_codeset')) echo "You need at least PHP 4.2.x to run PHPSurveyor." and die;
      bind_textdomain_codeset($languagetoset,'UTF-8');
-     return textdomain($languagetoset);
+     textdomain($languagetoset);
+     return $languagetoset;
     }
 
 

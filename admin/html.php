@@ -1796,14 +1796,29 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Language:")."</strong></font></td>\n"
 		 . "\t\t<td><select $slstyle name='language'>\n";
 		 
+
+    // First check what languages are available - if the one set in db is not available leave found as false
+		$found=false;
+	    foreach (getLanguageData() as  $langkey2=>$langname)
+        {
+			if ($esrow['language'] && $esrow['language'] == htmlspecialchars($langkey2))       {   $found=true;   }
+        }
+
 	    foreach (getLanguageData() as  $langkey2=>$langname)
         {
     		$editsurvey .= "\t\t\t<option value='".$langkey2."'";
-			if ($esrow['language'] && $esrow['language'] == htmlspecialchars($langname['description'])) {$editsurvey .= " selected";}
+			if ($found && $esrow['language'] && $esrow['language'] == $langkey2)
+            {
+              $editsurvey .= " selected";
+            }
              // if language has been renamed then default to DefaultLanguage
-			if (!$esrow['language'] && $currentadminlang && $currentadminlang == $langname) {$editsurvey .= " selected";}
+              elseif (!$found && $langkey2='en')
+              {
+                 {$editsurvey .= " selected";}
+              }
 			$editsurvey .= ">".$langname['description']."</option>\n";
 	    }
+
 		$editsurvey .= "\t\t</select></td>\n"
 			    	. "\t</tr>\n"
 					. "\t<tr><td align='right'>$setfont<strong>"._("Expiry Date:")."</strong></font></td>\n"

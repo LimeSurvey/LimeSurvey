@@ -38,7 +38,7 @@
 //if (empty($dbprefix)) {die ("Cannot run this script directly");}
 
 session_name("PHPSurveyorAdmin");
-session_start();
+if (session_id() == "") session_start();
 
 
 
@@ -46,10 +46,15 @@ session_start();
 if (returnglobal('action') == "changelang") 
 	{
     $_SESSION['adminlang']=returnglobal('lang');
+    
 	}
 elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 	{
         $_SESSION['adminlang']=$defaultlang;
     }
+// echo 'Domain:*'.$_SESSION['adminlang'].'*';
+// for debug purposes
+
 SetInterfaceLanguage($_SESSION['adminlang']);
+
 ?>
