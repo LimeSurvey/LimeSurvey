@@ -37,6 +37,11 @@ require('gettext.php');
 
 // Variables
 
+if (!defined("LC_MESSAGES"))
+{
+  define("LC_MESSAGES",5);
+}
+
 global $text_domains, $default_domain, $LC_CATEGORIES, $EMULATEGETTEXT, $CURRENTLOCALE;
 $text_domains = array();
 $default_domain = 'messages';

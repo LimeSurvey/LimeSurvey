@@ -49,7 +49,7 @@ if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
 ##################################################################################
 
 require_once (dirname(__FILE__).'/classes/phpmailer/class.phpmailer.php');
-require_once (dirname(__FILE__).'/classes/php-gettext/gettext.php');
+require_once (dirname(__FILE__).'/classes/php-gettext/gettext.inc');
 require_once (dirname(__FILE__).'/classes/core/surveytranslator.php');
 
 
