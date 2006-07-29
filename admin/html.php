@@ -1489,7 +1489,7 @@ if($action == "orderquestions")
     $orderquestions .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
     				   
 	$orderquestions .="<div id=\"movableNode\"><ul></ul></div>	
-			   		   <div id=\"arrDestInditcator\"><img src=".$imagefiles."/insert.gif'></div>
+			   		   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif'></div>
         			   <div id=\"arrDebug\"></div>" ; 					 
 	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ; 
 	$orderquestions .= "<form action='$scriptname' name='orderquestions' method='post'>
