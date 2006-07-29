@@ -1844,6 +1844,7 @@ function do_array_5point($ia)
         	if (!in_array($ansrow['code'],$selected))
         	{
         		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        		$_SESSION[$myfname] = "";
         	} else 
         	{
         		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
@@ -1930,6 +1931,7 @@ function do_array_10point($ia)
         	if (!in_array($ansrow['code'],$selected))
         	{
         		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        		$_SESSION[$myfname] = "";
         	} else 
         	{
         		$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
@@ -2325,6 +2327,7 @@ function do_array_flexible($ia)
         		if (!in_array($ansrow['code'],$selected))
         		{
         			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+        			$_SESSION[$myfname] = "";
         		} else 
         		{
         			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
