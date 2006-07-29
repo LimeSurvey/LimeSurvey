@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-07-29 15:51+0100\n"
+"PO-Revision-Date: 2006-07-29 20:21+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgid "Activate Security"
 msgstr "Sicherheit aktivieren"
 
 msgid "Modify Security Settings"
-msgstr "Sicherheitseinstellungen &auml;ndern"
+msgstr "Sicherheitseinstellungen ändern"
 
 msgid "Check Settings"
 msgstr "Systemübersicht"
@@ -33,7 +33,7 @@ msgid "Check Database"
 msgstr "Datenbank überprüfen"
 
 msgid "Delete Entire Survey"
-msgstr "Gesamte Umfrage l&ouml;schen"
+msgstr "Gesamte Umfrage löschen"
 
 msgid "Backup Entire Database"
 msgstr "Datenbank sichern"
@@ -138,7 +138,7 @@ msgid "Basic email notification"
 msgstr "Normale Bestätigung per Email."
 
 msgid "Detailed email notification with result codes"
-msgstr "Ausführliche Best&auml;tigung per Email mit Ergebnissen."
+msgstr "Ausführliche Bestätigung per Email mit Ergebnissen."
 
 msgid "PHPSurveyor Setup"
 msgstr "PHPSurveyor Einrichten"
@@ -474,7 +474,7 @@ msgid "The following problems have been found:"
 msgstr "Folgende Probleme wurden gefunden:"
 
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr "Die Umfrage kann nicht aktiviert werden, solange diese Probleme nicht gel&ouml;st sind."
+msgstr "Die Umfrage kann nicht aktiviert werden, solange diese Probleme nicht gelöst sind."
 
 msgid "Main Admin Screen"
 msgstr "Zurück zur Hauptseite"
@@ -483,19 +483,19 @@ msgid "Warning"
 msgstr "Warnung!"
 
 msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
-msgstr "Lesen Sie dies sorgf&auml;ltig durch, bevor Sie fortfahren."
+msgstr "Lesen Sie dies sorgfältig durch, bevor Sie fortfahren."
 
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
-msgstr "Sie sollten eine Umfrage nur aktivieren, wenn Sie ganz sicher sind, dass ihre Fragen komplett sind und keine &Auml;nderungen mehr notwendig sind."
+msgstr "Sie sollten eine Umfrage nur aktivieren, wenn Sie ganz sicher sind, dass ihre Fragen komplett sind und keine änderungen mehr notwendig sind."
 
 msgid "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>"
-msgstr "Sobald eine Umfrage einmal aktiviert ist, k&ouml;nnen Sie nicht mehr:<ul><li>Gruppen hinzufügen oder l&ouml;schen<li><li>Antworten für Mehrfachauswahl-Fragen hinzufügen oder l&ouml;schen<li><li>Fragen hinzufügen oder l&ouml;schen<li><ul>"
+msgstr "Sobald eine Umfrage einmal aktiviert ist, können Sie nicht mehr:<ul><li>Gruppen hinzufügen oder löschen<li><li>Antworten für Mehrfachauswahl-Fragen hinzufügen oder löschen<li><li>Fragen hinzufügen oder löschen<li><ul>"
 
 msgid "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>"
-msgstr "Jedoch k&ouml;nnen Sie immer noch:<ul><li>Ihre Frage-Codes, Frage-Text oder Frage-Typ &auml;ndern<li><li>Die Gruppennamen &auml;ndern<li><li>Vordefinierte Antworten hinzufügen, &auml;ndern, l&ouml;schen (ausser für Mehrfachauswahl-Fragen)<li><li>Den Umfrage Namen oder die Beschreibung &auml;ndern.<li><ul>"
+msgstr "Jedoch können Sie immer noch:<ul><li>Ihre Frage-Codes, Frage-Text oder Frage-Typ ändern<li><li>Die Gruppennamen ändern<li><li>Vordefinierte Antworten hinzufügen, ändern, löschen (ausser für Mehrfachauswahl-Fragen)<li><li>Den Umfrage Namen oder die Beschreibung ändern.<li><ul>"
 
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Sobald Daten in die Umfrage eingegeben wurden und Sie Gruppen oder Fragen noch hinzufügen oder l&ouml;schen wollen, müssen Sie die Umfrage deaktivieren. Dies hat zur Folge, dass alle eingegebenen Daten in eine separate Archiv-Tabelle verschoben werden."
+msgstr "Sobald Daten in die Umfrage eingegeben wurden und Sie Gruppen oder Fragen noch hinzufügen oder löschen wollen, müssen Sie die Umfrage deaktivieren. Dies hat zur Folge, dass alle eingegebenen Daten in eine separate Archiv-Tabelle verschoben werden."
 
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -516,7 +516,7 @@ msgid "Initialise Tokens"
 msgstr "Initialisiere Probanden..."
 
 msgid "This survey allows public registration. A token table must also be created."
-msgstr "Diese Umfrage erlaubt &ouml;ffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
+msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
 
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Diese Umfrage ist jetzt aktiv und Antworten können erfasst werden."
@@ -647,7 +647,7 @@ msgid "Show start.."
 msgstr "Zeige ersten.."
 
 msgid "Records Displayed:"
-msgstr "Angezeigte Datens&auml;tze:"
+msgstr "Angezeigte Datensätze:"
 
 msgid "Starting From:"
 msgstr "Start von:"
@@ -679,13 +679,13 @@ msgid "Condition Designer"
 msgstr "Bedingungs Designer"
 
 msgid "You have not selected a Survey."
-msgstr "Sie haben keine Umfrage ausgew&auml;hlt."
+msgstr "Sie haben keine Umfrage ausgewählt."
 
 msgid "You cannot run this script directly."
 msgstr "Dieses Script kann nicht direkt gestartet werden."
 
 msgid "You have not selected a Question."
-msgstr "Sie haben keine Frage ausgew&auml;hlt."
+msgstr "Sie haben keine Frage ausgewählt."
 
 msgid "Did not copy questions"
 msgstr "Fragen wurden nicht kopiert"
@@ -694,7 +694,7 @@ msgid "No condition selected to copy from"
 msgstr "Keine Bedingung zum Kopieren ausgewählt"
 
 msgid "No question selected to copy condition to"
-msgstr "Keine Zielfrage zum Kopieren der Bedingung ausgew&auml;hlt"
+msgstr "Keine Zielfrage zum Kopieren der Bedingung ausgewählt"
 
 msgid "Only show question {QID} IF"
 msgstr "Zeige die Frage {QID} nur, WENN"
@@ -726,7 +726,7 @@ msgid "copy to"
 msgstr "kopieren nach"
 
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
-msgstr "Sind sie sicher, dass sie diese Bedingung zu den gew&auml;hlten Fragen kopieren wollen?"
+msgstr "Sind sie sicher, dass sie diese Bedingung zu den gewählten Fragen kopieren wollen?"
 
 msgid "Add Condition"
 msgstr "Bedingung hinzufügen"
@@ -762,7 +762,7 @@ msgid "Group could not be updated"
 msgstr "Gruppe konnte nicht aktualisiert werden."
 
 msgid "Group could not be deleted"
-msgstr "Gruppe konnte nicht gel&ouml;scht werden."
+msgstr "Gruppe konnte nicht gelöscht werden."
 
 msgid "Answer could not be added. You must insert a code in the mandatory field"
 msgstr "Antwort konnte nicht hinzugefügt werden. Sie müssen einen Code und eine Antwort eingeben."
@@ -771,19 +771,19 @@ msgid "Question could not be created."
 msgstr "Frage konnte nicht erstellt werden."
 
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr "Frage konnte nicht aktualisiert werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abh&auml;ngen - dadurch gibt es Probleme beim &Auml;ndern des Typs. Sie müssen diese Bedingung l&ouml;schen, bevor Sie den Typ dieser Frage &auml;ndern k&ouml;nnen."
+msgstr "Frage konnte nicht aktualisiert werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abhängen - dadurch gibt es Probleme beim ändern des Typs. Sie müssen diese Bedingung löschen, bevor Sie den Typ dieser Frage ändern können."
 
 msgid "Question could not be updated"
 msgstr "Frage konnte nicht aktualisiert werden."
 
 msgid "Answers can't be deleted"
-msgstr "Frage konnte nicht gel&ouml;scht werden."
+msgstr "Frage konnte nicht gelöscht werden."
 
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
-msgstr "Frage konnte nicht gel&ouml;scht werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abh&auml;ngen. Sie k&ouml;nnen diese Frage nicht l&ouml;schen, solange diese Bedingungen nicht entfernt wurden."
+msgstr "Frage konnte nicht gelöscht werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abhängen. Sie können diese Frage nicht löschen, solange diese Bedingungen nicht entfernt wurden."
 
 msgid "Question could not be deleted"
-msgstr "Frage konnte nicht gel&ouml;scht werden."
+msgstr "Frage konnte nicht gelöscht werden."
 
 msgid "Fix Sort"
 msgstr "Sort Check"
@@ -807,13 +807,13 @@ msgid "Answer could not be updated. There is already an answer with this code"
 msgstr "Antwort konnte nicht aktualisiert werden. Es gibt schon eine Antwort mit diesem Code."
 
 msgid "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer."
-msgstr "Antwort konnte nicht aktualisiert werden. Sie haben den Antwort Code abge&auml;ndert. Es gibt aber Bedingungen zu anderen Fragen, welche vom Code dieser Frage abh&auml;ngen. Sie müssen diese Bedingungen l&ouml;schen, bevor Sie diesen Antwort-Code &auml;ndern k&ouml;nnen."
+msgstr "Antwort konnte nicht aktualisiert werden. Sie haben den Antwort Code abgeändert. Es gibt aber Bedingungen zu anderen Fragen, welche vom Code dieser Frage abhängen. Sie müssen diese Bedingungen löschen, bevor Sie diesen Antwort-Code ändern können."
 
 msgid "Del"
 msgstr "Löschen"
 
 msgid "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
-msgstr "Antwort konnte nicht gel&ouml;scht werden. Es gibt Bedingungen zu anderen Fragen, welche vom Code dieser Frage abh&auml;ngen. Sie müssen diese Bedingungen l&ouml;schen, bevor Sie diesen Antwort-Code &auml;ndern k&ouml;nnen."
+msgstr "Antwort konnte nicht gelöscht werden. Es gibt Bedingungen zu anderen Fragen, welche vom Code dieser Frage abhängen. Sie müssen diese Bedingungen löschen, bevor Sie diesen Antwort-Code ändern können."
 
 msgid "Up"
 msgstr "Hoch"
@@ -834,7 +834,7 @@ msgid "Data Entry"
 msgstr "Dateneingabe"
 
 msgid "You have not selected a survey for data-entry."
-msgstr "Sie haben keine Umfrage zur Dateneingabe ausgew&auml;hlt."
+msgstr "Sie haben keine Umfrage zur Dateneingabe ausgewählt."
 
 msgid "Identifier:"
 msgstr "Name:"
@@ -843,7 +843,7 @@ msgid "Password:"
 msgstr "Passwort:"
 
 msgid "Confirm Password:"
-msgstr "Passwort best&auml;tigen:"
+msgstr "Passwort bestätigen:"
 
 msgid "Email:"
 msgstr "E-Mail"
@@ -917,7 +917,7 @@ msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Diese Umfrage ist noch nicht aktiviert. Ihre Antwort kann nicht abgespeichert werden"
 
 msgid "The survey you selected does not exist"
-msgstr "Die ausgew&auml;hlte Umfrage existiert nicht."
+msgstr "Die ausgewählte Umfrage existiert nicht."
 
 msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
 msgstr "Überprüfung der Datenkonsitenz<br ><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. <font>"
@@ -971,10 +971,10 @@ msgid "In an active survey, a table is created to store all the data-entry recor
 msgstr "In einer aktiven Umfrage wird eine Tabelle erstellt, welche alle Daten-Eingaben aufnimmt."
 
 msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
-msgstr "Wenn Sie eine Umfrage deaktivieren, werden alle eingegebenen Daten von der Original-Tabelle in eine andere Tabelle verschoben. Wenn Sie dann die Umfrage wieder aktivieren, wird die Original-Tabelle und damit die Umfrage leer sein. <B>Es ist dann nicht mehr m&ouml;glich auf die alte Tabelle mit PHPSurveyor zuzugreifen.<B>"
+msgstr "Wenn Sie eine Umfrage deaktivieren, werden alle eingegebenen Daten von der Original-Tabelle in eine andere Tabelle verschoben. Wenn Sie dann die Umfrage wieder aktivieren, wird die Original-Tabelle und damit die Umfrage leer sein. <B>Es ist dann nicht mehr möglich auf die alte Tabelle mit PHPSurveyor zuzugreifen.<B>"
 
 msgid "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Deaktivierte Umfrage-Daten k&ouml;nnen nur durch einen Systemadministrator mit Hilfe eines MySQL-Tools wie beispielsweise PHPMyAdmin eingesehen werden. Falls Ihre Umfrage eine Probandentabelle benutzt, so wird auch diese umbenannt und ist folglich nur mehr einem Systemadministrator zug&auml;nglich."
+msgstr "Deaktivierte Umfrage-Daten können nur durch einen Systemadministrator mit Hilfe eines MySQL-Tools wie beispielsweise PHPMyAdmin eingesehen werden. Falls Ihre Umfrage eine Probandentabelle benutzt, so wird auch diese umbenannt und ist folglich nur mehr einem Systemadministrator zugänglich."
 
 msgid "Your responses table will be renamed to:"
 msgstr "Ihre Antworten-Tabelle wird wie folgt umbenannt:"
@@ -992,7 +992,7 @@ msgid "The responses to this survey are no longer available using PHPSurveyor."
 msgstr "Die Antworten dieser Umfrage sind nicht mehr verfügbar in PHPSurveyor."
 
 msgid "You should note the name of this table in case you need to access this information later."
-msgstr "Sie sollten sich den Namen dieser Tabelle notieren, falls Sie diese Daten sp&auml;ter noch brauchen."
+msgstr "Sie sollten sich den Namen dieser Tabelle notieren, falls Sie diese Daten später noch brauchen."
 
 msgid "The tokens table associated with this survey has been renamed to: "
 msgstr "Die Probanden-Tabelle, die mit dieser Umfrage verknüpft war, wurde wie folgt umbenannt: "
@@ -1001,22 +1001,22 @@ msgid "Delete Survey"
 msgstr "Umfrage löschen"
 
 msgid "You are about to delete this survey"
-msgstr "Sie sind im Begriff, diese Umfrage zu l&ouml;schen..."
+msgstr "Sie sind im Begriff, diese Umfrage zu löschen..."
 
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
-msgstr "Damit werden diese Umfrage und alle verknüpften Gruppen, Fragen, Antworten und Bedingungen gel&ouml;scht."
+msgstr "Damit werden diese Umfrage und alle verknüpften Gruppen, Fragen, Antworten und Bedingungen gelöscht."
 
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
-msgstr "Wir empfehlen Ihnen, bevor Sie die Umfrage l&ouml;schen, die Umfrage zu exportieren."
+msgstr "Wir empfehlen Ihnen, bevor Sie die Umfrage löschen, die Umfrage zu exportieren."
 
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr "Diese Umfrage ist aktiv und eine Antworten-Tabelle existiert. Wenn Sie diese Umfrage l&ouml;schen, werden auch die Antworten gelöscht. Wir empfehlen Ihnen, dass Sie die Antworten exportieren, bevor Sie die Umfrage löschen."
+msgstr "Diese Umfrage ist aktiv und eine Antworten-Tabelle existiert. Wenn Sie diese Umfrage löschen, werden auch die Antworten gelöscht. Wir empfehlen Ihnen, dass Sie die Antworten exportieren, bevor Sie die Umfrage löschen."
 
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr "Diese Umfrage hat eine zugeh&ouml;rige Probanden-Tabelle. Wenn Sie diese Umfrage l&ouml;schen, wird auch die Probandentabelle gel&ouml;scht. Wir empfehlen Ihnen, dass Sie die Probanden exportieren, bevor Sie die Umfrage l&ouml;schen."
+msgstr "Diese Umfrage hat eine zugehörige Probanden-Tabelle. Wenn Sie diese Umfrage löschen, wird auch die Probandentabelle gelöscht. Wir empfehlen Ihnen, dass Sie die Probanden exportieren, bevor Sie die Umfrage löschen."
 
 msgid "This survey has been deleted."
-msgstr "Diese Umfrage wurde gel&ouml;scht."
+msgstr "Diese Umfrage wurde gelöscht."
 
 msgid "Export Question"
 msgstr "Fragen exportieren"
@@ -1089,10 +1089,10 @@ msgid "Choose columns"
 msgstr "Spalten auswählen"
 
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr "Ihre Umfrage enth&auml;lt mehr als 255 Antwortspalten. Spreadsheet Programme wie Excel importieren max. 255 Spalten. W&auml;hlen Sie die zu exportierenden Spalten aus der unten stehenden Liste."
+msgstr "Ihre Umfrage enthält mehr als 255 Antwortspalten. Spreadsheet Programme wie Excel importieren max. 255 Spalten. Wählen Sie die zu exportierenden Spalten aus der unten stehenden Liste."
 
 msgid "Choose the columns you wish to export."
-msgstr "Wählen Sie die Spalten, die Sie exportieren wollen. W&auml;hlen Sie KEINE aus, um alle zu exportieren."
+msgstr "Wählen Sie die Spalten, die Sie exportieren wollen. Wählen Sie KEINE aus, um alle zu exportieren."
 
 msgid "Token Control"
 msgstr "Probanden Steuerung"
@@ -1101,7 +1101,7 @@ msgid "Choose Token Fields"
 msgstr "Wählen Sie die Zugangsschlüssel-Felder."
 
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr "Ihre Umfragedaten können mit den zugeordneten Token exportiert werden. W&auml;hlen Sie zus&auml;tzliche Felder, die mit exportiert werden sollen."
+msgstr "Ihre Umfragedaten können mit den zugeordneten Token exportiert werden. Wählen Sie zusätzliche Felder, die mit exportiert werden sollen."
 
 msgid "First Name"
 msgstr "Vorname"
@@ -1152,7 +1152,7 @@ msgid "De-activated Token Tables"
 msgstr "Deaktivierte Probanden-Tabellen"
 
 msgid "Check PHPSurveyor Data Integrity"
-msgstr "PHPSurveyor Datenintegrit&auml;t überprüfen"
+msgstr "PHPSurveyor Datenintegrität überprüfen"
 
 msgid "Survey"
 msgstr "Umfrage"
@@ -1183,6 +1183,9 @@ msgstr "Druckbare Version der Umfrage"
 
 msgid "Edit Current Survey"
 msgstr "Diese Umfrage bearbeiten"
+
+msgid "Order the groups in that Survey"
+msgstr "Reihenfolge der Gruppen in der Umfrage anpassen"
 
 msgid "Delete Current Survey"
 msgstr "Diese Umfrage löschen"
@@ -1240,6 +1243,11 @@ msgstr "Antworten werden mit einem Zeitstempel versehen."
 
 msgid "IP Addresses will be logged"
 msgstr "IP-Adressen der Antwortenden werden protokolliert."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Referer-URL"
+msgstr "Referrer-URL"
 
 msgid "It uses cookies for access control."
 msgstr "Es werden Cookies für die Zugriffskontrolle benutzt."
@@ -1324,7 +1332,7 @@ msgid "Deleting this group will also delete any questions and answers it contain
 msgstr "Das Löschen dieser Gruppe löscht auch alle möglichen Fragen und Antworten, die sie enthält. Sind Sie sicher, dass Sie fortfahren möchten?"
 
 msgid "Reorder the questions of this group"
-msgstr "Details dieser Gruppe verstecken"
+msgstr "Fragen in dieser Gruppe neu ordnen"
 
 msgid "Export Current Group"
 msgstr "Diese Gruppe exportieren"
@@ -1439,7 +1447,7 @@ msgstr "Benutzer-Administration"
 msgid ""
 "You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\n"
 "If you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts."
-msgstr "Sie haben die Sicherheitseinstellungen für das Umfrage-System noch nicht initialisiert. Dadurch ist der Administrator-Zugang völlig ungeschützt!<p>Wenn Sie unten auf 'Sicherheitseinstellungen initialisieren' klicken, werden standardmäßige Apache-Sicherheitseinstellungen zum Admin-Verzeichnis hinzugefügt. Sie ben&ouml;tigen dann den Standard-Benutzernamen und Passwort, um auf die Admin-Seiten zu gelangen."
+msgstr "Sie haben die Sicherheitseinstellungen für das Umfrage-System noch nicht initialisiert. Dadurch ist der Administrator-Zugang völlig ungeschützt!<p>Wenn Sie unten auf 'Sicherheitseinstellungen initialisieren' klicken, werden standardmäßige Apache-Sicherheitseinstellungen zum Admin-Verzeichnis hinzugefügt. Sie benötigen dann den Standard-Benutzernamen und Passwort, um auf die Admin-Seiten zu gelangen."
 
 msgid "Username"
 msgstr "Benutzername"
@@ -1457,7 +1465,7 @@ msgid "Security"
 msgstr "Sicherheit"
 
 msgid "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again."
-msgstr "Es sind momentan keine Benutzer angelegt. Wir empfehlen, dass die die Sicherheit ausschalten. Sie k&ouml;nnen sie dann wieder einschalten."
+msgstr "Es sind momentan keine Benutzer angelegt. Wir empfehlen, dass die die Sicherheit ausschalten. Sie können sie dann wieder einschalten."
 
 msgid "Add User"
 msgstr "Benutzer hinzufügen"
@@ -1484,7 +1492,7 @@ msgid "Import Question"
 msgstr "Fragen importieren"
 
 msgid "Select SQL File:"
-msgstr "SQL-Datei ausw&auml;hlen:"
+msgstr "SQL-Datei auswählen:"
 
 msgid "Copy Question"
 msgstr "Frage kopieren"
@@ -1659,13 +1667,13 @@ msgstr ""
 "{SURVEYURL}"
 
 msgid "Confirmation Email Subject"
-msgstr "Best&auml;tigungs-Email Betreff:"
+msgstr "Bestätigungs-Email Betreff:"
 
 msgid "Confirmation of completed survey"
 msgstr "Abschlussbestätigung einer Umfrage"
 
 msgid "Confirmation Email"
-msgstr "Text der Best&auml;tigung-Email:"
+msgstr "Text der Bestätigung-Email:"
 
 msgid "Allow public registration?"
 msgstr "Offene Registrierung erlauben?"
@@ -1726,7 +1734,7 @@ msgstr "Umfrage aktualisieren"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
-msgstr "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
+msgstr "Die hochgeladene Datei ist grösser als die upload_max_filesize Directive in der php.ini"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1859
 msgid "The file was only partially uploaded"
@@ -1774,7 +1782,7 @@ msgid "Select the field number you would like to use for your answers:"
 msgstr "Wählen Sie die Feldnummer aus, die sie für Ihre Antworten nutzen möchten:"
 
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
-msgstr "Es ist ein Fehler aufgetreten beim Upload ihrer Datei. Grund dafür k&ouml;nnten fehlerhafte Einstellungen der Berechtigungen des admin Ordners sein."
+msgstr "Es ist ein Fehler aufgetreten beim Upload ihrer Datei. Grund dafür könnten fehlerhafte Einstellungen der Berechtigungen des admin Ordners sein."
 
 msgid "File upload succeeded."
 msgstr "Datei erfolgreich hochgeladen."
@@ -1783,7 +1791,7 @@ msgid "Reading file.."
 msgstr "Lese Datei.."
 
 msgid "This file is not a PHPSurveyor group file. Import failed."
-msgstr "Diese Datei enth&auml;lt keine PHPSurveyor-Daten im richtigen Format."
+msgstr "Diese Datei enthält keine PHPSurveyor-Daten im richtigen Format."
 
 msgid "Group Import Summary"
 msgstr "Gruppen-Import übersicht"
@@ -1845,7 +1853,7 @@ msgid "Import of this survey file failed"
 msgstr "Import dieser Umfrage-Datei fehlgeschlagen."
 
 msgid "File does not contain PHPSurveyor data in the correct format."
-msgstr "Diese Datei enth&auml;lt keine PHPSurveyor-Daten im richtigen Format."
+msgstr "Diese Datei enthält keine PHPSurveyor-Daten im richtigen Format."
 
 msgid "Survey Import Summary"
 msgstr "Umfragen-Import übersicht"
@@ -1869,7 +1877,7 @@ msgid "Edit label set"
 msgstr "Beschriftung-Set bearbeiten"
 
 msgid "Delete label set"
-msgstr "Beschriftung-Set l&ouml;schen"
+msgstr "Beschriftung-Set löschen"
 
 msgid "Title"
 msgstr "Titel"
@@ -1878,16 +1886,16 @@ msgid "Order"
 msgstr "Reihenfolge"
 
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
-msgstr "Sie k&ouml;nnen die Codes nicht &auml;ndern und keine Eintr&auml;ge hinzufügen oder l&ouml;schen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
+msgstr "Sie können die Codes nicht ändern und keine Einträge hinzufügen oder löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
 
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
-msgstr "Mindestens eine Umfrage benutzt momentan dieses Beschriftung-Set. &Auml;ndern der Codes, Hinzufügen oder L&ouml;schen von Eintr&auml;gen dieses Beschriftung-Set kann ungewollte Ergebnisse nach sich ziehen."
+msgstr "Mindestens eine Umfrage benutzt momentan dieses Beschriftung-Set. ändern der Codes, Hinzufügen oder Löschen von Einträgen dieses Beschriftung-Set kann ungewollte Ergebnisse nach sich ziehen."
 
 msgid "Update of Label Set failed"
 msgstr "Aktualisieren des Beschriftung-Set fehlgeschlagen"
 
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
-msgstr "Konnte Beschriftung-Set nicht l&ouml;schen - Es gibt Fragen, die auf diesem Beschriftung-Set basieren. Sie müssen zuerst diese Fragen l&ouml;schen."
+msgstr "Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem Beschriftung-Set basieren. Sie müssen zuerst diese Fragen löschen."
 
 msgid "Start ID numbers at:"
 msgstr "ID Nummern starten bei:"
@@ -1899,7 +1907,7 @@ msgid "Expires:"
 msgstr "Endet am:"
 
 msgid "Are you sure you want to delete this entry?"
-msgstr "Sind Sie sicher, dass Sie diesen Eintrag l&ouml;schen wollen?"
+msgstr "Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1681
 msgid "Slider"
@@ -1999,10 +2007,10 @@ msgid "Results"
 msgstr "Ergebnisse"
 
 msgid "No of records in this query"
-msgstr "Anzahl der Datens&auml;tze in dieser Abfrage"
+msgstr "Anzahl der Datensätze in dieser Abfrage"
 
 msgid "Total records in survey"
-msgstr "Gesamtzahl der Datens&auml;tze dieser Umfrage"
+msgstr "Gesamtzahl der Datensätze dieser Umfrage"
 
 msgid "Percentage of total"
 msgstr "Anteil in Prozent"
@@ -2132,7 +2140,7 @@ msgid "Preview:"
 msgstr "Vorschau:"
 
 msgid "You have not selected a survey"
-msgstr "Sie haben keine Umfrage ausgew&auml;hlt."
+msgstr "Sie haben keine Umfrage ausgewählt."
 
 msgid "A token table has been created for this survey."
 msgstr "Es wurde eine Probandentabelle für diese Umfrage erstellt."
@@ -2144,7 +2152,7 @@ msgid "If you initialise tokens for this survey, the survey will only be accessi
 msgstr "Wenn Sie Tokens initialisieren für diese Umfrage, wird die Umfrage nur mehr mit einem gültigen Token ausfüllbar sein."
 
 msgid "Do you want to create a tokens table for this survey?"
-msgstr "M&ouml;chten Sie eine Probandentabelle mit Zugangsschlüsseln für diese Umfrage erstellen?"
+msgstr "Möchten Sie eine Probandentabelle mit Zugangsschlüsseln für diese Umfrage erstellen?"
 
 msgid "Display Tokens"
 msgstr "Zeige Probanden an"
@@ -2195,10 +2203,10 @@ msgid "Token Database Administration Options"
 msgstr "Probanden Datenbank-Administration"
 
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr "Sind sie wirklich sicher, dass Sie für ALLE Eintr&auml;ge den Einladungsstatus auf Nein zurücksetzen m&ouml;chten?"
+msgstr "Sind sie wirklich sicher, dass Sie für ALLE Einträge den Einladungsstatus auf Nein zurücksetzen möchten?"
 
 msgid "Set all entries to 'No invitation sent'."
-msgstr "Setze 'Eingeladen' auf Nein für alle Eintr&auml;ge."
+msgstr "Setze 'Eingeladen' auf Nein für alle Einträge."
 
 msgid "Are you sure you want to delete all unique token numbers?"
 msgstr "Sind sie wirklich sicher, dass Sie ALLE Zugangsschlüssel entfernen wollen?"
@@ -2207,7 +2215,7 @@ msgid "Delete all unique token numbers"
 msgstr "Alle Zugangsschlüssel entfernen"
 
 msgid "Are you really sure you want to delete ALL token entries?"
-msgstr "Sind Sie wirklich sicher, dass Sie ALLE Probanden-Eintr&auml;ge l&ouml;schen wollen?"
+msgstr "Sind Sie wirklich sicher, dass Sie ALLE Probanden-Einträge löschen wollen?"
 
 msgid "Delete all token entries"
 msgstr "Alle Probanden-Einträge löschen."
@@ -2235,7 +2243,7 @@ msgid "Edit Token Entry"
 msgstr "Proband bearbeiten"
 
 msgid "Delete Token Entry"
-msgstr "Proband l&ouml;schen"
+msgstr "Proband löschen"
 
 msgid "Update Response"
 msgstr "Antworten bearbeiten"
@@ -2250,13 +2258,13 @@ msgid "Delete Tokens Table"
 msgstr "Probandentabelle löschen"
 
 msgid "If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Wenn Sie diese Probandentabelle l&ouml;schen, sind keine Zugangsschlüssel mehr n&ouml;tig, um auf die Umfrage zuzugreifen. Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
+msgstr "Wenn Sie diese Probandentabelle löschen, sind keine Zugangsschlüssel mehr nötig, um auf die Umfrage zuzugreifen. Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
 
 msgid "Delete Tokens"
 msgstr "Lösche die Probandentabelle"
 
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator."
-msgstr "Die Probandentabelle wurde gel&ouml;scht, und es sind jetzt keine Zugangsschlüssel mehr n&ouml;tig, um die Umfrage auszufüllen. Eine Sicherheitskopie dieser Tabelle wurde erstellt. Der Systemadministrator kann auf diese Daten zugreifen."
+msgstr "Die Probandentabelle wurde gelöscht, und es sind jetzt keine Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen. Eine Sicherheitskopie dieser Tabelle wurde erstellt. Der Systemadministrator kann auf diese Daten zugreifen."
 
 msgid "Email Invitation"
 msgstr "Einladung an Probanden versenden"
@@ -2384,7 +2392,7 @@ msgid "Removing security settings"
 msgstr "Sicherheitseinstellungen entfernen"
 
 msgid "Access file, password file and user database deleted"
-msgstr "Zugangsdatei (.htaccess), Passwortdatei (htpasswd) und Benutzerdatenbank gel&ouml;scht."
+msgstr "Zugangsdatei (.htaccess), Passwortdatei (htpasswd) und Benutzerdatenbank gelöscht."
 
 msgid "Adding User"
 msgstr "Benutzer hinzufügen"
@@ -2393,10 +2401,10 @@ msgid "Could not add user. Username and/or password were not supplied"
 msgstr "Konnte Benutzer nicht hinzufügen. Benutzername und/oder Passwort wurde nicht angegeben."
 
 msgid "Deleting User"
-msgstr "L&ouml;sche Benutzer"
+msgstr "Lösche Benutzer"
 
 msgid "Could not delete user. Username was not supplied."
-msgstr "Konnte Benutzer nicht l&ouml;schen. Kein Benutzername angegeben."
+msgstr "Konnte Benutzer nicht löschen. Kein Benutzername angegeben."
 
 msgid "Modifying User"
 msgstr "Benutzer bearbeiten"
@@ -2414,7 +2422,7 @@ msgid "Export but leave survey active"
 msgstr "Nur exportieren und Umfrage aktiv lassen"
 
 msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr "Sofern Sie 'Exportieren, dann Umfrage deaktivieren' ausgew&auml;hlt haben, wird Ihre gegenw&auml;rtige Antwortentabelle umbenannt und es ist nicht einfach diese wiederherzustellen. Sind sie sicher, dass SIe das wollen?"
+msgstr "Sofern Sie 'Exportieren, dann Umfrage deaktivieren' ausgewählt haben, wird Ihre gegenwärtige Antwortentabelle umbenannt und es ist nicht einfach diese wiederherzustellen. Sind sie sicher, dass SIe das wollen?"
 
 msgid "Import a VV survey file"
 msgstr "VV-Umfrage-Datei importieren"

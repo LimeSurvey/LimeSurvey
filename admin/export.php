@@ -328,14 +328,6 @@ default:
 
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
-//Select public language file
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = db_execute_assoc($query);
-while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
-
-bindtextdomain($surveylanguage, dirname(__FILE__).'/locale');
-textdomain($surveylanguage);
-
 //STEP 1: First line is column headings
 
 $fieldmap=createFieldMap($surveyid);

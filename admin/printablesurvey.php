@@ -41,17 +41,11 @@ $surveyid = $_GET['sid'];
 $boxstyle = "style='border-color: #111111; border-width: 1; border-style: solid'";
 require_once(dirname(__FILE__).'/../config.php');
 
-//Get local language file
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or die ("Couldn't get language file");
+
 if (!isset($tpldir)) {$tpldir=$publicdir."/templates";}
-while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
 if (!isset($templatedir) || !$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
-$langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
-if (!is_file($langfilename)) {$langfilename="$langdir/$currentadminlang.lang.php";}
-require($langfilename);	
+
 
 sendcacheheaders();
 

@@ -106,15 +106,6 @@ echo "</table>\n"
     ."<form method='post' name='formbuilder' action='statistics.php'>\n"
     ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
     
-//Select public language file
-$query = "SELECT language, datestamp FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
-while ($row=$result->FetchRow()) {$surveylanguage = $row['language']; $datestamp=$row['datestamp'];}
-$langdir="$publicdir/lang";
-$langfilename="$langdir/$surveylanguage.lang.php";
-if (!is_file($langfilename)) {$langfilename="$langdir/$currentadminlang.lang.php";}
-require($langfilename); 
-
 // 1: Get list of questions from survey
 $query = "SELECT ".db_table_name("questions").".*, group_name\n"
         ."FROM ".db_table_name("questions").", ".db_table_name("groups")."\n"

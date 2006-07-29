@@ -42,12 +42,6 @@ $surveyid=returnglobal('sid');
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die("No SID provided.");}
 
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
-while ($row=$result->FetchRow()) {$surveylanguage = $row['language'];}
-echo(getLanguageCodefromLanguage($surveylanguage));
-$translator = new
-
 sendcacheheaders();
 
 if(isset($_POST['cquestions'])) {
