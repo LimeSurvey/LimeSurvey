@@ -36,7 +36,6 @@ require('gettext.php');
 
 
 // Variables
-
 if (!defined("LC_MESSAGES"))
 {
   define("LC_MESSAGES",5);
@@ -179,6 +178,7 @@ function _textdomain($domain) {
  * Lookup a message in the current domain.
  */
 function _gettext($msgid) {
+
 	$l10n = _get_reader();
 	//return $l10n->translate($msgid);
 	return _encode($l10n->translate($msgid));

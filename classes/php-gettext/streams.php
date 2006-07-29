@@ -110,7 +110,7 @@ class FileReader {
       // the discussions at PHP Bugs suggest it's the intended behaviour
       while ($bytes > 0) {
         $chunk  = fread($this->_fd, $bytes);
-        $data  .= $chunk;
+        @$data  .= $chunk;
         $bytes -= strlen($chunk);
       }
       $this->_pos = ftell($this->_fd);

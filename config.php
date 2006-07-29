@@ -128,7 +128,6 @@ $emailsmtppassword  =   "";               // SMTP authorisation password - empty
 $maxemails          =   100;              // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 $mutemailerrors     =   0;                // If you want to mute annoying error messages from the emailscript set this to 1.
                                           // This could be the case if your provider set a static sender_adress.
-                                          
 // JPGRAPH Settings
 // To use jpgraph you must install and set up jpgraph, available from http://www.aditus.nu/jpgraph/
 // PHPSurveyor has been tested using version 1.13. Documentation for this is available at the

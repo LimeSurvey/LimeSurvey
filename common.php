@@ -58,7 +58,7 @@ if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
     $_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
     }
 
-/**
+/*
 * $sourcefrom variable checks the location of the current script against
 * the administration directory, and if the current script is running
 * in the administration directory, it is set to "admin". Otherwise it is set
@@ -1675,7 +1675,11 @@ function GetLanguageFromSurveyID($surveyid)
 
 function SetInterfaceLanguage($languagetoset)
     {
+     //@$locale = (isset($_GET['lang']))? $_GET['lang'] : DEFAULT_LOCALE;
+     //if (function_exists('T_setlocale')) T_setlocale(LC_MESSAGES, $locale);
+//     echo setlocale(LC_ALL, $languagetoset);
      bindtextdomain($languagetoset, dirname(__FILE__).'/locale');
+     if (!function_exists('bind_textdomain_codeset')) echo "You need at least PHP 4.2.x to run PHPSurveyor." and die;
      bind_textdomain_codeset($languagetoset,'UTF-8');
      return textdomain($languagetoset);
     }
