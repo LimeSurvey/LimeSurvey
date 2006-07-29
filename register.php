@@ -64,7 +64,7 @@ if (!validate_email(returnglobal('register_email')))
 $query = "SELECT email FROM {$dbprefix}tokens_$surveyid\n"
 	   . "WHERE email = '".returnglobal('register_email')."'";
 $result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
-if ($result->RecordCount()) > 0)
+if (($result->RecordCount()) > 0)
 	{
 	$register_errormsg=_("The email you used has already been registered.");
 	include "index.php";

@@ -339,7 +339,8 @@ function surveyDetails($surveyid, $gid, $qid) {
 		$nicedate=date("D, d M Y", mktime(0,0,0,$nm,$nd,$ny));
 	}
 	
-	if ((isset($gid) && $gid) || returnglobal('action') == "editsurvey" || returnglobal('action') == "addsurvey" || returnglobal('action') == "editgroup" || returnglobal('action') == "addgroup" || returnglobal('action') == "showassessments") {$display="none";} else {$display="";}
+	if ((isset($gid) && $gid) || returnglobal('action') == "editsurvey" || returnglobal('action') =="ordergroups" || returnglobal('action') == "addsurvey" || returnglobal('action') == "editgroup" || returnglobal('action') == "addgroup" || returnglobal('action') == "showassessments") {$display="none";} else {$display="";}
+	
 	$fields=array(_("Title:")=>$thissurvey['name'],
 				  _("Survey URL:")=>"<a href='".$publicurl."/index.php?sid=$surveyid' target='_blank'>".$publicurl."/index.php?sid=$surveyid</a>",
 				  _("Description:")=>$thissurvey['description'],

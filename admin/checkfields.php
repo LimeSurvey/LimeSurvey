@@ -93,6 +93,7 @@ $allfields[]=array("{$dbprefix}groups", "gid", "gid int(11) NOT NULL auto_increm
 $allfields[]=array("{$dbprefix}groups", "sid", "sid int(11) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}groups", "group_name", "group_name varchar(100) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}groups", "description", "description text");
+$allfields[]=array("{$dbprefix}groups", "sortorder", "sortorder varchar(5) NULL");  // Added for group ordering
 
 $allfields[]=array("{$dbprefix}questions", "qid", "qid int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}questions", "sid", "sid int(11) NOT NULL default '0'");

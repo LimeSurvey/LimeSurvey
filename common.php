@@ -612,7 +612,7 @@ function gettemplatelist()
         {
         while (false !== ($file = readdir($handle)))
             {
-            if (!is_file("$tloc/$file") && $file != "." && $file != "..")
+            if (!is_file("$tloc/$file") && $file != "." && $file != ".." && $file!=".svn")
                 {
                 $list_of_files[] = $file;
                 }
@@ -1901,7 +1901,8 @@ function getAdminHeader()
                 . "<title>$sitename</title>\n"
                 . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
 				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\">\n"
-				. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>"
+				. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>" 
+				. "<script type=\"text/javascript\" src=\"scripts/draganddrop.js\"></script>"
                 . "</head>\n<body>\n"
                 . "<div class=\"maintitle\">\n"
                 . "\t\t$sitename\n" 

@@ -168,6 +168,7 @@ if (isset($cssummary)) {echo $cssummary;}
 if (isset($usersummary)) {echo $usersummary;}
 if (isset($addsummary)) {echo $addsummary;}
 if (isset($editsurvey)) {echo $editsurvey;}
+if (isset($ordergroups)){echo $ordergroups;}
 if (isset($newgroup)) {echo $newgroup;}
 if (isset($groupsummary)) {echo $groupsummary;}
 if (isset($editgroup)) {echo $editgroup;}

@@ -294,6 +294,10 @@ if ($surveyid)
 						. "onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\"" 
 						. "onmouseout=\"hideTooltip()\"" 
                     	. "onmouseover=\"showTooltip(event,'"._("Edit Current Survey")."');return false\">\n" ;
+        $surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/reorder.png' title='' alt='"._G_ORDER_BT."' align='left' name='ordergroups' "
+						. "onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'"._G_ORDER_BT."');return false\">\n" ;
 		if ($sumcount3 == 0 && $sumcount2 == 0)
 			{
 			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey' "
@@ -305,7 +309,9 @@ if ($surveyid)
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
+
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey' "
+
 						. "onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\""
 						. "onmouseout=\"hideTooltip()\"" 
                     	. "onmouseover=\"showTooltip(event,'". _("Export this Survey")."');return false\">\n" ;
@@ -1850,6 +1856,11 @@ if ($action == "editsurvey")
 					 . "</table></form>\n";
 		}
 	}
+if ($action == "ordergroups")
+	{
+		
+		$ordergroups = "<ul>" ; 
+	}	
 if ($action == "uploadf")
 	{
 	if (!isset($tempdir))
