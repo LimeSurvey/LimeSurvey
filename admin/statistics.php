@@ -351,10 +351,10 @@ foreach ($filters as $flt)
         case "G": // Gender
             echo "\t\t\t\t\t<option value='F'";
             if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {echo " selected";}
-            echo ">"._FEMALE."</option>\n";
+            echo ">"._("Female")."</option>\n";
             echo "\t\t\t\t\t<option value='M'";
             if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {echo " selected";}
-            echo ">"._MALE."</option>\n\t\t\t\t</select></font>\n";
+            echo ">"._("Male")."</option>\n\t\t\t\t</select></font>\n";
             break;
         case "Y": // Yes\No
             echo "\t\t\t\t\t<option value='Y'";
@@ -500,13 +500,13 @@ foreach ($filters as $flt)
                     ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
                     ."\t\t\t\t\t<option value='I'";
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected";}
-                echo ">"._INCREASE."</option>\n"
+                echo ">"._("Increase")."</option>\n"
                     ."\t\t\t\t\t<option value='S'";
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("S", $_POST[$myfield2])) {echo " selected";}
-                echo ">"._SAME."</option>\n"
+                echo ">"._("Same")."</option>\n"
                     ."\t\t\t\t\t<option value='D'";
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {echo " selected";}
-                echo ">"._DECREASE."</option>\n"
+                echo ">"._("Decrease")."</option>\n"
                     ."\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
                 $counter2++;
                 $allfields[]=$myfield2;
@@ -680,8 +680,8 @@ foreach ($fieldmap as $field)
             break;
         case "G":
             $thisselect="<div id='question{$field['fieldname']}' style='display:none'><select size='10' style='font-size: 8.5px'>\n";
-            $thisselect .= "<option value='F'>[F] "._FEMALE."</option>\n";
-            $thisselect .= "<option value='Y'>[M] "._MALE."</option>\n";
+            $thisselect .= "<option value='F'>[F] "._("Female")."</option>\n";
+            $thisselect .= "<option value='Y'>[M] "._("Male")."</option>\n";
             $thisselect .= "</select></div>\n";
             $answerselects[]=$thisselect;
             $asnames[]=$field['fieldname'];
@@ -990,7 +990,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 }
             $mfield=substr($rt, 1, strlen($rt));
             $alist[]=array("Answers", _("Answer"), $mfield);
-            $alist[]=array("NoAnswer", _NOANSWER, $mfield);
+            $alist[]=array("NoAnswer", _("No answer"), $mfield);
             }
         elseif (substr($rt, 0, 1) == "Q") //Multiple short text
             {
@@ -1005,7 +1005,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 }
             $mfield=substr($rt, 1, strlen($rt));
             $alist[]=array("Answers", _("Answer"), $mfield);
-            $alist[]=array("NoAnswer", _NOANSWER, $mfield);
+            $alist[]=array("NoAnswer", _("No answer"), $mfield);
             }
         elseif (substr($rt, 0, 1) == "R") //RANKING OPTION THEREFORE CONFUSING
             {
@@ -1207,7 +1207,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 $qlid=$nrow[4];
                 $qother=$nrow[5];
                 }
-            $alist[]=array("", _NOANSWER);
+            $alist[]=array("", _("No answer"));
             switch($qtype)
                 {
                 case "A": //Array of 5 point choices
@@ -1256,9 +1256,9 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     $qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
                     while ($qrow=$qresult->FetchRow())
                         {
-                        $alist[]=array("I", _INCREASE);
-                        $alist[]=array("S", _SAME);
-                        $alist[]=array("D", _DECREASE);
+                        $alist[]=array("I", _("Increase"));
+                        $alist[]=array("S", _("Same"));
+                        $alist[]=array("D", _("Decrease"));
                         $atext=$qrow[1];
                         }
                     $qquestion .= "<br />\n[".$atext."]";
@@ -1282,8 +1282,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     $qtitle .= "($qanswer)";
                     break;
                 case "G": //Gender
-                    $alist[]=array("F", _FEMALE);
-                    $alist[]=array("M", _MALE);
+                    $alist[]=array("F", _("Female"));
+                    $alist[]=array("M", _("Male"));
                     break;
                 case "Y": //Yes\No
                     $alist[]=array("Y", _("Yes"));
@@ -1379,7 +1379,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
                 while ($row=$result->FetchRow())
                     {
                     if ($al[0] == "") 
-                        {$fname=_NOANSWER;} 
+                        {$fname=_("No answer");} 
                     elseif ($al[0] == _("Other") || $al[0] == "Answers")
                         {$fname="$al[1] <input $btstyle type='submit' value='"._("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
                     elseif ($qtype == "S" || $qtype == "T" || $qtype == "Q")

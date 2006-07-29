@@ -818,15 +818,15 @@ elseif ($answers == "long")
 						{
 						case "Y": echo _("Yes"); break;
 						case "N": echo _("No"); break;
-						default: echo _NOTAPPLICABLE; break;
+						default: echo _("N/A"); break;
 						}
 					break;
 				case "G": //GENDER
 					switch($drow[$i])
 						{
-						case "M": echo _MALE; break;
-						case "F": echo _FEMALE; break;
-						default: echo _NOTAPPLICABLE; break;
+						case "M": echo _("Male"); break;
+						case "F": echo _("Female"); break;
+						default: echo _("N/A"); break;
 						}
 					break;
 				case "M": //multioption
@@ -867,13 +867,13 @@ elseif ($answers == "long")
 					switch($drow[$i])
 						{
 						case "I":
-							echo _INCREASE;
+							echo _("Increase");
 							break;
 						case "S":
-							echo _SAME;
+							echo _("Same");
 							break;
 						case "D":
-							echo _DECREASE;
+							echo _("Decrease");
 							break;
 						}
 					break;

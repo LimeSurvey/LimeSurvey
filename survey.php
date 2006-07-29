@@ -43,13 +43,13 @@ if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 // <-- END BUG FIX
 
-if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
-if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
+if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // --> START NEW FEATURE - SAVE
 // So SAVE YOUR RESPONSES SO FAR stays on same page
-if (isset($_POST['saveall']) && $_POST['saveall'] == _SAVE_AND_RETURN) {$_SESSION['step']=$_POST['thisstep'];}
+if (isset($_POST['saveall']) && $_POST['saveall'] == _("Save your responses so far")) {$_SESSION['step']=$_POST['thisstep'];}
 // <-- END NEW FEATURE - SAVE
 
 
@@ -61,7 +61,7 @@ $notanswered=addtoarray_single(checkmandatorys(),checkconditionalmandatorys());
 $notvalidated=checkpregs();
 
 //SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 	{
 	if ($thissurvey['private'] == "Y")
 		{
@@ -101,9 +101,9 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 				}
 			}
 
-		$completed = "<br /><strong><font size='2' color='red'>"._DIDNOTSAVE."</strong></font><br /><br />\n\n"
-				   . _NOTACTIVE1."<br /><br />\n"
-				   . "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._CLEARRESP."</a><br /><br />\n"
+		$completed = "<br /><strong><font size='2' color='red'>"._("Did Not Save")."</strong></font><br /><br />\n\n"
+				   . _("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n"
+				   . "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._("Clear Responses")."</a><br /><br />\n"
 				   . "<font size='1'>$subquery</font>\n";
 		}
 	else
@@ -135,10 +135,10 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 	
 			//Create text for use in later print section
 			$completed = "<br /><strong><font size='2'><font color='green'>"
-					   . _THANKS."</strong></font><br /><br />\n\n"
-					   . _SURVEYREC."<br />\n"
+					   . _("Thank you")."</strong></font><br /><br />\n\n"
+					   . _("Your survey responses have been recorded.")."<br />\n"
 					   . "<a href='javascript:window.close()'>"
-					   . _CLOSEWIN_PS."</a></font><br /><br />\n";
+					   . _("Close this Window")."</a></font><br /><br />\n";
 			
 			//Update the token if needed and send a confirmation email
 			if (isset($_POST['token']) && $_POST['token'])
@@ -182,7 +182,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (!isset($not
 	}
 
 //LAST PHASE
-if (isset($_POST['move']) && $_POST['move'] == " "._LAST." " && (!isset($notanswered) && !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if (isset($_POST['move']) && $_POST['move'] == " "._("last")." " && (!isset($notanswered) && !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 	{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	sendcacheheaders();
@@ -234,7 +234,7 @@ if ($surveyexists <1)
 		echo templatereplace($op);
 		}
 	echo "\t<center><br />\n"
-		."\t"._SURVEYNOEXIST."<br />&nbsp;\n";	
+		."\t"._("Sorry. There is no matching survey.")."<br />&nbsp;\n";	
 	foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		echo templatereplace($op);
@@ -270,7 +270,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		}
 	if ($thissurvey['active'] != "Y") 
 		{
-		echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";
+		echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 		}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
@@ -559,7 +559,7 @@ foreach(file("$thistpl/navigator.pstpl") as $op)
 	}
 echo "\n";
 
-if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._NOTACTIVE."</font></center>\n";}
+if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
 
 	
 if (is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions

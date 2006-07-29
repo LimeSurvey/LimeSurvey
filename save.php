@@ -104,7 +104,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	}
 
 // RECORD submitdate IF SUBMITTED
-if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." ") && (isset($_SESSION['srid']) && $_SESSION['srid'] > 0))
+if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (isset($_SESSION['srid']) && $_SESSION['srid'] > 0))
 	{
 	$query = "UPDATE {$thissurvey['tablename']} SET ";
 	$query .= "submitdate = '".date("Y-m-d H:i:s")."' ";
@@ -150,7 +150,7 @@ if ($thissurvey['allowsave'] == "Y" && !isset($_SESSION['scid']))
 	//PRESENT OPTIONS SCREEN
 	if (isset($errormsg) && $errormsg != "")
 		{
-		$errormsg .= "<p>"._SAVETRYAGAIN."</p>";
+		$errormsg .= "<p>"._("Please try again.")."</p>";
 		}
 	foreach(file("$thistpl/save.pstpl") as $op)
 		{
@@ -190,10 +190,10 @@ global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $site
 
 //Check that the required fields have been completed.
 $errormsg="";
-if (!isset($_POST['savename']) || !$_POST['savename']) {$errormsg.=_SAVENONAME."<br />\n";}
-if (!isset($_POST['savepass']) || !$_POST['savepass']) {$errormsg.=_SAVENOPASS."<br />\n";}
+if (!isset($_POST['savename']) || !$_POST['savename']) {$errormsg.=_("You must supply a name for this saved session.")."<br />\n";}
+if (!isset($_POST['savepass']) || !$_POST['savepass']) {$errormsg.=_("You must supply a password for this saved session.")."<br />\n";}
 if (!isset($_POST['savepass']) && isset($_POST['savepass2']) && $_POST['savepass'] != $_POST['savepass2'])
-	{$errormsg.=_SAVENOMATCH."<br />\n";}
+	{$errormsg.=_("Your passwords do not match.")."<br />\n";}
 
 if ($errormsg)
 	{
@@ -208,7 +208,7 @@ $result = db_execute_num($query) or die("Error checking for duplicates!<br />$qu
 list($count) = $result->FetchRow();
 if ($count > 0)
 	{
-	$errormsg.=_SAVEDUPLICATE."<br />\n";
+	$errormsg.=_("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
 	return;
 	}
 else
@@ -261,13 +261,13 @@ else
 		if (validate_email($_POST['saveemail']))
 			{
 // --> START ENHANCEMENT
-			$subject=_SAVE_EMAILSUBJECT . " - " . $thissurvey['name'];
+			$subject=_("Saved Survey Details") . " - " . $thissurvey['name'];
 // <-- END ENHANCEMENT
-			$message=_SAVE_EMAILTEXT;
+			$message=_("You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off.");
 			$message.="\n\n".$thissurvey['name']."\n\n";
-			$message.=_SAVENAME.": ".$_POST['savename']."\n";
-			$message.=_SAVEPASSWORD.": ".$_POST['savepass']."\n\n";
-			$message.=_SAVE_EMAILURL.":\n";
+			$message.=_("Name").": ".$_POST['savename']."\n";
+			$message.=_("Password").": ".$_POST['savepass']."\n\n";
+			$message.=_("Reload your survey by clicking on the following URL:").":\n";
 			$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
 			if (returnglobal('token')){$message.="&token=".returnglobal('token');}				

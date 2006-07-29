@@ -34,7 +34,6 @@
 	#############################################################	
 */
 require_once(dirname(__FILE__).'/../config.php');
-require_once(dirname(__FILE__).'/../clienttext.php');
 $file_version="PHPSurveyor Template Editor ".$versionnumber;
 $slstyle3=$slstyle2;
 if(get_magic_quotes_gpc())
@@ -262,7 +261,7 @@ function makegraph($thisstep, $total)
 	$graph .= "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n";
 	$graph .= "<tr><td align='right' width='40'>0%</td>\n";
 	$size=intval(($thisstep-1)/$total*100);
-	//$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% "._COMPLETE."'></td>\n";
+	//$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% "._("complete")."'></td>\n";
 	$graph .= "<td width='100' align='left'><img src='$publicurl/templates/$templatename/$shchart' "
 	."height='12' width='$size' align='left' alt='$size% complete'></td>\n";
 	$graph .= "<td align='left' width='40'>100%</td></tr>\n";
@@ -273,7 +272,7 @@ function makegraph($thisstep, $total)
 
 if (!$screenname) {$screenname=_("Welcome Page");}
 if ($screenname != _("Welcome Page")) {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
-if ($screenname == _("Submit Page")) {$_POST['move'] = " "._LAST." ";}
+if ($screenname == _("Submit Page")) {$_POST['move'] = " "._("last")." ";}
 //FAKE DATA FOR TEMPLATES
 $thissurvey['name']="Template Sample";
 $thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";

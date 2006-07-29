@@ -239,12 +239,12 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 			case "L":
 			case "O":
 				$answers=getAnswersSingle($surveyid, $gid, $qid);
-				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
+				$answers[]=array("code"=>"", "answer"=>_("No answer"));
 				break;
 			case "W":
 			case "Z":
 				$answers=getLabelSet($thisquestion['lid']);
-				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
+				$answers[]=array("code"=>"", "answer"=>_("No answer"));
 				break;
 			case "C":
 				$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
@@ -252,31 +252,31 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 				$answers[]=array("code"=>"N", "answer"=>_("No"));
 				break;
 			case "E":
-				$answers[]=array("code"=>"I", "answer"=>_INCREASE);
-				$answers[]=array("code"=>"S", "answer"=>_SAME);
-				$answers[]=array("code"=>"D", "answer"=>_DECREASE);
-				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
+				$answers[]=array("code"=>"I", "answer"=>_("Increase"));
+				$answers[]=array("code"=>"S", "answer"=>_("Same"));
+				$answers[]=array("code"=>"D", "answer"=>_("Decrease"));
+				$answers[]=array("code"=>"", "answer"=>_("No answer"));
 				break;
 			case "M":
 			case "P":
 				$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
-				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
+				$answers[]=array("code"=>"", "answer"=>_("No answer"));
 				break;
 			case "Y":
 				$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
 				$answers[]=array("code"=>"N", "answer"=>_("No"));
-				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
+				$answers[]=array("code"=>"", "answer"=>_("No answer"));
 				break;			
 			case "G":
-				$answers[]=array("code"=>"M", "answer"=>_MALE);
-				$answers[]=array("code"=>"F", "answer"=>_FEMALE);
-				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
+				$answers[]=array("code"=>"M", "answer"=>_("Male"));
+				$answers[]=array("code"=>"F", "answer"=>_("Female"));
+				$answers[]=array("code"=>"", "answer"=>_("No answer"));
 				break;
 			case "T":
 			case "S":
 			case "U":
 				$answers[]=array("code"=>_("Answered"), "answer"=>_("Answered"));
-				$answers[]=array("code"=>"", "answer"=>_NOANSWER);
+				$answers[]=array("code"=>"", "answer"=>_("No answer"));
 				break;
 		} // switch
 
@@ -354,11 +354,11 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 				$answers[]=array("code"=>"N", "answer"=>_("No"));
 				break;
 			case "G":
-				$answers[]=array("code"=>"M", "answer"=>_MALE);
-				$answers[]=array("code"=>"F", "answer"=>_FEMALE);
+				$answers[]=array("code"=>"M", "answer"=>_("Male"));
+				$answers[]=array("code"=>"F", "answer"=>_("Female"));
 				break;
 		} // switch
-		$answers[]=array("code"=>"", "answer"=>_NOANSWER);
+		$answers[]=array("code"=>"", "answer"=>_("No answer"));
 		$answers[]=array("code"=>"-oth-", "answer"=>_("Other"));
 
 		switch($questiontype) {
@@ -373,9 +373,9 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 				}
 				break;
 			case "E":
-				$values[]=array("code"=>"I", "answer"=>_INCREASE);
-				$values[]=array("code"=>"S", "answer"=>_SAME);
-				$values[]=array("code"=>"D", "answer"=>_DECREASE);
+				$values[]=array("code"=>"I", "answer"=>_("Increase"));
+				$values[]=array("code"=>"S", "answer"=>_("Same"));
+				$values[]=array("code"=>"D", "answer"=>_("Decrease"));
 				break;
 			case "C":
 			case "M":
@@ -390,7 +390,7 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 				$values = getLabelSet($thisquestion['lid']);
 				break;
 		}
-		$values[]=array("code"=>"", "answer"=>_NOANSWER);
+		$values[]=array("code"=>"", "answer"=>_("No answer"));
 		
 		switch($questiontype) {
 			case "L":

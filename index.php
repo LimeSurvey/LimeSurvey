@@ -42,8 +42,6 @@ if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid
 session_start();
 
 SetInterfaceLanguage(GetLanguageFromSurveyID($surveyid));
-require_once('clienttext.php');  // must be loaded AFTER set INTERFACE for now
-
 
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
@@ -69,8 +67,8 @@ if (!$surveyid)
 		}
 	echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><strong>"._('ERROR')."</strong></font><br />\n"
-		."\t\t\t"._NOSID."<br />\n"
-		."\t\t\t"._CONTACT1." $siteadminname ( $siteadminemail ) "._CONTACT2."\n"
+		."\t\t\t"._("You have not provided a survey identification number")."<br />\n"
+		."\t\t\t"._("Please contact")." $siteadminname ( $siteadminemail ) "._("for further assistance")."\n"
 		."\t\t</center><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
@@ -118,9 +116,9 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 		echo templatereplace($op);
 		}
 	echo "\t\t<center><br />\n"
-		."\t\t\t"._SURVEYEXPIRED."<br /><br />\n"
-		."\t\t\t"._CONTACT1." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
-		._CONTACT2."<br /><br />\n";
+		."\t\t\t"._("This survey is no longer available.")."<br /><br />\n"
+		."\t\t\t"._("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
+		._("for further assistance")."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach ($output as $op)
 		{
@@ -143,10 +141,10 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 		echo templatereplace($op);
 		}
 	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='RED'><strong>"._ERROR_PS."</strong></font><br />\n"
-		."\t\t\t"._SURVEYCOMPLETE."<br /><br />\n"
-		."\t\t\t"._CONTACT1." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
-		._CONTACT2."<br /><br />\n";
+		."\t\t\t<font color='RED'><strong>"._("Error")."</strong></font><br />\n"
+		."\t\t\t"._("You have already completed this survey.")."<br /><br />\n"
+		."\t\t\t"._("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
+		._("for further assistance")."<br /><br />\n";
 	$output=file("$tpldir/default/endpage.pstpl");
 	foreach($output as $op)
 		{
@@ -187,12 +185,12 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	// if (loadname is not set) or if ((loadname is set) and (loadname is NULL))
 	if (!isset($_POST['loadname']) || (isset($_POST['loadname']) && ($_POST['loadname'] == null)))		
 		{
-	    $errormsg .= _LOADNONAME."<br />\n";
+	    $errormsg .= _("You did not provide a name")."<br />\n";
 		}
 	// if (loadpass is not set) or if ((loadpass is set) and (loadpass is NULL))
 	if (!isset($_POST['loadpass']) || (isset($_POST['loadpass']) && ($_POST['loadpass'] == null)))
 		{
-		$errormsg .= _LOADNOPASS."<br />\n";
+		$errormsg .= _("You did not provide a password")."<br />\n";
 		}
 		
 	// Load session before loading the values from the saved data	
@@ -207,15 +205,15 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 
 	loadanswers();
 // <-- END NEW FEATURE - SAVE
-	$_POST['move'] = " "._NEXT." >> "; 
+	$_POST['move'] = " "._("next")." >> "; 
 		
 	if ($errormsg)
 		{
-	    $_POST['loadall'] = _LOAD_SAVED;
+	    $_POST['loadall'] = _("Load unfinished survey");
 		}
 	}
 //Allow loading of saved survey
-if (isset($_POST['loadall']) && $_POST['loadall'] == _LOAD_SAVED)
+if (isset($_POST['loadall']) && $_POST['loadall'] == _("Load unfinished survey"))
 	{
     require_once("load.php");
 	}
@@ -246,12 +244,12 @@ if ($tokensexist == 1 && returnglobal('token'))
 			echo "\t".templatereplace($op);
 			}
 		echo "\t<center><br />\n"
-			."\t"._NOTOKEN1."<br /><br />\n"
-			."\t"._NOTOKEN3."\n"
-			."\t"._FURTHERINFO." {$thissurvey['adminname']} "
+			."\t"._("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+			."\t"._("The token you have provided is either not valid, or has already been used.")."\n"
+			."\t"._("For further information contact")." {$thissurvey['adminname']} "
 			."(<a href='mailto:{$thissurvey['adminemail']}'>"
 			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-			."\t<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
+			."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -308,7 +306,7 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 
 // --> START NEW FEATURE - SAVE
 // SAVE POSTED ANSWERS TO DATABASE IF NEXT,PREV,LAST OR SUBMIT
-if (isset($_POST['move']) && ($_POST['move'] == " << "._PREV." " || $_POST['move'] == " "._NEXT." >> " || $_POST['move'] == " "._LAST." " || $_POST['move'] == " "._SUBMIT." ")) {
+if (isset($_POST['move']) && ($_POST['move'] == " << "._("prev")." " || $_POST['move'] == " "._("next")." >> " || $_POST['move'] == " "._("last")." " || $_POST['move'] == " "._("submit")." ")) {
 	require_once("save.php");
 
 	// RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
@@ -362,7 +360,7 @@ function loadanswers()
 	
 	if (mysql_num_rows($result) < 1)
 		{
-	    $errormsg .= _LOADNOMATCH."<br />\n";
+	    $errormsg .= _("There is no matching saved survey")."<br />\n";
 		}
 	else
 		{
@@ -437,7 +435,7 @@ function makegraph($thisstep, $total)
 	$graph .= "<td width='100' align='left'>\n"
 		    . "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 		    . "<tr><td class='progressbar'>\n"
-		    . "<img src='$shchart' height='12' width='$size' align='left' alt='$size% "._COMPLETE."'>\n"
+		    . "<img src='$shchart' height='12' width='$size' align='left' alt='$size% "._("complete")."'>\n"
 		    . "</td></tr>\n"
 		    . "</table>\n"
 		    . "</td>\n"
@@ -645,9 +643,9 @@ function checkmandatorys($backok=null)
 						{
 						//The number of questions not answered is equal to the number of questions
 						//This section gets used if it is a multiple choice type question
-						if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+						if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
 					    $notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -666,9 +664,9 @@ function checkmandatorys($backok=null)
 			elseif ((!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtcm]) || $_POST[$dtcm] == "on"))
 				{
 				//One of the mandatory questions hasn't been asnwered
-				if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
 				$notanswered[]=$mfns[$mi];
 				}
 			else
@@ -684,9 +682,9 @@ function checkmandatorys($backok=null)
 			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 				{
 				//The number of questions not answered is equal to the number of questions
-				if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
 			    $notanswered[]=substr($multiname, 5, strlen($multiname));
 				$$multiname="";
 				$$multiname2="";
@@ -713,9 +711,9 @@ function checkconditionalmandatorys($backok=null)
 					if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
 						{
 						//The number of questions not answered is equal to the number of questions
-						if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+						if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
 					    $notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -735,9 +733,9 @@ function checkconditionalmandatorys($backok=null)
 				}
 			elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answers is on, there is no answer, but it's a multiple
 				{
-				if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
 				$notanswered[]=$cmfns[$mi];
 				}
 			elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on")
@@ -753,9 +751,9 @@ function checkconditionalmandatorys($backok=null)
 			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 				{
 				//The number of questions not answered is equal to the number of questions
-				if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
 			    $notanswered[]=substr($multiname, 5, strlen($multiname));
 				}
 			}
@@ -800,9 +798,9 @@ function checkpregs($backok=null)
 			}
 		if (isset($notvalidated) && is_array($notvalidated))
 			{
-			if (isset($_POST['move']) && $_POST['move'] == " << "._PREV." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if (isset($_POST['move']) && $_POST['move'] == " "._NEXT." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if (isset($_POST['move']) && $_POST['move'] == " "._LAST." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._NEXT." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
 			return $notvalidated;
 			}
 	    }
@@ -955,9 +953,9 @@ function createinsertquery()
 			{
 			echo templatereplace($op);
 			}
-		echo "<br /><center><font face='verdana' size='2'><font color='red'><strong>"._ERROR_PS."</strong></font><br /><br />\n";
-		echo _BADSUBMIT1."<br /><br />\n";
-		echo "<font size='1'>"._BADSUBMIT2."<br />\n";
+		echo "<br /><center><font face='verdana' size='2'><font color='red'><strong>"._("Error")."</strong></font><br /><br />\n";
+		echo _("Cannot submit results - there are none to submit.")."<br /><br />\n";
+		echo "<font size='1'>"._("This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem.")."<br />\n";
 		echo "</font></center><br /><br />";
 		exit;		
 		}
@@ -1031,21 +1029,21 @@ function sendsubmitnotification($sendnotification)
 
 	$subject = "$sitename Survey Submitted";
 	
-	$message = _CONFIRMATION_MESSAGE1." - {$thissurvey['name']}\r\n"
-			 . _CONFIRMATION_MESSAGE2."\r\n\r\n";
+	$message = _("Survey Submitted")." - {$thissurvey['name']}\r\n"
+			 . _("A new response was entered for your survey")."\r\n\r\n";
 	if ($thissurvey['allowsave'] == "Y")
 		{
 		$message .= _CONFIRMATION_MESSAGE6 . "\r\n";
 		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\r\n\r\n";
 		}
 			 
-	$message .= _CONFIRMATION_MESSAGE3."\r\n"
+	$message .= _("Click the following link to see the individual response:")."\r\n"
 			 . "  $homeurl/browse.php?sid=$surveyid&action=id&id=".$_SESSION['srid']."\r\n\r\n"
              // Add link to edit individual responses from notification email  
-			 . _CONFIRMATION_MESSAGE5."\r\n"
+			 . _("Click the following link to edit the individual response:")."\r\n"
 
              . "  $homeurl/dataentry.php?sid=$surveyid&action=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\r\n\r\n"  
-			 . _CONFIRMATION_MESSAGE4."\r\n"
+			 . _("View statistics by clicking here:")."\r\n"
 			 . "  $homeurl/statistics.php?sid=$surveyid\r\n\r\n";
 	if ($sendnotification > 1)
 		{ //Send results as well. Currently just bare-bones - will be extended in later release
@@ -1089,20 +1087,20 @@ function submitfailed()
 		echo templatereplace($op);
 		}
 	$completed = "<br /><strong><font size='2' color='red'>"
-			   . _DIDNOTSAVE."</strong></font><br /><br />\n\n"
-			   . _DIDNOTSAVE2."<br /><br />\n";
+			   . _("Did Not Save")."</strong></font><br /><br />\n\n"
+			   . _("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
 	if ($thissurvey['adminemail'])
 		{	
-		$completed .= _DIDNOTSAVE3."<br /><br />\n";
-		$email=_DNSAVEEMAIL1." ".$thissurvey['name']." - $surveyid\n\n";
-		$email .= _DNSAVEEMAIL2.":\n";
+		$completed .= _("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
+		$email=_("An error occurred saving a response to survey id")." ".$thissurvey['name']." - $surveyid\n\n";
+		$email .= _("DATA TO BE ENTERED").":\n";
 		foreach ($_SESSION['insertarray'] as $value)
 			{
 			$email .= "$value: {$_SESSION[$value]}\n";
 			}
-		$email .= "\n"._DNSAVEEMAIL3.":\n"
+		$email .= "\n"._("SQL CODE THAT FAILED").":\n"
 				. "$subquery\n\n"
-				. _DNSAVEEMAIL4.":\n"
+				. _("ERROR MESSAGE").":\n"
 				. $connect->ErrorMsg()."\n\n";
 		MailTextMessage($email, _DNSAVEEMAIL5, $thissurvey['adminemail'], $thissurvey['adminemail'], "PHPSurveyor");
 		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
@@ -1112,7 +1110,7 @@ function submitfailed()
 		}
 	else
 		{
-		$completed .= "<a href='javascript:location.reload()'>"._SUBMITAGAIN."</a><br /><br />\n";
+		$completed .= "<a href='javascript:location.reload()'>"._("Try to submit again")."</a><br /><br />\n";
 		$completed .= $subquery;
 		}
 	return $completed;
@@ -1154,15 +1152,15 @@ function buildsurveysession()
 			{
 ?>
 	<center><br />
-	<?php echo _NOTOKEN1 ?><br /><br />
-	<?php echo _NOTOKEN2 ?><br />&nbsp;
+	<?php echo _("This is a controlled survey. You need a valid token to participate.") ?><br /><br />
+	<?php echo _("If you have been issued with a token, please enter it in the box below and click continue.") ?><br />&nbsp;
 	<form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'>
 	<table align='center'>
 		<tr>
 			<td align='center' valign='middle'>
 			<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid'>
-			<?php echo _TOKEN_PS ?>: <input class='text' type='text' name='token'>
-			<input class='submit' type='submit' value='<?php echo _CONTINUE_PS ?>'>
+			<?php echo _("Token") ?>: <input class='text' type='text' name='token'>
+			<input class='submit' type='submit' value='<?php echo _("Continue") ?>'>
 			</td>
 		</tr>
 	</table>
@@ -1197,12 +1195,12 @@ function buildsurveysession()
 				echo "\t".templatereplace($op);
 				}
 			echo "\t<center><br />\n"
-				."\t"._NOTOKEN1."<br /><br />\n"
-				."\t"._NOTOKEN3."\n"
-				."\t"._FURTHERINFO." {$thissurvey['adminname']} "
+				."\t"._("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+				."\t"._("The token you have provided is either not valid, or has already been used.")."\n"
+				."\t"._("For further information contact")." {$thissurvey['adminname']} "
 				."(<a href='mailto:{$thissurvey['adminemail']}'>"
 				."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-				."\t<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
+				."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
 			foreach(file("$thistpl/endpage.pstpl") as $op)
 				{
 				echo templatereplace($op);
@@ -1264,11 +1262,11 @@ function buildsurveysession()
 			echo "\t".templatereplace($op);
 			}
 		echo "\t<center><br />\n"
-			."\t"._NOQUESTIONS."<br /><br />\n"
-			."\t"._FURTHERINFO." {$thissurvey['adminname']}"
+			."\t"._("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
+			."\t"._("For further information contact")." {$thissurvey['adminname']}"
 			." (<a href='mailto:{$thissurvey['adminemail']}'>"
 			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-			."\t<a href='javascript: self.close()'>"._CLOSEWIN_PS."</a><br />&nbsp;\n";
+			."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 			{
 			echo templatereplace($op);
@@ -1451,41 +1449,41 @@ function surveymover()
 	$surveymover = "";
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 		{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _LAST." \" id=\"movelast\">";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _("last")." \" id=\"movelast\">";
 		}
 	else
 		{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _NEXT." >> \" id=\"movenext\">";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _("next")." >> \" id=\"movenext\">";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N")
 		{
 		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.phpsurveyor.move.value = this.value; document.phpsurveyor.submit();\" value=' << "
-					 . _PREV." ' name='move2' />\n";
+					 . _("prev")." ' name='move2' />\n";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 		{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-					  . _NEXT." >> ' name='move2' />\n";
+					  . _("next")." >> ' name='move2' />\n";
 		}
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-					  . _NEXT." >> ' name='move2' />\n";
+					  . _("next")." >> ' name='move2' />\n";
 		}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 		{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-					  . _NEXT." >> ' name='move2' />\n";
+					  . _("next")." >> ' name='move2' />\n";
 		}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 		{
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-					  . _LAST." ' name='move2' />\n";
+					  . _("last")." ' name='move2' />\n";
 		}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] == "A")
 		{
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-					  . _SUBMIT." ' name='move2' />\n";
+					  . _("submit")." ' name='move2' />\n";
 		}
 	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID'>\n";
 	return $surveymover;

@@ -1108,15 +1108,15 @@ function getextendedanswer($fieldcode, $value)
                     {
                     case "Y": $this_answer=_("Yes"); break;
                     case "N": $this_answer=_("No"); break;
-                    default: $this_answer=_NOANSWER;
+                    default: $this_answer=_("No answer");
                     }
                 break;
             case "G":
                 switch($value)
                     {
-                    case "M": $this_answer=_MALE; break;
-                    case "F": $this_answer=_FEMALE; break;
-                    default: $this_answer=_NOANSWER;
+                    case "M": $this_answer=_("Male"); break;
+                    case "F": $this_answer=_("Female"); break;
+                    default: $this_answer=_("No answer");
                     }
                 break;
             case "C":
@@ -1130,9 +1130,9 @@ function getextendedanswer($fieldcode, $value)
             case "E":
                 switch($value)
                     {
-                    case "I": $this_answer=_INCREASE; break;
-                    case "D": $this_answer=_DECREASE; break;
-                    case "S": $this_answer=_SAME; break;
+                    case "I": $this_answer=_("Increase"); break;
+                    case "D": $this_answer=_("Decrease"); break;
+                    case "S": $this_answer=_("Same"); break;
                     }
                 break;
             case "F":
@@ -1419,11 +1419,11 @@ function templatereplace($line)
         {
             if (!isset($_SESSION['step']) || !$_SESSION['step'])
                 {
-                $saveall = "<input type='submit' name='loadall' value='"._LOAD_SAVED."' class='saveall'>";
+                $saveall = "<input type='submit' name='loadall' value='"._("Load unfinished survey")."' class='saveall'>";
                 }
             elseif ($_SESSION['step'] <= $_SESSION['totalsteps'])  //Also modified so Save So Far shows up on last page.
                 {
-               	$saveall = "<input type='submit' name='saveall' value='"._SAVE_AND_RETURN."' class='saveall'>";
+               	$saveall = "<input type='submit' name='saveall' value='"._("Save your responses so far")."' class='saveall'>";
                 }
             else
                 {
@@ -1445,8 +1445,8 @@ function templatereplace($line)
         $clearall .= "&amp;token=".returnglobal('token');
         }
     $clearall .="' onClick='return confirm(\""
-              . _CONFIRMCLEAR."\")'>["
-              . _EXITCLEAR."]</a></div>\n";
+              . _("Are you sure you want to clear all your responses?")."\")'>["
+              . _("Exit and Clear Survey")."]</a></div>\n";
 
 	if (ereg("^</head>", $line))
         {
@@ -1474,11 +1474,11 @@ function templatereplace($line)
     $line=str_replace("{ANSWER}", $answer, $line);
     if ($totalquestions < 2)
         {
-        $line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS_SINGLE, $line); //Singular
+        $line=str_replace("{THEREAREXQUESTIONS}", _("There is 1 question in this survey."), $line); //Singular
         }
     else
         {
-        $line=str_replace("{THEREAREXQUESTIONS}", _THEREAREXQUESTIONS, $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+        $line=str_replace("{THEREAREXQUESTIONS}", _("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
         }
     $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
     if (isset($token)) {
@@ -1501,14 +1501,14 @@ function templatereplace($line)
         $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
         }
     $line=str_replace("{NAVIGATOR}", $navigator, $line);
-    $submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
+    $submitbutton="<input class='submit' type='submit' value=' "._("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
     $line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
     $line=str_replace("{COMPLETED}", $completed, $line);
     if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
 	else {$linkreplace="";}
     $line=str_replace("{URL}", $linkreplace, $line);
     $line=str_replace("{PRIVACY}", $privacy, $line);
-    $line=str_replace("{PRIVACYMESSAGE}", _PRIVACY_MESSAGE, $line);
+    $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>"._("A Note On Privacy")."</i></strong><br />"._("This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
     $line=str_replace("{CLEARALL}", $clearall, $line);
 
 // --> START NEW FEATURE - SAVE
@@ -1524,8 +1524,8 @@ function templatereplace($line)
 
     $line=str_replace("{SAVE}", $saveall, $line);
     $line=str_replace("{TEMPLATEURL}", $templateurl, $line);
-    $line=str_replace("{SUBMITCOMPLETE}", _SM_COMPLETED, $line);
-    $strreview=_SM_REVIEW;
+    $line=str_replace("{SUBMITCOMPLETE}", _("<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."), $line);
+    $strreview=_("If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses.");
     if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N") {$strreview = "";}
     $line=str_replace("{SUBMITREVIEW}", $strreview, $line);
 
@@ -1547,75 +1547,75 @@ function templatereplace($line)
         }
 
 
-    $line=str_replace("{ANSWERSCLEARED}", _ANSCLEAR, $line);
-    $line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;token=".returnglobal('token')."'>"._RESTART."</a>", $line);
-    $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>"._CLOSEWIN_PS."</a>", $line);
+    $line=str_replace("{ANSWERSCLEARED}", _("Answers Cleared"), $line);
+    $line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;token=".returnglobal('token')."'>"._("Restart this Survey")."</a>", $line);
+    $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>"._("Close this Window")."</a>", $line);
 
     //SAVE SURVEY DETAILS
-    $saveform = "<table><tr><td align='right'>"._SAVENAME.":</td><td><input type='text' name='savename' value='";
+    $saveform = "<table><tr><td align='right'>"._("Name").":</td><td><input type='text' name='savename' value='";
     if (isset($_POST['savename'])) {$saveform .= html_escape(auto_unescape($_POST['savename']));}
     $saveform .= "'></td></tr>\n"
-           . "<tr><td align='right'>"._SAVEPASSWORD."</td><td><input type='password' name='savepass' value='";
+           . "<tr><td align='right'>"._("Password")."</td><td><input type='password' name='savepass' value='";
     if (isset($_POST['savepass'])) {$saveform .= html_escape(auto_unescape($_POST['savepass']));}
     $saveform .= "'></td></tr>\n"
-           . "<tr><td align='right'>"._SAVEPASSWORDRPT."</td><td><input type='password' name='savepass2' value='";
+           . "<tr><td align='right'>"._("Repeat Password")."</td><td><input type='password' name='savepass2' value='";
     if (isset($_POST['savepass2'])) {$saveform .= html_escape(auto_unescape($_POST['savepass2']));}
     $saveform .= "'></td></tr>\n"
-           . "<tr><td align='right'>"._SAVE_EMAIL."</td><td><input type='text' name='saveemail' value='";
+           . "<tr><td align='right'>"._("Your Email")."</td><td><input type='text' name='saveemail' value='";
     if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
     $saveform .= "'></td></tr>\n"
-           . "<tr><td></td><td><input type='submit' name='savesubmit' value='"._SAVESUBMIT."'></td></tr>\n"
+           . "<tr><td></td><td><input type='submit' name='savesubmit' value='"._("Save Now")."'></td></tr>\n"
            . "</table>";
     $savereturn = "<a href='index.php?sid=$surveyid";
     if (returnglobal('token'))
         {
         $savereturn.= "&amp;token=".returnglobal('token');
         }
-    $savereturn .= "'>"._RETURNTOSURVEY."</a>";
+    $savereturn .= "'>"._("Return To Survey")."</a>";
     $line=str_replace("{SAVEERROR}", $errormsg, $line);
-    $line=str_replace("{SAVEHEADING}", _SAVEHEADING, $line);
-    $line=str_replace("{SAVEMESSAGE}", _SAVEEXPLANATION, $line);
+    $line=str_replace("{SAVEHEADING}", _("Save Your Unfinished Survey"), $line);
+    $line=str_replace("{SAVEMESSAGE}", _("Enter a name and password for this survey and click save below.<br />\nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\nIf you give an email address, an email containing the details will be sent to you."), $line);
     $line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
     $line=str_replace("{SAVEFORM}", $saveform, $line);
 
     //LOAD SURVEY DETAILS
-    $loadform = "<table><tr><td align='right'>"._LOADNAME.":</td><td><input type='text' name='loadname' value='";
+    $loadform = "<table><tr><td align='right'>"._("Saved name").":</td><td><input type='text' name='loadname' value='";
     if (isset($_POST['loadname'])) {$loadform .= html_escape(auto_unescape($_POST['loadname']));}
     $loadform .= "'></td></tr>\n"
-           . "<tr><td align='right'>"._LOADPASSWORD.":</td><td><input type='password' name='loadpass' value='";
+           . "<tr><td align='right'>"._("Password").":</td><td><input type='password' name='loadpass' value='";
     if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
     $loadform .= "'></td></tr>\n"
-           . "<tr><td></td><td><input type='submit' value='"._LOADSUBMIT."'></td></tr></table>\n";
+           . "<tr><td></td><td><input type='submit' value='"._("Load Now")."'></td></tr></table>\n";
     $line=str_replace("{LOADERROR}", $errormsg, $line);
-    $line=str_replace("{LOADHEADING}", _LOADHEADING, $line);
-    $line=str_replace("{LOADMESSAGE}", _LOADEXPLANATION, $line);
+    $line=str_replace("{LOADHEADING}", _("Load A Previously Saved Survey"), $line);
+    $line=str_replace("{LOADMESSAGE}", _("You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"), $line);
     $line=str_replace("{LOADFORM}", $loadform, $line);
 
     //REGISTER SURVEY DETAILS
     $line=str_replace("{REGISTERERROR}", $register_errormsg, $line);
-    $line=str_replace("{REGISTERMESSAGE1}", _RG_REGISTER1, $line);
-    $line=str_replace("{REGISTERMESSAGE2}", _RG_REGISTER2, $line);
+    $line=str_replace("{REGISTERMESSAGE1}", _("You must be registered to complete this survey"), $line);
+    $line=str_replace("{REGISTERMESSAGE2}", _("You may register for this survey if you wish to take part.<br />\nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
     if (strpos($line, "{REGISTERFORM}") !== false)
         {
         $registerform="<table class='register'>\n"
             ."<form method='post' action='register.php'>\n"
             ."<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
             ."<tr><td align='right'>"
-            ._RG_FIRSTNAME.":</td>"
+            ._("First Name").":</td>"
             ."<td align='left'><input class='text' type='text' name='register_firstname'";
         if (isset($_POST['register_firstname']))
             {
             $registerform .= " value='".returnglobal('register_firstname')."'";
                 }
         $registerform .= "></td></tr>"
-            ."<tr><td align='right'>"._RG_LASTNAME.":</td>\n"
+            ."<tr><td align='right'>"._("Last Name").":</td>\n"
             ."<td align='left'><input class='text' type='text' name='register_lastname'";
         if (isset($_POST['register_lastname']))
             {
             $registerform .= " value='".returnglobal('register_lastname')."'";
             }
         $registerform .= "></td></tr>\n"
-            ."<tr><td align='right'>"._RG_EMAIL.":</td>\n"
+            ."<tr><td align='right'>"._("Email Address").":</td>\n"
             ."<td align='left'><input class='text' type='text' name='register_email'";
         if (isset($_POST['register_email']))
             {
@@ -1642,14 +1642,14 @@ function templatereplace($line)
                 }
             $registerform .= "></td></tr>\n";
             }
-        $registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._CONTINUE_PS."'>"
+        $registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._("Continue")."'>"
             ."</td></tr>\n"
             ."</form>\n"
             ."</table>\n";
         $line=str_replace("{REGISTERFORM}", $registerform, $line);
         }
     $line=str_replace("{ASSESSMENTS}", $assessments, $line);
-    $line=str_replace("{ASSESSMENT_HEADING}", _ASSESSMENT_HEADING, $line);
+    $line=str_replace("{ASSESSMENT_HEADING}", _("Your Assessment"), $line);
     return $line;
     }
 

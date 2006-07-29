@@ -232,7 +232,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n<strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i></strong>";
+                         . _("Choose only one of the following")."</font></i></strong>";
                 }
             break;
         case "L": //LIST drop-down/radio-button list
@@ -240,7 +240,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n<strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i></strong>";
+                         . _("Choose only one of the following")."</font></i></strong>";
                 }
             break;
         case "W": //List - dropdown
@@ -248,7 +248,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n<strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i></strong>";
+                         . _("Choose only one of the following")."</font></i></strong>";
                 }
             break;
         case "!": //List - dropdown
@@ -256,7 +256,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n<strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i></strong>";
+                         . _("Choose only one of the following")."</font></i></strong>";
                 }
             break;
         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -264,7 +264,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n<strong><i><font size='1'>"
-                         . _INSTRUCTION_LIST."</font></i></strong>";
+                         . _("Choose only one of the following")."</font></i></strong>";
                 }
             break;
         case "R": //RANKING STYLE
@@ -275,7 +275,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                     $qtitle .= "<br />\n<strong><i><font size='1'>"
-                         . _INSTRUCTION_MULTI."</font></i></strong>";
+                         . _("Check any that apply")."</font></i></strong>";
                 }
             break;
 		case "J": //FILE CSV MORE
@@ -283,7 +283,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			if (count($values[1]) > 1) 
 				{
 				$qtitle .= "<br />\n</b><i><font size='1'>"
-						 . _INSTRUCTION_MULTI."</font></i><b>";
+						 . _("Check any that apply")."</font></i><b>";
 				}
 			break;
 
@@ -292,7 +292,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			if (count($values[1]) > 1) 
 				{
 				$qtitle .= "<br />\n</b><i><font size='1'>"
-						 . _INSTRUCTION_LIST."</font></i><b>";
+						 . _("Choose only one of the following")."</font></i><b>";
 				}
 			break;
         case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
@@ -300,7 +300,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
                 {
                 $qtitle .= "<br />\n<strong><i><font size='1'>"
-                         . _INSTRUCTION_MULTI."</font></i></strong>";
+                         . _("Check any that apply")."</font></i></strong>";
                 }
             break;
         case "Q": //MULTIPLE SHORT TEXT
@@ -363,7 +363,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
     if ($ia[6] == "Y")
         {
-        $qtitle = _REQUIRED.$qtitle;
+        $qtitle = _("*").$qtitle;
         }
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
@@ -396,7 +396,7 @@ function validation_message($ia)
         global $validationpopup, $popup;
         if (in_array($ia[1], $notvalidated))
             {
-            $qtitle .= "<strong><br /><span class='errormandatory'>"._VALIDATION." $help</span></strong><br />\n";
+            $qtitle .= "<strong><br /><span class='errormandatory'>"._("This question must be answered correctly")." $help</span></strong><br />\n";
             }
         }
     return $qtitle;
@@ -413,7 +413,7 @@ function mandatory_message($ia)
         global $mandatorypopup, $popup;
         if (in_array($ia[1], $notanswered))
             {
-            $qtitle .= "<strong><br /><span class='errormandatory'>"._MANDATORY.".";
+            $qtitle .= "<strong><br /><span class='errormandatory'>"._("This question is mandatory").".";
             switch($ia[4])
                 {
                 case "A":
@@ -423,14 +423,14 @@ function mandatory_message($ia)
                 case "F":
                 case "J":
                 case "H":
-                    $qtitle .= "<br />\n"._MANDATORY_PARTS.".";
+                    $qtitle .= "<br />\n"._("Please complete all parts").".";
                     break;
                 case "R":
-                    $qtitle .= "<br />\n"._MANDATORY_RANK.".";
+                    $qtitle .= "<br />\n"._("Please rank all items").".";
                     break;
                 case "M":
                 case "P":
-                    $qtitle .= "<br />\n"._MANDATORY_CHECK.".";
+                    $qtitle .= "<br />\n"._("Please check at least one item").".";
                     break;
                 } // end switch
             $qtitle .= "</span></strong><br />\n";
@@ -454,7 +454,7 @@ function mandatory_popup($ia, $notanswered=null)
             $mandatorypopup="Y";
             }else
             {
-            $popup="<script type=\"text/javascript\">\n<!--\n alert(\""._MANDATORY_POPUP."\")\n //-->\n</script>\n";
+            $popup="<script type=\"text/javascript\">\n<!--\n alert(\""._("One or more mandatory questions have not been answered. You cannot proceed until these have been completed")."\")\n //-->\n</script>\n";
             $mandatorypopup="Y";
             }
         return array($mandatorypopup, $popup);
@@ -477,7 +477,7 @@ function validation_popup($ia, $notvalidated=null)
         //POPUP WARNING
         if (!isset($validationpopup))
             {
-            $vpopup = "<script type\"text/javascript\">\n<!--\n alert(\""._VALIDATION_POPUP."\")\n //-->\n</script>\n";
+            $vpopup = "<script type\"text/javascript\">\n<!--\n alert(\""._("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid")."\")\n //-->\n</script>\n";
             $validationpopup="Y";
             }
         return array($validationpopup, $vpopup);
@@ -513,7 +513,7 @@ function do_5pointchoice($ia)
         $answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
         if (!$_SESSION[$ia[1]]) {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='NoAnswer' class='answertext'>"._NOANSWER."</label>\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='NoAnswer' class='answertext'>"._("No answer")."</label>\n";
 // --> END NEW FEATURE - SAVE
 
         }
@@ -530,8 +530,8 @@ function do_date($ia)
              . "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td>\n"
-             . "\t\t\t\t\t\t<font size='1'>"._DATEFORMAT."<br />\n"
-             . "\t\t\t\t\t\t"._DATEFORMATEG."\n"
+             . "\t\t\t\t\t\t<font size='1'>"._("Format: YYYY-MM-DD")."<br />\n"
+             . "\t\t\t\t\t\t"._("(eg: 2003-12-25 for Christmas day)")."\n"
              . "\t\t\t\t\t</font></td>\n"
              . "\t\t\t\t</tr>\n"
              . "\t\t\t</table>\n";
@@ -556,7 +556,7 @@ function do_list_CSV($ia)
 		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
 			$answer .= ">{$ansrow['answer']}</option>\n";
 		}
-		if (!$_SESSION[$ia[1]]) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
+		if (!$_SESSION[$ia[1]]) {$answer = "\t\t\t\t\t\t<option value='' selected>"._("Please choose")."..</option>\n".$answer;}
 		$answer .= "\t\t\t\t\t</select>\n";
 // --> START NEW FEATURE - SAVE
 		$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name)'>\n".$answer;
@@ -592,7 +592,7 @@ function do_list_dropdown($ia)
         elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
         $answer .= ">{$ansrow['answer']}</option>\n";
         }
-    if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
+    if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._("Please choose")."..</option>\n".$answer;}
     if (isset($other) && $other=="Y")
         {
         $answer .= "\t\t\t\t\t\t<option value='-oth-'";
@@ -602,7 +602,7 @@ function do_list_dropdown($ia)
             }
         $answer .= ">"._("Other")."</option>\n";
         }
-    if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
+    if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._("No answer")."</option>\n";}
     $answer .= "\t\t\t\t\t</select>\n";
     $sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
     if (isset($other) && $other=="Y")
@@ -687,7 +687,7 @@ function do_list_flexible_dropdown($ia)
             }
         $answer .= ">{$ansrow['title']}</option>\n";
         }
-    if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._PLEASECHOOSE."..</option>\n".$answer;}
+    if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>"._("Please choose")."..</option>\n".$answer;}
     if (isset($other) && $other=="Y")
         {
         $answer .= "\t\t\t\t\t\t<option value='-oth-'";
@@ -697,7 +697,7 @@ function do_list_flexible_dropdown($ia)
             }
         $answer .= ">"._("Other")."</option>\n";
         }
-    if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";}
+    if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>"._("No answer")."</option>\n";}
     $answer .= "\t\t\t\t\t</select>\n";
     $sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
     if (isset($other) && $other=="Y")
@@ -827,7 +827,7 @@ function do_list_radio($ia)
             }
 // --> START NEW FEATURE - SAVE
         $answer .=" onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/>"
-                 . "<label for='answer$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
+                 . "<label for='answer$ia[1]NANS' class='answertext'>"._("No answer")."</label>\n";
 // --> END NEW FEATURE - SAVE
 
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
@@ -939,7 +939,7 @@ function do_list_flexible_radio($ia)
             }
 // --> START NEW FEATURE - SAVE
         $answer .=" onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/>"
-                 . "<label for='answer$ia[1]NANS' class='answertext'>"._NOANSWER."</label>\n";
+                 . "<label for='answer$ia[1]NANS' class='answertext'>"._("No answer")."</label>\n";
 // --> END NEW FEATURE - SAVE
 
         if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
@@ -970,8 +970,8 @@ function do_listwithcomment($ia)
         {
         $answer .= "\t\t\t<table class='question'>\n"
                  . "\t\t\t\t<tr>\n"
-                 . "\t\t\t\t\t<td><u>"._CHOOSEONE.":</u></td>\n"
-                 . "\t\t\t\t\t<td><u><label for='$ia[1]comment'>"._ENTERCOMMENT.":</label></u></td>\n"
+                 . "\t\t\t\t\t<td><u>"._("Please choose one of the following").":</u></td>\n"
+                 . "\t\t\t\t\t<td><u><label for='$ia[1]comment'>"._("Please enter your comment here").":</label></u></td>\n"
                  . "\t\t\t\t</tr>\n"
                  . "\t\t\t\t<tr>\n"
                  . "\t\t\t\t\t<td valign='top'>\n";
@@ -1000,7 +1000,7 @@ function do_listwithcomment($ia)
                 {
                 $answer .= " />";
                 }
-            $answer .= "<label for='answer$ia[1] ' class='answertext'>"._NOANSWER."</label>\n";
+            $answer .= "<label for='answer$ia[1] ' class='answertext'>"._("No answer")."</label>\n";
             }
         $answer .= "\t\t\t\t\t</td>\n";
         $fname2 = $ia[1]."comment";
@@ -1049,11 +1049,11 @@ function do_listwithcomment($ia)
             {
             if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
                 {
-                $answer .= "\t\t\t\t\t\t<option value=' ' selected>"._NOANSWER."</option>\n";
+                $answer .= "\t\t\t\t\t\t<option value=' ' selected>"._("No answer")."</option>\n";
                 }
             elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
                 {
-                $answer .= "\t\t\t\t\t\t<option value=' '>"._NOANSWER."</option>\n";
+                $answer .= "\t\t\t\t\t\t<option value=' '>"._("No answer")."</option>\n";
                 }
             }
         $answer .= "\t\t\t\t\t</select>\n"
@@ -1216,7 +1216,7 @@ function do_ranking($ia)
             $chosen[]=array($thiscode, $thistext);
             }
         $ranklist .= "' />\n";
-        $ranklist .= "\t\t\t\t\t\t<img src='cut.gif' alt='"._REMOVEITEM."' title='"._REMOVEITEM."' ";
+        $ranklist .= "\t\t\t\t\t\t<img src='cut.gif' alt='"._("Remove this item")."' title='"._("Remove this item")."' ";
         if ($i != $existing)
             {
             $ranklist .= "style='display:none'";
@@ -1256,13 +1256,13 @@ function do_ranking($ia)
     $answer .= "\t\t\t<table border='0' cellspacing='5' class='rank'>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
-             . "\t\t\t\t\t\t"._RANK_1."<br />"
-             . "\t\t\t\t\t\t"._RANK_2
+             . "\t\t\t\t\t\t"._("Click on an item in the list on the left, starting with your")."<br />"
+             . "\t\t\t\t\t\t"._("highest ranking item, moving through to your lowest ranking item.")
              . "\t\t\t\t\t</font></td>\n"
              . "\t\t\t\t</tr>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td align='left' valign='top' class='rank'>\n"
-             . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>"._YOURCHOICES.":</label></strong><br />\n"
+             . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>"._("Your Choices").":</label></strong><br />\n"
              . "&nbsp;".$choicelist
              . "\t\t\t\t\t&nbsp;</td>\n";
     if (isset($maxselectlength) && $maxselectlength > 60)
@@ -1270,20 +1270,20 @@ function do_ranking($ia)
         $ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
         $answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"
                  . "\t\t\t\t\t<td align='left' bgcolor='silver' class='rank'>\n"
-                 . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;"._YOURRANKING.":</strong><br />\n";
+                 . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;"._("Your Ranking").":</strong><br />\n";
         }
     else
         {
         $answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>\n"
-                 . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._YOURRANKING.":</strong><br />\n";
+                 . "\t\t\t\t\t\t<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"._("Your Ranking").":</strong><br />\n";
         }
     $answer .= $ranklist
              . "\t\t\t\t\t</td>\n"
              . "\t\t\t\t</tr>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
-             . "\t\t\t\t\t\t"._RANK_3."<br />"
-             . "\t\t\t\t\t\t"._RANK_4.""
+             . "\t\t\t\t\t\t"._("Click on the scissors next to each item on the right")."<br />"
+             . "\t\t\t\t\t\t"._("to remove the last entry in your ranked list").""
              . "\t\t\t\t\t</font></td>\n"
              . "\t\t\t\t</tr>\n"
              . "\t\t\t</table>\n";
@@ -1421,7 +1421,7 @@ function do_multiplechoice_withcomments($ia)
         $fn++;
         $answer .= "\t\t\t\t\t\t\t\t<td>\n"
                  . "\t\t\t\t\t\t\t\t\t<label for='answer$myfname2'>"
-                 ."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='"._PS_COMMENT."' value='";
+                 ."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='"._("Make a comment on your choice here:")."' value='";
         if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 // --> START NEW FEATURE - SAVE
         $answer .= "' onChange='modfield(this.name)'/></label>\n"
@@ -1447,7 +1447,7 @@ function do_multiplechoice_withcomments($ia)
         $answer .= " onChange='modfield(this.name)'/>\n"
                  . "\t\t\t\t\t\t\t\t</td>\n"
                  . "\t\t\t\t\t\t\t\t<td valign='bottom'><label for='answer$myfname2'>\n"
-                 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname2' id='answer$myfname2' title='"._PS_COMMENT."' value='";
+                 . "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname2' id='answer$myfname2' title='"._("Make a comment on your choice here:")."' value='";
 // --> END NEW FEATURE - SAVE
 
         if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
@@ -1564,7 +1564,7 @@ function do_numerical($ia)
              . "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' "
              . "id='answer{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\" onChange='modfield(this.name)'"
              . "maxlength='$maxsize' /><br />\n"
-             . "\t\t\t<font size='1'><i>"._NUMERICAL_PS."</i></font>\n";
+             . "\t\t\t<font size='1'><i>"._("Only numbers may be entered in this field")."</i></font>\n";
 // --> END NEW FEATURE - SAVE
     
     $inputnames[]=$ia[1];
@@ -1747,7 +1747,7 @@ function do_yesno($ia)
         $answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
         if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>"._NOANSWER."</label><br />\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>"._("No answer")."</label><br />\n";
 // --> END NEW FEATURE - SAVE
 
         }
@@ -1769,13 +1769,13 @@ function do_gender($ia)
     if ($_SESSION[$ia[1]] == "F") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
     $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/>"
-             . "<label for='answer$ia[1]F' class='answertext'>"._FEMALE."</label><br />\n"
+             . "<label for='answer$ia[1]F' class='answertext'>"._("Female")."</label><br />\n"
              . "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]M' value='M'";
 // --> END NEW FEATURE - SAVE
 
     if ($_SESSION[$ia[1]] == "M") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
-    $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1]M' class='answertext'>"._MALE."</label><br />\n";
+    $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1]M' class='answertext'>"._("Male")."</label><br />\n";
 // --> END NEW FEATURE - SAVE
 
     if ($ia[6] != "Y" && $shownoanswer == 1)
@@ -1783,7 +1783,7 @@ function do_gender($ia)
         $answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
         if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
-        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>"._NOANSWER."</label>\n";
+        $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>"._("No answer")."</label>\n";
 // --> END NEW FEATURE - SAVE
 
         }
@@ -1820,7 +1820,7 @@ function do_array_5point($ia)
         }
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td class='array1'>"._NOANSWER."</td>\n";
+        $answer .= "\t\t\t\t\t<td class='array1'>"._("No answer")."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = $ansresult->FetchRow())
@@ -1867,7 +1867,7 @@ function do_array_5point($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
-                    ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='"._NOANSWER."'";
+                    ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='"._("No answer")."'";
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
@@ -1907,7 +1907,7 @@ function do_array_10point($ia)
         }
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td  class='array1'>"._NOANSWER."</td>\n";
+        $answer .= "\t\t\t\t\t<td  class='array1'>"._("No answer")."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = $ansresult->FetchRow())
@@ -1956,7 +1956,7 @@ function do_array_10point($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
-                    ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='"._NOANSWER."'";
+                    ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='"._("No answer")."'";
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
@@ -1995,7 +1995,7 @@ function do_array_yesnouncertain($ia)
              . "\t\t\t\t\t<td class='array1'>"._("No")."</td>\n";
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td  class='array1'>"._NOANSWER."</td>\n";
+        $answer .= "\t\t\t\t\t<td  class='array1'>"._("No answer")."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = $ansresult->FetchRow())
@@ -2054,7 +2054,7 @@ function do_array_yesnouncertain($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
-                    ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='"._NOANSWER."'";
+                    ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='"._("No answer")."'";
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
@@ -2194,12 +2194,12 @@ function do_array_increasesamedecrease($ia)
     $answer = "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
              . "\t\t\t\t\t<td width='$answerwidth%'></td>\n"
-             . "\t\t\t\t\t<td class='array1'>"._INCREASE."</td>\n"
-             . "\t\t\t\t\t<td class='array1'>"._SAME."</td>\n"
-             . "\t\t\t\t\t<td class='array1'>"._DECREASE."</td>\n";
+             . "\t\t\t\t\t<td class='array1'>"._("Increase")."</td>\n"
+             . "\t\t\t\t\t<td class='array1'>"._("Same")."</td>\n"
+             . "\t\t\t\t\t<td class='array1'>"._("Decrease")."</td>\n";
     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
         {
-        $answer .= "\t\t\t\t\t<td class='array1'>"._NOANSWER."</td>\n";
+        $answer .= "\t\t\t\t\t<td class='array1'>"._("No answer")."</td>\n";
         }
     $answer .= "\t\t\t\t</tr>\n";
     while ($ansrow = $ansresult->FetchRow())
@@ -2232,19 +2232,19 @@ function do_array_increasesamedecrease($ia)
         $answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
                  . "\t\t\t\t\t<td align='right'>$answertext</td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-I'>"
-                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-I' value='I' title='"._INCREASE."'";
+                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-I' value='I' title='"._("Increase")."'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "I") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-S'>"
-                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-S' value='S' title='"._SAME."'";
+                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-S' value='S' title='"._("Same")."'";
 // --> END NEW FEATURE - SAVE
 
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "S") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
         $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n"
                  . "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-D'>"
-                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-D' value='D' title='"._DECREASE."'";
+                 ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-D' value='D' title='"._("Decrease")."'";
 // --> END NEW FEATURE - SAVE
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "D") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
@@ -2257,7 +2257,7 @@ function do_array_increasesamedecrease($ia)
         if ($ia[6] != "Y" && $shownoanswer == 1)
             {
             $answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
-                    ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='"._NOANSWER."'";
+                    ."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='"._("No answer")."'";
             if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
             $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
@@ -2317,7 +2317,7 @@ function do_array_flexible($ia)
             }
         if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
             {
-            $answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>"._NOANSWER."</font></th>\n";
+            $answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>"._("No answer")."</font></th>\n";
             }
         $answer .= "\t\t\t\t</tr>\n";
 
@@ -2335,7 +2335,7 @@ function do_array_flexible($ia)
                         }
                     if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
                         {
-                        $answer .= "\t\t\t\t\t<td class='array1'><font size='1'>"._NOANSWER."</font></td>\n";
+                        $answer .= "\t\t\t\t\t<td class='array1'><font size='1'>"._("No answer")."</font></td>\n";
                         }
                     $answer .= "\t\t\t\t</tr>\n";
                     }
@@ -2386,7 +2386,7 @@ function do_array_flexible($ia)
             if ($ia[6] != "Y" && $shownoanswer == 1)
                 {
                 $answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-'>"
-                        ."<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='"._NOANSWER."'";
+                        ."<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='"._("No answer")."'";
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
 // --> START NEW FEATURE - SAVE
                 $answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
@@ -2401,7 +2401,7 @@ function do_array_flexible($ia)
         }
     else
         {
-        $answer = "<font color=red>"._ERROR_PS.": Flexible Label Not Found.</font>";
+        $answer = "<font color=red>"._("Error").": Flexible Label Not Found.</font>";
         $inputnames="";
         }
     return array($answer, $inputnames);
@@ -2425,8 +2425,8 @@ function do_array_flexiblecolumns($ia)
         }
     if ($ia[6] != "Y" && $shownoanswer == 1) {
         $labelcode[]="";
-        $labelans[]=_NOANSWER;
-        $labels[]=array("answer"=>_NOANSWER, "code"=>"");
+        $labelans[]=_("No answer");
+        $labels[]=array("answer"=>_("No answer"), "code"=>"");
     }
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
     $ansresult = db_execute_assoc($ansquery);
@@ -2586,7 +2586,7 @@ function retrieve_Answer($code)
                         }
                     else
                         {
-                        $return=_NOANSWER;
+                        $return=_("No answer");
                         }
                     break;
                 default:
@@ -2595,12 +2595,12 @@ function retrieve_Answer($code)
             }
         else
             {
-            $return=_NOANSWER;
+            $return=_("No answer");
             }
         }
     else
         {
-        $return=_ERROR_PS . "($code)";
+        $return=_("Error") . "($code)";
         }
     return $return;
     }

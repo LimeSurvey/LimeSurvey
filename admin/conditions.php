@@ -308,9 +308,9 @@ if ($questionscount > 0)
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", _("No"));
 						break;
 					case "E":
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", _INCREASE);
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", _SAME);
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", _DECREASE);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", _("Increase"));
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", _("Same"));
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", _("Decrease"));
 						break;
 					case "F":
 					case "H":
@@ -324,7 +324,7 @@ if ($questionscount > 0)
 							}
 						break;
 					}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", _NOANSWER);
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", _("No answer"));
 				}
 			}
 		elseif ($rows['type'] == "R")
@@ -346,7 +346,7 @@ if ($questionscount > 0)
 					{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
 					}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, "", _NOANSWER);
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, "", _("No answer"));
 				}
 			unset($quicky);
 			}
@@ -358,19 +358,19 @@ if ($questionscount > 0)
 				case "Y":
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", _("Yes"));
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", _("No"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _("No answer"));
 					break;
 				case "G":
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", _FEMALE);
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", _MALE);
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", _("Female"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", _("Male"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _("No answer"));
 					break;
 				case "5":
 					for ($i=1; $i<=5; $i++)
 						{
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
 						}
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _("No answer"));
 					break;
 				case "W":
 				case "Z":
@@ -397,7 +397,7 @@ if ($questionscount > 0)
 					if ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I")
 
 						{
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _NOANSWER);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _("No answer"));
 						}
 					break;
 				}

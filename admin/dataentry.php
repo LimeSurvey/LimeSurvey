@@ -107,9 +107,9 @@ if ($action == "insert")
 			$password=$saver['password'];
 			}
 		$errormsg="";
-		if (!$saver['identifier']) {$errormsg .= _("Error").": "._SAVENONAME;}
-		if (!$saver['password']) {$errormsg .= _("Error").": "._SAVENOPASS;}
-		if ($saver['password'] != $saver['passwordconfirm']) {$errormsg .= _("Error").": "._SAVENOMATCH;}
+		if (!$saver['identifier']) {$errormsg .= _("Error").": "._("You must supply a name for this saved session.");}
+		if (!$saver['password']) {$errormsg .= _("Error").": "._("You must supply a password for this saved session.");}
+		if ($saver['password'] != $saver['passwordconfirm']) {$errormsg .= _("Error").": "._("Your passwords do not match.");}
 		if (!$errormsg && $saver['identifier'] && !returnglobal('redo'))
 			{
 		    //All the fields are correct. Now make sure there's not already a matching saved item
@@ -120,7 +120,7 @@ if ($action == "insert")
 			$result = $connect->Execute($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 			if ($result->RecordCount() > 0) 
 				{
-				$errormsg.=_SAVEDUPLICATE."<br />\n";
+				$errormsg.=_("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
 				}
 			}
 		if ($errormsg) 
@@ -145,7 +145,7 @@ if ($action == "insert")
 					echo "<input type='hidden' name='$key' value='$val'>\n";
 					}
 				}
-			echo "</td></tr><tr><td></td><td><input type='submit' value='"._SUBMIT."'>
+			echo "</td></tr><tr><td></td><td><input type='submit' value='"._("submit")."'>
 				 <input type='hidden' name='sid' value='$surveyid'>
 				 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
 				 <input type='hidden' name='action' value='".$_POST['action']."'>
@@ -209,32 +209,32 @@ if ($action == "insert")
 					}
 				if (!isset($failed) || $failed < 1) 
 					{
-				    echo "<font color='green'>"._SAVE_SUCCEEDED."</font><br />\n";
+				    echo "<font color='green'>"._("Your survey responses have been saved succesfully")."</font><br />\n";
 					if ($saver['email'])
 						{
 					    //Send email
 						if (validate_email($saver['email']) && !returnglobal('redo'))
 							{
-							$subject=_SAVE_EMAILSUBJECT;
-							$message=_SAVE_EMAILTEXT;
+							$subject=_("Saved Survey Details");
+							$message=_("You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off.");
 							$message.="\n\n".$thissurvey['name']."\n\n";
-							$message.=_SAVENAME.": ".$saver['identifier']."\n";
-							$message.=_SAVEPASSWORD.": ".$saver['password']."\n\n";
-							$message.=_SAVE_EMAILURL.":\n";
+							$message.=_("Name").": ".$saver['identifier']."\n";
+							$message.=_("Password").": ".$saver['password']."\n\n";
+							$message.=_("Reload your survey by clicking on the following URL:").":\n";
 							$message.=$homeurl."/dataentry.php?sid=$surveyid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
 							$from = $thissurvey['adminemail'];
 
 							if (MailTextMessage($message, $subject, $saver['email'], $from, $sitename))
 								{
 								$emailsent="Y";
-								echo "<font color='green'>"._SAVE_EMAILSENT."</font><br />\n";
+								echo "<font color='green'>"._("An email has been sent with details about your saved survey")."</font><br />\n";
 								}
 							}
 						}
 					}
 				else
 					{
-					echo "<font color='red'>"._SAVE_FAILED."</font><br />\n<pre>$insert</pre>".htmlspecialchars($connect->ErrorMsg())."<br />\n";
+					echo "<font color='red'>"._("An error occurred and your survey responses were not saved.")."</font><br />\n<pre>$insert</pre>".htmlspecialchars($connect->ErrorMsg())."<br />\n";
 					}			    
 				}
 			else
@@ -596,13 +596,13 @@ elseif ($action == "edit" || $action == "editsaved")
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">"._PLEASECHOOSE."..</option>\n"
+					echo ">"._("Please choose")."..</option>\n"
 						."\t\t\t\t<option value='F'";
 					if ($idrow[$fnames[$i][0]] == "F") {echo " selected";}
-					echo ">"._FEMALE."</option>\n"
+					echo ">"._("Female")."</option>\n"
 						."\t\t\t\t<option value='M'";
 					if ($idrow[$fnames[$i][0]] == "M") {echo " selected";}
-					echo ">"._MALE."</option>\n"
+					echo ">"._("Male")."</option>\n"
 						."\t\t\t</select>\n";
 					break;
 				case "W":
@@ -621,7 +621,7 @@ elseif ($action == "edit" || $action == "editsaved")
 						echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 							."\t\t\t\t<option value=''";
 						if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-						echo ">"._PLEASECHOOSE."..</option>\n";
+						echo ">"._("Please choose")."..</option>\n";
 						
 						while ($llrow = $lresult->FetchRow())
 							{
@@ -658,7 +658,7 @@ elseif ($action == "edit" || $action == "editsaved")
 						echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 							."\t\t\t\t<option value=''";
 						if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-						echo ">"._PLEASECHOOSE."..</option>\n";
+						echo ">"._("Please choose")."..</option>\n";
 						
 						while ($llrow = $lresult->FetchRow())
 							{
@@ -687,7 +687,7 @@ elseif ($action == "edit" || $action == "editsaved")
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">"._PLEASECHOOSE."..</option>\n";
+					echo ">"._("Please choose")."..</option>\n";
 					
 					while ($llrow = $lresult->FetchRow())
 						{
@@ -823,7 +823,7 @@ elseif ($action == "edit" || $action == "editsaved")
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'>\n"
-								   . "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='"._REMOVEITEM."' title='"._REMOVEITEM."' ";
+								   . "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='"._("Remove this item")."' title='"._("Remove this item")."' ";
 						if ($j != $existing)
 							{
 							$ranklist .= "style='display:none'";
@@ -845,12 +845,12 @@ elseif ($action == "edit" || $action == "editsaved")
 						."\t\t\t\t<tr>\n"
 						."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
 						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURCHOICES.":</strong><br />\n"
+						._("Your Choices").":</strong><br />\n"
 						."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
 						."\t\t\t\t\t</font></td>\n"
 						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>\n"
 						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURRANKING.":</strong></font><br />\n"
+						._("Your Ranking").":</strong></font><br />\n"
 						.$ranklist
 						."\t\t\t\t\t</td>\n"
 						."\t\t\t\t</tr>\n"
@@ -930,7 +930,7 @@ elseif ($action == "edit" || $action == "editsaved")
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">"._PLEASECHOOSE."..</option>\n";
+					echo ">"._("Please choose")."..</option>\n";
 						
 					while ($llrow = mysql_fetch_array($lresult))
 						{
@@ -999,7 +999,7 @@ elseif ($action == "edit" || $action == "editsaved")
 					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">"._PLEASECHOOSE."..</option>\n"
+					echo ">"._("Please choose")."..</option>\n"
 						."\t\t\t\t<option value='Y'";
 					if ($idrow[$fnames[$i][0]] == "Y") {echo " selected";}
 					echo ">"._("Yes")."</option>\n"
@@ -1194,7 +1194,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			."</div>\n";
 		echo "	<tr>
 				<td bgcolor='#CCCCCC' align='center'>
-				 <input type='submit' $btstyle value='"._SUBMIT."'>
+				 <input type='submit' $btstyle value='"._("submit")."'>
 				 <input type='hidden' name='sid' value='$surveyid'>
 				 <input type='hidden' name='action' value='insert'>
 				 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
@@ -1437,8 +1437,8 @@ else
 						case "G":
 							switch($conrow['value'])
 								{
-								case "M": $conditions[]=_MALE; break;
-								case "F": $conditions[]=_FEMALE; break;
+								case "M": $conditions[]=_("Male"); break;
+								case "F": $conditions[]=_("Female"); break;
 								} // switch
 							break;
 						case "A":
@@ -1456,9 +1456,9 @@ else
 						case "E":
 							switch($conrow['value'])
 								{
-								case "I": $conditions[]=_INCREASE; break;
-								case "D": $conditions[]=_DECREASE; break;
-								case "S": $conditions[]=_SAME; break;
+								case "I": $conditions[]=_("Increase"); break;
+								case "D": $conditions[]=_("Decrease"); break;
+								case "S": $conditions[]=_("Same"); break;
 								}
 						case "F":
 						case "H":
@@ -1553,7 +1553,7 @@ else
 				{
 				case "5": //5 POINT CHOICE radio-buttons
 					echo "\t\t\t<select name='$fieldname'>\n"
-						."\t\t\t\t<option value=''>"._NOANSWER."</option>\n";
+						."\t\t\t\t<option value=''>"._("No answer")."</option>\n";
 					for ($x=1; $x<=5; $x++)
 						{
 						echo "\t\t\t\t<option value='$x'>$x</option>\n";
@@ -1565,9 +1565,9 @@ else
 					break;
 				case "G": //GENDER drop-down list
 					echo "\t\t\t<select name='$fieldname'>\n"
-						."\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n"
-						."\t\t\t\t<option value='F'>"._FEMALE."</option>\n"
-						."\t\t\t\t<option value='M'>"._MALE."</option>\n"
+						."\t\t\t\t<option selected value=''>"._("Please choose")."..</option>\n"
+						."\t\t\t\t<option value='F'>"._("Female")."</option>\n"
+						."\t\t\t\t<option value='M'>"._("Male")."</option>\n"
 						."\t\t\t</select>\n";
 					break;
 				case "Q": //MULTIPLE SHORT TEXT
@@ -1595,7 +1595,7 @@ else
 						echo "\t\t\t\t<option value='{$dearow['code']}'";
 						echo ">{$dearow['title']}</option>\n";
 						}
-					echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";
+					echo "\t\t\t\t<option selected value=''>"._("Please choose")."..</option>\n";
 
 					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1627,7 +1627,7 @@ else
 						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">{$dearow['answer']}</option>\n";
 						}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._("Please choose")."..</option>\n";}
 
 					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1658,7 +1658,7 @@ else
 						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">{$dearow['answer']}</option>\n";
 						}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._("Please choose")."..</option>\n";}
 					echo "\t\t\t</select>\n"
 						."\t\t\t<br />"._("Comment").":<br />\n"
 						."\t\t\t<textarea cols='40' rows='5' name='$fieldname"
@@ -1781,7 +1781,7 @@ else
 							$chosen[]=array($thiscode, $thistext);
 							}
 						$ranklist .= "'></font>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='"._REMOVEITEM."' title='"._REMOVEITEM."' ";
+						$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='"._("Remove this item")."' title='"._("Remove this item")."' ";
 						if (!isset($existing) || $i != $existing)
 							{
 							$ranklist .= "style='display:none'";
@@ -1814,12 +1814,12 @@ else
 						."\t\t\t\t<tr>\n"
 						."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
 						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURCHOICES.":</strong></font><br />\n"
+						._("Your Choices").":</strong></font><br />\n"
 						."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
 						."\t\t\t\t\t</td>\n"
 						."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>\n"
 						."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						._YOURRANKING.":</strong><br />\n"
+						._("Your Ranking").":</strong><br />\n"
 						.$ranklist
 						."\t\t\t\t\t</font></td>\n"
 						."\t\t\t\t</tr>\n"
@@ -1908,7 +1908,7 @@ else
 						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
 						echo ">{$dearow['answer']}</option>\n";
 						}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";}
+					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._("Please choose")."..</option>\n";}
 					break;
 				case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					echo "<table border='0'>\n";
@@ -1954,7 +1954,7 @@ else
 					break;
 				case "Y": //YES/NO radio-buttons
 					echo "\t\t\t<select name='$fieldname'>\n";
-					echo "\t\t\t\t<option selected value=''>"._PLEASECHOOSE."..</option>\n";
+					echo "\t\t\t\t<option selected value=''>"._("Please choose")."..</option>\n";
 					echo "\t\t\t\t<option value='Y'>"._("Yes")."</option>\n";
 					echo "\t\t\t\t<option value='N'>"._("No")."</option>\n";
 					echo "\t\t\t</select>\n";
@@ -1969,7 +1969,7 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>$setfont\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
+						echo "\t\t\t\t<option value=''>"._("Please choose")."..</option>\n";
 						for ($i=1; $i<=5; $i++)
 							{
 							echo "\t\t\t\t<option value='$i'>$i</option>\n";
@@ -1990,7 +1990,7 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
+						echo "\t\t\t\t<option value=''>"._("Please choose")."..</option>\n";
 						for ($i=1; $i<=10; $i++)
 							{
 							echo "\t\t\t\t<option value='$i'>$i</option>\n";
@@ -2011,7 +2011,7 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
+						echo "\t\t\t\t<option value=''>"._("Please choose")."..</option>\n";
 						echo "\t\t\t\t<option value='Y'>"._("Yes")."</option>\n";
 						echo "\t\t\t\t<option value='U'>"._("Uncertain")."</option>\n";
 						echo "\t\t\t\t<option value='N'>"._("No")."</option>\n";
@@ -2031,10 +2031,10 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
-						echo "\t\t\t\t<option value='I'>"._INCREASE."</option>\n";
-						echo "\t\t\t\t<option value='S'>"._SAME."</option>\n";
-						echo "\t\t\t\t<option value='D'>"._DECREASE."</option>\n";
+						echo "\t\t\t\t<option value=''>"._("Please choose")."..</option>\n";
+						echo "\t\t\t\t<option value='I'>"._("Increase")."</option>\n";
+						echo "\t\t\t\t<option value='S'>"._("Same")."</option>\n";
+						echo "\t\t\t\t<option value='D'>"._("Decrease")."</option>\n";
 						echo "\t\t\t</select>\n";
 						echo "\t\t</td>\n";
 						echo "</tr>\n";
@@ -2052,7 +2052,7 @@ else
 						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
 						echo "\t\t<td>\n";
 						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>"._PLEASECHOOSE."..</option>\n";
+						echo "\t\t\t\t<option value=''>"._("Please choose")."..</option>\n";
 						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 						$fresult = db_execute_assoc($fquery);
 						while ($frow = $fresult->FetchRow())
@@ -2112,7 +2112,7 @@ else
 			}
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-		echo "\t\t\t<input type='submit' value='"._SUBMIT."' $btstyle/>\n";
+		echo "\t\t\t<input type='submit' value='"._("submit")."' $btstyle/>\n";
 		echo "\t\t</font></td>\n";
 		echo "\t</tr>\n";
 		}
