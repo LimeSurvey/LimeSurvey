@@ -134,7 +134,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		."<table><tr><td></td></tr></table>\n";
 	
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY group_name";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY {$dbprefix}questions.sortorder";
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
 	
@@ -299,7 +299,7 @@ elseif ($action == "all")
 		}
 	echo "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY group_name";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY {$dbprefix}groups.sortorder";
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
 	

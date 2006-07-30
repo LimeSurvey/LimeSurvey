@@ -207,7 +207,7 @@ function getGroups($surveyid) {
 	$query = "SELECT gid, group_name
 			  FROM {$dbprefix}groups
 			  WHERE sid=$surveyid
-			  ORDER BY group_name";
+			  ORDER BY sortorder";
 	$result = db_execute_assoc($query) or die("Error getting groups<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
 	while($row=$result->FetchRow()) {

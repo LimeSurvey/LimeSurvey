@@ -418,6 +418,27 @@ function getquestions()
     return $questionselecter;
     }
 
+function getGroupSum($surveyid)
+{
+	global $surveyid,$dbprefix ; 
+	$sumquery3 = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid"; //Getting a count of questions for this survey
+	$sumresult3 = db_execute_assoc($sumquery3);
+	$groupscount = $sumresult3->RecordCount();
+	
+	return $groupscount ;
+}
+
+function getQuestionSum($surveyid)
+{
+	global $surveyid,$dbprefix ; 
+	
+	$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid"; //Getting a count of questions for this survey
+	$sumresult3 = db_execute_assoc($sumquery3);
+	$questionscount = $sumresult3->RecordCount();
+	
+	return $questionscount ;
+}
+
 /**
 * getMaxgrouporder($surveyid) queries the database for the maximum sortorder of a group.  
 * @global string $surveyid
@@ -428,7 +449,12 @@ function getMaxgrouporder($surveyid)
 	$max_sql = "SELECT max( sortorder ) AS max FROM groups WHERE sid =$surveyid" ; 
 	$max_result =db_execute_assoc($max_sql) ; 
 	$maxrow = $max_result->FetchRow() ; 
-	return $maxrow['max']; 
+	$current_max = $maxrow['max'];
+	if($current_max=="")
+	{
+		return "0" ; 
+	} 
+	else return $current_max++ ; 
 }
 
 
@@ -1249,7 +1275,7 @@ function createFieldMap($surveyid, $style="null") {
 
         }
     //Get list of questions
-    $aquery = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid AND ".db_table_name('questions').".sid=$surveyid ORDER BY group_name, title";
+    $aquery = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid AND ".db_table_name('questions').".sid=$surveyid ORDER BY {$dbprefix}groups.sortorder, title";
     $aresult = db_execute_assoc($aquery) or die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
         {

@@ -117,7 +117,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	} // while
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
-//	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, {$dbprefix}questions.title";
+//	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
 //	$qorderresult=$connect->Execute($qorderquery) or die("Couldn't generate a list of questions in order<br />$qorderquery<br />".$connect->ErrorMsg());
 //	$qordercount=$qorderresult->RecordCount();
 //	$c=0;
@@ -284,7 +284,7 @@ else
 			}
 }
 	//Get list of questions
-	$aquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY group_name, title";
+	$aquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY {$dbprefix}groups.sortorder, title";
 	$aresult = db_execute_assoc($aquery);
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 		{

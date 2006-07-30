@@ -53,7 +53,7 @@ if (!$style)
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
 	$query=" SELECT other, {$dbprefix}questions.type, {$dbprefix}questions.gid, {$dbprefix}questions.qid FROM {$dbprefix}questions, {$dbprefix}groups "
 		  ." where {$dbprefix}questions.gid={$dbprefix}groups.gid and {$dbprefix}groups.sid=$surveyid"
-		  ." order by group_name, {$dbprefix}questions.title";
+		  ." order by {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
 	$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($rows = $result->FetchRow()) 
 		{

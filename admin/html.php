@@ -294,10 +294,13 @@ if ($surveyid)
 						. "onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\"" 
 						. "onmouseout=\"hideTooltip()\"" 
                     	. "onmouseover=\"showTooltip(event,'"._("Edit Current Survey")."');return false\">\n" ;
-        $surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups' "
+        if($activated!="Y" && getGroupSum($surveyid)>1)
+        {
+        	$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups' "
 						. "onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
 						. "onmouseout=\"hideTooltip()\"" 
                     	. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">\n" ;
+        }
 		if ($sumcount3 == 0 && $sumcount2 == 0)
 			{
 			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey' "
@@ -517,7 +520,7 @@ if ($gid)
 	$sumquery4 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid"; //Getting a count of questions for this survey
 	$sumresult4 = $connect->Execute($sumquery4);
 	$sumcount4 = $sumresult4->RecordCount();
-	$grpquery ="SELECT * FROM {$dbprefix}groups WHERE gid=$gid ORDER BY group_name";
+	$grpquery ="SELECT * FROM {$dbprefix}groups WHERE gid=$gid ORDER BY {$dbprefix}groups.sortorder";
 	$grpresult = db_execute_assoc($grpquery);
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = $grpresult->FetchRow())
@@ -553,13 +556,16 @@ if ($gid)
 			{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='left' border='0' hspace='0'>\n";
 			}
+		if($activated!="Y" && getQuestionSum($surveyid)>1)
+		{
 		$groupsummary .= "<input type='image' src='$imagefiles/reorder.png' title=''" 
 					   . "alt='"._("Reorder the questions of this group")."'name='ReorderQuestions' "
 					   . "align='left' "
 					   . "onclick=\"window.open('$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid', '_top')\"" 
 					   . "onmouseout=\"hideTooltip()\"" 
-                       . "onmouseover=\"showTooltip(event,'"._("Reorder the questions of this group")."');return false\">"
-					   ."\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title=''" 
+                       . "onmouseover=\"showTooltip(event,'"._("Reorder the questions of this group")."');return false\">" ; 
+		}              
+		$groupsummary .="\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' title=''" 
 					   . "alt='". _("Export Current Group")."'name='ExportGroup' "
 					   . "align='left' "
 					   . "onclick=\"window.open('dumpgroup.php?sid=$surveyid&amp;gid=$gid', '_top')\"" 

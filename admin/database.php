@@ -241,7 +241,7 @@ elseif ($action == "renumberquestions")
             ."FROM {$dbprefix}questions, {$dbprefix}groups\n"
             ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
             ."AND {$dbprefix}questions.sid=$surveyid\n"
-            ."ORDER BY group_name, title";
+            ."ORDER BY {$dbprefix}groups.sortorder, title";
     $gresult=db_execute_assoc($gselect) or die ("Error: ".htmlspecialchars($connect->ErrorMsg()));
     $grows = array(); //Create an empty array in case FetchRow does not return any rows
     while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array

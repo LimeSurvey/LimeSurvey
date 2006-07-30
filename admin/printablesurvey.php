@@ -88,7 +88,7 @@ echo "\t</tr>\n";
 
 $fieldmap=createFieldMap($surveyid);
 
-$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
+$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.sortorder";
 $degresult = db_execute_assoc($degquery);
 // GROUP NAME
 while ($degrow = $degresult->FetchRow())

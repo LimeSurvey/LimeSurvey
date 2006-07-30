@@ -246,7 +246,7 @@ if ($action == "insert")
 	else
 		{
 		//BUILD THE SQL TO INSERT RESPONSES
-		$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
+		$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}groups.sortorder, title";
 		$iresult = db_execute_assoc($iquery);
 		$col_name="";
 		$insertqr="";
@@ -1213,7 +1213,7 @@ elseif ($action == "update")
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
-	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY group_name, title";
+	$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}groups.sortorder, title";
 	$iresult = db_execute_assoc($iquery);
 	
 	$updateqr = "UPDATE $surveytable SET \n";
@@ -1387,7 +1387,7 @@ else
 
 
 	// SURVEY NAME AND DESCRIPTION TO GO HERE
-	$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
+	$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.sortorder";
 	$degresult = db_execute_assoc($degquery);
 	// GROUP NAME
 	while ($degrow = $degresult->FetchRow())

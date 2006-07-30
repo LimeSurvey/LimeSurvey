@@ -118,7 +118,7 @@ function renumber($surveyid, $gid=null, $dbprefix) {
 	if (!empty($gid)) {
 	    $gselect .= "AND {$dbprefix}questions.gid=$gid\n";
 	}
-	$gselect .= "ORDER BY group_name, title";
+	$gselect .= "ORDER BY {$dbprefix}groups.sortorder, title";
 	$gresult=db_execute_assoc($gselect) or die ($connect->ErrorMsg());
 	$grows = array(); //Create an empty array in case FetchRow does not return any rows
 	while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array

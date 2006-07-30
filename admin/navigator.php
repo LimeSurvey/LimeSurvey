@@ -1389,7 +1389,7 @@ function getSurveysBrief($user=null, $surveyid=null, $notsid=null) {
 function getGroupsBrief($surveyid) {
     global $dbprefix, $connect;
 	$groupList=array();
-	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY group_name";
+	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.sortorder";
 	$result = db_execute_assoc($query) or die($query."<br />".$connect->ErrorMsg());
 	while($row=$result->FetchRow()) {
 		$groupList[]=array("group_name"=>$row['group_name'],
