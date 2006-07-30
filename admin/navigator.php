@@ -1669,7 +1669,7 @@ function questionTypes() {
 			"S"=>_("Short free text"),
 			"T"=>_("Long free text"),
 			"U"=>_("Huge Free Text"),
-			"Y"=>_("Yes")NO,
+			"Y"=>_("Yes","NO"),
 			"A"=>_("Array (5 Point Choice)"),
 			"B"=>_("Array (10 Point Choice)"),
 			"C"=>_("Array (Yes/No/Uncertain)"),
