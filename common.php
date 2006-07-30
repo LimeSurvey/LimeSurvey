@@ -1718,7 +1718,7 @@ function SetInterfaceLanguage($languagetoset)
     {
     
     if (function_exists('T_setlocale'))  {@T_setlocale(LC_MESSAGES, $languagetoset); }
-    @setlocale(LC_ALL, $languagetoset);
+    @setlocale(LC_ALL, 'en_EN');
     putenv("LANG=$languagetoset");
     putenv("LANGUAGE=$languagetoset");
 
