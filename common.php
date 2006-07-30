@@ -1718,8 +1718,8 @@ function SetInterfaceLanguage($languagetoset)
     {
     
     if (function_exists('T_setlocale'))  {@T_setlocale(LC_MESSAGES, $languagetoset); }
-    @setlocale(LC_ALL, 'en_EN');
-    putenv("LANG=$languagetoset");
+    @setlocale(LC_ALL,'en_GB', 'en_US','en_UK','en_EN'); // one of these should be present.. its weird but works
+    putenv("LANG=$languagetoset");  // these both suckers are needed to overwrite the path in the end
     putenv("LANGUAGE=$languagetoset");
 
      bindtextdomain($languagetoset, dirname(__FILE__).'/locale');
