@@ -13,7 +13,7 @@ if ($connect->Connect("$databaselocation:$databaseport", $databaseuser, $databas
          $connect->Connect("$databaselocation:$databaseport", $databaseuser, $databasepass);
          }
          
-$test = new libattributes($connect,$dbprefix);
+$test = new libattributes($connect,$dbprefix,'','44');
 $array = $test->get_attributes('A');
 print_r($array);
 print "<br><br>";

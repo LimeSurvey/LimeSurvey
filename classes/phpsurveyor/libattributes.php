@@ -3,14 +3,17 @@ class libattributes
 {
 	private $db; // lets keep a reference to adodb for ourselves.
 	private $dbprefix; // lets keep the db prefix for our queries
-	private $attributes; // Attribute List
+	private $attributelist; // Attribute List
+	private $surveyformat; // Keep track of survey mode
+	private $currentattributes; // list of current attributes for ( quesiton / group / allinone )
+	private $gid; // Current Group
 
 	function libattributes($db,$dbprefix)
 	{
 		$this->db = $db;
 		$this->dbprefix = $dbprefix;
 		$this->db ->debug = true;
-		
+
 		/* Define our Attributes
 		For each question attribute include a key:
 		name - the display name
@@ -57,8 +60,27 @@ class libattributes
 		$qattributes[]=array("name"=>"answer_width",
 		"types"=>"^ABCEF",
 		"help"=>"The percentage width of the answer column");
-		$this->attributes = $qattributes;
+		$this->attributelist = $qattributes;
 	}
+
+	/**
+	* create_attributes($surveyformat,$gid) - Creates internal array of attribute objects
+	* @return none
+	*/
+	function create_attributes($surveyformat,$gid)
+	{
+		$this->surveyformat = $surveyformat;
+		$this->gid = $gid;
+		if ($surveyformat == "G")
+		{
+			$questions = $this->get_group_questions($gid);
+			foreach ($questions as $quest)
+			{
+				$this->get_question_attributes($quest[0]);
+			}
+		}
+	}
+
 
 	/**
 	* get_attributes($type) - Returns availible attributes for a certain question type
@@ -66,7 +88,7 @@ class libattributes
 	*/
 	function get_attributes($type)
 	{
-		foreach($this->attributes as $qa)
+		foreach($this->attributelist as $qa)
 		{
 			for ($i=0; $i<=strlen($qa['types'])-1; $i++)
 			{
@@ -75,6 +97,46 @@ class libattributes
 			}
 		}
 		return $qat[$type];
+	}
+
+	/**
+	* get_question_attributes($qid) - Gets all attributes for a question
+	* @return an array of attribute objects  
+	*/	
+	private function get_question_attributes($qid)
+	{
+		$result = $this->db->Execute("SELECT qaid, attribute, value FROM question_attributes where qid='{$qid}'");
+		if ($result->RecordCount() > 0)
+		{
+			$qattributes = array();
+			while ($attrs = $result->fetchRow())
+			{
+				$qattributes[$attrs['qaid']] = new attribute($attrs['qaid'],$attrs['attribute'],$attrs['value'],$attrs['qid']);
+			}
+			return $qattributes;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	* get_group_questions($gid) - Gets qid's for all questions in group
+	* @return an array qids 
+	*/	
+	private function get_group_questions($gid)
+	{
+		$result = $this->db->Execute("SELECT qid FROM questions where gid='{$gid}'");
+		if ($result->RecordCount() > 0)
+		{
+			$questions = array();
+			while ($attrs = $result->fetchRow())
+			{
+				$questions[$attrs[0]] = $attrs[0];
+			}
+			return $questions;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -87,7 +149,7 @@ class libattributes
 		if ($val)
 		{
 			return $val;
-		} else 
+		} else
 		{
 			return false;
 		}
@@ -104,12 +166,11 @@ class libattributes
 		if ($result)
 		{
 			return true;
-		} else 
+		} else
 		{
 			return false;
 		}
 	}
-
 
 }
 ?>
