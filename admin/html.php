@@ -2051,15 +2051,15 @@ if ($action == "newsurvey")
 	//Survey Language
 	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Language:")."</strong></font></td>\n"
 				. "\t\t<td><select $slstyle name='language'>\n";
-   	foreach (getLanguageData() as $languages)
-    	{
-	    foreach ($languages as  $langkey2=>$langname)
-            {
+
+
+    foreach (getLanguageData() as  $langkey2=>$langname)
+       {
 	   	    $newsurvey .= "\t\t\t<option value='".$langkey2."'";
-    //		if ($currentadminlang && $currentadminlang == $langname) {$newsurvey .= " selected";}
+    		if ($defaultlang == $langkey2) {$newsurvey .= " selected";}
 	       	$newsurvey .= ">".$langname['description']."</option>\n";
-            }
-		}
+       }
+
 	$newsurvey .= "\t\t</select></td>\n"
 				. "\t</tr>\n";
 	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Expiry Date:")."</strong></font></td>\n"
