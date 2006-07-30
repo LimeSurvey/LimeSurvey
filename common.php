@@ -107,13 +107,13 @@ if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions')))
         if (!isset($mysqlbin) || !$mysqlbin)
             {
             $temp=shell_exec('which mysqldump');
-            list($mysqlbin, $discard)=explode(" ", $temp);
+            @list($mysqlbin, $discard)=explode(" ", $temp);
             $mysqlbin=substr($mysqlbin, 0, strlen($mysqlbin)-11);
             }
         if (!isset($apachedir) || !$apachedir)
             {
             $temp=shell_exec('which htpasswd');
-            list($htpasswddir, $discard)=explode(" ", $temp);
+            @list($htpasswddir, $discard)=explode(" ", $temp);
             $htpasswddir=substr($htpasswddir, 0, strlen($htpasswddir)-10);
             }
         else
