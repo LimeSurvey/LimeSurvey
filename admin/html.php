@@ -350,7 +350,7 @@ if ($surveyid)
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
 						. "\t\t\t\t</td>\n"
-						. "\t\t\t\t<td align='right' valign='middle' width='330'>\n";
+						. "\t\t\t\t<td align='right' valign='middle' width='380'>\n";
 		if (!$gid) 
 			{
 			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='". _("Close this Survey")."' alt='". _("Close this Survey")."' align='right'  name='CloseSurveyWindow' "
@@ -379,9 +379,8 @@ if ($surveyid)
 							. "onmouseout=\"hideTooltip()\"" 
                     		. "onmouseover=\"showTooltip(event,'"._("Add New Group to Survey")."');return false\">\n" ;
 			}
-		$surveysummary .= "$setfont<font size='1' color='#222222'><strong>"._("Groups").":</strong>"
-						. "\t\t<select style='font-size: 9; font-family: verdana; color: #222222; "
-						. "background: silver; width: 160' name='groupselect' "
+		$surveysummary .= "<font class=\"boxcaption\">"._("Groups").":</font>"
+						. "\t\t<select class=\"listboxgroups\" name='groupselect' "
 						. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 		if (getgrouplist($gid))
 			{
@@ -392,7 +391,7 @@ if ($surveyid)
 			$surveysummary .= "<option>"._("None")."</option>\n";
 			}
 		$surveysummary .= "</select>\n"
-						. "\t\t\t\t</font></font></td>"
+						. "\t\t\t\t</td>"
 						. "</tr>\n"
 						. "\t\t\t</table>\n"
 						. "\t\t</td>\n"
@@ -475,7 +474,7 @@ if ($surveyid)
 						. "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
 						. _("Language:")."</strong></font></td>\n";
-		if (!$s1row['language']) {$language=$currentadminlang;} else {$language=$s1row['language'];}
+		if (!$s1row['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($s1row['language']);}
 		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
 		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n"
 						. "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
@@ -603,13 +602,11 @@ if ($gid)
 						   . "onmouseout=\"hideTooltip()\"" 
                            . "onmouseover=\"showTooltip(event,'"._("Add New Question to Group")."');return false\">\n";
 			}
-		$groupsummary .= "\t\t\t\t\t$setfont<font size='1'><strong>"._("Questions").":</strong> <select name='qid' "
-					   . "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\" "
-					   . "style='font-size:9; font-family: verdana; color: #333333; background-color: "
-					   . "silver; width: 160'>\n"
+		$groupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">"._("Questions").":</font> <select class=\"listboxquestions\" name='qid' "
+					   . "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
 					   . getquestions()
 					   . "\t\t\t\t\t</select>\n"
-					   . "\t\t\t\t</font></font></td></tr>\n"
+					   . "\t\t\t\t</td></tr>\n"
 					   . "\t\t\t</table>\n"
 					   . "\t\t</td>\n"
 					   . "\t</tr>\n";

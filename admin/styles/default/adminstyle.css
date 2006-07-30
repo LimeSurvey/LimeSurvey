@@ -90,6 +90,32 @@ td 		{
         	background: SILVER; 
         	width: 180
         }
+.listboxgroups
+        {
+        	margin-top: 10px;
+        	height: 20px;
+        	font-size: 10;
+        	font-family: verdana;
+        	color: #333333;
+        	background: SILVER;
+        	width: 180
+        }
+.listboxquestions
+        {
+        	margin-top: 10px;
+        	height: 20px;
+        	font-size: 10;
+        	font-family: verdana;
+        	color: #333333;
+        	background: SILVER;
+        	width: 180
+        }
+.boxcaption
+        {
+        	font-size: 12;
+        	font-family: verdana;
+			font-weight: bold;
+        }
 .saveOrderbtn
 	   {
 	     		border: thin solid #000000;

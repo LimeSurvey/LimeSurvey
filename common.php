@@ -275,7 +275,7 @@ if ($sourcefrom == "admin")
                     . "onmouseout=\"hideTooltip()\"" 
                     . "onmouseover=\"showTooltip(event,'"._("Template Editor")."');return false\">\n"
                     . "\t\t\t\t</td>\n";
-        $adminmenu .= "\t\t\t\t<td align='right' width='400'>\n"
+        $adminmenu .= "\t\t\t\t<td align='right' width='450'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
                     . "alt='". _("Show Help")."' align='right' onClick=\"showhelp('show')\"" 
                     . "onmouseout=\"hideTooltip()\"" 
@@ -286,13 +286,13 @@ if ($sourcefrom == "admin")
                     . " alt='". _("Create or Import New Survey")."' onClick=\"window.open('$scriptname?action=newsurvey', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
                     . "onmouseover=\"showTooltip(event,'"._("Create or Import New Survey")."');return false\">\n"
-                    . "\t\t\t\t\t$setfont<font size='2'><strong>"._("Surveys").":</strong> "
+                    . "\t\t\t\t\t<font class=\"boxcaption\">"._("Surveys").":</font>"
                     . "\t\t\t\t\t<select class=\"listboxsurveys\""
                     . "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
                     //. $surveyselect
                     . getsurveylist()
                     . "\t\t\t\t\t</select>\n"
-                    . "\t\t\t\t</font></font></td>\n"
+                    . "\t\t\t\t</td>\n"
                     . "\t\t\t</tr>\n"
                     . "\t\t</table>\n"
                     . "\t</td>\n"
