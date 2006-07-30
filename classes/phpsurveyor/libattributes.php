@@ -1,12 +1,11 @@
 <?php
-
-class attributes
+class libattributes
 {
 	private $db; // lets keep a reference to adodb for ourselves.
 	private $dbprefix; // lets keep the db prefix for our queries
 	private $attributes; // Attribute List
 
-	public function __construct($db,$dbprefix) // Pass database object as a reference
+	function libattributes($db,$dbprefix)
 	{
 		$this->db = $db;
 		$this->dbprefix = $dbprefix;
@@ -93,6 +92,24 @@ class attributes
 			return false;
 		}
 	}
+
+
+	/**
+	* new_attribute($qid,$attribute,$value) - Stores a new attribute into the attributes table
+	* @return returns true if successful and false if not
+	*/	
+	function new_attribute($qid,$attribute,$value)
+	{
+		$result = $this->db->Execute("INSERT INTO question_attributes (qid,attribute,value) values('{$qid}','{$attribute}','{$value}')");
+		if ($result)
+		{
+			return true;
+		} else 
+		{
+			return false;
+		}
+	}
+
 
 }
 ?>
