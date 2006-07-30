@@ -204,8 +204,8 @@ if ($sourcefrom == "admin")
                     ."title=''" 
                     ."align='left' onClick=\"window.open('$scriptname', '_top')\" onmouseout=\"hideTooltip()\"" 
                     ."onmouseover=\"showTooltip(event,'"._("Default Administration Page")."');return false\">\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
+                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='15'  align='left'>\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' border='0' hspace='0'>\n";
         if ($accesscontrol == 1)
             {
             $fhtaccess = "$homedir/.htaccess";
@@ -229,16 +229,15 @@ if ($sourcefrom == "admin")
             }
         else
             {
-            $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n";
+            $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
             }
-        $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
+        $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/summary.png' name='CheckSettings' title='"
                     ."' alt='". _("Check Settings")."' align='left' "
                     . "onClick=\"window.open('$scriptname?action=checksettings', '_top')\"" 
                     . "onmouseout=\"hideTooltip()\"" 
                     . "onmouseover=\"showTooltip(event,'". _("Check Settings")."');return false\">"
-                    //. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n";
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 
         $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/checkdb.png' name='CheckDatabase' title='"
                     ."'  alt='"._("Check Database")."' align='left' onClick=\"window.open('checkfields.php', '_top')\"" 
@@ -254,34 +253,34 @@ if ($sourcefrom == "admin")
             }
         else
             {
-              $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n";
+              $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
             }
         $adminmenu  .= "\t\t\t\t\t<input type='image' src='$imagefiles/backup.png' name='ExportDB' title='' "
         			. "alt='". _("Backup Entire Database")."($surveyid)' align='left' "
                     . "onClick=\"window.open('dumpdb.php', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
                     . "onmouseover=\"showTooltip(event,'"._("Backup Entire Database")."');return false\">\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
                     . _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."'onClick=\"window.open('labels.php', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
                     . "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'  align='left'>\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' >\n";
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
         $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/templates.png' name='EditTemplates' title='' " 
         		    . "alt='". _("Template Editor")."' align='left' "
                     . "onClick=\"window.open('templates.php', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
                     . "onmouseover=\"showTooltip(event,'"._("Template Editor")."');return false\">\n"
                     . "\t\t\t\t</td>\n";
-        $adminmenu .= "\t\t\t\t<td align='right' width='450'>\n"
+        $adminmenu .= "\t\t\t\t<td align='right' width='400'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
                     . "alt='". _("Show Help")."' align='right' onClick=\"showhelp('show')\"" 
                     . "onmouseout=\"hideTooltip()\"" 
                     . "onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='42' height='20' align='right' >\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' >\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' height='20' align='right' >\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/add.png' align='right' name='AddSurvey' title=''" 
                     . " alt='". _("Create or Import New Survey")."' onClick=\"window.open('$scriptname?action=newsurvey', '_top')\""
                     . "onmouseout=\"hideTooltip()\"" 
