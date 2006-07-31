@@ -158,7 +158,7 @@ echo "<form method='post' action='index.php'>\n";
 //PRESENT OPTIONS SCREEN
 if (isset($errormsg) && $errormsg != "")
 	{
-	$errormsg .= "<p>"._SAVETRYAGAIN."</p>";
+	$errormsg .= "<p>"._("Please try again.")."</p>";
 	}
 foreach(file("$thistpl/save.pstpl") as $op)
 	{
