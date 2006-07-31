@@ -1464,7 +1464,7 @@ function templatereplace($line)
 		{
 		$saveall = "<input type='submit' name='loadall' value='"._("Load Unfinished Survey")."' class='saveall'>";
 		}
-	elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._LAST." "))  //Already saved and on Submit Page, don't show Save So Far button
+	elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._("last")." "))  //Already saved and on Submit Page, don't show Save So Far button
 		{
 		$saveall="";
 		}
