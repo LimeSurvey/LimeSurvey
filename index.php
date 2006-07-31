@@ -903,7 +903,7 @@ function createinsertquery()
 				{
 				$query .= ",`refurl`";
 				}
-			if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." "))
+			if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
 				{
 				$query .= ",'submitdate'";
 				}
@@ -921,7 +921,7 @@ function createinsertquery()
 				{
 				$query .= ", '".getenv("HTTP_REFERER")."'";
 				}
-			if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." "))
+			if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
 				{
 				$query .= ", '".date("Y-m-d H:i:s")."'";
 				}
