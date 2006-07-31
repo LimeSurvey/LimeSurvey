@@ -1456,18 +1456,18 @@ function templatereplace($line)
     //Set up save/load feature
     if ($thissurvey['allowsave'] == "Y")
         {
-            if (!isset($_SESSION['step']) || !$_SESSION['step'])
-                {
-                $saveall = "<input type='submit' name='loadall' value='"._("Load unfinished survey")."' class='saveall'>";
-                }
-            elseif ($_SESSION['step'] <= $_SESSION['totalsteps'])  //Also modified so Save So Far shows up on last page.
-                {
-               	$saveall = "<input type='submit' name='saveall' value='"._("Save your responses so far")."' class='saveall'>";
-                }
-            else
-                {
-                $saveall="";
-                }
+	if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
+		{
+		$saveall = "<input type='submit' name='loadall' value='"._LOAD_SAVED."' class='saveall'>";
+		}
+	elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._LAST." "))  //Already saved and on Submit Page, don't show Save So Far button
+		{
+		$saveall="";
+		}
+	else
+		{
+		$saveall="<input type='submit' name='saveall' value='"._SAVE_AND_RETURN."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";  // Show Save So Far button
+		}
         }
     else
         {

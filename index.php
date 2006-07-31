@@ -305,8 +305,9 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 
 
 // --> START NEW FEATURE - SAVE
-// SAVE POSTED ANSWERS TO DATABASE IF NEXT,PREV,LAST OR SUBMIT
-if (isset($_POST['move']) && ($_POST['move'] == " << "._("prev")." " || $_POST['move'] == " "._("next")." >> " || $_POST['move'] == " "._("last")." " || $_POST['move'] == " "._("submit")." ")) {
+// SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
+if (isset($_POST['move']) || isset($_POST['saveprompt']))
+	{
 	require_once("save.php");
 
 	// RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
@@ -314,13 +315,7 @@ if (isset($_POST['move']) && ($_POST['move'] == " << "._("prev")." " || $_POST['
 		loadanswers();
 		}
 	}
-
-if (isset($_POST['saveprompt'])) 	//Required when save form returns to save initial record
-	{
-	require_once("save.php");
-	}
 // --> END NEW FEATURE - SAVE
-
 
 
 sendcacheheaders();
@@ -346,18 +341,30 @@ function loadanswers()
 	global $dbprefix,$surveyid,$errormsg;
 	global $thissurvey;
 
-	$query = "SELECT * FROM {$dbprefix}saved_control INNER JOIN {$thissurvey['tablename']}
-		ON {$dbprefix}saved_control.srid = {$thissurvey['tablename']}.id
-		WHERE {$dbprefix}saved_control.sid=$surveyid\n";
-	if (isset($_POST['scid'])) 
-		{
-		$query .= "AND {$dbprefix}saved_control.scid=".auto_escape($_POST['scid'])."\n";
-		}
-	$query .="AND {$dbprefix}saved_control.identifier='".auto_escape($_SESSION['holdname'])."'
-			  AND {$dbprefix}saved_control.access_code='".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+	if (!isset($_POST['srid']))
+	{
+		return true;
+	}
 
+	if (isset($_POST['scid']))
+		{
+		$query = "SELECT * FROM {$dbprefix}saved_control INNER JOIN {$thissurvey['tablename']}
+			ON {$dbprefix}saved_control.srid = {$thissurvey['tablename']}.id
+			WHERE {$dbprefix}saved_control.sid=$surveyid\n";
+		if (isset($_POST['scid'])) 
+			{
+			$query .= "AND {$dbprefix}saved_control.scid=".auto_escape($_POST['scid'])."\n";
+			}
+		$query .="AND {$dbprefix}saved_control.identifier='".auto_escape($_SESSION['holdname'])."'
+				  AND {$dbprefix}saved_control.access_code='".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+		}
+	else
+		{
+		$query = "SELECT * FROM {$thissurvey['tablename']}
+			WHERE {$thissurvey['tablename']}.srid=".$_SESSION['srid']."\n";
+		}
 	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
-	
+
 	if (mysql_num_rows($result) < 1)
 		{
 	    $errormsg .= _("There is no matching saved survey")."<br />\n";
@@ -372,24 +379,24 @@ function loadanswers()
 			$column = mysql_field_name($result,$i);
 			if ($column == "token")
 				{
-			    	$_POST['token']=$value;
+				$_POST['token']=$value;
 				$token=$value;
 				}
 			if ($column == "saved_thisstep")
 				{
-			    	$_SESSION['step']=$value;
+				$_SESSION['step']=$value;
 				}
 			if ($column == "scid")
 				{
-			    	$_SESSION['scid']=$value;
+				$_SESSION['scid']=$value;
 				}
 			if ($column == "srid")
 				{
-			    	$_SESSION['srid']=$value;
+				$_SESSION['srid']=$value;
 				}
 			if ($column == "datestamp")
 				{
-			    	$_SESSION['datestamp']=$value;
+				$_SESSION['datestamp']=$value;
 				}
 			else
 				{
@@ -883,7 +890,7 @@ function createinsertquery()
 			// INSERT NEW ROW
 			// TODO SQL: quote colum name correctly
 			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
-					."(".implode(', ', array_map('db_quote_id',$colnames)).")\n";
+					."(".implode(', ', array_map('db_quote_id',$colnames));
 			if ($thissurvey['datestamp'] == "Y")
 				{
 				$query .= ",`datestamp`";
@@ -895,6 +902,10 @@ function createinsertquery()
 			if ($thissurvey['refurl'] == "Y")
 				{
 				$query .= ",`refurl`";
+				}
+			if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." "))
+				{
+				$query .= ",'submitdate'";
 				}
 			$query .=") ";
 			$query .="VALUES (".implode(", ", $values);
@@ -909,6 +920,10 @@ function createinsertquery()
 			if ($thissurvey['refurl'] == "Y")
 				{
 				$query .= ", '".getenv("HTTP_REFERER")."'";
+				}
+			if ((isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." "))
+				{
+				$query .= ", '".date("Y-m-d H:i:s")."'";
 				}
 			$query .=")";
 			}
@@ -1033,7 +1048,7 @@ function sendsubmitnotification($sendnotification)
 			 . _("A new response was entered for your survey")."\r\n\r\n";
 	if ($thissurvey['allowsave'] == "Y")
 		{
-		$message .= _CONFIRMATION_MESSAGE6 . "\r\n";
+		$message .= _("Click the following link to reload the survey:")."\r\n";
 		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\r\n\r\n";
 		}
 			 
@@ -1246,7 +1261,7 @@ function buildsurveysession()
 			$_SESSION['totalsteps']=count($_SESSION['grouplist']);
 			break;
 		case "S":
-			$_SESSION['totalsteps']=$totalquestions; 
+			$_SESSION['totalsteps']=$totalquestions;
 		}
 
 	if ($totalquestions == "0")	//break out and crash if there are no questions!

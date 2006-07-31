@@ -72,6 +72,8 @@ Redesigned 7/25/2006 - swales
 	6. The survey_x datestamp field is updated every time the record is updated.
 	7. Template can now contain {DATESTAMP} to show the last modified date/time.
 	8. A new field 'submitdate' has been added to the survey_x table and is written when the submit button is clicked.
+	9. Save So Far now displays on Submit page. This allows the user one last chance to create a saved_control record so they
+	   can return later.
 
 	Notes
 	-----
@@ -98,78 +100,84 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 		if ($result=$connect->Execute($subquery))
 			{
 			$srid = $connect->Insert_ID();
-			$_SESSION['srid'] = $srid;
+			if ($srid > 0)  //Was an Insert, not an Update
+				{
+				$_SESSION['srid'] = $srid;
+				}
 			}
 		}
 	}
 
-// RECORD submitdate IF SUBMITTED
-if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (isset($_SESSION['srid']) && $_SESSION['srid'] > 0))
-	{
-	$query = "UPDATE {$thissurvey['tablename']} SET ";
-	$query .= "submitdate = '".date("Y-m-d H:i:s")."' ";
-	$query .= "WHERE id=" . $_SESSION['srid'];
-	$result=$connect->Execute($query) or die("Couldn't update existing saved survey.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	}
-
 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
-if (isset($_POST['saveprompt']))
+if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' button on SAVE FORM
 	{
 	if ($thissurvey['active'] == "Y") 	// Only save if active
 		{
 		savedcontrol();
+		if (isset($errormsg) && $errormsg != "")
+			{
+			showsaveform();
+			}
 		}
 	else
 		{
 		$_SESSION['scid'] = 0;		// If not active set to a dummy value to save form does not continue to show.
-		$_SESSION['step']++;		// Moves to next page.
 		}
 	}
 
 // DISPLAY SAVE FORM
-// Displays even if not active just to show how it would look for real
-if ($thissurvey['allowsave'] == "Y" && !isset($_SESSION['scid']))
+// Displays even if not active just to show how it would look when active (for testing purposes)
+// Show 'SAVE FORM' only when click the 'Save so far' button the first time
+if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SESSION['scid']))
 	{
-	// prompt to save
-	sendcacheheaders();
-	echo "<html>\n";
-	foreach(file("$thistpl/startpage.pstpl") as $op)
-		{
-		echo templatereplace($op);
-		}
-	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
-		."\t<script type='text/javascript'>\n"
-		."\t<!--\n"
-		."\t\tfunction checkconditions(value, name, type)\n"
-		."\t\t\t{\n"
-		."\t\t\t}\n"
-		."\t//-->\n"
-		."\t</script>\n\n";
+	showsaveform();
+	}
 
-	echo "<form method='post' action='index.php'>\n";
-	//PRESENT OPTIONS SCREEN
-	if (isset($errormsg) && $errormsg != "")
-		{
-		$errormsg .= "<p>"._("Please try again.")."</p>";
-		}
-	foreach(file("$thistpl/save.pstpl") as $op)
-		{
-		echo templatereplace($op);
-		}
-	//END
-	echo "<input type='hidden' name='sid' value='$surveyid'>\n";
-	echo "<input type='hidden' name='thisstep' value='0'>\n";
-	echo "<input type='hidden' name='token' value='".returnglobal('token')."'>\n";
-	echo "<input type='hidden' name='saveprompt' value='Y'>\n";
-	echo "</form>";
-	
-	foreach(file("$thistpl/endpage.pstpl") as $op)
-		{
-		echo templatereplace($op);
-		}
-	echo "</html>\n";
-	exit;
-	}		
+
+function showsaveform()
+{
+//Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
+global $thistpl, $errormsg, $thissurvey, $surveyid;
+
+sendcacheheaders();
+echo "<html>\n";
+foreach(file("$thistpl/startpage.pstpl") as $op)
+	{
+	echo templatereplace($op);
+	}
+echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
+	."\t<script type='text/javascript'>\n"
+	."\t<!--\n"
+	."\t\tfunction checkconditions(value, name, type)\n"
+	."\t\t\t{\n"
+	."\t\t\t}\n"
+	."\t//-->\n"
+	."\t</script>\n\n";
+
+echo "<form method='post' action='index.php'>\n";
+//PRESENT OPTIONS SCREEN
+if (isset($errormsg) && $errormsg != "")
+	{
+	$errormsg .= "<p>"._SAVETRYAGAIN."</p>";
+	}
+foreach(file("$thistpl/save.pstpl") as $op)
+	{
+	echo templatereplace($op);
+	}
+//END
+echo "<input type='hidden' name='sid' value='$surveyid'>\n";
+echo "<input type='hidden' name='thisstep' value='0'>\n";
+echo "<input type='hidden' name='token' value='".returnglobal('token')."'>\n";
+echo "<input type='hidden' name='saveprompt' value='Y'>\n";
+echo "</form>";
+
+foreach(file("$thistpl/endpage.pstpl") as $op)
+	{
+	echo templatereplace($op);
+	}
+echo "</html>\n";
+exit;
+}
 
 function savedcontrol()
 {
@@ -213,22 +221,23 @@ if ($count > 0)
 	}
 else
 	{
-	//INSERT BLANK RECORD INTO "survey_x"
-	$sdata = array("datestamp"=>date("Y-m-d H:i:s"),
-			"ipaddr"=>$_SERVER['REMOTE_ADDR'],
-			"refurl"=>getenv("HTTP_REFERER"));
-
-	if ($connect->AutoExecute("{$thissurvey['tablename']}", $sdata,'INSERT'))
+	//INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
+	if (!isset($_SESSION['srid']))
 		{
-		$srid = $connect->Insert_ID();
-		$_SESSION['srid'] = $srid;
-		}
-	else
-		{
-		die("Unable to insert record into survey table.<br /><br />".htmlspecialchars($connect->ErrorMsg()));
-		}
-	
+		$sdata = array("datestamp"=>date("Y-m-d H:i:s"),
+				"ipaddr"=>$_SERVER['REMOTE_ADDR'],
+				"refurl"=>getenv("HTTP_REFERER"));
 
+		if ($connect->AutoExecute("{$thissurvey['tablename']}", $sdata,'INSERT'))
+			{
+			$srid = $connect->Insert_ID();
+			$_SESSION['srid'] = $srid;
+			}
+		else
+			{
+			die("Unable to insert record into survey table.<br /><br />".htmlspecialchars($connect->ErrorMsg()));
+			}
+		}
 	//CREATE ENTRY INTO "saved_control"
 	$scdata = array("sid"=>$surveyid,
 			"srid"=>$_SESSION['srid'],
@@ -282,7 +291,6 @@ else
 				}
 			}
 		}
-	$_SESSION['step']++;  //Moves to next page
 	}
 }
 

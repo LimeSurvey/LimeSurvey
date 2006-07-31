@@ -33,27 +33,26 @@
 	# Suite 330, Boston, MA  02111-1307, USA.					#
 	#############################################################
 */
-
 if (empty($homedir)) {die ("Cannot run this script directly");}
-
-//Move current step
-if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
-
-// --> START BUG FIX
+	
+//Move current step ###########################################################################
+if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
-// <-- END BUG FIX
 
 if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
 if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // --> START NEW FEATURE - SAVE
-// So SAVE YOUR RESPONSES SO FAR stays on same page
-if (isset($_POST['saveall']) && $_POST['saveall'] == _("Save your responses so far")) {$_SESSION['step']=$_POST['thisstep'];}
+// If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
+if (isset($_POST['saveprompt']) && $_POST['saveprompt'] == "Y" && $_SESSION['step'] > $_SESSION['totalsteps'])
+	{
+	$_POST['move'] = " "._("last")." ";
+	}
 // <-- END NEW FEATURE - SAVE
 
 
-//CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED
+//CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 $notanswered=addtoarray_single(checkmandatorys(),checkconditionalmandatorys());
 

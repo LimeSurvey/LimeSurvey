@@ -45,17 +45,23 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION[
 if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // --> START NEW FEATURE - SAVE
-// So SAVE YOUR RESPONSES SO FAR stays on same page
-if (isset($_POST['saveall']) && $_POST['saveall'] == _("Save your responses so far")) {$_SESSION['step']=$_POST['thisstep'];}
+// If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
+if (isset($_POST['saveprompt']) && $_POST['saveprompt'] == "Y" && $_SESSION['step'] > $_SESSION['totalsteps'])
+	{
+	$_POST['move'] = " "._LAST." ";
+	}
 // <-- END NEW FEATURE - SAVE
 
-//CONVERT POSTED ANSWERS TO SESSION VARIABLES #################################################
-
-
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
-
-//First, see if we are moving backwards, and its OK not to check:
-if ($allowmandbackwards==1 && isset($_POST['move']) &&  $_POST['move'] == " << "._("prev")." ") {$backok="Y";} else {$backok="N";}
+//First, see if we are moving backwards or doing a Save so far, and its OK not to check:
+if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == " << "._PREV." ") || (isset($_POST['saveall']) && $_POST['saveall'] == _SAVE_AND_RETURN)))
+	{
+	$backok="Y";
+	}
+else
+	{
+	$backok="N";
+	}
 
 //Now, we check mandatory questions if necessary
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
