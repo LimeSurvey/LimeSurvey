@@ -243,7 +243,11 @@ if ($sourcefrom == "admin")
                     ."'  alt='"._("Check Database")."' align='left' onClick=\"window.open('checkfields.php', '_top')\"" 
                     ."onmouseout=\"hideTooltip()\"" 
                     ."onmouseover=\"showTooltip(event,'"._("Check Database")."');return false\">\n";
-
+		 $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles//dataentry.png' name='ListSurveys' title='"
+                    ."'  alt='"._("Check Database")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\"" 
+                    ."onmouseout=\"hideTooltip()\"" 
+                    ."onmouseover=\"showTooltip(event,'"._("List Surveys")."');return false\">\n";
+                    
         if ($surveyid)
             {
             $adminmenu  .="\t\t\t\t\t<input type='image' src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _("Delete Entire Survey")." ($surveyid)' title='' align='left' "
@@ -1458,7 +1462,7 @@ function templatereplace($line)
         {
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 		{
-		$saveall = "<input type='submit' name='loadall' value='"._LOAD_SAVED."' class='saveall'>";
+		$saveall = "<input type='submit' name='loadall' value='"._("Load Unfinished Survey")."' class='saveall'>";
 		}
 	elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._LAST." "))  //Already saved and on Submit Page, don't show Save So Far button
 		{
@@ -1466,7 +1470,7 @@ function templatereplace($line)
 		}
 	else
 		{
-		$saveall="<input type='submit' name='saveall' value='"._SAVE_AND_RETURN."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";  // Show Save So Far button
+		$saveall="<input type='submit' name='saveall' value='"._("Save Survey and Return")."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";  // Show Save So Far button
 		}
         }
     else

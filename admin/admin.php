@@ -163,6 +163,7 @@ if ($action == "newsurvey")
 	exit;
 	}
 
+if (isset($listsurveys)) {echo $listsurveys; }
 if (isset($surveysummary)) {echo $surveysummary;}
 if (isset($cssummary)) {echo $cssummary;}
 if (isset($usersummary)) {echo $usersummary;}

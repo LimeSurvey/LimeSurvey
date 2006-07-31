@@ -37,6 +37,63 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
+if ($action == "listsurveys")
+{
+   
+	$query = "SELECT * FROM {$dbprefix}surveys";
+	$result = mysql_query($query) or die(mysql_error()); 
+	
+	if(mysql_num_rows($result)>0) {
+	$listsurveys= "<br><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
+				. "cellpadding='1' cellspacing='0' width='600'>
+				  <tr bgcolor='#BBBBBB'>
+				    <td height=\"22\"><strong>Survey</strong></td>
+				    <td><strong>Date Created</strong></td>
+				    <td><strong>Visibility</strong></td>
+				    <td><strong>Status</strong></td>
+				    <td colspan=\"3\"><strong>Action</strong></td>
+				  </tr>" ; 
+				  
+	while($rows = mysql_fetch_array($result))
+	{
+		if($rows['private']=="Y")
+		{
+			$visibility="Private" ; 
+		}
+		else $visibility ="Public" ; 
+		if($rows['active']=="Y")
+		{
+			$status= "Active" ; 
+		}
+		else $status ="Non Active" ; 
+		
+		$datecreated=$rows['datecreated'] ; 
+		
+		$listsurveys.="<tr>
+					    <td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['short_title']."</a></td>".
+					    "<td>".$datecreated."</td>".
+					    "<td>".$visibility."</td>" .
+					    "<td>".$status."</td>".
+					    "<td>&nbsp;</td>
+					    <td>&nbsp;</td>
+					    <td>&nbsp;</td>
+					  </tr>" ; 
+	}
+	$listsurveys.="<tr bgcolor='#BBBBBB'>
+				    <td><a href='".$scriptname."?action=newsurvey'><img border=0 src='".$imagefiles."/add.png' onmouseout=\"hideTooltip()\" " .
+				    	"onmouseover=\"showTooltip(event,'"._("Create Survey")."');return false\">" .
+				    	"</a></td>
+				    <td>&nbsp;</td>
+				    <td>&nbsp;</td>
+				    <td colspan=\"4\">&nbsp;</td>
+				  </tr>
+				</table></br>" ; 
+	}
+	else $listsurveys="<strong> No Surveys in this Installation </strong>" ;
+}
+
+
+
 if ($action == "checksettings" || $action == "changelang")
 	{
 	//GET NUMBER OF SURVEYS

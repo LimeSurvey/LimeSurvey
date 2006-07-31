@@ -110,6 +110,7 @@ $allfields[]=array("{$dbprefix}questions", "lid", "lid int(11) NOT NULL default 
 $allfields[]=array("{$dbprefix}surveys", "sid", "sid int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}surveys", "short_title", "short_title varchar(200) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}surveys", "description", "description text");
+$allfields[]=array("{$dbprefix}surveys", "datecreated", "datecreated date");
 $allfields[]=array("{$dbprefix}surveys", "admin", "admin varchar(50) default NULL");
 $allfields[]=array("{$dbprefix}surveys", "active", "active char(1) NOT NULL default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "welcome", "welcome text");
