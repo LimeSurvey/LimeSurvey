@@ -54,7 +54,7 @@ if (isset($_POST['saveprompt']) && $_POST['saveprompt'] == "Y" && $_SESSION['ste
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == " << "._PREV." ") || (isset($_POST['saveall']) && $_POST['saveall'] == _SAVE_AND_RETURN)))
+if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == " << ".('prev')." ") || (isset($_POST['saveall']) && $_POST['saveall'] == _SAVE_AND_RETURN)))
 	{
 	$backok="Y";
 	}
