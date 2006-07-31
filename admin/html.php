@@ -255,11 +255,22 @@ if ($surveyid)
 			}
 		elseif ($activated == "Y")
 			{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.png' title='' "
-							. "alt='"._("This survey is currently active")."' align='left'"
-							. "onmouseout=\"hideTooltip()\"" 
-                    		. "onmouseover=\"showTooltip(event,'"._("This survey is currently active")."');return false\">\n" 
-							. "\t\t\t\t\t<input type='image' src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
+			if (($s1row['useexpiry']=='Y') && ($s1row['expires'] < date("Y-m-d")))
+			{
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/expired.png' title='' "
+			               . "alt='"._("This survey is active but expired.")."' align='left'"
+							. "onmouseout=\"hideTooltip()\""
+                    		. "onmouseover=\"showTooltip(event,'"._("This survey is active but expired")."');return false\">\n";
+            }
+            else
+                {
+     			 $surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.png' title='' "
+	       						. "alt='"._("This survey is currently active")."' align='left'"
+		      					. "onmouseout=\"hideTooltip()\""
+                          		. "onmouseover=\"showTooltip(event,'"._("This survey is currently active")."');return false\">\n";
+                }
+                
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
 							. "alt='"._("De-activate this Survey")."' title='' align='left' "
 							. "onClick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\"" 
 							. "onmouseout=\"hideTooltip()\"" 
