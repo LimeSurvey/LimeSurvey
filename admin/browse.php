@@ -150,6 +150,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		{
 		$fnames[] = array("token", "token", "Token ID");		
 		}
+	$fnames[] = array("submitdate", "submitdate", "Date Submitted");
 	if ($datestamp == "Y") //add datetime to list if survey is datestamped
 		{
 		$fnames[] = array("datestamp", "datestamp", "Date Stamp");
@@ -321,6 +322,7 @@ elseif ($action == "all")
 		{
 		$fnames[] = array("token", "Token", "Token ID", "0");
 		}
+	$fnames[] = array("submitdate", "submitdate", "Date Submitted", "0");
 	if ($datestamp == "Y") //Add datestamp
 		{
 		$fnames[] = array("datestamp", "Datestamp", "Date Stamp", "0");
