@@ -362,9 +362,8 @@ function loadanswers()
 		{
 		return;
 		}
-	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
-
-	if (mysql_num_rows($result) < 1)
+	$result = db_execute_assoc($query) or die ("Error loading results<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	if ($result->RecordCount() < 1)
 		{
 	    $errormsg .= _("There is no matching saved survey")."<br />\n";
 		}
@@ -372,10 +371,9 @@ function loadanswers()
 		{
 		//A match has been found. Let's load the values!
 		//If this is from an email, build surveysession first
-		$row=mysql_fetch_row($result);
-		foreach ($row as $i => $value)
+		$row=$result->FetchRow();
+		foreach ($row as $column => $value)
 			{
-			$column = mysql_field_name($result,$i);
 			if ($column == "token")
 				{
 				$_POST['token']=$value;
@@ -844,144 +842,6 @@ function remove_nulls_from_array($array)
 	else
 		{
 		return false;
-		}
-	}
-
-//FUNCTIONS USED WHEN SUBMITTING RESULTS:
-function createinsertquery()
-	{
-	global $thissurvey;
-	global $deletenonvalues, $thistpl;
-	global $surveyid, $connect;
-	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
-	
-	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
-		{
-		$inserts=array_unique($_SESSION['insertarray']);
-	    	foreach ($inserts as $value)
-			{
-			//Work out if the field actually exists in this survey
-			$fieldexists = arraySearchByKey($value, $fieldmap, "fieldname");
-			//Iterate through possible responses
-			if (isset($_SESSION[$value]) && !empty($fieldexists))
-				{
-				//If deletenonvalues is ON, delete any values that shouldn't exist
-				if($deletenonvalues==1) {checkconfield($value);}
-				//Only create column name and data entry if there is actually data!
-				$colnames[]=$value;
-			    	$values[]=$connect->qstr($_SESSION[$value]);
-				}
-			}
-		if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
-			{
-			echo submitfailed();
-			exit;		
-		    	}
-
-		if ($thissurvey['datestamp'] == "Y")
-			{
-			$_SESSION['datestamp']=date("Y-m-d H:i:s");
-			}
-// --> START NEW FEATURE - SAVE
-	// CHECK TO SEE IF ROW ALREADY EXISTS
-		if (!isset($_SESSION['srid']))
-			{
-			// INSERT NEW ROW
-			// TODO SQL: quote colum name correctly
-			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
-					."(".implode(', ', array_map('db_quote_id',$colnames));
-			if ($thissurvey['datestamp'] == "Y")
-				{
-				$query .= ",`datestamp`";
-				}
-			if ($thissurvey['ipaddr'] == "Y")
-				{
-				$query .= ",`ipaddr`";
-				}
-			if ($thissurvey['refurl'] == "Y")
-				{
-				$query .= ",`refurl`";
-				}
-			if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
-				{
-				$query .= ",`submitdate`";
-				}
-			$query .=") ";
-			$query .="VALUES (".implode(", ", $values);
-			if ($thissurvey['datestamp'] == "Y")
-				{
-				$query .= ", '".$_SESSION['datestamp']."'";
-				}
-			if ($thissurvey['ipaddr'] == "Y")
-				{
-				$query .= ", '".$_SERVER['REMOTE_ADDR']."'";
-				}
-			if ($thissurvey['refurl'] == "Y")
-				{
-				$query .= ", '".getenv("HTTP_REFERER")."'";
-				}
-			if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
-				{
-				$query .= ", '".date("Y-m-d H:i:s")."'";
-				}
-			$query .=")";
-			}
-		else
-			{  // UPDATE EXISTING ROW
-			// Updates only the MODIFIED fields posted on current page.
-			if (isset($_POST['modfields']) && $_POST['modfields'])
-				{
-				$query = "UPDATE {$thissurvey['tablename']} SET ";
-				if ($thissurvey['datestamp'] == "Y")
-					{
-					$query .= "datestamp = '".$_SESSION['datestamp']."',";
-					}
-				if ($thissurvey['ipaddr'] == "Y")
-					{
-					$query .= "ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
-					}
-				if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
-					{
-					$query .= "submitdate = '".date("Y-m-d H:i:s")."',";
-					}
-				$fields=explode("|", $_POST['modfields']);
-				foreach ($fields as $field)
-					{
-					$query .= $field." = '".mysql_escape_string($_POST[$field])."',";
-					}
-				$query .= "WHERE id=" . $_SESSION['srid'];
-				$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
-				}
-			else
-				{
-				$query = "";
-				if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
-					{
-					$query = "UPDATE {$thissurvey['tablename']} SET ";
-					$query .= "submitdate = '".date("Y-m-d H:i:s")."' ";
-					$query .= "WHERE id=" . $_SESSION['srid'];
-					}
-				}
-			}
-// <-- END NEW FEATURE - SAVE
-//DEBUG START
-//echo $query;
-//DEBUG END
-		return $query;
-		}
-	else
-		{
-		sendcacheheaders();
-		doHeader();
-		foreach(file("$thistpl/startpage.pstpl") as $op)
-			{
-			echo templatereplace($op);
-			}
-		echo "<br /><center><font face='verdana' size='2'><font color='red'><strong>"._("Error")."</strong></font><br /><br />\n";
-		echo _("Cannot submit results - there are none to submit.")."<br /><br />\n";
-		echo "<font size='1'>"._("This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem.")."<br />\n";
-		echo "</font></center><br /><br />";
-		exit;		
 		}
 	}
 
