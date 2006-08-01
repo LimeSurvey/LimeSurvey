@@ -598,7 +598,7 @@ if ($gid)
 					   . "\t\t<td colspan='2'>\n"
 					   . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 					   . "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
-					   . "<font size='1' face='verdana' color='white'><strong>Group</strong> "
+					   . "<font size='1' face='verdana' color='white'><strong>"._("Group")."</strong> "
 					   . "<font color='silver'>{$grow['group_name']}</font></font></td></tr>\n"
 					   . "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 					   . "\t\t\t\t\t<td>\n"
@@ -1637,7 +1637,7 @@ if ($action == "editsurvey")
 		{
 		$esrow = array_map('htmlspecialchars', $esrow);
 		$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"
-					. "\t\t<strong>$setfont<font color='white'>Edit Survey</font></font></strong></td></tr>\n"
+					. "\t\t<strong>$setfont<font color='white'>"._("Edit Survey")."</font></font></strong></td></tr>\n"
 					. "\t<tr>"
 					. "\t\t<td align='right' width='25%'>$setfont<strong>"._("Title:")."</strong></font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='short_title' value=\"{$esrow['short_title']}\"></td></tr>\n"
