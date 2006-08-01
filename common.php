@@ -865,41 +865,41 @@ function conditionscount($qid)
 
 function keycontroljs()
     {
-    $kcjs=<<<EOF
-<SCRIPT TYPE="text/javascript">
-<!--
+    $kcjs="<<<EOF
+    <SCRIPT TYPE=\"text/javascript\">
+    <!--
 
-function getkey(e)
-    {
-    if (window.event) return window.event.keyCode;
-    else if (e) return e.which; else return null;
-    }
+    function getkey(e)
+       {
+       if (window.event) return window.event.keyCode;
+        else if (e) return e.which; else return null;
+        }
 
-function goodchars(e, goods)
-    {
-    var key, keychar;
-    key = getkey(e);
-    if (key == null) return true;
+    function goodchars(e, goods)
+        {
+       var key, keychar;
+       key = getkey(e);
+        if (key == null) return true;
 
-    // get character
-    keychar = String.fromCharCode(key);
-    keychar = keychar.toLowerCase();
-    goods = goods.toLowerCase();
+        // get character
+        keychar = String.fromCharCode(key);
+        keychar = keychar.toLowerCase();
+       goods = goods.toLowerCase();
 
-    // check goodkeys
-    if (goods.indexOf(keychar) != -1)
-        return true;
+       // check goodkeys
+        if (goods.indexOf(keychar) != -1)
+            return true;
 
-    // control keys
-    if ( key==null || key==0 || key==8 || key==9 || key==13 || key==27 )
-       return true;
+        // control keys
+        if ( key==null || key==0 || key==8 || key==9 || key==13 || key==27 )
+          return true;
 
-    // else return false
-    return false;
-    }
-//-->
-</SCRIPT>
-EOF;
+      // else return false
+     return false;
+       }
+    //-->
+    </SCRIPT>
+    EOF;";
     return $kcjs;
     }
 
@@ -1103,6 +1103,7 @@ function getsidgidqid($fieldcode)
 function getextendedanswer($fieldcode, $value)
     {
     global $dbprefix, $surveyid, $connect;
+
     //Fieldcode used to determine question, $value used to match against answer code
     //Returns NULL if question type does not suit
     if (substr_count($fieldcode, "X") > 1) //Only check if it looks like a real fieldcode
@@ -1457,6 +1458,7 @@ function templatereplace($line)
     global $assessments;
     global $errormsg;
 
+
     //Set up save/load feature
     if ($thissurvey['allowsave'] == "Y")
         {
@@ -1464,13 +1466,13 @@ function templatereplace($line)
 		{
 		$saveall = "<input type='submit' name='loadall' value='"._("Load Unfinished Survey")."' class='saveall'>";
 		}
-	elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._("last")." "))  //Already saved and on Submit Page, don't show Save So Far button
+	elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._('last')." "))  //Already saved and on Submit Page, don't show Save So Far button
 		{
 		$saveall="";
 		}
 	else
 		{
-		$saveall="<input type='submit' name='saveall' value='"._("Save Survey and Return")."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";  // Show Save So Far button
+		$saveall="<input type='submit' name='saveall' value='"._('Save Survey and Return')."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";  // Show Save So Far button
 		}
         }
     else
@@ -1517,7 +1519,9 @@ function templatereplace($line)
     $line=str_replace("{ANSWER}", $answer, $line);
     if ($totalquestions < 2)
         {
-        $line=str_replace("{THEREAREXQUESTIONS}", _("There is 1 question in this survey."), $line); //Singular
+
+
+        $line=str_replace("{THEREAREXQUESTIONS}", _("There is 1 question in this survey"), $line); //Singular
         }
     else
         {
