@@ -171,7 +171,7 @@ if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
 	{
     if (returnglobal('loadname') && returnglobal('loadpass'))
 		{
-        $_POST['loadall']="reload";
+        	$_POST['loadall']="reload";
 		$_POST['loadname']=returnglobal('loadname');
 		$_POST['loadpass']=returnglobal('loadpass');
 		$_POST['scid']=returnglobal('scid');
@@ -185,7 +185,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	// if (loadname is not set) or if ((loadname is set) and (loadname is NULL))
 	if (!isset($_POST['loadname']) || (isset($_POST['loadname']) && ($_POST['loadname'] == null)))		
 		{
-	    $errormsg .= _("You did not provide a name")."<br />\n";
+		$errormsg .= _("You did not provide a name")."<br />\n";
 		}
 	// if (loadpass is not set) or if ((loadpass is set) and (loadpass is NULL))
 	if (!isset($_POST['loadpass']) || (isset($_POST['loadpass']) && ($_POST['loadpass'] == null)))
@@ -198,24 +198,24 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		{
 		buildsurveysession();
 		}
-                                            //for later use.
+
 // --> START NEW FEATURE - SAVE
 	$_SESSION['holdname']=$_POST['loadname']; //Session variable used to load answers every page.
 	$_SESSION['holdpass']=$_POST['loadpass']; //Session variable used to load answers every page.
-
+	
 	loadanswers();
 // <-- END NEW FEATURE - SAVE
 	$_POST['move'] = " "._("next")." >> "; 
 		
 	if ($errormsg)
 		{
-	    $_POST['loadall'] = _("Load unfinished survey");
+	    $_POST['loadall'] = _("Load Unfinished Survey");
 		}
 	}
 //Allow loading of saved survey
-if (isset($_POST['loadall']) && $_POST['loadall'] == _("Load unfinished survey"))
+if (isset($_POST['loadall']) && $_POST['loadall'] == _("Load Unfinished Survey"))
 	{
-    require_once("load.php");
+	require_once("load.php");
 	}
 
 
@@ -341,27 +341,26 @@ function loadanswers()
 	global $dbprefix,$surveyid,$errormsg;
 	global $thissurvey;
 
-	if (!isset($_POST['srid']))
-	{
-		return true;
-	}
-
-	if (isset($_POST['scid']))
+	if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		{
 		$query = "SELECT * FROM {$dbprefix}saved_control INNER JOIN {$thissurvey['tablename']}
 			ON {$dbprefix}saved_control.srid = {$thissurvey['tablename']}.id
 			WHERE {$dbprefix}saved_control.sid=$surveyid\n";
-		if (isset($_POST['scid'])) 
+		if (isset($_POST['scid'])) //Would only come from email
 			{
 			$query .= "AND {$dbprefix}saved_control.scid=".auto_escape($_POST['scid'])."\n";
 			}
 		$query .="AND {$dbprefix}saved_control.identifier='".auto_escape($_SESSION['holdname'])."'
 				  AND {$dbprefix}saved_control.access_code='".md5(auto_unescape($_SESSION['holdpass']))."'\n";
 		}
-	else
+	elseif (isset($_SESSION['srid']))
 		{
 		$query = "SELECT * FROM {$thissurvey['tablename']}
-			WHERE {$thissurvey['tablename']}.srid=".$_SESSION['srid']."\n";
+			WHERE {$thissurvey['tablename']}.id=".$_SESSION['srid']."\n";
+		}
+	else
+		{
+		return;
 		}
 	$result = mysql_query($query) or die ("Error loading results<br />$query<br />".mysql_error());
 
@@ -905,7 +904,7 @@ function createinsertquery()
 				}
 			if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
 				{
-				$query .= ",'submitdate'";
+				$query .= ",`submitdate`";
 				}
 			$query .=") ";
 			$query .="VALUES (".implode(", ", $values);
@@ -1046,7 +1045,7 @@ function sendsubmitnotification($sendnotification)
 	
 	$message = _("Survey Submitted")." - {$thissurvey['name']}\r\n"
 			 . _("A new response was entered for your survey")."\r\n\r\n";
-	if ($thissurvey['allowsave'] == "Y")
+	if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
 		{
 		$message .= _("Click the following link to reload the survey:")."\r\n";
 		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\r\n\r\n";

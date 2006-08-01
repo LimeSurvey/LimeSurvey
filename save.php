@@ -96,7 +96,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	if ($thissurvey['active'] == "Y") 	// Only save if active
 		{
 		// SAVE DATA TO SURVEY_X RECORD
-		$subquery = createinsertquery();
+		$subquery = createinsertquery();		
 		if ($result=$connect->Execute($subquery))
 			{
 			$srid = $connect->Insert_ID();

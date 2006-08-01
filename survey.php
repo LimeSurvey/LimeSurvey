@@ -37,6 +37,7 @@ if (empty($homedir)) {die ("Cannot run this script directly");}
 	
 //Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
+if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 
 if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
@@ -45,7 +46,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['st
 
 // --> START NEW FEATURE - SAVE
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
-if (isset($_POST['saveprompt']) && $_POST['saveprompt'] == "Y" && $_SESSION['step'] > $_SESSION['totalsteps'])
+if ($_SESSION['step'] > $_SESSION['totalsteps'])
 	{
 	$_POST['move'] = " "._("last")." ";
 	}
