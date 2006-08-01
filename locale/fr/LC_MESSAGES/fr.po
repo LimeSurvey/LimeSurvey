@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-01 00:21+0100\n"
+"PO-Revision-Date: 2006-08-01 22:06+0100\n"
 "Last-Translator: GAUGRY Sébastien\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -166,11 +166,11 @@ msgstr "Suivant"
 msgid "last"
 msgstr "Dernier"
 
-msgid "Save your responses so far"
-msgstr "Sauvegarder les réponses faites jusqu'ici"
-
 msgid "submit"
 msgstr "Envoyer"
+
+msgid "Save your responses so far"
+msgstr "Sauvegarder les réponses faites jusqu'ici"
 
 msgid "Did Not Save"
 msgstr "Non sauvegardé"
@@ -221,8 +221,8 @@ msgstr "Vous n'avez pas fourni de nom"
 msgid "You did not provide a password"
 msgstr "Vous n'avez pas fourni de mot de passe"
 
-msgid "Load unfinished survey"
-msgstr "Chargement des réponses déjà enregistrées pour ce questionnaire"
+msgid "Load Unfinished Survey"
+msgstr "Charger un questionnaire non terminé"
 
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "C'est un questionnaire privé. Vous devez avoir une invitation pour y participer."
@@ -238,12 +238,6 @@ msgstr "Pas de questionnaire correspondant enregistré"
 
 msgid "complete"
 msgstr "Terminé"
-
-msgid "Cannot submit results - there are none to submit."
-msgstr "Impossible d'envoyer les réponses car il n'y en a aucune (vide)."
-
-msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Cette erreur peut se produire si vous avez déjà envoyé vos réponses et actualisé la page de votre navigateur avec 'Actualiser'. Dans ce cas, vos réponses ont déjà été sauvées.<br /><br />Si vous obtenez ce message au milieu du remplissage d'un questionnaire, vous devriez choisir '<-Précédente' dans votre navigateur et rafraîchir la page obtenue. Bien que vous perdiez vos réponses de la dernière page, toutes les autres sont conservées. Ce problème peut se produire si le serveur est surchargé ou énormément utilisé. Nous nous excusons pour ce problème."
 
 msgid ""
 "Dear {FIRSTNAME},\n"
@@ -465,6 +459,12 @@ msgstr "Mot de passe"
 
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Rechargez votre questionnaire en cliquant sur l'URL suivante :"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Impossible d'envoyer les réponses car il n'y en a aucune (vide)."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Cette erreur peut se produire si vous avez déjà envoyé vos réponses et actualisé la page de votre navigateur avec 'Actualiser'. Dans ce cas, vos réponses ont déjà été sauvées.<br /><br />Si vous obtenez ce message au milieu du remplissage d'un questionnaire, vous devriez choisir '<-Précédente' dans votre navigateur et rafraîchir la page obtenue. Bien que vous perdiez vos réponses de la dernière page, toutes les autres sont conservées. Ce problème peut se produire si le serveur est surchargé ou énormément utilisé. Nous nous excusons pour ce problème."
 
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Cette question est à réponses multiples mais n&#039;a aucune réponse de définie."
@@ -1365,7 +1365,7 @@ msgid "Deleting this group will also delete any questions and answers it contain
 msgstr "Supprimer ce groupe supprimera également toutes les questions et réponses qu&#039;il contient. Etes-vous sûr de vouloir continuer ?"
 
 msgid "Reorder the questions of this group"
-msgstr "Ré les détails de ce groupe"
+msgstr "Réorganiser les questions de ce groupe"
 
 msgid "Export Current Group"
 msgstr "Exporter le groupe en cours"
@@ -1558,6 +1558,9 @@ msgstr "Edition du groupe pour le questionnaire ID"
 
 msgid "Update Group"
 msgstr "Mise à jour du groupe"
+
+msgid "Edit Survey"
+msgstr "Editer le questionnaire"
 
 msgid "Admin Email:"
 msgstr "Mail de l&#039;administrateur :"
@@ -2313,13 +2316,13 @@ msgid "Invitation Sent To:"
 msgstr "Invitation envoyée à :"
 
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
-msgstr "Le mail à {FIRSTNAME} {LASTNAME} ({EMAIL})a échoué"
+msgstr "Le mail à {FIRSTNAME} {LASTNAME} ({EMAIL}) a échoué"
 
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Il y a plus de mail en suspens qui peuvent être envoyés en groupe (batch). Continuez d&#039;envoyer des mails en cliquant ci-dessous."
 
 msgid "There are {EMAILCOUNT} emails still to be sent."
-msgstr "Il y a encore {EMAILCOUNT} à envoyer."
+msgstr "Il y a encore {EMAILCOUNT} mails à envoyer."
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
 msgstr "Il n&#039;y avait aucun mail éligible à envoyer : aucun n&#039;a satisfait les critères - mail valide, invitation déjà envoyée, questionnaire déjà completé et invitation obtenue."
