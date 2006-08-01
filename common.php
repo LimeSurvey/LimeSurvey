@@ -1741,6 +1741,7 @@ function buildLabelsetCSArray()
               FROM ".db_table_name('labelsets')."
               ORDER BY lid";
     $result = db_execute_assoc($query) or die("Died collecting labelset ids<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+    $csarray=array();
     while ($row=$result->FetchRow())
         {
         $thisset="";
