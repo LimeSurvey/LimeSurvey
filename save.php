@@ -92,18 +92,17 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 		if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
 		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
 		}
-
-	if ($thissurvey['active'] == "Y") 	// Only save if active
+	}
+if ($thissurvey['active'] == "Y") 	// Only save if active
+	{
+	// SAVE DATA TO SURVEY_X RECORD
+	$subquery = createinsertquery();		
+	if ($result=$connect->Execute($subquery))
 		{
-		// SAVE DATA TO SURVEY_X RECORD
-		$subquery = createinsertquery();		
-		if ($result=$connect->Execute($subquery))
+		$srid = $connect->Insert_ID();
+		if ($srid > 0)  //Was an Insert, not an Update
 			{
-			$srid = $connect->Insert_ID();
-			if ($srid > 0)  //Was an Insert, not an Update
-				{
-				$_SESSION['srid'] = $srid;
-				}
+			$_SESSION['srid'] = $srid;
 			}
 		}
 	}

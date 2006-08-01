@@ -940,6 +940,10 @@ function createinsertquery()
 					{
 					$query .= "ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
 					}
+				if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
+					{
+					$query .= "submitdate = '".date("Y-m-d H:i:s")."',";
+					}
 				$fields=explode("|", $_POST['modfields']);
 				foreach ($fields as $field)
 					{
@@ -951,6 +955,12 @@ function createinsertquery()
 			else
 				{
 				$query = "";
+				if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
+					{
+					$query = "UPDATE {$thissurvey['tablename']} SET ";
+					$query .= "submitdate = '".date("Y-m-d H:i:s")."' ";
+					$query .= "WHERE id=" . $_SESSION['srid'];
+					}
 				}
 			}
 // <-- END NEW FEATURE - SAVE
