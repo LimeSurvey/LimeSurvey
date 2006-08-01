@@ -296,25 +296,28 @@ if (!$surveyid)
     exit;
     }
 
+// Get new random ids until one is found that is not used
+do
+  {
+    $newsid = getRandomID();
+    $isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid";
+    $isresult = db_execute_assoc($isquery);
+  }
+while ($isresult->RecordCount()>0);
+
 
 // A regex could do alot better here but I am bad on that so I am using the simple way.
 $insert=$tablearray[0];
 $start = strpos(strtolower ($insert), 'values'); 
 $start = strpos($insert, '(',$start)+1;
-$end  = strpos($insert, ',',$start)+1;
-$insert = substr($insert,0,$start).substr($insert,$end,strlen($insert));
-
-$start = strpos($insert, '(')+1; 
-$end = strpos($insert, ',')+1;
-$insert = substr($insert,0,$start).substr($insert,$end,strlen($insert));
+$end  = strpos($insert, ',',$start);
+$insert = substr($insert,0,$start).$newsid.substr($insert,$end,strlen($insert));
 
 $insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
 $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
 
 $oldsid=$surveyid;
 
-//GET NEW SID
-$newsid = mysql_insert_id();
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIE NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
