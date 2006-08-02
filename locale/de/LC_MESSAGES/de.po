@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-01 23:01+0100\n"
+"PO-Revision-Date: 2006-08-02 22:00+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -178,7 +178,7 @@ msgstr "Zeige Statistiken dieser Antworten an"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:946
 msgid "Export Results to Application"
-msgstr ""
+msgstr "Ergebnisse für externe Anwendungen exportieren"
 
 msgid "Export result to a SPSS command file"
 msgstr "Ergebnisse in eine SPSS Datei exportieren"
@@ -189,7 +189,7 @@ msgstr "Importiere Antworten aus einer alten deaktivierten Umfrage"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:953
 msgid "Backup results table as SQL file"
-msgstr ""
+msgstr "Ergebnisse als SQL-Datei speichern"
 
 msgid "View Saved but not submitted Responses"
 msgstr "Zeige zwischengespeicherte Antworten"
@@ -253,26 +253,26 @@ msgstr "Diese Umfrage enthält eine Frage."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1528
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
-msgstr ""
+msgstr "Diese Umfrage enthält {NUMBEROFQUESTIONS} Fragen."
 
 msgid "submit"
 msgstr "Absenden"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
 msgid "A Note On Privacy"
-msgstr ""
+msgstr "Eine Bemerkung zum Datenschutz"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
 msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr ""
+msgstr "Dieser Fragebogen ist anonym.<br />Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn eine bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1574
 msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
-msgstr ""
+msgstr "<strong>Vielen Dank!<br /><br />Sie haben alle Fragen beantwortet.</strong><br /><br />Klicken Sie nun auf 'Absenden', um den Vorgang abzuschliessen und Ihre Antworten endgültig abzusenden."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1575
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
-msgstr ""
+msgstr "Wenn Sie irgendeine Deiner Antworten nochmals überprüfen oder ändern wollen, so können Sie dies, indem Sie auf 'Zurück' klicken und Sie Ihre Antworten nochmals durchschauen."
 
 msgid "Answers Cleared"
 msgstr "Antworten gelöscht"
@@ -310,20 +310,23 @@ msgid ""
 "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
 "If you give an email address, an email containing the details will be sent to you."
 msgstr ""
+"Geben Sie einen Namen und ein Passwort für diese Umfrage ein und klicken Sie unten auf 'Speichern'.<br />\n"
+"Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann dann später von Ihnen vollendet werden, wenn Sie sich unter Ihrem Namen und Passwort wieder anmelden.<br /><br />\n"
+"Wenn Sie eine Email-Adresse angeben, wird auch eine Email an Sie mit diesen Daten versandt."
 
 msgid "Saved name"
 msgstr "Gespeicherter Name"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1635
 msgid "Load Now"
-msgstr ""
+msgstr "Jetzt laden"
 
 msgid "Load A Previously Saved Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1638
 msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
-msgstr ""
+msgstr "Auf dieser Seite könenn Sie eine zwischengespeichterte Umfrage laden.<br />Bitte geben Sie den Namen ein, den Sie benutzt haben, als Sie Ihre Umfragedaten zwischengespeichert haben (und natürlich das Passwort)."
 
 msgid "You must be registered to complete this survey"
 msgstr "Sie müssen registriert sein, um an dieser Umfrage teilzunehmen."
@@ -333,6 +336,8 @@ msgid ""
 "You may register for this survey if you wish to take part.<br />\n"
 "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr ""
+"Wenn Sie an dieser Umfrage teilnehmen möchten, müssen Sie sich registrieren.<br />\n"
+"Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden erhalten Sie per Email einen Link zu der Umfrage."
 
 msgid "First Name"
 msgstr "Vorname"

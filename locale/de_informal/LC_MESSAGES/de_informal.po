@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-07-30 18:43+0100\n"
+"PO-Revision-Date: 2006-08-02 22:00+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -31,6 +31,9 @@ msgstr "Systemübersicht"
 
 msgid "Check Database"
 msgstr "Datenbank überprüfen"
+
+msgid "List Surveys"
+msgstr "Liste aller Umfragen"
 
 msgid "Delete Entire Survey"
 msgstr "Gesamte Umfrage löschen"
@@ -152,20 +155,214 @@ msgstr "Einige Tabellen oder Felder scheinen in Deiner Datenbank zu fehlen."
 msgid "Check Database Fields"
 msgstr "Datenbankfelder überprüfen"
 
+msgid "Return to Survey Administration"
+msgstr "Zur Umfragen-Administration zurückkehren"
+
+msgid "Show summary information"
+msgstr "Zeige Zusammenfassung"
+
+msgid "Display Responses"
+msgstr "Zeige Antworten an"
+
+msgid "Display Last 50 Responses"
+msgstr "Zeige die letzten 50 Antworten an"
+
+msgid "Dataentry Screen for Survey"
+msgstr "Dateneingabemaske für die Umfrage"
+
+msgid "Printable Version of Survey"
+msgstr "Druckbare Version der Umfrage"
+
+msgid "Get statistics from these responses"
+msgstr "Zeige Statistiken dieser Antworten an"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:946
+msgid "Export Results to Application"
+msgstr "Ergebnisse für externe Anwendungen exportieren"
+
+msgid "Export result to a SPSS command file"
+msgstr "Export in eine SPSS-Datei"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
+msgid "Import answers from a deactivated survey table"
+msgstr "Importiere Antworten aus einer alten deaktivierten Umfrage-Tabelle"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:953
+msgid "Backup results table as SQL file"
+msgstr "Ergebnisse als SQL-Datei speichern"
+
+msgid "View Saved but not submitted Responses"
+msgstr "Zeige zwischengespeicherte Antworten"
+
+msgid "Import a VV survey file"
+msgstr "VV-Umfrage-Datei importieren"
+
+msgid "Export a VV survey file"
+msgstr "VV-Umfrage-Datei exportieren"
+
+msgid "Other"
+msgstr "Sonstiges"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "No answer"
+msgstr "Keine Antwort"
+
+msgid "Male"
+msgstr "Männlich"
+
+msgid "Female"
+msgstr "Weiblich"
+
+msgid "Uncertain"
+msgstr "Unsicher"
+
+msgid "Increase"
+msgstr "Zunahme"
+
+msgid "Decrease"
+msgstr "Abnahme"
+
+msgid "Same"
+msgstr "Unverändert"
+
+msgid "Comment"
+msgstr "Kommentar"
+
+msgid "Load Unfinished Survey"
+msgstr "Zwischengespeicherte Umfrage laden"
+
+msgid "last"
+msgstr "Abschließen"
+
+msgid "Save Survey and Return"
+msgstr "Umfrage speichern und zurückkehren"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Bist du wirklich sicher, dass Du alle Deine Antworten löschen willst?"
+
+msgid "Exit and Clear Survey"
+msgstr "Umfrage verlassen und löschen"
+
+msgid "There is 1 question in this survey"
+msgstr "Es gibt nur eine Frage in dieser Umfrage."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1528
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Diese Umfrage enthält {NUMBEROFQUESTIONS} Fragen."
+
+msgid "submit"
+msgstr "Absenden"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
+msgid "A Note On Privacy"
+msgstr "Eine Bemerkung zum Datenschutz"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
+msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Dieser Fragebogen ist anonym.<br />Die Daten mit Deinen Antworten enthalten keinerlei auf Dich zurückzuführende/identifizierende Informationen, es sei denn eine bestimmte Frage hat explizit danach gefragt. Wenn Du für diese Umfrage einen Zugangsschlüssel benutzt hast, so kannst Du sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1574
+msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
+msgstr "<strong>Vielen Dank!<br /><br />Du hast alle Fragen beantwortet.</strong><br /><br />Klicke nun auf 'Absenden', um den Vorgang abzuschliessen und Deine Antworten endgültig abzusenden."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1575
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Wenn Du irgendeine Deiner Antworten nochmals überprüfen oder ändern willst, so kannst Du dies, indem du auf 'Zurück' klickst und Dir Deine Antworten nochmals durchschaust."
+
+msgid "Answers Cleared"
+msgstr "Antworten gelöscht."
+
+msgid "Restart this Survey"
+msgstr "Umfrage neu starten"
+
+msgid "Close this Window"
+msgstr "Fenster schließen"
+
+msgid "Name"
+msgstr "Unverändert"
+
+msgid "Password"
+msgstr "Passwort"
+
+msgid "Repeat Password"
+msgstr "Passwort wiederholen"
+
+msgid "Your Email"
+msgstr "Deine E-Mail Adresse"
+
+msgid "Save Now"
+msgstr "Jetzt speichern"
+
+msgid "Return To Survey"
+msgstr "Zur Umfrage zurückkehren"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Umfrage zwischenspeichern"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1624
+msgid ""
+"Enter a name and password for this survey and click save below.<br />\n"
+"Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
+"If you give an email address, an email containing the details will be sent to you."
+msgstr ""
+"Gib einen Namen und ein Passwort ein für diese Umfrage und klicke unten auf 'Speichern'.<br />\n"
+"Deine Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann dann später von Dir vollendet werden, wenn Du Dich unter Deinem Namen und Passwort wieder anmeldest.<br /><br />\n"
+"Wenn Du eine Email-Adresse angibst, wird auch eine Email an Dich mit diesen Daten versandt."
+
+msgid "Saved name"
+msgstr "Speichername"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1635
+msgid "Load Now"
+msgstr "Jetzt laden"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1637
+msgid "Load A Previously Saved Survey"
+msgstr "Eine zwischengespeicherte Umfrage laden"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1638
+msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
+msgstr "Auf dieser Seite kannst Du eine zwischengespeichterte Umfrage laden.<br />Bitte gib den Namen ein, den Du benutzt hast, als Du Deine Umfrage gespeichert hast und natürlich das Passwort."
+
+msgid "You must be registered to complete this survey"
+msgstr "Du musst registriert sein, um diese Umfrage zu vollenden"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1644
+msgid ""
+"You may register for this survey if you wish to take part.<br />\n"
+"Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr ""
+"Wenn Du an dieser Umfrage teilnehmen möchtest, kannst Du dich registrieren.<br />\n"
+"Bitte gebe unten die notwendigen Daten ein und nach dem Absenden erhälst Du per Email einen Link zu der Umfrage."
+
+msgid "First Name"
+msgstr "Vorname"
+
+msgid "Last Name"
+msgstr "Nachname"
+
+msgid "Email Address"
+msgstr "Email-Addresse"
+
+msgid "Continue"
+msgstr "Weiter"
+
+msgid "Your Assessment"
+msgstr "Deine Auswertung"
+
 msgid "prev"
 msgstr "Zurück"
 
 msgid "next"
 msgstr "Weiter"
 
-msgid "last"
-msgstr "Abschließen"
-
 msgid "Save your responses so far"
 msgstr "Bisherige Antworten speichern"
-
-msgid "submit"
-msgstr "Absenden"
 
 msgid "Did Not Save"
 msgstr "Wurde nicht gespeichert"
@@ -181,9 +378,6 @@ msgstr "Vielen Dank"
 
 msgid "Your survey responses have been recorded."
 msgstr "Deine Antworten wurden gespeichert."
-
-msgid "Close this Window"
-msgstr "Fenster schließen"
 
 msgid "Sorry. There is no matching survey."
 msgstr "Es gibt leider keine passende Umfrage."
@@ -216,9 +410,6 @@ msgstr "Du hast keinen Namen angegeben"
 msgid "You did not provide a password"
 msgstr "Du hast kein Passwort angegeben"
 
-msgid "Load unfinished survey"
-msgstr "Zwischengespeicherte Umfrage laden"
-
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Um an dieser Umfrage teilzunehmen, benötigst Du einen passenden Zugangsschlüssel."
 
@@ -233,12 +424,6 @@ msgstr "Es gibt keine entsprechende Unmfrage."
 
 msgid "complete"
 msgstr "vollständig"
-
-msgid "Cannot submit results - there are none to submit."
-msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
-
-msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Dieser Fehler kann auftreten, wenn Du Deine Antworten bereits abgeschickt hast und in im  Browser auf 'Aktualisieren' geklickt hast. In diesem Fall wurden Deine Antworten bereits gespeichert."
 
 msgid ""
 "Dear {FIRSTNAME},\n"
@@ -257,6 +442,9 @@ msgstr "Umfrage wurde ausgefüllt"
 
 msgid "A new response was entered for your survey"
 msgstr "Deine Umfrage wurde gerade ausgefüllt."
+
+msgid "Click the following link to reload the survey:"
+msgstr "Klicke auf den folgenden Link um die Umfrage neu zu laden:"
 
 msgid "Click the following link to see the individual response:"
 msgstr "Klicke hier, um die einzelnen Antworten zu sehen:"
@@ -294,9 +482,6 @@ msgstr "Falls Du ein Schlüsselwort erhalten hast, gib es bitte in das untensteh
 msgid "Token"
 msgstr "Schlüsselwort"
 
-msgid "Continue"
-msgstr "Weiter"
-
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
 
@@ -332,9 +517,6 @@ msgstr "Eine oder mehrere Pflichtfragen sind nicht beantwortet worden. Bitte bea
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "Ein oder mehrere Fragen sind nicht korrekt beantwortet worden. Du kannst nicht fortfahren, bevor Du dies nicht getan hast."
 
-msgid "No answer"
-msgstr "Keine Antwort"
-
 msgid "Format: YYYY-MM-DD"
 msgstr "Format: JJJJ-MM-TT"
 
@@ -343,9 +525,6 @@ msgstr "(z.B.: 2005-12-24 für Heiligabend)"
 
 msgid "Please choose"
 msgstr "Bitte wählen"
-
-msgid "Other"
-msgstr "Sonstiges"
 
 msgid "Please choose one of the following"
 msgstr "Bitte wähle  eine Antwort aus"
@@ -379,30 +558,6 @@ msgstr "Bitte schreibe eine Kommentar zu Deiner Auswahl"
 
 msgid "Only numbers may be entered in this field"
 msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden"
-
-msgid "Yes"
-msgstr "Ja"
-
-msgid "No"
-msgstr "Nein"
-
-msgid "Female"
-msgstr "Weiblich"
-
-msgid "Male"
-msgstr "Männlich"
-
-msgid "Uncertain"
-msgstr "Unsicher"
-
-msgid "Increase"
-msgstr "Zunahme"
-
-msgid "Same"
-msgstr "Unverändert"
-
-msgid "Decrease"
-msgstr "Abnahme"
 
 msgid "The email you used is not valid. Please try again."
 msgstr "Die angegebene Email-Adresse ist ungültig. Bitte versuche es erneut."
@@ -443,14 +598,14 @@ msgstr "Details Deiner gespeicherten Umfrage"
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Du oder jemand der Deine Email-Adresse nutzt, hat Antworten auf eine Umfrage zwischengespeichert. Die folgenden Angaben kannst Du dazu verwenden, um zu dieser Umfrage zurückzukehren und das Ausfülllen der Umfrage fortzuführen."
 
-msgid "Name"
-msgstr "Unverändert"
-
-msgid "Password"
-msgstr "Passwort"
-
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Rufe die Umfrage auf, indem Du auf folgende URL klicken:"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Dieser Fehler kann auftreten, wenn Du Deine Antworten bereits abgeschickt hast und in im  Browser auf 'Aktualisieren' geklickt hast. In diesem Fall wurden Deine Antworten bereits gespeichert."
 
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Diese Frage ist vom Typ 'Mehrere Antworten', hat aber noch keine Antworten definiert."
@@ -547,9 +702,6 @@ msgstr "aktualisieren"
 
 msgid "Assessments"
 msgstr "Bewertungen"
-
-msgid "Return to Survey Administration"
-msgstr "Zur Umfragen-Administration zurückkehren"
 
 msgid "No SID Provided"
 msgstr "Keine SID angegeben"
@@ -910,9 +1062,6 @@ msgstr "Beantworte diese Frage nur, wenn folgende Bedingungen erfüllt sind:"
 msgid "Help about this question"
 msgstr "Hilfe zu dieser Frage"
 
-msgid "Comment"
-msgstr "Kommentar"
-
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Diese Umfrage ist noch nicht aktiviert. Deine Antwort kann nicht abgespeichert werden"
 
@@ -1103,12 +1252,6 @@ msgstr "Wähle die Zugangsschlüssel-Felder."
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr "Deine Umfragedaten können mit den zugeordneten Token exportiert werden. Wähle zusätzliche Felder, die mit exportiert werden sollen."
 
-msgid "First Name"
-msgstr "Vorname"
-
-msgid "Last Name"
-msgstr "Nachname"
-
 msgid "Email"
 msgstr "E-Mail"
 
@@ -1118,11 +1261,11 @@ msgstr "Name Attribute 1"
 msgid "Attribute 2"
 msgstr "Name Attribute 2"
 
-msgid "Email Address"
-msgstr "Email-Addresse"
-
 msgid "N/A"
 msgstr "Nicht zutreffend"
+
+msgid "Create Survey"
+msgstr "Erstelle Umfrage"
 
 msgid "PHPSurveyor System Summary"
 msgstr "PHPSurveyor Systemübersicht"
@@ -1163,6 +1306,12 @@ msgstr "Diese Umfrage ist momentan nicht aktiv."
 msgid "Activate this Survey"
 msgstr "Diese Umfrage aktivieren"
 
+msgid "This survey is active but expired."
+msgstr "Diese Umfrage aktiv aber abgelaufen´."
+
+msgid "This survey is active but expired"
+msgstr "Diese Umfrage aktiv aber abgelaufen"
+
 msgid "This survey is currently active"
 msgstr "Diese Umfrage ist momentan aktiv."
 
@@ -1174,12 +1323,6 @@ msgstr "Diese Umfrage kann nicht aktiviert werden."
 
 msgid "Do Survey"
 msgstr "Umfrage ausführen/testen"
-
-msgid "Dataentry Screen for Survey"
-msgstr "Dateneingabemaske für die Umfrage"
-
-msgid "Printable Version of Survey"
-msgstr "Druckbare Version der Umfrage"
 
 msgid "Edit Current Survey"
 msgstr "Diese Umfrage bearbeiten"
@@ -1198,9 +1341,6 @@ msgstr "Bewertungsregeln setzen"
 
 msgid "Browse Responses for this Survey"
 msgstr "Ergebnisse dieser Umfrage ansehen"
-
-msgid "View Saved but not submitted Responses"
-msgstr "Zeige zwischengespeicherte Antworten"
 
 msgid "Activate/Edit Tokens for this Survey"
 msgstr "Zugangsschlüssel aktivierenbearbeiten für diese Umfrage"
@@ -1533,6 +1673,9 @@ msgstr "Bearbeite Gruppe für Umfrage-ID "
 msgid "Update Group"
 msgstr "Gruppe aktualisieren"
 
+msgid "Edit Survey"
+msgstr "Umfrage bearbeiten"
+
 msgid "Admin Email:"
 msgstr "Administrator Email:"
 
@@ -1748,9 +1891,6 @@ msgstr "Keine Datei hochgeladen"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Fehler beim Datei-Upload. Du müssen eine CSV-Datei angeben"
 
-msgid "Create Survey"
-msgstr "Erstelle Umfrage"
-
 msgid "Import Survey"
 msgstr "Umfrage importieren"
 
@@ -1913,9 +2053,6 @@ msgstr "Bist Du sicher, dass Du diesen Eintrag löschen willst?"
 msgid "Slider"
 msgstr "Regler"
 
-msgid "Get statistics from these responses"
-msgstr "Zeige Statistiken dieser Antworten an"
-
 msgid "if you answered"
 msgstr "falls ihre Antwort "
 
@@ -1969,12 +2106,6 @@ msgstr "Identifizierung"
 
 msgid "Date Saved"
 msgstr "Datum Gespeichert"
-
-msgid "Show summary information"
-msgstr "Zeige Zusammenfassung"
-
-msgid "Display Responses"
-msgstr "Zeige Antworten an"
 
 msgid "Quick Statistics"
 msgstr "Statistiken"
@@ -2412,9 +2543,6 @@ msgstr "Benutzer bearbeiten"
 msgid "Could not modify user. Username and/or password were not supplied"
 msgstr "Konnte Benutzer nicht ändern. Benutzername und/oder Passwort wurden nicht angegeben."
 
-msgid "Export a VV survey file"
-msgstr "VV-Umfrage-Datei exportieren"
-
 msgid "Export, then de-activate survey"
 msgstr "Exportieren, dann Umfrage deaktivieren"
 
@@ -2423,9 +2551,6 @@ msgstr "Nur exportieren und Umfrage aktiv lassen"
 
 msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
 msgstr "Sofern Du 'Exportieren, dann Umfrage deaktivieren' ausgewählt hast, wird Deine gegenwärtige Antwortentabelle umbenannt und es ist nicht einfach diese wiederherzustellen. Sind sie sicher, dass SIe das wollen?"
-
-msgid "Import a VV survey file"
-msgstr "VV-Umfrage-Datei importieren"
 
 msgid "File:"
 msgstr "Datei:"
