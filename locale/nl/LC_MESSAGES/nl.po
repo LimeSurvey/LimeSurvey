@@ -1,9 +1,9 @@
 msgid ""
-msgstr ""
-"Project-Id-Version: PHPSurveyor Dutch Language file\n"
+""
+msgstr "Project-Id-Version: PHPSurveyor Dutch Language file\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2006-08-01 23:31+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Last-Translator: Ronald Leenes <uvtronald@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -15,10 +15,10 @@ msgstr ""
 "X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
 
 msgid "Administration"
-msgstr "Administratie"
+msgstr "Beheer"
 
 msgid "Default Administration Page"
-msgstr "Standaard administratie pagina"
+msgstr "Standaard beheerpagina"
 
 msgid "Activate Security"
 msgstr "Activeer beveiliging"
@@ -32,24 +32,20 @@ msgstr "Controleren instellingen"
 msgid "Check Database"
 msgstr "Controleren database"
 
-#, fuzzy
 msgid "List Surveys"
-msgstr "Vragenlijsten"
+msgstr "Toon vragenlijsten"
 
 msgid "Delete Entire Survey"
 msgstr "Wissen volledige vragenlijst"
 
-#, fuzzy
 msgid "Backup Entire Database"
-msgstr "Toevoegen database"
+msgstr "Backup gehele database"
 
-#, fuzzy
 msgid "Edit/Add Label Sets"
-msgstr "BewerkenToevoegen van label sets"
+msgstr "Bewerken/toevoegen van labelsets"
 
-#, fuzzy
 msgid "Template Editor"
-msgstr "Sjabloon:"
+msgstr "Sjablooneditor:"
 
 msgid "Show Help"
 msgstr "Toon help"
@@ -60,13 +56,11 @@ msgstr "Toevoegen of importeren nieuwe vragenlijst"
 msgid "Surveys"
 msgstr "Vragenlijsten"
 
-#, fuzzy
 msgid "Please Choose..."
-msgstr "Maak uw keuze.."
+msgstr "Maak uw keuze..."
 
-#, fuzzy
 msgid "None"
-msgstr "Neen"
+msgstr "Geen"
 
 msgid "5 Point Choice"
 msgstr "5 punt keuze"
@@ -78,26 +72,25 @@ msgid "Gender"
 msgstr "Geslacht"
 
 msgid "List (Dropdown)"
-msgstr "E&eacute;nkeuze (Dropdown)"
+msgstr "Lijst enkele keuze (Dropdown)"
 
 msgid "List (Radio)"
-msgstr "E&eacute;nkeuze (Radio)"
+msgstr "Lijst enkele keuze (Radioknoppen)"
 
 msgid "List With Comment"
-msgstr "E&eacute;nkeuze met opmerkingen"
+msgstr "Lijst enkele keuze met opmerkingen"
 
 msgid "Multiple Options"
 msgstr "Meerkeuze"
 
-#, fuzzy
 msgid "Multiple Options With Comments"
-msgstr "Meerkeuze met opmerkingen"
+msgstr "Meerkeuzevraag met opmerkingen"
 
 msgid "Multiple Short Text"
 msgstr "Meerdere korte antwoorden"
 
 msgid "Numerical Input"
-msgstr "Numerische vraag"
+msgstr "Numerieke vraag"
 
 msgid "Ranking"
 msgstr "Schaal"
@@ -108,13 +101,11 @@ msgstr "Kort vrij antwoord"
 msgid "Long free text"
 msgstr "Lang vrij antwoord"
 
-#, fuzzy
 msgid "Huge Free Text"
 msgstr "Lang vrij antwoord"
 
-#, fuzzy
 msgid "Yes/No"
-msgstr "JaNee"
+msgstr "Ja/Nee"
 
 msgid "Array (5 Point Choice)"
 msgstr "Matrix (5 punten)"
@@ -122,40 +113,35 @@ msgstr "Matrix (5 punten)"
 msgid "Array (10 Point Choice)"
 msgstr "Matrix (10 punten)"
 
-#, fuzzy
 msgid "Array (Yes/No/Uncertain)"
-msgstr "Matrix (JaNeeMisschien)"
+msgstr "Matrix (Ja/Nee/Weet niet)"
 
 msgid "Array (Increase, Same, Decrease)"
 msgstr "Matrix (Meer, Gelijk, Minder)"
 
 msgid "Array (Flexible Labels)"
-msgstr "Matrix (flexibele labels)"
+msgstr "Matrix (opties kolomsgewijs)"
 
-#, fuzzy
 msgid "Array (Flexible Labels) by Column"
-msgstr "Matrix (flexibele labels)"
+msgstr "Matrix (opties rijgewijs)"
 
 msgid "Boilerplate Question"
-msgstr "Hangijzervraag"
+msgstr "Opmerking"
 
-#, fuzzy
 msgid "List (Flexible Labels) (Dropdown)"
-msgstr "Enkel (flexibele labels)"
+msgstr "Lijstselectie enkel (eigen opties) (dropdown)"
 
-#, fuzzy
 msgid "List (Flexible Labels) (Radio)"
-msgstr "Enkel (flexibele labels)"
+msgstr "Lijstselectie enkel (eigen opties) (radioknoppen)"
 
 msgid "No email notification"
-msgstr "Geen e-mail verwittiging"
+msgstr "Geen e-mail bevestiging"
 
 msgid "Basic email notification"
-msgstr "Eenvoudige e-mail verwittiging"
+msgstr "Eenvoudige e-mail bevestiging"
 
-#, fuzzy
 msgid "Detailed email notification with result codes"
-msgstr "E-mail verwittiging met resultaten (codes)"
+msgstr "E-mail bevestiging met resultaten (codes)"
 
 msgid "PHPSurveyor Setup"
 msgstr "PHPSurveyor Configuratie"
@@ -164,63 +150,61 @@ msgid "Error"
 msgstr "Fout"
 
 msgid "It appears as if some tables or fields are missing from your database."
-msgstr "Er blijken bepaalde tabellen of velden in de database te ontbreken."
+msgstr "Er ontbreken tabellen of velden aan de database."
 
 msgid "Check Database Fields"
-msgstr "Controleren database velden"
+msgstr "Controleer database velden"
 
 msgid "Return to Survey Administration"
-msgstr "Keer terug naar Vragenlijst Administratie"
+msgstr "Keer terug naar vragenlijstbeheer"
 
 msgid "Show summary information"
 msgstr "Toon samenvatting"
 
 msgid "Display Responses"
-msgstr "Toon deelnames"
+msgstr "Toon antwoordsets"
 
 msgid "Display Last 50 Responses"
-msgstr "Toon laatste 50 deelnames"
+msgstr "Toon laatste 50 antwoordsets"
 
 msgid "Dataentry Screen for Survey"
-msgstr "Ingavescherm van de vragenlijst"
+msgstr "Invoerscherm van de vragenlijst"
 
 msgid "Printable Version of Survey"
-msgstr "Printvriendelijke versie van de vragenlijst"
+msgstr "Printbare versie van de vragenlijst"
 
 msgid "Get statistics from these responses"
-msgstr "Toon statistieken van deze deelnames"
+msgstr "Toon statistieken van deze antwoordsets"
 
 msgid "Export Results to Application"
 msgstr "Exporteer deelnames naar programma"
 
 #, fuzzy
 msgid "Export result to a SPSS command file"
-msgstr "Exporteer toegangscodes uit CSV bestand"
+msgstr "Exporteer resultaten naar SPSS importbestand"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:950
 msgid "Import answers from a deactivated survey table"
-msgstr ""
+msgstr "Importeer antwoorden van een gedeactiveerde vragenlijst"
 
 msgid "Backup results table as SQL file"
-msgstr "Backup deelnametabel als SQL bestand"
+msgstr "Backup antwoordsets als SQL bestand"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:955
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:407
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:410
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1905
 msgid "View Saved but not submitted Responses"
-msgstr ""
+msgstr "Toon bewaarde maar niet verstuurde antwoordsets"
 
-#, fuzzy
 msgid "Import a VV survey file"
-msgstr "Import van deze vragenlijst is mislukt"
+msgstr "Importeer een VV vragenlijst"
 
-#, fuzzy
 msgid "Export a VV survey file"
-msgstr "Exporteren vragenlijst"
+msgstr "Exporteer een VV vragenlijst"
 
 msgid "Other"
-msgstr "Andere"
+msgstr "Anders"
 
 msgid "Yes"
 msgstr "Ja"
@@ -238,7 +222,7 @@ msgid "Female"
 msgstr "Vrouwelijk"
 
 msgid "Uncertain"
-msgstr "Niet zeker"
+msgstr "Weet niet"
 
 msgid "Increase"
 msgstr "Toenemend"
@@ -252,54 +236,48 @@ msgstr "Zelfde"
 msgid "Comment"
 msgstr "Opmerking"
 
-#, fuzzy
 msgid "Load Unfinished Survey"
-msgstr "Laad onvoltooide enquête"
+msgstr "Laad onvoltooide vragenlijst"
 
 msgid "last"
 msgstr "Laatste"
 
-#, fuzzy
 msgid "Save Survey and Return"
-msgstr "Opgeslagen enquête details"
+msgstr "Bewaar vragenlijst en keer terug"
 
 msgid "Are you sure you want to clear all your responses?"
-msgstr "Bent u zeker dat u alle antwoorden wil verwijderen?"
+msgstr "Weet u zeker dat u alle antwoorden wilt verwijderen?"
 
 msgid "Exit and Clear Survey"
 msgstr "Afbreken en antwoorden verwijderen"
 
-#, fuzzy
 msgid "There is 1 question in this survey"
-msgstr "Er is slechts 1 vraag in deze enquete."
+msgstr "Er is slechts 1 vraag in deze vragenlijst."
 
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
-msgstr "Er zijn {NUMBEROFQUESTIONS} vragen in deze enquête."
+msgstr "Er zijn {NUMBEROFQUESTIONS} vragen in deze vragenlijst."
 
 msgid "submit"
 msgstr "Versturen"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
 msgid "A Note On Privacy"
-msgstr ""
+msgstr "Een opmerking over uw privacy"
 
-#, fuzzy
 msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "<strong><i>Privacy verklaring<i><strong><br >Deze enquête is anoniem.<br >De bewaarde antwoorden bevatten geen identiteitsgegevens tenzij u bij een bepaalde vraag identiteitsgegevens hebt ingevi=uld.Indien u via een code hebt ingelogd kunnen wij u verzekeren dat deze niet bewaard werd in combinatie met uw antwoorden maar wel in een alleenstaande, niet gekoppelde, tabel en dit enkel om na te kijken of voor die code de enquête reeds werd ingevuld of niet. Er is geen enkele manier om de codes te koppelen aan de antwoorden."
+msgstr "<strong><i>Privacy statement<i><strong><br >Deze vragenlijst is anoniem.<br >De bewaarde antwoorden bevatten geen identiteitsgegevens tenzij u deze bij een bepaalde vraag hebt ingevuld. Indien u via een toegangscode deelneemt kunnen wij u verzekeren dat deze niet wordt bewaard in combinatie met uw antwoorden maar wel is opgeslagen in een aparte tabel. De tabel met toegangscodes wordt gebruikt om na te kijken of een vragenlijst reeds voor de betreffende toegangscode is ingevuld. Er is geen enkele manier om de codes te koppelen aan de antwoorden."
 
-#, fuzzy
 msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
-msgstr "<strong>Dank u<br ><br >U hebt alle vragen in deze enquête beantwoord.<strong><br ><br >Klik op [-._SUBMIT.-] om uw antwoorden te bewaren."
+msgstr "<strong>Dank u<br ><br >U hebt alle vragen in deze vragenlijst beantwoord.<strong><br ><br >Klik op [-._SUBMIT.-] om uw antwoorden te versturen."
 
-#, fuzzy
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
-msgstr "Indien u uw antwoorden nog eens wil nakijken of wijzigen, blader dan door de enquête met de [<< -._PREV.-] en [-._NEXT.- >>] knoppen."
+msgstr "Als u uw antwoorden nog eens wilt nakijken of wijzigen, kunt u door de vragenlijst heen en weer bladeren met de [<< -._PREV.-] en [-._NEXT.- >>] knoppen."
 
 msgid "Answers Cleared"
 msgstr "Antwoorden verwijderd"
 
 msgid "Restart this Survey"
-msgstr "Herstart deze enquête"
+msgstr "Begin opnieuw met deze vragenlijst"
 
 msgid "Close this Window"
 msgstr "Sluit dit venster"
@@ -314,51 +292,48 @@ msgid "Repeat Password"
 msgstr "Herhaal wachtwoord"
 
 msgid "Your Email"
-msgstr "Uw e-mail adres"
+msgstr "Uw e-mailadres"
 
 msgid "Save Now"
-msgstr "Nu opslaan"
+msgstr "Bewaar nu"
 
 msgid "Return To Survey"
-msgstr "Terug naar de enqeute"
+msgstr "Terug naar de vragenlijst"
 
 msgid "Save Your Unfinished Survey"
-msgstr "Sla uw onvoltooide enquête op"
+msgstr "Bewaar de incomplete vragenlijst"
 
-#, fuzzy
 msgid ""
 "Enter a name and password for this survey and click save below.<br />\n"
 "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
 "If you give an email address, an email containing the details will be sent to you."
-msgstr "Vul een naam en wachtwoord in voor deze enquête en druk op save.<br >nUw enquête wordt opgeslagen en kan later worden aangevuld door in te loggen met de door u opgegeven inloggevens.<br ><br >nAls u een e-mail adres op geeft sturen we u de details per e-mail"
+msgstr "Vul een naam en wachtwoord in voor deze vragenlijst en druk op bewaar.<br >Uw vragenlijst wordt opgeslagen en kan later worden aangevuld door in te loggen met de door u opgegeven inloggevens.<br ><br >Als u een e-mail adres opgeeft worden de inloggegevens naar uw e-mail gestuurd."
 
 msgid "Saved name"
-msgstr "Naam"
+msgstr "Bewaarde naam"
 
 msgid "Load Now"
-msgstr "Laad nu"
+msgstr "Laad vragenlijst"
 
 msgid "Load A Previously Saved Survey"
-msgstr "Laad een eerder opgeslagen enquête"
+msgstr "Laad een eerder opgeslagen vragenlijst"
 
-#, fuzzy
 msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
-msgstr "U kunt een enquête laden die u hier eerder heeft opgeslagen.<br >nVul de eerder door u verzonnen naam en wachtwoord in<br ><br >n"
+msgstr "U kunt een vragenlijst die u hier eerder heeft opgeslagen inladen.<br >Vul de door u bij het bewaren opgegeven 'naam'  en wachtwoord in<br ><br >"
 
 msgid "You must be registered to complete this survey"
-msgstr "Registratie is vereist om deel te nemen aan deze enquête."
+msgstr "Registratie is vereist om deel te nemen aan deze vragenlijst."
 
-#, fuzzy
 msgid ""
 "You may register for this survey if you wish to take part.<br />\n"
 "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr "U kan uzelf registreren om deel te nemen aan deze enquête.<br >nVul volgende gegevens in en u zal onmiddellijk een email ontvangen met daarin een link naar de enquête."
+msgstr "U moet uzelf aanmelden om deel te nemen aan deze vragenlijst.<br >Vul volgende gegevens in en u zal onmiddellijk een email ontvangen met daarin een link naar de vragenlijst."
 
 msgid "First Name"
-msgstr "Voorname"
+msgstr "Voornaam"
 
 msgid "Last Name"
-msgstr "Familiename"
+msgstr "Achternaam"
 
 msgid "Email Address"
 msgstr "Email Adres"
@@ -367,7 +342,7 @@ msgid "Continue"
 msgstr "Ga verder"
 
 msgid "Your Assessment"
-msgstr "Uw toetsing"
+msgstr "Uw toets"
 
 msgid "prev"
 msgstr "Vorige"
@@ -376,13 +351,13 @@ msgid "next"
 msgstr "Volgende"
 
 msgid "Save your responses so far"
-msgstr "Sla uw antwoorden zover op"
+msgstr "Sla uw antwoorden tot nu toe op"
 
 msgid "Did Not Save"
-msgstr "Kon niet bewaren"
+msgstr "Niet bewaard"
 
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr "Uw antwoorden werden niet bewaard. Deze enquête is nog niet aktief."
+msgstr "Uw antwoorden zijn niet bewaard. Deze vragenlijst is nog niet aktief."
 
 msgid "Clear Responses"
 msgstr "Verwijder antwoorden"
@@ -391,32 +366,32 @@ msgid "Thank you"
 msgstr "Dank u"
 
 msgid "Your survey responses have been recorded."
-msgstr "Uw antwoorden werden bewaard."
+msgstr "Uw antwoorden zijn bewaard."
 
 msgid "Sorry. There is no matching survey."
-msgstr "Sorry. Er is geen enquête met dit nummer."
+msgstr "Sorry. Er is geen vragenlijst met dit nummer."
 
 msgid "This survey is not currently active. You will not be able to save your responses."
-msgstr "Deze enquête is momenteel niet aktief. U kan uw vragen niet bewaren."
+msgstr "Deze vragenlijst is momenteel niet actief. Uw antwoorden kunnen niet worden bewaard."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/index.php:69
 msgid "ERROR"
-msgstr ""
+msgstr "FOUT"
 
 msgid "You have not provided a survey identification number"
-msgstr "U hebt geen enquête nummer opgegeven."
+msgstr "U hebt geen vragenlijstnummer opgegeven."
 
 msgid "Please contact"
-msgstr "Contacteer"
+msgstr "Neem contact op met"
 
 msgid "for further assistance"
-msgstr "voor assistentie"
+msgstr "voor hulp"
 
 msgid "This survey is no longer available."
-msgstr "Deze enquête is niet meer beschikbaar."
+msgstr "Deze vragenlijst is niet meer beschikbaar."
 
 msgid "You have already completed this survey."
-msgstr "U hebt deze enquête reeds beantwoord."
+msgstr "U heeft deze vragenlijst al beantwoord."
 
 msgid "You did not provide a name"
 msgstr "U heeft geen naam opgegeven"
@@ -425,19 +400,19 @@ msgid "You did not provide a password"
 msgstr "U heeft geen wachtwoord opgegeven"
 
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Dit is een gecontrolleerde enquête. U hebt een geldige code nodig om deel te nemen."
+msgstr "Dit is een gecontrolleerde vragenlijst. U heeft een geldige toegangscode nodig om deel te nemen."
 
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "De code die u hebt ingegeven is ongeldig of ze werd reeds gebruikt."
 
 msgid "For further information contact"
-msgstr "Voor meer informatie contacteer"
+msgstr "Voor meer informatie neem contact op met"
 
 msgid "There is no matching saved survey"
-msgstr "Er is geen enquête gevonden met deze naam"
+msgstr "Er is geen vragenlijst gevonden bij deze naam"
 
 msgid "complete"
-msgstr "volledige"
+msgstr "afgerond"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/index.php:898
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1777
@@ -453,65 +428,72 @@ msgid ""
 "Sincerely,\n"
 "\n"
 "{ADMINNAME}"
-msgstr ""
+msgstr "Beste {FIRSTNAME},\n"
+"\n"
+"Dit e-mail bericht bevestigt dat u de vragenlijst  {SURVEYNAME} heeft ingevuld en dat uw antwoorden zijn opgeslagen. Dank u voor uw deelname.\n"
+"\n"
+"Als u vragen heeft over deze e-mail, neemt u dan contact op met de beheerder {ADMINNAME} via {ADMINEMAIL}.\n"
+"\n"
+"Hoogachtend,\n"
+"\n"
+"{ADMINNAME}"
 
 msgid "Survey Submitted"
-msgstr "Enquête verzonden"
+msgstr "Vragenlijst verstuurd"
 
 msgid "A new response was entered for your survey"
-msgstr "Er is weer een enquête beantwoord"
+msgstr "Er is weer een vragenlijst ingevuld"
 
 #, fuzzy
 msgid "Click the following link to reload the survey:"
-msgstr "Klik de volgende link om de individuele antwoorden te zien:"
+msgstr "Klik op de nevenstaande link om de vragenlijst te herladen:"
 
 msgid "Click the following link to see the individual response:"
-msgstr "Klik de volgende link om de individuele antwoorden te zien:"
+msgstr "Klik op de nevenstaande link om de individuele antwoorden te zien:"
 
-#, fuzzy
 msgid "Click the following link to edit the individual response:"
-msgstr "Klik de volgende link om de individuele antwoorden te zien:"
+msgstr "Klik de nevenstaande link om de individuele antwoorden te wijzigen:"
 
 msgid "View statistics by clicking here:"
-msgstr "Bekijk statistieken -> klik hier:"
+msgstr "Bekijk statistieken door op nevenstaande link te klikken:"
 
 msgid "An unexpected error has occurred and your responses cannot be saved."
-msgstr "Door een onverwachte fout werden uw antwoorden niet bewaard."
+msgstr "Door een onverwachte fout zijn uw antwoorden niet bewaard."
 
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
-msgstr "Uw antwoorden zijn niet verloren. Ze werden doorgestuurd naar de enquête administrator. Ze zullen op een later tijdstip worden ingevoerd."
+msgstr "Uw antwoorden zijn niet verloren. Ze zijn doorgestuurd naar de beheerder van de vragelijst. Ze zullen op een later tijdstip worden ingevoerd."
 
 msgid "An error occurred saving a response to survey id"
-msgstr "Er is een fout opgetreden bij het bewaren van antwoorden van enquête nr. "
+msgstr "Er is een fout opgetreden bij het bewaren van antwoorden van vragenlijst nr. "
 
 msgid "DATA TO BE ENTERED"
-msgstr "Error: EEMAIL2"
+msgstr "IN TE VOEREN GEGEVENS"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/index.php:985
 msgid "SQL CODE THAT FAILED"
-msgstr ""
+msgstr "DE SQL CODE WAAROP HET MISLIEP"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/index.php:987
 msgid "ERROR MESSAGE"
-msgstr ""
+msgstr "FOUTMELDING"
 
 msgid "Try to submit again"
-msgstr "Probeer opnieuw door te sturen"
+msgstr "Probeer opnieuw in te sturen"
 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
-msgstr "Indien u een code hebt ontvangen, geef ze dan hier in en klik op 'Verder'."
+msgstr "Indien u een toegangscode heeft ontvangen, vul deze dan hier in en klik op 'Verder'."
 
 msgid "Token"
-msgstr "Sleutel"
+msgstr "Toegangscode"
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
-msgstr "Er zijn nog geen vragen aangemaakt voor deze enquête en kan dus niet getest worden."
+msgstr "Er zijn nog geen vragen aangemaakt voor deze vragenlijst en er valt dus niets te testen of in te vullen."
 
 msgid "Choose only one of the following"
 msgstr "Kies één van volgende opties"
 
 msgid "Check any that apply"
-msgstr "Selecteer alle toepasselijke opties"
+msgstr "Selecteer de toepasselijke opties"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:366
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:247
@@ -520,32 +502,31 @@ msgstr ""
 
 #, fuzzy
 msgid "This question must be answered correctly"
-msgstr "Dit is een verplichte vraag"
+msgstr "Deze vraag moet juist worden beantwoord"
 
 msgid "This question is mandatory"
 msgstr "Dit is een verplichte vraag"
 
 msgid "Please complete all parts"
-msgstr "Vervolledig alle velden"
+msgstr "Vul alle onderdelen"
 
 msgid "Please rank all items"
 msgstr "Rangschik alle opties"
 
 msgid "Please check at least one item"
-msgstr "Kies minimum één optie"
+msgstr "Kies minimaal één optie"
 
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "Eén of meerdere verplichte velden zijn niet ingevuld. U kan niet verdergaan zonder deze te beantwoorden."
+msgstr "Eén of meer verplichte vragen zijn niet beantwoord. U kunt niet verdergaan zonder ze te beantwoorden."
 
-#, fuzzy
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "Eén of meerdere verplichte velden zijn niet ingevuld. U kan niet verdergaan zonder deze te beantwoorden."
+msgstr "Eén of meer vragen zijn onjuist beantwoord. U kunt niet verdergaan dit te herstellen."
 
 msgid "Format: YYYY-MM-DD"
 msgstr "Formaat: JJJJ-MM-DD"
 
 msgid "(eg: 2003-12-25 for Christmas day)"
-msgstr "(vb: 2003-12-25 voor Kerstmis)"
+msgstr "(bijvoorbeeld: 2003-12-25 is eerste Kerstdag)"
 
 msgid "Please choose"
 msgstr "Selecteer"
@@ -554,16 +535,16 @@ msgid "Please choose one of the following"
 msgstr "Kies één van de volgende"
 
 msgid "Please enter your comment here"
-msgstr "Geef uw opmerkingen hier in"
+msgstr "Vul hier uw opmerkingen in"
 
 msgid "Remove this item"
 msgstr "Verwijder dit antwoord"
 
 msgid "Click on an item in the list on the left, starting with your"
-msgstr "Selecteer een optie in de lijst aan de linkerzijde, beginnend met het meest"
+msgstr "Selecteer een optie in de lijst aan de linkerzijde, beginnend met de meest"
 
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr "toepasselijke optie gaande naar de minst toepasselijke optie."
+msgstr "toepasselijke optie doorgaand tot de minst toepasselijke optie."
 
 msgid "Your Choices"
 msgstr "Uw keuzes"
@@ -575,26 +556,25 @@ msgid "Click on the scissors next to each item on the right"
 msgstr "Klik op de schaar rechts naast de optie"
 
 msgid "to remove the last entry in your ranked list"
-msgstr "om deze te verwijderen van uw rangschikking"
+msgstr "om deze te verwijderen uit uw rangschikking"
 
 msgid "Make a comment on your choice here:"
 msgstr "Verduidelijk uw antwoord"
 
 msgid "Only numbers may be entered in this field"
-msgstr "In dit veld kunnen enkel nummers ingegeven worden"
+msgstr "In dit veld kunnen alleen cijfers worden ingevoerd"
 
 msgid "The email you used is not valid. Please try again."
-msgstr "Het emailadres dat u opgaf is niet geldig. Probeer nog eens."
+msgstr "Het emailadres dat u opgaf is niet geldig. Probeert u het nog eens."
 
 msgid "The email you used has already been registered."
 msgstr "Het emailadres dat u opgaf is reeds geregistreerd."
 
-#, fuzzy
 msgid ""
 "Thank you for registering to participate in this survey.<br /><br />\n"
 "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\n"
 "Survey Administrator {ADMINNAME} ({ADMINEMAIL})"
-msgstr "Bedankt voor uw registratie om deel te nemen aan deze enquête.<br ><br >nEr werd een email gestuurd naar het opgegeven adres met toegangsgegevens voor deze enquête. Volg de link in deze email om de enquête te starten.<br ><br >nEnquête verantwoordelijke {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Bedankt voor uw aanmelding om deel te nemen aan deze vragenlijst.<br ><br >\nEr is een email met toegangsgegevens voor deze vragenlijst gestuurd naar het opgegeven adres. Volg de link in deze email om de vragenlijst te beginnen.<br ><br >\nDe beheerder van deze vragenlijst {ADMINNAME} ({ADMINEMAIL})"
 
 msgid "Please try again."
 msgstr "Probeert u het nog eens."
@@ -2268,10 +2248,10 @@ msgid "Submit Your Survey."
 msgstr "Verstuur uw enquête"
 
 msgid "Thank you for completing this survey."
-msgstr "Bedankt om deel te nemen aan deze enquête."
+msgstr "Bedankt om deel te nemen aan deze vragenlijst."
 
 msgid "Please fax your completed survey to:"
-msgstr "Graag uw enquête faxen naar:"
+msgstr "Graag uw vragenlijst faxen naar:"
 
 #, fuzzy
 msgid "Answered"
@@ -2665,10 +2645,10 @@ msgstr "Uitnodiging verzonden naar:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:733
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
-msgstr ""
+msgstr "Versturen van mail naar {FIRSTNAME} {LASTNAME} ({EMAIL}) is mislukt"
 
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
-msgstr "Er zijn meer e-mails lopende dan in &eacute;&eacute;n keer kunnen verstuurd worden. Ga verder met het versturen door hieronder te klikken."
+msgstr "Er staan meer e-mails in de wachtrij dan in &eacute;&eacute;n keer kunnen worden verstuurd. Ga verder met het versturen door hieronder te klikken."
 
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Er zijn nog {EMAILCOUNT} e-mails te versturen."
@@ -2750,7 +2730,7 @@ msgid "Creating default htaccess file"
 msgstr "Aanmaken standaard htaccess bestand"
 
 msgid "Couldn't create htaccess file. Check your config.php for $homedir setting, and that you have write permission in the correct directory."
-msgstr "Kon het htaccess bestand niet maken. Controleer config.php op $homedir instelling, en op schrijfrechten in de juiste mappen."
+msgstr "Kon het htaccess bestand niet aanmaken. Controleer of de $homedir instelling correct is ingesteld in config.php en of u  schrijfrechten heeft in de juiste mappen."
 
 msgid "Security Levels are now set up!"
 msgstr "Beveiligingsniveaus zijn nu ingesteld!"
@@ -2759,98 +2739,97 @@ msgid "Creating default users"
 msgstr "Bezig met het aanmaken van de standaardgebruikers"
 
 msgid "Updating users table"
-msgstr "Bijwerken gebruikertabel"
+msgstr "Bijwerken gebruikerstabel"
 
 msgid "Error occurred creating htpasswd file"
-msgstr "Er deed zich een fout voor bij het aanmaken van het htpasswd bestand"
+msgstr "Er heeft zich een fout voorgedaan bij het aanmaken van het htpasswd bestand"
 
 #, fuzzy
 msgid "If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/"
-msgstr "Als u een Windows server gebruikt, is het aanbevolen dat u het apache htpasswd.exe bestand in uw admin map kopieert om deze functie te kunnen gebruiken. Het bestand wordt meestal gevonden in apache groupapachebin"
+msgstr "Als u een Windows server gebruikt, bevelen we u aan dat het apache htpasswd.exe bestand in uw admin map te plaatsen. Het bestand bevindt zich meestal in de map /apache group/apache/bin"
 
 msgid "Removing security settings"
 msgstr "Verwijderen beveiligingsinstellingen"
 
 msgid "Access file, password file and user database deleted"
-msgstr "Toegangsbestand, paswoordbestand en gebruikersdatabase gewist"
+msgstr "Toegangsbestand, paswoordbestand en gebruikersdatabase zijn gewist"
 
 msgid "Adding User"
 msgstr "Bezig met het toevoegen van de gebruiker"
 
 #, fuzzy
 msgid "Could not add user. Username and/or password were not supplied"
-msgstr "Kon de gebruiker niet toevoegen. Gebruikersnaam enof paswoord zijn niet opgegeven"
+msgstr "Kon de gebruiker niet toevoegen. Gebruikersnaam en/of paswoord ontbreken"
 
 msgid "Deleting User"
 msgstr "Bezig met het wissen van de gebruiker"
 
 msgid "Could not delete user. Username was not supplied."
-msgstr "Kon de gebruiker niet wissen. Gebruikersnaam is niet opgegeven."
+msgstr "Kon de gebruiker niet wissen. Gebruikersnaam ontbreekt."
 
 msgid "Modifying User"
-msgstr "Bezig met het bewerken van de gebruiker"
+msgstr "Bezig met het bewerken van de gebruikersgegevens"
 
 #, fuzzy
 msgid "Could not modify user. Username and/or password were not supplied"
-msgstr "Kon de gebruiker niet bewerken. Gebruikersnaam enof paswoord zijn niet opgegeven"
+msgstr "Kon de gebruikersgegevens niet bewerken. Gebruikersnaam en/of paswoord ontbreken"
 
 #, fuzzy
 msgid "Export, then de-activate survey"
-msgstr "Exporteer huidige vragenlijst"
+msgstr "Exporteer en deactiveer huidige vragenlijst "
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:59
 msgid "Export but leave survey active"
-msgstr ""
+msgstr "Exporteer, maar laat vragenlijst actief"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:67
 msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr ""
+msgstr "Als u kiest voor exporteer en deactiveer dan zal de huidige antwoordentabel worden hernoemd en zal het niet eenvoudig zijn deze te reactiveren. Bent u zeker van uw keuze? "
 
 #, fuzzy
 msgid "File:"
-msgstr "Titel:"
+msgstr "Bestand:"
 
 #, fuzzy
 msgid "Survey ID:"
-msgstr "Vragenlijst URL:"
+msgstr "Vragenlijst ID:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:64
 msgid "Exclude record IDs?"
-msgstr ""
+msgstr "Record IDs uitsluiten?"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:66
 msgid "When an imported record matches an existing record ID:"
-msgstr ""
+msgstr "Als een ge&iuml;mporteerd record gelijk is aan record ID:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:67
 msgid "Report an error (and skip the new record)."
-msgstr ""
+msgstr "Rapporteer een fout (en negeer het nieuwe record)"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:68
 msgid "Renumber the new record."
-msgstr ""
+msgstr "Hernummer het nieuwe record"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:69
 msgid "Ignore the new record."
-msgstr ""
+msgstr "Negeer het nieuwe record"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:70
 msgid "Replace the existing record."
-msgstr ""
+msgstr "Vervang het bestaande record"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:225
 msgid "Import Failed on Record"
-msgstr ""
+msgstr "Importeren mislukt van record"
 
 #, fuzzy
 msgid "because"
-msgstr "Afnemend"
+msgstr "omdat"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:238
 msgid "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr ""
+msgstr "Belangrijk:<br/>Ververs deze pagina NIET omdat het bestand anders opnieuw zal worden ingelezen wat tot doublures zal leiden  "
 
 #, fuzzy
 msgid "Total records imported:"
-msgstr "Totaal aantal vragenlijsten voltooid:"
-
+msgstr "Totaal aantal ge&iuml;mporteerde vragenlijsten:"
