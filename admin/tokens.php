@@ -1287,7 +1287,7 @@ if ($action == "upload")
 			$xx++;
 			}
 		echo "<font color='green'>"._("Success")."</font><br /><br>\n";
-		$message=str_replace("{TOKENCOUNT}", $xz, _("TOKENCOUNT} Records Created"));
+		$message=str_replace("{TOKENCOUNT}", $xz, _("{TOKENCOUNT} Records Created"));
 		echo "<i>$message</i><br />\n";
 		fclose($handle);
 		unlink($the_full_file_path);
