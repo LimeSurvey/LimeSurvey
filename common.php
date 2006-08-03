@@ -39,7 +39,7 @@ if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
 require_once(dirname(__FILE__).'/classes/adodb/adodb.inc.php');
 
-$versionnumber = "1.01alpha";
+$versionnumber = "1.08a";
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
 if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
