@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-02 22:00+0100\n"
+"PO-Revision-Date: 2006-08-03 20:17+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1672,6 +1672,9 @@ msgstr "Bearbeite Gruppe für Umfrage-ID "
 msgid "Update Group"
 msgstr "Gruppe aktualisieren"
 
+msgid "Edit Survey"
+msgstr "Umfrage bearbeiten"
+
 msgid "Admin Email:"
 msgstr "Administrator Email:"
 
@@ -2491,7 +2494,7 @@ msgstr "Importiere CSV-Datei"
 msgid "Creating Token Entries"
 msgstr "Erstelle Zugangsschlüssel-Einträge"
 
-msgid "TOKENCOUNT} Records Created"
+msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} Einträge erstellt"
 
 msgid "Creating default htaccess file"
