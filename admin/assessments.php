@@ -66,7 +66,7 @@ if ($action == _("Add")) {
 	$result=$connect->Execute($query);
 }
 
-
+sendcacheheaders();
 echo $htmlheader;
 echo "<table><tr><td height='1'></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
