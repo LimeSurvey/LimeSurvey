@@ -243,7 +243,7 @@ if ($sourcefrom == "admin")
                     ."'  alt='"._("Check Database")."' align='left' onClick=\"window.open('checkfields.php', '_top')\"" 
                     ."onmouseout=\"hideTooltip()\"" 
                     ."onmouseover=\"showTooltip(event,'"._("Check Database")."');return false\">\n";
-		 $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles//dataentry.png' name='ListSurveys' title='"
+		 $adminmenu .= "\t\t\t\t\t<input type='image' src='$imagefiles/surveylist.png' name='ListSurveys' title='"
                     ."'  alt='"._("Check Database")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\"" 
                     ."onmouseout=\"hideTooltip()\"" 
                     ."onmouseover=\"showTooltip(event,'"._("List Surveys")."');return false\">\n";
