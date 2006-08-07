@@ -80,8 +80,8 @@ if ($action != "upload")
 		echo "<br /><table class='outlinetable' align='center'>
 		<tr><th colspan=2>Import a VV survey file</th></tr>
 		<tr><td colspan='2' align='center'>
-		<strong>Cannot import</strong><br /><br />
-		This survey is not active. You must activate the survey before attempting to import a VVexport file.<br /><br />
+		<strong>"._("Cannot import the VVExport file.")."</strong><br /><br />
+		".("This survey is not active. You must activate the survey before attempting to import a VVexport file.")."<br /><br />
 		[<a href='$scriptname?sid=4'>"._("Return to Survey Administration")."</a>]
 		</td></tr>
 		</table>";		
