@@ -1637,21 +1637,21 @@ if ($action == "editsurvey")
 		{
 		$esrow = array_map('htmlspecialchars', $esrow);
 		$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"
-					. "\t\t<strong>$setfont<font color='white'>"._("Edit Survey")."</font></font></strong></td></tr>\n"
+					. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey")."</font></font></td></tr>\n"
 					. "\t<tr>"
-					. "\t\t<td align='right' width='25%'>$setfont<strong>"._("Title:")."</strong></font></td>\n"
+					. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='short_title' value=\"{$esrow['short_title']}\"></td></tr>\n"
-					. "\t<tr><td align='right' valign='top'><strong>$setfont"._("Description:")."</font></strong></td>\n"
+					. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Description:")."</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-					. "\t<tr><td align='right' valign='top'>$setfont<strong>"._("Welcome:")."</strong></font></td>\n"
+					. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='welcome'>".str_replace("<br />", "\n", $esrow['welcome'])."</textarea></td></tr>\n"
-					. "\t<tr><td align='right'>$setfont<strong>"._("Administrator:")."</strong></font></td>\n"
+					. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='admin' value=\"{$esrow['admin']}\"></td></tr>\n"
-					. "\t<tr><td align='right'>$setfont<strong>"._("Admin Email:")."</strong></font></td>\n"
+					. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='adminemail' value=\"{$esrow['adminemail']}\"></td></tr>\n"
-					. "\t<tr><td align='right'>$setfont<strong>"._("Fax To:")."</strong></font></td>\n"
+					. "\t<tr><td align='right'><font class='settingcaption'>"._("Fax To:")."</font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='faxto' value=\"{$esrow['faxto']}\"></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Format:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Format:")."</font></td>\n"
 					. "\t\t<td><select $slstyle name='format'>\n"
 					. "\t\t\t<option value='S'";
 		if ($esrow['format'] == "S" || !$esrow['format']) {$editsurvey .= " selected";}
@@ -1665,7 +1665,7 @@ if ($action == "editsurvey")
 					. "\t\t</select></td>\n"
 					. "\t</tr>\n";
 		//TEMPLATES
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Template:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Template:")."</font></td>\n"
 					 . "\t\t<td><select $slstyle name='template'>\n";
 		foreach (gettemplatelist() as $tname)
 			{
@@ -1677,7 +1677,7 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t\t</select></td>\n"
 					 . "\t</tr>\n";
 		//COOKIES
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Use Cookies?")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Use Cookies?")."</font></td>\n"
 					 . "\t\t<td><select $slstyle name='usecookie'>\n"
 					 . "\t\t\t<option value='Y'";
 		if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected";}
@@ -1688,7 +1688,7 @@ if ($action == "editsurvey")
 					 . "\t\t</select></td>\n"
 					 . "\t</tr>\n";
 		//ALLOW SAVES
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Allow Saves?")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow Saves?")."</font></td>\n"
 					. "\t\t<td><select $slstyle name='allowsave'>\n"
 					. "\t\t\t<option value='Y'";
 		if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$editsurvey .= " selected";}
@@ -1699,7 +1699,7 @@ if ($action == "editsurvey")
 					. "\t\t</select></td>\n"
 					. "\t</tr>\n";
 		//ALLOW PREV
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Show [<< Prev] button")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Show [<< Prev] button")."</font></td>\n"
 					. "\t\t<td><select $slstyle name='allowprev'>\n"
 					. "\t\t\t<option value='Y'";
 		if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$editsurvey .= " selected";}
@@ -1710,18 +1710,18 @@ if ($action == "editsurvey")
 					. "\t\t</select></td>\n"
 					. "\t</tr>\n";
 		//NOTIFICATION
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Notification:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Notification:")."</font></td>\n"
 					 . "\t\t<td><select $slstyle name='notification'>\n"
 					 . getNotificationlist($esrow['notification'])
 					 . "\t\t</select></td>\n"
 					 . "\t</tr>\n";
 		//ANONYMOUS
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Anonymous?")."</strong></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Anonymous?")."</font></td>\n";
 		if ($esrow['active'] == "Y")
 			{
-			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
-			if ($esrow['private'] == "N") {$editsurvey .= " This survey is <strong>not</strong> anonymous";}
-			else {$editsurvey .= "This survey <strong>is</strong> anonymous";}
+			$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
+			if ($esrow['private'] == "N") {$editsurvey .= " This survey is not anonymous";}
+			else {$editsurvey .= "This survey is anonymous";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 						 . "\t\t</font></font>\n";
 			$editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\"></td>\n";
@@ -1747,37 +1747,37 @@ if ($action == "editsurvey")
 					 . "\t\t}\n"
 					 . "\t}\n"
 					 . "--></script>\n";
-		$editsurvey .= "\t$setfont<strong>"._("Invitation Email Subject:")."</strong></font></td>\n"
+		$editsurvey .= "\t<font class='settingcaption'>"._("Invitation Email Subject:")."</font></td>\n"
 					 . "\t\t<td><input type='text' $slstyle size='54' name='email_invite_subj' id='email_invite_subj' value=\"{$esrow['email_invite_subj']}\">\n"
 					 . "\t\t<input type='hidden' name='email_invite_subj_default' id='email_invite_subj_default' value='".html_escape(_("Invitation to participate in survey"))."'>\n"
 					 . "\t\t<input type='button' $slstyle value='"._("Use default")."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")'>\n"
 					 . "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Invitation Email:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email:")."</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_invite' id='email_invite'>{$esrow['email_invite']}</textarea>\n"
 					. "\t\t<input type='hidden' name='email_invite_default' id='email_invite_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
 					. "\t\t<input type='button' $slstyle value='"._("Use default")."' onClick='javascript: fillin(\"email_invite\",\"email_invite_default\")'>\n"
 					. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Email Reminder Subject:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder Subject:")."</font></td>\n"
 					 . "\t\t<td><input type='text' $slstyle size='54' name='email_remind_subj' id='email_remind_subj' value=\"{$esrow['email_remind_subj']}\">\n"
 					 . "\t\t<input type='hidden' name='email_remind_subj_default' id='email_remind_subj_default' value='".html_escape(_("Reminder to participate in survey"))."'>\n"
 					 . "\t\t<input type='button' $slstyle value='"._("Use default")."' onClick='javascript: fillin(\"email_remind_subj\",\"email_remind_subj_default\")'>\n"
 					 . "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Email Reminder:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder:")."</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_remind' id='email_remind'>{$esrow['email_remind']}</textarea>\n"
 					. "\t\t<input type='hidden' name='email_remind_default' id='email_remind_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
 					. "\t\t<input type='button' $slstyle value='"._("Use default")."' onClick='javascript: fillin(\"email_remind\",\"email_remind_default\")'>\n"
 					. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Confirmation Email Subject")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email Subject")."</font></td>\n"
 					 . "\t\t<td><input type='text' $slstyle size='54' name='email_confirm_subj' id='email_confirm_subj' value=\"{$esrow['email_confirm_subj']}\">\n"
 					 . "\t\t<input type='hidden' name='email_confirm_subj_default' id='email_confirm_subj_default' value='".html_escape(_("Confirmation of completed survey"))."'>\n"
 					 . "\t\t<input type='button' $slstyle value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm_subj\",\"email_confirm_subj_default\")'>\n"
 					 . "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Confirmation Email")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email")."</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_confirm' id='email_confirm'>{$esrow['email_confirm']}</textarea>\n"
 					. "\t\t<input type='hidden' name='email_confirm_default' id='email_confirm_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"))."'>\n"
 					. "\t\t<input type='button' $slstyle value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm\",\"email_confirm_default\")'>\n"
 					. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Allow public registration?")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow public registration?")."</font></td>\n"
 					. "\t\t<td><select $slstyle name='allowregister'>\n"
 					. "\t\t\t<option value='Y'";
 		if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected";}
@@ -1786,28 +1786,28 @@ if ($action == "editsurvey")
 		if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("No")."</option>\n"
 					. "\t\t</select></td>\n\t</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Public registration Email Subject:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email Subject:")."</font></td>\n"
 					 . "\t\t<td><input type='text' $slstyle size='54' name='email_register_subj' id='email_register_subj' value=\"{$esrow['email_register_subj']}\">\n"
 					 . "\t\t<input type='hidden' name='email_register_subj_default' id='email_register_subj_default' value='".html_escape(_("Survey Registration Confirmation"))."'>\n"
 					 . "\t\t<input type='button' $slstyle value='"._("Use default")."' onClick='javascript:  fillin(\"email_register_subj\",\"email_register_subj_default\")'>\n"
 					 . "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Public registration Email:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email:")."</font></td>\n"
 					. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_register' id='email_register'>{$esrow['email_register']}</textarea>\n"
 					 . "\t\t<input type='hidden' name='email_register_default' id='email_register_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."))."'>\n"
 					. "\t\t<input type='button' $slstyle value='"._("Use default")."' onClick='javascript:  fillin(\"email_register\",\"email_register_default\")'>\n"
 					. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right' valign='top'>$setfont<strong>"._("Token Attribute Names:")."</strong></font></td>\n"
-					. "\t\t<td>$setfont<input $slstyle type='text' size='25' name='attribute1'"
+		$editsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Token Attribute Names:")."</font></td>\n"
+					. "\t\t<td><font class='settingcaption'><input $slstyle type='text' size='25' name='attribute1'"
 					. " value=\"{$esrow['attribute1']}\">("._("Attribute 1").")<br />"
 					. "<input $slstyle type='text' size='25' name='attribute2'"
 					. " value=\"{$esrow['attribute2']}\">("._("Attribute 2").")</font></td>\n\t</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Date Stamp?")."</strong></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Date Stamp?")."</font></td>\n";
 				
 		if ($esrow['active'] == "Y")
 			{
-			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
-			if ($esrow['datestamp'] != "Y") {$editsurvey .= " Responses <strong>will not</strong> be date stamped.";}
-			else {$editsurvey .= "Responses <strong>will</strong> be date stamped";}
+			$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
+			if ($esrow['datestamp'] != "Y") {$editsurvey .= " Responses will not be date stamped.";}
+			else {$editsurvey .= "Responses will be date stamped";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 						 . "\t\t</font></font>\n";
 			$editsurvey .= "<input type='hidden' name='datestamp' value=\"{$esrow['datestamp']}\"></td>\n";
@@ -1825,13 +1825,13 @@ if ($action == "editsurvey")
 			}
 		$editsurvey .= "</tr>\n";
 
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("IP Address")."</strong></font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("IP Address")."</font></td>\n";
 
 		if ($esrow['active'] == "Y")
 			{
-			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
-			if ($esrow['ipaddr'] != "Y") {$editsurvey .= " Responses <strong>will not</strong> have the IP address logged.";}
-			else {$editsurvey .= "Responses <strong>will</strong> have the IP address logged";}
+			$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
+			if ($esrow['ipaddr'] != "Y") {$editsurvey .= " Responses will not have the IP address logged.";}
+			else {$editsurvey .= "Responses will have the IP address logged";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 						 . "\t\t</font></font>\n";
 			$editsurvey .= "<input type='hidden' name='ipaddr' value='".$esrow['ipaddr']."'>\n</td>";
@@ -1849,13 +1849,13 @@ if ($action == "editsurvey")
 			}
 			
 	// begin REF URL Block
-	$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Referring URL")."</strong></font></td>\n";
+	$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Referring URL")."</font></td>\n";
 	
 			if ($esrow['active'] == "Y")
 			{
-			$editsurvey .= "\t\t<td>\n\t\t\t$setfont";
-			if ($esrow['refurl'] != "Y") {$editsurvey .= " Responses <strong>will not</strong> have their referring URL logged.";}
-			else {$editsurvey .= "Responses <strong>will</strong> have their referring URL logged.";}
+			$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
+			if ($esrow['refurl'] != "Y") {$editsurvey .= " Responses will not have their referring URL logged.";}
+			else {$editsurvey .= "Responses will have their referring URL logged.";}
 			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 						 . "\t\t</font></font>\n";
 			$editsurvey .= "<input type='hidden' name='refurl' value='".$esrow['refurl']."'>\n</td>";
@@ -1872,7 +1872,7 @@ if ($action == "editsurvey")
 						 . "</select>\n\t\t</td>\n";
 			}
 	// BENBUN - END REF URL Block
-		$editsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Language:")."</strong></font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Language:")."</font></td>\n"
 		 . "\t\t<td><select $slstyle name='language'>\n";
 		 
 
@@ -1900,19 +1900,19 @@ if ($action == "editsurvey")
 
 		$editsurvey .= "\t\t</select></td>\n"
 			    	. "\t</tr>\n"
-					. "\t<tr><td align='right'>$setfont<strong>"._("Expiry Date:")."</strong></font></td>\n"
+					. "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
 					. "\t\t\t<td><select $slstyle name='useexpiry'><option value='Y'";
 		if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("Yes")."</option>\n"
 					. "\t\t\t<option value='N'";
 		if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("No")."</option></select></td></tr><tr><td></td>\n"
+		$editsurvey .= ">"._("No")."</option></select></td></tr><tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='12' name='expires' value=\"{$esrow['expires']}\"></td></tr>\n"
-					. "\t<tr><td align='right'>$setfont<strong>"._("End URL:")."</strong></font></td>\n"
+					. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
-					. "\t<tr><td align='right'>$setfont<strong>"._("URL Description:")."</strong></font></td>\n"
+					. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value=\"{$esrow['urldescrip']}\"></td></tr>\n"
-					. "\t<tr><td align='right'>$setfont<strong>"._("Automatically load URL when survey complete?")."</strong></font></td>\n"
+					. "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
 					. "\t\t<td><select $slstyle name='autoredirect'>";
 		$editsurvey .= "\t\t\t<option value='Y'";
 		if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected";}
@@ -1992,28 +1992,28 @@ if ($action == "uploadf")
 if ($action == "newsurvey")
 	{
 	$newsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-				. "\t\t<strong>$setfont<font color='white'>"._("Create Survey")."</font></font></strong></td></tr>\n"
+				. "\t\t<font class='settingcaption'><font color='white'>"._("Create Survey")."</font></font></td></tr>\n"
 				. "\t<tr>\n"
-				. "\t\t<td align='right' width='25%'><strong>$setfont"._("Title:")."</font></strong></td>\n"
+				. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='short_title'></td></tr>\n"
-				. "\t<tr><td align='right'><strong>$setfont"._("Description:")."</font></strong>	</td>\n"
+				. "\t<tr><td align='right'><font class='settingcaption'>"._("Description:")."</font>	</td>\n"
 				. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='description'></textarea></td></tr>\n"
-				. "\t<tr><td align='right'>$setfont<strong>"._("Welcome:")."</strong></font></td>\n"
+				. "\t<tr><td align='right'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
 				. "\t\t<td><textarea $slstyle2 cols='50' rows='5' name='welcome'></textarea></td></tr>\n"
-				. "\t<tr><td align='right'>$setfont<strong>"._("Administrator:")."</strong></font></td>\n"
+				. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='admin'></td></tr>\n"
-				. "\t<tr><td align='right'>$setfont<strong>"._("Admin Email:")."</strong></font></td>\n"
+				. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='adminemail'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Fax To:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Fax To:")."</font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='faxto'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Format:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Format:")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='format'>\n"
 				. "\t\t\t<option value='S' selected>"._("Question by Question")."</option>\n"
 				. "\t\t\t<option value='G'>"._("Group by Group")."</option>\n"
 				. "\t\t\t<option value='A'>"._("All in one")."</option>\n"
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Template:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Template:")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='template'>\n";
 	foreach (gettemplatelist() as $tname)
 		{
@@ -2025,7 +2025,7 @@ if ($action == "newsurvey")
 	$newsurvey .= "\t\t</select></td>\n"
 				. "\t</tr>\n";
 	//COOKIES
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Use Cookies?")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Use Cookies?")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='usecookie'>\n"
 				. "\t\t\t<option value='Y'";
 	if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected";}
@@ -2036,7 +2036,7 @@ if ($action == "newsurvey")
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
 	//ALLOW SAVES
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Allow Saves?")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow Saves?")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='allowsave'>\n"
 				. "\t\t\t<option value='Y'";
 	if (!isset($esrow['allowsave']) || !$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$newsurvey .= " selected";}
@@ -2047,7 +2047,7 @@ if ($action == "newsurvey")
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
 	//ALLOW PREV
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Show [<< Prev] button")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Show [<< Prev] button")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='allowprev'>\n"
 				. "\t\t\t<option value='Y'";
 	if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$newsurvey .= " selected";}
@@ -2058,65 +2058,65 @@ if ($action == "newsurvey")
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
 	//NOTIFICATIONS
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Notification:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Notification:")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='notification'>\n"
 				. getNotificationlist(0)
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Anonymous?")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Anonymous?")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='private'>\n"
 				. "\t\t\t<option value='Y' selected>"._("Yes")."</option>\n"
 				. "\t\t\t<option value='N'>"._("No")."</option>\n"
 				. "\t\t</select></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Invitation Email Subject:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email Subject:")."</font></td>\n"
 				 . "\t\t<td><input type='text' $slstyle size='54' name='email_invite_subj' value='".html_escape(_("Invitation to participate in survey"))."'>\n"
 				 . "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Invitation Email:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email:")."</font></td>\n"
 				. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_invite'>"._("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
 				. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Email Reminder Subject:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder Subject:")."</font></td>\n"
 				 . "\t\t<td><input type='text' $slstyle size='54' name='email_remind_subj' value='".html_escape(_("Reminder to participate in survey"))."'>\n"
 				 . "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Email Reminder:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder:")."</font></td>\n"
 				. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_remind'>"._("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
 				. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Confirmation Email Subject")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email Subject")."</font></td>\n"
 				 . "\t\t<td><input type='text' $slstyle size='54' name='email_confirm_subj' value='".html_escape(_("Confirmation of completed survey"))."'>\n"
 				 . "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Confirmation Email")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email")."</font></td>\n"
 				. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_confirm'>"._("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
 				. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Allow public registration?")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow public registration?")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='allowregister'>\n"
 				. "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
 				. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
 				. "\t\t</select></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Public registration Email Subject:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email Subject:")."</font></td>\n"
 				 . "\t\t<td><input type='text' $slstyle size='54' name='email_register_subj' value='".html_escape(_("Survey Registration Confirmation"))."'>\n"
 				 . "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Public registration Email:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email:")."</font></td>\n"
 				. "\t\t<td><textarea $slstyle2 cols=50 rows=5 name='email_register'>"._("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
 				. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right' valign='top'>$setfont<strong>"._("Token Attribute Names:")."</strong></font></td>\n"
-				. "\t\t<td>$setfont<input $slstyle type='text' size='25' name='attribute1'>("._("Attribute 1").")<br />"
+	$newsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Token Attribute Names:")."</font></td>\n"
+				. "\t\t<td><font class='settingcaption'><input $slstyle type='text' size='25' name='attribute1'>("._("Attribute 1").")<br />"
 				. "<input $slstyle type='text' size='25' name='attribute2'>("._("Attribute 2").")</font></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Date Stamp?")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Date Stamp?")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='datestamp'>\n"
 				. "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
 				. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
 				. "\t\t</select></td>\n\t</tr>\n";
 	// IP Address
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("IP Address")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("IP Address")."</font></td>\n"
                                 . "\t\t<td><select $slstyle name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
                                 . "\t\t\t<option value='N' selected>"._("No")."</option>\n"
                                 . "\t\t</select></td>\n\t</tr>\n";
 	// Referring URL
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Referring URL")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Referring URL")."</font></td>\n"
                                 . "\t\t<td><select $slstyle name='refurl'>\n"                                . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
                                 . "\t\t\t<option value='N' selected>"._("No")."</option>\n"
                                 . "\t\t</select></td>\n\t</tr>\n";
 	//Survey Language
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Language:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Language:")."</font></td>\n"
 				. "\t\t<td><select $slstyle name='language'>\n";
 
 
@@ -2129,20 +2129,20 @@ if ($action == "newsurvey")
 
 	$newsurvey .= "\t\t</select></td>\n"
 				. "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'>$setfont<strong>"._("Expiry Date:")."</strong></font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
 				. "\t\t\t<td><select $slstyle name='useexpiry'><option value='Y'>"._("Yes")."</option>\n"
 				. "\t\t\t<option value='N' selected>"._("No")."</option></select></td></tr><tr><td></td>\n"
-				. "\t\t<td>$setfont<input $slstyle type='text' size='12' name='expires' value='1980-01-01'>"
+				. "\t\t<td><font class='settingcaption'><input $slstyle type='text' size='12' name='expires' value='1980-01-01'>"
 				. "<font size='1'>Date Format: YYYY-MM-DD</font></font></td></tr>\n"
-				. "\t<tr><td align='right'>$setfont<strong>"._("End URL:")."</strong></font></td>\n"
+				. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='url' value='http://";
 	if (isset($esrow)) {$newsurvey .= $esrow['url'];}
 	$newsurvey .= "'></td></tr>\n"
-				. "\t<tr><td align='right'>$setfont<strong>"._("URL Description:")."</strong></font></td>\n"
+				. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='urldescrip' value='";
 	if (isset($esrow)) {$newsurvey .= $esrow['urldescrip'];}
 	$newsurvey .= "'></td></tr>\n"
-				 . "\t<tr><td align='right'>$setfont<strong>"._("Automatically load URL when survey complete?")."</strong></font></td>\n"
+				 . "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
 				 . "\t\t<td><select $slstyle name='autoredirect'>\n"
 				 . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
 				 . "\t\t\t<option value='N' selected>"._("No")."</option>\n"
@@ -2151,12 +2151,12 @@ if ($action == "newsurvey")
 				. "\t<input type='hidden' name='action' value='insertnewsurvey'></td>\n"
 				. "\t</tr>\n"
 				. "</table></form>\n";
-	$newsurvey .= "<center>$setfont<strong>"._("OR")."</strong></font></center>\n";
+	$newsurvey .= "<center><font class='settingcaption'>"._("OR")."</font></center>\n";
 	$newsurvey .= "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n"
 				. "<table width='100%' border='0'>\n"
 				. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
-				. "\t\t<strong>$setfont<font color='white'>"._("Import Survey")."</font></font></strong></td></tr>\n\t<tr>"
-				. "\t\t<td align='right'>$setfont<strong>"._("Select SQL File:")."</strong></font></td>\n"
+				. "\t\t<font class='settingcaption'><font color='white'>"._("Import Survey")."</font></font></td></tr>\n\t<tr>"
+				. "\t\t<td align='right'><font class='settingcaption'>"._("Select SQL File:")."</font></td>\n"
 				. "\t\t<td><input $slstyle2 name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
 				. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._("Import Survey")."'>\n"
 				. "\t<input type='hidden' name='action' value='importsurvey'></TD>\n"

@@ -55,14 +55,14 @@ td 		{
 		
 .btstyle{
 		font-family: verdana,arial,sans-serif; 
-		font-size: 11
+		font-size: 11px;
         }
         
 .slstyle{
 		background-color: #EEEFFF; 
 		height: 18; 
 		font-family: verdana; 
-		font-size: 10; 
+		font-size: 10px;
 		color: #000080
 		}
 		
@@ -70,7 +70,7 @@ td 		{
 		{
 		background-color: #EEEFFF; 
 		font-family: verdana; 
-		font-size: 10; 
+		font-size: 10px;
 		color: #000080
 		}
 
@@ -84,7 +84,7 @@ td 		{
         {
         	margin-top: 10px; 
         	height: 20px; 
-        	font-size: 10; 
+        	font-size: 10px;
         	font-family: verdana; 
         	color: #333333; 
         	background: SILVER; 
@@ -94,7 +94,7 @@ td 		{
         {
         	margin-top: 10px;
         	height: 20px;
-        	font-size: 10;
+        	font-size: 10px;
         	font-family: verdana;
         	color: #333333;
         	background: SILVER;
@@ -104,7 +104,7 @@ td 		{
         {
         	margin-top: 10px;
         	height: 20px;
-        	font-size: 10;
+        	font-size: 10px;
         	font-family: verdana;
         	color: #333333;
         	background: SILVER;
@@ -112,7 +112,7 @@ td 		{
         }
 .boxcaption
         {
-        	font-size: 12;
+        	font-size: 12px;
         	font-family: verdana;
 			font-weight: bold;
         }
@@ -124,6 +124,12 @@ td 		{
 				font-weight: bold;
 				color: #000000;
 	   }
+.settingcaption
+        {
+        	font-size: 12px;
+        	font-family: verdana;
+			font-weight: bold;
+        }
 /**
  *  CSS Classes related with the tooltips displayed over 
  * 	the images. 
