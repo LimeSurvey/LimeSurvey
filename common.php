@@ -1952,6 +1952,7 @@ function getAdminHeader()
 				. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\">\n"
 				. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>" 
 				. "<script type=\"text/javascript\" src=\"scripts/draganddrop.js\"></script>"
+				. "<script type=\"text/javascript\" src=\"scripts/generic.js\"></script>"
                 . "</head>\n<body>\n"
                 . "<div class=\"maintitle\">\n"
                 . "\t\t$sitename\n" 

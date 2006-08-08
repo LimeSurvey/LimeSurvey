@@ -1219,7 +1219,7 @@ if ($action == "addquestion")
 				  . "\t<input type='hidden' name='gid' value='$gid' />\n"
 				  . "</td></tr></table>\n"
 				  . "\t</form>\n"
-				  . "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post'>\n"
+				  . "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
 				  . "<table width='100%' border='0' >\n\t"
 				  . "<tr><td colspan='2' align='center'>$setfont<strong>"._("OR")."</strong></font></td></tr>\n"
 				  . "<tr><td colspan='2' bgcolor='black' align='center'>\n"
@@ -1590,7 +1590,7 @@ if ($action == "addgroup")
 			   . "\t</td></table>\n"
 			   . "</form></td></tr>\n"
 			   . "<tr><td align='center'>$setfont<strong>"._("OR")."</strong></font></td></tr>\n"
-			   . "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post'>"
+			   . "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">"
 			   . "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 			   . "\t\t<strong>$setfont<font color='white'>"._("Import Group")."</font></font></strong></td></tr>\n\t<tr>"
 			   . "\t\n"
@@ -2152,7 +2152,7 @@ if ($action == "newsurvey")
 				. "\t</tr>\n"
 				. "</table></form>\n";
 	$newsurvey .= "<center><font class='settingcaption'>"._("OR")."</font></center>\n";
-	$newsurvey .= "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n"
+	$newsurvey .= "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
 				. "<table width='100%' border='0'>\n"
 				. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
 				. "\t\t<font class='settingcaption'><font color='white'>"._("Import Survey")."</font></font></td></tr>\n\t<tr>"
