@@ -1991,7 +1991,7 @@ if ($action == "uploadf")
 	
 if ($action == "newsurvey")
 	{
-	$newsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+	$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 				. "\t\t<font class='settingcaption'><font color='white'>"._("Create Survey")."</font></font></td></tr>\n"
 				. "\t<tr>\n"
 				. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
@@ -2129,11 +2129,13 @@ if ($action == "newsurvey")
 
 	$newsurvey .= "\t\t</select></td>\n"
 				. "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
 				. "\t\t\t<td><select $slstyle name='useexpiry'><option value='Y'>"._("Yes")."</option>\n"
-				. "\t\t\t<option value='N' selected>"._("No")."</option></select></td></tr><tr><td></td>\n"
-				. "\t\t<td><font class='settingcaption'><input $slstyle type='text' size='12' name='expires' value='1980-01-01'>"
-				. "<font size='1'>Date Format: YYYY-MM-DD</font></font></td></tr>\n"
+				. "\t\t\t<option value='N' selected>"._("No")."</option></select></td></tr>\n"
+                . "<tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
+				. "\t\t<td><input $slstyle type='text' id='f_date_b' size='12' name='expires' value='"
+                . date("Y-m-d")."'><button type='reset' id='f_trigger_b'>...</button>"
+				. "<font size='1'> Date Format: YYYY-MM-DD</font></td></tr>\n"
 				. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
 				. "\t\t<td><input $slstyle type='text' size='50' name='url' value='http://";
 	if (isset($esrow)) {$newsurvey .= $esrow['url'];}
@@ -2161,7 +2163,17 @@ if ($action == "newsurvey")
 				. "\t<tr><td colspan='2' align='center'><input type='submit' $btstyle value='"._("Import Survey")."'>\n"
 				. "\t<input type='hidden' name='action' value='importsurvey'></TD>\n"
 				. "\t</tr>\n</table></form>\n";
-	}
+	// Here we do setup the date javascript
+	$newsurvey .= "<script type=\"text/javascript\">\n"
+                . "Calendar.setup({\n"
+                . "inputField     :    \"f_date_b\",\n"    // id of the input field
+                . "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
+                . "showsTime      :    false,\n"                    // will display a time selector
+                . "button         :    \"f_trigger_b\",\n"         // trigger for the calendar (button ID)
+                . "singleClick    :    true,\n"                   // double-click mode
+                . "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
+                . "});\n"
+                . "</script>\n";	}
 
 function replacenewline ($texttoreplace)
 {
