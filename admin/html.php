@@ -1907,7 +1907,7 @@ if ($action == "editsurvey")
 					. "\t\t\t<option value='N'";
 		if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected";}
 		$editsurvey .= ">"._("No")."</option></select></td></tr><tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
-					. "\t\t<td><input $slstyle type='text' size='12' name='expires' value=\"{$esrow['expires']}\"></td></tr>\n"
+					. "\t\t<td><input $slstyle type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\"><button type='reset' id='f_trigger_b'>...</button></td></tr>\n"
 					. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
 					. "\t\t<td><input $slstyle type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
 					. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
@@ -1927,6 +1927,18 @@ if ($action == "editsurvey")
 					 . "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
 					 . "\t</td></tr>\n"
 					 . "</table></form>\n";
+					 
+	    // Here we do the setup the date javascript
+	    $editsurvey .= "<script type=\"text/javascript\">\n"
+                     . "Calendar.setup({\n"
+                     . "inputField     :    \"f_date_b\",\n"     // id of the input field
+                     . "ifFormat       :    \"%Y-%m-%d\",\n"     // format of the input field
+                     . "showsTime      :    false,\n"            // will display a time selector
+                     . "button         :    \"f_trigger_b\",\n"  // trigger for the calendar (button ID)
+                     . "singleClick    :    true,\n"             // double-click mode
+                     . "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
+                     . "});\n"
+                     . "</script>\n";
 		}
 	}
 if ($action == "ordergroups")
