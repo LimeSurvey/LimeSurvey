@@ -4,7 +4,9 @@ body {
 	margin-right: 0px;
 	margin-bottom: 0px;
 }
-
+img {
+		border: 0px ;  
+	}
 td,th,a,p,div
 		{
 		font-family:verdana,arial,sans-serif; 
