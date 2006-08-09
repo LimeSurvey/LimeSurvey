@@ -39,7 +39,8 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
 
 if ($action == _("Add")) {
-	$query = $connect->GetInsertSQL("{$dbprefix}assessments", array(
+    $inserttable=$dbprefix."assessments";
+	$query = $connect->GetInsertSQL($inserttable, array(
 		'sid' => $surveyid,
 		'scope' => $_POST['scope'],
 		'gid' => $_POST['gid'],

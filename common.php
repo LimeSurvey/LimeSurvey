@@ -278,7 +278,7 @@ if ($sourcefrom == "admin")
                     . "onmouseout=\"hideTooltip()\"" 
                     . "onmouseover=\"showTooltip(event,'"._("Template Editor")."');return false\">\n"
                     . "\t\t\t\t</td>\n";
-        $adminmenu .= "\t\t\t\t<td align='right' width='400'>\n"
+        $adminmenu .= "\t\t\t\t<td align='right' width='430'>\n"
                     . "\t\t\t\t\t<input type='image' src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
                     . "alt='". _("Show Help")."' align='right' onClick=\"showhelp('show')\"" 
                     . "onmouseout=\"hideTooltip()\"" 
