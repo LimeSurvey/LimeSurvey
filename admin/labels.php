@@ -228,7 +228,7 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t\t<a href='labels.php?action=delset&amp;lid=$lid'>"
             ."<img src='$imagefiles/delete.png' border='0' alt='"._("Delete label set")."' title='"
             ._("Delete label set")."' align='left' "
-            ."onClick=\"return confirm('".("Are you sure?")."')\"></a>\n"
+            ."onClick=\"return confirm('"._("Are you sure?")."')\"></a>\n"
             ."\t\t\t\t\t<input type='image' src='$imagefiles/exportsql.png' alt='"._("Export Label Set")."' title='"
             ._("Export Label Set")."' align='left' "
             ."onClick=\"window.open('dumplabel.php?lid=$lid', '_top')\">\n"

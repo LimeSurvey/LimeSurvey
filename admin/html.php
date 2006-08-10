@@ -132,7 +132,7 @@ if ($action == "checksettings" || $action == "changelang")
 	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
 				. "<form action='$scriptname'>"
 				. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
-				. "cellpadding='1' cellspacing='0' width='450'>\n"
+				. "cellpadding='1' cellspacing='0' width='600'>\n"
 				. "\t<tr>\n"
 				. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
 				. "\t\t\t<strong>"._("PHPSurveyor System Summary")."</strong>\n"
@@ -212,7 +212,7 @@ if ($action == "checksettings" || $action == "changelang")
 				. "</table></form>\n"
 				. "<table><tr><td height='1'></td></tr></table>\n";
 	$cssummary .= "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
-				. "cellpadding='1' cellspacing='0' width='450'>\n"
+				. "cellpadding='1' cellspacing='0' width='600'>\n"
 				. "<tr><td align='center'>$setfont<br />"
 				. "<a href='".$homeurl."/dbchecker.php'>"._("Check PHPSurveyor Data Integrity")."</a>"
 				. "<br />&nbsp;</font></td></tr>\n"
