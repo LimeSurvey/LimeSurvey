@@ -1722,8 +1722,8 @@ function GetLanguageFromSurveyID($surveyid)
     //This function loads the local language file applicable to a survey
         $surveylanguage='en';
         $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-        $result = db_execute_num($query) or die ("Couldn't get language file");
-        while ($row=$result->FetchRow()) {$surveylanguage = $row[0];}
+        $result = db_execute_num($query);
+        while ($result && ($row=$result->FetchRow())) {$surveylanguage = $row[0];}
         return $surveylanguage;
     }
 
