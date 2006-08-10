@@ -161,7 +161,7 @@ if ($action == "checksettings" || $action == "changelang")
 	{
     	$cssummary .= "\t\t\t\t<option value='$langkey'";
 		if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected";}
-		$cssummary .= ">".$languagekind['description']."</option>\n";
+		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 	}
 	$cssummary .= "\t\t\t</select>\n"
 				. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
@@ -1880,7 +1880,7 @@ if ($action == "editsurvey")
               {
                  {$editsurvey .= " selected";}
               }
-			$editsurvey .= ">".$langname['description']."</option>\n";
+			$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 	    }
 
 		$editsurvey .= "\t\t</select></td>\n"
@@ -2121,7 +2121,7 @@ if ($action == "newsurvey")
        {
 	   	    $newsurvey .= "\t\t\t<option value='".$langkey2."'";
     		if ($defaultlang == $langkey2) {$newsurvey .= " selected";}
-	       	$newsurvey .= ">".$langname['description']."</option>\n";
+			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
        }
 
 	$newsurvey .= "\t\t</select></td>\n"

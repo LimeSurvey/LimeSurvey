@@ -105,7 +105,7 @@
 
 	    // Greek
 	    $supportedLanguages['gr']['description'] = 'Greek';
-	    $supportedLanguages['gr']['nativedescription'] = 'Greek?';
+	    $supportedLanguages['gr']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
 
 	    // Hungarian
 	    $supportedLanguages['hu']['description'] = 'Hungarian';
