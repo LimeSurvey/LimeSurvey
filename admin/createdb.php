@@ -58,8 +58,8 @@ if (!$dbname)
 if (!$database_exists) //Database named in config.php does not exist
 	{
 	// TODO SQL: portable ??
-	$createDb=$connect->Execute("CREATE DATABASE `$dbname`"); //Better than using mysql_create_db which is deprecated and does not work for MySQL 4 Client API
-	if ($createDb) //Database has been succesfully created
+	$createDb=$connect->Execute("CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci"); //Better than using mysql_create_db which is deprecated and does not work for MySQL 4 Client API
+    if ($createDb) //Database has been succesfully created
 		{
         $connect->database = $dbname;
 	    $connect->Execute("USE DATABASE `$dbname`");
