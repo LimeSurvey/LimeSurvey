@@ -129,7 +129,6 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("submit")." ")
 		$completed = "<br /><strong><font size='2' color='red'>"._("Did Not Save")."</font></strong><br /><br />\n\n";
 		$completed .= _("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
 		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._("Clear Responses")."</a><br /><br />\n";
-		$completed .= "<font size='1'>$subquery</font>\n";
 		}
 	else
 		{

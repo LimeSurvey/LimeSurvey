@@ -525,7 +525,7 @@ function do_5pointchoice($ia)
 function do_date($ia)
     {
 // --> START NEW FEATURE - SAVE
-    $answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]."\" onChange='modfield(this.name)'/>\n"
+    $answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]."\" onChange='modfield(this.name)'/><button type='reset' id='f_trigger_b'>...</button>\n"
 // --> END NEW FEATURE - SAVE
              . "\t\t\t<table class='question'>\n"
              . "\t\t\t\t<tr>\n"
@@ -535,6 +535,17 @@ function do_date($ia)
              . "\t\t\t\t\t</font></td>\n"
              . "\t\t\t\t</tr>\n"
              . "\t\t\t</table>\n";
+	// Here we do setup the date javascript
+	$answer .= "<script type=\"text/javascript\">\n"
+             . "Calendar.setup({\n"
+             . "inputField     :    \"answer{$ia[1]}\",\n"    // id of the input field
+             . "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
+             . "showsTime      :    false,\n"                    // will display a time selector
+             . "button         :    \"f_trigger_b\",\n"         // trigger for the calendar (button ID)
+             . "singleClick    :    true,\n"                   // double-click mode
+             . "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
+             . "});\n"
+             . "</script>\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
     }
