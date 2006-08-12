@@ -156,16 +156,16 @@ switch ($databasetype)
     case "mysql"     :if ($databaseport!="default") {$dbport="$databaselocation:$databaseport";}
                         else {$dbport=$databaselocation;}
                         break;
-    case "odbc_mssql": $dbport="Driver={SQL Server};Server=nobodys;Database=".$databasename;
+    case "odbc_mssql": $dbport="Driver={SQL Server};Server=$databaselocation;Database=".$databasename;
                        break;
     default: echo "Unknown database type"; die;
-
     }
+
 if (@$connect->Connect($dbport, $databaseuser, $databasepass, $databasename))
    { $database_exists = TRUE;}
     else {
          $connect->database = '';
-         if ($databasetype='odbc_mssql') {$dbport="Driver={SQL Server};Server=nobodys;";}
+         if ($databasetype=='odbc_mssql') {$dbport="Driver={SQL Server};Server=$databaselocation;";}
          $connect->Connect($dbport, $databaseuser, $databasepass);
          }
 

@@ -62,7 +62,7 @@ if (!$database_exists) //Database named in config.php does not exist
 	{
       case 'mysql': $createDb=$connect->Execute("CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
                     break;
-      case 'oledb':
+      case 'odbc_mssql':
       case 'mssql': $createDb=$connect->Execute("CREATE DATABASE [$dbname];");
                     break;
            default: $createDb=$connect->Execute("CREATE DATABASE $dbname");
