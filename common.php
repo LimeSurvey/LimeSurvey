@@ -326,13 +326,13 @@ if ($sourcefrom == "admin")
 $qtypeselect = getqtypelist();
 
 //SECURITY SETUP STUFF
-$htaccess =<<<EOF
-AuthType Basic
-AuthName "SURVEYOR: Authorised Users only"
-AuthUserFile "$homedir/.htpasswd"
-AuthGroupFile /dev/null
-Require valid-user
-EOF;
+$htaccess ="
+AuthType Basic\n
+AuthName \"SURVEYOR: Authorised Users only\"\
+AuthUserFile \"$homedir/.htpasswd\"\
+AuthGroupFile /dev/null\n
+Require valid-user\n
+";
 
 function &db_execute_num($sql,$inputarr=false)
 {
@@ -882,7 +882,7 @@ function conditionscount($qid)
 
 function keycontroljs()
     {
-    $kcjs="<<<EOF
+    $kcjs="
     <SCRIPT TYPE=\"text/javascript\">
     <!--
 
@@ -916,7 +916,7 @@ function keycontroljs()
        }
     //-->
     </SCRIPT>
-    EOF;";
+";
     return $kcjs;
     }
 
