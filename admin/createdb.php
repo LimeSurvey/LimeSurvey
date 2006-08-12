@@ -57,8 +57,16 @@ if (!$dbname)
 	}
 if (!$database_exists) //Database named in config.php does not exist
 	{
-	// TODO SQL: portable ??
-	$createDb=$connect->Execute("CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci"); //Better than using mysql_create_db which is deprecated and does not work for MySQL 4 Client API
+	// TODO SQL: Portable to other databases??
+	switch ($databasetype)
+	{
+      case 'mysql': $createDb=$connect->Execute("CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
+                    break;
+      case 'oledb':
+      case 'mssql': $createDb=$connect->Execute("CREATE DATABASE [$dbname];");
+                    break;
+           default: $createDb=$connect->Execute("CREATE DATABASE $dbname");
+    }
     if ($createDb) //Database has been succesfully created
 		{
         $connect->database = $dbname;

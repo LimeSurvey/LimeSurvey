@@ -151,18 +151,29 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 //CACHE DATA
 $connect=&ADONewConnection($databasetype);
 $database_exists = FALSE;
-if ($connect->Connect("$databaselocation:$databaseport", $databaseuser, $databasepass, $databasename))
+switch ($databasetype)
+    {
+    case "mysql"     :if ($databaseport!="default") {$dbport="$databaselocation:$databaseport";}
+                        else {$dbport=$databaselocation;}
+                        break;
+    case "odbc_mssql": $dbport="Driver={SQL Server};Server=nobodys;Database=".$databasename;
+                       break;
+    default: echo "Unknown database type"; die;
+
+    }
+if (@$connect->Connect($dbport, $databaseuser, $databasepass, $databasename))
    { $database_exists = TRUE;}
     else {
          $connect->database = '';
-         $connect->Connect("$databaselocation:$databaseport", $databaseuser, $databasepass);
+         if ($databasetype='odbc_mssql') {$dbport="Driver={SQL Server};Server=nobodys;";}
+         $connect->Connect($dbport, $databaseuser, $databasepass);
          }
 
 
-// The following line is for debug purposes
+// The following line is for mysql debug purposes
 //$tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
 
-$connect->Execute("SET CHARACTER SET 'utf8'");
+if ($databasetype=='mysql') {$connect->Execute("SET CHARACTER SET 'utf8'");}
 
 
 //Admin menus and standards

@@ -35,11 +35,12 @@
 */
 
 // === Basic Setup
-$databasetype       =   "mysql";       // ADOdb database driver
-$databaselocation   =   "localhost";   // Network location of your MySQL Database
-$databaseport       =   "3306";        // The port of your MySQL Database (3306 is default)
+
+$databasetype       =   "mysql";       // ADOdb database driver - either mysql or odbc_mssql
+$databaselocation   =   "localhost";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
+$databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
 $databasename       =   "phpsurveyor"; // The name of the database that we will create
-$databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
+$databaseuser       =   "";            // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
 $databasetabletype  =   "MyISAM";      // Default table type (only used if creating db automatically through script -eg "MyISAM" or "InnoDB"
 $dbprefix           =   "";            // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
