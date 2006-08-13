@@ -1098,7 +1098,7 @@ function do_listwithcomment($ia)
 
 function do_ranking($ia)
     {
-    global $dbprefix;
+    global $dbprefix, $imagefiles;
     $qidattributes=getQuestionAttributes($ia[0]);
     $answer="";
     if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
@@ -1227,7 +1227,7 @@ function do_ranking($ia)
             $chosen[]=array($thiscode, $thistext);
             }
         $ranklist .= "' />\n";
-        $ranklist .= "\t\t\t\t\t\t<img src='cut.gif' alt='"._("Remove this item")."' title='"._("Remove this item")."' ";
+        $ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='"._("Remove this item")."' title='"._("Remove this item")."' ";
         if ($i != $existing)
             {
             $ranklist .= "style='display:none'";

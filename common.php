@@ -1473,7 +1473,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 
 function templatereplace($line)
     {
-    global $thissurvey;
+    global $thissurvey, $imagefiles;
 
     global $percentcomplete;
 
@@ -1567,7 +1567,7 @@ function templatereplace($line)
 		 }
     $line=str_replace("{SID}", $surveyid, $line);
     if ($help) {
-        $line=str_replace("{QUESTIONHELP}", "<img src='".$publicurl."/help.gif' alt='Help' align='left'>".$help, $line);
+        $line=str_replace("{QUESTIONHELP}", "<img src='".$imagefiles."/help.gif' alt='Help' align='left'>".$help, $line);
         $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
     }
     else
