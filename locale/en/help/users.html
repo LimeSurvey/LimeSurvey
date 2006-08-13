@@ -13,10 +13,9 @@ directory security using your servers standard methods.</font></p>
 
 <p><font face="Verdana"><font style="font-size: 8pt"><u><strong>Initialising Security<br>
 </strong></u>The first time you run security from PHPSurveyor, it will 'initialise' 
-the security settings. When it 'initialises', the script finds the Apache &quot;htpasswd&quot; 
-executable file and creates a 'user' file. It also creates a 'htaccess' file in 
+the security settings. When it 'initialises', it creates a '.htaccess' file in 
 your admin directory that restricts access to the admin directory to only those 
-users in the htpasswd file. The initial username and password are determined by 
+users in the '.htpasswd' file. The initial username and password are determined by 
 the 'default' settings in your config.php file. Once you have initialised 
 security succesfully, your browser will ask for this username and password 
 before allowing you to continue using the administration scripts of PHPSurveyor.</font></font></p>
@@ -52,14 +51,6 @@ If you are having trouble setting up security:</font></p>
     <td><font face="Verdana" style="font-size: 8pt">Make sure you have 
     read/write permissions in the admin directory. PHPSurveyor needs to be able 
     to create a .htpasswd and .htaccess file here.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font style="font-size: 8pt" face="Verdana">2.</font></td>
-    <td><font face="Verdana" style="font-size: 8pt">Make sure you have access to 
-    the htpasswd executable file. On windows servers in particular, a copy of 
-    this will almost certainly need to be placed in the /phpsurveyor/admin 
-    directory along with the other scripts. On Linux servers, the script will 
-    attempt to find the htpasswd executable using &quot;find&quot;.</font></td>
   </tr>
 </table>
 &nbsp;<p>&nbsp;</p>
