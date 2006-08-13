@@ -14,7 +14,7 @@ CREATE TABLE [dbo].[prefix_answers] (
   [code] nvarchar(5)  NOT NULL,
   [answer] ntext  NOT NULL,
   [default_value] nvarchar(1)  DEFAULT 'N' NOT NULL,
-  [sortorder] varchar(5)  NULL
+  [sortorder] nvarchar(5)  NULL
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
@@ -27,13 +27,13 @@ TEXTIMAGE_ON [PRIMARY]
 CREATE TABLE [dbo].[prefix_assessments] (
   [id] int IDENTITY(1, 1) NOT NULL,
   [sid] int DEFAULT 0 NOT NULL,
-  [scope] varchar(5)  NOT NULL,
+  [scope] nvarchar(5)  NOT NULL,
   [gid] int DEFAULT 0 NOT NULL,
   [name] text  NOT NULL,
-  [minimum] varchar(50)  NOT NULL,
-  [maximum] varchar(50)  NOT NULL,
-  [message] text  NOT NULL,
-  [link] text  NOT NULL
+  [minimum] nvarchar(50)  NOT NULL,
+  [maximum] nvarchar(50)  NOT NULL,
+  [message] ntext  NOT NULL,
+  [link] ntext  NOT NULL
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
@@ -47,9 +47,9 @@ CREATE TABLE [dbo].[prefix_conditions] (
   [cid] int IDENTITY(1, 1) NOT NULL,
   [qid] int DEFAULT 0 NOT NULL,
   [cqid] int DEFAULT 0 NOT NULL,
-  [cfieldname] varchar(50)  NOT NULL,
-  [method] varchar(2)  NOT NULL,
-  [value] varchar(5)  NOT NULL
+  [cfieldname] nvarchar(50)  NOT NULL,
+  [method] nvarchar(2)  NOT NULL,
+  [value] nvarchar(5)  NOT NULL
 )
 ON [PRIMARY]
 ;
@@ -61,9 +61,9 @@ ON [PRIMARY]
 CREATE TABLE [dbo].[prefix_groups] (
   [gid] int IDENTITY(1, 1) NOT NULL,
   [sid] int DEFAULT 0 NOT NULL,
-  [group_name] varchar(100)  NOT NULL,
-  [description] text  NULL,
-  [sortorder] varchar(5)  NULL
+  [group_name] nvarchar(100)  NOT NULL,
+  [description] ntext  NULL,
+  [sortorder] nvarchar(5)  NULL
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
@@ -75,9 +75,9 @@ TEXTIMAGE_ON [PRIMARY]
 
 CREATE TABLE [dbo].[prefix_labels] (
   [lid] int DEFAULT 0 NOT NULL,
-  [code] varchar(5)  NOT NULL,
-  [title] varchar(100)  NOT NULL,
-  [sortorder] varchar(5)  NULL
+  [code] nvarchar(5)  NOT NULL,
+  [title] nvarchar(100)  NOT NULL,
+  [sortorder] nvarchar(5)  NULL
 )
 ON [PRIMARY]
 ;
@@ -88,7 +88,7 @@ ON [PRIMARY]
 
 CREATE TABLE [dbo].[prefix_labelsets] (
   [lid] int IDENTITY(1, 1) NOT NULL,
-  [label_name] varchar(100)  NOT NULL
+  [label_name] nvarchar(100)  NOT NULL
 )
 ON [PRIMARY]
 ;
@@ -100,8 +100,8 @@ ON [PRIMARY]
 CREATE TABLE [dbo].[prefix_question_attributes] (
   [qaid] int IDENTITY(1, 1) NOT NULL,
   [qid] int NOT NULL,
-  [attribute] varchar(50)  NULL,
-  [value] varchar(20)  NULL
+  [attribute] nvarchar(50)  NULL,
+  [value] nvarchar(20)  NULL
 )
 ON [PRIMARY]
 ;
@@ -114,13 +114,13 @@ CREATE TABLE [dbo].[prefix_questions] (
   [qid] int IDENTITY(1, 1) NOT NULL,
   [sid] int DEFAULT 0 NOT NULL,
   [gid] int DEFAULT 0 NOT NULL,
-  [type] varchar(1)  DEFAULT 'T' NOT NULL,
-  [title] varchar(20)  NOT NULL,
-  [question] text  NOT NULL,
-  [preg] text  NULL,
-  [help] text  NULL,
-  [other] varchar(1)  DEFAULT 'N' NOT NULL,
-  [mandatory] varchar(1)  NULL,
+  [type] nvarchar(1)  DEFAULT 'T' NOT NULL,
+  [title] nvarchar(20)  NOT NULL,
+  [question] ntext  NOT NULL,
+  [preg] ntext  NULL,
+  [help] ntext  NULL,
+  [other] nvarchar(1)  DEFAULT 'N' NOT NULL,
+  [mandatory] nvarchar(1)  NULL,
   [lid] int DEFAULT 0 NOT NULL
 )
 ON [PRIMARY]
@@ -135,13 +135,13 @@ CREATE TABLE [dbo].[prefix_saved_control] (
   [scid] int IDENTITY(1, 1) NOT NULL,
   [sid] int CONSTRAINT [DF__saved_contr__sid__108B795B] DEFAULT 0 NOT NULL,
   [srid] int CONSTRAINT [DF__saved_cont__srid__117F9D94] DEFAULT 0 NOT NULL,
-  [identifier] text  NOT NULL,
-  [access_code] text  NOT NULL,
-  [email] varchar(200)  NULL,
-  [ip] text  NOT NULL,
-  [refurl] text  NULL,
-  [saved_thisstep] text  NOT NULL,
-  [status] varchar(1)  NOT NULL,
+  [identifier] ntext  NOT NULL,
+  [access_code] ntext  NOT NULL,
+  [email] nvarchar(200)  NULL,
+  [ip] ntext  NOT NULL,
+  [refurl] ntext  NULL,
+  [saved_thisstep] ntext  NOT NULL,
+  [status] nvarchar(1)  NOT NULL,
   [saved_date] datetime NULL
 )
 ON [PRIMARY]
@@ -154,42 +154,42 @@ TEXTIMAGE_ON [PRIMARY]
 
 CREATE TABLE [dbo].[prefix_surveys] (
   [sid] int NOT NULL,
-  [short_title] varchar(200)  NOT NULL,
-  [description] text  NULL,
+  [short_title] nvarchar(200)  NOT NULL,
+  [description] ntext  NULL,
   [datecreated] datetime NULL,
-  [admin] varchar(50)  NULL,
-  [active] varchar(1)  DEFAULT 'N' NOT NULL,
-  [welcome] text  NULL,
-  [useexpiry] varchar(1)  DEFAULT 'N' NOT NULL,
+  [admin] nvarchar(50)  NULL,
+  [active] nvarchar(1)  DEFAULT 'N' NOT NULL,
+  [welcome] ntext  NULL,
+  [useexpiry] nvarchar(1)  DEFAULT 'N' NOT NULL,
   [expires] datetime NULL,
-  [adminemail] varchar(100)  NULL,
-  [private] varchar(1)  NULL,
-  [faxto] varchar(20)  NULL,
-  [format] varchar(1)  NULL,
-  [template] varchar(100)  DEFAULT 'default' NULL,
-  [url] varchar(255)  NULL,
-  [urldescrip] varchar(255)  NULL,
-  [language] varchar(50)  NULL,
-  [datestamp] varchar(1)  DEFAULT 'N' NULL,
-  [ipaddr] varchar(1)  DEFAULT 'N' NULL,
-  [refurl] varchar(1)  DEFAULT 'N' NULL,
-  [usecookie] varchar(1)  DEFAULT 'N' NULL,
-  [notification] varchar(1)  DEFAULT '0' NULL,
-  [allowregister] varchar(1)  DEFAULT 'N' NULL,
-  [attribute1] varchar(255)  NULL,
-  [attribute2] varchar(255)  NULL,
-  [email_invite_subj] varchar(255)  NULL,
-  [email_invite] text  NULL,
-  [email_remind_subj] varchar(255)  NULL,
-  [email_remind] text  NULL,
-  [email_register_subj] varchar(255)  NULL,
-  [email_register] text  NULL,
-  [email_confirm_subj] varchar(255)  NULL,
-  [email_confirm] text  NULL,
-  [allowsave] varchar(1)  DEFAULT 'Y' NULL,
+  [adminemail] nvarchar(100)  NULL,
+  [private] nvarchar(1)  NULL,
+  [faxto] nvarchar(20)  NULL,
+  [format] nvarchar(1)  NULL,
+  [template] nvarchar(100)  DEFAULT 'default' NULL,
+  [url] nvarchar(255)  NULL,
+  [urldescrip] nvarchar(255)  NULL,
+  [language] nvarchar(50)  NULL,
+  [datestamp] nvarchar(1)  DEFAULT 'N' NULL,
+  [ipaddr] nvarchar(1)  DEFAULT 'N' NULL,
+  [refurl] nvarchar(1)  DEFAULT 'N' NULL,
+  [usecookie] nvarchar(1)  DEFAULT 'N' NULL,
+  [notification] nvarchar(1)  DEFAULT '0' NULL,
+  [allowregister] nvarchar(1)  DEFAULT 'N' NULL,
+  [attribute1] nvarchar(255)  NULL,
+  [attribute2] nvarchar(255)  NULL,
+  [email_invite_subj] nvarchar(255)  NULL,
+  [email_invite] ntext  NULL,
+  [email_remind_subj] nvarchar(255)  NULL,
+  [email_remind] ntext  NULL,
+  [email_register_subj] nvarchar(255)  NULL,
+  [email_register] ntext  NULL,
+  [email_confirm_subj] nvarchar(255)  NULL,
+  [email_confirm] ntext  NULL,
+  [allowsave] nvarchar(1)  DEFAULT 'Y' NULL,
   [autonumber_start] bigint DEFAULT 19533676560910059 NULL,
-  [autoredirect] varchar(1)  DEFAULT 'N' NULL,
-  [allowprev] varchar(1)  DEFAULT 'Y' NULL
+  [autoredirect] nvarchar(1)  DEFAULT 'N' NULL,
+  [allowprev] nvarchar(1)  DEFAULT 'Y' NULL
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
@@ -200,9 +200,9 @@ TEXTIMAGE_ON [PRIMARY]
 --
 
 CREATE TABLE [dbo].[prefix_users] (
-  [user] varchar(20)  NOT NULL,
-  [password] varchar(20)  NOT NULL,
-  [security] varchar(10)  NOT NULL
+  [user] nvarchar(20)  NOT NULL,
+  [password] nvarchar(20)  NOT NULL,
+  [security] nvarchar(10)  NOT NULL
 )
 ON [PRIMARY]
 ;

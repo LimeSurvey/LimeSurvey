@@ -92,8 +92,8 @@ if (!$database_exists)
 	}
 else
 	{
-	//DB EXISTS, CHECK FOR APPROPRIATE TABLES
-	checkfortables();
+	//DB EXISTS, CHECK FOR APPROPRIATE UPGRADES
+	checkforupgrades();
 	}
 
 

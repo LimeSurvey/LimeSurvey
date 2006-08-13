@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-03 20:17+0100\n"
+"PO-Revision-Date: 2006-08-13 22:32+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -29,8 +29,8 @@ msgstr "Sicherheitseinstellungen ändern"
 msgid "Check Settings"
 msgstr "Systemübersicht"
 
-msgid "Check Database"
-msgstr "Datenbank überprüfen"
+msgid "Check Data Consistency"
+msgstr "Datenkonsistenz überprüfen"
 
 msgid "List Surveys"
 msgstr "Liste aller Umfragen zeigen"
@@ -891,6 +891,12 @@ msgstr "Löschen"
 msgid "Close Window"
 msgstr "Fenster schließen"
 
+msgid "Populate Database"
+msgstr "Tabellen erstellen"
+
+msgid "Database has been successfully populated."
+msgstr "Tabellen in der Datenbank wurden erfolgreich erstellt."
+
 msgid "Database Information not provided. This script must be run from admin.php only."
 msgstr "Datenbank Information nicht angegeben. Dieses Skript muss von admin.php aufgerufen werden."
 
@@ -899,9 +905,6 @@ msgstr "Datenbank wurde erstellt."
 
 msgid "Please click below to populate the database"
 msgstr "Bitte klicken Sie auf 'Tabellen erstellen' um fortzufahren."
-
-msgid "Populate Database"
-msgstr "Tabellen erstellen"
 
 msgid "Could not create database"
 msgstr "Konnte Datenbank nicht erstellen"
@@ -1293,9 +1296,6 @@ msgstr "Aktive Probanden-Tabellen"
 msgid "De-activated Token Tables"
 msgstr "Deaktivierte Probanden-Tabellen"
 
-msgid "Check PHPSurveyor Data Integrity"
-msgstr "PHPSurveyor Datenintegrität überprüfen"
-
 msgid "Survey"
 msgstr "Umfrage"
 
@@ -1464,11 +1464,11 @@ msgstr "Sie müssen Fragen hinzufügen."
 msgid "Edit Current Group"
 msgstr "Diese Gruppe bearbeiten"
 
-msgid "Delete Current Group"
-msgstr "Diese Gruppe löschen"
-
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr "Das Löschen dieser Gruppe löscht auch alle möglichen Fragen und Antworten, die sie enthält. Sind Sie sicher, dass Sie fortfahren möchten?"
+
+msgid "Delete Current Group"
+msgstr "Diese Gruppe löschen"
 
 msgid "Reorder the questions of this group"
 msgstr "Fragen in dieser Gruppe neu ordnen"
@@ -1491,11 +1491,11 @@ msgstr "Neue Frage zu dieser Gruppe hinzufügen"
 msgid "Edit Current Question"
 msgstr "Diese Frage bearbeiten"
 
-msgid "Delete Current Question"
-msgstr "Diese Frage löschen"
-
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 msgstr "Das Löschen dieser Frage löscht auch alle möglichen Antworten, die sie umfasst. Sind Sie sicher, dass Sie fortfahren möchten?"
+
+msgid "Delete Current Question"
+msgstr "Diese Frage löschen"
 
 msgid "Export this Question"
 msgstr "Diese Frage exportieren"
@@ -1862,6 +1862,9 @@ msgstr "IP-Adresse protokollieren?"
 msgid "Referring URL"
 msgstr "Referrer-URL"
 
+msgid "Expires?"
+msgstr "Läuft ab?"
+
 msgid "End URL:"
 msgstr "End-URL:"
 
@@ -2018,6 +2021,10 @@ msgstr "Beschriftung-Set bearbeiten"
 msgid "Delete label set"
 msgstr "Beschriftung-Set löschen"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:231
+msgid "Are you sure?"
+msgstr "Sind Sie sicher?"
+
 msgid "Title"
 msgstr "Titel"
 
@@ -2051,6 +2058,9 @@ msgstr "Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1681
 msgid "Slider"
 msgstr "Regler"
+
+msgid "Check PHPSurveyor Data Integrity"
+msgstr "PHPSurveyor Datenintegrität überprüfen"
 
 msgid "if you answered"
 msgstr "falls ihre Antwort "
@@ -2190,6 +2200,26 @@ msgstr "Prozent"
 
 msgid "Browse"
 msgstr "Ansehen"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/stats.php:262
+msgid "Select question(s) from the following list"
+msgstr "Wählen Sie die Fragen aus der folgenden Liste"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/stats.php:332
+msgid "Like"
+msgstr "Wie"
+
+msgid "Not Equals"
+msgstr "Ungleich"
+
+msgid "Filter Conditions"
+msgstr "Filer-Bedingungen"
+
+msgid "Numerical"
+msgstr "Zahleneingabe"
+
+msgid "Huge free text"
+msgstr "Ausführlicher Freitext"
 
 msgid "Welcome Page"
 msgstr "Startseite"
@@ -2500,9 +2530,6 @@ msgstr "{TOKENCOUNT} Einträge erstellt"
 msgid "Creating default htaccess file"
 msgstr "Standard htaccess Datei erstellen"
 
-msgid "Couldn't create htaccess file. Check your config.php for $homedir setting, and that you have write permission in the correct directory."
-msgstr "Konnte htaccess Datei nicht erstellen. Bitte in der Datei config.php die Einstellungen für $homedir überprüfen, und die Schreibrechte im Verzeichnis überprüfen."
-
 msgid "Security Levels are now set up!"
 msgstr "Sicherheitseinstellung vorgenommen!"
 
@@ -2574,6 +2601,10 @@ msgstr "Neuen Datensatz ignorieren."
 
 msgid "Replace the existing record."
 msgstr "Alten Datensatz ersetzen."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:83
+msgid "Cannot import the VVExport file."
+msgstr "VVExport-Datei konnte nicht importiert werden."
 
 msgid "Import Failed on Record"
 msgstr "Import fehlgeschlagen für Datensatz"

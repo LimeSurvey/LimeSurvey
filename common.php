@@ -234,8 +234,8 @@ if ($sourcefrom == "admin")
 
         $adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
 					   "onmouseout=\"hideTooltip()\"" 
-                      ."onmouseover=\"showTooltip(event,'". _("Check Data Integrity")."');return false\">".
-                    "<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Database")."' align='left'></a>\n";
+                      ."onmouseover=\"showTooltip(event,'". _("Check Data Consistency")."');return false\">".
+                    "<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left'></a>\n";
 		 $adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
 		 			."onmouseout=\"hideTooltip()\"" 
                     ."onmouseover=\"showTooltip(event,'"._("List Surveys")."');return false\">\n" 
@@ -784,6 +784,31 @@ function checksecurity()
         }
     }
 
+
+// This functions checks if the databaseversion in the settings table is the same one as required
+// If no settings table does exists it is a upgrade from <=1.0 (mysql only)
+// Then the old checker script is run prior to the standard upgrade
+
+function checkforupgrades()
+{
+    global $connect, $databasetype, $dbprefix;
+    include ('admin/install/upgrade-'.$databasetype.'.php');
+    $tables = $connect->MetaTables();
+
+    if ($databasetype=='mysql')
+      {
+      if (!sql_table_exists('settings_global', $tables)) {mysqlcheckfields();}
+        else  // now check if there is a dbversion
+            {
+            $usquery = 'SELECT stg_value FROM '.$dbprefix.'settings_global where stg_name="DBVersion"';
+            $usresult = db_execute_assoc($usquery);
+            if ($usresult->RecordCount()==0) {mysqlcheckfields();}
+            }
+    }
+}
+
+
+
 function checkfortables()
     {
     global $scriptname, $btstyle, $dbprefix, $setfont, $connect;
@@ -799,7 +824,7 @@ function checkfortables()
 
     foreach($alltables as $at)
         {
-        if (!mysql_table_exists($at, $tables))
+        if (!sql_table_exists($at, $tables))
             {
             $checkfields="Y";
             }
@@ -825,7 +850,7 @@ function checkfortables()
         }
     }
 
-function mysql_table_exists($tableName, $tables)
+function sql_table_exists($tableName, $tables)
     {
     return(in_array($tableName, $tables));
     }
