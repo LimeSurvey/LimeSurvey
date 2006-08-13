@@ -113,9 +113,11 @@ class htaccess{
         fclose($file);
 
         // Writing names back to file (without the user to delete)
+        unlink($this->fPasswd);
         $file=fopen($path.$this->fPasswd,"w");
-        for($i=0;$i<count($newUserlist);$i++){
-            fputs($file,$newUserlist[$i][0].":".$newUserlist[$i][0]."\n");
+        foreach ($newUserlist as $newUser)
+        {
+        	fputs($file,$newUser[0].":".$newUser[1]);
         }
         fclose($file);
         
