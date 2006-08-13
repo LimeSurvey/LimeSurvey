@@ -69,7 +69,7 @@ if (!file_exists("$homedir/.htaccess") && $action == "setup")
 	}
 	else
 	{
-		unlink("$homedir/.htpasswd"); // Remove .htpasswd since it might have been written and operation failed?
+		if (file_exists("$homedir/.htpasswd")) unlink("$homedir/.htpasswd"); // Remove .htpasswd since it might have been written and operation failed?
 		$addsummary .= _("Error occurred creating htpasswd file")."<br /><br />\n<font size='1'>"._("If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/")."<br /></font>\n";
 	}
 	$addsummary .= "<br />\n<a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
