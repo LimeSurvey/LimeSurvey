@@ -760,20 +760,23 @@ function checksecurity()
     // Check that the names in the htpasswd file match up with the names in the database.
     // Any names missing in htpasswd file should be removed from users table
     global $homedir, $dbprefix, $connect;
-    $fname = "$homedir/.htpasswd";
-    $htpasswds = file($fname);
-    $realusers[] = "DUMMYRECORD"; //dummy entry because in_array never finds the first one!
-    foreach ($htpasswds as $htp)
-        {
+    include_once("classes/core/htaccess.class.php");
+    $ht = new htaccess("$homedir/.htaccess","$homedir/.htpasswd");
+    
+    $users=$ht->getUsers();
+	//$realusers[] = "DUMMYRECORD";
+    foreach ($users as $htp)
+    {
         list ($fuser, $fpass) = split(":", $htp);
-        $realusers[] = $fuser;
-        }
+        $realusers[] = $htp[0];
+    }
+
     $usquery = "SELECT user FROM ".db_table_name('users');
     $usresult = db_execute_assoc($usquery);
     if (!$usresult) {return "Database Error";}
     while ($usrow = $usresult->FetchRow())
         {
-        if (!array_search($usrow['user'], $realusers))
+        if (!in_array($usrow['user'], $realusers))
             {
             $dlusquery = "DELETE FROM ".db_table_name('users')." WHERE user='{$usrow['user']}'";
             $dlusresult = $connect->Execute($dlusquery);
