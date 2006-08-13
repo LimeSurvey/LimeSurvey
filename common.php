@@ -213,10 +213,11 @@ if ($sourcefrom == "admin")
             else
                 {
                 $securityok = checksecurity();
-                $adminmenu .= "<a href=\"#\ onClick=\"window.open('$scriptname?action=editusers', '_top')\" onmouseout=\"hideTooltip()\"" 
-                    		  ."onmouseover=\"showTooltip(event,'"._("Modify Security Settings")."');return false\">" .
-                    		  "<img' src='$imagefiles/security.png' name='AdminSecurity' title='"
-                            . _("Modify Security Settings")."' alt='". _("Modify Security Settings")."' align='left'></a>";
+                $adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
+                			"onmouseout=\"hideTooltip()\"" 
+                    		. "onmouseover=\"showTooltip(event,'"._("Modify Security Settings")."');return false\">" .
+                			 "<img src='$imagefiles/security.png' name='AdminSecurity'"
+                            ." title='' alt='"._("Modify Security Settings")."'  align='left'></a>";
                 }
             }
         else
