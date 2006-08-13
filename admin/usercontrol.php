@@ -34,7 +34,7 @@
 #############################################################
 */
 
-include("classes/htaccess.class.php");
+include("classes/core/htaccess.class.php");
 
 if (empty($homedir)) {die("Cannot run this script directly");}
 if ($accesscontrol <> 1) {exit;}
@@ -42,7 +42,12 @@ if ($accesscontrol <> 1) {exit;}
 //REDIRECT EVERYTHING HERE IF THERE IS NO .htaccess FILE.
 if (!file_exists("$homedir/.htaccess") && $action == "setup")
 {
-
+	// Remove old .htpasswd and db entries incase
+	if (file_exists("$homedir/.htpasswd")) unlink("$homedir/.htpasswd");
+	$dq="DELETE FROM ".db_table_name('users');
+	$dr=$connect->Execute($dq);
+	
+	// Start Creating
 	$addsummary = "<br />"._("Creating default htaccess file")."<br />\n";
 	$ht = new htaccess("$homedir/.htaccess","$homedir/.htpasswd");
 	$ht->setAuthType("Basic");
@@ -64,6 +69,7 @@ if (!file_exists("$homedir/.htaccess") && $action == "setup")
 	}
 	else
 	{
+		unlink("$homedir/.htpasswd"); // Remove .htpasswd since it might have been written and operation failed?
 		$addsummary .= _("Error occurred creating htpasswd file")."<br /><br />\n<font size='1'>"._("If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/")."<br /></font>\n";
 	}
 	$addsummary .= "<br />\n<a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
@@ -71,10 +77,8 @@ if (!file_exists("$homedir/.htaccess") && $action == "setup")
 elseif ($action == "deleteall")
 {
 	$addsummary = "<br /><strong>"._("Removing security settings")."..</strong><br />\n";
-	$fname1="$homedir/.htaccess";
-	unlink($fname1);
-	$fname1="$homedir/.htpasswd";
-	unlink($fname1);
+	if (file_exists("$homedir/.htaccess")) unlink("$homedir/.htaccess");
+	if (file_exists("$homedir/.htpasswd")) unlink("$homedir/.htpasswd");
 	$dq="DELETE FROM ".db_table_name('users');
 	$dr=$connect->Execute($dq);
 	$addsummary .= _("Access file, password file and user database deleted");
