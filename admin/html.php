@@ -999,6 +999,9 @@ if ($action == "modifyuser")
 				 . "\t\t<strong>$setfont<font color='white'>Modify User</td></tr>\n";
 	$muq = "SELECT * FROM {$dbprefix}users WHERE user='$user' LIMIT 1";
 	$mur = db_execute_assoc($muq);
+	$usersummary .= "\t<tr><td>$setfont<strong>"._("Username")."</strong></font></td>\n"
+					  . "\t<td>$setfont<strong>"._("Password")."</strong></font></td>\n"
+					  . "\t<td>$setfont<strong>"._("Security")."</strong></font></td></tr>\n";
 	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
 	while ($mrw = $mur->FetchRow())
 		{
