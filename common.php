@@ -97,7 +97,6 @@ if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions')))
     {
     // Only do this if safe_mode is OFF
     if (isset($mysqldir)) {$mysqlbin=$mysqldir;}
-    if (isset($apachedir)) {$htpasswddir=$apachedir;}
 	if ((substr($OS, 0, 3) != "WIN") && (substr($OS, 0, 4) != "OS/2") )
 	   	{
         //USING LINUX: Find the location of various files and put that in the appropriate variables!
@@ -107,23 +106,9 @@ if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions')))
             @list($mysqlbin, $discard)=explode(" ", $temp);
             $mysqlbin=substr($mysqlbin, 0, strlen($mysqlbin)-11);
             }
-        if (!isset($apachedir) || !$apachedir)
-            {
-            $temp=shell_exec('which htpasswd');
-            @list($htpasswddir, $discard)=explode(" ", $temp);
-            $htpasswddir=substr($htpasswddir, 0, strlen($htpasswddir)-10);
-            }
-        else
-            {
-            $htpasswddir=$apachedir;
-            }
         }
     }
-else
-    {
-    // Safe Mode is ON - turn off security
-    $accesscontrol = 0;
-    }
+
 
 //SET LANGUAGE DIRECTORY
 if ($sourcefrom == "admin")
