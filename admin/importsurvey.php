@@ -51,7 +51,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
     {
     echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
     echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-    echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+    echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
     echo "</font></td></tr></table>\n";
     echo "</body>\n</html>\n";
     exit;
@@ -75,7 +75,7 @@ if (substr($bigarray[1], 0, 22) != "# SURVEYOR SURVEY DUMP")
     {
     echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
     echo _("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
-    echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+    echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
     echo "</font></td></tr></table>\n";
     echo "</body>\n</html>\n";
     unlink($the_full_file_path);
@@ -289,7 +289,7 @@ if (!$surveyid)
     echo "<br /><strong><font color='red'>"._("Error")."</strong></font><br />\n";
     echo _("Import of this survey file failed")."<br />\n";
     echo _("File does not contain PHPSurveyor data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
-    echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+    echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
     echo "</font></td></tr></table>\n";
     echo "</body>\n</html>\n";
     unlink($the_full_file_path); //Delete the uploaded file
@@ -413,7 +413,7 @@ if ($grouparray) {
             {
             echo "<br />\n<font color='red'><strong>"._("Error")."</strong></font>"
                 ."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n"
-                ."<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
+                ."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
             exit;
             }
         //$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
@@ -650,7 +650,7 @@ echo "\t<li>"._("Question Attributes:")." $countquestion_attributes</li>\n";
 echo "\t<li>"._("Assessments")." $countassessments</li>\n</ul>\n";
 
 echo "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
-echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
+echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 
 echo "</font></td></tr></table>\n";
 echo "</body>\n</html>";

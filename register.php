@@ -134,7 +134,7 @@ if (MailtextMessage($message, $subject, returnglobal('register_email'), $from, $
 	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$html="<center>"._("Thank you for registering to participate in this survey.<br /><br />\nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})");
 	$html=Replacefields($html, $fieldsarray);
-	$html .= "<br /><br />\n<input $btstyle type='submit' onclick='javascript: self.close()' value='"._("Close this Window")."'></center>\n";
+	$html .= "<br /><br />\n<input type='submit' onclick='javascript: self.close()' value='"._("Close this Window")."'></center>\n";
 	}
 else
 	{

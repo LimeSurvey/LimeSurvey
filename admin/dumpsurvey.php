@@ -58,7 +58,7 @@ if (!$surveyid)
 		."$setfont<br /><strong><font color='red'>"
 		._("Error")."</font></strong><br />\n"
 		._("No SID has been provided. Cannot dump survey")."<br />\n"
-		."<br /><input type='submit' $btstyle value='"
+		."<br /><input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 		."\t</td></tr>\n"
 		."</table>\n"

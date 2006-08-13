@@ -50,7 +50,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
 	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 		._("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n"
-		."<input $btstyle type='submit' value='"
+		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
@@ -74,7 +74,7 @@ fclose($handle);
 if (!$_POST['sid'])
 	{
 	echo _("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
-		."<input $btstyle type='submit' value='"
+		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
@@ -83,7 +83,7 @@ if (!$_POST['sid'])
 if (!$_POST['gid'])
 	{
 	echo _("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
-		."<input $btstyle type='submit' value='"
+		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
@@ -93,7 +93,7 @@ if (substr($bigarray[1], 0, 24) != "# SURVEYOR QUESTION DUMP")
 	{
 	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 		._("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n"
-		."<input $btstyle type='submit' value='"
+		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\">\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";
@@ -447,7 +447,7 @@ if (isset($countquestion_attributes)) {echo $countquestion_attributes;}
 echo "</li></ul><br />\n";
 
 echo "<strong>"._("Import of Survey is completed.")."</strong><br />\n"
-	."<input $btstyle type='submit' value='"
+	."<input type='submit' value='"
 	._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$newqid', '_top')\">\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";

@@ -35,7 +35,7 @@
 */
 require_once(dirname(__FILE__).'/../config.php');
 $file_version="PHPSurveyor Template Editor ".$versionnumber;
-$slstyle3=$slstyle2;
+3=2;
 if(get_magic_quotes_gpc())
 	{
 	$_GET = array_map("stripslashes", $_GET);
@@ -118,7 +118,7 @@ if ($action == "upload") {
 	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
 		echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
 		echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-		echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "</td></tr></table>\n";
 		echo "</body>\n</html>\n";
 		exit;
@@ -510,7 +510,7 @@ echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	."<input type='image' src='$imagefiles/add.png' align='right' title='"._("Create new template")."' "
 	."onClick=\"javascript: copyprompt('"._("Create new template called:")."', '"._("NewTemplate")."', 'default', 'copy')\">"
 	."<font face='verdana' size='2' color='white'><strong>"._("Template:")."</strong> </font>"
-	."<select $slstyle name='templatedir' onchange='javascript: window.open(\"templates.php?editfile=$editfile&screenname=$screenname&templatename=\"+this.value, \"_top\")'>\n"
+	."<select name='templatedir' onchange='javascript: window.open(\"templates.php?editfile=$editfile&screenname=$screenname&templatename=\"+this.value, \"_top\")'>\n"
 	.makeoptions($templates, "name", "name", $templatename)
 	."</select>&nbsp;\n"
 	."</td></tr></table>\n"
@@ -549,7 +549,7 @@ echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' b
 	."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0'>"
 	."<img src='$imagefiles/blank.gif' width='23' align='right' alt='minimise' border='0' hspace='0'>"
 	."<font face='verdana' size='2' color='white'><strong>"._("Screen:")."</strong> </font>"
-	. "<select name='screenname' $slstyle onchange='javascript: window.open(\"templates.php?templatename=$templatename&editfile=$editfile&screenname=\"+this.value, \"_top\")'>\n"
+	. "<select name='screenname' onchange='javascript: window.open(\"templates.php?templatename=$templatename&editfile=$editfile&screenname=\"+this.value, \"_top\")'>\n"
 	. makeoptions($screens, "name", "name", $screenname)
 	. "</select>&nbsp;\n"
 	."</td></tr></table>\n"
@@ -575,7 +575,7 @@ echo "\t\t\t\t<table width='100%' border='0'>\n"
 	. "\t\t\t<input type='hidden' name='action' value='savechanges' />\n"
 	. "\t\t\t\t<table width='100%' align='center'><tr><td>"
 	."$setfont<strong>"._("Standard Files:")."</strong><font size='1'><br />\n"
-	."<select size='12' $slstyle2 name='editfile' onChange='javascript: window.open(\"templates.php?templatename=$templatename&screenname=$screenname&editfile=\"+this.value, \"_top\")'>\n"
+	."<select size='12' name='editfile' onChange='javascript: window.open(\"templates.php?templatename=$templatename&screenname=$screenname&editfile=\"+this.value, \"_top\")'>\n"
 	.makeoptions($files, "name", "name", $editfile)
 	."</select><br /><br />\n"
 	."\t\t\t\t\t\t</font></font></td>\n"
@@ -583,13 +583,13 @@ echo "\t\t\t\t<table width='100%' border='0'>\n"
 	."$setfont<strong>"._("Now editing:");
 	if (trim($editfile)!='') {echo " <i>$editfile</i>";}
 echo "</strong><font size='1'><br />\n"
-	."<textarea $slstyle3 name='changes' id='changes' cols='110' rows='12'>";
+	."<textarea 3 name='changes' id='changes' cols='110' rows='12'>";
 if ($editfile) {
 	echo textarea_encode(filetext($editfile));
 }
 echo "</textarea><br />\n";
 if (is_writable("$publicdir/templates/$templatename")) {
-echo "<input $btstyle align='right' type='submit' value='Save Changes'";
+echo "<input align='right' type='submit' value='Save Changes'";
 if ($templatename == "default") {
     echo " disabled";
 }
@@ -601,11 +601,11 @@ echo "<br />\n"
 	."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td align='right'>"
 	. "$setfont<strong>"._("Other Files:")."</strong></font><br />\n"
 	//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
-	. "<select size='9' $slstyle2 name='otherfile' id='otherfile'>\n"
+	. "<select size='9' name='otherfile' id='otherfile'>\n"
 	.makeoptions($otherfiles, "name", "name", "")
 	."</select>"
 	."</td></tr><tr><td align='right'>$setfont"
-	."<input type='submit' value='"._("Delete")."' $btstyle onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
+	."<input type='submit' value='"._("Delete")."' onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
 if ($templatename == "default") {
     echo " disabled";
 }
@@ -618,7 +618,7 @@ echo "></font>\n"
 	."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
 	."<form enctype='multipart/form-data' name='importsurvey' action='templates.php' method='post'>\n"
 	."<table><tr $btstyle> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
-	."<input $btstyle name=\"the_file\" type=\"file\" size=\"7\"><br />"
+	."<input name=\"the_file\" type=\"file\" size=\"7\"><br />"
 	."<input type='submit' value='"._("Upload")."' $btstyle";
 if ($templatename == "default") {
     echo " disabled";

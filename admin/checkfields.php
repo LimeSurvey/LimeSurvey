@@ -312,7 +312,7 @@ if (isset($checkfororphans) && $checkfororphans)
 
 echo "</font></font></font></td></tr>\n";
 echo "<tr><td align='center' bgcolor='#CCCCCC'>\n";
-echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 
 echo "</td></tr></table>\n";
 echo "<br />\n";

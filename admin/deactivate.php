@@ -59,8 +59,8 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._("Cancel")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._("De-Activate")."' onClick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
+	echo "\t\t\t<input type='submit' value='"._("Cancel")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
+	echo "\t\t\t<input type='submit' value='"._("De-Activate")."' onClick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -124,7 +124,7 @@ else
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+	echo "\t\t\t<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";

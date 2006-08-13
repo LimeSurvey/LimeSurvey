@@ -146,7 +146,7 @@ if ($action == "newset" || $action == "editset")
         ."\t\t\t\t\t$setfont<strong>"._("Set Name").":</strong></font>"
         ."\t\t\t\t</td>\n"
         ."\t\t\t\t<td>\n"
-        ."\t\t\t\t\t<input type='text' $slstyle name='label_name' value='";
+        ."\t\t\t\t\t<input type='text' name='label_name' value='";
     if (isset($lbname)) {echo $lbname;}
     echo "'>\n"
         ."\t\t\t\t</td>\n"
@@ -154,7 +154,7 @@ if ($action == "newset" || $action == "editset")
         ."\t\t\t<tr>\n"
         ."\t\t\t\t<td></td>\n"
         ."\t\t\t\t<td>\n"
-        ."\t\t\t\t<input $btstyle type='submit' value='";
+        ."\t\t\t\t<input type='submit' value='";
     if ($action == "newset") {echo _("Add");}
     else {echo _("Update");}
     echo "'>\n"
@@ -181,9 +181,9 @@ if ($action == "newset" || $action == "editset")
             ."\t\t\t<tr>\n"
             ."\t\t\t\t<td align='right'>$setfont<strong>"
             ._("Select SQL File:")."</strong></font></td>\n"
-            ."\t\t<td><input $btstyle name=\"the_file\" type=\"file\" size=\"35\">"
+            ."\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\">"
             ."</td></tr>\n"
-            ."\t<tr><td></td><td><input type='submit' $btstyle value='"._("Import Label Set")."'>\n"
+            ."\t<tr><td></td><td><input type='submit' value='"._("Import Label Set")."'>\n"
             ."\t<input type='hidden' name='action' value='importlabels'></TD>\n"
             ."\t</tr></table></form>\n";
         }
@@ -274,28 +274,28 @@ if (isset($lid) && ($action != "editset") && $lid)
             }
         else
             {
-            echo "\t\t\t\t\t<input type='text' $slstyle name='code' size='7' value=\"{$row['code']}\">\n";
+            echo "\t\t\t\t\t<input type='text' name='code' size='7' value=\"{$row['code']}\">\n";
             }
         echo "\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td width='50%'>\n"
-            ."\t\t\t\t\t<input type='text' $slstyle name='title' size='60' value=\"{$row['title']}\">\n"
+            ."\t\t\t\t\t<input type='text' name='title' size='60' value=\"{$row['title']}\">\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td width='20%'>\n"
-            ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Save")."' />\n";
+            ."\t\t\t\t\t<input type='submit' name='method' value='"._("Save")."' />\n";
         if ($activeuse == 0)
             {
-            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Del")."' />\n";
+            echo "\t\t\t\t\t<input type='submit' name='method' value='"._("Del")."' />\n";
             }
         echo "\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td>\n";
         if ($position > 0)
             {
-            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Up")."' />\n";
+            echo "\t\t\t\t\t<input type='submit' name='method' value='"._("Up")."' />\n";
             }
         else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left' alt=''>";}
         if ($position < $labelcount-1)
             {
-            echo "\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Dn")."' />\n";
+            echo "\t\t\t\t\t<input type='submit' name='method' value='"._("Dn")."' />\n";
             }
         echo "\t\t\t\t\t</td></tbody></table>\n"
             ."\t\t\t\t<input type='hidden' name='sortorder' value='{$row['sortorder']}'>\n"
@@ -313,13 +313,13 @@ if (isset($lid) && ($action != "editset") && $lid)
             ."\t\t\t\t<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
 			."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
             ."\t\t\t\t\t<tr><td width='10%'>\n"
-            ."\t\t\t\t\t<input type='text' $slstyle name='code' size='7' id='addnewlabelcode'>\n"
+            ."\t\t\t\t\t<input type='text' name='code' size='7' id='addnewlabelcode'>\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td width='50%'>\n"
-            ."\t\t\t\t\t<input type='text' $slstyle name='title' size='60'>\n"
+            ."\t\t\t\t\t<input type='text' name='title' size='60'>\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td width='20%'>\n"
-            ."\t\t\t\t\t<input $btstyle type='submit' name='method' value='"._("Add")."'>\n"
+            ."\t\t\t\t\t<input type='submit' name='method' value='"._("Add")."'>\n"
             ."\t\t\t\t\t</td>\n"
             ."\t\t\t\t\t<td>\n";
         echo "<script type='text/javascript' language='javascript'>\n"
@@ -347,7 +347,7 @@ if (isset($lid) && ($action != "editset") && $lid)
     echo "\t\t\t\t<tr><td colspan='4'><form style='margin-bottom:0;' action='labels.php' method='post'>"
 		."\t\t\t\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
 		."\t\t\t\t\t<tr><td width='80%'></td>"
-        ."\t\t\t\t<td></td><td><input $btstyle type='submit' name='method' value='"
+        ."\t\t\t\t<td></td><td><input type='submit' name='method' value='"
         ._("Fix Sort")."'></td>\n"
         ."\t\t\t\t</tr></tbody></table>"
         ."\t\t\t\t\t<input type='hidden' name='lid' value='$lid'>\n"

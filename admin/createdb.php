@@ -52,7 +52,7 @@ if (!$dbname)
 	echo _("Database Information not provided. This script must be run from admin.php only.");
 	
 	echo "<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
+	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
 	exit;
 	}
 if (!$database_exists) //Database named in config.php does not exist
@@ -74,7 +74,7 @@ if (!$database_exists) //Database named in config.php does not exist
 		echo "<br />$setfont<strong><font color='green'>\n";
 		echo _("Database has been created.")."</font></strong><br /><br />\n";
 		echo _("Please click below to populate the database")."<br /><br />\n";
-		echo "<input $btstyle type='submit' value='"._("Populate Database")."' onClick='location.href=\"checkfields.php\"'>";
+		echo "<input type='submit' value='"._("Populate Database")."' onClick='location.href=\"checkfields.php\"'>";
 		}
 	else
 		{
@@ -82,7 +82,7 @@ if (!$database_exists) //Database named in config.php does not exist
 		echo _("Could not create database")." ($dbname)<br /><font size='1'>\n";
 		echo $connect->ErrorMsg();
 		echo "</font><br /><br />\n";
-		echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
+		echo "<input type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
 		}
 	}
 echo "</td></tr></table>\n";

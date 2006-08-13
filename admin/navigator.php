@@ -329,7 +329,7 @@ function labelAdd() {
 }
 
 function surveyDetails($surveyid, $gid, $qid) {
-	global $publicurl, $homeurl, $imagefiles, $scriptname, $slstyle, $navigation;
+	global $publicurl, $homeurl, $imagefiles, $scriptname, , $navigation;
 	$thissurvey=getSurveyInfo($surveyid);
 
 	list($ny, $nm, $nd)=explode("-", $thissurvey['expiry']);
@@ -424,7 +424,7 @@ function surveyDel($surveyid) {
 }
 
 function surveyImport() {
-    global $publicurl, $homeurl, $imagefiles, $scriptname, $slstyle, $action, $navigation;
+    global $publicurl, $homeurl, $imagefiles, $scriptname, , $action, $navigation;
 	echo "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post'>\n"
 		. "<table width='100%' border='0'>\n"
 		. "<tr><td>\n"
@@ -437,7 +437,7 @@ function surveyImport() {
 		. "\t</tr>\n</table></form>\n";}
 
 function surveyEdit($surveyid) {
-	global $publicurl, $homeurl, $imagefiles, $scriptname, $slstyle, $action, $navigation;
+	global $publicurl, $homeurl, $imagefiles, $scriptname, , $action, $navigation;
 
 	if ($action == "editsurvey") {
 		$thissurvey=getSurveyInfo($surveyid);
@@ -702,7 +702,7 @@ function questionDetails($surveyid, $gid, $qid, $action) {
 }
 
 function questionEdit($surveyid, $gid, $qid) {
-	global $publicurl, $homeurl, $imagefiles, $scriptname, $slstyle, $action, $navigation;
+	global $publicurl, $homeurl, $imagefiles, $scriptname, , $action, $navigation;
 	
 	if ($action == "editquestion") {
 		$thissurvey = getSurveyInfo($surveyid);

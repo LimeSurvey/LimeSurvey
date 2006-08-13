@@ -614,7 +614,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 		."\t</tr>\n";
 	
 	echo "\t<tr><td colspan='3' align='center'>$setfont\n"
-		."<input type='submit' value='"._("Copy Conditions")."' $btstyle onclick=\"return confirm('"._("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\">"
+		."<input type='submit' value='"._("Copy Conditions")."' onclick=\"return confirm('"._("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\">"
 		."\t\t</font>\n";
 		
 	echo "<input type='hidden' name='action' value='copyconditions'>\n"
@@ -674,8 +674,8 @@ echo "\t\t\t</select>\n"
 	."\t</tr>\n"
 	."\t<tr>\n"
 	."\t\t<td colspan='3' align='center'>\n"
-	."\t\t\t<input type='reset' value='"._("Clear")."' onClick=\"clearAnswers()\" $btstyle />\n"
-	."\t\t\t<input type='submit' value='"._("Add Condition")."' $btstyle />\n"
+	."\t\t\t<input type='reset' value='"._("Clear")."' onClick=\"clearAnswers()\" />\n"
+	."\t\t\t<input type='submit' value='"._("Add Condition")."' />\n"
 	."<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='qid' value='$qid' />\n"
 	."<input type='hidden' name='action' value='insertcondition' />\n"

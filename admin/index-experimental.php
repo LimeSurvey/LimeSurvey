@@ -140,7 +140,7 @@ if (!$database_exists)
 		._("Either your selected database has not yet been created or there is a problem accessing it.")."<br />\n"
 		._("PHPSurveyor can attempt to create this database for you.")."<br /><br />\n"
 		._("Your selected database name is:")." $databasename<br />\n"
-		."<br /><input $btstyle type='submit' value='"
+		."<br /><input type='submit' value='"
 		._("Create Database")."' onClick='location.href=\"createdb.php\"' /></center>\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>\n";

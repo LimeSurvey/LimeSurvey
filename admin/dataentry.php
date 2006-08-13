@@ -56,7 +56,7 @@ if (!$database_exists)
 		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 		._("The defined surveyor database does not exist")."<br />\n"
 		._("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
-		."<input $btstyle type='submit' value='"
+		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"></font><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n";
@@ -71,7 +71,7 @@ if (!$surveyid && !$action)
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 		._("You have not selected a survey for data-entry.")."<br /><br />\n"
-		."<input $btstyle type='submit' value='"
+		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</font></td></tr></table>\n"
 		."</body>\n";
@@ -1146,7 +1146,7 @@ elseif ($action == "edit" || $action == "editsaved")
 		{
 		echo "	<tr>
 			 		<td bgcolor='#CCCCCC' align='center'>
-					 <input type='submit' $btstyle value='"._("Update Entry")."'>
+					 <input type='submit' value='"._("Update Entry")."'>
 					 <input type='hidden' name='id' value='$id'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='action' value='update'>
@@ -1194,7 +1194,7 @@ elseif ($action == "edit" || $action == "editsaved")
 			."</div>\n";
 		echo "	<tr>
 				<td bgcolor='#CCCCCC' align='center'>
-				 <input type='submit' $btstyle value='"._("submit")."'>
+				 <input type='submit' value='"._("submit")."'>
 				 <input type='hidden' name='sid' value='$surveyid'>
 				 <input type='hidden' name='action' value='insert'>
 				 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
@@ -2131,7 +2131,7 @@ else
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 		echo "\t\t\t<font color='red'><strong>"._("Error")."</strong></font><br />\n";
 		echo "\t\t\t"._("The survey you selected does not exist")."</font><br /><br />\n";
-		echo "\t\t\t<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "\t\t\t<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>";

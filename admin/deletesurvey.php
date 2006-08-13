@@ -51,7 +51,7 @@ if (!isset($surveyid) || !$surveyid)
 	{
 	echo "<br /><font color='red'><strong>"._("Error")."</strong></font><br />\n";
 	echo _("You have not selected a survey to delete")."<br /><br />\n";
-	echo "<input type='submit' $btstyle value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>";
 	exit;
@@ -83,8 +83,8 @@ if (!isset($ok) || !$ok)
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle  value='"._("Cancel")."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle  value='"._("Delete")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;ok=Y','_top')\" />\n";
+	echo "\t\t\t<input type='submit'  value='"._("Cancel")."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
+	echo "\t\t\t<input type='submit'  value='"._("Delete")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;ok=Y','_top')\" />\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -134,7 +134,7 @@ else //delete the survey
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>$setfont<br />\n";
 	echo "\t\t\t<strong>"._("This survey has been deleted.")."<br /><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "\t\t\t<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "\t\t</strong></font></td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";

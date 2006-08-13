@@ -213,7 +213,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center'>\n";
-		echo "\t\t\t<input type='submit' $btstyle value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+		echo "\t\t\t<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>\n";
@@ -239,8 +239,8 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	echo "\t</tr>\n";
 	echo "\t<tr>\n";
 	echo "\t\t<td align='center'>\n";
-	echo "\t\t\t<input type='submit' $btstyle value=\""._("Cancel")."\" onclick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
-	echo "\t\t\t<input type='submit' $btstyle value=\""._("Activate")."\" onClick=\"window.open('$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
+	echo "\t\t\t<input type='submit' value=\""._("Cancel")."\" onclick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\"><br />\n";
+	echo "\t\t\t<input type='submit' value=\""._("Activate")."\" onClick=\"window.open('$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
 	echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 	echo "</table>\n";
@@ -458,17 +458,17 @@ else
 	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 		{
 		echo _("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
-		echo "<input type='submit' value='"._("Initialise Tokens")."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\">\n";
+		echo "<input type='submit' value='"._("Initialise Tokens")."' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\">\n";
 		}
 	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
 		{
 		echo _("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-		echo "<input type='submit' value='"._("Initialise Tokens")."' $btstyle onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\">\n";
+		echo "<input type='submit' value='"._("Initialise Tokens")."' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\">\n";
 		}
 	else
 		{
 		echo _("This survey is now active, and responses can be recorded.")."<br /><br />\n";
-		echo "<input type='submit' value='"._("Main Admin Screen")."' $btstyle onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+		echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 		}
 	echo "\t\t\t\t</font></font></td></tr></table>\n";
 	echo "</body>\n</html>";

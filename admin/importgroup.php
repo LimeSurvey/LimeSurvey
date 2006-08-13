@@ -49,7 +49,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
 	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
 	echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -73,7 +73,7 @@ if (substr($bigarray[1], 0, 21) != "# SURVEYOR GROUP DUMP")
 	{
 	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
 	echo _("This file is not a PHPSurveyor group file. Import failed.")."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	unlink($the_full_file_path);
@@ -519,7 +519,7 @@ echo "\t<li>"._("Question Attributes:");
 if (isset($countquestion_attributes)) {echo " $countquestion_attributes";}
 echo ")</li>\n</ul>\n";
 echo "<strong>"._("Import of Group is completed.")."</strong><br />\n"
-	."<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n"
+	."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 

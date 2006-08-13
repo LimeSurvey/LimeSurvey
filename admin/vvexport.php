@@ -47,14 +47,14 @@ if (!$action == "export")
         <tr><th colspan='2'>"._("Export a VV survey file")."</th></tr>
         <tr>
          <td align='right'>"._("Export Survey").":</td>
-         <td><input type='text' $slstyle size=4 value='$surveyid' name='sid' readonly></td>
+         <td><input type='text' size=4 value='$surveyid' name='sid' readonly></td>
         </tr>
         <tr>
          <td align='right'>
           Mode:
          </td>
          <td>
-          <select name='method' $slstyle>
+          <select name='method' >
            <option value='deactivate'>"._("Export, then de-activate survey")."</option>
            <option value='none' selected>"._("Export but leave survey active")."</option>
           </select>
@@ -64,7 +64,7 @@ if (!$action == "export")
          <td>&nbsp;
          </td>
          <td>
-          <input type='submit' value='"._("Export Responses")."' $btstyle onClick='return confirm(\""._("If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?")."\")'>&nbsp;
+          <input type='submit' value='"._("Export Responses")."' onClick='return confirm(\""._("If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?")."\")'>&nbsp;
           <input type='hidden' name='action' value='export'>
          </td>
         </tr>

@@ -82,7 +82,7 @@ if (!isset($surveyid) || !$surveyid)
 		._("Token Control").":</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>$setfont<br /><font color='red'><strong>"
 		._("Error")."</strong></font><br />"._("You have not selected a survey")."<br /><br />"
-		."<input $btstyle type='submit' value='"
+		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
 		."</table>\n"
 		."</body>\n</html>";
@@ -99,7 +99,7 @@ if (!$chcount)
 		._("Token Control").":</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>$setfont<br /><font color='red'><strong>"
 		._("Error")."</strong></font><br />"._("The survey you selected does not exist")
-		."<br /><br />\n\t<input $btstyle type='submit' value='"
+		."<br /><br />\n\t<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
 		."</table>\n"
 		."</body>\n</html>";
@@ -139,7 +139,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			."\t\t<td align='center'>\n"
 			."\t\t\t$setfont<br /><br />\n"
 			."\t\t\t"._("A token table has been created for this survey.")." (\"tokens_$surveyid\")<br /><br />\n"
-			."\t\t\t<input type='submit' $btstyle value='"
+			."\t\t\t<input type='submit' value='"
 			._("Continue")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\">\n"
 			."\t\t</font></td>\n"
 			."\t</tr>\n"
@@ -157,7 +157,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			."\t\t<td align='center'>\n"
 			."\t\t\t$setfont<br /><br />\n"
 			."\t\t\t"._("A token table has been created for this survey.")." (\"tokens_$surveyid\")<br /><br />\n"
-			."\t\t\t<input type='submit' $btstyle value='"
+			."\t\t\t<input type='submit' value='"
 			._("Continue")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\">\n"
 			."\t\t</font></td>\n"
 			."\t</tr>\n"
@@ -187,9 +187,9 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			."\t\t\t<br /><br />\n"
 			."\t\t\t"._("Do you want to create a tokens table for this survey?");
 		echo "<br /><br />\n";
-		echo "\t\t\t<input type='submit' $btstyle value='"
+		echo "\t\t\t<input type='submit' value='"
 			._("Initialise Tokens")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;createtable=Y', '_top')\"><br />\n"
-			."\t\t\t<input type='submit' $btstyle value='"
+			."\t\t\t<input type='submit' value='"
 			._("Main Admin Screen")."' onClick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\"><br /><br /></font>\n";
 		if ($tcount>0)
 			{
@@ -199,13 +199,13 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 				 ."<tr>\n"
 				 ."<td bgcolor='#DDDDDD' align='center'><form action='$homeurl/tokens.php'>$setfont\n"
 				 ."The following old token tables could be restored:<br />\n"
-				 ."<select $slstyle2 size='4' name='oldtable'>\n";
+				 ."<select size='4' name='oldtable'>\n";
 			foreach($oldlist as $ol)
 				{
 				echo "<option>".$ol."</option>\n";
 				}
 			echo "</select><br />\n"
-				 ."<input type='submit' $btstyle value='Restore'>\n"
+				 ."<input type='submit' value='Restore'>\n"
 				 ."<input type='hidden' name='restoretable' value='Y'>\n"
 				 ."<input type='hidden' name='sid' value='$surveyid'>\n"
 				 ."</font></form></td>\n"
@@ -407,8 +407,8 @@ if ($action == "browse" || $action == "search")
 		."\t\t\t\n"
 		."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>\n"
 		."\t\t\t\t<tr><td><form method='post' action='$homeurl/tokens.php'>\n"
-		."\t\t\t\t\t<input $slstyle type='text' name='searchstring' value='$searchstring'>\n"
-		."\t\t\t\t\t<input $btstyle type='submit' value='"._("Search")."'>\n"
+		."\t\t\t\t\t<input type='text' name='searchstring' value='$searchstring'>\n"
+		."\t\t\t\t\t<input type='submit' value='"._("Search")."'>\n"
 		."\t\t\t\t<input type='hidden' name='order' value='$order'>\n"
 		."\t\t\t\t<input type='hidden' name='action' value='search'>\n"
 		."\t\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -417,8 +417,8 @@ if ($action == "browse" || $action == "search")
 		."\t\t</td>\n"
 		."\t\t<td align='right'><form action='$homeurl/tokens.php'>\n"
 		."\t\t<font size='1' face='verdana'>"
-		."&nbsp;"._("Records Displayed:")."<input type='text' $slstyle size='4' value='$limit' name='limit'>"
-		."&nbsp;"._("Starting From:")."<input type='text' $slstyle size='4' value='$start' name='start'>"
+		."&nbsp;"._("Records Displayed:")."<input type='text' size='4' value='$limit' name='limit'>"
+		."&nbsp;"._("Starting From:")."<input type='text' size='4' value='$start' name='start'>"
 		."&nbsp;<input type='submit' value='"._("Show")."' $btstyle>\n"
 		."\t\t</font>\n"
 		."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -594,9 +594,9 @@ if ($action == "kill")
 		echo "<font color='red'><strong>"._("Warning")."</strong></font><br />\n"
 			._("If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
 			."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
-			."<input type='submit' $btstyle value='"
+			."<input type='submit' value='"
 			._("Delete Tokens")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=kill&amp;ok=surething', '_top')\" /><br />\n"
-			."<input type='submit' $btstyle value='"
+			."<input type='submit' value='"
 			._("Cancel")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\" />\n";
 		}
 	elseif (isset($_GET['ok']) && $_GET['ok'] == "surething")
@@ -608,7 +608,7 @@ if ($action == "kill")
 		echo "<span style='display: block; text-align: center; width: 70%'>\n"
 			._("The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
 			."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
-			."<input type='submit' $btstyle value='"
+			."<input type='submit' value='"
 			._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
 			."</span>\n";
 		}
@@ -648,11 +648,11 @@ if (returnglobal('action') == "email")
 			}
 		echo "\t<tr>\n"
 			."\t\t<td align='right'>$setfont<strong>"._("From").":</strong></font></td>\n"
-			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
+			."\t\t<td><input type='text' size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right'>$setfont<strong>"._("Subject").":</strong></font></td>\n";
-		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value=\"$subject\" /></td>\n"
+		echo "\t\t<td><input type='text' size='50' name='subject' value=\"$subject\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' valign='top'>$setfont<strong>"._("Message").":</strong></font></td>\n"
@@ -662,7 +662,7 @@ if (returnglobal('action') == "email")
 		echo "\t\t\t</textarea>\n"
 			."\t\t</td>\n"
 			."\t</tr>\n"
-			."\t<tr><td></td><td align='left'><input type='submit' $btstyle value='"
+			."\t<tr><td></td><td align='left'><input type='submit' value='"
 			._("Send Invitations")."'>\n"
 			."\t<input type='hidden' name='ok' value='absolutely' />\n"
 			."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
@@ -780,19 +780,19 @@ if (returnglobal('action') == "remind")
 			."\t\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' width='150'>$setfont<strong>"._("From").":</strong></font></td>\n"
-			."\t\t<td><input type='text' $slstyle size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
+			."\t\t<td><input type='text' size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' width='150'>$setfont<strong>"._("Subject").":</strong></font></td>\n";
 		$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_remind_subj']);
-		echo "\t\t<td><input type='text' $slstyle size='50' name='subject' value='$subject' /></td>\n"
+		echo "\t\t<td><input type='text' size='50' name='subject' value='$subject' /></td>\n"
 			."\t</tr>\n";
 		if (!isset($_GET['tid']) || !$_GET['tid'])
 			{
 			echo "\t<tr>\n"
 				."\t\t<td align='right' width='150' valign='top'>$setfont<strong>"
 				._("Start at TID No:")."</strong></font></td>\n"
-				."\t\t<td><input type='text' $slstyle size='5' name='last_tid' /></td>\n"
+				."\t\t<td><input type='text' size='5' name='last_tid' /></td>\n"
 				."\t</tr>\n";
 			}
 		else
@@ -822,7 +822,7 @@ if (returnglobal('action') == "remind")
 			."\t<tr>\n"
 			."\t\t<td></td>\n"
 			."\t\t<td align='left'>\n"
-			."\t\t\t<input type='submit' $btstyle value='"._("Send Reminders")."' />\n"
+			."\t\t\t<input type='submit' value='"._("Send Reminders")."' />\n"
 			."\t<input type='hidden' name='ok' value='absolutely'>\n"
 			."\t<input type='hidden' name='sid' value='{$_GET['sid']}'>\n"
 			."\t<input type='hidden' name='action' value='remind'>\n"
@@ -936,9 +936,9 @@ if ($action == "tokenify")
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 		{
 		echo "<br />"._("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
-			."<input type='submit' $btstyle value='"
+			."<input type='submit' value='"
 			._("Yes")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify&amp;ok=Y', '_top')\" />\n"
-			."<input type='submit' $btstyle value='"
+			."<input type='submit' value='"
 			._("No")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\" />\n"
 			."<br /><br />\n";
 		}
@@ -1050,25 +1050,25 @@ if ($action == "edit" || $action == "addnew")
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<strong>"._("First Name").":</strong></font></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='firstname' value=\"";
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='30' name='firstname' value=\"";
 	if (isset($firstname)) {echo $firstname;}
 	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<strong>"._("Last Name").":</strong></font></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='30' name='lastname' value=\"";
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='30' name='lastname' value=\"";
 	if (isset($lastname)) {echo $lastname;}
 	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<strong>"._("Email").":</strong></font></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' $slstyle size='50' name='email' value=\"";
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' name='email' value=\"";
 	if (isset($email)) {echo $email;}
 	echo "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<strong>"._("Token").":</strong></font></td>\n"
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='token' value=\"";
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' name='token' value=\"";
 	if (isset($token)) {echo $token;}
 	echo "\">\n";
 	if ($action == "addnew")
@@ -1081,8 +1081,8 @@ if ($action == "edit" || $action == "addnew")
 		."\t<td align='right' width='20%'>$setfont<strong>"._("Invite sent?").":</strong></font></td>\n"
 		
 	// TLR change to put date into sent and completed
-    //	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='sent' value=\"";
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='sent' value=\"";
+    //	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' name='sent' value=\"";
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' name='sent' value=\"";
 		
 	if (isset($sent)) {echo $sent;}	else {echo "N";}
 	echo "\"></font></td>\n"
@@ -1091,8 +1091,8 @@ if ($action == "edit" || $action == "addnew")
 		."\t<td align='right' width='20%'>$setfont<strong>"._("Completed?").":</strong></font></td>\n"
 		
 	// TLR change to put date into sent and completed
-	//	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' $slstyle name='completed' value=\"";
-		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' $slstyle name='completed' value=\"";
+	//	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' name='completed' value=\"";
+		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' name='completed' value=\"";
 		
 	if (isset($completed)) {echo $completed;} else {echo "N";}
 	if ($edfieldcount > 7) 
@@ -1101,13 +1101,13 @@ if ($action == "edit" || $action == "addnew")
 			."</tr>\n"
 			."<tr>\n"
 			."\t<td align='right' width='20%'>$setfont<strong>".$attr1_name.":</strong></font></td>\n"
-			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' $slstyle name='attribute1' value=\"";
+			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' name='attribute1' value=\"";
 		if (isset($attribute_1)) {echo $attribute_1;}
 		echo "\"></font></td>\n"
 			."</tr>\n"
 			."<tr>\n"
 			."\t<td align='right' width='20%'>$setfont<strong>".$attr2_name.":</strong></font></td>\n"
-			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' $slstyle name='attribute2' value=\"";
+			."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' name='attribute2' value=\"";
 		if (isset($attribute_2)) {echo $attribute_2;}
 		}
 	echo "\"></font></td>\n"
@@ -1117,11 +1117,11 @@ if ($action == "edit" || $action == "addnew")
 	switch($action)
 		{
 		case "edit":
-			echo "\t\t<input type='submit' $btstyle name='action' value='"._("Update")."'>\n"
+			echo "\t\t<input type='submit' name='action' value='"._("Update")."'>\n"
 				."\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
 			break;
 		case "addnew":
-			echo "\t\t<input type='submit' $btstyle name='action' value='"._("Add")."'>\n";
+			echo "\t\t<input type='submit' name='action' value='"._("Add")."'>\n";
 			break;
 		}
 	echo "\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -1309,7 +1309,7 @@ echo getAdminFooter("$langdir/instructions.html#tokens", "Using PHPSurveyors Tok
 
 
 function form($error=false) {
-global $surveyid, $btstyle, $slstyle, $setfont;
+global $surveyid, $btstyle, , $setfont;
 
 	if ($error) {print $error . "<br /><br />\n";}
 	
@@ -1317,8 +1317,8 @@ global $surveyid, $btstyle, $slstyle, $setfont;
 		. "<input type='hidden' name='action' value='upload' />\n"
 		. "<input type='hidden' name='sid' value='$surveyid' />\n"
 		. "Upload a file<br />\n"
-		. "<input type='file' $slstyle name='the_file' size='35' /><br />\n"
-		. "<input type='submit' $btstyle value='Upload' />\n"
+		. "<input type='file' name='the_file' size='35' /><br />\n"
+		. "<input type='submit' value='Upload' />\n"
 		. "</form></font>\n\n";
 
 } # END form

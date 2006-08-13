@@ -91,10 +91,6 @@ if ($sourcefrom == "admin")
     include("sessioncontrol.php");
     }
 
-$btstyle = "class='btstyle' ";
-$slstyle = "class='slstyle' ";
-$slstyle2= "class='slstyle2' ";
-
 //TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
 if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions'))))
     {
@@ -830,7 +826,7 @@ function checkfortables()
             ._("Error")."</strong></font><br />\n"
             ."\t\t"
             ._("It appears as if some tables or fields are missing from your database.")."<br /><br />\n"
-            ."\t\t<input $btstyle type='submit' value='"
+            ."\t\t<input type='submit' value='"
             ._("Check Database Fields")."' onClick=\"window.open('checkfields.php', '_top')\">\n"
             ."\t</td></tr>\n"
             ."</table>\n"
@@ -2210,5 +2206,69 @@ function getArrayFiltersOutGroup($qid)
 	}
 	return false;
 }
+
+
+/**
+ * Run an arbitrary sequence of semicolon-delimited SQL commands
+ *
+ * Assumes that the input text (file or string) consists of
+ * a number of SQL statements ENDING WITH SEMICOLONS.  The
+ * semicolons MUST be the last character in a line.
+ * Lines that are blank or that start with "#" or "--" (postgres) are ignored.
+ * Only tested with mysql dump files (mysqldump -p -d moodle)
+ *
+ * @uses $CFG
+ * @param string $sqlfile The path where a file with sql commands can be found on the server.
+ * @param string $sqlstring If no path is supplied then a string with semicolon delimited sql
+ * commands can be supplied in this argument.
+ * @return bool Returns true if databse was modified successfully.
+ */
+function modify_database($sqlfile='', $sqlstring='') {
+
+    global $CFG;
+
+    $success = true;  // Let's be optimistic
+
+    if (!empty($sqlfile)) {
+        if (!is_readable($sqlfile)) {
+            $success = false;
+            echo '<p>Tried to modify database, but "'. $sqlfile .'" doesn\'t exist!</p>';
+            return $success;
+        } else {
+            $lines = file($sqlfile);
+        }
+    } else {
+        $sqlstring = trim($sqlstring);
+        if ($sqlstring{strlen($sqlstring)-1} != ";") {
+            $sqlstring .= ";"; // add it in if it's not there.
+        }
+        $lines[] = $sqlstring;
+    }
+
+    $command = '';
+
+    foreach ($lines as $line) {
+        $line = rtrim($line);
+        $length = strlen($line);
+
+        if ($length and $line[0] <> '#' and $line[0].$line[1] <> '--') {
+            if (substr($line, $length-1, 1) == ';') {
+                $line = substr($line, 0, $length-1);   // strip ;
+                $command .= $line;
+                $command = str_replace('prefix_', $CFG->prefix, $command); // Table prefixes
+                if (! execute_sql($command)) {
+                    $success = false;
+                }
+                $command = '';
+            } else {
+                $command .= $line;
+            }
+        }
+    }
+
+    return $success;
+
+}
+
 
 ?>

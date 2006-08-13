@@ -60,14 +60,14 @@ if (!$action == "import")
 		<form method='post'>
 		<tr>
 		 <td align='right'>"._("Target Survey ID")."</td>
-		 <td> $surveyid<input type='hidden' $slstyle value='$surveyid' name='sid'></td>
+		 <td> $surveyid<input type='hidden' value='$surveyid' name='sid'></td>
 		</tr>
 		<tr>
 		 <td align='right'>
 		  Source table:
 		 </td>
 		 <td>
-		  <select name='oldtable' $slstyle>
+		  <select name='oldtable' >
 {$optionElements}
 		  </select>
 		 </td>
@@ -76,7 +76,7 @@ if (!$action == "import")
 		 <td>&nbsp;
 		 </td>
 		 <td>
-		  <input type='submit' value='"._("Import Responses")."' $btstyle onClick='return confirm(\"Are you sure?\")'>&nbsp;
+		  <input type='submit' value='"._("Import Responses")."' onClick='return confirm(\"Are you sure?\")'>&nbsp;
 		 </td>
 		</tr>
 		 <input type='hidden' name='action' value='import'>

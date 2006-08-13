@@ -64,7 +64,7 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 sendcacheheaders();
 
-$slstyle2 = "style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080; width: 150'";
+= "style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080; width: 150'";
 
 echo $htmlheader;
 
@@ -137,15 +137,15 @@ $myfield3=$myfield."L";
 $myfield4=$myfield."=";
 echo "<td align='center'>$setfont<strong>id</strong><br />";
 echo "\t\t\t\t\t<font size='1'>"._("Number greater than").":<br />\n"
-        ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
+        ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
     if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
     echo "'><br />\n"
         ."\t\t\t\t\t"._("Number Less Than").":<br />\n"
-        ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield3' value='";
+        ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
     if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
     echo "'><br />\n";
     echo "\t\t\t\t\t=<br />
-            <input type='text' $slstyle2 name='$myfield4' value='";
+            <input type='text' name='$myfield4' value='";
     if (isset($_POST[$myfield4])) {echo $_POST[$myfield4];}
     echo "'><br /></font></font></td>\n";
     $allfields[]=$myfield2;
@@ -165,14 +165,14 @@ if ($datestamp == "Y") {
         ."\t\t\t\t\t<font size='1'>"._("Date (YYYY-MM-DD) equals").":<br />\n"
         ."\t\t\t\t\t<input name='$myfield3' type='text' value='";
     if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
-    echo "' ".substr($slstyle2, 0, -13) ."; width:80'><br />\n"
+    echo "' ".substr(2, 0, -13) ."; width:80'><br />\n"
         ."\t\t\t\t\t&nbsp;&nbsp;"._("OR between").":<br />\n"
         ."\t\t\t\t\t<input name='$myfield4' value='";
     if (isset($_POST[$myfield4])) {echo $_POST[$myfield4];}
-    echo "' type='text' ".substr($slstyle2, 0, -13) 
+    echo "' type='text' ".substr(2, 0, -13) 
         ."; width:65'> "._("and")." <input  name='$myfield5' value='";
     if (isset($_POST[$myfield5])) {echo $_POST[$myfield5];}
-    echo "' type='text' ".substr($slstyle2, 0, -13) 
+    echo "' type='text' ".substr(2, 0, -13) 
         ."; width:65'></font></font>\n";
     $allfields[]=$myfield2;
     $allfields[]=$myfield3;
@@ -217,7 +217,7 @@ foreach ($filters as $flt)
         if ($flt[2] == "N") {echo "</font>";}
         if ($flt[2] != "N") {echo "\t\t\t\t<select name='";}
         if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R" || $flt[2] == "J") {echo "M";}
-        if ($flt[2] != "N") {echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";}
+        if ($flt[2] != "N") {echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple 2>\n";}
         $allfields[]=$myfield;
         }
     echo "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
@@ -243,7 +243,7 @@ foreach ($filters as $flt)
                 ."')\">"
                 ."<br />\n"
                 ."\t\t\t\t\t<font size='1'>"._("Responses Containing").":</font><br />\n"
-                ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
+                ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 	            if (isset($_POST[$myfield2])) 
 	               {echo $_POST[$myfield2];}
             	echo "'>";
@@ -268,7 +268,7 @@ foreach ($filters as $flt)
                 ."')\">"
                 ."<br />\n"
                 ."\t\t\t\t\t<font size='1'>"._("Responses Containing").":</font><br />\n"
-                ."\t\t\t\t\t<textarea $slstyle2 name='$myfield2' rows='3' cols='80'>";
+                ."\t\t\t\t\t<textarea name='$myfield2' rows='3' cols='80'>";
             if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
             echo "</textarea>";
             $allfields[]=$myfield2;
@@ -287,7 +287,7 @@ foreach ($filters as $flt)
                 ."')\">"
                 ."<br />\n"
                 ."\t\t\t\t\t<font size='1'>"._("Responses Containing").":</font><br />\n"
-                ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
+                ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
             if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
             echo "'>";
             $allfields[]=$myfield2;
@@ -296,11 +296,11 @@ foreach ($filters as $flt)
             $myfield2="{$myfield}G";
             $myfield3="{$myfield}L";
             echo "\t\t\t\t\t<font size='1'>"._("Number greater than").":</font><br />\n"
-                ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield2' value='";
+                ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
             if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
             echo "'><br />\n"
                 ."\t\t\t\t\t"._("Number Less Than").":<br />\n"
-                ."\t\t\t\t\t<input type='text' $slstyle2 name='$myfield3' value='";
+                ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
             if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
             echo "'><br />\n";
             $allfields[]=$myfield2;
@@ -319,14 +319,14 @@ foreach ($filters as $flt)
                 ."\t\t\t\t\t<font size='1'>"._("Date (YYYY-MM-DD) equals").":<br />\n"
                 ."\t\t\t\t\t<input name='$myfield3' type='text' value='";
             if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
-            echo "' ".substr($slstyle2, 0, -13) ."; width:80'><br />\n"
+            echo "' ".substr(2, 0, -13) ."; width:80'><br />\n"
                 ."\t\t\t\t\t&nbsp;&nbsp;"._("OR between").":<br />\n"
                 ."\t\t\t\t\t<input name='$myfield4' value='";
             if (isset($_POST[$myfield4])) {echo $_POST[$myfield4];}
-            echo "' type='text' ".substr($slstyle2, 0, -13) 
+            echo "' type='text' ".substr(2, 0, -13) 
                 ."; width:65'> "._("and")." <input  name='$myfield5' value='";
             if (isset($_POST[$myfield5])) {echo $_POST[$myfield5];}
-            echo "' type='text' ".substr($slstyle2, 0, -13) 
+            echo "' type='text' ".substr(2, 0, -13) 
                 ."; width:65'></font></font>\n";
             break;
         case "5": // 5 point choice
@@ -377,7 +377,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._("Question").": "
                     .$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n";
                 for ($i=1; $i<=5; $i++)
                     {
                     echo "\t\t\t\t\t<option value='$i'";
@@ -415,7 +415,7 @@ foreach ($filters as $flt)
                     .str_replace("'", "`", $row[1])
                     ."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n";
                 for ($i=1; $i<=10; $i++)
                     {
                     echo "\t\t\t\t\t<option value='$i'";
@@ -451,7 +451,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._("Question").": ".$niceqtext." "
                     .str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n"
                     ."\t\t\t\t\t<option value='Y'";
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected";}
                 echo ">"._("Yes")."</option>\n"
@@ -488,7 +488,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._("Question")
                     .": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n"
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n"
                     ."\t\t\t\t\t<option value='I'";
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected";}
                 echo ">"._("Increase")."</option>\n"
@@ -529,7 +529,7 @@ foreach ($filters as $flt)
                 $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} ORDER BY sortorder, code";
                 //echo $fquery;
                 $fresult = db_execute_assoc($fquery);
-                echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple $slstyle2>\n";
+                echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n";
                 while ($frow = $fresult->FetchRow())
                     {
                     echo "\t\t\t\t\t<option value='{$frow['code']}'";
@@ -569,7 +569,7 @@ foreach ($filters as $flt)
                     .str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('"._("Question")
                     .": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
                     ."<br />\n"
-                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple $slstyle2>\n";
+                    ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple 2>\n";
                 foreach ($answers as $ans)
                     {
                     echo "\t\t\t\t\t<option value='$ans[0]'";
@@ -584,7 +584,7 @@ foreach ($filters as $flt)
             //Link to rankwinner script - awaiting completion
 //          echo "\t\t\t\t</tr>\n\t\t\t\t<tr bgcolor='#DDDDDD'>\n"
 //              ."<td colspan=$count align=center>$setfont"
-//              ."<input $btstyle type='button' value='Show Rank Summary' onClick=\"window.open('rankwinner.php?sid=$surveyid&amp;qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
+//              ."<input type='button' value='Show Rank Summary' onClick=\"window.open('rankwinner.php?sid=$surveyid&amp;qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
 //              ."</td></tr>\n\t\t\t\t<tr>\n";
             $counter=0;
             unset($answers);
@@ -601,7 +601,7 @@ foreach ($filters as $flt)
             echo ">&nbsp;"
                 ."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('"._("Question").": ".$niceqtext."')\"></strong>"
                 ."<br />\n";
-            echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple $slstyle2>\n";
+            echo "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple 2>\n";
             $allfields[]=$myfield;
             $query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} ORDER BY sortorder, title";
             $result = db_execute_num($query) or die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
@@ -643,8 +643,8 @@ echo "\t\t\t</table>\n"
     ."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' id='viewsummaryall' name='summary' value='$allfield'"
     ."><label for='viewsummaryall'>"._("View summary of all available fields")."</label></font></td></tr>\n"
     ."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
-    ."\t\t\t<input $btstyle type='submit' value='"._("View Stats")."'>\n"
-    ."\t\t\t<input $btstyle type='button' value='"._("Clear")."' onClick=\"window.open('statistics.php?sid=$surveyid', '_top')\">\n"
+    ."\t\t\t<input type='submit' value='"._("View Stats")."'>\n"
+    ."\t\t\t<input type='button' value='"._("Clear")."' onClick=\"window.open('statistics.php?sid=$surveyid', '_top')\">\n"
     ."\t\t<br />&nbsp;\n"
     ."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
     ."\t\t<input type='hidden' name='display' value='stats'>\n"
@@ -1372,12 +1372,12 @@ if (isset($_POST['summary']) && $_POST['summary'])
                     if ($al[0] == "") 
                         {$fname=_("No answer");} 
                     elseif ($al[0] == _("Other") || $al[0] == "Answers")
-                        {$fname="$al[1] <input $btstyle type='submit' value='"._("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+                        {$fname="$al[1] <input type='submit' value='"._("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
                     elseif ($qtype == "S" || $qtype == "T" || $qtype == "Q")
                         {
                         if ($al[0] == "Answer")
                             {
-                            $fname= "$al[1] <input $btstyle type='submit' value='"
+                            $fname= "$al[1] <input type='submit' value='"
                                   . _("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql="
                                   . urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";
                             }

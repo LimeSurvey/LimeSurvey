@@ -63,7 +63,7 @@ if ($action != "upload")
 		<tr><td>"._("Survey ID:")."</td><td><input type='text' size=2 name='sid' value='$surveyid' readonly></td></tr>
 		<tr><td>"._("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
         <!-- this next item should only appear if noid is not checked -->
-		<tr><td>"._("When an imported record matches an existing record ID:")."</td><td><select name='insert' $slstyle>
+		<tr><td>"._("When an imported record matches an existing record ID:")."</td><td><select name='insert' >
         <option value='error' selected>"._("Report an error (and skip the new record).")."</option>
         <option value='renumber'>"._("Renumber the new record.")."</option>
         <option value='ignore'>"._("Ignore the new record.")."</option>
@@ -101,7 +101,7 @@ else
 		{
 		echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
 		echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-		//echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		//echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "</font></td></tr></table>\n";
 		echo "</body>\n</html>\n";
 		exit;

@@ -66,7 +66,7 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 		. _("The defined surveyor database does not exist")."<br />\n"
 		. _("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
-		."<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>";
 	exit;
@@ -78,7 +78,7 @@ if (!$surveyid && !$action) //NO SID OR ACTION PROVIDED
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 		. _("You have not selected a survey to browse.")."<br /><br />\n"
-		."<input $btstyle type='submit' value='"
+		."<input type='submit' value='"
 		. _("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>";
@@ -102,7 +102,7 @@ if ($actcount > 0)
 				."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 				."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 				. _("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
-				."<input $btstyle type='submit' value='"
+				."<input type='submit' value='"
 				. _("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
 				."</td></tr></table>\n"
 				."</body>\n</html>";
@@ -117,7 +117,7 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 		. _("There is no matching survey.")." ($surveyid)<br /><br />\n"
-		."<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n</html>";
 	exit;
@@ -273,7 +273,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		."<table width='99%' align='center'>\n"
 		."\t<tr>\n"
 		."\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
-	if (isset($_POST['sql']) && $_POST['sql']) {echo "\t\t\t<input type='submit' $btstyle value='Close Window' onClick=\"window.close();\" />\n";}
+	if (isset($_POST['sql']) && $_POST['sql']) {echo "\t\t\t<input type='submit' value='Close Window' onClick=\"window.close();\" />\n";}
 	echo "\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n";
@@ -489,8 +489,8 @@ elseif ($action == "all")
 		."\t\t<td align='right'>\n"
 		."\t\t<form action='browse.php' method='post'><font size='1' face='verdana'>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt=''>\n"
-		."\t\t\t"._("Records Displayed:")."<input type='text' $slstyle size='4' value='$dtcount2' name='limit'>\n"
-		."\t\t\t"._("Starting From:")."<input type='text' $slstyle size='4' value='$start' name='start'>\n"
+		."\t\t\t"._("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit'>\n"
+		."\t\t\t"._("Starting From:")."<input type='text' size='4' value='$start' name='start'>\n"
 		."\t\t\t<input type='submit' value='"._("Show")."' $btstyle>\n"
 		."\t\t</font>\n"
 		."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"

@@ -49,7 +49,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
 	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
 	echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -76,7 +76,7 @@ if (substr($bigarray[1], 0, 25) != "# SURVEYOR LABEL SET DUMP")
 	{
 	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
 	echo _("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n";
-	echo "<input $btstyle type='submit' value='"._("Return to Labels Admin")."' onClick=\"window.open('labels.php', '_top')\">\n";
+	echo "<input type='submit' value='"._("Return to Labels Admin")."' onClick=\"window.open('labels.php', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -219,7 +219,7 @@ echo "\t<li>"._("Labelsets").": $countlabelsets</li>\n";
 echo "\t<li>"._("Labels").": $countlabels</li></ul><br />\n";
 
 echo "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
-echo "<input $btstyle type='submit' value='"._("Return to Labels Admin")."' onClick=\"window.open('labels.php?lid=$newlid', '_top')\">\n";
+echo "<input type='submit' value='"._("Return to Labels Admin")."' onClick=\"window.open('labels.php?lid=$newlid', '_top')\">\n";
 
 echo "</td></tr></table>\n";
 echo "</body>\n</html>";

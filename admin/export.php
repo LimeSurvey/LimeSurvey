@@ -161,7 +161,7 @@ if (!$style)
 		."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center' bgcolor='silver'>\n"
-		."\t\t\t$setfont<input $btstyle type='submit' value='"
+		."\t\t\t$setfont<input type='submit' value='"
 		._("Export Data")."'>\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t</font></td>\n"
@@ -180,7 +180,7 @@ if (!$style)
 			.stripcslashes(returnglobal('id'))
 			."\">\n";
 		}
-		echo "\t\t\t<input $btstyle type='submit' value='"
+		echo "\t\t\t<input type='submit' value='"
 		._("Close Window")."' onClick=\"self.close()\">\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -225,7 +225,7 @@ if (!$style)
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center'>$setfont<font size='1'>\n"
-		."\t\t\t<select name='colselect[]' $slstyle2 multiple size='15'>\n";
+		."\t\t\t<select name='colselect[]' multiple size='15'>\n";
 	$i=1;
 	foreach($excesscols as $ec)
 		{
