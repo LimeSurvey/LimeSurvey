@@ -37,21 +37,22 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
-require_once(dirname(__FILE__).'/classes/adodb/adodb.inc.php');
-
 $versionnumber = "1.08a";
-$dbprefix=strtolower($dbprefix);
-define("_PHPVERSION", phpversion());
-if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
+$dbversionnumber = 108;
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
 
+
+require_once (dirname(__FILE__).'/classes/adodb/adodb.inc.php');
 require_once (dirname(__FILE__).'/classes/phpmailer/class.phpmailer.php');
 require_once (dirname(__FILE__).'/classes/php-gettext/gettextinc.php');
 require_once (dirname(__FILE__).'/classes/core/surveytranslator.php');
 
+$dbprefix=strtolower($dbprefix);
+define("_PHPVERSION", phpversion());
+if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
 
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
     {
@@ -245,9 +246,9 @@ if ($sourcefrom == "admin")
                     ."' alt='". _("Check Settings")."' align='left'></a>"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 
-        $adminmenu .= "<a href=\"#\" onClick=\"window.open('checkfields.php', '_top')\"".
+        $adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
 					   "onmouseout=\"hideTooltip()\"" 
-                      ."onmouseover=\"showTooltip(event,'". _("Check Database")."');return false\">".
+                      ."onmouseover=\"showTooltip(event,'". _("Check Data Integrity")."');return false\">".
                     "<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Database")."' align='left'></a>\n";
 		 $adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
 		 			."onmouseout=\"hideTooltip()\"" 
@@ -2215,9 +2216,9 @@ function getArrayFiltersOutGroup($qid)
  * a number of SQL statements ENDING WITH SEMICOLONS.  The
  * semicolons MUST be the last character in a line.
  * Lines that are blank or that start with "#" or "--" (postgres) are ignored.
- * Only tested with mysql dump files (mysqldump -p -d moodle)
- *
- * @uses $CFG
+ * Only tested with mysql dump files (mysqldump -p -d phpsurveyor)
+ * Function kindly borrowed by Moodle
+ * @uses $dbprefix
  * @param string $sqlfile The path where a file with sql commands can be found on the server.
  * @param string $sqlstring If no path is supplied then a string with semicolon delimited sql
  * commands can be supplied in this argument.
@@ -2225,7 +2226,7 @@ function getArrayFiltersOutGroup($qid)
  */
 function modify_database($sqlfile='', $sqlstring='') {
 
-    global $CFG;
+    global $dbprefix;
 
     $success = true;  // Let's be optimistic
 
@@ -2251,12 +2252,12 @@ function modify_database($sqlfile='', $sqlstring='') {
         $line = rtrim($line);
         $length = strlen($line);
 
-        if ($length and $line[0] <> '#' and $line[0].$line[1] <> '--') {
+        if ($length and $line[0] <> '#' and substr($line,0,2) <> '--') {
             if (substr($line, $length-1, 1) == ';') {
                 $line = substr($line, 0, $length-1);   // strip ;
                 $command .= $line;
-                $command = str_replace('prefix_', $CFG->prefix, $command); // Table prefixes
-                if (! execute_sql($command)) {
+                $command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
+                if (! db_execute_num($command)) { Echo $command;
                     $success = false;
                 }
                 $command = '';

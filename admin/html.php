@@ -211,13 +211,6 @@ if ($action == "checksettings" || $action == "changelang")
 				. "\t</tr>\n"
 				. "</table></form>\n"
 				. "<table><tr><td height='1'></td></tr></table>\n";
-	$cssummary .= "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
-				. "cellpadding='1' cellspacing='0' width='600'>\n"
-				. "<tr><td align='center'>$setfont<br />"
-				. "<a href='".$homeurl."/dbchecker.php'>"._("Check PHPSurveyor Data Integrity")."</a>"
-				. "<br />&nbsp;</font></td></tr>\n"
-				. "</table>\n"
-				. "<table><tr><td height='1'></td></tr></table>\n";
 	}
 
 if ($surveyid)

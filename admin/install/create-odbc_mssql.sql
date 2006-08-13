@@ -6,10 +6,10 @@
 
 
 --
--- Structure for table answers : 
+-- Structure for table answers :
 --
 
-CREATE TABLE [dbo].[answers] (
+CREATE TABLE [dbo].[prefix_answers] (
   [qid] int DEFAULT 0 NOT NULL,
   [code] nvarchar(5)  NOT NULL,
   [answer] ntext  NOT NULL,
@@ -18,13 +18,13 @@ CREATE TABLE [dbo].[answers] (
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table assessments : 
+-- Structure for table assessments :
 --
 
-CREATE TABLE [dbo].[assessments] (
+CREATE TABLE [dbo].[prefix_assessments] (
   [id] int IDENTITY(1, 1) NOT NULL,
   [sid] int DEFAULT 0 NOT NULL,
   [scope] varchar(5)  NOT NULL,
@@ -37,13 +37,13 @@ CREATE TABLE [dbo].[assessments] (
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table conditions : 
+-- Structure for table conditions :
 --
 
-CREATE TABLE [dbo].[conditions] (
+CREATE TABLE [dbo].[prefix_conditions] (
   [cid] int IDENTITY(1, 1) NOT NULL,
   [qid] int DEFAULT 0 NOT NULL,
   [cqid] int DEFAULT 0 NOT NULL,
@@ -52,13 +52,13 @@ CREATE TABLE [dbo].[conditions] (
   [value] varchar(5)  NOT NULL
 )
 ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table groups : 
+-- Structure for table groups :
 --
 
-CREATE TABLE [dbo].[groups] (
+CREATE TABLE [dbo].[prefix_groups] (
   [gid] int IDENTITY(1, 1) NOT NULL,
   [sid] int DEFAULT 0 NOT NULL,
   [group_name] varchar(100)  NOT NULL,
@@ -67,50 +67,50 @@ CREATE TABLE [dbo].[groups] (
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table labels : 
+-- Structure for table labels :
 --
 
-CREATE TABLE [dbo].[labels] (
+CREATE TABLE [dbo].[prefix_labels] (
   [lid] int DEFAULT 0 NOT NULL,
   [code] varchar(5)  NOT NULL,
   [title] varchar(100)  NOT NULL,
   [sortorder] varchar(5)  NULL
 )
 ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table labelsets : 
+-- Structure for table labelsets :
 --
 
-CREATE TABLE [dbo].[labelsets] (
+CREATE TABLE [dbo].[prefix_labelsets] (
   [lid] int IDENTITY(1, 1) NOT NULL,
   [label_name] varchar(100)  NOT NULL
 )
 ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table question_attributes : 
+-- Structure for table question_attributes :
 --
 
-CREATE TABLE [dbo].[question_attributes] (
+CREATE TABLE [dbo].[prefix_question_attributes] (
   [qaid] int IDENTITY(1, 1) NOT NULL,
   [qid] int NOT NULL,
   [attribute] varchar(50)  NULL,
   [value] varchar(20)  NULL
 )
 ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table questions : 
+-- Structure for table questions :
 --
 
-CREATE TABLE [dbo].[questions] (
+CREATE TABLE [dbo].[prefix_questions] (
   [qid] int IDENTITY(1, 1) NOT NULL,
   [sid] int DEFAULT 0 NOT NULL,
   [gid] int DEFAULT 0 NOT NULL,
@@ -125,13 +125,13 @@ CREATE TABLE [dbo].[questions] (
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table saved_control : 
+-- Structure for table saved_control :
 --
 
-CREATE TABLE [dbo].[saved_control] (
+CREATE TABLE [dbo].[prefix_saved_control] (
   [scid] int IDENTITY(1, 1) NOT NULL,
   [sid] int CONSTRAINT [DF__saved_contr__sid__108B795B] DEFAULT 0 NOT NULL,
   [srid] int CONSTRAINT [DF__saved_cont__srid__117F9D94] DEFAULT 0 NOT NULL,
@@ -146,13 +146,13 @@ CREATE TABLE [dbo].[saved_control] (
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table surveys : 
+-- Structure for table surveys :
 --
 
-CREATE TABLE [dbo].[surveys] (
+CREATE TABLE [dbo].[prefix_surveys] (
   [sid] int NOT NULL,
   [short_title] varchar(200)  NOT NULL,
   [description] text  NULL,
@@ -193,69 +193,67 @@ CREATE TABLE [dbo].[surveys] (
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
-GO
+;
 
 --
--- Structure for table users : 
+-- Structure for table users :
 --
 
-CREATE TABLE [dbo].[users] (
+CREATE TABLE [dbo].[prefix_users] (
   [user] varchar(20)  NOT NULL,
   [password] varchar(20)  NOT NULL,
   [security] varchar(10)  NOT NULL
 )
 ON [PRIMARY]
-GO
+;
 
 --
--- Definition for indices : 
+-- Definition for indices :
 --
 
-ALTER TABLE [dbo].[assessments]
-ADD CONSTRAINT [PK_assessments] 
+ALTER TABLE [dbo].[prefix_assessments]
+ADD CONSTRAINT [PK_assessments]
 PRIMARY KEY CLUSTERED ([id])
 ON [PRIMARY]
-GO
+;
 
-ALTER TABLE [dbo].[conditions]
-ADD CONSTRAINT [PK_conditions] 
+ALTER TABLE [dbo].[prefix_conditions]
+ADD CONSTRAINT [PK_conditions]
 PRIMARY KEY CLUSTERED ([cid])
 ON [PRIMARY]
-GO
+;
 
-ALTER TABLE [dbo].[groups]
-ADD CONSTRAINT [PK_groups] 
+ALTER TABLE [dbo].[prefix_groups]
+ADD CONSTRAINT [PK_groups]
 PRIMARY KEY CLUSTERED ([gid])
 ON [PRIMARY]
-GO
+;
 
-ALTER TABLE [dbo].[labelsets]
-ADD CONSTRAINT [PK_labelsets] 
+ALTER TABLE [dbo].[prefix_labelsets]
+ADD CONSTRAINT [PK_labelsets]
 PRIMARY KEY CLUSTERED ([lid])
 ON [PRIMARY]
-GO
+;
 
-ALTER TABLE [dbo].[question_attributes]
-ADD CONSTRAINT [PK_question_attributes] 
+ALTER TABLE [dbo].[prefix_question_attributes]
+ADD CONSTRAINT [PK_question_attributes]
 PRIMARY KEY CLUSTERED ([qaid])
 ON [PRIMARY]
-GO
+;
 
-ALTER TABLE [dbo].[questions]
-ADD CONSTRAINT [PK_questions] 
+ALTER TABLE [dbo].[prefix_questions]
+ADD CONSTRAINT [PK_questions]
 PRIMARY KEY CLUSTERED ([qid])
 ON [PRIMARY]
-GO
+;
 
-ALTER TABLE [dbo].[saved_control]
-ADD CONSTRAINT [PK_saved_control] 
+ALTER TABLE [dbo].[prefix_saved_control]
+ADD CONSTRAINT [PK_saved_control]
 PRIMARY KEY CLUSTERED ([scid])
 ON [PRIMARY]
-GO
+;
 
-ALTER TABLE [dbo].[surveys]
-ADD CONSTRAINT [PK_surveys] 
+ALTER TABLE [dbo].[prefix_surveys]
+ADD CONSTRAINT [PK_surveys]
 PRIMARY KEY CLUSTERED ([sid])
-ON [PRIMARY]
-GO
-
+ON [PRIMARY];

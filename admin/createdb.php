@@ -46,6 +46,21 @@ echo "<table width='350' align='center' style='border: 1px solid #555555' cellpa
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Create Database")."</strong></td></tr>\n";
 echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
+// In Step2 fill the database with data
+if (returnglobal('createdbstep2')==_("Populate Database"))
+{
+   if (modify_database(dirname(__FILE__).'/install/create-'.$databasetype.'.sql'))
+   {
+   echo _("Database has been successfully populated.")."</font></strong></font><br /><br />\n";
+   echo "<input type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
+   }
+    else
+    {
+      echo"Error";
+    }
+
+}
+
 if (!$dbname)
 	{
 	echo "<br /><strong>$setfont<font color='red'>"._("Error")."</font></strong><br />\n";
@@ -72,13 +87,14 @@ if (!$database_exists) //Database named in config.php does not exist
         $connect->database = $dbname;
 	    $connect->Execute("USE DATABASE `$dbname`");
 		echo "<br />$setfont<strong><font color='green'>\n";
-		echo _("Database has been created.")."</font></strong><br /><br />\n";
+		echo _("Database has been created.")."</font></strong></font><br /><br />\n";
 		echo _("Please click below to populate the database")."<br /><br />\n";
-		echo "<input type='submit' value='"._("Populate Database")."' onClick='location.href=\"checkfields.php\"'>";
+		echo "<form method='post'>";
+		echo "<input type='submit' name='createdbstep2' value='"._("Populate Database")."' onClick='location.href=\"createdb.php\"'></form>";
 		}
 	else
 		{
-		echo "<strong>$setfont<font color='red'>"._("Error")."</strong></font><br />\n";
+		echo "<strong>$setfont<font color='red'>"._("Error")."</font></strong></font><br />\n";
 		echo _("Could not create database")." ($dbname)<br /><font size='1'>\n";
 		echo $connect->ErrorMsg();
 		echo "</font><br /><br />\n";

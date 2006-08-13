@@ -16,7 +16,7 @@
 -- Table structure for table `answers`
 -- 
 
-CREATE TABLE `answers` (
+CREATE TABLE `prefix_answers` (
   `qid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
   `answer` text NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `answers` (
 -- Table structure for table `assessments`
 -- 
 
-CREATE TABLE `assessments` (
+CREATE TABLE `prefix_assessments` (
   `id` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `scope` varchar(5) NOT NULL default '',
@@ -50,7 +50,7 @@ CREATE TABLE `assessments` (
 -- Table structure for table `conditions`
 -- 
 
-CREATE TABLE `conditions` (
+CREATE TABLE `prefix_conditions` (
   `cid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
   `cqid` int(11) NOT NULL default '0',
@@ -66,7 +66,7 @@ CREATE TABLE `conditions` (
 -- Table structure for table `groups`
 -- 
 
-CREATE TABLE `groups` (
+CREATE TABLE `prefix_groups` (
   `gid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `group_name` varchar(100) NOT NULL default '',
@@ -81,7 +81,7 @@ CREATE TABLE `groups` (
 -- Table structure for table `labels`
 -- 
 
-CREATE TABLE `labels` (
+CREATE TABLE `prefix_labels` (
   `lid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
   `title` varchar(100) NOT NULL default '',
@@ -95,7 +95,7 @@ CREATE TABLE `labels` (
 -- Table structure for table `labelsets`
 -- 
 
-CREATE TABLE `labelsets` (
+CREATE TABLE `prefix_labelsets` (
   `lid` int(11) NOT NULL auto_increment,
   `label_name` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`lid`)
@@ -107,7 +107,7 @@ CREATE TABLE `labelsets` (
 -- Table structure for table `question_attributes`
 -- 
 
-CREATE TABLE `question_attributes` (
+CREATE TABLE `prefix_question_attributes` (
   `qaid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
   `attribute` varchar(50) default NULL,
@@ -121,7 +121,7 @@ CREATE TABLE `question_attributes` (
 -- Table structure for table `questions`
 -- 
 
-CREATE TABLE `questions` (
+CREATE TABLE `prefix_questions` (
   `qid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `gid` int(11) NOT NULL default '0',
@@ -143,7 +143,7 @@ CREATE TABLE `questions` (
 -- Table structure for table `saved_control`
 -- 
 
-CREATE TABLE `saved_control` (
+CREATE TABLE `prefix_saved_control` (
   `scid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `srid` int(11) NOT NULL default '0',
@@ -164,7 +164,7 @@ CREATE TABLE `saved_control` (
 -- Table structure for table `surveys`
 -- 
 
-CREATE TABLE `surveys` (
+CREATE TABLE `prefix_surveys` (
   `sid` int(11) NOT NULL,
   `short_title` varchar(200) NOT NULL default '',
   `description` text,
@@ -210,7 +210,7 @@ CREATE TABLE `surveys` (
 -- Table structure for table `users`
 -- 
 
-CREATE TABLE `users` (
+CREATE TABLE `prefix_users` (
   `user` varchar(20) NOT NULL default '',
   `password` varchar(20) NOT NULL default '',
   `security` varchar(10) NOT NULL default ''
