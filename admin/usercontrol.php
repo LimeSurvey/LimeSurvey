@@ -34,7 +34,7 @@
 #############################################################
 */
 
-include("classes/core/htaccess.class.php");
+include_once("classes/core/htaccess.class.php");
 
 if (empty($homedir)) {die("Cannot run this script directly");}
 if ($accesscontrol <> 1) {exit;}
@@ -130,18 +130,9 @@ elseif ($action == "moduser")
 	$pass=preg_replace("/\W/","",$pass);
 	if ($user && $pass)
 	{
-		//$addsummary .= "Modifying user $user with password $pass<br />\n";
-		if ($htpasswddir) {$htpasswd = "\"$htpasswddir/htpasswd\"";} else {$htpasswd = "htpasswd";}
-		$command="$htpasswd -b .htpasswd $user $pass 2>&1";
-		exec($command, $CommandResult, $CommandStatus);
-		if ($CommandStatus) //0=success, for other possibilities see http://httpd.apache.org/docs/programs/htpasswd.html
-		{
-			$addsummary .= "<pre>";
-			$addsummary .= "\$CommandStatus = $CommandStatus\n";
-			$addsummary .= "\$CommandResult = \n";
-			foreach ($CommandResult as $Line) {$addsummary .= "$Line\n";}
-			$addsummary .= "</pre>\n";
-		}
+		$ht = new htaccess("$homedir/.htaccess","$homedir/.htpasswd");
+		$ht->setPasswd($user,$pass);
+		
 		$uquery = "UPDATE ".db_table_name('users')." SET password='$pass', security='{$_POST['level']}' WHERE user='$user'";
 		$uresult = $connect->Execute($uquery);
 
