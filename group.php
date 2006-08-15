@@ -1,40 +1,40 @@
 <?php
 /*
-	#############################################################
-	# >>> PHPSurveyor 	 										#
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA					#
-	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################
+#############################################################
+# >>> PHPSurveyor 	 										#
+#############################################################
+# > Author:  Jason Cleeland									#
+# > E-mail:  jason@cleeland.org								#
+# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
+# >          CARLTON SOUTH 3053, AUSTRALIA					#
+# > Date: 	 20 February 2003								#
+#															#
+# This set of scripts allows you to develop, publish and	#
+# perform data-entry on surveys.							#
+#############################################################
+#															#
+#	Copyright (C) 2003  Jason Cleeland						#
+#															#
+# This program is free software; you can redistribute 		#
+# it and/or modify it under the terms of the GNU General 	#
+# Public License as published by the Free Software 			#
+# Foundation; either version 2 of the License, or (at your 	#
+# option) any later version.								#
+#															#
+# This program is distributed in the hope that it will be 	#
+# useful, but WITHOUT ANY WARRANTY; without even the 		#
+# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
+# PARTICULAR PURPOSE.  See the GNU General Public License 	#
+# for more details.											#
+#															#
+# You should have received a copy of the GNU General 		#
+# Public License along with this program; if not, write to 	#
+# the Free Software Foundation, Inc., 59 Temple Place - 	#
+# Suite 330, Boston, MA  02111-1307, USA.					#
+#############################################################
 */
 if (empty($homedir)) {die ("Cannot run this script directly");}
-	
+
 //Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
@@ -47,21 +47,21 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['st
 // --> START NEW FEATURE - SAVE
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
 if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != " "._("submit")." ")
-	{	
+{
 	$_POST['move'] = " "._("last")." ";
-	}
+}
 // <-- END NEW FEATURE - SAVE
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
 if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == " << "._("prev")." ") || (isset($_POST['saveall']) && $_POST['saveall'] == _("Save your responses so far"))))
-	{
+{
 	$backok="Y";
-	}
+}
 else
-	{
+{
 	$backok="N";
-	}
+}
 
 //Now, we check mandatory questions if necessary
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
@@ -71,108 +71,108 @@ $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandator
 $notvalidated=checkpregs($backok);
 
 // Check for session timeout
-if (session_id()=='') 
- {
- 	 echo "Sorry, your sessions seems to have expired. Please restart the survey. (1)";
- 	 die();
- }
+if (session_id()=='')
+{
+	echo "Sorry, your sessions seems to have expired. Please restart the survey. (1)";
+	die();
+}
 
 //SEE IF THIS GROUP SHOULD DISPLAY
 if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " "._("last")." " && $_POST['move'] != " "._("submit")." ")
-	{
+{
 	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
-		{
+	{
 		if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step']=$_SESSION['step']-1;}
 		if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step']=$_SESSION['step']+1;}
 		if ($_SESSION['step']-1 == $_SESSION['totalsteps'])
-			{
-		    $_POST['move'] = " "._("last")." ";
+		{
+			$_POST['move'] = " "._("last")." ";
 			break;
-			}
 		}
 	}
+}
 
 //SUBMIT ###############################################################################
 // --> START NEW FEATURE - SAVE
 if (isset($_POST['move']) && $_POST['move'] == " "._("submit")." ")
 // <-- END NEW FEATURE - SAVE
-	{
+{
 
-        if ($thissurvey['refurl'] == "Y")                 {
-                if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
-                        {                     
-                        $_SESSION['insertarray'][] = "refurl";
-                        }
-                $_SESSION['refurl'] = $_SESSION['refurl'];                 }
-
-
-	//COMMIT CHANGES TO DATABASE
-	if ($thissurvey['active'] != "Y")
+	if ($thissurvey['refurl'] == "Y")                 {
+		if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
 		{
-		sendcacheheaders();
-		doHeader();
-		foreach(file("$thistpl/startpage.pstpl") as $op)
-			{
-			echo templatereplace($op);
-			}
-
-		//Check for assessments
-		$assessments = doAssessment($surveyid);
-		if ($assessments)
-			{
-			foreach(file("$thistpl/assessment.pstpl") as $op)
-				{
-				echo templatereplace($op);
-				}
-			}
-
-		$completed = "<br /><strong><font size='2' color='red'>"._("Did Not Save")."</font></strong><br /><br />\n\n";
-		$completed .= _("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
-		$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._("Clear Responses")."</a><br /><br />\n";
+			$_SESSION['insertarray'][] = "refurl";
 		}
-	else
-		{
+		$_SESSION['refurl'] = $_SESSION['refurl'];                 }
 
-			
-			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
-				{
-				$cookiename="PHPSID".returnglobal('sid')."STATUS";
-				setcookie("$cookiename", "COMPLETE", time() + 31536000);
-				}
-			
-            $content='';
+
+		//COMMIT CHANGES TO DATABASE
+		if ($thissurvey['active'] != "Y")
+		{
+			sendcacheheaders();
+			doHeader();
 			foreach(file("$thistpl/startpage.pstpl") as $op)
-				{
-				$content .= templatereplace($op);
-				}
-			//echo $thissurvey['url'];	
+			{
+				echo templatereplace($op);
+			}
+
 			//Check for assessments
 			$assessments = doAssessment($surveyid);
 			if ($assessments)
-				{
+			{
 				foreach(file("$thistpl/assessment.pstpl") as $op)
-					{
-				    $content .=templatereplace($op);
-					}
+				{
+					echo templatereplace($op);
 				}
+			}
+
+			$completed = "<br /><strong><font size='2' color='red'>"._("Did Not Save")."</font></strong><br /><br />\n\n";
+			$completed .= _("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
+			$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._("Clear Responses")."</a><br /><br />\n";
+		}
+		else
+		{
+
+
+			if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
+			{
+				$cookiename="PHPSID".returnglobal('sid')."STATUS";
+				setcookie("$cookiename", "COMPLETE", time() + 31536000);
+			}
+
+			$content='';
+			foreach(file("$thistpl/startpage.pstpl") as $op)
+			{
+				$content .= templatereplace($op);
+			}
+			//echo $thissurvey['url'];
+			//Check for assessments
+			$assessments = doAssessment($surveyid);
+			if ($assessments)
+			{
+				foreach(file("$thistpl/assessment.pstpl") as $op)
+				{
+					$content .=templatereplace($op);
+				}
+			}
 
 			$completed = "<br /><font size='2'><font color='green'><strong>"
-						._("Thank you")."</strong></font><br /><br />\n\n"
-						. _("Your survey responses have been recorded.")."<br />\n"
-						. "<a href='javascript:window.close()'>"
-						._("Close this Window")."</a></font><br /><br />\n";
+			._("Thank you")."</strong></font><br /><br />\n\n"
+			. _("Your survey responses have been recorded.")."<br />\n"
+			. "<a href='javascript:window.close()'>"
+			._("Close this Window")."</a></font><br /><br />\n";
 
 			//Update the token if needed and send a confirmation email
 			if (isset($_POST['token']) && $_POST['token'])
-				{
+			{
 				submittokens();
-				}
+			}
 
 			//Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
 			if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail'])
-				{ 
+			{
 				sendsubmitnotification($thissurvey['sendnotification']);
-				}
+			}
 
 
 			session_unset();
@@ -181,68 +181,68 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("submit")." ")
 
 			sendcacheheaders();
 			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
-				{
-			    //Automatically redirect the page to the "url" setting for the survey
+			{
+				//Automatically redirect the page to the "url" setting for the survey
 				session_write_close();
 				header("Location: {$thissurvey['url']}");
-			    }
+			}
 
 			doHeader();
-            echo $content;
+			echo $content;
 
 		}
-	
-	foreach(file("$thistpl/completed.pstpl") as $op)
+
+		foreach(file("$thistpl/completed.pstpl") as $op)
 		{
-		echo templatereplace($op);
+			echo templatereplace($op);
 		}
-	
-	echo "\n<br />\n";
-	foreach(file("$thistpl/endpage.pstpl") as $op)
+
+		echo "\n<br />\n";
+		foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
-		echo templatereplace($op);
+			echo templatereplace($op);
 		}
-	exit;
-	}
+		exit;
+}
 
 //LAST PHASE ###########################################################################
 if (isset($_POST['move']) && $_POST['move'] == " "._("last")." " && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
-	{
+{
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-    sendcacheheaders();
+	sendcacheheaders();
 	doHeader();
 	if ($thissurvey['private'] != "N")
-		{
+	{
 		$privacy="";
 		foreach (file("$thistpl/privacy.pstpl") as $op)
-			{
-			$privacy .= templatereplace($op);
-			}
-		}
-	foreach(file("$thistpl/startpage.pstpl") as $op)
 		{
-		echo templatereplace($op);
+			$privacy .= templatereplace($op);
 		}
+	}
+	foreach(file("$thistpl/startpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
-	
+
 	echo "\n\n<!-- START THE SURVEY -->\n";
 	foreach(file("$thistpl/survey.pstpl") as $op)
-		{
+	{
 		echo "\t\t".templatereplace($op);
-		}
+	}
 	//READ SUBMIT TEMPLATE
 	foreach(file("$thistpl/submit.pstpl") as $op)
-		{
+	{
 		echo "\t\t\t".templatereplace($op);
-		}
-	
+	}
+
 	$navigator = surveymover();
 	echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 	foreach(file("$thistpl/navigator.pstpl") as $op)
-		{
+	{
 		echo "\t\t".templatereplace($op);
-		}
-print <<<END
+	}
+	print <<<END
 	<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>
 	<input type='hidden' name='sid' value='$surveyid' id='sid'>
 	<input type='hidden' name='token' value='$token' id='token'>
@@ -250,68 +250,68 @@ print <<<END
 
 END;
 	foreach(file("$thistpl/endpage.pstpl") as $op)
-		{
+	{
 		echo templatereplace($op);
-		}
+	}
 	doFooter();
 	exit;
-	}
+}
 
 //SEE IF $surveyid EXISTS ####################################################################
 if ($surveyexists <1)
-	{
+{
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	foreach(file("$thistpl/startpage.pstpl") as $op)
-		{
+	{
 		echo templatereplace($op);
-		}
-	echo "\t<center><br />\n";
-	echo "\t"._("Sorry. There is no matching survey.")."<br />&nbsp;\n";	
-	foreach(file("$thistpl/endpage.pstpl") as $op)
-		{
-		echo templatereplace($op);
-		}
-	exit;
 	}
+	echo "\t<center><br />\n";
+	echo "\t"._("Sorry. There is no matching survey.")."<br />&nbsp;\n";
+	foreach(file("$thistpl/endpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
+	exit;
+}
 
 //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
 if (!isset($_SESSION['step']) || !$_SESSION['step'])
-	{
+{
 	$totalquestions = buildsurveysession();
 	sendcacheheaders();
 	doHeader();
 	foreach(file("$thistpl/startpage.pstpl") as $op)
-		{
+	{
 		echo templatereplace($op);
-		}
+	}
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
-	
+
 	echo "\n\n<!-- START THE SURVEY -->\n";
 
 	foreach(file("$thistpl/welcome.pstpl") as $op)
-		{
+	{
 		echo "\t\t\t".templatereplace($op);
-		}
+	}
 	echo "\n";
 	$navigator = surveymover();
 	foreach(file("$thistpl/navigator.pstpl") as $op)
-		{
+	{
 		echo templatereplace($op);
-		}
-	if ($thissurvey['active'] != "Y") 
-		{
+	}
+	if ($thissurvey['active'] != "Y")
+	{
 		echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
-		}
+	}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
 	echo "\n</form>\n";
 	foreach(file("$thistpl/endpage.pstpl") as $op)
-		{
+	{
 		echo templatereplace($op);
-		}
+	}
 	doFooter();
 	exit;
-	}
+}
 
 //******************************************************************************************************
 //PRESENT SURVEY
@@ -333,55 +333,55 @@ $conmandatoryfns=array();
 $conditions=array();
 $inputnames=array();
 foreach ($_SESSION['fieldarray'] as $ia)
-	{
+{
 	if ($ia[5] == $gid)
-		{
+	{
 		//Get the answers/inputnames
 		list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 		if ($plus_qanda)
-			{
-				$qanda[]=$plus_qanda;
-			}
+		{
+			$qanda[]=$plus_qanda;
+		}
 		if ($plus_inputnames)
-			{
+		{
 			$inputnames = addtoarray_single($inputnames, $plus_inputnames);
-			}
+		}
 
 		//Display the "mandatory" popup if necessary
-		if (isset($notanswered)) 
-			{
+		if (isset($notanswered))
+		{
 			list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
-			}
-		
+		}
+
 		//Display the "validation" popup if necessary
 		if (isset($notvalidated))
-			{
+		{
 			list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
-			}
-		
+		}
+
 		//Get list of mandatory questions
 		list($plusman, $pluscon)=create_mandatorylist($ia);
 		if ($plusman !== null)
-			{
-		    list($plus_man, $plus_manfns)=$plusman;
+		{
+			list($plus_man, $plus_manfns)=$plusman;
 			$mandatorys=addtoarray_single($mandatorys, $plus_man);
 			$mandatoryfns=addtoarray_single($mandatoryfns, $plus_manfns);
-			}
+		}
 		if ($pluscon !== null)
-			{
-		    list($plus_conman, $plus_conmanfns)=$pluscon;
+		{
+			list($plus_conman, $plus_conmanfns)=$pluscon;
 			$conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
 			$conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
-			}
-		
+		}
+
 		//Build an array containing the conditions that apply for this page
 		$plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
 		if ($plus_conditions)
-			{
-		    $conditions = addtoarray_single($conditions, $plus_conditions);
-			}
-		} 
-	} //end iteration
+		{
+			$conditions = addtoarray_single($conditions, $plus_conditions);
+		}
+	}
+} //end iteration
 
 
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
@@ -393,9 +393,9 @@ doHeader();
 if (isset($popup)) {echo $popup;}
 if (isset($vpopup)) {echo $vpopup;}
 foreach(file("$thistpl/startpage.pstpl") as $op)
-	{
+{
 	echo templatereplace($op);
-	}
+}
 $hiddenfieldnames=implode("|", $inputnames);
 print <<<END
 <form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>
@@ -452,9 +452,9 @@ echo "\t</script>\n\n";
 // <-- START THE SURVEY -->
 
 foreach(file("$thistpl/survey.pstpl") as $op)
-	{
+{
 	echo "\t".templatereplace($op);
-	}
+}
 
 print <<<END
 
@@ -466,7 +466,7 @@ END;
 $array_filterqs = getArrayFiltersForGroup();
 // Put in the radio button reset javascript for the array filter unselect
 if (isset($array_filterqs) && is_array($array_filterqs)) {
-print <<<END
+	print <<<END
 
 		function radio_unselect(radioObj)
 		{
@@ -489,9 +489,9 @@ END;
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
 if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && is_array($array_filterqs)))
-	{
+{
 	if (!isset($endzone)) {$endzone="";}
-print <<<END
+	print <<<END
 			if (type == 'radio' || type == 'select-one')
 			{
 				var hiddenformname='java'+name;
@@ -514,43 +514,43 @@ END;
 	$java="";
 	$cqcount=1;
 	foreach ($conditions as $cd)
-		{
+	{
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
-			{
+		{
 			$java .= $endzone;
 			$endzone = "";
 			$cqcount=1;
 			$java .= "\n\t\t\tif ((";
-			}
+		}
 		if (!isset($oldcq) || !$oldcq) {$oldcq = $cd[2];}
 		if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
-			{
+		{
 			$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]}";
 			$cccresult=db_execute_num($cccquery);
 			list($cccount) = $cccresult->FetchRow();
-			}
+		}
 		if ($cd[4] == "R") 	{$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);}
 		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "H" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $cccount <= $dropdownthreshold))
-							{$idname="java$cd[2]";}
+		{$idname="java$cd[2]";}
 		elseif ($cd[4] == "M" || $cd[4] == "P")
-							{$idname="java$cd[2]$cd[3]";}
+		{$idname="java$cd[2]$cd[3]";}
 		else				{$idname="java".$cd[2];}
 		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
 		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
-		if ($cd[3] == '') 
-			{
+		if ($cd[3] == '')
+		{
 			$java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
-			}
+		}
 		elseif ($cd[4] == "M" || $cd[4] == "P")
-			{
+		{
 			$java .= "document.getElementById('$idname').value == 'Y'";
-			}
-		else 
-			{
+		}
+		else
+		{
 			$java .= "document.getElementById('$idname').value == '$cd[3]'";
-			}
+		}
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
-			{
+		{
 			$endzone = "))\n";
 			$endzone .= "\t\t\t\t{\n";
 			$endzone .= "\t\t\t\tdocument.getElementById('question$cd[0]').style.display='';\n";
@@ -562,77 +562,77 @@ END;
 			$endzone .= "\t\t\t\tdocument.getElementById('display$cd[0]').value='';\n";
 			$endzone .= "\t\t\t\t}\n";
 			$cqcount++;
-			}
+		}
 		$oldq = $cd[0]; //Update oldq for next loop
 		$oldcq = $cd[2];  //Update oldcq for next loop
-		}
-	$java .= $endzone;
 	}
-	
+	$java .= $endzone;
+}
+
 if (isset($array_filterqs) && is_array($array_filterqs))
-	{
+{
 	if (!isset($appendj)) {$appendj="";}
 
 	foreach ($array_filterqs as $attralist)
-	        {
-                //die(print_r($attrflist));
-                $qbase = $surveyid."X".$gid."X".$attralist['qid'];
-                $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
-                if ($attralist['type'] == "M")
-	                {
-                        $qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' order by code;";
-                        $qresult = mysql_query($qquery);
-                        while ($fansrows = mysql_fetch_array($qresult))
-	                        {
-                                $fquestans = "java".$qfbase.$fansrows['code'];
-                                $tbody = "javatbd".$qbase.$fansrows['code'];
-                                $dtbody = "tbdisp".$qbase.$fansrows['code'];
-                                $tbodyae = $qbase.$fansrows['code'];
-                                $appendj .= "\n\t\t\tif ((document.getElementById('$fquestans').value == 'Y'))\n";
-                                $appendj .= "\t\t\t{\n";
-                                $appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='';\n";
-                                $appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='on';\n";
-                                $appendj .= "\t\t\t}\n";
-                                $appendj .= "\t\t\telse\n";
-                                $appendj .= "\t\t\t{\n";
-                                $appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                                $appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='off';\n";
-                                $appendj .= "\t\t\t\tradio_unselect(document.forms['phpsurveyor'].elements['$tbodyae']);\n";
-                                $appendj .= "\t\t\t}\n";
-	                        }
-	                }
-	        }
-        $java .= $appendj;
+	{
+		//die(print_r($attrflist));
+		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
+		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
+		if ($attralist['type'] == "M")
+		{
+			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' order by code;";
+			$qresult = mysql_query($qquery);
+			while ($fansrows = mysql_fetch_array($qresult))
+			{
+				$fquestans = "java".$qfbase.$fansrows['code'];
+				$tbody = "javatbd".$qbase.$fansrows['code'];
+				$dtbody = "tbdisp".$qbase.$fansrows['code'];
+				$tbodyae = $qbase.$fansrows['code'];
+				$appendj .= "\n\t\t\tif ((document.getElementById('$fquestans').value == 'Y'))\n";
+				$appendj .= "\t\t\t{\n";
+				$appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='';\n";
+				$appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='on';\n";
+				$appendj .= "\t\t\t}\n";
+				$appendj .= "\t\t\telse\n";
+				$appendj .= "\t\t\t{\n";
+				$appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='none';\n";
+				$appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='off';\n";
+				$appendj .= "\t\t\t\tradio_unselect(document.forms['phpsurveyor'].elements['$tbodyae']);\n";
+				$appendj .= "\t\t\t}\n";
+			}
+		}
 	}
+	$java .= $appendj;
+}
 
-	
+
 if (isset($java)) {echo $java;}
 echo "\t\t}\n"
-	."\t//-->\n"
-	."\t</script>\n\n";
+."\t//-->\n"
+."\t</script>\n\n";
 
 
 echo "\n\n<!-- START THE GROUP -->\n";
 foreach(file("$thistpl/startgroup.pstpl") as $op)
-	{
+{
 	echo "\t".templatereplace($op);
-	}
+}
 echo "\n";
 
 if ($groupdescription)
-	{
+{
 	foreach(file("$thistpl/groupdescription.pstpl") as $op)
-		{
+	{
 		echo "\t\t".templatereplace($op);
-		}
 	}
+}
 echo "\n";
 
 echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 if (isset($qanda) && is_array($qanda))
-	{
+{
 	foreach ($qanda as $qa)
-		{
+	{
 		echo "\n\t<!-- NEW QUESTION -->\n";
 		echo "\t\t\t\t<div id='question$qa[4]'";
 		if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
@@ -641,77 +641,77 @@ if (isset($qanda) && is_array($qanda))
 		$help=$qa[2];
 		$questioncode=$qa[5];
 		foreach(file("$thistpl/question.pstpl") as $op)
-			{
+		{
 			echo "\t\t\t\t\t".templatereplace($op)."\n";
-			}
-		echo "\t\t\t\t</div>\n";
 		}
+		echo "\t\t\t\t</div>\n";
 	}
+}
 echo "\n\n<!-- END THE GROUP -->\n";
 foreach(file("$thistpl/endgroup.pstpl") as $op)
-	{
+{
 	echo "\t\t\t\t".templatereplace($op);
-	}
+}
 echo "\n";
 
 $navigator = surveymover(); //This gets globalised in the templatereplace function
 
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 foreach(file("$thistpl/navigator.pstpl") as $op)
-	{
+{
 	echo "\t\t".templatereplace($op);
-	}
+}
 echo "\n";
 
-if ($thissurvey['active'] != "Y") 
-	{
+if ($thissurvey['active'] != "Y")
+{
 	echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
-	}
+}
 
 
 
 echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
 
 if (isset($conditions) && is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
-	{
+{
 	foreach (array_keys($_SESSION) as $SESak)
-		{
+	{
 		if (in_array($SESak, $_SESSION['insertarray']))
-			{
+		{
 			echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES). "'>\n";
-			}
 		}
 	}
+}
 //SOME STUFF FOR MANDATORY QUESTIONS
 if (remove_nulls_from_array($mandatorys))
-	{
+{
 	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
 	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory'>\n";
-	}
+}
 if (remove_nulls_from_array($conmandatorys))
-	{
+{
 	$conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
 	echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory'>\n";
-	}
+}
 if (remove_nulls_from_array($mandatoryfns))
-	{
+{
 	$mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
 	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn'>\n";
-	}
+}
 if (remove_nulls_from_array($conmandatoryfns))
-	{
+{
 	$conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
 	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn'>\n";
-	}
+}
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 echo "<input type='hidden' name='token' value='$token' id='token'>\n";
 echo "</form>\n";
 foreach(file("$thistpl/endpage.pstpl") as $op)
-	{
+{
 	echo templatereplace($op);
-	}
+}
 echo "\n";
 doFooter();
 
