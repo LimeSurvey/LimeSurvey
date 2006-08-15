@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor Greek language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-02 00:02+0100\n"
+"PO-Revision-Date: 2006-08-15 14:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgstr "Αποθήκευση Ολόκληρης Βάσης"
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:730
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1854
 msgid "Edit/Add Label Sets"
-msgstr ""
+msgstr "Επεξεργασία/Προσθήκη Σετ Ετικετών"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/common.php:273
 # C:\eclipse\workspace\phpsurveyor-sourceforge/common.php:276
@@ -100,9 +100,8 @@ msgstr "Παρακαλώ επιλέξτε..."
 msgid "None"
 msgstr "Κανένα"
 
-#, fuzzy
 msgid "5 Point Choice"
-msgstr "Οι επιλογές σας"
+msgstr "Επιλογή Πέντε Σημείων"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/common.php:463
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1659
@@ -149,9 +148,8 @@ msgstr ""
 msgid "Numerical Input"
 msgstr ""
 
-#, fuzzy
 msgid "Ranking"
-msgstr "Η ταξινόμησή σας"
+msgstr "Ταξινόμηση"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/common.php:474
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1669
@@ -256,21 +254,235 @@ msgstr ""
 msgid "Check Database Fields"
 msgstr ""
 
+msgid "Return to Survey Administration"
+msgstr "Επιστροφή στην διαχείριση έρευνας"
+
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/saved.php:144
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:242
+msgid "Show summary information"
+msgstr ""
+
+msgid "Display Responses"
+msgstr "Προβολή Απαντήσεων"
+
+msgid "Display Last 50 Responses"
+msgstr "Προβολή τελευταίων 50 Απαντήσεων"
+
+msgid "Dataentry Screen for Survey"
+msgstr "Φόρμα εισαγωγής δεδομένων για την Έρευνα"
+
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:287
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:290
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1883
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/printablesurvey.php:61
+msgid "Printable Version of Survey"
+msgstr ""
+
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1902
+msgid "Get statistics from these responses"
+msgstr ""
+
+# D:\webdocs\phpsurveyor1alpha/common.php:946
+msgid "Export Results to Application"
+msgstr "Εξαγωγή Αποτελεσμάτων σε εφαρμογή."
+
+# D:\webdocs\phpsurveyor1alpha/common.php:948
+msgid "Export result to a SPSS command file"
+msgstr ""
+
+# D:\webdocs\phpsurveyor1alpha/common.php:950
+msgid "Import answers from a deactivated survey table"
+msgstr ""
+
+# D:\webdocs\phpsurveyor1alpha/common.php:953
+msgid "Backup results table as SQL file"
+msgstr ""
+
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:336
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:339
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1905
+msgid "View Saved but not submitted Responses"
+msgstr ""
+
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/vvimport.php:61
+msgid "Import a VV survey file"
+msgstr ""
+
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/vvexport.php:47
+msgid "Export a VV survey file"
+msgstr ""
+
+msgid "Other"
+msgstr "Άλλο"
+
+msgid "Yes"
+msgstr "Ναι"
+
+msgid "No"
+msgstr "Όχι"
+
+msgid "No answer"
+msgstr "Καμία απάντηση"
+
+msgid "Male"
+msgstr "Άνδρας"
+
+msgid "Female"
+msgstr "Γυναίκα"
+
+# C:\eclipse\workspace\phpsurveyor-sourceforge/qanda.php:1994
+# C:\eclipse\workspace\phpsurveyor-sourceforge/qanda.php:2036
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:307
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:1069
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:1452
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:2016
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/export.php:863
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/printablesurvey.php:172
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/printablesurvey.php:586
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/results.php:251
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/results.php:384
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:469
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:1248
+msgid "Uncertain"
+msgstr "Αβέβαιο"
+
+msgid "Increase"
+msgstr "Αύξησε"
+
+msgid "Decrease"
+msgstr "Μείωσε"
+
+msgid "Same"
+msgstr "Ίδιο"
+
+# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:1663
+msgid "Comment"
+msgstr "Σχόλιο"
+
+msgid "Load Unfinished Survey"
+msgstr "Επανεκίνση Ημιτελής Έρευνας"
+
+msgid "last"
+msgstr "Τελευταία"
+
+msgid "Save Survey and Return"
+msgstr "Αποθήκευση Έρευνας και Επιστροφή."
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Είστε σίγουροι ότι επιθυμείτε την διαγραφή όλων των απαντήσεών σας?"
+
+msgid "Exit and Clear Survey"
+msgstr "Έξοδος απο την έρευνα και διαγραφή απαντήσεων"
+
+msgid "There is 1 question in this survey"
+msgstr "Υπάρχει μία ερώτηση σε αυτή την έρευνα."
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1528
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr ""
+
+msgid "submit"
+msgstr "Υποβολή"
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1558
+msgid "A Note On Privacy"
+msgstr ""
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1558
+msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr ""
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1574
+msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
+msgstr ""
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1575
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr ""
+
+msgid "Answers Cleared"
+msgstr "Οι απαντήσεις διαγράφηκαν"
+
+msgid "Restart this Survey"
+msgstr "Επανεκκίνηση της Έρευνας "
+
+msgid "Close this Window"
+msgstr "Κλείσιμο Παραθύρου"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Password"
+msgstr "Κωδικός:"
+
+msgid "Repeat Password"
+msgstr "Επανάληψη Κωδικού:"
+
+msgid "Your Email"
+msgstr "Η Διεύθυνση Email σας:"
+
+msgid "Save Now"
+msgstr "Αποθήκευση τώρα"
+
+msgid "Return To Survey"
+msgstr "Επιστροφή στην Έρευνα"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Αποθήκευση της Ημιτελής Έρευνας"
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1624
+msgid ""
+"Enter a name and password for this survey and click save below.<br />\n"
+"Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
+"If you give an email address, an email containing the details will be sent to you."
+msgstr ""
+
+msgid "Saved name"
+msgstr "Αποθήκευμένο Όνομα"
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1635
+msgid "Load Now"
+msgstr ""
+
+msgid "Load A Previously Saved Survey"
+msgstr "Φόρτωση προηγούμενης Ημιτελής Έρευνας"
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1638
+msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
+msgstr ""
+
+msgid "You must be registered to complete this survey"
+msgstr "Πρέπει να εγγραφείτε για να συμπληρώσετε αυτή την έρευνα"
+
+# D:\webdocs\phpsurveyor1alpha/common.php:1644
+msgid ""
+"You may register for this survey if you wish to take part.<br />\n"
+"Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr ""
+
+msgid "First Name"
+msgstr "Όνομα"
+
+msgid "Last Name"
+msgstr "Επίθετο"
+
+msgid "Email Address"
+msgstr "Διεύθυνση Email"
+
+msgid "Continue"
+msgstr "Συνέχεια"
+
+msgid "Your Assessment"
+msgstr "Η αξιολόγηση σας"
+
 msgid "prev"
 msgstr "Προηγούμενη"
 
 msgid "next"
 msgstr "Επόμενη"
 
-msgid "last"
-msgstr "Τελευταία"
-
-msgid "submit"
-msgstr "Υποβολή"
-
-#, fuzzy
 msgid "Save your responses so far"
-msgstr "Αποθηκευμένες Απαντήσεις"
+msgstr "Αποθέκευση των απαντήσεων σας μέχρι τώρα"
 
 msgid "Did Not Save"
 msgstr "Δέν αποθυκεύτηκε"
@@ -286,9 +498,6 @@ msgstr "Σας ευχαρηστούμε"
 
 msgid "Your survey responses have been recorded."
 msgstr "Οι απαντήσεις σας στην έρευνα έχουν καταχωρηθεί."
-
-msgid "Close this Window"
-msgstr "Κλείσιμο Παραθύρου"
 
 msgid "Sorry. There is no matching survey."
 msgstr "Λυπούμαστε. Δεν υπάρχει Έρευνα που να ταιριάζει."
@@ -320,10 +529,6 @@ msgstr "Δεν παρείχατε όνομα"
 
 msgid "You did not provide a password"
 msgstr "Δεν παρείχατε κωδικό"
-
-#, fuzzy
-msgid "Load Unfinished Survey"
-msgstr "Φόρτωση Ημιτελής Έρευνας"
 
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Πρόκειται για ελεγχόμενη Έρευνα στην οποία θα χρειαστείτε έγκυρα στοιχεία για να συμμετέχετε."
@@ -362,9 +567,8 @@ msgstr "Έρευνα καταχωρήθηκε"
 msgid "A new response was entered for your survey"
 msgstr "Μια νέα απάντηση εισήχθη για την έρευνά σας"
 
-#, fuzzy
 msgid "Click the following link to reload the survey:"
-msgstr "Κάντε κλίκ στην ακόλουθη σύνδεση για να εκδώσετε τη μεμονωμένη απάντηση:"
+msgstr "Κάντε κλίκ στον ακόλουθο σύνδεσμο για να επαναφορτώσετε την έρευνα."
 
 msgid "Click the following link to see the individual response:"
 msgstr "Κάντε κλίκ στην ακόλουθη σύνδεση για να δείτε τη μεμονωμένη απάντηση:"
@@ -402,9 +606,6 @@ msgstr "Στην περίπτωση που δεν σας έχουν αποδοθ
 msgid "Token"
 msgstr "Συμβολικός"
 
-msgid "Continue"
-msgstr "Συνέχεια"
-
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Η Έρευνα αυτή δεν περιέχει ερωτήσεις και επομένως δεν μπορεί να δοκιμαστεί ή να συμπληρωθεί."
 
@@ -441,9 +642,6 @@ msgstr "Μια ή περισσότερες υποχρεωτικές ερωτήσ
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "Μια ή περισσότερες υποχρεωτικές ερωτήσεις δεν έχουν απαντηθεί. Δεν μπορείτε να προχωρήσετε μέχρις ότου απαντηθούν!"
 
-msgid "No answer"
-msgstr "Καμία απάντηση"
-
 msgid "Format: YYYY-MM-DD"
 msgstr "Μορφή: ΕΕΕΕ-ΜΜ-ΗΗ"
 
@@ -452,9 +650,6 @@ msgstr "(πχ: 2003-12-25 για την ημέρα των Χριστουγένν
 
 msgid "Please choose"
 msgstr "Παρακαλώ επιλέξτε"
-
-msgid "Other"
-msgstr "Άλλο"
 
 msgid "Please choose one of the following"
 msgstr "Παρακαλώ επιλέξτε ένα από τα παρακάτω"
@@ -489,43 +684,6 @@ msgstr "Σχολιάστε την επιλογή σας εδώ:"
 msgid "Only numbers may be entered in this field"
 msgstr "Μόνο αριθμιτικές τιμές επιτρέπονται σε αυτό το πεδίο"
 
-msgid "Yes"
-msgstr "Ναι"
-
-msgid "No"
-msgstr "Όχι"
-
-msgid "Female"
-msgstr "Γυναίκα"
-
-msgid "Male"
-msgstr "Άνδρας"
-
-# C:\eclipse\workspace\phpsurveyor-sourceforge/qanda.php:1994
-# C:\eclipse\workspace\phpsurveyor-sourceforge/qanda.php:2036
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:307
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:1069
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:1452
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:2016
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/export.php:863
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/printablesurvey.php:172
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/printablesurvey.php:586
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/results.php:251
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/results.php:384
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:469
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:1248
-msgid "Uncertain"
-msgstr "Αβέβαιο"
-
-msgid "Increase"
-msgstr "Αύξησε"
-
-msgid "Same"
-msgstr "Ίδιο"
-
-msgid "Decrease"
-msgstr "Μείωσε"
-
 msgid "The email you used is not valid. Please try again."
 msgstr "Το e-mail που δώσατε δέν είναι έγκυρο. Παρακαλώ προσπαθήστε ξανά."
 
@@ -559,12 +717,6 @@ msgstr "Λεπτομέρειες Αποθηκευμένης Έρευνας"
 
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Εσείς ή κάποιος που χρησιμοποιεί την ηλεκτρονική σας διεύθυνση έχει αποθηκεύσει μια Έρευνα που βρίσκεται σε εξέλιξη. Μπορείτε να χρησιμοποιήσετε τα παρακάτω στοιχεία για να επιστρέψετε στην Έρευνα αυτή και να συνεχίσετε από εκεί που την είχατε αφήσει"
-
-msgid "Name"
-msgstr "Όνομα"
-
-msgid "Password"
-msgstr "Κωδικός:"
 
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Επαναφορτώστε την Έρευνά σας πατώντας στο παρακάτω URL:"
@@ -681,7 +833,7 @@ msgstr "Προειδοποίηση"
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/activate.php:228
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/deactivate.php:48
 msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
-msgstr ""
+msgstr "ΔΙΑΒΑΣΤΕ ΑΥΤΟ ΠΡΟΣΕΚΤΙΚΑ ΠΡΟΤΟΥ ΠΡΟΧΩΡΗΣΕΤΕ"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/activate.php:234
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
@@ -732,9 +884,8 @@ msgstr ""
 msgid "This survey allows public registration. A token table must also be created."
 msgstr ""
 
-#, fuzzy
 msgid "This survey is now active, and responses can be recorded."
-msgstr "Οι απαντήσεις σας στην έρευνα έχουν καταχωρηθεί."
+msgstr "Η έρευνα είναι ενεργοποιημένη και οι αποκρίσεις μπορούν να αποθηκευτούν."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/admin.php:83
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/browse.php:67
@@ -764,7 +915,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/createdb.php:46
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/index-experimental.php:144
 msgid "Create Database"
-msgstr ""
+msgstr "Δημιουργία Βάσης Δεδομένων"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/admin.php:205
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/export.php:214
@@ -813,17 +964,12 @@ msgstr ""
 msgid "Assessments"
 msgstr "Αξιολογήσεις"
 
-#, fuzzy
-msgid "Return to Survey Administration"
-msgstr "Επιστροφή στην έρευνα"
-
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/assessments.php:87
 msgid "No SID Provided"
 msgstr ""
 
-#, fuzzy
 msgid "Scope"
-msgstr "πλήρης"
+msgstr "Σκοπός"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/assessments.php:99
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/assessments.php:100
@@ -918,28 +1064,24 @@ msgstr ""
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#, fuzzy
 msgid "Are you sure you want to delete this entry."
-msgstr "Είστε σήγουροι ότι επιθυμείτε την αποθήκευση των απαντήσεών σας?"
+msgstr "Είστε σίγουροι ότι επιθυμείτε την διαγραφή αυτής της εγγραφής."
 
 msgid "Browse Responses"
 msgstr "Προβολή Απαντήσεων"
 
-#, fuzzy
 msgid "You have not selected a survey to browse."
-msgstr "Δέν έχει προσδιορίσθεί το ID της έρευνας"
+msgstr "Δεν έχετε επιλέξει έρευνα για προβολή."
 
-#, fuzzy
 msgid "This survey has not been activated. There are no results to browse."
-msgstr "Η Έρευνα αυτή δεν είναι ενεργή. Δεν θα μπορέσετε να αποθηκεύσετε τις απαντήσεις σας."
+msgstr "Η Έρευνα αυτή δεν έχει ενεργοποιηθεί. Δεν υπάρχουν απαντήσεις για προβολή."
 
 #, fuzzy
 msgid "There is no matching survey."
 msgstr "Λυπούμαστε. Δεν υπάρχει Έρευνα που να ταιριάζει."
 
-#, fuzzy
 msgid "View Response"
-msgstr "Διαγραφή Απαντήσεων"
+msgstr "Προβολή Αποκρίσεων"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/browse.php:238
 msgid "Edit this entry"
@@ -991,7 +1133,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/browse.php:492
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:422
 msgid "Show"
-msgstr ""
+msgstr "Προβολή"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/checkfields.php:185
 msgid "Checking to ensure all tables exist"
@@ -1009,7 +1151,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/checkfields.php:224
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/checkfields.php:290
 msgid "OK"
-msgstr ""
+msgstr "ΟΚ"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/checkfields.php:231
 msgid "Checking to ensure all fields exist"
@@ -1021,11 +1163,10 @@ msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:61
 msgid "Condition Designer"
-msgstr ""
+msgstr "Σχεδίαση Κανόνων"
 
-#, fuzzy
 msgid "You have not selected a Survey."
-msgstr "Έχετε ήδη συμπληρώσει αυτήν την έρευνα."
+msgstr "Δεν έχετε επιλέξει κάποια έρευνα."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:68
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:76
@@ -1048,9 +1189,8 @@ msgstr ""
 msgid "No question selected to copy condition to"
 msgstr ""
 
-#, fuzzy
 msgid "Only show question {QID} IF"
-msgstr "Απαντήστε μόνο αυτήν την ερώτηση"
+msgstr "Προβολή της Ερώτησης {QID} AN "
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:524
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:1507
@@ -1075,13 +1215,11 @@ msgstr ""
 msgid "Copy Conditions"
 msgstr "Αντιγραφή Συνθηκών"
 
-#, fuzzy
 msgid "Condition"
-msgstr "Επιβεβαίωση"
+msgstr "Συνθήκη"
 
-#, fuzzy
 msgid "Question"
-msgstr "στην ερώτηση"
+msgstr "Ερώτηση"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:610
 msgid "copy to"
@@ -1091,22 +1229,19 @@ msgstr ""
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr ""
 
-#, fuzzy
 msgid "Add Condition"
-msgstr "Επιβεβαίωση"
+msgstr "Προσθήκη Συνθήκης"
 
-#, fuzzy
 msgid "Answer"
-msgstr "Καμία απάντηση"
+msgstr "Απάντηση"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:683
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:656
 msgid "Clear"
 msgstr ""
 
-#, fuzzy
 msgid "Close Window"
-msgstr "Κλείσιμο Παραθύρου"
+msgstr "Κλείσιμο Παραθύρου "
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/createdb.php:52
 msgid "Database Information not provided. This script must be run from admin.php only."
@@ -1161,9 +1296,8 @@ msgstr ""
 msgid "Question could not be updated"
 msgstr ""
 
-#, fuzzy
 msgid "Answers can't be deleted"
-msgstr "Οι απαντήσεις διαγράφησαν"
+msgstr "Οι απαντήσεις δεν μπορούν να διαγραφούν"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/database.php:384
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/database.php:421
@@ -1248,13 +1382,11 @@ msgstr ""
 msgid "Survey could not be created because it did not have a short title"
 msgstr ""
 
-#, fuzzy
 msgid "Survey could not be created"
-msgstr "Η έρευνα ολοκληρώθηκε"
+msgstr "Η έρευνα δεν μπορεί να δημιουργηθεί."
 
-#, fuzzy
 msgid "Survey could not be updated"
-msgstr "Η έρευνα ολοκληρώθηκε"
+msgstr "Η έρευνα δεν μπόρεσε να ανανεωθεί"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:54
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:70
@@ -1282,16 +1414,14 @@ msgstr "Κωδικός: "
 msgid "Confirm Password:"
 msgstr "Επιβεβαίωση Κωδικού:"
 
-#, fuzzy
 msgid "Email:"
-msgstr "Το e-mail σας:"
+msgstr "Διεύθυνση Εmail:"
 
 msgid "Your survey responses have been saved succesfully"
 msgstr "Οι απαντήσεις της Έρευνάς σας αποθηκεύτηκαν με επιτυχία"
 
-#, fuzzy
 msgid "An email has been sent with details about your saved survey"
-msgstr "Σας απεστάλει email με τις πληροφορίες για την αποθηκευμένη Έρευνά σας."
+msgstr "Σας απεστάλει email με τις πληροφορίες σχετικά με την αποθηκευμένη Έρευνά σας."
 
 msgid "An error occurred and your survey responses were not saved."
 msgstr "Παρουσιάστηκε σφάλμα και οι απαντήσεις της Έρευνάς σας δεν αποθηκεύτηκαν."
@@ -1328,9 +1458,8 @@ msgstr ""
 msgid "View This Record"
 msgstr ""
 
-#, fuzzy
 msgid "Browse Saved Responses"
-msgstr "Διαγραφή Απαντήσεων"
+msgstr "Προβολή αποθηκευμένων αποκρίσεων."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:554
 msgid "Editing Response"
@@ -1347,9 +1476,8 @@ msgstr ""
 msgid "Update Entry"
 msgstr ""
 
-#, fuzzy
 msgid "Save as a partially completed survey"
-msgstr "Έχετε ήδη συμπληρώσει αυτήν την έρευνα."
+msgstr "Αποθήκευση ως ημιτελής έρευνας"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:1299
 msgid "Record has been updated."
@@ -1375,17 +1503,11 @@ msgstr ""
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#, fuzzy
 msgid "Help about this question"
-msgstr "Απαντήστε μόνο αυτήν την ερώτηση"
+msgstr "Βοηθεία σχετικά με αυτή την ερώτηση"
 
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:1663
-msgid "Comment"
-msgstr "Σχόλιο"
-
-#, fuzzy
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Η Έρευνα αυτή δεν περιέχει ερωτήσεις και επομένως δεν μπορεί να δοκιμαστεί ή να συμπληρωθεί."
+msgstr "Η Έρευνα αυτή δεν είναι ακόμα ενεργοποιημένη. Οι απαντήσεις σας δεν μπορούν να αποθηκευτούν."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/dataentry.php:2133
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:101
@@ -1486,9 +1608,8 @@ msgstr "Απ-ενεργοποίηση"
 msgid "The responses table has been renamed to: "
 msgstr ""
 
-#, fuzzy
 msgid "The responses to this survey are no longer available using PHPSurveyor."
-msgstr "Η Έρευνα αυτή δεν είναι πλέον διαθέσιμη."
+msgstr "Η απαντήσεις αυτής της έρευνας δεν είναι διαθέσιμες μέσω του PHPSurveyor."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/deactivate.php:118
 msgid "You should note the name of this table in case you need to access this information later."
@@ -1498,13 +1619,11 @@ msgstr ""
 msgid "The tokens table associated with this survey has been renamed to: "
 msgstr ""
 
-#, fuzzy
 msgid "Delete Survey"
-msgstr "Επιστροφή στην έρευνα"
+msgstr "Διαγραφή Έρευνας"
 
-#, fuzzy
 msgid "You are about to delete this survey"
-msgstr "Έχετε ήδη συμπληρώσει αυτήν την έρευνα."
+msgstr "Πρόκειτε να διαγράψετε αυτή την έρευνα"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/deletesurvey.php:69
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:419
@@ -1525,9 +1644,8 @@ msgstr ""
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr ""
 
-#, fuzzy
 msgid "This survey has been deleted."
-msgstr "Η Έρευνα αυτή δεν είναι πλέον διαθέσιμη."
+msgstr "Η Έρευνα αυτή έχει διαγραφεί."
 
 msgid "Export Question"
 msgstr "Εξαγωγή Ερώτησης:"
@@ -1562,9 +1680,8 @@ msgstr "Εξαγωγή Απαντήσεων"
 msgid "Filtered from Statistics Script"
 msgstr ""
 
-#, fuzzy
 msgid "Single Response"
-msgstr "Διαγραφή Απαντήσεων"
+msgstr "Μονή απάντηση"
 
 msgid "Questions"
 msgstr "Ερωτήσεις"
@@ -1581,13 +1698,11 @@ msgstr ""
 msgid "Question Codes"
 msgstr ""
 
-#, fuzzy
 msgid "Answers"
-msgstr "Οι απαντήσεις διαγράφησαν"
+msgstr "Απαντήσεις"
 
-#, fuzzy
 msgid "Answer Codes"
-msgstr "Οι απαντήσεις διαγράφησαν"
+msgstr "Κωδικοί Απαντήσης"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/export.php:143
 msgid "Full Answers"
@@ -1644,12 +1759,6 @@ msgstr ""
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr ""
 
-msgid "First Name"
-msgstr "Όνομα"
-
-msgid "Last Name"
-msgstr "Επίθετο"
-
 msgid "Email"
 msgstr "Διεύθυνση Email"
 
@@ -1677,12 +1786,8 @@ msgstr ""
 msgid "Attribute 2"
 msgstr ""
 
-msgid "Email Address"
-msgstr "Διεύθυνση Email"
-
-#, fuzzy
 msgid "N/A"
-msgstr "Μή εφαρμόσημο"
+msgstr "Μη Διαθεσιμο"
 
 msgid "Create Survey"
 msgstr "Δημιουργία Έρευνας"
@@ -1740,46 +1845,29 @@ msgstr ""
 msgid "Survey"
 msgstr ""
 
-#, fuzzy
 msgid "This survey is not currently active"
-msgstr "Η Έρευνα αυτή δεν είναι πλέον διαθέσιμη."
+msgstr "Η Έρευνα αυτή δεν είναι ενεργοποιημένη."
 
-#, fuzzy
 msgid "Activate this Survey"
-msgstr "Επανεκκίνηση της Έρευνας"
+msgstr "Ενεργοποίηση της Έρευνας"
 
-#, fuzzy
 msgid "This survey is active but expired."
-msgstr "Η Έρευνα αυτή δεν είναι πλέον διαθέσιμη."
+msgstr "Η Έρευνα αυτή είναι διαθέσιμη αλλά έχει λήξει."
 
-#, fuzzy
 msgid "This survey is active but expired"
-msgstr "Η Έρευνα αυτή δεν είναι πλέον διαθέσιμη."
+msgstr "Η Έρευνα αυτή είναι διαθέσιμη αλλά έχει λήξει."
 
-#, fuzzy
 msgid "This survey is currently active"
-msgstr "Η Έρευνα αυτή δεν είναι πλέον διαθέσιμη."
+msgstr "Η έρευνα είναι ενεργοποιημένη"
 
 msgid "De-activate this Survey"
 msgstr "Απενεργοποίηση της Έρευνας"
 
-#, fuzzy
 msgid "Cannot Activate this Survey"
-msgstr "Επανεκκίνηση της Έρευνας"
+msgstr "Η έρευνα αυτή δεν μπορεί να ενεργοποιηθεί"
 
 msgid "Do Survey"
 msgstr "Εκίνηση Έρευνας"
-
-#, fuzzy
-msgid "Dataentry Screen for Survey"
-msgstr "Επιστροφή στην έρευνα"
-
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:287
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:290
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1883
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/printablesurvey.php:61
-msgid "Printable Version of Survey"
-msgstr ""
 
 msgid "Edit Current Survey"
 msgstr "Επεξεργασία Έρευνας"
@@ -1795,19 +1883,11 @@ msgstr "Διαγραφή επιλεγμένης έρευνας"
 msgid "Export this Survey"
 msgstr "Εξαγωγή αυτής της Έρευνας"
 
-#, fuzzy
 msgid "Set Assessment Rules"
-msgstr "Η αξιολόγησή σας"
+msgstr "Προσθήκη Κανόνων Αξιολόγησης"
 
-#, fuzzy
 msgid "Browse Responses for this Survey"
-msgstr "Επανεκκίνηση της Έρευνας"
-
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:336
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:339
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1905
-msgid "View Saved but not submitted Responses"
-msgstr ""
+msgstr "Προβολή απαντήσεων σε αυτή την έρευνα."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:343
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:346
@@ -1821,9 +1901,8 @@ msgstr "Κλείσιμο αυτής της Έρευνας"
 msgid "Show Details of this Survey"
 msgstr "Προβολή Λεπτομεριών της Έρευνας"
 
-#, fuzzy
 msgid "Hide Details of this Survey"
-msgstr "Επανεκκίνηση της Έρευνας"
+msgstr "Απόκρυψη λεπτομεριών σχετικά με αυτήν την έρευνα."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:374
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:377
@@ -1853,9 +1932,8 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#, fuzzy
 msgid "This survey is anonymous."
-msgstr "Η Έρευνα αυτή δεν είναι πλέον διαθέσιμη."
+msgstr "Η Έρευνα αυτή είναι ανώνυμη."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:408
 msgid "This survey is NOT anonymous."
@@ -2091,9 +2169,8 @@ msgstr ""
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 msgstr ""
 
-#, fuzzy
 msgid "Export this Question"
-msgstr "Απαντήστε μόνο αυτήν την ερώτηση"
+msgstr "Εξαγωγή αυτής της Ερώτησης"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:669
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:672
@@ -2168,9 +2245,8 @@ msgstr ""
 msgid "Type:"
 msgstr ""
 
-#, fuzzy
 msgid "You need to add answers to this question"
-msgstr "Απαντήστε μόνο αυτήν την ερώτηση"
+msgstr "Πρέπει να προσθέσετε απαντήσεις σε αυτή την ερώτηση."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:747
 msgid "You need to choose a Label Set for this question"
@@ -2356,9 +2432,8 @@ msgstr ""
 msgid "Import Group"
 msgstr ""
 
-#, fuzzy
 msgid "Edit Group for Survey ID"
-msgstr "Υποβάλετε την έρενά σας."
+msgstr "Επεξεργασία ομάδας για Έρευνα Κωδικός"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:1547
 msgid "Update Group"
@@ -2375,7 +2450,7 @@ msgstr "Επεξεργασία Έρευνας"
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:1933
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:490
 msgid "Admin Email:"
-msgstr ""
+msgstr "Email Διαχειριστή: "
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:1581
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:1937
@@ -2543,9 +2618,8 @@ msgstr "Dear {FIRSTNAME},nnRecently we invited you to participate in a survey.nn
 msgid "Confirmation Email Subject"
 msgstr "Θέμα Email Επιβεβαίωσης"
 
-#, fuzzy
 msgid "Confirmation of completed survey"
-msgstr "Παρακαλώ να αποστείλετε με φάξ την συμπληρωμένη έρευνα στο:"
+msgstr "Επιβεβαίωση συμπληρωμένης έρευνας."
 
 msgid "Confirmation Email"
 msgstr "Email Επιβεβαίωσης"
@@ -2554,7 +2628,7 @@ msgstr "Email Επιβεβαίωσης"
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:2017
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:505
 msgid "Allow public registration?"
-msgstr ""
+msgstr "Η δημόσια εγγραφή επιτρέπεται ?"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:1716
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:2022
@@ -2738,7 +2812,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/importsurvey.php:645
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/labels.php:246
 msgid "Labels"
-msgstr ""
+msgstr "Ετικέτες"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/importgroup.php:521
 msgid "Import of Group is completed."
@@ -2782,9 +2856,8 @@ msgstr "Η εισαγωγή της Έρευνας ολοκληρώθηκε"
 msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr ""
 
-#, fuzzy
 msgid "Target Survey ID"
-msgstr "Λεπτομέρειες Αποθηκευμένης Έρευνας"
+msgstr "Προς Έρευνα Κωδικός"
 
 msgid "Import Responses"
 msgstr "Εισαγωγή Απαντήσεων"
@@ -2896,10 +2969,6 @@ msgstr "Σίγουρα επιθυμείτε την διαγραφή ?"
 msgid "Slider"
 msgstr ""
 
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:1902
-msgid "Get statistics from these responses"
-msgstr ""
-
 msgid "and"
 msgstr "και"
 
@@ -2953,18 +3022,10 @@ msgstr "Αποθηκευμένες Απαντήσεις"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/saved.php:103
 msgid "Identifier"
-msgstr ""
+msgstr "Αναγνωριστικό"
 
 msgid "Date Saved"
 msgstr "Η ημερομηνία αποθηκεύτηκε"
-
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/saved.php:144
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:242
-msgid "Show summary information"
-msgstr ""
-
-msgid "Display Responses"
-msgstr "Προβολή Απαντήσεων"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:96
 msgid "Quick Statistics"
@@ -3004,7 +3065,7 @@ msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:655
 msgid "View Stats"
-msgstr ""
+msgstr "Προβολή Στατιστικών"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:858
 msgid "Results"
@@ -3193,14 +3254,13 @@ msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/templates.php:644
 msgid "Preview:"
-msgstr ""
+msgstr "Προεπισκόπηση:"
 
 msgid "You have not selected a survey"
 msgstr "Δεν έχετε επιλέξει κάποια έρευνα"
 
-#, fuzzy
 msgid "A token table has been created for this survey."
-msgstr "Έχετε ήδη συμπληρώσει αυτήν την έρευνα."
+msgstr "Ένας πίνακας κουπονιών έχει δημιουργηθεί για αυτήν την έρευνα."
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:185
 msgid "Tokens have not been initialised for this survey."
@@ -3297,9 +3357,8 @@ msgstr "Είστε σήγουροι ότι επιθυμείτε την διαγ�
 msgid "Delete all unique token numbers"
 msgstr ""
 
-#, fuzzy
 msgid "Are you really sure you want to delete ALL token entries?"
-msgstr "Είστε σήγουροι ότι επιθυμείτε την διαγραφή όλων των απαντήσεών σας?"
+msgstr "Είστε σίγουροι ότι επιθυμείτε την διαγραφή όλων των κουπονιών ? "
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:362
 msgid "Delete all token entries"
@@ -3381,7 +3440,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:782
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:841
 msgid "From"
-msgstr ""
+msgstr "Από"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:654
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:786
@@ -3511,8 +3570,8 @@ msgstr ""
 msgid "Creating Token Entries"
 msgstr ""
 
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:1290
-msgid "TOKENCOUNT} Records Created"
+# D:\webdocs\phpsurveyor1alpha/admin/tokens.php:1290
+msgid "{TOKENCOUNT} Records Created"
 msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/usercontrol.php:47
@@ -3575,10 +3634,6 @@ msgstr ""
 msgid "Could not modify user. Username and/or password were not supplied"
 msgstr ""
 
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/vvexport.php:47
-msgid "Export a VV survey file"
-msgstr ""
-
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/vvexport.php:58
 msgid "Export, then de-activate survey"
 msgstr ""
@@ -3589,10 +3644,6 @@ msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/vvexport.php:67
 msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr ""
-
-# C:\eclipse\workspace\phpsurveyor-sourceforge/admin/vvimport.php:61
-msgid "Import a VV survey file"
 msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/vvimport.php:62
