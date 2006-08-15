@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor Greek language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-15 14:45+0100\n"
+"PO-Revision-Date: 2006-08-15 15:30+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -909,7 +909,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/admin.php:86
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/index-experimental.php:142
 msgid "Your selected database name is:"
-msgstr ""
+msgstr "Η επιλεγμένη βάση δεδομένων σας είναι:"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/admin.php:88
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/createdb.php:46
@@ -959,7 +959,7 @@ msgstr "Προσθήκη"
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:1120
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:1135
 msgid "Update"
-msgstr ""
+msgstr "Ανανέωση"
 
 msgid "Assessments"
 msgstr "Αξιολογήσεις"
@@ -1163,7 +1163,7 @@ msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:61
 msgid "Condition Designer"
-msgstr "Σχεδίαση Κανόνων"
+msgstr "Σχεδίαση Συνθηκών"
 
 msgid "You have not selected a Survey."
 msgstr "Δεν έχετε επιλέξει κάποια έρευνα."
@@ -1208,7 +1208,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:545
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:674
 msgid "Equals"
-msgstr ""
+msgstr "Ισούτε"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:592
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/conditions.php:623
@@ -1265,7 +1265,7 @@ msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/database.php:82
 msgid "Group could not be added. It is missing the mandatory group name"
-msgstr ""
+msgstr "H ομάδα δεν μπόρεσε να προστεθεί. Προσθέστε το υποχρεωτικό όνομα ομάδας"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/database.php:123
 msgid "Group could not be updated"
@@ -1991,7 +1991,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:345
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:373
 msgid "Survey URL:"
-msgstr ""
+msgstr "Διεύθυνση Έρευνας:"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:445
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:618
@@ -2708,7 +2708,7 @@ msgstr ""
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:374
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/navigator.php:496
 msgid "Automatically load URL when survey complete?"
-msgstr ""
+msgstr "Αυτόματη μεταφορά σε Ιστοσελίδα με την ολοκλήρωση της έρευνας ?"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/html.php:1852
 msgid "Update survey"
@@ -3195,7 +3195,7 @@ msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/templates.php:511
 msgid "NewTemplate"
-msgstr ""
+msgstr "Νέο Πρότυπο"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/templates.php:529
 msgid "This template can be modified"
@@ -3445,7 +3445,7 @@ msgstr "Από"
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:654
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:786
 msgid "Subject"
-msgstr ""
+msgstr "Θέμα"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:666
 msgid "Send Invitations"
@@ -3584,7 +3584,7 @@ msgstr ""
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/usercontrol.php:54
 msgid "Security Levels are now set up!"
-msgstr ""
+msgstr "Τα Επίπεδα ασφαλείας έχουν ενεργοποιηθεί!"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/usercontrol.php:58
 msgid "Creating default users"
