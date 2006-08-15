@@ -46,13 +46,13 @@ if (!file_exists("$homedir/.htaccess") && $action == "setup")
 	if (file_exists("$homedir/.htpasswd")) unlink("$homedir/.htpasswd");
 	$dq="DELETE FROM ".db_table_name('users');
 	$dr=$connect->Execute($dq);
-	
+
 	// Start Creating
 	$addsummary = "<br />"._("Creating default htaccess file")."<br />\n";
 	$ht = new htaccess("$homedir/.htaccess","$homedir/.htpasswd");
 	$ht->setAuthType("Basic");
 	$ht->setAuthName("PHPSurveyor Admin Interface");
-	
+
 	$addsummary .= _("Security Levels are now set up!")."<br />\n<br />\n";
 	$addsummary .= "<a href='$scriptname?action=editusers'>"._("Continue")."</a>\n";
 
@@ -132,7 +132,7 @@ elseif ($action == "moduser")
 	{
 		$ht = new htaccess("$homedir/.htaccess","$homedir/.htpasswd");
 		$ht->setPasswd($user,$pass);
-		
+
 		$uquery = "UPDATE ".db_table_name('users')." SET password='$pass', security='{$_POST['level']}' WHERE user='$user'";
 		$uresult = $connect->Execute($uquery);
 

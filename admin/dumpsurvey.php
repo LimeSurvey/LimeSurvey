@@ -1,37 +1,37 @@
 <?php
 /*
-	#############################################################
-	# >>> PHPSurveyor  										#
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################	
+#############################################################
+# >>> PHPSurveyor  										#
+#############################################################
+# > Author:  Jason Cleeland									#
+# > E-mail:  jason@cleeland.org								#
+# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
+# >          CARLTON SOUTH 3053, AUSTRALIA
+# > Date: 	 20 February 2003								#
+#															#
+# This set of scripts allows you to develop, publish and	#
+# perform data-entry on surveys.							#
+#############################################################
+#															#
+#	Copyright (C) 2003  Jason Cleeland						#
+#															#
+# This program is free software; you can redistribute 		#
+# it and/or modify it under the terms of the GNU General 	#
+# Public License as published by the Free Software 			#
+# Foundation; either version 2 of the License, or (at your 	#
+# option) any later version.								#
+#															#
+# This program is distributed in the hope that it will be 	#
+# useful, but WITHOUT ANY WARRANTY; without even the 		#
+# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
+# PARTICULAR PURPOSE.  See the GNU General Public License 	#
+# for more details.											#
+#															#
+# You should have received a copy of the GNU General 		#
+# Public License along with this program; if not, write to 	#
+# the Free Software Foundation, Inc., 59 Temple Place - 	#
+# Suite 330, Boston, MA  02111-1307, USA.					#
+#############################################################
 */
 
 
@@ -48,56 +48,56 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 //echo $htmlheader;
 if (!$surveyid)
-	{
+{
 	echo $htmlheader
-		."<br />\n"
-		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		._("Export Survey")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>\n"
-		."$setfont<br /><strong><font color='red'>"
-		._("Error")."</font></strong><br />\n"
-		._("No SID has been provided. Cannot dump survey")."<br />\n"
-		."<br /><input type='submit' value='"
-		._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
-		."\t</td></tr>\n"
-		."</table>\n"
-		."</body></html>\n";
+	."<br />\n"
+	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	._("Export Survey")."</strong></td></tr>\n"
+	."\t<tr><td align='center'>\n"
+	."$setfont<br /><strong><font color='red'>"
+	._("Error")."</font></strong><br />\n"
+	._("No SID has been provided. Cannot dump survey")."<br />\n"
+	."<br /><input type='submit' value='"
+	._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
+	."\t</td></tr>\n"
+	."</table>\n"
+	."</body></html>\n";
 	exit;
-	}
+}
 
 $dumphead = "# SURVEYOR SURVEY DUMP\n"
-		  . "#\n# This is a dumped survey from the PHPSurveyor Script\n"
-		  . "# http://www.phpsurveyor.org/\n";
+. "#\n# This is a dumped survey from the PHPSurveyor Script\n"
+. "# http://www.phpsurveyor.org/\n";
 
 function BuildOutput($Query)
-	{
+{
 	global $dbprefix, $connect;
 	$QueryResult = db_execute_assoc($Query) or die ("ERROR: $QueryResult<br />".htmlspecialchars($connect->ErrorMsg()));
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];
 	if ($dbprefix)
-		{
+	{
 		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
-		}
+	}
 	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
 	while ($Row = $QueryResult->FetchRow())
-		{
+	{
 		$ColumnNames = "";
 		$ColumnValues = "";
 		foreach ($Row as $Key=>$Value)
-			{
+		{
 			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
 			$ColumnValues .= $connect->qstr(str_replace("\r\n", "\n", $Value)) . ", ";
-			}
+		}
 		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
 		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
-		
-		
+
+
 		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues);\n";
-		}
-	return $Output;
 	}
+	return $Output;
+}
 
 //1: Surveys table
 $squery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -140,11 +140,11 @@ $fn = "survey_$surveyid.sql";
 header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 
 echo "#<pre>\n"
-	.$dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump
-	."#</pre>\n";
+.$dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump
+."#</pre>\n";
 ?>

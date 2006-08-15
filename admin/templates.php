@@ -1,46 +1,46 @@
 <?php
 /*
-	#############################################################
-	# >>> PHPSurveyor  										    #
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA					#
- 	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################	
+#############################################################
+# >>> PHPSurveyor  										    #
+#############################################################
+# > Author:  Jason Cleeland									#
+# > E-mail:  jason@cleeland.org								#
+# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
+# >          CARLTON SOUTH 3053, AUSTRALIA					#
+# > Date: 	 20 February 2003								#
+#															#
+# This set of scripts allows you to develop, publish and	#
+# perform data-entry on surveys.							#
+#############################################################
+#															#
+#	Copyright (C) 2003  Jason Cleeland						#
+#															#
+# This program is free software; you can redistribute 		#
+# it and/or modify it under the terms of the GNU General 	#
+# Public License as published by the Free Software 			#
+# Foundation; either version 2 of the License, or (at your 	#
+# option) any later version.								#
+#															#
+# This program is distributed in the hope that it will be 	#
+# useful, but WITHOUT ANY WARRANTY; without even the 		#
+# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
+# PARTICULAR PURPOSE.  See the GNU General Public License 	#
+# for more details.											#
+#															#
+# You should have received a copy of the GNU General 		#
+# Public License along with this program; if not, write to 	#
+# the Free Software Foundation, Inc., 59 Temple Place - 	#
+# Suite 330, Boston, MA  02111-1307, USA.					#
+#############################################################
 */
 require_once(dirname(__FILE__).'/../config.php');
 $file_version="PHPSurveyor Template Editor ".$versionnumber;
 3=2;
 if(get_magic_quotes_gpc())
-	{
+{
 	$_GET = array_map("stripslashes", $_GET);
 	$_POST = array_map("stripslashes", $_POST);
-	}
+}
 
 if (!isset($templatename)) {$templatename = returnglobal('templatename');}
 if (!isset($templatedir)) {$templatedir = returnglobal('templatedir');}
@@ -62,15 +62,15 @@ if ($action=="savechanges" && $_POST['changes']) {
 	if ($_POST['editfile']) {
 		$savefilename=$publicdir."/templates/".$_POST['templatename']."/".$_POST['editfile'];
 		if (is_writable($savefilename)) {
-		    if (!$handle = fopen($savefilename, 'w')) {
-		        echo "Could not open file ($savefilename)";
-				exit;
-		    }
-			if (!fwrite($handle, $_POST['changes'])) {
-			    echo "Cannot write to file ($savefilename)";
+			if (!$handle = fopen($savefilename, 'w')) {
+				echo "Could not open file ($savefilename)";
 				exit;
 			}
-		fclose($handle);
+			if (!fwrite($handle, $_POST['changes'])) {
+				echo "Cannot write to file ($savefilename)";
+				exit;
+			}
+			fclose($handle);
 		} else {
 			echo "The file $savefilename is not writable";
 		}
@@ -78,18 +78,18 @@ if ($action=="savechanges" && $_POST['changes']) {
 }
 
 if ($action == "copy" && isset($_GET['newname']) && isset($_GET['copydir'])) {
-    //Copies all the files from one template directory to a new one
+	//Copies all the files from one template directory to a new one
 	//This is a security issue because it is allowing copying from get variables...
 	$newdirname=$publicdir."/templates/".$_GET['newname'];
 	$copydirname=$publicdir."/templates/".$_GET['copydir'];
 	$mkdirresult=mkdir_p($newdirname);
 	if ($mkdirresult == 1) {
-	    $copyfiles=getListOfFiles($copydirname);
+		$copyfiles=getListOfFiles($copydirname);
 		foreach ($copyfiles as $file) {
 			$copyfile=$copydirname."/".$file;
 			$newfile=$newdirname."/".$file;
 			if (!copy($copyfile, $newfile)) {
-			    echo "<script type=\"text/javascript\">\n<!--\nalert('Failed to copy $file to new template directory.');\n//-->\n</script>";
+				echo "<script type=\"text/javascript\">\n<!--\nalert('Failed to copy $file to new template directory.');\n//-->\n</script>";
 			}
 		}
 		$templates[]=array("name"=>$_GET['newname'], "dir"=>$newdirname);
@@ -102,13 +102,13 @@ if ($action == "copy" && isset($_GET['newname']) && isset($_GET['copydir'])) {
 }
 
 if ($action == "rename" && isset($_GET['newname']) && isset($_GET['copydir'])) {
-    $newdirname=$publicdir."/templates/".$_GET['newname'];
+	$newdirname=$publicdir."/templates/".$_GET['newname'];
 	$olddirname=$publicdir."/templates/".$_GET['copydir'];
 	if (!rename($olddirname, $newdirname)) {
 		echo "<script type=\"text/javascript\">\n<!--\nalert('Directory could not be renamed to `".$_GET['newname']."`. Maybe you don't have permission.');\n//-->\n</script>";
 	} else {
-	$templates[]=array("name"=>$_GET['newname'], "dir"=>$newdirname);
-	$templatename=$_GET['newname'];
+		$templates[]=array("name"=>$_GET['newname'], "dir"=>$newdirname);
+		$templatename=$_GET['newname'];
 	}
 }
 
@@ -122,12 +122,12 @@ if ($action == "upload") {
 		echo "</td></tr></table>\n";
 		echo "</body>\n</html>\n";
 		exit;
-	}	
+	}
 }
 
 if ($action == "delete") {
 	if ($_POST['otherfile'] != "chart.jpg") {
-	    $the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_POST['otherfile']; //This is where the temp file is
+		$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_POST['otherfile']; //This is where the temp file is
 		unlink($the_full_file_path);
 	}
 }
@@ -139,11 +139,11 @@ if ($action == "zip") {
 	$zipfile="$tempdir/$templatename.zip";
 	$z -> Zip($templatedir, $zipfile);
 	if (is_file($zipfile)) {
-	    //Send the file for download!
+		//Send the file for download!
 		header("Pragma: public");
 		header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
-		
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
 		header("Content-Type: application/force-download");
 		header( "Content-Disposition: attachment; filename=$templatename.zip" );
 		header( "Content-Description: File Transfer");
@@ -151,7 +151,7 @@ if ($action == "zip") {
 
 		//Delete the temporary file
 		unlink($zipfile);
-		
+
 	}
 }
 
@@ -162,26 +162,26 @@ function mkdir_p($target){
 	//        2 for "directory/file by that name exists
 	//        0 for other errors
 	if(file_exists($target) || is_dir($target))
-		return 2; 
-	if(mkdir($target,0777)){ 
-		return 1; 
-  	} 
-	if(mkdir_p(substr($target, 0, (strrpos($target, '/')))) == 1){ 
-		if(mkdir_p($target) == 1) 
-			return 1; 
-		else 
-			return 0; 
-	} else { 
-		return 0; 
-	} 
-} 
- 
+	return 2;
+	if(mkdir($target,0777)){
+		return 1;
+	}
+	if(mkdir_p(substr($target, 0, (strrpos($target, '/')))) == 1){
+		if(mkdir_p($target) == 1)
+		return 1;
+		else
+		return 0;
+	} else {
+		return 0;
+	}
+}
+
 function makeoptions($array, $value, $text, $selectedvalue) {
 	$return="";
 	foreach ($array as $ar) {
 		$return .= "<option value='".$ar[$value]."'";
 		if ($ar[$value] == $selectedvalue) {
-		    $return .= " selected";
+			$return .= " selected";
 		}
 		$return .= ">".$ar[$text]."</option>\n";
 	}
@@ -234,10 +234,10 @@ $Load=array("startpage.pstpl", "load.pstpl", "endpage.pstpl");
 foreach ($files as $file) {
 	$thisfile="$publicdir/templates/$templatename/".$file['name'];
 	if (!is_file($thisfile)) {
-	    $copyfile="$publicdir/templates/default/".$file['name'];
+		$copyfile="$publicdir/templates/default/".$file['name'];
 		$newfile=$thisfile;
 		if (!@copy($copyfile, $newfile)) {
-		    echo "<script type=\"text/javascript\">\n<!--\nalert('Failed to copy ".$file['name']." to new template directory.');\n//-->\n</script>";
+			echo "<script type=\"text/javascript\">\n<!--\nalert('Failed to copy ".$file['name']." to new template directory.');\n//-->\n</script>";
 		}
 	}
 }
@@ -252,7 +252,7 @@ function filetext($templatefile) {
 }
 
 function makegraph($thisstep, $total)
-	{
+{
 	global $templatedir, $publicurl, $templatename;
 	$chart="$publicurl/templates/$templatedir/chart.jpg";
 	if (!is_file($chart)) {$shchart="chart.jpg";}
@@ -268,7 +268,7 @@ function makegraph($thisstep, $total)
 	$graph .= "</table>\n";
 	$graph .= "</td></tr>\n</table>\n";
 	return $graph;
-	}
+}
 
 if (!$screenname) {$screenname=_("Welcome Page");}
 if ($screenname != _("Welcome Page")) {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
@@ -300,138 +300,138 @@ $assessments="<table align='center'><tr><th>Assessment Heading</th></tr><tr><td 
 $addbr=false;
 switch($screenname) {
 	case _("Question Page"):
-		unset($files);
-		foreach ($Question as $qs) {
-			$files[]=array("name"=>$qs);
-		}
-		$myoutput[]="<meta http-equiv=\"expires\" content=\"Wed, 26 Feb 1997 08:21:57 GMT\">\n";
-		$myoutput[]="<meta http-equiv=\"Last-Modified\" content=\"".gmdate('D, d M Y H:i:s'). " GMT\">\n";
-		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\">\n";
-		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\">\n";
-		$myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startpage.pstpl"));
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/survey.pstpl"));
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startgroup.pstpl"));
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/groupdescription.pstpl"));
-		
-		$question="How many roads must a man walk down?";
-		$questioncode="1a";
-		$answer="<input type='radio' name='1' value='1' id='radio1'><label class='answertext' for='radio1'>One</label><br /><input type='radio' name='1' value='2' id='radio2'><label class='answertext' for='radio2'>Two</label><br /><input type='radio' name='1' value='3' id='radio3'><label class='answertext' for='radio3'>Three</label><br />\n";
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/question.pstpl"));
-		
-		$question="Please explain your details:";
-		$questioncode="2";
-		$answer="<textarea class='textarea'>Some text in this answer</textarea>";
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/question.pstpl"));
-		
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endgroup.pstpl"));
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/navigator.pstpl"));
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endpage.pstpl"));
-		break;
+	unset($files);
+	foreach ($Question as $qs) {
+		$files[]=array("name"=>$qs);
+	}
+	$myoutput[]="<meta http-equiv=\"expires\" content=\"Wed, 26 Feb 1997 08:21:57 GMT\">\n";
+	$myoutput[]="<meta http-equiv=\"Last-Modified\" content=\"".gmdate('D, d M Y H:i:s'). " GMT\">\n";
+	$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\">\n";
+	$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\">\n";
+	$myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startpage.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/survey.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startgroup.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/groupdescription.pstpl"));
+
+	$question="How many roads must a man walk down?";
+	$questioncode="1a";
+	$answer="<input type='radio' name='1' value='1' id='radio1'><label class='answertext' for='radio1'>One</label><br /><input type='radio' name='1' value='2' id='radio2'><label class='answertext' for='radio2'>Two</label><br /><input type='radio' name='1' value='3' id='radio3'><label class='answertext' for='radio3'>Three</label><br />\n";
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/question.pstpl"));
+
+	$question="Please explain your details:";
+	$questioncode="2";
+	$answer="<textarea class='textarea'>Some text in this answer</textarea>";
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/question.pstpl"));
+
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endgroup.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/navigator.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endpage.pstpl"));
+	break;
 	case _("Welcome Page"):
-		unset($files);
-		$myoutput[]="";
-		foreach ($Welcome as $qs) {
-			$files[]=array("name"=>$qs);
-			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
-		}
-		break;
+	unset($files);
+	$myoutput[]="";
+	foreach ($Welcome as $qs) {
+		$files[]=array("name"=>$qs);
+		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
+	}
+	break;
 	case _("Register Page"):
-		unset($files);
-		foreach($Register as $qs) {
-			$files[]=array("name"=>$qs);
-		}
-		foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/survey.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/register.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		$myoutput[]= "\n";
-		break;
+	unset($files);
+	foreach($Register as $qs) {
+		$files[]=array("name"=>$qs);
+	}
+	foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/survey.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/register.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	$myoutput[]= "\n";
+	break;
 	case _("Save Page"):
-		unset($files);
-		foreach($Save as $qs) {
-			$files[]=array("name"=>$qs);
-		}
-		foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/save.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		$myoutput[]= "\n";
-		break;
+	unset($files);
+	foreach($Save as $qs) {
+		$files[]=array("name"=>$qs);
+	}
+	foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/save.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	$myoutput[]= "\n";
+	break;
 	case _("Load Page"):
-		unset($files);
-		foreach($Load as $qs) {
-			$files[]=array("name"=>$qs);
-		}
-		foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/load.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		$myoutput[]= "\n";
-		break;
+	unset($files);
+	foreach($Load as $qs) {
+		$files[]=array("name"=>$qs);
+	}
+	foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/load.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	$myoutput[]= "\n";
+	break;
 	case _("Clear All Page"):
-		unset($files);
-		foreach ($Clearall as $qs) {
-			$files[]=array("name"=>$qs);
-		}
-		foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/clearall.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
-			{
-			$myoutput[]=templatereplace($op);
-			}
-		$myoutput[]= "\n";
-		break;
+	unset($files);
+	foreach ($Clearall as $qs) {
+		$files[]=array("name"=>$qs);
+	}
+	foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/clearall.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+	{
+		$myoutput[]=templatereplace($op);
+	}
+	$myoutput[]= "\n";
+	break;
 	case _("Submit Page"):
-		unset($files);
-		$myoutput[]="";
-		foreach ($Submit as $qs) {
-			$files[]=array("name"=>$qs);
-			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
-		}
-		break;
+	unset($files);
+	$myoutput[]="";
+	foreach ($Submit as $qs) {
+		$files[]=array("name"=>$qs);
+		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
+	}
+	break;
 	case _("Completed Page"):
-		unset($files);
-		$myoutput[]="";
-		foreach ($Completed as $qs) {
-			$files[]=array("name"=>$qs);
-			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
-		}
-		break;	
+	unset($files);
+	$myoutput[]="";
+	foreach ($Completed as $qs) {
+		$files[]=array("name"=>$qs);
+		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
+	}
+	break;
 }
 $myoutput[]="</html>";
 function doreplacement($file) { //Produce sample page from template file
@@ -446,27 +446,27 @@ if (is_array($files)) {
 	$match=0;
 	foreach ($files as $f) {
 		if ($editfile == $f["name"]) {
-		    $match=1;
+			$match=1;
 		}
 	}
 	if ($match != 1) {
 		if (count($files) == 1) {
-		    $editfile=$files[0]["name"];
+			$editfile=$files[0]["name"];
 		} else {
-		    $editfile="";
+			$editfile="";
 		}
 	}
 }
 //Get list of 'otherfiles'
 $dirloc=$publicdir."/templates/".$templatename;
 if ($handle = opendir($dirloc)) {
-    while(false !== ($file = readdir($handle))) {
+	while(false !== ($file = readdir($handle))) {
 		if (!array_search($file, $normalfiles)) {
 			if (!is_dir("$dirloc/$file")) {
-	    	    $otherfiles[]=array("name"=>$file);
+				$otherfiles[]=array("name"=>$file);
 			}
-    	}
-    } // while
+		}
+	} // while
 	closedir($handle);
 }
 
@@ -476,176 +476,176 @@ if ($handle = opendir($dirloc)) {
 sendcacheheaders();
 echo $htmlheader;
 echo "<script type='text/javascript'>\n"
-	."<!--\n"
-	."function copyprompt(text, defvalue, copydirectory, action)\n"
-	."\t{\n"
-	."\tif (newtemplatename=window.prompt(text, defvalue))\n"
-	."\t\t{\n"
-	."\t\tvar url='templates.php?action='+action+'&newname='+newtemplatename+'&copydir='+copydirectory;\n"
-	."\t\twindow.open(url, '_top');\n"
-	."\t\t}\n"
-	."\t}\n"
-	."//-->\n</script>\n";
+."<!--\n"
+."function copyprompt(text, defvalue, copydirectory, action)\n"
+."\t{\n"
+."\tif (newtemplatename=window.prompt(text, defvalue))\n"
+."\t\t{\n"
+."\t\tvar url='templates.php?action='+action+'&newname='+newtemplatename+'&copydir='+copydirectory;\n"
+."\t\twindow.open(url, '_top');\n"
+."\t\t}\n"
+."\t}\n"
+."//-->\n</script>\n";
 echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
-	. "\t<tr>\n"
-	. "\t\t<td>\n"
-	. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
-	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$file_version."</strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
-	. "\t\t\t</tr>\n"
-	. "\t\t\t<tr bgcolor='#999999'>\n"
-	. "\t\t\t\t<td>\n"
-	. "\t\t\t\t\t<input type='image' src='$imagefiles/home.png' name='HomeButton' alt='"
-	. _("Default Administration Page")."' title='"
-	. _("Default Administration Page")."' align='left'  onClick=\"window.open('$scriptname', '_top')\">\n"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>"
-	."</td><td align='right'>\n"
-	."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10' alt=''>"
-	."<img src='$imagefiles/seperator.gif' align='right' alt='' border='0' hspace='0'>"
-	."<input type='image' src='$imagefiles/add.png' align='right' title='"._("Create new template")."' "
-	."onClick=\"javascript: copyprompt('"._("Create new template called:")."', '"._("NewTemplate")."', 'default', 'copy')\">"
-	."<font face='verdana' size='2' color='white'><strong>"._("Template:")."</strong> </font>"
-	."<select name='templatedir' onchange='javascript: window.open(\"templates.php?editfile=$editfile&screenname=$screenname&templatename=\"+this.value, \"_top\")'>\n"
-	.makeoptions($templates, "name", "name", $templatename)
-	."</select>&nbsp;\n"
-	."</td></tr></table>\n"
-	."<table><tr><td height='1'></td></tr></table>\n";
-	
+. "\t<tr>\n"
+. "\t\t<td>\n"
+. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+. "\t\t\t<tr bgcolor='#555555'>\n"
+. "\t\t\t\t<td colspan='2' height='8'>\n"
+. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$file_version."</strong>\n"
+. "\t\t\t\t</font></font></td>\n"
+. "\t\t\t</tr>\n"
+. "\t\t\t<tr bgcolor='#999999'>\n"
+. "\t\t\t\t<td>\n"
+. "\t\t\t\t\t<input type='image' src='$imagefiles/home.png' name='HomeButton' alt='"
+. _("Default Administration Page")."' title='"
+. _("Default Administration Page")."' align='left'  onClick=\"window.open('$scriptname', '_top')\">\n"
+. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
+. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>"
+. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
+. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>"
+."</td><td align='right'>\n"
+."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10' alt=''>"
+."<img src='$imagefiles/seperator.gif' align='right' alt='' border='0' hspace='0'>"
+."<input type='image' src='$imagefiles/add.png' align='right' title='"._("Create new template")."' "
+."onClick=\"javascript: copyprompt('"._("Create new template called:")."', '"._("NewTemplate")."', 'default', 'copy')\">"
+."<font face='verdana' size='2' color='white'><strong>"._("Template:")."</strong> </font>"
+."<select name='templatedir' onchange='javascript: window.open(\"templates.php?editfile=$editfile&screenname=$screenname&templatename=\"+this.value, \"_top\")'>\n"
+.makeoptions($templates, "name", "name", $templatename)
+."</select>&nbsp;\n"
+."</td></tr></table>\n"
+."<table><tr><td height='1'></td></tr></table>\n";
+
 //TEMPLATE DETAILS
 echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
-	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Template:")." <i>$templatename</i></strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
-	. "\t\t\t</tr>\n"
-	. "\t\t\t<tr bgcolor='#999999'>\n"
-	. "\t\t\t\t<td>\n";
+. "\t\t\t<tr bgcolor='#555555'>\n"
+. "\t\t\t\t<td colspan='2' height='8'>\n"
+. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Template:")." <i>$templatename</i></strong>\n"
+. "\t\t\t\t</font></font></td>\n"
+. "\t\t\t</tr>\n"
+. "\t\t\t<tr bgcolor='#999999'>\n"
+. "\t\t\t\t<td>\n";
 if (is_writable("$publicdir/templates/$templatename")) {
-    echo "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='"._("This template can be modified")."' hspace='0' align='left'>\n";
-	} else {
+	echo "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='"._("This template can be modified")."' hspace='0' align='left'>\n";
+} else {
 	echo "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='"._("This template cannot be modified")."' hspace='0' align='left'>\n";
-	}
+}
 echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<input type='image' name='EditName' src='$imagefiles/edit.png' align='left' title='"._("Rename this template")."'"
-	." onClick=\"javascript: copyprompt('"._("Rename this template to:")."', '$templatename', '$templatename', 'rename')\"";
+."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
+."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+."\t\t\t\t\t<input type='image' name='EditName' src='$imagefiles/edit.png' align='left' title='"._("Rename this template")."'"
+." onClick=\"javascript: copyprompt('"._("Rename this template to:")."', '$templatename', '$templatename', 'rename')\"";
 if ($templatename == "default") {echo " disabled";}
 echo ">";
 echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<input type='image' name='Export' src='$imagefiles/exportsql.png' align='left' title='"._("Export Template")."'"
-	." onClick='javascript:window.open(\"templates.php?action=zip&editfile=$editfile&screenname=$screenname&templatename=$templatename\", \"_top\")'>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.png' align='left' title='"._("Make a copy of this template")."'"
-	." onClick=\"javascript: copyprompt('"._("Create a copy of this template called:")."', '"._("copy_of_")."$templatename', '$templatename', 'copy')\">"
-	."</td><td align='right'>\n"
-	."<img src='./images/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10'>"
-	."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0'>"
-	."<img src='$imagefiles/blank.gif' width='23' align='right' alt='minimise' border='0' hspace='0'>"
-	."<font face='verdana' size='2' color='white'><strong>"._("Screen:")."</strong> </font>"
-	. "<select name='screenname' onchange='javascript: window.open(\"templates.php?templatename=$templatename&editfile=$editfile&screenname=\"+this.value, \"_top\")'>\n"
-	. makeoptions($screens, "name", "name", $screenname)
-	. "</select>&nbsp;\n"
-	."</td></tr></table>\n"
-	."<table><tr><td height='1'></td></tr></table>\n";
+."\t\t\t\t\t<input type='image' name='Export' src='$imagefiles/exportsql.png' align='left' title='"._("Export Template")."'"
+." onClick='javascript:window.open(\"templates.php?action=zip&editfile=$editfile&screenname=$screenname&templatename=$templatename\", \"_top\")'>\n"
+."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.png' align='left' title='"._("Make a copy of this template")."'"
+." onClick=\"javascript: copyprompt('"._("Create a copy of this template called:")."', '"._("copy_of_")."$templatename', '$templatename', 'copy')\">"
+."</td><td align='right'>\n"
+."<img src='./images/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10'>"
+."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0'>"
+."<img src='$imagefiles/blank.gif' width='23' align='right' alt='minimise' border='0' hspace='0'>"
+."<font face='verdana' size='2' color='white'><strong>"._("Screen:")."</strong> </font>"
+. "<select name='screenname' onchange='javascript: window.open(\"templates.php?templatename=$templatename&editfile=$editfile&screenname=\"+this.value, \"_top\")'>\n"
+. makeoptions($screens, "name", "name", $screenname)
+. "</select>&nbsp;\n"
+."</td></tr></table>\n"
+."<table><tr><td height='1'></td></tr></table>\n";
 
 //FILE CONTROL DETAILS
 echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
-	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("File Control:")."</strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
-	. "\t\t\t</tr>\n"
-	. "\t\t\t<tr bgcolor='#999999'>"
-	. "\t\t\t\t<td align='center' bgcolor='#DDDDDD'>\n";
+. "\t\t\t<tr bgcolor='#555555'>\n"
+. "\t\t\t\t<td colspan='2' height='8'>\n"
+. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("File Control:")."</strong>\n"
+. "\t\t\t\t</font></font></td>\n"
+. "\t\t\t</tr>\n"
+. "\t\t\t<tr bgcolor='#999999'>"
+. "\t\t\t\t<td align='center' bgcolor='#DDDDDD'>\n";
 
 echo "\t\t\t\t<table width='100%' border='0'>\n"
-	."\t\t\t\t\t<tr>\n"
-	."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
-	. "<form name='editTemplate' method='post' action='templates.php'>\n"
-	. "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
-	. "\t\t\t<input type='hidden' name='screenname' value='$screenname' />\n"
-	. "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
-	. "\t\t\t<input type='hidden' name='action' value='savechanges' />\n"
-	. "\t\t\t\t<table width='100%' align='center'><tr><td>"
-	."$setfont<strong>"._("Standard Files:")."</strong><font size='1'><br />\n"
-	."<select size='12' name='editfile' onChange='javascript: window.open(\"templates.php?templatename=$templatename&screenname=$screenname&editfile=\"+this.value, \"_top\")'>\n"
-	.makeoptions($files, "name", "name", $editfile)
-	."</select><br /><br />\n"
-	."\t\t\t\t\t\t</font></font></td>\n"
-	."\t\t\t\t\t\t<td align='center' valign='top'>"
-	."$setfont<strong>"._("Now editing:");
-	if (trim($editfile)!='') {echo " <i>$editfile</i>";}
+."\t\t\t\t\t<tr>\n"
+."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
+. "<form name='editTemplate' method='post' action='templates.php'>\n"
+. "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
+. "\t\t\t<input type='hidden' name='screenname' value='$screenname' />\n"
+. "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
+. "\t\t\t<input type='hidden' name='action' value='savechanges' />\n"
+. "\t\t\t\t<table width='100%' align='center'><tr><td>"
+."$setfont<strong>"._("Standard Files:")."</strong><font size='1'><br />\n"
+."<select size='12' name='editfile' onChange='javascript: window.open(\"templates.php?templatename=$templatename&screenname=$screenname&editfile=\"+this.value, \"_top\")'>\n"
+.makeoptions($files, "name", "name", $editfile)
+."</select><br /><br />\n"
+."\t\t\t\t\t\t</font></font></td>\n"
+."\t\t\t\t\t\t<td align='center' valign='top'>"
+."$setfont<strong>"._("Now editing:");
+if (trim($editfile)!='') {echo " <i>$editfile</i>";}
 echo "</strong><font size='1'><br />\n"
-	."<textarea 3 name='changes' id='changes' cols='110' rows='12'>";
+."<textarea 3 name='changes' id='changes' cols='110' rows='12'>";
 if ($editfile) {
 	echo textarea_encode(filetext($editfile));
 }
 echo "</textarea><br />\n";
 if (is_writable("$publicdir/templates/$templatename")) {
-echo "<input align='right' type='submit' value='Save Changes'";
-if ($templatename == "default") {
-    echo " disabled";
-}
-echo ">";
+	echo "<input align='right' type='submit' value='Save Changes'";
+	if ($templatename == "default") {
+		echo " disabled";
 	}
+	echo ">";
+}
 echo "<br />\n"
-	. "</font></font></td></tr></table></form></td>\n"
-	."\t\t\t\t\t\t<td valign='top' align='right' width='20%'><form action='templates.php' method='post'>"
-	."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td align='right'>"
-	. "$setfont<strong>"._("Other Files:")."</strong></font><br />\n"
-	//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
-	. "<select size='9' name='otherfile' id='otherfile'>\n"
-	.makeoptions($otherfiles, "name", "name", "")
-	."</select>"
-	."</td></tr><tr><td align='right'>$setfont"
-	."<input type='submit' value='"._("Delete")."' onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
+. "</font></font></td></tr></table></form></td>\n"
+."\t\t\t\t\t\t<td valign='top' align='right' width='20%'><form action='templates.php' method='post'>"
+."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td align='right'>"
+. "$setfont<strong>"._("Other Files:")."</strong></font><br />\n"
+//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
+. "<select size='9' name='otherfile' id='otherfile'>\n"
+.makeoptions($otherfiles, "name", "name", "")
+."</select>"
+."</td></tr><tr><td align='right'>$setfont"
+."<input type='submit' value='"._("Delete")."' onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
 if ($templatename == "default") {
-    echo " disabled";
+	echo " disabled";
 }
 echo "></font>\n"
-	."<input type='hidden' name='editfile' value='$editfile'>\n"
-	."<input type='hidden' name='screenname' value='$screenname'>\n"
-	."<input type='hidden' name='templatename' value='$templatename'>\n"
-	."<input type='hidden' name='action' value='delete'>\n"
-	."</td>\n"
-	."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
-	."<form enctype='multipart/form-data' name='importsurvey' action='templates.php' method='post'>\n"
-	."<table><tr $btstyle> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
-	."<input name=\"the_file\" type=\"file\" size=\"7\"><br />"
-	."<input type='submit' value='"._("Upload")."' $btstyle";
+."<input type='hidden' name='editfile' value='$editfile'>\n"
+."<input type='hidden' name='screenname' value='$screenname'>\n"
+."<input type='hidden' name='templatename' value='$templatename'>\n"
+."<input type='hidden' name='action' value='delete'>\n"
+."</td>\n"
+."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
+."<form enctype='multipart/form-data' name='importsurvey' action='templates.php' method='post'>\n"
+."<table><tr $btstyle> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
+."<input name=\"the_file\" type=\"file\" size=\"7\"><br />"
+."<input type='submit' value='"._("Upload")."' $btstyle";
 if ($templatename == "default") {
-    echo " disabled";
+	echo " disabled";
 }
 echo ">\n"
-	."<input type='hidden' name='editfile' value='$editfile'>\n"
-	."<input type='hidden' name='screenname' value='$screenname'>\n"
-	."<input type='hidden' name='templatename' value='$templatename'>\n"
-	."<input type='hidden' name='action' value='upload'>\n"
-	."</td></table></form>\n"
-	."\t\t\t\t\t\t</td>\n"
-	."\t\t\t\t\t</tr>\n"
-	."\t\t\t\t</table>\n"
-	."\t\t\t</td>\n"
-	."\t</tr>"
-	."</table>"
-	."</table>";
+."<input type='hidden' name='editfile' value='$editfile'>\n"
+."<input type='hidden' name='screenname' value='$screenname'>\n"
+."<input type='hidden' name='templatename' value='$templatename'>\n"
+."<input type='hidden' name='action' value='upload'>\n"
+."</td></table></form>\n"
+."\t\t\t\t\t\t</td>\n"
+."\t\t\t\t\t</tr>\n"
+."\t\t\t\t</table>\n"
+."\t\t\t</td>\n"
+."\t</tr>"
+."</table>"
+."</table>";
 
 //SAMPLE ROW
 echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
-	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Preview:")."</strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
-	. "\t\t\t</tr>\n"
-	."\t<tr>\n"
-	."\t\t<td width='90%' align='center' bgcolor='#555555'>\n";
+. "\t\t\t<tr bgcolor='#555555'>\n"
+. "\t\t\t\t<td colspan='2' height='8'>\n"
+. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Preview:")."</strong>\n"
+. "\t\t\t\t</font></font></td>\n"
+. "\t\t\t</tr>\n"
+."\t<tr>\n"
+."\t\t<td width='90%' align='center' bgcolor='#555555'>\n";
 
 
 unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
@@ -658,91 +658,91 @@ foreach($myoutput as $line) {
 fclose($fnew);
 $langdir_template="$homeurl/lang/$currentadminlang";
 echo "<br />\n"
-	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
-	."<br />&nbsp;<br />"
-	."</td></tr></table>\n"
-	.getAdminFooter("$langdir_template/instructions.html#Templates", "");
+."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
+."<br />&nbsp;<br />"
+."</td></tr></table>\n"
+.getAdminFooter("$langdir_template/instructions.html#Templates", "");
 
 function unlink_wc($dir, $pattern){
-   if ($dh = opendir($dir)) { 
-       
-       //List and put into an array all files
-       while (false !== ($file = readdir($dh))){
-           if ($file != "." && $file != "..") {
-               $files[] = $file;
-           }
-       }
-       closedir($dh);
-       
-       
-       //Split file name and extenssion
-       if(strpos($pattern,".")) {
-           $baseexp=substr($pattern,0,strpos($pattern,"."));
-           $typeexp=substr($pattern,strpos($pattern,".")+1,strlen($pattern));
-       }else{ 
-           $baseexp=$pattern;
-           $typeexp="";
-       } 
-       
-       //Escape all regexp Characters 
-       $baseexp=preg_quote($baseexp); 
-       $typeexp=preg_quote($typeexp); 
-       
-       // Allow ? and *
-       $baseexp=str_replace(array("\*","\?"), array(".*","."), $baseexp);
-       $typeexp=str_replace(array("\*","\?"), array(".*","."), $typeexp);
-       
-       //Search for pattern match
-       $i=0;
-       foreach($files as $file) {
-           $filename=basename($file);
-           if(strpos($filename,".")) {
-               $base=substr($filename,0,strpos($filename,"."));
-               $type=substr($filename,strpos($filename,".")+1,strlen($filename));
-           }else{
-               $base=$filename;
-               $type="";
-           }
-       
-           if(preg_match("/^".$baseexp."$/i",$base) && preg_match("/^".$typeexp."$/i",$type))  {
-               $matches[$i]=$file;
-               $i++;
-           }
-       }
-       if (isset($matches)) {
-	       while(list($idx,$val) = each($matches)){
-	           if (substr($dir,-1) == "/"){
-	               unlink($dir.$val);
-	           }else{
-	               unlink($dir."/".$val);
-	           }
-       		}
-       }
-       
-   }
+	if ($dh = opendir($dir)) {
+
+		//List and put into an array all files
+		while (false !== ($file = readdir($dh))){
+			if ($file != "." && $file != "..") {
+				$files[] = $file;
+			}
+		}
+		closedir($dh);
+
+
+		//Split file name and extenssion
+		if(strpos($pattern,".")) {
+			$baseexp=substr($pattern,0,strpos($pattern,"."));
+			$typeexp=substr($pattern,strpos($pattern,".")+1,strlen($pattern));
+		}else{
+			$baseexp=$pattern;
+			$typeexp="";
+		}
+
+		//Escape all regexp Characters
+		$baseexp=preg_quote($baseexp);
+		$typeexp=preg_quote($typeexp);
+
+		// Allow ? and *
+		$baseexp=str_replace(array("\*","\?"), array(".*","."), $baseexp);
+		$typeexp=str_replace(array("\*","\?"), array(".*","."), $typeexp);
+
+		//Search for pattern match
+		$i=0;
+		foreach($files as $file) {
+			$filename=basename($file);
+			if(strpos($filename,".")) {
+				$base=substr($filename,0,strpos($filename,"."));
+				$type=substr($filename,strpos($filename,".")+1,strlen($filename));
+			}else{
+				$base=$filename;
+				$type="";
+			}
+
+			if(preg_match("/^".$baseexp."$/i",$base) && preg_match("/^".$typeexp."$/i",$type))  {
+				$matches[$i]=$file;
+				$i++;
+			}
+		}
+		if (isset($matches)) {
+			while(list($idx,$val) = each($matches)){
+				if (substr($dir,-1) == "/"){
+					unlink($dir.$val);
+				}else{
+					unlink($dir."/".$val);
+				}
+			}
+		}
+
+	}
 }
 
 function getListOfFiles($wh){
 	//Returns an array containing all files in a directory
 	if ($handle = opendir($wh)) {
-	while (false !== ($file = readdir($handle))) { 
-		if ($file != "." && $file != ".." && !is_dir($file)) { 
-			if(!isset($files) || !$files) $files="$file";
-			else $files="$file\n$files";
-			} 
+		while (false !== ($file = readdir($handle))) {
+			if ($file != "." && $file != ".." && !is_dir($file)) {
+				if(!isset($files) || !$files) $files="$file";
+				else $files="$file\n$files";
+			}
 		}
-	closedir($handle); 
+		closedir($handle);
 	}
-$arr=explode("\n",$files);
-return $arr;
+	$arr=explode("\n",$files);
+	return $arr;
 }
 
 function textarea_encode($html_code)
 {
-    $from = array('<', '>');
-    $to = array('&lt;', '&gt;');
-    $html_code = str_replace($from, $to, $html_code);
-    return $html_code;
+	$from = array('<', '>');
+	$to = array('&lt;', '&gt;');
+	$html_code = str_replace($from, $to, $html_code);
+	return $html_code;
 }
 
 

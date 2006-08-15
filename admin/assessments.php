@@ -1,37 +1,37 @@
 <?php
 /*
-	#############################################################
-	# >>> PHPSurveyor  										    #
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA					#
-	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################
+#############################################################
+# >>> PHPSurveyor  										    #
+#############################################################
+# > Author:  Jason Cleeland									#
+# > E-mail:  jason@cleeland.org								#
+# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
+# >          CARLTON SOUTH 3053, AUSTRALIA					#
+# > Date: 	 20 February 2003								#
+#															#
+# This set of scripts allows you to develop, publish and	#
+# perform data-entry on surveys.							#
+#############################################################
+#															#
+#	Copyright (C) 2003  Jason Cleeland						#
+#															#
+# This program is free software; you can redistribute 		#
+# it and/or modify it under the terms of the GNU General 	#
+# Public License as published by the Free Software 			#
+# Foundation; either version 2 of the License, or (at your 	#
+# option) any later version.								#
+#															#
+# This program is distributed in the hope that it will be 	#
+# useful, but WITHOUT ANY WARRANTY; without even the 		#
+# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
+# PARTICULAR PURPOSE.  See the GNU General Public License 	#
+# for more details.											#
+#															#
+# You should have received a copy of the GNU General 		#
+# Public License along with this program; if not, write to 	#
+# the Free Software Foundation, Inc., 59 Temple Place - 	#
+# Suite 330, Boston, MA  02111-1307, USA.					#
+#############################################################
 */
 require_once(dirname(__FILE__).'/../config.php');
 
@@ -39,16 +39,16 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
 
 if ($action == _("Add")) {
-    $inserttable=$dbprefix."assessments";
+	$inserttable=$dbprefix."assessments";
 	$query = $connect->GetInsertSQL($inserttable, array(
-		'sid' => $surveyid,
-		'scope' => $_POST['scope'],
-		'gid' => $_POST['gid'],
-		'minimum' => $_POST['minimum'],
-		'maximum' => $_POST['maximum'],
-		'name' => $_POST['name'],
-		'message' => $_POST['message'],
-		'link' => $_POST['link'] ));
+	'sid' => $surveyid,
+	'scope' => $_POST['scope'],
+	'gid' => $_POST['gid'],
+	'minimum' => $_POST['minimum'],
+	'maximum' => $_POST['maximum'],
+	'name' => $_POST['name'],
+	'message' => $_POST['message'],
+	'link' => $_POST['link'] ));
 	$result=$connect->Execute($query) or die("Error inserting<br />$query<br />".$connect->ErrorMsg());
 } elseif ($action == _("Update")) {
 	$query = "UPDATE {$dbprefix}assessments
@@ -70,22 +70,22 @@ if ($action == _("Add")) {
 sendcacheheaders();
 echo $htmlheader;
 echo "<table><tr><td height='1'></td></tr></table>\n"
-	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("Assessments")."</strong></font></td></tr>\n";
+. _("Assessments")."</strong></font></td></tr>\n";
 
 echo "\t<tr bgcolor='#999999'>\n"
-	. "\t\t<td>\n"
-	. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
-	. _("Return to Survey Administration")."' alt='". _("Return to Survey Administration")."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
-	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	. "\t\t</td>\n"
-	. "\t</tr>\n";
-echo "</table>";	
+. "\t\t<td>\n"
+. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
+. _("Return to Survey Administration")."' alt='". _("Return to Survey Administration")."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
+. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+. "\t\t</td>\n"
+. "\t</tr>\n";
+echo "</table>";
 
 if ($surveyid == "") {
-    echo _("No SID Provided");
+	echo _("No SID Provided");
 	exit;
 }
 
@@ -99,18 +99,18 @@ foreach($groups as $group) {
 $groupselect .="</select>\n";
 $headings=array(_("Scope"), _("Group"), _("Minimum"), _("Maximum"), _("Heading"), _("Message"), _("URL"));
 $inputs=array("<select name='scope'><option value='T'>"._("Total")."</option><option value='G'>"._("Group")."</option></select>",
-			  $groupselect,
-			  "<input type='text' name='minimum'>",
-			  "<input type='text' name='maximum'>",
-			  "<input type='text' name='name'>",
-			  "<textarea name='message'></textarea>",
-			  "<input type='text' name='link'>");
+$groupselect,
+"<input type='text' name='minimum'>",
+"<input type='text' name='maximum'>",
+"<input type='text' name='name'>",
+"<textarea name='message'></textarea>",
+"<input type='text' name='link'>");
 $actiontitle=_("Add");
 $actionbutton=_("Add");
 $thisid="";
 
 if ($action == "edit") {
-    $query = "SELECT * FROM {$dbprefix}assessments WHERE id=".$_POST['id'];
+	$query = "SELECT * FROM {$dbprefix}assessments WHERE id=".$_POST['id'];
 	$results = db_execute_assoc($query);
 	while($row=$results->FetchRow()) {
 		$editdata=$row;
@@ -122,12 +122,12 @@ if ($action == "edit") {
 	$scopeselect .= "'>"._("Group")."</option></select>";
 	$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
 	$inputs=array($scopeselect,
-				 $groupselect,
-				 "<input type='text' name='minimum' value='".$editdata['minimum']."'>",
-				 "<input type='text' name='maximum' value='".$editdata['maximum']."'>",
-				 "<input type='text' name='name' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."'>",
-				 "<textarea name='message'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
-				 "<input type='text' name='link' value='".$editdata['link']."'>");
+	$groupselect,
+	"<input type='text' name='minimum' value='".$editdata['minimum']."'>",
+	"<input type='text' name='maximum' value='".$editdata['maximum']."'>",
+	"<input type='text' name='name' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."'>",
+	"<textarea name='message'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
+	"<input type='text' name='link' value='".$editdata['link']."'>");
 	$actiontitle=_("Edit");
 	$actionbutton=_("Update");
 	$thisid=$editdata['id'];
@@ -179,13 +179,13 @@ foreach ($headings as $head) {
 }
 echo "<tr><th colspan='2'><input type='submit' value='$actionbutton'></th></tr><tr><td>\n";
 echo "<input type='hidden' name='sid' value='$surveyid'>\n"
-    ."<input type='hidden' name='action' value='$actionbutton'>\n"
-    ."<input type='hidden' name='id' value='$thisid'>\n"
-    ."</td></tr>\n"
-    ."</table></form></table><br />\n";
+."<input type='hidden' name='action' value='$actionbutton'>\n"
+."<input type='hidden' name='id' value='$thisid'>\n"
+."</td></tr>\n"
+."</table></form></table><br />\n";
 
 
-	
+
 
 echo getAdminFooter("", "");
 

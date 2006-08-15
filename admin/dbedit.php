@@ -1,37 +1,37 @@
 <?php
 /*
-	#############################################################
-	# >>> PHPSurveyor  										#
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################	
+#############################################################
+# >>> PHPSurveyor  										#
+#############################################################
+# > Author:  Jason Cleeland									#
+# > E-mail:  jason@cleeland.org								#
+# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
+# >          CARLTON SOUTH 3053, AUSTRALIA
+# > Date: 	 20 February 2003								#
+#															#
+# This set of scripts allows you to develop, publish and	#
+# perform data-entry on surveys.							#
+#############################################################
+#															#
+#	Copyright (C) 2003  Jason Cleeland						#
+#															#
+# This program is free software; you can redistribute 		#
+# it and/or modify it under the terms of the GNU General 	#
+# Public License as published by the Free Software 			#
+# Foundation; either version 2 of the License, or (at your 	#
+# option) any later version.								#
+#															#
+# This program is distributed in the hope that it will be 	#
+# useful, but WITHOUT ANY WARRANTY; without even the 		#
+# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
+# PARTICULAR PURPOSE.  See the GNU General Public License 	#
+# for more details.											#
+#															#
+# You should have received a copy of the GNU General 		#
+# Public License along with this program; if not, write to 	#
+# the Free Software Foundation, Inc., 59 Temple Place - 	#
+# Suite 330, Boston, MA  02111-1307, USA.					#
+#############################################################
 */
 
 //Ensure script is not run directly, avoid path disclosure
@@ -40,71 +40,71 @@ if (empty($homedir)) {die ("Cannot run this script directly (dbedit.php)");}
 if (call_user_func($auth_function)) {
 	switch($dbaction){
 		case "addlabelset":
-			$lid=addLabelset($dbprefix);
-			break;
-		case "addattribute": 
-			addAttribute($qid, $dbprefix);
-			break;
+		$lid=addLabelset($dbprefix);
+		break;
+		case "addattribute":
+		addAttribute($qid, $dbprefix);
+		break;
 		case "editattribute":
-			updateAttribute($qid, $dbprefix);
-			break;
+		updateAttribute($qid, $dbprefix);
+		break;
 		case "deleteattribute":
-			delAttribute($qid, $dbprefix);
-			break;
+		delAttribute($qid, $dbprefix);
+		break;
 		case "deleteassessment":
-			delAssessment($surveyid, $dbprefix);
-			break;
+		delAssessment($surveyid, $dbprefix);
+		break;
 		case "delsurvey":
-			delSurvey($surveyid, $dbprefix);
-			break;
+		delSurvey($surveyid, $dbprefix);
+		break;
 		case "delgroup":
-			if (delGroup($surveyid, $gid, $dbprefix)) {
-			    $gid="";
-			};
-			break;
+		if (delGroup($surveyid, $gid, $dbprefix)) {
+			$gid="";
+		};
+		break;
 		case "addassessment":
-			addAssessment($surveyid, $dbprefix);
-			break;
+		addAssessment($surveyid, $dbprefix);
+		break;
 		case "editassessment":
-			updateAssessment($surveyid, $dbprefix);
-			break;
+		updateAssessment($surveyid, $dbprefix);
+		break;
 		case "addanswer":
-			addAnswer($qid, $dbprefix);
-			break;
+		addAnswer($qid, $dbprefix);
+		break;
 		case "deleteanswer":
-			delAnswer($qid, $dbprefix);
-			break;
+		delAnswer($qid, $dbprefix);
+		break;
 		case "updateanswers":
-			updateAnswer($qid, $dbprefix);
-			break;
+		updateAnswer($qid, $dbprefix);
+		break;
 		case "moveanswer":
-			moveAnswer($qid, $dbprefix);		
-			break;
+		moveAnswer($qid, $dbprefix);
+		break;
 		case "editsurvey":
 		case "addsurvey":
-			$surveyid=editSurvey($surveyid, $dbprefix, $dbaction);
-			break;
+		$surveyid=editSurvey($surveyid, $dbprefix, $dbaction);
+		break;
 		case "editgroup":
 		case "addgroup":
-			$gid=editGroup($surveyid, $gid, $dbprefix, $dbaction);
-			break;
+		$gid=editGroup($surveyid, $gid, $dbprefix, $dbaction);
+		break;
 		case "delquestion":
-			if (delQuestion($surveyid, $qid, $dbprefix)) {
-			    $qid = "";
-			}
-			break;
+		if (delQuestion($surveyid, $qid, $dbprefix)) {
+			$qid = "";
+		}
+		break;
 		case "editquestion":
 		case "addquestion":
 		case "copyquestion":
-			$qid=editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction);
-			break;
+		$qid=editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction);
+		break;
 		case "renumbergroup":
 		case "renumbersurvey":
-			renumber($surveyid, $gid, $dbprefix);
-			break;
+		renumber($surveyid, $gid, $dbprefix);
+		break;
 		case "editlabel":
 		case "addlabel":
-		    editLabel($lid, $dbprefix, $dbaction);
+		editLabel($lid, $dbprefix, $dbaction);
 	} // switch
 }
 
@@ -116,7 +116,7 @@ function renumber($surveyid, $gid=null, $dbprefix) {
 			  WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid
 			  AND {$dbprefix}questions.sid=$surveyid\n";
 	if (!empty($gid)) {
-	    $gselect .= "AND {$dbprefix}questions.gid=$gid\n";
+		$gselect .= "AND {$dbprefix}questions.gid=$gid\n";
 	}
 	$gselect .= "ORDER BY {$dbprefix}groups.sortorder, title";
 	$gresult=db_execute_assoc($gselect) or die ($connect->ErrorMsg());
@@ -128,8 +128,8 @@ function renumber($surveyid, $gid=null, $dbprefix) {
 	foreach($grows as $grow) {
 		$sortednumber=sprintf("%0{$len}d", $question_number);
 		$usql="UPDATE {$dbprefix}questions\n"
-			."SET title='".$sortednumber."'\n"
-			."WHERE qid=".$grow['qid'];
+		."SET title='".$sortednumber."'\n"
+		."WHERE qid=".$grow['qid'];
 		//echo "[$usql]";
 		$uresult=$connect->Execute($usql) or die("Error:".$connect->ErrorMsg());
 		$question_number++;
@@ -146,84 +146,84 @@ function addLabelset($dbprefix) {
 }
 
 function editLabel($lid, $dbprefix, $dbaction) {
-    global $connect;
-    switch($dbaction) {
-	  case "addlabel":
-	    echo "Hi";
+	global $connect;
+	switch($dbaction) {
+		case "addlabel":
+		echo "Hi";
 		$query = "INSERT INTO {$dbprefix}labels
 				  VALUES ('$lid',
 				  	      '".auto_escape($_POST['code'])."',
 						  '".auto_escape($_POST['title'])."',
 						  '".auto_escape($_POST['sortorder'])."')";
 		$result = $connect->Execute($query);
-	  	break;
-	  case "editlabelset":
-	    break;
+		break;
+		case "editlabelset":
+		break;
 	}
 }
 
 function editSurvey($surveyid, $dbprefix, $dbaction) {
 	global $connect;
 	$tablefields=array("short_title",
-					   "description",
-					   "admin",
-					   "active",
-					   "welcome",
-					   "useexpiry",
-					   "expires",
-					   "adminemail",
-					   "private",
-					   "faxto",
-					   "format",
-					   "template",
-					   "url",
-					   "urldescrip",
-					   "language",
-					   "datestamp",
-                       "ipaddr",
-					   "usecookie",
-					   "notification",
-					   "allowregister",
-					   "attribute1",
-					   "attribute2",
-					   "email_invite_subj",
-					   "email_invite",
-					   "email_remind_subj",
-					   "email_remind",
-					   "email_register_subj",
-					   "email_register",
-					   "email_confirm_subj",
-					   "email_confirm",
-					   "allowsave",
-					   "autonumber_start",
-					   "autoredirect",
-					   "allowprev");
+	"description",
+	"admin",
+	"active",
+	"welcome",
+	"useexpiry",
+	"expires",
+	"adminemail",
+	"private",
+	"faxto",
+	"format",
+	"template",
+	"url",
+	"urldescrip",
+	"language",
+	"datestamp",
+	"ipaddr",
+	"usecookie",
+	"notification",
+	"allowregister",
+	"attribute1",
+	"attribute2",
+	"email_invite_subj",
+	"email_invite",
+	"email_remind_subj",
+	"email_remind",
+	"email_register_subj",
+	"email_register",
+	"email_confirm_subj",
+	"email_confirm",
+	"allowsave",
+	"autonumber_start",
+	"autoredirect",
+	"allowprev");
 	switch ($dbaction) {
 		case "editsurvey":
-			$query = "UPDATE {$dbprefix}surveys
+		$query = "UPDATE {$dbprefix}surveys
 					  SET ";
-			foreach ($tablefields as $tf) {
-				if (isset($_POST[$tf])) {
-					$querys[] = "$tf = '".auto_escape($_POST[$tf])."'";
-				}
+		foreach ($tablefields as $tf) {
+			if (isset($_POST[$tf])) {
+				$querys[] = "$tf = '".auto_escape($_POST[$tf])."'";
 			}
-			$query .= implode(",\n", $querys);
-			$query .= "\nWHERE sid=$surveyid";
-			$result = $connect->Execute($query);
-			break;
+		}
+		$query .= implode(",\n", $querys);
+		$query .= "\nWHERE sid=$surveyid";
+		$result = $connect->Execute($query);
+		break;
 		case "addsurvey":
-			$data = array();
-			foreach ($tablefields as $tf) {
-				if (isset($_POST[$tf]))
-				    $data[$tf] = $_POST[$tf];
-			}
-			$query = $connect->GetInsertSQL("{$dbprefix}surveys", $data);
-			if ($result = $connect->Execute($query)) {
-				$surveyid = $connect->Insert_ID();
-			} else {
-				echo $query."<br />".$connect->ErrorMsg();
-			}
-			break;
+		$data = array();
+		foreach ($tablefields as $tf) {
+			if (isset($_POST[$tf]))
+			$data[$tf] = $_POST[$tf];
+		}
+		$query = $connect->GetInsertSQL("{$dbprefix}surveys", $data);
+		if ($result = $connect->Execute($query)) {
+			$surveyid = $connect->Insert_ID();
+		} else {
+			echo $query."<br />".$connect->ErrorMsg();
+		}
+		break;
 	}
 	return $surveyid;
 }
@@ -231,40 +231,40 @@ function editSurvey($surveyid, $dbprefix, $dbaction) {
 function editGroup($surveyid, $gid, $dbprefix, $dbaction) {
 	global $connect;
 	$tablefields=array("sid",
-					   "group_name",
-					   "description");
+	"group_name",
+	"description");
 	switch($dbaction) {
 		case "editgroup":
-			$query = "UPDATE {$dbprefix}groups
+		$query = "UPDATE {$dbprefix}groups
 					  SET ";
-			foreach($tablefields as $tf) {
-				if (isset($_POST[$tf])) {
-				    $querys[]="$tf = '".auto_escape($_POST[$tf])."'";
-				}
+		foreach($tablefields as $tf) {
+			if (isset($_POST[$tf])) {
+				$querys[]="$tf = '".auto_escape($_POST[$tf])."'";
 			}
-			$query .= implode(",\n", $querys);
-			$query .= "\nWHERE gid=$gid";
-			$result = $connect->Execute($query);
-			
-			break;
+		}
+		$query .= implode(",\n", $querys);
+		$query .= "\nWHERE gid=$gid";
+		$result = $connect->Execute($query);
+
+		break;
 		case "addgroup":
-			$query = "INSERT INTO {$dbprefix}groups\n";
-			foreach ($tablefields as $tf) {
-				if (isset($_POST[$tf])) {
-				    $fields[]=$tf;
-					$values[]=auto_escape($_POST[$tf]);
-				}
+		$query = "INSERT INTO {$dbprefix}groups\n";
+		foreach ($tablefields as $tf) {
+			if (isset($_POST[$tf])) {
+				$fields[]=$tf;
+				$values[]=auto_escape($_POST[$tf]);
 			}
-			$query .= "(".implode(",\n", $fields).")";
-			$query .= "\nVALUES ('";
-			$query .= implode("',\n'", $values)."')";
-//			echo $query;
-			if ($result = $connect->Execute($query)) {
-				$gid = $connect->Insert_ID();
-			} else {
-				echo $query."<br />".$connect->ErrorMsg();
-			}			
-			break;
+		}
+		$query .= "(".implode(",\n", $fields).")";
+		$query .= "\nVALUES ('";
+		$query .= implode("',\n'", $values)."')";
+		//			echo $query;
+		if ($result = $connect->Execute($query)) {
+			$gid = $connect->Insert_ID();
+		} else {
+			echo $query."<br />".$connect->ErrorMsg();
+		}
+		break;
 	}
 	return $gid;
 }
@@ -273,7 +273,7 @@ function delQuestion($surveyid, $qid, $dbprefix) {
 	global $databasename;
 	global $connect;
 	if (!is_numeric($qid)) {
-	    return FALSE;
+		return FALSE;
 	} elseif ($_GET['ok'] == "yes") {
 		if (!isActivated($surveyid)) {
 			$query = "DELETE FROM {$dbprefix}answers WHERE qid = ".$qid;
@@ -297,82 +297,82 @@ function delQuestion($surveyid, $qid, $dbprefix) {
 function editQuestion($surveyid, $gid, $qid, $dbprefix, $dbaction) {
 	global $connect;
 	$tablefields=array("sid",
-					   "gid",
-					   "type",
-					   "title",
-					   "question",
-					   "help",
-					   "other",
-					   "mandatory",
-					   "lid",
-					   "preg");
+	"gid",
+	"type",
+	"title",
+	"question",
+	"help",
+	"other",
+	"mandatory",
+	"lid",
+	"preg");
 	switch($dbaction) {
 		case "editquestion":
-			$query = "UPDATE {$dbprefix}questions
+		$query = "UPDATE {$dbprefix}questions
 					  SET ";
-			foreach($tablefields as $tf) {
-				if (isset($_POST[$tf])) {
-				    $querys[]="$tf = '".auto_escape($_POST[$tf])."'";
-				}
+		foreach($tablefields as $tf) {
+			if (isset($_POST[$tf])) {
+				$querys[]="$tf = '".auto_escape($_POST[$tf])."'";
 			}
-			$query .= implode(",\n", $querys);
-			$query .= "\nWHERE qid=$qid";
-//			echo $query;
-			$result = $connect->Execute($query);
-			
-			if (isset($_POST['gid'])) {
-				$query = "UPDATE {$dbprefix}conditions
+		}
+		$query .= implode(",\n", $querys);
+		$query .= "\nWHERE qid=$qid";
+		//			echo $query;
+		$result = $connect->Execute($query);
+
+		if (isset($_POST['gid'])) {
+			$query = "UPDATE {$dbprefix}conditions
 						  SET cfieldname = '{$surveyid}X{$_POST['gid']}X{$qid}'
 						  WHERE cqid={$qid}";
-				$result = $connect->Execute($query);
-			}
-			
-			break;
+			$result = $connect->Execute($query);
+		}
+
+		break;
 		case "copyquestion":
-		    $oldqid=$qid;
+		$oldqid=$qid;
 		case "addquestion":
-			$query = "INSERT INTO {$dbprefix}questions\n";
-			foreach ($tablefields as $tf) {
-				if (isset($_POST[$tf])) {
-				    $fields[]=$tf;
-					$values[]=auto_escape($_POST[$tf]);
-				}
+		$query = "INSERT INTO {$dbprefix}questions\n";
+		foreach ($tablefields as $tf) {
+			if (isset($_POST[$tf])) {
+				$fields[]=$tf;
+				$values[]=auto_escape($_POST[$tf]);
 			}
-			$query .= "(".implode(",\n", $fields).")";
-			$query .= "\nVALUES ('";
-			$query .= implode("',\n'", $values)."')";
-//			echo $query;
-			if ($result = $connect->Execute($query)) {
-					$qid = $connect->Insert_ID();
-				} else {
-					echo $query."<br />".$connect->ErrorMsg();
-				}
-			break;
+		}
+		$query .= "(".implode(",\n", $fields).")";
+		$query .= "\nVALUES ('";
+		$query .= implode("',\n'", $values)."')";
+		//			echo $query;
+		if ($result = $connect->Execute($query)) {
+			$qid = $connect->Insert_ID();
+		} else {
+			echo $query."<br />".$connect->ErrorMsg();
+		}
+		break;
 	}
-    if ($dbaction == "copyquestion") { //Also copy the answers and the attributes
+	if ($dbaction == "copyquestion") { //Also copy the answers and the attributes
 		$query="SELECT * FROM {$dbprefix}answers
 				WHERE qid=$oldqid";
 		$results=db_execute_assoc($query);
 		while($row=$results->FetchRow()) {
-		  $qinsert="INSERT INTO {$dbprefix}answers
+			$qinsert="INSERT INTO {$dbprefix}answers
 		  			VALUES ('$qid',
 							'".auto_escape($row['code'])."',
 							'".auto_escape($row['answer'])."',
 							'".auto_escape($row['default_value'])."',
 							'".auto_escape($row['sortorder'])."')";
-		   $qresult=$connect->Execute($qinsert);
+			$qresult=$connect->Execute($qinsert);
 		}
-	    $query="SELECT * FROM {$dbprefix}question_attributes
+		$query="SELECT * FROM {$dbprefix}question_attributes
 				WHERE qid=$oldqid";
 		$results=db_execute_assoc($query);
 		while($row=$results->FetchRow()) {
-		  $qinsert="INSERT INTO {$dbprefix}question_attributes (qid,attribute,value)
+			$qinsert="INSERT INTO {$dbprefix}question_attributes (qid,attribute,value)
 		  			VALUES ('$qid',
 							'".auto_escape($row['attribute'])."',
 							'".auto_escape($row['value'])."')";
-		  $qresult=$connect->Execute($qinsert);
+			$qresult=$connect->Execute($qinsert);
 		}
-    }
+	}
 	return $qid;
 }
 
@@ -405,8 +405,8 @@ function updateAttribute($qid, $dbprefix) {
 function addAnswer($qid, $dbprefix) {
 	global $connect;
 	$where=array("qid"=>$qid,
-				   "code"=>$_POST['code']);
-	
+	"code"=>$_POST['code']);
+
 	if (matchExists("{$dbprefix}answers", $where) !== true) {
 		$query = "INSERT INTO {$dbprefix}answers
 				 (qid, code, answer, default_value, sortorder)
@@ -471,7 +471,7 @@ function delGroup($surveyid, $gid, $dbprefix) {
 	global $connect;
 	global $databasename;
 	if (!is_numeric($gid)) {
-	    return _("Error");
+		return _("Error");
 	} elseif ($_GET['ok'] == "yes") {
 		if (!isActivated($surveyid)) {
 			$query = "SELECT qid FROM {$dbprefix}questions WHERE gid=".$gid;
@@ -505,47 +505,47 @@ function delGroup($surveyid, $gid, $dbprefix) {
 function delSurvey($surveyid, $dbprefix) {
 	global $connect;
 	if (!is_numeric($surveyid)) { //make sure it's just a number!
-	    return _("Error")." "._("You have not selected a survey to delete");
+		return _("Error")." "._("You have not selected a survey to delete");
 	} elseif ($_GET['ok'] == "yes") {
 		$tablelist = $connect->MetaTables(); //Get a list of table names
-	
+
 		if (in_array("{$dbprefix}survey_$surveyid", $tablelist)) //delete the survey_$surveyid table
-			{
+		{
 			$dsquery = "DROP TABLE `{$dbprefix}survey_$surveyid`";
 			$dsresult = $connect->Execute($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
-			}
-	
+		}
+
 		if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
-			{
+		{
 			$dsquery = "DROP TABLE `{$dbprefix}tokens_$surveyid`";
 			$dsresult = $connect->Execute($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
-			}
-		
+		}
+
 		$dsquery = "SELECT qid FROM {$dbprefix}questions WHERE sid=$surveyid";
 		$dsresult = db_execute_assoc($dsquery) or die ("Couldn't find matching survey to delete<br />$dsquery<br />".$connect->ErrorMsg());
 		while ($dsrow = $dsresult->FetchRow())
-			{
+		{
 			$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
 			$asres = $connect->Execute($asdel);
 			$cddel = "DELETE FROM {$dbprefix}conditions WHERE qid={$dsrow['qid']}";
 			$cdres = $connect->Execute($cddel) or die ("Delete conditions failed<br />$cddel<br />".$connect->ErrorMsg());
 			$qadel = "DELETE FROM {$dbprefix}question_attributes WHERE qid={$dsrow['qid']}";
 			$qares = $connect->Execute($qadel);
-			}
-		
+		}
+
 		$qdel = "DELETE FROM {$dbprefix}questions WHERE sid=$surveyid";
 		$qres = $connect->Execute($qdel);
-	
+
 		$scdel = "DELETE FROM {$dbprefix}assessments WHERE sid=$surveyid";
 		$scres = $connect->Execute($scdel);
-		
+
 		$gdel = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid";
 		$gres = $connect->Execute($gdel);
-		
+
 		$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
-		$sres = $connect->Execute($sdel);		
+		$sres = $connect->Execute($sdel);
 	} else {
-	   echo $_GET['ok'];
+		echo $_GET['ok'];
 	}
 }
 
@@ -558,7 +558,7 @@ function updateAnswer($qid, $dbprefix) {
 	$result = $connect->Execute($query) or die($connect->ErrorMsg());
 	foreach($_POST['code'] as $key=>$code) {
 		$where=array("qid"=>$qid,
-					 "code"=>$code);
+		"code"=>$code);
 		if (matchExists("{$dbprefix}answers", $where) !== true) {
 			$insert="INSERT INTO {$dbprefix}answers
 					 (qid, code, answer, default_value, sortorder)
@@ -612,7 +612,7 @@ function matchExists($table, $where) {
 	$query .= implode("\nAND ", $wheres);
 	$result = $connect->Execute($query);
 	if ($result->RecordCount() > 0) {
-	    return true;
+		return true;
 	} else {
 		return false;
 	}
@@ -625,7 +625,7 @@ function isActivated($surveyid) {
 	$result = db_execute_num($query);
 	while ($row=$result->FetchRow()) {
 		if ($row[0] == "Y") {
-		    return TRUE;
+			return TRUE;
 		}
 	}
 	return FALSE;

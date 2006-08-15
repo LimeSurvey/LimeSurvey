@@ -1,37 +1,37 @@
 <?php
 /*
-	#############################################################
-	# >>> PHPSurveyor  										#
-	#############################################################
-	# > Author:  Jason Cleeland									#
-	# > E-mail:  jason@cleeland.org								#
-	# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-	# >          CARLTON SOUTH 3053, AUSTRALIA
- 	# > Date: 	 20 February 2003								#
-	#															#
-	# This set of scripts allows you to develop, publish and	#
-	# perform data-entry on surveys.							#
-	#############################################################
-	#															#
-	#	Copyright (C) 2003  Jason Cleeland						#
-	#															#
-	# This program is free software; you can redistribute 		#
-	# it and/or modify it under the terms of the GNU General 	#
-	# Public License as published by the Free Software 			#
-	# Foundation; either version 2 of the License, or (at your 	#
-	# option) any later version.								#
-	#															#
-	# This program is distributed in the hope that it will be 	#
-	# useful, but WITHOUT ANY WARRANTY; without even the 		#
-	# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-	# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-	# for more details.											#
-	#															#
-	# You should have received a copy of the GNU General 		#
-	# Public License along with this program; if not, write to 	#
-	# the Free Software Foundation, Inc., 59 Temple Place - 	#
-	# Suite 330, Boston, MA  02111-1307, USA.					#
-	#############################################################	
+#############################################################
+# >>> PHPSurveyor  										#
+#############################################################
+# > Author:  Jason Cleeland									#
+# > E-mail:  jason@cleeland.org								#
+# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
+# >          CARLTON SOUTH 3053, AUSTRALIA
+# > Date: 	 20 February 2003								#
+#															#
+# This set of scripts allows you to develop, publish and	#
+# perform data-entry on surveys.							#
+#############################################################
+#															#
+#	Copyright (C) 2003  Jason Cleeland						#
+#															#
+# This program is free software; you can redistribute 		#
+# it and/or modify it under the terms of the GNU General 	#
+# Public License as published by the Free Software 			#
+# Foundation; either version 2 of the License, or (at your 	#
+# option) any later version.								#
+#															#
+# This program is distributed in the hope that it will be 	#
+# useful, but WITHOUT ANY WARRANTY; without even the 		#
+# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
+# PARTICULAR PURPOSE.  See the GNU General Public License 	#
+# for more details.											#
+#															#
+# You should have received a copy of the GNU General 		#
+# Public License along with this program; if not, write to 	#
+# the Free Software Foundation, Inc., 59 Temple Place - 	#
+# Suite 330, Boston, MA  02111-1307, USA.					#
+#############################################################
 */
 require_once(dirname(__FILE__).'/../config.php');
 
@@ -43,27 +43,27 @@ if (!isset($order)) {$order=returnglobal('order');}
 if (!isset($sql)) {$sql=returnglobal('sql');}
 
 if (!$surveyid)
-	{
+{
 	//NOSID
 	exit;
-	}
+}
 if (!$column)
-	{
+{
 	//NOCOLUMN
 	exit;
-	}
+}
 
 $query = "SELECT id, $column FROM {$dbprefix}survey_$surveyid WHERE $column != ''";
 
 if ($sql && $sql != "NULL")
-	{
+{
 	$query .= " AND ".auto_unescape(urldecode($sql));
-	}
+}
 
 if ($order == "alpha")
-	{
+{
 	$query .= " ORDER BY $column";
-	}
+}
 
 $result=db_execute_assoc($query) or die("Error with query: ".$query."<br />".$connect->ErrorMsg());
 echo "<html><body topmargin='0' leftmargin='0' bgcolor='black'>\n";
@@ -73,12 +73,12 @@ echo "<td bgcolor='black' valign='top'><input type='image' align='right' src='./
 echo "<input type='image' src='./images/DownArrow.gif' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=alpha', '_top')\">";
 echo "</td></tr>\n";
 while ($row=$result->FetchRow())
-	{
+{
 	echo  "<tr><td valign='top' align='center' >$setfont"
-		. "<a href='browse.php?sid=$surveyid&action=id&id=".$row['id']."' target='home'>"
-		. $row['id']."</a></td>"
-		. "<td valign='top'>$setfont".$row[$column]."</td></tr>\n";
-	}
+	. "<a href='browse.php?sid=$surveyid&action=id&id=".$row['id']."' target='home'>"
+	. $row['id']."</a></td>"
+	. "<td valign='top'>$setfont".$row[$column]."</td></tr>\n";
+}
 echo "</table>\n";
 echo "</body></html>";
 ?>

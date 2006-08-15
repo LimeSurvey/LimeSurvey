@@ -107,22 +107,22 @@ for ($i=0; $i < $num_results; $i++) {
 			$fieldtype = "A".strlen($teststring);
 		}
 	}
-#Get qid (question id)
-$code="";
-if ($fieldname == "id" OR $fieldname=="token" OR $fieldname=="stamp" OR $fieldname=="attribute_1" OR $fieldname=="attribute_2"){
-	$qid = 0;
-}else{
-	//GET FIELD DATA
-	$fielddata=arraySearchByKey($fieldname, $fieldmap, "fieldname", 1);
-	$qid=$fielddata['qid'];
-	$ftype=$fielddata['type'];
-	$fsid=$fielddata['sid'];
-	$fgid=$fielddata['gid'];
-	$code=$fielddata['aid'];
-	$qtitle=str_replace(" ", '',$fielddata['title']);
-}
-$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype"));
-$fields = $fields + $tempArray;
+	#Get qid (question id)
+	$code="";
+	if ($fieldname == "id" OR $fieldname=="token" OR $fieldname=="stamp" OR $fieldname=="attribute_1" OR $fieldname=="attribute_2"){
+		$qid = 0;
+	}else{
+		//GET FIELD DATA
+		$fielddata=arraySearchByKey($fieldname, $fieldmap, "fieldname", 1);
+		$qid=$fielddata['qid'];
+		$ftype=$fielddata['type'];
+		$fsid=$fielddata['sid'];
+		$fgid=$fielddata['gid'];
+		$code=$fielddata['aid'];
+		$qtitle=str_replace(" ", '',$fielddata['title']);
+	}
+	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype"));
+	$fields = $fields + $tempArray;
 }
 
 // Lets Define SPSS Variables
