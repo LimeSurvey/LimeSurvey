@@ -151,6 +151,7 @@ else {
 	$connect->Connect($dbport, $databaseuser, $databasepass);
 }
 
+$dbexistsbutempty=(checkifemptydb() && $database_exists);
 
 // The following line is for mysql debug purposes
 //$tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
@@ -782,6 +783,16 @@ function checksecurity()
 			$dlusresult = $connect->Execute($dlusquery);
 		}
 	}
+}
+
+
+
+function checkifemptydb()
+{
+  global $connect;
+  $tablelist = $connect->MetaTables('TABLES');
+  if (count($tablelist)==0) {Return(true);}
+      else {Return(false);}
 }
 
 

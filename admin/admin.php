@@ -90,8 +90,23 @@ if (!$database_exists)
 	."</body>\n</html>\n";
 	exit;
 }
-else
+    elseif ($dbexistsbutempty && !(returnglobal('createdbstep2')==_("Populate Database")))
 {
+        $connect->database = $databasename;
+	    $connect->Execute("USE DATABASE `$databasename`");
+		echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._("PHPSurveyor Setup")."</strong></td></tr>\n"
+		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+		echo "<br />$setfont<strong><font color='green'>\n";
+		echo sprintf(_('A database named "%s" does already exist.'),$databasename)."</font></strong></font><br /><br />\n";
+		echo _("Do you want to populate that database now by creating the necessary tables?")."<br /><br />\n";
+		echo "<form method='post' action='createdb.php'>";
+		echo "<input type='submit' name='createdbstep2' value='"._("Populate Database")."'></form>";
+		exit;
+		}
+    else
+	{
 	//DB EXISTS, CHECK FOR APPROPRIATE UPGRADES
 	checkforupgrades();
 }

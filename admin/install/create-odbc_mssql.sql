@@ -1,10 +1,3 @@
--- SQL Manager 2005 Lite for SQL Server (2.4.0.1)
--- ---------------------------------------
--- Host      : nobodys
--- Database  : phpsurveyor
--- Version:  : Microsoft SQL Server  8.00.760
-
-
 --
 -- Structure for table answers :
 --
@@ -105,6 +98,15 @@ CREATE TABLE [dbo].[prefix_question_attributes] (
 )
 ON [PRIMARY]
 ;
+
+
+CREATE TABLE [dbo].[prefix_settings_global] (
+  [stg_name] nvarchar(50) NOT NULL,
+  [stg_value] nvarchar(255) NULL
+)
+ON [PRIMARY]
+;
+
 
 --
 -- Structure for table questions :
@@ -257,3 +259,12 @@ ALTER TABLE [dbo].[prefix_surveys]
 ADD CONSTRAINT [PK_surveys]
 PRIMARY KEY CLUSTERED ([sid])
 ON [PRIMARY];
+
+ALTER TABLE [dbo].[prefix_settings_global]
+ADD CONSTRAINT [PK_settings_global]
+PRIMARY KEY CLUSTERED ([stg_name])
+ON [PRIMARY];
+
+-- if you change the database scheme then change this version too and implement the changes in the upgrade_*.php too
+
+INSERT INTO [prefix_settings_global] values('DBVersion','108');

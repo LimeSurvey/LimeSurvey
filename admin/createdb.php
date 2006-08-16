@@ -49,15 +49,16 @@ echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 // In Step2 fill the database with data
 if (returnglobal('createdbstep2')==_("Populate Database"))
 {
-	if (modify_database(dirname(__FILE__).'/install/create-'.$databasetype.'.sql'))
-	{
-		echo _("Database has been successfully populated.")."</font></strong></font><br /><br />\n";
-		echo "<input type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
-	}
-	else
-	{
-		echo"Error";
-	}
+   if (modify_database(dirname(__FILE__).'/install/create-'.$databasetype.'.sql'))
+   {
+   echo sprintf(_("Database `%s` has been successfully populated."),$dbname)."</font></strong></font><br /><br />\n";
+   echo "<input type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
+   exit;
+   }
+    else
+    {
+      echo"Error";
+    }
 
 }
 
@@ -70,6 +71,7 @@ if (!$dbname)
 	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick='location.href=\"$scriptname\"'>";
 	exit;
 }
+	
 if (!$database_exists) //Database named in config.php does not exist
 {
 	// TODO SQL: Portable to other databases??
