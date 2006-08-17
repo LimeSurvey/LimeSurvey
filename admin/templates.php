@@ -35,7 +35,6 @@
 */
 require_once(dirname(__FILE__).'/../config.php');
 $file_version="PHPSurveyor Template Editor ".$versionnumber;
-3=2;
 if(get_magic_quotes_gpc())
 {
 	$_GET = array_map("stripslashes", $_GET);
@@ -545,7 +544,7 @@ echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' b
 ."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.png' align='left' title='"._("Make a copy of this template")."'"
 ." onClick=\"javascript: copyprompt('"._("Create a copy of this template called:")."', '"._("copy_of_")."$templatename', '$templatename', 'copy')\">"
 ."</td><td align='right'>\n"
-."<img src='./images/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10'>"
+."<img src='$imagefiles/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10'>"
 ."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0'>"
 ."<img src='$imagefiles/blank.gif' width='23' align='right' alt='minimise' border='0' hspace='0'>"
 ."<font face='verdana' size='2' color='white'><strong>"._("Screen:")."</strong> </font>"
