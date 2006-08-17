@@ -131,6 +131,11 @@
 	    $supportedLanguages['pt']['description'] = 'Portuguese';
 	    $supportedLanguages['pt']['nativedescription'] = 'Portugu&#234;s';
 
+	    // Brazilian Portuguese
+	    $supportedLanguages['pt_br']['description'] = 'Portuguese (Brazilian)';
+	    $supportedLanguages['pt_br']['nativedescription'] = 'Portugu&#234;s do Brasil';
+
+
 	    // Russian
 	    $supportedLanguages['ru']['description'] = 'Russian';
 	    $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
@@ -174,9 +179,6 @@
 
 	    // Latvian
 	    $supportedLanguages['lv']['description'] = 'Latvie&#353;u';
-
-	    // Lithuanian
-	    $supportedLanguages['lt']['description'] = 'Lietuvi&#371;';
 
 	    // Polish
 	    $supportedLanguages['pl']['description'] = 'Polski';
