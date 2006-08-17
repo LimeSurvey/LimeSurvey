@@ -1903,7 +1903,7 @@ if ($action == "editsurvey")
 		$editsurvey .= ">"._("No")."</option>\n"
 		. "</select></td></tr>";
 
-		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update survey")."'>\n"
+		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' class='standardbtn' value='"._("Update survey")."'>\n"
 		. "\t<input type='hidden' name='action' value='updatesurvey'>\n"
 		. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
 		. "\t</td></tr>\n"
