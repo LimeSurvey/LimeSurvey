@@ -4,6 +4,7 @@ body {
 	margin-right: 0px;
 	margin-bottom: 0px;
 }
+
 img {
 		border: 0px ;  
 	}
@@ -59,26 +60,34 @@ td 		{
 		font-family: verdana,arial,sans-serif; 
 		font-size: 11px;
         }
+
+.standardbtn
+        {
+		height: 20;
+		font-family: verdana,arial,sans-serif;
+		color: #000000;
+		font-size: 11px;
+        }
         
-.slstyle{
+input,select
+        {
 		background-color: #EEEFFF; 
 		height: 18; 
-		font-family: verdana; 
+		font-family: verdana,arial,sans-serif;
 		font-size: 10px;
-		color: #000080
+		color: #000080;
 		}
 		
-.slstyle2 
-		{
+textarea{
 		background-color: #EEEFFF; 
-		font-family: verdana; 
+		font-family: verdana,arial,sans-serif;
 		font-size: 10px;
 		color: #000080
 		}
 
 .subtitle
 	 	{
-		font-family: verdana; 
+		font-family: verdana,arial,sans-serif;
 		font-size: 10; 
 		color: #FFFFFF
 	 	}
@@ -87,7 +96,7 @@ td 		{
         	margin-top: 10px; 
         	height: 20px; 
         	font-size: 10px;
-        	font-family: verdana; 
+        	font-family: verdana,arial,sans-serif;
         	color: #333333; 
         	background: SILVER; 
         	width: 180
@@ -97,7 +106,7 @@ td 		{
         	margin-top: 10px;
         	height: 20px;
         	font-size: 10px;
-        	font-family: verdana;
+        	font-family: verdana,arial,sans-serif;
         	color: #333333;
         	background: SILVER;
         	width: 180
@@ -107,7 +116,7 @@ td 		{
         	margin-top: 10px;
         	height: 20px;
         	font-size: 10px;
-        	font-family: verdana;
+        	font-family: verdana,arial,sans-serif;
         	color: #333333;
         	background: SILVER;
         	width: 180
@@ -115,7 +124,7 @@ td 		{
 .boxcaption
         {
         	font-size: 12px;
-        	font-family: verdana;
+        	font-family: verdana,arial,sans-serif;
 			font-weight: bold;
         }
 .saveOrderbtn
@@ -129,7 +138,7 @@ td 		{
 .settingcaption
         {
         	font-size: 13px;
-        	font-family: verdana;
+        	font-family: verdana,arial,sans-serif;
 			font-weight: bold;
         }
 /**
