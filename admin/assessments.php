@@ -52,15 +52,15 @@ if ($action == _("Add")) {
 	$result=$connect->Execute($query) or die("Error inserting<br />$query<br />".$connect->ErrorMsg());
 } elseif ($action == _("Update")) {
 	$query = "UPDATE {$dbprefix}assessments
-			  SET scope=?,
+			  SET scope='".$_POST['scope']."',
 			  gid=".$_POST['gid'].",
-			  minimum=?,
-			  maximum=?,
-			  name=?,
-			  message=?,
-			  link=?
+			  minimum='".$_POST['minimum']."',
+			  maximum='".$_POST['maximum']."',
+			  name='".mysql_escape_string($_POST['name'])."',
+			  message='".mysql_escape_string($_POST['message'])."',
+			  link='".mysql_escape_string($_POST['link'])."'
 			  WHERE id=".$_POST['id'];
-	$result = $connect->Execute($query, $_POST['scope'], $_POST['minimum'], $_POST['maximum'], $_POST['name'], $_POST['message'], $_POST['link']) or die("Error updating<br />$query<br />".$connect->ErrorMsg());
+	$result = $connect->Execute($query) or die("Error updating<br />$query<br />".$connect->ErrorMsg());
 } elseif ($action == "delete") {
 	$query = "DELETE FROM {$dbprefix}assessments
 			  WHERE id=".$_POST['id'];
