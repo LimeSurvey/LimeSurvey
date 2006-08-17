@@ -226,8 +226,7 @@ if ($tokensexist == 1 && returnglobal('token'))
 {
 	//check if token actually does exist
 
-	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_$surveyid')." WHERE token='".trim(returnglobal('token'))."' AND AND (completed = 'N' or completed='')";
-
+	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
 	$tkresult = db_execute_num($tkquery);
 	list($tkexist) = $tkresult->FetchRow();
 	if (!$tkexist)
@@ -412,7 +411,7 @@ function loadanswers()
 function getTokenData($surveyid, $token)
 {
 	global $dbprefix, $connect;
-	$query = "SELECT * FROM ".db_table_name('tokens_$surveyid')." WHERE token='$token'";
+	$query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='$token'";
 	$result = db_execute_assoc($query) or die("Couldn't get token info in getTokenData()<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
 	while($row=$result->FetchRow())
 	{

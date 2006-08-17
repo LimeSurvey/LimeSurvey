@@ -446,7 +446,7 @@ if ($action == "browse" || $action == "search")
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
 	$bquery .= " LIMIT $start, $limit";
-	$bresult = db_execute_assoc($bquery) or die (_("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bresult = db_execute_num($bquery) or die (_("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bgc="";
 
 	echo "<tr><td colspan='2'>\n"
@@ -501,7 +501,7 @@ if ($action == "browse" || $action == "search")
 
 	while ($brow = $bresult->FetchRow())
 	{
-		$brow['token'] = trim($brow['token']);
+	$brow['token'] = trim($brow['token']);
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
 		echo "\t<tr bgcolor='$bgc'>\n";
 		for ($i=0; $i<=$bfieldcount; $i++)
@@ -973,7 +973,7 @@ if ($action == "tokenify")
 			$itresult = $connect->Execute($itquery);
 			$newtokencount++;
 		}
-		$message=str_replace("{TOKENCOUNT}", $newtokencount, _("TOKENCOUNT} tokens have been created"));
+		$message=str_replace("{TOKENCOUNT}", $newtokencount, _("{TOKENCOUNT} tokens have been created"));
 		echo "<br /><strong>$message</strong><br /><br />\n";
 	}
 	echo "\t</font></td></tr></table>\n";
@@ -1178,7 +1178,8 @@ if ($action == _("Add"))
 		$data['attribute_1'] = $_POST['attribute1'];
 		$data['attribute_2'] = $_POST['attribute2'];
 	}
-	$inquery = $connect->GetInsertSQL("{$dbprefix}tokens_$surveyid", $data);
+    $tblInsert="{$dbprefix}tokens_$surveyid";
+	$inquery = $connect->GetInsertSQL($tblInsert, $data);
 	$inresult = $connect->Execute($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	echo "<br />$setfont<font color='green'><strong>"._("Success")."</strong></font><br />\n"
 	."<br />"._("Added New Token")."<br /><br />\n"
@@ -1308,8 +1309,9 @@ echo getAdminFooter("$langdir/instructions.html#tokens", "Using PHPSurveyors Tok
 //	."</body>\n</html>";
 
 
-function form($error=false) {
-	global $surveyid, $btstyle, , $setfont;
+function form($error=false)
+{
+	global $surveyid, $setfont;
 
 	if ($error) {print $error . "<br /><br />\n";}
 
