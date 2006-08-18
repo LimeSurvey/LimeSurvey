@@ -754,7 +754,7 @@ if (returnglobal('action') == "email")
 				{
 					// TLR change to put date into sent and completed
 					//		$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
-					$today = date("Y-m-d Hi");
+					$today = date("Y-m-d H:i");
 					$udequery = "UPDATE ".db_table_name("tokens_{$_POST['sid']}")."\n"
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
 					//
