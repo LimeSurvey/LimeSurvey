@@ -79,8 +79,9 @@ $allfields[]=array("{$dbprefix}conditions", "value", "value varchar(5) NOT NULL 
 $allfields[]=array("{$dbprefix}groups", "gid", "gid int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}groups", "sid", "sid int(11) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}groups", "group_name", "group_name varchar(100) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}groups", "group_code", "group_code varchar(50) NULL");
+$allfields[]=array("{$dbprefix}groups", "group_order", "group_order int(11) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}groups", "description", "description text");
-$allfields[]=array("{$dbprefix}groups", "sortorder", "sortorder varchar(5) NULL");  // Added for group ordering
 
 $allfields[]=array("{$dbprefix}questions", "qid", "qid int(11) NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}questions", "sid", "sid int(11) NOT NULL default '0'");
@@ -93,6 +94,7 @@ $allfields[]=array("{$dbprefix}questions", "help", "help text");
 $allfields[]=array("{$dbprefix}questions", "other", "other char(1) NOT NULL default 'N'");
 $allfields[]=array("{$dbprefix}questions", "mandatory", "mandatory char(1) default NULL");
 $allfields[]=array("{$dbprefix}questions", "lid", "lid int(11) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}questions", "question_order", "question_order int(11) NOT NULL default '0'");
 
 $allfields[]=array("{$dbprefix}surveys", "sid", "sid int(11) NOT NULL");
 $allfields[]=array("{$dbprefix}surveys", "short_title", "short_title varchar(200) NOT NULL default ''");

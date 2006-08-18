@@ -69,9 +69,9 @@ CREATE TABLE `prefix_groups` (
   `gid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `group_name` varchar(100) NOT NULL default '',
-  `group_order` varchar(45) default NULL,
+  `group_code` varchar(50) NOT NULL default '',
+  `group_order` int(11) NOT NULL default '0',
   `description` text,
-  `sortorder` varchar(5) default NULL,
   PRIMARY KEY  (`gid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
@@ -133,6 +133,7 @@ CREATE TABLE `prefix_questions` (
   `other` char(1) NOT NULL default 'N',
   `mandatory` char(1) default NULL,
   `lid` int(11) NOT NULL default '0',
+  `question_order` int(11) NOT NULL,
   PRIMARY KEY  (`qid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
