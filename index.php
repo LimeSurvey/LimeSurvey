@@ -1100,7 +1100,7 @@ function buildsurveysession()
 	//1. SESSION VARIABLE: grouplist
 	//A list of groups in this survey, ordered by group name.
 
-	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.sortorder";
+	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.group_order";
 	$result = db_execute_assoc($query) or die ("Couldn't get group list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($row = $result->FetchRow())
 	{
@@ -1110,7 +1110,7 @@ function buildsurveysession()
 	$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
 	."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
 	."AND {$dbprefix}questions.sid=$surveyid\n"
-	."ORDER BY {$dbprefix}groups.sortorder";
+	."ORDER BY {$dbprefix}groups.group_order";
 	$result = db_execute_assoc($query);
 
 	$arows = $result->GetRows();
