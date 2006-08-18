@@ -207,9 +207,9 @@ elseif ($action == "insertnewquestion")
 		$_POST  = array_map('db_quote', $_POST);
 
 		if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
-		$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, lid)"
+		$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
 		." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-		." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
+		." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '99999')";
 		$result = $connect->Execute($query);
 		if (!$result)
 		{
@@ -220,6 +220,7 @@ elseif ($action == "insertnewquestion")
 			$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //get last question id
 			$result=db_execute_assoc($query);
 			while ($row=$result->FetchRow()) {$qid = $row['qid'];}
+			fixsortorderQuestions($qid);
 		}
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
@@ -256,7 +257,7 @@ elseif ($action == "renumberquestions")
 		}
 		//echo "GROUP: ".$grow['group_name']."<br />";
 		$usql="UPDATE {$dbprefix}questions\n"
-		."SET title='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
+		."SET question_order='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
 		."WHERE qid=".$grow['qid'];
 		//echo "[$sql]";
 		$uresult=$connect->Execute($usql) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
@@ -395,6 +396,9 @@ elseif ($action == "delquestion")
 	}
 	else
 	{
+		$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}'");
+		$row=$result->FetchRow();
+		$gid = $row['gid'];
 		//see if there are any conditions/attributes/answers for this question, and delete them now as well
 		$cquery = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
 		$cresult = $connect->Execute($cquery);
@@ -404,6 +408,7 @@ elseif ($action == "delquestion")
 		$cresult = $connect->Execute($cquery);
 		$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
 		$result = $connect->Execute($query);
+		fixsortorderQuestions(0,$gid);
 		if ($result)
 		{
 			$qid="";
