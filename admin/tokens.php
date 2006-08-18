@@ -36,7 +36,6 @@
 
 # TOKENS FILE
 
-$THISOS=""; //SET TO "solaris" if you are using solaris and experiencing the random number bug
 require_once(dirname(__FILE__).'/../config.php');
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -990,15 +989,7 @@ if ($action == "tokenify")
 			$insert = "NO";
 			while ($insert != "OK")
 			{
-				if ($THISOS == "solaris")
-				{
-					$nt1=db_execute_num("SELECT RAND()");
-					while ($row=$nt1->FetchRow()) {$newtoken=(int)(sprintf("%010s", $row[0]*1000000000));}
-				}
-				else
-				{
-					$newtoken = sprintf("%010s", rand(1, getrandmax()));
-				}
+				$newtoken = randomkey(10);
 				$ntquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='$newtoken'";
 				$ntresult = $connect->Execute($ntquery);
 				if (!$ntresult->RecordCount()) {$insert = "OK";}
@@ -1417,6 +1408,19 @@ function getLine($file)
 	}
 	// return the line buffer.
 	return $buffer;
+}
+
+function randomkey($length)
+{
+  $pattern = "1234567890";
+  for($i=0;$i<$length;$i++)
+  {
+   if(isset($key))
+     $key .= $pattern{rand(0,9)};
+   else
+     $key = $pattern{rand(0,9)};
+  }
+  return $key;
 }
 
 ?>

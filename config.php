@@ -114,7 +114,7 @@ $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 $siteadminemail     =   "your@email.org"; // The default email address of the site administrator
 $siteadminname      =   "Your Name";      // The name of the site administrator
 
-$emailmethod        =   "smtp";           // The following values can be used:
+$emailmethod        =   "mail";           // The following values can be used:
 									      // mail      -  use internal PHP Mailer
                                           // sendmail  -  use Sendmail Mailer
                                           // smtp      -  use SMTP relaying
@@ -126,9 +126,8 @@ $emailsmtphost      =   "localhost";    // Sets the SMTP host. All hosts must be
 $emailsmtpuser      =   "";               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
 $emailsmtppassword  =   "";               // SMTP authorisation password - empty password is not allowed
 
-$maxemails          =   100;              // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
-$mutemailerrors     =   0;                // If you want to mute annoying error messages from the emailscript set this to 1.
-                                          // This could be the case if your provider set a static sender_adress.
+$maxemails          =   50;              // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+
 // JPGRAPH Settings
 // To use jpgraph you must install and set up jpgraph, available from http://www.aditus.nu/jpgraph/
 // PHPSurveyor has been tested using version 1.13. Documentation for this is available at the
