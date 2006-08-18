@@ -1529,7 +1529,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 if($action == "orderquestions")
 {
 
-	$oqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid order by title" ;
+	$oqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid order by sortorder" ;
 	$oqresult = mysql_query($oqquery) ;
 	$orderquestions ="<p align='left'>" ;
 	$orderquestions="<ul id='arrangableNodes'>" ;

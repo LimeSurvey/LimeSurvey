@@ -192,7 +192,7 @@ elseif ($action == "reorderquestions")
 
 	foreach($questionorder as $key =>$value)
 	{
-		$upordquery="UPDATE {$dbprefix}questions SET title='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
+		$upordquery="UPDATE {$dbprefix}questions SET sortorder='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
 		$upordresult=mysql_query($upordquery) or die(mysql_error()) ;
 	}
 }
