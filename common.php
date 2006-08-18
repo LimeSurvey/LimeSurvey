@@ -882,7 +882,7 @@ function CompareGroupThenTitle($a, $b)
 	}
 	if ($GroupResult == 0)
 	{
-		$TitleResult = strnatcasecmp($a["title"], $b["title"]);
+		$TitleResult = strnatcasecmp($a["sortorder"], $b["sortorder"]);
 		return $TitleResult;
 	}
 	return $GroupResult;
