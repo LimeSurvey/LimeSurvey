@@ -957,7 +957,7 @@ function fixsortorder($qid) //Function rewrites the sortorder for a group of ans
 	}
 }
 
-function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder for a group of answers
+function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder for questions
 {
 	global $dbprefix, $connect;
 	if ($qid != 0)
@@ -965,13 +965,27 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 	$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}'");
 	$row=$result->FetchRow();
 	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$row['gid']}' ORDER BY question_order, title");
-	}
+	} else {
 	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' ORDER BY question_order, title");
+	}
 	$position=1;
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}'";
 		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update question_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
+		$position++;
+	}
+}
+
+function fixsortorderGroups() //Function rewrites the sortorder for questions
+{
+	global $dbprefix, $connect;
+	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE gid='{$gid}' ORDER BY group_order, group_name");
+	$position=1;
+	while ($cdrow=$cdresult->FetchRow())
+	{
+		$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}'";
+		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update group_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$position++;
 	}
 }
