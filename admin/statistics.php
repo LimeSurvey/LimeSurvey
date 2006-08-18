@@ -64,8 +64,6 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 sendcacheheaders();
 
-= "style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080; width: 150'";
-
 echo $htmlheader;
 
 if (!$surveyid)

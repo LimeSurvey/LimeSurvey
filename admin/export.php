@@ -377,6 +377,7 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 	. " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 }
 $dquery .=" ORDER BY id LIMIT 1";
+echo $dquery;
 $dresult = $connect->Execute($dquery) or die(_("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 $fieldcount = $dresult->FieldCount();
 $firstline="";
@@ -385,7 +386,8 @@ $debug="";
 for ($i=0; $i<$fieldcount; $i++)
 {
 	//Iterate through column names and output headings
-	$fieldinfo=$dresult->FetchField($i)->name;
+	$field=$dresult->FetchField($i);
+	$fieldinfo=$field->name;
 	if ($fieldinfo == "token")
 	{
 		if ($answers == "short")
@@ -682,7 +684,8 @@ elseif ($answers == "long")
 		for ($i=0; $i<$fieldcount; $i++) //For each field, work out the QID
 		{
 			$debug .= "\n";
-			$fieldinfo=$dresult->FetchField($i)->name;
+			$field=$dresult->FetchField($i);
+			$fieldinfo=$field->name;
 			if ($fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
 			{
 				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
@@ -742,7 +745,7 @@ elseif ($answers == "long")
 				break;
 				case "R": //RANKING TYPE
 				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = ?";
-				$lr = db_execute_assoc($lq, $drow[$i]);
+				$lr = db_execute_assoc($lq, array($drow[$i]));
 				while ($lrow = $lr->FetchRow())
 				{
 					echo $lrow['answer'];
@@ -763,7 +766,7 @@ elseif ($answers == "long")
 					else
 					{
 						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = ?";
-						$lr = db_execute_assoc($lq, $drow[$i]) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
+						$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
 						while ($lrow = $lr->FetchRow())
 						{
 							//if ($lrow['code'] == $drow[$i]) {echo $lrow['answer'];}
@@ -878,8 +881,8 @@ elseif ($answers == "long")
 					echo $frow['title'];
 				}
 				break;
-				default:
-				if ($dresult->FetchField($i)->name == "token")
+				default: $tempresult=$dresult->FetchField($i);
+				if ($tempresult->name == "token")
 				{
 					$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$surveyid WHERE token='$drow[$i]'";
 					if ($tokenresult = db_execute_assoc($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".$connect->ErrorMsg());

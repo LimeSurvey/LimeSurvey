@@ -985,7 +985,7 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 	} else {
 	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' ORDER BY question_order, title");
 	}
-	$position=1;
+	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}'";
@@ -998,7 +998,7 @@ function fixsortorderGroups() //Function rewrites the sortorder for questions
 {
 	global $dbprefix, $connect;
 	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." ORDER BY group_order, group_name");
-	$position=1;
+	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}'";
