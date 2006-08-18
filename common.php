@@ -461,6 +461,23 @@ function getMaxgrouporder($surveyid)
 	else return ++$current_max ;
 }
 
+/**
+* getMaxquestionorder($gid) queries the database for the maximum sortorder of a question.  
+* @global string $surveyid
+*/
+function getMaxquestionorder($gid)
+{
+	global $surveyid ;
+	$max_sql = "SELECT max( question_order ) AS max FROM questions WHERE gid='$gid'" ;
+	$max_result =db_execute_assoc($max_sql) ;
+	$maxrow = $max_result->FetchRow() ;
+	$current_max = $maxrow['max'];
+	if($current_max=="")
+	{
+		return "0" ;
+	}
+	else return ++$current_max ;
+}
 
 /**
 * getanswers() queries the database for a list of all answers matching the current question qid
@@ -980,7 +997,7 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 function fixsortorderGroups() //Function rewrites the sortorder for questions
 {
 	global $dbprefix, $connect;
-	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE gid='{$gid}' ORDER BY group_order, group_name");
+	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." ORDER BY group_order, group_name");
 	$position=1;
 	while ($cdrow=$cdresult->FetchRow())
 	{
