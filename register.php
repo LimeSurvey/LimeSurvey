@@ -81,7 +81,7 @@ while ($insert != "OK")
 	if (isset($THISOS) && $THISOS == "solaris")
 	{
 		$nt1=db_execute_num("SELECT RAND()");
-		while ($row=$nt1->FetchRow())) {$newtoken="R".(int)(sprintf("%09s", $row[0]*100000000));}
+		while ($row=$nt1->FetchRow()) {$newtoken="R".(int)(sprintf("%09s", $row[0]*100000000));}
 	}
 	else
 	{
