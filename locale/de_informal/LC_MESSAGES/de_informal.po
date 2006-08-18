@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-03 20:17+0100\n"
+"PO-Revision-Date: 2006-08-18 19:38+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
-"X-Poedit-Language: German informal\n"
+"X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
@@ -29,8 +29,8 @@ msgstr "Sicherheitseinstellungen ändern"
 msgid "Check Settings"
 msgstr "Systemübersicht"
 
-msgid "Check Database"
-msgstr "Datenbank überprüfen"
+msgid "Check Data Consistency"
+msgstr "Datenkonsistenz überprüfen"
 
 msgid "List Surveys"
 msgstr "Liste aller Umfragen"
@@ -691,6 +691,18 @@ msgstr "Dein gewählter Datenbankname ist:"
 msgid "Create Database"
 msgstr "Erstelle Datenbank"
 
+msgid "Populate Database"
+msgstr "Tabellen erstellen"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:102
+#, php-format
+msgid "A database named \"%s\" does already exist."
+msgstr "Eine Datenbank namens \"%s\" existiert schon."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:103
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "Möchten Du in der Datenbank nun die notwendigen Tabellen anlegen?"
+
 msgid "Help"
 msgstr "Hilfe"
 
@@ -807,26 +819,6 @@ msgstr "Start von:"
 msgid "Show"
 msgstr "Anzeigen"
 
-msgid "Checking to ensure all tables exist"
-msgstr "Überprüfe Tabellen"
-
-msgid "Checking"
-msgstr "Überprüfe"
-
-msgid "Table Created"
-msgstr "Tabelle erstellt"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:223
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:289
-msgid "OK"
-msgstr "OK"
-
-msgid "Checking to ensure all fields exist"
-msgstr "Überprüfe Felder in den Tabellen"
-
-msgid "Field Created"
-msgstr "Feld erstellt"
-
 msgid "Condition Designer"
 msgstr "Bedingungs Designer"
 
@@ -892,6 +884,10 @@ msgstr "Löschen"
 msgid "Close Window"
 msgstr "Fenster schließen"
 
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr "Die Tabellen in der Datenbank `%s` wurden erfolgreich erstellt."
+
 msgid "Database Information not provided. This script must be run from admin.php only."
 msgstr "Datenbank Information nicht angegeben. Dieses Skript muss von admin.php aufgerufen werden."
 
@@ -900,9 +896,6 @@ msgstr "Datenbank wurde erstellt."
 
 msgid "Please click below to populate the database"
 msgstr "Bitte klicke auf 'Tabellen erstellen' um fortzufahren."
-
-msgid "Populate Database"
-msgstr "Tabellen erstellen"
 
 msgid "Could not create database"
 msgstr "Konnte Datenbank nicht erstellen"
@@ -1294,9 +1287,6 @@ msgstr "Aktive Zugangsschlüssel-Tabellen"
 msgid "De-activated Token Tables"
 msgstr "Deaktivierte Zugangsschlüssel-Tabellen"
 
-msgid "Check PHPSurveyor Data Integrity"
-msgstr "PHPSurveyor Datenintegrität überprüfen"
-
 msgid "Survey"
 msgstr "Umfrage"
 
@@ -1465,11 +1455,11 @@ msgstr "Du müssen Fragen hinzufügen."
 msgid "Edit Current Group"
 msgstr "Diese Gruppe bearbeiten"
 
-msgid "Delete Current Group"
-msgstr "Diese Gruppe löschen"
-
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr "Das Löschen dieser Gruppe löscht auch alle möglichen Fragen und Antworten, die sie enthält. Bist Du sicher, dass Du fortfahren möchtest?"
+
+msgid "Delete Current Group"
+msgstr "Diese Gruppe löschen"
 
 msgid "Reorder the questions of this group"
 msgstr "Details dieser Gruppe verstecken"
@@ -1492,11 +1482,11 @@ msgstr "Neue Frage zu dieser Gruppe hinzufügen"
 msgid "Edit Current Question"
 msgstr "Diese Frage bearbeiten"
 
-msgid "Delete Current Question"
-msgstr "Diese Frage löschen"
-
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 msgstr "Das Löschen dieser Frage löscht auch alle möglichen Antworten, die sie umfasst. Bist Du sicher, dass Du fortfahren möchtest?"
+
+msgid "Delete Current Question"
+msgstr "Diese Frage löschen"
 
 msgid "Export this Question"
 msgstr "Diese Frage exportieren"
@@ -1581,6 +1571,12 @@ msgstr "Aktion"
 msgid "Move"
 msgstr "Bewegen"
 
+msgid "Username"
+msgstr "Benutzername"
+
+msgid "Security"
+msgstr "Sicherheit"
+
 msgid "User Control"
 msgstr "Benutzer-Administration"
 
@@ -1588,9 +1584,6 @@ msgid ""
 "You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\n"
 "If you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts."
 msgstr "Du hast die Sicherheitseinstellungen für das Umfrage-System noch nicht initialisiert. Dadurch ist der Administrator-Zugang völlig ungeschützt!<p>Wenn Du unten auf 'Sicherheitseinstellungen initialisieren' klickst, werden standardmäßige Apache-Sicherheitseinstellungen zum Admin-Verzeichnis hinzugefügt. Du benötigst dann den Standard-Benutzernamen und Passwort, um auf die Admin-Seiten zu gelangen."
-
-msgid "Username"
-msgstr "Benutzername"
 
 msgid "It is highly recommended that once your security system has been initialised you change this default password."
 msgstr "Nach der Initialisierung der Sicherheitseinstellungen solltest Du unbedingt das Standard-Passwort neu setzen."
@@ -1600,9 +1593,6 @@ msgstr "Initialisiere Sicherheitseinstellungen"
 
 msgid "User"
 msgstr "Benutzer"
-
-msgid "Security"
-msgstr "Sicherheit"
 
 msgid "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again."
 msgstr "Es sind momentan keine Benutzer angelegt. Wir empfehlen, dass Du die die 'Sicherheitseinstellungen' abschaltest und wieder anschaltest."
@@ -1863,6 +1853,9 @@ msgstr "IP-Adresse protokollieren?"
 msgid "Referring URL"
 msgstr "Referrer-URL"
 
+msgid "Expires?"
+msgstr "Läuft ab?"
+
 msgid "End URL:"
 msgstr "End-URL:"
 
@@ -2019,6 +2012,10 @@ msgstr "Beschriftung-Set bearbeiten"
 msgid "Delete label set"
 msgstr "Beschriftung-Set löschen"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:231
+msgid "Are you sure?"
+msgstr "Sind Sie sicher?"
+
 msgid "Title"
 msgstr "Titel"
 
@@ -2036,22 +2033,6 @@ msgstr "Aktualisieren des Beschriftung-Set fehlgeschlagen"
 
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem Beschriftung-Set basieren. Du musst zuerst diese Fragen löschen."
-
-msgid "Start ID numbers at:"
-msgstr "ID Nummern starten bei:"
-
-msgid "Add Survey"
-msgstr "Umfrage hinzufügen"
-
-msgid "Expires:"
-msgstr "Endet am:"
-
-msgid "Are you sure you want to delete this entry?"
-msgstr "Bist Du sicher, dass Du diesen Eintrag löschen willst?"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1681
-msgid "Slider"
-msgstr "Regler"
 
 msgid "if you answered"
 msgstr "falls ihre Antwort "
@@ -2106,6 +2087,9 @@ msgstr "Identifizierung"
 
 msgid "Date Saved"
 msgstr "Datum Gespeichert"
+
+msgid "Are you sure you want to delete this entry?"
+msgstr "Bist Du sicher, dass Du diesen Eintrag löschen willst?"
 
 msgid "Quick Statistics"
 msgstr "Statistiken"
@@ -2191,6 +2175,26 @@ msgstr "Prozent"
 
 msgid "Browse"
 msgstr "Ansehen"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/stats.php:262
+msgid "Select question(s) from the following list"
+msgstr "Wähle Fragen aus der folgenden Liste"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/stats.php:332
+msgid "Like"
+msgstr "Wie"
+
+msgid "Not Equals"
+msgstr "Ungleich"
+
+msgid "Filter Conditions"
+msgstr "Filer-Bedingungen"
+
+msgid "Numerical"
+msgstr "Zahlenangabe"
+
+msgid "Huge free text"
+msgstr "Ausführlicher Freitext"
 
 msgid "Welcome Page"
 msgstr "Startseite"
@@ -2455,7 +2459,7 @@ msgstr "Zugangsschlüssel erstellen"
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Wenn Du auf Ja klickst, wird für alle Einträge ohne eindeutigen Zugangsschlüssel ein entsprechender Schlüssel generiert. OK?"
 
-msgid "TOKENCOUNT} tokens have been created"
+msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} Zugangsschlüssel wurden generiert"
 
 msgid "Token has been deleted."
@@ -2501,9 +2505,6 @@ msgstr "{TOKENCOUNT} Einträge erstellt"
 msgid "Creating default htaccess file"
 msgstr "Standard htaccess Datei erstellen"
 
-msgid "Couldn't create htaccess file. Check your config.php for $homedir setting, and that you have write permission in the correct directory."
-msgstr "Konnte htaccess Datei nicht erstellen. Bitte in der Datei config.php die Einstellungen für $homedir überprüfen, und die Schreibrechte im Verzeichnis überprüfen."
-
 msgid "Security Levels are now set up!"
 msgstr "Sicherheitseinstellung vorgenommen!"
 
@@ -2516,8 +2517,9 @@ msgstr "Aktualisiere Benutzer-Tabelle"
 msgid "Error occurred creating htpasswd file"
 msgstr "Beim Erstellen der Datei 'htpasswd' ist ein Fehler aufgetreten."
 
-msgid "If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/"
-msgstr "Falls Du einen Windows Server benutzt, musst Du die Datei htpasswd.exe von Apache in das admin Verzeichnis von PHPSurveyor kopieren, damit dies einwandfrei funktioniert. Diese Datei ist im Normalfall unter  /apache group/apache/bin/ zu finden."
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:73
+msgid "Make sure you have read/write permissions in the admin directory."
+msgstr "Stelle sicher, dass SDu Schreib- und Leserechte im /admin-Verzeichnis hast."
 
 msgid "Removing security settings"
 msgstr "Sicherheitseinstellungen entfernen"
@@ -2576,6 +2578,10 @@ msgstr "Neuen Datensatz ignorieren."
 msgid "Replace the existing record."
 msgstr "Alten Datensatz ersetzen."
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:83
+msgid "Cannot import the VVExport file."
+msgstr "VVExport-Datei konnte nicht importiert werden."
+
 msgid "Import Failed on Record"
 msgstr "Import fehlgeschlagen für Datensatz"
 
@@ -2587,4 +2593,24 @@ msgstr "Achtung:<br />Diese Seite bitte NICHT aktualisieren, da ansonsten die Da
 
 msgid "Total records imported:"
 msgstr "Anzahl Datensätze importiert:"
+
+msgid "Checking to ensure all tables exist"
+msgstr "Überprüfe Tabellen"
+
+msgid "Checking"
+msgstr "Überprüfe"
+
+msgid "Table Created"
+msgstr "Tabelle erstellt"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:223
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:289
+msgid "OK"
+msgstr "OK"
+
+msgid "Checking to ensure all fields exist"
+msgstr "Überprüfe Felder in den Tabellen"
+
+msgid "Field Created"
+msgstr "Feld erstellt"
 
