@@ -85,7 +85,7 @@ elseif ($action == "insertnewgroup")
 	{
 		$_POST  = array_map('db_quote', $_POST);
 
-		$query = "INSERT INTO {$dbprefix}groups (sid, group_name, description,sortorder) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).")";
+		$query = "INSERT INTO {$dbprefix}groups (sid, group_name, description,group_order) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).")";
 		$result = $connect->Execute($query);
 
 		if ($result)
@@ -98,7 +98,7 @@ elseif ($action == "insertnewgroup")
 		}
 		else
 		{
-			echo _("Error").": The database reported the following error:<br />\n";
+			echo _("Error: The database reported the following error:")."<br />\n";
 			echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
 			echo "<pre>".htmlspecialchars($query)."</pre>\n";
 			echo "</body>\n</html>";
@@ -180,7 +180,7 @@ elseif ($action == "reordergroups")
 	$grouporder = explode(",",$_POST['hiddenNodeIds']) ;
 	foreach($grouporder as $key =>$value)
 	{
-		$upgrorder_query="UPDATE {$dbprefix}groups SET sortorder=$key where gid=$value" ;
+		$upgrorder_query="UPDATE {$dbprefix}groups SET group_order=$key where gid=$value" ;
 		$upgrorder_result=mysql_query($upgrorder_query) ;
 	}
 }
@@ -241,7 +241,7 @@ elseif ($action == "renumberquestions")
 	."FROM {$dbprefix}questions, {$dbprefix}groups\n"
 	."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
 	."AND {$dbprefix}questions.sid=$surveyid\n"
-	."ORDER BY {$dbprefix}groups.sortorder, title";
+	."ORDER BY {$dbprefix}groups.group_order, title";
 	$gresult=db_execute_assoc($gselect) or die ("Error: ".htmlspecialchars($connect->ErrorMsg()));
 	$grows = array(); //Create an empty array in case FetchRow does not return any rows
 	while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array

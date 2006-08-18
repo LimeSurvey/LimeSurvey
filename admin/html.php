@@ -576,7 +576,7 @@ if ($gid)
 	$sumquery4 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid"; //Getting a count of questions for this survey
 	$sumresult4 = $connect->Execute($sumquery4);
 	$sumcount4 = $sumresult4->RecordCount();
-	$grpquery ="SELECT * FROM {$dbprefix}groups WHERE gid=$gid ORDER BY {$dbprefix}groups.sortorder";
+	$grpquery ="SELECT * FROM {$dbprefix}groups WHERE gid=$gid ORDER BY {$dbprefix}groups.group_order";
 	$grpresult = db_execute_assoc($grpquery);
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = $grpresult->FetchRow())

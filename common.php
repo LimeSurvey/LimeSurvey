@@ -450,7 +450,7 @@ function getQuestionSum($surveyid)
 function getMaxgrouporder($surveyid)
 {
 	global $surveyid ;
-	$max_sql = "SELECT max( sortorder ) AS max FROM groups WHERE sid =$surveyid" ;
+	$max_sql = "SELECT max( group_order ) AS max FROM groups WHERE sid =$surveyid" ;
 	$max_result =db_execute_assoc($max_sql) ;
 	$maxrow = $max_result->FetchRow() ;
 	$current_max = $maxrow['max'];
@@ -582,7 +582,7 @@ function getgrouplist($gid)
 	global $surveyid, $dbprefix, $scriptname, $connect;
 	$groupselecter="";
 	if (!$surveyid) {$surveyid=$_POST['sid'];}
-	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY sortorder";
+	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_order";
 	$gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	while($gv = $gidresult->FetchRow())
 	{
