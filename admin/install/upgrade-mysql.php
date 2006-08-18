@@ -237,8 +237,11 @@ foreach ($tablenames as $tn)
         }
         }
     }
-    
+
+convertquestionorder();
+convertgrouporder();
 modify_database('','insert '.$dbprefix.'settings_global values("DBVersion","108")');
+
 echo "</font></font></font></td></tr>\n";
 echo "<tr><td align='center' bgcolor='#CCCCCC'>\n";
 echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('admin.php', '_top')\">\n";
@@ -246,6 +249,42 @@ echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.o
 echo "</td></tr></table>\n";
 echo "<br />\n";
 echo getAdminFooter("$langdir/instructions.html", "Using PHPSurveyors Admin Script");
+}
+
+
+function convertgrouporder() //Function rewrites the grouporder for complete db
+{
+	global $dbprefix, $connect;
+	$tabsurvey = db_execute_assoc("SELECT sid from ".$dbprefix."surveys");
+	while ($surveyrow=$tabsurvey->FetchRow())
+	{
+      $tabgroups = db_execute_assoc("SELECT * from ".$dbprefix."groups where sid=".$surveyrow['sid']." order by group_name");
+      $icount=0;
+      while ($grouprow=$tabgroups->FetchRow())
+      {
+        $cd2query="UPDATE ".db_table_name('groups')." SET group_order=? WHERE gid=?";
+		$cd2result=$connect->Execute($cd2query, Array($icount, $grouprow['gid'])) or die ("Couldn't update group_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
+        $icount++;
+      }
+	}
+}
+
+
+function convertquestionorder() //Function rewrites the question_order for complete db
+{
+	global $dbprefix, $connect;
+	$tabsurvey = db_execute_assoc("SELECT gid from ".$dbprefix."groups");
+	while ($surveyrow=$tabsurvey->FetchRow())
+	{
+      $tabgroups = db_execute_assoc("SELECT qid from ".$dbprefix."questions where gid=".$surveyrow['gid']." order by title");
+      $icount=0;
+      while ($grouprow=$tabgroups->FetchRow())
+      {
+        $cd2query="UPDATE ".db_table_name('questions')." SET question_order=? WHERE qid=?";
+		$cd2result=$connect->Execute($cd2query, Array($icount, $grouprow['qid'])) or die ("Couldn't update group_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
+        $icount++;
+      }
+	}
 }
 
 function checktable($tablename)

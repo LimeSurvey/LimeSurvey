@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-18 19:31+0100\n"
+"PO-Revision-Date: 2006-08-18 22:29+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgid "Please Choose..."
 msgstr "Bitte auswählen.."
 
 msgid "None"
-msgstr "Nein"
+msgstr "Keine"
 
 msgid "5 Point Choice"
 msgstr "5 Punkte Auswahl"
@@ -901,6 +901,10 @@ msgstr "Konnte Datenbank nicht erstellen"
 
 msgid "Group could not be added. It is missing the mandatory group name"
 msgstr "Gruppe konnte nicht hinzugefügt werden. Der Gruppenname wurde nicht angegeben."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:101
+msgid "Error: The database reported the following error:"
+msgstr "Fehler: Die Datenbank meldet folgenden Fehler:"
 
 msgid "Group could not be updated"
 msgstr "Gruppe konnte nicht aktualisiert werden."
