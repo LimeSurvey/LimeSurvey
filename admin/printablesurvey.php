@@ -88,12 +88,12 @@ echo "\t</tr>\n";
 
 $fieldmap=createFieldMap($surveyid);
 
-$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.sortorder";
+$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.group_order";
 $degresult = db_execute_assoc($degquery);
 // GROUP NAME
 while ($degrow = $degresult->FetchRow())
 {
-	$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']} ORDER BY sortorder";
+	$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']} ORDER BY question_order";
 	$deqresult = db_execute_assoc($deqquery);
 	$deqrows = array(); //Create an empty array in case FetchRow does not return any rows
 	while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} // Get table output into array

@@ -1529,11 +1529,11 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 if($action == "orderquestions")
 {
 
-	$oqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid order by sortorder" ;
-	$oqresult = mysql_query($oqquery) ;
+	$oqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid order by question_order" ;
+	$oqresult = db_execute_assoc($oqquery) ;
 	$orderquestions ="<p align='left'>" ;
 	$orderquestions="<ul id='arrangableNodes'>" ;
-	while($oqrow = mysql_fetch_array($oqresult))
+	while($oqrow = $oqresult->FetchRow())
 	{
 		$oqrow = array_map('htmlspecialchars',$oqrow) ;
 		$orderquestions.= "<li id='".$oqrow['qid']."'>".$oqrow['question']."</li>" ;
@@ -1926,7 +1926,7 @@ if ($action == "ordergroups")
 {
 	$ordergroups = "<ul id='arrangableNodes'>";
 	//Get the groups from this survey
-	$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by sortorder,group_name" ;
+	$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order,group_name" ;
 	$ogresult = mysql_query($ogquery) or die(mysql_error()) ;
 	while($ogrows=mysql_fetch_array($ogresult))
 	{
