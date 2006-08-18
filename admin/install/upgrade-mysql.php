@@ -236,7 +236,7 @@ foreach ($tablenames as $tn)
         }
     }
     
-modify_database('','insert '.$dbprefix.'settings_global values("DBVersion","'.$dbversionnumber.'")');
+modify_database('','insert '.$dbprefix.'settings_global values("DBVersion","108")');
 echo "</font></font></font></td></tr>\n";
 echo "<tr><td align='center' bgcolor='#CCCCCC'>\n";
 echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('admin.php', '_top')\">\n";

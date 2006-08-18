@@ -60,7 +60,6 @@ CREATE TABLE `prefix_conditions` (
   PRIMARY KEY  (`cid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `groups`
@@ -72,6 +71,7 @@ CREATE TABLE `prefix_groups` (
   `group_name` varchar(100) NOT NULL default '',
   `group_order` varchar(45) default NULL,
   `description` text,
+  `sortorder` varchar(5) default NULL,
   PRIMARY KEY  (`gid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
@@ -201,10 +201,10 @@ CREATE TABLE `prefix_surveys` (
   `ipaddr` char(1) default 'N',
   `useexpiry` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
+  `datecreated` date default NULL,
   PRIMARY KEY  (`sid`)
 ) TYPE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `users`
@@ -215,3 +215,20 @@ CREATE TABLE `prefix_users` (
   `password` varchar(20) NOT NULL default '',
   `security` varchar(10) NOT NULL default ''
 ) TYPE=MyISAM;
+
+--
+-- Table structure for table `settings_global`
+--
+
+CREATE TABLE `prefix_settings_global` (
+  `stg_name` varchar(50) NOT NULL default '',
+  `stg_value` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`stg_name`)
+) TYPE=MyISAM;
+
+--
+-- Table `settings_global`
+--
+
+INSERT INTO `settings_global` VALUES ('DBVersion', '108');
+
