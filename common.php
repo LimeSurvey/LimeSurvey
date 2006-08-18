@@ -872,9 +872,9 @@ function sql_table_exists($tableName, $tables)
 # group_name and then title.
 function CompareGroupThenTitle($a, $b)
 {
-	if (isset($a["group_name"]) && isset($b["group_name"]))
+	if (isset($a["group_order"]) && isset($b["group_order"]))
 	{
-		$GroupResult = strnatcasecmp($a["group_name"], $b["group_name"]);
+		$GroupResult = strnatcasecmp($a["group_order"], $b["group_order"]);
 	}
 	else
 	{
@@ -882,7 +882,7 @@ function CompareGroupThenTitle($a, $b)
 	}
 	if ($GroupResult == 0)
 	{
-		$TitleResult = strnatcasecmp($a["sortorder"], $b["sortorder"]);
+		$TitleResult = strnatcasecmp($a["question_order"], $b["question_order"]);
 		return $TitleResult;
 	}
 	return $GroupResult;
