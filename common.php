@@ -603,7 +603,7 @@ function getgrouplist2($gid)
 	global $surveyid, $dbprefix, $connect;
 	$groupselecter = "";
 	if (!$surveyid) {$surveyid=$_POST['sid'];}
-	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY sortorder";
+	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_order";
 	$gidresult = db_execute_num($gidquery) or die("Plain old did not work!");
 	while ($gv = $gidresult->FetchRow())
 	{
@@ -624,7 +624,7 @@ function getgrouplist3($gid)
 	global $surveyid, $dbprefix, $connect;
 	if (!$surveyid) {$surveyid=$_POST['sid'];}
 	$groupselecter = "";
-	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY sortorder";
+	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid ORDER BY group_order";
 	$gidresult = db_execute_num($gidquery) or die("Plain old did not work!");
 	while ($gv = $gidresult->FetchRow())
 	{
@@ -1318,7 +1318,7 @@ function createFieldMap($surveyid, $style="null") {
 
 	}
 	//Get list of questions
-	$aquery = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid AND ".db_table_name('questions').".sid=$surveyid ORDER BY {$dbprefix}groups.sortorder, title";
+	$aquery = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid AND ".db_table_name('questions').".sid=$surveyid ORDER BY {$dbprefix}groups.group_order, title";
 	$aresult = db_execute_assoc($aquery) or die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 	{
