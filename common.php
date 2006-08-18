@@ -52,6 +52,7 @@ require_once (dirname(__FILE__).'/classes/core/surveytranslator.php');
 
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
+if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
 
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 {
