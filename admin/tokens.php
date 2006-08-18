@@ -45,7 +45,41 @@ if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($start)) {$start=returnglobal('start');}
 if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 
+
 sendcacheheaders();
+
+if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+{
+
+   	header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
+   	header("Content-type: text/comma-separated-values; charset=UTF-8");
+    Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
+    $bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+	$bquery .= " ORDER BY tid";
+
+	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bfieldcount=$bresult->FieldCount();
+
+	echo "Tid, Firstname, Lastname, Email, Token , Attribute1, Attribute2, mpid\n";
+	while ($brow = $bresult->FetchRow())
+	{
+		echo trim($brow['tid']).",";
+		echo trim($brow['firstname']).",";
+		echo trim($brow['lastname']).",";
+		echo trim($brow['email']).",";
+		echo trim($brow['token']);
+		if($bfieldcount > 7)
+		{
+			echo ",";
+			echo trim($brow['attribute_1']).",";
+			echo trim($brow['attribute_2']).",";
+			echo trim($brow['mpid']);
+		}
+		echo "\n";
+	}
+	exit();
+}
 
 if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL={$_SERVER['PHP_SELF']}?action=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\"", $htmlheader);}
 else {echo $htmlheader;}
@@ -979,34 +1013,6 @@ if ($action == "tokenify")
 	echo "\t</font></td></tr></table>\n";
 }
 
-if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
-{
-	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
-	$bquery .= " ORDER BY tid";
-
-	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
-	$bfieldcount=$bresult->FieldCount();
-
-	echo "\t<textarea rows=20 cols=120>\n";
-	echo "Tid, Firstname, Lastname, Email, Token [, attribute1, attribute2, mpid]\n";
-	while ($brow = $bresult->FetchRow())
-	{
-		echo trim($brow['tid']).",";
-		echo trim($brow['firstname']).",";
-		echo trim($brow['lastname']).",";
-		echo trim($brow['email']).",";
-		echo trim($brow['token']);
-		if($bfieldcount > 7)
-		{
-			echo ",";
-			echo trim($brow['attribute_1']).",";
-			echo trim($brow['attribute_2']).",";
-			echo trim($brow['mpid']);
-		}
-		echo "\n";
-	}
-	echo "\n\t</textarea>\n";
-}
 
 if ($action == "delete")
 {
@@ -1255,6 +1261,12 @@ if ($action == "upload")
 				$elements = count($line);
 				if ($elements > 1)
 				{
+					$firstname = '';
+					$lastname = '';
+					$email = '';
+					$token = '';
+					$attribute1 = '';
+					$attribute2 = '';
 					$xy = 0;
 					foreach($line as $el)
 					{
