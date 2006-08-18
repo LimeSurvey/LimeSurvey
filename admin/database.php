@@ -134,6 +134,7 @@ elseif ($action == "delgroupnone")
 	{
 		$gid = "";
 		$groupselect = getgrouplist($gid);
+		fixsortorderGroups();
 	}
 	else
 	{
@@ -169,6 +170,7 @@ elseif ($action == "delgroup")
 	{
 		$gid = "";
 		$groupselect = getgrouplist($gid);
+		fixsortorderGroups();
 	}
 	else
 	{
@@ -209,7 +211,7 @@ elseif ($action == "insertnewquestion")
 		if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
 		$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
 		." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-		." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '99999')";
+		." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).")";
 		$result = $connect->Execute($query);
 		if (!$result)
 		{
