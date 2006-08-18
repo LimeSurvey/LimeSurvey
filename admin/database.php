@@ -222,7 +222,6 @@ elseif ($action == "insertnewquestion")
 			$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //get last question id
 			$result=db_execute_assoc($query);
 			while ($row=$result->FetchRow()) {$qid = $row['qid'];}
-			fixsortorderQuestions($qid);
 		}
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
