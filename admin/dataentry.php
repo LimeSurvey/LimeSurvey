@@ -926,13 +926,13 @@ elseif ($action == "edit" || $action == "editsaved")
 
 				case "I": //FILE CSV ONE
 				$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
-				$lresult = mysql_query($lquery);
+				$lresult = db_execute_assoc($lquery);
 				echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 				."\t\t\t\t<option value=''";
 				if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
 				echo ">"._("Please choose")."..</option>\n";
 
-				while ($llrow = mysql_fetch_array($lresult))
+				while ($llrow = $lresult->FetchRow())
 				{
 					echo "\t\t\t\t<option value='{$llrow['code']}'";
 					if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
@@ -1890,8 +1890,8 @@ else
 				break;
 				case "J": //FILE CSV MORE
 				$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$mearesult = mysql_query($meaquery);
-				while ($mearow = mysql_fetch_array($mearesult))
+				$mearesult = db_execute_assoc($meaquery);
+				while ($mearow = $mearesult->FetchRow())
 				{
 					echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
 					if ($mearow['default_value'] == "Y") {echo " checked";}
@@ -1900,9 +1900,9 @@ else
 				break;
 				case "I": //FILE CSV ONE - LIST drop-down/radio-button list
 				$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-				$dearesult = mysql_query($deaquery);
+				$dearesult = db_execute_assoc($deaquery);
 				echo "\t\t\t<select name='$fieldname'>\n";
-				while ($dearow = mysql_fetch_array($dearesult))
+				while ($dearow = $dearesult->FetchRow())
 				{
 					echo "\t\t\t\t<option value='{$dearow['code']}'";
 					if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
