@@ -2,7 +2,7 @@ Welcome to PHPSurveyor!
 
 Warning:
 THIS IS AN ALPHA RELEASE. IT SHOULD NO BET USED FOR PRODUCTION!
-IF YOU DO SO, DO IT AT YOUR OWN RISK!
+IF YOU DO SO, YOU DO IT (as always) AT YOUR OWN RISK!
 
 
 HOW TO INSTALL
@@ -65,8 +65,41 @@ The upgrade procedure step-by-step:
 Thank you to everyone who helped with this new release!
 
 
-Changes from 0.996 to 1.0
+Changes from 1.0 to 1.08a
 
+- Completely overhauled interface icons. The style has been kindly created by Mitchell Butler. Small additions by c_schmitz.
+- Added answer limiting based on a previous question for array question types (machaven)
+- Added drag'n'drop re-ordering for groups and questions (nkorfiatis)
+- Added page-by-page saving of the answers (swales)
+- Changed the translation system from language files to gettext system. That will make translations easier to handle and to update. Refer to the translation instructions here: http://www.phpsurveyor.org/index.php?option=com_jd-wiki&Itemid=51&id=how_to_translate_phpsurveyor (c_schmitz))
+- Added date picker to date question type and survey properties (c_schmitz)
+- Changed the mailer class to PHPMailer which is alot more reliable and easier to configure. (c_schmitz)
+- Added an overview of all surveys in addition to the existing combobox (nkorfiatis)
+- Re-designed the .htaccess password creation so it does not rely on command execution (machaven)
+- Added ADODB universal database support - onyl mysql for now is supported. Work for odbc_mssql and postgres has begun. (Frediano Ziglio (Freddy77), c_schmitz)
+- Added Feature to save the referring URL. Kind Donator: Lawrence Weathers (docweathers) Coder: Richard Kavanagh (www.benbun.co.uk)
+- Added feature to show custom attribute names in token interface
+- Added random survey number generation to make guesses on the surveyid harder
+- Moved some of the admin interface styles to style sheets
+- Fixed image links and included PNGFix in admin interface for crappy old IE6 browsers (nkorfiatis)
+- Added bubble hints to new icons (nkorfiatis)
+- Changed upgrade feature and added DB Versioning for easier updates to the DB in the future (c_schmitz))
+- Added Vietnamese language file originally by Vinh Ngo
+- Updated Traditional Chinese translation by Mark Yeung
+- Updated Danish translation from Carsten Hoilund (carsten.hoilund@gm...) and  nkorfiatis
+- Updated Italian lnagugae file by Mario Marani
+- Updated French language file by Sebastian Gaugry and Pascal Bastien
+- Updated Slovenian translation by Gasper Koren
+- Updated Greek translation by nkorfiatis
+- Added Brazilian Portuguese language file by Anderson La‚cio Galindo Trindade
+- Added Finnish translation kindly provided by Matti Lassila
+- Removed experimental interface. there will be a new interface later in time.. just not this one.
+- Fixed numerous small bugs and added the same amount at other places.
+
+
+
+
+Changes from 0.996 to 1.0
 
 -Added SMTP relay and authorization
 -Added Japanese translation kindly provided by Masaru Ryumae
@@ -241,7 +274,7 @@ present an "assessment" when the users submits the survey.
 * COMPLETE Italian translation of the instructions and 
   updated italian language file kindly provided by Mario Marani !! (great work!)
 * Bulgarian Language File kindly provided by Nikolay Tsanov <tsanov@tu...>
-* Added Portuguese language kindly provided by Rosaura Gazzola & Job Vieira L·cio, Brazil
+* Added Portuguese language kindly provided by Rosaura Gazzola & Job Vieira L cio, Brazil
 * Updated german language files
 * Updated chinese language file thanks to Cha (sf.net name: cafetango)
 
