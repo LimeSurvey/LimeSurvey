@@ -4,13 +4,17 @@ Warning:
 THIS IS AN ALPHA RELEASE. IT SHOULD NO BET USED FOR PRODUCTION!
 IF YOU DO SO, YOU DO IT (as always) AT YOUR OWN RISK!
 
+This release does have the following requirement:
+
+-MySQL 4.1 or higher
+-PHP 4.1 or higher with deactivated SAFE_MODE (which is a pretty standard setting)
+-Either gettext OR mbstring library installed. (for localizations)
+
 
 HOW TO INSTALL
 ---------------
 If you are doing a complete new installation please refer to the manual at
 /docs/manual.html.
-
-
 
 
 
@@ -71,6 +75,7 @@ Changes from 1.0 to 1.08a
 - Added answer limiting based on a previous question for array question types (machaven)
 - Added drag'n'drop re-ordering for groups and questions (nkorfiatis)
 - Added page-by-page saving of the answers (swales)
+- Updated the SPSS-export with lots of changes (machaven)
 - Changed the translation system from language files to gettext system. That will make translations easier to handle and to update. Refer to the translation instructions here: http://www.phpsurveyor.org/index.php?option=com_jd-wiki&Itemid=51&id=how_to_translate_phpsurveyor (c_schmitz))
 - Added date picker to date question type and survey properties (c_schmitz)
 - Changed the mailer class to PHPMailer which is alot more reliable and easier to configure. (c_schmitz)
