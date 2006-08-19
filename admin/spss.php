@@ -96,7 +96,7 @@ for ($i=0; $i < $num_results; $i++) {
 		{
 			# Determine the SPSS Variable Type
 			$val_query="SELECT $fieldname FROM {$dbprefix}survey_$surveyid";
-			$val_result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
+			$val_result=db_execute_assoc($val_query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 			$val_size = 0;
 			$teststring="";
 			while ($val_row = $val_result->FetchRow())
@@ -132,24 +132,12 @@ for ($i=0; $i < $num_results; $i++) {
 		$fgid=$fielddata['gid'];
 		$code=$fielddata['aid'];
 	}
-	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype", "sql_name"=>$row["Field"]));
+	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype", "ftype"=>"$ftype","sql_name"=>$row["Field"]));
 	$fields = $fields + $tempArray;
 }
 
 reset($fields);
-while (list($k, $v)=each($fields)) {
-	if ($v['type']=="ASIZE") {
-		if (array_key_exists('sql_name', $v)) {
-			$query="SELECT MAX(CHAR_LENGTH(".$v['sql_name'].")) AS maxc FROM {$dbprefix}survey_$surveyid";
-			$result=mysql_query($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
-			$row = mysql_fetch_array($result);
-			$fields[$k]['type']="A".(
-			$row['maxc']>0?(
-			$row['maxc']>60?60:$row['maxc']
-			):1);
-		}
-	}
-}
+
 
 /*
 FILE TYPE NESTED RECORD=1(A).
@@ -269,7 +257,7 @@ foreach ($fields as $field){
 			if ($num_results >0){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
-					$row = mysql_fetch_array($result);
+					$row = $result->FetchRow();
 					$question_text = $row["question"];
 					$question_title = $row["title"];
 				}
@@ -293,7 +281,7 @@ foreach ($fields as $field){
 		}else{
 			$test=explode ("X", $field["name"]);
 			$query = "SELECT `{$dbprefix}questions`.`question` FROM {$dbprefix}questions WHERE ((`{$dbprefix}questions`.`sid` =".$surveyid.") AND (`{$dbprefix}questions`.`qid` =".$field["qid"]."))";
-			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".mysql_error());
+			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".ErrorMsg());
 			$row = $result->FetchRow();
 			echo "VARIABLE LABELS ".$field["id"]." '".
 			substr(strip_tags_full($row["question"]), 0, 59)."'.\n";
@@ -304,20 +292,23 @@ foreach ($fields as $field){
 // Create our Value Labels!
 echo "*Define Value labels.\n";
 reset($fields);
-foreach ($fields as $field){
+foreach ($fields as $field)
+{
 	if ($field["qid"]!=0)
 	{
-		$query = "SELECT `{$dbprefix}answers`.`code`, `{$dbprefix}answers`.`answer`, `{$dbprefix}questions`.`type` FROM {$dbprefix}answers, {$dbprefix}questions WHERE (`{$dbprefix}answers`.`qid` = ".$field["qid"].") and (`{$dbprefix}questions`.`qid` = ".$field["qid"].")";
-		$result=db_execute_assoc($query) or die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg());
-		$num_results = $result->RecordCount();
-		if ($num_results > 0)
+		if ($field['ftype'] != "T" && $field['ftype'] != "S" && $field['ftype'] != "U" && $field['ftype'] != "A" && $field['ftype'] != "B" && $field['ftype'] != "F")
 		{
-			$displayvaluelabel = 0;
-			# Build array that has to be returned
-			for ($i=0; $i < $num_results; $i++) {
-				$row = $result->FetchRow();
-				if ($row['type'] != "T" && $row['type'] != "S" && $row['type'] != "U" && $row['type'] != "A" && $row['type'] != "B")
+			$query = "SELECT `{$dbprefix}answers`.`code`, `{$dbprefix}answers`.`answer`, `{$dbprefix}questions`.`type` FROM {$dbprefix}answers, {$dbprefix}questions WHERE (`{$dbprefix}answers`.`qid` = ".$field["qid"].") and (`{$dbprefix}questions`.`qid` = ".$field["qid"].")";
+			$result=db_execute_assoc($query) or die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg());
+			$num_results = $result->RecordCount();
+			if ($num_results > 0)
+			{
+				$displayvaluelabel = 0;
+				# Build array that has to be returned
+				for ($i=0; $i < $num_results; $i++)
 				{
+					$row = $result->FetchRow();
+
 					if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
@@ -329,7 +320,28 @@ foreach ($fields as $field){
 				}
 			}
 		}
+		if ($field['ftype'] == "F")
+		{
+			$query = "SELECT `{$dbprefix}questions`.`lid`, `{$dbprefix}labels`.`code`, `{$dbprefix}labels`.`title` from {$dbprefix}questions, {$dbprefix}labels WHERE (`{$dbprefix}questions`.`qid` = ".$field["qid"].") and (`{$dbprefix}questions`.`lid` = `{$dbprefix}labels`.`lid`)";
+			$result=db_execute_assoc($query) or die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());
+			$num_results = $result->RecordCount();
+			if ($num_results > 0)
+			{
+				for ($i=0; $i < $num_results; $i++)
+				{
+					$row = $result->FetchRow();
+					if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";
+					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
+					if ($i == ($num_results-1))
+					{
+						echo $row["code"]." \"".strip_tags_full(substr($row["title"],0,59))."\".\n"; // put . at end
+					} else {
+						echo $row["code"]." \"".strip_tags_full(substr($row["title"],0,59))."\"\n";
+
+					}
+				}
+			}
+		}
 	}
 }
-
 ?>
