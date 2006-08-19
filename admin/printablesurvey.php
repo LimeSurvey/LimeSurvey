@@ -459,8 +459,8 @@ while ($degrow = $degresult->FetchRow())
 			case "J":  //FILE CSV MORE
 			echo "\t\t\t$setfont<u>"._("Please choose <strong>all</strong> that apply:")."</u><br />\n";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-			$mearesult = mysql_query($meaquery);
-			while ($mearow = mysql_fetch_array($mearesult))
+			$mearesult = db_execute_assoc($meaquery);
+			while ($mearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' />{$mearow['answer']}<br />\n";
 			}
@@ -468,8 +468,8 @@ while ($degrow = $degresult->FetchRow())
 			case "I":  //FILE CSV ONE
 			echo "\t\t\t$setfont<u>"._("Please choose <strong>only one</strong> of the following:").":</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-			$dearesult = mysql_query($deaquery);
-			while ($dearow = mysql_fetch_array($dearesult))
+			$dearesult = db_execute_assoc($deaquery);
+			while ($dearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' />{$dearow['answer']}<br />\n";
 			}

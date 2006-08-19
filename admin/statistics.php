@@ -224,9 +224,9 @@ foreach ($filters as $flt)
 		case "Q":
 		echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' ORDER BY sortorder, answer";
-		$result = mysql_query($query) or die ("Couldn't get answers!<br />$query<br />".mysql_error());
+		$result = db_execute_assoc($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
-		while ($row=mysql_fetch_row($result))
+		while ($row = $result->FetchRow())
 		{
 			$myfield2 = "Q".$myfield."$row[0]";
 			if ($counter2 == 4) {echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
@@ -985,9 +985,9 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		{
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 			$nquery = "SELECT title, type, question, other FROM {$dbprefix}questions WHERE qid='".substr($qqid, 0, strlen($qqid)-1)."'";
-			$nresult = mysql_query($nquery) or die("Couldn't get text question<br />$nquery<br />".mysql_error());
+			$nresult = db_execute_num($nquery) or die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 			$count = substr($qqid, strlen($qqid)-1);
-			while ($nrow=mysql_fetch_row($nresult))
+			while ($nrow=$nresult->FetchRow())
 			{
 				$qtitle=$nrow[0].'-'.$count; $qtype=$nrow[1];
 				$qquestion=strip_tags($nrow[2]);
