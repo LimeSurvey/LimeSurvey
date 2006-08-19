@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor Greek language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-15 15:30+0100\n"
+"PO-Revision-Date: 2006-08-18 22:50+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr "Επεξεργασία/Προσθήκη Σετ Ετικετών"
 # C:\eclipse\workspace\phpsurveyor-sourceforge/common.php:273
 # C:\eclipse\workspace\phpsurveyor-sourceforge/common.php:276
 msgid "Template Editor"
-msgstr ""
+msgstr "Επεργαστής Προτύπων"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/common.php:280
 # C:\eclipse\workspace\phpsurveyor-sourceforge/common.php:282
@@ -3132,9 +3132,8 @@ msgstr ""
 msgid "Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
 msgstr ""
 
-#, fuzzy
 msgid "Count"
-msgstr "Συνέχεια"
+msgstr "Σύνολο"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/statistics.php:1338
 msgid "Percentage"
@@ -3349,9 +3348,8 @@ msgstr "Είστε σήγουροι ότι επιθυμείτε την διαγ�
 msgid "Set all entries to 'No invitation sent'."
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to delete all unique token numbers?"
-msgstr "Είστε σήγουροι ότι επιθυμείτε την διαγραφή όλων των απαντήσεών σας?"
+msgstr "Είστε σίγουροι ότι επιθυμείτε την διαγραφή όλων των μοναδικών αριθμών κουπονιών?"
 
 # C:\eclipse\workspace\phpsurveyor-sourceforge/admin/tokens.php:360
 msgid "Delete all unique token numbers"

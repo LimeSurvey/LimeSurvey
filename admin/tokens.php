@@ -265,35 +265,40 @@ if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_(
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
 echo "\t<tr bgcolor='#999999'>\n"
 ."\t\t<td>\n"
-."\t\t\t<input type='image' name='HelpButton' src='$imagefiles/showhelp.png' title='"
-._("Show Help")."' align='right'  onClick=\"showhelp('show')\">\n"
-."\t\t\t<input type='image' name='HomeButton' src='$imagefiles/home.png' title='"
-._("Return to Survey Administration")."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+."\t\t\t<a href=\"#\" onClick=\"showhelp('show')\" onmouseout=\"hideTooltip()\""
+			."onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">" .
+					"<img src='$imagefiles/showhelp.png' title='' align='right'></a>\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\""
+			."onmouseover=\"showTooltip(event,'"._("Return to Survey Administration")."');return false\">" .
+		"<img name='HomeButton' src='$imagefiles/home.png' align='left' ></a>\n"
 ."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<input type='image' name='SummaryButton' src='$imagefiles/summary.png' title='"
-._("Show summary information")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\">\n"
-."\t\t\t<input type='image' name='ViewAllButton' src='$imagefiles/document.png' title='"
-._("Display Tokens")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=browse', '_top')\">\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Show summary information")."');return false\" >" .
+		"<img name='SummaryButton' src='$imagefiles/summary.png' title='' align='left' ></a>\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=browse', '_top')\" onmouseout=\"hideTooltip()\""
+			."onmouseover=\"showTooltip(event,'"._("Display Tokens")."');return false\">" .
+					"<img name='ViewAllButton' src='$imagefiles/document.png' title='' align='left' ></a>\n"
 ."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' border='0' hspace='0' align='left'>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<input type='image' name='AddNewButton' src='$imagefiles/add.png' title='"
-._("Add new token entry")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=addnew', '_top')\">\n"
-."\t\t\t<input type='image' name='ImportButton' src='$imagefiles/importcsv.png' title='"
-._("Import Tokens from CSV File")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=import', '_top')\">\n"
-."\t\t\t<input type='image' name='ExportButton' src='$imagefiles/exportcsv.png' title='"
-._("Export Tokens to CSV file")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=export', '_top')\">\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=addnew', '_top')\" onmouseout=\"hideTooltip()\"" .
+		"onmouseover=\"showTooltip(event,'"._("Add new token entry")."');return false\">" .
+				"<img name='AddNewButton' src='$imagefiles/add.png' title='' align='left' ></a>\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=import', '_top')\" onmouseout=\"hideTooltip()\" ".
+		"onmouseover=\"showTooltip(event,'"._("Import Tokens from CSV File")."');return false\"> <img name='ImportButton' src='$imagefiles/importcsv.png' title='' align='left'></a>"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=export', '_top')\" onmouseout=\"hideTooltip()\"" .
+	"onmouseover=\"showTooltip(event,'"._("Export Tokens to CSV file")."');return false\">".
+		"<img name='ExportButton' src='$imagefiles/exportcsv.png' align='left' ></a>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<input type='image' name='InviteButton' src='$imagefiles/invite.png' title='"
-._("Send email invitation")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=email', '_top')\">\n"
-."\t\t\t<input type='image' name='RemindButton' src='$imagefiles/remind.png' title='"
-._("Send email reminder")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=remind', '_top')\">\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=email', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Send email invitation")."');return false\">" .
+		"<img name='InviteButton' src='$imagefiles/invite.png' title='' align='left'></a>\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=remind', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Send email reminder")."');return false\">" .
+		"<img name='RemindButton' src='$imagefiles/remind.png' title='' align='left' ></a>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<input type='image' name='TokenifyButton' src='$imagefiles/tokenify.png' title='"
-._("Generate Tokens")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify', '_top')\">\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Generate Tokens")."');return false\">" .
+		"<img name='TokenifyButton' src='$imagefiles/tokenify.png' title='' align='left'></a>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<input type='image' name='DeleteTokensButton' src='$imagefiles/delete.png' title='"
-._("Drop tokens table")."' align='left' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=kill', '_top')\">\n"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=kill', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Drop tokens table")."');return false\">" .
+		"<img name='DeleteTokensButton' src='$imagefiles/delete.png' title='' align='left' ></a>\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
 
@@ -427,15 +432,19 @@ if ($action == "browse" || $action == "search")
 	."\t<tr bgcolor='#999999'><td align='left'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<input type='image' name='DBeginButton' align='left' src='$imagefiles/databegin.png' title='"
-	._("Show start..")."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
-	."\t\t\t<input type='image' name='DBackButton' align='left' src='$imagefiles/databack.png' title='"
-	._("Show last...")."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
+	."\t\t\t<a href='$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Show start..")."');return false\">".
+			"<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' title=''/></a>\n"
+	."\t\t\t<a href='$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Show previous...")."');return false\">" .
+			"<img name='DBackButton' align='left' src='$imagefiles/databack.png' title='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left'>\n"
-	."\t\t\t<input type='image' name='DForwardButton' align='left' src='$imagefiles/dataforward.png' title='"
-	._("Show next...")."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
-	."\t\t\t<input type='image' name='DEndButton' align='left'  src='$imagefiles/dataend.png' title='"
-	._("Show last...")."' onClick=\"window.open('$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring','_top')\" />\n"
+	."\t\t\t<a href='$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Show next...")."');return false\">" .
+			"<img name='DForwardButton' align='left' src='$imagefiles/dataforward.png' title=''/></a>\n"
+	."\t\t\t<a href='$homeurl/tokens.php?action=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+			" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Show last...")."');return false\">".
+			"<img name='DEndButton' align='left'  src='$imagefiles/dataend.png' title=''/></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\n"
 	."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>\n"
@@ -452,7 +461,7 @@ if ($action == "browse" || $action == "search")
 	."\t\t<font size='1' face='verdana'>"
 	."&nbsp;"._("Records Displayed:")."<input type='text' size='4' value='$limit' name='limit'>"
 	."&nbsp;"._("Starting From:")."<input type='text' size='4' value='$start' name='start'>"
-	."&nbsp;<input type='submit' value='"._("Show")."' $btstyle>\n"
+	."&nbsp;<input type='submit' value='"._("Show")."'>\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t\t<input type='hidden' name='action' value='browse'>\n"

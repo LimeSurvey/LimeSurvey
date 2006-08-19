@@ -52,7 +52,7 @@ require_once (dirname(__FILE__).'/classes/core/surveytranslator.php');
 
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
-if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
+//if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
 
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 {
@@ -1014,41 +1014,45 @@ function browsemenubar()
 	if (!isset($surveyoptions)) {$surveyoptions="";}
 	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
-	. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
-	. _("Return to Survey Administration")."' alt='". _("Return to Survey Administration")."' align='left' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
+			"onmouseover=\"showTooltip(event,'"._("Return to Survey Administration")."')\">" .
+			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
-	. "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.png' title='"
-	. _("Show summary information")."' align='left' onClick=\"window.open('browse.php?sid=$surveyid', '_top')\">\n"
-	. "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.png' title='"
-	. _("Display Responses")."' align='left' onClick=\"window.open('browse.php?sid=$surveyid&amp;action=all', '_top')\">\n"
-	. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.png' title='"
-	. _("Display Last 50 Responses")."' align='left' onClick=\"window.open('browse.php?sid=$surveyid&amp;action=all&amp;limit=50&amp;order=desc', '_top')\">\n"
-	. "\t\t\t<input type='image' name='DataEntry' src='$imagefiles/dataentry.png' title='"
-	. _("Dataentry Screen for Survey")."' align='left'  onclick=\"window.open('dataentry.php?sid=$surveyid', '_top')\">\n"
-	. "\t\t\t<input type='image' name='Printable' src='$imagefiles/print.png' title='"
-	. _("Printable Version of Survey")."' align='left'  onclick=\"window.open('printablesurvey.php?sid=$surveyid', '_blank')\">\n"
-	. "\t\t\t<input type='image' name='Statistics' src='$imagefiles/statistics.png' title='"
-	. _("Get statistics from these responses")."' align='left'  onclick=\"window.open('statistics.php?sid=$surveyid', '_top')\">\n"
+	. "\t\t\t<a href='browse.php?sid=$surveyid' onmouseout=\"hideTooltip()\"" .
+			" onmouseover=\"showTooltip(event,'"._("Show summary information")."')\"" .
+			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' align='left'></a>\n"
+	. "\t\t\t<a href='browse.php?sid=$surveyid&amp;action=all' onmouseout=\"hideTooltip()\"" .
+			"onmouseover=\"showTooltip(event,'". _("Display Responses")."')\">" .
+			"<img name='ViewAll' src='$imagefiles/document.png' title='' align='left'></a>\n"
+	. "\t\t\t<a href='browse.php?sid=$surveyid&amp;action=all&amp;limit=50&amp;order=desc'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Display Last 50 Responses")."')\">" .
+			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' align='left'></a>\n"
+	. "\t\t\t<a href='dataentry.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Dataentry Screen for Survey")."')\">" .
+	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' align='left'></a>\n"
+	. "\t\t\t<a href='printablesurvey.php?sid=$surveyid'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."')\">" .
+			"<img name='Printable' src='$imagefiles/print.png' title='' align='left'\"></a>\n"
+	. "\t\t\t<a href='statistics.php?sid=$surveyid' " .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Get statistics from these responses")."')\">".
+		"<img name='Statistics' src='$imagefiles/statistics.png' title='' align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
-	. "\t\t\t<input type='image' name='Export' src='$imagefiles/export.png' title='"
-	. _("Export Results to Application")."' alt='". _("Export Results to Application")."'align='left'  onclick=\"window.open('export.php?sid=$surveyid', '_blank')\">\n"
-	. "\t\t\t<a href='spss.php?sid=$surveyid'><img src='$imagefiles/exportspss.png' align='left' title='"
+	. "\t\t\t<a href='export.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Results to Application")."')\"><img name='Export' src='$imagefiles/export.png' " .
+			"title='' alt=''align='left'  blank')\"></a>\n"
+	. "\t\t\t<a href='spss.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Export result to a SPSS command file")."')\"><img src='$imagefiles/exportspss.png' align='left' title='"
 	. _("Export result to a SPSS command file")."' border='0' alt='". _("Export result to a SPSS command file")."'></a>\n"
-	. "\t\t\t<input type='image' name='Export' src='$imagefiles/importold.png' title='"
-	. _("Import answers from a deactivated survey table")."' alt='". _("Import answers from a deactivated survey table")."'align='left'  onclick=\"window.open('importoldresponses.php?sid=$surveyid', '_blank')\">\n"
+	. "\t\t\t<a href='importoldresponses.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Import answers from a deactivated survey table")."')\" >" .
+			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
-	. "\t\t\t<input type='image' name='SaveDump' src='$imagefiles/exportsql.png' title='"
-	. _("Backup results table as SQL file")."' align='left'  onclick=\"window.open('resultsdump.php?sid=$surveyid', '_top')\">\n"
+	. "\t\t\t<a href='resultsdump.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Backup results table as SQL file")."')\">" .
+			"<img name='SaveDump' src='$imagefiles/exportsql.png' title='' align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
-	. "\t\t\t<input type='image' src='$imagefiles/saved.png' title='"._("View Saved but not submitted Responses")."' "
-	. "align='left'  name='BrowseSaved' "
-	. "onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\">\n"
-	. "\t\t\t<a href='vvexport.php?sid=$surveyid'>\n"
-	. "\t\t\t<a href='vvimport.php?sid=$surveyid'><img src='$imagefiles/importvv.png' align='left' title='"
-	. _("Import a VV survey file")."' border='0' alt='". _("Import a VV survey file")."'></a>\n"
-	. "\t\t\t<a href='vvexport.php?sid=$surveyid'><img src='$imagefiles/exportvv.png' align='left' title='"
-	. _("Export a VV survey file")."' alt='". _("Export a VV survey file")."' border='0'></a>\n"
+	. "\t\t\t<a href='".$homeurl."/saved.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("View Saved but not submitted Responses")."')\" >" .
+		"<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved'></a>\n"
+	. "\t\t\t<a href='vvexport.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Import a VV survey file")."')\">\n"
+	. "<img src='$imagefiles/importvv.png' align='left' title='' border='0' alt=''></a>\n"
+	. "\t\t\t<a href='vvexport.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export a VV survey file")."')\">" .
+		"<img src='$imagefiles/exportvv.png' align='left' title='' alt='' border='0'></a>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	return $surveyoptions;

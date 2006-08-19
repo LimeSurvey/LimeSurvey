@@ -136,14 +136,16 @@ function savedmenubar()
 	if (!isset($surveyoptions)) {$surveyoptions="";}
 	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
-	. "\t\t\t<input type='image' name='Administration' src='$imagefiles/home.png' title='"
-	. _("Return to Survey Administration")."' align='left'  onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\">\n"
+	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
+			"onmouseover=\"showTooltip(event,'"._("Return to Survey Administration")."')\" >" .
+			"<img name='Administration' src='$imagefiles/home.png' title='' align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t<input type='image' name='SurveySummary' src='$imagefiles/summary.png' title='"
-	. _("Show summary information")."'  align='left' onClick=\"window.open('saved.php?sid=$surveyid', '_top')\">\n"
-	. "\t\t\t<input type='image' name='ViewAll' src='$imagefiles/document.png' title='"
-	. _("Display Responses")."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&amp;action=all', '_top')\">\n"
+	. "\t\t\t<a href='saved.php?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
+			"onmouseover=\"showTooltip(event,'". _("Show summary information")."')\">" .
+			"<img name='SurveySummary' src='$imagefiles/summary.png' title=''  align='left'></a>\n"
+	. "\t\t\t<a href='saved.php?sid=$surveyid&amp;action=all' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Display Responses")."')\">" .
+	"<img name='ViewAll' src='$imagefiles/document.png' title=''  align='left'></a>\n"
 	//. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.png' title='"
 	//. _("Display Last 50 Responses")."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"

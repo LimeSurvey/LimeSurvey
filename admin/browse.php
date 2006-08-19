@@ -235,21 +235,24 @@ if ($action == "id") // Looking at a SINGLE entry
 	."\t<tr bgcolor='#999999'><td colspan='2'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt=''>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
-	."\t\t\t<input type='image' align='left' src='$imagefiles/edit.png' title='"
-	. _("Edit this entry")."' alt='"._("Edit this entry")."' onClick=\"window.open('dataentry.php?action=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
-	."\t\t\t<a href='dataentry.php?action=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'>"
-	."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='"
-	. _("Delete this entry")."' title='"
-	. _("Delete this entry")."' onClick=\"return confirm('"._("Are you sure you want to delete this entry.")."')\" /></a>\n"
-	. "\t\t\t<input type='image' name='Export' src='$imagefiles/exportsql.png' title='"
-	. _("Export this Response")."' alt='". _("Export this Response")."'align='left'  onclick=\"window.open('export.php?sid=$surveyid&id=$id', '_blank')\">\n"
+	."\t\t\t<a href='dataentry.php?action=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Edit this entry")."')\">" .
+			"<img align='left' src='$imagefiles/edit.png' title='' alt=''/></a>\n"
+	."\t\t\t<a href='dataentry.php?action=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Delete this entry")."')\">" 
+	."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('"._("Are you sure you want to delete this entry.")."')\" /></a>\n"
+	. "\t\t\t<a href='export.php?sid=$surveyid&id=$id'" .
+		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Export this Response")."')\">" .
+		"<img name='Export' src='$imagefiles/exportsql.png' title='' alt='". _("Export this Response")."'align='left'></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt=''>\n"
-	."\t\t\t<input type='image' name='DataBack' align='left' src='$imagefiles/databack.png' title='"
-	. _("Show last...")."' onClick=\"window.open('browse.php?action=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
+	."\t\t\t<a href='browse.php?action=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show last...")."')\">".
+		"<img name='DataBack' align='left' src='$imagefiles/databack.png' title='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt=''>\n"
-	."\t\t\t<input type='image' name='DataForward' align='left' src='$imagefiles/dataforward.png' title='"
-	. _("Show next...")."' onClick=\"window.open('browse.php?action=id&amp;id=$next&amp;sid=$surveyid&amp;surveytable=$surveytable','_top')\" />\n"
+	."\t\t\t<a href='browse.php?action=id&amp;id=$next&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show next...")."')\">" .
+		"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n"
 	."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
@@ -474,15 +477,19 @@ elseif ($action == "all")
 	{
 		echo "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt=''>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
-		."\t\t\t<input type='image' name='DataBegin' align='left' src='$imagefiles/databegin.png' title='"
-		. _("Show start..")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit','_top')\" />\n"
-		."\t\t\t<input type='image' name='DataBack' align='left'  src='$imagefiles/databack.png' title='"
-		. _("Show last...")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$last&amp;limit=$limit','_top')\" />\n"
+		."\t\t\t<a href='browse.php?action=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit'" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show start..")."');return false\">" .
+						"<img name='DataBegin' align='left' src='$imagefiles/databegin.png' title=''/></a>\n"
+		."\t\t\t<a href='browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$last&amp;limit=$limit'" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show previous...")."');return false\">" .
+				"<img name='DataBack' align='left'  src='$imagefiles/databack.png' title=''/></a>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt=''>\n"
-		."\t\t\t<input type='image' name='DataForward' align='left' src='$imagefiles/dataforward.png' title='"
-		. _("Show next...")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$next&amp;limit=$limit','_top')\" />\n"
-		."\t\t\t<input type='image' name='DataEnd' align='left' src='$imagefiles/dataend.png' title='"
-		. _("Show last...")."' onClick=\"window.open('browse.php?action=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit','_top')\" />\n"
+		."\t\t\t<a href='browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$next&amp;limit=$limit'" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show next...")."');return false\">".
+				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title=''/></a>\n"
+		."\t\t\t<a href='browse.php?action=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit'" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show last...")."');return false\">" .
+				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' title=''></a>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n";
 	}
 	echo("\t\t</td>\n"

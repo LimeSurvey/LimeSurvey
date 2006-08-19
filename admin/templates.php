@@ -496,9 +496,9 @@ echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 . "\t\t\t</tr>\n"
 . "\t\t\t<tr bgcolor='#999999'>\n"
 . "\t\t\t\t<td>\n"
-. "\t\t\t\t\t<input type='image' src='$imagefiles/home.png' name='HomeButton' alt='"
-. _("Default Administration Page")."' title='"
-. _("Default Administration Page")."' align='left'  onClick=\"window.open('$scriptname', '_top')\">\n"
+. "\t\t\t\t\t<a href='$scriptname'" .
+		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Default Administration Page")."')\">" .
+		"<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' align='left'></a>\n"
 . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>"
 . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
@@ -506,8 +506,9 @@ echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 ."</td><td align='right'>\n"
 ."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10' alt=''>"
 ."<img src='$imagefiles/seperator.gif' align='right' alt='' border='0' hspace='0'>"
-."<input type='image' src='$imagefiles/add.png' align='right' title='"._("Create new template")."' "
-."onClick=\"javascript: copyprompt('"._("Create new template called:")."', '"._("NewTemplate")."', 'default', 'copy')\">"
+."<a href='#' onClick=\"javascript: copyprompt('"._("Create new template called:")."', '"._("NewTemplate")."', 'default', 'copy')\"" .
+		" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Create new template")."')\">" .
+		"<img src='$imagefiles/add.png' align='right' title=''></a>"
 ."<font face='verdana' size='2' color='white'><strong>"._("Template:")."</strong> </font>"
 ."<select name='templatedir' onchange='javascript: window.open(\"templates.php?editfile=$editfile&screenname=$screenname&templatename=\"+this.value, \"_top\")'>\n"
 .makeoptions($templates, "name", "name", $templatename)
@@ -533,16 +534,20 @@ echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hs
 ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 ."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left'>\n"
 ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t\t\t<input type='image' name='EditName' src='$imagefiles/edit.png' align='left' title='"._("Rename this template")."'"
-." onClick=\"javascript: copyprompt('"._("Rename this template to:")."', '$templatename', '$templatename', 'rename')\"";
+."\t\t\t\t\t<a href='#' onClick=\"javascript: copyprompt('"._("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
+		"<img name='EditName' src='$imagefiles/edit.png' align='left' title='"._("Rename this template")."'" .
+		" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Create new template")."')\" ";
 if ($templatename == "default") {echo " disabled";}
 echo ">";
 echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left'>\n"
-."\t\t\t\t\t<input type='image' name='Export' src='$imagefiles/exportsql.png' align='left' title='"._("Export Template")."'"
-." onClick='javascript:window.open(\"templates.php?action=zip&editfile=$editfile&screenname=$screenname&templatename=$templatename\", \"_top\")'>\n"
+."\t\t\t\t\t<a href='#' onClick='javascript:window.open(\"templates.php?action=zip&editfile=$editfile&screenname=$screenname&templatename=$templatename\", \"_top\")'".
+		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Template")."')\">" .
+				"<img name='Export' src='$imagefiles/exportsql.png' align='left' title=''></a>\n"
 ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t\t\t<input type='image' name='MakeCopy' src='$imagefiles/copy.png' align='left' title='"._("Make a copy of this template")."'"
-." onClick=\"javascript: copyprompt('"._("Create a copy of this template called:")."', '"._("copy_of_")."$templatename', '$templatename', 'copy')\">"
+."\t\t\t\t\t" .
+		"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Template")."')\"" .
+		"onClick=\"javascript: copyprompt('"._("Make a copy of this template")."', '"._("copy_of_")."$templatename', '$templatename', 'copy')\">" .
+		"<img name='MakeCopy' src='$imagefiles/copy.png' align='left' title=''></a>"
 ."</td><td align='right'>\n"
 ."<img src='$imagefiles/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10'>"
 ."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0'>"
