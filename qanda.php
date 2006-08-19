@@ -555,9 +555,9 @@ function do_list_CSV($ia)
 {
 	global $dbprefix;
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] ORDER BY sortorder, answer";
-	$ansresult = mysql_query($ansquery) or die("Couldn't get answers<br />$ansquery<br />".mysql_error());
-	$anscount = mysql_num_rows($ansresult);
-	while ($ansrow = mysql_fetch_array($ansresult))
+	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$anscount = $ansresult->RecordCount();
+	while ($ansrow = $ansresult->FetchRow())
 	{
 		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -1487,12 +1487,12 @@ function do_multiplechoice_CSV($ia)
 	. "\t\t\t\t\t<td>&nbsp;</td>\n"
 	. "\t\t\t\t\t<td align='left' class='answertext'>\n";
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} ORDER BY sortorder, answer";
-	$ansresult = mysql_query($ansquery);
-	$anscount = mysql_num_rows($ansresult);
+	$ansresult = db_execute_assoc($ansquery) or die(htmlspecialchars($connect->ErrorMsg()));
+	$anscount = $ansresult->RecordCount();
 	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
 	if (!isset($multifields)) {$multifields="";}
-	while ($ansrow = mysql_fetch_array($ansresult))
+	while ($ansrow = $ansresult->FetchRow())
 	{
 		$myfname = $ia[1].$ansrow['code'];
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='$ia[1]{$ansrow['code']}' value='Y'";
