@@ -41,9 +41,9 @@ if ($action == "listsurveys")
 {
 
 	$query = "SELECT * FROM {$dbprefix}surveys";
-	$result = mysql_query($query) or die(mysql_error());
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
-	if(mysql_num_rows($result)>0) {
+	if($result->RecordCount() > 0) {
 		$listsurveys= "<br><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='600'>
 				  <tr bgcolor='#BBBBBB'>
@@ -54,7 +54,7 @@ if ($action == "listsurveys")
 				    <td colspan=\"3\"><strong>Action</strong></td>
 				  </tr>" ; 
 
-		while($rows = mysql_fetch_array($result))
+		while($rows = $result->FetchRow())
 		{
 			if($rows['private']=="Y")
 			{
@@ -1927,8 +1927,8 @@ if ($action == "ordergroups")
 	$ordergroups = "<ul id='arrangableNodes'>";
 	//Get the groups from this survey
 	$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order,group_name" ;
-	$ogresult = mysql_query($ogquery) or die(mysql_error()) ;
-	while($ogrows=mysql_fetch_array($ogresult))
+	$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
+	while($ogrows = $ogresult->FetchRow())
 	{
 		$ordergroups.="<li id='".$ogrows['gid']."'>".$ogrows['group_name']."</li>\n" ;
 	}
