@@ -129,7 +129,7 @@ elseif ($action == "delgroupnone")
 {
 	if (!isset($gid)) {$gid=returnglobal('gid');}
 	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
-	$result = $connect->Execute($query);
+	$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
 	if ($result)
 	{
 		$gid = "";
@@ -165,7 +165,7 @@ elseif ($action == "delgroup")
 		}
 	}
 	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
-	$result = $connect->Execute($query);
+	$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
 	if ($result)
 	{
 		$gid = "";
@@ -183,7 +183,7 @@ elseif ($action == "reordergroups")
 	foreach($grouporder as $key =>$value)
 	{
 		$upgrorder_query="UPDATE {$dbprefix}groups SET group_order=$key where gid=$value" ;
-		$upgrorder_result=mysql_query($upgrorder_query) ;
+		$upgrorder_result = $connect->Execute($upgrorder_query) or die($connect->ErrorMsg()) ;
 	}
 }
 
@@ -195,7 +195,7 @@ elseif ($action == "reorderquestions")
 	foreach($questionorder as $key =>$value)
 	{
 		$upordquery="UPDATE {$dbprefix}questions SET question_order='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
-		$upordresult=mysql_query($upordquery) or die(mysql_error()) ;
+		$upordresult= $connect->Execute($upordquery) or die($connect->ErrorMsg()) ;
 	}
 }
 elseif ($action == "insertnewquestion")
@@ -316,10 +316,10 @@ elseif ($action == "updatequestion")
 			if ($oldtype !=  $_POST['type'] & $change == "0")
 			{
 				$query = "DELETE FROM {$dbprefix}answers WHERE qid={$_POST['qid']}";
-				$result = mysql_query($query);
+				$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
 				if (!$result)
 				{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answers can't be deleted")."\n".mysql_error()."\")\n //-->\n</script>\n";
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answers can't be deleted")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
 				}
 			}
 		}
@@ -345,7 +345,7 @@ elseif ($action == "copynewquestion")
 		$newqid = $connect->Insert_ID();
 		if (!$result)
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
 		}
 		if (returnglobal('copyanswers') == "Y")
 		{
@@ -618,7 +618,7 @@ elseif ($action == "insertCSV")
 			if (!is_null($valore))
 			{
 				$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '$k', '$valore', '00000', 'N')";
-				$cdresult = $cdresult=mysql_query($cdquery) or die(mysql_error());
+				$cdresult = $cdresult = $connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
 			}
 		}
 		$band = 1;
