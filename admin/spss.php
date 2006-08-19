@@ -13,7 +13,7 @@ header("Content-Type: application/octetstream");
 header("Content-Disposition: ".
 (strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
 :"attachment; ").
-"filename=survey.sps");//sav");
+"filename=survey.sps");
 
 
 sendcacheheaders();
