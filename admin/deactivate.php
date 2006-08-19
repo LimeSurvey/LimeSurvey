@@ -52,7 +52,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	echo "\t\t<td>\n";
 	echo "\t\t\t"._("In an active survey, a table is created to store all the data-entry records.")."\n";
 	echo "\t\t\t<p>"._("When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.")."</p>\n";
-	echo "\t\t\t<p>"._("De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.")."</p>\n";
+	echo "\t\t\t<p>"._("De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.")."</p>\n";
 	echo "\t\t\t<p>"._("Your responses table will be renamed to:")." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
 	echo "\t\t\t<p>"._("You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.")."</p>\n";
 	echo "\t\t</td>\n";
