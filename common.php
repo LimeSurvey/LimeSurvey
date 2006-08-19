@@ -1989,11 +1989,11 @@ function getHeader()
 	{
 		return  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
 		. "<head>\n"
-		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"classes/slider/swing.css\">\n"
+		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"scripts/slider/swing.css\">\n"
 		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
-		. "<script type=\"text/javascript\" src=\"classes/slider/range.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"classes/slider/timer.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"classes/slider/slider.js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"scripts/slider/range.js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"scripts/slider/timer.js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"scripts/slider/slider.js\"></script>\n"
 		. "<script type=\"text/javascript\" src=\"scripts/calendar/calendar.js\"></script>\n"
 		. "<script type=\"text/javascript\" src=\"scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
 		. "<script type=\"text/javascript\" src=\"scripts/calendar/calendar-setup.js\"></script>\n";
