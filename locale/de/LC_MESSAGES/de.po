@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-18 22:29+0100\n"
+"PO-Revision-Date: 2006-08-19 07:04+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -808,6 +808,9 @@ msgstr "Ansicht der Daten"
 
 msgid "Show start.."
 msgstr "Zeige ersten.."
+
+msgid "Show previous..."
+msgstr "Zeige vorherige..."
 
 msgid "Records Displayed:"
 msgstr "Angezeigte Datensätze:"
@@ -1698,8 +1701,8 @@ msgstr "Zwischenspeichern erlauben?"
 msgid "Show [<< Prev] button"
 msgstr "[<< Zurück] Button zeigen"
 
-msgid "Notification:"
-msgstr "Benachrichtigung:"
+msgid "Admin Notification:"
+msgstr "Admin Benachrichtigung:"
 
 msgid "Anonymous?"
 msgstr "Anonym?"
@@ -1848,13 +1851,13 @@ msgstr "Probanden Schlüssel:"
 msgid "Date Stamp?"
 msgstr "Zeit-Datumsstempel?"
 
-msgid "IP Address"
-msgstr "IP-Adresse protokollieren?"
+msgid "Save IP Address?"
+msgstr "IP-Adresse speichern?"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
-msgid "Referring URL"
-msgstr "Referrer-URL"
+msgid "Save Referring URL?"
+msgstr "Referrer-URL speichern?"
 
 msgid "Expires?"
 msgstr "Läuft ab?"
@@ -2088,6 +2091,9 @@ msgstr "Zwischengespeicherte Antworten:"
 msgid "Identifier"
 msgstr "Identifizierung"
 
+msgid "IP Address"
+msgstr "IP-Adresse protokollieren?"
+
 msgid "Date Saved"
 msgstr "Datum Gespeichert"
 
@@ -2223,14 +2229,14 @@ msgstr "Seite laden"
 msgid "Save Page"
 msgstr "Seite speichern"
 
-msgid "Create new template"
-msgstr "Neue Vorlage erstellen"
-
 msgid "Create new template called:"
 msgstr "Name der neuen Vorlage:"
 
 msgid "NewTemplate"
 msgstr "NeueVorlage"
+
+msgid "Create new template"
+msgstr "Neue Vorlage erstellen"
 
 msgid "This template can be modified"
 msgstr "Diese Vorlage kann bearbeitet werden."
@@ -2238,20 +2244,17 @@ msgstr "Diese Vorlage kann bearbeitet werden."
 msgid "This template cannot be modified"
 msgstr "Diese Vorlage kann nicht bearbeitet werden."
 
-msgid "Rename this template"
-msgstr "Vorlage umbenennen"
-
 msgid "Rename this template to:"
 msgstr "Vorlage umbenennen nach:"
+
+msgid "Rename this template"
+msgstr "Vorlage umbenennen"
 
 msgid "Export Template"
 msgstr "Vorlage exportieren"
 
 msgid "Make a copy of this template"
 msgstr "Vorlage kopieren"
-
-msgid "Create a copy of this template called:"
-msgstr "Name für die Vorlagenkopie:"
 
 msgid "copy_of_"
 msgstr "Kopie_von_"

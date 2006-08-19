@@ -1691,7 +1691,7 @@ if ($action == "editsurvey")
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 		//NOTIFICATION
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Notification:")."</font></td>\n"
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Notification:")."</font></td>\n"
 		. "\t\t<td><select name='notification'>\n"
 		. getNotificationlist($esrow['notification'])
 		. "\t\t</select></td>\n"
@@ -1806,7 +1806,7 @@ if ($action == "editsurvey")
 		}
 		$editsurvey .= "</tr>\n";
 
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("IP Address")."</font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save IP Address?")."</font></td>\n";
 
 		if ($esrow['active'] == "Y")
 		{
@@ -1830,7 +1830,7 @@ if ($action == "editsurvey")
 		}
 
 		// begin REF URL Block
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Referring URL")."</font></td>\n";
+		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save Referring URL?")."</font></td>\n";
 
 		if ($esrow['active'] == "Y")
 		{
@@ -2051,7 +2051,7 @@ if ($action == "newsurvey")
 	. "\t\t</select></td>\n"
 	. "\t</tr>\n";
 	//NOTIFICATIONS
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Notification:")."</font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Notification:")."</font></td>\n"
 	. "\t\t<td><select name='notification'>\n"
 	. getNotificationlist(0)
 	. "\t\t</select></td>\n"
@@ -2099,12 +2099,12 @@ if ($action == "newsurvey")
 	. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
 	. "\t\t</select></td>\n\t</tr>\n";
 	// IP Address
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("IP Address")."</font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save IP Address?")."</font></td>\n"
 	. "\t\t<td><select name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
 	. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
 	. "\t\t</select></td>\n\t</tr>\n";
 	// Referring URL
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Referring URL")."</font></td>\n"
+	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save Referring URL?")."</font></td>\n"
 	. "\t\t<td><select name='refurl'>\n"                                . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
 	. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
 	. "\t\t</select></td>\n\t</tr>\n";

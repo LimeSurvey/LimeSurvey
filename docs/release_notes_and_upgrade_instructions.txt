@@ -1,9 +1,17 @@
 Welcome to PHPSurveyor!
 
+Warning:
+THIS IS AN ALPHA RELEASE. IT SHOULD NO BET USED FOR PRODUCTION!
+IF YOU DO SO, DO IT AT YOUR OWN RISK!
+
+
 HOW TO INSTALL
 ---------------
 If you are doing a complete new installation please refer to the manual at
-/admin/manual.html.
+/docs/manual.html.
+
+
+
 
 
 HOW TO UPGRADE from all earlier versions of PHPSurveyor
@@ -45,14 +53,11 @@ The upgrade procedure step-by-step:
 
 6.) Run the admin/admin.php as usual!
 
-7.) Do a database check. Click on the brown container icon in the admin bar, 
-    then execute the database check. This will generate missing tables and/or fields.
-
-8.) There are new template files required for this release. If you 
-    have any templates you have created yourself, you need to 
-    ensure that they have a copy of the "assessments.pstpl", 
-    "save.pstpl" and "load.pstpl" templates in their directory. The 
-    templates admin screen will automatically copy the default 
+7.) If you are upgrading from a version < 0.99: There are new template files
+    required for this release. If you have any templates you have created
+    yourself, you need to  ensure that they have a copy of the
+    "assessments.pstpl", "save.pstpl" and "load.pstpl" templates in their
+    directory. The templates admin screen will automatically copy the default
     version of these files into any template folder it views if they do 
     not already exist.
 
@@ -68,7 +73,7 @@ Changes from 0.996 to 1.0
 -Added Greek translation file kindly provided by Artemis Mendrinos
 -Added Romanian translation kindly provided by Bogdan Anastasiei
 -Added Swedish translation of administration kindly provided by Niklas Andersson
--Updated spanish translation kindly provided by Juan Rafael Fernàndez
+-Updated spanish translation kindly provided by Juan Rafael Fern ndez
 -Updated russian translation by Alexander Shilov
 -Fixed an error message showing up when a survey was deleted but the token still was set to 'completed = yes'
 -Fixed bug #470: VVimport fails (reports that an active survey is not currently active) if dbprefix is set
@@ -90,7 +95,7 @@ Changes from 0.995 to 0.996
 
 -Fixed bug #454: remote exploit where attacker was able to inject code into the log file using save.php and could execute the injected code and attached commands by a broken MySQL command.
  This exploit is only working if the apache access.logs are made available (by mistake or a sloppy server configuration).
--Updated french language files & instructions by Sébastien Gaugry
+-Updated french language files & instructions by S bastien Gaugry
 -Removed 'Header already sent messages' when sending notifications or test-submitting in question-by-question mode
 
 
@@ -232,11 +237,11 @@ present an "assessment" when the users submits the survey.
 3.) New language translations
 
 * COMPLETE French translation of the instructions and updated french language file 
-  kindly provided by Sébastien GAUGRY !! (great work!)
+  kindly provided by S bastien GAUGRY !! (great work!)
 * COMPLETE Italian translation of the instructions and 
   updated italian language file kindly provided by Mario Marani !! (great work!)
 * Bulgarian Language File kindly provided by Nikolay Tsanov <tsanov@tu...>
-* Added Portuguese language kindly provided by Rosaura Gazzola & Job Vieira Lúcio, Brazil
+* Added Portuguese language kindly provided by Rosaura Gazzola & Job Vieira L·cio, Brazil
 * Updated german language files
 * Updated chinese language file thanks to Cha (sf.net name: cafetango)
 
