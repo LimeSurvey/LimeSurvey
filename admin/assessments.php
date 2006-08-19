@@ -56,9 +56,9 @@ if ($action == _("Add")) {
 			  gid=".$_POST['gid'].",
 			  minimum='".$_POST['minimum']."',
 			  maximum='".$_POST['maximum']."',
-			  name='".mysql_escape_string($_POST['name'])."',
-			  message='".mysql_escape_string($_POST['message'])."',
-			  link='".mysql_escape_string($_POST['link'])."'
+			  name='".sanitize_sql_string($_POST['name'])."',
+			  message='".sanitize_sql_string($_POST['message'])."',
+			  link='".sanitize_sql_string($_POST['link'])."'
 			  WHERE id=".$_POST['id'];
 	$result = $connect->Execute($query) or die("Error updating<br />$query<br />".$connect->ErrorMsg());
 } elseif ($action == "delete") {
