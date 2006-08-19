@@ -581,8 +581,8 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 		if ($attralist['type'] == "M")
 		{
 			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' order by code;";
-			$qresult = mysql_query($qquery);
-			while ($fansrows = mysql_fetch_array($qresult))
+			$qresult = db_execute_assoc($qquery);
+			while ($fansrows = $qresult->FetchRow())
 			{
 				$fquestans = "java".$qfbase.$fansrows['code'];
 				$tbody = "javatbd".$qbase.$fansrows['code'];
