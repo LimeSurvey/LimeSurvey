@@ -257,8 +257,8 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 
 #Lookup the names of the attributes
 $query = "SELECT attribute1, attribute2 FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = mysql_query($query) or die("Couldn't execute query: <br />$query<br />".mysql_error());
-$row = mysql_fetch_array($result);
+$result = db_execute_assoc($query) or die("Couldn't execute query: <br />$query<br />".$connect->ErrorMsg());
+$row = $result->FetchRow();
 if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_("Attribute 1");}
 if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_("Attribute 2");}
 
