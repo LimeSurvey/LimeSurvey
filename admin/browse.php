@@ -138,7 +138,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
 
-	$fnrows = array(); //Create an empty array in case mysql_fetch_array does not return any rows
+	$fnrows = array(); //Create an empty array in case fetch_array does not return any rows
 	while ($fnrow = $fnresult->FetchRow()) {++$fncount; $fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr']; $refurl=$fnrow['refurl'];} // Get table output into array
 
 	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
