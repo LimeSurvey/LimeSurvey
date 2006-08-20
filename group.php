@@ -463,7 +463,7 @@ print <<<END
 <!--
 END;
 // Find out if there are any array_filter questions in this group
-$array_filterqs = getArrayFiltersForGroup();
+$array_filterqs = getArrayFiltersForGroup($gid);
 // Put in the radio button reset javascript for the array filter unselect
 if (isset($array_filterqs) && is_array($array_filterqs)) {
 	print <<<END
