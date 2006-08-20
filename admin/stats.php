@@ -60,7 +60,7 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 }
 
 //Get array of all questions with answers
-$query = "SELECT ".db_table_name("questions").".*, group_name\n"
+$query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
         ."FROM ".db_table_name("questions").", ".db_table_name("groups")."\n"
         ."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
         ."AND ".db_table_name("questions").".sid=$surveyid";
