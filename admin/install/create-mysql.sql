@@ -22,6 +22,7 @@ CREATE TABLE `prefix_answers` (
   `answer` text NOT NULL,
   `default_value` char(1) NOT NULL default 'N',
   `sortorder` varchar(5) default NULL,
+  `answer_language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`,`code`)
 ) TYPE=MyISAM;
 
@@ -72,6 +73,7 @@ CREATE TABLE `prefix_groups` (
   `group_code` varchar(50) NOT NULL default '',
   `group_order` int(11) NOT NULL default '0',
   `description` text,
+  `group_language` varchar(20) default 'en',
   PRIMARY KEY  (`gid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
@@ -86,6 +88,7 @@ CREATE TABLE `prefix_labels` (
   `code` varchar(5) NOT NULL default '',
   `title` varchar(100) NOT NULL default '',
   `sortorder` varchar(5) default NULL,
+  `label_language` varchar(20) default 'en',
   PRIMARY KEY  (`lid`,`code`)
 ) TYPE=MyISAM;
 
@@ -134,6 +137,7 @@ CREATE TABLE `prefix_questions` (
   `mandatory` char(1) default NULL,
   `lid` int(11) NOT NULL default '0',
   `question_order` int(11) NOT NULL,
+  `question_language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
@@ -231,5 +235,5 @@ CREATE TABLE `prefix_settings_global` (
 -- Table `settings_global`
 --
 
-INSERT INTO `settings_global` VALUES ('DBVersion', '108');
+INSERT INTO `settings_global` VALUES ('DBVersion', '109');
 

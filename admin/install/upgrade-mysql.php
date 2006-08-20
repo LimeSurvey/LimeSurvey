@@ -8,14 +8,26 @@ function db_upgrade($oldversion) {
 /// This function does anything necessary to upgrade 
 /// older versions to match current functionality 
 
-
-    if ($oldversion < 2004021600) {
-//       delete_records("log_display", "module", "lesson");
+    if ($oldversion < 109) {
+      modify_database("","ALTER TABLE `prefix_answers` ADD `answer_language` varchar(20) default 'en'");
+      modify_database("","ALTER TABLE `prefix_questions` ADD `question_language` varchar(20) default 'en'");
+      modify_database("","ALTER TABLE `prefix_groups` ADD `group_language` varchar(20) default 'en'");
+      modify_database("","ALTER TABLE `prefix_labels` ADD `label_language` varchar(20) default 'en'");
+      modify_database("","ALTER TABLE `prefix_questions` ADD `question_language` varchar(20) default 'en'");
+      modify_database("","UPDATE `prefix_settings_global` SET stg_value='109' where stg_name ='DBVersion'");
     }
 
     
     return true;
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -240,7 +252,7 @@ foreach ($tablenames as $tn)
 
 convertquestionorder();
 convertgrouporder();
-modify_database('','insert '.$dbprefix.'settings_global values("DBVersion","108")');
+modify_database('','insert prefix_settings_global values("DBVersion","108")');
 
 echo "</font></font></font></td></tr>\n";
 echo "<tr><td align='center' bgcolor='#CCCCCC'>\n";

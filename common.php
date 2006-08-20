@@ -38,7 +38,7 @@
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
 $versionnumber = "1.08a";
-$dbversionnumber = 108;
+$dbversionnumber = 109;
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
@@ -819,7 +819,7 @@ function checkifemptydb()
 
 function checkforupgrades()
 {
-	global $connect, $databasetype, $dbprefix;
+	global $connect, $databasetype, $dbprefix, $dbversionnumber;
 	include ('admin/install/upgrade-'.$databasetype.'.php');
 	$tables = $connect->MetaTables();
 
@@ -831,6 +831,11 @@ function checkforupgrades()
 			$usquery = 'SELECT stg_value FROM '.$dbprefix.'settings_global where stg_name="DBVersion"';
 			$usresult = db_execute_assoc($usquery);
 			if ($usresult->RecordCount()==0) {mysqlcheckfields();}
+             else
+             {
+             $usrow = $usresult->FetchRow();
+             if (intval($usrow['stg_value'])<$dbversionnumber) {db_upgrade(intval($usrow['stg_value']));}
+             }
 		}
 	}
 }
