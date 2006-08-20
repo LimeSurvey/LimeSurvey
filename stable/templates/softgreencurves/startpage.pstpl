@@ -1,0 +1,92 @@
+<head>
+	<title>
+	{SURVEYNAME}
+	</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">	
+<style>
+.clearall
+	{
+	font-size: 7pt;
+	}
+.clearall
+	A:link
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: #FF6600;
+	}
+.clearall
+	A:visited
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: #FF6600;
+	}
+.clearall
+	A:active
+	{
+	text-decoration: none;
+	font-family: verdana;
+	color: #FF6600;
+	}
+.clearall
+	A:hover
+	{
+	text-decoration: underline;
+	font-family: verdana;
+	color: #FF6600;
+	}
+.select
+	{
+	font-family: verdana;
+	font-size: 9pt;
+	color: #003300;
+	}
+.submit
+	{
+	background-color: #007000;
+	color: #EFEFEF;
+	border-left-color: #00BB00;
+	border-top-color: #00BB00;
+	border-right-color: #111111;
+	border-bottom-color: #111111;
+	}
+.text
+	{
+	font-family: verdana;
+	font-size: 9pt;
+	color: #003300;
+	}
+.textarea
+	{
+	font-family: verdana;
+	font-size: 9pt;
+	color: #003300;
+	}
+.rank
+	{
+	border: solid;
+	border-width: 1;
+	border-color: #AAAAAA;
+	background-color: #DDFFDD;
+	font-family: verdana;
+	font-size: 8;
+	}
+.graph
+	{
+	border: outset;
+	border-width: 1;
+	border-color: #003300;
+	background-color: #CCFFCC;
+	}
+.array1
+	{
+	background-color: #DDFFDD;
+	}
+.array2
+	{
+	background-color: #EEFFEE;
+	}
+</style>
+</head>
+<body leftmargin='0' vlink='#003300' link='#003300'><font face='verdana' size='2'>

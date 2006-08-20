@@ -1,0 +1,9 @@
+<table width='100%' align='center'>
+	<tr>
+		<td align='center'>
+			<font>{NAVIGATOR}</font><br />
+			<font>{CLEARALL}</font>
+			{SAVE}
+		</td>
+	</tr>
+</table>

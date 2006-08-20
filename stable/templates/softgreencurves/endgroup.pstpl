@@ -1,0 +1,33 @@
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width='46' bgcolor='white'></td>
+		<td width='25' background='{TEMPLATEURL}smallgrid2.gif'></td>
+	</tr>
+	<tr>
+		<td width='25' background='{TEMPLATEURL}smallgrid.gif'>
+		</td>
+		<td width='46' valign='top' bgcolor='white'>
+			<img src='{TEMPLATEURL}botcurve.gif' align='left' hspace='0'>
+		</td>
+		<td bgcolor='white'>&nbsp;
+		</td>
+		<td width='46' valign='top' bgcolor='white'>
+			<img src='{TEMPLATEURL}botcurve2.gif' align='left' hspace='0'>
+		</td>
+		<td width='25' background='{TEMPLATEURL}smallgrid2.gif'></td>
+	</tr>
+	<tr height='10'>
+		<td width='25' height='5' background='{TEMPLATEURL}smallgrid.gif'>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td width='25' background='{TEMPLATEURL}smallgrid2.gif'>
+		</td>
+	</tr>
+</table>

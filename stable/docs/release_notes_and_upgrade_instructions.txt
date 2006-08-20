@@ -1,0 +1,254 @@
+Welcome to PHPSurveyor!
+
+HOW TO INSTALL
+---------------
+If you are doing a complete new installation please refer to the manual at
+/admin/manual.html.
+
+
+HOW TO UPGRADE from all earlier versions of PHPSurveyor
+-------------------------------------------------------
+
+IMPORTANT: Before you upgrade READ THIS:
+
+PHPSurveyor has been converted to UTF-8. That means that existing surveys 
+using an non-alphabetic (A..Z) charset like japanese or kyrillic WILL HAVE 
+TO be redone!
+
+If you have surveys in a such a language you will have to take the 
+pain and do this.
+
+There is no safe way around this (The only way might be an export of the database
+and try converting the SQL file with an UTF-8 capable editor - but we never tried that.)
+
+The advantage on the other hand is that in this new version of PHPSurveyor you can 
+have your admin interface in russian but write chinese surveys for example - 
+and even mix it. You can use any writable char of any language without messing up 
+anything. No future language changes in PHPSurveyor will be necessary, new 
+languages will be supported out of the box.
+
+Ready to upgrade?
+
+The upgrade procedure step-by-step:
+
+1.) Make a full backup of your PHPSurveyor database just in case!
+
+2.) Make a full backup of your PHPSurveyor directory 
+    (especially the the file admin/config.php for reference)!
+
+3.) Delete all files from your PHPSurveyor directory.
+
+4.) Upload the new files into your PHPSurveyor directory.
+
+5.) Edit the config.php to match your existing database setup... 
+    Do NOT just copy over the old config.php!
+
+6.) Run the admin/admin.php as usual!
+
+7.) Do a database check. Click on the brown container icon in the admin bar, 
+    then execute the database check. This will generate missing tables and/or fields.
+
+8.) There are new template files required for this release. If you 
+    have any templates you have created yourself, you need to 
+    ensure that they have a copy of the "assessments.pstpl", 
+    "save.pstpl" and "load.pstpl" templates in their directory. The 
+    templates admin screen will automatically copy the default 
+    version of these files into any template folder it views if they do 
+    not already exist.
+
+
+Thank you to everyone who helped with this new release!
+
+
+Changes from 0.996 to 1.0
+
+
+-Added SMTP relay and authorization
+-Added Japanese translation kindly provided by Masaru Ryumae
+-Added Greek translation file kindly provided by Artemis Mendrinos
+-Added Romanian translation kindly provided by Bogdan Anastasiei
+-Added Swedish translation of administration kindly provided by Niklas Andersson
+-Updated spanish translation kindly provided by Juan Rafael Fernàndez
+-Updated russian translation by Alexander Shilov
+-Fixed an error message showing up when a survey was deleted but the token still was set to 'completed = yes'
+-Fixed bug #470: VVimport fails (reports that an active survey is not currently active) if dbprefix is set
+-Fixed bug #465: Error messages if a question has no answers
+-Fixed bug #463: Checkbox with conditions = JS error on Firefox in 'All in one' mode
+-Fixed bug #457: SQL syntax error when having changed a question type from a question with activated 'other' option to a question type with no 'other' option and then activating the survey.
+-Fixed bug #456: Emails using local server (Postfix) rather than remote mail server as specified in config file
+-Fixed bug #455: Losing ip-address when editing a cached survey
+-Fixed bug #435: Basic handling of session timeouts.
+-Fixed bug #458: Wrong path for 2 files in experimental interface
+-Removed a possible error in relation to dbprefix settings.
+-Removed a small warning notice regarding flush_cache_ob.
+-Fixed swedish language file
+-Fixed small antialiasing bug with JPGraph
+
+
+
+Changes from 0.995 to 0.996
+
+-Fixed bug #454: remote exploit where attacker was able to inject code into the log file using save.php and could execute the injected code and attached commands by a broken MySQL command.
+ This exploit is only working if the apache access.logs are made available (by mistake or a sloppy server configuration).
+-Updated french language files & instructions by Sébastien Gaugry
+-Removed 'Header already sent messages' when sending notifications or test-submitting in question-by-question mode
+
+
+
+Changes from 0.993 to 0.995
+
+Fixed bug #397: [Translation] Updated swedish lang-file (c_schmitz)
+Fixed bug #398: [Security] shell_exec not only disabled in safe_mode (c_schmitz)
+Fixed bug #400: [Documentation] Requirements for phpsurveyor (c_schmitz)
+Fixed bug #348: [Import / Export] Failed to import survey dumps when using MySQL version 5.x (c_schmitz)
+Fixed bug #403: [Import / Export] SPSS export does not work properly in 0.993 (c_schmitz)
+Fixed bug #411: [Survey at Runtime] Patch: Options List (do_list_radio function) (c_schmitz)
+Fixed bug #415: [Import / Export] Infinite loop in resultsdump.php (c_schmitz)
+Fixed bug #427: [Survey at Runtime] Error finding question attributes (c_schmitz)
+Fixed bug #424: [Tokens] /// in invitation text (c_schmitz)
+Fixed bug #419: [Tokens] Importing Tokens with pre-set token id not usable without editing (c_schmitz)
+Fixed bug #416: [Survey at Runtime] bug saving partially completed surveys - Multiple Options/Array. (c_schmitz)
+Fixed bug #425: [Tokens] Reminder emails with nothing but Subject line (c_schmitz)
+Fixed bug #432: [Survey at Runtime] Error finding question attributes (c_schmitz)
+Fixed bug #423: [Import / Export] wrong Excel export "Full headings" for matrix questions (c_schmitz)
+Fixed bug #422: [Survey at Runtime] $shownoanswer=0 - 5 point choice question shows the "No answer" option (c_schmitz)
+Fixed bug #434: [Survey at Runtime] Columns in array type questions no longer line up (c_schmitz)
+Fixed bug #428: [Survey at Runtime] Problems with public registration (c_schmitz)
+Fixed bug #437: [Import / Export] Exporting Question/Answer Codes returns Question Texts, not their codes (c_schmitz)
+
+
+Changes from 0.992 to 0.993
+
+New features:
+Basic smtp email function can be configured in config.php now
+
+Bugfixes:
+- Resolved some serious issues with using tokens
+- Fixed copying of questions and conditions when using MySQL 5 server
+- Minor fixes und updates
+
+
+
+Changes from 0.991 to 0.992
+
+New features:
+
+Added croatian language file (submitted by Ivana Pavic)!
+Change survey sent/taken from "Y" to the date:
+	When reviewing the tokens display, the fields telling if the survey request was sent, 
+	and the survey taken, display a N or Y. This was changed to be the actual date this event took place. 
+	This is giving some siginificant additional information to the survey author. (Patch by Thomas Ringate / tringate!)
+New global option that allows the administrator to specify what is the minimum number of remaining answers 
+	in an 'array - flexible' question that must be remaining before repeating the question headings. This 
+	avoids that the headings of the question are repeated if only a few answers are remaining. (Patch by Kris Ven !)
+
+Changes:
+Moved admin CSS styles to separate CSS file
+Updated slovenian language file
+Updated dutch language file
+Updated french language file (by Pascal Bastien/pascal-gnu)
+Moved config.php and common.php from admin directory to main one. This allow easy configuration of permission on IIS (patch #326 by freddy77)
+Use extensively dirname and __FILE__ constants. This allow inclusion using full path names limiting some possible security issues. (patch #326 by freddy77)
+Added XPertmailer class wich helps alot when sending email dealing with all the linefeed issues. SMTP function will be available in the next version.
+
+Bug Fixes:
+
+Fixed bug #373: Setting Charset on MySQL connection
+Fixed bug #325: Spelling error in keyword fo SPSS export
+Fixed bug #331: Some conditions broken in 'All in one' survey mode
+Fixed bug #339: Input fields on "Register for survey "-page not constructed properly
+Fixed bug #339: Umlauts not showing up correctly in german formal language
+Fixed bug #348: Failed to import survey dumps when using MySQL version 5.x
+Fixed bug #345: Excel export reports "Use of undefined constant _IP_ADDRESS"
+Fixed bug #338: Message 'This survey is no longer available' if Expires: field is left empty when creating a survey by introducing a new field to the survey table since '0000-00-00' entries will be invalid under MySQL5 strict mode.
+Fixed bug #347: Invitation mail empty under certain server configurations
+Fixed bug 342: The "Export database" option exports all tables even if we use a prefix for tables
+Fixed bug #357: Error "Undefined index attribute..." in tokens.php when trying to export tokens
+Fixed bug #355: Save button on last page in group mode doesn't really make sense.
+Fixed bug #380: Can`t add a label with code 0
+Fixed bug #368: Conditionals on multiple option / checkbox question type was broken
+Fixed bug #372: Backup of entire database command does not create correct empty default values
+Fixed bug #374: Couldn't delete response record if using prefixed tables
+
+
+
+Changes from 0.98 to 0.99
+=========================
+
+1.) New question types
+
+* List type question divided into two question types - radio 
+button or drop down, so you can choose on a question by 
+question basis whether or not to have radio buttons or a 
+dropdown list.
+
+* New "flexible" list type question uses labelsets to make reusing 
+sets of answers easier - one radio and one dropdown type
+
+* New "Huge" text question allows for a _really big_ textarea
+
+2.) New features
+
+* UTF-8 conversion. Use any char of any language mixed together. 
+  The problems with mixed up charsets are gone now hopefully. 
+  READ THE STATEMENT AT THE BEGINNING OF THIS FILE!!!!
+
+* Question attributes, allows for better control over the display 
+and working of individual questions - for example:
+
+    - Have multiple choice or list questions display in multiple columns
+    - Set a maximum character length on text questions
+    - Adjust the width of  the input box in text questions
+    - Hide the tip "Please Choose One" of selected questions
+        - Allow the user to select the number of lines the text area will have with long free text and huge free text
+      Thank you very much to Shawn Wales (sf.net name: swales)!
+    - Allows the user to select the width of the text area with long free text and huge free text questions
+      Thank you very much to Shawn Wales (sf.net name: swales)!
+
+* New system option to set the table type in MySQL
+
+* New "assessments" feature which allows you to sum the 
+answers to groups of questions, or the total survey, and then 
+present an "assessment" when the users submits the survey.
+
+* New survey options, including:
+ - the capacity to set the "subject" of emails on a survey-by-survey basis
+ - hide the "<< prev" button so users can only go forwards through a survey
+ - Allow users to save a partially completed survey and come back to complete it later
+ - Automatically load the "URL" when the user has completed the survey
+
+* VV Import and VV Export
+ - A way of exporting and importing results directly to the responses table - which not only allows merging of survey 
+   responses run on different servers, but also the ability to add or remove questions to a survey while preserving the existing 
+   responses.
+
+* New sample survey 
+
+* Added W3C HTML 4.01 transitional and WAI 508 compliance (not yet finished)
+
+* Basic ability to integrate into other CMS - thank you to asmaloney
+
+
+3.) New language translations
+
+* COMPLETE French translation of the instructions and updated french language file 
+  kindly provided by Sébastien GAUGRY !! (great work!)
+* COMPLETE Italian translation of the instructions and 
+  updated italian language file kindly provided by Mario Marani !! (great work!)
+* Bulgarian Language File kindly provided by Nikolay Tsanov <tsanov@tu...>
+* Added Portuguese language kindly provided by Rosaura Gazzola & Job Vieira Lúcio, Brazil
+* Updated german language files
+* Updated chinese language file thanks to Cha (sf.net name: cafetango)
+
+
+4.) New themes
+* Included "Blue Heaven" theme 
+* Included "BluenGrey" theme 
+* Included "Vallendar" theme 
+* Included "Business_Grey" theme 
+* Included "Eirenicon" theme 
+* Included "SoftGreenCurves" theme 
+
+
+... and tons of bugfixes - too many to write down here...
+

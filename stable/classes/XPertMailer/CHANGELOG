@@ -1,0 +1,49 @@
+
+XPertMailer ChangeLog
+=====================
+
+Version 1.4.2
+13-Feb-2006
+
+- Fixed the regular expression to match the format of an e-mail address
+
+Version 1.4.1
+3-Feb-2006
+
+- Fixed the looping problem for AUTH comments
+
+Version 1.4
+1-Feb-2006
+
+- Added TSL/SSL Relay support to auth() function
+- Added HOWTO file
+- Fixed Bcc
+- Updated documentation
+
+Version 1.3
+26-Jan-2006
+
+- Added Cc and Bcc functionality
+- Added default funtion mail() on localhost, if it fails, will try socket connection
+- Added port number socket connection value with port() function
+- Fixed coresponding Microsoft Article ID 291828 for "From:" header value
+- Fixed auth method, if AUTH_DETECT will fail then it will attempt to use AUTH_LOGIN
+- Removed "@" from function calling (displays errors and works much faster)
+- Mutation of function getmxrr() for win32 inside in class
+- Updated documentation
+
+Version 1.2
+12-Jan-2006
+
+- Added - sending to multiple e-mail addresses functionality
+- Added SMTP_RELAY_CLIENT and SMTP_CLIENT_RELAY server connection type
+- Fixed RELAY "RCPT TO:" syntax
+- Fixed error reporting with PRINT_ERROR constant
+- Updated documentation
+
+Version 1.1
+6-Jan-2006
+
+- Added documentation of public functions
+- Including examples "Howto use XPertMailer class"
+- Reduced code space
