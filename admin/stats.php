@@ -61,9 +61,9 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 
 //Get array of all questions with answers
 $query = "SELECT ".db_table_name("questions").".*, group_name\n"
-."FROM ".db_table_name("questions").", ".db_table_name("groups")."\n"
-."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
-."AND ".db_table_name("questions").".sid=$surveyid";
+        ."FROM ".db_table_name("questions").", ".db_table_name("groups")."\n"
+        ."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
+        ."AND ".db_table_name("questions").".sid=$surveyid";
 $result = db_execute_assoc($query) or die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
 $rows = $result->GetRows();
 
@@ -126,7 +126,7 @@ if(!isset($_POST['action'])) {
     	?>
     	document.getElementById(value).style.display='';
     }
-<<<<<<< .mine
+
      function selectAll(item) {
 	   var element=document.getElementById(item);
 	   for (var i=0; i < element.options.length; i++) {
@@ -151,7 +151,7 @@ if(!isset($_POST['action'])) {
     		  if (method.options[i].selected && method.options[i].value == "equals") {
     		    sql = sql + " = '" + element.value + "'";
     		  }
-=======
+
     function addCondition(value) {
     	var val='VALUE'+value;
     	var type=document.getElementById(val).type;
@@ -169,7 +169,6 @@ if(!isset($_POST['action'])) {
     			if (method.options[i].selected && method.options[i].value == "equals") {
     				sql = sql + " = '" + element.value + "'";
     			}
->>>>>>> .r1992
     		}
 
     		break;
@@ -182,7 +181,6 @@ if(!isset($_POST['action'])) {
     				var modifier='NOT IN';
     			}
     		}
-<<<<<<< .mine
             var sql=value+' '+modifier+' (';
             var r = new Array();
             var x=0;
@@ -221,7 +219,7 @@ if(!isset($_POST['action'])) {
        }
        
      }
-=======
+
     		var sql=value+' '+modifier+' (';
     		var r = new Array();
     		var x=0;
@@ -254,7 +252,6 @@ if(!isset($_POST['action'])) {
     	}
 
     }
->>>>>>> .r1992
     //--></script>
     <?
 
@@ -282,11 +279,6 @@ if(!isset($_POST['action'])) {
     </tr>
 
     </table>
-    <pre>
-    <?
-    //print_r($questions);
-    ?>
-    </pre>
     <?
 
     //////////////////////////////////////////////////////////////////
@@ -294,15 +286,10 @@ if(!isset($_POST['action'])) {
     //////////////////////////////////////////////////////////////////
 
 } elseif (isset($_POST['action']) && $_POST['action'] == "fields") {
-<<<<<<< .mine
-//    print_r($_POST);
-//    print_r($_GET);
-=======
 	print_r($_POST);
 	print_r($_GET);
->>>>>>> .r1992
 	?>
-<<<<<<< .mine
+
     <script type='text/javascript'>
     <!--
       function selectAll(item) {
@@ -337,9 +324,6 @@ if(!isset($_POST['action'])) {
      </tr>
     </table>
     
-    
-    <?
-=======
 	<table width='99%' align='center' style='border: 1px'>
 	<tr>
 	<td colspan='2' style='border: 1px; background-color: #cccccc'>
@@ -352,7 +336,6 @@ if(!isset($_POST['action'])) {
 	</td>
 	</tr>
 	</table>
->>>>>>> .r1992
 
 
 	<?
@@ -367,7 +350,6 @@ echo "Howdy";
 }
 
 function presentQuestionList($questions) {
-<<<<<<< .mine
 //////////////////////////////////////////////////////////////////
 // PRESENT QUESTION LIST /////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -414,7 +396,7 @@ function presentQuestionList($questions) {
     //////////////////////////////////////////////////////////////////
     // END OF PRESENT QUESTION LIST //////////////////////////////////
     //////////////////////////////////////////////////////////////////
-=======
+
 	//////////////////////////////////////////////////////////////////
 	// PRESENT QUESTION LIST /////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////
@@ -461,7 +443,6 @@ function presentQuestionList($questions) {
 	//////////////////////////////////////////////////////////////////
 	// END OF PRESENT QUESTION LIST //////////////////////////////////
 	//////////////////////////////////////////////////////////////////
->>>>>>> .r1992
 }
 
 
@@ -531,7 +512,6 @@ function presentFilterConditions() {
 	//////////////////////////////////////////////////////////////////
 	?>
 	<table width='99%' align='center'>
-<<<<<<< .mine
      <tr>
       <th>
        <? echo _("Filter Conditions") ?>
@@ -550,7 +530,8 @@ function presentFilterConditions() {
 		    echo "      <option value='$bit'>".$bit."</option>\n";
 		  }
 		 }
-=======
+		}
+        ?>
 	<tr>
 	<th>
 	<? echo _("Filter Conditions") ?>
@@ -563,7 +544,6 @@ function presentFilterConditions() {
 	if(isset($_POST['conditions'])) {
 		foreach($_POST['conditions'] as $condition) {
 			echo "      <option value='$condition'>".$condition."</option>\n";
->>>>>>> .r1992
 		}
 	}
 	?>
@@ -579,8 +559,6 @@ function presentFilterConditions() {
 	// END OF SHOW FILTER CONDITIONS /////////////////////////////////
 	//////////////////////////////////////////////////////////////////
 }
-
-
 
 
 function getAnswerArray($data) {
@@ -866,3 +844,4 @@ function debug($data) {
 	print_r($data);
 	print "</pre>";
 }
+?>
