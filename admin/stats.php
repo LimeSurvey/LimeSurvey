@@ -127,13 +127,6 @@ if(!isset($_POST['action'])) {
     	document.getElementById(value).style.display='';
     }
 
-     function selectAll(item) {
-	   var element=document.getElementById(item);
-	   for (var i=0; i < element.options.length; i++) {
-	    method.options[i].selected=true;
-	   }
-	 }
-
     function addCondition(value) {
     	var val='VALUE'+value;
     	var type=document.getElementById(val).type;
@@ -191,25 +184,7 @@ if(!isset($_POST['action'])) {
 	   }
 	   filter.value=filters;
      }
-     function removeCondition() {
-       var conditions=document.getElementById('conditions');
-       var selected=conditions.selectedIndex;
-       conditions.options[selected] = null;
-       if(conditions.options.length < 1 ) {
-        document.getElementById('removecondition').display='none';
-       }
-       
-     }
 
-    function removeCondition() {
-    	var conditions=document.getElementById('conditions');
-    	var selected=conditions.selectedIndex;
-    	conditions.options[selected] = null;
-    	if(conditions.options.length < 1 ) {
-    		document.getElementById('removecondition').display='none';
-    	}
-
-    }
     //--></script>
     <?
 
@@ -244,8 +219,6 @@ if(!isset($_POST['action'])) {
     //////////////////////////////////////////////////////////////////
 
 } elseif (isset($_POST['action']) && $_POST['action'] == "fields") {
-	print_r($_POST);
-	print_r($_GET);
 	?>
 
     <script type='text/javascript'>
@@ -262,30 +235,15 @@ if(!isset($_POST['action'])) {
 
     //-->
     </script>
-   
-    <table width='99%' align='center' style='border: 1px'>
-     <tr>
-      <td colspan='2' style='border: 1px; background-color: #cccccc; text-align: center'>
-       <form method='post' action='stats.php?sid=<? echo $_GET['sid'] ?>'>
-       <input type='hidden' name='action' value='display' />
-       <input type='hidden' name='filter[]' value='<? echo htmlentities($_POST['filter'][0], ENT_QUOTES) ?>' />
-        <? presentQuestionList($questions) ?>
-       <input type='button' value='Select All' onClick='selectAll("questions")' / >
-       <input type='submit' value='Proceed' />
-       </form>
-      </td>
-     </tr>
-     <tr>
-      <td colspan='2' style='border: 1px; background-color: #eeeeee'>
-      <? presentFilterConditions() ?>
-      </td>
-     </tr>
-    </table>
     
+    <form method='post' action='stats.php?sid=<? echo $_GET['sid'] ?>'>
+    <input type='hidden' name='action' value='display'>
 	<table width='99%' align='center' style='border: 1px'>
 	<tr>
-	<td colspan='2' style='border: 1px; background-color: #cccccc'>
+	<td colspan='2' style='text-align: center; border: 1px; background-color: #cccccc'>
 	<? presentQuestionList($questions) ?>
+	<input type='button' value='<? echo _("Select all"); ?>' onClick='selectAll("questions")'>
+	<input type='submit' value='<? echo _("Proceed"); ?>'>
 	</td>
 	</tr>
 	<tr>
@@ -294,17 +252,25 @@ if(!isset($_POST['action'])) {
 	</td>
 	</tr>
 	</table>
+	</form>
 
 
 	<?
 
 
 } elseif (isset($_POST['action']) && $_POST['action'] == "display") {
+/////////////////////////////////////////////////////////////////////
+// START OF PRESENTING RESULTS //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
 echo "<pre>";
 print_r($_POST);
 echo "</pre>";
 echo "Howdy";
 
+/////////////////////////////////////////////////////////////////////
+// END OF PRESENTING RESULTS //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 }
 
 function presentQuestionList($questions) {
@@ -312,6 +278,15 @@ function presentQuestionList($questions) {
 	// PRESENT QUESTION LIST /////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////
 	?>
+	<script type='text/javascript'>
+	<!--
+     function selectAll(item) {
+	   var element=document.getElementById(item);
+	   for (var i=0; i < element.options.length; i++) {
+	    element.options[i].selected=true;
+	   }
+	 }	
+	//--></script>
 	<table class='filter' width='99%' align='center'>
 	<tr>
 	<th>
@@ -320,7 +295,7 @@ function presentQuestionList($questions) {
 	</tr>
 	<tr>
 	<td style='text-align: center'>
-	<select multiple name='questions' size='10' onDblClick='alert(this.value)' onChange='display(this.value)'>
+	<select multiple name='questions[]' id='questions' size='10' onDblClick='alert(this.value)' onChange='display(this.value)'>
 	<?
 	$currentgroup="";
 	foreach($questions as $question) {
@@ -422,6 +397,30 @@ function presentFilterConditions() {
 	// SHOW FILTER CONDITIONS ////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////
 	?>
+	<script type='text/javascript'>
+	<!--
+	    function removeCondition() {
+    	var conditions=document.getElementById('conditions');
+    	var selected=conditions.selectedIndex;
+    	var token = "," + conditions.options[selected].value;
+    	var token2 = conditions.options[selected].value;
+    	var filter = document.getElementById('filter');
+		conditions.options[selected] = null;
+    	if(conditions.options.length < 1 ) {
+            document.getElementById('removecondition').display='none';
+    	}
+    	if(filter.value.indexOf(token) != -1) {
+		  var newfilter=filter.value.replace(token,"");
+		} else {
+		  var newfilter=filter.value.replace(token2, "");
+		}
+		filter.value=newfilter;
+		if (filter.value.indexOf(",") == 0) {
+            newfilter = filter.value.substring(1);
+            filter.value=newfilter;
+		}
+    }   
+    //--></script>
 	<table width='99%' align='center'>
 	<tr>
 	<th>
@@ -430,11 +429,13 @@ function presentFilterConditions() {
 	</tr>
 	<tr>
 	<td style='text-align: center'>
+	<input type='hidden' name='filter' id='filter' value="<? if(isset($_POST['filter'])) {echo $_POST['filter'];} ?>" />
 	<select multiple name='conditions[]' id='conditions' size='5' style='width: 600'>
 	<?
-	if(isset($_POST['conditions'])) {
-		foreach($_POST['conditions'] as $condition) {
-			echo "      <option value='$condition'>".$condition."</option>\n";
+	if(isset($_POST['filter'])) {
+	    $filters=explode(",", $_POST['filter']);
+		foreach($filters as $condition) {
+			echo "      <option value=\"$condition\">".$condition."</option>\n";
 		}
 	}
 	?>
