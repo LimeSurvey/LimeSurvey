@@ -126,6 +126,32 @@ if(!isset($_POST['action'])) {
     	?>
     	document.getElementById(value).style.display='';
     }
+<<<<<<< .mine
+     function selectAll(item) {
+	   var element=document.getElementById(item);
+	   for (var i=0; i < element.options.length; i++) {
+	    method.options[i].selected=true;
+	   }
+	 }
+	 
+     function addCondition(value) {
+       var val='VALUE'+value;
+       var type=document.getElementById(val).type;
+       var element=document.getElementById(val);
+       var meth='method'+value;
+       var method=document.getElementById(meth);
+       
+       switch(type) {
+         case 'text':
+            var sql=value+" ";
+            for(var i=0; i < method.options.length; i++) {
+              if(method.options[i].selected && method.options[i].value == "like") {
+    		    sql = sql + " LIKE '%" + element.value + "%'";
+    		  } 
+    		  if (method.options[i].selected && method.options[i].value == "equals") {
+    		    sql = sql + " = '" + element.value + "'";
+    		  }
+=======
     function addCondition(value) {
     	var val='VALUE'+value;
     	var type=document.getElementById(val).type;
@@ -143,6 +169,7 @@ if(!isset($_POST['action'])) {
     			if (method.options[i].selected && method.options[i].value == "equals") {
     				sql = sql + " = '" + element.value + "'";
     			}
+>>>>>>> .r1992
     		}
 
     		break;
@@ -155,6 +182,46 @@ if(!isset($_POST['action'])) {
     				var modifier='NOT IN';
     			}
     		}
+<<<<<<< .mine
+            var sql=value+' '+modifier+' (';
+            var r = new Array();
+            var x=0;
+            for (var i = 0; i < element.options.length; i++) {
+    		 if (element.options[i].selected) {
+              var thisvalue = element.options[i].value;
+              if(x>0) {
+    		   sql = sql+', ';
+    		  }
+              sql = sql + "'"+thisvalue+"'";
+              x++;
+             }
+            }
+            sql = sql+')';
+            break;
+       }
+       var conditions=document.getElementById('conditions');
+       concount=conditions.options.length;
+       conditions.options[concount] = new Option(sql, sql);
+       if(conditions.options.length > 0) {
+        document.getElementById('removecondition').display='';
+       }
+       var filters = new Array();
+       var filter = document.getElementById('filter');
+       for (var i = 0; i < concount+1; i++) {
+	    filters[i]=conditions.options[i].value;
+	   }
+	   filter.value=filters;
+     }
+     function removeCondition() {
+       var conditions=document.getElementById('conditions');
+       var selected=conditions.selectedIndex;
+       conditions.options[selected] = null;
+       if(conditions.options.length < 1 ) {
+        document.getElementById('removecondition').display='none';
+       }
+       
+     }
+=======
     		var sql=value+' '+modifier+' (';
     		var r = new Array();
     		var x=0;
@@ -187,6 +254,7 @@ if(!isset($_POST['action'])) {
     	}
 
     }
+>>>>>>> .r1992
     //--></script>
     <?
 
@@ -194,7 +262,7 @@ if(!isset($_POST['action'])) {
     // END OF DO JAVASCRIPT //////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
     ?>
-    <table width='99%' align='center' style='border: 1px'>
+	<table width='99%' align='center' style='border: 1px'>
     <tr>
     <td colspan='2' style='border: 1px; background-color: #cccccc' align='center'>
     <form method='post' action='stats.php?sid=<? echo $_GET['sid'] ?>'>
@@ -226,9 +294,52 @@ if(!isset($_POST['action'])) {
     //////////////////////////////////////////////////////////////////
 
 } elseif (isset($_POST['action']) && $_POST['action'] == "fields") {
+<<<<<<< .mine
+//    print_r($_POST);
+//    print_r($_GET);
+=======
 	print_r($_POST);
 	print_r($_GET);
+>>>>>>> .r1992
 	?>
+<<<<<<< .mine
+    <script type='text/javascript'>
+    <!--
+      function selectAll(item) {
+	   var element=document.getElementById(item);
+	   for (var i=0; i < element.options.length; i++) {
+	    element.options[i].selected=true;
+	   }
+	  }
+	  function display(item) {
+	   /* Just a dummy function */
+	  }
+
+    //-->
+    </script>
+   
+    <table width='99%' align='center' style='border: 1px'>
+     <tr>
+      <td colspan='2' style='border: 1px; background-color: #cccccc; text-align: center'>
+       <form method='post' action='stats.php?sid=<? echo $_GET['sid'] ?>'>
+       <input type='hidden' name='action' value='display' />
+       <input type='hidden' name='filter[]' value='<? echo htmlentities($_POST['filter'][0], ENT_QUOTES) ?>' />
+        <? presentQuestionList($questions) ?>
+       <input type='button' value='Select All' onClick='selectAll("questions")' / >
+       <input type='submit' value='Proceed' />
+       </form>
+      </td>
+     </tr>
+     <tr>
+      <td colspan='2' style='border: 1px; background-color: #eeeeee'>
+      <? presentFilterConditions() ?>
+      </td>
+     </tr>
+    </table>
+    
+    
+    <?
+=======
 	<table width='99%' align='center' style='border: 1px'>
 	<tr>
 	<td colspan='2' style='border: 1px; background-color: #cccccc'>
@@ -241,17 +352,69 @@ if(!isset($_POST['action'])) {
 	</td>
 	</tr>
 	</table>
+>>>>>>> .r1992
 
 
 	<?
 
 
 } elseif (isset($_POST['action']) && $_POST['action'] == "display") {
-
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+echo "Howdy";
 
 }
 
 function presentQuestionList($questions) {
+<<<<<<< .mine
+//////////////////////////////////////////////////////////////////
+// PRESENT QUESTION LIST /////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+    ?>
+    <table class='filter' width='99%' align='center'>
+     <tr>
+      <th>
+       <? echo _("Select question(s) from the following list") ?>
+      </th>
+     </tr>
+     <tr>
+      <td style='text-align: center'>
+       <select multiple name='questions[]' id='questions' size='10' onDblClick='alert(this.value)' onChange='display(this.value)'>
+    <?
+    $currentgroup="";
+    foreach($questions as $question) {
+      if($question['group_name'] != $currentgroup) {
+        if($currentgroup != "") {
+    	  echo "    </optgroup>\n";
+    	}
+        echo "    <optgroup label='"._("Group").": ".$question['group_name']."'>\n";
+      }
+      if(count($question['parts']) > 1) {
+        echo "     <option value=''>".$question['title'].": ".$question['question']."</option>\n";
+        foreach($question['parts'] as $qpart) {
+         $spacer="";
+    	 for($i=0; $i<=strlen($question['title'])*2; $i++) {
+    	   $spacer .= "&nbsp;";
+    	 }
+    	 echo "     <option value='".$question['sid']."X".$question['gid']."X".$question['qid'].$qpart['id']."'>".$spacer."-> ".$qpart['part']."</option>\n";
+    	}
+      } else {
+        echo "     <option value='".$question['sid']."X".$question['gid']."X".$question['qid']."'>".$question['title'].": ".$question['question']."</option>\n";
+      }
+      $currentgroup=$question['group_name'];
+    }
+    ?>
+        </optgroup>
+       </select>
+      </td>
+     </tr>
+    </table>
+    <?
+    //////////////////////////////////////////////////////////////////
+    // END OF PRESENT QUESTION LIST //////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+=======
 	//////////////////////////////////////////////////////////////////
 	// PRESENT QUESTION LIST /////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////
@@ -298,6 +461,7 @@ function presentQuestionList($questions) {
 	//////////////////////////////////////////////////////////////////
 	// END OF PRESENT QUESTION LIST //////////////////////////////////
 	//////////////////////////////////////////////////////////////////
+>>>>>>> .r1992
 }
 
 
@@ -367,6 +531,26 @@ function presentFilterConditions() {
 	//////////////////////////////////////////////////////////////////
 	?>
 	<table width='99%' align='center'>
+<<<<<<< .mine
+     <tr>
+      <th>
+       <? echo _("Filter Conditions") ?>
+      </th>
+     </tr>
+     <tr>
+      <td style='text-align: center'>
+       <input type='hidden' name='filter[]' id='filter'>
+       <select multiple name='conditions' id='conditions' size='5' style='width: 600'>
+        <?
+        if(isset($_POST['filter'])) {
+		 foreach($_POST['filter'] as $condition) {
+		  $bits=explode(",", $condition);
+		  //print_r($bits);
+		  foreach($bits as $bit) {
+		    echo "      <option value='$bit'>".$bit."</option>\n";
+		  }
+		 }
+=======
 	<tr>
 	<th>
 	<? echo _("Filter Conditions") ?>
@@ -379,6 +563,7 @@ function presentFilterConditions() {
 	if(isset($_POST['conditions'])) {
 		foreach($_POST['conditions'] as $condition) {
 			echo "      <option value='$condition'>".$condition."</option>\n";
+>>>>>>> .r1992
 		}
 	}
 	?>
