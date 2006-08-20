@@ -133,24 +133,6 @@ if(!isset($_POST['action'])) {
 	    method.options[i].selected=true;
 	   }
 	 }
-	 
-     function addCondition(value) {
-       var val='VALUE'+value;
-       var type=document.getElementById(val).type;
-       var element=document.getElementById(val);
-       var meth='method'+value;
-       var method=document.getElementById(meth);
-       
-       switch(type) {
-         case 'text':
-            var sql=value+" ";
-            for(var i=0; i < method.options.length; i++) {
-              if(method.options[i].selected && method.options[i].value == "like") {
-    		    sql = sql + " LIKE '%" + element.value + "%'";
-    		  } 
-    		  if (method.options[i].selected && method.options[i].value == "equals") {
-    		    sql = sql + " = '" + element.value + "'";
-    		  }
 
     function addCondition(value) {
     	var val='VALUE'+value;
@@ -170,7 +152,6 @@ if(!isset($_POST['action'])) {
     				sql = sql + " = '" + element.value + "'";
     			}
     		}
-
     		break;
     		case 'select-multiple':
     		for(var i=0; i < method.options.length; i++) {
@@ -220,29 +201,6 @@ if(!isset($_POST['action'])) {
        
      }
 
-    		var sql=value+' '+modifier+' (';
-    		var r = new Array();
-    		var x=0;
-    		for (var i = 0; i < element.options.length; i++) {
-    			if (element.options[i].selected) {
-    				var thisvalue = element.options[i].value;
-    				if(x>0) {
-    					sql = sql+', ';
-    				}
-    				sql = sql + "'"+thisvalue+"'";
-    				x++;
-    			}
-    		}
-    		sql = sql+')';
-    		break;
-    	}
-    	var conditions=document.getElementById('conditions');
-    	concount=conditions.options.length;
-    	conditions.options[concount] = new Option(sql, sql);
-    	if(conditions.options.length > 0) {
-    		document.getElementById('removecondition').display='';
-    	}
-    }
     function removeCondition() {
     	var conditions=document.getElementById('conditions');
     	var selected=conditions.selectedIndex;
@@ -350,53 +308,6 @@ echo "Howdy";
 }
 
 function presentQuestionList($questions) {
-//////////////////////////////////////////////////////////////////
-// PRESENT QUESTION LIST /////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-    ?>
-    <table class='filter' width='99%' align='center'>
-     <tr>
-      <th>
-       <? echo _("Select question(s) from the following list") ?>
-      </th>
-     </tr>
-     <tr>
-      <td style='text-align: center'>
-       <select multiple name='questions[]' id='questions' size='10' onDblClick='alert(this.value)' onChange='display(this.value)'>
-    <?
-    $currentgroup="";
-    foreach($questions as $question) {
-      if($question['group_name'] != $currentgroup) {
-        if($currentgroup != "") {
-    	  echo "    </optgroup>\n";
-    	}
-        echo "    <optgroup label='"._("Group").": ".$question['group_name']."'>\n";
-      }
-      if(count($question['parts']) > 1) {
-        echo "     <option value=''>".$question['title'].": ".$question['question']."</option>\n";
-        foreach($question['parts'] as $qpart) {
-         $spacer="";
-    	 for($i=0; $i<=strlen($question['title'])*2; $i++) {
-    	   $spacer .= "&nbsp;";
-    	 }
-    	 echo "     <option value='".$question['sid']."X".$question['gid']."X".$question['qid'].$qpart['id']."'>".$spacer."-> ".$qpart['part']."</option>\n";
-    	}
-      } else {
-        echo "     <option value='".$question['sid']."X".$question['gid']."X".$question['qid']."'>".$question['title'].": ".$question['question']."</option>\n";
-      }
-      $currentgroup=$question['group_name'];
-    }
-    ?>
-        </optgroup>
-       </select>
-      </td>
-     </tr>
-    </table>
-    <?
-    //////////////////////////////////////////////////////////////////
-    // END OF PRESENT QUESTION LIST //////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-
 	//////////////////////////////////////////////////////////////////
 	// PRESENT QUESTION LIST /////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////
@@ -512,26 +423,6 @@ function presentFilterConditions() {
 	//////////////////////////////////////////////////////////////////
 	?>
 	<table width='99%' align='center'>
-     <tr>
-      <th>
-       <? echo _("Filter Conditions") ?>
-      </th>
-     </tr>
-     <tr>
-      <td style='text-align: center'>
-       <input type='hidden' name='filter[]' id='filter'>
-       <select multiple name='conditions' id='conditions' size='5' style='width: 600'>
-        <?
-        if(isset($_POST['filter'])) {
-		 foreach($_POST['filter'] as $condition) {
-		  $bits=explode(",", $condition);
-		  //print_r($bits);
-		  foreach($bits as $bit) {
-		    echo "      <option value='$bit'>".$bit."</option>\n";
-		  }
-		 }
-		}
-        ?>
 	<tr>
 	<th>
 	<? echo _("Filter Conditions") ?>
