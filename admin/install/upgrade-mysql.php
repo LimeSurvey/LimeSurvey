@@ -13,7 +13,6 @@ function db_upgrade($oldversion) {
       modify_database("","ALTER TABLE `prefix_questions` ADD `question_language` varchar(20) default 'en'");
       modify_database("","ALTER TABLE `prefix_groups` ADD `group_language` varchar(20) default 'en'");
       modify_database("","ALTER TABLE `prefix_labels` ADD `label_language` varchar(20) default 'en'");
-      modify_database("","ALTER TABLE `prefix_questions` ADD `question_language` varchar(20) default 'en'");
       modify_database("","UPDATE `prefix_settings_global` SET stg_value='109' where stg_name ='DBVersion'");
     }
 

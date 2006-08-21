@@ -621,9 +621,9 @@ echo "></font>\n"
 ."</td>\n"
 ."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
 ."<form enctype='multipart/form-data' name='importsurvey' action='templates.php' method='post'>\n"
-."<table><tr $btstyle> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
+."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
 ."<input name=\"the_file\" type=\"file\" size=\"7\"><br />"
-."<input type='submit' value='"._("Upload")."' $btstyle";
+."<input type='submit' value='"._("Upload")."'";
 if ($templatename == "default") {
 	echo " disabled";
 }
@@ -660,7 +660,7 @@ foreach($myoutput as $line) {
 	fwrite($fnew, $line);
 }
 fclose($fnew);
-$langdir_template="$homeurl/lang/$currentadminlang";
+$langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
 echo "<br />\n"
 ."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
 ."<br />&nbsp;<br />"
