@@ -114,7 +114,7 @@ $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 $siteadminemail     =   "your@email.org"; // The default email address of the site administrator
 $siteadminname      =   "Your Name";      // The name of the site administrator
 
-$emailmethod        =   "smtp";           // The following values can be used:
+$emailmethod        =   "mail";           // The following values can be used:
 									      // mail      -  use internal PHP Mailer
                                           // sendmail  -  use Sendmail Mailer
                                           // smtp      -  use SMTP relaying
