@@ -453,7 +453,6 @@ function getMaxgrouporder($surveyid)
 	global $surveyid, $dbprefix ;
 	$max_sql = "SELECT max( group_order ) AS max FROM {$dbprefix}groups WHERE sid =$surveyid" ;
 	$max_result =db_execute_assoc($max_sql) ;
-	if isset
 	$maxrow = $max_result->FetchRow() ;
 	$current_max = $maxrow['max'];
 	if($current_max=="")
