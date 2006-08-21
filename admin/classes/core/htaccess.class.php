@@ -68,7 +68,7 @@ class htaccess{
         if($isAlready==false){
             $file=fopen($this->fPasswd,"a");
             
-			if(strtolower(substr($_ENV["OS"],0,7))!="windows"){
+            if (PHP_OS == "WIN32" || PHP_OS == "WINNT") {
 				$password=crypt($password);
 			}
             
@@ -98,7 +98,7 @@ class htaccess{
     */
     function delUser($username){
         // Reading names from file
-        $file=fopen($path.$this->fPasswd,"r");
+        $file=fopen($this->fPasswd,"r");
         $i=0;
         while($line=fgets($file,200)){
             $lineArr=explode(":",$line);
@@ -114,14 +114,14 @@ class htaccess{
 
         // Writing names back to file (without the user to delete)
         unlink($this->fPasswd);
-        $file=fopen($path.$this->fPasswd,"w");
+        $file=fopen($this->fPasswd,"w");
         foreach ($newUserlist as $newUser)
         {
         	fputs($file,$newUser[0].":".$newUser[1]);
         }
         fclose($file);
         
-        if($deleted==true){
+        if(isset($deleted)){
             return true;
         }else{
             return false;
