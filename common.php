@@ -658,6 +658,7 @@ function getuserlist()
 	global $dbprefix, $connect;
 	$uquery = "SELECT * FROM ".db_table_name('users')." ORDER BY user";
 	$uresult = db_execute_assoc($uquery);
+	$userlist = array();
 	while ($urow = $uresult->FetchRow())
 	{
 		$userlist[] = array("user"=>$urow['user'], "password"=>$urow['password'], "security"=>$urow['security']);
@@ -783,10 +784,9 @@ function checksecurity()
 	$ht = new htaccess("$homedir/.htaccess","$homedir/.htpasswd");
 
 	$users=$ht->getUsers();
-	//$realusers[] = "DUMMYRECORD";
+
 	foreach ($users as $htp)
 	{
-		list ($fuser, $fpass) = split(":", $htp);
 		$realusers[] = $htp[0];
 	}
 
