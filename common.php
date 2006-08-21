@@ -450,9 +450,10 @@ function getQuestionSum($surveyid)
 */
 function getMaxgrouporder($surveyid)
 {
-	global $surveyid ;
-	$max_sql = "SELECT max( group_order ) AS max FROM groups WHERE sid =$surveyid" ;
+	global $surveyid, $dbprefix ;
+	$max_sql = "SELECT max( group_order ) AS max FROM {$dbprefix}groups WHERE sid =$surveyid" ;
 	$max_result =db_execute_assoc($max_sql) ;
+	if isset
 	$maxrow = $max_result->FetchRow() ;
 	$current_max = $maxrow['max'];
 	if($current_max=="")
@@ -468,8 +469,8 @@ function getMaxgrouporder($surveyid)
 */
 function getMaxquestionorder($gid)
 {
-	global $surveyid ;
-	$max_sql = "SELECT max( question_order ) AS max FROM questions WHERE gid='$gid'" ;
+	global $surveyid, $dbprefix ;
+	$max_sql = "SELECT max( question_order ) AS max FROM {$dbprefix}questions WHERE gid='$gid'" ;
 	$max_result =db_execute_assoc($max_sql) ;
 	$maxrow = $max_result->FetchRow() ;
 	$current_max = $maxrow['max'];
