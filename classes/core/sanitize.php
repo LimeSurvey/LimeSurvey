@@ -91,7 +91,7 @@ function nice_addslashes($string)
 function my_utf8_decode($string)
 {
 return strtr($string,
-  "???????¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ",
+  "???????¥     Ä        Ä                 á                     °··  ˜ ",
   "SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy");
 }
 
@@ -268,8 +268,5 @@ function check($input, $flags, $min='', $max='')
     return FALSE;
   return TRUE;
 }
-
-// testing
-include "test.php"
 
 ?>

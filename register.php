@@ -96,9 +96,9 @@ while ($insert != "OK")
 $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
 . "(`firstname`, `lastname`, `email`, `token`, `attribute_1`, `attribute_2`)\n"
 . "VALUES (?, ?, ?, ?, ?, ?)";
-$result = $connect->Execute($query, returnglobal('register_firstname'), returnglobal('register_lastname'),
+$result = $connect->Execute($query, array(returnglobal('register_firstname'), returnglobal('register_lastname'),
 returnglobal('register_email'), $newtoken,
-returnglobal('register_attribute1'), returnglobal('register_attribute2')
+returnglobal('register_attribute1'), returnglobal('register_attribute2'))
 ) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
 $tid=$connect->Insert_ID();
 

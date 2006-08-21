@@ -49,6 +49,7 @@ require_once (dirname(__FILE__).'/classes/adodb/adodb.inc.php');
 require_once (dirname(__FILE__).'/classes/phpmailer/class.phpmailer.php');
 require_once (dirname(__FILE__).'/classes/php-gettext/gettextinc.php');
 require_once (dirname(__FILE__).'/classes/core/surveytranslator.php');
+require_once (dirname(__FILE__).'/classes/core/sanitize.php');
 
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
@@ -825,7 +826,7 @@ function checkforupgrades()
 
 	if ($databasetype=='mysql')
 	{
-		if (!sql_table_exists('settings_global', $tables)) {mysqlcheckfields();}
+		if (!sql_table_exists($dbprefix.'settings_global', $tables)) {mysqlcheckfields();}
 		else  // now check if there is a dbversion
 		{
 			$usquery = 'SELECT stg_value FROM '.$dbprefix.'settings_global where stg_name="DBVersion"';
