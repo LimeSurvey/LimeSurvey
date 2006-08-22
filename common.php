@@ -37,7 +37,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
-$versionnumber = "1.08a";
+$versionnumber = "1.08a2";
 $dbversionnumber = 109;
 
 ##################################################################################

@@ -43,7 +43,7 @@ $databasename       =   "phpsurveyor"; // The name of the database that we will 
 $databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
 $databasetabletype  =   "MyISAM";      // Default mySQL table type (only used if creating db automatically through script -eg "MyISAM" or "InnoDB"
-$dbprefix           =   "phpsv_";            // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
+$dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
 
 $useidprefix        =   0;             // Set this to 1 if you want to use a prefix on survey responses (useful for replicated/pooled databases)
