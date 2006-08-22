@@ -488,7 +488,7 @@ if ($action == "browse" || $action == "search")
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
 	$bquery .= " LIMIT $start, $limit";
-	$bresult = db_execute_num($bquery) or die (_("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bresult = db_execute_assoc($bquery) or die (_("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bgc="";
 
 	echo "<tr><td colspan='2'>\n"
@@ -543,18 +543,18 @@ if ($action == "browse" || $action == "search")
 
 	while ($brow = $bresult->FetchRow())
 	{
-	$brow['token'] = trim($brow['token']);
+    	$brow['token'] = trim($brow['token']);
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
 		echo "\t<tr bgcolor='$bgc'>\n";
-		for ($i=0; $i<=$bfieldcount; $i++)
+		foreach ($brow as $a=>$b)
 		{
-			echo "\t\t<td>$setfont$brow[$i]</font></td>\n";
+			echo "\t\t<td>$setfont$brow[$a]</font></td>\n";
 		}
 		echo "\t\t<td align='left'>\n"
 		."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='E' title='"
-		._("Edit Token Entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=edit&amp;tid=$brow[0]', '_top')\" />"
+		._("Edit Token Entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=edit&amp;tid=".$brow['tid']."', '_top')\" />"
 		."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
-		._("Delete Token Entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=delete&amp;tid=$brow[0]&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
+		._("Delete Token Entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
 
 		if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='"._("Do Survey")."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
 		echo "\n\t\t</td>\n";
@@ -597,7 +597,7 @@ if ($action == "browse" || $action == "search")
 		{
 			echo "\t\t<td align='center' valign='top'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='I' title='"
-			._("Send invitation email to this entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=email&amp;tid=$brow[0]', '_top')\" />"
+			._("Send invitation email to this entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=email&amp;tid=".$brow['tid']."', '_top')\" />"
 			."\t\t</td>\n";
 		}
 

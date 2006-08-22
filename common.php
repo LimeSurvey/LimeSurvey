@@ -324,7 +324,8 @@ function &db_execute_num($sql,$inputarr=false)
 	global $connect;
 
 	$connect->SetFetchMode(ADODB_FETCH_NUM);
-	return $connect->Execute($sql,$inputarr);
+	$dataset=$connect->Execute($sql,$inputarr);
+	return $dataset;
 }
 
 function &db_execute_assoc($sql,$inputarr=false)
@@ -332,7 +333,8 @@ function &db_execute_assoc($sql,$inputarr=false)
 	global $connect;
 
 	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
-	return $connect->Execute($sql,$inputarr);
+	$dataset=$connect->Execute($sql,$inputarr);
+	return $dataset;
 }
 
 function db_quote_id($id)
@@ -845,7 +847,7 @@ function checkforupgrades()
 
 function checkfortables()
 {
-	global $scriptname, $btstyle, $dbprefix, $setfont, $connect;
+	global $scriptname, $dbprefix, $setfont, $connect;
 	$alltables=array("{$dbprefix}surveys",
 	"{$dbprefix}groups",
 	"{$dbprefix}questions",

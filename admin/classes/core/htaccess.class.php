@@ -68,7 +68,7 @@ class htaccess{
         if($isAlready==false){
             $file=fopen($this->fPasswd,"a");
             
-            if (PHP_OS == "WIN32" || PHP_OS == "WINNT") {
+            if (!PHP_OS == "WIN32" && !PHP_OS == "WINNT") {
 				$password=crypt($password);
 			}
             

@@ -880,7 +880,7 @@ if (returnglobal('viewanswer'))
 		. "\t\t<td align='center' width='10%'>";
 		if (($activated == "Y" && ($qtype == "L" || $qtype =="!")) || ($activated == "N"))
 		{
-			$vasummary .= "\t\t\t<select name='default' $btstyle>\n"
+			$vasummary .= "\t\t\t<select name='default' >\n"
 			. "\t\t\t\t<option value='Y'";
 			if ($cdrow['default_value'] == "Y") {$vasummary .= " selected";};
 			$vasummary .= ">"._("Yes")."</option>\n"
@@ -934,7 +934,7 @@ if (returnglobal('viewanswer'))
 		. "\t\t<td align='center' width='50%'><input name='answer' type='text' size='50'>\n"
 		. "\t\t<input name='sortorder' type='hidden' value='$position'></td>\n"
 		. "\t\t<td align='center' width='10%'>"
-		. "\t\t\t<select name='default' $btstyle>\n"
+		. "\t\t\t<select name='default' >\n"
 		. "\t\t\t\t<option value='Y'>"._("Yes")."</option>\n"
 		. "\t\t\t\t<option value='N' selected>"._("No")."</option>\n"
 		. "\t\t\t</select></td>\n"
@@ -1487,7 +1487,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
                           <tr>  			  
 						  <td nowrap width='50%' ><select id='QTlist' name='attribute_name' >
 						  </select></td><td align='center' width='20%'><input type='text' id='QTtext' size='6' name='attribute_value' ></td>
-						  <td align='center'><input type='submit' value='"._("Add")."' $btstyle>
+						  <td align='center'><input type='submit' value='"._("Add")."' >
 						  <input type='hidden' name='action' value='addattribute'>
 						  <input type='hidden' name='sid' value='$surveyid'>
 					      <input type='hidden' name='qid' value='$qid'>

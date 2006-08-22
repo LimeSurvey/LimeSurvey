@@ -2112,7 +2112,7 @@ else
 		}
 		echo "\t<tr>\n";
 		echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-		echo "\t\t\t<input type='submit' value='"._("submit")."' $btstyle/>\n";
+		echo "\t\t\t<input type='submit' value='"._("submit")."' />\n";
 		echo "\t\t</font></td>\n";
 		echo "\t</tr>\n";
 	}

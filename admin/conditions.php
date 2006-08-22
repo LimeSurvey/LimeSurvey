@@ -691,7 +691,7 @@ echo "\t<tr><td colspan='3'></td></tr>\n"
 ."\t\t</td>\n";
 echo "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
 ."\t\t<tr><td colspan='3' align='center'>\n"
-."\t\t\t<input type='submit' value='"._("Close Window")."' onClick=\"window.close()\" $btstyle>\n"
+."\t\t\t<input type='submit' value='"._("Close Window")."' onClick=\"window.close()\" >\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
 echo "\t<tr><td colspan='3'></td></tr>\n"

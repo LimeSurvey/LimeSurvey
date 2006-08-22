@@ -87,7 +87,6 @@ unset($rows);
 //////////////////////////////////////////////////////////////////
 
 sendcacheheaders();
-$slstyle2 = "style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080; width: 150'";
 $surveyoptions=browsemenubar();
 echo $htmlheader;
 ?>

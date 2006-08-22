@@ -498,7 +498,7 @@ elseif ($action == "all")
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt=''>\n"
 	."\t\t\t"._("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit'>\n"
 	."\t\t\t"._("Starting From:")."<input type='text' size='4' value='$start' name='start'>\n"
-	."\t\t\t<input type='submit' value='"._("Show")."' $btstyle>\n"
+	."\t\t\t<input type='submit' value='"._("Show")."'>\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t\t<input type='hidden' name='action' value='all'>\n");

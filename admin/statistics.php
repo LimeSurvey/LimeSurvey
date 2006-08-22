@@ -865,13 +865,13 @@ if (isset($_POST['display']) && $_POST['display'])
 	{
 		echo "\t<tr>"
 		."\t\t<td align='right' width='50%'><form action='browse.php' method='post' target='_blank'>\n"
-		."\t\t<input type='submit' value='Browse' $btstyle>\n"
+		."\t\t<input type='submit' value='Browse' >\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n"
 		."\t\t\t<input type='hidden' name='action' value='all'>\n"
 		."\t\t</form>\n"
 		."\t\t<td width='50%'><form action='export.php' method='post' target='_blank'>\n"
-		."\t\t<input type='submit' value='Export' $btstyle>\n"
+		."\t\t<input type='submit' value='Export' >\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n";
 		//Add the fieldnames
