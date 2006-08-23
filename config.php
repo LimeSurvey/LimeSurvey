@@ -150,4 +150,5 @@ $embedded_footerfunc = "";      // e.g. COM_siteFooter for geeklog
 //DO NOT CHANGE BELOW HERE --------------------
 
 require_once(dirname(__FILE__).'/common.php');
+$dbprefix = sanitize_sql_db_tablename($dbprefix);
 ?>
