@@ -6,8 +6,8 @@ $locale = new phpsurveyor_lang('en'); // Char code
 print $locale->getTranslation("Hello World!");
 */
 
-require_once(dirname(__FILE__).'/classes/php-gettext/gettext.php');
-require_once(dirname(__FILE__).'/classes/php-gettext/streams.php');
+require_once(dirname(__FILE__).'/../php-gettext/gettext.php');
+require_once(dirname(__FILE__).'/../php-gettext/streams.php');
 
 class phpsurveyor_lang {
 
