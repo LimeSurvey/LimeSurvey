@@ -1320,9 +1320,10 @@ if ($action == "copyquestion")
 			. "\t\t<input type='hidden' name='action' value='copynewquestion'>\n"
 			. "\t\t<input type='hidden' name='sid' value='$sid' />\n"
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
+			. "\t\t<input type='hidden' name='gid' value='$gid' />\n"
 			. "\t</form></tr>\n"
 			. "</table>\n";
-		}
+		} 
 		else
 		{
 

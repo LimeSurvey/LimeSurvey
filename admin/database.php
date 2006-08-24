@@ -47,6 +47,21 @@ function db_quote($str)
 	return $connect->escape($str);
 }
 
+/*
+ * Gets the maximum question_order field value for a group
+ * @gid: The id of the group
+ */
+function get_max_order($gid)
+{
+	global $connect ; 
+	global $dbprefix ; 
+	$query="SELECT MAX(question_order) as max FROM {$dbprefix}questions where gid=".$gid ; 
+	//$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
+	$result = $connect->Execute($query) or die($query);
+	$gv = $result->FetchRow();
+	return $gv['max'];
+}
+
 
 if ($action == "delattribute")
 {
@@ -216,6 +231,7 @@ elseif ($action == "insertnewquestion")
 		if (!$result)
 		{
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+			
 		}
 		else
 		{
@@ -340,12 +356,16 @@ elseif ($action == "copynewquestion")
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
-		$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
-		$result = $connect->Execute($query);
+		//Get maximum order from the question group
+		$max=get_max_order($_POST['gid'])+1 ; 
+		
+		$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, question_order) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max)";
+		$result = $connect->Execute($query) or die($connect->ErrorMsg());
 		$newqid = $connect->Insert_ID();
 		if (!$result)
 		{
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
+			
 		}
 		if (returnglobal('copyanswers') == "Y")
 		{
