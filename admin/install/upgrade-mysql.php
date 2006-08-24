@@ -200,7 +200,7 @@ foreach ($alltables as $at)
     if (!in_array($at, $tablelist))
         {
         //Create table
-        $ctquery="CREATE TABLE `$at` (\n";
+        $ctquery="CREATE TABLE ".db_quote_id($at)." (\n";
         foreach ($allfields as $af)
             {
             if ($af[0] == $at)
@@ -251,7 +251,7 @@ foreach ($tablenames as $tn)
 
 convertquestionorder();
 convertgrouporder();
-modify_database('','insert prefix_settings_global values("DBVersion","108")');
+modify_database('','insert '.db_table_name("settings_global").' values("DBVersion","108")');
 
 echo "</font></font></font></td></tr>\n";
 echo "<tr><td align='center' bgcolor='#CCCCCC'>\n";
@@ -266,10 +266,10 @@ echo getAdminFooter("$langdir/instructions.html", "Using PHPSurveyors Admin Scri
 function convertgrouporder() //Function rewrites the grouporder for complete db
 {
 	global $dbprefix, $connect;
-	$tabsurvey = db_execute_assoc("SELECT sid from ".$dbprefix."surveys");
+	$tabsurvey = db_execute_assoc("SELECT sid from ".db_table_name("surveys"));
 	while ($surveyrow=$tabsurvey->FetchRow())
 	{
-      $tabgroups = db_execute_assoc("SELECT * from ".$dbprefix."groups where sid=".$surveyrow['sid']." order by group_name");
+      $tabgroups = db_execute_assoc("SELECT * from ".db_table_name("groups")." where sid=".$surveyrow['sid']." order by group_name");
       $icount=0;
       while ($grouprow=$tabgroups->FetchRow())
       {
@@ -284,10 +284,10 @@ function convertgrouporder() //Function rewrites the grouporder for complete db
 function convertquestionorder() //Function rewrites the question_order for complete db
 {
 	global $dbprefix, $connect;
-	$tabsurvey = db_execute_assoc("SELECT gid from ".$dbprefix."groups");
+	$tabsurvey = db_execute_assoc("SELECT gid from ".db_table_name("groups"));
 	while ($surveyrow=$tabsurvey->FetchRow())
 	{
-      $tabgroups = db_execute_assoc("SELECT qid from ".$dbprefix."questions where gid=".$surveyrow['gid']." order by title");
+      $tabgroups = db_execute_assoc("SELECT qid from ".db_table_name("questions")." where gid=".$surveyrow['gid']." order by title");
       $icount=0;
       while ($grouprow=$tabgroups->FetchRow())
       {
@@ -302,7 +302,7 @@ function checktable($tablename)
     {
     global $databasename, $allfields, $connect;
     echo "<strong>-></strong>"._("Checking")." <strong>$tablename</strong>..<br />";
-    $fieldnames = array_values($connect->MetaColumnNames($tablename, true));
+    $fieldnames = array_values($connect->MetaColumnNames(db_quote_id($tablename), true));
     foreach ($allfields as $af)
         {
         if ($af[0] == $tablename)

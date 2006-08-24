@@ -831,7 +831,7 @@ function checkforupgrades()
 		if (!sql_table_exists($dbprefix.'settings_global', $tables)) {mysqlcheckfields();}
 		else  // now check if there is a dbversion
 		{
-			$usquery = 'SELECT stg_value FROM '.$dbprefix.'settings_global where stg_name="DBVersion"';
+			$usquery = 'SELECT stg_value FROM '.db_table_name("settings_global").' where stg_name="DBVersion"';
 			$usresult = db_execute_assoc($usquery);
 			if ($usresult->RecordCount()==0) {mysqlcheckfields();}
              else

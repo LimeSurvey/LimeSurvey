@@ -40,7 +40,7 @@ if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 if ($action == "listsurveys")
 {
 
-	$query = "SELECT * FROM {$dbprefix}surveys";
+	$query = "SELECT * FROM ".db_table_name('surveys');
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
 	if($result->RecordCount() > 0) {
@@ -97,13 +97,13 @@ if ($action == "listsurveys")
 if ($action == "checksettings" || $action == "changelang")
 {
 	//GET NUMBER OF SURVEYS
-	$query = "SELECT sid FROM {$dbprefix}surveys";
+	$query = "SELECT sid FROM ".db_table_name('surveys');
 	$result = $connect->Execute($query);
 	$surveycount=$result->RecordCount();
-	$query = "SELECT sid FROM {$dbprefix}surveys WHERE active='Y'";
+	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
 	$result = $connect->Execute($query);
 	$activesurveycount=$result->RecordCount();
-	$query = "SELECT user FROM {$dbprefix}users";
+	$query = "SELECT user FROM ".db_table_name('users');
 	$result = $connect->Execute($query);
 	$usercount = $result->RecordCount();
 	$tablelist = $connect->MetaTables();
@@ -270,13 +270,13 @@ if ($surveyid)
 	. "\t\t}\n"
 	. "-->\n"
 	. "</script>\n";
-	$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid"; //Getting a count of questions for this survey
+	$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid"; //Getting a count of questions for this survey
 	$sumresult3 = $connect->Execute($sumquery3);
 	$sumcount3 = $sumresult3->RecordCount();
-	$sumquery2 = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid"; //Getting a count of groups for this survey
+	$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid"; //Getting a count of groups for this survey
 	$sumresult2 = $connect->Execute($sumquery2);
 	$sumcount2 = $sumresult2->RecordCount();
-	$sumquery1 = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid"; //Getting data for this survey
+	$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid"; //Getting data for this survey
 	$sumresult1 = db_execute_assoc($sumquery1);
 	$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($s1row = $sumresult1->FetchRow())
@@ -573,10 +573,10 @@ if ($surveyid)
 
 if ($gid)
 {
-	$sumquery4 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid"; //Getting a count of questions for this survey
+	$sumquery4 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid"; //Getting a count of questions for this survey
 	$sumresult4 = $connect->Execute($sumquery4);
 	$sumcount4 = $sumresult4->RecordCount();
-	$grpquery ="SELECT * FROM {$dbprefix}groups WHERE gid=$gid ORDER BY {$dbprefix}groups.group_order";
+	$grpquery ="SELECT * FROM ".db_table_name('groups')." WHERE gid=$gid ORDER BY {$dbprefix}groups.group_order";
 	$grpresult = db_execute_assoc($grpquery);
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = $grpresult->FetchRow())
@@ -677,10 +677,10 @@ if ($gid)
 if ($qid)
 {
 	//Show Question Details
-	$qrq = "SELECT * FROM {$dbprefix}answers WHERE qid=$qid ORDER BY sortorder, answer";
+	$qrq = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid ORDER BY sortorder, answer";
 	$qrr = $connect->Execute($qrq);
 	$qct = $qrr->RecordCount();
-	$qrquery = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid AND sid=$surveyid AND qid=$qid";
+	$qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid";
 	$qrresult = db_execute_assoc($qrquery) or die($qrquery."<br />".$connect->ErrorMsg());
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = $qrresult->FetchRow())
@@ -829,13 +829,13 @@ if ($qid)
 if (returnglobal('viewanswer'))
 {
 	echo keycontroljs();
-	$qquery = "SELECT type FROM {$dbprefix}questions WHERE qid=$qid";
+	$qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid";
 	$qresult = db_execute_assoc($qquery);
 	while ($qrow=$qresult->FetchRow()) {$qtype=$qrow['type'];}
 	if (!isset($_POST['ansaction']))
 	{
 		//check if any nulls exist. If they do, redo the sortorders
-		$caquery="SELECT * FROM {$dbprefix}answers WHERE qid=$qid AND sortorder is null";
+		$caquery="SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND sortorder is null";
 		$caresult=$connect->Execute($caquery);
 		$cacount=$caresult->RecordCount();
 		if ($cacount)

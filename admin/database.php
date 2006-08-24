@@ -647,7 +647,7 @@ elseif ($action == "insertnewsurvey")
 		do
 		{
 			$surveyid = getRandomID();
-			$isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$surveyid";
+			$isquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 			$isresult = db_execute_assoc($isquery);
 		}
 		while ($isresult->RecordCount()>0);
