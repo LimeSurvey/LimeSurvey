@@ -450,7 +450,7 @@ function mandatory_popup($ia, $notanswered=null)
 		//POPUP WARNING
 		if (!isset($mandatorypopup) && ($ia[4] == "T" || $ia[4] == "S" || $ia[4] == "U"))
 		{
-			$popup="<script type=\"text/javascript\">\n<!--\n alert(\""._MANDATORY_POPUP_TEXT."\")\n //-->\n</script>\n";
+			$popup="<script type=\"text/javascript\">\n<!--\n alert(\""._('You cannot proceed until you enter some text for one or more questions.')."\")\n //-->\n</script>\n";
 			$mandatorypopup="Y";
 		}else
 		{
