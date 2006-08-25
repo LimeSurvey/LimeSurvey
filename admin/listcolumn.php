@@ -68,9 +68,9 @@ if ($order == "alpha")
 $result=db_execute_assoc($query) or die("Error with query: ".$query."<br />".$connect->ErrorMsg());
 echo "<html><body topmargin='0' leftmargin='0' bgcolor='black'>\n";
 echo "<table width='98%' align='center' border='1' bordercolor='#111111' cellspacing='0' bgcolor='white'>\n";
-echo "<tr><td bgcolor='black' valign='top'><input type='image' src='./images/DownArrow.gif' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
-echo "<td bgcolor='black' valign='top'><input type='image' align='right' src='./images/close.gif' onclick='window.close()'>";
-echo "<input type='image' src='./images/DownArrow.gif' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=alpha', '_top')\">";
+echo "<tr><td bgcolor='black' valign='top'><input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
+echo "<td bgcolor='black' valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()'>";
+echo "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=alpha', '_top')\">";
 echo "</td></tr>\n";
 while ($row=$result->FetchRow())
 {

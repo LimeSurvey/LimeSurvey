@@ -256,7 +256,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 }
 
 #Lookup the names of the attributes
-$query = "SELECT attribute1, attribute2 FROM {$dbprefix}surveys WHERE sid=$surveyid";
+$query = "SELECT attribute1, attribute2 FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Couldn't execute query: <br />$query<br />".$connect->ErrorMsg());
 $row = $result->FetchRow();
 if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_("Attribute 1");}
@@ -570,8 +570,8 @@ if ($action == "browse" || $action == "search")
 			."\t\t<input type='hidden' name='sql' value=\"token='{$brow['token']}'\" />\n"
 			."\t\t</form>\n";
 
-			// TLR Add an UPDATE button to the tokens display in the MPID Actions column
-			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='$brow[4]'";
+			// UPDATE button to the tokens display in the MPID Actions column
+			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."'";
 			$result=db_execute_num($query) or die ("<br />Could not find token!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 			list($id) = $result->FetchRow();
 			if  ($id)
@@ -589,9 +589,6 @@ if ($action == "browse" || $action == "search")
 			}
 		}
 
-		// TLR change to put date into sent and completed
-		//	elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] != "Y")
-		//	elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] == "N")
 		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N")
 
 		{
@@ -601,9 +598,6 @@ if ($action == "browse" || $action == "search")
 			."\t\t</td>\n";
 		}
 
-		// TLR change to put date into sent and completed
-		//	elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] == "Y")
-		//	elseif ($brow['completed'] != "Y" && $brow['token'] && $brow['sent'] != "N")
 		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N")
 
 		{
@@ -761,8 +755,7 @@ if (returnglobal('action') == "email")
 
 				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename))
 				{
-					// TLR change to put date into sent and completed
-					//		$udequery = "UPDATE {$dbprefix}tokens_{$_POST['sid']} SET sent='Y' WHERE tid={$emrow['tid']}";
+					// Put date into sent and completed
 					$today = date("Y-m-d H:i");
 					$udequery = "UPDATE ".db_table_name("tokens_{$_POST['sid']}")."\n"
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
@@ -1184,7 +1177,7 @@ if ($action == _("Add"))
 		$data['attribute_1'] = $_POST['attribute1'];
 		$data['attribute_2'] = $_POST['attribute2'];
 	}
-    $tblInsert="{$dbprefix}tokens_$surveyid";
+    $tblInsert=db_table_name('tokens_'.$surveyid);
 	$inquery = $connect->GetInsertSQL($tblInsert, $data);
 	$inresult = $connect->Execute($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	echo "<br />$setfont<font color='green'><strong>"._("Success")."</strong></font><br />\n"

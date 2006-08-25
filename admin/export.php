@@ -276,7 +276,9 @@ if (!$style)
 			."<input type='checkbox' name='last_name' id='last_name'>"
 			."<label for='last_name'>"._("Last Name")."</label><br />\n"
 			."<input type='checkbox' name='email_address' id='email_address'>"
-			."<label for='email_address'>"._("Email")."</label><br />\n";
+			."<label for='email_address'>"._("Email")."</label><br />\n"
+			."<input type='checkbox' name='token' id='token'>"
+			."<label for='token'>"._("Token")."</label><br />\n";
 			$query = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
 			$result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
 			$rowcount = $result->FieldCount();
@@ -361,6 +363,10 @@ if (isset($_POST['email_address']) && $_POST['email_address']=="on")
 {
 	$dquery .= ", {$dbprefix}tokens_$surveyid.email";
 }
+if (isset($_POST['token']) && $_POST['token']=="on")
+{
+	$dquery .= ", {$dbprefix}tokens_$surveyid.token";
+}
 if (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on")
 {
 	$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_1";
@@ -370,14 +376,13 @@ if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
 	$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_2";
 }
 $dquery .= " FROM $surveytable";
-if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on") || (isset($_POST['email_address']) && $_POST['email_address']=="on"))
+if ((isset($_POST['first_name']) && $_POST['first_name']=="on")  || (isset($_POST['token']) && $_POST['token']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on") || (isset($_POST['email_address']) && $_POST['email_address']=="on"))
 {
 	$dquery .= ""
 	. " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
 	. " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 }
 $dquery .=" ORDER BY id LIMIT 1";
-echo $dquery;
 $dresult = $connect->Execute($dquery) or die(_("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 $fieldcount = $dresult->FieldCount();
 $firstline="";
@@ -405,12 +410,12 @@ for ($i=0; $i<$fieldcount; $i++)
 		{
 			if ($style == "abrev")
 			{
-				if ($type == "csv") {$firstline .= "\""._("Token")."\"$s";}
+				if ($type == "csv") {$firstline .= "\""._("Token")."\"$separator";}
 				else {$firstline .= _("Token")."$separator";}
 			}
 			else
 			{
-				if ($type == "csv") {$firstline .= "\""._("Token")."\"$s";}
+				if ($type == "csv") {$firstline .= "\""._("Token")."\"$separator";}
 				else {$firstline .= _("Token")."$separator";}
 			}
 		}
@@ -429,6 +434,11 @@ for ($i=0; $i<$fieldcount; $i++)
 	{
 		if ($type == "csv") {$firstline .= "\""._("Email Address")."\"$separator";}
 		else {$firstline .= _("Email Address")."$separator";}
+	}
+	elseif ($fieldinfo == "token")
+	{
+		if ($type == "csv") {$firstline .= "\""._("Token")."\"$separator";}
+		else {$firstline .= _("Token")."$separator";}
 	}
 	elseif ($fieldinfo == "attribute_1")
 	{
@@ -608,7 +618,7 @@ else
 
 
 //Now dump the data
-if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
+if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['token']) && $_POST['token']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
 {
 	$dquery = "SELECT $selectfields";
 	if (isset($_POST['first_name']) && $_POST['first_name']=="on")
@@ -618,6 +628,10 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 	if (isset($_POST['last_name']) && $_POST['last_name']=="on")
 	{
 		$dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
+	}
+	if (isset($_POST['token']) && $_POST['token']=="on")
+	{
+		$dquery .= ", {$dbprefix}tokens_$surveyid.token";
 	}
 	if (isset($_POST['email_address']) && $_POST['email_address']=="on")
 	{
@@ -718,6 +732,9 @@ elseif ($answers == "long")
 						break;
 						case "email":
 						$ftitle=_("Email").":";
+						break;
+						case "token":
+						$ftitle=_("Token").":";
 						break;
 						case "attribute_1":
 						$ftitle=_("Attribute 1").":";

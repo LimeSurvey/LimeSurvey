@@ -150,7 +150,7 @@ $allfields[]=$myfield2;
 $allfields[]=$myfield3;
 $allfields[]=$myfield4;
 
-if ($datestamp == "Y") {
+if (isset($datestamp) && $datestamp == "Y") {
 	$myfield = "datestamp";
 	$myfield2 = "datestampG";
 	$myfield3 = "datestampL";
