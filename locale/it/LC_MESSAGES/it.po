@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor Italian language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-19 00:30+0100\n"
-"Last-Translator: Mario Marani <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2006-08-28 18:28+0100\n"
+"Last-Translator: Mario <mario.marani@libero.it>\n"
 "Language-Team: Mario Marani <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -14,224 +14,223 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: phpsurveyor\n"
 
-#: phpsurveyor/common.php:192
+#: phpsurveyor/common.php:193
 msgid "Administration"
 msgstr "Amministrazione"
 
-#: phpsurveyor/common.php:198
 #: phpsurveyor/common.php:199
+#: phpsurveyor/common.php:200
 #: phpsurveyor/admin/templates.php:500
-#: phpsurveyor/admin/templates.php:501
 msgid "Default Administration Page"
-msgstr "Pagina amministrazione di default"
+msgstr "Pagina Amministrazione"
 
-#: phpsurveyor/common.php:210
-#: phpsurveyor/common.php:212
+#: phpsurveyor/common.php:211
+#: phpsurveyor/common.php:213
 msgid "Activate Security"
-msgstr "Configura sicurezza"
+msgstr "Attiva sicurezza"
 
-#: phpsurveyor/common.php:219
-#: phpsurveyor/common.php:221
+#: phpsurveyor/common.php:220
+#: phpsurveyor/common.php:222
 msgid "Modify Security Settings"
 msgstr "Modifica le impostazioni di sicurezza"
 
-#: phpsurveyor/common.php:231
-#: phpsurveyor/common.php:233
+#: phpsurveyor/common.php:232
+#: phpsurveyor/common.php:234
 msgid "Check Settings"
 msgstr "Verifica impostazioni"
 
-#: phpsurveyor/common.php:238
 #: phpsurveyor/common.php:239
+#: phpsurveyor/common.php:240
 msgid "Check Data Consistency"
 msgstr "Verifica consistenza dati"
 
-#: phpsurveyor/common.php:242
-#: phpsurveyor/common.php:244
+#: phpsurveyor/common.php:243
+#: phpsurveyor/common.php:245
 msgid "List Surveys"
 msgstr "Lista questionari"
 
-#: phpsurveyor/common.php:252
 #: phpsurveyor/common.php:253
+#: phpsurveyor/common.php:254
 msgid "Delete Entire Survey"
 msgstr "Elimina indagine"
 
-#: phpsurveyor/common.php:263
 #: phpsurveyor/common.php:264
+#: phpsurveyor/common.php:265
 msgid "Backup Entire Database"
 msgstr "Backup dell&#039;intero Database"
 
-#: phpsurveyor/common.php:269
-#: phpsurveyor/common.php:271
+#: phpsurveyor/common.php:270
+#: phpsurveyor/common.php:272
 #: phpsurveyor/admin/html.php:781
 msgid "Edit/Add Label Sets"
 msgstr "Modifica/Aggiungi etichette"
 
-#: phpsurveyor/common.php:278
 #: phpsurveyor/common.php:279
+#: phpsurveyor/common.php:280
 msgid "Template Editor"
 msgstr "Editor dei Template"
 
-#: phpsurveyor/common.php:284
-#: phpsurveyor/common.php:286
-#: phpsurveyor/admin/labels.php:95
+#: phpsurveyor/common.php:285
+#: phpsurveyor/common.php:287
+#: phpsurveyor/admin/labels.php:94
 #: phpsurveyor/admin/tokens.php:269
 msgid "Show Help"
 msgstr "Guida in linea"
 
-#: phpsurveyor/common.php:291
 #: phpsurveyor/common.php:292
-msgid "Create or Import New Survey"
-msgstr "Crea o importa una nuova indagine"
-
 #: phpsurveyor/common.php:293
+msgid "Create or Import New Survey"
+msgstr "Crea una nuova indagine o importa i dati di una vecchia indagine"
+
+#: phpsurveyor/common.php:294
 #: phpsurveyor/admin/html.php:179
 #: phpsurveyor/admin/importsurvey.php:643
 msgid "Surveys"
 msgstr "Indagini"
 
-#: phpsurveyor/common.php:375
-#: phpsurveyor/common.php:420
-#: phpsurveyor/common.php:486
-#: phpsurveyor/common.php:595
-#: phpsurveyor/common.php:616
+#: phpsurveyor/common.php:378
+#: phpsurveyor/common.php:423
+#: phpsurveyor/common.php:506
+#: phpsurveyor/common.php:615
+#: phpsurveyor/common.php:636
 #: phpsurveyor/admin/html.php:1151
 #: phpsurveyor/admin/html.php:1267
-#: phpsurveyor/admin/html.php:1411
-#: phpsurveyor/admin/labels.php:117
+#: phpsurveyor/admin/html.php:1412
+#: phpsurveyor/admin/labels.php:116
 msgid "Please Choose..."
 msgstr "Seleziona..."
 
-#: phpsurveyor/common.php:376
-#: phpsurveyor/common.php:596
-#: phpsurveyor/common.php:617
+#: phpsurveyor/common.php:379
+#: phpsurveyor/common.php:616
+#: phpsurveyor/common.php:637
 #: phpsurveyor/admin/html.php:448
 msgid "None"
 msgstr "Nessuno"
 
-#: phpsurveyor/common.php:506
+#: phpsurveyor/common.php:526
 msgid "5 Point Choice"
 msgstr "Attribuzione punteggio (1-5)"
 
-#: phpsurveyor/common.php:507
-#: phpsurveyor/admin/stats.php:620
+#: phpsurveyor/common.php:527
+#: phpsurveyor/admin/stats.php:674
 msgid "Date"
 msgstr "Data"
 
-#: phpsurveyor/common.php:509
+#: phpsurveyor/common.php:529
 msgid "Gender"
 msgstr "Genere"
 
-#: phpsurveyor/common.php:510
+#: phpsurveyor/common.php:530
 msgid "List (Dropdown)"
-msgstr "Lista (Dropdown)"
+msgstr "Elenco (Menù Dropdown)"
 
-#: phpsurveyor/common.php:511
+#: phpsurveyor/common.php:531
 msgid "List (Radio)"
-msgstr "Lista (Radio)"
+msgstr "Elenco (Pulsanti Radio)"
 
-#: phpsurveyor/common.php:512
+#: phpsurveyor/common.php:532
 msgid "List With Comment"
 msgstr "Lista con commento"
 
-#: phpsurveyor/common.php:513
+#: phpsurveyor/common.php:533
 msgid "Multiple Options"
 msgstr "Scelta multipla"
 
-#: phpsurveyor/common.php:514
+#: phpsurveyor/common.php:534
 msgid "Multiple Options With Comments"
 msgstr "Scelta multipla con commenti"
 
-#: phpsurveyor/common.php:515
+#: phpsurveyor/common.php:535
 msgid "Multiple Short Text"
 msgstr "Testo breve multiplo"
 
-#: phpsurveyor/common.php:516
+#: phpsurveyor/common.php:536
 msgid "Numerical Input"
 msgstr "Inserimento numerico"
 
-#: phpsurveyor/common.php:517
-#: phpsurveyor/admin/export.php:493
-#: phpsurveyor/admin/statistics.php:1011
+#: phpsurveyor/common.php:537
+#: phpsurveyor/admin/export.php:505
+#: phpsurveyor/admin/statistics.php:1009
 msgid "Ranking"
 msgstr "ClassificaOrdinamento"
 
-#: phpsurveyor/common.php:518
-#: phpsurveyor/admin/stats.php:444
-#: phpsurveyor/admin/stats.php:641
+#: phpsurveyor/common.php:538
+#: phpsurveyor/admin/stats.php:498
+#: phpsurveyor/admin/stats.php:695
 msgid "Short free text"
 msgstr "Testo libero breve"
 
-#: phpsurveyor/common.php:519
-#: phpsurveyor/admin/stats.php:652
+#: phpsurveyor/common.php:539
+#: phpsurveyor/admin/stats.php:706
 msgid "Long free text"
 msgstr "Testo libero lungo"
 
-#: phpsurveyor/common.php:520
+#: phpsurveyor/common.php:540
 msgid "Huge Free Text"
 msgstr "Testo libero maxi"
 
-#: phpsurveyor/common.php:521
+#: phpsurveyor/common.php:541
 msgid "Yes/No"
 msgstr "SI/NO"
 
-#: phpsurveyor/common.php:522
+#: phpsurveyor/common.php:542
 msgid "Array (5 Point Choice)"
 msgstr "Scelta (punteggio 1-5)"
 
-#: phpsurveyor/common.php:523
+#: phpsurveyor/common.php:543
 msgid "Array (10 Point Choice)"
 msgstr "Scelta (punteggio 1-10)"
 
-#: phpsurveyor/common.php:524
+#: phpsurveyor/common.php:544
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Scelta (SI/NO/NON SO)"
 
-#: phpsurveyor/common.php:525
+#: phpsurveyor/common.php:545
 msgid "Array (Increase, Same, Decrease)"
 msgstr "Scelta (in aumento, costante, in diminuzione)"
 
-#: phpsurveyor/common.php:526
+#: phpsurveyor/common.php:546
 msgid "Array (Flexible Labels)"
 msgstr "Scelta (Etichetta variabile)"
 
-#: phpsurveyor/common.php:527
+#: phpsurveyor/common.php:547
 msgid "Array (Flexible Labels) by Column"
 msgstr "Scelta (Etichetta variabile per colonna)"
 
-#: phpsurveyor/common.php:532
+#: phpsurveyor/common.php:552
 msgid "Boilerplate Question"
 msgstr "Domande Boilerplate"
 
-#: phpsurveyor/common.php:533
+#: phpsurveyor/common.php:553
 msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Lista (Etichetta variabile) (Dropdown)"
 
-#: phpsurveyor/common.php:534
+#: phpsurveyor/common.php:554
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Lista (Etichetta variabile) (Radio)"
 
-#: phpsurveyor/common.php:558
+#: phpsurveyor/common.php:578
 #: phpsurveyor/admin/html.php:480
 msgid "No email notification"
-msgstr "Nessuna e-mail di notifica"
+msgstr "Nessuna e-mail di notifica."
 
-#: phpsurveyor/common.php:559
+#: phpsurveyor/common.php:579
 #: phpsurveyor/admin/html.php:483
 msgid "Basic email notification"
 msgstr "e-mail di notifica standard"
 
-#: phpsurveyor/common.php:560
+#: phpsurveyor/common.php:580
 #: phpsurveyor/admin/html.php:486
 msgid "Detailed email notification with result codes"
 msgstr "e-mail di notifica dettagliata con codici risultati"
 
-#: phpsurveyor/common.php:849
+#: phpsurveyor/common.php:874
 #: phpsurveyor/admin/admin.php:79
 #: phpsurveyor/admin/admin.php:99
 msgid "PHPSurveyor Setup"
 msgstr "Impostazioni PHPSurveyor"
 
-#: phpsurveyor/common.php:852
+#: phpsurveyor/common.php:877
 #: phpsurveyor/index.php:144
 #: phpsurveyor/qanda.php:2415
 #: phpsurveyor/qanda.php:2614
@@ -258,13 +257,13 @@ msgstr "Impostazioni PHPSurveyor"
 #: phpsurveyor/admin/dumplabel.php:58
 #: phpsurveyor/admin/dumpquestion.php:58
 #: phpsurveyor/admin/dumpsurvey.php:59
-#: phpsurveyor/admin/export.php:380
-#: phpsurveyor/admin/html.php:1967
-#: phpsurveyor/admin/html.php:1971
-#: phpsurveyor/admin/html.php:1975
-#: phpsurveyor/admin/html.php:1981
-#: phpsurveyor/admin/html.php:2282
-#: phpsurveyor/admin/html.php:2294
+#: phpsurveyor/admin/export.php:386
+#: phpsurveyor/admin/html.php:1968
+#: phpsurveyor/admin/html.php:1972
+#: phpsurveyor/admin/html.php:1976
+#: phpsurveyor/admin/html.php:1982
+#: phpsurveyor/admin/html.php:2283
+#: phpsurveyor/admin/html.php:2295
 #: phpsurveyor/admin/importgroup.php:50
 #: phpsurveyor/admin/importgroup.php:74
 #: phpsurveyor/admin/importgroup.php:349
@@ -286,108 +285,109 @@ msgstr "Impostazioni PHPSurveyor"
 #: phpsurveyor/admin/templates.php:118
 #: phpsurveyor/admin/tokens.php:117
 #: phpsurveyor/admin/tokens.php:134
-#: phpsurveyor/admin/tokens.php:377
-#: phpsurveyor/admin/tokens.php:397
-#: phpsurveyor/admin/tokens.php:464
-#: phpsurveyor/admin/tokens.php:482
-#: phpsurveyor/admin/tokens.php:1225
+#: phpsurveyor/admin/tokens.php:382
+#: phpsurveyor/admin/tokens.php:402
+#: phpsurveyor/admin/tokens.php:473
+#: phpsurveyor/admin/tokens.php:491
+#: phpsurveyor/admin/tokens.php:1227
 #: phpsurveyor/admin/vvexport.php:159
 #: phpsurveyor/admin/vvexport.php:176
 #: phpsurveyor/admin/vvimport.php:102
 msgid "Error"
 msgstr "Errore"
 
-#: phpsurveyor/common.php:854
+#: phpsurveyor/common.php:879
 msgid "It appears as if some tables or fields are missing from your database."
 msgstr "Alcune tabelle o campi non sono presenti nel database."
 
-#: phpsurveyor/common.php:856
-#: phpsurveyor/admin/install/upgrade-mysql.php:174
+#: phpsurveyor/common.php:881
+#: phpsurveyor/admin/install/upgrade-mysql.php:185
 msgid "Check Database Fields"
 msgstr "Verifica campi nel database"
 
-#: phpsurveyor/common.php:968
-#: phpsurveyor/admin/assessments.php:80
+#: phpsurveyor/common.php:1026
+#: phpsurveyor/admin/assessments.php:79
 #: phpsurveyor/admin/dataentry.php:371
 #: phpsurveyor/admin/dbchecker.php:287
 #: phpsurveyor/admin/dbchecker.php:376
 #: phpsurveyor/admin/importoldresponses.php:84
-#: phpsurveyor/admin/labels.php:86
+#: phpsurveyor/admin/labels.php:85
 #: phpsurveyor/admin/saved.php:140
-#: phpsurveyor/admin/tokens.php:271
+#: phpsurveyor/admin/tokens.php:272
 #: phpsurveyor/admin/vvexport.php:71
 #: phpsurveyor/admin/vvimport.php:85
 msgid "Return to Survey Administration"
 msgstr "Amministrazione generale"
 
-#: phpsurveyor/common.php:972
-#: phpsurveyor/admin/saved.php:144
-#: phpsurveyor/admin/tokens.php:275
+#: phpsurveyor/common.php:1031
+#: phpsurveyor/admin/saved.php:145
+#: phpsurveyor/admin/tokens.php:276
 msgid "Show summary information"
 msgstr "Riepilogo"
 
-#: phpsurveyor/common.php:974
-#: phpsurveyor/admin/saved.php:146
+#: phpsurveyor/common.php:1034
+#: phpsurveyor/admin/saved.php:147
 msgid "Display Responses"
 msgstr "Mostra risposte"
 
-#: phpsurveyor/common.php:976
+#: phpsurveyor/common.php:1037
 msgid "Display Last 50 Responses"
 msgstr "Ultime 50 risposte"
 
-#: phpsurveyor/common.php:978
+#: phpsurveyor/common.php:1039
 #: phpsurveyor/admin/html.php:344
 #: phpsurveyor/admin/html.php:345
 msgid "Dataentry Screen for Survey"
 msgstr "Data entry"
 
-#: phpsurveyor/common.php:980
+#: phpsurveyor/common.php:1042
 #: phpsurveyor/admin/html.php:349
 #: phpsurveyor/admin/html.php:350
 #: phpsurveyor/admin/printablesurvey.php:55
 msgid "Printable Version of Survey"
 msgstr "Stampa indagine"
 
-#: phpsurveyor/common.php:982
+#: phpsurveyor/common.php:1045
 msgid "Get statistics from these responses"
 msgstr "Statistiche"
 
-#: phpsurveyor/common.php:985
+#: phpsurveyor/common.php:1048
 msgid "Export Results to Application"
 msgstr "Esporta risultati"
 
-#: phpsurveyor/common.php:987
+#: phpsurveyor/common.php:1050
+#: phpsurveyor/common.php:1051
 msgid "Export result to a SPSS command file"
 msgstr "Esporta i risultati ad un file SPSS"
 
-#: phpsurveyor/common.php:989
+#: phpsurveyor/common.php:1052
 msgid "Import answers from a deactivated survey table"
 msgstr "Importa risposte da un questionario disattivato "
 
-#: phpsurveyor/common.php:992
+#: phpsurveyor/common.php:1055
 msgid "Backup results table as SQL file"
 msgstr "Backup dei risultati in file SQL"
 
-#: phpsurveyor/common.php:994
+#: phpsurveyor/common.php:1058
 #: phpsurveyor/admin/html.php:399
 #: phpsurveyor/admin/html.php:400
 msgid "View Saved but not submitted Responses"
 msgstr "Visualizza le risposte salvate ma non inviate"
 
-#: phpsurveyor/common.php:999
+#: phpsurveyor/common.php:1060
 #: phpsurveyor/admin/vvimport.php:61
 msgid "Import a VV survey file"
-msgstr "Importa file VV indagine"
+msgstr "Importa il  file VV delle risposte"
 
-#: phpsurveyor/common.php:1001
+#: phpsurveyor/common.php:1062
 #: phpsurveyor/admin/vvexport.php:47
 msgid "Export a VV survey file"
-msgstr "Esporta file VV indagine"
+msgstr "Esporta il  file VV delle risposte"
 
-#: phpsurveyor/common.php:1178
-#: phpsurveyor/common.php:1354
-#: phpsurveyor/common.php:1414
-#: phpsurveyor/common.php:1424
+#: phpsurveyor/common.php:1240
+#: phpsurveyor/common.php:1416
+#: phpsurveyor/common.php:1476
+#: phpsurveyor/common.php:1486
 #: phpsurveyor/qanda.php:614
 #: phpsurveyor/qanda.php:709
 #: phpsurveyor/qanda.php:819
@@ -406,11 +406,11 @@ msgstr "Esporta file VV indagine"
 #: phpsurveyor/admin/dataentry.php:1870
 #: phpsurveyor/admin/dataentry.php:1886
 #: phpsurveyor/admin/dataentry.php:1934
-#: phpsurveyor/admin/export.php:500
 #: phpsurveyor/admin/export.php:512
-#: phpsurveyor/admin/export.php:532
-#: phpsurveyor/admin/export.php:761
-#: phpsurveyor/admin/export.php:785
+#: phpsurveyor/admin/export.php:524
+#: phpsurveyor/admin/export.php:544
+#: phpsurveyor/admin/export.php:781
+#: phpsurveyor/admin/export.php:805
 #: phpsurveyor/admin/printablesurvey.php:316
 #: phpsurveyor/admin/printablesurvey.php:330
 #: phpsurveyor/admin/printablesurvey.php:370
@@ -418,16 +418,16 @@ msgstr "Esporta file VV indagine"
 #: phpsurveyor/admin/printablesurvey.php:443
 #: phpsurveyor/admin/printablesurvey.php:455
 #: phpsurveyor/admin/results.php:362
-#: phpsurveyor/admin/statistics.php:969
-#: phpsurveyor/admin/statistics.php:1307
-#: phpsurveyor/admin/statistics.php:1335
-#: phpsurveyor/admin/statistics.php:1374
+#: phpsurveyor/admin/statistics.php:967
+#: phpsurveyor/admin/statistics.php:1305
+#: phpsurveyor/admin/statistics.php:1333
+#: phpsurveyor/admin/statistics.php:1372
 msgid "Other"
 msgstr "Altro"
 
-#: phpsurveyor/common.php:1186
-#: phpsurveyor/common.php:1192
-#: phpsurveyor/common.php:1208
+#: phpsurveyor/common.php:1248
+#: phpsurveyor/common.php:1254
+#: phpsurveyor/common.php:1270
 #: phpsurveyor/qanda.php:1747
 #: phpsurveyor/qanda.php:2004
 #: phpsurveyor/qanda.php:2042
@@ -439,37 +439,37 @@ msgstr "Altro"
 #: phpsurveyor/admin/dataentry.php:1451
 #: phpsurveyor/admin/dataentry.php:1958
 #: phpsurveyor/admin/dataentry.php:2015
-#: phpsurveyor/admin/export.php:811
-#: phpsurveyor/admin/export.php:838
-#: phpsurveyor/admin/export.php:849
+#: phpsurveyor/admin/export.php:831
+#: phpsurveyor/admin/export.php:858
+#: phpsurveyor/admin/export.php:869
 #: phpsurveyor/admin/html.php:886
 #: phpsurveyor/admin/html.php:938
 #: phpsurveyor/admin/html.php:1164
 #: phpsurveyor/admin/html.php:1174
 #: phpsurveyor/admin/html.php:1290
 #: phpsurveyor/admin/html.php:1302
-#: phpsurveyor/admin/html.php:1440
-#: phpsurveyor/admin/html.php:1458
-#: phpsurveyor/admin/html.php:1665
-#: phpsurveyor/admin/html.php:1676
-#: phpsurveyor/admin/html.php:1687
-#: phpsurveyor/admin/html.php:1715
-#: phpsurveyor/admin/html.php:1765
-#: phpsurveyor/admin/html.php:1801
-#: phpsurveyor/admin/html.php:1825
-#: phpsurveyor/admin/html.php:1849
-#: phpsurveyor/admin/html.php:1887
-#: phpsurveyor/admin/html.php:1900
-#: phpsurveyor/admin/html.php:2025
-#: phpsurveyor/admin/html.php:2036
-#: phpsurveyor/admin/html.php:2047
-#: phpsurveyor/admin/html.php:2061
-#: phpsurveyor/admin/html.php:2084
-#: phpsurveyor/admin/html.php:2098
-#: phpsurveyor/admin/html.php:2103
-#: phpsurveyor/admin/html.php:2108
-#: phpsurveyor/admin/html.php:2126
-#: phpsurveyor/admin/html.php:2142
+#: phpsurveyor/admin/html.php:1441
+#: phpsurveyor/admin/html.php:1459
+#: phpsurveyor/admin/html.php:1666
+#: phpsurveyor/admin/html.php:1677
+#: phpsurveyor/admin/html.php:1688
+#: phpsurveyor/admin/html.php:1716
+#: phpsurveyor/admin/html.php:1766
+#: phpsurveyor/admin/html.php:1802
+#: phpsurveyor/admin/html.php:1826
+#: phpsurveyor/admin/html.php:1850
+#: phpsurveyor/admin/html.php:1888
+#: phpsurveyor/admin/html.php:1901
+#: phpsurveyor/admin/html.php:2026
+#: phpsurveyor/admin/html.php:2037
+#: phpsurveyor/admin/html.php:2048
+#: phpsurveyor/admin/html.php:2062
+#: phpsurveyor/admin/html.php:2085
+#: phpsurveyor/admin/html.php:2099
+#: phpsurveyor/admin/html.php:2104
+#: phpsurveyor/admin/html.php:2109
+#: phpsurveyor/admin/html.php:2127
+#: phpsurveyor/admin/html.php:2143
 #: phpsurveyor/admin/printablesurvey.php:147
 #: phpsurveyor/admin/printablesurvey.php:165
 #: phpsurveyor/admin/printablesurvey.php:528
@@ -480,20 +480,20 @@ msgstr "Altro"
 #: phpsurveyor/admin/results.php:305
 #: phpsurveyor/admin/results.php:353
 #: phpsurveyor/admin/results.php:383
-#: phpsurveyor/admin/statistics.php:353
-#: phpsurveyor/admin/statistics.php:457
-#: phpsurveyor/admin/statistics.php:682
-#: phpsurveyor/admin/statistics.php:691
-#: phpsurveyor/admin/statistics.php:1237
-#: phpsurveyor/admin/statistics.php:1280
-#: phpsurveyor/admin/stats.php:500
-#: phpsurveyor/admin/stats.php:577
-#: phpsurveyor/admin/tokens.php:973
+#: phpsurveyor/admin/statistics.php:351
+#: phpsurveyor/admin/statistics.php:455
+#: phpsurveyor/admin/statistics.php:680
+#: phpsurveyor/admin/statistics.php:689
+#: phpsurveyor/admin/statistics.php:1235
+#: phpsurveyor/admin/statistics.php:1278
+#: phpsurveyor/admin/stats.php:554
+#: phpsurveyor/admin/stats.php:631
+#: phpsurveyor/admin/tokens.php:975
 msgid "Yes"
 msgstr "Sì"
 
-#: phpsurveyor/common.php:1193
-#: phpsurveyor/common.php:1209
+#: phpsurveyor/common.php:1255
+#: phpsurveyor/common.php:1271
 #: phpsurveyor/qanda.php:1753
 #: phpsurveyor/qanda.php:2006
 #: phpsurveyor/qanda.php:2054
@@ -505,38 +505,38 @@ msgstr "Sì"
 #: phpsurveyor/admin/dataentry.php:1453
 #: phpsurveyor/admin/dataentry.php:1959
 #: phpsurveyor/admin/dataentry.php:2017
-#: phpsurveyor/admin/export.php:812
-#: phpsurveyor/admin/export.php:839
-#: phpsurveyor/admin/export.php:840
-#: phpsurveyor/admin/export.php:852
+#: phpsurveyor/admin/export.php:832
+#: phpsurveyor/admin/export.php:859
+#: phpsurveyor/admin/export.php:860
+#: phpsurveyor/admin/export.php:872
 #: phpsurveyor/admin/html.php:889
 #: phpsurveyor/admin/html.php:939
 #: phpsurveyor/admin/html.php:1166
 #: phpsurveyor/admin/html.php:1176
 #: phpsurveyor/admin/html.php:1293
 #: phpsurveyor/admin/html.php:1305
-#: phpsurveyor/admin/html.php:1443
-#: phpsurveyor/admin/html.php:1461
-#: phpsurveyor/admin/html.php:1668
-#: phpsurveyor/admin/html.php:1679
-#: phpsurveyor/admin/html.php:1690
-#: phpsurveyor/admin/html.php:1718
-#: phpsurveyor/admin/html.php:1768
-#: phpsurveyor/admin/html.php:1804
-#: phpsurveyor/admin/html.php:1828
-#: phpsurveyor/admin/html.php:1852
-#: phpsurveyor/admin/html.php:1890
-#: phpsurveyor/admin/html.php:1903
-#: phpsurveyor/admin/html.php:2028
-#: phpsurveyor/admin/html.php:2039
-#: phpsurveyor/admin/html.php:2050
-#: phpsurveyor/admin/html.php:2062
-#: phpsurveyor/admin/html.php:2085
-#: phpsurveyor/admin/html.php:2099
-#: phpsurveyor/admin/html.php:2104
-#: phpsurveyor/admin/html.php:2109
-#: phpsurveyor/admin/html.php:2127
-#: phpsurveyor/admin/html.php:2143
+#: phpsurveyor/admin/html.php:1444
+#: phpsurveyor/admin/html.php:1462
+#: phpsurveyor/admin/html.php:1669
+#: phpsurveyor/admin/html.php:1680
+#: phpsurveyor/admin/html.php:1691
+#: phpsurveyor/admin/html.php:1719
+#: phpsurveyor/admin/html.php:1769
+#: phpsurveyor/admin/html.php:1805
+#: phpsurveyor/admin/html.php:1829
+#: phpsurveyor/admin/html.php:1853
+#: phpsurveyor/admin/html.php:1891
+#: phpsurveyor/admin/html.php:1904
+#: phpsurveyor/admin/html.php:2029
+#: phpsurveyor/admin/html.php:2040
+#: phpsurveyor/admin/html.php:2051
+#: phpsurveyor/admin/html.php:2063
+#: phpsurveyor/admin/html.php:2086
+#: phpsurveyor/admin/html.php:2100
+#: phpsurveyor/admin/html.php:2105
+#: phpsurveyor/admin/html.php:2110
+#: phpsurveyor/admin/html.php:2128
+#: phpsurveyor/admin/html.php:2144
 #: phpsurveyor/admin/printablesurvey.php:148
 #: phpsurveyor/admin/printablesurvey.php:167
 #: phpsurveyor/admin/printablesurvey.php:529
@@ -545,19 +545,19 @@ msgstr "Sì"
 #: phpsurveyor/admin/results.php:267
 #: phpsurveyor/admin/results.php:354
 #: phpsurveyor/admin/results.php:385
-#: phpsurveyor/admin/statistics.php:356
-#: phpsurveyor/admin/statistics.php:463
-#: phpsurveyor/admin/statistics.php:683
-#: phpsurveyor/admin/statistics.php:1238
-#: phpsurveyor/admin/statistics.php:1281
-#: phpsurveyor/admin/stats.php:510
-#: phpsurveyor/admin/stats.php:582
-#: phpsurveyor/admin/tokens.php:975
+#: phpsurveyor/admin/statistics.php:354
+#: phpsurveyor/admin/statistics.php:461
+#: phpsurveyor/admin/statistics.php:681
+#: phpsurveyor/admin/statistics.php:1236
+#: phpsurveyor/admin/statistics.php:1279
+#: phpsurveyor/admin/stats.php:564
+#: phpsurveyor/admin/stats.php:636
+#: phpsurveyor/admin/tokens.php:977
 msgid "No"
 msgstr "NO"
 
-#: phpsurveyor/common.php:1194
-#: phpsurveyor/common.php:1202
+#: phpsurveyor/common.php:1256
+#: phpsurveyor/common.php:1264
 #: phpsurveyor/qanda.php:516
 #: phpsurveyor/qanda.php:616
 #: phpsurveyor/qanda.php:711
@@ -599,130 +599,130 @@ msgstr "NO"
 #: phpsurveyor/admin/results.php:279
 #: phpsurveyor/admin/results.php:361
 #: phpsurveyor/admin/results.php:393
-#: phpsurveyor/admin/statistics.php:984
-#: phpsurveyor/admin/statistics.php:999
-#: phpsurveyor/admin/statistics.php:1201
-#: phpsurveyor/admin/statistics.php:1373
+#: phpsurveyor/admin/statistics.php:982
+#: phpsurveyor/admin/statistics.php:997
+#: phpsurveyor/admin/statistics.php:1199
+#: phpsurveyor/admin/statistics.php:1371
 msgid "No answer"
 msgstr "Nessuna risposta"
 
-#: phpsurveyor/common.php:1200
+#: phpsurveyor/common.php:1262
 #: phpsurveyor/qanda.php:1789
 #: phpsurveyor/admin/conditions.php:359
 #: phpsurveyor/admin/dataentry.php:605
 #: phpsurveyor/admin/dataentry.php:1440
 #: phpsurveyor/admin/dataentry.php:1570
-#: phpsurveyor/admin/export.php:819
+#: phpsurveyor/admin/export.php:839
 #: phpsurveyor/admin/printablesurvey.php:154
 #: phpsurveyor/admin/printablesurvey.php:279
 #: phpsurveyor/admin/results.php:271
 #: phpsurveyor/admin/results.php:357
-#: phpsurveyor/admin/statistics.php:348
-#: phpsurveyor/admin/statistics.php:675
-#: phpsurveyor/admin/statistics.php:1277
-#: phpsurveyor/admin/stats.php:604
+#: phpsurveyor/admin/statistics.php:346
+#: phpsurveyor/admin/statistics.php:673
+#: phpsurveyor/admin/statistics.php:1275
+#: phpsurveyor/admin/stats.php:658
 msgid "Male"
 msgstr "Maschio"
 
-#: phpsurveyor/common.php:1201
+#: phpsurveyor/common.php:1263
 #: phpsurveyor/qanda.php:1783
 #: phpsurveyor/admin/conditions.php:358
 #: phpsurveyor/admin/dataentry.php:602
 #: phpsurveyor/admin/dataentry.php:1441
 #: phpsurveyor/admin/dataentry.php:1569
-#: phpsurveyor/admin/export.php:820
+#: phpsurveyor/admin/export.php:840
 #: phpsurveyor/admin/printablesurvey.php:155
 #: phpsurveyor/admin/printablesurvey.php:278
 #: phpsurveyor/admin/results.php:272
 #: phpsurveyor/admin/results.php:358
-#: phpsurveyor/admin/statistics.php:345
-#: phpsurveyor/admin/statistics.php:674
-#: phpsurveyor/admin/statistics.php:1276
-#: phpsurveyor/admin/stats.php:609
+#: phpsurveyor/admin/statistics.php:343
+#: phpsurveyor/admin/statistics.php:672
+#: phpsurveyor/admin/statistics.php:1274
+#: phpsurveyor/admin/stats.php:663
 msgid "Female"
 msgstr "Femmina"
 
-#: phpsurveyor/common.php:1210
+#: phpsurveyor/common.php:1272
 #: phpsurveyor/qanda.php:2005
 #: phpsurveyor/qanda.php:2047
 #: phpsurveyor/admin/conditions.php:301
 #: phpsurveyor/admin/dataentry.php:1069
 #: phpsurveyor/admin/dataentry.php:1452
 #: phpsurveyor/admin/dataentry.php:2016
-#: phpsurveyor/admin/export.php:855
+#: phpsurveyor/admin/export.php:875
 #: phpsurveyor/admin/printablesurvey.php:166
 #: phpsurveyor/admin/printablesurvey.php:580
 #: phpsurveyor/admin/results.php:251
 #: phpsurveyor/admin/results.php:384
-#: phpsurveyor/admin/statistics.php:460
-#: phpsurveyor/admin/statistics.php:1239
-#: phpsurveyor/admin/stats.php:505
+#: phpsurveyor/admin/statistics.php:458
+#: phpsurveyor/admin/statistics.php:1237
+#: phpsurveyor/admin/stats.php:559
 msgid "Uncertain"
 msgstr "Non so"
 
-#: phpsurveyor/common.php:1216
+#: phpsurveyor/common.php:1278
 #: phpsurveyor/qanda.php:2208
 #: phpsurveyor/qanda.php:2246
 #: phpsurveyor/admin/conditions.php:305
 #: phpsurveyor/admin/dataentry.php:1459
 #: phpsurveyor/admin/dataentry.php:2035
-#: phpsurveyor/admin/export.php:862
+#: phpsurveyor/admin/export.php:882
 #: phpsurveyor/admin/printablesurvey.php:173
 #: phpsurveyor/admin/printablesurvey.php:597
 #: phpsurveyor/admin/results.php:255
 #: phpsurveyor/admin/results.php:376
-#: phpsurveyor/admin/statistics.php:494
-#: phpsurveyor/admin/statistics.php:1250
-#: phpsurveyor/admin/stats.php:527
+#: phpsurveyor/admin/statistics.php:492
+#: phpsurveyor/admin/statistics.php:1248
+#: phpsurveyor/admin/stats.php:581
 msgid "Increase"
 msgstr "In aumento"
 
-#: phpsurveyor/common.php:1217
+#: phpsurveyor/common.php:1279
 #: phpsurveyor/qanda.php:2210
 #: phpsurveyor/qanda.php:2258
 #: phpsurveyor/admin/conditions.php:307
 #: phpsurveyor/admin/dataentry.php:1460
 #: phpsurveyor/admin/dataentry.php:2037
-#: phpsurveyor/admin/export.php:868
+#: phpsurveyor/admin/export.php:888
 #: phpsurveyor/admin/printablesurvey.php:174
 #: phpsurveyor/admin/printablesurvey.php:599
 #: phpsurveyor/admin/results.php:257
 #: phpsurveyor/admin/results.php:378
-#: phpsurveyor/admin/statistics.php:500
-#: phpsurveyor/admin/statistics.php:1252
-#: phpsurveyor/admin/stats.php:537
+#: phpsurveyor/admin/statistics.php:498
+#: phpsurveyor/admin/statistics.php:1250
+#: phpsurveyor/admin/stats.php:591
 msgid "Decrease"
 msgstr "In diminuzione"
 
-#: phpsurveyor/common.php:1218
+#: phpsurveyor/common.php:1280
 #: phpsurveyor/qanda.php:2209
 #: phpsurveyor/qanda.php:2251
 #: phpsurveyor/admin/conditions.php:306
 #: phpsurveyor/admin/dataentry.php:1461
 #: phpsurveyor/admin/dataentry.php:2036
-#: phpsurveyor/admin/export.php:865
+#: phpsurveyor/admin/export.php:885
 #: phpsurveyor/admin/printablesurvey.php:175
 #: phpsurveyor/admin/printablesurvey.php:598
 #: phpsurveyor/admin/results.php:256
 #: phpsurveyor/admin/results.php:377
-#: phpsurveyor/admin/statistics.php:497
-#: phpsurveyor/admin/statistics.php:1251
-#: phpsurveyor/admin/stats.php:532
+#: phpsurveyor/admin/statistics.php:495
+#: phpsurveyor/admin/statistics.php:1249
+#: phpsurveyor/admin/stats.php:586
 msgid "Same"
 msgstr "Uguale"
 
-#: phpsurveyor/common.php:1371
+#: phpsurveyor/common.php:1433
 #: phpsurveyor/admin/dataentry.php:1663
 msgid "Comment"
 msgstr "Commento"
 
-#: phpsurveyor/common.php:1506
+#: phpsurveyor/common.php:1568
 #: phpsurveyor/index.php:212
 #: phpsurveyor/index.php:216
 msgid "Load Unfinished Survey"
 msgstr "Carica questionario non terminato"
 
-#: phpsurveyor/common.php:1508
+#: phpsurveyor/common.php:1570
 #: phpsurveyor/group.php:45
 #: phpsurveyor/group.php:51
 #: phpsurveyor/group.php:81
@@ -747,27 +747,27 @@ msgstr "Carica questionario non terminato"
 msgid "last"
 msgstr "Fine"
 
-#: phpsurveyor/common.php:1514
+#: phpsurveyor/common.php:1576
 msgid "Save Survey and Return"
 msgstr "Salva il questionario e Ritorna"
 
-#: phpsurveyor/common.php:1532
+#: phpsurveyor/common.php:1594
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Procedere nell&#039;eliminazione di tutte le risposte?"
 
-#: phpsurveyor/common.php:1533
+#: phpsurveyor/common.php:1595
 msgid "Exit and Clear Survey"
 msgstr "Azzera e esci dall&#039;indagine"
 
-#: phpsurveyor/common.php:1563
+#: phpsurveyor/common.php:1625
 msgid "There is 1 question in this survey"
-msgstr "Vi &egrave; 1 domanda in questa indagine."
+msgstr "Vi &egrave; 1 domanda in questo questionario."
 
-#: phpsurveyor/common.php:1567
+#: phpsurveyor/common.php:1629
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Vi sono {NUMBEROFQUESTIONS} domande in questa indagine."
 
-#: phpsurveyor/common.php:1590
+#: phpsurveyor/common.php:1652
 #: phpsurveyor/group.php:49
 #: phpsurveyor/group.php:81
 #: phpsurveyor/group.php:97
@@ -786,31 +786,31 @@ msgstr "Vi sono {NUMBEROFQUESTIONS} domande in questa indagine."
 msgid "submit"
 msgstr "Invia"
 
-#: phpsurveyor/common.php:1597
+#: phpsurveyor/common.php:1659
 msgid "A Note On Privacy"
 msgstr "Nota sulla privacy"
 
-#: phpsurveyor/common.php:1597
+#: phpsurveyor/common.php:1659
 msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Questa indagine &egrave; anonima.<br >I record delle risposte non contengono alcuna informazione che possa identificarti, a meno che nel questionario non siano presenti specifiche domande a riguardo. Se hai risposto ad un questionario con un identificativo per l'accesso puoi essere sicuro che tale identificativo non verrà in alcun modo associato alle risposte. Essi sono gestiti in un database separato che contiene dati solo in riferimento alla compilazione o meno del questionario. Non esiste alcun modo per associare gli identificativi alle risposte fornite."
 
-#: phpsurveyor/common.php:1613
+#: phpsurveyor/common.php:1675
 msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
-msgstr "<b>Grazie,<br ><br >per aver risposto alle domande del questionario.<b><br ><br>Fai clic sul pulsante [-._SUBMIT.-] per completare il questionario e salvare le risposte fornite."
+msgstr "<strong>Grazie,<br /><br />per aver risposto alle domande del questionario.</strong><br /><br />Fai clic sul pulsante \"Invia\" per completare il questionario e salvare le risposte fornite."
 
-#: phpsurveyor/common.php:1614
+#: phpsurveyor/common.php:1676
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
-msgstr "Se vuoi controllare le risposte date e, eventualmente, cambiarne qualcuna fai clic sul pulsante [<< -._PREV.-]."
+msgstr "Se vuoi controllare le risposte date e, eventualmente, cambiarne qualcuna fai clic sul pulsante \"Indietro\" fino a che non trovi la/le risposta/e da modificare."
 
-#: phpsurveyor/common.php:1636
+#: phpsurveyor/common.php:1698
 msgid "Answers Cleared"
 msgstr "Risposte azzerate"
 
-#: phpsurveyor/common.php:1637
+#: phpsurveyor/common.php:1699
 msgid "Restart this Survey"
 msgstr "Avvia di nuovo l&#039;indagine"
 
-#: phpsurveyor/common.php:1638
+#: phpsurveyor/common.php:1700
 #: phpsurveyor/group.php:163
 #: phpsurveyor/index.php:251
 #: phpsurveyor/index.php:1086
@@ -821,14 +821,14 @@ msgstr "Avvia di nuovo l&#039;indagine"
 msgid "Close this Window"
 msgstr "Chiudi finestra"
 
-#: phpsurveyor/common.php:1641
+#: phpsurveyor/common.php:1703
 #: phpsurveyor/save.php:281
 #: phpsurveyor/admin/dataentry.php:221
 msgid "Name"
 msgstr "Nome"
 
-#: phpsurveyor/common.php:1644
-#: phpsurveyor/common.php:1671
+#: phpsurveyor/common.php:1706
+#: phpsurveyor/common.php:1733
 #: phpsurveyor/save.php:282
 #: phpsurveyor/admin/dataentry.php:222
 #: phpsurveyor/admin/html.php:1003
@@ -839,93 +839,93 @@ msgstr "Nome"
 msgid "Password"
 msgstr "Password"
 
-#: phpsurveyor/common.php:1647
+#: phpsurveyor/common.php:1709
 msgid "Repeat Password"
 msgstr "Ripeti la password"
 
-#: phpsurveyor/common.php:1650
+#: phpsurveyor/common.php:1712
 msgid "Your Email"
 msgstr "Indirizzo e-mail"
 
-#: phpsurveyor/common.php:1653
+#: phpsurveyor/common.php:1715
 msgid "Save Now"
 msgstr "Salva"
 
-#: phpsurveyor/common.php:1660
+#: phpsurveyor/common.php:1722
 msgid "Return To Survey"
 msgstr "Ritorna al questionario"
 
-#: phpsurveyor/common.php:1662
+#: phpsurveyor/common.php:1724
 msgid "Save Your Unfinished Survey"
 msgstr "Salva il tuo questionario non terminato"
 
-#: phpsurveyor/common.php:1663
+#: phpsurveyor/common.php:1725
 msgid ""
 "Enter a name and password for this survey and click save below.<br />\n"
 "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
 "If you give an email address, an email containing the details will be sent to you."
 msgstr "Inserisci un nome ed una password per questo questionario, quindi fai clic sul pulsante Salva riportato pi&ugrave; sotto.<br >nIl tuo questionario verr&agrave; salvato utilizzando quel nome e quella password, e potr&agrave; essere completato successivamente dopo aver fatto un login con il nome e la password indicate.<br ><br >nSe hai fornito un indirizzo e-mail, ti verrà inviato un messaggio contenente tutti i dettagli del caso."
 
-#: phpsurveyor/common.php:1668
+#: phpsurveyor/common.php:1730
 msgid "Saved name"
 msgstr "Nome salvato"
 
-#: phpsurveyor/common.php:1674
+#: phpsurveyor/common.php:1736
 msgid "Load Now"
 msgstr "Riprendi adesso"
 
-#: phpsurveyor/common.php:1676
+#: phpsurveyor/common.php:1738
 msgid "Load A Previously Saved Survey"
 msgstr "Riprendi il questionario non completato e precedentemente salvato"
 
-#: phpsurveyor/common.php:1677
+#: phpsurveyor/common.php:1739
 msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
 msgstr "Puoi riprendere il questionario, precedentemente salvato, da questa schermata.<br >nInserisci il nome e la password che hai utilizzato per salvare il questionario.<br ><br >n"
 
-#: phpsurveyor/common.php:1682
+#: phpsurveyor/common.php:1744
 msgid "You must be registered to complete this survey"
 msgstr "Devi essere registrato per partecipare a questa indagine"
 
-#: phpsurveyor/common.php:1683
+#: phpsurveyor/common.php:1745
 msgid ""
 "You may register for this survey if you wish to take part.<br />\n"
 "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Ti puoi registrare se vuoi partecipare a questa indagine.<br >nInserisci i tuoi dati qui sotto, e ti verr&agrave; immediatamente inviata una e-mail contenente l'indirizzo per collegarti e partecipare a questa indagine."
 
-#: phpsurveyor/common.php:1690
+#: phpsurveyor/common.php:1752
 #: phpsurveyor/admin/export.php:275
-#: phpsurveyor/admin/export.php:423
-#: phpsurveyor/admin/export.php:424
-#: phpsurveyor/admin/export.php:711
-#: phpsurveyor/admin/tokens.php:496
-#: phpsurveyor/admin/tokens.php:1049
+#: phpsurveyor/admin/export.php:430
+#: phpsurveyor/admin/export.php:431
+#: phpsurveyor/admin/export.php:728
+#: phpsurveyor/admin/tokens.php:505
+#: phpsurveyor/admin/tokens.php:1051
 msgid "First Name"
 msgstr "Nome"
 
-#: phpsurveyor/common.php:1697
+#: phpsurveyor/common.php:1759
 #: phpsurveyor/admin/export.php:277
-#: phpsurveyor/admin/export.php:418
-#: phpsurveyor/admin/export.php:419
-#: phpsurveyor/admin/export.php:714
-#: phpsurveyor/admin/tokens.php:500
-#: phpsurveyor/admin/tokens.php:1055
+#: phpsurveyor/admin/export.php:425
+#: phpsurveyor/admin/export.php:426
+#: phpsurveyor/admin/export.php:731
+#: phpsurveyor/admin/tokens.php:509
+#: phpsurveyor/admin/tokens.php:1057
 msgid "Last Name"
 msgstr "Cognome"
 
-#: phpsurveyor/common.php:1704
-#: phpsurveyor/admin/export.php:428
-#: phpsurveyor/admin/export.php:429
+#: phpsurveyor/common.php:1766
+#: phpsurveyor/admin/export.php:435
+#: phpsurveyor/admin/export.php:436
 #: phpsurveyor/admin/saved.php:106
 msgid "Email Address"
 msgstr "Indirizzo e-mail"
 
-#: phpsurveyor/common.php:1731
+#: phpsurveyor/common.php:1793
 #: phpsurveyor/index.php:1046
-#: phpsurveyor/admin/html.php:2347
+#: phpsurveyor/admin/html.php:2348
 #: phpsurveyor/admin/tokens.php:176
 #: phpsurveyor/admin/tokens.php:194
-#: phpsurveyor/admin/tokens.php:782
-#: phpsurveyor/admin/tokens.php:939
+#: phpsurveyor/admin/tokens.php:784
+#: phpsurveyor/admin/tokens.php:941
 #: phpsurveyor/admin/usercontrol.php:57
 #: phpsurveyor/admin/usercontrol.php:75
 #: phpsurveyor/admin/usercontrol.php:105
@@ -934,7 +934,7 @@ msgstr "Indirizzo e-mail"
 msgid "Continue"
 msgstr "Continua"
 
-#: phpsurveyor/common.php:1738
+#: phpsurveyor/common.php:1800
 msgid "Your Assessment"
 msgstr "La tua valutazione"
 
@@ -1099,8 +1099,8 @@ msgid "complete"
 msgstr "Completato"
 
 #: phpsurveyor/index.php:897
-#: phpsurveyor/admin/html.php:1758
-#: phpsurveyor/admin/html.php:2080
+#: phpsurveyor/admin/html.php:1759
+#: phpsurveyor/admin/html.php:2081
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -1180,14 +1180,18 @@ msgstr "Inserisci il tuo Identificativo  nella campo in basso e clicca continua.
 
 #: phpsurveyor/index.php:1045
 #: phpsurveyor/admin/dataentry.php:1359
-#: phpsurveyor/admin/export.php:395
-#: phpsurveyor/admin/export.php:399
+#: phpsurveyor/admin/export.php:281
+#: phpsurveyor/admin/export.php:402
 #: phpsurveyor/admin/export.php:406
-#: phpsurveyor/admin/export.php:407
-#: phpsurveyor/admin/export.php:411
-#: phpsurveyor/admin/export.php:412
-#: phpsurveyor/admin/tokens.php:508
-#: phpsurveyor/admin/tokens.php:1067
+#: phpsurveyor/admin/export.php:413
+#: phpsurveyor/admin/export.php:414
+#: phpsurveyor/admin/export.php:418
+#: phpsurveyor/admin/export.php:419
+#: phpsurveyor/admin/export.php:440
+#: phpsurveyor/admin/export.php:441
+#: phpsurveyor/admin/export.php:737
+#: phpsurveyor/admin/tokens.php:517
+#: phpsurveyor/admin/tokens.php:1069
 msgid "Token"
 msgstr "Identificativi"
 
@@ -1235,6 +1239,10 @@ msgstr "Seleziona tutti i campi"
 msgid "Please check at least one item"
 msgstr "Si prega di selezionare almeno una opzione"
 
+#: phpsurveyor/qanda.php:453
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr "Non puoi procedere fino a che non inserisci un testo per una o più domande"
+
 #: phpsurveyor/qanda.php:457
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "Non hai risposto ad una o più domande obbligatorie. Non è possibile continuare senza che queste siano state completate"
@@ -1249,7 +1257,7 @@ msgstr "Formato: AAAA-MM-GG"
 
 #: phpsurveyor/qanda.php:534
 msgid "(eg: 2003-12-25 for Christmas day)"
-msgstr "(ad es.: 2006-12-25 giorno di Natale)"
+msgstr "(ad es.: il giorno di Natale verrà indicato ne seguente modo 2006-12-25)"
 
 #: phpsurveyor/qanda.php:570
 #: phpsurveyor/qanda.php:606
@@ -1276,11 +1284,11 @@ msgstr "Seleziona"
 
 #: phpsurveyor/qanda.php:984
 msgid "Please choose one of the following"
-msgstr "Seleziona uno dei seguenti"
+msgstr "Scegli una delle seguenti risposte"
 
 #: phpsurveyor/qanda.php:985
 msgid "Please enter your comment here"
-msgstr "Scrivi i tuoi commenti"
+msgstr "Inserisci  qui sotto il tuo commento"
 
 #: phpsurveyor/qanda.php:1230
 #: phpsurveyor/admin/dataentry.php:826
@@ -1463,10 +1471,10 @@ msgstr "L&#039;indagine non può essere attivata prima di risolvere i problemi e
 #: phpsurveyor/admin/tokens.php:119
 #: phpsurveyor/admin/tokens.php:136
 #: phpsurveyor/admin/tokens.php:226
-#: phpsurveyor/admin/tokens.php:645
+#: phpsurveyor/admin/tokens.php:648
 #: phpsurveyor/admin/usercontrol.php:85
 #: phpsurveyor/admin/vvexport.php:159
-#: phpsurveyor/admin/install/upgrade-mysql.php:244
+#: phpsurveyor/admin/install/upgrade-mysql.php:258
 msgid "Main Admin Screen"
 msgstr "Torna alla pagina di amministrazione generale"
 
@@ -1477,15 +1485,15 @@ msgstr "Torna alla pagina di amministrazione generale"
 #: phpsurveyor/admin/html.php:798
 #: phpsurveyor/admin/html.php:1030
 #: phpsurveyor/admin/html.php:1063
-#: phpsurveyor/admin/html.php:2261
-#: phpsurveyor/admin/labels.php:343
-#: phpsurveyor/admin/labels.php:361
+#: phpsurveyor/admin/html.php:2262
+#: phpsurveyor/admin/labels.php:338
+#: phpsurveyor/admin/labels.php:356
 #: phpsurveyor/admin/tokens.php:217
-#: phpsurveyor/admin/tokens.php:627
-#: phpsurveyor/admin/tokens.php:776
-#: phpsurveyor/admin/tokens.php:794
-#: phpsurveyor/admin/tokens.php:935
-#: phpsurveyor/admin/tokens.php:954
+#: phpsurveyor/admin/tokens.php:630
+#: phpsurveyor/admin/tokens.php:778
+#: phpsurveyor/admin/tokens.php:796
+#: phpsurveyor/admin/tokens.php:937
+#: phpsurveyor/admin/tokens.php:956
 msgid "Warning"
 msgstr "Attenzione"
 
@@ -1513,7 +1521,7 @@ msgstr "Una volta inseriti tutti i dati, per eliminare o aggiungere nuovi gruppi
 #: phpsurveyor/admin/activate.php:242
 #: phpsurveyor/admin/deactivate.php:62
 #: phpsurveyor/admin/deletesurvey.php:86
-#: phpsurveyor/admin/tokens.php:633
+#: phpsurveyor/admin/tokens.php:636
 msgid "Cancel"
 msgstr "Cancella"
 
@@ -1531,7 +1539,7 @@ msgstr "L&#039;indagine è stata attivata. Le tabelle dei risultati sono state c
 
 #: phpsurveyor/admin/activate.php:460
 msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Questa indagine è anonima. Crea una tabella degli identificativi."
+msgstr "Questa indagine non è anonima. Crea una tabella degli identificativi."
 
 #: phpsurveyor/admin/activate.php:461
 #: phpsurveyor/admin/activate.php:466
@@ -1586,39 +1594,39 @@ msgstr "Un database di nome \"%s\" già esiste."
 
 #: phpsurveyor/admin/admin.php:103
 msgid "Do you want to populate that database now by creating the necessary tables?"
-msgstr "Vuoi popolare il database creando adesso le tabelle?"
+msgstr "Vuoi popolare il database creando adesso le relative tabelle?"
 
 #: phpsurveyor/admin/admin.php:221
 #: phpsurveyor/admin/export.php:214
 #: phpsurveyor/admin/export.php:220
 #: phpsurveyor/admin/export.php:271
-#: phpsurveyor/admin/labels.php:520
-#: phpsurveyor/admin/tokens.php:1340
+#: phpsurveyor/admin/labels.php:515
+#: phpsurveyor/admin/tokens.php:1342
 msgid "Help"
 msgstr "Guida in linea"
 
 #: phpsurveyor/admin/assessments.php:41
 #: phpsurveyor/admin/assessments.php:108
 #: phpsurveyor/admin/assessments.php:109
-#: phpsurveyor/admin/database.php:458
-#: phpsurveyor/admin/database.php:493
+#: phpsurveyor/admin/database.php:484
+#: phpsurveyor/admin/database.php:519
 #: phpsurveyor/admin/html.php:941
-#: phpsurveyor/admin/html.php:1490
-#: phpsurveyor/admin/labels.php:158
-#: phpsurveyor/admin/labels.php:322
-#: phpsurveyor/admin/labels.php:445
-#: phpsurveyor/admin/stats.php:349
-#: phpsurveyor/admin/tokens.php:1121
-#: phpsurveyor/admin/tokens.php:1162
+#: phpsurveyor/admin/html.php:1491
+#: phpsurveyor/admin/labels.php:157
+#: phpsurveyor/admin/labels.php:317
+#: phpsurveyor/admin/labels.php:440
+#: phpsurveyor/admin/stats.php:379
+#: phpsurveyor/admin/tokens.php:1123
+#: phpsurveyor/admin/tokens.php:1164
 msgid "Add"
 msgstr "Aggiungi"
 
 #: phpsurveyor/admin/assessments.php:53
 #: phpsurveyor/admin/assessments.php:132
 #: phpsurveyor/admin/html.php:1015
-#: phpsurveyor/admin/labels.php:159
-#: phpsurveyor/admin/tokens.php:1117
-#: phpsurveyor/admin/tokens.php:1132
+#: phpsurveyor/admin/labels.php:158
+#: phpsurveyor/admin/tokens.php:1119
+#: phpsurveyor/admin/tokens.php:1134
 msgid "Update"
 msgstr "Aggiorna"
 
@@ -1639,18 +1647,18 @@ msgstr "Campo applicazione"
 #: phpsurveyor/admin/assessments.php:101
 #: phpsurveyor/admin/assessments.php:122
 #: phpsurveyor/admin/html.php:589
-#: phpsurveyor/admin/statistics.php:196
-#: phpsurveyor/admin/stats.php:275
+#: phpsurveyor/admin/statistics.php:194
+#: phpsurveyor/admin/stats.php:305
 msgid "Group"
 msgstr "Gruppo"
 
 #: phpsurveyor/admin/assessments.php:100
-#: phpsurveyor/admin/statistics.php:1057
+#: phpsurveyor/admin/statistics.php:1055
 msgid "Minimum"
 msgstr "Minimo"
 
 #: phpsurveyor/admin/assessments.php:100
-#: phpsurveyor/admin/statistics.php:1151
+#: phpsurveyor/admin/statistics.php:1149
 msgid "Maximum"
 msgstr "Massimo"
 
@@ -1659,8 +1667,8 @@ msgid "Heading"
 msgstr "Intestazione"
 
 #: phpsurveyor/admin/assessments.php:100
-#: phpsurveyor/admin/tokens.php:691
-#: phpsurveyor/admin/tokens.php:841
+#: phpsurveyor/admin/tokens.php:694
+#: phpsurveyor/admin/tokens.php:843
 msgid "Message"
 msgstr "Messaggio"
 
@@ -1685,17 +1693,17 @@ msgid "If you create any assessments in this page, for the currently selected su
 msgstr "Se crei una valutazione per l&#039;indagine corrente questa sarà aggiornata alla fine dell&#039;indagine dopo il suo invio"
 
 #: phpsurveyor/admin/assessments.php:146
-#: phpsurveyor/admin/tokens.php:532
+#: phpsurveyor/admin/tokens.php:541
 msgid "Actions"
 msgstr "Funzioni"
 
 #: phpsurveyor/admin/assessments.php:161
 #: phpsurveyor/admin/deletesurvey.php:87
 #: phpsurveyor/admin/html.php:1080
-#: phpsurveyor/admin/html.php:1516
+#: phpsurveyor/admin/html.php:1517
 #: phpsurveyor/admin/saved.php:120
-#: phpsurveyor/admin/templates.php:607
-#: phpsurveyor/admin/tokens.php:1013
+#: phpsurveyor/admin/templates.php:612
+#: phpsurveyor/admin/tokens.php:1015
 msgid "Delete"
 msgstr "Elimina"
 
@@ -1709,8 +1717,8 @@ msgstr "Sei sicuro di voler cancellare quanto hai inserito?"
 #: phpsurveyor/admin/browse.php:101
 #: phpsurveyor/admin/browse.php:116
 #: phpsurveyor/admin/browse.php:131
-#: phpsurveyor/admin/browse.php:285
-#: phpsurveyor/admin/browse.php:556
+#: phpsurveyor/admin/browse.php:288
+#: phpsurveyor/admin/browse.php:563
 #: phpsurveyor/admin/dataentry.php:380
 #: phpsurveyor/admin/dataentry.php:391
 #: phpsurveyor/admin/dataentry.php:1301
@@ -1733,7 +1741,7 @@ msgid "There is no matching survey."
 msgstr "L&#039;indagine non esiste."
 
 #: phpsurveyor/admin/browse.php:234
-#: phpsurveyor/admin/tokens.php:557
+#: phpsurveyor/admin/tokens.php:566
 msgid "View Response"
 msgstr "Visualizza risposta"
 
@@ -1742,50 +1750,53 @@ msgid "Edit this entry"
 msgstr "Modifica risposta"
 
 #: phpsurveyor/admin/browse.php:242
-#: phpsurveyor/admin/browse.php:243
 msgid "Delete this entry"
 msgstr "Elimina risposta"
 
 #: phpsurveyor/admin/browse.php:245
+#: phpsurveyor/admin/browse.php:246
 msgid "Export this Response"
 msgstr "Esporta questa risposta"
 
-#: phpsurveyor/admin/browse.php:249
-#: phpsurveyor/admin/browse.php:480
-#: phpsurveyor/admin/browse.php:485
-#: phpsurveyor/admin/tokens.php:433
-#: phpsurveyor/admin/tokens.php:438
+#: phpsurveyor/admin/browse.php:250
+#: phpsurveyor/admin/browse.php:491
+#: phpsurveyor/admin/tokens.php:446
 msgid "Show last..."
 msgstr "Mostra ultimo..."
 
-#: phpsurveyor/admin/browse.php:252
-#: phpsurveyor/admin/browse.php:483
-#: phpsurveyor/admin/tokens.php:436
+#: phpsurveyor/admin/browse.php:254
+#: phpsurveyor/admin/browse.php:488
+#: phpsurveyor/admin/tokens.php:443
 msgid "Show next..."
 msgstr "Mostra successivo..."
 
-#: phpsurveyor/admin/browse.php:471
-#: phpsurveyor/admin/tokens.php:426
+#: phpsurveyor/admin/browse.php:474
+#: phpsurveyor/admin/tokens.php:431
 msgid "Data View Control"
 msgstr "Visualizzazione dati"
 
-#: phpsurveyor/admin/browse.php:478
-#: phpsurveyor/admin/tokens.php:431
+#: phpsurveyor/admin/browse.php:481
+#: phpsurveyor/admin/tokens.php:436
 msgid "Show start.."
 msgstr "Inizio"
 
-#: phpsurveyor/admin/browse.php:492
-#: phpsurveyor/admin/tokens.php:453
+#: phpsurveyor/admin/browse.php:484
+#: phpsurveyor/admin/tokens.php:439
+msgid "Show previous..."
+msgstr "Mostra precedente..."
+
+#: phpsurveyor/admin/browse.php:499
+#: phpsurveyor/admin/tokens.php:462
 msgid "Records Displayed:"
 msgstr "Record visualizzati:"
 
-#: phpsurveyor/admin/browse.php:493
-#: phpsurveyor/admin/tokens.php:454
+#: phpsurveyor/admin/browse.php:500
+#: phpsurveyor/admin/tokens.php:463
 msgid "Starting From:"
 msgstr "Inizio da:"
 
-#: phpsurveyor/admin/browse.php:494
-#: phpsurveyor/admin/tokens.php:455
+#: phpsurveyor/admin/browse.php:501
+#: phpsurveyor/admin/tokens.php:464
 msgid "Show"
 msgstr "Mostra"
 
@@ -1824,23 +1835,23 @@ msgstr "Mostra questa domanda con codice   {QID}   solo SE:"
 
 #: phpsurveyor/admin/conditions.php:511
 #: phpsurveyor/admin/printablesurvey.php:127
-#: phpsurveyor/admin/statistics.php:173
-#: phpsurveyor/admin/statistics.php:327
+#: phpsurveyor/admin/statistics.php:171
+#: phpsurveyor/admin/statistics.php:325
 msgid "and"
 msgstr "e"
 
 #: phpsurveyor/admin/conditions.php:518
 #: phpsurveyor/admin/dataentry.php:1507
 #: phpsurveyor/admin/html.php:1205
-#: phpsurveyor/admin/html.php:1573
-#: phpsurveyor/admin/html.php:2149
+#: phpsurveyor/admin/html.php:1574
+#: phpsurveyor/admin/html.php:2150
 msgid "OR"
 msgstr "O"
 
 #: phpsurveyor/admin/conditions.php:539
 #: phpsurveyor/admin/conditions.php:668
-#: phpsurveyor/admin/stats.php:333
-#: phpsurveyor/admin/stats.php:339
+#: phpsurveyor/admin/stats.php:363
+#: phpsurveyor/admin/stats.php:369
 msgid "Equals"
 msgstr "Uguaglia"
 
@@ -1856,18 +1867,18 @@ msgstr "Condizione"
 #: phpsurveyor/admin/conditions.php:591
 #: phpsurveyor/admin/conditions.php:639
 #: phpsurveyor/admin/html.php:693
-#: phpsurveyor/admin/statistics.php:215
-#: phpsurveyor/admin/statistics.php:242
-#: phpsurveyor/admin/statistics.php:267
-#: phpsurveyor/admin/statistics.php:286
-#: phpsurveyor/admin/statistics.php:316
-#: phpsurveyor/admin/statistics.php:377
-#: phpsurveyor/admin/statistics.php:414
-#: phpsurveyor/admin/statistics.php:451
-#: phpsurveyor/admin/statistics.php:488
-#: phpsurveyor/admin/statistics.php:526
-#: phpsurveyor/admin/statistics.php:569
-#: phpsurveyor/admin/statistics.php:602
+#: phpsurveyor/admin/statistics.php:213
+#: phpsurveyor/admin/statistics.php:240
+#: phpsurveyor/admin/statistics.php:265
+#: phpsurveyor/admin/statistics.php:284
+#: phpsurveyor/admin/statistics.php:314
+#: phpsurveyor/admin/statistics.php:375
+#: phpsurveyor/admin/statistics.php:412
+#: phpsurveyor/admin/statistics.php:449
+#: phpsurveyor/admin/statistics.php:486
+#: phpsurveyor/admin/statistics.php:524
+#: phpsurveyor/admin/statistics.php:567
+#: phpsurveyor/admin/statistics.php:600
 msgid "Question"
 msgstr "Domanda"
 
@@ -1886,20 +1897,20 @@ msgstr "Aggiungi condizione"
 
 #: phpsurveyor/admin/conditions.php:644
 #: phpsurveyor/admin/html.php:852
-#: phpsurveyor/admin/statistics.php:983
-#: phpsurveyor/admin/statistics.php:998
-#: phpsurveyor/admin/statistics.php:1325
+#: phpsurveyor/admin/statistics.php:981
+#: phpsurveyor/admin/statistics.php:996
+#: phpsurveyor/admin/statistics.php:1323
 msgid "Answer"
 msgstr "Risposta"
 
 #: phpsurveyor/admin/conditions.php:677
-#: phpsurveyor/admin/statistics.php:647
+#: phpsurveyor/admin/statistics.php:645
 msgid "Clear"
 msgstr "Annulla"
 
 #: phpsurveyor/admin/conditions.php:694
 #: phpsurveyor/admin/export.php:184
-#: phpsurveyor/admin/labels.php:219
+#: phpsurveyor/admin/labels.php:218
 msgid "Close Window"
 msgstr "Chiudi finestra"
 
@@ -1924,135 +1935,135 @@ msgstr "Fai clic sul seguente link per l&#039;inserimento dei dati nel database"
 msgid "Could not create database"
 msgstr "Impossibile creare database"
 
-#: phpsurveyor/admin/database.php:82
+#: phpsurveyor/admin/database.php:97
 msgid "Group could not be added. It is missing the mandatory group name"
 msgstr "Impossibile aggiungere gruppo. Inserire il nome del gruppo nel campo obbligatorio nome del gruppo"
 
-#: phpsurveyor/admin/database.php:101
+#: phpsurveyor/admin/database.php:116
 msgid "Error: The database reported the following error:"
 msgstr "Errore: il database ha segnalato il seguente errore:"
 
-#: phpsurveyor/admin/database.php:123
+#: phpsurveyor/admin/database.php:138
 msgid "Group could not be updated"
 msgstr "Impossibile aggiornare gruppo"
 
-#: phpsurveyor/admin/database.php:140
-#: phpsurveyor/admin/database.php:163
-#: phpsurveyor/admin/database.php:175
+#: phpsurveyor/admin/database.php:156
+#: phpsurveyor/admin/database.php:179
+#: phpsurveyor/admin/database.php:192
 msgid "Group could not be deleted"
 msgstr "Impossibile eliminare gruppo"
 
-#: phpsurveyor/admin/database.php:203
-#: phpsurveyor/admin/database.php:335
+#: phpsurveyor/admin/database.php:220
+#: phpsurveyor/admin/database.php:353
 msgid "Answer could not be added. You must insert a code in the mandatory field"
 msgstr "Impossibile aggiungere domanda. Inserire il Codice nel campo obbligatorio"
 
-#: phpsurveyor/admin/database.php:216
-#: phpsurveyor/admin/database.php:346
+#: phpsurveyor/admin/database.php:233
+#: phpsurveyor/admin/database.php:367
 msgid "Question could not be created."
 msgstr "Impossibile creare domande."
 
-#: phpsurveyor/admin/database.php:293
+#: phpsurveyor/admin/database.php:311
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Impossibile aggiornare domande. Le condizioni di alcune domande dipendono dalla risposta di questa domanda. Cambiare il tipo di domanda causerà dei problemi al sistema. Elimina le condizioni prima di modificare il tipo di domanda."
 
-#: phpsurveyor/admin/database.php:312
-#: phpsurveyor/admin/database.php:326
+#: phpsurveyor/admin/database.php:330
+#: phpsurveyor/admin/database.php:344
 msgid "Question could not be updated"
 msgstr "Impossibile aggiornare domanda"
 
-#: phpsurveyor/admin/database.php:320
+#: phpsurveyor/admin/database.php:338
 msgid "Answers can't be deleted"
 msgstr "Impossibile eliminare le risposte"
 
-#: phpsurveyor/admin/database.php:394
-#: phpsurveyor/admin/database.php:431
+#: phpsurveyor/admin/database.php:416
+#: phpsurveyor/admin/database.php:457
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Impossibile eliminare la domanda. Alcune domande dipendono dalle condizioni imposte a questa domanda. Elimina le condizioni prima di eliminare la domanda"
 
-#: phpsurveyor/admin/database.php:415
-#: phpsurveyor/admin/database.php:452
+#: phpsurveyor/admin/database.php:441
+#: phpsurveyor/admin/database.php:478
 msgid "Question could not be deleted"
 msgstr "Impossibile eliminare la domanda"
 
-#: phpsurveyor/admin/database.php:470
+#: phpsurveyor/admin/database.php:496
 #: phpsurveyor/admin/html.php:967
-#: phpsurveyor/admin/labels.php:351
-#: phpsurveyor/admin/labels.php:492
+#: phpsurveyor/admin/labels.php:346
+#: phpsurveyor/admin/labels.php:487
 msgid "Fix Sort"
 msgstr "Ordina"
 
-#: phpsurveyor/admin/database.php:473
+#: phpsurveyor/admin/database.php:499
 #: phpsurveyor/admin/html.php:959
 msgid "Sort Alpha"
 msgstr "Ordina risposte alfabeticamente"
 
-#: phpsurveyor/admin/database.php:496
+#: phpsurveyor/admin/database.php:522
 msgid "Answer could not be added. You must include both a Code and an Answer"
 msgstr "Impossibile aggiungere la domanda. Inserire Codice e Risposta"
 
-#: phpsurveyor/admin/database.php:505
+#: phpsurveyor/admin/database.php:531
 #: phpsurveyor/admin/dbedit.php:420
 msgid "Answer could not be added. There is already an answer with this code"
 msgstr "Impossibile aggiungere la domanda. Domanda con codice già esistente"
 
-#: phpsurveyor/admin/database.php:514
+#: phpsurveyor/admin/database.php:540
 #: phpsurveyor/admin/html.php:900
 #: phpsurveyor/admin/html.php:907
-#: phpsurveyor/admin/html.php:1507
-#: phpsurveyor/admin/labels.php:284
-#: phpsurveyor/admin/labels.php:441
-#: phpsurveyor/admin/labels.php:455
+#: phpsurveyor/admin/html.php:1508
+#: phpsurveyor/admin/labels.php:279
+#: phpsurveyor/admin/labels.php:436
+#: phpsurveyor/admin/labels.php:450
 msgid "Save"
 msgstr "Salva"
 
-#: phpsurveyor/admin/database.php:517
+#: phpsurveyor/admin/database.php:543
 msgid "Answer could not be updated. You must include both a Code and an Answer"
 msgstr "Impossibile aggiornare la domanda. Inserire Codice e Risposta"
 
-#: phpsurveyor/admin/database.php:534
+#: phpsurveyor/admin/database.php:560
 #: phpsurveyor/admin/dbedit.php:573
 msgid "Answer could not be updated. There is already an answer with this code"
 msgstr "Impossibile aggiornare la domanda. Domanda ha un codice già esistente"
 
-#: phpsurveyor/admin/database.php:540
+#: phpsurveyor/admin/database.php:566
 msgid "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer."
 msgstr "Impossibile aggiornare la domanda. Il codice della domande è stato modificato. Alcune domande dipendono dalle condizioni associate alla domanda con il vecchio codice. Elimina le condizioni prima di modifcare il codice di questa domanda."
 
-#: phpsurveyor/admin/database.php:550
+#: phpsurveyor/admin/database.php:576
 #: phpsurveyor/admin/html.php:901
-#: phpsurveyor/admin/labels.php:287
-#: phpsurveyor/admin/labels.php:485
+#: phpsurveyor/admin/labels.php:282
+#: phpsurveyor/admin/labels.php:480
 msgid "Del"
 msgstr "Elimina"
 
-#: phpsurveyor/admin/database.php:558
+#: phpsurveyor/admin/database.php:584
 msgid "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
 msgstr "Impossibile eliminare la risposta. Alcune domande dipendono dalle condizioni imposte a questa risposta. Elimina le condizioni prima di eliminare questa risposta"
 
-#: phpsurveyor/admin/database.php:567
+#: phpsurveyor/admin/database.php:593
 #: phpsurveyor/admin/html.php:910
-#: phpsurveyor/admin/labels.php:293
-#: phpsurveyor/admin/labels.php:462
+#: phpsurveyor/admin/labels.php:288
+#: phpsurveyor/admin/labels.php:457
 msgid "Up"
 msgstr "Su"
 
-#: phpsurveyor/admin/database.php:578
+#: phpsurveyor/admin/database.php:604
 #: phpsurveyor/admin/html.php:912
-#: phpsurveyor/admin/labels.php:298
-#: phpsurveyor/admin/labels.php:473
+#: phpsurveyor/admin/labels.php:293
+#: phpsurveyor/admin/labels.php:468
 msgid "Dn"
 msgstr "Giù"
 
-#: phpsurveyor/admin/database.php:627
+#: phpsurveyor/admin/database.php:653
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Impossibile creare l&#039;indagine. Inserire un titolo"
 
-#: phpsurveyor/admin/database.php:675
+#: phpsurveyor/admin/database.php:701
 msgid "Survey could not be created"
 msgstr "Impossibile creare l&#039;indagine"
 
-#: phpsurveyor/admin/database.php:720
+#: phpsurveyor/admin/database.php:746
 msgid "Survey could not be updated"
 msgstr "Impossibile aggiornare l&#039;indagine"
 
@@ -2113,11 +2124,11 @@ msgstr "Si &egrave; verificato un errore. Le tue risposte non sono state salvate
 #: phpsurveyor/admin/importquestion.php:432
 #: phpsurveyor/admin/importsurvey.php:62
 #: phpsurveyor/admin/importsurvey.php:641
-#: phpsurveyor/admin/tokens.php:372
-#: phpsurveyor/admin/tokens.php:1156
-#: phpsurveyor/admin/tokens.php:1181
-#: phpsurveyor/admin/tokens.php:1230
-#: phpsurveyor/admin/tokens.php:1293
+#: phpsurveyor/admin/tokens.php:377
+#: phpsurveyor/admin/tokens.php:1158
+#: phpsurveyor/admin/tokens.php:1183
+#: phpsurveyor/admin/tokens.php:1232
+#: phpsurveyor/admin/tokens.php:1295
 #: phpsurveyor/admin/vvimport.php:111
 msgid "Success"
 msgstr "Complimenti"
@@ -2145,9 +2156,9 @@ msgid "Editing Response"
 msgstr "Crea risposte"
 
 #: phpsurveyor/admin/dataentry.php:582
-#: phpsurveyor/admin/html.php:1388
-#: phpsurveyor/admin/html.php:1424
-#: phpsurveyor/admin/html.php:1450
+#: phpsurveyor/admin/html.php:1389
+#: phpsurveyor/admin/html.php:1425
+#: phpsurveyor/admin/html.php:1451
 msgid "Cannot be modified"
 msgstr "Impossibile modificare"
 
@@ -2173,8 +2184,8 @@ msgid "Datestamp"
 msgstr "Data invio questionario completato"
 
 #: phpsurveyor/admin/dataentry.php:1381
-#: phpsurveyor/admin/export.php:453
-#: phpsurveyor/admin/export.php:454
+#: phpsurveyor/admin/export.php:465
+#: phpsurveyor/admin/export.php:466
 msgid "IP-Address"
 msgstr "Indirizzo IP"
 
@@ -2283,8 +2294,8 @@ msgid "When you de-activate a survey all the data entered in the original table 
 msgstr "Disattivando l&#039;indagine tutti i dati inseriti verranno spostati altrove. Il database verrà svuotato attivando di nuovo l&#039;indagine. Non sarà più possibile accedere a queste informazioni tramite PHPSurveyor."
 
 #: phpsurveyor/admin/deactivate.php:55
-msgid "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Le informazioni di un&#039;indagine disattivata possono essere visualizzate solo dall&#039;amministratore mediante uno strumento MySQL come PhpMyAdmin. Se l&#039;indagine utilizza identificativi, la tabella delle risposte verrà rinominata e sarà accessibile solo dall&#039;amministratore."
+msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Le informazioni di una indagine  disattivata possono essere visualizzate solo dagli amministratori di sistema mediante uno strumento di accesso al database MySQL come PhpMyAdmin. Se l&#039;indagine utilizza identificativi, la relativa tabella verrà rinominata e sarà accessibile solo dgli amministratori di sistema."
 
 #: phpsurveyor/admin/deactivate.php:56
 msgid "Your responses table will be renamed to:"
@@ -2348,8 +2359,8 @@ msgid "Export Question"
 msgstr "Esporta domanda"
 
 #: phpsurveyor/admin/dumplabel.php:56
-#: phpsurveyor/admin/labels.php:232
-#: phpsurveyor/admin/labels.php:233
+#: phpsurveyor/admin/labels.php:228
+#: phpsurveyor/admin/labels.php:229
 msgid "Export Label Set"
 msgstr "Esporta gruppo etichette"
 
@@ -2471,40 +2482,40 @@ msgid "Your survey can export associated token data with each response. Select a
 msgstr "La tua indagine può esportare gli identificativi associati a ciascuna risposta. Seleziona gli altri campi che desideri esportare."
 
 #: phpsurveyor/admin/export.php:279
-#: phpsurveyor/admin/export.php:717
-#: phpsurveyor/admin/tokens.php:504
-#: phpsurveyor/admin/tokens.php:1061
+#: phpsurveyor/admin/export.php:734
+#: phpsurveyor/admin/tokens.php:513
+#: phpsurveyor/admin/tokens.php:1063
 msgid "Email"
 msgstr "e-mail"
 
-#: phpsurveyor/admin/export.php:286
-#: phpsurveyor/admin/export.php:434
-#: phpsurveyor/admin/export.php:720
-#: phpsurveyor/admin/html.php:1782
-#: phpsurveyor/admin/html.php:2094
+#: phpsurveyor/admin/export.php:288
+#: phpsurveyor/admin/export.php:446
+#: phpsurveyor/admin/export.php:740
+#: phpsurveyor/admin/html.php:1783
+#: phpsurveyor/admin/html.php:2095
 #: phpsurveyor/admin/tokens.php:262
-#: phpsurveyor/admin/tokens.php:522
+#: phpsurveyor/admin/tokens.php:531
 msgid "Attribute 1"
 msgstr "Attributo_1"
 
-#: phpsurveyor/admin/export.php:288
-#: phpsurveyor/admin/export.php:439
-#: phpsurveyor/admin/export.php:723
-#: phpsurveyor/admin/html.php:1784
-#: phpsurveyor/admin/html.php:2095
+#: phpsurveyor/admin/export.php:290
+#: phpsurveyor/admin/export.php:451
+#: phpsurveyor/admin/export.php:743
+#: phpsurveyor/admin/html.php:1785
+#: phpsurveyor/admin/html.php:2096
 #: phpsurveyor/admin/tokens.php:263
-#: phpsurveyor/admin/tokens.php:526
+#: phpsurveyor/admin/tokens.php:535
 msgid "Attribute 2"
 msgstr "Attributo_2"
 
-#: phpsurveyor/admin/export.php:813
-#: phpsurveyor/admin/export.php:821
+#: phpsurveyor/admin/export.php:833
+#: phpsurveyor/admin/export.php:841
 msgid "N/A"
 msgstr "Non Disponibile"
 
 #: phpsurveyor/admin/html.php:84
-#: phpsurveyor/admin/html.php:1988
-#: phpsurveyor/admin/html.php:2145
+#: phpsurveyor/admin/html.php:1989
+#: phpsurveyor/admin/html.php:2146
 msgid "Create Survey"
 msgstr "Crea nuova indagine"
 
@@ -2585,7 +2596,7 @@ msgstr "Impossibile attivare indagine"
 
 #: phpsurveyor/admin/html.php:338
 #: phpsurveyor/admin/html.php:340
-#: phpsurveyor/admin/tokens.php:550
+#: phpsurveyor/admin/tokens.php:559
 msgid "Do Survey"
 msgstr "Prova indagine"
 
@@ -2647,10 +2658,10 @@ msgstr "Gruppi"
 
 #: phpsurveyor/admin/html.php:461
 #: phpsurveyor/admin/html.php:666
-#: phpsurveyor/admin/html.php:1564
-#: phpsurveyor/admin/html.php:1597
-#: phpsurveyor/admin/html.php:1623
-#: phpsurveyor/admin/html.php:1990
+#: phpsurveyor/admin/html.php:1565
+#: phpsurveyor/admin/html.php:1598
+#: phpsurveyor/admin/html.php:1624
+#: phpsurveyor/admin/html.php:1991
 msgid "Title:"
 msgstr "Titolo:"
 
@@ -2664,7 +2675,7 @@ msgstr "Questa indagine NON è anonima."
 
 #: phpsurveyor/admin/html.php:468
 msgid "It is presented question by question."
-msgstr "Viene visualizzata domanda per domanda."
+msgstr "Il questionario viene visualizzato con una domanda per pagina."
 
 #: phpsurveyor/admin/html.php:469
 msgid "It is presented group by group."
@@ -2696,7 +2707,7 @@ msgstr "Se sono stati usati degli identificativi, il pubblico può registrarsi p
 
 #: phpsurveyor/admin/html.php:476
 msgid "Participants can save partially finished surveys"
-msgstr "I partecipanti possono salvare questionari completati parzialmente "
+msgstr "I rispondenti possono salvare questionari parzialmente completati. "
 
 #: phpsurveyor/admin/html.php:489
 msgid "Regenerate Question Numbers:"
@@ -2716,48 +2727,48 @@ msgstr "URL dell&#039;indagine:"
 
 #: phpsurveyor/admin/html.php:504
 #: phpsurveyor/admin/html.php:670
-#: phpsurveyor/admin/html.php:1566
-#: phpsurveyor/admin/html.php:1599
-#: phpsurveyor/admin/html.php:1625
-#: phpsurveyor/admin/html.php:1992
+#: phpsurveyor/admin/html.php:1567
+#: phpsurveyor/admin/html.php:1600
+#: phpsurveyor/admin/html.php:1626
+#: phpsurveyor/admin/html.php:1993
 msgid "Description:"
 msgstr "Descrizione:"
 
 #: phpsurveyor/admin/html.php:509
-#: phpsurveyor/admin/html.php:1627
-#: phpsurveyor/admin/html.php:1994
+#: phpsurveyor/admin/html.php:1628
+#: phpsurveyor/admin/html.php:1995
 msgid "Welcome:"
 msgstr "Benvenuto:"
 
 #: phpsurveyor/admin/html.php:512
-#: phpsurveyor/admin/html.php:1629
-#: phpsurveyor/admin/html.php:1996
+#: phpsurveyor/admin/html.php:1630
+#: phpsurveyor/admin/html.php:1997
 msgid "Administrator:"
 msgstr "Amministratore:"
 
 #: phpsurveyor/admin/html.php:515
-#: phpsurveyor/admin/html.php:1633
-#: phpsurveyor/admin/html.php:2000
+#: phpsurveyor/admin/html.php:1634
+#: phpsurveyor/admin/html.php:2001
 msgid "Fax To:"
 msgstr "Fax:"
 
 #: phpsurveyor/admin/html.php:519
-#: phpsurveyor/admin/html.php:1890
-#: phpsurveyor/admin/html.php:2128
+#: phpsurveyor/admin/html.php:1891
+#: phpsurveyor/admin/html.php:2129
 msgid "Expiry Date:"
 msgstr "Scadenza:"
 
 #: phpsurveyor/admin/html.php:530
-#: phpsurveyor/admin/html.php:1649
-#: phpsurveyor/admin/html.php:2009
-#: phpsurveyor/admin/templates.php:511
-#: phpsurveyor/admin/templates.php:522
+#: phpsurveyor/admin/html.php:1650
+#: phpsurveyor/admin/html.php:2010
+#: phpsurveyor/admin/templates.php:512
+#: phpsurveyor/admin/templates.php:523
 msgid "Template:"
 msgstr "Template:"
 
 #: phpsurveyor/admin/html.php:533
-#: phpsurveyor/admin/html.php:1856
-#: phpsurveyor/admin/html.php:2112
+#: phpsurveyor/admin/html.php:1857
+#: phpsurveyor/admin/html.php:2113
 msgid "Language:"
 msgstr "Lingua:"
 
@@ -2782,9 +2793,9 @@ msgid "Survey is not currently active."
 msgstr "L&#039;indagine non è al momento attiva."
 
 #: phpsurveyor/admin/html.php:554
-#: phpsurveyor/admin/html.php:1388
-#: phpsurveyor/admin/html.php:1424
-#: phpsurveyor/admin/html.php:1450
+#: phpsurveyor/admin/html.php:1389
+#: phpsurveyor/admin/html.php:1425
+#: phpsurveyor/admin/html.php:1451
 msgid "Survey is currently active."
 msgstr "L&#039;indagine è attiva."
 
@@ -2862,7 +2873,7 @@ msgstr "Copia domanda corrente"
 
 #: phpsurveyor/admin/html.php:728
 msgid "Set Conditions for this Question"
-msgstr "Imposta condizioni"
+msgstr "Imposta condizioni per una ramificazione di questa domanda"
 
 #: phpsurveyor/admin/html.php:736
 #: phpsurveyor/admin/html.php:791
@@ -2884,7 +2895,7 @@ msgstr "Nascondi i dettagli di questa domanda"
 #: phpsurveyor/admin/html.php:757
 #: phpsurveyor/admin/html.php:1118
 #: phpsurveyor/admin/html.php:1233
-#: phpsurveyor/admin/html.php:1365
+#: phpsurveyor/admin/html.php:1366
 msgid "Code:"
 msgstr "Codice:"
 
@@ -2899,28 +2910,28 @@ msgstr "Domanda opzionale"
 #: phpsurveyor/admin/html.php:763
 #: phpsurveyor/admin/html.php:1122
 #: phpsurveyor/admin/html.php:1237
-#: phpsurveyor/admin/html.php:1369
+#: phpsurveyor/admin/html.php:1370
 msgid "Question:"
 msgstr "Domanda:"
 
 #: phpsurveyor/admin/html.php:765
 #: phpsurveyor/admin/html.php:1126
 #: phpsurveyor/admin/html.php:1241
-#: phpsurveyor/admin/html.php:1373
+#: phpsurveyor/admin/html.php:1374
 msgid "Help:"
 msgstr "Nota di spiegazione:"
 
 #: phpsurveyor/admin/html.php:771
 #: phpsurveyor/admin/html.php:1138
 #: phpsurveyor/admin/html.php:1252
-#: phpsurveyor/admin/html.php:1394
+#: phpsurveyor/admin/html.php:1395
 msgid "Validation:"
 msgstr "Convalida:"
 
 #: phpsurveyor/admin/html.php:776
 #: phpsurveyor/admin/html.php:1130
 #: phpsurveyor/admin/html.php:1245
-#: phpsurveyor/admin/html.php:1378
+#: phpsurveyor/admin/html.php:1379
 msgid "Type:"
 msgstr "Tipologia:"
 
@@ -2935,7 +2946,7 @@ msgstr "E&#039; necessario inserire un gruppo di etichette per questa domanda"
 #: phpsurveyor/admin/html.php:804
 #: phpsurveyor/admin/html.php:1162
 #: phpsurveyor/admin/html.php:1287
-#: phpsurveyor/admin/html.php:1436
+#: phpsurveyor/admin/html.php:1437
 msgid "Other:"
 msgstr "Altro:"
 
@@ -2944,8 +2955,8 @@ msgid "Upload completed"
 msgstr "Operazioni di caricamento completate"
 
 #: phpsurveyor/admin/html.php:852
-#: phpsurveyor/admin/labels.php:251
-#: phpsurveyor/admin/statistics.php:1437
+#: phpsurveyor/admin/labels.php:246
+#: phpsurveyor/admin/statistics.php:1435
 msgid "Code"
 msgstr "Codice"
 
@@ -2955,7 +2966,7 @@ msgstr "Default"
 
 #: phpsurveyor/admin/html.php:853
 #: phpsurveyor/admin/html.php:1055
-#: phpsurveyor/admin/labels.php:257
+#: phpsurveyor/admin/labels.php:252
 #: phpsurveyor/admin/saved.php:107
 msgid "Action"
 msgstr "Attiva"
@@ -3019,24 +3030,24 @@ msgid "Add Question"
 msgstr "Aggiungi domanda"
 
 #: phpsurveyor/admin/html.php:1120
-#: phpsurveyor/admin/html.php:1565
+#: phpsurveyor/admin/html.php:1566
 msgid "Required"
 msgstr "*Obbligatorio"
 
 #: phpsurveyor/admin/html.php:1145
 #: phpsurveyor/admin/html.php:1259
-#: phpsurveyor/admin/html.php:1401
+#: phpsurveyor/admin/html.php:1402
 msgid "Label Set:"
 msgstr "Gruppo di etichette:"
 
 #: phpsurveyor/admin/html.php:1172
 #: phpsurveyor/admin/html.php:1300
-#: phpsurveyor/admin/html.php:1456
+#: phpsurveyor/admin/html.php:1457
 msgid "Mandatory:"
 msgstr "Obbligatorio:"
 
 #: phpsurveyor/admin/html.php:1185
-#: phpsurveyor/admin/html.php:1484
+#: phpsurveyor/admin/html.php:1485
 #: phpsurveyor/admin/importgroup.php:518
 #: phpsurveyor/admin/importquestion.php:445
 #: phpsurveyor/admin/importsurvey.php:649
@@ -3050,15 +3061,15 @@ msgid "Import Question"
 msgstr "Importa domanda"
 
 #: phpsurveyor/admin/html.php:1208
-#: phpsurveyor/admin/html.php:1578
-#: phpsurveyor/admin/html.php:2154
-#: phpsurveyor/admin/labels.php:183
+#: phpsurveyor/admin/html.php:1579
+#: phpsurveyor/admin/html.php:2155
+#: phpsurveyor/admin/labels.php:182
 msgid "Select SQL File:"
 msgstr "Seleziona File SQL:"
 
 #: phpsurveyor/admin/html.php:1229
 #: phpsurveyor/admin/html.php:1319
-#: phpsurveyor/admin/html.php:1339
+#: phpsurveyor/admin/html.php:1340
 msgid "Copy Question"
 msgstr "Copia domanda"
 
@@ -3067,141 +3078,141 @@ msgid "Note: You MUST enter a new question code"
 msgstr "Nota: è obbligatorio inserire un nuovo codice domanda"
 
 #: phpsurveyor/admin/html.php:1280
-#: phpsurveyor/admin/html.php:1430
+#: phpsurveyor/admin/html.php:1431
 msgid "Group:"
 msgstr "Gruppo:"
 
-#: phpsurveyor/admin/html.php:1329
+#: phpsurveyor/admin/html.php:1330
 msgid "Copy Answers?"
 msgstr "Copiare risposte?"
 
-#: phpsurveyor/admin/html.php:1334
+#: phpsurveyor/admin/html.php:1335
 msgid "Copy Attributes?"
 msgstr "Copia attributi?"
 
-#: phpsurveyor/admin/html.php:1359
+#: phpsurveyor/admin/html.php:1360
 msgid "Edit Question"
 msgstr "Modifica domanda"
 
-#: phpsurveyor/admin/html.php:1470
+#: phpsurveyor/admin/html.php:1471
 msgid "Update Question"
 msgstr "Aggiorna domanda"
 
-#: phpsurveyor/admin/html.php:1543
-#: phpsurveyor/admin/html.php:1937
+#: phpsurveyor/admin/html.php:1544
+#: phpsurveyor/admin/html.php:1938
 msgid "Save Order"
 msgstr "Salva ordine"
 
-#: phpsurveyor/admin/html.php:1562
-#: phpsurveyor/admin/html.php:1568
+#: phpsurveyor/admin/html.php:1563
+#: phpsurveyor/admin/html.php:1569
 msgid "Add Group"
 msgstr "Aggiungi gruppo"
 
-#: phpsurveyor/admin/html.php:1566
+#: phpsurveyor/admin/html.php:1567
 msgid "Optional"
 msgstr "Opzionale"
 
-#: phpsurveyor/admin/html.php:1576
-#: phpsurveyor/admin/html.php:1580
+#: phpsurveyor/admin/html.php:1577
+#: phpsurveyor/admin/html.php:1581
 #: phpsurveyor/admin/importgroup.php:43
 msgid "Import Group"
 msgstr "Importa gruppo"
 
-#: phpsurveyor/admin/html.php:1595
+#: phpsurveyor/admin/html.php:1596
 msgid "Edit Group for Survey ID"
 msgstr "Modifica Gruppo per l&#039;indagine ID numero:"
 
-#: phpsurveyor/admin/html.php:1601
+#: phpsurveyor/admin/html.php:1602
 msgid "Update Group"
 msgstr "Aggiorna gruppo"
 
-#: phpsurveyor/admin/html.php:1621
+#: phpsurveyor/admin/html.php:1622
 msgid "Edit Survey"
 msgstr "Modifica indagine"
 
-#: phpsurveyor/admin/html.php:1631
-#: phpsurveyor/admin/html.php:1998
+#: phpsurveyor/admin/html.php:1632
+#: phpsurveyor/admin/html.php:1999
 msgid "Admin Email:"
 msgstr "e-mail Amministratore:"
 
-#: phpsurveyor/admin/html.php:1635
-#: phpsurveyor/admin/html.php:2002
+#: phpsurveyor/admin/html.php:1636
+#: phpsurveyor/admin/html.php:2003
 msgid "Format:"
 msgstr "Formato:"
 
-#: phpsurveyor/admin/html.php:1639
-#: phpsurveyor/admin/html.php:2004
-msgid "Question by Question"
-msgstr "Visualizza per domanda"
-
-#: phpsurveyor/admin/html.php:1642
+#: phpsurveyor/admin/html.php:1640
 #: phpsurveyor/admin/html.php:2005
-msgid "Group by Group"
-msgstr "Visualizza per gruppo"
+msgid "Question by Question"
+msgstr "Visualizza una domanda per pagina"
 
-#: phpsurveyor/admin/html.php:1645
+#: phpsurveyor/admin/html.php:1643
 #: phpsurveyor/admin/html.php:2006
+msgid "Group by Group"
+msgstr "Visualizza un gruppo di domande per pagina"
+
+#: phpsurveyor/admin/html.php:1646
+#: phpsurveyor/admin/html.php:2007
 msgid "All in one"
-msgstr "Visualizza tutto"
+msgstr "Visualizza tutte le domande in una pagina"
 
-#: phpsurveyor/admin/html.php:1661
-#: phpsurveyor/admin/html.php:2021
+#: phpsurveyor/admin/html.php:1662
+#: phpsurveyor/admin/html.php:2022
 msgid "Use Cookies?"
-msgstr "Uso dei cookie"
+msgstr "Usa i cookie?"
 
-#: phpsurveyor/admin/html.php:1672
-#: phpsurveyor/admin/html.php:2032
+#: phpsurveyor/admin/html.php:1673
+#: phpsurveyor/admin/html.php:2033
 msgid "Allow Saves?"
-msgstr "Permetti il salvataggio"
+msgstr "Permetti il salvataggio?"
 
-#: phpsurveyor/admin/html.php:1683
-#: phpsurveyor/admin/html.php:2043
+#: phpsurveyor/admin/html.php:1684
+#: phpsurveyor/admin/html.php:2044
 msgid "Show [<< Prev] button"
 msgstr "Mostra il pulsante [Indietro]"
 
-#: phpsurveyor/admin/html.php:1694
-#: phpsurveyor/admin/html.php:2054
-msgid "Notification:"
-msgstr "Notifica:"
+#: phpsurveyor/admin/html.php:1695
+#: phpsurveyor/admin/html.php:2055
+msgid "Admin Notification:"
+msgstr "Notifica Amministrazione:"
 
-#: phpsurveyor/admin/html.php:1700
-#: phpsurveyor/admin/html.php:2059
+#: phpsurveyor/admin/html.php:1701
+#: phpsurveyor/admin/html.php:2060
 msgid "Anonymous?"
 msgstr "Anonimo"
 
-#: phpsurveyor/admin/html.php:1726
+#: phpsurveyor/admin/html.php:1727
 msgid "This will replace the existing text. Continue?"
 msgstr "Questo rimpiazzerà il testo esistente. Vuoi preseguire?"
 
-#: phpsurveyor/admin/html.php:1731
-#: phpsurveyor/admin/html.php:2064
+#: phpsurveyor/admin/html.php:1732
+#: phpsurveyor/admin/html.php:2065
 msgid "Invitation Email Subject:"
 msgstr "Oggetto della e-mail di invito:"
 
-#: phpsurveyor/admin/html.php:1733
-#: phpsurveyor/admin/html.php:2065
+#: phpsurveyor/admin/html.php:1734
+#: phpsurveyor/admin/html.php:2066
 msgid "Invitation to participate in survey"
 msgstr "Invito a partecipare ad una indagine on line"
 
-#: phpsurveyor/admin/html.php:1734
-#: phpsurveyor/admin/html.php:1739
-#: phpsurveyor/admin/html.php:1744
-#: phpsurveyor/admin/html.php:1749
-#: phpsurveyor/admin/html.php:1754
-#: phpsurveyor/admin/html.php:1759
-#: phpsurveyor/admin/html.php:1773
-#: phpsurveyor/admin/html.php:1778
+#: phpsurveyor/admin/html.php:1735
+#: phpsurveyor/admin/html.php:1740
+#: phpsurveyor/admin/html.php:1745
+#: phpsurveyor/admin/html.php:1750
+#: phpsurveyor/admin/html.php:1755
+#: phpsurveyor/admin/html.php:1760
+#: phpsurveyor/admin/html.php:1774
+#: phpsurveyor/admin/html.php:1779
 msgid "Use default"
 msgstr "Usa il default"
 
-#: phpsurveyor/admin/html.php:1736
-#: phpsurveyor/admin/html.php:2067
+#: phpsurveyor/admin/html.php:1737
+#: phpsurveyor/admin/html.php:2068
 msgid "Invitation Email:"
 msgstr "Testo della e-mail di invito:"
 
-#: phpsurveyor/admin/html.php:1738
-#: phpsurveyor/admin/html.php:2068
-#: phpsurveyor/admin/tokens.php:664
+#: phpsurveyor/admin/html.php:1739
+#: phpsurveyor/admin/html.php:2069
+#: phpsurveyor/admin/tokens.php:667
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3239,24 +3250,24 @@ msgstr ""
 "Fai clic qui per accedere al questionario:\n"
 "{SURVEYURL}"
 
-#: phpsurveyor/admin/html.php:1741
-#: phpsurveyor/admin/html.php:2070
+#: phpsurveyor/admin/html.php:1742
+#: phpsurveyor/admin/html.php:2071
 msgid "Email Reminder Subject:"
 msgstr "Oggetto della e-mail di sollecito:"
 
-#: phpsurveyor/admin/html.php:1743
-#: phpsurveyor/admin/html.php:2071
+#: phpsurveyor/admin/html.php:1744
+#: phpsurveyor/admin/html.php:2072
 msgid "Reminder to participate in survey"
 msgstr "Sollecito a partecipare all'indagine on line"
 
-#: phpsurveyor/admin/html.php:1746
-#: phpsurveyor/admin/html.php:2073
+#: phpsurveyor/admin/html.php:1747
+#: phpsurveyor/admin/html.php:2074
 msgid "Email Reminder:"
 msgstr "Testo della e-mail di sollecito:"
 
-#: phpsurveyor/admin/html.php:1748
-#: phpsurveyor/admin/html.php:2074
-#: phpsurveyor/admin/tokens.php:811
+#: phpsurveyor/admin/html.php:1749
+#: phpsurveyor/admin/html.php:2075
+#: phpsurveyor/admin/tokens.php:813
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3299,43 +3310,43 @@ msgstr ""
 "Fai clic qui per accedere all'indagine:\n"
 "{SURVEYURL}"
 
-#: phpsurveyor/admin/html.php:1751
-#: phpsurveyor/admin/html.php:2076
+#: phpsurveyor/admin/html.php:1752
+#: phpsurveyor/admin/html.php:2077
 msgid "Confirmation Email Subject"
 msgstr "Oggetto della e-mail di conferma completamento indagine"
 
-#: phpsurveyor/admin/html.php:1753
-#: phpsurveyor/admin/html.php:2077
+#: phpsurveyor/admin/html.php:1754
+#: phpsurveyor/admin/html.php:2078
 msgid "Confirmation of completed survey"
 msgstr "Conferma del completamento dell'indagine on line"
 
-#: phpsurveyor/admin/html.php:1756
-#: phpsurveyor/admin/html.php:2079
+#: phpsurveyor/admin/html.php:1757
+#: phpsurveyor/admin/html.php:2080
 msgid "Confirmation Email"
 msgstr "Testo e-mail di conferma completamento indagine"
 
-#: phpsurveyor/admin/html.php:1761
-#: phpsurveyor/admin/html.php:2082
+#: phpsurveyor/admin/html.php:1762
+#: phpsurveyor/admin/html.php:2083
 msgid "Allow public registration?"
 msgstr "Permetti una registrazione pubblica"
 
-#: phpsurveyor/admin/html.php:1770
-#: phpsurveyor/admin/html.php:2087
+#: phpsurveyor/admin/html.php:1771
+#: phpsurveyor/admin/html.php:2088
 msgid "Public registration Email Subject:"
 msgstr "Oggetto della e-mail di risposta alla registrazione pubblica:"
 
-#: phpsurveyor/admin/html.php:1772
-#: phpsurveyor/admin/html.php:2088
+#: phpsurveyor/admin/html.php:1773
+#: phpsurveyor/admin/html.php:2089
 msgid "Survey Registration Confirmation"
 msgstr "Conferma registrazione all'indagine on line"
 
-#: phpsurveyor/admin/html.php:1775
-#: phpsurveyor/admin/html.php:2090
+#: phpsurveyor/admin/html.php:1776
+#: phpsurveyor/admin/html.php:2091
 msgid "Public registration Email:"
 msgstr "Testo della e-mail di risposta alla registrazione pubblica:"
 
-#: phpsurveyor/admin/html.php:1777
-#: phpsurveyor/admin/html.php:2091
+#: phpsurveyor/admin/html.php:1778
+#: phpsurveyor/admin/html.php:2092
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3357,102 +3368,101 @@ msgstr ""
 "\n"
 "Se hai qualche domanda circa il questionario, o se non ti sei registrato e ritieni che questa e-mail ti sia pervenuta per errore, ti preghiamo di contattare  {ADMINNAME} all&#039;indirizzo {ADMINEMAIL}."
 
-#: phpsurveyor/admin/html.php:1780
-#: phpsurveyor/admin/html.php:2093
+#: phpsurveyor/admin/html.php:1781
+#: phpsurveyor/admin/html.php:2094
 msgid "Token Attribute Names:"
 msgstr "Nomi dei campi degli attributi degli identificativi:"
 
-#: phpsurveyor/admin/html.php:1785
-#: phpsurveyor/admin/html.php:2096
+#: phpsurveyor/admin/html.php:1786
+#: phpsurveyor/admin/html.php:2097
 msgid "Date Stamp?"
 msgstr "Data invio questionario completato"
 
-#: phpsurveyor/admin/html.php:1809
-#: phpsurveyor/admin/html.php:2102
-#: phpsurveyor/admin/saved.php:104
-msgid "IP Address"
-msgstr "Indirizzo IP"
+#: phpsurveyor/admin/html.php:1810
+#: phpsurveyor/admin/html.php:2103
+msgid "Save IP Address?"
+msgstr "Salva Indirizzo IP?"
 
-#: phpsurveyor/admin/html.php:1833
-#: phpsurveyor/admin/html.php:2107
-msgid "Referring URL"
-msgstr "URL di riferimento"
+#: phpsurveyor/admin/html.php:1834
+#: phpsurveyor/admin/html.php:2108
+msgid "Save Referring URL?"
+msgstr "Salva URL di riferimento?"
 
-#: phpsurveyor/admin/html.php:1884
-#: phpsurveyor/admin/html.php:2125
+#: phpsurveyor/admin/html.php:1885
+#: phpsurveyor/admin/html.php:2126
 msgid "Expires?"
 msgstr "Scade?"
 
-#: phpsurveyor/admin/html.php:1892
-#: phpsurveyor/admin/html.php:2132
+#: phpsurveyor/admin/html.php:1893
+#: phpsurveyor/admin/html.php:2133
 msgid "End URL:"
 msgstr "Rinvia a URL:"
 
-#: phpsurveyor/admin/html.php:1894
-#: phpsurveyor/admin/html.php:2136
+#: phpsurveyor/admin/html.php:1895
+#: phpsurveyor/admin/html.php:2137
 msgid "URL Description:"
 msgstr "Descrizione URL:"
 
-#: phpsurveyor/admin/html.php:1896
-#: phpsurveyor/admin/html.php:2140
+#: phpsurveyor/admin/html.php:1897
+#: phpsurveyor/admin/html.php:2141
 msgid "Automatically load URL when survey complete?"
 msgstr "Rinvia automaticamente ad URL"
 
-#: phpsurveyor/admin/html.php:1906
+#: phpsurveyor/admin/html.php:1907
 msgid "Update survey"
 msgstr "Aggiorna l&#039;indagine"
 
-#: phpsurveyor/admin/html.php:1967
+#: phpsurveyor/admin/html.php:1968
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
 msgstr "Le dimensioni del file in upload sono maggiori del valore settato in upload_max_file nel file php.ini"
 
-#: phpsurveyor/admin/html.php:1971
+#: phpsurveyor/admin/html.php:1972
 msgid "The file was only partially uploaded"
 msgstr "Il file è stato parzialmente caricato"
 
-#: phpsurveyor/admin/html.php:1975
+#: phpsurveyor/admin/html.php:1976
 msgid "No file was uploaded"
 msgstr "Nessun file è stato caricato"
 
-#: phpsurveyor/admin/html.php:1981
+#: phpsurveyor/admin/html.php:1982
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Trasferimento del file non riuscito. Selezionare un file CSV"
 
-#: phpsurveyor/admin/html.php:2153
-#: phpsurveyor/admin/html.php:2156
+#: phpsurveyor/admin/html.php:2154
+#: phpsurveyor/admin/html.php:2157
 #: phpsurveyor/admin/importsurvey.php:45
 msgid "Import Survey"
 msgstr "Importa indagine"
 
-#: phpsurveyor/admin/html.php:2261
+#: phpsurveyor/admin/html.php:2262
 msgid "You need to upload the file"
 msgstr "&Egrave; necessario caricare il file"
 
-#: phpsurveyor/admin/html.php:2268
+#: phpsurveyor/admin/html.php:2269
 msgid "You must upload a CSV file"
 msgstr "Carica un file CSV"
 
-#: phpsurveyor/admin/html.php:2270
+#: phpsurveyor/admin/html.php:2271
 msgid "Upload CSV file"
 msgstr "Fai Upload del File CSV"
 
-#: phpsurveyor/admin/html.php:2282
+#: phpsurveyor/admin/html.php:2283
 msgid "It is impossible to upload a file other than CSV type"
 msgstr "Impossibile caricare un file di tipo diverso da CSV"
 
-#: phpsurveyor/admin/html.php:2294
+#: phpsurveyor/admin/html.php:2295
 msgid "It is impossible to upload an empty file"
 msgstr "Impossibile caricare un file vuoto"
 
-#: phpsurveyor/admin/html.php:2301
+#: phpsurveyor/admin/html.php:2302
 msgid "Uploading CSV file"
 msgstr "Operazioni di caricamento del file CSV in corso"
 
-#: phpsurveyor/admin/html.php:2302
+#: phpsurveyor/admin/html.php:2303
 msgid "Visualization:"
 msgstr "Visualizza"
 
-#: phpsurveyor/admin/html.php:2302
+#: phpsurveyor/admin/html.php:2303
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Selezionare il n. del campo"
 
@@ -3496,14 +3506,14 @@ msgstr "Condizioni"
 
 #: phpsurveyor/admin/importgroup.php:513
 #: phpsurveyor/admin/importsurvey.php:648
-#: phpsurveyor/admin/labels.php:215
+#: phpsurveyor/admin/labels.php:214
 msgid "Label Set"
 msgstr "Gruppo di etichette"
 
 #: phpsurveyor/admin/importgroup.php:515
 #: phpsurveyor/admin/importlabel.php:219
 #: phpsurveyor/admin/importsurvey.php:648
-#: phpsurveyor/admin/labels.php:246
+#: phpsurveyor/admin/labels.php:241
 msgid "Labels"
 msgstr "Etichette"
 
@@ -3512,8 +3522,8 @@ msgid "Import of Group is completed."
 msgstr "Importazione gruppo completata."
 
 #: phpsurveyor/admin/importlabel.php:43
-#: phpsurveyor/admin/labels.php:178
-#: phpsurveyor/admin/labels.php:186
+#: phpsurveyor/admin/labels.php:177
+#: phpsurveyor/admin/labels.php:185
 msgid "Import Label Set"
 msgstr "Importa etichetta"
 
@@ -3538,7 +3548,7 @@ msgstr "Riepilogo importazione domande"
 
 #: phpsurveyor/admin/importlabel.php:218
 #: phpsurveyor/admin/importquestion.php:440
-#: phpsurveyor/admin/labels.php:102
+#: phpsurveyor/admin/labels.php:101
 msgid "Labelsets"
 msgstr "Etichette"
 
@@ -3589,57 +3599,56 @@ msgstr "Riepilogo importazione indagine"
 msgid "Label Sets Administration"
 msgstr "Gestione etichette"
 
-#: phpsurveyor/admin/labels.php:100
+#: phpsurveyor/admin/labels.php:99
 msgid "Add new label set"
 msgstr "Aggiungi nuovo gruppo di etichette"
 
-#: phpsurveyor/admin/labels.php:140
+#: phpsurveyor/admin/labels.php:139
 msgid "Create New Label Set"
 msgstr "Crea un nuovo gruppo di etichette"
 
-#: phpsurveyor/admin/labels.php:141
+#: phpsurveyor/admin/labels.php:140
 msgid "Edit Label Set"
 msgstr "Modifica etichette"
 
-#: phpsurveyor/admin/labels.php:146
+#: phpsurveyor/admin/labels.php:145
 msgid "Set Name"
 msgstr "Nome gruppo"
 
-#: phpsurveyor/admin/labels.php:226
+#: phpsurveyor/admin/labels.php:224
 msgid "Edit label set"
 msgstr "Modifica gruppo etichette"
 
-#: phpsurveyor/admin/labels.php:229
-#: phpsurveyor/admin/labels.php:230
+#: phpsurveyor/admin/labels.php:226
 msgid "Delete label set"
 msgstr "Cancella gruppo etichette"
 
-#: phpsurveyor/admin/labels.php:231
+#: phpsurveyor/admin/labels.php:227
 msgid "Are you sure?"
 msgstr "Sei sicuro?"
 
-#: phpsurveyor/admin/labels.php:254
+#: phpsurveyor/admin/labels.php:249
 msgid "Title"
 msgstr "Titolo"
 
-#: phpsurveyor/admin/labels.php:260
+#: phpsurveyor/admin/labels.php:255
 msgid "Order"
 msgstr "Ordine"
 
-#: phpsurveyor/admin/labels.php:343
+#: phpsurveyor/admin/labels.php:338
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr "Impossibile modificare i codici, aggiungere o eliminare elementi in questo gruppo di etichette perchè è utilizzato da un&#039;indagine attiva."
 
-#: phpsurveyor/admin/labels.php:361
+#: phpsurveyor/admin/labels.php:356
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Alcune indagini usano questo gruppo di etichette. Modificare i codici, aggiungere o eliminare elementi in questo gruppo di etichette può portare a risultati non desiderati sulle altre indagini."
 
-#: phpsurveyor/admin/labels.php:389
-#: phpsurveyor/admin/labels.php:423
+#: phpsurveyor/admin/labels.php:384
+#: phpsurveyor/admin/labels.php:418
 msgid "Update of Label Set failed"
 msgstr "Aggiornamento del gruppo di etichette non riuscito"
 
-#: phpsurveyor/admin/labels.php:401
+#: phpsurveyor/admin/labels.php:396
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Impossibile cancellare il gruppo di etichette - Ci sono delle domande che dipendono da esso. E&#039; necessario eliminare prima queste domande."
 
@@ -3730,6 +3739,10 @@ msgstr "Risposte salvate:"
 msgid "Identifier"
 msgstr "Identificatore"
 
+#: phpsurveyor/admin/saved.php:104
+msgid "IP Address"
+msgstr "Indirizzo IP"
+
 #: phpsurveyor/admin/saved.php:105
 msgid "Date Saved"
 msgstr "Data salvata"
@@ -3738,149 +3751,157 @@ msgstr "Data salvata"
 msgid "Are you sure you want to delete this entry?"
 msgstr "Sei sicuro di voler cancellare quanto hai inserito?"
 
-#: phpsurveyor/admin/statistics.php:96
-#: phpsurveyor/admin/stats.php:97
+#: phpsurveyor/admin/statistics.php:94
+#: phpsurveyor/admin/stats.php:96
 msgid "Quick Statistics"
 msgstr "Statistiche"
 
-#: phpsurveyor/admin/statistics.php:103
+#: phpsurveyor/admin/statistics.php:101
 msgid "Filter Settings"
 msgstr "Imposta filtro"
 
-#: phpsurveyor/admin/statistics.php:139
-#: phpsurveyor/admin/statistics.php:298
+#: phpsurveyor/admin/statistics.php:137
+#: phpsurveyor/admin/statistics.php:296
 msgid "Number greater than"
 msgstr "Numero più grande di"
 
-#: phpsurveyor/admin/statistics.php:143
-#: phpsurveyor/admin/statistics.php:302
+#: phpsurveyor/admin/statistics.php:141
+#: phpsurveyor/admin/statistics.php:300
 msgid "Number Less Than"
 msgstr "Numero più piccolo di"
 
-#: phpsurveyor/admin/statistics.php:165
-#: phpsurveyor/admin/statistics.php:319
+#: phpsurveyor/admin/statistics.php:163
+#: phpsurveyor/admin/statistics.php:317
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Data (YYYY-MM-DD) eguaglia"
 
-#: phpsurveyor/admin/statistics.php:169
-#: phpsurveyor/admin/statistics.php:323
+#: phpsurveyor/admin/statistics.php:167
+#: phpsurveyor/admin/statistics.php:321
 msgid "OR between"
 msgstr "OR tra"
 
-#: phpsurveyor/admin/statistics.php:245
-#: phpsurveyor/admin/statistics.php:270
-#: phpsurveyor/admin/statistics.php:289
+#: phpsurveyor/admin/statistics.php:243
+#: phpsurveyor/admin/statistics.php:268
+#: phpsurveyor/admin/statistics.php:287
 msgid "Responses Containing"
 msgstr "Risposte contenenti"
 
-#: phpsurveyor/admin/statistics.php:644
+#: phpsurveyor/admin/statistics.php:642
 msgid "View summary of all available fields"
 msgstr "Vista  di tutti  i campi disponibili"
 
-#: phpsurveyor/admin/statistics.php:646
+#: phpsurveyor/admin/statistics.php:644
 msgid "View Stats"
 msgstr "Vista delle statistiche"
 
-#: phpsurveyor/admin/statistics.php:849
+#: phpsurveyor/admin/statistics.php:847
 msgid "Results"
 msgstr "Risultati"
 
-#: phpsurveyor/admin/statistics.php:852
+#: phpsurveyor/admin/statistics.php:850
 msgid "No of records in this query"
 msgstr "Numero di record in questa query"
 
-#: phpsurveyor/admin/statistics.php:853
+#: phpsurveyor/admin/statistics.php:851
 msgid "Total records in survey"
 msgstr "Record totali nell&#039;indagine"
 
-#: phpsurveyor/admin/statistics.php:857
+#: phpsurveyor/admin/statistics.php:855
 msgid "Percentage of total"
 msgstr "Percentuale del totale"
 
-#: phpsurveyor/admin/statistics.php:861
+#: phpsurveyor/admin/statistics.php:859
 msgid "SQL"
 msgstr "SQL"
 
-#: phpsurveyor/admin/statistics.php:1034
-#: phpsurveyor/admin/statistics.php:1320
+#: phpsurveyor/admin/statistics.php:1032
+#: phpsurveyor/admin/statistics.php:1318
 msgid "Field Summary for"
 msgstr "Campo sommario per"
 
-#: phpsurveyor/admin/statistics.php:1038
+#: phpsurveyor/admin/statistics.php:1036
 msgid "Calculation"
 msgstr "Calcolo"
 
-#: phpsurveyor/admin/statistics.php:1040
+#: phpsurveyor/admin/statistics.php:1038
 msgid "Result"
 msgstr "Risultato"
 
-#: phpsurveyor/admin/statistics.php:1054
+#: phpsurveyor/admin/statistics.php:1052
 msgid "Sum"
 msgstr "Somma"
 
-#: phpsurveyor/admin/statistics.php:1055
+#: phpsurveyor/admin/statistics.php:1053
 msgid "Standard Deviation"
 msgstr "Deviazione Standard "
 
-#: phpsurveyor/admin/statistics.php:1056
+#: phpsurveyor/admin/statistics.php:1054
 msgid "Average"
 msgstr "Media"
 
-#: phpsurveyor/admin/statistics.php:1093
+#: phpsurveyor/admin/statistics.php:1091
 msgid "1st Quartile (Q1)"
 msgstr "Primo Quartile (Q1)"
 
-#: phpsurveyor/admin/statistics.php:1114
+#: phpsurveyor/admin/statistics.php:1112
 msgid "2nd Quartile (Median)"
 msgstr "Secondo Quartile (Mediana)"
 
-#: phpsurveyor/admin/statistics.php:1142
+#: phpsurveyor/admin/statistics.php:1140
 msgid "3rd Quartile (Q3)"
 msgstr "Terzo Quartile (Q3)"
 
-#: phpsurveyor/admin/statistics.php:1162
+#: phpsurveyor/admin/statistics.php:1160
 msgid "Null values are ignored in calculations"
 msgstr "*Valori nulli saranno ignorati nei calcoli"
 
-#: phpsurveyor/admin/statistics.php:1163
+#: phpsurveyor/admin/statistics.php:1161
 msgid "Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
 msgstr "*Q1 and Q3 sono calcolati utilizzando il <a href=&#039;http:mathforum.orglibrarydrmathview60969.html&#039; target=&#039;_blank&#039;>metodo minitab<a>"
 
-#: phpsurveyor/admin/statistics.php:1327
-#: phpsurveyor/admin/statistics.php:1442
+#: phpsurveyor/admin/statistics.php:1325
+#: phpsurveyor/admin/statistics.php:1440
 msgid "Count"
 msgstr "Conta"
 
-#: phpsurveyor/admin/statistics.php:1329
+#: phpsurveyor/admin/statistics.php:1327
 msgid "Percentage"
 msgstr "Percentuale"
 
-#: phpsurveyor/admin/statistics.php:1375
-#: phpsurveyor/admin/statistics.php:1381
+#: phpsurveyor/admin/statistics.php:1373
+#: phpsurveyor/admin/statistics.php:1379
 msgid "Browse"
 msgstr "Sfoglia"
 
-#: phpsurveyor/admin/stats.php:262
+#: phpsurveyor/admin/stats.php:244
+msgid "Select all"
+msgstr "Seleziona tutto"
+
+#: phpsurveyor/admin/stats.php:245
+msgid "Proceed"
+msgstr "Continua"
+
+#: phpsurveyor/admin/stats.php:292
 msgid "Select question(s) from the following list"
 msgstr "Scegli la/le domanda/e dalla seguente lista"
 
-#: phpsurveyor/admin/stats.php:332
+#: phpsurveyor/admin/stats.php:362
 msgid "Like"
 msgstr "Come"
 
-#: phpsurveyor/admin/stats.php:340
+#: phpsurveyor/admin/stats.php:370
 msgid "Not Equals"
 msgstr "Non eguaglia"
 
-#: phpsurveyor/admin/stats.php:372
+#: phpsurveyor/admin/stats.php:426
 msgid "Filter Conditions"
 msgstr "Condizioni di filtraggio"
 
-#: phpsurveyor/admin/stats.php:630
+#: phpsurveyor/admin/stats.php:684
 msgid "Numerical"
 msgstr "Numerico"
 
-#: phpsurveyor/admin/stats.php:663
+#: phpsurveyor/admin/stats.php:717
 msgid "Huge free text"
 msgstr "Testo libero maxi"
 
@@ -3929,75 +3950,73 @@ msgid "Save Page"
 msgstr "Salva Pagina"
 
 #: phpsurveyor/admin/templates.php:509
-msgid "Create new template"
-msgstr "Crea nuovo template"
-
-#: phpsurveyor/admin/templates.php:510
 msgid "Create new template called:"
 msgstr "Crea nuovo template con nome:"
 
-#: phpsurveyor/admin/templates.php:510
+#: phpsurveyor/admin/templates.php:509
 msgid "NewTemplate"
 msgstr "Nuovo emplate"
 
-#: phpsurveyor/admin/templates.php:528
+#: phpsurveyor/admin/templates.php:510
+#: phpsurveyor/admin/templates.php:539
+msgid "Create new template"
+msgstr "Crea nuovo template"
+
+#: phpsurveyor/admin/templates.php:529
 msgid "This template can be modified"
 msgstr "Questo template può essere modificato"
 
-#: phpsurveyor/admin/templates.php:530
+#: phpsurveyor/admin/templates.php:531
 msgid "This template cannot be modified"
 msgstr "Questo template non può essere modificato"
-
-#: phpsurveyor/admin/templates.php:536
-msgid "Rename this template"
-msgstr "Rinomina questo template"
 
 #: phpsurveyor/admin/templates.php:537
 msgid "Rename this template to:"
 msgstr "Rinomina questo template come:"
 
-#: phpsurveyor/admin/templates.php:541
+#: phpsurveyor/admin/templates.php:538
+msgid "Rename this template"
+msgstr "Rinomina questo template"
+
+#: phpsurveyor/admin/templates.php:544
+#: phpsurveyor/admin/templates.php:548
 msgid "Export Template"
 msgstr "Esporta Template"
 
-#: phpsurveyor/admin/templates.php:544
+#: phpsurveyor/admin/templates.php:549
 msgid "Make a copy of this template"
 msgstr "Fai una copia di questo template"
 
-#: phpsurveyor/admin/templates.php:545
-msgid "Create a copy of this template called:"
-msgstr "Crea una copia di questo template con nome:"
-
-#: phpsurveyor/admin/templates.php:545
+#: phpsurveyor/admin/templates.php:549
 msgid "copy_of_"
 msgstr "copia_di_"
 
-#: phpsurveyor/admin/templates.php:550
+#: phpsurveyor/admin/templates.php:555
 msgid "Screen:"
 msgstr "Finestra:"
 
-#: phpsurveyor/admin/templates.php:561
+#: phpsurveyor/admin/templates.php:566
 msgid "File Control:"
 msgstr "Controllo File:"
 
-#: phpsurveyor/admin/templates.php:576
+#: phpsurveyor/admin/templates.php:581
 msgid "Standard Files:"
 msgstr "Standard File:"
 
-#: phpsurveyor/admin/templates.php:582
+#: phpsurveyor/admin/templates.php:587
 msgid "Now editing:"
 msgstr "Modifica ora:"
 
-#: phpsurveyor/admin/templates.php:601
+#: phpsurveyor/admin/templates.php:606
 msgid "Other Files:"
 msgstr "Altri File:"
 
-#: phpsurveyor/admin/templates.php:621
+#: phpsurveyor/admin/templates.php:626
 #: phpsurveyor/admin/vvimport.php:72
 msgid "Upload"
 msgstr "Upload"
 
-#: phpsurveyor/admin/templates.php:643
+#: phpsurveyor/admin/templates.php:648
 msgid "Preview:"
 msgstr "Anteprima:"
 
@@ -4022,308 +4041,308 @@ msgstr "Attivando gli identificativi per questa indagine, l&#039;accesso all&#03
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Creare una tabella degli identificativi per questa indagine?"
 
-#: phpsurveyor/admin/tokens.php:277
-#: phpsurveyor/admin/tokens.php:1158
-#: phpsurveyor/admin/tokens.php:1183
+#: phpsurveyor/admin/tokens.php:279
+#: phpsurveyor/admin/tokens.php:1160
+#: phpsurveyor/admin/tokens.php:1185
 msgid "Display Tokens"
 msgstr "Mostra gli identificativi"
 
-#: phpsurveyor/admin/tokens.php:281
-#: phpsurveyor/admin/tokens.php:1184
+#: phpsurveyor/admin/tokens.php:284
+#: phpsurveyor/admin/tokens.php:1186
 msgid "Add new token entry"
 msgstr "Aggiungi un identificativo"
 
-#: phpsurveyor/admin/tokens.php:283
+#: phpsurveyor/admin/tokens.php:287
 msgid "Import Tokens from CSV File"
 msgstr "Importa file CSV"
 
-#: phpsurveyor/admin/tokens.php:285
+#: phpsurveyor/admin/tokens.php:289
 msgid "Export Tokens to CSV file"
 msgstr "Esporta gli identificativi come file CSV"
 
-#: phpsurveyor/admin/tokens.php:288
+#: phpsurveyor/admin/tokens.php:292
 msgid "Send email invitation"
 msgstr "Invia invito"
 
-#: phpsurveyor/admin/tokens.php:290
+#: phpsurveyor/admin/tokens.php:294
 msgid "Send email reminder"
 msgstr "Invia sollectito"
 
-#: phpsurveyor/admin/tokens.php:293
+#: phpsurveyor/admin/tokens.php:297
 msgid "Generate Tokens"
 msgstr "Genera password di identificazione"
 
-#: phpsurveyor/admin/tokens.php:296
-#: phpsurveyor/admin/tokens.php:403
+#: phpsurveyor/admin/tokens.php:300
+#: phpsurveyor/admin/tokens.php:408
 msgid "Drop tokens table"
 msgstr "Elimina le tabelle degli identificativi"
 
-#: phpsurveyor/admin/tokens.php:310
+#: phpsurveyor/admin/tokens.php:315
 msgid "Total Records in this Token Table:"
 msgstr "Numero totale record in questa tabella degli identificativi:"
 
-#: phpsurveyor/admin/tokens.php:314
+#: phpsurveyor/admin/tokens.php:319
 msgid "Total With No Unique Token:"
 msgstr "Totale senza identificativo unico:"
 
-#: phpsurveyor/admin/tokens.php:320
+#: phpsurveyor/admin/tokens.php:325
 msgid "Total Invitations Sent:"
 msgstr "Totale inviti inviati:"
 
-#: phpsurveyor/admin/tokens.php:325
+#: phpsurveyor/admin/tokens.php:330
 msgid "Total Surveys Completed:"
 msgstr "Totale questionari completati:"
 
-#: phpsurveyor/admin/tokens.php:344
+#: phpsurveyor/admin/tokens.php:349
 msgid "All token entries have been deleted."
 msgstr "Tutti gli identificativi sono stati azzerati"
 
-#: phpsurveyor/admin/tokens.php:352
+#: phpsurveyor/admin/tokens.php:357
 msgid "All invite entries have been set to 'Not Invited'."
 msgstr "Gli inviti non verranno spediti"
 
-#: phpsurveyor/admin/tokens.php:360
+#: phpsurveyor/admin/tokens.php:365
 msgid "All unique token numbers have been removed."
 msgstr "I codici associati agli identificativi sono stati eliminati"
 
-#: phpsurveyor/admin/tokens.php:385
+#: phpsurveyor/admin/tokens.php:390
 msgid "Token Database Administration Options"
 msgstr "Amministrazione Database identificativi"
 
-#: phpsurveyor/admin/tokens.php:391
+#: phpsurveyor/admin/tokens.php:396
 msgid "Are you really sure you want to reset all invitation records to NO?"
 msgstr "Annullare la spedizione di tutti gli inviti?"
 
-#: phpsurveyor/admin/tokens.php:391
+#: phpsurveyor/admin/tokens.php:396
 msgid "Set all entries to 'No invitation sent'."
 msgstr "Non spedire gli inviti"
 
-#: phpsurveyor/admin/tokens.php:393
+#: phpsurveyor/admin/tokens.php:398
 msgid "Are you sure you want to delete all unique token numbers?"
 msgstr "Elimina tutti i codici associati agli identificativi?"
 
-#: phpsurveyor/admin/tokens.php:393
+#: phpsurveyor/admin/tokens.php:398
 msgid "Delete all unique token numbers"
 msgstr "Elimina codici associati agli identificativi"
 
-#: phpsurveyor/admin/tokens.php:395
+#: phpsurveyor/admin/tokens.php:400
 msgid "Are you really sure you want to delete ALL token entries?"
 msgstr "Procedere nell&#039;eliminazione delle voci di TUTTI gli identificativi?"
 
-#: phpsurveyor/admin/tokens.php:395
+#: phpsurveyor/admin/tokens.php:400
 msgid "Delete all token entries"
 msgstr "Azzera gli identificativi"
 
-#: phpsurveyor/admin/tokens.php:401
+#: phpsurveyor/admin/tokens.php:406
 msgid "Update tokens table with new fields"
 msgstr "Aggiorna la tabella degli identificativi con nuovi campi"
 
-#: phpsurveyor/admin/tokens.php:444
+#: phpsurveyor/admin/tokens.php:453
 msgid "Search"
 msgstr "Cerca"
 
-#: phpsurveyor/admin/tokens.php:492
-#: phpsurveyor/admin/tokens.php:496
-#: phpsurveyor/admin/tokens.php:500
-#: phpsurveyor/admin/tokens.php:504
-#: phpsurveyor/admin/tokens.php:508
-#: phpsurveyor/admin/tokens.php:512
-#: phpsurveyor/admin/tokens.php:516
-#: phpsurveyor/admin/tokens.php:522
-#: phpsurveyor/admin/tokens.php:526
-#: phpsurveyor/admin/tokens.php:530
+#: phpsurveyor/admin/tokens.php:501
+#: phpsurveyor/admin/tokens.php:505
+#: phpsurveyor/admin/tokens.php:509
+#: phpsurveyor/admin/tokens.php:513
+#: phpsurveyor/admin/tokens.php:517
+#: phpsurveyor/admin/tokens.php:521
+#: phpsurveyor/admin/tokens.php:525
+#: phpsurveyor/admin/tokens.php:531
+#: phpsurveyor/admin/tokens.php:535
+#: phpsurveyor/admin/tokens.php:539
 msgid "Sort by: "
 msgstr "Ordina: "
 
-#: phpsurveyor/admin/tokens.php:512
-#: phpsurveyor/admin/tokens.php:1078
+#: phpsurveyor/admin/tokens.php:521
+#: phpsurveyor/admin/tokens.php:1080
 msgid "Invite sent?"
 msgstr "Invito spedito?"
 
-#: phpsurveyor/admin/tokens.php:516
-#: phpsurveyor/admin/tokens.php:1088
+#: phpsurveyor/admin/tokens.php:525
+#: phpsurveyor/admin/tokens.php:1090
 msgid "Completed?"
 msgstr "Completato?"
 
-#: phpsurveyor/admin/tokens.php:530
+#: phpsurveyor/admin/tokens.php:539
 msgid "MPID"
 msgstr "MPID"
 
-#: phpsurveyor/admin/tokens.php:546
+#: phpsurveyor/admin/tokens.php:555
 msgid "Edit Token Entry"
 msgstr "Genera idenficativi"
 
-#: phpsurveyor/admin/tokens.php:548
+#: phpsurveyor/admin/tokens.php:557
 msgid "Delete Token Entry"
 msgstr "Elimina identificativi"
 
-#: phpsurveyor/admin/tokens.php:573
+#: phpsurveyor/admin/tokens.php:582
 msgid "Update Response"
 msgstr "Aggiorna risposta"
 
-#: phpsurveyor/admin/tokens.php:591
+#: phpsurveyor/admin/tokens.php:597
 msgid "Send invitation email to this entry"
 msgstr "Invia invito a questo utente"
 
-#: phpsurveyor/admin/tokens.php:603
+#: phpsurveyor/admin/tokens.php:606
 msgid "Send reminder email to this entry"
 msgstr "Invia sollecito a questo utente"
 
-#: phpsurveyor/admin/tokens.php:622
+#: phpsurveyor/admin/tokens.php:625
 msgid "Delete Tokens Table"
 msgstr "Elimina tabella identificativi"
 
-#: phpsurveyor/admin/tokens.php:628
+#: phpsurveyor/admin/tokens.php:631
 msgid "If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "L&#039;eliminanazione della tabella degli identificativi, renderà l&#039;indagine aperta a tutti. Verrà eseguito un backup dei dati a cui solo l&#039;amministratore di sistema avrà accesso."
 
-#: phpsurveyor/admin/tokens.php:631
+#: phpsurveyor/admin/tokens.php:634
 msgid "Delete Tokens"
 msgstr "Elimina tabella degli identificativi"
 
-#: phpsurveyor/admin/tokens.php:642
+#: phpsurveyor/admin/tokens.php:645
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator."
 msgstr "La tabella degli identificativi è stata eliminata e non è più obbligatorio avere un identificativo di ingresso per accedere all&#039;indagine. Se si procede verrà eseguito un backup dei dati al quale solo l&#039;amministratore di sistema avrà accesso."
 
-#: phpsurveyor/admin/tokens.php:658
+#: phpsurveyor/admin/tokens.php:661
 msgid "Email Invitation"
 msgstr "Invia invito"
 
-#: phpsurveyor/admin/tokens.php:683
-#: phpsurveyor/admin/tokens.php:815
-#: phpsurveyor/admin/tokens.php:874
+#: phpsurveyor/admin/tokens.php:686
+#: phpsurveyor/admin/tokens.php:817
+#: phpsurveyor/admin/tokens.php:876
 msgid "From"
 msgstr "Da"
 
-#: phpsurveyor/admin/tokens.php:687
-#: phpsurveyor/admin/tokens.php:819
+#: phpsurveyor/admin/tokens.php:690
+#: phpsurveyor/admin/tokens.php:821
 msgid "Subject"
 msgstr "Oggetto"
 
-#: phpsurveyor/admin/tokens.php:699
+#: phpsurveyor/admin/tokens.php:702
 msgid "Send Invitations"
 msgstr "Invia inviti"
 
-#: phpsurveyor/admin/tokens.php:709
+#: phpsurveyor/admin/tokens.php:712
 msgid "Sending Invitations"
 msgstr "Invio degli inviti in corso"
 
-#: phpsurveyor/admin/tokens.php:712
-#: phpsurveyor/admin/tokens.php:835
-#: phpsurveyor/admin/tokens.php:875
+#: phpsurveyor/admin/tokens.php:715
+#: phpsurveyor/admin/tokens.php:837
+#: phpsurveyor/admin/tokens.php:877
 msgid "Sending to TID No:"
 msgstr "Invia a ID dell&#039;identificativo n.:"
 
-#: phpsurveyor/admin/tokens.php:762
+#: phpsurveyor/admin/tokens.php:764
 msgid "Invitation Sent To:"
 msgstr "Invito inviato a:"
 
-#: phpsurveyor/admin/tokens.php:766
+#: phpsurveyor/admin/tokens.php:768
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
 msgstr "Invio posta a {FIRSTNAME} {LASTNAME} ({EMAIL}) fallito"
 
-#: phpsurveyor/admin/tokens.php:778
-#: phpsurveyor/admin/tokens.php:936
+#: phpsurveyor/admin/tokens.php:780
+#: phpsurveyor/admin/tokens.php:938
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Troppe e-mail in attesa di essere spedite. Impossibile inviarle tutte insieme. Clicca sul seguente link per continuare a inviare i messaggi."
 
-#: phpsurveyor/admin/tokens.php:779
-#: phpsurveyor/admin/tokens.php:937
+#: phpsurveyor/admin/tokens.php:781
+#: phpsurveyor/admin/tokens.php:939
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Ci sono ancora {EMAILCOUNT} e-mail in attesa di invio."
 
-#: phpsurveyor/admin/tokens.php:794
+#: phpsurveyor/admin/tokens.php:796
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
 msgstr "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, non è stato ancora inviato un invito, l&#039;indagine è già stata completata, l&#039;utente ha già un identificativo"
 
-#: phpsurveyor/admin/tokens.php:805
+#: phpsurveyor/admin/tokens.php:807
 msgid "Email Reminder"
 msgstr "Invia sollecita"
 
-#: phpsurveyor/admin/tokens.php:827
+#: phpsurveyor/admin/tokens.php:829
 msgid "Start at TID No:"
 msgstr "Incomincia dall&#039;ID dell&#039;identificativo n.:"
 
-#: phpsurveyor/admin/tokens.php:858
+#: phpsurveyor/admin/tokens.php:860
 msgid "Send Reminders"
 msgstr "Invia solleciti"
 
-#: phpsurveyor/admin/tokens.php:870
+#: phpsurveyor/admin/tokens.php:872
 msgid "Sending Reminders"
 msgstr "Invia solleciti"
 
-#: phpsurveyor/admin/tokens.php:920
+#: phpsurveyor/admin/tokens.php:922
 msgid "Reminder Sent To:"
 msgstr "Sollecito inviato a:"
 
-#: phpsurveyor/admin/tokens.php:955
+#: phpsurveyor/admin/tokens.php:957
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, un invito è già stato inviato ma l&#039;indagine non è stata completata."
 
-#: phpsurveyor/admin/tokens.php:967
+#: phpsurveyor/admin/tokens.php:969
 msgid "Create Tokens"
 msgstr "Genera identificativi"
 
-#: phpsurveyor/admin/tokens.php:971
+#: phpsurveyor/admin/tokens.php:973
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Facendo clic su SI verranno generati automaticamente i codici e le password di identificazione per tutti gli utenti che ne sono ancora sprovvisti. Procedere?"
 
-#: phpsurveyor/admin/tokens.php:1001
+#: phpsurveyor/admin/tokens.php:1003
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} identificativi sono stati creati"
 
-#: phpsurveyor/admin/tokens.php:1015
+#: phpsurveyor/admin/tokens.php:1017
 msgid "Token has been deleted."
 msgstr "Identificativo eliminato."
 
-#: phpsurveyor/admin/tokens.php:1016
+#: phpsurveyor/admin/tokens.php:1018
 msgid "Reloading Screen. Please wait."
 msgstr "Aggiornamento in corso. Attendere prego."
 
-#: phpsurveyor/admin/tokens.php:1040
-#: phpsurveyor/admin/tokens.php:1135
-#: phpsurveyor/admin/tokens.php:1165
+#: phpsurveyor/admin/tokens.php:1042
+#: phpsurveyor/admin/tokens.php:1137
+#: phpsurveyor/admin/tokens.php:1167
 msgid "Add or Edit Token"
 msgstr "Aggiungi o genera identificativi"
 
-#: phpsurveyor/admin/tokens.php:1073
+#: phpsurveyor/admin/tokens.php:1075
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Si può scegliere di lasciare questo campo vuoto e generare i identificativi automaticamente usando &#039;Genera identificativi&#039;"
 
-#: phpsurveyor/admin/tokens.php:1157
+#: phpsurveyor/admin/tokens.php:1159
 msgid "Updated Token"
 msgstr "Aggiorna identificativi"
 
-#: phpsurveyor/admin/tokens.php:1182
+#: phpsurveyor/admin/tokens.php:1184
 msgid "Added New Token"
 msgstr "Un nuovo identificativo è stato creato"
 
-#: phpsurveyor/admin/tokens.php:1192
-#: phpsurveyor/admin/tokens.php:1210
+#: phpsurveyor/admin/tokens.php:1194
+#: phpsurveyor/admin/tokens.php:1212
 msgid "Upload CSV File"
 msgstr "Fai Upload del File CSV"
 
-#: phpsurveyor/admin/tokens.php:1198
+#: phpsurveyor/admin/tokens.php:1200
 msgid "Note:"
 msgstr "Nota:"
 
-#: phpsurveyor/admin/tokens.php:1199
+#: phpsurveyor/admin/tokens.php:1201
 msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\"."
 msgstr "Il file deve essere un file CSV standard (delimitato da virgole) senza apici. La prima riga deve contenere i dati dell&#039;intestazione dei campi (che verrà rimossa). I dati devono seguire il seguente ordine \"nome, cognome, email, [Token], [Attribute1], [Attribute2]\"."
 
-#: phpsurveyor/admin/tokens.php:1225
+#: phpsurveyor/admin/tokens.php:1227
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Lista di upload non trovata. Controlla i tuoi permessi ed il percorso per vedere se c&#039;è l&#039;indice di upload"
 
-#: phpsurveyor/admin/tokens.php:1230
+#: phpsurveyor/admin/tokens.php:1232
 msgid "Importing CSV File"
 msgstr "Importazione File CSV"
 
-#: phpsurveyor/admin/tokens.php:1231
+#: phpsurveyor/admin/tokens.php:1233
 msgid "Creating Token Entries"
 msgstr "Crea voce identificativi"
 
-#: phpsurveyor/admin/tokens.php:1294
+#: phpsurveyor/admin/tokens.php:1296
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} voci sono state create"
 
@@ -4447,29 +4466,29 @@ msgstr "Nota importante:<br>NON AGGIORNARE questa pagina, pechè questo comporta
 msgid "Total records imported:"
 msgstr "Totale dei record importati:"
 
-#: phpsurveyor/admin/install/upgrade-mysql.php:177
+#: phpsurveyor/admin/install/upgrade-mysql.php:188
 msgid "Checking to ensure all tables exist"
 msgstr "Verifica delle seguenti tabelle"
 
-#: phpsurveyor/admin/install/upgrade-mysql.php:188
-#: phpsurveyor/admin/install/upgrade-mysql.php:254
+#: phpsurveyor/admin/install/upgrade-mysql.php:199
+#: phpsurveyor/admin/install/upgrade-mysql.php:304
 msgid "Checking"
 msgstr "Verifica"
 
-#: phpsurveyor/admin/install/upgrade-mysql.php:211
+#: phpsurveyor/admin/install/upgrade-mysql.php:222
 msgid "Table Created"
 msgstr "La tabella è stata creata"
 
-#: phpsurveyor/admin/install/upgrade-mysql.php:215
-#: phpsurveyor/admin/install/upgrade-mysql.php:290
+#: phpsurveyor/admin/install/upgrade-mysql.php:226
+#: phpsurveyor/admin/install/upgrade-mysql.php:340
 msgid "OK"
 msgstr "OK"
 
-#: phpsurveyor/admin/install/upgrade-mysql.php:222
+#: phpsurveyor/admin/install/upgrade-mysql.php:233
 msgid "Checking to ensure all fields exist"
 msgstr "Verifica dei seguenti campi"
 
-#: phpsurveyor/admin/install/upgrade-mysql.php:279
+#: phpsurveyor/admin/install/upgrade-mysql.php:329
 msgid "Field Created"
 msgstr "I campi sono stati creati"
 
