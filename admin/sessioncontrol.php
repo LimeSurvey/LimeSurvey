@@ -40,21 +40,53 @@
 session_name("PHPSurveyorAdmin");
 if (session_id() == "") session_start();
 
-
-
 //LANGUAGE ISSUES
-if (returnglobal('action') == "changelang")
-{
-	$_SESSION['adminlang']=returnglobal('lang');
 
-}
+if (returnglobal('action') == "changelang")
+	{
+	$_SESSION['adminlang']=returnglobal('lang');
+	// if user is logged in update language in database
+	if(isset($_SESSION['loginID']))
+		{
+		$uquery = "UPDATE {$dbprefix}users SET lang='{$_SESSION['adminlang']}' WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
+		$uresult = $connect->Execute($uquery);
+		}
+	}
 elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
-{
+	{
 	$_SESSION['adminlang']=$defaultlang;
-}
+	}
 // echo 'Domain:*'.$_SESSION['adminlang'].'*';
 // for debug purposes
 
 SetInterfaceLanguage($_SESSION['adminlang']);
 
+// get user rights
+if(isset($_SESSION['loginID']))
+	{
+	$squery = "SELECT create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, create_template FROM {$dbprefix}users WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
+	$sresult = $connect->Execute($squery);
+	if(@$fields = $sresult->FetchRow())
+		{
+		$_SESSION['USER_RIGHT_CREATE_SURVEY'] = $fields['create_survey'];
+		$_SESSION['USER_RIGHT_CONFIGURATOR'] = $fields['configurator'];
+		$_SESSION['USER_RIGHT_CREATE_USER'] = $fields['create_user'];
+		$_SESSION['USER_RIGHT_DELETE_USER'] = $fields['delete_user'];
+		$_SESSION['USER_RIGHT_PULL_UP_USER'] = $fields['pull_up_user'];
+		$_SESSION['USER_RIGHT_PUSH_DOWN_USER'] = $fields['push_down_user'];
+		$_SESSION['USER_RIGHT_CREATE_TEMPLATE'] = $fields['create_template'];
+		}
+	/*
+	else
+		{
+		// nicht mehr nötig
+		$accesssummary = ("<strong>Keine Benutzerrechte gefunden! Bitte kontaktieren Sie den Admin.</strong>");
+		killSession();
+		checkfortables();
+		}
+	*/
+	}
+
+//CHANGE LANGUAGE IF SESSION LANG DOESN'T MATCH DEFAULT LANG
+//if (isset($_SESSION['adminlang'])) {$defaultlang=$_SESSION['adminlang'];}
 ?>

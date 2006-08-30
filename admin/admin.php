@@ -33,6 +33,7 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
+
 require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -42,8 +43,7 @@ if (!isset($lid)) {$lid=returnglobal('lid');}
 if (!isset($code)) {$code=returnglobal('code');}
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($ok)) {$ok=returnglobal('ok');}
-if (!isset($user)) {$user=returnglobal('user');}
-if (!isset($pass)) {$pass=returnglobal('pass');}
+
 if (!isset($the_file)) {$the_file=returnglobal('the_file');}
 if (!isset($svettore)) {$svettore=returnglobal('svettore');}
 if (!isset($fp)) {$fp=returnglobal('filev');}
@@ -113,31 +113,83 @@ if (!$database_exists)
 
 
 if ($action == "activate")
-{
-	include("activate.php");
-	exit;
-}
+	{
+	$surquery = "SELECT activate_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
+	$surrows = $surresult->FetchRow();
+
+	if($surrows['activate_survey'])
+		{
+		include("activate.php");
+		exit;
+		}
+	else
+		{
+		include("access_denied.php");		
+		}	
+	}
 if ($action == "deactivate")
 {
-	include("deactivate.php");
-	exit;
+	$surquery = "SELECT activate_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
+	$surrows = $surresult->FetchRow();
+
+	if($surrows['activate_survey'])
+		{
+		include("deactivate.php");
+		exit;
+		}
+	else
+		{
+		include("access_denied.php");		
+		}
 }
 
 if ($action == "importsurvey")
-{
-	include("importsurvey.php");
-	exit;
-}
+	{
+	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
+		{
+		include("importsurvey.php");
+		exit;
+		}
+	else
+		{
+		include("access_denied.php");		
+		}
+	}
 if ($action == "importgroup")
-{
-	include("importgroup.php");
-	exit;
-}
+	{
+	/*$surquery = "SELECT define_questions FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
+	$surrows = $surresult->FetchRow();
+
+	if($surrows['define_questions'])
+		{*/
+		include("importgroup.php");
+		exit;
+		/*}
+	else
+		{
+		include("access_denied.php");		
+		}*/
+	
+	}
 if ($action == "importquestion")
-{
-	include("importquestion.php");
-	exit;
-}
+	{
+	/*$surquery = "SELECT define_questions FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
+	$surrows = $surresult->FetchRow();
+
+	if($surrows['define_questions'])
+		{*/
+		include("importquestion.php");
+		exit;
+		/*}
+	else
+		{
+		include("access_denied.php");		
+		}*/
+	}
 
 //CHECK THAT SURVEYS MARKED AS ACTIVE ACTUALLY HAVE MATCHING TABLES
 checkactivations();
@@ -154,7 +206,6 @@ $action == "delattribute" || $action == "addattribute" || $action == "editattrib
 	include("database.php");
 }
 
-
 // WE DRAW THE PRETTY SCREEN HERE
 
 include("html.php");
@@ -167,7 +218,9 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 
 echo showadminmenu();
 
-if ($action == "newsurvey")
+if (isset($accesssummary)) {echo $accesssummary;}	// added by Dennis
+
+if ($action == "newsurvey" && isset($_SESSION['loginID']))
 {
 	echo "$newsurvey\n"
 	."\t\t</td>\n";
@@ -178,26 +231,29 @@ if ($action == "newsurvey")
 	exit;
 }
 
-if (isset($listsurveys)) {echo $listsurveys; }
-if (isset($surveysummary)) {echo $surveysummary;}
-if (isset($cssummary)) {echo $cssummary;}
-if (isset($usersummary)) {echo $usersummary;}
-if (isset($addsummary)) {echo $addsummary;}
-if (isset($editsurvey)) {echo $editsurvey;}
-if (isset($ordergroups)){echo $ordergroups;}
-if (isset($newgroup)) {echo $newgroup;}
-if (isset($groupsummary)) {echo $groupsummary;}
-if (isset($editgroup)) {echo $editgroup;}
-if (isset($newquestion)) {echo $newquestion;}
-if (isset($questionsummary)) {echo $questionsummary;}
-if (isset($editquestion)) {echo $editquestion;}
-if (isset($orderquestions)) {echo $orderquestions;}
-if (isset($newanswer)) {echo $newanswer;}
-if (isset($answersummary)) {echo $answersummary;}
-if (isset($vasummary)) {echo $vasummary;}
-if (isset($editanswer)) {echo $editanswer;}
-if (isset($editcsv)) {echo $editcsv;}
-
+if (!isset($accesssummary)){
+	if (isset($loginsummary)) {echo $loginsummary;}	// added by Dennis
+	if (isset($logoutsummary)) {echo $logoutsummary;}	// added by Dennis
+	if (isset($listsurveys)) {echo $listsurveys; }
+	if (isset($surveysummary)) {echo $surveysummary;}
+	if (isset($cssummary)) {echo $cssummary;}
+	if (isset($usersummary)) {echo $usersummary;}
+	if (isset($addsummary)) {echo $addsummary;}
+	if (isset($editsurvey)) {echo $editsurvey;}
+	if (isset($ordergroups)){echo $ordergroups;}
+	if (isset($newgroup)) {echo $newgroup;}
+	if (isset($groupsummary)) {echo $groupsummary;}
+	if (isset($editgroup)) {echo $editgroup;}
+	if (isset($newquestion)) {echo $newquestion;}
+	if (isset($questionsummary)) {echo $questionsummary;}
+	if (isset($editquestion)) {echo $editquestion;}
+	if (isset($orderquestions)) {echo $orderquestions;}
+	if (isset($newanswer)) {echo $newanswer;}
+	if (isset($answersummary)) {echo $answersummary;}
+	if (isset($vasummary)) {echo $vasummary;}
+	if (isset($editanswer)) {echo $editanswer;}
+	if (isset($editcsv)) {echo $editcsv;}
+}
 
 echo "\t\t</td>\n";
 

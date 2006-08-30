@@ -37,9 +37,9 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
-if ($action == "listsurveys")
+if ($action == "listsurveys" && isset($_SESSION['loginID']))
 {
-
+	//$query = "SELECT a.* FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid WHERE b.uid = ".$_SESSION['loginID'];
 	$query = "SELECT * FROM ".db_table_name('surveys');
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
@@ -79,6 +79,8 @@ if ($action == "listsurveys")
 					    <td>&nbsp;</td>
 					  </tr>" ; 
 		}
+		if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
+			{
 		$listsurveys.="<tr bgcolor='#BBBBBB'>
 				    <td><a href='".$scriptname."?action=newsurvey'><img border=0 src='".$imagefiles."/add.png' onmouseout=\"hideTooltip()\" " .
 				    "onmouseover=\"showTooltip(event,'"._("Create Survey")."');return false\">" .
@@ -86,8 +88,9 @@ if ($action == "listsurveys")
 				    <td>&nbsp;</td>
 				    <td>&nbsp;</td>
 				    <td colspan=\"4\">&nbsp;</td>
-				  </tr>
-				</table></br>" ; 
+				  </tr>";
+			}
+		$listsurveys.="</table></br>" ; 
 	}
 	else $listsurveys="<strong> No Surveys in this Installation </strong>" ;
 }
@@ -130,88 +133,97 @@ if ($action == "checksettings" || $action == "changelang")
 	if(isset($tokenlist) && is_array($tokenlist))
 	{$activetokens=count($tokenlist);} else {$activetokens=0;}
 	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
-	. "<form action='$scriptname'>"
-	. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
-	. "cellpadding='1' cellspacing='0' width='600'>\n"
-	. "\t<tr>\n"
-	. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
-	. "\t\t\t<strong>"._("PHPSurveyor System Summary")."</strong>\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td width='50%' align='right'>$setfont\n"
-	. "\t\t\t<strong>"._("Database Name").":</strong></font>\n"
-	. "\t\t</td><td>$setfont\n"
-	. "\t\t\t$databasename\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
-	. "\t\t\t<strong>"._("Default Language").":</strong></font>\n"
-	. "\t\t</td><td>$setfont\n"
-	. "\t\t\t".getLanguageNameFromCode($defaultlang)."\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right' >$setfont\n"
-	. "\t\t\t<strong>"._("Current Language").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
-	. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
-	foreach (getlanguagedata() as $langkey=>$languagekind)
-	{
+				. "<form action='$scriptname'>"
+				. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
+				. "cellpadding='1' cellspacing='0' width='600'>\n"
+				. "\t<tr>\n"
+				. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
+				. "\t\t\t<strong>"._("PHPSurveyor System Summary")."</strong>\n"
+				. "\t\t</font></td>\n"
+				. "\t</tr>\n";
+	// Database name & default language
+	if($_SESSION['USER_RIGHT_CONFIGURATOR'])
+		{
+		$cssummary .= "\t<tr>\n"
+					. "\t\t<td width='50%' align='right'>$setfont\n"
+					. "\t\t\t<strong>"._("Database Name").":</strong></font>\n"
+					. "\t\t</td><td>$setfont\n"
+					. "\t\t\t$databasename\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n"
+					. "\t<tr>\n"
+					. "\t\t<td align='right'>$setfont\n"
+					. "\t\t\t<strong>"._("Default Language").":</strong></font>\n"
+					. "\t\t</td><td>$setfont\n"
+					. "\t\t\t".getLanguageNameFromCode($defaultlang)."\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n";
+		}
+	// Current language
+	$cssummary .=  "\t<tr>\n"
+				. "\t\t<td align='right' >$setfont\n"
+				. "\t\t\t<strong>"._("Current Language").":</strong>\n"
+				. "\t\t</font></td><td>$setfont\n"
+				. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
+  	foreach (getlanguagedata() as $langkey=>$languagekind)
+		{
 		$cssummary .= "\t\t\t\t<option value='$langkey'";
 		if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected";}
 		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
-	}
+		}
 	$cssummary .= "\t\t\t</select>\n"
-	. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
-	. "\t\t\t<strong>"._("Users").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
-	. "\t\t\t$usercount\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
-	. "\t\t\t<strong>"._("Surveys").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
-	. "\t\t\t$surveycount\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
-	. "\t\t\t<strong>"._("Active Surveys").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
-	. "\t\t\t$activesurveycount\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
-	. "\t\t\t<strong>"._("De-activated Surveys").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
-	. "\t\t\t$deactivatedsurveys\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
-	. "\t\t\t<strong>"._("Active Token Tables").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
-	. "\t\t\t$activetokens\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
-	. "\t\t\t<strong>"._("De-activated Token Tables").":</strong></font>\n"
-	. "\t\t</td><td>$setfont\n"
-	. "\t\t\t$deactivatedtokens\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n"
-	. "</table></form>\n"
-	. "<table><tr><td height='1'></td></tr></table>\n";
-}
+				. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
+				. "\t\t</font></td>\n"
+				. "\t</tr>\n";
+	// Other infos
+	if($_SESSION['USER_RIGHT_CONFIGURATOR'])
+		{
+		$cssummary .=  "\t<tr>\n"
+					. "\t\t<td align='right'>$setfont\n"
+					. "\t\t\t<strong>"._("Users").":</strong>\n"
+					. "\t\t</font></td><td>$setfont\n"
+					. "\t\t\t$usercount\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n"
+					. "\t<tr>\n"
+					. "\t\t<td align='right'>$setfont\n"
+					. "\t\t\t<strong>"._("Surveys").":</strong>\n"
+					. "\t\t</font></td><td>$setfont\n"
+					. "\t\t\t$surveycount\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n"
+					. "\t<tr>\n"
+					. "\t\t<td align='right'>$setfont\n"
+					. "\t\t\t<strong>"._("Active Surveys").":</strong>\n"
+					. "\t\t</font></td><td>$setfont\n"
+					. "\t\t\t$activesurveycount\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n"
+					. "\t<tr>\n"
+					. "\t\t<td align='right'>$setfont\n"
+					. "\t\t\t<strong>"._("De-activated Surveys").":</strong>\n"
+					. "\t\t</font></td><td>$setfont\n"
+					. "\t\t\t$deactivatedsurveys\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n"
+					. "\t<tr>\n"
+					. "\t\t<td align='right'>$setfont\n"
+					. "\t\t\t<strong>"._("Active Token Tables").":</strong>\n"
+					. "\t\t</font></td><td>$setfont\n"
+					. "\t\t\t$activetokens\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n"
+					. "\t<tr>\n"
+					. "\t\t<td align='right'>$setfont\n"
+					. "\t\t\t<strong>"._("De-activated Token Tables").":</strong></font>\n"
+					. "\t\t</td><td>$setfont\n"
+					. "\t\t\t$deactivatedtokens\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n";
+			}
+		$cssummary .=  "</table></form>\n"
+					. "<table><tr><td height='1'></td></tr></table>\n";
+	}
 
 if ($surveyid)
 {
@@ -270,7 +282,14 @@ if ($surveyid)
 	. "\t\t}\n"
 	. "-->\n"
 	. "</script>\n";
+	
+	$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
 	$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid"; //Getting a count of questions for this survey
+	//$sumresult5 = $connect->Execute($sumquery5) or die($connect->ErrorMsg());		
+	$sumresult5 = db_execute_assoc($sumquery5);
+	$sumrows5 = $sumresult5->FetchRow();
+	
+	$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid"; //Getting a count of questions for this survey
 	$sumresult3 = $connect->Execute($sumquery3);
 	$sumcount3 = $sumresult3->RecordCount();
 	$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid"; //Getting a count of groups for this survey
@@ -296,11 +315,14 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' "
 			. "title='' alt='"._("This survey is not currently active")."' border='0' hspace='0' align='left'"
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("This survey is not currently active")."');return false\">\n"
-			. "<a href=\"#\" onClick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("Activate this Survey")."');return false\">" .
-			"<img src='$imagefiles/activate.png' name='ActivateSurvey' title='' alt='"._("Activate this Survey")."' align='left'></a>\n" ;
+			. "onmouseover=\"showTooltip(event,'"._("This survey is not currently active")."');return false\">\n";
+			if($sumrows5['activate_survey'])
+				{			
+				$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'"._("Activate this Survey")."');return false\">" .
+				"<img src='$imagefiles/activate.png' name='ActivateSurvey' title='' alt='"._("Activate this Survey")."' align='left'></a>\n" ;
+			}
 		}
 		elseif ($activated == "Y")
 		{
@@ -318,12 +340,14 @@ if ($surveyid)
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'"._("This survey is currently active")."');return false\">\n";
 			}
-
-			$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("De-activate this Survey")."');return false\">" .
-			"<img src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
-			. "alt='"._("De-activate this Survey")."' title='' align='left'></a>\n" ;
+			if($sumrows5['activate_survey'])
+				{	
+				$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'"._("De-activate this Survey")."');return false\">" .
+				"<img src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
+				. "alt='"._("De-activate this Survey")."' title='' align='left'></a>\n" ;
+			}
 		}
 		elseif ($activated == "N")
 		{
@@ -332,58 +356,66 @@ if ($surveyid)
 			. "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='14' title='"._("Cannot Activate this Survey")."' "
 			. "alt='"._("Cannot Activate this Survey")."' border='0' align='left' hspace='0'>\n";
 		}
+		
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-		. "<a href=\"#\" onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'"._("Do Survey")."');return false\">"
-		."<img accesskey='d' src='$imagefiles/do.png' title='' "
-		. "name='DoSurvey' align='left' alt='"._("Do Survey")."'></a>"
-
-		. "<a href=\"#\" onclick=\"window.open('".$homeurl."/dataentry.php?sid=$surveyid', '_blank')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'"._("Dataentry Screen for Survey")."');return false\">"
-		. "<img src='$imagefiles/dataentry.png' title='' align='left' alt='"._("Dataentry Screen for Survey")."'"
-		. "name='DoDataentry'></a>\n"
-		. "<a href=\"#\" onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$surveyid', '_blank')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
-		. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."'>"
-		."</a>"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-		. "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'"._("Edit Current Survey")."');return false\">" .
-		"<img src='$imagefiles/edit.png' title=''name='EditSurvey' align='left' alt='"._("Edit Current Survey")."'></a>" ;
-		if($activated!="Y" && getGroupSum($surveyid)>1)
-		{
-			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">" .
-			"<img src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups'></a>" ;
-		}
-		if ($sumcount3 == 0 && $sumcount2 == 0)
-		{
+						. "<a href=\"#\" onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
+						. "onmouseout=\"hideTooltip()\"" 
+						. "onmouseover=\"showTooltip(event,'"._("Do Survey")."');return false\">" 
+						."<img accesskey='d' src='$imagefiles/do.png' title='' "
+						. "name='DoSurvey' align='left' alt='"._("Do Survey")."'></a>";
+			
+		if($sumrows5['browse_response'])
+			{		 
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/dataentry.php?sid=$surveyid', '_blank')\"" 
+							. "onmouseout=\"hideTooltip()\"" 
+							. "onmouseover=\"showTooltip(event,'"._("Dataentry Screen for Survey")."');return false\">" 
+							. "<img src='$imagefiles/dataentry.png' title='' align='left' alt='"._("Dataentry Screen for Survey")."'"
+							. "name='DoDataentry'></a>\n";
+			}
+		$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$surveyid', '_blank')\""
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
+						. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."'>"
+						."</a>"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+		if($sumrows5['edit_survey_property'])
+			{
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\"" 
+							. "onmouseout=\"hideTooltip()\"" 
+							. "onmouseover=\"showTooltip(event,'"._("Edit Current Survey")."');return false\">" .
+							"<img src='$imagefiles/edit.png' title=''name='EditSurvey' align='left' alt='"._("Edit Current Survey")."'></a>" ;
+        	}
+		if($activated!="Y" && getGroupSum($surveyid)>1 && $sumrows5['define_questions'])
+        	{
+        	$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
+						. "onmouseout=\"hideTooltip()\"" 
+                    	. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">" .
+                    	"<img src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups'></a>" ; 
+        	}
+		if ($sumcount3 == 0 && $sumcount2 == 0 && $sumrows5['delete_survey'])
+			{			
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=delsurvey&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Delete Current Survey")."');return false\">\n" .
 			"<img src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey'></a>" ;
-
-		}
+			}
 		else
-		{
+			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' height='20' align='left' border='0' hspace='0'>\n";
-		}
+			}
 
 		$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'". _("Export this Survey")."');return false\">" .
 		"<img src='$imagefiles/exportsql.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey'></a>" ;
-		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-		. "<a href=\"#\" onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'". _("Set Assessment Rules")."');return false\">" .
-		"<img src='$imagefiles/assessments.png' title='' alt='". _("Set Assessment Rules")."' align='left' name='SurveyAssessment'></a>\n" ;
-
+		if($actsurrows['edit_survey_property'])
+			{
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+			. "<a href=\"#\" onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'". _("Set Assessment Rules")."');return false\">" .
+			"<img src='$imagefiles/assessments.png' title='' alt='". _("Set Assessment Rules")."' align='left' name='SurveyAssessment'></a>\n" ;
+			}
 		if ($activated == "Y")
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
@@ -429,7 +461,7 @@ if ($surveyid)
 		{
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' align='right' border='0' hspace='0'>\n";
 		}
-		else
+		elseif($sumrows5['define_questions'])
 		{
 			$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -486,14 +518,18 @@ if ($surveyid)
 			$surveysummary2 .= _("Detailed email notification with result codes")."<br />\n";
 			break;
 		}
-		$surveysummary2 .= _("Regenerate Question Numbers:")
-		. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
-		. "onClick='return confirm(\"Are you sure?\")' "
-		. ">"._("Straight")."</a>] "
-		. "[<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup' "
-		. "onClick='return confirm(\"Are you sure?\")' "
-		. ">"._("By Group")."</a>]";
-		$surveysummary2 .= "</font></font></td></tr>\n";
+		
+		if($sumrows5['edit_survey_property'])
+			{		
+			$surveysummary2 .= _("Regenerate Question Numbers:")
+			. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
+			. "onClick='return confirm(\"Are you sure?\")' "
+			. ">"._("Straight")."</a>] "
+			. "[<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup' "
+			. "onClick='return confirm(\"Are you sure?\")' "
+			. ">"._("By Group")."</a>]";
+			$surveysummary2 .= "</font></font></td></tr>\n";
+			}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails11'>"
 		. "<td align='right' valign='top'>$setfont<strong>"
 		. _("Survey URL:") . "</strong></font></td>\n";
@@ -974,254 +1010,343 @@ if (returnglobal('viewanswer'))
 	}
 
 	$vasummary .= "</table>\n";
-}
 
-if ($action == "setupsecurity")
-{
-	$action = "setup";
+	}
+
+// check data for login
+if($_POST['user'] && $_POST['password'])	// added by Dennis
+	{	
+	$action = "login";	
 	include("usercontrol.php");
-}
+	}
+// login form
+if(!isset($_SESSION['loginID']))	// added by Dennis
+	{
+	$loginsummary .= "<form name='login' id='login' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' >"._("You have to login first.")."<br>			
+						<table>
+							<tr>
+								<td><p>"._("Username")."</p></td>
+								<td><input name='user' type='text' id='user' size='40' maxlength='40' value=''></td>
+							</tr>
+							<tr>
+								<td><p>"._("Password")."</p></td>
+								<td><input name='password' id='password' type='password' size='40' maxlength='40'></td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+								<td><input class='action' type='submit' value='Login'></td>
+							</tr>
+						</table>						
+					</form>";
+	}
 
-if ($action == "turnoffsecurity")
-{
-	$action = "deleteall";
+// logout user
+if ($action == "logoutuser" && isset($_SESSION['loginID']))	// added by Dennis
+	{
+	$action = "logout";
 	include("usercontrol.php");
-}
-
+	}
+	
 if ($action == "adduser" || $action=="deluser" || $action == "moduser")
 {
 	include("usercontrol.php");
 }
 
-if ($action == "modifyuser")
+if ($action == "modifyuser" && isset($_SESSION['loginID']))	// Recht ??
 {
-	$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
-	. "\t\t<strong>$setfont<font color='white'>Modify User</td></tr>\n";
-	$muq = "SELECT * FROM {$dbprefix}users WHERE user='$user' LIMIT 1";
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
+				 . "\t\t<strong>$setfont<font color='white'>"._("Modifying User")."</td></tr>\n"
+					 . "\t<tr>\n"
+					 . "\t\t<th>$setfont"._("Username")."</th>\n"
+					 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
+					 . "\t\t<th>$setfont"._("Password")."</font></th>\n"
+					 . "\t</tr>\n";
+	
+	$muq = "SELECT user, DECODE(password, '{$codeString}'), email, uid, parent_id FROM {$dbprefix}users WHERE user='{$_GET['user']}' AND uid='{$_GET['uid']}' LIMIT 1";	//	added by Dennis
+	//echo($muq);
+	
 	$mur = db_execute_assoc($muq);
-	$usersummary .= "\t<tr><td>$setfont<strong>"._("Username")."</strong></font></td>\n"
-	. "\t<td>$setfont<strong>"._("Password")."</strong></font></td>\n"
-	. "\t<td>$setfont<strong>"._("Security")."</strong></font></td></tr>\n";
 	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
 	while ($mrw = $mur->FetchRow())
-	{
+		{
 		$mrw = array_map('htmlspecialchars', $mrw);
-		$usersummary .= "\t<td>$setfont<strong>{$mrw['user']}</strong></font>\n"
-		. "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
-		. "\t<td>\n\t\t<input type='text' name='pass' value=\"{$mrw['password']}\"></td>\n"
-		. "\t<td>\n\t\t<input type='text' size='2' name='level' value=\"{$mrw['security']}\"></td>\n";
-	}
+		$decodeString = "DECODE(password, '{$codeString}')";	//	added by Dennis
+		$usersummary .= "\t<td align='center'>$setfont<strong>{$mrw['user']}</strong></font>\n"
+					  . "\t<td align='center'>\n\t\t<input $slstyle type='text' name='email' value=\"{$mrw['email']}\"></td>\n"	
+					  . "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
+					  . "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\"></td>\n";	// added by Dennis
+
+		if($_SESSION['loginID'] == $_GET['uid'])
+			{
+			$usersummary .= "\t<td align='center'>\n\t\t<input $slstyle type='text' name='pass' value=\"{$mrw[$decodeString]}\"></td>\n";
+			}
+		}		
 	$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n"
-	. "\t\t<input type='submit' value='"._("Update")."'>\n"
-	. "<input type='hidden' name='action' value='moduser'></td></tr>\n"
-	. "</form></table>\n";
+				  . "\t\t<input type='submit' $btstyle value='"._("Update")."'>\n"
+				  . "<input type='hidden' name='action' value='moduser'></td></tr>\n"
+				  . "</form></table>\n";
 }
 
 if ($action == "editusers")
-{
-	if (!file_exists("$homedir/.htaccess"))
 	{
-		$usersummary = "<table width='100%' border='0'><tr><td colspan='2'>\n"
-		. "<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='4' height='4'>"
-		. "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></font></td></tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td>\n"
-		. "\t\t\t$setfont<font color='RED'><strong>"._("Warning")."</strong></font></font><br />\n"
-		. "\t\t\t"._("You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\nIf you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts.")."\n"
-		. "\t\t\t<p>"._("Username").": $defaultuser<br />"._("Password").": $defaultpass</p>\n"
-		. "\t\t\t<p>"._("It is highly recommended that once your security system has been initialised you change this default password.")."</p>\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='center'>\n"
-		. "\t\t\t<input type='submit' value='"._("Initialise Security")."' "
-		. "onClick=\"window.open('$scriptname?action=setupsecurity', '_top')\">\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n"
-		. "</table>\n"
-		. "</td></tr></table>\n";
-	}
-	else
-	{
-		$usersummary = "<table width='100%' border='0'><tr><td colspan='2'>\n"
-		. "<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='4' height='4'>"
-		. "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></td></tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<th>$setfont"._("User")."</th>\n"
-		. "\t\t<th>$setfont"._("Password")."</font></th>\n"
-		. "\t\t<th>$setfont"._("Security")."</font></th>\n"
-		. "\t\t<th>$setfont"._("Action")."</font></th>\n"
-		. "\t</tr>\n";
-		$userlist = getuserlist();
-		$ui = count($userlist);
-		if ($ui < 1)
+	/*
+	Tritt im Moment nicht mehr auf, da die Datenbank automatisch initialisiert wird
+	
+	$muq = "SELECT uid FROM {$dbprefix}users LIMIT 1";	//	added by Dennis
+	//echo($muq);
+	$mur = db_execute_assoc($muq);
+	if ($mur->RecordCount() < 1) 
 		{
-			$usersummary .= "\t<tr>\n"
-			. "\t\t<td>\n"
-			. "\t\t\t<center>"._("Warning").": "._("No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again.")."</center>"
-			. "\t\t</td>\n"
-			. "\t</tr>\n";
+		$usersummary = "<table width='100%' border='0'><tr><td colspan='2'>\n"
+				 . "<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+				 . "\t\t\t\t<tr bgcolor='#555555'><td colspan='4' height='4'>"
+				 . "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></font></td></tr>\n"
+				 . "\t<tr>\n"
+				 . "\t\t<td>\n"
+				 . "\t\t\t$setfont<font color='RED'><strong>"._("Warning")."</strong></font></font><br />\n"
+				 . "\t\t\t"._UC_TURNON_MESSAGE1."\n"
+				 . "\t\t\t<p>"._("Username").": $defaultuser<br />"._("Password").": $defaultpass</p>\n"
+				 . "\t\t\t<p>"._UC_TURNON_MESSAGE2."</p>\n"
+				 . "\t\t</td>\n"
+				 . "\t</tr>\n"
+				 . "\t<tr>\n"
+				 . "\t\t<td align='center'>\n"
+				 . "\t\t\t<input type='submit' $btstyle value='"._("Initialise")."' "
+				 . "onClick=\"window.open('install/upgrade-mysql.php', '_top')\">\n"
+				 . "\t\t</td>\n"
+				 . "\t</tr>\n"
+				 . "</table>\n"
+				 . "</td></tr></table>\n";
 		}
-		else
+	else*/
+	if(isset($_SESSION['loginID']))
 		{
-			foreach ($userlist as $usr)
+		$usersummary = "<table width='100%' border='0'><tr><td colspan='2'>\n"
+					 . "<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+					 . "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
+					 . "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></td></tr>\n"
+					 . "\t<tr>\n"
+					 . "\t\t<th>$setfont"._("Username")."</th>\n"
+					 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
+					 . "\t\t<th>$setfont"._("Password")."</font></th>\n"
+					 . "\t\t<th>$setfont"._("Level")."</font></th>\n"
+					 . "\t\t<th>$setfont"._("Parent_ID")."</font></th>\n"
+					 . "\t\t<th>$setfont"._("Action")."</font></th>\n"
+					 . "\t</tr>\n";
+		
+		//$userlist = getuserlist();
+		$_SESSION['userlist'] = getuserlistforuser($_SESSION['loginID'], 0, NULL);
+		$ui = count($_SESSION['userlist']);
+		
+		/*
+		Tritt im Moment nicht mehr auf, da die Datenbank automatisch initialisiert wird
+		
+		if ($ui < 1)
 			{
-				$usersummary .= "\t<tr>\n"
-				. "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
-				. "\t\t<td align='center'>$setfont{$usr['password']}</font></td>\n"
-				. "\t\t<td align='center'>$setfont{$usr['security']}</td>\n"
-				. "\t\t<td align='center'>\n"
-				. "\t\t\t<input type='submit' value='"._("Edit")."' "
-				. "onClick=\"window.open('$scriptname?action=modifyuser&user={$usr['user']}', '_top')\" />\n";
-				if ($ui > 1 )
+			$usersummary .= "\t<tr>\n"
+						 . "\t\t<td>\n"
+						 . "\t\t\t<center>"._("Warning").": "._UC_NOUSERS."</center>"
+						 . "\t\t</td>\n"
+						 . "\t</tr>\n";
+			}
+		else*/
+			{
+			
+			//	sort
+			$sortArray = array();
+			
+			foreach($_SESSION['userlist'] as $key => $array) {
+				$sortArray[$key] = $array[0];
+			}				
+			array_multisort($sortArray, $_SESSION['userlist']); // by user name
+			
+			//	output users
+			foreach ($_SESSION['userlist'] as $usr)
 				{
-					$usersummary .= "\t\t\t<input type='submit' value='"._("Delete")."' "
-					. "onClick=\"window.open('$scriptname?action=deluser&user={$usr['user']}', '_top')\" />\n";
-				}
+				$usersummary .= "\t<tr>\n"
+							  . "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
+							  . "\t<td align='center'>$setfont{$usr['email']}</font></td>\n";
+				// passwords of other users will not be displayed
+				if ($usr['uid'] == $_SESSION['loginID'])
+					{
+					$usersummary .=  "\t\t<td align='center'>$setfont{$usr['password']}</font></td>\n";
+					}
+				else
+					{
+					$usersummary .=  "\t\t<td align='center'>******</td>\n";
+					} 
+				$usersummary .= "\t\t<td align='center'>$setfont{$usr['level']}</td>\n"							  
+							  . "\t\t<td align='center'>$setfont{$usr['parent_id']}</td>\n"
+							  . "\t\t<td align='center'>\n"
+							  . "<input type='hidden' name='uid' value='{$usr['uid']}' ";	// added by Dennis
+				
+				// users are only allowed to change his own data
+				if ($usr['uid'] == $_SESSION['loginID'])				
+					{  
+					$usersummary .= "\t\t\t<input type='submit' $btstyle value='"._("Edit")."' "
+								  . "onClick=\"window.open('$scriptname?action=modifyuser&user={$usr['user']}&uid={$usr['uid']}', '_top')\" />\n";	// added by Dennis
+					}
+				// users are allowed to delete all successor users (but the admin not himself) 
+				if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($usr['uid'] == $_SESSION['loginID'])))				
+					{
+					$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"	// added by Dennis
+					 			  ."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
+					 			  ."<input type='hidden' name='action' value='deluser'>"
+								  ."<input type='hidden' name='user' value='{$usr['user']}'>"
+					 			  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+					 			  ."</form>";
+					}				
 				$usersummary .= "\t\t</td>\n"
-				. "\t</tr>\n";
-				$ui++;
+							  . "\t</tr>\n";
+
+				}
+			}
+		if($_SESSION['USER_RIGHT_CREATE_USER'])
+			{
+			$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
+						  . "\t\t<tr>\n"
+						  . "\t\t<td align='center'><input type='text' $slstyle name='new_user'></td>\n"
+						  . "\t\t<td align='center'><input type='text' $slstyle name='new_email'></td>\n"
+						  . "\t\t<td align='center'><input type='submit' $btstyle value='"._("Add User")."'></td>\n"
+						  . "\t</tr>\n"
+						  . "\t<tr>\n"
+						  . "\t\t<td align='center'><input type='hidden' name='action' value='adduser'></td>\n"
+						  . "\t</tr>\n"
+						  . "\t</form>\n"
+						  . "\t<tr>\n";
 			}
 		}
-		$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
-		. "\t\t<tr>\n"
-		. "\t\t<td align='center'><input type='text' name='user'></td>\n"
-		. "\t\t<td align='center'><input type='text' name='pass'></td>\n"
-		. "\t\t<td align='center'><input type='text' name='level' size='2'></td>\n"
-		. "\t\t<td align='center'><input type='submit' value='"._("Add User")."'></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='center'><input type='hidden' name='action' value='adduser'></td>\n"
-		. "\t</tr>\n"
-		. "\t</form>\n"
-		. "\t<tr>\n"
-		. "\t\t<td colspan='3'></td>\n"
-		. "\t\t<td align='center'><input type='submit' value='"._("Turn Off Security")."' "
-		. "onClick=\"window.open('$scriptname?action=turnoffsecurity', '_top')\" /></td>\n"
-		. "\t</tr>\n"
-		. "</table>\n"
-		. "</td></tr></table>\n";
 	}
-}
 if ($action == "addquestion")
-{
-	$newquestion =  "\t<form action='$scriptname' name='addnewquestion' method='post'>\n"
-	. "<table width='100%' border='0'>\n\n"
-	. "\t<tr>\n"
-	. "\t\t<td colspan='2' bgcolor='black' align='center'>"
-	. "\t\t<strong>$setfont<font color='white'>"._("Add Question")."\n"
-	. "\t\t</font></font></strong></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'  width='35%'>$setfont<strong>"._("Code:")."</strong></font></td>\n"
-	. "\t\t<td><input type='text' size='20' name='title'>"
-	. "<font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Question:")."</strong></font></td>\n"
-	. "\t\t<td><textarea cols='50' rows='3' name='question'></textarea></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Help:")."</strong></font></td>\n"
-	. "\t\t<td><textarea cols='50' rows='3' name='help'></textarea></td>\n"
-	. "\t</tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Type:")."</strong></font></td>\n"
-	. "\t\t<td><select name='type' id='question_type' "
-	. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
-	. "$qtypeselect"
-	. "\t\t</select></td>\n"
-	. "\t</tr>\n";
-
-	$newquestion .= "\t<tr id='Validation'>\n"
-	. "\t\t<td align='right'>$setfont<strong>"._("Validation:")."</strong></font></td>\n"
-	. "\t\t<td>$setfont\n"
-	. "\t\t<input type='text' name='preg' size=50></font>\n"
-	. "\t\t</td>\n"
-	. "\t</tr>\n";
-
-	$newquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
-	. "\t\t<td align='right'>$setfont<strong>"._("Label Set:")."</strong></font></td>\n"
-	. "\t\t<td>$setfont\n"
-	. "\t\t<select name='lid' >\n";
-	$labelsets=getlabelsets();
-	if (count($labelsets)>0)
 	{
-		$newquestion .= "\t\t\t<option value=''>"._("Please Choose...")."</option>\n";
-		foreach ($labelsets as $lb)
+	
+	if($sumrows5['define_questions'])
+	//if($_SESSION['SURVEY_RIGHTS'][$sid]["add_question"] == 1)
+		{				
+		$newquestion =  "\t<form action='$scriptname' name='addnewquestion' method='post'>\n"
+		. "<table width='100%' border='0'>\n\n"
+		. "\t<tr>\n"
+		. "\t\t<td colspan='2' bgcolor='black' align='center'>"
+		. "\t\t<strong>$setfont<font color='white'>"._("Add Question")."\n"
+		. "\t\t</font></font></strong></td>\n"
+		. "\t</tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right'  width='35%'>$setfont<strong>"._("Code:")."</strong></font></td>\n"
+		. "\t\t<td><input type='text' size='20' name='title'>"
+		. "<font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Question:")."</strong></font></td>\n"
+		. "\t\t<td><textarea cols='50' rows='3' name='question'></textarea></td>\n"
+		. "\t</tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Help:")."</strong></font></td>\n"
+		. "\t\t<td><textarea cols='50' rows='3' name='help'></textarea></td>\n"
+		. "\t</tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Type:")."</strong></font></td>\n"
+		. "\t\t<td><select name='type' id='question_type' "
+		. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
+		. "$qtypeselect"
+		. "\t\t</select></td>\n"
+		. "\t</tr>\n";
+	
+		$newquestion .= "\t<tr id='Validation'>\n"
+		. "\t\t<td align='right'>$setfont<strong>"._("Validation:")."</strong></font></td>\n"
+		. "\t\t<td>$setfont\n"
+		. "\t\t<input type='text' name='preg' size=50></font>\n"
+		. "\t\t</td>\n"
+		. "\t</tr>\n";
+	
+		$newquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
+		. "\t\t<td align='right'>$setfont<strong>"._("Label Set:")."</strong></font></td>\n"
+		. "\t\t<td>$setfont\n"
+		. "\t\t<select name='lid' >\n";
+		$labelsets=getlabelsets();
+		if (count($labelsets)>0)
 		{
-			$newquestion .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
+			$newquestion .= "\t\t\t<option value=''>"._("Please Choose...")."</option>\n";
+			foreach ($labelsets as $lb)
+			{
+				$newquestion .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
+			}
 		}
+		$newquestion .= "\t\t</select>\n"
+		. "\t\t</font></td>\n"
+		. "\t</tr>\n";
+	
+		$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
+		. "\t\t<td align='right'>$setfont<strong>"._("Other:")."</strong></font></td>\n"
+		. "\t\t<td>$setfont\n"
+		. "\t\t\t<label for='OY'>"._("Yes")."</label>"
+		. "<input id='OY' type='radio' name='other' value='Y' />&nbsp;&nbsp;\n"
+		. "\t\t\t<label for='ON'>"._("No")."</label>"
+		. "<input id='ON' type='radio' name='other' value='N' checked />\n"
+		. "\t\t</font></td>\n"
+		. "\t</tr>\n";
+	
+		$newquestion .= "\t<tr id='MandatorySelection'>\n"
+		. "\t\t<td align='right'>$setfont<strong>"._("Mandatory:")."</strong></font></td>\n"
+		. "\t\t<td>$setfont\n"
+		. "\t\t\t<label for='MY'>"._("Yes")."</label>"
+		. "<input id='MY' type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
+		. "\t\t\t<label for='MN'>"._("No")."</label>"
+		. "<input id='MN' type='radio' name='mandatory' value='N' checked />\n"
+		. "\t\t</font></td>\n"
+		. "\t</tr>\n";
+	
+		//Question attributes
+		$qattributes=questionAttributes();
+	
+		$newquestion .= "\t<tr id='QTattributes'>
+							<td align='right'>{$setfont}<strong>"._("Question Attributes:")."</strong></font></td>
+							<td><select id='QTlist' name='attribute_name' >
+							</select>
+							<input type='text' id='QTtext' name='attribute_value' ></td></tr>\n";
+		$newquestion .= "\t<tr>\n"
+		. "\t\t<td colspan='2' align='center'>";
+	
+		if (isset($eqrow)) {$newquestion .= questionjavascript($eqrow['type'], $qattributes);}
+		else {$newquestion .= questionjavascript('', $qattributes);}
+	
+		$newquestion .= "<input type='submit' value='"
+		. _("Add Question")."' />\n"
+		. "\t\n"
+		. "\t<input type='hidden' name='action' value='insertnewquestion' />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		. "\t<input type='hidden' name='gid' value='$gid' />\n"
+		. "</td></tr></table>\n"
+		. "\t</form>\n"
+		. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
+		. "<table width='100%' border='0' >\n\t"
+		. "<tr><td colspan='2' align='center'>$setfont<strong>"._("OR")."</strong></font></td></tr>\n"
+		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "\t\t<strong>$setfont<font color='white'>"._("Import Question")."</font></font></strong></td></tr>\n\t<tr>"
+		. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Select SQL File:")."</strong></font></td>\n"
+		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\"></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' "
+		. "value='"._("Import Question")."'>\n"
+		. "\t<input type='hidden' name='action' value='importquestion'>\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
+		. "\t<input type='hidden' name='gid' value='$gid'>\n"
+		. "\t</td></tr></table></form>\n\n";
+		
+		}
+	else
+		{
+		include("access_denied.php");
+		}	
 	}
-	$newquestion .= "\t\t</select>\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n";
-
-	$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
-	. "\t\t<td align='right'>$setfont<strong>"._("Other:")."</strong></font></td>\n"
-	. "\t\t<td>$setfont\n"
-	. "\t\t\t<label for='OY'>"._("Yes")."</label>"
-	. "<input id='OY' type='radio' name='other' value='Y' />&nbsp;&nbsp;\n"
-	. "\t\t\t<label for='ON'>"._("No")."</label>"
-	. "<input id='ON' type='radio' name='other' value='N' checked />\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n";
-
-	$newquestion .= "\t<tr id='MandatorySelection'>\n"
-	. "\t\t<td align='right'>$setfont<strong>"._("Mandatory:")."</strong></font></td>\n"
-	. "\t\t<td>$setfont\n"
-	. "\t\t\t<label for='MY'>"._("Yes")."</label>"
-	. "<input id='MY' type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
-	. "\t\t\t<label for='MN'>"._("No")."</label>"
-	. "<input id='MN' type='radio' name='mandatory' value='N' checked />\n"
-	. "\t\t</font></td>\n"
-	. "\t</tr>\n";
-
-	//Question attributes
-	$qattributes=questionAttributes();
-
-	$newquestion .= "\t<tr id='QTattributes'>
-						<td align='right'>{$setfont}<strong>"._("Question Attributes:")."</strong></font></td>
-						<td><select id='QTlist' name='attribute_name' >
-						</select>
-						<input type='text' id='QTtext' name='attribute_value' ></td></tr>\n";
-	$newquestion .= "\t<tr>\n"
-	. "\t\t<td colspan='2' align='center'>";
-
-	if (isset($eqrow)) {$newquestion .= questionjavascript($eqrow['type'], $qattributes);}
-	else {$newquestion .= questionjavascript('', $qattributes);}
-
-	$newquestion .= "<input type='submit' value='"
-	. _("Add Question")."' />\n"
-	. "\t\n"
-	. "\t<input type='hidden' name='action' value='insertnewquestion' />\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "\t<input type='hidden' name='gid' value='$gid' />\n"
-	. "</td></tr></table>\n"
-	. "\t</form>\n"
-	. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
-	. "<table width='100%' border='0' >\n\t"
-	. "<tr><td colspan='2' align='center'>$setfont<strong>"._("OR")."</strong></font></td></tr>\n"
-	. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong>$setfont<font color='white'>"._("Import Question")."</font></font></strong></td></tr>\n\t<tr>"
-	. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Select SQL File:")."</strong></font></td>\n"
-	. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\"></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' "
-	. "value='"._("Import Question")."'>\n"
-	. "\t<input type='hidden' name='action' value='importquestion'>\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-	. "\t<input type='hidden' name='gid' value='$gid'>\n"
-	. "\t</td></tr></table></form>\n\n";
-}
 
 if ($action == "copyquestion")
-{
+	{
+	//if($sumrows5['define_questions'])
+	
+	
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
 	$eqresult = db_execute_assoc($eqquery);
 	$qattributes=questionAttributes();
 	while ($eqrow = $eqresult->FetchRow())
-	{
+		{
 		$eqrow = array_map('htmlspecialchars', $eqrow);
 		$editquestion = "<form action='$scriptname' name='editquestion' method='post'>\n<table width='100%' border='0'>\n"
 		. "\t<tr>\n"
@@ -1261,18 +1386,18 @@ if ($action == "copyquestion")
 		. "\t\t<select name='lid' >\n";
 		$labelsets=getlabelsets();
 		if (count($labelsets)>0)
-		{
-			if (!$eqrow['lid'])
 			{
+			if (!$eqrow['lid'])
+				{
 				$editquestion .= "\t\t\t<option value=''>"._("Please Choose...")."</option>\n";
 			}
 			foreach ($labelsets as $lb)
-			{
+				{
 				$editquestion .= "\t\t\t<option value='{$lb[0]}'";
 				if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
 				$editquestion .= ">{$lb[1]}</option>\n";
+				}
 			}
-		}
 		$editquestion .= "\t\t</select>\n"
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n"
@@ -1313,7 +1438,7 @@ if ($action == "copyquestion")
 		$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 
 		if ($eqrow['type'] == "J" || $eqrow['type'] == "I")
-		{
+			{
 			$editquestion .= "\t<tr>\n"
 			. "\t\t<input type='hidden' name='copyanswers' value='Y'>\n"
 			. "\t\t<td colspan='2' align='center'><input type='submit' value='"._("Copy Question")."'></td>\n"
@@ -1323,9 +1448,9 @@ if ($action == "copyquestion")
 			. "\t\t<input type='hidden' name='gid' value='$gid' />\n"
 			. "\t</form></tr>\n"
 			. "</table>\n";
-		} 
+			} 
 		else
-		{
+			{
 
 			$editquestion .= "$setfont<strong>"._("Copy Answers?")."</strong></font></td>\n"
 			. "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y' />"
@@ -1343,16 +1468,16 @@ if ($action == "copyquestion")
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
 			. "\t</td></tr>\n"
 			. "</table>\n</form>\n";
+			}
 		}
 	}
-}
 
 if ($action == "editquestion" || $action == "editattribute" || $action == "delattribute" || $action == "addattribute")
-{
+	{
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
 	$eqresult = db_execute_assoc($eqquery);
 	while ($eqrow = $eqresult->FetchRow())
-	{
+		{
 		$eqrow  = array_map('htmlspecialchars', $eqrow);
 		$editquestion = "<tr><td>\n"
 		."<table width='100%' border='0' bgcolor='#EEEEEE'><tr>"
@@ -1378,18 +1503,18 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= "\t<tr>\n"
 		. "\t\t<td align='right'>$setfont<strong>"._("Type:")."</strong></font></td>\n";
 		if ($activated != "Y")
-		{
+			{
 			$editquestion .= "\t\t<td><select id='question_type' name='type' "
 			. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 			. getqtypelist($eqrow['type'])
 			. "\t\t</select></td>\n";
-		}
+			}
 		else
-		{
+			{
 			$editquestion .= "\t\t<td>{$setfont}[{$eqrow['type']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
 			. "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}'>\n"
 			. "\t\t</font></td>\n";
-		}
+			}
 
 		$editquestion .= "\t<tr id='Validation'>\n"
 		. "\t\t<td align='right'>$setfont<strong>"._("Validation:")."</strong></font></td>\n"
@@ -1402,29 +1527,29 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "\t\t<td align='right'>$setfont<strong>"._("Label Set:")."</strong></font></td>\n"
 		. "\t\t<td>$setfont\n";
 		if ($activated != "Y")
-		{
+			{
 			$editquestion .= "\t\t<select name='lid' >\n";
 			$labelsets=getlabelsets();
 			if (count($labelsets)>0)
-			{
+				{
 				if (!$eqrow['lid'])
-				{
+					{
 					$editquestion .= "\t\t\t<option value=''>"._("Please Choose...")."</option>\n";
-				}
+					}
 				foreach ($labelsets as $lb)
-				{
+					{
 					$editquestion .= "\t\t\t<option value='{$lb[0]}'";
 					if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
 					$editquestion .= ">{$lb[1]}</option>\n";
+					}
 				}
-			}
 			$editquestion .= "\t\t</select>\n";
-		}
+			}
 		else
-		{
+			{
 			$editquestion .= "[{$eqrow['lid']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
 			. "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\">\n";
-		}
+			}
 		$editquestion .= "\t\t</font></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
@@ -1436,7 +1561,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= "\t<tr id='OtherSelection'>\n"
 		. "\t\t<td align='right'>$setfont<strong>"._("Other:")."</strong></font></td>\n";
 		if ($activated != "Y")
-		{
+			{
 			$editquestion .= "\t\t<td>$setfont\n"
 			. "\t\t\t<label for='OY'>"._("Yes")."</label><input id='OY' type='radio' name='other' value='Y'";
 			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
@@ -1445,12 +1570,12 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 			if ($eqrow['other'] == "N") {$editquestion .= " checked";}
 			$editquestion .= " />\n"
 			. "\t\t</font></td>\n";
-		}
+			}
 		else
-		{
+			{
 			$editquestion .= "<td>$setfont [{$eqrow['other']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
 			. "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\"></font></td>\n";
-		}
+			}
 		$editquestion .= "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='MandatorySelection'>\n"
@@ -1474,7 +1599,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "\t<input type='hidden' name='qid' value='$qid'>\n"
 		. "\t</td></tr>\n"
 		. "</table></form></td><td>\n";
-	}
+		}
 
 	$qidattributes=getQuestionAttributes($qid);
 	$editquestion .= "\t\t\t<td valign='top' width='35%'><table width='100%' border='0' cellspacing='0'>
@@ -1496,7 +1621,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					      <tr><th colspan='4' height='10'></th></tr>\n";
 	$editquestion .= "\t\t\t</table></form>\n";
 	foreach ($qidattributes as $qa)
-	{
+		{
 		$editquestion .= "\t\t\t<table class='outlinetable' width='90%' border='0' cellspacing='0'>"
 		."<tr><td width='85%'>"
 		."<form action='$scriptname' method='post'>"
@@ -1522,10 +1647,11 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "\t<input type='hidden' name='qaid' value='".$qa['qaid']."'>\n"
 		. "</td></tr></table>\n"
 		. "</form>\n</table>";
-	}
+		}
 	$editquestion .= "</td></tr></table></table>\n";
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
-}
+	}
+	
 //Constructing the drag and drop interface here...
 if($action == "orderquestions")
 {
@@ -1559,394 +1685,425 @@ if($action == "orderquestions")
 
 if ($action == "addgroup")
 {
-	$newgroup = "<tr><td><form action='$scriptname' name='addnewgroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong>$setfont<font color='white'>"._("Add Group")."</font></font></strong></td></tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont<strong>"._("Title:")."</strong></font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='group_name'><font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
-	. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
-	. "\t\t<td><textarea cols='50' rows='4' name='description'></textarea></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."'>\n"
-	. "\t<input type='hidden' name='action' value='insertnewgroup'>\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-	. "\t</td></table>\n"
-	. "</form></td></tr>\n"
-	. "<tr><td align='center'>$setfont<strong>"._("OR")."</strong></font></td></tr>\n"
-	. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">"
-	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong>$setfont<font color='white'>"._("Import Group")."</font></font></strong></td></tr>\n\t<tr>"
-	. "\t\n"
-	. "\t\t<td align='right'>$setfont<strong>"._("Select SQL File:")."</strong></font></td>\n"
-	. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Group")."'>\n"
-	. "\t<input type='hidden' name='action' value='importgroup'>\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-	. "\t</td></tr>\n</table></form>\n";
+	if($sumrows5['define_questions'])
+		{
+
+		$newgroup = "<tr><td><form action='$scriptname' name='addnewgroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "\t\t<strong>$setfont<font color='white'>"._("Add Group")."</font></font></strong></td></tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right'>$setfont<strong>"._("Title:")."</strong></font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='group_name'><font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
+		. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
+		. "\t\t<td><textarea cols='50' rows='4' name='description'></textarea></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."'>\n"
+		. "\t<input type='hidden' name='action' value='insertnewgroup'>\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
+		. "\t</td></table>\n"
+		. "</form></td></tr>\n"
+		. "<tr><td align='center'>$setfont<strong>"._("OR")."</strong></font></td></tr>\n"
+		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">"
+		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "\t\t<strong>$setfont<font color='white'>"._("Import Group")."</font></font></strong></td></tr>\n\t<tr>"
+		. "\t\n"
+		. "\t\t<td align='right'>$setfont<strong>"._("Select SQL File:")."</strong></font></td>\n"
+		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Group")."'>\n"
+		. "\t<input type='hidden' name='action' value='importgroup'>\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
+		. "\t</td></tr>\n</table></form>\n";
+	
+		}
+	else
+		{
+		include("access_denied.php");
+		}
 }
 
 if ($action == "editgroup")
 {
-	$egquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
-	$egresult = db_execute_assoc($egquery);
-	while ($esrow = $egresult->FetchRow())
-	{
-		$esrow = array_map('htmlspecialchars', $esrow);
-		$editgroup =  "<form action='$scriptname' name='editgroup' method='post'>"
-		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Edit Group for Survey ID")."($surveyid)</font></font></strong></td></tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Title:")."</strong></font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='group_name' value=\"{$esrow['group_name']}\"></td></tr>\n"
-		. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>(optional)</font></td>\n"
-		. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update Group")."'>\n"
-		. "\t<input type='hidden' name='action' value='updategroup'>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		. "\t<input type='hidden' name='gid' value='$gid'>\n"
-		. "\t</td></tr>\n"
-		. "</table>\n"
-		. "\t</form>\n";
-	}
+	if($sumrows5['edit_survey_property'])
+		{	
+		$egquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
+		$egresult = db_execute_assoc($egquery);
+		while ($esrow = $egresult->FetchRow())
+			{
+			$esrow = array_map('htmlspecialchars', $esrow);
+			$editgroup =  "<form action='$scriptname' name='editgroup' method='post'>"
+			. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+			. "\t\t<strong>$setfont<font color='white'>"._("Edit Group for Survey ID")."($surveyid)</font></font></strong></td></tr>\n"
+			. "\t<tr>\n"
+			. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Title:")."</strong></font></td>\n"
+			. "\t\t<td><input type='text' size='50' name='group_name' value=\"{$esrow['group_name']}\"></td></tr>\n"
+			. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>(optional)</font></td>\n"
+			. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
+			. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update Group")."'>\n"
+			. "\t<input type='hidden' name='action' value='updategroup'>\n"
+			. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
+			. "\t<input type='hidden' name='gid' value='$gid'>\n"
+			. "\t</td></tr>\n"
+			. "</table>\n"
+			. "\t</form>\n";
+			}
+		}
+	else
+		{
+		include("access_denied.php");
+		}
 }
 
 
 // Editing the survey
 if ($action == "editsurvey")
 {
-	$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-	$esresult = db_execute_assoc($esquery);
-	while ($esrow = $esresult->FetchRow())
-	{
-		$esrow = array_map('htmlspecialchars', $esrow);
-		$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"
-		. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey")."</font></font></td></tr>\n"
-		. "\t<tr>"
-		. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='short_title' value=\"{$esrow['short_title']}\"></td></tr>\n"
-		. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Description:")."</font></td>\n"
-		. "\t\t<td><textarea cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-		. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
-		. "\t\t<td><textarea cols='50' rows='5' name='welcome'>".str_replace("<br />", "\n", $esrow['welcome'])."</textarea></td></tr>\n"
-		. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\"></td></tr>\n"
-		. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='adminemail' value=\"{$esrow['adminemail']}\"></td></tr>\n"
-		. "\t<tr><td align='right'><font class='settingcaption'>"._("Fax To:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='faxto' value=\"{$esrow['faxto']}\"></td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Format:")."</font></td>\n"
-		. "\t\t<td><select name='format'>\n"
-		. "\t\t\t<option value='S'";
-		if ($esrow['format'] == "S" || !$esrow['format']) {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("Question by Question")."</option>\n"
-		. "\t\t\t<option value='G'";
-		if ($esrow['format'] == "G") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("Group by Group")."</option>\n"
-		. "\t\t\t<option value='A'";
-		if ($esrow['format'] == "A") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("All in one")."</option>\n"
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
-		//TEMPLATES
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Template:")."</font></td>\n"
-		. "\t\t<td><select name='template'>\n";
-		foreach (gettemplatelist() as $tname)
+	if($sumrows5['edit_survey_property'])
+		{	
+		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
+		$esresult = db_execute_assoc($esquery);
+		while ($esrow = $esresult->FetchRow())
 		{
-			$editsurvey .= "\t\t\t<option value='$tname'";
-			if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {$editsurvey .= " selected";}
-			elseif (!$esrow['template'] && $tname == "default") {$editsurvey .= " selected";}
-			$editsurvey .= ">$tname</option>\n";
-		}
-		$editsurvey .= "\t\t</select></td>\n"
-		. "\t</tr>\n";
-		//COOKIES
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Use Cookies?")."</font></td>\n"
-		. "\t\t<td><select name='usecookie'>\n"
-		. "\t\t\t<option value='Y'";
-		if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("Yes")."</option>\n"
-		. "\t\t\t<option value='N'";
-		if ($esrow['usecookie'] != "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("No")."</option>\n"
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
-		//ALLOW SAVES
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow Saves?")."</font></td>\n"
-		. "\t\t<td><select name='allowsave'>\n"
-		. "\t\t\t<option value='Y'";
-		if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("Yes")."</option>\n"
-		. "\t\t<option value='N'";
-		if ($esrow['allowsave'] == "N") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("No")."</option>\n"
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
-		//ALLOW PREV
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Show [<< Prev] button")."</font></td>\n"
-		. "\t\t<td><select name='allowprev'>\n"
-		. "\t\t\t<option value='Y'";
-		if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("Yes")."</option>\n"
-		. "\t\t<option value='N'";
-		if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("No")."</option>\n"
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
-		//NOTIFICATION
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Notification:")."</font></td>\n"
-		. "\t\t<td><select name='notification'>\n"
-		. getNotificationlist($esrow['notification'])
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
-		//ANONYMOUS
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Anonymous?")."</font></td>\n";
-		if ($esrow['active'] == "Y")
-		{
-			$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
-			if ($esrow['private'] == "N") {$editsurvey .= " This survey is not anonymous";}
-			else {$editsurvey .= "This survey is anonymous";}
-			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
-			. "\t\t</font></font>\n";
-			$editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\"></td>\n";
-		}
-		else
-		{
-			$editsurvey .= "\t\t<td><select name='private'>\n"
-			. "\t\t\t<option value='Y'";
-			if ($esrow['private'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._("Yes")."</option>\n"
-			. "\t\t\t<option value='N'";
-			if ($esrow['private'] != "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._("No")."</option>\n"
-			. "</select>\n\t\t</td>\n";
-		}
-		$editsurvey .= "</tr>\n";
-		$editsurvey .= "<tr><td align='right'><script type='text/javascript'>\n"
-		. "<!--\n"
-		. "function fillin(tofield, fromfield)\n"
-		. "\t{\n"
-		. "\t\tif (confirm(\""._("This will replace the existing text. Continue?")."\")) {\n"
-		. "\t\t\tdocument.getElementById(tofield).value = document.getElementById(fromfield).value\n"
-		. "\t\t}\n"
-		. "\t}\n"
-		. "--></script>\n";
-		$editsurvey .= "\t<font class='settingcaption'>"._("Invitation Email Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_invite_subj' id='email_invite_subj' value=\"{$esrow['email_invite_subj']}\">\n"
-		. "\t\t<input type='hidden' name='email_invite_subj_default' id='email_invite_subj_default' value='".html_escape(_("Invitation to participate in survey"))."'>\n"
-		. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")'>\n"
-		. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email:")."</font></td>\n"
-		. "\t\t<td><textarea cols=50 rows=5 name='email_invite' id='email_invite'>{$esrow['email_invite']}</textarea>\n"
-		. "\t\t<input type='hidden' name='email_invite_default' id='email_invite_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
-		. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite\",\"email_invite_default\")'>\n"
-		. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_remind_subj' id='email_remind_subj' value=\"{$esrow['email_remind_subj']}\">\n"
-		. "\t\t<input type='hidden' name='email_remind_subj_default' id='email_remind_subj_default' value='".html_escape(_("Reminder to participate in survey"))."'>\n"
-		. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_remind_subj\",\"email_remind_subj_default\")'>\n"
-		. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder:")."</font></td>\n"
-		. "\t\t<td><textarea cols=50 rows=5 name='email_remind' id='email_remind'>{$esrow['email_remind']}</textarea>\n"
-		. "\t\t<input type='hidden' name='email_remind_default' id='email_remind_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
-		. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_remind\",\"email_remind_default\")'>\n"
-		. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email Subject")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_confirm_subj' id='email_confirm_subj' value=\"{$esrow['email_confirm_subj']}\">\n"
-		. "\t\t<input type='hidden' name='email_confirm_subj_default' id='email_confirm_subj_default' value='".html_escape(_("Confirmation of completed survey"))."'>\n"
-		. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm_subj\",\"email_confirm_subj_default\")'>\n"
-		. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email")."</font></td>\n"
-		. "\t\t<td><textarea cols=50 rows=5 name='email_confirm' id='email_confirm'>{$esrow['email_confirm']}</textarea>\n"
-		. "\t\t<input type='hidden' name='email_confirm_default' id='email_confirm_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"))."'>\n"
-		. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm\",\"email_confirm_default\")'>\n"
-		. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow public registration?")."</font></td>\n"
-		. "\t\t<td><select name='allowregister'>\n"
-		. "\t\t\t<option value='Y'";
-		if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("Yes")."</option>\n"
-		. "\t\t\t<option value='N'";
-		if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("No")."</option>\n"
-		. "\t\t</select></td>\n\t</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_register_subj' id='email_register_subj' value=\"{$esrow['email_register_subj']}\">\n"
-		. "\t\t<input type='hidden' name='email_register_subj_default' id='email_register_subj_default' value='".html_escape(_("Survey Registration Confirmation"))."'>\n"
-		. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript:  fillin(\"email_register_subj\",\"email_register_subj_default\")'>\n"
-		. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email:")."</font></td>\n"
-		. "\t\t<td><textarea cols=50 rows=5 name='email_register' id='email_register'>{$esrow['email_register']}</textarea>\n"
-		. "\t\t<input type='hidden' name='email_register_default' id='email_register_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."))."'>\n"
-		. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript:  fillin(\"email_register\",\"email_register_default\")'>\n"
-		. "\t</td></tr>\n";
-		$editsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Token Attribute Names:")."</font></td>\n"
-		. "\t\t<td><font class='settingcaption'><input type='text' size='25' name='attribute1'"
-		. " value=\"{$esrow['attribute1']}\">("._("Attribute 1").")<br />"
-		. "<input type='text' size='25' name='attribute2'"
-		. " value=\"{$esrow['attribute2']}\">("._("Attribute 2").")</font></td>\n\t</tr>\n";
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Date Stamp?")."</font></td>\n";
-
-		if ($esrow['active'] == "Y")
-		{
-			$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
-			if ($esrow['datestamp'] != "Y") {$editsurvey .= " Responses will not be date stamped.";}
-			else {$editsurvey .= "Responses will be date stamped";}
-			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
-			. "\t\t</font></font>\n";
-			$editsurvey .= "<input type='hidden' name='datestamp' value=\"{$esrow['datestamp']}\"></td>\n";
-		}
-		else
-		{
-			$editsurvey .= "\t\t<td><select name='datestamp'>\n"
-			. "\t\t\t<option value='Y'";
-			if ($esrow['datestamp'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._("Yes")."</option>\n"
-			. "\t\t\t<option value='N'";
-			if ($esrow['datestamp'] != "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._("No")."</option>\n"
-			. "</select>\n\t\t</td>\n";
-		}
-		$editsurvey .= "</tr>\n";
-
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save IP Address?")."</font></td>\n";
-
-		if ($esrow['active'] == "Y")
-		{
-			$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
-			if ($esrow['ipaddr'] != "Y") {$editsurvey .= " Responses will not have the IP address logged.";}
-			else {$editsurvey .= "Responses will have the IP address logged";}
-			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
-			. "\t\t</font></font>\n";
-			$editsurvey .= "<input type='hidden' name='ipaddr' value='".$esrow['ipaddr']."'>\n</td>";
-		}
-		else
-		{
-			$editsurvey .= "\t\t<td><select name='ipaddr'>\n"
-			. "\t\t\t<option value='Y'";
-			if ($esrow['ipaddr'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._("Yes")."</option>\n"
-			. "\t\t\t<option value='N'";
-			if ($esrow['ipaddr'] != "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._("No")."</option>\n"
-			. "</select>\n\t\t</td>\n";
-		}
-
-		// begin REF URL Block
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save Referring URL?")."</font></td>\n";
-
-		if ($esrow['active'] == "Y")
-		{
-			$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
-			if ($esrow['refurl'] != "Y") {$editsurvey .= " Responses will not have their referring URL logged.";}
-			else {$editsurvey .= "Responses will have their referring URL logged.";}
-			$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
-			. "\t\t</font></font>\n";
-			$editsurvey .= "<input type='hidden' name='refurl' value='".$esrow['refurl']."'>\n</td>";
-		}
-		else
-		{
-			$editsurvey .= "\t\t<td><select name='refurl'>\n"
-			. "\t\t\t<option value='Y'";
-			if ($esrow['refurl'] == "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._("Yes")."</option>\n"
-			. "\t\t\t<option value='N'";
-			if ($esrow['refurl'] != "Y") {$editsurvey .= " selected";}
-			$editsurvey .= ">"._("No")."</option>\n"
-			. "</select>\n\t\t</td>\n";
-		}
-		// BENBUN - END REF URL Block
-		$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Language:")."</font></td>\n"
-		. "\t\t<td><select name='language'>\n";
-
-
-		// First check what languages are available - if the one set in db is not available leave found as false
-		$found=false;
-		foreach (getLanguageData() as  $langkey2=>$langname)
-		{
-			if ($esrow['language'] && $esrow['language'] == htmlspecialchars($langkey2))       {   $found=true;   }
-		}
-
-		foreach (getLanguageData() as  $langkey2=>$langname)
-		{
-			$editsurvey .= "\t\t\t<option value='".$langkey2."'";
-			if ($found && $esrow['language'] && $esrow['language'] == $langkey2)
+			$esrow = array_map('htmlspecialchars', $esrow);
+			$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>"
+			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey")."</font></font></td></tr>\n"
+			. "\t<tr>"
+			. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='50' name='short_title' value=\"{$esrow['short_title']}\"></td></tr>\n"
+			. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Description:")."</font></td>\n"
+			. "\t\t<td><textarea cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
+			. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
+			. "\t\t<td><textarea cols='50' rows='5' name='welcome'>".str_replace("<br />", "\n", $esrow['welcome'])."</textarea></td></tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\"></td></tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='50' name='adminemail' value=\"{$esrow['adminemail']}\"></td></tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("Fax To:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='50' name='faxto' value=\"{$esrow['faxto']}\"></td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Format:")."</font></td>\n"
+			. "\t\t<td><select name='format'>\n"
+			. "\t\t\t<option value='S'";
+			if ($esrow['format'] == "S" || !$esrow['format']) {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("Question by Question")."</option>\n"
+			. "\t\t\t<option value='G'";
+			if ($esrow['format'] == "G") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("Group by Group")."</option>\n"
+			. "\t\t\t<option value='A'";
+			if ($esrow['format'] == "A") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("All in one")."</option>\n"
+			. "\t\t</select></td>\n"
+			. "\t</tr>\n";
+			//TEMPLATES
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Template:")."</font></td>\n"
+			. "\t\t<td><select name='template'>\n";
+			foreach (gettemplatelist() as $tname)
 			{
-				$editsurvey .= " selected";
+				$editsurvey .= "\t\t\t<option value='$tname'";
+				if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {$editsurvey .= " selected";}
+				elseif (!$esrow['template'] && $tname == "default") {$editsurvey .= " selected";}
+				$editsurvey .= ">$tname</option>\n";
 			}
-			// if language has been renamed then default to DefaultLanguage
-			elseif (!$found && $langkey2='en')
+			$editsurvey .= "\t\t</select></td>\n"
+			. "\t</tr>\n";
+			//COOKIES
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Use Cookies?")."</font></td>\n"
+			. "\t\t<td><select name='usecookie'>\n"
+			. "\t\t\t<option value='Y'";
+			if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("Yes")."</option>\n"
+			. "\t\t\t<option value='N'";
+			if ($esrow['usecookie'] != "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("No")."</option>\n"
+			. "\t\t</select></td>\n"
+			. "\t</tr>\n";
+			//ALLOW SAVES
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow Saves?")."</font></td>\n"
+			. "\t\t<td><select name='allowsave'>\n"
+			. "\t\t\t<option value='Y'";
+			if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("Yes")."</option>\n"
+			. "\t\t<option value='N'";
+			if ($esrow['allowsave'] == "N") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("No")."</option>\n"
+			. "\t\t</select></td>\n"
+			. "\t</tr>\n";
+			//ALLOW PREV
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Show [<< Prev] button")."</font></td>\n"
+			. "\t\t<td><select name='allowprev'>\n"
+			. "\t\t\t<option value='Y'";
+			if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("Yes")."</option>\n"
+			. "\t\t<option value='N'";
+			if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("No")."</option>\n"
+			. "\t\t</select></td>\n"
+			. "\t</tr>\n";
+			//NOTIFICATION
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Notification:")."</font></td>\n"
+			. "\t\t<td><select name='notification'>\n"
+			. getNotificationlist($esrow['notification'])
+			. "\t\t</select></td>\n"
+			. "\t</tr>\n";
+			//ANONYMOUS
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Anonymous?")."</font></td>\n";
+			if ($esrow['active'] == "Y")
 			{
-				{$editsurvey .= " selected";}
+				$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
+				if ($esrow['private'] == "N") {$editsurvey .= " This survey is not anonymous";}
+				else {$editsurvey .= "This survey is anonymous";}
+				$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
+				. "\t\t</font></font>\n";
+				$editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\"></td>\n";
 			}
-			$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+			else
+			{
+				$editsurvey .= "\t\t<td><select name='private'>\n"
+				. "\t\t\t<option value='Y'";
+				if ($esrow['private'] == "Y") {$editsurvey .= " selected";}
+				$editsurvey .= ">"._("Yes")."</option>\n"
+				. "\t\t\t<option value='N'";
+				if ($esrow['private'] != "Y") {$editsurvey .= " selected";}
+				$editsurvey .= ">"._("No")."</option>\n"
+				. "</select>\n\t\t</td>\n";
+			}
+			$editsurvey .= "</tr>\n";
+			$editsurvey .= "<tr><td align='right'><script type='text/javascript'>\n"
+			. "<!--\n"
+			. "function fillin(tofield, fromfield)\n"
+			. "\t{\n"
+			. "\t\tif (confirm(\""._("This will replace the existing text. Continue?")."\")) {\n"
+			. "\t\t\tdocument.getElementById(tofield).value = document.getElementById(fromfield).value\n"
+			. "\t\t}\n"
+			. "\t}\n"
+			. "--></script>\n";
+			$editsurvey .= "\t<font class='settingcaption'>"._("Invitation Email Subject:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='54' name='email_invite_subj' id='email_invite_subj' value=\"{$esrow['email_invite_subj']}\">\n"
+			. "\t\t<input type='hidden' name='email_invite_subj_default' id='email_invite_subj_default' value='".html_escape(_("Invitation to participate in survey"))."'>\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email:")."</font></td>\n"
+			. "\t\t<td><textarea cols=50 rows=5 name='email_invite' id='email_invite'>{$esrow['email_invite']}</textarea>\n"
+			. "\t\t<input type='hidden' name='email_invite_default' id='email_invite_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite\",\"email_invite_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder Subject:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='54' name='email_remind_subj' id='email_remind_subj' value=\"{$esrow['email_remind_subj']}\">\n"
+			. "\t\t<input type='hidden' name='email_remind_subj_default' id='email_remind_subj_default' value='".html_escape(_("Reminder to participate in survey"))."'>\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_remind_subj\",\"email_remind_subj_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder:")."</font></td>\n"
+			. "\t\t<td><textarea cols=50 rows=5 name='email_remind' id='email_remind'>{$esrow['email_remind']}</textarea>\n"
+			. "\t\t<input type='hidden' name='email_remind_default' id='email_remind_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_remind\",\"email_remind_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email Subject")."</font></td>\n"
+			. "\t\t<td><input type='text' size='54' name='email_confirm_subj' id='email_confirm_subj' value=\"{$esrow['email_confirm_subj']}\">\n"
+			. "\t\t<input type='hidden' name='email_confirm_subj_default' id='email_confirm_subj_default' value='".html_escape(_("Confirmation of completed survey"))."'>\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm_subj\",\"email_confirm_subj_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email")."</font></td>\n"
+			. "\t\t<td><textarea cols=50 rows=5 name='email_confirm' id='email_confirm'>{$esrow['email_confirm']}</textarea>\n"
+			. "\t\t<input type='hidden' name='email_confirm_default' id='email_confirm_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"))."'>\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm\",\"email_confirm_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow public registration?")."</font></td>\n"
+			. "\t\t<td><select name='allowregister'>\n"
+			. "\t\t\t<option value='Y'";
+			if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("Yes")."</option>\n"
+			. "\t\t\t<option value='N'";
+			if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("No")."</option>\n"
+			. "\t\t</select></td>\n\t</tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email Subject:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='54' name='email_register_subj' id='email_register_subj' value=\"{$esrow['email_register_subj']}\">\n"
+			. "\t\t<input type='hidden' name='email_register_subj_default' id='email_register_subj_default' value='".html_escape(_("Survey Registration Confirmation"))."'>\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript:  fillin(\"email_register_subj\",\"email_register_subj_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email:")."</font></td>\n"
+			. "\t\t<td><textarea cols=50 rows=5 name='email_register' id='email_register'>{$esrow['email_register']}</textarea>\n"
+			. "\t\t<input type='hidden' name='email_register_default' id='email_register_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."))."'>\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript:  fillin(\"email_register\",\"email_register_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Token Attribute Names:")."</font></td>\n"
+			. "\t\t<td><font class='settingcaption'><input type='text' size='25' name='attribute1'"
+			. " value=\"{$esrow['attribute1']}\">("._("Attribute 1").")<br />"
+			. "<input type='text' size='25' name='attribute2'"
+			. " value=\"{$esrow['attribute2']}\">("._("Attribute 2").")</font></td>\n\t</tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Date Stamp?")."</font></td>\n";
+	
+			if ($esrow['active'] == "Y")
+			{
+				$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
+				if ($esrow['datestamp'] != "Y") {$editsurvey .= " Responses will not be date stamped.";}
+				else {$editsurvey .= "Responses will be date stamped";}
+				$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
+				. "\t\t</font></font>\n";
+				$editsurvey .= "<input type='hidden' name='datestamp' value=\"{$esrow['datestamp']}\"></td>\n";
+			}
+			else
+			{
+				$editsurvey .= "\t\t<td><select name='datestamp'>\n"
+				. "\t\t\t<option value='Y'";
+				if ($esrow['datestamp'] == "Y") {$editsurvey .= " selected";}
+				$editsurvey .= ">"._("Yes")."</option>\n"
+				. "\t\t\t<option value='N'";
+				if ($esrow['datestamp'] != "Y") {$editsurvey .= " selected";}
+				$editsurvey .= ">"._("No")."</option>\n"
+				. "</select>\n\t\t</td>\n";
+			}
+			$editsurvey .= "</tr>\n";
+	
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save IP Address?")."</font></td>\n";
+	
+			if ($esrow['active'] == "Y")
+			{
+				$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
+				if ($esrow['ipaddr'] != "Y") {$editsurvey .= " Responses will not have the IP address logged.";}
+				else {$editsurvey .= "Responses will have the IP address logged";}
+				$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
+				. "\t\t</font></font>\n";
+				$editsurvey .= "<input type='hidden' name='ipaddr' value='".$esrow['ipaddr']."'>\n</td>";
+			}
+			else
+			{
+				$editsurvey .= "\t\t<td><select name='ipaddr'>\n"
+				. "\t\t\t<option value='Y'";
+				if ($esrow['ipaddr'] == "Y") {$editsurvey .= " selected";}
+				$editsurvey .= ">"._("Yes")."</option>\n"
+				. "\t\t\t<option value='N'";
+				if ($esrow['ipaddr'] != "Y") {$editsurvey .= " selected";}
+				$editsurvey .= ">"._("No")."</option>\n"
+				. "</select>\n\t\t</td>\n";
+			}
+	
+			// begin REF URL Block
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save Referring URL?")."</font></td>\n";
+	
+			if ($esrow['active'] == "Y")
+			{
+				$editsurvey .= "\t\t<td>\n\t\t\t<font class='settingcaption'>";
+				if ($esrow['refurl'] != "Y") {$editsurvey .= " Responses will not have their referring URL logged.";}
+				else {$editsurvey .= "Responses will have their referring URL logged.";}
+				$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
+				. "\t\t</font></font>\n";
+				$editsurvey .= "<input type='hidden' name='refurl' value='".$esrow['refurl']."'>\n</td>";
+			}
+			else
+			{
+				$editsurvey .= "\t\t<td><select name='refurl'>\n"
+				. "\t\t\t<option value='Y'";
+				if ($esrow['refurl'] == "Y") {$editsurvey .= " selected";}
+				$editsurvey .= ">"._("Yes")."</option>\n"
+				. "\t\t\t<option value='N'";
+				if ($esrow['refurl'] != "Y") {$editsurvey .= " selected";}
+				$editsurvey .= ">"._("No")."</option>\n"
+				. "</select>\n\t\t</td>\n";
+			}
+			// BENBUN - END REF URL Block
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Language:")."</font></td>\n"
+			. "\t\t<td><select name='language'>\n";
+	
+	
+			// First check what languages are available - if the one set in db is not available leave found as false
+			$found=false;
+			foreach (getLanguageData() as  $langkey2=>$langname)
+			{
+				if ($esrow['language'] && $esrow['language'] == htmlspecialchars($langkey2))       {   $found=true;   }
+			}
+	
+			foreach (getLanguageData() as  $langkey2=>$langname)
+			{
+				$editsurvey .= "\t\t\t<option value='".$langkey2."'";
+				if ($found && $esrow['language'] && $esrow['language'] == $langkey2)
+				{
+					$editsurvey .= " selected";
+				}
+				// if language has been renamed then default to DefaultLanguage
+				elseif (!$found && $langkey2='en')
+				{
+					{$editsurvey .= " selected";}
+				}
+				$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+			}
+	
+			$editsurvey .= "\t\t</select></td>\n"
+			. "\t</tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
+			. "\t\t\t<td><select name='useexpiry'><option value='Y'";
+			if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("Yes")."</option>\n"
+			. "\t\t\t<option value='N'";
+			if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("No")."</option></select></td></tr><tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
+			. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\"><button type='reset' id='f_trigger_b'>...</button></td></tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='50' name='urldescrip' value=\"{$esrow['urldescrip']}\"></td></tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
+			. "\t\t<td><select name='autoredirect'>";
+			$editsurvey .= "\t\t\t<option value='Y'";
+			if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("Yes")."</option>\n";
+			$editsurvey .= "\t\t\t<option value='N'";
+			if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") {$editsurvey .= " selected";}
+			$editsurvey .= ">"._("No")."</option>\n"
+			. "</select></td></tr>";
+	
+			$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' class='standardbtn' value='"._("Update survey")."'>\n"
+			. "\t<input type='hidden' name='action' value='updatesurvey'>\n"
+			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
+			. "\t</td></tr>\n"
+			. "</table></form>\n";
+	
+			// Here we do the setup the date javascript
+			$editsurvey .= "<script type=\"text/javascript\">\n"
+			. "Calendar.setup({\n"
+			. "inputField     :    \"f_date_b\",\n"     // id of the input field
+			. "ifFormat       :    \"%Y-%m-%d\",\n"     // format of the input field
+			. "showsTime      :    false,\n"            // will display a time selector
+			. "button         :    \"f_trigger_b\",\n"  // trigger for the calendar (button ID)
+			. "singleClick    :    true,\n"             // double-click mode
+			. "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
+			. "});\n"
+			. "</script>\n";
 		}
-
-		$editsurvey .= "\t\t</select></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
-		. "\t\t\t<td><select name='useexpiry'><option value='Y'";
-		if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("Yes")."</option>\n"
-		. "\t\t\t<option value='N'";
-		if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("No")."</option></select></td></tr><tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
-		. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\"><button type='reset' id='f_trigger_b'>...</button></td></tr>\n"
-		. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
-		. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='urldescrip' value=\"{$esrow['urldescrip']}\"></td></tr>\n"
-		. "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
-		. "\t\t<td><select name='autoredirect'>";
-		$editsurvey .= "\t\t\t<option value='Y'";
-		if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("Yes")."</option>\n";
-		$editsurvey .= "\t\t\t<option value='N'";
-		if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") {$editsurvey .= " selected";}
-		$editsurvey .= ">"._("No")."</option>\n"
-		. "</select></td></tr>";
-
-		$editsurvey .= "\t<tr><td colspan='2' align='center'><input type='submit' class='standardbtn' value='"._("Update survey")."'>\n"
-		. "\t<input type='hidden' name='action' value='updatesurvey'>\n"
-		. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
-		. "\t</td></tr>\n"
-		. "</table></form>\n";
-
-		// Here we do the setup the date javascript
-		$editsurvey .= "<script type=\"text/javascript\">\n"
-		. "Calendar.setup({\n"
-		. "inputField     :    \"f_date_b\",\n"     // id of the input field
-		. "ifFormat       :    \"%Y-%m-%d\",\n"     // format of the input field
-		. "showsTime      :    false,\n"            // will display a time selector
-		. "button         :    \"f_trigger_b\",\n"  // trigger for the calendar (button ID)
-		. "singleClick    :    true,\n"             // double-click mode
-		. "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
-		. "});\n"
-		. "</script>\n";
-	}
+		
+		}
+	else
+		{
+		include("access_denied.php");
+		}
+		
 }
 if ($action == "ordergroups")
 {
-	$ordergroups = "<ul id='arrangableNodes'>";
-	//Get the groups from this survey
-	$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order,group_name" ;
-	$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
-	while($ogrows = $ogresult->FetchRow())
-	{
-		$ordergroups.="<li id='".$ogrows['gid']."'>".$ogrows['group_name']."</li>\n" ;
-	}
-	$ordergroups.="</ul>" ;
-
-	$ordergroups .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
-	$ordergroups .="<div id=\"movableNode\"><ul></ul></div>
-			   		   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif'></div>
-        			   <div id=\"arrDebug\"></div>" ; 					 
-	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
-	$ordergroups .= "<form action='$scriptname' name='ordergroups' method='post'>
-						<input type='hidden' name='hiddenNodeIds'>
-						<input type='hidden' name='action' value='reordergroups'> 
-						<input type='hidden' name='sid' value='$surveyid'>
-						</form>" ; 
-	$ordergroups .="</p>" ;
-
+	if($sumrows5['edit_survey_property'])
+		{		
+		$ordergroups = "<ul id='arrangableNodes'>";
+		//Get the groups from this survey
+		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order,group_name" ;
+		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
+		while($ogrows = $ogresult->FetchRow())
+		{
+			$ordergroups.="<li id='".$ogrows['gid']."'>".$ogrows['group_name']."</li>\n" ;
+		}
+		$ordergroups.="</ul>" ;
+	
+		$ordergroups .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
+		$ordergroups .="<div id=\"movableNode\"><ul></ul></div>
+						   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif'></div>
+						   <div id=\"arrDebug\"></div>" ; 					 
+		//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
+		$ordergroups .= "<form action='$scriptname' name='ordergroups' method='post'>
+							<input type='hidden' name='hiddenNodeIds'>
+							<input type='hidden' name='action' value='reordergroups'> 
+							<input type='hidden' name='sid' value='$surveyid'>
+							</form>" ; 
+		$ordergroups .="</p>" ;
+		}
+	else
+		{
+		include("access_denied.php");
+		}
 }
 if ($action == "uploadf")
 {
@@ -1983,191 +2140,200 @@ if ($action == "uploadf")
 	}
 }
 
-if ($action == "newsurvey")
-{
-	$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<font class='settingcaption'><font color='white'>"._("Create Survey")."</font></font></td></tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='short_title'></td></tr>\n"
-	. "\t<tr><td align='right'><font class='settingcaption'>"._("Description:")."</font>	</td>\n"
-	. "\t\t<td><textarea cols='50' rows='5' name='description'></textarea></td></tr>\n"
-	. "\t<tr><td align='right'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
-	. "\t\t<td><textarea cols='50' rows='5' name='welcome'></textarea></td></tr>\n"
-	. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='admin'></td></tr>\n"
-	. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='adminemail'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Fax To:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='faxto'></td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Format:")."</font></td>\n"
-	. "\t\t<td><select name='format'>\n"
-	. "\t\t\t<option value='S' selected>"._("Question by Question")."</option>\n"
-	. "\t\t\t<option value='G'>"._("Group by Group")."</option>\n"
-	. "\t\t\t<option value='A'>"._("All in one")."</option>\n"
-	. "\t\t</select></td>\n"
-	. "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Template:")."</font></td>\n"
-	. "\t\t<td><select name='template'>\n";
-	foreach (gettemplatelist() as $tname)
+if ($action == "newsurvey") // && isset($_SESSION['loginID']))	wird durch das Recht abgefangen
 	{
-		$newsurvey .= "\t\t\t<option value='$tname'";
-		if (isset($esrow) && $esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected";}
-		elseif ((!isset($esrow) || !$esrow['template']) && $tname == "default") {$newsurvey .= " selected";}
-		$newsurvey .= ">$tname</option>\n";
+	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
+		{
+		
+		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "\t\t<font class='settingcaption'><font color='white'>"._("Create Survey")."</font></font></td></tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='short_title'></td></tr>\n"
+		. "\t<tr><td align='right'><font class='settingcaption'>"._("Description:")."</font>	</td>\n"
+		. "\t\t<td><textarea cols='50' rows='5' name='description'></textarea></td></tr>\n"
+		. "\t<tr><td align='right'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
+		. "\t\t<td><textarea cols='50' rows='5' name='welcome'></textarea></td></tr>\n"
+		. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='admin'></td></tr>\n"
+		. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='adminemail'></td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Fax To:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='faxto'></td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Format:")."</font></td>\n"
+		. "\t\t<td><select name='format'>\n"
+		. "\t\t\t<option value='S' selected>"._("Question by Question")."</option>\n"
+		. "\t\t\t<option value='G'>"._("Group by Group")."</option>\n"
+		. "\t\t\t<option value='A'>"._("All in one")."</option>\n"
+		. "\t\t</select></td>\n"
+		. "\t</tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Template:")."</font></td>\n"
+		. "\t\t<td><select name='template'>\n";
+		foreach (gettemplatelist() as $tname)
+		{
+			$newsurvey .= "\t\t\t<option value='$tname'";
+			if (isset($esrow) && $esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected";}
+			elseif ((!isset($esrow) || !$esrow['template']) && $tname == "default") {$newsurvey .= " selected";}
+			$newsurvey .= ">$tname</option>\n";
+		}
+		$newsurvey .= "\t\t</select></td>\n"
+		. "\t</tr>\n";
+		//COOKIES
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Use Cookies?")."</font></td>\n"
+		. "\t\t<td><select name='usecookie'>\n"
+		. "\t\t\t<option value='Y'";
+		if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected";}
+		$newsurvey .= ">"._("Yes")."</option>\n"
+		. "\t\t\t<option value='N'";
+		if (isset($esrow) && $esrow['usecookie'] != "Y" || !isset($esrow)) {$newsurvey .= " selected";}
+		$newsurvey .= ">"._("No")."</option>\n"
+		. "\t\t</select></td>\n"
+		. "\t</tr>\n";
+		//ALLOW SAVES
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow Saves?")."</font></td>\n"
+		. "\t\t<td><select name='allowsave'>\n"
+		. "\t\t\t<option value='Y'";
+		if (!isset($esrow['allowsave']) || !$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$newsurvey .= " selected";}
+		$newsurvey .= ">"._("Yes")."</option>\n"
+		. "\t\t<option value='N'";
+		if (isset($esrow['allowsave']) && $esrow['allowsave'] == "N") {$newsurvey .= " selected";}
+		$newsurvey .= ">"._("No")."</option>\n"
+		. "\t\t</select></td>\n"
+		. "\t</tr>\n";
+		//ALLOW PREV
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Show [<< Prev] button")."</font></td>\n"
+		. "\t\t<td><select name='allowprev'>\n"
+		. "\t\t\t<option value='Y'";
+		if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$newsurvey .= " selected";}
+		$newsurvey .= ">"._("Yes")."</option>\n"
+		. "\t\t<option value='N'";
+		if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$newsurvey .= " selected";}
+		$newsurvey .= ">"._("No")."</option>\n"
+		. "\t\t</select></td>\n"
+		. "\t</tr>\n";
+		//NOTIFICATIONS
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Notification:")."</font></td>\n"
+		. "\t\t<td><select name='notification'>\n"
+		. getNotificationlist(0)
+		. "\t\t</select></td>\n"
+		. "\t</tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Anonymous?")."</font></td>\n"
+		. "\t\t<td><select name='private'>\n"
+		. "\t\t\t<option value='Y' selected>"._("Yes")."</option>\n"
+		. "\t\t\t<option value='N'>"._("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email Subject:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='54' name='email_invite_subj' value='".html_escape(_("Invitation to participate in survey"))."'>\n"
+		. "\t</td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email:")."</font></td>\n"
+		. "\t\t<td><textarea cols=50 rows=5 name='email_invite'>"._("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
+		. "\t</td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder Subject:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='54' name='email_remind_subj' value='".html_escape(_("Reminder to participate in survey"))."'>\n"
+		. "\t</td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder:")."</font></td>\n"
+		. "\t\t<td><textarea cols=50 rows=5 name='email_remind'>"._("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
+		. "\t</td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email Subject")."</font></td>\n"
+		. "\t\t<td><input type='text' size='54' name='email_confirm_subj' value='".html_escape(_("Confirmation of completed survey"))."'>\n"
+		. "\t</td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email")."</font></td>\n"
+		. "\t\t<td><textarea cols=50 rows=5 name='email_confirm'>"._("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
+		. "\t</td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow public registration?")."</font></td>\n"
+		. "\t\t<td><select name='allowregister'>\n"
+		. "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email Subject:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='54' name='email_register_subj' value='".html_escape(_("Survey Registration Confirmation"))."'>\n"
+		. "\t</td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email:")."</font></td>\n"
+		. "\t\t<td><textarea cols=50 rows=5 name='email_register'>"._("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
+		. "\t</td></tr>\n";
+		$newsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Token Attribute Names:")."</font></td>\n"
+		. "\t\t<td><font class='settingcaption'><input type='text' size='25' name='attribute1'>("._("Attribute 1").")<br />"
+		. "<input type='text' size='25' name='attribute2'>("._("Attribute 2").")</font></td>\n\t</tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Date Stamp?")."</font></td>\n"
+		. "\t\t<td><select name='datestamp'>\n"
+		. "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+		// IP Address
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save IP Address?")."</font></td>\n"
+		. "\t\t<td><select name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+		// Referring URL
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save Referring URL?")."</font></td>\n"
+		. "\t\t<td><select name='refurl'>\n"                                . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+		//Survey Language
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Language:")."</font></td>\n"
+		. "\t\t<td><select name='language'>\n";
+	
+	
+		foreach (getLanguageData() as  $langkey2=>$langname)
+		{
+			$newsurvey .= "\t\t\t<option value='".$langkey2."'";
+			if ($defaultlang == $langkey2) {$newsurvey .= " selected";}
+			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+		}
+	
+		$newsurvey .= "\t\t</select></td>\n"
+		. "\t</tr>\n";
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
+		. "\t\t\t<td><select name='useexpiry'><option value='Y'>"._("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected>"._("No")."</option></select></td></tr>\n"
+		. "<tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
+		. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value='"
+		. date("Y-m-d")."'><button type='reset' id='f_trigger_b'>...</button>"
+		. "<font size='1'> Date Format: YYYY-MM-DD</font></td></tr>\n"
+		. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='url' value='http://";
+		if (isset($esrow)) {$newsurvey .= $esrow['url'];}
+		$newsurvey .= "'></td></tr>\n"
+		. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='urldescrip' value='";
+		if (isset($esrow)) {$newsurvey .= $esrow['urldescrip'];}
+		$newsurvey .= "'></td></tr>\n"
+		. "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
+		. "\t\t<td><select name='autoredirect'>\n"
+		. "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
+		. "</select></td></tr>"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Create Survey")."'>\n"
+		. "\t<input type='hidden' name='action' value='insertnewsurvey'></td>\n"
+		. "\t</tr>\n"
+		. "</table></form>\n";
+		$newsurvey .= "<center><font class='settingcaption'>"._("OR")."</font></center>\n";
+		$newsurvey .= "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
+		. "<table width='100%' border='0'>\n"
+		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "\t\t<font class='settingcaption'><font color='white'>"._("Import Survey")."</font></font></td></tr>\n\t<tr>"
+		. "\t\t<td align='right'><font class='settingcaption'>"._("Select SQL File:")."</font></td>\n"
+		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Survey")."'>\n"
+		. "\t<input type='hidden' name='action' value='importsurvey'></TD>\n"
+		. "\t</tr>\n</table></form>\n";
+		// Here we do setup the date javascript
+		$newsurvey .= "<script type=\"text/javascript\">\n"
+		. "Calendar.setup({\n"
+		. "inputField     :    \"f_date_b\",\n"    // id of the input field
+		. "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
+		. "showsTime      :    false,\n"                    // will display a time selector
+		. "button         :    \"f_trigger_b\",\n"         // trigger for the calendar (button ID)
+		. "singleClick    :    true,\n"                   // double-click mode
+		. "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
+		. "});\n"
+		. "</script>\n";	
+		}
+	else
+		{
+		include("access_denied.php");
+		}
 	}
-	$newsurvey .= "\t\t</select></td>\n"
-	. "\t</tr>\n";
-	//COOKIES
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Use Cookies?")."</font></td>\n"
-	. "\t\t<td><select name='usecookie'>\n"
-	. "\t\t\t<option value='Y'";
-	if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected";}
-	$newsurvey .= ">"._("Yes")."</option>\n"
-	. "\t\t\t<option value='N'";
-	if (isset($esrow) && $esrow['usecookie'] != "Y" || !isset($esrow)) {$newsurvey .= " selected";}
-	$newsurvey .= ">"._("No")."</option>\n"
-	. "\t\t</select></td>\n"
-	. "\t</tr>\n";
-	//ALLOW SAVES
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow Saves?")."</font></td>\n"
-	. "\t\t<td><select name='allowsave'>\n"
-	. "\t\t\t<option value='Y'";
-	if (!isset($esrow['allowsave']) || !$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$newsurvey .= " selected";}
-	$newsurvey .= ">"._("Yes")."</option>\n"
-	. "\t\t<option value='N'";
-	if (isset($esrow['allowsave']) && $esrow['allowsave'] == "N") {$newsurvey .= " selected";}
-	$newsurvey .= ">"._("No")."</option>\n"
-	. "\t\t</select></td>\n"
-	. "\t</tr>\n";
-	//ALLOW PREV
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Show [<< Prev] button")."</font></td>\n"
-	. "\t\t<td><select name='allowprev'>\n"
-	. "\t\t\t<option value='Y'";
-	if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$newsurvey .= " selected";}
-	$newsurvey .= ">"._("Yes")."</option>\n"
-	. "\t\t<option value='N'";
-	if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$newsurvey .= " selected";}
-	$newsurvey .= ">"._("No")."</option>\n"
-	. "\t\t</select></td>\n"
-	. "\t</tr>\n";
-	//NOTIFICATIONS
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Notification:")."</font></td>\n"
-	. "\t\t<td><select name='notification'>\n"
-	. getNotificationlist(0)
-	. "\t\t</select></td>\n"
-	. "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Anonymous?")."</font></td>\n"
-	. "\t\t<td><select name='private'>\n"
-	. "\t\t\t<option value='Y' selected>"._("Yes")."</option>\n"
-	. "\t\t\t<option value='N'>"._("No")."</option>\n"
-	. "\t\t</select></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email Subject:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='54' name='email_invite_subj' value='".html_escape(_("Invitation to participate in survey"))."'>\n"
-	. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email:")."</font></td>\n"
-	. "\t\t<td><textarea cols=50 rows=5 name='email_invite'>"._("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
-	. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder Subject:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='54' name='email_remind_subj' value='".html_escape(_("Reminder to participate in survey"))."'>\n"
-	. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder:")."</font></td>\n"
-	. "\t\t<td><textarea cols=50 rows=5 name='email_remind'>"._("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
-	. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email Subject")."</font></td>\n"
-	. "\t\t<td><input type='text' size='54' name='email_confirm_subj' value='".html_escape(_("Confirmation of completed survey"))."'>\n"
-	. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email")."</font></td>\n"
-	. "\t\t<td><textarea cols=50 rows=5 name='email_confirm'>"._("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
-	. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow public registration?")."</font></td>\n"
-	. "\t\t<td><select name='allowregister'>\n"
-	. "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
-	. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
-	. "\t\t</select></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email Subject:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='54' name='email_register_subj' value='".html_escape(_("Survey Registration Confirmation"))."'>\n"
-	. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email:")."</font></td>\n"
-	. "\t\t<td><textarea cols=50 rows=5 name='email_register'>"._("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
-	. "\t</td></tr>\n";
-	$newsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Token Attribute Names:")."</font></td>\n"
-	. "\t\t<td><font class='settingcaption'><input type='text' size='25' name='attribute1'>("._("Attribute 1").")<br />"
-	. "<input type='text' size='25' name='attribute2'>("._("Attribute 2").")</font></td>\n\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Date Stamp?")."</font></td>\n"
-	. "\t\t<td><select name='datestamp'>\n"
-	. "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
-	. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
-	. "\t\t</select></td>\n\t</tr>\n";
-	// IP Address
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save IP Address?")."</font></td>\n"
-	. "\t\t<td><select name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
-	. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
-	. "\t\t</select></td>\n\t</tr>\n";
-	// Referring URL
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Save Referring URL?")."</font></td>\n"
-	. "\t\t<td><select name='refurl'>\n"                                . "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
-	. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
-	. "\t\t</select></td>\n\t</tr>\n";
-	//Survey Language
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Language:")."</font></td>\n"
-	. "\t\t<td><select name='language'>\n";
-
-
-	foreach (getLanguageData() as  $langkey2=>$langname)
-	{
-		$newsurvey .= "\t\t\t<option value='".$langkey2."'";
-		if ($defaultlang == $langkey2) {$newsurvey .= " selected";}
-		$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
-	}
-
-	$newsurvey .= "\t\t</select></td>\n"
-	. "\t</tr>\n";
-	$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
-	. "\t\t\t<td><select name='useexpiry'><option value='Y'>"._("Yes")."</option>\n"
-	. "\t\t\t<option value='N' selected>"._("No")."</option></select></td></tr>\n"
-	. "<tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
-	. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value='"
-	. date("Y-m-d")."'><button type='reset' id='f_trigger_b'>...</button>"
-	. "<font size='1'> Date Format: YYYY-MM-DD</font></td></tr>\n"
-	. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='url' value='http://";
-	if (isset($esrow)) {$newsurvey .= $esrow['url'];}
-	$newsurvey .= "'></td></tr>\n"
-	. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='urldescrip' value='";
-	if (isset($esrow)) {$newsurvey .= $esrow['urldescrip'];}
-	$newsurvey .= "'></td></tr>\n"
-	. "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
-	. "\t\t<td><select name='autoredirect'>\n"
-	. "\t\t\t<option value='Y'>"._("Yes")."</option>\n"
-	. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
-	. "</select></td></tr>"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Create Survey")."'>\n"
-	. "\t<input type='hidden' name='action' value='insertnewsurvey'></td>\n"
-	. "\t</tr>\n"
-	. "</table></form>\n";
-	$newsurvey .= "<center><font class='settingcaption'>"._("OR")."</font></center>\n";
-	$newsurvey .= "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
-	. "<table width='100%' border='0'>\n"
-	. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<font class='settingcaption'><font color='white'>"._("Import Survey")."</font></font></td></tr>\n\t<tr>"
-	. "\t\t<td align='right'><font class='settingcaption'>"._("Select SQL File:")."</font></td>\n"
-	. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Survey")."'>\n"
-	. "\t<input type='hidden' name='action' value='importsurvey'></TD>\n"
-	. "\t</tr>\n</table></form>\n";
-	// Here we do setup the date javascript
-	$newsurvey .= "<script type=\"text/javascript\">\n"
-	. "Calendar.setup({\n"
-	. "inputField     :    \"f_date_b\",\n"    // id of the input field
-	. "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
-	. "showsTime      :    false,\n"                    // will display a time selector
-	. "button         :    \"f_trigger_b\",\n"         // trigger for the calendar (button ID)
-	. "singleClick    :    true,\n"                   // double-click mode
-	. "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
-	. "});\n"
-	. "</script>\n";	}
 
 	function replacenewline ($texttoreplace)
 	{

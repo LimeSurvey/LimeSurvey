@@ -692,6 +692,8 @@ elseif ($action == "insertnewsurvey")
 		. "'{$_POST['email_confirm']}', \n"
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', '{$_POST['allowprev']}','".date("Y-m-d")."')";
 		$isresult = $connect->Execute($isquery);
+		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for creator
+    $isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
 		if ($isresult)
 		{
 			$surveyselect = getsurveylist();
@@ -748,19 +750,30 @@ elseif ($action == "updatesurvey")
 }
 
 elseif ($action == "delsurvey") //can only happen if there are no groups, no questions, no answers etc.
-{
-	$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
-	$result = $connect->Execute($query);
-	if ($result)
-	{
-		$surveyid = "";
-		$surveyselect = getsurveylist();
+	{	
+	$actsurquery = "SELECT delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+	$actsurresult = &db_execute_assoc($actsurquery);
+	$actsurrows = $actsurresult->FetchRow();
+	
+	if($actsurrows['delete_survey'])	
+		{		
+		$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
+		$result = $connect->Execute($query);
+		if ($result)
+			{
+			$surveyid = "";
+			$surveyselect = getsurveylist();
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+			}
+		}
+	else 
+		{
+		include("access_denied.php");
+		}	
 	}
-	else
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
-	}
-}
 
 else
 {
