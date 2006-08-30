@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-19 23:52+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2006-08-28 15:58+0100\n"
+"Last-Translator: D <a@b.de>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -2620,3 +2620,81 @@ msgstr "Überprüfe Felder in den Tabellen"
 msgid "Field Created"
 msgstr "Feld erstellt"
 
+#new messages added by Dennis
+
+msgid "User Table Initialized"
+msgstr "User-Tabelle initialisiert"
+
+msgid "Checking to ensure all tables initialized:"
+msgstr "Überprüfe Initialisierungen:"
+
+msgid "Table fixed"
+msgstr "Tabelle korrigiert"
+
+Checking to ensure all fields exist
+
+msgid "You have to login first."
+msgstr "Sie müssen sich erst anmelden"
+
+msgid "Login"
+msgstr "Anmeldung"
+
+msgid "Login failed!"
+msgstr "Anmelden fehlgeschlagen!"
+
+msgid "Login successful."
+msgstr "Anmelden erfolgreich."
+
+msgid "Hello {NAME}!"
+msgstr "Hallo {NAME}!"
+
+msgid "Logout"
+msgstr "Abmeldung"
+
+msgid "Logout successful."
+msgstr "Abmelden erfolgreich."
+
+msgid "Access denied!"
+msgstr "Zugriff verweigert!"
+
+msgid "You are not allowed to change User Data!"
+msgstr "Sie sind nicht berechtigt User-Daten zu ändern!"
+
+msgid "You are not allowed to reset security settings!"
+msgstr "Sie sind nicht berechtigt die Sicherheitseinstellungen zurückzusetzen!"
+
+msgid "You are not allowed to create new surveys!"
+msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+
+msgid "Failed to add User."
+msgstr "Konnte Benutzer nicht hinzufügen."
+
+msgid "Email address ist not valid."
+msgstr "Email-Adresse ist nicht gültig."
+
+msgid "Username was not supplied."
+msgstr "Es wurde kein Benutzername angegeben."
+
+msgid "Username and/or email address already exists."
+msgstr "Benutzername oder Email-Adresse existiert bereits."
+
+msgid "Could not modify User Data."
+msgstr "Benutzerdaten konnten nicht geändert werden."
+
+msgid "Password was not supplied."
+msgstr "Passwort wurde nicht angegeben."
+
+msgid "Email address already exists."
+msgstr "Email-Adresse existiert bereits."
+
+msgid "Email to {NAME} ({EMAIL}) failed."
+msgstr "Email für {NAME} ({EMAIL}) fehlgeschlagen."
+
+msgid "An email with a generated password was sent to the user."
+msgstr "Es wurde eine Email mit einem generierten Passwort an den Benutzer versandt."
+
+msgid "You were signed in. Your data:"
+msgstr "Sie wurden eingetragen. Ihre Daten lauten:"
+
+msgid "You are not allowed to perform this operation!"
+msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
