@@ -36,14 +36,12 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
-
 $versionnumber = "1.08a2";
 $dbversionnumber = 109;
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
-
 
 require_once (dirname(__FILE__).'/classes/adodb/adodb.inc.php');
 require_once (dirname(__FILE__).'/classes/phpmailer/class.phpmailer.php');
@@ -86,51 +84,7 @@ if (eregi($slashlesshome, $slashlesspath) || eregi("dump", $_SERVER['PHP_SELF'])
 } else {
 	$sourcefrom="public";
 }
-
-//IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
-if ($sourcefrom == "admin")
-{
-	include("sessioncontrol.php");
-}
-
-//TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
-if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions'))))
-{
-	// Only do this if safe_mode is OFF
-	if (isset($mysqldir)) {$mysqlbin=$mysqldir;}
-	if ((substr($OS, 0, 3) != "WIN") && (substr($OS, 0, 4) != "OS/2") )
-	{
-		//USING LINUX: Find the location of various files and put that in the appropriate variables!
-		if (!isset($mysqlbin) || !$mysqlbin)
-		{
-			$temp=shell_exec('which mysqldump');
-			@list($mysqlbin, $discard)=explode(" ", $temp);
-			$mysqlbin=substr($mysqlbin, 0, strlen($mysqlbin)-11);
-		}
-	}
-}
-
-
-//SET LANGUAGE DIRECTORY
-if ($sourcefrom == "admin")
-{
-	$langdir="$publicurl/locale/".$_SESSION['adminlang']."/help";
-	$langdirlocal="$rootdir/locale/".$_SESSION['adminlang']."/help";
-
-	if (!is_dir($langdirlocal))  // is_dir only works on local dirs
-	{
-		$langdir="$publicurl/locale/en/help"; //default to english if there is no matching language dir
-	}
-}
-
-//SET LOCAL TIME
-$localtimedate=(strftime("%Y-%m-%d %H:%M", mktime(date("H")+$timeadjust)));
-
-// SITE STYLES
-$setfont = "<font size='2' face='verdana'>";
-
-$singleborderstyle = "style='border: 1px solid #111111'";
-
+//BEFORE SESSIONCONTOL BECAUSE OF THE CONNECTION
 //CACHE DATA
 $connect=&ADONewConnection($databasetype);
 $database_exists = FALSE;
@@ -171,6 +125,52 @@ if ($sourcefrom == "admin")
 	$htmlheader = getAdminHeader();
 
 }
+
+//IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
+if ($sourcefrom == "admin")
+{
+	include("sessioncontrol.php");
+	
+}
+
+//TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
+if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions'))))
+{
+	// Only do this if safe_mode is OFF
+	if (isset($mysqldir)) {$mysqlbin=$mysqldir;}
+	if ((substr($OS, 0, 3) != "WIN") && (substr($OS, 0, 4) != "OS/2") )
+	{
+		//USING LINUX: Find the location of various files and put that in the appropriate variables!
+		if (!isset($mysqlbin) || !$mysqlbin)
+		{
+			$temp=shell_exec('which mysqldump');
+			@list($mysqlbin, $discard)=explode(" ", $temp);
+			$mysqlbin=substr($mysqlbin, 0, strlen($mysqlbin)-11);
+		}
+	}
+}
+
+
+//SET LANGUAGE DIRECTORY
+if ($sourcefrom == "admin")
+{
+	$langdir="$publicurl/locale/".$_SESSION['adminlang']."/help";
+	$langdirlocal="$rootdir/locale/".$_SESSION['adminlang']."/help";
+
+	if (!is_dir($langdirlocal))  // is_dir only works on local dirs
+	{
+		$langdir="$publicurl/locale/en/help"; //default to english if there is no matching language dir
+	}
+}
+
+//SET LOCAL TIME
+$localtimedate=(strftime("%Y-%m-%d %H:%M", mktime(date("H")+$timeadjust)));
+
+// SITE STYLES
+$setfont = "<font size='2' face='verdana'>";
+
+$singleborderstyle = "style='border: 1px solid #111111'";
+
 /**
      * showadminmenu() function returns html text for the administration button bar
      * @global string $accesscontrol
@@ -181,143 +181,170 @@ if ($sourcefrom == "admin")
      * @global string $imagefiles
      * @return string $adminmenu
      */
-function showadminmenu()
-{
-	global $accesscontrol, $homedir, $scriptname, $surveyid, $setfont, $imagefiles;
-	$adminmenu  = "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
-	. "\t<tr>\n"
-	. "\t\t<td>\n"
-	. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
-	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Administration")."</strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
-	. "\t\t\t</tr>\n"
-	. "\t\t\t<tr bgcolor='#999999'>\n"
-	. "\t\t\t\t<td>\n"
-	. "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname', '_top')\"" .
-	"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Default Administration Page")."');return false\">" .
-	"<img src='$imagefiles/home.png' name='HomeButton' alt='"._("Default Administration Page")."' "
-	."title=''" ."align='left'></a>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='15'  align='left'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' border='0' hspace='0'>\n";
-	if ($accesscontrol == 1)
-	{
-		$fhtaccess = "$homedir/.htaccess";
-		if (!file_exists($fhtaccess))
-		{
-			$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
-			"onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("Activate Security")."');return false\">" .
-			"<img src='$imagefiles/badsecurity.png' name='AdminSecurity'"
-			." title='' alt='"._("Activate Security")."'  align='left'></a>";
-		}
+    function showadminmenu()
+        {
+        global $accesscontrol, $homedir, $scriptname, $surveyid, $setfont, $imagefiles;
+        $adminmenu  = "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+                    . "\t<tr>\n"
+                    . "\t\t<td>\n"
+                    . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+                    . "\t\t\t<tr bgcolor='#555555'>\n"
+                    . "\t\t\t\t<td colspan='2' height='8'>\n"
+                    . "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Administration")."</strong>";
+		if(isset($_SESSION['loginID']))
+			{
+			$adminmenu  .= " --  Logged in as: <strong>". $_SESSION['user'] ."</strong>"."\n";
+			}
+       	$adminmenu .= "\t\t\t\t</font></font></td>\n"
+                    . "\t\t\t</tr>\n"
+                    . "\t\t\t<tr bgcolor='#999999'>\n"
+                    . "\t\t\t\t<td>\n"
+                    . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname', '_top')\"" .
+                     "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Default Administration Page")."');return false\">" .
+                     "<img src='$imagefiles/home.png' name='HomeButton' alt='"._("Default Administration Page")."' " 
+                    ."title=''" ."align='left'></a>\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='2'  align='left'>\n";
+		
+		// if not logged in show login icon
+		if(!isset($_SESSION['loginID']))
+			{
+			$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname', '_top')\"" .
+					"onmouseout=\"hideTooltip()\"" 
+					. "onmouseover=\"showTooltip(event,'"._("Login")."');return false\">" .
+					 "<img src='$imagefiles/login.png' name='Login'"
+					." title='' alt='"._("Login")."'  align='left'></a>";
+			}
+		// show logout icon
 		else
-		{
-			$securityok = checksecurity();
-			$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
-			"onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("Modify Security Settings")."');return false\">" .
-			"<img src='$imagefiles/security.png' name='AdminSecurity'"
-			." title='' alt='"._("Modify Security Settings")."'  align='left'></a>";
-		}
-	}
-	else
-	{
-		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
-	}
-	$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
-	"<a href=\"#\" onClick=\"window.open('$scriptname?action=checksettings', '_top')\"" .
-	"onmouseout=\"hideTooltip()\""
-	."onmouseover=\"showTooltip(event,'". _("Check Settings")."');return false\">"
-	. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
-	."' alt='". _("Check Settings")."' align='left'></a>"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+			{
+			$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logoutuser', '_top')\"" .
+					"onmouseout=\"hideTooltip()\"" 
+					. "onmouseover=\"showTooltip(event,'"._("Logout")."');return false\">" .
+					 "<img src='$imagefiles/logout.png' name='Logout'"
+					." title='' alt='"._("Logout")."'  align='left'></a>";
+			}			
+        
+		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
 
-	$adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
-	"onmouseout=\"hideTooltip()\""
-	."onmouseover=\"showTooltip(event,'". _("Check Data Consistency")."');return false\">".
-	"<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left'></a>\n";
-	$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
-	."onmouseout=\"hideTooltip()\""
-	."onmouseover=\"showTooltip(event,'"._("List Surveys")."');return false\">\n"
-	."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''" .
-	"  alt='"._("List Surveys")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\">"
-	."</a>" ;
+		// edit users
+		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
+					"onmouseout=\"hideTooltip()\"" 
+					. "onmouseover=\"showTooltip(event,'"._("Modify Security Settings")."');return false\">" .
+					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
+					." title='' alt='"._("Modify Security Settings")."'  align='left'></a>";
 
-	if ($surveyid)
-	{
-		$adminmenu  .="<a href=\"#\""
-		. "onClick=\"window.open('deletesurvey.php?sid=$surveyid', '_top')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'"._("Delete Entire Survey")."');return false\">"
-		."<img src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _("Delete Entire Survey")." ($surveyid)' title='' align='left'>
-                        </a>\n";
-	}
-	else
-	{
-		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
-	}
-	$adminmenu  .= "<a href=\"#\""
-	. "onClick=\"window.open('dumpdb.php', '_top')\""
-	. "onmouseout=\"hideTooltip()\""
-	. "onmouseover=\"showTooltip(event,'"._("Backup Entire Database")."');return false\">" .
-	"<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". _("Backup Entire Database")."($surveyid)' align='left'>"
-	."</a>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-	. "<a href=\"#\" onClick=\"window.open('labels.php', '_top')\""
-	. "onmouseout=\"hideTooltip()\""
-	. "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">" .
-	"<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
-	. _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."'></a>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
-	$adminmenu .= "<a href=\"#\" " .
-	"onClick=\"window.open('templates.php', '_top')\""
-	. "onmouseout=\"hideTooltip()\""
-	. "onmouseover=\"showTooltip(event,'"._("Template Editor")."');return false\">" .
-	"<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". _("Template Editor")."' align='left'></a>\n"
-	. "\t\t\t\t</td>\n";
-	$adminmenu .= "\t\t\t\t<td align='right' width='430'>\n"
-	. "<a href=\"#\" onClick=\"showhelp('show')\""
-	. "onmouseout=\"hideTooltip()\""
-	. "onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">"
-	. "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
-	. "alt='". _("Show Help")."' align='right' ></a>"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' height='20' align='right' >\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n"
-	. "<a href=\"#\" onClick=\"window.open('$scriptname?action=newsurvey', '_top')\""
-	. "onmouseout=\"hideTooltip()\""
-	. "onmouseover=\"showTooltip(event,'"._("Create or Import New Survey")."');return false\">" .
-	"<img src='$imagefiles/add.png' align='right' name='AddSurvey' title='' alt='". _("Create or Import New Survey")."'></a>\n"
-	. "\t\t\t\t\t<font class=\"boxcaption\">"._("Surveys").":</font>"
-	. "\t\t\t\t\t<select class=\"listboxsurveys\""
-	. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-	//. $surveyselect
-	. getsurveylist()
-	. "\t\t\t\t\t</select>\n"
-	. "\t\t\t\t</td>\n"
-	. "\t\t\t</tr>\n"
-	. "\t\t</table>\n"
-	. "\t</td>\n"
-	. "</tr>\n"
-	. "</table>\n";
-	return $adminmenu;
-}
-
-
+		// check settings
+        $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
+						"<a href=\"#\" onClick=\"window.open('$scriptname?action=checksettings', '_top')\"" .
+					   "onmouseout=\"hideTooltip()\"" 
+                      ."onmouseover=\"showTooltip(event,'". _("Check Settings")."');return false\">" 
+                    . "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
+                    ."' alt='". _("Check Settings")."' align='left'></a>"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+		
+		// check data cosistency
+        if($_SESSION['USER_RIGHT_CONFIGURATOR'])
+			{
+		$adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
+					   "onmouseout=\"hideTooltip()\"" 
+                      ."onmouseover=\"showTooltip(event,'". _("Check Data Consistency")."');return false\">".
+                    "<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left'></a>\n";
+			}
+		// list surveys
+		$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
+		 			."onmouseout=\"hideTooltip()\"" 
+                    ."onmouseover=\"showTooltip(event,'"._("List Surveys")."');return false\">\n" 
+		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''" .
+		 			"  alt='"._("List Surveys")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\">" 
+                    ."</a>" ;
+        
+		// delete Survey       
+		if ($surveyid)
+			{
+			global $dbprefix, $connect;
+			
+			$actsurquery = "SELECT delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+			//$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
+			$actsurresult = &db_execute_assoc($actsurquery);
+			$actsurrows = $actsurresult->FetchRow();
+			if($actsurrows['delete_survey'])
+				{			
+				$adminmenu  .="<a href=\"#\"" 
+							. "onClick=\"window.open('deletesurvey.php?sid=$surveyid', '_top')\"" 
+							. "onmouseout=\"hideTooltip()\"" 
+							. "onmouseover=\"showTooltip(event,'"._("Delete Entire Survey")."');return false\">"
+							."<img src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _("Delete Entire Survey")." ($surveyid)' title='' align='left'>";
+				}
+			}
+		else
+			{
+			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
+			}
+		
+		// db backup & label editor
+		if($_SESSION['USER_RIGHT_CONFIGURATOR'])
+			{
+			$adminmenu  .= "<a href=\"#\""
+						. "onClick=\"window.open('dumpdb.php', '_top')\""
+						. "onmouseout=\"hideTooltip()\"" 
+						. "onmouseover=\"showTooltip(event,'"._("Backup Entire Database")."');return false\">"
+						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". _("Backup Entire Database")."($surveyid)' align='left'>" 
+						."</a>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+						. "<a href=\"#\" onClick=\"window.open('labels.php', '_top')\"" 
+						. "onmouseout=\"hideTooltip()\"" 
+						. "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">" .
+						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
+						. _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."'></a>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+            }
+        if($_SESSION['USER_RIGHT_CREATE_TEMPLATE'])
+			{
+	        $adminmenu .= "<a href=\"#\" " .
+	        			  "onClick=\"window.open('templates.php', '_top')\""
+	                    . "onmouseout=\"hideTooltip()\"" 
+	                    . "onmouseover=\"showTooltip(event,'"._("Template Editor")."');return false\">" .
+	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". _("Template Editor")."' align='left'></a>\n"
+	                    . "\t\t\t\t</td>\n";
+            }
+        if($_SESSION['loginID']) //ADDED by Moses to prevent errors by reading db while not logged in.
+	        {
+	        $adminmenu .= "\t\t\t\t<td align='right' width='430'>\n"
+	                    . "<a href=\"#\" onClick=\"showhelp('show')\"" 
+	                    . "onmouseout=\"hideTooltip()\"" 
+	                    . "onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">" 
+	                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
+	                    . "alt='". _("Show Help")."' align='right' ></a>"
+	                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' height='20' align='right' >\n"
+	                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
+	                    
+			if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
+				{
+			$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=newsurvey', '_top')\"" 
+						. "onmouseout=\"hideTooltip()\"" 
+						. "onmouseover=\"showTooltip(event,'"._("Create or Import New Survey")."');return false\">" .
+						"<img src='$imagefiles/add.png' align='right' name='AddSurvey' title='' alt='". _("Create or Import New Survey")."'></a>\n";
+	             }
+			$adminmenu .= "\t\t\t\t\t<font class=\"boxcaption\">"._("Surveys").":</font>"
+	                    . "\t\t\t\t\t<select class=\"listboxsurveys\""
+	                    . "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+	                    //. $surveyselect
+	                    . getsurveylist()
+	                    . "\t\t\t\t\t</select>\n"
+	                    . "\t\t\t\t</td>\n";
+            }
+            $adminmenu .= "\t\t\t</tr>\n"
+	                    . "\t\t</table>\n"
+	                    . "\t</td>\n"
+	                    . "</tr>\n"
+	                    . "</table>\n";
+        return $adminmenu;
+        }
 //DATA TYPES
 $qtypeselect = getqtypelist();
-
-//SECURITY SETUP STUFF
-$htaccess ="
-AuthType Basic\n
-AuthName \"SURVEYOR: Authorised Users only\"\
-AuthUserFile \"$homedir/.htpasswd\"\
-AuthGroupFile /dev/null\n
-Require valid-user\n
-";
 
 function &db_execute_num($sql,$inputarr=false)
 {
@@ -359,26 +386,29 @@ function db_table_name($name)
 *
 */
 function getsurveylist()
-{
-	global $surveyid, $dbprefix, $scriptname, $connect;
-	$surveyidquery = 'SELECT sid, short_title FROM '.db_table_name('surveys').' ORDER BY short_title';
-	$surveyidresult = db_execute_num($surveyidquery);
-	if (!$surveyidresult) {return "Database Error";}
-	$surveyselecter = "";
-	$surveynames = $surveyidresult->GetRows();
-	if ($surveynames)
-	{
-		foreach($surveynames as $sv)
-		{
-			$surveyselecter .= "\t\t\t<option";
-			if ($sv[0] == $surveyid) {$surveyselecter .= " selected"; $svexist = 1;}
-			$surveyselecter .=" value='$scriptname?sid=$sv[0]'>$sv[1]</option>\n";
-		}
-	}
-	if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected>"._("Please Choose...")."</option>\n".$surveyselecter;}
-	else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>"._("None")."</option>\n".$surveyselecter;}
-	return $surveyselecter;
-}
+    {
+    global $surveyid, $dbprefix, $scriptname, $connect;
+    $surveyidquery = 'SELECT a.* FROM '.db_table_name('surveys').' AS a INNER JOIN '.db_table_name('surveys_rights').' AS b ON a.sid = b.sid '
+    				.'WHERE b.uid ='.$_SESSION['loginID'].' AND (edit_survey_property = 1 OR b.define_questions = 1 '
+    				.'OR b.browse_response = 1 OR b.export = 1 OR b.add_user = 1 OR delete_survey = 1 '
+    				.'OR b.activate_survey = 1) ORDER BY a.short_title';//CHANGED by Moses only with rights
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    $surveyselecter = "";
+    $surveynames = $surveyidresult->GetRows();
+    if ($surveynames)
+        {
+        foreach($surveynames as $sv)
+            {
+            $surveyselecter .= "\t\t\t<option";
+            if ($sv[0] == $surveyid) {$surveyselecter .= " selected"; $svexist = 1;}
+            $surveyselecter .=" value='$scriptname?sid=$sv[0]'>$sv[1]</option>\n";
+            }
+        }
+    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected>"._("Please Choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>"._("None")."</option>\n".$surveyselecter;}
+    return $surveyselecter;
+    }
 
 /**
 * getquestions() queries the database for a list of all questions matching the current survey sid
@@ -2310,6 +2340,11 @@ function getArrayFiltersOutGroup($qid)
 function modify_database($sqlfile='', $sqlstring='') {
 
 	global $dbprefix;
+	global $defaultuser;
+	global $defaultpass;
+	global $siteadminemail;
+	global $defaultlang;
+	global $codeString;
 
 	$success = true;  // Let's be optimistic
 
@@ -2340,6 +2375,11 @@ function modify_database($sqlfile='', $sqlstring='') {
 				$line = substr($line, 0, $length-1);   // strip ;
 				$command .= $line;
 				$command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
+				$command = str_replace('$defaultuser', $defaultuser, $command); // variables By Moses
+				$command = str_replace('$defaultpass', $defaultpass, $command); // variables By Moses
+				$command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
+				$command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
+				$command = str_replace('$codeString', $codeString, $command); // variables By Moses
 				if (! db_execute_num($command)) { Echo $command;
 				$success = false;
 				}
@@ -2386,5 +2426,36 @@ function strip_tags_full($string) {
 
 	return $string;
 }
+
+// gets all users who are successors from an user
+function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
+    {
+	global $dbprefix, $codeString;
+		
+	if($level == 0)
+		{
+		$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email FROM {$dbprefix}users WHERE uid='{$uid}'";			//added by Dennis
+    	}
+	else{
+		$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email FROM {$dbprefix}users WHERE parent_id='{$uid}'";			//added by Dennis
+		}		
+		
+		$sresult = db_execute_assoc($squery);
+		while ($srow = $sresult->FetchRow())
+			{
+			$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], "level"=>$level);			//added by Dennis
+			$userlist = getuserlistforuser($srow['uid'], $level+1, $userlist);
+			}
+    return $userlist;
+    }
+
+// unsets all Session variables to kill session
+function killSession()	//added by Dennis
+	{
+		foreach ($_SESSION as $key =>$value) {
+		//echo $key." = ".$value."<br>";
+		unset($_SESSION[$key]);	
+		}
+	}
 
 ?>
