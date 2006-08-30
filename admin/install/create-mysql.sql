@@ -216,11 +216,44 @@ CREATE TABLE `prefix_surveys` (
 -- 
 
 CREATE TABLE `prefix_users` (
+  `uid` int(11) NOT NULL auto_increment PRIMARY KEY,
   `user` varchar(20) NOT NULL default '',
-  `password` varchar(20) NOT NULL default '',
-  `security` varchar(10) NOT NULL default ''
+  `password` BLOB NOT NULL default '',
+  `parent_id` int(10) unsigned NOT NULL,
+  `lang` varchar(20),
+  `email` varchar(50) NOT NULL UNIQUE,
+  `create_survey` tinyint(1) NOT NULL default '0',
+  `create_user` tinyint(1) NOT NULL default '0',
+  `delete_user` tinyint(1) NOT NULL default '0',
+  `pull_up_user` tinyint(1) NOT NULL default '0',
+  `push_down_user` tinyint(1) NOT NULL default '0',
+  `configurator` tinyint(1) NOT NULL default '0',
+  `create_template` tinyint(1) NOT NULL default '0'
 ) TYPE=MyISAM;
 
+CREATE TABLE `prefix_surveys_rights` (
+	`sid` int(10) unsigned NOT NULL default '0',
+	`uid` int(10) unsigned NOT NULL default '0',
+	`edit_survey_property` tinyint(1) NOT NULL default '0',
+	`define_questions` tinyint(1) NOT NULL default '0',
+	`browse_response` tinyint(1) NOT NULL default '0',
+	`export` tinyint(1) NOT NULL default '0',
+	`add_user` tinyint(1) NOT NULL default '0',
+	`delete_survey` tinyint(1) NOT NULL default '0',
+	`activate_survey` tinyint(1) NOT NULL default '0'
+) TYPE=MyISAM;
+
+CREATE TABLE `prefix_user_groups` (
+	`gid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
+	`name` varchar(20) NOT NULL UNIQUE,
+	`description` varchar(255) NOT NULL default '',
+	`creator_id` int(10) unsigned NOT NULL
+) TYPE=MyISAM;
+
+CREATE TABLE `prefix_user_in_groups` (
+	`gid` int(10) unsigned NOT NULL,
+	`uid` int(10) unsigned NOT NULL
+) TYPE=MyISAM;
 --
 -- Table structure for table `settings_global`
 --
@@ -236,4 +269,9 @@ CREATE TABLE `prefix_settings_global` (
 --
 
 INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '109');
+
+--
+-- Table `users`
+--
+INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', ENCODE('$defaultpass','$codeString'), 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 

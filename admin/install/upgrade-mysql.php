@@ -48,7 +48,10 @@ $alltables=array("{$dbprefix}surveys",
                  "{$dbprefix}settings_global",
                  "{$dbprefix}saved_control",
                  "{$dbprefix}question_attributes",
-                 "{$dbprefix}assessments");
+                 "{$dbprefix}assessments",
+                 "{$dbprefix}surveys_rights",
+                 "{$dbprefix}user_groups",
+                 "{$dbprefix}user_in_groups"); //New table for rights);
 
 //KEYS
 $keyinfo[]=array("{$dbprefix}surveys", "sid");
@@ -60,6 +63,9 @@ $keyinfo[]=array("{$dbprefix}settings_global", "stg_name");
 $keyinfo[]=array("{$dbprefix}saved_control", "scid");
 $keyinfo[]=array("{$dbprefix}question_attributes", "qaid");
 $keyinfo[]=array("{$dbprefix}assessments", "id");
+$keyinfo[]=array("{$dbprefix}users", "uid"); //users now has Key
+$keyinfo[]=array("{$dbprefix}surveys_rights", "sid, uid"); //survey_rights now has Key
+$keyinfo[]=array("{$dbprefix}user_groups", "gid");
 
 //FIELDS THAT SHOULD EXIST
 $allfields[]=array("{$dbprefix}labelsets", "lid", "lid int(11) NOT NULL auto_increment");
@@ -70,9 +76,19 @@ $allfields[]=array("{$dbprefix}labels", "code", "code varchar(5) NOT NULL defaul
 $allfields[]=array("{$dbprefix}labels", "title", "title varchar(100) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}labels", "sortorder", "sortorder varchar(5) NULL");
 
-$allfields[]=array("{$dbprefix}users", "user", "user varchar(20) NOT NULL default ''");
-$allfields[]=array("{$dbprefix}users", "password", "password varchar(20) NOT NULL default ''");
-$allfields[]=array("{$dbprefix}users", "security", "security varchar(10) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}users", "uid", "uid int(10) unsigned NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}users", "user", "user varchar(20) NOT NULL default '' UNIQUE");
+$allfields[]=array("{$dbprefix}users", "password", "password BLOB NOT NULL");
+$allfields[]=array("{$dbprefix}users", "parent_id", "parent_id int(10) unsigned NOT NULL");
+$allfields[]=array("{$dbprefix}users", "lang", "lang varchar(20)");
+$allfields[]=array("{$dbprefix}users", "email", "email varchar(50) NOT NULL UNIQUE");
+$allfields[]=array("{$dbprefix}users", "CREATE_SURVEY","CREATE_SURVEY tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "CREATE_USER","CREATE_USER tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "DELETE_USER","DELETE_USER tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "PULL_UP_USER","PULL_UP_USER tinyint(1) NOT NULL default '0'");//GIVE NEW PARENT USER
+$allfields[]=array("{$dbprefix}users", "PUSH_DOWN_USER","PUSH_DOWN_USER tinyint(1) NOT NULL default '0'");//GIVE NEW PARENT USER
+$allfields[]=array("{$dbprefix}users", "CONFIGURATOR","CONFIGURATOR tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "CREATE_TEMPLATE","CREATE_TEMPLATE tinyint(1) NOT NULL default '0'");
 
 $allfields[]=array("{$dbprefix}answers", "qid", "qid int(11) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}answers", "code", "code varchar(5) NOT NULL default ''");
@@ -178,7 +194,25 @@ $allfields[]=array("{$dbprefix}assessments", "link", "link text NOT NULL");
 
 $allfields[]=array("{$dbprefix}settings_global", "stg_name", "stg_name varchar(50) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}settings_global", "stg_value", "stg_value varchar(255) NOT NULL default ''");
+//Check new tables for rights
+$allfields[]=array("{$dbprefix}surveys_rights", "sid", "sid int(10) unsigned NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}surveys_rights", "uid", "uid int(10) unsigned NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}surveys_rights", "edit_survey_property", "CHANGE_SURVEY_PROPERTY tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}surveys_rights", "define_questions", "DEFINE_QUESTIONS tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}surveys_rights", "browse_response", "LOOK_STATISTICS tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}surveys_rights", "export", "EXPORT tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}surveys_rights", "add_user", "ADD_USER tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}surveys_rights", "delete_survey", "DELETE_SURVEY tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}surveys_rights", "activate_survey", "DO_SURVEY tinyint(1) NOT NULL default '0'");
 
+
+$allfields[]=array("{$dbprefix}user_groups", "gid", "gid int(10) unsigned NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}user_groups", "name", "name varchar(20) NOT NULL UNIQUE");
+$allfields[]=array("{$dbprefix}user_groups", "description", "description varchar(255) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}user_groups", "creator_id", "creator_id int(10) unsigned NOT NULL");
+
+$allfields[]=array("{$dbprefix}user_in_groups", "gid","gid int(10) unsigned NOT NULL");
+$allfields[]=array("{$dbprefix}user_in_groups", "uid","uid int(10) unsigned NOT NULL");
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
@@ -248,6 +282,27 @@ foreach ($tablenames as $tn)
         }
         }
     }
+    
+    // INIT TABLES
+echo "$setfont<strong>"._("Checking to ensure all tables initialized:")."</strong><br /><font size='1'>\n";
+
+//INIT USER TABLE
+$query = "SELECT uid, CREATE_SURVEY, CREATE_USER, DELETE_USER, PULL_UP_USER, PUSH_DOWN_USER, CONFIGURATOR, CREATE_TEMPLATE FROM {$dbprefix}users";
+$result = $connect->Execute($query) or die("Initialization check failed.<br />$query<br />".($connect->ErrorMsg()));
+echo "<strong>-></strong>"._("Checking")." <strong>{$dbprefix}users</strong>..<br />";
+if($row = $result->FetchRow()) {
+
+	if(($row[1] + $row[2] + $row[3] + $row[4] + $row[5] + $row[6] + $row[7]) != 7) {
+		$query = "UPDATE {$dbprefix}users SET CREATE_TEMPLATE = 1, CREATE_SURVEY = 1, CREATE_USER = 1, DELETE_USER = 1, PULL_UP_USER = 1, PUSH_DOWN_USER = 1, CONFIGURATOR = 1 WHERE uid = ".$row[0];
+		mysql_query($query) or die("Fixing of {$dbprefix}users with rights of $defaultuser failed.<br />$query<br />".($connect->ErrorMsg()));
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._("Table_fixed")."</font><br />\n";
+	}
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._("OK")."</font><br />\n";
+} else {
+	$query = "INSERT INTO {$dbprefix}users VALUES(NULL, '$defaultuser', ENCODE('$defaultpass', '$codeString'), 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1)";
+	mysql_query($query) or die("Initialization of {$dbprefix}users with admin user failed.<br />$query<br />".($connect->ErrorMsg()));
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._("User Table Initialized")."</font><br />\n";
+}
 
 convertquestionorder();
 convertgrouporder();
