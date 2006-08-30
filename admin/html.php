@@ -1014,30 +1014,58 @@ if (returnglobal('viewanswer'))
 	}
 
 // check data for login
-if($_POST['user'] && $_POST['password'])	// added by Dennis
+if(($_POST['user'] && $_POST['password']) || ($action == "forgotpass"))	// added by Dennis
 	{	
-	$action = "login";	
+	//$action = "login";	
 	include("usercontrol.php");
 	}
 // login form
-if(!isset($_SESSION['loginID']))	// added by Dennis
+if(!isset($_SESSION['loginID']) && $action != forgotpass)	// added by Dennis
 	{
-	$loginsummary .= "<form name='login' id='login' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' >"._("You have to login first.")."<br>			
-						<table>
-							<tr>
-								<td><p>"._("Username")."</p></td>
-								<td><input name='user' type='text' id='user' size='40' maxlength='40' value=''></td>
-							</tr>
-							<tr>
-								<td><p>"._("Password")."</p></td>
-								<td><input name='password' id='password' type='password' size='40' maxlength='40'></td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td><input class='action' type='submit' value='Login'></td>
-							</tr>
-						</table>						
-					</form>";
+	
+	if($action == forgotpassword)
+		{
+		$loginsummary .= "<form name='forgot' id='forgot' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' ><br /><strong>"._("You have to enter user name and email.")."</strong><br />	<br />		
+							<table>
+								<tr>
+									<td><p>"._("Username")."</p></td>
+									<td><input name='user' type='text' id='user' size='40' maxlength='40' value=''></td>
+								</tr>
+								<tr>
+									<td><p>"._("Email")."</p></td>
+									<td><input name='email' id='email' type='text' size='40' maxlength='40' value=''></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td><input type='hidden' name='action' value='forgotpass'>
+									<input class='action' type='submit' value='Check data'></td>
+								</tr>								
+							</table>						
+						</form>";
+		}
+	else
+		{
+		$loginsummary .= "<form name='login' id='login' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />		
+							<table>
+								<tr>
+									<td><p>"._("Username")."</p></td>
+									<td><input name='user' type='text' id='user' size='40' maxlength='40' value=''></td>
+								</tr>
+								<tr>
+									<td><p>"._("Password")."</p></td>
+									<td><input name='password' id='password' type='password' size='40' maxlength='40'></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td><input class='action' type='submit' value='Login'></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td><a href='$scriptname?action=forgotpassword'>"._("Forgot Your Password?")."</a><br />&nbsp;\n</td>
+								</tr>
+							</table>						
+						</form>";
+		}
 	}
 
 // logout user
@@ -1047,14 +1075,14 @@ if ($action == "logoutuser" && isset($_SESSION['loginID']))	// added by Dennis
 	include("usercontrol.php");
 	}
 	
-if ($action == "adduser" || $action=="deluser" || $action == "moduser")
+if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $action == "userrights")
 {
 	include("usercontrol.php");
 }
 
-if ($action == "modifyuser" && isset($_SESSION['loginID']))	// Recht ??
+if ($action == "modifyuser" && ($_SESSION['loginID'] == $_POST['uid']))
 {
-		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
+	$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
 				 . "\t\t<strong>$setfont<font color='white'>"._("Modifying User")."</td></tr>\n"
 					 . "\t<tr>\n"
 					 . "\t\t<th>$setfont"._("Username")."</th>\n"
@@ -1062,7 +1090,7 @@ if ($action == "modifyuser" && isset($_SESSION['loginID']))	// Recht ??
 					 . "\t\t<th>$setfont"._("Password")."</font></th>\n"
 					 . "\t</tr>\n";
 	
-	$muq = "SELECT user, DECODE(password, '{$codeString}'), email, uid, parent_id FROM {$dbprefix}users WHERE user='{$_GET['user']}' AND uid='{$_GET['uid']}' LIMIT 1";	//	added by Dennis
+	$muq = "SELECT user, DECODE(password, '{$codeString}'), email, uid, parent_id FROM {$dbprefix}users WHERE uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
 	//echo($muq);
 	
 	$mur = db_execute_assoc($muq);
@@ -1075,17 +1103,117 @@ if ($action == "modifyuser" && isset($_SESSION['loginID']))	// Recht ??
 					  . "\t<td align='center'>\n\t\t<input $slstyle type='text' name='email' value=\"{$mrw['email']}\"></td>\n"	
 					  . "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
 					  . "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\"></td>\n";	// added by Dennis
-
-		if($_SESSION['loginID'] == $_GET['uid'])
-			{
-			$usersummary .= "\t<td align='center'>\n\t\t<input $slstyle type='text' name='pass' value=\"{$mrw[$decodeString]}\"></td>\n";
-			}
+		$usersummary .= "\t<td align='center'>\n\t\t<input $slstyle type='text' name='pass' value=\"{$mrw[$decodeString]}\"></td>\n";
 		}		
 	$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n"
 				  . "\t\t<input type='submit' $btstyle value='"._("Update")."'>\n"
 				  . "<input type='hidden' name='action' value='moduser'></td></tr>\n"
 				  . "</form></table>\n";
 }
+
+if ($action == "setuserrights" && ($_SESSION['loginID'] != $_POST['uid']))
+	{
+	$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='7' bgcolor='black' align='center'>\n"
+				 . "\t\t<strong>$setfont<font color='white'>"._("Set User Rights")."</td></tr>\n";
+					
+					if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
+						$usersummary .= "\t\t<th align='center'>create survey</th>\n";
+					}
+					if($_SESSION['USER_RIGHT_CONFIGURATOR']) {
+						$usersummary .= "\t\t<th align='center'>configurator</th>\n";
+					}
+					if($_SESSION['USER_RIGHT_CREATE_USER']) {
+						$usersummary .= "\t\t<th align='center'>create user</th>\n";
+					}
+					if($_SESSION['USER_RIGHT_DELETE_USER']) {
+						$usersummary .= "\t\t<th align='center'>delete user</th>\n";
+					}
+					if($_SESSION['USER_RIGHT_PULL_UP_USER']) {
+						$usersummary .= "\t\t<th align='center'>pull up user</th>\n";
+					}
+					if($_SESSION['USER_RIGHT_PUSH_DOWN_USER']) {
+						$usersummary .= "\t\t<th align='center'>push down user</th>\n";
+					}
+					if($_SESSION['USER_RIGHT_CREATE_TEMPLATE']) {
+						$usersummary .= "\t\t<th align='center'>create template</th>\n";
+					}
+					
+					foreach ($_SESSION['userlist'] as $usr)
+						{
+						if ($usr['uid'] == $_POST['uid'])
+							{
+					
+							$usersummary .="\t\t<th></th>\n\t</tr>\n"
+							."\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
+										  ."<form action='$scriptname' method='post'>\n";
+							//content
+							if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
+								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_survey\" value=\"create_survey\"";
+								if($usr['create_survey']) {
+									$usersummary .= " checked ";
+								}
+								$usersummary .="></td>\n";
+							}
+							if($_SESSION['USER_RIGHT_CONFIGURATOR']) {
+								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"configurator\" value=\"configurator\"";
+								if($usr['configurator']) {
+									$usersummary .= " checked ";
+								}
+								$usersummary .="></td>\n";
+							}
+							if($_SESSION['USER_RIGHT_CREATE_USER']) {
+								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_user\" value=\"create_user\"";
+								if($usr['create_user']) {
+									$usersummary .= " checked ";
+								}
+								$usersummary .="></td>\n";
+							}
+							if($_SESSION['USER_RIGHT_DELETE_USER']) {
+								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_user\" value=\"delete_user\"";
+								if($usr['delete_user']) {
+									$usersummary .= " checked ";
+								}
+								$usersummary .="></td>\n";
+							}
+							if($_SESSION['USER_RIGHT_PULL_UP_USER']) {
+								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"pull_up_user\" value=\"pull_up_user\"";
+								if($usr['pull_up_user']) {
+									$usersummary .= " checked ";
+								}
+								$usersummary .="></td>\n";
+							}
+							if($_SESSION['USER_RIGHT_PUSH_DOWN_USER']) {
+								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"push_down_user\" value=\"push_down_user\"";
+								if($usr['push_down_user']) {
+									$usersummary .= " checked ";
+								}
+								$usersummary .="></td>\n";
+							}
+							if($_SESSION['USER_RIGHT_CREATE_TEMPLATE']) {
+								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_template\" value=\"create_template\"";
+								if($usr['create_template']) {
+									$usersummary .= " checked ";
+								}
+								$usersummary .="></td>\n";
+							}
+		
+							$usersummary .= "\t\t\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
+										  //."<form action='$scriptname' method='post'>"
+										  ."\t\n\t<tr><td colspan='7' align='center'>"
+										  ."<input type='submit' value='"._("Save Changes")."'>"
+										  ."<input type='hidden' name='action' value='userrights'>"
+										  ."<input type='hidden' name='uid' value='{$_POST['uid']}'></td></tr>"
+										  ."</form>"
+										  . "</table>\n";
+						/*$usersummary .= "\t\n"
+						  . "\t\t<input type='submit' $btstyle value='"._("Save Changes")."'>\n"
+						  . "<input type='hidden' name='action' value='userrights'>\n"
+						  . "</form>"*/
+						  
+							continue;
+						  	}					  
+						}
+	}
 
 if ($action == "editusers")
 	{
@@ -1121,8 +1249,7 @@ if ($action == "editusers")
 	else*/
 	if(isset($_SESSION['loginID']))
 		{
-		$usersummary = "<table width='100%' border='0'><tr><td colspan='2'>\n"
-					 . "<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$usersummary = "<table width='100%' border='0'>\n"
 					 . "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
 					 . "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></td></tr>\n"
 					 . "\t<tr>\n"
@@ -1177,15 +1304,18 @@ if ($action == "editusers")
 					} 
 				$usersummary .= "\t\t<td align='center'>$setfont{$usr['level']}</td>\n"							  
 							  . "\t\t<td align='center'>$setfont{$usr['parent_id']}</td>\n"
-							  . "\t\t<td align='center'>\n"
-							  . "<input type='hidden' name='uid' value='{$usr['uid']}' ";	// added by Dennis
-				
+							  . "\t\t<td align='center'>\n";
+							  
 				// users are only allowed to change his own data
 				if ($usr['uid'] == $_SESSION['loginID'])				
 					{  
-					$usersummary .= "\t\t\t<input type='submit' $btstyle value='"._("Edit")."' "
-								  . "onClick=\"window.open('$scriptname?action=modifyuser&user={$usr['user']}&uid={$usr['uid']}', '_top')\" />\n";	// added by Dennis
-					}
+					$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"//?action=modifyuser'>"	// added by Dennis
+					 			  ."<input type='submit' value='"._("Edit")."'>"
+					 			  ."<input type='hidden' name='action' value='modifyuser'>"
+					 			  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+					 			  ."</form>";
+					}			
+					
 				// users are allowed to delete all successor users (but the admin not himself) 
 				if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($usr['uid'] == $_SESSION['loginID'])))				
 					{
@@ -1196,9 +1326,18 @@ if ($action == "editusers")
 					 			  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
 					 			  ."</form>";
 					}				
+				
+				if ($usr['uid'] != $_SESSION['loginID'])				
+					{  
+					$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"	// added by Dennis
+					 			  ."<input type='submit' value='"._("Set User Rights")."'>"
+					 			  ."<input type='hidden' name='action' value='setuserrights'>"
+					 			  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+					 			  ."</form>";
+					}		
+				
 				$usersummary .= "\t\t</td>\n"
 							  . "\t</tr>\n";
-
 				}
 			}
 		if($_SESSION['USER_RIGHT_CREATE_USER'])
@@ -1207,13 +1346,9 @@ if ($action == "editusers")
 						  . "\t\t<tr>\n"
 						  . "\t\t<td align='center'><input type='text' $slstyle name='new_user'></td>\n"
 						  . "\t\t<td align='center'><input type='text' $slstyle name='new_email'></td>\n"
-						  . "\t\t<td align='center'><input type='submit' $btstyle value='"._("Add User")."'></td>\n"
-						  . "\t</tr>\n"
-						  . "\t<tr>\n"
-						  . "\t\t<td align='center'><input type='hidden' name='action' value='adduser'></td>\n"
-						  . "\t</tr>\n"
-						  . "\t</form>\n"
-						  . "\t<tr>\n";
+						  . "\t\t<td align='center'><input type='submit' $btstyle value='"._("Add User")."'>"
+						  . "<input type='hidden' name='action' value='adduser'></td>\n"
+						  . "\t</tr>\n";
 			}
 		}
 	}
@@ -1221,7 +1356,6 @@ if ($action == "addquestion")
 	{
 	
 	if($sumrows5['define_questions'])
-	//if($_SESSION['SURVEY_RIGHTS'][$sid]["add_question"] == 1)
 		{				
 		$newquestion =  "\t<form action='$scriptname' name='addnewquestion' method='post'>\n"
 		. "<table width='100%' border='0'>\n\n"

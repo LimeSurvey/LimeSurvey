@@ -2434,16 +2434,16 @@ function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
 		
 	if($level == 0)
 		{
-		$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email FROM {$dbprefix}users WHERE uid='{$uid}'";			//added by Dennis
+		$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, create_template FROM {$dbprefix}users WHERE uid='{$uid}'";			//added by Dennis
     	}
 	else{
-		$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email FROM {$dbprefix}users WHERE parent_id='{$uid}'";			//added by Dennis
+		$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, create_template FROM {$dbprefix}users WHERE parent_id='{$uid}'";			//added by Dennis
 		}		
 		
 		$sresult = db_execute_assoc($squery);
 		while ($srow = $sresult->FetchRow())
 			{
-			$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], "level"=>$level);			//added by Dennis
+			$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], "level"=>$level, "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "pull_up_user"=>$srow['pull_up_user'], "push_down_user"=>$srow['push_down_user'], "create_template"=>$srow['create_template']);			//added by Dennis modified by Moses
 			$userlist = getuserlistforuser($srow['uid'], $level+1, $userlist);
 			}
     return $userlist;
@@ -2458,4 +2458,67 @@ function killSession()	//added by Dennis
 		}
 	}
 
+// set the rights of a user and his children
+function setrights($uid, $rights) 
+	{
+	global $connect;
+	
+	$updates = "create_survey=".$rights['create_survey']
+	. ", create_user=".$rights['create_user']
+	. ", delete_user=".$rights['delete_user']
+	. ", pull_up_user=".$rights['pull_up_user']
+	. ", push_down_user=".$rights['push_down_user']
+	. ", configurator=".$rights['configurator']	
+	. ", create_template=".$rights['create_template'];
+	$uquery = "UPDATE ".db_table_name('users')." SET ".$updates." WHERE uid = ".$uid;
+	$test = 0;
+	foreach($rights as $right) 
+		{
+			if(!$right) {
+					$test = 1;
+			}
+		}
+	if($test) {	
+		$updatesArray = array();
+		
+		if(!$rights['create_survey']) 
+			$updatesArray[] = "create_survey=".$rights['create_survey'];
+		if(!$rights['create_user']) 
+			$updatesArray[] = "create_user=".$rights['create_user'];
+		if(!$rights['delete_user']) 
+			$updatesArray[] = "delete_user=".$rights['delete_user'];
+		if(!$rights['pull_up_user']) 
+			$updatesArray[] = "pull_up_user=".$rights['pull_up_user'];
+		if(!$rights['push_down_user']) 
+			$updatesArray[] = "push_down_user=".$rights['push_down_user'];
+		if(!$rights['configurator']) 
+			$updatesArray[] = "configurator=".$rights['configurator'];
+		if(!$rights['create_template']) 
+			$updatesArray[] = "create_template=".$rights['create_template'];
+		
+		$updates = implode(", ", $updatesArray);
+		
+		$userlist = getuserlistforuser($uid, 0, NULL);
+		foreach($userlist as $user)
+			{
+				$utwoquery = "UPDATE ".db_table_name('users')." SET ".$updates." WHERE uid = ".$user['uid'];
+				$connect->Execute($utwoquery) or die (htmlspecialchars($connect->ErrorMsg()));
+			}
+	}
+	return $connect->Execute($uquery);
+	}
+		
+	function createPassword()
+	{
+	$pwchars = "abcdefhjmnpqrstuvwxyz23456789";
+	$password_length = 8;
+	$passwd = '';
+	
+	for ($i=0; $i<$password_length; $i++)
+		{
+		$passwd .= $pwchars[floor(rand(0,strlen($pwchars)))];
+		}	
+	return $passwd;
+	}
+	
 ?>
