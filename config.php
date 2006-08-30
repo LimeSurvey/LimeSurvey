@@ -46,11 +46,13 @@ $databasetabletype  =   "MyISAM";      // Default mySQL table type (only used if
 $dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
 
+$codeString 		= 'hU+*jzR2#';	   //added by Dennis
+
 $useidprefix        =   0;             // Set this to 1 if you want to use a prefix on survey responses (useful for replicated/pooled databases)
 $idprefix           =   0;             // Leave this as 0 to use your server's IP address. Alternatively, use a number here - characters WILL NOT WORK.
 
 // FILE LOCATIONS
-$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/phpsurveyor"; //The root web url for your phpsurveyor installation. 
+$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/PHPSurveyor/"; //The root web url for your phpsurveyor installation. 
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your phpsurveyor installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\phpsurveyor"!
@@ -65,7 +67,6 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked PHPSurveyo
 
     //The following url and dir locations do not need to be modified unless you have a non-standard
     //PHPSurveyor installation. Do not change unless you know what you are doing.
-    
     $homeurl        =   "$rooturl/admin"; // The website location (url) of the admin scripts
     $publicurl      =   "$rooturl";       // The public website location (url) of the public survey script
     $tempurl        =   "$rooturl/tmp";
@@ -82,7 +83,6 @@ $scriptname         =   "admin.php";      // The name of the admin script (can b
 $accesscontrol      =   1;                // make 0 for no access control
 $defaultuser        =   "admin";          // This is the default username when security is first turned on
 $defaultpass        =   "password";       // This is the default password for when security is first turned on
-
 
 // Site Settings
 $lwcdropdowns       =   "R";              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)
