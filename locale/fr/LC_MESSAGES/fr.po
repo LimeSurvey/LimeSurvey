@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-18 19:02+0100\n"
+"PO-Revision-Date: 2006-08-31 20:59+0100\n"
 "Last-Translator: GAUGRY Sébastien\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,17 @@ msgstr "Administration"
 msgid "Default Administration Page"
 msgstr "Page d&lsquo;administration générale"
 
-msgid "Activate Security"
-msgstr "Activer la sécurité"
+# E:\www\phpsurveyor/common.php:213
+# E:\www\phpsurveyor/common.php:215
+# E:\www\phpsurveyor/admin/usercontrol.php:91
+msgid "Login"
+msgstr "Connexion"
+
+# E:\www\phpsurveyor/common.php:222
+# E:\www\phpsurveyor/common.php:224
+# E:\www\phpsurveyor/admin/usercontrol.php:134
+msgid "Logout"
+msgstr "Déconnexion"
 
 msgid "Modify Security Settings"
 msgstr "Modifier les paramètres de sécurité"
@@ -78,13 +87,13 @@ msgid "List (Dropdown)"
 msgstr "Liste déroulante"
 
 msgid "List (Radio)"
-msgstr "Bouton radio"
+msgstr "Boutons radio"
 
 msgid "List With Comment"
 msgstr "Liste déroulante avec commentaire"
 
 msgid "Multiple Options"
-msgstr "Case à cocher"
+msgstr "Cases à cocher"
 
 msgid "Multiple Options With Comments"
 msgstr "Cases à cocher avec commentaire"
@@ -102,10 +111,10 @@ msgid "Short free text"
 msgstr "Zone de texte court"
 
 msgid "Long free text"
-msgstr "Zone de commentaire"
+msgstr "Zone de texte longue"
 
 msgid "Huge Free Text"
-msgstr "Zone de texte long"
+msgstr "Zone de texte immense"
 
 msgid "Yes/No"
 msgstr "Oui/Non"
@@ -181,7 +190,7 @@ msgstr "Donner les statistiques de ces réponses"
 
 # E:\www\phpsurveyor/common.php:946
 msgid "Export Results to Application"
-msgstr "Exporter le résultat dans une application"
+msgstr "Exporter les résultats dans une application"
 
 msgid "Export result to a SPSS command file"
 msgstr "Exporter le résultat dans un fichier de commandes SPSS"
@@ -242,7 +251,7 @@ msgid "last"
 msgstr "Dernier"
 
 msgid "Save Survey and Return"
-msgstr "Sauvegarder le questionnaire et y retourner"
+msgstr "Sauvegarder le questionnaire et le continuer"
 
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Etes-vous sûr de vouloir effacer toutes vos réponses ?"
@@ -521,6 +530,10 @@ msgstr "Veuillez classer tous les éléments SVP"
 msgid "Please check at least one item"
 msgstr "Veuillez choisir au moins un élément SVP"
 
+# E:\www\phpsurveyor/qanda.php:453
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr "Vous ne pouvez pas poursuivre tant que vous n'aurez pas entré du texte dans une ou plusieurs questions."
+
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "Vous n'avez pas répondu à une ou plusieurs questions obligatoires. Vous ne pouvez pas enregistrer vos réponses au questionnaire tant que vous n'aurez pas répondu à celles-ci"
 
@@ -613,6 +626,45 @@ msgstr "Impossible d'envoyer les réponses car il n'y en a aucune (vide)."
 
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Cette erreur peut se produire si vous avez déjà envoyé vos réponses et actualisé la page de votre navigateur avec 'Actualiser'. Dans ce cas, vos réponses ont déjà été sauvées.<br /><br />Si vous obtenez ce message au milieu du remplissage d'un questionnaire, vous devriez choisir '<-Précédente' dans votre navigateur et rafraîchir la page obtenue. Bien que vous perdiez vos réponses de la dernière page, toutes les autres sont conservées. Ce problème peut se produire si le serveur est surchargé ou énormément utilisé. Nous nous excusons pour ce problème."
+
+# E:\www\phpsurveyor/admin/access_denied.php:43
+msgid "Access denied!"
+msgstr "Accès refusé !"
+
+msgid "<p>You are not allowed to create new surveys!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à créer un nouveau questionnaire !</p>"
+
+msgid "<p>You are not allowed to delete this survey!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à supprimer ce questionnaire !</p>"
+
+msgid "<p>You are not allowed to add new questions for this survey!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à ajouter de nouvelles questions à ce questionnaire !</p>"
+
+msgid "<p>You are not allowed to activate this survey!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à activer ce questionnaire !</p>"
+
+msgid "<p>You are not allowed to deactivate this survey!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à désactiver ce questionnaire !</p>"
+
+msgid "<p>You are not allowed to add a group to this survey!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à ajouter un groupe dans ce questionnaire !</p>"
+
+msgid "<p>You are not allowed to order groups in this survey!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à réorganiser les groupes dans ce questionnaire !</p>"
+
+msgid "<p>You are not allowed to edit this survey!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à éditer ce questionnaire !</p>"
+
+msgid "<p>You are not allowed to edit groups in this survey!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à editer les groupes dans ce questionnaire !</p>"
+
+# E:\www\phpsurveyor/admin/access_denied.php:103
+msgid "<p>You are not allowed to browse response!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à parcourir les réponses !</p>"
+
+# E:\www\phpsurveyor/admin/access_denied.php:108
+msgid "<p>You are not allowed to set assessment rules!</p>"
+msgstr "<p>Vous n'êtes pas autorisé à définir des règles d'évaluation !</p>"
 
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Cette question est à réponses multiples mais n&lsquo;a aucune réponse de définie."
@@ -826,6 +878,9 @@ msgstr "Navigation dans les données "
 msgid "Show start.."
 msgstr "Montrer le début..."
 
+msgid "Show previous..."
+msgstr "Montrer le précédent..."
+
 msgid "Records Displayed:"
 msgstr "Enregistrements affichés :"
 
@@ -918,6 +973,10 @@ msgstr "Impossible de créer la base de données"
 
 msgid "Group could not be added. It is missing the mandatory group name"
 msgstr "Le groupe ne peut pas être ajouté: nom du groupe obligatoire absent."
+
+# E:\www\phpsurveyor/admin/database.php:116
+msgid "Error: The database reported the following error:"
+msgstr "Erreur : la base de données a retourné l'erreur suivante :"
 
 msgid "Group could not be updated"
 msgstr "Le groupe ne peut pas être mis à jour"
@@ -1131,8 +1190,8 @@ msgstr "Dans un questionnaire activé, une table est créée pour stocker toutes
 msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
 msgstr "Lorsque vous désactivez un questionnaire, toutes les données saisies dans la table originale seront déplacées ailleurs, ainsi lorsque vous réactiverez le questionnaire la table sera vide. Vous ne pourrez plus accéder à  ces données avec PHPSurveyor."
 
-msgid "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Seul un administrateur systéme peut accéder aux données d&lsquo;un questionnaire désactivé en utilisant un gestionnaire de bases de données MySQL tel que PhpMyAdmin par exemple. Si votre questionnaire utilise des invitations, cette table sera également renommée et seul un administrateur systéme y aura accés."
+msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Seul un administrateur système peut accéder aux données d&lsquo;un questionnaire désactivé en utilisant un gestionnaire de bases de données tel que PhpMyAdmin. Si votre questionnaire utilise des invitations, cette table sera également renommée et seul un administrateur système y aura accès."
 
 msgid "Your responses table will be renamed to:"
 msgstr "Votre table de réponses sera renommée en :"
@@ -1579,39 +1638,43 @@ msgstr "Action"
 msgid "Move"
 msgstr "Déplacer"
 
+# E:\www\phpsurveyor/admin/html.php:1028
+msgid "You have to enter user name and email."
+msgstr "Vosu devez entrer un nom d'utilisateur et un mail."
+
 msgid "Username"
 msgstr "Nom d&lsquo;utilisateur"
 
-msgid "Security"
-msgstr "Protection"
+# E:\www\phpsurveyor/admin/html.php:1048
+msgid "You have to login first."
+msgstr "Vous devez d'abord vous connecter."
+
+# E:\www\phpsurveyor/admin/html.php:1064
+msgid "Forgot Your Password?"
+msgstr "Oubli du mot de passe ?"
+
+msgid "Modifying User"
+msgstr "Modification de l&lsquo;utilisateur"
+
+msgid "Set User Rights"
+msgstr "Définir les droits utilisateur"
+
+msgid "Save Changes"
+msgstr "Sauvegarder les changements"
 
 msgid "User Control"
 msgstr "Contrôle utilisateur"
 
-msgid ""
-"You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\n"
-"If you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts."
-msgstr ""
-"Vous n&lsquo;avez pas encore initialisé les paramètres de sécurité pour votre système de questionnaire et en conséquence il n&lsquo;y a pas de restriction d&lsquo;accés.<p>\n"
-"Si vous cliquez sur le bouton INITIALISER LA SECURITE ci-dessous, les paramètres de sécurité standards d&lsquo;Apache seront ajoutés au répertoire d&lsquo;administration de ce script. Vous aurez alors besoin d&lsquo;utiliser le nom d&lsquo;utilisateur et le mot de passe par défaut pour accéder à l&lsquo;administration et aux scripts de saisie de données."
+# E:\www\phpsurveyor/admin/html.php:1259
+msgid "Level"
+msgstr "Niveau"
 
-msgid "It is highly recommended that once your security system has been initialised you change this default password."
-msgstr "Il est fortement recommandé, une fois votre systéme de sécurité initialisé, de changer le mot de passe par défaut."
-
-msgid "Initialise Security"
-msgstr "Initialiser la sécurité"
-
-msgid "User"
-msgstr "Utilisateur"
-
-msgid "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again."
-msgstr "Aucun utilisateur dans la table. Nous vous recommandons de DESACTIVER LA SECURITE et de la REACTIVER ensuite."
+# E:\www\phpsurveyor/admin/html.php:1260
+msgid "Parent_ID"
+msgstr "Parent_ID"
 
 msgid "Add User"
 msgstr "Ajouter un utilisateur"
-
-msgid "Turn Off Security"
-msgstr "Désactiver la sécurité"
 
 msgid "Add Question"
 msgstr "Ajouter une question"
@@ -1698,10 +1761,10 @@ msgid "Allow Saves?"
 msgstr "Autoriser les sauvegardes ?"
 
 msgid "Show [<< Prev] button"
-msgstr "Montrer le bouton [<< Préc]"
+msgstr "Montrer le bouton [Précédent]"
 
-msgid "Notification:"
-msgstr "Notification :"
+msgid "Admin Notification:"
+msgstr "Notification de l'administrateur :"
 
 msgid "Anonymous?"
 msgstr "Anonyme :"
@@ -1860,13 +1923,13 @@ msgstr "Nom des champs supplémentaires pour l&lsquo;enregistrement public :"
 msgid "Date Stamp?"
 msgstr "Réponses datées :"
 
-msgid "IP Address"
-msgstr "Adresse IP :"
+msgid "Save IP Address?"
+msgstr "Sauvegarder l'adresse IP :"
 
 # E:\www\phpsurveyor/admin/html.php:1785
 # E:\www\phpsurveyor/admin/html.php:2047
-msgid "Referring URL"
-msgstr "Referring URL"
+msgid "Save Referring URL?"
+msgstr "Sauvegarder l'URL référente ?"
 
 msgid "Expires?"
 msgstr "Date limite de réponse?"
@@ -2098,6 +2161,9 @@ msgstr "Réponse(s) sauvegardée(s) :"
 msgid "Identifier"
 msgstr "Identification"
 
+msgid "IP Address"
+msgstr "Adresse IP :"
+
 msgid "Date Saved"
 msgstr "Date de sauvegarde"
 
@@ -2189,6 +2255,13 @@ msgstr "Pourcentage"
 msgid "Browse"
 msgstr "Parcourir"
 
+msgid "Select all"
+msgstr "Sélectionner tout"
+
+# E:\www\phpsurveyor/admin/stats.php:245
+msgid "Proceed"
+msgstr "Effectuer"
+
 # E:\www\phpsurveyor/admin/stats.php:262
 msgid "Select question(s) from the following list"
 msgstr "Choisissez la ou les questions dans la liste suivante"
@@ -2233,14 +2306,14 @@ msgstr "Charger la page"
 msgid "Save Page"
 msgstr "Sauvegarder la page"
 
-msgid "Create new template"
-msgstr "Créer un nouveau modèle"
-
 msgid "Create new template called:"
 msgstr "Créer un nouveau modèle nommé :"
 
 msgid "NewTemplate"
 msgstr "Nouveau modèle"
+
+msgid "Create new template"
+msgstr "Créer un nouveau modèle"
 
 msgid "This template can be modified"
 msgstr "Ce modèle peut être modifié"
@@ -2248,20 +2321,17 @@ msgstr "Ce modèle peut être modifié"
 msgid "This template cannot be modified"
 msgstr "Ce modèle ne peut pas être modifié"
 
-msgid "Rename this template"
-msgstr "Renommer ce modèle"
-
 msgid "Rename this template to:"
 msgstr "Renommer ce modèle en :"
+
+msgid "Rename this template"
+msgstr "Renommer ce modèle"
 
 msgid "Export Template"
 msgstr "Exporter le modèle"
 
 msgid "Make a copy of this template"
 msgstr "Faire une copie de ce modèle"
-
-msgid "Create a copy of this template called:"
-msgstr "Créer une copie de ce modèle nommé :"
 
 msgid "copy_of_"
 msgstr "copie_de_"
@@ -2514,48 +2584,100 @@ msgstr "Création des entrées des invitations"
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} enregistrements crées"
 
-msgid "Creating default htaccess file"
-msgstr "Créer le fichier htaccess par défaut"
+msgid "Forgot Password"
+msgstr "Oubli du mot de passe"
 
-msgid "Security Levels are now set up!"
-msgstr "Le niveau de sécurité est maintenant configuré !"
+# E:\www\phpsurveyor/admin/usercontrol.php:54
+msgid "User name and/or email not found!"
+msgstr "Nom d'utilisateur et ou mail non trouvé !"
 
-msgid "Creating default users"
-msgstr "Créer les utilisateurs par défaut"
+# E:\www\phpsurveyor/admin/usercontrol.php:63
+msgid "Your data:"
+msgstr "Vos informations :"
 
-msgid "Updating users table"
-msgstr "Mise à jour de la table des utilisateurs"
+# E:\www\phpsurveyor/admin/usercontrol.php:75
+msgid "An email with your login data was sent to you."
+msgstr "Un mail avec vos informations de connexion vous a été envoyé."
 
-msgid "Error occurred creating htpasswd file"
-msgstr "Une erreur s&lsquo;est produite lors de la création du fichier htpasswd"
+msgid "Email to {NAME} ({EMAIL}) failed."
+msgstr "Le mail à {NAME} ({EMAIL}) a échoué."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:73
-msgid "Make sure you have read/write permissions in the admin directory."
-msgstr "Assurez-vous d'avoir les droits en lecture/écriture pour le dossier admin"
+# E:\www\phpsurveyor/admin/usercontrol.php:101
+# E:\www\phpsurveyor/admin/usercontrol.php:126
+msgid "Login failed!"
+msgstr "Connexion refusée !"
 
-msgid "Removing security settings"
-msgstr "Enlever les paramètres de sécurité"
+msgid "Welcome {NAME}"
+msgstr "Bienvenue {NAME}"
 
-msgid "Access file, password file and user database deleted"
-msgstr "Les fichiers de permissions, de mots de passe et d&lsquo;utilisateurs ont été effacés"
+# E:\www\phpsurveyor/admin/usercontrol.php:120
+msgid "Login successful!"
+msgstr "Connexion réussie !"
 
-msgid "Adding User"
-msgstr "Ajouter un utilisateur"
+# E:\www\phpsurveyor/admin/usercontrol.php:138
+msgid "Logout successful."
+msgstr "Déconnexion réussie."
 
-msgid "Could not add user. Username and/or password were not supplied"
-msgstr "Impossible d&lsquo;ajouter l&lsquo;utilisateur. Le nom d&lsquo;utilisateur et/ou le mot de passe n&lsquo;étaient pas renseignés"
+# E:\www\phpsurveyor/admin/usercontrol.php:153
+# E:\www\phpsurveyor/admin/usercontrol.php:157
+# E:\www\phpsurveyor/admin/usercontrol.php:171
+msgid "Failed to add User."
+msgstr "Echec de la création de l'utilisateur"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:153
+# E:\www\phpsurveyor/admin/usercontrol.php:277
+msgid "Email address ist not valid."
+msgstr "L'adresse mail n'est pas valide."
+
+msgid "Username was not supplied."
+msgstr "Le nom d&lsquo;utilisateur n&lsquo;était pas rempli."
+
+# E:\www\phpsurveyor/admin/admin.php:102
+msgid "Username and/or email address already exists."
+msgstr "le nom d'utlisateur et/ou l'adresse mail existe déjà."
+
+# E:\www\phpsurveyor/admin/usercontrol.php:176
+msgid "You were signed in. Your data:"
+msgstr "Vous avez été enregistré. Vos informations :"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:188
+msgid "An email with a generated password was sent to the user."
+msgstr "Un mail avec un mot de passe généré a été envoyé à l'utilisateur."
 
 msgid "Deleting User"
 msgstr "Supprimer un utilisateur"
 
-msgid "Could not delete user. Username was not supplied."
+msgid "Admin cannot be deleted!"
+msgstr "L'administrateur ne peut pas être effacé !"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:250
+msgid "You are not allowed to perform this operation!"
+msgstr "Vous n'êtes pas autorisé à effectuer cette opération !"
+
+msgid "Could not delete user. User was not supplied."
 msgstr "Impossible de supprimer l&lsquo;utilisateur. Le nom d&lsquo;utilisateur n&lsquo;était pas rempli."
 
-msgid "Modifying User"
-msgstr "Modification de l&lsquo;utilisateur"
+# E:\www\phpsurveyor/admin/usercontrol.php:277
+# E:\www\phpsurveyor/admin/usercontrol.php:282
+# E:\www\phpsurveyor/admin/usercontrol.php:293
+msgid "Could not modify User Data."
+msgstr "Modification impossible des données de l'utilisateur."
 
-msgid "Could not modify user. Username and/or password were not supplied"
-msgstr "Impossible de modifier l&lsquo;utilisateur. Le nom d&lsquo;utilisateur et/ou le mot de passe n&lsquo;étaient pas renseignés"
+# E:\www\phpsurveyor/admin/usercontrol.php:283
+msgid "Password was not supplied."
+msgstr "Le mot de passe n'a pas été fourni."
+
+# E:\www\phpsurveyor/admin/admin.php:102
+msgid "Email address already exists."
+msgstr "L'adresse mail existe déjà."
+
+# E:\www\phpsurveyor/admin/usercontrol.php:304
+msgid "Back"
+msgstr "Précédent"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Set user rights successfully."
+msgstr "Réussite de l'affectation des droits utilisateur."
 
 msgid "Export, then de-activate survey"
 msgstr "Exporter et ensuite désactiver le questionnaire"
@@ -2621,6 +2743,17 @@ msgstr "OK"
 
 msgid "Checking to ensure all fields exist"
 msgstr "Vérification de l'existence de tous les champs"
+
+msgid "Checking to ensure all tables initialized:"
+msgstr "Vérification de l'initialisation de toutes les tables :"
+
+# E:\www\phpsurveyor/admin/install/upgrade-mysql.php:298
+msgid "Table_fixed"
+msgstr "Table corrigée"
+
+# E:\www\phpsurveyor/admin/install/upgrade-mysql.php:304
+msgid "User Table Initialized"
+msgstr "Table Utilisateur initialisée"
 
 msgid "Field Created"
 msgstr "Champ créé"
