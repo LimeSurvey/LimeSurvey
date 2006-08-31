@@ -39,7 +39,7 @@ if ($accesscontrol <> 1) {exit;}
 
 if (!isset($_SESSION['loginID']))
 	{
-	if($action == forgotpass)
+	if($action == "forgotpass")
 		{
 		$loginsummary = "<br /><strong>"._("Forgot Password")."</strong><br />\n";
 		
@@ -50,7 +50,7 @@ if (!isset($_SESSION['loginID']))
 			//echo $query;
 			if ($result->RecordCount() < 1) 
 				{
-				// falsche bzw. unbekannte Email-Adresse
+				// wrong or unknown username and/or email
 				$loginsummary .= "<br />"._("User name and/or email not found!")."<br />";
 				$loginsummary .= "<br /><br /><a href='$scriptname?action=forgotpassword'>"._("Continue")."</a><br />&nbsp;\n";
 				}
@@ -83,10 +83,8 @@ if (!isset($_SESSION['loginID']))
 					}
 				}									
 			}	
-		}
-	
-	
-	else
+		}	
+	else	// normal login
 		{
 		$loginsummary = "<br /><strong>"._("Login")."</strong><br />\n";
 		
@@ -111,13 +109,13 @@ if (!isset($_SESSION['loginID']))
 					killSession();	// clear $_SESSION
 					
 					$_SESSION['loginID'] = intval($fields['uid']);
-					//$_SESSION['loginIP'] = $_SERVER['REMOTE_ADDR'];
 					$_SESSION['user'] = $fields['user'];
 					$_SESSION['adminlang'] = $fields['lang'];
 	
-					//echo SetInterfaceLanguage($_SESSION['adminlang']);
-					$loginsummary .= str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
-					$loginsummary .= _("Login successful!");
+					SetInterfaceLanguage($_SESSION['adminlang']);
+					
+					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
+					$loginsummary .= _("Login successful.");
 					$loginsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 					
 					}
@@ -200,11 +198,11 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 
 elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST['uid'] == $_SESSION['loginID'])))
 	{	
+	$addsummary = "<br /><strong>"._("Deleting User")."</strong><br />\n";
+		
 	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0 LIMIT 1";
 	$adminresult = $connect->Execute($adminquery);
 	$row=$adminresult->FetchRow();
-	
-	$addsummary = "<br /><strong>"._("Deleting User")."</strong><br />\n";
 		
 	if($row['uid'] == $_POST['uid'])	// it's the superadmin !!!
 		{		
@@ -212,8 +210,6 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 		}
 	else
 		{		
-		$user = html_entity_decode($_POST['user']);
-		
 		if (isset($_POST['uid']))
 			{		
 			// is the user allowed to delete?
@@ -243,12 +239,12 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 				
 				if($_POST['uid'] == $_SESSION['loginID']) killSession();	// user deleted himself
 				
-				$addsummary .= "<br />"._("Username").": $user<br />\n";								
+				$addsummary .= "<br />"._("Username").": {$_POST['user']}<br />\n";								
 				}
 			else
 				{			
-				$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
-				//$addsummary .= "<br />"._("Not allowed to delete this User!")."<br />\n";		
+				include("access_denied.php");
+				//$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";			
 				}
 			}
 		else
@@ -261,10 +257,10 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 
 elseif ($action == "moduser")// && $_POST['uid'] == $_SESSION['loginID'])
 	{
-	if($_POST['uid'] == $_SESSION['loginID'])
-		{	
-		$addsummary = "<br /><strong>"._("Modifying User")."</strong><br />\n";
+	$addsummary = "<br /><strong>"._("Modifying User")."</strong><br />\n";
 		
+	if($_POST['uid'] == $_SESSION['loginID'])
+		{		
 		$user = html_entity_decode($_POST['user']);
 		$email = html_entity_decode($_POST['email']);	
 		$pass = html_entity_decode($_POST['pass']);
@@ -306,28 +302,36 @@ elseif ($action == "moduser")// && $_POST['uid'] == $_SESSION['loginID'])
 						 ."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
 						 ."</form>";
 			}
-		else{
+		else
+			{
 			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 			}
 		}
+	else
+		{			
+		include("access_denied.php");
+		//$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
+		//$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+		}
 	}
 
-
-elseif ($action == "userrights" && $_POST['uid'] != $_SESSION['loginID'])
+elseif ($action == "userrights")
 	{	
-	foreach ($_SESSION['userlist'] as $usr)
+	$addsummary = "<br /><strong>"._("Set User Rights")."</strong><br />\n";
+	
+	if($_POST['uid'] != $_SESSION['loginID'])
 		{
-		if ($usr['uid'] == $_POST['uid'])
+		foreach ($_SESSION['userlist'] as $usr)
 			{
-			$isallowed = true;
-			continue;
+			if ($usr['uid'] == $_POST['uid'])
+				{
+				$isallowed = true;
+				continue;
+				}
 			}
-		}
-			
-		if($isallowed)			
-			{	
-			$addsummary = "<br /><strong>"._("Set User Rights")."</strong><br />\n";
-			
+				
+		if($isallowed)
+			{			
 			$rights = array();
 			
 			if(isset($_POST['create_survey']))$rights['create_survey']=1;		else $rights['create_survey']=0;
@@ -339,9 +343,20 @@ elseif ($action == "userrights" && $_POST['uid'] != $_SESSION['loginID'])
 			if(isset($_POST['create_template']))$rights['create_template']=1;	else $rights['create_template']=0;
 		
 			setrights($_POST['uid'], $rights);
-			$addsummary .= "<br />"._("Set user rights successfully.")."<br />\n"; 						
+			$addsummary .= "<br />"._("Update user rights successful.")."<br />\n"; 						
+			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 			}
-		$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";	
+		else
+			{
+			include("access_denied.php");
+			//$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
+			}
+		}
+	else
+		{			
+		$addsummary .= "<br />"._("You are not allowed to change your own rights!")."<br />\n";		
+		$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+		}
 	}
 
 ?>

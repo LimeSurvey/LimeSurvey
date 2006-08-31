@@ -39,33 +39,33 @@ if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
 if ($action == "listsurveys" && isset($_SESSION['loginID']))
 {
-	//$query = "SELECT a.* FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid WHERE b.uid = ".$_SESSION['loginID'];
-	$query = "SELECT * FROM ".db_table_name('surveys');
+	$query = "SELECT a.* FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid WHERE b.uid = ".$_SESSION['loginID'];
+	//$query = "SELECT * FROM ".db_table_name('surveys');
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
 	if($result->RecordCount() > 0) {
 		$listsurveys= "<br><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='600'>
 				  <tr bgcolor='#BBBBBB'>
-				    <td height=\"22\"><strong>Survey</strong></td>
-				    <td><strong>Date Created</strong></td>
-				    <td><strong>Visibility</strong></td>
-				    <td><strong>Status</strong></td>
-				    <td colspan=\"3\"><strong>Action</strong></td>
+				    <td height=\"22\"><strong>"._("Survey")."</strong></td>
+				    <td><strong>"._("Date Created")."</strong></td>
+				    <td><strong>"._("Visibility")."</strong></td>
+				    <td><strong>"._("Status")."</strong></td>
+				    <td colspan=\"3\"><strong>"._("Action")."</strong></td>
 				  </tr>" ; 
 
 		while($rows = $result->FetchRow())
 		{
 			if($rows['private']=="Y")
 			{
-				$visibility="Private" ;
+				$visibility=_("Private") ;
 			}
-			else $visibility ="Public" ;
+			else $visibility =_("Public") ;
 			if($rows['active']=="Y")
 			{
-				$status= "Active" ;
+				$status=_("Active") ;
 			}
-			else $status ="Non Active" ;
+			else $status =_("Non Active") ;
 
 			$datecreated=$rows['datecreated'] ;
 
@@ -92,7 +92,7 @@ if ($action == "listsurveys" && isset($_SESSION['loginID']))
 			}
 		$listsurveys.="</table></br>" ; 
 	}
-	else $listsurveys="<strong> No Surveys in this Installation </strong>" ;
+	else $listsurveys="<br /><strong> No Surveys in this Installation </strong><br /><br />" ;
 }
 
 
@@ -227,79 +227,84 @@ if ($action == "checksettings" || $action == "changelang")
 
 if ($surveyid)
 {
-	$surveysummary = "<script type='text/javascript'>\n"
-	. "<!--\n"
-	. "\tfunction showdetails(action)\n"
-	. "\t\t{\n"
-	. "\t\tif (action == \"hides\")\n"
-	. "\t\t\t{\n"
-	. "\t\t\tfor (i=0; i<=11; i++)\n"
-	. "\t\t\t\t{\n"
-	. "\t\t\t\tvar name='surveydetails'+i;\n"
-	. "\t\t\t\tdocument.getElementById(name).style.display='none';\n"
-	. "\t\t\t\t}\n"
-	. "\t\t\t}\n"
-	. "\t\telse if (action == \"shows\")\n"
-	. "\t\t\t{\n"
-	. "\t\t\tfor (i=0; i<=11; i++)\n"
-	. "\t\t\t\t{\n"
-	. "\t\t\t\tvar name='surveydetails'+i;\n"
-	. "\t\t\t\tdocument.getElementById(name).style.display='';\n"
-	. "\t\t\t\t}\n"
-	. "\t\t\t}\n"
-	. "\t\telse if (action == \"hideg\")\n"
-	. "\t\t\t{\n"
-	. "\t\t\tfor (i=20; i<=21; i++)\n"
-	. "\t\t\t\t{\n"
-	. "\t\t\t\tvar name='surveydetails'+i;\n"
-	. "\t\t\t\tdocument.getElementById(name).style.display='none';\n"
-	. "\t\t\t\t}\n"
-	. "\t\t\t}\n"
-	. "\t\telse if (action == \"showg\")\n"
-	. "\t\t\t{\n"
-	. "\t\t\tfor (i=20; i<=21; i++)\n"
-	. "\t\t\t\t{\n"
-	. "\t\t\t\tvar name='surveydetails'+i;\n"
-	. "\t\t\t\tdocument.getElementById(name).style.display='';\n"
-	. "\t\t\t\t}\n"
-	. "\t\t\t}\n"
-	. "\t\telse if (action == \"hideq\")\n"
-	. "\t\t\t{\n"
-	. "\t\t\tfor (i=30; i<=37; i++)\n"
-	. "\t\t\t\t{\n"
-	. "\t\t\t\tvar name='surveydetails'+i;\n"
-	. "\t\t\t\tdocument.getElementById(name).style.display='none';\n"
-	. "\t\t\t\t}\n"
-	. "\t\t\t}\n"
-	. "\t\telse if (action == \"showq\")\n"
-	. "\t\t\t{\n"
-	. "\t\t\tfor (i=30; i<=37; i++)\n"
-	. "\t\t\t\t{\n"
-	. "\t\t\t\tvar name='surveydetails'+i;\n"
-	. "\t\t\t\tdocument.getElementById(name).style.display='';\n"
-	. "\t\t\t\t}\n"
-	. "\t\t\t}\n"
-	. "\t\t}\n"
-	. "-->\n"
-	. "</script>\n";
-	
-	$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-	$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid"; //Getting a count of questions for this survey
-	//$sumresult5 = $connect->Execute($sumquery5) or die($connect->ErrorMsg());		
-	$sumresult5 = db_execute_assoc($sumquery5);
-	$sumrows5 = $sumresult5->FetchRow();
-	
-	$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid"; //Getting a count of questions for this survey
-	$sumresult3 = $connect->Execute($sumquery3);
-	$sumcount3 = $sumresult3->RecordCount();
-	$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid"; //Getting a count of groups for this survey
-	$sumresult2 = $connect->Execute($sumquery2);
-	$sumcount2 = $sumresult2->RecordCount();
-	$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid"; //Getting data for this survey
-	$sumresult1 = db_execute_assoc($sumquery1);
-	$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
-	while ($s1row = $sumresult1->FetchRow())
-	{
+	$query = "SELECT * FROM ".db_table_name('surveys_rights')." WHERE  sid = {$surveyid} AND uid = ".$_SESSION['loginID'] ." LIMIT 1";
+	$result = $connect->Execute($query);
+	if($result->RecordCount() > 0)
+		{
+		$surveysummary = "<script type='text/javascript'>\n"
+		. "<!--\n"
+		. "\tfunction showdetails(action)\n"
+		. "\t\t{\n"
+		. "\t\tif (action == \"hides\")\n"
+		. "\t\t\t{\n"
+		. "\t\t\tfor (i=0; i<=11; i++)\n"
+		. "\t\t\t\t{\n"
+		. "\t\t\t\tvar name='surveydetails'+i;\n"
+		. "\t\t\t\tdocument.getElementById(name).style.display='none';\n"
+		. "\t\t\t\t}\n"
+		. "\t\t\t}\n"
+		. "\t\telse if (action == \"shows\")\n"
+		. "\t\t\t{\n"
+		. "\t\t\tfor (i=0; i<=11; i++)\n"
+		. "\t\t\t\t{\n"
+		. "\t\t\t\tvar name='surveydetails'+i;\n"
+		. "\t\t\t\tdocument.getElementById(name).style.display='';\n"
+		. "\t\t\t\t}\n"
+		. "\t\t\t}\n"
+		. "\t\telse if (action == \"hideg\")\n"
+		. "\t\t\t{\n"
+		. "\t\t\tfor (i=20; i<=21; i++)\n"
+		. "\t\t\t\t{\n"
+		. "\t\t\t\tvar name='surveydetails'+i;\n"
+		. "\t\t\t\tdocument.getElementById(name).style.display='none';\n"
+		. "\t\t\t\t}\n"
+		. "\t\t\t}\n"
+		. "\t\telse if (action == \"showg\")\n"
+		. "\t\t\t{\n"
+		. "\t\t\tfor (i=20; i<=21; i++)\n"
+		. "\t\t\t\t{\n"
+		. "\t\t\t\tvar name='surveydetails'+i;\n"
+		. "\t\t\t\tdocument.getElementById(name).style.display='';\n"
+		. "\t\t\t\t}\n"
+		. "\t\t\t}\n"
+		. "\t\telse if (action == \"hideq\")\n"
+		. "\t\t\t{\n"
+		. "\t\t\tfor (i=30; i<=37; i++)\n"
+		. "\t\t\t\t{\n"
+		. "\t\t\t\tvar name='surveydetails'+i;\n"
+		. "\t\t\t\tdocument.getElementById(name).style.display='none';\n"
+		. "\t\t\t\t}\n"
+		. "\t\t\t}\n"
+		. "\t\telse if (action == \"showq\")\n"
+		. "\t\t\t{\n"
+		. "\t\t\tfor (i=30; i<=37; i++)\n"
+		. "\t\t\t\t{\n"
+		. "\t\t\t\tvar name='surveydetails'+i;\n"
+		. "\t\t\t\tdocument.getElementById(name).style.display='';\n"
+		. "\t\t\t\t}\n"
+		. "\t\t\t}\n"
+		. "\t\t}\n"
+		. "-->\n"
+		. "</script>\n";
+		
+		$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
+		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid"; //Getting a count of questions for this survey
+		//$sumresult5 = $connect->Execute($sumquery5) or die($connect->ErrorMsg());		
+		$sumresult5 = db_execute_assoc($sumquery5);
+		$sumrows5 = $sumresult5->FetchRow();
+		
+		$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid"; //Getting a count of questions for this survey
+		$sumresult3 = $connect->Execute($sumquery3);
+		$sumcount3 = $sumresult3->RecordCount();
+		$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid"; //Getting a count of groups for this survey
+		$sumresult2 = $connect->Execute($sumquery2);
+		$sumcount2 = $sumresult2->RecordCount();
+		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid LIMIT 1"; //Getting data for this survey
+		$sumresult1 = db_execute_assoc($sumquery1);
+		$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
+					
+		$s1row = $sumresult1->FetchRow();
+		
 		$s1row = array_map('htmlspecialchars', $s1row);
 		$activated = $s1row['active'];
 		//BUTTON BAR
@@ -357,6 +362,16 @@ if ($surveyid)
 			. "alt='"._("Cannot Activate this Survey")."' border='0' align='left' hspace='0'>\n";
 		}
 		
+		// survey rights
+		
+		if($s1row['creator_id'] == $_SESSION['loginID'])
+			{	
+			$surveysummary .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=surveysecurity&sid=$surveyid', '_top')\"" .
+							"onmouseout=\"hideTooltip()\"" 
+							. "onmouseover=\"showTooltip(event,'"._("Survey Security Settings")."');return false\">" .
+							 "<img src='$imagefiles/security.png' name='SurveySecurity'"
+							." title='' alt='"._("Survey Security Settings")."'  align='left'></a>";
+			}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
 						. "<a href=\"#\" onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
 						. "onmouseout=\"hideTooltip()\"" 
@@ -374,7 +389,7 @@ if ($surveyid)
 			}
 		$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$surveyid', '_blank')\""
 						. "onmouseout=\"hideTooltip()\"" 
-                    	. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
+						. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
 						. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."'>"
 						."</a>"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
@@ -384,14 +399,14 @@ if ($surveyid)
 							. "onmouseout=\"hideTooltip()\"" 
 							. "onmouseover=\"showTooltip(event,'"._("Edit Current Survey")."');return false\">" .
 							"<img src='$imagefiles/edit.png' title=''name='EditSurvey' align='left' alt='"._("Edit Current Survey")."'></a>" ;
-        	}
+			}
 		if($activated!="Y" && getGroupSum($surveyid)>1 && $sumrows5['define_questions'])
-        	{
-        	$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
+			{
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
 						. "onmouseout=\"hideTooltip()\"" 
-                    	. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">" .
-                    	"<img src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups'></a>" ; 
-        	}
+						. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">" .
+						"<img src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups'></a>" ; 
+			}
 		if ($sumcount3 == 0 && $sumcount2 == 0 && $sumrows5['delete_survey'])
 			{			
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=delsurvey&amp;sid=$surveyid', '_top')\""
@@ -403,208 +418,215 @@ if ($surveyid)
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' height='20' align='left' border='0' hspace='0'>\n";
 			}
-
-		$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'". _("Export this Survey")."');return false\">" .
-		"<img src='$imagefiles/exportsql.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey'></a>" ;
-		if($actsurrows['edit_survey_property'])
-			{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-			. "<a href=\"#\" onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\""
+	
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'". _("Set Assessment Rules")."');return false\">" .
-			"<img src='$imagefiles/assessments.png' title='' alt='". _("Set Assessment Rules")."' align='left' name='SurveyAssessment'></a>\n" ;
-			}
-		if ($activated == "Y")
-		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-			. "<a href=\"#\" onclick=\"window.open('".$homeurl."/browse.php?sid=$surveyid', '_top')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("Browse Responses for this Survey")."');return false\">" .
-			"<img src='$imagefiles/browse.png' title=''align='left' name='BrowseSurveyResults' alt='"._("Browse Responses for this Survey")."'></a>\n"
-			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
-			if ($s1row['allowsave'] == "Y")
-			{
-				$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\""
+			. "onmouseover=\"showTooltip(event,'". _("Export this Survey")."');return false\">" .
+			"<img src='$imagefiles/exportsql.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey'></a>" ;
+			if($actsurrows['edit_survey_property'])
+				{
+				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+				. "<a href=\"#\" onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
-				. "onmouseover=\"showTooltip(event,'"._("View Saved but not submitted Responses")."');return false\">"
-				. "<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' alt='"._("View Saved but not submitted Responses")."'></a>"
+				. "onmouseover=\"showTooltip(event,'". _("Set Assessment Rules")."');return false\">" .
+				"<img src='$imagefiles/assessments.png' title='' alt='". _("Set Assessment Rules")."' align='left' name='SurveyAssessment'></a>\n" ;
+				}
+			if ($activated == "Y")
+			{
+				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+				. "<a href=\"#\" onclick=\"window.open('".$homeurl."/browse.php?sid=$surveyid', '_top')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'"._("Browse Responses for this Survey")."');return false\">" .
+				"<img src='$imagefiles/browse.png' title=''align='left' name='BrowseSurveyResults' alt='"._("Browse Responses for this Survey")."'></a>\n"
 				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+				if ($s1row['allowsave'] == "Y")
+				{
+					$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\""
+					. "onmouseout=\"hideTooltip()\""
+					. "onmouseover=\"showTooltip(event,'"._("View Saved but not submitted Responses")."');return false\">"
+					. "<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' alt='"._("View Saved but not submitted Responses")."'></a>"
+					. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+				}
+				$surveysummary .="<a href=\"#\" onclick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'"._("Activate/Edit Tokens for this Survey")."');return false\">" .
+				"<img src='$imagefiles/tokens.png' title='' align='left'  name='TokensControl' alt='"._("Activate/Edit Tokens for this Survey")."'></a>\n" ;
 			}
-			$surveysummary .="<a href=\"#\" onclick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("Activate/Edit Tokens for this Survey")."');return false\">" .
-			"<img src='$imagefiles/tokens.png' title='' align='left'  name='TokensControl' alt='"._("Activate/Edit Tokens for this Survey")."'></a>\n" ;
-		}
-		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-		. "\t\t\t\t</td>\n"
-		. "\t\t\t\t<td align='right' valign='middle' width='400'>\n";
-		if (!$gid)
-		{
-			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='". _("Close this Survey")."' alt='". _("Close this Survey")."' align='right'  name='CloseSurveyWindow' "
-			. "onclick=\"window.open('$scriptname', '_top')\">\n";
-		}
-		else
-		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='21' align='right' "
-			. "border='0' hspace='0' alt=''>\n";
-		}
-		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='". _("Show Details of this Survey")."' alt='". _("Show Details of this Survey")."' name='MaximiseSurveyWindow' "
-		. "align='right' onclick='showdetails(\"shows\")'>\n"
-		. "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='". _("Hide Details of this Survey")."' alt='". _("Hide Details of this Survey")."' name='MinimiseSurveyWindow' "
-		. "align='right' onclick='showdetails(\"hides\")'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' align='right' border='0' width='18'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' border='0' "
-		. "alt='' hspace='0'>\n";
-		if ($activated == "Y")
-		{
-			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' align='right' border='0' hspace='0'>\n";
-		}
-		elseif($sumrows5['define_questions'])
-		{
-			$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("Add New Group to Survey")."');return false\"> " .
-			"<img src='$imagefiles/add.png' title='' alt=''align='right'  name='AddNewGroup'></a>\n" ;
-		}
-		$surveysummary .= "<font class=\"boxcaption\">"._("Groups").":</font>"
-		. "\t\t<select class=\"listboxgroups\" name='groupselect' "
-		. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
-		if (getgrouplist($gid))
-		{
-			$surveysummary .= getgrouplist($gid);
-		}
-		else
-		{
-			$surveysummary .= "<option>"._("None")."</option>\n";
-		}
-		$surveysummary .= "</select>\n"
-		. "\t\t\t\t</td>"
-		. "</tr>\n"
-		. "\t\t\t</table>\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n";
-
-		//SURVEY SUMMARY
-		if ($gid || $qid || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups") {$showstyle="style='display: none'";}
-		if (!isset($showstyle)) {$showstyle="";}
-		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
-		. "$setfont<strong>"._("Title:")."</strong></font></td>\n"
-		. "\t<td>$setfont<font color='#000080'><strong>{$s1row['short_title']} "
-		. "(ID {$s1row['sid']})</strong></font></font></td></tr>\n";
-		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td>"
-		. "<td>$setfont<font size='1' color='#000080'>\n";
-		if ($s1row['private'] != "N") {$surveysummary2 .= _("This survey is anonymous.")."<br />\n";}
-		else {$surveysummary2 .= _("This survey is NOT anonymous.")."<br />\n";}
-		if ($s1row['format'] == "S") {$surveysummary2 .= _("It is presented question by question.")."<br />\n";}
-		elseif ($s1row['format'] == "G") {$surveysummary2 .= _("It is presented group by group.")."<br />\n";}
-		else {$surveysummary2 .= _("It is presented on one single page.")."<br />\n";}
-		if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _("Responses will be date stamped")."<br />\n";}
-		if ($s1row['ipaddr'] == "Y") {$surveysummary2 .= _("IP Addresses will be logged")."<br />\n";}
-		if ($s1row['refurl'] == "Y") {$surveysummary2 .= _("Referer-URL")."<br />\n";}
-		if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _("It uses cookies for access control.")."<br />\n";}
-		if ($s1row['allowregister'] == "Y") {$surveysummary2 .= _("If tokens are used, the public may register for this survey")."<br />\n";}
-		if ($s1row['allowsave'] == "Y") {$surveysummary2 .= _("Participants can save partially finished surveys")."<br />\n";}
-		switch ($s1row['notification'])
-		{
-			case 0:
-			$surveysummary2 .= _("No email notification")."<br />\n";
-			break;
-			case 1:
-			$surveysummary2 .= _("Basic email notification")."<br />\n";
-			break;
-			case 2:
-			$surveysummary2 .= _("Detailed email notification with result codes")."<br />\n";
-			break;
-		}
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+			. "\t\t\t\t</td>\n"
+			. "\t\t\t\t<td align='right' valign='middle' width='400'>\n";
+			if (!$gid)
+			{
+				$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='". _("Close this Survey")."' alt='". _("Close this Survey")."' align='right'  name='CloseSurveyWindow' "
+				. "onclick=\"window.open('$scriptname', '_top')\">\n";
+			}
+			else
+			{
+				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='21' align='right' "
+				. "border='0' hspace='0' alt=''>\n";
+			}
+			$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='". _("Show Details of this Survey")."' alt='". _("Show Details of this Survey")."' name='MaximiseSurveyWindow' "
+			. "align='right' onclick='showdetails(\"shows\")'>\n"
+			. "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='". _("Hide Details of this Survey")."' alt='". _("Hide Details of this Survey")."' name='MinimiseSurveyWindow' "
+			. "align='right' onclick='showdetails(\"hides\")'>\n"
+			. "\t\t\t\t\t<img src='$imagefiles/blank.gif' align='right' border='0' width='18'>\n"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' border='0' "
+			. "alt='' hspace='0'>\n";
+			if ($activated == "Y")
+			{
+				$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' align='right' border='0' hspace='0'>\n";
+			}
+			elseif($sumrows5['define_questions'])
+			{
+				$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'"._("Add New Group to Survey")."');return false\"> " .
+				"<img src='$imagefiles/add.png' title='' alt=''align='right'  name='AddNewGroup'></a>\n" ;
+			}
+			$surveysummary .= "<font class=\"boxcaption\">"._("Groups").":</font>"
+			. "\t\t<select class=\"listboxgroups\" name='groupselect' "
+			. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+			if (getgrouplist($gid))
+			{
+				$surveysummary .= getgrouplist($gid);
+			}
+			else
+			{
+				$surveysummary .= "<option>"._("None")."</option>\n";
+			}
+			$surveysummary .= "</select>\n"
+			. "\t\t\t\t</td>"
+			. "</tr>\n"
+			. "\t\t\t</table>\n"
+			. "\t\t</td>\n"
+			. "\t</tr>\n";
+			
+			//SURVEY SUMMARY
+			if ($gid || $qid || $action=="surveysecurity" || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups") {$showstyle="style='display: none'";}
+			if (!isset($showstyle)) {$showstyle="";}
+			$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
+			. "$setfont<strong>"._("Title:")."</strong></font></td>\n"
+			. "\t<td>$setfont<font color='#000080'><strong>{$s1row['short_title']} "
+			. "(ID {$s1row['sid']})</strong></font></font></td></tr>\n";
+			$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td>"
+			. "<td>$setfont<font size='1' color='#000080'>\n";
+			if ($s1row['private'] != "N") {$surveysummary2 .= _("This survey is anonymous.")."<br />\n";}
+			else {$surveysummary2 .= _("This survey is NOT anonymous.")."<br />\n";}
+			if ($s1row['format'] == "S") {$surveysummary2 .= _("It is presented question by question.")."<br />\n";}
+			elseif ($s1row['format'] == "G") {$surveysummary2 .= _("It is presented group by group.")."<br />\n";}
+			else {$surveysummary2 .= _("It is presented on one single page.")."<br />\n";}
+			if ($s1row['datestamp'] == "Y") {$surveysummary2 .= _("Responses will be date stamped")."<br />\n";}
+			if ($s1row['ipaddr'] == "Y") {$surveysummary2 .= _("IP Addresses will be logged")."<br />\n";}
+			if ($s1row['refurl'] == "Y") {$surveysummary2 .= _("Referer-URL")."<br />\n";}
+			if ($s1row['usecookie'] == "Y") {$surveysummary2 .= _("It uses cookies for access control.")."<br />\n";}
+			if ($s1row['allowregister'] == "Y") {$surveysummary2 .= _("If tokens are used, the public may register for this survey")."<br />\n";}
+			if ($s1row['allowsave'] == "Y") {$surveysummary2 .= _("Participants can save partially finished surveys")."<br />\n";}
+			switch ($s1row['notification'])
+			{
+				case 0:
+				$surveysummary2 .= _("No email notification")."<br />\n";
+				break;
+				case 1:
+				$surveysummary2 .= _("Basic email notification")."<br />\n";
+				break;
+				case 2:
+				$surveysummary2 .= _("Detailed email notification with result codes")."<br />\n";
+				break;
+			}
+			
+			if($sumrows5['edit_survey_property'])
+				{		
+				$surveysummary2 .= _("Regenerate Question Numbers:")
+				. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
+				. "onClick='return confirm(\"Are you sure?\")' "
+				. ">"._("Straight")."</a>] "
+				. "[<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup' "
+				. "onClick='return confirm(\"Are you sure?\")' "
+				. ">"._("By Group")."</a>]";
+				$surveysummary2 .= "</font></font></td></tr>\n";
+				}
+			$surveysummary .= "\t<tr $showstyle id='surveydetails11'>"
+			. "<td align='right' valign='top'>$setfont<strong>"
+			. _("Survey URL:") . "</strong></font></td>\n";
+			$tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $s1row['sid'];
+			$surveysummary .= "\t\t<td>$setfont <a href='$tmp_url' target='_blank'>$tmp_url</a>"
+			. "</font></td></tr>\n"
+			. "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<strong>"
+			. _("Description:")."</strong></font></td>\n\t\t<td>";
+			if (trim($s1row['description'])!='') {$surveysummary .= "$setfont {$s1row['description']}</font>";}
+			$surveysummary .= "</td></tr>\n"
+			. "\t<tr $showstyle id='surveydetails3'>\n"
+			. "\t\t<td align='right' valign='top'>$setfont<strong>"
+			. _("Welcome:")."</strong></font></td>\n"
+			. "\t\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n"
+			. "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<strong>"
+			. _("Administrator:")."</strong></font></td>\n"
+			. "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n"
+			. "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<strong>"
+			. _("Fax To:")."</strong></font></td>\n\t\t<td>";
+			if (trim($s1row['faxto'])!='') {$surveysummary .= "$setfont {$s1row['faxto']}</font>";}
+			$surveysummary .= "</td></tr>\n"
+			. "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<strong>"
+			. _("Expiry Date:")."</strong></font></td>\n";
+			if ($s1row['useexpiry']== "Y")
+			{
+				$expdate=$s1row['expires'];
+			}
+			else
+			{
+				$expdate="-";
+			}
+			$surveysummary .= "\t<td>$setfont$expdate</font></td></tr>\n"
+			. "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<strong>"
+			. _("Template:")."</strong></font></td>\n"
+			. "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n"
+			. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
+			. _("Language:")."</strong></font></td>\n";
+			if (!$s1row['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($s1row['language']);}
+			if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
+			$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n"
+			. "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
+			. _("Exit Link:")."</strong></font></td>\n"
+			. "\t\t<td>";
+			if ($s1row['url']!="") {$surveysummary .="$setfont <a href=\"{$s1row['url']}\" title=\"{$s1row['url']}\">{$s1row['urldescrip']}</a></font>";}
+			$surveysummary .="</td></tr>\n";								
+			$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<strong>"
+			. _("Status:")."</strong></font></td>\n"
+			. "\t<td valign='top'>$setfont"
+			. "<font size='1'>"._("Number of groups in survey:")." $sumcount2<br />\n"
+			. _("Number of questions in survey:")." $sumcount3<br />\n";
+			if ($activated == "N" && $sumcount3 > 0)
+			{
+				$surveysummary .= _("Survey is not currently active.")."<br />\n";
+			}
+			elseif ($activated == "Y")
+			{
+				$surveysummary .= _("Survey is currently active.")."<br />\n"
+				. _("Survey table name is:")." 'survey_$surveyid'<br />";
+			}
+			else
+			{
+				$surveysummary .= _("Survey cannot be activated yet.")."<br />\n";
+				if ($sumcount2 == 0)
+				{
+					$surveysummary .= "\t<font color='green'>["._("You need to add groups")."]</font><br />";
+				}
+				if ($sumcount3 == 0)
+				{
+					$surveysummary .= "\t<font color='green'>["._("You need to add questions")."]</font>";
+				}
+			}
+			$surveysummary .= "</font></font></td></tr>\n"
+			. $surveysummary2
+			. "</table>\n";
 		
-		if($sumrows5['edit_survey_property'])
-			{		
-			$surveysummary2 .= _("Regenerate Question Numbers:")
-			. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
-			. "onClick='return confirm(\"Are you sure?\")' "
-			. ">"._("Straight")."</a>] "
-			. "[<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup' "
-			. "onClick='return confirm(\"Are you sure?\")' "
-			. ">"._("By Group")."</a>]";
-			$surveysummary2 .= "</font></font></td></tr>\n";
-			}
-		$surveysummary .= "\t<tr $showstyle id='surveydetails11'>"
-		. "<td align='right' valign='top'>$setfont<strong>"
-		. _("Survey URL:") . "</strong></font></td>\n";
-		$tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $s1row['sid'];
-		$surveysummary .= "\t\t<td>$setfont <a href='$tmp_url' target='_blank'>$tmp_url</a>"
-		. "</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<strong>"
-		. _("Description:")."</strong></font></td>\n\t\t<td>";
-		if (trim($s1row['description'])!='') {$surveysummary .= "$setfont {$s1row['description']}</font>";}
-		$surveysummary .= "</td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails3'>\n"
-		. "\t\t<td align='right' valign='top'>$setfont<strong>"
-		. _("Welcome:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<strong>"
-		. _("Administrator:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<strong>"
-		. _("Fax To:")."</strong></font></td>\n\t\t<td>";
-		if (trim($s1row['faxto'])!='') {$surveysummary .= "$setfont {$s1row['faxto']}</font>";}
-		$surveysummary .= "</td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<strong>"
-		. _("Expiry Date:")."</strong></font></td>\n";
-		if ($s1row['useexpiry']== "Y")
-		{
-			$expdate=$s1row['expires'];
+		//*******************************
+		
 		}
-		else
-		{
-			$expdate="-";
-		}
-		$surveysummary .= "\t<td>$setfont$expdate</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<strong>"
-		. _("Template:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
-		. _("Language:")."</strong></font></td>\n";
-		if (!$s1row['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($s1row['language']);}
-		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
-		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
-		. _("Exit Link:")."</strong></font></td>\n"
-		. "\t\t<td>";
-		if ($s1row['url']!="") {$surveysummary .="$setfont <a href=\"{$s1row['url']}\" title=\"{$s1row['url']}\">{$s1row['urldescrip']}</a></font>";}
-		$surveysummary .="</td></tr>\n";
-	}
-	$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<strong>"
-	. _("Status:")."</strong></font></td>\n"
-	. "\t<td valign='top'>$setfont"
-	. "<font size='1'>"._("Number of groups in survey:")." $sumcount2<br />\n"
-	. _("Number of questions in survey:")." $sumcount3<br />\n";
-	if ($activated == "N" && $sumcount3 > 0)
-	{
-		$surveysummary .= _("Survey is not currently active.")."<br />\n";
-	}
-	elseif ($activated == "Y")
-	{
-		$surveysummary .= _("Survey is currently active.")."<br />\n"
-		. _("Survey table name is:")." 'survey_$surveyid'<br />";
-	}
 	else
-	{
-		$surveysummary .= _("Survey cannot be activated yet.")."<br />\n";
-		if ($sumcount2 == 0)
 		{
-			$surveysummary .= "\t<font color='green'>["._("You need to add groups")."]</font><br />";
+		include("access_denied.php");
 		}
-		if ($sumcount3 == 0)
-		{
-			$surveysummary .= "\t<font color='green'>["._("You need to add questions")."]</font>";
-		}
-	}
-	$surveysummary .= "</font></font></td></tr>\n"
-	. $surveysummary2
-	. "</table>\n";
 }
 
 if ($gid)
@@ -1015,10 +1037,10 @@ if (returnglobal('viewanswer'))
 
 // check data for login
 if(($_POST['user'] && $_POST['password']) || ($action == "forgotpass"))	// added by Dennis
-	{	
-	//$action = "login";	
+	{
 	include("usercontrol.php");
 	}
+	
 // login form
 if(!isset($_SESSION['loginID']) && $action != forgotpass)	// added by Dennis
 	{
@@ -1080,173 +1102,164 @@ if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $actio
 	include("usercontrol.php");
 }
 
-if ($action == "modifyuser" && ($_SESSION['loginID'] == $_POST['uid']))
-{
-	$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
-				 . "\t\t<strong>$setfont<font color='white'>"._("Modifying User")."</td></tr>\n"
-					 . "\t<tr>\n"
-					 . "\t\t<th>$setfont"._("Username")."</th>\n"
-					 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
-					 . "\t\t<th>$setfont"._("Password")."</font></th>\n"
-					 . "\t</tr>\n";
-	
-	$muq = "SELECT user, DECODE(password, '{$codeString}'), email, uid, parent_id FROM {$dbprefix}users WHERE uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
-	//echo($muq);
-	
-	$mur = db_execute_assoc($muq);
-	$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
-	while ($mrw = $mur->FetchRow())
+if ($action == "modifyuser")
+	{
+	if($_SESSION['loginID'] == $_POST['uid'])
 		{
-		$mrw = array_map('htmlspecialchars', $mrw);
-		$decodeString = "DECODE(password, '{$codeString}')";	//	added by Dennis
-		$usersummary .= "\t<td align='center'>$setfont<strong>{$mrw['user']}</strong></font>\n"
-					  . "\t<td align='center'>\n\t\t<input $slstyle type='text' name='email' value=\"{$mrw['email']}\"></td>\n"	
-					  . "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
-					  . "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\"></td>\n";	// added by Dennis
-		$usersummary .= "\t<td align='center'>\n\t\t<input $slstyle type='text' name='pass' value=\"{$mrw[$decodeString]}\"></td>\n";
-		}		
-	$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n"
-				  . "\t\t<input type='submit' $btstyle value='"._("Update")."'>\n"
-				  . "<input type='hidden' name='action' value='moduser'></td></tr>\n"
-				  . "</form></table>\n";
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
+					 . "\t\t<strong>$setfont<font color='white'>"._("Modifying User")."</td></tr>\n"
+						 . "\t<tr>\n"
+						 . "\t\t<th>$setfont"._("Username")."</th>\n"
+						 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
+						 . "\t\t<th>$setfont"._("Password")."</font></th>\n"
+						 . "\t</tr>\n";
+		
+		$muq = "SELECT user, DECODE(password, '{$codeString}'), email, uid, parent_id FROM {$dbprefix}users WHERE uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
+		//echo($muq);
+		
+		$mur = db_execute_assoc($muq);
+		$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
+		while ($mrw = $mur->FetchRow())
+			{
+			$mrw = array_map('htmlspecialchars', $mrw);
+			$decodeString = "DECODE(password, '{$codeString}')";	//	added by Dennis
+			$usersummary .= "\t<td align='center'>$setfont<strong>{$mrw['user']}</strong></font>\n"
+						  . "\t<td align='center'>\n\t\t<input $slstyle type='text' name='email' value=\"{$mrw['email']}\"></td>\n"	
+						  . "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
+						  . "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\"></td>\n";	// added by Dennis
+			$usersummary .= "\t<td align='center'>\n\t\t<input $slstyle type='text' name='pass' value=\"{$mrw[$decodeString]}\"></td>\n";
+			}		
+		$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n"
+					  . "\t\t<input type='submit' $btstyle value='"._("Update")."'>\n"
+					  . "<input type='hidden' name='action' value='moduser'></td></tr>\n"
+					  . "</form></table>\n";
+		}  
+	else
+		{			
+		include("access_denied.php");			
+		//$addsummary = "<br /><strong>"._("Modifying User")."</strong><br />\n";
+		//$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
+		//$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+		}
 }
 
-if ($action == "setuserrights" && ($_SESSION['loginID'] != $_POST['uid']))
+if ($action == "setuserrights")
 	{
-	$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='7' bgcolor='black' align='center'>\n"
-				 . "\t\t<strong>$setfont<font color='white'>"._("Set User Rights")."</td></tr>\n";
-					
-					if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
-						$usersummary .= "\t\t<th align='center'>create survey</th>\n";
-					}
-					if($_SESSION['USER_RIGHT_CONFIGURATOR']) {
-						$usersummary .= "\t\t<th align='center'>configurator</th>\n";
-					}
-					if($_SESSION['USER_RIGHT_CREATE_USER']) {
-						$usersummary .= "\t\t<th align='center'>create user</th>\n";
-					}
-					if($_SESSION['USER_RIGHT_DELETE_USER']) {
-						$usersummary .= "\t\t<th align='center'>delete user</th>\n";
-					}
-					if($_SESSION['USER_RIGHT_PULL_UP_USER']) {
-						$usersummary .= "\t\t<th align='center'>pull up user</th>\n";
-					}
-					if($_SESSION['USER_RIGHT_PUSH_DOWN_USER']) {
-						$usersummary .= "\t\t<th align='center'>push down user</th>\n";
-					}
-					if($_SESSION['USER_RIGHT_CREATE_TEMPLATE']) {
-						$usersummary .= "\t\t<th align='center'>create template</th>\n";
-					}
-					
-					foreach ($_SESSION['userlist'] as $usr)
-						{
-						if ($usr['uid'] == $_POST['uid'])
-							{
-					
-							$usersummary .="\t\t<th></th>\n\t</tr>\n"
-							."\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
-										  ."<form action='$scriptname' method='post'>\n";
-							//content
-							if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
-								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_survey\" value=\"create_survey\"";
-								if($usr['create_survey']) {
-									$usersummary .= " checked ";
-								}
-								$usersummary .="></td>\n";
-							}
-							if($_SESSION['USER_RIGHT_CONFIGURATOR']) {
-								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"configurator\" value=\"configurator\"";
-								if($usr['configurator']) {
-									$usersummary .= " checked ";
-								}
-								$usersummary .="></td>\n";
-							}
-							if($_SESSION['USER_RIGHT_CREATE_USER']) {
-								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_user\" value=\"create_user\"";
-								if($usr['create_user']) {
-									$usersummary .= " checked ";
-								}
-								$usersummary .="></td>\n";
-							}
-							if($_SESSION['USER_RIGHT_DELETE_USER']) {
-								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_user\" value=\"delete_user\"";
-								if($usr['delete_user']) {
-									$usersummary .= " checked ";
-								}
-								$usersummary .="></td>\n";
-							}
-							if($_SESSION['USER_RIGHT_PULL_UP_USER']) {
-								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"pull_up_user\" value=\"pull_up_user\"";
-								if($usr['pull_up_user']) {
-									$usersummary .= " checked ";
-								}
-								$usersummary .="></td>\n";
-							}
-							if($_SESSION['USER_RIGHT_PUSH_DOWN_USER']) {
-								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"push_down_user\" value=\"push_down_user\"";
-								if($usr['push_down_user']) {
-									$usersummary .= " checked ";
-								}
-								$usersummary .="></td>\n";
-							}
-							if($_SESSION['USER_RIGHT_CREATE_TEMPLATE']) {
-								$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_template\" value=\"create_template\"";
-								if($usr['create_template']) {
-									$usersummary .= " checked ";
-								}
-								$usersummary .="></td>\n";
-							}
-		
-							$usersummary .= "\t\t\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
-										  //."<form action='$scriptname' method='post'>"
-										  ."\t\n\t<tr><td colspan='7' align='center'>"
-										  ."<input type='submit' value='"._("Save Changes")."'>"
-										  ."<input type='hidden' name='action' value='userrights'>"
-										  ."<input type='hidden' name='uid' value='{$_POST['uid']}'></td></tr>"
-										  ."</form>"
-										  . "</table>\n";
-						/*$usersummary .= "\t\n"
-						  . "\t\t<input type='submit' $btstyle value='"._("Save Changes")."'>\n"
-						  . "<input type='hidden' name='action' value='userrights'>\n"
-						  . "</form>"*/
-						  
-							continue;
-						  	}					  
+	if($_SESSION['loginID'] != $_POST['uid'])
+		{
+	
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='7' bgcolor='black' align='center'>\n"
+					 . "\t\t<strong>$setfont<font color='white'>"._("Set User Rights").": ".$_POST['user']."</td></tr>\n";
+						
+						if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
+							$usersummary .= "\t\t<th align='center'>create survey</th>\n";
 						}
+						if($_SESSION['USER_RIGHT_CONFIGURATOR']) {
+							$usersummary .= "\t\t<th align='center'>configurator</th>\n";
+						}
+						if($_SESSION['USER_RIGHT_CREATE_USER']) {
+							$usersummary .= "\t\t<th align='center'>create user</th>\n";
+						}
+						if($_SESSION['USER_RIGHT_DELETE_USER']) {
+							$usersummary .= "\t\t<th align='center'>delete user</th>\n";
+						}
+						if($_SESSION['USER_RIGHT_PULL_UP_USER']) {
+							$usersummary .= "\t\t<th align='center'>pull up user</th>\n";
+						}
+						if($_SESSION['USER_RIGHT_PUSH_DOWN_USER']) {
+							$usersummary .= "\t\t<th align='center'>push down user</th>\n";
+						}
+						if($_SESSION['USER_RIGHT_CREATE_TEMPLATE']) {
+							$usersummary .= "\t\t<th align='center'>create template</th>\n";
+						}
+						
+						foreach ($_SESSION['userlist'] as $usr)
+							{
+							if ($usr['uid'] == $_POST['uid'])
+								{
+						
+								$usersummary .="\t\t<th></th>\n\t</tr>\n"
+								."\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
+											  ."<form action='$scriptname' method='post'>\n";
+								//content
+								if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
+									$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_survey\" value=\"create_survey\"";
+									if($usr['create_survey']) {
+										$usersummary .= " checked ";
+									}
+									$usersummary .="></td>\n";
+								}
+								if($_SESSION['USER_RIGHT_CONFIGURATOR']) {
+									$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"configurator\" value=\"configurator\"";
+									if($usr['configurator']) {
+										$usersummary .= " checked ";
+									}
+									$usersummary .="></td>\n";
+								}
+								if($_SESSION['USER_RIGHT_CREATE_USER']) {
+									$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_user\" value=\"create_user\"";
+									if($usr['create_user']) {
+										$usersummary .= " checked ";
+									}
+									$usersummary .="></td>\n";
+								}
+								if($_SESSION['USER_RIGHT_DELETE_USER']) {
+									$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_user\" value=\"delete_user\"";
+									if($usr['delete_user']) {
+										$usersummary .= " checked ";
+									}
+									$usersummary .="></td>\n";
+								}
+								if($_SESSION['USER_RIGHT_PULL_UP_USER']) {
+									$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"pull_up_user\" value=\"pull_up_user\"";
+									if($usr['pull_up_user']) {
+										$usersummary .= " checked ";
+									}
+									$usersummary .="></td>\n";
+								}
+								if($_SESSION['USER_RIGHT_PUSH_DOWN_USER']) {
+									$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"push_down_user\" value=\"push_down_user\"";
+									if($usr['push_down_user']) {
+										$usersummary .= " checked ";
+									}
+									$usersummary .="></td>\n";
+								}
+								if($_SESSION['USER_RIGHT_CREATE_TEMPLATE']) {
+									$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_template\" value=\"create_template\"";
+									if($usr['create_template']) {
+										$usersummary .= " checked ";
+									}
+									$usersummary .="></td>\n";
+								}
+			
+								$usersummary .= "\t\t\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
+											  //."<form action='$scriptname' method='post'>"
+											  ."\t\n\t<tr><td colspan='7' align='center'>"
+											  ."<input type='submit' value='"._("Save Now")."'>"
+											  ."<input type='hidden' name='action' value='userrights'>"
+											  ."<input type='hidden' name='uid' value='{$_POST['uid']}'></td></tr>"
+											  ."</form>"
+											  . "</table>\n";
+							/*$usersummary .= "\t\n"
+							  . "\t\t<input type='submit' $btstyle value='"._("Save Now")."'>\n"
+							  . "<input type='hidden' name='action' value='userrights'>\n"
+							  . "</form>"*/
+							  
+								continue;
+								}					  
+							}
+		}
+	else
+		{			
+		include("access_denied.php");			
+		//$addsummary = "<br /><strong>"._("Set User Rights")."</strong><br />\n";
+		//$addsummary .= "<br />"._("You are not allowed to change your own rights!")."<br />\n";		
+		//$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+		}
 	}
 
 if ($action == "editusers")
-	{
-	/*
-	Tritt im Moment nicht mehr auf, da die Datenbank automatisch initialisiert wird
-	
-	$muq = "SELECT uid FROM {$dbprefix}users LIMIT 1";	//	added by Dennis
-	//echo($muq);
-	$mur = db_execute_assoc($muq);
-	if ($mur->RecordCount() < 1) 
-		{
-		$usersummary = "<table width='100%' border='0'><tr><td colspan='2'>\n"
-				 . "<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-				 . "\t\t\t\t<tr bgcolor='#555555'><td colspan='4' height='4'>"
-				 . "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></font></td></tr>\n"
-				 . "\t<tr>\n"
-				 . "\t\t<td>\n"
-				 . "\t\t\t$setfont<font color='RED'><strong>"._("Warning")."</strong></font></font><br />\n"
-				 . "\t\t\t"._UC_TURNON_MESSAGE1."\n"
-				 . "\t\t\t<p>"._("Username").": $defaultuser<br />"._("Password").": $defaultpass</p>\n"
-				 . "\t\t\t<p>"._UC_TURNON_MESSAGE2."</p>\n"
-				 . "\t\t</td>\n"
-				 . "\t</tr>\n"
-				 . "\t<tr>\n"
-				 . "\t\t<td align='center'>\n"
-				 . "\t\t\t<input type='submit' $btstyle value='"._("Initialise")."' "
-				 . "onClick=\"window.open('install/upgrade-mysql.php', '_top')\">\n"
-				 . "\t\t</td>\n"
-				 . "\t</tr>\n"
-				 . "</table>\n"
-				 . "</td></tr></table>\n";
-		}
-	else*/
+	{	
 	if(isset($_SESSION['loginID']))
 		{
 		$usersummary = "<table width='100%' border='0'>\n"
@@ -1332,7 +1345,8 @@ if ($action == "editusers")
 					$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"	// added by Dennis
 					 			  ."<input type='submit' value='"._("Set User Rights")."'>"
 					 			  ."<input type='hidden' name='action' value='setuserrights'>"
-					 			  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+					 			  ."<input type='hidden' name='user' value='{$usr['user']}'>"
+						  		  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
 					 			  ."</form>";
 					}		
 				
@@ -1884,6 +1898,51 @@ if ($action == "editgroup")
 		include("access_denied.php");
 		}
 }
+
+// *************************************************
+// *************************************************
+// *************************************************
+if($action == "surveysecurity")
+	{
+	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];
+	$result = db_execute_assoc($query);
+	if($result->RecordCount() > 0)
+		{
+		$query2 = "SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid != ".$_SESSION['loginID'];
+		$result2 = db_execute_assoc($query2);
+		$surveysecurity = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+						 . "\t\t<strong>$setfont<font color='white'>"._("Survey Security")."</td></tr>\n"
+						 . "\t<tr>\n" 
+						 . "\t\t<th>$setfont"._("Username")."</th>\n"
+						 . "\t\t<th>$setfont"._("Action")."</font></th>\n"
+						 . "\t</tr>\n";
+		if($result2->RecordCount() > 0)
+			{
+		//	output users
+			while ($resul2row = $result2->FetchRow())
+				{
+				$surveysecurity .= "\t<tr>\n"
+								. "\t<td align='center'>$setfont{$resul2row['uid']}</font></td>\n"
+								. "\t<td align='center'>Action</font></td>\n"							   
+								. "\t</tr>\n";		
+				}		
+			}			
+		$surveysecurity .= "\t\t<form action='$scriptname' method='post'>\n"
+						. "\t\t<tr>\n"
+						. "\t\t<td align='center'><input type='text' $slstyle name='user'></td>\n"
+						. "\t\t<td align='center'><input type='submit' $btstyle value='"._("Add User")."'>"
+						. "<input type='hidden' name='action' value='addsurveysecurity'></td>\n"
+						. "\t</tr>\n"
+						. "\t</table>\n";			
+		}
+	else
+		{
+		include("access_denied.php");
+		}
+	}
+	// *************************************************
+	// *************************************************
+	// *************************************************
 
 
 // Editing the survey

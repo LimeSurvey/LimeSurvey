@@ -171,6 +171,7 @@ CREATE TABLE `prefix_saved_control` (
 
 CREATE TABLE `prefix_surveys` (
   `sid` int(11) NOT NULL,
+  `creator_id` int(11) NOT NULL,
   `short_title` varchar(200) NOT NULL default '',
   `description` text,
   `admin` varchar(50) default NULL,

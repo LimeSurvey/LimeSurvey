@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-28 15:58+0100\n"
+"PO-Revision-Date: 2006-08-31 21:04+0100\n"
 "Last-Translator: D <a@b.de>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2621,7 +2621,6 @@ msgid "Field Created"
 msgstr "Feld erstellt"
 
 #new messages added by Dennis
-
 msgid "User Table Initialized"
 msgstr "User-Tabelle initialisiert"
 
@@ -2631,10 +2630,9 @@ msgstr "Überprüfe Initialisierungen:"
 msgid "Table fixed"
 msgstr "Tabelle korrigiert"
 
-Checking to ensure all fields exist
-
+#Checking to ensure all fields exist
 msgid "You have to login first."
-msgstr "Sie müssen sich erst anmelden"
+msgstr "Sie müssen sich erst anmelden."
 
 msgid "Login"
 msgstr "Anmeldung"
@@ -2698,3 +2696,52 @@ msgstr "Sie wurden eingetragen. Ihre Daten lauten:"
 
 msgid "You are not allowed to perform this operation!"
 msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
+
+msgid "Date Created"
+msgstr "Erstelldatum"
+
+msgid "Visibility"
+msgstr "Sichbarkeit"
+
+msgid "Private"
+msgstr "Privat"
+
+msgid "Public"
+msgstr "Öffentlich"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Non Active"
+msgstr "Nicht Aktiv"
+
+msgid "Welcome {NAME}"
+msgstr "Willkommen {NAME}"
+
+msgid "Forgot Password"
+msgstr "Passwort vergessen"
+
+msgid "Forgot Your Password?"
+msgstr "Haben Sie Ihr Passwort vergessen?"
+
+msgid "Survey Security Settings"
+msgstr "Umfrage-Sicherheitseinstellungen"
+
+msgid "Survey Security"
+msgstr "Umfrage-Sicherheit"
+
+msgid "Set User Rights"
+msgstr "Setze Benutzerrechte"
+
+msgid "Update user rights successful."
+msgstr "Benutzerrechte erfolgreich geändert."
+
+msgid "Logged in as:"
+msgstr "Eingeloggt als:"
+
+msgid "You are not allowed to change your own rights!"
+msgstr "Sie sind nicht berechtigt Ihre eigenen Rechte zu ändern!"
+
+msgid "Admin cannot be deleted!"
+msgstr "Der Admin kann nicht gelöscht werden!"
+

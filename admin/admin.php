@@ -239,6 +239,7 @@ if (!isset($accesssummary)){
 	if (isset($cssummary)) {echo $cssummary;}
 	if (isset($usersummary)) {echo $usersummary;}
 	if (isset($addsummary)) {echo $addsummary;}
+	if (isset($surveysecurity)) {echo $surveysecurity;}
 	if (isset($editsurvey)) {echo $editsurvey;}
 	if (isset($ordergroups)){echo $ordergroups;}
 	if (isset($newgroup)) {echo $newgroup;}

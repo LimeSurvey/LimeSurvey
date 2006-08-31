@@ -193,7 +193,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{
-			$adminmenu  .= " --  Logged in as: <strong>". $_SESSION['user'] ."</strong>"."\n";
+			$adminmenu  .= " --  "._("Logged in as:"). " <strong>". $_SESSION['user'] ."</strong>"."\n";
 			}
        	$adminmenu .= "\t\t\t\t</font></font></td>\n"
                     . "\t\t\t</tr>\n"
@@ -388,10 +388,15 @@ function db_table_name($name)
 function getsurveylist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect;
-    $surveyidquery = 'SELECT a.* FROM '.db_table_name('surveys').' AS a INNER JOIN '.db_table_name('surveys_rights').' AS b ON a.sid = b.sid '
-    				.'WHERE b.uid ='.$_SESSION['loginID'].' AND (edit_survey_property = 1 OR b.define_questions = 1 '
-    				.'OR b.browse_response = 1 OR b.export = 1 OR b.add_user = 1 OR delete_survey = 1 '
-    				.'OR b.activate_survey = 1) ORDER BY a.short_title';//CHANGED by Moses only with rights
+    $surveyidquery = "SELECT a.sid, a.short_title, a.description, a.admin, a.active, a.welcome, a.useexpiry, a.expires, "
+										. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, a.urldescrip, "
+										. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
+										. "a.email_invite_subj, a.email_invite, a.email_remind_subj, a.email_remind, "
+										. "a.email_register_subj, a.email_register, a.email_confirm_subj, a.email_confirm, "
+										. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid "
+    								. "WHERE b.uid =".$_SESSION['loginID']." AND (edit_survey_property = 1 OR b.define_questions = 1 "
+    								. "OR b.browse_response = 1 OR b.export = 1 OR b.add_user = 1 OR delete_survey = 1 "
+    								. "OR b.activate_survey = 1) ORDER BY a.short_title";//CHANGED by Moses only with rights
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
@@ -806,35 +811,6 @@ function checkactivations()
 		}
 	}
 }
-
-function checksecurity()
-{
-	// Check that the names in the htpasswd file match up with the names in the database.
-	// Any names missing in htpasswd file should be removed from users table
-	global $homedir, $dbprefix, $connect;
-	include_once("classes/core/htaccess.class.php");
-	$ht = new htaccess("$homedir/.htaccess","$homedir/.htpasswd");
-
-	$users=$ht->getUsers();
-
-	foreach ($users as $htp)
-	{
-		$realusers[] = $htp[0];
-	}
-
-	$usquery = "SELECT user FROM ".db_table_name('users');
-	$usresult = db_execute_assoc($usquery);
-	if (!$usresult) {return "Database Error";}
-	while ($usrow = $usresult->FetchRow())
-	{
-		if (!in_array($usrow['user'], $realusers))
-		{
-			$dlusquery = "DELETE FROM ".db_table_name('users')." WHERE user='{$usrow['user']}'";
-			$dlusresult = $connect->Execute($dlusquery);
-		}
-	}
-}
-
 
 
 function checkifemptydb()

@@ -673,13 +673,13 @@ elseif ($action == "insertnewsurvey")
 		while ($isresult->RecordCount()>0);
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
-		. "(sid, short_title, description, admin, active, welcome, useexpiry, expires, "
+		. "(sid, creator_id, short_title, description, admin, active, welcome, useexpiry, expires, "
 		. "adminemail, private, faxto, format, template, url, urldescrip, "
 		. "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
 		. "email_invite_subj, email_invite, email_remind_subj, email_remind, "
 		. "email_register_subj, email_register, email_confirm_subj, email_confirm, "
 		. "allowsave, autoredirect, allowprev,datecreated)\n"
-		. "VALUES ($surveyid, '{$_POST['short_title']}', '{$_POST['description']}',\n"
+		. "VALUES ($surveyid, {$_SESSION['loginID']},'{$_POST['short_title']}', '{$_POST['description']}',\n"
 		. "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
 		. "'{$_POST['useexpiry']}',{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"
 		. "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
