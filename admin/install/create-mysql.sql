@@ -239,9 +239,9 @@ CREATE TABLE `prefix_surveys_rights` (
 	`define_questions` tinyint(1) NOT NULL default '0',
 	`browse_response` tinyint(1) NOT NULL default '0',
 	`export` tinyint(1) NOT NULL default '0',
-	`add_user` tinyint(1) NOT NULL default '0',
 	`delete_survey` tinyint(1) NOT NULL default '0',
-	`activate_survey` tinyint(1) NOT NULL default '0'
+	`activate_survey` tinyint(1) NOT NULL default '0',
+	PRIMARY KEY (sid, uid)
 ) TYPE=MyISAM;
 
 CREATE TABLE `prefix_user_groups` (

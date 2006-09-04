@@ -369,7 +369,7 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=surveysecurity&sid=$surveyid', '_top')\"" .
 							"onmouseout=\"hideTooltip()\"" 
 							. "onmouseover=\"showTooltip(event,'"._("Survey Security Settings")."');return false\">" .
-							 "<img src='$imagefiles/security.png' name='SurveySecurity'"
+							 "<img src='$imagefiles/survey_security.png' name='SurveySecurity'"
 							." title='' alt='"._("Survey Security Settings")."'  align='left'></a>";
 			}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
@@ -502,7 +502,7 @@ if ($surveyid)
 			. "\t</tr>\n";
 			
 			//SURVEY SUMMARY
-			if ($gid || $qid || $action=="surveysecurity" || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups") {$showstyle="style='display: none'";}
+			if ($gid || $qid || $action=="surveysecurity" || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="setsurveysecurity" || $action=="delsurveysecurity" || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups") {$showstyle="style='display: none'";}
 			if (!isset($showstyle)) {$showstyle="";}
 			$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
 			. "$setfont<strong>"._("Title:")."</strong></font></td>\n"
@@ -1036,18 +1036,18 @@ if (returnglobal('viewanswer'))
 	}
 
 // check data for login
-if(($_POST['user'] && $_POST['password']) || ($action == "forgotpass"))	// added by Dennis
+if(isset($_POST['user']) && isset($_POST['password']) || ($action == "forgotpass"))	// added by Dennis
 	{
 	include("usercontrol.php");
 	}
 	
 // login form
-if(!isset($_SESSION['loginID']) && $action != forgotpass)	// added by Dennis
+if(!isset($_SESSION['loginID']) && $action != "forgotpass")	// added by Dennis
 	{
 	
-	if($action == forgotpassword)
+	if($action == "forgotpassword")
 		{
-		$loginsummary .= "<form name='forgot' id='forgot' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' ><br /><strong>"._("You have to enter user name and email.")."</strong><br />	<br />		
+		$loginsummary = "<form name='forgot' id='forgot' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' ><br /><strong>"._("You have to enter user name and email.")."</strong><br />	<br />		
 							<table>
 								<tr>
 									<td><p>"._("Username")."</p></td>
@@ -1067,7 +1067,7 @@ if(!isset($_SESSION['loginID']) && $action != forgotpass)	// added by Dennis
 		}
 	else
 		{
-		$loginsummary .= "<form name='login' id='login' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />		
+		$loginsummary = "<form name='login' id='login' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />		
 							<table>
 								<tr>
 									<td><p>"._("Username")."</p></td>
@@ -1091,7 +1091,7 @@ if(!isset($_SESSION['loginID']) && $action != forgotpass)	// added by Dennis
 	}
 
 // logout user
-if ($action == "logoutuser" && isset($_SESSION['loginID']))	// added by Dennis
+if ($action == "logoutuser" && isset($_SESSION['loginID']))
 	{
 	$action = "logout";
 	include("usercontrol.php");
@@ -1137,9 +1137,6 @@ if ($action == "modifyuser")
 	else
 		{			
 		include("access_denied.php");			
-		//$addsummary = "<br /><strong>"._("Modifying User")."</strong><br />\n";
-		//$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
-		//$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 }
 
@@ -1233,18 +1230,12 @@ if ($action == "setuserrights")
 								}
 			
 								$usersummary .= "\t\t\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
-											  //."<form action='$scriptname' method='post'>"
 											  ."\t\n\t<tr><td colspan='7' align='center'>"
 											  ."<input type='submit' value='"._("Save Now")."'>"
 											  ."<input type='hidden' name='action' value='userrights'>"
 											  ."<input type='hidden' name='uid' value='{$_POST['uid']}'></td></tr>"
 											  ."</form>"
 											  . "</table>\n";
-							/*$usersummary .= "\t\n"
-							  . "\t\t<input type='submit' $btstyle value='"._("Save Now")."'>\n"
-							  . "<input type='hidden' name='action' value='userrights'>\n"
-							  . "</form>"*/
-							  
 								continue;
 								}					  
 							}
@@ -1252,9 +1243,6 @@ if ($action == "setuserrights")
 	else
 		{			
 		include("access_denied.php");			
-		//$addsummary = "<br /><strong>"._("Set User Rights")."</strong><br />\n";
-		//$addsummary .= "<br />"._("You are not allowed to change your own rights!")."<br />\n";		
-		//$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	}
 
@@ -1262,7 +1250,10 @@ if ($action == "editusers")
 	{	
 	if(isset($_SESSION['loginID']))
 		{
-		$usersummary = "<table width='100%' border='0'>\n"
+
+$usersummary = "<table style=\"border-collapse:collapse;\" width='100%' border='0'>\n"
+
+		//$usersummary = "<table width='100%' border='0'>\n"
 					 . "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
 					 . "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></td></tr>\n"
 					 . "\t<tr>\n"
@@ -1304,7 +1295,25 @@ if ($action == "editusers")
 			foreach ($_SESSION['userlist'] as $usr)
 				{
 				$usersummary .= "\t<tr>\n"
-							  . "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
+							  . "\t<td style=\"border-left:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['user']}</font></td>\n"
+							  . "\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['email']}</font></td>\n";
+				// passwords of other users will not be displayed
+				if ($usr['uid'] == $_SESSION['loginID'])
+					{
+					$usersummary .=  "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['password']}</font></td>\n";
+					}
+				else
+					{
+					$usersummary .=  "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>******</td>\n";
+					} 
+				$usersummary .= "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['level']}</td>\n"							  
+							  . "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['parent_id']}</td>\n"
+							  . "\t\t<td style=\"padding-top:5px; border-right:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>\n";
+							
+							
+							
+							
+/*							  . "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
 							  . "\t<td align='center'>$setfont{$usr['email']}</font></td>\n";
 				// passwords of other users will not be displayed
 				if ($usr['uid'] == $_SESSION['loginID'])
@@ -1317,7 +1326,7 @@ if ($action == "editusers")
 					} 
 				$usersummary .= "\t\t<td align='center'>$setfont{$usr['level']}</td>\n"							  
 							  . "\t\t<td align='center'>$setfont{$usr['parent_id']}</td>\n"
-							  . "\t\t<td align='center'>\n";
+							  . "\t\t<td align='center'>\n";*/
 							  
 				// users are only allowed to change his own data
 				if ($usr['uid'] == $_SESSION['loginID'])				
@@ -1900,17 +1909,160 @@ if ($action == "editgroup")
 }
 
 // *************************************************
+// Survey Rights End	****************************
 // *************************************************
-// *************************************************
+
+if($action == "addsurveysecurity")
+	{
+	$addsummary = "<br /><strong>"._("Add User")."</strong><br />\n";
+		
+	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	$result = db_execute_assoc($query);
+	if($result->RecordCount() > 0)
+		{		
+		if($_POST['uid'] != _("Please Choose...")){
+		
+			$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_POST['uid'].",0,0,0,0,0,0)";
+			$isrresult = $connect->Execute($isrquery);
+			
+			if(mysql_affected_rows() < 0)
+				{
+				// Username already exists.
+				$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username already exists.")."<br />\n";		
+				}
+			else
+				{
+				$addsummary .= "<br />"._("User added.")."<br />\n";
+				}			
+			$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
+						 ."<input type='submit' value='"._("Set Survey Rights")."'>"
+						 ."<input type='hidden' name='action' value='setsurveysecurity'>"
+						 ."<input type='hidden' name='user' value='{$_POST['user']}'>"
+						 ."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
+						 ."</form>\n";
+			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&sid={$surveyid}'>"._("Continue")."</a><br />&nbsp;\n";
+		}
+		else
+			{
+				$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("No Username selected.")."<br />\n";		
+				$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&sid={$surveyid}'>"._("Continue")."</a><br />&nbsp;\n";		
+			}
+		}
+	else
+		{			
+		include("access_denied.php");
+		}	
+	}
+	
+if($action == "delsurveysecurity"){
+	{	
+	$addsummary = "<br /><strong>"._("Deleting User")."</strong><br />\n";
+		
+	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	$result = db_execute_assoc($query);
+	if($result->RecordCount() > 0)
+		{
+		if (isset($_POST['uid']))
+			{
+			$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$_POST['uid']} AND sid={$surveyid}";	//	added by Dennis
+			$dresult=$connect->Execute($dquery);
+			
+			$addsummary .= "<br />"._("Username").": {$_POST['user']}<br />\n";								
+			}
+		else
+			{
+			$addsummary .= "<br />"._("Could not delete user. User was not supplied.")."<br />\n";
+			}		
+		}		
+	else
+		{			
+		include("access_denied.php");
+		}
+	$addsummary .= "<br /><br /><a href='$scriptname?sid={$surveyid}&action=surveysecurity'>"._("Continue")."</a><br />&nbsp;\n";	
+	}
+}
+
+if($action == "setsurveysecurity")
+	{
+	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	$result = db_execute_assoc($query);
+	if($result->RecordCount() > 0)
+		{		
+		$query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid = ".$_POST['uid'];
+		$result2 = db_execute_assoc($query2);
+
+		if($result2->RecordCount() > 0)
+			{			
+			$resul2row = $result2->FetchRow();			
+			
+			$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
+						 . "\t\t<strong>$setfont<font color='white'>"._("Set Survey Rights").": ".$_POST['user']."</td></tr>\n";
+										
+			$usersummary .= "\t\t<th align='center'>edit_survey_property</th>\n"
+						  . "\t\t<th align='center'>define_questions</th>\n"
+						  . "\t\t<th align='center'>browse_response</th>\n"
+						  . "\t\t<th align='center'>export</th>\n"
+						  . "\t\t<th align='center'>delete_survey</th>\n"
+						  . "\t\t<th align='center'>activate_survey</th>\n"
+						  . "\t\t<th></th>\n\t</tr>\n"						 
+						  . "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
+			
+			//content
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
+			if($resul2row['edit_survey_property']) {
+				$usersummary .= " checked ";
+			}
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"define_questions\" value=\"define_questions\"";
+			if($resul2row['define_questions']) {
+				$usersummary .= " checked ";
+			}
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"browse_response\" value=\"browse_response\"";
+			if($resul2row['browse_response']) {
+				$usersummary .= " checked ";
+			}
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"export\" value=\"export\"";
+			if($resul2row['export']) {
+				$usersummary .= " checked ";
+			}
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_survey\" value=\"delete_survey\"";
+			if($resul2row['delete_survey']) {
+				$usersummary .= " checked ";
+			}
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"activate_survey\" value=\"activate_survey\"";
+			if($resul2row['activate_survey']) {
+				$usersummary .= " checked ";
+			}
+			$usersummary .="></td>\n";
+
+			$usersummary .= "\t\n\t<tr><td colspan='6' align='center'>"
+						  ."<input type='submit' value='"._("Save Now")."'>"
+						  ."<input type='hidden' name='action' value='surveyrights'>"
+						  ."<input type='hidden' name='uid' value='{$_POST['uid']}'></td></tr>"
+						  ."</form>"
+						  . "</table>\n";
+			}
+		}
+	else
+		{
+		include("access_denied.php");	
+		}
+	}
+
 if($action == "surveysecurity")
 	{
 	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 		{
-		$query2 = "SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid != ".$_SESSION['loginID'];
+		$query2 = "SELECT a.uid, b.user FROM ".db_table_name('surveys_rights')."AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'];
+		//$query2 = "SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid != ".$_SESSION['loginID'];
 		$result2 = db_execute_assoc($query2);
-		$surveysecurity = "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		$surveysecurity = "<table style=\"border-collapse:collapse;\" width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 						 . "\t\t<strong>$setfont<font color='white'>"._("Survey Security")."</td></tr>\n"
 						 . "\t<tr>\n" 
 						 . "\t\t<th>$setfont"._("Username")."</th>\n"
@@ -1922,16 +2074,39 @@ if($action == "surveysecurity")
 			while ($resul2row = $result2->FetchRow())
 				{
 				$surveysecurity .= "\t<tr>\n"
-								. "\t<td align='center'>$setfont{$resul2row['uid']}</font></td>\n"
-								. "\t<td align='center'>Action</font></td>\n"							   
-								. "\t</tr>\n";		
-				}		
+								. "\t<td style=\"border-left:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$resul2row['user']}</font></td>\n"
+								. "\t\t<td style=\"border-right:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000; padding-top:5px;\" align='center'>\n";
+						
+				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
+								  ."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
+								  ."<input type='hidden' name='action' value='delsurveysecurity'>"
+								  ."<input type='hidden' name='user' value='{$resul2row['user']}'>"
+								  ."<input type='hidden' name='uid' value='{$resul2row['uid']}'>"
+								  ."</form></font>";
+								
+				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
+								  ."<input type='submit' value='"._("Set Survey Rights")."'>"
+								  ."<input type='hidden' name='action' value='setsurveysecurity'>"
+								  ."<input type='hidden' name='user' value='{$resul2row['user']}'>"
+								  ."<input type='hidden' name='uid' value='{$resul2row['uid']}'>"
+								  ."</form>\n";
+				
+				$surveysecurity .= "\t\t</td>\n"
+								. "\t</tr>\n";								
+				}				
 			}			
-		$surveysecurity .= "\t\t<form action='$scriptname' method='post'>\n"
+		$surveysecurity .= "\t\t<form action='$scriptname?sid={$surveyid}' method='post'>\n"
 						. "\t\t<tr>\n"
-						. "\t\t<td align='center'><input type='text' $slstyle name='user'></td>\n"
+						
+						. "\t\t\t\t\t<td align='center'>"
+	                    . "\t\t\t\t\t<select name='uid' class=\"listboxsurveys\">\n"
+	                    //. $surveyuserselect
+	                    . getsurveyuserlist()
+	                    . "\t\t\t\t\t</select>\n"
+	                    . "\t\t\t\t</td>\n"
+						
 						. "\t\t<td align='center'><input type='submit' $btstyle value='"._("Add User")."'>"
-						. "<input type='hidden' name='action' value='addsurveysecurity'></td>\n"
+						. "<input type='hidden' name='action' value='addsurveysecurity'></td></form>\n"
 						. "\t</tr>\n"
 						. "\t</table>\n";			
 		}
@@ -1940,8 +2115,35 @@ if($action == "surveysecurity")
 		include("access_denied.php");
 		}
 	}
+
+elseif ($action == "surveyrights")
+	{	
+	$addsummary = "<br /><strong>"._("Set Survey Rights")."</strong><br />\n";
+	
+	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	$result = db_execute_assoc($query);
+	if($result->RecordCount() > 0)
+		{			
+		$rights = array();
+		
+		if(isset($_POST['edit_survey_property']))$rights['edit_survey_property']=1;	else $rights['edit_survey_property']=0;
+		if(isset($_POST['define_questions']))$rights['define_questions']=1;			else $rights['define_questions']=0;
+		if(isset($_POST['browse_response']))$rights['browse_response']=1;			else $rights['browse_response']=0;
+		if(isset($_POST['export']))$rights['export']=1;								else $rights['export']=0;
+		if(isset($_POST['delete_survey']))$rights['delete_survey']=1;				else $rights['delete_survey']=0;
+		if(isset($_POST['activate_survey']))$rights['activate_survey']=1;			else $rights['activate_survey']=0;
+	
+		setsurveyrights($_POST['uid'], $rights);
+		$addsummary .= "<br />"._("Update survey rights successful.")."<br />\n"; 						
+		$addsummary .= "<br /><br /><a href='$scriptname?sid={$surveyid}&action=surveysecurity'>"._("Continue")."</a><br />&nbsp;\n";
+		}
+	else
+		{
+		include("access_denied.php");
+		}
+	}
 	// *************************************************
-	// *************************************************
+	// Survey Rights End	****************************
 	// *************************************************
 
 

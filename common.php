@@ -238,7 +238,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 		
 		// check data cosistency
-        if($_SESSION['USER_RIGHT_CONFIGURATOR'])
+        if(isset($_SESSION['USER_RIGHT_CONFIGURATOR']))
 			{
 		$adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
 					   "onmouseout=\"hideTooltip()\"" 
@@ -277,7 +277,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			}
 		
 		// db backup & label editor
-		if($_SESSION['USER_RIGHT_CONFIGURATOR'])
+		if(isset($_SESSION['USER_RIGHT_CONFIGURATOR']))
 			{
 			$adminmenu  .= "<a href=\"#\""
 						. "onClick=\"window.open('dumpdb.php', '_top')\""
@@ -295,7 +295,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 						. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
             }
-        if($_SESSION['USER_RIGHT_CREATE_TEMPLATE'])
+        if(isset($_SESSION['USER_RIGHT_CREATE_TEMPLATE']))
 			{
 	        $adminmenu .= "<a href=\"#\" " .
 	        			  "onClick=\"window.open('templates.php', '_top')\""
@@ -304,7 +304,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". _("Template Editor")."' align='left'></a>\n"
 	                    . "\t\t\t\t</td>\n";
             }
-        if($_SESSION['loginID']) //ADDED by Moses to prevent errors by reading db while not logged in.
+        if(isset($_SESSION['loginID'])) //ADDED by Moses to prevent errors by reading db while not logged in.
 	        {
 	        $adminmenu .= "\t\t\t\t<td align='right' width='430'>\n"
 	                    . "<a href=\"#\" onClick=\"showhelp('show')\"" 
@@ -315,7 +315,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' height='20' align='right' >\n"
 	                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
 	                    
-			if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
+			if(isset($_SESSION['USER_RIGHT_CREATE_SURVEY']))
 				{
 			$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=newsurvey', '_top')\"" 
 						. "onmouseout=\"hideTooltip()\"" 
@@ -388,9 +388,7 @@ function getsurveylist()
 										. "a.email_invite_subj, a.email_invite, a.email_remind_subj, a.email_remind, "
 										. "a.email_register_subj, a.email_register, a.email_confirm_subj, a.email_confirm, "
 										. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid "
-    								. "WHERE b.uid =".$_SESSION['loginID']." AND (edit_survey_property = 1 OR b.define_questions = 1 "
-    								. "OR b.browse_response = 1 OR b.export = 1 OR b.add_user = 1 OR delete_survey = 1 "
-    								. "OR b.activate_survey = 1) ORDER BY a.short_title";//CHANGED by Moses only with rights
+    								. "WHERE b.uid =".$_SESSION['loginID'];//CHANGED by Moses only with rights
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
@@ -2429,7 +2427,7 @@ function killSession()	//added by Dennis
 	}
 
 // set the rights of a user and his children
-function setrights($uid, $rights) 
+function setuserrights($uid, $rights) 
 	{
 	global $connect;
 	
@@ -2477,8 +2475,24 @@ function setrights($uid, $rights)
 	}
 	return $connect->Execute($uquery);
 	}
+	
+// set the rights for a survey
+function setsurveyrights($uid, $rights) 
+	{
+	global $connect, $surveyid;
+	
+	$updates = "edit_survey_property=".$rights['edit_survey_property']
+	. ", define_questions=".$rights['define_questions']
+	. ", browse_response=".$rights['browse_response']
+	. ", export=".$rights['export']
+	. ", delete_survey=".$rights['delete_survey']	
+	. ", activate_survey=".$rights['activate_survey'];
+	$uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uid;
+	
+	return $connect->Execute($uquery);
+	}
 		
-	function createPassword()
+function createPassword()
 	{
 	$pwchars = "abcdefhjmnpqrstuvwxyz23456789";
 	$password_length = 8;
@@ -2489,6 +2503,28 @@ function setrights($uid, $rights)
 		$passwd .= $pwchars[floor(rand(0,strlen($pwchars)))];
 		}	
 	return $passwd;
-	}
+	}	
 	
+function getsurveyuserlist()
+    {
+    global $surveyid, $dbprefix, $scriptname, $connect;
+    
+	$surveyidquery = "SELECT a.uid, a.user FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE ISNULL(id)";
+
+    $surveyidresult = db_execute_assoc($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    $surveyselecter = "";
+    $surveynames = $surveyidresult->GetRows();
+    if ($surveynames)
+        {
+        foreach($surveynames as $sv)
+            {
+			$surveyselecter .= "\t\t\t<option";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['user']}</option>\n";
+            }
+        }
+    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected>"._("Please Choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "\t\t\t<option value='-1'>"._("None")."</option>\n".$surveyselecter;}
+    return $surveyselecter;
+    }
 ?>

@@ -202,7 +202,6 @@ $allfields[]=array("{$dbprefix}surveys_rights", "edit_survey_property", "CHANGE_
 $allfields[]=array("{$dbprefix}surveys_rights", "define_questions", "DEFINE_QUESTIONS tinyint(1) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}surveys_rights", "browse_response", "LOOK_STATISTICS tinyint(1) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}surveys_rights", "export", "EXPORT tinyint(1) NOT NULL default '0'");
-$allfields[]=array("{$dbprefix}surveys_rights", "add_user", "ADD_USER tinyint(1) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}surveys_rights", "delete_survey", "DELETE_SURVEY tinyint(1) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}surveys_rights", "activate_survey", "DO_SURVEY tinyint(1) NOT NULL default '0'");
 

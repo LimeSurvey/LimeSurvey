@@ -255,7 +255,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 	}
 
-elseif ($action == "moduser")// && $_POST['uid'] == $_SESSION['loginID'])
+elseif ($action == "moduser")
 	{
 	$addsummary = "<br /><strong>"._("Modifying User")."</strong><br />\n";
 		
@@ -280,7 +280,7 @@ elseif ($action == "moduser")// && $_POST['uid'] == $_SESSION['loginID'])
 			}
 		elseif($valid_email)
 			{
-			$uquery = "UPDATE {$dbprefix}users SET email='{$email}', password=ENCODE('{$pass}', '{$codeString}') WHERE uid={$_POST['uid']}";	//		added by Dennis
+			$uquery = "UPDATE {$dbprefix}users SET email='{$email}', password=ENCODE('{$pass}', '{$codeString}') WHERE uid={$_POST['uid']}";
 			//echo($uquery);
 			$uresult = $connect->Execute($uquery);
 			if(mysql_affected_rows() < 0)
@@ -295,8 +295,7 @@ elseif ($action == "moduser")// && $_POST['uid'] == $_SESSION['loginID'])
 			}		
 		if($failed)
 			{
-			//$addsummary .= "<br /><br /><a href='$scriptname?action=modifyuser&user=$user&uid={$_POST['uid']}'>"._("Continue")."</a><br />&nbsp;\n";
-			$addsummary .= "<br /><br /><form method='post' action='$scriptname'>"	// added by Dennis
+			$addsummary .= "<br /><br /><form method='post' action='$scriptname'>"
 						 ."<input type='submit' value='"._("Back")."'>"
 						 ."<input type='hidden' name='action' value='modifyuser'>"
 						 ."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
@@ -310,8 +309,6 @@ elseif ($action == "moduser")// && $_POST['uid'] == $_SESSION['loginID'])
 	else
 		{			
 		include("access_denied.php");
-		//$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
-		//$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	}
 
@@ -342,14 +339,13 @@ elseif ($action == "userrights")
 			if(isset($_POST['push_down_user']))$rights['push_down_user']=1;		else $rights['push_down_user']=0;
 			if(isset($_POST['create_template']))$rights['create_template']=1;	else $rights['create_template']=0;
 		
-			setrights($_POST['uid'], $rights);
+			setuserrights($_POST['uid'], $rights);
 			$addsummary .= "<br />"._("Update user rights successful.")."<br />\n"; 						
 			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 			}
 		else
 			{
-			include("access_denied.php");
-			//$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
+			include("access_denied.php");	
 			}
 		}
 	else

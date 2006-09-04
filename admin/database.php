@@ -692,7 +692,7 @@ elseif ($action == "insertnewsurvey")
 		. "'{$_POST['email_confirm']}', \n"
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', '{$_POST['allowprev']}','".date("Y-m-d")."')";
 		$isresult = $connect->Execute($isquery);
-		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for creator
+		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for creator
     $isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
 		if ($isresult)
 		{

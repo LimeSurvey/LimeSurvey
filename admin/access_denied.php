@@ -129,7 +129,14 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}*/
 		
-		
+	else
+		{
+		$accesssummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
+		if($sid)
+			$accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid&action=surveysecurity'>"._("Continue")."</a><br />&nbsp;\n";
+		else 
+			$accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+		}
 		
 	}
 ?>
