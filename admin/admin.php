@@ -51,6 +51,7 @@ if (!isset($elem)) {$elem=returnglobal('elem');}
 
 sendcacheheaders();
 
+
 echo $htmlheader;
 
 echo "<script type='text/javascript'>\n"

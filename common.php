@@ -115,22 +115,16 @@ if ($databasetype=='mysql') {$connect->Execute("SET CHARACTER SET 'utf8'");}
 
 
 //Admin menus and standards
+//IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
 if ($sourcefrom == "admin")
 {
+	include("sessioncontrol.php");
 	/**
     * @param string $htmlheader
     * This is the html header text for all administration pages
     *
     */
-	$htmlheader = getAdminHeader();
-
-}
-
-//IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
-if ($sourcefrom == "admin")
-{
-	include("sessioncontrol.php");
-	
+	$htmlheader = getAdminHeader();	
 }
 
 //TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
