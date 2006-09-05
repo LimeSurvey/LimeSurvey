@@ -199,6 +199,9 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     ."title=''" ."align='left'></a>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='2'  align='left'>\n";
 		
+		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
+
 		// if not logged in show login icon
 		if(!isset($_SESSION['loginID']))
 			{
@@ -217,9 +220,6 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 					 "<img src='$imagefiles/logout.png' name='Logout'"
 					." title='' alt='"._("Logout")."'  align='left'></a>";
 			}			
-        
-		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
 
 		// edit users
 		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
@@ -291,8 +291,6 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 						. "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">" .
 						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
 						. _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."'></a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
             }
         if(isset($_SESSION['USER_RIGHT_CREATE_TEMPLATE']))
