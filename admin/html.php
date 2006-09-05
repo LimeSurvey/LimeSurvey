@@ -1047,7 +1047,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass")	// added by Dennis
 	
 	if($action == "forgotpassword")
 		{
-		$loginsummary = "<form name='forgot' id='forgot' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' ><br /><strong>"._("You have to enter user name and email.")."</strong><br />	<br />		
+		$loginsummary = "<form name='forgot' id='forgot' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to enter user name and email.")."</strong><br />	<br />		
 							<table>
 								<tr>
 									<td><p>"._("Username")."</p></td>
@@ -1067,7 +1067,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass")	// added by Dennis
 		}
 	else
 		{
-		$loginsummary = "<form name='login' id='login' method='post' action='http://{$_SERVER['SERVER_NAME']}/phpsurveyor/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />		
+		$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />		
 							<table>
 								<tr>
 									<td><p>"._("Username")."</p></td>
