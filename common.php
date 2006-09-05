@@ -196,8 +196,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname', '_top')\"" .
                      "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Default Administration Page")."');return false\">" .
                      "<img src='$imagefiles/home.png' name='HomeButton' alt='"._("Default Administration Page")."' " 
-                    ."title=''" ."align='left'></a>\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='2'  align='left'>\n";
+                    ."title=''" ."align='left'></a>\n";
 		
 		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
@@ -245,14 +244,6 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                       ."onmouseover=\"showTooltip(event,'". _("Check Data Consistency")."');return false\">".
                     "<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left'></a>\n";
 			}
-		// list surveys
-		$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
-		 			."onmouseout=\"hideTooltip()\"" 
-                    ."onmouseover=\"showTooltip(event,'"._("List Surveys")."');return false\">\n" 
-		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''" .
-		 			"  alt='"._("List Surveys")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\">" 
-                    ."</a>" ;
-        
 		// delete Survey       
 		if ($surveyid)
 			{
@@ -276,6 +267,14 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
 			}
 		
+		// list surveys
+		$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
+		 			."onmouseout=\"hideTooltip()\"" 
+                    ."onmouseover=\"showTooltip(event,'"._("List Surveys")."');return false\">\n" 
+		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''" .
+		 			"  alt='"._("List Surveys")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\">" 
+                    ."</a>" ;
+        
 		// db backup & label editor
 		if(isset($_SESSION['USER_RIGHT_CONFIGURATOR']))
 			{
