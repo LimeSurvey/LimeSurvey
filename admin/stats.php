@@ -176,12 +176,14 @@ if(!isset($_POST['action'])) {
        if(conditions.options.length > 0) {
         document.getElementById('removecondition').display='';
        }
-       var filters = new Array();
+       
+       var filters = new String();
        var filter = document.getElementById('filter');
        for (var i = 0; i < concount+1; i++) {
-	    filters[i]=conditions.options[i].value;
+	    filters += conditions.options[i].value + ";";
 	   }
 	   filter.value=filters;
+	   alert(filters);
      }
 
     //--></script>
@@ -213,11 +215,11 @@ if(!isset($_POST['action'])) {
     </table>
     <?
 
+
+} elseif (isset($_POST['action']) && $_POST['action'] == "fields") {
     //////////////////////////////////////////////////////////////////
     // DO FIELD SELECTION PAGE ///////////////////////////////////////
     //////////////////////////////////////////////////////////////////
-
-} elseif (isset($_POST['action']) && $_POST['action'] == "fields") {
 	?>
 
     <script type='text/javascript'>
@@ -240,14 +242,14 @@ if(!isset($_POST['action'])) {
 	<table width='99%' align='center' style='border: 1px'>
 	<tr>
 	<td colspan='2' style='text-align: center; border: 1px; background-color: #cccccc'>
-	<? presentQuestionList($questions) ?>
-	<input type='button' value='<? echo _("Select all"); ?>' onClick='selectAll("questions")'>
-	<input type='submit' value='<? echo _("Proceed"); ?>'>
+	<? presentFilterConditions() ?>
 	</td>
 	</tr>
 	<tr>
-	<td colspan='2' style='border: 1px; background-color: #eeeeee'>
-	<? presentFilterConditions() ?>
+	<td colspan='2' style='text-align: center; border: 1px;'>
+	<? presentQuestionList($questions) ?>
+	<input type='button' value='<? echo _("Select all"); ?>' onClick='selectAll("questions")'>
+	<input type='submit' value='<? echo _("Proceed"); ?>'>
 	</td>
 	</tr>
 	</table>
@@ -265,7 +267,6 @@ if(!isset($_POST['action'])) {
 echo "<pre>";
 print_r($_POST);
 echo "</pre>";
-echo "Howdy";
 
 /////////////////////////////////////////////////////////////////////
 // END OF PRESENTING RESULTS //////////////////////////////////////
@@ -289,7 +290,7 @@ function presentQuestionList($questions) {
 	<table class='filter' width='99%' align='center'>
 	<tr>
 	<th>
-	<? echo _("Select question(s) from the following list") ?>
+	<? echo _("Question List") ?>
 	</th>
 	</tr>
 	<tr>
@@ -401,7 +402,7 @@ function presentFilterConditions() {
 	    function removeCondition() {
     	var conditions=document.getElementById('conditions');
     	var selected=conditions.selectedIndex;
-    	var token = "," + conditions.options[selected].value;
+    	var token = conditions.options[selected].value + ";";
     	var token2 = conditions.options[selected].value;
     	var filter = document.getElementById('filter');
 		conditions.options[selected] = null;
@@ -432,9 +433,11 @@ function presentFilterConditions() {
 	<select multiple name='conditions[]' id='conditions' size='5' style='width: 600'>
 	<?
 	if(isset($_POST['filter'])) {
-	    $filters=explode(",", $_POST['filter']);
+	    $filters=explode(";", $_POST['filter']);
 		foreach($filters as $condition) {
-			echo "      <option value=\"$condition\">".$condition."</option>\n";
+		    if($condition != "") {
+                echo "      <option value=\"$condition\">".$condition."</option>\n";
+			}
 		}
 	}
 	?>
