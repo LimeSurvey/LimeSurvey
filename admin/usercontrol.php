@@ -112,7 +112,9 @@ if (!isset($_SESSION['loginID']))
 					$_SESSION['user'] = $fields['user'];
 					$_SESSION['adminlang'] = $fields['lang'];
 	
-					SetInterfaceLanguage($_SESSION['adminlang']);
+					$login = true;
+					include("sessioncontrol.php");
+					//SetInterfaceLanguage($_SESSION['adminlang']);
 					
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
 					$loginsummary .= _("Login successful.");
@@ -157,20 +159,26 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 		}		
 	elseif($valid_email)
 		{
-		echo ($new_pass = createPassword());
+		echo "Generated Password for testing: ".$new_pass = createPassword();
 		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', ENCODE('{$new_pass}', '{$codeString}'), {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
-		//echo($uquery);
 		$uresult = $connect->Execute($uquery);
-		//echo($uresult); //TODO Is this working?I don't know if you so get the affacted rows 
 		
-		if(mysql_affected_rows() < 0)
-		//if(modify_database($uquery.";") < 0)//Has to be terminated by a semi-colon
+		if($uresult)
 			{
-			$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username and/or email address already exists.")."<br />\n";		
-			}
-		else{
-			// send Mail
+			$newqid = $connect->Insert_ID();
 			
+			// add new user to userlist			
+			$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, create_template FROM {$dbprefix}users WHERE uid='{$newqid}'";			//added by Dennis
+			$sresult = db_execute_assoc($squery);
+			$srow = $sresult->FetchRow();	
+			
+			array_push($_SESSION['userlist'], array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], 
+				"password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], "level"=>$level, 
+				"create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], 
+				"delete_user"=>$srow['delete_user'], "pull_up_user"=>$srow['pull_up_user'], "push_down_user"=>$srow['push_down_user'], 
+				"create_template"=>$srow['create_template']));
+			
+			// send Mail			
 			$body = _("You were signed in. Your data:");
 			$body .= _("Username") . ": " . $new_user . "<br>\n";
 			$body .= _("Password") . ": " . $new_pass . "<br>\n";
@@ -191,9 +199,19 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				$tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", _("Email to {NAME} ({EMAIL}) failed."));
 				$addsummary .= "<br />".str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
 				}
+			
+			$addsummary .= "<br />\t\t\t<form method='post' action='$scriptname'>"
+				  ."<input type='submit' value='"._("Set User Rights")."'>"
+				  ."<input type='hidden' name='action' value='setuserrights'>"
+				  ."<input type='hidden' name='user' value='{$new_user}'>"
+				  ."<input type='hidden' name='uid' value='{$newqid}'>"
+				  ."</form>";						
 			}
-		}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+		else{
+			$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username and/or email address already exists.")."<br />\n";		
+			}						
+		}	
+	$addsummary .= "<br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 	}
 
 elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST['uid'] == $_SESSION['loginID'])))

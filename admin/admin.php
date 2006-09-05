@@ -217,7 +217,10 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
 //."\t\t\t<font size='2'>\n";
 
-echo showadminmenu();
+if(isset($_SESSION['loginID']))
+	{
+	echo showadminmenu();
+	}
 
 if (isset($accesssummary)) {echo $accesssummary;}	// added by Dennis
 

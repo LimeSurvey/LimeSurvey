@@ -201,24 +201,11 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
 
-		// if not logged in show login icon
-		if(!isset($_SESSION['loginID']))
-			{
-			$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname', '_top')\"" .
-					"onmouseout=\"hideTooltip()\"" 
-					. "onmouseover=\"showTooltip(event,'"._("Login")."');return false\">" .
-					 "<img src='$imagefiles/login.png' name='Login'"
-					." title='' alt='"._("Login")."'  align='left'></a>";
-			}
-		// show logout icon
-		else
-			{
-			$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logoutuser', '_top')\"" .
+		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logoutuser', '_top')\"" .
 					"onmouseout=\"hideTooltip()\"" 
 					. "onmouseover=\"showTooltip(event,'"._("Logout")."');return false\">" .
 					 "<img src='$imagefiles/logout.png' name='Logout'"
-					." title='' alt='"._("Logout")."'  align='left'></a>";
-			}			
+					." title='' alt='"._("Logout")."'  align='left'></a>";				
 
 		// edit users
 		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
@@ -2506,7 +2493,7 @@ function getsurveyuserlist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect;
     
-	$surveyidquery = "SELECT a.uid, a.user FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE ISNULL(id)";
+	$surveyidquery = "SELECT a.uid, a.user FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE ISNULL(id) ORDER BY a.user";
 
     $surveyidresult = db_execute_assoc($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
@@ -2520,8 +2507,9 @@ function getsurveyuserlist()
             $surveyselecter .=" value='{$sv['uid']}'>{$sv['user']}</option>\n";
             }
         }
-    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected>"._("Please Choose...")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected>"._("Please Choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "\t\t\t<option value='-1'>"._("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
     }
+	
 ?>

@@ -95,9 +95,7 @@ if ($action == "listsurveys" && isset($_SESSION['loginID']))
 	else $listsurveys="<br /><strong> No Surveys in this Installation </strong><br /><br />" ;
 }
 
-
-
-if ($action == "checksettings" || $action == "changelang")
+if ($action == "checksettings" || ($action == "changelang" && isset($_SESSION['loginID'])))
 {
 	//GET NUMBER OF SURVEYS
 	$query = "SELECT sid FROM ".db_table_name('surveys');
@@ -428,6 +426,13 @@ if ($surveyid)
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Export this Survey")."');return false\">" .
 			"<img src='$imagefiles/exportsql.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey'></a>" ;
+			
+			// ***********************
+			$actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+			//$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
+			$actsurresult = &db_execute_assoc($actsurquery);
+			$actsurrows = $actsurresult->FetchRow();
+			
 			if($actsurrows['edit_survey_property'])
 				{
 				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
@@ -1071,9 +1076,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass")	// added by Dennis
 									<td>&nbsp;</td>
 									<td><input type='hidden' name='action' value='forgotpass'>
 									<input class='action' type='submit' value='Check data'></td>
-								</tr>								
-							</table>						
-						</form>";
+								</tr>";		
 		}
 	else
 		{
@@ -1094,10 +1097,27 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass")	// added by Dennis
 								<tr>
 									<td>&nbsp;</td>
 									<td><a href='$scriptname?action=forgotpassword'>"._("Forgot Your Password?")."</a><br />&nbsp;\n</td>
-								</tr>
-							</table>						
-						</form>";
+								</tr>";
+
 		}
+		// Current language
+		$loginsummary .=  "\t<tr>\n"
+					. "\t\t<td align='center' >$setfont\n"
+					. "\t\t\t<strong>"._("Current Language").":</strong>\n"
+					. "\t\t</font></td><td>$setfont\n"
+					. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
+		foreach (getlanguagedata() as $langkey=>$languagekind)
+			{
+			$loginsummary .= "\t\t\t\t<option value='$langkey'";
+			if ($langkey == $_SESSION['adminlang']) {$loginsummary .= " selected";}
+			$loginsummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
+			}
+		$loginsummary .= "\t\t\t</select>\n"
+					. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
+					. "\t\t</font></td>\n"
+					. "\t</tr>\n"
+					. "</table>"						
+					. "</form>";
 	}
 
 // logout user
@@ -1182,11 +1202,10 @@ if ($action == "setuserrights")
 						
 						foreach ($_SESSION['userlist'] as $usr)
 							{
-							if ($usr['uid'] == $_POST['uid'])
+							if ($usr['uid'] == $_POST['uid'])	// ist nicht der fall bei neuen *******
 								{
-						
 								$usersummary .="\t\t<th></th>\n\t</tr>\n"
-								."\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
+								."\t<tr><form method='post' action='$scriptname'></tr>"
 											  ."<form action='$scriptname' method='post'>\n";
 								//content
 								if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
@@ -1279,99 +1298,86 @@ $usersummary = "<table style=\"border-collapse:collapse;\" width='100%' border='
 		$_SESSION['userlist'] = getuserlistforuser($_SESSION['loginID'], 0, NULL);
 		$ui = count($_SESSION['userlist']);
 		
-		/*
-		Tritt im Moment nicht mehr auf, da die Datenbank automatisch initialisiert wird
+		$usrhimself = $_SESSION['userlist'][0];
+		unset($_SESSION['userlist'][0]);		
 		
-		if ($ui < 1)
+		//	sort
+		$sortArray = array();		
+		
+		foreach($_SESSION['userlist'] as $key => $array) {
+			$sortArray[$key] = $array[0];
+		}				
+		array_multisort($sortArray, $_SESSION['userlist']); // by user name
+			
+		//	output users			
+		$usersummary .= "\t<tr>\n"
+					  . "\t<td style=\"border-left:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'><strong>$setfont{$usrhimself['user']}</font></strong></td>\n"
+					  . "\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'><strong>$setfont{$usrhimself['email']}</font></strong></td>\n";
+			
+		$usersummary .=  "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'><strong>$setfont{$usrhimself['password']}</font></strong></td>\n";
+		
+		$usersummary .= "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'><strong>$setfont{$usrhimself['level']}</strong></td>\n"							  
+					  . "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'><strong>$setfont{$usrhimself['parent_id']}</strong></td>\n"
+					  . "\t\t<td style=\"padding-top:5px; border-right:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>\n";
+						
+		$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+					  ."<input type='submit' value='"._("Edit")."'>"
+					  ."<input type='hidden' name='action' value='modifyuser'>"
+					  ."<input type='hidden' name='uid' value='{$usrhimself['uid']}'>"
+					  ."</form>";			
+				
+		// users are allowed to delete all successor users (but the admin not himself) 
+		if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($usrhimself['uid'] == $_SESSION['loginID'])))				
+			{
+			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
+						  ."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
+						  ."<input type='hidden' name='action' value='deluser'>"
+						  ."<input type='hidden' name='user' value='{$usrhimself['user']}'>"
+						  ."<input type='hidden' name='uid' value='{$usrhimself['uid']}'>"
+						  ."</form>";
+			}				
+
+		$usersummary .= "\t\t</td>\n"
+					  . "\t</tr>\n";
+		
+		// empty row
+		if(!empty($_SESSION['userlist']))
+			$usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\" style=\"border-left:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'></td>\n\t</tr>";
+						 
+		// other users
+		foreach ($_SESSION['userlist'] as $usr)
 			{
 			$usersummary .= "\t<tr>\n"
-						 . "\t\t<td>\n"
-						 . "\t\t\t<center>"._("Warning").": "._UC_NOUSERS."</center>"
-						 . "\t\t</td>\n"
-						 . "\t</tr>\n";
-			}
-		else*/
-			{
+						  . "\t<td style=\"border-left:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['user']}</font></td>\n"
+						  . "\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['email']}</font></td>\n";
 			
-			//	sort
-			$sortArray = array();
+			// passwords of other users will not be displayed				
+			$usersummary .=  "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>******</td>\n";
 			
-			foreach($_SESSION['userlist'] as $key => $array) {
-			    $sortArray[$key] = $array;
-			}				
-			array_multisort($sortArray, $_SESSION['userlist']); // by user name
-			
-			//	output users
-			foreach ($_SESSION['userlist'] as $usr)
+			$usersummary .= "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['level']}</td>\n"							  
+						  . "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['parent_id']}</td>\n"
+						  . "\t\t<td style=\"padding-top:5px; border-right:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>\n";
+				
+			// users are allowed to delete all successor users (but the admin not himself) 
+			if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($usr['uid'] == $_SESSION['loginID'])))				
 				{
-				$usersummary .= "\t<tr>\n"
-							  . "\t<td style=\"border-left:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['user']}</font></td>\n"
-							  . "\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['email']}</font></td>\n";
-				// passwords of other users will not be displayed
-				if ($usr['uid'] == $_SESSION['loginID'])
-					{
-					$usersummary .=  "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['password']}</font></td>\n";
-					}
-				else
-					{
-					$usersummary .=  "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>******</td>\n";
-					} 
-				$usersummary .= "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['level']}</td>\n"							  
-							  . "\t\t<td style=\"border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>$setfont{$usr['parent_id']}</td>\n"
-							  . "\t\t<td style=\"padding-top:5px; border-right:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'>\n";
-							
-							
-							
-							
-/*							  . "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
-							  . "\t<td align='center'>$setfont{$usr['email']}</font></td>\n";
-				// passwords of other users will not be displayed
-				if ($usr['uid'] == $_SESSION['loginID'])
-					{
-					$usersummary .=  "\t\t<td align='center'>$setfont{$usr['password']}</font></td>\n";
-					}
-				else
-					{
-					$usersummary .=  "\t\t<td align='center'>******</td>\n";
-					} 
-				$usersummary .= "\t\t<td align='center'>$setfont{$usr['level']}</td>\n"							  
-							  . "\t\t<td align='center'>$setfont{$usr['parent_id']}</td>\n"
-							  . "\t\t<td align='center'>\n";*/
-							  
-				// users are only allowed to change his own data
-				if ($usr['uid'] == $_SESSION['loginID'])				
-					{  
-					$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"//?action=modifyuser'>"	// added by Dennis
-					 			  ."<input type='submit' value='"._("Edit")."'>"
-					 			  ."<input type='hidden' name='action' value='modifyuser'>"
-					 			  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
-					 			  ."</form>";
-					}			
-					
-				// users are allowed to delete all successor users (but the admin not himself) 
-				if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($usr['uid'] == $_SESSION['loginID'])))				
-					{
-					$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"	// added by Dennis
-					 			  ."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
-					 			  ."<input type='hidden' name='action' value='deluser'>"
-								  ."<input type='hidden' name='user' value='{$usr['user']}'>"
-					 			  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
-					 			  ."</form>";
-					}				
-				
-				if ($usr['uid'] != $_SESSION['loginID'])				
-					{  
-					$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"	// added by Dennis
-					 			  ."<input type='submit' value='"._("Set User Rights")."'>"
-					 			  ."<input type='hidden' name='action' value='setuserrights'>"
-					 			  ."<input type='hidden' name='user' value='{$usr['user']}'>"
-						  		  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
-					 			  ."</form>";
-					}		
-				
-				$usersummary .= "\t\t</td>\n"
-							  . "\t</tr>\n";
-				}
+				$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
+							  ."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
+							  ."<input type='hidden' name='action' value='deluser'>"
+							  ."<input type='hidden' name='user' value='{$usr['user']}'>"
+							  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+							  ."</form>";
+				}				
+			
+			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+						  ."<input type='submit' value='"._("Set User Rights")."'>"
+						  ."<input type='hidden' name='action' value='setuserrights'>"
+						  ."<input type='hidden' name='user' value='{$usr['user']}'>"
+						  ."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+						  ."</form>";					
+			
+			$usersummary .= "\t\t</td>\n"
+						  . "\t</tr>\n";
 			}
 		if($_SESSION['USER_RIGHT_CREATE_USER'])
 			{
@@ -1930,24 +1936,26 @@ if($action == "addsurveysecurity")
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 		{		
-		if($_POST['uid'] != _("Please Choose...")){
+		if($_POST['uid'] > 0){
 		
 			$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_POST['uid'].",0,0,0,0,0,0)";
 			$isrresult = $connect->Execute($isrquery);
 			
-			if(mysql_affected_rows() < 0)
+			if($isrresult)
+				{
+				$addsummary .= "<br />"._("User added.")."<br />\n";
+				}
+			else
 				{
 				// Username already exists.
 				$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username already exists.")."<br />\n";		
 				}
-			else
-				{
-				$addsummary .= "<br />"._("User added.")."<br />\n";
-				}			
+			
+	
 			$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
 						 ."<input type='submit' value='"._("Set Survey Rights")."'>"
 						 ."<input type='hidden' name='action' value='setsurveysecurity'>"
-						 ."<input type='hidden' name='user' value='{$_POST['user']}'>"
+						 //."<input type='hidden' name='user' value='{$_POST['user']}'>"
 						 ."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
 						 ."</form>\n";
 			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&sid={$surveyid}'>"._("Continue")."</a><br />&nbsp;\n";
@@ -2006,7 +2014,8 @@ if($action == "setsurveysecurity")
 			$resul2row = $result2->FetchRow();			
 			
 			$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
-						 . "\t\t<strong>$setfont<font color='white'>"._("Set Survey Rights").": ".$_POST['user']."</td></tr>\n";
+						 //. "\t\t<strong>$setfont<font color='white'>"._("Set Survey Rights").": ".$_POST['user']."</td></tr>\n";
+						 . "\t\t<strong>$setfont<font color='white'>"._("Set Survey Rights")."</td></tr>\n";
 										
 			$usersummary .= "\t\t<th align='center'>edit_survey_property</th>\n"
 						  . "\t\t<th align='center'>define_questions</th>\n"
@@ -2115,7 +2124,7 @@ if($action == "surveysecurity")
 	                    . "\t\t\t\t\t</select>\n"
 	                    . "\t\t\t\t</td>\n"
 						
-						. "\t\t<td align='center'><input type='submit' $btstyle value='"._("Add User")."'>"
+						. "\t\t<td align='center'><input type='submit' value='"._("Add User")."'>"
 						. "<input type='hidden' name='action' value='addsurveysecurity'></td></form>\n"
 						. "\t</tr>\n"
 						. "\t</table>\n";			

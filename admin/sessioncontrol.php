@@ -42,7 +42,7 @@ if (session_id() == "") session_start();
 
 //LANGUAGE ISSUES
 
-if (returnglobal('action') == "changelang")
+if (returnglobal('action') == "changelang" && !$login)	// no update when login (just read from db)
 	{
 	$_SESSION['adminlang']=returnglobal('lang');
 	// if user is logged in update language in database
@@ -75,18 +75,6 @@ if(isset($_SESSION['loginID']))
 		$_SESSION['USER_RIGHT_PULL_UP_USER'] = $fields['pull_up_user'];
 		$_SESSION['USER_RIGHT_PUSH_DOWN_USER'] = $fields['push_down_user'];
 		$_SESSION['USER_RIGHT_CREATE_TEMPLATE'] = $fields['create_template'];
-		}
-	/*
-	else
-		{
-		// nicht mehr nötig
-		$accesssummary = ("<strong>Keine Benutzerrechte gefunden! Bitte kontaktieren Sie den Admin.</strong>");
-		killSession();
-		checkfortables();
-		}
-	*/
+		}	
 	}
-
-//CHANGE LANGUAGE IF SESSION LANG DOESN'T MATCH DEFAULT LANG
-//if (isset($_SESSION['adminlang'])) {$defaultlang=$_SESSION['adminlang'];}
 ?>

@@ -218,7 +218,7 @@ CREATE TABLE `prefix_surveys` (
 
 CREATE TABLE `prefix_users` (
   `uid` int(11) NOT NULL auto_increment PRIMARY KEY,
-  `user` varchar(20) NOT NULL default '',
+  `user` varchar(20) NOT NULL UNIQUE default '',
   `password` BLOB NOT NULL default '',
   `parent_id` int(10) unsigned NOT NULL,
   `lang` varchar(20),
