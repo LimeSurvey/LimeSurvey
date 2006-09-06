@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-31 20:59+0100\n"
+"PO-Revision-Date: 2006-09-06 18:10+0100\n"
 "Last-Translator: GAUGRY Sébastien\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -18,14 +18,12 @@ msgstr ""
 msgid "Administration"
 msgstr "Administration"
 
+# E:\www\phpsurveyor/common.php:190
+msgid "Logged in as:"
+msgstr "Connecté sous :"
+
 msgid "Default Administration Page"
 msgstr "Page d&lsquo;administration générale"
-
-# E:\www\phpsurveyor/common.php:213
-# E:\www\phpsurveyor/common.php:215
-# E:\www\phpsurveyor/admin/usercontrol.php:91
-msgid "Login"
-msgstr "Connexion"
 
 # E:\www\phpsurveyor/common.php:222
 # E:\www\phpsurveyor/common.php:224
@@ -42,11 +40,11 @@ msgstr "Vérifier les paramètres"
 msgid "Check Data Consistency"
 msgstr "Vérifier la cohérence des données"
 
-msgid "List Surveys"
-msgstr "Lister les questionnaires"
-
 msgid "Delete Entire Survey"
 msgstr "Supprimer tout le questionnaire"
+
+msgid "List Surveys"
+msgstr "Lister les questionnaires"
 
 msgid "Backup Entire Database"
 msgstr "Sauvegarder entiérement la base de données"
@@ -665,6 +663,10 @@ msgstr "<p>Vous n'êtes pas autorisé à parcourir les réponses !</p>"
 # E:\www\phpsurveyor/admin/access_denied.php:108
 msgid "<p>You are not allowed to set assessment rules!</p>"
 msgstr "<p>Vous n'êtes pas autorisé à définir des règles d'évaluation !</p>"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:250
+msgid "You are not allowed to perform this operation!"
+msgstr "Vous n'êtes pas autorisé à effectuer cette opération !"
 
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Cette question est à réponses multiples mais n&lsquo;a aucune réponse de définie."
@@ -1335,6 +1337,43 @@ msgstr "Attribut_2"
 msgid "N/A"
 msgstr "N/A"
 
+msgid "Survey"
+msgstr "Questionnaire"
+
+msgid "Date Created"
+msgstr "Date créée"
+
+# E:\www\phpsurveyor/admin/html.php:52
+msgid "Visibility"
+msgstr "Visibilité"
+
+msgid "Status"
+msgstr "Statut :"
+
+# E:\www\phpsurveyor/admin/html.php:808
+# E:\www\phpsurveyor/admin/html.php:1007
+# E:\www\phpsurveyor/admin/labels.php:257
+# E:\www\phpsurveyor/admin/navigator.php:226
+# E:\www\phpsurveyor/admin/navigator.php:931
+# E:\www\phpsurveyor/admin/navigator.php:1030
+# E:\www\phpsurveyor/admin/navigator.php:1131
+# E:\www\phpsurveyor/admin/saved.php:107
+msgid "Action"
+msgstr "Action"
+
+msgid "Private"
+msgstr "Privé"
+
+# E:\www\phpsurveyor/admin/html.php:63
+msgid "Public"
+msgstr "Public"
+
+msgid "Active"
+msgstr "Activé"
+
+msgid "Non Active"
+msgstr "Non activé"
+
 msgid "Create Survey"
 msgstr "Créer le questionnaire"
 
@@ -1365,9 +1404,6 @@ msgstr "Table(s) d&lsquo;invitation(s) activée(s)"
 msgid "De-activated Token Tables"
 msgstr "Table(s) d&lsquo;invitation(s) désactivée(s)"
 
-msgid "Survey"
-msgstr "Questionnaire"
-
 msgid "This survey is not currently active"
 msgstr "Ce questionnaire est actuellement désactivé"
 
@@ -1388,6 +1424,9 @@ msgstr "Désactiver ce questionnaire"
 
 msgid "Cannot Activate this Survey"
 msgstr "Impossible d&lsquo;activer ce questionnaire"
+
+msgid "Survey Security Settings"
+msgstr "Paramètres de sécurité du questionnaire"
 
 msgid "Do Survey"
 msgstr "Tester le questionnaire"
@@ -1502,7 +1541,7 @@ msgid "Exit Link:"
 msgstr "Lien :"
 
 msgid "Status:"
-msgstr "Status :"
+msgstr "Statut :"
 
 msgid "Number of groups in survey:"
 msgstr "Nombre de groupe(s) dans le questionnaire :"
@@ -1624,17 +1663,6 @@ msgstr "Code :"
 msgid "Default"
 msgstr "Défaut"
 
-# E:\www\phpsurveyor/admin/html.php:808
-# E:\www\phpsurveyor/admin/html.php:1007
-# E:\www\phpsurveyor/admin/labels.php:257
-# E:\www\phpsurveyor/admin/navigator.php:226
-# E:\www\phpsurveyor/admin/navigator.php:931
-# E:\www\phpsurveyor/admin/navigator.php:1030
-# E:\www\phpsurveyor/admin/navigator.php:1131
-# E:\www\phpsurveyor/admin/saved.php:107
-msgid "Action"
-msgstr "Action"
-
 msgid "Move"
 msgstr "Déplacer"
 
@@ -1658,9 +1686,6 @@ msgstr "Modification de l&lsquo;utilisateur"
 
 msgid "Set User Rights"
 msgstr "Définir les droits utilisateur"
-
-msgid "Save Changes"
-msgstr "Sauvegarder les changements"
 
 msgid "User Control"
 msgstr "Contrôle utilisateur"
@@ -1735,6 +1760,39 @@ msgstr "Edition du groupe pour le questionnaire ID"
 
 msgid "Update Group"
 msgstr "Mise à jour du groupe"
+
+msgid "User added."
+msgstr "Utilisateur ajouté."
+
+# E:\www\phpsurveyor/admin/usercontrol.php:153
+# E:\www\phpsurveyor/admin/usercontrol.php:157
+# E:\www\phpsurveyor/admin/usercontrol.php:171
+msgid "Failed to add User."
+msgstr "Echec de la création de l'utilisateur"
+
+# E:\www\phpsurveyor/admin/admin.php:102
+msgid "Username already exists."
+msgstr "Le nom d'utilisateur existe déjà."
+
+msgid "Set Survey Rights"
+msgstr "Définir les droits sur ce questionnaire"
+
+# E:\www\phpsurveyor/admin/html.php:1957
+msgid "No Username selected."
+msgstr "Pas de nom d'utilisateur sélectionné"
+
+msgid "Deleting User"
+msgstr "Supprimer un utilisateur"
+
+msgid "Could not delete user. User was not supplied."
+msgstr "Impossible de supprimer l&lsquo;utilisateur. Le nom d&lsquo;utilisateur n&lsquo;était pas rempli."
+
+msgid "Survey Security"
+msgstr "Sécurité du questionnaire"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Update survey rights successful."
+msgstr "Réussite de la mise à jour des droits sur ce questionnaire."
 
 msgid "Edit Survey"
 msgstr "Editer le questionnaire"
@@ -2262,9 +2320,8 @@ msgstr "Sélectionner tout"
 msgid "Proceed"
 msgstr "Effectuer"
 
-# E:\www\phpsurveyor/admin/stats.php:262
-msgid "Select question(s) from the following list"
-msgstr "Choisissez la ou les questions dans la liste suivante"
+msgid "Question List"
+msgstr "Liste de questions"
 
 # E:\www\phpsurveyor/admin/stats.php:332
 msgid "Like"
@@ -2602,6 +2659,12 @@ msgstr "Un mail avec vos informations de connexion vous a été envoyé."
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Le mail à {NAME} ({EMAIL}) a échoué."
 
+# E:\www\phpsurveyor/common.php:213
+# E:\www\phpsurveyor/common.php:215
+# E:\www\phpsurveyor/admin/usercontrol.php:91
+msgid "Login"
+msgstr "Connexion"
+
 # E:\www\phpsurveyor/admin/usercontrol.php:101
 # E:\www\phpsurveyor/admin/usercontrol.php:126
 msgid "Login failed!"
@@ -2611,18 +2674,12 @@ msgid "Welcome {NAME}"
 msgstr "Bienvenue {NAME}"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:120
-msgid "Login successful!"
-msgstr "Connexion réussie !"
+msgid "Login successful."
+msgstr "Connexion réussie."
 
 # E:\www\phpsurveyor/admin/usercontrol.php:138
 msgid "Logout successful."
 msgstr "Déconnexion réussie."
-
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:157
-# E:\www\phpsurveyor/admin/usercontrol.php:171
-msgid "Failed to add User."
-msgstr "Echec de la création de l'utilisateur"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:153
 # E:\www\phpsurveyor/admin/usercontrol.php:277
@@ -2632,10 +2689,6 @@ msgstr "L'adresse mail n'est pas valide."
 msgid "Username was not supplied."
 msgstr "Le nom d&lsquo;utilisateur n&lsquo;était pas rempli."
 
-# E:\www\phpsurveyor/admin/admin.php:102
-msgid "Username and/or email address already exists."
-msgstr "le nom d'utlisateur et/ou l'adresse mail existe déjà."
-
 # E:\www\phpsurveyor/admin/usercontrol.php:176
 msgid "You were signed in. Your data:"
 msgstr "Vous avez été enregistré. Vos informations :"
@@ -2644,18 +2697,12 @@ msgstr "Vous avez été enregistré. Vos informations :"
 msgid "An email with a generated password was sent to the user."
 msgstr "Un mail avec un mot de passe généré a été envoyé à l'utilisateur."
 
-msgid "Deleting User"
-msgstr "Supprimer un utilisateur"
+# E:\www\phpsurveyor/admin/admin.php:102
+msgid "Username and/or email address already exists."
+msgstr "le nom d'utlisateur et/ou l'adresse mail existe déjà."
 
 msgid "Admin cannot be deleted!"
 msgstr "L'administrateur ne peut pas être effacé !"
-
-# E:\www\phpsurveyor/admin/usercontrol.php:250
-msgid "You are not allowed to perform this operation!"
-msgstr "Vous n'êtes pas autorisé à effectuer cette opération !"
-
-msgid "Could not delete user. User was not supplied."
-msgstr "Impossible de supprimer l&lsquo;utilisateur. Le nom d&lsquo;utilisateur n&lsquo;était pas rempli."
 
 # E:\www\phpsurveyor/admin/usercontrol.php:277
 # E:\www\phpsurveyor/admin/usercontrol.php:282
@@ -2676,8 +2723,12 @@ msgid "Back"
 msgstr "Précédent"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:342
-msgid "Set user rights successfully."
-msgstr "Réussite de l'affectation des droits utilisateur."
+msgid "Update user rights successful."
+msgstr "Réussite de la mise à jour des droits de l'utilisateur."
+
+# E:\www\phpsurveyor/admin/usercontrol.php:250
+msgid "You are not allowed to change your own rights!"
+msgstr "Vous n'êtes pas autorisé à changer vos propres droits !"
 
 msgid "Export, then de-activate survey"
 msgstr "Exporter et ensuite désactiver le questionnaire"
