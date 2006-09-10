@@ -229,7 +229,8 @@ CREATE TABLE `prefix_users` (
   `pull_up_user` tinyint(1) NOT NULL default '0',
   `push_down_user` tinyint(1) NOT NULL default '0',
   `configurator` tinyint(1) NOT NULL default '0',
-  `create_template` tinyint(1) NOT NULL default '0'
+  `manage_template` tinyint(1) NOT NULL default '0',
+  `manage_label` tinyint(1) NOT NULL default '0'
 ) TYPE=MyISAM;
 
 CREATE TABLE `prefix_surveys_rights` (
@@ -245,14 +246,14 @@ CREATE TABLE `prefix_surveys_rights` (
 ) TYPE=MyISAM;
 
 CREATE TABLE `prefix_user_groups` (
-	`gid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
+	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
 	`name` varchar(20) NOT NULL UNIQUE,
 	`description` varchar(255) NOT NULL default '',
 	`creator_id` int(10) unsigned NOT NULL
 ) TYPE=MyISAM;
 
 CREATE TABLE `prefix_user_in_groups` (
-	`gid` int(10) unsigned NOT NULL,
+	`ugid` int(10) unsigned NOT NULL,
 	`uid` int(10) unsigned NOT NULL
 ) TYPE=MyISAM;
 --
@@ -274,5 +275,5 @@ INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '109');
 --
 -- Table `users`
 --
-INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', ENCODE('$defaultpass','$codeString'), 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', ENCODE('$defaultpass','$codeString'), 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,1);
 

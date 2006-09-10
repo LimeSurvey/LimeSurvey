@@ -65,7 +65,7 @@ $keyinfo[]=array("{$dbprefix}question_attributes", "qaid");
 $keyinfo[]=array("{$dbprefix}assessments", "id");
 $keyinfo[]=array("{$dbprefix}users", "uid"); //users now has Key
 $keyinfo[]=array("{$dbprefix}surveys_rights", "sid, uid"); //survey_rights now has Key
-$keyinfo[]=array("{$dbprefix}user_groups", "gid");
+$keyinfo[]=array("{$dbprefix}user_groups", "ugid");
 
 //FIELDS THAT SHOULD EXIST
 $allfields[]=array("{$dbprefix}labelsets", "lid", "lid int(11) NOT NULL auto_increment");
@@ -82,13 +82,14 @@ $allfields[]=array("{$dbprefix}users", "password", "password BLOB NOT NULL");
 $allfields[]=array("{$dbprefix}users", "parent_id", "parent_id int(10) unsigned NOT NULL");
 $allfields[]=array("{$dbprefix}users", "lang", "lang varchar(20)");
 $allfields[]=array("{$dbprefix}users", "email", "email varchar(50) NOT NULL UNIQUE");
-$allfields[]=array("{$dbprefix}users", "CREATE_SURVEY","CREATE_SURVEY tinyint(1) NOT NULL default '0'");
-$allfields[]=array("{$dbprefix}users", "CREATE_USER","CREATE_USER tinyint(1) NOT NULL default '0'");
-$allfields[]=array("{$dbprefix}users", "DELETE_USER","DELETE_USER tinyint(1) NOT NULL default '0'");
-$allfields[]=array("{$dbprefix}users", "PULL_UP_USER","PULL_UP_USER tinyint(1) NOT NULL default '0'");//GIVE NEW PARENT USER
-$allfields[]=array("{$dbprefix}users", "PUSH_DOWN_USER","PUSH_DOWN_USER tinyint(1) NOT NULL default '0'");//GIVE NEW PARENT USER
-$allfields[]=array("{$dbprefix}users", "CONFIGURATOR","CONFIGURATOR tinyint(1) NOT NULL default '0'");
-$allfields[]=array("{$dbprefix}users", "CREATE_TEMPLATE","CREATE_TEMPLATE tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "create_survey","create_survey tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "create_user","create_user tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "delete_user","delete_user tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "pull_up_user","pull_up_user tinyint(1) NOT NULL default '0'");//GIVE NEW PARENT USER
+$allfields[]=array("{$dbprefix}users", "push_down_user","push_down_user tinyint(1) NOT NULL default '0'");//GIVE NEW PARENT USER
+$allfields[]=array("{$dbprefix}users", "configurator","configurator tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "manage_template","manage_template tinyint(1) NOT NULL default '0'");
+$allfields[]=array("{$dbprefix}users", "manage_label","manage_label tinyint(1) NOT NULL default '0'");
 
 $allfields[]=array("{$dbprefix}answers", "qid", "qid int(11) NOT NULL default '0'");
 $allfields[]=array("{$dbprefix}answers", "code", "code varchar(5) NOT NULL default ''");
@@ -206,7 +207,7 @@ $allfields[]=array("{$dbprefix}surveys_rights", "delete_survey", "DELETE_SURVEY 
 $allfields[]=array("{$dbprefix}surveys_rights", "activate_survey", "DO_SURVEY tinyint(1) NOT NULL default '0'");
 
 
-$allfields[]=array("{$dbprefix}user_groups", "gid", "gid int(10) unsigned NOT NULL auto_increment");
+$allfields[]=array("{$dbprefix}user_groups", "ugid", "ugid int(10) unsigned NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}user_groups", "name", "name varchar(20) NOT NULL UNIQUE");
 $allfields[]=array("{$dbprefix}user_groups", "description", "description varchar(255) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}user_groups", "creator_id", "creator_id int(10) unsigned NOT NULL");
@@ -287,19 +288,19 @@ foreach ($tablenames as $tn)
 echo "$setfont<strong>"._("Checking to ensure all tables initialized:")."</strong><br /><font size='1'>\n";
 
 //INIT USER TABLE
-$query = "SELECT uid, CREATE_SURVEY, CREATE_USER, DELETE_USER, PULL_UP_USER, PUSH_DOWN_USER, CONFIGURATOR, CREATE_TEMPLATE FROM {$dbprefix}users";
+$query = "SELECT uid, create_survey, create_user, delete_user, pull_up_user, push_down_user, configurator, manage_template, manage_label FROM {$dbprefix}users";
 $result = $connect->Execute($query) or die("Initialization check failed.<br />$query<br />".($connect->ErrorMsg()));
 echo "<strong>-></strong>"._("Checking")." <strong>{$dbprefix}users</strong>..<br />";
 if($row = $result->FetchRow()) {
 
-	if(($row[1] + $row[2] + $row[3] + $row[4] + $row[5] + $row[6] + $row[7]) != 7) {
-		$query = "UPDATE {$dbprefix}users SET CREATE_TEMPLATE = 1, CREATE_SURVEY = 1, CREATE_USER = 1, DELETE_USER = 1, PULL_UP_USER = 1, PUSH_DOWN_USER = 1, CONFIGURATOR = 1 WHERE uid = ".$row[0];
+	if(($row[1] + $row[2] + $row[3] + $row[4] + $row[5] + $row[6] + $row[7] + $row[8]) != 8) {
+		$query = "UPDATE {$dbprefix}users SET manage_label = 1, manage_template = 1, create_survey = 1, create_user = 1, delete_user = 1, pull_up_user = 1, push_down_user = 1, configurator = 1 WHERE uid = ".$row[0];
 		mysql_query($query) or die("Fixing of {$dbprefix}users with rights of $defaultuser failed.<br />$query<br />".($connect->ErrorMsg()));
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._("Table_fixed")."</font><br />\n";
 	}
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='green'>"._("OK")."</font><br />\n";
 } else {
-	$query = "INSERT INTO {$dbprefix}users VALUES(NULL, '$defaultuser', ENCODE('$defaultpass', '$codeString'), 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1)";
+	$query = "INSERT INTO {$dbprefix}users VALUES(NULL, '$defaultuser', ENCODE('$defaultpass', '$codeString'), 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,1)";
 	mysql_query($query) or die("Initialization of {$dbprefix}users with admin user failed.<br />$query<br />".($connect->ErrorMsg()));
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>"._("User Table Initialized")."</font><br />\n";
 }

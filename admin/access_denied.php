@@ -110,7 +110,11 @@ if (isset($_SESSION['loginID']))
 		}
 
 
-
+	elseif($action == "delusergroup")
+		{		
+		$accesssummary .= _("<p>You are not allowed to delete this group!</p>");
+		$accesssummary .= "<a href='$scriptname?action=editusergroups'>"._("Continue")."</a><br />&nbsp;\n";
+		}
 
 	
 	/*elseif(returnglobal('action') == "importsurvey")
@@ -134,6 +138,10 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
 		if($sid)
 			$accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid&action=surveysecurity'>"._("Continue")."</a><br />&nbsp;\n";
+		elseif(isset($_GET['ugid']))
+			{
+			$accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$_GET['ugid']}'>"._("Continue")."</a><br />&nbsp;\n";
+					}
 		else 
 			$accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 		}

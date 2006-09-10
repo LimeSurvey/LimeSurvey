@@ -84,7 +84,7 @@ if (!isset($_SESSION['loginID']))
 				}									
 			}	
 		}	
-	else	// normal login
+	else	// normal login 		elseif($action == "login")
 		{
 		$loginsummary = "<br /><strong>"._("Login")."</strong><br />\n";
 		
@@ -95,8 +95,9 @@ if (!isset($_SESSION['loginID']))
 			//echo $query;
 			if ($result->RecordCount() < 1) 
 				{
-				// falsche bzw. unbekannte Email-Adresse
-				$loginsummary .= _("Login failed!");
+				// wrong or unknown username and/or email
+				$loginsummary .= "<br />"._("User name and/or email not found!")."<br />";
+				$loginsummary .= "<br /><br /><a href='$scriptname'>"._("Continue")."</a><br />&nbsp;\n";
 				}
 			else 
 				{
@@ -114,16 +115,15 @@ if (!isset($_SESSION['loginID']))
 	
 					$login = true;
 					include("sessioncontrol.php");
-					//SetInterfaceLanguage($_SESSION['adminlang']);
 					
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
 					$loginsummary .= _("Login successful.");
 					$loginsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
-					
 					}
 				else 
 					{
-					$loginsummary .= _("Login failed!");
+					$loginsummary .= "<br />"._("User name and/or email not found!")."<br />";
+					$loginsummary .= "<br /><br /><a href='$scriptname?action=login'>"._("Continue")."</a><br />&nbsp;\n";
 					}
 				}	
 			}
@@ -160,7 +160,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	elseif($valid_email)
 		{
 		echo "Generated Password for testing: ".$new_pass = createPassword();
-		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', ENCODE('{$new_pass}', '{$codeString}'), {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
+		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', ENCODE('{$new_pass}', '{$codeString}'), {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery);
 		
 		if($uresult)
@@ -168,7 +168,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$newqid = $connect->Insert_ID();
 			
 			// add new user to userlist			
-			$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, create_template FROM {$dbprefix}users WHERE uid='{$newqid}'";			//added by Dennis
+			$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid='{$newqid}'";			//added by Dennis
 			$sresult = db_execute_assoc($squery);
 			$srow = $sresult->FetchRow();	
 			
@@ -176,7 +176,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				"password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], "level"=>$level, 
 				"create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], 
 				"delete_user"=>$srow['delete_user'], "pull_up_user"=>$srow['pull_up_user'], "push_down_user"=>$srow['push_down_user'], 
-				"create_template"=>$srow['create_template']));
+				"manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']));
 			
 			// send Mail			
 			$body = _("You were signed in. Your data:");
@@ -301,15 +301,16 @@ elseif ($action == "moduser")
 			$uquery = "UPDATE {$dbprefix}users SET email='{$email}', password=ENCODE('{$pass}', '{$codeString}') WHERE uid={$_POST['uid']}";
 			//echo($uquery);
 			$uresult = $connect->Execute($uquery);
-			if(mysql_affected_rows() < 0)
-				{
-				// Username and/or email adress already exists.
-				$addsummary .= "<br /><strong>"._("Could not modify User Data.")."</strong><br />\n" . " "._("Email address already exists.")."<br />\n";     
-				}
-			else
+			
+			if($uresult)
 				{
 				$addsummary .= "<br />"._("Username").": $user<br />"._("Password").": $pass<br />\n";
 				}
+			else
+				{
+				// Username and/or email adress already exists.
+				$addsummary .= "<br /><strong>"._("Could not modify User Data.")."</strong><br />\n" . " "._("Email address already exists.")."<br />\n";     
+				}				
 			}		
 		if($failed)
 			{
@@ -355,7 +356,8 @@ elseif ($action == "userrights")
 			if(isset($_POST['delete_user']))$rights['delete_user']=1;			else $rights['delete_user']=0;
 			if(isset($_POST['pull_up_user']))$rights['pull_up_user']=1;			else $rights['pull_up_user']=0;
 			if(isset($_POST['push_down_user']))$rights['push_down_user']=1;		else $rights['push_down_user']=0;
-			if(isset($_POST['create_template']))$rights['create_template']=1;	else $rights['create_template']=0;
+			if(isset($_POST['manage_template']))$rights['manage_template']=1;	else $rights['manage_template']=0;
+			if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
 		
 			setuserrights($_POST['uid'], $rights);
 			$addsummary .= "<br />"._("Update user rights successful.")."<br />\n"; 						

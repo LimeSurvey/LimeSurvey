@@ -68,8 +68,19 @@ echo "<script type='text/javascript'>\n"
 ."\t\t\tdocument.getElementById(name).style.display='';\n"
 ."\t\t\t}\n"
 ."\t\t}\n"
+
 ."-->\n"
+."function bla(str1, str2)\n"
+."{\n"
+."	return(str1+str2);\n"
+."}\n"
 ."</script>\n";
+
+
+
+//. "onChange=\"window.open('$scriptname?action=addgroup&amp;ugid='+arrayugid[this.selectedIndex],'_top')\">\n"
+	                    
+
 
 // CHECK IF FIRST USE!
 if (!$database_exists)

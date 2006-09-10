@@ -214,9 +214,14 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
 					." title='' alt='"._("Modify Security Settings")."'  align='left'></a>";
 
+		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\""
+					. "onmouseout=\"hideTooltip()\""
+					. "onmouseover=\"showTooltip(event,'"._("Create/Edit Groups")."');return false\">" .
+					"<img src='$imagefiles/tokens.png' title='' align='left'  name='Create/Edit Groups' alt='"._("Create/Edit Groups")."'></a>\n" ;
+		
 		// check settings
-        $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
-						"<a href=\"#\" onClick=\"window.open('$scriptname?action=checksettings', '_top')\"" .
+        //"\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
+						$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=checksettings', '_top')\"" .
 					   "onmouseout=\"hideTooltip()\"" 
                       ."onmouseover=\"showTooltip(event,'". _("Check Settings")."');return false\">" 
                     . "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
@@ -224,12 +229,16 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 		
 		// check data cosistency
-        if(isset($_SESSION['USER_RIGHT_CONFIGURATOR']))
+        if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
-		$adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
-					   "onmouseout=\"hideTooltip()\"" 
-                      ."onmouseover=\"showTooltip(event,'". _("Check Data Consistency")."');return false\">".
-                    "<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left'></a>\n";
+			$adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
+						   "onmouseout=\"hideTooltip()\"" 
+						  ."onmouseover=\"showTooltip(event,'". _("Check Data Consistency")."');return false\">".
+						"<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left'></a>\n";
+			}
+		else
+			{
+			$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";			
 			}
 		// delete Survey       
 		if ($surveyid)
@@ -263,7 +272,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     ."</a>" ;
         
 		// db backup & label editor
-		if(isset($_SESSION['USER_RIGHT_CONFIGURATOR']))
+		if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
 			$adminmenu  .= "<a href=\"#\""
 						. "onClick=\"window.open('dumpdb.php', '_top')\""
@@ -271,15 +280,26 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 						. "onmouseover=\"showTooltip(event,'"._("Backup Entire Database")."');return false\">"
 						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". _("Backup Entire Database")."($surveyid)' align='left'>" 
 						."</a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
-						. "<a href=\"#\" onClick=\"window.open('labels.php', '_top')\"" 
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+			}
+		else
+			{
+			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
+			}
+		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
+			{
+			$adminmenu  .= "<a href=\"#\" onClick=\"window.open('labels.php', '_top')\"" 
 						. "onmouseout=\"hideTooltip()\"" 
 						. "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">" .
 						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
 						. _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."'></a>\n"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
-            }
-        if(isset($_SESSION['USER_RIGHT_CREATE_TEMPLATE']))
+           	}
+		else
+			{
+			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
+			}
+        if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			{
 	        $adminmenu .= "<a href=\"#\" " .
 	        			  "onClick=\"window.open('templates.php', '_top')\""
@@ -299,7 +319,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' height='20' align='right' >\n"
 	                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
 	                    
-			if(isset($_SESSION['USER_RIGHT_CREATE_SURVEY']))
+			if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
 				{
 			$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=newsurvey', '_top')\"" 
 						. "onmouseout=\"hideTooltip()\"" 
@@ -2287,7 +2307,7 @@ function getArrayFiltersOutGroup($qid)
  * @param string $sqlfile The path where a file with sql commands can be found on the server.
  * @param string $sqlstring If no path is supplied then a string with semicolon delimited sql
  * commands can be supplied in this argument.
- * @return bool Returns true if databse was modified successfully.
+ * @return bool Returns true if database was modified successfully.
  */
 function modify_database($sqlfile='', $sqlstring='') {
 
@@ -2383,23 +2403,40 @@ function strip_tags_full($string) {
 function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
     {
 	global $dbprefix, $codeString;
-		
-	if($level == 0)
+	
+		if($level == 0)
 		{
-		$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, create_template FROM {$dbprefix}users WHERE uid='{$uid}'";			//added by Dennis
-    	}
+			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.pull_up_user, a.push_down_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";			//added by Dennis
+    }
 	else{
-		$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, create_template FROM {$dbprefix}users WHERE parent_id='{$uid}'";			//added by Dennis
+		$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.pull_up_user, a.push_down_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.parent_id='{$uid}'";			//added by Dennis
 		}		
 		
 		$sresult = db_execute_assoc($squery);
 		while ($srow = $sresult->FetchRow())
 			{
-			$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], "level"=>$level, "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "pull_up_user"=>$srow['pull_up_user'], "push_down_user"=>$srow['push_down_user'], "create_template"=>$srow['create_template']);			//added by Dennis modified by Moses
+			$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "level"=>$level, "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "pull_up_user"=>$srow['pull_up_user'], "push_down_user"=>$srow['push_down_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
 			$userlist = getuserlistforuser($srow['uid'], $level+1, $userlist);
 			}
     return $userlist;
     }
+
+// adds Usergroups in Database by Moses
+
+function addUserGroupInDB($group_name, $group_description) {
+	global $connect;
+	$iquery = "INSERT INTO ".db_table_name('user_groups')." VALUES(NULL, '{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
+	if($connect->Execute($iquery)) {
+		$id = $connect->Insert_Id();
+		if($id > 0) {
+			$iquery = "INSERT INTO ".db_table_name('user_in_groups')." VALUES(LAST_INSERT_ID(), '{$_SESSION['loginID']}')";
+			$connect->Execute($iquery ) or die($connect->ErrorMsg());
+		}
+		return $id;
+	} else {
+		return -1;
+	}
+}
 
 // unsets all Session variables to kill session
 function killSession()	//added by Dennis
@@ -2421,7 +2458,8 @@ function setuserrights($uid, $rights)
 	. ", pull_up_user=".$rights['pull_up_user']
 	. ", push_down_user=".$rights['push_down_user']
 	. ", configurator=".$rights['configurator']	
-	. ", create_template=".$rights['create_template'];
+	. ", manage_template=".$rights['manage_template']
+	. ", manage_label=".$rights['manage_label'];
 	$uquery = "UPDATE ".db_table_name('users')." SET ".$updates." WHERE uid = ".$uid;
 	$test = 0;
 	foreach($rights as $right) 
@@ -2445,9 +2483,11 @@ function setuserrights($uid, $rights)
 			$updatesArray[] = "push_down_user=".$rights['push_down_user'];
 		if(!$rights['configurator']) 
 			$updatesArray[] = "configurator=".$rights['configurator'];
-		if(!$rights['create_template']) 
-			$updatesArray[] = "create_template=".$rights['create_template'];
-		
+		if(!$rights['manage_template']) 
+			$updatesArray[] = "manage_template=".$rights['manage_template'];
+		if(!$rights['manage_label']) 
+			$updatesArray[] = "manage_label=".$rights['manage_label'];
+			
 		$updates = implode(", ", $updatesArray);
 		
 		$userlist = getuserlistforuser($uid, 0, NULL);
@@ -2489,6 +2529,52 @@ function createPassword()
 	return $passwd;
 	}	
 	
+function getgroupuserlist()
+    {
+    global $ugid, $dbprefix, $scriptname, $connect;
+    
+	$surveyidquery = "SELECT a.uid, a.user FROM ".db_table_name('users')." AS a LEFT JOIN (SELECT uid AS id FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE ISNULL(id) ORDER BY a.user";
+
+    $surveyidresult = db_execute_assoc($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    $surveyselecter = "";
+    $surveynames = $surveyidresult->GetRows();
+    if ($surveynames)
+        {
+        foreach($surveynames as $sv)
+            {
+			$surveyselecter .= "\t\t\t<option";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['user']}</option>\n";
+            }
+        }
+    $surveyselecter = "\t\t\t<option value='-1' selected>"._("Please Choose...")."</option>\n".$surveyselecter;
+    return $surveyselecter;
+    }
+	
+function deleteUserFromGroup($uid, $ugid)
+	{
+	global $connect;
+	
+	$query = "SELECT ugid, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	$result = db_execute_assoc($query);
+	if($result->RecordCount() > 0)
+		{
+		$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
+		if($connect->Execute($remquery))
+			{
+			return 1;
+			}
+		else
+			{
+			return 0;
+			}
+		}
+	else
+		{
+		include("access_denied.php");
+		}
+	}
+
 function getsurveyuserlist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect;
@@ -2512,4 +2598,27 @@ function getsurveyuserlist()
     return $surveyselecter;
     }
 	
+function getusergrouplist()
+    {
+    global $dbprefix, $scriptname, $connect;
+    
+	$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE creator_id = {$_SESSION['loginID']} ORDER BY name";
+
+    $sresult = db_execute_assoc($squery);
+    if (!$sresult) {return "Database Error";}
+    $selecter = "";
+    $groupnames = $sresult->GetRows();
+    if ($groupnames)
+        {
+        foreach($groupnames as $gn)
+            {
+			$selecter .= "\t\t\t<option";
+            if ($gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1; echo "toll";}
+            $selecter .=" value='{$gn['ugid']}'>{$gn['name']}</option>\n";
+            }
+        }
+    if (!isset($svexist)) {$selecter = "\t\t\t<option value='-1' selected>"._("Please Choose...")."</option>\n".$selecter;}
+    //else {$selecter = "\t\t\t<option value='-1'>"._("None")."</option>\n".$selecter;}
+    return $selecter;
+    }
 ?>
