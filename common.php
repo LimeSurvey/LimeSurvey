@@ -2060,9 +2060,15 @@ function getAdminHeader()
 	. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
 	. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\">\n"
 	. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
-	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"scripts/draganddrop.js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
+	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n";
+
+	// This prevents a lasting javascripterror in the application
+	if ((returnglobal('action') == "ordergroups") || (returnglobal('action') == "orderquestions")) 
+  {
+  	$strAdminHeader.="<script type=\"text/javascript\" src=\"scripts/draganddrop.js\"></script>\n";
+  }
+  
+	$strAdminHeader.="<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/generic.js\"></script>"

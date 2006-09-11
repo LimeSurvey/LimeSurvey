@@ -1594,7 +1594,7 @@ if ($action == "editusergroups")
 	                    . "\t\t\t\t\t\t<input name='sid' type='hidden' value='12'>"
 						. "\t\t\t<select name='ugid' class=\"listboxusergroups\""
 						
-	                    . "onChange=\"window.open(bla('$scriptname?action=editusergroups&amp;ugid=', this.options[this.selectedIndex].value),'_top')\">\n"
+	                    . "onChange=\"window.open('$scriptname?action=editusergroups&amp;ugid=', this.options[this.selectedIndex].value,'_top')\">\n"
 	                    //. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
 	                    
 						. getusergrouplist()

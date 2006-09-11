@@ -55,7 +55,6 @@ sendcacheheaders();
 echo $htmlheader;
 
 echo "<script type='text/javascript'>\n"
-."<!--\n"
 ."\tfunction showhelp(action)\n"
 ."\t\t{\n"
 ."\t\tvar name='help';\n"
@@ -68,12 +67,6 @@ echo "<script type='text/javascript'>\n"
 ."\t\t\tdocument.getElementById(name).style.display='';\n"
 ."\t\t\t}\n"
 ."\t\t}\n"
-
-."-->\n"
-."function bla(str1, str2)\n"
-."{\n"
-."	return(str1+str2);\n"
-."}\n"
 ."</script>\n";
 
 
