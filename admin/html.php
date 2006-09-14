@@ -40,7 +40,6 @@ if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 if ($action == "listsurveys" && isset($_SESSION['loginID']))
 {
 	$query = "SELECT a.* FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid WHERE b.uid = ".$_SESSION['loginID'];
-	//$query = "SELECT * FROM ".db_table_name('surveys');
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
 	if($result->RecordCount() > 0) {
@@ -282,7 +281,6 @@ if ($surveyid)
 		
 		$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
 		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid"; //Getting a count of questions for this survey
-		//$sumresult5 = $connect->Execute($sumquery5) or die($connect->ErrorMsg());		
 		$sumresult5 = db_execute_assoc($sumquery5);
 		$sumrows5 = $sumresult5->FetchRow();
 		
@@ -449,13 +447,6 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
 			}
 			
-		// ***********************
-		//$actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-		////$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
-		//$actsurresult = &db_execute_assoc($actsurquery);
-		//$actsurrows = $actsurresult->FetchRow();
-		
-		//if($actsurrows['edit_survey_property'])
 		if ($sumrows5['edit_survey_property'])
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
@@ -540,7 +531,7 @@ if ($surveyid)
 		. "\t</tr>\n";
 		
 		//SURVEY SUMMARY
-		if ($gid || $qid || $action=="surveysecurity" || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="setsurveysecurity" || $action=="delsurveysecurity" || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups") {$showstyle="style='display: none'";}
+		if ($gid || $qid || $action=="surveysecurity" || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity" || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups") {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
 		. "$setfont<strong>"._("Title:")."</strong></font></td>\n"
@@ -657,9 +648,6 @@ if ($surveyid)
 		$surveysummary .= "</font></font></td></tr>\n"
 		. $surveysummary2
 		. "</table>\n";
-		
-		//*******************************
-		
 		}
 	else
 		{
@@ -1402,14 +1390,15 @@ if ($action == "editusers")
 		array_multisort($sortArray, $_SESSION['userlist']); // by user name
 			
 		//	output users			
-		$usersummary .= "\t<tr>\n"
+		$usersummary .= "\t<tr bgcolor='#999999'>\n"
 					  . "\t<td align='center'><strong>$setfont{$usrhimself['user']}</font></strong></td>\n"
 					  . "\t<td align='center'><strong>$setfont{$usrhimself['email']}</font></strong></td>\n";
 			
 		$usersummary .=  "\t\t<td align='center'><strong>$setfont{$usrhimself['password']}</font></strong></td>\n";
 		
+		
 		if($usrhimself['parent']!=0) {
-			$usersummary .= "\t\t<td align='center'><strong>$setfont{$usrhimself['parent']}</font></strong></td>\n"
+			$usersummary .= "\t\t<td align='center'><strong>$setfont{$usrhimself['parent']}as</font></strong></td>\n"
 						  . "\t\t<td align='center'>\n";
 			}
 		else
@@ -1439,13 +1428,16 @@ if ($action == "editusers")
 		
 		// empty row
 		if(!empty($_SESSION['userlist']))
-			$usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\" style=\"border-left:1px solid #000000; border-top:1px solid #000000; border-bottom:1px solid #000000;\" align='center'></td>\n\t</tr>";
+			$usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
 						 
 		// other users
+		$row = 0;
 		foreach ($_SESSION['userlist'] as $usr)
 			{
-			$usersummary .= "\t<tr>\n"
-						  . "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
+			if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
+			else $usersummary .= "\t<tr>\n";
+			
+			$usersummary .= "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
 						  . "\t<td align='center'>$setfont{$usr['email']}</font></td>\n";
 			
 			// passwords of other users will not be displayed				
@@ -1453,7 +1445,7 @@ if ($action == "editusers")
 			
 			$usersummary .= //"\t\t<td align='center'>$setfont{$usr['level']}</font></td>\n"							  
 						  "\t\t<td align='center'>$setfont{$usr['parent']}</font></td>\n"
-						  . "\t\t<td align='center'>\n";
+						  . "\t\t<td valign='middle' align='center'>\n";
 				
 			// users are allowed to delete all successor users (but the admin not himself) 
 			if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usr['uid'] == $_SESSION['loginID'])))				
@@ -1475,9 +1467,13 @@ if ($action == "editusers")
 			
 			$usersummary .= "\t\t</td>\n"
 						  . "\t</tr>\n";
+			$row++;
 			}
+			
+		
 		if($_SESSION['USER_RIGHT_CREATE_USER'] == 1)
 			{
+			//$usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
 			$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
 						  . "\t\t<tr>\n"
 						  . "\t\t<td align='center'><input type='text' name='new_user'></td>\n"
@@ -1486,7 +1482,10 @@ if ($action == "editusers")
 						  . "<input type='hidden' name='action' value='adduser'></td>\n"
 						  . "\t</tr>\n";
 			}
+		//$usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
+						
 		}
+		
 	}
 	
 if ($action == "addusergroup")
@@ -1516,7 +1515,7 @@ if ($action == "delusergroup")
 	{
 	$usersummary = "<br /><strong>"._("Deleting User Group")."</strong><br />\n";
 		
-	if(isset($_POST['ugid']) && $_POST['ugid'] > -1)
+	if(!empty($_POST['ugid']) && $_POST['ugid'] > -1)
 		{
 		$query = "SELECT ugid, name, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_POST['ugid']." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
 		$result = db_execute_assoc($query);
@@ -1584,7 +1583,7 @@ if ($action == "editusergroups")
 	{	
 	if(isset($_SESSION['loginID']))
 		{
-		$usersummary .= "<table width='100%' border='0'>\n"
+		$usersummary .= "\t<table width='100%' border='0'>\n"
 						. "\t\t\t\t<tr valign='middle' bgcolor='#555555'><td colspan='3' height='4'>"
 						. "<font size='1' face='verdana' color='white'><strong>"._("Group Control")."</strong></font></td></tr>\n"
 					 	. "\t\t<tr>\n"						
@@ -1593,9 +1592,7 @@ if ($action == "editusergroups")
 						. "\t\t<form method='get'>\n"
 	                    . "\t\t\t\t\t\t<input name='sid' type='hidden' value='12'>"
 						. "\t\t\t<select name='ugid' class=\"listboxusergroups\""
-						
-	                    . "onChange=\"window.open('$scriptname?action=editusergroups&amp;ugid=', this.options[this.selectedIndex].value,'_top')\">\n"
-	                    //. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+						. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
 	                    
 						. getusergrouplist()
 	                    . "\t\t\t</select>\n"
@@ -1606,13 +1603,16 @@ if ($action == "editusergroups")
 						. "\t\t\t\t\t<form action='$scriptname' method='GET'>\n"
 						. "\t\t\t\t\t\t<input type='submit' value='"._("Add new group")."'>\n"
 						. "\t\t\t\t\t\t<input type='hidden' name='action' value='addusergroup'>\n"
-						. "\t\t\t\t\t</form>\n"									
-						. "\t\t\t\t\t\t<form method='post' action='$scriptname?action=delusergroup'>"		
+						. "\t\t\t\t\t</form>\n";					
+		if(isset($_GET['ugid']))
+			{
+			$usersummary .= "\t\t\t\t\t<form method='post' action='$scriptname?action=delusergroup'>"		
 						. "\t\t\t\t\t\t<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
-						. "\t\t\t\t\t\t<input name='ugid' type='hidden' value='{$ugid}'>"
-						. "\t\t\t\t\t</from>"
+						. "\t\t\t\t\t\t<input name='ugid' type='hidden' value='{$_GET['ugid']}'>"
+						. "\t\t\t\t\t</from>";
+			}
 							
-						. "\t\t\t\t\t</td>\n"
+		$usersummary .= "\t\t\t\t\t</td>\n"
 						. "\t</tr>"
 						. "\t</table>\n";
 								
@@ -1631,19 +1631,21 @@ if ($action == "editusergroups")
 							 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
 							 . "\t\t<th>$setfont"._("Action")."</font></th>\n"
 							 . "\t</tr>\n";
-						 
+				
+				$row = 0;				
 				while ($egurow = $eguresult->FetchRow())
-					{		
-					//	output users			
-					$usersummary .= "\t<tr>\n"
-								  . "\t<td align='center'><strong>$setfont{$egurow['user']}</font></strong></td>\n";
-					$usersummary .= "\t<td align='center'><strong>$setfont{$egurow['email']}</font></strong></td>\n";
-					$usersummary .= "\t\t<td align='center'>\n";
+					{
+					//	output users
+					//if($row == 1){ $usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
+					if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
+					else $usersummary .= "\t<tr>\n";
+					$usersummary .= "\t<td align='center'><strong>$setfont{$egurow['user']}</font></strong></td>\n"
+								  . "\t<td align='center'><strong>$setfont{$egurow['email']}</font></strong></td>\n"
+								  . "\t\t<td align='center'>\n";
 					
 					$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup'>";
 					if($_SESSION['loginID'] != $egurow['uid'])
-						{
-						
+						{						
 						$usersummary .= "<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
 									." <input type='hidden' name='user' value='{$egurow['user']}'>"
 									." <input name='uid' type='hidden' value='{$egurow['uid']}'>"
@@ -1652,16 +1654,19 @@ if ($action == "editusergroups")
 					$usersummary .= "</form>"
 									. "\t\t</td>\n"
 								  . "\t</tr>\n";		
+					$row++;
 					}			
 				$usersummary .= "\t\t<form action='$scriptname?ugid={$ugid}' method='post'>\n"
 					. "\t\t<tr><td colspan='2'></td>\n"				
-					. "\t\t\t\t\t<td align='center'>"
-					. "\t\t\t\t\t<select name='uid' class=\"listboxusergroups\">\n"
+					. "\t\t\t<td align='center'>"
+					. "\t\t\t\t<select name='uid' class=\"listboxusergroups\">\n"
 					. getgroupuserlist()
-					. "\t\t\t\t\t</select>\n"
-					. "<input type='submit' value='"._("Add User")."'>"
-					. "<input type='hidden' name='action' value='addusertogroup'></td></form>\n"
-					. "</td></tr></form>\n";
+					. "\t\t\t\t</select>\n"
+					. "\t\t\t\t<input type='submit' value='"._("Add User")."'>\n"
+					. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup'></td></form>\n"
+					. "\t\t\t</td>\n"
+					. "\t\t</tr>\n"
+					. "\t</form>\n";
 				}			
 			else
 				{
@@ -2253,7 +2258,7 @@ if($action == "addusertogroup")
 	}
 	
 // *************************************************
-// Survey Rights End	****************************
+// Survey Rights Start	****************************
 // *************************************************
 
 if($action == "addsurveysecurity")
@@ -2278,8 +2283,6 @@ if($action == "addsurveysecurity")
 				// Username already exists.
 				$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username already exists.")."<br />\n";		
 				}
-			
-	
 			$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
 						 ."<input type='submit' value='"._("Set Survey Rights")."'>"
 						 ."<input type='hidden' name='action' value='setsurveysecurity'>"
@@ -2299,7 +2302,62 @@ if($action == "addsurveysecurity")
 		include("access_denied.php");
 		}	
 	}
-	
+
+
+if($action == "addusergroupsurveysecurity")
+	{
+	$addsummary = "<br /><strong>"._("Add User Group")."</strong><br />\n";
+		
+	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];
+	$result = db_execute_assoc($query);
+	if($result->RecordCount() > 0)
+		{		
+		if($_POST['ugid'] > 0){		
+			$query2 = "SELECT a.uid FROM ".db_table_name('users')." AS a INNER JOIN (SELECT b.uid FROM ".db_table_name('surveys_rights')." AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$_POST['ugid']}) AS d ON a.uid = d.uid";
+			$result2 = db_execute_assoc($query2);
+			if($result2->RecordCount() > 0)
+				{
+				while ($row2 = $result2->FetchRow())
+					{
+					$uid_arr[] = $row2['uid'];
+					$values[] = "($surveyid, {$row2['uid']},0,0,0,0,0,0)";
+					}
+				}
+			$values_implode = implode(",", $values);
+			
+			$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ".$values_implode;
+			$isrresult = $connect->Execute($isrquery);
+			
+			if($isrresult)
+				{
+				$addsummary .= "<br />"._("User Group added.")."<br />\n";
+				$_SESSION['uids'] = $uid_arr;
+				}
+			else
+				{
+				// Users already exists.
+				$addsummary .= "<br /><strong>"._("Failed to add User Group.")."</strong><br />\n";		
+				}
+			$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
+						 ."<input type='submit' value='"._("Set Survey Rights")."'>"
+						 ."<input type='hidden' name='action' value='setusergroupsurveysecurity'>"
+						 //."<input type='hidden' name='user' value='{$_POST['user']}'>"
+						 ."<input type='hidden' name='ugid' value='{$_POST['ugid']}'>"
+						 ."</form>\n";
+			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&sid={$surveyid}'>"._("Continue")."</a><br />&nbsp;\n";
+		}
+		else
+			{
+				$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("No Username selected.")."<br />\n";		
+				$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&sid={$surveyid}'>"._("Continue")."</a><br />&nbsp;\n";		
+			}
+		}
+	else
+		{			
+		include("access_denied.php");
+		}	
+	}
+
 if($action == "delsurveysecurity"){
 	{	
 	$addsummary = "<br /><strong>"._("Deleting User")."</strong><br />\n";
@@ -2400,6 +2458,58 @@ if($action == "setsurveysecurity")
 		}
 	}
 
+
+if($action == "setusergroupsurveysecurity")
+	{
+	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];//." AND creator_id != ".$_POST['uid'];
+	$result = db_execute_assoc($query);
+	if($result->RecordCount() > 0)
+		{
+			$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
+						 . "\t\t<strong>$setfont<font color='white'>"._("Set Survey Rights")."</td></tr>\n";
+										
+			$usersummary .= "\t\t<th align='center'>Edit Survey Property</th>\n"
+						  . "\t\t<th align='center'>Define Questions</th>\n"
+						  . "\t\t<th align='center'>Browse Response</th>\n"
+						  . "\t\t<th align='center'>Export</th>\n"
+						  . "\t\t<th align='center'>Delete Survey</th>\n"
+						  . "\t\t<th align='center'>Activate Survey</th>\n"
+						  . "\t\t<th></th>\n\t</tr>\n"						 
+						  . "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
+			
+			//content
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
+			
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"define_questions\" value=\"define_questions\"";
+			
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"browse_response\" value=\"browse_response\"";
+			
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"export\" value=\"export\"";
+			
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_survey\" value=\"delete_survey\"";
+			
+			$usersummary .="></td>\n";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"activate_survey\" value=\"activate_survey\"";
+			
+			$usersummary .="></td>\n";
+
+			$usersummary .= "\t\n\t<tr><td colspan='6' align='center'>"
+						  ."<input type='submit' value='"._("Save Now")."'>"
+						  ."<input type='hidden' name='action' value='surveyrights'>"
+						  ."<input type='hidden' name='ugid' value='{$_POST['ugid']}'></td></tr>"
+						  ."</form>"
+						  . "</table>\n";			
+		}
+	else
+		{
+		include("access_denied.php");	
+		}
+	}
+	
 if($action == "surveysecurity")
 	{
 	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];
@@ -2407,7 +2517,6 @@ if($action == "surveysecurity")
 	if($result->RecordCount() > 0)
 		{
 		$query2 = "SELECT a.uid, b.user FROM ".db_table_name('surveys_rights')."AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'];
-		//$query2 = "SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid != ".$_SESSION['loginID'];
 		$result2 = db_execute_assoc($query2);
 		$surveysecurity = "<table width='100%' rules='rows' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 						 . "\t\t<strong>$setfont<font color='white'>"._("Survey Security")."</td></tr>\n"
@@ -2418,10 +2527,12 @@ if($action == "surveysecurity")
 		if($result2->RecordCount() > 0)
 			{
 		//	output users
+			$row = 0;
 			while ($resul2row = $result2->FetchRow())
 				{
-				$surveysecurity .= "\t<tr>\n"
-								. "\t<td align='center'>$setfont{$resul2row['user']}</font></td>\n"
+				if(($row % 2) == 0) $surveysecurity .= "\t<tr  bgcolor='#999999'>\n";
+				else $surveysecurity .= "\t<tr>\n";
+				$surveysecurity .= "\t<td align='center'>$setfont{$resul2row['user']}</font></td>\n"
 								. "\t\t<td align='center'>\n";
 						
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
@@ -2440,13 +2551,15 @@ if($action == "surveysecurity")
 				
 				$surveysecurity .= "\t\t</td>\n"
 								. "\t</tr>\n";								
+				
+				$row++;
 				}				
 			}			
 		$surveysecurity .= "\t\t<form action='$scriptname?sid={$surveyid}' method='post'>\n"
 						. "\t\t<tr>\n"
 						
-						. "\t\t\t\t\t<td align='center'>"
-	                    . "\t\t\t\t\t<select name='uid' class=\"listboxsurveys\">\n"
+						. "\t\t\t\t\t<td align='right'>"
+	                    . "\t\t\t\t\t<strong>"._("User").": </strong><select name='uid' class=\"listboxsurveys\">\n"
 	                    //. $surveyuserselect
 	                    . getsurveyuserlist()
 	                    . "\t\t\t\t\t</select>\n"
@@ -2454,8 +2567,23 @@ if($action == "surveysecurity")
 						
 						. "\t\t<td align='center'><input type='submit' value='"._("Add User")."'>"
 						. "<input type='hidden' name='action' value='addsurveysecurity'></td></form>\n"
+						. "\t</tr>\n";
+						//. "\t</table>\n";
+						
+		$surveysecurity .= "\t\t<form action='$scriptname?sid={$surveyid}' method='post'>\n"
+						. "\t\t<tr>\n"
+						
+						. "\t\t\t\t\t<td align='right'>"
+	                    . "\t\t\t\t\t<strong>"._("Groups").": </strong><select name='ugid' class=\"listboxsurveys\">\n"
+	                    //. $surveyuserselect
+	                    . getsurveyusergrouplist()
+	                    . "\t\t\t\t\t</select>\n"
+	                    . "\t\t\t\t</td>\n"
+						
+						. "\t\t<td align='center'><input type='submit' value='"._("Add Group")."'>"
+						. "<input type='hidden' name='action' value='addusergroupsurveysecurity'></td></form>\n"
 						. "\t</tr>\n"
-						. "\t</table>\n";			
+						. "\t</table>\n";
 		}
 	else
 		{
@@ -2467,7 +2595,12 @@ elseif ($action == "surveyrights")
 	{	
 	$addsummary = "<br /><strong>"._("Set Survey Rights")."</strong><br />\n";
 	
-	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	if(isset($_POST['uid'])){
+		$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	}
+	else{
+		$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];//." AND creator_id != ".$_POST['uid'];
+	}
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 		{			
@@ -2479,9 +2612,22 @@ elseif ($action == "surveyrights")
 		if(isset($_POST['export']))$rights['export']=1;								else $rights['export']=0;
 		if(isset($_POST['delete_survey']))$rights['delete_survey']=1;				else $rights['delete_survey']=0;
 		if(isset($_POST['activate_survey']))$rights['activate_survey']=1;			else $rights['activate_survey']=0;
-	
-		setsurveyrights($_POST['uid'], $rights);
-		$addsummary .= "<br />"._("Update survey rights successful.")."<br />\n"; 						
+		
+		if(isset($_POST['uid'])){
+			$uids[] = $_POST['uid'];
+		}
+		else{
+			$uids = $_SESSION['uids'];
+			unset($_SESSION['uids']);
+		}
+		if(setsurveyrights($uids, $rights))
+			{			
+				$addsummary .= "<br />"._("Update survey rights successful.")."<br />\n"; 						
+			}
+		else 
+			{
+				$addsummary .= "<br /><strong>"._("Failed to update survey rights!")."</strong><br />\n"; 						
+			}
 		$addsummary .= "<br /><br /><a href='$scriptname?sid={$surveyid}&action=surveysecurity'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	else
@@ -2489,6 +2635,7 @@ elseif ($action == "surveyrights")
 		include("access_denied.php");
 		}
 	}
+
 	// *************************************************
 	// Survey Rights End	****************************
 	// *************************************************
@@ -2816,6 +2963,40 @@ if ($action == "editsurvey")
 		}
 		
 }
+
+// muss geändert werden
+if ($action == "orderusers")
+{
+	//if($sumrows5['edit_survey_property'])
+		{		
+		$ordergroups = "<ul id='arrangableNodes'>";
+		//Get the groups from this survey
+		$ogquery = "SELECT * FROM {$dbprefix}users" ;
+		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
+		while($ogrows = $ogresult->FetchRow())
+		{
+			$ordergroups.="<li id='".$ogrows['uid']."'>".$ogrows['user']."</li>\n" ;
+		}
+		$ordergroups.="</ul>" ;
+	
+		$ordergroups .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
+		$ordergroups .="<div id=\"movableNode\"><ul></ul></div>
+						   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif'></div>
+						   <div id=\"arrDebug\"></div>" ; 					 
+		//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
+		$ordergroups .= "<form action='$scriptname' name='orderusers' method='post'>
+							<input type='hidden' name='hiddenNodeIds'>
+							<input type='hidden' name='action' value='reorderusers'> 
+							<input type='hidden' name='sid' value='$surveyid'>
+							</form>" ; 
+		$ordergroups .="</p>" ;
+		}
+	//else
+		{
+		//include("access_denied.php");
+		}
+}
+
 if ($action == "ordergroups")
 {
 	if($sumrows5['edit_survey_property'])
@@ -2882,11 +3063,10 @@ if ($action == "uploadf")
 	}
 }
 
-if ($action == "newsurvey") // && isset($_SESSION['loginID']))	wird durch das Recht abgefangen
+if ($action == "newsurvey")
 	{
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
-		{
-		
+		{		
 		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<font class='settingcaption'><font color='white'>"._("Create Survey")."</font></font></td></tr>\n"
 		. "\t<tr>\n"

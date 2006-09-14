@@ -221,12 +221,12 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		
 		// check settings
         //"\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
-						$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=checksettings', '_top')\"" .
-					   "onmouseout=\"hideTooltip()\"" 
-                      ."onmouseover=\"showTooltip(event,'". _("Check Settings")."');return false\">" 
-                    . "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
-                    ."' alt='". _("Check Settings")."' align='left'></a>"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+						$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=checksettings', '_top')\""
+					    . "onmouseout=\"hideTooltip()\"" 
+                      	. "onmouseover=\"showTooltip(event,'". _("Check Settings")."');return false\">" 
+						. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
+						. "' alt='". _("Check Settings")."' align='left'></a>"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 		
 		// check data cosistency
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
@@ -329,7 +329,6 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			$adminmenu .= "\t\t\t\t\t<font class=\"boxcaption\">"._("Surveys").":</font>"
 	                    . "\t\t\t\t\t<select class=\"listboxsurveys\""
 	                    . "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-	                    //. $surveyselect
 	                    . getsurveylist()
 	                    . "\t\t\t\t\t</select>\n"
 	                    . "\t\t\t\t</td>\n";
@@ -358,7 +357,7 @@ function &db_execute_assoc($sql,$inputarr=false)
 	global $connect;
 
 	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
-	$dataset=$connect->Execute($sql,$inputarr);
+	$dataset=$connect->Execute($sql,$inputarr) or die($sql);
 	return $dataset;
 }
 
@@ -2063,7 +2062,7 @@ function getAdminHeader()
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n";
 
 	// This prevents a lasting javascripterror in the application
-	if ((returnglobal('action') == "ordergroups") || (returnglobal('action') == "orderquestions")) 
+	if ((returnglobal('action') == "ordergroups") || (returnglobal('action') == "orderquestions") || (returnglobal('action') == "orderusers")) 
   {
   	$strAdminHeader.="<script type=\"text/javascript\" src=\"scripts/draganddrop.js\"></script>\n";
   }
@@ -2507,9 +2506,11 @@ function setuserrights($uid, $rights)
 	}
 	
 // set the rights for a survey
-function setsurveyrights($uid, $rights) 
+function setsurveyrights($uids, $rights) 
 	{
 	global $connect, $surveyid;
+
+	$uids_implode = implode(" OR uid = ", $uids);
 	
 	$updates = "edit_survey_property=".$rights['edit_survey_property']
 	. ", define_questions=".$rights['define_questions']
@@ -2517,7 +2518,7 @@ function setsurveyrights($uid, $rights)
 	. ", export=".$rights['export']
 	. ", delete_survey=".$rights['delete_survey']	
 	. ", activate_survey=".$rights['activate_survey'];
-	$uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uid;
+	$uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uids_implode;
 	
 	return $connect->Execute($uquery);
 	}
@@ -2604,6 +2605,28 @@ function getsurveyuserlist()
     return $surveyselecter;
     }
 	
+function getsurveyusergrouplist()
+    {
+    global $surveyid, $dbprefix, $scriptname, $connect;
+    
+	$surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM ".db_table_name('user_groups')." AS a LEFT JOIN (SELECT b.ugid FROM ".db_table_name('user_in_groups')." AS b LEFT JOIN ".db_table_name('surveys_rights')." AS c ON b.uid = c.uid WHERE ISNULL(c.uid)) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING da IS NOT NULL";
+	$surveyidresult = db_execute_assoc($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    $surveyselecter = "";
+    $surveynames = $surveyidresult->GetRows();
+    if ($surveynames)
+        {
+        foreach($surveynames as $sv)
+            {
+			$surveyselecter .= "\t\t\t<option";
+            $surveyselecter .=" value='{$sv['ugid']}'>{$sv['name']}</option>\n";
+            }
+        }
+    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected>"._("Please Choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "\t\t\t<option value='-1'>"._("None")."</option>\n".$surveyselecter;}
+    return $surveyselecter;
+    }
+	
 function getusergrouplist()
     {
     global $dbprefix, $scriptname, $connect;
@@ -2619,8 +2642,8 @@ function getusergrouplist()
         foreach($groupnames as $gn)
             {
 			$selecter .= "\t\t\t<option";
-            if ($gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1; echo "toll";}
-            $selecter .=" value='{$gn['ugid']}'>{$gn['name']}</option>\n";
+            if ($gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1;}
+            $selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
             }
         }
     if (!isset($svexist)) {$selecter = "\t\t\t<option value='-1' selected>"._("Please Choose...")."</option>\n".$selecter;}

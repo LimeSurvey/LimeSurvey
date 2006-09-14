@@ -69,12 +69,6 @@ echo "<script type='text/javascript'>\n"
 ."\t\t}\n"
 ."</script>\n";
 
-
-
-//. "onChange=\"window.open('$scriptname?action=addgroup&amp;ugid='+arrayugid[this.selectedIndex],'_top')\">\n"
-	                    
-
-
 // CHECK IF FIRST USE!
 if (!$database_exists)
 {
@@ -133,6 +127,7 @@ if ($action == "activate")
 		include("access_denied.php");		
 		}	
 	}
+	
 if ($action == "deactivate")
 {
 	$surquery = "SELECT activate_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey

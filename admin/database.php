@@ -62,375 +62,417 @@ function get_max_order($gid)
 	return $gv['max'];
 }
 
-
-if ($action == "delattribute")
-{
-	settype($_POST['qaid'], "integer");
-	$query = "DELETE FROM {$dbprefix}question_attributes
-              WHERE qaid={$_POST['qaid']} AND qid={$_POST['qid']}";
-	$result=$connect->Execute($query) or die("Couldn't delete attribute<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
-}
-elseif ($action == "addattribute")
-{
-	if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+if(isset($surveyid))
 	{
-		$query = "INSERT INTO {$dbprefix}question_attributes
-                  (qid, attribute, value)
-                  VALUES ('{$_POST['qid']}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
-		$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
-	}
-}
-elseif ($action == "editattribute")
-{
-	if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+	$actsurquery = "SELECT define_questions, edit_survey_property, delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+	$actsurresult = db_execute_assoc($actsurquery);
+	$actsurrows = $actsurresult->FetchRow();
+	
+	if ($action == "delattribute" && $actsurrows['define_questions'])
 	{
 		settype($_POST['qaid'], "integer");
-		$query = "UPDATE {$dbprefix}question_attributes
-                  SET value='{$_POST['attribute_value']}' WHERE qaid='{$_POST['qaid']}' AND qid='{$_POST['qid']}'";
-		$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$query = "DELETE FROM {$dbprefix}question_attributes
+				  WHERE qaid={$_POST['qaid']} AND qid={$_POST['qid']}";
+		$result=$connect->Execute($query) or die("Couldn't delete attribute<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 	}
-}
-elseif ($action == "insertnewgroup")
-{
-	if (!$_POST['group_name'])
+	elseif ($action == "addattribute" && $actsurrows['define_questions'])
 	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be added. It is missing the mandatory group name")."\")\n //-->\n</script>\n";
-	}
-	else
-	{
-		$_POST  = array_map('db_quote', $_POST);
-
-		$query = "INSERT INTO {$dbprefix}groups (sid, group_name, description,group_order) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).")";
-		$result = $connect->Execute($query);
-
-		if ($result)
-		{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $surveyid\")\n //-->\n</script>\n";
-			$query = "SELECT gid FROM {$dbprefix}groups WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
-			$result = db_execute_assoc($query);
-			while ($res = $result->FetchRow()) {$gid = $res['gid'];}
-			$groupselect = getgrouplist($gid);
-		}
-		else
-		{
-			echo _("Error: The database reported the following error:")."<br />\n";
-			echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
-			echo "<pre>".htmlspecialchars($query)."</pre>\n";
-			echo "</body>\n</html>";
-			exit;
-		}
-	}
-}
-
-elseif ($action == "updategroup")
-{
-	$_POST  = array_map('db_quote', $_POST);
-
-	$ugquery = "UPDATE {$dbprefix}groups SET group_name='{$_POST['group_name']}', description='{$_POST['description']}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
-	$ugresult = $connect->Execute($ugquery);
-	if ($ugresult)
-	{
-		//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n</script>\n";
-		$groupsummary = getgrouplist($_POST['gid']);
-	}
-	else
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be updated")."\")\n //-->\n</script>\n";
-	}
-
-}
-
-elseif ($action == "delgroupnone")
-{
-	if (!isset($gid)) {$gid=returnglobal('gid');}
-	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
-	$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
-	if ($result)
-	{
-		$gid = "";
-		$groupselect = getgrouplist($gid);
-		fixsortorderGroups();
-	}
-	else
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
-	}
-}
-
-elseif ($action == "delgroup")
-{
-	if (!isset($gid)) {$gid=returnglobal('gid');}
-	$query = "SELECT qid FROM {$dbprefix}groups, {$dbprefix}questions WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid AND {$dbprefix}groups.gid=$gid";
-	if ($result = db_execute_assoc($query))
-	{
-		if (!isset($total)) {$total=0;}
-		$qtodel=$result->RecordCount();
-		while ($row=$result->FetchRow())
-		{
-			$dquery = "DELETE FROM {$dbprefix}conditions WHERE qid={$row['qid']}";
-			if ($dresult=$connect->Execute($dquery)) {$total++;}
-			$dquery = "DELETE FROM {$dbprefix}answers WHERE qid={$row['qid']}";
-			if ($dresult=$connect->Execute($dquery)) {$total++;}
-			$dquery = "DELETE FROM {$dbprefix}questions WHERE qid={$row['qid']}";
-			if ($dresult=$connect->Execute($dquery)) {$total++;}
-		}
-		if ($total != $qtodel*3)
-		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\")\n //-->\n</script>\n";
-		}
-	}
-	$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
-	$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
-	if ($result)
-	{
-		$gid = "";
-		$groupselect = getgrouplist($gid);
-		fixsortorderGroups();
-	}
-	else
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
-	}
-}
-elseif ($action == "reordergroups")
-{
-	$grouporder = explode(",",$_POST['hiddenNodeIds']) ;
-	foreach($grouporder as $key =>$value)
-	{
-		$upgrorder_query="UPDATE {$dbprefix}groups SET group_order=$key where gid=$value" ;
-		$upgrorder_result = $connect->Execute($upgrorder_query) or die($connect->ErrorMsg()) ;
-	}
-}
-
-elseif ($action == "reorderquestions")
-{
-	//Getting the hiddeNodeIds field and constructing the question order array
-	$questionorder=explode(",",$_POST['hiddenNodeIds']) ;
-
-	foreach($questionorder as $key =>$value)
-	{
-		$upordquery="UPDATE {$dbprefix}questions SET question_order='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
-		$upordresult= $connect->Execute($upordquery) or die($connect->ErrorMsg()) ;
-	}
-}
-elseif ($action == "insertnewquestion")
-{
-	if (!$_POST['title'])
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must insert a code in the mandatory field")."\")\n //-->\n</script>\n";
-	}
-	else
-	{
-		$_POST  = array_map('db_quote', $_POST);
-
-		if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
-		$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
-		." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-		." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).")";
-		$result = $connect->Execute($query);
-		if (!$result)
-		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-			
-		}
-		else
-		{
-			$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //get last question id
-			$result=db_execute_assoc($query);
-			while ($row=$result->FetchRow()) {$qid = $row['qid'];}
-		}
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
 			$query = "INSERT INTO {$dbprefix}question_attributes
-                  (qid, attribute, value)
-                  VALUES
-                  ($qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
-			$result = $connect->Execute($query);
+					  (qid, attribute, value)
+					  VALUES ('{$_POST['qid']}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
+			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		}
 	}
-}
-elseif ($action == "renumberquestions")
-{
-	//Automatically renumbers the "question codes" so that they follow
-	//a methodical numbering method
-	$question_number=1;
-	$group_number=0;
-	$gselect="SELECT *\n"
-	."FROM {$dbprefix}questions, {$dbprefix}groups\n"
-	."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-	."AND {$dbprefix}questions.sid=$surveyid\n"
-	."ORDER BY {$dbprefix}groups.group_order, title";
-	$gresult=db_execute_assoc($gselect) or die ("Error: ".htmlspecialchars($connect->ErrorMsg()));
-	$grows = array(); //Create an empty array in case FetchRow does not return any rows
-	while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array
-	usort($grows, 'CompareGroupThenTitle');
-	foreach($grows as $grow)
+	elseif ($action == "editattribute" && $actsurrows['define_questions'])
 	{
-		//Go through all the questions
-		if ((isset($_GET['style']) && $_GET['style']=="bygroup") && (!isset($groupname) || $groupname != $grow['group_name']))
+		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
-			$question_number=1;
-			$group_number++;
+			settype($_POST['qaid'], "integer");
+			$query = "UPDATE {$dbprefix}question_attributes
+					  SET value='{$_POST['attribute_value']}' WHERE qaid='{$_POST['qaid']}' AND qid='{$_POST['qid']}'";
+			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		}
-		//echo "GROUP: ".$grow['group_name']."<br />";
-		$usql="UPDATE {$dbprefix}questions\n"
-		."SET question_order='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
-		."WHERE qid=".$grow['qid'];
-		//echo "[$sql]";
-		$uresult=$connect->Execute($usql) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
-		$question_number++;
-		$groupname=$grow['group_name'];
 	}
-}
-
-elseif ($action == "updatequestion")
-{
-	$cqquery = "SELECT type FROM {$dbprefix}questions WHERE qid={$_POST['qid']}";
-	$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-	while ($cqr=$cqresult->FetchRow()) {$oldtype=$cqr['type'];}
-
-	global $change;
-	$change = "0";
-	if (($oldtype == "J" && $_POST['type']== "I") || ($oldtype == "I" && $_POST['type']== "J") || ($oldtype == $_POST['type']))
+	elseif ($action == "insertnewgroup" && $actsurrows['define_questions'])
 	{
-		$change = "1";
+		if (!$_POST['group_name'])
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be added. It is missing the mandatory group name")."\")\n //-->\n</script>\n";
+		}
+		else
+		{
+			$_POST  = array_map('db_quote', $_POST);
+	
+			$query = "INSERT INTO {$dbprefix}groups (sid, group_name, description,group_order) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).")";
+			$result = $connect->Execute($query);
+	
+			if ($result)
+			{
+				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $surveyid\")\n //-->\n < /script>\n";
+				$query = "SELECT gid FROM {$dbprefix}groups WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
+				$result = db_execute_assoc($query);
+				while ($res = $result->FetchRow()) {$gid = $res['gid'];}
+				$groupselect = getgrouplist($gid);
+			}
+			else
+			{
+				echo _("Error: The database reported the following error:")."<br />\n";
+				echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
+				echo "<pre>".htmlspecialchars($query)."</pre>\n";
+				echo "</body>\n</html>";
+				exit;
+			}
+		}
 	}
-
-	if ($oldtype != $_POST['type'])
+	
+	elseif ($action == "updategroup" && $actsurrows['define_questions'])
 	{
-		//Make sure there are no conditions based on this question, since we are changing the type
-		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']}";
+		$_POST  = array_map('db_quote', $_POST);
+	
+		$ugquery = "UPDATE {$dbprefix}groups SET group_name='{$_POST['group_name']}', description='{$_POST['description']}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
+		$ugresult = $connect->Execute($ugquery);
+		if ($ugresult)
+		{
+			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n< /script>\n";
+			$groupsummary = getgrouplist($_POST['gid']);
+		}
+		else
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be updated")."\")\n //-->\n</script>\n";
+		}
+	
+	}
+	
+	elseif ($action == "delgroupnone" && $actsurrows['define_questions'])
+	{
+		if (!isset($gid)) {$gid=returnglobal('gid');}
+		$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
+		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
+		if ($result)
+		{
+			$gid = "";
+			$groupselect = getgrouplist($gid);
+			fixsortorderGroups();
+		}
+		else
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
+		}
+	}
+	
+	elseif ($action == "delgroup" && $actsurrows['define_questions'])
+	{
+		if (!isset($gid)) {$gid=returnglobal('gid');}
+		$query = "SELECT qid FROM {$dbprefix}groups, {$dbprefix}questions WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid AND {$dbprefix}groups.gid=$gid";
+		if ($result = db_execute_assoc($query))
+		{
+			if (!isset($total)) {$total=0;}
+			$qtodel=$result->RecordCount();
+			while ($row=$result->FetchRow())
+			{
+				$dquery = "DELETE FROM {$dbprefix}conditions WHERE qid={$row['qid']}";
+				if ($dresult=$connect->Execute($dquery)) {$total++;}
+				$dquery = "DELETE FROM {$dbprefix}answers WHERE qid={$row['qid']}";
+				if ($dresult=$connect->Execute($dquery)) {$total++;}
+				$dquery = "DELETE FROM {$dbprefix}questions WHERE qid={$row['qid']}";
+				if ($dresult=$connect->Execute($dquery)) {$total++;}
+			}
+			if ($total != $qtodel*3)
+			{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\")\n //-->\n</script>\n";
+			}
+		}
+		$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
+		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
+		if ($result)
+		{
+			$gid = "";
+			$groupselect = getgrouplist($gid);
+			fixsortorderGroups();
+		}
+		else
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
+		}
+	}
+	elseif ($action == "reordergroups" && $actsurrows['define_questions'])
+	{
+		$grouporder = explode(",",$_POST['hiddenNodeIds']) ;
+		foreach($grouporder as $key =>$value)
+		{
+			$upgrorder_query="UPDATE {$dbprefix}groups SET group_order=$key where gid=$value" ;
+			$upgrorder_result = $connect->Execute($upgrorder_query) or die($connect->ErrorMsg()) ;
+		}
+	}
+	
+	elseif ($action == "reorderquestions" && $actsurrows['define_questions'])
+	{
+		//Getting the hiddeNodeIds field and constructing the question order array
+		$questionorder=explode(",",$_POST['hiddenNodeIds']) ;
+	
+		foreach($questionorder as $key =>$value)
+		{
+			$upordquery="UPDATE {$dbprefix}questions SET question_order='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
+			$upordresult= $connect->Execute($upordquery) or die($connect->ErrorMsg()) ;
+		}
+	}
+	elseif ($action == "insertnewquestion" && $actsurrows['define_questions'])
+	{
+		if (!$_POST['title'])
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must insert a code in the mandatory field")."\")\n //-->\n</script>\n";
+		}
+		else
+		{
+			$_POST  = array_map('db_quote', $_POST);
+	
+			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
+			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
+			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
+			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).")";
+			$result = $connect->Execute($query);
+			if (!$result)
+			{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+				
+			}
+			else
+			{
+				$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //get last question id
+				$result=db_execute_assoc($query);
+				while ($row=$result->FetchRow()) {$qid = $row['qid'];}
+			}
+			if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+			{
+				$query = "INSERT INTO {$dbprefix}question_attributes
+					  (qid, attribute, value)
+					  VALUES
+					  ($qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
+				$result = $connect->Execute($query);
+			}
+		}
+	}
+	elseif ($action == "renumberquestions" && $actsurrows['define_questions'])
+	{
+		//Automatically renumbers the "question codes" so that they follow
+		//a methodical numbering method
+		$question_number=1;
+		$group_number=0;
+		$gselect="SELECT *\n"
+		."FROM {$dbprefix}questions, {$dbprefix}groups\n"
+		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
+		."AND {$dbprefix}questions.sid=$surveyid\n"
+		."ORDER BY {$dbprefix}groups.group_order, title";
+		$gresult=db_execute_assoc($gselect) or die ("Error: ".htmlspecialchars($connect->ErrorMsg()));
+		$grows = array(); //Create an empty array in case FetchRow does not return any rows
+		while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array
+		usort($grows, 'CompareGroupThenTitle');
+		foreach($grows as $grow)
+		{
+			//Go through all the questions
+			if ((isset($_GET['style']) && $_GET['style']=="bygroup") && (!isset($groupname) || $groupname != $grow['group_name']))
+			{
+				$question_number=1;
+				$group_number++;
+			}
+			//echo "GROUP: ".$grow['group_name']."<br />";
+			$usql="UPDATE {$dbprefix}questions\n"
+			."SET question_order='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
+			."WHERE qid=".$grow['qid'];
+			//echo "[$sql]";
+			$uresult=$connect->Execute($usql) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
+			$question_number++;
+			$groupname=$grow['group_name'];
+		}
+	}
+	
+	elseif ($action == "updatequestion" && $actsurrows['define_questions'])
+	{
+		$cqquery = "SELECT type FROM {$dbprefix}questions WHERE qid={$_POST['qid']}";
+		$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+		while ($cqr=$cqresult->FetchRow()) {$oldtype=$cqr['type'];}
+	
+		global $change;
+		$change = "0";
+		if (($oldtype == "J" && $_POST['type']== "I") || ($oldtype == "I" && $_POST['type']== "J") || ($oldtype == $_POST['type']))
+		{
+			$change = "1";
+		}
+	
+		if ($oldtype != $_POST['type'])
+		{
+			//Make sure there are no conditions based on this question, since we are changing the type
+			$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']}";
+			$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$cccount=$ccresult->RecordCount();
+			while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
+			if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
+		}
+		$_POST  = array_map('db_quote', $_POST);
+		if (isset($cccount) && $cccount)
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.")." ($qidlist)\")\n //-->\n</script>\n";
+		}
+		else
+		{
+			if (isset($_POST['gid']) && $_POST['gid'] != "")
+			{
+				$uqquery = "UPDATE {$dbprefix}questions "
+				. "SET type='{$_POST['type']}', title='{$_POST['title']}', "
+				. "question='{$_POST['question']}', preg='{$_POST['preg']}', help='{$_POST['help']}', "
+				. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
+				. "mandatory='{$_POST['mandatory']}'";
+				if (isset($_POST['lid']) && trim($_POST['lid'])!="")
+				{
+					$uqquery.=", lid='{$_POST['lid']}' ";
+				}
+				$uqquery.= "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
+				$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+				if (!$uqresult)
+				{
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+				}
+				if ($oldtype !=  $_POST['type'] & $change == "0")
+				{
+					$query = "DELETE FROM {$dbprefix}answers WHERE qid={$_POST['qid']}";
+					$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
+					if (!$result)
+					{
+						echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answers can't be deleted")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
+					}
+				}
+			}
+			else
+			{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated")."\")\n //-->\n</script>\n";
+			}
+		}
+	}
+	
+	elseif ($action == "copynewquestion" && $actsurrows['define_questions'])
+	{
+		if (!$_POST['title'])
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must insert a code in the mandatory field")."\")\n //-->\n</script>\n";
+		}
+		else
+		{
+			$_POST  = array_map('db_quote', $_POST);
+			if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
+			//Get maximum order from the question group
+			$max=get_max_order($_POST['gid'])+1 ; 
+			
+			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, question_order) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max)";
+			$result = $connect->Execute($query) or die($connect->ErrorMsg());
+			$newqid = $connect->Insert_ID();
+			if (!$result)
+			{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
+				
+			}
+			if (returnglobal('copyanswers') == "Y")
+			{
+				$q1 = "SELECT * FROM {$dbprefix}answers WHERE qid="
+				. returnglobal('oldqid')
+				. " ORDER BY code";
+				$r1 = db_execute_assoc($q1);
+				while ($qr1 = $r1->FetchRow())
+				{
+					$qr1 = array_map('db_quote', $qr1);
+					$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder) "
+					. "VALUES ('$newqid', '{$qr1['code']}', "
+					. "'{$qr1['answer']}', '{$qr1['default_value']}', "
+					. "'{$qr1['sortorder']}')";
+					$ir1 = $connect->Execute($i1);
+				}
+			}
+			if (returnglobal('copyattributes') == "Y")
+			{
+				$q1 = "SELECT * FROM {$dbprefix}question_attributes
+				   WHERE qid=".returnglobal('oldqid')."
+				   ORDER BY qaid";
+				$r1 = db_execute_assoc($q1);
+				while($qr1 = $r1->FetchRow())
+				{
+					$qr1 = array_map('db_quote', $qr1);
+					$i1 = "INSERT INTO {$dbprefix}question_attributes
+					   (qid, attribute, value)
+					   VALUES ('$newqid',
+					   '{$qr1['attribute']}',
+					   '{$qr1['value']}')";
+					$ir1 = $connect->Execute($i1);
+				} // while
+			}
+		}
+	}
+	elseif ($action == "delquestion" && $actsurrows['define_questions'])
+	{
+		if (!isset($qid)) {$qid=returnglobal('qid');}
+		//check if any other questions have conditions which rely on this question. Don't delete if there are.
+		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid=$qid";
+		$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$cccount=$ccresult->RecordCount();
+		while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
+		if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
+		if ($cccount) //there are conditions dependant on this question
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
+		}
+		else
+		{
+			$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}'");
+			$row=$result->FetchRow();
+			$gid = $row['gid'];
+			//see if there are any conditions/attributes/answers for this question, and delete them now as well
+			$cquery = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
+			$cresult = $connect->Execute($cquery);
+			$query = "DELETE FROM {$dbprefix}question_attributes WHERE qid=$qid";
+			$result = $connect->Execute($query);
+			$cquery = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
+			$cresult = $connect->Execute($cquery);
+			$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
+			$result = $connect->Execute($query);
+			fixsortorderQuestions(0,$gid);
+			if ($result)
+			{
+				$qid="";
+				$_POST['qid']="";
+				$_GET['qid']="";
+			}
+			else
+			{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted")."\n$error\")\n //-->\n</script>\n";
+			}
+		}
+	}
+	
+	elseif ($action == "delquestionall" && $actsurrows['define_questions'])
+	{
+		if (!isset($qid)) {$qid=returnglobal('qid');}
+		//check if any other questions have conditions which rely on this question. Don't delete if there are.
+		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
 		$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		$cccount=$ccresult->RecordCount();
 		while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
 		if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
-	}
-	$_POST  = array_map('db_quote', $_POST);
-	if (isset($cccount) && $cccount)
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.")." ($qidlist)\")\n //-->\n</script>\n";
-	}
-	else
-	{
-		if (isset($_POST['gid']) && $_POST['gid'] != "")
+		if ($cccount) //there are conditions dependant on this question
 		{
-			$uqquery = "UPDATE {$dbprefix}questions "
-			. "SET type='{$_POST['type']}', title='{$_POST['title']}', "
-			. "question='{$_POST['question']}', preg='{$_POST['preg']}', help='{$_POST['help']}', "
-			. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
-			. "mandatory='{$_POST['mandatory']}'";
-			if (isset($_POST['lid']) && trim($_POST['lid'])!="")
-			{
-				$uqquery.=", lid='{$_POST['lid']}' ";
-			}
-			$uqquery.= "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
-			$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-			if (!$uqresult)
-			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-			}
-			if ($oldtype !=  $_POST['type'] & $change == "0")
-			{
-				$query = "DELETE FROM {$dbprefix}answers WHERE qid={$_POST['qid']}";
-				$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
-				if (!$result)
-				{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answers can't be deleted")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
-				}
-			}
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
 		}
 		else
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated")."\")\n //-->\n</script>\n";
+			//First delete all the answers
+			if (!isset($total)) {$total=0;}
+			$query = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
+			if ($result=$connect->Execute($query)) {$total++;}
+			$query = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
+			if ($result=$connect->Execute($query)) {$total++;}
+			$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
+			if ($result=$connect->Execute($query)) {$total++;}
 		}
-	}
-}
-
-elseif ($action == "copynewquestion")
-{
-	if (!$_POST['title'])
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must insert a code in the mandatory field")."\")\n //-->\n</script>\n";
-	}
-	else
-	{
-		$_POST  = array_map('db_quote', $_POST);
-		if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
-		//Get maximum order from the question group
-		$max=get_max_order($_POST['gid'])+1 ; 
-		
-		$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, question_order) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max)";
-		$result = $connect->Execute($query) or die($connect->ErrorMsg());
-		$newqid = $connect->Insert_ID();
-		if (!$result)
-		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
-			
-		}
-		if (returnglobal('copyanswers') == "Y")
-		{
-			$q1 = "SELECT * FROM {$dbprefix}answers WHERE qid="
-			. returnglobal('oldqid')
-			. " ORDER BY code";
-			$r1 = db_execute_assoc($q1);
-			while ($qr1 = $r1->FetchRow())
-			{
-				$qr1 = array_map('db_quote', $qr1);
-				$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder) "
-				. "VALUES ('$newqid', '{$qr1['code']}', "
-				. "'{$qr1['answer']}', '{$qr1['default_value']}', "
-				. "'{$qr1['sortorder']}')";
-				$ir1 = $connect->Execute($i1);
-			}
-		}
-		if (returnglobal('copyattributes') == "Y")
-		{
-			$q1 = "SELECT * FROM {$dbprefix}question_attributes
-               WHERE qid=".returnglobal('oldqid')."
-               ORDER BY qaid";
-			$r1 = db_execute_assoc($q1);
-			while($qr1 = $r1->FetchRow())
-			{
-				$qr1 = array_map('db_quote', $qr1);
-				$i1 = "INSERT INTO {$dbprefix}question_attributes
-                   (qid, attribute, value)
-                   VALUES ('$newqid',
-                   '{$qr1['attribute']}',
-                   '{$qr1['value']}')";
-				$ir1 = $connect->Execute($i1);
-			} // while
-		}
-	}
-}
-elseif ($action == "delquestion")
-{
-	if (!isset($qid)) {$qid=returnglobal('qid');}
-	//check if any other questions have conditions which rely on this question. Don't delete if there are.
-	$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid=$qid";
-	$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-	$cccount=$ccresult->RecordCount();
-	while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
-	if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
-	if ($cccount) //there are conditions dependant on this question
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
-	}
-	else
-	{
-		$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}'");
-		$row=$result->FetchRow();
-		$gid = $row['gid'];
-		//see if there are any conditions/attributes/answers for this question, and delete them now as well
-		$cquery = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
-		$cresult = $connect->Execute($cquery);
-		$query = "DELETE FROM {$dbprefix}question_attributes WHERE qid=$qid";
-		$result = $connect->Execute($query);
-		$cquery = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
-		$cresult = $connect->Execute($cquery);
-		$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
-		$result = $connect->Execute($query);
-		fixsortorderQuestions(0,$gid);
-		if ($result)
+		if ($total==3)
 		{
 			$qid="";
 			$_POST['qid']="";
@@ -441,211 +483,178 @@ elseif ($action == "delquestion")
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted")."\n$error\")\n //-->\n</script>\n";
 		}
 	}
-}
-
-elseif ($action == "delquestionall")
-{
-	if (!isset($qid)) {$qid=returnglobal('qid');}
-	//check if any other questions have conditions which rely on this question. Don't delete if there are.
-	$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
-	$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-	$cccount=$ccresult->RecordCount();
-	while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
-	if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
-	if ($cccount) //there are conditions dependant on this question
+	
+	elseif ($action == "modanswer" && $actsurrows['define_questions'])
 	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
-	}
-	else
-	{
-		//First delete all the answers
-		if (!isset($total)) {$total=0;}
-		$query = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
-		if ($result=$connect->Execute($query)) {$total++;}
-		$query = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
-		if ($result=$connect->Execute($query)) {$total++;}
-		$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
-		if ($result=$connect->Execute($query)) {$total++;}
-	}
-	if ($total==3)
-	{
-		$qid="";
-		$_POST['qid']="";
-		$_GET['qid']="";
-	}
-	else
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted")."\n$error\")\n //-->\n</script>\n";
-	}
-}
-
-elseif ($action == "modanswer")
-{
-	if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _("Add"))) //TURN ALL OTHER DEFAULT SETTINGS TO NO
-	{
-		$query = "UPDATE {$dbprefix}answers SET default_value = 'N' WHERE qid={$_POST['qid']}";
-		$result=$connect->Execute($query) or die("Error occurred updating default_value settings");
-	}
-	if (isset($_POST['code'])) $_POST['code'] = db_quote($_POST['code']);
-	if (isset($_POST['oldcode'])) {$_POST['oldcode'] = db_quote($_POST['oldcode']);}
-	if (isset($_POST['answer'])) $_POST['answer'] = db_quote($_POST['answer']);
-	if (isset($_POST['oldanswer'])) {$_POST['oldanswer'] = db_quote($_POST['oldanswer']);}
-	if (isset($_POST['default_value'])) {$_POST['oldanswer'] = db_quote($_POST['default_value']);}
-	switch ($_POST['ansaction'])
-	{
-		case _("Fix Sort"):
-		fixsortorder($_POST['qid']);
-		break;
-		case _("Sort Alpha"):
-		$uaquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$_POST['qid']}' ORDER BY answer";
-		$uaresult = db_execute_assoc($uaquery) or die("Cannot get answers<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-		while($uarow=$uaresult->FetchRow())
+		if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _("Add"))) //TURN ALL OTHER DEFAULT SETTINGS TO NO
 		{
-			$orderedanswers[]=array("qid"=>$uarow['qid'],
-			"code"=>$uarow['code'],
-			"answer"=>$uarow['answer'],
-			"default_value"=>$uarow['default_value'],
-			"sortorder"=>$uarow['sortorder']);
-		} // while
-		$i=0;
-		foreach ($orderedanswers as $oa)
-		{
-			$position=sprintf("%05d", $i);
-			$upquery = "UPDATE {$dbprefix}answers SET sortorder='$position' WHERE qid='{$oa['qid']}' AND code='{$oa['code']}'";
-			$upresult = $connect->Execute($upquery);
-			$i++;
-		} // foreach
-		break;
-		case _("Add"):
-		if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
-		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must include both a Code and an Answer")."\")\n //-->\n</script>\n";
+			$query = "UPDATE {$dbprefix}answers SET default_value = 'N' WHERE qid={$_POST['qid']}";
+			$result=$connect->Execute($query) or die("Error occurred updating default_value settings");
 		}
-		else
+		if (isset($_POST['code'])) $_POST['code'] = db_quote($_POST['code']);
+		if (isset($_POST['oldcode'])) {$_POST['oldcode'] = db_quote($_POST['oldcode']);}
+		if (isset($_POST['answer'])) $_POST['answer'] = db_quote($_POST['answer']);
+		if (isset($_POST['oldanswer'])) {$_POST['oldanswer'] = db_quote($_POST['oldanswer']);}
+		if (isset($_POST['default_value'])) {$_POST['oldanswer'] = db_quote($_POST['default_value']);}
+		switch ($_POST['ansaction'])
 		{
-			$uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
-			$uaresult = $connect->Execute($uaquery) or die ("Cannot check for duplicate codes<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-			$matchcount = $uaresult->RecordCount();
-			if ($matchcount) //another answer exists with the same code
+			case _("Fix Sort"):
+			fixsortorder($_POST['qid']);
+			break;
+			case _("Sort Alpha"):
+			$uaquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$_POST['qid']}' ORDER BY answer";
+			$uaresult = db_execute_assoc($uaquery) or die("Cannot get answers<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+			while($uarow=$uaresult->FetchRow())
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. There is already an answer with this code")."\")\n //-->\n</script>\n";
+				$orderedanswers[]=array("qid"=>$uarow['qid'],
+				"code"=>$uarow['code'],
+				"answer"=>$uarow['answer'],
+				"default_value"=>$uarow['default_value'],
+				"sortorder"=>$uarow['sortorder']);
+			} // while
+			$i=0;
+			foreach ($orderedanswers as $oa)
+			{
+				$position=sprintf("%05d", $i);
+				$upquery = "UPDATE {$dbprefix}answers SET sortorder='$position' WHERE qid='{$oa['qid']}' AND code='{$oa['code']}'";
+				$upresult = $connect->Execute($upquery);
+				$i++;
+			} // foreach
+			break;
+			case _("Add"):
+			if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
+			{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. You must include both a Code and an Answer")."\")\n //-->\n</script>\n";
 			}
 			else
-			{
-				$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
-				$cdresult = $connect->Execute($cdquery) or die ("Couldn't add answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-			}
-		}
-		break;
-		case _("Save"):
-		if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
-		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. You must include both a Code and an Answer")."\")\n //-->\n</script>\n";
-		}
-		else
-		{
-			if ($_POST['code'] != $_POST['oldcode']) //code is being changed. Check against other codes and conditions
 			{
 				$uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
 				$uaresult = $connect->Execute($uaquery) or die ("Cannot check for duplicate codes<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 				$matchcount = $uaresult->RecordCount();
-				$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
-				$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-				$cccount=$ccresult->RecordCount();
-				while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
-				if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
-			}
-			if (isset($matchcount) && $matchcount) //another answer exists with the same code
-			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. There is already an answer with this code")."\")\n //-->\n</script>\n";
-			}
-			else
-			{
-				if (isset($cccount) && $cccount) // there are conditions dependent upon this answer to this question
+				if ($matchcount) //another answer exists with the same code
 				{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.")." ($qidlist)\")\n //-->\n</script>\n";
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. There is already an answer with this code")."\")\n //-->\n</script>\n";
 				}
 				else
 				{
-					$cdquery = "UPDATE {$dbprefix}answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', default_value='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND qid='{$_POST['qid']}'";
-					$cdresult = $connect->Execute($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+					$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
+					$cdresult = $connect->Execute($cdquery) or die ("Couldn't add answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 				}
 			}
-		}
-		break;
-		case _("Del"):
-		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
-		$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-		$cccount=$ccresult->RecordCount();
-		while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
-		if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
-		if ($cccount)
-		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
-		}
-		else
-		{
-			$cdquery = "DELETE FROM {$dbprefix}answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
-			$cdresult = $connect->Execute($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-		}
-		fixsortorder($qid);
-		break;
-		case _("Up"):
-		$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
-		$replacesortorder=$newsortorder;
-		$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-		$cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
-		$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-		$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
-		$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-		$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
-		$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-		break;
-		case _("Dn"):
-		$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
-		$replacesortorder=$newsortorder;
-		$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-		$newreplace2=sprintf("%05d", $_POST['sortorder']);
-		$cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
-		$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-		$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
-		$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-		$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
-		$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-		break;
-		default:
-		break;
-	}
-}
-
-
-elseif ($action == "insertCSV")
-{
-	if (get_magic_quotes_gpc() == "0")
-	{
-		$_POST['svettore'] = addcslashes($_POST['svettore'], "'");
-	}
-	$vettore = explode ("^", $svettore );
-	$band = 0;
-	$indice = $_POST['numcol'] - 1;
-	foreach ($vettore as $k => $v)
-	{
-		$vettoreriga = explode ($elem, $v);
-		if ($band == 1)
-		{
-			$valore = $vettoreriga[$indice];
-			$valore = trim($valore);
-			if (!is_null($valore))
+			break;
+			case _("Save"):
+			if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
 			{
-				$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '$k', '$valore', '00000', 'N')";
-				$cdresult = $cdresult = $connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. You must include both a Code and an Answer")."\")\n //-->\n</script>\n";
 			}
+			else
+			{
+				if ($_POST['code'] != $_POST['oldcode']) //code is being changed. Check against other codes and conditions
+				{
+					$uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
+					$uaresult = $connect->Execute($uaquery) or die ("Cannot check for duplicate codes<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+					$matchcount = $uaresult->RecordCount();
+					$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
+					$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+					$cccount=$ccresult->RecordCount();
+					while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
+					if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
+				}
+				if (isset($matchcount) && $matchcount) //another answer exists with the same code
+				{
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. There is already an answer with this code")."\")\n //-->\n</script>\n";
+				}
+				else
+				{
+					if (isset($cccount) && $cccount) // there are conditions dependent upon this answer to this question
+					{
+						echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.")." ($qidlist)\")\n //-->\n</script>\n";
+					}
+					else
+					{
+						$cdquery = "UPDATE {$dbprefix}answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', default_value='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND qid='{$_POST['qid']}'";
+						$cdresult = $connect->Execute($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+					}
+				}
+			}
+			break;
+			case _("Del"):
+			$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
+			$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$cccount=$ccresult->RecordCount();
+			while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
+			if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
+			if ($cccount)
+			{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed")." ($qidlist)\")\n //-->\n</script>\n";
+			}
+			else
+			{
+				$cdquery = "DELETE FROM {$dbprefix}answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
+				$cdresult = $connect->Execute($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+			}
+			fixsortorder($qid);
+			break;
+			case _("Up"):
+			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
+			$replacesortorder=$newsortorder;
+			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
+			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
+			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
+			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
+			break;
+			case _("Dn"):
+			$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
+			$replacesortorder=$newsortorder;
+			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
+			$newreplace2=sprintf("%05d", $_POST['sortorder']);
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
+			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
+			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
+			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
+			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
+			break;
+			default:
+			break;
 		}
-		$band = 1;
 	}
+	
+	
+	
+	elseif ($action == "insertCSV" && $actsurrows['define_questions'])
+	{
+		if (get_magic_quotes_gpc() == "0")
+		{
+			$_POST['svettore'] = addcslashes($_POST['svettore'], "'");
+		}
+		$vettore = explode ("^", $svettore );
+		$band = 0;
+		$indice = $_POST['numcol'] - 1;
+		foreach ($vettore as $k => $v)
+		{
+			$vettoreriga = explode ($elem, $v);
+			if ($band == 1)
+			{
+				$valore = $vettoreriga[$indice];
+				$valore = trim($valore);
+				if (!is_null($valore))
+				{
+					$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '$k', '$valore', '00000', 'N')";
+					$cdresult = $cdresult = $connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
+				}
+			}
+			$band = 1;
+		}
+	}
+
 }
 
-elseif ($action == "insertnewsurvey")
+
+elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 {
 	if ($_POST['url'] == "http://") {$_POST['url']="";}
 	if (!$_POST['short_title'])
@@ -707,7 +716,7 @@ elseif ($action == "insertnewsurvey")
 	}
 }
 
-elseif ($action == "updatesurvey")
+elseif ($action == "updatesurvey" && $actsurrows['edit_survey_property'])
 {
 	if ($_POST['url'] == "http://") {$_POST['url']="";}
 	$_POST  = array_map('db_quote', $_POST);
@@ -749,35 +758,25 @@ elseif ($action == "updatesurvey")
 	}
 }
 
-elseif ($action == "delsurvey") //can only happen if there are no groups, no questions, no answers etc.
+elseif ($action == "delsurvey" && $actsurrows['delete_survey']) //can only happen if there are no groups, no questions, no answers etc.
 	{	
-	$actsurquery = "SELECT delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-	$actsurresult = &db_execute_assoc($actsurquery);
-	$actsurrows = $actsurresult->FetchRow();
-	
-	if($actsurrows['delete_survey'])	
-		{		
-		$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
-		$result = $connect->Execute($query);
-		if ($result)
-			{
-			$surveyid = "";
-			$surveyselect = getsurveylist();
-			}
-		else
-			{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
-			}
-		}
-	else 
+	$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
+	$result = $connect->Execute($query);
+	if ($result)
 		{
-		include("access_denied.php");
-		}	
+		$surveyid = "";
+		$surveyselect = getsurveylist();
+		}
+	else
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+		}
 	}
-
-else
-{
-	echo "$action Not Yet Available!";
-}
+else 
+	{
+	//echo "$action Not Yet Available!";
+	include("access_denied.php");
+	}
+//}
 
 ?>
