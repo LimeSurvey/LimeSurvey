@@ -973,13 +973,13 @@ function keycontroljs()
 function fixsortorder($qid) //Function rewrites the sortorder for a group of answers
 {
 	global $dbprefix, $connect;
-	$cdresult = db_execute_num("SELECT qid, code, answer FROM ".db_table_name('answers')." WHERE qid=? ORDER BY sortorder, answer", $qid);
+	$cdresult = db_execute_num("SELECT qid, code, answer FROM ".db_table_name('answers')." WHERE qid='{$qid}' ORDER BY sortorder, answer");
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$position=sprintf("%05d", $position);
-		$cd2query="UPDATE ".db_table_name('answers')." SET sortorder=? WHERE qid=? AND code=? AND answer=?";
-		$cd2result=$connect->Execute($cd2query, $position, $cdrow[0], $cdrow[1], $cdrow[2]) or die ("Couldn't update sortorder<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
+		$cd2query="UPDATE ".db_table_name('answers')." SET sortorder='{$position}' WHERE qid='{$cdrow[0]}' AND code='{$cdrow[1]}' AND answer='{$cdrow[2]}'";
+		$cd2result=$connect->Execute($cd2query) or die ("Couldn't update sortorder<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$position++;
 	}
 }
