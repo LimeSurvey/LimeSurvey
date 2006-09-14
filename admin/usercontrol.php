@@ -160,7 +160,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	elseif($valid_email)
 		{
 		echo "Generated Password for testing: ".$new_pass = createPassword();
-		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', ENCODE('{$new_pass}', '{$codeString}'), {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0,0)";
+		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', ENCODE('{$new_pass}', '{$codeString}'), {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery);
 		
 		if($uresult)
@@ -168,15 +168,15 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$newqid = $connect->Insert_ID();
 			
 			// add new user to userlist			
-			$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid='{$newqid}'";			//added by Dennis
+			$squery = "SELECT uid, user, DECODE(password, '{$codeString}'), parent_id, email, create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid='{$newqid}'";			//added by Dennis
 			$sresult = db_execute_assoc($squery);
 			$srow = $sresult->FetchRow();	
 			
 			array_push($_SESSION['userlist'], array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], 
 				"password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], "level"=>$level, 
 				"create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], 
-				"delete_user"=>$srow['delete_user'], "pull_up_user"=>$srow['pull_up_user'], "push_down_user"=>$srow['push_down_user'], 
-				"manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']));
+				"delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'],
+				"manage_label"=>$srow['manage_label']));
 			
 			// send Mail			
 			$body = _("You were signed in. Your data:");
@@ -354,8 +354,7 @@ elseif ($action == "userrights")
 			if(isset($_POST['configurator']))$rights['configurator']=1;			else $rights['configurator']=0;
 			if(isset($_POST['create_user']))$rights['create_user']=1;			else $rights['create_user']=0;
 			if(isset($_POST['delete_user']))$rights['delete_user']=1;			else $rights['delete_user']=0;
-			if(isset($_POST['pull_up_user']))$rights['pull_up_user']=1;			else $rights['pull_up_user']=0;
-			if(isset($_POST['push_down_user']))$rights['push_down_user']=1;		else $rights['push_down_user']=0;
+			if(isset($_POST['move_user']))$rights['move_user']=1;			else $rights['move_user']=0;
 			if(isset($_POST['manage_template']))$rights['manage_template']=1;	else $rights['manage_template']=0;
 			if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
 		

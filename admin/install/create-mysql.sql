@@ -226,8 +226,7 @@ CREATE TABLE `prefix_users` (
   `create_survey` tinyint(1) NOT NULL default '0',
   `create_user` tinyint(1) NOT NULL default '0',
   `delete_user` tinyint(1) NOT NULL default '0',
-  `pull_up_user` tinyint(1) NOT NULL default '0',
-  `push_down_user` tinyint(1) NOT NULL default '0',
+  `move_user` tinyint(1) NOT NULL default '0',
   `configurator` tinyint(1) NOT NULL default '0',
   `manage_template` tinyint(1) NOT NULL default '0',
   `manage_label` tinyint(1) NOT NULL default '0'
@@ -275,5 +274,5 @@ INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '109');
 --
 -- Table `users`
 --
-INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', ENCODE('$defaultpass','$codeString'), 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,1);
+INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', ENCODE('$defaultpass','$codeString'), 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 

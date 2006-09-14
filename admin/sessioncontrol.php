@@ -64,7 +64,7 @@ SetInterfaceLanguage($_SESSION['adminlang']);
 // get user rights
 if(isset($_SESSION['loginID']))
 	{
-	$squery = "SELECT create_survey, configurator, create_user, delete_user, pull_up_user, push_down_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
+	$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
 	$sresult = $connect->Execute($squery);
 	if(@$fields = $sresult->FetchRow())
 		{
@@ -72,8 +72,7 @@ if(isset($_SESSION['loginID']))
 		$_SESSION['USER_RIGHT_CONFIGURATOR'] = $fields['configurator'];
 		$_SESSION['USER_RIGHT_CREATE_USER'] = $fields['create_user'];
 		$_SESSION['USER_RIGHT_DELETE_USER'] = $fields['delete_user'];
-		$_SESSION['USER_RIGHT_PULL_UP_USER'] = $fields['pull_up_user'];
-		$_SESSION['USER_RIGHT_PUSH_DOWN_USER'] = $fields['push_down_user'];
+		$_SESSION['USER_RIGHT_MOVE_USER'] = $fields['move_user'];
 		$_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
 		$_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
 		}

@@ -972,13 +972,13 @@ function keycontroljs()
 function fixsortorder($qid) //Function rewrites the sortorder for a group of answers
 {
 	global $dbprefix, $connect;
-	$cdresult = db_execute_num("SELECT qid, code, answer FROM ".db_table_name('answers')." WHERE qid='{$qid}' ORDER BY sortorder, answer");
+	$cdresult = db_execute_num("SELECT qid, code, answer FROM ".db_table_name('answers')." WHERE qid=? ORDER BY sortorder, answer", $qid);
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$position=sprintf("%05d", $position);
-		$cd2query="UPDATE ".db_table_name('answers')." SET sortorder='{$position}' WHERE qid='{$cdrow[0]}' AND code='{$cdrow[1]}' AND answer='{$cdrow[2]}'";
-		$cd2result=$connect->Execute($cd2query) or die ("Couldn't update sortorder<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
+		$cd2query="UPDATE ".db_table_name('answers')." SET sortorder=? WHERE qid=? AND code=? AND answer=?";
+		$cd2result=$connect->Execute($cd2query, $position, $cdrow[0], $cdrow[1], $cdrow[2]) or die ("Couldn't update sortorder<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$position++;
 	}
 }
@@ -2411,16 +2411,16 @@ function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
 	
 		if($level == 0)
 		{
-			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.pull_up_user, a.push_down_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";			//added by Dennis
+			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";			//added by Dennis
     }
 	else{
-		$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.pull_up_user, a.push_down_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.parent_id='{$uid}'";			//added by Dennis
+		$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.parent_id='{$uid}'";			//added by Dennis
 		}		
 		
 		$sresult = db_execute_assoc($squery);
 		while ($srow = $sresult->FetchRow())
 			{
-			$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "level"=>$level, "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "pull_up_user"=>$srow['pull_up_user'], "push_down_user"=>$srow['push_down_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+			$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "level"=>$level, "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
 			$userlist = getuserlistforuser($srow['uid'], $level+1, $userlist);
 			}
     return $userlist;
@@ -2460,8 +2460,7 @@ function setuserrights($uid, $rights)
 	$updates = "create_survey=".$rights['create_survey']
 	. ", create_user=".$rights['create_user']
 	. ", delete_user=".$rights['delete_user']
-	. ", pull_up_user=".$rights['pull_up_user']
-	. ", push_down_user=".$rights['push_down_user']
+	. ", move_user=".$rights['move_user']
 	. ", configurator=".$rights['configurator']	
 	. ", manage_template=".$rights['manage_template']
 	. ", manage_label=".$rights['manage_label'];
@@ -2482,10 +2481,8 @@ function setuserrights($uid, $rights)
 			$updatesArray[] = "create_user=".$rights['create_user'];
 		if(!$rights['delete_user']) 
 			$updatesArray[] = "delete_user=".$rights['delete_user'];
-		if(!$rights['pull_up_user']) 
-			$updatesArray[] = "pull_up_user=".$rights['pull_up_user'];
-		if(!$rights['push_down_user']) 
-			$updatesArray[] = "push_down_user=".$rights['push_down_user'];
+		if(!$rights['move_user']) 
+			$updatesArray[] = "move_user=".$rights['move_user'];
 		if(!$rights['configurator']) 
 			$updatesArray[] = "configurator=".$rights['configurator'];
 		if(!$rights['manage_template']) 
@@ -2519,7 +2516,7 @@ function setsurveyrights($uids, $rights)
 	. ", delete_survey=".$rights['delete_survey']	
 	. ", activate_survey=".$rights['activate_survey'];
 	$uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uids_implode;
-	
+	// TODO
 	return $connect->Execute($uquery);
 	}
 		

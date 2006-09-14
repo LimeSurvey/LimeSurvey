@@ -400,6 +400,7 @@ if ($surveyid)
 						. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."'>"
 						."</a>"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+		
 		if($sumrows5['edit_survey_property'])
 			{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\"" 
@@ -411,24 +412,25 @@ if ($surveyid)
 			{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
 			}
-		if($activated!="Y" && getGroupSum($surveyid)>1 && $sumrows5['define_questions'])
-			{
-			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
-						. "onmouseout=\"hideTooltip()\"" 
-						. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">" .
-						"<img src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups'></a>" ; 
-			}
-		else
-			{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
-			}
-
+		
 		if ($sumcount3 == 0 && $sumcount2 == 0 && $sumrows5['delete_survey'])
 			{			
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=delsurvey&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Delete Current Survey")."');return false\">\n" .
 			"<img src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey'></a>" ;
+			}
+		else
+			{
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			}
+		
+		if($activated!="Y" && getGroupSum($surveyid)>1 && $sumrows5['define_questions'])
+			{
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
+						. "onmouseout=\"hideTooltip()\"" 
+						. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">" .
+						"<img src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups'></a>" ; 
 			}
 		else
 			{
@@ -653,6 +655,72 @@ if ($surveyid)
 		{
 		include("access_denied.php");
 		}
+}
+
+if (isset($_GET['ugid']) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb")
+	{
+	if(isset($_GET['ugid']))
+		{
+		$ugid = $_GET['ugid'];
+		$grpquery = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = $ugid";
+		$grpresult = db_execute_assoc($grpquery);
+		$grow = array_map('htmlspecialchars', $grpresult->FetchRow());
+		}
+	$usergroupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
+	$usergroupsummary .= "\t<tr>\n"
+	. "\t\t<td colspan='2'>\n"
+	. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
+	. "<font size='1' face='verdana' color='white'><strong>"._("User Groups")."</strong> ";
+	if($ugid)
+		{
+		$usergroupsummary .= "<font color='silver'>{$grow['group_name']}</font></font></td></tr>\n";
+		}
+	else
+		{
+		$usergroupsummary .= "</font></td></tr>\n";
+		}		
+	$usergroupsummary .= "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
+						. "\t\t\t\t\t<td>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left'>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='175' height='20' border='0' hspace='0' align='left'>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='45' height='20' border='0' hspace='0' align='left'>\n";
+					
+	if($ugid && $_SESSION['loginID'] == $grow['creator_id'])		
+		{			
+		$usergroupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('"._("Are you sure you want to delete this entry.")."')\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'". _("Delete Current User Group")."');return false\">"
+			. "<img src='$imagefiles/delete.png' alt='' name='DeleteUserGroup' title='' align='left' border='0' hspace='0'></a>";
+		}
+	else
+		{
+		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='43' height='20' border='0' hspace='0' align='left'>\n";	
+		}
+	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='86' height='20' align='left' border='0' hspace='0'>\n"
+					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+					   . "\t\t\t\t\t</td>\n"
+					   . "\t\t\t\t\t<td align='right' width='420'>\n"
+					   . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='82' height='20'>\n"
+					   . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
+
+	$usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
+	."onmouseout=\"hideTooltip()\""
+	."onmouseover=\"showTooltip(event,'"._("Add New User Group")."');return false\">" .
+	"<img src='$imagefiles/add.png' title='' alt='' " .
+	"align='right' name='AddNewUserGroup' onClick=\"window.open('', '_top')\"></a>\n";
+	
+	$usergroupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">"._("User Groups").":</font>&nbsp;<select class=\"listboxquestions\" name='qid' "
+	. "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
+	. getusergrouplist()
+	. "\t\t\t\t\t</select>\n"
+	. "\t\t\t\t</td></tr>\n"
+	. "\t\t\t</table>\n"
+	. "\t\t</td>\n"
+	. "\t</tr>\n"
+	. "\n</table>\n";
 }
 
 if ($gid)
@@ -1263,11 +1331,8 @@ if ($action == "setuserrights")
 		if($_SESSION['USER_RIGHT_DELETE_USER']) {
 			$usersummary .= "\t\t<th align='center'>delete user</th>\n";
 		}
-		if($_SESSION['USER_RIGHT_PULL_UP_USER']) {
-			$usersummary .= "\t\t<th align='center'>pull up user</th>\n";
-		}
-		if($_SESSION['USER_RIGHT_PUSH_DOWN_USER']) {
-			$usersummary .= "\t\t<th align='center'>push down user</th>\n";
+		if($_SESSION['USER_RIGHT_MOVE_USER']) {
+			$usersummary .= "\t\t<th align='center'>move user</th>\n";
 		}
 		if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']) {
 			$usersummary .= "\t\t<th align='center'>manage template</th>\n";
@@ -1312,16 +1377,9 @@ if ($action == "setuserrights")
 					}
 					$usersummary .="></td>\n";
 				}
-				if($_SESSION['USER_RIGHT_PULL_UP_USER']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"pull_up_user\" value=\"pull_up_user\"";
-					if($usr['pull_up_user']) {
-						$usersummary .= " checked ";
-					}
-					$usersummary .="></td>\n";
-				}
-				if($_SESSION['USER_RIGHT_PUSH_DOWN_USER']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"push_down_user\" value=\"push_down_user\"";
-					if($usr['push_down_user']) {
+				if($_SESSION['USER_RIGHT_MOVE_USER']) {
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"move_user\" value=\"move_user\"";
+					if($usr['move_user']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .="></td>\n";
@@ -1363,13 +1421,13 @@ if ($action == "editusers")
 	if(isset($_SESSION['loginID']))
 		{
 		$usersummary = "<table rules='rows' width='100%'>\n"
-					 . "\t\t\t\t<tr bgcolor='#555555'><td colspan='5' height='4'>"
+					 . "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
 					 . "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></font></td></tr>\n"
 					 . "\t<tr>\n"
 					 . "\t\t<th>$setfont"._("Username")."</font></th>\n"
 					 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
 					 . "\t\t<th>$setfont"._("Password")."</font></th>\n"
-					 //. "\t\t<th>$setfont"._("Level")."</font></th>\n"
+					 . "\t\t<th>$setfont"._("MOVE_USER")."</font></th>\n"
 					 . "\t\t<th>$setfont"._("Creator")."</font></th>\n"
 					 . "\t\t<th>$setfont"._("Action")."</font></th>\n"
 					 . "\t</tr>\n";
@@ -1396,6 +1454,11 @@ if ($action == "editusers")
 			
 		$usersummary .=  "\t\t<td align='center'><strong>$setfont{$usrhimself['password']}</font></strong></td>\n";
 		
+		if($_SESSION['USER_RIGHT_MOVE_USER'] == 0 ) {
+				$usersummary .= "\t\t<td align='center'>$setfont{$usr['parent']}</font></td>\n";
+			} else {
+				$usersummary .= "\t\t<td align='center'>$setfont{$usr['parent']}</font></td>\n";
+			}
 		
 		if($usrhimself['parent']!=0) {
 			$usersummary .= "\t\t<td align='center'><strong>$setfont{$usrhimself['parent']}as</font></strong></td>\n"
@@ -1438,10 +1501,16 @@ if ($action == "editusers")
 			else $usersummary .= "\t<tr>\n";
 			
 			$usersummary .= "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
-						  . "\t<td align='center'>$setfont{$usr['email']}</font></td>\n";
+						  . "\t<td align='center'><a href='mailto:{$usr['email']}'>$setfont{$usr['email']}</font></a></td>\n";
 			
 			// passwords of other users will not be displayed				
 			$usersummary .=  "\t\t<td align='center'>$setfont******</font></td>\n";
+			
+			if($_SESSION['USER_RIGHT_MOVE_USER'] == 0 ) {
+				$usersummary .= "\t\t<td align='center'>$setfont{$usr['parent']}</font></td>\n";
+			} else {
+				$usersummary .= "\t\t<td align='center'>$setfont{$usr['parent']}</font></td>\n";
+			}
 			
 			$usersummary .= //"\t\t<td align='center'>$setfont{$usr['level']}</font></td>\n"							  
 						  "\t\t<td align='center'>$setfont{$usr['parent']}</font></td>\n"
@@ -1515,15 +1584,15 @@ if ($action == "delusergroup")
 	{
 	$usersummary = "<br /><strong>"._("Deleting User Group")."</strong><br />\n";
 		
-	if(!empty($_POST['ugid']) && $_POST['ugid'] > -1)
+	if(!empty($_GET['ugid']) && $_GET['ugid'] > -1)
 		{
-		$query = "SELECT ugid, name, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_POST['ugid']." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
+		$query = "SELECT ugid, name, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
 		$result = db_execute_assoc($query);
 		if($result->RecordCount() > 0)
 			{
 			$row = $result->FetchRow();
 			
-			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$ugid} AND creator_id = {$_SESSION['loginID']}";
+			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$_GET['ugid']} AND creator_id = {$_SESSION['loginID']}";
 			if($connect->Execute($remquery))
 				{
 				$usersummary .= "<br />"._("Group Name").": {$row['name']}<br />\n";								
@@ -1580,98 +1649,65 @@ if ($action == "usergroupindb") {
 	}
 	
 if ($action == "editusergroups")
-	{	
-	if(isset($_SESSION['loginID']))
+	{
+	if(isset($_GET['ugid']))
 		{
-		$usersummary .= "\t<table width='100%' border='0'>\n"
-						. "\t\t\t\t<tr valign='middle' bgcolor='#555555'><td colspan='3' height='4'>"
-						. "<font size='1' face='verdana' color='white'><strong>"._("Group Control")."</strong></font></td></tr>\n"
-					 	. "\t\t<tr>\n"						
-						. "\t\t\t\t\t<td align='center' valign='middle'>"
-						. "\t\t<font class=\"boxcaption\">"._("User Groups").":</font>"
-						. "\t\t<form method='get'>\n"
-	                    . "\t\t\t\t\t\t<input name='sid' type='hidden' value='12'>"
-						. "\t\t\t<select name='ugid' class=\"listboxusergroups\""
-						. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-	                    
-						. getusergrouplist()
-	                    . "\t\t\t</select>\n"
-						. "\t\t</form>"
-						
-	                    . "\t\t\t\t</td>\n"
-						. "\t\t\t\t\t<td align='center' valign='middle'>\n"
-						. "\t\t\t\t\t<form action='$scriptname' method='GET'>\n"
-						. "\t\t\t\t\t\t<input type='submit' value='"._("Add new group")."'>\n"
-						. "\t\t\t\t\t\t<input type='hidden' name='action' value='addusergroup'>\n"
-						. "\t\t\t\t\t</form>\n";					
-		if(isset($_GET['ugid']))
-			{
-			$usersummary .= "\t\t\t\t\t<form method='post' action='$scriptname?action=delusergroup'>"		
-						. "\t\t\t\t\t\t<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
-						. "\t\t\t\t\t\t<input name='ugid' type='hidden' value='{$_GET['ugid']}'>"
-						. "\t\t\t\t\t</from>";
-			}
-							
-		$usersummary .= "\t\t\t\t\t</td>\n"
-						. "\t</tr>"
-						. "\t</table>\n";
-								
-		if(isset($_GET['ugid']))
-			{
-			$query = "SELECT ugid, name, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
-			$result = db_execute_assoc($query);
-			if($result->RecordCount() > 0)
-				{				
-				$ugid = $_GET['ugid'];
-				$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid;
-				$eguresult = db_execute_assoc($eguquery);
-				$usersummary .= "<table rules='rows' width='100%' border='1'>\n"
-							 . "\t<tr>\n"
-							 . "\t\t<th>$setfont"._("Username")."</font></th>\n"
-							 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
-							 . "\t\t<th>$setfont"._("Action")."</font></th>\n"
-							 . "\t</tr>\n";
-				
-				$row = 0;				
-				while ($egurow = $eguresult->FetchRow())
-					{
-					//	output users
-					//if($row == 1){ $usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
-					if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
-					else $usersummary .= "\t<tr>\n";
-					$usersummary .= "\t<td align='center'><strong>$setfont{$egurow['user']}</font></strong></td>\n"
-								  . "\t<td align='center'><strong>$setfont{$egurow['email']}</font></strong></td>\n"
-								  . "\t\t<td align='center'>\n";
-					
-					$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup'>";
-					if($_SESSION['loginID'] != $egurow['uid'])
-						{						
-						$usersummary .= "<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
-									." <input type='hidden' name='user' value='{$egurow['user']}'>"
-									." <input name='uid' type='hidden' value='{$egurow['uid']}'>"
-									." <input name='ugid' type='hidden' value='{$ugid}'>";
-						}
-					$usersummary .= "</form>"
-									. "\t\t</td>\n"
-								  . "\t</tr>\n";		
-					$row++;
-					}			
-				$usersummary .= "\t\t<form action='$scriptname?ugid={$ugid}' method='post'>\n"
-					. "\t\t<tr><td colspan='2'></td>\n"				
-					. "\t\t\t<td align='center'>"
-					. "\t\t\t\t<select name='uid' class=\"listboxusergroups\">\n"
-					. getgroupuserlist()
-					. "\t\t\t\t</select>\n"
-					. "\t\t\t\t<input type='submit' value='"._("Add User")."'>\n"
-					. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup'></td></form>\n"
-					. "\t\t\t</td>\n"
-					. "\t\t</tr>\n"
-					. "\t</form>\n";
-				}			
-			else
+		$ugid = $_GET['ugid'];
+		
+		$query = "SELECT ugid, name, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
+		$result = db_execute_assoc($query);
+		if($result->RecordCount() > 0)
+			{				
+			
+			$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid;
+			$eguresult = db_execute_assoc($eguquery);
+			$usergroupsummary .= "<table rules='rows' width='100%' border='1'>\n"
+						 . "\t<tr>\n"
+						 . "\t\t<th>$setfont"._("Username")."</font></th>\n"
+						 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
+						 . "\t\t<th>$setfont"._("Action")."</font></th>\n"
+						 . "\t</tr>\n";
+			
+			$row = 0;				
+			while ($egurow = $eguresult->FetchRow())
 				{
-				include("access_denied.php");
-				}
+				//	output users
+				//if($row == 1){ $usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
+				if(($row % 2) == 0) $usergroupsummary .= "\t<tr  bgcolor='#999999'>\n";
+				else $usergroupsummary .= "\t<tr>\n";
+				$usergroupsummary .= "\t<td align='center'><strong>$setfont{$egurow['user']}</font></strong></td>\n"
+							  . "\t<td align='center'><strong>$setfont{$egurow['email']}</font></strong></td>\n"
+							  . "\t\t<td align='center'>\n";
+				
+				
+				if($_SESSION['loginID'] != $egurow['uid'])
+					{						
+					$usergroupsummary .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup'>"
+								." <input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
+								." <input type='hidden' name='user' value='{$egurow['user']}'>"
+								." <input name='uid' type='hidden' value='{$egurow['uid']}'>"
+								." <input name='ugid' type='hidden' value='{$ugid}'>";
+					}
+				$usergroupsummary .= "</form>"
+								. "\t\t</td>\n"
+							  . "\t</tr>\n";		
+				$row++;
+				}			
+			$usergroupsummary .= "\t\t<form action='$scriptname?ugid={$ugid}' method='post'>\n"
+				. "\t\t<tr><td colspan='2'></td>\n"				
+				. "\t\t\t<td align='center'>"
+				. "\t\t\t\t<select name='uid' class=\"listboxusergroups\">\n"
+				. getgroupuserlist()
+				. "\t\t\t\t</select>\n"
+				. "\t\t\t\t<input type='submit' value='"._("Add User")."'>\n"
+				. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup'></td></form>\n"
+				. "\t\t\t</td>\n"
+				. "\t\t</tr>\n"
+				. "\t</form>\n";
+			}			
+		else
+			{
+			include("access_denied.php");
 			}
 		}
 	}

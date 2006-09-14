@@ -37,6 +37,7 @@
 require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+if (!isset($ugid)) {$ugid=returnglobal('ugid');}
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($lid)) {$lid=returnglobal('lid');}
@@ -237,6 +238,7 @@ if ($action == "newsurvey" && isset($_SESSION['loginID']))
 if (!isset($accesssummary)){
 	if (isset($loginsummary)) {echo $loginsummary;}	// added by Dennis
 	if (isset($logoutsummary)) {echo $logoutsummary;}	// added by Dennis
+	if (isset($usergroupsummary)) {echo $usergroupsummary;}
 	if (isset($listsurveys)) {echo $listsurveys; }
 	if (isset($surveysummary)) {echo $surveysummary;}
 	if (isset($cssummary)) {echo $cssummary;}
@@ -246,6 +248,7 @@ if (!isset($accesssummary)){
 	if (isset($editsurvey)) {echo $editsurvey;}
 	if (isset($ordergroups)){echo $ordergroups;}
 	if (isset($newgroup)) {echo $newgroup;}
+	
 	if (isset($groupsummary)) {echo $groupsummary;}
 	if (isset($editgroup)) {echo $editgroup;}
 	if (isset($newquestion)) {echo $newquestion;}
