@@ -69,6 +69,14 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 	echo $export;
 	exit;
 
+	}
+else
+	{
+	$action = "dumpdb";
+	include("access_denied.php");
+	include("admin.php");	
+	}
+
 	function defdump($tablename)
 	{
 		global $connect;
@@ -135,13 +143,6 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			$result .= ");\n";
 		} // while
 		return $result . "\n\n\n";
-	}
-	
-	}
-else
-	{
-	$action = "dumpdb";
-	include("access_denied.php");
-	include("admin.php");	
-	}
+	}	
+
 ?>
