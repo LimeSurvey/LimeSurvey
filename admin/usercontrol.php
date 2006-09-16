@@ -123,7 +123,7 @@ if (!isset($_SESSION['loginID']))
 				else 
 					{
 					$loginsummary .= "<br />"._("User name and/or email not found!")."<br />";
-					$loginsummary .= "<br /><br /><a href='$scriptname?action=login'>"._("Continue")."</a><br />&nbsp;\n";
+					$loginsummary .= "<br /><br /><a href='$scriptname'>"._("Continue")."</a><br />&nbsp;\n";
 					}
 				}	
 			}

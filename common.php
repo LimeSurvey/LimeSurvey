@@ -2407,27 +2407,45 @@ function strip_tags_full($string) {
 // gets all users who are successors from an user
 function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
     {
-	global $dbprefix, $codeString;
+	global $connect, $dbprefix, $codeString;
 	
 		if($level == 0)
 		{
-			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";			//added by Dennis
+			$createquery = "DROP TABLE IF EXISTS temp_users";
+			modify_database(null, $createquery);
+			$createquery = "CREATE TEMPORARY TABLE temp_users AS SELECT a.uid AS uid, a.user AS user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id AS parent_id, a.email AS email, a.create_survey AS create_survey, a.configurator AS configurator, a.create_user AS create_user, a.delete_user AS delete_user, a.move_user AS move_user, a.manage_template AS manage_template, a.manage_label AS manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";
+			modify_database(null, $createquery);
+			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}'), b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";			//added by Dennis
     }
-	else{
-		$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.parent_id='{$uid}'";			//added by Dennis
-		}		
+		else	{
+			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}'), b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.parent_id='{$uid}'";			//added by Dennis
+			modify_database(null,"INSERT INTO temp_users (uid, user, decpassword, parent, parent_id, email, create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label)".$squery);
+		}
 		
-		$sresult = db_execute_assoc($squery);
-		while ($srow = $sresult->FetchRow())
+		if($sresult = db_execute_assoc($squery)) {
+			while ($srow = $sresult->FetchRow()) {
+				getuserlistforuser($srow['uid'], $level+1, $userlist);
+			}
+		}
+		if($level == 0)
 			{
-			$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "level"=>$level, "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
-			$userlist = getuserlistforuser($srow['uid'], $level+1, $userlist);
+					$query = "SELECT * FROM temp_users WHERE uid = {$uid}";
+					$sresult = db_execute_assoc($query);
+					while ($srow = $sresult->FetchRow())
+						{
+							$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+						}
+					$query = "SELECT * FROM temp_users WHERE uid <> {$uid} ORDER BY user";
+					$sresult = db_execute_assoc($query);
+					while ($srow = $sresult->FetchRow())
+						{
+							$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+						}
 			}
     return $userlist;
     }
 
 // adds Usergroups in Database by Moses
-
 function addUserGroupInDB($group_name, $group_description) {
 	global $connect;
 	$iquery = "INSERT INTO ".db_table_name('user_groups')." VALUES(NULL, '{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
@@ -2554,30 +2572,6 @@ function getgroupuserlist()
     $surveyselecter = "\t\t\t<option value='-1' selected>"._("Please Choose...")."</option>\n".$surveyselecter;
     return $surveyselecter;
     }
-	
-function deleteUserFromGroup($uid, $ugid)
-	{
-	global $connect;
-	
-	$query = "SELECT ugid, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
-	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0)
-		{
-		$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
-		if($connect->Execute($remquery))
-			{
-			return 1;
-			}
-		else
-			{
-			return 0;
-			}
-		}
-	else
-		{
-		include("access_denied.php");
-		}
-	}
 
 function getsurveyuserlist()
     {
@@ -2628,7 +2622,8 @@ function getusergrouplist()
     {
     global $dbprefix, $scriptname, $connect;
     
-	$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE creator_id = {$_SESSION['loginID']} ORDER BY name";
+	//$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE creator_id = {$_SESSION['loginID']} ORDER BY name";
+	$squery = "SELECT a.ugid, a.name, a.creator_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE uid = {$_SESSION['loginID']} ORDER BY name";
 
     $sresult = db_execute_assoc($squery);
     if (!$sresult) {return "Database Error";}
@@ -2638,8 +2633,9 @@ function getusergrouplist()
         {
         foreach($groupnames as $gn)
             {
-			$selecter .= "\t\t\t<option";
-            if ($gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1;}
+			$selecter .= "\t\t\t<option ";
+            if($gn['uid'] == $gn['creator_id']) {$selecter .= " style=\"font-weight: bold;\"";}			
+			if ($gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1;}
             $selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
             }
         }
