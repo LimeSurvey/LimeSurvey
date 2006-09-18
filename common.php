@@ -2643,4 +2643,13 @@ function getusergrouplist()
     //else {$selecter = "\t\t\t<option value='-1'>"._("None")."</option>\n".$selecter;}
     return $selecter;
     }
+    
+function updateusergroup($name, $description, $ugid) 
+	{
+	global $dbprefix, $scriptname, $connect;
+	
+	$uquery = "UPDATE ".db_table_name('user_groups')." SET name = '$name', description = '$description' WHERE ugid =$ugid";
+	// TODO
+	return $connect->Execute($uquery) or die($connect->ErrorMsg()) ;
+	}
 ?>

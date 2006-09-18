@@ -657,7 +657,7 @@ if ($surveyid)
 		}
 }
 
-if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb")
+if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb" || $action == "editusergroup")
 	{
 	if($ugid)
 		{
@@ -1339,80 +1339,84 @@ if ($action == "setuserrights")
 		{	
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' bgcolor='black' align='center'>\n"
 					 . "\t\t<strong>$setfont<font color='white'>"._("Set User Rights").": ".$_POST['user']."</td></tr>\n";
-						
-		if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
-			$usersummary .= "\t\t<th align='center'>create survey</th>\n";
-		}
-		if($_SESSION['USER_RIGHT_CONFIGURATOR']) {
-			$usersummary .= "\t\t<th align='center'>configurator</th>\n";
-		}
-		if($_SESSION['USER_RIGHT_CREATE_USER']) {
-			$usersummary .= "\t\t<th align='center'>create user</th>\n";
-		}
-		if($_SESSION['USER_RIGHT_DELETE_USER']) {
-			$usersummary .= "\t\t<th align='center'>delete user</th>\n";
-		}
-		if($_SESSION['USER_RIGHT_MOVE_USER']) {
-			$usersummary .= "\t\t<th align='center'>move user</th>\n";
-		}
-		if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']) {
-			$usersummary .= "\t\t<th align='center'>manage template</th>\n";
-		}
-		if($_SESSION['USER_RIGHT_MANAGE_LABEL']) {
-			$usersummary .= "\t\t<th align='center'>manage label</th>\n";
-		}
-		
+								
 		foreach ($_SESSION['userlist'] as $usr)
-			{
+			{			
 			if ($usr['uid'] == $_POST['uid'])
 				{
+				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
+				$sresult = $connect->Execute($squery);
+				$parent = $sresult->FetchRow();
+
+				if($parent['create_survey']) {
+					$usersummary .= "\t\t<th align='center'>create survey</th>\n";
+				}
+				if($parent['configurator']) {
+					$usersummary .= "\t\t<th align='center'>configurator</th>\n";
+				}
+				if($parent['create_user']) {
+					$usersummary .= "\t\t<th align='center'>create user</th>\n";
+				}
+				if($parent['delete_user']) {
+					$usersummary .= "\t\t<th align='center'>delete user</th>\n";
+				}
+				if($parent['move_user']) {
+					$usersummary .= "\t\t<th align='center'>move user</th>\n";
+				}
+				if($parent['manage_template']) {
+					$usersummary .= "\t\t<th align='center'>manage template</th>\n";
+				}
+				if($parent['manage_label']) {
+					$usersummary .= "\t\t<th align='center'>manage label</th>\n";
+				}
+		
 				$usersummary .="\t\t<th></th>\n\t</tr>\n"
 				."\t<tr><form method='post' action='$scriptname'></tr>"
 							  ."<form action='$scriptname' method='post'>\n";
 				//content
-				if($_SESSION['USER_RIGHT_CREATE_SURVEY']) {
+				if($parent['create_survey']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_survey\" value=\"create_survey\"";
 					if($usr['create_survey']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .="></td>\n";
 				}
-				if($_SESSION['USER_RIGHT_CONFIGURATOR']) {
+				if($parent['configurator']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"configurator\" value=\"configurator\"";
 					if($usr['configurator']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .="></td>\n";
 				}
-				if($_SESSION['USER_RIGHT_CREATE_USER']) {
+				if($parent['create_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_user\" value=\"create_user\"";
 					if($usr['create_user']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .="></td>\n";
 				}
-				if($_SESSION['USER_RIGHT_DELETE_USER']) {
+				if($parent['delete_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_user\" value=\"delete_user\"";
 					if($usr['delete_user']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .="></td>\n";
 				}
-				if($_SESSION['USER_RIGHT_MOVE_USER']) {
+				if($parent['move_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"move_user\" value=\"move_user\"";
 					if($usr['move_user']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .="></td>\n";
 				}
-				if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']) {
+				if($parent['manage_template']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"manage_template\" value=\"manage_template\"";
 					if($usr['manage_template']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .="></td>\n";
 				}
-				if($_SESSION['USER_RIGHT_MANAGE_LABEL']) {
+				if($parent['manage_label']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"manage_label\" value=\"manage_label\"";
 					if($usr['manage_label']) {
 						$usersummary .= " checked ";
@@ -1426,16 +1430,16 @@ if ($action == "setuserrights")
 							  ."<input type='hidden' name='action' value='userrights'>"
 							  ."<input type='hidden' name='uid' value='{$_POST['uid']}'></td></tr>"
 							  ."</form>"
-							  . "</table>\n";
+							  . "</table>\n";				
 				continue;
-				}					  
-			}
-		}
+				}	// if
+			}	// foreach
+		}	// if
 	else
 		{			
 		include("access_denied.php");			
 		}
-	}
+	}	// if
 
 if($action == "setnewparents") 
 	{
@@ -1631,7 +1635,32 @@ if ($action == "addusergroup")
 		include("access_denied.php");
 		}
 	}
-	
+
+if ($action == "editusergroup")
+	{
+	$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
+	$result = db_execute_assoc($query);
+	while ($esrow = $result->FetchRow())
+		{
+		$esrow = array_map('htmlspecialchars', $esrow);
+		$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
+		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "\t\t<strong>$setfont<font color='white'>"._("Edit Group for Creator ID")."(".$_SESSION['loginID'].")</font></font></strong></td></tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Name:")."</strong></font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\"></td></tr>\n"
+		. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>(optional)</font></td>\n"
+		. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update User Group")."'>\n"
+		. "\t<input type='hidden' name='action' value='editusergroupindb'>\n"
+		. "\t<input type='hidden' name='creator_id' value='$creator_id'>\n"
+		. "\t<input type='hidden' name='ugid' value='$ugid'>\n"
+		. "\t</td></tr>\n"
+		. "</table>\n"
+		. "\t</form>\n";
+		}	
+	}
+
 if ($action == "delusergroup")
 	{
 	$usersummary = "<br /><strong>"._("Deleting User Group")."</strong><br />\n";
@@ -1699,7 +1728,23 @@ if ($action == "usergroupindb") {
 						. "<br /><a href='$scriptname?action=addusergroup'>"._("Continue")."</a><br />&nbsp;\n";
 		}	
 	}
+
+if ($action == "editusergroupindb"){
+	$usersummary = "<br /><strong>"._("Edit User Group Successful!")."</strong><br />\n";
+	$ugid = $_POST['ugid'];
+	$name = $_POST['name'];
+	$description = $_POST['description'];
 	
+	if(updateusergroup($name, $description, $ugid))
+	{
+	$usersummary .= "<br />"._("Name").": {$name}<br />\n";
+	$usersummary .= _("Description: ").$description."<br />\n";
+	$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>"._("Continue")."</a><br />&nbsp;\n";
+	}
+	else $usersummary .= "<br /><strong>"._("Failed to update!")."</strong><br />\n"
+						. "<br /><a href='$scriptname?action=editusergroups'>"._("Continue")."</a><br />&nbsp;\n";
+}	
+
 if ($action == "editusergroups")
 	{
 	if(isset($_GET['ugid']))

@@ -308,11 +308,16 @@ while ($isresult->RecordCount()>0);
 
 // A regex could do alot better here but I am bad on that so I am using the simple way.
 $insert=$tablearray[0];
-$start = strpos(strtolower ($insert), 'values');
-$start = strpos($insert, '(',$start)+1;
-$end  = strpos($insert, ',',$start);
-$insert = substr($insert,0,$start).$newsid.substr($insert,$end,strlen($insert));
+//$start = strpos(strtolower ($insert), 'values');
+//$start = strpos($insert, '(',$start)+1;
+//$end  = strpos($insert, ',',$start);
+//$insert = substr($insert,0,$start).$newsid.substr($insert,$end,strlen($insert));
 
+$sfieldorders=convertToArray($insert, "`, `", "(`", "`)");
+$sfieldcontents=convertToArray($insert, "', '", "('", "')");
+$creator_id_pos=array_search("creator_id", $sfieldorders);
+$creator_id=$sfieldcontents[$creator_id_pos];	
+$insert = str_replace("('$surveyid', '$creator_id',", "('$newsid', '{$_SESSION['loginID']}',", $insert);
 $insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
 $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
 
@@ -637,6 +642,10 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		unset($newcqid);
 	}
 }
+
+// DO SURVEY_RIGHTS
+$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
+$isrresult = $connect->Execute($isrquery) or die("<strong>"._("Error")."</strong> Failed to insert survey rights<br />\n$isrquery<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
 echo "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n";
 echo "<strong><u>"._("Survey Import Summary")."</u></strong><br />\n";
