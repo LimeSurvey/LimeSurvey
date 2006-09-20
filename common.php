@@ -385,7 +385,7 @@ function db_table_name($name)
 function getsurveylist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect;
-    $surveyidquery = "SELECT a.sid, a.short_title, a.description, a.admin, a.active, a.welcome, a.useexpiry, a.expires, "
+    $surveyidquery = "SELECT a.sid, a.creator_id, a.short_title, a.description, a.admin, a.active, a.welcome, a.useexpiry, a.expires, "
 										. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, a.urldescrip, "
 										. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
 										. "a.email_invite_subj, a.email_invite, a.email_remind_subj, a.email_remind, "
@@ -401,8 +401,9 @@ function getsurveylist()
         foreach($surveynames as $sv)
             {
             $surveyselecter .= "\t\t\t<option";
-            if ($sv[0] == $surveyid) {$surveyselecter .= " selected"; $svexist = 1;}
-            $surveyselecter .=" value='$scriptname?sid=$sv[0]'>$sv[1]</option>\n";
+			if($_SESSION['loginID'] == $sv[1]) {$surveyselecter .= " style=\"font-weight: bold;\"";}			
+			if ($sv[0] == $surveyid) {$surveyselecter .= " selected"; $svexist = 1;}
+            $surveyselecter .=" value='$scriptname?sid=$sv[0]'>$sv[2]</option>\n";
             }
         }
     if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected>"._("Please Choose...")."</option>\n".$surveyselecter;}
@@ -2062,7 +2063,7 @@ function getAdminHeader()
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n";
 
 	// This prevents a lasting javascripterror in the application
-	if ((returnglobal('action') == "ordergroups") || (returnglobal('action') == "orderquestions") || (returnglobal('action') == "orderusers")) 
+	if ((returnglobal('action') == "ordergroups") || (returnglobal('action') == "orderquestions")) 
   {
   	$strAdminHeader.="<script type=\"text/javascript\" src=\"scripts/draganddrop.js\"></script>\n";
   }
@@ -2124,7 +2125,6 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
 
 	$mail = new PHPMailer;
 	$mail->CharSet = "UTF-8";
-
 
 	$fromname='';
 	$fromemail=$from;
@@ -2600,7 +2600,7 @@ function getsurveyusergrouplist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect;
     
-	$surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM ".db_table_name('user_groups')." AS a LEFT JOIN (SELECT b.ugid FROM ".db_table_name('user_in_groups')." AS b LEFT JOIN ".db_table_name('surveys_rights')." AS c ON b.uid = c.uid WHERE ISNULL(c.uid)) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING da IS NOT NULL";
+	$surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM ".db_table_name('user_groups')." AS a LEFT JOIN (SELECT b.ugid FROM ".db_table_name('user_in_groups')." AS b LEFT JOIN (SELECT * FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE ISNULL(c.uid)) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING da IS NOT NULL";
 	$surveyidresult = db_execute_assoc($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
@@ -2634,7 +2634,7 @@ function getusergrouplist()
         foreach($groupnames as $gn)
             {
 			$selecter .= "\t\t\t<option ";
-            if($gn['uid'] == $gn['creator_id']) {$selecter .= " style=\"font-weight: bold;\"";}			
+            if($_SESSION['loginID'] == $gn['creator_id']) {$selecter .= " style=\"font-weight: bold;\"";}			
 			if ($gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1;}
             $selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
             }

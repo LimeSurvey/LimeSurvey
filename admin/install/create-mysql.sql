@@ -247,7 +247,7 @@ CREATE TABLE `prefix_surveys_rights` (
 CREATE TABLE `prefix_user_groups` (
 	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
 	`name` varchar(20) NOT NULL UNIQUE,
-	`description` varchar(255) NOT NULL default '',
+	`description` TEXT NOT NULL default '',
 	`creator_id` int(10) unsigned NOT NULL
 ) TYPE=MyISAM;
 

@@ -657,7 +657,7 @@ if ($surveyid)
 		}
 }
 
-if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb" || $action == "editusergroup")
+if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb" || $action == "editusergroup" || $action == "mailusergroup")
 	{
 	if($ugid)
 		{
@@ -689,10 +689,10 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 
 	if($ugid)		
 		{
-		$usergroupsummary .= "<a href=\"mailto:test@de.de\" onClick=\"window.open('$scriptname?action=emailgroup&amp;ugid=$ugid', '_top')\""
+		$usergroupsummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=mailusergroup&amp;ugid=$ugid', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'"._("Mail to all Members")."');return false\"> " .
-						"<img src='$imagefiles/invite.png' title='' align='left' alt='' name='EmailGroup'></a>\n" ;
+						"<img src='$imagefiles/invite.png' title='' align='left' alt='' name='MailUserGroup'></a>\n" ;
 		}
 	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='135' height='20' border='0' hspace='0' align='left'>\n"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
@@ -1488,8 +1488,7 @@ if ($action == "editusers")
 		
 		//$userlist = getuserlist();
 		$_SESSION['userlist'] = getuserlistforuser($_SESSION['loginID'], 0, NULL);
-		$ui = count($_SESSION['userlist']);
-		
+		$ui = count($_SESSION['userlist']);		
 		$usrhimself = $_SESSION['userlist'][0];
 		unset($_SESSION['userlist'][0]);
 		
@@ -1532,8 +1531,11 @@ if ($action == "editusers")
 						 
 		// other users
 		$row = 0;
-		foreach ($_SESSION['userlist'] as $usr)
+		//foreach ($_SESSION['userlist'] as $usr)
+		$usr_arr = $_SESSION['userlist'];
+		for($i=1; $i<=count($_SESSION['userlist']); $i++)
 			{
+			$usr = $usr_arr[$i];
 			if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
 			else $usersummary .= "\t<tr>\n";
 			
@@ -1640,12 +1642,10 @@ if ($action == "editusergroup")
 	{
 	$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
 	$result = db_execute_assoc($query);
-	while ($esrow = $result->FetchRow())
-		{
-		$esrow = array_map('htmlspecialchars', $esrow);
-		$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
+	$esrow = $result->FetchRow();
+	$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
 		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Edit Group for Creator ID")."(".$_SESSION['loginID'].")</font></font></strong></td></tr>\n"
+		. "\t\t<strong>$setfont<font color='white'>"._("Edit Group for Creator")."(".$_SESSION['user'].")</font></font></strong></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Name:")."</strong></font></td>\n"
 		. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\"></td></tr>\n"
@@ -1658,7 +1658,44 @@ if ($action == "editusergroup")
 		. "\t</td></tr>\n"
 		. "</table>\n"
 		. "\t</form>\n";
-		}	
+	}
+
+if ($action == "mailusergroup")
+	{
+	$query = "SELECT a.ugid, a.name, a.creator_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
+	$result = db_execute_assoc($query);
+	$crow = $result->FetchRow();
+	$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != {$_SESSION['loginID']} ORDER BY b.user";
+	$eguresult = db_execute_assoc($eguquery);
+	while ($egurow = $eguresult->FetchRow())
+		{
+		$to .= $egurow['user']. ' <'.$egurow['email'].'>'. ', ' ; 
+		$addressee .= $egurow['user'].', ';
+		}
+	
+	$to = substr("$to", 0, -2);
+	$addressee = substr("$addressee", 0, -2);	
+			
+	$usersummary = "<form action='$scriptname' name='mailusergroup' method='post'>"
+		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "\t\t<strong>$setfont<font color='white'>"._("Mail to all Members")."</font></font></strong></td></tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right' width='20%'>$setfont<strong>"._("To:")."</strong></font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='to' value=\"{$to}\"></td></tr>\n"
+		. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Send me a copy:")."</strong></font></td>\n"
+		. "\t\t<td><input name='copymail' type='checkbox' value='1'></td></tr>\n"
+		. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Subject:")."</strong></font></td>\n"
+		. "\t\t<td><input type='text' size='50' name='subject' value=''></td></tr>\n"
+		. "\t<tr><td align='right'>$setfont<strong>"._("Message:")."</strong></font></td>\n"
+		. "\t\t<td><textarea cols='50' rows='4' name='body'></textarea></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Send")."'>\n"
+		. "<input type='reset' value='Reset'><br>" 
+		. "\t<input type='hidden' name='action' value='mailsendusergroup'>\n"
+		. "\t<input type='hidden' name='addressee' value='$addressee'>\n"
+		. "\t<input type='hidden' name='ugid' value='$ugid'>\n"
+		. "\t</td></tr>\n"
+		. "</table>\n"
+		. "\t</form>\n";	
 	}
 
 if ($action == "delusergroup")
@@ -1729,21 +1766,69 @@ if ($action == "usergroupindb") {
 		}	
 	}
 
+if ($action == "mailsendusergroup")
+	{
+	$usersummary = "<br /><strong>"._("Mail to all Members")."</strong><br />\n";
+	
+	// user musst be in user group
+	$query = "SELECT uid FROM ".db_table_name('user_in_groups') ." WHERE ugid = {$ugid} AND uid = {$_SESSION['loginID']}";
+	$result = db_execute_assoc($query);
+	
+	if($result->RecordCount() > 0)
+		{
+		$from_user = "SELECT email, user FROM ".db_table_name("users")." WHERE uid = " .$_SESSION['loginID'];
+		$from_user_result = mysql_query($from_user);
+		$from_user_row = mysql_fetch_array($from_user_result, MYSQL_BOTH);
+		$from = $from_user_row['user'].' <'.$from_user_row['email'].'> ';
+				
+		$ugid = $_POST['ugid'];
+		$to	= $_POST['to'];
+		$body = $_POST['body'];
+		$subject = $_POST['subject'];
+		$addressee = $_POST['addressee'];
+		
+		if($_POST['copymail'] == 1)
+			{
+			$to .= ", " . $from;
+			}
+		
+		$body = str_replace("\n.", "\n..", $body);
+		$body = wordwrap($body, 70);
+			
+		if (mail($to, $subject, $body, "From: $from"))
+			{
+			$usersummary = "<br /><strong>".("Message sent successfully!")."</strong><br />\n"
+						 . "<br />To: $addressee<br />\n"
+						 . "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>"._("Continue")."</a><br />&nbsp;\n";	
+			}
+		else
+			{
+			$usersummary .= "<br /><strong>"._("Mail not sent!")."</strong><br />\n";					
+			$usersummary .= "<br /><a href='$scriptname?action=mailusergroup&amp;ugid={$ugid}'>"._("Continue")."</a><br />&nbsp;\n";	
+			}
+		}
+	else
+		{
+		include("access_denied.php");
+		}
+	}	
+	
 if ($action == "editusergroupindb"){
-	$usersummary = "<br /><strong>"._("Edit User Group Successful!")."</strong><br />\n";
+	
 	$ugid = $_POST['ugid'];
 	$name = $_POST['name'];
 	$description = $_POST['description'];
 	
 	if(updateusergroup($name, $description, $ugid))
 	{
+	$usersummary = "<br /><strong>"._("Edit User Group Successfully!")."</strong><br />\n";
 	$usersummary .= "<br />"._("Name").": {$name}<br />\n";
 	$usersummary .= _("Description: ").$description."<br />\n";
 	$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>"._("Continue")."</a><br />&nbsp;\n";
 	}
 	else $usersummary .= "<br /><strong>"._("Failed to update!")."</strong><br />\n"
 						. "<br /><a href='$scriptname?action=editusergroups'>"._("Continue")."</a><br />&nbsp;\n";
-}	
+}
 
 if ($action == "editusergroups")
 	{
@@ -1751,12 +1836,23 @@ if ($action == "editusergroups")
 		{
 		$ugid = $_GET['ugid'];
 		
-		$query = "SELECT a.ugid, a.name, a.creator_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
+		$query = "SELECT a.ugid, a.name, a.creator_id, a.description, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
 		$result = db_execute_assoc($query);
 		$crow = $result->FetchRow();
 		
 		if($result->RecordCount() > 0)
 			{
+
+			if(!empty($crow['description']))
+				{
+				$usergroupsummary .= "<table rules='rows' width='100%' border='1' cellpadding='10'>\n"
+									. "\t\t\t\t<tr $gshowstyle id='surveydetails20'><td align='justify' colspan='2' height='4'>"
+									. "<font size='2' face='verdana' color='black'><strong>"._("Description: ")."</strong>"
+									. "<font color='black'>{$crow['description']}</font></font></td></tr>\n"
+									. "</table>";
+				}
+			
+			
 			$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.user";
 			$eguresult = db_execute_assoc($eguquery);
 			$usergroupsummary .= "<table rules='rows' width='100%' border='1'>\n"
@@ -2687,7 +2783,7 @@ if($action == "surveysecurity")
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 		{
-		$query2 = "SELECT a.uid, b.user FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'];
+		$query2 = "SELECT a.uid, b.user FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.user";
 		$result2 = db_execute_assoc($query2);
 		$surveysecurity = "<table width='100%' rules='rows' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
 						 . "\t\t<strong>$setfont<font color='white'>"._("Survey Security")."</td></tr>\n"
@@ -2708,6 +2804,7 @@ if($action == "surveysecurity")
 					{
 					$group_ids[] = $resul3row['ugid'];
 					}
+				if(!isset($group_ids)) break;	// TODO
 				$group_ids_query = implode(" OR ugid=", $group_ids);
 				unset($group_ids);
 				
@@ -3167,39 +3264,6 @@ if ($action == "editsurvey")
 		include("access_denied.php");
 		}
 		
-}
-
-// muss geändert werden
-if ($action == "orderusers")
-{
-	//if($sumrows5['edit_survey_property'])
-		{		
-		$ordergroups = "<ul id='arrangableNodes'>";
-		//Get the groups from this survey
-		$ogquery = "SELECT * FROM {$dbprefix}users" ;
-		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
-		while($ogrows = $ogresult->FetchRow())
-		{
-			$ordergroups.="<li id='".$ogrows['uid']."'>".$ogrows['user']."</li>\n" ;
-		}
-		$ordergroups.="</ul>" ;
-	
-		$ordergroups .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
-		$ordergroups .="<div id=\"movableNode\"><ul></ul></div>
-						   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif'></div>
-						   <div id=\"arrDebug\"></div>" ; 					 
-		//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
-		$ordergroups .= "<form action='$scriptname' name='orderusers' method='post'>
-							<input type='hidden' name='hiddenNodeIds'>
-							<input type='hidden' name='action' value='reorderusers'> 
-							<input type='hidden' name='sid' value='$surveyid'>
-							</form>" ; 
-		$ordergroups .="</p>" ;
-		}
-	//else
-		{
-		//include("access_denied.php");
-		}
 }
 
 if ($action == "ordergroups")

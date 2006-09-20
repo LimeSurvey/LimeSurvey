@@ -208,7 +208,7 @@ $allfields[]=array("{$dbprefix}surveys_rights", "activate_survey", "DO_SURVEY ti
 
 $allfields[]=array("{$dbprefix}user_groups", "ugid", "ugid int(10) unsigned NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}user_groups", "name", "name varchar(20) NOT NULL UNIQUE");
-$allfields[]=array("{$dbprefix}user_groups", "description", "description varchar(255) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}user_groups", "description", "description TEXT NOT NULL default ''");
 $allfields[]=array("{$dbprefix}user_groups", "creator_id", "creator_id int(10) unsigned NOT NULL");
 
 $allfields[]=array("{$dbprefix}user_in_groups", "gid","gid int(10) unsigned NOT NULL");

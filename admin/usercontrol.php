@@ -60,7 +60,7 @@ if (!isset($_SESSION['loginID']))
 				 
 				// send Mail
 			
-				$body = _("Your data:");
+				$body = _("Your data:") . "<br>\n";;
 				$body .= _("Username") . ": " . $fields['user'] . "<br>\n";
 				$body .= _("Password") . ": " . $fields['password'] . "<br>\n";
 				
@@ -179,11 +179,11 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				"manage_label"=>$srow['manage_label']));
 			
 			// send Mail			
-			$body = _("You were signed in. Your data:");
+			$body = _("You were signed in. Your data:") . "<br>\n";;
 			$body .= _("Username") . ": " . $new_user . "<br>\n";
 			$body .= _("Password") . ": " . $new_pass . "<br>\n";
 			
-			$subject = 'Anmeldung';
+			$subject = 'Registration';
 			$to = $new_email;
 			$from = $siteadminemail;
 			$sitename = $siteadminname;
