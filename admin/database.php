@@ -623,8 +623,6 @@ if(isset($surveyid))
 		}
 	}
 	
-	
-	
 	elseif ($action == "insertCSV" && $actsurrows['define_questions'])
 	{
 		if (get_magic_quotes_gpc() == "0")
@@ -649,21 +647,13 @@ if(isset($surveyid))
 			}
 			$band = 1;
 		}
-	}
-
-}
-
-
-elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
-{
-	if ($_POST['url'] == "http://") {$_POST['url']="";}
-	if (!$_POST['short_title'])
+	}	
+	
+	elseif ($action == "updatesurvey" && $actsurrows['edit_survey_property'])
 	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be created because it did not have a short title")."\")\n //-->\n</script>\n";
-	}
-	else
-	{
+		if ($_POST['url'] == "http://") {$_POST['url']="";}
 		$_POST  = array_map('db_quote', $_POST);
+	
 		if (trim($_POST['expires'])=="")
 		{
 			$_POST['expires']='1980-01-01';
@@ -672,13 +662,77 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		{
 			$_POST['expires']="'".$_POST['expires']."'";
 		}
+	
+		$usquery = "UPDATE {$dbprefix}surveys \n"
+		. "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
+		. "admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
+		. "useexpiry='{$_POST['useexpiry']}', expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
+		. "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
+		. "format='{$_POST['format']}', template='{$_POST['template']}',\n"
+		. "url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}',\n"
+		. "language='{$_POST['language']}', datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
+		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
+		. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
+		. "attribute2='{$_POST['attribute2']}', email_invite_subj='{$_POST['email_invite_subj']}',\n"
+		. "email_invite='{$_POST['email_invite']}', email_remind_subj='{$_POST['email_remind_subj']}',\n"
+		. "email_remind='{$_POST['email_remind']}', email_register_subj='{$_POST['email_register_subj']}',\n"
+		. "email_register='{$_POST['email_register']}', email_confirm_subj='{$_POST['email_confirm_subj']}',\n"
+		. "email_confirm='{$_POST['email_confirm']}', allowsave='{$_POST['allowsave']}',\n"
+		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
+		. "WHERE sid={$_POST['sid']}";
+		$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+		if ($usresult)
+		{
+			$surveyselect = getsurveylist();
+		}
+		else
+		{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be updated")."\n".$connect->ErrorMsg() ." ($usquery)\")\n //-->\n</script>\n";
+		}
+	}
+	
+	elseif ($action == "delsurvey" && $actsurrows['delete_survey']) //can only happen if there are no groups, no questions, no answers etc.
+		{	
+		$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
+		$result = $connect->Execute($query);
+		if ($result)
+			{
+			$surveyid = "";
+			$surveyselect = getsurveylist();
+			}
+		else
+			{
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
+			}
+		}
+	}
+
+
+elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
+	{
+	if ($_POST['url'] == "http://") {$_POST['url']="";}
+	if (!$_POST['short_title'])
+		{
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be created because it did not have a short title")."\")\n //-->\n</script>\n";
+		}
+	else
+		{
+		$_POST  = array_map('db_quote', $_POST);
+		if (trim($_POST['expires'])=="")
+			{
+			$_POST['expires']='1980-01-01';
+			}
+		else
+			{
+			$_POST['expires']="'".$_POST['expires']."'";
+			}
 		// Get random ids until one is found that is not used
 		do
-		{
+			{
 			$surveyid = getRandomID();
 			$isquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 			$isresult = db_execute_assoc($isquery);
-		}
+			}
 		while ($isresult->RecordCount()>0);
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
@@ -704,74 +758,18 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for creator
     $isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
 		if ($isresult)
-		{
+			{
 			$surveyselect = getsurveylist();
-		}
+			}
 		else
-		{
+			{
 			$errormsg=_("Survey could not be created")." - ".$connect->ErrorMsg();
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
 			echo htmlspecialchars($isquery);
+			}
 		}
 	}
-}
 
-elseif ($action == "updatesurvey" && $actsurrows['edit_survey_property'])
-{
-	if ($_POST['url'] == "http://") {$_POST['url']="";}
-	$_POST  = array_map('db_quote', $_POST);
-
-	if (trim($_POST['expires'])=="")
-	{
-		$_POST['expires']='1980-01-01';
-	}
-	else
-	{
-		$_POST['expires']="'".$_POST['expires']."'";
-	}
-
-	$usquery = "UPDATE {$dbprefix}surveys \n"
-	. "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
-	. "admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
-	. "useexpiry='{$_POST['useexpiry']}', expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
-	. "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
-	. "format='{$_POST['format']}', template='{$_POST['template']}',\n"
-	. "url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}',\n"
-	. "language='{$_POST['language']}', datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
-	. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
-	. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
-	. "attribute2='{$_POST['attribute2']}', email_invite_subj='{$_POST['email_invite_subj']}',\n"
-	. "email_invite='{$_POST['email_invite']}', email_remind_subj='{$_POST['email_remind_subj']}',\n"
-	. "email_remind='{$_POST['email_remind']}', email_register_subj='{$_POST['email_register_subj']}',\n"
-	. "email_register='{$_POST['email_register']}', email_confirm_subj='{$_POST['email_confirm_subj']}',\n"
-	. "email_confirm='{$_POST['email_confirm']}', allowsave='{$_POST['allowsave']}',\n"
-	. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
-	. "WHERE sid={$_POST['sid']}";
-	$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
-	if ($usresult)
-	{
-		$surveyselect = getsurveylist();
-	}
-	else
-	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be updated")."\n".$connect->ErrorMsg() ." ($usquery)\")\n //-->\n</script>\n";
-	}
-}
-
-elseif ($action == "delsurvey" && $actsurrows['delete_survey']) //can only happen if there are no groups, no questions, no answers etc.
-	{	
-	$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
-	$result = $connect->Execute($query);
-	if ($result)
-		{
-		$surveyid = "";
-		$surveyselect = getsurveylist();
-		}
-	else
-		{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
-		}
-	}
 else 
 	{
 	//echo "$action Not Yet Available!";

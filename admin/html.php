@@ -1300,14 +1300,15 @@ if ($action == "modifyuser")
 	{
 	if($_SESSION['loginID'] == $_POST['uid'])
 		{
-		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>\n"
 					 . "\t\t<strong>$setfont<font color='white'>"._("Modifying User")."</td></tr>\n"
 						 . "\t<tr>\n"
 						 . "\t\t<th>$setfont"._("Username")."</th>\n"
 						 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
+						 . "\t\t<th>$setfont"._("Full name")."</th>\n"
 						 . "\t\t<th>$setfont"._("Password")."</font></th>\n"
 						 . "\t</tr>\n";
-		$muq = "SELECT a.user, DECODE(a.password, '{$codeString}') AS decpassword, a.email, a.uid, b.user AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
+		$muq = "SELECT a.user, DECODE(a.password, '{$codeString}') AS decpassword, a.full_name, a.email, a.uid, b.user AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
 		//echo($muq);
 		
 		$mur = db_execute_assoc($muq);
@@ -1317,12 +1318,13 @@ if ($action == "modifyuser")
 			$mrw = array_map('htmlspecialchars', $mrw);
 			$decodeString = "DECODE(a.password, '{$codeString}')";	//	added by Dennis
 			$usersummary .= "\t<td align='center'>$setfont<strong>{$mrw['user']}</strong></font>\n"
-						  . "\t<td align='center'>\n\t\t<input type='text' name='email' value=\"{$mrw['email']}\"></td>\n"	
+						  . "\t<td align='center'>\n\t\t<input type='text' name='email' value=\"{$mrw['email']}\"></td>\n"
+						  . "\t<td align='center'>\n\t\t<input type='text' name='full_name' value=\"{$mrw['full_name']}\"></td>\n"	
 						  . "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
 						  . "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\"></td>\n";	// added by Dennis
 			$usersummary .= "\t<td align='center'>\n\t\t<input type='text' name='pass' value=\"{$mrw['decpassword']}\"></td>\n";
 			}		
-		$usersummary .= "\t</tr>\n\t<tr><td colspan='3' align='center'>\n"
+		$usersummary .= "\t</tr>\n\t<tr><td colspan='4' align='center'>\n"
 					  . "\t\t<input type='submit' value='"._("Update")."'>\n"
 					  . "<input type='hidden' name='action' value='moduser'></td></tr>\n"
 					  . "</form></table>\n";
@@ -1331,7 +1333,7 @@ if ($action == "modifyuser")
 		{			
 		include("access_denied.php");			
 		}
-}
+	}
 
 if ($action == "setuserrights")
 	{
@@ -1481,6 +1483,7 @@ if ($action == "editusers")
 					 . "\t<tr>\n"
 					 . "\t\t<th>$setfont"._("Username")."</font></th>\n"
 					 . "\t\t<th>$setfont"._("Email")."</font></th>\n"
+					 . "\t\t<th>$setfont"._("Full name")."</font></th>\n"
 					 . "\t\t<th>$setfont"._("Password")."</font></th>\n"
 					 . "\t\t<th>$setfont"._("Creator")."</font></th>\n"
 					 . "\t\t<th>$setfont"._("Action")."</font></th>\n"
@@ -1496,6 +1499,7 @@ if ($action == "editusers")
 		$usersummary .= "\t<tr bgcolor='#999999'>\n"
 					  . "\t<td align='center'><strong>$setfont{$usrhimself['user']}</font></strong></td>\n"
 					  . "\t<td align='center'><strong>$setfont{$usrhimself['email']}</font></strong></td>\n"
+					  . "\t\t<td align='center'><strong>$setfont{$usrhimself['full_name']}</font></strong></td>\n"
 					  . "\t\t<td align='center'><strong>$setfont{$usrhimself['password']}</font></strong></td>\n";
 		if($usrhimself['parent_id']!=0) {
 			$usersummary .= "\t\t<td align='center'>$setfont{$usrhimself['parent']}</font></td>\n";
@@ -1540,7 +1544,8 @@ if ($action == "editusers")
 			else $usersummary .= "\t<tr>\n";
 			
 			$usersummary .= "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
-						  . "\t<td align='center'><a href='mailto:{$usr['email']}'>$setfont{$usr['email']}</font></a></td>\n";
+						  . "\t<td align='center'><a href='mailto:{$usr['email']}'>$setfont{$usr['email']}</font></a></td>\n"
+						  . "\t<td align='center'>$setfont{$usr['full_name']}</td>\n";
 			
 			// passwords of other users will not be displayed				
 			$usersummary .=  "\t\t<td align='center'>$setfont******</font></td>\n";
@@ -1609,6 +1614,7 @@ if ($action == "editusers")
 						  . "\t\t<tr>\n"
 						  . "\t\t<td align='center'><input type='text' name='new_user'></td>\n"
 						  . "\t\t<td align='center'><input type='text' name='new_email'></td>\n"
+						  . "\t\t<td align='center'><input type='text' name='new_full_name'></td>\n"
 						  . "\t\t<td align='center'><input type='submit' value='"._("Add User")."'>"
 						  . "<input type='hidden' name='action' value='adduser'></td>\n"
 						  . "\t</tr>\n";
@@ -2544,18 +2550,18 @@ if($action == "addsurveysecurity")
 			if($isrresult)
 				{
 				$addsummary .= "<br />"._("User added.")."<br />\n";
-				}
-			else
-				{
-				// Username already exists.
-				$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username already exists.")."<br />\n";		
-				}
-			$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
+				$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
 						 ."<input type='submit' value='"._("Set Survey Rights")."'>"
 						 ."<input type='hidden' name='action' value='setsurveysecurity'>"
 						 //."<input type='hidden' name='user' value='{$_POST['user']}'>"
 						 ."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
 						 ."</form>\n";
+				}
+			else
+				{
+				// Username already exists.
+				$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username already exists.")."<br />\n";		
+				}			
 			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&sid={$surveyid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 		else
@@ -2580,7 +2586,7 @@ if($action == "addusergroupsurveysecurity")
 	if($result->RecordCount() > 0)
 		{		
 		if($_POST['ugid'] > 0){		
-			$query2 = "SELECT a.uid FROM ".db_table_name('users')." AS a INNER JOIN (SELECT b.uid FROM ".db_table_name('surveys_rights')." AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$_POST['ugid']}) AS d ON a.uid = d.uid";
+			$query2 = "SELECT b.uid FROM (SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$_POST['ugid']}";
 			$result2 = db_execute_assoc($query2);
 			if($result2->RecordCount() > 0)
 				{
@@ -2589,28 +2595,27 @@ if($action == "addusergroupsurveysecurity")
 					$uid_arr[] = $row2['uid'];
 					$values[] = "($surveyid, {$row2['uid']},0,0,0,0,0,0)";
 					}
-				}
-			$values_implode = implode(",", $values);
+				$values_implode = implode(",", $values);
 			
-			$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ".$values_implode;
-			$isrresult = $connect->Execute($isrquery);
-			
-			if($isrresult)
-				{
-				$addsummary .= "<br />"._("User Group added.")."<br />\n";
-				$_SESSION['uids'] = $uid_arr;
-				}
+				$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ".$values_implode;
+				$isrresult = $connect->Execute($isrquery);
+				
+				if($isrresult)
+					{
+					$addsummary .= "<br />"._("User Group added.")."<br />\n";
+					$_SESSION['uids'] = $uid_arr;
+					$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
+							 ."<input type='submit' value='"._("Set Survey Rights")."'>"
+							 ."<input type='hidden' name='action' value='setusergroupsurveysecurity'>"
+							 ."<input type='hidden' name='ugid' value='{$_POST['ugid']}'>"
+							 ."</form>\n";
+					}
+				}				
 			else
 				{
-				// Users already exists.
+				// no user to add
 				$addsummary .= "<br /><strong>"._("Failed to add User Group.")."</strong><br />\n";		
-				}
-			$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
-						 ."<input type='submit' value='"._("Set Survey Rights")."'>"
-						 ."<input type='hidden' name='action' value='setusergroupsurveysecurity'>"
-						 //."<input type='hidden' name='user' value='{$_POST['user']}'>"
-						 ."<input type='hidden' name='ugid' value='{$_POST['ugid']}'>"
-						 ."</form>\n";
+				}						
 			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&sid={$surveyid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 		else
@@ -2961,7 +2966,7 @@ if ($action == "editsurvey")
 			. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Description:")."</font></td>\n"
 			. "\t\t<td><textarea cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
 			. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
-			. "\t\t<td><textarea cols='50' rows='5' name='welcome'>".str_replace("<br />", "\n", $esrow['welcome'])."</textarea></td></tr>\n"
+			. "\t\t<td><textarea cols='50' rows='5' name='welcome'>".str_replace("&lt;br /&gt;", "\n", $esrow['welcome'])."</textarea></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
 			. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\"></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"

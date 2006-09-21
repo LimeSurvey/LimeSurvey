@@ -2413,13 +2413,13 @@ function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
 		{
 			$createquery = "DROP TABLE IF EXISTS temp_users";
 			modify_database(null, $createquery);
-			$createquery = "CREATE TEMPORARY TABLE temp_users AS SELECT a.uid AS uid, a.user AS user, DECODE(a.password, '{$codeString}') AS decpassword, b.user AS parent, a.parent_id AS parent_id, a.email AS email, a.create_survey AS create_survey, a.configurator AS configurator, a.create_user AS create_user, a.delete_user AS delete_user, a.move_user AS move_user, a.manage_template AS manage_template, a.manage_label AS manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";
+			$createquery = "CREATE TEMPORARY TABLE temp_users AS SELECT a.uid AS uid, a.user AS user, DECODE(a.password, '{$codeString}') AS decpassword, a.full_name AS full_name, b.user AS parent, a.parent_id AS parent_id, a.email AS email, a.create_survey AS create_survey, a.configurator AS configurator, a.create_user AS create_user, a.delete_user AS delete_user, a.move_user AS move_user, a.manage_template AS manage_template, a.manage_label AS manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";
 			modify_database(null, $createquery);
-			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}'), b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";			//added by Dennis
+			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}'), a.full_name, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$uid}'";			//added by Dennis
     }
 		else	{
-			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}'), b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.parent_id='{$uid}'";			//added by Dennis
-			modify_database(null,"INSERT INTO temp_users (uid, user, decpassword, parent, parent_id, email, create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label)".$squery);
+			$squery = "SELECT a.uid, a.user, DECODE(a.password, '{$codeString}'), a.full_name, b.user AS parent, a.parent_id, a.email, a.create_survey, a.configurator, a.create_user, a.delete_user, a.move_user, a.manage_template, a.manage_label FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.parent_id='{$uid}'";			//added by Dennis
+			modify_database(null,"INSERT INTO temp_users (uid, user, decpassword, full_name, parent, parent_id, email, create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label)".$squery);
 		}
 		
 		if($sresult = db_execute_assoc($squery)) {
@@ -2433,13 +2433,13 @@ function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
 					$sresult = db_execute_assoc($query);
 					while ($srow = $sresult->FetchRow())
 						{
-							$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+							$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "full_name"=>$srow['full_name'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
 						}
 					$query = "SELECT * FROM temp_users WHERE uid <> {$uid} ORDER BY user";
 					$sresult = db_execute_assoc($query);
 					while ($srow = $sresult->FetchRow())
 						{
-							$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+							$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['decpassword'], "full_name"=>$srow['full_name'], "parent"=>$srow['parent'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
 						}
 			}
     return $userlist;

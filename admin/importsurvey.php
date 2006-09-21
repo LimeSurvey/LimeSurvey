@@ -317,7 +317,16 @@ $sfieldorders=convertToArray($insert, "`, `", "(`", "`)");
 $sfieldcontents=convertToArray($insert, "', '", "('", "')");
 $creator_id_pos=array_search("creator_id", $sfieldorders);
 $creator_id=$sfieldcontents[$creator_id_pos];	
-$insert = str_replace("('$surveyid', '$creator_id',", "('$newsid', '{$_SESSION['loginID']}',", $insert);
+if($creator_id_pos)
+	{
+	$insert = str_replace("('$surveyid', '$creator_id',", "('$newsid', '{$_SESSION['loginID']}',", $insert);
+	}
+else	// old format
+	{
+	$insert = str_replace("(`sid`, ", "(`sid`, `creator_id`,", $insert);
+	$insert = str_replace("('$surveyid',", "('$newsid', '{$_SESSION['loginID']}',", $insert);
+	}
+
 $insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
 $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
 

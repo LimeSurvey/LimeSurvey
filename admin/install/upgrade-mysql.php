@@ -79,6 +79,7 @@ $allfields[]=array("{$dbprefix}labels", "sortorder", "sortorder varchar(5) NULL"
 $allfields[]=array("{$dbprefix}users", "uid", "uid int(10) unsigned NOT NULL auto_increment");
 $allfields[]=array("{$dbprefix}users", "user", "user varchar(20) NOT NULL default '' UNIQUE");
 $allfields[]=array("{$dbprefix}users", "password", "password BLOB NOT NULL");
+$allfields[]=array("{$dbprefix}users", "full_name", "full_name VARCHAR(50) NOT NULL");
 $allfields[]=array("{$dbprefix}users", "parent_id", "parent_id int(10) unsigned NOT NULL");
 $allfields[]=array("{$dbprefix}users", "lang", "lang varchar(20)");
 $allfields[]=array("{$dbprefix}users", "email", "email varchar(50) NOT NULL UNIQUE");

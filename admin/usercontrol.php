@@ -145,6 +145,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	
 	$new_user = html_entity_decode($_POST['new_user']);
 	$new_email = html_entity_decode($_POST['new_email']);
+	$new_full_name = html_entity_decode($_POST['new_full_name']);
 	$valid_email = true;
 	
 	if(!validate_email($new_email))	
@@ -160,7 +161,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	elseif($valid_email)
 		{
 		echo "Generated Password for testing: ".$new_pass = createPassword();
-		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', ENCODE('{$new_pass}', '{$codeString}'), {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
+		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', ENCODE('{$new_pass}', '{$codeString}'), '{$new_full_name}', {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery);
 		
 		if($uresult)
@@ -282,6 +283,7 @@ elseif ($action == "moduser")
 		$user = html_entity_decode($_POST['user']);
 		$email = html_entity_decode($_POST['email']);	
 		$pass = html_entity_decode($_POST['pass']);
+		$full_name = html_entity_decode($_POST['full_name']);
 		$valid_email = true;
 		
 		if(!validate_email($email))
@@ -298,7 +300,7 @@ elseif ($action == "moduser")
 			}
 		elseif($valid_email)
 			{
-			$uquery = "UPDATE {$dbprefix}users SET email='{$email}', password=ENCODE('{$pass}', '{$codeString}') WHERE uid={$_POST['uid']}";
+			$uquery = "UPDATE {$dbprefix}users SET email='{$email}', full_name='{$full_name}', password=ENCODE('{$pass}', '{$codeString}') WHERE uid={$_POST['uid']}";
 			//echo($uquery);
 			$uresult = $connect->Execute($uquery);
 			
