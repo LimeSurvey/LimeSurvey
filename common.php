@@ -201,12 +201,6 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
 
-		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logoutuser', '_top')\"" .
-					"onmouseout=\"hideTooltip()\"" 
-					. "onmouseover=\"showTooltip(event,'"._("Logout")."');return false\">" .
-					 "<img src='$imagefiles/logout.png' name='Logout'"
-					." title='' alt='"._("Logout")."'  align='left'></a>";				
-
 		// edit users
 		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
 					"onmouseout=\"hideTooltip()\"" 
@@ -316,7 +310,11 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	                    . "onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">" 
 	                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
 	                    . "alt='". _("Show Help")."' align='right' ></a>"
-	                    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' height='20' align='right' >\n"
+		                . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logoutuser', '_top')\"" 
+                        . "onmouseout=\"hideTooltip()\"" 
+					    . "onmouseover=\"showTooltip(event,'"._("Logout")."');return false\">" 
+                        . "<img src='$imagefiles/logout.png' name='Logout'"
+					    . "title='' alt='"._("Logout")."'  align='right'></a>"				
 	                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
 	                    
 			if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
@@ -340,6 +338,9 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	                    . "</table>\n";
         return $adminmenu;
         }
+        
+        
+        
 //DATA TYPES
 $qtypeselect = getqtypelist();
 
@@ -458,10 +459,10 @@ function getquestions()
 	return $questionselecter;
 }
 
-function getGroupSum($surveyid)
+function getGroupSum($surveyid, $lang)
 {
 	global $surveyid,$dbprefix ;
-	$sumquery3 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."'"; //Getting a count of questions for this survey
+	$sumquery3 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$lang."'"; //Getting a count of questions for this survey
 
 	$sumresult3 = db_execute_assoc($sumquery3);
 	$groupscount = $sumresult3->RecordCount();

@@ -9,11 +9,15 @@ function db_upgrade($oldversion) {
 /// older versions to match current functionality 
 
     if ($oldversion < 109) {
-      modify_database("","ALTER TABLE `prefix_answers` ADD `answer_language` varchar(20) default 'en'");
-      modify_database("","ALTER TABLE `prefix_questions` ADD `question_language` varchar(20) default 'en'");
-      modify_database("","ALTER TABLE `prefix_groups` ADD `group_language` varchar(20) default 'en'");
-      modify_database("","ALTER TABLE `prefix_labels` ADD `label_language` varchar(20) default 'en'");
+      modify_database("","ALTER TABLE `prefix_answers` ADD `language` varchar(20) default 'en'");
+      modify_database("","ALTER TABLE `prefix_questions` ADD `language` varchar(20) default 'en'");
+      modify_database("","ALTER TABLE `prefix_groups` ADD `language` varchar(20) default 'en'");
+      modify_database("","ALTER TABLE `prefix_labels` ADD `language` varchar(20) default 'en'");
       modify_database("","UPDATE  `prefix_settings_global` SET stg_value='109' where stg_name ='DBVersion'");
+    }
+
+    if ($oldversion < 110) {
+      modify_database("","ALTER TABLE `prefix_surveys` ADD `available_languages` varchar(255)");
     }
 
     

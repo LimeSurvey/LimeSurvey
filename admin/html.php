@@ -286,7 +286,7 @@ if ($surveyid)
 		$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid"; //Getting a count of questions for this survey
 		$sumresult3 = $connect->Execute($sumquery3);
 		$sumcount3 = $sumresult3->RecordCount();
-	$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$defaultlang."'"; //Getting a count of groups for this survey
+	    $sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$defaultlang."'"; //Getting a count of groups for this survey
 		$sumresult2 = $connect->Execute($sumquery2);
 		$sumcount2 = $sumresult2->RecordCount();
 		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid LIMIT 1"; //Getting data for this survey
@@ -424,7 +424,7 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
 			}
 		
-		if($activated!="Y" && getGroupSum($surveyid)>1 && $sumrows5['define_questions'])
+		if($activated!="Y" && getGroupSum($surveyid,$s1row['language'])>1 && $sumrows5['define_questions'])
 			{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
 						. "onmouseout=\"hideTooltip()\"" 
@@ -612,14 +612,13 @@ if ($surveyid)
 		. _("Template:")."</strong></font></td>\n"
 		. "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n"
 		. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
-		. _("Language:")."</strong></font></td>\n";
+		. _("Base Language:")."</strong></font></td>\n";
 		if (!$s1row['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($s1row['language']);}
 		$surveysummary .= "\t<td>$setfont$language</font></td></tr>\n";
 
 	
 		$surveysummary .= "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
-//		. _("Available_languages:")."</strong></font></td>\n";
-		. "Available_languages: </strong></font></td>\n";
+		. _("Additional Languages:")."</strong></font></td>\n";
 		if (!$s1row['available_languages']) {$available_languages=$defaultlang;} else 
 		{$available_languages=$s1row['available_languages'];}
 		$surveysummary .= "\t<td>$setfont$available_languages</font></td></tr>\n";
@@ -1253,7 +1252,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "login"
 		}
 	else
 		{		
-		$loginsummary = $loginfailed . "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />		
+		$loginsummary =  "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />		
 							<table>
 								<tr>
 									<td><p>"._("Username")."</p></td>
