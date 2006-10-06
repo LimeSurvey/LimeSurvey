@@ -33,6 +33,7 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
+error_reporting(E_ALL);
 
 require_once(dirname(__FILE__).'/../config.php');
 
@@ -49,6 +50,8 @@ if (!isset($the_file)) {$the_file=returnglobal('the_file');}
 if (!isset($svettore)) {$svettore=returnglobal('svettore');}
 if (!isset($fp)) {$fp=returnglobal('filev');}
 if (!isset($elem)) {$elem=returnglobal('elem');}
+//NEW for multilanguage surveys 
+if (!isset($s_lang)) {$s_lang=returnglobal('s_lang');}
 
 sendcacheheaders();
 

@@ -187,11 +187,11 @@ textarea{
 	
 	#arrangableNodes,#movableNode ul{
 	   /* cursor: move; */
-		padding-left:0px;
+		padding-left:-60px;
 		margin-left:0px;
 		margin-top:0px;
 		padding-top:0px;
-		width:300px;
+		width:500px;
 	}
 	
 	#arrangableNodes li,#movableNode li{
@@ -199,9 +199,10 @@ textarea{
 		cursor: move;
 		border:1px solid #999;
 		padding:5px;
-		width: 25em;
+		width: 50em;
         text-align: left; 
 		background-color:#EEE;
 		margin-top:2px;
+		padding-left: -200px;
 	}
   	

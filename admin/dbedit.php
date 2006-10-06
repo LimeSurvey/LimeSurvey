@@ -197,7 +197,9 @@ function editSurvey($surveyid, $dbprefix, $dbaction) {
 	"allowsave",
 	"autonumber_start",
 	"autoredirect",
-	"allowprev");
+	"allowprev",
+//NEW for multilanguage surveys 
+		"available_languages");
 	switch ($dbaction) {
 		case "editsurvey":
 		$query = "UPDATE {$dbprefix}surveys

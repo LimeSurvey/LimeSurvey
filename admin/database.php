@@ -71,7 +71,7 @@ if(isset($surveyid))
 	if ($action == "delattribute" && $actsurrows['define_questions'])
 	{
 		settype($_POST['qaid'], "integer");
-		$query = "DELETE FROM {$dbprefix}question_attributes
+	$query = "DELETE FROM ".db_table_name('question_attributes')."
 				  WHERE qaid={$_POST['qaid']} AND qid={$_POST['qid']}";
 		$result=$connect->Execute($query) or die("Couldn't delete attribute<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 	}
@@ -79,7 +79,7 @@ if(isset($surveyid))
 	{
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
-			$query = "INSERT INTO {$dbprefix}question_attributes
+		$query = "INSERT INTO ".db_table_name('question_attributes')."
 					  (qid, attribute, value)
 					  VALUES ('{$_POST['qid']}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
 			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -90,7 +90,7 @@ if(isset($surveyid))
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
 			settype($_POST['qaid'], "integer");
-			$query = "UPDATE {$dbprefix}question_attributes
+		$query = "UPDATE ".db_table_name('question_attributes')."
 					  SET value='{$_POST['attribute_value']}' WHERE qaid='{$_POST['qaid']}' AND qid='{$_POST['qid']}'";
 			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		}
@@ -105,13 +105,13 @@ if(isset($surveyid))
 		{
 			$_POST  = array_map('db_quote', $_POST);
 	
-			$query = "INSERT INTO {$dbprefix}groups (sid, group_name, description,group_order) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).")";
+		$query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).")";
 			$result = $connect->Execute($query);
 	
 			if ($result)
 			{
 				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $surveyid\")\n //-->\n < /script>\n";
-				$query = "SELECT gid FROM {$dbprefix}groups WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
+			$query = "SELECT gid FROM ".db_table_name('groups')." WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
 				$result = db_execute_assoc($query);
 				while ($res = $result->FetchRow()) {$gid = $res['gid'];}
 				$groupselect = getgrouplist($gid);
@@ -131,7 +131,7 @@ if(isset($surveyid))
 	{
 		$_POST  = array_map('db_quote', $_POST);
 	
-		$ugquery = "UPDATE {$dbprefix}groups SET group_name='{$_POST['group_name']}', description='{$_POST['description']}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
+	$ugquery = "UPDATE ".db_table_name('groups')." SET group_name='{$_POST['group_name']}', description='{$_POST['description']}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
 		$ugresult = $connect->Execute($ugquery);
 		if ($ugresult)
 		{
@@ -148,7 +148,7 @@ if(isset($surveyid))
 	elseif ($action == "delgroupnone" && $actsurrows['define_questions'])
 	{
 		if (!isset($gid)) {$gid=returnglobal('gid');}
-		$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
+	$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
 		if ($result)
 		{
@@ -165,18 +165,18 @@ if(isset($surveyid))
 	elseif ($action == "delgroup" && $actsurrows['define_questions'])
 	{
 		if (!isset($gid)) {$gid=returnglobal('gid');}
-		$query = "SELECT qid FROM {$dbprefix}groups, {$dbprefix}questions WHERE {$dbprefix}groups.gid={$dbprefix}questions.gid AND {$dbprefix}groups.gid=$gid";
+	$query = "SELECT qid FROM ".db_table_name('groups').", ".db_table_name('questions')." WHERE ".db_table_name('groups').".gid={".db_table_name('questions').".gid AND ".db_table_name('groups').".gid=$gid";
 		if ($result = db_execute_assoc($query))
 		{
 			if (!isset($total)) {$total=0;}
 			$qtodel=$result->RecordCount();
 			while ($row=$result->FetchRow())
 			{
-				$dquery = "DELETE FROM {$dbprefix}conditions WHERE qid={$row['qid']}";
+			$dquery = "DELETE FROM ".db_table_name('conditions')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
-				$dquery = "DELETE FROM {$dbprefix}answers WHERE qid={$row['qid']}";
+			$dquery = "DELETE FROM ".db_table_name('answers')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
-				$dquery = "DELETE FROM {$dbprefix}questions WHERE qid={$row['qid']}";
+			$dquery = "DELETE FROM ".db_table_name('qeustions')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
 			}
 			if ($total != $qtodel*3)
@@ -184,7 +184,7 @@ if(isset($surveyid))
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\")\n //-->\n</script>\n";
 			}
 		}
-		$query = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid AND gid=$gid";
+	$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
 		if ($result)
 		{
@@ -202,7 +202,7 @@ if(isset($surveyid))
 		$grouporder = explode(",",$_POST['hiddenNodeIds']) ;
 		foreach($grouporder as $key =>$value)
 		{
-			$upgrorder_query="UPDATE {$dbprefix}groups SET group_order=$key where gid=$value" ;
+		$upgrorder_query="UPDATE ".db_table_name('groups')." SET group_order=$key where gid=$value" ;
 			$upgrorder_result = $connect->Execute($upgrorder_query) or die($connect->ErrorMsg()) ;
 		}
 	}
@@ -214,7 +214,7 @@ if(isset($surveyid))
 	
 		foreach($questionorder as $key =>$value)
 		{
-			$upordquery="UPDATE {$dbprefix}questions SET question_order='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
+		$upordquery="UPDATE ".db_table_name('questions')." SET question_order='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
 			$upordresult= $connect->Execute($upordquery) or die($connect->ErrorMsg()) ;
 		}
 	}
@@ -229,7 +229,7 @@ if(isset($surveyid))
 			$_POST  = array_map('db_quote', $_POST);
 	
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
-			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
+		$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).")";
 			$result = $connect->Execute($query);
@@ -240,13 +240,13 @@ if(isset($surveyid))
 			}
 			else
 			{
-				$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //get last question id
+			$query = "SELECT qid FROM ".db_table_name('questions')." ORDER BY qid DESC LIMIT 1"; //get last question id
 				$result=db_execute_assoc($query);
 				while ($row=$result->FetchRow()) {$qid = $row['qid'];}
 			}
 			if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 			{
-				$query = "INSERT INTO {$dbprefix}question_attributes
+			$query = "INSERT INTO ".db_table_name('question_attributes')."
 					  (qid, attribute, value)
 					  VALUES
 					  ($qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
@@ -261,10 +261,10 @@ if(isset($surveyid))
 		$question_number=1;
 		$group_number=0;
 		$gselect="SELECT *\n"
-		."FROM {$dbprefix}questions, {$dbprefix}groups\n"
-		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-		."AND {$dbprefix}questions.sid=$surveyid\n"
-		."ORDER BY {$dbprefix}groups.group_order, title";
+	."FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
+	."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
+	."AND ".db_table_name('questions').".sid=$surveyid\n"
+	."ORDER BY ".db_table_name('groups').".group_order, title";
 		$gresult=db_execute_assoc($gselect) or die ("Error: ".htmlspecialchars($connect->ErrorMsg()));
 		$grows = array(); //Create an empty array in case FetchRow does not return any rows
 		while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array
@@ -278,7 +278,7 @@ if(isset($surveyid))
 				$group_number++;
 			}
 			//echo "GROUP: ".$grow['group_name']."<br />";
-			$usql="UPDATE {$dbprefix}questions\n"
+		$usql="UPDATE ".db_table_name('questions')."\n"
 			."SET question_order='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
 			."WHERE qid=".$grow['qid'];
 			//echo "[$sql]";
@@ -290,7 +290,7 @@ if(isset($surveyid))
 	
 	elseif ($action == "updatequestion" && $actsurrows['define_questions'])
 	{
-		$cqquery = "SELECT type FROM {$dbprefix}questions WHERE qid={$_POST['qid']}";
+	$cqquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$_POST['qid']}";
 		$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($cqr=$cqresult->FetchRow()) {$oldtype=$cqr['type'];}
 	
@@ -304,7 +304,7 @@ if(isset($surveyid))
 		if ($oldtype != $_POST['type'])
 		{
 			//Make sure there are no conditions based on this question, since we are changing the type
-			$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']}";
+		$ccquery = "SELECT * FROM ".db_table_name('conditions')." WHERE cqid={$_POST['qid']}";
 			$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 			$cccount=$ccresult->RecordCount();
 			while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
@@ -772,9 +772,9 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
 else 
 	{
-	//echo "$action Not Yet Available!";
+
 	include("access_denied.php");
 	}
-//}
+
 
 ?>

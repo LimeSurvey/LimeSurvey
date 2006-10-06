@@ -525,7 +525,7 @@ END;
 		if (!isset($oldcq) || !$oldcq) {$oldcq = $cd[2];}
 		if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
 		{
-			$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]}";
+			$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
 			$cccresult=db_execute_num($cccquery);
 			list($cccount) = $cccresult->FetchRow();
 		}
@@ -580,7 +580,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' order by code;";
+			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language=".$_SESSION['s_lang']." order by code;";
 			$qresult = db_execute_assoc($qquery);
 			while ($fansrows = $qresult->FetchRow())
 			{
@@ -628,6 +628,8 @@ if ($groupdescription)
 }
 echo "\n";
 
+
+// RL: here it is.
 echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 if (isset($qanda) && is_array($qanda))
 {

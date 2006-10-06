@@ -284,7 +284,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 	while ($crows=$cresult->FetchRow())//Go through each condition for this current question
 	{
 		//Check if the condition is multiple type
-		$ccquery="SELECT type FROM {$dbprefix}questions WHERE qid={$crows['cqid']}";
+		$ccquery="SELECT type FROM {$dbprefix}questions WHERE qid={$crows['cqid']} AND language='".$_SESSION['s_lang']."' ";
 		$ccresult=db_execute_assoc($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		while($ccrows=$ccresult->FetchRow())
 		{

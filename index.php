@@ -41,7 +41,10 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");}
 session_start();
 
-SetInterfaceLanguage(GetLanguageFromSurveyID($surveyid));
+//NEW for multilanguage surveys 
+SetSurveyLanguage($surveyid);
+
+
 
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
@@ -94,7 +97,7 @@ $i = 0; $tokensexist = 0;
 $tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
 foreach ($tablelist as $tbl)
 {
-	if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist = 1;}
+	if ($tbl == db_table_name('tokens')."_$surveyid") {$tokensexist = 1;}
 }
 
 
@@ -342,15 +345,15 @@ function loadanswers()
 
 	if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	{
-		$query = "SELECT * FROM {$dbprefix}saved_control INNER JOIN {$thissurvey['tablename']}
-			ON {$dbprefix}saved_control.srid = {$thissurvey['tablename']}.id
-			WHERE {$dbprefix}saved_control.sid=$surveyid\n";
+		$query = "SELECT * FROM ".db_table_name('saved_control')." INNER JOIN {$thissurvey['tablename']}
+			ON ".db_table_name('saved_control').".srid = {$thissurvey['tablename']}.id
+			WHERE ".db_table_name('saved_control').".sid=$surveyid\n";
 		if (isset($_POST['scid'])) //Would only come from email
 		{
-			$query .= "AND {$dbprefix}saved_control.scid=".auto_escape($_POST['scid'])."\n";
+			$query .= "AND ".db_table_name('saved_control').".scid=".auto_escape($_POST['scid'])."\n";
 		}
-		$query .="AND {$dbprefix}saved_control.identifier='".auto_escape($_SESSION['holdname'])."'
-				  AND {$dbprefix}saved_control.access_code='".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+		$query .="AND ".db_table_name('saved_control').".identifier='".auto_escape($_SESSION['holdname'])."'
+				  AND ".db_table_name('saved_control').".access_code='".md5(auto_unescape($_SESSION['holdpass']))."'\n";
 	}
 	elseif (isset($_SESSION['srid']))
 	{
@@ -492,7 +495,7 @@ function checkgroupfordisplay($gid)
 			{
 				//Iterate through each condition for this question and check if it is met.
 				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-				." WHERE qid={$row['cqid']}";
+				." WHERE qid={$row['cqid']} AND language=".$_SESSION['s_lang'];
 				$result2=db_execute_assoc($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
 				while($row2=$result2->FetchRow())
 				{
@@ -572,11 +575,11 @@ function checkconfield($value)
 		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value])
 		{
 			$currentcfield="";
-			$query = "SELECT {$dbprefix}conditions.*, {$dbprefix}questions.type "
-			. "FROM {$dbprefix}conditions, {$dbprefix}questions "
-			. "WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
-			. "AND {$dbprefix}conditions.qid=$sfa[0] "
-			. "ORDER BY {$dbprefix}conditions.qid";
+			$query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
+			. "FROM ".db_table_name('conditions').", ".db_table_name('questions')." "
+			. "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
+			. "AND ".db_table_name('conditions').".qid=$sfa[0] "
+			. "ORDER BY ".db_table_name('conditions').".qid";
 			$result=db_execute_assoc($query) or die($query."<br />".htmlspecialchars($connect->ErrorMsg()));
 			while($rows = $result->FetchRow())
 			{
@@ -782,8 +785,9 @@ function checkpregs($backok=null)
 				{
 					$fieldinfo=arraySearchByKey($field, $fieldmap, "fieldname", 1);
 					$pregquery="SELECT preg\n"
-					."FROM {$dbprefix}questions\n"
-					."WHERE qid=".$fieldinfo['qid'];
+					."FROM ".db_table_name('questions')."\n"
+					."WHERE qid=".$fieldinfo['qid']." "
+					. "AND language='".$_SESSION['s_lang']."'";
 					$pregresult=db_execute_assoc($pregquery) or die("ERROR: $pregquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($pregrow=$pregresult->FetchRow())
 					{
@@ -851,7 +855,7 @@ function submittokens()
 	global $sitename, $thistpl;
 
 	// TLR change to put date into sent and completed
-	//	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n"
+	//	$utquery = "UPDATE ".db_table_name('tokens')."_$surveyid\n"
 	//			 . "SET completed='Y'\n"
 	$today = date("Y-m-d Hi");
 	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n"
@@ -861,7 +865,7 @@ function submittokens()
 	$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 
 	// TLR change to put date into sent and completed
-	$cnfquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}' AND completed!='N' AND completed!=''";
+	$cnfquery = "SELECT * FROM ".db_table_name('tokens')."_$surveyid WHERE token='{$_POST['token']}' AND completed!='N' AND completed!=''";
 
 	$cnfresult = db_execute_assoc($cnfquery);
 	while ($cnfrow = $cnfresult->FetchRow())
@@ -1061,7 +1065,7 @@ function buildsurveysession()
 	elseif ($tokensexist == 1 && returnglobal('token'))
 	{
 		//check if token actually does exist
-		$tkquery = "SELECT COUNT(*) FROM {$dbprefix}tokens_$surveyid WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
+		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens')."_$surveyid WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
 		$tkresult = db_execute_num($tkquery);
 		list($tkexist) = $tkresult->FetchRow();
 		if (!$tkexist)
@@ -1100,17 +1104,19 @@ function buildsurveysession()
 	//1. SESSION VARIABLE: grouplist
 	//A list of groups in this survey, ordered by group name.
 
-	$query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.group_order";
+	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."' ORDER BY ".db_table_name('groups').".group_order";
 	$result = db_execute_assoc($query) or die ("Couldn't get group list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($row = $result->FetchRow())
 	{
 		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
 	}
 
-	$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
-	."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-	."AND {$dbprefix}questions.sid=$surveyid\n"
-	."ORDER BY {$dbprefix}groups.group_order";
+	$query = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
+	."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
+	."AND ".db_table_name('questions').".sid=$surveyid\n"
+	."AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."' "
+	."AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' "
+	."ORDER BY ".db_table_name('groups').".group_order";
 	$result = db_execute_assoc($query);
 
 	$arows = $result->GetRows();
@@ -1184,11 +1190,13 @@ function buildsurveysession()
 		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
 		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^")
 		{
-			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
-			. "FROM {$dbprefix}answers, {$dbprefix}questions\n"
-			. "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
-			. "AND sid=$surveyid AND {$dbprefix}questions.qid={$arow['qid']}\n"
-			. "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
+			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
+			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+			. "AND sid=$surveyid AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 			$abresult = db_execute_assoc($abquery);
 			while ($abrow = $abresult->FetchRow())
 			{
@@ -1211,12 +1219,14 @@ function buildsurveysession()
 		}
 		elseif ($arow['type'] == "R")
 		{
-			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
-			. "FROM {$dbprefix}answers, {$dbprefix}questions\n"
-			. "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
+			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
+			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
+			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
 			. "AND sid=$surveyid\n"
-			. "AND {$dbprefix}questions.qid={$arow['qid']}\n"
-			. "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 			$abresult = $connect->Execute($abquery) or die("ERROR:<br />".$abquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 			$abcount = $abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)
@@ -1228,12 +1238,14 @@ function buildsurveysession()
 
 		elseif ($arow['type'] == "Q" || $arow['type'] == "J" )
 		{
-			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other\n"
-			. "FROM {$dbprefix}answers, {$dbprefix}questions\n"
-			. "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
+			$abquery = "SELECT ".db_table_name('answers').".*,".db_table_name('questions').".other\n"
+			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
+			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
 			. "AND sid=$surveyid\n"
-			. "AND {$dbprefix}questions.qid={$arow['qid']}\n"
-			. "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 			$abresult = db_execute_assoc($abquery);
 			while ($abrow = $abresult->FetchRow())
 			{
@@ -1251,12 +1263,13 @@ function buildsurveysession()
 			$_SESSION['insertarray'][] = $fieldname;
 			if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = $fieldname."other";}
 			//go through answers, and if there is a default, register it now so that conditions work properly the first time
-			$abquery = "SELECT {$dbprefix}answers.*\n"
-			. "FROM {$dbprefix}answers, {$dbprefix}questions\n"
-			. "WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid\n"
+			$abquery = "SELECT ".db_table_name('answers').".*\n"
+			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
+			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
 			. "AND sid=$surveyid\n"
-			. "AND {$dbprefix}questions.qid={$arow['qid']}\n"
-			. "ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 			$abresult = db_execute_assoc($abquery);
 			while($abrow = $abresult->FetchRow())
 			{
@@ -1375,7 +1388,7 @@ function surveymover()
 function doAssessment($surveyid)
 {
 	global $dbprefix, $thistpl, $connect;
-	$query = "SELECT * FROM {$dbprefix}assessments
+	$query = "SELECT * FROM ".db_table_name('assessments')."
 			  WHERE sid=$surveyid
 			  ORDER BY scope";
 	if ($result = db_execute_assoc($query))
