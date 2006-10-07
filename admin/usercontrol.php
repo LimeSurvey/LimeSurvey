@@ -118,7 +118,7 @@ if (!isset($_SESSION['loginID']))
 					
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
 					$loginsummary .= _("Login successful.");
-					$loginsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+					$loginsummary .= "<br /><br />\n";
 					}
 				else 
 					{

@@ -3204,11 +3204,12 @@ if ($action == "editsurvey")
 				. "</select>\n\t\t</td>\n";
 			}
 			// BENBUN - END REF URL Block
-			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Language:")."</font></td>\n"
-			. "\t\t<td><select name='language'>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Base Language:")."</font></td>\n"
+			. "\t\t<td>\n".GetLanguageNameFromCode($esrow['language']);
 	
 	
 			// First check what languages are available - if the one set in db is not available leave found as false
+			/*
 			$found=false;
 			foreach (getLanguageData() as  $langkey2=>$langname)
 			{
@@ -3229,9 +3230,20 @@ if ($action == "editsurvey")
 				}
 				$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 			}
-	
-			$editsurvey .= "\t\t</select></td>\n"
-			. "\t</tr>\n"
+	*/
+			$editsurvey .= "\t\t</td>\t</tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("Additional Languages:")."</font></td>\n"
+			. "\t\t<td><select type='text' size='5' name='url' value=\"{$esrow['url']}\"></select></td>"
+			. '<td align=left><INPUT type="button" value="<< '._('Add').'" onclick="DoAdd()" ID="Button1" NAME="Button1"><BR> <INPUT type="button" value="'._('Remove').' >>" onclick="DoRemove()" ID="Button2" NAME="Button2"></td>\n'
+			. "\t\t<td align=left><select type='text' size='5' name='available_languages'>";
+			foreach (getLanguageData() as  $langkey2=>$langname)
+			{
+				$editsurvey .= "\t\t\t<option id='".$langkey2."'";
+				$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+			}
+			
+            $editsurvey .= "</select></td>"
+			. " </tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
 			. "\t\t\t<td><select name='useexpiry'><option value='Y'";
 			if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected";}
@@ -3476,7 +3488,7 @@ if ($action == "newsurvey")
 		. "\t\t\t<option value='N' selected>"._("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		//Survey Language
-		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Language:")."</font></td>\n"
+		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Base Language:")."</font></td>\n"
 		. "\t\t<td><select name='language'>\n";
 	
 	
