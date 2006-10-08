@@ -619,13 +619,20 @@ if ($surveyid)
 	
 		$surveysummary .= "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
 		. _("Additional Languages:")."</strong></font></td>\n";
-		if (!$s1row['additional_languages']) {$additional_languages=$defaultlang;} else 
-		{$additional_languages=$s1row['additional_languages'];}
-		$surveysummary .= "\t<td>$setfont$additional_languages</font></td></tr>\n";
-	
+
+        $first=true; 
+        foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+        { 
+          if ($langname)
+          {
+        	if (!$first) {$surveysummary .= "\t\t\t<tr><td></td>";}
+            $first=false; 
+            $surveysummary .= "<td>".getLanguageNameFromCode($langname)."</td></tr>\n";
+		  }
+        }
+
 		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
-		$surveysummary .= "\t\t<td>$setfont$language</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
+		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
 		. _("Exit Link:")."</strong></font></td>\n"
 		. "\t\t<td>";
 		if ($s1row['url']!="") {$surveysummary .="$setfont <a href=\"{$s1row['url']}\" title=\"{$s1row['url']}\">{$s1row['urldescrip']}</a></font>";}
@@ -3213,12 +3220,12 @@ if ($action == "editsurvey")
 			
 			// Additional languages listbox
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Additional Languages:")."</font></td>\n"
-			. "\t\t<td><select style='min-width:250px;'  type='text' size='5' id='additional_languages' name='additional_languages'>";
+			. "\t\t<td><select multiple style='min-width:250px;'  type='text' size='5' id='additional_languages' name='additional_languages'>";
             foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
             { 
               if ($langname)
               {
-				$editsurvey .= "\t\t\t<option id='".$langname."'";
+				$editsurvey .= "\t\t\t<option id='".$langname."' value='".$langname."'";
 				$editsurvey .= ">".getLanguageNameFromCode($langname)."</option>\n";
 			  }
             }
@@ -3231,7 +3238,7 @@ if ($action == "editsurvey")
             . "\t\t<td align=left><select type='text' size='5' id='available_languages' name='available_languages'>";
 			foreach (getLanguageData() as  $langkey2=>$langname)
 			{
-				$editsurvey .= "\t\t\t<option id='".$langkey2."'";
+				$editsurvey .= "\t\t\t<option id='".$langkey2."' value='".$langkey2."'";
 				$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 			}
 			
@@ -3259,9 +3266,11 @@ if ($action == "editsurvey")
 			$editsurvey .= ">"._("No")."</option>\n"
 			. "</select></td></tr>";
 	
-			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' class='standardbtn' value='"._("Update survey")."'>\n"
+			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs();' class='standardbtn' value='"._("Update survey")."'>\n"
 			. "\t<input type='hidden' name='action' value='updatesurvey'>\n"
 			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
+			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\">\n"
+			. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\">\n"
 			. "\t</td></tr>\n"
 			. "</table></form>\n";
 	

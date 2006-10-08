@@ -662,7 +662,8 @@ if(isset($surveyid))
 		{
 			$_POST['expires']="'".$_POST['expires']."'";
 		}
-	
+
+
 		$usquery = "UPDATE {$dbprefix}surveys \n"
 		. "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
 		. "admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
@@ -670,7 +671,8 @@ if(isset($surveyid))
 		. "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
 		. "format='{$_POST['format']}', template='{$_POST['template']}',\n"
 		. "url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}',\n"
-		. "language='{$_POST['language']}', datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
+		. "language='{$_POST['language']}', additional_languages='{$_POST['languageids']}',\n" 
+        . "datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
 		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 		. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
 		. "attribute2='{$_POST['attribute2']}', email_invite_subj='{$_POST['email_invite_subj']}',\n"

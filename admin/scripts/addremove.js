@@ -9,6 +9,7 @@ function DoAdd()
   AddItem(document.getElementById("additional_languages"), strText, strId);
   RemoveItem(document.getElementById("available_languages"), document.getElementById("available_languages").selectedIndex);
   sortSelect(document.getElementById("additional_languages"));
+  UpdateLanguageIDs();
   }
 }
 
@@ -22,11 +23,12 @@ function DoRemove()
 }
 
 
+
 function AddItem(objListBox, strText, strId)
 {
   var newOpt;
   newOpt = document.createElement("OPTION");
-  newOpt = new Option(strText,strText);
+  newOpt = new Option(strText,strId);
   newOpt.id = strId;
   objListBox.options[objListBox.length]=newOpt;
 }
@@ -48,6 +50,19 @@ function GetItemIndex(objListBox, strId)
     }
   }
   return -1;
+}
+
+
+function UpdateLanguageIDs()
+{
+  document.getElementById("languageids").value = ''; 
+
+  var lbBox = document.getElementById("additional_languages");
+  for (var i = 0; i < lbBox.options.length; i++)
+  {
+  document.getElementById("languageids").value = document.getElementById("languageids").value + lbBox.options[i].value+ ' ';  
+  }
+  return true;
 }
 
 function compareText (option1, option2) {
