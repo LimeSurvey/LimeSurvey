@@ -1886,7 +1886,7 @@ function getSavedCount($surveyid)
 	return $count;
 }
 
-function GetLanguageFromSurveyID($surveyid)
+function GetBaseLanguageFromSurveyID($surveyid)
 {
 	global $connect;
 	//This function loads the local language file applicable to a survey
@@ -1896,6 +1896,20 @@ function GetLanguageFromSurveyID($surveyid)
 	while ($result && ($row=$result->FetchRow())) {$surveylanguage = $row[0];}
 	return $surveylanguage;
 }
+
+
+function GetAdditionalLanguagesFromSurveyID($surveyid)
+{
+	global $connect;
+	//This function loads the local language file applicable to a survey
+	$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+	$result = db_execute_num($query);
+	while ($result && ($row=$result->FetchRow())) {$surveylanguage = $row[0];}
+	$additional_languages = explode(" ", $surveylanguage);
+	if ($additional_languages==false) { $additional_languages = array();}
+	return $additional_languages;
+}
+
 
 function SetInterfaceLanguage($languagetoset)
 {
@@ -1917,18 +1931,18 @@ function SetInterfaceLanguage($languagetoset)
 //NEW for multilanguage surveys 
 function SetSurveyLanguage($surveyid)
 {
-	//echo "Native language: ".GetLanguageFromSurveyID($surveyid)."<br>";
-	$defaultlanguage = getLanguageCodefromLanguage(GetLanguageFromSurveyID($surveyid));
+	//echo "Native language: ".GetBaseLanguageFromSurveyID($surveyid)."<br>";
+	$defaultlanguage = getLanguageCodefromLanguage(GetBaseLanguageFromSurveyID($surveyid));
 	
 	if (returnglobal('s_lang')) {
 				$new_lang=returnglobal('s_lang');
 
-				$query = "SELECT available_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+				$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 				$result = db_execute_assoc($query);
-				while ($result && ($row=$result->FetchRow())) {$available_languages = $row['available_languages'];}
+				while ($result && ($row=$result->FetchRow())) {$additional_languages = $row['additional_languages'];}
 
-		//		echo "Available languages: ".$available_languages."<br>";
-				if (strpos($available_languages, $new_lang) === false) {
+		//		echo "Available languages: ".$additional_languages."<br>";
+				if (strpos($additional_languages, $new_lang) === false) {
 				//Language not supported, fall back to default language
 			//	echo "Language not supported, resorting to ".$defaultlanguage."<br>";
 				$_SESSION['s_lang'] = $defaultlanguage;
@@ -2106,7 +2120,7 @@ function getHeader()
 {
 	global $embedded, $surveyid;
 
-	if (isset($surveyid)) {$surveylanguage=GetLanguageFromSurveyID($surveyid);}
+	if (isset($surveyid)) {$surveylanguage=GetBaseLanguageFromSurveyID($surveyid);}
 	else {$surveylanguage='en';}
 	if ( !$embedded )
 	{

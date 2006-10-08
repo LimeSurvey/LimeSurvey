@@ -17,7 +17,7 @@ function db_upgrade($oldversion) {
     }
 
     if ($oldversion < 110) {
-      modify_database("","ALTER TABLE `prefix_surveys` ADD `available_languages` varchar(255)");
+      modify_database("","ALTER TABLE `prefix_surveys` ADD `additional_languages` varchar(255)");
     }
 
     

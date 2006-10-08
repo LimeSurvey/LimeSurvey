@@ -86,7 +86,7 @@ if($actsurrows['browse_response']){
 	
 	if ($action == "edit" || $action == "" || $action == "editsaved")
 	{
-		GetLanguageFromSurveyID($surveyid);
+		GetBaseLanguageFromSurveyID($surveyid);
 	}
 	
 	if ($action == "insert")
@@ -99,7 +99,7 @@ if($actsurrows['browse_response']){
 		if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
 			//Save this, don't submit to final response table
-			GetLanguageFromSurveyID($surveyid);
+			GetBaseLanguageFromSurveyID($surveyid);
 			$saver['identifier']=returnglobal('save_identifier');
 			$saver['password']=returnglobal('save_password');
 			$saver['passwordconfirm']=returnglobal('save_confirmpassword');
@@ -1342,7 +1342,7 @@ if($actsurrows['browse_response']){
 		.$surveyoptions
 		."</table>";
 	
-		GetLanguageFromSurveyID($surveyid);
+		GetBaseLanguageFromSurveyID($surveyid);
 		$thissurvey=getSurveyInfo($surveyid);
 		$surveytable = "{$dbprefix}survey_$surveyid";
 	

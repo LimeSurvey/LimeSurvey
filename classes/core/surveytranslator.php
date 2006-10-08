@@ -48,11 +48,11 @@
         $detaillanguages = getLanguageData();
         if (isset($detaillanguages[$codetosearch]['description']))
         {
-              return $detaillanguages[$codetosearch]['description'];
+              return $detaillanguages[$codetosearch]['description'].' - '.$detaillanguages[$codetosearch]['nativedescription'];
         }
           else
         // else return default en code
-        return "English";
+        return false;
     }
 
 

@@ -83,7 +83,7 @@ elseif (isset($surveyid) && $surveyid)
 	$fieldmap=createFieldMap($surveyid, "full");
 	$surveytable = "{$dbprefix}survey_$surveyid";
 
-	GetLanguageFromSurveyID($surveyid);
+	GetBaseLanguageFromSurveyID($surveyid);
 
 	$fieldnames = array_values($connect->MetaColumnNames($surveytable, true));
 
