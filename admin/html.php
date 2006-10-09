@@ -282,8 +282,6 @@ if ($surveyid)
     	$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$defaultlang."'"; //Getting a count of questions for this survey
 		$sumresult5 = db_execute_assoc($sumquery5);
 		$sumrows5 = $sumresult5->FetchRow();
-		
-		$sumquery3 = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid"; //Getting a count of questions for this survey
 		$sumresult3 = $connect->Execute($sumquery3);
 		$sumcount3 = $sumresult3->RecordCount();
 	    $sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$defaultlang."'"; //Getting a count of groups for this survey
@@ -1464,7 +1462,7 @@ if ($action == "setuserrights")
 
 if($action == "setnewparents") 
 	{
-	// muss noch eingeschränkt werden ...
+	// muss noch eingeschr?nkt werden ...
 	if($_SESSION['USER_RIGHT_MOVE_USER'])
 		{
 		$uid = $_POST['uid'];
@@ -3301,7 +3299,8 @@ if ($action == "ordergroups")
 		{		
 		$ordergroups = "<ul id='arrangableNodes'>";
 		//Get the groups from this survey
-		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order,group_name" ;
+		$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid='{$surveyid}' AND language='{$s_lang}' order by group_order,group_name" ;
 		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
 		while($ogrows = $ogresult->FetchRow())
 		{

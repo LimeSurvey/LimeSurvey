@@ -105,16 +105,34 @@ if(isset($surveyid))
 		{
 			$_POST  = array_map('db_quote', $_POST);
 	
-		$query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).")";
+			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+			$query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).",'{$baselang}')";
 			$result = $connect->Execute($query);
 	
 			if ($result)
 			{
 				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $surveyid\")\n //-->\n < /script>\n";
-			$query = "SELECT gid FROM ".db_table_name('groups')." WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
+				$query = "SELECT gid FROM ".db_table_name('groups')." WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
 				$result = db_execute_assoc($query);
 				while ($res = $result->FetchRow()) {$gid = $res['gid'];}
 				$groupselect = getgrouplist($gid);
+				$addlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
+				foreach ($addlangs as $alang)
+				{
+					if ($alang != "")
+					{
+						$query = "INSERT INTO ".db_table_name('groups')." (gid,sid, group_name, description,group_order,language) VALUES ('{$gid}','{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).",'{$alang}')";
+						$result = $connect->Execute($query);
+						if (!$result)
+						{
+							echo _("Error: The database reported the following error:")."<br />\n";
+							echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
+							echo "<pre>".htmlspecialchars($query)."</pre>\n";
+							echo "</body>\n</html>";
+							exit;
+						}
+					}
+				}
 			}
 			else
 			{
@@ -165,7 +183,7 @@ if(isset($surveyid))
 	elseif ($action == "delgroup" && $actsurrows['define_questions'])
 	{
 		if (!isset($gid)) {$gid=returnglobal('gid');}
-	$query = "SELECT qid FROM ".db_table_name('groups').", ".db_table_name('questions')." WHERE ".db_table_name('groups').".gid={".db_table_name('questions').".gid AND ".db_table_name('groups').".gid=$gid";
+	$query = "SELECT qid FROM ".db_table_name('groups').", ".db_table_name('questions')." WHERE ".db_table_name('groups').".gid=".db_table_name('questions').".gid AND ".db_table_name('groups').".gid=$gid";
 		if ($result = db_execute_assoc($query))
 		{
 			if (!isset($total)) {$total=0;}
