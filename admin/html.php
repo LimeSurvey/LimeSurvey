@@ -2977,12 +2977,6 @@ if ($action == "editsurvey")
 			$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>"
 			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey")."</font></font></td></tr>\n"
 			. "\t<tr>"
-			. "\t\t<td align='right' width='20%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
-			. "\t\t<td width='20%'><input type='text' size='50' name='short_title' value=\"{$esrow['short_title']}\"></td></tr>\n"
-			. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Description:")."</font></td>\n"
-			. "\t\t<td><textarea cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-			. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
-			. "\t\t<td><textarea cols='50' rows='5' name='welcome'>".str_replace("&lt;br /&gt;", "\n", $esrow['welcome'])."</textarea></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
 			. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\"></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"
@@ -3076,45 +3070,6 @@ if ($action == "editsurvey")
 				. "</select>\n\t\t</td>\n";
 			}
 			$editsurvey .= "</tr>\n";
-			$editsurvey .= "<tr><td align='right'><script type='text/javascript'>\n"
-			. "<!--\n"
-			. "function fillin(tofield, fromfield)\n"
-			. "\t{\n"
-			. "\t\tif (confirm(\""._("This will replace the existing text. Continue?")."\")) {\n"
-			. "\t\t\tdocument.getElementById(tofield).value = document.getElementById(fromfield).value\n"
-			. "\t\t}\n"
-			. "\t}\n"
-			. "--></script>\n";
-			$editsurvey .= "\t<font class='settingcaption'>"._("Invitation Email Subject:")."</font></td>\n"
-			. "\t\t<td><input type='text' size='54' name='email_invite_subj' id='email_invite_subj' value=\"{$esrow['email_invite_subj']}\">\n"
-			. "\t\t<input type='hidden' name='email_invite_subj_default' id='email_invite_subj_default' value='".html_escape(_("Invitati</td>on to participate in survey"))."'>\n"
-			. "\t\t<td width='10%'><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")'></td>\n"
-			. "\t</tr>\n";
-			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email:")."</font></td>\n"
-			. "\t\t<td><textarea cols=50 rows=5 name='email_invite' id='email_invite'>{$esrow['email_invite']}</textarea>\n"
-			. "\t\t<input type='hidden' name='email_invite_default' id='email_invite_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
-			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite\",\"email_invite_default\")'></td>\n"
-			. "\t</tr>\n";
-			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder Subject:")."</font></td>\n"
-			. "\t\t<td><input type='text' size='54' name='email_remind_subj' id='email_remind_subj' value=\"{$esrow['email_remind_subj']}\">\n"
-			. "\t\t<input type='hidden' name='email_remind_subj_default' id='email_remind_subj_default' value='".html_escape(_("Reminder to participate in survey"))."'>\n"
-			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_remind_subj\",\"email_remind_subj_default\")'>\n"
-			. "\t</td></tr>\n";
-			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder:")."</font></td>\n"
-			. "\t\t<td><textarea cols=50 rows=5 name='email_remind' id='email_remind'>{$esrow['email_remind']}</textarea>\n"
-			. "\t\t<input type='hidden' name='email_remind_default' id='email_remind_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
-			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_remind\",\"email_remind_default\")'>\n"
-			. "\t</td></tr>\n";
-			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email Subject")."</font></td>\n"
-			. "\t\t<td><input type='text' size='54' name='email_confirm_subj' id='email_confirm_subj' value=\"{$esrow['email_confirm_subj']}\">\n"
-			. "\t\t<input type='hidden' name='email_confirm_subj_default' id='email_confirm_subj_default' value='".html_escape(_("Confirmation of completed survey"))."'>\n"
-			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm_subj\",\"email_confirm_subj_default\")'>\n"
-			. "\t</td></tr>\n";
-			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email")."</font></td>\n"
-			. "\t\t<td><textarea cols=50 rows=5 name='email_confirm' id='email_confirm'>{$esrow['email_confirm']}</textarea>\n"
-			. "\t\t<input type='hidden' name='email_confirm_default' id='email_confirm_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"))."'>\n"
-			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm\",\"email_confirm_default\")'>\n"
-			. "\t</td></tr>\n";
 			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Allow public registration?")."</font></td>\n"
 			. "\t\t<td><select name='allowregister'>\n"
 			. "\t\t\t<option value='Y'";
@@ -3124,16 +3079,6 @@ if ($action == "editsurvey")
 			if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected";}
 			$editsurvey .= ">"._("No")."</option>\n"
 			. "\t\t</select></td>\n\t</tr>\n";
-			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email Subject:")."</font></td>\n"
-			. "\t\t<td><input type='text' size='54' name='email_register_subj' id='email_register_subj' value=\"{$esrow['email_register_subj']}\">\n"
-			. "\t\t<input type='hidden' name='email_register_subj_default' id='email_register_subj_default' value='".html_escape(_("Survey Registration Confirmation"))."'>\n"
-			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript:  fillin(\"email_register_subj\",\"email_register_subj_default\")'>\n"
-			. "\t</td></tr>\n";
-			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email:")."</font></td>\n"
-			. "\t\t<td><textarea cols=50 rows=5 name='email_register' id='email_register'>{$esrow['email_register']}</textarea>\n"
-			. "\t\t<input type='hidden' name='email_register_default' id='email_register_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."))."'>\n"
-			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript:  fillin(\"email_register\",\"email_register_default\")'>\n"
-			. "\t</td></tr>\n";
 			$editsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Token Attribute Names:")."</font></td>\n"
 			. "\t\t<td><font class='settingcaption'><input type='text' size='25' name='attribute1'"
 			. " value=\"{$esrow['attribute1']}\">("._("Attribute 1").")<br />"
@@ -3252,8 +3197,6 @@ if ($action == "editsurvey")
 			. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\"><button type='reset' id='f_trigger_b'>...</button></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
 			. "\t\t<td><input type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
-			. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
-			. "\t\t<td><input type='text' size='50' name='urldescrip' value=\"{$esrow['urldescrip']}\"></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
 			. "\t\t<td><select name='autoredirect'>";
 			$editsurvey .= "\t\t\t<option value='Y'";
@@ -3264,7 +3207,7 @@ if ($action == "editsurvey")
 			$editsurvey .= ">"._("No")."</option>\n"
 			. "</select></td></tr>";
 	
-			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs();' class='standardbtn' value='"._("Update survey")."'>\n"
+			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs();' class='standardbtn' value='"._("Save and Continue")." >>'>\n"
 			. "\t<input type='hidden' name='action' value='updatesurvey'>\n"
 			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
 			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\">\n"
@@ -3292,6 +3235,96 @@ if ($action == "editsurvey")
 		}
 		
 }
+
+
+
+if ($action == "updatesurvey")  // Edit survey step 2
+{
+	if($sumrows5['edit_survey_property'])
+		{	
+		$esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='".GetBaseLanguageFromSurveyid($surveyid)."'";
+		$esresult = db_execute_assoc($esquery);
+		while ($esrow = $esresult->FetchRow())
+		  {
+			$esrow = array_map('htmlspecialchars', $esrow);
+			$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>"
+			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey")."</font></font></td></tr>\n";
+
+			$editsurvey .= "\t\t<tr><td align='right' width='20%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
+			. "\t\t<td width='20%'><input type='text' size='50' name='short_title' value=\"{$esrow['short_title']}\"></td></tr>\n"
+			. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Description:")."</font></td>\n"
+			. "\t\t<td><textarea cols='50' rows='5' name='description'>{$esrow['description']}</textarea></td></tr>\n"
+			. "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
+			. "\t\t<td><textarea cols='50' rows='5' name='welcome'>".str_replace("&lt;br /&gt;", "\n", $esrow['welcome'])."</textarea></td></tr>\n"
+			. "<tr><td align='right'><script type='text/javascript'>\n"
+			. "<!--\n"
+			. "function fillin(tofield, fromfield)\n"
+			. "\t{\n"
+			. "\t\tif (confirm(\""._("This will replace the existing text. Continue?")."\")) {\n"
+			. "\t\t\tdocument.getElementById(tofield).value = document.getElementById(fromfield).value\n"
+			. "\t\t}\n"
+			. "\t}\n"
+			. "--></script>\n";
+			$editsurvey .= "\t<font class='settingcaption'>"._("Invitation Email Subject:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='54' name='email_invite_subj' id='email_invite_subj' value=\"{$esrow['email_invite_subj']}\">\n"
+			. "\t\t<input type='hidden' name='email_invite_subj_default' id='email_invite_subj_default' value='".html_escape(_("Invitati</td>on to participate in survey"))."'>\n"
+			. "\t\t<td width='10%'><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")'></td>\n"
+			. "\t</tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Invitation Email:")."</font></td>\n"
+			. "\t\t<td><textarea cols=50 rows=5 name='email_invite' id='email_invite'>{$esrow['email_invite']}</textarea>\n"
+			. "\t\t<input type='hidden' name='email_invite_default' id='email_invite_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
+			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite\",\"email_invite_default\")'></td>\n"
+			. "\t</tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder Subject:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='54' name='email_remind_subj' id='email_remind_subj' value=\"{$esrow['email_remind_subj']}\">\n"
+			. "\t\t<input type='hidden' name='email_remind_subj_default' id='email_remind_subj_default' value='".html_escape(_("Reminder to participate in survey"))."'>\n"
+			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_remind_subj\",\"email_remind_subj_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Email Reminder:")."</font></td>\n"
+			. "\t\t<td><textarea cols=50 rows=5 name='email_remind' id='email_remind'>{$esrow['email_remind']}</textarea>\n"
+			. "\t\t<input type='hidden' name='email_remind_default' id='email_remind_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."'>\n"
+			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_remind\",\"email_remind_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email Subject")."</font></td>\n"
+			. "\t\t<td><input type='text' size='54' name='email_confirm_subj' id='email_confirm_subj' value=\"{$esrow['email_confirm_subj']}\">\n"
+			. "\t\t<input type='hidden' name='email_confirm_subj_default' id='email_confirm_subj_default' value='".html_escape(_("Confirmation of completed survey"))."'>\n"
+			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm_subj\",\"email_confirm_subj_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Confirmation Email")."</font></td>\n"
+			. "\t\t<td><textarea cols=50 rows=5 name='email_confirm' id='email_confirm'>{$esrow['email_confirm']}</textarea>\n"
+			. "\t\t<input type='hidden' name='email_confirm_default' id='email_confirm_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"))."'>\n"
+			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_confirm\",\"email_confirm_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email Subject:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='54' name='email_register_subj' id='email_register_subj' value=\"{$esrow['email_register_subj']}\">\n"
+			. "\t\t<input type='hidden' name='email_register_subj_default' id='email_register_subj_default' value='".html_escape(_("Survey Registration Confirmation"))."'>\n"
+			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript:  fillin(\"email_register_subj\",\"email_register_subj_default\")'>\n"
+			. "\t</td></tr>\n";
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Public registration Email:")."</font></td>\n"
+			. "\t\t<td><textarea cols=50 rows=5 name='email_register' id='email_register'>{$esrow['email_register']}</textarea>\n"
+			. "\t\t<input type='hidden' name='email_register_default' id='email_register_default' value='".html_escape(_("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."))."'>\n"
+			. "\t\t</td><td><input type='button' value='"._("Use default")."' onClick='javascript:  fillin(\"email_register\",\"email_register_default\")'>\n"
+			. "\t</td></tr>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
+			. "\t\t<td><input type='text' size='50' name='urldescrip' value=\"{$esrow['urldescrip']}\"></td></tr>\n";
+	
+			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs();' class='standardbtn' value='"._("Save and Continue")." >>'>\n"
+			. "\t<input type='hidden' name='action' value='updatesurvey'>\n"
+			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
+			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\">\n"
+			. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\">\n"
+			. "\t</td></tr>\n"
+			. "</table></form>\n";
+		  }
+		
+		}
+	else
+		{
+		include("access_denied.php");
+		}
+		
+}
+
 
 if ($action == "ordergroups")
 {

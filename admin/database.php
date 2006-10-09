@@ -775,8 +775,26 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['email_confirm']}', \n"
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', '{$_POST['allowprev']}','".date("Y-m-d")."')";
 		$isresult = $connect->Execute($isquery);
+        
+        // insert base language into surveys_language_settings 
+		$isquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
+        . "(surveyls_survey_id, surveyls_language, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_urldescription, "
+		. "surveyls_email_invite_subj, surveyls_email_invite, surveyls_email_remind_subj, surveyls_email_remind, "
+		. "surveyls_email_register_subj, surveyls_email_register, surveyls_email_confirm_subj, surveyls_email_confirm)\n"
+		. "VALUES ($surveyid, '{$_POST['language']}', '{$_POST['short_title']}', '{$_POST['description']}',\n"
+		. "'".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
+		. "'{$_POST['urldescrip']}', '{$_POST['email_invite_subj']}',\n"
+		. "'{$_POST['email_invite']}', '{$_POST['email_remind_subj']}',\n"
+		. "'{$_POST['email_remind']}', '{$_POST['email_register_subj']}',\n"
+		. "'{$_POST['email_register']}', '{$_POST['email_confirm_subj']}',\n"
+		. "'{$_POST['email_confirm']}')";
+		
+		
+		$isresult = $connect->Execute($isquery);
+		
+		// Insert into survey_rights
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for creator
-    $isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
+        $isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
 		if ($isresult)
 			{
 			$surveyselect = getsurveylist();

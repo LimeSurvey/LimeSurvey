@@ -186,7 +186,7 @@ CREATE TABLE `prefix_surveys` (
   `url` varchar(255) default NULL,
   `urldescrip` varchar(255) default NULL,
   `language` varchar(50) default NULL,
-  `available_languages` varchar(255) default NULL,
+  `additional_languages` varchar(255) default NULL,
   `datestamp` char(1) default 'N',
   `usecookie` char(1) default 'N',
   `notification` char(1) default '0',
@@ -211,6 +211,34 @@ CREATE TABLE `prefix_surveys` (
   `datecreated` date default NULL,
   PRIMARY KEY  (`sid`)
 ) TYPE=MyISAM;
+
+
+-- 
+-- Table structure for table `surveys_languagesettings`
+-- 
+
+
+DROP TABLE IF EXISTS `prefix_surveys_languagesettings`;
+CREATE TABLE `prefix_surveys_languagesettings` (
+  `surveyls_survey_id` INT UNSIGNED NOT NULL DEFAULT 0,
+  `surveyls_language` VARCHAR(45) NULL DEFAULT 'en',
+  `surveyls_title` VARCHAR(200) NOT NULL,
+  `surveyls_description` TEXT NULL,
+  `surveyls_welcometext` TEXT NULL,
+  `surveyls_urldescription` VARCHAR(255) NULL,
+  `surveyls_email_invite_subj` VARCHAR(255) NULL,
+  `surveyls_email_invite` TEXT NULL,
+  `surveyls_email_remind_subj` VARCHAR(255) NULL,
+  `surveyls_email_remind` TEXT NULL,
+  `surveyls_email_register_subj` VARCHAR(255) NULL,
+  `surveyls_email_register` TEXT NULL,
+  `surveyls_email_confirm_subj` VARCHAR(255) NULL,
+  `surveyls_email_confirm` TEXT NULL,
+  PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
+)
+TYPE = MyISAM
+CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 
 
 -- 
