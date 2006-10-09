@@ -1440,11 +1440,12 @@ function createFieldMap($surveyid, $style="null") {
 
 	}
 	//Get list of questions
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 	$aquery = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')
 	." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid AND "
 	.db_table_name('questions').".sid=$surveyid AND "
-	.db_table_name('questions').".language='".$_SESSION['s_lang']."' AND "
-	.db_table_name('groups').".language='".$_SESSION['s_lang']."' "
+	.db_table_name('questions').".language='{$s_lang}' AND "
+	.db_table_name('groups').".language='{$s_lang}' "
 	." ORDER BY {$dbprefix}groups.group_order, title";
 	$aresult = db_execute_assoc($aquery) or die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
