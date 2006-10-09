@@ -425,8 +425,8 @@ function getquestions()
 {
 	global $surveyid, $gid, $qid, $dbprefix, $scriptname, $connect;
 //MOD for multilanguage surveys 
-
-	$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$_SESSION['s_lang']."'";
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}'";
 	$qresult = db_execute_assoc($qquery);
 	$qrows = $qresult->GetRows();
 
@@ -473,8 +473,8 @@ function getGroupSum($surveyid, $lang)
 function getQuestionSum($surveyid)
 {
 	global $surveyid,$dbprefix ;
-
-	$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."'"; //Getting a count of questions for this survey
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='{$s_lang}'"; //Getting a count of questions for this survey
 
 
 	$sumresult3 = db_execute_assoc($sumquery3);
@@ -490,9 +490,8 @@ function getQuestionSum($surveyid)
 function getMaxgrouporder($surveyid)
 {
 	global $surveyid ;
-	$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='".$_SESSION['s_lang']."'" ;
-
-
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
 	$max_result =db_execute_assoc($max_sql) ;
 	$maxrow = $max_result->FetchRow() ;
 	$current_max = $maxrow['max'];
@@ -510,7 +509,8 @@ function getMaxgrouporder($surveyid)
 function getMaxquestionorder($gid)
 {
 	global $surveyid ;
-	$max_sql = "SELECT max( question_order ) AS max FROM questions WHERE gid='$gid' AND language='".$_SESSION['s_lang']."'";
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$max_sql = "SELECT max( question_order ) AS max FROM questions WHERE gid='$gid' AND language='$s_lang'";
 	//		echo "debug: ".$max_sql."<br>" and die;
 
 
@@ -536,7 +536,8 @@ function getMaxquestionorder($gid)
 function getanswers()
 {
 	global $surveyid, $gid, $qid, $code, $dbprefix, $connect;
-	$aquery = 'SELECT code, answer FROM '.db_table_name('answers')." WHERE qid=$qid AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$aquery = 'SELECT code, answer FROM '.db_table_name('answers')." WHERE qid=$qid AND language='$s_lang' ORDER BY sortorder, answer";
 
 	$aresult = db_execute_assoc($aquery);
 	$answerselecter = "";
@@ -645,7 +646,8 @@ function getgrouplist($gid)
 	global $surveyid, $dbprefix, $scriptname, $connect;
 	$groupselecter="";
 	if (!$surveyid) {$surveyid=$_POST['sid'];}
-	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND  language='".$_SESSION['s_lang']."'  ORDER BY group_order";
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
 	//
 	$gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	while($gv = $gidresult->FetchRow())
@@ -667,7 +669,8 @@ function getgrouplist2($gid)
 	global $surveyid, $dbprefix, $connect;
 	$groupselecter = "";
 	if (!$surveyid) {$surveyid=$_POST['sid'];}
-	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."' ORDER BY group_order";
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
 
 	$gidresult = db_execute_num($gidquery) or die("Plain old did not work!");
@@ -690,7 +693,8 @@ function getgrouplist3($gid)
 	global $surveyid, $dbprefix, $connect;
 	if (!$surveyid) {$surveyid=$_POST['sid'];}
 	$groupselecter = "";
-	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."' ORDER BY group_order";
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
 
 	$gidresult = db_execute_num($gidquery) or die("Plain old did not work!");
@@ -769,8 +773,8 @@ function getSurveyInfo($surveyid)
 	global $dbprefix, $siteadminname, $siteadminemail, $connect;
 	$query="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	$result=db_execute_assoc($query) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-
-	$query2="SELECT * FROM ".db_table_name('survey_texts')." WHERE sid=$surveyid and language='".$_SESSION['s_lang']."'";
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$query2="SELECT * FROM ".db_table_name('survey_texts')." WHERE sid=$surveyid and language='$s_lang'";
 	$result2=db_execute_assoc($query2) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 
 
@@ -824,8 +828,10 @@ function getSurveyInfo($surveyid)
 
 function getlabelsets()
 {
-	global $dbprefix, $connect;
-	$query = "SELECT * FROM ".db_table_name('labelsets')." WHERE language='".$_SESSION['s_lang']."' ORDER BY label_name";
+	global $dbprefix, $connect, $surveyid;
+	die("FIXME: languages and labels, what to do :/ function getlabelsets()");
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$query = "SELECT * FROM ".db_table_name('labelsets')." WHERE language='$s_lang' ORDER BY label_name";
 	$result = db_execute_assoc($query) or die ("Couldn't get list of label sets<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$labelsets=array();
 	while ($row=$result->FetchRow())
@@ -1056,12 +1062,13 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 
 function fixsortorderGroups() //Function rewrites the sortorder for questions
 {
-	global $dbprefix, $connect;
-	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE language='".$_SESSION['s_lang']."' ORDER BY group_order, group_name");
+	global $dbprefix, $connect, $surveyid;
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE language='{$s_lang}' ORDER BY group_order, group_name");
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
-		$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' AND language='".$_SESSION['s_lang']."' ";
+		$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' AND language='{$s_lang}' ";
 		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update group_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$position++;
 	}
