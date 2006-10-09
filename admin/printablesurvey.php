@@ -87,8 +87,8 @@ echo "\t</tr>\n";
 // SURVEY NAME AND DESCRIPTION TO GO HERE
 
 $fieldmap=createFieldMap($surveyid);
-
-$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.group_order";
+$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid='{$surveyid}' AND language='{$s_lang}' ORDER BY {$dbprefix}groups.group_order";
 $degresult = db_execute_assoc($degquery);
 // GROUP NAME
 while ($degrow = $degresult->FetchRow())
