@@ -43,12 +43,15 @@
 
 
 
-    function getLanguageNameFromCode($codetosearch)
+    function getLanguageNameFromCode($codetosearch, $withnative=true)
     {
         $detaillanguages = getLanguageData();
         if (isset($detaillanguages[$codetosearch]['description']))
         {
+          if ($withnative) {
               return $detaillanguages[$codetosearch]['description'].' - '.$detaillanguages[$codetosearch]['nativedescription'];
+              }
+              else { return $detaillanguages[$codetosearch]['description'];}
         }
           else
         // else return default en code

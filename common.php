@@ -2193,10 +2193,10 @@ function getAdminHeader()
 	. "<![endif]-->\n"
 	. "<title>$sitename</title>\n"
 	. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
-	. "<script type=\"text/javascript\" src=\"scripts/tabber/tabber.js\"></script>\n"
+	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-//    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"scripts/tabber/tabber.css\">\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/luna/tab.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\">\n";
     
 	// This prevents a lasting javascripterror in the application

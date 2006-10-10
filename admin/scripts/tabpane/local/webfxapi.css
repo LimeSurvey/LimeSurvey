@@ -1,0 +1,47 @@
+/* This style sheet is used for WebFX Api pages */a.helpLink,
+a.helpLink:hover {
+	color:				rgb(0,66,174);
+	border-bottom-color:rgb(0,66,174);
+}
+
+.help-tooltip {
+	width:	auto;
+}
+
+.help-tooltip h4,
+.help-tooltip table,
+.help-tooltip p {
+	width:	auto;
+}
+
+.methodContainer {
+	display:	none;
+}
+
+.methodInfo h4,
+.methodInfo thead td {
+	font-size:		13px;
+	background:		none;
+	border-bottom:	0;
+}
+
+.methodInfo h4,
+.methodInfo p, 
+.methodInfo table {
+	margin:		5px;
+	padding:	0;
+}
+
+td {
+	vertical-align:	top;
+}
+
+td code {
+	white-space:	nowrap;
+}
+
+code a:visited,
+code a:hover {
+	color:		rgb(0,66,174);
+	background:	transparent;	
+}

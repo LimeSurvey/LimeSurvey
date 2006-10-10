@@ -14,6 +14,8 @@ td,th,a,p,div
 		font-size:10pt
 		}
 
+.
+
 .maintitle
         {
 		font-size:14pt;
@@ -134,12 +136,31 @@ textarea{
 				font-weight: bold;
 				color: #000000;
 	   }
+        
 .settingcaption
         {
+            float:left;
+            width:200px;
+            text-align : right;
         	font-size: 13px;
         	font-family: verdana,arial,sans-serif;
 			font-weight: bold;
-        }
+        }       
+.settingentry
+   {
+            float:left;
+            width:200px;
+        	font-size: 13px;
+        	font-family: verdana,arial,sans-serif;
+            vertical-align:texttop;
+        	
+   }        
+.settingrow
+{
+
+  width:400px;
+}
+         
 /**
  *  CSS Classes related with the tooltips displayed over 
  * 	the images. 
