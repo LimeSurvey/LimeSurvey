@@ -683,24 +683,49 @@ if(isset($surveyid))
 
 
 		$usquery = "UPDATE {$dbprefix}surveys \n"
-		. "SET short_title='{$_POST['short_title']}', description='{$_POST['description']}',\n"
-		. "admin='{$_POST['admin']}', welcome='".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
-		. "useexpiry='{$_POST['useexpiry']}', expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
+		. "SET admin='{$_POST['admin']}', useexpiry='{$_POST['useexpiry']}',\n"
+        . "expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
 		. "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
 		. "format='{$_POST['format']}', template='{$_POST['template']}',\n"
-		. "url='{$_POST['url']}', urldescrip='{$_POST['urldescrip']}',\n"
+		. "url='{$_POST['url']}', \n"
 		. "language='{$_POST['language']}', additional_languages='{$_POST['languageids']}',\n" 
         . "datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
 		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 		. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
-		. "attribute2='{$_POST['attribute2']}', email_invite_subj='{$_POST['email_invite_subj']}',\n"
-		. "email_invite='{$_POST['email_invite']}', email_remind_subj='{$_POST['email_remind_subj']}',\n"
-		. "email_remind='{$_POST['email_remind']}', email_register_subj='{$_POST['email_register_subj']}',\n"
-		. "email_register='{$_POST['email_register']}', email_confirm_subj='{$_POST['email_confirm_subj']}',\n"
-		. "email_confirm='{$_POST['email_confirm']}', allowsave='{$_POST['allowsave']}',\n"
+		. "attribute2='{$_POST['attribute2']}', allowsave='{$_POST['allowsave']}',\n"
 		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
 		. "WHERE sid={$_POST['sid']}";
 		$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+        $sqlstring =''; 
+        foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+        { 
+          if ($langname)
+          {
+            $sqlstring .= "and surveyls_language <> '".$langname."' ";
+		  }
+        }
+        // Add base language too
+        $sqlstring .= "and surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
+
+       	$usquery = "Delete from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$_POST['sid']} ".$sqlstring;
+		$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+
+        foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+        { 
+          if ($langname)
+          {
+            $usquery = "select * from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$_POST['sid']} and surveyls_language='".$langname."'";
+    		$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+            if ($usresult->RecordCount()==0)
+            {
+            $usquery = "insert into ".db_table_name('surveys_languagesettings')." SET surveyls_survey_id={$_POST['sid']}, surveyls_language='".$langname."'";
+    		$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+            }
+		  }
+        }
+
+
+
 		if ($usresult)
 		{
 			$surveyselect = getsurveylist();
