@@ -50,14 +50,14 @@ dark:	rgb(0,66,174);
 .dynamic-tab-pane-control .tab-row .tab a {
 	font-family:		Verdana, Helvetica, Arial;
 	font-size:			13px;
-	color:				rgb(0,66,174);
+	color:				#AAAAAA;
 	text-decoration:	none;
 	cursor:			hand;
 	cursor:			pointer;	
 }
 
 .dynamic-tab-pane-control .tab-row .hover a {
-	color:	rgb(0,66,174);
+	color:	#333333;
 }
 
 .dynamic-tab-pane-control .tab-row .tab.selected a {
@@ -66,8 +66,8 @@ dark:	rgb(0,66,174);
 
 .dynamic-tab-pane-control .tab-page {
 	clear:			both;
-	border:			1px solid rgb(120,172,255);
-	background:		White;
+	border:			1px solid #888888;
+	background:		#BBBBBB;
 	z-index:		2;
 	position:		relative;
 	top:			-2px;
@@ -80,7 +80,7 @@ dark:	rgb(0,66,174);
 .dynamic-tab-pane-control .tab-row {
 	z-index:		1;
 	white-space:	nowrap;
-	background:		rgb(234,242,255);
+	background:		#EEEEEE;
 	height:			1.85em;
 	width:			100%;
 }

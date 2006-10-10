@@ -2196,7 +2196,7 @@ function getAdminHeader()
 	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/luna/tab.css\" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\">\n";
     
 	// This prevents a lasting javascripterror in the application

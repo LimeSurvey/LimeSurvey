@@ -2975,7 +2975,7 @@ if ($action == "editsurvey")
 			$esrow = array_map('htmlspecialchars', $esrow);
 			include('./scripts/addremove.js');
 			$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>"
-			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey")."</font></font></td></tr>\n"
+			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey - Step 1 of 2")."</font></font></td></tr>\n"
 			. "\t<tr>"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
 			. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\"></td></tr>\n"
@@ -3166,7 +3166,7 @@ if ($action == "editsurvey")
 			. "\t\t<td><select multiple style='min-width:250px;'  type='text' size='5' id='additional_languages' name='additional_languages'>";
             foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
             { 
-              if ($langname)
+              if ($langname && $langname!=$esrow['language']) // base languag must not be shown here
               {
 				$editsurvey .= "\t\t\t<option id='".$langname."' value='".$langname."'";
 				$editsurvey .= ">".getLanguageNameFromCode($langname)."</option>\n";
@@ -3179,10 +3179,14 @@ if ($action == "editsurvey")
 
 			// Available languages listbox			
             . "\t\t<td align=left><select type='text' size='5' id='available_languages' name='available_languages'>";
+            $tempLang=GetAdditionalLanguagesFromSurveyID($surveyid);
 			foreach (getLanguageData() as  $langkey2=>$langname)
 			{
+              if ($langkey2!=$esrow['language'] && in_array($langkey2,$tempLang)==false)  // base languag must not be shown here
+              {
 				$editsurvey .= "\t\t\t<option id='".$langkey2."' value='".$langkey2."'";
 				$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+			  }	
 			}
 			
             $editsurvey .= "</select></td>"
@@ -3244,11 +3248,13 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		$esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid";
 		$esresult = db_execute_assoc($esquery);
         $editsurvey ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
-			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey Step 2")."</font></font></td></tr></table>\n"
+			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey - Step 2 of 2")."</font></font></td></tr></table>\n"
             . '<div class="tab-pane" id="tab-pane-1">';
 		while ($esrow = $esresult->FetchRow())
 		  { 
-            $editsurvey .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['surveyls_language'],false).'</h2>';
+            $editsurvey .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['surveyls_language'],false);
+            if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$editsurvey .= '('._('Base Language').')';}
+            $editsurvey .= '</h2>';
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n";
 

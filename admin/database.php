@@ -735,7 +735,7 @@ if(isset($surveyid))
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be updated")."\n".$connect->ErrorMsg() ." ($usquery)\")\n //-->\n</script>\n";
 		}
 	}
-	
+
 	elseif ($action == "delsurvey" && $actsurrows['delete_survey']) //can only happen if there are no groups, no questions, no answers etc.
 		{	
 		$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -748,8 +748,34 @@ if(isset($surveyid))
 		else
 			{
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
-			}
-		}
+
+		  }
+        }
+
+	
+	// Save the 2nd page from the survey-properties
+	elseif ($action == "updatesurvey2" && $actsurrows['edit_survey_property'])
+	{
+        $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+        foreach ($languagelist as $langname)
+        { 
+          if ($langname)
+          {
+		       $usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
+                		. "SET surveyls_title='".$_POST['short_title_'.$langname]."', surveyls_description='".$_POST['description_'.$langname]."',\n"
+		                . "surveyls_welcometext='".str_replace("\n", "<br />", $_POST['welcome_'.$langname])."',\n"
+		                . "surveyls_urldescription='".$_POST['urldescrip_'.$langname]."', surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."',\n"
+		                . "surveyls_email_invite='".$_POST['email_invite_'.$langname]."', surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."',\n"
+		                . "surveyls_email_remind='".$_POST['email_remind_'.$langname]."', surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."',\n"
+		                . "surveyls_email_register='".$_POST['email_register_'.$langname]."', surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."',\n"
+		                . "surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."'\n"
+		                . "WHERE surveyls_survey_id=".$_POST['sid']." and surveyls_language='".$langname."'";
+        	   $usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+		  }
+        }
+	}
+
 	}
 
 

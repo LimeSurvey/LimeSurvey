@@ -1,20 +1,22 @@
-body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-}
+body    {
+	   margin-left: 0px;
+	   margin-top: 0px;
+	   margin-right: 0px;
+	   margin-bottom: 0px;
+        }
 
-img {
+
+img     {
 		border: 0px ;  
-	}
+	    }
+
+
 td,th,a,p,div
 		{
 		font-family:verdana,arial,sans-serif; 
 		font-size:10pt
 		}
 
-.
 
 .maintitle
         {
@@ -25,6 +27,7 @@ td,th,a,p,div
 		text-align:center;
 		margin:auto;
         }
+
 
 .outlinetable
 		{

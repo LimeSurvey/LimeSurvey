@@ -203,7 +203,7 @@ checkactivations();
 if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" ||
 $action=="delquestion" || $action=="delquestionall" || $action == "insertnewsurvey" ||
 $action == "copynewquestion" || $action == "insertnewgroup" || $action=="reordergroups" || $action == "insertCSV" ||
-$action == "insertnewquestion" || $action == "updatesurvey" || $action=="updategroup" ||
+$action == "insertnewquestion" || $action == "updatesurvey" || $action == "updatesurvey2" || $action=="updategroup" ||
 $action=="reorderquestions" || $action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
 $action == "delattribute" || $action == "addattribute" || $action == "editattribute")
 {
