@@ -236,8 +236,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_confirm` TEXT NULL,
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
 )
-TYPE = MyISAM
-CHARACTER SET utf8 COLLATE utf8_general_ci;
+TYPE = MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 
@@ -299,7 +298,7 @@ CREATE TABLE `prefix_settings_global` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '109');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '110');
 
 --
 -- Table `users`
