@@ -137,7 +137,17 @@ textarea{
 				color: #000000;
 	   }
         
-.settingcaption
+
+font.settingcaption
+        {
+            text-align : right;
+        	font-size: 13px;
+        	font-family: verdana,arial,sans-serif;
+			font-weight: bold;
+        }       
+
+        
+p.settingcaption
         {
             float:left;
             width:200px;
@@ -145,20 +155,23 @@ textarea{
         	font-size: 13px;
         	font-family: verdana,arial,sans-serif;
 			font-weight: bold;
+            clear:left;
         }       
 .settingentry
    {
             float:left;
-            width:200px;
+            width:410px;
+            padding-left: 5px;
         	font-size: 13px;
-        	font-family: verdana,arial,sans-serif;
+         	font-family: verdana,arial,sans-serif;
             vertical-align:texttop;
-        	
+        	clear:right;
    }        
+   
 .settingrow
 {
-
-  width:400px;
+  width:620px;
+  float:center;
 }
          
 /**
