@@ -48,14 +48,14 @@ function db_quote($str)
 }
 
 /*
- * Gets the maximum question_order field value for a group
- * @gid: The id of the group
- */
+* Gets the maximum question_order field value for a group
+* @gid: The id of the group
+*/
 function get_max_order($gid)
 {
-	global $connect ; 
-	global $dbprefix ; 
-	$query="SELECT MAX(question_order) as max FROM {$dbprefix}questions where gid=".$gid ; 
+	global $connect ;
+	global $dbprefix ;
+	$query="SELECT MAX(question_order) as max FROM {$dbprefix}questions where gid=".$gid ;
 	//$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
 	$result = $connect->Execute($query) or die($query);
 	$gv = $result->FetchRow();
@@ -63,15 +63,15 @@ function get_max_order($gid)
 }
 
 if(isset($surveyid))
-	{
+{
 	$actsurquery = "SELECT define_questions, edit_survey_property, delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 	$actsurresult = db_execute_assoc($actsurquery);
 	$actsurrows = $actsurresult->FetchRow();
-	
+
 	if ($action == "delattribute" && $actsurrows['define_questions'])
 	{
 		settype($_POST['qaid'], "integer");
-	$query = "DELETE FROM ".db_table_name('question_attributes')."
+		$query = "DELETE FROM ".db_table_name('question_attributes')."
 				  WHERE qaid={$_POST['qaid']} AND qid={$_POST['qid']}";
 		$result=$connect->Execute($query) or die("Couldn't delete attribute<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 	}
@@ -79,7 +79,7 @@ if(isset($surveyid))
 	{
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
-		$query = "INSERT INTO ".db_table_name('question_attributes')."
+			$query = "INSERT INTO ".db_table_name('question_attributes')."
 					  (qid, attribute, value)
 					  VALUES ('{$_POST['qid']}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
 			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -90,7 +90,7 @@ if(isset($surveyid))
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
 			settype($_POST['qaid'], "integer");
-		$query = "UPDATE ".db_table_name('question_attributes')."
+			$query = "UPDATE ".db_table_name('question_attributes')."
 					  SET value='{$_POST['attribute_value']}' WHERE qaid='{$_POST['qaid']}' AND qid='{$_POST['qid']}'";
 			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		}
@@ -104,11 +104,11 @@ if(isset($surveyid))
 		else
 		{
 			$_POST  = array_map('db_quote', $_POST);
-	
+
 			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
 			$query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).",'{$baselang}')";
 			$result = $connect->Execute($query);
-	
+
 			if ($result)
 			{
 				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $surveyid\")\n //-->\n < /script>\n";
@@ -144,29 +144,37 @@ if(isset($surveyid))
 			}
 		}
 	}
-	
+
 	elseif ($action == "updategroup" && $actsurrows['define_questions'])
 	{
 		$_POST  = array_map('db_quote', $_POST);
-	
-	$ugquery = "UPDATE ".db_table_name('groups')." SET group_name='{$_POST['group_name']}', description='{$_POST['description']}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']}";
-		$ugresult = $connect->Execute($ugquery);
-		if ($ugresult)
+		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
+		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+		array_push($grplangs,$baselang[0].$baselang[1]);
+		foreach ($grplangs as $grplang)
 		{
-			//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n< /script>\n";
-			$groupsummary = getgrouplist($_POST['gid']);
+			if (isset($grplang) && $grplang != "")
+			{
+				$ugquery = "UPDATE ".db_table_name('groups')." SET group_name='{$_POST['group_name_'.$grplang]}', description='{$_POST['description_'.$grplang]}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']} AND language='{$grplang}'";
+				$ugresult = $connect->Execute($ugquery);
+				if ($ugresult)
+				{
+					//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n< /script>\n";
+					$groupsummary = getgrouplist($_POST['gid']);
+				}
+				else
+				{
+					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be updated")."\")\n //-->\n</script>\n";
+				}
+			}
 		}
-		else
-		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be updated")."\")\n //-->\n</script>\n";
-		}
-	
+
 	}
-	
+
 	elseif ($action == "delgroupnone" && $actsurrows['define_questions'])
 	{
-		if (!isset($gid)) {$gid=returnglobal('gid');}
-	$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
+		if (!isset($gid)) $gid=returnglobal('gid');
+		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
 		if ($result)
 		{
@@ -179,22 +187,22 @@ if(isset($surveyid))
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
 		}
 	}
-	
+
 	elseif ($action == "delgroup" && $actsurrows['define_questions'])
 	{
-		if (!isset($gid)) {$gid=returnglobal('gid');}
-	$query = "SELECT qid FROM ".db_table_name('groups').", ".db_table_name('questions')." WHERE ".db_table_name('groups').".gid=".db_table_name('questions').".gid AND ".db_table_name('groups').".gid=$gid";
+		if (!isset($gid)) $gid=returnglobal('gid');
+		$query = "SELECT qid FROM ".db_table_name('groups').", ".db_table_name('questions')." WHERE ".db_table_name('groups').".gid=".db_table_name('questions').".gid AND ".db_table_name('groups').".gid=$gid";
 		if ($result = db_execute_assoc($query))
 		{
-			if (!isset($total)) {$total=0;}
+			if (!isset($total)) $total=0;
 			$qtodel=$result->RecordCount();
 			while ($row=$result->FetchRow())
 			{
-			$dquery = "DELETE FROM ".db_table_name('conditions')." WHERE qid={$row['qid']}";
+				$dquery = "DELETE FROM ".db_table_name('conditions')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
-			$dquery = "DELETE FROM ".db_table_name('answers')." WHERE qid={$row['qid']}";
+				$dquery = "DELETE FROM ".db_table_name('answers')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
-			$dquery = "DELETE FROM ".db_table_name('qeustions')." WHERE qid={$row['qid']}";
+				$dquery = "DELETE FROM ".db_table_name('qeustions')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
 			}
 			if ($total != $qtodel*3)
@@ -202,7 +210,7 @@ if(isset($surveyid))
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\")\n //-->\n</script>\n";
 			}
 		}
-	$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
+		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
 		if ($result)
 		{
@@ -220,19 +228,19 @@ if(isset($surveyid))
 		$grouporder = explode(",",$_POST['hiddenNodeIds']) ;
 		foreach($grouporder as $key =>$value)
 		{
-		$upgrorder_query="UPDATE ".db_table_name('groups')." SET group_order=$key where gid=$value" ;
+			$upgrorder_query="UPDATE ".db_table_name('groups')." SET group_order=$key where gid=$value" ;
 			$upgrorder_result = $connect->Execute($upgrorder_query) or die($connect->ErrorMsg()) ;
 		}
 	}
-	
+
 	elseif ($action == "reorderquestions" && $actsurrows['define_questions'])
 	{
 		//Getting the hiddeNodeIds field and constructing the question order array
 		$questionorder=explode(",",$_POST['hiddenNodeIds']) ;
-	
+
 		foreach($questionorder as $key =>$value)
 		{
-		$upordquery="UPDATE ".db_table_name('questions')." SET question_order='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
+			$upordquery="UPDATE ".db_table_name('questions')." SET question_order='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
 			$upordresult= $connect->Execute($upordquery) or die($connect->ErrorMsg()) ;
 		}
 	}
@@ -245,26 +253,26 @@ if(isset($surveyid))
 		else
 		{
 			$_POST  = array_map('db_quote', $_POST);
-	
+
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
-		$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
+			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).")";
 			$result = $connect->Execute($query);
 			if (!$result)
 			{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-				
+
 			}
 			else
 			{
-			$query = "SELECT qid FROM ".db_table_name('questions')." ORDER BY qid DESC LIMIT 1"; //get last question id
+				$query = "SELECT qid FROM ".db_table_name('questions')." ORDER BY qid DESC LIMIT 1"; //get last question id
 				$result=db_execute_assoc($query);
 				while ($row=$result->FetchRow()) {$qid = $row['qid'];}
 			}
 			if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 			{
-			$query = "INSERT INTO ".db_table_name('question_attributes')."
+				$query = "INSERT INTO ".db_table_name('question_attributes')."
 					  (qid, attribute, value)
 					  VALUES
 					  ($qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
@@ -279,10 +287,10 @@ if(isset($surveyid))
 		$question_number=1;
 		$group_number=0;
 		$gselect="SELECT *\n"
-	."FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
-	."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
-	."AND ".db_table_name('questions').".sid=$surveyid\n"
-	."ORDER BY ".db_table_name('groups').".group_order, title";
+		."FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
+		."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
+		."AND ".db_table_name('questions').".sid=$surveyid\n"
+		."ORDER BY ".db_table_name('groups').".group_order, title";
 		$gresult=db_execute_assoc($gselect) or die ("Error: ".htmlspecialchars($connect->ErrorMsg()));
 		$grows = array(); //Create an empty array in case FetchRow does not return any rows
 		while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array
@@ -296,7 +304,7 @@ if(isset($surveyid))
 				$group_number++;
 			}
 			//echo "GROUP: ".$grow['group_name']."<br />";
-		$usql="UPDATE ".db_table_name('questions')."\n"
+			$usql="UPDATE ".db_table_name('questions')."\n"
 			."SET question_order='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
 			."WHERE qid=".$grow['qid'];
 			//echo "[$sql]";
@@ -305,24 +313,24 @@ if(isset($surveyid))
 			$groupname=$grow['group_name'];
 		}
 	}
-	
+
 	elseif ($action == "updatequestion" && $actsurrows['define_questions'])
 	{
-	$cqquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$_POST['qid']}";
+		$cqquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$_POST['qid']}";
 		$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($cqr=$cqresult->FetchRow()) {$oldtype=$cqr['type'];}
-	
+
 		global $change;
 		$change = "0";
 		if (($oldtype == "J" && $_POST['type']== "I") || ($oldtype == "I" && $_POST['type']== "J") || ($oldtype == $_POST['type']))
 		{
 			$change = "1";
 		}
-	
+
 		if ($oldtype != $_POST['type'])
 		{
 			//Make sure there are no conditions based on this question, since we are changing the type
-		$ccquery = "SELECT * FROM ".db_table_name('conditions')." WHERE cqid={$_POST['qid']}";
+			$ccquery = "SELECT * FROM ".db_table_name('conditions')." WHERE cqid={$_POST['qid']}";
 			$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 			$cccount=$ccresult->RecordCount();
 			while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
@@ -368,7 +376,7 @@ if(isset($surveyid))
 			}
 		}
 	}
-	
+
 	elseif ($action == "copynewquestion" && $actsurrows['define_questions'])
 	{
 		if (!$_POST['title'])
@@ -380,15 +388,15 @@ if(isset($surveyid))
 			$_POST  = array_map('db_quote', $_POST);
 			if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
 			//Get maximum order from the question group
-			$max=get_max_order($_POST['gid'])+1 ; 
-			
+			$max=get_max_order($_POST['gid'])+1 ;
+
 			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, question_order) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max)";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
 			$newqid = $connect->Insert_ID();
 			if (!$result)
 			{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
-				
+
 			}
 			if (returnglobal('copyanswers') == "Y")
 			{
@@ -465,7 +473,7 @@ if(isset($surveyid))
 			}
 		}
 	}
-	
+
 	elseif ($action == "delquestionall" && $actsurrows['define_questions'])
 	{
 		if (!isset($qid)) {$qid=returnglobal('qid');}
@@ -501,7 +509,7 @@ if(isset($surveyid))
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be deleted")."\n$error\")\n //-->\n</script>\n";
 		}
 	}
-	
+
 	elseif ($action == "modanswer" && $actsurrows['define_questions'])
 	{
 		if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _("Add"))) //TURN ALL OTHER DEFAULT SETTINGS TO NO
@@ -640,7 +648,7 @@ if(isset($surveyid))
 			break;
 		}
 	}
-	
+
 	elseif ($action == "insertCSV" && $actsurrows['define_questions'])
 	{
 		if (get_magic_quotes_gpc() == "0")
@@ -665,13 +673,13 @@ if(isset($surveyid))
 			}
 			$band = 1;
 		}
-	}	
-	
+	}
+
 	elseif ($action == "updatesurvey" && $actsurrows['edit_survey_property'])
 	{
 		if ($_POST['url'] == "http://") {$_POST['url']="";}
 		$_POST  = array_map('db_quote', $_POST);
-	
+
 		if (trim($_POST['expires'])=="")
 		{
 			$_POST['expires']='1980-01-01';
@@ -684,45 +692,45 @@ if(isset($surveyid))
 
 		$usquery = "UPDATE {$dbprefix}surveys \n"
 		. "SET admin='{$_POST['admin']}', useexpiry='{$_POST['useexpiry']}',\n"
-        . "expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
+		. "expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
 		. "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
 		. "format='{$_POST['format']}', template='{$_POST['template']}',\n"
 		. "url='{$_POST['url']}', \n"
-		. "language='{$_POST['language']}', additional_languages='{$_POST['languageids']}',\n" 
-        . "datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
+		. "language='{$_POST['language']}', additional_languages='{$_POST['languageids']}',\n"
+		. "datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
 		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 		. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
 		. "attribute2='{$_POST['attribute2']}', allowsave='{$_POST['allowsave']}',\n"
 		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
 		. "WHERE sid={$_POST['sid']}";
 		$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
-        $sqlstring =''; 
-        foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
-        { 
-          if ($langname)
-          {
-            $sqlstring .= "and surveyls_language <> '".$langname."' ";
-		  }
-        }
-        // Add base language too
-        $sqlstring .= "and surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
+		$sqlstring ='';
+		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+		{
+			if ($langname)
+			{
+				$sqlstring .= "and surveyls_language <> '".$langname."' ";
+			}
+		}
+		// Add base language too
+		$sqlstring .= "and surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
 
-       	$usquery = "Delete from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$_POST['sid']} ".$sqlstring;
+		$usquery = "Delete from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$_POST['sid']} ".$sqlstring;
 		$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 
-        foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
-        { 
-          if ($langname)
-          {
-            $usquery = "select * from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$_POST['sid']} and surveyls_language='".$langname."'";
-    		$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
-            if ($usresult->RecordCount()==0)
-            {
-            $usquery = "insert into ".db_table_name('surveys_languagesettings')." SET surveyls_survey_id={$_POST['sid']}, surveyls_language='".$langname."'";
-    		$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
-            }
-		  }
-        }
+		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+		{
+			if ($langname)
+			{
+				$usquery = "select * from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$_POST['sid']} and surveyls_language='".$langname."'";
+				$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+				if ($usresult->RecordCount()==0)
+				{
+					$usquery = "insert into ".db_table_name('surveys_languagesettings')." SET surveyls_survey_id={$_POST['sid']}, surveyls_language='".$langname."'";
+					$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+				}
+			}
+		}
 
 
 
@@ -737,73 +745,73 @@ if(isset($surveyid))
 	}
 
 	elseif ($action == "delsurvey" && $actsurrows['delete_survey']) //can only happen if there are no groups, no questions, no answers etc.
-		{	
+	{
 		$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
 		$result = $connect->Execute($query);
 		if ($result)
-			{
+		{
 			$surveyid = "";
 			$surveyselect = getsurveylist();
-			}
+		}
 		else
-			{
+		{
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\"Survey id($surveyid) was NOT DELETED!\n$error\")\n //-->\n</script>\n";
 
-		  }
-        }
+		}
+	}
 
-	
+
 	// Save the 2nd page from the survey-properties
 	elseif ($action == "updatesurvey2" && $actsurrows['edit_survey_property'])
 	{
-        $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
-        foreach ($languagelist as $langname)
-        { 
-          if ($langname)
-          {
-		       $usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
-                		. "SET surveyls_title='".$_POST['short_title_'.$langname]."', surveyls_description='".$_POST['description_'.$langname]."',\n"
-		                . "surveyls_welcometext='".str_replace("\n", "<br />", $_POST['welcome_'.$langname])."',\n"
-		                . "surveyls_urldescription='".$_POST['urldescrip_'.$langname]."', surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."',\n"
-		                . "surveyls_email_invite='".$_POST['email_invite_'.$langname]."', surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."',\n"
-		                . "surveyls_email_remind='".$_POST['email_remind_'.$langname]."', surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."',\n"
-		                . "surveyls_email_register='".$_POST['email_register_'.$langname]."', surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."',\n"
-		                . "surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."'\n"
-		                . "WHERE surveyls_survey_id=".$_POST['sid']." and surveyls_language='".$langname."'";
-        	   $usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
-		  }
-        }
+		$languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+		foreach ($languagelist as $langname)
+		{
+			if ($langname)
+			{
+				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
+				. "SET surveyls_title='".$_POST['short_title_'.$langname]."', surveyls_description='".$_POST['description_'.$langname]."',\n"
+				. "surveyls_welcometext='".str_replace("\n", "<br />", $_POST['welcome_'.$langname])."',\n"
+				. "surveyls_urldescription='".$_POST['urldescrip_'.$langname]."', surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."',\n"
+				. "surveyls_email_invite='".$_POST['email_invite_'.$langname]."', surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."',\n"
+				. "surveyls_email_remind='".$_POST['email_remind_'.$langname]."', surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."',\n"
+				. "surveyls_email_register='".$_POST['email_register_'.$langname]."', surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."',\n"
+				. "surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."'\n"
+				. "WHERE surveyls_survey_id=".$_POST['sid']." and surveyls_language='".$langname."'";
+				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+			}
+		}
 	}
 
-	}
+}
 
 
 elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
-	{
+{
 	if ($_POST['url'] == "http://") {$_POST['url']="";}
 	if (!$_POST['short_title'])
-		{
+	{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be created because it did not have a short title")."\")\n //-->\n</script>\n";
-		}
+	}
 	else
-		{
+	{
 		$_POST  = array_map('db_quote', $_POST);
 		if (trim($_POST['expires'])=="")
-			{
+		{
 			$_POST['expires']='1980-01-01';
-			}
+		}
 		else
-			{
+		{
 			$_POST['expires']="'".$_POST['expires']."'";
-			}
+		}
 		// Get random ids until one is found that is not used
 		do
-			{
+		{
 			$surveyid = getRandomID();
 			$isquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 			$isresult = db_execute_assoc($isquery);
-			}
+		}
 		while ($isresult->RecordCount()>0);
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
@@ -826,10 +834,10 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['email_confirm']}', \n"
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', '{$_POST['allowprev']}','".date("Y-m-d")."')";
 		$isresult = $connect->Execute($isquery);
-        
-        // insert base language into surveys_language_settings 
+
+		// insert base language into surveys_language_settings
 		$isquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
-        . "(surveyls_survey_id, surveyls_language, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_urldescription, "
+		. "(surveyls_survey_id, surveyls_language, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_urldescription, "
 		. "surveyls_email_invite_subj, surveyls_email_invite, surveyls_email_remind_subj, surveyls_email_remind, "
 		. "surveyls_email_register_subj, surveyls_email_register, surveyls_email_confirm_subj, surveyls_email_confirm)\n"
 		. "VALUES ($surveyid, '{$_POST['language']}', '{$_POST['short_title']}', '{$_POST['description']}',\n"
@@ -839,31 +847,31 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['email_remind']}', '{$_POST['email_register_subj']}',\n"
 		. "'{$_POST['email_register']}', '{$_POST['email_confirm_subj']}',\n"
 		. "'{$_POST['email_confirm']}')";
-		
-		
+
+
 		$isresult = $connect->Execute($isquery);
-		
+
 		// Insert into survey_rights
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for creator
-        $isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
+		$isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
 		if ($isresult)
-			{
+		{
 			$surveyselect = getsurveylist();
-			}
+		}
 		else
-			{
+		{
 			$errormsg=_("Survey could not be created")." - ".$connect->ErrorMsg();
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
 			echo htmlspecialchars($isquery);
-			}
 		}
 	}
+}
 
-else 
-	{
+else
+{
 
 	include("access_denied.php");
-	}
+}
 
 
 ?>
