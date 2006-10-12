@@ -196,22 +196,22 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname', '_top')\"" .
                      "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Default Administration Page")."');return false\">" .
                      "<img src='$imagefiles/home.png' name='HomeButton' alt='"._("Default Administration Page")."' " 
-                    ."title=''" ."align='left'></a>\n";
+                    ."title=''" ."align='left' /></a>\n";
 		
-		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n";
+		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left' />\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n";
 
 		// edit users
 		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
 					"onmouseout=\"hideTooltip()\"" 
 					. "onmouseover=\"showTooltip(event,'"._("Modify Security Settings")."');return false\">" .
 					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
-					." title='' alt='"._("Modify Security Settings")."'  align='left'></a>";
+					." title='' alt='"._("Modify Security Settings")."'  align='left' /></a>";
 
 		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\""
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'"._("Create/Edit Groups")."');return false\">" .
-					"<img src='$imagefiles/tokens.png' title='' align='left'  name='Create/Edit Groups' alt='"._("Create/Edit Groups")."'></a>\n" ;
+					"<img src='$imagefiles/tokens.png' title='' align='left' alt='"._("Create/Edit Groups")."' /></a>\n" ;
 		
 		// check settings
         //"\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
@@ -219,8 +219,8 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 					    . "onmouseout=\"hideTooltip()\"" 
                       	. "onmouseover=\"showTooltip(event,'". _("Check Settings")."');return false\">" 
 						. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
-						. "' alt='". _("Check Settings")."' align='left'></a>"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+						. "' alt='". _("Check Settings")."' align='left' /></a>"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 		
 		// check data cosistency
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
@@ -228,11 +228,11 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			$adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
 						   "onmouseout=\"hideTooltip()\"" 
 						  ."onmouseover=\"showTooltip(event,'". _("Check Data Consistency")."');return false\">".
-						"<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left'></a>\n";
+						"<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left' /></a>\n";
 			}
 		else
 			{
-			$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";			
+			$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";			
 			}
 		// delete Survey       
 		if ($surveyid)
@@ -249,20 +249,21 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 							. "onClick=\"window.open('deletesurvey.php?sid=$surveyid', '_top')\"" 
 							. "onmouseout=\"hideTooltip()\"" 
 							. "onmouseover=\"showTooltip(event,'"._("Delete Entire Survey")."');return false\">"
-							."<img src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _("Delete Entire Survey")." ($surveyid)' title='' align='left'>";
+							."<img src='$imagefiles/delete.png' name='DeleteSurvey' alt='". _("Delete Entire Survey")." ($surveyid)' title='' align='left' />"
+                            ."</a>" ;
 				}
 			}
 		else
 			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
+			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";
 			}
 		
 		// list surveys
 		$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
 		 			."onmouseout=\"hideTooltip()\"" 
                     ."onmouseover=\"showTooltip(event,'"._("List Surveys")."');return false\">\n" 
-		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''" .
-		 			"  alt='"._("List Surveys")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\">" 
+		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''" 
+		 			."  alt='"._("List Surveys")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\" />" 
                     ."</a>" ;
         
 		// db backup & label editor
@@ -272,13 +273,13 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 						. "onClick=\"window.open('dumpdb.php', '_top')\""
 						. "onmouseout=\"hideTooltip()\"" 
 						. "onmouseover=\"showTooltip(event,'"._("Backup Entire Database")."');return false\">"
-						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". _("Backup Entire Database")."($surveyid)' align='left'>" 
+						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". _("Backup Entire Database")."($surveyid)' align='left' />" 
 						."</a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 			}
 		else
 			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
+			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";
 			}
 		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			{
@@ -286,12 +287,12 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 						. "onmouseout=\"hideTooltip()\"" 
 						. "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">" .
 						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
-						. _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."'></a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+						. _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."' /></a>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
            	}
 		else
 			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left'>\n";
+			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";
 			}
         if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			{
@@ -299,7 +300,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	        			  "onClick=\"window.open('templates.php', '_top')\""
 	                    . "onmouseout=\"hideTooltip()\"" 
 	                    . "onmouseover=\"showTooltip(event,'"._("Template Editor")."');return false\">" .
-	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". _("Template Editor")."' align='left'></a>\n"
+	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". _("Template Editor")."' align='left' /></a>\n"
 	                    . "\t\t\t\t</td>\n";
             }
         if(isset($_SESSION['loginID'])) //ADDED by Moses to prevent errors by reading db while not logged in.
@@ -309,20 +310,20 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	                    . "onmouseout=\"hideTooltip()\"" 
 	                    . "onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">" 
 	                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
-	                    . "alt='". _("Show Help")."' align='right' ></a>"
+	                    . "alt='". _("Show Help")."' align='right'  /></a>"
 		                . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logoutuser', '_top')\"" 
                         . "onmouseout=\"hideTooltip()\"" 
 					    . "onmouseover=\"showTooltip(event,'"._("Logout")."');return false\">" 
                         . "<img src='$imagefiles/logout.png' name='Logout'"
-					    . "title='' alt='"._("Logout")."'  align='right'></a>"				
-	                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
+					    . "title='' alt='"._("Logout")."'  align='right' /></a>"				
+	                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0' />\n";
 	                    
 			if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
 				{
 			$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=newsurvey', '_top')\"" 
 						. "onmouseout=\"hideTooltip()\"" 
 						. "onmouseover=\"showTooltip(event,'"._("Create or Import New Survey")."');return false\">" .
-						"<img src='$imagefiles/add.png' align='right' name='AddSurvey' title='' alt='". _("Create or Import New Survey")."'></a>\n";
+						"<img src='$imagefiles/add.png' align='right' name='AddSurvey' title='' alt='". _("Create or Import New Survey")."' /></a>\n";
 	             }
 			$adminmenu .= "\t\t\t\t\t<font class=\"boxcaption\">"._("Surveys").":</font>"
 	                    . "\t\t\t\t\t<select class=\"listboxsurveys\""
@@ -1083,43 +1084,43 @@ function browsemenubar()
 	. "\t\t<td>\n"
 	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
 			"onmouseover=\"showTooltip(event,'"._("Return to Survey Administration")."')\">" .
-			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'></a>\n"
-	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left'>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
+			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left' /></a>\n"
+	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left' />\n"
+	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='browse.php?sid=$surveyid' onmouseout=\"hideTooltip()\"" .
 			" onmouseover=\"showTooltip(event,'"._("Show summary information")."')\"" .
-			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' align='left'></a>\n"
+			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' align='left' /></a>\n"
 	. "\t\t\t<a href='browse.php?sid=$surveyid&amp;action=all' onmouseout=\"hideTooltip()\"" .
 			"onmouseover=\"showTooltip(event,'". _("Display Responses")."')\">" .
-			"<img name='ViewAll' src='$imagefiles/document.png' title='' align='left'></a>\n"
+			"<img name='ViewAll' src='$imagefiles/document.png' title='' align='left' /></a>\n"
 	. "\t\t\t<a href='browse.php?sid=$surveyid&amp;action=all&amp;limit=50&amp;order=desc'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Display Last 50 Responses")."')\">" .
-			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' align='left'></a>\n"
+			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' align='left' /></a>\n"
 	. "\t\t\t<a href='dataentry.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Dataentry Screen for Survey")."')\">" .
-	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' align='left'></a>\n"
+	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' align='left' /></a>\n"
 	. "\t\t\t<a href='printablesurvey.php?sid=$surveyid'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."')\">" .
-			"<img name='Printable' src='$imagefiles/print.png' title='' align='left'\"></a>\n"
+			"<img name='Printable' src='$imagefiles/print.png' title='' align='left' /></a>\n"
 	. "\t\t\t<a href='statistics.php?sid=$surveyid' " .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Get statistics from these responses")."')\">".
-		"<img name='Statistics' src='$imagefiles/statistics.png' title='' align='left'></a>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
+		"<img name='Statistics' src='$imagefiles/statistics.png' title='' align='left' /></a>\n"
+	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='export.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Results to Application")."')\"><img name='Export' src='$imagefiles/export.png' " .
 			"title='' alt=''align='left'  blank')\"></a>\n"
 	. "\t\t\t<a href='spss.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Export result to a SPSS command file")."')\"><img src='$imagefiles/exportspss.png' align='left' title='"
 	. _("Export result to a SPSS command file")."' border='0' alt='". _("Export result to a SPSS command file")."'></a>\n"
 	. "\t\t\t<a href='importoldresponses.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Import answers from a deactivated survey table")."')\" >" .
-			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left'></a>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
+			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left' /></a>\n"
+	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='resultsdump.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Backup results table as SQL file")."')\">" .
-			"<img name='SaveDump' src='$imagefiles/exportsql.png' title='' align='left'></a>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left'>\n"
+			"<img name='SaveDump' src='$imagefiles/exportsql.png' title='' align='left' /></a>\n"
+	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='".$homeurl."/saved.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("View Saved but not submitted Responses")."')\" >" .
-		"<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved'></a>\n"
+		"<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' /></a>\n"
 	. "\t\t\t<a href='vvexport.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Import a VV survey file")."')\">\n"
-	. "<img src='$imagefiles/importvv.png' align='left' title='' border='0' alt=''></a>\n"
+	. "<img src='$imagefiles/importvv.png' align='left' title='' border='0' alt='' /></a>\n"
 	. "\t\t\t<a href='vvexport.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export a VV survey file")."')\">" .
-		"<img src='$imagefiles/exportvv.png' align='left' title='' alt='' border='0'></a>\n"
+		"<img src='$imagefiles/exportvv.png' align='left' title='' alt='' border='0' /></a>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	return $surveyoptions;
@@ -2132,7 +2133,7 @@ function getHeader()
 	else {$surveylanguage='en';}
 	if ( !$embedded )
 	{
-		return  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
+		return  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
 		. "<head>\n"
 		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"scripts/slider/swing.css\">\n"
 		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
@@ -2166,10 +2167,10 @@ function getAdminFooter($url, $explanation)
 	$strHTMLFooter = "<div style='color: #FFFFFF; text-align:center; background-color: #000000; padding:3px; '>\n"
 	. "\t\t\t<img  align='right' alt='Donate to PHPSurveyor' src='$imagefiles/donate.gif' "
 	. "onClick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
-	. "onMouseOut=\"document.body.style.cursor='auto'\">\n"
+	. "onMouseOut=\"document.body.style.cursor='auto'\" />\n"
 	. "\t\t\t<img style='padding-right:87px' align='left' alt='Help - $explanation' src='$imagefiles/help.gif' "
 	. "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
-	. "onMouseOut=\"document.body.style.cursor='auto'\">\n"
+	. "onMouseOut=\"document.body.style.cursor='auto'\" />\n"
 	. "\t\t\t<a href='http://www.phpsurveyor.org' class='subtitle' target='_blank'>"
 	. "PHPSurveyor</a><div class='version'>Version $versionnumber</div> \n"
 	. "</div>\n"
@@ -2186,18 +2187,18 @@ function doAdminHeader()
 function getAdminHeader()
 {
 	global $sitename, $sitename, $homeurl;
-	$strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
+	$strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
 	."<html>\n<head>\n"
 	. "<!--[if lt IE 7]>\n"
 	. "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
 	. "<![endif]-->\n"
 	. "<title>$sitename</title>\n"
-	. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
+	. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\">\n";
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\" />\n";
     
 	// This prevents a lasting javascripterror in the application
 	if ((returnglobal('action') == "ordergroups") || (returnglobal('action') == "orderquestions")) 

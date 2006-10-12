@@ -83,9 +83,9 @@ if($actsurrows['edit_survey_property']){
 	echo "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Return to Survey Administration")."');return false\">" .
-			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left' ></a>\n"
-	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>\n"
+	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
+	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	echo "</table>";

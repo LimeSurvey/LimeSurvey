@@ -1345,7 +1345,7 @@ function helpscreen()
 	."\t\t\t\t<tr>\n"
 	."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
 	."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left'>\n"
-	."\t\t\t\t\t\t<input type='image' name='CloseHelpButton' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\">\n"
+	."\t\t\t\t\t\t<input type='image' name='CloseHelpButton' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\" />\n"
 	."\t\t\t\t\t</td>\n"
 	."\t\t\t\t</tr>\n"
 	."\t\t\t\t<tr>\n"

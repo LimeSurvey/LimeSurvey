@@ -86,11 +86,11 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	."\t\t\t\t<tr bgcolor='#999999'>\n"
 	."\t\t\t\t\t<td>\n"
 	."\t\t\t\t\t<a href='$scriptname' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Return to Survey Administration")."');return false\">" .
-			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left' ></a>"
-	."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left' alt=''>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
-	."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt=''>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
+			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>"
+	."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left' alt='' />\n"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
+	."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt='' />\n"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t\t\t</td>\n"
 	."\t\t\t\t\t<td align='right' width='620'>\n"
 	."<a href=\"#\" onClick=\"showhelp('show')\"" 
@@ -142,7 +142,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."\t\t\t<tr bgcolor='black'>\n"
 		."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><strong>\n"
 		."\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' "
-		."onClick=\"window.open('labels.php?lid=$lid', '_top')\">\n";
+		."onClick=\"window.open('labels.php?lid=$lid', '_top')\" />\n";
 		if ($action == "newset") {echo _("Create New Label Set");}
 		else {echo _("Edit Label Set");}
 		echo "\t\t\t\t</strong></font></font></td>\n"
@@ -223,7 +223,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t\t\t\t\t<td>\n"
 			."\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
 			._("Close Window")."' align='right' "
-			."onClick=\"window.open('labels.php', '_top')\">\n"
+			."onClick=\"window.open('labels.php', '_top')\" />\n"
 			."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt=''>\n"
 			."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 			."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt=''>\n"
@@ -533,7 +533,7 @@ function helpscreen()
 	echo "\t\t\t\t<tr>\n";
 	echo "\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
 	echo "\t\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' hspace='0' border='0' align='left' alt=''>\n";
-	echo "\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\">\n";
+	echo "\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\" />\n";
 	echo "\t\t\t\t\t</td>\n";
 	echo "\t\t\t\t</tr>\n";
 	echo "\t\t\t\t<tr>\n";

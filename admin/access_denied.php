@@ -137,7 +137,7 @@ if (isset($_SESSION['loginID']))
 		{
 		$accesssummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
 		if($sid)
-			$accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid&action=surveysecurity'>"._("Continue")."</a><br />&nbsp;\n";
+			$accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid&amp;action=surveysecurity'>"._("Continue")."</a><br />&nbsp;\n";
 		elseif($ugid)
 		//elseif(isset($_GET['ugid']))
 			{
