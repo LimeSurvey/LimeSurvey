@@ -70,7 +70,7 @@ if ($action != "upload")
         <option value='replace'>"._("Replace the existing record.")."</option>
         </select></td></tr>
 		<tr><td>&nbsp;</td><td><input type='submit' value='"._("Upload")."'>
-		<input type='hidden' name='action' value='upload'>
+		<input type='hidden' name='action' value='upload' />
 		</td></tr>
 		</table>
 		</form>";

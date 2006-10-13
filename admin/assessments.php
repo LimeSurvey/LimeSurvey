@@ -159,9 +159,9 @@ if($actsurrows['edit_survey_property']){
 		echo "<td>
 			   <table width='100%'>
 				<tr><td align='center'><form method='post' action='assessments.php?sid=$surveyid'>
-				 <input type='submit' value='"._("Edit")."'>
-				 <input type='hidden' name='action' value='edit'>
-				 <input type='hidden' name='id' value='".$assess['id']."'>
+				 <input type='submit' value='"._("Edit")."' />
+				 <input type='hidden' name='action' value='edit' />
+				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form></td>
 				 <td align='center'><form method='post' action='assessments.php?sid=$surveyid'>
 				 <input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>

@@ -11,7 +11,7 @@ img     {
 	    }
 
 
-td,th,a,p,div
+th,a,p,div
 		{
 		font-family:verdana,arial,sans-serif; 
 		font-size:10pt
@@ -180,6 +180,8 @@ span.settingcaption
             width:620px;
             float:center;
             clear:left;
+            margin-bottom: 20px;
+            
     }
 
          

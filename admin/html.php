@@ -308,17 +308,17 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' "
 			. "title='' alt='"._("This survey is not currently active")."' border='0' hspace='0' align='left'"
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'"._("This survey is not currently active")."');return false\">\n";
+			. "onmouseover=\"showTooltip(event,'"._("This survey is not currently active")."');return false\" />\n";
 			if($sumrows5['activate_survey'])
 			{
 				$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'"._("Activate this Survey")."');return false\">" .
-				"<img src='$imagefiles/activate.png' name='ActivateSurvey' title='' alt='"._("Activate this Survey")."' align='left'></a>\n" ;
+				"<img src='$imagefiles/activate.png' name='ActivateSurvey' title='' alt='"._("Activate this Survey")."' align='left' /></a>\n" ;
 			}
 			else
 			{
-				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='14' align='left' border='0' hspace='0'>\n";
+				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='14' align='left' border='0' hspace='0' />\n";
 			}
 		}
 		elseif ($activated == "Y")
@@ -328,14 +328,14 @@ if ($surveyid)
 				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/expired.png' title='' "
 				. "alt='"._("This survey is active but expired.")."' align='left'"
 				. "onmouseout=\"hideTooltip()\""
-				. "onmouseover=\"showTooltip(event,'"._("This survey is active but expired")."');return false\">\n";
+				. "onmouseover=\"showTooltip(event,'"._("This survey is active but expired")."');return false\" />\n";
 			}
 			else
 			{
 				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/active.png' title='' "
 				. "alt='"._("This survey is currently active")."' align='left'"
 				. "onmouseout=\"hideTooltip()\""
-				. "onmouseover=\"showTooltip(event,'"._("This survey is currently active")."');return false\">\n";
+				. "onmouseover=\"showTooltip(event,'"._("This survey is currently active")."');return false\" />\n";
 			}
 			if($sumrows5['activate_survey'])
 			{
@@ -343,22 +343,22 @@ if ($surveyid)
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'"._("De-activate this Survey")."');return false\">" .
 				"<img src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
-				. "alt='"._("De-activate this Survey")."' title='' align='left'></a>\n" ;
+				. "alt='"._("De-activate this Survey")."' title='' align='left' /></a>\n" ;
 			}
 			else
 			{
-				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='14' align='left' border='0' hspace='0'>\n";
+				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='14' align='left' border='0' hspace='0' />\n";
 			}
 		}
 		elseif ($activated == "N")
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' title='"._("This survey is not currently active")."' "
-			. "alt='"._("This survey is not currently active")."' border='0' hspace='0' align='left'>\n"
+			. "alt='"._("This survey is not currently active")."' border='0' hspace='0' align='left' />\n"
 			. "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='14' title='"._("Cannot Activate this Survey")."' "
-			. "alt='"._("Cannot Activate this Survey")."' border='0' align='left' hspace='0'>\n";
+			. "alt='"._("Cannot Activate this Survey")."' border='0' align='left' hspace='0' />\n";
 		}
 
-		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 		// survey rights
 
 		if($s1row['creator_id'] == $_SESSION['loginID'])
@@ -367,17 +367,17 @@ if ($surveyid)
 			"onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Survey Security Settings")."');return false\">" .
 			"<img src='$imagefiles/survey_security.png' name='SurveySecurity'"
-			." title='' alt='"._("Survey Security Settings")."'  align='left'></a>";
+			." title='' alt='"._("Survey Security Settings")."'  align='left' /></a>";
 		}
 		else
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'"._("Do Survey")."');return false\">"
 		."<img accesskey='d' src='$imagefiles/do.png' title='' "
-		. "name='DoSurvey' align='left' alt='"._("Do Survey")."'></a>";
+		. "name='DoSurvey' align='left' alt='"._("Do Survey")."' /></a>";
 
 		if($sumrows5['browse_response'])
 		{
@@ -385,29 +385,29 @@ if ($surveyid)
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Dataentry Screen for Survey")."');return false\">"
 			. "<img src='$imagefiles/dataentry.png' title='' align='left' alt='"._("Dataentry Screen for Survey")."'"
-			. "name='DoDataentry'></a>\n";
+			. "name='DoDataentry' /></a>\n";
 		}
 		else
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$surveyid', '_blank')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
-		. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."'>"
+		. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."' />"
 		."</a>"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 
 		if($sumrows5['edit_survey_property'])
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Edit Current Survey")."');return false\">" .
-			"<img src='$imagefiles/edit.png' title=''name='EditSurvey' align='left' alt='"._("Edit Current Survey")."'></a>" ;
+			"<img src='$imagefiles/edit.png' title=''name='EditSurvey' align='left' alt='"._("Edit Current Survey")."' /></a>" ;
 		}
 		else
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
 		if ($sumcount3 == 0 && $sumcount2 == 0 && $sumrows5['delete_survey'])
@@ -415,11 +415,11 @@ if ($surveyid)
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=delsurvey&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Delete Current Survey")."');return false\">\n" .
-			"<img src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey' alt='Delete Current Survey' ></a>" ;
+			"<img src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey' alt='Delete Current Survey'  /></a>" ;
 		}
 		else
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
 		if($activated!="Y" && getGroupSum($surveyid,$s1row['language'])>1 && $sumrows5['define_questions'])
@@ -431,7 +431,7 @@ if ($surveyid)
 		}
 		else
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
 		if ($sumrows5['export'])
@@ -439,48 +439,48 @@ if ($surveyid)
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Export this Survey")."');return false\">" .
-			"<img src='$imagefiles/exportsql.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey'></a>" ;
+			"<img src='$imagefiles/exportsql.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey' /></a>" ;
 		}
 		else
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
 		if ($sumrows5['edit_survey_property'])
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
 			. "<a href=\"#\" onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Set Assessment Rules")."');return false\">" .
-			"<img src='$imagefiles/assessments.png' title='' alt='". _("Set Assessment Rules")."' align='left' name='SurveyAssessment'></a>\n" ;
+			"<img src='$imagefiles/assessments.png' title='' alt='". _("Set Assessment Rules")."' align='left' name='SurveyAssessment' /></a>\n" ;
 		}
 		else
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
 		if ($activated == "Y" && $sumrows5['browse_response'])
 		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
 			. "<a href=\"#\" onclick=\"window.open('".$homeurl."/browse.php?sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Browse Responses for this Survey")."');return false\">" .
-			"<img src='$imagefiles/browse.png' title=''align='left' name='BrowseSurveyResults' alt='"._("Browse Responses for this Survey")."'></a>\n"
+			"<img src='$imagefiles/browse.png' title=''align='left' name='BrowseSurveyResults' alt='"._("Browse Responses for this Survey")."' /></a>\n"
 			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 			if ($s1row['allowsave'] == "Y")
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'"._("View Saved but not submitted Responses")."');return false\">"
-				. "<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' alt='"._("View Saved but not submitted Responses")."'></a>"
-				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+				. "<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' alt='"._("View Saved but not submitted Responses")."' /></a>"
+				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 			}
 			$surveysummary .="<a href=\"#\" onclick=\"window.open('$homeurl/tokens.php?sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Activate/Edit Tokens for this Survey")."');return false\">" .
-			"<img src='$imagefiles/tokens.png' title='' align='left'  name='TokensControl' alt='"._("Activate/Edit Tokens for this Survey")."'></a>\n" ;
+			"<img src='$imagefiles/tokens.png' title='' align='left'  name='TokensControl' alt='"._("Activate/Edit Tokens for this Survey")."' /></a>\n" ;
 		}
-		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n"
+		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
 		. "\t\t\t\t</td>\n"
 		. "\t\t\t\t<td align='right' valign='middle' width='400'>\n";
 		if (!$gid)
@@ -491,24 +491,24 @@ if ($surveyid)
 		else
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='21' align='right' "
-			. "border='0' hspace='0' alt=''>\n";
+			. "border='0' hspace='0' alt='' />\n";
 		}
 		$surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='". _("Show Details of this Survey")."' alt='". _("Show Details of this Survey")."' name='MaximiseSurveyWindow' "
-		. "align='right' onclick='showdetails(\"shows\")'>\n"
+		. "align='right' onclick='showdetails(\"shows\")' />\n"
 		. "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='". _("Hide Details of this Survey")."' alt='". _("Hide Details of this Survey")."' name='MinimiseSurveyWindow' "
-		. "align='right' onclick='showdetails(\"hides\")'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' align='right' border='0' width='18' alt=''>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' border='0' alt='' hspace='0'>\n";
+		. "align='right' onclick='showdetails(\"hides\")' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' align='right' border='0' width='18' alt='' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' border='0' alt='' hspace='0' />\n";
 		if ($activated == "Y")
 		{
-			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' align='right' border='0' hspace='0'>\n";
+			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' align='right' border='0' hspace='0' />\n";
 		}
 		elseif($sumrows5['define_questions'])
 		{
 			$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Add New Group to Survey")."');return false\"> " .
-			"<img src='$imagefiles/add.png' title='' alt=''align='right'  name='AddNewGroup'></a>\n" ;
+			"<img src='$imagefiles/add.png' title='' alt=''align='right'  name='AddNewGroup' /></a>\n" ;
 		}
 		$surveysummary .= "<font class=\"boxcaption\">"._("Groups").":</font>"
 		. "\t\t<select class=\"listboxgroups\" name='groupselect' "
@@ -1646,11 +1646,11 @@ if ($action == "addusergroup")
 		. "\t\t<strong>$setfont<font color='white'>"._("Add User Group")."</font></font></strong></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'>$setfont<strong>"._("Name:")."</strong></font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='group_name'><font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
+		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
 		. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='group_description'></textarea></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."'>\n"
-		. "\t<input type='hidden' name='action' value='usergroupindb'>\n"
+		. "\t<input type='hidden' name='action' value='usergroupindb' />\n"
 		. "\t</td></table>\n"
 		. "</form>\n";
 	}
@@ -1673,10 +1673,10 @@ if ($action == "editusergroup")
 	. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\"></td></tr>\n"
 	. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>(optional)</font></td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update User Group")."'>\n"
-	. "\t<input type='hidden' name='action' value='editusergroupindb'>\n"
-	. "\t<input type='hidden' name='creator_id' value='$creator_id'>\n"
-	. "\t<input type='hidden' name='ugid' value='$ugid'>\n"
+	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update User Group")."' />\n"
+	. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
+	. "\t<input type='hidden' name='creator_id' value='$creator_id' />\n"
+	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
 	. "\t</td></tr>\n"
 	. "</table>\n"
 	. "\t</form>\n";
@@ -2493,18 +2493,18 @@ if ($action == "editgroup")
 			$editgroup .= '</h2>';
 			$editgroup .= "<form name='editgroup' action='$scriptname' method='post'>\n";
 			$editgroup .= "\t<div class='settingrow'><span class='settingcaption'>"._("Title:")."</span>\n"
-			. "\t\t<span class='settingentry'><input type='text' size='50' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\">\n"
+			. "\t\t<span class='settingentry'><input type='text' size='50' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
 			. "\t</span class='settingentry'></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>"._("Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-			. "\t</span></div></div>";
+			. "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
 		}
 		$editgroup .= '</div>';
 		$editgroup .= "\t<p><input type='submit' class='standardbtn' value='"._("Update Group")."'>\n"
-		. "\t<input type='hidden' name='action' value='updategroup'>\n"
-		. "\t<input type='hidden' name='sid' value=\"{$surveyid}\">\n"
-		. "\t<input type='hidden' name='gid' value='{$gid}'>\n"
-		. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\">\n"
+		. "\t<input type='hidden' name='action' value='updategroup' />\n"
+		. "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
+		. "\t<input type='hidden' name='gid' value='{$gid}' />\n"
+		. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
 		. "\t</p>\n"
 		. "</form>\n";
 	}

@@ -36,7 +36,11 @@ function db_upgrade($oldversion) {
                         `surveyls_email_confirm` TEXT NULL,
                         PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
                             )
-                    TYPE = MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;");      
+                    TYPE = MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;");  
+      modify_database("","ALTER TABLE `prefix_groups` CHANGE `gid` `gid` INT( 11 ) NOT NULL");     
+      modify_database("","ALTER TABLE `prefix_groups` DROP PRIMARY KEY");     
+      modify_database("","ALTER TABLE `prefix_groups` ADD PRIMARY KEY (`gid`,`language`)");     
+                    
       modify_database("","UPDATE  `prefix_settings_global` SET stg_value='110' where stg_name ='DBVersion'");
     }
 

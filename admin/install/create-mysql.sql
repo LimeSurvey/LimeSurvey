@@ -67,14 +67,14 @@ CREATE TABLE `prefix_conditions` (
 -- 
 
 CREATE TABLE `prefix_groups` (
-  `gid` int(11) NOT NULL auto_increment,
+  `gid` int(11) NOT NULL,
   `sid` int(11) NOT NULL default '0',
   `group_name` varchar(100) NOT NULL default '',
   `group_code` varchar(50) NOT NULL default '',
   `group_order` int(11) NOT NULL default '0',
   `description` text,
   `language` varchar(20) default 'en',
-  PRIMARY KEY  (`gid`)
+  PRIMARY KEY  (`gid`,`language`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

@@ -1831,7 +1831,7 @@ function templatereplace($line)
 	{
 		$registerform="<table class='register'>\n"
 		."<form method='post' action='register.php'>\n"
-		."<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
+		."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
 		."<tr><td align='right'>"
 		._("First Name").":</td>"
 		."<td align='left'><input class='text' type='text' name='register_firstname'";
