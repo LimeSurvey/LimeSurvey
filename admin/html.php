@@ -2480,6 +2480,37 @@ if ($action == "editgroup")
 {
 	if ($sumrows5['edit_survey_property'])
 	{
+		$grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		array_pop($grplangs);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$grplangs[] = $baselang;
+		$grplangs = array_flip($grplangs);
+
+		$egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
+		$egresult = db_execute_assoc($egquery);
+		while ($esrow = $egresult->FetchRow())
+		{
+			if(!array_key_exists($esrow['language'], $grplangs)) // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
+			{
+				$egquery = "DELETE FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND gid='{$gid}' AND language='".$esrow['language']."'";
+				$egresultD = $connect->Execute($egquery);
+			} else {
+				$grplangs[$esrow['language']] = 99;
+			}
+			if ($esrow['language'] == $baselang) $basesettings = array('group_name' => $esrow['group_name'],'description' => $esrow['description'],'group_order' => $esrow['group_order']);
+
+		}
+	
+		while (list($key,$value) = each($grplangs))
+		{
+			if ($value != 99)
+			{
+				//die("INSERT:".$key);
+				$egquery = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$gid}', '{$surveyid}', '{$basesettings['group_name']}', '{$basesettings['description']}','{$basesettings['group_order']}', '{$key}')";
+				$egresult = $connect->Execute($egquery);
+			}
+		}
+		
 		$egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$egresult = db_execute_assoc($egquery);
 		$editgroup ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
