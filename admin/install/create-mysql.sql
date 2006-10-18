@@ -67,7 +67,7 @@ CREATE TABLE `prefix_conditions` (
 -- 
 
 CREATE TABLE `prefix_groups` (
-  `gid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
   `group_name` varchar(100) NOT NULL default '',
   `group_code` varchar(50) NOT NULL default '',
