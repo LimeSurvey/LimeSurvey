@@ -23,7 +23,7 @@ CREATE TABLE `prefix_answers` (
   `default_value` char(1) NOT NULL default 'N',
   `sortorder` varchar(5) default NULL,
   `language` varchar(20) default 'en',
-  PRIMARY KEY  (`qid`,`code`)
+  PRIMARY KEY  (`qid`,`code`,`language`)
 ) TYPE=MyISAM;
 
 -- --------------------------------------------------------
@@ -138,7 +138,7 @@ CREATE TABLE `prefix_questions` (
   `lid` int(11) NOT NULL default '0',
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
-  PRIMARY KEY  (`qid`)
+  PRIMARY KEY  (`qid`,`language`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

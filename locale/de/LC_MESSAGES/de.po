@@ -2,29 +2,33 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-31 21:04+0100\n"
-"Last-Translator: D <a@b.de>\n"
+"PO-Revision-Date: 2006-10-19 23:16+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
-"X-Poedit-Language: german\n"
+"X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\phpsurveyor\n"
 "X-Poedit-Country: german\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\phpsurveyor\n"
 
 msgid "Administration"
 msgstr "Administration"
 
+msgid "Logged in as:"
+msgstr "Eingeloggt als:"
+
 msgid "Default Administration Page"
 msgstr "Haupt-Administrationsseite"
 
-msgid "Activate Security"
-msgstr "Sicherheit aktivieren"
-
 msgid "Modify Security Settings"
 msgstr "Sicherheitseinstellungen ändern"
+
+# D:\web\xampp\htdocs\phpsurveyor/common.php:213
+# D:\web\xampp\htdocs\phpsurveyor/common.php:214
+msgid "Create/Edit Groups"
+msgstr ""
 
 msgid "Check Settings"
 msgstr "Systemübersicht"
@@ -32,11 +36,11 @@ msgstr "Systemübersicht"
 msgid "Check Data Consistency"
 msgstr "Datenkonsistenz überprüfen"
 
-msgid "List Surveys"
-msgstr "Liste aller Umfragen zeigen"
-
 msgid "Delete Entire Survey"
 msgstr "Gesamte Umfrage löschen"
+
+msgid "List Surveys"
+msgstr "Liste aller Umfragen zeigen"
 
 msgid "Backup Entire Database"
 msgstr "Datenbank sichern"
@@ -49,6 +53,9 @@ msgstr "Vorlagen-Editor"
 
 msgid "Show Help"
 msgstr "Hilfe anzeigen"
+
+msgid "Logout"
+msgstr "Abmeldung"
 
 msgid "Create or Import New Survey"
 msgstr "Neue Umfrage erstellen oder importieren"
@@ -510,6 +517,10 @@ msgstr "Bitte bringen Sie alle Elemente in eine Rangfolge"
 msgid "Please check at least one item"
 msgstr "Bitte machen Sie mindestens ein Kreuz"
 
+# D:\web\xampp\htdocs\phpsurveyor/qanda.php:454
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr ""
+
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "Eine oder mehrere Pflichtfragen sind nicht beantwortet worden. Bitte beantworten Sie diese, um fortzufahren!"
 
@@ -605,6 +616,58 @@ msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
 
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Dieser Fehler kann auftreten, wenn Sie Ihre Antworten bereits abgeschickt haben und in Ihrem Browser auf 'aktualisieren' geklickt haben. In diesem Fall wurden Ihre Fragen bereits gespeichert."
+
+msgid "Access denied!"
+msgstr "Zugriff verweigert!"
+
+#, fuzzy
+msgid "<p>You are not allowed to create new surveys!</p>"
+msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+
+msgid "<p>You are not allowed to delete this survey!</p>"
+msgstr "Sie sind nicht berechtigt Umfragen zu löschen!"
+
+msgid "<p>You are not allowed to add new questions for this survey!</p>"
+msgstr "Sie sind nicht berechtigt neue Fragen zu dieser Umfrage hinzuzufügen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to activate this survey!</p>"
+msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to deactivate this survey!</p>"
+msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to add a group to this survey!</p>"
+msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to order groups in this survey!</p>"
+msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to edit this survey!</p>"
+msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to edit groups in this survey!</p>"
+msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to browse response!</p>"
+msgstr "Sie sind nicht berechtigt die Sicherheitseinstellungen zurückzusetzen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to set assessment rules!</p>"
+msgstr "Sie sind nicht berechtigt die Sicherheitseinstellungen zurückzusetzen!"
+
+#, fuzzy
+msgid "<p>You are not allowed to delete this group!</p>"
+msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
+
+msgid "You are not allowed to perform this operation!"
+msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
 
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Diese Frage ist vom Typ 'Mehrere Antworten', hat aber noch keine Antworten definiert."
@@ -972,14 +1035,14 @@ msgstr "Hoch"
 msgid "Dn"
 msgstr "Runter"
 
+msgid "Survey could not be updated"
+msgstr "Umfrage konnte nicht aktualisiert werden."
+
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Umfrage konnte nicht erstellt werden. Bitte geben Sie einen Titel für diese Umfrage an."
 
 msgid "Survey could not be created"
 msgstr "Umfrage konnte nicht erstellt werden."
-
-msgid "Survey could not be updated"
-msgstr "Umfrage konnte nicht aktualisiert werden."
 
 msgid "Data Entry"
 msgstr "Dateneingabe"
@@ -1263,6 +1326,34 @@ msgstr "Name Attribute 2"
 msgid "N/A"
 msgstr "Nicht zutreffend"
 
+msgid "Survey"
+msgstr "Umfrage"
+
+msgid "Date Created"
+msgstr "Erstelldatum"
+
+msgid "Visibility"
+msgstr "Sichbarkeit"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:479
+msgid "Status"
+msgstr "Status"
+
+msgid "Action"
+msgstr "Aktion"
+
+msgid "Private"
+msgstr "Privat"
+
+msgid "Public"
+msgstr "Öffentlich"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Non Active"
+msgstr "Nicht Aktiv"
+
 msgid "Create Survey"
 msgstr "Erstelle Umfrage"
 
@@ -1293,9 +1384,6 @@ msgstr "Aktive Probanden-Tabellen"
 msgid "De-activated Token Tables"
 msgstr "Deaktivierte Probanden-Tabellen"
 
-msgid "Survey"
-msgstr "Umfrage"
-
 msgid "This survey is not currently active"
 msgstr "Diese Umfrage ist momentan nicht aktiv."
 
@@ -1317,17 +1405,20 @@ msgstr "Diese Umfrage deaktivieren"
 msgid "Cannot Activate this Survey"
 msgstr "Diese Umfrage kann nicht aktiviert werden."
 
+msgid "Survey Security Settings"
+msgstr "Umfrage-Sicherheitseinstellungen"
+
 msgid "Do Survey"
 msgstr "Umfrage ausführen/testen"
 
 msgid "Edit Current Survey"
 msgstr "Diese Umfrage bearbeiten"
 
-msgid "Order the groups in that Survey"
-msgstr "Reihenfolge der Gruppen in der Umfrage anpassen"
-
 msgid "Delete Current Survey"
 msgstr "Diese Umfrage löschen"
+
+msgid "Order the groups in that Survey"
+msgstr "Reihenfolge der Gruppen in der Umfrage anpassen"
 
 msgid "Export this Survey"
 msgstr "Diese Umfrage exportieren"
@@ -1424,21 +1515,22 @@ msgstr "Umfrage endet am:"
 msgid "Template:"
 msgstr "Vorlage:"
 
-msgid "Language:"
-msgstr "Sprache:"
+msgid "Base Language:"
+msgstr "Basis-Sprache:"
 
-msgid "Exit Link:"
-msgstr "Link:"
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:618
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3201
+msgid "Additional Languages:"
+msgstr ""
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:479
-msgid "Status:"
-msgstr "Status:"
+msgid "Exit Link"
+msgstr "Abschluss-Link:"
 
-msgid "Number of groups in survey:"
-msgstr "Anzahl Gruppen in der Umfrage:"
+msgid "Number of groups in survey"
+msgstr "Anzahl Gruppen in der Umfrage"
 
-msgid "Number of questions in survey:"
-msgstr "Anzahl Fragen in der Umfrage:"
+msgid "Number of questions in survey"
+msgstr "Anzahl Fragen in der Umfrage"
 
 msgid "Survey is not currently active."
 msgstr "Die Umfrage ist momentan nicht aktiv."
@@ -1446,8 +1538,8 @@ msgstr "Die Umfrage ist momentan nicht aktiv."
 msgid "Survey is currently active."
 msgstr "Die Umfrage ist momentan aktiv."
 
-msgid "Survey table name is:"
-msgstr "Name der Umfrage-Tabelle:"
+msgid "Survey table name is"
+msgstr "Name der Umfrage-Tabelle"
 
 msgid "Survey cannot be activated yet."
 msgstr "Die Umfrage kann noch nicht aktiviert werden."
@@ -1457,6 +1549,31 @@ msgstr "Sie müssen Gruppen hinzufügen."
 
 msgid "You need to add questions"
 msgstr "Sie müssen Fragen hinzufügen."
+
+msgid "User Group"
+msgstr "Benutzer-Gruppe"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:707
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1703
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1793
+msgid "Mail to all Members"
+msgstr ""
+
+#, fuzzy
+msgid "Edit Current User Group"
+msgstr "Diese Gruppe bearbeiten"
+
+#, fuzzy
+msgid "Delete Current User Group"
+msgstr "Diese Gruppe löschen"
+
+#, fuzzy
+msgid "Add New User Group"
+msgstr "Neue Frage zu dieser Gruppe hinzufügen"
+
+#, fuzzy
+msgid "User Groups"
+msgstr "Gruppen"
 
 msgid "Edit Current Group"
 msgstr "Diese Gruppe bearbeiten"
@@ -1571,49 +1688,137 @@ msgstr "Code"
 msgid "Default"
 msgstr "Vorgewählt"
 
-msgid "Action"
-msgstr "Aktion"
-
 msgid "Move"
 msgstr "Bewegen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1235
+msgid "You have to enter user name and email."
+msgstr ""
 
 msgid "Username"
 msgstr "Benutzername"
 
-msgid "Security"
-msgstr "Sicherheit"
+# Checking to ensure all fields exist
+msgid "You have to login first."
+msgstr "Sie müssen sich erst anmelden."
+
+msgid "Forgot Your Password?"
+msgstr "Haben Sie Ihr Passwort vergessen?"
+
+msgid "Modifying User"
+msgstr "Benutzer bearbeiten"
+
+msgid "Full name"
+msgstr "Vor- und Nachname"
+
+msgid "Set User Rights"
+msgstr "Setze Benutzerrechte"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1482
+msgid "Setting new Parent"
+msgstr ""
+
+#, fuzzy
+msgid "Set Parent successful."
+msgstr "Anmelden erfolgreich."
 
 msgid "User Control"
 msgstr "Benutzer-Administration"
 
-msgid ""
-"You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\n"
-"If you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts."
-msgstr "Sie haben die Sicherheitseinstellungen für das Umfrage-System noch nicht initialisiert. Dadurch ist der Administrator-Zugang völlig ungeschützt!<p>Wenn Sie unten auf 'Sicherheitseinstellungen initialisieren' klicken, werden standardmäßige Apache-Sicherheitseinstellungen zum Admin-Verzeichnis hinzugefügt. Sie benötigen dann den Standard-Benutzernamen und Passwort, um auf die Admin-Seiten zu gelangen."
+msgid "Creator"
+msgstr "Ersteller"
 
-msgid "It is highly recommended that once your security system has been initialised you change this default password."
-msgstr "Nach der Initialisierung der Sicherheitseinstellungen sollten sie unbedingt das Standard-Passwort neu setzen."
-
-msgid "Initialise Security"
-msgstr "Initialisiere Sicherheitseinstellungen"
-
-msgid "User"
-msgstr "Benutzer"
-
-msgid "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again."
-msgstr "Es sind momentan keine Benutzer angelegt. Wir empfehlen, dass die die Sicherheit ausschalten. Sie können sie dann wieder einschalten."
+#, fuzzy
+msgid "Change"
+msgstr "Abbrechen"
 
 msgid "Add User"
 msgstr "Benutzer hinzufügen"
 
-msgid "Turn Off Security"
-msgstr "Sicherheit deaktivieren"
+msgid "Add User Group"
+msgstr "Benutzergruppe hinzufügen"
 
-msgid "Add Question"
-msgstr "Frage hinzufügen"
+msgid "Name:"
+msgstr "Name:"
 
 msgid "Required"
 msgstr "Pflichtangabe"
+
+msgid "Optional"
+msgstr "Optionale Frage"
+
+msgid "Add Group"
+msgstr "Gruppe hinzufügen"
+
+#, fuzzy
+msgid "Edit Group for Creator"
+msgstr "Bearbeite Gruppe für Umfrage-ID "
+
+#, fuzzy
+msgid "Update User Group"
+msgstr "Gruppe aktualisieren"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1705
+msgid "To:"
+msgstr ""
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1707
+msgid "Send me a copy:"
+msgstr ""
+
+msgid "Subject:"
+msgstr "Betreff:"
+
+msgid "Message:"
+msgstr "Nachricht:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1713
+msgid "Send"
+msgstr ""
+
+msgid "Deleting User Group"
+msgstr "Lösche Benutzergruppe"
+
+msgid "Group Name"
+msgstr "Gruppenname"
+
+msgid "Could not delete user group."
+msgstr "Konnte Benutzergruppe nicht löschen."
+
+#, fuzzy
+msgid "Could not delete user group. No group selected."
+msgstr "Konnte Benutzer nicht löschen. Kein Benutzername angegeben."
+
+msgid "Description: "
+msgstr "Beschreibung:"
+
+msgid "Failed to add Group!"
+msgstr "Konnte Gruppe nicht hinzufügen."
+
+msgid "Group already exists!"
+msgstr "Gruppe existiert bereits."
+
+msgid "Group name was not supplied!"
+msgstr "Es wurde kein Gruppenname angegeben."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1828
+msgid "Mail not sent!"
+msgstr ""
+
+msgid "Edit User Group Successfully!"
+msgstr "Benutzergruppe erfolgreich geändert."
+
+msgid "Failed to update!"
+msgstr "Fehler beim Aktualisieren der Daten!"
+
+msgid "Delete User"
+msgstr "Lösche Benutzer"
+
+msgid "Could not delete user. User was not supplied."
+msgstr "Konnte Benutzer nicht löschen. Kein Benutzername angegeben."
+
+msgid "Add Question"
+msgstr "Frage hinzufügen"
 
 msgid "Label Set:"
 msgstr "Beschriftung-Set:"
@@ -1654,23 +1859,61 @@ msgstr "Frage aktualisieren"
 msgid "Save Order"
 msgstr "Reihenfolge speichern"
 
-msgid "Add Group"
-msgstr "Gruppe hinzufügen"
-
-msgid "Optional"
-msgstr "Optionale Frage"
-
 msgid "Import Group"
 msgstr "Gruppen importieren"
 
-msgid "Edit Group for Survey ID"
-msgstr "Bearbeite Gruppe für Umfrage-ID "
+msgid "Edit Group"
+msgstr "Gruppe bearbeiten"
+
+msgid "Base Language"
+msgstr "Basis-Sprache"
 
 msgid "Update Group"
 msgstr "Gruppe aktualisieren"
 
-msgid "Edit Survey"
-msgstr "Umfrage bearbeiten"
+msgid "User added."
+msgstr "Benutzer hinzugefügt."
+
+msgid "Failed to add User."
+msgstr "Konnte Benutzer nicht hinzufügen."
+
+msgid "Username already exists."
+msgstr "Benutzername existiert bereits."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2574
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2620
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2674
+msgid "No Username selected."
+msgstr ""
+
+msgid "Set Survey Rights"
+msgstr "Setze Umfrage-Benutzerrechte"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2656
+msgid "User Group added."
+msgstr ""
+
+msgid "Failed to add User Group."
+msgstr "Konnte Benutzergruppe nicht hinzufügen."
+
+msgid "Deleting User"
+msgstr "Lösche Benutzer"
+
+msgid "Survey Security"
+msgstr "Umfrage-Sicherheit"
+
+msgid "User"
+msgstr "Benutzer"
+
+msgid "Update survey rights successful."
+msgstr "Benutzerrechte erfolgreich aktualisiert."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2987
+msgid "Failed to update survey rights!"
+msgstr ""
+
+msgid "Edit Survey - Step 1 of 2"
+msgstr "Umfrage bearbeiten - Schritt 1 von 2"
 
 msgid "Admin Email:"
 msgstr "Administrator Email:"
@@ -1706,6 +1949,42 @@ msgstr "Admin Benachrichtigung:"
 
 msgid "Anonymous?"
 msgstr "Anonym?"
+
+msgid "Allow public registration?"
+msgstr "Offene Registrierung erlauben?"
+
+msgid "Token Attribute Names:"
+msgstr "Probanden Schlüssel:"
+
+msgid "Date Stamp?"
+msgstr "Zeit-Datumsstempel?"
+
+msgid "Save IP Address?"
+msgstr "IP-Adresse speichern?"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Save Referring URL?"
+msgstr "Referrer-URL speichern?"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3214
+msgid "Remove"
+msgstr "Löschen"
+
+msgid "Expires?"
+msgstr "Läuft ab?"
+
+msgid "End URL:"
+msgstr "End-URL:"
+
+msgid "Automatically load URL when survey complete?"
+msgstr "URL automatisch laden, wenn die Umfrage abgeschlossen ist?"
+
+msgid "Save and Continue"
+msgstr "Speichern und Fortfahren"
+
+msgid "Edit Survey - Step 2 of 2"
+msgstr "Umfrage bearbeiten - Schritt 2 von 2"
 
 msgid "This will replace the existing text. Continue?"
 msgstr "Der bestehende Text wird ersetzt. Fortfahren?"
@@ -1814,9 +2093,6 @@ msgstr "Abschlussbestätigung einer Umfrage"
 msgid "Confirmation Email"
 msgstr "Text der Bestätigung-Email:"
 
-msgid "Allow public registration?"
-msgstr "Offene Registrierung erlauben?"
-
 msgid "Public registration Email Subject:"
 msgstr "Offene Registrierung Email Betreff:"
 
@@ -1845,34 +2121,8 @@ msgstr ""
 "\n"
 "Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}."
 
-msgid "Token Attribute Names:"
-msgstr "Probanden Schlüssel:"
-
-msgid "Date Stamp?"
-msgstr "Zeit-Datumsstempel?"
-
-msgid "Save IP Address?"
-msgstr "IP-Adresse speichern?"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
-msgid "Save Referring URL?"
-msgstr "Referrer-URL speichern?"
-
-msgid "Expires?"
-msgstr "Läuft ab?"
-
-msgid "End URL:"
-msgstr "End-URL:"
-
 msgid "URL Description:"
 msgstr "URL Beschreibung:"
-
-msgid "Automatically load URL when survey complete?"
-msgstr "URL automatisch laden, wenn die Umfrage abgeschlossen ist?"
-
-msgid "Update survey"
-msgstr "Umfrage aktualisieren"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
@@ -2185,9 +2435,15 @@ msgstr "Prozent"
 msgid "Browse"
 msgstr "Ansehen"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/stats.php:262
-msgid "Select question(s) from the following list"
-msgstr "Wählen Sie die Fragen aus der folgenden Liste"
+msgid "Select all"
+msgstr "Alle auswählen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/stats.php:252
+msgid "Proceed"
+msgstr "Fortfahren"
+
+msgid "Question List"
+msgstr "Fragenliste"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/stats.php:332
 msgid "Like"
@@ -2508,48 +2764,70 @@ msgstr "Erstelle Zugangsschlüssel-Einträge"
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} Einträge erstellt"
 
-msgid "Creating default htaccess file"
-msgstr "Standard htaccess Datei erstellen"
+msgid "Forgot Password"
+msgstr "Passwort vergessen"
 
-msgid "Security Levels are now set up!"
-msgstr "Sicherheitseinstellung vorgenommen!"
+msgid "User name and/or email not found!"
+msgstr "Benutzername und/oder Email-Adresse nicht gefunden!"
 
-msgid "Creating default users"
-msgstr "Erstelle standard Benutzer"
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:63
+msgid "Your data:"
+msgstr "Ihre Daten:"
 
-msgid "Updating users table"
-msgstr "Aktualisiere Benutzer-Tabelle"
+msgid "An email with your login data was sent to you."
+msgstr "Es wurde eine Email mit den Login-Daten an Sie versandt."
 
-msgid "Error occurred creating htpasswd file"
-msgstr "Beim Erstellen der Datei 'htpasswd' ist ein Fehler aufgetreten."
+msgid "Email to {NAME} ({EMAIL}) failed."
+msgstr "Email für {NAME} ({EMAIL}) fehlgeschlagen."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:73
-msgid "Make sure you have read/write permissions in the admin directory."
-msgstr "Stellen Sie sicher, dass Sie Schreib- und Leserechte im /admin-Verzeichnis haben."
+msgid "Login"
+msgstr "Anmeldung"
 
-msgid "Removing security settings"
-msgstr "Sicherheitseinstellungen entfernen"
+msgid "Welcome {NAME}"
+msgstr "Willkommen {NAME}"
 
-msgid "Access file, password file and user database deleted"
-msgstr "Zugangsdatei (.htaccess), Passwortdatei (htpasswd) und Benutzerdatenbank gelöscht."
+msgid "Login successful."
+msgstr "Anmelden erfolgreich."
 
-msgid "Adding User"
-msgstr "Benutzer hinzufügen"
+msgid "Logout successful."
+msgstr "Abmelden erfolgreich."
 
-msgid "Could not add user. Username and/or password were not supplied"
-msgstr "Konnte Benutzer nicht hinzufügen. Benutzername und/oder Passwort wurde nicht angegeben."
+msgid "Email address ist not valid."
+msgstr "Email-Adresse ist nicht gültig."
 
-msgid "Deleting User"
-msgstr "Lösche Benutzer"
+msgid "Username was not supplied."
+msgstr "Es wurde kein Benutzername angegeben."
 
-msgid "Could not delete user. Username was not supplied."
-msgstr "Konnte Benutzer nicht löschen. Kein Benutzername angegeben."
+msgid "You were signed in. Your data:"
+msgstr "Sie wurden eingetragen. Ihre Daten lauten:"
 
-msgid "Modifying User"
-msgstr "Benutzer bearbeiten"
+msgid "An email with a generated password was sent to the user."
+msgstr "Es wurde eine Email mit einem generierten Passwort an den Benutzer versandt."
 
-msgid "Could not modify user. Username and/or password were not supplied"
-msgstr "Konnte Benutzer nicht ändern. Benutzername und/oder Passwort wurden nicht angegeben."
+msgid "Username and/or email address already exists."
+msgstr "Benutzername oder Email-Adresse existiert bereits."
+
+msgid "Admin cannot be deleted!"
+msgstr "Der Admin kann nicht gelöscht werden!"
+
+msgid "Could not modify User Data."
+msgstr "Benutzerdaten konnten nicht geändert werden."
+
+msgid "Password was not supplied."
+msgstr "Passwort wurde nicht angegeben."
+
+msgid "Email address already exists."
+msgstr "Email-Adresse existiert bereits."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:320
+msgid "Back"
+msgstr "zurück"
+
+msgid "Update user rights successful."
+msgstr "Benutzerrechte erfolgreich geändert."
+
+msgid "You are not allowed to change your own rights!"
+msgstr "Sie sind nicht berechtigt Ihre eigenen Rechte zu ändern!"
 
 msgid "Export, then de-activate survey"
 msgstr "Exportieren, dann Umfrage deaktivieren"
@@ -2617,131 +2895,16 @@ msgstr "OK"
 msgid "Checking to ensure all fields exist"
 msgstr "Überprüfe Felder in den Tabellen"
 
-msgid "Field Created"
-msgstr "Feld erstellt"
-
-#new messages added by Dennis
-msgid "User Table Initialized"
-msgstr "User-Tabelle initialisiert"
-
 msgid "Checking to ensure all tables initialized:"
 msgstr "Überprüfe Initialisierungen:"
 
-msgid "Table fixed"
+msgid "Table_fixed"
 msgstr "Tabelle korrigiert"
 
-#Checking to ensure all fields exist
-msgid "You have to login first."
-msgstr "Sie müssen sich erst anmelden."
+# new messages added by Dennis
+msgid "User Table Initialized"
+msgstr "User-Tabelle initialisiert"
 
-msgid "Login"
-msgstr "Anmeldung"
-
-msgid "Login failed!"
-msgstr "Anmelden fehlgeschlagen!"
-
-msgid "Login successful."
-msgstr "Anmelden erfolgreich."
-
-msgid "Hello {NAME}!"
-msgstr "Hallo {NAME}!"
-
-msgid "Logout"
-msgstr "Abmeldung"
-
-msgid "Logout successful."
-msgstr "Abmelden erfolgreich."
-
-msgid "Access denied!"
-msgstr "Zugriff verweigert!"
-
-msgid "You are not allowed to change User Data!"
-msgstr "Sie sind nicht berechtigt User-Daten zu ändern!"
-
-msgid "You are not allowed to reset security settings!"
-msgstr "Sie sind nicht berechtigt die Sicherheitseinstellungen zurückzusetzen!"
-
-msgid "You are not allowed to create new surveys!"
-msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
-
-msgid "Failed to add User."
-msgstr "Konnte Benutzer nicht hinzufügen."
-
-msgid "Email address ist not valid."
-msgstr "Email-Adresse ist nicht gültig."
-
-msgid "Username was not supplied."
-msgstr "Es wurde kein Benutzername angegeben."
-
-msgid "Username and/or email address already exists."
-msgstr "Benutzername oder Email-Adresse existiert bereits."
-
-msgid "Could not modify User Data."
-msgstr "Benutzerdaten konnten nicht geändert werden."
-
-msgid "Password was not supplied."
-msgstr "Passwort wurde nicht angegeben."
-
-msgid "Email address already exists."
-msgstr "Email-Adresse existiert bereits."
-
-msgid "Email to {NAME} ({EMAIL}) failed."
-msgstr "Email für {NAME} ({EMAIL}) fehlgeschlagen."
-
-msgid "An email with a generated password was sent to the user."
-msgstr "Es wurde eine Email mit einem generierten Passwort an den Benutzer versandt."
-
-msgid "You were signed in. Your data:"
-msgstr "Sie wurden eingetragen. Ihre Daten lauten:"
-
-msgid "You are not allowed to perform this operation!"
-msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
-
-msgid "Date Created"
-msgstr "Erstelldatum"
-
-msgid "Visibility"
-msgstr "Sichbarkeit"
-
-msgid "Private"
-msgstr "Privat"
-
-msgid "Public"
-msgstr "Öffentlich"
-
-msgid "Active"
-msgstr "Aktiv"
-
-msgid "Non Active"
-msgstr "Nicht Aktiv"
-
-msgid "Welcome {NAME}"
-msgstr "Willkommen {NAME}"
-
-msgid "Forgot Password"
-msgstr "Passwort vergessen"
-
-msgid "Forgot Your Password?"
-msgstr "Haben Sie Ihr Passwort vergessen?"
-
-msgid "Survey Security Settings"
-msgstr "Umfrage-Sicherheitseinstellungen"
-
-msgid "Survey Security"
-msgstr "Umfrage-Sicherheit"
-
-msgid "Set User Rights"
-msgstr "Setze Benutzerrechte"
-
-msgid "Update user rights successful."
-msgstr "Benutzerrechte erfolgreich geändert."
-
-msgid "Logged in as:"
-msgstr "Eingeloggt als:"
-
-msgid "You are not allowed to change your own rights!"
-msgstr "Sie sind nicht berechtigt Ihre eigenen Rechte zu ändern!"
-
-msgid "Admin cannot be deleted!"
-msgstr "Der Admin kann nicht gelöscht werden!"
+msgid "Field Created"
+msgstr "Feld erstellt"
 

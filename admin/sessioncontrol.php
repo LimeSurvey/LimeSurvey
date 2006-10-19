@@ -42,7 +42,7 @@ if (session_id() == "") session_start();
 
 //LANGUAGE ISSUES
 
-if (returnglobal('action') == "changelang" && !$login)	// no update when login (just read from db)
+if (returnglobal('action') == "changelang" && (!isset($login) || !$login ))	// no update when login (just read from db)
 	{
 	$_SESSION['adminlang']=returnglobal('lang');
 	// if user is logged in update language in database

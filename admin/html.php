@@ -134,30 +134,30 @@ if (($action == "checksettings" || $action == "changelang") && isset($_SESSION['
 	. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 	. "cellpadding='1' cellspacing='0' width='600'>\n"
 	. "\t<tr>\n"
-	. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
+	. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>\n"
 	. "\t\t\t<strong>"._("PHPSurveyor System Summary")."</strong>\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n";
 	// Database name & default language
 	$cssummary .= "\t<tr>\n"
-	. "\t\t<td width='50%' align='right'>$setfont\n"
+	. "\t\t<td width='50%' align='right'>\n"
 	. "\t\t\t<strong>"._("Database Name").":</strong></font>\n"
-	. "\t\t</td><td>$setfont\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t$databasename\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
+	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Default Language").":</strong></font>\n"
-	. "\t\t</td><td>$setfont\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t".getLanguageNameFromCode($defaultlang)."\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n";
 	// Current language
 	$cssummary .=  "\t<tr>\n"
-	. "\t\t<td align='right' >$setfont\n"
+	. "\t\t<td align='right' >\n"
 	. "\t\t\t<strong>"._("Current Language").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
+	. "\t\t</font></td><td>\n"
 	. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
 	foreach (getlanguagedata() as $langkey=>$languagekind)
 	{
@@ -171,44 +171,44 @@ if (($action == "checksettings" || $action == "changelang") && isset($_SESSION['
 	. "\t</tr>\n";
 	// Other infos
 	$cssummary .=  "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
+	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Users").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
+	. "\t\t</font></td><td>\n"
 	. "\t\t\t$usercount\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
+	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Surveys").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
+	. "\t\t</font></td><td>\n"
 	. "\t\t\t$surveycount\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
+	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Active Surveys").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
+	. "\t\t</font></td><td>\n"
 	. "\t\t\t$activesurveycount\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
+	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("De-activated Surveys").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
+	. "\t\t</font></td><td>\n"
 	. "\t\t\t$deactivatedsurveys\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
+	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Active Token Tables").":</strong>\n"
-	. "\t\t</font></td><td>$setfont\n"
+	. "\t\t</font></td><td>\n"
 	. "\t\t\t$activetokens\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right'>$setfont\n"
+	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("De-activated Token Tables").":</strong></font>\n"
-	. "\t\t</td><td>$setfont\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t$deactivatedtokens\n"
 	. "\t\t</font></td>\n"
 	. "\t</tr>\n"
@@ -300,8 +300,8 @@ if ($surveyid)
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
-		. "$setfont<font size='1' face='verdana' color='white'><strong>"._("Survey")."</strong> "
-		. "<font color='silver'>{$s1row['short_title']}</font></font></font></td></tr>\n"
+		. "<font size='1' face='verdana' color='white'><strong>"._("Survey")."</strong> "
+		. "<font color='silver'>{$s1row['short_title']}</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#999999'><td align='right' height='22'>\n";
 		if ($activated == "N" && $sumcount3>0)
 		{
@@ -533,11 +533,11 @@ if ($surveyid)
 		if ($gid || $qid || $action=="surveysecurity" || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity" || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups" || $action=="updatesurvey") {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
-		. "$setfont<strong>"._("Title:")."</strong></font></td>\n"
-		. "\t<td>$setfont<font color='#000080'><strong>{$s1row['short_title']} "
-		. "(ID {$s1row['sid']})</strong></font></font></td></tr>\n";
+		. "<strong>"._("Title:")."</strong></td>\n"
+		. "\t<td class='settingentryhighlight'><strong>{$s1row['short_title']} "
+		. "(ID {$s1row['sid']})</strong></td></tr>\n";
 		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td>"
-		. "<td>$setfont<font size='1' color='#000080'>\n";
+		. "<td><font size='1' color='#000080'>\n";
 		if ($s1row['private'] != "N") {$surveysummary2 .= _("This survey is anonymous.")."<br />\n";}
 		else {$surveysummary2 .= _("This survey is NOT anonymous.")."<br />\n";}
 		if ($s1row['format'] == "S") {$surveysummary2 .= _("It is presented question by question.")."<br />\n";}
@@ -571,31 +571,31 @@ if ($surveyid)
 			. "[<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup' "
 			. "onClick='return confirm(\"Are you sure?\")' "
 			. ">"._("By Group")."</a>]";
-			$surveysummary2 .= "</font></font></td></tr>\n";
+			$surveysummary2 .= "</td></tr>\n";
 		}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails11'>"
-		. "<td align='right' valign='top'>$setfont<strong>"
-		. _("Survey URL:") . "</strong></font></td>\n";
+		. "<td align='right' valign='top'><strong>"
+		. _("Survey URL:") . "</strong></td>\n";
 		$tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $s1row['sid'];
-		$surveysummary .= "\t\t<td>$setfont <a href='$tmp_url' target='_blank'>$tmp_url</a>"
-		. "</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'>$setfont<strong>"
-		. _("Description:")."</strong></font></td>\n\t\t<td>";
-		if (trim($s1row['description'])!='') {$surveysummary .= "$setfont {$s1row['description']}</font>";}
+		$surveysummary .= "\t\t<td> <a href='$tmp_url' target='_blank'>$tmp_url</a>"
+		. "</td></tr>\n"
+		. "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'><strong>"
+		. _("Description:")."</strong></td>\n\t\t<td>";
+		if (trim($s1row['description'])!='') {$surveysummary .= " {$s1row['description']}";}
 		$surveysummary .= "</td></tr>\n"
 		. "\t<tr $showstyle id='surveydetails3'>\n"
-		. "\t\t<td align='right' valign='top'>$setfont<strong>"
-		. _("Welcome:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont {$s1row['welcome']}</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'>$setfont<strong>"
-		. _("Administrator:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont {$s1row['admin']} ({$s1row['adminemail']})</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'>$setfont<strong>"
-		. _("Fax To:")."</strong></font></td>\n\t\t<td>";
-		if (trim($s1row['faxto'])!='') {$surveysummary .= "$setfont {$s1row['faxto']}</font>";}
+		. "\t\t<td align='right' valign='top'><strong>"
+		. _("Welcome:")."</strong></td>\n"
+		. "\t\t<td> {$s1row['welcome']}</td></tr>\n"
+		. "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'><strong>"
+		. _("Administrator:")."</strong></td>\n"
+		. "\t\t<td> {$s1row['admin']} ({$s1row['adminemail']})</td></tr>\n"
+		. "\t<tr $showstyle id='surveydetails5'><td align='right' valign='top'><strong>"
+		. _("Fax To:")."</strong></td>\n\t\t<td>";
+		if (trim($s1row['faxto'])!='') {$surveysummary .= " {$s1row['faxto']}";}
 		$surveysummary .= "</td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'>$setfont<strong>"
-		. _("Expiry Date:")."</strong></font></td>\n";
+		. "\t<tr $showstyle id='surveydetails6'><td align='right' valign='top'><strong>"
+		. _("Expiry Date:")."</strong></td>\n";
 		if ($s1row['useexpiry']== "Y")
 		{
 			$expdate=$s1row['expires'];
@@ -604,18 +604,18 @@ if ($surveyid)
 		{
 			$expdate="-";
 		}
-		$surveysummary .= "\t<td>$setfont$expdate</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'>$setfont<strong>"
-		. _("Template:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont {$s1row['template']}</font></td></tr>\n"
-		. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'>$setfont<strong>"
-		. _("Base Language:")."</strong></font></td>\n";
+		$surveysummary .= "\t<td>$expdate</td></tr>\n"
+		. "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'><strong>"
+		. _("Template:")."</strong></td>\n"
+		. "\t\t<td> {$s1row['template']}</td></tr>\n"
+		. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'><strong>"
+		. _("Base Language:")."</strong></td>\n";
 		if (!$s1row['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($s1row['language']);}
-		$surveysummary .= "\t<td>$setfont$language</font></td></tr>\n";
+		$surveysummary .= "\t<td>$language</td></tr>\n";
 
 
-		$surveysummary .= "\t<tr $showstyle id='surveydetails8a'><td align='right' valign='top'>$setfont<strong>"
-		. _("Additional Languages:")."</strong></font></td>\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails8a'><td align='right' valign='top'><strong>"
+		. _("Additional Languages:")."</strong></td>\n";
 
 		$first=true;
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
@@ -629,16 +629,16 @@ if ($surveyid)
 		}
 
 		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
-		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'>$setfont<strong>"
-		. _("Exit Link:")."</strong></font></td>\n"
+		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'><strong>"
+		. _("Exit Link").":</strong></td>\n"
 		. "\t\t<td>";
-		if ($s1row['url']!="") {$surveysummary .="$setfont <a href=\"{$s1row['url']}\" title=\"{$s1row['url']}\">{$s1row['urldescrip']}</a></font>";}
+		if ($s1row['url']!="") {$surveysummary .=" <a href=\"{$s1row['url']}\" title=\"{$s1row['url']}\">{$s1row['urldescrip']}</a>";}
 		$surveysummary .="</td></tr>\n";
-		$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'>$setfont<strong>"
-		. _("Status:")."</strong></font></td>\n"
-		. "\t<td valign='top'>$setfont"
-		. "<font size='1'>"._("Number of groups in survey:")." $sumcount2<br />\n"
-		. _("Number of questions in survey:")." $sumcount3<br />\n";
+		$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'><strong>"
+		. _("Status").":</strong></td>\n"
+		. "\t<td valign='top'>"
+		. "<font size='1'>"._("Number of groups in survey").": $sumcount2<br />\n"
+		. _("Number of questions in survey").": $sumcount3<br />\n";
 		if ($activated == "N" && $sumcount3 > 0)
 		{
 			$surveysummary .= _("Survey is not currently active.")."<br />\n";
@@ -646,21 +646,21 @@ if ($surveyid)
 		elseif ($activated == "Y")
 		{
 			$surveysummary .= _("Survey is currently active.")."<br />\n"
-			. _("Survey table name is:")." 'survey_$surveyid'<br />";
+			. _("Survey table name is").": 'survey_$surveyid'<br />";
 		}
 		else
 		{
 			$surveysummary .= _("Survey cannot be activated yet.")."<br />\n";
 			if ($sumcount2 == 0 && $sumrows5['define_questions'])
 			{
-				$surveysummary .= "\t<font color='green'>["._("You need to add groups")."]</font><br />";
+				$surveysummary .= "\t<font class='statusentryhighlight'>["._("You need to add groups")."]</font><br />";
 			}
 			if ($sumcount3 == 0 && $sumrows5['define_questions'])
 			{
-				$surveysummary .= "\t<font color='green'>["._("You need to add questions")."]</font>";
+				$surveysummary .= "\t<font class='statusentryhighlight'>["._("You need to add questions")."]</font>";
 			}
 		}
-		$surveysummary .= "</font></font></td></tr>\n"
+		$surveysummary .= "</font></td></tr>\n"
 		. $surveysummary2
 		. "</table>\n";
 	}
@@ -686,7 +686,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	. "<font size='1' face='verdana' color='white'><strong>"._("User Group")."</strong> ";
 	if($ugid)
 	{
-		$usergroupsummary .= "<font color='silver'>{$grow['name']}</font></font></td></tr>\n";
+		$usergroupsummary .= "<font color='silver'>{$grow['name']}</font></td></tr>\n";
 	}
 	else
 	{
@@ -873,13 +873,13 @@ if ($gid)
 		if ($qid) {$gshowstyle="style='display: none'";}
 		else	  {$gshowstyle="";}
 
-		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'>$setfont<strong>"
+		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'><strong>"
 		. _("Title:")."</strong></font></td>\n"
 		. "\t<td>"
-		. "$setfont{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n"
-		. "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'>$setfont<strong>"
+		. "{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n"
+		. "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'><strong>"
 		. _("Description:")."</strong></font></td>\n\t<td>";
-		if (trim($grow['description'])!='') {$groupsummary .="$setfont{$grow['description']}</font>";}
+		if (trim($grow['description'])!='') {$groupsummary .="{$grow['description']}</font>";}
 		$groupsummary .= "</td></tr>\n";
 	}
 	$groupsummary .= "\n</table>\n";
@@ -995,27 +995,27 @@ if ($qid)
 		. "\t</tr>\n";
 		if (returnglobal('viewanswer'))	{$qshowstyle = "style='display: none'";}
 		else							{$qshowstyle = "";}
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'>$setfont<strong>"
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'><strong>"
 		. _("Code:")."</strong></font></td>\n"
-		. "\t<td>$setfont{$qrrow['title']}";
+		. "\t<td>{$qrrow['title']}";
 		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>"._("Mandatory Question")."</i>)";}
 		else {$questionsummary .= ": (<i>"._("Optional Question")."</i>)";}
 		$questionsummary .= "</font></td></tr>\n"
-		. "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'>$setfont<strong>"
-		. _("Question:")."</strong></font></td>\n\t<td>$setfont{$qrrow['question']}</font></td></tr>\n"
-		. "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'>$setfont<strong>"
+		. "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'><strong>"
+		. _("Question:")."</strong></font></td>\n\t<td>{$qrrow['question']}</font></td></tr>\n"
+		. "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'><strong>"
 		. _("Help:")."</strong></font></td>\n\t<td>";
-		if (trim($qrrow['help'])!=''){$questionsummary .= "$setfont{$qrrow['help']}</font>";}
+		if (trim($qrrow['help'])!=''){$questionsummary .= "{$qrrow['help']}</font>";}
 		$questionsummary .= "</td></tr>\n";
 		if ($qrrow['preg'])
 		{
-			$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'>$setfont<strong>"
-			. _("Validation:")."</strong></font></td>\n\t<td>$setfont{$qrrow['preg']}"
+			$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'><strong>"
+			. _("Validation:")."</strong></font></td>\n\t<td>{$qrrow['preg']}"
 			. "</font></td></tr>\n";
 		}
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'>$setfont<strong>"
-		._("Type:")."</strong></font></td>\n\t<td>$setfont{$qtypes[$qrrow['type']]}";
+		$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'><strong>"
+		._("Type:")."</strong></font></td>\n\t<td>{$qtypes[$qrrow['type']]}";
 		if ($qrrow['type'] == "F" ||$qrrow['type'] == "H")
 		{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
@@ -1042,9 +1042,9 @@ if ($qid)
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 		{
 			$questionsummary .= "\t<tr $qshowstyle id='surveydetails37'>"
-			. "<td align='right' valign='top'>$setfont<strong>"
+			. "<td align='right' valign='top'><strong>"
 			. _("Other:")."</strong></font></td>\n"
-			. "\t<td>$setfont{$qrrow['other']}</td></tr>\n";
+			. "\t<td>{$qrrow['other']}</td></tr>\n";
 		}
 		if ($qrrow['type'] == "J" || $qrrow['type'] == "I")
 		{
@@ -1092,9 +1092,9 @@ if (returnglobal('viewanswer'))
 	$cdquery = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$defaultlang."' ORDER BY sortorder, answer";
 	$cdresult = db_execute_assoc($cdquery);
 	$cdcount = $cdresult->RecordCount();
-	$vasummary .= "\t<tr><th width='10%'>$setfont"._("Code")."</font></th><th width='50%'>$setfont"._("Answer")."</font></th>"
-	. "<th width='10%'>$setfont"._("Default")."</font></th><th width='15%'>$setfont"._("Action")."</font></th>"
-	. "<th>$setfont"._("Move")."</font></th></tr>\n";
+	$vasummary .= "\t<tr><th width='10%'>"._("Code")."</font></th><th width='50%'>"._("Answer")."</font></th>"
+	. "<th width='10%'>"._("Default")."</font></th><th width='15%'>"._("Action")."</font></th>"
+	. "<th>"._("Move")."</font></th></tr>\n";
 	$position=0;
 	while ($cdrow = $cdresult->FetchRow())
 	{
@@ -1111,7 +1111,7 @@ if (returnglobal('viewanswer'))
 		}
 		else
 		{
-			$vasummary .= "$setfont<font size='1'>{$cdrow['code']}"
+			$vasummary .= "<font size='1'>{$cdrow['code']}"
 			. "<input type='hidden' name='code' value=\"{$cdrow['code']}\">";
 		}
 		$vasummary .="</td>\n";
@@ -1134,7 +1134,7 @@ if (returnglobal('viewanswer'))
 		}
 		else
 		{
-			$vasummary .= "$setfont<font size='1'>{$cdrow['default_value']}"
+			$vasummary .= "<font size='1'>{$cdrow['default_value']}"
 			. "<input type='hidden' name='default' value=\"{$cdrow['default_value']}\">";
 		}
 		if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
@@ -1259,17 +1259,17 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "login"
 		$loginsummary =  "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />
 							<table>
 								<tr>
-									<td><p>"._("Username")."</p></td>
-									<td><input name='user' type='text' id='user' size='40' maxlength='40' value=''></td>
+									<td>"._("Username")."</td>
+									<td><input name='user' type='text' id='user' size='40' maxlength='40' value='' /></td>
 								</tr>
 								<tr>
-									<td><p>"._("Password")."</p></td>
-									<td><input name='password' id='password' type='password' size='40' maxlength='40'></td>
+									<td>"._("Password")."</td>
+									<td><input name='password' id='password' type='password' size='40' maxlength='40' /></td>
 								</tr>
 								<tr>
 									<td>&nbsp;</td>
-									<td><input type='hidden' name='action' value='login'>
-									<input class='action' type='submit' value='Login'><br />&nbsp;\n</td>
+									<td align='center'><input type='hidden' name='action' value='login' />
+									<input class='action' type='submit' value='Login' /><br />&nbsp;\n</td>
 								</tr>
 								<tr>
 									<td>&nbsp;</td>
@@ -1281,9 +1281,9 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "login"
 		// Language selection
 		$loginsummary .=  "\t<form name='language' id='language' method='post' action='$rooturl/admin/admin.php' >"
 		. "\t<table><tr>\n"
-		. "\t\t<td align='center' >$setfont\n"
-		. "\t\t\t<strong>"._("Current Language").":</strong>\n"
-		. "\t\t</font></td><td>$setfont\n"
+		. "\t\t<td align='center' >\n"
+		. "\t\t\t"._("Current Language").":\n"
+		. "\t\t</td><td>\n"
 		. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
 		foreach (getlanguagedata() as $langkey=>$languagekind)
 		{
@@ -1292,11 +1292,11 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "login"
 			$loginsummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 		}
 		$loginsummary .= "\t\t\t</select>\n"
-		. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
-		. "\t\t</font></td>\n"
+		. "\t\t\t<input type='hidden' name='action' value='changelang' />\n"
+		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "</table>"
-		. "</form>";
+		. "</form><br />";
 	}
 }
 
@@ -1317,12 +1317,12 @@ if ($action == "modifyuser")
 	if($_SESSION['loginID'] == $_POST['uid'])
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Modifying User")."</td></tr>\n"
+		. "\t\t<strong><font color='white'>"._("Modifying User")."</td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<th>$setfont"._("Username")."</th>\n"
-		. "\t\t<th>$setfont"._("Email")."</font></th>\n"
-		. "\t\t<th>$setfont"._("Full name")."</th>\n"
-		. "\t\t<th>$setfont"._("Password")."</font></th>\n"
+		. "\t\t<th>"._("Username")."</th>\n"
+		. "\t\t<th>"._("Email")."</font></th>\n"
+		. "\t\t<th>"._("Full name")."</th>\n"
+		. "\t\t<th>"._("Password")."</font></th>\n"
 		. "\t</tr>\n";
 		$muq = "SELECT a.user, DECODE(a.password, '{$codeString}') AS decpassword, a.full_name, a.email, a.uid, b.user AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
 		//echo($muq);
@@ -1333,7 +1333,7 @@ if ($action == "modifyuser")
 		{
 			$mrw = array_map('htmlspecialchars', $mrw);
 			$decodeString = "DECODE(a.password, '{$codeString}')";	//	added by Dennis
-			$usersummary .= "\t<td align='center'>$setfont<strong>{$mrw['user']}</strong></font>\n"
+			$usersummary .= "\t<td align='center'><strong>{$mrw['user']}</strong></font>\n"
 			. "\t<td align='center'>\n\t\t<input type='text' name='email' value=\"{$mrw['email']}\"></td>\n"
 			. "\t<td align='center'>\n\t\t<input type='text' name='full_name' value=\"{$mrw['full_name']}\"></td>\n"
 			. "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
@@ -1356,7 +1356,7 @@ if ($action == "setuserrights")
 	if($_SESSION['loginID'] != $_POST['uid'])
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Set User Rights").": ".$_POST['user']."</td></tr>\n";
+		. "\t\t<strong><font color='white'>"._("Set User Rights").": ".$_POST['user']."</td></tr>\n";
 
 		foreach ($_SESSION['userlist'] as $usr)
 		{
@@ -1497,12 +1497,12 @@ if ($action == "editusers")
 		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
 		. "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></font></td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<th>$setfont"._("Username")."</font></th>\n"
-		. "\t\t<th>$setfont"._("Email")."</font></th>\n"
-		. "\t\t<th>$setfont"._("Full name")."</font></th>\n"
-		. "\t\t<th>$setfont"._("Password")."</font></th>\n"
-		. "\t\t<th>$setfont"._("Creator")."</font></th>\n"
-		. "\t\t<th>$setfont"._("Action")."</font></th>\n"
+		. "\t\t<th>"._("Username")."</font></th>\n"
+		. "\t\t<th>"._("Email")."</font></th>\n"
+		. "\t\t<th>"._("Full name")."</font></th>\n"
+		. "\t\t<th>"._("Password")."</font></th>\n"
+		. "\t\t<th>"._("Creator")."</font></th>\n"
+		. "\t\t<th>"._("Action")."</font></th>\n"
 		. "\t</tr>\n";
 
 		//$userlist = getuserlist();
@@ -1513,16 +1513,16 @@ if ($action == "editusers")
 
 		//	output users
 		$usersummary .= "\t<tr bgcolor='#999999'>\n"
-		. "\t<td align='center'><strong>$setfont{$usrhimself['user']}</font></strong></td>\n"
-		. "\t<td align='center'><strong>$setfont{$usrhimself['email']}</font></strong></td>\n"
-		. "\t\t<td align='center'><strong>$setfont{$usrhimself['full_name']}</font></strong></td>\n"
-		. "\t\t<td align='center'><strong>$setfont{$usrhimself['password']}</font></strong></td>\n";
+		. "\t<td align='center'><strong>{$usrhimself['user']}</font></strong></td>\n"
+		. "\t<td align='center'><strong>{$usrhimself['email']}</font></strong></td>\n"
+		. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</font></strong></td>\n"
+		. "\t\t<td align='center'><strong>{$usrhimself['password']}</font></strong></td>\n";
 		if($usrhimself['parent_id']!=0) {
-			$usersummary .= "\t\t<td align='center'>$setfont{$usrhimself['parent']}</font></td>\n";
+			$usersummary .= "\t\t<td align='center'>{$usrhimself['parent']}</font></td>\n";
 		}
 		else
 		{
-			$usersummary .= "\t\t<td align='center'><strong>$setfont---</font></strong></td>\n";
+			$usersummary .= "\t\t<td align='center'><strong>---</font></strong></td>\n";
 		}
 		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n"
 		."\t\t\t<form method='post' action='$scriptname'>"
@@ -1559,12 +1559,12 @@ if ($action == "editusers")
 			if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
 			else $usersummary .= "\t<tr>\n";
 
-			$usersummary .= "\t<td align='center'>$setfont{$usr['user']}</font></td>\n"
-			. "\t<td align='center'><a href='mailto:{$usr['email']}'>$setfont{$usr['email']}</font></a></td>\n"
-			. "\t<td align='center'>$setfont{$usr['full_name']}</td>\n";
+			$usersummary .= "\t<td align='center'>{$usr['user']}</font></td>\n"
+			. "\t<td align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</font></a></td>\n"
+			. "\t<td align='center'>{$usr['full_name']}</td>\n";
 
 			// passwords of other users will not be displayed
-			$usersummary .=  "\t\t<td align='center'>$setfont******</font></td>\n";
+			$usersummary .=  "\t\t<td align='center'>******</font></td>\n";
 
 			if($_SESSION['USER_RIGHT_MOVE_USER'])
 			{
@@ -1597,7 +1597,7 @@ if ($action == "editusers")
 			}
 			else
 			{
-				$usersummary .= "\t\t<td align='center'>$setfont{$usr['parent']}</font></td>\n";
+				$usersummary .= "\t\t<td align='center'>{$usr['parent']}</font></td>\n";
 			}
 
 			$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
@@ -1643,11 +1643,11 @@ if ($action == "addusergroup")
 	if(isset($_SESSION['loginID']))
 	{
 		$usersummary = "<form action='$scriptname' name='addnewusergroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Add User Group")."</font></font></strong></td></tr>\n"
+		. "\t\t<strong><font color='white'>"._("Add User Group")."</font></font></strong></td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Name:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Name:")."</strong></font></td>\n"
 		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
-		. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
+		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='group_description'></textarea></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."'>\n"
 		. "\t<input type='hidden' name='action' value='usergroupindb' />\n"
@@ -1667,11 +1667,11 @@ if ($action == "editusergroup")
 	$esrow = $result->FetchRow();
 	$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
 	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong>$setfont<font color='white'>"._("Edit Group for Creator")."(".$_SESSION['user'].")</font></font></strong></td></tr>\n"
+	. "\t\t<strong><font color='white'>"._("Edit Group for Creator")."(".$_SESSION['user'].")</font></font></strong></td></tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Name:")."</strong></font></td>\n"
+	. "\t\t<td align='right' width='20%'><strong>"._("Name:")."</strong></font></td>\n"
 	. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\"></td></tr>\n"
-	. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>(optional)</font></td>\n"
+	. "\t<tr><td align='right'><strong>"._("Description:")."</strong>(optional)</font></td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
 	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update User Group")."' />\n"
 	. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
@@ -1700,15 +1700,15 @@ if ($action == "mailusergroup")
 
 	$usersummary = "<form action='$scriptname' name='mailusergroup' method='post'>"
 	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong>$setfont<font color='white'>"._("Mail to all Members")."</font></font></strong></td></tr>\n"
+	. "\t\t<strong><font color='white'>"._("Mail to all Members")."</font></font></strong></td></tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right' width='20%'>$setfont<strong>"._("To:")."</strong></font></td>\n"
+	. "\t\t<td align='right' width='20%'><strong>"._("To:")."</strong></font></td>\n"
 	. "\t\t<td><input type='text' size='50' name='to' value=\"{$to}\"></td></tr>\n"
-	. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Send me a copy:")."</strong></font></td>\n"
+	. "\t\t<td align='right' width='20%'><strong>"._("Send me a copy:")."</strong></font></td>\n"
 	. "\t\t<td><input name='copymail' type='checkbox' value='1'></td></tr>\n"
-	. "\t\t<td align='right' width='20%'>$setfont<strong>"._("Subject:")."</strong></font></td>\n"
+	. "\t\t<td align='right' width='20%'><strong>"._("Subject:")."</strong></font></td>\n"
 	. "\t\t<td><input type='text' size='50' name='subject' value=''></td></tr>\n"
-	. "\t<tr><td align='right'>$setfont<strong>"._("Message:")."</strong></font></td>\n"
+	. "\t<tr><td align='right'><strong>"._("Message:")."</strong></font></td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='body'></textarea></td></tr>\n"
 	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Send")."'>\n"
 	. "<input type='reset' value='Reset'><br>"
@@ -1879,9 +1879,9 @@ if ($action == "editusergroups")
 			$eguresult = db_execute_assoc($eguquery);
 			$usergroupsummary .= "<table rules='rows' width='100%' border='1'>\n"
 			. "\t<tr>\n"
-			. "\t\t<th>$setfont"._("Username")."</font></th>\n"
-			. "\t\t<th>$setfont"._("Email")."</font></th>\n"
-			. "\t\t<th>$setfont"._("Action")."</font></th>\n"
+			. "\t\t<th>"._("Username")."</font></th>\n"
+			. "\t\t<th>"._("Email")."</font></th>\n"
+			. "\t\t<th>"._("Action")."</font></th>\n"
 			. "\t</tr>\n";
 
 			$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
@@ -1894,8 +1894,8 @@ if ($action == "editusergroups")
 				if($egurow['uid'] == $crow['creator_id'])
 				{
 					$usergroupcreator = "\t<tr bgcolor='#999999'>\n"
-					. "\t<td align='center'><strong>$setfont{$egurow['user']}</font></strong></td>\n"
-					. "\t<td align='center'><strong>$setfont{$egurow['email']}</font></strong></td>\n"
+					. "\t<td align='center'><strong>{$egurow['user']}</font></strong></td>\n"
+					. "\t<td align='center'><strong>{$egurow['email']}</font></strong></td>\n"
 					. "\t\t<td align='center'>\n";
 					continue;
 				}
@@ -1903,8 +1903,8 @@ if ($action == "editusergroups")
 				if($row == 1){ $usergroupentries .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
 				if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
 				else $usergroupentries .= "\t<tr>\n";
-				$usergroupentries .= "\t<td align='center'>$setfont{$egurow['user']}</font></td>\n"
-				. "\t<td align='center'>$setfont{$egurow['email']}</font></td>\n"
+				$usergroupentries .= "\t<td align='center'>{$egurow['user']}</font></td>\n"
+				. "\t<td align='center'>{$egurow['email']}</font></td>\n"
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
 				// creator and not himself    or    not creator and himself
@@ -1987,23 +1987,23 @@ if ($action == "addquestion")
 		. "<table width='100%' border='0'>\n\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' bgcolor='black' align='center'>"
-		. "\t\t<strong>$setfont<font color='white'>"._("Add Question")."\n"
+		. "\t\t<strong><font color='white'>"._("Add Question")."\n"
 		. "\t\t</font></font></strong></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'  width='35%'>$setfont<strong>"._("Code:")."</strong></font></td>\n"
+		. "\t\t<td align='right'  width='35%'><strong>"._("Code:")."</strong></font></td>\n"
 		. "\t\t<td><input type='text' size='20' name='title'>"
 		. "<font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Question:")."</strong></font></td>\n"
+		. "\t\t<td align='right' width='35%'><strong>"._("Question:")."</strong></font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='3' name='question'></textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Help:")."</strong></font></td>\n"
+		. "\t\t<td align='right' width='35%'><strong>"._("Help:")."</strong></font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='3' name='help'></textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Type:")."</strong></font></td>\n"
+		. "\t\t<td align='right' width='35%'><strong>"._("Type:")."</strong></font></td>\n"
 		. "\t\t<td><select name='type' id='question_type' "
 		. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 		. "$qtypeselect"
@@ -2011,15 +2011,15 @@ if ($action == "addquestion")
 		. "\t</tr>\n";
 
 		$newquestion .= "\t<tr id='Validation'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Validation:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t<input type='text' name='preg' size=50></font>\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
 		$newquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Label Set:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t<select name='lid' >\n";
 		$labelsets=getlabelsets();
 		if (count($labelsets)>0)
@@ -2035,8 +2035,8 @@ if ($action == "addquestion")
 		. "\t</tr>\n";
 
 		$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Other:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Other:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t\t<label for='OY'>"._("Yes")."</label>"
 		. "<input id='OY' type='radio' name='other' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='ON'>"._("No")."</label>"
@@ -2045,8 +2045,8 @@ if ($action == "addquestion")
 		. "\t</tr>\n";
 
 		$newquestion .= "\t<tr id='MandatorySelection'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Mandatory:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t\t<label for='MY'>"._("Yes")."</label>"
 		. "<input id='MY' type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='MN'>"._("No")."</label>"
@@ -2058,7 +2058,7 @@ if ($action == "addquestion")
 		$qattributes=questionAttributes();
 
 		$newquestion .= "\t<tr id='QTattributes'>
-							<td align='right'>{$setfont}<strong>"._("Question Attributes:")."</strong></font></td>
+							<td align='right'>{}<strong>"._("Question Attributes:")."</strong></font></td>
 							<td><select id='QTlist' name='attribute_name' >
 							</select>
 							<input type='text' id='QTtext' name='attribute_value' ></td></tr>\n";
@@ -2078,10 +2078,10 @@ if ($action == "addquestion")
 		. "\t</form>\n"
 		. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
 		. "<table width='100%' border='0' >\n\t"
-		. "<tr><td colspan='2' align='center'>$setfont<strong>"._("OR")."</strong></font></td></tr>\n"
+		. "<tr><td colspan='2' align='center'><strong>"._("OR")."</strong></font></td></tr>\n"
 		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Import Question")."</font></font></strong></td></tr>\n\t<tr>"
-		. "\t\t<td align='right' width='35%'>$setfont<strong>"._("Select SQL File:")."</strong></font></td>\n"
+		. "\t\t<strong><font color='white'>"._("Import Question")."</font></font></strong></td></tr>\n\t<tr>"
+		. "\t\t<td align='right' width='35%'><strong>"._("Select SQL File:")."</strong></font></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\"></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' "
 		. "value='"._("Import Question")."'>\n"
@@ -2108,38 +2108,38 @@ if ($action == "copyquestion")
 		$editquestion = "<form action='$scriptname' name='editquestion' method='post'>\n<table width='100%' border='0'>\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t\t$setfont<font color='white'><strong>"._("Copy Question")."</strong><br />"._("Note: You MUST enter a new question code")."</font></font>\n"
+		. "\t\t\t<font color='white'><strong>"._("Copy Question")."</strong><br />"._("Note: You MUST enter a new question code")."</font></font>\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Code:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Code:")."</strong></font></td>\n"
 		. "\t\t<td><input type='text' size='20' name='title' value='' /></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'>$setfont<strong>"._("Question:")."</strong></font></td>\n"
+		. "\t\t<td align='right' valign='top'><strong>"._("Question:")."</strong></font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'>$setfont<strong>"._("Help:")."</strong></font></td>\n"
+		. "\t\t<td align='right' valign='top'><strong>"._("Help:")."</strong></font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Type:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Type:")."</strong></font></td>\n"
 		. "\t\t<td><select name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 		. getqtypelist($eqrow['type'])
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='Validation'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Validation:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\">\n"
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Label Set:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t<select name='lid' >\n";
 		$labelsets=getlabelsets();
 		if (count($labelsets)>0)
@@ -2159,16 +2159,16 @@ if ($action == "copyquestion")
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Group:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Group:")."</strong></font></td>\n"
 		. "\t\t<td><select name='gid'>\n"
 		. getgrouplist3($eqrow['gid'])
 		. "\t\t\t</select></td>\n"
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Other:")."</strong></font></td>\n";
+		. "\t\t<td align='right'><strong>"._("Other:")."</strong></font></td>\n";
 
-		$editquestion .= "\t\t<td>$setfont\n"
+		$editquestion .= "\t\t<td>\n"
 		. "\t\t\t"._("Yes")." <input type='radio' name='other' value='Y'";
 		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
@@ -2179,8 +2179,8 @@ if ($action == "copyquestion")
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='MandatorySelection'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Mandatory:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t\t"._("Yes")." <input type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
@@ -2209,13 +2209,13 @@ if ($action == "copyquestion")
 		else
 		{
 
-			$editquestion .= "$setfont<strong>"._("Copy Answers?")."</strong></font></td>\n"
-			. "\t\t<td>$setfont<input type='checkbox' checked name='copyanswers' value='Y' />"
+			$editquestion .= "<strong>"._("Copy Answers?")."</strong></font></td>\n"
+			. "\t\t<td><input type='checkbox' checked name='copyanswers' value='Y' />"
 			. "</font></td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
-			. "\t\t<td align='right'>$setfont<strong>"._("Copy Attributes?")."</strong></font></td>\n"
-			. "\t\t<td>$setfont<input type='checkbox' checked name='copyattributes' value='Y' />"
+			. "\t\t<td align='right'><strong>"._("Copy Attributes?")."</strong></font></td>\n"
+			. "\t\t<td><input type='checkbox' checked name='copyattributes' value='Y' />"
 			. "</font></td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
@@ -2239,26 +2239,26 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion = "<tr><td>\n"
 		."<table width='100%' border='0' bgcolor='#EEEEEE'><tr>"
 		. "<td colspan='3' bgcolor='black' align='center'>"
-		. "\t\t\t$setfont<font color='white'><strong>"._("Edit Question")." $qid</strong></font></font>\n"
+		. "\t\t\t<font color='white'><strong>"._("Edit Question")." $qid</strong></font></font>\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td valign='top'><form action='$scriptname' name='editquestion' method='post'><table width='100%' border='0'>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Code:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Code:")."</strong></font></td>\n"
 		. "\t\t<td><input type='text' size='20' name='title' value=\"{$eqrow['title']}\"></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'>$setfont<strong>"._("Question:")."</strong></font></td>\n"
+		. "\t\t<td align='right' valign='top'><strong>"._("Question:")."</strong></font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'>$setfont<strong>"._("Help:")."</strong></font></td>\n"
+		. "\t\t<td align='right' valign='top'><strong>"._("Help:")."</strong></font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n"
 		. "\t</tr>\n";
 		//question type:
 		$editquestion .= "\t<tr>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Type:")."</strong></font></td>\n";
+		. "\t\t<td align='right'><strong>"._("Type:")."</strong></font></td>\n";
 		if ($activated != "Y")
 		{
 			$editquestion .= "\t\t<td><select id='question_type' name='type' "
@@ -2268,21 +2268,21 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		}
 		else
 		{
-			$editquestion .= "\t\t<td>{$setfont}[{$eqrow['type']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
+			$editquestion .= "\t\t<td>{}[{$eqrow['type']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
 			. "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}'>\n"
 			. "\t\t</font></td>\n";
 		}
 
 		$editquestion .= "\t<tr id='Validation'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Validation:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\">\n"
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n";
 
 		$editquestion  .="\t<tr id='LabelSets' style='display: none'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Label Set:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n";
+		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></font></td>\n"
+		. "\t\t<td>\n";
 		if ($activated != "Y")
 		{
 			$editquestion .= "\t\t<select name='lid' >\n";
@@ -2310,16 +2310,16 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= "\t\t</font></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t<td align='right'>$setfont<strong>"._("Group:")."</strong></font></td>\n"
+		. "\t<td align='right'><strong>"._("Group:")."</strong></font></td>\n"
 		. "\t\t<td><select name='gid'>\n"
 		. getgrouplist3($eqrow['gid'])
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 		$editquestion .= "\t<tr id='OtherSelection'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Other:")."</strong></font></td>\n";
+		. "\t\t<td align='right'><strong>"._("Other:")."</strong></font></td>\n";
 		if ($activated != "Y")
 		{
-			$editquestion .= "\t\t<td>$setfont\n"
+			$editquestion .= "\t\t<td>\n"
 			. "\t\t\t<label for='OY'>"._("Yes")."</label><input id='OY' type='radio' name='other' value='Y'";
 			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
 			$editquestion .= " />&nbsp;&nbsp;\n"
@@ -2330,14 +2330,14 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		}
 		else
 		{
-			$editquestion .= "<td>$setfont [{$eqrow['other']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
+			$editquestion .= "<td> [{$eqrow['other']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
 			. "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\"></font></td>\n";
 		}
 		$editquestion .= "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='MandatorySelection'>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Mandatory:")."</strong></font></td>\n"
-		. "\t\t<td>$setfont\n"
+		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></font></td>\n"
+		. "\t\t<td>\n"
 		. "\t\t\t<label for='MY'>"._("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
@@ -2364,7 +2364,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					    <td colspan='2' align='center'>
 						  <form action='$scriptname' method='post'><table class='outlinetable' cellspacing='0' width='90%'>
 						  <tr id='QTattributes'>
-						    <th colspan='4'>{$setfont}"._("Question Attributes:")."</font></th>
+						    <th colspan='4'>{}"._("Question Attributes:")."</font></th>
    					      </tr>
 						  <tr><th colspan='4' height='5'></th></tr>
                           <tr>  			  
@@ -2446,23 +2446,23 @@ if ($action == "addgroup")
 	{
 
 		$newgroup = "<tr><td><form action='$scriptname' name='addnewgroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Add Group")."</font></font></strong></td></tr>\n"
+		. "\t\t<strong><font color='white'>"._("Add Group")."</font></font></strong></td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Title:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Title:")."</strong></font></td>\n"
 		. "\t\t<td><input type='text' size='50' name='group_name'><font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
-		. "\t<tr><td align='right'>$setfont<strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
+		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='description'></textarea></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."'>\n"
 		. "\t<input type='hidden' name='action' value='insertnewgroup'>\n"
 		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		. "\t</td></table>\n"
 		. "</form></td></tr>\n"
-		. "<tr><td align='center'>$setfont<strong>"._("OR")."</strong></font></td></tr>\n"
+		. "<tr><td align='center'><strong>"._("OR")."</strong></font></td></tr>\n"
 		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">"
 		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Import Group")."</font></font></strong></td></tr>\n\t<tr>"
+		. "\t\t<strong><font color='white'>"._("Import Group")."</font></font></strong></td></tr>\n\t<tr>"
 		. "\t\n"
-		. "\t\t<td align='right'>$setfont<strong>"._("Select SQL File:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Select SQL File:")."</strong></font></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Group")."'>\n"
 		. "\t<input type='hidden' name='action' value='importgroup'>\n"
@@ -2723,8 +2723,8 @@ if($action == "setsurveysecurity")
 			$resul2row = $result2->FetchRow();
 
 			$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
-			//. "\t\t<strong>$setfont<font color='white'>"._("Set Survey Rights").": ".$_POST['user']."</td></tr>\n";
-			. "\t\t<strong>$setfont<font color='white'>"._("Set Survey Rights")."</td></tr>\n";
+			//. "\t\t<strong><font color='white'>"._("Set Survey Rights").": ".$_POST['user']."</td></tr>\n";
+			. "\t\t<strong><font color='white'>"._("Set Survey Rights")."</td></tr>\n";
 
 			$usersummary .= "\t\t<th align='center'>Edit Survey Property</th>\n"
 			. "\t\t<th align='center'>Define Questions</th>\n"
@@ -2789,7 +2789,7 @@ if($action == "setusergroupsurveysecurity")
 	if($result->RecordCount() > 0)
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Set Survey Rights")."</td></tr>\n";
+		. "\t\t<strong><font color='white'>"._("Set Survey Rights")."</td></tr>\n";
 
 		$usersummary .= "\t\t<th align='center'>Edit Survey Property</th>\n"
 		. "\t\t<th align='center'>Define Questions</th>\n"
@@ -2842,11 +2842,11 @@ if($action == "surveysecurity")
 		$query2 = "SELECT a.uid, b.user FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.user";
 		$result2 = db_execute_assoc($query2);
 		$surveysecurity = "<table width='100%' rules='rows' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
-		. "\t\t<strong>$setfont<font color='white'>"._("Survey Security")."</td></tr>\n"
+		. "\t\t<strong><font color='white'>"._("Survey Security")."</td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<th>$setfont"._("Username")."</th>\n"
-		. "\t\t<th>$setfont"._("User Group")."</th>\n"
-		. "\t\t<th>$setfont"._("Action")."</font></th>\n"
+		. "\t\t<th>"._("Username")."</th>\n"
+		. "\t\t<th>"._("User Group")."</th>\n"
+		. "\t\t<th>"._("Action")."</font></th>\n"
 		. "\t</tr>\n";
 		if($result2->RecordCount() > 0)
 		{
@@ -2878,8 +2878,8 @@ if($action == "surveysecurity")
 				else
 				$surveysecurity .= "\t<tr>\n";
 
-				$surveysecurity .= "\t<td align='center'>$setfont{$resul2row['user']}</font>\n"
-				. "\t<td align='center'>$setfont";
+				$surveysecurity .= "\t<td align='center'>{$resul2row['user']}</font>\n"
+				. "\t<td align='center'>";
 
 				if(count($group_names) > 0)
 				{
@@ -3723,7 +3723,7 @@ function upload()
 	$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails37'><td></td><td>"
 	. "<font face='verdana' size='1' color='green'>"
 	. _("Warning").": ". _("You need to upload the file")." "
-	. "\n$setfont<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n"
+	. "\n<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n"
 	. "<input type='hidden' name='action' value='uploadf' />\n"
 	. "<input type='hidden' name='sid' value='$sid' />\n"
 	. "<input type='hidden' name='gid' value='$gid' />\n"
@@ -3763,7 +3763,7 @@ function control()
 			$editcsv  = "<table width='100%' align='center' border='0'>\n"
 			. "<tr bgcolor='#555555'><td colspan='2'><font color='white'><b>"
 			. _("Uploading CSV file")."</b></td></tr>\n";
-			$editcsv .= "<tr><th>$setfont"._("Visualization:")."</font></th><th>$setfont"._("Select the field number you would like to use for your answers:")."</font></th>"
+			$editcsv .= "<tr><th>"._("Visualization:")."</font></th><th>"._("Select the field number you would like to use for your answers:")."</font></th>"
 			. "</tr>\n";
 			$ricorpv = substr_count($lines[0],";");
 			$ricorv = substr_count($lines[0],",");

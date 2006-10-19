@@ -1,8 +1,9 @@
 body    {
-	   margin-left: 0px;
-	   margin-top: 0px;
-	   margin-right: 0px;
-	   margin-bottom: 0px;
+	    margin-left: 0px;
+	    margin-top: 0px;
+	    margin-right: 0px;
+	    margin-bottom: 0px;
+        text-align:left;
         }
 
 
@@ -82,6 +83,10 @@ input,select
 		color: #000080;
 		}
 		
+action  {
+        text-align:left;   
+        }		
+		
 textarea{
 		background-color: #EEEFFF; 
 		font-family: verdana,arial,sans-serif;
@@ -103,7 +108,7 @@ textarea{
         	font-family: verdana,arial,sans-serif;
         	color: #333333; 
         	background: SILVER; 
-        	width: 180
+        	width: 180px;
         }
 .listboxgroups
         {
@@ -113,7 +118,7 @@ textarea{
         	font-family: verdana,arial,sans-serif;
         	color: #333333;
         	background: SILVER;
-        	width: 180
+        	width: 180px;
         }
 .listboxquestions
         {
@@ -123,7 +128,7 @@ textarea{
         	font-family: verdana,arial,sans-serif;
         	color: #333333;
         	background: SILVER;
-        	width: 180
+        	width: 180px;
         }
 .boxcaption
         {
@@ -140,6 +145,17 @@ textarea{
 			color: #000000;
 	   }
         
+.settingentryhighlight
+{
+  color:#000080;
+  font-weight: bold;
+}
+
+.statusentryhighlight
+{
+  font-size: 10px;
+  color:#FF0000;
+}
 
 font.settingcaption
         {

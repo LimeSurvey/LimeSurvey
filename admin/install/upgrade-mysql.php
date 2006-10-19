@@ -39,6 +39,10 @@ function db_upgrade($oldversion) {
                     TYPE = MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;");  
       modify_database("","ALTER TABLE `prefix_groups` DROP PRIMARY KEY");     
       modify_database("","ALTER TABLE `prefix_groups` ADD PRIMARY KEY (`gid`,`language`)");     
+      modify_database("","ALTER TABLE `prefix_questions` DROP PRIMARY KEY");     
+      modify_database("","ALTER TABLE `prefix_questions` ADD PRIMARY KEY (`qid`,`language`)");     
+      modify_database("","ALTER TABLE `prefix_answers` DROP PRIMARY KEY");     
+      modify_database("","ALTER TABLE `prefix_answers` ADD PRIMARY KEY (`qid`,` code`,`language`)");     
                     
       modify_database("","UPDATE  `prefix_settings_global` SET stg_value='110' where stg_name ='DBVersion'");
     }
