@@ -2164,15 +2164,15 @@ function doAdminFooter()
 function getAdminFooter($url, $explanation)
 {
 	global $versionnumber, $setfont, $imagefiles;
-	$strHTMLFooter = "<div style='color: #FFFFFF; text-align:center; background-color: #000000; padding:3px; '>\n"
-	. "\t\t\t<img  align='right' alt='Donate to PHPSurveyor' src='$imagefiles/donate.gif' "
-	. "onClick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
-	. "onMouseOut=\"document.body.style.cursor='auto'\" />\n"
-	. "\t\t\t<img style='padding-right:87px' align='left' alt='Help - $explanation' src='$imagefiles/help.gif' "
+	$strHTMLFooter = "<div class='footer'>\n"
+	. "\t\t\t<img align='left' alt='Help - $explanation' src='$imagefiles/help.gif' "
 	. "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
 	. "onMouseOut=\"document.body.style.cursor='auto'\" />\n"
 	. "\t\t\t<a href='http://www.phpsurveyor.org' class='subtitle' target='_blank'>"
-	. "PHPSurveyor</a><div class='version'>Version $versionnumber</div> \n"
+	. "PHPSurveyor</a><div class='subtitle'>Version $versionnumber</div> \n"
+	. "\t\t\t<img  align='right' alt='Donate to PHPSurveyor' src='$imagefiles/donate.gif' "
+	. "onClick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
+	. "onMouseOut=\"document.body.style.cursor='auto'\" />\n"
 	. "</div>\n"
 	. "</body>\n</html>";
 	return $strHTMLFooter;

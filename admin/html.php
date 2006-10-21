@@ -64,7 +64,7 @@ if ($action == "listsurveys" && isset($_SESSION['loginID']))
 			{
 				$status=_("Active") ;
 			}
-			else $status =_("Non Active") ;
+			else $status =_("Inactive") ;
 
 			$datecreated=$rows['datecreated'] ;
 
@@ -136,28 +136,28 @@ if (($action == "checksettings" || $action == "changelang") && isset($_SESSION['
 	. "\t<tr>\n"
 	. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>\n"
 	. "\t\t\t<strong>"._("PHPSurveyor System Summary")."</strong>\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	// Database name & default language
 	$cssummary .= "\t<tr>\n"
 	. "\t\t<td width='50%' align='right'>\n"
-	. "\t\t\t<strong>"._("Database Name").":</strong></font>\n"
+	. "\t\t\t<strong>"._("Database Name").":</strong>\n"
 	. "\t\t</td><td>\n"
 	. "\t\t\t$databasename\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right'>\n"
-	. "\t\t\t<strong>"._("Default Language").":</strong></font>\n"
+	. "\t\t\t<strong>"._("Default Language").":</strong>\n"
 	. "\t\t</td><td>\n"
 	. "\t\t\t".getLanguageNameFromCode($defaultlang)."\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	// Current language
 	$cssummary .=  "\t<tr>\n"
 	. "\t\t<td align='right' >\n"
 	. "\t\t\t<strong>"._("Current Language").":</strong>\n"
-	. "\t\t</font></td><td>\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
 	foreach (getlanguagedata() as $langkey=>$languagekind)
 	{
@@ -166,51 +166,51 @@ if (($action == "checksettings" || $action == "changelang") && isset($_SESSION['
 		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 	}
 	$cssummary .= "\t\t\t</select>\n"
-	. "\t\t\t<input type='hidden' name='action' value='changelang'>\n"
-	. "\t\t</font></td>\n"
+	. "\t\t\t<input type='hidden' name='action' value='changelang' />\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	// Other infos
 	$cssummary .=  "\t<tr>\n"
 	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Users").":</strong>\n"
-	. "\t\t</font></td><td>\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t$usercount\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Surveys").":</strong>\n"
-	. "\t\t</font></td><td>\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t$surveycount\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Active Surveys").":</strong>\n"
-	. "\t\t</font></td><td>\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t$activesurveycount\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("De-activated Surveys").":</strong>\n"
-	. "\t\t</font></td><td>\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t$deactivatedsurveys\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right'>\n"
 	. "\t\t\t<strong>"._("Active Token Tables").":</strong>\n"
-	. "\t\t</font></td><td>\n"
+	. "\t\t</td><td>\n"
 	. "\t\t\t$activetokens\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right'>\n"
-	. "\t\t\t<strong>"._("De-activated Token Tables").":</strong></font>\n"
+	. "\t\t\t<strong>"._("De-activated Token Tables").":</strong>\n"
 	. "\t\t</td><td>\n"
 	. "\t\t\t$deactivatedtokens\n"
-	. "\t\t</font></td>\n"
+	. "\t\t</td>\n"
 	. "\t</tr>\n"
 	. "</table></form>\n"
 	. "<table><tr><td height='1'></td></tr></table>\n";
@@ -427,7 +427,7 @@ if ($surveyid)
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Order the groups in that Survey")."');return false\">" .
-			"<img src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups'></a>" ;
+			"<img src='$imagefiles/reorder.png' title='' alt='"._("Order the groups in that Survey")."' align='left' name='ordergroups' /></a>" ;
 		}
 		else
 		{
@@ -537,7 +537,7 @@ if ($surveyid)
 		. "\t<td class='settingentryhighlight'><strong>{$s1row['short_title']} "
 		. "(ID {$s1row['sid']})</strong></td></tr>\n";
 		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td>"
-		. "<td><font size='1' color='#000080'>\n";
+		. "<td>\n";
 		if ($s1row['private'] != "N") {$surveysummary2 .= _("This survey is anonymous.")."<br />\n";}
 		else {$surveysummary2 .= _("This survey is NOT anonymous.")."<br />\n";}
 		if ($s1row['format'] == "S") {$surveysummary2 .= _("It is presented question by question.")."<br />\n";}
@@ -810,7 +810,7 @@ if ($gid)
 		{
 			$groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Reorder the questions of this group")."');return false\">"
-			. "<img src='$imagefiles/reorder.png' title='' alt=''name='ReorderQuestions' align='left'></a>" ;
+			. "<img src='$imagefiles/reorder.png' title='' alt=''name='ReorderQuestions' align='left' /></a>" ;
 		}
 		else
 		{
