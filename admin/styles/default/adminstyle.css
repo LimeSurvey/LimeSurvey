@@ -1,4 +1,5 @@
 body    {
+		font-family:verdana,arial,sans-serif; 
 	    margin-left: 0px;
 	    margin-top: 0px;
 	    margin-right: 0px;
@@ -17,7 +18,7 @@ body    {
 	    padding:5px;
         text-align:center;
         color: #ffffff;
-	    
+	    height: 30px; 
         }
         
 
@@ -28,7 +29,6 @@ img     {
 
 th,a,p,div
 		{
-		font-family:verdana,arial,sans-serif; 
 		font-size:10pt
 		}
 
@@ -51,7 +51,6 @@ th,a,p,div
 		
 .outlinetable td
 		{
-		font-family:verdana,arial,sans-serif; 
 		font-size:10pt; 
 		background-color: #EEEEEE; 
 		border: 1px solid #CCCCCC
@@ -59,32 +58,27 @@ th,a,p,div
 		
 .outlinetable th
 		{
-		font-family:verdana,arial,sans-serif; 
 		font-size:10pt; 
 		background-color: #777777; 
 		color: #FFFFFF;
 		}
 
 ul 		{
-		font-family:verdana,arial,sans-serif; 
 		font-size:10pt; 
 		color: #000000;
 		}
 		
 td 		{
-		font-family:verdana,arial,sans-serif; 
 		font-size:10pt; color: #000000;
 		}
 		
 .btstyle{
-		font-family: verdana,arial,sans-serif; 
 		font-size: 11px;
         }
 
 .standardbtn
         {
 		height: 20;
-		font-family: verdana,arial,sans-serif;
 		color: #000000;
 		font-size: 11px;
         }
@@ -103,23 +97,20 @@ action  {
 		
 textarea{
 		background-color: #EEEFFF; 
-		font-family: verdana,arial,sans-serif;
 		font-size: 10px;
-		color: #000080
+		color: #000080;
 		}
 
 .subtitle
 	 	{
-		font-family: verdana,arial,sans-serif;
 		font-size: 10px; 
-		color: #FFFFFF
+		color: #FFFFFF;
 	 	}
 .listboxsurveys
         {
         	margin-top: 10px; 
         	height: 20px; 
         	font-size: 10px;
-        	font-family: verdana,arial,sans-serif;
         	color: #333333; 
         	background: SILVER; 
         	width: 180px;
@@ -129,7 +120,6 @@ textarea{
         	margin-top: 10px;
         	height: 20px;
         	font-size: 10px;
-        	font-family: verdana,arial,sans-serif;
         	color: #333333;
         	background: SILVER;
         	width: 180px;
@@ -139,7 +129,6 @@ textarea{
         	margin-top: 10px;
         	height: 20px;
         	font-size: 10px;
-        	font-family: verdana,arial,sans-serif;
         	color: #333333;
         	background: SILVER;
         	width: 180px;
@@ -147,7 +136,6 @@ textarea{
 .boxcaption
         {
         	font-size: 12px;
-        	font-family: verdana,arial,sans-serif;
 			font-weight: bold;
         }
 .saveOrderbtn
@@ -177,7 +165,6 @@ font.settingcaption
             vertical-align: top;
             text-align : right;
         	font-size: 13px;
-        	font-family: verdana,arial,sans-serif;
 			font-weight: bold;
         }       
 
@@ -188,7 +175,6 @@ span.settingcaption
             width:150px;
             text-align : right;
         	font-size: 13px;
-        	font-family: verdana,arial,sans-serif;
 			font-weight: bold;
             clear:left;
             margin-bottom: 10px;
@@ -200,7 +186,6 @@ span.settingcaption
             width:450px;
             padding-left: 5px;
             font-size: 13px;
-            font-family: verdana,arial,sans-serif;
             text-align:left;
             clear:right;
             margin-bottom: 10px;
