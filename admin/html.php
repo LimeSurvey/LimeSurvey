@@ -615,7 +615,7 @@ if ($surveyid)
 
 
 		$surveysummary .= "\t<tr $showstyle id='surveydetails8a'><td align='right' valign='top'><strong>"
-		. _("Additional Languages:")."</strong></td>\n";
+		. _("Additional Languages").":</strong></td>\n";
 
 		$first=true;
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
@@ -3198,7 +3198,7 @@ if ($action == "editsurvey")
 			. "\t\t</td>\t</tr>\n"
 
 			// Additional languages listbox
-			. "\t<tr><td align='right'><font class='settingcaption'>"._("Additional Languages:")."</font></td>\n"
+			. "\t<tr><td align='right'><font class='settingcaption'>"._("Additional Languages").":</font></td>\n"
 			. "\t\t<td><select multiple style='min-width:250px;'  type='text' size='5' id='additional_languages' name='additional_languages'>";
 			foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
 			{

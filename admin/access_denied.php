@@ -50,27 +50,27 @@ if (isset($_SESSION['loginID']))
 	*/
 	if(returnglobal('action') == "newsurvey")
 		{		
-		$accesssummary .= _("<p>You are not allowed to create new surveys!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to create new surveys!")."</p>";
 		$accesssummary .= "<a href='$scriptname'>"._("Continue")."</a><br />&nbsp;\n";
 		}	
 	elseif(returnglobal('action') == "delsurvey" || $action == "delsurvey")
 		{		
-		$accesssummary .= _("<p>You are not allowed to delete this survey!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to delete this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif(returnglobal('action') == "addquestion")
 		{		
-		$accesssummary .= _("<p>You are not allowed to add new questions for this survey!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to add new questions for this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif(returnglobal('action') == "activate")
 		{		
-		$accesssummary .= _("<p>You are not allowed to activate this survey!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to activate this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif(returnglobal('action') == "deactivate")
 		{		
-		$accesssummary .= _("<p>You are not allowed to deactivate this survey!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to deactivate this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	
@@ -78,41 +78,41 @@ if (isset($_SESSION['loginID']))
 	
 	elseif(returnglobal('action') == "addgroup")
 		{		
-		$accesssummary .= _("<p>You are not allowed to add a group to this survey!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to add a group to this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif(returnglobal('action') == "ordergroups")
 		{		
-		$accesssummary .= _("<p>You are not allowed to order groups in this survey!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to order groups in this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif(returnglobal('action') == "editsurvey")
 		{		
-		$accesssummary .= _("<p>You are not allowed to edit this survey!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to edit this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif(returnglobal('action') == "editgroup")
 		{		
-		$accesssummary .= _("<p>You are not allowed to edit groups in this survey!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to edit groups in this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	
 	
 	elseif($action == "browse_response")
 		{		
-		$accesssummary .= _("<p>You are not allowed to browse response!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to browse response!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif($action == "assessment")
 		{		
-		$accesssummary .= _("<p>You are not allowed to set assessment rules!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to set assessment rules!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 
 
 	elseif($action == "delusergroup")
 		{		
-		$accesssummary .= _("<p>You are not allowed to delete this group!</p>");
+		$accesssummary .= "<p>"._("You are not allowed to delete this group!")."</p>";
 		$accesssummary .= "<a href='$scriptname?action=editusergroups'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 

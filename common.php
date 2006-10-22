@@ -187,7 +187,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{
-			$adminmenu  .= " --  "._("Logged in as:"). " <strong>". $_SESSION['user'] ."</strong>"."\n";
+			$adminmenu  .= " --  "._("Logged in as"). ": <strong>". $_SESSION['user'] ."</strong>"."\n";
 			}
        	$adminmenu .= "\t\t\t\t</font></font></td>\n"
                     . "\t\t\t</tr>\n"

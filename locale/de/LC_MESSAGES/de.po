@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-10-19 23:16+0100\n"
+"PO-Revision-Date: 2006-10-22 12:05+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 msgid "Administration"
 msgstr "Administration"
 
-msgid "Logged in as:"
-msgstr "Eingeloggt als:"
+msgid "Logged in as"
+msgstr "Eingeloggt als"
 
 msgid "Default Administration Page"
 msgstr "Haupt-Administrationsseite"
@@ -28,7 +28,7 @@ msgstr "Sicherheitseinstellungen ändern"
 # D:\web\xampp\htdocs\phpsurveyor/common.php:213
 # D:\web\xampp\htdocs\phpsurveyor/common.php:214
 msgid "Create/Edit Groups"
-msgstr ""
+msgstr "Erzeuge/Bearbeite Gruppen"
 
 msgid "Check Settings"
 msgstr "Systemübersicht"
@@ -115,22 +115,22 @@ msgid "Yes/No"
 msgstr "Ja/Nein"
 
 msgid "Array (5 Point Choice)"
-msgstr "Feld (5 Punkte Auswahl)"
+msgstr "Matrix (5 Punkte Auswahl)"
 
 msgid "Array (10 Point Choice)"
-msgstr "Feld (10 Punkte Auswahl)"
+msgstr "Matrix (10 Punkte Auswahl)"
 
 msgid "Array (Yes/No/Uncertain)"
-msgstr "Feld (Ja/Nein/Unsicher)"
+msgstr "Matrix (Ja/Nein/Unsicher)"
 
 msgid "Array (Increase, Same, Decrease)"
-msgstr "Feld (Zunahme/Gleich/Abnahme)"
+msgstr "MAtrix (Zunahme/Gleich/Abnahme)"
 
 msgid "Array (Flexible Labels)"
-msgstr "Feld (Flexible Beschriftungen)"
+msgstr "Matrix (Flexible Beschriftungen)"
 
 msgid "Array (Flexible Labels) by Column"
-msgstr "Array (Flexible Beschriftungen) nach Spalte"
+msgstr "MAtrix (Flexible Beschriftungen) nach Spalte"
 
 msgid "Boilerplate Question"
 msgstr "Textbaustein (nur Anzeige)"
@@ -519,7 +519,7 @@ msgstr "Bitte machen Sie mindestens ein Kreuz"
 
 # D:\web\xampp\htdocs\phpsurveyor/qanda.php:454
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr ""
+msgstr "Sie können nicht fortfahren, bevor Sie etwas Text für ein oder mehrere Frage eingegeben haben."
 
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "Eine oder mehrere Pflichtfragen sind nicht beantwortet worden. Bitte beantworten Sie diese, um fortzufahren!"
@@ -620,51 +620,41 @@ msgstr "Dieser Fehler kann auftreten, wenn Sie Ihre Antworten bereits abgeschick
 msgid "Access denied!"
 msgstr "Zugriff verweigert!"
 
-#, fuzzy
-msgid "<p>You are not allowed to create new surveys!</p>"
+msgid "You are not allowed to create new surveys!"
 msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
 
-msgid "<p>You are not allowed to delete this survey!</p>"
-msgstr "Sie sind nicht berechtigt Umfragen zu löschen!"
+msgid "You are not allowed to delete this survey!"
+msgstr "Sie sind nicht berechtigt diese Umfrage zu löschen!"
 
-msgid "<p>You are not allowed to add new questions for this survey!</p>"
+msgid "You are not allowed to add new questions for this survey!"
 msgstr "Sie sind nicht berechtigt neue Fragen zu dieser Umfrage hinzuzufügen!"
 
-#, fuzzy
-msgid "<p>You are not allowed to activate this survey!</p>"
-msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+msgid "You are not allowed to activate this survey!"
+msgstr "Sie sind nicht berechtigt diese Umfrage zu aktivieren."
 
-#, fuzzy
-msgid "<p>You are not allowed to deactivate this survey!</p>"
-msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+msgid "You are not allowed to deactivate this survey!"
+msgstr "Sie sind nicht berechtigt diese Umfrage zu deaktivieren."
 
-#, fuzzy
-msgid "<p>You are not allowed to add a group to this survey!</p>"
-msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+msgid "You are not allowed to add a group to this survey!"
+msgstr "Sie sind nicht berechtigt ein Gruppe zu dieser Umfrage hinzuzufügen."
 
-#, fuzzy
-msgid "<p>You are not allowed to order groups in this survey!</p>"
-msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+msgid "You are not allowed to order groups in this survey!"
+msgstr "Sie sind nicht berechtigt die Gruppen in dieser Umfrage zu sortieren!"
 
-#, fuzzy
-msgid "<p>You are not allowed to edit this survey!</p>"
-msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+msgid "You are not allowed to edit this survey!"
+msgstr "Sie sind nicht berechtigt diese Umfrage zu bearbeiten!"
 
-#, fuzzy
-msgid "<p>You are not allowed to edit groups in this survey!</p>"
-msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
+msgid "You are not allowed to edit groups in this survey!"
+msgstr "Sie sind nicht berechtigt Gruppen dieser Umfrage zu bearbeiten!"
 
-#, fuzzy
-msgid "<p>You are not allowed to browse response!</p>"
-msgstr "Sie sind nicht berechtigt die Sicherheitseinstellungen zurückzusetzen!"
+msgid "You are not allowed to browse response!"
+msgstr "Sie sind nicht berechtigt sich Ergebnisse anzuschauen."
 
-#, fuzzy
-msgid "<p>You are not allowed to set assessment rules!</p>"
-msgstr "Sie sind nicht berechtigt die Sicherheitseinstellungen zurückzusetzen!"
+msgid "You are not allowed to set assessment rules!"
+msgstr "Sie sind nicht berechtigt Bewertungsrichtlinien zu setzen."
 
-#, fuzzy
-msgid "<p>You are not allowed to delete this group!</p>"
-msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
+msgid "You are not allowed to delete this group!"
+msgstr "Sie sind nicht berechtigt diese Gruppe zu löschen!"
 
 msgid "You are not allowed to perform this operation!"
 msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
@@ -1351,8 +1341,8 @@ msgstr "Öffentlich"
 msgid "Active"
 msgstr "Aktiv"
 
-msgid "Non Active"
-msgstr "Nicht Aktiv"
+msgid "Inactive"
+msgstr "Inaktiv"
 
 msgid "Create Survey"
 msgstr "Erstelle Umfrage"
@@ -1520,8 +1510,8 @@ msgstr "Basis-Sprache:"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:618
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3201
-msgid "Additional Languages:"
-msgstr ""
+msgid "Additional Languages"
+msgstr "Zusätzliche Sprachen"
 
 msgid "Exit Link"
 msgstr "Abschluss-Link:"
@@ -1557,23 +1547,19 @@ msgstr "Benutzer-Gruppe"
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1703
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1793
 msgid "Mail to all Members"
-msgstr ""
+msgstr "Nachricht an alle Mitglieder"
 
-#, fuzzy
 msgid "Edit Current User Group"
-msgstr "Diese Gruppe bearbeiten"
+msgstr "Diese Benutzergruppe bearbeiten"
 
-#, fuzzy
 msgid "Delete Current User Group"
-msgstr "Diese Gruppe löschen"
+msgstr "Diese Benutzergruppe löschen"
 
-#, fuzzy
 msgid "Add New User Group"
-msgstr "Neue Frage zu dieser Gruppe hinzufügen"
+msgstr "Neue Benutzergruppe hinzufügen"
 
-#, fuzzy
 msgid "User Groups"
-msgstr "Gruppen"
+msgstr "Benutzergruppen"
 
 msgid "Edit Current Group"
 msgstr "Diese Gruppe bearbeiten"
@@ -1693,7 +1679,7 @@ msgstr "Bewegen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1235
 msgid "You have to enter user name and email."
-msgstr ""
+msgstr "Sie müssen Username und Email angeben."
 
 msgid "Username"
 msgstr "Benutzername"
@@ -1716,11 +1702,10 @@ msgstr "Setze Benutzerrechte"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1482
 msgid "Setting new Parent"
-msgstr ""
+msgstr "Übergeordneten User setzen"
 
-#, fuzzy
 msgid "Set Parent successful."
-msgstr "Anmelden erfolgreich."
+msgstr "Übergeordneten User erfolgreich gesetzt."
 
 msgid "User Control"
 msgstr "Benutzer-Administration"
@@ -1728,9 +1713,8 @@ msgstr "Benutzer-Administration"
 msgid "Creator"
 msgstr "Ersteller"
 
-#, fuzzy
 msgid "Change"
-msgstr "Abbrechen"
+msgstr "Bearbeiten"
 
 msgid "Add User"
 msgstr "Benutzer hinzufügen"
@@ -1750,21 +1734,19 @@ msgstr "Optionale Frage"
 msgid "Add Group"
 msgstr "Gruppe hinzufügen"
 
-#, fuzzy
 msgid "Edit Group for Creator"
-msgstr "Bearbeite Gruppe für Umfrage-ID "
+msgstr "Bearbeite Gruppe für Erzeuger"
 
-#, fuzzy
 msgid "Update User Group"
-msgstr "Gruppe aktualisieren"
+msgstr "Benutzergruppe aktualisieren"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1705
 msgid "To:"
-msgstr ""
+msgstr "An:"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1707
 msgid "Send me a copy:"
-msgstr ""
+msgstr "Sende eine Kopie an:"
 
 msgid "Subject:"
 msgstr "Betreff:"
@@ -1774,7 +1756,7 @@ msgstr "Nachricht:"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1713
 msgid "Send"
-msgstr ""
+msgstr "Sende"
 
 msgid "Deleting User Group"
 msgstr "Lösche Benutzergruppe"
@@ -1785,9 +1767,8 @@ msgstr "Gruppenname"
 msgid "Could not delete user group."
 msgstr "Konnte Benutzergruppe nicht löschen."
 
-#, fuzzy
 msgid "Could not delete user group. No group selected."
-msgstr "Konnte Benutzer nicht löschen. Kein Benutzername angegeben."
+msgstr "Konnte Benutzergruppe nicht löschen. Es wurde keine Gruppe ausgewählt."
 
 msgid "Description: "
 msgstr "Beschreibung:"
@@ -1803,7 +1784,7 @@ msgstr "Es wurde kein Gruppenname angegeben."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1828
 msgid "Mail not sent!"
-msgstr ""
+msgstr "Mail wurde nicht versendet."
 
 msgid "Edit User Group Successfully!"
 msgstr "Benutzergruppe erfolgreich geändert."
@@ -1884,14 +1865,14 @@ msgstr "Benutzername existiert bereits."
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2620
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2674
 msgid "No Username selected."
-msgstr ""
+msgstr "Kein Username gewählt."
 
 msgid "Set Survey Rights"
 msgstr "Setze Umfrage-Benutzerrechte"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2656
 msgid "User Group added."
-msgstr ""
+msgstr "Benutzergruppe hinzugefügt."
 
 msgid "Failed to add User Group."
 msgstr "Konnte Benutzergruppe nicht hinzufügen."
@@ -1910,7 +1891,7 @@ msgstr "Benutzerrechte erfolgreich aktualisiert."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2987
 msgid "Failed to update survey rights!"
-msgstr ""
+msgstr "Konnte die Umfragerechte nicht aktualisieren!"
 
 msgid "Edit Survey - Step 1 of 2"
 msgstr "Umfrage bearbeiten - Schritt 1 von 2"
