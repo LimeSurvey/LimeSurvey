@@ -253,12 +253,37 @@ if(isset($surveyid))
 		else
 		{
 			$_POST  = array_map('db_quote', $_POST);
-
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
-			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order)"
+			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);	
+			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).")";
+			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).",'{$baselang}')";
 			$result = $connect->Execute($query);
+			// Add other languages
+			if ($result)
+			{
+				$query = "SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$_POST['gid']}' AND sid='{$_POST['sid']}' AND title='{$_POST['title']}' AND language='{$baselang}'";
+				$result2 = db_execute_assoc($query);
+				while ($res = $result2->FetchRow()) {$curquest = $res['qid'];}
+				$addlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
+				foreach ($addlangs as $alang)
+				{
+					if ($alang != "")
+					{	
+						$query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
+						." VALUES ('$curquest','{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
+						." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).",'{$alang}')";
+						$result2 = $connect->Execute($query);
+						if (!$result2)
+						{
+							echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question in lang={$alang} could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+
+						}
+					}
+				}
+			}
+			
+			
 			if (!$result)
 			{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be created.")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";

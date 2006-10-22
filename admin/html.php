@@ -2233,59 +2233,52 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 {
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
 	$eqresult = db_execute_assoc($eqquery);
+	$editquestion ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
+	. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Question")."</font></font></td></tr></table>\n"
+	. '<div class="tab-pane" id="tab-pane-1">';
 	while ($eqrow = $eqresult->FetchRow())
 	{
+		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
+		if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
 		$eqrow  = array_map('htmlspecialchars', $eqrow);
-		$editquestion = "<tr><td>\n"
-		."<table width='100%' border='0' bgcolor='#EEEEEE'><tr>"
-		. "<td colspan='3' bgcolor='black' align='center'>"
-		. "\t\t\t<font color='white'><strong>"._("Edit Question")." $qid</strong></font></font>\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td valign='top'><form action='$scriptname' name='editquestion' method='post'><table width='100%' border='0'>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>"._("Code:")."</strong></font></td>\n"
-		. "\t\t<td><input type='text' size='20' name='title' value=\"{$eqrow['title']}\"></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'><strong>"._("Question:")."</strong></font></td>\n"
-		. "\t\t<td><textarea cols='50' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'><strong>"._("Help:")."</strong></font></td>\n"
-		. "\t\t<td><textarea cols='50' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n"
-		. "\t</tr>\n";
-		//question type:
-		$editquestion .= "\t<tr>\n"
-		. "\t\t<td align='right'><strong>"._("Type:")."</strong></font></td>\n";
+		$editquestion .= '</h2>';
+		$editquestion .= "<form name='editquestion' action='$scriptname' method='post'>\n";
+		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Code:")."</span>\n"
+		. "\t\t<span class='settingentry'><input type='text' size='50' name='title_{$eqrow['language']}' value=\"{$eqrow['title']}\" />\n"
+		. "\t</span class='settingentry'></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>"._("Question:")."</span>\n"
+		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
+		. "\t</span class='settingentry'></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
+		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
+		. "\t</span class='settingentry'></div>\n";
+		
+		// Question Type
 		if ($activated != "Y")
 		{
-			$editquestion .= "\t\t<td><select id='question_type' name='type' "
-			. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
-			. getqtypelist($eqrow['type'])
-			. "\t\t</select></td>\n";
+			$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Type:")."</span>\n"
+			. "\t\t<span class='settingentry'><select id='question_type' name='type_{$eqrow['language']}' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
+			. getqtypelist($eqrow['type']) . "\t\t</select>"
+			. "\t</span class='settingentry'></div>\n";
 		}
 		else
 		{
-			$editquestion .= "\t\t<td>{}[{$eqrow['type']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
-			. "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}'>\n"
-			. "\t\t</font></td>\n";
+			$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>[{$eqrow['type']}]"._("Cannot be modified")." - "._("Survey is currently active.")."</span>\n"
+			. "\t\t<span class='settingentry'><input type='hidden' name='type_{$eqrow['language']}' id='question_type' value='{$eqrow['type']}' />\n"
+			. "\t</span class='settingentry'></div>\n";
 		}
 
-		$editquestion .= "\t<tr id='Validation'>\n"
-		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></font></td>\n"
-		. "\t\t<td>\n"
-		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\">\n"
-		. "\t\t</font></td>\n"
-		. "\t</tr>\n";
-
-		$editquestion  .="\t<tr id='LabelSets' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></font></td>\n"
-		. "\t\t<td>\n";
+		// Validation
+		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Validation:")."</span>\n"
+		. "\t\t<span class='settingentry'><input type='text' size='50' name='preg_{$eqrow['language']}' value=\"{$eqrow['preg']}\" />\n"
+		. "\t</span class='settingentry'></div>\n";
+		
+		//Label Set
+		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Label Set:")."</span>\n";
+		
 		if ($activated != "Y")
 		{
-			$editquestion .= "\t\t<select name='lid' >\n";
+			$editquestion .= "\t\t<span class='settingentry'><select name='lid' >\n";
 			$labelsets=getlabelsets();
 			if (count($labelsets)>0)
 			{
@@ -2300,71 +2293,65 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					$editquestion .= ">{$lb[1]}</option>\n";
 				}
 			}
-			$editquestion .= "\t\t</select>\n";
+			$editquestion .= "\t\t</select></span class='settingentry'></div>\n";
 		}
 		else
-		{
-			$editquestion .= "[{$eqrow['lid']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
-			. "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\">\n";
+		{	
+			$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>[{$eqrow['lid']}]"._("Cannot be modified")." - "._("Survey is currently active.")."</span>\n"
+			. "\t\t<span class='settingentry'><input type='hidden' name='lid_{$eqrow['language']}' id='question_type' value='{$eqrow['lid']}' />\n"
+			. "\t</span class='settingentry'></div>\n";
 		}
-		$editquestion .= "\t\t</font></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t<td align='right'><strong>"._("Group:")."</strong></font></td>\n"
-		. "\t\t<td><select name='gid'>\n"
-		. getgrouplist3($eqrow['gid'])
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
-		$editquestion .= "\t<tr id='OtherSelection'>\n"
-		. "\t\t<td align='right'><strong>"._("Other:")."</strong></font></td>\n";
+		
+		// Group
+		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Group:")."</span>\n"
+		. "\t\t<span class='settingentry'><select id='question_type' name='gid_{$eqrow['language']}'>\n"
+		. getgrouplist3($eqrow['gid']) . "\t\t</select>"
+		. "\t</span class='settingentry'></div>\n";
+		
+		//Other
 		if ($activated != "Y")
 		{
-			$editquestion .= "\t\t<td>\n"
-			. "\t\t\t<label for='OY'>"._("Yes")."</label><input id='OY' type='radio' name='other' value='Y'";
+			$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Other:")."</span>\n"
+			. "\t\t<span class='settingentry'><label for='OY'>"._("Yes")."</label><input id='OY' type='radio' name='other' value='Y'";
 			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
-			$editquestion .= " />&nbsp;&nbsp;\n"
-			. "\t\t\t<label for='ON'>"._("No")."</label><input id='ON' type='radio' name='other' value='N'";
+			$editquestion .= "/>&nbsp;&nbsp;<label for='ON'>"._("No")."</label><input id='ON' type='radio' name='other' value='N'";
 			if ($eqrow['other'] == "N") {$editquestion .= " checked";}
-			$editquestion .= " />\n"
-			. "\t\t</font></td>\n";
+			$editquestion .= "/>\n\t</span class='settingentry'></div>\n";
 		}
 		else
 		{
-			$editquestion .= "<td> [{$eqrow['other']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
-			. "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\"></font></td>\n";
+			$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>[{$eqrow['other']}]"._("Cannot be modified")." - "._("Survey is currently active.")."</span>\n"
+			. "\t\t<span class='settingentry'><input type='hidden' name='other_{$eqrow['language']}' id='question_type' value='{$eqrow['other']}' />\n"
+			. "\t</span class='settingentry'></div>\n";
 		}
-		$editquestion .= "\t</tr>\n";
 
-		$editquestion .= "\t<tr id='MandatorySelection'>\n"
-		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></font></td>\n"
-		. "\t\t<td>\n"
-		. "\t\t\t<label for='MY'>"._("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
+		//Manditory
+		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Mandatory:")."</span>\n"
+		. "\t\t<span class='settingentry'><label for='MY'>"._("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
-		$editquestion .= " />&nbsp;&nbsp;\n"
-		. "\t\t\t<label for='MN'>"._("No")."</label><input id='MN' type='radio' name='mandatory' value='N'";
+		$editquestion .= "/>&nbsp;&nbsp;<label for='MN'>"._("No")."</label><input id='MN' type='radio' name='mandatory' value='N'";
 		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked";}
-		$editquestion .= " />\n"
-		. "\t\t</font></td>\n"
-		. "\t</tr>\n";
-		$qattributes=questionAttributes();
+		$editquestion .= "/>\n\t</span class='settingentry'></div>\n";
 
-		$editquestion .= "\t<tr>\n"
-		. "\t\t<td colspan='2' align='center'>"
-		. "<input type='submit' value='"._("Update Question")."'>\n"
-		. "\t<input type='hidden' name='action' value='updatequestion'>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		. "\t<input type='hidden' name='qid' value='$qid'>\n"
-		. "\t</td></tr>\n"
-		. "</table></form></td><td>\n";
+		$qattributes=questionAttributes();
+		$editquestion .= '</div>';
 	}
+	
+
+	$editquestion .= "\t<p><input type='submit' value='"._("Update Question")."'>\n"
+	. "\t<input type='hidden' name='action' value='updatequestion'>\n"
+	. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
+	. "\t<input type='hidden' name='qid' value='$qid'></form>\n"
+	. "\t\n";
+	
 
 	$qidattributes=getQuestionAttributes($qid);
-	$editquestion .= "\t\t\t<td valign='top' width='35%'><table width='100%' border='0' cellspacing='0'>
+	$editquestion .= "\t\t\t<table>
 					   <tr>
 					    <td colspan='2' align='center'>
 						  <form action='$scriptname' method='post'><table class='outlinetable' cellspacing='0' width='90%'>
 						  <tr id='QTattributes'>
-						    <th colspan='4'>{}"._("Question Attributes:")."</font></th>
+						    <th colspan='4'>"._("Question Attributes:")."</font></th>
    					      </tr>
 						  <tr><th colspan='4' height='5'></th></tr>
                           <tr>  			  
@@ -2377,6 +2364,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					      <input type='hidden' name='gid' value='$gid'></td></tr>
 					      <tr><th colspan='4' height='10'></th></tr>\n";
 	$editquestion .= "\t\t\t</table></form>\n";
+	
 	foreach ($qidattributes as $qa)
 	{
 		$editquestion .= "\t\t\t<table class='outlinetable' width='90%' border='0' cellspacing='0'>"
@@ -2405,7 +2393,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "</td></tr></table>\n"
 		. "</form>\n</table>";
 	}
-	$editquestion .= "</td></tr></table></table>\n";
+
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 }
 
