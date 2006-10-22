@@ -511,9 +511,8 @@ function getMaxquestionorder($gid)
 {
 	global $surveyid ;
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$max_sql = "SELECT max( question_order ) AS max FROM questions WHERE gid='$gid' AND language='$s_lang'";
+	$max_sql = "SELECT max( question_order ) AS max FROM ".db_table_name('questions')." WHERE gid='$gid' AND language='$s_lang'";
 	//		echo "debug: ".$max_sql."<br>" and die;
-
 
 	$max_result =db_execute_assoc($max_sql) ;
 	$maxrow = $max_result->FetchRow() ;
@@ -538,7 +537,7 @@ function getanswers()
 {
 	global $surveyid, $gid, $qid, $code, $dbprefix, $connect;
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$aquery = 'SELECT code, answer FROM '.db_table_name('answers')." WHERE qid=$qid AND language='$s_lang' ORDER BY sortorder, answer";
+	$aquery = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid=$qid AND language='$s_lang' ORDER BY sortorder, answer";
 
 	$aresult = db_execute_assoc($aquery);
 	$answerselecter = "";
@@ -827,11 +826,9 @@ function getSurveyInfo($surveyid)
 }
 
 
-function getlabelsets()
+function getlabelsets($s_lang="en")
 {
 	global $dbprefix, $connect, $surveyid;
-	die("FIXME: languages and labels, what to do :/ function getlabelsets()");
-	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 	$query = "SELECT * FROM ".db_table_name('labelsets')." WHERE language='$s_lang' ORDER BY label_name";
 	$result = db_execute_assoc($query) or die ("Couldn't get list of label sets<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$labelsets=array();
