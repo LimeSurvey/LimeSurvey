@@ -2233,6 +2233,38 @@ if ($action == "copyquestion")
 
 if ($action == "editquestion" || $action == "editattribute" || $action == "delattribute" || $action == "addattribute")
 {
+	
+		$questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		array_pop($questlangs);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$questlangs[] = $baselang;
+		$questlangs = array_flip($questlangs);
+		$egquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
+		$egresult = db_execute_assoc($egquery);
+		while ($esrow = $egresult->FetchRow())
+		{
+			if(!array_key_exists($esrow['language'], $questlangs)) // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
+			{
+				$egquery = "DELETE FROM ".db_table_name('questions')." WHERE sid='{$surveyid}' AND gid='{$gid}' AND qid='{$qid}' AND language='".$esrow['language']."'";
+				$egresultD = $connect->Execute($egquery);
+			} else {
+				$questlangs[$esrow['language']] = 99;
+			}
+			if ($esrow['language'] == $baselang) $basesettings = array('lid' => $esrow['lid'],'question_order' => $esrow['question_order'],'other' => $esrow['other'],'mandatory' => $esrow['mandatory'],'type' => $esrow['type'],'title' => $esrow['title'],'preg' => $esrow['preg'],'question' => $esrow['question'],'help' => $esrow['help']);
+
+		}
+	
+		while (list($key,$value) = each($questlangs))
+		{
+			if ($value != 99)
+			{
+				$egquery = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
+				." VALUES ('{$qid}','{$surveyid}', '{$gid}', '{$basesettings['type']}', '{$basesettings['title']}',"
+				." '{$basesettings['question']}', '{$basesettings['preg']}', '{$basesettings['help']}', '{$basesettings['other']}', '{$basesettings['mandatory']}', '{$basesettings['lid']}','{$basesettings['question_order']}','{$key}')";
+				$egresult = $connect->Execute($egquery);
+			}
+		}
+	
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
 	$eqresult = db_execute_assoc($eqquery);
 	$editquestion ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
