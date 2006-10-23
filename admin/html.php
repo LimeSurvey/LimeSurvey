@@ -993,7 +993,7 @@ if ($qid)
 		. "\t\t\t</table>\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
-		if (returnglobal('viewanswer'))	{$qshowstyle = "style='display: none'";}
+		if (returnglobal('viewanswer') || $action =="editquestion")	{$qshowstyle = "style='display: none'";}
 		else							{$qshowstyle = "";}
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'><strong>"
 		. _("Code:")."</strong></font></td>\n"
