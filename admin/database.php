@@ -370,21 +370,32 @@ if(isset($surveyid))
 		{
 			if (isset($_POST['gid']) && $_POST['gid'] != "")
 			{
-				$uqquery = "UPDATE {$dbprefix}questions "
-				. "SET type='{$_POST['type']}', title='{$_POST['title']}', "
-				. "question='{$_POST['question']}', preg='{$_POST['preg']}', help='{$_POST['help']}', "
-				. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
-				. "mandatory='{$_POST['mandatory']}'";
-				if (isset($_POST['lid']) && trim($_POST['lid'])!="")
+				
+				$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
+				$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+				array_push($questlangs,$baselang[0].$baselang[1]);
+				foreach ($questlangs as $qlang)
 				{
-					$uqquery.=", lid='{$_POST['lid']}' ";
+					if (isset($qlang) && $qlang != "")
+					{
+						$uqquery = "UPDATE {$dbprefix}questions "
+						. "SET type='{$_POST['type']}', title='{$_POST['title_'.$qlang]}', "
+						. "question='{$_POST['question_'.$qlang]}', preg='{$_POST['preg']}', help='{$_POST['help_'.$qlang]}', "
+						. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
+						. "mandatory='{$_POST['mandatory']}'";
+						if (isset($_POST['lid_'.$qlang]) && trim($_POST['lid_'.$qlang])!="")
+						{
+							$uqquery.=", lid='{$_POST['lid_'.$qlang]}' ";
+						}
+						$uqquery.= "WHERE sid='{$_POST['sid']}' AND qid='{$_POST['qid']}' AND language='{$qlang}'";
+						$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+						if (!$uqresult)
+						{
+							echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+						}
+					}
 				}
-				$uqquery.= "WHERE sid={$_POST['sid']} AND qid={$_POST['qid']}";
-				$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-				if (!$uqresult)
-				{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Question could not be updated")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-				}
+				
 				if ($oldtype !=  $_POST['type'] & $change == "0")
 				{
 					$query = "DELETE FROM {$dbprefix}answers WHERE qid={$_POST['qid']}";
