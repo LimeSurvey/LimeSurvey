@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-10-22 12:05+0100\n"
+"PO-Revision-Date: 2006-10-22 16:04+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1541,7 +1541,7 @@ msgid "You need to add questions"
 msgstr "Sie müssen Fragen hinzufügen."
 
 msgid "User Group"
-msgstr "Benutzer-Gruppe"
+msgstr "Benutzergruppe"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:707
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1703
@@ -1879,6 +1879,18 @@ msgstr "Konnte Benutzergruppe nicht hinzufügen."
 
 msgid "Deleting User"
 msgstr "Lösche Benutzer"
+
+msgid "Edit Survey Properties"
+msgstr "Umfrage-Einstellungen bearbeiten"
+
+msgid "Define Questions"
+msgstr "Fragen definieren"
+
+msgid "Export"
+msgstr "Datenexport"
+
+msgid "Browse Response"
+msgstr "Antworten anzeigen"
 
 msgid "Survey Security"
 msgstr "Umfrage-Sicherheit"

@@ -42,16 +42,14 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
 	
-	sendcacheheaders();
+	doAdminHeader();
+	include('./scripts/addremove.js');
 	
 	//DO DATABASE UPDATESTUFF
 	if ($action == "updateset") {updateset($lid);}
 	if ($action == "insertset") {$lid=insertset();}
 	if ($action == "modanswers") {modanswers($lid);}
 	if ($action == "delset") {if (delset($lid)) {$lid=0;}}
-	
-	echo $htmlheader;
-	
 	if ($action == "importlabels")
 	{
 		include("importlabel.php");
@@ -97,16 +95,15 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	."onmouseout=\"hideTooltip()\"" 
 	."onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">" 
 	."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
-	."alt='". _("Show Help")."' align='right' ></a>"	
-	."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'  alt=''>\n"
-	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt=''>\n"
+	."alt='". _("Show Help")."' align='right'  /></a>"	
+	."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'  alt='' />\n"
+	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt='' />\n"
 	."<a href=\"#\" onClick=\"window.open('labels.php?action=newset', '_top')\"" 
 	."onmouseout=\"hideTooltip()\"" 
 	."onmouseover=\"showTooltip(event,'"._("Add new label set")."');return false\">"
-	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". _("Add new label set")."'></a>\n"	 
-	."\t\t\t\t\t$setfont<font size='1'><strong>"
-	._("Labelsets").":</strong> "
-	."\t\t\t\t\t<select style='font-size: 9; font-family: verdana; color: #333333; background: SILVER; width: 160' "
+	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". _("Add new label set")."' /></a>\n"	 
+	."\t\t\t\t\t<font class='boxcaption'>"._("Labelsets").": </font>"
+	."\t\t\t\t\t<select class='listboxsurveys' "
 	."onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 	$labelsets=getlabelsets();
 	if (count($labelsets)>0)
@@ -135,32 +132,60 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		{
 			$query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
 			$result=db_execute_assoc($query);
-			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid'];}
+			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $languageids=$row['languages'];}
 		}
 		echo "\t\t<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
 		."\t\t<table width='100%' bgcolor='#DDDDDD'>\n"
 		."\t\t\t<tr bgcolor='black'>\n"
-		."\t\t\t\t<td colspan='2' align='center'>$setfont<font color='white'><strong>\n"
+		."\t\t\t\t<td colspan='4' align='center'>$setfont<font color='white'><strong>\n"
 		."\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' "
 		."onClick=\"window.open('labels.php?lid=$lid', '_top')\" />\n";
-		if ($action == "newset") {echo _("Create New Label Set");}
+		if ($action == "newset") {echo _("Create New Label Set"); $languageids="en";}
 		else {echo _("Edit Label Set");}
 		echo "\t\t\t\t</strong></font></font></td>\n"
 		."\t\t\t</tr>\n"
 		."\t\t\t<tr>\n"
-		."\t\t\t\t<td align='right' width='15%'>\n"
+		."\t\t\t\t<td align='right' width='25%'>\n"
 		."\t\t\t\t\t$setfont<strong>"._("Set Name").":</strong></font>"
 		."\t\t\t\t</td>\n"
 		."\t\t\t\t<td>\n"
+		."\t\t\t\t\t<input type='hidden' id='languageids' value='$languageids'>"
 		."\t\t\t\t\t<input type='text' name='label_name' value='";
 		if (isset($lbname)) {echo $lbname;}
 		echo "'>\n"
 		."\t\t\t\t</td>\n"
 		."\t\t\t</tr>\n"
-		."\t\t\t<tr>\n"
+		// Additional languages listbox
+    	. "\t<tr><td align='right'><font class='settingcaption'>"._("Languages").":</font></td>\n"
+		. "\t\t<td><select multiple style='min-width:250px;'  type='text' size='5' id='additional_languages' name='additional_languages'>";
+        $languageids=explode(" ",$languageids);
+
+		foreach ($languageids as $langname)
+			{
+					echo  "\t\t\t<option id='".$langname."' value='".$langname."'";
+					echo ">".getLanguageNameFromCode($langname)."</option>\n";
+			}
+
+			//  Add/Remove Buttons
+			echo "</select></td>"
+			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\"><BR> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove()\" ID=\"RemoveBtn\" ></td>\n"
+
+			// Available languages listbox
+			. "\t\t<td align=left width='45%'><select type='text' size='5' id='available_languages' name='available_languages'>";
+			$tempLang=GetAdditionalLanguagesFromSurveyID($surveyid);
+			foreach (getLanguageData() as  $langkey2=>$langname)
+			{
+				if ($langkey2!=$esrow['language'] && in_array($langkey2,$tempLang)==false)  // base languag must not be shown here
+				{
+					echo "\t\t\t<option id='".$langkey2."' value='".$langkey2."'";
+					echo ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+				}
+			}
+
+		echo "\t\t\t<tr>\n"
 		."\t\t\t\t<td></td>\n"
 		."\t\t\t\t<td>\n"
-		."\t\t\t\t<input type='submit' value='";
+    	."\t\t\t\t<input type='submit' value='";
 		if ($action == "newset") {echo _("Add");}
 		else {echo _("Update");}
 		echo "'>\n"
@@ -224,16 +249,16 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
 			._("Close Window")."' align='right' "
 			."onClick=\"window.open('labels.php', '_top')\" />\n"
-			."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt=''>\n"
-			."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
-			."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt=''>\n"
-			."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
+			."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
+			."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
+			."\t\t\t\t\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt='' />\n"
+			."\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t\t\t\t\t<a href='labels.php?action=editset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Edit label set")."');return false\">" .
-			"<img name='DeleteTokensButton' src='$imagefiles/edit.png' title='' align='left' ></a>" 
+			"<img name='DeleteTokensButton' src='$imagefiles/edit.png' title='' align='left'  /></a>" 
 			."\t\t\t\t\t<a href='labels.php?action=delset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Delete label set")."');return false\">"
-			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onClick=\"return confirm('"._("Are you sure?")."')\"></a>\n"
+			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onClick=\"return confirm('"._("Are you sure?")."')\" /></a>\n"
 			."\t\t\t\t\t<a href='dumplabel.php?lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Label Set")."');return false\">" .
-					"<img src='$imagefiles/exportsql.png' alt='"._("Export Label Set")."' title='' align='left'></a>" 
+					"<img src='$imagefiles/exportsql.png' alt='"._("Export Label Set")."' title='' align='left' /></a>" 
 			."\t\t\t\t\t</td>\n"
 			."\t\t\t\t</tr>\n"
 			."\t\t\t</table>\n";
@@ -294,7 +319,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			{
 				echo "\t\t\t\t\t<input type='submit' name='method' value='"._("Up")."' />\n";
 			}
-			else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left' alt=''>";}
+			else {echo "<img src='$imagefiles/blank.gif' width='21' height='5' align='left' alt='' />";}
 			if ($position < $labelcount-1)
 			{
 				echo "\t\t\t\t\t<input type='submit' name='method' value='"._("Dn")."' />\n";
@@ -532,7 +557,7 @@ function helpscreen()
 	echo "\t\t\t\t</tr>\n";
 	echo "\t\t\t\t<tr>\n";
 	echo "\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
-	echo "\t\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' hspace='0' border='0' align='left' alt=''>\n";
+	echo "\t\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' hspace='0' border='0' align='left' alt='' />\n";
 	echo "\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\" />\n";
 	echo "\t\t\t\t\t</td>\n";
 	echo "\t\t\t\t</tr>\n";

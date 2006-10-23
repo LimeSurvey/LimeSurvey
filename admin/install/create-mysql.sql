@@ -89,7 +89,7 @@ CREATE TABLE `prefix_labels` (
   `title` varchar(100) NOT NULL default '',
   `sortorder` varchar(5) default NULL,
   `language` varchar(20) default 'en',
-  PRIMARY KEY  (`lid`,`code`)
+  PRIMARY KEY  (`lid`,`code`,`language`)
 ) TYPE=MyISAM;
 
 -- --------------------------------------------------------
@@ -101,7 +101,8 @@ CREATE TABLE `prefix_labels` (
 CREATE TABLE `prefix_labelsets` (
   `lid` int(11) NOT NULL auto_increment,
   `label_name` varchar(100) NOT NULL default '',
-  PRIMARY KEY  (`lid`)
+  `language` varchar(20) default 'en',
+  PRIMARY KEY  (`lid`,`languages`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

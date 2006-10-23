@@ -2768,7 +2768,7 @@ function getusergrouplist()
             {
 			$selecter .= "\t\t\t<option ";
             if($_SESSION['loginID'] == $gn['creator_id']) {$selecter .= " style=\"font-weight: bold;\"";}			
-			if ($gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1;}
+			if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1;}
             $selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
             }
         }

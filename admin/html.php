@@ -736,7 +736,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='86' height='20' align='left' border='0' hspace='0'>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t\t\t</td>\n"
-	. "\t\t\t\t\t<td align='right' width='420'>\n"
+	. "\t\t\t\t\t<td align='right' width='480'>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='82' height='20'>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
 
@@ -840,7 +840,7 @@ if ($gid)
 		}
 		else
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='right' border='0' hspace='0'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='right' border='0' hspace='0'>\n";
 		}
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
 		. _("Show Details of this Group")."' alt='". _("Show Details of this Group")."' name='MaximiseGroupWindow' "
@@ -1900,6 +1900,7 @@ if ($action == "editusergroups")
 					continue;
 				}
 				//	output users
+				$usergroupentries='';
 				if($row == 1){ $usergroupentries .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
 				if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
 				else $usergroupentries .= "\t<tr>\n";
@@ -1921,7 +1922,8 @@ if ($action == "editusergroups")
 				. "\t</tr>\n";
 				$row++;
 			}
-			$usergroupsummary .= $usergroupcreator . $usergroupentries;
+			$usergroupsummary .= $usergroupcreator;
+            if (isset($usergroupentries)) {$usergroupsummary .= $usergroupentries;};
 
 			if(isset($row2['ugid']))
 			{
@@ -2727,15 +2729,14 @@ if($action == "setsurveysecurity")
 			$resul2row = $result2->FetchRow();
 
 			$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
-			//. "\t\t<strong><font color='white'>"._("Set Survey Rights").": ".$_POST['user']."</td></tr>\n";
 			. "\t\t<strong><font color='white'>"._("Set Survey Rights")."</td></tr>\n";
 
-			$usersummary .= "\t\t<th align='center'>Edit Survey Property</th>\n"
-			. "\t\t<th align='center'>Define Questions</th>\n"
-			. "\t\t<th align='center'>Browse Response</th>\n"
-			. "\t\t<th align='center'>Export</th>\n"
-			. "\t\t<th align='center'>Delete Survey</th>\n"
-			. "\t\t<th align='center'>Activate Survey</th>\n"
+			$usersummary .= "\t\t<th align='center'>"._("Edit Survey Properties")."</th>\n"
+			. "\t\t<th align='center'>"._("Define Questions")."</th>\n"
+			. "\t\t<th align='center'>"._("Browse Responses")."</th>\n"
+			. "\t\t<th align='center'>"._("Export")."</th>\n"
+			. "\t\t<th align='center'>"._("Delete Survey")."</th>\n"
+			. "\t\t<th align='center'>"._("Activate Survey")."</th>\n"
 			. "\t\t<th></th>\n\t</tr>\n"
 			. "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
 
@@ -2796,11 +2797,11 @@ if($action == "setusergroupsurveysecurity")
 		. "\t\t<strong><font color='white'>"._("Set Survey Rights")."</td></tr>\n";
 
 		$usersummary .= "\t\t<th align='center'>Edit Survey Property</th>\n"
-		. "\t\t<th align='center'>Define Questions</th>\n"
-		. "\t\t<th align='center'>Browse Response</th>\n"
-		. "\t\t<th align='center'>Export</th>\n"
-		. "\t\t<th align='center'>Delete Survey</th>\n"
-		. "\t\t<th align='center'>Activate Survey</th>\n"
+		. "\t\t<th align='center'>"._("Define Questions")."</th>\n"
+		. "\t\t<th align='center'>"._("Browse Response")."</th>\n"
+		. "\t\t<th align='center'>"._("Export")."</th>\n"
+		. "\t\t<th align='center'>"._("Delete Survey")."</th>\n"
+		. "\t\t<th align='center'>"._("Activate Survey")."</th>\n"
 		. "\t\t<th></th>\n\t</tr>\n"
 		. "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
 
