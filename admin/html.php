@@ -2251,37 +2251,10 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "\t</span class='settingentry'></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
+		. "\t</span class='settingentry'></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'></span>\n"
+		. "\t\t<span class='settingentry'>\n"
 		. "\t</span class='settingentry'></div>\n";
-
-		//Label Set
-		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Label Set:")."</span>\n";
-		
-		if ($activated != "Y")
-		{
-			$editquestion .= "\t\t<span class='settingentry'><select name='lid' >\n";
-			$labelsets=getlabelsets();
-			if (count($labelsets)>0)
-			{
-				if (!$eqrow['lid'])
-				{
-					$editquestion .= "\t\t\t<option value=''>"._("Please Choose...")."</option>\n";
-				}
-				foreach ($labelsets as $lb)
-				{
-					$editquestion .= "\t\t\t<option value='{$lb[0]}'";
-					if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
-					$editquestion .= ">{$lb[1]}</option>\n";
-				}
-			}
-			$editquestion .= "\t\t</select></span class='settingentry'></div>\n";
-		}
-		else
-		{	
-			$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>[{$eqrow['lid']}]"._("Cannot be modified")." - "._("Survey is currently active.")."</span>\n"
-			. "\t\t<span class='settingentry'><input type='hidden' name='lid_{$eqrow['language']}' id='question_type' value='{$eqrow['lid']}' />\n"
-			. "\t</span class='settingentry'></div>\n";
-		}
-		
 		$qattributes=questionAttributes();
 		$editquestion .= '</div>';
 	}
@@ -2303,7 +2276,36 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   			. "\t\t</font></td>\n";
   		}
   
-  		$editquestion .= "\t\t</font></td>\n"
+  		$editquestion  .="\t</tr><tr id='LabelSets' style='display: none'>\n"
+  		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></font></td>\n"
+  		. "\t\t<td>\n";
+  		
+  		if ($activated != "Y")
+  		{
+  			$editquestion .= "\t\t<select name='lid' >\n";
+  			$labelsets=getlabelsets();
+  			if (count($labelsets)>0)
+  			{
+  				if (!$eqrow['lid'])
+  				{
+  					$editquestion .= "\t\t\t<option value=''>"._("Please Choose...")."</option>\n";
+  				}
+  				foreach ($labelsets as $lb)
+  				{
+  					$editquestion .= "\t\t\t<option value='{$lb[0]}'";
+  					if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
+  					$editquestion .= ">{$lb[1]}</option>\n";
+  				}
+  			}
+  			$editquestion .= "\t\t</select>\n";
+  		}
+  		else
+  		{
+  			$editquestion .= "[{$eqrow['lid']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
+ 			. "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\">\n";
+  		}
+  		
+  		$editquestion .= "\t\t</td>\n"
   		. "\t</tr>\n"
   		. "\t<tr>\n"
   		. "\t<td align='right'><strong>"._("Group:")."</strong></font></td>\n"
