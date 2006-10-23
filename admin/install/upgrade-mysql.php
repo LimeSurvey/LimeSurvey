@@ -43,7 +43,6 @@ function db_upgrade($oldversion) {
       modify_database("","ALTER TABLE `prefix_questions` ADD PRIMARY KEY (`qid`,`language`)");     
       modify_database("","ALTER TABLE `prefix_answers` DROP PRIMARY KEY");     
       modify_database("","ALTER TABLE `prefix_answers` ADD PRIMARY KEY (`qid`,` code`,`language`)");     
-      modify_database("","ALTER TABLE `prefix_labelsets` ADD `language` varchar(20) default 'en'");
                     
       modify_database("","UPDATE  `prefix_settings_global` SET stg_value='110' where stg_name ='DBVersion'");
     }

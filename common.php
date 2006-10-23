@@ -829,7 +829,7 @@ function getSurveyInfo($surveyid)
 function getlabelsets($s_lang="en")
 {
 	global $dbprefix, $connect, $surveyid;
-	$query = "SELECT * FROM ".db_table_name('labelsets')." WHERE language='$s_lang' ORDER BY label_name";
+	$query = "SELECT ".db_table_name('labelsets').".lid as lid, label_name FROM ".db_table_name('labelsets').",".db_table_name('labels')." WHERE language='$s_lang' and ".db_table_name('labels').".lid=".db_table_name('labelsets').".lid group BY label_name order by label_name";
 	$result = db_execute_assoc($query) or die ("Couldn't get list of label sets<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$labelsets=array();
 	while ($row=$result->FetchRow())
@@ -1721,7 +1721,7 @@ function templatereplace($line)
 	}
 	$line=str_replace("{SID}", $surveyid, $line);
 	if ($help) {
-		$line=str_replace("{QUESTIONHELP}", "<img src='".$imagefiles."/help.gif' alt='Help' align='left'>".$help, $line);
+		$line=str_replace("{QUESTIONHELP}", "<img src='".$imagefiles."/help.gif' alt='Help' align='left' />".$help, $line);
 		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
 	}
 	else

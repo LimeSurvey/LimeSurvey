@@ -130,9 +130,9 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	{
 		if ($action == "editset")
 		{
-			$query = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
+         	$query = "SELECT label_name,".db_table_name('labelsets').".lid, language FROM ".db_table_name('labelsets').",".db_table_name('labels')." WHERE ".db_table_name('labelsets').".lid=$lid and ".db_table_name('labels').".lid=".db_table_name('labelsets').".lid group BY language order by language";
 			$result=db_execute_assoc($query);
-			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $languageids=$row['languages'];}
+			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid'];}
 		}
 		echo "\t\t<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
 		."\t\t<table width='100%' bgcolor='#DDDDDD'>\n"
@@ -158,12 +158,12 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		// Additional languages listbox
     	. "\t<tr><td align='right'><font class='settingcaption'>"._("Languages").":</font></td>\n"
 		. "\t\t<td><select multiple style='min-width:250px;'  type='text' size='5' id='additional_languages' name='additional_languages'>";
-        $languageids=explode(" ",$languageids);
 
-		foreach ($languageids as $langname)
+    	$result=db_execute_assoc($query);
+		while ($row=$result->FetchRow()) 
 			{
-					echo  "\t\t\t<option id='".$langname."' value='".$langname."'";
-					echo ">".getLanguageNameFromCode($langname)."</option>\n";
+					echo  "\t\t\t<option id='".$row['language']."' value='".$row['language']."'";
+					echo ">".getLanguageNameFromCode($row['language'])."</option>\n";
 			}
 
 			//  Add/Remove Buttons
@@ -183,9 +183,9 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			}
 
 		echo "\t\t\t<tr>\n"
-		."\t\t\t\t<td></td>\n"
+		."\t\t\t\t<td></td><td></td>\n"
 		."\t\t\t\t<td>\n"
-    	."\t\t\t\t<input type='submit' value='";
+    	."\t\t\t\t<br><input type='submit' value='";
 		if ($action == "newset") {echo _("Add");}
 		else {echo _("Update");}
 		echo "'>\n"

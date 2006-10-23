@@ -101,8 +101,7 @@ CREATE TABLE `prefix_labels` (
 CREATE TABLE `prefix_labelsets` (
   `lid` int(11) NOT NULL auto_increment,
   `label_name` varchar(100) NOT NULL default '',
-  `language` varchar(20) default 'en',
-  PRIMARY KEY  (`lid`,`languages`)
+  PRIMARY KEY  (`lid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
