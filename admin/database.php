@@ -383,9 +383,9 @@ if(isset($surveyid))
 						. "question='{$_POST['question_'.$qlang]}', preg='{$_POST['preg']}', help='{$_POST['help_'.$qlang]}', "
 						. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
 						. "mandatory='{$_POST['mandatory']}'";
-						if (isset($_POST['lid_'.$qlang]) && trim($_POST['lid_'.$qlang])!="")
+						if (isset($_POST['lid']) && trim($_POST['lid'])!="")
 						{
-							$uqquery.=", lid='{$_POST['lid_'.$qlang]}' ";
+							$uqquery.=", lid='{$_POST['lid']}' ";
 						}
 						$uqquery.= "WHERE sid='{$_POST['sid']}' AND qid='{$_POST['qid']}' AND language='{$qlang}'";
 						$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
