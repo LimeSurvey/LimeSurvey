@@ -33,7 +33,6 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-error_reporting(E_ALL);
 
 require_once(dirname(__FILE__).'/../config.php');
 

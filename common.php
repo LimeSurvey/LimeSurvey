@@ -38,6 +38,7 @@
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 $versionnumber = "1.09a";
 $dbversionnumber = 110;
+error_reporting(E_ALL); //For debug purposes - remove/comment out for release
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
@@ -51,7 +52,6 @@ require_once (dirname(__FILE__).'/classes/core/sanitize.php');
 
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
-//if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
 
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 {
@@ -826,10 +826,10 @@ function getSurveyInfo($surveyid)
 }
 
 
-function getlabelsets($s_lang="en")
+function getlabelsets()
 {
 	global $dbprefix, $connect, $surveyid;
-	$query = "SELECT ".db_table_name('labelsets').".lid as lid, label_name FROM ".db_table_name('labelsets').",".db_table_name('labels')." WHERE language='$s_lang' and ".db_table_name('labels').".lid=".db_table_name('labelsets').".lid group BY label_name order by label_name";
+	$query = "SELECT ".db_table_name('labelsets').".lid as lid, label_name FROM ".db_table_name('labelsets')." order by label_name";
 	$result = db_execute_assoc($query) or die ("Couldn't get list of label sets<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$labelsets=array();
 	while ($row=$result->FetchRow())
