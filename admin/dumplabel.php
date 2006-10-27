@@ -99,7 +99,7 @@ $qquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
 $qdump = BuildOutput($qquery);
 
 //2: Answers table
-$aquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid";
+$aquery = "SELECT lid, code, title, sortorder, language FROM {$dbprefix}labels WHERE lid=$lid";
 $adump = BuildOutput($aquery);
 
 $fn = "labelset_$lid.sql";
