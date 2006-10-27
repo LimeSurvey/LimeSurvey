@@ -1354,7 +1354,7 @@ if($actsurrows['browse_response']){
 		."\t<tr bgcolor='#777777'>\n"
 		."\t\t<td colspan='3' align='center'><font color='white'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
-		."\t\t\t<br>$setfont".$thissurvey['description']."</font></font>\n"
+		."\t\t\t<br />$setfont".$thissurvey['description']."</font></font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 	

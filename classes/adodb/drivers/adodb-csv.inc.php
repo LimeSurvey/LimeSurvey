@@ -89,7 +89,7 @@ class ADODB_csv extends ADOConnection {
 		$err = false;
 		$rs = csv2rs($url,$err,false);
 		
-		if ($this->debug) print "$url<br><i>$err</i><br>";
+		if ($this->debug) print "$url<br /><i>$err</i><br />";
 
 		$at = strpos($err,'::::');
 		if ($at === false) {
@@ -146,7 +146,7 @@ class ADODB_csv extends ADOConnection {
 		
 		
 		$rs = csv2rs($url,$err,false);
-		if ($this->debug) print urldecode($url)."<br><i>$err</i><br>";
+		if ($this->debug) print urldecode($url)."<br /><i>$err</i><br />";
 		$at = strpos($err,'::::');
 		if ($at === false) {		
 			$this->_errorMsg = $err;

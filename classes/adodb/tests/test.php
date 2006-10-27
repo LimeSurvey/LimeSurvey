@@ -30,7 +30,7 @@ if (PHP_VERSION < 5) include_once('../adodb-pear.inc.php');
 //
 function Err($msg)
 {
-	print "<b>$msg</b><br>";
+	print "<b>$msg</b><br />";
 	flush();
 }
 
@@ -127,35 +127,35 @@ FROM `nuke_stories` `t1`, `nuke_authors` `t2`, `nuke_stories_cat` `t3`, `nuke_to
 	
 	$arr = $db->ServerInfo();
 	print_r($arr);
-	echo "<br>";
+	echo "<br />";
 	$e = error_reporting(E_ALL-E_WARNING);
 	flush();
 	#$db->debug=1;
 	$tt  = $db->Time(); 
-	if ($tt == 0) echo '<br><b>$db->Time failed</b>';
-	else echo "<br>db->Time: ".date('d-m-Y H:i:s',$tt);
-	echo '<br>';
+	if ($tt == 0) echo '<br /><b>$db->Time failed</b>';
+	else echo "<br />db->Time: ".date('d-m-Y H:i:s',$tt);
+	echo '<br />';
 	
-	echo "Date=",$db->UserDate('2002-04-07'),'<br>';
+	echo "Date=",$db->UserDate('2002-04-07'),'<br />';
 	print "<i>date1</i> (1969-02-20) = ".$db->DBDate('1969-2-20');
-	print "<br><i>date1</i> (1999-02-20) = ".$db->DBDate('1999-2-20');
-	print "<br><i>date1.1</i> 1999 = ".$db->DBDate("'1999'");
-	print "<br><i>date2</i> (1970-1-2) = ".$db->DBDate(24*3600)."<p>";
+	print "<br /><i>date1</i> (1999-02-20) = ".$db->DBDate('1999-2-20');
+	print "<br /><i>date1.1</i> 1999 = ".$db->DBDate("'1999'");
+	print "<br /><i>date2</i> (1970-1-2) = ".$db->DBDate(24*3600)."<p>";
 	print "<i>ts1</i> (1999-02-20 13:40:50) = ".$db->DBTimeStamp('1999-2-20 1:40:50 pm');
-	print "<br><i>ts1.1</i> (1999-02-20 13:40:00) = ".$db->DBTimeStamp('1999-2-20 13:40');
-	print "<br><i>ts2</i> (1999-02-20) = ".$db->DBTimeStamp('1999-2-20');
-	print "<br><i>ts3</i> (1970-1-2 +/- timezone) = ".$db->DBTimeStamp(24*3600);
-	print "<br> Fractional TS (1999-2-20 13:40:50.91): ".$db->DBTimeStamp($db->UnixTimeStamp('1999-2-20 13:40:50.91+1'));
+	print "<br /><i>ts1.1</i> (1999-02-20 13:40:00) = ".$db->DBTimeStamp('1999-2-20 13:40');
+	print "<br /><i>ts2</i> (1999-02-20) = ".$db->DBTimeStamp('1999-2-20');
+	print "<br /><i>ts3</i> (1970-1-2 +/- timezone) = ".$db->DBTimeStamp(24*3600);
+	print "<br /> Fractional TS (1999-2-20 13:40:50.91): ".$db->DBTimeStamp($db->UnixTimeStamp('1999-2-20 13:40:50.91+1'));
 	 $dd = $db->UnixDate('1999-02-20');
-	print "<br>unixdate</i> 1999-02-20 = ".date('Y-m-d',$dd)."<p>";
-	print "<br><i>ts4</i> =".($db->UnixTimeStamp("19700101000101")+8*3600);
-	print "<br><i>ts5</i> =".$db->DBTimeStamp($db->UnixTimeStamp("20040110092123"));
-	print "<br><i>ts6</i> =".$db->UserTimeStamp("20040110092123");
-	print "<br><i>ts7</i> =".$db->DBTimeStamp("20040110092123");
+	print "<br />unixdate</i> 1999-02-20 = ".date('Y-m-d',$dd)."<p>";
+	print "<br /><i>ts4</i> =".($db->UnixTimeStamp("19700101000101")+8*3600);
+	print "<br /><i>ts5</i> =".$db->DBTimeStamp($db->UnixTimeStamp("20040110092123"));
+	print "<br /><i>ts6</i> =".$db->UserTimeStamp("20040110092123");
+	print "<br /><i>ts7</i> =".$db->DBTimeStamp("20040110092123");
 	flush();
 	// mssql too slow in failing bad connection
 	if (false && $db->databaseType != 'mssql') {
-		print "<p>Testing bad connection. Ignore following error msgs:<br>";
+		print "<p>Testing bad connection. Ignore following error msgs:<br />";
 		$db2 = ADONewConnection();
 		$rez = $db2->Connect("bad connection");
 		$err = $db2->ErrorMsg();
@@ -300,8 +300,8 @@ FROM `nuke_stories` `t1`, `nuke_authors` `t2`, `nuke_stories_cat` `t3`, `nuke_to
 		$a = $db->MetaColumns('ADOXYZ');
 		if ($a===false) print "<b>MetaColumns not supported</b></p>";
 		else {
-			print "<p>Columns of ADOXYZ: <font size=1><br>";
-			foreach($a as $v) {print_r($v); echo "<br>";}
+			print "<p>Columns of ADOXYZ: <font size=1><br />";
+			foreach($a as $v) {print_r($v); echo "<br />";}
 			echo "</font>";
 		}
 		
@@ -310,7 +310,7 @@ FROM `nuke_stories` `t1`, `nuke_authors` `t2`, `nuke_stories_cat` `t3`, `nuke_to
 		$a = $db->MetaIndexes(('ADOXYZ'),true);
 		if ($a===false) print "<b>MetaIndexes not supported</b></p>";
 		else {
-			print "<p>Indexes of ADOXYZ: <font size=1><br>";
+			print "<p>Indexes of ADOXYZ: <font size=1><br />";
 			adodb_pr($a);
 			echo "</font>";
 		}
@@ -398,7 +398,7 @@ GO
 		$db->InParameter($cmd,$ss,'a');
 		$rs = $db->Execute($cmd);
 		#var_dump($rs->fields);
-		echo $rs->fields['T']." --- ".$rs->fields['A']."---<br>";
+		echo $rs->fields['T']." --- ".$rs->fields['A']."---<br />";
 
 		$cat = 'Dairy Products';
 		$yr = '1998';
@@ -505,7 +505,7 @@ GO
 		$db->CompleteTrans();
 		
 		$s2= $db->GetOne("select photo from photos where id=99");
-		echo "<br>---$s2";
+		echo "<br />---$s2";
 		if ($s !== $s2) Err("insert blob does not match");
 
 		print "<h4>Testing Blob: size=".strlen($s)."</h4>";
@@ -747,14 +747,14 @@ END Adodb;
 		where id=".$db->Param('zid')." and created>=".$db->Param('ZDATE')."",
 		$array);
 	if ($id != 1) Err("Bad bind; id=$id");
-	else echo "<br>Bind date/integer 1 passed";
+	else echo "<br />Bind date/integer 1 passed";
 	
 	$array =array(1,$db->BindDate(time()));
 	$id = $db->GetOne("select id from ADOXYZ 
 		where id=".$db->Param('0')." and created>=".$db->Param('1')."",
 		$array);
 	if ($id != 1) Err("Bad bind; id=$id");
-	else echo "<br>Bind date/integer 2 passed";
+	else echo "<br />Bind date/integer 2 passed";
 	
 	$db->debug = false;
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -922,7 +922,7 @@ END Adodb;
 	$zdate = $db->DBDate($zdate);
 	$db->Execute("update ADOXYZ set created=$zdate where id=1");
 	$row = $db->GetRow("select created,firstname from ADOXYZ where id=1");
-	print_r($row); echo "<br>";
+	print_r($row); echo "<br />";
 	
 	
 	
@@ -988,25 +988,25 @@ END Adodb;
 			if (trim($rs->Fields("firstname")) != 'Caroline') {
 				print "<p><b>$db->databaseType: MoveFirst failed -- probably cannot scroll backwards</b></p>";
 			}
-			else print "MoveFirst() OK<BR>";
+			else print "MoveFirst() OK<br />";
 						
 						// Move(3) tests error handling -- MoveFirst should not move cursor
 			$rs->Move(3);
 			if (trim($rs->Fields("firstname")) != 'George') {
 				print '<p>'.$rs->Fields("id")."<b>$db->databaseType: Move(3) failed</b></p>";
-			} else print "Move(3) OK<BR>";
+			} else print "Move(3) OK<br />";
 						
 			$rs->Move(7);
 			if (trim($rs->Fields("firstname")) != 'Yat Sun') {
 				print '<p>'.$rs->Fields("id")."<b>$db->databaseType: Move(7) failed</b></p>";
 				print_r($rs);
-			} else print "Move(7) OK<BR>";
+			} else print "Move(7) OK<br />";
 			if ($rs->EOF) Err("Move(7) is EOF already");
 			$rs->MoveLast();
 			if (trim($rs->Fields("firstname")) != 'Steven'){
 				 print '<p>'.$rs->Fields("id")."<b>$db->databaseType: MoveLast() failed</b></p>";
 				 print_r($rs);
-			}else print "MoveLast() OK<BR>";
+			}else print "MoveLast() OK<br />";
 			$rs->MoveNext();
 			if (!$rs->EOF) err("Bad MoveNext");
 			if ($rs->canSeek) {
@@ -1014,7 +1014,7 @@ END Adodb;
 				if (trim($rs->Fields("firstname")) != 'George') {
 					print '<p>'.$rs->Fields("id")."<b>$db->databaseType: Move(3) after MoveLast failed</b></p>";
 					
-				} else print "Move(3) after MoveLast() OK<BR>";
+				} else print "Move(3) after MoveLast() OK<br />";
 			}
 			
 			print "<p>Empty Move Test";
@@ -1052,13 +1052,13 @@ END Adodb;
 	$rs = &$db->Execute("select * from ADOXYZ order by id");
 	if ($rs) {
 		$arr = &$rs->GetArray(10);
-		if (sizeof($arr) != 10 || trim($arr[1][1]) != 'John' || trim($arr[1][2]) != 'Lim') print $arr[1][1].' '.$arr[1][2]."<b> &nbsp; ERROR</b><br>";
-		else print " OK<BR>";
+		if (sizeof($arr) != 10 || trim($arr[1][1]) != 'John' || trim($arr[1][2]) != 'Lim') print $arr[1][1].' '.$arr[1][2]."<b> &nbsp; ERROR</b><br />";
+		else print " OK<br />";
 	}
 	
 	$arr = $db->GetArray("select x from ADOXYZ");
 	$e = $db->ErrorMsg(); $e2 = $db->ErrorNo();
-	echo "Testing error handling, should see illegal column 'x' error=<i>$e ($e2) </i><br>";
+	echo "Testing error handling, should see illegal column 'x' error=<i>$e ($e2) </i><br />";
 	if (!$e || !$e2) Err("Error handling did not work");
 	print "Testing FetchNextObject for 1 object ";
 	$rs = &$db->Execute("select distinct lastname,firstname from ADOXYZ where firstname='Caroline'");
@@ -1067,8 +1067,8 @@ END Adodb;
 	while ($o = $rs->FetchNextObject()) {
 		$fcnt += 1;	
 	}
-	if ($fcnt == 1) print " OK<BR>";
-	else print "<b>FAILED</b><BR>";
+	if ($fcnt == 1) print " OK<br />";
+	else print "<b>FAILED</b><br />";
 	
 	$stmt = $db->Prepare("select * from ADOXYZ where id < 3");
 	$rs = $db->Execute($stmt);
@@ -1089,15 +1089,15 @@ END Adodb;
 	if ($rs) {
 		$arr = $rs->GetAssoc();
 		//print_r($arr);
-		if (empty($arr['See']) || trim(reset($arr['See'])) != 'Wai Hun') print $arr['See']." &nbsp; <b>ERROR</b><br>";
+		if (empty($arr['See']) || trim(reset($arr['See'])) != 'Wai Hun') print $arr['See']." &nbsp; <b>ERROR</b><br />";
 		else print " OK 1";
 	}
 	
 	$arr = &$db->GetAssoc("select distinct lastname,firstname from ADOXYZ");
 	if ($arr) {
 		//print_r($arr);
-		if (empty($arr['See']) || trim($arr['See']) != 'Wai Hun') print $arr['See']." &nbsp; <b>ERROR</b><br>";
-		else print " OK 2<BR>";
+		if (empty($arr['See']) || trim($arr['See']) != 'Wai Hun') print $arr['See']." &nbsp; <b>ERROR</b><br />";
+		else print " OK 2<br />";
 	}
 	// Comment this out to test countrecs = false
 	$ADODB_COUNTRECS = $savecrecs;
@@ -1107,63 +1107,63 @@ END Adodb;
 	if (reset($rs->fields) != 50) echo Err("$cnt wrong for Prepare/CacheGetOne");
 	
 	for ($loop=0; $loop < 1; $loop++) {
-	print "Testing GetMenu() and CacheExecute<BR>";
+	print "Testing GetMenu() and CacheExecute<br />";
 	$db->debug = true;
 	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
 	
 	
 
 
-	if ($rs) print 'With blanks, Steven selected:'. $rs->GetMenu('menu','Steven').'<BR>'; 
-	else print " Fail<BR>";
+	if ($rs) print 'With blanks, Steven selected:'. $rs->GetMenu('menu','Steven').'<br />'; 
+	else print " Fail<br />";
 	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
 	
-	if ($rs) print ' No blanks, Steven selected: '. $rs->GetMenu('menu','Steven',false).'<BR>';
-	else print " Fail<BR>";
+	if ($rs) print ' No blanks, Steven selected: '. $rs->GetMenu('menu','Steven',false).'<br />';
+	else print " Fail<br />";
 	
 	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
 	
-	if ($rs) print ' 1st line set to **** , Steven selected: '. $rs->GetMenu('menu','Steven','1st:****').'<BR>';
-	else print " Fail<BR>";
+	if ($rs) print ' 1st line set to **** , Steven selected: '. $rs->GetMenu('menu','Steven','1st:****').'<br />';
+	else print " Fail<br />";
 	
 
 	
 	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
-	if ($rs) print ' Multiple, Alan selected: '. $rs->GetMenu('menu','Alan',false,true).'<BR>';
-	else print " Fail<BR>";
+	if ($rs) print ' Multiple, Alan selected: '. $rs->GetMenu('menu','Alan',false,true).'<br />';
+	else print " Fail<br />";
 	print '</p><hr />';
 	
 	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
 	if ($rs) {
 		print ' Multiple, Alan and George selected: '. $rs->GetMenu('menu',array('Alan','George'),false,true);
 		if (empty($rs->connection)) print "<b>Connection object missing from recordset</b></br>";
-	} else print " Fail<BR>";
+	} else print " Fail<br />";
 	print '</p><hr />';
 	
-	print "Testing GetMenu3()<br>";
+	print "Testing GetMenu3()<br />";
 	$rs = $db->Execute("select ".$db->Concat('firstname',"'-'",'id').",id, lastname from ADOXYZ order by lastname,id");
 	if ($rs) print "Grouped Menu: ".$rs->GetMenu3('name');
 	else Err('Grouped Menu GetMenu3()');
 	print "<hr />";
 
-	print "Testing GetMenu2() <BR>";
+	print "Testing GetMenu2() <br />";
 	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
-	if ($rs) print 'With blanks, Steven selected:'. $rs->GetMenu2('menu',('Oey')).'<BR>'; 
-	else print " Fail<BR>";
+	if ($rs) print 'With blanks, Steven selected:'. $rs->GetMenu2('menu',('Oey')).'<br />'; 
+	else print " Fail<br />";
 	$rs = &$db->CacheExecute(6,"select distinct firstname,lastname from ADOXYZ");
-	if ($rs) print ' No blanks, Steven selected: '. $rs->GetMenu2('menu',('Oey'),false).'<BR>';
-	else print " Fail<BR>";
+	if ($rs) print ' No blanks, Steven selected: '. $rs->GetMenu2('menu',('Oey'),false).'<br />';
+	else print " Fail<br />";
 	}
 	echo "<h3>CacheEXecute</h3>";
 
 	$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
 	$rs = &$db->CacheExecute(6,"select distinct firstname,lastname from ADOXYZ");
-	print_r($rs->fields); echo $rs->fetchMode;echo "<br>";
+	print_r($rs->fields); echo $rs->fetchMode;echo "<br />";
 	echo $rs->Fields('firstname');
 	
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 	$rs = &$db->CacheExecute(6,"select distinct firstname,lastname from ADOXYZ");
-	print_r($rs->fields);echo "<br>";
+	print_r($rs->fields);echo "<br />";
 	echo $rs->Fields('firstname');
 	$db->debug = false;
 	
@@ -1180,13 +1180,13 @@ END Adodb;
 	$sql = 'select * from ADOXYZ order by 1';
 	echo "<p>**Testing '$sql' (phplens compat 2)</p>";
 	$rs = &$db->Execute($sql);
-	if (!$rs) err( "<b>No recordset returned for '$sql'<br>".$db->ErrorMsg()."</b>");
+	if (!$rs) err( "<b>No recordset returned for '$sql'<br />".$db->ErrorMsg()."</b>");
 	
 	
 	$sql = 'select * from ADOXYZ order by 1,1';
 	echo "<p>**Testing '$sql' (phplens compat 3)</p>";
 	$rs = &$db->Execute($sql);
-	if (!$rs) err( "<b>No recordset returned for '$sql'<br>".$db->ErrorMsg()."</b>");
+	if (!$rs) err( "<b>No recordset returned for '$sql'<br />".$db->ErrorMsg()."</b>");
 	
 	
 	// Move
@@ -1230,7 +1230,7 @@ END Adodb;
 	} else 
 		print "<p><b>ADO skipped error handling of bad select statement</b></p>";
 	
-	print "<p>ASSOC TEST 2<br>";
+	print "<p>ASSOC TEST 2<br />";
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 	$rs = $db->query('select * from adoxyz order by id');
 	if ($ee = $db->ErrorMsg()) {
@@ -1243,48 +1243,48 @@ END Adodb;
 	for($i=0;$i<$rs->FieldCount();$i++) 
 	{ 
 		$fld=$rs->FetchField($i); 
-		print "<br> Field name is ".$fld->name; 
+		print "<br /> Field name is ".$fld->name; 
 		print " ".$rs->Fields($fld->name); 
 	} 
 
 		
-	print "<p>BOTH TEST 2<br>";
+	print "<p>BOTH TEST 2<br />";
 	if ($db->dataProvider == 'ado') {
-		print "<b>ADODB_FETCH_BOTH not supported</b> for dataProvider=".$db->dataProvider."<br>";
+		print "<b>ADODB_FETCH_BOTH not supported</b> for dataProvider=".$db->dataProvider."<br />";
 	} else {
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		$rs = $db->query('select * from adoxyz order by id');
 		for($i=0;$i<$rs->FieldCount();$i++) 
 		{ 
 			$fld=$rs->FetchField($i); 
-			print "<br> Field name is ".$fld->name; 
+			print "<br /> Field name is ".$fld->name; 
 			print " ".$rs->Fields($fld->name); 
 		} 
 	}
 	
-	print "<p>NUM TEST 2<br>";
+	print "<p>NUM TEST 2<br />";
 	$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
 	$rs = $db->query('select * from adoxyz order by id');
 	for($i=0;$i<$rs->FieldCount();$i++) 
 	{ 
 		$fld=$rs->FetchField($i); 
-		print "<br> Field name is ".$fld->name; 
+		print "<br /> Field name is ".$fld->name; 
 		print " ".$rs->Fields($fld->name); 
 	} 
 	
-	print "<p>ASSOC Test of SelectLimit<br>";
+	print "<p>ASSOC Test of SelectLimit<br />";
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 	$rs = $db->selectlimit('select * from adoxyz order by id',3,4);
 	$cnt = 0;
 	while ($rs && !$rs->EOF) {
 		$cnt += 1;
 		if (!isset($rs->fields['firstname'])) {
-			print "<br><b>ASSOC returned numeric field</b></p>";
+			print "<br /><b>ASSOC returned numeric field</b></p>";
 			break;
 		}
 		$rs->MoveNext();
 	}
-	if ($cnt != 3) print "<br><b>Count should be 3, instead it was $cnt</b></p>";
+	if ($cnt != 3) print "<br /><b>Count should be 3, instead it was $cnt</b></p>";
 	
 	
 	$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
@@ -1329,7 +1329,7 @@ END Adodb;
 	$rs = $db->SelectLimit($sql,1);
 	$d = date('d-m-M-Y-').'Q'.(ceil(date('m')/3.0)).date(' h:i:s A');
 	if (!$rs) Err("SQLDate query returned no recordset");
-	else if ($d != $rs->fields[0]) Err("SQLDate 1 failed expected: <br>act:$d <br>sql:".$rs->fields[0]);
+	else if ($d != $rs->fields[0]) Err("SQLDate 1 failed expected: <br />act:$d <br />sql:".$rs->fields[0]);
 	
 	$date = $db->SQLDate('d-m-M-Y-\QQ h:i:s A',$db->DBDate("1974-02-25"));
 	$sql = "SELECT $date from ADOXYZ";
@@ -1340,9 +1340,9 @@ END Adodb;
 	$d = date('d-m-M-Y-',$ts).'Q'.(ceil(date('m',$ts)/3.0)).date(' h:i:s A',$ts);
 	if (!$rs) {
 		Err("SQLDate query returned no recordset");
-		echo $db->ErrorMsg(),'<br>';
+		echo $db->ErrorMsg(),'<br />';
 	} else if ($d != reset($rs->fields)) {
-		Err("SQLDate 2 failed expected: <br>act:$d <br>sql:".$rs->fields[0].' <br>'.$db->ErrorMsg());
+		Err("SQLDate 2 failed expected: <br />act:$d <br />sql:".$rs->fields[0].' <br />'.$db->ErrorMsg());
 	}
 	
 	
@@ -1569,7 +1569,7 @@ END Adodb;
 	$metae = $db->MetaError($ERRNO);
 	if ($metae !== DB_ERROR_NOSUCHTABLE) print "<p><b>MetaError=".$metae." wrong</b>, should be ".DB_ERROR_NOSUCHTABLE."</p>";
 	else print "<p>MetaError ok (".DB_ERROR_NOSUCHTABLE."): ".$db->MetaErrorMsg($metae)."</p>";
-	if ($TESTERRS != 1) print "<b>raiseErrorFn select nowhere failed</b><br>";
+	if ($TESTERRS != 1) print "<b>raiseErrorFn select nowhere failed</b><br />";
 	$rs = $db->Execute('select * from adoxyz');
 	if ($debugerr) print " Move";
 	$rs->Move(100);
@@ -1614,8 +1614,8 @@ END Adodb;
 		$conn = NewADOConnection($db->databaseType);
 		$conn->raiseErrorFn = 'adodb_test_err';
 		if (1) $conn->PConnect('abc','baduser','badpassword');
-		if ($TESTERRS == 2) print "raiseErrorFn tests passed<br>";
-		else print "<b>raiseErrorFn tests failed ($TESTERRS)</b><br>";
+		if ($TESTERRS == 2) print "raiseErrorFn tests passed<br />";
+		else print "<b>raiseErrorFn tests failed ($TESTERRS)</b><br />";
 		
 		flush();
 	}
@@ -1651,7 +1651,7 @@ global $TESTERRS,$ERRNO;
 
 	$ERRNO = $errno;
 	$TESTERRS += 1;
-	print "<i>** $dbms ($fn): errno=$errno &nbsp; errmsg=$errmsg ($p1,$p2)</i><br>";
+	print "<i>** $dbms ($fn): errno=$errno &nbsp; errmsg=$errmsg ($p1,$p2)</i><br />";
 }
 
 //--------------------------------------------------------------------------------------
@@ -1724,7 +1724,7 @@ Test <a href=test4.php>GetInsertSQL/GetUpdateSQL</a> &nbsp;
 <?php
 include('./testdatabases.inc.php');
 
-echo "<br>vers=",ADOConnection::Version();
+echo "<br />vers=",ADOConnection::Version();
 
 
 include_once('../adodb-time.inc.php');

@@ -12,32 +12,32 @@ V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reser
 
 <table><tr valign=top><td>
 <form method=get>
-<input type=checkbox name="testaccess" value=1 <?php echo !empty($testaccess) ? 'checked' : '' ?>> <b>Access</b><br>
-<input type=checkbox name="testibase" value=1 <?php echo !empty($testibase) ? 'checked' : '' ?>> <b>Interbase</b><br>
-<input type=checkbox name="testmssql" value=1 <?php echo !empty($testmssql) ? 'checked' : '' ?>> <b>MSSQL</b><br>
- <input type=checkbox name="testmysql" value=1 <?php echo !empty($testmysql) ? 'checked' : '' ?>> <b>MySQL</b><br>
-<input type=checkbox name="testmysqlodbc" value=1 <?php echo !empty($testmysqlodbc) ? 'checked' : '' ?>> <b>MySQL ODBC</b><br>
+<input type=checkbox name="testaccess" value=1 <?php echo !empty($testaccess) ? 'checked' : '' ?>> <b>Access</b><br />
+<input type=checkbox name="testibase" value=1 <?php echo !empty($testibase) ? 'checked' : '' ?>> <b>Interbase</b><br />
+<input type=checkbox name="testmssql" value=1 <?php echo !empty($testmssql) ? 'checked' : '' ?>> <b>MSSQL</b><br />
+ <input type=checkbox name="testmysql" value=1 <?php echo !empty($testmysql) ? 'checked' : '' ?>> <b>MySQL</b><br />
+<input type=checkbox name="testmysqlodbc" value=1 <?php echo !empty($testmysqlodbc) ? 'checked' : '' ?>> <b>MySQL ODBC</b><br />
 <input type=checkbox name="testmysqli" value=1 <?php echo !empty($testmysqli) ? 'checked' : '' ?>> <b>MySQLi</b>
-<br>
-<td><input type=checkbox name="testsqlite" value=1 <?php echo !empty($testsqlite) ? 'checked' : '' ?>> <b>SQLite</b><br>
-<input type=checkbox name="testproxy" value=1 <?php echo !empty($testproxy) ? 'checked' : '' ?>> <b>MySQL Proxy</b><br>
-<input type=checkbox name="testoracle" value=1 <?php echo !empty($testoracle) ? 'checked' : '' ?>> <b>Oracle (oci8)</b> <br>
-<input type=checkbox name="testpostgres" value=1 <?php echo !empty($testpostgres) ? 'checked' : '' ?>> <b>PostgreSQL</b><br>
-<input type=checkbox name="testpgodbc" value=1 <?php echo !empty($testpgodbc) ? 'checked' : '' ?>> <b>PostgreSQL ODBC</b><br>
+<br />
+<td><input type=checkbox name="testsqlite" value=1 <?php echo !empty($testsqlite) ? 'checked' : '' ?>> <b>SQLite</b><br />
+<input type=checkbox name="testproxy" value=1 <?php echo !empty($testproxy) ? 'checked' : '' ?>> <b>MySQL Proxy</b><br />
+<input type=checkbox name="testoracle" value=1 <?php echo !empty($testoracle) ? 'checked' : '' ?>> <b>Oracle (oci8)</b> <br />
+<input type=checkbox name="testpostgres" value=1 <?php echo !empty($testpostgres) ? 'checked' : '' ?>> <b>PostgreSQL</b><br />
+<input type=checkbox name="testpgodbc" value=1 <?php echo !empty($testpgodbc) ? 'checked' : '' ?>> <b>PostgreSQL ODBC</b><br />
 <td>
-<input type=checkbox name="testpdopgsql" value=1 <?php echo !empty($testpdopgsql) ? 'checked' : '' ?>> <b>PgSQL PDO</b><br>
-<input type=checkbox name="testpdomysql" value=1 <?php echo !empty($testpdomysql) ? 'checked' : '' ?>> <b>MySQL PDO</b><br>
-<input type=checkbox name="testpdosqlite" value=1 <?php echo !empty($testpdosqlite) ? 'checked' : '' ?>> <b>SQLite PDO</b><br>
-<input type=checkbox name="testpdoaccess" value=1 <?php echo !empty($testpdoaccess) ? 'checked' : '' ?>> <b>Access PDO</b><br>
-<input type=checkbox name="testpdomssql" value=1 <?php echo !empty($testpdomssql) ? 'checked' : '' ?>> <b>MSSQL PDO</b><br>
+<input type=checkbox name="testpdopgsql" value=1 <?php echo !empty($testpdopgsql) ? 'checked' : '' ?>> <b>PgSQL PDO</b><br />
+<input type=checkbox name="testpdomysql" value=1 <?php echo !empty($testpdomysql) ? 'checked' : '' ?>> <b>MySQL PDO</b><br />
+<input type=checkbox name="testpdosqlite" value=1 <?php echo !empty($testpdosqlite) ? 'checked' : '' ?>> <b>SQLite PDO</b><br />
+<input type=checkbox name="testpdoaccess" value=1 <?php echo !empty($testpdoaccess) ? 'checked' : '' ?>> <b>Access PDO</b><br />
+<input type=checkbox name="testpdomssql" value=1 <?php echo !empty($testpdomssql) ? 'checked' : '' ?>> <b>MSSQL PDO</b><br />
 
-<input type=checkbox name="testpdoora" value=1 <?php echo !empty($testpdoora) ? 'checked' : '' ?>> <b>OCI PDO</b><br>
+<input type=checkbox name="testpdoora" value=1 <?php echo !empty($testpdoora) ? 'checked' : '' ?>> <b>OCI PDO</b><br />
 
-<td><input type=checkbox name="testdb2" value=1 <?php echo !empty($testdb2) ? 'checked' : '' ?>> DB2<br>
-<input type=checkbox name="testvfp" value=1 <?php echo !empty($testvfp) ? 'checked' : '' ?>> VFP+ODBTP<br>
-<input type=checkbox name="testado" value=1 <?php echo !empty($testado) ? 'checked' : '' ?>> ADO (for mssql and access)<br>
-<input type=checkbox name="nocountrecs" value=1 <?php echo !empty($nocountrecs) ? 'checked' : '' ?>> $ADODB_COUNTRECS=false<br>
-<input type=checkbox name="nolog" value=1 <?php echo !empty($nolog) ? 'checked' : '' ?>> No SQL Logging<br>
+<td><input type=checkbox name="testdb2" value=1 <?php echo !empty($testdb2) ? 'checked' : '' ?>> DB2<br />
+<input type=checkbox name="testvfp" value=1 <?php echo !empty($testvfp) ? 'checked' : '' ?>> VFP+ODBTP<br />
+<input type=checkbox name="testado" value=1 <?php echo !empty($testado) ? 'checked' : '' ?>> ADO (for mssql and access)<br />
+<input type=checkbox name="nocountrecs" value=1 <?php echo !empty($nocountrecs) ? 'checked' : '' ?>> $ADODB_COUNTRECS=false<br />
+<input type=checkbox name="nolog" value=1 <?php echo !empty($nolog) ? 'checked' : '' ?>> No SQL Logging<br />
 <input type=checkbox name="time" value=1 <?php echo !empty($_GET['time']) ? 'checked' : '' ?>> ADOdb time test
 </table>
 <input type=submit>
@@ -73,7 +73,7 @@ if (!empty($testpostgres)) {
 	if ($db->Connect("localhost","tester","test","test")) {
 		testdb($db,"create table ADOXYZ (id integer, firstname char(24), lastname varchar,created date)");
 	}else
-		print "ERROR: PostgreSQL requires a database called test on server, user tester, password test.<BR>".$db->ErrorMsg();
+		print "ERROR: PostgreSQL requires a database called test on server, user tester, password test.<br />".$db->ErrorMsg();
 }
 
 if (!empty($testpgodbc)) { 
@@ -86,7 +86,7 @@ if (!empty($testpgodbc)) {
 		$db->hasTransactions = true;
 		testdb($db,
 		"create table ADOXYZ (id int, firstname char(24), lastname char(24), created date) type=innodb");
-	} else print "ERROR: PostgreSQL requires a database called test on server, user tester, password test.<BR>".$db->ErrorMsg();
+	} else print "ERROR: PostgreSQL requires a database called test on server, user tester, password test.<br />".$db->ErrorMsg();
 }
 
 if (!empty($testibase)) {
@@ -95,7 +95,7 @@ if (!empty($testibase)) {
 	print "<h1>Connecting $db->databaseType...</h1>";
 	if ($db->PConnect("localhost:d:\\firebird\\151\\examples\\EMPLOYEE.fdb", "sysdba", "masterkey", ""))
 		testdb($db,"create table ADOXYZ (id integer, firstname char(24), lastname char(24),price numeric(12,2),created date)");
-	 else print "ERROR: Interbase test requires a database called employee.gdb".'<BR>'.$db->ErrorMsg();
+	 else print "ERROR: Interbase test requires a database called employee.gdb".'<br />'.$db->ErrorMsg();
 	
 }
 
@@ -208,9 +208,9 @@ if (!empty($testaccess) && !empty($testado)) { // ADO ACCESS
 		//. 'USER ID=;PASSWORD=;';
 	$_GET['nolog'] = 1;
 	if ($db->PConnect($myDSN, "", "", "")) {
-		print "ADO version=".$db->_connectionID->version."<br>";
+		print "ADO version=".$db->_connectionID->version."<br />";
 		testdb($db,"create table ADOXYZ (id int, firstname char(24), lastname char(24),created datetime)");
-	} else print "ERROR: Access test requires a Access database $access".'<BR>'.$db->ErrorMsg();
+	} else print "ERROR: Access test requires a Access database $access".'<br />'.$db->ErrorMsg();
 	
 }
 
@@ -248,7 +248,7 @@ if (!empty($testmysql)) { // MYSQL
 		//$db->debug=1;$db->Execute('drop table ADOXYZ');
 		testdb($db,
 		"create table ADOXYZ (id int, firstname char(24), lastname char(24), created date) Type=InnoDB");
-	} else print "ERROR: MySQL test requires a MySQL server on localhost, userid='admin', password='', database='test'".'<BR>'.$db->ErrorMsg();
+	} else print "ERROR: MySQL test requires a MySQL server on localhost, userid='admin', password='', database='test'".'<br />'.$db->ErrorMsg();
 }
 
 // REQUIRES MySQL server at localhost with database 'test'
@@ -262,7 +262,7 @@ if (!empty($testmysqli)) { // MYSQL
 		//$db->debug=1;$db->Execute('drop table ADOXYZ');
 		testdb($db,
 		"create table ADOXYZ (id int, firstname char(24), lastname char(24), created date)");
-	} else print "ERROR: MySQL test requires a MySQL server on localhost, userid='admin', password='', database='test'".'<BR>'.$db->ErrorMsg();
+	} else print "ERROR: MySQL test requires a MySQL server on localhost, userid='admin', password='', database='test'".'<br />'.$db->ErrorMsg();
 }
 
 
@@ -277,7 +277,7 @@ if (!empty($testmysqlodbc)) { // MYSQL
 	if ($db->PConnect('mysql', "root", ""))
 		testdb($db,
 		"create table ADOXYZ (id int, firstname char(24), lastname char(24), created date) type=innodb");
-	else print "ERROR: MySQL test requires a MySQL server on localhost, userid='admin', password='', database='test'".'<BR>'.$db->ErrorMsg();
+	else print "ERROR: MySQL test requires a MySQL server on localhost, userid='admin', password='', database='test'".'<br />'.$db->ErrorMsg();
 }
 
 if (!empty($testproxy)){
@@ -288,7 +288,7 @@ if (!empty($testproxy)){
 	if ($db->PConnect('http://localhost/php/phplens/adodb/server.php'))
 		testdb($db,
 		"create table ADOXYZ (id int, firstname char(24), lastname char(24), created date) type=innodb");
-	else print "ERROR: MySQL test requires a MySQL server on localhost, userid='admin', password='', database='test'".'<BR>'.$db->ErrorMsg();
+	else print "ERROR: MySQL test requires a MySQL server on localhost, userid='admin', password='', database='test'".'<br />'.$db->ErrorMsg();
 
 }
 
@@ -300,7 +300,7 @@ if (!empty($testoracle)) {
 	print "<h1>Connecting $db->databaseType...</h1>";
 	if (true || $db->Connect('', "scott", "natsoft",''))
 		testdb($db,"create table ADOXYZ (id int, firstname varchar(24), lastname varchar(24),created date)");
-	else print "ERROR: Oracle test requires an Oracle server setup with scott/natsoft".'<BR>'.$db->ErrorMsg();
+	else print "ERROR: Oracle test requires an Oracle server setup with scott/natsoft".'<br />'.$db->ErrorMsg();
 
 }
 ADOLoadCode("oracle"); // no longer supported
@@ -310,7 +310,7 @@ if (false && !empty($testoracle)) {
 	print "<h1>Connecting $db->databaseType...</h1>";
 	if ($db->PConnect("", "scott", "tiger", "natsoft.domain"))
 		testdb($db,"create table ADOXYZ (id int, firstname varchar(24), lastname varchar(24),created date)");
-	else print "ERROR: Oracle test requires an Oracle server setup with scott/tiger".'<BR>'.$db->ErrorMsg();
+	else print "ERROR: Oracle test requires an Oracle server setup with scott/tiger".'<br />'.$db->ErrorMsg();
 
 }
 
@@ -324,7 +324,7 @@ if (!empty($testdb2)) {
 		#$dsn = "driver={IBM db2 odbc DRIVER};Database=test;hostname=localhost;port=50000;protocol=TCPIP; uid=natsoft; pwd=guest";
 		if ($db->Connect('localhost','natsoft','guest','test')) {
 			testdb($db,"create table ADOXYZ (id int, firstname varchar(24), lastname varchar(24),created date)");
-		} else print "ERROR: DB2 test requires an server setup with odbc data source db2_sample".'<BR>'.$db->ErrorMsg();
+		} else print "ERROR: DB2 test requires an server setup with odbc data source db2_sample".'<br />'.$db->ErrorMsg();
 	} else { 
 		$db = ADONewConnection("odbc_db2");
 		print "<h1>Connecting $db->databaseType...</h1>";
@@ -334,7 +334,7 @@ if (!empty($testdb2)) {
 		#$dsn = "driver={IBM db2 odbc DRIVER};Database=test;hostname=localhost;port=50000;protocol=TCPIP; uid=natsoft; pwd=guest";
 		if ($db->Connect($dsn)) {
 			testdb($db,"create table ADOXYZ (id int, firstname varchar(24), lastname varchar(24),created date)");
-		} else print "ERROR: DB2 test requires an server setup with odbc data source db2_sample".'<BR>'.$db->ErrorMsg();
+		} else print "ERROR: DB2 test requires an server setup with odbc data source db2_sample".'<br />'.$db->ErrorMsg();
 	}
 echo "<hr />";
 flush();
@@ -369,7 +369,7 @@ if (!empty($testmssql)) { // MS SQL Server -- the extension is buggy -- probably
 		AutoDetect_MSSQL_Date_Order($db);
 	//	$db->Execute('drop table adoxyz');
 		testdb($db,"create table ADOXYZ (id int, firstname char(24) null, lastname char(24) null,created datetime null)");
-	} else print "ERROR: MSSQL test 2 requires a MS SQL 7 on a server='192.168.0.1', userid='adodb', password='natsoft', database='ai'".'<BR>'.$db->ErrorMsg();
+	} else print "ERROR: MSSQL test 2 requires a MS SQL 7 on a server='192.168.0.1', userid='adodb', password='natsoft', database='ai'".'<br />'.$db->ErrorMsg();
 	
 }
 

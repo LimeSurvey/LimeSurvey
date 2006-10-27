@@ -57,13 +57,13 @@ foreach($rs as $v) {
 	$i += 1;
 	echo "rec $i: "; $s1 = adodb_pr($v,true); $s2 = adodb_pr($rs->fields,true);
 	if ($s1 != $s2 && !empty($v)) {adodb_pr($s1); adodb_pr($s2);}
-	else echo "passed<br>";
+	else echo "passed<br />";
 	flush();
 }
 
 
 if ($i != $cnt) die("actual cnt is $i, cnt should be $cnt\n");
-else echo "Count $i is correct<br>";
+else echo "Count $i is correct<br />";
 
 $rs = $db->Execute("select bad from badder");
 
@@ -91,7 +91,7 @@ try {
 	ADOdb_Active_Record::SetDatabaseAdapter($db);
 	$a = new City();
 	
-	echo "<p>Successfully created City()<br>";
+	echo "<p>Successfully created City()<br />";
 	var_dump($a->GetPrimaryKeys());
 	$a->city = 'Kuala Lumpur';
 	$a->Save();

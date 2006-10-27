@@ -512,7 +512,7 @@ function getMaxquestionorder($gid)
 	global $surveyid ;
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 	$max_sql = "SELECT max( question_order ) AS max FROM ".db_table_name('questions')." WHERE gid='$gid' AND language='$s_lang'";
-	//		echo "debug: ".$max_sql."<br>" and die;
+	//		echo "debug: ".$max_sql."<br />" and die;
 
 	$max_result =db_execute_assoc($max_sql) ;
 	$maxrow = $max_result->FetchRow() ;
@@ -1737,7 +1737,7 @@ function templatereplace($line)
 	else {$linkreplace="";}
 	$line=str_replace("{URL}", $linkreplace, $line);
 	$line=str_replace("{PRIVACY}", $privacy, $line);
-	$line=str_replace("{PRIVACYMESSAGE}", "<strong><i>"._("A Note On Privacy")."</i></strong><br />"._("This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
+	$line=str_replace("{PRIVACYMESSAGE}", "<strong><i>"._("A Note On Privacy")."</i></strong><br />"._("This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
 	$line=str_replace("{CLEARALL}", $clearall, $line);
 
 	// --> START NEW FEATURE - SAVE
@@ -1937,7 +1937,7 @@ function SetInterfaceLanguage($languagetoset)
 //NEW for multilanguage surveys 
 function SetSurveyLanguage($surveyid)
 {
-	//echo "Native language: ".GetBaseLanguageFromSurveyID($surveyid)."<br>";
+	//echo "Native language: ".GetBaseLanguageFromSurveyID($surveyid)."<br />";
 	$defaultlanguage = getLanguageCodefromLanguage(GetBaseLanguageFromSurveyID($surveyid));
 	
 	if (returnglobal('s_lang')) {
@@ -1947,14 +1947,14 @@ function SetSurveyLanguage($surveyid)
 				$result = db_execute_assoc($query);
 				while ($result && ($row=$result->FetchRow())) {$additional_languages = $row['additional_languages'];}
 
-		//		echo "Available languages: ".$additional_languages."<br>";
+		//		echo "Available languages: ".$additional_languages."<br />";
 				if (strpos($additional_languages, $new_lang) === false) {
 				//Language not supported, fall back to default language
-			//	echo "Language not supported, resorting to ".$defaultlanguage."<br>";
+			//	echo "Language not supported, resorting to ".$defaultlanguage."<br />";
 				$_SESSION['s_lang'] = $defaultlanguage;
 				} else {
 					$_SESSION['s_lang'] = $new_lang;
-				//	echo "Language will be set to ".$_SESSION['s_lang']."<br>";
+				//	echo "Language will be set to ".$_SESSION['s_lang']."<br />";
 				}
 	}
 			else {
@@ -1962,7 +1962,7 @@ function SetSurveyLanguage($surveyid)
 						$_SESSION['s_lang'] = $defaultlanguage;
 					}
 			}
-		//	echo "taal:  ".getLanguageNameFromCode($_SESSION['s_lang'])."<br>";
+		//	echo "taal:  ".getLanguageNameFromCode($_SESSION['s_lang'])."<br />";
 			SetInterfaceLanguage($_SESSION['s_lang']);
 //
 //			if (!function_exists('bind_textdomain_codeset')) echo "You need at least PHP 4.2.x to run PHPSurveyor." and die;
@@ -2598,7 +2598,7 @@ function addUserGroupInDB($group_name, $group_description) {
 function killSession()	//added by Dennis
 	{
 		foreach ($_SESSION as $key =>$value) {
-		//echo $key." = ".$value."<br>";
+		//echo $key." = ".$value."<br />";
 		unset($_SESSION[$key]);	
 		}
 	}

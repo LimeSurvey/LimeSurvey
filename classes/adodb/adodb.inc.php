@@ -371,7 +371,7 @@
 			return;
 		}
 		
-		if ($newline) $msg .= "<br>\n";
+		if ($newline) $msg .= "<br />\n";
 		
 		if (isset($_SERVER['HTTP_USER_AGENT']) || !$newline) echo $msg;
 		else echo strip_tags($msg);
@@ -704,8 +704,8 @@
 		Advantages include:
 		
 		a. StartTrans/CompleteTrans is nestable, unlike BeginTrans/CommitTrans/RollbackTrans.
-		   Only the outermost block is treated as a transaction.<br>
-		b. CompleteTrans auto-detects SQL errors, and will rollback on errors, commit otherwise.<br>
+		   Only the outermost block is treated as a transaction.<br />
+		b. CompleteTrans auto-detects SQL errors, and will rollback on errors, commit otherwise.<br />
 		c. All BeginTrans/CommitTrans/RollbackTrans inside a StartTrans/CompleteTrans block
 		   are disabled, making it backward compatible.
 	*/
@@ -1525,7 +1525,7 @@
             $dir = $ADODB_CACHE_DIR;
             
          if ($this->debug) {
-            ADOConnection::outp( "CacheFlush: $dir<br><pre>\n", $this->_dirFlush($dir),"</pre>");
+            ADOConnection::outp( "CacheFlush: $dir<br /><pre>\n", $this->_dirFlush($dir),"</pre>");
          } else {
             $this->_dirFlush($dir);
          }
@@ -1577,7 +1577,7 @@
 				// old version 'rm -f `find '.$ADODB_CACHE_DIR.' -name adodb_*.cache`';
 			}
 			if ($this->debug) {
-				ADOConnection::outp( "CacheFlush: $cmd<br><pre>\n", system($cmd),"</pre>");
+				ADOConnection::outp( "CacheFlush: $cmd<br /><pre>\n", system($cmd),"</pre>");
 			} else {
 				exec($cmd);
 			}

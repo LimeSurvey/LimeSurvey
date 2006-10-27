@@ -12,7 +12,7 @@
  
  // documentation on usage is at http://php.weblogs.com/adodb_csv
  
- echo PHP_VERSION,'<br>';
+ echo PHP_VERSION,'<br />';
  var_dump(parse_url('odbc_mssql://userserver/'));
  die();
  

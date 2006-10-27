@@ -78,7 +78,7 @@ class Assert {
   function failNotEquals($expected, $actual, $expected_label, $message=0) {
     // Private function for reporting failure to match.
     $str = $message ? ($message . ' ') : '';
-    $str .= "($expected_label/actual)<br>";
+    $str .= "($expected_label/actual)<br />";
     $htmlExpected = htmlspecialchars($expected);
     $htmlActual = htmlspecialchars($actual);
     $str .= sprintf("<pre>%s\n--------\n%s</pre>",
@@ -128,11 +128,11 @@ class TestCase extends Assert /* implements Test */ {
   }
 
   function setUp() /* expect override */ {
-    //print("TestCase::setUp()<br>\n");
+    //print("TestCase::setUp()<br />\n");
   }
 
   function tearDown() /* possible override */ {
-    //print("TestCase::tearDown()<br>\n");
+    //print("TestCase::tearDown()<br />\n");
   }
 
   ////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ class TestCase extends Assert /* implements Test */ {
   }
 
   function fail($message=0) {
-    //printf("TestCase::fail(%s)<br>\n", ($message) ? $message : '');
+    //printf("TestCase::fail(%s)<br />\n", ($message) ? $message : '');
     /* JUnit throws AssertionFailedError here.  We just record the
        failure and carry on */
     $this->fExceptions[] = new Exception(&$message);
@@ -153,7 +153,7 @@ class TestCase extends Assert /* implements Test */ {
   function error($message) {
     /* report error that requires correction in the test script
        itself, or (heaven forbid) in this testing infrastructure */
-    printf('<b>ERROR: ' . $message . '</b><br>');
+    printf('<b>ERROR: ' . $message . '</b><br />');
     $this->fResult->stop();
   }
 
@@ -329,8 +329,8 @@ class TextTestResult extends TestResult {
     /* report result of test run */
     $nRun = $this->countTests();
     $nFailures = $this->countFailures();
-    printf("<p>%s test%s run<br>", $nRun, ($nRun == 1) ? '' : 's');
-    printf("%s failure%s.<br>\n", $nFailures, ($nFailures == 1) ? '' : 's');
+    printf("<p>%s test%s run<br />", $nRun, ($nRun == 1) ? '' : 's');
+    printf("%s failure%s.<br />\n", $nFailures, ($nFailures == 1) ? '' : 's');
     if ($nFailures == 0)
       return;
 
@@ -358,7 +358,7 @@ class TextTestResult extends TestResult {
     $outcome = $test->failed()
        ? "<font color=\"red\">FAIL</font>"
        : "<font color=\"green\">ok</font>";
-    printf("$outcome<br>\n");
+    printf("$outcome<br />\n");
     flush();
   }
 }

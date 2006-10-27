@@ -100,10 +100,10 @@ function& adodb_log_sql(&$conn,$sql,$inputarr)
 			$conn->debug = $dbg;
 		}
 		if (isset($_SERVER['HTTP_HOST'])) {
-			$tracer .= '<br>'.$_SERVER['HTTP_HOST'];
+			$tracer .= '<br />'.$_SERVER['HTTP_HOST'];
 			if (isset($_SERVER['PHP_SELF'])) $tracer .= $_SERVER['PHP_SELF'];
 		} else 
-			if (isset($_SERVER['PHP_SELF'])) $tracer .= '<br>'.$_SERVER['PHP_SELF'];
+			if (isset($_SERVER['PHP_SELF'])) $tracer .= '<br />'.$_SERVER['PHP_SELF'];
 		//$tracer .= (string) adodb_backtrace(false);
 		
 		$tracer = (string) substr($tracer,0,500);
@@ -173,7 +173,7 @@ function& adodb_log_sql(&$conn,$sql,$inputarr)
 				timer decimal(16,6))");
 			}
 			if (!$ok) {
-				ADOConnection::outp( "<p><b>LOGSQL Insert Failed</b>: $isql<br>$err2</p>");
+				ADOConnection::outp( "<p><b>LOGSQL Insert Failed</b>: $isql<br />$err2</p>");
 				$conn->_logsql = false;
 			}
 		}
@@ -334,7 +334,7 @@ Committed_AS:   348732 kB
 		$d_system = $info[2] - $last[2];
 		$d_idle = $info[3] - $last[3];
 		
-		//printf("Delta - User: %f  Nice: %f  System: %f  Idle: %f<br>",$d_user,$d_nice,$d_system,$d_idle);
+		//printf("Delta - User: %f  Nice: %f  System: %f  Idle: %f<br />",$d_user,$d_nice,$d_system,$d_idle);
 
 		if (strncmp(PHP_OS,'WIN',3)==0) {
 			if ($d_idle < 1) $d_idle = 1;
@@ -367,7 +367,7 @@ Committed_AS:   348732 kB
 		if ($arr) {
 			$s .= '<h3>Scripts Affected</h3>';
 			foreach($arr as $k) {
-				$s .= sprintf("%4d",$k[0]).' &nbsp; '.strip_tags($k[1]).'<br>';
+				$s .= sprintf("%4d",$k[0]).' &nbsp; '.strip_tags($k[1]).'<br />';
 			}
 		}
 		
@@ -442,7 +442,7 @@ Committed_AS:   348732 kB
 			
 			if (!$rs) return "<p>$this->helpurl. ".$this->conn->ErrorMsg()."</p>";
 			$s = "<h3>Suspicious SQL</h3>
-<font size=1>The following SQL have high average execution times</font><br>
+<font size=1>The following SQL have high average execution times</font><br />
 <table border=1 bgcolor=white><tr><td><b>Avg Time</b><td><b>Count</b><td><b>SQL</b><td><b>Max</b><td><b>Min</b></tr>\n";
 			$max = $this->maxLength;
 			while (!$rs->EOF) {
@@ -521,7 +521,7 @@ Committed_AS:   348732 kB
 			$ADODB_FETCH_MODE = $save;
 			if (!$rs) return "<p>$this->helpurl. ".$this->conn->ErrorMsg()."</p>";
 			$s = "<h3>Expensive SQL</h3>
-<font size=1>Tuning the following SQL could reduce the server load substantially</font><br>
+<font size=1>Tuning the following SQL could reduce the server load substantially</font><br />
 <table border=1 bgcolor=white><tr><td><b>Load</b><td><b>Count</b><td><b>SQL</b><td><b>Max</b><td><b>Min</b></tr>\n";
 			$max = $this->maxLength;
 			while (!$rs->EOF) {
@@ -709,7 +709,7 @@ Committed_AS:   348732 kB
 			break;
 		case 'viewsql':
 			if (empty($_GET['hidem']))
-				echo "&nbsp; <a href=\"?do=viewsql&clearsql=1\">Clear SQL Log</a><br>";
+				echo "&nbsp; <a href=\"?do=viewsql&clearsql=1\">Clear SQL Log</a><br />";
 			echo($this->SuspiciousSQL($nsql));
 			echo($this->ExpensiveSQL($nsql));
 			echo($this->InvalidSQL($nsql));
@@ -940,7 +940,7 @@ Committed_AS:   348732 kB
 					if (empty($e1)) $e1 = '-1'; // postgresql fix
 					print ' &nbsp; '.$e1.': '.$e2;
 				} else {
-					print "<p>No Recordset returned<br></p>";
+					print "<p>No Recordset returned<br /></p>";
 				}
 			}
 		} // foreach

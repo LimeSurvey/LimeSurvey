@@ -108,7 +108,7 @@ class ADODB_ado extends ADOConnection {
 		if ($argUsername) $argHostname .= ";$u=$argUsername";
 		if ($argPassword)$argHostname .= ";$p=$argPassword";
 		
-		if ($this->debug) ADOConnection::outp( "Host=".$argHostname."<BR>\n version=$dbc->version");
+		if ($this->debug) ADOConnection::outp( "Host=".$argHostname."<br />\n version=$dbc->version");
 		// @ added below for php 4.0.1 and earlier
 		@$dbc->Open((string) $argHostname);
 		
@@ -183,7 +183,7 @@ class ADODB_ado extends ADOConnection {
 				$tt=substr($t->value,0,6);
 				if ($tt!='SYSTEM' && $tt !='ACCESS')
 					$arr[]=$f->value;
-				//print $f->value . ' ' . $t->value.'<br>';
+				//print $f->value . ' ' . $t->value.'<br />';
 				$adors->MoveNext();
 			}
 			$adors->Close();
@@ -383,7 +383,7 @@ class ADORecordSet_ado extends ADORecordSet {
 		$o->ado_type = $t;
 		
 
-		//print "off=$off name=$o->name type=$o->type len=$o->max_length<br>";
+		//print "off=$off name=$o->name type=$o->type len=$o->max_length<br />";
 		return $o;
 	}
 	

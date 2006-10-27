@@ -173,7 +173,7 @@ elseif (isset($surveyid) && $surveyid)
 
 		//Rename survey responses table
 		$deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
-		$deactivateresult = $connect->Execute($deactivatequery) or die ("\n\n"._("Error")."Couldn't deactivate because:<BR>".$connect->ErrorMsg()."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+		$deactivateresult = $connect->Execute($deactivatequery) or die ("\n\n"._("Error")."Couldn't deactivate because:<br />".$connect->ErrorMsg()."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 		break;
 		case "delete": //Delete the rows
 		break;

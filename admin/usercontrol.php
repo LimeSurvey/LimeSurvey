@@ -60,9 +60,9 @@ if (!isset($_SESSION['loginID']))
 				 
 				// send Mail
 			
-				$body = _("Your data:") . "<br>\n";;
-				$body .= _("Username") . ": " . $fields['user'] . "<br>\n";
-				$body .= _("Password") . ": " . $fields['password'] . "<br>\n";
+				$body = _("Your data:") . "<br />\n";;
+				$body .= _("Username") . ": " . $fields['user'] . "<br />\n";
+				$body .= _("Password") . ": " . $fields['password'] . "<br />\n";
 				
 				$subject = 'User Data';
 				$to = $_POST['email'];
@@ -102,8 +102,8 @@ if (!isset($_SESSION['loginID']))
 			else 
 				{
 				$fields = $result->FetchRow();
-				//echo("Passwort aus der DB: " . $fields[2] . "<br>");
-				//echo("eingegebenes Passwort " . $_POST['password'] . "<br>");
+				//echo("Passwort aus der DB: " . $fields[2] . "<br />");
+				//echo("eingegebenes Passwort " . $_POST['password'] . "<br />");
 				if ($_POST['password'] == $fields['password']) 
 					{
 					// Anmeldung ERFOLGREICH
@@ -180,9 +180,9 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				"manage_label"=>$srow['manage_label']));
 			
 			// send Mail			
-			$body = _("You were signed in. Your data:") . "<br>\n";;
-			$body .= _("Username") . ": " . $new_user . "<br>\n";
-			$body .= _("Password") . ": " . $new_pass . "<br>\n";
+			$body = _("You were signed in. Your data:") . "<br />\n";;
+			$body .= _("Username") . ": " . $new_user . "<br />\n";
+			$body .= _("Password") . ": " . $new_pass . "<br />\n";
 			
 			$subject = 'Registration';
 			$to = $new_email;

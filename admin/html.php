@@ -43,7 +43,7 @@ if ($action == "listsurveys" && isset($_SESSION['loginID']))
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
 	if($result->RecordCount() > 0) {
-		$listsurveys= "<br><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
+		$listsurveys= "<br /><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='600'>
 				  <tr bgcolor='#BBBBBB'>
 				    <td height=\"22\"><strong>"._("Survey")."</strong></td>
@@ -1107,20 +1107,20 @@ if (returnglobal('viewanswer'))
 		{
 			$vasummary .="<input name='code' type='text' value=\"{$cdrow['code']}\" maxlength='5' size='5' "
 			."onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\""
-			.">";
+			." />";
 		}
 		else
 		{
 			$vasummary .= "<font size='1'>{$cdrow['code']}"
-			. "<input type='hidden' name='code' value=\"{$cdrow['code']}\">";
+			. "<input type='hidden' name='code' value=\"{$cdrow['code']}\" />";
 		}
 		$vasummary .="</td>\n";
 		$cdrow['answer']=htmlspecialchars($cdrow['answer']);  // So HTML-Code can be used in answers
 		$cdrow['default_value'] = htmlspecialchars($cdrow['default_value']);
 		$vasummary .= "\t\t<td align='center' width='50%'><input name='answer' "
-		. "type='text' value=\"{$cdrow['answer']}\" size='50'>\n"
+		. "type='text' value=\"{$cdrow['answer']}\" size='50' />\n"
 		. "\t\t<input name='sortorder' type='hidden' value=\"$position\"></td>"
-		. "\t\t<td align='center' width='10%'>";
+		. "\t\t<td align='center' width='10%' />";
 		if (($activated == "Y" && ($qtype == "L" || $qtype =="!")) || ($activated == "N"))
 		{
 			$vasummary .= "\t\t\t<select name='default' >\n"
@@ -1135,34 +1135,34 @@ if (returnglobal('viewanswer'))
 		else
 		{
 			$vasummary .= "<font size='1'>{$cdrow['default_value']}"
-			. "<input type='hidden' name='default' value=\"{$cdrow['default_value']}\">";
+			. "<input type='hidden' name='default' value=\"{$cdrow['default_value']}\" />";
 		}
 		if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
 		{
 			$vasummary .= "\t\t<td align='center' width='15%'>\n"
-			. "\t\t\t<input name='ansaction' type='submit' value='"._("Save")."'>"
-			. "<input name='ansaction' type='submit' value='"._("Del")."'>\n"
+			. "\t\t\t<input name='ansaction' type='submit' value='"._("Save")."' />"
+			. "<input name='ansaction' type='submit' value='"._("Del")."' />\n"
 			. "\t\t</td>\n";
 		}
 		else
 		{
 			$vasummary .= "\t\t<td align='center' width='15%'><input name='ansaction' "
-			. "type='submit' value='"._("Save")."'></td>\n";
+			. "type='submit' value='"._("Save")."' /></td>\n";
 		}
 		$vasummary .= "\t\t<td align='center'>";
-		if ($position > 0) {$vasummary .= "<input name='ansaction' type='submit' value='"._("Up")."'>";}
+		if ($position > 0) {$vasummary .= "<input name='ansaction' type='submit' value='"._("Up")."' />";}
 		else {$vasummary .= "&nbsp;&nbsp;&nbsp;&nbsp;";}
-		if ($position < $cdcount-1) {$vasummary .= "<input name='ansaction' type='submit' value='"._("Dn")."'>";}
+		if ($position < $cdcount-1) {$vasummary .= "<input name='ansaction' type='submit' value='"._("Dn")."' />";}
 		else {$vasummary .= "&nbsp;&nbsp;&nbsp;&nbsp;";}
 		$vasummary .= "\t\t\n";
-		$vasummary .= "\t<input type='hidden' name='oldcode' value=\"{$cdrow['code']}\">\n"
-		. "\t<input type='hidden' name='oldanswer' value=\"{$cdrow['answer']}\">\n"
-		. "\t<input type='hidden' name='olddefault' value=\"{$cdrow['default_value']}\">\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		. "\t<input type='hidden' name='gid' value='$gid'>\n"
-		. "\t<input type='hidden' name='qid' value='$qid'>\n"
-		. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
-		. "\t<input type='hidden' name='action' value='modanswer'>\n"
+		$vasummary .= "\t<input type='hidden' name='oldcode' value=\"{$cdrow['code']}\" />\n"
+		. "\t<input type='hidden' name='oldanswer' value=\"{$cdrow['answer']}\" />\n"
+		. "\t<input type='hidden' name='olddefault' value=\"{$cdrow['default_value']}\" />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		. "\t<input type='hidden' name='gid' value='$gid' />\n"
+		. "\t<input type='hidden' name='qid' value='$qid' />\n"
+		. "\t<input type='hidden' name='viewanswer' value='Y' />\n"
+		. "\t<input type='hidden' name='action' value='modanswer' />\n"
 		. "\t</td></table></form></tr>\n";
 		$position++;
 	}
@@ -1172,22 +1172,22 @@ if (returnglobal('viewanswer'))
 		$vasummary .= "\t<tr><td colspan='5'><form style='margin-bottom:0;' action='".$scriptname."' method='post'>\n"
 		. "\t<table width='100%'><tr><td align='center' width='10%'><input name='code' type='text' size='5' maxlength='5' "
 		. "id='addanswercode' "
-		. "onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\">"
+		. "onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\" />"
 		. "</td>\n"
-		. "\t\t<td align='center' width='50%'><input name='answer' type='text' size='50'>\n"
-		. "\t\t<input name='sortorder' type='hidden' value='$position'></td>\n"
+		. "\t\t<td align='center' width='50%'><input name='answer' type='text' size='50' />\n"
+		. "\t\t<input name='sortorder' type='hidden' value='$position' /></td>\n"
 		. "\t\t<td align='center' width='10%'>"
 		. "\t\t\t<select name='default' >\n"
 		. "\t\t\t\t<option value='Y'>"._("Yes")."</option>\n"
 		. "\t\t\t\t<option value='N' selected>"._("No")."</option>\n"
 		. "\t\t\t</select></td>\n"
-		. "\t\t<td align='center' width='15%'><input name='ansaction' type='submit' value='"._("Add")."'></td>\n"
+		. "\t\t<td align='center' width='15%'><input name='ansaction' type='submit' value='"._("Add")."' /></td>\n"
 		. "\t\t<td>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		. "\t<input type='hidden' name='gid' value='$gid'>\n"
-		. "\t<input type='hidden' name='qid' value='$qid'>\n"
-		. "\t<input type='hidden' name='action' value='modanswer'>\n"
-		. "\t<input type='hidden' name='viewanswer' value='Y'>\n";
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		. "\t<input type='hidden' name='gid' value='$gid' />\n"
+		. "\t<input type='hidden' name='qid' value='$qid' />\n"
+		. "\t<input type='hidden' name='action' value='modanswer' />\n"
+		. "\t<input type='hidden' name='viewanswer' value='Y' />\n";
 		$vasummary .= "<script type='text/javascript' language='javascript'>\n"
 		. "<!--\n"
 		. "document.getElementById('addanswercode').focus();\n"
@@ -1199,20 +1199,20 @@ if (returnglobal('viewanswer'))
 	{
 		$vasummary .= "<tr><td colspan='3'></td><td align='center'>"
 		. "<form style='margin-bottom:0;' action='".$scriptname."' method='post'>"
-		. "<input type='submit' name='ansaction' value='"._("Sort Alpha")."'>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		. "\t<input type='hidden' name='gid' value='$gid'>\n"
-		. "\t<input type='hidden' name='qid' value='$qid'>\n"
-		. "\t<input type='hidden' name='action' value='modanswer'>\n"
-		. "\t<input type='hidden' name='viewanswer' value='Y'></form>\n</td>"
+		. "<input type='submit' name='ansaction' value='"._("Sort Alpha")."' />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		. "\t<input type='hidden' name='gid' value='$gid' />\n"
+		. "\t<input type='hidden' name='qid' value='$qid' />\n"
+		. "\t<input type='hidden' name='action' value='modanswer' />\n"
+		. "\t<input type='hidden' name='viewanswer' value='Y' /></form>\n</td>"
 		. "\t<td align='center'>\n"
 		. "\t<form style='margin-bottom:0;' action='".$scriptname."' method='post'>"
-		. "<input type='submit' name='ansaction' value='"._("Fix Sort")."'>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		. "\t<input type='hidden' name='gid' value='$gid'>\n"
-		. "\t<input type='hidden' name='qid' value='$qid'>\n"
-		. "\t<input type='hidden' name='action' value='modanswer'>\n"
-		. "\t<input type='hidden' name='viewanswer' value='Y'>\n"
+		. "<input type='submit' name='ansaction' value='"._("Fix Sort")."' />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		. "\t<input type='hidden' name='gid' value='$gid' />\n"
+		. "\t<input type='hidden' name='qid' value='$qid' />\n"
+		. "\t<input type='hidden' name='action' value='modanswer' />\n"
+		. "\t<input type='hidden' name='viewanswer' value='Y' />\n"
 		. "</form></td>\n";
 	}
 
@@ -1236,16 +1236,16 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "login"
 							<table>
 								<tr>
 									<td><p>"._("Username")."</p></td>
-									<td><input name='user' type='text' id='user' size='40' maxlength='40' value=''></td>
+									<td><input name='user' type='text' id='user' size='40' maxlength='40' value='' /></td>
 								</tr>
 								<tr>
 									<td><p>"._("Email")."</p></td>
-									<td><input name='email' id='email' type='text' size='40' maxlength='40' value=''></td>
+									<td><input name='email' id='email' type='text' size='40' maxlength='40' value='' /></td>
 								</tr>
 								<tr>
 									<td>&nbsp;</td>
-									<td><input type='hidden' name='action' value='forgotpass'>
-									<input class='action' type='submit' value='Check data'><br />&nbsp;\n</td>
+									<td><input type='hidden' name='action' value='forgotpass' />
+									<input class='action' type='submit' value='Check data' /><br />&nbsp;\n</td>
 								</tr>
 								<tr>
 									<td>&nbsp;</td>
@@ -1334,15 +1334,15 @@ if ($action == "modifyuser")
 			$mrw = array_map('htmlspecialchars', $mrw);
 			$decodeString = "DECODE(a.password, '{$codeString}')";	//	added by Dennis
 			$usersummary .= "\t<td align='center'><strong>{$mrw['user']}</strong></font>\n"
-			. "\t<td align='center'>\n\t\t<input type='text' name='email' value=\"{$mrw['email']}\"></td>\n"
-			. "\t<td align='center'>\n\t\t<input type='text' name='full_name' value=\"{$mrw['full_name']}\"></td>\n"
-			. "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\"></td>\n"
-			. "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\"></td>\n";	// added by Dennis
-			$usersummary .= "\t<td align='center'>\n\t\t<input type='text' name='pass' value=\"{$mrw['decpassword']}\"></td>\n";
+			. "\t<td align='center'>\n\t\t<input type='text' name='email' value=\"{$mrw['email']}\" /></td>\n"
+			. "\t<td align='center'>\n\t\t<input type='text' name='full_name' value=\"{$mrw['full_name']}\" /></td>\n"
+			. "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\" /></td>\n"
+			. "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\" /></td>\n";	// added by Dennis
+			$usersummary .= "\t<td align='center'>\n\t\t<input type='text' name='pass' value=\"{$mrw['decpassword']}\" /></td>\n";
 		}
 		$usersummary .= "\t</tr>\n\t<tr><td colspan='4' align='center'>\n"
-		. "\t\t<input type='submit' value='"._("Update")."'>\n"
-		. "<input type='hidden' name='action' value='moduser'></td></tr>\n"
+		. "\t\t<input type='submit' value='"._("Update")."' />\n"
+		. "<input type='hidden' name='action' value='moduser' /></td></tr>\n"
 		. "</form></table>\n";
 	}
 	else
@@ -1397,56 +1397,56 @@ if ($action == "setuserrights")
 					if($usr['create_survey']) {
 						$usersummary .= " checked ";
 					}
-					$usersummary .="></td>\n";
+					$usersummary .=" /></td>\n";
 				}
 				if($parent['configurator']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"configurator\" value=\"configurator\"";
 					if($usr['configurator']) {
 						$usersummary .= " checked ";
 					}
-					$usersummary .="></td>\n";
+					$usersummary .=" /></td>\n";
 				}
 				if($parent['create_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_user\" value=\"create_user\"";
 					if($usr['create_user']) {
 						$usersummary .= " checked ";
 					}
-					$usersummary .="></td>\n";
+					$usersummary .=" /></td>\n";
 				}
 				if($parent['delete_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_user\" value=\"delete_user\"";
 					if($usr['delete_user']) {
 						$usersummary .= " checked ";
 					}
-					$usersummary .="></td>\n";
+					$usersummary .=" /></td>\n";
 				}
 				if($parent['move_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"move_user\" value=\"move_user\"";
 					if($usr['move_user']) {
 						$usersummary .= " checked ";
 					}
-					$usersummary .="></td>\n";
+					$usersummary .=" /></td>\n";
 				}
 				if($parent['manage_template']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"manage_template\" value=\"manage_template\"";
 					if($usr['manage_template']) {
 						$usersummary .= " checked ";
 					}
-					$usersummary .="></td>\n";
+					$usersummary .=" /></td>\n";
 				}
 				if($parent['manage_label']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"manage_label\" value=\"manage_label\"";
 					if($usr['manage_label']) {
 						$usersummary .= " checked ";
 					}
-					$usersummary .="></td>\n";
+					$usersummary .=" /></td>\n";
 				}
 
 				$usersummary .= "\t\t\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
 				."\t\n\t<tr><td colspan='8' align='center'>"
-				."<input type='submit' value='"._("Save Now")."'>"
-				."<input type='hidden' name='action' value='userrights'>"
-				."<input type='hidden' name='uid' value='{$_POST['uid']}'></td></tr>"
+				."<input type='submit' value='"._("Save Now")."' />"
+				."<input type='hidden' name='action' value='userrights' />"
+				."<input type='hidden' name='uid' value='{$_POST['uid']}' /></td></tr>"
 				."</form>"
 				. "</table>\n";
 				continue;
@@ -1497,12 +1497,12 @@ if ($action == "editusers")
 		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
 		. "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></font></td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<th>"._("Username")."</font></th>\n"
-		. "\t\t<th>"._("Email")."</font></th>\n"
-		. "\t\t<th>"._("Full name")."</font></th>\n"
-		. "\t\t<th>"._("Password")."</font></th>\n"
-		. "\t\t<th>"._("Creator")."</font></th>\n"
-		. "\t\t<th>"._("Action")."</font></th>\n"
+		. "\t\t<th>"._("Username")."</th>\n"
+		. "\t\t<th>"._("Email")."</th>\n"
+		. "\t\t<th>"._("Full name")."</th>\n"
+		. "\t\t<th>"._("Password")."</th>\n"
+		. "\t\t<th>"._("Creator")."</th>\n"
+		. "\t\t<th>"._("Action")."</th>\n"
 		. "\t</tr>\n";
 
 		//$userlist = getuserlist();
@@ -1513,32 +1513,32 @@ if ($action == "editusers")
 
 		//	output users
 		$usersummary .= "\t<tr bgcolor='#999999'>\n"
-		. "\t<td align='center'><strong>{$usrhimself['user']}</font></strong></td>\n"
-		. "\t<td align='center'><strong>{$usrhimself['email']}</font></strong></td>\n"
-		. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</font></strong></td>\n"
-		. "\t\t<td align='center'><strong>{$usrhimself['password']}</font></strong></td>\n";
+		. "\t<td align='center'><strong>{$usrhimself['user']}</strong></td>\n"
+		. "\t<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
+		. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
+		. "\t\t<td align='center'><strong>{$usrhimself['password']}</strong></td>\n";
 		if($usrhimself['parent_id']!=0) {
-			$usersummary .= "\t\t<td align='center'>{$usrhimself['parent']}</font></td>\n";
+			$usersummary .= "\t\t<td align='center'>{$usrhimself['parent']}</td>\n";
 		}
 		else
 		{
-			$usersummary .= "\t\t<td align='center'><strong>---</font></strong></td>\n";
+			$usersummary .= "\t\t<td align='center'><strong>---</strong></td>\n";
 		}
 		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n"
 		."\t\t\t<form method='post' action='$scriptname'>"
-		."<input type='submit' value='"._("Edit")."'>"
-		."<input type='hidden' name='action' value='modifyuser'>"
-		."<input type='hidden' name='uid' value='{$usrhimself['uid']}'>"
+		."<input type='submit' value='"._("Edit")."' />"
+		."<input type='hidden' name='action' value='modifyuser' />"
+		."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
 		."</form>";
 
 		// users are allowed to delete all successor users (but the admin not himself)
 		if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
-			."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
-			."<input type='hidden' name='action' value='deluser'>"
-			."<input type='hidden' name='user' value='{$usrhimself['user']}'>"
-			."<input type='hidden' name='uid' value='{$usrhimself['uid']}'>"
+			."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />"
+			."<input type='hidden' name='action' value='deluser' />"
+			."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
+			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
 			."</form>";
 		}
 
@@ -1559,18 +1559,18 @@ if ($action == "editusers")
 			if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
 			else $usersummary .= "\t<tr>\n";
 
-			$usersummary .= "\t<td align='center'>{$usr['user']}</font></td>\n"
-			. "\t<td align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</font></a></td>\n"
+			$usersummary .= "\t<td align='center'>{$usr['user']}</td>\n"
+			. "\t<td align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
 			. "\t<td align='center'>{$usr['full_name']}</td>\n";
 
 			// passwords of other users will not be displayed
-			$usersummary .=  "\t\t<td align='center'>******</font></td>\n";
+			$usersummary .=  "\t\t<td align='center'>******</td>\n";
 
 			if($_SESSION['USER_RIGHT_MOVE_USER'])
 			{
 				$usersummary .= "\t\t<td align='center'>"
 				."<form name='parentsform{$usr['uid']}'action='$scriptname?action=setnewparents' method='post'>"
-				."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+				."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 				."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").innerHTML = \"<input type=\\\"submit\\\" value=\\\""._("Change")."\\\">\"'>";
 				//."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").createElement(\"input\")'>";
 				if($usr['uid'] != $usrhimself['uid'])
@@ -1597,7 +1597,7 @@ if ($action == "editusers")
 			}
 			else
 			{
-				$usersummary .= "\t\t<td align='center'>{$usr['parent']}</font></td>\n";
+				$usersummary .= "\t\t<td align='center'>{$usr['parent']}</td>\n";
 			}
 
 			$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
@@ -1605,18 +1605,18 @@ if ($action == "editusers")
 			if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usr['uid'] == $_SESSION['loginID'])))
 			{
 				$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
-				."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
-				."<input type='hidden' name='action' value='deluser'>"
-				."<input type='hidden' name='user' value='{$usr['user']}'>"
-				."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+				."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />"
+				."<input type='hidden' name='action' value='deluser' />"
+				."<input type='hidden' name='user' value='{$usr['user']}' />"
+				."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 				."</form>";
 			}
 
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
-			."<input type='submit' value='"._("Set User Rights")."'>"
-			."<input type='hidden' name='action' value='setuserrights'>"
-			."<input type='hidden' name='user' value='{$usr['user']}'>"
-			."<input type='hidden' name='uid' value='{$usr['uid']}'>"
+			."<input type='submit' value='"._("Set User Rights")."' />"
+			."<input type='hidden' name='action' value='setuserrights' />"
+			."<input type='hidden' name='user' value='{$usr['user']}' />"
+			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 
 			$usersummary .= "\t\t</td>\n"
@@ -1628,11 +1628,11 @@ if ($action == "editusers")
 		{
 			$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
 			. "\t\t<tr>\n"
-			. "\t\t<td align='center'><input type='text' name='new_user'></td>\n"
-			. "\t\t<td align='center'><input type='text' name='new_email'></td>\n"
-			. "\t\t<td align='center'><input type='text' name='new_full_name'></td>\n"
-			. "\t\t<td align='center'><input type='submit' value='"._("Add User")."'>"
-			. "<input type='hidden' name='action' value='adduser'></td>\n"
+			. "\t\t<td align='center'><input type='text' name='new_user' /></td>\n"
+			. "\t\t<td align='center'><input type='text' name='new_email' /></td>\n"
+			. "\t\t<td align='center'><input type='text' name='new_full_name' /></td>\n"
+			. "\t\t<td align='center'><input type='submit' value='"._("Add User")."' />"
+			. "<input type='hidden' name='action' value='adduser' /></td>\n"
 			. "\t</tr>\n";
 		}
 	}
@@ -1643,13 +1643,13 @@ if ($action == "addusergroup")
 	if(isset($_SESSION['loginID']))
 	{
 		$usersummary = "<form action='$scriptname' name='addnewusergroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>"._("Add User Group")."</font></font></strong></td></tr>\n"
+		. "\t\t<strong><font color='white'>"._("Add User Group")."</font></strong></td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>"._("Name:")."</strong></font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
-		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Name:")."</strong></td>\n"
+		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1' />"._("Required")."</td></tr>\n"
+		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='group_description'></textarea></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."'>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='usergroupindb' />\n"
 		. "\t</td></table>\n"
 		. "</form>\n";
@@ -1667,11 +1667,11 @@ if ($action == "editusergroup")
 	$esrow = $result->FetchRow();
 	$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
 	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong><font color='white'>"._("Edit Group for Creator")."(".$_SESSION['user'].")</font></font></strong></td></tr>\n"
+	. "\t\t<strong><font color='white'>"._("Edit Group for Creator")."(".$_SESSION['user'].")</font></strong></td></tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right' width='20%'><strong>"._("Name:")."</strong></font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\"></td></tr>\n"
-	. "\t<tr><td align='right'><strong>"._("Description:")."</strong>(optional)</font></td>\n"
+	. "\t\t<td align='right' width='20%'><strong>"._("Name:")."</strong></td>\n"
+	. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\" /></td></tr>\n"
+	. "\t<tr><td align='right'><strong>"._("Description:")."</strong>(optional)</td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
 	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update User Group")."' />\n"
 	. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
@@ -1700,21 +1700,21 @@ if ($action == "mailusergroup")
 
 	$usersummary = "<form action='$scriptname' name='mailusergroup' method='post'>"
 	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong><font color='white'>"._("Mail to all Members")."</font></font></strong></td></tr>\n"
+	. "\t\t<strong><font color='white'>"._("Mail to all Members")."</font></strong></td></tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right' width='20%'><strong>"._("To:")."</strong></font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='to' value=\"{$to}\"></td></tr>\n"
-	. "\t\t<td align='right' width='20%'><strong>"._("Send me a copy:")."</strong></font></td>\n"
-	. "\t\t<td><input name='copymail' type='checkbox' value='1'></td></tr>\n"
-	. "\t\t<td align='right' width='20%'><strong>"._("Subject:")."</strong></font></td>\n"
-	. "\t\t<td><input type='text' size='50' name='subject' value=''></td></tr>\n"
-	. "\t<tr><td align='right'><strong>"._("Message:")."</strong></font></td>\n"
+	. "\t\t<td align='right' width='20%'><strong>"._("To:")."</strong></td>\n"
+	. "\t\t<td><input type='text' size='50' name='to' value=\"{$to}\" /></td></tr>\n"
+	. "\t\t<td align='right' width='20%'><strong>"._("Send me a copy:")."</strong></td>\n"
+	. "\t\t<td><input name='copymail' type='checkbox' value='1' /></td></tr>\n"
+	. "\t\t<td align='right' width='20%'><strong>"._("Subject:")."</strong></td>\n"
+	. "\t\t<td><input type='text' size='50' name='subject' value='' /></td></tr>\n"
+	. "\t<tr><td align='right'><strong>"._("Message:")."</strong></td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='body'></textarea></td></tr>\n"
 	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Send")."'>\n"
-	. "<input type='reset' value='Reset'><br>"
-	. "\t<input type='hidden' name='action' value='mailsendusergroup'>\n"
-	. "\t<input type='hidden' name='addressee' value='$addressee'>\n"
-	. "\t<input type='hidden' name='ugid' value='$ugid'>\n"
+	. "<input type='reset' value='Reset'><br />"
+	. "\t<input type='hidden' name='action' value='mailsendusergroup' />\n"
+	. "\t<input type='hidden' name='addressee' value='$addressee' />\n"
+	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
 	. "\t</td></tr>\n"
 	. "</table>\n"
 	. "\t</form>\n";
@@ -1870,7 +1870,7 @@ if ($action == "editusergroups")
 				$usergroupsummary .= "<table rules='rows' width='100%' border='1' cellpadding='10'>\n"
 				. "\t\t\t\t<tr $gshowstyle id='surveydetails20'><td align='justify' colspan='2' height='4'>"
 				. "<font size='2' face='verdana' color='black'><strong>"._("Description: ")."</strong>"
-				. "<font color='black'>{$crow['description']}</font></font></td></tr>\n"
+				. "<font color='black'>{$crow['description']}</font></td></tr>\n"
 				. "</table>";
 			}
 
@@ -1879,9 +1879,9 @@ if ($action == "editusergroups")
 			$eguresult = db_execute_assoc($eguquery);
 			$usergroupsummary .= "<table rules='rows' width='100%' border='1'>\n"
 			. "\t<tr>\n"
-			. "\t\t<th>"._("Username")."</font></th>\n"
-			. "\t\t<th>"._("Email")."</font></th>\n"
-			. "\t\t<th>"._("Action")."</font></th>\n"
+			. "\t\t<th>"._("Username")."</th>\n"
+			. "\t\t<th>"._("Email")."</th>\n"
+			. "\t\t<th>"._("Action")."</th>\n"
 			. "\t</tr>\n";
 
 			$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
@@ -1894,8 +1894,8 @@ if ($action == "editusergroups")
 				if($egurow['uid'] == $crow['creator_id'])
 				{
 					$usergroupcreator = "\t<tr bgcolor='#999999'>\n"
-					. "\t<td align='center'><strong>{$egurow['user']}</font></strong></td>\n"
-					. "\t<td align='center'><strong>{$egurow['email']}</font></strong></td>\n"
+					. "\t<td align='center'><strong>{$egurow['user']}</strong></td>\n"
+					. "\t<td align='center'><strong>{$egurow['email']}</strong></td>\n"
 					. "\t\t<td align='center'>\n";
 					continue;
 				}
@@ -1904,18 +1904,18 @@ if ($action == "editusergroups")
 				if($row == 1){ $usergroupentries .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
 				if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
 				else $usergroupentries .= "\t<tr>\n";
-				$usergroupentries .= "\t<td align='center'>{$egurow['user']}</font></td>\n"
-				. "\t<td align='center'>{$egurow['email']}</font></td>\n"
+				$usergroupentries .= "\t<td align='center'>{$egurow['user']}</td>\n"
+				. "\t<td align='center'>{$egurow['email']}</td>\n"
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
 				// creator and not himself    or    not creator and himself
 				if((isset($row2['ugid']) && $_SESSION['loginID'] != $egurow['uid']) || (!isset($row2['ugid']) && $_SESSION['loginID'] == $egurow['uid']))
 				{
 					$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&ugid=$ugid'>"
-					." <input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
-					." <input type='hidden' name='user' value='{$egurow['user']}'>"
-					." <input name='uid' type='hidden' value='{$egurow['uid']}'>"
-					." <input name='ugid' type='hidden' value='{$ugid}'>";
+					." <input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />"
+					." <input type='hidden' name='user' value='{$egurow['user']}' />"
+					." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
+					." <input name='ugid' type='hidden' value='{$ugid}' />";
 				}
 				$usergroupentries .= "</form>"
 				. "\t\t</td>\n"
@@ -1933,8 +1933,8 @@ if ($action == "editusergroups")
 				. "\t\t\t\t<select name='uid' class=\"listboxgroups\">\n"
 				. getgroupuserlist()
 				. "\t\t\t\t</select></td>\n"
-				. "\t\t\t\t<td align='center'><input type='submit' value='"._("Add User")."'>\n"
-				. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup'></td></form>\n"
+				. "\t\t\t\t<td align='center'><input type='submit' value='"._("Add User")."' />\n"
+				. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup' /></td></form>\n"
 				. "\t\t\t</td>\n"
 				. "\t\t</tr>\n"
 				. "\t</form>\n";
@@ -1990,22 +1990,22 @@ if ($action == "addquestion")
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' bgcolor='black' align='center'>"
 		. "\t\t<strong><font color='white'>"._("Add Question")."\n"
-		. "\t\t</font></font></strong></td>\n"
+		. "\t\t</font></strong></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'  width='35%'><strong>"._("Code:")."</strong></font></td>\n"
-		. "\t\t<td><input type='text' size='20' name='title'>"
-		. "<font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
+		. "\t\t<td align='right'  width='35%'><strong>"._("Code:")."</strong></td>\n"
+		. "\t\t<td><input type='text' size='20' name='title' />"
+		. "<font color='red' face='verdana' size='1'>"._("Required")."</td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'><strong>"._("Question:")."</strong></font></td>\n"
+		. "\t\t<td align='right' width='35%'><strong>"._("Question:")."</strong></td>\n"
 		. "\t\t<td><textarea cols='50' rows='3' name='question'></textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'><strong>"._("Help:")."</strong></font></td>\n"
+		. "\t\t<td align='right' width='35%'><strong>"._("Help:")."</strong></td>\n"
 		. "\t\t<td><textarea cols='50' rows='3' name='help'></textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'><strong>"._("Type:")."</strong></font></td>\n"
+		. "\t\t<td align='right' width='35%'><strong>"._("Type:")."</strong></td>\n"
 		. "\t\t<td><select name='type' id='question_type' "
 		. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 		. "$qtypeselect"
@@ -2013,14 +2013,14 @@ if ($action == "addquestion")
 		. "\t</tr>\n";
 
 		$newquestion .= "\t<tr id='Validation'>\n"
-		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></td>\n"
 		. "\t\t<td>\n"
-		. "\t\t<input type='text' name='preg' size=50></font>\n"
+		. "\t\t<input type='text' name='preg' size=50 />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
 		$newquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t<select name='lid' >\n";
 		$labelsets=getlabelsets();
@@ -2033,37 +2033,37 @@ if ($action == "addquestion")
 			}
 		}
 		$newquestion .= "\t\t</select>\n"
-		. "\t\t</font></td>\n"
+		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
 		$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>"._("Other:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Other:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t\t<label for='OY'>"._("Yes")."</label>"
 		. "<input id='OY' type='radio' name='other' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='ON'>"._("No")."</label>"
 		. "<input id='ON' type='radio' name='other' value='N' checked />\n"
-		. "\t\t</font></td>\n"
+		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
 		$newquestion .= "\t<tr id='MandatorySelection'>\n"
-		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t\t<label for='MY'>"._("Yes")."</label>"
 		. "<input id='MY' type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='MN'>"._("No")."</label>"
 		. "<input id='MN' type='radio' name='mandatory' value='N' checked />\n"
-		. "\t\t</font></td>\n"
+		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
 		//Question attributes
 		$qattributes=questionAttributes();
 
 		$newquestion .= "\t<tr id='QTattributes'>
-							<td align='right'>{}<strong>"._("Question Attributes:")."</strong></font></td>
+							<td align='right'>{}<strong>"._("Question Attributes:")."</strong></td>
 							<td><select id='QTlist' name='attribute_name' >
 							</select>
-							<input type='text' id='QTtext' name='attribute_value' ></td></tr>\n";
+							<input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
 		$newquestion .= "\t<tr>\n"
 		. "\t\t<td colspan='2' align='center'>";
 
@@ -2080,16 +2080,16 @@ if ($action == "addquestion")
 		. "\t</form>\n"
 		. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
 		. "<table width='100%' border='0' >\n\t"
-		. "<tr><td colspan='2' align='center'><strong>"._("OR")."</strong></font></td></tr>\n"
+		. "<tr><td colspan='2' align='center'><strong>"._("OR")."</strong></td></tr>\n"
 		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>"._("Import Question")."</font></font></strong></td></tr>\n\t<tr>"
-		. "\t\t<td align='right' width='35%'><strong>"._("Select SQL File:")."</strong></font></td>\n"
-		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\"></td></tr>\n"
+		. "\t\t<strong><font color='white'>"._("Import Question")."</font></strong></td></tr>\n\t<tr>"
+		. "\t\t<td align='right' width='35%'><strong>"._("Select SQL File:")."</strong></td>\n"
+		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' "
-		. "value='"._("Import Question")."'>\n"
-		. "\t<input type='hidden' name='action' value='importquestion'>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		. "\t<input type='hidden' name='gid' value='$gid'>\n"
+		. "value='"._("Import Question")."' />\n"
+		. "\t<input type='hidden' name='action' value='importquestion' />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		. "\t<input type='hidden' name='gid' value='$gid' />\n"
 		. "\t</td></tr></table></form>\n\n";
 
 	}
@@ -2110,37 +2110,37 @@ if ($action == "copyquestion")
 		$editquestion = "<form action='$scriptname' name='editquestion' method='post'>\n<table width='100%' border='0'>\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t\t<font color='white'><strong>"._("Copy Question")."</strong><br />"._("Note: You MUST enter a new question code")."</font></font>\n"
+		. "\t\t\t<font color='white'><strong>"._("Copy Question")."</strong><br />"._("Note: You MUST enter a new question code")."</font>\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>"._("Code:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Code:")."</strong></td>\n"
 		. "\t\t<td><input type='text' size='20' name='title' value='' /></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'><strong>"._("Question:")."</strong></font></td>\n"
+		. "\t\t<td align='right' valign='top'><strong>"._("Question:")."</strong></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'><strong>"._("Help:")."</strong></font></td>\n"
+		. "\t\t<td align='right' valign='top'><strong>"._("Help:")."</strong></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>"._("Type:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Type:")."</strong></td>\n"
 		. "\t\t<td><select name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 		. getqtypelist($eqrow['type'])
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='Validation'>\n"
-		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></td>\n"
 		. "\t\t<td>\n"
-		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\">\n"
-		. "\t\t</font></td>\n"
+		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\" />\n"
+		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t<select name='lid' >\n";
 		$labelsets=getlabelsets();
@@ -2158,17 +2158,17 @@ if ($action == "copyquestion")
 			}
 		}
 		$editquestion .= "\t\t</select>\n"
-		. "\t\t</font></td>\n"
+		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>"._("Group:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Group:")."</strong></td>\n"
 		. "\t\t<td><select name='gid'>\n"
 		. getgrouplist3($eqrow['gid'])
 		. "\t\t\t</select></td>\n"
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>"._("Other:")."</strong></font></td>\n";
+		. "\t\t<td align='right'><strong>"._("Other:")."</strong></td>\n";
 
 		$editquestion .= "\t\t<td>\n"
 		. "\t\t\t"._("Yes")." <input type='radio' name='other' value='Y'";
@@ -2177,11 +2177,11 @@ if ($action == "copyquestion")
 		. "\t\t\t"._("No")." <input type='radio' name='other' value='N'";
 		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
 		$editquestion .= " />\n"
-		. "\t\t</font></td>\n"
+		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='MandatorySelection'>\n"
-		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t\t"._("Yes")." <input type='radio' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
@@ -2189,7 +2189,7 @@ if ($action == "copyquestion")
 		. "\t\t\t"._("No")." <input type='radio' name='mandatory' value='N'";
 		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked";}
 		$editquestion .= " />\n"
-		. "\t\t</font></td>\n"
+		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'>";
@@ -2200,8 +2200,8 @@ if ($action == "copyquestion")
 		{
 			$editquestion .= "\t<tr>\n"
 			. "\t\t<input type='hidden' name='copyanswers' value='Y'>\n"
-			. "\t\t<td colspan='2' align='center'><input type='submit' value='"._("Copy Question")."'></td>\n"
-			. "\t\t<input type='hidden' name='action' value='copynewquestion'>\n"
+			. "\t\t<td colspan='2' align='center'><input type='submit' value='"._("Copy Question")."' /></td>\n"
+			. "\t\t<input type='hidden' name='action' value='copynewquestion' />\n"
 			. "\t\t<input type='hidden' name='sid' value='$sid' />\n"
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
 			. "\t\t<input type='hidden' name='gid' value='$gid' />\n"
@@ -2211,18 +2211,18 @@ if ($action == "copyquestion")
 		else
 		{
 
-			$editquestion .= "<strong>"._("Copy Answers?")."</strong></font></td>\n"
+			$editquestion .= "<strong>"._("Copy Answers?")."</strong></td>\n"
 			. "\t\t<td><input type='checkbox' checked name='copyanswers' value='Y' />"
-			. "</font></td>\n"
+			. "</td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
-			. "\t\t<td align='right'><strong>"._("Copy Attributes?")."</strong></font></td>\n"
+			. "\t\t<td align='right'><strong>"._("Copy Attributes?")."</strong></td>\n"
 			. "\t\t<td><input type='checkbox' checked name='copyattributes' value='Y' />"
-			. "</font></td>\n"
+			. "</td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
-			. "\t\t<td colspan='2' align='center'><input type='submit' value='"._("Copy Question")."'>\n"
-			. "\t\t<input type='hidden' name='action' value='copynewquestion'>\n"
+			. "\t\t<td colspan='2' align='center'><input type='submit' value='"._("Copy Question")."' />\n"
+			. "\t\t<input type='hidden' name='action' value='copynewquestion' />\n"
 			. "\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
 			. "\t</td></tr>\n"
@@ -2268,7 +2268,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
 	$eqresult = db_execute_assoc($eqquery);
 	$editquestion ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
-	. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Question")."</font></font></td></tr></table>\n"
+	. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Question")."</font></td></tr></table>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
 	while ($eqrow = $eqresult->FetchRow())
 	{
@@ -2295,7 +2295,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	
  		//question type:
   		$editquestion .= "\t<table><tr>\n"
-  		. "\t\t<td align='right'><strong>"._("Type:")."</strong></font></td>\n";
+  		. "\t\t<td align='right'><strong>"._("Type:")."</strong></td>\n";
   		if ($activated != "Y")
   		{
   			$editquestion .= "\t\t<td><select id='question_type' name='type' "
@@ -2306,12 +2306,12 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		else
   		{
   			$editquestion .= "\t\t<td>{}[{$eqrow['type']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
-  			. "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}'>\n"
-  			. "\t\t</font></td>\n";
+  			. "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n"
+  			. "\t\t</td>\n";
   		}
   
   		$editquestion  .="\t</tr><tr id='LabelSets' style='display: none'>\n"
-  		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></font></td>\n"
+  		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></td>\n"
   		. "\t\t<td>\n";
   		
   		if ($activated != "Y")
@@ -2336,19 +2336,19 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		else
   		{
   			$editquestion .= "[{$eqrow['lid']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
- 			. "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\">\n";
+ 			. "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\" />\n";
   		}
   		
   		$editquestion .= "\t\t</td>\n"
   		. "\t</tr>\n"
   		. "\t<tr>\n"
-  		. "\t<td align='right'><strong>"._("Group:")."</strong></font></td>\n"
+  		. "\t<td align='right'><strong>"._("Group:")."</strong></td>\n"
   		. "\t\t<td><select name='gid'>\n"
   		. getgrouplist3($eqrow['gid'])
   		. "\t\t</select></td>\n"
   		. "\t</tr>\n";
   		$editquestion .= "\t<tr id='OtherSelection'>\n"
-  		. "\t\t<td align='right'><strong>"._("Other:")."</strong></font></td>\n";
+  		. "\t\t<td align='right'><strong>"._("Other:")."</strong></td>\n";
   		
   		if ($activated != "Y")
   		{
@@ -2359,17 +2359,17 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   			. "\t\t\t<label for='ON'>"._("No")."</label><input id='ON' type='radio' name='other' value='N'";
   			if ($eqrow['other'] == "N" || $eqrow['other'] == "" ) {$editquestion .= " checked";}
   			$editquestion .= " />\n"
-  			. "\t\t</font></td>\n";
+  			. "\t\t</td>\n";
   		}
   		else
   		{
   			$editquestion .= "<td> [{$eqrow['other']}] - "._("Cannot be modified")." - "._("Survey is currently active.")."\n"
-  			. "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\"></font></td>\n";
+  			. "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\" /></td>\n";
   		}
   		$editquestion .= "\t</tr>\n";
   
   		$editquestion .= "\t<tr id='MandatorySelection'>\n"
-  		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></font></td>\n"
+  		. "\t\t<td align='right'><strong>"._("Mandatory:")."</strong></td>\n"
   		. "\t\t<td>\n"
   		. "\t\t\t<label for='MY'>"._("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
   		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
@@ -2377,21 +2377,21 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		. "\t\t\t<label for='MN'>"._("No")."</label><input id='MN' type='radio' name='mandatory' value='N'";
   		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked";}
   		$editquestion .= " />\n"
-  		. "\t\t</font></td>\n"
+  		. "\t\t</td>\n"
   		. "\t</tr>\n";
   		
   		$editquestion .= "\t<tr id='Validation'>\n"
-  		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></font></td>\n"
+  		. "\t\t<td align='right'><strong>"._("Validation:")."</strong></td>\n"
   		. "\t\t<td>\n"
-  		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\">\n"
-  		. "\t\t</font></td>\n"
+  		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\" />\n"
+  		. "\t\t</td>\n"
   		. "\t</tr>\n";
 	
 	
-	$editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='"._("Update Question")."'>\n"
-	. "\t<input type='hidden' name='action' value='updatequestion'>\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-	. "\t<input type='hidden' name='qid' value='$qid'></form></td></tr>\n"
+	$editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='"._("Update Question")."' />\n"
+	. "\t<input type='hidden' name='action' value='updatequestion' />\n"
+	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+	. "\t<input type='hidden' name='qid' value='$qid' /></form></td></tr>\n"
 	. "\t\n";
 	
 
@@ -2401,17 +2401,17 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					    <td colspan='2' align='center'>
 						  <form action='$scriptname' method='post'><table class='outlinetable' cellspacing='0' width='90%'>
 						  <tr id='QTattributes'>
-						    <th colspan='4'>"._("Question Attributes:")."</font></th>
+						    <th colspan='4'>"._("Question Attributes:")."</th>
    					      </tr>
 						  <tr><th colspan='4' height='5'></th></tr>
                           <tr>  			  
 						  <td nowrap width='50%' ><select id='QTlist' name='attribute_name' >
-						  </select></td><td align='center' width='20%'><input type='text' id='QTtext' size='6' name='attribute_value' ></td>
+						  </select></td><td align='center' width='20%'><input type='text' id='QTtext' size='6' name='attribute_value'  /></td>
 						  <td align='center'><input type='submit' value='"._("Add")."' >
-						  <input type='hidden' name='action' value='addattribute'>
-						  <input type='hidden' name='sid' value='$surveyid'>
-					      <input type='hidden' name='qid' value='$qid'>
-					      <input type='hidden' name='gid' value='$gid'></td></tr>
+						  <input type='hidden' name='action' value='addattribute' />
+						  <input type='hidden' name='sid' value='$surveyid' />
+					      <input type='hidden' name='qid' value='$qid' />
+					      <input type='hidden' name='gid' value='$gid' /></td></tr>
 					      <tr><th colspan='4' height='10'></th></tr>\n";
 	$editquestion .= "\t\t\t</table></form>\n";
 	
@@ -2426,20 +2426,20 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		.$qa['value']."' /></td>
 					   <td ><input type='submit' value='"
 		._("Save")."' />
-					   <input type='hidden' name='action' value='editattribute'>\n
-					   <input type='hidden' name='sid' value='$surveyid'>\n
-					   <input type='hidden' name='gid' value='$gid'>\n
-					   <input type='hidden' name='qid' value='$qid'>\n
-					   <input type='hidden' name='qaid' value='".$qa['qaid']."'>\n"
+					   <input type='hidden' name='action' value='editattribute' />\n
+					   <input type='hidden' name='sid' value='$surveyid' />\n
+					   <input type='hidden' name='gid' value='$gid' />\n
+					   <input type='hidden' name='qid' value='$qid' />\n
+					   <input type='hidden' name='qaid' value='".$qa['qaid']."' />\n"
 		."\t\t\t</td></tr></table></form></td><td>
 					   <form action='$scriptname' method='post'><table width='100%'><tr><td width='5%'>
 					   <input type='submit' value='"
 		._("Delete")."' />"
-		. "\t<input type='hidden' name='action' value='delattribute'>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		. "\t<input type='hidden' name='qid' value='$qid'>\n"
-		. "\t<input type='hidden' name='gid' value='$gid'>\n"
-		. "\t<input type='hidden' name='qaid' value='".$qa['qaid']."'>\n"
+		. "\t<input type='hidden' name='action' value='delattribute' />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		. "\t<input type='hidden' name='qid' value='$qid' />\n"
+		. "\t<input type='hidden' name='gid' value='$gid' />\n"
+		. "\t<input type='hidden' name='qaid' value='".$qa['qaid']."' />\n"
 		. "</td></tr></table>\n"
 		. "</form>\n</table>";
 	}
@@ -2469,10 +2469,10 @@ if($action == "orderquestions")
         			   <div id=\"arrDebug\"></div>"; 					 
 	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
 	$orderquestions .= "<form action='$scriptname' name='orderquestions' method='post'>
-						<input type='hidden' name='hiddenNodeIds'>
-						<input type='hidden' name='action' value='reorderquestions'> 
-						<input type='hidden' name='gid' value='$gid'>
-						<input type='hidden' name='sid' value='$surveyid'>
+						<input type='hidden' name='hiddenNodeIds' />
+						<input type='hidden' name='action' value='reorderquestions' /> 
+						<input type='hidden' name='gid' value='$gid' />
+						<input type='hidden' name='sid' value='$surveyid' />
 						</form>" ; 
 	$orderquestions .="</p>" ;
 
@@ -2484,27 +2484,27 @@ if ($action == "addgroup")
 	{
 
 		$newgroup = "<tr><td><form action='$scriptname' name='addnewgroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>"._("Add Group")."</font></font></strong></td></tr>\n"
+		. "\t\t<strong><font color='white'>"._("Add Group")."</font></strong></td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>"._("Title:")."</strong></font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='group_name'><font color='red' face='verdana' size='1'>"._("Required")."</font></td></tr>\n"
-		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</font></td>\n"
+		. "\t\t<td align='right'><strong>"._("Title:")."</strong></td>\n"
+		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'>"._("Required")."</td></tr>\n"
+		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='description'></textarea></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."'>\n"
-		. "\t<input type='hidden' name='action' value='insertnewgroup'>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."' />\n"
+		. "\t<input type='hidden' name='action' value='insertnewgroup' />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		. "\t</td></table>\n"
 		. "</form></td></tr>\n"
-		. "<tr><td align='center'><strong>"._("OR")."</strong></font></td></tr>\n"
+		. "<tr><td align='center'><strong>"._("OR")."</strong></td></tr>\n"
 		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">"
 		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>"._("Import Group")."</font></font></strong></td></tr>\n\t<tr>"
+		. "\t\t<strong><font color='white'>"._("Import Group")."</font></strong></td></tr>\n\t<tr>"
 		. "\t\n"
-		. "\t\t<td align='right'><strong>"._("Select SQL File:")."</strong></font></td>\n"
-		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\"></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Group")."'>\n"
-		. "\t<input type='hidden' name='action' value='importgroup'>\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
+		. "\t\t<td align='right'><strong>"._("Select SQL File:")."</strong></td>\n"
+		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Group")."' />\n"
+		. "\t<input type='hidden' name='action' value='importgroup' />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		. "\t</td></tr>\n</table></form>\n";
 
 	}
@@ -2569,7 +2569,7 @@ if ($action == "editgroup")
 			. "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
 		}
 		$editgroup .= '</div>';
-		$editgroup .= "\t<p><input type='submit' class='standardbtn' value='"._("Update Group")."'>\n"
+		$editgroup .= "\t<p><input type='submit' class='standardbtn' value='"._("Update Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='updategroup' />\n"
 		. "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
 		. "\t<input type='hidden' name='gid' value='{$gid}' />\n"
@@ -2640,10 +2640,10 @@ if($action == "addsurveysecurity")
 			{
 				$addsummary .= "<br />"._("User added.")."<br />\n";
 				$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='"._("Set Survey Rights")."'>"
-				."<input type='hidden' name='action' value='setsurveysecurity'>"
+				."<input type='submit' value='"._("Set Survey Rights")."' />"
+				."<input type='hidden' name='action' value='setsurveysecurity' />"
 				//."<input type='hidden' name='user' value='{$_POST['user']}'>"
-				."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
+				."<input type='hidden' name='uid' value='{$_POST['uid']}' />"
 				."</form>\n";
 			}
 			else
@@ -2694,9 +2694,9 @@ if($action == "addusergroupsurveysecurity")
 					$addsummary .= "<br />"._("User Group added.")."<br />\n";
 					$_SESSION['uids'] = $uid_arr;
 					$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
-					."<input type='submit' value='"._("Set Survey Rights")."'>"
-					."<input type='hidden' name='action' value='setusergroupsurveysecurity'>"
-					."<input type='hidden' name='ugid' value='{$_POST['ugid']}'>"
+					."<input type='submit' value='"._("Set Survey Rights")."' />"
+					."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
+					."<input type='hidden' name='ugid' value='{$_POST['ugid']}' />"
 					."</form>\n";
 				}
 			}
@@ -2777,37 +2777,37 @@ if($action == "setsurveysecurity")
 			if($resul2row['edit_survey_property']) {
 				$usersummary .= " checked ";
 			}
-			$usersummary .="></td>\n";
+			$usersummary .=" /></td>\n";
 			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"define_questions\" value=\"define_questions\"";
 			if($resul2row['define_questions']) {
 				$usersummary .= " checked ";
 			}
-			$usersummary .="></td>\n";
+			$usersummary .=" /></td>\n";
 			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"browse_response\" value=\"browse_response\"";
 			if($resul2row['browse_response']) {
 				$usersummary .= " checked ";
 			}
-			$usersummary .="></td>\n";
+			$usersummary .=" /></td>\n";
 			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"export\" value=\"export\"";
 			if($resul2row['export']) {
 				$usersummary .= " checked ";
 			}
-			$usersummary .="></td>\n";
+			$usersummary .=" /></td>\n";
 			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_survey\" value=\"delete_survey\"";
 			if($resul2row['delete_survey']) {
 				$usersummary .= " checked ";
 			}
-			$usersummary .="></td>\n";
+			$usersummary .=" /></td>\n";
 			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"activate_survey\" value=\"activate_survey\"";
 			if($resul2row['activate_survey']) {
 				$usersummary .= " checked ";
 			}
-			$usersummary .="></td>\n";
+			$usersummary .=" /></td>\n";
 
 			$usersummary .= "\t\n\t<tr><td colspan='6' align='center'>"
-			."<input type='submit' value='"._("Save Now")."'>"
-			."<input type='hidden' name='action' value='surveyrights'>"
-			."<input type='hidden' name='uid' value='{$_POST['uid']}'></td></tr>"
+			."<input type='submit' value='"._("Save Now")."' />"
+			."<input type='hidden' name='action' value='surveyrights' />"
+			."<input type='hidden' name='uid' value='{$_POST['uid']}' /></td></tr>"
 			."</form>"
 			. "</table>\n";
 		}
@@ -2840,27 +2840,27 @@ if($action == "setusergroupsurveysecurity")
 		//content
 		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
 
-		$usersummary .="></td>\n";
+		$usersummary .=" /></td>\n";
 		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"define_questions\" value=\"define_questions\"";
 
-		$usersummary .="></td>\n";
+		$usersummary .=" /></td>\n";
 		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"browse_response\" value=\"browse_response\"";
 
-		$usersummary .="></td>\n";
+		$usersummary .=" /></td>\n";
 		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"export\" value=\"export\"";
 
-		$usersummary .="></td>\n";
+		$usersummary .=" /></td>\n";
 		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_survey\" value=\"delete_survey\"";
 
-		$usersummary .="></td>\n";
+		$usersummary .=" /></td>\n";
 		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"activate_survey\" value=\"activate_survey\"";
 
-		$usersummary .="></td>\n";
+		$usersummary .=" /></td>\n";
 
 		$usersummary .= "\t\n\t<tr><td colspan='6' align='center'>"
-		."<input type='submit' value='"._("Save Now")."'>"
-		."<input type='hidden' name='action' value='surveyrights'>"
-		."<input type='hidden' name='ugid' value='{$_POST['ugid']}'></td></tr>"
+		."<input type='submit' value='"._("Save Now")."' />"
+		."<input type='hidden' name='action' value='surveyrights' />"
+		."<input type='hidden' name='ugid' value='{$_POST['ugid']}' /></td></tr>"
 		."</form>"
 		. "</table>\n";
 	}
@@ -2883,7 +2883,7 @@ if($action == "surveysecurity")
 		. "\t<tr>\n"
 		. "\t\t<th>"._("Username")."</th>\n"
 		. "\t\t<th>"._("User Group")."</th>\n"
-		. "\t\t<th>"._("Action")."</font></th>\n"
+		. "\t\t<th>"._("Action")."</th>\n"
 		. "\t</tr>\n";
 		if($result2->RecordCount() > 0)
 		{
@@ -2915,7 +2915,7 @@ if($action == "surveysecurity")
 				else
 				$surveysecurity .= "\t<tr>\n";
 
-				$surveysecurity .= "\t<td align='center'>{$resul2row['user']}</font>\n"
+				$surveysecurity .= "\t<td align='center'>{$resul2row['user']}\n"
 				. "\t<td align='center'>";
 
 				if(count($group_names) > 0)
@@ -2928,21 +2928,21 @@ if($action == "surveysecurity")
 				}
 				unset($group_names);
 
-				$surveysecurity .= "</font></td>\n"
+				$surveysecurity .= "</td>\n"
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>"
-				."<input type='hidden' name='action' value='delsurveysecurity'>"
-				."<input type='hidden' name='user' value='{$resul2row['user']}'>"
-				."<input type='hidden' name='uid' value='{$resul2row['uid']}'>"
-				."</form></font>";
+				."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />"
+				."<input type='hidden' name='action' value='delsurveysecurity' />"
+				."<input type='hidden' name='user' value='{$resul2row['user']}' />"
+				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"
+				."</form>";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='"._("Set Survey Rights")."'>"
-				."<input type='hidden' name='action' value='setsurveysecurity'>"
-				."<input type='hidden' name='user' value='{$resul2row['user']}'>"
-				."<input type='hidden' name='uid' value='{$resul2row['uid']}'>"
+				."<input type='submit' value='"._("Set Survey Rights")."' />"
+				."<input type='hidden' name='action' value='setsurveysecurity' />"
+				."<input type='hidden' name='user' value='{$resul2row['user']}' />"
+				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"
 				."</form>\n";
 
 				$surveysecurity .= "\t\t</td>\n"
@@ -2960,8 +2960,8 @@ if($action == "surveysecurity")
 		. "\t\t\t\t\t</select>\n"
 		. "\t\t\t\t</td>\n"
 
-		. "\t\t<td align='center'><input type='submit' value='"._("Add User")."'>"
-		. "<input type='hidden' name='action' value='addsurveysecurity'></td></form>\n"
+		. "\t\t<td align='center'><input type='submit' value='"._("Add User")."' />"
+		. "<input type='hidden' name='action' value='addsurveysecurity' /></td></form>\n"
 		. "\t</tr>\n";
 		//. "\t</table>\n";
 
@@ -2975,8 +2975,8 @@ if($action == "surveysecurity")
 		. "\t\t\t\t\t</select>\n"
 		. "\t\t\t\t</td>\n"
 
-		. "\t\t<td align='center'><input type='submit' value='"._("Add Group")."'>"
-		. "<input type='hidden' name='action' value='addusergroupsurveysecurity'></td></form>\n"
+		. "\t\t<td align='center'><input type='submit' value='"._("Add Group")."' />"
+		. "<input type='hidden' name='action' value='addusergroupsurveysecurity' /></td></form>\n"
 		. "\t</tr>\n"
 		. "\t</table>\n";
 	}
@@ -3048,14 +3048,14 @@ if ($action == "editsurvey")
 			$esrow = array_map('htmlspecialchars', $esrow);
 			include('./scripts/addremove.js');
 			$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>"
-			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey - Step 1 of 2")."</font></font></td></tr>\n"
+			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey - Step 1 of 2")."</font></td></tr>\n"
 			. "\t<tr>"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
-			. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\"></td></tr>\n"
+			. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\" /></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Admin Email:")."</font></td>\n"
-			. "\t\t<td><input type='text' size='50' name='adminemail' value=\"{$esrow['adminemail']}\"></td></tr>\n"
+			. "\t\t<td><input type='text' size='50' name='adminemail' value=\"{$esrow['adminemail']}\" /></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Fax To:")."</font></td>\n"
-			. "\t\t<td><input type='text' size='50' name='faxto' value=\"{$esrow['faxto']}\"></td></tr>\n";
+			. "\t\t<td><input type='text' size='50' name='faxto' value=\"{$esrow['faxto']}\" /></td></tr>\n";
 			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Format:")."</font></td>\n"
 			. "\t\t<td><select name='format'>\n"
 			. "\t\t\t<option value='S'";
@@ -3129,7 +3129,7 @@ if ($action == "editsurvey")
 				else {$editsurvey .= "This survey is anonymous";}
 				$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 				. "\t\t</font></font>\n";
-				$editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\"></td>\n";
+				$editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\" /></td>\n";
 			}
 			else
 			{
@@ -3154,9 +3154,9 @@ if ($action == "editsurvey")
 			. "\t\t</select></td>\n\t</tr>\n";
 			$editsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>"._("Token Attribute Names:")."</font></td>\n"
 			. "\t\t<td><font class='settingcaption'><input type='text' size='25' name='attribute1'"
-			. " value=\"{$esrow['attribute1']}\">("._("Attribute 1").")<br />"
+			. " value=\"{$esrow['attribute1']}\" />("._("Attribute 1").")<br />"
 			. "<input type='text' size='25' name='attribute2'"
-			. " value=\"{$esrow['attribute2']}\">("._("Attribute 2").")</font></td>\n\t</tr>\n";
+			. " value=\"{$esrow['attribute2']}\" />("._("Attribute 2").")</font></td>\n\t</tr>\n";
 			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Date Stamp?")."</font></td>\n";
 
 			if ($esrow['active'] == "Y")
@@ -3166,7 +3166,7 @@ if ($action == "editsurvey")
 				else {$editsurvey .= "Responses will be date stamped";}
 				$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 				. "\t\t</font></font>\n";
-				$editsurvey .= "<input type='hidden' name='datestamp' value=\"{$esrow['datestamp']}\"></td>\n";
+				$editsurvey .= "<input type='hidden' name='datestamp' value=\"{$esrow['datestamp']}\" /></td>\n";
 			}
 			else
 			{
@@ -3190,7 +3190,7 @@ if ($action == "editsurvey")
 				else {$editsurvey .= "Responses will have the IP address logged";}
 				$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 				. "\t\t</font></font>\n";
-				$editsurvey .= "<input type='hidden' name='ipaddr' value='".$esrow['ipaddr']."'>\n</td>";
+				$editsurvey .= "<input type='hidden' name='ipaddr' value='".$esrow['ipaddr']."' />\n</td>";
 			}
 			else
 			{
@@ -3214,7 +3214,7 @@ if ($action == "editsurvey")
 				else {$editsurvey .= "Responses will have their referring URL logged.";}
 				$editsurvey .= "<font size='1' color='red'>&nbsp;(Cannot be changed)\n"
 				. "\t\t</font></font>\n";
-				$editsurvey .= "<input type='hidden' name='refurl' value='".$esrow['refurl']."'>\n</td>";
+				$editsurvey .= "<input type='hidden' name='refurl' value='".$esrow['refurl']."' />\n</td>";
 			}
 			else
 			{
@@ -3248,7 +3248,7 @@ if ($action == "editsurvey")
 
 			//  Add/Remove Buttons
 			$editsurvey .= "</select></td>"
-			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\"><BR> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove()\" ID=\"RemoveBtn\" ></td>\n"
+			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><BR /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove()\" ID=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
 			. "\t\t<td align=left><select type='text' size='5' id='available_languages' name='available_languages'>";
@@ -3271,9 +3271,9 @@ if ($action == "editsurvey")
 			. "\t\t\t<option value='N'";
 			if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected";}
 			$editsurvey .= ">"._("No")."</option></select></td></tr><tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
-			. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\"><button type='reset' id='f_trigger_b'>...</button></td></tr>\n"
+			. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\" /><button type='reset' id='f_trigger_b'>...</button></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
-			. "\t\t<td><input type='text' size='50' name='url' value=\"{$esrow['url']}\"></td></tr>\n"
+			. "\t\t<td><input type='text' size='50' name='url' value=\"{$esrow['url']}\" /></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
 			. "\t\t<td><select name='autoredirect'>";
 			$editsurvey .= "\t\t\t<option value='Y'";
@@ -3284,11 +3284,11 @@ if ($action == "editsurvey")
 			$editsurvey .= ">"._("No")."</option>\n"
 			. "</select></td></tr>";
 
-			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs();' class='standardbtn' value='"._("Save and Continue")." >>'>\n"
-			. "\t<input type='hidden' name='action' value='updatesurvey'>\n"
-			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\">\n"
-			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\">\n"
-			. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\">\n"
+			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs();' class='standardbtn' value='"._("Save and Continue")." >>' />\n"
+			. "\t<input type='hidden' name='action' value='updatesurvey' />\n"
+			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
+			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
+			. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
 			. "\t</td></tr>\n"
 			. "</table></form>\n";
 
@@ -3332,7 +3332,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n";
 
 			$editsurvey .= "\t\t<div class='settingrow'><span class='settingcaption'>"._("Title:")."</span>\n"
-			. "\t\t<span class='settingentry'><input type='text' size='50' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\"></span>\n"
+			. "\t\t<span class='settingentry'><input type='text' size='50' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>"._("Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='50' rows='5' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea></span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>"._("Welcome:")."</span>\n"
@@ -3348,9 +3348,9 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			. "--></script>\n</div>";
 
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>"._("Invitation Email Subject:")."</span>\n"
-			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_invite_subj_".$esrow['surveyls_language']."' id='email_invite_subj' value=\"{$esrow['surveyls_email_invite_subj']}\">\n"
-			. "\t\t<input type='hidden' name='email_invite_subj_default_".$esrow['surveyls_language']."' id='email_invite_subj_default' value='".html_escape(_("Invitation to participate in survey"))."'>\n"
-			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")'>\n"
+			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_invite_subj_".$esrow['surveyls_language']."' id='email_invite_subj' value=\"{$esrow['surveyls_email_invite_subj']}\" />\n"
+			. "\t\t<input type='hidden' name='email_invite_subj_default_".$esrow['surveyls_language']."' id='email_invite_subj_default' value='".html_escape(_("Invitation to participate in survey"))."' />\n"
+			. "\t\t<input type='button' value='"._("Use default")."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>"._("Invitation Email:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_invite_".$esrow['surveyls_language']."' id='email_invite'>{$esrow['surveyls_email_invite']}</textarea>\n"

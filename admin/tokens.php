@@ -628,7 +628,7 @@ if ($action == "kill")
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 		echo "<font color='red'><strong>"._("Warning")."</strong></font><br />\n"
-		._("If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
+		._("If you delete this table tokens will no longer be required to access this survey.<br />A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
 		."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
 		."<input type='submit' value='"
 		._("Delete Tokens")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=kill&amp;ok=surething', '_top')\" /><br />\n"
@@ -642,7 +642,7 @@ if ($action == "kill")
 		$deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
 		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())."<br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		echo "<span style='display: block; text-align: center; width: 70%'>\n"
-		._("The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
+		._("The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
 		."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
 		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
@@ -1292,7 +1292,7 @@ if ($action == "upload")
 			}
 			$xx++;
 		}
-		echo "<font color='green'>"._("Success")."</font><br /><br>\n";
+		echo "<font color='green'>"._("Success")."</font><br /><br />\n";
 		$message=str_replace("{TOKENCOUNT}", $xz, _("{TOKENCOUNT} Records Created"));
 		echo "<i>$message</i><br />\n";
 		fclose($handle);

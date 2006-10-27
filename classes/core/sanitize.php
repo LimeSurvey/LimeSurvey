@@ -167,7 +167,7 @@ function sanitize_html_string($string)
 	$replacement[0] = '&amp;';
 	$replacement[1] = '&lt;';
 	$replacement[2] = '&gt;';
-	$replacement[3] = '<br>';
+	$replacement[3] = '<br />';
 	$replacement[4] = '&quot;';
 	$replacement[5] = '&#39;';
 	$replacement[6] = '&#37;';

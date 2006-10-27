@@ -180,11 +180,11 @@ foreach ($fields as $field){
 if ($i % 20 != 0) echo ".\n";
 echo "END FILE TYPE.\n\n";
 //echo ".";
-//minni echo "<br>";
+//minni echo "<br />";
 //echo "\n\n\n";
 
 //echo "*Begin data\n";
-echo "BEGIN DATA\n";//minni"<br>";
+echo "BEGIN DATA\n";//minni"<br />";
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	$query="SELECT `{$dbprefix}tokens_$surveyid`.`firstname`   ,
@@ -227,24 +227,24 @@ for ($i=0; $i < $num_results; $i++) {
 		if ($fieldno % 20 == 0) echo "\n";
 	}
 	if ($fieldno % 20 != 0) echo "\n";
-	//echo "\n";//minni"<br>";
+	//echo "\n";//minni"<br />";
 	#Conditions for SPSS fields:
 	# - Length may not be longer than 8 charac
 }
-echo "END DATA.\nEXECUTE.\n\n";//minni<br>";
+echo "END DATA.\nEXECUTE.\n\n";//minni<br />";
 
-echo "*Define Variable Properties.\n";//minni"<br>";
+echo "*Define Variable Properties.\n";//minni"<br />";
 foreach ($fields as $field){
 	if (	$field["id"] == "fname" OR
 	$field["id"]=="lname" OR
 	$field["id"]=="email" OR
 	$field["id"]=="attr1" OR
 	$field["id"]=="attr2"){
-		echo "VARIABLE LABELS ".$field["id"]." '".substr(strip_tags_full($field["name"]), 0, 59)."'.\n";//minni"<br>";
+		echo "VARIABLE LABELS ".$field["id"]." '".substr(strip_tags_full($field["name"]), 0, 59)."'.\n";//minni"<br />";
 	} elseif ($field["name"]=="id") {
-		echo "VARIABLE LABELS ".$field["id"]." 'Record ID'.\n";//minni"<br>";
+		echo "VARIABLE LABELS ".$field["id"]." 'Record ID'.\n";//minni"<br />";
 	} elseif ($field["name"]=="stamp") {
-		echo "VARIABLE LABELS ".$field["id"]." 'Completion Date'.\n";//minni"<br>";
+		echo "VARIABLE LABELS ".$field["id"]." 'Completion Date'.\n";//minni"<br />";
 	}else{
 		#If a split question
 		if ($field["code"] != ""){
@@ -271,7 +271,7 @@ foreach ($fields as $field){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
 					$row = $result->FetchRow();
-					echo "VARIABLE LABELS ".$field["id"]." '".substr(strip_tags_full($question_title), 0, 59)." - ".substr(strip_tags_full($row["answer"]), 0, 59)."'.\n";//minni"<br>";
+					echo "VARIABLE LABELS ".$field["id"]." '".substr(strip_tags_full($question_title), 0, 59)." - ".substr(strip_tags_full($row["answer"]), 0, 59)."'.\n";//minni"<br />";
 				}
 			}
 			if (substr($field['sql_name'], -5)=='other') {

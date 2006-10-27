@@ -103,7 +103,7 @@ else
 	@$result = $connect->Execute($query); //Note this won't die if it fails - that's deliberate.
 
 	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
-	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<BR>".htmlspecialchars($connect->ErrorMsg())."<BR><BR><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	echo "\t<tr>\n";

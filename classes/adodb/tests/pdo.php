@@ -55,7 +55,7 @@ try {
 	echo "Meta\n";
 	for ($i=0; $i < $rs->NumCols(); $i++) {
 		var_dump($rs->FetchField($i));
-		echo "<br>";
+		echo "<br />";
 	}
 	
 	echo "FETCH\n";
@@ -66,7 +66,7 @@ try {
 		if ($cnt++ > 1000) break;
 	}
 	
-	echo "<br>--------------------------------------------------------<br>\n\n\n";
+	echo "<br />--------------------------------------------------------<br />\n\n\n";
 	
 	$stmt = $DB->PrepareStmt("select * from ADOXYZ");
 	

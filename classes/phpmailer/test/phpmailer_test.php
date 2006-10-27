@@ -534,7 +534,7 @@ else
 
 if(isset($global_vars["submitted"]))
 {
-    echo "Test results:<br>";
+    echo "Test results:<br />";
     $suite = new TestSuite( "phpmailerTest" );
     
     $testRunner = new TestRunner;

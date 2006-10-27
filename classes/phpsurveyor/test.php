@@ -16,10 +16,10 @@ if ($connect->Connect("$databaselocation:$databaseport", $databaseuser, $databas
 $test = new libattributes($connect,$dbprefix,'','44');
 $array = $test->get_attributes('A');
 print_r($array);
-print "<br><br>";
+print "<br /><br />";
 $value = $test->get_attribute_value(206,'array_filter');
 print $value;
-print "<br><br>";
+print "<br /><br />";
 if ($test->new_attribute('999','test_attribute','abc'))
 {
 	print "Added Attribute";
