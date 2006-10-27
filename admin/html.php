@@ -2235,7 +2235,6 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 {
 	
 		$questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-		array_pop($questlangs);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$questlangs[] = $baselang;
 		$questlangs = array_flip($questlangs);
@@ -2482,22 +2481,40 @@ if ($action == "addgroup")
 {
 	if($sumrows5['define_questions'])
 	{
+		$grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$grplangs[] = $baselang;
+		$grplangs = array_reverse($grplangs);
 
 		$newgroup = "<tr><td><form action='$scriptname' name='addnewgroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>"._("Add Group")."</font></strong></td></tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>"._("Title:")."</strong></td>\n"
-		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'>"._("Required")."</td></tr>\n"
-		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</td>\n"
-		. "\t\t<td><textarea cols='50' rows='4' name='description'></textarea></td></tr>\n"
+		. "\t\t<strong><font color='white'>"._("Add Group")."</font></strong></td></tr></table>\n";
+
+
+		$newgroup .="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
+		. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Group")."</font></font></td></tr><tr><td>\n"
+		. '<div class="tab-pane" id="tab-pane-1">';
+		foreach ($grplangs as $grouplang)
+		{
+			$newgroup .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang);
+			if ($grouplang==$baselang) {$newgroup .= '('._('Base Language').')';}
+			$newgroup .= "</h2>"
+            . "<table width='100%' border='0'>"
+    		. "\t\t<tr><td align='right'><strong>"._("Title:")."</strong></td>\n"
+    		. "\t\t<td><input type='text' size='50' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'>"._("Required")."</td></tr>\n"
+    		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</td>\n"
+    		. "\t\t<td><textarea cols='50' rows='4' name='description_$grouplang'></textarea></td></tr>\n"
+    		. "</table></div>";
+        }
+
+		$newgroup.= "</div>" 
+        . "\t<input type='hidden' name='action' value='insertnewgroup' />\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid' /></td></tr>"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Add Group")."' />\n"
-		. "\t<input type='hidden' name='action' value='insertnewgroup' />\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		. "\t</td></table>\n"
 		. "</form></td></tr>\n"
 		. "<tr><td align='center'><strong>"._("OR")."</strong></td></tr>\n"
 		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">"
-		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>"._("Import Group")."</font></strong></td></tr>\n\t<tr>"
 		. "\t\n"
 		. "\t\t<td align='right'><strong>"._("Select SQL File:")."</strong></td>\n"
@@ -2519,7 +2536,6 @@ if ($action == "editgroup")
 	if ($sumrows5['edit_survey_property'])
 	{
 		$grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-		array_pop($grplangs);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$grplangs[] = $baselang;
 		$grplangs = array_flip($grplangs);

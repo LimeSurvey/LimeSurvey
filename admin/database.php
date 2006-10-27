@@ -97,51 +97,46 @@ if(isset($surveyid))
 	}
 	elseif ($action == "insertnewgroup" && $actsurrows['define_questions'])
 	{
-		if (!$_POST['group_name'])
-		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be added. It is missing the mandatory group name")."\")\n //-->\n</script>\n";
+  		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
+  		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+  		$grplangs[] = $baselang;
+        $errorstring = '';  
+        foreach ($grplangs as $grouplang)
+        {
+          if (!$_POST['group_name_'.$grouplang]) { $errorstring.= GetLanguageNameFromCode($grouplang).", ";}
 		}
+        if ($errorstring!='') 
+        {	
+            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be added. It is missing the group name for the following languages ").":".$errorstring."\")\n //-->\n</script>\n";
+        }  
+
 		else
 		{
 			$_POST  = array_map('db_quote', $_POST);
-
-			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
-			$query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).",'{$baselang}')";
-			$result = $connect->Execute($query);
-
-			if ($result)
-			{
-				//echo "<script type=\"text/javascript\">\n<!--\n alert(\"New group ({$_POST['group_name']}) has been created for survey id $surveyid\")\n //-->\n < /script>\n";
-				$query = "SELECT gid FROM ".db_table_name('groups')." WHERE group_name='{$_POST['group_name']}' AND sid={$_POST['sid']}";
-				$result = db_execute_assoc($query);
-				while ($res = $result->FetchRow()) {$gid = $res['gid'];}
-				$groupselect = getgrouplist($gid);
-				$addlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
-				foreach ($addlangs as $alang)
+            $first=true;
+    		foreach ($grplangs as $grouplang)
+	       	{
+		      	if ($first)
+                  {
+                    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
+                    $result = $connect->Execute($query);
+                    $groupid=$connect->Insert_Id();
+                    $first=false;
+                  }
+                  else{
+                        $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
+                        $result = $connect->Execute($query);
+                     }
+				if (!$result)
 				{
-					if ($alang != "")
-					{
-						$query = "INSERT INTO ".db_table_name('groups')." (gid,sid, group_name, description,group_order,language) VALUES ('{$gid}','{$_POST['sid']}', '{$_POST['group_name']}', '{$_POST['description']}',".getMaxgrouporder($_POST['sid']).",'{$alang}')";
-						$result = $connect->Execute($query);
-						if (!$result)
-						{
-							echo _("Error: The database reported the following error:")."<br />\n";
-							echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
-							echo "<pre>".htmlspecialchars($query)."</pre>\n";
-							echo "</body>\n</html>";
-							exit;
-						}
-					}
+					echo _("Error: The database reported the following error:")."<br />\n";
+					echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
+					echo "<pre>".htmlspecialchars($query)."</pre>\n";
+					echo "</body>\n</html>";
+					exit;
 				}
-			}
-			else
-			{
-				echo _("Error: The database reported the following error:")."<br />\n";
-				echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
-				echo "<pre>".htmlspecialchars($query)."</pre>\n";
-				echo "</body>\n</html>";
-				exit;
-			}
+			}     
+
 		}
 	}
 

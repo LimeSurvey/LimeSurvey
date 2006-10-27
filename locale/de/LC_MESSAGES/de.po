@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-10-22 16:04+0100\n"
+"PO-Revision-Date: 2006-10-27 20:57+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -270,7 +270,7 @@ msgid "A Note On Privacy"
 msgstr "Eine Bemerkung zum Datenschutz"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
-msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgid "This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Dieser Fragebogen ist anonym.<br />Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn eine bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1574
@@ -1834,6 +1834,9 @@ msgstr "Attribute kopieren?"
 msgid "Edit Question"
 msgstr "Bearbeite Frage"
 
+msgid "Base Language"
+msgstr "Basis-Sprache"
+
 msgid "Update Question"
 msgstr "Frage aktualisieren"
 
@@ -1845,9 +1848,6 @@ msgstr "Gruppen importieren"
 
 msgid "Edit Group"
 msgstr "Gruppe bearbeiten"
-
-msgid "Base Language"
-msgstr "Basis-Sprache"
 
 msgid "Update Group"
 msgstr "Gruppe aktualisieren"
@@ -2255,6 +2255,9 @@ msgstr "Beschriftungs-Vorlagen bearbeiten"
 msgid "Set Name"
 msgstr "Name setzen"
 
+msgid "Languages"
+msgstr "Sprachen"
+
 msgid "Edit label set"
 msgstr "Beschriftung-Set bearbeiten"
 
@@ -2270,6 +2273,15 @@ msgstr "Titel"
 
 msgid "Order"
 msgstr "Reihenfolge"
+
+msgid "Save All"
+msgstr "Alles Speichern"
+
+msgid "New label"
+msgstr "Neue Beschriftung"
+
+msgid "Add new label"
+msgstr "Neue Beschriftung hinzufügen"
 
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr "Sie können die Codes nicht ändern und keine Einträge hinzufügen oder löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
@@ -2647,14 +2659,14 @@ msgstr "Sende eine Erinnerungs-E-Mail für diesen Eintrag"
 msgid "Delete Tokens Table"
 msgstr "Probandentabelle löschen"
 
-msgid "If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Wenn Sie diese Probandentabelle löschen, sind keine Zugangsschlüssel mehr nötig, um auf die Umfrage zuzugreifen. Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
+msgid "If you delete this table tokens will no longer be required to access this survey.<br />A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Wenn Sie diese Probandentabelle löschen, sind keine Zugangsschlüssel mehr nötig, um auf die Umfrage zuzugreifen. <br />Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
 
 msgid "Delete Tokens"
 msgstr "Lösche die Probandentabelle"
 
-msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator."
-msgstr "Die Probandentabelle wurde gelöscht, und es sind jetzt keine Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen. Eine Sicherheitskopie dieser Tabelle wurde erstellt. Der Systemadministrator kann auf diese Daten zugreifen."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Die Probandentabelle wurde gelöscht, und es sind jetzt keine Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen.<br /> Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der Systemadministrator kann auf diese Daten zugreifen."
 
 msgid "Email Invitation"
 msgstr "Einladung an Probanden versenden"

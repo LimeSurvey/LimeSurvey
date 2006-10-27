@@ -1910,7 +1910,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 	$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	$result = db_execute_num($query);
 	while ($result && ($row=$result->FetchRow())) {$surveylanguage = $row[0];}
-	if (isset($surveylanguage)) $additional_languages = explode(" ", $surveylanguage);
+	if (isset($surveylanguage)) $additional_languages = explode(" ", trim($surveylanguage));
 	if (!isset($additional_languages) || $additional_languages==false) { $additional_languages = array();}
 	return $additional_languages;
 }
