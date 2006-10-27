@@ -271,29 +271,13 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$rwlabelset=$rslabelset->FetchRow();
 		$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 		
-		echo "\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'><thead align='center'>\n"
+		echo "\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
 		."<tr bgcolor='#555555' >\n"
 		."\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
 		._("Labels")
 		."\t</font></strong></td>\n"
 		."</tr>\n"
-		."<tr bgcolor='#BBBBBB'>\n"
-		."\t<td width='25%' align=right><strong><font size='1' face='verdana' >\n"
-		._("Code")
-		."\t</font></strong></td>\n"
-		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
-		._("Title")
-		."\t</font></strong></td>\n"
-		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
-		._("Action")
-		."\t</font></strong></td>\n"
-		."\t<td width='15%' align=center><strong><font size='1' face='verdana'>\n"
-		._("Order")
-		."\t</font></strong></td>\n"
-		."</tr></thead>\n"
-		."\n"
-        ."\t<tr><td colspan='4'>\n"
-        ."<form method='post' action='labels.php'>\n"
+        ."\t<tr><td colspan='4'>\n"        ."<form method='post' action='labels.php'>\n"
 	    ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
 		."<input type='hidden' name='lid' value='$lid' />\n"
 		."<input type='hidden' name='action' value='modanswers' />\n";
@@ -308,7 +292,23 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		$labelcount = $result->RecordCount();
             echo "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
-                ."\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n";
+                ."\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
+                ."<thead align='center'>"
+        		."<tr bgcolor='#BBBBBB'>\n"
+        		."\t<td width='25%' align=right><strong><font size='1' face='verdana' >\n"
+        		._("Code")
+        		."\t</font></strong></td>\n"
+        		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
+        		._("Title")
+        		."\t</font></strong></td>\n"
+        		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
+        		._("Action")
+        		."\t</font></strong></td>\n"
+        		."\t<td width='15%' align=center><strong><font size='1' face='verdana'>\n"
+        		._("Order")
+        		."\t</font></strong></td>\n"
+        		."</tr></thead>"
+                ."<tbody align='center'>";
     		while ($row=$result->FetchRow())
     		{
                 $autoids=$autoids.' '.$row['autoid'];

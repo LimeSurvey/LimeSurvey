@@ -170,7 +170,7 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 $query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
 ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-."AND qid=$qid";
+."AND qid=$qid AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 $result = db_execute_assoc($query) or die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
 while ($rows=$result->FetchRow())
 {
@@ -183,10 +183,11 @@ while ($rows=$result->FetchRow())
 //2: Get all other questions that occur before this question that are pre-determined answer types
 
 //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-$qquery = "SELECT *\n"
-. "FROM {$dbprefix}questions, {$dbprefix}groups\n"
-."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-."AND {$dbprefix}questions.sid=$surveyid\n";
+$qquery = "SELECT * "
+        ."FROM {$dbprefix}questions, {$dbprefix}groups "
+        ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
+        ."AND {$dbprefix}questions.sid=$surveyid "
+        ."AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 
 $qresult = db_execute_assoc($qquery) or die ("$qquery<br />".$connect->ErrorMsg());
 $qrows = $qresult->GetRows();
@@ -229,7 +230,7 @@ if (isset($questionlist) && is_array($questionlist))
 {
 	foreach ($questionlist as $ql)
 	{
-		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql";
+		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 		$result=db_execute_assoc($query) or die("Couldn't get question $qid");
 		$thiscount=$result->RecordCount();
 		while ($myrows=$result->FetchRow())
@@ -243,7 +244,7 @@ if (isset($postquestionlist) && is_array($postquestionlist))
 {
 	foreach ($postquestionlist as $pq)
 	{
-		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$pq";
+		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$pq AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 		$result = db_execute_assoc($query) or die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
 		$postcount=$result->RecordCount();
 		while($myrows=$result->FetchRow())
@@ -308,9 +309,9 @@ if ($questionscount > 0)
 					break;
 					case "F":
 					case "H":
-					$fquery = "SELECT * FROM {$dbprefix}labels\n"
-					. "WHERE lid={$rows['lid']}\n"
-					. "ORDER BY sortorder, code";
+					$fquery = "SELECT * FROM {$dbprefix}labels "
+					. "WHERE lid={$rows['lid']} AND language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
+					. "ORDER BY sortorder, code ";
 					$fresult = db_execute_assoc($fquery);
 					while ($frow=$fresult->FetchRow())
 					{
@@ -323,8 +324,8 @@ if ($questionscount > 0)
 		}
 		elseif ($rows['type'] == "R")
 		{
-			$aquery="SELECT * FROM {$dbprefix}answers\n"
-			."WHERE qid={$rows['qid']}\n"
+			$aquery="SELECT * FROM {$dbprefix}answers "
+			."WHERE qid={$rows['qid']}AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
 			."ORDER BY sortorder, answer";
 			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
 			$acount=$aresult->RecordCount();
@@ -369,7 +370,7 @@ if ($questionscount > 0)
 				case "W":
 				case "Z":
 				$fquery = "SELECT * FROM {$dbprefix}labels\n"
-				. "WHERE lid={$rows['lid']}\n"
+				. "WHERE lid={$rows['lid']} AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				. "ORDER BY sortorder, code";
 
 				$fresult = db_execute_assoc($fquery);
@@ -380,7 +381,7 @@ if ($questionscount > 0)
 				break;
 				default:
 				$aquery="SELECT * FROM {$dbprefix}answers\n"
-				."WHERE qid={$rows['qid']}\n"
+				."WHERE qid={$rows['qid']} AND language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
 				."ORDER BY sortorder, answer";
 				$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
 				while ($arows=$aresult->FetchRow())
@@ -493,7 +494,7 @@ echo "\t\t\t$setfont<strong>$onlyshow</strong></font>\n"
 //3: Get other conditions currently set for this question
 $query = "SELECT {$dbprefix}conditions.cid, {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname, {$dbprefix}conditions.value, {$dbprefix}questions.type\n"
 ."FROM {$dbprefix}conditions, {$dbprefix}questions\n"
-."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid\n"
+."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
 ."AND {$dbprefix}conditions.qid=$qid\n"
 ."ORDER BY {$dbprefix}conditions.cfieldname";
 $result = db_execute_assoc($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());

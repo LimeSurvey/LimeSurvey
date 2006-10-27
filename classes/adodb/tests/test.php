@@ -802,7 +802,7 @@ END Adodb;
 	print "<p>FetchObject/FetchNextObject Test</p>";
 	$rs = $db->Execute('select * from ADOXYZ');
 	if ($rs) {
-		if (empty($rs->connection)) print "<b>Connection object missing from recordset</b></br>";
+		if (empty($rs->connection)) print "<b>Connection object missing from recordset</b><br />";
 		
 		while ($o = $rs->FetchNextObject()) { // calls FetchObject internally
 			if (!is_string($o->FIRSTNAME) || !is_string($o->LASTNAME)) {
@@ -819,7 +819,7 @@ END Adodb;
 	print "<p>FetchObject/FetchNextObject Test 2</p>";
 	#$db->debug=99;
 	$rs = $db->Execute('select * from ADOXYZ');
-	if (empty($rs->connection)) print "<b>Connection object missing from recordset</b></br>";
+	if (empty($rs->connection)) print "<b>Connection object missing from recordset</b><br />";
 	print_r($rs->fields);
 	while ($o = $rs->FetchNextObject()) { // calls FetchObject internally
 		if (!is_string($o->FIRSTNAME) || !is_string($o->LASTNAME)) {
@@ -962,7 +962,7 @@ END Adodb;
 	$rs = &$db->SelectLimit('select * from ADOXYZ order by id',-1,48);
 	$A=0;
 	if ($rs && !$rs->EOF) {
-		if (empty($rs->connection)) print "<b>Connection object missing from recordset</b></br>";
+		if (empty($rs->connection)) print "<b>Connection object missing from recordset</b><br />";
 		if (trim($rs->fields[1]) != 'Wai Hun') Err("Error 1 ".$rs->fields[1]);
 		$rs->MoveNext();
 		if (trim($rs->fields[1]) != 'Steven') Err("Error 2 ".$rs->fields[1]);
@@ -1136,7 +1136,7 @@ END Adodb;
 	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
 	if ($rs) {
 		print ' Multiple, Alan and George selected: '. $rs->GetMenu('menu',array('Alan','George'),false,true);
-		if (empty($rs->connection)) print "<b>Connection object missing from recordset</b></br>";
+		if (empty($rs->connection)) print "<b>Connection object missing from recordset</b><br />";
 	} else print " Fail<br />";
 	print '</p><hr />';
 	

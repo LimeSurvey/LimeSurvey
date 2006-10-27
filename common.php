@@ -286,8 +286,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			$adminmenu  .= "<a href=\"#\" onClick=\"window.open('labels.php', '_top')\"" 
 						. "onmouseout=\"hideTooltip()\"" 
 						. "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">" .
-						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='"
-						. _("Edit/Add Label Sets")."' alt='". _("Edit/Add Label Sets")."' /></a>\n"
+						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='' alt='". _("Edit/Add Label Sets")."' /></a>\n"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
            	}
 		else

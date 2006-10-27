@@ -81,15 +81,15 @@ if ($action == "listsurveys" && isset($_SESSION['loginID']))
 		if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		{
 			$listsurveys.="<tr bgcolor='#BBBBBB'>
-				    <td><a href='".$scriptname."?action=newsurvey'><img border=0 src='".$imagefiles."/add.png' onmouseout=\"hideTooltip()\" " .
-				    "onmouseover=\"showTooltip(event,'"._("Create Survey")."');return false\">" .
+				    <td><a href='".$scriptname."?action=newsurvey'><img border=0 src='".$imagefiles."/add.png' alt='' onmouseout=\"hideTooltip()\" " .
+				    "onmouseover=\"showTooltip(event,'"._("Create Survey")."');return false\" />" .
 				    "</a></td>
 				    <td>&nbsp;</td>
 				    <td>&nbsp;</td>
 				    <td colspan=\"4\">&nbsp;</td>
 				  </tr>";
 		}
-		$listsurveys.="</table></br>" ;
+		$listsurveys.="</table><br />" ;
 	}
 	else $listsurveys="<br /><strong> No Surveys in this Installation </strong><br /><br />" ;
 }

@@ -354,7 +354,7 @@ class phpmailerTest extends TestCase
         $this->Mail->IsHTML(true);
         $this->Mail->Subject .= ": HTML only";
         
-        $this->Mail->Body = "This is a <b>test message</b> written in HTML. </br>" .
+        $this->Mail->Body = "This is a <b>test message</b> written in HTML. <br />" .
                             "Go to <a href=\"http://phpmailer.sourceforge.net/\">" .
                             "http://phpmailer.sourceforge.net/</a> for new versions of " .
                             "phpmailer.  <p/> Thank you!";
