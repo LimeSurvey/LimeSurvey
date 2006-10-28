@@ -2203,7 +2203,7 @@ function getAdminHeader()
 	$strAdminHeader.="<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"scripts/generic.js\"></script>"
+	. "<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
 	. "</head>\n<body>\n"
 	. "<div class=\"maintitle\">\n"
 	. "\t\t$sitename\n"

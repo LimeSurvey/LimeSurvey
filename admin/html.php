@@ -533,7 +533,7 @@ if ($surveyid)
 		if ($gid || $qid || $action=="surveysecurity" || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity" || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups" || $action=="updatesurvey") {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
-		. "<strong>"._("Title:")."</strong></td>\n"
+		. "<strong>"._("Title").":</strong></td>\n"
 		. "\t<td class='settingentryhighlight'><strong>{$s1row['short_title']} "
 		. "(ID {$s1row['sid']})</strong></td></tr>\n";
 		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td>"
@@ -874,7 +874,7 @@ if ($gid)
 		else	  {$gshowstyle="";}
 
 		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'><strong>"
-		. _("Title:")."</strong></font></td>\n"
+		. _("Title").":</strong></font></td>\n"
 		. "\t<td>"
 		. "{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n"
 		. "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'><strong>"
@@ -2499,7 +2499,7 @@ if ($action == "addgroup")
 			if ($grouplang==$baselang) {$newgroup .= '('._('Base Language').')';}
 			$newgroup .= "</h2>"
             . "<table width='100%' border='0'>"
-    		. "\t\t<tr><td align='right'><strong>"._("Title:")."</strong></td>\n"
+    		. "\t\t<tr><td align='right'><strong>"._("Title").":</strong></td>\n"
     		. "\t\t<td><input type='text' size='50' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'>"._("Required")."</td></tr>\n"
     		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</td>\n"
     		. "\t\t<td><textarea cols='50' rows='4' name='description_$grouplang'></textarea></td></tr>\n"
@@ -2577,7 +2577,7 @@ if ($action == "editgroup")
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editgroup .= '</h2>';
 			$editgroup .= "<form name='editgroup' action='$scriptname' method='post'>\n";
-			$editgroup .= "\t<div class='settingrow'><span class='settingcaption'>"._("Title:")."</span>\n"
+			$editgroup .= "\t<div class='settingrow'><span class='settingcaption'>"._("Title").":</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
 			. "\t</span class='settingentry'></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>"._("Description:")."</span>\n"
@@ -3362,7 +3362,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n";
 
-			$editsurvey .= "\t\t<div class='settingrow'><span class='settingcaption'>"._("Title:")."</span>\n"
+			$editsurvey .= "\t\t<div class='settingrow'><span class='settingcaption'>"._("Title").":</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>"._("Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='50' rows='5' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea></span>\n"
@@ -3502,11 +3502,12 @@ if ($action == "newsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
-		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('short_title'), '".("Error: You have to enter a title for this survey.")."');\" >\n"
+        . "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<font class='settingcaption'><font color='white'>"._("Create Survey")."</font></font></td></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='short_title' /></td></tr>\n"
+		. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title").":</font></td>\n"
+		. "\t\t<td><input type='text' size='50' id='short_title' name='short_title' /><font size=1> "._('(This field is mandatory.)')."</font></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>"._("Description:")."</font>	</td>\n"
 		. "\t\t<td><textarea cols='50' rows='5' name='description'></textarea></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
