@@ -6,8 +6,9 @@
     <strong><font color='red'>{ANSWERSCLEARED}</font></strong><br /><br />
 	{RESTART}<br />
         {URL}<br />
-	{CLOSEWINDOW}
+	{CLOSEWINDOW}</font>
    </td>
   </tr>
  </table>
 <br />
+<table  width='0%' align='center'><tr><td><table align='center'  width='0%' border='0'><tr><td>

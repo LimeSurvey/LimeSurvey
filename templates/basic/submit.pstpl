@@ -1,11 +1,11 @@
 <table width="90%" align="center"><tr><td>
- <br>
- <br>
-{SUBMITCOMPLETE}<p>
+ <br />
+ <br />
+{SUBMITCOMPLETE} <br />
 
-<center>{SUBMITBUTTON}</center><p>
+<center>{SUBMITBUTTON}</center> <br />
 
-{SUBMITREVIEW}.<p>
+{SUBMITREVIEW}. <br />
 {PRIVACY}
 <br />
 </td></tr></table>

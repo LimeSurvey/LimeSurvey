@@ -1,7 +1,7 @@
 <center>
 <font color='red'>{LOADERROR}</font>
-<p><strong><font size='+1'>{LOADHEADING}</font></strong></p>
-<p>{LOADMESSAGE}</p>
-<p>{LOADFORM}</p>
+<strong><font size='+1'>{LOADHEADING}</font></strong><br /><br />
+{LOADMESSAGE}<br />
+{LOADFORM}<br />
 {RETURNTOSURVEY}
 </center>

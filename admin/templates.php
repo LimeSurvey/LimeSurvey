@@ -306,11 +306,11 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		foreach ($Question as $qs) {
 			$files[]=array("name"=>$qs);
 		}
-		$myoutput[]="<meta http-equiv=\"expires\" content=\"Wed, 26 Feb 1997 08:21:57 GMT\">\n";
-		$myoutput[]="<meta http-equiv=\"Last-Modified\" content=\"".gmdate('D, d M Y H:i:s'). " GMT\">\n";
-		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\">\n";
-		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\">\n";
-		$myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
+		$myoutput[]="<meta http-equiv=\"expires\" content=\"Wed, 26 Feb 1997 08:21:57 GMT\" />\n";
+		$myoutput[]="<meta http-equiv=\"Last-Modified\" content=\"".gmdate('D, d M Y H:i:s'). " GMT\" />\n";
+		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\" />\n";
+		$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\" />\n";
+		$myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\" />\n";
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startpage.pstpl"));
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/survey.pstpl"));
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startgroup.pstpl"));
@@ -551,7 +551,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 					"<img name='Export' src='$imagefiles/exportsql.png' alt='' align='left' title='' /></a>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t" .
-			"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Template")."')\"" .
+			"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Copy Template")."')\"" .
 			"onClick=\"javascript: copyprompt('"._("Make a copy of this template")."', '"._("copy_of_")."$templatename', '$templatename', 'copy')\">" .
 			"<img name='MakeCopy' src='$imagefiles/copy.png' alt='' align='left' title='' /></a>"
 	."</td><td align='right'>\n"
@@ -601,7 +601,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	if (is_writable("$publicdir/templates/$templatename")) {
 		echo "<input align='right' type='submit' value='Save Changes'";
 		if ($templatename == "default") {
-			echo " disabled";
+			echo " style='color: #BBBBBB;' disabled alt='"._('Changes cannot be saved to the default template.')."'";
 		}
 		echo " />";
 	}
@@ -611,7 +611,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td align='right'>"
 	. "$setfont<strong>"._("Other Files:")."</strong></font><br />\n"
 	//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
-	. "<select size='9' name='otherfile' id='otherfile'>\n"
+	. "<select size='10' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
 	.makeoptions($otherfiles, "name", "name", "")
 	."</select>"
 	."</td></tr><tr><td align='right'>$setfont"
@@ -628,7 +628,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
 	."<form enctype='multipart/form-data' name='importsurvey' action='templates.php' method='post'>\n"
 	."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
-	."<input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
+	."<strong>"._('Upload a File').":</strong><br /><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
 	."<input type='submit' value='"._("Upload")."'";
 	if ($templatename == "default") {
 		echo " disabled";

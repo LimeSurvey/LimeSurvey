@@ -8,9 +8,9 @@
 {COMPLETED}
 
 Thank you very much for the time and effort of taking this survey! 
-Company X looks forward to continuing to improve the services it offers its customers.<p>
+Company X looks forward to continuing to improve the services it offers its customers. <br /><br />
 
-<center><input type="button" name="closeme" value="Close Window" onClick="top.window.close();"></center>
+<center><input type="button" name="closeme" value="Close Window" onClick="top.window.close();" /></center>
 
 
 </td></tr></table>

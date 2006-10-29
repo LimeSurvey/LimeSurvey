@@ -10,6 +10,6 @@
 		<td nowrap valign="bottom"><strong>{SURVEYNAME}</strong></td>
 	</tr>
 	<tr>
-		<td colspan="2" align="center"><table width='80%'><tr><td>{WELCOME}<br> <br></td></tr></table></td>
+		<td colspan="2" align="center"><table width='80%'><tr><td>{WELCOME}<br /> <br /></td></tr></table></td>
 	</tr>
 </table>

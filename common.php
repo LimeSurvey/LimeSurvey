@@ -1792,7 +1792,7 @@ function templatereplace($line)
 	. "<tr><td align='right'>"._("Your Email")."</td><td><input type='text' name='saveemail' value='";
 	if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
 	$saveform .= "' /></td></tr>\n"
-	. "<tr><td></td><td><input type='submit' name='savesubmit' value='"._("Save Now")."'></td></tr>\n"
+	. "<tr><td></td><td><input type='submit' name='savesubmit' value='"._("Save Now")."' /></td></tr>\n"
 	. "</table>";
 	$savereturn = "<a href='index.php?sid=$surveyid";
 	if (returnglobal('token'))
@@ -1825,10 +1825,10 @@ function templatereplace($line)
 	$line=str_replace("{REGISTERMESSAGE2}", _("You may register for this survey if you wish to take part.<br />\nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
 	if (strpos($line, "{REGISTERFORM}") !== false)
 	{
-		$registerform="<table class='register'>\n"
-		."<form method='post' action='register.php'>\n"
-		."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
+		$registerform="<form method='post' action='register.php'>\n"
+		."<table class='register'>\n"
 		."<tr><td align='right'>"
+		."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
 		._("First Name").":</td>"
 		."<td align='left'><input class='text' type='text' name='register_firstname'";
 		if (isset($_POST['register_firstname']))
@@ -1872,8 +1872,8 @@ function templatereplace($line)
 		}
 		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._("Continue")."' />"
 		."</td></tr>\n"
-		."</form>\n"
-		."</table>\n";
+		."</table>\n"
+		."</form>\n";
 		$line=str_replace("{REGISTERFORM}", $registerform, $line);
 	}
 	$line=str_replace("{ASSESSMENTS}", $assessments, $line);

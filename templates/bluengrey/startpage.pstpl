@@ -1,12 +1,12 @@
 	<title>
 	{SURVEYNAME}
 	</title>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">	
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />	
 <meta name="generator" content="PHPSurveyor http://www.phpsurveyor.org" />
-<style>
+<style type='text/css'>
 
 body {
-	color: black;
+	color: #444444;
 	background-color: #FFFFFF;
 	font-family: Verdana;
 	font-size: 12px;
@@ -21,7 +21,8 @@ font{
 }
 .submit
 	{
-	background-color: #CCCCFF;
+	background-color: #FFFFFF;
+        color: #2F5376;
 	}
 .text
 	{
@@ -102,8 +103,8 @@ font{
 	}
 </style>
 </head>
-<body><font color='#444444'>
+<body>
 <br/>
-<table width='85%' align='center' style='border-collapse: collapse' bordercolor='#999999' bgcolor='#E9E9E9' border='2' cellspacing='0'>
+<table width='85%' align='center' style='border-collapse:collapse; border-color:#444444;' bgcolor='#E9E9E9' border='2' cellspacing='0'>
 	<tr>
 		<td style="font-family:Verdana; font-size:12px;">

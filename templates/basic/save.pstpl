@@ -1,7 +1,8 @@
 <center>
 <font color='red'>{SAVEERROR}</font>
-<p><strong><font size='+1'>{SAVEHEADING}</font></strong></p>
-<p>{SAVEMESSAGE}</p>
-<p>{SAVEFORM}</p>
+<strong><font size='+1'>{SAVEHEADING}</font></strong><br /><br />
+{SAVEMESSAGE}<br /><br />
+{SAVEFORM}<br />
 {RETURNTOSURVEY}
 </center>
+<table  width='0%' align='center'><tr><td><table align='center'  width='0%' border='0'><tr><td>

@@ -1,6 +1,5 @@
-<head>
 <title>{SURVEYNAME} :: {GROUPNAME}</title>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="generator" content="PHPSurveyor http://www.phpsurveyor.org" />
 <style type='text/css'>
 body { font-family: arial, verdana, sans-serif; font-size: 14px; line-height: 17px; background-color: #999999; }

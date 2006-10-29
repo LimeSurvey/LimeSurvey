@@ -2,7 +2,7 @@
 	<tr>
 		<td align='center'>
 			<font>{NAVIGATOR}</font><br />
-			<font>{CLEARALL}</font>
+			{CLEARALL}
 			{SAVE}
 		</td>
 	</tr>
