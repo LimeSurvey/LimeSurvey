@@ -354,9 +354,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     				// Fill the sortorder hiddenfield so we now what field is moved down
                     echo "\t<input type='submit' name='method' value='"._("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
-    			echo "<input type='hidden' name='old_title' value='{$row['title']}' />\n"
-    			."<input type='hidden' name='old_code' value='{$row['code']}' />\n"
-    			."\t</td></tr>\n";
+    			echo "\t</td></tr>\n";
     			$position++;
     		}
     	    if ($labelcount>0)  
@@ -367,12 +365,9 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
     		$position=sprintf("%05d", $position);
     		if ($activeuse == 0)
-    		{   echo "<tr><td><br /></td></tr><tr><td width='25%' align=right>";
-    			if ($first)
-    			{
-    			     echo "<strong>"._('New label').":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n";
-    			}
-    			echo "\t</td>\n"
+    		{   echo "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
+  			    ."<strong>"._('New label').":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n"
+    			."\t</td>\n"
     			."\t<td width='35%'>\n"
     			."\t<input type='text' maxlength='100' name='inserttitle_$lslanguage' size='80' />\n"
     			."\t</td>\n"
