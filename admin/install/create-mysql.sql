@@ -84,14 +84,13 @@ CREATE TABLE `prefix_groups` (
 -- 
 
 CREATE TABLE `prefix_labels` (
-  `autoid` int(11) NOT NULL auto_increment,
   `lid` int(11) NOT NULL default '0',
-  `code` varchar(5) NOT NULL default '',
+  `code` varchar(10) NOT NULL default '',
   `title` varchar(100) NOT NULL default '',
   `sortorder` varchar(5) default NULL,
   `language` varchar(20) default 'en',
-  PRIMARY KEY  (`lid`,`code`,`language`),
-  KEY `autoid` (`autoid`)
+  PRIMARY KEY  (`lid`,`sortorder`,`language`),
+  KEY `ixcode` (`code`)
 ) TYPE=MyISAM;
 
 -- --------------------------------------------------------

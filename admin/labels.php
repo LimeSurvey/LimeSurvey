@@ -191,8 +191,13 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		if ($action == "newset") {echo "insertset";}
 		else {echo "updateset";}
 		echo "' />\n";
-		if ($action == "editset") {echo "<input type='hidden' name='lid' value='$lblid' />\n";}
-		echo "</td>\n"
+		
+        if ($action == "editset") 
+        {
+            echo "<input type='hidden' name='lid' value='$lblid' />\n";
+        }
+		
+        echo "</td>\n"
 		."\t</tr>\n";
 		echo "</table></form>\n";
 		if ($action == "newset")
@@ -283,7 +288,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."<input type='hidden' name='action' value='modanswers' />\n";
         echo "<div class='tab-pane' id='tab-pane-1'>";    
         $first=true;
-        $autoids=''; $codeids='';
+        $sortorderids=''; $codeids='';
 		foreach ($lslanguages as $lslanguage)
 		{
      		$position=0;
@@ -311,14 +316,14 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
                 ."<tbody align='center'>";
     		while ($row=$result->FetchRow())
     		{
-                $autoids=$autoids.' '.$row['autoid'];
-    			if ($first) {$codeids=$codeids.' '.$row['autoid'];}                 
+                $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
+    			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}                 
     			echo "<tr><td width='25%' align=right>\n";
 
     			if ($activeuse > 0)
     			{
     				echo "\t{$row['code']}"
-    				."<input type='hidden' name='code_{$row['autoid']}' value=\"{$row['code']}\" />\n";
+    				."<input type='hidden' name='code_{$row['sortorder']}' value=\"{$row['code']}\" />\n";
     			}
     			elseif (!$first)
     			{   
@@ -326,12 +331,12 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
                 }
     			else
     			{
-    				echo "\t<input type='text' name='code_{$row['autoid']}' size='10' value=\"{$row['code']}\" />\n";
+    				echo "\t<input type='text' name='code_{$row['sortorder']}' maxlength='10' size='10' value=\"{$row['code']}\" />\n";
     			}
     			
     			echo "\t</td>\n"
     			."\t<td width='35%'>\n"
-    			."\t<input type='text' name='title_{$row['autoid']}' size='80' value=\"{$row['title']}\" />\n"
+    			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"{$row['title']}\" />\n"
     			."\t</td>\n"
     			."\t<td width='25%'>\n";
     			if ($activeuse == 0)
@@ -354,18 +359,22 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t</td></tr>\n";
     			$position++;
     		}
-    	    if ($labelcount>0) {echo "\t<tr><td colspan=4><center><input type='submit' name='method' value='"._("Save All")."' /></center></td></tr>\n";}
+    	    if ($labelcount>0)  
+            {                       
+                echo "\t<tr><td colspan=4><center><input type='submit' name='method' value='"._("Save All")."'  />"
+                ."</center></td></tr>\n";
+            }
 
     		$position=sprintf("%05d", $position);
     		if ($activeuse == 0)
     		{   echo "<tr><td><br /></td></tr><tr><td width='25%' align=right>";
     			if ($first)
     			{
-    			     echo _('New label').":<input type='text' name='insertcode' size='10' id='addnewlabelcode' />\n";
+    			     echo "<strong>"._('New label').":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n";
     			}
     			echo "\t</td>\n"
     			."\t<td width='35%'>\n"
-    			."\t<input type='text' name='inserttitle_$lslanguage' size='80' />\n"
+    			."\t<input type='text' maxlength='100' name='inserttitle_$lslanguage' size='80' />\n"
     			."\t</td>\n"
     			."\t<td width='25%'>\n"
     			."\t<input type='submit' name='method' value='"._("Add new label")."' />\n"
@@ -394,14 +403,15 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 	    echo("</div>");
         }	
-	echo "<input type='hidden' name='autoids' value='$autoids' />\n"
-	    ."<input type='hidden' name='codeids' value='$codeids' />\n";
+	echo "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
+	echo "<input type='hidden' name='codeids' value='$codeids' />\n";
 	echo "</div>"
 	
     	."</form>";
 	
-	// Here starts the insert new label form
-    echo "</td></tr><tr><td colspan='4'><form style='margin-bottom:0;' action='labels.php' method='post'>"
+	// Here starts the Fix Sort order form
+    echo "</td></tr><tr><td colspan='4'>"
+        ."<form style='margin-bottom:0;' action='labels.php' method='post'>"
 		."<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
 		."\t<tr><td width='80%'></td>"
 		."<td></td><td><input type='submit' name='method' value='"
@@ -409,7 +419,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."</tr></tbody></table>"
 		."\t<input type='hidden' name='lid' value='$lid' />\n"
 		."\t<input type='hidden' name='action' value='modanswers' />\n"
-		."\t</form>\n";
+		."</form>\n";
 		if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
 		{
 			echo "<tr>\n"
@@ -539,15 +549,17 @@ function modanswers($lid)
 		}
 		break;
 		// Save all labels with one button
-		case _("Save"):
+		case _("Save All"):
             //Determine autoids by evaluating the hidden field		
-            $autoids=explode(' ', trim($_POST['autoids']));
+            $sortorderids=explode(' ', trim($_POST['sortorderids']));
             $codeids=explode(' ', trim($_POST['codeids']));
-            
             $count=0; 
-         	foreach ($autoids as $autoid)
+
+         	foreach ($sortorderids as $sortorderid)
         	{
-        		$query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$autoid]}' WHERE autoid=$autoid";
+        		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
+        		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
+                $query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}' WHERE sortorder=$orderid and language='$langid'";
         		//echo $query;  DP
         		if (!$result = $connect->Execute($query))
         		{
@@ -556,34 +568,34 @@ function modanswers($lid)
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
 		    }
+
 		break;
 
-        // Pressing the UP button
+        // Pressing the Up button
 		case _("Up"):
-		$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
-		$replacesortorder=$newsortorder;
-		$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='PEND' WHERE lid=$lid AND sortorder='$newsortorder'";
+		$newsortorder=$_POST['sortorder']-1;
+		$oldsortorder=$_POST['sortorder'];
+		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder='$newreplacesortorder'";
+		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=$newsortorder WHERE lid=$lid AND sortorder=$oldsortorder";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
+		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$oldsortorder' WHERE lid=$lid AND sortorder=-1";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
 		break;
 
         // Pressing the Down button
 		case _("Dn"):
-		$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
-		$replacesortorder=$newsortorder;
-		$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-		$newreplace2=sprintf("%05d", $_POST['sortorder']);
-		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='PEND' WHERE lid=$lid AND sortorder='$newsortorder'";
+		$newsortorder=$_POST['sortorder']+1;
+		$oldsortorder=$_POST['sortorder'];
+		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
+		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder=$oldsortorder";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$newreplacesortorder' WHERE lid=$lid AND sortorder='PEND'";
+		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=$oldsortorder WHERE lid=$lid AND sortorder=-1";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
 		break;
+		
+		// Delete Button
 		case _("Del"):
 		$query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
 		if (!$result = $connect->Execute($query))
@@ -591,6 +603,8 @@ function modanswers($lid)
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._LB_FAIL_DELANS." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 		}
 		break;
+		
+		// Fix Sortorder button
 		case _("Fix Sort"):
 		fixorder($lid);
 		break;
