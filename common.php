@@ -933,7 +933,7 @@ function checkfortables()
 		."\t\t"
 		._("It appears as if some tables or fields are missing from your database.")."<br /><br />\n"
 		."\t\t<input type='submit' value='"
-		._("Check Database Fields")."' onClick=\"window.open('checkfields.php', '_top')\">\n"
+		._("Check Database Fields")."' onClick=\"window.open('checkfields.php', '_top')\" />\n"
 		."\t</td></tr>\n"
 		."</table>\n"
 		."</body></html>\n";
@@ -1645,7 +1645,7 @@ function templatereplace($line)
 	{
 		if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 		{
-			$saveall = "<input type='submit' name='loadall' value='"._("Load Unfinished Survey")."' class='saveall'>";
+			$saveall = "<input type='submit' name='loadall' value='"._("Load Unfinished Survey")."' class='saveall' />";
 		}
 		elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._('last')." "))  //Already saved and on Submit Page, don't show Save So Far button
 		{
@@ -1653,7 +1653,7 @@ function templatereplace($line)
 		}
 		else
 		{
-			$saveall="<input type='submit' name='saveall' value='"._('Save Survey and Return')."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";  // Show Save So Far button
+			$saveall="<input type='submit' name='saveall' value='"._('Save Survey and Return')."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";  // Show Save So Far button
 		}
 	}
 	else
@@ -1729,7 +1729,7 @@ function templatereplace($line)
 		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
 	}
 	$line=str_replace("{NAVIGATOR}", $navigator, $line);
-	$submitbutton="<input class='submit' type='submit' value=' "._("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
+	$submitbutton="<input class='submit' type='submit' value=' "._("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";
 	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
 	$line=str_replace("{COMPLETED}", $completed, $line);
 	if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
@@ -1782,16 +1782,16 @@ function templatereplace($line)
 	//SAVE SURVEY DETAILS
 	$saveform = "<table><tr><td align='right'>"._("Name").":</td><td><input type='text' name='savename' value='";
 	if (isset($_POST['savename'])) {$saveform .= html_escape(auto_unescape($_POST['savename']));}
-	$saveform .= "'></td></tr>\n"
+	$saveform .= "' /></td></tr>\n"
 	. "<tr><td align='right'>"._("Password")."</td><td><input type='password' name='savepass' value='";
 	if (isset($_POST['savepass'])) {$saveform .= html_escape(auto_unescape($_POST['savepass']));}
-	$saveform .= "'></td></tr>\n"
+	$saveform .= "' /></td></tr>\n"
 	. "<tr><td align='right'>"._("Repeat Password")."</td><td><input type='password' name='savepass2' value='";
 	if (isset($_POST['savepass2'])) {$saveform .= html_escape(auto_unescape($_POST['savepass2']));}
-	$saveform .= "'></td></tr>\n"
+	$saveform .= "' /></td></tr>\n"
 	. "<tr><td align='right'>"._("Your Email")."</td><td><input type='text' name='saveemail' value='";
 	if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
-	$saveform .= "'></td></tr>\n"
+	$saveform .= "' /></td></tr>\n"
 	. "<tr><td></td><td><input type='submit' name='savesubmit' value='"._("Save Now")."'></td></tr>\n"
 	. "</table>";
 	$savereturn = "<a href='index.php?sid=$surveyid";
@@ -1809,11 +1809,11 @@ function templatereplace($line)
 	//LOAD SURVEY DETAILS
 	$loadform = "<table><tr><td align='right'>"._("Saved name").":</td><td><input type='text' name='loadname' value='";
 	if (isset($_POST['loadname'])) {$loadform .= html_escape(auto_unescape($_POST['loadname']));}
-	$loadform .= "'></td></tr>\n"
+	$loadform .= "' /></td></tr>\n"
 	. "<tr><td align='right'>"._("Password").":</td><td><input type='password' name='loadpass' value='";
 	if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
-	$loadform .= "'></td></tr>\n"
-	. "<tr><td></td><td><input type='submit' value='"._("Load Now")."'></td></tr></table>\n";
+	$loadform .= "' /></td></tr>\n"
+	. "<tr><td></td><td><input type='submit' value='"._("Load Now")."' /></td></tr></table>\n";
 	$line=str_replace("{LOADERROR}", $errormsg, $line);
 	$line=str_replace("{LOADHEADING}", _("Load A Previously Saved Survey"), $line);
 	$line=str_replace("{LOADMESSAGE}", _("You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"), $line);
@@ -1835,21 +1835,21 @@ function templatereplace($line)
 		{
 			$registerform .= " value='".returnglobal('register_firstname')."'";
 		}
-		$registerform .= "></td></tr>"
+		$registerform .= " /></td></tr>"
 		."<tr><td align='right'>"._("Last Name").":</td>\n"
 		."<td align='left'><input class='text' type='text' name='register_lastname'";
 		if (isset($_POST['register_lastname']))
 		{
 			$registerform .= " value='".returnglobal('register_lastname')."'";
 		}
-		$registerform .= "></td></tr>\n"
+		$registerform .= " /></td></tr>\n"
 		."<tr><td align='right'>"._("Email Address").":</td>\n"
 		."<td align='left'><input class='text' type='text' name='register_email'";
 		if (isset($_POST['register_email']))
 		{
 			$registerform .= " value='".returnglobal('register_email')."'";
 		}
-		$registerform .= "></td></tr>\n";
+		$registerform .= " /></td></tr>\n";
 		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
 		{
 			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
@@ -1858,7 +1858,7 @@ function templatereplace($line)
 			{
 				$registerform .= " value='".returnglobal('register_attribute1')."'";
 			}
-			$registerform .= "></td></tr>\n";
+			$registerform .= " /></td></tr>\n";
 		}
 		if(isset($thissurvey['attribute2']) && $thissurvey['attribute2'])
 		{
@@ -1868,9 +1868,9 @@ function templatereplace($line)
 			{
 				$registerform .= " value='".returnglobal('register_attribute2')."'";
 			}
-			$registerform .= "></td></tr>\n";
+			$registerform .= " /></td></tr>\n";
 		}
-		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._("Continue")."'>"
+		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._("Continue")."' />"
 		."</td></tr>\n"
 		."</form>\n"
 		."</table>\n";
@@ -2131,7 +2131,7 @@ function getHeader()
 	{
 		return  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
 		. "<head>\n"
-		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"scripts/slider/swing.css\">\n"
+		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"scripts/slider/swing.css\" />\n"
 		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
 		. "<script type=\"text/javascript\" src=\"scripts/slider/range.js\"></script>\n"
 		. "<script type=\"text/javascript\" src=\"scripts/slider/timer.js\"></script>\n"

@@ -1045,9 +1045,9 @@ function buildsurveysession()
 	<table align='center'>
 		<tr>
 			<td align='center' valign='middle'>
-			<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid'>
+			<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid' />
 			<?php echo _("Token") ?>: <input class='text' type='text' name='token'>
-			<input class='submit' type='submit' value='<?php echo _("Continue") ?>'>
+			<input class='submit' type='submit' value='<?php echo _("Continue") ?>' />
 			</td>
 		</tr>
 	</table>
@@ -1345,11 +1345,11 @@ function surveymover()
 	$surveymover = "";
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 	{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _("last")." \" id=\"movelast\">";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _("last")." \" id=\"movelast\" />";
 	}
 	else
 	{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _("next")." >> \" id=\"movenext\">";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _("next")." >> \" id=\"movenext\" />";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N")
 	{
@@ -1381,7 +1381,7 @@ function surveymover()
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
 		. _("submit")." ' name='move2' />\n";
 	}
-	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID'>\n";
+	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
 	return $surveymover;
 }
 
