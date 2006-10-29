@@ -2264,7 +2264,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 			}
 		}
 	
-	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
+	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
 	$eqresult = db_execute_assoc($eqquery);
 	$editquestion ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
 	. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Question")."</font></td></tr></table>\n"
@@ -2277,9 +2277,9 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= '</h2>';
 		$editquestion .= "<form name='editquestion' action='$scriptname' method='post'>\n";
 		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Code:")."</span>\n"
-		. "\t\t<span class='settingentry'><input type='text' size='50' name='title_{$eqrow['language']}' value=\"{$eqrow['title']}\" />\n"
-		. "\t</span class='settingentry'></div>\n"
-		. "\t<div class='settingrow'><span class='settingcaption'>"._("Question:")."</span>\n"
+		. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value=\"{$eqrow['title']}\" />\n"
+		. "\t</span class='settingentry'></div>\n";
+		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>"._("Question:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
 		. "\t</span class='settingentry'></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
@@ -2288,10 +2288,32 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "\t<div class='settingrow'><span class='settingcaption'></span>\n"
 		. "\t\t<span class='settingentry'>\n"
 		. "\t</span class='settingentry'></div>\n";
-		$qattributes=questionAttributes();
 		$editquestion .= '</div>';
 	}
 	
+	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language != '{$baselang}'";
+	$eqresult = db_execute_assoc($eqquery);
+	while ($eqrow = $eqresult->FetchRow())
+	{
+		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
+		if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
+		$eqrow  = array_map('htmlspecialchars', $eqrow);
+		$editquestion .= '</h2>';
+		$editquestion .= "<form name='editquestion' action='$scriptname' method='post'>\n";
+		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>"._("Question:")."</span>\n"
+		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
+		. "\t</span class='settingentry'></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
+		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
+		. "\t</span class='settingentry'></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'></span>\n"
+		. "\t\t<span class='settingentry'>\n"
+		. "\t</span class='settingentry'></div>\n";
+		$editquestion .= '</div>';
+	}
+	
+		$qattributes=questionAttributes();
+		
  		//question type:
   		$editquestion .= "\t<table><tr>\n"
   		. "\t\t<td align='right'><strong>"._("Type:")."</strong></td>\n";

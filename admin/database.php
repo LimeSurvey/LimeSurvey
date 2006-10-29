@@ -374,7 +374,7 @@ if(isset($surveyid))
 					if (isset($qlang) && $qlang != "")
 					{
 						$uqquery = "UPDATE {$dbprefix}questions "
-						. "SET type='{$_POST['type']}', title='{$_POST['title_'.$qlang]}', "
+						. "SET type='{$_POST['type']}', title='{$_POST['title']}', "
 						. "question='{$_POST['question_'.$qlang]}', preg='{$_POST['preg']}', help='{$_POST['help_'.$qlang]}', "
 						. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
 						. "mandatory='{$_POST['mandatory']}'";
