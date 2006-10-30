@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-10-27 20:57+0100\n"
+"PO-Revision-Date: 2006-10-30 21:44+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -955,8 +955,8 @@ msgstr "Bitte klicken Sie auf 'Tabellen erstellen' um fortzufahren."
 msgid "Could not create database"
 msgstr "Konnte Datenbank nicht erstellen"
 
-msgid "Group could not be added. It is missing the mandatory group name"
-msgstr "Gruppe konnte nicht hinzugefügt werden. Der Gruppenname wurde nicht angegeben."
+msgid "Group could not be added. It is missing the group name for the following languages "
+msgstr "Gruppe konnte nicht hinzugefügt werden. Der Gruppenname für die folgenden Sprachen fehlt"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:101
 msgid "Error: The database reported the following error:"
@@ -1437,8 +1437,8 @@ msgstr "Neue Gruppe hinzufügen"
 msgid "Groups"
 msgstr "Gruppen"
 
-msgid "Title:"
-msgstr "Titel:"
+msgid "Title"
+msgstr "Titel"
 
 msgid "This survey is anonymous."
 msgstr "Dies ist eine anonyme Umfrage."
@@ -1713,6 +1713,9 @@ msgstr "Benutzer-Administration"
 msgid "Creator"
 msgstr "Ersteller"
 
+msgid "Edit User"
+msgstr "Benutzer bearbeiten"
+
 msgid "Change"
 msgstr "Bearbeiten"
 
@@ -1843,11 +1846,11 @@ msgstr "Frage aktualisieren"
 msgid "Save Order"
 msgstr "Reihenfolge speichern"
 
-msgid "Import Group"
-msgstr "Gruppen importieren"
-
 msgid "Edit Group"
 msgstr "Gruppe bearbeiten"
+
+msgid "Import Group"
+msgstr "Gruppen importieren"
 
 msgid "Update Group"
 msgstr "Gruppe aktualisieren"
@@ -1976,11 +1979,11 @@ msgstr "URL automatisch laden, wenn die Umfrage abgeschlossen ist?"
 msgid "Save and Continue"
 msgstr "Speichern und Fortfahren"
 
-msgid "Edit Survey - Step 2 of 2"
-msgstr "Umfrage bearbeiten - Schritt 2 von 2"
-
 msgid "This will replace the existing text. Continue?"
 msgstr "Der bestehende Text wird ersetzt. Fortfahren?"
+
+msgid "Edit Survey - Step 2 of 2"
+msgstr "Umfrage bearbeiten - Schritt 2 von 2"
 
 msgid "Invitation Email Subject:"
 msgstr "Einladungs-Email Betreff:"
@@ -2133,6 +2136,9 @@ msgstr "Keine Datei hochgeladen"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Fehler beim Datei-Upload. Sie müssen eine CSV-Datei angeben"
 
+msgid "(This field is mandatory.)"
+msgstr "(Dies ist ein Pflichtfeld.)"
+
 msgid "Import Survey"
 msgstr "Umfrage importieren"
 
@@ -2267,9 +2273,6 @@ msgstr "Beschriftung-Set löschen"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:231
 msgid "Are you sure?"
 msgstr "Sind Sie sicher?"
-
-msgid "Title"
-msgstr "Titel"
 
 msgid "Order"
 msgstr "Reihenfolge"
@@ -2505,6 +2508,10 @@ msgstr "Diese Vorlage kann bearbeitet werden."
 msgid "This template cannot be modified"
 msgstr "Diese Vorlage kann nicht bearbeitet werden."
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:538
+msgid "You can\\'t edit the default template."
+msgstr "Sie können das Standardtemplate nicht bearbeiten."
+
 msgid "Rename this template to:"
 msgstr "Vorlage umbenennen nach:"
 
@@ -2513,6 +2520,9 @@ msgstr "Vorlage umbenennen"
 
 msgid "Export Template"
 msgstr "Vorlage exportieren"
+
+msgid "Copy Template"
+msgstr "Vorlage kopieren"
 
 msgid "Make a copy of this template"
 msgstr "Vorlage kopieren"
@@ -2532,8 +2542,15 @@ msgstr "Standard-Dateien:"
 msgid "Now editing:"
 msgstr "In Bearbeitung:"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:604
+msgid "Changes cannot be saved to the default template."
+msgstr "Änderungen am Standardtemplate können nicht gespeichert werden."
+
 msgid "Other Files:"
 msgstr "Andere Dateien:"
+
+msgid "Upload a File"
+msgstr "Eine Datei hochladen"
 
 msgid "Upload"
 msgstr "Hochladen"

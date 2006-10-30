@@ -373,10 +373,10 @@ if ($surveyid)
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
+		$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'"._("Do Survey")."');return false\">"
-		."<img accesskey='d' src='$imagefiles/do.png' title='' "
+		."<img  src='$imagefiles/do.png' title='' "
 		. "name='DoSurvey' align='left' alt='"._("Do Survey")."' /></a>";
 
 		if($sumrows5['browse_response'])
@@ -697,29 +697,29 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	$usergroupsummary .= "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 	. "\t\t\t\t\t<td>\n";
 
-	$usergroupsummary .=  "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
+	$usergroupsummary .=  "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
 	if($ugid)
 	{
 		$usergroupsummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=mailusergroup&amp;ugid=$ugid', '_top')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'"._("Mail to all Members")."');return false\"> " .
-		"<img src='$imagefiles/invite.png' title='' align='left' alt='' name='MailUserGroup'></a>\n" ;
+		"<img src='$imagefiles/invite.png' title='' align='left' alt='' name='MailUserGroup' /></a>\n" ;
 	}
-	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='135' height='20' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
+	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='135' height='20' border='0' hspace='0' align='left' />\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
 	if($ugid && $_SESSION['loginID'] == $grow['creator_id'])
 	{
 		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroup&amp;ugid=$ugid','_top')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'". _("Edit Current User Group")."');return false\">" .
-		"<img src='$imagefiles/edit.png' title='' alt='' name='EditUserGroup' align='left'></a>\n" ;
+		"<img src='$imagefiles/edit.png' title='' alt='' name='EditUserGroup' align='left' /></a>\n" ;
 	}
 	else
 	{
-		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='45' height='20' border='0' hspace='0' align='left'>\n";
+		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='45' height='20' border='0' hspace='0' align='left' />\n";
 	}
 
 	if($ugid && $_SESSION['loginID'] == $grow['creator_id'])
@@ -727,24 +727,24 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		$usergroupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('"._("Are you sure you want to delete this entry.")."')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'". _("Delete Current User Group")."');return false\">"
-		. "<img src='$imagefiles/delete.png' alt='' name='DeleteUserGroup' title='' align='left' border='0' hspace='0'></a>";
+		. "<img src='$imagefiles/delete.png' alt='' name='DeleteUserGroup' title='' align='left' border='0' hspace='0' /></a>";
 	}
 	else
 	{
-		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='43' height='20' border='0' hspace='0' align='left'>\n";
+		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='43' height='20' border='0' hspace='0' align='left' />\n";
 	}
-	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='86' height='20' align='left' border='0' hspace='0'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='86' height='20' align='left' border='0' hspace='0' />\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t\t\t</td>\n"
 	. "\t\t\t\t\t<td align='right' width='480'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='82' height='20'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
+	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='82' height='20' />\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0' />\n";
 
 	$usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
 	."onmouseout=\"hideTooltip()\""
 	."onmouseover=\"showTooltip(event,'"._("Add New User Group")."');return false\">" .
 	"<img src='$imagefiles/add.png' title='' alt='' " .
-	"align='right' name='AddNewUserGroup' onClick=\"window.open('', '_top')\"></a>\n";
+	"align='right' name='AddNewUserGroup' onClick=\"window.open('', '_top')\" /></a>\n";
 
 	$usergroupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">"._("User Groups").":</font>&nbsp;<select class=\"listboxgroups\" name='ugid' "
 	. "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
@@ -778,21 +778,21 @@ if ($gid)
 		. "<font color='silver'>{$grow['group_name']}</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 		. "\t\t\t\t\t<td>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='175' height='20' border='0' hspace='0' align='left'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='175' height='20' border='0' hspace='0' align='left' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
 		if($sumrows5['define_questions'])
 		{
 			$groupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Edit Current Group")."');return false\">" .
-			"<img src='$imagefiles/edit.png' title='' alt='' name='EditGroup' align='left'></a>\n" ;
+			"<img src='$imagefiles/edit.png' title='' alt='' name='EditGroup' align='left' /></a>\n" ;
 		}
 		else
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
 		if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") && $sumrows5['define_questions'])
@@ -800,11 +800,11 @@ if ($gid)
 			$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('"._("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?")."')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Delete Current Group")."');return false\">"
-			. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0'></a>";
+			. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
 		}
 		else
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		if(($activated!="Y" && getQuestionSum($surveyid)>1) && $sumrows5['define_questions'])
 		{
@@ -814,21 +814,21 @@ if ($gid)
 		}
 		else
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		if($sumrows5['export'])
 		{
 
 			$groupsummary .="<a href='dumpgroup.php?sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Export Current Group")."');return false\">" .
-			"<img src='$imagefiles/exportsql.png' title='' alt=''name='ExportGroup' align='left'></a>";
+			"<img src='$imagefiles/exportsql.png' title='' alt=''name='ExportGroup' align='left' /></a>";
 		}
 		else
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
-		$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
+		$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t</td>\n"
 		. "\t\t\t\t\t<td align='right' width='400'>\n";
 
@@ -840,19 +840,19 @@ if ($gid)
 		}
 		else
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='right' border='0' hspace='0'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='right' border='0' hspace='0' />\n";
 		}
 		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
 		. _("Show Details of this Group")."' alt='". _("Show Details of this Group")."' name='MaximiseGroupWindow' "
-		. "align='right'  onclick='showdetails(\"showg\")'>"
+		. "align='right'  onclick='showdetails(\"showg\")' />"
 		. "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
 		. _("Hide Details of this Group")."' alt='". _("Hide Details of this Group")."' name='MinimiseGroupWindow' "
-		. "align='right'  onclick='showdetails(\"hideg\")'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='20' height='20'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0'>\n";
+		. "align='right'  onclick='showdetails(\"hideg\")' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='20' height='20' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0' />\n";
 		if ($activated == "Y")
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' border='0' hspace='0' align='right'>\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' border='0' hspace='0' align='right' />\n";
 		}
 		elseif($sumrows5['define_questions'])
 		{
@@ -860,7 +860,7 @@ if ($gid)
 			."onmouseout=\"hideTooltip()\""
 			."onmouseover=\"showTooltip(event,'"._("Add New Question to Group")."');return false\">" .
 			"<img src='$imagefiles/add.png' title='' alt='' " .
-			"align='right' name='AddNewQuestion' onClick=\"window.open('', '_top')\"></a>\n";
+			"align='right' name='AddNewQuestion' onClick=\"window.open('', '_top')\" /></a>\n";
 		}
 		$groupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">"._("Questions").":</font>&nbsp;<select class=\"listboxquestions\" name='qid' "
 		. "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
@@ -874,12 +874,12 @@ if ($gid)
 		else	  {$gshowstyle="";}
 
 		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'><strong>"
-		. _("Title").":</strong></font></td>\n"
+		. _("Title").":</strong></td>\n"
 		. "\t<td>"
-		. "{$grow['group_name']} ({$grow['gid']})</font></td></tr>\n"
+		. "{$grow['group_name']} ({$grow['gid']})</td></tr>\n"
 		. "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'><strong>"
-		. _("Description:")."</strong></font></td>\n\t<td>";
-		if (trim($grow['description'])!='') {$groupsummary .="{$grow['description']}</font>";}
+		. _("Description:")."</strong></td>\n\t<td>";
+		if (trim($grow['description'])!='') {$groupsummary .=$grow['description'];}
 		$groupsummary .= "</td></tr>\n";
 	}
 	$groupsummary .= "\n</table>\n";
@@ -904,21 +904,21 @@ if ($qid)
 		. _("Question")."</strong> <font color='silver'>{$qrrow['question']}</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 		. "\t\t\t\t\t<td>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='175' height='20' border='0' hspace='0' align='left'>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='175' height='20' border='0' hspace='0' align='left' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
 		if($sumrows5['define_questions'])
 		{
 			$questionsummary .= "<a href='$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
 			"onmouseout=\"hideTooltip()\""
 			."onmouseover=\"showTooltip(event,'". _("Edit Current Question")."');return false\">" .
-			"<img src='$imagefiles/edit.png' title='' alt='' align='left' name='EditQuestion'></a>\n" ;
+			"<img src='$imagefiles/edit.png' title='' alt='' align='left' name='EditQuestion' /></a>\n" ;
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
 		if ((($qct == 0 && $activated != "Y") || $activated != "Y") && $sumrows5['define_questions'])
@@ -928,47 +928,47 @@ if ($qid)
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Delete Current Question")."');return false\">"
 			. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '' title='' "
-			."align='left' border='0' hspace='0'></a>\n";
+			."align='left' border='0' hspace='0' /></a>\n";
 		}
-		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";}
-		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";}
+		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 
 		if($sumrows5['export'])
 		{
 			$questionsummary .= "<a href='dumpquestion.php?qid=$qid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Export this Question")."');return false\">" .
 			"<img src='$imagefiles/exportsql.png' title=''"
-			. "alt=''align='left' name='ExportQuestion'></a>\n";
+			. "alt=''align='left' name='ExportQuestion' /></a>\n";
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
+		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
 		if($sumrows5['define_questions'])
 		{
 			$questionsummary .= "<a href='$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
 			"onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Copy Current Question")."');return false\">" .
-			"<img src='$imagefiles/copy.png' title=''alt='' align='left' name='CopyQuestion'></a>\n"
-			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
+			"<img src='$imagefiles/copy.png' title=''alt='' align='left' name='CopyQuestion' /></a>\n"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		if($sumrows5['define_questions'])
 		{
 			$questionsummary .= "<a href='#' onClick=\"window.open('".$homeurl."/conditions.php?sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=560, scrollbars=yes, resizable=yes, left=50, top=50')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Set Conditions for this Question")."');return false\">"
-			. "<img src='$imagefiles/conditions.png' title='' alt='' align='left' name='SetQuestionConditions'></a>\n"
-			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n";
+			. "<img src='$imagefiles/conditions.png' title='' alt='' align='left' name='SetQuestionConditions' /></a>\n"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0'>\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R")
 		{
@@ -976,7 +976,7 @@ if ($qid)
 			"<a href='".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y'" .
 			"onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Edit/Add Answers for this Question")."');return false\">" .
-			"<img src='$imagefiles/answers.png' title='' align='left' name='ViewAnswers'></a>\n" ;
+			"<img src='$imagefiles/answers.png' alt='' title='' align='left' name='ViewAnswers' /></a>\n" ;
 		}
 		$questionsummary .= "\t\t\t\t\t</td>\n"
 		. "\t\t\t\t\t<td align='right' width='400' valign='top'>\n"
@@ -985,10 +985,10 @@ if ($qid)
 		. "onclick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\" />\n"
 		. "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
 		. _("Show Details of this Question")."'  alt='". _("Show Details of this Question")."'align='right'  name='MaximiseQuestionWindow' "
-		. "onclick='showdetails(\"showq\")'>"
+		. "onclick='showdetails(\"showq\")' />"
 		. "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
 		. _("Hide Details of this Question")."'  alt='". _("Hide Details of this Question")."'align='right'  name='MinimiseQuestionWindow' "
-		. "onclick='showdetails(\"hideq\")'>\n"
+		. "onclick='showdetails(\"hideq\")' />\n"
 		. "\t\t\t\t</td></tr>\n"
 		. "\t\t\t</table>\n"
 		. "\t\t</td>\n"
@@ -996,26 +996,26 @@ if ($qid)
 		if (returnglobal('viewanswer') || $action =="editquestion")	{$qshowstyle = "style='display: none'";}
 		else							{$qshowstyle = "";}
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'><strong>"
-		. _("Code:")."</strong></font></td>\n"
+		. _("Code:")."</strong></td>\n"
 		. "\t<td>{$qrrow['title']}";
 		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>"._("Mandatory Question")."</i>)";}
 		else {$questionsummary .= ": (<i>"._("Optional Question")."</i>)";}
-		$questionsummary .= "</font></td></tr>\n"
+		$questionsummary .= "</td></tr>\n"
 		. "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'><strong>"
-		. _("Question:")."</strong></font></td>\n\t<td>{$qrrow['question']}</font></td></tr>\n"
+		. _("Question:")."</strong></td>\n\t<td>{$qrrow['question']}</td></tr>\n"
 		. "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'><strong>"
-		. _("Help:")."</strong></font></td>\n\t<td>";
-		if (trim($qrrow['help'])!=''){$questionsummary .= "{$qrrow['help']}</font>";}
+		. _("Help:")."</strong></td>\n\t<td>";
+		if (trim($qrrow['help'])!=''){$questionsummary .= "{$qrrow['help']}";}
 		$questionsummary .= "</td></tr>\n";
 		if ($qrrow['preg'])
 		{
 			$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'><strong>"
-			. _("Validation:")."</strong></font></td>\n\t<td>{$qrrow['preg']}"
-			. "</font></td></tr>\n";
+			. _("Validation:")."</strong></td>\n\t<td>{$qrrow['preg']}"
+			. "</td></tr>\n";
 		}
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'><strong>"
-		._("Type:")."</strong></font></td>\n\t<td>{$qtypes[$qrrow['type']]}";
+		._("Type:")."</strong></td>\n\t<td>{$qtypes[$qrrow['type']]}";
 		if ($qrrow['type'] == "F" ||$qrrow['type'] == "H")
 		{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
@@ -1023,7 +1023,7 @@ if ($qid)
 			. _("Edit/Add Label Sets")."' height='15' width='15' hspace='0' name='EditThisLabelSet' "
 			. "onClick=\"window.open('labels.php?lid={$qrrow['lid']}', '_blank')\">\n";
 		}
-		$questionsummary .="</font></td></tr>\n";
+		$questionsummary .="</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 		{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td>"
@@ -1043,7 +1043,7 @@ if ($qid)
 		{
 			$questionsummary .= "\t<tr $qshowstyle id='surveydetails37'>"
 			. "<td align='right' valign='top'><strong>"
-			. _("Other:")."</strong></font></td>\n"
+			. _("Other:")."</strong></td>\n"
 			. "\t<td>{$qrrow['other']}</td></tr>\n";
 		}
 		if ($qrrow['type'] == "J" || $qrrow['type'] == "I")
@@ -1092,9 +1092,9 @@ if (returnglobal('viewanswer'))
 	$cdquery = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$defaultlang."' ORDER BY sortorder, answer";
 	$cdresult = db_execute_assoc($cdquery);
 	$cdcount = $cdresult->RecordCount();
-	$vasummary .= "\t<tr><th width='10%'>"._("Code")."</font></th><th width='50%'>"._("Answer")."</font></th>"
-	. "<th width='10%'>"._("Default")."</font></th><th width='15%'>"._("Action")."</font></th>"
-	. "<th>"._("Move")."</font></th></tr>\n";
+	$vasummary .= "\t<tr><th width='10%'>"._("Code")."</th><th width='50%'>"._("Answer")."</th>"
+	. "<th width='10%'>"._("Default")."</th><th width='15%'>"._("Action")."</th>"
+	. "<th>"._("Move")."</th></tr>\n";
 	$position=0;
 	while ($cdrow = $cdresult->FetchRow())
 	{
@@ -1320,9 +1320,9 @@ if ($action == "modifyuser")
 		. "\t\t<strong><font color='white'>"._("Modifying User")."</td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<th>"._("Username")."</th>\n"
-		. "\t\t<th>"._("Email")."</font></th>\n"
+		. "\t\t<th>"._("Email")."</th>\n"
 		. "\t\t<th>"._("Full name")."</th>\n"
-		. "\t\t<th>"._("Password")."</font></th>\n"
+		. "\t\t<th>"._("Password")."</th>\n"
 		. "\t</tr>\n";
 		$muq = "SELECT a.user, DECODE(a.password, '{$codeString}') AS decpassword, a.full_name, a.email, a.uid, b.user AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
 		//echo($muq);
@@ -1333,7 +1333,7 @@ if ($action == "modifyuser")
 		{
 			$mrw = array_map('htmlspecialchars', $mrw);
 			$decodeString = "DECODE(a.password, '{$codeString}')";	//	added by Dennis
-			$usersummary .= "\t<td align='center'><strong>{$mrw['user']}</strong></font>\n"
+			$usersummary .= "\t<td align='center'><strong>{$mrw['user']}</strong>\n"
 			. "\t<td align='center'>\n\t\t<input type='text' name='email' value=\"{$mrw['email']}\" /></td>\n"
 			. "\t<td align='center'>\n\t\t<input type='text' name='full_name' value=\"{$mrw['full_name']}\" /></td>\n"
 			. "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\" /></td>\n"
@@ -1502,7 +1502,7 @@ if ($action == "editusers")
 		. "\t\t<th>"._("Full name")."</th>\n"
 		. "\t\t<th>"._("Password")."</th>\n"
 		. "\t\t<th>"._("Creator")."</th>\n"
-		. "\t\t<th>"._("Action")."</th>\n"
+		. "\t\t<th></th>\n"
 		. "\t</tr>\n";
 
 		//$userlist = getuserlist();
@@ -1526,7 +1526,7 @@ if ($action == "editusers")
 		}
 		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n"
 		."\t\t\t<form method='post' action='$scriptname'>"
-		."<input type='submit' value='"._("Edit")."' />"
+		."<input type='submit' value='"._("Edit User")."' />"
 		."<input type='hidden' name='action' value='modifyuser' />"
 		."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
 		."</form>";
@@ -2486,7 +2486,7 @@ if($action == "orderquestions")
 	$orderquestions .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>";
 
 	$orderquestions .="<div id=\"movableNode\"><ul></ul></div>
-			   		   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif'></div>
+			   		   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif' /></div>
         			   <div id=\"arrDebug\"></div>"; 					 
 	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
 	$orderquestions .= "<form action='$scriptname' name='orderquestions' method='post'>
@@ -3470,7 +3470,7 @@ if ($action == "ordergroups")
 
 		$ordergroups .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
 		$ordergroups .="<div id=\"movableNode\"><ul></ul></div>
-						   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif'></div>
+						   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif' /></div>
 						   <div id=\"arrDebug\"></div>" ; 					 
 		//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
 		$ordergroups .= "<form action='$scriptname' name='ordergroups' method='post'>
