@@ -5,7 +5,8 @@
     <font face='arial' size='2'>
     <font color='red'><strong>{ANSWERSCLEARED}</strong></font><br /><br />
 	{RESTART}<br />
-	{CLOSEWINDOW}
+	{CLOSEWINDOW}</font>
+
    </td>
   </tr>
  </table>

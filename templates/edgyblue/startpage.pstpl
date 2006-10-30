@@ -1,9 +1,13 @@
 	<title>
 	SURVEYOR
 	</title>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">	
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />	
 <meta name="generator" content="PHPSurveyor http://www.phpsurveyor.org" />
-<style>
+<style type='text/css'>
+body{
+	font-size: 8pt;
+	font-family: verdana;
+}
 .submit
 	{
 	color: #333399;
@@ -108,13 +112,13 @@
 	}
 </style>
 </head>
-<body bgcolor='#FF9933' link='#0000FF' vlink='#800080' alink='#FF0000'><font face='verdana' size='2'>
+<body bgcolor='#FF9933' link='#0000FF' vlink='#800080' alink='#FF0000'>
 <table width='75%' align='center' cellspacing='0' cellpadding='0' bgcolor='white'>
 	<tr>
-		<td width='32'><img src='{TEMPLATEURL}topleft_bord.gif' border='0'></td>
-		<td background='{TEMPLATEURL}top_bord.gif'></td>
-		<td width='32'><img src='{TEMPLATEURL}topright_bord.gif' border='0'></td>
+		<td width='32'><img src='{TEMPLATEURL}topleft_bord.gif' border='0' alt='' /></td>
+		<td style='background-image:url({TEMPLATEURL}top_bord.gif)'></td>
+		<td width='32'><img src='{TEMPLATEURL}topright_bord.gif' border='0' alt='' /></td>
 	</tr>
 	<tr>
-		<td background='{TEMPLATEURL}left_bord.gif'></td>
+		<td style='background-image:url({TEMPLATEURL}left_bord.gif)'></td>
 		<td>

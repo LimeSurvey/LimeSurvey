@@ -1,7 +1,7 @@
 <table width='100%' align='center' cellspacing='0'>
     <tr>
         <td align='left' bgcolor='#FFFFFF'>
-            <img src={TEMPLATEURL}logo.jpg align='right'>
+            <img src={TEMPLATEURL}logo.jpg align='right' alt='Your logo' />
             <font color='#17479E'><b>{SURVEYNAME}</b></font><br />
 
         </td>
