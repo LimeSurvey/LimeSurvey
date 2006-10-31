@@ -1109,38 +1109,33 @@ if (returnglobal('viewanswer'))
 	$sortorderids=''; 
 	$codeids='';
 
-	// Create each language tab
 	foreach ($anslangs as $anslang)
-	$cdquery = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$anslang."' ORDER BY sortorder, answer";
-	$cdresult = db_execute_assoc($cdquery);
-	$anscount = $cdresult->RecordCount();
-	$position=0;
-	$vasummary .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($anslang,false);
-	if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('._('Base Language').')';}
-	$vasummary .= '</h2>';
-
-	while ($row = $cdresult->FetchRow())
 	{
-		$query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' ORDER BY sortorder, code";
+		$position=0;
+    	$query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' ORDER BY sortorder, code";
 		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 		$anscount = $result->RecordCount();
-		$vasummary .= "\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
-		."<thead align='center'>"
-		."<tr bgcolor='#BBBBBB'>\n"
-		."\t<td width='25%' align=right><strong><font size='1' face='verdana' >\n"
-		._("Code")
-		."\t</font></strong></td>\n"
-		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
-		._("Title")
-		."\t</font></strong></td>\n"
-		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
-		._("Action")
-		."\t</font></strong></td>\n"
-		."\t<td width='15%' align=center><strong><font size='1' face='verdana'>\n"
-		._("Order")
-		."\t</font></strong></td>\n"
-		."</tr></thead>"
-		."<tbody align='center'>";
+        $vasummary .= "<div class='tab-page'>"
+                ."<h2 class='tab'>".getLanguageNameFromCode($anslang);
+        if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('._('Base Language').')';}
+                
+        $vasummary .= "</h2>\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
+                ."<thead align='center'>"
+        		."<tr bgcolor='#BBBBBB'>\n"
+        		."\t<td width='25%' align=right><strong><font size='1' face='verdana' >\n"
+        		._("Code")
+        		."\t</font></strong></td>\n"
+        		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
+        		._("Title")
+        		."\t</font></strong></td>\n"
+        		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
+        		._("Action")
+        		."\t</font></strong></td>\n"
+        		."\t<td width='15%' align=center><strong><font size='1' face='verdana'>\n"
+        		._("Order")
+        		."\t</font></strong></td>\n"
+        		."</tr></thead>"
+                ."<tbody align='center'>";
 		while ($row=$result->FetchRow())
 		{
 			$row['code'] = htmlspecialchars($row['code']);
@@ -1150,7 +1145,7 @@ if (returnglobal('viewanswer'))
 			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
 			$vasummary .= "<tr><td width='25%' align=right>\n";
 
-			if ($activated == "Y")
+			if ($activated > 1)
 			{
 				$vasummary .= "\t{$row['code']}"
 				."<input type='hidden' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
@@ -1171,7 +1166,7 @@ if (returnglobal('viewanswer'))
 			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"{$row['answer']}\" />\n"
 			."\t</td>\n"
 			."\t<td width='25%'>\n";
-			if ($activated == "N")
+			if ($activated == 0)
 			{
 				$vasummary .= "\t<input type='submit' name='method' value='"._("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
@@ -1186,7 +1181,7 @@ if (returnglobal('viewanswer'))
 				// Fill the sortorder hiddenfield so we now what field is moved down
 				$vasummary .= "\t<input type='submit' name='method' value='"._("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
-			$vasummary .= "\t</td></tr></div>\n";
+			$vasummary .= "\t</td></tr>\n";
 			$position++;
 		}
 		if ($anscount == 0)
@@ -1195,7 +1190,7 @@ if (returnglobal('viewanswer'))
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);
-		if ($activated == "M")
+		if ($activated == 0)
 		{
 			$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
 			."<strong>"._('New Answer').":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewanswercode' />\n"
@@ -1229,6 +1224,7 @@ if (returnglobal('viewanswer'))
 
 		$vasummary .= "</div>";
 	}
+
 
 	/*
 
