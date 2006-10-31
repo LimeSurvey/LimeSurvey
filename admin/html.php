@@ -1030,8 +1030,8 @@ if ($qid)
 			. "<font face='verdana' size='1' color='green'>"
 			. _("Warning").": ". _("You need to add answers to this question")." "
 			. "<input type='image' src='$imagefiles/answers.png' title='"
-			. _("Edit/Add Answers for this Question")."' border='0' hspace='0' name='EditThisQuestionAnswers'"
-			. "onClick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\"></font></td></tr>\n";
+			. _("Edit/Add Answers for this Question")."' name='EditThisQuestionAnswers'"
+			. "onClick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\" /></font></td></tr>\n";
 		}
 		if (!$qrrow['lid'] && ($qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 		{
@@ -2386,7 +2386,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
 	$eqresult = db_execute_assoc($eqquery);
 	$editquestion ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
-	. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Question")."</font></td></tr></table>\n"
+	. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Question")."</font></font></td></tr></table>\n"
+	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
 	while ($eqrow = $eqresult->FetchRow())
 	{
@@ -2394,7 +2395,6 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
 		$eqrow  = array_map('htmlspecialchars', $eqrow);
 		$editquestion .= '</h2>';
-		$editquestion .= "<form name='editquestion' action='$scriptname' method='post'>\n";
 		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Code:")."</span>\n"
 		. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value=\"{$eqrow['title']}\" />\n"
 		. "\t</span class='settingentry'></div>\n";
@@ -2404,8 +2404,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
 		. "\t</span class='settingentry'></div>\n"
-		. "\t<div class='settingrow'><span class='settingcaption'></span>\n"
-		. "\t\t<span class='settingentry'>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
+		. "\t\t<span class='settingentry'>&nbsp;\n"
 		. "\t</span class='settingentry'></div>\n";
 		$editquestion .= '</div>';
 	}
@@ -2418,15 +2418,14 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
 		$eqrow  = array_map('htmlspecialchars', $eqrow);
 		$editquestion .= '</h2>';
-		$editquestion .= "<form name='editquestion' action='$scriptname' method='post'>\n";
 		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>"._("Question:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
 		. "\t</span class='settingentry'></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
 		. "\t</span class='settingentry'></div>\n"
-		. "\t<div class='settingrow'><span class='settingcaption'></span>\n"
-		. "\t\t<span class='settingentry'>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
+		. "\t\t<span class='settingentry'>&nbsp;\n"
 		. "\t</span class='settingentry'></div>\n";
 		$editquestion .= '</div>';
 	}
@@ -2531,7 +2530,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='"._("Update Question")."' />\n"
 	. "\t<input type='hidden' name='action' value='updatequestion' />\n"
 	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "\t<input type='hidden' name='qid' value='$qid' /></form></td></tr>\n"
+	. "\t<input type='hidden' name='qid' value='$qid' /></td></tr></table></div></form>\n"
 	. "\t\n";
 	
 
@@ -2547,7 +2546,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
                           <tr>  			  
 						  <td nowrap width='50%' ><select id='QTlist' name='attribute_name' >
 						  </select></td><td align='center' width='20%'><input type='text' id='QTtext' size='6' name='attribute_value'  /></td>
-						  <td align='center'><input type='submit' value='"._("Add")."' >
+						  <td align='center'><input type='submit' value='"._("Add")."' />
 						  <input type='hidden' name='action' value='addattribute' />
 						  <input type='hidden' name='sid' value='$surveyid' />
 					      <input type='hidden' name='qid' value='$qid' />
@@ -2583,7 +2582,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "</td></tr></table>\n"
 		. "</form>\n</table>";
 	}
-
+    $editquestion .= "</table>";
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 }
 
