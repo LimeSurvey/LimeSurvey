@@ -21,7 +21,7 @@ CREATE TABLE `prefix_answers` (
   `code` varchar(5) NOT NULL default '',
   `answer` text NOT NULL,
   `default_value` char(1) NOT NULL default 'N',
-  `sortorder` varchar(5) default NULL,
+  `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`,`code`,`language`)
 ) TYPE=MyISAM;
@@ -87,7 +87,7 @@ CREATE TABLE `prefix_labels` (
   `lid` int(11) NOT NULL default '0',
   `code` varchar(10) NOT NULL default '',
   `title` varchar(100) NOT NULL default '',
-  `sortorder` varchar(5) default NULL,
+  `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
   KEY `ixcode` (`code`)
