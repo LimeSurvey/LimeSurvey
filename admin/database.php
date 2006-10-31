@@ -543,6 +543,86 @@ if(isset($surveyid))
 
 	elseif ($action == "modanswer" && $actsurrows['define_questions'])
 	{
+		switch($_POST['method'])
+		{
+			// Add a new answer button
+			case _("Add new Answer"):
+			if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
+			{
+   				$query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
+        	    $result = $connect->Execute($query);
+       			$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
+	        	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+				$baselang = GetBaseLanguageFromSurveyID($surveyid);
+				array_unshift($anslangs,$baselang);
+       			foreach ($anslangs as $anslang)
+    	    	{
+    				if(!isset($_POST['default'])) $_POST['default'] = "";
+    	    		$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', '{$_POST['insertcode']}', '{$_POST['insertanswer_'.$anslang]}', '{$newsortorder}', '{$_POST['default']}','$anslang')";
+           		    if (!$result = $connect->Execute($query))
+    				{
+    					echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to insert answer')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+    				}
+				}
+			}
+		break;
+		// Save all answers with one button
+		case _("Save All"):
+			//Determine autoids by evaluating the hidden field		
+            $sortorderids=explode(' ', trim($_POST['sortorderids']));
+            $codeids=explode(' ', trim($_POST['codeids']));
+            $count=0; 
+
+         	foreach ($sortorderids as $sortorderid)
+        	{
+        		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
+        		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
+        		$query = "UPDATE ".db_table_name('answers')." SET code='".$_POST['code_'.$codeids[$count]]."', answer='{$_POST['answer_'.$sortorderid]}' WHERE sortorder=$orderid and language='$langid'";
+        		if (!$result = $connect->Execute($query))
+        		{
+        			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to update answers')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+    			}
+    			$count++;
+    			if ($count>count($codeids)-1) {$count=0;}
+		    }
+
+		break;
+
+		// Pressing the Up button
+		case _("Up"):
+		$newsortorder=$_POST['sortorder']-1;
+		$oldsortorder=$_POST['sortorder'];
+		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=$newsortorder WHERE qid=$qid AND sortorder=$oldsortorder";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder='$oldsortorder' WHERE qid=$qid AND sortorder=-1";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		break;
+
+        // Pressing the Down button
+		case _("Dn"):
+		$newsortorder=$_POST['sortorder']+1;
+		$oldsortorder=$_POST['sortorder'];
+		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder=$oldsortorder";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=$oldsortorder WHERE qid=$qid AND sortorder=-1";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		break;
+		
+		// Delete Button
+		case _("Del"):
+			$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$qid} AND sortorder='{$_POST['sortorder']}'";
+			if (!$result = $connect->Execute($query))
+			{
+				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to delete answer')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+			}
+		break;
+		}
+		/*
+		
 		if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == _("Add"))) //TURN ALL OTHER DEFAULT SETTINGS TO NO
 		{
 			$query = "UPDATE {$dbprefix}answers SET default_value = 'N' WHERE qid={$_POST['qid']}";
@@ -677,7 +757,7 @@ if(isset($surveyid))
 			break;
 			default:
 			break;
-		}
+		}*/
 	}
 
 	elseif ($action == "insertCSV" && $actsurrows['define_questions'])

@@ -1101,9 +1101,13 @@ if (returnglobal('viewanswer'))
 	._("Answers")
 	."\t</font></strong></td>\n"
 	."</tr>\n"
-	."\t<tr><td colspan='5'><form method='post' action='admin.php'>\n"
-	."<input type='hidden' name='qid' value='$qid' />\n"
-	."<input type='hidden' name='action' value='modanswers' />\n";
+	."\t<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'>\n"
+	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+	. "\t<input type='hidden' name='gid' value='$gid' />\n"
+	. "\t<input type='hidden' name='qid' value='$qid' />\n"
+	. "\t<input type='hidden' name='viewanswer' value='Y' />\n"
+	."<input type='hidden' name='sortorder' value='' />\n"
+	. "\t<input type='hidden' name='action' value='modanswer' />\n";
 	$vasummary .= "<div class='tab-pane' id='tab-pane-1'>";
 	$first=true;
 	$sortorderids=''; 
@@ -1126,7 +1130,7 @@ if (returnglobal('viewanswer'))
         		._("Code")
         		."\t</font></strong></td>\n"
         		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
-        		._("Title")
+        		._("Answer")
         		."\t</font></strong></td>\n"
         		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
         		._("Action")
@@ -1143,6 +1147,7 @@ if (returnglobal('viewanswer'))
 			
 			$sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
 			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
+			
 			$vasummary .= "<tr><td width='25%' align=right>\n";
 
 			if ($activated > 1)
@@ -1163,7 +1168,7 @@ if (returnglobal('viewanswer'))
 
 			$vasummary .= "\t</td>\n"
 			."\t<td width='35%'>\n"
-			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"{$row['answer']}\" />\n"
+			."\t<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"{$row['answer']}\" />\n"
 			."\t</td>\n"
 			."\t<td width='25%'>\n";
 			if ($activated == 0)
@@ -1184,7 +1189,7 @@ if (returnglobal('viewanswer'))
 			$vasummary .= "\t</td></tr>\n";
 			$position++;
 		}
-		if ($anscount == 0)
+		if ($anscount > 1)
 		{
 			$vasummary .= "\t<tr><td colspan=4><center><input type='submit' name='method' value='"._("Save All")."'  />"
 			."</center></td></tr>\n";
@@ -1221,8 +1226,9 @@ if (returnglobal('viewanswer'))
 		}
 		$first=false;
 		$vasummary .= "</tbody></table>\n";
-
-		$vasummary .= "</div>";
+		$vasummary .=  "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
+		$vasummary .=  "<input type='hidden' name='codeids' value='$codeids' />\n";
+		$vasummary .= "</div></form>";
 	}
 
 
