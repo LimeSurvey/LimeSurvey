@@ -2180,7 +2180,7 @@ function doAdminHeader()
 
 function getAdminHeader()
 {
-	global $sitename, $sitename, $homeurl;
+	global $sitename;
 	$strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
 	."<html>\n<head>\n"
 	. "<!--[if lt IE 7]>\n"

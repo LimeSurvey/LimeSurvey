@@ -7,7 +7,13 @@ body    {
         text-align:left;
         }
 
-
+.boxstyle
+        {
+        border-color: #111111; 
+        border-width: 1; 
+        border-style: solid;
+        }
+        
 .footer
         {
 	    margin-left: 0px;

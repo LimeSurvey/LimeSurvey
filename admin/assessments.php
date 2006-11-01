@@ -36,7 +36,7 @@
 require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (!isset($action)) {echo $action=returnglobal('action');}
+if (!isset($action)) {$action=returnglobal('action');}
 
 $actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 $actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
@@ -74,11 +74,14 @@ if($actsurrows['edit_survey_property']){
 	}
 	
 	sendcacheheaders();
-	echo $htmlheader;
-	echo "<table><tr><td height='1'></td></tr></table>\n"
-	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("Assessments")."</strong></font></td></tr>\n";
+	DoAdminHeader();
+    echo  "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+        . "\t<tr>\n"
+        . "\t\t<td>\n"
+        . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+        . "\t\t\t<tr bgcolor='#555555'>\n"
+        . "\t\t\t\t<td colspan='2' height='8'>\n"
+        . "\t\t\t\t\t<font size='1' color='white'><strong>"._("Assessments")."</strong></font></td></tr>\n";
 	
 	echo "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
@@ -106,11 +109,11 @@ if($actsurrows['edit_survey_property']){
 	$headings=array(_("Scope"), _("Group"), _("Minimum"), _("Maximum"), _("Heading"), _("Message"), _("URL"));
 	$inputs=array("<select name='scope'><option value='T'>"._("Total")."</option><option value='G'>"._("Group")."</option></select>",
 	$groupselect,
-	"<input type='text' name='minimum'>",
-	"<input type='text' name='maximum'>",
-	"<input type='text' name='name'>",
-	"<textarea name='message'></textarea>",
-	"<input type='text' name='link'>");
+	"<input type='text' name='minimum' />",
+	"<input type='text' name='maximum' />",
+	"<input type='text' name='name' />",
+	"<textarea name='message'></textarea />",
+	"<input type='text' name='link' />");
 	$actiontitle=_("Add");
 	$actionbutton=_("Add");
 	$thisid="";
@@ -129,11 +132,11 @@ if($actsurrows['edit_survey_property']){
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
 		$inputs=array($scopeselect,
 		$groupselect,
-		"<input type='text' name='minimum' value='".$editdata['minimum']."'>",
-		"<input type='text' name='maximum' value='".$editdata['maximum']."'>",
-		"<input type='text' name='name' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."'>",
+		"<input type='text' name='minimum' value='".$editdata['minimum']."' />",
+		"<input type='text' name='maximum' value='".$editdata['maximum']."' />",
+		"<input type='text' name='name' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."' />",
 		"<textarea name='message'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
-		"<input type='text' name='link' value='".$editdata['link']."'>");
+		"<input type='text' name='link' value='".$editdata['link']."' />");
 		$actiontitle=_("Edit");
 		$actionbutton=_("Update");
 		$thisid=$editdata['id'];
@@ -164,9 +167,9 @@ if($actsurrows['edit_survey_property']){
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form></td>
 				 <td align='center'><form method='post' action='assessments.php?sid=$surveyid'>
-				 <input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")'>
-				 <input type='hidden' name='action' value='delete'>
-				 <input type='hidden' name='id' value='".$assess['id']."'>
+				 <input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />
+				 <input type='hidden' name='action' value='delete' />
+				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form>
 				 </td>
 				</tr>
@@ -183,12 +186,12 @@ if($actsurrows['edit_survey_property']){
 		echo "<tr><th>$head</th><td>".$inputs[$i]."</td></tr>\n";
 		$i++;
 	}
-	echo "<tr><th colspan='2'><input type='submit' value='$actionbutton'></th></tr><tr><td>\n";
-	echo "<input type='hidden' name='sid' value='$surveyid'>\n"
-	."<input type='hidden' name='action' value='$actionbutton'>\n"
-	."<input type='hidden' name='id' value='$thisid'>\n"
-	."</td></tr>\n"
-	."</table></form></table><br />\n";
+	echo "<tr><th colspan='2' align='center'><input type='submit' value='$actionbutton' />\n";
+	echo "<input type='hidden' name='sid' value='$surveyid' />\n"
+	."<input type='hidden' name='action' value='$actionbutton' />\n"
+	."<input type='hidden' name='id' value='$thisid' />\n"
+	."</th></tr>\n"
+	."</table></form></table><br /></table>\n";
 		
 	echo getAdminFooter("", "");
 	}

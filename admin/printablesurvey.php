@@ -38,7 +38,6 @@ if (empty($_GET['sid'])) {die ("Cannot run this script directly");}
 
 $surveyid = $_GET['sid'];
 
-$boxstyle = "style='border-color: #111111; border-width: 1; border-style: solid'";
 require_once(dirname(__FILE__).'/../config.php');
 
 
@@ -49,10 +48,7 @@ if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 
 sendcacheheaders();
 
-DoHeader();
-echo "<meta http-equiv='content-script-type' content='text/javascript' />\n"
-. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n";
-echo "<title>"._("Printable Version of Survey")."</title></head>\n<body>\n";
+DoAdminHeader();
 
 // PRESENT SURVEY DATAENTRY SCREEN
 
@@ -79,7 +75,7 @@ echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t<table border='1' style='border-collapse: collapse; border-color: #111111; width: 100%'>\n";
 echo "\t\t\t\t<tr><td align='center'>\n";
 echo "\t\t\t\t\t<font size='5' face='verdana'><strong>$surveyname</strong></font>\n";
-echo "\t\t\t\t\t<br />$setfont$surveydesc</font>\n";
+echo "\t\t\t\t\t<br />$surveydesc\n";
 echo "\t\t\t\t</td></tr>\n";
 echo "\t\t\t</table>\n";
 echo "\t\t</td>\n";
@@ -233,7 +229,7 @@ while ($degrow = $degresult->FetchRow())
 		if ($explanation)
 		{
 			$explanation = "["._("Only answer this question")." ".$explanation."]";
-			echo "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
+			echo "<tr bgcolor='$bgc'><td colspan='3'>$explanation</td></tr>\n";
 		}
 
 		//END OF GETTING CONDITIONS
@@ -246,7 +242,7 @@ while ($degrow = $degresult->FetchRow())
 		{
 			echo _("*");
 		}
-		echo "\t\t\t<strong>$setfont{$deqrow['title']}: {$deqrow['question']}</font></strong>\n";
+		echo "\t\t\t<strong>{$deqrow['title']}: {$deqrow['question']}</strong>\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		//DIFFERENT TYPES OF DATA FIELD HERE
@@ -263,20 +259,20 @@ while ($degrow = $degresult->FetchRow())
 		switch($deqrow['type'])
 		{
 			case "5":  //5 POINT CHOICE
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			for ($i=1; $i<=5; $i++)
 			{
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='$i' readonly='readonly' />$i \n";
 			}
 			break;
 			case "D":  //DATE
-			echo "\t\t\t$setfont<u>"._("Please enter a date:")."</u><br />\n";
-			echo "\t\t\t<input type='text' $boxstyle name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' readonly='readonly' /></font>\n";
+			echo "\t\t\t<u>"._("Please enter a date:")."</u><br />\n";
+			echo "\t\t\t<input type='text' class='boxstyle' name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' readonly='readonly' />\n";
 			break;
 			case "G":  //GENDER
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			echo "\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			echo "\t\t\t<input type='checkbox' name='$fieldname' value='F' readonly='readonly' />"._("Female")."<br />\n";
-			echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />"._("Male")."<br /></font>\n";
+			echo "\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />"._("Male")."<br />\n";
 			break;
 			case "W": //Flexible List
 			case "Z":
@@ -289,7 +285,7 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$dcols=0;
 			}
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>only one</strong> of the following:")."</u></font><br />\n";
+			echo "\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, title";
 			$dearesult = db_execute_assoc($deaquery) or die("ERROR: $deaquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 			$deacount=$dearesult->RecordCount();
@@ -300,7 +296,7 @@ while ($degrow = $degresult->FetchRow())
 				$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
 				$divider="</td>\n <td valign='top' width='$width%' nowrap>";
 				$upto=0;
-				echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>$setfont";
+				echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
 				while ($dearow = $dearesult->FetchRow())
 				{
 					if ($upto == $maxrows)
@@ -315,12 +311,11 @@ while ($degrow = $degresult->FetchRow())
 				{
 					echo "\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 				}
-				echo "</font></td></tr></table>\n";
+				echo "</td></tr></table>\n";
 				//Let's break the presentation into columns.
 			}
 			else
 			{
-				echo $setfont;
 				while ($dearow = $dearesult->FetchRow())
 				{
 					echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['title']}<br />\n";
@@ -329,7 +324,6 @@ while ($degrow = $degresult->FetchRow())
 				{
 					echo "\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 				}
-				echo "\t\t\t</font>";
 			}
 			break;
 			case "L":  //LIST
@@ -343,7 +337,7 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$dcols=0;
 			}
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$dearesult = db_execute_assoc($deaquery);
 			$deacount=$dearesult->RecordCount();
@@ -385,25 +379,25 @@ while ($degrow = $degresult->FetchRow())
 			}
 			break;
 			case "O":  //LIST WITH COMMENT
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			echo "\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$dearesult = db_execute_assoc($deaquery);
 			while ($dearow = $dearesult->FetchRow())
 			{
 				echo "\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
 			}
-			echo "\t\t\t<u>"._("Make a comment on your choice here:")."</u><br /></font>\n";
-			echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname"."comment"."' readonly='readonly'></textarea>\n";
+			echo "\t\t\t<u>"._("Make a comment on your choice here:")."</u><br />\n";
+			echo "\t\t\t<textarea class='boxstyle' cols='50' rows='8' name='$fieldname"."comment"."' readonly='readonly'></textarea>\n";
 			break;
 			case "R":  //RANKING Type Question
 			$reaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$rearesult = db_execute_assoc($reaquery) or die ("Couldn't get ranked answers<br />".htmlspecialchars($connect->ErrorMsg()));
 			$reacount = $rearesult->RecordCount();
-			echo "\t\t\t$setfont<u>"._("Please number each box in order of preference from 1 to")." $reacount</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please number each box in order of preference from 1 to")." $reacount</u><br />\n";
 			while ($rearow = $rearesult->FetchRow())
 			{
 				echo "\t\t\t<table cellspacing='1' cellpadding='0'><tr><td width='20' height='20' bgcolor='white' style='border: solid 1 #111111'>&nbsp;</td>\n";
-				echo "\t\t\t<td valign='middle'>$setfont{$rearow['answer']}</font></td></tr></table>\n";
+				echo "\t\t\t<td valign='middle'>{$rearow['answer']}</td></tr></table>\n";
 			}
 			break;
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
@@ -416,7 +410,7 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$dcols=0;
 			}
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>all</strong> that apply:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose <strong>all</strong> that apply:")."</u><br />\n";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$meacount = $mearesult->RecordCount();
@@ -440,7 +434,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					echo "\t\t\t"._("Other").": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+					echo "\t\t\t"._("Other").": <input type='text' class='boxstyle' size='60' name='$fieldname" . "other' readonly='readonly' />\n";
 				}
 				echo "</td></tr></table>\n";
 			}
@@ -452,12 +446,12 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					echo "\t\t\t"._("Other").": <input type='text' $boxstyle size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+					echo "\t\t\t"._("Other").": <input type='text' class='boxstyle' size='60' name='$fieldname" . "other' readonly='readonly' />\n";
 				}
 			}
 			break;
 			case "J":  //FILE CSV MORE
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>all</strong> that apply:")."</u><br />\n";
+			echo "\t\t\t<u>"._("Please choose <strong>all</strong> that apply:")."</u><br />\n";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			while ($mearow = $mearesult->FetchRow())
@@ -466,7 +460,7 @@ while ($degrow = $degresult->FetchRow())
 			}
 			break;
 			case "I":  //FILE CSV ONE
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>only one</strong> of the following:").":</u><br />\n";
+			echo "\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:").":</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$dearesult = db_execute_assoc($deaquery);
 			while ($dearow = $mearesult->FetchRow())
@@ -478,71 +472,71 @@ while ($degrow = $degresult->FetchRow())
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			echo "\t\t\t$setfont<u>"._("Please choose all that apply and provide a comment:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose all that apply and provide a comment:")."</u><br />\n";
 			echo "\t\t\t<table border='0'>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td>$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+				echo "\t\t\t\t\t<td><input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
 				if ($mearow['default_value'] == "Y") {echo " checked";}
-				echo " readonly='readonly' />{$mearow['answer']} </font></td>\n";
+				echo " readonly='readonly' />{$mearow['answer']}</td>\n";
 				//This is the commments field:
-				echo "\t\t\t\t\t<td>$setfont<input type='text' $boxstyle name='$fieldname{$mearow['code']}comment' size='60' readonly='readonly' /></font></td>\n";
+				echo "\t\t\t\t\t<td><input type='text' class='boxstyle' name='$fieldname{$mearow['code']}comment' size='60' readonly='readonly' /></td>\n";
 				echo "\t\t\t\t</tr>\n";
 			}
 			echo "\t\t\t</table>\n";
 			break;
 			case "Q":  //MULTIPLE SHORT TEXT
-			echo "\t\t\t$setfont<u>"._("Please write your answer(s) here:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please write your answer(s) here:")."</u><br />\n";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			echo "\t\t\t<table border='0'>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td>$setfont{$mearow['answer']}: <input type='text' size='60' name='$fieldname{$mearow['code']}' value=''";
+				echo "\t\t\t\t\t<td>{$mearow['answer']}: <input type='text' size='60' name='$fieldname{$mearow['code']}' value=''";
 				if ($mearow['default_value'] == "Y") {echo " checked";}
-				echo " readonly='readonly' /></font></td>\n";
+				echo " readonly='readonly' /></td>\n";
 				echo "\t\t\t\t</tr>\n";
 			}
 			echo "\t\t\t</table>\n";
 			break;
 			case "S":  //SHORT TEXT
-			echo "\t\t\t$setfont<u>"._("Please write your answer here:")."</u><br /></font>\n";
-			echo "\t\t\t<input type='text' name='$fieldname' size='60' $boxstyle readonly='readonly' />\n";
+			echo "\t\t\t<u>"._("Please write your answer here:")."</u><br />\n";
+			echo "\t\t\t<input type='text' name='$fieldname' size='60' class='boxstyle' readonly='readonly' />\n";
 			break;
 			case "T":  //LONG TEXT
-			echo "\t\t\t$setfont<u>"._("Please write your answer here:")."</u><br /></font>\n";
-			echo "\t\t\t<textarea $boxstyle cols='50' rows='8' name='$fieldname' readonly='readonly'></textarea>\n";
+			echo "\t\t\t<u>"._("Please write your answer here:")."</u><br />\n";
+			echo "\t\t\t<textarea class='boxstyle' cols='50' rows='8' name='$fieldname' readonly='readonly'></textarea>\n";
 			break;
 			case "U":  //HUGE TEXT
-			echo "\t\t\t$setfont<u>"._("Please write your answer here:")."</u><br /></font>\n";
-			echo "\t\t\t<textarea $boxstyle cols='70' rows='50' name='$fieldname' readonly='readonly'></textarea>\n";
+			echo "\t\t\t<u>"._("Please write your answer here:")."</u><br />\n";
+			echo "\t\t\t<textarea class='boxstyle' cols='70' rows='50' name='$fieldname' readonly='readonly'></textarea>\n";
 			break;
 			case "N":  //NUMERICAL
-			echo "\t\t\t$setfont<u>"._("Please write your answer here:")."</u><br />\n";
-			echo "\t\t\t<input type='text' size='40' $boxstyle readonly='readonly' /></font>\n";
+			echo "\t\t\t<u>"._("Please write your answer here:")."</u><br />\n";
+			echo "\t\t\t<input type='text' size='40' class='boxstyle' readonly='readonly' />\n";
 			break;
 			case "Y":  //YES/NO
-			echo "\t\t\t$setfont<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			echo "\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			echo "\t\t\t<input type='checkbox' name='$fieldname' value='Y' readonly='readonly' />"._("Yes")."<br />\n";
-			echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />"._("No")."<br /></font>\n";
+			echo "\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />"._("No")."<br />\n";
 			break;
 			case "A":  //ARRAY (5 POINT CHOICE)
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			echo "\t\t\t$setfont<u>"._("Please choose the appropriate response for each item:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
 			echo "\t\t\t<table>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
-				echo "\t\t\t\t\t<td>$setfont";
+				echo "\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
+				echo "\t\t\t\t\t<td>";
 				for ($i=1; $i<=5; $i++)
 				{
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
 				}
-				echo "\t\t\t\t\t</font></td>\n";
+				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 			}
 			echo "\t\t\t</table>\n";
@@ -550,18 +544,18 @@ while ($degrow = $degresult->FetchRow())
 			case "B":  //ARRAY (10 POINT CHOICE)
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			echo "\t\t\t$setfont<u>"._("Please choose the appropriate response for each item:")."</u><br /></font>";
+			echo "\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />";
 			echo "\t\t\t<table border='0'>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
-				echo "\t\t\t\t\t<td>$setfont\n";
+				echo "\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
+				echo "\t\t\t\t\t<td>\n";
 				for ($i=1; $i<=10; $i++)
 				{
 					echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
 				}
-				echo "\t\t\t\t\t</font></td>\n";
+				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 			}
 			echo "\t\t\t</table>\n";
@@ -569,17 +563,17 @@ while ($degrow = $degresult->FetchRow())
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			echo "\t\t\t$setfont<u>"._("Please choose the appropriate response for each item:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
 			echo "\t\t\t<table>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
-				echo "\t\t\t\t\t<td>$setfont\n";
+				echo "\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
+				echo "\t\t\t\t\t<td>\n";
 				echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />"._("Yes")."&nbsp;\n";
 				echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U' readonly='readonly' />"._("Uncertain")."&nbsp;\n";
 				echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N' readonly='readonly' />"._("No")."&nbsp;\n";
-				echo "\t\t\t\t\t</font></td>\n";
+				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 			}
 			echo "\t\t\t</table>\n";
@@ -587,17 +581,17 @@ while ($degrow = $degresult->FetchRow())
 			case "E":  //ARRAY (Increase/Same/Decrease)
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			echo "\t\t\t$setfont<u>"._("Please choose the appropriate response for each item:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
 			echo "\t\t\t<table>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
-				echo "\t\t\t\t\t<td>$setfont\n";
+				echo "\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
+				echo "\t\t\t\t\t<td>\n";
 				echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='I' readonly='readonly' />"._("Increase")."&nbsp;\n";
 				echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='S' readonly='readonly' />"._("Same")."&nbsp;\n";
 				echo "\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D' readonly='readonly' />"._("Decrease")."&nbsp;\n";
-				echo "\t\t\t\t\t</font></td>\n";
+				echo "\t\t\t\t\t</td>\n";
 				echo "\t\t\t\t</tr>\n";
 			}
 			echo "\t\t\t</table>\n";
@@ -607,7 +601,7 @@ while ($degrow = $degresult->FetchRow())
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			echo "\t\t\t$setfont<u>"._("Please choose the appropriate response for each item:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
 			echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 			$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
 			$fresult = db_execute_assoc($fquery);
@@ -623,15 +617,15 @@ while ($degrow = $degresult->FetchRow())
 			while ($mearow = $mearesult->FetchRow())
 			{
 				echo "\t\t\t\t<tr>\n";
-				echo "\t\t\t\t\t<td align='left'>$setfont{$mearow['answer']}</font></td>\n";
+				echo "\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
 				//echo "\t\t\t\t\t<td>";
 				for ($i=1; $i<=$fcount; $i++)
 				{
 
 					echo "\t\t\t\t\t<td align='center'";
 					if ($i > 1) {echo " $headstyle";}
-					echo ">$setfont\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' /></font>\n";
+					echo ">\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
 					echo "\t\t\t\t\t</td>\n";
 				}
 				//echo "\t\t\t\t\t</tr></table></td>\n";
@@ -644,7 +638,7 @@ while ($degrow = $degresult->FetchRow())
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";
 			$fquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 			$fresult = db_execute_assoc($fquery);
-			echo "\t\t\t$setfont<u>"._("Please choose the appropriate response for each item:")."</u><br /></font>\n";
+			echo "\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
 			echo "\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 			$meaquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}' ORDER BY sortorder, code";
 			$mearesult = db_execute_assoc($meaquery);
@@ -653,7 +647,7 @@ while ($degrow = $degresult->FetchRow())
 			$i=0;
 			while ($frow = $fresult->FetchRow())
 			{
-				echo "\t\t\t\t\t<td align='center'>$setfont{$frow['answer']}</font></td>\n";
+				echo "\t\t\t\t\t<td align='center'>{$frow['answer']}</td>\n";
 				$i++;
 			}
 			echo "\t\t\t\t\t\t</tr>\n";
@@ -667,8 +661,8 @@ while ($degrow = $degresult->FetchRow())
 
 					echo "\t\t\t\t\t<td align='center'";
 					if ($i > 1) {echo " $headstyle";}
-					echo ">$setfont\n";
-					echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' /></font>\n";
+					echo ">\n";
+					echo "\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
 					echo "\t\t\t\t\t</td>\n";
 				}
 				//echo "\t\t\t\t\t</tr></table></td>\n";
@@ -687,7 +681,7 @@ echo "\t\t<td colspan='3' align='center'>\n";
 echo "\t\t\t<table width='100%' border='1' style='border-collapse: collapse'>\n";
 echo "\t\t\t\t<tr>\n";
 echo "\t\t\t\t\t<td align='center'>\n";
-echo "\t\t\t\t\t\t$setfont<strong>"._("Submit Your Survey.")."</strong></font><br />\n";
+echo "\t\t\t\t\t\t<strong>"._("Submit Your Survey.")."</strong><br />\n";
 echo "\t\t\t\t\t\t"._("Thank you for completing this survey.")." "._("Please fax your completed survey to:")." $surveyfaxto";
 if ($surveyuseexpiry=="Y")
 {
