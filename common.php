@@ -1023,19 +1023,19 @@ function keycontroljs()
 }
 
 
-function fixsortorder($qid) //Function rewrites the sortorder for a group of answers
+function fixsortorderAnswers($qid) //Function rewrites the sortorder for a group of answers
 {
 	global $dbprefix, $connect;
-	$cdresult = db_execute_num("SELECT qid, code, answer FROM ".db_table_name('answers')." WHERE qid=? AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer", $qid);
+	$cdresult = db_execute_num("SELECT qid, code, sortorder FROM ".db_table_name('answers')." WHERE qid=?  group by qid, code, sortorder ORDER BY sortorder", array($qid));
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
-		$position=sprintf("%05d", $position);
-		$cd2query="UPDATE ".db_table_name('answers')." SET sortorder=? WHERE qid=? AND code=? AND answer=? AND language='".$_SESSION['s_lang']."'";
-		$cd2result=$connect->Execute($cd2query, $position, $cdrow[0], $cdrow[1], $cdrow[2]) or die ("Couldn't update sortorder<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
+		$cd2query="UPDATE ".db_table_name('answers')." SET sortorder=? WHERE qid=? AND code=? AND sortorder=? ";
+		$cd2result=$connect->Execute($cd2query, array($position, $cdrow[0], $cdrow[1], $cdrow[2])) or die ("Couldn't update sortorder<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$position++;
 	}
 }
+
 
 function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder for questions
 {

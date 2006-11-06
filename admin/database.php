@@ -549,7 +549,7 @@ if(isset($surveyid))
 			case _("Add new Answer"):
 			if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
 			{
-   				$query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
+                $query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
         	    $result = $connect->Execute($query);
        			$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
 	        	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -619,6 +619,7 @@ if(isset($surveyid))
 			{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to delete answer')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 			}
+            fixsortorderAnswers($qid);
 		break;
 		}
 		/*
@@ -636,7 +637,7 @@ if(isset($surveyid))
 		switch ($_POST['ansaction'])
 		{
 			case _("Fix Sort"):
-			fixsortorder($_POST['qid']);
+			fixsortorderAnswers($_POST['qid']);
 			break;
 			case _("Sort Alpha"):
 			$uaquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$_POST['qid']}' ORDER BY answer";
@@ -730,7 +731,7 @@ if(isset($surveyid))
 				$cdquery = "DELETE FROM {$dbprefix}answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
 				$cdresult = $connect->Execute($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 			}
-			fixsortorder($qid);
+			fixsortorderAnswers($qid);
 			break;
 			case _("Up"):
 			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);

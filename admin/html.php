@@ -1088,7 +1088,7 @@ if (returnglobal('viewanswer'))
 		$cacount=$caresult->RecordCount();
 		if ($cacount)
 		{
-			fixsortorder($qid); // !!Adjust this!!
+			fixsortorderAnswers($qid); // !!Adjust this!!
 		}
 	}
 
@@ -1198,13 +1198,19 @@ if (returnglobal('viewanswer'))
 		if ($activated == 0)
 		{
 			$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
-			."<strong>"._('New Answer').":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewanswercode' />\n"
-			."\t</td>\n"
+			."<strong>"._('New Answer').":</strong> ";
+            if ($first==true) 
+                { 
+                $vasummary .= "<input type='text' maxlength='10' name='insertcode' size='10' id='addnewanswercode' />\n";
+                $first=false;
+                }
+			$vasummary .= "\t</td>\n"
 			."\t<td width='35%'>\n"
 			."\t<input type='text' maxlength='100' name='insertanswer_$anslang' size='80' />\n"
 			."\t</td>\n"
 			."\t<td width='25%'>\n"
 			."\t<input type='submit' name='method' value='"._("Add new Answer")."' />\n"
+			."\t<input type='hidden' name='action' value='modanswer' />\n"
 			."\t</td>\n"
 			."\t<td>\n"
 			."<script type='text/javascript'>\n"

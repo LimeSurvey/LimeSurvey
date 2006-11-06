@@ -205,6 +205,7 @@ $action == "copynewquestion" || $action == "insertnewgroup" || $action=="reorder
 $action == "insertnewquestion" || $action == "updatesurvey" || $action == "updatesurvey2" || $action=="updategroup" ||
 $action=="reorderquestions" || $action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
 $action == "delattribute" || $action == "addattribute" || $action == "editattribute")
+
 {
 	include("database.php");
 }
