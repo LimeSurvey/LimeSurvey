@@ -1120,7 +1120,7 @@ if (returnglobal('viewanswer'))
 		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 		$anscount = $result->RecordCount();
         $vasummary .= "<div class='tab-page'>"
-                ."<h2 class='tab'>".getLanguageNameFromCode($anslang);
+                ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
         if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('._('Base Language').')';}
                 
         $vasummary .= "</h2>\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
@@ -2412,8 +2412,9 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language != '{$baselang}'";
 	$eqresult = db_execute_assoc($eqquery);
-	while ($eqrow = $eqresult->FetchRow())
+	while (!$eqresult->EOF) 
 	{
+	    $eqrow = $eqresult->FetchRow();
 		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
 		if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
 		$eqrow  = array_map('htmlspecialchars', $eqrow);
@@ -2430,7 +2431,6 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= '</div>';
 	}
 	
-		$qattributes=questionAttributes();
 		
  		//question type:
   		$editquestion .= "\t<table><tr>\n"
@@ -2453,6 +2453,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		. "\t\t<td align='right'><strong>"._("Label Set:")."</strong></td>\n"
   		. "\t\t<td>\n";
   		
+		$qattributes=questionAttributes();
   		if ($activated != "Y")
   		{
   			$editquestion .= "\t\t<select name='lid' >\n";

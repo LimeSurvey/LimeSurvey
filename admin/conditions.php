@@ -51,24 +51,24 @@ if(isset($_POST['cquestions'])) {
 }
 
 echo "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
-."\t<tr><td align='center'>$setfont<font color='white'><strong>"
-._("Condition Designer")."</strong></font></font></td></tr>\n"
+."\t<tr><td align='center'><font color='white'><strong>"
+._("Condition Designer")."</strong></font></td></tr>\n"
 ."</table>\n";
 
 
 if (!isset($surveyid))
 {
-	echo "<br /><center>$setfont<strong>"
+	echo "<br /><center><strong>"
 	._("You have not selected a Survey.")." "._("You cannot run this script directly.")
-	."</strong></font></center>\n"
+	."</strong></center>\n"
 	."</body></html>\n";
 	exit;
 }
 if (!isset($_GET['qid']) && !isset($_POST['qid']))
 {
-	echo "<br /><center>$setfont<strong>"
+	echo "<br /><center><strong>"
 	._("You have not selected a Question.")." "._("You cannot run this script directly.")
-	."</strong></font></center>\n"
+	."</strong></center>\n"
 	."</body></html>\n";
 	exit;
 }
@@ -187,7 +187,8 @@ $qquery = "SELECT * "
         ."FROM {$dbprefix}questions, {$dbprefix}groups "
         ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
         ."AND {$dbprefix}questions.sid=$surveyid "
-        ."AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+        ."AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
+        ."AND ".db_table_name('groups').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
 
 $qresult = db_execute_assoc($qquery) or die ("$qquery<br />".$connect->ErrorMsg());
 $qrows = $qresult->GetRows();
@@ -230,8 +231,9 @@ if (isset($questionlist) && is_array($questionlist))
 {
 	foreach ($questionlist as $ql)
 	{
-		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
-		$result=db_execute_assoc($query) or die("Couldn't get question $qid");
+		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups "
+                ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' AND ".db_table_name('groups').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+        $result=db_execute_assoc($query) or die("Couldn't get question $qid");
 		$thiscount=$result->RecordCount();
 		while ($myrows=$result->FetchRow())
 		{
@@ -275,7 +277,7 @@ if ($questionscount > 0)
 		else {$shortquestion=$rows['title'].": ".strip_tags($rows['question']);}
 		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H")
 		{
-			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} ORDER BY sortorder, answer";
+			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder, answer";
 			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 			while ($arows = $aresult->FetchRow())
 			{
@@ -485,9 +487,9 @@ $showreplace="$questiontitle<img src='$imagefiles/speaker.png' alt=\""
 . htmlspecialchars($questiontext)
 . "\" onClick=\"alert('"
 . htmlspecialchars(addslashes(strip_tags($questiontext)))
-. "')\">";
+. "')\" />";
 $onlyshow=str_replace("{QID}", $showreplace, _("Only show question {QID} IF"));
-echo "\t\t\t$setfont<strong>$onlyshow</strong></font>\n"
+echo "\t\t\t<strong>$onlyshow</strong>\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
 
@@ -496,7 +498,7 @@ $query = "SELECT {$dbprefix}conditions.cid, {$dbprefix}conditions.cqid, {$dbpref
 ."FROM {$dbprefix}conditions, {$dbprefix}questions\n"
 ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
 ."AND {$dbprefix}conditions.qid=$qid\n"
-."ORDER BY {$dbprefix}conditions.cfieldname";
+."ORDER BY {$dbprefix}conditions.cfieldname"; 
 $result = db_execute_assoc($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 $conditionscount=$result->RecordCount();
 
@@ -508,15 +510,15 @@ if ($conditionscount > 0)
 		{
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 			."\t\t\t\t\t<td valign='middle' align='center'>\n"
-			."$setfont<font size='1'><strong>"
-			._("and")."</strong></font></font>";
+			."<font size='1'><strong>"
+			._("and")."</strong></font>";
 		}
 		elseif (isset($currentfield))
 		{
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 			."\t\t\t\t\t<td valign='top' align='center'>\n"
-			."$setfont<font size='1'><strong>"
-			._("OR")."</strong></font></font>";
+			."<font size='1'><strong>"
+			._("OR")."</strong></font>";
 		}
 		echo "\t<tr bgcolor='#E1FFE1'>\n"
 		."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
@@ -536,8 +538,8 @@ if ($conditionscount > 0)
 			}
 		}
 		echo "\t\t</font></td>\n"
-		."\t\t<td align='center' valign='middle' width='15%'>$setfont<font size='1'>"
-		._("Equals")."</font></font></td>"
+		."\t\t<td align='center' valign='middle' width='15%'><font size='1'>"
+		._("Equals")."</font></td>"
 		."\t\t\t\t\n"
 		."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
 		."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
@@ -552,11 +554,11 @@ if ($conditionscount > 0)
 		}
 		echo "\t\t\t\t\t</font></td>\n"
 		."\t\t\t\t\t<td align='right' valign='middle' >\n"
-		."\t\t\t\t\t\t<input type='submit' value='Del' style='font-family: verdana; font-size: 8; height:15'>\n"
-		."\t\t\t\t\t<input type='hidden' name='action' value='delete'>\n"
-		."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}'>\n"
-		."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		."\t\t\t\t\t<input type='hidden' name='qid' value='$qid'>\n"
+		."\t\t\t\t\t\t<input type='submit' value='Del' style='font-family: verdana; font-size: 8; height:15' />\n"
+		."\t\t\t\t\t<input type='hidden' name='action' value='delete' />\n"
+		."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
+		."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n"
 		."\t\t\t\t\t</td>\n"
 		."\t</table></form>\n"
 		."\t</tr>\n";
@@ -583,13 +585,13 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 
 	echo "\t<table width='100%'><tr bgcolor='#CDCDCD'>\n"
 	."\t\t<td colspan='3' align='center'>\n"
-	."\t\t$setfont<strong>"
-	._("Copy Conditions")."</strong></font>\n"
+	."\t\t<strong>"
+	._("Copy Conditions")."</strong>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 
 	echo "\t<tr>\n"
-	."\t\t<th>{$setfont}"._("Condition")."</font></th><th></th><th>{$setfont}"._("Question")."</font></th>\n"
+	."\t\t<th>"._("Condition")."</font></th><th></th><th>"._("Question")."</th>\n"
 	."\t</tr>\n";
 
 	echo "\t<tr>\n"
@@ -601,9 +603,9 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	}
 	echo "\t\t</select>\n"
 	."\t\t</td>\n"
-	."\t\t<td align='center'>$setfont\n"
+	."\t\t<td align='center'>\n"
 	."\t\t"._("copy to")."\n"
-	."\t\t</font></td>\n"
+	."\t\t</td>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:220' size='4'>\n";
 	foreach ($pquestions as $pq)
@@ -614,13 +616,13 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	echo "\t\t</td>\n"
 	."\t</tr>\n";
 
-	echo "\t<tr><td colspan='3' align='center'>$setfont\n"
-	."<input type='submit' value='"._("Copy Conditions")."' onclick=\"return confirm('"._("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\">"
-	."\t\t</font>\n";
+	echo "\t<tr><td colspan='3' align='center'>\n"
+	."<input type='submit' value='"._("Copy Conditions")."' onclick=\"return confirm('"._("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\" />"
+	."\t\t\n";
 
-	echo "<input type='hidden' name='action' value='copyconditions'>\n"
-	."<input type='hidden' name='sid' value='$surveyid'>\n"
-	."<input type='hidden' name='qid' value='$qid'>\n"
+	echo "<input type='hidden' name='action' value='copyconditions' />\n"
+	."<input type='hidden' name='sid' value='$surveyid' />\n"
+	."<input type='hidden' name='qid' value='$qid' />\n"
 	."</td></tr></table></form>\n";
 
 	echo "\t<tr ><td colspan='3'></td></tr>\n"
@@ -632,17 +634,17 @@ echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditio
 echo "<table width='100%' border='0' >";
 echo "\t<tr bgcolor='#CDCDCD'>\n"
 ."\t\t<td colspan='3' align='center'>\n"
-."\t\t\t$setfont<strong>"._("Add Condition")."</strong></font>\n"
+."\t\t\t<strong>"._("Add Condition")."</strong>\n"
 ."\t\t</td>\n"
 ."\t</tr>\n"
 ."\t<tr bgcolor='#EFEFEF'>\n"
 ."\t\t<th width='40%'>\n"
-."\t\t\t$setfont<strong>"._("Question")."</strong></font>\n"
+."\t\t\t<strong>"._("Question")."</strong>\n"
 ."\t\t</th>\n"
 ."\t\t<th width='20%'>\n"
 ."\t\t</th>\n"
 ."\t\t<th width='40%'>\n"
-."\t\t\t$setfont<strong>"._("Answer")."</strong></font>\n"
+."\t\t\t<strong>"._("Answer")."</strong>\n"
 ."\t\t</th>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
@@ -661,13 +663,13 @@ if (isset($cquestions))
 }
 echo "\t\t\t</select>\n"
 ."\t\t</td>\n"
-."\t\t<td align='center'>$setfont\n";
+."\t\t<td align='center'>\n";
 //echo "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
 //echo "\t\t\t\t<option value='='>Equals</option>\n";
 //echo "\t\t\t\t<option value='!'>Does not equal</option>\n";
 //echo "\t\t\t</select>\n";
 echo "\t\t\t"._("Equals")."\n"
-."\t\t</font></td>\n"
+."\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
 ."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
 
@@ -692,7 +694,7 @@ echo "\t<tr><td colspan='3'></td></tr>\n"
 ."\t\t</td>\n";
 echo "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
 ."\t\t<tr><td colspan='3' align='center'>\n"
-."\t\t\t<input type='submit' value='"._("Close Window")."' onClick=\"window.close()\" >\n"
+."\t\t\t<input type='submit' value='"._("Close Window")."' onClick=\"window.close()\"  />\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
 echo "\t<tr><td colspan='3'></td></tr>\n"
