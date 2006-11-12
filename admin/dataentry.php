@@ -1330,9 +1330,10 @@ if($actsurrows['browse_response']){
 		."</table>\n"
 		."</body>\n";
 	}
-	
 	else
 	{
+		$langlistbox = languageDropdown($surveyid,$_GET['language']);
+		$thissurvey=getSurveyInfo($surveyid);
 		//This is the default, presenting a blank dataentry form
 		$fieldmap=createFieldMap($surveyid);
 		// PRESENT SURVEY DATAENTRY SCREEN
@@ -1341,18 +1342,23 @@ if($actsurrows['browse_response']){
 		._("Browse Responses")."</strong></font></td></tr>\n"
 		.$surveyoptions
 		."</table>";
-	
-		GetBaseLanguageFromSurveyID($surveyid);
-		$thissurvey=getSurveyInfo($surveyid);
-		$surveytable = "{$dbprefix}survey_$surveyid";
-	
+		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		array_unshift($slangs,$baselang);
+		
+		if(!isset($_GET['language']) || !in_array($_GET['language'],$slangs))
+		{
+			$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		} else {
+			$baselang = $_GET['language'];
+		}
 	
 		echo "<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><strong>"
 		._("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#777777'>\n"
-		."\t\t<td colspan='3' align='center'><font color='white'>\n"
+		."\t\t<td align='left'>$langlistbox</td><td colspan='2' align='center'><font color='white'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
 		."\t\t\t<br />$setfont".$thissurvey['description']."</font></font>\n"
 		."\t\t</td>\n"
@@ -1393,12 +1399,12 @@ if($actsurrows['browse_response']){
 	
 	
 		// SURVEY NAME AND DESCRIPTION TO GO HERE
-		$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid ORDER BY {$dbprefix}groups.group_order";
+		$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND language='{$baselang}' ORDER BY {$dbprefix}groups.group_order";
 		$degresult = db_execute_assoc($degquery);
 		// GROUP NAME
 		while ($degrow = $degresult->FetchRow())
 		{
-			$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']}";
+			$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$baselang}'";
 			$deqresult = db_execute_assoc($deqquery);
 			echo "\t<tr>\n"
 			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<strong>{$degrow['group_name']}</strong></font></td>\n"
@@ -1491,7 +1497,7 @@ if($actsurrows['browse_response']){
 							case "F":
 							case "H":
 							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}'";
+							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$baselang}'";
 							$ansresult=db_execute_assoc($ansquery);
 							$i=0;
 							while ($ansrow=$ansresult->FetchRow())
@@ -1504,7 +1510,7 @@ if($actsurrows['browse_response']){
 							$operator=_("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
 							break;
 							default:
-							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
+							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
 							$ansresult=db_execute_assoc($ansquery);
 							while ($ansrow=$ansresult->FetchRow())
 							{
@@ -1603,7 +1609,7 @@ if($actsurrows['browse_response']){
 					}
 					echo "\t\t\t\t<option selected value=''>"._("Please choose")."..</option>\n";
 	
-					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
+					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']} AND language='{$baselang}";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($orow = $oresult->FetchRow())
 					{
@@ -1635,7 +1641,7 @@ if($actsurrows['browse_response']){
 					}
 					if (!$defexists) {echo "\t\t\t\t<option selected value=''>"._("Please choose")."..</option>\n";}
 	
-					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']}";
+					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']} AND language='{$baselang}";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($orow = $oresult->FetchRow())
 					{
@@ -1655,7 +1661,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$defexists="";
-					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					echo "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
@@ -1848,7 +1854,7 @@ if($actsurrows['browse_response']){
 					{
 						$dcols=0;
 					}
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					$meacount = $mearesult->RecordCount();
 					if ($deqrow['other'] == "Y") {$meacount++;}
@@ -2163,7 +2169,7 @@ else
 	$action = "browse_response";
 	include("access_denied.php");
 	include("admin.php");
-	//echo("Wird gelöscht: " . $sumrows5['DELETE_SURVEY']);	
+	//echo("Wird gel?scht: " . $sumrows5['DELETE_SURVEY']);	
 	}
 
 
