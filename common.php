@@ -773,16 +773,14 @@ function getSurveyInfo($surveyid)
 	$query="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	$result=db_execute_assoc($query) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$query2="SELECT * FROM ".db_table_name('survey_texts')." WHERE sid=$surveyid and language='$s_lang'";
+	$query2="SELECT * FROM ".db_table_name('surveys_languagesettings')." WHERE surveyls_survey_id=$surveyid and surveyls_language='$s_lang'";
 	$result2=db_execute_assoc($query2) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-
-
 	while ($row=$result->FetchRow())
 	{
 		$row2 = $result2->FetchRow();
-		$thissurvey=array("name"=>$row['short_title'],
-		"description"=>$row2['description'],
-		"welcome"=>$row2['welcome'],
+		$thissurvey=array("name"=>$row['surveyls_title'],
+		"description"=>$row2['surveyls_description'],
+		"welcome"=>$row2['surveyls_welcometext'],
 		"templatedir"=>$row['template'],
 		"adminname"=>$row['admin'],
 		"adminemail"=>$row['adminemail'],
@@ -805,14 +803,14 @@ function getSurveyInfo($surveyid)
 		"allowregister"=>$row['allowregister'],
 		"attribute1"=>$row['attribute1'],
 		"attribute2"=>$row['attribute2'],
-		"email_invite_subj"=>$row2['email_invite_subj'],
-		"email_invite"=>$row2['email_invite'],
-		"email_remind_subj"=>$row2['email_remind_subj'],
-		"email_remind"=>$row2['email_remind'],
-		"email_confirm_subj"=>$row2['email_confirm_subj'],
-		"email_confirm"=>$row2['email_confirm'],
-		"email_register_subj"=>$row2['email_register_subj'],
-		"email_register"=>$row2['email_register'],
+		"email_invite_subj"=>$row2['surveyls_email_invite_subj'],
+		"email_invite"=>$row2['surveyls_email_invite'],
+		"email_remind_subj"=>$row2['surveyls_email_remind_subj'],
+		"email_remind"=>$row2['surveyls_email_remind'],
+		"email_confirm_subj"=>$row2['surveyls_email_confirm_subj'],
+		"email_confirm"=>$row2['surveyls_email_confirm'],
+		"email_register_subj"=>$row2['surveyls_email_register_subj'],
+		"email_register"=>$row2['surveyls_email_register'],
 		"allowsave"=>$row['allowsave'],
 		"autonumber_start"=>$row['autonumber_start'],
 		"autoredirect"=>$row['autoredirect'],
@@ -1508,8 +1506,8 @@ function createFieldMap($surveyid, $style="null") {
 			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
 			." FROM ".db_table_name('answers').", ".db_table_name('questions')
 			." WHERE sid=$surveyid AND ".db_table_name('answers').".qid=".db_table_name('questions').".qid "
-			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."'"
-			." AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."'" 
+			. "AND ".db_table_name('questions').".language='".$s_lang."'"
+			." AND ".db_table_name('answers').".language='".$s_lang."'" 
 			." AND ".db_table_name('questions').".qid={$arow['qid']} "
 			." ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -2777,11 +2775,26 @@ function getusergrouplist()
     }
     
 function updateusergroup($name, $description, $ugid) 
-	{
+{
 	global $dbprefix, $scriptname, $connect;
 	
 	$uquery = "UPDATE ".db_table_name('user_groups')." SET name = '$name', description = '$description' WHERE ugid =$ugid";
 	// TODO
 	return $connect->Execute($uquery) or die($connect->ErrorMsg()) ;
+}
+
+function languageDropdown($surveyid,$selected) 
+{
+	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	array_unshift($slangs,$baselang);
+	$html = "<select class='listboxquestions' name='langselect' onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
+	foreach ($slangs as $lang)
+	{
+		if ($lang == $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?sid={$surveyid}&language={$lang}' selected>".getLanguageNameFromCode($lang,false)."</option>\n";
+		if ($lang != $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
 	}
+	$html .= "</select>";
+	return $html;
+}
 ?>
