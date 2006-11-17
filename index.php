@@ -36,13 +36,13 @@
 
 require_once(dirname(__FILE__).'/config.php');
 
-if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
 if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");}
 session_start();
 
 //NEW for multilanguage surveys 
-SetSurveyLanguage($surveyid);
+//SetSurveyLanguage($surveyid);
 
 
 
@@ -1065,7 +1065,7 @@ function buildsurveysession()
 	elseif ($tokensexist == 1 && returnglobal('token'))
 	{
 		//check if token actually does exist
-		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens')."_$surveyid WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
+		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
 		$tkresult = db_execute_num($tkquery);
 		list($tkexist) = $tkresult->FetchRow();
 		if (!$tkexist)
@@ -1095,12 +1095,34 @@ function buildsurveysession()
 			exit;
 		}
 	}
-
+			
 	//RESET ALL THE SESSION VARIABLES AND START AGAIN
 	unset($_SESSION['grouplist']);
 	unset($_SESSION['fieldarray']);
 	unset($_SESSION['insertarray']);
 	unset($_SESSION['thistoken']);
+
+//get language from token (if one exists)
+		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
+		//echo $tkquery2;
+		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		while ($rw = $result->FetchRow())
+	{ 
+		$tklanguage=$rw['attribute_1'];
+	}
+
+
+//RL: multilingual support 
+// language selection by means of tokens has to go in here as well
+	if (returnglobal('lang')) { $language_to_set=returnglobal('lang');
+		} elseif (isset($tklanguage)) { $language_to_set=$tklanguage;}
+		else {$language_to_set = $thissurvey['language'];}
+
+	SetSurveyLanguage($surveyid, $language_to_set);
+	
+//end RL
+//var_dump($_SESSION);
+
 	//1. SESSION VARIABLE: grouplist
 	//A list of groups in this survey, ordered by group name.
 
@@ -1111,12 +1133,15 @@ function buildsurveysession()
 		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
 	}
 
+
 	$query = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
 	."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
 	."AND ".db_table_name('questions').".sid=$surveyid\n"
 	."AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."' "
 	."AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' "
 	."ORDER BY ".db_table_name('groups').".group_order";
+ //var_dump($_SESSION);
+//	echo $query."<br>";
 	$result = db_execute_assoc($query);
 
 	$arows = $result->GetRows();

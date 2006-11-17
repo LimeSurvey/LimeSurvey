@@ -1932,35 +1932,27 @@ function SetInterfaceLanguage($languagetoset)
 
 
 //NEW for multilanguage surveys 
-function SetSurveyLanguage($surveyid)
+function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 {
-	//echo "Native language: ".GetBaseLanguageFromSurveyID($surveyid)."<br />";
-	$defaultlanguage = getLanguageCodefromLanguage(GetBaseLanguageFromSurveyID($surveyid));
-	
-	if (returnglobal('s_lang')) {
-				$new_lang=returnglobal('s_lang');
 
-				$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+	// see if language actually is present in survey
+				$query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 				$result = db_execute_assoc($query);
-				while ($result && ($row=$result->FetchRow())) {$additional_languages = $row['additional_languages'];}
-
-		//		echo "Available languages: ".$additional_languages."<br />";
-				if (strpos($additional_languages, $new_lang) === false) {
-				//Language not supported, fall back to default language
-			//	echo "Language not supported, resorting to ".$defaultlanguage."<br />";
-				$_SESSION['s_lang'] = $defaultlanguage;
-				} else {
-					$_SESSION['s_lang'] = $new_lang;
-				//	echo "Language will be set to ".$_SESSION['s_lang']."<br />";
+				while ($result && ($row=$result->FetchRow())) {
+					$additional_languages = $row['additional_languages'];
+					$default_language = $row['language'];
 				}
-	}
-			else {
-					if (!isset($_SESSION['s_lang'])){
-						$_SESSION['s_lang'] = $defaultlanguage;
-					}
-			}
-		//	echo "taal:  ".getLanguageNameFromCode($_SESSION['s_lang'])."<br />";
-			SetInterfaceLanguage($_SESSION['s_lang']);
+
+				//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
+				if ((strpos($additional_languages, $language) === false) or ($default_language == $language) or !isset($language)) {
+					// Language not supported, or default language for survey, fall back to survey's default language
+					$_SESSION['s_lang'] = $default_language;
+					//echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
+				} else {
+					$_SESSION['s_lang'] = $language;
+					//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
+				}
+				SetInterfaceLanguage($_SESSION['s_lang']);
 //
 //			if (!function_exists('bind_textdomain_codeset')) echo "You need at least PHP 4.2.x to run PHPSurveyor." and die;
 //			bind_textdomain_codeset($_SESSION['s_lang'],'UTF-8');

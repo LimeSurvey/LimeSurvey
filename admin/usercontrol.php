@@ -102,20 +102,20 @@ if (!isset($_SESSION['loginID']))
 			else 
 				{
 				$fields = $result->FetchRow();
-				//echo("Passwort aus der DB: " . $fields[2] . "<br />");
+				//echo("Passwort aus der DB: " . $fields['password'] . "<br />");
 				//echo("eingegebenes Passwort " . $_POST['password'] . "<br />");
 				if ($_POST['password'] == $fields['password']) 
 					{
 					// Anmeldung ERFOLGREICH
-					killSession();	// clear $_SESSION
+					//killSession();	// clear $_SESSION   //removed by RONALD
 					
 					$_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['user'];
 					$_SESSION['adminlang'] = $fields['lang'];
-	
+
 					$login = true;
 					include("sessioncontrol.php");
-					
+
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
 					$loginsummary .= _("Login successful.");
 					$loginsummary .= "<br /><br />\n";
@@ -196,7 +196,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				}
 			else
 				{
-				// Muss noch mal gesendet werden oder andere Möglichkeit
+				// Muss noch mal gesendet werden oder andere MË†glichkeit
 				$tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", _("Email to {NAME} ({EMAIL}) failed."));
 				$addsummary .= "<br />".str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
 				}
@@ -243,7 +243,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 			
 			if($isallowed)
 				{
-				// Wenn ein Benutzer gelöscht wird, werden die von ihm erstellten Benutzer dem Benutzer
+				// Wenn ein Benutzer gelË†scht wird, werden die von ihm erstellten Benutzer dem Benutzer
 				// zugeordnet, von dem er selbst erstellt wurde
 				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid={$_POST['uid']}";
 				$sresult = $connect->Execute($squery);
