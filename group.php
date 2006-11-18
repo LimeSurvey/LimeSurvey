@@ -629,7 +629,6 @@ if ($groupdescription)
 echo "\n";
 
 
-// RL: here it is.
 echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 if (isset($qanda) && is_array($qanda))
 {
