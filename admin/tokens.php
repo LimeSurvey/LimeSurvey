@@ -60,15 +60,16 @@ if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 
-	echo "Tid, Firstname, Lastname, Email, Token , Attribute1, Attribute2, mpid\n";
+	echo "Tid, Firstname, Lastname, Email, Token , Language, Attribute1, Attribute2, mpid\n";
 	while ($brow = $bresult->FetchRow())
 	{
 		echo trim($brow['tid']).",";
 		echo trim($brow['firstname']).",";
 		echo trim($brow['lastname']).",";
 		echo trim($brow['email']).",";
-		echo trim($brow['token']);
-		if($bfieldcount > 7)
+		echo trim($brow['token']).",";
+		echo trim($brow['language']);
+		if($bfieldcount > 8)
 		{
 			echo ",";
 			echo trim($brow['attribute_1']).",";
@@ -159,6 +160,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "lastname varchar(40) NULL,\n "
 		. "email varchar(100) NULL,\n "
 		. "token varchar(10) NULL,\n "
+		. "language varchar(2) NULL,\n "
 		. "sent varchar(15) NULL DEFAULT 'N',\n "
 		. "completed varchar(15) NULL DEFAULT 'N',\n "
 
@@ -515,6 +517,12 @@ if ($action == "browse" || $action == "search")
 	."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='"
 	._("Sort by: ")._("Token")."' border='0' align='left'></a>$setfont"._("Token")."</font></th>\n"
+
+	."\t\t<th align='left' valign='top'>"
+	."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=language&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<img src='$imagefiles/downarrow.png' alt='"
+	._("Sort by: ")._("Language")."' border='0' align='left'></a>$setfont"._("Language")."</font></th>\n"
+	
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=sent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='"
@@ -523,7 +531,7 @@ if ($action == "browse" || $action == "search")
 	."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='"
 	._("Sort by: ")._("Completed?")."' border='0' align='left'></a>$setfont"._("Completed?")."</font></th>\n";
-	if ($bfieldcount == 9)
+	if ($bfieldcount == 10)
 	{
 		echo "\t\t<th align='left' valign='top'>"
 		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=attribute_1&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
@@ -911,6 +919,7 @@ if (returnglobal('action') == "remind")
 				$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 				$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}";
 				$fieldsarray["{TOKEN}"]=$emrow['token'];
+				$fieldsarray["{LANGUAGE}"]=$emrow['language'];
 				$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
 				$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
 
@@ -1076,6 +1085,15 @@ if ($action == "edit" || $action == "addnew")
 	}
 	echo "\t</font></td>\n"
 	."</tr>\n"
+
+."<tr>\n"
+	."\t<td align='right' width='20%'>$setfont<strong>"._("Language").":</strong></font></td>\n"
+	."\t<td bgcolor='#EEEEEE'>$setfont";
+	echo languageDropdownClean($surveyid,$language);
+	echo "</font></td>\n"
+	."</tr>\n"
+
+	
 	."<tr>\n"
 	."\t<td align='right' width='20%'>$setfont<strong>"._("Invite sent?").":</strong></font></td>\n"
 
@@ -1141,11 +1159,12 @@ if ($action == _("Update"))
 	$data[] = $_POST['lastname'];
 	$data[] = $_POST['email'];
 	$data[] = $_POST['token'];
+	$data[] = $_POST['language'];
 	$data[] = $_POST['sent'];
 	$data[] = $_POST['completed'];
 	$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
 	. "lastname=?, email=?, "
-	. "token=?, sent=?, completed=?";
+	. "token=?, language=?, sent=?, completed=?";
 	if (isset($_POST['attribute1']))
 	{
 		$data[] = $_POST['attribute1'];
@@ -1154,6 +1173,7 @@ if ($action == _("Update"))
 	}
 
 	$udquery .= " WHERE tid={$_POST['tid']}";
+
 	$udresult = $connect->Execute($udquery, $data) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	echo "<br />$setfont<font color='green'><strong>"._("Success")."</strong></font><br />\n"
 	."<br />"._("Updated Token")."<br /><br />\n"
@@ -1170,6 +1190,7 @@ if ($action == _("Add"))
 	'lastname' => $_POST['lastname'],
 	'email' => $_POST['email'],
 	'token' => $_POST['token'],
+	'language' => $_POST['language'],
 	'sent' => $_POST['sent'],
 	'completed' => $_POST['completed']);
 	if (isset($_POST['attribute1']))
@@ -1243,7 +1264,7 @@ if ($action == "upload")
 			elseif (substr($buffer, -1) == "\n") {$buffer = substr($buffer, 0, -1);}
 			elseif (substr($buffer, -1) == "\r") {$buffer = substr($buffer, 0, -1);}
 			if(function_exists('mb_convert_encoding')) {$buffer=mb_convert_encoding($buffer,"UTF-8","auto");} //Sometimes mb_convert_encoding doesn't exist
-			$firstname = ""; $lastname = ""; $email = ""; $token = ""; //Clear out values from the last path, in case the next line is missing a value
+			$firstname = ""; $lastname = ""; $email = ""; $token = ""; $language=""; //Clear out values from the last path, in case the next line is missing a value
 			if (!$xx)
 			{
 				//THIS IS THE FIRST LINE. IT IS THE HEADINGS. IGNORE IT
@@ -1258,6 +1279,7 @@ if ($action == "upload")
 					$lastname = '';
 					$email = '';
 					$token = '';
+					$language = '';
 					$attribute1 = '';
 					$attribute2 = '';
 					$xy = 0;
@@ -1265,23 +1287,24 @@ if ($action == "upload")
 					{
 						//echo "[$el]($xy)<br />\n"; //Debugging info
 						if ($xy < $elements)
-						{
-							if ($xy == 0) {$firstname = $el;}
-							if ($xy == 1) {$lastname = $el;}
-							if ($xy == 2) {$email = trim($el);}
-							if ($xy == 3) {$token = trim($el);}
-							if ($xy == 4) {$attribute1 = trim($el);}
-							if ($xy == 5) {$attribute2 = trim($el);}
+						{ if ($xy == 0) {$tid_temp = $el;}
+							if ($xy == 1) {$firstname = $el;}
+							if ($xy == 2) {$lastname = $el;}
+							if ($xy == 3) {$email = trim($el);}
+							if ($xy == 4) {$token = trim($el);}
+							if ($xy == 5) {$language = trim($el);}
+							if ($xy == 6) {$attribute1 = trim($el);}
+							if ($xy == 7) {$attribute2 = trim($el);}
 						}
 						$xy++;
 					}
 					//CHECK FOR DUPLICATES?
 					$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-					. "(firstname, lastname, email, token";
+					. "(firstname, lastname, email, token, language";
 					if (isset($attribute1)) {$iq .= ", attribute_1";}
 					if (isset($attribute2)) {$iq .= ", attribute_2";}
 					$iq .=") \n"
-					. "VALUES ('$firstname', '$lastname', '$email', '$token'";
+					. "VALUES ('$firstname', '$lastname', '$email', '$token', '$language'";
 					if (isset($attribute1)) {$iq .= ", '$attribute1'";}
 					if (isset($attribute2)) {$iq .= ", '$attribute2'";}
 					$iq .= ")";
