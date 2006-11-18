@@ -254,6 +254,7 @@ else
 	$createsurvey .= "  id BIGINT(11) NOT NULL auto_increment,\n";
 	// --> START NEW FEATURE - SAVE
 	$createsurvey .= " submitdate datetime NOT NULL default '0000-00-00 00:00:00',\n";
+	$createsurvey .= " startlanguage varchar(20) NOT NULL ,\n";
 	// --> END NEW FEATURE - SAVE
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
@@ -283,15 +284,20 @@ else
 			$createsurvey .= " refurl MEDIUMTEXT,\n";
 		}
 	}
-	//Get list of questions
-	$aquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY {$dbprefix}groups.group_order, title";
+	//Get list of questions for the base language
+	$aquery = " SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')
+              ." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid "
+              ." AND ".db_table_name('questions').".sid={$_GET['sid']} "
+              ." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+              ." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+              ." ORDER BY ".db_table_name('groups').".group_order, title";
 	$aresult = db_execute_assoc($aquery);
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 	{
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" &&
-		$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" &&
-		$arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" &&
-		$arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J")
+		    $arow['type'] != "C" && $arow['type'] != "E" && $arow['type'] != "F" &&
+		    $arow['type'] != "H" && $arow['type'] != "P" && $arow['type'] != "R" &&
+		    $arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J")
 		{
 			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
 			switch($arow['type'])
