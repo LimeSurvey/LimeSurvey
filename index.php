@@ -421,6 +421,7 @@ function getTokenData($surveyid, $token)
 		$thistoken=array("firstname"=>$row['firstname'],
 		"lastname"=>$row['lastname'],
 		"email"=>$row['email'],
+		"language" =>$row['language'],
 		"attribute_1"=>$row['attribute_1'],
 		"attribute_2"=>$row['attribute_2']);
 	} // while
@@ -1108,7 +1109,7 @@ function buildsurveysession()
 		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($rw = $result->FetchRow())
 	{ 
-		$tklanguage=$rw['attribute_1'];
+		$tklanguage=$rw['language'];
 	}
 
 
@@ -1118,8 +1119,9 @@ function buildsurveysession()
 		} elseif (isset($tklanguage)) { $language_to_set=$tklanguage;}
 		else {$language_to_set = $thissurvey['language'];}
 
+if (!isset($_SESSION['s_lang'])) {
 	SetSurveyLanguage($surveyid, $language_to_set);
-	
+	}
 //end RL
 //var_dump($_SESSION);
 
