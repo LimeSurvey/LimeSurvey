@@ -1103,7 +1103,8 @@ function buildsurveysession()
 	unset($_SESSION['insertarray']);
 	unset($_SESSION['thistoken']);
 
-//get language from token (if one exists)
+	//RL: multilingual support 
+	//get language from token (if one exists)
 		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
 		//echo $tkquery2;
 		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1111,19 +1112,15 @@ function buildsurveysession()
 	{ 
 		$tklanguage=$rw['language'];
 	}
-
-
-//RL: multilingual support 
-// language selection by means of tokens has to go in here as well
 	if (returnglobal('lang')) { $language_to_set=returnglobal('lang');
 		} elseif (isset($tklanguage)) { $language_to_set=$tklanguage;}
 		else {$language_to_set = $thissurvey['language'];}
 
-if (!isset($_SESSION['s_lang'])) {
-	SetSurveyLanguage($surveyid, $language_to_set);
+	if (!isset($_SESSION['s_lang'])) {
+		SetSurveyLanguage($surveyid, $language_to_set);
 	}
 //end RL
-//var_dump($_SESSION);
+
 
 	//1. SESSION VARIABLE: grouplist
 	//A list of groups in this survey, ordered by group name.
