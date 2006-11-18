@@ -42,9 +42,7 @@ if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid
 session_start();
 
 //NEW for multilanguage surveys 
-//SetSurveyLanguage($surveyid);
-
-
+if (isset($_SESSION['s_lang'])){SetInterfaceLanguage($_SESSION['s_lang']);}
 
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
@@ -1103,14 +1101,18 @@ function buildsurveysession()
 	unset($_SESSION['insertarray']);
 	unset($_SESSION['thistoken']);
 
+	
 	//RL: multilingual support 
+
+	if (isset($_GET['token'])){
 	//get language from token (if one exists)
 		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
 		//echo $tkquery2;
 		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($rw = $result->FetchRow())
-	{ 
-		$tklanguage=$rw['language'];
+		{ 
+			$tklanguage=$rw['language'];
+		}
 	}
 	if (returnglobal('lang')) { $language_to_set=returnglobal('lang');
 		} elseif (isset($tklanguage)) { $language_to_set=$tklanguage;}
