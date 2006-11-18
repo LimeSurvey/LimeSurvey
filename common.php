@@ -2789,4 +2789,19 @@ function languageDropdown($surveyid,$selected)
 	$html .= "</select>";
 	return $html;
 }
+
+function languageDropdownClean($surveyid,$selected) 
+{
+	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	array_unshift($slangs,$baselang);
+	$html = "<select class='listboxquestions' name='language')\">\n";
+	foreach ($slangs as $lang)
+	{
+		if ($lang == $selected) $html .= "\t<option value='$lang' selected>".getLanguageNameFromCode($lang,false)."</option>\n";
+		if ($lang != $selected) $html .= "\t<option value='$lang'>".getLanguageNameFromCode($lang,false)."</option>\n";
+	}
+	$html .= "</select>";
+	return $html;
+}
 ?>
