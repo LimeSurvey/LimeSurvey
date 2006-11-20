@@ -296,15 +296,22 @@ if (!$surveyid)
 	exit;
 }
 
-// Get new random ids until one is found that is not used
-do
-{
-	$newsid = getRandomID();
+// Use the existing surveyid if it does not already exists
+// This allows the URL links to the survey to keep working because the sid did not change
+	$newsid = $surveyid;
 	$isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid";
 	$isresult = db_execute_assoc($isquery);
-}
-while ($isresult->RecordCount()>0);
-
+	if ($isresult->RecordCount()>0)
+	{
+		// Get new random ids until one is found that is not used
+		do
+		{
+			$newsid = getRandomID();
+			$isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid";
+			$isresult = db_execute_assoc($isquery);
+		}
+		while ($isresult->RecordCount()>0);
+	}
 
 // A regex could do alot better here but I am bad on that so I am using the simple way.
 $insert=$tablearray[0];
