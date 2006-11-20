@@ -301,6 +301,10 @@ function savedcontrol()
 //FUNCTIONS USED WHEN SUBMITTING RESULTS:
 function createinsertquery()
 {
+	// Performance optimized	: Nov 13, 2006
+	// Performance Improvement	: 31%
+	// Optimized By				: swales
+
 	global $thissurvey;
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect;
@@ -312,7 +316,7 @@ function createinsertquery()
 		foreach ($inserts as $value)
 		{
 			//Work out if the field actually exists in this survey
-			$fieldexists = arraySearchByKey($value, $fieldmap, "fieldname");
+			$fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
 			//Iterate through possible responses
 			if (isset($_SESSION[$value]) && !empty($fieldexists))
 			{

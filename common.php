@@ -1185,6 +1185,10 @@ function getLegitQids($surveyid)
 
 function returnquestiontitlefromfieldcode($fieldcode)
 {
+	// Performance optimized	: Nov 13, 2006
+	// Performance Improvement	: 37%
+	// Optimized By				: swales
+
 	if (!isset($fieldcode)) {return "Preset";}
 	if ($fieldcode == "token") {return "Token";}
 	if ($fieldcode == "datestamp") {return "Date Stamp";}
@@ -1193,10 +1197,7 @@ function returnquestiontitlefromfieldcode($fieldcode)
 	global $dbprefix, $surveyid, $connect;
 
 	//Find matching information;
-	$detailsarray=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname");
-	foreach ($detailsarray as $dt) {
-		$details=$dt;
-	}
+	$details=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname", 1);
 
 	$fqid=$details['qid'];
 	$qq = "SELECT question, other FROM ".db_table_name('questions')." WHERE qid=$fqid AND language='".$_SESSION['s_lang']."'";
@@ -1258,16 +1259,17 @@ function getsidgidqid($fieldcode)
 */
 function getextendedanswer($fieldcode, $value)
 {
+	// Performance optimized	: Nov 13, 2006
+	// Performance Improvement	: 36%
+	// Optimized By				: swales
+
 	global $dbprefix, $surveyid, $connect;
 
 	//Fieldcode used to determine question, $value used to match against answer code
 	//Returns NULL if question type does not suit
 	if (substr_count($fieldcode, "X") > 1) //Only check if it looks like a real fieldcode
 	{
-		$detailsarray=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname");
-		foreach ($detailsarray as $dt) {
-			$fields=$dt;
-		}
+		$fields=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname", 1);
 		//Find out the question type
 		$query = "SELECT type, lid FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$_SESSION['s_lang']."'";
 		$result = db_execute_assoc($query) or die ("Couldn't get question type - getextendedanswer() in common.php<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1378,9 +1380,19 @@ function crlf_lineendings($text)
 }
 
 function createFieldMap($surveyid, $style="null") {
+	// Performance optimized	: Nov 13, 2006
+	// Performance Improvement	: 88%
+	// Optimized By				: swales
+
 	//This function generates an array containing the fieldcode, and matching data in the same
 	//order as the activate script
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $globalfieldmap;
+
+	//checks to see if fieldmap has already been built for this page.
+	if (isset($globalfieldmap) && $globalfieldmap[0] == $surveyid) {
+		return $globalfieldmap[1];
+	}
+
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
 	$pquery = "SELECT private, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	$presult=db_execute_assoc($pquery);
@@ -1603,7 +1615,12 @@ function createFieldMap($surveyid, $style="null") {
 			}
 		}
 	}
-	if (isset($fieldmap)) {return $fieldmap;}
+	if (isset($fieldmap)) {
+		$globalfieldmap[0] = $surveyid;
+		$globalfieldmap[1] = $fieldmap;
+
+		return $fieldmap;
+	}
 }
 
 function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
@@ -1624,10 +1641,12 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 
 function templatereplace($line)
 {
+	// Performance optimized	: Nov 10, 2006
+	// Performance Improvement	: 49%
+	// Optimized By				: swales
+
 	global $thissurvey, $imagefiles;
-
 	global $percentcomplete;
-
 	global $groupname, $groupdescription, $question;
 	global $questioncode, $answer, $navigator;
 	global $help, $totalquestions, $surveyformat;
@@ -1637,40 +1656,6 @@ function templatereplace($line)
 	global $assessments;
 	global $errormsg;
 
-
-	//Set up save/load feature
-	if ($thissurvey['allowsave'] == "Y")
-	{
-		if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
-		{
-			$saveall = "<input type='submit' name='loadall' value='"._("Load Unfinished Survey")."' class='saveall' />";
-		}
-		elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._('last')." "))  //Already saved and on Submit Page, don't show Save So Far button
-		{
-			$saveall="";
-		}
-		else
-		{
-			$saveall="<input type='submit' name='saveall' value='"._('Save Survey and Return')."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";  // Show Save So Far button
-		}
-	}
-	else
-	{
-		$saveall="";
-	}
-
-	if ($thissurvey['templatedir']) {$templateurl="$publicurl/templates/{$thissurvey['templatedir']}/";}
-	else {$templateurl="$publicurl/templates/default/";}
-
-	$clearall = "\t\t\t\t\t<div class='clearall'>"
-	. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall";
-	if (returnglobal('token'))
-	{
-		$clearall .= "&amp;token=".returnglobal('token');
-	}
-	$clearall .="' onClick='return confirm(\""
-	. _("Are you sure you want to clear all your responses?")."\")'>["
-	. _("Exit and Clear Survey")."]</a></div>\n";
 
 	if (ereg("^</head>", $line))
 	{
@@ -1687,140 +1672,202 @@ function templatereplace($line)
 		,$line);
 	}
 
-	$line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
-	$line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
-	$line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
-	$line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
-	$line=str_replace("{GROUPNAME}", $groupname, $line);
-	$line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
-	$line=str_replace("{QUESTION}", $question, $line);
-	$line=str_replace("{QUESTION_CODE}", $questioncode, $line);
-	$line=str_replace("{ANSWER}", $answer, $line);
+
+	// If there are non-bracketed replacements to be made do so above this line.
+	// Only continue in this routine if there are bracketed items to replace {}
+	if (strpos($line, "{") === false) {
+		return $line;
+	}
+
+	if (strpos($line, "{SURVEYNAME}") !== false) $line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
+	if (strpos($line, "{SURVEYDESCRIPTION}") !== false) $line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
+	if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
+	if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
+	if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
+	if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
+	if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
+	if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $questioncode, $line);
+	if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
 	if ($totalquestions < 2)
 	{
-
-
-		$line=str_replace("{THEREAREXQUESTIONS}", _("There is 1 question in this survey"), $line); //Singular
+		if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", _("There is 1 question in this survey"), $line); //Singular
 	}
 	else
 	{
-		$line=str_replace("{THEREAREXQUESTIONS}", _("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+		if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", _("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
 	}
-	$line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
-	if (isset($token)) {
-		$line=str_replace("{TOKEN}", $token, $line);
+	if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
+
+	if (strpos($line, "{TOKEN}") !== false) {
+		if (isset($token)) {
+			$line=str_replace("{TOKEN}", $token, $line);
+		}
+		elseif (isset($_POST['token'])) {
+			$line=str_replace("{TOKEN}", $_POST['token'], $line);
+		}
+		else {
+			$line=str_replace("{TOKEN}",'', $line);
+		}
 	}
-	elseif (isset($_POST['token'])) {
-		$line=str_replace("{TOKEN}", $_POST['token'], $line);
-	}
-	else {
-		$line=str_replace("{TOKEN}",'', $line);
-	}
-	$line=str_replace("{SID}", $surveyid, $line);
+
+	if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
 	if ($help) {
-		$line=str_replace("{QUESTIONHELP}", "<img src='".$imagefiles."/help.gif' alt='Help' align='left' />".$help, $line);
-		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+		if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", "<img src='".$imagefiles."/help.gif' alt='Help' align='left'>".$help, $line);
+		if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
 	}
 	else
 	{
-		$line=str_replace("{QUESTIONHELP}", $help, $line);
-		$line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+		if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", $help, $line);
+		if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
 	}
-	$line=str_replace("{NAVIGATOR}", $navigator, $line);
-	$submitbutton="<input class='submit' type='submit' value=' "._("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";
-	$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
-	$line=str_replace("{COMPLETED}", $completed, $line);
-	if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
-	else {$linkreplace="";}
-	$line=str_replace("{URL}", $linkreplace, $line);
-	$line=str_replace("{PRIVACY}", $privacy, $line);
-	$line=str_replace("{PRIVACYMESSAGE}", "<strong><i>"._("A Note On Privacy")."</i></strong><br />"._("This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
-	$line=str_replace("{CLEARALL}", $clearall, $line);
+	if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
+	if (strpos($line, "{SUBMITBUTTON}") !== false) {
+		$submitbutton="<input class='submit' type='submit' value=' "._("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
+		$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
+	}
+	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
+	if (strpos($line, "{URL}") !== false) {
+		if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
+		else {$linkreplace="";}
+		$line=str_replace("{URL}", $linkreplace, $line);
+	}
+	if (strpos($line, "{PRIVACY}") !== false) $line=str_replace("{PRIVACY}", $privacy, $line);
+	if (strpos($line, "{PRIVACYMESSAGE}") !== false) $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>"._("A Note On Privacy")."</i></strong><br />"._("This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
+	if (strpos($line, "{CLEARALL}") !== false) 	{
+		$clearall = "\t\t\t\t\t<div class='clearall'>"
+		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall";
+		if (returnglobal('token'))
+		{
+			$clearall .= "&amp;token=".returnglobal('token');
+		}
+		$clearall .="' onClick='return confirm(\""
+		. _("Are you sure you want to clear all your responses?")."\")'>["
+		. _("Exit and Clear Survey")."]</a></div>\n";
 
-	// --> START NEW FEATURE - SAVE
-	if (isset($_SESSION['datestamp']))
-	{
-		$line=str_replace("{DATESTAMP}", $_SESSION['datestamp'], $line);
+
+		$line=str_replace("{CLEARALL}", $clearall, $line);
 	}
-	else
-	{
-		$line=str_replace("{DATESTAMP}", "-", $line);
+	// --> START NEW FEATURE - SAVE
+	if (strpos($line, "{DATESTAMP}") !== false) {
+		if (isset($_SESSION['datestamp'])) {
+			$line=str_replace("{DATESTAMP}", $_SESSION['datestamp'], $line);
+		}
+		else {
+			$line=str_replace("{DATESTAMP}", "-", $line);
+		}
 	}
 	// <-- END NEW FEATURE - SAVE
 
-	$line=str_replace("{SAVE}", $saveall, $line);
-	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
-	$line=str_replace("{SUBMITCOMPLETE}", _("<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."), $line);
-	$strreview=_("If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses.");
-	if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N") {$strreview = "";}
-	$line=str_replace("{SUBMITREVIEW}", $strreview, $line);
-
+	if (strpos($line, "{SAVE}") !== false)	{
+		//Set up save/load feature
+		if ($thissurvey['allowsave'] == "Y")
+		{
+			if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
+			{
+				$saveall = "<input type='submit' name='loadall' value='"._("Load Unfinished Survey")."' class='saveall'>";
+			}
+			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._('last')." "))  //Already saved and on Submit Page, dont show Save So Far button
+			{
+				$saveall="";
+			}
+			else
+			{
+				$saveall="<input type='submit' name='saveall' value='"._('Save Survey and Return')."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";  // Show Save So Far button
+			}
+		}
+		else
+		{
+			$saveall="";
+		}
+		$line=str_replace("{SAVE}", $saveall, $line);
+	}
+	if (strpos($line, "{TEMPLATEURL}") !== false) {
+		if ($thissurvey['templatedir']) {
+			$templateurl="$publicurl/templates/{$thissurvey['templatedir']}/";
+		}
+		else {
+			$templateurl="$publicurl/templates/default/";
+		}
+		$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
+	}
+	if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", _("<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."), $line);
+	if (strpos($line, "{SUBMITREVIEW}") !== false) {
+		if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N") {
+			$strreview = "";
+		}
+		else {
+			$strreview=_("If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses.");
+		}
+		$line=str_replace("{SUBMITREVIEW}", $strreview, $line);
+	}
 	if (isset($_SESSION['thistoken']))
 	{
-		$line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
-		$line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
-		$line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
-		$line=str_replace("{TOKEN:ATTRIBUTE_1}", $_SESSION['thistoken']['attribute_1'], $line);
-		$line=str_replace("{TOKEN:ATTRIBUTE_2}", $_SESSION['thistoken']['attribute_2'], $line);
+		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
+		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
+		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
+		if (strpos($line, "{TOKEN:ATTRIBUTE_1}") !== false) $line=str_replace("{TOKEN:ATTRIBUTE_1}", $_SESSION['thistoken']['attribute_1'], $line);
+		if (strpos($line, "{TOKEN:ATTRIBUTE_2}") !== false) $line=str_replace("{TOKEN:ATTRIBUTE_2}", $_SESSION['thistoken']['attribute_2'], $line);
 	}
 	else
 	{
-		$line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
-		$line=str_replace("{TOKEN:LASTNAME}", "", $line);
-		$line=str_replace("{TOKEN:EMAIL}", "", $line);
-		$line=str_replace("{TOKEN:ATTRIBUTE_1}", "", $line);
-		$line=str_replace("{TOKEN:ATTRIBUTE_2}", "", $line);
+		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
+		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
+		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
+		if (strpos($line, "{TOKEN:ATTRIBUTE_1}") !== false) $line=str_replace("{TOKEN:ATTRIBUTE_1}", "", $line);
+		if (strpos($line, "{TOKEN:ATTRIBUTE_2}") !== false) $line=str_replace("{TOKEN:ATTRIBUTE_2}", "", $line);
 	}
 
+	if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", _("Answers Cleared"), $line);
+	if (strpos($line, "{RESTART}") !== false) $line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;token=".returnglobal('token')."'>"._("Restart this Survey")."</a>", $line);
+	if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>"._("Close this Window")."</a>", $line);
 
-	$line=str_replace("{ANSWERSCLEARED}", _("Answers Cleared"), $line);
-	$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;token=".returnglobal('token')."'>"._("Restart this Survey")."</a>", $line);
-	$line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>"._("Close this Window")."</a>", $line);
-
-	//SAVE SURVEY DETAILS
-	$saveform = "<table><tr><td align='right'>"._("Name").":</td><td><input type='text' name='savename' value='";
-	if (isset($_POST['savename'])) {$saveform .= html_escape(auto_unescape($_POST['savename']));}
-	$saveform .= "' /></td></tr>\n"
-	. "<tr><td align='right'>"._("Password")."</td><td><input type='password' name='savepass' value='";
-	if (isset($_POST['savepass'])) {$saveform .= html_escape(auto_unescape($_POST['savepass']));}
-	$saveform .= "' /></td></tr>\n"
-	. "<tr><td align='right'>"._("Repeat Password")."</td><td><input type='password' name='savepass2' value='";
-	if (isset($_POST['savepass2'])) {$saveform .= html_escape(auto_unescape($_POST['savepass2']));}
-	$saveform .= "' /></td></tr>\n"
-	. "<tr><td align='right'>"._("Your Email")."</td><td><input type='text' name='saveemail' value='";
-	if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
-	$saveform .= "' /></td></tr>\n"
-	. "<tr><td></td><td><input type='submit' name='savesubmit' value='"._("Save Now")."' /></td></tr>\n"
-	. "</table>";
 	$savereturn = "<a href='index.php?sid=$surveyid";
 	if (returnglobal('token'))
 	{
 		$savereturn.= "&amp;token=".returnglobal('token');
 	}
 	$savereturn .= "'>"._("Return To Survey")."</a>";
-	$line=str_replace("{SAVEERROR}", $errormsg, $line);
-	$line=str_replace("{SAVEHEADING}", _("Save Your Unfinished Survey"), $line);
-	$line=str_replace("{SAVEMESSAGE}", _("Enter a name and password for this survey and click save below.<br />\nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\nIf you give an email address, an email containing the details will be sent to you."), $line);
-	$line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
-	$line=str_replace("{SAVEFORM}", $saveform, $line);
-
-	//LOAD SURVEY DETAILS
-	$loadform = "<table><tr><td align='right'>"._("Saved name").":</td><td><input type='text' name='loadname' value='";
-	if (isset($_POST['loadname'])) {$loadform .= html_escape(auto_unescape($_POST['loadname']));}
-	$loadform .= "' /></td></tr>\n"
-	. "<tr><td align='right'>"._("Password").":</td><td><input type='password' name='loadpass' value='";
-	if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
-	$loadform .= "' /></td></tr>\n"
-	. "<tr><td></td><td><input type='submit' value='"._("Load Now")."' /></td></tr></table>\n";
-	$line=str_replace("{LOADERROR}", $errormsg, $line);
-	$line=str_replace("{LOADHEADING}", _("Load A Previously Saved Survey"), $line);
-	$line=str_replace("{LOADMESSAGE}", _("You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"), $line);
-	$line=str_replace("{LOADFORM}", $loadform, $line);
+	if (strpos($line, "{SAVEERROR}") !== false) $line=str_replace("{SAVEERROR}", $errormsg, $line);
+	if (strpos($line, "{SAVEHEADING}") !== false) $line=str_replace("{SAVEHEADING}", _("Save Your Unfinished Survey"), $line);
+	if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", _("Enter a name and password for this survey and click save below.<br />\nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\nIf you give an email address, an email containing the details will be sent to you."), $line);
+	if (strpos($line, "{RETURNTOSURVEY}") !== false) $line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
+	if (strpos($line, "{SAVEFORM}") !== false) {
+		//SAVE SURVEY DETAILS
+		$saveform = "<table><tr><td align='right'>"._("Name").":</td><td><input type='text' name='savename' value='";
+		if (isset($_POST['savename'])) {$saveform .= html_escape(auto_unescape($_POST['savename']));}
+		$saveform .= "'></td></tr>\n"
+		. "<tr><td align='right'>"._("Password")."</td><td><input type='password' name='savepass' value='";
+		if (isset($_POST['savepass'])) {$saveform .= html_escape(auto_unescape($_POST['savepass']));}
+		$saveform .= "'></td></tr>\n"
+		. "<tr><td align='right'>"._("Repeat Password")."</td><td><input type='password' name='savepass2' value='";
+		if (isset($_POST['savepass2'])) {$saveform .= html_escape(auto_unescape($_POST['savepass2']));}
+		$saveform .= "'></td></tr>\n"
+		. "<tr><td align='right'>"._("Your Email")."</td><td><input type='text' name='saveemail' value='";
+		if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
+		$saveform .= "'></td></tr>\n"
+		. "<tr><td></td><td><input type='submit' name='savesubmit' value='"._("Save Now")."'></td></tr>\n"
+		. "</table>";
+		$line=str_replace("{SAVEFORM}", $saveform, $line);
+	}
+	if (strpos($line, "{LOADERROR}") !== false) $line=str_replace("{LOADERROR}", $errormsg, $line);
+	if (strpos($line, "{LOADHEADING}") !== false) $line=str_replace("{LOADHEADING}", _("Load A Previously Saved Survey"), $line);
+	if (strpos($line, "{LOADMESSAGE}") !== false) $line=str_replace("{LOADMESSAGE}", _("You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"), $line);
+	if (strpos($line, "{LOADFORM}") !== false) {
+		//LOAD SURVEY DETAILS
+		$loadform = "<table><tr><td align='right'>"._("Saved name").":</td><td><input type='text' name='loadname' value='";
+		if (isset($_POST['loadname'])) {$loadform .= html_escape(auto_unescape($_POST['loadname']));}
+		$loadform .= "'></td></tr>\n"
+		. "<tr><td align='right'>"._("Password").":</td><td><input type='password' name='loadpass' value='";
+		if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
+		$loadform .= "'></td></tr>\n"
+		. "<tr><td></td><td><input type='submit' value='"._("Load Now")."'></td></tr></table>\n";
+		$line=str_replace("{LOADFORM}", $loadform, $line);
+	}
 
 	//REGISTER SURVEY DETAILS
-	$line=str_replace("{REGISTERERROR}", $register_errormsg, $line);
-	$line=str_replace("{REGISTERMESSAGE1}", _("You must be registered to complete this survey"), $line);
-	$line=str_replace("{REGISTERMESSAGE2}", _("You may register for this survey if you wish to take part.<br />\nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
+	if (strpos($line, "{REGISTERERROR}") !== false) $line=str_replace("{REGISTERERROR}", $register_errormsg, $line);
+	if (strpos($line, "{REGISTERMESSAGE1}") !== false) $line=str_replace("{REGISTERMESSAGE1}", _("You must be registered to complete this survey"), $line);
+	if (strpos($line, "{REGISTERMESSAGE2}") !== false) $line=str_replace("{REGISTERMESSAGE2}", _("You may register for this survey if you wish to take part.<br />\nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
 	if (strpos($line, "{REGISTERFORM}") !== false)
 	{
 		$registerform="<form method='post' action='register.php'>\n"
@@ -1833,21 +1880,21 @@ function templatereplace($line)
 		{
 			$registerform .= " value='".returnglobal('register_firstname')."'";
 		}
-		$registerform .= " /></td></tr>"
+		$registerform .= "></td></tr>"
 		."<tr><td align='right'>"._("Last Name").":</td>\n"
 		."<td align='left'><input class='text' type='text' name='register_lastname'";
 		if (isset($_POST['register_lastname']))
 		{
 			$registerform .= " value='".returnglobal('register_lastname')."'";
 		}
-		$registerform .= " /></td></tr>\n"
+		$registerform .= "></td></tr>\n"
 		."<tr><td align='right'>"._("Email Address").":</td>\n"
 		."<td align='left'><input class='text' type='text' name='register_email'";
 		if (isset($_POST['register_email']))
 		{
 			$registerform .= " value='".returnglobal('register_email')."'";
 		}
-		$registerform .= " /></td></tr>\n";
+		$registerform .= "></td></tr>\n";
 		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
 		{
 			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
@@ -1856,7 +1903,7 @@ function templatereplace($line)
 			{
 				$registerform .= " value='".returnglobal('register_attribute1')."'";
 			}
-			$registerform .= " /></td></tr>\n";
+			$registerform .= "></td></tr>\n";
 		}
 		if(isset($thissurvey['attribute2']) && $thissurvey['attribute2'])
 		{
@@ -1866,16 +1913,16 @@ function templatereplace($line)
 			{
 				$registerform .= " value='".returnglobal('register_attribute2')."'";
 			}
-			$registerform .= " /></td></tr>\n";
+			$registerform .= "></td></tr>\n";
 		}
-		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._("Continue")."' />"
+		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='"._("Continue")."'>"
 		."</td></tr>\n"
-		."</table>\n"
-		."</form>\n";
+		."</form>\n"
+		."</table>\n";
 		$line=str_replace("{REGISTERFORM}", $registerform, $line);
 	}
-	$line=str_replace("{ASSESSMENTS}", $assessments, $line);
-	$line=str_replace("{ASSESSMENT_HEADING}", _("Your Assessment"), $line);
+	if (strpos($line, "{ASSESSMENTS}") !== false) $line=str_replace("{ASSESSMENTS}", $assessments, $line);
+	if (strpos($line, "{ASSESSMENT_HEADING}") !== false) $line=str_replace("{ASSESSMENT_HEADING}", _("Your Assessment"), $line);
 	return $line;
 }
 
