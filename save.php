@@ -230,6 +230,7 @@ function savedcontrol()
 		{
 			$sdata = array("datestamp"=>date("Y-m-d H:i:s"),
 			"ipaddr"=>$_SERVER['REMOTE_ADDR'],
+			"startlanguage"=>GetBaseLanguageFromSurveyID($surveyid),
 			"refurl"=>getenv("HTTP_REFERER"));
 			//One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
 			if ($connect->AutoExecute("{$thissurvey['tablename']}", $sdata,'INSERT'))
@@ -354,6 +355,7 @@ function createinsertquery()
 			{
 				$query .= ",`ipaddr`";
 			}
+			$query .= ",,`startlanguage`";
 			if ($thissurvey['refurl'] == "Y")
 			{
 				$query .= ",`refurl`";
@@ -372,6 +374,7 @@ function createinsertquery()
 			{
 				$query .= ", '".$_SERVER['REMOTE_ADDR']."'";
 			}
+			$query .= ", '".GetBaseLanguageFromSurveyID($surveyid)."'";
 			if ($thissurvey['refurl'] == "Y")
 			{
 				$query .= ", '".getenv("HTTP_REFERER")."'";
