@@ -355,7 +355,7 @@ function createinsertquery()
 			{
 				$query .= ",`ipaddr`";
 			}
-			$query .= ",,`startlanguage`";
+			$query .= ",`startlanguage`";
 			if ($thissurvey['refurl'] == "Y")
 			{
 				$query .= ",`refurl`";
