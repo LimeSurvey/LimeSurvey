@@ -1574,8 +1574,8 @@ function createFieldMap($surveyid, $style="null") {
 			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM "
 			.db_table_name('answers').", ".db_table_name('questions')." WHERE sid=$surveyid AND "
 			.db_table_name('answers').".qid=".db_table_name('questions').".qid AND "
-			.db_table_name('answers').".language='".$_SESSION['s_lang']."' AND "
-			.db_table_name('questions').".language='".$_SESSION['s_lang']."' AND "
+			.db_table_name('answers').".language='".$s_lang."' AND "
+			.db_table_name('questions').".language='".$s_lang."' AND "
 			.db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (type Q)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			while ($abrow=$abresult->FetchRow())
@@ -1596,8 +1596,8 @@ function createFieldMap($surveyid, $style="null") {
 			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM "
 			.db_table_name('answers').", ".db_table_name('questions')." WHERE "
 			.db_table_name('answers').".qid=".db_table_name('questions').".qid AND sid=$surveyid AND "
-			.db_table_name('answers').".language='".$_SESSION['s_lang']."' AND "
-			.db_table_name('questions').".language='".$_SESSION['s_lang']."' AND"
+			.db_table_name('answers').".language='".$s_lang."' AND "
+			.db_table_name('questions').".language='".$s_lang."' AND"
 			.db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers')
 			.".sortorder, ".db_table_name('answers').".answer";
 			$abresult=$connect->Execute($abquery) or die ("Couldn't get list of answers in createFieldMap function (type R)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
