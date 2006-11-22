@@ -41,7 +41,7 @@ if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
 if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");}
 session_start();
 
-//NEW for multilanguage surveys 
+//NEW for multilanguage surveys
 if (isset($_SESSION['s_lang'])){SetInterfaceLanguage($_SESSION['s_lang']);}
 
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
@@ -1004,6 +1004,10 @@ function submitfailed()
 
 function buildsurveysession()
 {
+	// Performance optimized	: Nov 22, 2006
+	// Performance Improvement	: 17%
+	// Optimized By				: swales
+
 	global $thissurvey;
 	global $tokensexist, $thistpl;
 	global $surveyid, $dbprefix, $connect;
@@ -1094,15 +1098,15 @@ function buildsurveysession()
 			exit;
 		}
 	}
-			
+
 	//RESET ALL THE SESSION VARIABLES AND START AGAIN
 	unset($_SESSION['grouplist']);
 	unset($_SESSION['fieldarray']);
 	unset($_SESSION['insertarray']);
 	unset($_SESSION['thistoken']);
 
-	
-	//RL: multilingual support 
+
+	//RL: multilingual support
 
 	if (isset($_GET['token'])){
 	//get language from token (if one exists)
@@ -1110,7 +1114,7 @@ function buildsurveysession()
 		//echo $tkquery2;
 		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($rw = $result->FetchRow())
-		{ 
+		{
 			$tklanguage=$rw['language'];
 		}
 	}
@@ -1135,12 +1139,24 @@ function buildsurveysession()
 	}
 
 
-	$query = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
-	."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
-	."AND ".db_table_name('questions').".sid=$surveyid\n"
-	."AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."' "
-	."AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' "
-	."ORDER BY ".db_table_name('groups').".group_order";
+//	Old query
+//	$query = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
+//	."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
+//	."AND ".db_table_name('questions').".sid=$surveyid\n"
+//	."AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."' "
+//	."AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' "
+//	."ORDER BY ".db_table_name('groups').".group_order";
+
+	// Change query to use sub-select to see if conditions exist.
+	$query = "SELECT ".db_table_name('questions').".*, ".db_table_name('groups').".*,\n"
+	." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
+	." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".qid) AS hasconditions\n"
+    ." FROM ".db_table_name('groups')." INNER JOIN ".db_table_name('questions')." ON ".db_table_name('groups').".gid = ".db_table_name('questions').".gid\n"
+    ." WHERE ".db_table_name('questions').".sid=".$surveyid."\n"
+    ." AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."'\n"
+    ." AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."'\n"
+    ." ORDER BY ".db_table_name('groups').".group_order";
+
  //var_dump($_SESSION);
 //	echo $query."<br>";
 	$result = db_execute_assoc($query);
@@ -1310,8 +1326,21 @@ function buildsurveysession()
 			$_SESSION['insertarray'][] = $fieldname;
 		}
 
-		//Check to see if there are any conditions set for this question
-		if (conditionscount($arow['qid']) > 0)
+
+
+//		Separate query for each row no necessary because query above includes a sub-select now.
+//		Increases performance by at least 17% and reduces number of queries executed
+//		//Check to see if there are any conditions set for this question
+//		if (conditionscount($arow['qid']) > 0)
+//		{
+//			$conditions = "Y";
+//		}
+//		else
+//		{
+//			$conditions = "N";
+//		}
+
+		if ($arow['hasconditions']==1)
 		{
 			$conditions = "Y";
 		}
@@ -1319,6 +1348,7 @@ function buildsurveysession()
 		{
 			$conditions = "N";
 		}
+
 
 		//3(b) See if any of the insertarray values have been passed in the query URL
 
