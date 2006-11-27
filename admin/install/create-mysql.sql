@@ -211,7 +211,6 @@ CREATE TABLE `prefix_surveys` (
   `useexpiry` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
-  `groupset` varchar(255) default NULL,
   PRIMARY KEY  (`sid`)
 ) TYPE=MyISAM;
 
@@ -301,7 +300,7 @@ CREATE TABLE `prefix_settings_global` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '111');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '110');
 
 --
 -- Table `users`

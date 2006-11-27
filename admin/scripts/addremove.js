@@ -22,7 +22,7 @@ function DoRemove()
   sortSelect(document.getElementById("available_languages"));
 }
 
-function DoAddG(){  if (document.getElementById("available_groups").selectedIndex>-1)  {  var strText = document.getElementById("available_groups").options[document.getElementById("available_groups").selectedIndex].text;  var strId = document.getElementById("available_groups").options[document.getElementById("available_groups").selectedIndex].value;  AddItem(document.getElementById("groups_in_set"), strText, strId);  RemoveItem(document.getElementById("available_groups"), document.getElementById("available_groups").selectedIndex);  sortSelect(document.getElementById("groups_in_set"));  UpdateLanguageIDs();  }}function DoRemoveG(){  var strText = document.getElementById("groups_in_set").options[document.getElementById("groups_in_set").selectedIndex].text;  var strId = document.getElementById("groups_in_set").options[document.getElementById("groups_in_set").selectedIndex].value;  AddItem(document.getElementById("available_groups"), strText, strId);  RemoveItem(document.getElementById("groups_in_set"), document.getElementById("groups_in_set").selectedIndex);  sortSelect(document.getElementById("available_groups"));}
+
 
 function AddItem(objListBox, strText, strId)
 {
@@ -61,19 +61,6 @@ function UpdateLanguageIDs()
   for (var i = 0; i < lbBox.options.length; i++)
   {
   document.getElementById("languageids").value = document.getElementById("languageids").value + lbBox.options[i].value+ ' ';  
-  }
-  UpdateGroupsinSet();
-  return true;
-}
-
-function UpdateGroupsinSet()
-{
-  document.getElementById("groupsinset").value = ''; 
-
-  var lbBox = document.getElementById("groups_in_set");
-  for (var i = 0; i < lbBox.options.length; i++)
-  {
-  document.getElementById("groupsinset").value = document.getElementById("groupsinset").value + lbBox.options[i].value+ ' ';  
   }
   return true;
 }

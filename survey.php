@@ -33,11 +33,6 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-
-// Performance optimized	: Nov 27, 2006
-// Performance Improvement	: 41% (Call to templatereplace())
-// Optimized By				: swales
-
 if (empty($homedir)) {die ("Cannot run this script directly");}
 
 //Move current step ###########################################################################
@@ -71,12 +66,10 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset(
 	if ($thissurvey['private'] == "Y")
 	{
 		$privacy="";
-//		foreach (file("$thistpl/privacy.pstpl") as $op)
-//		{
-//			$privacy .= templatereplace($op);
-//		}
-			$privacy .= templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
-
+		foreach (file("$thistpl/privacy.pstpl") as $op)
+		{
+			$privacy .= templatereplace($op);
+		}
 	}
 	if ($thissurvey['refurl'] == "Y")
 	{
@@ -93,21 +86,19 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset(
 	{
 		sendcacheheaders();
 		doHeader();
-//		foreach(file("$thistpl/startpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
-		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+		foreach(file("$thistpl/startpage.pstpl") as $op)
+		{
+			echo templatereplace($op);
+		}
 
 		//Check for assessments
 		$assessments = doAssessment($surveyid);
 		if ($assessments)
 		{
-//			foreach(file("$thistpl/assessment.pstpl") as $op)
-//			{
-//				echo templatereplace($op);
-//			}
-			echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+			foreach(file("$thistpl/assessment.pstpl") as $op)
+			{
+				echo templatereplace($op);
+			}
 		}
 
 		$completed = "<br /><strong><font size='2' color='red'>"._("Did Not Save")."</strong></font><br /><br />\n\n"
@@ -127,21 +118,19 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset(
 		$content='';
 
 		//Start to print the final page
-//		foreach(file("$thistpl/startpage.pstpl") as $op)
-//		{
-//			$content .= templatereplace($op);
-//		}
-			$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+		foreach(file("$thistpl/startpage.pstpl") as $op)
+		{
+			$content .= templatereplace($op);
+		}
 
 		//Check for assessments
 		$assessments = doAssessment($surveyid);
 		if ($assessments)
 		{
-//			foreach(file("$thistpl/assessment.pstpl") as $op)
-//			{
-//				$content .= templatereplace($op);
-//			}
-			$content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+			foreach(file("$thistpl/assessment.pstpl") as $op)
+			{
+				$content .= templatereplace($op);
+			}
 		}
 
 		//Create text for use in later print section
@@ -179,19 +168,16 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset(
 
 	}
 
-//	foreach(file("$thistpl/completed.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
+	foreach(file("$thistpl/completed.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 
 	echo "\n<br />\n";
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-
+	foreach(file("$thistpl/endpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	exit;
 }
 
@@ -201,40 +187,33 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("last")." " && (!isset($not
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	sendcacheheaders();
 	doHeader();
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-
+	foreach(file("$thistpl/startpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n"
 	."\n\n<!-- START THE SURVEY -->\n";
-//	foreach(file("$thistpl/survey.pstpl") as $op)
-//	{
-//		echo "\t\t".templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-
+	foreach(file("$thistpl/survey.pstpl") as $op)
+	{
+		echo "\t\t".templatereplace($op);
+	}
 	//READ SUBMIT TEMPLATE
-//	foreach(file("$thistpl/submit.pstpl") as $op)
-//	{
-//		echo "\t\t\t".templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/submit.pstpl"));
+	foreach(file("$thistpl/submit.pstpl") as $op)
+	{
+		echo "\t\t\t".templatereplace($op);
+	}
 
 	$navigator = surveymover();
 	echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-//	foreach(file("$thistpl/navigator.pstpl") as $op)
-//	{
-//		echo "\t\t".templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
+	foreach(file("$thistpl/navigator.pstpl") as $op)
+	{
+		echo "\t\t".templatereplace($op);
+	}
 	echo "\n";
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	foreach(file("$thistpl/endpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	echo "\n"
 	."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
 	."\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
@@ -250,18 +229,16 @@ if ($surveyexists <1)
 	sendcacheheaders();
 	doHeader();
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+	foreach(file("$thistpl/startpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	echo "\t<center><br />\n"
 	."\t"._("Sorry. There is no matching survey.")."<br />&nbsp;\n";
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	foreach(file("$thistpl/endpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	exit;
 }
 
@@ -273,27 +250,24 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	// Now shows welcome message and next page will be Save page if Allow Saves is on
 	sendcacheheaders();
 	doHeader();
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+	foreach(file("$thistpl/startpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 
 	echo "\n\n<!-- START THE SURVEY -->\n";
 
-//	foreach(file("$thistpl/welcome.pstpl") as $op)
-//	{
-//		echo "\t\t\t".templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
+	foreach(file("$thistpl/welcome.pstpl") as $op)
+	{
+		echo "\t\t\t".templatereplace($op);
+	}
 	echo "\n";
 	$navigator = surveymover();
-//	foreach(file("$thistpl/navigator.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
+	foreach(file("$thistpl/navigator.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	if ($thissurvey['active'] != "Y")
 	{
 		echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
@@ -301,11 +275,10 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
 	echo "\n</form>\n";
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	foreach(file("$thistpl/endpage.pstpl") as $op)
+	{
+		echo templatereplace($op);
+	}
 	doFooter();
 	exit;
 	// <-- END NEW FEATURE - SAVE
@@ -381,11 +354,10 @@ sendcacheheaders();
 doHeader();
 if(isset($popup)) {echo $popup;}
 if(isset($vpopup)) {echo $vpopup;}
-//foreach(file("$thistpl/startpage.pstpl") as $op)
-//{
-//	echo templatereplace($op);
-//}
-echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+foreach(file("$thistpl/startpage.pstpl") as $op)
+{
+	echo templatereplace($op);
+}
 echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n\n<!-- INPUT NAMES -->\n"
@@ -438,11 +410,10 @@ echo "\t//-->\n";
 echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE
 
-//foreach(file("$thistpl/welcome.pstpl") as $op)
-//{
-//	echo templatereplace($op);
-//}
-echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
+foreach(file("$thistpl/welcome.pstpl") as $op)
+{
+	echo templatereplace($op);
+}
 
 echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 ."\t<script type='text/javascript'>\n"
@@ -534,20 +505,18 @@ foreach ($_SESSION['grouplist'] as $gl)
 	$groupname=$gl[1];
 	$groupdescription=$gl[2];
 	echo "\n\n<!-- START THE GROUP -->\n";
-//	foreach(file("$thistpl/startgroup.pstpl") as $op)
-//	{
-//		echo "\t".templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
+	foreach(file("$thistpl/startgroup.pstpl") as $op)
+	{
+		echo "\t".templatereplace($op);
+	}
 	echo "\n";
 
 	if ($groupdescription)
 	{
-//		foreach(file("$thistpl/groupdescription.pstpl") as $op)
-//		{
-//			echo "\t\t".templatereplace($op);
-//		}
-		echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
+		foreach(file("$thistpl/groupdescription.pstpl") as $op)
+		{
+			echo "\t\t".templatereplace($op);
+		}
 	}
 	echo "\n";
 
@@ -565,32 +534,29 @@ foreach ($_SESSION['grouplist'] as $gl)
 				$answer=$qa[1];
 				$help=$qa[2];
 				$questioncode=$qa[5];
-//				foreach(file("$thistpl/question.pstpl") as $op)
-//				{
-//					echo "\t\t\t\t\t".templatereplace($op)."\n";
-//				}
-				echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
+				foreach(file("$thistpl/question.pstpl") as $op)
+				{
+					echo "\t\t\t\t\t".templatereplace($op)."\n";
+				}
 				echo "\t\t\t\t</div>\n";
 			}
 		}
 	}
 
 	echo "\n\n<!-- END THE GROUP -->\n";
-//	foreach(file("$thistpl/endgroup.pstpl") as $op)
-//	{
-//		echo "\t\t\t\t".templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
+	foreach(file("$thistpl/endgroup.pstpl") as $op)
+	{
+		echo "\t\t\t\t".templatereplace($op);
+	}
 	echo "\n";
 }
 //echo "&nbsp;\n";
 $navigator = surveymover();
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-//foreach(file("$thistpl/navigator.pstpl") as $op)
-//{
-//	echo "\t\t".templatereplace($op);
-//}
-echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
+foreach(file("$thistpl/navigator.pstpl") as $op)
+{
+	echo "\t\t".templatereplace($op);
+}
 echo "\n";
 
 if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
@@ -632,11 +598,10 @@ echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thiss
 ."<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
 ."<input type='hidden' name='token' value='$token' id='token'>\n"
 ."</form>\n";
-//foreach(file("$thistpl/endpage.pstpl") as $op)
-//{
-//	echo templatereplace($op);
-//}
-echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+foreach(file("$thistpl/endpage.pstpl") as $op)
+{
+	echo templatereplace($op);
+}
 echo "\n";
 doFooter();
 

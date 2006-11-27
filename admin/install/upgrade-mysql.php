@@ -51,10 +51,7 @@ function db_upgrade($oldversion) {
       modify_database("","UPDATE  `prefix_settings_global` SET stg_value='110' where stg_name ='DBVersion'");
     }
 
-    if ($oldversion < 111) {
-      modify_database("","ALTER TABLE `prefix_surveys` ADD `groupset` varchar(255) default NULL");
-    	modify_database("","UPDATE  `prefix_settings_global` SET stg_value='111' where stg_name ='DBVersion'");
-    }
+    
     return true;
 }
 
@@ -200,7 +197,6 @@ $allfields[]=array("{$dbprefix}surveys", "allowsave","allowsave char(1) default 
 $allfields[]=array("{$dbprefix}surveys", "autonumber_start", "autonumber_start bigint(11) default 0");
 $allfields[]=array("{$dbprefix}surveys", "autoredirect", "autoredirect char(1) default 'N'");
 $allfields[]=array("{$dbprefix}surveys", "allowprev","allowprev char(1) default 'Y'");
-$allfields[]=array("{$dbprefix}surveys", "groupset","groupset varchar(255) default NULL");
 
 
 

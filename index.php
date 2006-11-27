@@ -41,28 +41,7 @@ if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
 if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");}
 session_start();
 
-<<<<<<< .mine
-//RL: support for randomly picking one group out of a set.
-// grouplist contains an array: $alternative_groups that holds the groups to choose from
-//require_once(dirname(__FILE__).'/grouplist.inc');
-if (!isset($_SESSION['the_one'])){ 
-	//   echo "Selecting alternative:";
-	$query = "SELECT groupset FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-	$result = db_execute_num($query);
-	while ($result && ($row=$result->FetchRow())) {$groupset=$row[0];}
-	if (isset($groupset)){ 
-		$_SESSION['GroupsInSet'] = explode(" ", trim($groupset));	
-		$num_groups_in_set = count($_SESSION['GroupsInSet']);
-		$_SESSION['the_one'] = $_SESSION['GroupsInSet'][rand(0, $num_groups_in_set-1)];
-	}
-	//echo "the one: ".$_SESSION['the_one']."<br>";
-	// END setting things up. The rest is in function checkgroupfordisplay
-}
-
-//NEW for multilanguage surveys 
-=======
 //NEW for multilanguage surveys
->>>>>>> .r2162
 if (isset($_SESSION['s_lang'])){SetInterfaceLanguage($_SESSION['s_lang']);}
 
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
@@ -478,15 +457,9 @@ function checkgroupfordisplay($gid)
 	//If none of the questions in the group are set to display, then
 	//the function will return false, to indicate that the whole group
 	//should not display at all.
-	global $dbprefix, $connect, $GroupsInSet;
+	global $dbprefix, $connect;
 	$countQuestionsInThisGroup=0;
 	$countConditionalQuestionsInThisGroup=0;
-
-if (isset($_SESSION['GroupsInSet'])){	
-	//RL: filter out the groups that of the alternatives set that should not be shown
-	if ((in_array($gid, $_SESSION['GroupsInSet'])) and ($gid != $_SESSION['the_one'])){ return false;}
-}
-
 	foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
 	{
 		if ($ia[5] == $gid) //If the question is in the group we are checking:
