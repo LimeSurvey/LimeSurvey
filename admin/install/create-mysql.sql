@@ -211,6 +211,7 @@ CREATE TABLE `prefix_surveys` (
   `useexpiry` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
+  `groupset` varchar(255) default NULL,
   PRIMARY KEY  (`sid`)
 ) TYPE=MyISAM;
 

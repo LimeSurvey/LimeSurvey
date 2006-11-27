@@ -197,7 +197,7 @@ if(isset($surveyid))
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
 				$dquery = "DELETE FROM ".db_table_name('answers')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
-				$dquery = "DELETE FROM ".db_table_name('qeustions')." WHERE qid={$row['qid']}";
+				$dquery = "DELETE FROM ".db_table_name('questions')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
 			}
 			if ($total != $qtodel*3)
@@ -209,6 +209,15 @@ if(isset($surveyid))
 		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
 		if ($result)
 		{
+			//RL: remove from groupset
+			$query = "SELECT groupset FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+			$result = db_execute_num($query);
+			while ($result && ($row=$result->FetchRow())) {$groupset=$row[0];}
+			str_replace($gid, '', $groupset);
+			$query = "UPDATE ".db_table_name('surveys')." SET groupset=$groupset WHERE sid=$surveyid";
+			$result = db_execute($query) or die($connect->ErrorMsg());
+			//end RL
+				
 			$gid = "";
 			$groupselect = getgrouplist($gid);
 			fixsortorderGroups();
@@ -809,6 +818,9 @@ if(isset($surveyid))
 		. "format='{$_POST['format']}', template='{$_POST['template']}',\n"
 		. "url='{$_POST['url']}', \n"
 		. "language='{$_POST['language']}', additional_languages='{$_POST['languageids']}',\n"
+//RL: groupset
+		. "groupset='{$_POST['groupsinset']}', \n"
+//end 
 		. "datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
 		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 		. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"

@@ -608,6 +608,7 @@ if ($surveyid)
 		. "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'><strong>"
 		. _("Template:")."</strong></td>\n"
 		. "\t\t<td> {$s1row['template']}</td></tr>\n"
+		
 		. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'><strong>"
 		. _("Base Language:")."</strong></td>\n";
 		if (!$s1row['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($s1row['language']);}
@@ -627,6 +628,29 @@ if ($surveyid)
 				$surveysummary .= "<td>".getLanguageNameFromCode($langname)."</td></tr>\n";
 			}
 		}
+
+//RL 
+if ($groupconditional){
+		$surveysummary .= "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'><strong>"
+		. _("Select group from:")."</strong></td>\n";
+		if (!$s1row['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($s1row['language']);}
+		$surveysummary .= "\t<td>$language</td></tr>\n";
+
+
+		$surveysummary .= "\t<tr $showstyle id='surveydetails8a'><td align='right' valign='top'><strong>"
+		. _("Available groups").":</strong></td>\n";
+
+		$first=true;
+		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+		{
+			if ($langname)
+			{
+				if (!$first) {$surveysummary .= "\t\t\t<tr $showstyle><td></td>";}
+				$first=false;
+				$surveysummary .= "<td>".getLanguageNameFromCode($langname)."</td></tr>\n";
+			}
+		}
+} //RL end
 
 		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'><strong>"
@@ -3423,10 +3447,36 @@ if ($action == "editsurvey")
 					$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 				}
 			}
-
 			$editsurvey .= "</select></td>"
-			. " </tr>\n"
-			. "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
+			. " </tr>\n";
+
+//RL: random selection of group from set
+
+
+			// groups in set
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Select a random group from the following set").":</font></td>\n"
+			. "\t\t<td><select multiple style='min-width:250px;'  size='5' id='groups_in_set' name='groups_in_set'>";
+			foreach (GetGroupstoRandomize($surveyid) as $groupnum)
+			{
+				if ($groupnum) 			{
+					$editsurvey .= "\t\t\t<option id='".$groupnum."' value='".$groupnum."'";
+					$editsurvey .= ">".getGroupNamefromGid($surveyid, $groupnum)."</option>\n";
+				}
+			}
+
+			//  Add/Remove Buttons
+			$editsurvey .= "</select></td>"
+			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAddG()\" ID=\"AddBtnG\" /><BR /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemoveG()\" ID=\"RemoveBtnG\"  /></td>\n"
+			// Available languages listbox
+			. "\t\t<td align=left><select size='5' style='min-width:250px;' id='available_groups' name='available_groups'>";
+			$tempGroup=GetGroupstoRandomize($surveyid);
+			$editsurvey .= getgrouplistwithoutrandomset($surveyid);
+			$editsurvey .= "</select></td>"
+			. " </tr>\n";
+// RL end 
+
+
+			$editsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
 			. "\t\t\t<td><select name='useexpiry'><option value='Y'";
 			if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected";}
 			$editsurvey .= ">"._("Yes")."</option>\n"
@@ -3450,6 +3500,9 @@ if ($action == "editsurvey")
 			. "\t<input type='hidden' name='action' value='updatesurvey' />\n"
 			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
 			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
+//RL: groups in set			
+			. "\t<input type='hidden' name='groupsinset' id='groupsinset' value=\"{$esrow['groupset']}\" />\n"
+// end
 			. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
 			. "\t</td></tr>\n"
 			. "</table></form>\n";
