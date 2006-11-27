@@ -2837,7 +2837,12 @@ function languageDropdown($surveyid,$selected)
 	return $html;
 }
 
+<<<<<<< .mine
+//RL functions
+function languageDropdownClean($surveyid,$selected) 
+=======
 function languageDropdownClean($surveyid,$selected)
+>>>>>>> .r2162
 {
 	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -2850,5 +2855,45 @@ function languageDropdownClean($surveyid,$selected)
 	}
 	$html .= "</select>";
 	return $html;
+}
+
+function GetGroupstoRandomize($surveyid){
+	global $connect;
+	$query = "SELECT language, groupset FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+	$result = db_execute_num($query);
+	while ($result && ($row=$result->FetchRow())) {$language = $row[0]; $groupset=$row[1];}
+	if (isset($groupset)) $GroupsInSet = explode(" ", trim($groupset));
+	if (!isset($groupset) || $groupset==false) { $GroupsInSet = array();}
+	return $GroupsInSet;
+}
+
+function getGroupNamefromGid($surveyid, $groupid) {
+ global $connect;
+ 
+ $query = "SELECT group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid and gid=$groupid";
+	$result = db_execute_num($query);
+	while ($result && ($row=$result->FetchRow())) {$groupname = $row[0];}
+	return $groupname;
+}
+
+function getgrouplistwithoutrandomset($surveyid)
+{
+	global $surveyid, $dbprefix, $scriptname, $connect;
+	$groupselecter="";
+	if (!$surveyid) {$surveyid=$_POST['sid'];}
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$theset = GetGroupstoRandomize($surveyid);
+	
+	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
+	//
+	$gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	while($gv = $gidresult->FetchRow())
+	{
+		if (!in_array($gv[0], $theset)) {
+		$groupselecter .= "\t\t<option id='$gv[0]'";
+		$groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
+		}
+	}
+	return $groupselecter;
 }
 ?>
