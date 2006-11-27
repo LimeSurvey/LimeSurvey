@@ -191,7 +191,8 @@ CREATE TABLE [dbo].[prefix_surveys] (
   [allowsave] nvarchar(1)  DEFAULT 'Y' NULL,
   [autonumber_start] bigint DEFAULT 19533676560910059 NULL,
   [autoredirect] nvarchar(1)  DEFAULT 'N' NULL,
-  [allowprev] nvarchar(1)  DEFAULT 'Y' NULL
+  [allowprev] nvarchar(1)  DEFAULT 'Y' NULL,
+  [groupset] nvarchar(255)  NULL
 )
 ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
@@ -267,4 +268,4 @@ ON [PRIMARY];
 
 -- if you change the database scheme then change this version too and implement the changes in the upgrade_*.php too
 
-INSERT INTO [prefix_settings_global] values('DBVersion','108');
+INSERT INTO [prefix_settings_global] values('DBVersion','109');

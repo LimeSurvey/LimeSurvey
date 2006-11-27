@@ -231,7 +231,8 @@ CREATE TABLE surveys (
     ipaddr character(1) DEFAULT 'N'::bpchar,
     useexpiry character(1) DEFAULT 'N'::bpchar NOT NULL,
     refurl character(1) DEFAULT 'N'::bpchar,
-    datecreated date
+    datecreated date,
+    groupset character varying(255)
 );
 
 

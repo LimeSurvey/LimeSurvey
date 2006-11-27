@@ -301,7 +301,7 @@ CREATE TABLE `prefix_settings_global` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '110');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '111');
 
 --
 -- Table `users`
