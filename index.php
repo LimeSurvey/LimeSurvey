@@ -34,6 +34,10 @@
 #############################################################
 */
 
+// Performance optimized	: Nov 28, 2006
+// Performance Improvement	: 41% (Call to templatereplace())
+// Optimized By				: swales
+
 require_once(dirname(__FILE__).'/config.php');
 
 if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
@@ -61,21 +65,23 @@ if (!$surveyid)
 	//A nice exit
 	sendcacheheaders();
 	doHeader();
-	$output=file("$tpldir/default/startpage.pstpl");
-	foreach($output as $op)
-	{
-		echo templatereplace($op);
-	}
+//	$output=file("$tpldir/default/startpage.pstpl");
+//	foreach($output as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>"._('ERROR')."</strong></font><br />\n"
 	."\t\t\t"._("You have not provided a survey identification number")."<br />\n"
 	."\t\t\t"._("Please contact")." $siteadminname ( $siteadminemail ) "._("for further assistance")."\n"
 	."\t\t</center><br />\n";
-	$output=file("$tpldir/default/endpage.pstpl");
-	foreach($output as $op)
-	{
-		echo templatereplace($op);
-	}
+//	$output=file("$tpldir/default/endpage.pstpl");
+//	foreach($output as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -111,20 +117,22 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 {
 	sendcacheheaders();
 	doHeader();
-	$output=file("$tpldir/default/startpage.pstpl");
-	foreach ($output as $op)
-	{
-		echo templatereplace($op);
-	}
+//	$output=file("$tpldir/default/startpage.pstpl");
+//	foreach ($output as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t"._("This survey is no longer available.")."<br /><br />\n"
 	."\t\t\t"._("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
 	._("for further assistance")."<br /><br />\n";
-	$output=file("$tpldir/default/endpage.pstpl");
-	foreach ($output as $op)
-	{
-		echo templatereplace($op);
-	}
+//	$output=file("$tpldir/default/endpage.pstpl");
+//	foreach ($output as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -136,21 +144,23 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 {
 	sendcacheheaders();
 	doHeader();
-	$output=file("$tpldir/default/startpage.pstpl");
-	foreach($output as $op)
-	{
-		echo templatereplace($op);
-	}
+//	$output=file("$tpldir/default/startpage.pstpl");
+//	foreach($output as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>"._("Error")."</strong></font><br />\n"
 	."\t\t\t"._("You have already completed this survey.")."<br /><br />\n"
 	."\t\t\t"._("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
 	._("for further assistance")."<br /><br />\n";
-	$output=file("$tpldir/default/endpage.pstpl");
-	foreach($output as $op)
-	{
-		echo templatereplace($op);
-	}
+//	$output=file("$tpldir/default/endpage.pstpl");
+//	foreach($output as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -235,14 +245,16 @@ if ($tokensexist == 1 && returnglobal('token'))
 		sendcacheheaders();
 		doHeader();
 		//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-		foreach(file("$thistpl/startpage.pstpl") as $op)
-		{
-			echo templatereplace($op);
-		}
-		foreach(file("$thistpl/survey.pstpl") as $op)
-		{
-			echo "\t".templatereplace($op);
-		}
+//		foreach(file("$thistpl/startpage.pstpl") as $op)
+//		{
+//			echo templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+//		foreach(file("$thistpl/survey.pstpl") as $op)
+//		{
+//			echo "\t".templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
 		."\t"._("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
 		."\t"._("The token you have provided is either not valid, or has already been used.")."\n"
@@ -250,10 +262,11 @@ if ($tokensexist == 1 && returnglobal('token'))
 		."(<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
-		foreach(file("$thistpl/endpage.pstpl") as $op)
-		{
-			echo templatereplace($op);
-		}
+//		foreach(file("$thistpl/endpage.pstpl") as $op)
+//		{
+//			echo templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		exit;
 	}
 }
@@ -268,10 +281,11 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 		header("Location: {$_GET['redirect']}");
 	}
 	doHeader();
-	foreach(file("$thistpl/startpage.pstpl") as $op)
-	{
-		echo templatereplace($op);
-	}
+//	foreach(file("$thistpl/startpage.pstpl") as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 	."\t<script type='text/javascript'>\n"
 	."\t<!--\n"
@@ -282,15 +296,17 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	."\t</script>\n\n";
 
 	//Present the clear all page using clearall.pstpl template
-	foreach(file("$thistpl/clearall.pstpl") as $op)
-	{
-		echo templatereplace($op);
-	}
+//	foreach(file("$thistpl/clearall.pstpl") as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$thistpl/clearall.pstpl"));
 
-	foreach(file("$thistpl/endpage.pstpl") as $op)
-	{
-		echo templatereplace($op);
-	}
+//	foreach(file("$thistpl/endpage.pstpl") as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -968,10 +984,11 @@ function submitfailed()
 	global $thistpl, $subquery, $surveyid, $connect;
 	sendcacheheaders();
 	doHeader();
-	foreach(file("$thistpl/startpage.pstpl") as $op)
-	{
-		echo templatereplace($op);
-	}
+//	foreach(file("$thistpl/startpage.pstpl") as $op)
+//	{
+//		echo templatereplace($op);
+//	}
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	$completed = "<br /><strong><font size='2' color='red'>"
 	. _("Did Not Save")."</strong></font><br /><br />\n\n"
 	. _("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
@@ -1023,20 +1040,23 @@ function buildsurveysession()
 		sendcacheheaders();
 		doHeader();
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
-		foreach(file("$thistpl/startpage.pstpl") as $op)
-		{
-			echo templatereplace($op);
-		}
-		foreach(file("$thistpl/survey.pstpl") as $op)
-		{
-			echo templatereplace($op);
-		}
+//		foreach(file("$thistpl/startpage.pstpl") as $op)
+//		{
+//			echo templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+//		foreach(file("$thistpl/survey.pstpl") as $op)
+//		{
+//			echo templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
 		{
-			foreach(file("$thistpl/register.pstpl") as $op)
-			{
-				echo templatereplace($op);
-			}
+//			foreach(file("$thistpl/register.pstpl") as $op)
+//			{
+//				echo templatereplace($op);
+//			}
+			echo templatereplace(file_get_contents("$thistpl/register.pstpl"));
 		}
 		else
 		{
@@ -1058,10 +1078,11 @@ function buildsurveysession()
 	<br />&nbsp;</center>
 <?php
 		}
-		foreach(file("$thistpl/endpage.pstpl") as $op)
-		{
-			echo templatereplace($op);
-		}
+//		foreach(file("$thistpl/endpage.pstpl") as $op)
+//		{
+//			echo templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		exit;
 	}
 	//Tokens are required, and a token has been provided.
@@ -1076,14 +1097,16 @@ function buildsurveysession()
 			sendcacheheaders();
 			doHeader();
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-			foreach(file("$thistpl/startpage.pstpl") as $op)
-			{
-				echo templatereplace($op);
-			}
-			foreach(file("$thistpl/survey.pstpl") as $op)
-			{
-				echo "\t".templatereplace($op);
-			}
+//			foreach(file("$thistpl/startpage.pstpl") as $op)
+//			{
+//				echo templatereplace($op);
+//			}
+			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+//			foreach(file("$thistpl/survey.pstpl") as $op)
+//			{
+//				echo "\t".templatereplace($op);
+//			}
+			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 			echo "\t<center><br />\n"
 			."\t"._("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
 			."\t"._("The token you have provided is either not valid, or has already been used.")."\n"
@@ -1091,10 +1114,11 @@ function buildsurveysession()
 			."(<a href='mailto:{$thissurvey['adminemail']}'>"
 			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 			."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
-			foreach(file("$thistpl/endpage.pstpl") as $op)
-			{
-				echo templatereplace($op);
-			}
+//			foreach(file("$thistpl/endpage.pstpl") as $op)
+//			{
+//				echo templatereplace($op);
+//			}
+			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 			exit;
 		}
 	}
@@ -1184,24 +1208,27 @@ function buildsurveysession()
 	{
 		sendcacheheaders();
 		doHeader();
-		foreach(file("$thistpl/startpage.pstpl") as $op)
-		{
-			echo templatereplace($op);
-		}
-		foreach(file("$thistpl/survey.pstpl") as $op)
-		{
-			echo "\t".templatereplace($op);
-		}
+//		foreach(file("$thistpl/startpage.pstpl") as $op)
+//		{
+//			echo templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+//		foreach(file("$thistpl/survey.pstpl") as $op)
+//		{
+//			echo "\t".templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
 		."\t"._("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
 		."\t"._("For further information contact")." {$thissurvey['adminname']}"
 		." (<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
-		foreach(file("$thistpl/endpage.pstpl") as $op)
-		{
-			echo templatereplace($op);
-		}
+//		foreach(file("$thistpl/endpage.pstpl") as $op)
+//		{
+//			echo templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		exit;
 	}
 
