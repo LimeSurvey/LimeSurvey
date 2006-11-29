@@ -1163,7 +1163,7 @@ function buildsurveysession()
 	}
 
 
-//	Old query
+// Original Query
 //	$query = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
 //	."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
 //	."AND ".db_table_name('questions').".sid=$surveyid\n"
@@ -1171,6 +1171,7 @@ function buildsurveysession()
 //	."AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' "
 //	."ORDER BY ".db_table_name('groups').".group_order";
 
+// Optimized Query
 	// Change query to use sub-select to see if conditions exist.
 	$query = "SELECT ".db_table_name('questions').".*, ".db_table_name('groups').".*,\n"
 	." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
@@ -1259,13 +1260,26 @@ function buildsurveysession()
 		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
 		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^")
 		{
-			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
-			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
-			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-			. "AND sid=$surveyid AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+// Original Query
+//			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
+//			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
+//			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+//			. "AND sid=$surveyid AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+//			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+//			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+//			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
+// Optimized Query
+			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
+			. " FROM ".db_table_name('answers')."\n"
+			. " INNER JOIN ".db_table_name('questions')."\n"
+			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
+			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+			. " AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
 			$abresult = db_execute_assoc($abquery);
 			while ($abrow = $abresult->FetchRow())
 			{
@@ -1288,14 +1302,27 @@ function buildsurveysession()
 		}
 		elseif ($arow['type'] == "R")
 		{
-			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
-			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
-			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-			. "AND sid=$surveyid\n"
-			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+// Original Query
+//			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
+//			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
+//			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+//			. "AND sid=$surveyid\n"
+//			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+//			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+//			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+//			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
+// Optimized Query
+			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
+			. " FROM ".db_table_name('answers')."\n"
+			. " INNER JOIN ".db_table_name('questions')."\n"
+			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
+			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+			. " AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
 			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
 			$abresult = $connect->Execute($abquery) or die("ERROR:<br />".$abquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 			$abcount = $abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)
@@ -1307,14 +1334,22 @@ function buildsurveysession()
 
 		elseif ($arow['type'] == "Q" || $arow['type'] == "J" )
 		{
-			$abquery = "SELECT ".db_table_name('answers').".*,".db_table_name('questions').".other\n"
-			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
-			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-			. "AND sid=$surveyid\n"
-			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+// Original Query
+//			$abquery = "SELECT ".db_table_name('answers').".*,".db_table_name('questions').".other\n"
+//			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
+//			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+//			. "AND sid=$surveyid\n"
+//			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+//			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+//			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+//			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
+// Optimized Query
+			$abquery = "SELECT ".db_table_name('answers').".code\n"
+			. " FROM ".db_table_name('answers')."\n"
+			. " WHERE ".db_table_name('answers').".qid={$arow['qid']}\n"
+			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
 			$abresult = db_execute_assoc($abquery);
 			while ($abrow = $abresult->FetchRow())
 			{
@@ -1332,13 +1367,21 @@ function buildsurveysession()
 			$_SESSION['insertarray'][] = $fieldname;
 			if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = $fieldname."other";}
 			//go through answers, and if there is a default, register it now so that conditions work properly the first time
-			$abquery = "SELECT ".db_table_name('answers').".*\n"
-			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
-			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-			. "AND sid=$surveyid\n"
-			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+// Original Query
+//			$abquery = "SELECT ".db_table_name('answers').".*\n"
+//			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
+//			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+//			. "AND sid=$surveyid\n"
+//			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+//			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+//			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
+// Optimized Query
+			$abquery = "SELECT ".db_table_name('answers').".code\n"
+			. " FROM ".db_table_name('answers')."\n"
+			. " WHERE ".db_table_name('answers').".qid={$arow['qid']}\n"
+			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
 			$abresult = db_execute_assoc($abquery);
 			while($abrow = $abresult->FetchRow())
 			{

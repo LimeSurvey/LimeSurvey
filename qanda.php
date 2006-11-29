@@ -382,21 +382,21 @@ function validation_message($ia)
 	//This function checks to see if this question requires validation and
 	//that validation has not been met.
 	global $notvalidated, $dbprefix, $connect;
-	$help="";
-	$helpselect="SELECT help\n"
-	."FROM {$dbprefix}questions\n"
-	."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
-	$helpresult=db_execute_assoc($helpselect) or die("$helpselect<br />".htmlspecialchars($connect->ErrorMsg()));
-	while ($helprow=$helpresult->FetchRow())
-	{
-		$help=" <i>(".$helprow['help'].")</i>";
-	}
 	$qtitle="";
 	if (isset($notvalidated) && is_array($notvalidated)) //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
 	{
 		global $validationpopup, $popup;
 		if (in_array($ia[1], $notvalidated))
 		{
+			$help="";
+			$helpselect="SELECT help\n"
+			."FROM {$dbprefix}questions\n"
+			."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
+			$helpresult=db_execute_assoc($helpselect) or die("$helpselect<br />".htmlspecialchars($connect->ErrorMsg()));
+			while ($helprow=$helpresult->FetchRow())
+			{
+				$help=" <i>(".$helprow['help'].")</i>";
+			}
 			$qtitle .= "<strong><br /><span class='errormandatory'>"._("This question must be answered correctly")." $help</span></strong><br />\n";
 		}
 	}
