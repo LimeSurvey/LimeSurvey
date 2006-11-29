@@ -37,7 +37,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 $versionnumber = "1.09a";
-$dbversionnumber = 110;
+$dbversionnumber = 111;
 error_reporting(E_ALL); //For debug purposes - remove/comment out for release
 
 ##################################################################################
@@ -567,37 +567,33 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 	{
 		$qtypes = array(
 		"5"=>_("5 Point Choice"),
+		"A"=>_("Array (5 Point Choice)"),
+		"B"=>_("Array (10 Point Choice)"),
+		"C"=>_("Array (Yes/No/Uncertain)"),
 		"D"=>_("Date"),
-		//"X"=>_("Email Address"),
+		"E"=>_("Array (Increase, Same, Decrease)"),
+		"F"=>_("Array (Flexible Labels)"),
 		"G"=>_("Gender"),
-		"!"=>_("List (Dropdown)"),
+		"H"=>_("Array (Flexible Labels) by Column"),
+		"I"=>_("Language Switch"),
 		"L"=>_("List (Radio)"),
-		"O"=>_("List With Comment"),
 		"M"=>_("Multiple Options"),
+		"N"=>_("Numerical Input"),
+		"O"=>_("List With Comment"),
 		"P"=>_("Multiple Options With Comments"),
 		"Q"=>_("Multiple Short Text"),
-		"N"=>_("Numerical Input"),
 		"R"=>_("Ranking"),
 		"S"=>_("Short free text"),
 		"T"=>_("Long free text"),
 		"U"=>_("Huge Free Text"),
-		"Y"=>_("Yes/No"),
-		"A"=>_("Array (5 Point Choice)"),
-		"B"=>_("Array (10 Point Choice)"),
-		"C"=>_("Array (Yes/No/Uncertain)"),
-		"E"=>_("Array (Increase, Same, Decrease)"),
-		"F"=>_("Array (Flexible Labels)"),
-		"H"=>_("Array (Flexible Labels) by Column"),
-		//			"J"=>_("Multiple Choice Question CSV-File based"),
-		//			"I"=>_("Single Choice Question CSV-File based"),
-
-		//"V"=>_JSVALIDATEDTEXT,
-		"X"=>_("Boilerplate Question"),
 		"W"=>_("List (Flexible Labels) (Dropdown)"),
-		"Z"=>_("List (Flexible Labels) (Radio)")
+		"X"=>_("Boilerplate Question"),
+		"Y"=>_("Yes/No"),
+		"Z"=>_("List (Flexible Labels) (Radio)"),
+		"!"=>_("List (Dropdown)")
 		//            "^"=>_("Slider"),
 		);
-
+//echo $SelectedCode;
 		if ($ReturnType == "array") {return $qtypes;}
 		$qtypeselecter = "";
 		foreach($qtypes as $TypeCode=>$TypeDescription)
@@ -2837,7 +2833,8 @@ function languageDropdown($surveyid,$selected)
 	return $html;
 }
 
-function languageDropdownClean($surveyid,$selected)
+//RL functions
+function languageDropdownClean($surveyid,$selected) 
 {
 	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -2850,5 +2847,45 @@ function languageDropdownClean($surveyid,$selected)
 	}
 	$html .= "</select>";
 	return $html;
+}
+
+function GetGroupstoRandomize($surveyid){
+	global $connect;
+	$query = "SELECT language, groupset FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+	$result = db_execute_num($query);
+	while ($result && ($row=$result->FetchRow())) {$language = $row[0]; $groupset=$row[1];}
+	if (isset($groupset)) $GroupsInSet = explode(" ", trim($groupset));
+	if (!isset($groupset) || $groupset==false) { $GroupsInSet = array();}
+	return $GroupsInSet;
+}
+
+function getGroupNamefromGid($surveyid, $groupid) {
+ global $connect;
+ 
+ $query = "SELECT group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid and gid=$groupid";
+	$result = db_execute_num($query);
+	while ($result && ($row=$result->FetchRow())) {$groupname = $row[0];}
+	return $groupname;
+}
+
+function getgrouplistwithoutrandomset($surveyid)
+{
+	global $surveyid, $dbprefix, $scriptname, $connect;
+	$groupselecter="";
+	if (!$surveyid) {$surveyid=$_POST['sid'];}
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$theset = GetGroupstoRandomize($surveyid);
+	
+	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
+	//
+	$gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	while($gv = $gidresult->FetchRow())
+	{
+		if (!in_array($gv[0], $theset)) {
+		$groupselecter .= "\t\t<option id='$gv[0]'";
+		$groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
+		}
+	}
+	return $groupselecter;
 }
 ?>

@@ -1046,23 +1046,6 @@ if ($qid)
 			. _("Other:")."</strong></td>\n"
 			. "\t<td>{$qrrow['other']}</td></tr>\n";
 		}
-		if ($qrrow['type'] == "J" || $qrrow['type'] == "I")
-		{
-			if ($action == "insertCSV")
-			{
-				$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails37'><td></td><td>"
-				. "<font face='verdana' size='2' color='green'><b>
-							 ". _("Upload completed")."</font></b></td></tr>\n";
-			}
-			elseif ($action == "editquestion" || $action == "copyquestion")
-			{
-				$questionsummary .= " ";
-			}
-			elseif ($action == "insertnewquestion" || ($action == "updatequestion" && $change == "0"))
-			{
-				upload();
-			}
-		}
 		$qid_attributes=getQuestionAttributes($qid);
 	}
 	$questionsummary .= "</table>\n";
@@ -2395,41 +2378,42 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Question")."</font></font></td></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
-	while ($eqrow = $eqresult->FetchRow())
-	{
-		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
-		if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
-		$eqrow  = array_map('htmlspecialchars', $eqrow);
-		$editquestion .= '</h2>';
-		$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Code:")."</span>\n"
-		. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value=\"{$eqrow['title']}\" />\n"
-		. "\t</span class='settingentry'></div>\n";
-		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>"._("Question:")."</span>\n"
-		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
-		. "\t</span class='settingentry'></div>\n"
-		. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
-		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
-		. "\t</span class='settingentry'></div>\n"
-		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
-		. "\t\t<span class='settingentry'>&nbsp;\n"
-		. "\t</span class='settingentry'></div>\n";
-		$editquestion .= '</div>';
-	}
 	
-	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language != '{$baselang}'";
-	$eqresult = db_execute_assoc($eqquery);
-	while (!$eqresult->EOF) 
+    $eqrow = $eqresult->FetchRow();  // there should be only one datarow, therefore we don't need a 'while' construct here.
+                                     // Todo: handler in case that record is not found  
+
+	$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
+	if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
+	$eqrow  = array_map('htmlspecialchars', $eqrow);
+	$editquestion .= '</h2>';
+	$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>"._("Code:")."</span>\n"
+	. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value=\"{$eqrow['title']}\" />\n"
+	. "\t</span class='settingentry'></div>\n";
+	$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>"._("Question:")."</span>\n"
+	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
+	. "\t</span class='settingentry'></div>\n"
+	. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
+	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
+	. "\t</span class='settingentry'></div>\n"
+	. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
+	. "\t\t<span class='settingentry'>&nbsp;\n"
+	. "\t</span class='settingentry'></div>\n";
+	$editquestion .= '</div>';
+	
+	$aqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language != '{$baselang}'";
+	$aqresult = db_execute_assoc($aqquery);
+	while (!$aqresult->EOF) 
 	{
-	    $eqrow = $eqresult->FetchRow();
-		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
-		if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
-		$eqrow  = array_map('htmlspecialchars', $eqrow);
+	    $aqrow = $eqresult->FetchRow();
+		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($aqrow['language'],false);
+		if ($aqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
+		$aqrow  = array_map('htmlspecialchars', $aqrow);
 		$editquestion .= '</h2>';
 		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>"._("Question:")."</span>\n"
-		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
+		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$aqrow['language']}'>{$aqrow['question']}</textarea>\n"
 		. "\t</span class='settingentry'></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>"._("Help:")."</span>\n"
-		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
+		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$aqrow['language']}'>{$aqrow['help']}</textarea>\n"
 		. "\t</span class='settingentry'></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 		. "\t\t<span class='settingentry'>&nbsp;\n"
@@ -3928,7 +3912,7 @@ function questionjavascript($type, $qattributes)
 function upload()
 {
 	global $questionsummary, $sid, $qid, $gid;
-	$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails37'><td></td><td>"
+	$questionsummary .= "\t\t<tr id='surveydetails37'><td></td><td>"
 	. "<font face='verdana' size='1' color='green'>"
 	. _("Warning").": ". _("You need to upload the file")." "
 	. "\n<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n"
