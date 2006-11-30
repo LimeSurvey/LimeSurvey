@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-10-26 18:39+0100\n"
+"PO-Revision-Date: 2006-11-30 08:11+0100\n"
 "Last-Translator: GAUGRY Sébastien\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,6 @@ msgid "Administration"
 msgstr "Administration"
 
 # E:\www\phpsurveyor/common.php:190
-#, fuzzy
 msgid "Logged in as"
 msgstr "Connecté sous :"
 
@@ -243,25 +242,10 @@ msgid "Decrease"
 msgstr "Diminuer"
 
 msgid "Same"
-msgstr "Sans Changement"
+msgstr "Sans changement"
 
 msgid "Comment"
 msgstr "Commentaire"
-
-msgid "Load Unfinished Survey"
-msgstr "Charger un questionnaire non terminé"
-
-msgid "last"
-msgstr "Dernier"
-
-msgid "Save Survey and Return"
-msgstr "Sauvegarder le questionnaire et le continuer"
-
-msgid "Are you sure you want to clear all your responses?"
-msgstr "Etes-vous sûr de vouloir effacer toutes vos réponses ?"
-
-msgid "Exit and Clear Survey"
-msgstr "Sortir et effacer le questionnaire"
 
 msgid "There is 1 question in this survey"
 msgstr "Il y a 1 question dans ce questionnaire"
@@ -279,7 +263,22 @@ msgstr "Note sur la vie privée"
 
 # E:\www\phpsurveyor/common.php:1558
 msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Ce questionnaire est anonyme.<br>L'enregistrement de votre réponse ne contient aucune information d'identification sur vous, à moins qu'une question ne vous ai été posée dans ce sens. Si vous avez répondu à un questionnaire utilisant des invitations, vous pouvez être assuré(e) que l'invitation n'est pas enregistrée avec votre réponse. Les invitations sont gérées dans une base de données séparée qui n'est mise à jour que pour indiquer si vous l'avez ou non utilisée pour remplir le questionnaire. Il n'y a aucun moyen de faire le lien entre les invitations et les réponses enregistrées pour ce questionnaire."
+msgstr "Ce questionnaire est anonyme.<br>L'enregistrement de vos réponses ne contient aucune information d'identification sur vous, à moins qu'une question ne vous ait été posée dans ce sens. Si vous avez répondu à un questionnaire utilisant des invitations, vous pouvez être assuré(e) que le code de l'invitation n'est pas enregistré avec votre réponse. Les invitations sont gérées dans une base de données séparée qui n'est mise à jour que pour indiquer si vous avez ou non utilisé votre invitation pour remplir le questionnaire. Il n'y a aucun moyen de faire le lien entre les invitations et les réponses enregistrées pour ce questionnaire."
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Etes-vous sûr de vouloir effacer toutes vos réponses ?"
+
+msgid "Exit and Clear Survey"
+msgstr "Sortir et effacer le questionnaire"
+
+msgid "Load Unfinished Survey"
+msgstr "Charger un questionnaire non terminé"
+
+msgid "last"
+msgstr "Dernier"
+
+msgid "Save Survey and Return"
+msgstr "Sauvegarder le questionnaire et le continuer"
 
 # E:\www\phpsurveyor/common.php:1574
 msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
@@ -298,21 +297,6 @@ msgstr "Recommencer ce questionnaire"
 msgid "Close this Window"
 msgstr "Fermer cette fenêtre"
 
-msgid "Name"
-msgstr "Nom"
-
-msgid "Password"
-msgstr "Mot de passe"
-
-msgid "Repeat Password"
-msgstr "Répéter le mot de passe"
-
-msgid "Your Email"
-msgstr "Votre mail"
-
-msgid "Save Now"
-msgstr "Sauvegarder maintenant"
-
 msgid "Return To Survey"
 msgstr "Retourner au questionnaire"
 
@@ -329,12 +313,20 @@ msgstr ""
 "Votre questionnaire sera sauvegardé en utilisant ce nom et ce mot de passe et vous pourrez le compléter plus tard en vous connectant avec les mêmes identifiants.<br /><br />\n"
 "Si vous donnez une adresse mail, un message contenant ces informations vous sera envoyé."
 
-msgid "Saved name"
-msgstr "Nom de sauvegarde"
+msgid "Name"
+msgstr "Nom"
 
-# E:\www\phpsurveyor/common.php:1635
-msgid "Load Now"
-msgstr "Charger maintenant"
+msgid "Password"
+msgstr "Mot de passe"
+
+msgid "Repeat Password"
+msgstr "Répéter le mot de passe"
+
+msgid "Your Email"
+msgstr "Votre mail"
+
+msgid "Save Now"
+msgstr "Sauvegarder maintenant"
 
 msgid "Load A Previously Saved Survey"
 msgstr "Charger un questionnaire précédemment sauvegardé"
@@ -342,6 +334,13 @@ msgstr "Charger un questionnaire précédemment sauvegardé"
 # E:\www\phpsurveyor/common.php:1638
 msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
 msgstr "Vous pouvez, depuis cet écran, charger un questionnaire que vous avez précédemment sauvegardé.<br />Renseignez le 'nom' que vous avez utilisé pour la sauvegarde, et le mot de passe.<br />"
+
+msgid "Saved name"
+msgstr "Nom de sauvegarde"
+
+# E:\www\phpsurveyor/common.php:1635
+msgid "Load Now"
+msgstr "Charger maintenant"
 
 msgid "You must be registered to complete this survey"
 msgstr "Vous devez être enregistré pour compléter ce questionnaire"
@@ -635,55 +634,43 @@ msgstr "Cette erreur peut se produire si vous avez déjà envoyé vos réponses 
 msgid "Access denied!"
 msgstr "Accès refusé !"
 
-#, fuzzy
 msgid "You are not allowed to create new surveys!"
-msgstr "<p>Vous n'êtes pas autorisé à créer un nouveau questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à créer de nouveaux questionnaires !"
 
-#, fuzzy
 msgid "You are not allowed to delete this survey!"
-msgstr "<p>Vous n'êtes pas autorisé à supprimer ce questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à supprimer ce questionnaire !"
 
-#, fuzzy
 msgid "You are not allowed to add new questions for this survey!"
-msgstr "<p>Vous n'êtes pas autorisé à ajouter de nouvelles questions à ce questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à ajouter de nouvelles questions à ce questionnaire !"
 
-#, fuzzy
 msgid "You are not allowed to activate this survey!"
-msgstr "<p>Vous n'êtes pas autorisé à activer ce questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à activer ce questionnaire !"
 
-#, fuzzy
 msgid "You are not allowed to deactivate this survey!"
-msgstr "<p>Vous n'êtes pas autorisé à désactiver ce questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à désactiver ce questionnaire !"
 
-#, fuzzy
 msgid "You are not allowed to add a group to this survey!"
-msgstr "<p>Vous n'êtes pas autorisé à ajouter un groupe dans ce questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à ajouter un groupe dans ce questionnaire !"
 
-#, fuzzy
 msgid "You are not allowed to order groups in this survey!"
-msgstr "<p>Vous n'êtes pas autorisé à réorganiser les groupes dans ce questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à réorganiser les groupes dans ce questionnaire !"
 
-#, fuzzy
 msgid "You are not allowed to edit this survey!"
-msgstr "<p>Vous n'êtes pas autorisé à éditer ce questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à éditer ce questionnaire !"
 
-#, fuzzy
 msgid "You are not allowed to edit groups in this survey!"
-msgstr "<p>Vous n'êtes pas autorisé à editer les groupes dans ce questionnaire !</p>"
+msgstr "Vous n'êtes pas autorisé à editer les groupes dans ce questionnaire !"
 
 # E:\www\phpsurveyor/admin/access_denied.php:103
-#, fuzzy
 msgid "You are not allowed to browse response!"
-msgstr "<p>Vous n'êtes pas autorisé à parcourir les réponses !</p>"
+msgstr "Vous n'êtes pas autorisé à parcourir les réponses !"
 
 # E:\www\phpsurveyor/admin/access_denied.php:108
-#, fuzzy
 msgid "You are not allowed to set assessment rules!"
-msgstr "<p>Vous n'êtes pas autorisé à définir des règles d'évaluation !</p>"
+msgstr "Vous n'êtes pas autorisé à définir des règles d'évaluation !"
 
-#, fuzzy
 msgid "You are not allowed to delete this group!"
-msgstr "<p>Vous n'êtes pas autorisé à supprimer ce groupe !</p>"
+msgstr "Vous n'êtes pas autorisé à supprimer ce groupe !"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:250
 msgid "You are not allowed to perform this operation!"
@@ -994,8 +981,8 @@ msgstr "Veuillez cliquer ci-dessous pour peupler la base de données"
 msgid "Could not create database"
 msgstr "Impossible de créer la base de données"
 
-msgid "Group could not be added. It is missing the mandatory group name"
-msgstr "Le groupe ne peut pas être ajouté: nom du groupe obligatoire absent."
+msgid "Group could not be added. It is missing the group name for the following languages "
+msgstr "Le groupe ne peut pas être ajouté. Il manque le nom du groupe pour les langues suivantes"
 
 # E:\www\phpsurveyor/admin/database.php:116
 msgid "Error: The database reported the following error:"
@@ -1028,41 +1015,20 @@ msgstr "La question ne peut pas être supprimée. Il y a des conditions qui se f
 msgid "Question could not be deleted"
 msgstr "La question ne peut pas être supprimée"
 
-msgid "Fix Sort"
-msgstr "Tri"
+msgid "Add new Answer"
+msgstr "Ajouter une nouvelle réponse"
 
-msgid "Sort Alpha"
-msgstr "Tri Alpha"
-
-msgid "Answer could not be added. You must include both a Code and an Answer"
-msgstr "La réponse ne peut pas être ajoutée. Vous devez inclure un code et une réponse"
-
-msgid "Answer could not be added. There is already an answer with this code"
-msgstr "La réponse ne peut pas être ajoutée. Il y a déjà une réponse avec ce code"
-
-msgid "Save"
-msgstr "Sauver"
-
-msgid "Answer could not be updated. You must include both a Code and an Answer"
-msgstr "La réponse ne peut pas être mise à jour. Vous devez inclure un code et une réponse"
-
-msgid "Answer could not be updated. There is already an answer with this code"
-msgstr "La réponse ne peut pas être mise à jour. Il y a déjà une réponse avec ce code"
-
-msgid "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer."
-msgstr "La réponse ne peut pas être mise à jour. Vous avez modifié le code de réponse, mais il y a des conditions pour d&lsquo;autres questions qui dépendent de l&lsquo;ancien code de réponse de cette question.  Vous devez supprimer ces conditions avant de pouvoir modifier le code de cette réponse."
-
-msgid "Del"
-msgstr "Supprimer"
-
-msgid "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
-msgstr "La réponse ne peut pas être supprimée. Il y a des conditions pour d&lsquo;autres questions qui dépendent de cette réponse.  Vous ne pouvez pas supprimer cette réponse jusqu&lsquo;à ce que ces conditions soient enlevées"
+msgid "Save All"
+msgstr "Sauver tout"
 
 msgid "Up"
 msgstr "Haut"
 
 msgid "Dn"
 msgstr "Bas"
+
+msgid "Del"
+msgstr "Supprimer"
 
 msgid "Survey could not be updated"
 msgstr "Le questionnaire ne peut pas être mis à jour"
@@ -1201,8 +1167,14 @@ msgstr "Tous les groupes sont cohérents"
 msgid "No database action required"
 msgstr "Pas d&lsquo;action à faire sur la base de données"
 
+msgid "Answer could not be added. There is already an answer with this code"
+msgstr "La réponse ne peut pas être ajoutée. Il y a déjà une réponse avec ce code"
+
 msgid "You have not selected a survey to delete"
 msgstr "Vous n&lsquo;avez pas sélectionné de questionnaire à supprimer"
+
+msgid "Answer could not be updated. There is already an answer with this code"
+msgstr "La réponse ne peut pas être mise à jour. Il y a déjà une réponse avec ce code"
 
 msgid "Deactivate Survey"
 msgstr "Désactiver le questionnaire"
@@ -1488,8 +1460,8 @@ msgstr "Ajouter un nouveau groupe au questionnaire"
 msgid "Groups"
 msgstr "Groupes"
 
-msgid "Title:"
-msgstr "Titre :"
+msgid "Title"
+msgstr "Titre"
 
 msgid "This survey is anonymous."
 msgstr "Ce questionnaire est anonyme."
@@ -1697,14 +1669,20 @@ msgstr "Autre :"
 msgid "Upload completed"
 msgstr "Envoi terminé"
 
+msgid "Base Language"
+msgstr "Langue de base"
+
 msgid "Code"
 msgstr "Code :"
 
-msgid "Default"
-msgstr "Défaut"
+msgid "Order"
+msgstr "Commander"
 
-msgid "Move"
-msgstr "Déplacer"
+msgid "New Answer"
+msgstr "Nouvelle réponse"
+
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Vous ne pouvez pas changer des codes, ajouter ou supprimer des entrées dans ce jeu d&lsquo;étiquettes parce que celles-ci sont utilisées par un questionnaire activé."
 
 # E:\www\phpsurveyor/admin/html.php:1028
 msgid "You have to enter user name and email."
@@ -1743,6 +1721,9 @@ msgstr "Contrôle utilisateur"
 
 msgid "Creator"
 msgstr "Créateur"
+
+msgid "Edit User"
+msgstr "Editer un utilisateur"
 
 msgid "Change"
 msgstr "Changer"
@@ -1878,20 +1859,20 @@ msgstr "Copier les attributs ?"
 msgid "Edit Question"
 msgstr "Editer la question"
 
-msgid "Base Language"
-msgstr "Langue de base"
-
 msgid "Update Question"
 msgstr "Mise à jour de la question"
+
+msgid "Save"
+msgstr "Sauver"
 
 msgid "Save Order"
 msgstr "Sauver l'ordre"
 
-msgid "Import Group"
-msgstr "Importer le groupe"
-
 msgid "Edit Group"
 msgstr "Editer un groupe"
+
+msgid "Import Group"
+msgstr "Importer le groupe"
 
 msgid "Update Group"
 msgstr "Mise à jour du groupe"
@@ -2020,11 +2001,11 @@ msgstr "Charger automatiquement l&lsquo;URL quand le questionnaire est terminé 
 msgid "Save and Continue"
 msgstr "Sauvegarder et continuer"
 
-msgid "Edit Survey - Step 2 of 2"
-msgstr "Edition du questionnaire - Etape 2 sur 2"
-
 msgid "This will replace the existing text. Continue?"
 msgstr "Cela remplacera le texte existant. Continuer ?"
+
+msgid "Edit Survey - Step 2 of 2"
+msgstr "Edition du questionnaire - Etape 2 sur 2"
 
 msgid "Invitation Email Subject:"
 msgstr "Objet du mail d&lsquo;invitation :"
@@ -2187,6 +2168,9 @@ msgstr "Aucun fichier n'a été envoyé"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Erreur lors de l'envoi du fichier. Vous devez choisir un fichier CSV valide."
 
+msgid "(This field is mandatory.)"
+msgstr "(Ce champ est obligatoire)"
+
 msgid "Import Survey"
 msgstr "Importer le questionnaire"
 
@@ -2320,14 +2304,14 @@ msgstr "Supprimer un jeu d&lsquo;étiquettes"
 msgid "Are you sure?"
 msgstr "Etes-vous sûr?"
 
-msgid "Title"
-msgstr "Titre"
+msgid "New label"
+msgstr "Nouveau jeu d&lsquo;étiquettes_NEW_LABEL"
 
-msgid "Order"
-msgstr "Commander"
+msgid "Add new label"
+msgstr "Ajouter un nouveau jeu d&lsquo;étiquettes_ADD_NEW_LABEL"
 
-msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
-msgstr "Vous ne pouvez pas changer des codes, ajouter ou supprimer des entrées dans ce jeu d&lsquo;étiquettes parce que celles-ci sont utilisées par un questionnaire activé."
+msgid "Fix Sort"
+msgstr "Tri"
 
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Quelques questionnaires utilisent actuellement ce jeu d&lsquo;étiquettes. Modifier les codes, ajouter ou supprimer des entrées de ce jeu pourrait entrainer des effets indésirables dans d&lsquo;autres questionnaires."
@@ -2548,6 +2532,10 @@ msgstr "Ce modèle peut être modifié"
 msgid "This template cannot be modified"
 msgstr "Ce modèle ne peut pas être modifié"
 
+# E:\www\phpsurveyor/admin/templates.php:538
+msgid "You can\\'t edit the default template."
+msgstr "Vous ne pouvez pas éditer le modèle par défaut."
+
 msgid "Rename this template to:"
 msgstr "Renommer ce modèle en :"
 
@@ -2556,6 +2544,9 @@ msgstr "Renommer ce modèle"
 
 msgid "Export Template"
 msgstr "Exporter le modèle"
+
+msgid "Copy Template"
+msgstr "Copier le modèle :"
 
 msgid "Make a copy of this template"
 msgstr "Faire une copie de ce modèle"
@@ -2575,8 +2566,15 @@ msgstr "Fichiers standards :"
 msgid "Now editing:"
 msgstr "Edition en cours :"
 
+# E:\www\phpsurveyor/admin/templates.php:604
+msgid "Changes cannot be saved to the default template."
+msgstr "Les modifications ne peuvent pas être sauvegarder pour le modèle par défaut."
+
 msgid "Other Files:"
 msgstr "Autres fichiers :"
+
+msgid "Upload a File"
+msgstr "Envoyer un fichier"
 
 msgid "Upload"
 msgstr "Télécharger (Upload)"
@@ -2674,6 +2672,9 @@ msgstr "Chercher"
 msgid "Sort by: "
 msgstr "Tri par : "
 
+msgid "Language"
+msgstr "Langue"
+
 msgid "Invite sent?"
 msgstr "Invitation envoyée ?"
 
@@ -2702,14 +2703,14 @@ msgstr "Envoyer un rappel par mail à cette entrée"
 msgid "Delete Tokens Table"
 msgstr "Suppression de la table des invitations"
 
-msgid "If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Si vous supprimez cette table, des invitations ne seront plus requises pour accéder à ce questionnaire. Une sauvegarde de cette table sera effectuée si vous la supprimez. Votre administrateur systéme pourra accéder à cette table."
+msgid "If you delete this table tokens will no longer be required to access this survey.<br />A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Si vous supprimez cette table, des invitations ne seront plus requises pour accéder à ce questionnaire. <br />Une sauvegarde de cette table sera effectuée si vous la supprimez. Votre administrateur système pourra accéder à cette table."
 
 msgid "Delete Tokens"
 msgstr "Supprimer les invitations"
 
-msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator."
-msgstr "La table des invitations a été enlevée maintenant et des invitations ne sont plus requises pour accéder à ce questionnaire. Une sauvegarde de cette table a été effectuée. L&lsquo;administrateur systéme pourra y accéder."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator."
+msgstr "La table des invitations a maintenant été enlevée et des invitations ne sont plus requises pour accéder à ce questionnaire. <br /> Une sauvegarde de cette table a été effectuée.Un administrateur système pourra y accéder."
 
 msgid "Email Invitation"
 msgstr "Invitation par mail"
