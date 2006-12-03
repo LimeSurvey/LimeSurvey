@@ -36,6 +36,9 @@
 
 require_once(dirname(__FILE__).'/../config.php');
 error_reporting(E_ALL); 
+
+include_once("login_check.php");
+
 if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	{
 

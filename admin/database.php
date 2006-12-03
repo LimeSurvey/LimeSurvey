@@ -34,7 +34,7 @@
 #############################################################
 */
 //Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix)) {die ("Cannot run this script directly [database.php]");}
+if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
 if (!isset($action)) {$action=returnglobal('action');}
 

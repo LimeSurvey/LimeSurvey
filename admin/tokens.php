@@ -44,6 +44,7 @@ if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($start)) {$start=returnglobal('start');}
 if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 
+include_once("login_check.php");
 
 sendcacheheaders();
 

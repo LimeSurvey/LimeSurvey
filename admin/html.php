@@ -37,7 +37,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
-if ($action == "listsurveys" && isset($_SESSION['loginID']))
+if ($action == "listsurveys")
 {
 	$query = "SELECT a.* FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid WHERE b.uid = ".$_SESSION['loginID'];
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
@@ -94,7 +94,7 @@ if ($action == "listsurveys" && isset($_SESSION['loginID']))
 	else $listsurveys="<br /><strong> No Surveys in this Installation </strong><br /><br />" ;
 }
 
-if (($action == "checksettings" || $action == "changelang") && isset($_SESSION['loginID']))
+if ($action == "checksettings" || $action == "changelang")
 {
 	//GET NUMBER OF SURVEYS
 	$query = "SELECT sid FROM ".db_table_name('surveys');
@@ -1328,92 +1328,7 @@ if (returnglobal('viewanswer'))
 	*/
 }
 
-// check data for login
-if(isset($_POST['user']) && isset($_POST['password']) || ($action == "forgotpass"))	// added by Dennis
-{
-	include("usercontrol.php");
-}
 
-// login form
-if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "login")	// added by Dennis
-{
-
-	if($action == "forgotpassword")
-	{
-		$loginsummary = "<form name='forgot' id='forgot' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to enter user name and email.")."</strong><br />	<br />
-							<table>
-								<tr>
-									<td><p>"._("Username")."</p></td>
-									<td><input name='user' type='text' id='user' size='40' maxlength='40' value='' /></td>
-								</tr>
-								<tr>
-									<td><p>"._("Email")."</p></td>
-									<td><input name='email' id='email' type='text' size='40' maxlength='40' value='' /></td>
-								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td><input type='hidden' name='action' value='forgotpass' />
-									<input class='action' type='submit' value='Check data' /><br />&nbsp;\n</td>
-								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td><a href='$scriptname'>"._("Main Admin Screen")."</a></td>
-								</tr>
-							</table>						
-						</form>";	
-	}
-	else
-	{
-		$loginsummary =  "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />
-							<table>
-								<tr>
-									<td>"._("Username")."</td>
-									<td><input name='user' type='text' id='user' size='40' maxlength='40' value='' /></td>
-								</tr>
-								<tr>
-									<td>"._("Password")."</td>
-									<td><input name='password' id='password' type='password' size='40' maxlength='40' /></td>
-								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td align='center'><input type='hidden' name='action' value='login' />
-									<input class='action' type='submit' value='Login' /><br />&nbsp;\n</td>
-								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td><a href='$scriptname?action=forgotpassword'>"._("Forgot Your Password?")."</a><br />&nbsp;\n</td>
-								</tr>
-							</table>
-						</form>";
-
-		// Language selection
-		$loginsummary .=  "\t<form name='language' id='language' method='post' action='$rooturl/admin/admin.php' >"
-		. "\t<table><tr>\n"
-		. "\t\t<td align='center' >\n"
-		. "\t\t\t"._("Current Language").":\n"
-		. "\t\t</td><td>\n"
-		. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
-		foreach (getlanguagedata() as $langkey=>$languagekind)
-		{
-			$loginsummary .= "\t\t\t\t<option value='$langkey'";
-			if ($langkey == $_SESSION['adminlang']) {$loginsummary .= " selected";}
-			$loginsummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
-		}
-		$loginsummary .= "\t\t\t</select>\n"
-		. "\t\t\t<input type='hidden' name='action' value='changelang' />\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n"
-		. "</table>"
-		. "</form><br />";
-	}
-}
-
-// logout user
-if ($action == "logoutuser" && isset($_SESSION['loginID']))
-{
-	$action = "logout";
-	include("usercontrol.php");
-}
 
 if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $action == "userrights")
 {
@@ -1569,7 +1484,7 @@ if ($action == "setuserrights")
 
 if($action == "setnewparents")
 {
-	// muss noch eingeschr?nkt werden ...
+	// muss noch eingeschraenkt werden ...
 	if($_SESSION['USER_RIGHT_MOVE_USER'])
 	{
 		$uid = $_POST['uid'];
@@ -1587,7 +1502,7 @@ if($action == "setnewparents")
 		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query);
 		$query = "UPDATE ".db_table_name('users')." SET parent_id = ".$oldparent." WHERE parent_id = ".$uid;
 		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query);
-		$usersummary .= "<br /><strong>"._("Setting new Parent")."</strong><br />"
+		$usersummary = "<br /><strong>"._("Setting new Parent")."</strong><br />"
 		. "<br />"._("Set Parent successful.")."<br />"
 		. "<br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
 	}
@@ -1599,158 +1514,154 @@ if($action == "setnewparents")
 
 if ($action == "editusers")
 {
-	if(isset($_SESSION['loginID']))
+	$usersummary = "<table rules='rows' width='100%'>\n"
+	. "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
+	. "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></font></td></tr>\n"
+	. "\t<tr>\n"
+	. "\t\t<th>"._("Username")."</th>\n"
+	. "\t\t<th>"._("Email")."</th>\n"
+	. "\t\t<th>"._("Full name")."</th>\n"
+	. "\t\t<th>"._("Password")."</th>\n"
+	. "\t\t<th>"._("Creator")."</th>\n"
+	. "\t\t<th></th>\n"
+	. "\t</tr>\n";
+
+	//$userlist = getuserlist();
+	$_SESSION['userlist'] = getuserlistforuser($_SESSION['loginID'], 0, NULL);
+	$ui = count($_SESSION['userlist']);
+	$usrhimself = $_SESSION['userlist'][0];
+	unset($_SESSION['userlist'][0]);
+
+	//	output users
+	$usersummary .= "\t<tr bgcolor='#999999'>\n"
+	. "\t<td align='center'><strong>{$usrhimself['user']}</strong></td>\n"
+	. "\t<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
+	. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
+	. "\t\t<td align='center'><strong>{$usrhimself['password']}</strong></td>\n";
+	if($usrhimself['parent_id']!=0) {
+		$usersummary .= "\t\t<td align='center'>{$usrhimself['parent']}</td>\n";
+	}
+	else
 	{
-		$usersummary = "<table rules='rows' width='100%'>\n"
-		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
-		. "<font size='1' face='verdana' color='white'><strong>"._("User Control")."</strong></font></td></tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<th>"._("Username")."</th>\n"
-		. "\t\t<th>"._("Email")."</th>\n"
-		. "\t\t<th>"._("Full name")."</th>\n"
-		. "\t\t<th>"._("Password")."</th>\n"
-		. "\t\t<th>"._("Creator")."</th>\n"
-		. "\t\t<th></th>\n"
-		. "\t</tr>\n";
+		$usersummary .= "\t\t<td align='center'><strong>---</strong></td>\n";
+	}
+	$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n"
+	."\t\t\t<form method='post' action='$scriptname'>"
+	."<input type='submit' value='"._("Edit User")."' />"
+	."<input type='hidden' name='action' value='modifyuser' />"
+	."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
+	."</form>";
 
-		//$userlist = getuserlist();
-		$_SESSION['userlist'] = getuserlistforuser($_SESSION['loginID'], 0, NULL);
-		$ui = count($_SESSION['userlist']);
-		$usrhimself = $_SESSION['userlist'][0];
-		unset($_SESSION['userlist'][0]);
+	// users are allowed to delete all successor users (but the admin not himself)
+	if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
+	{
+		$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
+		."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />"
+		."<input type='hidden' name='action' value='deluser' />"
+		."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
+		."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
+		."</form>";
+	}
 
-		//	output users
-		$usersummary .= "\t<tr bgcolor='#999999'>\n"
-		. "\t<td align='center'><strong>{$usrhimself['user']}</strong></td>\n"
-		. "\t<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
-		. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
-		. "\t\t<td align='center'><strong>{$usrhimself['password']}</strong></td>\n";
-		if($usrhimself['parent_id']!=0) {
-			$usersummary .= "\t\t<td align='center'>{$usrhimself['parent']}</td>\n";
+	$usersummary .= "\t\t</td>\n"
+	. "\t</tr>\n";
+
+	// empty row
+	if(!empty($_SESSION['userlist']))
+	$usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
+
+	// other users
+	$row = 0;
+	//foreach ($_SESSION['userlist'] as $usr)
+	$usr_arr = $_SESSION['userlist'];
+	for($i=1; $i<=count($_SESSION['userlist']); $i++)
+	{
+		$usr = $usr_arr[$i];
+		if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
+		else $usersummary .= "\t<tr>\n";
+
+		$usersummary .= "\t<td align='center'>{$usr['user']}</td>\n"
+		. "\t<td align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
+		. "\t<td align='center'>{$usr['full_name']}</td>\n";
+
+		// passwords of other users will not be displayed
+		$usersummary .=  "\t\t<td align='center'>******</td>\n";
+
+		if($_SESSION['USER_RIGHT_MOVE_USER'])
+		{
+			$usersummary .= "\t\t<td align='center'>"
+			."<form name='parentsform{$usr['uid']}'action='$scriptname?action=setnewparents' method='post'>"
+			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+			."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").innerHTML = \"<input type=\\\"submit\\\" value=\\\""._("Change")."\\\">\"'>";
+			//."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").createElement(\"input\")'>";
+			if($usr['uid'] != $usrhimself['uid'])
+			{
+				$usersummary .= "<option value='{$usrhimself['uid']}'";
+				if($usr['parent_id'] == $usrhimself['uid']) {
+					$usersummary .= "selected";
+				}
+				$usersummary .=">".$usrhimself['user']."</option>\n";
+			}
+			foreach ($_SESSION['userlist'] as $usrpar)
+			{
+				if($usr['uid'] != $usrpar['uid']) {
+					$usersummary .= "<option value='{$usrpar['uid']}' ";
+					if($usr['parent_id'] == $usrpar['uid']) {
+						$usersummary .= "selected";
+					}
+					$usersummary .=">".$usrpar['user']."</option>\n";
+				}
+			}
+			$usersummary .= "</select>";
+			$usersummary .= "<div id='button{$usr['uid']}'></div>\n";
+			$usersummary .= "</form></td>\n";
 		}
 		else
 		{
-			$usersummary .= "\t\t<td align='center'><strong>---</strong></td>\n";
+			$usersummary .= "\t\t<td align='center'>{$usr['parent']}</td>\n";
 		}
-		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n"
-		."\t\t\t<form method='post' action='$scriptname'>"
-		."<input type='submit' value='"._("Edit User")."' />"
-		."<input type='hidden' name='action' value='modifyuser' />"
-		."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
-		."</form>";
 
+		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
 		// users are allowed to delete all successor users (but the admin not himself)
-		if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
+		if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usr['uid'] == $_SESSION['loginID'])))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
 			."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />"
 			."<input type='hidden' name='action' value='deluser' />"
-			."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
-			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
-			."</form>";
-		}
-
-		$usersummary .= "\t\t</td>\n"
-		. "\t</tr>\n";
-
-		// empty row
-		if(!empty($_SESSION['userlist']))
-		$usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
-
-		// other users
-		$row = 0;
-		//foreach ($_SESSION['userlist'] as $usr)
-		$usr_arr = $_SESSION['userlist'];
-		for($i=1; $i<=count($_SESSION['userlist']); $i++)
-		{
-			$usr = $usr_arr[$i];
-			if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
-			else $usersummary .= "\t<tr>\n";
-
-			$usersummary .= "\t<td align='center'>{$usr['user']}</td>\n"
-			. "\t<td align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
-			. "\t<td align='center'>{$usr['full_name']}</td>\n";
-
-			// passwords of other users will not be displayed
-			$usersummary .=  "\t\t<td align='center'>******</td>\n";
-
-			if($_SESSION['USER_RIGHT_MOVE_USER'])
-			{
-				$usersummary .= "\t\t<td align='center'>"
-				."<form name='parentsform{$usr['uid']}'action='$scriptname?action=setnewparents' method='post'>"
-				."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-				."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").innerHTML = \"<input type=\\\"submit\\\" value=\\\""._("Change")."\\\">\"'>";
-				//."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").createElement(\"input\")'>";
-				if($usr['uid'] != $usrhimself['uid'])
-				{
-					$usersummary .= "<option value='{$usrhimself['uid']}'";
-					if($usr['parent_id'] == $usrhimself['uid']) {
-						$usersummary .= "selected";
-					}
-					$usersummary .=">".$usrhimself['user']."</option>\n";
-				}
-				foreach ($_SESSION['userlist'] as $usrpar)
-				{
-					if($usr['uid'] != $usrpar['uid']) {
-						$usersummary .= "<option value='{$usrpar['uid']}' ";
-						if($usr['parent_id'] == $usrpar['uid']) {
-							$usersummary .= "selected";
-						}
-						$usersummary .=">".$usrpar['user']."</option>\n";
-					}
-				}
-				$usersummary .= "</select>";
-				$usersummary .= "<div id='button{$usr['uid']}'></div>\n";
-				$usersummary .= "</form></td>\n";
-			}
-			else
-			{
-				$usersummary .= "\t\t<td align='center'>{$usr['parent']}</td>\n";
-			}
-
-			$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
-			// users are allowed to delete all successor users (but the admin not himself)
-			if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usr['uid'] == $_SESSION['loginID'])))
-			{
-				$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
-				."<input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />"
-				."<input type='hidden' name='action' value='deluser' />"
-				."<input type='hidden' name='user' value='{$usr['user']}' />"
-				."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-				."</form>";
-			}
-
-			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
-			."<input type='submit' value='"._("Set User Rights")."' />"
-			."<input type='hidden' name='action' value='setuserrights' />"
 			."<input type='hidden' name='user' value='{$usr['user']}' />"
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
-
-			$usersummary .= "\t\t</td>\n"
-			. "\t</tr>\n";
-			$row++;
 		}
 
-		if($_SESSION['USER_RIGHT_CREATE_USER'])
-		{
-			$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
-			. "\t\t<tr>\n"
-			. "\t\t<td align='center'><input type='text' name='new_user' /></td>\n"
-			. "\t\t<td align='center'><input type='text' name='new_email' /></td>\n"
-			. "\t\t<td align='center'><input type='text' name='new_full_name' /></td>\n"
-			. "\t\t<td align='center'><input type='submit' value='"._("Add User")."' />"
-			. "<input type='hidden' name='action' value='adduser' /></td>\n"
-			. "\t</tr>\n";
-		}
+		$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+		."<input type='submit' value='"._("Set User Rights")."' />"
+		."<input type='hidden' name='action' value='setuserrights' />"
+		."<input type='hidden' name='user' value='{$usr['user']}' />"
+		."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+		."</form>";
+
+		$usersummary .= "\t\t</td>\n"
+		. "\t</tr>\n";
+		$row++;
 	}
+
+	if($_SESSION['USER_RIGHT_CREATE_USER'])
+	{
+		$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
+		. "\t\t<tr>\n"
+		. "\t\t<td align='center'><input type='text' name='new_user' /></td>\n"
+		. "\t\t<td align='center'><input type='text' name='new_email' /></td>\n"
+		. "\t\t<td align='center'><input type='text' name='new_full_name' /></td>\n"
+		. "\t\t<td align='center'><input type='submit' value='"._("Add User")."' />"
+		. "<input type='hidden' name='action' value='adduser' /></td>\n"
+		. "\t</tr>\n";
+	}
+	
 }
 
 if ($action == "addusergroup")
 {
-	if(isset($_SESSION['loginID']))
-	{
-		$usersummary = "<form action='$scriptname' name='addnewusergroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+	$usersummary = "<form action='$scriptname' name='addnewusergroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>"._("Add User Group")."</font></strong></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'><strong>"._("Name:")."</strong></td>\n"
@@ -1761,11 +1672,6 @@ if ($action == "addusergroup")
 		. "\t<input type='hidden' name='action' value='usergroupindb' />\n"
 		. "\t</td></table>\n"
 		. "</form>\n";
-	}
-	else
-	{
-		include("access_denied.php");
-	}
 }
 
 if ($action == "editusergroup")
@@ -1797,6 +1703,8 @@ if ($action == "mailusergroup")
 	$crow = $result->FetchRow();
 	$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != {$_SESSION['loginID']} ORDER BY b.user";
 	$eguresult = db_execute_assoc($eguquery);
+	$addressee = '';
+	$to = '';
 	while ($egurow = $eguresult->FetchRow())
 	{
 		$to .= $egurow['user']. ' <'.$egurow['email'].'>'. ', ' ;
@@ -1917,7 +1825,7 @@ if ($action == "mailsendusergroup")
 		$subject = $_POST['subject'];
 		$addressee = $_POST['addressee'];
 
-		if($_POST['copymail'] == 1)
+		if(isset($_POST['copymail']) && $_POST['copymail'] == 1)
 		{
 			$to .= ", " . $from;
 		}
@@ -1997,6 +1905,7 @@ if ($action == "editusergroups")
 			$row2 = $result2->FetchRow();
 
 			$row = 1;
+			$usergroupentries='';
 			while ($egurow = $eguresult->FetchRow())
 			{
 				if($egurow['uid'] == $crow['creator_id'])
@@ -2008,7 +1917,7 @@ if ($action == "editusergroups")
 					continue;
 				}
 				//	output users
-				$usergroupentries='';
+				
 				if($row == 1){ $usergroupentries .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
 				if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
 				else $usergroupentries .= "\t<tr>\n";
@@ -3038,34 +2947,38 @@ if($action == "surveysecurity")
 			$row = 0;
 			while ($resul2row = $result2->FetchRow())
 			{
-				$query3 = "SELECT a.ugid FROM ".db_table_name('user_in_groups')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE b.uid = ".$resul2row['uid'];
+				$query3 = "SELECT a.ugid FROM ".db_table_name('user_in_groups')." AS a RIGHT OUTER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE b.uid = ".$resul2row['uid'];
 				$result3 = db_execute_assoc($query3);
 				while ($resul3row = $result3->FetchRow())
 				{
 					$group_ids[] = $resul3row['ugid'];
 				}
-				if(!isset($group_ids)) break;	// TODO
-				$group_ids_query = implode(" OR ugid=", $group_ids);
-				unset($group_ids);
-
-				$query4 = "SELECT name FROM ".db_table_name('user_groups')." WHERE ugid = ".$group_ids_query;
-				$result4 = db_execute_assoc($query4);
-				while ($resul4row = $result4->FetchRow())
-				{
-					$group_names[] = $resul4row['name'];
+				
+				if($group_ids[0] != NULL)
+				{				
+					if(!isset($group_ids)) break;	// TODO
+					$group_ids_query = implode(" OR ugid=", $group_ids);
+					unset($group_ids);
+	
+					$query4 = "SELECT name FROM ".db_table_name('user_groups')." WHERE ugid = ".$group_ids_query;
+					$result4 = db_execute_assoc($query4);
+					
+					while ($resul4row = $result4->FetchRow())
+					{
+						$group_names[] = $resul4row['name'];
+					}
+					if(count($group_names) > 0)
+					$group_names_query = implode(", ", $group_names);
 				}
-				if(count($group_names) > 0)
-				$group_names_query = implode(", ", $group_names);
-
 				if(($row % 2) == 0)
-				$surveysecurity .= "\t<tr  bgcolor='#999999'>\n";
+					$surveysecurity .= "\t<tr  bgcolor='#999999'>\n";
 				else
-				$surveysecurity .= "\t<tr>\n";
+					$surveysecurity .= "\t<tr>\n";
 
 				$surveysecurity .= "\t<td align='center'>{$resul2row['user']}\n"
-				. "\t<td align='center'>";
-
-				if(count($group_names) > 0)
+								 . "\t<td align='center'>";
+					
+				if(isset($group_names) > 0)
 				{
 					$surveysecurity .= $group_names_query;
 				}

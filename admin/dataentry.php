@@ -41,6 +41,8 @@ $id = returnglobal('id');
 $saver['scid']=returnglobal('save_scid');
 $surveytable = "{$dbprefix}survey_$surveyid";
 
+include_once("login_check.php");
+
 $actsurquery = "SELECT browse_response FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 $actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
 $actsurrows = $actsurresult->FetchRow();

@@ -35,6 +35,8 @@
 */
 require_once(dirname(__FILE__).'/../config.php');
 
+include_once("login_check.php");
+
 if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	{
 

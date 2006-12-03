@@ -52,8 +52,7 @@ if (!isset($elem)) {$elem=returnglobal('elem');}
 //NEW for multilanguage surveys 
 if (!isset($s_lang)) {$s_lang=returnglobal('s_lang');}
 
-sendcacheheaders();
-
+/*sendcacheheaders();
 
 echo $htmlheader;
 
@@ -70,7 +69,7 @@ echo "<script type='text/javascript'>\n"
 ."\t\t\tdocument.getElementById(name).style.display='';\n"
 ."\t\t\t}\n"
 ."\t\t}\n"
-."</script>\n";
+."</script>\n";*/
 
 // CHECK IF FIRST USE!
 if (!$database_exists)
@@ -112,6 +111,9 @@ if (!$database_exists)
 	//DB EXISTS, CHECK FOR APPROPRIATE UPGRADES
 	checkforupgrades();
 }
+
+
+include ("login_check.php");
 
 
 if ($action == "activate")
@@ -210,6 +212,7 @@ $action == "delattribute" || $action == "addattribute" || $action == "editattrib
 	include("database.php");
 }
 
+
 // WE DRAW THE PRETTY SCREEN HERE
 
 include("html.php");
@@ -220,14 +223,11 @@ echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
 //."\t\t\t<font size='2'>\n";
 
-if(isset($_SESSION['loginID']))
-	{
-	echo showadminmenu();
-	}
+echo showadminmenu();
 
 if (isset($accesssummary)) {echo $accesssummary;}	// added by Dennis
 
-if ($action == "newsurvey" && isset($_SESSION['loginID']))
+if ($action == "newsurvey")
 {
 	echo "$newsurvey\n"
 	."\t\t</td>\n";
@@ -239,7 +239,7 @@ if ($action == "newsurvey" && isset($_SESSION['loginID']))
 }
 
 if (!isset($accesssummary)){
-	if (isset($loginsummary)) {echo $loginsummary;}	// added by Dennis
+	//if (isset($loginsummary)) {echo $loginsummary;}	// added by Dennis
 	if (isset($logoutsummary)) {echo $logoutsummary;}	// added by Dennis
 	if (isset($usergroupsummary)) {echo $usergroupsummary;}
 	if (isset($listsurveys)) {echo $listsurveys; }

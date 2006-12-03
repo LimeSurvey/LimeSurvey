@@ -41,6 +41,8 @@ if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($noid)) {$noid=returnglobal('noid');}
 if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
 
+include_once("login_check.php");
+
 function db_quote($str) {
 	global $connect;
 	return $connect->escape($str);

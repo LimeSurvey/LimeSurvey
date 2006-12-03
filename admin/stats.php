@@ -36,6 +36,8 @@
 
 require_once(dirname(__FILE__).'/../config.php');
 
+include_once("login_check.php");
+
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse

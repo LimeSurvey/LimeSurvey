@@ -35,6 +35,8 @@
 */
 require_once(dirname(__FILE__).'/../config.php');
 
+include_once("login_check.php");
+
 if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
 {
 	require_once ("$jpgraphdir/jpgraph.php");

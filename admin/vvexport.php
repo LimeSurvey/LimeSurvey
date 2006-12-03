@@ -39,6 +39,8 @@ require_once(dirname(__FILE__).'/../config.php');
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action = returnglobal('action');}
 
+include_once("login_check.php");
+
 if (!$action == "export")
 {
 	echo $htmlheader;

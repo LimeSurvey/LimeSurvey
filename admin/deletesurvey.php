@@ -38,6 +38,8 @@ if (isset($_GET['ok'])) {$ok = $_GET['ok'];}
 
 require_once(dirname(__FILE__).'/../config.php');
 
+include_once("login_check.php");
+
 $actsurquery = "SELECT delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 //$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());	
 $actsurresult = &db_execute_assoc($actsurquery);

@@ -41,6 +41,8 @@ if (!isset($id)) {$id=returnglobal('id');}
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($order)) {$order=returnglobal('order');}
 
+include_once("login_check.php");
+
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die("No SID provided.");}
 

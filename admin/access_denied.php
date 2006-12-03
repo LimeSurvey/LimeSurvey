@@ -136,9 +136,9 @@ if (isset($_SESSION['loginID']))
 	else
 		{
 		$accesssummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";		
-		if($sid)
+		if(!empty($sid))
 			$accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid&amp;action=surveysecurity'>"._("Continue")."</a><br />&nbsp;\n";
-		elseif($ugid)
+		elseif(!empty($ugid))
 		//elseif(isset($_GET['ugid']))
 			{
 			$accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$ugid}'>"._("Continue")."</a><br />&nbsp;\n";

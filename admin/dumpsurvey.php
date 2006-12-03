@@ -46,6 +46,8 @@ require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
+include_once("login_check.php");
+
 //echo $htmlheader;
 if (!$surveyid)
 {

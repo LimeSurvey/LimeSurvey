@@ -40,6 +40,8 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action = returnglobal('action');}
 if (!isset($oldtable)) {$oldtable = returnglobal('oldtable');}
 
+include_once("login_check.php");
+
 if (!$action == "import")
 {
 	// show UI for choosing old table

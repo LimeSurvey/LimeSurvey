@@ -34,7 +34,7 @@
 #############################################################
 */
 
-if (empty($homedir)) {die("Cannot run this script directly (usercontrol)");}
+if (empty($homedir)) {die("Cannot run this script directly");}
 if ($accesscontrol <> 1) {exit;}
 
 if (!isset($_SESSION['loginID']))
@@ -174,7 +174,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$srow = $sresult->FetchRow();	
 			
 			array_push($_SESSION['userlist'], array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], 
-				"password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], "level"=>$level, 
+				"password"=>$srow["DECODE(password, '{$codeString}')"], "parent_id"=>$srow['parent_id'], // "level"=>$level, 
 				"create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], 
 				"delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'],
 				"manage_label"=>$srow['manage_label']));
@@ -183,6 +183,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$body = _("You were signed in. Your data:") . "<br />\n";;
 			$body .= _("Username") . ": " . $new_user . "<br />\n";
 			$body .= _("Password") . ": " . $new_pass . "<br />\n";
+			$body .= "<a href='" . $homeurl . "/admin.php'>"._("Login")."</a><br />\n";
 			
 			$subject = 'Registration';
 			$to = $new_email;
@@ -196,7 +197,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				}
 			else
 				{
-				// Muss noch mal gesendet werden oder andere Mˆglichkeit
+				// Muss noch mal gesendet werden oder andere Möglichkeit
 				$tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", _("Email to {NAME} ({EMAIL}) failed."));
 				$addsummary .= "<br />".str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
 				}

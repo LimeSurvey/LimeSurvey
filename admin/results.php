@@ -36,6 +36,8 @@
 
 require_once(dirname(__FILE__).'/../config.php');
 
+include_once("login_check.php");
+
 //OK: Here's how it works so far!
 
 /*include this file in a php script
