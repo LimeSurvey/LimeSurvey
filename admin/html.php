@@ -2144,7 +2144,7 @@ if ($action == "copyquestion")
 		. "\t</tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'><strong>"._("Type:")."</strong></td>\n"
-		. "\t\t<td><select name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
+		. "\t\t<td><SELECT name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 		. getqtypelist($eqrow['type'])
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
@@ -2336,7 +2336,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		. "\t\t<td align='right'><strong>"._("Type:")."</strong></td>\n";
   		if ($activated != "Y")
   		{
-  			$editquestion .= "\t\t<td><select id='question_type' name='type' "
+  			$editquestion .= "\t\t<td><SELECT id='question_type' name='type' "
   			. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
   			. getqtypelist($eqrow['type'])
   			. "\t\t</select></td>\n";
@@ -3753,7 +3753,9 @@ function replacenewline ($texttoreplace)
 function questionjavascript($type, $qattributes)
 {
 	$newquestion = "<script type='text/javascript'>\n"
-	. "<!--\n";
+	. "<!--\n"
+    ."if (navigator.userAgent.indexOf(\"Gecko\") != -1)\n"
+	."window.addEventListener(\"load\", init_gecko_select_hack, false);\n";	
 	$jc=0;
 	$newquestion .= "\t\t\tvar qtypes = new Array();\n";
 	$newquestion .= "\t\t\tvar qnames = new Array();\n\n";
