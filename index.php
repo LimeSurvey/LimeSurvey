@@ -46,7 +46,7 @@ if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid
 session_start();
 
 //NEW for multilanguage surveys
-if (isset($_SESSION['s_lang'])){SetInterfaceLanguage($_SESSION['s_lang']);}
+if (isset($_SESSION['s_lang'])){SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);}
 
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
@@ -984,10 +984,6 @@ function submitfailed()
 	global $thistpl, $subquery, $surveyid, $connect;
 	sendcacheheaders();
 	doHeader();
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	$completed = "<br /><strong><font size='2' color='red'>"
 	. _("Did Not Save")."</strong></font><br /><br />\n\n"
@@ -1040,22 +1036,11 @@ function buildsurveysession()
 		sendcacheheaders();
 		doHeader();
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
-//		foreach(file("$thistpl/startpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
+
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-//		foreach(file("$thistpl/survey.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
 		{
-//			foreach(file("$thistpl/register.pstpl") as $op)
-//			{
-//				echo templatereplace($op);
-//			}
 			echo templatereplace(file_get_contents("$thistpl/register.pstpl"));
 		}
 		else

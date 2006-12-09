@@ -258,9 +258,9 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 		echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 	}
-	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
-	echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname'>\n"; //This is to ensure consistency with mandatory checks, and new group test
+	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+	echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
 	echo "\n</form>\n";
 //	foreach(file("$thistpl/endpage.pstpl") as $op)
 //	{
@@ -453,7 +453,7 @@ echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' nam
 echo "\n\n<!-- INPUT NAMES -->\n";
 echo "\t<input type='hidden' name='fieldnames' value='";
 echo implode("|", $inputnames);
-echo "' id='fieldnames'>\n";
+echo "' id='fieldnames'  />\n";
 
 // --> START NEW FEATURE - SAVE
 // Used to keep track of the fields modified, so only those are updated during save
@@ -467,7 +467,7 @@ echo "\t<input type='hidden' name='modfields' value='";
 //	echo implode("|", $inputmodfields);
 //}
 
-echo "' id='modfields'>\n";
+echo "' id='modfields' />\n";
 echo "\n";
 echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
 echo "\t<script type='text/javascript'>\n";
@@ -519,7 +519,7 @@ if ($newgroup == "Y" && $groupdescription && (isset($_POST['move']) && $_POST['m
 {
 	$presentinggroupdescription = "yes";
 	echo "\n\n<!-- START THE GROUP DESCRIPTION -->\n";
-	echo "\t\t\t<input type='hidden' name='grpdesc' value='Y' id='grpdesc'>\n";
+	echo "\t\t\t<input type='hidden' name='grpdesc' value='Y' id='grpdesc' />\n";
 //	foreach(file("$thistpl/startgroup.pstpl") as $op)
 //	{
 //		echo "\t".templatereplace($op);
@@ -554,7 +554,7 @@ if ($newgroup == "Y" && $groupdescription && (isset($_POST['move']) && $_POST['m
 	echo "\n";
 
 	$_SESSION['step']--;
-	echo "\t\t\t<input type='hidden' name='newgroupondisplay' value='Y' id='newgroupondisplay'>\n";
+	echo "\t\t\t<input type='hidden' name='newgroupondisplay' value='Y' id='newgroupondisplay' />\n";
 }
 else
 {
@@ -627,7 +627,7 @@ if (isset($conditions) && is_array($conditions)) //if conditions exist, create h
 	{
 		if (in_array($SESak, $_SESSION['insertarray']))
 		{
-			echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES) . "'>\n";
+			echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES) . "' />\n";
 		}
 	}
 }
@@ -637,28 +637,28 @@ if (isset($conditions) && is_array($conditions)) //if conditions exist, create h
 if (remove_nulls_from_array($mandatorys) && $newgroup != "Y")
 {
 	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
-	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory'>\n";
+	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";
 }
 if (remove_nulls_from_array($conmandatorys))
 {
 	$conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
-	echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory'>\n";
+	echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory' />\n";
 }
 if (remove_nulls_from_array($mandatoryfns))
 {
 	$mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
-	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn'>\n";
+	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn' />\n";
 }
 if (remove_nulls_from_array($conmandatoryfns))
 {
 	$conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
-	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn'>\n";
+	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
 }
 
-echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
-echo "<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
-echo "<input type='hidden' name='token' value='$token' id='token'>\n";
-echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars($groupname)."' id='lastgroupname'>\n";
+echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
+echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+echo "<input type='hidden' name='token' value='$token' id='token' />\n";
+echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars($groupname)."' id='lastgroupname' />\n";
 echo "</form>\n";
 //foreach(file("$thistpl/endpage.pstpl") as $op)
 //{
@@ -719,9 +719,9 @@ function last()
 //	}
 	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 	echo "\n";
-	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n";
-	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
+	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
+	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
 	echo "\n</form>\n";
 //	foreach(file("$thistpl/endpage.pstpl") as $op)
 //	{

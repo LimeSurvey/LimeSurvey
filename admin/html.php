@@ -2313,7 +2313,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$aqresult = db_execute_assoc($aqquery);
 	while (!$aqresult->EOF) 
 	{
-	    $aqrow = $eqresult->FetchRow();
+	    $aqrow = $aqresult->FetchRow();
 		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($aqrow['language'],false);
 		if ($aqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
 		$aqrow  = array_map('htmlspecialchars', $aqrow);
