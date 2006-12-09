@@ -288,12 +288,12 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		}
 		break;
 
-		case "I": //FILE CSV ONE
-		$values=do_list_CSV($ia);
+		case "I": //Language Question
+		$values=do_language($ia);
 		if (count($values[1]) > 1)
 		{
 			$qtitle .= "<br />\n</b><i><font size='1'>"
-			. _("Choose only one of the following")."</font></i><b>";
+			. _("Choose your language")."</font></i><b>";
 		}
 		break;
 		case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
@@ -553,28 +553,27 @@ function do_date($ia)
 }
 
 
-function do_list_CSV($ia)
+function do_language($ia)
 {
-	global $dbprefix;
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
-	$anscount = $ansresult->RecordCount();
-	while ($ansrow = $ansresult->FetchRow())
+	global $dbprefix, $surveyid;
+	$answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
+	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name);modlanguage(this.name)'>\n";
+	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t\t\t<option value='' selected>"._("Please choose")."..</option>\n";}
+	foreach ($answerlangs as $ansrow)
 	{
-		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
-		if ($_SESSION[$ia[1]] == $ansrow['code'])
+		$answer .= "\t\t\t\t\t\t<option value='{$ansrow}'";
+		if ($_SESSION[$ia[1]] == $ansrow)
 		{
 			$answer .= " selected";
 		}
 		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
-		$answer .= ">{$ansrow['answer']}</option>\n";
+		$answer .= ">".getLanguageNameFromCode($ansrow, true)."</option>\n";
 	}
-	if (!$_SESSION[$ia[1]]) {$answer = "\t\t\t\t\t\t<option value='' selected>"._("Please choose")."..</option>\n".$answer;}
 	$answer .= "\t\t\t\t\t</select>\n";
-	// --> START NEW FEATURE - SAVE
-	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name)'>\n".$answer;
-	// --> END NEW FEATURE - SAVE
 	$inputnames[]=$ia[1];
+    $answer .= "\n\t\t\t<input type='hidden' name='s_lang' id='s_lang' value='' />";
+		
 	return array($answer, $inputnames);
 }
 

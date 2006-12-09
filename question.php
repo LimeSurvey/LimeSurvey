@@ -121,7 +121,6 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("submit")." ")
 		$completed = "<br /><strong><font size='2' color='red'>"._("Did Not Save")."</font></strong><br /><br />\n\n";
 		$completed .= _("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
 		$completed .= "<a href='".$_SERVER['PHP_SELF']."?sid=$surveyid&amp;move=clearall'>"._("Clear Responses")."</a><br /><br />\n";
-		$completed .= "<font size='1'>$subquery</font>\n";
 	}
 	else
 	{
@@ -487,6 +486,14 @@ echo "\t\t\t\t\t\tdocument.getElementById('modfields').value=myarray.join('|');\
 echo "\t\t\t\t\t}\n";
 echo "\t\t\t\t}\n";
 echo "\t\t\t}\n";
+echo "\n";
+echo "\t\tfunction modlanguage(name)\n";
+echo "\t\t\t{\n";
+echo "\t\t\t\ttemp=document.getElementById(name).value;\n";
+echo "\t\t\t\tif (temp!='') {\n";
+echo "\t\t\t\t\tdocument.getElementById('s_lang').value=temp;\n";
+echo "\t\t\t\t}\n";
+echo "\t\t\t} \n";
 echo "\n";
 echo "\t\tfunction inArray(needle, haystack)\n";
 echo "\t\t\t{\n";
