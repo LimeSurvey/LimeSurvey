@@ -577,7 +577,8 @@ if(isset($surveyid))
         	{
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
-        		$query = "UPDATE ".db_table_name('answers')." SET code='".$_POST['code_'.$codeids[$count]]."', answer='{$_POST['answer_'.$sortorderid]}' WHERE sortorder=$orderid and language='$langid'";
+        		$query = "UPDATE ".db_table_name('answers')." SET code='".$_POST['code_'.$codeids[$count]]."', 
+        		answer='{$_POST['answer_'.$sortorderid]}' WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
         		if (!$result = $connect->Execute($query))
         		{
         			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to update answers')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
