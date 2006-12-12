@@ -30,7 +30,7 @@ foreach ($tablelist as $tbl)
 }
 
 #Lookup the names of the attributes
-$query="SELECT sid, attribute1, attribute2, private FROM {$dbprefix}surveys WHERE sid=$surveyid";
+$query="SELECT sid, attribute1, attribute2, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 $num_results = $result->RecordCount();
 $num_fields = $num_results;
@@ -40,6 +40,7 @@ for ($i=0; $i < $num_results; $i++) {
 	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_TL_ATTR1;}
 	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_TL_ATTR2;}
 	$surveyprivate=$row['private'];
+	$language=$row['language'];
 }
 
 $fieldno=0;
@@ -88,6 +89,7 @@ for ($i=0; $i < $num_results; $i++) {
 		$fieldname = "stamp";
 	}
 
+	
 	#Determine field type
 	if ($fieldname=="stamp"){
 		$fieldtype = "DATETIME20.0";
@@ -185,23 +187,23 @@ echo "END FILE TYPE.\n\n";
 
 //echo "*Begin data\n";
 echo "BEGIN DATA\n";//minni"<br />";
-
+$tokensexist=0;
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
-	$query="SELECT `{$dbprefix}tokens_$surveyid`.`firstname`   ,
-	       `{$dbprefix}tokens_$surveyid`.`lastname`    ,
-	       `{$dbprefix}tokens_$surveyid`.`email`";
+	$query="SELECT {$dbprefix}tokens_$surveyid.firstname   ,
+	       {$dbprefix}tokens_$surveyid.lastname    ,
+	       {$dbprefix}tokens_$surveyid.email";
 	if (in_array("attribute_1", $token_fields)) {
-		$query .= ",\n		`{$dbprefix}tokens_$surveyid`.`attribute_1`";
+		$query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_1";
 	}
 	if (in_array("attribute_2", $token_fields)) {
-		$query .= ",\n		`{$dbprefix}tokens_$surveyid`.`attribute_2`";
+		$query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_2";
 	}
-	$query .= ",\n	       `{$dbprefix}survey_$surveyid`.*
-	FROM `{$dbprefix}survey_$surveyid`
-	LEFT JOIN `{$dbprefix}tokens_$surveyid` ON `{$dbprefix}survey_$surveyid`.`token` = `{$dbprefix}tokens_$surveyid`.`token`";
+	$query .= ",\n	       {$dbprefix}survey_$surveyid.*
+	FROM {$dbprefix}survey_$surveyid
+	LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
 } else {
-	$query = "SELECT `{$dbprefix}survey_$surveyid`.*
-	FROM `{$dbprefix}survey_$surveyid`";
+	$query = "SELECT {$dbprefix}survey_$surveyid.*
+	FROM {$dbprefix}survey_$surveyid";
 }
 
 
@@ -249,8 +251,11 @@ foreach ($fields as $field){
 		#If a split question
 		if ($field["code"] != ""){
 			#Lookup the question
-			$query = "SELECT `{$dbprefix}questions`.`question`, `{$dbprefix}questions`.`title` FROM {$dbprefix}questions WHERE ((`{$dbprefix}questions`.`sid` =".$surveyid.") AND (`{$dbprefix}questions`.`qid` =".$field["qid"]."))";
-			#echo $query;
+
+			$query = "SELECT question, title 
+			FROM {$dbprefix}questions WHERE sid='".$surveyid."' AND language='".$language."' 
+			AND qid='".$field["qid"]."'";
+			
 			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 			$num_results = $result->RecordCount();
 			$num_fields = $num_results;
@@ -263,7 +268,8 @@ foreach ($fields as $field){
 				}
 			}
 			#Lookup the answer
-			$query = "SELECT `{$dbprefix}answers`.`answer` FROM {$dbprefix}answers WHERE ((`{$dbprefix}answers`.`qid` =".$field["qid"].") AND (`{$dbprefix}answers`.`code` ='".$field["code"]."'))";
+			$query = "SELECT answer FROM {$dbprefix}answers WHERE 
+			qid='".$field["qid"]."' and language='".$language."' AND code ='".$field["code"]."'";
 			$result=db_execute_assoc($query) or die("Couldn't lookup answer<br />$query<br />".$connect->ErrorMsg());
 			$num_results = $result->RecordCount();
 			$num_fields = $num_results;
@@ -280,7 +286,9 @@ foreach ($fields as $field){
 			}
 		}else{
 			$test=explode ("X", $field["name"]);
-			$query = "SELECT `{$dbprefix}questions`.`question` FROM {$dbprefix}questions WHERE ((`{$dbprefix}questions`.`sid` =".$surveyid.") AND (`{$dbprefix}questions`.`qid` =".$field["qid"]."))";
+			$query = "SELECT question FROM {$dbprefix}questions 
+			WHERE sid ='".$surveyid."' AND language='".$language."' 
+			AND qid='".$field["qid"]."'";
 			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".ErrorMsg());
 			$row = $result->FetchRow();
 			echo "VARIABLE LABELS ".$field["id"]." '".
@@ -298,7 +306,10 @@ foreach ($fields as $field)
 	{
 		if ($field['ftype'] != "T" && $field['ftype'] != "S" && $field['ftype'] != "U" && $field['ftype'] != "A" && $field['ftype'] != "B" && $field['ftype'] != "F")
 		{
-			$query = "SELECT `{$dbprefix}answers`.`code`, `{$dbprefix}answers`.`answer`, `{$dbprefix}questions`.`type` FROM {$dbprefix}answers, {$dbprefix}questions WHERE (`{$dbprefix}answers`.`qid` = ".$field["qid"].") and (`{$dbprefix}questions`.`qid` = ".$field["qid"].")";
+			$query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
+			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
+			{$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
+			and {$dbprefix}questions.qid='".$field["qid"]."'";
 			$result=db_execute_assoc($query) or die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg());
 			$num_results = $result->RecordCount();
 			if ($num_results > 0)
@@ -322,7 +333,9 @@ foreach ($fields as $field)
 		}
 		if ($field['ftype'] == "F")
 		{
-			$query = "SELECT `{$dbprefix}questions`.`lid`, `{$dbprefix}labels`.`code`, `{$dbprefix}labels`.`title` from {$dbprefix}questions, {$dbprefix}labels WHERE (`{$dbprefix}questions`.`qid` = ".$field["qid"].") and (`{$dbprefix}questions`.`lid` = `{$dbprefix}labels`.`lid`)";
+			$query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
+			{$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
+			{$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid";
 			$result=db_execute_assoc($query) or die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());
 			$num_results = $result->RecordCount();
 			if ($num_results > 0)
