@@ -70,7 +70,8 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	$fields=array();
 }
 
-$fieldno=1;
+//$fieldno=1;
+$fieldno=0;
 $tempArray = array();
 $query="SHOW COLUMNS FROM ".db_table_name("survey_$surveyid");
 $result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
@@ -83,7 +84,7 @@ for ($i=0; $i < $num_results; $i++) {
 	# - Length may not be longer than 8 characters
 	# - Name may not begin with a digit
 	$fieldname = $row["Field"];
-
+	//echo $fieldname." - ";
 	#Rename 'datestamp' to stamp
 	if ($fieldname =="datestamp") {
 		$fieldname = "stamp";
@@ -91,7 +92,7 @@ for ($i=0; $i < $num_results; $i++) {
 
 	
 	#Determine field type
-	if ($fieldname=="stamp"){
+	if ($fieldname=="stamp" || $fieldname=="submitdate" || $fieldname=="datestamp"){
 		$fieldtype = "DATETIME20.0";
 	} else {
 		if (isset($fieldname) && $fieldname != "")
@@ -187,7 +188,6 @@ echo "END FILE TYPE.\n\n";
 
 //echo "*Begin data\n";
 echo "BEGIN DATA\n";//minni"<br />";
-$tokensexist=0;
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	$query="SELECT {$dbprefix}tokens_$surveyid.firstname   ,
 	       {$dbprefix}tokens_$surveyid.lastname    ,
@@ -202,7 +202,8 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	FROM {$dbprefix}survey_$surveyid
 	LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
 } else {
-	$query = "SELECT {$dbprefix}survey_$surveyid.*
+	//$query = "SELECT {$dbprefix}survey_$surveyid.*
+	$query = "SELECT *
 	FROM {$dbprefix}survey_$surveyid";
 }
 
@@ -211,9 +212,12 @@ $result=db_execute_num($query) or die("Couldn't get results<br />$query<br />".$
 $num_results = $result->RecordCount();
 $num_fields = $result->FieldCount();
 for ($i=0; $i < $num_results; $i++) {
+
 	$row = $result->FetchRow();
 	$fieldno = 0;
 	while ($fieldno < $num_fields){
+	
+			//echo " field: ".$fields[$fieldno]["id"]." id : ".$fields[$fieldno]["qid"]." val:".$row[$fieldno]."-type: ".$fields[$fieldno]["type"]." |<br> ";
 		if ($fieldno % 20 == 0) echo chr(65+intval($fieldno/20))." ";
 		//if ($i==0) { echo "Field: $fieldno - Dati: ";var_dump($fields[$fieldno]);echo "\n"; }
 		if ($fields[$fieldno]["type"]=="DATETIME20.0"){
@@ -333,8 +337,10 @@ foreach ($fields as $field)
 		}
 		if ($field['ftype'] == "F")
 		{
+			$displayvaluelabel = 0;
 			$query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
 			{$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
+			{$dbprefix}questions.language='".$language."' and 
 			{$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid";
 			$result=db_execute_assoc($query) or die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());
 			$num_results = $result->RecordCount();
