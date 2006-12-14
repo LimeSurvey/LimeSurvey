@@ -277,7 +277,7 @@ if ($questionscount > 0)
 		else {$shortquestion=$rows['title'].": ".strip_tags($rows['question']);}
 		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H")
 		{
-			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder, answer";
+			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder, answer";
 			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 			while ($arows = $aresult->FetchRow())
 			{
