@@ -64,10 +64,6 @@ if (isset($_POST['summary']) && !is_array($_POST['summary'])) {
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
-sendcacheheaders();
-
-echo $htmlheader;
-
 if (!$surveyid)
 {
 	//need to have a survey id

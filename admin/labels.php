@@ -44,8 +44,6 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
-	
-	doAdminHeader();
 	include('./scripts/addremove.js');
 	
 	//DO DATABASE UPDATESTUFF 
@@ -137,7 +135,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			$result=db_execute_assoc($query);
 			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
 		}
-		echo "<form style='margin-bottom:0;' method='post' action='labels.php'>\n"
+		echo "<form style='margin-bottom:0;' method='post' action='labels.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".("Error: You have to enter a name for this label set.'").")\">\n"
 		."<table width='100%' bgcolor='#DDDDDD'>\n"
 		."\t<tr bgcolor='black'>\n"
 		."<td colspan='4' align='center'><font color='white'><strong>\n"
@@ -154,7 +152,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."</td>\n"
 		."<td>\n"
 		."\t<input type='hidden' name='languageids' id='languageids' value='$langids' />"
-		."\t<input type='text' name='label_name' value='";
+		."\t<input type='text' id='label_name' name='label_name' value='";
 		if (isset($lbname)) {echo $lbname;}
 		echo "' />\n"
 		."</td>\n"
@@ -170,7 +168,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 			//  Add/Remove Buttons
 			echo "</select></td>"
-			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove()\" ID=\"RemoveBtn\"  /></td>\n"
+			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove(1,'"._("You cannot remove this items since you need at least one language in a labelset.")."')\" ID=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
 			. "<td align=left width='45%'><select size='5' id='available_languages' name='available_languages'>";

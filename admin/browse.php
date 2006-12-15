@@ -46,8 +46,6 @@ include_once("login_check.php");
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die("No SID provided.");}
 
-sendcacheheaders();
-
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
@@ -56,7 +54,6 @@ require_once(dirname(__FILE__).'/sessioncontrol.php');
 
 
 $surveyoptions = browsemenubar();
-echo $htmlheader;
 echo "<table><tr><td></td></tr></table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
@@ -127,6 +124,7 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 
 //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 
+$qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($action == "id") // Looking at a SINGLE entry
 {
 	//SHOW HEADER
@@ -136,7 +134,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	."<table><tr><td></td></tr></table>\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY {$dbprefix}groups.group_order, {$dbprefix}questions.title";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' and {$dbprefix}questions.language='$qulanguage' ORDER BY {$dbprefix}groups.group_order, {$dbprefix}questions.title";
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
 
@@ -305,7 +303,7 @@ elseif ($action == "all")
 	}
 	echo "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY {$dbprefix}groups.group_order";
+	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' and {$dbprefix}questions.language='$qulanguage' and {$dbprefix}groups.language='$qulanguage' ORDER BY {$dbprefix}groups.group_order";
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
 
@@ -371,7 +369,7 @@ elseif ($action == "all")
 		}
 		elseif ($fnrow['type'] == "R")
 		{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid and {$dbprefix}questions.language='$qulanguage' ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = $connect->Execute($i2query);
 			$i2count = $i2result->RecordCount();
 			for ($i=1; $i<=$i2count; $i++)
@@ -383,7 +381,7 @@ elseif ($action == "all")
 		}
 		else
 		{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid and {$dbprefix}questions.language='$qulanguage' ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = db_execute_assoc($i2query);
 			$otherexists = "";
 			while ($i2row = $i2result->FetchRow())

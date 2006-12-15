@@ -3307,7 +3307,7 @@ if ($action == "editsurvey")
 
 			//  Add/Remove Buttons
 			$editsurvey .= "</select></td>"
-			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><BR /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove()\" ID=\"RemoveBtn\"  /></td>\n"
+			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><BR /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove(0,'')\" ID=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
 			. "\t\t<td align=left><select size='5' id='available_languages' name='available_languages'>";

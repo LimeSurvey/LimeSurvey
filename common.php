@@ -270,7 +270,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
 			$adminmenu  .= "<a href=\"#\""
-						. "onClick=\"window.open('dumpdb.php', '_top')\""
+						. "onClick=\"window.open('dumpdb.php?action=dumpdb', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'"._("Backup Entire Database")."');return false\">"
 						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". _("Backup Entire Database")."($surveyid)' align='left' />"

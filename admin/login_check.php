@@ -1,25 +1,26 @@
 <?
-
-sendcacheheaders();
-
-echo $htmlheader;
-
-echo "<script type='text/javascript'>\n"
-."\tfunction showhelp(action)\n"
-."\t\t{\n"
-."\t\tvar name='help';\n"
-."\t\tif (action == \"hide\")\n"
-."\t\t\t{\n"
-."\t\t\tdocument.getElementById(name).style.display='none';\n"
-."\t\t\t}\n"
-."\t\telse if (action == \"show\")\n"
-."\t\t\t{\n"
-."\t\t\tdocument.getElementById(name).style.display='';\n"
-."\t\t\t}\n"
-."\t\t}\n"
-."</script>\n";
-
 if (!isset($action)) {$action=returnglobal('action');}
+if (($action != "dumpdb") && ($action != "foo") )
+    {
+    sendcacheheaders();
+	doAdminHeader();
+    echo "<script type='text/javascript'>\n"
+    ."\tfunction showhelp(action)\n"
+    ."\t\t{\n"
+    ."\t\tvar name='help';\n"
+    ."\t\tif (action == \"hide\")\n"
+    ."\t\t\t{\n"
+    ."\t\t\tdocument.getElementById(name).style.display='none';\n"
+    ."\t\t\t}\n"
+    ."\t\telse if (action == \"show\")\n"
+    ."\t\t\t{\n"
+    ."\t\t\tdocument.getElementById(name).style.display='';\n"
+    ."\t\t\t}\n"
+    ."\t\t}\n"
+    ."</script>\n";
+    }
+
+
 
 // check data for login
 if(isset($_POST['user']) && isset($_POST['password']) || ($action == "forgotpass"))	// added by Dennis

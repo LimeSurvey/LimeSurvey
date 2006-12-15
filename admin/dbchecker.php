@@ -46,8 +46,6 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 	
 	if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 	{
-		sendcacheheaders();
-		echo $htmlheader;
 		echo "<table><tr><td height='1'></td></tr></table>\n"
 		. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='450'>\n"

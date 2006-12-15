@@ -13,13 +13,19 @@ function DoAdd()
   }
 }
 
-function DoRemove()
+function DoRemove(minItems,strmsg)
 {
   var strText = document.getElementById("additional_languages").options[document.getElementById("additional_languages").selectedIndex].text;
   var strId = document.getElementById("additional_languages").options[document.getElementById("additional_languages").selectedIndex].value;
+  if (document.getElementById("additional_languages").options.length>minItems)
+  {
   AddItem(document.getElementById("available_languages"), strText, strId);
   RemoveItem(document.getElementById("additional_languages"), document.getElementById("additional_languages").selectedIndex);
   sortSelect(document.getElementById("available_languages"));
+  UpdateLanguageIDs();
+  }
+  else 
+    if (strmsg!=''){alert(strmsg);}
 }
 
 
