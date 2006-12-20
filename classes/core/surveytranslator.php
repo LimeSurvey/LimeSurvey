@@ -94,6 +94,7 @@
 	    $supportedLanguages['fi']['description'] = 'Finnish';
 	    $supportedLanguages['fi']['nativedescription'] = 'Suomi';
 
+
 	    // French
 	    $supportedLanguages['fr']['description'] = 'French';
 	    $supportedLanguages['fr']['nativedescription'] = 'Fran&#231;ais';
@@ -109,6 +110,10 @@
 	    // Greek
 	    $supportedLanguages['gr']['description'] = 'Greek';
 	    $supportedLanguages['gr']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
+
+	    // Hebrew
+	    $supportedLanguages['he']['description'] = 'Hebrew';
+	    $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';
 
 	    // Hungarian
 	    $supportedLanguages['hu']['description'] = 'Hungarian';
