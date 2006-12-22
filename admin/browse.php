@@ -33,7 +33,7 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-require_once(dirname(__FILE__).'/../config.php');
+require_once(dirname(__FILE__).'/../common.php');
 
 if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -49,9 +49,6 @@ if (empty($surveyid)) {die("No SID provided.");}
 //Select public language file
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
-
-require_once(dirname(__FILE__).'/sessioncontrol.php');
-
 
 $surveyoptions = browsemenubar();
 echo "<table><tr><td></td></tr></table>\n"

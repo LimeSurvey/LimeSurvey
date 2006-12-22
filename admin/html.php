@@ -3106,8 +3106,8 @@ if ($action == "editsurvey")
 		while ($esrow = $esresult->FetchRow())
 		{
 			$esrow = array_map('htmlspecialchars', $esrow);
-			include('./scripts/addremove.js');
-			$editsurvey = "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>"
+			$editsurvey = include2var('./scripts/addremove.js');
+			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>"
 			. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey - Step 1 of 2")."</font></font></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>"._("Administrator:")."</font></td>\n"
 			. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\" /></td></tr>\n"

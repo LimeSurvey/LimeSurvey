@@ -1354,53 +1354,6 @@ function form($error=false)
 
 } # END form
 
-function helpscreen()
-{
-	global $homeurl, $langdir, $imagefiles;
-	global $action, $setfont;
-	echo "<!-- HELP SCREEN / RIGHT HAND CELL -->\n"
-	."\t\t<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
-	."\t\t\t<table width='100%'><tr><td><table width='100%' align='center' cellspacing='0'>\n"
-	."\t\t\t\t<tr>\n"
-	."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
-	."\t\t\t\t\t\t$setfont<font color='white' size='1'><strong>"._("Help")."</strong>\n"
-	."\t\t\t\t\t</font></font></td>\n"
-	."\t\t\t\t</tr>\n"
-	."\t\t\t\t<tr>\n"
-	."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
-	."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left'>\n"
-	."\t\t\t\t\t\t<input type='image' name='CloseHelpButton' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\" />\n"
-	."\t\t\t\t\t</td>\n"
-	."\t\t\t\t</tr>\n"
-	."\t\t\t\t<tr>\n"
-	."\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
-	//determine which help document to show
-	$helpdoc = "$langdir/tokens.html";
-	switch ($action)
-	{
-		case "browse":
-		$helpdoc .= "#Display%20Tokens";
-		break;
-		case "email":
-		$helpdoc .= "#E%20Invitiation";
-		break;
-		case "addnew":
-		$helpdoc .= "#Add%20new%20token%20entry";
-		break;
-		case "import":
-		$helpdoc .= "#Import/Upload%20CSV%20File";
-		break;
-		case "tokenify":
-		$helpdoc .= "#Generate%20Tokens";
-		break;
-	}
-	echo "\t\t\t\t\t\t<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
-	."\t\t\t\t\t\t</iframe>\n"
-	."\t\t\t\t\t</td>"
-	."\t\t\t\t</tr>\n"
-	."\t\t\t</table></td></tr></table>\n"
-	."\t\t</td>\n";
-}
 
 function getLine($file)
 {

@@ -44,43 +44,27 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
-	include('./scripts/addremove.js');
+	include2var('./scripts/addremove.js');
 	
 	//DO DATABASE UPDATESTUFF 
 	if ($action == "updateset") {updateset($lid);}
-	if ($action == "insertset") {$lid=insertset();}
-	if ($action == "modanswers") {modanswers($lid);}
-	if ($action == "delset") {if (delset($lid)) {$lid=0;}}
+	if ($action == "insertlabelset") {$lid=insertlabelset();}
+	if ($action == "modlabelsetanswers") {modlabelsetanswers($lid);}
+	if ($action == "deletelabelset") {if (deletelabelset($lid)) {$lid=0;}}
 	if ($action == "importlabels")
 	{
 		include("importlabel.php");
 		exit;
 	}
 	
-	echo "<script type='text/javascript'>\n"
-	."<!--\n"
-	."\tfunction showhelp(action)\n"
-	."{\n"
-	."var name='help';\n"
-	."if (action == \"hide\")\n"
-	."\t{\n"
-	."\tdocument.getElementById(name).style.display='none';\n"
-	."\t}\n"
-	."else if (action == \"show\")\n"
-	."\t{\n"
-	."\tdocument.getElementById(name).style.display='';\n"
-	."\t}\n"
-	."}\n"
-	."-->\n"
-	."</script>\n";
-	echo "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
-	."\t<tr>\n"
-	."<td valign='top' align='center' bgcolor='#BBBBBB'>\n"
-	."\t<table cellspacing='1'><tr><td></td></tr></table>\n"
-	."\t<table width='99%' align='center' style='border: 1px solid #555555' "
-	."cellpadding='1' cellspacing='0'>\n"
-	."<tr bgcolor='#555555'><td height='4' colspan='2'>"
-	."<font size='1' face='verdana' color='white'><strong>"
+
+	$labelsoutput= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+                    . "\t<tr>\n"
+                    . "\t\t<td>\n"
+                    . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+                    . "\t\t\t<tr bgcolor='#555555'>\n"
+                    . "\t\t\t\t<td colspan='2' height='8'>\n"
+                    . "\t\t\t\t<font size='1' color='white'><strong>"
 	._("Label Sets Administration")."</strong></font></td></tr>\n"
 	."<tr bgcolor='#999999'>\n"
 	."\t<td>\n"
@@ -99,7 +83,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	."alt='". _("Show Help")."' align='right'  /></a>"	
 	."\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'  alt='' />\n"
 	."\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt='' />\n"
-	."<a href=\"#\" onClick=\"window.open('labels.php?action=newset', '_top')\"" 
+	."<a href=\"#\" onClick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
 	."onmouseout=\"hideTooltip()\"" 
 	."onmouseover=\"showTooltip(event,'"._("Add new label set")."');return false\">"
 	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". _("Add new label set")."' /></a>\n"	 
@@ -111,40 +95,41 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	{
 		foreach ($labelsets as $lb)
 		{
-			echo "<option value='?lid={$lb[0]}'";
-			if ($lb[0] == $lid) {echo " selected";}
-			echo ">{$lb[1]}</option>\n";
+			$labelsoutput.="<option value='admin.php?action=labels&amp;lid={$lb[0]}'";
+			if ($lb[0] == $lid) {$labelsoutput.= " selected";}
+			$labelsoutput.= ">{$lb[1]}</option>\n";
 		}
 	}
-	echo "<option value=''";
-	if (!isset($lid) || $lid<1) {echo " selected";}
-	echo ">"._("Please Choose...")."</option>\n";
+	$labelsoutput.= "<option value=''";
+	if (!isset($lid) || $lid<1) {$labelsoutput.= " selected";}
+	$labelsoutput.= ">"._("Please Choose...")."</option>\n";
 	
-	echo "\t</select>\n"
+	$labelsoutput.= "\t</select>\n"
 	."\t</td>\n"
 	."</tr>\n"
-	."\t</table>\n"
-	."<table ><tr><td></td></tr></table>\n";
-	
+	."\t</table>\n";
+
+	if ($action!='labels' || isset($lid))  {$labelsoutput.="<table ><tr><td></td></tr></table>\n";}
+    	
 	//NEW SET
-	if ($action == "newset" || $action == "editset")
+	if ($action == "newlabelset" || $action == "editlabelset")
 	{
-		if ($action == "editset")
+		if ($action == "editlabelset")
 		{
          	$query = "SELECT label_name,".db_table_name('labelsets').".lid, languages FROM ".db_table_name('labelsets');
 			$result=db_execute_assoc($query);
 			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
 		}
-		echo "<form style='margin-bottom:0;' method='post' action='labels.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".("Error: You have to enter a name for this label set.'").")\">\n"
+		$labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".("Error: You have to enter a name for this label set.'").")\">\n"
 		."<table width='100%' bgcolor='#DDDDDD'>\n"
 		."\t<tr bgcolor='black'>\n"
 		."<td colspan='4' align='center'><font color='white'><strong>\n"
 		."<input type='image' src='$imagefiles/close.gif' align='right' "
-		."onClick=\"window.open('labels.php?lid=$lid', '_top')\" />\n";
-		if ($action == "newset") {echo _("Create New Label Set"); $langids="en";}
-		else {echo _("Edit Label Set");}
+		."onClick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
+		if ($action == "newlabelset") {$labelsoutput.= _("Create New Label Set"); $langids="en";}
+		else {$labelsoutput.= _("Edit Label Set");}
 		$langidsarray=explode(" ",trim($langids)); //Make an array of it
-		echo "</strong></font></td>\n"
+		$labelsoutput.= "</strong></font></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."<td align='right' width='25%'>\n"
@@ -153,8 +138,8 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."<td>\n"
 		."\t<input type='hidden' name='languageids' id='languageids' value='$langids' />"
 		."\t<input type='text' id='label_name' name='label_name' value='";
-		if (isset($lbname)) {echo $lbname;}
-		echo "' />\n"
+		if (isset($lbname)) {$labelsoutput.= $lbname;}
+		$labelsoutput.= "' />\n"
 		."</td>\n"
 		."\t</tr>\n"
 		// Additional languages listbox
@@ -162,12 +147,12 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		. "<td><select multiple style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
 		foreach ($langidsarray as $langid) 
 			{
-					echo  "\t<option id='".$langid."' value='".$langid."'";
-					echo ">".getLanguageNameFromCode($langid)."</option>\n";
+					$labelsoutput.=  "\t<option id='".$langid."' value='".$langid."'";
+					$labelsoutput.= ">".getLanguageNameFromCode($langid)."</option>\n";
 			}
 
 			//  Add/Remove Buttons
-			echo "</select></td>"
+			$labelsoutput.= "</select></td>"
 			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove(1,'"._("You cannot remove this items since you need at least one language in a labelset.")."')\" ID=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
@@ -176,34 +161,34 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			{
 				if (in_array($langkey,$langidsarray)==false)  // base languag must not be shown here
 				{
-					echo "\t<option id='".$langkey."' value='".$langkey."'";
-					echo ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+					$labelsoutput.= "\t<option id='".$langkey."' value='".$langkey."'";
+					$labelsoutput.= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 				}
 			}
 
-		echo "\t</select></td></tr><tr>\n"
+		$labelsoutput.= "\t</select></td></tr><tr>\n"
 		."<td></td><td></td>\n"
 		."<td>\n"
     	."<br /><input type='submit' value='";
-		if ($action == "newset") {echo _("Add");}
-		  else {echo _("Update");}
-		echo "' />\n"
+		if ($action == "newlabelset") {$labelsoutput.= _("Add");}
+		  else {$labelsoutput.= _("Update");}
+		$labelsoutput.= "' />\n"
 		."<input type='hidden' name='action' value='";
-		if ($action == "newset") {echo "insertset";}
-		else {echo "updateset";}
-		echo "' />\n";
+		if ($action == "newlabelset") {$labelsoutput.= "insertlabelset";}
+		else {$labelsoutput.= "updateset";}
+		$labelsoutput.= "' />\n";
 		
-        if ($action == "editset") 
+        if ($action == "editlabelset") 
         {
-            echo "<input type='hidden' name='lid' value='$lblid' />\n";
+            $labelsoutput.= "<input type='hidden' name='lid' value='$lblid' />\n";
         }
 		
-        echo "</td>\n"
+        $labelsoutput.= "</td>\n"
 		."\t</tr>\n";
-		echo "</table></form>\n";
-		if ($action == "newset")
+		$labelsoutput.= "</table></form>\n";
+		if ($action == "newlabelset")
 		{
-			echo "<form enctype='multipart/form-data' name='importlabels' action='labels.php' method='post'>\n"
+			$labelsoutput.= "<form enctype='multipart/form-data' name='importlabels' action='admin.php?action=labels' method='post'>\n"
 			."<table width='100%' bgcolor='#DDDDDD'>\n"
 			."\t<tr><td colspan='2' align='center'>\n"
 			."<strong>OR</strong>\n"
@@ -224,7 +209,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		}
 	}
 	//SET SELECTED
-	if (isset($lid) && ($action != "editset") && $lid)
+	if (isset($lid) && ($action != "editlabelset") && $lid)
 	{
 		//CHECK TO SEE IF ANY ACTIVE SURVEYS ARE USING THIS LABELSET (Don't let it be changed if this is the case)
 		$query = "SELECT ".db_table_name('surveys').".short_title FROM ".db_table_name('questions').", ".db_table_name('surveys')." WHERE ".db_table_name('questions').".sid=".db_table_name('surveys').".sid AND ".db_table_name('questions').".lid=$lid AND ".db_table_name('surveys').".active='Y'";
@@ -244,7 +229,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$result = db_execute_assoc($query);
 		while ($row=$result->FetchRow())
 		{
-			echo "\t<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+			$labelsoutput.= "\t<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 			."<tr bgcolor='#555555'><td height='4' colspan='2'>"
 			."<font size='1' face='verdana' color='white'><strong>"
 			._("Label Set").":</strong> {$row['label_name']}</font></td></tr>\n"
@@ -252,14 +237,14 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t<td>\n"
 			."\t<input type='image' src='$imagefiles/close.gif' title='"
 			._("Close Window")."' align='right' "
-			."onClick=\"window.open('labels.php', '_top')\" />\n"
+			."onClick=\"window.open('admin.php?action=labels', '_top')\" />\n"
 			."\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-			."\t<a href='labels.php?action=editset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Edit label set")."');return false\">" .
+			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Edit label set")."');return false\">" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='' align='left'  /></a>" 
-			."\t<a href='labels.php?action=delset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Delete label set")."');return false\">"
+			."\t<a href='admin.php?action=deletelabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Delete label set")."');return false\">"
 			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onClick=\"return confirm('"._("Are you sure?")."')\" /></a>\n"
 			."\t<a href='dumplabel.php?lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Label Set")."');return false\">" .
 					"<img src='$imagefiles/exportsql.png' alt='"._("Export Label Set")."' title='' align='left' /></a>" 
@@ -277,17 +262,17 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$rwlabelset=$rslabelset->FetchRow();
 		$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 		
-		echo "\t<table width='99%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
+		$labelsoutput.= "\t<table width='100%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
 		."<tr bgcolor='#555555' >\n"
 		."\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
 		._("Labels")
 		."\t</font></strong></td>\n"
 		."</tr>\n"
-        ."\t<tr><td colspan='4'>\n"        ."<form method='post' action='labels.php'>\n"
+        ."\t<tr><td colspan='4'>\n"        ."<form method='post' action='admin.php'>\n"
 	    ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
 		."<input type='hidden' name='lid' value='$lid' />\n"
-		."<input type='hidden' name='action' value='modanswers' />\n";
-        echo "<div class='tab-pane' id='tab-pane-1'>";    
+		."<input type='hidden' name='action' value='modlabelsetanswers' />\n";
+        $labelsoutput.= "<div class='tab-pane' id='tab-pane-1'>";    
         $first=true;
         $sortorderids=''; $codeids='';
 		foreach ($lslanguages as $lslanguage)
@@ -296,7 +281,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		$query = "SELECT * FROM ".db_table_name('labels')." WHERE lid=$lid and language='$lslanguage' ORDER BY sortorder, code";
     		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
     		$labelcount = $result->RecordCount();
-            echo "<div class='tab-page'>"
+            $labelsoutput.= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
                 ."\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
                 ."<thead align='center'>"
@@ -319,54 +304,54 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		{
                 $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
     			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}                 
-    			echo "<tr><td width='25%' align=right>\n";
+    			$labelsoutput.= "<tr><td width='25%' align=right>\n";
 
     			if ($activeuse > 0)
     			{
-    				echo "\t{$row['code']}"
+    				$labelsoutput.= "\t{$row['code']}"
     				."<input type='hidden' name='code_{$row['sortorder']}' value=\"{$row['code']}\" />\n";
     			}
     			elseif (!$first)
     			{   
-                    echo "\t{$row['code']}";
+                    $labelsoutput.= "\t{$row['code']}";
                 }
     			else
     			{
-    				echo "\t<input type='text' name='code_{$row['sortorder']}' maxlength='10' size='10' value=\"{$row['code']}\" />\n";
+    				$labelsoutput.= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='10' size='10' value=\"{$row['code']}\" />\n";
     			}
     			
-    			echo "\t</td>\n"
+    			$labelsoutput.= "\t</td>\n"
     			."\t<td width='35%'>\n"
     			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"{$row['title']}\" />\n"
     			."\t</td>\n"
     			."\t<td width='25%'>\n";
     			if ($activeuse == 0)
     			{
-    				echo "\t<input type='submit' name='method' value='"._("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+    				$labelsoutput.= "\t<input type='submit' name='method' value='"._("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
-    			echo "\t</td>\n"
+    			$labelsoutput.= "\t</td>\n"
     			."\t<td>\n";
     			if ($position > 0)
     			{
-    				echo "\t<input type='submit' name='method' value='"._("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+    				$labelsoutput.= "\t<input type='submit' name='method' value='"._("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			};
     			if ($position < $labelcount-1)
     			{
     				// Fill the sortorder hiddenfield so we now what field is moved down
-                    echo "\t<input type='submit' name='method' value='"._("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+                    $labelsoutput.= "\t<input type='submit' name='method' value='"._("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
-    			echo "\t</td></tr>\n";
+    			$labelsoutput.= "\t</td></tr>\n";
     			$position++;
     		}
     	    if ($labelcount>0)  
             {                       
-                echo "\t<tr><td colspan=4><center><input type='submit' name='method' value='"._("Save All")."'  />"
+                $labelsoutput.= "\t<tr><td colspan=4><center><input type='submit' name='method' value='"._("Save All")."'  />"
                 ."</center></td></tr>\n";
             }
 
     		$position=sprintf("%05d", $position);
     		if ($activeuse == 0)
-    		{   echo "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
+    		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
   			    ."<strong>"._('New label').":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n"
     			."\t</td>\n"
     			."\t<td width='35%'>\n"
@@ -387,7 +372,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		}
     		else
     		{
-    			echo "<tr>\n"
+    			$labelsoutput.= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
     			."<font color='red' size='1'><i><strong>"
     			._("Warning")."</strong>: "._("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></strong></font>\n"
@@ -395,49 +380,40 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."</tr>\n";
     		}
         $first=false;
-    	echo"</tbody></table>\n";
+    	$labelsoutput.="</tbody></table>\n";
 
-	    echo("</div>");
+	    $labelsoutput.=("</div>");
         }	
-	echo "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
-	echo "<input type='hidden' name='codeids' value='$codeids' />\n";
-	echo "</div>"
+	$labelsoutput.= "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
+	$labelsoutput.= "<input type='hidden' name='codeids' value='$codeids' />\n";
+	$labelsoutput.= "</div>"
 	
     	."</form>";
 	
 	// Here starts the Fix Sort order form
-    echo "</td></tr><tr><td colspan='4'>"
-        ."<form style='margin-bottom:0;' action='labels.php' method='post'>"
+    $labelsoutput.= "</td></tr><tr><td colspan='4'>"
+        ."<form style='margin-bottom:0;' action='admin.php?action=labels' method='post'>"
 		."<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
 		."\t<tr><td width='80%'></td>"
 		."<td></td><td><input type='submit' name='method' value='"
 		._("Fix Sort")."' /></td>\n"
 		."</tr></tbody></table>"
 		."\t<input type='hidden' name='lid' value='$lid' />\n"
-		."\t<input type='hidden' name='action' value='modanswers' />\n"
+		."\t<input type='hidden' name='action' value='modlabelsetanswers' />\n"
 		."</form>\n";
 		if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
 		{
-			echo "<tr>\n"
+			$labelsoutput.= "<tr>\n"
 			."\t<td colspan='4' align='center'>\n"
 			."<font color='red' size='1'><i><strong>"
 			._("Warning")."</strong>: "._("Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.")."</i><br />";
-			foreach ($qidarray as $qd) {echo "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
-			echo "</strong></font>\n"
+			foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
+			$labelsoutput.= "</strong></font>\n"
 			."\t</td>\n"
 			."</tr>\n";
 		}
-		echo "\t</table>\n";
+		$labelsoutput.= "\t</table>\n";
 	}
-
-	
-	//CLOSE OFF
-	echo "\t</td>\n"; //END OF MAIN CELL
-	helpscreen();
-	echo "</table>\n";
-	
-	echo getAdminFooter("$langdir/instructions.html#labels", "Using PHPSurveyor`s Labels Editor");
-
 	}
 else
 	{
@@ -455,13 +431,13 @@ function updateset($lid)
 	$query = "UPDATE ".db_table_name('labelsets')." SET label_name='{$_POST['label_name']}', languages='{$_POST['languageids']}' WHERE lid=$lid";
 	if (!$result = $connect->Execute($query))
 	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\""._("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 	}
 }
 
 
 
-function delset($lid)
+function deletelabelset($lid)
 // language proof
 {
 	global $dbprefix, $connect;
@@ -471,7 +447,7 @@ function delset($lid)
 	$count = $result->RecordCount();
 	if ($count > 0)
 	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.")."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\""._("Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.")."\")\n //-->\n</script>\n";
 		return false;
 	}
 	else //There are no dependencies. We can delete this safely
@@ -486,16 +462,16 @@ function delset($lid)
 
 
 
-function insertset()
+function insertlabelset()
 {
 	global $dbprefix, $connect;
-//	echo $_POST['languageids'];  For debug purposes
+//	$labelsoutput.= $_POST['languageids'];  For debug purposes
 	$_POST['label_name'] = sanitize_sql_string($_POST['label_name']);
 	$_POST['languageids'] = sanitize_sql_string($_POST['languageids']);
 	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ('{$_POST['label_name']}','{$_POST['languageids']}')";
 	if (!$result = $connect->Execute($query))
 	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\""._("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 	}
 	else
 	{
@@ -505,7 +481,7 @@ function insertset()
 
 
 
-function modanswers($lid)
+function modlabelsetanswers($lid)
 {
 	global $dbprefix, $connect;
 	
@@ -539,7 +515,7 @@ function modanswers($lid)
     			$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, '{$_POST['insertcode']}', '{$_POST['inserttitle_'.$lslanguage]}', '$newsortorder','$lslanguage')";
                 if (!$result = $connect->Execute($query))
     			{
-    				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to insert label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+    				$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to insert label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
     			}
 			}
 		}
@@ -556,10 +532,10 @@ function modanswers($lid)
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
                 $query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}' WHERE sortorder=$orderid and language='$langid'";
-        		//echo $query;  DP
+        		//$labelsoutput.= $query;  DP
         		if (!$result = $connect->Execute($query))
         		{
-        			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to update label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to update label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
     			}
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
@@ -596,7 +572,7 @@ function modanswers($lid)
 		$query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
 		if (!$result = $connect->Execute($query))
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to delete label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to delete label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 		}
 		break;
 		
@@ -606,6 +582,8 @@ function modanswers($lid)
 		break;
 	}
 }
+
+
 function fixorder($lid) //Function rewrites the sortorder for a group of answers
 {
 	global $dbprefix, $connect;
@@ -628,41 +606,7 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
     }	
 }
 
-function helpscreen()
-{
-	global $homeurl, $langdir, $imagefiles;
-	global $lid, $action;
-	echo "<td id='help' width='150' valign='top' style='display: none' bgcolor='#CCCCCC'>\n";
-	echo "\t<table width='100%'><tr><td><table width='100%' align='center' cellspacing='0'>\n";
-	echo "<tr>\n";
-	echo "\t<td bgcolor='#555555' height='8'>\n";
-	echo "<font color='white' size='1'><strong>"._("Help")."</strong></font>\n";
-	echo "\t</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
-	echo "<img src='$imagefiles/blank.gif' width='20' hspace='0' border='0' align='left' alt='' />\n";
-	echo "<input type='image' src='$imagefiles/close.gif' align='right' onClick=\"showhelp('hide')\" />\n";
-	echo "\t</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
-	//determine which help document to show
-	if (!$lid)
-	{
-		$helpdoc = "$langdir/labelsets.html";
-	}
-	elseif ($lid)
-	{
-		$helpdoc = "$langdir/labels.html";
-	}
-	echo "<iframe width='150' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n";
-	echo "</iframe>\n";
-	echo "\t</td>";
-	echo "</tr>\n";
-	echo "\t</table></td></tr></table>\n";
-	echo "</td>\n";
-}
+
 
 
 ?>

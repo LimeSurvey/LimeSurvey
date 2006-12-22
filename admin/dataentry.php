@@ -49,11 +49,7 @@ $actsurrows = $actsurresult->FetchRow();
 
 if($actsurrows['browse_response']){	
 	
-	sendcacheheaders();
-	
 	$surveyoptions = browsemenubar();
-	echo $htmlheader;
-	
 	if (!$database_exists)
 	{
 		//echo "</table>\n";
@@ -1334,7 +1330,8 @@ if($actsurrows['browse_response']){
 	}
 	else
 	{
-		$langlistbox = languageDropdown($surveyid,$_GET['language']);
+		if (!isset($_GET['language'])) {$_GET['language']=GetBaseLanguageFromSurveyID($surveyid);} 
+        $langlistbox = languageDropdown($surveyid,$_GET['language']);
 		$thissurvey=getSurveyInfo($surveyid);
 		//This is the default, presenting a blank dataentry form
 		$fieldmap=createFieldMap($surveyid);

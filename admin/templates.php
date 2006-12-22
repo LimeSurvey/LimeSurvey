@@ -470,8 +470,6 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	//****************************************************************
 	//** OUTPUT STARTS HERE
 	//****************************************************************
-	sendcacheheaders();
-	doAdminHeader();
 	echo "<script type='text/javascript'>\n"
 	."<!--\n"
 	."function copyprompt(text, defvalue, copydirectory, action)\n"

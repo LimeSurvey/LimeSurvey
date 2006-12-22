@@ -33,12 +33,14 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-//SESSIONCONTROL.PHP FILE MANAGES ADMIN SESSIONS. IT WILL EVENTUALL EXTEND TO MANAGING USER LEVELS
+//SESSIONCONTROL.PHP FILE MANAGES ADMIN SESSIONS. 
 //Ensure script is not run directly, avoid path disclosure
+
 if (empty($dbprefix)) {die ("Cannot run this script directly");}
 
 session_name("PHPSurveyorAdmin");
 if (session_id() == "") session_start();
+
 
 //LANGUAGE ISSUES
 
@@ -62,9 +64,14 @@ elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 SetInterfaceLanguage($_SESSION['adminlang']);
 
 // get user rights
-if(isset($_SESSION['loginID']))
-	{
-	$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
+if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}
+	
+
+
+function GetSessionUserRights($loginID)
+{
+	global $dbprefix,$connect; 
+    $squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";	//		added by Dennis
 	$sresult = $connect->Execute($squery);
 	if(@$fields = $sresult->FetchRow())
 		{
@@ -76,5 +83,8 @@ if(isset($_SESSION['loginID']))
 		$_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
 		$_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
 		}
-	}
+}
+
+
+	
 ?>

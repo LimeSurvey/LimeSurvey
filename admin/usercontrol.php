@@ -36,7 +36,6 @@
 
 if (empty($homedir)) {die("Cannot run this script directly");}
 if ($accesscontrol <> 1) {exit;}
-
 if (!isset($_SESSION['loginID']))
 	{
 	if($action == "forgotpass")
@@ -84,7 +83,7 @@ if (!isset($_SESSION['loginID']))
 				}									
 			}	
 		}	
-	else	// normal login 		elseif($action == "login")
+	elseif($action == "login")	// normal login 		
 		{
 		$loginsummary = "<br /><strong>"._("Login")."</strong><br />\n";
 		
@@ -107,18 +106,17 @@ if (!isset($_SESSION['loginID']))
 				if ($_POST['password'] == $fields['password']) 
 					{
 					// Anmeldung ERFOLGREICH
-					//killSession();	// clear $_SESSION   //removed by RONALD
 					
 					$_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['user'];
 					$_SESSION['adminlang'] = $fields['lang'];
-
 					$login = true;
-					include("sessioncontrol.php");
 
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
 					$loginsummary .= _("Login successful.");
 					$loginsummary .= "<br /><br />\n";
+					GetSessionUserRights($_SESSION['loginID']);
+					
 					}
 				else 
 					{
