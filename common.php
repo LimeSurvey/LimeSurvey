@@ -118,7 +118,7 @@ if ($databasetype=='mysql') {$connect->Execute("SET CHARACTER SET 'utf8'");}
 //IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
 if ($sourcefrom == "admin")
 {
-	include("sessioncontrol.php");
+	include(dirname(__FILE__)."/admin/sessioncontrol.php");
 	/**
     * @param string $htmlheader
     * This is the html header text for all administration pages
@@ -184,12 +184,12 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
                     . "\t\t\t<tr bgcolor='#555555'>\n"
                     . "\t\t\t\t<td colspan='2' height='8'>\n"
-                    . "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Administration")."</strong>";
+                    . "\t\t\t\t<font size='1' color='white'><strong>"._("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{
 			$adminmenu  .= " --  "._("Logged in as"). ": <strong>". $_SESSION['user'] ."</strong>"."\n";
 			}
-       	$adminmenu .= "\t\t\t\t</font></font></td>\n"
+       	$adminmenu .= "\t\t\t\t</font></td>\n"
                     . "\t\t\t</tr>\n"
                     . "\t\t\t<tr bgcolor='#999999'>\n"
                     . "\t\t\t\t<td>\n"
@@ -225,10 +225,10 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		// check data cosistency
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
-			$adminmenu .= "<a href=\"#\" onClick=\"window.open('dbchecker.php', '_top')\"".
+			$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=checkintegrity', '_top')\"".
 						   "onmouseout=\"hideTooltip()\""
-						  ."onmouseover=\"showTooltip(event,'". _("Check Data Consistency")."');return false\">".
-						"<img src='$imagefiles/checkdb.png' name='CheckDatabase' title=''  alt='"._("Check Data Consistency")."' align='left' /></a>\n";
+						  ."onmouseover=\"showTooltip(event,'". _("Check Data Integrity")."');return false\">".
+						"<img src='$imagefiles/checkdb.png' name='CheckDataINtegrity' title=''  alt='"._("Check Data Integrity")."' align='left' /></a>\n";
 			}
 		else
 			{
@@ -283,7 +283,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			}
 		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			{
-			$adminmenu  .= "<a href=\"#\" onClick=\"window.open('labels.php', '_top')\""
+			$adminmenu  .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=labels', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'"._("Edit/Add Label Sets")."');return false\">" .
 						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='' alt='". _("Edit/Add Label Sets")."' /></a>\n"
@@ -310,7 +310,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	                    . "onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">"
 	                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
 	                    . "alt='". _("Show Help")."' align='right'  /></a>"
-		                . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logoutuser', '_top')\""
+		                . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logout', '_top')\""
                         . "onmouseout=\"hideTooltip()\""
 					    . "onmouseover=\"showTooltip(event,'"._("Logout")."');return false\">"
                         . "<img src='$imagefiles/logout.png' name='Logout'"
@@ -2214,6 +2214,7 @@ function doAdminHeader()
 function getAdminHeader()
 {
 	global $sitename;
+	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']='') {$_SESSION['adminlang']='en';}
 	$strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
 	."<html>\n<head>\n"
 	. "<!--[if lt IE 7]>\n"
@@ -2225,15 +2226,8 @@ function getAdminHeader()
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\" />\n";
-
-	// This prevents a lasting javascripterror in the application
-	if ((returnglobal('action') == "ordergroups") || (returnglobal('action') == "orderquestions"))
-  {
-  	$strAdminHeader.="<script type=\"text/javascript\" src=\"scripts/draganddrop.js\"></script>\n";
-  }
-
-	$strAdminHeader.="<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\" />\n"
+	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
@@ -2629,11 +2623,31 @@ function addUserGroupInDB($group_name, $group_description) {
 // unsets all Session variables to kill session
 function killSession()	//added by Dennis
 	{
-		foreach ($_SESSION as $key =>$value) {
-		//echo $key." = ".$value."<br />";
-		unset($_SESSION[$key]);
+		// Delete the Session Cookie
+		$CookieInfo = session_get_cookie_params();
+		if ( (empty($CookieInfo['domain'])) && (empty($CookieInfo['secure'])) ) {
+			setcookie(session_name(), '', time()-3600, $CookieInfo['path']);
+		} elseif (empty($CookieInfo['secure'])) {
+			setcookie(session_name(), '', time()-3600, $CookieInfo['path'], $CookieInfo['domain']);
+		} else {
+			setcookie(session_name(), '', time()-3600, $CookieInfo['path'], $CookieInfo['domain'], $CookieInfo['secure']);
 		}
-	}
+		unset($_COOKIE[session_name()]);
+        foreach ($_SESSION as $key =>$value) 
+        {
+		  //echo $key." = ".$value."<br />";
+		  unset($_SESSION[$key]);
+		}
+		$_SESSION = array(); // redundant with previous lines
+		session_unset();
+		session_destroy();
+  	}
+
+
+
+
+
+
 
 // set the rights of a user and his children
 function setuserrights($uid, $rights)
@@ -2888,4 +2902,16 @@ function getgrouplistwithoutrandomset($surveyid)
 	}
 	return $groupselecter;
 }
+
+function include2var($file)
+//This function includes a file but doesnt output it - instead it writes it into the return variable
+// by Carsten Schmitz
+{
+   ob_start();
+   include $file;
+   $output = ob_get_contents();
+   @ob_end_clean();
+   return $output;
+} 
+
 ?>

@@ -46,7 +46,7 @@ $databasetabletype  =   "MyISAM";      // Default mySQL table type (only used if
 $dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
 
-$codeString 		= 'hU+*jzR2#';	   //added by Dennis
+$codeString 		=   "hU+*jzR2#";	   //added by Dennis
 
 $useidprefix        =   0;             // Set this to 1 if you want to use a prefix on survey responses (useful for replicated/pooled databases)
 $idprefix           =   0;             // Leave this as 0 to use your server's IP address. Alternatively, use a number here - characters WILL NOT WORK.
