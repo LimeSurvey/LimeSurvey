@@ -296,7 +296,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			{
 	        $adminmenu .= "<a href=\"#\" " .
-	        			  "onClick=\"window.open('templates.php', '_top')\""
+	        			  "onClick=\"window.open('$scriptname?action=templates', '_top')\""
 	                    . "onmouseout=\"hideTooltip()\""
 	                    . "onmouseover=\"showTooltip(event,'"._("Template Editor")."');return false\">" .
 	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". _("Template Editor")."' align='left' /></a>\n"

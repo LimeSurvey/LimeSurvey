@@ -151,11 +151,18 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if ($action=="checkintegrity")  {	include("integritycheck.php"); }
   if ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset" ||
       $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers") { include("labels.php");}
+  if ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || $action=="templaterename"
+      || $action=="templateupload" || $action=="templatefiledelete" || $action=="templatezip")  {	include("templates.php"); }
   
-  
-  // WE DRAW THE PRETTY SCREEN HERE
-  
-  include("html.php");
+  if ($action=="listurveys" || $action=="checksettings" || $action=="changelang" || $action=="adduser" || 
+      $action=="deluser" || $action=="moduser" || $action=="userrights" || $action=="modifyuser" ||
+      $action=="editusers" || $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
+      $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || $action=="editusergroupindb" ||
+      $action=="addquestion" || $action=="copyquestion" || $action=="editquestion" ||
+      $action=="editattribute" || $action=="delattribute" || $action=="addattribute" ||
+      $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups" ||
+      $action=="uploadf" || $action=="newsurvey" || 
+      $action=="addgroup" || $action=="editgroup" || $action=="surveyrights" ) include("html.php");
   
   $adminoutput.= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
   ."\t<tr>\n"
@@ -163,34 +170,36 @@ if(isset($_SESSION['loginID']) && $action!='login')
   
   
   // For some output we dont want to have the standard admin menu bar
-  if (!isset($labelsoutput)) {$adminoutput.= showadminmenu();}
+  if (!isset($labelsoutput) && !isset($templatesoutput)) {$adminoutput.= showadminmenu();}
     
   
+  if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
   if (isset($accesssummary)) {$adminoutput.= $accesssummary;}	// added by Dennis
-  if (isset($addsummary)) {$adminoutput.= $addsummary;}
-  if (isset($answersummary)) {$adminoutput.= $answersummary;}
-  if (isset($cssummary)) {$adminoutput.= $cssummary;}
-  if (isset($editanswer)) {$adminoutput.= $editanswer;}
-  if (isset($editgroup)) {$adminoutput.= $editgroup;}
-  if (isset($editquestion)) {$adminoutput.= $editquestion;}
-  if (isset($editsurvey)) {$adminoutput.= $editsurvey;}
-  if (isset($groupsummary)) {$adminoutput.= $groupsummary;}
-  if (isset($labelsoutput)) {$adminoutput.= $labelsoutput;}
-  if (isset($listsurveys)) {$adminoutput.= $listsurveys; }
-  if (isset($logoutsummary)) {$adminoutput.= $logoutsummary;}	// added by Dennis
-  if (isset($integritycheck)) {$adminoutput.= $integritycheck;}
-  if (isset($newanswer)) {$adminoutput.= $newanswer;}
-  if (isset($newgroup)) {$adminoutput.= $newgroup;}
-  if (isset($newquestion)) {$adminoutput.= $newquestion;}
-  if (isset($newsurvey)) {$adminoutput.= $newsurvey;}
-  if (isset($ordergroups)){$adminoutput.= $ordergroups;}
-  if (isset($orderquestions)) {$adminoutput.= $orderquestions;}
-  if (isset($questionsummary)) {$adminoutput.= $questionsummary;}
-  if (isset($surveysecurity)) {$adminoutput.= $surveysecurity;}
   if (isset($surveysummary)) {$adminoutput.= $surveysummary;}
   if (isset($usergroupsummary)) {$adminoutput.= $usergroupsummary;}
   if (isset($usersummary)) {$adminoutput.= $usersummary;}
+  if (isset($logoutsummary)) {$adminoutput.= $logoutsummary;}	// added by Dennis
+  if (isset($groupsummary)) {$adminoutput.= $groupsummary;}
+  if (isset($questionsummary)) {$adminoutput.= $questionsummary;}
   if (isset($vasummary)) {$adminoutput.= $vasummary;}
+  if (isset($addsummary)) {$adminoutput.= $addsummary;}
+  if (isset($answersummary)) {$adminoutput.= $answersummary;}
+  if (isset($cssummary)) {$adminoutput.= $cssummary;}
+  
+  if (isset($editgroup)) {$adminoutput.= $editgroup;}
+  if (isset($editquestion)) {$adminoutput.= $editquestion;}
+  if (isset($editsurvey)) {$adminoutput.= $editsurvey;}
+  if (isset($labelsoutput)) {$adminoutput.= $labelsoutput;}
+  if (isset($listsurveys)) {$adminoutput.= $listsurveys; }
+  if (isset($integritycheck)) {$adminoutput.= $integritycheck;}
+  if (isset($ordergroups)){$adminoutput.= $ordergroups;}
+  if (isset($orderquestions)) {$adminoutput.= $orderquestions;}
+  if (isset($surveysecurity)) {$adminoutput.= $surveysecurity;}
+  if (isset($newsurvey)) {$adminoutput.= $newsurvey;}
+  if (isset($newgroup)) {$adminoutput.= $newgroup;}
+  if (isset($newquestion)) {$adminoutput.= $newquestion;}
+  if (isset($newanswer)) {$adminoutput.= $newanswer;}
+  if (isset($editanswer)) {$adminoutput.= $editanswer;}
  	
   
   $adminoutput.= "\t\t</td>\n".helpscreen();;

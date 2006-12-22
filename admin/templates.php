@@ -33,10 +33,8 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-require_once(dirname(__FILE__).'/../config.php');
 
 include_once("login_check.php");
-
 if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	{
 
@@ -62,7 +60,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	
 	
 	//Save Changes if necessary
-	if ($action=="savechanges" && $_POST['changes']) {
+	if ($action=="templatesavechanges" && $_POST['changes']) {
 		$_POST['changes']=str_replace("\r\n", "\n", $_POST['changes']);
 		if ($_POST['editfile']) {
 			$savefilename=$publicdir."/templates/".$_POST['templatename']."/".$_POST['editfile'];
@@ -82,7 +80,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 	}
 	
-	if ($action == "copy" && isset($_GET['newname']) && isset($_GET['copydir'])) {
+	if ($action == "templatecopy" && isset($_GET['newname']) && isset($_GET['copydir'])) {
 		//Copies all the files from one template directory to a new one
 		//This is a security issue because it is allowing copying from get variables...
 		$newdirname=$publicdir."/templates/".$_GET['newname'];
@@ -106,7 +104,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 	}
 	
-	if ($action == "rename" && isset($_GET['newname']) && isset($_GET['copydir'])) {
+	if ($action == "templaterename" && isset($_GET['newname']) && isset($_GET['copydir'])) {
 		$newdirname=$publicdir."/templates/".$_GET['newname'];
 		$olddirname=$publicdir."/templates/".$_GET['copydir'];
 		if (!rename($olddirname, $newdirname)) {
@@ -117,7 +115,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 	}
 	
-	if ($action == "upload") {
+	if ($action == "templateupload") {
 		//Uploads the file into the appropriate directory
 		$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
 		if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
@@ -130,14 +128,14 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 	}
 	
-	if ($action == "delete") {
+	if ($action == "templatefiledelete") {
 		if ($_POST['otherfile'] != "chart.jpg") {
 			$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_POST['otherfile']; //This is where the temp file is
 			unlink($the_full_file_path);
 		}
 	}
 	
-	if ($action == "zip") {
+	if ($action == "templatezip") {
 		require("classes/phpzip/phpzip.inc.php");
 		$z = new PHPZip();
 		$templatedir="$publicdir/templates/$templatename/";
@@ -160,37 +158,6 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 	}
 
-	function mkdir_p($target){
-		//creates a new directory
-		//Returns 1 for success
-		//        2 for "directory/file by that name exists
-		//        0 for other errors
-		if(file_exists($target) || is_dir($target))
-		return 2;
-		if(mkdir($target,0777)){
-			return 1;
-		}
-		if(mkdir_p(substr($target, 0, (strrpos($target, '/')))) == 1){
-			if(mkdir_p($target) == 1)
-			return 1;
-			else
-			return 0;
-		} else {
-			return 0;
-		}
-	}
-	
-	function makeoptions($array, $value, $text, $selectedvalue) {
-		$return="";
-		foreach ($array as $ar) {
-			$return .= "<option value='".$ar[$value]."'";
-			if ($ar[$value] == $selectedvalue) {
-				$return .= " selected";
-			}
-			$return .= ">".$ar[$text]."</option>\n";
-		}
-		return $return;
-	}
 	//Standard Template Files
 	$files[]=array("name"=>"startpage.pstpl");
 	$files[]=array("name"=>"survey.pstpl");
@@ -245,34 +212,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			}
 		}
 	}
-	//Load this editfile
-	function filetext($templatefile) {
-		global $publicdir, $templatename;
-		$output="";
-		foreach(file("$publicdir/templates/$templatename/$templatefile") as $line) {
-			$output .= $line;
-		}
-		return $output;
-	}
-	
-	function makegraph($thisstep, $total)
-	{
-		global $templatedir, $publicurl, $templatename;
-		$chart="$publicurl/templates/$templatedir/chart.jpg";
-		if (!is_file($chart)) {$shchart="chart.jpg";}
-		else {$shchart = "$publicurl/templates/$templatedir/chart.jpg";}
-		$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n";
-		$graph .= "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n";
-		$graph .= "<tr><td align='right' width='40'>0%</td>\n";
-		$size=intval(($thisstep-1)/$total*100);
-		//$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% "._("complete")."'></td>\n";
-		$graph .= "<td width='100' align='left'><img src='$publicurl/templates/$templatename/$shchart' "
-		."height='12' width='$size' align='left' alt='$size% complete' /></td>\n";
-		$graph .= "<td align='left' width='40'>100%</td></tr>\n";
-		$graph .= "</table>\n";
-		$graph .= "</td></tr>\n</table>\n";
-		return $graph;
-	}
+
 	
 	if (!$screenname) {$screenname=_("Welcome Page");}
 	if ($screenname != _("Welcome Page")) {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
@@ -470,18 +410,18 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	//****************************************************************
 	//** OUTPUT STARTS HERE
 	//****************************************************************
-	echo "<script type='text/javascript'>\n"
+	$templatesoutput= "<script type='text/javascript'>\n"
 	."<!--\n"
 	."function copyprompt(text, defvalue, copydirectory, action)\n"
 	."\t{\n"
 	."\tif (newtemplatename=window.prompt(text, defvalue))\n"
 	."\t\t{\n"
-	."\t\tvar url='templates.php?action='+action+'&newname='+newtemplatename+'&copydir='+copydirectory;\n"
+	."\t\tvar url='admin.php?action=templatecopy&newname='+newtemplatename+'&copydir='+copydirectory;\n"
 	."\t\twindow.open(url, '_top');\n"
 	."\t\t}\n"
 	."\t}\n"
 	."//-->\n</script>\n";
-	echo "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+	$templatesoutput.= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	. "\t<tr>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -506,14 +446,14 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Create new template")."')\">" .
 			"<img src='$imagefiles/add.png' alt='' align='right' title='' /></a>"
 	."<font face='verdana' size='2' color='white'><strong>"._("Template:")."</strong> </font>"
-	."<select name='templatedir' onchange='javascript: window.open(\"templates.php?editfile=$editfile&amp;screenname=$screenname&amp;templatename=\"+this.value, \"_top\")'>\n"
+	."<select name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=$screenname&amp;templatename=\"+this.value, \"_top\")'>\n"
 	.makeoptions($templates, "name", "name", $templatename)
 	."</select>&nbsp;\n"
 	."</td></tr></table>\n"
 	."<table><tr><td height='1'></td></tr></table>\n";
 	
 	//TEMPLATE DETAILS
-	echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	$templatesoutput.= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
 	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Template:")." <i>$templatename</i></strong>\n"
@@ -522,31 +462,31 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	. "\t\t\t<tr bgcolor='#999999'>\n"
 	. "\t\t\t\t<td>\n";
 	if (is_writable("$publicdir/templates/$templatename")) {
-		echo "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='"._("This template can be modified")."' hspace='0' align='left' />\n";
+		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='"._("This template can be modified")."' hspace='0' align='left' />\n";
 	} else {
-		echo "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='"._("This template cannot be modified")."' hspace='0' align='left' />\n";
+		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='"._("This template cannot be modified")."' hspace='0' align='left' />\n";
 	}
-	echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
+	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 	
 	if ($templatename == "default") 
     {
-            echo "\t\t\t\t\t" .
+            $templatesoutput.= "\t\t\t\t\t" .
     			 "<img name='EditName' src='$imagefiles/noedit.png' alt='' align='left' title=''" .
     			 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("You can\'t edit the default template.")."')\" ".
                  " />";
     }
     else 
         {	
-            echo "\t\t\t\t\t<a href='#' onClick=\"javascript: copyprompt('"._("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
+            $templatesoutput.= "\t\t\t\t\t<a href='#' onClick=\"javascript: copyprompt('"._("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
     			 "<img name='EditName' src='$imagefiles/edit.png' alt='' align='left' title=''" .
     			 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Rename this template")."')\" ".
                  " /></a>";
         }
-	echo "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left' />\n"
-	."\t\t\t\t\t<a href='#' onClick='javascript:window.open(\"templates.php?action=zip&amp;editfile=$editfile&amp;screenname=$screenname&amp;templatename=$templatename\", \"_top\")'".
+	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left' />\n"
+	."\t\t\t\t\t<a href='#' onClick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=$screenname&amp;templatename=$templatename\", \"_top\")'".
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Template")."')\">" .
 					"<img name='Export' src='$imagefiles/exportsql.png' alt='' align='left' title='' /></a>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
@@ -559,14 +499,14 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0' />"
 	."<img src='$imagefiles/blank.gif' width='23' align='right' alt='minimise' border='0' hspace='0' />"
 	."<font face='verdana' size='2' color='white'><strong>"._("Screen:")."</strong> </font>"
-	. "<select name='screenname' onchange='javascript: window.open(\"templates.php?templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
+	. "<select name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
 	. makeoptions($screens, "name", "name", $screenname)
 	. "</select>&nbsp;\n"
 	."</td></tr></table>\n"
 	."<table><tr><td height='1'></td></tr></table>\n";
 	
 	//FILE CONTROL DETAILS
-	echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	$templatesoutput.= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
 	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("File Control:")."</strong>\n"
@@ -575,39 +515,39 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	. "\t\t\t<tr bgcolor='#999999'>"
 	. "\t\t\t\t<td align='center' bgcolor='#DDDDDD'>\n";
 	
-	echo "\t\t\t\t<table width='100%' border='0'>\n"
+	$templatesoutput.= "\t\t\t\t<table width='100%' border='0'>\n"
 	."\t\t\t\t\t<tr>\n"
 	."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
-	. "<form name='editTemplate' method='post' action='templates.php'>\n"
+	. "<form name='editTemplate' method='post' action='admin.php'>\n"
 	. "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
 	. "\t\t\t<input type='hidden' name='screenname' value='$screenname' />\n"
 	. "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
-	. "\t\t\t<input type='hidden' name='action' value='savechanges' />\n"
+	. "\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
 	. "\t\t\t\t<table width='100%' align='center'><tr><td>"
 	."$setfont<strong>"._("Standard Files:")."</strong><font size='1'><br />\n"
-	."<select size='12' name='editfile' onChange='javascript: window.open(\"templates.php?templatename=$templatename&amp;screenname=$screenname&amp;editfile=\"+this.value, \"_top\")'>\n"
+	."<select size='12' name='editfile' onChange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=$screenname&amp;editfile=\"+this.value, \"_top\")'>\n"
 	.makeoptions($files, "name", "name", $editfile)
 	."</select><br /><br />\n"
 	."\t\t\t\t\t\t</font></font></td>\n"
 	."\t\t\t\t\t\t<td align='center' valign='top'>"
 	."$setfont<strong>"._("Now editing:");
-	if (trim($editfile)!='') {echo " <i>$editfile</i>";}
-	echo "</strong><font size='1'><br />\n"
+	if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
+	$templatesoutput.= "</strong><font size='1'><br />\n"
 	."<textarea name='changes' id='changes' cols='110' rows='12'>";
 	if ($editfile) {
-		echo textarea_encode(filetext($editfile));
+		$templatesoutput.= textarea_encode(filetext($editfile));
 	}
-	echo "</textarea><br />\n";
+	$templatesoutput.= "</textarea><br />\n";
 	if (is_writable("$publicdir/templates/$templatename")) {
-		echo "<input align='right' type='submit' value='Save Changes'";
+		$templatesoutput.= "<input align='right' type='submit' value='Save Changes'";
 		if ($templatename == "default") {
-			echo " style='color: #BBBBBB;' disabled alt='"._('Changes cannot be saved to the default template.')."'";
+			$templatesoutput.= " style='color: #BBBBBB;' disabled alt='"._('Changes cannot be saved to the default template.')."'";
 		}
-		echo " />";
+		$templatesoutput.= " />";
 	}
-	echo "<br />\n"
+	$templatesoutput.= "<br />\n"
 	. "</font></font></td></tr></table></form></td>\n"
-	."\t\t\t\t\t\t<td valign='top' align='right' width='20%'><form action='templates.php' method='post'>"
+	."\t\t\t\t\t\t<td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
 	."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td align='right'>"
 	. "$setfont<strong>"._("Other Files:")."</strong></font><br />\n"
 	//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
@@ -617,27 +557,27 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."</td></tr><tr><td align='right'>$setfont"
 	."<input type='submit' value='"._("Delete")."' onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
 	if ($templatename == "default") {
-		echo " disabled";
+		$templatesoutput.= " disabled";
 	}
-	echo " /></font>\n"
+	$templatesoutput.= " /></font>\n"
 	."<input type='hidden' name='editfile' value='$editfile' />\n"
 	."<input type='hidden' name='screenname' value='$screenname' />\n"
 	."<input type='hidden' name='templatename' value='$templatename' />\n"
-	."<input type='hidden' name='action' value='delete' />\n"
+	."<input type='hidden' name='action' value='templatefiledelete' />\n"
 	."</td>\n"
 	."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
-	."<form enctype='multipart/form-data' name='importsurvey' action='templates.php' method='post'>\n"
+	."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post'>\n"
 	."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
 	."<strong>"._('Upload a File').":</strong><br /><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
 	."<input type='submit' value='"._("Upload")."'";
 	if ($templatename == "default") {
-		echo " disabled";
+		$templatesoutput.= " disabled";
 	}
-	echo " />\n"
+	$templatesoutput.= " />\n"
 	."<input type='hidden' name='editfile' value='$editfile' />\n"
 	."<input type='hidden' name='screenname' value='$screenname' />\n"
 	."<input type='hidden' name='templatename' value='$templatename' />\n"
-	."<input type='hidden' name='action' value='upload' />\n"
+	."<input type='hidden' name='action' value='templateupload' />\n"
 	."</td></table></form>\n"
 	."\t\t\t\t\t\t</td>\n"
 	."\t\t\t\t\t</tr>\n"
@@ -648,7 +588,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."</table>";
 	
 	//SAMPLE ROW
-	echo "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	$templatesoutput.= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
 	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>"._("Preview:")."</strong>\n"
@@ -667,11 +607,10 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	}
 	fclose($fnew);
 	$langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
-	echo "<br />\n"
+	$templatesoutput.= "<br />\n"
 	."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
 	."<br />&nbsp;<br />"
-	."</td></tr></table>\n"
-	.getAdminFooter("$langdir_template/instructions.html#Templates", "");
+	."</td></tr></table>\n";
 
 	}
 else
@@ -770,6 +709,67 @@ function textarea_encode($html_code)
 	$html_code = str_replace($from, $to, $html_code);
 	return $html_code;
 	}
+
+//Load this editfile
+function filetext($templatefile) {
+	global $publicdir, $templatename;
+	$output="";
+	foreach(file("$publicdir/templates/$templatename/$templatefile") as $line) {
+		$output .= $line;
+	}
+	return $output;
+}
+
+function makegraph($thisstep, $total)
+{
+	global $templatedir, $publicurl, $templatename;
+	$chart="$publicurl/templates/$templatedir/chart.jpg";
+	if (!is_file($chart)) {$shchart="chart.jpg";}
+	else {$shchart = "$publicurl/templates/$templatedir/chart.jpg";}
+	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n";
+	$graph .= "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n";
+	$graph .= "<tr><td align='right' width='40'>0%</td>\n";
+	$size=intval(($thisstep-1)/$total*100);
+	//$graph .= "<td width='100' align='left'><img src='$shchart' height='12' width='$size' align='left' alt='$size% "._("complete")."'></td>\n";
+	$graph .= "<td width='100' align='left'><img src='$publicurl/templates/$templatename/$shchart' "
+	."height='12' width='$size' align='left' alt='$size% complete' /></td>\n";
+	$graph .= "<td align='left' width='40'>100%</td></tr>\n";
+	$graph .= "</table>\n";
+	$graph .= "</td></tr>\n</table>\n";
+	return $graph;
+}
+
+function mkdir_p($target){
+	//creates a new directory
+	//Returns 1 for success
+	//        2 for "directory/file by that name exists
+	//        0 for other errors
+	if(file_exists($target) || is_dir($target))
+	return 2;
+	if(mkdir($target,0777)){
+		return 1;
+	}
+	if(mkdir_p(substr($target, 0, (strrpos($target, '/')))) == 1){
+		if(mkdir_p($target) == 1)
+		return 1;
+		else
+		return 0;
+	} else {
+		return 0;
+	}
+}
+
+function makeoptions($array, $value, $text, $selectedvalue) {
+	$return="";
+	foreach ($array as $ar) {
+		$return .= "<option value='".$ar[$value]."'";
+		if ($ar[$value] == $selectedvalue) {
+			$return .= " selected";
+		}
+		$return .= ">".$ar[$text]."</option>\n";
+	}
+	return $return;
+}
 
 
 ?>

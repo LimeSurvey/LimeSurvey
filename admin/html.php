@@ -1076,9 +1076,9 @@ if (returnglobal('viewanswer'))
 	}
 
 	// Print Key Contorl JavaScript
-	echo keycontroljs();
+	$vasummary = keycontroljs();
 
-	$vasummary = "\t<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n"
+	$vasummary .= "\t<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n"
 	."<tr bgcolor='#555555' >\n"
 	."\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
 	._("Answers")
@@ -1172,7 +1172,7 @@ if (returnglobal('viewanswer'))
 			$vasummary .= "\t</td></tr>\n";
 			$position++;
 		}
-		if ($anscount > 1)
+		if ($anscount > 0)
 		{
 			$vasummary .= "\t<tr><td colspan=4><center><input type='submit' name='method' value='"._("Save All")."'  />"
 			."</center></td></tr>\n";
@@ -1221,111 +1221,6 @@ if (returnglobal('viewanswer'))
 	}
 
 
-	/*
-
-	$cdrow['answer']=htmlspecialchars($cdrow['answer']);  // So HTML-Code can be used in answers
-	$cdrow['default_value'] = htmlspecialchars($cdrow['default_value']);
-	$vasummary .= "\t\t<td align='center' width='50%'><input name='answer' "
-	. "type='text' value=\"{$cdrow['answer']}\" size='50' />\n"
-	. "\t\t<input name='sortorder' type='hidden' value=\"$position\"></td>"
-	. "\t\t<td align='center' width='10%' />";
-	if (($activated == "Y" && ($qtype == "L" || $qtype =="!")) || ($activated == "N"))
-	{
-	$vasummary .= "\t\t\t<select name='default' >\n"
-	. "\t\t\t\t<option value='Y'";
-	if ($cdrow['default_value'] == "Y") {$vasummary .= " selected";};
-	$vasummary .= ">"._("Yes")."</option>\n"
-	. "\t\t\t\t<option value='N'";
-	if ($cdrow['default_value'] != "Y") {$vasummary .= " selected";};
-	$vasummary .= ">"._("No")."</option>\n"
-	. "\t\t\t</select></td>\n";
-	}
-	else
-	{
-	$vasummary .= "<font size='1'>{$cdrow['default_value']}"
-	. "<input type='hidden' name='default' value=\"{$cdrow['default_value']}\" />";
-	}
-	if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
-	{
-	$vasummary .= "\t\t<td align='center' width='15%'>\n"
-	. "\t\t\t<input name='ansaction' type='submit' value='"._("Save")."' />"
-	. "<input name='ansaction' type='submit' value='"._("Del")."' />\n"
-	. "\t\t</td>\n";
-	}
-	else
-	{
-	$vasummary .= "\t\t<td align='center' width='15%'><input name='ansaction' "
-	. "type='submit' value='"._("Save")."' /></td>\n";
-	}
-	$vasummary .= "\t\t<td align='center'>";
-	if ($position > 0) {$vasummary .= "<input name='ansaction' type='submit' value='"._("Up")."' />";}
-	else {$vasummary .= "&nbsp;&nbsp;&nbsp;&nbsp;";}
-	if ($position < $cdcount-1) {$vasummary .= "<input name='ansaction' type='submit' value='"._("Dn")."' />";}
-	else {$vasummary .= "&nbsp;&nbsp;&nbsp;&nbsp;";}
-	$vasummary .= "\t\t\n";
-	$vasummary .= "\t<input type='hidden' name='oldcode' value=\"{$cdrow['code']}\" />\n"
-	. "\t<input type='hidden' name='oldanswer' value=\"{$cdrow['answer']}\" />\n"
-	. "\t<input type='hidden' name='olddefault' value=\"{$cdrow['default_value']}\" />\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "\t<input type='hidden' name='gid' value='$gid' />\n"
-	. "\t<input type='hidden' name='qid' value='$qid' />\n"
-	. "\t<input type='hidden' name='viewanswer' value='Y' />\n"
-	. "\t<input type='hidden' name='action' value='modanswer' />\n"
-	. "\t</td></table></form></tr>\n";
-	$position++;
-	}
-	if (($activated == "Y" && ($qtype == "L" || $qtype == "!")) || ($activated == "N"))
-	{
-	$position=sprintf("%05d", $position);
-	$vasummary .= "\t<tr><td colspan='5'><form style='margin-bottom:0;' action='".$scriptname."' method='post'>\n"
-	. "\t<table width='100%'><tr><td align='center' width='10%'><input name='code' type='text' size='5' maxlength='5' "
-	. "id='addanswercode' "
-	. "onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\" />"
-	. "</td>\n"
-	. "\t\t<td align='center' width='50%'><input name='answer' type='text' size='50' />\n"
-	. "\t\t<input name='sortorder' type='hidden' value='$position' /></td>\n"
-	. "\t\t<td align='center' width='10%'>"
-	. "\t\t\t<select name='default' >\n"
-	. "\t\t\t\t<option value='Y'>"._("Yes")."</option>\n"
-	. "\t\t\t\t<option value='N' selected>"._("No")."</option>\n"
-	. "\t\t\t</select></td>\n"
-	. "\t\t<td align='center' width='15%'><input name='ansaction' type='submit' value='"._("Add")."' /></td>\n"
-	. "\t\t<td>\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "\t<input type='hidden' name='gid' value='$gid' />\n"
-	. "\t<input type='hidden' name='qid' value='$qid' />\n"
-	. "\t<input type='hidden' name='action' value='modanswer' />\n"
-	. "\t<input type='hidden' name='viewanswer' value='Y' />\n";
-	$vasummary .= "<script type='text/javascript' language='javascript'>\n"
-	. "<!--\n"
-	. "document.getElementById('addanswercode').focus();\n"
-	. "//-->\n"
-	. "</script>\n"
-	. "\t</td></table></form></tr>\n";
-	}
-	if ($cdcount > 0)
-	{
-	$vasummary .= "<tr><td colspan='3'></td><td align='center'>"
-	. "<form style='margin-bottom:0;' action='".$scriptname."' method='post'>"
-	. "<input type='submit' name='ansaction' value='"._("Sort Alpha")."' />\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "\t<input type='hidden' name='gid' value='$gid' />\n"
-	. "\t<input type='hidden' name='qid' value='$qid' />\n"
-	. "\t<input type='hidden' name='action' value='modanswer' />\n"
-	. "\t<input type='hidden' name='viewanswer' value='Y' /></form>\n</td>"
-	. "\t<td align='center'>\n"
-	. "\t<form style='margin-bottom:0;' action='".$scriptname."' method='post'>"
-	. "<input type='submit' name='ansaction' value='"._("Fix Sort")."' />\n"
-	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "\t<input type='hidden' name='gid' value='$gid' />\n"
-	. "\t<input type='hidden' name='qid' value='$qid' />\n"
-	. "\t<input type='hidden' name='action' value='modanswer' />\n"
-	. "\t<input type='hidden' name='viewanswer' value='Y' />\n"
-	. "</form></td>\n";
-	}
-
-	$vasummary .= "</table>\n";
-	*/
 }
 
 
@@ -2526,12 +2421,13 @@ if ($action == "addgroup")
 		$grplangs[] = $baselang;
 		$grplangs = array_reverse($grplangs);
 
-		$newgroup = "<tr><td><form action='$scriptname' name='addnewgroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>"._("Add Group")."</font></strong></td></tr></table>\n";
+		$newgroup = "<tr><td><form action='$scriptname' name='addnewgroupfrom' method='post'>"
+                   ."<table width='100%' border='0'><tr>\n"
+                   ."\t<td colspan='2' bgcolor='black' align='center'>\n\t\t<strong><font color='white'>"._("Add Group")."</font></strong></td>"
+                   ."</tr></table>\n";
 
 
-		$newgroup .="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
-		. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Group")."</font></font></td></tr><tr><td>\n"
+		$newgroup .="<table width='100%' border='0'>\n\t<tr><td>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
 		foreach ($grplangs as $grouplang)
 		{
@@ -2540,7 +2436,7 @@ if ($action == "addgroup")
 			$newgroup .= "</h2>"
             . "<table width='100%' border='0'>"
     		. "\t\t<tr><td align='right'><strong>"._("Title").":</strong></td>\n"
-    		. "\t\t<td><input type='text' size='50' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'>"._("Required")."</td></tr>\n"
+    		. "\t\t<td><input type='text' size='50' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'> "._("Required")."</font></td></tr>\n"
     		. "\t<tr><td align='right'><strong>"._("Description:")."</strong>("._("Optional").")</td>\n"
     		. "\t\t<td><textarea cols='50' rows='4' name='description_$grouplang'></textarea></td></tr>\n"
     		. "</table></div>";
@@ -3479,27 +3375,22 @@ if ($action == "ordergroups")
 {
 	if($sumrows5['edit_survey_property'])
 	{
-		$ordergroups = "<ul id='arrangableNodes'>";
+		$ordergroups = "<form method='post'><ul >";
 		//Get the groups from this survey
 		$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid='{$surveyid}' AND language='{$s_lang}' order by group_order,group_name" ;
 		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
+		$cnt=0;
 		while($ogrows = $ogresult->FetchRow())
 		{
-			$ordergroups.="<li id='".$ogrows['gid']."'>".$ogrows['group_name']."</li>\n" ;
-		}
-		$ordergroups.="</ul>" ;
+			$ordergroups.="<li id='".$ogrows['gid']."'>".$ogrows['group_name']."\n" ;
+		    if ($cnt>0) {$ordergroups.="<input type='submit' id='groupup_".$ogrows['gid']."' value='Up'>";}
+		    if ($cnt<$ogresult->RecordCount()-1) {$ordergroups.="<input type='submit' id='groupdown_".$ogrows['gid']."' value='Down'>";}
+			$ordergroups.="</li>\n" ;
 
-		$ordergroups .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>" ;
-		$ordergroups .="<div id=\"movableNode\"><ul></ul></div>
-						   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif' /></div>
-						   <div id=\"arrDebug\"></div>" ; 					 
-		//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
-		$ordergroups .= "<form action='$scriptname' name='ordergroups' method='post'>
-							<input type='hidden' name='hiddenNodeIds' />
-							<input type='hidden' name='action' value='reordergroups' /> 
-							<input type='hidden' name='sid' value='$surveyid' />
-							</form>" ; 
+			$cnt++;
+		}
+		$ordergroups.="</ul></form>" ;
 		$ordergroups .="</p>" ;
 	}
 	else
