@@ -33,7 +33,6 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-require_once(dirname(__FILE__).'/../config.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
@@ -46,7 +45,7 @@ $actsurrows = $actsurresult->FetchRow();
 
 if($actsurrows['edit_survey_property']){
 
-	if ($action == _("Add")) {
+	if ($action == "assessmentadd") {
 		$inserttable=$dbprefix."assessments";
 		$query = $connect->GetInsertSQL($inserttable, array(
 		'sid' => $surveyid,
@@ -58,7 +57,7 @@ if($actsurrows['edit_survey_property']){
 		'message' => $_POST['message'],
 		'link' => $_POST['link'] ));
 		$result=$connect->Execute($query) or die("Error inserting<br />$query<br />".$connect->ErrorMsg());
-	} elseif ($action == _("Update")) {
+	} elseif ($action == "assessmentupdate") {
 		$query = "UPDATE {$dbprefix}assessments
 				  SET scope='".$_POST['scope']."',
 				  gid=".$_POST['gid'].",
@@ -69,15 +68,13 @@ if($actsurrows['edit_survey_property']){
 				  link='".sanitize_sql_string($_POST['link'])."'
 				  WHERE id=".$_POST['id'];
 		$result = $connect->Execute($query) or die("Error updating<br />$query<br />".$connect->ErrorMsg());
-	} elseif ($action == "delete") {
+	} elseif ($action == "assessmentdelete") {
 		$query = "DELETE FROM {$dbprefix}assessments
 				  WHERE id=".$_POST['id'];
 		$result=$connect->Execute($query);
 	}
 	
-	sendcacheheaders();
-	DoAdminHeader();
-    echo  "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+    $assessmentsoutput=  "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
         . "\t<tr>\n"
         . "\t\t<td>\n"
         . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -85,7 +82,7 @@ if($actsurrows['edit_survey_property']){
         . "\t\t\t\t<td colspan='2' height='8'>\n"
         . "\t\t\t\t\t<font size='1' color='white'><strong>"._("Assessments")."</strong></font></td></tr>\n";
 	
-	echo "\t<tr bgcolor='#999999'>\n"
+	$assessmentsoutput.= "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Return to Survey Administration")."');return false\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>\n"
@@ -93,15 +90,15 @@ if($actsurrows['edit_survey_property']){
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
-	echo "</table>";
+	$assessmentsoutput.= "</table>";
 	
 	if ($surveyid == "") {
-		echo _("No SID Provided");
+		$assessmentsoutput.= _("No SID Provided");
 		exit;
 	}
 	
 	$assessments=getAssessments($surveyid);
-	//echo "<pre>";print_r($assessments);echo "</pre>";
+	//$assessmentsoutput.= "<pre>";print_r($assessments);echo "</pre>";
 	$groups=getGroups($surveyid);
 	$groupselect="<select name='gid'>\n";
 	foreach($groups as $group) {
@@ -117,10 +114,10 @@ if($actsurrows['edit_survey_property']){
 	"<textarea name='message'></textarea />",
 	"<input type='text' name='link' />");
 	$actiontitle=_("Add");
-	$actionbutton=_("Add");
+	$actionvalue="assessmentadd";
 	$thisid="";
 	
-	if ($action == "edit") {
+	if ($action == "assessmentedit") {
 		$query = "SELECT * FROM {$dbprefix}assessments WHERE id=".$_POST['id'];
 		$results = db_execute_assoc($query);
 		while($row=$results->FetchRow()) {
@@ -140,62 +137,60 @@ if($actsurrows['edit_survey_property']){
 		"<textarea name='message'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
 		"<input type='text' name='link' value='".$editdata['link']."' />");
 		$actiontitle=_("Edit");
-		$actionbutton=_("Update");
+		$actionvalue="assessmentupdate";
 		$thisid=$editdata['id'];
 	}
-	//echo "<pre>"; print_r($edits); echo "</pre>";
+	//$assessmentsoutput.= "<pre>"; print_r($edits); $assessmentsoutput.= "</pre>";
 	//PRESENT THE PAGE
 	
-	echo "<br /><table align='center' class='outlinetable' cellspacing='0' width='90%'>
+	$assessmentsoutput.= "<br /><table align='center' class='outlinetable' cellspacing='0' width='90%'>
 		<tr><th>"._("If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission")."</th></tr>
 		<tr><td>";
-	echo "<table cellspacing='1' align='center' width='90%'>
+	$assessmentsoutput.= "<table cellspacing='1' align='center' width='90%'>
 		<tr><th>ID</th><th>SID</th>\n";
 	foreach ($headings as $head) {
-		echo "<th>$head</th>\n";
+		$assessmentsoutput.= "<th>$head</th>\n";
 	}
-	echo "<th>"._("Actions")."</th>";
-	echo "</tr>\n";
+	$assessmentsoutput.= "<th>"._("Actions")."</th>";
+	$assessmentsoutput.= "</tr>\n";
 	foreach($assessments as $assess) {
-		echo "<tr>\n";
+		$assessmentsoutput.= "<tr>\n";
 		foreach($assess as $as) {
-			echo "<td>".stripslashes($as)."</td>\n";
+			$assessmentsoutput.= "<td>".stripslashes($as)."</td>\n";
 		}
-		echo "<td>
+		$assessmentsoutput.= "<td>
 			   <table width='100%'>
-				<tr><td align='center'><form method='post' action='assessments.php?sid=$surveyid'>
+				<tr><td align='center'><form method='post' action='admin.php?sid=$surveyid'>
 				 <input type='submit' value='"._("Edit")."' />
-				 <input type='hidden' name='action' value='edit' />
+				 <input type='hidden' name='action' value='assessmentedit' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form></td>
-				 <td align='center'><form method='post' action='assessments.php?sid=$surveyid'>
+				 <td align='center'><form method='post' action='admin.php?sid=$surveyid'>
 				 <input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />
-				 <input type='hidden' name='action' value='delete' />
+				 <input type='hidden' name='action' value='assessmentdelete' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form>
 				 </td>
 				</tr>
 			   </table>
 			  </td>\n";
-		echo "</tr>\n";
+		$assessmentsoutput.= "</tr>\n";
 	}
-	echo "</table>";
-	echo "<br /><form method='post' action='assessments.php?sid=$surveyid'><table align='center' cellspacing='1'>\n";
-	echo "<tr><th colspan='2'>$actiontitle</th></tr>\n";
+	$assessmentsoutput.= "</table>";
+	$assessmentsoutput.= "<br /><form method='post' action='admin.php?sid=$surveyid'><table align='center' cellspacing='1'>\n";
+	$assessmentsoutput.= "<tr><th colspan='2'>$actiontitle</th></tr>\n";
 	$i=0;
 	
 	foreach ($headings as $head) {
-		echo "<tr><th>$head</th><td>".$inputs[$i]."</td></tr>\n";
+		$assessmentsoutput.= "<tr><th>$head</th><td>".$inputs[$i]."</td></tr>\n";
 		$i++;
 	}
-	echo "<tr><th colspan='2' align='center'><input type='submit' value='$actionbutton' />\n";
-	echo "<input type='hidden' name='sid' value='$surveyid' />\n"
-	."<input type='hidden' name='action' value='$actionbutton' />\n"
+	$assessmentsoutput.= "<tr><th colspan='2' align='center'><input type='submit' value='$actiontitle' />\n";
+	$assessmentsoutput.= "<input type='hidden' name='sid' value='$surveyid' />\n"
+	."<input type='hidden' name='action' value='$actionvalue' />\n"
 	."<input type='hidden' name='id' value='$thisid' />\n"
 	."</th></tr>\n"
 	."</table></form></table><br /></table>\n";
-		
-	echo getAdminFooter("", "");
 	}
 else
 	{

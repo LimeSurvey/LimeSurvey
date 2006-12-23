@@ -36,6 +36,7 @@
 
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
 
+if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');}              //??
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}  //SurveyID
 if (!isset($ugid)) {$ugid=returnglobal('ugid');}         //Usergroup-ID
 if (!isset($gid)) {$gid=returnglobal('gid');}            //GroupID
@@ -46,7 +47,6 @@ if (!isset($action)) {$action=returnglobal('action');}   //Desired action
 if (!isset($ok)) {$ok=returnglobal('ok');}               // ??
 if (!isset($fp)) {$fp=returnglobal('filev');}                 //??
 if (!isset($elem)) {$elem=returnglobal('elem');}              //??
-if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');}              //??
 
 
 
@@ -143,26 +143,32 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action == "insertnewquestion" || $action == "updatesurvey" || $action == "updatesurvey2" || $action=="updategroup" ||
       $action=="reorderquestions" || $action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
       $action == "delattribute" || $action == "addattribute" || $action == "editattribute")
-  
   {
   	include("database.php");
   }
-  
+
+
   if ($action=="checkintegrity")  {	include("integritycheck.php"); }
+  else
   if ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset" ||
       $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers") { include("labels.php");}
+  else    
   if ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || $action=="templaterename"
       || $action=="templateupload" || $action=="templatefiledelete" || $action=="templatezip")  {	include("templates.php"); }
-  
-  if ($action=="listurveys" || $action=="checksettings" || $action=="changelang" || $action=="adduser" || 
+  else    
+  if ($action=="assessments" || $action=="assessmentdelete" || $action=="assessmentedit" || $action=="foo"
+      || $action=="assessmentadd" || $action=="assessmentupdate" || $action=="foo")  {	include("assessments.php"); }
+  else    
+  if ($surveyid || $action=="listurveys" || $action=="checksettings" || $action=="changelang" || $action=="adduser" || 
       $action=="deluser" || $action=="moduser" || $action=="userrights" || $action=="modifyuser" ||
       $action=="editusers" || $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
       $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || $action=="editusergroupindb" ||
-      $action=="addquestion" || $action=="copyquestion" || $action=="editquestion" ||
+      $action=="addquestion" || $action=="copyquestion" || $action=="editquestion"  ||
       $action=="editattribute" || $action=="delattribute" || $action=="addattribute" ||
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups" ||
-      $action=="uploadf" || $action=="newsurvey" || 
+      $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||
       $action=="addgroup" || $action=="editgroup" || $action=="surveyrights" ) include("html.php");
+
   
   $adminoutput.= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
   ."\t<tr>\n"
@@ -170,21 +176,21 @@ if(isset($_SESSION['loginID']) && $action!='login')
   
   
   // For some output we dont want to have the standard admin menu bar
-  if (!isset($labelsoutput) && !isset($templatesoutput)) {$adminoutput.= showadminmenu();}
+  if (!isset($labelsoutput) && !isset($templatesoutput) && !isset($assessmentsoutput)) {$adminoutput.= showadminmenu();}
     
   
   if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
-  if (isset($accesssummary)) {$adminoutput.= $accesssummary;}	// added by Dennis
-  if (isset($surveysummary)) {$adminoutput.= $surveysummary;}
-  if (isset($usergroupsummary)) {$adminoutput.= $usergroupsummary;}
-  if (isset($usersummary)) {$adminoutput.= $usersummary;}
-  if (isset($logoutsummary)) {$adminoutput.= $logoutsummary;}	// added by Dennis
-  if (isset($groupsummary)) {$adminoutput.= $groupsummary;}
+  if (isset($accesssummary  )) {$adminoutput.= $accesssummary;}	// added by Dennis
+  if (isset($surveysummary  )) {$adminoutput.= $surveysummary;}
+  if (isset($usergroupsummary)){$adminoutput.= $usergroupsummary;}
+  if (isset($usersummary    )) {$adminoutput.= $usersummary;}
+  if (isset($logoutsummary  )) {$adminoutput.= $logoutsummary;}	// added by Dennis
+  if (isset($groupsummary   )) {$adminoutput.= $groupsummary;}
   if (isset($questionsummary)) {$adminoutput.= $questionsummary;}
-  if (isset($vasummary)) {$adminoutput.= $vasummary;}
-  if (isset($addsummary)) {$adminoutput.= $addsummary;}
-  if (isset($answersummary)) {$adminoutput.= $answersummary;}
-  if (isset($cssummary)) {$adminoutput.= $cssummary;}
+  if (isset($vasummary      )) {$adminoutput.= $vasummary;}
+  if (isset($addsummary     )) {$adminoutput.= $addsummary;}
+  if (isset($answersummary  )) {$adminoutput.= $answersummary;}
+  if (isset($cssummary      )) {$adminoutput.= $cssummary;}
   
   if (isset($editgroup)) {$adminoutput.= $editgroup;}
   if (isset($editquestion)) {$adminoutput.= $editquestion;}
@@ -200,6 +206,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($newquestion)) {$adminoutput.= $newquestion;}
   if (isset($newanswer)) {$adminoutput.= $newanswer;}
   if (isset($editanswer)) {$adminoutput.= $editanswer;}
+  if (isset($assessmentsoutput)) {$adminoutput.= $assessmentsoutput;}
  	
   
   $adminoutput.= "\t\t</td>\n".helpscreen();;

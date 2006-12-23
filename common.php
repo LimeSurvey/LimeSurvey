@@ -127,6 +127,7 @@ if ($sourcefrom == "admin")
 	$htmlheader = getAdminHeader();
 }
 
+
 //TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
 if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions'))))
 {
@@ -2214,7 +2215,7 @@ function doAdminHeader()
 function getAdminHeader()
 {
 	global $sitename;
-	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']='') {$_SESSION['adminlang']='en';}
+	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']='en';}
 	$strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
 	."<html>\n<head>\n"
 	. "<!--[if lt IE 7]>\n"

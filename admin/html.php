@@ -449,7 +449,7 @@ if ($surveyid)
 		if ($sumrows5['edit_survey_property'])
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
-			. "<a href=\"#\" onclick=\"window.open('".$homeurl."/assessments.php?sid=$surveyid', '_top')\""
+			. "<a href=\"#\" onclick=\"window.open('$scriptname?action=assessments&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Set Assessment Rules")."');return false\">" .
 			"<img src='$imagefiles/assessments.png' title='' alt='". _("Set Assessment Rules")."' align='left' name='SurveyAssessment' /></a>\n" ;

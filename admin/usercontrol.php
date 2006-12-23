@@ -109,7 +109,7 @@ if (!isset($_SESSION['loginID']))
 					
 					$_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['user'];
-					$_SESSION['adminlang'] = $fields['lang'];
+					$_SESSION['adminlang'] = $fields['lang']; 
 					$login = true;
 
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
