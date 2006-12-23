@@ -66,7 +66,7 @@ if (!$gid)
 $fn = "group_$gid.sql";
 
 $dumphead = "# SURVEYOR GROUP DUMP\n";
-$dumphead .= "#\n# This is a dumped group from the PHPSurveyor Script\n";
+$dumphead .= "# Version $versionnumber\n# This is a dumped group from the PHPSurveyor Script\n";
 $dumphead .= "# http://www.phpsurveyor.org/\n";
 
 function BuildOutput($Query)

@@ -69,7 +69,7 @@ if (!$surveyid)
 }
 
 $dumphead = "# SURVEYOR SURVEY DUMP\n"
-. "#\n# This is a dumped survey from the PHPSurveyor Script\n"
+. "# Version $versionnumber\n# This is a dumped survey from the PHPSurveyor Script\n"
 . "# http://www.phpsurveyor.org/\n";
 
 function BuildOutput($Query)

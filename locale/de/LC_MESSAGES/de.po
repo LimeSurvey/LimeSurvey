@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-10-30 21:44+0100\n"
+"PO-Revision-Date: 2006-12-23 16:51+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -33,8 +33,8 @@ msgstr "Erzeuge/Bearbeite Gruppen"
 msgid "Check Settings"
 msgstr "Systemübersicht"
 
-msgid "Check Data Consistency"
-msgstr "Datenkonsistenz überprüfen"
+msgid "Check Data Integrity"
+msgstr "Datenintegrität überprüfen"
 
 msgid "Delete Entire Survey"
 msgstr "Gesamte Umfrage löschen"
@@ -72,32 +72,50 @@ msgstr "Keine"
 msgid "5 Point Choice"
 msgstr "5 Punkte Auswahl"
 
+msgid "Array (5 Point Choice)"
+msgstr "Matrix (5 Punkte Auswahl)"
+
+msgid "Array (10 Point Choice)"
+msgstr "Matrix (10 Punkte Auswahl)"
+
+msgid "Array (Yes/No/Uncertain)"
+msgstr "Matrix (Ja/Nein/Unsicher)"
+
 msgid "Date"
 msgstr "Datum"
+
+msgid "Array (Increase, Same, Decrease)"
+msgstr "MAtrix (Zunahme/Gleich/Abnahme)"
+
+msgid "Array (Flexible Labels)"
+msgstr "Matrix (Flexible Beschriftungen)"
 
 msgid "Gender"
 msgstr "Geschlecht"
 
-msgid "List (Dropdown)"
-msgstr "Liste (Klappbox)"
+msgid "Array (Flexible Labels) by Column"
+msgstr "MAtrix (Flexible Beschriftungen) nach Spalte"
+
+msgid "Language Switch"
+msgstr "Sprachwechsel"
 
 msgid "List (Radio)"
 msgstr "Liste (Optionsfelder)"
 
-msgid "List With Comment"
-msgstr "Liste mit Kommentar"
-
 msgid "Multiple Options"
 msgstr "Mehrfachauswahl"
+
+msgid "Numerical Input"
+msgstr "Zahleneingabe"
+
+msgid "List With Comment"
+msgstr "Liste mit Kommentar"
 
 msgid "Multiple Options With Comments"
 msgstr "Mehrfachauswahl mit Kommentar"
 
 msgid "Multiple Short Text"
 msgstr "Mehrfache kurze Texte"
-
-msgid "Numerical Input"
-msgstr "Zahleneingabe"
 
 msgid "Ranking"
 msgstr "Reihenfolge"
@@ -111,35 +129,20 @@ msgstr "Langer freier Text"
 msgid "Huge Free Text"
 msgstr "Ausführlicher Freitext"
 
-msgid "Yes/No"
-msgstr "Ja/Nein"
-
-msgid "Array (5 Point Choice)"
-msgstr "Matrix (5 Punkte Auswahl)"
-
-msgid "Array (10 Point Choice)"
-msgstr "Matrix (10 Punkte Auswahl)"
-
-msgid "Array (Yes/No/Uncertain)"
-msgstr "Matrix (Ja/Nein/Unsicher)"
-
-msgid "Array (Increase, Same, Decrease)"
-msgstr "MAtrix (Zunahme/Gleich/Abnahme)"
-
-msgid "Array (Flexible Labels)"
-msgstr "Matrix (Flexible Beschriftungen)"
-
-msgid "Array (Flexible Labels) by Column"
-msgstr "MAtrix (Flexible Beschriftungen) nach Spalte"
+msgid "List (Flexible Labels) (Dropdown)"
+msgstr "Liste (Flexible Beschriftungen) (Klappbox)"
 
 msgid "Boilerplate Question"
 msgstr "Textbaustein (nur Anzeige)"
 
-msgid "List (Flexible Labels) (Dropdown)"
-msgstr "Liste (Flexible Beschriftungen) (Klappbox)"
+msgid "Yes/No"
+msgstr "Ja/Nein"
 
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Liste (Flexible Beschriftungen) (Optionsfelder)"
+
+msgid "List (Dropdown)"
+msgstr "Liste (Klappbox)"
 
 msgid "No email notification"
 msgstr "Keine Bestätigung per Email."
@@ -240,21 +243,6 @@ msgstr "Unverändert"
 msgid "Comment"
 msgstr "Kommentar"
 
-msgid "Load Unfinished Survey"
-msgstr "Zwischengespeicherte Umfrage laden"
-
-msgid "last"
-msgstr "Abschließen"
-
-msgid "Save Survey and Return"
-msgstr "Umfrage zwischenspeichern und weitermachen"
-
-msgid "Are you sure you want to clear all your responses?"
-msgstr "Sind sie wirklich sicher, dass Sie alle Ihre  Antworten löschen wollen?"
-
-msgid "Exit and Clear Survey"
-msgstr "Umfrage verlassen und löschen"
-
 msgid "There is 1 question in this survey"
 msgstr "Diese Umfrage enthält eine Frage."
 
@@ -270,8 +258,23 @@ msgid "A Note On Privacy"
 msgstr "Eine Bemerkung zum Datenschutz"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
-msgid "This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Dieser Fragebogen ist anonym.<br />Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn eine bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde."
+msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Dieser Fragebogen ist anonym.<br />Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn eine bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde. Er wird einer getrennten Datenbank aufbewahrt und nur aktualisiert, um zu speichern ob sie diese Umfrage abgeschlossen haben oder nicht. Es gibt keinen Weg die Zugangsschlüssel mit den Umfrageergebnissen zusammenzuführen."
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Sind sie wirklich sicher, dass Sie alle Ihre  Antworten löschen wollen?"
+
+msgid "Exit and Clear Survey"
+msgstr "Umfrage verlassen und löschen"
+
+msgid "Load Unfinished Survey"
+msgstr "Zwischengespeicherte Umfrage laden"
+
+msgid "last"
+msgstr "Abschließen"
+
+msgid "Save Survey and Return"
+msgstr "Umfrage zwischenspeichern und weitermachen"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1574
 msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
@@ -290,21 +293,6 @@ msgstr "Diese Umfrage neu starten"
 msgid "Close this Window"
 msgstr "Fenster schließen"
 
-msgid "Name"
-msgstr "Unverändert"
-
-msgid "Password"
-msgstr "Passwort"
-
-msgid "Repeat Password"
-msgstr "Passwort wiederholen"
-
-msgid "Your Email"
-msgstr "Deine E-Mail"
-
-msgid "Save Now"
-msgstr "Jetzt Speichern"
-
 msgid "Return To Survey"
 msgstr "Zur Umfrage zurückkehren"
 
@@ -321,12 +309,20 @@ msgstr ""
 "Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann dann später von Ihnen vollendet werden, wenn Sie sich unter Ihrem Namen und Passwort wieder anmelden.<br /><br />\n"
 "Wenn Sie eine Email-Adresse angeben, wird auch eine Email an Sie mit diesen Daten versandt."
 
-msgid "Saved name"
-msgstr "Gespeicherter Name"
+msgid "Name"
+msgstr "Unverändert"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1635
-msgid "Load Now"
-msgstr "Jetzt laden"
+msgid "Password"
+msgstr "Passwort"
+
+msgid "Repeat Password"
+msgstr "Passwort wiederholen"
+
+msgid "Your Email"
+msgstr "Deine E-Mail"
+
+msgid "Save Now"
+msgstr "Jetzt Speichern"
 
 msgid "Load A Previously Saved Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
@@ -334,6 +330,13 @@ msgstr "Zwischengespeicherte Umfrage laden"
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1638
 msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
 msgstr "Auf dieser Seite könenn Sie eine zwischengespeichterte Umfrage laden.<br />Bitte geben Sie den Namen ein, den Sie benutzt haben, als Sie Ihre Umfragedaten zwischengespeichert haben (und natürlich das Passwort)."
+
+msgid "Saved name"
+msgstr "Gespeicherter Name"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1635
+msgid "Load Now"
+msgstr "Jetzt laden"
 
 msgid "You must be registered to complete this survey"
 msgstr "Sie müssen registriert sein, um an dieser Umfrage teilzunehmen."
@@ -496,6 +499,9 @@ msgstr "Bitte wählen Sie einen Punkt aus der Liste aus."
 
 msgid "Check any that apply"
 msgstr "Bitte wählen Sie einen oder mehrere Punkte aus der Liste aus."
+
+msgid "Choose your language"
+msgstr "Wählen Sie Ihre Sprache"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:366
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:253
@@ -728,41 +734,12 @@ msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zuga
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Diese Umfrage ist jetzt aktiv und Antworten können erfasst werden."
 
-msgid "The defined surveyor database does not exist"
-msgstr "Die angegebene PHPSurveyor Datenbank existiert nicht."
-
-msgid "Either your selected database has not yet been created or there is a problem accessing it."
-msgstr "Entweder wurde die angegebene Datenbank noch nicht erstellt oder es gibt ein anderes Problem beim Zugriff."
-
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor kann versuchen diese Datenbank für Sie zu erstellen."
-
-msgid "Your selected database name is:"
-msgstr "Ihr gewählter Datenbankname ist:"
-
-msgid "Create Database"
-msgstr "Erstelle Datenbank"
-
-msgid "Populate Database"
-msgstr "Tabellen erstellen"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:102
-#, php-format
-msgid "A database named \"%s\" does already exist."
-msgstr "Eine Datenbank namens \"%s\" existiert schon."
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:103
-msgid "Do you want to populate that database now by creating the necessary tables?"
-msgstr "Möchten Sie in der Datenbank nun die notwendigen Tabellen anlegen?"
+# D:\web\xampp\htdocs\phpsurveyor/admin/admin.php:218
+msgid "Using the PHPSurveyor Admin Script"
+msgstr "Bedienungsanleitung für die PHPSurveyor Administration"
 
 msgid "Help"
 msgstr "Hilfe"
-
-msgid "Add"
-msgstr "Hinzufügen"
-
-msgid "Update"
-msgstr "aktualisieren"
 
 msgid "Assessments"
 msgstr "Bewertungen"
@@ -811,6 +788,9 @@ msgstr "URL"
 msgid "Total"
 msgstr "Gesamt"
 
+msgid "Add"
+msgstr "Hinzufügen"
+
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -828,6 +808,12 @@ msgstr "Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?"
 
 msgid "Browse Responses"
 msgstr "Antworten anzeigen"
+
+msgid "The defined surveyor database does not exist"
+msgstr "Die angegebene PHPSurveyor Datenbank existiert nicht."
+
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Entweder wurde die angegebene Datenbank noch nicht erstellt oder es gibt ein anderes Problem beim Zugriff."
 
 msgid "You have not selected a survey to browse."
 msgstr "Sie haben keine Umfrage zum Anzeigen ausgewählt."
@@ -939,6 +925,12 @@ msgstr "Löschen"
 msgid "Close Window"
 msgstr "Fenster schließen"
 
+msgid "Create Database"
+msgstr "Erstelle Datenbank"
+
+msgid "Populate Database"
+msgstr "Tabellen erstellen"
+
 #, php-format
 msgid "Database `%s` has been successfully populated."
 msgstr "Die Tabellen in der Datenbank `%s` wurden erfolgreich erstellt."
@@ -989,41 +981,20 @@ msgstr "Frage konnte nicht gelöscht werden. Es gibt Bedingungen in anderen Frag
 msgid "Question could not be deleted"
 msgstr "Frage konnte nicht gelöscht werden."
 
-msgid "Fix Sort"
-msgstr "Sort Check"
+msgid "Add new Answer"
+msgstr "Neue Antwort hinzufügen"
 
-msgid "Sort Alpha"
-msgstr "Alph. Sortieren"
-
-msgid "Answer could not be added. You must include both a Code and an Answer"
-msgstr "Antwort konnte nicht hinzugefügt werden. Sie müssen einen Code und eine Antwort eingeben."
-
-msgid "Answer could not be added. There is already an answer with this code"
-msgstr "Antwort konnte nicht hinzugefügt werden. Es gibt schon eine Antwort mit diesem Code."
-
-msgid "Save"
-msgstr "Speichern"
-
-msgid "Answer could not be updated. You must include both a Code and an Answer"
-msgstr "Antwort konnte nicht aktualisiert werden. Sie müssen einen Code für diese Frage angeben."
-
-msgid "Answer could not be updated. There is already an answer with this code"
-msgstr "Antwort konnte nicht aktualisiert werden. Es gibt schon eine Antwort mit diesem Code."
-
-msgid "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer."
-msgstr "Antwort konnte nicht aktualisiert werden. Sie haben den Antwort Code abgeändert. Es gibt aber Bedingungen zu anderen Fragen, welche vom Code dieser Frage abhängen. Sie müssen diese Bedingungen löschen, bevor Sie diesen Antwort-Code ändern können."
-
-msgid "Del"
-msgstr "Löschen"
-
-msgid "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
-msgstr "Antwort konnte nicht gelöscht werden. Es gibt Bedingungen zu anderen Fragen, welche vom Code dieser Frage abhängen. Sie müssen diese Bedingungen löschen, bevor Sie diesen Antwort-Code ändern können."
+msgid "Save All"
+msgstr "Alles Speichern"
 
 msgid "Up"
 msgstr "Hoch"
 
 msgid "Dn"
 msgstr "Runter"
+
+msgid "Del"
+msgstr "Löschen"
 
 msgid "Survey could not be updated"
 msgstr "Umfrage konnte nicht aktualisiert werden."
@@ -1120,50 +1091,14 @@ msgstr "Diese Umfrage ist noch nicht aktiviert. Ihre Antwort kann nicht abgespei
 msgid "The survey you selected does not exist"
 msgstr "Die ausgewählte Umfrage existiert nicht."
 
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
-msgstr "Überprüfung der Datenkonsitenz<br ><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. <font>"
-
-msgid "The following conditions should be deleted"
-msgstr "Die folgenden Bedingungen sollten gelöscht werden:"
-
-msgid "All conditions meet consistency standards"
-msgstr "Alle Bedingungen sind konsistent."
-
-msgid "The following question attributes should be deleted"
-msgstr "Die folgenden Fragenattribute sollten gelöscht werden:"
-
-msgid "All question_attributes meet consistency standards"
-msgstr "Alle Fragenattribute sind konsistent."
-
-msgid "The following assessments should be deleted"
-msgstr "Die folgenden Bewertungen sollten gelöscht werden:"
-
-msgid "All assessments meet consistency standards"
-msgstr "Alle Bewertungen sind konsistent."
-
-msgid "The following answers should be deleted"
-msgstr "Die folgenden Antworten sollten gelöscht werden:"
-
-msgid "All answers meet consistency standards"
-msgstr "Alle Antworten sind konsistent."
-
-msgid "The following questions should be deleted"
-msgstr "Die folgenden Fragen sollten gelöscht werden:"
-
-msgid "All questions meet consistency standards"
-msgstr "Alle Fragen sind konsistent."
-
-msgid "The following groups should be deleted"
-msgstr "Die folgenden Gruppen sollten gelöscht werden:"
-
-msgid "All groups meet consistency standards"
-msgstr "Alle Gruppen sind konsistent."
-
-msgid "No database action required"
-msgstr "Es sind keine Datenänderungen notwendig."
+msgid "Answer could not be added. There is already an answer with this code"
+msgstr "Antwort konnte nicht hinzugefügt werden. Es gibt schon eine Antwort mit diesem Code."
 
 msgid "You have not selected a survey to delete"
 msgstr "Sie haben keine Umfrage zum Löschen ausgewählt."
+
+msgid "Answer could not be updated. There is already an answer with this code"
+msgstr "Antwort konnte nicht aktualisiert werden. Es gibt schon eine Antwort mit diesem Code."
 
 msgid "Deactivate Survey"
 msgstr "Umfrage deaktivieren"
@@ -1655,8 +1590,8 @@ msgstr "Sie müssen ein Beschriftung-Set für diese Frage auswählen"
 msgid "Other:"
 msgstr "'Sonstige:' Angabe möglich:"
 
-msgid "Upload completed"
-msgstr "Upload vollständig"
+msgid "Base Language"
+msgstr "Basis-Sprache"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:795
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:251
@@ -1671,31 +1606,26 @@ msgstr "Upload vollständig"
 msgid "Code"
 msgstr "Code"
 
-msgid "Default"
-msgstr "Vorgewählt"
+msgid "Order"
+msgstr "Reihenfolge"
 
-msgid "Move"
-msgstr "Bewegen"
+msgid "New Answer"
+msgstr "Neue Antwort"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1235
-msgid "You have to enter user name and email."
-msgstr "Sie müssen Username und Email angeben."
-
-msgid "Username"
-msgstr "Benutzername"
-
-# Checking to ensure all fields exist
-msgid "You have to login first."
-msgstr "Sie müssen sich erst anmelden."
-
-msgid "Forgot Your Password?"
-msgstr "Haben Sie Ihr Passwort vergessen?"
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Sie können die Codes nicht ändern und keine Einträge hinzufügen oder löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
 
 msgid "Modifying User"
 msgstr "Benutzer bearbeiten"
 
+msgid "Username"
+msgstr "Benutzername"
+
 msgid "Full name"
 msgstr "Vor- und Nachname"
+
+msgid "Update"
+msgstr "aktualisieren"
 
 msgid "Set User Rights"
 msgstr "Setze Benutzerrechte"
@@ -1829,7 +1759,7 @@ msgid "Group:"
 msgstr "Gruppe:"
 
 msgid "Copy Answers?"
-msgstr "Fragen kopieren?"
+msgstr "Antworten kopieren?"
 
 msgid "Copy Attributes?"
 msgstr "Attribute kopieren?"
@@ -1837,20 +1767,20 @@ msgstr "Attribute kopieren?"
 msgid "Edit Question"
 msgstr "Bearbeite Frage"
 
-msgid "Base Language"
-msgstr "Basis-Sprache"
-
 msgid "Update Question"
 msgstr "Frage aktualisieren"
+
+msgid "Save"
+msgstr "Speichern"
 
 msgid "Save Order"
 msgstr "Reihenfolge speichern"
 
-msgid "Edit Group"
-msgstr "Gruppe bearbeiten"
-
 msgid "Import Group"
 msgstr "Gruppen importieren"
+
+msgid "Edit Group"
+msgstr "Gruppe bearbeiten"
 
 msgid "Update Group"
 msgstr "Gruppe aktualisieren"
@@ -2246,6 +2176,61 @@ msgstr "Diese Datei enthält keine PHPSurveyor-Daten im richtigen Format."
 msgid "Survey Import Summary"
 msgstr "Umfragen-Import übersicht"
 
+msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
+msgstr "Überprüfung der Datenkonsitenz<br ><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. <font>"
+
+msgid "The following conditions should be deleted"
+msgstr "Die folgenden Bedingungen sollten gelöscht werden:"
+
+msgid "All conditions meet consistency standards"
+msgstr "Alle Bedingungen sind konsistent."
+
+msgid "The following question attributes should be deleted"
+msgstr "Die folgenden Fragenattribute sollten gelöscht werden:"
+
+msgid "All question_attributes meet consistency standards"
+msgstr "Alle Fragenattribute sind konsistent."
+
+msgid "The following assessments should be deleted"
+msgstr "Die folgenden Bewertungen sollten gelöscht werden:"
+
+msgid "All assessments meet consistency standards"
+msgstr "Alle Bewertungen sind konsistent."
+
+msgid "The following answers should be deleted"
+msgstr "Die folgenden Antworten sollten gelöscht werden:"
+
+msgid "All answers meet consistency standards"
+msgstr "Alle Antworten sind konsistent."
+
+msgid "The following questions should be deleted"
+msgstr "Die folgenden Fragen sollten gelöscht werden:"
+
+msgid "All questions meet consistency standards"
+msgstr "Alle Fragen sind konsistent."
+
+msgid "The following groups should be deleted"
+msgstr "Die folgenden Gruppen sollten gelöscht werden:"
+
+msgid "All groups meet consistency standards"
+msgstr "Alle Gruppen sind konsistent."
+
+msgid "No database action required"
+msgstr "Es sind keine Datenänderungen notwendig."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:795
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:251
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:224
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1005
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1029
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1037
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1043
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1046
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1047
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1446
+msgid "Close"
+msgstr "Schließen"
+
 msgid "Label Sets Administration"
 msgstr "Beschriftung-Set Administration"
 
@@ -2264,6 +2249,10 @@ msgstr "Name setzen"
 msgid "Languages"
 msgstr "Sprachen"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/labels.php:154
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr "Sie können diese Sprache nicht entfernen, da sie mindestens eine Sprache in einem Beschriftungsset benötigen."
+
 msgid "Edit label set"
 msgstr "Beschriftung-Set bearbeiten"
 
@@ -2274,20 +2263,14 @@ msgstr "Beschriftung-Set löschen"
 msgid "Are you sure?"
 msgstr "Sind Sie sicher?"
 
-msgid "Order"
-msgstr "Reihenfolge"
-
-msgid "Save All"
-msgstr "Alles Speichern"
-
 msgid "New label"
 msgstr "Neue Beschriftung"
 
 msgid "Add new label"
 msgstr "Neue Beschriftung hinzufügen"
 
-msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
-msgstr "Sie können die Codes nicht ändern und keine Einträge hinzufügen oder löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
+msgid "Fix Sort"
+msgstr "Sort Check"
 
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Mindestens eine Umfrage benutzt momentan dieses Beschriftung-Set. ändern der Codes, Hinzufügen oder Löschen von Einträgen dieses Beschriftung-Set kann ungewollte Ergebnisse nach sich ziehen."
@@ -2297,6 +2280,17 @@ msgstr "Aktualisieren des Beschriftung-Set fehlgeschlagen"
 
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem Beschriftung-Set basieren. Sie müssen zuerst diese Fragen löschen."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1235
+msgid "You have to enter user name and email."
+msgstr "Sie müssen Username und Email angeben."
+
+# Checking to ensure all fields exist
+msgid "You have to login first."
+msgstr "Sie müssen sich erst anmelden."
+
+msgid "Forgot Your Password?"
+msgstr "Haben Sie Ihr Passwort vergessen?"
 
 msgid "if you answered"
 msgstr "falls ihre Antwort "
@@ -2648,6 +2642,9 @@ msgstr "Suchen"
 msgid "Sort by: "
 msgstr "Sortieren nach: "
 
+msgid "Language"
+msgstr "Sprache"
+
 msgid "Invite sent?"
 msgstr "Eingeladen?"
 
@@ -2899,6 +2896,28 @@ msgstr "Achtung:<br />Diese Seite bitte NICHT aktualisieren, da ansonsten die Da
 
 msgid "Total records imported:"
 msgstr "Anzahl Datensätze importiert:"
+
+msgid "Welcome to PHPSurveyor Setup!"
+msgstr "Willkommen zur PHPSurveyor Installation!"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/install/index.php:48
+msgid "The database defined in config.php does not exist."
+msgstr "Die in config.php definierte Datenbank existiert nicht."
+
+msgid "PHPSurveyor can attempt to create this database for you."
+msgstr "PHPSurveyor kann versuchen diese Datenbank für Sie zu erstellen."
+
+msgid "Your selected database name is:"
+msgstr "Ihr gewählter Datenbankname ist:"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:102
+#, php-format
+msgid "A database named \"%s\" does already exist."
+msgstr "Eine Datenbank namens \"%s\" existiert schon."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:103
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "Möchten Sie in der Datenbank nun die notwendigen Tabellen anlegen?"
 
 msgid "Checking to ensure all tables exist"
 msgstr "Überprüfe Tabellen"

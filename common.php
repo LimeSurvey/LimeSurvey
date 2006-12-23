@@ -36,9 +36,9 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
-$versionnumber = "1.09a";
+$versionnumber = "1.15a";
 $dbversionnumber = 111;
-error_reporting(E_ALL); //For debug purposes - remove/comment out for release
+if ($debug==1) {error_reporting(E_ALL);} //For debug purposes - switch on in config.phh
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE

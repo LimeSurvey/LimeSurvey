@@ -301,7 +301,7 @@ if ($surveyid)
 		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 		. "<font size='1' face='verdana' color='white'><strong>"._("Survey")."</strong> "
-		. "<font color='silver'>{$s1row['short_title']}</font></font></td></tr>\n"
+		. "<font color='silver'>{$s1row['short_title']} (ID:$surveyid)</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#999999'><td align='right' height='22'>\n";
 		if ($activated == "N" && $sumcount3>0)
 		{
@@ -757,7 +757,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	. "\n</table>\n";
 }
 
-if ($gid)
+if ($gid)   // Show the group toolbar
 {
 	$sumquery4 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND
 	gid=$gid AND language='".$defaultlang."'"; //Getting a count of questions for this survey
@@ -775,12 +775,12 @@ if ($gid)
 		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 		. "<font size='1' face='verdana' color='white'><strong>"._("Group")."</strong> "
-		. "<font color='silver'>{$grow['group_name']}</font></font></td></tr>\n"
+		. "<font color='silver'>{$grow['group_name']} (ID:$gid)</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 		. "\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='175' height='20' border='0' hspace='0' align='left' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='160' height='20' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
 		if($sumrows5['define_questions'])
@@ -885,7 +885,7 @@ if ($gid)
 	$groupsummary .= "\n</table>\n";
 }
 
-if ($qid)
+if ($qid)  // Show the question toolbar
 {
 	//Show Question Details
 	$qrq = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$defaultlang."' ORDER BY sortorder, answer";
@@ -901,12 +901,12 @@ if ($qid)
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		. _("Question")."</strong> <font color='silver'>{$qrrow['question']}</font></font></td></tr>\n"
+		. _("Question")."</strong> <font color='silver'>{$qrrow['question']} (ID:$qid)</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 		. "\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='175' height='20' border='0' hspace='0' align='left' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='160' height='20' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
 		if($sumrows5['define_questions'])
