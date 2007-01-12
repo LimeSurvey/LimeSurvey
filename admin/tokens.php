@@ -37,6 +37,9 @@
 # TOKENS FILE
 
 require_once(dirname(__FILE__).'/../config.php');
+if ($enableLdap) {
+	require_once(dirname(__FILE__).'/../config-ldap.php');
+}
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($order)) {$order=returnglobal('order');}
@@ -288,6 +291,8 @@ echo "\t<tr bgcolor='#999999'>\n"
 				"<img name='AddNewButton' src='$imagefiles/add.png' title='' align='left' ></a>\n"
 ."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=import', '_top')\" onmouseout=\"hideTooltip()\" ".
 		"onmouseover=\"showTooltip(event,'"._("Import Tokens from CSV File")."');return false\"> <img name='ImportButton' src='$imagefiles/importcsv.png' title='' align='left'></a>"
+."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=importldap', '_top')\" onmouseout=\"hideTooltip()\" ".
+                "onmouseover=\"showTooltip(event,'"._("Import Tokens from LDAP Query")."');return false\"> <img name='ImportLdapButton' src='$imagefiles/importldap.png' title='' align='left'></a>"
 ."\t\t\t<a href=\"#\" onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=export', '_top')\" onmouseout=\"hideTooltip()\"" .
 	"onmouseover=\"showTooltip(event,'"._("Export Tokens to CSV file")."');return false\">".
 		"<img name='ExportButton' src='$imagefiles/exportcsv.png' align='left' ></a>\n"
@@ -1227,6 +1232,23 @@ if ($action == "import")
 	."</td></tr></table>\n";
 }
 
+if ($action == "importldap")
+{
+        echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
+        ."<font size='1' face='verdana' color='white'><strong>"
+        ._("Upload LDAP entries")."</strong></font></td></tr>\n"
+        ."\t<tr><td align='center'>\n";
+        formldap();
+        echo "<table width='400' bgcolor='#eeeeee'>\n"
+        ."\t<tr>\n"
+        ."\t\t<td align='center'>\n"
+        ."\t\t\t<font size='1'><strong>"._("Note:")."</strong><br />\n"
+        ."\t\t\t"._("LDAP queries are defined by the administrator in the config-ldap.php file")."\n"
+        ."\t\t</font></td>\n"
+        ."\t</tr>\n"
+        ."</table><br />\n"
+        ."</td></tr></table>\n";
+}
 
 if ($action == "upload")
 {
@@ -1325,6 +1347,82 @@ if ($action == "upload")
 	echo "\t\t\t</td></tr></table>\n";
 }
 
+if ($action == "uploadldap") {
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	._("Uploading LDAP Query")."</strong></td></tr>\n"
+	."\t<tr><td align='center'>\n";
+	$ldapq=$_POST['ldapQueries']; // the ldap query id
+
+	$ldap_server_id=$ldap_queries[$ldapq]['ldapServerId'];
+	$ldapserver=$ldap_server[$ldap_server_id]['server'];
+	$ldapport=$ldap_server[$ldap_server_id]['port'];
+
+	// define $attrlist: list of attributes to read from users' entries
+	$attrparams = array('firstname_attr','lastname_attr',
+			'email_attr','token_attr', 'language',
+			'attr1', 'attr2');
+	foreach ($attrparams as $id => $attr) {
+		if (array_key_exists($attr,$ldap_queries[$ldapq]) &&
+		    $ldap_queries[$ldapq][$attr] != '') {
+			$attrlist[]=$ldap_queries[$ldapq][$attr];
+		}
+	}
+
+	// Open connection to server
+	$ds = ldap_getCnx($ldap_server_id);
+
+	if ($ds) {
+		// bind to server
+		$resbind=ldap_bindCnx($ds, $ldap_server_id);
+
+		if ($resbind) {
+			$ResArray=array();
+			$resultnum=ldap_doTokenSearch($ds, $ldapq, $ResArray);
+
+			if ($resultnum >= 1) {
+				foreach ($ResArray as $responseGroupId => $responseGroup) {
+					for($j = 0;$j < $responseGroup['count']; $j++) {
+						$mytoken='';
+						$mylanguage='';
+						$myfirstname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]);
+						$mylastame = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']]);
+						$myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
+						if ( ! empty($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]) ) $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
+						if ( ! empty($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]) ) $myattr1 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]);
+						if ( ! empty($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]) ) $myattr2 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]);
+						if ( ! empty($responseGroup[$j][$ldap_queries[$ldapq]['language']]) ) $mylanguage = ldap_readattr($response[$ldap_queries[$ldapq]['language']]);
+
+						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
+						. "(firstname, lastname, email, token, language";
+						if (isset($myattr1)) {$iq .= ", attribute_1";}
+						if (isset($myattr2)) {$iq .= ", attribute_2";}
+						$iq .=") \n"
+						. "VALUES ('$myfirstname', '$mylastame', '$myemail', '$mytoken', '$mylanguage'";
+						if (isset($myattr1)) {$iq .= ", '$myattr1'";}
+						if (isset($myattr2)) {$iq .= ", '$myattr2'";}
+						$iq .= ")";
+						$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
+					} // End for each entry
+				} // End foreach responseGroup
+			} // End of if resnum >= 1
+
+			echo "<font color='green'>"._("Success")."</font><br /><br>\n";
+			$message=str_replace("{TOKENCOUNT}", $resultnum, _("{TOKENCOUNT} Records Created"));
+			echo "<i>$message</i><br />\n";
+		}
+		else {
+			$errormessage="<strong><font color='red'>"._("Error").":</font> "._("Can't bind to the Ldap directory")."</strong>\n";
+			formldap($errormessage);
+		}
+		@ldap_close($ds);
+	}
+	else {
+		$errormessage="<strong><font color='red'>"._("Error").":</font> "._("Can't connect to the Ldap directory")."</strong>\n";
+		formldap($errormessage);
+	}
+}
+
+
 //echo "</center>\n";
 //echo "&nbsp;"
 echo "\t\t<table><tr><td></td></tr></table>\n"
@@ -1354,6 +1452,36 @@ function form($error=false)
 
 } # END form
 
+function formldap($error=false)
+{
+	global $surveyid, $setfont;
+	global $ldap_queries;
+
+	if ($error) {print $error . "<br /><br />\n";}
+
+	if (! isset($ldap_queries) || ! is_array($ldap_queries) || count($ldap_queries) == 0) {
+		echo '<br />';
+		echo _('Ldap disabled or no LDAP query defined.');
+		echo '<br /><br /><br />';
+		echo '</center>';
+	}
+	else {
+		echo '<br />';
+		print "\n$setfont\n";
+		echo _('Select the Ldap query you want:');
+		echo '<br />';
+		echo "<form method='post' action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+		echo "<select name='ldapQueries' style='length=35'><br />";
+		foreach ($ldap_queries as $q_number => $q) {
+			echo " <option value=".$q_number.">".$q['name']."</option>";
+		}
+		echo "</select><br />";
+		echo "<input type='hidden' name='sid' value='$surveyid' />";
+		echo "<input type='hidden' name='action' value='uploadldap' />";
+		echo "<input type='submit' name='submit'>";
+		echo '</form></font>';
+	}
+}
 
 function getLine($file)
 {

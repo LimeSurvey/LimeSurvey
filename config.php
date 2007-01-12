@@ -147,6 +147,9 @@ $embedded_inc = "";             // path to the header to include if any
 $embedded_headerfunc = "";      // e.g. COM_siteHeader for geeklog
 $embedded_footerfunc = "";      // e.g. COM_siteFooter for geeklog
 
+// Enable or Disable Ldap feature
+$enableLdap = false;
+
 
 //DO NOT CHANGE BELOW HERE --------------------
 
