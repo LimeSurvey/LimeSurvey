@@ -240,37 +240,26 @@ span.settingcaption
  *  CSS Classes related with the reordering 
  */ 	
 
-	/* Don't change these options */
-	#movableNode{
-		position:absolute;
-	}
-	
-	#arrDestInditcator{
-		position:absolute;
-		display:none;
-		width:100px;
-	}
-/*	 End options that shouldn't be changed */
 
 	
-	#arrangableNodes,#movableNode ul{
+.movableNodeul{
 	   /* cursor: move; */
-		padding-left:-60px;
+		padding-left:0px;
 		margin-left:0px;
 		margin-top:0px;
 		padding-top:0px;
-		width:500px;
+		width:50em;
 	}
 	
-	#arrangableNodes li,#movableNode li{
+	
+.movableNode{
 		list-style-type:none;
-		cursor: move;
 		border:1px solid #999;
-		padding:5px;
+		padding:0.5em;
 		width: 50em;
         text-align: left; 
 		background-color:#EEE;
 		margin-top:2px;
-		padding-left: -200px;
+
 	}
   	

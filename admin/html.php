@@ -810,7 +810,7 @@ if ($gid)   // Show the group toolbar
 		{
 			$groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Reorder the questions of this group")."');return false\">"
-			. "<img src='$imagefiles/reorder.png' title='' alt=''name='ReorderQuestions' align='left' /></a>" ;
+			. "<img src='$imagefiles/reorder.png' title='' alt=''name='updatequestionorder' align='left' /></a>" ;
 		}
 		else
 		{
@@ -2404,7 +2404,7 @@ if($action == "orderquestions")
 	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
 	$orderquestions .= "<form action='$scriptname' name='orderquestions' method='post'>
 						<input type='hidden' name='hiddenNodeIds' />
-						<input type='hidden' name='action' value='reorderquestions' /> 
+						<input type='hidden' name='action' value='updatequestionorder' /> 
 						<input type='hidden' name='gid' value='$gid' />
 						<input type='hidden' name='sid' value='$surveyid' />
 						</form>" ; 
@@ -3371,27 +3371,75 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 }
 
 
+// Show the screen to order groups
+
 if ($action == "ordergroups")
 {
 	if($sumrows5['edit_survey_property'])
 	{
-		$ordergroups = "<form method='post'><ul >";
+	// Check if one of the up/down buttons have been clicked
+	if (isset($_POST['groupordermethod']))
+	{
+       // Todo: Check if conditions to the questions in that to be moved group are connected. If yes then only move that group within the condition limit
+	   switch($_POST['groupordermethod'])
+	   {
+        // Pressing the Up button
+		case _("Up"):
+		$newsortorder=$_POST['sortorder']-1;
+		$oldsortorder=$_POST['sortorder'];
+		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$newsortorder";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=$newsortorder WHERE sid=$surveyid AND group_order=$oldsortorder";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order='$oldsortorder' WHERE sid=$surveyid AND group_order=-1";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		break;
+
+        // Pressing the Down button
+		case _("Dn"):
+		$newsortorder=$_POST['sortorder']+1;
+		$oldsortorder=$_POST['sortorder'];
+		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$newsortorder";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order='$newsortorder' WHERE sid=$surveyid AND group_order=$oldsortorder";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=$oldsortorder WHERE sid=$surveyid AND group_order=-1";
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		break;
+        }
+    }
+
+        $ordergroups = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' bgcolor='black' align='center'>"
+		. "\t\t<font class='settingcaption'><font color='white'>"._("Change Group Order")."</font></font></td></tr>"
+//        . "<tr> <td >".("Group Name")."</td><td>".("Action")."</td></tr>"
+        . "</table>\n"
+		. "<form method='post'>";
 		//Get the groups from this survey
 		$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid='{$surveyid}' AND language='{$s_lang}' order by group_order,group_name" ;
 		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
-		$cnt=0;
+    	$groupcount = $ogresult->RecordCount();        
+        $cnt=0;
 		while($ogrows = $ogresult->FetchRow())
 		{
-			$ordergroups.="<li id='".$ogrows['gid']."'>".$ogrows['group_name']."\n" ;
-		    if ($cnt>0) {$ordergroups.="<input type='submit' id='groupup_".$ogrows['gid']."' value='Up'>";}
-		    if ($cnt<$ogresult->RecordCount()-1) {$ordergroups.="<input type='submit' id='groupdown_".$ogrows['gid']."' value='Down'>";}
-			$ordergroups.="</li>\n" ;
+			$ordergroups.="<li class='movableNode' id='".$ogrows['gid']."'>\n" ;
+   				$ordergroups.= "\t<input style='float:right;";
+                if ($cnt == 0){$ordergroups.="visibility:hidden;";}
+                $ordergroups.="' type='submit' name='groupordermethod' value='"._("Up")."' onclick=\"this.form.sortorder.value='{$ogrows['group_order']}'\" />\n";
+    			if ($cnt < $groupcount-1)
+    			{
+    				// Fill the sortorder hiddenfield so we now what field is moved down
+                    $ordergroups.= "\t<input type='submit' style='float:right;' name='groupordermethod' value='"._("Dn")."' onclick=\"this.form.sortorder.value='{$ogrows['group_order']}'\" />\n";
+    			}
+			$ordergroups.=$ogrows['group_name']."</li>\n" ;
 
 			$cnt++;
 		}
-		$ordergroups.="</ul></form>" ;
-		$ordergroups .="</p>" ;
+		$ordergroups.="</ul>\n"
+		. "\t<input type='hidden' name='sortorder' />"
+		. "\t<input type='hidden' name='action' value='ordergroups' />" 
+        . "</form>" ;
+		$ordergroups .="<br />" ;
 	}
 	else
 	{
@@ -3432,6 +3480,8 @@ if ($action == "uploadf")
 		$editcsv .="<b><font color='red'>"._("Error").":</font> "._("Error on file transfer. You must select a CSV file")."</b>\n";
 	}
 }
+
+
 
 if ($action == "newsurvey")
 {

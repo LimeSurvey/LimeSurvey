@@ -218,7 +218,7 @@ if(isset($surveyid))
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
 		}
 	}
-	elseif ($action == "reordergroups" && $actsurrows['define_questions'])
+	elseif ($action == "updategrouporder" && $actsurrows['define_questions'])
 	{
 		$grouporder = explode(",",$_POST['hiddenNodeIds']) ;
 		foreach($grouporder as $key =>$value)
@@ -228,7 +228,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "reorderquestions" && $actsurrows['define_questions'])
+	elseif ($action == "updatequestionorder" && $actsurrows['define_questions'])
 	{
 		//Getting the hiddeNodeIds field and constructing the question order array
 		$questionorder=explode(",",$_POST['hiddenNodeIds']) ;
