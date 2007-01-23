@@ -460,6 +460,8 @@ function getquestions()
 	return $questionselecter;
 }
 
+
+// Gets number of groups inside a particular survey
 function getGroupSum($surveyid, $lang)
 {
 	global $surveyid,$dbprefix ;
@@ -471,18 +473,18 @@ function getGroupSum($surveyid, $lang)
 	return $groupscount ;
 }
 
-function getQuestionSum($surveyid)
+
+// Gets number of questions inside a particular group 
+function getQuestionSum($surveyid, $groupid)
 {
 	global $surveyid,$dbprefix ;
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='{$s_lang}'"; //Getting a count of questions for this survey
-
-
+	$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$groupid and sid=$surveyid AND language='{$s_lang}'"; //Getting a count of questions for this survey
 	$sumresult3 = db_execute_assoc($sumquery3);
 	$questionscount = $sumresult3->RecordCount();
-
 	return $questionscount ;
 }
+
 
 /**
 * getMaxgrouporder($surveyid) queries the database for the maximum sortorder of a group.
@@ -502,6 +504,7 @@ function getMaxgrouporder($surveyid)
 	}
 	else return ++$current_max ;
 }
+
 
 /**
 * getMaxquestionorder($gid) queries the database for the maximum sortorder of a question.
@@ -523,6 +526,7 @@ function getMaxquestionorder($gid)
 	}
 	else return ++$current_max ;
 }
+
 
 /**
 * getanswers() queries the database for a list of all answers matching the current question qid
@@ -550,6 +554,7 @@ function getanswers()
 	if (!$aexists) {$answerselecter = "\t\t<option selected>"._("Please Choose...")."</option>\n".$answerselecter;}
 	return $answerselecter;
 }
+
 
 /**
 * getqtypelist() Returnst list of question types available in PHPSurveyor. Edit this if you are adding a new
@@ -607,6 +612,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 	}
 }
 
+
 /**
 * getNotificationlist() returns different options for notifications
 * @param string $notificationcode - the currently selected one
@@ -628,6 +634,7 @@ function getNotificationlist($notificationcode)
 	}
 	return $ntypeselector;
 }
+
 
 /**
 * getgrouplist() queries the database for a list of all groups matching the current survey sid
@@ -660,6 +667,7 @@ function getgrouplist($gid)
 	return $groupselecter;
 }
 
+
 function getgrouplist2($gid)
 {
 	global $surveyid, $dbprefix, $connect;
@@ -684,6 +692,7 @@ function getgrouplist2($gid)
 	return $groupselecter;
 }
 
+
 function getgrouplist3($gid)
 {
 	global $surveyid, $dbprefix, $connect;
@@ -702,6 +711,7 @@ function getgrouplist3($gid)
 	}
 	return $groupselecter;
 }
+
 
 function getgrouplistlang($gid, $language)
 {
@@ -726,10 +736,6 @@ function getgrouplistlang($gid, $language)
 }
 
 
-
-
-
-
 function getuserlist()
 {
 	global $dbprefix, $connect;
@@ -742,6 +748,7 @@ function getuserlist()
 	}
 	return $userlist;
 }
+
 
 function gettemplatelist()
 {
@@ -833,6 +840,7 @@ function getlabelsets()
 	return $labelsets;
 }
 
+
 function checkactivations()
 {
 	global $dbprefix, $connect;
@@ -869,7 +877,6 @@ function checkifemptydb()
 // This functions checks if the databaseversion in the settings table is the same one as required
 // If no settings table does exists it is a upgrade from <=1.0 (mysql only)
 // Then the old checker script is run prior to the standard upgrade
-
 function checkforupgrades()
 {
 	global $connect, $databasetype, $dbprefix, $dbversionnumber;
@@ -892,7 +899,6 @@ function checkforupgrades()
 		}
 	}
 }
-
 
 
 function checkfortables()
@@ -936,10 +942,12 @@ function checkfortables()
 	}
 }
 
+
 function sql_table_exists($tableName, $tables)
 {
 	return(in_array($tableName, $tables));
 }
+
 
 ################################################################################
 # Compares two elements from an array (passed by the usort function)
@@ -963,10 +971,12 @@ function CompareGroupThenTitle($a, $b)
 	return $GroupResult;
 }
 
+
 function StandardSort($a, $b)
 {
 	return strnatcasecmp($a, $b);
 }
+
 
 function conditionscount($qid)
 {
@@ -976,6 +986,7 @@ function conditionscount($qid)
 	list($count) = $result->FetchRow();
 	return $count;
 }
+
 
 function keycontroljs()
 {
@@ -1052,6 +1063,7 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 	}
 }
 
+
 function fixsortorderGroups() //Function rewrites the sortorder for questions
 {
 	global $dbprefix, $connect, $surveyid;
@@ -1065,6 +1077,7 @@ function fixsortorderGroups() //Function rewrites the sortorder for questions
 		$position++;
 	}
 }
+
 
 function browsemenubar()
 {
@@ -1117,6 +1130,7 @@ function browsemenubar()
 	return $surveyoptions;
 }
 
+
 function returnglobal($stringname)
 {
 	if (_PHPVERSION < "4.1.0")
@@ -1159,6 +1173,7 @@ function returnglobal($stringname)
 	}
 }
 
+
 function sendcacheheaders()
 {
 	global $embedded;
@@ -1171,6 +1186,7 @@ function sendcacheheaders()
 	header('Content-Type: text/html; charset=utf-8');
 }
 
+
 function getLegitQids($surveyid)
 {
 	global $dbprefix;
@@ -1179,6 +1195,7 @@ function getLegitQids($surveyid)
 	$lr = db_execute_num($lq);
 	return array_merge(array("DUMMY ENTRY"), $lr->GetRows());
 }
+
 
 function returnquestiontitlefromfieldcode($fieldcode)
 {
@@ -1227,6 +1244,7 @@ function returnquestiontitlefromfieldcode($fieldcode)
 	}
 	return $qname;
 }
+
 
 function getsidgidqid($fieldcode)
 {

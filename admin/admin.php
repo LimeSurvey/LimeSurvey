@@ -139,9 +139,9 @@ if(isset($_SESSION['loginID']) && $action!='login')
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
   if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" ||
       $action=="delquestion" || $action=="delquestionall" || $action == "insertnewsurvey" ||
-      $action == "copynewquestion" || $action == "insertnewgroup" || $action=="updategrouporder" || $action == "insertCSV" ||
+      $action == "copynewquestion" || $action == "insertnewgroup" || $action == "insertCSV" ||
       $action == "insertnewquestion" || $action == "updatesurvey" || $action == "updatesurvey2" || $action=="updategroup" ||
-      $action=="updatequestionorder" || $action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
+      $action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
       $action == "delattribute" || $action == "addattribute" || $action == "editattribute")
   {
   	include("database.php");

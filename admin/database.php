@@ -170,7 +170,9 @@ if(isset($surveyid))
 	{
 		if (!isset($gid)) $gid=returnglobal('gid');
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
+		echo $query;
 		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
+		
 		if ($result)
 		{
 			$gid = "";
@@ -218,27 +220,7 @@ if(isset($surveyid))
 			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be deleted")."\n$error\")\n //-->\n</script>\n";
 		}
 	}
-	elseif ($action == "updategrouporder" && $actsurrows['define_questions'])
-	{
-		$grouporder = explode(",",$_POST['hiddenNodeIds']) ;
-		foreach($grouporder as $key =>$value)
-		{
-			$upgrorder_query="UPDATE ".db_table_name('groups')." SET group_order=$key where gid=$value" ;
-			$upgrorder_result = $connect->Execute($upgrorder_query) or die($connect->ErrorMsg()) ;
-		}
-	}
 
-	elseif ($action == "updatequestionorder" && $actsurrows['define_questions'])
-	{
-		//Getting the hiddeNodeIds field and constructing the question order array
-		$questionorder=explode(",",$_POST['hiddenNodeIds']) ;
-
-		foreach($questionorder as $key =>$value)
-		{
-			$upordquery="UPDATE ".db_table_name('questions')." SET question_order='".str_pad($key+1, 4, "0", STR_PAD_LEFT)."' WHERE qid=".$value."";
-			$upordresult= $connect->Execute($upordquery) or die($connect->ErrorMsg()) ;
-		}
-	}
 	elseif ($action == "insertnewquestion" && $actsurrows['define_questions'])
 	{
 		if (!$_POST['title'])

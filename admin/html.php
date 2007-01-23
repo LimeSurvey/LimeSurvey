@@ -806,7 +806,7 @@ if ($gid)   // Show the group toolbar
 		{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		if(($activated!="Y" && getQuestionSum($surveyid)>1) && $sumrows5['define_questions'])
+		if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && $sumrows5['define_questions'])
 		{
 			$groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Reorder the questions of this group")."');return false\">"
@@ -2381,36 +2381,84 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 }
 
-//Constructing the drag and drop interface here...
+//Constructing the interface here...
 if($action == "orderquestions")
 {
-	$defaultlang = GetBaseLanguageFromSurveyID($surveyid);
-	$oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$defaultlang."' order by question_order" ;
-	$oqresult = db_execute_assoc($oqquery);
-	$orderquestions ="<p align='left'>";
-	$orderquestions="<ul id='arrangableNodes'>";
-	while($oqrow = $oqresult->FetchRow())
+    if($sumrows5['edit_survey_property'])
 	{
-		$oqrow = array_map('htmlspecialchars',$oqrow) ;
-		$orderquestions.= "<li id='".$oqrow['qid']."'>".$oqrow['question']."</li>";
+    	if (isset($_POST['questionordermethod']))
+    	{
+           // Todo: Check if conditions to the questions in that to be moved group are connected. If yes then only move that group within the condition limit
+    	   switch($_POST['questionordermethod'])
+    	   {
+            // Pressing the Up button
+    		case _("Up"):
+    		$newsortorder=$_POST['sortorder']-1;
+    		$oldsortorder=$_POST['sortorder'];
+    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
+    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newsortorder WHERE gid=$gid AND question_order=$oldsortorder";
+    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$oldsortorder' WHERE gid=$gid AND question_order=-1";
+    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    		break;
+    
+            // Pressing the Down button
+    		case _("Dn"):
+    		$newsortorder=$_POST['sortorder']+1;
+    		$oldsortorder=$_POST['sortorder'];
+    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
+    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$newsortorder' WHERE gid=$gid AND question_order=$oldsortorder";
+    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$oldsortorder WHERE gid=$gid AND question_order=-1";
+    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    		break;
+         }
+      }
+    
+    	//Get the questions for this group
+    	$defaultlang = GetBaseLanguageFromSurveyID($surveyid);
+    	$oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$defaultlang."' order by question_order" ;
+    	$oqresult = db_execute_assoc($oqquery);
+    	
+        $orderquestions = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' bgcolor='black' align='center'>"
+    		. "\t\t<font class='settingcaption'><font color='white'>"._("Change Question Order")."</font></font></td></tr>"
+    //        . "<tr> <td >".("Question Name")."</td><td>".("Action")."</td></tr>"
+            . "</table>\n"
+    		. "<form method='post'>";	
+    
+       	$questioncount = $oqresult->RecordCount();        
+        $cnt=0;
+    	while($oqrow = $oqresult->FetchRow())
+    	{
+  			$orderquestions.="<li class='movableNode' id='".$ogrows['gid']."'>\n" ;
+     				$orderquestions.= "\t<input style='float:right;";
+                  if ($cnt == 0){$orderquestions.="visibility:hidden;";}
+                  $orderquestions.="' type='submit' name='questionordermethod' value='"._("Up")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
+      			if ($cnt < $questioncount-1)
+      			{
+      				// Fill the sortorder hiddenfield so we now what field is moved down
+                      $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='"._("Dn")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
+      			}
+  			$orderquestions.=$oqrow['title']."</li>\n" ;
+  
+  			$cnt++;
+  		}
+  		$orderquestions.="</ul>\n"
+  		. "\t<input type='hidden' name='sortorder' />"
+  		. "\t<input type='hidden' name='action' value='orderquestions' />" 
+          . "</form>" ;
+  		$orderquestions .="<br />" ;
+      	}
+  	
+	else
+	{
+		include("access_denied.php");
 	}
+}	
 
-	$orderquestions .="</ul>" ;
-	$orderquestions .="<a href=\"#\" onclick=\"saveArrangableNodes();return false\" class=\"saveOrderbtn\">&nbsp;"._("Save Order")."&nbsp;</a>";
 
-	$orderquestions .="<div id=\"movableNode\"><ul></ul></div>
-			   		   <div id=\"arrDestInditcator\"><img src='".$imagefiles."/insert.gif' /></div>
-        			   <div id=\"arrDebug\"></div>"; 					 
-	//    $orderquestions .="<a href='javascript:testjs()'>test</a>" ;
-	$orderquestions .= "<form action='$scriptname' name='orderquestions' method='post'>
-						<input type='hidden' name='hiddenNodeIds' />
-						<input type='hidden' name='action' value='updatequestionorder' /> 
-						<input type='hidden' name='gid' value='$gid' />
-						<input type='hidden' name='sid' value='$surveyid' />
-						</form>" ; 
-	$orderquestions .="</p>" ;
-
-}
 
 if ($action == "addgroup")
 {
