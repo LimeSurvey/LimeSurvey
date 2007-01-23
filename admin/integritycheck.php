@@ -243,7 +243,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			$integritycheck .= "<br />"._("No database action required");
 		} else {
 			$integritycheck .= "<br />Should we proceed with the delete?<br />\n";
-			$integritycheck .= "<form action='{$_SERVER['PHP_SELF']}' method='POST'>\n";
+			$integritycheck .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='POST'>\n";
 			if (isset($cdelete)) {
 				foreach ($cdelete as $cd) {
 					$integritycheck .= "<input type='hidden' name='cdelete[]' value='{$cd['cid']}'>\n";
@@ -283,7 +283,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			                  ."<input type='submit' value='Yes - Delete Them!'>\n"
 			                  ."</form>\n";
 		}
-		$integritycheck .= "<br /><br /><a href='$scriptname'>"._("Close")."</a><br /><br />\n"
+		$integritycheck .= "<br /><br />\n"
 		."</font></td></tr></table>\n"
 		."<table><tr><td height='1'></td></tr></table>\n";
 	}
@@ -368,9 +368,8 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			$integritycheck .= "</font><br />\n";
 		}
 		$integritycheck .= "Check database again?<br />\n"
-		                  ."<a href='dbchecker.php'>Check Again</a><br />\n"
-		                  ."<a href='$scriptname'>"._("Close")."</a>"
-		                  ."</td></tr></table></body></html>\n";
+		                  ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>Check Again</a><br />\n"
+		                  ."</td></tr></table><br />\n";
 	}
 
 	}
