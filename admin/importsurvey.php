@@ -40,7 +40,7 @@ include_once("login_check.php");
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
 $importsurvey = "<br />\n";
-echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+$importsurvey .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 $importsurvey .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 ._("Import Survey")."</strong></font></td></tr>\n";
 $importsurvey .= "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
@@ -65,28 +65,51 @@ $importsurvey .= _("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
-	//$buffer = fgets($handle, 1024); //Length parameter is required for PHP versions < 4.2.0
-	$buffer = fgets($handle, 10240); //To allow for very long survey welcomes (up to 10k)
+    //To allow for very long survey lines (up to 10k)  
+    //Note that the Length parameter is required for PHP versions < 4.2.0 - do not remove it!
+	$buffer = fgets($handle, 10240); 
 	$bigarray[] = $buffer;
 }
 fclose($handle);
 
-if (substr($bigarray[1], 0, 22) != "# SURVEYOR SURVEY DUMP")
-{
-	$importsurvey .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-	$importsurvey .= _("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
-	$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	$importsurvey .= "</font></td></tr></table>\n";
-	$importsurvey .= "</body>\n</html>\n";
-	unlink($the_full_file_path);
-	exit;
-}
 
+// Now we try to determine the dataformat of the survey file.
+ 
+if ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
+{
+	$importversion = 100;  // version 1.0 file
+}
+elseif 
+   ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 37) == "# http://phpsurveyor.sourceforge.net/"))
+{
+	$importversion = 99;  // Version 0.99 file - carries a different URL
+}
+elseif 
+   (substr($bigarray[0], 0, 25) == "# PHPSurveyor Survey Dump")
+    {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
+      if (substr($bigarray[1], 0, 15) == "# Version 1.08a") {$importversion = 108;}  // Version 1.08a(2) file 
+      if (substr($bigarray[1], 0, 15) == "# Version 1.15a") {$importversion = 115;}  // Version 1.15a file
+    }
+else    // unknown file - show error message
+  {
+    $importsurvey .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
+  	$importsurvey .= _("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
+  	$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+  	$importsurvey .= "</font></td></tr></table>\n";
+  	$importsurvey .= "</body>\n</html>\n";
+  	unlink($the_full_file_path);
+  	exit;
+  }
+
+
+// okay.. now lets drop the first 9 lines and get to the data
 for ($i=0; $i<9; $i++)
 {
 	unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
+
+
 
 //SURVEYS
 if (array_search("# GROUPS TABLE\n", $bigarray))
@@ -675,10 +698,7 @@ $importsurvey .= "\t<li>"._("Question Attributes:")." $countquestion_attributes<
 $importsurvey .= "\t<li>"._("Assessments")." $countassessments</li>\n</ul>\n";
 
 $importsurvey .= "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
-$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
-
-$importsurvey .= "</font></td></tr></table>\n";
-$importsurvey .= "</body>\n</html>";
+$importsurvey .= "</font></td></tr></table><br />\n";
 unlink($the_full_file_path);
 
 function convertToArray($string, $seperator, $start, $end) {
