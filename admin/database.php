@@ -79,6 +79,7 @@ if(isset($surveyid))
 	{
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
+			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO ".db_table_name('question_attributes')."
 					  (qid, attribute, value)
 					  VALUES ('{$_POST['qid']}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
@@ -531,20 +532,21 @@ if(isset($surveyid))
 			case _("Add new Answer"):
 			if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
 			{
-                $query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
-        	    $result = $connect->Execute($query);
-       			$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
-	        	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+				$_POST  = array_map('db_quote', $_POST);
+				$query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
+				$result = $connect->Execute($query);
+				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
+				$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
 				array_unshift($anslangs,$baselang);
-       			foreach ($anslangs as $anslang)
-    	    	{
-    				if(!isset($_POST['default'])) $_POST['default'] = "";
-    	    		$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', '{$_POST['insertcode']}', '{$_POST['insertanswer_'.$anslang]}', '{$newsortorder}', '{$_POST['default']}','$anslang')";
-           		    if (!$result = $connect->Execute($query))
-    				{
-    					echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to insert answer')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-    				}
+				foreach ($anslangs as $anslang)
+				{
+					if(!isset($_POST['default'])) $_POST['default'] = "";
+	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', '{$_POST['insertcode']}', '{$_POST['insertanswer_'.$anslang]}', '{$newsortorder}', '{$_POST['default']}','$anslang')";
+	       		    		if (!$result = $connect->Execute($query))
+					{
+						echo "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to insert answer')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+					}
 				}
 			}
 		break;
@@ -859,6 +861,7 @@ if(isset($surveyid))
 	// Save the 2nd page from the survey-properties
 	elseif ($action == "updatesurvey2" && $actsurrows['edit_survey_property'])
 	{
+		$_POST  = array_map('db_quote', $_POST);
 		$languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
 		foreach ($languagelist as $langname)
