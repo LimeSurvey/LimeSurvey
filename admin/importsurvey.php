@@ -35,33 +35,33 @@
 */
 //Ensure script is not run directly, avoid path disclosure
 if (empty($homedir)) {die ("Cannot run this script directly");}
-
+include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
-echo "<br />\n";
+$importsurvey = "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+$importsurvey .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 ._("Import Survey")."</strong></font></td></tr>\n";
-echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+$importsurvey .= "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
-	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-	echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</font></td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	$importsurvey .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
+	$importsurvey .= _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+	$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	$importsurvey .= "</font></td></tr></table>\n";
+	$importsurvey .= "</body>\n</html>\n";
 	exit;
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-echo "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
-echo _("File upload succeeded.")."<br /><br />\n";
-echo _("Reading file..")."<br />\n";
+$importsurvey .= "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
+$importsurvey .= _("File upload succeeded.")."<br /><br />\n";
+$importsurvey .= _("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
@@ -73,11 +73,11 @@ fclose($handle);
 
 if (substr($bigarray[1], 0, 22) != "# SURVEYOR SURVEY DUMP")
 {
-	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-	echo _("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
-	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</font></td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	$importsurvey .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
+	$importsurvey .= _("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
+	$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	$importsurvey .= "</font></td></tr></table>\n";
+	$importsurvey .= "</body>\n</html>\n";
 	unlink($the_full_file_path);
 	exit;
 }
@@ -286,12 +286,12 @@ $surveyid=$sffieldcontents[$surveyidpos];
 
 if (!$surveyid)
 {
-	echo "<br /><strong><font color='red'>"._("Error")."</strong></font><br />\n";
-	echo _("Import of this survey file failed")."<br />\n";
-	echo _("File does not contain PHPSurveyor data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
-	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
-	echo "</font></td></tr></table>\n";
-	echo "</body>\n</html>\n";
+	$importsurvey .= "<br /><strong><font color='red'>"._("Error")."</strong></font><br />\n";
+	$importsurvey .= _("Import of this survey file failed")."<br />\n";
+	$importsurvey .= _("File does not contain PHPSurveyor data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
+	$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	$importsurvey .= "</font></td></tr></table>\n";
+	$importsurvey .= "</body>\n</html>\n";
 	unlink($the_full_file_path); //Delete the uploaded file
 	exit;
 }
@@ -358,7 +358,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		$lsiresult=$connect->Execute($lsainsert);
 		$newlid=$connect->Insert_ID();
 
-		echo "OLDLID: $oldlid   NEWLID: $newlid";
+		$importsurvey .= "OLDLID: $oldlid   NEWLID: $newlid";
 
 		if ($labelsarray) {
 			foreach ($labelsarray as $la) {
@@ -432,7 +432,7 @@ if ($grouparray) {
 		$gsid=$gacfieldcontents[$surveyidpos];
 		if ($gsid != $surveyid)
 		{
-			echo "<br />\n<font color='red'><strong>"._("Error")."</strong></font>"
+			$importsurvey .= "<br />\n<font color='red'><strong>"._("Error")."</strong></font>"
 			."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n"
 			."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 			exit;
@@ -653,7 +653,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 			$insert=str_replace("`cid`,", "", $insert);
 			$result=$connect->Execute($insert) or die ("Couldn't insert condition<br />$insert<br />".$connect->ErrorMsg());
 		} else {
-			echo "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
+			$importsurvey .= "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
 		}
 		unset($newcqid);
 	}
@@ -663,22 +663,22 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
 $isrresult = $connect->Execute($isrquery) or die("<strong>"._("Error")."</strong> Failed to insert survey rights<br />\n$isrquery<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
-echo "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n";
-echo "<strong><u>"._("Survey Import Summary")."</u></strong><br />\n";
-echo "<ul>\n\t<li>"._("Surveys").": $countsurveys</li>\n";
-echo "\t<li>"._("Groups").": $countgroups</li>\n";
-echo "\t<li>"._("Questions").": $countquestions</li>\n";
-echo "\t<li>"._("Answers").": $countanswers</li>\n";
-echo "\t<li>"._("Conditions").": $countconditions</li>\n";
-echo "\t<li>"._("Label Set").": $countlabelsets ("._("Labels").": $countlabels)</li>\n";
-echo "\t<li>"._("Question Attributes:")." $countquestion_attributes</li>\n";
-echo "\t<li>"._("Assessments")." $countassessments</li>\n</ul>\n";
+$importsurvey .= "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n";
+$importsurvey .= "<strong><u>"._("Survey Import Summary")."</u></strong><br />\n";
+$importsurvey .= "<ul>\n\t<li>"._("Surveys").": $countsurveys</li>\n";
+$importsurvey .= "\t<li>"._("Groups").": $countgroups</li>\n";
+$importsurvey .= "\t<li>"._("Questions").": $countquestions</li>\n";
+$importsurvey .= "\t<li>"._("Answers").": $countanswers</li>\n";
+$importsurvey .= "\t<li>"._("Conditions").": $countconditions</li>\n";
+$importsurvey .= "\t<li>"._("Label Set").": $countlabelsets ("._("Labels").": $countlabels)</li>\n";
+$importsurvey .= "\t<li>"._("Question Attributes:")." $countquestion_attributes</li>\n";
+$importsurvey .= "\t<li>"._("Assessments")." $countassessments</li>\n</ul>\n";
 
-echo "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
-echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
+$importsurvey .= "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
+$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 
-echo "</font></td></tr></table>\n";
-echo "</body>\n</html>";
+$importsurvey .= "</font></td></tr></table>\n";
+$importsurvey .= "</body>\n</html>";
 unlink($the_full_file_path);
 
 function convertToArray($string, $seperator, $start, $end) {

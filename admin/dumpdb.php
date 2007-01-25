@@ -116,7 +116,6 @@ else
 			else $def .= "   KEY $x (" . implode($columns, ", ") . ")";
 		}
 		$def .= "\n);\n\n\n";
-		//echo "<pre>$def</pre><br />";
 		return (stripslashes($def));
 	}
 	

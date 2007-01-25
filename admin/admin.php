@@ -207,6 +207,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($newanswer)) {$adminoutput.= $newanswer;}
   if (isset($editanswer)) {$adminoutput.= $editanswer;}
   if (isset($assessmentsoutput)) {$adminoutput.= $assessmentsoutput;}
+  if (isset($importsurvey)) {$adminoutput.= $importsurvey;}
  	
   
   $adminoutput.= "\t\t</td>\n".helpscreen();;

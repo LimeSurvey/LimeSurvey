@@ -37,10 +37,15 @@
 
 // DUMP THE RELATED DATA FOR A SINGLE SURVEY INTO A SQL FILE FOR IMPORTING LATER ON OR ON ANOTHER SURVEY SETUP
 // DUMP ALL DATA WITH RELATED SID FROM THE FOLLOWING TABLES
-// 1. surveys
-// 2. groups
-// 3. questions
-// 4. answers
+// 1. Surveys
+// 2. Groups
+// 3. Questions
+// 4. Answers
+// 5. Conditions 
+// 6. Label Sets
+// 7. Labels
+// 8. Question Attributes
+// 9. Assessments
 
 require_once(dirname(__FILE__).'/../config.php');
 
@@ -48,7 +53,7 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 include_once("login_check.php");
 
-//echo $htmlheader;
+
 if (!$surveyid)
 {
 	echo $htmlheader
@@ -68,9 +73,10 @@ if (!$surveyid)
 	exit;
 }
 
-$dumphead = "# SURVEYOR SURVEY DUMP\n"
+$dumphead = "# PHPSurveyor Survey Dump\n"
 . "# Version $versionnumber\n# This is a dumped survey from the PHPSurveyor Script\n"
-. "# http://www.phpsurveyor.org/\n";
+. "# http://www.phpsurveyor.org/\n"
+. "# Do not change this header!\n";
 
 function BuildOutput($Query)
 {
@@ -146,7 +152,5 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 
-echo "#<pre>\n"
-.$dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump
-."#</pre>\n";
+echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump."\n";
 ?>
