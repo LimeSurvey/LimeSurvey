@@ -1301,7 +1301,7 @@ function getextendedanswer($fieldcode, $value)
 			case "^":
 			case "I":
 			case "R":
-			$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".mysql_escape_string($value)."' AND language='".$_SESSION['s_lang']."'";
+			$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$_SESSION['s_lang']."'";
 			$result = db_execute_assoc($query, $fields['qid'], $value) or die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 			while($row=$result->FetchRow())
 			{
