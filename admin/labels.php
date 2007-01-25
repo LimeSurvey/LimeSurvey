@@ -42,7 +42,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
-	include2var('./scripts/addremove.js');
+	$labelsoutput= include2var('./scripts/addremove.js');
 	
 	//DO DATABASE UPDATESTUFF 
 	if ($action == "updateset") {updateset($lid);}
@@ -56,7 +56,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	}
 	
 
-	$labelsoutput= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+	$labelsoutput.= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
                     . "\t<tr>\n"
                     . "\t\t<td>\n"
                     . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
