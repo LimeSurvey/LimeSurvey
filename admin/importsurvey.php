@@ -82,7 +82,7 @@ if ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarra
 elseif 
    ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 37) == "# http://phpsurveyor.sourceforge.net/"))
 {
-	$importversion = 99;  // Version 0.99 file - carries a different URL
+	$importversion = 99;  // Version 0.99 file or older - carries a different URL
 }
 elseif 
    (substr($bigarray[0], 0, 25) == "# PHPSurveyor Survey Dump")
@@ -103,6 +103,7 @@ else    // unknown file - show error message
 
 
 // okay.. now lets drop the first 9 lines and get to the data
+// This works for all versions
 for ($i=0; $i<9; $i++)
 {
 	unset($bigarray[$i]);
@@ -336,49 +337,124 @@ if (!$surveyid)
 		while ($isresult->RecordCount()>0);
 	}
 
-// A regex could do alot better here but I am bad on that so I am using the simple way.
-$insert=$tablearray[0];
-//$start = strpos(strtolower ($insert), 'values');
-//$start = strpos($insert, '(',$start)+1;
-//$end  = strpos($insert, ',',$start);
-//$insert = substr($insert,0,$start).$newsid.substr($insert,$end,strlen($insert));
 
+$insert=$tablearray[0];
 $sfieldorders=convertToArray($insert, "`, `", "(`", "`)");
 $sfieldcontents=convertToArray($insert, "', '", "('", "')");
-$creator_id_pos=array_search("creator_id", $sfieldorders);
-$creator_id=$sfieldcontents[$creator_id_pos];	
-if($creator_id_pos)
-	{
-	$insert = str_replace("('$surveyid', '$creator_id',", "('$newsid', '{$_SESSION['loginID']}',", $insert);
-	}
-else	// old format
-	{
-	$insert = str_replace("(`sid`, ", "(`sid`, `creator_id`,", $insert);
-	$insert = str_replace("('$surveyid',", "('$newsid', '{$_SESSION['loginID']}',", $insert);
-	}
+$surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
+// Set new creator ID
+$surveyrowdata['creator_id']=$_SESSION['loginID'];
+// Set new survey ID
+$surveyrowdata['sid']=$newsid;
 
-$insert = str_replace("INTO surveys", "INTO {$dbprefix}surveys", $insert); //handle db prefix
+
+if ($importversion<=100)
+// find the old language field and replace its contents with the new language shortcuts
+    {
+    $oldlanguage=$surveyrowdata['language'];
+    $newlanguage='en'; //Default
+    switch ($oldlanguage) 
+      {
+      case "bulgarian":
+         $newlanguage='bg';
+         break;
+      case "chinese-simplified":
+         $newlanguage='cns';
+         break;
+      case "chinese-traditional":
+         $newlanguage='cnt';
+         break;
+      case "croatian":
+         $newlanguage='hr';
+         break;
+      case "danish":
+         $newlanguage='da';
+         break;
+      case "dutch":
+         $newlanguage='nl';
+         break;
+      case "english":
+         $newlanguage='en';
+         break;
+      case "french":
+         $newlanguage='fr';
+         break;
+      case "german-informal":
+         $newlanguage='de_informal';
+         break;
+      case "german":
+         $newlanguage='de';
+         break;
+      case "greek":
+         $newlanguage='gr';
+         break;
+      case "hungarian":
+         $newlanguage='hu';
+         break;
+      case "italian":
+         $newlanguage='it';
+         break;
+      case "japanese":
+         $newlanguage='jp';
+         break;
+      case "lithuanian":
+         $newlanguage='lt';
+         break;
+      case "norwegian":
+         $newlanguage='no';
+         break;
+      case "portuguese":
+         $newlanguage='pt';
+         break;
+      case "romanian":
+         $newlanguage='ro';
+         break;
+      case "russian":
+         $newlanguage='ru';
+         break;
+      case "slovenian":
+         $newlanguage='si';
+         break;
+      case "spanish":
+         $newlanguage='es';
+         break;
+      case "swedish":
+         $newlanguage='se';
+         break;
+      }	
+
+    $surveyrowdata['language']=$newlanguage;
+    }
+
+$values=array_values($surveyrowdata);
+$values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
+$insert = "insert INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
 $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
 
 $oldsid=$surveyid;
 
 
-//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIE NEW LID IS FOR THE QUESTIONS
+//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
-	$csarray=buildLabelsetCSArray();
+	$csarray=buildLabelsetCSArray();   // build checksums over all existing labelsets
 	foreach ($labelsetsarray as $lsa) {
 		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
-		$newfieldcontents=$fieldcontents;
-		$oldlidpos=array_search("lid", $fieldorders);
-		$oldlid=$fieldcontents[$oldlidpos];
-
-		unset($newfieldcontents[array_search("lid", $fieldorders)]);
-		$newvalues="('".implode("', '", $newfieldcontents)."')";
-		$lsainsert = str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $lsa);
-		$lsainsert = str_replace("INTO labelsets", "INTO {$dbprefix}labelsets", $lsainsert); //db prefix handler
-		$lsainsert = str_replace("`lid`,", "", $lsainsert); //db prefix handler
+		$labelsetrowdata=array_combine($fieldorders,$fieldcontents);
+		
+		// Save old labelid
+		$oldlid=$labelsetrowdata['lid'];
+		// set the new language
+		if ($importversion<=100)
+            {
+            $labelsetrowdata['languages']=$newlanguage;
+            } 
+        $newvalues=array_values($labelsetrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
+        $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
 		$lsiresult=$connect->Execute($lsainsert);
+		
+		// Get the new insert id for the labels inside this labelset
 		$newlid=$connect->Insert_ID();
 
 		$importsurvey .= "OLDLID: $oldlid   NEWLID: $newlid";

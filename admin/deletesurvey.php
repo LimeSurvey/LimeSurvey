@@ -139,6 +139,10 @@ if($actsurrows['delete_survey'])
 	
 		$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
 		$sres = $connect->Execute($sdel);
+
+        $srdel = "DELETE FROM {$dbprefix}surveys_rights WHERE sid=$surveyid";
+		$srres = $connect->Execute($srdel);
+
 	
 		echo "<table width='100%' align='center'>\n";
 		echo "\t<tr>\n";
