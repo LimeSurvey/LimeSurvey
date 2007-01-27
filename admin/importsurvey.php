@@ -17,9 +17,9 @@
 #                                                           #
 # This program is free software; you can redistribute       #
 # it and/or modify it under the terms of the GNU General    #
-# Public License as published by the Free Software          #
-# Foundation; either version 2 of the License, or (at your  #
-# option) any later version.                                #
+# Public License Version 2 as published by the Free         #
+# Software Foundation.                                      #
+#                                                           #
 #                                                           #
 # This program is distributed in the hope that it will be   #
 # useful, but WITHOUT ANY WARRANTY; without even the        #
@@ -37,7 +37,26 @@
 if (empty($homedir)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
 
+
+// array_combine function is PHP5 only so we have to provide 
+// our own in case it doesn't exist
+if (!function_exists('array_combine')) {
+   function array_combine($a, $b) {
+       $c = array();
+       if (is_array($a) && is_array($b))
+           while (list(, $va) = each($a))
+               if (list(, $vb) = each($b))
+                   $c[$va] = $vb;
+               else
+                   break 1;
+       return $c;
+   }
+}
+
+
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
+
+
 
 $importsurvey = "<br />\n";
 $importsurvey .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
@@ -450,8 +469,8 @@ if (isset($labelsetsarray) && $labelsetsarray) {
             $labelsetrowdata['languages']=$newlanguage;
             } 
         $newvalues=array_values($labelsetrowdata);
-        $newvalues=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
-        $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+        $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 		$lsiresult=$connect->Execute($lsainsert);
 		
 		// Get the new insert id for the labels inside this labelset
@@ -461,18 +480,22 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 
 		if ($labelsarray) {
 			foreach ($labelsarray as $la) {
-				//GET ORDER OF FIELDS
+				//Get field names into array
 				$lfieldorders=convertToArray($la, "`, `", "(`", "`)");
+				//Get field values into array
 				$lfieldcontents=convertToArray($la, "', '", "('", "')");
-				$newlfieldcontents=$lfieldcontents;
-				$labellidpos=array_search("lid", $lfieldorders);
-				$labellid=$lfieldcontents[$labellidpos];
+				// Combine into one array with keys and values since its easier to handle
+         		$labelrowdata=array_combine($lfieldorders,$lfieldcontents);
+				$labellid=$labelrowdata['lid'];
+		        if ($importversion<=100)
+                {
+                $labelrowdata['language']=$newlanguage;
+                } 				
 				if ($labellid == $oldlid) {
-					$newlfieldcontents[array_search("lid", $lfieldorders)]=$newlid;
-					$newlvalues="('".implode("', '", $newlfieldcontents)."')";
-					$lainsert = str_replace("('".implode("', '", $lfieldcontents)."')", $newlvalues, $la);
-					//$lainsert = str_replace("'$labellid'", "'$newlid'", $la);
-					$lainsert = str_replace ("INTO labels", "INTO {$dbprefix}labels", $lainsert);
+					$labelrowdata['lid']=$newlid;
+                    $newvalues=array_values($labelrowdata);
+                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                    $lainsert = "insert INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 					$liresult=$connect->Execute($lainsert);
 				}
 			}
@@ -519,16 +542,17 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		$labelreplacements[]=array($oldlid, $newlid);
 	}
 }
+
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if ($grouparray) {
 	foreach ($grouparray as $ga) {
 		//GET ORDER OF FIELDS
 		$gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
 		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
-		$gidpos=array_search("gid", $gafieldorders);
-		$gid=$gacfieldcontents[$gidpos];
-		$surveyidpos=array_search("sid", $gafieldorders);
-		$gsid=$gacfieldcontents[$surveyidpos];
+		$grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
+		$gid=$grouprowdata['gid'];
+		$gsid=$grouprowdata['sid'];
+		//Now an additional integrity check if there are any groups not belonging into this survey
 		if ($gsid != $surveyid)
 		{
 			$importsurvey .= "<br />\n<font color='red'><strong>"._("Error")."</strong></font>"
@@ -536,66 +560,89 @@ if ($grouparray) {
 			."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
 			exit;
 		}
-		//$gid = substr($ga, strpos($ga, "('")+2, (strpos($ga, "',")-(strpos($ga, "('")+2)));
-		$ginsert = str_replace("('$gid', '$surveyid',", "('$newsid',", $ga);
-		$ginsert = str_replace("(`gid`,", "(", $ginsert);
-		$ginsert = str_replace("INTO groups", "INTO {$dbprefix}groups", $ginsert);
-		$oldgid=$gid;
+		//remove the old group id
+		unset($grouprowdata['gid']);
+        //replace old surveyid by new surveyid
+        $grouprowdata['sid']=$newsid;  
+        // Version <=100 dont have a language field yet so we set it now
+		if ($importversion<=100)  
+            {
+            $grouprowdata['language']=$newlanguage;
+            } 
+		$oldgid=$gid; // save it for later
+        $newvalues=array_values($grouprowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+        $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$gres = $connect->Execute($ginsert) or die("<strong>"._("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 		//GET NEW GID
-		$gidquery = "SELECT gid FROM {$dbprefix}groups ORDER BY gid DESC LIMIT 1";
-		$gidres = db_execute_num($gidquery);
-		while ($grow = $gidres->FetchRow()) {$newgid = $grow[0];}
+		$newgid=$connect->Insert_ID();
+
 		//NOW DO NESTED QUESTIONS FOR THIS GID
 		if ($questionarray) {
 			foreach ($questionarray as $qa) {
 				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
 				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
-				$newfieldcontents=$qacfieldcontents;
-				$thisgid=$qacfieldcontents[array_search("gid", $qafieldorders)];
+        		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
+				$thisgid=$questionrowdata['gid'];
 				if ($thisgid == $gid) {
-					$qid = $qacfieldcontents[array_search("qid", $qafieldorders)];
-					// Remove quid field
-					unset($newfieldcontents[array_search("qid", $qafieldorders)]);
-					$newfieldcontents[array_search("sid", $qafieldorders)] = $newsid;
-					$newfieldcontents[array_search("gid", $qafieldorders)] = $newgid;
+					$qid = $questionrowdata['qid'];
+					// Remove qid field
+					unset($questionrowdata['qid']);
+					$questionrowdata["sid"] = $newsid;
+					$questionrowdata["gid"] = $newgid;
+                    // Version <=100 doesn't have a language field yet so we set it now
+            		if ($importversion<=100)  
+                        {
+                        $grouprowdata['language']=$newlanguage;
+                        } 
 					$oldqid=$qid;
-					$newvalues="('".implode("', '", $newfieldcontents)."')";
-					$qinsert = str_replace ("('".implode("', '", $qacfieldcontents)."')", $newvalues, $qa);
-					$qinsert = str_replace ("(`qid`,", "(", $qinsert);
-					$qinsert = str_replace("INTO questions", "INTO {$dbprefix}questions", $qinsert);
-					$type = $qacfieldcontents[array_search("type", $qafieldorders)]; //Get the type
-					$other = $qacfieldcontents[array_search("other", $qafieldorders)]; //Get 'other';
-					$qres = $connect->Execute($qinsert) or die ("<strong>"._("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
-					$qidres = db_execute_assoc($qidquery);
-					while ($qrow = $qidres->FetchRow()) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
-					if ($type == "F" || $type == "H" || $type == "W" || $type == "Z") {//IF this is a flexible label array, update the lid entry
+
+                    // Now we will fix up the label id 
+					$type = $questionrowdata["type"]; //Get the type
+					if ($type == "F" || $type == "H" || $type == "W" || $type == "Z") 
+                    {//IF this is a flexible label array, update the lid entry
 						if (isset($labelreplacements)) {
 							foreach ($labelreplacements as $lrp) {
-								if ($lrp[0] == $oldlid) {
-									$lrupdate="UPDATE {$dbprefix}questions SET lid='{$lrp[1]}' WHERE qid=$newqid";
-									$lrresult=$connect->Execute($lrupdate);
+								if ($lrp[0] == $questionrowdata["lid"]) {
+									$questionrowdata["lid"]=$lrp[1];
 								}
 							}
 						}
-					}
+                    }
+					$other = $questionrowdata["other"]; //Get 'other' field value
+                    $newvalues=array_values($questionrowdata);
+                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                    $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+					$qres = $connect->Execute($qinsert) or die ("<strong>"._("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+
+					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
+					$qidres = db_execute_assoc($qidquery);
+					while ($qrow = $qidres->FetchRow()) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
+					
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
+					
 					//NOW DO NESTED ANSWERS FOR THIS QID
 					if (isset($answerarray) && $answerarray) {
 						foreach ($answerarray as $aa) {
 							$aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
 							$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
-							$newfieldcontents=$aacfieldcontents;
-							$code=$aacfieldcontents[array_search("code", $aafieldorders)];
-							$thisqid=$aacfieldcontents[array_search("qid", $aafieldorders)];
-							if ($thisqid == $qid) {
-								$newfieldcontents[array_search("qid", $aafieldorders)]=$newqid;
-								$newvalues="('".implode("', '", $newfieldcontents)."')";
-								$ainsert = str_replace("('".implode("', '", $aacfieldcontents)."')", $newvalues, $aa);
-								$ainsert = str_replace("INTO answers", "INTO {$dbprefix}answers", $ainsert);
+                    		$answerrowdata=array_combine($aafieldorders,$aacfieldcontents);
+							$code=$answerrowdata["code"];
+							$thisqid=$answerrowdata["qid"];
+							if ($thisqid == $qid) 
+                            {
+								$answerrowdata["qid"]=$newqid;
+                                // Version <=100 doesn't have a language field yet so we set it now
+                        		if ($importversion<=100)  
+                                    {
+                                    $answerrowdata['language']=$newlanguage;
+                                    } 
+                                $newvalues=array_values($answerrowdata);
+                                $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                                $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 								$ares = $connect->Execute($ainsert) or die ("<strong>"._("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+								
 								if ($type == "M" || $type == "P") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
 									"newcfieldname"=>$newsid."X".$newgid."X".$newqid,
@@ -668,23 +715,20 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 	foreach ($question_attributesarray as $qar) {
 		$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($qar, "', '", "('", "')");
-		$newfieldcontents=$fieldcontents;
+        $qarowdata=array_combine($fieldorders,$fieldcontents);
 		$newqid="";
-		$oldqid=$fieldcontents[array_search("qid", $fieldorders)];
+		$oldqid=$qarowdata['qid'];
 		foreach ($substitutions as $subs) {
 			if ($oldqid==$subs[2]) {$newqid=$subs[5];}
 		}
 
-		$newfieldcontents[array_search("qid", $fieldorders)]=$newqid;
-		unset($newfieldcontents[array_search("qaid", $fieldorders)]);
+		$qarowdata["qid"]=$newqid;
+		unset($qarowdata["qaid"]);
 
-		$newvalues="('".implode("', '", $newfieldcontents)."')";
-		$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $qar);
-		$insert=str_replace("INTO question_attributes", "INTO {$dbprefix}question_attributes", $insert);
-		$insert=str_replace("`qaid`,", "", $insert);
-		$result=$connect->Execute($insert) or die ("Couldn't insert question_attribute<br />$insert<br />".$connect->ErrorMsg());
-
-		unset($newqid);
+        $newvalues=array_values($qarowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+        $qainsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		$result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
 	}
 }
 
@@ -692,23 +736,23 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
 	foreach ($assessmentsarray as $qar) {
 		$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($qar, "', '", "('", "')");
-		$newfieldcontents=$fieldcontents;
-		$oldsid=$fieldcontents[array_search("sid", $fieldorders)];
-		$oldgid=$fieldcontents[array_search("gid", $fieldorders)];
+        $asrowdata=array_combine($fieldorders,$fieldcontents);
+		$oldsid=$asrowdata["sid"];
+		$oldgid=$asrowdata["gid"];
 		foreach ($substitutions as $subs) {
 			if ($oldsid==$subs[0]) {$newsid=$subs[3];}
 			if ($oldgid==$subs[1]) {$newgid=$subs[4];}
 		}
 
-		$newfieldcontents[array_search("sid", $fieldorders)]=$newsid;
-		$newfieldcontents[array_search("gid", $fieldorders)]=$newgid;
-		unset($newfieldcontents[array_search("id", $fieldorders)]);
+		$asrowdata["sid"]=$newsid;
+		$asrowdata["gid"]=$newgid;
+		unset($asrowdata["id"]);
 
-		$newvalues="('".implode("', '", $newfieldcontents)."')";
-		$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $qar);
-		$insert=str_replace("INTO assessments", "INTO {$dbprefix}assessments", $insert);
-		$insert=str_replace("`id`,", "", $insert);
-		$result=$connect->Execute($insert) or die ("Couldn't insert assessment<br />$insert<br />".$connect->ErrorMsg());
+
+        $newvalues=array_values($asrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+        $asinsert = "insert INTO {$dbprefix}assessments (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		$result=$connect->Execute($asinsert) or die ("Couldn't insert assessment<br />$asinsert<br />".$connect->ErrorMsg());
 
 		unset($newgid);
 	}
@@ -718,12 +762,14 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 	foreach ($conditionsarray as $car) {
 		$fieldorders=convertToArray($car, "`, `", "(`", "`)");
 		$fieldcontents=convertToArray($car, "', '", "('", "')");
-		$newfieldcontents=$fieldcontents;
-		$oldcid=$fieldcontents[array_search("cid", $fieldorders)];
-		$oldqid=$fieldcontents[array_search("qid", $fieldorders)];
-		$oldcfieldname=$fieldcontents[array_search("cfieldname", $fieldorders)];
-		$oldcqid=$fieldcontents[array_search("cqid", $fieldorders)];
-		$thisvalue=$fieldcontents[array_search("value", $fieldorders)];
+        $conditionrowdata=array_combine($fieldorders,$fieldcontents);
+
+		$oldcid=$conditionrowdata["cid"];
+		$oldqid=$conditionrowdata["qid"];
+		$oldcfieldname=$conditionrowdata["cfieldname"];
+		$oldcqid=$conditionrowdata["cqid"];
+		$thisvalue=$conditionrowdata["value"];
+		
 		foreach ($substitutions as $subs) {
 			if ($oldqid==$subs[2])  {$newqid=$subs[5];}
 			if ($oldcqid==$subs[2]) {$newcqid=$subs[5];}
@@ -741,16 +787,17 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 			}
 		}
 		if (!isset($newcfieldname)) {$newcfieldname="";}
-		unset($newfieldcontents[array_search("cid", $fieldorders)]);
-		$newfieldcontents[array_search("qid", $fieldorders)]=$newqid;
-		$newfieldcontents[array_search("cfieldname", $fieldorders)]=$newcfieldname;
+		unset($conditionrowdata["cid"]);
+		$conditionrowdata["qid"]=$newqid;
+		$conditionrowdata["cfieldname"]=$newcfieldname;
+		
 		if (isset($newcqid)) {
-			$newfieldcontents[array_search("cqid", $fieldorders)]=$newcqid;
-			$newvalues="('".implode("', '", $newfieldcontents)."')";
-			$insert=str_replace("('".implode("', '", $fieldcontents)."')", $newvalues, $car);
-			$insert=str_replace("INTO conditions", "INTO {$dbprefix}conditions", $insert);
-			$insert=str_replace("`cid`,", "", $insert);
-			$result=$connect->Execute($insert) or die ("Couldn't insert condition<br />$insert<br />".$connect->ErrorMsg());
+			$conditionrowdata["cqid"]=$newcqid;
+
+            $newvalues=array_values($conditionrowdata);
+            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+            $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+			$result=$connect->Execute($conditioninsert) or die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
 		} else {
 			$importsurvey .= "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
 		}
@@ -784,4 +831,5 @@ function convertToArray($string, $seperator, $start, $end) {
 	$orders=explode($seperator, $order);
 	return $orders;
 }
+
 ?>
