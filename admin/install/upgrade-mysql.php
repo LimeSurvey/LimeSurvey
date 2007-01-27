@@ -161,7 +161,7 @@ $allfields[]=array("{$dbprefix}questions", "question_order", "question_order int
 
 $allfields[]=array("{$dbprefix}surveys", "sid", "sid int(11) NOT NULL");
 $allfields[]=array("{$dbprefix}surveys", "creator_id", "uid int(11) NOT NULL");
-$allfields[]=array("{$dbprefix}surveys", "short_title", "short_title varchar(200) NOT NULL default ''");
+$allfields[]=array("{$dbprefix}surveys", "surveyls_title", "surveyls_title varchar(200) NOT NULL default ''");
 $allfields[]=array("{$dbprefix}surveys", "description", "description text");
 $allfields[]=array("{$dbprefix}surveys", "datecreated", "datecreated date");
 $allfields[]=array("{$dbprefix}surveys", "admin", "admin varchar(50) default NULL");

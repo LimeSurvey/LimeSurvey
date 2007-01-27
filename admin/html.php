@@ -69,7 +69,7 @@ if ($action == "listsurveys")
 			$datecreated=$rows['datecreated'] ;
 
 			$listsurveys.="<tr>
-					    <td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['short_title']."</a></td>".
+					    <td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
 					    "<td>".$datecreated."</td>".
 					    "<td>".$visibility."</td>" .
 					    "<td>".$status."</td>".
@@ -287,7 +287,7 @@ if ($surveyid)
 		$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$defaultlang."'"; //Getting a count of groups for this survey
 		$sumresult2 = $connect->Execute($sumquery2);
 		$sumcount2 = $sumresult2->RecordCount();
-		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid LIMIT 1"; //Getting data for this survey
+		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid LIMIT 1 "; //Getting data for this survey
 		$sumresult1 = db_execute_assoc($sumquery1);
 		$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 
@@ -301,7 +301,7 @@ if ($surveyid)
 		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 		. "<font size='1' face='verdana' color='white'><strong>"._("Survey")."</strong> "
-		. "<font color='silver'>{$s1row['short_title']} (ID:$surveyid)</font></font></td></tr>\n"
+		. "<font color='silver'>{$s1row['surveyls_title']} (ID:$surveyid)</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#999999'><td align='right' height='22'>\n";
 		if ($activated == "N" && $sumcount3>0)
 		{
@@ -534,7 +534,7 @@ if ($surveyid)
 		if (!isset($showstyle)) {$showstyle="";}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
 		. "<strong>"._("Title").":</strong></td>\n"
-		. "\t<td class='settingentryhighlight'><strong>{$s1row['short_title']} "
+		. "\t<td class='settingentryhighlight'><strong>{$s1row['surveyls_title']} "
 		. "(ID {$s1row['sid']})</strong></td></tr>\n";
 		$surveysummary2 = "\t<tr $showstyle id='surveydetails1'><td width='80'></td>"
 		. "<td>\n";
@@ -581,12 +581,12 @@ if ($surveyid)
 		. "</td></tr>\n"
 		. "\t<tr $showstyle id='surveydetails2'><td align='right' valign='top'><strong>"
 		. _("Description:")."</strong></td>\n\t\t<td>";
-		if (trim($s1row['description'])!='') {$surveysummary .= " {$s1row['description']}";}
+		if (trim($s1row['surveyls_description'])!='') {$surveysummary .= " {$s1row['surveyls_description']}";}
 		$surveysummary .= "</td></tr>\n"
 		. "\t<tr $showstyle id='surveydetails3'>\n"
 		. "\t\t<td align='right' valign='top'><strong>"
 		. _("Welcome:")."</strong></td>\n"
-		. "\t\t<td> {$s1row['welcome']}</td></tr>\n"
+		. "\t\t<td> {$s1row['surveyls_welcometext']}</td></tr>\n"
 		. "\t<tr $showstyle id='surveydetails4'><td align='right' valign='top'><strong>"
 		. _("Administrator:")."</strong></td>\n"
 		. "\t\t<td> {$s1row['admin']} ({$s1row['adminemail']})</td></tr>\n"
@@ -628,11 +628,11 @@ if ($surveyid)
 			}
 		}
 
-		if ($s1row['urldescrip']==""){$s1row['urldescrip']=$s1row['url'];}
+		if ($s1row['surveyls_urldescription']==""){$s1row['surveyls_urldescription']=$s1row['url'];}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'><strong>"
 		. _("Exit Link").":</strong></td>\n"
 		. "\t\t<td>";
-		if ($s1row['url']!="") {$surveysummary .=" <a href=\"{$s1row['url']}\" title=\"{$s1row['url']}\">{$s1row['urldescrip']}</a>";}
+		if ($s1row['url']!="") {$surveysummary .=" <a href=\"{$s1row['url']}\" title=\"{$s1row['url']}\">{$s1row['surveyls_urldescription']}</a>";}
 		$surveysummary .="</td></tr>\n";
 		$surveysummary .= "\t<tr $showstyle id='surveydetails10'><td align='right' valign='top'><strong>"
 		. _("Status").":</strong></td>\n"
@@ -3339,6 +3339,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
         . "<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
 		. "\t\t<font class='settingcaption'><font color='white'>"._("Edit Survey - Step 2 of 2")."</font></font></td></tr></table>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
+//		echo implode(' ', $grplangs);  For debug purposes
 		foreach ($grplangs as $grouplang)
 		{
     		$esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
@@ -3535,12 +3536,12 @@ if ($action == "newsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
-		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('short_title'), '".("Error: You have to enter a title for this survey.")."');\" >\n"
+		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".("Error: You have to enter a title for this survey.")."');\" >\n"
         . "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<font class='settingcaption'><font color='white'>"._("Create Survey")."</font></font></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='25%'><font class='settingcaption'>"._("Title").":</font></td>\n"
-		. "\t\t<td><input type='text' size='50' id='short_title' name='short_title' /><font size=1> "._('(This field is mandatory.)')."</font></td></tr>\n"
+		. "\t\t<td><input type='text' size='50' id='surveyls_title' name='surveyls_title' /><font size=1> "._('(This field is mandatory.)')."</font></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>"._("Description:")."</font>	</td>\n"
 		. "\t\t<td><textarea cols='50' rows='5' name='description'></textarea></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>"._("Welcome:")."</font></td>\n"
@@ -3687,7 +3688,7 @@ if ($action == "newsurvey")
 		$newsurvey .= "' /></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>"._("URL Description:")."</font></td>\n"
 		. "\t\t<td><input type='text' size='50' name='urldescrip' value='";
-		if (isset($esrow)) {$newsurvey .= $esrow['urldescrip'];}
+		if (isset($esrow)) {$newsurvey .= $esrow['surveyls_urldescription'];}
 		$newsurvey .= "' /></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>"._("Automatically load URL when survey complete?")."</font></td>\n"
 		. "\t\t<td><select name='autoredirect'>\n"

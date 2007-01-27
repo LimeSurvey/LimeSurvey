@@ -90,7 +90,7 @@ if ($actcount > 0)
 	while ($actrow = $actresult->FetchRow())
 	{
 		$surveytable = "{$dbprefix}survey_{$actrow['sid']}";
-		$surveyname = "{$actrow['short_title']}";
+		$surveyname = "{$actrow['surveyls_title']}";
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 		{
 			echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"

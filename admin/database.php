@@ -888,7 +888,7 @@ if(isset($surveyid))
 elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 {
 	if ($_POST['url'] == "http://") {$_POST['url']="";}
-	if (!$_POST['short_title'])
+	if (!$_POST['surveyls_title'])
 	{
 		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Survey could not be created because it did not have a short title")."\")\n //-->\n</script>\n";
 	}
@@ -913,32 +913,25 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		while ($isresult->RecordCount()>0);
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
-		. "(sid, creator_id, short_title, description, admin, active, welcome, useexpiry, expires, "
-		. "adminemail, private, faxto, format, template, url, urldescrip, "
+		. "(sid, creator_id, admin, active, useexpiry, expires, "
+		. "adminemail, private, faxto, format, template, url, "
 		. "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
-		. "email_invite_subj, email_invite, email_remind_subj, email_remind, "
-		. "email_register_subj, email_register, email_confirm_subj, email_confirm, "
 		. "allowsave, autoredirect, allowprev,datecreated)\n"
-		. "VALUES ($surveyid, {$_SESSION['loginID']},'{$_POST['short_title']}', '{$_POST['description']}',\n"
-		. "'{$_POST['admin']}', 'N', '".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
+		. "VALUES ($surveyid, {$_SESSION['loginID']},\n"
+		. "'{$_POST['admin']}', 'N', \n"
 		. "'{$_POST['useexpiry']}',{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"
 		. "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
-		. "'{$_POST['urldescrip']}', '{$_POST['language']}', '{$_POST['datestamp']}', '{$_POST['ipaddr']}', '{$_POST['refurl']}',\n"
+		. "'{$_POST['language']}', '{$_POST['datestamp']}', '{$_POST['ipaddr']}', '{$_POST['refurl']}',\n"
 		. "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
-		. "'{$_POST['attribute1']}', '{$_POST['attribute2']}', '{$_POST['email_invite_subj']}',\n"
-		. "'{$_POST['email_invite']}', '{$_POST['email_remind_subj']}',\n"
-		. "'{$_POST['email_remind']}', '{$_POST['email_register_subj']}',\n"
-		. "'{$_POST['email_register']}', '{$_POST['email_confirm_subj']}',\n"
-		. "'{$_POST['email_confirm']}', \n"
+		. "'{$_POST['attribute1']}', '{$_POST['attribute2']}', \n"
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', '{$_POST['allowprev']}','".date("Y-m-d")."')";
 		$isresult = $connect->Execute($isquery);
-
 		// insert base language into surveys_language_settings
 		$isquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
 		. "(surveyls_survey_id, surveyls_language, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_urldescription, "
 		. "surveyls_email_invite_subj, surveyls_email_invite, surveyls_email_remind_subj, surveyls_email_remind, "
 		. "surveyls_email_register_subj, surveyls_email_register, surveyls_email_confirm_subj, surveyls_email_confirm)\n"
-		. "VALUES ($surveyid, '{$_POST['language']}', '{$_POST['short_title']}', '{$_POST['description']}',\n"
+		. "VALUES ($surveyid, '{$_POST['language']}', '{$_POST['surveyls_title']}', '{$_POST['description']}',\n"
 		. "'".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
 		. "'{$_POST['urldescrip']}', '{$_POST['email_invite_subj']}',\n"
 		. "'{$_POST['email_invite']}', '{$_POST['email_remind_subj']}',\n"

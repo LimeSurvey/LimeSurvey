@@ -387,13 +387,12 @@ function db_table_name($name)
 function getsurveylist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect;
-    $surveyidquery = "SELECT a.sid, a.creator_id, a.short_title, a.description, a.admin, a.active, a.welcome, a.useexpiry, a.expires, "
-										. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, a.urldescrip, "
-										. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
-										. "a.email_invite_subj, a.email_invite, a.email_remind_subj, a.email_remind, "
-										. "a.email_register_subj, a.email_register, a.email_confirm_subj, a.email_confirm, "
-										. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid "
-    								. "WHERE b.uid =".$_SESSION['loginID'];//CHANGED by Moses only with rights
+    $surveyidquery = "SELECT a.sid, a.creator_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, a.useexpiry, a.expires, "
+					. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, "
+					. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
+					. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid "
+					. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) "
+					. "WHERE b.uid =".$_SESSION['loginID'];//CHANGED by Moses only with rights
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
@@ -1047,32 +1046,31 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 {
 	global $dbprefix, $connect;
 	if ($qid != 0)
-	{
-	$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}' AND language='".$_SESSION['s_lang']."'");
-	$row=$result->FetchRow();
-	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$row['gid']}' AND language='".$_SESSION['s_lang']."' ORDER BY question_order, title");
-	} else {
-	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' AND language='".$_SESSION['s_lang']."' ORDER BY question_order, title");
-	}
+    	{
+    	$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}' group by gid");
+    	$row=$result->FetchRow();
+    	$gid=$row['gid'];
+    	}
+	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' group by qid ORDER BY question_order, title");
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
-		$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' AND language='".$_SESSION['s_lang']."'";
+		$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' ";
 		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update question_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$position++;
 	}
 }
 
 
-function fixsortorderGroups() //Function rewrites the sortorder for questions
+function fixsortorderGroups() //Function rewrites the sortorder for groups
 {
 	global $dbprefix, $connect, $surveyid;
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE language='{$s_lang}' ORDER BY group_order, group_name");
+	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." group by gid ORDER BY group_order, group_name");
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
-		$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' AND language='{$s_lang}' ";
+		$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' ";
 		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update group_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$position++;
 	}

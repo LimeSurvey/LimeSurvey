@@ -443,7 +443,49 @@ if ($importversion<=100)
       }	
 
     $surveyrowdata['language']=$newlanguage;
+    
+    // copy the survey row data
+    
+     // now prepare the languagesettings table and drop according values from the survey array
+    $surveylsrowdata=array();     
+    $surveylsrowdata['surveyls_survey_id']=$newsid;     
+    $surveylsrowdata['surveyls_language']=$newlanguage;     
+    $surveylsrowdata['surveyls_title']=$surveyrowdata['short_title'];
+    $surveylsrowdata['surveyls_description']=$surveyrowdata['description'];
+    $surveylsrowdata['surveyls_welcometext']=$surveyrowdata['welcome'];
+    $surveylsrowdata['surveyls_urldescription']=$surveyrowdata['urldescrip'];
+    $surveylsrowdata['surveyls_email_invite_subj']=$surveyrowdata['email_invite_subj'];
+    $surveylsrowdata['surveyls_email_invite']=$surveyrowdata['email_invite'];
+    $surveylsrowdata['surveyls_email_remind_subj']=$surveyrowdata['email_remind_subj'];
+    $surveylsrowdata['surveyls_email_remind']=$surveyrowdata['email_remind'];
+    $surveylsrowdata['surveyls_email_register_subj']=$surveyrowdata['email_register_subj'];
+    $surveylsrowdata['surveyls_email_register']=$surveyrowdata['email_register'];
+    $surveylsrowdata['surveyls_email_confirm_subj']=$surveyrowdata['email_confirm_subj'];
+    $surveylsrowdata['surveyls_email_confirm']=$surveyrowdata['email_confirm'];
+    unset($surveyrowdata['short_title']);
+    unset($surveyrowdata['description']);
+    unset($surveyrowdata['welcome']);
+    unset($surveyrowdata['urldescrip']);
+    unset($surveyrowdata['email_invite_subj']);
+    unset($surveyrowdata['email_invite']);
+    unset($surveyrowdata['email_remind_subj']);
+    unset($surveyrowdata['email_remind']);
+    unset($surveyrowdata['email_register_subj']);
+    unset($surveyrowdata['email_register']);
+    unset($surveyrowdata['email_confirm_subj']);
+    unset($surveyrowdata['email_confirm']);
+
+    // import the survey language-specific settings
+    $values=array_values($surveylsrowdata);
+    $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
+    $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
+    $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
+
+
+
     }
+
+
 
 $values=array_values($surveyrowdata);
 $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
@@ -709,6 +751,20 @@ if ($grouparray) {
 		}
 	}
 }
+
+if ($importversion<=100)  
+   {
+   // Fix sortorder of the groups from older survey version
+   fixsortorderGroups();
+   //... and for the questions inside the groups
+   // get all group ids and fix questions inside each group
+   $gquery = "SELECT gid FROM {$dbprefix}groups where sid=$newsid group by gid ORDER BY gid"; //Get last question added (finds new qid)
+   $gres = db_execute_assoc($gquery);
+   while ($grow = $gres->FetchRow()) 
+        {
+        fixsortorderQuestions(0,$grow['gid']);
+        }
+   } 
 //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions and question_attributes.
 if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES

@@ -148,7 +148,7 @@ while ($chrow = $chresult->FetchRow())
 {
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Token Control").":</strong> "
-	."<font color='silver'>{$chrow['short_title']}</font></font></td></tr>\n";
+	."<font color='silver'>{$chrow['surveyls_title']}</font></font></td></tr>\n";
 	$surveyprivate = $chrow['private'];
 }
 

@@ -56,7 +56,7 @@ $desquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $desresult = db_execute_assoc($desquery);
 while ($desrow = $desresult->FetchRow())
 {
-	$surveyname = $desrow['short_title'];
+	$surveyname = $desrow['surveyls_title'];
 	$surveydesc = $desrow['description'];
 	$surveyactive = $desrow['active'];
 	$surveytable = "{$dbprefix}survey_{$desrow['sid']}";

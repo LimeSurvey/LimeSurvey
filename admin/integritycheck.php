@@ -41,9 +41,10 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 	// STRAY QUESTIONS, ANSWERS, CONDITIONS OR GROUPS AND DELETES THEM
 	$ok=returnglobal('ok');
 	
+	$integritycheck='';
 	if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
 	{
-		$integritycheck = "<table><tr><td height='1'></td></tr></table>\n"
+		$integritycheck .= "<table><tr><td height='1'></td></tr></table>\n"
 		. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='450'>\n"
 		. "\t<tr>\n"
@@ -293,11 +294,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='450'>\n"
 		. "\t<tr>\n"
-		. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>$setfont\n"
-		. "\t\t\t<strong>"._("Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>")."</strong>\n"
+		. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>\n"
+		. "\t\t\t<strong>"._("Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. ")."</strong>\n"
 		. "\t\t</font></td>\n"
 		. "\t</tr>\n"
-		. "\t<tr><td align='center'>$setfont";
+		. "\t<tr><td align='center'>";
 		$cdelete=returnglobal('cdelete');
 		$adelete=returnglobal('adelete');
 		$qdelete=returnglobal('qdelete');

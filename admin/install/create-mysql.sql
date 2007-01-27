@@ -174,11 +174,8 @@ CREATE TABLE `prefix_saved_control` (
 CREATE TABLE `prefix_surveys` (
   `sid` int(11) NOT NULL,
   `creator_id` int(11) NOT NULL,
-  `short_title` varchar(200) NOT NULL default '',
-  `description` text,
   `admin` varchar(50) default NULL,
   `active` char(1) NOT NULL default 'N',
-  `welcome` text,
   `expires` date default NULL,
   `adminemail` varchar(100) default NULL,
   `private` char(1) default NULL,
@@ -186,7 +183,6 @@ CREATE TABLE `prefix_surveys` (
   `format` char(1) default NULL,
   `template` varchar(100) default 'default',
   `url` varchar(255) default NULL,
-  `urldescrip` varchar(255) default NULL,
   `language` varchar(50) default NULL,
   `additional_languages` varchar(255) default NULL,
   `datestamp` char(1) default 'N',
@@ -195,14 +191,6 @@ CREATE TABLE `prefix_surveys` (
   `allowregister` char(1) default 'N',
   `attribute1` varchar(255) default NULL,
   `attribute2` varchar(255) default NULL,
-  `email_invite_subj` varchar(255) default NULL,
-  `email_invite` text,
-  `email_remind_subj` varchar(255) default NULL,
-  `email_remind` text,
-  `email_register_subj` varchar(255) default NULL,
-  `email_register` text,
-  `email_confirm_subj` varchar(255) default NULL,
-  `email_confirm` text,
   `allowsave` char(1) default 'Y',
   `autonumber_start` bigint(11) default '0',
   `autoredirect` char(1) default 'N',
@@ -238,7 +226,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_confirm` TEXT NULL,
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
 )
-TYPE = MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+TYPE = MyISAM;
 
 
 
