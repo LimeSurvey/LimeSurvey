@@ -73,10 +73,12 @@ if (!$surveyid)
 	exit;
 }
 
-$dumphead = "# PHPSurveyor Survey Dump\n"
-. "# Version $versionnumber\n# This is a dumped survey from the PHPSurveyor Script\n"
-. "# http://www.phpsurveyor.org/\n"
-. "# Do not change this header!\n";
+$dumphead = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+            ."<Application>\n"
+            ."<ApplicationName>PHPSurveyor<ApplicationName>\n"
+            ."<ApplicationURL>http://www.phpsurveyor.org<ApplicationURL>\n"
+            ."<ApplicationVersion>$versionnumber</ApplicationVersion>\n"
+            ."<ApplicationData>\n";
 
 function BuildOutput($Query)
 {
@@ -88,22 +90,18 @@ function BuildOutput($Query)
 	{
 		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
 	}
-	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
+	$Output = "\t<table>\n";
+	$Output .= "\t\t<tablename>$TableName</tablename>\n";
 	while ($Row = $QueryResult->FetchRow())
 	{
-		$ColumnNames = "";
-		$ColumnValues = "";
+    	$Output .= "\t\t<row>\n";
 		foreach ($Row as $Key=>$Value)
 		{
-			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
-			$ColumnValues .= $connect->qstr(str_replace("\r\n", "\n", $Value)) . ", ";
+			$Output .= "\t\t\t<$Key>".$Value."</$Key>\n";
 		}
-		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
-		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
-
-
-		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues);\n";
+    	$Output .= "\t\t</row>\n";
 	}
+	$Output .= "\t</table>\n";
 	return $Output;
 }
 
@@ -143,14 +141,20 @@ $qadump = BuildOutput($query);
 $query = "SELECT {$dbprefix}assessments.* FROM {$dbprefix}assessments WHERE {$dbprefix}assessments.sid=$surveyid";
 $asdump = BuildOutput($query);
 
-$fn = "survey_$surveyid.sql";
+//10:Survey Language Specific Setting
+$query = "SELECT {$dbprefix}surveys_languagesettings.* FROM {$dbprefix}surveys_languagesettings WHERE {$dbprefix}surveys_languagesettings.surveyls_survey_id=$surveyid";
+$slsdump = BuildOutput($query);
 
-header("Content-Type: application/download");
+
+$fn = "phpsurveyor_survey_$surveyid.xml";
+
+header("Content-Type: application/download; charset=utf-8");
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 
-echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump."\n";
+echo $dumphead, $sdump, $slsdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump."</ApplicationData>\n</Application>\n";
+
 ?>
