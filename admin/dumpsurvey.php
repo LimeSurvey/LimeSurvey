@@ -73,88 +73,102 @@ if (!$surveyid)
 	exit;
 }
 
-$dumphead = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-            ."<Application>\n"
-            ."<ApplicationName>PHPSurveyor<ApplicationName>\n"
-            ."<ApplicationURL>http://www.phpsurveyor.org<ApplicationURL>\n"
-            ."<ApplicationVersion>$versionnumber</ApplicationVersion>\n"
-            ."<ApplicationData>\n";
+$dumphead = "# PHPSurveyor Survey Dump\n"
+. "# Version $versionnumber\n# This is a dumped survey from the PHPSurveyor Script\n"
+. "# http://www.phpsurveyor.org/\n"
+. "# Do not change this header!\n";
 
 function BuildOutput($Query)
 {
 	global $dbprefix, $connect;
 	$QueryResult = db_execute_assoc($Query) or die ("ERROR: $QueryResult<br />".htmlspecialchars($connect->ErrorMsg()));
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
-	$TableName = $MatchResults[1];
+	$TableName = $MatchResults[1];;
 	if ($dbprefix)
 	{
 		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
 	}
-	$Output = "\t<table>\n";
-	$Output .= "\t\t<tablename>$TableName</tablename>\n";
+	$Output = "\n#\n# " . strtoupper($TableName) . " TABLE\n#\n";
+	$HeaderDone = false;	$ColumnNames = "";
 	while ($Row = $QueryResult->FetchRow())
 	{
-    	$Output .= "\t\t<row>\n";
+
+       if (!$HeaderDone)
+       {
+    		foreach ($Row as $Key=>$Value)
+    		{
+    			$ColumnNames .= CSVEscape($Key).","; //Add all the column names together
+    		}
+			$ColumnNames = substr($ColumnNames, 0, -1); //strip off last comma space
+     		$Output .= "$ColumnNames\n";
+    		$HeaderDone=true;
+       }
+		$ColumnValues = "";
 		foreach ($Row as $Key=>$Value)
 		{
-			$Output .= "\t\t\t<$Key>".$Value."</$Key>\n";
+			$ColumnValues .= CSVEscape(str_replace("\r\n", "\n", $Value)) . ",";
 		}
-    	$Output .= "\t\t</row>\n";
+		$ColumnValues = substr($ColumnValues, 0, -1); //strip off last comma space
+		$Output .= "$ColumnValues\n";
 	}
-	$Output .= "\t</table>\n";
 	return $Output;
 }
+
+
+function CSVEscape($str) 
+{
+   return '"' . str_replace('"','""', $str) . '"';
+}
+
 
 //1: Surveys table
 $squery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $sdump = BuildOutput($squery);
 
-//2: Groups Table
+//2: Surveys Languagsettings table
+$slsquery = "SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$surveyid";
+$slsdump = BuildOutput($slsquery);
+
+//3: Groups Table
 $gquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid";
 $gdump = BuildOutput($gquery);
 
-//3: Questions Table
+//4: Questions Table
 $qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid";
 $qdump = BuildOutput($qquery);
 
-//4: Answers table
+//5: Answers table
 $aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $adump = BuildOutput($aquery);
 
-//5: Conditions table
+//6: Conditions table
 $cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $cdump = BuildOutput($cquery);
 
-//6: Label Sets
+//7: Label Sets
 $lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type IN ('F', 'H', 'W', 'Z') AND sid=$surveyid";
 $lsdump = BuildOutput($lsquery);
 
-//7: Labels
+//8: Labels
 $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'W', 'H', 'Z') AND sid=$surveyid";
 $ldump = BuildOutput($lquery);
 
-//8: Question Attributes
+//9: Question Attributes
 $query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $qadump = BuildOutput($query);
 
-//9: Assessments
+//10: Assessments;
 $query = "SELECT {$dbprefix}assessments.* FROM {$dbprefix}assessments WHERE {$dbprefix}assessments.sid=$surveyid";
 $asdump = BuildOutput($query);
 
-//10:Survey Language Specific Setting
-$query = "SELECT {$dbprefix}surveys_languagesettings.* FROM {$dbprefix}surveys_languagesettings WHERE {$dbprefix}surveys_languagesettings.surveyls_survey_id=$surveyid";
-$slsdump = BuildOutput($query);
+$fn = "phpsurveyor_survey_$surveyid.csv";
 
-
-$fn = "phpsurveyor_survey_$surveyid.xml";
-
-header("Content-Type: application/download; charset=utf-8");
+header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 
-echo $dumphead, $sdump, $slsdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump."</ApplicationData>\n</Application>\n";
-
+echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump, $slsdump."\n";
 ?>

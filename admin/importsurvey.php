@@ -39,7 +39,7 @@ include_once("login_check.php");
 
 
 // array_combine function is PHP5 only so we have to provide 
-// our own in case it doesn't exist
+// our own in case it doesn't exist like in PHP 4
 if (!function_exists('array_combine')) {
    function array_combine($a, $b) {
        $c = array();
@@ -142,7 +142,7 @@ elseif (array_search("# GROUPS TABLE\r\n", $bigarray))
 }
 for ($i=0; $i<=$stoppoint+1; $i++)
 {
-	if ($i<$stoppoint-2) {$tablearray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) {$surveyarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
@@ -266,6 +266,7 @@ else
 {
 	$stoppoint = count($bigarray)-1;
 }
+
 for ($i=0; $i<=$stoppoint+1; $i++)
 {
 	if ($i<$stoppoint-2) {$labelsarray[] = $bigarray[$i];}
@@ -293,24 +294,41 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 }
 $bigarray = array_values($bigarray);
 
-//LAST LOT (now assessments)
-if (!isset($noconditions) || $noconditions != "Y")
+//ASSESSMENTS
+if (array_search("# SURVEYS_LANGUAGESETTINGS TABLE\n", $bigarray))
+{
+	$stoppoint = array_search("# SURVEYS_LANGUAGESETTINGS TABLE\n", $bigarray);
+}
+elseif (array_search("# SURVEYS_LANGUAGESETTINGS TABLE\r\n", $bigarray))
+{
+	$stoppoint = array_search("# SURVEYS_LANGUAGESETTINGS TABLE\r\n", $bigarray);
+}
+else
 {
 	$stoppoint = count($bigarray)-1;
-	for ($i=0; $i<=$stoppoint+1; $i++)
-	{
-		if ($i<$stoppoint-1) {$assessmentsarray[] = $bigarray[$i];}
-		unset($bigarray[$i]);
-	}
+}
+for ($i=0; $i<=$stoppoint+1; $i++)
+{
+	if ($i<$stoppoint-2 || $i==count($bigarray)-1) {$assessmentsarray[] = $bigarray[$i];}
+	unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
 
-//QUESTION_ATTRIBUTES
+
+//Survey Language Settings
+$stoppoint = count($bigarray)-1;
+for ($i=0; $i<=$stoppoint+1; $i++)
+{
+	if ($i<$stoppoint-1) {$surveylsarray[] = $bigarray[$i];}
+	unset($bigarray[$i]);
+}
+
+$bigarray = array_values($bigarray);
 
 
 
-
-if (isset($tablearray)) {$countsurveys = count($tablearray);} else {$countsurveys = 0;}
+if (isset($surveyarray)) {$countsurveys = count($surveyarray);} else {$countsurveys = 0;}
+if (isset($surveylsarray)) {$countlanguages = count($surveylsarray)-1;} else {$countlanguages = 0;}
 if (isset($grouparray)) {$countgroups = count($grouparray);} else {$countgroups = 0;}
 if (isset($questionarray)) {$countquestions = count($questionarray);} else {$countquestions=0;}
 if (isset($answerarray)) {$countanswers = count($answerarray);} else {$countanswers=0;}
@@ -321,11 +339,27 @@ if (isset($question_attributesarray)) {$countquestion_attributes = count($questi
 if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else {$countassessments=0;}
 
 // CREATE SURVEY
-$sfieldorders=convertToArray($tablearray[0], "`, `", "(`", "`)");
-$sffieldcontents=convertToArray($tablearray[0], "', '", "('", "')");
 
-$surveyidpos=array_search("sid", $sfieldorders);
-$surveyid=$sffieldcontents[$surveyidpos];
+if ($importversion>=115)
+{
+    if ($countsurveys>0){$countsurveys--;};
+    if ($countgroups>0){$countgroups--;};
+    if ($countquestions>0){$countquestions--;};
+    if ($countassessments>0){$countassessments--;};
+    if ($countconditions>0){$countconditions--;};
+    if ($countlabelsets>0){$countlabelsets--;};
+    if ($countquestion_attributes>0){$countquestion_attributes--;};
+    $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
+    $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
+}
+else
+    {
+    $sfieldorders=convertToArray($surveyarray[0], "`, `", "(`", "`)");
+    $sfieldcontents=convertToArray($surveyarray[0], "', '", "('", "')");
+    }
+$surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
+$surveyid=$surveyrowdata["sid"];
+
 
 if (!$surveyid)
 {
@@ -357,9 +391,17 @@ if (!$surveyid)
 	}
 
 
-$insert=$tablearray[0];
-$sfieldorders=convertToArray($insert, "`, `", "(`", "`)");
-$sfieldcontents=convertToArray($insert, "', '", "('", "')");
+$insert=$surveyarray[0];
+if ($importversion>=115)
+{
+    $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
+    $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
+}
+else
+    {
+    $sfieldorders=convertToArray($surveyarray[0], "`, `", "(`", "`)");
+    $sfieldcontents=convertToArray($surveyarray[0], "', '", "('", "')");
+    }
 $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
 // Set new creator ID
 $surveyrowdata['creator_id']=$_SESSION['loginID'];
@@ -479,7 +521,7 @@ if ($importversion<=100)
     $values=array_values($surveylsrowdata);
     $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
     $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-    $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
+    $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
 
 
 
@@ -490,17 +532,47 @@ if ($importversion<=100)
 $values=array_values($surveyrowdata);
 $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 $insert = "insert INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-$iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$tablearray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
+$iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg());
 
 $oldsid=$surveyid;
+
+// Now import the survey language settings
+if ($importversion>=115)
+{
+    $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
+    $count=0;
+	foreach ($surveylsarray as $slsrow) {
+        if ($count==0) {$count++; continue;}
+        $fieldcontents=convertCSVRowToArray($slsrow,',','"');
+		$surveylsrowdata=array_combine($fieldorders,$fieldcontents);
+        $surveylsrowdata['surveyls_survey_id']=$newsid;     
+        $newvalues=array_values($surveylsrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+        $lsainsert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+		$lsiresult=$connect->Execute($lsainsert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$lsainsert]</font><hr><br />\n" . $connect->ErrorMsg() );
+	}	
+		
+}
+
 
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
 	$csarray=buildLabelsetCSArray();   // build checksums over all existing labelsets
+	$count=0;
 	foreach ($labelsetsarray as $lsa) {
-		$fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
-		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
+	    
+        if ($importversion>=115)
+        {
+            $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
+            $fieldcontents=convertCSVRowToArray($lsa,',','"');
+            if ($count==0) {$count++; continue;}
+        }
+        else
+            {
+                $fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
+        		$fieldcontents=convertToArray($lsa, "', '", "('", "')");
+            }		
 		$labelsetrowdata=array_combine($fieldorders,$fieldcontents);
 		
 		// Save old labelid
@@ -521,12 +593,22 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		$importsurvey .= "OLDLID: $oldlid   NEWLID: $newlid";
 
 		if ($labelsarray) {
+		    $count=0;
 			foreach ($labelsarray as $la) {
-				//Get field names into array
-				$lfieldorders=convertToArray($la, "`, `", "(`", "`)");
-				//Get field values into array
-				$lfieldcontents=convertToArray($la, "', '", "('", "')");
-				// Combine into one array with keys and values since its easier to handle
+                if ($importversion>=115)
+                {
+                    $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
+                    $lfieldcontents=convertCSVRowToArray($la,',','"');
+                    if ($count==0) {$count++; continue;}
+                }
+                else
+                    {
+        				//Get field names into array
+        				$lfieldorders=convertToArray($la, "`, `", "(`", "`)");
+        				//Get field values into array
+        				$lfieldcontents=convertToArray($la, "', '", "('", "')");
+                    }		
+        		// Combine into one array with keys and values since its easier to handle
          		$labelrowdata=array_combine($lfieldorders,$lfieldcontents);
 				$labellid=$labelrowdata['lid'];
 		        if ($importversion<=100)
@@ -587,10 +669,21 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if ($grouparray) {
+    $count=0;
 	foreach ($grouparray as $ga) {
-		//GET ORDER OF FIELDS
-		$gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
-		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
+        if ($importversion>=115)
+        {
+            $gafieldorders   =convertCSVRowToArray($grouparray[0],',','"');
+            $gacfieldcontents=convertCSVRowToArray($ga,',','"');
+            if ($count==0) {$count++; continue;}
+        }
+        else
+            {
+				//Get field names into array
+        		$gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
+				//Get field values into array
+        		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
+            }		
 		$grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
 		$gid=$grouprowdata['gid'];
 		$gsid=$grouprowdata['sid'];
@@ -621,9 +714,20 @@ if ($grouparray) {
 
 		//NOW DO NESTED QUESTIONS FOR THIS GID
 		if ($questionarray) {
+		    $count=0;  
 			foreach ($questionarray as $qa) {
-				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
-				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
+                if ($importversion>=115)
+                {
+                    $qafieldorders   =convertCSVRowToArray($questionarray[0],',','"');
+                    $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+                    if ($count==0) {$count++; continue;}
+                }
+                else
+                    {
+        				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
+        				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
+                    }
+                if (count($qafieldorders)!=count($qacfieldcontents)){echo implode('_',$qacfieldcontents);}     	
         		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
 				$thisgid=$questionrowdata['gid'];
 				if ($thisgid == $gid) {
@@ -666,9 +770,19 @@ if ($grouparray) {
 					
 					//NOW DO NESTED ANSWERS FOR THIS QID
 					if (isset($answerarray) && $answerarray) {
+					    $count=0; 
 						foreach ($answerarray as $aa) {
-							$aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
-							$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
+                            if ($importversion>=115)
+                            {
+                                $aafieldorders   =convertCSVRowToArray($answerarray[0],',','"');
+                                $aacfieldcontents=convertCSVRowToArray($aa,',','"');
+                                if ($count==0) {$count++; continue;}
+                            }
+                            else
+                                {
+        							$aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
+        							$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
+                                }		
                     		$answerrowdata=array_combine($aafieldorders,$aacfieldcontents);
 							$code=$answerrowdata["code"];
 							$thisqid=$answerrowdata["qid"];
@@ -768,9 +882,19 @@ if ($importversion<=100)
 //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions and question_attributes.
 if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
+    $count=0;
 	foreach ($question_attributesarray as $qar) {
-		$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
-		$fieldcontents=convertToArray($qar, "', '", "('", "')");
+        if ($importversion>=115)
+        {
+            $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            if ($count==0) {$count++; continue;}
+        }
+        else
+            {
+        		$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
+        		$fieldcontents=convertToArray($qar, "', '", "('", "')");
+            }		
         $qarowdata=array_combine($fieldorders,$fieldcontents);
 		$newqid="";
 		$oldqid=$qarowdata['qid'];
@@ -789,9 +913,19 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 }
 
 if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
+    $count=0; 
 	foreach ($assessmentsarray as $qar) {
-		$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
-		$fieldcontents=convertToArray($qar, "', '", "('", "')");
+        if ($importversion>=115)
+        {
+            $fieldorders  =convertCSVRowToArray($assessmentsarray[0],',','"');
+            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            if ($count==0) {$count++; continue;}
+        }
+        else
+            {
+        		$fieldorders=convertToArray($qar, "`, `", "(`", "`)");
+        		$fieldcontents=convertToArray($qar, "', '", "('", "')");
+            }		
         $asrowdata=array_combine($fieldorders,$fieldcontents);
 		$oldsid=$asrowdata["sid"];
 		$oldgid=$asrowdata["gid"];
@@ -815,9 +949,19 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
 }
 
 if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
+    $count='0';  
 	foreach ($conditionsarray as $car) {
-		$fieldorders=convertToArray($car, "`, `", "(`", "`)");
-		$fieldcontents=convertToArray($car, "', '", "('", "')");
+        if ($importversion>=115)
+        {
+            $fieldorders  =convertCSVRowToArray($conditionsarray[0],',','"');
+            $fieldcontents=convertCSVRowToArray($car,',','"');
+            if ($count==0) {$count++; continue;}
+        }
+        else
+            {
+        		$fieldorders=convertToArray($car, "`, `", "(`", "`)");
+        		$fieldcontents=convertToArray($car, "', '", "('", "')");
+            }
         $conditionrowdata=array_combine($fieldorders,$fieldcontents);
 
 		$oldcid=$conditionrowdata["cid"];
@@ -868,17 +1012,38 @@ $isrresult = $connect->Execute($isrquery) or die("<strong>"._("Error")."</strong
 $importsurvey .= "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n";
 $importsurvey .= "<strong><u>"._("Survey Import Summary")."</u></strong><br />\n";
 $importsurvey .= "<ul>\n\t<li>"._("Surveys").": $countsurveys</li>\n";
+if ($importversion>=115)
+    {
+    $importsurvey .= "\t<li>"._("Languages").": $countlanguages</li>\n";
+    }
 $importsurvey .= "\t<li>"._("Groups").": $countgroups</li>\n";
 $importsurvey .= "\t<li>"._("Questions").": $countquestions</li>\n";
 $importsurvey .= "\t<li>"._("Answers").": $countanswers</li>\n";
 $importsurvey .= "\t<li>"._("Conditions").": $countconditions</li>\n";
-$importsurvey .= "\t<li>"._("Label Set").": $countlabelsets ("._("Labels").": $countlabels)</li>\n";
-$importsurvey .= "\t<li>"._("Question Attributes:")." $countquestion_attributes</li>\n";
-$importsurvey .= "\t<li>"._("Assessments")." $countassessments</li>\n</ul>\n";
+$importsurvey .= "\t<li>"._("Label Sets").": $countlabelsets ("._("Labels").": $countlabels)</li>\n";
+$importsurvey .= "\t<li>"._("Question Attributes").": $countquestion_attributes</li>\n";
+$importsurvey .= "\t<li>"._("Assessments").": $countassessments</li>\n</ul>\n";
 
 $importsurvey .= "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
 $importsurvey .= "</font></td></tr></table><br />\n";
 unlink($the_full_file_path);
+
+function convertCSVRowToArray($string, $seperator, $quotechar) 
+{
+	$fields=preg_split('/,(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
+	$fields=array_map('unquote',$fields);
+	return $fields;
+}
+
+function unquote($field)
+{
+  $field=substr($field,1,strlen($field)-2);
+  return str_replace('""','"',$field);
+}
+
+
+
+
 
 function convertToArray($string, $seperator, $start, $end) {
 	$begin=strpos($string, $start)+strlen($start);

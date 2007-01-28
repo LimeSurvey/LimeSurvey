@@ -1995,7 +1995,7 @@ if ($action == "addquestion")
 		. "<tr><td colspan='2' align='center'><strong>"._("OR")."</strong></td></tr>\n"
 		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>"._("Import Question")."</font></strong></td></tr>\n\t<tr>"
-		. "\t\t<td align='right' width='35%'><strong>"._("Select SQL File:")."</strong></td>\n"
+		. "\t\t<td align='right' width='35%'><strong>"._("Select SQL/CSV File:")."</strong></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' "
 		. "value='"._("Import Question")."' />\n"
