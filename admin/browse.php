@@ -240,7 +240,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('"._("Are you sure you want to delete this entry.")."')\" /></a>\n"
 	. "\t\t\t<a href='export.php?sid=$surveyid&id=$id'" .
 		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Export this Response")."')\">" .
-		"<img name='Export' src='$imagefiles/exportsql.png' title='' alt='". _("Export this Response")."'align='left' /></a>\n"
+		"<img name='Export' src='$imagefiles/exportcsv.png' title='' alt='". _("Export this Response")."'align='left' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='browse.php?action=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable'" .

@@ -62,58 +62,70 @@ if (!$qid)
 	echo "</body></html>\n";
 	exit;
 }
-$dumphead = "# SURVEYOR QUESTION DUMP\n";
-$dumphead .= "# Version $versionnumber\n# This is a dumped question from the PHPSurveyor Script\n";
-$dumphead .= "# http://www.phpsurveyor.org/\n";
+
+$dumphead = "# PHPSurveyor Question Dump\n"
+          . "# DBVersion $dbversionnumber\n"
+          . "# This is a dumped question from the PHPSurveyor Script\n"
+          . "# http://www.phpsurveyor.org/\n"
+          . "# Do not change this header!\n";
 
 function BuildOutput($Query)
 {
 	global $dbprefix, $connect;
-	$QueryResult = db_execute_assoc($Query);
+	$QueryResult = db_execute_assoc($Query) or die ("ERROR: $QueryResult<br />".htmlspecialchars($connect->ErrorMsg()));
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
-	$TableName = $MatchResults[1];
+	$TableName = $MatchResults[1];;
 	if ($dbprefix)
 	{
 		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
 	}
-	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
+	$Output = "\n#\n# " . strtoupper($TableName) . " TABLE\n#\n";
+	$HeaderDone = false;	$ColumnNames = "";
 	while ($Row = $QueryResult->FetchRow())
 	{
-		$ColumnNames = "";
+
+       if (!$HeaderDone)
+       {
+    		foreach ($Row as $Key=>$Value)
+    		{
+    			$ColumnNames .= CSVEscape($Key).","; //Add all the column names together
+    		}
+			$ColumnNames = substr($ColumnNames, 0, -1); //strip off last comma space
+     		$Output .= "$ColumnNames\n";
+    		$HeaderDone=true;
+       }
 		$ColumnValues = "";
 		foreach ($Row as $Key=>$Value)
 		{
-			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
-			$ColumnValues .= $connect->qstr(str_replace("\r\n", "\n", $Value)) . ", ";
+			$ColumnValues .= CSVEscape(str_replace("\r\n", "\n", $Value)) . ",";
 		}
-		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
-		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
-
-		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues)\n";
+		$ColumnValues = substr($ColumnValues, 0, -1); //strip off last comma space
+		$Output .= "$ColumnValues\n";
 	}
 	return $Output;
 }
 
+
 //1: Questions Table
 $qquery = "SELECT * FROM {$dbprefix}questions WHERE qid=$qid";
-$qdump = BuildOutput($qquery);
+$qdump = BuildCSVFromQuery($qquery);
 
 //2: Answers table
 $aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid=$qid";
-$adump = BuildOutput($aquery);
+$adump = BuildCSVFromQuery($aquery);
 
 //3: Labelsets Table
 $lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type='F' AND qid=$qid";
-$lsdump = BuildOutput($lsquery);
+$lsdump = BuildCSVFromQuery($lsquery);
 
 //4: Labels Table
 $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'H', 'Z', 'W') AND qid=$qid";
-$ldump = BuildOutput($lquery);
+$ldump = BuildCSVFromQuery($lquery);
 
 //5: Question Attributes
 $query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes WHERE {$dbprefix}question_attributes.qid=$qid";
-$qadump = BuildOutput($query);
-$fn = "question_$qid.sql";
+$qadump = BuildCSVFromQuery($query);
+$fn = "phpsurveyor_question_$qid.csv";
 
 header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
@@ -121,8 +133,6 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
-echo "#<pre>\n";
 echo $dumphead, $qdump, $adump, $lsdump, $ldump, $qadump;
-echo "#</pre>\n";
 
 ?>

@@ -245,7 +245,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t<a href='admin.php?action=deletelabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Delete label set")."');return false\">"
 			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onClick=\"return confirm('"._("Are you sure?")."')\" /></a>\n"
 			."\t<a href='dumplabel.php?lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Label Set")."');return false\">" .
-					"<img src='$imagefiles/exportsql.png' alt='"._("Export Label Set")."' title='' align='left' /></a>" 
+					"<img src='$imagefiles/exportcsv.png' alt='"._("Export Label Set")."' title='' align='left' /></a>" 
 			."\t</td>\n"
 			."</tr>\n"
 			."\t</table>\n";

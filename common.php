@@ -884,9 +884,6 @@ function checkforupgrades()
 
 	if ($databasetype=='mysql')
 	{
-		if (!sql_table_exists($dbprefix.'settings_global', $tables)) {mysqlcheckfields();}
-		else  // now check if there is a dbversion
-		{
 			$usquery = 'SELECT stg_value FROM '.db_table_name("settings_global").' where stg_name="DBVersion"';
 			$usresult = db_execute_assoc($usquery);
 			if ($usresult->RecordCount()==0) {mysqlcheckfields();}
@@ -895,7 +892,6 @@ function checkforupgrades()
              $usrow = $usresult->FetchRow();
              if (intval($usrow['stg_value'])<$dbversionnumber) {db_upgrade(intval($usrow['stg_value']));}
              }
-		}
 	}
 }
 
@@ -1115,7 +1111,7 @@ function browsemenubar()
 			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='resultsdump.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Backup results table as SQL file")."')\">" .
-			"<img name='SaveDump' src='$imagefiles/exportsql.png' title='' align='left' /></a>\n"
+			"<img name='SaveDump' src='$imagefiles/exportcsv.png' title='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='".$homeurl."/saved.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("View Saved but not submitted Responses")."')\" >" .
 		"<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' /></a>\n"
@@ -2930,5 +2926,61 @@ function include2var($file)
    @ob_end_clean();
    return $output;
 } 
+
+function BuildCSVFromQuery($Query)
+{
+	global $dbprefix, $connect;
+	$QueryResult = db_execute_assoc($Query) or die ("ERROR: $QueryResult<br />".htmlspecialchars($connect->ErrorMsg()));
+	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
+	$TableName = $MatchResults[1];;
+	if ($dbprefix)
+	{
+		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
+	}
+	$Output = "\n#\n# " . strtoupper($TableName) . " TABLE\n#\n";
+	$HeaderDone = false;	$ColumnNames = "";
+	while ($Row = $QueryResult->FetchRow())
+	{
+
+       if (!$HeaderDone)
+       {
+    		foreach ($Row as $Key=>$Value)
+    		{
+    			$ColumnNames .= CSVEscape($Key).","; //Add all the column names together
+    		}
+			$ColumnNames = substr($ColumnNames, 0, -1); //strip off last comma space
+     		$Output .= "$ColumnNames\n";
+    		$HeaderDone=true;
+       }
+		$ColumnValues = "";
+		foreach ($Row as $Key=>$Value)
+		{
+			$ColumnValues .= CSVEscape(str_replace("\r\n", "\n", $Value)) . ",";
+		}
+		$ColumnValues = substr($ColumnValues, 0, -1); //strip off last comma space
+		$Output .= "$ColumnValues\n";
+	}
+	return $Output;
+}
+
+function CSVEscape($str) 
+{
+   return '"' . str_replace('"','""', $str) . '"';
+}
+
+function convertCSVRowToArray($string, $seperator, $quotechar) 
+{
+	$fields=preg_split('/,(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
+	$fields=array_map('CSVUnquote',$fields);
+	return $fields;
+}
+
+function CSVUnquote($field)
+{
+  $field=substr($field,1,strlen($field)-2);
+  return str_replace('""','"',$field);
+}
+
+
 
 ?>

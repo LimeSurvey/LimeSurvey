@@ -439,7 +439,7 @@ if ($surveyid)
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'". _("Export this Survey")."');return false\">" .
-			"<img src='$imagefiles/exportsql.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey' /></a>" ;
+			"<img src='$imagefiles/exportcsv.png' title='' alt='". _("Export this Survey")."' align='left' name='ExportSurvey' /></a>" ;
 		}
 		else
 		{
@@ -821,7 +821,7 @@ if ($gid)   // Show the group toolbar
 
 			$groupsummary .="<a href='dumpgroup.php?sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Export Current Group")."');return false\">" .
-			"<img src='$imagefiles/exportsql.png' title='' alt=''name='ExportGroup' align='left' /></a>";
+			"<img src='$imagefiles/exportcsv.png' title='' alt=''name='ExportGroup' align='left' /></a>";
 		}
 		else
 		{
@@ -937,7 +937,7 @@ if ($qid)  // Show the question toolbar
 		{
 			$questionsummary .= "<a href='dumpquestion.php?qid=$qid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Export this Question")."');return false\">" .
-			"<img src='$imagefiles/exportsql.png' title=''"
+			"<img src='$imagefiles/exportcsv.png' title=''"
 			. "alt=''align='left' name='ExportQuestion' /></a>\n";
 		}
 		else
@@ -1972,7 +1972,7 @@ if ($action == "addquestion")
 		$qattributes=questionAttributes();
 
 		$newquestion .= "\t<tr id='QTattributes'>
-							<td align='right'>{}<strong>"._("Question Attributes:")."</strong></td>
+							<td align='right'><strong>"._("Question Attributes:")."</strong></td>
 							<td><select id='QTlist' name='attribute_name' >
 							</select>
 							<input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
@@ -1995,7 +1995,7 @@ if ($action == "addquestion")
 		. "<tr><td colspan='2' align='center'><strong>"._("OR")."</strong></td></tr>\n"
 		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>"._("Import Question")."</font></strong></td></tr>\n\t<tr>"
-		. "\t\t<td align='right' width='35%'><strong>"._("Select SQL/CSV File:")."</strong></td>\n"
+		. "\t\t<td align='right' width='35%'><strong>"._("Select CSV File").":</strong></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' "
 		. "value='"._("Import Question")."' />\n"
@@ -2501,7 +2501,7 @@ if ($action == "addgroup")
 		. "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>"._("Import Group")."</font></strong></td></tr>\n\t<tr>"
 		. "\t\n"
-		. "\t\t<td align='right'><strong>"._("Select SQL File:")."</strong></td>\n"
+		. "\t\t<td align='right'><strong>"._("Select CSV File:")."</strong></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='importgroup' />\n"
@@ -3704,7 +3704,7 @@ if ($action == "newsurvey")
 		. "<table width='100%' border='0'>\n"
 		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<font class='settingcaption'><font color='white'>"._("Import Survey")."</font></font></td></tr>\n\t<tr>"
-		. "\t\t<td align='right'><font class='settingcaption'>"._("Select SQL File:")."</font></td>\n"
+		. "\t\t<td align='right'><font class='settingcaption'>"._("Select CSV/SQL File:")."</font></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Import Survey")."' />\n"
 		. "\t<input type='hidden' name='action' value='importsurvey' /></TD>\n"

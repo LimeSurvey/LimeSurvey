@@ -63,39 +63,14 @@ if (!$gid)
 	exit;
 }
 
-$fn = "group_$gid.sql";
+$fn = "phpsurveyor_group_$gid.csv";
 
-$dumphead = "# SURVEYOR GROUP DUMP\n";
-$dumphead .= "# Version $versionnumber\n# This is a dumped group from the PHPSurveyor Script\n";
-$dumphead .= "# http://www.phpsurveyor.org/\n";
+$dumphead = "# PHPSurveyor Group Dump\n"
+        . "# DBVersion $dbversionnumber\n"
+        . "# This is a dumped group from the PHPSurveyor Script\n"
+        . "# http://www.phpsurveyor.org/\n"
+        . "# Do not change this header!\n";
 
-function BuildOutput($Query)
-{
-	global $dbprefix, $connect;
-	$QueryResult = db_execute_assoc($Query) or die("ERROR:\n".$Query."\n".$connect->ErrorMsg()."\n\n");
-	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
-	$TableName = $MatchResults[1];
-	if ($dbprefix)
-	{
-		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
-	}
-	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
-	while ($Row = $QueryResult->FetchRow())
-	{
-		$ColumnNames = "";
-		$ColumnValues = "";
-		foreach ($Row as $Key=>$Value)
-		{
-			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
-			$ColumnValues .= $connect->qstr(str_replace("\r\n", "\n", $Value)) . ", ";
-		}
-		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
-		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
-
-		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues);\n";
-	}
-	return $Output;
-}
 
 header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
@@ -106,34 +81,32 @@ header("Pragma: no-cache");
 
 //0: Groups Table
 $gquery = "SELECT * FROM {$dbprefix}groups WHERE gid=$gid";
-$gdump = BuildOutput($gquery);
+$gdump = BuildCSVFromQuery($gquery);
 
 //1: Questions Table
 $qquery = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid";
-$qdump = BuildOutput($qquery);
+$qdump = BuildCSVFromQuery($qquery);
 
 //2: Answers table
 $aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.gid=$gid";
-$adump = BuildOutput($aquery);
+$adump = BuildCSVFromQuery($aquery);
 
 //3: Conditions table - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
 $cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid=b.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}questions.gid=$gid AND b.gid=$gid";
-$cdump = BuildOutput($cquery);
+$cdump = BuildCSVFromQuery($cquery);
 
 //4: Labelsets Table
 $lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type in ('F', 'H', 'W', 'Z') AND gid=$gid";
-$lsdump = BuildOutput($lsquery);
+$lsdump = BuildCSVFromQuery($lsquery);
 
 //5: Labels Table
 $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type='F' AND gid=$gid";
-$ldump = BuildOutput($lquery);
+$ldump = BuildCSVFromQuery($lquery);
 
 //8: Question Attributes
 $query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}questions.gid=$gid";
-$qadump = BuildOutput($query);
+$qadump = BuildCSVFromQuery($query);
 // HTTP/1.0
-echo "#<pre>\n";
 echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump;
-echo "#</pre>\n";
 
 ?>

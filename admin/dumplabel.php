@@ -62,47 +62,22 @@ if (!$lid)
 	echo "</body></html>\n";
 	exit;
 }
-$dumphead = "# SURVEYOR LABEL SET DUMP\n";
-$dumphead .= "#\n# This is a dumped label set from the PHPSurveyor Script\n";
-$dumphead .= "# http://www.phpsurveyor.org/\n";
 
-function BuildOutput($Query)
-{
-	global $dbprefix, $connect;
-	$QueryResult = db_execute_assoc($Query);
-	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
-	$TableName = $MatchResults[1];
-	if ($dbprefix)
-	{
-		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
-	}
-	$Output = "\n# NEW TABLE\n# " . strtoupper($TableName) . " TABLE\n#\n";
-	while ($Row = $QueryResult->FetchRow())
-	{
-		$ColumnNames = "";
-		$ColumnValues = "";
-		foreach ($Row as $Key=>$Value)
-		{
-			$ColumnNames .= "`" . $Key . "`, "; //Add all the column names together
-			$ColumnValues .= $connect->qstr(str_replace("\r\n", "\n", $Value)) . ", ";
-		}
-		$ColumnNames = substr($ColumnNames, 0, -2); //strip off last comma space
-		$ColumnValues = substr($ColumnValues, 0, -2); //strip off last comma space
-
-		$Output .= "INSERT INTO $TableName ($ColumnNames) VALUES ($ColumnValues)\n";
-	}
-	return $Output;
-}
+$dumphead = "# PHPSurveyor Label Set Dump\n"
+. "# DBVersion $dbversionnumber\n"
+." # This is a dumped label set from the PHPSurveyor Script\n"
+. "# http://www.phpsurveyor.org/\n"
+. "# Do not change this header!\n";
 
 //1: Questions Table
 $qquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
-$qdump = BuildOutput($qquery);
+$qdump = BuildCSVFromQuery($qquery);
 
 //2: Answers table
 $aquery = "SELECT lid, code, title, sortorder, language FROM {$dbprefix}labels WHERE lid=$lid";
-$adump = BuildOutput($aquery);
+$adump = BuildCSVFromQuery($aquery);
 
-$fn = "labelset_$lid.sql";
+$fn = "phpsurveyor_labelset_$lid.csv";
 
 //header("Content-Type: application/msword"); //EXPORT INTO MSWORD
 header("Content-Disposition: attachment; filename=$fn");
@@ -110,8 +85,7 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
-echo "#<pre>\n";
+
 echo $dumphead, $qdump, $adump;
-echo "#</pre>\n";
 
 ?>

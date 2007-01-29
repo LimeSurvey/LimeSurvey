@@ -53,7 +53,6 @@ if (!isset($elem)) {$elem=returnglobal('elem');}              //??
 $adminoutput=getAdminHeader();  // Alle future output is written into this and then outputted at the end of file
 
 include_once("login_check.php");
-
     
 
 if ($action == "activate")
@@ -99,6 +98,9 @@ if ($action == "importsurvey")
 		include("access_denied.php");		
 		}
 	}
+
+
+
 if ($action == "importgroup")
 	{
 	/*$surquery = "SELECT define_questions FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
@@ -208,6 +210,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($editanswer)) {$adminoutput.= $editanswer;}
   if (isset($assessmentsoutput)) {$adminoutput.= $assessmentsoutput;}
   if (isset($importsurvey)) {$adminoutput.= $importsurvey;}
+  if (isset($importgroup)) {$adminoutput.= $importgroup;}
+  if (isset($importquestion)) {$adminoutput.= $importquestion;}
  	
   
   $adminoutput.= "\t\t</td>\n".helpscreen();;

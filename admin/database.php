@@ -200,7 +200,7 @@ if(isset($surveyid))
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
 				$dquery = "DELETE FROM ".db_table_name('answers')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
-				$dquery = "DELETE FROM ".db_table_name('qeustions')." WHERE qid={$row['qid']}";
+				$dquery = "DELETE FROM ".db_table_name('questions')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
 			}
 			if ($total != $qtodel*3)

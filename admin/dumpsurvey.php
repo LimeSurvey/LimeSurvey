@@ -74,92 +74,50 @@ if (!$surveyid)
 }
 
 $dumphead = "# PHPSurveyor Survey Dump\n"
-. "# Version $versionnumber\n# This is a dumped survey from the PHPSurveyor Script\n"
-. "# http://www.phpsurveyor.org/\n"
-. "# Do not change this header!\n";
-
-function BuildOutput($Query)
-{
-	global $dbprefix, $connect;
-	$QueryResult = db_execute_assoc($Query) or die ("ERROR: $QueryResult<br />".htmlspecialchars($connect->ErrorMsg()));
-	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
-	$TableName = $MatchResults[1];;
-	if ($dbprefix)
-	{
-		$TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
-	}
-	$Output = "\n#\n# " . strtoupper($TableName) . " TABLE\n#\n";
-	$HeaderDone = false;	$ColumnNames = "";
-	while ($Row = $QueryResult->FetchRow())
-	{
-
-       if (!$HeaderDone)
-       {
-    		foreach ($Row as $Key=>$Value)
-    		{
-    			$ColumnNames .= CSVEscape($Key).","; //Add all the column names together
-    		}
-			$ColumnNames = substr($ColumnNames, 0, -1); //strip off last comma space
-     		$Output .= "$ColumnNames\n";
-    		$HeaderDone=true;
-       }
-		$ColumnValues = "";
-		foreach ($Row as $Key=>$Value)
-		{
-			$ColumnValues .= CSVEscape(str_replace("\r\n", "\n", $Value)) . ",";
-		}
-		$ColumnValues = substr($ColumnValues, 0, -1); //strip off last comma space
-		$Output .= "$ColumnValues\n";
-	}
-	return $Output;
-}
-
-
-function CSVEscape($str) 
-{
-   return '"' . str_replace('"','""', $str) . '"';
-}
-
+        . "# DBVersion $dbversionnumber\n"
+        . "# This is a dumped survey from the PHPSurveyor Script\n"
+        . "# http://www.phpsurveyor.org/\n"
+        . "# Do not change this header!\n";
 
 //1: Surveys table
 $squery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$sdump = BuildOutput($squery);
+$sdump = BuildCSVFromQuery($squery);
 
 //2: Surveys Languagsettings table
 $slsquery = "SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$surveyid";
-$slsdump = BuildOutput($slsquery);
+$slsdump = BuildCSVFromQuery($slsquery);
 
 //3: Groups Table
 $gquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid";
-$gdump = BuildOutput($gquery);
+$gdump = BuildCSVFromQuery($gquery);
 
 //4: Questions Table
 $qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid";
-$qdump = BuildOutput($qquery);
+$qdump = BuildCSVFromQuery($qquery);
 
 //5: Answers table
 $aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
-$adump = BuildOutput($aquery);
+$adump = BuildCSVFromQuery($aquery);
 
 //6: Conditions table
 $cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
-$cdump = BuildOutput($cquery);
+$cdump = BuildCSVFromQuery($cquery);
 
 //7: Label Sets
 $lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type IN ('F', 'H', 'W', 'Z') AND sid=$surveyid";
-$lsdump = BuildOutput($lsquery);
+$lsdump = BuildCSVFromQuery($lsquery);
 
 //8: Labels
 $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'W', 'H', 'Z') AND sid=$surveyid";
-$ldump = BuildOutput($lquery);
+$ldump = BuildCSVFromQuery($lquery);
 
 //9: Question Attributes
 $query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
-$qadump = BuildOutput($query);
+$qadump = BuildCSVFromQuery($query);
 
 //10: Assessments;
 $query = "SELECT {$dbprefix}assessments.* FROM {$dbprefix}assessments WHERE {$dbprefix}assessments.sid=$surveyid";
-$asdump = BuildOutput($query);
+$asdump = BuildCSVFromQuery($query);
 
 $fn = "phpsurveyor_survey_$surveyid.csv";
 

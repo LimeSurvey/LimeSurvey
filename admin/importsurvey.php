@@ -70,10 +70,9 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
 	$importsurvey .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
 	$importsurvey .= _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	$importsurvey .= "</font></td></tr></table>\n";
 	$importsurvey .= "</body>\n</html>\n";
-	exit;
+	return;
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
@@ -106,18 +105,16 @@ elseif
 elseif 
    (substr($bigarray[0], 0, 25) == "# PHPSurveyor Survey Dump")
     {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
-      if (substr($bigarray[1], 0, 15) == "# Version 1.08a") {$importversion = 108;}  // Version 1.08a(2) file 
-      if (substr($bigarray[1], 0, 15) == "# Version 1.15a") {$importversion = 115;}  // Version 1.15a file
+      $importversion=substr($bigarray[1], 12, 3);
     }
 else    // unknown file - show error message
   {
     $importsurvey .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
   	$importsurvey .= _("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
-  	$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
   	$importsurvey .= "</font></td></tr></table>\n";
   	$importsurvey .= "</body>\n</html>\n";
   	unlink($the_full_file_path);
-  	exit;
+  	return;
   }
 
 
@@ -340,7 +337,7 @@ if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else
 
 // CREATE SURVEY
 
-if ($importversion>=115)
+if ($importversion>=111)
 {
     if ($countsurveys>0){$countsurveys--;};
     if ($countgroups>0){$countgroups--;};
@@ -366,11 +363,10 @@ if (!$surveyid)
 	$importsurvey .= "<br /><strong><font color='red'>"._("Error")."</strong></font><br />\n";
 	$importsurvey .= _("Import of this survey file failed")."<br />\n";
 	$importsurvey .= _("File does not contain PHPSurveyor data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
-	$importsurvey .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	$importsurvey .= "</font></td></tr></table>\n";
 	$importsurvey .= "</body>\n</html>\n";
 	unlink($the_full_file_path); //Delete the uploaded file
-	exit;
+	return;
 }
 
 // Use the existing surveyid if it does not already exists
@@ -392,7 +388,7 @@ if (!$surveyid)
 
 
 $insert=$surveyarray[0];
-if ($importversion>=115)
+if ($importversion>=111)
 {
     $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
     $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
@@ -537,7 +533,7 @@ $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey f
 $oldsid=$surveyid;
 
 // Now import the survey language settings
-if ($importversion>=115)
+if ($importversion>=111)
 {
     $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
     $count=0;
@@ -562,7 +558,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 	$count=0;
 	foreach ($labelsetsarray as $lsa) {
 	    
-        if ($importversion>=115)
+        if ($importversion>=111)
         {
             $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
             $fieldcontents=convertCSVRowToArray($lsa,',','"');
@@ -595,7 +591,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		if ($labelsarray) {
 		    $count=0;
 			foreach ($labelsarray as $la) {
-                if ($importversion>=115)
+                if ($importversion>=111)
                 {
                     $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
                     $lfieldcontents=convertCSVRowToArray($la,',','"');
@@ -668,10 +664,10 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 }
 
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
-if ($grouparray) {
+if (isset($grouparray) && $grouparray) {
     $count=0;
 	foreach ($grouparray as $ga) {
-        if ($importversion>=115)
+        if ($importversion>=111)
         {
             $gafieldorders   =convertCSVRowToArray($grouparray[0],',','"');
             $gacfieldcontents=convertCSVRowToArray($ga,',','"');
@@ -692,8 +688,7 @@ if ($grouparray) {
 		{
 			$importsurvey .= "<br />\n<font color='red'><strong>"._("Error")."</strong></font>"
 			."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n"
-			."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$newsid', '_top')\">\n";
-			exit;
+			return;
 		}
 		//remove the old group id
 		unset($grouprowdata['gid']);
@@ -713,10 +708,10 @@ if ($grouparray) {
 		$newgid=$connect->Insert_ID();
 
 		//NOW DO NESTED QUESTIONS FOR THIS GID
-		if ($questionarray) {
+		if (isset($questionarray) && $questionarray) {
 		    $count=0;  
 			foreach ($questionarray as $qa) {
-                if ($importversion>=115)
+                if ($importversion>=111)
                 {
                     $qafieldorders   =convertCSVRowToArray($questionarray[0],',','"');
                     $qacfieldcontents=convertCSVRowToArray($qa,',','"');
@@ -727,7 +722,6 @@ if ($grouparray) {
         				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
         				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
                     }
-                if (count($qafieldorders)!=count($qacfieldcontents)){echo implode('_',$qacfieldcontents);}     	
         		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
 				$thisgid=$questionrowdata['gid'];
 				if ($thisgid == $gid) {
@@ -772,7 +766,7 @@ if ($grouparray) {
 					if (isset($answerarray) && $answerarray) {
 					    $count=0; 
 						foreach ($answerarray as $aa) {
-                            if ($importversion>=115)
+                            if ($importversion>=111)
                             {
                                 $aafieldorders   =convertCSVRowToArray($answerarray[0],',','"');
                                 $aacfieldcontents=convertCSVRowToArray($aa,',','"');
@@ -884,7 +878,7 @@ if ($importversion<=100)
 if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
     $count=0;
 	foreach ($question_attributesarray as $qar) {
-        if ($importversion>=115)
+        if ($importversion>=111)
         {
             $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
             $fieldcontents=convertCSVRowToArray($qar,',','"');
@@ -915,7 +909,7 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
     $count=0; 
 	foreach ($assessmentsarray as $qar) {
-        if ($importversion>=115)
+        if ($importversion>=111)
         {
             $fieldorders  =convertCSVRowToArray($assessmentsarray[0],',','"');
             $fieldcontents=convertCSVRowToArray($qar,',','"');
@@ -951,7 +945,7 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
 if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
     $count='0';  
 	foreach ($conditionsarray as $car) {
-        if ($importversion>=115)
+        if ($importversion>=111)
         {
             $fieldorders  =convertCSVRowToArray($conditionsarray[0],',','"');
             $fieldcontents=convertCSVRowToArray($car,',','"');
@@ -1012,7 +1006,7 @@ $isrresult = $connect->Execute($isrquery) or die("<strong>"._("Error")."</strong
 $importsurvey .= "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n";
 $importsurvey .= "<strong><u>"._("Survey Import Summary")."</u></strong><br />\n";
 $importsurvey .= "<ul>\n\t<li>"._("Surveys").": $countsurveys</li>\n";
-if ($importversion>=115)
+if ($importversion>=111)
     {
     $importsurvey .= "\t<li>"._("Languages").": $countlanguages</li>\n";
     }
@@ -1027,22 +1021,6 @@ $importsurvey .= "\t<li>"._("Assessments").": $countassessments</li>\n</ul>\n";
 $importsurvey .= "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
 $importsurvey .= "</font></td></tr></table><br />\n";
 unlink($the_full_file_path);
-
-function convertCSVRowToArray($string, $seperator, $quotechar) 
-{
-	$fields=preg_split('/,(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
-	$fields=array_map('unquote',$fields);
-	return $fields;
-}
-
-function unquote($field)
-{
-  $field=substr($field,1,strlen($field)-2);
-  return str_replace('""','"',$field);
-}
-
-
-
 
 
 function convertToArray($string, $seperator, $start, $end) {
