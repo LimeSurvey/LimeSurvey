@@ -155,7 +155,7 @@ else
 }
 for ($i=0; $i<=$stoppoint+1; $i++)
 {
-	if ($i<$stoppoint-2) {$answerarray[] = str_replace("`default`", "`default_value`", $bigarray[$i]);}
+	if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
@@ -232,12 +232,24 @@ if (!isset($noconditions) || $noconditions != "Y")
 }
 $bigarray = array_values($bigarray);
 
-if (isset($grouparray)) {$countgroups = count($grouparray);}
-if (isset($questionarray)) {$countquestions = count($questionarray);}
-if (isset($answerarray)) {$countanswers = count($answerarray);}
-if (isset($conditionsarray)) {$countconditions = count($conditionsarray);}
-if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);}
-if (isset($labelsarray)) {$countlabels = count($labelsarray);}
+if (isset($grouparray)) {$countgroups = count($grouparray)-1;} else {$countgroups=0;}
+if (isset($questionarray))
+    {
+    $questionfieldnames=convertCSVRowToArray($questionarray[0],',','"');
+    unset($questionarray[0]);
+    $countquestions = count($questionarray);
+    }
+    else {$countquestions=0;}
+if (isset($answerarray)) 
+    {
+    $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
+    unset($answerarray[0]);
+    $countanswers = count($answerarray);
+    }
+    else {$countanswers=0;}
+if (isset($conditionsarray)) {$countconditions = count($conditionsarray)-1;} else {$countlabelsets=0;}
+if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;} else {$countlabelsets=0;}
+if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
 
 $newsid = $_POST["sid"];
@@ -344,12 +356,9 @@ if (isset($grouparray) && $grouparray) {
 		
 		//NOW DO NESTED QUESTIONS FOR THIS GID
 		if (isset($questionarray) && $questionarray) {
-            $qafieldorders=convertCSVRowToArray($questionarray[0],',','"');
-            unset($questionarray[0]);
 			foreach ($questionarray as $qa) {
                 $qacfieldcontents=convertCSVRowToArray($qa,',','"');
-				$newfieldcontents=$qacfieldcontents;
-        		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
+        		$questionrowdata=array_combine($questionfieldnames,$qacfieldcontents);
 				$thisgid=$questionrowdata['gid'];
 				if ($thisgid == $gid) {
 					$qid = $questionrowdata['qid'];
@@ -383,12 +392,10 @@ if (isset($grouparray) && $grouparray) {
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					//NOW DO NESTED ANSWERS FOR THIS QID
-					if (isset($answerarray) && $answerarray) {
-                        $aafieldorders=convertCSVRowToArray($answerarray[0],',','"');
-                        unset($answerarray[0]);
+					if ($answerarray) {
 						foreach ($answerarray as $aa) {
                             $aacfieldcontents=convertCSVRowToArray($aa,',','"');
-                    		$answerrowdata=array_combine($aafieldorders,$aacfieldcontents);
+                    		$answerrowdata=array_combine($answerfieldnames,$aacfieldcontents);
 							$code=$answerrowdata["code"];
 							$thisqid=$answerrowdata["qid"];
 							if ($thisqid == $qid) 

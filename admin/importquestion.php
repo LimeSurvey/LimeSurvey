@@ -192,7 +192,12 @@ if (!isset($noconditions) || $noconditions != "Y")
 $bigarray = array_values($bigarray);
 
 if (isset($questionarray)) {$countquestions = count($questionarray)-1;}  else {$countquestions=0;}
-if (isset($answerarray)) {$countanswers = count($answerarray)-1;}  else {$countanswers=0;}
+if (isset($answerarray)) 
+    {
+        $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
+        unset($answerarray[0]);
+        $countanswers = count($answerarray);
+    }  else {$countanswers=0;}
 if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;}  else {$countlabelsets=0;}
 if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray)-1;} else {$countquestion_attributes=0;}
@@ -315,8 +320,6 @@ if (isset($questionarray) && $questionarray) {
 		$newrank=0;
 		//NOW DO NESTED ANSWERS FOR THIS QID
     	if (isset($answerarray) && $answerarray) {
-            $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
-            unset($answerarray[0]);
     		foreach ($answerarray as $aa) {
                 $answerfieldcontents=convertCSVRowToArray($aa,',','"');
                 $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
