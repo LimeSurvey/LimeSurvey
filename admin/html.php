@@ -1576,7 +1576,7 @@ if ($action == "editusergroup")
 	$esrow = $result->FetchRow();
 	$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
 	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong><font color='white'>"._("Edit Group for Creator")."(".$_SESSION['user'].")</font></strong></td></tr>\n"
+	. "\t\t<strong><font color='white'>"._("Edit User Group (Owner: ").$_SESSION['user'].")</font></strong></td></tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='20%'><strong>"._("Name:")."</strong></td>\n"
 	. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\" /></td></tr>\n"
@@ -1584,7 +1584,7 @@ if ($action == "editusergroup")
 	. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
 	. "\t<tr><td colspan='2' align='center'><input type='submit' value='"._("Update User Group")."' />\n"
 	. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
-	. "\t<input type='hidden' name='creator_id' value='$creator_id' />\n"
+	. "\t<input type='hidden' name='creator_id' value='".$_SESSION['loginID']."' />\n"
 	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
 	. "\t</td></tr>\n"
 	. "</table>\n"
@@ -1666,7 +1666,7 @@ if ($action == "delusergroup")
 }
 
 if ($action == "usergroupindb") {
-	$usersummary = "<br /><strong>"._("Add User Group")."</strong><br />\n";
+	$usersummary = "<br /><strong>"._("Adding User Group")."...</strong><br />\n";
 
 	$group_name = $_POST['group_name'];
 	$group_description = $_POST['group_description'];
@@ -1682,6 +1682,7 @@ if ($action == "usergroupindb") {
 				$usersummary .= _("Description: ").$group_description."<br />\n";
 			}
 
+         	$usersummary .= "<br /><strong>"._("User group successfully added!")."</strong><br />\n";
 			$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>"._("Continue")."</a><br />&nbsp;\n";
 		}
 		else
@@ -1763,7 +1764,7 @@ if ($action == "editusergroupindb"){
 	. "<br /><a href='$scriptname?action=editusergroups'>"._("Continue")."</a><br />&nbsp;\n";
 }
 
-if ($action == "editusergroups")
+if ($action == "editusergroups"  )
 {
 	if(isset($_GET['ugid']))
 	{
@@ -1779,7 +1780,7 @@ if ($action == "editusergroups")
 			if(!empty($crow['description']))
 			{
 				$usergroupsummary .= "<table rules='rows' width='100%' border='1' cellpadding='10'>\n"
-				. "\t\t\t\t<tr $gshowstyle id='surveydetails20'><td align='justify' colspan='2' height='4'>"
+				. "\t\t\t\t<tr id='surveydetails20'><td align='justify' colspan='2' height='4'>"
 				. "<font size='2' face='verdana' color='black'><strong>"._("Description: ")."</strong>"
 				. "<font color='black'>{$crow['description']}</font></td></tr>\n"
 				. "</table>";
@@ -1907,7 +1908,7 @@ if ($action == "addquestion")
 		. "\t<tr>\n"
 		. "\t\t<td align='right'  width='35%'><strong>"._("Code:")."</strong></td>\n"
 		. "\t\t<td><input type='text' size='20' name='title' />"
-		. "<font color='red' face='verdana' size='1'>"._("Required")."</td></tr>\n"
+		. "<font color='red' face='verdana' size='1'> "._("Required")."</td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='35%'><strong>"._("Question:")."</strong></td>\n"
 		. "\t\t<td><textarea cols='50' rows='3' name='question'></textarea></td>\n"
@@ -2585,7 +2586,7 @@ if ($action == "editgroup")
 
 if($action == "addusertogroup")
 {
-	$addsummary = "<br /><strong>"._("Add User")."</strong><br />\n";
+	$addsummary = "<br /><strong>"._("Adding User to group")."...</strong><br />\n";
 
 	$query = "SELECT ugid, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
@@ -2600,7 +2601,7 @@ if($action == "addusertogroup")
 			{
 				$addsummary .= "<br />"._("User added.")."<br />\n";
 			}
-			else
+			else  // ToDo: for this to happen the keys on the table must still be set accordingly
 			{
 				// Username already exists.
 				$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username already exists.")."<br />\n";
@@ -3673,7 +3674,7 @@ if ($action == "newsurvey")
 			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 		}
 
-		$newsurvey .= "\t\t</select></td>\n"
+		$newsurvey .= "\t\t</select><font size='1'> "._('This setting cannot be changed later!')."</font></td>\n"
 		. "\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>"._("Expires?")."</font></td>\n"
 		. "\t\t\t<td><select name='useexpiry'><option value='Y'>"._("Yes")."</option>\n"
@@ -3681,7 +3682,7 @@ if ($action == "newsurvey")
 		. "<tr><td align='right'><font class='settingcaption'>"._("Expiry Date:")."</font></td>\n"
 		. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value='"
 		. date("Y-m-d")."' /><button type='reset' id='f_trigger_b'>...</button>"
-		. "<font size='1'> Date Format: YYYY-MM-DD</font></td></tr>\n"
+		. "<font size='1'> "._('Date Format').": YYYY-MM-DD</font></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>"._("End URL:")."</font></td>\n"
 		. "\t\t<td><input type='text' size='50' name='url' value='http://";
 		if (isset($esrow)) {$newsurvey .= $esrow['url'];}

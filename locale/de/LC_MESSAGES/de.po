@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-23 16:51+0100\n"
+"PO-Revision-Date: 2007-01-31 22:55+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -947,8 +947,14 @@ msgstr "Bitte klicken Sie auf 'Tabellen erstellen' um fortzufahren."
 msgid "Could not create database"
 msgstr "Konnte Datenbank nicht erstellen"
 
-msgid "Group could not be added. It is missing the group name for the following languages "
-msgstr "Gruppe konnte nicht hinzugefügt werden. Der Gruppenname für die folgenden Sprachen fehlt"
+msgid ""
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr ""
+"Gruppe konnte nicht hinzugefügt werden.\\n"
+"\\n"
+" Der Gruppenname für die folgenden Sprachen fehlt"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:101
 msgid "Error: The database reported the following error:"
@@ -1281,6 +1287,10 @@ msgstr "Inaktiv"
 
 msgid "Create Survey"
 msgstr "Erstelle Umfrage"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:94
+msgid "No Surveys available - please create one."
+msgstr "Keine Umfrage verfügbar - Bitte erstellen Sie ein Umfrage."
 
 msgid "PHPSurveyor System Summary"
 msgstr "PHPSurveyor Systemübersicht"
@@ -1667,8 +1677,8 @@ msgstr "Optionale Frage"
 msgid "Add Group"
 msgstr "Gruppe hinzufügen"
 
-msgid "Edit Group for Creator"
-msgstr "Bearbeite Gruppe für Erzeuger"
+msgid "Edit User Group (Owner: "
+msgstr "Bearbeite Benutzergruppe (Eigentümer:"
 
 msgid "Update User Group"
 msgstr "Benutzergruppe aktualisieren"
@@ -1703,8 +1713,14 @@ msgstr "Konnte Benutzergruppe nicht löschen."
 msgid "Could not delete user group. No group selected."
 msgstr "Konnte Benutzergruppe nicht löschen. Es wurde keine Gruppe ausgewählt."
 
+msgid "Adding User Group"
+msgstr "Füge Benutzergruppe hinzu"
+
 msgid "Description: "
 msgstr "Beschreibung:"
+
+msgid "User group successfully added!"
+msgstr "Benutzergruppe erfolgreich hinzugefügt!"
 
 msgid "Failed to add Group!"
 msgstr "Konnte Gruppe nicht hinzufügen."
@@ -1746,8 +1762,8 @@ msgstr "Frage-Attribute:"
 msgid "Import Question"
 msgstr "Fragen importieren"
 
-msgid "Select SQL File:"
-msgstr "SQL-Datei auswählen:"
+msgid "Select CSV File"
+msgstr "CSV-Datei auswählen:"
 
 msgid "Copy Question"
 msgstr "Frage kopieren"
@@ -1773,17 +1789,23 @@ msgstr "Frage aktualisieren"
 msgid "Save"
 msgstr "Speichern"
 
-msgid "Save Order"
-msgstr "Reihenfolge speichern"
+msgid "Change Question Order"
+msgstr "Fragen-Reihenfolge ändern"
 
 msgid "Import Group"
 msgstr "Gruppen importieren"
+
+msgid "Select CSV File:"
+msgstr "CSV-Datei auswählen:"
 
 msgid "Edit Group"
 msgstr "Gruppe bearbeiten"
 
 msgid "Update Group"
 msgstr "Gruppe aktualisieren"
+
+msgid "Adding User to group"
+msgstr "Füge Benutzer zu Gruppe hinzu"
 
 msgid "User added."
 msgstr "Benutzer hinzugefügt."
@@ -2050,6 +2072,10 @@ msgstr ""
 msgid "URL Description:"
 msgstr "URL Beschreibung:"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3463
+msgid "Change Group Order"
+msgstr "Ändern der Gruppen Reihenfolge"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
 msgstr "Die hochgeladene Datei ist grösser als die upload_max_filesize Directive in der php.ini"
@@ -2069,8 +2095,19 @@ msgstr "Fehler beim Datei-Upload. Sie müssen eine CSV-Datei angeben"
 msgid "(This field is mandatory.)"
 msgstr "(Dies ist ein Pflichtfeld.)"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3677
+msgid "This setting cannot be changed later!"
+msgstr "Die Einstellung kann später nicht geändert werden."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:147
+msgid "Date Format"
+msgstr "Datumsformat"
+
 msgid "Import Survey"
 msgstr "Umfrage importieren"
+
+msgid "Select CSV/SQL File:"
+msgstr "CSV/SQL-Datei auswählen:"
 
 msgid "You need to upload the file"
 msgstr "Sie müssen eine Date hochladen"
@@ -2123,7 +2160,7 @@ msgstr "Beschriftung-Set"
 msgid "Labels"
 msgstr "Antworten"
 
-msgid "Import of Group is completed."
+msgid "Import of group is completed."
 msgstr "Import der Gruppe abgeschlossen."
 
 msgid "Import Label Set"
@@ -2164,6 +2201,9 @@ msgstr "keine SID (Umfrage) angegeben. Kann Frage nicht importieren."
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "keine GID (Gruppe) angegeben. Kann Frage nicht importieren."
 
+msgid "Label Sets"
+msgstr "Beschriftung-Sets"
+
 msgid "This file is not a PHPSurveyor survey file. Import failed."
 msgstr "Diese Datei ist keine PHPSurveyor-Umfrage-Datei. Import fehlgeschlagen."
 
@@ -2175,6 +2215,12 @@ msgstr "Diese Datei enthält keine PHPSurveyor-Daten im richtigen Format."
 
 msgid "Survey Import Summary"
 msgstr "Umfragen-Import übersicht"
+
+msgid "Languages"
+msgstr "Sprachen"
+
+msgid "Question Attributes"
+msgstr "Fragen-Attribute:"
 
 msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
 msgstr "Überprüfung der Datenkonsitenz<br ><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. <font>"
@@ -2218,18 +2264,8 @@ msgstr "Alle Gruppen sind konsistent."
 msgid "No database action required"
 msgstr "Es sind keine Datenänderungen notwendig."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:795
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:251
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:224
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1005
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1029
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1037
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1043
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1046
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1047
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1446
-msgid "Close"
-msgstr "Schließen"
+msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. "
+msgstr "Überprüfung der Datenkonsistenz<br /><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. <font>"
 
 msgid "Label Sets Administration"
 msgstr "Beschriftung-Set Administration"
@@ -2246,12 +2282,12 @@ msgstr "Beschriftungs-Vorlagen bearbeiten"
 msgid "Set Name"
 msgstr "Name setzen"
 
-msgid "Languages"
-msgstr "Sprachen"
-
 # D:\web\xampp\htdocs\phpsurveyor/admin/labels.php:154
 msgid "You cannot remove this items since you need at least one language in a labelset."
 msgstr "Sie können diese Sprache nicht entfernen, da sie mindestens eine Sprache in einem Beschriftungsset benötigen."
+
+msgid "Select SQL File:"
+msgstr "SQL-Datei auswählen:"
 
 msgid "Edit label set"
 msgstr "Beschriftung-Set bearbeiten"
@@ -2576,6 +2612,9 @@ msgstr "Neuen Probanden hinzufügen"
 msgid "Import Tokens from CSV File"
 msgstr "Import von Probanden von einer CSV-Datei"
 
+msgid "Import Tokens from LDAP Query"
+msgstr "Import von Zugangsschlüsseln aus LDAP"
+
 msgid "Export Tokens to CSV file"
 msgstr "Export von Probanden CSV-Datei"
 
@@ -2771,6 +2810,13 @@ msgstr "Anmerkung:"
 msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\"."
 msgstr "Die Datei sollte eine Standard CSV-Datei sein (Komma-getrennt und ohne Anführungszeichen). Die erste Zeile sollte Feldnamen enthalten (diese werden entfernt). Die Daten/Felder sollten in folgender Reihenfolge sein: 'vorname, name, email, [token], [attribute1], [attribute2]'."
 
+msgid "Upload LDAP entries"
+msgstr "LDAP Einträge hochladen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1246
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr ""
+
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Hochgeladene Datei nicht gefunden. überprüfen Sie Ihre Berechtigung und den Pfad des Upload-Verzeichnisses."
 
@@ -2782,6 +2828,25 @@ msgstr "Erstelle Zugangsschlüssel-Einträge"
 
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} Einträge erstellt"
+
+msgid "Uploading LDAP Query"
+msgstr "Lade LDAP Abfrage hoch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1414
+msgid "Can't bind to the Ldap directory"
+msgstr ""
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1420
+msgid "Can't connect to the Ldap directory"
+msgstr ""
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1464
+msgid "Ldap disabled or no LDAP query defined."
+msgstr ""
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1471
+msgid "Select the Ldap query you want:"
+msgstr ""
 
 msgid "Forgot Password"
 msgstr "Passwort vergessen"
@@ -2918,34 +2983,4 @@ msgstr "Eine Datenbank namens \"%s\" existiert schon."
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:103
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Möchten Sie in der Datenbank nun die notwendigen Tabellen anlegen?"
-
-msgid "Checking to ensure all tables exist"
-msgstr "Überprüfe Tabellen"
-
-msgid "Checking"
-msgstr "Überprüfe"
-
-msgid "Table Created"
-msgstr "Tabelle erstellt"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:223
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:289
-msgid "OK"
-msgstr "OK"
-
-msgid "Checking to ensure all fields exist"
-msgstr "Überprüfe Felder in den Tabellen"
-
-msgid "Checking to ensure all tables initialized:"
-msgstr "Überprüfe Initialisierungen:"
-
-msgid "Table_fixed"
-msgstr "Tabelle korrigiert"
-
-# new messages added by Dennis
-msgid "User Table Initialized"
-msgstr "User-Tabelle initialisiert"
-
-msgid "Field Created"
-msgstr "Feld erstellt"
 

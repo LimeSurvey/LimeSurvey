@@ -158,7 +158,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 		}		
 	elseif($valid_email)
 		{
-		echo "Generated Password for testing: ".$new_pass = createPassword();
+        $new_pass = createPassword();
 		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', ENCODE('{$new_pass}', '{$codeString}'), '{$new_full_name}', {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery);
 		

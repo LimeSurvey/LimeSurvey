@@ -2738,7 +2738,7 @@ function createPassword()
 
 	for ($i=0; $i<$password_length; $i++)
 		{
-		$passwd .= $pwchars[floor(rand(0,strlen($pwchars)))];
+		$passwd .= $pwchars[floor(rand(0,strlen($pwchars)-1))];
 		}
 	return $passwd;
 	}
@@ -2917,7 +2917,7 @@ function getgrouplistwithoutrandomset($surveyid)
 }
 
 function include2var($file)
-//This function includes a file but doesnt output it - instead it writes it into the return variable
+//This function includes a file but doesn't output it - instead it writes it into the return variable
 // by Carsten Schmitz
 {
    ob_start();

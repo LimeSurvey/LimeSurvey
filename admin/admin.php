@@ -165,9 +165,9 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action=="deluser" || $action=="moduser" || $action=="userrights" || $action=="modifyuser" ||
       $action=="editusers" || $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
       $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || $action=="editusergroupindb" ||
-      $action=="addquestion" || $action=="copyquestion" || $action=="editquestion"  ||
-      $action=="editattribute" || $action=="delattribute" || $action=="addattribute" ||
-      $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups" ||
+      $action=="addquestion" || $action=="copyquestion" || $action=="editquestion"  || $action=="editusergroups" ||
+      $action=="editattribute" || $action=="delattribute" || $action=="addattribute" || $action=="deleteuserfromgroup" ||
+      $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups" || $action=="addusertogroup" ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||
       $action=="addgroup" || $action=="editgroup" || $action=="surveyrights" ) include("html.php");
 

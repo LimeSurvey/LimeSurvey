@@ -104,11 +104,11 @@ if(isset($surveyid))
         $errorstring = '';  
         foreach ($grplangs as $grouplang)
         {
-          if (!$_POST['group_name_'.$grouplang]) { $errorstring.= GetLanguageNameFromCode($grouplang).", ";}
+          if (!$_POST['group_name_'.$grouplang]) { $errorstring.= GetLanguageNameFromCode($grouplang,false)."\\n";}
 		}
         if ($errorstring!='') 
-        {	
-            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be added. It is missing the group name for the following languages ").":".$errorstring."\")\n //-->\n</script>\n";
+        {
+            echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Group could not be added.\\n\\nIt is missing the group name for the following languages").":\\n".$errorstring."\")\n //-->\n</script>\n";
         }  
 
 		else
@@ -136,7 +136,9 @@ if(isset($surveyid))
 					echo "</body>\n</html>";
 					exit;
 				}
-			}     
+			}
+		    // This line sets the newly inserted group as the new group
+            if (isset($groupid)){$gid=$groupid;}     
 
 		}
 	}
