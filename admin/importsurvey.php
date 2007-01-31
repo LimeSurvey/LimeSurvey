@@ -687,7 +687,7 @@ if (isset($grouparray) && $grouparray) {
 		if ($gsid != $surveyid)
 		{
 			$importsurvey .= "<br />\n<font color='red'><strong>"._("Error")."</strong></font>"
-			."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n"
+			."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n";
 			return;
 		}
 		//remove the old group id

@@ -39,7 +39,7 @@ if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
 if ($action == "listsurveys")
 {
-	$query = "SELECT a.* FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid WHERE b.uid = ".$_SESSION['loginID'];
+	$query = "SELECT a.*, c.* FROM ".db_table_name('surveys')." as a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) WHERE b.uid = ".$_SESSION['loginID']." and surveyls_survey_id=a.sid and surveyls_language=a.language";
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
 	if($result->RecordCount() > 0) {
