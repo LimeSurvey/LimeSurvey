@@ -391,7 +391,7 @@ if ($surveyid)
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/printablesurvey.php?sid=$surveyid', '_blank')\""
+		$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid', '_blank')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
 		. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."' />"

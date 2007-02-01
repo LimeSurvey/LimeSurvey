@@ -49,10 +49,8 @@ if (!isset($fp)) {$fp=returnglobal('filev');}                 //??
 if (!isset($elem)) {$elem=returnglobal('elem');}              //??
 
 
-
-$adminoutput=getAdminHeader();  // Alle future output is written into this and then outputted at the end of file
-
 include_once("login_check.php");
+$adminoutput='';
     
 
 if ($action == "activate")
@@ -139,17 +137,18 @@ if ($action == "importquestion")
 if(isset($_SESSION['loginID']) && $action!='login')
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
-  if ($action == "delsurvey" || $action == "delgroup" || $action == "delgroupall" ||
-      $action=="delquestion" || $action=="delquestionall" || $action == "insertnewsurvey" ||
-      $action == "copynewquestion" || $action == "insertnewgroup" || $action == "insertCSV" ||
-      $action == "insertnewquestion" || $action == "updatesurvey" || $action == "updatesurvey2" || $action=="updategroup" ||
-      $action=="updatequestion" || $action == "modanswer" || $action == "renumberquestions" ||
-      $action == "delattribute" || $action == "addattribute" || $action == "editattribute")
+  if ($action == "delsurvey"         || $action == "delgroup"       || $action == "delgroupall" ||
+      $action == "delquestion"       || $action =="delquestionall"  || $action == "insertnewsurvey" ||
+      $action == "copynewquestion"   || $action == "insertnewgroup" || $action == "insertCSV" ||
+      $action == "insertnewquestion" || $action == "updatesurvey"   || $action == "updatesurvey2" || $action=="updategroup" ||
+      $action == "updatequestion"    || $action == "modanswer"      || $action == "renumberquestions" ||
+      $action == "delattribute"      || $action == "addattribute"   || $action == "editattribute")
   {
   	include("database.php");
   }
 
-
+  if ($action=="showprintablesurvey")  {	include("printablesurvey.php"); }
+  else  
   if ($action=="checkintegrity")  {	include("integritycheck.php"); }
   else
   if ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset" ||
@@ -171,14 +170,22 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||
       $action=="addgroup" || $action=="editgroup" || $action=="surveyrights" ) include("html.php");
 
+  if (!isset($printablesurveyoutput))   // For a few actions we dont want to have the header
+    {  
+    $adminoutput=getAdminHeader();  // Alle future output is written into this and then outputted at the end of file
+    $adminoutput.= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
+    ."\t<tr>\n"
+    ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
+    }
+
   
-  $adminoutput.= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
-  ."\t<tr>\n"
-  ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
   
+
+
   
   // For some output we dont want to have the standard admin menu bar
-  if (!isset($labelsoutput) && !isset($templatesoutput) && !isset($assessmentsoutput)) {$adminoutput.= showadminmenu();}
+  if (!isset($labelsoutput) && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
+      !isset($assessmentsoutput)) {$adminoutput.= showadminmenu();}
     
   
   if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
@@ -212,15 +219,18 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($importsurvey)) {$adminoutput.= $importsurvey;}
   if (isset($importgroup)) {$adminoutput.= $importgroup;}
   if (isset($importquestion)) {$adminoutput.= $importquestion;}
+  if (isset($printablesurveyoutput)) {$adminoutput.= $printablesurveyoutput;}
  	
   
-  $adminoutput.= "\t\t</td>\n".helpscreen();;
   
   
-  $adminoutput.= "\t</tr>\n";
-  $adminoutput.= "</table>\n";
-  
-  $adminoutput.= getAdminFooter("$langdir/instructions.html", _("Using the PHPSurveyor Admin Script"));
+  if (!isset($printablesurveyoutput))
+  {  
+  $adminoutput.= "\t\t</td>\n".helpscreen()
+              . "\t</tr>\n"
+              . "</table>\n"
+              . getAdminFooter("$langdir/instructions.html", _("Using the PHPSurveyor Admin Script"));
+  }
 }
   
 sendcacheheaders();

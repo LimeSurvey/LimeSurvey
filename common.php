@@ -795,7 +795,7 @@ function getSurveyInfo($surveyid)
 		"template"=>$row['template'],
 		"tablename"=>$dbprefix."survey_".$row['sid'],
 		"url"=>$row['url'],
-		"urldescrip"=>$row['urldescrip'],
+		"urldescrip"=>$row2['surveyls_urldescription'],
 		"format"=>$row['format'],
 		"language"=>$row['language'],
 		"datestamp"=>$row['datestamp'],
