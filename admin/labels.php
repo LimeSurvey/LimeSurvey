@@ -210,7 +210,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	if (isset($lid) && ($action != "editlabelset") && $lid)
 	{
 		//CHECK TO SEE IF ANY ACTIVE SURVEYS ARE USING THIS LABELSET (Don't let it be changed if this is the case)
-		$query = "SELECT ".db_table_name('surveys').".surveyls_title FROM ".db_table_name('questions').", ".db_table_name('surveys')." WHERE ".db_table_name('questions').".sid=".db_table_name('surveys').".sid AND ".db_table_name('questions').".lid=$lid AND ".db_table_name('surveys').".active='Y'";
+		$query = "SELECT ".db_table_name('surveys_languagesettings').".surveyls_title FROM ".db_table_name('questions').", ".db_table_name('surveys')." , ".db_table_name('surveys_languagesettings')." WHERE ".db_table_name('questions').".sid=".db_table_name('surveys').".sid AND ".db_table_name('surveys').".sid=".db_table_name('surveys_languagesettings').".surveyls_survey_id AND ".db_table_name('questions').".lid=$lid AND ".db_table_name('surveys').".active='Y'";
 		$result = db_execute_assoc($query);
 		$activeuse=$result->RecordCount();
 		while ($row=$result->FetchRow()) {$activesurveys[]=$row['surveyls_title'];}
