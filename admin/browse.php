@@ -534,7 +534,7 @@ elseif ($action == "all")
 			echo "\t\t<td align='center'><font size='1'>\n";
 			if (isset($TokenRow) && $TokenRow)
 			{
-				echo "\t\t<a href='tokens.php?sid=$surveyid&amp;action=edit&amp;tid={$TokenRow['tid']}' title='Edit this token'>";
+				echo "\t\t<a href='tokens.php?sid=$surveyid&amp;action=tokenedit&amp;tid={$TokenRow['tid']}' title='Edit this token'>";
 			}
 			echo "{$dtrow['token']}";
 			if (isset($TokenRow) && $TokenRow)

@@ -36,7 +36,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
-$versionnumber = "1.15a";
+$versionnumber = "1.45a";
 $dbversionnumber = 111;
 if ($debug==1) {error_reporting(E_ALL);} //For debug purposes - switch on in config.phh
 
@@ -2340,10 +2340,17 @@ function FlattenText($texttoflatten)
 */
 function getreferringurl()
 {
-	if (!isset($_SESSION['refurl']))
-	{
-		if (!ereg(getenv("SERVER_NAME"), getenv("HTTP_REFERER"))) { $_SESSION['refurl'] = getenv("HTTP_REFERER"); }
-	}
+  if(isset($_SERVER["HTTP_REFERER"]))
+  {
+    if(!ereg($_SERVER["SERVER_NAME"], $_SERVER["HTTP_REFERER"]))
+    {
+      $_SESSION['refurl'] = $_SERVER["HTTP_REFERER"];
+    }
+  }
+  else
+  {
+    $_SESSION['refurl'] = null;
+  }
 }
 
 function getRandomID()

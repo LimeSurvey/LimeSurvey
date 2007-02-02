@@ -49,6 +49,11 @@ if (!isset($fp)) {$fp=returnglobal('filev');}                 //??
 if (!isset($elem)) {$elem=returnglobal('elem');}              //??
 
 $adminoutput='';
+
+  if ($action!="showprintablesurvey")   // For a few actions we dont want to have the header
+    {  
+    $adminoutput .= getAdminHeader();  // Alle future output is written into this and then outputted at the end of file
+    }
 include_once("login_check.php");
 
     
@@ -131,6 +136,8 @@ if ($action == "importquestion")
 		}*/
 	}
 
+
+
 //CHECK THAT SURVEYS MARKED AS ACTIVE ACTUALLY HAVE MATCHING TABLES
 //    checkactivations();
 
@@ -147,6 +154,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   	include("database.php");
   }
 
+  if ($action=="tokens")  {	include("tokens.php"); }
+  else  
   if ($action=="showprintablesurvey")  {	include("printablesurvey.php"); }
   else  
   if ($action=="checkintegrity")  {	include("integritycheck.php"); }
@@ -172,7 +181,6 @@ if(isset($_SESSION['loginID']) && $action!='login')
 
   if (!isset($printablesurveyoutput))   // For a few actions we dont want to have the header
     {  
-    $adminoutput .= getAdminHeader();  // Alle future output is written into this and then outputted at the end of file
     $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
     ."\t<tr>\n"
     ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
@@ -185,7 +193,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   
   // For some output we dont want to have the standard admin menu bar
   if (!isset($labelsoutput) && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
-      !isset($assessmentsoutput)) {$adminoutput.= showadminmenu();}
+      !isset($assessmentsoutput) && !isset($tokenoutput)) {$adminoutput.= showadminmenu();}
     
   
   if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
@@ -220,7 +228,9 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($importgroup)) {$adminoutput.= $importgroup;}
   if (isset($importquestion)) {$adminoutput.= $importquestion;}
   if (isset($printablesurveyoutput)) {$adminoutput.= $printablesurveyoutput;}
- 	
+  if (isset($activateoutput)) {$adminoutput.= $activateoutput;} 	
+  if (isset($deactivateoutput)) {$adminoutput.= $deactivateoutput;} 	
+  if (isset($tokenoutput)) {$adminoutput.= $tokenoutput;} 	
   
   
   

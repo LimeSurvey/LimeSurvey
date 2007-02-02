@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-01-31 22:55+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-02-02 22:50+0100\n"
+"Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -310,7 +310,7 @@ msgstr ""
 "Wenn Sie eine Email-Adresse angeben, wird auch eine Email an Sie mit diesen Daten versandt."
 
 msgid "Name"
-msgstr "Unverändert"
+msgstr "Name"
 
 msgid "Password"
 msgstr "Passwort"
@@ -689,9 +689,6 @@ msgstr "Folgende Probleme wurden gefunden:"
 msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "Die Umfrage kann nicht aktiviert werden, solange diese Probleme nicht gelöst sind."
 
-msgid "Main Admin Screen"
-msgstr "Zurück zur Hauptseite"
-
 msgid "Warning"
 msgstr "Warnung!"
 
@@ -699,25 +696,22 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "Lesen Sie dies sorgfältig durch, bevor Sie fortfahren."
 
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
-msgstr "Sie sollten eine Umfrage nur aktivieren, wenn Sie ganz sicher sind, dass ihre Fragen komplett sind und keine änderungen mehr notwendig sind."
+msgstr "Sie sollten eine Umfrage nur aktivieren, wenn Sie ganz sicher sind, dass ihre Fragen komplett und keine Änderungen mehr notwendig sind."
 
 msgid "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>"
-msgstr "Sobald eine Umfrage einmal aktiviert ist, können Sie nicht mehr:<ul><li>Gruppen hinzufügen oder löschen<li><li>Antworten für Mehrfachauswahl-Fragen hinzufügen oder löschen<li><li>Fragen hinzufügen oder löschen<li><ul>"
+msgstr "Sobald eine Umfrage einmal aktiviert ist, können Sie nicht mehr:<ul><li>Gruppen hinzufügen oder löschen</li><li>Antworten für Mehrfachauswahl-Fragen hinzufügen oder löschen</li><li>Fragen hinzufügen oder löschen</li></ul>"
 
 msgid "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>"
-msgstr "Jedoch können Sie immer noch:<ul><li>Ihre Frage-Codes, Frage-Text oder Frage-Typ ändern<li><li>Die Gruppennamen ändern<li><li>Vordefinierte Antworten hinzufügen, ändern, löschen (ausser für Mehrfachauswahl-Fragen)<li><li>Den Umfrage Namen oder die Beschreibung ändern.<li><ul>"
+msgstr "Jedoch können Sie immer noch:<ul><li>Ihre Frage-Codes, Frage-Text oder Frage-Typ ändern</li><li>Die Gruppennamen ändern</li><li>Vordefinierte Antworten hinzufügen, ändern, löschen (ausser für Mehrfachauswahl-Fragen)</li><li>Den Umfrage Namen oder die Beschreibung ändern.</li></ul>"
 
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr "Sobald Daten in die Umfrage eingegeben wurden und Sie Gruppen oder Fragen noch hinzufügen oder löschen wollen, müssen Sie die Umfrage deaktivieren. Dies hat zur Folge, dass alle eingegebenen Daten in eine separate Archiv-Tabelle verschoben werden."
 
-msgid "Cancel"
-msgstr "Abbrechen"
-
-msgid "Activate"
-msgstr "Aktivieren"
-
 msgid "Survey could not be actived."
 msgstr "Die Umfrage konnte nicht aktiviert werden."
+
+msgid "Main Admin Screen"
+msgstr "Zurück zur Hauptseite"
 
 msgid "Survey has been activated. Results table has been succesfully created."
 msgstr "Die Umfrage wurde aktiviert. Die Ergebnis-Tabelle wurde erfolgreich erstellt."
@@ -1124,8 +1118,11 @@ msgstr "Ihre Antworten-Tabelle wird wie folgt umbenannt:"
 msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
 msgstr "Sie sollten Ihre Antworten exportieren, bevor Sie die Umfrage deaktivieren. Klicken Sie auf 'Abbrechen', um zur Hauptseite zurückzukehren, ohne diese Umfrage zu deaktivieren."
 
-msgid "De-Activate"
+msgid "De-Activate Survey"
 msgstr "Umfrage deaktivieren"
+
+msgid "Survey Has Been De-Activated"
+msgstr "Umfrage wurde deaktiviert"
 
 msgid "The responses table has been renamed to: "
 msgstr "Die Antworten-Tabelle wurde umbenannt zu: "
@@ -1156,6 +1153,9 @@ msgstr "Diese Umfrage ist aktiv und eine Antworten-Tabelle existiert. Wenn Sie d
 
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Diese Umfrage hat eine zugehörige Probanden-Tabelle. Wenn Sie diese Umfrage löschen, wird auch die Probandentabelle gelöscht. Wir empfehlen Ihnen, dass Sie die Probanden exportieren, bevor Sie die Umfrage löschen."
+
+msgid "Cancel"
+msgstr "Abbrechen"
 
 msgid "This survey has been deleted."
 msgstr "Diese Umfrage wurde gelöscht."
@@ -2330,6 +2330,10 @@ msgstr "Haben Sie Ihr Passwort vergessen?"
 
 msgid "if you answered"
 msgstr "falls ihre Antwort "
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:216
+msgid "or"
+msgstr "oder"
 
 msgid "to question"
 msgstr " war bei der Frage"

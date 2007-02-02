@@ -1362,10 +1362,10 @@ function buildsurveysession()
 //			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 
 // Optimized Query
-			$abquery = "SELECT ".db_table_name('answers').".code\n"
-			. " FROM ".db_table_name('answers')."\n"
-			. " WHERE ".db_table_name('answers').".qid={$arow['qid']}\n"
-			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abquery = "SELECT a.code, a.default_value\n"
+			. " FROM ".db_table_name('answers')." as a \n"
+			. " WHERE a.qid={$arow['qid']}\n"
+			. " ORDER BY a.sortorder, a.answer";
 
 			$abresult = db_execute_assoc($abquery);
 			while($abrow = $abresult->FetchRow())

@@ -37,9 +37,10 @@
 # TOKENS FILE
 
 require_once(dirname(__FILE__).'/../config.php');
-if ($enableLdap) {
+if ($enableLdap) 
+    {
 	require_once(dirname(__FILE__).'/../config-ldap.php');
-}
+    }
 if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($order)) {$order=returnglobal('order');}
@@ -49,7 +50,7 @@ if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 
 include_once("login_check.php");
 
-sendcacheheaders();
+$tokenoutput='';
 
 if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 {
@@ -64,32 +65,29 @@ if ($action == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 
-	echo "Tid, Firstname, Lastname, Email, Token , Language, Attribute1, Attribute2, mpid\n";
+	$tokenoutput .= "Tid, Firstname, Lastname, Email, Token , Language, Attribute1, Attribute2, mpid\n";
 	while ($brow = $bresult->FetchRow())
 	{
-		echo trim($brow['tid']).",";
-		echo trim($brow['firstname']).",";
-		echo trim($brow['lastname']).",";
-		echo trim($brow['email']).",";
-		echo trim($brow['token']).",";
-		echo trim($brow['language']);
+		$tokenoutput .= trim($brow['tid']).",";
+		$tokenoutput .= trim($brow['firstname']).",";
+		$tokenoutput .= trim($brow['lastname']).",";
+		$tokenoutput .= trim($brow['email']).",";
+		$tokenoutput .= trim($brow['token']).",";
+		$tokenoutput .= trim($brow['language']);
 		if($bfieldcount > 8)
 		{
-			echo ",";
-			echo trim($brow['attribute_1']).",";
-			echo trim($brow['attribute_2']).",";
-			echo trim($brow['mpid']);
+			$tokenoutput .= ",";
+			$tokenoutput .= trim($brow['attribute_1']).",";
+			$tokenoutput .= trim($brow['attribute_2']).",";
+			$tokenoutput .= trim($brow['mpid']);
 		}
-		echo "\n";
+		$tokenoutput .= "\n";
 	}
 	exit();
 }
 
-if ($action == "delete") {echo str_replace("<head>\n", "<head>\n<meta http-equiv=\"refresh\" content=\"2;URL={$_SERVER['PHP_SELF']}?action=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\"", $htmlheader);}
-else {echo $htmlheader;}
-
 //Show Help
-echo "<script type='text/javascript'>\n"
+$tokenoutput .= "<script type='text/javascript'>\n"
 ."<!--\n"
 ."\tfunction showhelp(action)\n"
 ."\t\t{\n"
@@ -106,17 +104,17 @@ echo "<script type='text/javascript'>\n"
 ."-->\n"
 ."</script>\n";
 
-echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
+$tokenoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 ."\t<tr>\n"
 ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n"
 ."\t\t<table><tr><td></td></tr></table>\n";
 
-echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+$tokenoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
 // MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid)
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Token Control").":</strong></font></td></tr>\n"
 	."\t<tr><td align='center'>$setfont<br /><font color='red'><strong>"
 	._("Error")."</strong></font><br />"._("You have not selected a survey")."<br /><br />"
@@ -128,12 +126,13 @@ if (!isset($surveyid) || !$surveyid)
 }
 
 // MAKE SURE THAT THE SURVEY EXISTS
-$chquery = "SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+$chquery = "SELECT * FROM ".db_table_name('surveys')." as a inner join ".db_table_name('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=$surveyid";
+
 $chresult=db_execute_assoc($chquery);
 $chcount=$chresult->RecordCount();
 if (!$chcount)
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Token Control").":</strong></font></td></tr>\n"
 	."\t<tr><td align='center'>$setfont<br /><font color='red'><strong>"
 	._("Error")."</strong></font><br />"._("The survey you selected does not exist")
@@ -146,7 +145,7 @@ if (!$chcount)
 // A survey DOES exist
 while ($chrow = $chresult->FetchRow())
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Token Control").":</strong> "
 	."<font color='silver'>{$chrow['surveyls_title']}</font></font></td></tr>\n";
 	$surveyprivate = $chrow['private'];
@@ -174,7 +173,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "PRIMARY KEY (tid),\n"
 		. "INDEX (token)) TYPE=MyISAM;";
 		$ctresult = $connect->Execute($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".htmlspecialchars($connect->ErrorMsg()));
-		echo "\t<tr>\n"
+		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t$setfont<br /><br />\n"
 		."\t\t\t"._("A token table has been created for this survey.")." (\"tokens_$surveyid\")<br /><br />\n"
@@ -184,15 +183,14 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		."\t</tr>\n"
 		."</table>\n"
 		."<table><tr><td></td></tr></table>\n"
-		."</td></tr></table>\n"
-		.getAdminFooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
+		."</td></tr></table>\n";
 		exit;
 	}
 	elseif (isset($_GET['restoretable']) && $_GET['restoretable'] == "Y" && isset($_GET['oldtable']) && $_GET['oldtable'])
 	{
 		$query = "RENAME TABLE ".db_quote_id($_GET['oldtable'])." TO ".db_table_name("tokens_$surveyid");
 		$result=$connect->Execute($query) or die("Failed Rename!<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
-		echo "\t<tr>\n"
+		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t$setfont<br /><br />\n"
 		."\t\t\t"._("A token table has been created for this survey.")." (\"tokens_$surveyid\")<br /><br />\n"
@@ -202,8 +200,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		."\t</tr>\n"
 		."</table>\n"
 		."<table><tr><td></td></tr></table>\n"
-		."</td></tr></table>\n"
-		.getAdminFooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
+		."</td></tr></table>\n";
 		exit;
 	}
 	else
@@ -218,21 +215,21 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 				$oldlist[]=$rows[0];
 			}
 		}
-		echo "\t<tr>\n"
+		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t$setfont<br /><font color='red'><strong>"._("Warning")."</strong></font><br />\n"
 		."\t\t\t<strong>"._("Tokens have not been initialised for this survey.")."</strong><br /><br />\n"
 		."\t\t\t"._("If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token.")
 		."\t\t\t<br /><br />\n"
 		."\t\t\t"._("Do you want to create a tokens table for this survey?");
-		echo "<br /><br />\n";
-		echo "\t\t\t<input type='submit' value='"
+		$tokenoutput .= "<br /><br />\n";
+		$tokenoutput .= "\t\t\t<input type='submit' value='"
 		._("Initialise Tokens")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;createtable=Y', '_top')\"><br />\n"
 		."\t\t\t<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\"><br /><br /></font>\n";
 		if ($tcount>0)
 		{
-			echo "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
+			$tokenoutput .= "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
 			."<td bgcolor='#666666'>$setfont<font color='white' size='1'>Restore Options:\n"
 			."</font></font></td></tr>\n"
 			."<tr>\n"
@@ -241,9 +238,9 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			."<select size='4' name='oldtable'>\n";
 			foreach($oldlist as $ol)
 			{
-				echo "<option>".$ol."</option>\n";
+				$tokenoutput .= "<option>".$ol."</option>\n";
 			}
-			echo "</select><br />\n"
+			$tokenoutput .= "</select><br />\n"
 			."<input type='submit' value='Restore'>\n"
 			."<input type='hidden' name='restoretable' value='Y'>\n"
 			."<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -251,12 +248,11 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			."</tr></table>\n";
 		}
 
-		echo "\t\t</td>\n"
+		$tokenoutput .= "\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
 		."<table><tr><td></td></tr></table>\n"
-		."</td></tr></table>\n"
-		.getAdminFooter("$langdir/instructions.html", "Information about PHPSurveyor Tokens Functions");
+		."</td></tr></table>\n";
 		exit;
 	}
 }
@@ -269,7 +265,7 @@ if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_(
 if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_("Attribute 2");}
 
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
-echo "\t<tr bgcolor='#999999'>\n"
+$tokenoutput .= "\t<tr bgcolor='#999999'>\n"
 ."\t\t<td>\n"
 ."\t\t\t<a href=\"#\" onClick=\"showhelp('show')\" onmouseout=\"hideTooltip()\""
 			."onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">" .
@@ -313,9 +309,9 @@ echo "\t<tr bgcolor='#999999'>\n"
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
 $tkcount = $tkresult->RecordCount();
 
-echo "\t<tr><td align='center'><br /></td></tr>\n";
+$tokenoutput .= "\t<tr><td align='center'><br /></td></tr>\n";
 // GIVE SOME INFORMATION ABOUT THE TOKENS
-echo "\t<tr>\n"
+$tokenoutput .= "\t<tr>\n"
 ."\t\t<td align='center'>\n"
 ."\t\t\t<table align='center' bgcolor='#DDDDDD' cellpadding='2' style='border: 1px solid #555555'>\n"
 ."\t\t\t\t<tr>\n"
@@ -324,19 +320,19 @@ echo "\t<tr>\n"
 $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
 $tksr = db_execute_num($tksq);
 while ($tkr = $tksr->FetchRow())
-{echo "\t\t\t\t\t\t"._("Total With No Unique Token:")." $tkr[0] / $tkcount<br />\n";}
+{$tokenoutput .= "\t\t\t\t\t\t"._("Total With No Unique Token:")." $tkr[0] / $tkcount<br />\n";}
 
 $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (sent!='N' and sent<>'')";
 
 $tksr = db_execute_num($tksq);
 while ($tkr = $tksr->FetchRow())
-{echo "\t\t\t\t\t\t"._("Total Invitations Sent:")." $tkr[0] / $tkcount<br />\n";}
+{$tokenoutput .= "\t\t\t\t\t\t"._("Total Invitations Sent:")." $tkr[0] / $tkcount<br />\n";}
 $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
 
 $tksr = db_execute_num($tksq);
 while ($tkr = $tksr->FetchRow())
-{echo "\t\t\t\t\t\t"._("Total Surveys Completed:")." $tkr[0] / $tkcount\n";}
-echo "\t\t\t\t\t</font></td>\n"
+{$tokenoutput .= "\t\t\t\t\t\t"._("Total Surveys Completed:")." $tkr[0] / $tkcount\n";}
+$tokenoutput .= "\t\t\t\t\t</font></td>\n"
 ."\t\t\t\t</tr>\n"
 ."\t\t\t</table>\n"
 ."\t\t\t<br />\n"
@@ -345,7 +341,7 @@ echo "\t\t\t\t\t</font></td>\n"
 ."</table>\n"
 ."<table ><tr><td></td></tr></table>\n";
 
-echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+$tokenoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
 #############################################################################################
 // NOW FOR VARIOUS ACTIONS:
@@ -354,7 +350,7 @@ if ($action == "deleteall")
 {
 	$query="DELETE FROM ".db_table_name("tokens_$surveyid");
 	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._("All token entries have been deleted.")."</font></font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._("All token entries have been deleted.")."</font></font></strong></td></tr>\n";
 	$action="";
 }
 
@@ -362,7 +358,7 @@ if ($action == "clearinvites")
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N'";
 	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	echo "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._("All invite entries have been set to 'Not Invited'.")."</font></font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td bgcolor='silver' align='center'><strong>$setfont<font color='green'>"._("All invite entries have been set to 'Not Invited'.")."</font></font></strong></td></tr>\n";
 	$action="";
 }
 
@@ -370,7 +366,7 @@ if ($action == "cleartokens")
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
 	$result=$connect->Execute($query) or die("Couldn't reset the tokens field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	echo "<tr><td align='center' bgcolor='silver'><strong>$setfont<font color='green'>"._("All unique token numbers have been removed.")."</font></font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td align='center' bgcolor='silver'><strong>$setfont<font color='green'>"._("All unique token numbers have been removed.")."</font></font></strong></td></tr>\n";
 	$action="";
 }
 
@@ -382,19 +378,19 @@ if ($action == "updatedb" && $surveyid)
 	. "ADD `mpid` int NULL";
 	if ($result = $connect->Execute($query))
 	{
-		echo "<tr><td align='center'>"._("Success")."</td></tr>\n";
+		$tokenoutput .= "<tr><td align='center'>"._("Success")."</td></tr>\n";
 		$action="";
 	}
 	else
 	{
-		echo "<tr><td align='center'>"._("Error")."</td></tr>\n";
+		$tokenoutput .= "<tr><td align='center'>"._("Error")."</td></tr>\n";
 		$action="";
 	}
 }
 
 if (!$action)
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Token Database Administration Options").":</strong></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td align='center'>\n"
@@ -411,9 +407,9 @@ if (!$action)
 	$bfieldcount=$bresult->FieldCount();
 	if ($bfieldcount==7)
 	{
-		echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=updatedb'>"._("Update tokens table with new fields")."</a></li>\n";
+		$tokenoutput .= "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=updatedb'>"._("Update tokens table with new fields")."</a></li>\n";
 	}
-	echo "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=kill'>"._("Drop tokens table")."</a></li></ul>\n"
+	$tokenoutput .= "\t\t\t<li><a href='$homeurl/tokens.php?sid=$surveyid&amp;action=kill'>"._("Drop tokens table")."</a></li></ul>\n"
 	."\t\t\t</td></tr></table>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n"
@@ -435,7 +431,7 @@ if ($action == "browse" || $action == "search")
 	if ($end < 0) {$end=0;}
 
 	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Data View Control").":</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#999999'><td align='left'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left'>\n"
@@ -499,10 +495,10 @@ if ($action == "browse" || $action == "search")
 	$bresult = db_execute_assoc($bquery) or die (_("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bgc="";
 
-	echo "<tr><td colspan='2'>\n"
+	$tokenoutput .= "<tr><td colspan='2'>\n"
 	."<table width='100%' cellpadding='1' cellspacing='1' align='center' bgcolor='#CCCCCC'>\n";
 	//COLUMN HEADINGS
-	echo "\t<tr>\n"
+	$tokenoutput .= "\t<tr>\n"
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='"
@@ -539,7 +535,7 @@ if ($action == "browse" || $action == "search")
 	._("Sort by: ")._("Completed?")."' border='0' align='left'></a>$setfont"._("Completed?")."</font></th>\n";
 	if ($bfieldcount == 10)
 	{
-		echo "\t\t<th align='left' valign='top'>"
+		$tokenoutput .= "\t\t<th align='left' valign='top'>"
 		."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse&amp;order=attribute_1&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/downarrow.png' alt='"
 		._("Sort by: ")._("Attribute 1")."' border='0' align='left'></a>$setfont".$attr1_name."</font></th>\n"
@@ -552,29 +548,29 @@ if ($action == "browse" || $action == "search")
 		."<img src='$imagefiles/downarrow.png' alt='"
 		._("Sort by: ")._("MPID")."' border='0' align='left'></a>$setfont"._("MPID")."</font></th>\n";
 	}
-	echo "\t\t<th align='left' valign='top' colspan='2'>$setfont"._("Actions")."</font></th>\n"
+	$tokenoutput .= "\t\t<th align='left' valign='top' colspan='2'>$setfont"._("Actions")."</font></th>\n"
 	."\t</tr>\n";
 
 	while ($brow = $bresult->FetchRow())
 	{
     	$brow['token'] = trim($brow['token']);
 		if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";} else {$bgc = "#EEEEEE";}
-		echo "\t<tr bgcolor='$bgc'>\n";
+		$tokenoutput .= "\t<tr bgcolor='$bgc'>\n";
 		foreach ($brow as $a=>$b)
 		{
-			echo "\t\t<td>$setfont$brow[$a]</font></td>\n";
+			$tokenoutput .= "\t\t<td>$setfont$brow[$a]</font></td>\n";
 		}
-		echo "\t\t<td align='left'>\n"
+		$tokenoutput .= "\t\t<td align='left'>\n"
 		."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='E' title='"
 		._("Edit Token Entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=edit&amp;tid=".$brow['tid']."', '_top')\" />"
 		."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
 		._("Delete Token Entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
 
-		if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {echo "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='"._("Do Survey")."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
-		echo "\n\t\t</td>\n";
+		if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {$tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='"._("Do Survey")."' onClick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
+		$tokenoutput .= "\n\t\t</td>\n";
 		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
 		{
-			echo "\t\t<form action='$homeurl/browse.php' method='post' target='_blank'>\n"
+			$tokenoutput .= "\t\t<form action='$homeurl/browse.php' method='post' target='_blank'>\n"
 			."\t\t<td align='center' valign='top'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='V' title='"
 			._("View Response")."' />\n"
@@ -590,7 +586,7 @@ if ($action == "browse" || $action == "search")
 			list($id) = $result->FetchRow();
 			if  ($id)
 			{
-				echo "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n"
+				$tokenoutput .= "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n"
 				."\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
 				._("Update Response")."' />\n"
@@ -606,7 +602,7 @@ if ($action == "browse" || $action == "search")
 		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N")
 
 		{
-			echo "\t\t<td align='center' valign='top'>\n"
+			$tokenoutput .= "\t\t<td align='center' valign='top'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='I' title='"
 			._("Send invitation email to this entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=email&amp;tid=".$brow['tid']."', '_top')\" />"
 			."\t\t</td>\n";
@@ -615,33 +611,33 @@ if ($action == "browse" || $action == "search")
 		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N")
 
 		{
-			echo "\t\t<td align='center' valign='top'>\n"
+			$tokenoutput .= "\t\t<td align='center' valign='top'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='R' title='"
 			._("Send reminder email to this entry")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=remind&amp;tid=$brow[0]', '_top')\" />"
 			."\t\t</td>\n";
 		}
 		else
 		{
-			echo "\t\t<td>\n"
+			$tokenoutput .= "\t\t<td>\n"
 			."\t\t</td>\n";
 		}
-		echo "\t</tr>\n";
+		$tokenoutput .= "\t</tr>\n";
 	}
-	echo "</table>\n"
+	$tokenoutput .= "</table>\n"
 	."</td></tr></table>\n";
 }
 
 if ($action == "kill")
 {
 	$date = date('YmdHi');
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4' align='center'>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4' align='center'>"
 	."<font size='1' face='verdana' color='white'><strong>"
 	._("Delete Tokens Table").":</strong></font></td></tr>\n"
 	."\t<tr><td colspan='2' align='center'>\n"
 	."$setfont<br />\n";
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
-		echo "<font color='red'><strong>"._("Warning")."</strong></font><br />\n"
+		$tokenoutput .= "<font color='red'><strong>"._("Warning")."</strong></font><br />\n"
 		._("If you delete this table tokens will no longer be required to access this survey.<br />A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
 		."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
 		."<input type='submit' value='"
@@ -655,14 +651,14 @@ if ($action == "kill")
 		$newtable = "old_tokens_{$surveyid}_$date";
 		$deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
 		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())."<br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
-		echo "<span style='display: block; text-align: center; width: 70%'>\n"
+		$tokenoutput .= "<span style='display: block; text-align: center; width: 70%'>\n"
 		._("The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
 		."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
 		."<input type='submit' value='"
 		._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
 		."</span>\n";
 	}
-	echo "</font></td></tr></table>\n"
+	$tokenoutput .= "</font></td></tr></table>\n"
 	."<table><tr><td></td></tr></table>\n";
 
 }
@@ -670,7 +666,7 @@ if ($action == "kill")
 
 if (returnglobal('action') == "email")
 {
-	echo "\t<tr bgcolor='#555555'>\n\t\t<td colspan='2' height='4'>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'>\n\t\t<td colspan='2' height='4'>"
 	."<font size='1' face='verdana' color='white'><strong>"
 	._("Email Invitation").":</strong></font></td>\n\t</tr>\n"
 	."\t<tr>\n\t\t<td colspan='2' align='center'>\n";
@@ -688,28 +684,28 @@ if (returnglobal('action') == "email")
 		$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
 		$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
 
-		echo "<form method='post' action='tokens.php?sid=$surveyid'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
+		$tokenoutput .= "<form method='post' action='tokens.php?sid=$surveyid'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 		."\n";
 		if (isset($_GET['tid']) && $_GET['tid'])
 		{
-			echo "<tr><td bgcolor='silver' colspan='2'>$setfont<font size='1'>"
+			$tokenoutput .= "<tr><td bgcolor='silver' colspan='2'>$setfont<font size='1'>"
 			."to TokenID No {$_GET['tid']}"
 			."</font></font></td></tr>";
 		}
-		echo "\t<tr>\n"
+		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='right'>$setfont<strong>"._("From").":</strong></font></td>\n"
 		."\t\t<td><input type='text' size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='right'>$setfont<strong>"._("Subject").":</strong></font></td>\n";
-		echo "\t\t<td><input type='text' size='50' name='subject' value=\"$subject\" /></td>\n"
+		$tokenoutput .= "\t\t<td><input type='text' size='50' name='subject' value=\"$subject\" /></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='right' valign='top'>$setfont<strong>"._("Message").":</strong></font></td>\n"
 		."\t\t<td>\n"
 		."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-		echo $textarea;
-		echo "\t\t\t</textarea>\n"
+		$tokenoutput .= $textarea;
+		$tokenoutput .= "\t\t\t</textarea>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr><td></td><td align='left'><input type='submit' value='"
@@ -717,22 +713,22 @@ if (returnglobal('action') == "email")
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
 		."\t<input type='hidden' name='action' value='email' /></td></tr>\n";
-		if (isset($_GET['tid']) && $_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}' />";}
-		echo "\n"
+		if (isset($_GET['tid']) && $_GET['tid']) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$_GET['tid']}' />";}
+		$tokenoutput .= "\n"
 		."</table></form>\n";
 	}
 	else
 	{
-		echo _("Sending Invitations");
+		$tokenoutput .= _("Sending Invitations");
 		$_POST['message']=auto_unescape($_POST['message']);
 		$_POST['subject']=auto_unescape($_POST['subject']);
-		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._("Sending to TID No:")." {$_POST['tid']})";}
-		echo "<br />\n";
+		if (isset($_POST['tid']) && $_POST['tid']) {$tokenoutput .= " ("._("Sending to TID No:")." {$_POST['tid']})";}
+		$tokenoutput .= "<br />\n";
 
 		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
 
 		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
-		echo "<!-- ctquery: $ctquery -->\n";
+		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
 		$ctresult = $connect->Execute($ctquery) or die("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
@@ -743,12 +739,12 @@ if (returnglobal('action') == "email")
 
 		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
 		$emquery .= " LIMIT $maxemails";
-		echo "\n\n<!-- emquery: $emquery -->\n\n";
+		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
 		$emresult = db_execute_assoc($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 		$emcount = $emresult->RecordCount();
 		$from = $_POST['from'];
 
-		echo "<table width='500px' align='center' bgcolor='#EEEEEE'>\n"
+		$tokenoutput .= "<table width='500px' align='center' bgcolor='#EEEEEE'>\n"
 		."\t<tr>\n"
 		."\t\t<td><font size='1'>\n";
 		if ($emcount > 0)
@@ -775,27 +771,27 @@ if (returnglobal('action') == "email")
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
 					//
 					$uderesult = $connect->Execute($udequery) or die ("Couldn't update tokens<br />$udequery<br />".htmlspecialchars($connect->ErrorMsg()));
-					echo "["._("Invitation Sent To:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+					$tokenoutput .= "["._("Invitation Sent To:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 				}
 				else
 				{
-					echo ReplaceFields(_("Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"), $fieldsarray);
-					echo "<br /><pre>$headers<br />$message</pre>";
+					$tokenoutput .= ReplaceFields(_("Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"), $fieldsarray);
+					$tokenoutput .= "<br /><pre>$headers<br />$message</pre>";
 				}
 			}
 			if ($ctcount > $emcount)
 			{
 				$lefttosend = $ctcount-$maxemails;
-				echo "\t\t</td>\n"
+				$tokenoutput .= "\t\t</td>\n"
 				."\t</tr>\n"
 				."\t<tr>\n"
 				."\t\t<td align='center'>$setfont<strong>"._("Warning")."</strong><br />\n"
 				."\t\t\t<form method='post'>\n"
 				._("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n";
-				echo str_replace("{EMAILCOUNT}", "$lefttosend", _("There are {EMAILCOUNT} emails still to be sent."));
-				echo "<br /><br />\n";
+				$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", _("There are {EMAILCOUNT} emails still to be sent."));
+				$tokenoutput .= "<br /><br />\n";
 				$message = html_escape($_POST['message']);
-				echo "\t\t\t<input type='submit' value='"._("Continue")."' />\n"
+				$tokenoutput .= "\t\t\t<input type='submit' value='"._("Continue")."' />\n"
 				."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 				."\t\t\t<input type='hidden' name='action' value=\"email\" />\n"
 				."\t\t\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
@@ -807,17 +803,17 @@ if (returnglobal('action') == "email")
 		}
 		else
 		{
-			echo "<center><strong>"._("Warning")."</strong><br />\n"._("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.")."</center>\n";
+			$tokenoutput .= "<center><strong>"._("Warning")."</strong><br />\n"._("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.")."</center>\n";
 		}
-		echo "\t\t</td>\n";
+		$tokenoutput .= "\t\t</td>\n";
 
 	}
-	echo "</td></tr></table>\n";
+	$tokenoutput .= "</td></tr></table>\n";
 }
 
 if (returnglobal('action') == "remind")
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Email Reminder").":</strong></font></td></tr>\n"
 	."\t<tr><td colspan='2' align='center'>\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
@@ -825,7 +821,7 @@ if (returnglobal('action') == "remind")
 		//GET SURVEY DETAILS
 		$thissurvey=getSurveyInfo($surveyid);
 		if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", _("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
-		echo "<form method='post' action='$homeurl/tokens.php'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
+		$tokenoutput .= "<form method='post' action='$homeurl/tokens.php'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 		."\t\n"
 		."\t<tr>\n"
 		."\t\t<td align='right' width='150'>$setfont<strong>"._("From").":</strong></font></td>\n"
@@ -834,11 +830,11 @@ if (returnglobal('action') == "remind")
 		."\t<tr>\n"
 		."\t\t<td align='right' width='150'>$setfont<strong>"._("Subject").":</strong></font></td>\n";
 		$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_remind_subj']);
-		echo "\t\t<td><input type='text' size='50' name='subject' value='$subject' /></td>\n"
+		$tokenoutput .= "\t\t<td><input type='text' size='50' name='subject' value='$subject' /></td>\n"
 		."\t</tr>\n";
 		if (!isset($_GET['tid']) || !$_GET['tid'])
 		{
-			echo "\t<tr>\n"
+			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='right' width='150' valign='top'>$setfont<strong>"
 			._("Start at TID No:")."</strong></font></td>\n"
 			."\t\t<td><input type='text' size='5' name='last_tid' /></td>\n"
@@ -846,13 +842,13 @@ if (returnglobal('action') == "remind")
 		}
 		else
 		{
-			echo "\t<tr>\n"
+			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='right' width='150' valign='top'>$setfont<strong>"
 			._("Sending to TID No:")."</strong></font></td>\n"
 			."\t\t<td>$setfont{$_GET['tid']}</font></td>\n"
 			."\t</tr>\n";
 		}
-		echo "\t<tr>\n"
+		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='right' width='150' valign='top'>$setfont<strong>"
 		._("Message").":</strong></font></td>\n"
 		."\t\t<td>\n"
@@ -863,9 +859,9 @@ if (returnglobal('action') == "remind")
 		$textarea = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $textarea);
 		$textarea = str_replace("{SURVEYNAME}", $thissurvey['name'], $textarea);
 		$textarea = str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $textarea);
-		echo $textarea;
+		$tokenoutput .= $textarea;
 
-		echo "\t\t\t</textarea>\n"
+		$tokenoutput .= "\t\t\t</textarea>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
@@ -877,24 +873,24 @@ if (returnglobal('action') == "remind")
 		."\t<input type='hidden' name='action' value='remind'>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
-		if (isset($_GET['tid']) && $_GET['tid']) {echo "\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";}
-		echo "\t</table>\n"
+		if (isset($_GET['tid']) && $_GET['tid']) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";}
+		$tokenoutput .= "\t</table>\n"
 		."</form>\n";
 	}
 	else
 	{
-		echo _("Sending Reminders")."<br />\n";
+		$tokenoutput .= _("Sending Reminders")."<br />\n";
 		$_POST['message']=auto_unescape($_POST['message']);
 		$_POST['subject']=auto_unescape($_POST['subject']);
 
-		if (isset($_POST['last_tid']) && $_POST['last_tid']) {echo " ("._("From")." TID: {$_POST['last_tid']})";}
-		if (isset($_POST['tid']) && $_POST['tid']) {echo " ("._("Sending to TID No:")." TID: {$_POST['tid']})";}
+		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$tokenoutput .= " ("._("From")." TID: {$_POST['last_tid']})";}
+		if (isset($_POST['tid']) && $_POST['tid']) {$tokenoutput .= " ("._("Sending to TID No:")." TID: {$_POST['tid']})";}
 
 		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> ''";
 
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
-		echo "<!-- ctquery: $ctquery -->\n";
+		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
 		$ctresult = $connect->Execute($ctquery) or die ("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
@@ -910,7 +906,7 @@ if (returnglobal('action') == "remind")
 		$emresult = db_execute_assoc($emquery) or die ("Couldn't do query.<br />$emquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		$emcount = $emresult->RecordCount();
 		$from = $_POST['from'];
-		echo "<table width='500' align='center' bgcolor='#EEEEEE'>\n"
+		$tokenoutput .= "<table width='500' align='center' bgcolor='#EEEEEE'>\n"
 		."\t<tr>\n"
 		."\t\t<td><font size='1'>\n";
 
@@ -934,18 +930,18 @@ if (returnglobal('action') == "remind")
 
 				if (MailtextMessage($sendmessage, $msgsubject, $to, $from, $sitename))
 				{
-					echo "\t\t\t({$emrow['tid']})["._("Reminder Sent To:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+					$tokenoutput .= "\t\t\t({$emrow['tid']})["._("Reminder Sent To:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				}
 				else
 				{
-					echo "\t\t\t({$emrow['tid']})[Email to {$emrow['firstname']} {$emrow['lastname']} failed]<br />\n";
+					$tokenoutput .= "\t\t\t({$emrow['tid']})[Email to {$emrow['firstname']} {$emrow['lastname']} failed]<br />\n";
 				}
 				$lasttid = $emrow['tid'];
 			}
 			if ($ctcount > $emcount)
 			{
 				$lefttosend = $ctcount-$maxemails;
-				echo "\t\t</td>\n"
+				$tokenoutput .= "\t\t</td>\n"
 				."\t</tr>\n"
 				."\t<tr><form method='post' action='$homeurl/tokens.php'>\n"
 				."\t\t<td align='center'>\n"
@@ -961,31 +957,31 @@ if (returnglobal('action') == "remind")
 				."\t<input type='hidden' name='from' value=\"{$_POST['from']}\" />\n"
 				."\t<input type='hidden' name='subject' value=\"{$_POST['subject']}\" />\n";
 				$message = html_escape($_POST['message']);
-				echo "\t<input type='hidden' name='message' value=\"$message\" />\n"
+				$tokenoutput .= "\t<input type='hidden' name='message' value=\"$message\" />\n"
 				."\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
 				."\t</form>\n";
 			}
 		}
 		else
 		{
-			echo "<center><strong>"._("Warning")."</strong><br />\n"
+			$tokenoutput .= "<center><strong>"._("Warning")."</strong><br />\n"
 			._("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.")."\n"
 			."<br /><br />\n"
 			."\t\t</td>\n";
 		}
-		echo "\t</tr>\n"
+		$tokenoutput .= "\t</tr>\n"
 		."</table>\n";
 	}
-	echo "</td></tr></table>\n";
+	$tokenoutput .= "</td></tr></table>\n";
 }
 
 if ($action == "tokenify")
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Create Tokens").":</strong></font></td></tr>\n";
-	echo "\t<tr><td align='center'>$setfont<br />\n";
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Create Tokens").":</strong></font></td></tr>\n";
+	$tokenoutput .= "\t<tr><td align='center'>$setfont<br />\n";
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
-		echo "<br />"._("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
+		$tokenoutput .= "<br />"._("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
 		."<input type='submit' value='"
 		._("Yes")."' onClick=\"window.open('$homeurl/tokens.php?sid=$surveyid&amp;action=tokenify&amp;ok=Y', '_top')\" />\n"
 		."<input type='submit' value='"
@@ -1016,9 +1012,9 @@ if ($action == "tokenify")
 			$newtokencount++;
 		}
 		$message=str_replace("{TOKENCOUNT}", $newtokencount, _("{TOKENCOUNT} tokens have been created"));
-		echo "<br /><strong>$message</strong><br /><br />\n";
+		$tokenoutput .= "<br /><strong>$message</strong><br /><br />\n";
 	}
-	echo "\t</font></td></tr></table>\n";
+	$tokenoutput .= "\t</font></td></tr></table>\n";
 }
 
 
@@ -1026,7 +1022,7 @@ if ($action == "delete")
 {
 	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$_GET['tid']}";
 	$dlresult = $connect->Execute($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".htmlspecialchars($connect->ErrorMsg()));
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Delete")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>$setfont<br />\n"
 	."<br /><strong>"._("Token has been deleted.")."</strong><br />\n"
@@ -1053,7 +1049,7 @@ if ($action == "edit" || $action == "addnew")
 		$edresult = $connect->Execute($edquery);
 		$edfieldcount = $edresult->FieldCount();
 	}
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Add or Edit Token")."</strong></font></td></tr>\n"
 	."\t<tr><td align='center'>\n"
 	."<form method='post' action='$homeurl/tokens.php'>\n"
@@ -1065,38 +1061,38 @@ if ($action == "edit" || $action == "addnew")
 	."<tr>\n"
 	."\t<td align='right' width='20%'>$setfont<strong>"._("First Name").":</strong></font></td>\n"
 	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='30' name='firstname' value=\"";
-	if (isset($firstname)) {echo $firstname;}
-	echo "\"></font></td>\n"
+	if (isset($firstname)) {$tokenoutput .= $firstname;}
+	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'>$setfont<strong>"._("Last Name").":</strong></font></td>\n"
 	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='30' name='lastname' value=\"";
-	if (isset($lastname)) {echo $lastname;}
-	echo "\"></font></td>\n"
+	if (isset($lastname)) {$tokenoutput .= $lastname;}
+	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'>$setfont<strong>"._("Email").":</strong></font></td>\n"
 	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' name='email' value=\"";
-	if (isset($email)) {echo $email;}
-	echo "\"></font></td>\n"
+	if (isset($email)) {$tokenoutput .= $email;}
+	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'>$setfont<strong>"._("Token").":</strong></font></td>\n"
 	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' name='token' value=\"";
-	if (isset($token)) {echo $token;}
-	echo "\">\n";
+	if (isset($token)) {$tokenoutput .= $token;}
+	$tokenoutput .= "\">\n";
 	if ($action == "addnew")
 	{
-		echo "\t\t$setfont<font size='1' color='red'>"._("You can leave this blank, and automatically generate tokens using 'Create Tokens'")."</font></font>\n";
+		$tokenoutput .= "\t\t$setfont<font size='1' color='red'>"._("You can leave this blank, and automatically generate tokens using 'Create Tokens'")."</font></font>\n";
 	}
-	echo "\t</font></td>\n"
+	$tokenoutput .= "\t</font></td>\n"
 	."</tr>\n"
 
 ."<tr>\n"
 	."\t<td align='right' width='20%'>$setfont<strong>"._("Language").":</strong></font></td>\n"
 	."\t<td bgcolor='#EEEEEE'>$setfont";
-	echo languageDropdownClean($surveyid,$language);
-	echo "</font></td>\n"
+	$tokenoutput .= languageDropdownClean($surveyid,$language);
+	$tokenoutput .= "</font></td>\n"
 	."</tr>\n"
 
 	
@@ -1107,8 +1103,8 @@ if ($action == "edit" || $action == "addnew")
 	//	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' name='sent' value=\"";
 	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' name='sent' value=\"";
 
-	if (isset($sent)) {echo $sent;}	else {echo "N";}
-	echo "\"></font></td>\n"
+	if (isset($sent)) {$tokenoutput .= $sent;}	else {$tokenoutput .= "N";}
+	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'>$setfont<strong>"._("Completed?").":</strong></font></td>\n"
@@ -1117,37 +1113,37 @@ if ($action == "edit" || $action == "addnew")
 	//	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='1' name='completed' value=\"";
 	."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='15' name='completed' value=\"";
 
-	if (isset($completed)) {echo $completed;} else {echo "N";}
+	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
 	if ($edfieldcount > 7)
 	{
-		echo "\"></font></td>\n"
+		$tokenoutput .= "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<strong>".$attr1_name.":</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' name='attribute1' value=\"";
-		if (isset($attribute_1)) {echo $attribute_1;}
-		echo "\"></font></td>\n"
+		if (isset($attribute_1)) {$tokenoutput .= $attribute_1;}
+		$tokenoutput .= "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'>$setfont<strong>".$attr2_name.":</strong></font></td>\n"
 		."\t<td bgcolor='#EEEEEE'>$setfont<input type='text' size='50' name='attribute2' value=\"";
-		if (isset($attribute_2)) {echo $attribute_2;}
+		if (isset($attribute_2)) {$tokenoutput .= $attribute_2;}
 	}
-	echo "\"></font></td>\n"
+	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td colspan='2' align='center'>";
 	switch($action)
 	{
 		case "edit":
-		echo "\t\t<input type='submit' name='action' value='"._("Update")."'>\n"
+		$tokenoutput .= "\t\t<input type='submit' name='action' value='"._("Update")."'>\n"
 		."\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
 		break;
 		case "addnew":
-		echo "\t\t<input type='submit' name='action' value='"._("Add")."'>\n";
+		$tokenoutput .= "\t\t<input type='submit' name='action' value='"._("Add")."'>\n";
 		break;
 	}
-	echo "\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
+	$tokenoutput .= "\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t</td>\n"
 	."</tr>\n\n"
 	."</table></form>\n"
@@ -1157,7 +1153,7 @@ if ($action == "edit" || $action == "addnew")
 
 if ($action == _("Update"))
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Add or Edit Token")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	$data = array();
@@ -1181,7 +1177,7 @@ if ($action == _("Update"))
 	$udquery .= " WHERE tid={$_POST['tid']}";
 
 	$udresult = $connect->Execute($udquery, $data) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
-	echo "<br />$setfont<font color='green'><strong>"._("Success")."</strong></font><br />\n"
+	$tokenoutput .= "<br />$setfont<font color='green'><strong>"._("Success")."</strong></font><br />\n"
 	."<br />"._("Updated Token")."<br /><br />\n"
 	."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._("Display Tokens")."</a><br /><br />\n"
 	."\t</td></tr></table>\n";
@@ -1189,7 +1185,7 @@ if ($action == _("Update"))
 
 if ($action == _("Add"))
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Add or Edit Token")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	$data = array('firstname' => $_POST['firstname'],
@@ -1207,7 +1203,7 @@ if ($action == _("Add"))
     $tblInsert=db_table_name('tokens_'.$surveyid);
 	$inquery = $connect->GetInsertSQL($tblInsert, $data);
 	$inresult = $connect->Execute($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
-	echo "<br />$setfont<font color='green'><strong>"._("Success")."</strong></font><br />\n"
+	$tokenoutput .= "<br />$setfont<font color='green'><strong>"._("Success")."</strong></font><br />\n"
 	."<br />"._("Added New Token")."<br /><br />\n"
 	."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=browse'>"._("Display Tokens")."</a><br />\n"
 	."<a href='$homeurl/tokens.php?sid=$surveyid&amp;action=addnew'>"._("Add new token entry")."</a><br /><br />\n"
@@ -1216,12 +1212,12 @@ if ($action == _("Add"))
 
 if ($action == "import")
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 	."<font size='1' face='verdana' color='white'><strong>"
 	._("Upload CSV File")."</strong></font></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	form();
-	echo "<table width='400' bgcolor='#eeeeee'>\n"
+	$tokenoutput .= "<table width='400' bgcolor='#eeeeee'>\n"
 	."\t<tr>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t\t<font size='1'><strong>"._("Note:")."</strong><br />\n"
@@ -1234,12 +1230,12 @@ if ($action == "import")
 
 if ($action == "importldap")
 {
-        echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
+        $tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
         ."<font size='1' face='verdana' color='white'><strong>"
         ._("Upload LDAP entries")."</strong></font></td></tr>\n"
         ."\t<tr><td align='center'>\n";
         formldap();
-        echo "<table width='400' bgcolor='#eeeeee'>\n"
+        $tokenoutput .= "<table width='400' bgcolor='#eeeeee'>\n"
         ."\t<tr>\n"
         ."\t\t<td align='center'>\n"
         ."\t\t\t<font size='1'><strong>"._("Note:")."</strong><br />\n"
@@ -1252,7 +1248,7 @@ if ($action == "importldap")
 
 if ($action == "upload")
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Upload CSV File")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	if (!isset($tempdir))
@@ -1273,11 +1269,11 @@ if ($action == "upload")
 	}
 	else
 	{
-		echo "<br /><strong>"._("Importing CSV File")."</strong><br />\n<font color='green'>"._("Success")."</font><br /><br />\n"
+		$tokenoutput .= "<br /><strong>"._("Importing CSV File")."</strong><br />\n<font color='green'>"._("Success")."</font><br /><br />\n"
 		._("Creating Token Entries")."<br />\n";
 		$xz = 0; $xx = 0;
 		$handle = fopen($the_full_file_path, "r");
-		if ($handle == false) {echo "Failed to open the uploaded file!\n";}
+		if ($handle == false) {$tokenoutput .= "Failed to open the uploaded file!\n";}
 		while (!feof($handle))
 		{
 			$buffer=getLine($handle); //Function determines line endings including \r (mac)
@@ -1308,7 +1304,7 @@ if ($action == "upload")
 					$xy = 0;
 					foreach($line as $el)
 					{
-						//echo "[$el]($xy)<br />\n"; //Debugging info
+						//$tokenoutput .= "[$el]($xy)<br />\n"; //Debugging info
 						if ($xy < $elements)
 						{ if ($xy == 0) {$tid_temp = $el;}
 							if ($xy == 1) {$firstname = $el;}
@@ -1331,24 +1327,24 @@ if ($action == "upload")
 					if (isset($attribute1)) {$iq .= ", '$attribute1'";}
 					if (isset($attribute2)) {$iq .= ", '$attribute2'";}
 					$iq .= ")";
-					//echo "<pre style='text-align: left'>$iq</pre>\n"; //Debugging info
+					//$tokenoutput .= "<pre style='text-align: left'>$iq</pre>\n"; //Debugging info
 					$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
 					$xz++;
 				}
 			}
 			$xx++;
 		}
-		echo "<font color='green'>"._("Success")."</font><br /><br />\n";
+		$tokenoutput .= "<font color='green'>"._("Success")."</font><br /><br />\n";
 		$message=str_replace("{TOKENCOUNT}", $xz, _("{TOKENCOUNT} Records Created"));
-		echo "<i>$message</i><br />\n";
+		$tokenoutput .= "<i>$message</i><br />\n";
 		fclose($handle);
 		unlink($the_full_file_path);
 	}
-	echo "\t\t\t</td></tr></table>\n";
+	$tokenoutput .= "\t\t\t</td></tr></table>\n";
 }
 
 if ($action == "uploadldap") {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Uploading LDAP Query")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	$ldapq=$_POST['ldapQueries']; // the ldap query id
@@ -1406,9 +1402,9 @@ if ($action == "uploadldap") {
 				} // End foreach responseGroup
 			} // End of if resnum >= 1
 
-			echo "<font color='green'>"._("Success")."</font><br /><br>\n";
+			$tokenoutput .= "<font color='green'>"._("Success")."</font><br /><br>\n";
 			$message=str_replace("{TOKENCOUNT}", $resultnum, _("{TOKENCOUNT} Records Created"));
-			echo "<i>$message</i><br />\n";
+			$tokenoutput .= "<i>$message</i><br />\n";
 		}
 		else {
 			$errormessage="<strong><font color='red'>"._("Error").":</font> "._("Can't bind to the Ldap directory")."</strong>\n";
@@ -1423,17 +1419,15 @@ if ($action == "uploadldap") {
 }
 
 
-//echo "</center>\n";
-//echo "&nbsp;"
-echo "\t\t<table><tr><td></td></tr></table>\n"
+//$tokenoutput .= "</center>\n";
+//$tokenoutput .= "&nbsp;"
+$tokenoutput .= "\t\t<table><tr><td></td></tr></table>\n"
 ."\t\t</td>\n";
 
-//echo "</td>\n";
-echo helpscreen()
+//$tokenoutput .= "</td>\n";
+$tokenoutput .= helpscreen()
 ."</tr></table>\n";
 
-echo getAdminFooter("$langdir/instructions.html#tokens", "Using PHPSurveyors Tokens Function");
-//	."</body>\n</html>";
 
 
 function form($error=false)
@@ -1460,26 +1454,26 @@ function formldap($error=false)
 	if ($error) {print $error . "<br /><br />\n";}
 
 	if (! isset($ldap_queries) || ! is_array($ldap_queries) || count($ldap_queries) == 0) {
-		echo '<br />';
-		echo _('Ldap disabled or no LDAP query defined.');
-		echo '<br /><br /><br />';
-		echo '</center>';
+		$tokenoutput .= '<br />';
+		$tokenoutput .= _('Ldap disabled or no LDAP query defined.');
+		$tokenoutput .= '<br /><br /><br />';
+		$tokenoutput .= '</center>';
 	}
 	else {
-		echo '<br />';
+		$tokenoutput .= '<br />';
 		print "\n$setfont\n";
-		echo _('Select the Ldap query you want:');
-		echo '<br />';
-		echo "<form method='post' action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
-		echo "<select name='ldapQueries' style='length=35'><br />";
+		$tokenoutput .= _('Select the Ldap query you want:');
+		$tokenoutput .= '<br />';
+		$tokenoutput .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+		$tokenoutput .= "<select name='ldapQueries' style='length=35'><br />";
 		foreach ($ldap_queries as $q_number => $q) {
-			echo " <option value=".$q_number.">".$q['name']."</option>";
+			$tokenoutput .= " <option value=".$q_number.">".$q['name']."</option>";
 		}
-		echo "</select><br />";
-		echo "<input type='hidden' name='sid' value='$surveyid' />";
-		echo "<input type='hidden' name='action' value='uploadldap' />";
-		echo "<input type='submit' name='submit'>";
-		echo '</form></font>';
+		$tokenoutput .= "</select><br />";
+		$tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' />";
+		$tokenoutput .= "<input type='hidden' name='action' value='uploadldap' />";
+		$tokenoutput .= "<input type='submit' name='submit'>";
+		$tokenoutput .= '</form></font>';
 	}
 }
 

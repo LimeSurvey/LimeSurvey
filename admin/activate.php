@@ -36,7 +36,9 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (empty($homedir)) {die ("Cannot run this script directly");}
+include_once("login_check.php");
 
+$activateoutput='';
 if (!isset($_GET['ok']) || !$_GET['ok'])
 {
 	if (isset($_GET['fixnumbering']) && $_GET['fixnumbering'])
@@ -186,65 +188,57 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		$fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
 		$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
 	}
-	//	echo "<pre>";print_r($duplicates); echo "</pre>";
 
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
 	if (isset($failedcheck) && $failedcheck)
 	{
-		echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-		echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td align='center' bgcolor='#ffeeee'>\n";
-		echo "\t\t\t<font color='red'>$setfont<strong>"._("Error")."</strong><br />\n";
-		echo "\t\t\t"._("Survey does not pass consistency check")."</font></font>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td>\n";
-		echo "\t\t\t$setfont<strong>"._("The following problems have been found:")."</strong></font><br />\n";
-		echo "\t\t\t<ul>\n";
+		$activateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
+		$activateoutput .= "\t<tr>\n";
+		$activateoutput .= "\t\t<td align='center' bgcolor='#ffeeee'>\n";
+		$activateoutput .= "\t\t\t<font color='red'><strong>"._("Error")."</strong><br />\n";
+		$activateoutput .= "\t\t\t"._("Survey does not pass consistency check")."</font></font>\n";
+		$activateoutput .= "\t\t</td>\n";
+		$activateoutput .= "\t</tr>\n";
+		$activateoutput .= "\t<tr>\n";
+		$activateoutput .= "\t\t<td>\n";
+		$activateoutput .= "\t\t\t<strong>"._("The following problems have been found:")."</strong></font><br />\n";
+		$activateoutput .= "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 		{
-			echo "\t\t\t\t<li>$setfont Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</font></li>\n";
+			$activateoutput .= "\t\t\t\t<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</font></li>\n";
 		}
-		echo "\t\t\t</ul>\n";
-		echo "\t\t\t$setfont"._("The survey cannot be activated until these problems have been resolved.")."</font>\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td align='center'>\n";
-		echo "\t\t\t<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n";
-		echo "\t\t</td>\n";
-		echo "\t</tr>\n";
-		echo "</table>\n";
+		$activateoutput .= "\t\t\t</ul>\n";
+		$activateoutput .= "\t\t\t"._("The survey cannot be activated until these problems have been resolved.")."</font>\n";
+		$activateoutput .= "\t\t</td>\n";
+		$activateoutput .= "\t</tr>\n";
+		$activateoutput .= "</table>\n";
 		exit;
 	}
 
-	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td align='center' bgcolor='#ffeeee'>\n";
-	echo "\t\t\t<font color='red'>$setfont<strong>"._("Warning")."</strong><br />\n";
-	echo "\t\t\t"._("READ THIS CAREFULLY BEFORE PROCEEDING")."\n";
-	echo "\t\t\t</font></font>\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td>\n";
-	echo _("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.")."<br /><br />\n";
-	echo _("Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>")."\n";
-	echo _("However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>")."\n";
-	echo _("Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.")."<br /><br />\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "\t<tr>\n";
-	echo "\t\t<td align='center'>\n";
-	echo "\t\t\t<input type='submit' value=\""._("Cancel")."\" onclick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" /><br />\n";
-	echo "\t\t\t<input type='submit' value=\""._("Activate")."\" onClick=\"window.open('$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\" />\n";
-	echo "\t\t</td>\n";
-	echo "\t</tr>\n";
-	echo "</table>\n";
-	echo "</body>\n</html>";
+	$activateoutput .= "<br />\n<table width='500' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
+	$activateoutput .= "\t<tr>\n";
+	$activateoutput .= "\t\t<td align='center' bgcolor='#ffeeee'>\n";
+	$activateoutput .= "\t\t\t<font color='red'><strong>"._("Warning")."</strong><br />\n";
+	$activateoutput .= "\t\t\t"._("READ THIS CAREFULLY BEFORE PROCEEDING")."\n";
+	$activateoutput .= "\t\t\t</font></font>\n";
+	$activateoutput .= "\t\t</td>\n";
+	$activateoutput .= "\t</tr>\n";
+	$activateoutput .= "\t<tr>\n";
+	$activateoutput .= "\t\t<td>\n";
+	$activateoutput .= _("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.")."<br /><br />\n";
+	$activateoutput .= _("Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>")."\n";
+	$activateoutput .= _("However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>")."\n";
+	$activateoutput .= _("Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.")."<br /><br />\n";
+	$activateoutput .= "\t\t</td>\n";
+	$activateoutput .= "\t</tr>\n";
+	$activateoutput .= "\t<tr>\n";
+	$activateoutput .= "\t\t<td align='center'>\n";
+	$activateoutput .= "\t\t\t<input type='submit' value=\""._("Activate Survey")."\" onClick=\"window.open('$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\" />\n";
+	$activateoutput .= "\t\t<br />&nbsp;</td>\n";
+	$activateoutput .= "\t</tr>\n";
+	$activateoutput .= "</table><br />&nbsp;\n";
 
 }
 else
@@ -400,7 +394,7 @@ else
 	//$createsurvey = substr($createsurvey, 0, strlen($createsurvey)-2);
 	$createsurvey .= "  UNIQUE(id)\n";
 	$createsurvey .= ") TYPE=MyISAM;";
-	//echo "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
+	//$activateoutput .= "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
 
 	$createtable=$connect->Execute($createsurvey) or die
 	(
@@ -411,7 +405,7 @@ else
 	"<center><a href='$scriptname?sid={$_GET['sid']}'>"._("Main Admin Screen")."</a></center>\n" .
 	"DB "._("Error").":<br />\n<font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
 	"<pre>$createsurvey</pre>\n" .
-	"</td></tr></table>\n" .
+	"</td></tr></table></br>&nbsp;\n" .
 	"</body>\n</html>"
 	);
 
@@ -450,33 +444,32 @@ else
 		$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$idprefix;
 		if (!$result = $connect->Execute($autonumberquery))
 		{
-			echo "There was an error defining the autonumbering to start at $idprefix.<br />";
+			$activateoutput .= "There was an error defining the autonumbering to start at $idprefix.<br />";
 		}
 	}
 
-	echo "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
-	echo "\t\t\t\t<tr><td align='center'>$setfont<font color='green'>"._("Survey has been activated. Results table has been succesfully created.")."<br /><br />\n";
+	$activateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
+	$activateoutput .= "\t\t\t\t<tr><td align='center'><font color='green'>"._("Survey has been activated. Results table has been succesfully created.")."<br /><br />\n";
 
 	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = $connect->Execute($acquery);
 
 	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 	{
-		echo _("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
-		echo "<input type='submit' value='"._("Initialise Tokens")."' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
+		$activateoutput .= _("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
+		$activateoutput .= "<input type='submit' value='"._("Initialise Tokens")."' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
 	}
 	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
 	{
-		echo _("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-		echo "<input type='submit' value='"._("Initialise Tokens")."' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
+		$activateoutput .= _("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
+		$activateoutput .= "<input type='submit' value='"._("Initialise Tokens")."' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
 	}
 	else
 	{
-		echo _("This survey is now active, and responses can be recorded.")."<br /><br />\n";
-		echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n";
+		$activateoutput .= _("This survey is now active, and responses can be recorded.")."<br /><br />\n";
 	}
-	echo "\t\t\t\t</font></font></td></tr></table>\n";
-	echo "</body>\n</html>";
+	$activateoutput .= "\t\t\t\t</font></font></td></tr></table><br />&nbsp;\n";
+	
 }
 ?>
