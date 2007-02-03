@@ -373,11 +373,34 @@ if ($surveyid)
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'"._("Do Survey")."');return false\">"
-		."<img  src='$imagefiles/do.png' title='' "
-		. "name='DoSurvey' align='left' alt='"._("Do Survey")."' /></a>";
+		
+		if (!is_array(GetAdditionalLanguagesFromSurveyID($surveyid)))
+		{
+			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'"._("Do Survey")."');return false\">"
+			."<img  src='$imagefiles/do.png' title='' "
+			. "name='DoSurvey' align='left' alt='"._("Do Survey")."' /></a>";
+		
+		} else {
+			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='visible';\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'"._("Do Survey")."');return false\">"
+			."<img  src='$imagefiles/do.png' title='' "
+			. "name='DoSurvey' align='left' alt='"._("Do Survey")."' /></a>";
+			
+			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+			$baselang = GetBaseLanguageFromSurveyID($surveyid);
+			$tmp_survlangs[] = $baselang;
+			
+			// Test Survey Language Selection Popup
+			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr bgcolor=\"#FFFF66\"><td>"._("Please Select a Language:")."</td></tr>";
+			foreach ($tmp_survlangs as $tmp_lang)
+			{
+				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\" />".getLanguageNameFromCode($tmp_lang,false)."</a></td></tr>";
+			}
+			$surveysummary .= "</table></DIV>";
+		}
 
 		if($sumrows5['browse_response'])
 		{
