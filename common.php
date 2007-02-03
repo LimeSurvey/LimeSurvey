@@ -2224,7 +2224,7 @@ function doAdminHeader()
 	echo getAdminHeader();
 }
 
-function getAdminHeader()
+function getAdminHeader($meta=false)
 {
 	global $sitename;
 	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']='en';}
@@ -2233,8 +2233,12 @@ function getAdminHeader()
 	. "<!--[if lt IE 7]>\n"
 	. "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
 	. "<![endif]-->\n"
-	. "<title>$sitename</title>\n"
-	. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
+	. "<title>$sitename</title>\n";
+	if ($meta)
+        {
+        $strAdminHeader.=$meta;
+        }
+	$strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"

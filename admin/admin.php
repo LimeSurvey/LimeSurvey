@@ -50,10 +50,6 @@ if (!isset($elem)) {$elem=returnglobal('elem');}              //??
 
 $adminoutput='';
 
-  if ($action!="showprintablesurvey")   // For a few actions we dont want to have the header
-    {  
-    $adminoutput .= getAdminHeader();  // Alle future output is written into this and then outputted at the end of file
-    }
 include_once("login_check.php");
 
     
@@ -181,6 +177,9 @@ if(isset($_SESSION['loginID']) && $action!='login')
 
   if (!isset($printablesurveyoutput))   // For a few actions we dont want to have the header
     {  
+    if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
+    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // Alle future output is written into this and then outputted at the end of file
+    $_SESSION['metaHeader']='';    
     $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
     ."\t<tr>\n"
     ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
