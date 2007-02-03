@@ -268,9 +268,9 @@ span.settingcaption
 		font-size: 11px;
 		position: absolute;
 		width: 100px;
-		height: 200px;
-		background-color: #FFFFFF;
-		top: 152px;
+		height: 100px;
+		background-color: #FFFF66;
+		top: 151px;
 		left: 80px;
 		border-style: solid;
 		border-width: 1px;
@@ -279,8 +279,8 @@ span.settingcaption
 		z-index:10000;
 		opacity:0.7;
 		visibility:hidden;
-		filter:alpha(opacity=70);
-		-khtml-opacity: 0.7;
-		-moz-opacity: 0.7;
+		filter:alpha(opacity=90);
+		-khtml-opacity: 0.9;
+		-moz-opacity: 0.9;
 		-moz-border-radius:6px;	/* Rounded edges in Firefox */
 	}
