@@ -397,7 +397,7 @@ if ($surveyid)
 			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr><td>"._("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
-				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\" /><font color=\"#097300\">".getLanguageNameFromCode($tmp_lang,false)."</font></a></td></tr>";
+				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\" /><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 			}
 			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden';\" /><font color=\"#DF3030\">"._("Cancel")."</font></a></td><tr></table></DIV>";
 			
