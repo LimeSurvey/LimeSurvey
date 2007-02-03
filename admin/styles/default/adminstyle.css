@@ -262,4 +262,25 @@ span.settingcaption
 		margin-top:2px;
 
 	}
-  	
+
+.testsurvpopup{
+		font-family:arial,verdana,sans-serif;
+		font-size: 11px;
+		position: absolute;
+		width: 100px;
+		height: 200px;
+		background-color: #FFFFFF;
+		top: 152px;
+		left: 80px;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #000000;
+		padding: 8px;
+		z-index:10000;
+		opacity:0.7;
+		visibility:hidden;
+		filter:alpha(opacity=70);
+		-khtml-opacity: 0.7;
+		-moz-opacity: 0.7;
+		-moz-border-radius:6px;	/* Rounded edges in Firefox */
+	}
