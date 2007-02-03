@@ -374,7 +374,7 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		
-		if (!is_array(GetAdditionalLanguagesFromSurveyID($surveyid)))
+		if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
 		{
 			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -392,14 +392,20 @@ if ($surveyid)
 			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 			$baselang = GetBaseLanguageFromSurveyID($surveyid);
 			$tmp_survlangs[] = $baselang;
-			
+
 			// Test Survey Language Selection Popup
-			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr bgcolor=\"#FFFF66\"><td>"._("Please Select a Language:")."</td></tr>";
+			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr><td>"._("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
-				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\" />".getLanguageNameFromCode($tmp_lang,false)."</a></td></tr>";
+				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\" /><font color=\"#097300\">".getLanguageNameFromCode($tmp_lang,false)."</font></a></td></tr>";
 			}
-			$surveysummary .= "</table></DIV>";
+			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden';\" /><font color=\"#DF3030\">"._("Cancel")."</font></a></td><tr></table></DIV>";
+			
+			if (count($tmp_survlangs) > 2)
+			{
+				$tmp_pheight = 100 + ((count($tmp_survlangs)-2) * 20);
+				$surveysummary .= "<script type='text/javascript'>document.getElementById('testsurvpopup').style.height='".$tmp_pheight."px';</script>";
+			}
 		}
 
 		if($sumrows5['browse_response'])
