@@ -383,7 +383,7 @@ if ($surveyid)
 			. "name='DoSurvey' align='left' alt='"._("Do Survey")."' /></a>";
 		
 		} else {
-			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='visible';\""
+			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('testsurvpopup').style.visibility='visible';\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'"._("Do Survey")."');return false\">"
 			."<img  src='$imagefiles/do.png' title='' "
@@ -420,12 +420,45 @@ if ($surveyid)
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid', '_blank')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
-		. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."' />"
-		."</a>"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
+		
+		if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+		{
+			
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid', '_blank')\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
+			. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."' />"
+			."</a>"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
+		
+		} else {
+			
+			$surveysummary .= "<a href=\"#\" onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='visible';\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."');return false\">\n"
+			. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='"._("Printable Version of Survey")."' />"
+			."</a>"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
+			
+			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+			$baselang = GetBaseLanguageFromSurveyID($surveyid);
+			$tmp_survlangs[] = $baselang;
+
+			// Test Survey Language Selection Popup
+			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"printpopup\"><table width=\"100%\"><tr><td>"._("Please select a language:")."</td></tr>";
+			foreach ($tmp_survlangs as $tmp_lang)
+			{
+				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden'; window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid&amp;lang=".$tmp_lang."', '_blank')\" /><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+			}
+			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\" /><font color=\"#DF3030\">"._("Cancel")."</font></a></td><tr></table></DIV>";
+			
+			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>";
+			if (count($tmp_survlangs) > 2)
+			{
+				$tmp_pheight = 100 + ((count($tmp_survlangs)-2) * 20);
+				$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.height='".$tmp_pheight."px';</script>";
+			}
+		}
 
 		if($sumrows5['edit_survey_property'])
 		{

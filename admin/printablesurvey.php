@@ -47,11 +47,20 @@ if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 
 
 // PRESENT SURVEY DATAENTRY SCREEN
-//ToDo: Show a language selection box 
-$surveyprintlang=GetbaseLanguageFromSurveyid($surveyid);
-$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid and language=".$connect->qstr($surveyprintlang); //Getting data for this survey
-$desresult = db_execute_assoc($desquery);
 
+// Set the language of the survey, either from GET parameter of session var
+if (isset($_GET['lang']))
+{
+	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_GET['lang']);
+	if ($_GET['lang']) $surveyprintlang = $_GET['lang'];
+} else
+{
+	$surveyprintlang=GetbaseLanguageFromSurveyid($surveyid);
+}
+
+$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid=$surveyid and phpsv_surveys_languagesettings.surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
+
+$desresult = db_execute_assoc($desquery);
 while ($desrow = $desresult->FetchRow())
 {
 	$surveyname = $desrow['surveyls_title'];
