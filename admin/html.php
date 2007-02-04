@@ -403,7 +403,7 @@ if ($surveyid)
 			
 			if (count($tmp_survlangs) > 2)
 			{
-				$tmp_pheight = 100 + ((count($tmp_survlangs)-2) * 20);
+				$tmp_pheight = 110 + ((count($tmp_survlangs)-2) * 20);
 				$surveysummary .= "<script type='text/javascript'>document.getElementById('testsurvpopup').style.height='".$tmp_pheight."px';</script>";
 			}
 		}
@@ -455,7 +455,7 @@ if ($surveyid)
 			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>";
 			if (count($tmp_survlangs) > 2)
 			{
-				$tmp_pheight = 100 + ((count($tmp_survlangs)-2) * 20);
+				$tmp_pheight = 110 + ((count($tmp_survlangs)-2) * 20);
 				$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.height='".$tmp_pheight."px';</script>";
 			}
 		}
