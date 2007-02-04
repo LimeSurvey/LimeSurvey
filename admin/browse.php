@@ -56,12 +56,12 @@ $browseoutput = "<table><tr><td></td></tr></table>\n"
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
 	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("Browse Responses")."</strong></font></td></tr>\n"
+	. $clang->gT("Browse Responses")."</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-	."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
-	. _("The defined surveyor database does not exist")."<br />\n"
-	. _("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
-	."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+	. $clang->gT("The defined surveyor database does not exist")."<br />\n"
+	. $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
+	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	return;
@@ -69,12 +69,12 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 {
 	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("Browse Responses")."</strong></font></td></tr>\n"
+	. $clang->gT("Browse Responses")."</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-	."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
-	. _("You have not selected a survey to browse.")."<br /><br />\n"
+	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+	. $clang->gT("You have not selected a survey to browse.")."<br /><br />\n"
 	."<input type='submit' value='"
-	. _("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+	. $clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n";
 	return;
 }
@@ -93,12 +93,12 @@ if ($actcount > 0)
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 		{
 			$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-			. _("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></font></tr>\n"
+			. $clang->gT("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></font></tr>\n"
 			."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-			."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
-			. _("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
+			."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+			. $clang->gT("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
 			."<input type='submit' value='"
-			. _("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
+			. $clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
 			."</td></tr></table>\n"
 			."</body>\n</html>";
 			return;
@@ -108,11 +108,11 @@ if ($actcount > 0)
 else //SURVEY MATCHING $surveyid DOESN'T EXIST
 {
 	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("Browse Responses")."</strong></font></td></tr>\n"
+	. $clang->gT("Browse Responses")."</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-	."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
-	. _("There is no matching survey.")." ($surveyid)<br /><br />\n"
-	."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+	. $clang->gT("There is no matching survey.")." ($surveyid)<br /><br />\n"
+	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	return;
@@ -124,7 +124,7 @@ $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($subaction == "id") // Looking at a SINGLE entry
 {
 	//SHOW HEADER
-	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Browse Responses").": <font color='silver'>$surveyname</font></strong></font></td></tr>\n";
+	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Browse Responses").": <font color='silver'>$surveyname</font></strong></font></td></tr>\n";
 	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= "$surveyoptions";} // Don't show options if coming from tokens script
 	$browseoutput .= "</table>\n"
 	."<table><tr><td></td></tr></table>\n";
@@ -227,27 +227,27 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$browseoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'>\n"
 	."\t\t<td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("View Response").":</strong> $id</font></td></tr>\n"
+	. $clang->gT("View Response").":</strong> $id</font></td></tr>\n"
 	."\t<tr bgcolor='#999999'><td colspan='2'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='dataentry.php?action=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Edit this entry")."')\">" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry")."')\">" .
 			"<img align='left' src='$imagefiles/edit.png' title='' alt='' /></a>\n"
 	."\t\t\t<a href='dataentry.php?action=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Delete this entry")."')\">" 
-	."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('"._("Are you sure you want to delete this entry.")."')\" /></a>\n"
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry")."')\">" 
+	."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.")."')\" /></a>\n"
 	. "\t\t\t<a href='export.php?sid=$surveyid&id=$id'" .
-		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Export this Response")."')\">" .
-		"<img name='Export' src='$imagefiles/exportcsv.png' title='' alt='". _("Export this Response")."'align='left' /></a>\n"
+		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Export this Response")."')\">" .
+		"<img name='Export' src='$imagefiles/exportcsv.png' title='' alt='". $clang->gT("Export this Response")."'align='left' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show last...")."')\">".
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show last...")."')\">".
 		"<img name='DataBack' align='left' src='$imagefiles/databack.png' title='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show next...")."')\">" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show next...")."')\">" .
 		"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n"
@@ -281,7 +281,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 elseif ($subaction == "all")
 {
 	$browseoutput .= ("\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n");
+	. $clang->gT("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n");
 
 	if (!isset($_POST['sql']))
 	{$browseoutput .= "$surveyoptions";} //don't show options when called from another script with a filter on
@@ -467,24 +467,24 @@ elseif ($subaction == "all")
 	$browseoutput .= "<table><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("Data View Control").":</strong></font></td></tr>\n"
+	. $clang->gT("Data View Control").":</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#999999'><td align='left'>\n";
 	if (!isset($_POST['sql']))
 	{
 		$browseoutput .= "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit'" .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show start..")."');return false\">" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show start..")."');return false\">" .
 						"<img name='DataBegin' align='left' src='$imagefiles/databegin.png' title='' /></a>\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$last&amp;limit=$limit'" .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show previous...")."');return false\">" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show previous...")."');return false\">" .
 				"<img name='DataBack' align='left'  src='$imagefiles/databack.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$next&amp;limit=$limit'" .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show next...")."');return false\">".
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show next...")."');return false\">".
 				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit'" .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show last...")."');return false\">" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show last...")."');return false\">" .
 				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
 	}
@@ -492,9 +492,9 @@ elseif ($subaction == "all")
 	."\t\t<td align='right'>\n"
 	."\t\t<form action='browse.php' method='post'><font size='1' face='verdana'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
-	."\t\t\t"._("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit'>\n"
-	."\t\t\t"._("Starting From:")."<input type='text' size='4' value='$start' name='start'>\n"
-	."\t\t\t<input type='submit' value='"._("Show")."'>\n"
+	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit'>\n"
+	."\t\t\t".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start'>\n"
+	."\t\t\t<input type='submit' value='".$clang->gT("Show")."'>\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t\t<input type='hidden' name='action' value='all'>\n");
@@ -556,7 +556,7 @@ elseif ($subaction == "all")
 else
 {
 	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. _("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
+	. $clang->gT("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
 	. $surveyoptions;
 	$browseoutput .= "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";
