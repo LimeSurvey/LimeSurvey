@@ -52,8 +52,7 @@ if (!isset($elem)) {$elem=returnglobal('elem');}              //??
 $adminoutput='';
 
 include_once("login_check.php");
-
-    
+  
 
 if ($action == "activate")
 	{
@@ -242,7 +241,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   $adminoutput.= "\t\t</td>\n".helpscreen()
               . "\t</tr>\n"
               . "</table>\n"
-              . getAdminFooter("$langdir/instructions.html", _("Using the PHPSurveyor Admin Script"));
+              . getAdminFooter("$langdir/instructions.html", $clang->gT("Using the PHPSurveyor Admin Script"));
   }
 }
   
@@ -255,7 +254,7 @@ echo $adminoutput;
   // 
   {
   	global $homeurl, $langdir,  $imagefiles;
-  	global $surveyid, $gid, $qid, $action;
+  	global $surveyid, $gid, $qid, $action, $clang;
 
   	$helpoutput= "<script type='text/javascript'>\n"
     ."\tfunction showhelp(action)\n"
@@ -277,7 +276,7 @@ echo $adminoutput;
   	."\t\t\t\t<tr>\n"
   	."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
   	."\t\t\t\t\t\t<font color='white' size='1'><strong>"
-  	._("Help")."</strong>\n"
+  	.$clang->gT("Help")."</strong>\n"
   	."\t\t\t\t\t</font></td>\n"
   	."\t\t\t\t</tr>\n"
   	."\t\t\t\t<tr>\n"
