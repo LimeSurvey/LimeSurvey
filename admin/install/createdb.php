@@ -83,7 +83,7 @@ if (!$database_exists) //Database named in config.php does not exist
 		break;
 		default: $createDb=$connect->Execute("CREATE DATABASE $dbname");
 	}
-	if ($createDb) //Database has been succesfully created
+	if ($createDb) //Database has been successfully created
 	{
 		$connect->database = $dbname;
 		$connect->Execute("USE DATABASE `$dbname`");

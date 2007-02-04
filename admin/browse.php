@@ -38,7 +38,6 @@ require_once(dirname(__FILE__).'/../common.php');
 if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($id)) {$id=returnglobal('id');}
-if (!isset($action)) {$action=returnglobal('action');}
 if (!isset($order)) {$order=returnglobal('order');}
 
 include_once("login_check.php");
@@ -51,12 +50,12 @@ $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
 
 $surveyoptions = browsemenubar();
-echo "<table><tr><td></td></tr></table>\n"
+$browseoutput = "<table><tr><td></td></tr></table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	. _("Browse Responses")."</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 	."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
@@ -65,24 +64,24 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 	."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
-	exit;
+	return;
 }
-if (!$surveyid && !$action) //NO SID OR ACTION PROVIDED
+if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	. _("Browse Responses")."</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 	."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
 	. _("You have not selected a survey to browse.")."<br /><br />\n"
 	."<input type='submit' value='"
 	. _("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
-	."</td></tr></table>\n"
-	."</body>\n</html>";
-	exit;
+	."</td></tr></table>\n";
+	return;
 }
 
 //CHECK IF SURVEY IS ACTIVATED AND EXISTS
-$actquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
+$actquery = "SELECT * FROM ".db_table_name('surveys')." as a inner join ".db_table_name('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=$surveyid";
+
 $actresult = db_execute_assoc($actquery);
 $actcount = $actresult->RecordCount();
 if ($actcount > 0)
@@ -93,7 +92,7 @@ if ($actcount > 0)
 		$surveyname = "{$actrow['surveyls_title']}";
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 		{
-			echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+			$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 			. _("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></font></tr>\n"
 			."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 			."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
@@ -102,13 +101,13 @@ if ($actcount > 0)
 			. _("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
 			."</td></tr></table>\n"
 			."</body>\n</html>";
-			exit;
+			return;
 		}
 	}
 }
 else //SURVEY MATCHING $surveyid DOESN'T EXIST
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	. _("Browse Responses")."</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 	."<strong><font color='red'>"._("Error")."</font></strong><br />\n"
@@ -116,18 +115,18 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 	."<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
-	exit;
+	return;
 }
 
 //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 
 $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
-if ($action == "id") // Looking at a SINGLE entry
+if ($subaction == "id") // Looking at a SINGLE entry
 {
 	//SHOW HEADER
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Browse Responses").": <font color='silver'>$surveyname</font></strong></font></td></tr>\n";
-	if (!isset($_POST['sql']) || !$_POST['sql']) {echo "$surveyoptions";} // Don't show options if coming from tokens script
-	echo "</table>\n"
+	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Browse Responses").": <font color='silver'>$surveyname</font></strong></font></td></tr>\n";
+	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= "$surveyoptions";} // Don't show options if coming from tokens script
+	$browseoutput .= "</table>\n"
 	."<table><tr><td></td></tr></table>\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
@@ -225,7 +224,7 @@ if ($action == "id") // Looking at a SINGLE entry
 	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id'];}
 	$next=$id+1;
 	$last=$id-1;
-	echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	$browseoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'>\n"
 	."\t\t<td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	. _("View Response").":</strong> $id</font></td></tr>\n"
@@ -243,11 +242,11 @@ if ($action == "id") // Looking at a SINGLE entry
 		"<img name='Export' src='$imagefiles/exportcsv.png' title='' alt='". _("Export this Response")."'align='left' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
-	."\t\t\t<a href='browse.php?action=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show last...")."')\">".
 		"<img name='DataBack' align='left' src='$imagefiles/databack.png' title='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-	."\t\t\t<a href='browse.php?action=id&amp;id=$next&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show next...")."')\">" .
 		"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
 	."\t\t</td>\n"
@@ -259,7 +258,7 @@ if ($action == "id") // Looking at a SINGLE entry
 		$i=0;
 		for ($i; $i<$nfncount+1; $i++)
 		{
-			echo "\t<tr>\n"
+			$browseoutput .= "\t<tr>\n"
 			."\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>"
 			."$setfont{$fnames[$i][2]}</font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 5px'>$setfont"
@@ -269,26 +268,26 @@ if ($action == "id") // Looking at a SINGLE entry
 			."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
 		}
 	}
-	echo "</table>\n"
+	$browseoutput .= "</table>\n"
 	."<table width='99%' align='center'>\n"
 	."\t<tr>\n"
 	."\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
-	if (isset($_POST['sql']) && $_POST['sql']) {echo "\t\t\t<input type='submit' value='Close Window' onClick=\"window.close();\" />\n";}
-	echo "\t\t</td>\n"
+	if (isset($_POST['sql']) && $_POST['sql']) {$browseoutput .= "\t\t\t<input type='submit' value='Close Window' onClick=\"window.close();\" />\n";}
+	$browseoutput .= "\t\t</td>\n"
 	."\t</tr>\n"
 	."</table>\n";
 }
 
-elseif ($action == "all")
+elseif ($subaction == "all")
 {
-	echo ("\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$browseoutput .= ("\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	. _("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n");
 
 	if (!isset($_POST['sql']))
-	{echo "$surveyoptions";} //don't show options when called from another script with a filter on
+	{$browseoutput .= "$surveyoptions";} //don't show options when called from another script with a filter on
 	else
 	{
-		echo "\n<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
+		$browseoutput .= "\n<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center' $singleborderstyle>$setfont\n"
 		."\t\t\tShowing Filtered Results<br />\n"
@@ -298,7 +297,7 @@ elseif ($action == "all")
 		."</table>\n";
 
 	}
-	echo "</table>\n";
+	$browseoutput .= "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' and {$dbprefix}questions.language='$qulanguage' and {$dbprefix}groups.language='$qulanguage' ORDER BY {$dbprefix}groups.group_order";
 	$fnresult = db_execute_assoc($fnquery);
@@ -465,31 +464,31 @@ elseif ($action == "all")
 	if ($next >= $dtcount) {$next=$dtcount-$limit;}
 	if ($end < 0) {$end=0;}
 
-	echo "<table><tr><td></td></tr></table>\n"
+	$browseoutput .= "<table><tr><td></td></tr></table>\n"
 	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	. _("Data View Control").":</strong></font></td></tr>\n"
 	."\t<tr bgcolor='#999999'><td align='left'>\n";
 	if (!isset($_POST['sql']))
 	{
-		echo "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
+		$browseoutput .= "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-		."\t\t\t<a href='browse.php?action=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit'" .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit'" .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show start..")."');return false\">" .
 						"<img name='DataBegin' align='left' src='$imagefiles/databegin.png' title='' /></a>\n"
-		."\t\t\t<a href='browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$last&amp;limit=$limit'" .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$last&amp;limit=$limit'" .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show previous...")."');return false\">" .
 				"<img name='DataBack' align='left'  src='$imagefiles/databack.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-		."\t\t\t<a href='browse.php?action=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$next&amp;limit=$limit'" .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$next&amp;limit=$limit'" .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show next...")."');return false\">".
 				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
-		."\t\t\t<a href='browse.php?action=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit'" .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit'" .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Show last...")."');return false\">" .
 				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
 	}
-	echo("\t\t</td>\n"
+	$browseoutput .=("\t\t</td>\n"
 	."\t\t<td align='right'>\n"
 	."\t\t<form action='browse.php' method='post'><font size='1' face='verdana'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
@@ -501,14 +500,14 @@ elseif ($action == "all")
 	."\t\t<input type='hidden' name='action' value='all'>\n");
 	if (isset($_POST['sql']))
 	{
-		echo "\t\t<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."'>\n";
+		$browseoutput .= "\t\t<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."'>\n";
 	}
-	echo 	 "\t\t</form></td>\n"
+	$browseoutput .= 	 "\t\t</form></td>\n"
 	."\t</tr>\n"
 	."</table>\n"
 	."<table><tr><td></td></tr></table>\n";
 
-	echo $tableheader;
+	$browseoutput .= $tableheader;
 
 	while ($dtrow = $dtresult->FetchRow())
 	{
@@ -518,9 +517,9 @@ elseif ($action == "all")
 			if ($bgcc == "#EEEEEE") {$bgcc = "#CCCCCC";}
 			else {$bgcc = "#EEEEEE";}
 		}
-		echo "\t<tr bgcolor='$bgcc' valign='top'>\n"
+		$browseoutput .= "\t<tr bgcolor='$bgcc' valign='top'>\n"
 		."\t\t<td align='center'><font face='verdana' size='1'>\n"
-		."\t\t\t<a href='browse.php?sid=$surveyid&amp;action=id&amp;id={$dtrow['id']}' title='View this record'>"
+		."\t\t\t<a href='browse.php?sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='View this record'>"
 		."{$dtrow['id']}</a></font></td>\n";
 
 		$i = 0;
@@ -531,44 +530,43 @@ elseif ($action == "all")
 			{
 				$TokenRow = $SQLResult->FetchRow();
 			}
-			echo "\t\t<td align='center'><font size='1'>\n";
+			$browseoutput .= "\t\t<td align='center'><font size='1'>\n";
 			if (isset($TokenRow) && $TokenRow)
 			{
-				echo "\t\t<a href='tokens.php?sid=$surveyid&amp;action=tokenedit&amp;tid={$TokenRow['tid']}' title='Edit this token'>";
+				$browseoutput .= "\t\t<a href='tokens.php?sid=$surveyid&amp;subaction=tokenedit&amp;tid={$TokenRow['tid']}' title='Edit this token'>";
 			}
-			echo "{$dtrow['token']}";
+			$browseoutput .= "{$dtrow['token']}";
 			if (isset($TokenRow) && $TokenRow)
 			{
-				echo "</a>\n";
+				$browseoutput .= "</a>\n";
 			}
 			$i++;
 		}
 
 		for ($i; $i<$fncount; $i++)
 		{
-			echo "\t\t<td align='center'><font size='1' face='verdana'>"
+			$browseoutput .= "\t\t<td align='center'><font size='1' face='verdana'>"
 			. htmlspecialchars($dtrow[$fnames[$i][0]])
 			."</font></td>\n";
 		}
-		echo "\t</tr>\n";
+		$browseoutput .= "\t</tr>\n";
 	}
-	echo "</table>\n<br />\n";
+	$browseoutput .= "</table>\n<br />\n";
 }
 else
 {
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	. _("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
 	. $surveyoptions;
-	echo "</table>\n";
+	$browseoutput .= "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";
 	$gnresult = db_execute_num($gnquery);
 	while ($gnrow = $gnresult->FetchRow())
 	{
-		echo "<table width='100%' border='0'>\n"
+		$browseoutput .= "<table width='100%' border='0'>\n"
 		."\t<tr><td align='center'>$setfont{$gnrow[0]} responses in this database</font></td></tr>\n"
 		."</table>\n";
 	}
 }
-echo getAdminFooter("$langdir/instructions.html#browse", "Using PHPSurveyors Browse Function");
 
 ?>

@@ -1077,33 +1077,29 @@ function browsemenubar()
 {
 	global $surveyid, $scriptname, $imagefiles, $homeurl;
 	//BROWSE MENU BAR
-	if (!isset($surveyoptions)) {$surveyoptions="";}
-	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
+	$browsemenubar = "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
 			"onmouseover=\"showTooltip(event,'"._("Return to Survey Administration")."')\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left' />\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
-	. "\t\t\t<a href='browse.php?sid=$surveyid' onmouseout=\"hideTooltip()\"" .
+	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid' onmouseout=\"hideTooltip()\"" .
 			" onmouseover=\"showTooltip(event,'"._("Show summary information")."')\"" .
 			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' align='left' /></a>\n"
-	. "\t\t\t<a href='browse.php?sid=$surveyid&amp;action=all' onmouseout=\"hideTooltip()\"" .
+	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\"" .
 			"onmouseover=\"showTooltip(event,'". _("Display Responses")."')\">" .
 			"<img name='ViewAll' src='$imagefiles/document.png' title='' align='left' /></a>\n"
-	. "\t\t\t<a href='browse.php?sid=$surveyid&amp;action=all&amp;limit=50&amp;order=desc'" .
+	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Display Last 50 Responses")."')\">" .
 			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' align='left' /></a>\n"
 	. "\t\t\t<a href='dataentry.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Dataentry Screen for Survey")."')\">" .
 	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' align='left' /></a>\n"
-	. "\t\t\t<a href='printablesurvey.php?sid=$surveyid'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Printable Version of Survey")."')\">" .
-			"<img name='Printable' src='$imagefiles/print.png' title='' align='left' /></a>\n"
-	. "\t\t\t<a href='statistics.php?sid=$surveyid' " .
+	. "\t\t\t<a href='$scriptname?action=statistics&amp;sid=$surveyid' " .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Get statistics from these responses")."')\">".
 		"<img name='Statistics' src='$imagefiles/statistics.png' title='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
-	. "\t\t\t<a href='export.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Results to Application")."')\"><img name='Export' src='$imagefiles/export.png' " .
+	. "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Results to Application")."')\"><img name='Export' src='$imagefiles/export.png' " .
 			"title='' alt=''align='left'  blank')\"></a>\n"
 	. "\t\t\t<a href='spss.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Export result to a SPSS command file")."')\"><img src='$imagefiles/exportspss.png' align='left' title='"
 	. _("Export result to a SPSS command file")."' border='0' alt='". _("Export result to a SPSS command file")."'></a>\n"
@@ -1121,7 +1117,7 @@ function browsemenubar()
 		"<img src='$imagefiles/exportvv.png' align='left' title='' alt='' border='0' /></a>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
-	return $surveyoptions;
+	return $browsemenubar;
 }
 
 

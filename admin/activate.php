@@ -450,7 +450,7 @@ else
 
 	$activateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
-	$activateoutput .= "\t\t\t\t<tr><td align='center'><font color='green'>"._("Survey has been activated. Results table has been succesfully created.")."<br /><br />\n";
+	$activateoutput .= "\t\t\t\t<tr><td align='center'><font color='green'>"._("Survey has been activated. Results table has been successfully created.")."<br /><br />\n";
 
 	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
 	$acresult = $connect->Execute($acquery);
